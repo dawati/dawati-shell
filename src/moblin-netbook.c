@@ -33,10 +33,8 @@
 #include <gmodule.h>
 #include <string.h>
 
-#include "../tidy/tidy-grid.h"
+#include "tidy/tidy-grid.h"
 
-/* For debugging only */
-#include "../../../core/window-private.h"
 #include "compositor-mutter.h"
 
 #define DESTROY_TIMEOUT     250
@@ -809,9 +807,6 @@ switcher_clone_input_cb (ClutterActor *clone,
   MetaWindow    *window;
   MetaWorkspace *workspace;
 
-  printf ("Actor %p (%s) clicked\n",
-          clone, clutter_actor_get_name (clone));
-
   window    = mutter_window_get_meta_window (mw);
   workspace = meta_window_get_workspace (window);
 
@@ -887,17 +882,9 @@ show_switcher (void)
           continue;
         }
 
-#if 0
-      printf ("Adding %p:%s\n",
-              mw,
-              mutter_window_get_meta_window (mw) ?
-              mutter_window_get_meta_window (mw)->desc : "unknown");
-#endif
-
       texture = mutter_window_get_texture (mw);
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
 
-      clutter_actor_set_name (clone, mutter_window_get_meta_window (mw)->desc);
       g_signal_connect (clone,
                         "button-press-event",
                         G_CALLBACK (switcher_clone_input_cb), mw);
