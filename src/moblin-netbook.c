@@ -48,11 +48,16 @@
 #define PANEL_HEIGHT          40
 #define SWITCHER_SLIDE_THRESHOLD 3
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
+#define WORKSPACE_DATA_KEY "MCCP-moblin-netbook-workspace-data"
 
 #define SWITCHER_CELL_WIDTH  200
 #define SWITCHER_CELL_HEIGHT 200
 
+#define WORKSPACE_CELL_WIDTH  100
+#define WORKSPACE_CELL_HEIGHT 80
+
 static GQuark actor_data_quark = 0;
+static GQuark workspace_data_quark = 0;
 
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
@@ -104,6 +109,7 @@ struct PluginPrivate
   ClutterActor          *panel;
 
   ClutterActor          *switcher;
+  ClutterActor          *workspace_switcher;
 
   XserverRegion          input_region;
 
@@ -937,6 +943,210 @@ toggle_switcher ()
     show_switcher ();
 }
 
+static void
+hide_workspace_switcher (void)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+
+  if (!priv->workspace_switcher)
+    return;
+
+  clutter_actor_destroy (priv->workspace_switcher);
+
+  disable_stage (plugin);
+
+  priv->workspace_switcher = NULL;
+}
+
+static ClutterActor *
+ensure_nth_workspace (GList **list, gint n)
+{
+  GList *l = *list;
+  GList *tmp = NULL;
+  gint   i = 0;
+
+  while (l)
+    {
+      if (i == n)
+        return l->data;
+
+      l = l->next;
+      ++i;
+    }
+
+  g_assert (i <= n);
+
+  while (i <= n)
+    {
+      ClutterActor *group = clutter_group_new ();
+
+      tmp = g_list_append (tmp, group);
+
+      ++i;
+    }
+
+  g_assert (tmp);
+
+  *list = g_list_concat (*list, tmp);
+
+  return g_list_last (*list)->data;
+}
+
+static gboolean
+workspace_input_cb (ClutterActor *clone,
+                    ClutterEvent *event,
+                    gpointer      data)
+{
+  MetaWorkspace *workspace = data;
+
+  hide_workspace_switcher ();
+  meta_workspace_activate (workspace, event->any.time);
+
+  return FALSE;
+}
+
+static void
+show_workspace_switcher (void)
+{
+  MutterPlugin  *plugin   = mutter_get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+  ClutterActor  *overlay;
+  GList         *l;
+  ClutterActor  *switcher;
+  TidyGrid      *grid;
+  guint          panel_height;
+  gint           panel_y;
+  gint           screen_width, screen_height;
+  GList         *workspaces = NULL;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  switcher = tidy_grid_new ();
+
+  grid = TIDY_GRID (switcher);
+
+  tidy_grid_set_homogenous_rows (grid, TRUE);
+  tidy_grid_set_homogenous_columns (grid, TRUE);
+  tidy_grid_set_column_major (grid, FALSE);
+  tidy_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+  tidy_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+
+  l = mutter_plugin_get_windows (plugin);
+  while (l)
+    {
+      MutterWindow       *mw = l->data;
+      ClutterActor       *a  = CLUTTER_ACTOR (mw);
+      MetaCompWindowType  type;
+      gint                ws_indx;
+      ClutterActor       *texture;
+      ClutterActor       *clone;
+      ClutterActor       *workspace = NULL;
+      guint               w, h;
+      gdouble             s_x, s_y, s;
+
+      type = mutter_window_get_window_type (mw);
+      ws_indx = mutter_window_get_workspace (mw);
+
+      /*
+       * Only show regular windows that are not sticky (getting stacking order
+       * right for sticky windows would be really hard, and since they appear
+       * on each workspace, they do not help in identifying which workspace
+       * it is).
+       */
+      if (ws_indx < 0                             ||
+          mutter_window_is_override_redirect (mw) ||
+          type != META_COMP_WINDOW_NORMAL)
+        {
+          l = l->next;
+          continue;
+        }
+
+
+      workspace = ensure_nth_workspace (&workspaces, ws_indx);
+
+      g_assert (workspace);
+
+      if (!g_object_get_qdata (G_OBJECT (workspace), workspace_data_quark))
+        {
+          gint           n;
+          MetaWorkspace *meta_ws;
+          MetaWindow    *meta_win;
+
+          meta_win = mutter_window_get_meta_window (mw);
+          meta_ws  = meta_window_get_workspace (meta_win);
+
+          g_object_set_qdata_full (G_OBJECT (workspace), workspace_data_quark,
+                                   meta_ws, NULL);
+        }
+
+      texture = mutter_window_get_texture (mw);
+      clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+
+      g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
+      g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
+
+      l = l->next;
+    }
+
+  l = workspaces;
+  while (l)
+    {
+      ClutterActor  *ws = l->data;
+      gint           w, h;
+      gdouble        s_x, s_y;
+      MetaWorkspace *meta_ws;
+
+      /*
+       * Scale workspace to fit the predefined size of the grid cell
+       */
+      clutter_actor_get_size (ws, &w, &h);
+
+      s_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) w;
+      s_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) h;
+
+      clutter_actor_set_scale (ws, s_x, s_y);
+
+      meta_ws = g_object_get_qdata (G_OBJECT (ws), workspace_data_quark)      ;
+
+      g_signal_connect (ws,
+                        "button-press-event",
+                        G_CALLBACK (workspace_input_cb), meta_ws);
+
+      clutter_actor_set_reactive (ws, TRUE);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws);
+
+      l = l->next;
+    }
+
+  if (priv->workspace_switcher)
+    hide_workspace_switcher ();
+
+  priv->workspace_switcher = switcher;
+
+  overlay = mutter_plugin_get_overlay_group (plugin);
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
+
+  clutter_actor_set_width (switcher, screen_width);
+
+  mutter_plugin_set_stage_reactive (plugin, TRUE);
+}
+
+static void
+toggle_workspace_switcher ()
+{
+  MutterPlugin  *plugin   = mutter_get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+
+  if (priv->workspace_switcher)
+    hide_workspace_switcher ();
+  else
+    show_workspace_switcher ();
+}
+
 static gboolean
 switcher_clone_input_cb (ClutterActor *clone,
                          ClutterEvent *event,
@@ -1018,7 +1228,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
                                            &screen_width, &screen_height);
 
           if (event_x > screen_width - SWITCHER_SLIDE_THRESHOLD)
-            toggle_switcher ();
+            toggle_workspace_switcher ();
         }
     }
   else if (event->type == CLUTTER_KEY_RELEASE)
@@ -1181,6 +1391,8 @@ do_init (const char *params)
                     GINT_TO_POINTER (FALSE));
 
   clutter_set_motion_events_enabled (TRUE);
+
+  workspace_data_quark = g_quark_from_static_string (WORKSPACE_DATA_KEY);
 
   return TRUE;
 }
