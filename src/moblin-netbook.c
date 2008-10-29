@@ -929,7 +929,7 @@ show_switcher (void)
   overlay = mutter_plugin_get_overlay_group (plugin);
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
 
-  clutter_actor_set_width (grid, screen_width);
+  clutter_actor_set_width (switcher, screen_width);
 }
 
 static void
