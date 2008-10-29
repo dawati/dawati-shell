@@ -29,6 +29,9 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version)
 
+MUTTER_PLUGIN_DIR=$($PKG_CONFIG metacity-plugins --variable=mutterplugindir)
+AC_SUBST(MUTTER_PLUGIN_DIR)
+
 PLUGIN_LT_LDFLAGS="-version-info plugin_major_version:plugin_minor_version:plugin_micro_version"
 AC_SUBST(PLUGIN_LT_LDFLAGS)
 
@@ -45,7 +48,7 @@ echo "
         Configuration:
 
             Mutter version   :    mutter_version
-            Installation path:    ${prefix}
+            Installation path:    ${MUTTER_PLUGIN_DIR}
 
 
         Type make to build the plugin.
