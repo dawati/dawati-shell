@@ -46,6 +46,7 @@
 
 #define PANEL_SLIDE_THRESHOLD 2
 #define PANEL_HEIGHT          40
+#define SWITCHER_SLIDE_THRESHOLD 3
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
 #define SWITCHER_CELL_WIDTH  200
@@ -70,6 +71,9 @@ static void     kill_effect (MutterWindow *actor, gulong event);
 static gboolean xevent_filter (XEvent *xev);
 static gboolean reload (const char *params);
 
+static gboolean switcher_clone_input_cb (ClutterActor *clone,
+                                         ClutterEvent *event,
+                                         gpointer      data);
 /*
  * Create the plugin struct; function pointers initialized in
  * g_module_check_init().
@@ -100,6 +104,8 @@ struct PluginPrivate
   ClutterActor          *panel;
 
   ClutterActor          *switcher;
+
+  XserverRegion          input_region;
 
   gboolean               debug_mode : 1;
   gboolean               panel_out  : 1;
@@ -650,10 +656,9 @@ destroy (MutterWindow *mcw)
 static void
 disable_stage (MutterPlugin *plugin)
 {
-  gint screen_width, screen_height;
+  PluginPrivate *priv = plugin->plugin_private;
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-  mutter_plugin_set_stage_input_area (plugin, 0, 0, screen_width, 1);
+  mutter_plugin_set_stage_input_region (plugin, priv->input_region);
 }
 
 static void
@@ -798,23 +803,6 @@ switcher_clone_weak_notify (gpointer data, GObject *object)
   g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
 }
 
-static gboolean
-switcher_clone_input_cb (ClutterActor *clone,
-                         ClutterEvent *event,
-                         gpointer      data)
-{
-  MutterWindow  *mw = data;
-  MetaWindow    *window;
-  MetaWorkspace *workspace;
-
-  window    = mutter_window_get_meta_window (mw);
-  workspace = meta_window_get_workspace (window);
-
-  meta_workspace_activate_with_focus (workspace, window, event->any.time);
-
-  return FALSE;
-}
-
 /*
  * This is a simple example of how a switcher might access the windows.
  *
@@ -833,6 +821,9 @@ hide_switcher (void)
     return;
 
   clutter_actor_destroy (priv->switcher);
+
+  disable_stage (plugin);
+
   priv->switcher = NULL;
 }
 
@@ -930,6 +921,8 @@ show_switcher (void)
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
 
   clutter_actor_set_width (switcher, screen_width);
+
+  mutter_plugin_set_stage_reactive (plugin, TRUE);
 }
 
 static void
@@ -945,6 +938,24 @@ toggle_switcher ()
 }
 
 static gboolean
+switcher_clone_input_cb (ClutterActor *clone,
+                         ClutterEvent *event,
+                         gpointer      data)
+{
+  MutterWindow  *mw = data;
+  MetaWindow    *window;
+  MetaWorkspace *workspace;
+
+  window    = mutter_window_get_meta_window (mw);
+  workspace = meta_window_get_workspace (window);
+
+  hide_switcher ();
+  meta_workspace_activate_with_focus (workspace, window, event->any.time);
+
+  return FALSE;
+}
+
+static gboolean
 stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
   gboolean capture = GPOINTER_TO_INT (data);
@@ -952,14 +963,20 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
   if ((capture && event->type == CLUTTER_MOTION) ||
       (!capture && event->type == CLUTTER_BUTTON_PRESS))
     {
-      gint event_y;
-      MutterPlugin       *plugin = mutter_get_plugin ();
-      PluginPrivate      *priv   = plugin->plugin_private;
+      gint           event_y, event_x;
+      MutterPlugin  *plugin = mutter_get_plugin ();
+      PluginPrivate *priv   = plugin->plugin_private;
 
       if (event->type == CLUTTER_MOTION)
-        event_y = ((ClutterMotionEvent*)event)->y;
+        {
+          event_x = ((ClutterMotionEvent*)event)->x;
+          event_y = ((ClutterMotionEvent*)event)->y;
+        }
       else
-        event_y = ((ClutterButtonEvent*)event)->y;
+        {
+          event_x = ((ClutterButtonEvent*)event)->x;
+          event_y = ((ClutterButtonEvent*)event)->y;
+        }
 
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
@@ -993,6 +1010,16 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
           priv->panel_out = TRUE;
         }
+      else if (!priv->switcher)
+        {
+          gint screen_width, screen_height;
+
+          mutter_plugin_query_screen_size (plugin,
+                                           &screen_width, &screen_height);
+
+          if (event_x > screen_width - SWITCHER_SLIDE_THRESHOLD)
+            toggle_switcher ();
+        }
     }
   else if (event->type == CLUTTER_KEY_RELEASE)
     {
@@ -1001,11 +1028,6 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       g_print ("*** key press event (key:%c) ***\n",
 	       clutter_key_event_symbol (kev));
 
-    }
-
-  if (!capture && (event->type == CLUTTER_BUTTON_PRESS))
-    {
-      toggle_switcher ();
     }
 
   return FALSE;
@@ -1048,6 +1070,9 @@ do_init (const char *params)
   ClutterActor  *overlay;
   ClutterActor  *panel;
   gint           screen_width, screen_height;
+  XRectangle     rect[2];
+  XserverRegion  region;
+  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);;
 
   plugin->plugin_private = priv;
 
@@ -1055,6 +1080,20 @@ do_init (const char *params)
   plugin->name = _(name);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  rect[0].x = 0;
+  rect[0].y = 0;
+  rect[0].width = screen_width;
+  rect[0].height = 1;
+
+  rect[1].x = screen_width - SWITCHER_SLIDE_THRESHOLD;
+  rect[1].y = 0;
+  rect[1].width = SWITCHER_SLIDE_THRESHOLD;
+  rect[1].height = screen_height;
+
+  region = XFixesCreateRegion (xdpy, &rect[0], 2);
+
+  priv->input_region = region;
 
   if (params)
     {
@@ -1141,8 +1180,6 @@ do_init (const char *params)
                     "button-press-event", G_CALLBACK (stage_input_cb),
                     GINT_TO_POINTER (FALSE));
 
-  mutter_plugin_set_stage_input_area (plugin, 0, 0, screen_width, 1);
-
   clutter_set_motion_events_enabled (TRUE);
 
   return TRUE;
@@ -1151,8 +1188,16 @@ do_init (const char *params)
 static void
 free_plugin_private (PluginPrivate *priv)
 {
+  MutterPlugin *plugin;
+  Display      *xdpy;
+
   if (!priv)
     return;
+
+  xdpy = mutter_plugin_get_xdisplay (plugin);
+
+  if (priv->input_region)
+    XFixesDestroyRegion (xdpy, priv->input_region);
 
   g_object_unref (priv->destroy_effect);
   g_object_unref (priv->minimize_effect);
