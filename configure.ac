@@ -29,7 +29,7 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version)
 
-PLUGIN_LT_LDFLAGS="-version-info $PLUGIN_MAJOR_VERSION:$PLUGIN_MINOR_VERSION:$PLUGIN_MICRO_VERSION"
+PLUGIN_LT_LDFLAGS="-version-info plugin_major_version:plugin_minor_version:plugin_micro_version"
 AC_SUBST(PLUGIN_LT_LDFLAGS)
 
 AC_OUTPUT([
@@ -39,8 +39,8 @@ po/Makefile.in
 ])
 
 echo "
-        Mutter Moblin Netbook Plugin
-        ============================
+        Mutter Moblin Netbook Plugin version plugin_version
+        ===================================================
 
         Configuration:
 
