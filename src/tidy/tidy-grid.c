@@ -725,11 +725,17 @@ compute_row_height (GList                    *siblings,
     {
       ClutterActor *child = l->data;
       ClutterUnit natural_width, natural_height;
+      gdouble scale_x, scale_y;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
                                         &natural_width, &natural_height);
+
+      clutter_actor_get_scale (child, &scale_x, &scale_y);
+
+      natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
+      natural_height = (ClutterUnit)((gdouble)natural_height * scale_y);
 
       if (priv->column_major)
         {
@@ -788,12 +794,18 @@ compute_row_start (GList           *siblings,
     {
       ClutterActor *child = l->data;
       ClutterUnit natural_width, natural_height;
+      gdouble scale_x, scale_y;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
                                         &natural_width, &natural_height);
 
+
+      clutter_actor_get_scale (child, &scale_x, &scale_y);
+
+      natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
+      natural_height = (ClutterUnit)((gdouble)natural_height * scale_y);
 
       if (priv->column_major)
         natural_width = natural_height;
@@ -884,11 +896,19 @@ tidy_grid_allocate (ClutterActor          *self,
           ClutterActor *child = iter->data;
           ClutterUnit natural_width;
           ClutterUnit natural_height;
+	  gdouble     scale_x, scale_y;
 
           /* each child will get as much space as they require */
           clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                             NULL, NULL,
                                             &natural_width, &natural_height);
+
+	  /* We want scale taken into account for mutter use */
+	  clutter_actor_get_scale (child, &scale_x, &scale_y);
+
+	  natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
+	  natural_height = (ClutterUnit)((gdouble)natural_height * scale_y);
+
           if (natural_width > priv->max_extent_a)
             priv->max_extent_a = natural_width;
           if (natural_height > priv->max_extent_b)
@@ -908,11 +928,17 @@ tidy_grid_allocate (ClutterActor          *self,
       ClutterActor *child = iter->data;
       ClutterUnit natural_a;
       ClutterUnit natural_b;
+      gdouble scale_x, scale_y;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
                                         &natural_a, &natural_b);
+
+      clutter_actor_get_scale (child, &scale_x, &scale_y);
+
+      natural_a = (ClutterUnit)((gdouble)natural_a  * scale_x);
+      natural_b = (ClutterUnit)((gdouble)natural_b * scale_y);
 
       if (priv->column_major) /* swap axes around if column is major */
         {
