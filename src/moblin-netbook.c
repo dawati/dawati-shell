@@ -37,16 +37,16 @@
 
 #include "compositor-mutter.h"
 
-#define DESTROY_TIMEOUT     250
-#define MINIMIZE_TIMEOUT    250
-#define MAXIMIZE_TIMEOUT    250
-#define MAP_TIMEOUT         250
-#define SWITCH_TIMEOUT      500
-#define PANEL_SLIDE_TIMEOUT 250;                \
-
-#define PANEL_SLIDE_THRESHOLD 2
-#define PANEL_HEIGHT          40
-#define SWITCHER_SLIDE_THRESHOLD 3
+#define DESTROY_TIMEOUT             250
+#define MINIMIZE_TIMEOUT            250
+#define MAXIMIZE_TIMEOUT            250
+#define MAP_TIMEOUT                 250
+#define SWITCH_TIMEOUT              500
+#define PANEL_SLIDE_TIMEOUT         250
+#define PANEL_SLIDE_THRESHOLD       2
+#define PANEL_HEIGHT                40
+#define WS_SWITCHER_SLIDE_TIMEOUT   250
+#define WS_SWITCHER_SLIDE_THRESHOLD 3
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 #define WORKSPACE_DATA_KEY "MCCP-moblin-netbook-workspace-data"
 
@@ -97,6 +97,7 @@ struct PluginPrivate
   ClutterEffectTemplate *switch_workspace_effect;
   ClutterEffectTemplate *switch_workspace_arrow_effect;
   ClutterEffectTemplate *panel_slide_effect;
+  ClutterEffectTemplate *ws_switcher_slide_effect;
 
   /* Valid only when switch_workspace effect is in progress */
   ClutterTimeline       *tml_switch_workspace1;
@@ -1014,17 +1015,29 @@ show_workspace_switcher (void)
   ClutterActor  *overlay;
   GList         *l;
   ClutterActor  *switcher;
+  ClutterActor  *background;
   TidyGrid      *grid;
   guint          panel_height;
   gint           panel_y;
   gint           screen_width, screen_height;
   GList         *workspaces = NULL;
+  gdouble        ws_scale_x, ws_scale_y;
+  gint           switcher_width, switcher_height;
+  ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
+  gint           ws_count = 0;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  switcher = tidy_grid_new ();
+  ws_scale_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) screen_width;
+  ws_scale_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) screen_height;
 
-  grid = TIDY_GRID (switcher);
+  switcher = clutter_group_new ();
+  background = clutter_rectangle_new_with_color (&background_clr);
+
+  grid = TIDY_GRID (tidy_grid_new ());
+
+  clutter_container_add (CLUTTER_CONTAINER (switcher),
+                         background, CLUTTER_ACTOR (grid), NULL);
 
   tidy_grid_set_homogenous_rows (grid, TRUE);
   tidy_grid_set_homogenous_columns (grid, TRUE);
@@ -1033,6 +1046,8 @@ show_workspace_switcher (void)
   tidy_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
 
   l = mutter_plugin_get_windows (plugin);
+  l = g_list_last (l);
+
   while (l)
     {
       MutterWindow       *mw = l->data;
@@ -1042,7 +1057,7 @@ show_workspace_switcher (void)
       ClutterActor       *texture;
       ClutterActor       *clone;
       ClutterActor       *workspace = NULL;
-      guint               w, h;
+      guint               x, y, w, h;
       gdouble             s_x, s_y, s;
 
       type = mutter_window_get_window_type (mw);
@@ -1058,7 +1073,7 @@ show_workspace_switcher (void)
           mutter_window_is_override_redirect (mw) ||
           type != META_COMP_WINDOW_NORMAL)
         {
-          l = l->next;
+          l = l->prev;
           continue;
         }
 
@@ -1083,31 +1098,27 @@ show_workspace_switcher (void)
       texture = mutter_window_get_texture (mw);
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
 
+      clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
+      clutter_actor_set_position (clone, x, y);
+
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
 
-      l = l->next;
+      l = l->prev;
     }
 
   l = workspaces;
   while (l)
     {
       ClutterActor  *ws = l->data;
-      gint           w, h;
-      gdouble        s_x, s_y;
       MetaWorkspace *meta_ws;
 
       /*
        * Scale workspace to fit the predefined size of the grid cell
        */
-      clutter_actor_get_size (ws, &w, &h);
-
-      s_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) w;
-      s_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) h;
-
-      clutter_actor_set_scale (ws, s_x, s_y);
+      clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
       meta_ws = g_object_get_qdata (G_OBJECT (ws), workspace_data_quark)      ;
 
@@ -1119,6 +1130,7 @@ show_workspace_switcher (void)
 
       clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws);
 
+      ++ws_count;
       l = l->next;
     }
 
@@ -1130,7 +1142,21 @@ show_workspace_switcher (void)
   overlay = mutter_plugin_get_overlay_group (plugin);
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
 
-  clutter_actor_set_width (switcher, screen_width);
+  /*
+   * TODO -- fix TidyGrid, so we do not have to set the width explicitely.
+   */
+  clutter_actor_set_size (CLUTTER_ACTOR (grid),
+                          ws_count * WORKSPACE_CELL_WIDTH,
+                          WORKSPACE_CELL_HEIGHT);
+
+
+  clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
+  clutter_actor_set_size (background, switcher_width, switcher_height);
+
+  clutter_actor_set_anchor_point (switcher,
+                                  switcher_width/2, switcher_height/2);
+
+  clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
 }
@@ -1227,7 +1253,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
           mutter_plugin_query_screen_size (plugin,
                                            &screen_width, &screen_height);
 
-          if (event_x > screen_width - SWITCHER_SLIDE_THRESHOLD)
+          if (event_x > screen_width - WS_SWITCHER_SLIDE_THRESHOLD)
             toggle_workspace_switcher ();
         }
     }
@@ -1270,12 +1296,14 @@ do_init (const char *params)
   MutterPlugin *plugin = mutter_get_plugin ();
 
   PluginPrivate *priv = g_new0 (PluginPrivate, 1);
-  guint          destroy_timeout     = DESTROY_TIMEOUT;
-  guint          minimize_timeout    = MINIMIZE_TIMEOUT;
-  guint          maximize_timeout    = MAXIMIZE_TIMEOUT;
-  guint          map_timeout         = MAP_TIMEOUT;
-  guint          switch_timeout      = SWITCH_TIMEOUT;
-  guint          panel_slide_timeout = PANEL_SLIDE_TIMEOUT;
+  guint          destroy_timeout           = DESTROY_TIMEOUT;
+  guint          minimize_timeout          = MINIMIZE_TIMEOUT;
+  guint          maximize_timeout          = MAXIMIZE_TIMEOUT;
+  guint          map_timeout               = MAP_TIMEOUT;
+  guint          switch_timeout            = SWITCH_TIMEOUT;
+  guint          panel_slide_timeout       = PANEL_SLIDE_TIMEOUT;
+  guint          ws_switcher_slide_timeout = WS_SWITCHER_SLIDE_TIMEOUT;
+
   const gchar   *name;
   ClutterActor  *overlay;
   ClutterActor  *panel;
@@ -1296,9 +1324,9 @@ do_init (const char *params)
   rect[0].width = screen_width;
   rect[0].height = 1;
 
-  rect[1].x = screen_width - SWITCHER_SLIDE_THRESHOLD;
+  rect[1].x = screen_width - WS_SWITCHER_SLIDE_THRESHOLD;
   rect[1].y = 0;
-  rect[1].width = SWITCHER_SLIDE_THRESHOLD;
+  rect[1].width = WS_SWITCHER_SLIDE_THRESHOLD;
   rect[1].height = screen_height;
 
   region = XFixesCreateRegion (xdpy, &rect[0], 2);
@@ -1317,11 +1345,13 @@ do_init (const char *params)
           /*
            * Double the effect duration to make them easier to observe.
            */
-          destroy_timeout  *= 2;
-          minimize_timeout *= 2;
-          maximize_timeout *= 2;
-          map_timeout      *= 2;
-          switch_timeout   *= 2;
+          destroy_timeout           *= 2;
+          minimize_timeout          *= 2;
+          maximize_timeout          *= 2;
+          map_timeout               *= 2;
+          switch_timeout            *= 2;
+          panel_slide_timeout       *= 2;
+          ws_switcher_slide_timeout *= 2;
         }
     }
 
@@ -1369,6 +1399,11 @@ do_init (const char *params)
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
 							panel_slide_timeout),
                                     CLUTTER_ALPHA_SINE_INC);
+
+  priv->ws_switcher_slide_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+						ws_switcher_slide_timeout),
+                                                CLUTTER_ALPHA_SINE_INC);
 
   clutter_actor_set_position (panel, 0,
                               -clutter_actor_get_height (panel));
