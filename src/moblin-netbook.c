@@ -79,6 +79,9 @@ static gboolean reload (const char *params);
 static gboolean switcher_clone_input_cb (ClutterActor *clone,
                                          ClutterEvent *event,
                                          gpointer      data);
+
+static void show_workspace_chooser (const gchar *app_path);
+
 /*
  * Create the plugin struct; function pointers initialized in
  * g_module_check_init().
@@ -111,8 +114,12 @@ struct PluginPrivate
 
   ClutterActor          *switcher;
   ClutterActor          *workspace_switcher;
+  ClutterActor          *workspace_chooser;
 
   XserverRegion          input_region;
+
+  gint                   next_app_workspace;
+  gchar                 *app_to_start;
 
   gboolean               debug_mode : 1;
   gboolean               panel_out  : 1;
@@ -683,7 +690,9 @@ on_panel_effect_complete (ClutterActor *panel, gpointer data)
   else
     {
       priv->panel_back_in_progress = FALSE;
-      disable_stage (plugin);
+
+      if (!priv->workspace_chooser)
+        disable_stage (plugin);
     }
 }
 
@@ -1007,6 +1016,14 @@ workspace_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+static gboolean
+test_input_cb (ClutterActor *clone,
+               ClutterEvent *event,
+               gpointer      data)
+{
+  printf ("test\n");
+}
+
 static ClutterActor *
 make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
 {
@@ -1089,6 +1106,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
 
       clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
       clutter_actor_set_position (clone, x, y);
+      clutter_actor_set_reactive (clone, FALSE);
 
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
@@ -1188,6 +1206,154 @@ toggle_workspace_switcher ()
     show_workspace_switcher ();
 }
 
+static void
+spawn_app (const gchar *path)
+{
+  if (!path)
+    return;
+
+  printf ("Spawning application [%s]\n", path);
+}
+
+static void
+hide_workspace_chooser (void)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+
+  if (!priv->workspace_chooser)
+    return;
+
+  clutter_actor_destroy (priv->workspace_chooser);
+
+  disable_stage (plugin);
+
+  priv->workspace_chooser = NULL;
+}
+
+static gboolean
+workspace_chooser_input_cb (ClutterActor *clone,
+                            ClutterEvent *event,
+                            gpointer      data)
+{
+  MetaWorkspace *workspace = data;
+  MutterPlugin  *plugin    = mutter_get_plugin ();
+  PluginPrivate *priv      = plugin->plugin_private;
+
+  priv->next_app_workspace = meta_workspace_index (workspace);
+
+  hide_workspace_chooser ();
+
+  spawn_app (priv->app_to_start);
+
+  g_free (priv->app_to_start);
+  priv->app_to_start = NULL;
+
+  return FALSE;
+}
+
+static gboolean
+new_workspace_input_cb (ClutterActor *clone,
+                        ClutterEvent *event,
+                        gpointer      data)
+{
+  MutterPlugin  *plugin    = mutter_get_plugin ();
+  PluginPrivate *priv      = plugin->plugin_private;
+
+  priv->next_app_workspace = GPOINTER_TO_INT (data);
+
+  hide_workspace_chooser ();
+
+  spawn_app (priv->app_to_start);
+
+  g_free (priv->app_to_start);
+  priv->app_to_start = NULL;
+
+  return FALSE;
+}
+
+static void
+show_workspace_chooser (const gchar *app_path)
+{
+  MutterPlugin  *plugin   = mutter_get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+  ClutterActor  *overlay;
+  ClutterActor  *switcher;
+  ClutterActor  *background;
+  ClutterActor  *grid;
+  ClutterActor  *new_ws;
+  ClutterActor  *new_ws_background;
+  ClutterActor  *new_ws_label;
+  gint           screen_width, screen_height;
+  gint           switcher_width, switcher_height;
+  ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
+  ClutterColor   new_ws_clr = { 0xff, 0xff, 0xff, 0xff };
+  ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
+  gint           ws_count = 0;
+
+  g_free (priv->app_to_start);
+  priv->app_to_start = g_strdup (app_path);
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  switcher = clutter_group_new ();
+  background = clutter_rectangle_new_with_color (&background_clr);
+
+  grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
+                              &ws_count);
+
+  new_ws = clutter_group_new ();
+  new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
+
+  clutter_actor_set_size (new_ws_background,
+                          WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
+
+  new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
+                                         &new_ws_text_clr);
+  clutter_actor_set_anchor_point_from_gravity (new_ws_label,
+                                               CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_position (new_ws_label,
+                              WORKSPACE_CELL_WIDTH / 2,
+                              WORKSPACE_CELL_HEIGHT / 2);
+
+  clutter_container_add (CLUTTER_CONTAINER (new_ws),
+                         new_ws_background, new_ws_label, NULL);
+
+  g_signal_connect (new_ws, "button-press-event",
+                    G_CALLBACK (new_workspace_input_cb),
+                    GINT_TO_POINTER (ws_count));
+
+  clutter_actor_set_reactive (new_ws, TRUE);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (grid), new_ws);
+
+  clutter_actor_set_size (grid,
+                          (ws_count+1) * (WORKSPACE_CELL_WIDTH+80),
+                          WORKSPACE_CELL_HEIGHT);
+
+  clutter_container_add (CLUTTER_CONTAINER (switcher),
+                         background, CLUTTER_ACTOR (grid), NULL);
+
+  if (priv->workspace_chooser)
+    hide_workspace_chooser ();
+
+  priv->workspace_chooser = switcher;
+
+  overlay = mutter_plugin_get_overlay_group (plugin);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
+
+  clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
+  clutter_actor_set_size (background, switcher_width, switcher_height);
+
+  clutter_actor_set_anchor_point (switcher,
+                                  switcher_width/2, switcher_height/2);
+
+  clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
+
+  mutter_plugin_set_stage_reactive (plugin, TRUE);
+}
+
 static gboolean
 switcher_clone_input_cb (ClutterActor *clone,
                          ClutterEvent *event,
@@ -1284,12 +1450,53 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
+static gboolean
+app_launcher_input_cb (ClutterActor *actor,
+                       ClutterEvent *event,
+                       gpointer      data)
+{
+  show_workspace_chooser (data);
+  return FALSE;
+}
+
+static ClutterActor *
+make_app_launcher (const gchar *name, const gchar *path)
+{
+  ClutterColor  bkg_clr = {0, 0, 0x7f, 0xff};
+  ClutterColor  fg_clr  = {0xf8, 0xd9, 0x09, 0xff};
+  ClutterActor *group = clutter_group_new ();
+  ClutterActor *label = clutter_label_new_full ("Sans 12", name, &fg_clr);
+  ClutterActor *bkg = clutter_rectangle_new_with_color (&bkg_clr);
+  guint         l_width;
+
+  clutter_actor_realize (label);
+  l_width = clutter_actor_get_width (label);
+  l_width += 10;
+
+  clutter_actor_set_anchor_point_from_gravity (label, CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_position (label, l_width/2, PANEL_HEIGHT / 2);
+
+  clutter_actor_set_size (bkg, l_width + 5, PANEL_HEIGHT);
+
+  clutter_container_add (CLUTTER_CONTAINER (group), bkg, label, NULL);
+
+  g_signal_connect (group,
+                    "button-press-event", G_CALLBACK (app_launcher_input_cb),
+                    (gpointer)path);
+
+  clutter_actor_set_reactive (group, TRUE);
+
+  return group;
+}
+
 static ClutterActor *
 make_panel (gint width)
 {
   ClutterActor *panel;
   ClutterActor *background;
   ClutterColor  clr = {0x44, 0x44, 0x44, 0x7f};
+  ClutterActor *launcher;
+  gint          x, w;
 
   panel = clutter_group_new ();
 
@@ -1298,6 +1505,16 @@ make_panel (gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
   clutter_actor_set_size (background, width, PANEL_HEIGHT);
 
+  launcher = make_app_launcher ("Calculator", "/usr/bin/gcalctool");
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
+
+  x = clutter_actor_get_x (launcher);
+  w = clutter_actor_get_width (launcher);
+
+  launcher = make_app_launcher ("Editor", "/usr/bin/gedit");
+  clutter_actor_set_position (launcher, w + x + 10, 0);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
   return panel;
 }
 
@@ -1329,9 +1546,10 @@ do_init (const char *params)
 
   plugin->plugin_private = priv;
 
+  priv->next_app_workspace = -2;
+
   name = plugin->name;
   plugin->name = _(name);
-
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   rect[0].x = 0;
