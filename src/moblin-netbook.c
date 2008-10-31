@@ -1016,14 +1016,6 @@ workspace_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
-static gboolean
-test_input_cb (ClutterActor *clone,
-               ClutterEvent *event,
-               gpointer      data)
-{
-  printf ("test\n");
-}
-
 static ClutterActor *
 make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
 {
@@ -1307,7 +1299,6 @@ show_workspace_chooser (const gchar *app_path)
 
   clutter_actor_set_size (new_ws_background,
                           WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
-
   new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
                                          &new_ws_text_clr);
   clutter_actor_set_anchor_point_from_gravity (new_ws_label,
