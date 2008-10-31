@@ -1007,23 +1007,17 @@ workspace_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
-static void
-show_workspace_switcher (void)
+static ClutterActor *
+make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
-  ClutterActor  *overlay;
   GList         *l;
-  ClutterActor  *switcher;
-  ClutterActor  *background;
   TidyGrid      *grid;
-  guint          panel_height;
-  gint           panel_y;
+  ClutterActor  *grid_actor;
   gint           screen_width, screen_height;
   GList         *workspaces = NULL;
   gdouble        ws_scale_x, ws_scale_y;
-  gint           switcher_width, switcher_height;
-  ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
   gint           ws_count = 0;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
@@ -1031,13 +1025,8 @@ show_workspace_switcher (void)
   ws_scale_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) screen_width;
   ws_scale_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) screen_height;
 
-  switcher = clutter_group_new ();
-  background = clutter_rectangle_new_with_color (&background_clr);
-
-  grid = TIDY_GRID (tidy_grid_new ());
-
-  clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, CLUTTER_ACTOR (grid), NULL);
+  grid_actor = tidy_grid_new ();
+  grid = TIDY_GRID (grid_actor);
 
   tidy_grid_set_homogenous_rows (grid, TRUE);
   tidy_grid_set_homogenous_columns (grid, TRUE);
@@ -1122,9 +1111,7 @@ show_workspace_switcher (void)
 
       meta_ws = g_object_get_qdata (G_OBJECT (ws), workspace_data_quark)      ;
 
-      g_signal_connect (ws,
-                        "button-press-event",
-                        G_CALLBACK (workspace_input_cb), meta_ws);
+      g_signal_connect (ws, "button-press-event", ws_callback, meta_ws);
 
       clutter_actor_set_reactive (ws, TRUE);
 
@@ -1134,6 +1121,42 @@ show_workspace_switcher (void)
       l = l->next;
     }
 
+  /*
+   * TODO -- fix TidyGrid, so we do not have to set the width explicitely.
+   */
+  clutter_actor_set_size (grid_actor,
+                          ws_count * WORKSPACE_CELL_WIDTH,
+                          WORKSPACE_CELL_HEIGHT);
+
+  if (n_workspaces)
+    *n_workspaces = ws_count;
+
+  return grid_actor;
+}
+
+static void
+show_workspace_switcher (void)
+{
+  MutterPlugin  *plugin   = mutter_get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+  ClutterActor  *overlay;
+  ClutterActor  *switcher;
+  ClutterActor  *background;
+  ClutterActor  *grid;
+  gint           screen_width, screen_height;
+  gint           switcher_width, switcher_height;
+  ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  switcher = clutter_group_new ();
+  background = clutter_rectangle_new_with_color (&background_clr);
+
+  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL);
+
+  clutter_container_add (CLUTTER_CONTAINER (switcher),
+                         background, CLUTTER_ACTOR (grid), NULL);
+
   if (priv->workspace_switcher)
     hide_workspace_switcher ();
 
@@ -1141,14 +1164,6 @@ show_workspace_switcher (void)
 
   overlay = mutter_plugin_get_overlay_group (plugin);
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
-
-  /*
-   * TODO -- fix TidyGrid, so we do not have to set the width explicitely.
-   */
-  clutter_actor_set_size (CLUTTER_ACTOR (grid),
-                          ws_count * WORKSPACE_CELL_WIDTH,
-                          WORKSPACE_CELL_HEIGHT);
-
 
   clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
   clutter_actor_set_size (background, switcher_width, switcher_height);
