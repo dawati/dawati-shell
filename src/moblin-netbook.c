@@ -591,7 +591,69 @@ map (MutterWindow *mcw)
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mcw);
+      ActorPrivate *apriv = get_actor_private (mcw);
+
+      /*
+       * Put the window on the requested wokspace, if any.
+       *
+       * NB: this is for prototyping only; if this functionality should remain
+       *     it probably needs to use start up notification.
+       *
+       * What we do is:
+       *
+       * 1. Dispatch _NET_WM_DESKTOP client message; when this is processed by
+       *    metacity, it moves the window on the requested desktop.
+       *
+       * 2. Activate the desktop -- this results in switch from current to
+       *    whatever desktop.
+       */
+      if (priv->next_app_workspace > -2)
+        {
+          static Atom net_wm_desktop = 0;
+          MetaWindow  *mw = mutter_window_get_meta_window (mcw);
+          MetaScreen  *screen = meta_window_get_screen (mw);
+          MetaDisplay *display = meta_screen_get_display (screen);
+          Display     *xdpy = meta_display_get_xdisplay (display);
+
+          if (!net_wm_desktop)
+            net_wm_desktop = XInternAtom (xdpy, "_NET_WM_DESKTOP", False);
+
+          if (mw)
+            {
+              Window xwin = meta_window_get_xwindow (mw);
+              XEvent ev;
+
+              memset(&ev, 0, sizeof(ev));
+
+              ev.xclient.type = ClientMessage;
+              ev.xclient.window = xwin;
+              ev.xclient.message_type = net_wm_desktop;
+              ev.xclient.format = 32;
+              ev.xclient.data.l[0] = priv->next_app_workspace;
+
+              /*
+               * Metacity watches for property changes, hence the
+               * PropertyChangeMask
+               */
+              XSendEvent(xdpy, xwin, False, PropertyChangeMask, &ev);
+              XSync(xdpy, False);
+
+              if (priv->next_app_workspace > -1)
+                {
+                  GList * l;
+                  MetaWorkspace * workspace;
+
+                  l = meta_screen_get_workspaces (screen);
+                  workspace = g_list_nth_data (l, priv->next_app_workspace);
+
+                  if (workspace)
+                    meta_workspace_activate_with_focus (workspace, mw,
+                                                        CurrentTime);
+                }
+            }
+
+          priv->next_app_workspace = -2;
+        }
 
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
@@ -1201,10 +1263,23 @@ toggle_workspace_switcher ()
 static void
 spawn_app (const gchar *path)
 {
+  gchar *argv[2] = {NULL, NULL};
+
+  argv[0] = g_strdup (path);
+
   if (!path)
     return;
 
-  printf ("Spawning application [%s]\n", path);
+  if (!g_spawn_async (NULL, &argv[0], NULL, G_SPAWN_SEARCH_PATH,
+                      NULL, NULL, NULL, NULL))
+    {
+      MutterPlugin  *plugin  = mutter_get_plugin ();
+      PluginPrivate *priv    = plugin->plugin_private;
+
+      g_free (priv->app_to_start);
+      priv->app_to_start = NULL;
+      priv->next_app_workspace = -2;
+    }
 }
 
 static void
