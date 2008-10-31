@@ -234,6 +234,13 @@ switch_workspace (const GList **actors, gint from, gint to,
   gint           screen_width;
   gint           screen_height;
 
+  if (from == to)
+    {
+      mutter_plugin_effect_completed (plugin, NULL,
+				      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+      return;
+    }
+
   stage = mutter_plugin_get_stage (plugin);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
@@ -244,17 +251,6 @@ switch_workspace (const GList **actors, gint from, gint to,
   clutter_container_add_actor (CLUTTER_CONTAINER (window_layer), group1);
   clutter_container_add_actor (CLUTTER_CONTAINER (window_layer), group2);
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay_layer), group3);
-
-  if (from == to)
-    {
-      clutter_actor_destroy (group3);
-      clutter_actor_destroy (group2);
-      clutter_actor_destroy (group1);
-
-      mutter_plugin_effect_completed (plugin, NULL,
-                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
-      return;
-    }
 
   n_workspaces = g_list_length (plugin->work_areas);
 
