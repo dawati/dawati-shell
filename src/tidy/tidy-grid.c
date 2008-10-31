@@ -932,7 +932,14 @@ tidy_grid_allocate (ClutterActor          *self,
       ClutterUnit real_b;
       gdouble scale_x, scale_y;
 
-      /* each child will get as much space as they require */
+      /*
+       * each child will get as much space as they require
+       *
+       * For placing the children, we take into account their scale, that is
+       * what the natural_a, _b values are for. However, we need to give the
+       * child back an allocation that is unscalled, hence the real_a, real_b
+       * values.
+       */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
                                         &real_a, &real_b);
