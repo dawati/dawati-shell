@@ -928,17 +928,19 @@ tidy_grid_allocate (ClutterActor          *self,
       ClutterActor *child = iter->data;
       ClutterUnit natural_a;
       ClutterUnit natural_b;
+      ClutterUnit real_a;
+      ClutterUnit real_b;
       gdouble scale_x, scale_y;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
-                                        &natural_a, &natural_b);
+                                        &real_a, &real_b);
 
       clutter_actor_get_scale (child, &scale_x, &scale_y);
 
-      natural_a = (ClutterUnit)((gdouble)natural_a  * scale_x);
-      natural_b = (ClutterUnit)((gdouble)natural_b * scale_y);
+      natural_a = (ClutterUnit)((gdouble)real_a  * scale_x);
+      natural_b = (ClutterUnit)((gdouble)real_b * scale_y);
 
       if (priv->column_major) /* swap axes around if column is major */
         {
@@ -984,17 +986,17 @@ tidy_grid_allocate (ClutterActor          *self,
           if (homogenous_a)
             {
               child_box.x1 = current_a + (priv->max_extent_a-natural_a) * aalign;
-              child_box.x2 = child_box.x1 + natural_a;
+              child_box.x2 = child_box.x1 + real_a;
 
             }
           else
             {
               child_box.x1 = current_a;
-              child_box.x2 = child_box.x1 + natural_a;
+              child_box.x2 = child_box.x1 + real_a;
             }
 
           child_box.y1 = current_b + (row_height-natural_b) * balign;
-          child_box.y2 = child_box.y1 + natural_b;
+          child_box.y2 = child_box.y1 + real_b;
 
 
           if (priv->column_major)
