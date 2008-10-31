@@ -105,8 +105,8 @@ struct PluginPrivate
   ClutterEffectTemplate *ws_switcher_slide_effect;
 
   /* Valid only when switch_workspace effect is in progress */
+  ClutterTimeline       *tml_switch_workspace0;
   ClutterTimeline       *tml_switch_workspace1;
-  ClutterTimeline       *tml_switch_workspace2;
   GList                **actors;
   ClutterActor          *desktop1;
   ClutterActor          *desktop2;
@@ -207,8 +207,8 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   clutter_actor_destroy (ppriv->d_overlay);
 
   ppriv->actors = NULL;
+  ppriv->tml_switch_workspace0 = NULL;
   ppriv->tml_switch_workspace1 = NULL;
-  ppriv->tml_switch_workspace2 = NULL;
   ppriv->desktop1 = NULL;
   ppriv->desktop2 = NULL;
 
@@ -224,15 +224,16 @@ switch_workspace (const GList **actors, gint from, gint to,
   PluginPrivate *ppriv  = plugin->plugin_private;
   GList         *l;
   gint           n_workspaces;
-  ClutterActor  *group1  = clutter_group_new ();
-  ClutterActor  *group2  = clutter_group_new ();
-  ClutterActor  *group3  = clutter_group_new ();
+  ClutterActor  *workspace_slider0  = clutter_group_new ();
+  ClutterActor  *workspace_slider1  = clutter_group_new ();
+  ClutterActor  *indicator_group  = clutter_group_new ();
   ClutterActor  *stage, *label, *rect, *window_layer, *overlay_layer;
   gint           to_x, to_y, from_x = 0, from_y = 0;
   ClutterColor   white = { 0xff, 0xff, 0xff, 0xff };
   ClutterColor   black = { 0x33, 0x33, 0x33, 0xff };
   gint           screen_width;
   gint           screen_height;
+  guint		 indicator_width, indicator_height;
 
   if (from == to)
     {
@@ -248,9 +249,12 @@ switch_workspace (const GList **actors, gint from, gint to,
   window_layer = mutter_plugin_get_window_group (plugin);
   overlay_layer = mutter_plugin_get_overlay_group (plugin);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (window_layer), group1);
-  clutter_container_add_actor (CLUTTER_CONTAINER (window_layer), group2);
-  clutter_container_add_actor (CLUTTER_CONTAINER (overlay_layer), group3);
+  clutter_container_add_actor (CLUTTER_CONTAINER (window_layer),
+			       workspace_slider0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (window_layer),
+			       workspace_slider1);
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay_layer),
+			       indicator_group);
 
   n_workspaces = g_list_length (plugin->work_areas);
 
@@ -267,6 +271,8 @@ switch_workspace (const GList **actors, gint from, gint to,
 
       if (workspace == to || workspace == from)
         {
+	  ClutterActor *slider =
+	    workspace == to ? workspace_slider1 : workspace_slider0;
           gint x, y;
           guint w, h;
 
@@ -275,7 +281,7 @@ switch_workspace (const GList **actors, gint from, gint to,
 
           priv->orig_parent = clutter_actor_get_parent (a);
 
-          clutter_actor_reparent (a, workspace == to ? group2 : group1);
+          clutter_actor_reparent (a, slider);
           clutter_actor_show_all (a);
           clutter_actor_raise_top (a);
         }
@@ -297,21 +303,21 @@ switch_workspace (const GList **actors, gint from, gint to,
   /* Make arrow indicator */
   rect = clutter_rectangle_new ();
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &white);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group3), rect);
+  clutter_container_add_actor (CLUTTER_CONTAINER (indicator_group), rect);
 
   label = clutter_label_new ();
   clutter_label_set_font_name (CLUTTER_LABEL (label), "Sans Bold 148");
   clutter_label_set_color (CLUTTER_LABEL (label), &black);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group3), label);
+  clutter_container_add_actor (CLUTTER_CONTAINER (indicator_group), label);
 
   clutter_actor_set_size (rect,
                           clutter_actor_get_width (label),
                           clutter_actor_get_height (label));
 
   ppriv->actors  = (GList **)actors;
-  ppriv->desktop1 = group1;
-  ppriv->desktop2 = group2;
-  ppriv->d_overlay = group3;
+  ppriv->desktop1 = workspace_slider0;
+  ppriv->desktop2 = workspace_slider1;
+  ppriv->d_overlay = indicator_group;
 
   switch (direction)
     {
@@ -348,35 +354,31 @@ switch_workspace (const GList **actors, gint from, gint to,
     }
 
   /* dest group offscreen and on top */
-  clutter_actor_set_position (group2, to_x, to_y); /* *-1 for simpler */
-  clutter_actor_raise_top (group2);
+  clutter_actor_set_position (workspace_slider1, to_x, to_y);
+  clutter_actor_raise_top (workspace_slider1);
 
   /* center arrow */
-  clutter_actor_set_position
-                    (group3,
-                     (screen_width - clutter_actor_get_width (group3)) / 2,
-                     (screen_height - clutter_actor_get_height (group3)) / 2);
-
+  clutter_actor_get_size (indicator_group, &indicator_width, &indicator_height);
+  clutter_actor_set_position (indicator_group,
+			      (screen_width - indicator_width) / 2,
+			      (screen_height - indicator_height) / 2);
 
   /* workspace were going too */
-  ppriv->tml_switch_workspace2 =
-    clutter_effect_move (ppriv->switch_workspace_effect, group2,
+  ppriv->tml_switch_workspace1 =
+    clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider1,
                          0, 0,
                          on_switch_workspace_effect_complete,
-
                          actors);
   /* coming from */
-  ppriv->tml_switch_workspace1 =
-    clutter_effect_move (ppriv->switch_workspace_effect, group1,
+  ppriv->tml_switch_workspace0 =
+    clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider0,
                          to_x, to_y,
                          NULL, NULL);
 
   /* arrow */
-  clutter_effect_fade (ppriv->switch_workspace_arrow_effect, group3,
+  clutter_effect_fade (ppriv->switch_workspace_arrow_effect, indicator_group,
                        0,
                        NULL, NULL);
-
-
 }
 
 /*
@@ -783,10 +785,10 @@ kill_effect (MutterWindow *mcw, gulong event)
     {
       PluginPrivate *ppriv  = plugin->plugin_private;
 
-      if (ppriv->tml_switch_workspace1)
+      if (ppriv->tml_switch_workspace0)
         {
+          clutter_timeline_stop (ppriv->tml_switch_workspace0);
           clutter_timeline_stop (ppriv->tml_switch_workspace1);
-          clutter_timeline_stop (ppriv->tml_switch_workspace2);
           on_switch_workspace_effect_complete (ppriv->desktop1, ppriv->actors);
         }
 
