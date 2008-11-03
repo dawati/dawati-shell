@@ -1346,11 +1346,13 @@ new_workspace_input_cb (ClutterActor *clone,
 {
   MutterPlugin  *plugin    = mutter_get_plugin ();
   PluginPrivate *priv      = plugin->plugin_private;
+  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
 
   priv->next_app_workspace = GPOINTER_TO_INT (data);
 
   hide_workspace_chooser ();
 
+  meta_screen_append_new_workspace (screen, TRUE, event->any.time);
   spawn_app (priv->app_to_start);
 
   g_free (priv->app_to_start);
