@@ -1031,7 +1031,7 @@ hide_workspace_switcher (void)
 }
 
 static ClutterActor *
-ensure_nth_workspace (GList **list, gint n)
+ensure_nth_workspace (GList **list, gint n, gint active)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   GList         *l      = *list;
@@ -1056,13 +1056,17 @@ ensure_nth_workspace (GList **list, gint n)
     {
       ClutterActor *group = clutter_group_new ();
       ClutterColor  background_clr = { 0, 0, 0, 0};
+      ClutterColor  active_clr =     { 0xfd, 0xd9, 0x09, 0x7f};
       ClutterActor *background;
 
       /*
        * We need to add background, otherwise if the ws is empty, the group
        * will have size 0x0, and not respond to clicks.
        */
-      background =  clutter_rectangle_new_with_color (&background_clr);
+      if (i == active)
+        background =  clutter_rectangle_new_with_color (&active_clr);
+      else
+        background =  clutter_rectangle_new_with_color (&background_clr);
       clutter_actor_set_size (background, screen_width, screen_height);
       clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
 
@@ -1110,6 +1114,9 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   gdouble        ws_scale_x, ws_scale_y;
   gint           ws_count = 0;
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  gint           active_ws;
+
+  active_ws = meta_screen_get_active_workspace_index (screen);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1137,6 +1144,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
       ClutterActor       *workspace = NULL;
       guint               x, y, w, h;
       gdouble             s_x, s_y, s;
+      gboolean            active;
 
       type = mutter_window_get_window_type (mw);
       ws_indx = mutter_window_get_workspace (mw);
@@ -1155,8 +1163,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
           continue;
         }
 
-
-      workspace = ensure_nth_workspace (&workspaces, ws_indx);
+      workspace = ensure_nth_workspace (&workspaces, ws_indx, active_ws);
 
       g_assert (workspace);
 
