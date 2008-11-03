@@ -1119,11 +1119,9 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   grid_actor = tidy_grid_new ();
   grid = TIDY_GRID (grid_actor);
 
-  tidy_grid_set_homogenous_rows (grid, TRUE);
-  tidy_grid_set_homogenous_columns (grid, TRUE);
   tidy_grid_set_column_major (grid, FALSE);
-  tidy_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
-  tidy_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+  tidy_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
+  tidy_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
 
   l = mutter_plugin_get_windows (plugin);
   l = g_list_last (l);
@@ -1204,7 +1202,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
    * TODO -- fix TidyGrid, so we do not have to set the width explicitely.
    */
   clutter_actor_set_size (grid_actor,
-                          ws_count * WORKSPACE_CELL_WIDTH,
+                          ws_count * WORKSPACE_CELL_WIDTH + (ws_count - 1) * 5,
                           WORKSPACE_CELL_HEIGHT);
 
   if (n_workspaces)
@@ -1398,11 +1396,17 @@ show_workspace_chooser (const gchar *app_path)
                           WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
   new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
                                          &new_ws_text_clr);
-  clutter_actor_set_anchor_point_from_gravity (new_ws_label,
-                                               CLUTTER_GRAVITY_CENTER);
+  clutter_actor_realize (new_ws_label);
+
+  /*
+   * Tried to use anchor point in the middle of the label here, but it would
+   * appear that the group does not take anchor point into account when
+   * caluculating it's size, so it ends up wider than it should by the offset.
+   */
   clutter_actor_set_position (new_ws_label,
-                              WORKSPACE_CELL_WIDTH / 2,
-                              WORKSPACE_CELL_HEIGHT / 2);
+                              2,
+                              (WORKSPACE_CELL_HEIGHT -
+                               clutter_actor_get_height (new_ws_label))/2);
 
   clutter_container_add (CLUTTER_CONTAINER (new_ws),
                          new_ws_background, new_ws_label, NULL);
@@ -1413,11 +1417,11 @@ show_workspace_chooser (const gchar *app_path)
 
   clutter_actor_set_reactive (new_ws, TRUE);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (grid), new_ws);
+  clutter_actor_set_width (grid,
+                           clutter_actor_get_width (grid) + 5 +
+                           clutter_actor_get_width (new_ws));
 
-  clutter_actor_set_size (grid,
-                          (ws_count+1) * (WORKSPACE_CELL_WIDTH+80),
-                          WORKSPACE_CELL_HEIGHT);
+  clutter_container_add_actor (CLUTTER_CONTAINER (grid), new_ws);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          background, CLUTTER_ACTOR (grid), NULL);
