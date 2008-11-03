@@ -57,7 +57,6 @@
 #define WORKSPACE_CELL_HEIGHT 80
 
 static GQuark actor_data_quark = 0;
-static GQuark workspace_data_quark = 0;
 
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
@@ -1110,6 +1109,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   GList         *workspaces = NULL;
   gdouble        ws_scale_x, ws_scale_y;
   gint           ws_count = 0;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1162,19 +1162,6 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
 
       g_assert (workspace);
 
-      if (!g_object_get_qdata (G_OBJECT (workspace), workspace_data_quark))
-        {
-          gint           n;
-          MetaWorkspace *meta_ws;
-          MetaWindow    *meta_win;
-
-          meta_win = mutter_window_get_meta_window (mw);
-          meta_ws  = meta_window_get_workspace (meta_win);
-
-          g_object_set_qdata_full (G_OBJECT (workspace), workspace_data_quark,
-                                   meta_ws, NULL);
-        }
-
       texture = mutter_window_get_texture (mw);
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
 
@@ -1196,12 +1183,12 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
       ClutterActor  *ws = l->data;
       MetaWorkspace *meta_ws;
 
+      meta_ws = meta_screen_get_workspace_by_index (screen, ws_count);
+
       /*
        * Scale workspace to fit the predefined size of the grid cell
        */
       clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
-
-      meta_ws = g_object_get_qdata (G_OBJECT (ws), workspace_data_quark)      ;
 
       g_signal_connect (ws, "button-press-event", ws_callback, meta_ws);
 
@@ -1758,8 +1745,6 @@ do_init (const char *params)
                     GINT_TO_POINTER (FALSE));
 
   clutter_set_motion_events_enabled (TRUE);
-
-  workspace_data_quark = g_quark_from_static_string (WORKSPACE_DATA_KEY);
 
   return TRUE;
 }
