@@ -1034,9 +1034,13 @@ hide_workspace_switcher (void)
 static ClutterActor *
 ensure_nth_workspace (GList **list, gint n)
 {
-  GList *l = *list;
-  GList *tmp = NULL;
-  gint   i = 0;
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  GList         *l      = *list;
+  GList         *tmp    = NULL;
+  gint           i      = 0;
+  gint           screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   while (l)
     {
@@ -1052,6 +1056,16 @@ ensure_nth_workspace (GList **list, gint n)
   while (i <= n)
     {
       ClutterActor *group = clutter_group_new ();
+      ClutterColor  background_clr = { 0, 0, 0, 0};
+      ClutterActor *background;
+
+      /*
+       * We need to add background, otherwise if the ws is empty, the group
+       * will have size 0x0, and not respond to clicks.
+       */
+      background =  clutter_rectangle_new_with_color (&background_clr);
+      clutter_actor_set_size (background, screen_width, screen_height);
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
 
       tmp = g_list_append (tmp, group);
 
@@ -1071,6 +1085,12 @@ workspace_input_cb (ClutterActor *clone,
                     gpointer      data)
 {
   MetaWorkspace *workspace = data;
+
+  if (!workspace)
+    {
+      g_warning ("No workspace specified, %s:%d\n", __FILE__, __LINE__);
+      return FALSE;
+    }
 
   hide_workspace_switcher ();
   meta_workspace_activate (workspace, event->any.time);
@@ -1214,20 +1234,27 @@ show_workspace_switcher (void)
   ClutterActor  *overlay;
   ClutterActor  *switcher;
   ClutterActor  *background;
+  ClutterActor  *label;
   ClutterActor  *grid;
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
+  ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   switcher = clutter_group_new ();
   background = clutter_rectangle_new_with_color (&background_clr);
 
+  label = clutter_label_new_full ("Sans 12", "Choose workspace:", &label_clr);
+  clutter_actor_realize (label);
+
   grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL);
+  clutter_actor_set_position (CLUTTER_ACTOR (grid), 0,
+                              clutter_actor_get_height (label) + 3);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, CLUTTER_ACTOR (grid), NULL);
+                         background, label, CLUTTER_ACTOR (grid), NULL);
 
   if (priv->workspace_switcher)
     hide_workspace_switcher ();
@@ -1306,6 +1333,12 @@ workspace_chooser_input_cb (ClutterActor *clone,
   MetaWorkspace *workspace = data;
   MutterPlugin  *plugin    = mutter_get_plugin ();
   PluginPrivate *priv      = plugin->plugin_private;
+
+  if (!workspace)
+    {
+      g_warning ("No workspace specified, %s:%d\n", __FILE__, __LINE__);
+      return FALSE;
+    }
 
   priv->next_app_workspace = meta_workspace_index (workspace);
 
