@@ -48,13 +48,14 @@
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define WS_SWITCHER_SLIDE_THRESHOLD 3
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
-#define WORKSPACE_DATA_KEY "MCCP-moblin-netbook-workspace-data"
 
 #define SWITCHER_CELL_WIDTH  200
 #define SWITCHER_CELL_HEIGHT 200
 
 #define WORKSPACE_CELL_WIDTH  100
 #define WORKSPACE_CELL_HEIGHT 80
+
+#define WORKSPACE_CHOOSER_TIMEOUT 1000
 
 static GQuark actor_data_quark = 0;
 
@@ -1366,6 +1367,25 @@ new_workspace_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+static gboolean
+workspace_chooser_timeout_cb (gpointer data)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+
+  hide_workspace_chooser ();
+  priv->next_app_workspace = -2;
+
+  spawn_app (priv->app_to_start);
+
+  g_free (priv->app_to_start);
+  priv->app_to_start = NULL;
+  priv->next_app_workspace = -2;
+
+  /* One off */
+  return FALSE;
+}
+
 static void
 show_workspace_chooser (const gchar *app_path)
 {
@@ -1459,6 +1479,8 @@ show_workspace_chooser (const gchar *app_path)
   clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
+
+  g_timeout_add (WORKSPACE_CHOOSER_TIMEOUT, workspace_chooser_timeout_cb, NULL);
 }
 
 static gboolean
