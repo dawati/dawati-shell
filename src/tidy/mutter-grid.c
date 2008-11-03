@@ -1,4 +1,4 @@
-/* tidy-grid.h: Reflowing grid layout container for clutter.
+/* mutter-grid.h: Reflowing grid layout container for clutter.
  *
  * Copyright (C) 2008 Intel Corporation
  *
@@ -32,76 +32,76 @@
 #include <clutter/clutter-container.h>
 #include <string.h>
 
-#include "tidy-grid.h"
+#include "mutter-grid.h"
 
-typedef struct _TidyGridActorData TidyGridActorData;
+typedef struct _MutterGridActorData MutterGridActorData;
 
-static void tidy_grid_dispose             (GObject *object);
-static void tidy_grid_finalize            (GObject *object);
+static void mutter_grid_dispose             (GObject *object);
+static void mutter_grid_finalize            (GObject *object);
 
-static void tidy_grid_finalize            (GObject *object);
+static void mutter_grid_finalize            (GObject *object);
 
-static void tidy_grid_set_property        (GObject      *object,
+static void mutter_grid_set_property        (GObject      *object,
                                            guint         prop_id,
                                            const GValue *value,
                                            GParamSpec   *pspec);
-static void tidy_grid_get_property        (GObject      *object,
+static void mutter_grid_get_property        (GObject      *object,
                                            guint         prop_id,
                                            GValue       *value,
                                            GParamSpec   *pspec);
 
 static void clutter_container_iface_init  (ClutterContainerIface *iface);
 
-static void tidy_grid_real_add            (ClutterContainer *container,
+static void mutter_grid_real_add            (ClutterContainer *container,
                                            ClutterActor     *actor);
-static void tidy_grid_real_remove         (ClutterContainer *container,
+static void mutter_grid_real_remove         (ClutterContainer *container,
                                            ClutterActor     *actor);
-static void tidy_grid_real_foreach        (ClutterContainer *container,
+static void mutter_grid_real_foreach        (ClutterContainer *container,
                                            ClutterCallback   callback,
                                            gpointer          user_data);
-static void tidy_grid_real_raise          (ClutterContainer *container,
+static void mutter_grid_real_raise          (ClutterContainer *container,
                                            ClutterActor     *actor,
                                            ClutterActor     *sibling);
-static void tidy_grid_real_lower          (ClutterContainer *container,
+static void mutter_grid_real_lower          (ClutterContainer *container,
                                            ClutterActor     *actor,
                                            ClutterActor     *sibling);
 static void
-tidy_grid_real_sort_depth_order (ClutterContainer *container);
+mutter_grid_real_sort_depth_order (ClutterContainer *container);
 
 static void
-tidy_grid_free_actor_data (gpointer data);
+mutter_grid_free_actor_data (gpointer data);
 
-static void tidy_grid_paint (ClutterActor *actor);
+static void mutter_grid_paint (ClutterActor *actor);
 
-static void tidy_grid_pick (ClutterActor *actor,
+static void mutter_grid_pick (ClutterActor *actor,
                                        const ClutterColor *color);
 
 static void
-tidy_grid_get_preferred_width (ClutterActor *self,
+mutter_grid_get_preferred_width (ClutterActor *self,
                                          ClutterUnit for_height,
                                          ClutterUnit *min_width_p,
                                          ClutterUnit *natural_width_p);
 
 static void
-tidy_grid_get_preferred_height (ClutterActor *self,
+mutter_grid_get_preferred_height (ClutterActor *self,
                                            ClutterUnit for_width,
                                            ClutterUnit *min_height_p,
                                            ClutterUnit *natural_height_p);
 
-static void tidy_grid_allocate (ClutterActor *self,
+static void mutter_grid_allocate (ClutterActor *self,
                                            const ClutterActorBox *box,
                                            gboolean absolute_origin_changed);
 
-G_DEFINE_TYPE_WITH_CODE (TidyGrid, tidy_grid,
+G_DEFINE_TYPE_WITH_CODE (MutterGrid, mutter_grid,
                          CLUTTER_TYPE_ACTOR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 clutter_container_iface_init));
 
-#define TIDY_GRID_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TIDY_TYPE_GRID, \
-                                TidyGridPrivate))
+#define MUTTER_GRID_GET_PRIVATE(obj) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MUTTER_TYPE_GRID, \
+                                MutterGridPrivate))
 
-struct _TidyGridPrivate
+struct _MutterGridPrivate
 {
   ClutterUnit for_height,  for_width;
   ClutterUnit pref_width,  pref_height;
@@ -138,7 +138,7 @@ enum
   PROP_COLUMN_MAJOR,
 };
 
-struct _TidyGridActorData
+struct _MutterGridActorData
 {
   gboolean    xpos_set,   ypos_set;
   ClutterUnit xpos,       ypos;
@@ -146,24 +146,24 @@ struct _TidyGridActorData
 };
 
 static void
-tidy_grid_class_init (TidyGridClass *klass)
+mutter_grid_class_init (MutterGridClass *klass)
 {
   GObjectClass *gobject_class = (GObjectClass *) klass;
   ClutterActorClass *actor_class = (ClutterActorClass *) klass;
 
-  gobject_class->dispose = tidy_grid_dispose;
-  gobject_class->finalize = tidy_grid_finalize;
+  gobject_class->dispose = mutter_grid_dispose;
+  gobject_class->finalize = mutter_grid_finalize;
 
-  gobject_class->set_property = tidy_grid_set_property;
-  gobject_class->get_property = tidy_grid_get_property;
+  gobject_class->set_property = mutter_grid_set_property;
+  gobject_class->get_property = mutter_grid_get_property;
 
-  actor_class->paint                = tidy_grid_paint;
-  actor_class->pick                 = tidy_grid_pick;
-  actor_class->get_preferred_width  = tidy_grid_get_preferred_width;
-  actor_class->get_preferred_height = tidy_grid_get_preferred_height;
-  actor_class->allocate             = tidy_grid_allocate;
+  actor_class->paint                = mutter_grid_paint;
+  actor_class->pick                 = mutter_grid_pick;
+  actor_class->get_preferred_width  = mutter_grid_get_preferred_width;
+  actor_class->get_preferred_height = mutter_grid_get_preferred_height;
+  actor_class->allocate             = mutter_grid_allocate;
 
-  g_type_class_add_private (klass, sizeof (TidyGridPrivate));
+  g_type_class_add_private (klass, sizeof (MutterGridPrivate));
 
 
   g_object_class_install_property
@@ -246,33 +246,33 @@ tidy_grid_class_init (TidyGridClass *klass)
 static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->add              = tidy_grid_real_add;
-  iface->remove           = tidy_grid_real_remove;
-  iface->foreach          = tidy_grid_real_foreach;
-  iface->raise            = tidy_grid_real_raise;
-  iface->lower            = tidy_grid_real_lower;
-  iface->sort_depth_order = tidy_grid_real_sort_depth_order;
+  iface->add              = mutter_grid_real_add;
+  iface->remove           = mutter_grid_real_remove;
+  iface->foreach          = mutter_grid_real_foreach;
+  iface->raise            = mutter_grid_real_raise;
+  iface->lower            = mutter_grid_real_lower;
+  iface->sort_depth_order = mutter_grid_real_sort_depth_order;
 }
 
 static void
-tidy_grid_init (TidyGrid *self)
+mutter_grid_init (MutterGrid *self)
 {
-  TidyGridPrivate *priv;
+  MutterGridPrivate *priv;
 
-  self->priv = priv = TIDY_GRID_GET_PRIVATE (self);
+  self->priv = priv = MUTTER_GRID_GET_PRIVATE (self);
 
   priv->hash_table
     = g_hash_table_new_full (g_direct_hash,
                              g_direct_equal,
                              /*g_object_unref*/NULL,
-                             tidy_grid_free_actor_data);
+                             mutter_grid_free_actor_data);
 }
 
 static void
-tidy_grid_dispose (GObject *object)
+mutter_grid_dispose (GObject *object)
 {
-  TidyGrid *self = (TidyGrid *) object;
-  TidyGridPrivate *priv;
+  MutterGrid *self = (MutterGrid *) object;
+  MutterGridPrivate *priv;
 
   priv = self->priv;
 
@@ -282,196 +282,196 @@ tidy_grid_dispose (GObject *object)
                              (ClutterCallback) clutter_actor_destroy,
                              NULL);
 
-  G_OBJECT_CLASS (tidy_grid_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mutter_grid_parent_class)->dispose (object);
 }
 
 static void
-tidy_grid_finalize (GObject *object)
+mutter_grid_finalize (GObject *object)
 {
-  TidyGrid *self = (TidyGrid *) object;
-  TidyGridPrivate *priv = self->priv;
+  MutterGrid *self = (MutterGrid *) object;
+  MutterGridPrivate *priv = self->priv;
 
   g_hash_table_destroy (priv->hash_table);
 
-  G_OBJECT_CLASS (tidy_grid_parent_class)->finalize (object);
+  G_OBJECT_CLASS (mutter_grid_parent_class)->finalize (object);
 }
 
 
 void
-tidy_grid_set_end_align (TidyGrid *self,
+mutter_grid_set_end_align (MutterGrid *self,
                          gboolean  value)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   priv->end_align = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gboolean
-tidy_grid_get_end_align (TidyGrid *self)
+mutter_grid_get_end_align (MutterGrid *self)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   return priv->end_align;
 }
 
 void
-tidy_grid_set_homogenous_rows (TidyGrid *self,
+mutter_grid_set_homogenous_rows (MutterGrid *self,
                                gboolean  value)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   priv->homogenous_rows = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gboolean
-tidy_grid_get_homogenous_rows (TidyGrid *self)
+mutter_grid_get_homogenous_rows (MutterGrid *self)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   return priv->homogenous_rows;
 }
 
 
 void
-tidy_grid_set_homogenous_columns (TidyGrid *self,
+mutter_grid_set_homogenous_columns (MutterGrid *self,
                                   gboolean  value)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   priv->homogenous_columns = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 
 gboolean
-tidy_grid_get_homogenous_columns (TidyGrid *self)
+mutter_grid_get_homogenous_columns (MutterGrid *self)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   return priv->homogenous_columns;
 }
 
 
 void
-tidy_grid_set_column_major (TidyGrid *self,
+mutter_grid_set_column_major (MutterGrid *self,
                             gboolean  value)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   priv->column_major = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gboolean
-tidy_grid_get_column_major (TidyGrid *self)
+mutter_grid_get_column_major (MutterGrid *self)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   return priv->column_major;
 }
 
 void
-tidy_grid_set_column_gap (TidyGrid    *self,
+mutter_grid_set_column_gap (MutterGrid    *self,
                           ClutterUnit  value)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   priv->column_gap = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 ClutterUnit
-tidy_grid_get_column_gap (TidyGrid *self)
+mutter_grid_get_column_gap (MutterGrid *self)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   return priv->column_gap;
 }
 
 
 
 void
-tidy_grid_set_row_gap (TidyGrid    *self,
+mutter_grid_set_row_gap (MutterGrid    *self,
                        ClutterUnit  value)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   priv->row_gap = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 ClutterUnit
-tidy_grid_get_row_gap (TidyGrid *self)
+mutter_grid_get_row_gap (MutterGrid *self)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   return priv->row_gap;
 }
 
 
 void
-tidy_grid_set_valign (TidyGrid *self,
+mutter_grid_set_valign (MutterGrid *self,
                       gdouble   value)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   priv->valign = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gdouble
-tidy_grid_get_valign (TidyGrid *self)
+mutter_grid_get_valign (MutterGrid *self)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   return priv->valign;
 }
 
 
 
 void
-tidy_grid_set_halign (TidyGrid *self,
+mutter_grid_set_halign (MutterGrid *self,
                       gdouble   value)
 
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   priv->halign = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gdouble
-tidy_grid_get_halign (TidyGrid *self)
+mutter_grid_get_halign (MutterGrid *self)
 {
-  TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
+  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
   return priv->halign;
 }
 
 
 static void
-tidy_grid_set_property (GObject      *object,
+mutter_grid_set_property (GObject      *object,
                         guint         prop_id,
                         const GValue *value,
                         GParamSpec   *pspec)
 {
-  TidyGrid *grid = TIDY_GRID (object);
+  MutterGrid *grid = MUTTER_GRID (object);
 
-  TidyGridPrivate *priv;
+  MutterGridPrivate *priv;
 
-  priv = TIDY_GRID_GET_PRIVATE (object);
+  priv = MUTTER_GRID_GET_PRIVATE (object);
 
   switch (prop_id)
     {
     case PROP_END_ALIGN:
-      tidy_grid_set_end_align (grid, g_value_get_boolean (value));
+      mutter_grid_set_end_align (grid, g_value_get_boolean (value));
       break;
     case PROP_HOMOGENOUS_ROWS:
-      tidy_grid_set_homogenous_rows (grid, g_value_get_boolean (value));
+      mutter_grid_set_homogenous_rows (grid, g_value_get_boolean (value));
       break;
     case PROP_HOMOGENOUS_COLUMNS:
-      tidy_grid_set_homogenous_columns (grid, g_value_get_boolean (value));
+      mutter_grid_set_homogenous_columns (grid, g_value_get_boolean (value));
       break;
     case PROP_COLUMN_MAJOR:
-      tidy_grid_set_column_major (grid, g_value_get_boolean (value));
+      mutter_grid_set_column_major (grid, g_value_get_boolean (value));
       break;
     case PROP_COLUMN_GAP:
-      tidy_grid_set_column_gap (grid, clutter_value_get_unit (value));
+      mutter_grid_set_column_gap (grid, clutter_value_get_unit (value));
       break;
     case PROP_ROW_GAP:
-      tidy_grid_set_row_gap (grid, clutter_value_get_unit (value));
+      mutter_grid_set_row_gap (grid, clutter_value_get_unit (value));
       break;
     case PROP_VALIGN:
-      tidy_grid_set_valign (grid, g_value_get_double (value));
+      mutter_grid_set_valign (grid, g_value_get_double (value));
       break;
     case PROP_HALIGN:
-      tidy_grid_set_halign (grid, g_value_get_double (value));
+      mutter_grid_set_halign (grid, g_value_get_double (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -480,42 +480,42 @@ tidy_grid_set_property (GObject      *object,
 }
 
 static void
-tidy_grid_get_property (GObject    *object,
+mutter_grid_get_property (GObject    *object,
                         guint       prop_id,
                         GValue     *value,
                         GParamSpec *pspec)
 {
-  TidyGrid *grid = TIDY_GRID (object);
+  MutterGrid *grid = MUTTER_GRID (object);
 
-  TidyGridPrivate *priv;
+  MutterGridPrivate *priv;
 
-  priv = TIDY_GRID_GET_PRIVATE (object);
+  priv = MUTTER_GRID_GET_PRIVATE (object);
 
   switch (prop_id)
     {
     case PROP_HOMOGENOUS_ROWS:
-      g_value_set_boolean (value, tidy_grid_get_homogenous_rows (grid));
+      g_value_set_boolean (value, mutter_grid_get_homogenous_rows (grid));
       break;
     case PROP_HOMOGENOUS_COLUMNS:
-      g_value_set_boolean (value, tidy_grid_get_homogenous_columns (grid));
+      g_value_set_boolean (value, mutter_grid_get_homogenous_columns (grid));
       break;
     case PROP_END_ALIGN:
-      g_value_set_boolean (value, tidy_grid_get_end_align (grid));
+      g_value_set_boolean (value, mutter_grid_get_end_align (grid));
       break;
     case PROP_COLUMN_MAJOR:
-      g_value_set_boolean (value, tidy_grid_get_column_major (grid));
+      g_value_set_boolean (value, mutter_grid_get_column_major (grid));
       break;
     case PROP_COLUMN_GAP:
-      clutter_value_set_unit (value, tidy_grid_get_column_gap (grid));
+      clutter_value_set_unit (value, mutter_grid_get_column_gap (grid));
       break;
     case PROP_ROW_GAP:
-      clutter_value_set_unit (value, tidy_grid_get_row_gap (grid));
+      clutter_value_set_unit (value, mutter_grid_get_row_gap (grid));
       break;
     case PROP_VALIGN:
-      g_value_set_double (value, tidy_grid_get_valign (grid));
+      g_value_set_double (value, mutter_grid_get_valign (grid));
       break;
     case PROP_HALIGN:
-      g_value_set_double (value, tidy_grid_get_halign (grid));
+      g_value_set_double (value, mutter_grid_get_halign (grid));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -525,35 +525,35 @@ tidy_grid_get_property (GObject    *object,
 
 
 static void
-tidy_grid_free_actor_data (gpointer data)
+mutter_grid_free_actor_data (gpointer data)
 {
-  g_slice_free (TidyGridActorData, data);
+  g_slice_free (MutterGridActorData, data);
 }
 
 ClutterActor *
-tidy_grid_new (void)
+mutter_grid_new (void)
 {
-  ClutterActor *self = g_object_new (TIDY_TYPE_GRID, NULL);
+  ClutterActor *self = g_object_new (MUTTER_TYPE_GRID, NULL);
 
   return self;
 }
 
 static void
-tidy_grid_real_add (ClutterContainer *container,
+mutter_grid_real_add (ClutterContainer *container,
                     ClutterActor     *actor)
 {
-  TidyGridPrivate *priv;
-  TidyGridActorData *data;
+  MutterGridPrivate *priv;
+  MutterGridActorData *data;
 
-  g_return_if_fail (TIDY_IS_GRID (container));
+  g_return_if_fail (MUTTER_IS_GRID (container));
 
   g_object_ref (actor);
 
-  priv = TIDY_GRID (container)->priv;
+  priv = MUTTER_GRID (container)->priv;
 
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
 
-  data = g_slice_alloc0 (sizeof (TidyGridActorData));
+  data = g_slice_alloc0 (sizeof (MutterGridActorData));
 
   priv->list = g_list_append (priv->list, actor);
   g_hash_table_insert (priv->hash_table, actor, data);
@@ -564,11 +564,11 @@ tidy_grid_real_add (ClutterContainer *container,
 }
 
 static void
-tidy_grid_real_remove (ClutterContainer *container,
+mutter_grid_real_remove (ClutterContainer *container,
                        ClutterActor     *actor)
 {
-  TidyGrid *layout = TIDY_GRID (container);
-  TidyGridPrivate *priv = layout->priv;
+  MutterGrid *layout = MUTTER_GRID (container);
+  MutterGridPrivate *priv = layout->priv;
 
   g_object_ref (actor);
 
@@ -589,18 +589,18 @@ tidy_grid_real_remove (ClutterContainer *container,
 }
 
 static void
-tidy_grid_real_foreach (ClutterContainer *container,
+mutter_grid_real_foreach (ClutterContainer *container,
                                    ClutterCallback callback,
                                    gpointer user_data)
 {
-  TidyGrid *layout = TIDY_GRID (container);
-  TidyGridPrivate *priv = layout->priv;
+  MutterGrid *layout = MUTTER_GRID (container);
+  MutterGridPrivate *priv = layout->priv;
 
   g_list_foreach (priv->list, (GFunc) callback, user_data);
 }
 
 static void
-tidy_grid_real_raise (ClutterContainer *container,
+mutter_grid_real_raise (ClutterContainer *container,
                                  ClutterActor *actor,
                                  ClutterActor *sibling)
 {
@@ -608,7 +608,7 @@ tidy_grid_real_raise (ClutterContainer *container,
 }
 
 static void
-tidy_grid_real_lower (ClutterContainer *container,
+mutter_grid_real_lower (ClutterContainer *container,
                                  ClutterActor *actor,
                                  ClutterActor *sibling)
 {
@@ -616,16 +616,16 @@ tidy_grid_real_lower (ClutterContainer *container,
 }
 
 static void
-tidy_grid_real_sort_depth_order (ClutterContainer *container)
+mutter_grid_real_sort_depth_order (ClutterContainer *container)
 {
   /* STUB */
 }
 
 static void
-tidy_grid_paint (ClutterActor *actor)
+mutter_grid_paint (ClutterActor *actor)
 {
-  TidyGrid *layout = (TidyGrid *) actor;
-  TidyGridPrivate *priv = layout->priv;
+  MutterGrid *layout = (MutterGrid *) actor;
+  MutterGridPrivate *priv = layout->priv;
   GList *child_item;
 
   for (child_item = priv->list;
@@ -643,27 +643,27 @@ tidy_grid_paint (ClutterActor *actor)
 }
 
 static void
-tidy_grid_pick (ClutterActor *actor,
+mutter_grid_pick (ClutterActor *actor,
                            const ClutterColor *color)
 {
   /* Chain up so we get a bounding box pained (if we are reactive) */
-  CLUTTER_ACTOR_CLASS (tidy_grid_parent_class)->pick (actor, color);
+  CLUTTER_ACTOR_CLASS (mutter_grid_parent_class)->pick (actor, color);
 
   /* Just forward to the paint call which in turn will trigger
    * the child actors also getting 'picked'.
    */
   if (CLUTTER_ACTOR_IS_VISIBLE (actor))
-   tidy_grid_paint (actor);
+   mutter_grid_paint (actor);
 }
 
 static void
-tidy_grid_get_preferred_width (ClutterActor *self,
+mutter_grid_get_preferred_width (ClutterActor *self,
                                           ClutterUnit for_height,
                                           ClutterUnit *min_width_p,
                                           ClutterUnit *natural_width_p)
 {
-  TidyGrid *layout = (TidyGrid *) self;
-  TidyGridPrivate *priv = layout->priv;
+  MutterGrid *layout = (MutterGrid *) self;
+  MutterGridPrivate *priv = layout->priv;
   ClutterUnit natural_width;
 
   natural_width = CLUTTER_UNITS_FROM_INT (200);
@@ -676,13 +676,13 @@ tidy_grid_get_preferred_width (ClutterActor *self,
 }
 
 static void
-tidy_grid_get_preferred_height (ClutterActor *self,
+mutter_grid_get_preferred_height (ClutterActor *self,
                                 ClutterUnit for_width,
                                 ClutterUnit *min_height_p,
                                 ClutterUnit *natural_height_p)
 {
-  TidyGrid *layout = (TidyGrid *) self;
-  TidyGridPrivate *priv = layout->priv;
+  MutterGrid *layout = (MutterGrid *) self;
+  MutterGridPrivate *priv = layout->priv;
   ClutterUnit natural_height;
 
   natural_height = CLUTTER_UNITS_FROM_INT (200);
@@ -700,7 +700,7 @@ static ClutterUnit
 compute_row_height (GList                    *siblings,
                     ClutterUnit               best_yet,
                     ClutterUnit               current_a,
-                    TidyGridPrivate *priv)
+                    MutterGridPrivate *priv)
 {
   GList *l;
 
@@ -768,7 +768,7 @@ compute_row_height (GList                    *siblings,
 static ClutterUnit
 compute_row_start (GList           *siblings,
                    ClutterUnit      start_x,
-                   TidyGridPrivate *priv)
+                   MutterGridPrivate *priv)
 {
   ClutterUnit current_a = start_x;
   GList *l;
@@ -827,12 +827,12 @@ compute_row_start (GList           *siblings,
 }
 
 static void
-tidy_grid_allocate (ClutterActor          *self,
+mutter_grid_allocate (ClutterActor          *self,
                               const ClutterActorBox *box,
                               gboolean               absolute_origin_changed)
 {
-  TidyGrid *layout = (TidyGrid *) self;
-  TidyGridPrivate *priv = layout->priv;
+  MutterGrid *layout = (MutterGrid *) self;
+  MutterGridPrivate *priv = layout->priv;
 
   ClutterUnit current_a;
   ClutterUnit current_b;
@@ -850,7 +850,7 @@ tidy_grid_allocate (ClutterActor          *self,
   GList *iter;
 
   /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (tidy_grid_parent_class)
+  CLUTTER_ACTOR_CLASS (mutter_grid_parent_class)
     ->allocate (self, box, absolute_origin_changed);
 
   priv->alloc_width = box->x2 - box->x1;

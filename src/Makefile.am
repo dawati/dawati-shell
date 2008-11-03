@@ -4,7 +4,7 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 INCLUDES=@MUTTER_PLUGIN_CFLAGS@
 
 moblin_netbook_la_CFLAGS   = -Werror=missing-prototypes -fPIC
-moblin_netbook_la_SOURCES  = tidy/tidy-grid.c moblin-netbook.c
+moblin_netbook_la_SOURCES  = tidy/mutter-grid.c moblin-netbook.c
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@
 

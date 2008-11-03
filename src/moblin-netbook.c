@@ -33,7 +33,7 @@
 #include <gmodule.h>
 #include <string.h>
 
-#include "tidy/tidy-grid.h"
+#include "tidy/mutter-grid.h"
 
 #include "compositor-mutter.h"
 
@@ -913,22 +913,22 @@ show_switcher (void)
   ClutterActor  *overlay;
   GList         *l;
   ClutterActor  *switcher;
-  TidyGrid      *grid;
+  MutterGrid    *grid;
   guint          panel_height;
   gint           panel_y;
   gint           screen_width, screen_height;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  switcher = tidy_grid_new ();
+  switcher = mutter_grid_new ();
 
-  grid = TIDY_GRID (switcher);
+  grid = MUTTER_GRID (switcher);
 
-  tidy_grid_set_homogenous_rows (grid, TRUE);
-  tidy_grid_set_homogenous_columns (grid, TRUE);
-  tidy_grid_set_column_major (grid, FALSE);
-  tidy_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
-  tidy_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+  mutter_grid_set_homogenous_rows (grid, TRUE);
+  mutter_grid_set_homogenous_columns (grid, TRUE);
+  mutter_grid_set_column_major (grid, FALSE);
+  mutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+  mutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
 
   l = mutter_plugin_get_windows (plugin);
   while (l)
@@ -1108,7 +1108,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
   GList         *l;
-  TidyGrid      *grid;
+  MutterGrid    *grid;
   ClutterActor  *grid_actor;
   gint           screen_width, screen_height;
   GList         *workspaces = NULL;
@@ -1124,12 +1124,12 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   ws_scale_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) screen_width;
   ws_scale_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) screen_height;
 
-  grid_actor = tidy_grid_new ();
-  grid = TIDY_GRID (grid_actor);
+  grid_actor = mutter_grid_new ();
+  grid = MUTTER_GRID (grid_actor);
 
-  tidy_grid_set_column_major (grid, FALSE);
-  tidy_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
-  tidy_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
+  mutter_grid_set_column_major (grid, FALSE);
+  mutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
+  mutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
 
   l = mutter_plugin_get_windows (plugin);
   l = g_list_last (l);
@@ -1207,7 +1207,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
     }
 
   /*
-   * TODO -- fix TidyGrid, so we do not have to set the width explicitely.
+   * TODO -- fix MutterGrid, so we do not have to set the width explicitely.
    */
   clutter_actor_set_size (grid_actor,
                           ws_count * WORKSPACE_CELL_WIDTH + (ws_count - 1) * 5,
