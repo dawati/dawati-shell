@@ -1231,7 +1231,7 @@ show_workspace_switcher (void)
   switcher = clutter_group_new ();
   background = clutter_rectangle_new_with_color (&background_clr);
 
-  label = clutter_label_new_full ("Sans 12", "Choose workspace:", &label_clr);
+  label = clutter_label_new_full ("Sans 12", "You can select a workspace:", &label_clr);
   clutter_actor_realize (label);
 
   grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL);
@@ -1368,6 +1368,7 @@ show_workspace_chooser (const gchar *app_path)
   ClutterActor  *switcher;
   ClutterActor  *background;
   ClutterActor  *grid;
+  ClutterActor  *label;
   ClutterActor  *new_ws;
   ClutterActor  *new_ws_background;
   ClutterActor  *new_ws_label;
@@ -1376,6 +1377,7 @@ show_workspace_chooser (const gchar *app_path)
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
   ClutterColor   new_ws_clr = { 0xff, 0xff, 0xff, 0xff };
   ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
+  ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
 
   g_free (priv->app_to_start);
@@ -1386,8 +1388,14 @@ show_workspace_chooser (const gchar *app_path)
   switcher = clutter_group_new ();
   background = clutter_rectangle_new_with_color (&background_clr);
 
+  label = clutter_label_new_full ("Sans 12", "You can select a workspace:", &label_clr);
+  clutter_actor_realize (label);
+
   grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
                               &ws_count);
+  clutter_actor_set_position (CLUTTER_ACTOR (grid), 0,
+                              clutter_actor_get_height (label) + 3);
+
 
   new_ws = clutter_group_new ();
   new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
@@ -1424,7 +1432,7 @@ show_workspace_chooser (const gchar *app_path)
   clutter_container_add_actor (CLUTTER_CONTAINER (grid), new_ws);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, CLUTTER_ACTOR (grid), NULL);
+                         background, label, CLUTTER_ACTOR (grid), NULL);
 
   if (priv->workspace_chooser)
     hide_workspace_chooser ();
