@@ -1185,7 +1185,8 @@ make_workspace_grid (GCallback  ws_callback,
   nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
   nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
   nutter_grid_set_max_size (grid, screen_width, screen_height);
-  nutter_grid_set_max_dimension (grid, active_ws + 1);
+  nutter_grid_set_max_dimension (grid,
+                                 new_ws_callback ? active_ws + 1 : active_ws);
 
   for (i = 0; i < active_ws; ++i)
     {
