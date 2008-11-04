@@ -1127,13 +1127,11 @@ make_workspace_label (const gchar *text)
   group = clutter_group_new ();
 
   border = clutter_rectangle_new_with_color (&f_clr);
-  clutter_actor_set_size (border,
-                          WORKSPACE_CELL_WIDTH + 6,
-                          WORKSPACE_CELL_HEIGHT + 6);
+  clutter_actor_set_size (border, WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
 
   background = clutter_rectangle_new_with_color (&b_clr);
   clutter_actor_set_size (background,
-                          WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
+                          WORKSPACE_CELL_WIDTH - 6, WORKSPACE_CELL_HEIGHT - 6);
   clutter_actor_set_position (background, 3, 3);
 
   label = clutter_label_new_full ("Sans 16", text, &f_clr);
@@ -1302,8 +1300,8 @@ make_workspace_grid (GCallback  ws_callback,
       new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
 
       clutter_actor_set_size (new_ws_background,
-                              WORKSPACE_CELL_WIDTH + WORKSPACE_BORDER,
-                              WORKSPACE_CELL_HEIGHT + WORKSPACE_BORDER);
+                              WORKSPACE_CELL_WIDTH,
+                              WORKSPACE_CELL_HEIGHT);
 
       new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
                                              &new_ws_text_clr);
@@ -1315,9 +1313,8 @@ make_workspace_grid (GCallback  ws_callback,
        * caluculating it's size, so it ends up wider than it should by the
        * offset.
        */
-      clutter_actor_set_position (new_ws_label,
-                                  WORKSPACE_BORDER / 2 + 2,
-                                  (WORKSPACE_CELL_HEIGHT + WORKSPACE_BORDER -
+      clutter_actor_set_position (new_ws_label, 2,
+                                  (WORKSPACE_CELL_HEIGHT -
                                    clutter_actor_get_height (new_ws_label))/2);
 
       clutter_container_add (CLUTTER_CONTAINER (new_ws),
