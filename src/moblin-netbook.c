@@ -258,15 +258,17 @@ switch_workspace (const GList **actors, gint from, gint to,
 
   n_workspaces = g_list_length (plugin->work_areas);
 
-  l = g_list_last (*((GList**) actors));
-
-  while (l)
+  for (l = g_list_last (*((GList**) actors)); l != NULL; l = l->prev)
     {
       MutterWindow *mcw  = l->data;
       ActorPrivate *priv = get_actor_private (mcw);
       ClutterActor *a    = CLUTTER_ACTOR (mcw);
       gint          workspace;
 
+      /* We don't care about minimized windows */
+      if (!mutter_window_showing_on_its_workspace (mcw))
+	continue;
+      
       workspace = mutter_window_get_workspace (mcw);
 
       if (workspace == to || workspace == from)
@@ -296,8 +298,6 @@ switch_workspace (const GList **actors, gint from, gint to,
           clutter_actor_hide (a);
           priv->orig_parent = NULL;
         }
-
-      l = l->prev;
     }
 
   /* Make arrow indicator */
