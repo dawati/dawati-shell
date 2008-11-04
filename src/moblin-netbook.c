@@ -33,7 +33,7 @@
 #include <gmodule.h>
 #include <string.h>
 
-#include "tidy/mutter-grid.h"
+#include "nutter/nutter-grid.h"
 
 #include "compositor-mutter.h"
 
@@ -913,22 +913,22 @@ show_switcher (void)
   ClutterActor  *overlay;
   GList         *l;
   ClutterActor  *switcher;
-  MutterGrid    *grid;
+  NutterGrid    *grid;
   guint          panel_height;
   gint           panel_y;
   gint           screen_width, screen_height;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  switcher = mutter_grid_new ();
+  switcher = nutter_grid_new ();
 
-  grid = MUTTER_GRID (switcher);
+  grid = NUTTER_GRID (switcher);
 
-  mutter_grid_set_homogenous_rows (grid, TRUE);
-  mutter_grid_set_homogenous_columns (grid, TRUE);
-  mutter_grid_set_column_major (grid, FALSE);
-  mutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
-  mutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+  nutter_grid_set_homogenous_rows (grid, TRUE);
+  nutter_grid_set_homogenous_columns (grid, TRUE);
+  nutter_grid_set_column_major (grid, FALSE);
+  nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+  nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
 
   l = mutter_plugin_get_windows (plugin);
   while (l)
@@ -1108,7 +1108,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
   GList         *l;
-  MutterGrid    *grid;
+  NutterGrid    *grid;
   ClutterActor  *grid_actor;
   gint           screen_width, screen_height;
   GList         *workspaces = NULL;
@@ -1124,12 +1124,12 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   ws_scale_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) screen_width;
   ws_scale_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) screen_height;
 
-  grid_actor = mutter_grid_new ();
-  grid = MUTTER_GRID (grid_actor);
+  grid_actor = nutter_grid_new ();
+  grid = NUTTER_GRID (grid_actor);
 
-  mutter_grid_set_column_major (grid, FALSE);
-  mutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
-  mutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
+  nutter_grid_set_column_major (grid, FALSE);
+  nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
+  nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
 
   l = mutter_plugin_get_windows (plugin);
   l = g_list_last (l);
@@ -1207,7 +1207,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
     }
 
   /*
-   * TODO -- fix MutterGrid, so we do not have to set the width explicitely.
+   * TODO -- fix NutterGrid, so we do not have to set the width explicitely.
    */
   clutter_actor_set_size (grid_actor,
                           ws_count * WORKSPACE_CELL_WIDTH + (ws_count - 1) * 5,

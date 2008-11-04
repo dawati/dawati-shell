@@ -1,4 +1,4 @@
-/* mutter-grid.h: Reflowing grid layout container for clutter.
+/* nutter-grid.h: Reflowing grid layout container for clutter.
  *
  * Copyright (C) 2008 Intel Corporation
  *
@@ -32,76 +32,76 @@
 #include <clutter/clutter-container.h>
 #include <string.h>
 
-#include "mutter-grid.h"
+#include "nutter-grid.h"
 
-typedef struct _MutterGridActorData MutterGridActorData;
+typedef struct _NutterGridActorData NutterGridActorData;
 
-static void mutter_grid_dispose             (GObject *object);
-static void mutter_grid_finalize            (GObject *object);
+static void nutter_grid_dispose             (GObject *object);
+static void nutter_grid_finalize            (GObject *object);
 
-static void mutter_grid_finalize            (GObject *object);
+static void nutter_grid_finalize            (GObject *object);
 
-static void mutter_grid_set_property        (GObject      *object,
+static void nutter_grid_set_property        (GObject      *object,
                                            guint         prop_id,
                                            const GValue *value,
                                            GParamSpec   *pspec);
-static void mutter_grid_get_property        (GObject      *object,
+static void nutter_grid_get_property        (GObject      *object,
                                            guint         prop_id,
                                            GValue       *value,
                                            GParamSpec   *pspec);
 
 static void clutter_container_iface_init  (ClutterContainerIface *iface);
 
-static void mutter_grid_real_add            (ClutterContainer *container,
+static void nutter_grid_real_add            (ClutterContainer *container,
                                            ClutterActor     *actor);
-static void mutter_grid_real_remove         (ClutterContainer *container,
+static void nutter_grid_real_remove         (ClutterContainer *container,
                                            ClutterActor     *actor);
-static void mutter_grid_real_foreach        (ClutterContainer *container,
+static void nutter_grid_real_foreach        (ClutterContainer *container,
                                            ClutterCallback   callback,
                                            gpointer          user_data);
-static void mutter_grid_real_raise          (ClutterContainer *container,
+static void nutter_grid_real_raise          (ClutterContainer *container,
                                            ClutterActor     *actor,
                                            ClutterActor     *sibling);
-static void mutter_grid_real_lower          (ClutterContainer *container,
+static void nutter_grid_real_lower          (ClutterContainer *container,
                                            ClutterActor     *actor,
                                            ClutterActor     *sibling);
 static void
-mutter_grid_real_sort_depth_order (ClutterContainer *container);
+nutter_grid_real_sort_depth_order (ClutterContainer *container);
 
 static void
-mutter_grid_free_actor_data (gpointer data);
+nutter_grid_free_actor_data (gpointer data);
 
-static void mutter_grid_paint (ClutterActor *actor);
+static void nutter_grid_paint (ClutterActor *actor);
 
-static void mutter_grid_pick (ClutterActor *actor,
+static void nutter_grid_pick (ClutterActor *actor,
                                        const ClutterColor *color);
 
 static void
-mutter_grid_get_preferred_width (ClutterActor *self,
+nutter_grid_get_preferred_width (ClutterActor *self,
                                          ClutterUnit for_height,
                                          ClutterUnit *min_width_p,
                                          ClutterUnit *natural_width_p);
 
 static void
-mutter_grid_get_preferred_height (ClutterActor *self,
+nutter_grid_get_preferred_height (ClutterActor *self,
                                            ClutterUnit for_width,
                                            ClutterUnit *min_height_p,
                                            ClutterUnit *natural_height_p);
 
-static void mutter_grid_allocate (ClutterActor *self,
+static void nutter_grid_allocate (ClutterActor *self,
                                            const ClutterActorBox *box,
                                            gboolean absolute_origin_changed);
 
-G_DEFINE_TYPE_WITH_CODE (MutterGrid, mutter_grid,
+G_DEFINE_TYPE_WITH_CODE (NutterGrid, nutter_grid,
                          CLUTTER_TYPE_ACTOR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 clutter_container_iface_init));
 
-#define MUTTER_GRID_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MUTTER_TYPE_GRID, \
-                                MutterGridPrivate))
+#define NUTTER_GRID_GET_PRIVATE(obj) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), NUTTER_TYPE_GRID, \
+                                NutterGridPrivate))
 
-struct _MutterGridPrivate
+struct _NutterGridPrivate
 {
   ClutterUnit for_height,  for_width;
   ClutterUnit pref_width,  pref_height;
@@ -138,7 +138,7 @@ enum
   PROP_COLUMN_MAJOR,
 };
 
-struct _MutterGridActorData
+struct _NutterGridActorData
 {
   gboolean    xpos_set,   ypos_set;
   ClutterUnit xpos,       ypos;
@@ -146,24 +146,24 @@ struct _MutterGridActorData
 };
 
 static void
-mutter_grid_class_init (MutterGridClass *klass)
+nutter_grid_class_init (NutterGridClass *klass)
 {
   GObjectClass *gobject_class = (GObjectClass *) klass;
   ClutterActorClass *actor_class = (ClutterActorClass *) klass;
 
-  gobject_class->dispose = mutter_grid_dispose;
-  gobject_class->finalize = mutter_grid_finalize;
+  gobject_class->dispose = nutter_grid_dispose;
+  gobject_class->finalize = nutter_grid_finalize;
 
-  gobject_class->set_property = mutter_grid_set_property;
-  gobject_class->get_property = mutter_grid_get_property;
+  gobject_class->set_property = nutter_grid_set_property;
+  gobject_class->get_property = nutter_grid_get_property;
 
-  actor_class->paint                = mutter_grid_paint;
-  actor_class->pick                 = mutter_grid_pick;
-  actor_class->get_preferred_width  = mutter_grid_get_preferred_width;
-  actor_class->get_preferred_height = mutter_grid_get_preferred_height;
-  actor_class->allocate             = mutter_grid_allocate;
+  actor_class->paint                = nutter_grid_paint;
+  actor_class->pick                 = nutter_grid_pick;
+  actor_class->get_preferred_width  = nutter_grid_get_preferred_width;
+  actor_class->get_preferred_height = nutter_grid_get_preferred_height;
+  actor_class->allocate             = nutter_grid_allocate;
 
-  g_type_class_add_private (klass, sizeof (MutterGridPrivate));
+  g_type_class_add_private (klass, sizeof (NutterGridPrivate));
 
 
   g_object_class_install_property
@@ -246,33 +246,33 @@ mutter_grid_class_init (MutterGridClass *klass)
 static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->add              = mutter_grid_real_add;
-  iface->remove           = mutter_grid_real_remove;
-  iface->foreach          = mutter_grid_real_foreach;
-  iface->raise            = mutter_grid_real_raise;
-  iface->lower            = mutter_grid_real_lower;
-  iface->sort_depth_order = mutter_grid_real_sort_depth_order;
+  iface->add              = nutter_grid_real_add;
+  iface->remove           = nutter_grid_real_remove;
+  iface->foreach          = nutter_grid_real_foreach;
+  iface->raise            = nutter_grid_real_raise;
+  iface->lower            = nutter_grid_real_lower;
+  iface->sort_depth_order = nutter_grid_real_sort_depth_order;
 }
 
 static void
-mutter_grid_init (MutterGrid *self)
+nutter_grid_init (NutterGrid *self)
 {
-  MutterGridPrivate *priv;
+  NutterGridPrivate *priv;
 
-  self->priv = priv = MUTTER_GRID_GET_PRIVATE (self);
+  self->priv = priv = NUTTER_GRID_GET_PRIVATE (self);
 
   priv->hash_table
     = g_hash_table_new_full (g_direct_hash,
                              g_direct_equal,
                              /*g_object_unref*/NULL,
-                             mutter_grid_free_actor_data);
+                             nutter_grid_free_actor_data);
 }
 
 static void
-mutter_grid_dispose (GObject *object)
+nutter_grid_dispose (GObject *object)
 {
-  MutterGrid *self = (MutterGrid *) object;
-  MutterGridPrivate *priv;
+  NutterGrid *self = (NutterGrid *) object;
+  NutterGridPrivate *priv;
 
   priv = self->priv;
 
@@ -282,196 +282,196 @@ mutter_grid_dispose (GObject *object)
                              (ClutterCallback) clutter_actor_destroy,
                              NULL);
 
-  G_OBJECT_CLASS (mutter_grid_parent_class)->dispose (object);
+  G_OBJECT_CLASS (nutter_grid_parent_class)->dispose (object);
 }
 
 static void
-mutter_grid_finalize (GObject *object)
+nutter_grid_finalize (GObject *object)
 {
-  MutterGrid *self = (MutterGrid *) object;
-  MutterGridPrivate *priv = self->priv;
+  NutterGrid *self = (NutterGrid *) object;
+  NutterGridPrivate *priv = self->priv;
 
   g_hash_table_destroy (priv->hash_table);
 
-  G_OBJECT_CLASS (mutter_grid_parent_class)->finalize (object);
+  G_OBJECT_CLASS (nutter_grid_parent_class)->finalize (object);
 }
 
 
 void
-mutter_grid_set_end_align (MutterGrid *self,
+nutter_grid_set_end_align (NutterGrid *self,
                          gboolean  value)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->end_align = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gboolean
-mutter_grid_get_end_align (MutterGrid *self)
+nutter_grid_get_end_align (NutterGrid *self)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   return priv->end_align;
 }
 
 void
-mutter_grid_set_homogenous_rows (MutterGrid *self,
+nutter_grid_set_homogenous_rows (NutterGrid *self,
                                gboolean  value)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->homogenous_rows = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gboolean
-mutter_grid_get_homogenous_rows (MutterGrid *self)
+nutter_grid_get_homogenous_rows (NutterGrid *self)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   return priv->homogenous_rows;
 }
 
 
 void
-mutter_grid_set_homogenous_columns (MutterGrid *self,
+nutter_grid_set_homogenous_columns (NutterGrid *self,
                                   gboolean  value)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->homogenous_columns = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 
 gboolean
-mutter_grid_get_homogenous_columns (MutterGrid *self)
+nutter_grid_get_homogenous_columns (NutterGrid *self)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   return priv->homogenous_columns;
 }
 
 
 void
-mutter_grid_set_column_major (MutterGrid *self,
+nutter_grid_set_column_major (NutterGrid *self,
                             gboolean  value)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->column_major = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gboolean
-mutter_grid_get_column_major (MutterGrid *self)
+nutter_grid_get_column_major (NutterGrid *self)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   return priv->column_major;
 }
 
 void
-mutter_grid_set_column_gap (MutterGrid    *self,
+nutter_grid_set_column_gap (NutterGrid    *self,
                           ClutterUnit  value)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->column_gap = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 ClutterUnit
-mutter_grid_get_column_gap (MutterGrid *self)
+nutter_grid_get_column_gap (NutterGrid *self)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   return priv->column_gap;
 }
 
 
 
 void
-mutter_grid_set_row_gap (MutterGrid    *self,
+nutter_grid_set_row_gap (NutterGrid    *self,
                        ClutterUnit  value)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->row_gap = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 ClutterUnit
-mutter_grid_get_row_gap (MutterGrid *self)
+nutter_grid_get_row_gap (NutterGrid *self)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   return priv->row_gap;
 }
 
 
 void
-mutter_grid_set_valign (MutterGrid *self,
+nutter_grid_set_valign (NutterGrid *self,
                       gdouble   value)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->valign = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gdouble
-mutter_grid_get_valign (MutterGrid *self)
+nutter_grid_get_valign (NutterGrid *self)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   return priv->valign;
 }
 
 
 
 void
-mutter_grid_set_halign (MutterGrid *self,
+nutter_grid_set_halign (NutterGrid *self,
                       gdouble   value)
 
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->halign = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gdouble
-mutter_grid_get_halign (MutterGrid *self)
+nutter_grid_get_halign (NutterGrid *self)
 {
-  MutterGridPrivate *priv = MUTTER_GRID_GET_PRIVATE (self);
+  NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   return priv->halign;
 }
 
 
 static void
-mutter_grid_set_property (GObject      *object,
+nutter_grid_set_property (GObject      *object,
                         guint         prop_id,
                         const GValue *value,
                         GParamSpec   *pspec)
 {
-  MutterGrid *grid = MUTTER_GRID (object);
+  NutterGrid *grid = NUTTER_GRID (object);
 
-  MutterGridPrivate *priv;
+  NutterGridPrivate *priv;
 
-  priv = MUTTER_GRID_GET_PRIVATE (object);
+  priv = NUTTER_GRID_GET_PRIVATE (object);
 
   switch (prop_id)
     {
     case PROP_END_ALIGN:
-      mutter_grid_set_end_align (grid, g_value_get_boolean (value));
+      nutter_grid_set_end_align (grid, g_value_get_boolean (value));
       break;
     case PROP_HOMOGENOUS_ROWS:
-      mutter_grid_set_homogenous_rows (grid, g_value_get_boolean (value));
+      nutter_grid_set_homogenous_rows (grid, g_value_get_boolean (value));
       break;
     case PROP_HOMOGENOUS_COLUMNS:
-      mutter_grid_set_homogenous_columns (grid, g_value_get_boolean (value));
+      nutter_grid_set_homogenous_columns (grid, g_value_get_boolean (value));
       break;
     case PROP_COLUMN_MAJOR:
-      mutter_grid_set_column_major (grid, g_value_get_boolean (value));
+      nutter_grid_set_column_major (grid, g_value_get_boolean (value));
       break;
     case PROP_COLUMN_GAP:
-      mutter_grid_set_column_gap (grid, clutter_value_get_unit (value));
+      nutter_grid_set_column_gap (grid, clutter_value_get_unit (value));
       break;
     case PROP_ROW_GAP:
-      mutter_grid_set_row_gap (grid, clutter_value_get_unit (value));
+      nutter_grid_set_row_gap (grid, clutter_value_get_unit (value));
       break;
     case PROP_VALIGN:
-      mutter_grid_set_valign (grid, g_value_get_double (value));
+      nutter_grid_set_valign (grid, g_value_get_double (value));
       break;
     case PROP_HALIGN:
-      mutter_grid_set_halign (grid, g_value_get_double (value));
+      nutter_grid_set_halign (grid, g_value_get_double (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -480,42 +480,42 @@ mutter_grid_set_property (GObject      *object,
 }
 
 static void
-mutter_grid_get_property (GObject    *object,
+nutter_grid_get_property (GObject    *object,
                         guint       prop_id,
                         GValue     *value,
                         GParamSpec *pspec)
 {
-  MutterGrid *grid = MUTTER_GRID (object);
+  NutterGrid *grid = NUTTER_GRID (object);
 
-  MutterGridPrivate *priv;
+  NutterGridPrivate *priv;
 
-  priv = MUTTER_GRID_GET_PRIVATE (object);
+  priv = NUTTER_GRID_GET_PRIVATE (object);
 
   switch (prop_id)
     {
     case PROP_HOMOGENOUS_ROWS:
-      g_value_set_boolean (value, mutter_grid_get_homogenous_rows (grid));
+      g_value_set_boolean (value, nutter_grid_get_homogenous_rows (grid));
       break;
     case PROP_HOMOGENOUS_COLUMNS:
-      g_value_set_boolean (value, mutter_grid_get_homogenous_columns (grid));
+      g_value_set_boolean (value, nutter_grid_get_homogenous_columns (grid));
       break;
     case PROP_END_ALIGN:
-      g_value_set_boolean (value, mutter_grid_get_end_align (grid));
+      g_value_set_boolean (value, nutter_grid_get_end_align (grid));
       break;
     case PROP_COLUMN_MAJOR:
-      g_value_set_boolean (value, mutter_grid_get_column_major (grid));
+      g_value_set_boolean (value, nutter_grid_get_column_major (grid));
       break;
     case PROP_COLUMN_GAP:
-      clutter_value_set_unit (value, mutter_grid_get_column_gap (grid));
+      clutter_value_set_unit (value, nutter_grid_get_column_gap (grid));
       break;
     case PROP_ROW_GAP:
-      clutter_value_set_unit (value, mutter_grid_get_row_gap (grid));
+      clutter_value_set_unit (value, nutter_grid_get_row_gap (grid));
       break;
     case PROP_VALIGN:
-      g_value_set_double (value, mutter_grid_get_valign (grid));
+      g_value_set_double (value, nutter_grid_get_valign (grid));
       break;
     case PROP_HALIGN:
-      g_value_set_double (value, mutter_grid_get_halign (grid));
+      g_value_set_double (value, nutter_grid_get_halign (grid));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -525,35 +525,35 @@ mutter_grid_get_property (GObject    *object,
 
 
 static void
-mutter_grid_free_actor_data (gpointer data)
+nutter_grid_free_actor_data (gpointer data)
 {
-  g_slice_free (MutterGridActorData, data);
+  g_slice_free (NutterGridActorData, data);
 }
 
 ClutterActor *
-mutter_grid_new (void)
+nutter_grid_new (void)
 {
-  ClutterActor *self = g_object_new (MUTTER_TYPE_GRID, NULL);
+  ClutterActor *self = g_object_new (NUTTER_TYPE_GRID, NULL);
 
   return self;
 }
 
 static void
-mutter_grid_real_add (ClutterContainer *container,
+nutter_grid_real_add (ClutterContainer *container,
                     ClutterActor     *actor)
 {
-  MutterGridPrivate *priv;
-  MutterGridActorData *data;
+  NutterGridPrivate *priv;
+  NutterGridActorData *data;
 
-  g_return_if_fail (MUTTER_IS_GRID (container));
+  g_return_if_fail (NUTTER_IS_GRID (container));
 
   g_object_ref (actor);
 
-  priv = MUTTER_GRID (container)->priv;
+  priv = NUTTER_GRID (container)->priv;
 
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
 
-  data = g_slice_alloc0 (sizeof (MutterGridActorData));
+  data = g_slice_alloc0 (sizeof (NutterGridActorData));
 
   priv->list = g_list_append (priv->list, actor);
   g_hash_table_insert (priv->hash_table, actor, data);
@@ -564,11 +564,11 @@ mutter_grid_real_add (ClutterContainer *container,
 }
 
 static void
-mutter_grid_real_remove (ClutterContainer *container,
+nutter_grid_real_remove (ClutterContainer *container,
                        ClutterActor     *actor)
 {
-  MutterGrid *layout = MUTTER_GRID (container);
-  MutterGridPrivate *priv = layout->priv;
+  NutterGrid *layout = NUTTER_GRID (container);
+  NutterGridPrivate *priv = layout->priv;
 
   g_object_ref (actor);
 
@@ -589,18 +589,18 @@ mutter_grid_real_remove (ClutterContainer *container,
 }
 
 static void
-mutter_grid_real_foreach (ClutterContainer *container,
+nutter_grid_real_foreach (ClutterContainer *container,
                                    ClutterCallback callback,
                                    gpointer user_data)
 {
-  MutterGrid *layout = MUTTER_GRID (container);
-  MutterGridPrivate *priv = layout->priv;
+  NutterGrid *layout = NUTTER_GRID (container);
+  NutterGridPrivate *priv = layout->priv;
 
   g_list_foreach (priv->list, (GFunc) callback, user_data);
 }
 
 static void
-mutter_grid_real_raise (ClutterContainer *container,
+nutter_grid_real_raise (ClutterContainer *container,
                                  ClutterActor *actor,
                                  ClutterActor *sibling)
 {
@@ -608,7 +608,7 @@ mutter_grid_real_raise (ClutterContainer *container,
 }
 
 static void
-mutter_grid_real_lower (ClutterContainer *container,
+nutter_grid_real_lower (ClutterContainer *container,
                                  ClutterActor *actor,
                                  ClutterActor *sibling)
 {
@@ -616,16 +616,16 @@ mutter_grid_real_lower (ClutterContainer *container,
 }
 
 static void
-mutter_grid_real_sort_depth_order (ClutterContainer *container)
+nutter_grid_real_sort_depth_order (ClutterContainer *container)
 {
   /* STUB */
 }
 
 static void
-mutter_grid_paint (ClutterActor *actor)
+nutter_grid_paint (ClutterActor *actor)
 {
-  MutterGrid *layout = (MutterGrid *) actor;
-  MutterGridPrivate *priv = layout->priv;
+  NutterGrid *layout = (NutterGrid *) actor;
+  NutterGridPrivate *priv = layout->priv;
   GList *child_item;
 
   for (child_item = priv->list;
@@ -643,27 +643,27 @@ mutter_grid_paint (ClutterActor *actor)
 }
 
 static void
-mutter_grid_pick (ClutterActor *actor,
+nutter_grid_pick (ClutterActor *actor,
                            const ClutterColor *color)
 {
   /* Chain up so we get a bounding box pained (if we are reactive) */
-  CLUTTER_ACTOR_CLASS (mutter_grid_parent_class)->pick (actor, color);
+  CLUTTER_ACTOR_CLASS (nutter_grid_parent_class)->pick (actor, color);
 
   /* Just forward to the paint call which in turn will trigger
    * the child actors also getting 'picked'.
    */
   if (CLUTTER_ACTOR_IS_VISIBLE (actor))
-   mutter_grid_paint (actor);
+   nutter_grid_paint (actor);
 }
 
 static void
-mutter_grid_get_preferred_width (ClutterActor *self,
+nutter_grid_get_preferred_width (ClutterActor *self,
                                           ClutterUnit for_height,
                                           ClutterUnit *min_width_p,
                                           ClutterUnit *natural_width_p)
 {
-  MutterGrid *layout = (MutterGrid *) self;
-  MutterGridPrivate *priv = layout->priv;
+  NutterGrid *layout = (NutterGrid *) self;
+  NutterGridPrivate *priv = layout->priv;
   ClutterUnit natural_width;
 
   natural_width = CLUTTER_UNITS_FROM_INT (200);
@@ -676,13 +676,13 @@ mutter_grid_get_preferred_width (ClutterActor *self,
 }
 
 static void
-mutter_grid_get_preferred_height (ClutterActor *self,
+nutter_grid_get_preferred_height (ClutterActor *self,
                                 ClutterUnit for_width,
                                 ClutterUnit *min_height_p,
                                 ClutterUnit *natural_height_p)
 {
-  MutterGrid *layout = (MutterGrid *) self;
-  MutterGridPrivate *priv = layout->priv;
+  NutterGrid *layout = (NutterGrid *) self;
+  NutterGridPrivate *priv = layout->priv;
   ClutterUnit natural_height;
 
   natural_height = CLUTTER_UNITS_FROM_INT (200);
@@ -700,7 +700,7 @@ static ClutterUnit
 compute_row_height (GList                    *siblings,
                     ClutterUnit               best_yet,
                     ClutterUnit               current_a,
-                    MutterGridPrivate *priv)
+                    NutterGridPrivate *priv)
 {
   GList *l;
 
@@ -768,7 +768,7 @@ compute_row_height (GList                    *siblings,
 static ClutterUnit
 compute_row_start (GList           *siblings,
                    ClutterUnit      start_x,
-                   MutterGridPrivate *priv)
+                   NutterGridPrivate *priv)
 {
   ClutterUnit current_a = start_x;
   GList *l;
@@ -827,12 +827,12 @@ compute_row_start (GList           *siblings,
 }
 
 static void
-mutter_grid_allocate (ClutterActor          *self,
+nutter_grid_allocate (ClutterActor          *self,
                               const ClutterActorBox *box,
                               gboolean               absolute_origin_changed)
 {
-  MutterGrid *layout = (MutterGrid *) self;
-  MutterGridPrivate *priv = layout->priv;
+  NutterGrid *layout = (NutterGrid *) self;
+  NutterGridPrivate *priv = layout->priv;
 
   ClutterUnit current_a;
   ClutterUnit current_b;
@@ -850,7 +850,7 @@ mutter_grid_allocate (ClutterActor          *self,
   GList *iter;
 
   /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (mutter_grid_parent_class)
+  CLUTTER_ACTOR_CLASS (nutter_grid_parent_class)
     ->allocate (self, box, absolute_origin_changed);
 
   priv->alloc_width = box->x2 - box->x1;
@@ -903,7 +903,7 @@ mutter_grid_allocate (ClutterActor          *self,
                                             NULL, NULL,
                                             &natural_width, &natural_height);
 
-	  /* We want scale taken into account for mutter use */
+	  /* We want scale taken into account for nutter use */
 	  clutter_actor_get_scale (child, &scale_x, &scale_y);
 
 	  natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
