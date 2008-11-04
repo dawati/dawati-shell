@@ -133,6 +133,8 @@ struct _NutterGridPrivate
   ClutterUnit max_height;
   ClutterUnit natural_width;
   ClutterUnit natural_height;
+
+  gint        max_dimension;
 };
 
 enum
@@ -274,6 +276,7 @@ nutter_grid_init (NutterGrid *self)
 
   priv->max_width  = 200;
   priv->max_height = 200;
+  priv->max_dimension = -1;
 
   priv->hash_table
     = g_hash_table_new_full (g_direct_hash,
@@ -878,6 +881,7 @@ nutter_grid_allocate (ClutterActor          *self,
   current_a = current_b = next_b = 0;
 
   GList *iter;
+  gint   dimension = 0;
 
   /* chain up to set actor->allocation */
   CLUTTER_ACTOR_CLASS (nutter_grid_parent_class)
@@ -987,14 +991,20 @@ nutter_grid_allocate (ClutterActor          *self,
         }
 
       /* if the child is overflowing, we wrap to next line */
-      if (current_a + natural_a > priv->a_wrap ||
+      if ((priv->max_dimension > 0 && dimension >= priv->max_dimension) ||
+	  current_a + natural_a > priv->a_wrap ||
           (homogenous_a && current_a + priv->max_extent_a > priv->a_wrap))
         {
           current_b = next_b + bgap;
           current_a = 0;
           next_b = current_b + bgap;
           priv->first_of_batch = TRUE;
+	  dimension = 0;
         }
+      else
+	{
+	  dimension++;
+	}
 
       if (priv->end_align &&
           priv->first_of_batch)
@@ -1099,6 +1109,7 @@ nutter_grid_natural_size (ClutterActor *self)
   current_a = current_b = next_b = 0;
 
   GList *iter;
+  gint   dimension = 0;
 
   if (priv->column_major)
     {
@@ -1195,7 +1206,8 @@ nutter_grid_natural_size (ClutterActor *self)
         }
 
       /* if the child is overflowing, we wrap to next line */
-      if (current_a + natural_a > priv->a_wrap ||
+      if ((priv->max_dimension > 0 && dimension >= priv->max_dimension) ||
+	  current_a + natural_a > priv->a_wrap ||
           (homogenous_a && current_a + priv->max_extent_a > priv->a_wrap))
         {
           current_b = next_b + bgap;
@@ -1203,7 +1215,12 @@ nutter_grid_natural_size (ClutterActor *self)
           current_a = 0;
           next_b = current_b + bgap;
           priv->first_of_batch = TRUE;
+	  dimension = 0;
         }
+      else
+	{
+	  dimension++;
+	}
 
       if (current_a + natural_a > my_max_a)
 	my_max_a = current_a + natural_a;
@@ -1247,6 +1264,10 @@ nutter_grid_natural_size (ClutterActor *self)
       priv->natural_width  = my_max_a + CFX_HALF;
       priv->natural_height = my_max_b + CFX_HALF;
     }
+
+  printf ("Calculated natural size %f x %f\n",
+	  CLUTTER_UNITS_TO_FLOAT (priv->natural_width),
+	  CLUTTER_UNITS_TO_FLOAT (priv->natural_height));
 }
 
 void
@@ -1285,3 +1306,21 @@ nutter_grid_on_child_change (GObject          *object,
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (layout));
 }
+
+void
+nutter_grid_set_max_dimension (NutterGrid *self, gint dim)
+{
+  NutterGrid *layout = (NutterGrid *) self;
+  NutterGridPrivate *priv = layout->priv;
+
+  if (dim == priv->max_dimension)
+    return;
+
+  priv->max_dimension = dim;
+
+  priv->natural_width  = 0;
+  priv->natural_height = 0;
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (layout));
+}
+

@@ -98,6 +98,9 @@ void          nutter_grid_set_max_size           (NutterGrid    *self,
 						  guint          width,
 						  guint          height);
 
+void          nutter_grid_set_max_dimension      (NutterGrid    *self,
+						  gint           dim);
+
 G_END_DECLS
 
 #endif /* __NUTTER_GRID_H__ */
