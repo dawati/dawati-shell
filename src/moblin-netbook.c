@@ -127,6 +127,8 @@ struct PluginPrivate
   gboolean               panel_out  : 1;
   gboolean               panel_out_in_progress : 1;
   gboolean               panel_back_in_progress : 1;
+
+  guint                  workspace_chooser_timeout;
 };
 
 /*
@@ -645,8 +647,9 @@ map (MutterWindow *mcw)
                   GList * l;
                   MetaWorkspace * workspace;
 
-                  l = meta_screen_get_workspaces (screen);
-                  workspace = g_list_nth_data (l, priv->next_app_workspace);
+                  workspace =
+                    meta_screen_get_workspace_by_index (screen,
+                                                    priv->next_app_workspace);
 
                   if (workspace)
                     meta_workspace_activate_with_focus (workspace, mw,
@@ -1092,7 +1095,13 @@ workspace_input_cb (ClutterActor *clone,
                     ClutterEvent *event,
                     gpointer      data)
 {
-  MetaWorkspace *workspace = data;
+  gint           indx   = GPOINTER_TO_INT (data);
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  MetaWorkspace *workspace;
+
+  workspace = meta_screen_get_workspace_by_index (screen, indx);
+
 
   if (!workspace)
     {
@@ -1184,6 +1193,11 @@ make_workspace_grid (GCallback  ws_callback,
 
       ws_label = make_workspace_label (s);
 
+      g_signal_connect (ws_label, "button-press-event",
+                        ws_callback, GINT_TO_POINTER (i));
+
+      clutter_actor_set_reactive (ws_label, TRUE);
+
       clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws_label);
 
       g_free (s);
@@ -1192,6 +1206,13 @@ make_workspace_grid (GCallback  ws_callback,
   if (new_ws_callback)
     {
       ws_label = make_workspace_label ("+");
+
+      g_signal_connect (ws_label, "button-press-event",
+                        G_CALLBACK (new_ws_callback),
+                        GINT_TO_POINTER (i));
+
+      clutter_actor_set_reactive (ws_label, TRUE);
+
       clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws_label);
     }
 
@@ -1254,16 +1275,14 @@ make_workspace_grid (GCallback  ws_callback,
   while (l)
     {
       ClutterActor  *ws = l->data;
-      MetaWorkspace *meta_ws;
-
-      meta_ws = meta_screen_get_workspace_by_index (screen, ws_count);
 
       /*
        * Scale workspace to fit the predefined size of the grid cell
        */
       clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
-      g_signal_connect (ws, "button-press-event", ws_callback, meta_ws);
+      g_signal_connect (ws, "button-press-event",
+                        ws_callback, GINT_TO_POINTER (ws_count));
 
       clutter_actor_set_reactive (ws, TRUE);
 
@@ -1414,6 +1433,12 @@ hide_workspace_chooser (void)
   if (!priv->workspace_chooser)
     return;
 
+  if (priv->workspace_chooser_timeout)
+    {
+      g_source_remove (priv->workspace_chooser_timeout);
+      priv->workspace_chooser_timeout = 0;
+    }
+
   clutter_actor_destroy (priv->workspace_chooser);
 
   disable_stage (plugin);
@@ -1426,9 +1451,13 @@ workspace_chooser_input_cb (ClutterActor *clone,
                             ClutterEvent *event,
                             gpointer      data)
 {
-  MetaWorkspace *workspace = data;
-  MutterPlugin  *plugin    = mutter_get_plugin ();
-  PluginPrivate *priv      = plugin->plugin_private;
+  gint           indx   = GPOINTER_TO_INT (data);
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  MetaWorkspace *workspace;
+
+  workspace = meta_screen_get_workspace_by_index (screen, indx);
 
   if (!workspace)
     {
@@ -1436,7 +1465,7 @@ workspace_chooser_input_cb (ClutterActor *clone,
       return FALSE;
     }
 
-  priv->next_app_workspace = meta_workspace_index (workspace);
+  priv->next_app_workspace = indx;
 
   hide_workspace_chooser ();
 
@@ -1546,8 +1575,9 @@ show_workspace_chooser (const gchar *app_path)
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
 
-  g_timeout_add (WORKSPACE_CHOOSER_TIMEOUT, workspace_chooser_timeout_cb,
-                 GINT_TO_POINTER (ws_count));
+  priv->workspace_chooser_timeout =
+    g_timeout_add (WORKSPACE_CHOOSER_TIMEOUT, workspace_chooser_timeout_cb,
+                   GINT_TO_POINTER (ws_count));
 }
 
 static gboolean
