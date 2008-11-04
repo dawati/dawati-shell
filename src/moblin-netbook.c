@@ -1218,7 +1218,6 @@ make_workspace_grid (GCallback  ws_callback,
     }
 
   l = mutter_plugin_get_windows (plugin);
-  l = g_list_last (l);
 
   while (l)
     {
@@ -1246,7 +1245,7 @@ make_workspace_grid (GCallback  ws_callback,
           mutter_window_is_override_redirect (mw) ||
           type != META_COMP_WINDOW_NORMAL)
         {
-          l = l->prev;
+          l = l->next;
           continue;
         }
 
@@ -1269,7 +1268,7 @@ make_workspace_grid (GCallback  ws_callback,
 
       clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
 
-      l = l->prev;
+      l = l->next;
     }
 
   l = workspaces;
