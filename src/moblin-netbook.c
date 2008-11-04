@@ -926,7 +926,6 @@ show_switcher (void)
 
   grid = NUTTER_GRID (switcher);
 
-  nutter_grid_set_homogenous_rows (grid, TRUE);
   nutter_grid_set_homogenous_columns (grid, TRUE);
   nutter_grid_set_column_major (grid, FALSE);
   nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
@@ -1108,7 +1107,46 @@ workspace_input_cb (ClutterActor *clone,
 }
 
 static ClutterActor *
-make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
+make_workspace_label (const gchar *text)
+{
+  ClutterActor *group;
+  ClutterActor *background;
+  ClutterActor *border;
+  ClutterActor *label;
+  ClutterColor  b_clr = { 0x44, 0x44, 0x44, 0xff };
+  ClutterColor  f_clr = { 0xff, 0xff, 0xff, 0xff };
+  guint         l_w, l_h;
+
+  group = clutter_group_new ();
+
+  border = clutter_rectangle_new_with_color (&f_clr);
+  clutter_actor_set_size (border,
+                          WORKSPACE_CELL_WIDTH + 6,
+                          WORKSPACE_CELL_HEIGHT + 6);
+
+  background = clutter_rectangle_new_with_color (&b_clr);
+  clutter_actor_set_size (background,
+                          WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
+  clutter_actor_set_position (background, 3, 3);
+
+  label = clutter_label_new_full ("Sans 16", text, &f_clr);
+  clutter_actor_realize (label);
+  clutter_actor_get_size (label, &l_w, &l_h);
+
+  clutter_actor_set_position (label,
+                              (WORKSPACE_CELL_WIDTH - l_w)/2,
+                              (WORKSPACE_CELL_HEIGHT - l_h)/2);
+
+  clutter_container_add (CLUTTER_CONTAINER (group), border, background, label,
+                         NULL);
+
+  return group;
+}
+
+static ClutterActor *
+make_workspace_grid (GCallback  ws_callback,
+                     GCallback  new_ws_callback,
+                     gint      *n_workspaces)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -1121,6 +1159,8 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   gint           ws_count = 0;
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   gint           active_ws;
+  gint           i;
+  ClutterActor  *ws_label;
 
   active_ws = meta_screen_get_n_workspaces (screen);
 
@@ -1136,6 +1176,24 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
   nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
   nutter_grid_set_max_size (grid, screen_width, screen_height);
+  nutter_grid_set_max_dimension (grid, active_ws + 1);
+
+  for (i = 0; i < active_ws; ++i)
+    {
+      gchar *s = g_strdup_printf ("%d", i + 1);
+
+      ws_label = make_workspace_label (s);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws_label);
+
+      g_free (s);
+    }
+
+  if (new_ws_callback)
+    {
+      ws_label = make_workspace_label ("+");
+      clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws_label);
+    }
 
   l = mutter_plugin_get_windows (plugin);
   l = g_list_last (l);
@@ -1215,9 +1273,48 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
       l = l->next;
     }
 
-  /*
-   * TODO -- fix NutterGrid, so we do not have to set the width explicitely.
-   */
+  if (new_ws_callback)
+    {
+      ClutterActor  *new_ws;
+      ClutterActor  *new_ws_background;
+      ClutterActor  *new_ws_label;
+      ClutterColor   new_ws_clr = { 0xfd, 0xd9, 0x09, 0x7f};
+      ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
+
+      new_ws = clutter_group_new ();
+      new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
+
+      clutter_actor_set_size (new_ws_background,
+                              WORKSPACE_CELL_WIDTH + WORKSPACE_BORDER,
+                              WORKSPACE_CELL_HEIGHT + WORKSPACE_BORDER);
+
+      new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
+                                             &new_ws_text_clr);
+      clutter_actor_realize (new_ws_label);
+
+      /*
+       * Tried to use anchor point in the middle of the label here, but it would
+       * appear that the group does not take anchor point into account when
+       * caluculating it's size, so it ends up wider than it should by the
+       * offset.
+       */
+      clutter_actor_set_position (new_ws_label,
+                                  WORKSPACE_BORDER / 2 + 2,
+                                  (WORKSPACE_CELL_HEIGHT + WORKSPACE_BORDER -
+                                   clutter_actor_get_height (new_ws_label))/2);
+
+      clutter_container_add (CLUTTER_CONTAINER (new_ws),
+                             new_ws_background, new_ws_label, NULL);
+
+      g_signal_connect (new_ws, "button-press-event",
+                        G_CALLBACK (new_ws_callback),
+                        GINT_TO_POINTER (ws_count));
+
+      clutter_actor_set_reactive (new_ws, TRUE);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (grid), new_ws);
+
+    }
 
   if (n_workspaces)
     *n_workspaces = ws_count;
@@ -1248,7 +1345,7 @@ show_workspace_switcher (void)
   label = clutter_label_new_full ("Sans 12", "You can select a workspace:", &label_clr);
   clutter_actor_realize (label);
 
-  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL);
+  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL, NULL);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0,
                               clutter_actor_get_height (label) + 3);
 
@@ -1404,14 +1501,9 @@ show_workspace_chooser (const gchar *app_path)
   ClutterActor  *background;
   ClutterActor  *grid;
   ClutterActor  *label;
-  ClutterActor  *new_ws;
-  ClutterActor  *new_ws_background;
-  ClutterActor  *new_ws_label;
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
-  ClutterColor   new_ws_clr = { 0xfd, 0xd9, 0x09, 0x7f};
-  ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
 
@@ -1427,46 +1519,10 @@ show_workspace_chooser (const gchar *app_path)
   clutter_actor_realize (label);
 
   grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
+                              G_CALLBACK (new_workspace_input_cb),
                               &ws_count);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0,
                               clutter_actor_get_height (label) + 3);
-
-
-  new_ws = clutter_group_new ();
-  new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
-
-  clutter_actor_set_size (new_ws_background,
-                          WORKSPACE_CELL_WIDTH + WORKSPACE_BORDER,
-                          WORKSPACE_CELL_HEIGHT + WORKSPACE_BORDER);
-
-  new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
-                                         &new_ws_text_clr);
-  clutter_actor_realize (new_ws_label);
-
-  /*
-   * Tried to use anchor point in the middle of the label here, but it would
-   * appear that the group does not take anchor point into account when
-   * caluculating it's size, so it ends up wider than it should by the offset.
-   */
-  clutter_actor_set_position (new_ws_label,
-                              WORKSPACE_BORDER / 2 + 2,
-                              (WORKSPACE_CELL_HEIGHT + WORKSPACE_BORDER -
-                               clutter_actor_get_height (new_ws_label))/2);
-
-  clutter_container_add (CLUTTER_CONTAINER (new_ws),
-                         new_ws_background, new_ws_label, NULL);
-
-  g_signal_connect (new_ws, "button-press-event",
-                    G_CALLBACK (new_workspace_input_cb),
-                    GINT_TO_POINTER (ws_count));
-
-  clutter_actor_set_reactive (new_ws, TRUE);
-
-  clutter_actor_set_width (grid,
-                           clutter_actor_get_width (grid) + 5 +
-                           clutter_actor_get_width (new_ws));
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (grid), new_ws);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          background, label, CLUTTER_ACTOR (grid), NULL);
