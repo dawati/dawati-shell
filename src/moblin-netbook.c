@@ -55,7 +55,7 @@
 #define WORKSPACE_CELL_WIDTH  100
 #define WORKSPACE_CELL_HEIGHT 80
 
-#define WORKSPACE_CHOOSER_TIMEOUT 1000
+#define WORKSPACE_CHOOSER_TIMEOUT 3000
 
 static GQuark actor_data_quark = 0;
 
@@ -929,6 +929,7 @@ show_switcher (void)
   nutter_grid_set_column_major (grid, FALSE);
   nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
   nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+  nutter_grid_set_max_size (grid, screen_width, screen_height);
 
   l = mutter_plugin_get_windows (plugin);
   while (l)
@@ -997,8 +998,6 @@ show_switcher (void)
 
   overlay = mutter_plugin_get_overlay_group (plugin);
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
-
-  clutter_actor_set_width (switcher, screen_width);
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
 }
@@ -1130,6 +1129,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   nutter_grid_set_column_major (grid, FALSE);
   nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
   nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
+  nutter_grid_set_max_size (grid, screen_width, screen_height);
 
   l = mutter_plugin_get_windows (plugin);
   l = g_list_last (l);
@@ -1209,9 +1209,6 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   /*
    * TODO -- fix NutterGrid, so we do not have to set the width explicitely.
    */
-  clutter_actor_set_size (grid_actor,
-                          ws_count * WORKSPACE_CELL_WIDTH + (ws_count - 1) * 5,
-                          WORKSPACE_CELL_HEIGHT);
 
   if (n_workspaces)
     *n_workspaces = ws_count;

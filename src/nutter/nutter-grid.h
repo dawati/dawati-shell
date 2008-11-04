@@ -70,29 +70,33 @@ GType nutter_grid_get_type (void) G_GNUC_CONST;
 
 ClutterActor *nutter_grid_new                    (void);
 void          nutter_grid_set_end_align          (NutterGrid    *self,
-                                                gboolean     value);
+						  gboolean     value);
 gboolean      nutter_grid_get_end_align          (NutterGrid    *self);
 void          nutter_grid_set_homogenous_rows    (NutterGrid    *self,
-                                                gboolean     value);
+						  gboolean     value);
 gboolean      nutter_grid_get_homogenous_rows    (NutterGrid    *self);
 void          nutter_grid_set_homogenous_columns (NutterGrid    *self,
-                                                gboolean     value);
+						  gboolean     value);
 gboolean      nutter_grid_get_homogenous_columns (NutterGrid    *self);
 void          nutter_grid_set_column_major       (NutterGrid    *self,
-                                                gboolean     value);
+						  gboolean     value);
 gboolean      nutter_grid_get_column_major       (NutterGrid    *self);
 void          nutter_grid_set_row_gap            (NutterGrid    *self,
-                                                ClutterUnit  value);
+						  ClutterUnit  value);
 ClutterUnit   nutter_grid_get_row_gap            (NutterGrid    *self);
 void          nutter_grid_set_column_gap         (NutterGrid    *self,
-                                                ClutterUnit  value);
+						  ClutterUnit  value);
 ClutterUnit   nutter_grid_get_column_gap         (NutterGrid    *self);
 void          nutter_grid_set_valign             (NutterGrid    *self,
-                                                gdouble      value);
+						  gdouble      value);
 gdouble       nutter_grid_get_valign             (NutterGrid    *self);
 void          nutter_grid_set_halign             (NutterGrid    *self,
-                                                gdouble      value);
+						  gdouble      value);
 gdouble       nutter_grid_get_halign             (NutterGrid    *self);
+
+void          nutter_grid_set_max_size           (NutterGrid    *self,
+						  guint          width,
+						  guint          height);
 
 G_END_DECLS
 

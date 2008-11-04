@@ -42,29 +42,29 @@ static void nutter_grid_finalize            (GObject *object);
 static void nutter_grid_finalize            (GObject *object);
 
 static void nutter_grid_set_property        (GObject      *object,
-                                           guint         prop_id,
-                                           const GValue *value,
-                                           GParamSpec   *pspec);
+					     guint         prop_id,
+					     const GValue *value,
+					     GParamSpec   *pspec);
 static void nutter_grid_get_property        (GObject      *object,
-                                           guint         prop_id,
-                                           GValue       *value,
-                                           GParamSpec   *pspec);
+					     guint         prop_id,
+					     GValue       *value,
+					     GParamSpec   *pspec);
 
-static void clutter_container_iface_init  (ClutterContainerIface *iface);
+static void clutter_container_iface_init    (ClutterContainerIface *iface);
 
 static void nutter_grid_real_add            (ClutterContainer *container,
-                                           ClutterActor     *actor);
+					     ClutterActor     *actor);
 static void nutter_grid_real_remove         (ClutterContainer *container,
-                                           ClutterActor     *actor);
+					     ClutterActor     *actor);
 static void nutter_grid_real_foreach        (ClutterContainer *container,
-                                           ClutterCallback   callback,
-                                           gpointer          user_data);
+					     ClutterCallback   callback,
+					     gpointer          user_data);
 static void nutter_grid_real_raise          (ClutterContainer *container,
-                                           ClutterActor     *actor,
-                                           ClutterActor     *sibling);
+					     ClutterActor     *actor,
+					     ClutterActor     *sibling);
 static void nutter_grid_real_lower          (ClutterContainer *container,
-                                           ClutterActor     *actor,
-                                           ClutterActor     *sibling);
+					     ClutterActor     *actor,
+					     ClutterActor     *sibling);
 static void
 nutter_grid_real_sort_depth_order (ClutterContainer *container);
 
@@ -74,23 +74,29 @@ nutter_grid_free_actor_data (gpointer data);
 static void nutter_grid_paint (ClutterActor *actor);
 
 static void nutter_grid_pick (ClutterActor *actor,
-                                       const ClutterColor *color);
+			      const ClutterColor *color);
 
 static void
 nutter_grid_get_preferred_width (ClutterActor *self,
-                                         ClutterUnit for_height,
-                                         ClutterUnit *min_width_p,
-                                         ClutterUnit *natural_width_p);
+				 ClutterUnit for_height,
+				 ClutterUnit *min_width_p,
+				 ClutterUnit *natural_width_p);
 
 static void
 nutter_grid_get_preferred_height (ClutterActor *self,
-                                           ClutterUnit for_width,
-                                           ClutterUnit *min_height_p,
-                                           ClutterUnit *natural_height_p);
+				  ClutterUnit for_width,
+				  ClutterUnit *min_height_p,
+				  ClutterUnit *natural_height_p);
 
 static void nutter_grid_allocate (ClutterActor *self,
-                                           const ClutterActorBox *box,
-                                           gboolean absolute_origin_changed);
+				  const ClutterActorBox *box,
+				  gboolean absolute_origin_changed);
+
+static void nutter_grid_natural_size (ClutterActor *self);
+
+static void nutter_grid_on_child_change (GObject    *object,
+					 GParamSpec *param_spec,
+					 NutterGrid *self);
 
 G_DEFINE_TYPE_WITH_CODE (NutterGrid, nutter_grid,
                          CLUTTER_TYPE_ACTOR,
@@ -123,6 +129,10 @@ struct _NutterGridPrivate
   ClutterUnit a_current_sum, a_wrap;
   ClutterUnit max_extent_a;
   ClutterUnit max_extent_b;
+  ClutterUnit max_width;
+  ClutterUnit max_height;
+  ClutterUnit natural_width;
+  ClutterUnit natural_height;
 };
 
 enum
@@ -141,6 +151,7 @@ enum
 struct _NutterGridActorData
 {
   gboolean    xpos_set,   ypos_set;
+  gboolean    skip_allocation_change;
   ClutterUnit xpos,       ypos;
   ClutterUnit pref_width, pref_height;
 };
@@ -261,6 +272,9 @@ nutter_grid_init (NutterGrid *self)
 
   self->priv = priv = NUTTER_GRID_GET_PRIVATE (self);
 
+  priv->max_width  = 200;
+  priv->max_height = 200;
+
   priv->hash_table
     = g_hash_table_new_full (g_direct_hash,
                              g_direct_equal,
@@ -314,8 +328,7 @@ nutter_grid_get_end_align (NutterGrid *self)
 }
 
 void
-nutter_grid_set_homogenous_rows (NutterGrid *self,
-                               gboolean  value)
+nutter_grid_set_homogenous_rows (NutterGrid *self, gboolean value)
 {
   NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->homogenous_rows = value;
@@ -331,8 +344,7 @@ nutter_grid_get_homogenous_rows (NutterGrid *self)
 
 
 void
-nutter_grid_set_homogenous_columns (NutterGrid *self,
-                                  gboolean  value)
+nutter_grid_set_homogenous_columns (NutterGrid *self, gboolean value)
 {
   NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->homogenous_columns = value;
@@ -349,8 +361,7 @@ nutter_grid_get_homogenous_columns (NutterGrid *self)
 
 
 void
-nutter_grid_set_column_major (NutterGrid *self,
-                            gboolean  value)
+nutter_grid_set_column_major (NutterGrid *self, gboolean value)
 {
   NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->column_major = value;
@@ -365,8 +376,7 @@ nutter_grid_get_column_major (NutterGrid *self)
 }
 
 void
-nutter_grid_set_column_gap (NutterGrid    *self,
-                          ClutterUnit  value)
+nutter_grid_set_column_gap (NutterGrid *self, ClutterUnit value)
 {
   NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->column_gap = value;
@@ -380,11 +390,8 @@ nutter_grid_get_column_gap (NutterGrid *self)
   return priv->column_gap;
 }
 
-
-
 void
-nutter_grid_set_row_gap (NutterGrid    *self,
-                       ClutterUnit  value)
+nutter_grid_set_row_gap (NutterGrid *self, ClutterUnit value)
 {
   NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->row_gap = value;
@@ -400,8 +407,7 @@ nutter_grid_get_row_gap (NutterGrid *self)
 
 
 void
-nutter_grid_set_valign (NutterGrid *self,
-                      gdouble   value)
+nutter_grid_set_valign (NutterGrid *self, gdouble  value)
 {
   NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
   priv->valign = value;
@@ -418,8 +424,7 @@ nutter_grid_get_valign (NutterGrid *self)
 
 
 void
-nutter_grid_set_halign (NutterGrid *self,
-                      gdouble   value)
+nutter_grid_set_halign (NutterGrid *self, gdouble value)
 
 {
   NutterGridPrivate *priv = NUTTER_GRID_GET_PRIVATE (self);
@@ -434,12 +439,11 @@ nutter_grid_get_halign (NutterGrid *self)
   return priv->halign;
 }
 
-
 static void
 nutter_grid_set_property (GObject      *object,
-                        guint         prop_id,
-                        const GValue *value,
-                        GParamSpec   *pspec)
+			  guint         prop_id,
+			  const GValue *value,
+			  GParamSpec   *pspec)
 {
   NutterGrid *grid = NUTTER_GRID (object);
 
@@ -481,9 +485,9 @@ nutter_grid_set_property (GObject      *object,
 
 static void
 nutter_grid_get_property (GObject    *object,
-                        guint       prop_id,
-                        GValue     *value,
-                        GParamSpec *pspec)
+			  guint       prop_id,
+			  GValue     *value,
+			  GParamSpec *pspec)
 {
   NutterGrid *grid = NUTTER_GRID (object);
 
@@ -539,8 +543,7 @@ nutter_grid_new (void)
 }
 
 static void
-nutter_grid_real_add (ClutterContainer *container,
-                    ClutterActor     *actor)
+nutter_grid_real_add (ClutterContainer *container, ClutterActor *actor)
 {
   NutterGridPrivate *priv;
   NutterGridActorData *data;
@@ -558,14 +561,33 @@ nutter_grid_real_add (ClutterContainer *container,
   priv->list = g_list_append (priv->list, actor);
   g_hash_table_insert (priv->hash_table, actor, data);
 
+  priv->natural_width  = 0;
+  priv->natural_height = 0;
+
+  /*
+   * We are only interested in size changes, but since we only manipulate
+   * the actor position ourselves, we can hook to the allocation notification.
+   */
+  g_signal_connect (actor,
+                    "notify::allocation",
+                    G_CALLBACK(nutter_grid_on_child_change),
+		    container);
+  g_signal_connect (actor,
+                    "notify::scale-x",
+                    G_CALLBACK(nutter_grid_on_child_change),
+		    container);
+  g_signal_connect (actor,
+                    "notify::scale-y",
+                    G_CALLBACK(nutter_grid_on_child_change),
+		    container);
+
   clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 
   g_object_unref (actor);
 }
 
 static void
-nutter_grid_real_remove (ClutterContainer *container,
-                       ClutterActor     *actor)
+nutter_grid_real_remove (ClutterContainer *container, ClutterActor *actor)
 {
   NutterGrid *layout = NUTTER_GRID (container);
   NutterGridPrivate *priv = layout->priv;
@@ -575,6 +597,14 @@ nutter_grid_real_remove (ClutterContainer *container,
   if (g_hash_table_remove (priv->hash_table, actor))
     {
       clutter_actor_unparent (actor);
+
+      priv->natural_width  = 0;
+      priv->natural_height = 0;
+
+      g_signal_handlers_disconnect_by_func
+                            (actor,
+                             G_CALLBACK(nutter_grid_on_child_change),
+                             container);
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (layout));
 
@@ -590,8 +620,8 @@ nutter_grid_real_remove (ClutterContainer *container,
 
 static void
 nutter_grid_real_foreach (ClutterContainer *container,
-                                   ClutterCallback callback,
-                                   gpointer user_data)
+			  ClutterCallback   callback,
+			  gpointer          user_data)
 {
   NutterGrid *layout = NUTTER_GRID (container);
   NutterGridPrivate *priv = layout->priv;
@@ -601,16 +631,16 @@ nutter_grid_real_foreach (ClutterContainer *container,
 
 static void
 nutter_grid_real_raise (ClutterContainer *container,
-                                 ClutterActor *actor,
-                                 ClutterActor *sibling)
+			ClutterActor     *actor,
+			ClutterActor     *sibling)
 {
   /* STUB */
 }
 
 static void
 nutter_grid_real_lower (ClutterContainer *container,
-                                 ClutterActor *actor,
-                                 ClutterActor *sibling)
+			ClutterActor     *actor,
+			ClutterActor     *sibling)
 {
   /* STUB */
 }
@@ -643,8 +673,7 @@ nutter_grid_paint (ClutterActor *actor)
 }
 
 static void
-nutter_grid_pick (ClutterActor *actor,
-                           const ClutterColor *color)
+nutter_grid_pick (ClutterActor *actor, const ClutterColor *color)
 {
   /* Chain up so we get a bounding box pained (if we are reactive) */
   CLUTTER_ACTOR_CLASS (nutter_grid_parent_class)->pick (actor, color);
@@ -658,49 +687,50 @@ nutter_grid_pick (ClutterActor *actor,
 
 static void
 nutter_grid_get_preferred_width (ClutterActor *self,
-                                          ClutterUnit for_height,
-                                          ClutterUnit *min_width_p,
-                                          ClutterUnit *natural_width_p)
+				 ClutterUnit   for_height,
+				 ClutterUnit  *min_width_p,
+				 ClutterUnit  *natural_width_p)
 {
   NutterGrid *layout = (NutterGrid *) self;
   NutterGridPrivate *priv = layout->priv;
-  ClutterUnit natural_width;
 
-  natural_width = CLUTTER_UNITS_FROM_INT (200);
+  if (!priv->natural_width)
+    nutter_grid_natural_size (self);
+
   if (min_width_p)
-    *min_width_p = natural_width;
+    *min_width_p = priv->natural_width;
   if (natural_width_p)
-    *natural_width_p = natural_width;
+    *natural_width_p = priv->natural_width;
 
-  priv->pref_width = natural_width;
+  priv->pref_width = priv->natural_width;
 }
 
 static void
 nutter_grid_get_preferred_height (ClutterActor *self,
-                                ClutterUnit for_width,
-                                ClutterUnit *min_height_p,
-                                ClutterUnit *natural_height_p)
+				  ClutterUnit   for_width,
+				  ClutterUnit  *min_height_p,
+				  ClutterUnit  *natural_height_p)
 {
   NutterGrid *layout = (NutterGrid *) self;
   NutterGridPrivate *priv = layout->priv;
-  ClutterUnit natural_height;
 
-  natural_height = CLUTTER_UNITS_FROM_INT (200);
+  if (!priv->natural_height)
+    nutter_grid_natural_size (self);
 
   priv->for_width = for_width;
-  priv->pref_height = natural_height;
+  priv->pref_height = priv->natural_height;
 
   if (min_height_p)
-    *min_height_p = natural_height;
+    *min_height_p = priv->natural_height;
   if (natural_height_p)
-    *natural_height_p = natural_height;
+    *natural_height_p = priv->natural_height;
 }
 
 static ClutterUnit
 compute_row_height (GList                    *siblings,
                     ClutterUnit               best_yet,
                     ClutterUnit               current_a,
-                    NutterGridPrivate *priv)
+                    NutterGridPrivate        *priv)
 {
   GList *l;
 
@@ -766,8 +796,8 @@ compute_row_height (GList                    *siblings,
 
 
 static ClutterUnit
-compute_row_start (GList           *siblings,
-                   ClutterUnit      start_x,
+compute_row_start (GList              *siblings,
+                   ClutterUnit        start_x,
                    NutterGridPrivate *priv)
 {
   ClutterUnit current_a = start_x;
@@ -828,8 +858,8 @@ compute_row_start (GList           *siblings,
 
 static void
 nutter_grid_allocate (ClutterActor          *self,
-                              const ClutterActorBox *box,
-                              gboolean               absolute_origin_changed)
+		      const ClutterActorBox *box,
+		      gboolean               absolute_origin_changed)
 {
   NutterGrid *layout = (NutterGrid *) self;
   NutterGridPrivate *priv = layout->priv;
@@ -979,6 +1009,7 @@ nutter_grid_allocate (ClutterActor          *self,
         {
           ClutterUnit     row_height;
           ClutterActorBox child_box;
+	  NutterGridActorData *actor_data;
 
           if (homogenous_b)
             {
@@ -1017,7 +1048,19 @@ nutter_grid_allocate (ClutterActor          *self,
               child_box.y2 = temp;
             }
 
-          /* update the allocation */
+          /*
+	   * Update the allocation -- this will trigger notification on the
+	   * child which we listen for to keep up with child changes; flag
+	   * the child so that we do not redo the allocation on the next
+	   * notification.
+	   */
+	  actor_data = g_hash_table_lookup (priv->hash_table, child);
+
+	  if (actor_data)
+	    {
+	      actor_data->skip_allocation_change = TRUE;
+	    }
+
           clutter_actor_allocate (CLUTTER_ACTOR (child),
                                   &child_box,
                                   absolute_origin_changed);
@@ -1032,4 +1075,213 @@ nutter_grid_allocate (ClutterActor          *self,
             }
         }
     }
+}
+
+static void
+nutter_grid_natural_size (ClutterActor *self)
+{
+  NutterGrid *layout = (NutterGrid *) self;
+  NutterGridPrivate *priv = layout->priv;
+
+  ClutterUnit current_a;
+  ClutterUnit current_b;
+  ClutterUnit next_b;
+  ClutterUnit agap;
+  ClutterUnit bgap;
+  ClutterUnit my_max_a = 0;
+  ClutterUnit my_max_b = 0;
+
+  gboolean homogenous_a;
+  gboolean homogenous_b;
+  gdouble  aalign;
+  gdouble  balign;
+
+  current_a = current_b = next_b = 0;
+
+  GList *iter;
+
+  if (priv->column_major)
+    {
+      priv->a_wrap = priv->max_height;
+      homogenous_b = priv->homogenous_columns;
+      homogenous_a = priv->homogenous_rows;
+      aalign = priv->valign;
+      balign = priv->halign;
+      agap          = priv->row_gap;
+      bgap          = priv->column_gap;
+    }
+  else
+    {
+      priv->a_wrap = priv->max_width;
+      homogenous_a = priv->homogenous_columns;
+      homogenous_b = priv->homogenous_rows;
+      aalign = priv->halign;
+      balign = priv->valign;
+      agap          = priv->column_gap;
+      bgap          = priv->row_gap;
+    }
+
+  priv->max_extent_a = 0;
+  priv->max_extent_b = 0;
+
+  priv->first_of_batch = TRUE;
+
+  if (homogenous_a ||
+      homogenous_b)
+    {
+      for (iter = priv->list; iter; iter = iter->next)
+        {
+          ClutterActor *child = iter->data;
+          ClutterUnit natural_width;
+          ClutterUnit natural_height;
+	  gdouble     scale_x, scale_y;
+
+          /* each child will get as much space as they require */
+          clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
+                                            NULL, NULL,
+                                            &natural_width, &natural_height);
+
+	  /* We want scale taken into account for nutter use */
+	  clutter_actor_get_scale (child, &scale_x, &scale_y);
+
+	  natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
+	  natural_height = (ClutterUnit)((gdouble)natural_height * scale_y);
+
+          if (natural_width > priv->max_extent_a)
+            priv->max_extent_a = natural_width;
+          if (natural_height > priv->max_extent_b)
+            priv->max_extent_b = natural_width;
+        }
+    }
+
+  if (priv->column_major)
+    {
+      ClutterUnit temp = priv->max_extent_a;
+      priv->max_extent_a = priv->max_extent_b;
+      priv->max_extent_b = temp;
+    }
+
+  for (iter = priv->list; iter; iter=iter->next)
+    {
+      ClutterActor *child = iter->data;
+      ClutterUnit natural_a;
+      ClutterUnit natural_b;
+      ClutterUnit real_a;
+      ClutterUnit real_b;
+      gdouble scale_x, scale_y;
+
+      /*
+       * each child will get as much space as they require
+       *
+       * For placing the children, we take into account their scale, that is
+       * what the natural_a, _b values are for. However, we need to give the
+       * child back an allocation that is unscalled, hence the real_a, real_b
+       * values.
+       */
+      clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
+                                        NULL, NULL,
+                                        &real_a, &real_b);
+
+      clutter_actor_get_scale (child, &scale_x, &scale_y);
+
+      natural_a = (ClutterUnit)((gdouble)real_a  * scale_x);
+      natural_b = (ClutterUnit)((gdouble)real_b * scale_y);
+
+      if (priv->column_major) /* swap axes around if column is major */
+        {
+          ClutterUnit temp = natural_a;
+          natural_a = natural_b;
+          natural_b = temp;
+        }
+
+      /* if the child is overflowing, we wrap to next line */
+      if (current_a + natural_a > priv->a_wrap ||
+          (homogenous_a && current_a + priv->max_extent_a > priv->a_wrap))
+        {
+          current_b = next_b + bgap;
+
+          current_a = 0;
+          next_b = current_b + bgap;
+          priv->first_of_batch = TRUE;
+        }
+
+      if (current_a + natural_a > my_max_a)
+	my_max_a = current_a + natural_a;
+
+      if (current_b + natural_b > my_max_b)
+	my_max_b = current_b + natural_b;
+
+      if (priv->end_align &&
+          priv->first_of_batch)
+        {
+          current_a = compute_row_start (iter, current_a, priv);
+          priv->first_of_batch = FALSE;
+        }
+
+      if (next_b-current_b < natural_b)
+          next_b = current_b + natural_b;
+
+      if (homogenous_a)
+	{
+	  current_a += priv->max_extent_a + agap;
+	}
+      else
+	{
+	  current_a += natural_a + agap;
+	}
+    }
+
+  /*
+   * NB: because of the scaling, we introduce a small rounding error into
+   *     the calculation; unfortunately, clutter somewhere looses the
+   *     fractional part, so 414.99 suddenly becomes 414.0 when passed into
+   *     the alloc function; so we add 0.5 here to avoid wrong layout.
+   */
+  if (priv->column_major)
+    {
+      priv->natural_width  = my_max_b + CFX_HALF;
+      priv->natural_height = my_max_a + CFX_HALF;
+    }
+  else
+    {
+      priv->natural_width  = my_max_a + CFX_HALF;
+      priv->natural_height = my_max_b + CFX_HALF;
+    }
+}
+
+void
+nutter_grid_set_max_size (NutterGrid *self, guint width, guint height)
+{
+  NutterGrid *layout = (NutterGrid *) self;
+  NutterGridPrivate *priv = layout->priv;
+
+  priv->max_width  = CLUTTER_UNITS_FROM_INT (width);
+  priv->max_height = CLUTTER_UNITS_FROM_INT (height);
+}
+
+static void
+nutter_grid_on_child_change (GObject          *object,
+			     GParamSpec       *param_spec,
+			     NutterGrid       *self)
+{
+  NutterGrid *layout = (NutterGrid *) self;
+  NutterGridPrivate *priv = layout->priv;
+  NutterGridActorData *data;
+
+  data = g_hash_table_lookup (priv->hash_table, object);
+
+  if (data)
+    {
+      if (data->skip_allocation_change &&
+	  !strcmp (param_spec->name, "allocation"))
+	{
+	  data->skip_allocation_change = FALSE;
+	  return;
+	}
+    }
+
+  priv->natural_width  = 0;
+  priv->natural_height = 0;
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (layout));
 }
