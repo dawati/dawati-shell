@@ -55,6 +55,8 @@
 #define WORKSPACE_CELL_WIDTH  100
 #define WORKSPACE_CELL_HEIGHT 80
 
+#define WORKSPACE_BORDER 20
+
 #define WORKSPACE_CHOOSER_TIMEOUT 3000
 
 static GQuark actor_data_quark = 0;
@@ -1067,7 +1069,11 @@ ensure_nth_workspace (GList **list, gint n, gint active)
         background =  clutter_rectangle_new_with_color (&active_clr);
       else
         background =  clutter_rectangle_new_with_color (&background_clr);
-      clutter_actor_set_size (background, screen_width, screen_height);
+
+      clutter_actor_set_size (background,
+                              screen_width  + WORKSPACE_BORDER,
+                              screen_height + WORKSPACE_BORDER);
+
       clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
 
       tmp = g_list_append (tmp, group);
@@ -1116,7 +1122,7 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   gint           active_ws;
 
-  active_ws = meta_screen_get_active_workspace_index (screen);
+  active_ws = meta_screen_get_n_workspaces (screen);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1172,7 +1178,10 @@ make_workspace_grid (GCallback ws_callback, gint *n_workspaces)
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
 
       clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
-      clutter_actor_set_position (clone, x, y);
+      clutter_actor_set_position (clone,
+                                  x + WORKSPACE_BORDER / 2,
+                                  y + WORKSPACE_BORDER / 2);
+
       clutter_actor_set_reactive (clone, FALSE);
 
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
@@ -1369,10 +1378,12 @@ workspace_chooser_timeout_cb (gpointer data)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
 
   hide_workspace_chooser ();
-  priv->next_app_workspace = -2;
+  priv->next_app_workspace = GPOINTER_TO_INT (data);
 
+  meta_screen_append_new_workspace (screen, TRUE, 0);
   spawn_app (priv->app_to_start);
 
   g_free (priv->app_to_start);
@@ -1399,7 +1410,7 @@ show_workspace_chooser (const gchar *app_path)
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
-  ClutterColor   new_ws_clr = { 0xff, 0xff, 0xff, 0xff };
+  ClutterColor   new_ws_clr = { 0xfd, 0xd9, 0x09, 0x7f};
   ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
@@ -1425,7 +1436,9 @@ show_workspace_chooser (const gchar *app_path)
   new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
 
   clutter_actor_set_size (new_ws_background,
-                          WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
+                          WORKSPACE_CELL_WIDTH + WORKSPACE_BORDER,
+                          WORKSPACE_CELL_HEIGHT + WORKSPACE_BORDER);
+
   new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
                                          &new_ws_text_clr);
   clutter_actor_realize (new_ws_label);
@@ -1436,8 +1449,8 @@ show_workspace_chooser (const gchar *app_path)
    * caluculating it's size, so it ends up wider than it should by the offset.
    */
   clutter_actor_set_position (new_ws_label,
-                              2,
-                              (WORKSPACE_CELL_HEIGHT -
+                              WORKSPACE_BORDER / 2 + 2,
+                              (WORKSPACE_CELL_HEIGHT + WORKSPACE_BORDER -
                                clutter_actor_get_height (new_ws_label))/2);
 
   clutter_container_add (CLUTTER_CONTAINER (new_ws),
@@ -1477,7 +1490,8 @@ show_workspace_chooser (const gchar *app_path)
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
 
-  g_timeout_add (WORKSPACE_CHOOSER_TIMEOUT, workspace_chooser_timeout_cb, NULL);
+  g_timeout_add (WORKSPACE_CHOOSER_TIMEOUT, workspace_chooser_timeout_cb,
+                 GINT_TO_POINTER (ws_count));
 }
 
 static gboolean
