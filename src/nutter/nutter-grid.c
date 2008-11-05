@@ -1264,10 +1264,6 @@ nutter_grid_natural_size (ClutterActor *self)
       priv->natural_width  = my_max_a + CFX_HALF;
       priv->natural_height = my_max_b + CFX_HALF;
     }
-
-  printf ("Calculated natural size %f x %f\n",
-	  CLUTTER_UNITS_TO_FLOAT (priv->natural_width),
-	  CLUTTER_UNITS_TO_FLOAT (priv->natural_height));
 }
 
 void

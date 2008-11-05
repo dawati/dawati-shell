@@ -4,7 +4,10 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 INCLUDES=@MUTTER_PLUGIN_CFLAGS@
 
 moblin_netbook_la_CFLAGS   = -Werror=missing-prototypes -fPIC
-moblin_netbook_la_SOURCES  = nutter/nutter-grid.c moblin-netbook.c
+moblin_netbook_la_SOURCES  = 	nutter/nutter-grid.c	\
+				nutter/nutter-ws-icon.c	\
+				moblin-netbook.c
+
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@
 

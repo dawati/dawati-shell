@@ -34,6 +34,7 @@
 #include <string.h>
 
 #include "nutter/nutter-grid.h"
+#include "nutter/nutter-ws-icon.h"
 
 #include "compositor-mutter.h"
 
@@ -268,7 +269,7 @@ switch_workspace (const GList **actors, gint from, gint to,
       /* We don't care about minimized windows */
       if (!mutter_window_showing_on_its_workspace (mcw))
 	continue;
-      
+
       workspace = mutter_window_get_workspace (mcw);
 
       if (workspace == to || workspace == from)
@@ -1116,36 +1117,24 @@ workspace_input_cb (ClutterActor *clone,
 static ClutterActor *
 make_workspace_label (const gchar *text)
 {
-  ClutterActor *group;
-  ClutterActor *background;
-  ClutterActor *border;
-  ClutterActor *label;
+  NutterWsIcon *icon;
+  ClutterActor *actor;
   ClutterColor  b_clr = { 0x44, 0x44, 0x44, 0xff };
   ClutterColor  f_clr = { 0xff, 0xff, 0xff, 0xff };
-  guint         l_w, l_h;
 
-  group = clutter_group_new ();
+  actor = nutter_ws_icon_new ();
+  icon  = NUTTER_WS_ICON (actor);
 
-  border = clutter_rectangle_new_with_color (&f_clr);
-  clutter_actor_set_size (border, WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
+  clutter_actor_set_size (actor, WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
 
-  background = clutter_rectangle_new_with_color (&b_clr);
-  clutter_actor_set_size (background,
-                          WORKSPACE_CELL_WIDTH - 6, WORKSPACE_CELL_HEIGHT - 6);
-  clutter_actor_set_position (background, 3, 3);
+  nutter_ws_icon_set_font_name (icon, "Sans 16");
+  nutter_ws_icon_set_text (icon, text);
+  nutter_ws_icon_set_color (icon, &b_clr);
+  nutter_ws_icon_set_border_width (icon, 3);
+  nutter_ws_icon_set_text_color (icon, &f_clr);
+  nutter_ws_icon_set_border_color (icon, &f_clr);
 
-  label = clutter_label_new_full ("Sans 16", text, &f_clr);
-  clutter_actor_realize (label);
-  clutter_actor_get_size (label, &l_w, &l_h);
-
-  clutter_actor_set_position (label,
-                              (WORKSPACE_CELL_WIDTH - l_w)/2,
-                              (WORKSPACE_CELL_HEIGHT - l_h)/2);
-
-  clutter_container_add (CLUTTER_CONTAINER (group), border, background, label,
-                         NULL);
-
-  return group;
+  return actor;
 }
 
 static ClutterActor *
