@@ -757,7 +757,7 @@ on_panel_effect_complete (ClutterActor *panel, gpointer data)
     {
       priv->panel_back_in_progress = FALSE;
 
-      if (!priv->workspace_chooser)
+      if (!priv->workspace_chooser && !priv->workspace_switcher)
         disable_stage (plugin);
     }
 }
@@ -1034,7 +1034,7 @@ hide_workspace_switcher (void)
 }
 
 static ClutterActor *
-ensure_nth_workspace (GList **list, gint n, gint active)
+ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   GList         *l      = *list;
@@ -1057,25 +1057,46 @@ ensure_nth_workspace (GList **list, gint n, gint active)
 
   while (i <= n)
     {
-      ClutterActor *group = clutter_group_new ();
+      ClutterActor *group;
       ClutterColor  background_clr = { 0, 0, 0, 0};
       ClutterColor  active_clr =     { 0xfd, 0xd9, 0x09, 0x7f};
       ClutterActor *background;
 
-      /*
-       * We need to add background, otherwise if the ws is empty, the group
-       * will have size 0x0, and not respond to clicks.
-       */
-      if (i == active)
-        background =  clutter_rectangle_new_with_color (&active_clr);
+      if (expanded)
+        {
+          NutterGrid *ng;
+
+          group = nutter_grid_new ();
+          ng = NUTTER_GRID (group);
+
+          nutter_grid_set_max_dimension (ng, 1);
+          nutter_grid_set_row_gap (ng, CLUTTER_UNITS_FROM_INT (10));
+          nutter_grid_set_column_gap (ng, CLUTTER_UNITS_FROM_INT (10));
+          nutter_grid_set_max_size (ng, G_MAXUINT, G_MAXUINT);
+          nutter_grid_set_homogenous_columns (ng, TRUE);
+          nutter_grid_set_homogenous_rows (ng, TRUE);
+          nutter_grid_set_valign (ng, 0.5);
+          nutter_grid_set_halign (ng, 0.5);
+        }
       else
-        background =  clutter_rectangle_new_with_color (&background_clr);
+        {
+          group = clutter_group_new ();
 
-      clutter_actor_set_size (background,
-                              screen_width  + WORKSPACE_BORDER,
-                              screen_height + WORKSPACE_BORDER);
+          /*
+           * We need to add background, otherwise if the ws is empty, the group
+           * will have size 0x0, and not respond to clicks.
+           */
+          if (i == active)
+            background =  clutter_rectangle_new_with_color (&active_clr);
+          else
+            background =  clutter_rectangle_new_with_color (&background_clr);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
+          clutter_actor_set_size (background,
+                                  screen_width,
+                                  screen_height);
+
+          clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
+        }
 
       tmp = g_list_append (tmp, group);
 
@@ -1140,7 +1161,8 @@ make_workspace_label (const gchar *text)
 static ClutterActor *
 make_workspace_grid (GCallback  ws_callback,
                      GCallback  new_ws_callback,
-                     gint      *n_workspaces)
+                     gint      *n_workspaces,
+                     gboolean   expanded)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -1234,22 +1256,44 @@ make_workspace_grid (GCallback  ws_callback,
           continue;
         }
 
-      workspace = ensure_nth_workspace (&workspaces, ws_indx, active_ws);
-
-      g_assert (workspace);
-
       texture = mutter_window_get_texture (mw);
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
-
-      clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
-      clutter_actor_set_position (clone,
-                                  x + WORKSPACE_BORDER / 2,
-                                  y + WORKSPACE_BORDER / 2);
 
       clutter_actor_set_reactive (clone, FALSE);
 
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
+
+      workspace = ensure_nth_workspace (&workspaces, ws_indx, active_ws,
+                                        expanded);
+      g_assert (workspace);
+
+      if (!expanded)
+        {
+          clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
+          clutter_actor_set_position (clone,
+                                      x + WORKSPACE_BORDER / 2,
+                                      y + WORKSPACE_BORDER / 2);
+        }
+      else
+        {
+          guint w, h;
+          gdouble scale_x, scale_y, scale;
+
+          clutter_actor_get_size (clone, &w, &h);
+
+          scale_x = (gdouble)WORKSPACE_CELL_WIDTH  / (gdouble)w;
+          scale_y = (gdouble)WORKSPACE_CELL_HEIGHT / (gdouble)h;
+
+          scale = scale_x < scale_y ? scale_x : scale_y;
+
+          clutter_actor_set_scale (clone, scale, scale);
+
+          g_signal_connect (clone,
+                            "button-press-event",
+                            G_CALLBACK (switcher_clone_input_cb), mw);
+          clutter_actor_set_reactive (clone, TRUE);
+        }
 
       clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
 
@@ -1264,7 +1308,8 @@ make_workspace_grid (GCallback  ws_callback,
       /*
        * Scale workspace to fit the predefined size of the grid cell
        */
-      clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
+      if (!expanded)
+        clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
       g_signal_connect (ws, "button-press-event",
                         ws_callback, GINT_TO_POINTER (ws_count));
@@ -1348,7 +1393,8 @@ show_workspace_switcher (void)
   label = clutter_label_new_full ("Sans 12", "You can select a workspace:", &label_clr);
   clutter_actor_realize (label);
 
-  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL, NULL);
+  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb),
+                              NULL, NULL, TRUE);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0,
                               clutter_actor_get_height (label) + 3);
 
@@ -1533,7 +1579,7 @@ show_workspace_chooser (const gchar *app_path)
 
   grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
                               G_CALLBACK (new_workspace_input_cb),
-                              &ws_count);
+                              &ws_count, FALSE);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0,
                               clutter_actor_get_height (label) + 3);
 
@@ -1637,16 +1683,6 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
           priv->panel_out = TRUE;
         }
-      else if (!priv->switcher)
-        {
-          gint screen_width, screen_height;
-
-          mutter_plugin_query_screen_size (plugin,
-                                           &screen_width, &screen_height);
-
-          if (event_x > screen_width - WS_SWITCHER_SLIDE_THRESHOLD)
-            toggle_workspace_switcher ();
-        }
     }
   else if (event->type == CLUTTER_KEY_RELEASE)
     {
@@ -1699,6 +1735,46 @@ make_app_launcher (const gchar *name, const gchar *path)
   return group;
 }
 
+static gboolean
+workspace_button_input_cb (ClutterActor *actor,
+                           ClutterEvent *event,
+                           gpointer      data)
+{
+  show_workspace_switcher ();
+  return FALSE;
+}
+
+static ClutterActor *
+make_workspace_switcher_button ()
+{
+  ClutterColor  bkg_clr = {0, 0, 0x7f, 0xff};
+  ClutterColor  fg_clr  = {0xf8, 0xd9, 0x09, 0xff};
+  ClutterActor *group   = clutter_group_new ();
+  ClutterActor *label   = clutter_label_new_full ("Sans 12", "Spaces", &fg_clr);
+  ClutterActor *bkg     = clutter_rectangle_new_with_color (&bkg_clr);
+  guint         l_width;
+
+  clutter_actor_realize (label);
+  l_width = clutter_actor_get_width (label);
+  l_width += 10;
+
+  clutter_actor_set_anchor_point_from_gravity (label, CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_position (label, l_width/2, PANEL_HEIGHT / 2);
+
+  clutter_actor_set_size (bkg, l_width + 5, PANEL_HEIGHT);
+
+  clutter_container_add (CLUTTER_CONTAINER (group), bkg, label, NULL);
+
+  g_signal_connect (group,
+                    "button-press-event",
+                    G_CALLBACK (workspace_button_input_cb),
+                    NULL);
+
+  clutter_actor_set_reactive (group, TRUE);
+
+  return group;
+}
+
 static ClutterActor *
 make_panel (gint width)
 {
@@ -1725,6 +1801,15 @@ make_panel (gint width)
   clutter_actor_set_position (launcher, w + x + 10, 0);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
+
+  x = clutter_actor_get_x (launcher);
+  w = clutter_actor_get_width (launcher);
+
+  launcher = make_workspace_switcher_button ();
+  clutter_actor_set_position (launcher, w + x + 100, 0);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
+
   return panel;
 }
 
