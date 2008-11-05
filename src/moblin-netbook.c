@@ -1194,6 +1194,8 @@ make_workspace_grid (GCallback  ws_callback,
   nutter_grid_set_max_size (grid, screen_width, screen_height);
   nutter_grid_set_max_dimension (grid,
                                  new_ws_callback ? active_ws + 1 : active_ws);
+  nutter_grid_set_homogenous_columns (grid, TRUE);
+  nutter_grid_set_halign (grid, 0.5);
 
   for (i = 0; i < active_ws; ++i)
     {
