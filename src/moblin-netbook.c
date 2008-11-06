@@ -1402,7 +1402,6 @@ show_workspace_switcher (void)
   ClutterActor  *switcher;
   ClutterActor  *background;
   ClutterActor  *label;
-  ClutterActor  *new;
   ClutterActor  *grid;
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
@@ -1427,17 +1426,8 @@ show_workspace_switcher (void)
   clutter_actor_set_position (grid, 0, grid_y);
   clutter_actor_get_size (grid, &grid_w, &grid_h);
 
-  new = make_workspace_label ("+");
-  clutter_actor_set_size (new, WORKSPACE_CELL_WIDTH, grid_h);
-  clutter_actor_set_position (new, grid_w + 3, grid_y);
-
-  g_signal_connect (new, "button-press-event",
-                    G_CALLBACK (create_workspace_input_cb), NULL);
-
-  clutter_actor_set_reactive (new, TRUE);
-
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, label, grid, new, NULL);
+                         background, label, grid, NULL);
 
   if (priv->workspace_switcher)
     hide_workspace_switcher ();
