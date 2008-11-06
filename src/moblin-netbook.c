@@ -1337,6 +1337,8 @@ show_workspace_switcher (void)
   gint           switcher_width, switcher_height;
   gint           grid_y;
   guint          grid_w, grid_h;
+  gint           panel_y;
+  guint          panel_height;
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
 
@@ -1369,10 +1371,9 @@ show_workspace_switcher (void)
   clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
   clutter_actor_set_size (background, switcher_width, switcher_height);
 
-  clutter_actor_set_anchor_point (switcher,
-                                  switcher_width/2, switcher_height/2);
-
-  clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
+  panel_height = clutter_actor_get_height (priv->panel);
+  panel_y      = clutter_actor_get_y (priv->panel);
+  clutter_actor_set_position (switcher, 0, panel_height);
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
 }
@@ -1535,9 +1536,9 @@ show_workspace_chooser (const gchar *app_path)
   ClutterActor  *grid;
   ClutterActor  *label;
   gint           screen_width, screen_height;
-  gint           switcher_width, switcher_height;
-  gint           grid_width, grid_height;
-  gint           label_height;
+  guint          switcher_width, switcher_height;
+  guint          grid_width, grid_height;
+  guint          label_height;
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
@@ -1810,7 +1811,14 @@ make_panel (gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
   clutter_actor_set_size (background, width, PANEL_HEIGHT);
 
+  launcher = make_workspace_switcher_button ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
+
+  x = clutter_actor_get_x (launcher);
+  w = clutter_actor_get_width (launcher);
+
   launcher = make_app_launcher ("Calculator", "/usr/bin/gcalctool");
+  clutter_actor_set_position (launcher, w + x + 10, 0);
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
 
   x = clutter_actor_get_x (launcher);
@@ -1818,15 +1826,6 @@ make_panel (gint width)
 
   launcher = make_app_launcher ("Editor", "/usr/bin/gedit");
   clutter_actor_set_position (launcher, w + x + 10, 0);
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
-
-  x = clutter_actor_get_x (launcher);
-  w = clutter_actor_get_width (launcher);
-
-  launcher = make_workspace_switcher_button ();
-  clutter_actor_set_position (launcher, w + x + 100, 0);
-
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
 
   return panel;
