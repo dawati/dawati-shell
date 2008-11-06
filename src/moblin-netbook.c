@@ -1162,7 +1162,6 @@ make_workspace_label (const gchar *text)
 
 static ClutterActor *
 make_workspace_grid (GCallback  ws_callback,
-                     GCallback  new_ws_callback,
                      gint      *n_workspaces,
                      gboolean   expanded)
 {
@@ -1194,8 +1193,7 @@ make_workspace_grid (GCallback  ws_callback,
   nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
   nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
   nutter_grid_set_max_size (grid, screen_width, screen_height);
-  nutter_grid_set_max_dimension (grid,
-                                 new_ws_callback ? active_ws + 1 : active_ws);
+  nutter_grid_set_max_dimension (grid, active_ws);
   nutter_grid_set_homogenous_columns (grid, TRUE);
   nutter_grid_set_halign (grid, 0.5);
 
@@ -1213,19 +1211,6 @@ make_workspace_grid (GCallback  ws_callback,
       clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws_label);
 
       g_free (s);
-    }
-
-  if (new_ws_callback)
-    {
-      ws_label = make_workspace_label ("+");
-
-      g_signal_connect (ws_label, "button-press-event",
-                        G_CALLBACK (new_ws_callback),
-                        GINT_TO_POINTER (i));
-
-      clutter_actor_set_reactive (ws_label, TRUE);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws_label);
     }
 
   l = mutter_plugin_get_windows (plugin);
@@ -1331,47 +1316,6 @@ make_workspace_grid (GCallback  ws_callback,
       l = l->next;
     }
 
-  if (new_ws_callback)
-    {
-      ClutterActor  *new_ws;
-      ClutterActor  *new_ws_background;
-      ClutterActor  *new_ws_label;
-      ClutterColor   new_ws_clr = { 0xfd, 0xd9, 0x09, 0x7f};
-      ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
-
-      new_ws = clutter_group_new ();
-      new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
-
-      clutter_actor_set_size (new_ws_background,
-                              WORKSPACE_CELL_WIDTH,
-                              WORKSPACE_CELL_HEIGHT);
-
-      new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
-                                             &new_ws_text_clr);
-      clutter_actor_realize (new_ws_label);
-
-      /*
-       * Tried to use anchor point in the middle of the label here, but it would
-       * appear that the group does not take anchor point into account when
-       * caluculating it's size, so it ends up wider than it should by the
-       * offset.
-       */
-      clutter_actor_set_position (new_ws_label, 2,
-                                  (WORKSPACE_CELL_HEIGHT -
-                                   clutter_actor_get_height (new_ws_label))/2);
-
-      clutter_container_add (CLUTTER_CONTAINER (new_ws),
-                             new_ws_background, new_ws_label, NULL);
-
-      g_signal_connect (new_ws, "button-press-event",
-                        G_CALLBACK (new_ws_callback),
-                        GINT_TO_POINTER (ws_count));
-
-      clutter_actor_set_reactive (new_ws, TRUE);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (grid), new_ws);
-
-    }
 
   if (n_workspaces)
     *n_workspaces = ws_count;
@@ -1406,8 +1350,7 @@ show_workspace_switcher (void)
 
   grid_y = clutter_actor_get_height (label) + 3;
 
-  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb),
-                              NULL, NULL, TRUE);
+  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL, TRUE);
   clutter_actor_realize (grid);
   clutter_actor_set_position (grid, 0, grid_y);
   clutter_actor_get_size (grid, &grid_w, &grid_h);
@@ -1593,9 +1536,16 @@ show_workspace_chooser (const gchar *app_path)
   ClutterActor  *label;
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
+  gint           grid_width, grid_height;
+  gint           label_height;
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
+  ClutterActor  *new_ws;
+  ClutterActor  *new_ws_background;
+  ClutterActor  *new_ws_label;
+  ClutterColor   new_ws_clr = { 0xfd, 0xd9, 0x09, 0x7f};
+  ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
 
   g_free (priv->app_to_start);
   priv->app_to_start = g_strdup (app_path);
@@ -1605,17 +1555,48 @@ show_workspace_chooser (const gchar *app_path)
   switcher = clutter_group_new ();
   background = clutter_rectangle_new_with_color (&background_clr);
 
-  label = clutter_label_new_full ("Sans 12", "You can select a workspace:", &label_clr);
+  label = clutter_label_new_full ("Sans 12",
+                                  "You can select a workspace:", &label_clr);
   clutter_actor_realize (label);
+  label_height = clutter_actor_get_height (label) + 3;
 
   grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
-                              G_CALLBACK (new_workspace_input_cb),
                               &ws_count, FALSE);
-  clutter_actor_set_position (CLUTTER_ACTOR (grid), 0,
-                              clutter_actor_get_height (label) + 3);
+  clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
+  clutter_actor_realize (grid);
+  clutter_actor_get_size (grid, &grid_width, &grid_height);
+
+  new_ws = clutter_group_new ();
+  clutter_actor_set_position (new_ws, grid_width + 5, label_height);
+
+  new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
+  clutter_actor_set_size (new_ws_background, WORKSPACE_CELL_WIDTH, grid_height);
+
+  new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
+                                         &new_ws_text_clr);
+  clutter_actor_realize (new_ws_label);
+
+  /*
+   * Tried to use anchor point in the middle of the label here, but it would
+   * appear that the group does not take anchor point into account when
+   * caluculating it's size, so it ends up wider than it should by the
+   * offset.
+   */
+  clutter_actor_set_position (new_ws_label, 2,
+                              (grid_height -
+                               clutter_actor_get_height (new_ws_label))/2);
+
+  clutter_container_add (CLUTTER_CONTAINER (new_ws),
+                         new_ws_background, new_ws_label, NULL);
+
+  g_signal_connect (new_ws, "button-press-event",
+                    G_CALLBACK (new_workspace_input_cb),
+                    GINT_TO_POINTER (ws_count));
+
+  clutter_actor_set_reactive (new_ws, TRUE);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, label, CLUTTER_ACTOR (grid), NULL);
+                         background, label, grid, new_ws, NULL);
 
   if (priv->workspace_chooser)
     hide_workspace_chooser ();
