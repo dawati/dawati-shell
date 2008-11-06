@@ -1276,11 +1276,14 @@ make_workspace_grid (GCallback  ws_callback,
           clutter_actor_set_position (clone,
                                       x + WORKSPACE_BORDER / 2,
                                       y + WORKSPACE_BORDER / 2);
+
+          clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
         }
       else
         {
           guint w, h;
           gdouble scale_x, scale_y, scale;
+          ClutterActor *scaler;
 
           clutter_actor_get_size (clone, &w, &h);
 
@@ -1289,21 +1292,17 @@ make_workspace_grid (GCallback  ws_callback,
 
           scale = scale_x < scale_y ? scale_x : scale_y;
 
-          /*
-           * This can only be done for textures; for anything else,
-           * there is NutterScaleGroup
-           */
-          clutter_actor_set_size (clone,
-                                  (gint)((gdouble)w * scale),
-                                  (gint)((gdouble)h * scale));
+          scaler = nutter_scale_group_new ();
+          clutter_actor_set_scale (scaler, scale, scale);
+          clutter_container_add_actor (CLUTTER_CONTAINER (scaler), clone);
 
           g_signal_connect (clone,
                             "button-press-event",
                             G_CALLBACK (switcher_clone_input_cb), mw);
           clutter_actor_set_reactive (clone, TRUE);
-        }
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
+          clutter_container_add_actor (CLUTTER_CONTAINER (workspace), scaler);
+        }
 
       l = l->next;
     }
