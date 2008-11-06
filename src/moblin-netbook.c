@@ -1666,8 +1666,15 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
 
+      if (!capture &&
+          priv->workspace_switcher && event->type == CLUTTER_BUTTON_PRESS)
+        {
+          hide_workspace_switcher ();
+        }
+
       if (priv->panel_out &&
-          (event->type == CLUTTER_BUTTON_PRESS || !priv->switcher))
+          (event->type == CLUTTER_BUTTON_PRESS ||
+           (!priv->switcher && !priv->workspace_switcher)))
         {
           guint height = clutter_actor_get_height (priv->panel);
           gint  x      = clutter_actor_get_x (priv->panel);
@@ -1753,7 +1760,7 @@ workspace_button_input_cb (ClutterActor *actor,
                            gpointer      data)
 {
   show_workspace_switcher ();
-  return FALSE;
+  return TRUE;
 }
 
 static ClutterActor *
