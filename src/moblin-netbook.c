@@ -1372,6 +1372,21 @@ make_workspace_grid (GCallback  ws_callback,
   return grid_actor;
 }
 
+static gboolean
+create_workspace_input_cb (ClutterActor *clone,
+                           ClutterEvent *event,
+                           gpointer      data)
+{
+  MutterPlugin  *plugin    = mutter_get_plugin ();
+  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
+
+  hide_workspace_switcher ();
+
+  meta_screen_append_new_workspace (screen, TRUE, event->any.time);
+
+  return FALSE;
+}
+
 static void
 show_workspace_switcher (void)
 {
@@ -1381,9 +1396,12 @@ show_workspace_switcher (void)
   ClutterActor  *switcher;
   ClutterActor  *background;
   ClutterActor  *label;
+  ClutterActor  *new;
   ClutterActor  *grid;
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
+  gint           grid_y;
+  guint          grid_w, grid_h;
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
 
@@ -1395,13 +1413,25 @@ show_workspace_switcher (void)
   label = clutter_label_new_full ("Sans 12", "You can select a workspace:", &label_clr);
   clutter_actor_realize (label);
 
+  grid_y = clutter_actor_get_height (label) + 3;
+
   grid = make_workspace_grid (G_CALLBACK (workspace_input_cb),
                               NULL, NULL, TRUE);
-  clutter_actor_set_position (CLUTTER_ACTOR (grid), 0,
-                              clutter_actor_get_height (label) + 3);
+  clutter_actor_realize (grid);
+  clutter_actor_set_position (grid, 0, grid_y);
+  clutter_actor_get_size (grid, &grid_w, &grid_h);
+
+  new = make_workspace_label ("+");
+  clutter_actor_set_size (new, WORKSPACE_CELL_WIDTH, grid_h);
+  clutter_actor_set_position (new, grid_w + 3, grid_y);
+
+  g_signal_connect (new, "button-press-event",
+                    G_CALLBACK (create_workspace_input_cb), NULL);
+
+  clutter_actor_set_reactive (new, TRUE);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, label, CLUTTER_ACTOR (grid), NULL);
+                         background, label, grid, new, NULL);
 
   if (priv->workspace_switcher)
     hide_workspace_switcher ();
