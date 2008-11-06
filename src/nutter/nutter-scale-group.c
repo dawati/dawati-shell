@@ -90,7 +90,10 @@ nutter_scale_group_on_scale_change (GObject     *object,
 				    GParamSpec  *param_spec,
 				    gpointer     data)
 {
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (object));
+  ClutterActor *parent = clutter_actor_get_parent (CLUTTER_ACTOR (object));
+
+  if (parent)
+    clutter_actor_queue_relayout (parent);
 }
 
 static void
