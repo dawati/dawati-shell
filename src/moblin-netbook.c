@@ -60,6 +60,8 @@
 
 #define WORKSPACE_CHOOSER_TIMEOUT 3000
 
+#define MAX_WORKSPACES 8
+
 static GQuark actor_data_quark = 0;
 
 typedef struct PluginPrivate PluginPrivate;
@@ -1377,21 +1379,6 @@ make_workspace_grid (GCallback  ws_callback,
   return grid_actor;
 }
 
-static gboolean
-create_workspace_input_cb (ClutterActor *clone,
-                           ClutterEvent *event,
-                           gpointer      data)
-{
-  MutterPlugin  *plugin    = mutter_get_plugin ();
-  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
-
-  hide_workspace_switcher ();
-
-  meta_screen_append_new_workspace (screen, TRUE, event->any.time);
-
-  return FALSE;
-}
-
 static void
 show_workspace_switcher (void)
 {
@@ -1542,12 +1529,20 @@ new_workspace_input_cb (ClutterActor *clone,
   MutterPlugin  *plugin    = mutter_get_plugin ();
   PluginPrivate *priv      = plugin->plugin_private;
   MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
-
-  priv->next_app_workspace = GPOINTER_TO_INT (data);
+  gint           ws_count  = GPOINTER_TO_INT (data);
 
   hide_workspace_chooser ();
 
-  meta_screen_append_new_workspace (screen, TRUE, event->any.time);
+  if (ws_count < MAX_WORKSPACES)
+    {
+      priv->next_app_workspace = ws_count;
+      meta_screen_append_new_workspace (screen, TRUE, event->any.time);
+    }
+  else
+    {
+      priv->next_app_workspace = -2;
+    }
+
   spawn_app (priv->app_to_start);
 
   g_free (priv->app_to_start);
@@ -1559,14 +1554,23 @@ new_workspace_input_cb (ClutterActor *clone,
 static gboolean
 workspace_chooser_timeout_cb (gpointer data)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  MutterPlugin  *plugin    = mutter_get_plugin ();
+  PluginPrivate *priv      = plugin->plugin_private;
+  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
+  gint           ws_count  = GPOINTER_TO_INT (data);
 
   hide_workspace_chooser ();
-  priv->next_app_workspace = GPOINTER_TO_INT (data);
 
-  meta_screen_append_new_workspace (screen, TRUE, 0);
+  if (ws_count < MAX_WORKSPACES)
+    {
+      priv->next_app_workspace = ws_count;
+      meta_screen_append_new_workspace (screen, TRUE, CurrentTime);
+    }
+  else
+    {
+      priv->next_app_workspace = -2;
+    }
+
   spawn_app (priv->app_to_start);
 
   g_free (priv->app_to_start);
