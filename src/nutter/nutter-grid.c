@@ -94,10 +94,6 @@ static void nutter_grid_allocate (ClutterActor *self,
 
 static void nutter_grid_natural_size (ClutterActor *self);
 
-static void nutter_grid_on_child_change (GObject    *object,
-					 GParamSpec *param_spec,
-					 NutterGrid *self);
-
 G_DEFINE_TYPE_WITH_CODE (NutterGrid, nutter_grid,
                          CLUTTER_TYPE_ACTOR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
@@ -567,25 +563,6 @@ nutter_grid_real_add (ClutterContainer *container, ClutterActor *actor)
   priv->natural_width  = 0;
   priv->natural_height = 0;
 
-  /*
-   * We are only interested in size changes, but since we only manipulate
-   * the actor position ourselves, we can hook to the allocation notification.
-   */
-  g_signal_connect (actor,
-                    "notify::allocation",
-                    G_CALLBACK(nutter_grid_on_child_change),
-		    container);
-  g_signal_connect (actor,
-                    "notify::scale-x",
-                    G_CALLBACK(nutter_grid_on_child_change),
-		    container);
-  g_signal_connect (actor,
-                    "notify::scale-y",
-                    G_CALLBACK(nutter_grid_on_child_change),
-		    container);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
   g_object_unref (actor);
 }
 
@@ -603,11 +580,6 @@ nutter_grid_real_remove (ClutterContainer *container, ClutterActor *actor)
 
       priv->natural_width  = 0;
       priv->natural_height = 0;
-
-      g_signal_handlers_disconnect_by_func
-                            (actor,
-                             G_CALLBACK(nutter_grid_on_child_change),
-                             container);
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (layout));
 
@@ -758,17 +730,11 @@ compute_row_height (GList                    *siblings,
     {
       ClutterActor *child = l->data;
       ClutterUnit natural_width, natural_height;
-      gdouble scale_x, scale_y;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
                                         &natural_width, &natural_height);
-
-      clutter_actor_get_scale (child, &scale_x, &scale_y);
-
-      natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
-      natural_height = (ClutterUnit)((gdouble)natural_height * scale_y);
 
       if (priv->column_major)
         {
@@ -827,18 +793,11 @@ compute_row_start (GList              *siblings,
     {
       ClutterActor *child = l->data;
       ClutterUnit natural_width, natural_height;
-      gdouble scale_x, scale_y;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
                                         &natural_width, &natural_height);
-
-
-      clutter_actor_get_scale (child, &scale_x, &scale_y);
-
-      natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
-      natural_height = (ClutterUnit)((gdouble)natural_height * scale_y);
 
       if (priv->column_major)
         natural_width = natural_height;
@@ -930,18 +889,11 @@ nutter_grid_allocate (ClutterActor          *self,
           ClutterActor *child = iter->data;
           ClutterUnit natural_width;
           ClutterUnit natural_height;
-	  gdouble     scale_x, scale_y;
 
           /* each child will get as much space as they require */
           clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                             NULL, NULL,
                                             &natural_width, &natural_height);
-
-	  /* We want scale taken into account for nutter use */
-	  clutter_actor_get_scale (child, &scale_x, &scale_y);
-
-	  natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
-	  natural_height = (ClutterUnit)((gdouble)natural_height * scale_y);
 
           if (natural_width > priv->max_extent_a)
             priv->max_extent_a = natural_width;
@@ -962,26 +914,13 @@ nutter_grid_allocate (ClutterActor          *self,
       ClutterActor *child = iter->data;
       ClutterUnit natural_a;
       ClutterUnit natural_b;
-      ClutterUnit real_a;
-      ClutterUnit real_b;
-      gdouble scale_x, scale_y;
 
       /*
        * each child will get as much space as they require
-       *
-       * For placing the children, we take into account their scale, that is
-       * what the natural_a, _b values are for. However, we need to give the
-       * child back an allocation that is unscalled, hence the real_a, real_b
-       * values.
        */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
-                                        &real_a, &real_b);
-
-      clutter_actor_get_scale (child, &scale_x, &scale_y);
-
-      natural_a = (ClutterUnit)((gdouble)real_a  * scale_x);
-      natural_b = (ClutterUnit)((gdouble)real_b * scale_y);
+                                        &natural_a, &natural_b);
 
       if (priv->column_major) /* swap axes around if column is major */
         {
@@ -1034,17 +973,17 @@ nutter_grid_allocate (ClutterActor          *self,
           if (homogenous_a)
             {
               child_box.x1 = current_a + (priv->max_extent_a-natural_a) * aalign;
-              child_box.x2 = child_box.x1 + real_a;
+              child_box.x2 = child_box.x1 + natural_a;
 
             }
           else
             {
               child_box.x1 = current_a;
-              child_box.x2 = child_box.x1 + real_a;
+              child_box.x2 = child_box.x1 + natural_a;
             }
 
           child_box.y1 = current_b + (row_height-natural_b) * balign;
-          child_box.y2 = child_box.y1 + real_b;
+          child_box.y2 = child_box.y1 + natural_b;
 
 
           if (priv->column_major)
@@ -1145,20 +1084,13 @@ nutter_grid_natural_size (ClutterActor *self)
           ClutterActor *child = iter->data;
           ClutterUnit natural_width;
           ClutterUnit natural_height;
-	  gdouble     scale_x, scale_y;
 
           /* each child will get as much space as they require */
           clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                             NULL, NULL,
                                             &natural_width, &natural_height);
 
-	  /* We want scale taken into account for nutter use */
-	  clutter_actor_get_scale (child, &scale_x, &scale_y);
-
-	  natural_width  = (ClutterUnit)((gdouble)natural_width  * scale_x);
-	  natural_height = (ClutterUnit)((gdouble)natural_height * scale_y);
-
-          if (natural_width > priv->max_extent_a)
+	  if (natural_width > priv->max_extent_a)
             priv->max_extent_a = natural_width;
           if (natural_height > priv->max_extent_b)
             priv->max_extent_b = natural_width;
@@ -1177,26 +1109,13 @@ nutter_grid_natural_size (ClutterActor *self)
       ClutterActor *child = iter->data;
       ClutterUnit natural_a;
       ClutterUnit natural_b;
-      ClutterUnit real_a;
-      ClutterUnit real_b;
-      gdouble scale_x, scale_y;
 
       /*
        * each child will get as much space as they require
-       *
-       * For placing the children, we take into account their scale, that is
-       * what the natural_a, _b values are for. However, we need to give the
-       * child back an allocation that is unscalled, hence the real_a, real_b
-       * values.
        */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
                                         NULL, NULL,
-                                        &real_a, &real_b);
-
-      clutter_actor_get_scale (child, &scale_x, &scale_y);
-
-      natural_a = (ClutterUnit)((gdouble)real_a  * scale_x);
-      natural_b = (ClutterUnit)((gdouble)real_b * scale_y);
+                                        &natural_a, &natural_b);
 
       if (priv->column_major) /* swap axes around if column is major */
         {
@@ -1274,33 +1193,6 @@ nutter_grid_set_max_size (NutterGrid *self, guint width, guint height)
 
   priv->max_width  = CLUTTER_UNITS_FROM_INT (width);
   priv->max_height = CLUTTER_UNITS_FROM_INT (height);
-}
-
-static void
-nutter_grid_on_child_change (GObject          *object,
-			     GParamSpec       *param_spec,
-			     NutterGrid       *self)
-{
-  NutterGrid *layout = (NutterGrid *) self;
-  NutterGridPrivate *priv = layout->priv;
-  NutterGridActorData *data;
-
-  data = g_hash_table_lookup (priv->hash_table, object);
-
-  if (data)
-    {
-      if (data->skip_allocation_change &&
-	  !strcmp (param_spec->name, "allocation"))
-	{
-	  data->skip_allocation_change = FALSE;
-	  return;
-	}
-    }
-
-  priv->natural_width  = 0;
-  priv->natural_height = 0;
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (layout));
 }
 
 void

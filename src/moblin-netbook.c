@@ -35,7 +35,7 @@
 
 #include "nutter/nutter-grid.h"
 #include "nutter/nutter-ws-icon.h"
-
+#include "nutter/nutter-scale-group.h"
 #include "compositor-mutter.h"
 
 #define DESTROY_TIMEOUT             250
@@ -1080,7 +1080,7 @@ ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
         }
       else
         {
-          group = clutter_group_new ();
+          group = nutter_scale_group_new ();
 
           /*
            * We need to add background, otherwise if the ws is empty, the group
@@ -1289,7 +1289,13 @@ make_workspace_grid (GCallback  ws_callback,
 
           scale = scale_x < scale_y ? scale_x : scale_y;
 
-          clutter_actor_set_scale (clone, scale, scale);
+          /*
+           * This can only be done for textures; for anything else,
+           * there is NutterScaleGroup
+           */
+          clutter_actor_set_size (clone,
+                                  (gint)((gdouble)w * scale),
+                                  (gint)((gdouble)h * scale));
 
           g_signal_connect (clone,
                             "button-press-event",
