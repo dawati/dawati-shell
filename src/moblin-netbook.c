@@ -86,6 +86,7 @@ static gboolean switcher_clone_input_cb (ClutterActor *clone,
                                          gpointer      data);
 
 static void show_workspace_chooser (const gchar *app_path);
+static void hide_panel (void);
 
 /*
  * Create the plugin struct; function pointers initialized in
@@ -120,6 +121,7 @@ struct PluginPrivate
   ClutterActor          *switcher;
   ClutterActor          *workspace_switcher;
   ClutterActor          *workspace_chooser;
+  ClutterActor          *lowlight;
 
   XserverRegion          input_region;
 
@@ -728,6 +730,18 @@ destroy (MutterWindow *mcw)
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+}
+
+static void
+set_lowlight (gboolean on)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+
+  if (on)
+    clutter_actor_show (priv->lowlight);
+  else
+    clutter_actor_hide (priv->lowlight);
 }
 
 /*
@@ -1427,6 +1441,10 @@ hide_workspace_chooser (void)
       priv->workspace_chooser_timeout = 0;
     }
 
+  set_lowlight (FALSE);
+
+  hide_panel ();
+
   clutter_actor_destroy (priv->workspace_chooser);
 
   disable_stage (plugin);
@@ -1599,6 +1617,8 @@ show_workspace_chooser (const gchar *app_path)
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          background, label, grid, new_ws, NULL);
 
+  set_lowlight (TRUE);
+
   if (priv->workspace_chooser)
     hide_workspace_chooser ();
 
@@ -1641,6 +1661,23 @@ switcher_clone_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+static void
+hide_panel ()
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  guint          height = clutter_actor_get_height (priv->panel);
+  gint           x      = clutter_actor_get_x (priv->panel);
+
+  priv->panel_back_in_progress  = TRUE;
+
+  clutter_effect_move (priv->panel_slide_effect,
+                       priv->panel, x, -height,
+                       on_panel_effect_complete,
+                       GINT_TO_POINTER (FALSE));
+  priv->panel_out = FALSE;
+}
+
 static gboolean
 stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
@@ -1678,17 +1715,10 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
            (!priv->switcher && !priv->workspace_switcher)))
         {
           guint height = clutter_actor_get_height (priv->panel);
-          gint  x      = clutter_actor_get_x (priv->panel);
 
           if (event_y > (gint)height)
             {
-              priv->panel_back_in_progress  = TRUE;
-
-              clutter_effect_move (priv->panel_slide_effect,
-                                   priv->panel, x, -height,
-                                   on_panel_effect_complete,
-                                   GINT_TO_POINTER (FALSE));
-              priv->panel_out = FALSE;
+              hide_panel ();
             }
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
@@ -1852,10 +1882,12 @@ do_init (const char *params)
   const gchar   *name;
   ClutterActor  *overlay;
   ClutterActor  *panel;
+  ClutterActor  *lowlight;
   gint           screen_width, screen_height;
   XRectangle     rect[2];
   XserverRegion  region;
-  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);;
+  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
+  ClutterColor   low_clr = { 0, 0, 0, 0x7f };
 
   plugin->plugin_private = priv;
 
@@ -1938,8 +1970,14 @@ do_init (const char *params)
 
   overlay = mutter_plugin_get_overlay_group (plugin);
 
+  lowlight = clutter_rectangle_new_with_color (&low_clr);
+  priv->lowlight = lowlight;
+  clutter_actor_set_size (lowlight, screen_width, screen_height);
+
   panel = priv->panel = make_panel (screen_width);
-  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), panel);
+  clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
+
+  clutter_actor_hide (lowlight);
 
   priv->panel_slide_effect
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
