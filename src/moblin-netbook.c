@@ -59,6 +59,7 @@
 #define WORKSPACE_BORDER 20
 
 #define WORKSPACE_CHOOSER_TIMEOUT 3000
+#define WORKSPACE_CHOOSER_BORDER_WIDTH 1
 
 #define MAX_WORKSPACES 8
 
@@ -1557,7 +1558,7 @@ show_workspace_chooser (const gchar *app_path)
   guint          switcher_width, switcher_height;
   guint          grid_width, grid_height;
   guint          label_height;
-  ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
+  ClutterColor   background_clr = { 0, 0, 0, 0xaf };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
   ClutterActor  *new_ws;
@@ -1573,6 +1574,13 @@ show_workspace_chooser (const gchar *app_path)
 
   switcher = clutter_group_new ();
   background = clutter_rectangle_new_with_color (&background_clr);
+  clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (background),
+                                      WORKSPACE_CHOOSER_BORDER_WIDTH);
+  clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (background),
+                                      &label_clr);
+  clutter_actor_set_position (background,
+                              -2*WORKSPACE_CHOOSER_BORDER_WIDTH,
+                              -2*WORKSPACE_CHOOSER_BORDER_WIDTH);
 
   label = clutter_label_new_full ("Sans 12",
                                   "You can select a workspace:", &label_clr);
@@ -1629,7 +1637,9 @@ show_workspace_chooser (const gchar *app_path)
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
 
   clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
-  clutter_actor_set_size (background, switcher_width, switcher_height);
+  clutter_actor_set_size (background,
+                          switcher_width  + 4 * WORKSPACE_CHOOSER_BORDER_WIDTH,
+                          switcher_height + 4 * WORKSPACE_CHOOSER_BORDER_WIDTH);
 
   clutter_actor_set_anchor_point (switcher,
                                   switcher_width/2, switcher_height/2);
