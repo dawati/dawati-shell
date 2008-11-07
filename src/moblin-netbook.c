@@ -50,8 +50,8 @@
 #define WS_SWITCHER_SLIDE_THRESHOLD 3
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
-#define SWITCHER_CELL_WIDTH  200
-#define SWITCHER_CELL_HEIGHT 200
+#define APP_SWITCHER_CELL_WIDTH  200
+#define APP_SWITCHER_CELL_HEIGHT 200
 
 #define WORKSPACE_CELL_WIDTH  100
 #define WORKSPACE_CELL_HEIGHT 80
@@ -82,11 +82,6 @@ static void     kill_effect (MutterWindow *actor, gulong event);
 static gboolean xevent_filter (XEvent *xev);
 static gboolean reload (const char *params);
 
-static gboolean switcher_clone_input_cb (ClutterActor *clone,
-                                         ClutterEvent *event,
-                                         gpointer      data);
-
-static void show_workspace_chooser (const gchar *app_path);
 static void hide_panel (void);
 
 /*
@@ -733,6 +728,9 @@ destroy (MutterWindow *mcw)
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
+/*
+ * Low-lights and un-low-lights the entire screen below the plugin UI elements.
+ */
 static void
 set_lowlight (gboolean on)
 {
@@ -873,6 +871,15 @@ g_module_check_init (GModule *module)
   return NULL;
 }
 
+/*
+ * Clone lifecycle house keeping.
+ *
+ * The workspace switcher and chooser hold clones of the window glx textures.
+ * We need to ensure that when the master texture disappears, we remove the
+ * clone as well. We do this via weak reference on the original object, and
+ * so when the clone itself disappears, we need to remove the weak reference
+ * from the master.
+ */
 static void switcher_clone_weak_notify (gpointer data, GObject *object);
 
 static void
@@ -902,16 +909,8 @@ switcher_clone_weak_notify (gpointer data, GObject *object)
   g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
 }
 
-/*
- * This is a simple example of how a switcher might access the windows.
- *
- * Note that we use ClutterCloneTexture hooked up to the texture *inside*
- * MutterWindow (with FBO support, we could clone the entire MutterWindow,
- * although for the switcher purposes that is probably not what is wanted
- * anyway).
- */
 static void
-hide_switcher (void)
+hide_app_switcher (void)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
@@ -926,11 +925,42 @@ hide_switcher (void)
   priv->switcher = NULL;
 }
 
-static void
-show_switcher (void)
+/*
+ * Handles click on an application thumb in application switcher by
+ * activating the corresponding application.
+ */
+static gboolean
+app_switcher_clone_input_cb (ClutterActor *clone,
+                             ClutterEvent *event,
+                             gpointer      data)
 {
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
+  MutterWindow  *mw = data;
+  MetaWindow    *window;
+  MetaWorkspace *workspace;
+
+  window    = mutter_window_get_meta_window (mw);
+  workspace = meta_window_get_workspace (window);
+
+  hide_app_switcher ();
+  meta_workspace_activate_with_focus (workspace, window, event->any.time);
+
+  return FALSE;
+}
+
+/*
+ * This is a simple example of how an application switcher might access the
+ * windows to display thumbnails.
+ *
+ * Note that we use ClutterCloneTexture hooked up to the texture *inside*
+ * MutterWindow (with FBO support, we could clone the entire MutterWindow,
+ * although for the switcher purposes that is probably not what is wanted
+ * anyway).
+ */
+static void
+show_app_switcher (void)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
   ClutterActor  *overlay;
   GList         *l;
   ClutterActor  *switcher;
@@ -977,7 +1007,7 @@ show_switcher (void)
 
       g_signal_connect (clone,
                         "button-press-event",
-                        G_CALLBACK (switcher_clone_input_cb), mw);
+                        G_CALLBACK (app_switcher_clone_input_cb), mw);
 
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
@@ -986,8 +1016,8 @@ show_switcher (void)
        * Scale clone to fit the predefined size of the grid cell
        */
       clutter_actor_get_size (a, &w, &h);
-      s_x = (gdouble) SWITCHER_CELL_WIDTH  / (gdouble) w;
-      s_y = (gdouble) SWITCHER_CELL_HEIGHT / (gdouble) h;
+      s_x = (gdouble) APP_SWITCHER_CELL_WIDTH  / (gdouble) w;
+      s_y = (gdouble) APP_SWITCHER_CELL_HEIGHT / (gdouble) h;
 
       s = s_x < s_y ? s_x : s_y;
 
@@ -1007,7 +1037,7 @@ show_switcher (void)
     }
 
   if (priv->switcher)
-    hide_switcher ();
+    hide_app_switcher ();
 
   priv->switcher = switcher;
 
@@ -1029,11 +1059,14 @@ toggle_switcher ()
   PluginPrivate *priv     = plugin->plugin_private;
 
   if (priv->switcher)
-    hide_switcher ();
+    hide_app_switcher ();
   else
-    show_switcher ();
+    show_app_switcher ();
 }
 
+/*
+ * Workspace switcher, used to switch between existing workspaces.
+ */
 static void
 hide_workspace_switcher (void)
 {
@@ -1050,6 +1083,18 @@ hide_workspace_switcher (void)
   priv->workspace_switcher = NULL;
 }
 
+/*
+ * Returns a container for n-th workspace.
+ *
+ * list -- WS containers; if the n-th container does not exist, it is
+ *         appended.
+ *
+ * active -- index of the currently active workspace (to be highlighted)
+ *
+ * expanded -- whether the workspace should be a thumb or whether the
+ *             children should be laid out in non-overlapping fashion (see
+ *             the workspace chooser below).
+ */
 static ClutterActor *
 ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
 {
@@ -1083,6 +1128,9 @@ ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
         {
           NutterGrid *ng;
 
+          /*
+           * For the expanded grid, we use NutterGrid one column wide.
+           */
           group = nutter_grid_new ();
           ng = NUTTER_GRID (group);
 
@@ -1097,6 +1145,10 @@ ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
         }
       else
         {
+          /*
+           * For non-expanded group, we use NutterScaleGroup container, which
+           * allows us to apply scale to the workspace en mass.
+           */
           group = nutter_scale_group_new ();
 
           /*
@@ -1127,6 +1179,10 @@ ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
   return g_list_last (*list)->data;
 }
 
+/*
+ * Calback for clicks on a workspace in the switcher (switches to the
+ * appropriate ws).
+ */
 static gboolean
 workspace_input_cb (ClutterActor *clone,
                     ClutterEvent *event,
@@ -1152,6 +1208,12 @@ workspace_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+/*
+ * Creates an iconic representation of the workspace with the label provided.
+ *
+ * We use the custom NutterWsIcon actor, which automatically handles layout
+ * when the icon is resized.
+ */
 static ClutterActor *
 make_workspace_label (const gchar *text)
 {
@@ -1175,6 +1237,12 @@ make_workspace_label (const gchar *text)
   return actor;
 }
 
+/*
+ * Creates a grid of workspaces, which contains a header row with
+ * workspace symbolic icon, and the workspaces below it.
+ *
+ * It can be expanded (WS chooser) or unexpanded (WS switcher).
+ */
 static ClutterActor *
 make_workspace_grid (GCallback  ws_callback,
                      gint      *n_workspaces,
@@ -1274,6 +1342,12 @@ make_workspace_grid (GCallback  ws_callback,
 
       if (!expanded)
         {
+          /*
+           * Clones on un-expanded workspaces are left at their original
+           * size and position matching that of the original texture.
+           *
+           * (The entiery WS container is then scaled.)
+           */
           clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
           clutter_actor_set_position (clone,
                                       x + WORKSPACE_BORDER / 2,
@@ -1283,6 +1357,13 @@ make_workspace_grid (GCallback  ws_callback,
         }
       else
         {
+          /*
+           * Clones for expanded workspaces are scaled to fit inside the
+           * cell size.
+           *
+           * The also need to respond to click by switching to the appropriate
+           * ws *and* activating the appropriate application.
+           */
           guint w, h;
           gdouble scale_x, scale_y, scale;
           ClutterActor *scaler;
@@ -1300,7 +1381,7 @@ make_workspace_grid (GCallback  ws_callback,
 
           g_signal_connect (clone,
                             "button-press-event",
-                            G_CALLBACK (switcher_clone_input_cb), mw);
+                            G_CALLBACK (app_switcher_clone_input_cb), mw);
           clutter_actor_set_reactive (clone, TRUE);
 
           clutter_container_add_actor (CLUTTER_CONTAINER (workspace), scaler);
@@ -1315,7 +1396,7 @@ make_workspace_grid (GCallback  ws_callback,
       ClutterActor  *ws = l->data;
 
       /*
-       * Scale workspace to fit the predefined size of the grid cell
+       * Scale unexpanded workspaces to fit the predefined size of the grid cell
        */
       if (!expanded)
         clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
@@ -1338,6 +1419,9 @@ make_workspace_grid (GCallback  ws_callback,
   return grid_actor;
 }
 
+/*
+ * Constructs and shows the workspace switcher actor.
+ */
 static void
 show_workspace_switcher (void)
 {
@@ -1405,6 +1489,10 @@ toggle_workspace_switcher ()
     show_workspace_switcher ();
 }
 
+/*
+ * Helper method to spawn and application. Will eventually be replaced
+ * by libgnome-menu, or something like that.
+ */
 static void
 spawn_app (const gchar *path)
 {
@@ -1427,6 +1515,13 @@ spawn_app (const gchar *path)
     }
 }
 
+/*
+ * Workspace chooser
+ *
+ * The chooser is shown when user launches an application from the panel; it
+ * allows the user to select an existing workspace to place the application on,
+ * or, by default, it creates a new workspace for the application.
+ */
 static void
 hide_workspace_chooser (void)
 {
@@ -1453,6 +1548,10 @@ hide_workspace_chooser (void)
   priv->workspace_chooser = NULL;
 }
 
+/*
+ * Handles button press on a workspace withing the chooser by placing the
+ * starting application on the given workspace.
+ */
 static gboolean
 workspace_chooser_input_cb (ClutterActor *clone,
                             ClutterEvent *event,
@@ -1484,6 +1583,10 @@ workspace_chooser_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+/*
+ * Handles click on the New Workspace area in the chooser by placing the
+ * starting application on a new workspace.
+ */
 static gboolean
 new_workspace_input_cb (ClutterActor *clone,
                         ClutterEvent *event,
@@ -1496,6 +1599,9 @@ new_workspace_input_cb (ClutterActor *clone,
 
   hide_workspace_chooser ();
 
+  /*
+   * Workspaces are restricted to MAX_WORKSPACES
+   */
   if (ws_count < MAX_WORKSPACES)
     {
       priv->next_app_workspace = ws_count;
@@ -1514,6 +1620,10 @@ new_workspace_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+/*
+ * Triggers when the user does not interact with the chooser; it places the
+ * starting application on a new workspace.
+ */
 static gboolean
 workspace_chooser_timeout_cb (gpointer data)
 {
@@ -1524,6 +1634,9 @@ workspace_chooser_timeout_cb (gpointer data)
 
   hide_workspace_chooser ();
 
+  /*
+   * Workspaces are restricted to MAX_WORKSPACES
+   */
   if (ws_count < MAX_WORKSPACES)
     {
       priv->next_app_workspace = ws_count;
@@ -1544,6 +1657,9 @@ workspace_chooser_timeout_cb (gpointer data)
   return FALSE;
 }
 
+/*
+ * Creates and shows the workspace chooser.
+ */
 static void
 show_workspace_chooser (const gchar *app_path)
 {
@@ -1653,24 +1769,9 @@ show_workspace_chooser (const gchar *app_path)
                    GINT_TO_POINTER (ws_count));
 }
 
-static gboolean
-switcher_clone_input_cb (ClutterActor *clone,
-                         ClutterEvent *event,
-                         gpointer      data)
-{
-  MutterWindow  *mw = data;
-  MetaWindow    *window;
-  MetaWorkspace *workspace;
-
-  window    = mutter_window_get_meta_window (mw);
-  workspace = meta_window_get_workspace (window);
-
-  hide_switcher ();
-  meta_workspace_activate_with_focus (workspace, window, event->any.time);
-
-  return FALSE;
-}
-
+/*
+ * The slide-out top panel.
+ */
 static void
 hide_panel ()
 {
@@ -1688,6 +1789,11 @@ hide_panel ()
   priv->panel_out = FALSE;
 }
 
+/*
+ * Handles input events on stage.
+ *
+ * NB: used both during capture and bubble stages.
+ */
 static gboolean
 stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
@@ -1756,6 +1862,9 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
+/*
+ * Panel buttons.
+ */
 static gboolean
 app_launcher_input_cb (ClutterActor *actor,
                        ClutterEvent *event,

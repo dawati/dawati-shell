@@ -28,6 +28,14 @@
 
 #include <clutter/clutter-container.h>
 
+/*
+ * Custom ClutterGroup subclass that takes it's scale into account when
+ * reporting its size, i.e., its preferred size will be
+ *
+ * (content_width * scale_x) x (content_height * scale_y)
+ *
+ * NutterScaleGroup is intended for making thumbnails from bigger objects.
+ */
 G_DEFINE_TYPE (NutterScaleGroup, nutter_scale_group, CLUTTER_TYPE_GROUP);
 
 static void
