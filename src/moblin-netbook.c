@@ -1962,10 +1962,10 @@ app_launcher_input_cb (ClutterActor *actor,
 static ClutterActor *
 make_app_launcher (const gchar *name, const gchar *path)
 {
-  ClutterColor  bkg_clr = {0, 0, 0x7f, 0xff};
-  ClutterColor  fg_clr  = {0xf8, 0xd9, 0x09, 0xff};
+  ClutterColor  bkg_clr = {0, 0, 0, 0xff};
+  ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
   ClutterActor *group = clutter_group_new ();
-  ClutterActor *label = clutter_label_new_full ("Sans 12", name, &fg_clr);
+  ClutterActor *label = clutter_label_new_full ("Sans 12 Bold", name, &fg_clr);
   ClutterActor *bkg = clutter_rectangle_new_with_color (&bkg_clr);
   guint         l_width;
 
@@ -2001,10 +2001,11 @@ workspace_button_input_cb (ClutterActor *actor,
 static ClutterActor *
 make_workspace_switcher_button ()
 {
-  ClutterColor  bkg_clr = {0, 0, 0x7f, 0xff};
-  ClutterColor  fg_clr  = {0xf8, 0xd9, 0x09, 0xff};
+  ClutterColor  bkg_clr = {0, 0, 0, 0xff};
+  ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
   ClutterActor *group   = clutter_group_new ();
-  ClutterActor *label   = clutter_label_new_full ("Sans 12", "Spaces", &fg_clr);
+  ClutterActor *label   = clutter_label_new_full ("Sans 12 Bold", 
+                                                  "Spaces", &fg_clr);
   ClutterActor *bkg     = clutter_rectangle_new_with_color (&bkg_clr);
   guint         l_width;
 
