@@ -84,6 +84,9 @@ static gboolean reload (const char *params);
 
 static void hide_panel (void);
 
+static gint _desktop_paint_offset = 0;
+static ClutterActor* _desktop_tex = NULL;
+
 /*
  * Create the plugin struct; function pointers initialized in
  * g_module_check_init().
@@ -181,6 +184,49 @@ get_actor_private (MutterWindow *actor)
 }
 
 static void
+on_desktop_pre_paint (ClutterActor *actor,
+                      gpointer      user_data)
+{
+  ClutterCloneTexturePrivate  *priv;
+  ClutterActor                *parent_texture;
+  gint                         x_1, y_1, x_2, y_2;
+  ClutterColor                 col = { 0xff, 0xff, 0xff, 0xff };
+  CoglHandle                   cogl_texture;
+  ClutterFixed                 t_w, t_h;
+  guint                        tex_width, tex_height;
+  guint w, h;
+
+  clutter_actor_get_size (_desktop_tex, &w, &h);
+
+  cogl_translate (_desktop_paint_offset - w/4 , 0 , 0);
+
+  cogl_texture 
+       = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(_desktop_tex));
+
+  if (cogl_texture == COGL_INVALID_HANDLE)
+    return;
+
+  col.alpha = clutter_actor_get_paint_opacity (actor);
+  cogl_color (&col);
+
+  tex_width = cogl_texture_get_width (cogl_texture);
+  tex_height = cogl_texture_get_height (cogl_texture);
+
+  t_w = CFX_QDIV (CLUTTER_INT_TO_FIXED (w),
+                  CLUTTER_INT_TO_FIXED (tex_width));
+  t_h = CFX_QDIV (CLUTTER_INT_TO_FIXED (h),
+                  CLUTTER_INT_TO_FIXED (tex_height));
+
+  /* Parent paint translated us into position */
+  cogl_texture_rectangle (cogl_texture, 0, 0,
+			  CLUTTER_INT_TO_FIXED (w),
+			  CLUTTER_INT_TO_FIXED (h),
+			  0, 0, t_w, t_h);
+
+  g_signal_stop_emission_by_name (actor, "paint");
+}
+
+static void
 on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 {
   MutterPlugin   *plugin = mutter_get_plugin ();
@@ -218,6 +264,14 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 }
 
 static void
+on_workspace_frame_change (ClutterTimeline *timeline,
+                           gint             frame_num,
+                           gpointer         data)
+{
+  _desktop_paint_offset += ((gint)data) * -1;
+}
+
+static void
 switch_workspace (const GList **actors, gint from, gint to,
                   MetaMotionDirection direction)
 {
@@ -230,6 +284,7 @@ switch_workspace (const GList **actors, gint from, gint to,
   ClutterActor  *indicator_group  = clutter_group_new ();
   ClutterActor  *stage, *label, *rect, *window_layer, *overlay_layer;
   gint           to_x, to_y, from_x = 0, from_y = 0;
+  gint           para_dir = 2;
   ClutterColor   white = { 0xff, 0xff, 0xff, 0xff };
   ClutterColor   black = { 0x33, 0x33, 0x33, 0xff };
   gint           screen_width;
@@ -341,6 +396,8 @@ switch_workspace (const GList **actors, gint from, gint to,
 
       to_x = -screen_width * -1;
       to_y = 0;
+
+      para_dir = -2;
       break;
 
     case META_MOTION_RIGHT:
@@ -380,6 +437,12 @@ switch_workspace (const GList **actors, gint from, gint to,
   clutter_effect_fade (ppriv->switch_workspace_arrow_effect, indicator_group,
                        0,
                        NULL, NULL);
+
+  /* desktop parallax */
+  g_signal_connect (ppriv->tml_switch_workspace1, 
+                    "new-frame", 
+                    G_CALLBACK (on_workspace_frame_change), 
+                    GINT_TO_POINTER(para_dir));
 }
 
 /*
@@ -591,6 +654,27 @@ map (MutterWindow *mcw)
   ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
 
   type = mutter_window_get_window_type (mcw);
+
+  if (type == META_COMP_WINDOW_DESKTOP 
+      && _desktop_tex != NULL ) /* FIXME */
+    {
+      gint screen_width, screen_height;
+
+      mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+      clutter_actor_set_size (_desktop_tex, 
+                              screen_width * 8,
+                              screen_height);
+
+      clutter_actor_set_parent (_desktop_tex, actor);
+
+      g_signal_connect (actor,
+                        "paint", G_CALLBACK (on_desktop_pre_paint),
+                        NULL);
+
+      mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+      return;
+    }
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
@@ -1438,7 +1522,7 @@ show_workspace_switcher (void)
   guint          grid_w, grid_h;
   gint           panel_y;
   guint          panel_height;
-  ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0x77 };
+  ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0xdd };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
@@ -1446,7 +1530,8 @@ show_workspace_switcher (void)
   switcher = clutter_group_new ();
   background = clutter_rectangle_new_with_color (&background_clr);
 
-  label = clutter_label_new_full ("Sans 12", "You can select a workspace:", &label_clr);
+  label = clutter_label_new_full ("Sans 12", 
+                                  "You can select a workspace:", &label_clr);
   clutter_actor_realize (label);
 
   grid_y = clutter_actor_get_height (label) + 3;
@@ -2127,6 +2212,21 @@ do_init (const char *params)
   g_signal_connect (mutter_plugin_get_stage (plugin),
                     "button-press-event", G_CALLBACK (stage_input_cb),
                     GINT_TO_POINTER (FALSE));
+
+
+  _desktop_tex = clutter_texture_new_from_file ("/tmp/bck.jpg", NULL);
+
+  if (_desktop_tex == NULL)
+    {
+      g_warning ("Failed to load /tmp/bck.jpg, No tiled desktop image");
+    }
+  else
+    {
+      g_object_set (_desktop_tex,
+                    "repeat-x", TRUE,
+                    "repeat-y", TRUE,
+                    NULL);
+    }
 
   clutter_set_motion_events_enabled (TRUE);
 
