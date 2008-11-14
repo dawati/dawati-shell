@@ -21,6 +21,9 @@
  * 02111-1307, USA.
  */
 
+#define SN_API_NOT_YET_FROZEN 1
+#include <libsn/sn.h>
+
 #define MUTTER_BUILDING_PLUGIN 1
 #include "mutter-plugin.h"
 
@@ -133,6 +136,11 @@ struct PluginPrivate
   gboolean               panel_back_in_progress : 1;
 
   guint                  workspace_chooser_timeout;
+
+  /* Startup Notification */
+  SnDisplay             *sn_display;
+  SnMonitorContext      *sn_context;
+
 };
 
 /*
@@ -225,6 +233,47 @@ on_desktop_pre_paint (ClutterActor *actor,
 
   g_signal_stop_emission_by_name (actor, "paint");
 }
+
+static void 
+on_sn_monitor_event (SnMonitorEvent *event,
+                     void            *user_data)
+{
+  SnStartupSequence *sequence;
+  const char *seq_id = NULL, *bin_name = NULL;
+
+  sequence = sn_monitor_event_get_startup_sequence (event);
+
+  if (sequence == NULL)
+    {
+      g_warning ("%s() failed, context / sequence is NULL\n", __func__);
+      return;
+    }
+
+  seq_id   = sn_startup_sequence_get_id (sequence);
+  bin_name = sn_startup_sequence_get_binary_name (sequence);
+
+  if (seq_id == NULL || bin_name == NULL)
+    {
+      g_warning("%s() failed, seq_id or bin_name NULL \n", __func__ );
+      return;
+    }
+
+  switch (sn_monitor_event_get_type (event))
+    {
+    case SN_MONITOR_EVENT_INITIATED:
+      printf ("SN_MONITOR_EVENT_INITIATED\n");
+      break;
+    case SN_MONITOR_EVENT_CHANGED:
+      printf ("SN_MONITOR_EVENT_CHANGED\n");
+      break;
+    case SN_MONITOR_EVENT_COMPLETED:
+      printf ("SN_MONITOR_EVENT_COMPLETED\n");
+      break;
+    case SN_MONITOR_EVENT_CANCELED:
+      break;
+    }
+}
+
 
 static void
 on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
@@ -865,9 +914,9 @@ static gboolean
 xevent_filter (XEvent *xev)
 {
   MutterPlugin *plugin = mutter_get_plugin ();
-  ClutterActor                *stage;
+  PluginPrivate *priv  = plugin->plugin_private;
 
-  stage = mutter_plugin_get_stage (plugin);
+  sn_display_process_event (priv->sn_display, xev);
 
   clutter_x11_handle_event (xev);
 
@@ -1581,15 +1630,39 @@ toggle_workspace_switcher ()
 static void
 spawn_app (const gchar *path)
 {
-  gchar *argv[2] = {NULL, NULL};
+  MutterPlugin      *plugin  = mutter_get_plugin ();
+  PluginPrivate     *priv    = plugin->plugin_private;
+  Display           *xdpy = mutter_plugin_get_xdisplay (plugin);
+  SnLauncherContext *context = NULL;
+
+  gchar             *argv[2] = {NULL, NULL};
 
   argv[0] = g_strdup (path);
 
   if (!path)
     return;
 
-  if (!g_spawn_async (NULL, &argv[0], NULL, G_SPAWN_SEARCH_PATH,
-                      NULL, NULL, NULL, NULL))
+  context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
+  
+  /* FIXME */
+  sn_launcher_context_set_name (context, path);
+  sn_launcher_context_set_description (context, path);
+  sn_launcher_context_set_binary_name (context, path);
+  
+  sn_launcher_context_initiate (context, 
+                                "mutter-netbook-shell", 
+                                path, /* bin_name */
+				CurrentTime);
+
+  if (!g_spawn_async (NULL, 
+                      &argv[0], 
+                      NULL, 
+                      G_SPAWN_SEARCH_PATH,
+                      (GSpawnChildSetupFunc)
+                             sn_launcher_context_setup_child_process, 
+                      (gpointer)context, 
+                      NULL, 
+                      NULL))
     {
       MutterPlugin  *plugin  = mutter_get_plugin ();
       PluginPrivate *priv    = plugin->plugin_private;
@@ -1598,6 +1671,8 @@ spawn_app (const gchar *path)
       priv->app_to_start = NULL;
       priv->next_app_workspace = -2;
     }
+
+  sn_launcher_context_unref (context);
 }
 
 /*
@@ -2215,6 +2290,7 @@ do_init (const char *params)
                     GINT_TO_POINTER (FALSE));
 
 
+  /* FIXME: move to priv, pull image from theme, css ? */
   _desktop_tex = clutter_texture_new_from_file ("/tmp/bck.jpg", NULL);
 
   if (_desktop_tex == NULL)
@@ -2230,6 +2306,13 @@ do_init (const char *params)
     }
 
   clutter_set_motion_events_enabled (TRUE);
+
+  /* startup notification */
+   priv->sn_display = sn_display_new (xdpy, NULL, NULL);
+   priv->sn_context = sn_monitor_context_new (priv->sn_display, 
+                                              DefaultScreen (xdpy),
+                                              on_sn_monitor_event,
+                                              (void *)priv, NULL);
 
   return TRUE;
 }
