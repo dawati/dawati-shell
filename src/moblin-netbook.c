@@ -802,7 +802,7 @@ destroy (MutterWindow *mcw)
 
       apriv->tml_destroy = clutter_effect_scale (priv->destroy_effect,
                                                  actor,
-                                                 1.0,
+                                                 4.0,
                                                  0.0,
                                                  (ClutterEffectCompleteFunc)
                                                  on_destroy_effect_complete,
