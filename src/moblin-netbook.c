@@ -267,7 +267,8 @@ on_sn_monitor_event (SnMonitorEvent *event,
       printf ("SN_MONITOR_EVENT_CHANGED\n");
       break;
     case SN_MONITOR_EVENT_COMPLETED:
-      printf ("SN_MONITOR_EVENT_COMPLETED\n");
+      printf ("SN_MONITOR_EVENT_COMPLETED: %s\n",
+              sn_startup_sequence_get_id (sequence));
       break;
     case SN_MONITOR_EVENT_CANCELED:
       break;
@@ -756,6 +757,9 @@ map (MutterWindow *mcw)
 
           if (mw)
             {
+              /* FIXME: Not at all reliable.. windows appear not
+               * unreaised, unfocussed
+              */
               Window xwin = meta_window_get_xwindow (mw);
               XEvent ev;
 
@@ -784,7 +788,8 @@ map (MutterWindow *mcw)
                                                     priv->next_app_workspace);
 
                   if (workspace)
-                    meta_workspace_activate_with_focus (workspace, mw,
+                    meta_workspace_activate_with_focus (workspace, 
+                                                        mw,
                                                         CurrentTime);
                 }
             }
@@ -1671,6 +1676,8 @@ spawn_app (const gchar *path)
       priv->app_to_start = NULL;
       priv->next_app_workspace = -2;
     }
+
+  printf("context id: %s\n", sn_launcher_context_get_startup_id (context));
 
   sn_launcher_context_unref (context);
 }
