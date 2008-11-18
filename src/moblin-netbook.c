@@ -1059,12 +1059,9 @@ hide_workspace_switcher (void)
  *
  * active -- index of the currently active workspace (to be highlighted)
  *
- * expanded -- whether the workspace should be a thumb or whether the
- *             children should be laid out in non-overlapping fashion (see
- *             the workspace chooser below).
  */
 static ClutterActor *
-ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
+ensure_nth_workspace (GList **list, gint n, gint active)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   GList         *l      = *list;
@@ -1092,48 +1089,27 @@ ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
       ClutterColor  active_clr =     { 0xfd, 0xd9, 0x09, 0x7f};
       ClutterActor *background;
 
-      if (expanded)
-        {
-          NutterGrid *ng;
 
-          /*
-           * For the expanded grid, we use NutterGrid one column wide.
-           */
-          group = nutter_grid_new ();
-          ng = NUTTER_GRID (group);
+      /*
+       * For non-expanded group, we use NutterScaleGroup container, which
+       * allows us to apply scale to the workspace en mass.
+       */
+      group = nutter_scale_group_new ();
 
-          nutter_grid_set_max_dimension (ng, 1);
-          nutter_grid_set_row_gap (ng, CLUTTER_UNITS_FROM_INT (10));
-          nutter_grid_set_column_gap (ng, CLUTTER_UNITS_FROM_INT (10));
-          nutter_grid_set_max_size (ng, G_MAXUINT, G_MAXUINT);
-          nutter_grid_set_homogenous_columns (ng, TRUE);
-          nutter_grid_set_homogenous_rows (ng, TRUE);
-          nutter_grid_set_valign (ng, 0.5);
-          nutter_grid_set_halign (ng, 0.5);
-        }
+      /*
+       * We need to add background, otherwise if the ws is empty, the group
+       * will have size 0x0, and not respond to clicks.
+       */
+      if (i == active)
+        background =  clutter_rectangle_new_with_color (&active_clr);
       else
-        {
-          /*
-           * For non-expanded group, we use NutterScaleGroup container, which
-           * allows us to apply scale to the workspace en mass.
-           */
-          group = nutter_scale_group_new ();
+        background =  clutter_rectangle_new_with_color (&background_clr);
 
-          /*
-           * We need to add background, otherwise if the ws is empty, the group
-           * will have size 0x0, and not respond to clicks.
-           */
-          if (i == active)
-            background =  clutter_rectangle_new_with_color (&active_clr);
-          else
-            background =  clutter_rectangle_new_with_color (&background_clr);
+      clutter_actor_set_size (background,
+                              screen_width,
+                              screen_height);
 
-          clutter_actor_set_size (background,
-                                  screen_width,
-                                  screen_height);
-
-          clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
-        }
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
 
       tmp = g_list_append (tmp, group);
 
@@ -1286,8 +1262,7 @@ make_workspace_switcher (GCallback  ws_callback)
  */
 static ClutterActor *
 make_workspace_grid (GCallback  ws_callback,
-                     gint      *n_workspaces,
-                     gboolean   expanded)
+                     gint      *n_workspaces)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -1377,56 +1352,22 @@ make_workspace_grid (GCallback  ws_callback,
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
 
-      workspace = ensure_nth_workspace (&workspaces, ws_indx, active_ws,
-                                        expanded);
+      workspace = ensure_nth_workspace (&workspaces, ws_indx, active_ws);
       g_assert (workspace);
 
-      if (!expanded)
-        {
-          /*
-           * Clones on un-expanded workspaces are left at their original
-           * size and position matching that of the original texture.
-           *
-           * (The entiery WS container is then scaled.)
-           */
-          clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
-          clutter_actor_set_position (clone,
-                                      x + WORKSPACE_BORDER / 2,
-                                      y + WORKSPACE_BORDER / 2);
 
-          clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
-        }
-      else
-        {
-          /*
-           * Clones for expanded workspaces are scaled to fit inside the
-           * cell size.
-           *
-           * The also need to respond to click by switching to the appropriate
-           * ws *and* activating the appropriate application.
-           */
-          guint w, h;
-          gdouble scale_x, scale_y, scale;
-          ClutterActor *scaler;
+      /*
+       * Clones on un-expanded workspaces are left at their original
+       * size and position matching that of the original texture.
+       *
+       * (The entiery WS container is then scaled.)
+       */
+      clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
+      clutter_actor_set_position (clone,
+                                  x + WORKSPACE_BORDER / 2,
+                                  y + WORKSPACE_BORDER / 2);
 
-          clutter_actor_get_size (clone, &w, &h);
-
-          scale_x = (gdouble)WORKSPACE_CELL_WIDTH  / (gdouble)w;
-          scale_y = (gdouble)WORKSPACE_CELL_HEIGHT / (gdouble)h;
-
-          scale = scale_x < scale_y ? scale_x : scale_y;
-
-          scaler = nutter_scale_group_new ();
-          clutter_actor_set_scale (scaler, scale, scale);
-          clutter_container_add_actor (CLUTTER_CONTAINER (scaler), clone);
-
-          g_signal_connect (clone,
-                            "button-press-event",
-                            G_CALLBACK (app_switcher_clone_input_cb), mw);
-          clutter_actor_set_reactive (clone, TRUE);
-
-          clutter_container_add_actor (CLUTTER_CONTAINER (workspace), scaler);
-        }
+      clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
 
       l = l->next;
     }
@@ -1439,8 +1380,7 @@ make_workspace_grid (GCallback  ws_callback,
       /*
        * Scale unexpanded workspaces to fit the predefined size of the grid cell
        */
-      if (!expanded)
-        clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
+      clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
       g_signal_connect (ws, "button-press-event",
                         ws_callback, GINT_TO_POINTER (ws_count));
@@ -1517,18 +1457,6 @@ show_workspace_switcher (void)
   clutter_actor_set_position (switcher, 0, panel_height);
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
-}
-
-static void
-toggle_workspace_switcher ()
-{
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
-
-  if (priv->workspace_switcher)
-    hide_workspace_switcher ();
-  else
-    show_workspace_switcher ();
 }
 
 /*
@@ -1746,7 +1674,7 @@ show_workspace_chooser (const gchar *app_path)
   label_height = clutter_actor_get_height (label) + 3;
 
   grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
-                              &ws_count, FALSE);
+                              &ws_count);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
   clutter_actor_realize (grid);
   clutter_actor_get_size (grid, &grid_width, &grid_height);
