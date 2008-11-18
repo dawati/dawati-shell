@@ -1188,7 +1188,7 @@ make_workspace_switcher (GCallback  ws_callback)
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  gint           ws_count;
+  gint           ws_count, ws_max_windows = 0;
   gint          *n_windows;
   gint           i;
   NbtkWidget    *table;
@@ -1246,11 +1246,14 @@ make_workspace_switcher (GCallback  ws_callback)
 
       n_windows[ws_indx]++;
       nbtk_table_add_actor (NBTK_TABLE (table), clone, n_windows[ws_indx], ws_indx);
+      ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
   g_free (n_windows);
 
-  clutter_actor_set_size (CLUTTER_ACTOR (table), 300, 100);
 
+  clutter_actor_set_size (CLUTTER_ACTOR (table),
+                          WORKSPACE_CELL_WIDTH * ws_count,
+                          WORKSPACE_CELL_HEIGHT * (ws_max_windows + 1));
 
   return CLUTTER_ACTOR (table);
 }
