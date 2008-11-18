@@ -30,6 +30,7 @@
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+#include <nbtk/nbtk.h>
 #include <gmodule.h>
 #include <string.h>
 
@@ -1204,6 +1205,79 @@ make_workspace_label (const gchar *text)
   return actor;
 }
 
+static ClutterActor*
+make_workspace_switcher (GCallback  ws_callback)
+{
+  MutterPlugin  *plugin   = mutter_get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  gint           ws_count;
+  gint          *n_windows;
+  gint           i;
+  NbtkWidget    *table;
+  GList         *window_list, *l;
+
+  table = nbtk_table_new ();
+
+  ws_count = meta_screen_get_n_workspaces (screen);
+
+  /* loop through all the workspaces, adding a label for each */
+  for (i = 0; i < ws_count; i++)
+    {
+      ClutterActor *ws_label;
+      gchar *s;
+     
+      s = g_strdup_printf ("%d", i + 1);
+
+      ws_label = make_workspace_label (s);
+
+      g_signal_connect (ws_label, "button-press-event",
+                        ws_callback, GINT_TO_POINTER (i));
+
+      nbtk_table_add_widget (table, ws_label, 0, i);
+    }
+
+  /* iterate through the windows, adding them to the correct workspace */
+
+  n_windows = g_new0 (gint, ws_count);
+  window_list = mutter_plugin_get_windows (plugin);
+  for (l = window_list; l; l = g_list_next (l))
+    {
+      MutterWindow      *mw = l->data;
+      ClutterActor      *texture, *clone;
+      gint                ws_indx;
+      MetaCompWindowType  type;
+
+      ws_indx = mutter_window_get_workspace (mw);
+      type = mutter_window_get_window_type (mw);
+      /*
+       * Only show regular windows that are not sticky (getting stacking order
+       * right for sticky windows would be really hard, and since they appear
+       * on each workspace, they do not help in identifying which workspace
+       * it is).
+       */
+      if (ws_indx < 0                             ||
+          mutter_window_is_override_redirect (mw) ||
+          type != META_COMP_WINDOW_NORMAL)
+        {
+          l = l->next;
+          continue;
+        }
+
+      texture = mutter_window_get_texture (mw);
+      clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+
+      n_windows[ws_indx]++;
+      nbtk_table_add_widget (NBTK_TABLE (table), clone, n_windows[ws_indx], ws_indx);
+    }
+  g_free (n_windows);
+
+  clutter_actor_set_size (table, 300, 200);
+
+
+  return CLUTTER_ACTOR (table);
+}
+
 /*
  * Creates a grid of workspaces, which contains a header row with
  * workspace symbolic icon, and the workspaces below it.
@@ -1419,7 +1493,7 @@ show_workspace_switcher (void)
 
   grid_y = clutter_actor_get_height (label) + 3;
 
-  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL, TRUE);
+  grid = make_workspace_switcher (G_CALLBACK (workspace_input_cb));
   clutter_actor_realize (grid);
   clutter_actor_set_position (grid, 0, grid_y);
   clutter_actor_get_size (grid, &grid_w, &grid_h);
