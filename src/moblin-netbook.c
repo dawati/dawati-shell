@@ -1210,7 +1210,7 @@ make_workspace_switcher (GCallback  ws_callback)
       g_signal_connect (ws_label, "button-press-event",
                         ws_callback, GINT_TO_POINTER (i));
 
-      nbtk_table_add_widget (NBTK_TABLE (table), ws_label, 0, i);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i);
     }
 
   /* iterate through the windows, adding them to the correct workspace */
@@ -1244,7 +1244,7 @@ make_workspace_switcher (GCallback  ws_callback)
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
 
       n_windows[ws_indx]++;
-      nbtk_table_add_widget (NBTK_TABLE (table), clone, n_windows[ws_indx], ws_indx);
+      nbtk_table_add_actor (NBTK_TABLE (table), clone, n_windows[ws_indx], ws_indx);
     }
   g_free (n_windows);
 
