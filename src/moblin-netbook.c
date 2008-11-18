@@ -1210,7 +1210,7 @@ make_workspace_switcher (GCallback  ws_callback)
       g_signal_connect (ws_label, "button-press-event",
                         ws_callback, GINT_TO_POINTER (i));
 
-      nbtk_table_add_widget (table, ws_label, 0, i);
+      nbtk_table_add_widget (NBTK_TABLE (table), ws_label, 0, i);
     }
 
   /* iterate through the windows, adding them to the correct workspace */
@@ -1248,7 +1248,7 @@ make_workspace_switcher (GCallback  ws_callback)
     }
   g_free (n_windows);
 
-  clutter_actor_set_size (table, 300, 200);
+  clutter_actor_set_size (CLUTTER_ACTOR (table), 300, 100);
 
 
   return CLUTTER_ACTOR (table);
