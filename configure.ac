@@ -27,7 +27,7 @@ AM_PROG_LIBTOOL
 
 AM_GLIB_GNU_GETTEXT
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version)
+PKG_CHECK_MODULES(MUTTER_PLUGIN, nbtk-1.0 metacity-plugins >= mutter_version)
 
 MUTTER_PLUGIN_DIR=$($PKG_CONFIG metacity-plugins --variable=mutterplugindir)
 AC_SUBST(MUTTER_PLUGIN_DIR)
