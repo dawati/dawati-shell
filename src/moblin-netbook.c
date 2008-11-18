@@ -1208,6 +1208,8 @@ make_workspace_switcher (GCallback  ws_callback)
 
       ws_label = make_workspace_label (s);
 
+      clutter_actor_set_reactive (ws_label, TRUE);
+
       g_signal_connect (ws_label, "button-press-event",
                         ws_callback, GINT_TO_POINTER (i));
 
@@ -1243,6 +1245,15 @@ make_workspace_switcher (GCallback  ws_callback)
 
       texture = mutter_window_get_texture (mw);
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+
+      /* 
+       * switch to window workspace when window thumbnail is clicked
+       * XXX: this should probably raise the selected window as well
+       */
+      clutter_actor_set_reactive (clone, TRUE);
+
+      g_signal_connect (clone, "button-press-event",
+                        ws_callback, GINT_TO_POINTER (ws_indx));
 
       n_windows[ws_indx]++;
       nbtk_table_add_actor (NBTK_TABLE (table), clone, n_windows[ws_indx], ws_indx, TRUE);
