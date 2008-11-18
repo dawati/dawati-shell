@@ -4,6 +4,7 @@
  * Copyright (c) 2008 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
+ *         Thomas Wood <thomas@linux.intel.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
