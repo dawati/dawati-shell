@@ -4,6 +4,7 @@
  * Copyright (c) 2008 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
+ *         Thomas Wood <thomas@linux.intel.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,10 +34,10 @@
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+#include <nbtk/nbtk.h>
 #include <gmodule.h>
 #include <string.h>
 
-#include "nutter/nutter-grid.h"
 #include "nutter/nutter-ws-icon.h"
 #include "nutter/nutter-scale-group.h"
 #include "compositor-mutter.h"
@@ -1159,123 +1160,6 @@ app_switcher_clone_input_cb (ClutterActor *clone,
 }
 
 /*
- * This is a simple example of how an application switcher might access the
- * windows to display thumbnails.
- *
- * Note that we use ClutterCloneTexture hooked up to the texture *inside*
- * MutterWindow (with FBO support, we could clone the entire MutterWindow,
- * although for the switcher purposes that is probably not what is wanted
- * anyway).
- */
-static void
-show_app_switcher (void)
-{
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  ClutterActor  *overlay;
-  GList         *l;
-  ClutterActor  *switcher;
-  NutterGrid    *grid;
-  guint          panel_height;
-  gint           panel_y;
-  gint           screen_width, screen_height;
-
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  switcher = nutter_grid_new ();
-
-  grid = NUTTER_GRID (switcher);
-
-  nutter_grid_set_homogenous_columns (grid, TRUE);
-  nutter_grid_set_column_major (grid, FALSE);
-  nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
-  nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
-  nutter_grid_set_max_size (grid, screen_width, screen_height);
-
-  l = mutter_plugin_get_windows (plugin);
-  while (l)
-    {
-      MutterWindow       *mw   = l->data;
-      MetaCompWindowType  type = mutter_window_get_window_type (mw);
-      ClutterActor       *a    = CLUTTER_ACTOR (mw);
-      ClutterActor       *texture;
-      ClutterActor       *clone;
-      guint               w, h;
-      gdouble             s_x, s_y, s;
-
-      /*
-       * Only show regular windows.
-       */
-      if (mutter_window_is_override_redirect (mw) ||
-          type != META_COMP_WINDOW_NORMAL)
-        {
-          l = l->next;
-          continue;
-        }
-
-      texture = mutter_window_get_texture (mw);
-      clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
-
-      g_signal_connect (clone,
-                        "button-press-event",
-                        G_CALLBACK (app_switcher_clone_input_cb), mw);
-
-      g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
-      g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
-
-      /*
-       * Scale clone to fit the predefined size of the grid cell
-       */
-      clutter_actor_get_size (a, &w, &h);
-      s_x = (gdouble) APP_SWITCHER_CELL_WIDTH  / (gdouble) w;
-      s_y = (gdouble) APP_SWITCHER_CELL_HEIGHT / (gdouble) h;
-
-      s = s_x < s_y ? s_x : s_y;
-
-      if (s_x < s_y)
-        clutter_actor_set_size (clone,
-                                (guint)((gdouble)w * s_x),
-                                (guint)((gdouble)h * s_x));
-      else
-        clutter_actor_set_size (clone,
-                                (guint)((gdouble)w * s_y),
-                                (guint)((gdouble)h * s_y));
-
-      clutter_actor_set_reactive (clone, TRUE);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (grid), clone);
-      l = l->next;
-    }
-
-  if (priv->switcher)
-    hide_app_switcher ();
-
-  priv->switcher = switcher;
-
-  panel_height = clutter_actor_get_height (priv->panel);
-  panel_y      = clutter_actor_get_y (priv->panel);
-
-  clutter_actor_set_position (switcher, 10, panel_height + panel_y);
-
-  overlay = mutter_plugin_get_overlay_group (plugin);
-  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
-
-  mutter_plugin_set_stage_reactive (plugin, TRUE);
-}
-
-static void
-toggle_switcher ()
-{
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
-
-  if (priv->switcher)
-    hide_app_switcher ();
-  else
-    show_app_switcher ();
-}
-
-/*
  * Workspace switcher, used to switch between existing workspaces.
  */
 static void
@@ -1302,12 +1186,9 @@ hide_workspace_switcher (void)
  *
  * active -- index of the currently active workspace (to be highlighted)
  *
- * expanded -- whether the workspace should be a thumb or whether the
- *             children should be laid out in non-overlapping fashion (see
- *             the workspace chooser below).
  */
 static ClutterActor *
-ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
+ensure_nth_workspace (GList **list, gint n, gint active)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   GList         *l      = *list;
@@ -1335,48 +1216,27 @@ ensure_nth_workspace (GList **list, gint n, gint active, gboolean expanded)
       ClutterColor  active_clr =     { 0xfd, 0xd9, 0x09, 0x7f};
       ClutterActor *background;
 
-      if (expanded)
-        {
-          NutterGrid *ng;
 
-          /*
-           * For the expanded grid, we use NutterGrid one column wide.
-           */
-          group = nutter_grid_new ();
-          ng = NUTTER_GRID (group);
+      /*
+       * For non-expanded group, we use NutterScaleGroup container, which
+       * allows us to apply scale to the workspace en mass.
+       */
+      group = nutter_scale_group_new ();
 
-          nutter_grid_set_max_dimension (ng, 1);
-          nutter_grid_set_row_gap (ng, CLUTTER_UNITS_FROM_INT (10));
-          nutter_grid_set_column_gap (ng, CLUTTER_UNITS_FROM_INT (10));
-          nutter_grid_set_max_size (ng, G_MAXUINT, G_MAXUINT);
-          nutter_grid_set_homogenous_columns (ng, TRUE);
-          nutter_grid_set_homogenous_rows (ng, TRUE);
-          nutter_grid_set_valign (ng, 0.5);
-          nutter_grid_set_halign (ng, 0.5);
-        }
+      /*
+       * We need to add background, otherwise if the ws is empty, the group
+       * will have size 0x0, and not respond to clicks.
+       */
+      if (i == active)
+        background =  clutter_rectangle_new_with_color (&active_clr);
       else
-        {
-          /*
-           * For non-expanded group, we use NutterScaleGroup container, which
-           * allows us to apply scale to the workspace en mass.
-           */
-          group = nutter_scale_group_new ();
+        background =  clutter_rectangle_new_with_color (&background_clr);
 
-          /*
-           * We need to add background, otherwise if the ws is empty, the group
-           * will have size 0x0, and not respond to clicks.
-           */
-          if (i == active)
-            background =  clutter_rectangle_new_with_color (&active_clr);
-          else
-            background =  clutter_rectangle_new_with_color (&background_clr);
+      clutter_actor_set_size (background,
+                              screen_width,
+                              screen_height);
 
-          clutter_actor_set_size (background,
-                                  screen_width,
-                                  screen_height);
-
-          clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
-        }
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
 
       tmp = g_list_append (tmp, group);
 
@@ -1447,11 +1307,100 @@ make_workspace_label (const gchar *text)
   return actor;
 }
 
+static ClutterActor*
+make_workspace_switcher (GCallback  ws_callback)
+{
+  MutterPlugin  *plugin   = mutter_get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  gint           ws_count, ws_max_windows = 0;
+  gint          *n_windows;
+  gint           i;
+  NbtkWidget    *table;
+  GList         *window_list, *l;
+
+  table = nbtk_table_new ();
+
+  ws_count = meta_screen_get_n_workspaces (screen);
+
+  /* loop through all the workspaces, adding a label for each */
+  for (i = 0; i < ws_count; i++)
+    {
+      ClutterActor *ws_label;
+      gchar *s;
+
+      s = g_strdup_printf ("%d", i + 1);
+
+      ws_label = make_workspace_label (s);
+
+      clutter_actor_set_reactive (ws_label, TRUE);
+
+      g_signal_connect (ws_label, "button-press-event",
+                        ws_callback, GINT_TO_POINTER (i));
+
+      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i);
+    }
+
+  /* iterate through the windows, adding them to the correct workspace */
+
+  n_windows = g_new0 (gint, ws_count);
+  window_list = mutter_plugin_get_windows (plugin);
+  for (l = window_list; l; l = g_list_next (l))
+    {
+      MutterWindow      *mw = l->data;
+      ClutterActor      *texture, *clone;
+      gint                ws_indx;
+      MetaCompWindowType  type;
+
+      ws_indx = mutter_window_get_workspace (mw);
+      type = mutter_window_get_window_type (mw);
+      /*
+       * Only show regular windows that are not sticky (getting stacking order
+       * right for sticky windows would be really hard, and since they appear
+       * on each workspace, they do not help in identifying which workspace
+       * it is).
+       */
+      if (ws_indx < 0                             ||
+          mutter_window_is_override_redirect (mw) ||
+          type != META_COMP_WINDOW_NORMAL)
+        {
+          l = l->next;
+          continue;
+        }
+
+      texture = mutter_window_get_texture (mw);
+      clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+
+      /*
+       * switch to window workspace when window thumbnail is clicked
+       * XXX: this should probably raise the selected window as well
+       */
+      clutter_actor_set_reactive (clone, TRUE);
+
+      g_signal_connect (clone, "button-press-event",
+                        ws_callback, GINT_TO_POINTER (ws_indx));
+
+      n_windows[ws_indx]++;
+      nbtk_table_add_actor (NBTK_TABLE (table), clone,
+                            n_windows[ws_indx], ws_indx);
+      clutter_container_child_set (CLUTTER_CONTAINER (table), clone,
+                                   "keep-aspect-ratio", TRUE, NULL);
+
+      ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
+    }
+  g_free (n_windows);
+
+
+  clutter_actor_set_size (CLUTTER_ACTOR (table),
+                          WORKSPACE_CELL_WIDTH * ws_count,
+                          WORKSPACE_CELL_HEIGHT * (ws_max_windows + 1));
+
+  return CLUTTER_ACTOR (table);
+}
+
 /*
  * Creates a grid of workspaces, which contains a header row with
  * workspace symbolic icon, and the workspaces below it.
- *
- * It can be expanded (WS chooser) or unexpanded (WS switcher).
  */
 
 struct ws_grid_cb_data
@@ -1468,16 +1417,14 @@ free_ws_grid_cb_data (struct ws_grid_cb_data *data)
 }
 
 static ClutterActor *
-make_workspace_grid (GCallback    ws_callback,
-                     const gchar *sn_id,
-                     gint        *n_workspaces,
-                     gboolean     expanded)
+make_workspace_chooser (GCallback    ws_callback,
+                        const gchar *sn_id,
+                        gint        *n_workspaces)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
   GList         *l;
-  NutterGrid    *grid;
-  ClutterActor  *grid_actor;
+  NbtkWidget    *table;
   gint           screen_width, screen_height;
   GList         *workspaces = NULL;
   gdouble        ws_scale_x, ws_scale_y;
@@ -1496,17 +1443,7 @@ make_workspace_grid (GCallback    ws_callback,
   ws_scale_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) screen_width;
   ws_scale_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) screen_height;
 
-  grid_actor = nutter_grid_new ();
-  grid = NUTTER_GRID (grid_actor);
-
-  nutter_grid_set_column_major (grid, FALSE);
-  nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
-  nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
-  nutter_grid_set_max_size (grid, screen_width, screen_height);
-  nutter_grid_set_max_dimension (grid, active_ws);
-  nutter_grid_set_homogenous_columns (grid, TRUE);
-  nutter_grid_set_halign (grid, 0.5);
-
+  table = nbtk_table_new ();
   for (i = 0; i < active_ws; ++i)
     {
       gchar *s = g_strdup_printf ("%d", i + 1);
@@ -1524,7 +1461,7 @@ make_workspace_grid (GCallback    ws_callback,
 
       clutter_actor_set_reactive (ws_label, TRUE);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws_label);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i);
 
       g_free (s);
     }
@@ -1569,56 +1506,22 @@ make_workspace_grid (GCallback    ws_callback,
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
 
-      workspace = ensure_nth_workspace (&workspaces, ws_indx, active_ws,
-                                        expanded);
+      workspace = ensure_nth_workspace (&workspaces, ws_indx, active_ws);
       g_assert (workspace);
 
-      if (!expanded)
-        {
-          /*
-           * Clones on un-expanded workspaces are left at their original
-           * size and position matching that of the original texture.
-           *
-           * (The entiery WS container is then scaled.)
-           */
-          clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
-          clutter_actor_set_position (clone,
-                                      x + WORKSPACE_BORDER / 2,
-                                      y + WORKSPACE_BORDER / 2);
 
-          clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
-        }
-      else
-        {
-          /*
-           * Clones for expanded workspaces are scaled to fit inside the
-           * cell size.
-           *
-           * The also need to respond to click by switching to the appropriate
-           * ws *and* activating the appropriate application.
-           */
-          guint w, h;
-          gdouble scale_x, scale_y, scale;
-          ClutterActor *scaler;
+      /*
+       * Clones on un-expanded workspaces are left at their original
+       * size and position matching that of the original texture.
+       *
+       * (The entiery WS container is then scaled.)
+       */
+      clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
+      clutter_actor_set_position (clone,
+                                  x + WORKSPACE_BORDER / 2,
+                                  y + WORKSPACE_BORDER / 2);
 
-          clutter_actor_get_size (clone, &w, &h);
-
-          scale_x = (gdouble)WORKSPACE_CELL_WIDTH  / (gdouble)w;
-          scale_y = (gdouble)WORKSPACE_CELL_HEIGHT / (gdouble)h;
-
-          scale = scale_x < scale_y ? scale_x : scale_y;
-
-          scaler = nutter_scale_group_new ();
-          clutter_actor_set_scale (scaler, scale, scale);
-          clutter_container_add_actor (CLUTTER_CONTAINER (scaler), clone);
-
-          g_signal_connect (clone,
-                            "button-press-event",
-                            G_CALLBACK (app_switcher_clone_input_cb), mw);
-          clutter_actor_set_reactive (clone, TRUE);
-
-          clutter_container_add_actor (CLUTTER_CONTAINER (workspace), scaler);
-        }
+      clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
 
       l = l->next;
     }
@@ -1636,8 +1539,7 @@ make_workspace_grid (GCallback    ws_callback,
       /*
        * Scale unexpanded workspaces to fit the predefined size of the grid cell
        */
-      if (!expanded)
-        clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
+      clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
       g_signal_connect_data (ws, "button-press-event",
                              ws_callback, wsg_data,
@@ -1645,16 +1547,20 @@ make_workspace_grid (GCallback    ws_callback,
 
       clutter_actor_set_reactive (ws, TRUE);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws, 1, ws_count);
 
       ++ws_count;
       l = l->next;
     }
 
+  clutter_actor_set_size (CLUTTER_ACTOR (table),
+                          active_ws * WORKSPACE_CELL_WIDTH,
+                          2 * WORKSPACE_CELL_HEIGHT);
+
   if (n_workspaces)
     *n_workspaces = active_ws;
 
-  return grid_actor;
+  return CLUTTER_ACTOR (table);
 }
 
 /*
@@ -1690,8 +1596,7 @@ show_workspace_switcher (void)
 
   grid_y = clutter_actor_get_height (label) + 3;
 
-  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb),
-                              NULL, NULL, TRUE);
+  grid = make_workspace_switcher (G_CALLBACK (workspace_input_cb));
   clutter_actor_realize (grid);
   clutter_actor_set_position (grid, 0, grid_y);
   clutter_actor_get_size (grid, &grid_w, &grid_h);
@@ -1715,18 +1620,6 @@ show_workspace_switcher (void)
   clutter_actor_set_position (switcher, 0, panel_height);
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
-}
-
-static void
-toggle_workspace_switcher ()
-{
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
-
-  if (priv->workspace_switcher)
-    hide_workspace_switcher ();
-  else
-    show_workspace_switcher ();
 }
 
 /*
@@ -1984,8 +1877,8 @@ show_workspace_chooser (const gchar * sn_id)
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;
 
-  grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
-                              sn_id, &ws_count, FALSE);
+  grid = make_workspace_chooser (G_CALLBACK (workspace_chooser_input_cb),
+                                 sn_id, &ws_count);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
   clutter_actor_realize (grid);
   clutter_actor_get_size (grid, &grid_width, &grid_height);
