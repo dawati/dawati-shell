@@ -127,9 +127,6 @@ struct PluginPrivate
 
   XserverRegion          input_region;
 
-  gint                   next_app_workspace;
-  gchar                 *app_to_start;
-
   gboolean               debug_mode : 1;
   gboolean               panel_out  : 1;
   gboolean               panel_out_in_progress : 1;
@@ -140,7 +137,7 @@ struct PluginPrivate
   /* Startup Notification */
   SnDisplay             *sn_display;
   SnMonitorContext      *sn_context;
-
+  GHashTable            *sn_hash;
 };
 
 /*
@@ -208,7 +205,7 @@ on_desktop_pre_paint (ClutterActor *actor,
 
   cogl_translate (_desktop_paint_offset - w/4 , 0 , 0);
 
-  cogl_texture 
+  cogl_texture
        = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(_desktop_tex));
 
   if (cogl_texture == COGL_INVALID_HANDLE)
@@ -234,12 +231,31 @@ on_desktop_pre_paint (ClutterActor *actor,
   g_signal_stop_emission_by_name (actor, "paint");
 }
 
-static void 
-on_sn_monitor_event (SnMonitorEvent *event,
-                     void            *user_data)
+static void show_workspace_chooser (const gchar * sn_id);
+
+struct sn_hash_data
 {
+  MutterWindow       *mcw;
+  gint                workspace;
+  SnMonitorEventType  state;
+};
+
+static void
+free_sn_hash_data (struct sn_hash_data *data)
+{
+  g_slice_free (struct sn_hash_data, data);
+}
+
+static void
+on_sn_monitor_event (SnMonitorEvent *event,
+                     void           *user_data)
+{
+  MutterPlugin      *plugin = mutter_get_plugin ();
+  PluginPrivate     *priv   = plugin->plugin_private;
   SnStartupSequence *sequence;
-  const char *seq_id = NULL, *bin_name = NULL;
+  const char        *seq_id = NULL, *bin_name = NULL;
+  gint               workspace_indx = -2;
+  gpointer           key, value;
 
   sequence = sn_monitor_event_get_startup_sequence (event);
 
@@ -261,16 +277,41 @@ on_sn_monitor_event (SnMonitorEvent *event,
   switch (sn_monitor_event_get_type (event))
     {
     case SN_MONITOR_EVENT_INITIATED:
-      printf ("SN_MONITOR_EVENT_INITIATED\n");
+      {
+        struct sn_hash_data *sn_data = g_slice_new0 (struct sn_hash_data);
+
+        sn_data->workspace = -2;
+        sn_data->state = SN_MONITOR_EVENT_INITIATED;
+
+        printf ("SN_MONITOR_EVENT_INITIATED: %s [%s]\n",
+                seq_id, bin_name);
+        g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
+        show_workspace_chooser (seq_id);
+      }
       break;
     case SN_MONITOR_EVENT_CHANGED:
-      printf ("SN_MONITOR_EVENT_CHANGED\n");
+      printf ("SN_MONITOR_EVENT_CHANGED: %s [%s]\n",
+              seq_id, bin_name);
+      if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
+        {
+          struct sn_hash_data *sn_data = value;
+
+          sn_data->state = SN_MONITOR_EVENT_CHANGED;
+        }
       break;
     case SN_MONITOR_EVENT_COMPLETED:
-      printf ("SN_MONITOR_EVENT_COMPLETED: %s\n",
-              sn_startup_sequence_get_id (sequence));
+      printf ("SN_MONITOR_EVENT_COMPLETED: %s [%s], ws %d\n",
+              seq_id, bin_name, workspace_indx);
+      if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
+        {
+          struct sn_hash_data *sn_data = value;
+
+          sn_data->state = SN_MONITOR_EVENT_COMPLETED;
+        }
       break;
     case SN_MONITOR_EVENT_CANCELED:
+      printf ("SN_MONITOR_EVENT_CANCELED: %s [%s]\n", seq_id, bin_name);
+      g_hash_table_remove (priv->sn_hash, seq_id);
       break;
     }
 }
@@ -489,9 +530,9 @@ switch_workspace (const GList **actors, gint from, gint to,
                        NULL, NULL);
 
   /* desktop parallax */
-  g_signal_connect (ppriv->tml_switch_workspace1, 
-                    "new-frame", 
-                    G_CALLBACK (on_workspace_frame_change), 
+  g_signal_connect (ppriv->tml_switch_workspace1,
+                    "new-frame",
+                    G_CALLBACK (on_workspace_frame_change),
                     GINT_TO_POINTER(para_dir));
 }
 
@@ -691,6 +732,61 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
+static void
+move_window_to_workspace (MutterWindow *mcw, gint workspace_index)
+{
+  if (workspace_index > -2)
+    {
+      static Atom  net_wm_desktop = 0;
+      MetaWindow  *mw      = mutter_window_get_meta_window (mcw);
+      MetaScreen  *screen  = meta_window_get_screen (mw);
+      MetaDisplay *display = meta_screen_get_display (screen);
+      Display     *xdpy    = meta_display_get_xdisplay (display);
+
+      if (!net_wm_desktop)
+        net_wm_desktop = XInternAtom (xdpy, "_NET_WM_DESKTOP", False);
+
+      if (mw)
+        {
+          /* FIXME: Not at all reliable.. windows appear not
+           * unreaised, unfocussed
+           */
+          Window xwin = meta_window_get_xwindow (mw);
+          XEvent ev;
+
+          memset(&ev, 0, sizeof(ev));
+
+          ev.xclient.type = ClientMessage;
+          ev.xclient.window = xwin;
+          ev.xclient.message_type = net_wm_desktop;
+          ev.xclient.format = 32;
+          ev.xclient.data.l[0] = workspace_index;
+
+          /*
+           * Metacity watches for property changes, hence the
+           * PropertyChangeMask
+           */
+          XSendEvent(xdpy, xwin, False, PropertyChangeMask, &ev);
+          XSync(xdpy, False);
+
+          if (workspace_index > -1)
+            {
+              GList * l;
+              MetaWorkspace * workspace;
+
+              workspace =
+                meta_screen_get_workspace_by_index (screen,
+                                                    workspace_index);
+
+              if (workspace)
+                meta_workspace_activate_with_focus (workspace,
+                                                    mw,
+                                                    CurrentTime);
+            }
+        }
+    }
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -705,14 +801,14 @@ map (MutterWindow *mcw)
 
   type = mutter_window_get_window_type (mcw);
 
-  if (type == META_COMP_WINDOW_DESKTOP 
+  if (type == META_COMP_WINDOW_DESKTOP
       && _desktop_tex != NULL ) /* FIXME */
     {
       gint screen_width, screen_height;
 
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-      clutter_actor_set_size (_desktop_tex, 
+      clutter_actor_set_size (_desktop_tex,
                               screen_width * 8,
                               screen_height);
 
@@ -729,72 +825,50 @@ map (MutterWindow *mcw)
   if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mcw);
+      MetaWindow   *mw = mutter_window_get_meta_window (mcw);
+      gint          workspace_index = -2;
 
-      /*
-       * Put the window on the requested wokspace, if any.
-       *
-       * NB: this is for prototyping only; if this functionality should remain
-       *     it probably needs to use start up notification.
-       *
-       * What we do is:
-       *
-       * 1. Dispatch _NET_WM_DESKTOP client message; when this is processed by
-       *    metacity, it moves the window on the requested desktop.
-       *
-       * 2. Activate the desktop -- this results in switch from current to
-       *    whatever desktop.
-       */
-      if (priv->next_app_workspace > -2)
+      if (mw)
         {
-          static Atom net_wm_desktop = 0;
-          MetaWindow  *mw = mutter_window_get_meta_window (mcw);
-          MetaScreen  *screen = meta_window_get_screen (mw);
-          MetaDisplay *display = meta_screen_get_display (screen);
-          Display     *xdpy = meta_display_get_xdisplay (display);
+          const char *sn_id = meta_window_get_startup_id (mw);
 
-          if (!net_wm_desktop)
-            net_wm_desktop = XInternAtom (xdpy, "_NET_WM_DESKTOP", False);
-
-          if (mw)
+          if (sn_id)
             {
-              /* FIXME: Not at all reliable.. windows appear not
-               * unreaised, unfocussed
-              */
-              Window xwin = meta_window_get_xwindow (mw);
-              XEvent ev;
+              gpointer key, value;
 
-              memset(&ev, 0, sizeof(ev));
-
-              ev.xclient.type = ClientMessage;
-              ev.xclient.window = xwin;
-              ev.xclient.message_type = net_wm_desktop;
-              ev.xclient.format = 32;
-              ev.xclient.data.l[0] = priv->next_app_workspace;
-
-              /*
-               * Metacity watches for property changes, hence the
-               * PropertyChangeMask
-               */
-              XSendEvent(xdpy, xwin, False, PropertyChangeMask, &ev);
-              XSync(xdpy, False);
-
-              if (priv->next_app_workspace > -1)
+              if (g_hash_table_lookup_extended (priv->sn_hash, sn_id,
+                                                &key, &value))
                 {
-                  GList * l;
-                  MetaWorkspace * workspace;
+                  struct sn_hash_data *sn_data = value;
 
-                  workspace =
-                    meta_screen_get_workspace_by_index (screen,
-                                                    priv->next_app_workspace);
+                  printf ("FOUND WINDOW %s (ws %d) IN HASH\n",
+                          sn_id, sn_data->workspace);
 
-                  if (workspace)
-                    meta_workspace_activate_with_focus (workspace, 
-                                                        mw,
-                                                        CurrentTime);
+                  g_assert (sn_data->state == SN_MONITOR_EVENT_COMPLETED);
+
+                  sn_data->mcw = mcw;
+
+                  workspace_index = sn_data->workspace;
+
+                  /*
+                   * If a workspace is set to a meaninful value, remove the
+                   * window from hash and move it to the appropriate WS.
+                   */
+                  if (workspace_index > -2)
+                    {
+                      g_hash_table_remove (priv->sn_hash, sn_id);
+                      move_window_to_workspace (mcw, workspace_index);
+                    }
+                  else
+                    {
+                      /* Window has mapped, but no selection of workspace
+                       * (either explict by user, or implicity via timeout) has
+                       * taken place yet. We delay showing the actor.
+                       */
+                      return;
+                    }
                 }
             }
-
-          priv->next_app_workspace = -2;
         }
 
       clutter_actor_move_anchor_point_from_gravity (actor,
@@ -812,7 +886,6 @@ map (MutterWindow *mcw)
                                              NULL);
 
       apriv->is_minimized = FALSE;
-
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
@@ -1333,7 +1406,6 @@ workspace_input_cb (ClutterActor *clone,
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
 
-
   if (!workspace)
     {
       g_warning ("No workspace specified, %s:%d\n", __FILE__, __LINE__);
@@ -1381,8 +1453,16 @@ make_workspace_label (const gchar *text)
  *
  * It can be expanded (WS chooser) or unexpanded (WS switcher).
  */
+
+struct ws_grid_cb_data
+{
+  gpointer ws_cb_data;
+  gint     index;
+};
+
 static ClutterActor *
 make_workspace_grid (GCallback  ws_callback,
+                     gpointer   ws_cb_data,
                      gint      *n_workspaces,
                      gboolean   expanded)
 {
@@ -1401,6 +1481,8 @@ make_workspace_grid (GCallback  ws_callback,
   ClutterActor  *ws_label;
 
   active_ws = meta_screen_get_n_workspaces (screen);
+
+  printf ("n workspaces %d\n", active_ws);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1421,11 +1503,16 @@ make_workspace_grid (GCallback  ws_callback,
   for (i = 0; i < active_ws; ++i)
     {
       gchar *s = g_strdup_printf ("%d", i + 1);
+      struct ws_grid_cb_data * wsg_data =
+        g_slice_new (struct ws_grid_cb_data);
+
+      wsg_data->ws_cb_data = ws_cb_data;
+      wsg_data->index = i;
 
       ws_label = make_workspace_label (s);
 
       g_signal_connect (ws_label, "button-press-event",
-                        ws_callback, GINT_TO_POINTER (i));
+                        ws_callback, wsg_data);
 
       clutter_actor_set_reactive (ws_label, TRUE);
 
@@ -1532,6 +1619,11 @@ make_workspace_grid (GCallback  ws_callback,
   while (l)
     {
       ClutterActor  *ws = l->data;
+      struct ws_grid_cb_data * wsg_data =
+        g_slice_new (struct ws_grid_cb_data);
+
+      wsg_data->ws_cb_data = ws_cb_data;
+      wsg_data->index = ws_count;
 
       /*
        * Scale unexpanded workspaces to fit the predefined size of the grid cell
@@ -1540,7 +1632,7 @@ make_workspace_grid (GCallback  ws_callback,
         clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
       g_signal_connect (ws, "button-press-event",
-                        ws_callback, GINT_TO_POINTER (ws_count));
+                        ws_callback, wsg_data);
 
       clutter_actor_set_reactive (ws, TRUE);
 
@@ -1550,9 +1642,8 @@ make_workspace_grid (GCallback  ws_callback,
       l = l->next;
     }
 
-
   if (n_workspaces)
-    *n_workspaces = ws_count;
+    *n_workspaces = active_ws;
 
   return grid_actor;
 }
@@ -1584,13 +1675,14 @@ show_workspace_switcher (void)
   switcher = clutter_group_new ();
   background = clutter_rectangle_new_with_color (&background_clr);
 
-  label = clutter_label_new_full ("Sans 12", 
+  label = clutter_label_new_full ("Sans 12",
                                   "You can select a workspace:", &label_clr);
   clutter_actor_realize (label);
 
   grid_y = clutter_actor_get_height (label) + 3;
 
-  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb), NULL, TRUE);
+  grid = make_workspace_grid (G_CALLBACK (workspace_input_cb),
+                              NULL, NULL, TRUE);
   clutter_actor_realize (grid);
   clutter_actor_set_position (grid, 0, grid_y);
   clutter_actor_get_size (grid, &grid_w, &grid_h);
@@ -1639,7 +1731,7 @@ spawn_app (const gchar *path)
   PluginPrivate     *priv    = plugin->plugin_private;
   Display           *xdpy = mutter_plugin_get_xdisplay (plugin);
   SnLauncherContext *context = NULL;
-
+  const gchar       *id;
   gchar             *argv[2] = {NULL, NULL};
 
   argv[0] = g_strdup (path);
@@ -1648,36 +1740,33 @@ spawn_app (const gchar *path)
     return;
 
   context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
-  
+
   /* FIXME */
   sn_launcher_context_set_name (context, path);
   sn_launcher_context_set_description (context, path);
   sn_launcher_context_set_binary_name (context, path);
-  
-  sn_launcher_context_initiate (context, 
-                                "mutter-netbook-shell", 
+
+  sn_launcher_context_initiate (context,
+                                "mutter-netbook-shell",
                                 path, /* bin_name */
 				CurrentTime);
 
-  if (!g_spawn_async (NULL, 
-                      &argv[0], 
-                      NULL, 
+  id = sn_launcher_context_get_startup_id (context);
+
+  if (!g_spawn_async (NULL,
+                      &argv[0],
+                      NULL,
                       G_SPAWN_SEARCH_PATH,
                       (GSpawnChildSetupFunc)
-                             sn_launcher_context_setup_child_process, 
-                      (gpointer)context, 
-                      NULL, 
+                      sn_launcher_context_setup_child_process,
+                      (gpointer)context,
+                      NULL,
                       NULL))
     {
-      MutterPlugin  *plugin  = mutter_get_plugin ();
-      PluginPrivate *priv    = plugin->plugin_private;
-
-      g_free (priv->app_to_start);
-      priv->app_to_start = NULL;
-      priv->next_app_workspace = -2;
+      g_warning ("Failed to launch [%s]", path);
     }
 
-  printf("context id: %s\n", sn_launcher_context_get_startup_id (context));
+  printf("context id: %s\n", id);
 
   sn_launcher_context_unref (context);
 }
@@ -1715,6 +1804,38 @@ hide_workspace_chooser (void)
   priv->workspace_chooser = NULL;
 }
 
+static void
+finialize_app_startup (const char * sn_id, gint workspace)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  gpointer       key, value;
+
+  if (workspace >= MAX_WORKSPACES)
+    workspace = MAX_WORKSPACES - 1;
+
+  printf ("FINALIZE for %s; ws %d\n", sn_id, workspace);
+
+  if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
+    {
+      MutterWindow        *mcw = NULL;
+      struct sn_hash_data *sn_data = value;
+
+      /*
+       * Update the workspace index.
+       */
+      sn_data->workspace = workspace;
+
+      if (sn_data->mcw)
+        {
+          printf ("FINALIZE executing delayed map for %s on %d\n",
+                  sn_id, workspace);
+
+          map (sn_data->mcw);
+        }
+    }
+}
+
 /*
  * Handles button press on a workspace withing the chooser by placing the
  * starting application on the given workspace.
@@ -1724,11 +1845,14 @@ workspace_chooser_input_cb (ClutterActor *clone,
                             ClutterEvent *event,
                             gpointer      data)
 {
-  gint           indx   = GPOINTER_TO_INT (data);
+  struct ws_grid_cb_data * wsg_data = data;
+  gint           indx   = wsg_data->index;
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   MetaWorkspace *workspace;
+  gpointer       key, value;
+  const char    *sn_id = wsg_data->ws_cb_data;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
 
@@ -1738,14 +1862,9 @@ workspace_chooser_input_cb (ClutterActor *clone,
       return FALSE;
     }
 
-  priv->next_app_workspace = indx;
-
   hide_workspace_chooser ();
 
-  spawn_app (priv->app_to_start);
-
-  g_free (priv->app_to_start);
-  priv->app_to_start = NULL;
+  finialize_app_startup (sn_id, wsg_data->index);
 
   return FALSE;
 }
@@ -1762,27 +1881,14 @@ new_workspace_input_cb (ClutterActor *clone,
   MutterPlugin  *plugin    = mutter_get_plugin ();
   PluginPrivate *priv      = plugin->plugin_private;
   MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
-  gint           ws_count  = GPOINTER_TO_INT (data);
+  struct ws_grid_cb_data * wsg_data = data;
+  const char    *sn_id = wsg_data->ws_cb_data;
 
   hide_workspace_chooser ();
 
-  /*
-   * Workspaces are restricted to MAX_WORKSPACES
-   */
-  if (ws_count < MAX_WORKSPACES)
-    {
-      priv->next_app_workspace = ws_count;
-      meta_screen_append_new_workspace (screen, TRUE, event->any.time);
-    }
-  else
-    {
-      priv->next_app_workspace = -2;
-    }
+  meta_screen_append_new_workspace (screen, FALSE, event->any.time);
 
-  spawn_app (priv->app_to_start);
-
-  g_free (priv->app_to_start);
-  priv->app_to_start = NULL;
+  finialize_app_startup (sn_id, wsg_data->index);
 
   return FALSE;
 }
@@ -1791,34 +1897,32 @@ new_workspace_input_cb (ClutterActor *clone,
  * Triggers when the user does not interact with the chooser; it places the
  * starting application on a new workspace.
  */
+struct ws_chooser_timeout_data
+{
+  gchar * sn_id;
+  gint    workspace;
+};
+
+static void
+free_ws_chooser_timeout_data (struct ws_chooser_timeout_data *data)
+{
+  g_free (data->sn_id);
+  g_slice_free (struct ws_chooser_timeout_data, data);
+}
+
 static gboolean
 workspace_chooser_timeout_cb (gpointer data)
 {
   MutterPlugin  *plugin    = mutter_get_plugin ();
   PluginPrivate *priv      = plugin->plugin_private;
   MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
-  gint           ws_count  = GPOINTER_TO_INT (data);
+  struct ws_chooser_timeout_data *wsc_data = data;
 
   hide_workspace_chooser ();
 
-  /*
-   * Workspaces are restricted to MAX_WORKSPACES
-   */
-  if (ws_count < MAX_WORKSPACES)
-    {
-      priv->next_app_workspace = ws_count;
-      meta_screen_append_new_workspace (screen, TRUE, CurrentTime);
-    }
-  else
-    {
-      priv->next_app_workspace = -2;
-    }
+  meta_screen_append_new_workspace (screen, FALSE, CurrentTime);
 
-  spawn_app (priv->app_to_start);
-
-  g_free (priv->app_to_start);
-  priv->app_to_start = NULL;
-  priv->next_app_workspace = -2;
+  finialize_app_startup (wsc_data->sn_id, wsc_data->workspace);
 
   /* One off */
   return FALSE;
@@ -1828,7 +1932,7 @@ workspace_chooser_timeout_cb (gpointer data)
  * Creates and shows the workspace chooser.
  */
 static void
-show_workspace_chooser (const gchar *app_path)
+show_workspace_chooser (const gchar * sn_id)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -1849,9 +1953,10 @@ show_workspace_chooser (const gchar *app_path)
   ClutterActor  *new_ws_label;
   ClutterColor   new_ws_clr = { 0xfd, 0xd9, 0x09, 0x7f};
   ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
-
-  g_free (priv->app_to_start);
-  priv->app_to_start = g_strdup (app_path);
+  struct ws_grid_cb_data * wsg_data =
+        g_slice_new (struct ws_grid_cb_data);
+  struct ws_chooser_timeout_data * wsc_data =
+        g_slice_new (struct ws_chooser_timeout_data);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1871,6 +1976,7 @@ show_workspace_chooser (const gchar *app_path)
   label_height = clutter_actor_get_height (label) + 3;
 
   grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
+                              g_strdup (sn_id),
                               &ws_count, FALSE);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
   clutter_actor_realize (grid);
@@ -1899,9 +2005,12 @@ show_workspace_chooser (const gchar *app_path)
   clutter_container_add (CLUTTER_CONTAINER (new_ws),
                          new_ws_background, new_ws_label, NULL);
 
+  wsg_data->ws_cb_data = g_strdup (sn_id);
+  wsg_data->index = ws_count;
+
   g_signal_connect (new_ws, "button-press-event",
                     G_CALLBACK (new_workspace_input_cb),
-                    GINT_TO_POINTER (ws_count));
+                    wsg_data);
 
   clutter_actor_set_reactive (new_ws, TRUE);
 
@@ -1931,9 +2040,17 @@ show_workspace_chooser (const gchar *app_path)
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
 
+  printf ("ws_count %d\n", ws_count);
+
+  wsc_data->sn_id = g_strdup (sn_id);
+  wsc_data->workspace = ws_count;
+
   priv->workspace_chooser_timeout =
-    g_timeout_add (WORKSPACE_CHOOSER_TIMEOUT, workspace_chooser_timeout_cb,
-                   GINT_TO_POINTER (ws_count));
+    g_timeout_add_full (G_PRIORITY_DEFAULT,
+                        WORKSPACE_CHOOSER_TIMEOUT,
+                        workspace_chooser_timeout_cb,
+                        wsc_data,
+                        (GDestroyNotify)free_ws_chooser_timeout_data);
 }
 
 /*
@@ -2037,7 +2154,8 @@ app_launcher_input_cb (ClutterActor *actor,
                        ClutterEvent *event,
                        gpointer      data)
 {
-  show_workspace_chooser (data);
+  spawn_app (data);
+
   return FALSE;
 }
 
@@ -2086,7 +2204,7 @@ make_workspace_switcher_button ()
   ClutterColor  bkg_clr = {0, 0, 0, 0xff};
   ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
   ClutterActor *group   = clutter_group_new ();
-  ClutterActor *label   = clutter_label_new_full ("Sans 12 Bold", 
+  ClutterActor *label   = clutter_label_new_full ("Sans 12 Bold",
                                                   "Spaces", &fg_clr);
   ClutterActor *bkg     = clutter_rectangle_new_with_color (&bkg_clr);
   guint         l_width;
@@ -2177,8 +2295,6 @@ do_init (const char *params)
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
 
   plugin->plugin_private = priv;
-
-  priv->next_app_workspace = -2;
 
   name = plugin->name;
   plugin->name = _(name);
@@ -2315,11 +2431,15 @@ do_init (const char *params)
   clutter_set_motion_events_enabled (TRUE);
 
   /* startup notification */
-   priv->sn_display = sn_display_new (xdpy, NULL, NULL);
-   priv->sn_context = sn_monitor_context_new (priv->sn_display, 
-                                              DefaultScreen (xdpy),
-                                              on_sn_monitor_event,
-                                              (void *)priv, NULL);
+  priv->sn_display = sn_display_new (xdpy, NULL, NULL);
+  priv->sn_context = sn_monitor_context_new (priv->sn_display,
+                                             DefaultScreen (xdpy),
+                                             on_sn_monitor_event,
+                                             (void *)priv, NULL);
+
+  priv->sn_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                         g_free,
+                                         (GDestroyNotify) free_sn_hash_data);
 
   return TRUE;
 }
