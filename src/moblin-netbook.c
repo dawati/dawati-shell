@@ -35,7 +35,6 @@
 #include <gmodule.h>
 #include <string.h>
 
-#include "nutter/nutter-grid.h"
 #include "nutter/nutter-ws-icon.h"
 #include "nutter/nutter-scale-group.h"
 #include "compositor-mutter.h"
@@ -1273,18 +1272,15 @@ make_workspace_switcher (GCallback  ws_callback)
 /*
  * Creates a grid of workspaces, which contains a header row with
  * workspace symbolic icon, and the workspaces below it.
- *
- * It can be expanded (WS chooser) or unexpanded (WS switcher).
  */
 static ClutterActor *
-make_workspace_grid (GCallback  ws_callback,
-                     gint      *n_workspaces)
+make_workspace_chooser (GCallback  ws_callback,
+                        gint      *n_workspaces)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
   GList         *l;
-  NutterGrid    *grid;
-  ClutterActor  *grid_actor;
+  NbtkWidget    *table;
   gint           screen_width, screen_height;
   GList         *workspaces = NULL;
   gdouble        ws_scale_x, ws_scale_y;
@@ -1300,18 +1296,8 @@ make_workspace_grid (GCallback  ws_callback,
 
   ws_scale_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) screen_width;
   ws_scale_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) screen_height;
-
-  grid_actor = nutter_grid_new ();
-  grid = NUTTER_GRID (grid_actor);
-
-  nutter_grid_set_column_major (grid, FALSE);
-  nutter_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (5));
-  nutter_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (5));
-  nutter_grid_set_max_size (grid, screen_width, screen_height);
-  nutter_grid_set_max_dimension (grid, active_ws);
-  nutter_grid_set_homogenous_columns (grid, TRUE);
-  nutter_grid_set_halign (grid, 0.5);
-
+  
+  table = nbtk_table_new ();
   for (i = 0; i < active_ws; ++i)
     {
       gchar *s = g_strdup_printf ("%d", i + 1);
@@ -1323,7 +1309,7 @@ make_workspace_grid (GCallback  ws_callback,
 
       clutter_actor_set_reactive (ws_label, TRUE);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws_label);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i, TRUE);
 
       g_free (s);
     }
@@ -1403,17 +1389,20 @@ make_workspace_grid (GCallback  ws_callback,
 
       clutter_actor_set_reactive (ws, TRUE);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (grid), ws);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws, 1, ws_count, FALSE);
 
       ++ws_count;
       l = l->next;
     }
 
+  clutter_actor_set_size (CLUTTER_ACTOR (table),
+                          active_ws * WORKSPACE_CELL_WIDTH,
+                          2 * WORKSPACE_CELL_HEIGHT);
 
   if (n_workspaces)
     *n_workspaces = ws_count;
 
-  return grid_actor;
+  return CLUTTER_ACTOR (table);
 }
 
 /*
@@ -1689,8 +1678,8 @@ show_workspace_chooser (const gchar *app_path)
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;
 
-  grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
-                              &ws_count);
+  grid = make_workspace_chooser (G_CALLBACK (workspace_chooser_input_cb),
+                                 &ws_count);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
   clutter_actor_realize (grid);
   clutter_actor_get_size (grid, &grid_width, &grid_height);
