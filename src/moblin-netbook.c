@@ -1456,15 +1456,22 @@ make_workspace_label (const gchar *text)
 
 struct ws_grid_cb_data
 {
-  gpointer ws_cb_data;
-  gint     index;
+  gchar *sn_id;
+  gint   workspace;
 };
 
+static void
+free_ws_grid_cb_data (struct ws_grid_cb_data *data)
+{
+  g_free (data->sn_id);
+  g_slice_free (struct ws_grid_cb_data, data);
+}
+
 static ClutterActor *
-make_workspace_grid (GCallback  ws_callback,
-                     gpointer   ws_cb_data,
-                     gint      *n_workspaces,
-                     gboolean   expanded)
+make_workspace_grid (GCallback    ws_callback,
+                     const gchar *sn_id,
+                     gint        *n_workspaces,
+                     gboolean     expanded)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -1506,13 +1513,14 @@ make_workspace_grid (GCallback  ws_callback,
       struct ws_grid_cb_data * wsg_data =
         g_slice_new (struct ws_grid_cb_data);
 
-      wsg_data->ws_cb_data = ws_cb_data;
-      wsg_data->index = i;
+      wsg_data->sn_id = g_strdup (sn_id);
+      wsg_data->workspace = i;
 
       ws_label = make_workspace_label (s);
 
-      g_signal_connect (ws_label, "button-press-event",
-                        ws_callback, wsg_data);
+      g_signal_connect_data (ws_label, "button-press-event",
+                             ws_callback, wsg_data,
+                             (GClosureNotify)free_ws_grid_cb_data, 0);
 
       clutter_actor_set_reactive (ws_label, TRUE);
 
@@ -1622,8 +1630,8 @@ make_workspace_grid (GCallback  ws_callback,
       struct ws_grid_cb_data * wsg_data =
         g_slice_new (struct ws_grid_cb_data);
 
-      wsg_data->ws_cb_data = ws_cb_data;
-      wsg_data->index = ws_count;
+      wsg_data->sn_id = g_strdup (sn_id);
+      wsg_data->workspace = ws_count;
 
       /*
        * Scale unexpanded workspaces to fit the predefined size of the grid cell
@@ -1631,8 +1639,9 @@ make_workspace_grid (GCallback  ws_callback,
       if (!expanded)
         clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
-      g_signal_connect (ws, "button-press-event",
-                        ws_callback, wsg_data);
+      g_signal_connect_data (ws, "button-press-event",
+                             ws_callback, wsg_data,
+                             (GClosureNotify)free_ws_grid_cb_data, 0);
 
       clutter_actor_set_reactive (ws, TRUE);
 
@@ -1846,13 +1855,13 @@ workspace_chooser_input_cb (ClutterActor *clone,
                             gpointer      data)
 {
   struct ws_grid_cb_data * wsg_data = data;
-  gint           indx   = wsg_data->index;
+  gint           indx   = wsg_data->workspace;
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   MetaWorkspace *workspace;
   gpointer       key, value;
-  const char    *sn_id = wsg_data->ws_cb_data;
+  const char    *sn_id = wsg_data->sn_id;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
 
@@ -1864,7 +1873,7 @@ workspace_chooser_input_cb (ClutterActor *clone,
 
   hide_workspace_chooser ();
 
-  finialize_app_startup (sn_id, wsg_data->index);
+  finialize_app_startup (sn_id, wsg_data->workspace);
 
   return FALSE;
 }
@@ -1882,13 +1891,13 @@ new_workspace_input_cb (ClutterActor *clone,
   PluginPrivate *priv      = plugin->plugin_private;
   MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
   struct ws_grid_cb_data * wsg_data = data;
-  const char    *sn_id = wsg_data->ws_cb_data;
+  const char    *sn_id     = wsg_data->sn_id;
 
   hide_workspace_chooser ();
 
   meta_screen_append_new_workspace (screen, FALSE, event->any.time);
 
-  finialize_app_startup (sn_id, wsg_data->index);
+  finialize_app_startup (sn_id, wsg_data->workspace);
 
   return FALSE;
 }
@@ -1976,8 +1985,7 @@ show_workspace_chooser (const gchar * sn_id)
   label_height = clutter_actor_get_height (label) + 3;
 
   grid = make_workspace_grid (G_CALLBACK (workspace_chooser_input_cb),
-                              g_strdup (sn_id),
-                              &ws_count, FALSE);
+                              sn_id, &ws_count, FALSE);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
   clutter_actor_realize (grid);
   clutter_actor_get_size (grid, &grid_width, &grid_height);
@@ -2005,12 +2013,13 @@ show_workspace_chooser (const gchar * sn_id)
   clutter_container_add (CLUTTER_CONTAINER (new_ws),
                          new_ws_background, new_ws_label, NULL);
 
-  wsg_data->ws_cb_data = g_strdup (sn_id);
-  wsg_data->index = ws_count;
+  wsg_data->sn_id     = g_strdup (sn_id);
+  wsg_data->workspace = ws_count;
 
-  g_signal_connect (new_ws, "button-press-event",
-                    G_CALLBACK (new_workspace_input_cb),
-                    wsg_data);
+  g_signal_connect_data (new_ws, "button-press-event",
+                         G_CALLBACK (new_workspace_input_cb),
+                         wsg_data,
+                         (GClosureNotify)free_ws_grid_cb_data, 0);
 
   clutter_actor_set_reactive (new_ws, TRUE);
 
