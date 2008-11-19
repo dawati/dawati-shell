@@ -1212,7 +1212,7 @@ make_workspace_switcher (GCallback  ws_callback)
       g_signal_connect (ws_label, "button-press-event",
                         ws_callback, GINT_TO_POINTER (i));
 
-      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i, FALSE);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i);
     }
 
   /* iterate through the windows, adding them to the correct workspace */
@@ -1255,7 +1255,10 @@ make_workspace_switcher (GCallback  ws_callback)
                         ws_callback, GINT_TO_POINTER (ws_indx));
 
       n_windows[ws_indx]++;
-      nbtk_table_add_actor (NBTK_TABLE (table), clone, n_windows[ws_indx], ws_indx, TRUE);
+      nbtk_table_add_actor (NBTK_TABLE (table), clone,
+                            n_windows[ws_indx], ws_indx);
+      clutter_container_child_set (CLUTTER_CONTAINER (table), clone,
+                                   "keep-aspect-ratio", TRUE, NULL);
       
       ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
@@ -1309,7 +1312,7 @@ make_workspace_chooser (GCallback  ws_callback,
 
       clutter_actor_set_reactive (ws_label, TRUE);
 
-      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i, TRUE);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i);
 
       g_free (s);
     }
@@ -1389,7 +1392,7 @@ make_workspace_chooser (GCallback  ws_callback,
 
       clutter_actor_set_reactive (ws, TRUE);
 
-      nbtk_table_add_actor (NBTK_TABLE (table), ws, 1, ws_count, FALSE);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws, 1, ws_count);
 
       ++ws_count;
       l = l->next;
