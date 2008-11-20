@@ -356,7 +356,7 @@ on_workspace_frame_change (ClutterTimeline *timeline,
   MutterPlugin   *plugin = mutter_get_plugin ();
   PluginPrivate  *priv  = plugin->plugin_private;
 
-  priv->parallax_paint_offset += ((gint)data) * -1;
+  priv->parallax_paint_offset += GPOINTER_TO_INT (data) * -1;
 }
 
 static void
