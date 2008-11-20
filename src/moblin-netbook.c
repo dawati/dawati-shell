@@ -1166,28 +1166,6 @@ hide_app_switcher (void)
 }
 
 /*
- * Handles click on an application thumb in application switcher by
- * activating the corresponding application.
- */
-static gboolean
-app_switcher_clone_input_cb (ClutterActor *clone,
-                             ClutterEvent *event,
-                             gpointer      data)
-{
-  MutterWindow  *mw = data;
-  MetaWindow    *window;
-  MetaWorkspace *workspace;
-
-  window    = mutter_window_get_meta_window (mw);
-  workspace = meta_window_get_workspace (window);
-
-  hide_app_switcher ();
-  meta_workspace_activate_with_focus (workspace, window, event->any.time);
-
-  return FALSE;
-}
-
-/*
  * Workspace switcher, used to switch between existing workspaces.
  */
 static void
@@ -1335,6 +1313,36 @@ make_workspace_label (const gchar *text)
   return actor;
 }
 
+static gboolean
+workspace_switcher_clone_input_cb (ClutterActor *clone,
+                                   ClutterEvent *event,
+                                   gpointer      data)
+{
+  MutterWindow  *mw = data;
+  MetaWindow    *window;
+  MetaWorkspace *workspace;
+  MetaWorkspace *active_workspace;
+  MetaScreen    *screen;
+
+  window           = mutter_window_get_meta_window (mw);
+  screen           = meta_window_get_screen (window);
+  workspace        = meta_window_get_workspace (window);
+  active_workspace = meta_screen_get_active_workspace (screen);
+
+  hide_app_switcher ();
+
+  if (!active_workspace || (active_workspace == workspace))
+    {
+      meta_window_activate_with_workspace (window, event->any.time, workspace);
+    }
+  else
+    {
+      meta_workspace_activate_with_focus (workspace, window, event->any.time);
+    }
+
+  return FALSE;
+}
+
 static ClutterActor*
 make_workspace_switcher (GCallback  ws_callback)
 {
@@ -1406,7 +1414,7 @@ make_workspace_switcher (GCallback  ws_callback)
       clutter_actor_set_reactive (clone, TRUE);
 
       g_signal_connect (clone, "button-press-event",
-                        ws_callback, GINT_TO_POINTER (ws_indx));
+                        G_CALLBACK (workspace_switcher_clone_input_cb), mw);
 
       n_windows[ws_indx]++;
       nbtk_table_add_actor (NBTK_TABLE (table), clone,
@@ -1416,8 +1424,8 @@ make_workspace_switcher (GCallback  ws_callback)
 
       ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
-  g_free (n_windows);
 
+  g_free (n_windows);
 
   clutter_actor_set_size (CLUTTER_ACTOR (table),
                           WORKSPACE_CELL_WIDTH * ws_count,
