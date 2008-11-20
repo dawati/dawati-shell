@@ -738,51 +738,32 @@ move_window_to_workspace (MutterWindow *mcw, gint workspace_index)
 {
   if (workspace_index > -2)
     {
-      static Atom  net_wm_desktop = 0;
       MetaWindow  *mw      = mutter_window_get_meta_window (mcw);
       MetaScreen  *screen  = meta_window_get_screen (mw);
-      MetaDisplay *display = meta_screen_get_display (screen);
-      Display     *xdpy    = meta_display_get_xdisplay (display);
-
-      if (!net_wm_desktop)
-        net_wm_desktop = XInternAtom (xdpy, "_NET_WM_DESKTOP", False);
 
       if (mw)
         {
-          /* FIXME: Not at all reliable.. windows appear not
-           * unreaised, unfocussed
-           */
-          Window xwin = meta_window_get_xwindow (mw);
-          XEvent ev;
-
-          memset(&ev, 0, sizeof(ev));
-
-          ev.xclient.type = ClientMessage;
-          ev.xclient.window = xwin;
-          ev.xclient.message_type = net_wm_desktop;
-          ev.xclient.format = 32;
-          ev.xclient.data.l[0] = workspace_index;
-
           /*
-           * Metacity watches for property changes, hence the
-           * PropertyChangeMask
+           * Move the window to the requested workspace; if the window is not
+           * sticky, activate the workspace as well.
            */
-          XSendEvent(xdpy, xwin, False, PropertyChangeMask, &ev);
-          XSync(xdpy, False);
+          meta_window_change_workspace_by_index (mw, workspace_index, TRUE);
 
           if (workspace_index > -1)
             {
-              GList * l;
-              MetaWorkspace * workspace;
+              MetaDisplay   *display = meta_screen_get_display (screen);
+              MetaWorkspace *workspace;
 
               workspace =
                 meta_screen_get_workspace_by_index (screen,
                                                     workspace_index);
 
               if (workspace)
-                meta_workspace_activate_with_focus (workspace,
-                                                    mw,
-                                                    CurrentTime);
+                {
+                  guint32 timestamp = meta_display_get_current_time (display);
+
+                  meta_workspace_activate_with_focus (workspace, mw, timestamp);
+                }
             }
         }
     }
