@@ -1610,8 +1610,12 @@ show_workspace_switcher (void)
 static void
 spawn_app (const gchar *path)
 {
-  MutterPlugin      *plugin  = mutter_get_plugin ();
-  PluginPrivate     *priv    = plugin->plugin_private;
+  MutterPlugin      *plugin    = mutter_get_plugin ();
+  PluginPrivate     *priv      = plugin->plugin_private;
+  MetaScreen        *screen    = mutter_plugin_get_screen (plugin);
+  MetaDisplay       *display   = meta_screen_get_display (screen);
+  guint32            timestamp = meta_display_get_current_time (display);
+
   Display           *xdpy = mutter_plugin_get_xdisplay (plugin);
   SnLauncherContext *context = NULL;
   const gchar       *id;
@@ -1632,7 +1636,7 @@ spawn_app (const gchar *path)
   sn_launcher_context_initiate (context,
                                 "mutter-netbook-shell",
                                 path, /* bin_name */
-				CurrentTime);
+				timestamp);
 
   id = sn_launcher_context_get_startup_id (context);
 
@@ -1799,11 +1803,14 @@ workspace_chooser_timeout_cb (gpointer data)
   MutterPlugin  *plugin    = mutter_get_plugin ();
   PluginPrivate *priv      = plugin->plugin_private;
   MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
+  MetaDisplay   *display   = meta_screen_get_display (screen);
+  guint32        timestamp = meta_display_get_current_time (display);
+
   struct ws_chooser_timeout_data *wsc_data = data;
 
   hide_workspace_chooser ();
 
-  meta_screen_append_new_workspace (screen, FALSE, CurrentTime);
+  meta_screen_append_new_workspace (screen, FALSE, timestamp);
 
   finialize_app_startup (wsc_data->sn_id, wsc_data->workspace);
 
