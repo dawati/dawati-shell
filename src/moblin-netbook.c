@@ -283,16 +283,11 @@ on_sn_monitor_event (SnMonitorEvent *event,
 
         sn_data->workspace = -2;
         sn_data->state = SN_MONITOR_EVENT_INITIATED;
-
-        printf ("SN_MONITOR_EVENT_INITIATED: %s [%s]\n",
-                seq_id, bin_name);
         g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
         show_workspace_chooser (seq_id);
       }
       break;
     case SN_MONITOR_EVENT_CHANGED:
-      printf ("SN_MONITOR_EVENT_CHANGED: %s [%s]\n",
-              seq_id, bin_name);
       if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
         {
           struct sn_hash_data *sn_data = value;
@@ -301,8 +296,6 @@ on_sn_monitor_event (SnMonitorEvent *event,
         }
       break;
     case SN_MONITOR_EVENT_COMPLETED:
-      printf ("SN_MONITOR_EVENT_COMPLETED: %s [%s], ws %d\n",
-              seq_id, bin_name, workspace_indx);
       if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
         {
           struct sn_hash_data *sn_data = value;
@@ -311,7 +304,6 @@ on_sn_monitor_event (SnMonitorEvent *event,
         }
       break;
     case SN_MONITOR_EVENT_CANCELED:
-      printf ("SN_MONITOR_EVENT_CANCELED: %s [%s]\n", seq_id, bin_name);
       g_hash_table_remove (priv->sn_hash, seq_id);
       break;
     }
@@ -822,9 +814,6 @@ map (MutterWindow *mcw)
                                                 &key, &value))
                 {
                   struct sn_hash_data *sn_data = value;
-
-                  printf ("FOUND WINDOW %s (ws %d) IN HASH\n",
-                          sn_id, sn_data->workspace);
 
                   g_assert (sn_data->state == SN_MONITOR_EVENT_COMPLETED);
 
@@ -1417,8 +1406,6 @@ make_workspace_chooser (GCallback    ws_callback,
 
   active_ws = meta_screen_get_n_workspaces (screen);
 
-  printf ("n workspaces %d\n", active_ws);
-
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   ws_scale_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) screen_width;
@@ -1653,8 +1640,6 @@ spawn_app (const gchar *path)
       g_warning ("Failed to launch [%s]", path);
     }
 
-  printf("context id: %s\n", id);
-
   sn_launcher_context_unref (context);
 }
 
@@ -1701,8 +1686,6 @@ finialize_app_startup (const char * sn_id, gint workspace)
   if (workspace >= MAX_WORKSPACES)
     workspace = MAX_WORKSPACES - 1;
 
-  printf ("FINALIZE for %s; ws %d\n", sn_id, workspace);
-
   if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
     {
       MutterWindow        *mcw = NULL;
@@ -1715,9 +1698,6 @@ finialize_app_startup (const char * sn_id, gint workspace)
 
       if (sn_data->mcw)
         {
-          printf ("FINALIZE executing delayed map for %s on %d\n",
-                  sn_id, workspace);
-
           map (sn_data->mcw);
         }
     }
@@ -1929,8 +1909,6 @@ show_workspace_chooser (const gchar * sn_id)
   clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
-
-  printf ("ws_count %d\n", ws_count);
 
   wsc_data->sn_id = g_strdup (sn_id);
   wsc_data->workspace = ws_count;
