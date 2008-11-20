@@ -87,6 +87,8 @@ static gboolean xevent_filter (XEvent *xev);
 static gboolean reload (const char *params);
 
 static void hide_panel (void);
+static void finialize_app_startup (const char * sn_id, gint workspace);
+static void hide_workspace_chooser (void);
 
 /*
  * Create the plugin struct; function pointers initialized in
@@ -248,6 +250,44 @@ free_sn_hash_data (struct sn_hash_data *data)
   g_slice_free (struct sn_hash_data, data);
 }
 
+/*
+ * Triggers when the user does not interact with the chooser; it places the
+ * starting application on a new workspace.
+ */
+struct ws_chooser_timeout_data
+{
+  gchar * sn_id;
+  gint    workspace;
+};
+
+static void
+free_ws_chooser_timeout_data (struct ws_chooser_timeout_data *data)
+{
+  g_free (data->sn_id);
+  g_slice_free (struct ws_chooser_timeout_data, data);
+}
+
+static gboolean
+workspace_chooser_timeout_cb (gpointer data)
+{
+  MutterPlugin  *plugin    = mutter_get_plugin ();
+  PluginPrivate *priv      = plugin->plugin_private;
+  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
+  MetaDisplay   *display   = meta_screen_get_display (screen);
+  guint32        timestamp = meta_display_get_current_time (display);
+
+  struct ws_chooser_timeout_data *wsc_data = data;
+
+  hide_workspace_chooser ();
+
+  meta_screen_append_new_workspace (screen, FALSE, timestamp);
+
+  finialize_app_startup (wsc_data->sn_id, wsc_data->workspace);
+
+  /* One off */
+  return FALSE;
+}
+
 static void
 on_sn_monitor_event (SnMonitorEvent *event,
                      void           *user_data)
@@ -299,9 +339,23 @@ on_sn_monitor_event (SnMonitorEvent *event,
     case SN_MONITOR_EVENT_COMPLETED:
       if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
         {
+          MetaScreen *screen = mutter_plugin_get_screen (plugin);
+          gint        ws_count = meta_screen_get_n_workspaces (screen);
           struct sn_hash_data *sn_data = value;
+          struct ws_chooser_timeout_data * wsc_data;
 
           sn_data->state = SN_MONITOR_EVENT_COMPLETED;
+
+          wsc_data = g_slice_new (struct ws_chooser_timeout_data);
+          wsc_data->sn_id = g_strdup (seq_id);
+          wsc_data->workspace = ws_count;
+
+          priv->workspace_chooser_timeout =
+            g_timeout_add_full (G_PRIORITY_DEFAULT,
+                                WORKSPACE_CHOOSER_TIMEOUT,
+                                workspace_chooser_timeout_cb,
+                                wsc_data,
+                                (GDestroyNotify)free_ws_chooser_timeout_data);
         }
       break;
     case SN_MONITOR_EVENT_CANCELED:
@@ -1765,44 +1819,6 @@ new_workspace_input_cb (ClutterActor *clone,
 }
 
 /*
- * Triggers when the user does not interact with the chooser; it places the
- * starting application on a new workspace.
- */
-struct ws_chooser_timeout_data
-{
-  gchar * sn_id;
-  gint    workspace;
-};
-
-static void
-free_ws_chooser_timeout_data (struct ws_chooser_timeout_data *data)
-{
-  g_free (data->sn_id);
-  g_slice_free (struct ws_chooser_timeout_data, data);
-}
-
-static gboolean
-workspace_chooser_timeout_cb (gpointer data)
-{
-  MutterPlugin  *plugin    = mutter_get_plugin ();
-  PluginPrivate *priv      = plugin->plugin_private;
-  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
-  MetaDisplay   *display   = meta_screen_get_display (screen);
-  guint32        timestamp = meta_display_get_current_time (display);
-
-  struct ws_chooser_timeout_data *wsc_data = data;
-
-  hide_workspace_chooser ();
-
-  meta_screen_append_new_workspace (screen, FALSE, timestamp);
-
-  finialize_app_startup (wsc_data->sn_id, wsc_data->workspace);
-
-  /* One off */
-  return FALSE;
-}
-
-/*
  * Creates and shows the workspace chooser.
  */
 static void
@@ -1829,8 +1845,6 @@ show_workspace_chooser (const gchar * sn_id)
   ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
   struct ws_grid_cb_data * wsg_data =
         g_slice_new (struct ws_grid_cb_data);
-  struct ws_chooser_timeout_data * wsc_data =
-        g_slice_new (struct ws_chooser_timeout_data);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1913,16 +1927,6 @@ show_workspace_chooser (const gchar * sn_id)
   clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
-
-  wsc_data->sn_id = g_strdup (sn_id);
-  wsc_data->workspace = ws_count;
-
-  priv->workspace_chooser_timeout =
-    g_timeout_add_full (G_PRIORITY_DEFAULT,
-                        WORKSPACE_CHOOSER_TIMEOUT,
-                        workspace_chooser_timeout_cb,
-                        wsc_data,
-                        (GDestroyNotify)free_ws_chooser_timeout_data);
 }
 
 /*
