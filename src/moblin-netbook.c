@@ -88,9 +88,6 @@ static gboolean reload (const char *params);
 
 static void hide_panel (void);
 
-static gint _desktop_paint_offset = 0;
-static ClutterActor* _desktop_tex = NULL;
-
 /*
  * Create the plugin struct; function pointers initialized in
  * g_module_check_init().
@@ -139,6 +136,9 @@ struct PluginPrivate
   SnDisplay             *sn_display;
   SnMonitorContext      *sn_context;
   GHashTable            *sn_hash;
+
+  gint                   parallax_paint_offset;
+  ClutterActor          *parallax_tex;
 };
 
 /*
@@ -193,21 +193,22 @@ static void
 on_desktop_pre_paint (ClutterActor *actor,
                       gpointer      user_data)
 {
-  ClutterCloneTexturePrivate  *priv;
-  ClutterActor                *parent_texture;
-  gint                         x_1, y_1, x_2, y_2;
-  ClutterColor                 col = { 0xff, 0xff, 0xff, 0xff };
-  CoglHandle                   cogl_texture;
-  ClutterFixed                 t_w, t_h;
-  guint                        tex_width, tex_height;
-  guint w, h;
+  MutterPlugin      *plugin = mutter_get_plugin ();
+  PluginPrivate     *priv   = plugin->plugin_private;
+  ClutterActor      *parent_texture;
+  gint               x_1, y_1, x_2, y_2;
+  ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
+  CoglHandle         cogl_texture;
+  ClutterFixed       t_w, t_h;
+  guint              tex_width, tex_height;
+  guint              w, h;
 
-  clutter_actor_get_size (_desktop_tex, &w, &h);
+  clutter_actor_get_size (priv->parallax_tex, &w, &h);
 
-  cogl_translate (_desktop_paint_offset - w/4 , 0 , 0);
+  cogl_translate (priv->parallax_paint_offset - w/4 , 0 , 0);
 
   cogl_texture
-       = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(_desktop_tex));
+       = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(priv->parallax_tex));
 
   if (cogl_texture == COGL_INVALID_HANDLE)
     return;
@@ -352,7 +353,10 @@ on_workspace_frame_change (ClutterTimeline *timeline,
                            gint             frame_num,
                            gpointer         data)
 {
-  _desktop_paint_offset += ((gint)data) * -1;
+  MutterPlugin   *plugin = mutter_get_plugin ();
+  PluginPrivate  *priv  = plugin->plugin_private;
+
+  priv->parallax_paint_offset += ((gint)data) * -1;
 }
 
 static void
@@ -776,17 +780,17 @@ map (MutterWindow *mcw)
   type = mutter_window_get_window_type (mcw);
 
   if (type == META_COMP_WINDOW_DESKTOP
-      && _desktop_tex != NULL ) /* FIXME */
+      && priv->parallax_tex != NULL ) /* FIXME */
     {
       gint screen_width, screen_height;
 
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-      clutter_actor_set_size (_desktop_tex,
+      clutter_actor_set_size (priv->parallax_tex,
                               screen_width * 8,
                               screen_height);
 
-      clutter_actor_set_parent (_desktop_tex, actor);
+      clutter_actor_set_parent (priv->parallax_tex, actor);
 
       g_signal_connect (actor,
                         "paint", G_CALLBACK (on_desktop_pre_paint),
@@ -2282,15 +2286,15 @@ do_init (const char *params)
 
 
   /* FIXME: move to priv, pull image from theme, css ? */
-  _desktop_tex = clutter_texture_new_from_file ("/tmp/bck.jpg", NULL);
+  priv->parallax_tex = clutter_texture_new_from_file ("/tmp/bck.jpg", NULL);
 
-  if (_desktop_tex == NULL)
+  if (priv->parallax_tex == NULL)
     {
       g_warning ("Failed to load /tmp/bck.jpg, No tiled desktop image");
     }
   else
     {
-      g_object_set (_desktop_tex,
+      g_object_set (priv->parallax_tex,
                     "repeat-x", TRUE,
                     "repeat-y", TRUE,
                     NULL);
