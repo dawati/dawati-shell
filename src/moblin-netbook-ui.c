@@ -308,11 +308,10 @@ make_workspace_switcher (GCallback  ws_callback)
       texture = mutter_window_get_texture (mw);
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
 
-      /*
-       * switch to window workspace when window thumbnail is clicked
-       * XXX: this should probably raise the selected window as well
-       */
       clutter_actor_set_reactive (clone, TRUE);
+
+      g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
+      g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
 
       g_signal_connect (clone, "button-press-event",
                         G_CALLBACK (workspace_switcher_clone_input_cb), mw);
