@@ -27,6 +27,7 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-chooser.h"
+#include "moblin-netbook-panel.h"
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -560,42 +561,6 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
-static void
-move_window_to_workspace (MutterWindow *mcw, gint workspace_index)
-{
-  if (workspace_index > -2)
-    {
-      MetaWindow  *mw      = mutter_window_get_meta_window (mcw);
-      MetaScreen  *screen  = meta_window_get_screen (mw);
-
-      if (mw)
-        {
-          /*
-           * Move the window to the requested workspace; if the window is not
-           * sticky, activate the workspace as well.
-           */
-          meta_window_change_workspace_by_index (mw, workspace_index, TRUE);
-
-          if (workspace_index > -1)
-            {
-              MetaDisplay   *display = meta_screen_get_display (screen);
-              MetaWorkspace *workspace;
-
-              workspace =
-                meta_screen_get_workspace_by_index (screen,
-                                                    workspace_index);
-
-              if (workspace)
-                {
-                  guint32 timestamp = meta_display_get_current_time (display);
-
-                  meta_workspace_activate_with_focus (workspace, mw, timestamp);
-                }
-            }
-        }
-    }
-}
-
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -641,38 +606,8 @@ map (MutterWindow *mcw)
         {
           const char *sn_id = meta_window_get_startup_id (mw);
 
-          if (sn_id)
-            {
-              gpointer key, value;
-
-              if (g_hash_table_lookup_extended (priv->sn_hash, sn_id,
-                                                &key, &value))
-                {
-                  SnHashData *sn_data = value;
-
-                  sn_data->mcw = mcw;
-
-                  workspace_index = sn_data->workspace;
-
-                  /*
-                   * If a workspace is set to a meaninful value, remove the
-                   * window from hash and move it to the appropriate WS.
-                   */
-                  if (workspace_index > -2)
-                    {
-                      g_hash_table_remove (priv->sn_hash, sn_id);
-                      move_window_to_workspace (mcw, workspace_index);
-                    }
-                  else
-                    {
-                      /* Window has mapped, but no selection of workspace
-                       * (either explict by user, or implicity via timeout) has
-                       * taken place yet. We delay showing the actor.
-                       */
-                      return;
-                    }
-                }
-            }
+          if (!startup_notification_should_map (mcw, sn_id))
+            return;
         }
 
       clutter_actor_move_anchor_point_from_gravity (actor,
@@ -933,12 +868,6 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
-static void
-free_sn_hash_data (SnHashData *data)
-{
-  g_slice_free (SnHashData, data);
-}
-
 /*
  * Core of the plugin init function, called for initial initialization and
  * by the reload() function. Returns TRUE on success.
@@ -1103,16 +1032,7 @@ do_init (const char *params)
 
   clutter_set_motion_events_enabled (TRUE);
 
-  /* startup notification */
-  priv->sn_display = sn_display_new (xdpy, NULL, NULL);
-  priv->sn_context = sn_monitor_context_new (priv->sn_display,
-                                             DefaultScreen (xdpy),
-                                             on_sn_monitor_event,
-                                             (void *)priv, NULL);
-
-  priv->sn_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                         g_free,
-                                         (GDestroyNotify) free_sn_hash_data);
+  setup_startup_notification ();
 
   return TRUE;
 }
