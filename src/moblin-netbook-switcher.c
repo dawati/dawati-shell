@@ -80,35 +80,6 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
-/*
- * Creates an iconic representation of the workspace with the label provided.
- *
- * We use the custom NutterWsIcon actor, which automatically handles layout
- * when the icon is resized.
- */
-static ClutterActor *
-make_workspace_label (const gchar *text)
-{
-  NutterWsIcon *icon;
-  ClutterActor *actor;
-  ClutterColor  b_clr = { 0x44, 0x44, 0x44, 0xff };
-  ClutterColor  f_clr = { 0xff, 0xff, 0xff, 0xff };
-
-  actor = nutter_ws_icon_new ();
-  icon  = NUTTER_WS_ICON (actor);
-
-  clutter_actor_set_size (actor, WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
-
-  nutter_ws_icon_set_font_name (icon, "Sans 16");
-  nutter_ws_icon_set_text (icon, text);
-  nutter_ws_icon_set_color (icon, &b_clr);
-  nutter_ws_icon_set_border_width (icon, 3);
-  nutter_ws_icon_set_text_color (icon, &f_clr);
-  nutter_ws_icon_set_border_color (icon, &f_clr);
-
-  return actor;
-}
-
 static gboolean
 workspace_switcher_clone_input_cb (ClutterActor *clone,
                                    ClutterEvent *event,

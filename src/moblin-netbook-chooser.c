@@ -78,29 +78,6 @@ make_workspace_chooser (GCallback    ws_callback,
   ws_scale_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) screen_height;
 
   table = nbtk_table_new ();
-#if 0
-  for (i = 0; i < active_ws; ++i)
-    {
-      gchar *s = g_strdup_printf ("%d", i + 1);
-      struct ws_grid_cb_data * wsg_data =
-        g_slice_new (struct ws_grid_cb_data);
-
-      wsg_data->sn_id = g_strdup (sn_id);
-      wsg_data->workspace = i;
-
-      ws_label = make_workspace_label (s);
-
-      g_signal_connect_data (ws_label, "button-press-event",
-                             ws_callback, wsg_data,
-                             (GClosureNotify)free_ws_grid_cb_data, 0);
-
-      clutter_actor_set_reactive (ws_label, TRUE);
-
-      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i);
-
-      g_free (s);
-    }
-#endif
 
   l = mutter_plugin_get_windows (plugin);
 
@@ -165,6 +142,7 @@ make_workspace_chooser (GCallback    ws_callback,
   l = workspaces;
   while (l)
     {
+      gchar *s = g_strdup_printf ("%d", ws_count + 1);
       ClutterActor  *ws = l->data;
       struct ws_grid_cb_data * wsg_data =
         g_slice_new (struct ws_grid_cb_data);
@@ -183,7 +161,11 @@ make_workspace_chooser (GCallback    ws_callback,
 
       clutter_actor_set_reactive (ws, TRUE);
 
+      ws_label = make_workspace_label (s);
+      g_free (s);
+
       nbtk_table_add_actor (NBTK_TABLE (table), ws, 1, ws_count);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 1, ws_count);
 
       ++ws_count;
       l = l->next;
