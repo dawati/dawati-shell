@@ -22,8 +22,8 @@
  * 02111-1307, USA.
  */
 
-#ifndef MOBLIN_NETBOOK_UI_H
-#define MOBLIN_NETBOOK_UI_H
+#ifndef MOBLIN_NETBOOK_SWITCHER_H
+#define MOBLIN_NETBOOK_SWITCHER_H
 
 #include <nbtk/nbtk.h>
 #include "nutter/nutter-ws-icon.h"
@@ -44,12 +44,7 @@
 
 #define MAX_WORKSPACES 8
 
-ClutterActor *make_panel (gint width);
-void          hide_panel (void);
-
-void          switcher_clone_weak_notify (gpointer data, GObject *object);
-void          switcher_origin_weak_notify (gpointer data, GObject *object);
-
-ClutterActor *ensure_nth_workspace (GList **list, gint n, gint active);
+void          show_workspace_switcher (void);
+void          hide_workspace_switcher (void);
 
 #endif

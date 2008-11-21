@@ -28,6 +28,15 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
 
+typedef struct SnHashData    SnHashData;
+
+struct SnHashData
+{
+  MutterWindow       *mcw;
+  gint                workspace;
+  SnMonitorEventType  state;
+};
+
 void show_workspace_chooser (const gchar * sn_id);
 void hide_workspace_chooser (void);
 
