@@ -25,6 +25,10 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
 
+/*
+ * This file contains some utility functions shared between the UI components.
+ * TODO -- see if can get rid of most of this.
+ */
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
 mutter_get_plugin ()
