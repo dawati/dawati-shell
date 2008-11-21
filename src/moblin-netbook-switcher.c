@@ -37,43 +37,6 @@ mutter_get_plugin ()
  * Workspace switcher, used to switch between existing workspaces.
  */
 
-/*
- * Clone lifecycle house keeping.
- *
- * The workspace switcher and chooser hold clones of the window glx textures.
- * We need to ensure that when the master texture disappears, we remove the
- * clone as well. We do this via weak reference on the original object, and
- * so when the clone itself disappears, we need to remove the weak reference
- * from the master.
- */
-
-void
-switcher_origin_weak_notify (gpointer data, GObject *object)
-{
-  ClutterActor *clone = data;
-
-  /*
-   * The original MutterWindow destroyed; remove the weak reference the
-   * we added to the clone referencing the original window, then
-   * destroy the clone.
-   */
-  g_object_weak_unref (G_OBJECT (clone), switcher_clone_weak_notify, object);
-  clutter_actor_destroy (clone);
-}
-
-void
-switcher_clone_weak_notify (gpointer data, GObject *object)
-{
-  ClutterActor *origin = data;
-
-  /*
-   * Clone destroyed -- this function gets only called whent the clone
-   * is destroyed while the original MutterWindow still exists, so remove
-   * the weak reference we added on the origin for sake of the clone.
-   */
-  g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
-}
-
 void
 hide_workspace_switcher (void)
 {
@@ -90,77 +53,6 @@ hide_workspace_switcher (void)
   priv->workspace_switcher = NULL;
 }
 
-/*
- * Returns a container for n-th workspace.
- *
- * list -- WS containers; if the n-th container does not exist, it is
- *         appended.
- *
- * active -- index of the currently active workspace (to be highlighted)
- *
- */
-ClutterActor *
-ensure_nth_workspace (GList **list, gint n, gint active)
-{
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  GList         *l      = *list;
-  GList         *tmp    = NULL;
-  gint           i      = 0;
-  gint           screen_width, screen_height;
-
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  while (l)
-    {
-      if (i == n)
-        return l->data;
-
-      l = l->next;
-      ++i;
-    }
-
-  g_assert (i <= n);
-
-  while (i <= n)
-    {
-      ClutterActor *group;
-      ClutterColor  background_clr = { 0, 0, 0, 0};
-      ClutterColor  active_clr =     { 0xfd, 0xd9, 0x09, 0x7f};
-      ClutterActor *background;
-
-
-      /*
-       * For non-expanded group, we use NutterScaleGroup container, which
-       * allows us to apply scale to the workspace en mass.
-       */
-      group = nutter_scale_group_new ();
-
-      /*
-       * We need to add background, otherwise if the ws is empty, the group
-       * will have size 0x0, and not respond to clicks.
-       */
-      if (i == active)
-        background =  clutter_rectangle_new_with_color (&active_clr);
-      else
-        background =  clutter_rectangle_new_with_color (&background_clr);
-
-      clutter_actor_set_size (background,
-                              screen_width,
-                              screen_height);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
-
-      tmp = g_list_append (tmp, group);
-
-      ++i;
-    }
-
-  g_assert (tmp);
-
-  *list = g_list_concat (*list, tmp);
-
-  return g_list_last (*list)->data;
-}
 
 /*
  * Calback for clicks on a workspace in the switcher (switches to the

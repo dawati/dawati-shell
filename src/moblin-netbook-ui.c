@@ -33,207 +33,110 @@ mutter_get_plugin ()
 }
 
 /*
- * The slide-out top panel.
+ * Returns a container for n-th workspace.
+ *
+ * list -- WS containers; if the n-th container does not exist, it is
+ *         appended.
+ *
+ * active -- index of the currently active workspace (to be highlighted)
+ *
  */
-static void
-on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
+ClutterActor *
+ensure_nth_workspace (GList **list, gint n, gint active)
 {
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  GList         *l      = *list;
+  GList         *tmp    = NULL;
+  gint           i      = 0;
+  gint           screen_width, screen_height;
 
-  priv->panel_back_in_progress = FALSE;
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  if (!priv->workspace_chooser && !priv->workspace_switcher)
-    disable_stage (plugin);
+  while (l)
+    {
+      if (i == n)
+        return l->data;
+
+      l = l->next;
+      ++i;
+    }
+
+  g_assert (i <= n);
+
+  while (i <= n)
+    {
+      ClutterActor *group;
+      ClutterColor  background_clr = { 0, 0, 0, 0};
+      ClutterColor  active_clr =     { 0xfd, 0xd9, 0x09, 0x7f};
+      ClutterActor *background;
+
+
+      /*
+       * For non-expanded group, we use NutterScaleGroup container, which
+       * allows us to apply scale to the workspace en mass.
+       */
+      group = nutter_scale_group_new ();
+
+      /*
+       * We need to add background, otherwise if the ws is empty, the group
+       * will have size 0x0, and not respond to clicks.
+       */
+      if (i == active)
+        background =  clutter_rectangle_new_with_color (&active_clr);
+      else
+        background =  clutter_rectangle_new_with_color (&background_clr);
+
+      clutter_actor_set_size (background,
+                              screen_width,
+                              screen_height);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), background);
+
+      tmp = g_list_append (tmp, group);
+
+      ++i;
+    }
+
+  g_assert (tmp);
+
+  *list = g_list_concat (*list, tmp);
+
+  return g_list_last (*list)->data;
+}
+
+/*
+ * Clone lifecycle house keeping.
+ *
+ * The workspace switcher and chooser hold clones of the window glx textures.
+ * We need to ensure that when the master texture disappears, we remove the
+ * clone as well. We do this via weak reference on the original object, and
+ * so when the clone itself disappears, we need to remove the weak reference
+ * from the master.
+ */
+
+void
+switcher_origin_weak_notify (gpointer data, GObject *object)
+{
+  ClutterActor *clone = data;
+
+  /*
+   * The original MutterWindow destroyed; remove the weak reference the
+   * we added to the clone referencing the original window, then
+   * destroy the clone.
+   */
+  g_object_weak_unref (G_OBJECT (clone), switcher_clone_weak_notify, object);
+  clutter_actor_destroy (clone);
 }
 
 void
-hide_panel ()
+switcher_clone_weak_notify (gpointer data, GObject *object)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  guint          height = clutter_actor_get_height (priv->panel);
-  gint           x      = clutter_actor_get_x (priv->panel);
+  ClutterActor *origin = data;
 
-  priv->panel_back_in_progress  = TRUE;
-
-  clutter_effect_move (priv->panel_slide_effect,
-                       priv->panel, x, -height,
-                       on_panel_back_effect_complete,
-                       NULL);
-  priv->panel_out = FALSE;
+  /*
+   * Clone destroyed -- this function gets only called whent the clone
+   * is destroyed while the original MutterWindow still exists, so remove
+   * the weak reference we added on the origin for sake of the clone.
+   */
+  g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
 }
-
-/*
- * Panel buttons.
- */
-/*
- * Helper method to spawn and application. Will eventually be replaced
- * by libgnome-menu, or something like that.
- */
-static void
-spawn_app (const gchar *path)
-{
-  MutterPlugin      *plugin    = mutter_get_plugin ();
-  PluginPrivate     *priv      = plugin->plugin_private;
-  MetaScreen        *screen    = mutter_plugin_get_screen (plugin);
-  MetaDisplay       *display   = meta_screen_get_display (screen);
-  guint32            timestamp = meta_display_get_current_time (display);
-
-  Display           *xdpy = mutter_plugin_get_xdisplay (plugin);
-  SnLauncherContext *context = NULL;
-  const gchar       *id;
-  gchar             *argv[2] = {NULL, NULL};
-
-  argv[0] = g_strdup (path);
-
-  if (!path)
-    return;
-
-  context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
-
-  /* FIXME */
-  sn_launcher_context_set_name (context, path);
-  sn_launcher_context_set_description (context, path);
-  sn_launcher_context_set_binary_name (context, path);
-
-  sn_launcher_context_initiate (context,
-                                "mutter-netbook-shell",
-                                path, /* bin_name */
-				timestamp);
-
-  id = sn_launcher_context_get_startup_id (context);
-
-  if (!g_spawn_async (NULL,
-                      &argv[0],
-                      NULL,
-                      G_SPAWN_SEARCH_PATH,
-                      (GSpawnChildSetupFunc)
-                      sn_launcher_context_setup_child_process,
-                      (gpointer)context,
-                      NULL,
-                      NULL))
-    {
-      g_warning ("Failed to launch [%s]", path);
-    }
-
-  sn_launcher_context_unref (context);
-}
-
-static gboolean
-app_launcher_input_cb (ClutterActor *actor,
-                       ClutterEvent *event,
-                       gpointer      data)
-{
-  spawn_app (data);
-
-  return FALSE;
-}
-
-static ClutterActor *
-make_app_launcher (const gchar *name, const gchar *path)
-{
-  ClutterColor  bkg_clr = {0, 0, 0, 0xff};
-  ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
-  ClutterActor *group = clutter_group_new ();
-  ClutterActor *label = clutter_label_new_full ("Sans 12 Bold", name, &fg_clr);
-  ClutterActor *bkg = clutter_rectangle_new_with_color (&bkg_clr);
-  guint         l_width;
-
-  clutter_actor_realize (label);
-  l_width = clutter_actor_get_width (label);
-  l_width += 10;
-
-  clutter_actor_set_anchor_point_from_gravity (label, CLUTTER_GRAVITY_CENTER);
-  clutter_actor_set_position (label, l_width/2, PANEL_HEIGHT / 2);
-
-  clutter_actor_set_size (bkg, l_width + 5, PANEL_HEIGHT);
-
-  clutter_container_add (CLUTTER_CONTAINER (group), bkg, label, NULL);
-
-  g_signal_connect (group,
-                    "button-press-event", G_CALLBACK (app_launcher_input_cb),
-                    (gpointer)path);
-
-  clutter_actor_set_reactive (group, TRUE);
-
-  return group;
-}
-
-static gboolean
-workspace_button_input_cb (ClutterActor *actor,
-                           ClutterEvent *event,
-                           gpointer      data)
-{
-  show_workspace_switcher ();
-  return TRUE;
-}
-
-static ClutterActor *
-make_workspace_switcher_button ()
-{
-  ClutterColor  bkg_clr = {0, 0, 0, 0xff};
-  ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
-  ClutterActor *group   = clutter_group_new ();
-  ClutterActor *label   = clutter_label_new_full ("Sans 12 Bold",
-                                                  "Spaces", &fg_clr);
-  ClutterActor *bkg     = clutter_rectangle_new_with_color (&bkg_clr);
-  guint         l_width;
-
-  clutter_actor_realize (label);
-  l_width = clutter_actor_get_width (label);
-  l_width += 10;
-
-  clutter_actor_set_anchor_point_from_gravity (label, CLUTTER_GRAVITY_CENTER);
-  clutter_actor_set_position (label, l_width/2, PANEL_HEIGHT / 2);
-
-  clutter_actor_set_size (bkg, l_width + 5, PANEL_HEIGHT);
-
-  clutter_container_add (CLUTTER_CONTAINER (group), bkg, label, NULL);
-
-  g_signal_connect (group,
-                    "button-press-event",
-                    G_CALLBACK (workspace_button_input_cb),
-                    NULL);
-
-  clutter_actor_set_reactive (group, TRUE);
-
-  return group;
-}
-
-ClutterActor *
-make_panel (gint width)
-{
-  ClutterActor *panel;
-  ClutterActor *background;
-  ClutterColor  clr = {0x44, 0x44, 0x44, 0x7f};
-  ClutterActor *launcher;
-  gint          x, w;
-
-  panel = clutter_group_new ();
-
-  /* FIME -- size and color */
-  background = clutter_rectangle_new_with_color (&clr);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
-  clutter_actor_set_size (background, width, PANEL_HEIGHT);
-
-  launcher = make_workspace_switcher_button ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
-
-  x = clutter_actor_get_x (launcher);
-  w = clutter_actor_get_width (launcher);
-
-  launcher = make_app_launcher ("Calculator", "/usr/bin/gcalctool");
-  clutter_actor_set_position (launcher, w + x + 10, 0);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
-
-  x = clutter_actor_get_x (launcher);
-  w = clutter_actor_get_width (launcher);
-
-  launcher = make_app_launcher ("Editor", "/usr/bin/gedit");
-  clutter_actor_set_position (launcher, w + x + 10, 0);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
-
-  return panel;
-}
-
