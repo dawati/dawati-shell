@@ -3,7 +3,7 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 
 INCLUDES=@MUTTER_PLUGIN_CFLAGS@
 
-moblin_netbook_la_CFLAGS   = -Werror=missing-prototypes -fPIC
+AM_CFLAGS   = -Werror=missing-prototypes -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				nutter/nutter-ws-icon.c		\
 				moblin-netbook.c		\
