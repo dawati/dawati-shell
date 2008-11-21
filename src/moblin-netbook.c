@@ -650,8 +650,6 @@ map (MutterWindow *mcw)
                 {
                   SnHashData *sn_data = value;
 
-                  g_assert (sn_data->state == SN_MONITOR_EVENT_COMPLETED);
-
                   sn_data->mcw = mcw;
 
                   workspace_index = sn_data->workspace;
