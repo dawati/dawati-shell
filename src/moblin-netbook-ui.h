@@ -59,9 +59,9 @@ void          hide_panel (void);
 void          show_workspace_switcher (void);
 void          hide_workspace_switcher (void);
 
-void          show_workspace_chooser (const gchar * sn_id);
-void          hide_workspace_chooser (void);
+void          switcher_clone_weak_notify (gpointer data, GObject *object);
+void          switcher_origin_weak_notify (gpointer data, GObject *object);
 
-void          on_sn_monitor_event (SnMonitorEvent *event, void *user_data);
+ClutterActor *ensure_nth_workspace (GList **list, gint n, gint active);
 
 #endif
