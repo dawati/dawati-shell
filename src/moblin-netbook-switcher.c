@@ -143,7 +143,7 @@ make_workspace_switcher (GCallback  ws_callback)
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  gint           ws_count, ws_max_windows = 0;
+  gint           ws_count, active_ws, ws_max_windows = 0;
   gint          *n_windows;
   gint           i;
   NbtkWidget    *table;
@@ -223,6 +223,10 @@ make_workspace_switcher (GCallback  ws_callback)
   clutter_actor_set_size (CLUTTER_ACTOR (table),
                           WORKSPACE_CELL_WIDTH * ws_count,
                           WORKSPACE_CELL_HEIGHT * (ws_max_windows + 1));
+
+  /* hilight the active workspace */
+  active_ws = meta_screen_get_active_workspace_index (screen);
+  nbtk_table_set_active_col (NBTK_TABLE (table), active_ws);
 
   return CLUTTER_ACTOR (table);
 }
