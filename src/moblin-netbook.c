@@ -34,7 +34,8 @@
 #include <gmodule.h>
 #include <string.h>
 
-#include "compositor-mutter.h"
+#include <compositor-mutter.h>
+#include <display.h>
 
 #define DESTROY_TIMEOUT             250
 #define MINIMIZE_TIMEOUT            250
@@ -694,7 +695,7 @@ disable_stage (MutterPlugin *plugin)
 static gboolean
 xevent_filter (XEvent *xev)
 {
-  MutterPlugin *plugin = mutter_get_plugin ();
+  MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv  = plugin->plugin_private;
 
   sn_display_process_event (priv->sn_display, xev);
@@ -868,6 +869,119 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
+static void
+setup_parallax_effect (void)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv  = plugin->plugin_private;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  MetaDisplay   *display = meta_screen_get_display (screen);
+  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
+  gboolean       have_desktop = FALSE;
+  gint           screen_width, screen_height;
+  Window        *children, *l;
+  guint          n_children;
+  Window         root_win;
+  Window         parent_win, root_win2;
+  Status         status;
+  Atom           desktop_atom;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  /*
+   * The do_init() method is called before the Manager starts managing
+   * pre-existing windows, so we cannot query the windows via the normal
+   * Mutter API, but have to use X lib to traverse the root window list.
+   *
+   * (We could probably add manage_all_windows() virtual to the plugin API
+   * to split the initialization into two stages, but it is probably not worth
+   * the hassle.)
+   */
+  root_win = RootWindow (xdpy, meta_screen_get_screen_number (screen));
+
+  status = XQueryTree (xdpy, root_win, &root_win, &parent_win, &children,
+                       &n_children);
+
+  desktop_atom = meta_display_get_atom (display,
+                                        META_ATOM__NET_WM_WINDOW_TYPE_DESKTOP);
+
+  if (status)
+    {
+      guint i;
+      Atom  type_atom;
+
+      type_atom = meta_display_get_atom (display,
+                                         META_ATOM__NET_WM_WINDOW_TYPE);
+
+      for (l = children, i = 0; i < n_children; ++l, ++i)
+        {
+          unsigned long  n_items, ret_bytes;
+          Atom           ret_type;
+          int            ret_format;
+          Atom          *type;
+
+          XGetWindowProperty (xdpy, *l, type_atom, 0, 8192, False,
+                              XA_ATOM, &ret_type, &ret_format,
+                              &n_items, &ret_bytes, (unsigned char**)&type);
+
+          if (type)
+            {
+              if (*type == desktop_atom)
+                have_desktop = TRUE;
+
+              XFree (type);
+            }
+
+          if (have_desktop)
+            break;
+        }
+
+      XFree (children);
+    }
+
+  if (!have_desktop)
+    {
+      /*
+       * Create a dummy desktop window.
+       */
+      Window               dwin;
+      XSetWindowAttributes attr;
+
+      attr.event_mask = ExposureMask;
+
+      dwin = XCreateWindow (xdpy,
+                            RootWindow (xdpy,
+                                        meta_screen_get_screen_number (screen)),
+                            0, 0, screen_width, screen_height, 0,
+                            CopyFromParent, InputOnly, CopyFromParent,
+                            CWEventMask, &attr);
+
+      XChangeProperty (xdpy, dwin,
+                       meta_display_get_atom (display,
+                                              META_ATOM__NET_WM_WINDOW_TYPE),
+                       XA_ATOM, 32, PropModeReplace,
+                       (unsigned char *) &desktop_atom,
+                       1);
+
+      XMapWindow (xdpy, dwin);
+    }
+
+  /* FIXME: pull image from theme, css ? */
+  priv->parallax_tex = clutter_texture_new_from_file ("/tmp/bck.jpg", NULL);
+
+  if (priv->parallax_tex == NULL)
+    {
+      g_warning ("Failed to load /tmp/bck.jpg, No tiled desktop image");
+    }
+  else
+    {
+      g_object_set (priv->parallax_tex,
+                    "repeat-x", TRUE,
+                    "repeat-y", TRUE,
+                    NULL);
+    }
+}
+
 /*
  * Core of the plugin init function, called for initial initialization and
  * by the reload() function. Returns TRUE on success.
@@ -875,9 +989,9 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 static gboolean
 do_init (const char *params)
 {
-  MutterPlugin *plugin = mutter_get_plugin ();
-
+  MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv = g_new0 (PluginPrivate, 1);
+
   guint          destroy_timeout           = DESTROY_TIMEOUT;
   guint          minimize_timeout          = MINIMIZE_TIMEOUT;
   guint          maximize_timeout          = MAXIMIZE_TIMEOUT;
@@ -1014,23 +1128,9 @@ do_init (const char *params)
                     "button-press-event", G_CALLBACK (stage_input_cb),
                     GINT_TO_POINTER (FALSE));
 
-
-  /* FIXME: move to priv, pull image from theme, css ? */
-  priv->parallax_tex = clutter_texture_new_from_file ("/tmp/bck.jpg", NULL);
-
-  if (priv->parallax_tex == NULL)
-    {
-      g_warning ("Failed to load /tmp/bck.jpg, No tiled desktop image");
-    }
-  else
-    {
-      g_object_set (priv->parallax_tex,
-                    "repeat-x", TRUE,
-                    "repeat-y", TRUE,
-                    NULL);
-    }
-
   clutter_set_motion_events_enabled (TRUE);
+
+  setup_parallax_effect ();
 
   setup_startup_notification ();
 
