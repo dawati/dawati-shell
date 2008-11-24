@@ -236,8 +236,8 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       clutter_actor_set_reactive (ws_label, TRUE);
 
 
-      nbtk_table_add_actor (NBTK_TABLE (table), ws, 1, ws_count);
-      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 1, ws_count);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws, 0, ws_count);
+      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, ws_count);
 
       ++ws_count;
       l = l->next;
@@ -245,7 +245,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
 
   clutter_actor_set_size (CLUTTER_ACTOR (table),
                           active_ws * WORKSPACE_CELL_WIDTH,
-                          2 * WORKSPACE_CELL_HEIGHT);
+                          WORKSPACE_CELL_HEIGHT);
 
   if (n_workspaces)
     *n_workspaces = active_ws;
