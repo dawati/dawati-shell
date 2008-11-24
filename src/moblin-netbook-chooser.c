@@ -112,8 +112,6 @@ finalize_app_startup (const char * sn_id, gint workspace)
        */
       sn_data->workspace = workspace;
 
-      printf ("Finalizing for WS %d\n", workspace);
-
       /*
        * If the window has already mapped (i.e., we have its MutterWindow),
        * we move it to the requested workspace so that the switche workspace

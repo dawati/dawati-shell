@@ -64,6 +64,7 @@ struct PluginPrivate
   ClutterActor          *switcher;
   ClutterActor          *workspace_switcher;
   ClutterActor          *workspace_chooser;
+  ClutterActor          *launcher;
   ClutterActor          *lowlight;
 
   XserverRegion          input_region;

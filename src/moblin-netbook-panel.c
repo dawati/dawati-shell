@@ -25,6 +25,7 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-panel.h"
+#include "moblin-netbook-launcher.h"
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -65,68 +66,12 @@ hide_panel ()
   priv->panel_out = FALSE;
 }
 
-/*
- * Panel buttons.
- */
-/*
- * Helper method to spawn and application. Will eventually be replaced
- * by libgnome-menu, or something like that.
- */
-static void
-spawn_app (const gchar *path)
-{
-  MutterPlugin      *plugin    = mutter_get_plugin ();
-  PluginPrivate     *priv      = plugin->plugin_private;
-  MetaScreen        *screen    = mutter_plugin_get_screen (plugin);
-  MetaDisplay       *display   = meta_screen_get_display (screen);
-  guint32            timestamp = meta_display_get_current_time (display);
-
-  Display           *xdpy = mutter_plugin_get_xdisplay (plugin);
-  SnLauncherContext *context = NULL;
-  const gchar       *id;
-  gchar             *argv[2] = {NULL, NULL};
-
-  argv[0] = g_strdup (path);
-
-  if (!path)
-    return;
-
-  context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
-
-  /* FIXME */
-  sn_launcher_context_set_name (context, path);
-  sn_launcher_context_set_description (context, path);
-  sn_launcher_context_set_binary_name (context, path);
-
-  sn_launcher_context_initiate (context,
-                                "mutter-netbook-shell",
-                                path, /* bin_name */
-				timestamp);
-
-  id = sn_launcher_context_get_startup_id (context);
-
-  if (!g_spawn_async (NULL,
-                      &argv[0],
-                      NULL,
-                      G_SPAWN_SEARCH_PATH,
-                      (GSpawnChildSetupFunc)
-                      sn_launcher_context_setup_child_process,
-                      (gpointer)context,
-                      NULL,
-                      NULL))
-    {
-      g_warning ("Failed to launch [%s]", path);
-    }
-
-  sn_launcher_context_unref (context);
-}
-
 static gboolean
 app_launcher_input_cb (ClutterActor *actor,
                        ClutterEvent *event,
                        gpointer      data)
 {
-  spawn_app (data);
+  launcher_spawn_app (data);
 
   return FALSE;
 }
@@ -202,14 +147,62 @@ make_workspace_switcher_button ()
   return group;
 }
 
+static gboolean
+launcher_button_input_cb (ClutterActor *actor,
+                          ClutterEvent *event,
+                          gpointer      data)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+
+  clutter_actor_show (priv->launcher);
+  return TRUE;
+}
+
+static ClutterActor *
+make_launcher_button ()
+{
+  ClutterColor  bkg_clr = {0, 0, 0, 0xff};
+  ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
+  ClutterActor *group   = clutter_group_new ();
+  ClutterActor *label   = clutter_label_new_full ("Sans 12 Bold",
+                                                  "Launcher", &fg_clr);
+  ClutterActor *bkg     = clutter_rectangle_new_with_color (&bkg_clr);
+  guint         l_width;
+
+  clutter_actor_realize (label);
+  l_width = clutter_actor_get_width (label);
+  l_width += 10;
+
+  clutter_actor_set_anchor_point_from_gravity (label, CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_position (label, l_width/2, PANEL_HEIGHT / 2);
+
+  clutter_actor_set_size (bkg, l_width + 5, PANEL_HEIGHT);
+
+  clutter_container_add (CLUTTER_CONTAINER (group), bkg, label, NULL);
+
+  g_signal_connect (group,
+                    "button-press-event",
+                    G_CALLBACK (launcher_button_input_cb),
+                    NULL);
+
+  clutter_actor_set_reactive (group, TRUE);
+
+  return group;
+}
+
 ClutterActor *
 make_panel (gint width)
 {
-  ClutterActor *panel;
-  ClutterActor *background;
-  ClutterColor  clr = {0x44, 0x44, 0x44, 0x7f};
-  ClutterActor *launcher;
-  gint          x, w;
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  ClutterActor  *panel;
+  ClutterActor  *background;
+  ClutterColor   clr = {0x44, 0x44, 0x44, 0x7f};
+  ClutterActor  *launcher, *overlay;
+  gint           x, w;
+
+  overlay = mutter_plugin_get_overlay_group (plugin);
 
   panel = clutter_group_new ();
 
@@ -234,6 +227,17 @@ make_panel (gint width)
   launcher = make_app_launcher ("Editor", "/usr/bin/gedit");
   clutter_actor_set_position (launcher, w + x + 10, 0);
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
+
+  x = clutter_actor_get_x (launcher);
+  w = clutter_actor_get_width (launcher);
+
+  launcher = make_launcher_button ();
+  clutter_actor_set_position (launcher, w + x + 10, 0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
+
+  priv->launcher = make_launcher (w + x + 10, clutter_actor_get_height (panel));
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->launcher);
+  clutter_actor_hide (priv->launcher);
 
   return panel;
 }

@@ -10,7 +10,8 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-ui.c		\
 				moblin-netbook-chooser.c	\
 				moblin-netbook-switcher.c	\
-				moblin-netbook-panel.c
+				moblin-netbook-panel.c		\
+				moblin-netbook-launcher.c
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@

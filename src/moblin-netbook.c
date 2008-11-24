@@ -838,15 +838,19 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
 
-      if (!capture &&
-          priv->workspace_switcher && event->type == CLUTTER_BUTTON_PRESS)
+      if (!capture && event->type == CLUTTER_BUTTON_PRESS)
         {
-          hide_workspace_switcher ();
+          if (priv->workspace_switcher)
+            hide_workspace_switcher ();
+
+          if (priv->launcher)
+            clutter_actor_hide (priv->launcher);
         }
 
       if (priv->panel_out &&
           (event->type == CLUTTER_BUTTON_PRESS ||
-           (!priv->switcher && !priv->workspace_switcher)))
+           (!priv->switcher && !priv->workspace_switcher &&
+            !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))))
         {
           guint height = clutter_actor_get_height (priv->panel);
 
@@ -1021,6 +1025,8 @@ do_init (const char *params)
   Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
 
+  gtk_init (NULL, NULL);
+
   plugin->plugin_private = priv;
 
   name = plugin->name;
@@ -1104,7 +1110,11 @@ do_init (const char *params)
   priv->lowlight = lowlight;
   clutter_actor_set_size (lowlight, screen_width, screen_height);
 
+  /*
+   * This also creates the launcher.
+   */
   panel = priv->panel = make_panel (screen_width);
+
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
 
   clutter_actor_hide (lowlight);
