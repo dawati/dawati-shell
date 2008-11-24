@@ -72,6 +72,7 @@ struct PluginPrivate
   gboolean               panel_out  : 1;
   gboolean               panel_out_in_progress : 1;
   gboolean               panel_back_in_progress : 1;
+  gboolean               desktop_switch_in_progress : 1;
 
   guint                  workspace_chooser_timeout;
 
@@ -98,8 +99,9 @@ struct ActorPrivate
   ClutterTimeline *tml_destroy;
   ClutterTimeline *tml_map;
 
-  gboolean      is_minimized : 1;
-  gboolean      is_maximized : 1;
+  gboolean      is_minimized   : 1;
+  gboolean      is_maximized   : 1;
+  gboolean      sn_in_progress : 1;
 };
 
 ActorPrivate * get_actor_private (MutterWindow *actor);

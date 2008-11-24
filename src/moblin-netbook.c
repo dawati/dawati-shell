@@ -176,6 +176,9 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   ppriv->tml_switch_workspace1 = NULL;
   ppriv->desktop1 = NULL;
   ppriv->desktop2 = NULL;
+  ppriv->desktop_switch_in_progress = FALSE;
+
+  startup_notification_finalize ();
 
   mutter_plugin_effect_completed (plugin, actor_for_cb,
                                   MUTTER_PLUGIN_SWITCH_WORKSPACE);
@@ -241,6 +244,12 @@ switch_workspace (const GList **actors, gint from, gint to,
       ActorPrivate *priv = get_actor_private (mcw);
       ClutterActor *a    = CLUTTER_ACTOR (mcw);
       gint          workspace;
+
+      /*
+       * We do not show windows that are in SN flux.
+       */
+      if (priv->sn_in_progress)
+        continue;
 
       /* We don't care about minimized windows */
       if (!mutter_window_showing_on_its_workspace (mcw))
@@ -341,6 +350,8 @@ switch_workspace (const GList **actors, gint from, gint to,
   clutter_actor_set_position (indicator_group,
 			      (screen_width - indicator_width) / 2,
 			      (screen_height - indicator_height) / 2);
+
+  ppriv->desktop_switch_in_progress = TRUE;
 
   /* workspace were going too */
   ppriv->tml_switch_workspace1 =

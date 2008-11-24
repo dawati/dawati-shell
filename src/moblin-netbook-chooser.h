@@ -28,12 +28,14 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
 
-void show_workspace_chooser (const gchar * sn_id);
-void hide_workspace_chooser (void);
+void     show_workspace_chooser (const gchar * sn_id);
+void     hide_workspace_chooser (void);
 
-void setup_startup_notification (void);
+void     setup_startup_notification (void);
 
 gboolean startup_notification_should_map (MutterWindow *mcw,
                                           const gchar  *sn_id);
+
+void     startup_notification_finalize (void);
 
 #endif

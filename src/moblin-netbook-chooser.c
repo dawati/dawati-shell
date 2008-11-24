@@ -58,6 +58,42 @@ free_ws_grid_cb_data (struct ws_grid_cb_data *data)
 }
 
 static void
+move_window_to_workspace (MutterWindow *mcw, gint workspace_index)
+{
+  if (workspace_index > -2)
+    {
+      MetaWindow  *mw      = mutter_window_get_meta_window (mcw);
+      MetaScreen  *screen  = meta_window_get_screen (mw);
+
+      if (mw)
+        {
+          /*
+           * Move the window to the requested workspace; if the window is not
+           * sticky, activate the workspace as well.
+           */
+          meta_window_change_workspace_by_index (mw, workspace_index, TRUE);
+
+          if (workspace_index > -1)
+            {
+              MetaDisplay   *display = meta_screen_get_display (screen);
+              MetaWorkspace *workspace;
+
+              workspace =
+                meta_screen_get_workspace_by_index (screen,
+                                                    workspace_index);
+
+              if (workspace)
+                {
+                  guint32 timestamp = meta_display_get_current_time (display);
+
+                  meta_workspace_activate_with_focus (workspace, mw, timestamp);
+                }
+            }
+        }
+    }
+}
+
+static void
 finalize_app_startup (const char * sn_id, gint workspace)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
@@ -69,15 +105,26 @@ finalize_app_startup (const char * sn_id, gint workspace)
 
   if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
     {
-      MutterWindow *mcw = NULL;
-      SnHashData   *sn_data = value;
+      SnHashData *sn_data = value;
 
       /*
        * Update the workspace index.
        */
       sn_data->workspace = workspace;
 
+      printf ("Finalizing for WS %d\n", workspace);
+
+      /*
+       * If the window has already mapped (i.e., we have its MutterWindow),
+       * we move it to the requested workspace so that the switche workspace
+       * effect is triggered.
+       *
+       * If the WS effect is no longer in progress, we map the window.
+       */
       if (sn_data->mcw)
+        move_window_to_workspace (sn_data->mcw, workspace);
+
+      if (sn_data->mcw && !priv->desktop_switch_in_progress)
         {
           plugin->map (sn_data->mcw);
         }
@@ -270,6 +317,8 @@ new_workspace_input_cb (ClutterActor *clone,
 
   hide_workspace_chooser ();
 
+  priv->desktop_switch_in_progress = TRUE;
+
   meta_screen_append_new_workspace (screen, FALSE, event->any.time);
 
   finalize_app_startup (sn_id, wsg_data->workspace);
@@ -456,6 +505,8 @@ workspace_chooser_timeout_cb (gpointer data)
 
   struct ws_chooser_timeout_data *wsc_data = data;
 
+  priv->desktop_switch_in_progress = TRUE;
+
   hide_workspace_chooser ();
 
   meta_screen_append_new_workspace (screen, FALSE, timestamp);
@@ -537,6 +588,17 @@ on_sn_monitor_event (SnMonitorEvent *event,
         }
       break;
     case SN_MONITOR_EVENT_CANCELED:
+      if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
+        {
+          SnHashData *sn_data = value;
+
+          if (sn_data->mcw)
+            {
+              ActorPrivate *apriv = get_actor_private (sn_data->mcw);
+
+              apriv->sn_in_progress = FALSE;
+            }
+        }
       g_hash_table_remove (priv->sn_hash, seq_id);
       break;
     }
@@ -567,42 +629,6 @@ setup_startup_notification (void)
                                          (GDestroyNotify) free_sn_hash_data);
 }
 
-static void
-move_window_to_workspace (MutterWindow *mcw, gint workspace_index)
-{
-  if (workspace_index > -2)
-    {
-      MetaWindow  *mw      = mutter_window_get_meta_window (mcw);
-      MetaScreen  *screen  = meta_window_get_screen (mw);
-
-      if (mw)
-        {
-          /*
-           * Move the window to the requested workspace; if the window is not
-           * sticky, activate the workspace as well.
-           */
-          meta_window_change_workspace_by_index (mw, workspace_index, TRUE);
-
-          if (workspace_index > -1)
-            {
-              MetaDisplay   *display = meta_screen_get_display (screen);
-              MetaWorkspace *workspace;
-
-              workspace =
-                meta_screen_get_workspace_by_index (screen,
-                                                    workspace_index);
-
-              if (workspace)
-                {
-                  guint32 timestamp = meta_display_get_current_time (display);
-
-                  meta_workspace_activate_with_focus (workspace, mw, timestamp);
-                }
-            }
-        }
-    }
-}
-
 gboolean
 startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
 {
@@ -610,15 +636,17 @@ startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
   PluginPrivate *priv   = plugin->plugin_private;
   gpointer       key, value;
 
-  if (!sn_id)
+  if (!sn_id || !mcw)
     return TRUE;
 
   if (g_hash_table_lookup_extended (priv->sn_hash, sn_id,
                                     &key, &value))
     {
-      SnHashData *sn_data = value;
-      gint        workspace_index;
+      SnHashData   *sn_data = value;
+      gint          workspace_index;
+      ActorPrivate *apriv = get_actor_private (mcw);
 
+      apriv->sn_in_progress = TRUE;
       sn_data->mcw = mcw;
 
       workspace_index = sn_data->workspace;
@@ -629,7 +657,19 @@ startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
        */
       if (workspace_index > -2)
         {
-          g_hash_table_remove (priv->sn_hash, sn_id);
+          if (!priv->desktop_switch_in_progress)
+            {
+              /*
+               * If the WS effect is no longer in progress, we
+               * reset the SN flag and remove the window from hash.
+               *
+               * We then move the window onto the appropriate workspace.
+               */
+              apriv->sn_in_progress = FALSE;
+
+              g_hash_table_remove (priv->sn_hash, sn_id);
+            }
+
           move_window_to_workspace (mcw, workspace_index);
         }
       else
@@ -643,4 +683,48 @@ startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
     }
 
   return TRUE;
+}
+
+/*
+ * Work through any windows in the SN hash and make sure they are mapped.
+ *
+ * (Called at the end of WS switching effect.)
+ */
+void
+startup_notification_finalize (void)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  gpointer       key, value;
+  GHashTableIter iter;
+
+  if (priv->desktop_switch_in_progress)
+    return;
+
+  g_hash_table_iter_init (&iter, priv->sn_hash);
+
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      SnHashData *sn_data = value;
+      gint        workspace_index;
+
+      workspace_index = sn_data->workspace;
+
+      /*
+       * If a workspace is set to a meaninful value, remove the
+       * window from hash and move it to the appropriate WS.
+       */
+      if (workspace_index > -2)
+        {
+          MutterWindow *mcw = sn_data->mcw;
+          ActorPrivate *apriv = get_actor_private (mcw);
+
+          apriv->sn_in_progress = FALSE;
+          g_hash_table_remove (priv->sn_hash, key);
+          g_hash_table_iter_init (&iter, priv->sn_hash);
+
+          if (mcw)
+            plugin->map (mcw);
+        }
+    }
 }
