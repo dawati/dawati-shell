@@ -222,14 +222,19 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
        */
       clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
-      g_signal_connect_data (ws, "button-press-event",
+      ws_label = make_workspace_label (s);
+      g_free (s);
+
+      /*
+       * We connect to the label, as the workspace size depends on its content
+       * so we do not get the signal reliably for the entire cell.
+       */
+      g_signal_connect_data (ws_label, "button-press-event",
                              G_CALLBACK (workspace_chooser_input_cb), wsg_data,
                              (GClosureNotify)free_ws_grid_cb_data, 0);
 
-      clutter_actor_set_reactive (ws, TRUE);
+      clutter_actor_set_reactive (ws_label, TRUE);
 
-      ws_label = make_workspace_label (s);
-      g_free (s);
 
       nbtk_table_add_actor (NBTK_TABLE (table), ws, 1, ws_count);
       nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 1, ws_count);
