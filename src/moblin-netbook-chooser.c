@@ -57,14 +57,72 @@ free_ws_grid_cb_data (struct ws_grid_cb_data *data)
   g_slice_free (struct ws_grid_cb_data, data);
 }
 
+static void
+finalize_app_startup (const char * sn_id, gint workspace)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  gpointer       key, value;
+
+  if (workspace >= MAX_WORKSPACES)
+    workspace = MAX_WORKSPACES - 1;
+
+  if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
+    {
+      MutterWindow *mcw = NULL;
+      SnHashData   *sn_data = value;
+
+      /*
+       * Update the workspace index.
+       */
+      sn_data->workspace = workspace;
+
+      if (sn_data->mcw)
+        {
+          plugin->map (sn_data->mcw);
+        }
+    }
+}
+
+/*
+ * Handles button press on a workspace withing the chooser by placing the
+ * starting application on the given workspace.
+ */
+static gboolean
+workspace_chooser_input_cb (ClutterActor *clone,
+                            ClutterEvent *event,
+                            gpointer      data)
+{
+  struct ws_grid_cb_data * wsg_data = data;
+  gint           indx   = wsg_data->workspace;
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  MetaWorkspace *workspace;
+  gpointer       key, value;
+  const char    *sn_id = wsg_data->sn_id;
+
+  workspace = meta_screen_get_workspace_by_index (screen, indx);
+
+  if (!workspace)
+    {
+      g_warning ("No workspace specified, %s:%d\n", __FILE__, __LINE__);
+      return FALSE;
+    }
+
+  hide_workspace_chooser ();
+
+  finalize_app_startup (sn_id, wsg_data->workspace);
+
+  return FALSE;
+}
+
 /*
  * Creates a grid of workspaces, which contains a header row with
  * workspace symbolic icon, and the workspaces below it.
  */
 static ClutterActor *
-make_workspace_chooser (GCallback    ws_callback,
-                        const gchar *sn_id,
-                        gint        *n_workspaces)
+make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -165,7 +223,7 @@ make_workspace_chooser (GCallback    ws_callback,
       clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
 
       g_signal_connect_data (ws, "button-press-event",
-                             ws_callback, wsg_data,
+                             G_CALLBACK (workspace_chooser_input_cb), wsg_data,
                              (GClosureNotify)free_ws_grid_cb_data, 0);
 
       clutter_actor_set_reactive (ws, TRUE);
@@ -188,66 +246,6 @@ make_workspace_chooser (GCallback    ws_callback,
     *n_workspaces = active_ws;
 
   return CLUTTER_ACTOR (table);
-}
-
-static void
-finalize_app_startup (const char * sn_id, gint workspace)
-{
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  gpointer       key, value;
-
-  if (workspace >= MAX_WORKSPACES)
-    workspace = MAX_WORKSPACES - 1;
-
-  if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
-    {
-      MutterWindow *mcw = NULL;
-      SnHashData   *sn_data = value;
-
-      /*
-       * Update the workspace index.
-       */
-      sn_data->workspace = workspace;
-
-      if (sn_data->mcw)
-        {
-          plugin->map (sn_data->mcw);
-        }
-    }
-}
-
-/*
- * Handles button press on a workspace withing the chooser by placing the
- * starting application on the given workspace.
- */
-static gboolean
-workspace_chooser_input_cb (ClutterActor *clone,
-                            ClutterEvent *event,
-                            gpointer      data)
-{
-  struct ws_grid_cb_data * wsg_data = data;
-  gint           indx   = wsg_data->workspace;
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  MetaWorkspace *workspace;
-  gpointer       key, value;
-  const char    *sn_id = wsg_data->sn_id;
-
-  workspace = meta_screen_get_workspace_by_index (screen, indx);
-
-  if (!workspace)
-    {
-      g_warning ("No workspace specified, %s:%d\n", __FILE__, __LINE__);
-      return FALSE;
-    }
-
-  hide_workspace_chooser ();
-
-  finalize_app_startup (sn_id, wsg_data->workspace);
-
-  return FALSE;
 }
 
 /*
@@ -334,8 +332,7 @@ show_workspace_chooser (const gchar * sn_id)
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;
 
-  grid = make_workspace_chooser (G_CALLBACK (workspace_chooser_input_cb),
-                                 sn_id, &ws_count);
+  grid = make_workspace_chooser (sn_id, &ws_count);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
   clutter_actor_realize (grid);
   clutter_actor_get_size (grid, &grid_width, &grid_height);
