@@ -73,7 +73,8 @@ move_window_to_workspace (MutterWindow *mcw,
            * Move the window to the requested workspace; if the window is not
            * sticky, activate the workspace as well.
            */
-          meta_window_change_workspace_by_index (mw, workspace_index, TRUE);
+          meta_window_change_workspace_by_index (mw, workspace_index, TRUE,
+                                                 timestamp);
 
           if (workspace_index > -1)
             {
