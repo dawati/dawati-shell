@@ -167,28 +167,6 @@ get_all_applications (void)
 }
 
 /*
- * FIXME -- this is only necessary because at present NbtkTable does not
- * correctly chain up it's pick() virtual. Remove this function once NbtkTable
- * is fixed.
- *
- * NB: This does not work as it should anyway, because the table space is
- *     not completely filled in by it's children; the signal can only be
- *     reliably handled on the table, not on the children.
- */
-static gboolean
-entry_input_cb (ClutterActor *actor, ClutterEvent *event, gpointer data)
-{
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-
-  clutter_actor_hide (priv->launcher);
-
-  launcher_spawn_app (data);
-
-  return TRUE;
-}
-
-/*
  * FIXME -- this is bit lame; what we really need is for NbtkTable to have
  * row-clicked signal to which we can connect on per-row basis.
  */
@@ -264,21 +242,6 @@ make_launcher (gint x, gint y)
 
       nbtk_table_add_actor (NBTK_TABLE (table), icon, i, 0);
       nbtk_table_add_actor (NBTK_TABLE (table), label, i, 1);
-
-#if 1
-      /*
-       * FIXME -- this is a hack used to work around the broken pick() virtual
-       * in NbtkTable; remove, together with the callback function, once
-       * NbtkTable picking is fixed.
-       */
-      g_signal_connect (icon, "button-press-event",
-			G_CALLBACK (entry_input_cb), exec);
-      g_signal_connect (label, "button-press-event",
-			G_CALLBACK (entry_input_cb), exec);
-
-      clutter_actor_set_reactive (CLUTTER_ACTOR (icon), TRUE);
-      clutter_actor_set_reactive (CLUTTER_ACTOR (label), TRUE);
-#endif
 
       clutter_container_child_set (CLUTTER_CONTAINER (launcher), icon,
 				   "keep-aspect-ratio", TRUE, NULL);
