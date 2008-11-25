@@ -172,7 +172,7 @@ entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
   PluginPrivate *priv   = plugin->plugin_private;
   const gchar   *exec   = data;
 
-  launcher_spawn_app (exec);
+  launcher_spawn_app (exec, event->any.time);
 
   clutter_actor_hide (priv->launcher);
 
@@ -279,13 +279,12 @@ make_launcher (gint x, gint y)
  * by libgnome-menu, or something like that.
  */
 void
-launcher_spawn_app (const gchar *path)
+launcher_spawn_app (const gchar *path, guint32 timestamp)
 {
   MutterPlugin      *plugin    = mutter_get_plugin ();
   PluginPrivate     *priv      = plugin->plugin_private;
   MetaScreen        *screen    = mutter_plugin_get_screen (plugin);
   MetaDisplay       *display   = meta_screen_get_display (screen);
-  guint32            timestamp = meta_display_get_current_time (display);
 
   Display           *xdpy = mutter_plugin_get_xdisplay (plugin);
   SnLauncherContext *context = NULL;

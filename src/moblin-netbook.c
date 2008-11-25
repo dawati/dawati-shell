@@ -666,10 +666,16 @@ destroy (MutterWindow *mcw)
 {
   MutterPlugin       *plugin = mutter_get_plugin ();
   PluginPrivate      *priv   = plugin->plugin_private;
+  MetaScreen         *screen;
   MetaCompWindowType  type;
   ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
+  gint                workspace;
+  gboolean            workspace_empty = TRUE;
+  GList              *l;
 
-  type = mutter_window_get_window_type (mcw);
+  type      = mutter_window_get_window_type (mcw);
+  workspace = mutter_window_get_workspace (mcw);
+  screen    = mutter_plugin_get_screen (plugin);
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
@@ -688,6 +694,39 @@ destroy (MutterWindow *mcw)
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+
+  l = mutter_get_windows (screen);
+  while (l)
+    {
+      MutterWindow *m = l->data;
+
+      if (m != mcw)
+        {
+          gint w = mutter_window_get_workspace (m);
+
+          if (w == workspace)
+            {
+              workspace_empty = FALSE;
+              break;
+            }
+        }
+
+      l = l->next;
+    }
+
+  if (workspace_empty)
+    {
+      MetaWorkspace *mws;
+      MetaDisplay   *display;
+      guint32        timestamp;
+
+      display = meta_screen_get_display (screen);
+      timestamp = meta_display_get_current_time_roundtrip (display);
+
+      mws = meta_screen_get_workspace_by_index (screen, workspace);
+
+      meta_screen_remove_workspace (screen, mws, timestamp);
+    }
 }
 
 /*

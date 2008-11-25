@@ -500,7 +500,7 @@ workspace_chooser_timeout_cb (gpointer data)
   PluginPrivate *priv      = plugin->plugin_private;
   MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
   MetaDisplay   *display   = meta_screen_get_display (screen);
-  guint32        timestamp = meta_display_get_current_time (display);
+  guint32        timestamp = meta_display_get_current_time_roundtrip (display);
 
   struct ws_chooser_timeout_data *wsc_data = data;
 

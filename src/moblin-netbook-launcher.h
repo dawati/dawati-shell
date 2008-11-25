@@ -26,6 +26,6 @@
 #define MOBLIN_NETBOOK_LAUNCHER_H
 
 ClutterActor *make_launcher (gint x, gint y);
-void          launcher_spawn_app (const gchar *path);
+void          launcher_spawn_app (const gchar *path, guint32 timestamp);
 
 #endif
