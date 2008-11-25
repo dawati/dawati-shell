@@ -33,6 +33,8 @@
 
 
 #define ICON_SIZE 32
+#define N_COLS 8
+#define PADDING 4
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -40,9 +42,6 @@ mutter_get_plugin ()
 {
   return &mutter_plugin;
 }
-
-static int n_rows = 0;
-static GList *exec_list = NULL;
 
 /* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
 static int
@@ -166,6 +165,20 @@ get_all_applications (void)
   return retval;
 }
 
+static gboolean
+entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  const gchar   *exec   = data;
+
+  launcher_spawn_app (exec);
+
+  clutter_actor_hide (priv->launcher);
+
+  return TRUE;
+}
+
 /*
  * FIXME -- this is bit lame; what we really need is for NbtkTable to have
  * row-clicked signal to which we can connect on per-row basis.
@@ -173,22 +186,9 @@ get_all_applications (void)
 static gboolean
 table_input_cb (ClutterActor *table, ClutterEvent *event, gpointer data)
 {
-  guint height = clutter_actor_get_height (table);
-  guint row_height;
-  guint row;
-  const gchar *exec;
-
-  row_height = height / n_rows;
-
-  row =
-    (((ClutterButtonEvent*)event)->y - clutter_actor_get_y (table)) /row_height;
-
-  exec = g_list_nth_data (exec_list, row);
-
-  launcher_spawn_app (exec);
-
-  clutter_actor_hide (table);
-
+  /*
+   * Processing stops here.
+   */
   return TRUE;
 }
 
@@ -200,16 +200,19 @@ make_launcher (gint x, gint y)
   ClutterActor *stage, *launcher;
   NbtkWidget   *table;
 
-  gint i;
+  gint row, col;
 
   table = nbtk_table_new ();
   launcher = CLUTTER_ACTOR (table);
+
+  nbtk_table_set_col_spacing (table, 2*PADDING);
+  nbtk_table_set_row_spacing (table, 2*PADDING);
 
   apps = get_all_applications ();
 
   theme = gtk_icon_theme_get_default ();
 
-  for (a = apps, i = 0; a; a = a->next, ++i)
+  for (a = apps, row = 0, col = 0; a; a = a->next)
     {
       ClutterActor *icon, *item, *label;
       const gchar  *name;
@@ -237,22 +240,26 @@ make_launcher (gint x, gint y)
           gtk_icon_info_free (info);
         }
 
-      label = clutter_label_new_with_text ("Sans 12",
-					   gmenu_tree_entry_get_name (entry));
+      nbtk_table_add_actor (NBTK_TABLE (table), icon, row, col);
 
-      nbtk_table_add_actor (NBTK_TABLE (table), icon, i, 0);
-      nbtk_table_add_actor (NBTK_TABLE (table), label, i, 1);
+      g_signal_connect (icon, "button-press-event",
+                        G_CALLBACK (entry_input_cb), exec);
+
+      clutter_actor_set_reactive (icon, TRUE);
 
       clutter_container_child_set (CLUTTER_CONTAINER (launcher), icon,
 				   "keep-aspect-ratio", TRUE, NULL);
 
-      exec_list = g_list_prepend (exec_list, exec);
+      if (++col >= N_COLS)
+        {
+          col = 0;
+          ++row;
+        }
     }
 
-  exec_list = g_list_reverse (exec_list);
-
-  n_rows = i;
-  clutter_actor_set_size (launcher, 600, i*ICON_SIZE);
+  clutter_actor_set_size (launcher,
+                          col * (ICON_SIZE + 2 * PADDING),
+                          row * (ICON_SIZE + 2 * PADDING));
 
   g_signal_connect (launcher, "button-press-event",
 		    G_CALLBACK (table_input_cb), NULL);
