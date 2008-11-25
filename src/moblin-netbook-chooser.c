@@ -317,7 +317,10 @@ new_workspace_input_cb (ClutterActor *clone,
 
   priv->desktop_switch_in_progress = TRUE;
 
-  meta_screen_append_new_workspace (screen, FALSE, event->any.time);
+  if (wsg_data->workspace >= MAX_WORKSPACES)
+    wsg_data->workspace = MAX_WORKSPACES - 1;
+  else
+    meta_screen_append_new_workspace (screen, FALSE, event->any.time);
 
   finalize_app_startup (sn_id, wsg_data->workspace);
 
@@ -507,7 +510,10 @@ workspace_chooser_timeout_cb (gpointer data)
 
   hide_workspace_chooser ();
 
-  meta_screen_append_new_workspace (screen, FALSE, timestamp);
+  if (wsc_data->workspace >= MAX_WORKSPACES)
+    wsc_data->workspace = MAX_WORKSPACES - 1;
+  else
+    meta_screen_append_new_workspace (screen, FALSE, timestamp);
 
   finalize_app_startup (wsc_data->sn_id, wsc_data->workspace);
 
