@@ -67,46 +67,6 @@ hide_panel ()
 }
 
 static gboolean
-app_launcher_input_cb (ClutterActor *actor,
-                       ClutterEvent *event,
-                       gpointer      data)
-{
-  launcher_spawn_app (data);
-
-  return FALSE;
-}
-
-static ClutterActor *
-make_app_launcher (const gchar *name, const gchar *path)
-{
-  ClutterColor  bkg_clr = {0, 0, 0, 0xff};
-  ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
-  ClutterActor *group = clutter_group_new ();
-  ClutterActor *label = clutter_label_new_full ("Sans 12 Bold", name, &fg_clr);
-  ClutterActor *bkg = clutter_rectangle_new_with_color (&bkg_clr);
-  guint         l_width;
-
-  clutter_actor_realize (label);
-  l_width = clutter_actor_get_width (label);
-  l_width += 10;
-
-  clutter_actor_set_anchor_point_from_gravity (label, CLUTTER_GRAVITY_CENTER);
-  clutter_actor_set_position (label, l_width/2, PANEL_HEIGHT / 2);
-
-  clutter_actor_set_size (bkg, l_width + 5, PANEL_HEIGHT);
-
-  clutter_container_add (CLUTTER_CONTAINER (group), bkg, label, NULL);
-
-  g_signal_connect (group,
-                    "button-press-event", G_CALLBACK (app_launcher_input_cb),
-                    (gpointer)path);
-
-  clutter_actor_set_reactive (group, TRUE);
-
-  return group;
-}
-
-static gboolean
 workspace_button_input_cb (ClutterActor *actor,
                            ClutterEvent *event,
                            gpointer      data)
@@ -212,20 +172,6 @@ make_panel (gint width)
   clutter_actor_set_size (background, width, PANEL_HEIGHT);
 
   launcher = make_workspace_switcher_button ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
-
-  x = clutter_actor_get_x (launcher);
-  w = clutter_actor_get_width (launcher);
-
-  launcher = make_app_launcher ("Calculator", "/usr/bin/gcalctool");
-  clutter_actor_set_position (launcher, w + x + 10, 0);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
-
-  x = clutter_actor_get_x (launcher);
-  w = clutter_actor_get_width (launcher);
-
-  launcher = make_app_launcher ("Editor", "/usr/bin/gedit");
-  clutter_actor_set_position (launcher, w + x + 10, 0);
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
 
   x = clutter_actor_get_x (launcher);
