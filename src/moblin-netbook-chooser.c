@@ -58,7 +58,9 @@ free_ws_grid_cb_data (struct ws_grid_cb_data *data)
 }
 
 static void
-move_window_to_workspace (MutterWindow *mcw, gint workspace_index)
+move_window_to_workspace (MutterWindow *mcw,
+                          gint          workspace_index,
+                          guint32       timestamp)
 {
   if (workspace_index > -2)
     {
@@ -83,18 +85,14 @@ move_window_to_workspace (MutterWindow *mcw, gint workspace_index)
                                                     workspace_index);
 
               if (workspace)
-                {
-                  guint32 timestamp = meta_display_get_current_time (display);
-
-                  meta_workspace_activate_with_focus (workspace, mw, timestamp);
-                }
+                meta_workspace_activate_with_focus (workspace, mw, timestamp);
             }
         }
     }
 }
 
 static void
-finalize_app_startup (const char * sn_id, gint workspace)
+finalize_app_startup (const char * sn_id, gint workspace, guint32 timestamp)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
@@ -120,7 +118,7 @@ finalize_app_startup (const char * sn_id, gint workspace)
        * If the WS effect is no longer in progress, we map the window.
        */
       if (sn_data->mcw)
-        move_window_to_workspace (sn_data->mcw, workspace);
+        move_window_to_workspace (sn_data->mcw, workspace, timestamp);
 
       if (sn_data->mcw && !priv->desktop_switch_in_progress)
         {
@@ -157,7 +155,7 @@ workspace_chooser_input_cb (ClutterActor *clone,
 
   hide_workspace_chooser ();
 
-  finalize_app_startup (sn_id, wsg_data->workspace);
+  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time);
 
   return FALSE;
 }
@@ -322,7 +320,7 @@ new_workspace_input_cb (ClutterActor *clone,
   else
     meta_screen_append_new_workspace (screen, FALSE, event->any.time);
 
-  finalize_app_startup (sn_id, wsg_data->workspace);
+  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time);
 
   return FALSE;
 }
@@ -515,7 +513,7 @@ workspace_chooser_timeout_cb (gpointer data)
   else
     meta_screen_append_new_workspace (screen, FALSE, timestamp);
 
-  finalize_app_startup (wsc_data->sn_id, wsc_data->workspace);
+  finalize_app_startup (wsc_data->sn_id, wsc_data->workspace, timestamp);
 
   /* One off */
   return FALSE;
@@ -674,7 +672,7 @@ startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
               g_hash_table_remove (priv->sn_hash, sn_id);
             }
 
-          move_window_to_workspace (mcw, workspace_index);
+          move_window_to_workspace (mcw, workspace_index, CurrentTime);
         }
       else
         {
