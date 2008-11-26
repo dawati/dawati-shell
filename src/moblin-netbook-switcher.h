@@ -44,7 +44,7 @@
 
 #define MAX_WORKSPACES 8
 
-void          show_workspace_switcher (void);
-void          hide_workspace_switcher (void);
+void          show_workspace_switcher (guint32 timestamp);
+void          hide_workspace_switcher (guint32 timestamp);
 
 #endif

@@ -46,7 +46,7 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
   priv->panel_back_in_progress = FALSE;
 
   if (!priv->workspace_chooser && !priv->workspace_switcher)
-    disable_stage (plugin);
+    disable_stage (plugin, CurrentTime);
 }
 
 void

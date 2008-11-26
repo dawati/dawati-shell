@@ -38,7 +38,7 @@ mutter_get_plugin ()
  */
 
 void
-hide_workspace_switcher (void)
+hide_workspace_switcher (guint32 timestamp)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
@@ -48,7 +48,7 @@ hide_workspace_switcher (void)
 
   clutter_actor_destroy (priv->workspace_switcher);
 
-  disable_stage (plugin);
+  disable_stage (plugin, timestamp);
 
   priv->workspace_switcher = NULL;
 }
@@ -74,7 +74,7 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
       return FALSE;
     }
 
-  hide_workspace_switcher ();
+  hide_workspace_switcher (event->any.time);
   meta_workspace_activate (workspace, event->any.time);
 
   return FALSE;
@@ -206,7 +206,7 @@ make_workspace_switcher (GCallback  ws_callback)
  * Constructs and shows the workspace switcher actor.
  */
 void
-show_workspace_switcher (void)
+show_workspace_switcher (guint32 timestamp)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -244,7 +244,7 @@ show_workspace_switcher (void)
                          background, label, grid, NULL);
 
   if (priv->workspace_switcher)
-    hide_workspace_switcher ();
+    hide_workspace_switcher (timestamp);
 
   priv->workspace_switcher = switcher;
 
@@ -258,5 +258,5 @@ show_workspace_switcher (void)
   panel_y      = clutter_actor_get_y (priv->panel);
   clutter_actor_set_position (switcher, 0, panel_height);
 
-  enable_stage (plugin);
+  enable_stage (plugin, timestamp);
 }

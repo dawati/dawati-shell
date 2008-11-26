@@ -154,7 +154,7 @@ workspace_chooser_input_cb (ClutterActor *clone,
       return FALSE;
     }
 
-  hide_workspace_chooser ();
+  hide_workspace_chooser (event->any.time);
 
   finalize_app_startup (sn_id, wsg_data->workspace, event->any.time);
 
@@ -312,7 +312,7 @@ new_workspace_input_cb (ClutterActor *clone,
   struct ws_grid_cb_data * wsg_data = data;
   const char    *sn_id     = wsg_data->sn_id;
 
-  hide_workspace_chooser ();
+  hide_workspace_chooser (event->any.time);
 
   priv->desktop_switch_in_progress = TRUE;
 
@@ -345,7 +345,7 @@ set_lowlight (gboolean on)
  * Creates and shows the workspace chooser.
  */
 void
-show_workspace_chooser (const gchar * sn_id)
+show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -430,7 +430,7 @@ show_workspace_chooser (const gchar * sn_id)
   set_lowlight (TRUE);
 
   if (priv->workspace_chooser)
-    hide_workspace_chooser ();
+    hide_workspace_chooser (timestamp);
 
   priv->workspace_chooser = switcher;
 
@@ -448,11 +448,11 @@ show_workspace_chooser (const gchar * sn_id)
 
   clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
 
-  enable_stage (plugin);
+  enable_stage (plugin, timestamp);
 }
 
 void
-hide_workspace_chooser (void)
+hide_workspace_chooser (guint32 timestamp)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
@@ -472,7 +472,7 @@ hide_workspace_chooser (void)
 
   clutter_actor_destroy (priv->workspace_chooser);
 
-  disable_stage (plugin);
+  disable_stage (plugin, timestamp);
 
   priv->workspace_chooser = NULL;
 }
@@ -507,7 +507,7 @@ workspace_chooser_timeout_cb (gpointer data)
 
   priv->desktop_switch_in_progress = TRUE;
 
-  hide_workspace_chooser ();
+  hide_workspace_chooser (timestamp);
 
   if (wsc_data->workspace >= MAX_WORKSPACES)
     wsc_data->workspace = MAX_WORKSPACES - 1;
@@ -552,12 +552,13 @@ on_sn_monitor_event (SnMonitorEvent *event,
     {
     case SN_MONITOR_EVENT_INITIATED:
       {
-        SnHashData *sn_data = g_slice_new0 (SnHashData);
+        SnHashData *sn_data   = g_slice_new0 (SnHashData);
+        guint32     timestamp = sn_startup_sequence_get_timestamp (sequence);
 
         sn_data->workspace = -2;
         sn_data->state = SN_MONITOR_EVENT_INITIATED;
         g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
-        show_workspace_chooser (seq_id);
+        show_workspace_chooser (seq_id, timestamp);
       }
       break;
     case SN_MONITOR_EVENT_CHANGED:

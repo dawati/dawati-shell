@@ -735,17 +735,40 @@ destroy (MutterWindow *mcw)
  * Used by the completion callback for the panel in/out effects
  */
 void
-disable_stage (MutterPlugin *plugin)
+disable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   PluginPrivate *priv = plugin->plugin_private;
 
   mutter_plugin_set_stage_input_region (plugin, priv->input_region);
+
+  if (priv->keyboard_grab)
+    {
+      Display *xdpy = mutter_plugin_get_xdisplay (plugin);
+
+      XUngrabKeyboard (xdpy, timestamp);
+      priv->keyboard_grab = FALSE;
+    }
 }
 
 void
-enable_stage (MutterPlugin *plugin)
+enable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
+  MetaScreen   *screen = mutter_plugin_get_screen (plugin);
+  Display      *xdpy   = mutter_plugin_get_xdisplay (plugin);
+  ClutterActor *stage  = mutter_get_stage_for_screen (screen);
+  Window        xwin   = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
   mutter_plugin_set_stage_reactive (plugin, TRUE);
+
+  if (Success == XGrabKeyboard (xdpy, xwin, True,
+                                GrabModeAsync, GrabModeAsync, timestamp))
+    {
+      PluginPrivate *priv = plugin->plugin_private;
+
+      priv->keyboard_grab = TRUE;
+    }
+  else
+    g_warning ("Stage keyboard grab failed!\n");
 }
 
 static gboolean
@@ -850,7 +873,7 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
 
   priv->panel_out_in_progress = FALSE;
 
-  enable_stage (plugin);
+  enable_stage (plugin, CurrentTime);
 }
 
 /*
@@ -918,7 +941,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
           priv->panel_out = TRUE;
         }
     }
-  else if (event->type == CLUTTER_KEY_RELEASE)
+  else if (event->type == CLUTTER_KEY_PRESS)
     {
       ClutterKeyEvent *kev = (ClutterKeyEvent *) event;
 
@@ -1181,7 +1204,7 @@ do_init (const char *params)
   /*
    * Set up the stage even processing
    */
-  disable_stage (plugin);
+  disable_stage (plugin, CurrentTime);
 
   /*
    * Hook to the captured signal, so we get to see all events before our

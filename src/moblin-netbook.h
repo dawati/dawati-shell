@@ -69,11 +69,12 @@ struct PluginPrivate
 
   XserverRegion          input_region;
 
-  gboolean               debug_mode : 1;
-  gboolean               panel_out  : 1;
-  gboolean               panel_out_in_progress : 1;
-  gboolean               panel_back_in_progress : 1;
+  gboolean               debug_mode                 : 1;
+  gboolean               panel_out                  : 1;
+  gboolean               panel_out_in_progress      : 1;
+  gboolean               panel_back_in_progress     : 1;
   gboolean               desktop_switch_in_progress : 1;
+  gboolean               keyboard_grab              : 1;
 
   guint                  workspace_chooser_timeout;
 
@@ -106,7 +107,7 @@ struct ActorPrivate
 };
 
 ActorPrivate * get_actor_private (MutterWindow *actor);
-void           disable_stage     (MutterPlugin *plugin);
-void           enable_stage      (MutterPlugin *plugin);
+void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
+void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
 
 #endif
