@@ -658,49 +658,21 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
-/*
- * Simple TV-out like effect.
- */
 static void
-destroy (MutterWindow *mcw)
+check_for_empty_workspaces (gint workspace, MutterWindow *ignore)
 {
-  MutterPlugin       *plugin = mutter_get_plugin ();
-  PluginPrivate      *priv   = plugin->plugin_private;
-  MetaScreen         *screen;
-  MetaCompWindowType  type;
-  ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
-  gint                workspace;
-  gboolean            workspace_empty = TRUE;
-  GList              *l;
-
-  type      = mutter_window_get_window_type (mcw);
-  workspace = mutter_window_get_workspace (mcw);
-  screen    = mutter_plugin_get_screen (plugin);
-
-  if (type == META_COMP_WINDOW_NORMAL)
-    {
-      ActorPrivate *apriv  = get_actor_private (mcw);
-
-      clutter_actor_move_anchor_point_from_gravity (actor,
-                                                    CLUTTER_GRAVITY_CENTER);
-
-      apriv->tml_destroy = clutter_effect_scale (priv->destroy_effect,
-                                                 actor,
-                                                 4.0,
-                                                 0.0,
-                                                 (ClutterEffectCompleteFunc)
-                                                 on_destroy_effect_complete,
-                                                 NULL);
-    }
-  else
-    mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+  MutterPlugin   *plugin = mutter_get_plugin ();
+  PluginPrivate  *priv   = plugin->plugin_private;
+  MetaScreen     *screen = mutter_plugin_get_screen (plugin);
+  gboolean        workspace_empty = TRUE;
+  GList          *l;
 
   l = mutter_get_windows (screen);
   while (l)
     {
       MutterWindow *m = l->data;
 
-      if (m != mcw)
+      if (m != ignore)
         {
           gint w = mutter_window_get_workspace (m);
 
@@ -727,6 +699,45 @@ destroy (MutterWindow *mcw)
 
       meta_screen_remove_workspace (screen, mws, timestamp);
     }
+}
+
+/*
+ * Simple TV-out like effect.
+ */
+static void
+destroy (MutterWindow *mcw)
+{
+  MutterPlugin       *plugin = mutter_get_plugin ();
+  PluginPrivate      *priv   = plugin->plugin_private;
+  MetaScreen         *screen;
+  MetaCompWindowType  type;
+  ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
+  gint                workspace;
+  gboolean            workspace_empty = TRUE;
+
+  type      = mutter_window_get_window_type (mcw);
+  workspace = mutter_window_get_workspace (mcw);
+  screen    = mutter_plugin_get_screen (plugin);
+
+  if (type == META_COMP_WINDOW_NORMAL)
+    {
+      ActorPrivate *apriv  = get_actor_private (mcw);
+
+      clutter_actor_move_anchor_point_from_gravity (actor,
+                                                    CLUTTER_GRAVITY_CENTER);
+
+      apriv->tml_destroy = clutter_effect_scale (priv->destroy_effect,
+                                                 actor,
+                                                 4.0,
+                                                 0.0,
+                                                 (ClutterEffectCompleteFunc)
+                                                 on_destroy_effect_complete,
+                                                 NULL);
+    }
+  else
+    mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+
+  check_for_empty_workspaces (workspace, mcw);
 }
 
 /*
