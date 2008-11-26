@@ -161,6 +161,35 @@ workspace_chooser_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+static gboolean
+chooser_keyboard_input_cb (ClutterActor *self,
+                           ClutterEvent *event,
+                           gpointer      data)
+{
+  const char      *sn_id  = data;
+  guint            symbol = clutter_key_event_symbol (&event->key);
+  gint             indx;
+
+  if (symbol < CLUTTER_0 || symbol > CLUTTER_9)
+    return FALSE;
+
+  /*
+   * The keyboard shortcuts are 1-based index, and 0 means new workspace.
+   */
+  indx = symbol - CLUTTER_0 - 1;
+
+  if (indx >= MAX_WORKSPACES)
+    indx = MAX_WORKSPACES - 1;
+  else if (indx == -1)
+    indx = -2;
+
+  hide_workspace_chooser (event->any.time);
+
+  finalize_app_startup (sn_id, indx, event->any.time);
+
+  return TRUE;
+}
+
 /*
  * Creates a grid of workspaces, which contains a header row with
  * workspace symbolic icon, and the workspaces below it.
@@ -447,6 +476,14 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
                                   switcher_width/2, switcher_height/2);
 
   clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
+
+  clutter_actor_set_reactive (switcher, TRUE);
+
+  g_signal_connect_data (switcher, "key-press-event",
+                         G_CALLBACK (chooser_keyboard_input_cb),
+                         g_strdup (sn_id), (GClosureNotify) g_free, 0);
+
+  clutter_grab_keyboard (switcher);
 
   enable_stage (plugin, timestamp);
 }
