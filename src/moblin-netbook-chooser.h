@@ -38,4 +38,8 @@ gboolean startup_notification_should_map (MutterWindow *mcw,
 
 void     startup_notification_finalize (void);
 
+void     spawn_app (const gchar *path,
+                    guint32      timestamp,
+                    gboolean     without_chooser);
+
 #endif

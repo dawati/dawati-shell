@@ -42,6 +42,7 @@ struct SnHashData
   MutterWindow       *mcw;
   gint                workspace;
   SnMonitorEventType  state;
+  gboolean            without_chooser : 1;
 };
 
 struct ws_grid_cb_data
@@ -558,8 +559,7 @@ workspace_chooser_timeout_cb (gpointer data)
 }
 
 static void
-on_sn_monitor_event (SnMonitorEvent *event,
-                     void           *user_data)
+on_sn_monitor_event (SnMonitorEvent *event, void *user_data)
 {
   MutterPlugin      *plugin = mutter_get_plugin ();
   PluginPrivate     *priv   = plugin->plugin_private;
@@ -589,14 +589,28 @@ on_sn_monitor_event (SnMonitorEvent *event,
     {
     case SN_MONITOR_EVENT_INITIATED:
       {
-        SnHashData *sn_data   = g_slice_new0 (SnHashData);
+        SnHashData *sn_data;
         guint32     timestamp = sn_startup_sequence_get_timestamp (sequence);
 
-        sn_data->workspace = -2;
-        sn_data->state = SN_MONITOR_EVENT_INITIATED;
-        g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
-        show_workspace_chooser (seq_id, timestamp);
+        if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
+          {
+            sn_data = value;
+          }
+        else
+          {
+            sn_data = g_slice_new0 (SnHashData);
+
+            sn_data->workspace = -2;
+
+            g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
+          }
+
+          sn_data->state = SN_MONITOR_EVENT_INITIATED;
+
+          if (!sn_data->without_chooser)
+            show_workspace_chooser (seq_id, timestamp);
       }
+
       break;
     case SN_MONITOR_EVENT_CHANGED:
       if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
@@ -768,4 +782,56 @@ startup_notification_finalize (void)
             plugin->map (mcw);
         }
     }
+}
+
+void
+spawn_app (const gchar *path, guint32 timestamp, gboolean without_chooser)
+{
+  MutterPlugin      *plugin  = mutter_get_plugin ();
+  PluginPrivate     *priv    = plugin->plugin_private;
+  MetaScreen        *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay       *display = meta_screen_get_display (screen);
+  Display           *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  SnLauncherContext *context = NULL;
+  const gchar       *sn_id;
+  gchar             *argv[2] = {NULL, NULL};
+  SnHashData        *sn_data = g_slice_new0 (SnHashData);
+
+  argv[0] = g_strdup (path);
+
+  if (!path)
+    return;
+
+  context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
+
+  sn_launcher_context_set_name (context, path);
+  sn_launcher_context_set_description (context, path);
+  sn_launcher_context_set_binary_name (context, path);
+
+  sn_launcher_context_initiate (context,
+                                "mutter-netbook-shell",
+                                path, /* bin_name */
+				timestamp);
+
+  sn_id = sn_launcher_context_get_startup_id (context);
+
+  sn_data->workspace = -2;
+  sn_data->without_chooser = without_chooser;
+
+  g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
+
+  if (!g_spawn_async (NULL,
+                      &argv[0],
+                      NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      (GSpawnChildSetupFunc)
+                      sn_launcher_context_setup_child_process,
+                      (gpointer)context,
+                      NULL,
+                      NULL))
+    {
+      g_warning ("Failed to launch [%s]", path);
+    }
+
+  sn_launcher_context_unref (context);
 }

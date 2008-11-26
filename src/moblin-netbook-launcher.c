@@ -168,11 +168,16 @@ get_all_applications (void)
 static gboolean
 entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  const gchar   *exec   = data;
+  MutterPlugin       *plugin          = mutter_get_plugin ();
+  PluginPrivate      *priv            = plugin->plugin_private;
+  const gchar        *exec            = data;
+  ClutterButtonEvent *bev             = (ClutterButtonEvent*)event;
+  gboolean            without_chooser = FALSE;
 
-  launcher_spawn_app (exec, event->any.time);
+  if (bev->modifier_state & CLUTTER_MOD1_MASK)
+    without_chooser = TRUE;
+
+  spawn_app (exec, event->any.time, without_chooser);
 
   clutter_actor_hide (priv->launcher);
 
@@ -205,8 +210,8 @@ make_launcher (gint x, gint y)
   table = nbtk_table_new ();
   launcher = CLUTTER_ACTOR (table);
 
-  nbtk_table_set_col_spacing (table, 2*PADDING);
-  nbtk_table_set_row_spacing (table, 2*PADDING);
+  nbtk_table_set_col_spacing (NBTK_TABLE (table), 2*PADDING);
+  nbtk_table_set_row_spacing (NBTK_TABLE (table), 2*PADDING);
 
   apps = get_all_applications ();
 
@@ -270,59 +275,3 @@ make_launcher (gint x, gint y)
 
   return launcher;
 }
-
-/*
- * Panel buttons.
- */
-/*
- * Helper method to spawn and application. Will eventually be replaced
- * by libgnome-menu, or something like that.
- */
-void
-launcher_spawn_app (const gchar *path, guint32 timestamp)
-{
-  MutterPlugin      *plugin    = mutter_get_plugin ();
-  PluginPrivate     *priv      = plugin->plugin_private;
-  MetaScreen        *screen    = mutter_plugin_get_screen (plugin);
-  MetaDisplay       *display   = meta_screen_get_display (screen);
-
-  Display           *xdpy = mutter_plugin_get_xdisplay (plugin);
-  SnLauncherContext *context = NULL;
-  const gchar       *id;
-  gchar             *argv[2] = {NULL, NULL};
-
-  argv[0] = g_strdup (path);
-
-  if (!path)
-    return;
-
-  context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
-
-  /* FIXME */
-  sn_launcher_context_set_name (context, path);
-  sn_launcher_context_set_description (context, path);
-  sn_launcher_context_set_binary_name (context, path);
-
-  sn_launcher_context_initiate (context,
-                                "mutter-netbook-shell",
-                                path, /* bin_name */
-				timestamp);
-
-  id = sn_launcher_context_get_startup_id (context);
-
-  if (!g_spawn_async (NULL,
-                      &argv[0],
-                      NULL,
-                      G_SPAWN_SEARCH_PATH,
-                      (GSpawnChildSetupFunc)
-                      sn_launcher_context_setup_child_process,
-                      (gpointer)context,
-                      NULL,
-                      NULL))
-    {
-      g_warning ("Failed to launch [%s]", path);
-    }
-
-  sn_launcher_context_unref (context);
-}
-
