@@ -258,5 +258,5 @@ show_workspace_switcher (void)
   panel_y      = clutter_actor_get_y (priv->panel);
   clutter_actor_set_position (switcher, 0, panel_height);
 
-  mutter_plugin_set_stage_reactive (plugin, TRUE);
+  enable_stage (plugin);
 }

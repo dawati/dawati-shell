@@ -742,6 +742,12 @@ disable_stage (MutterPlugin *plugin)
   mutter_plugin_set_stage_input_region (plugin, priv->input_region);
 }
 
+void
+enable_stage (MutterPlugin *plugin)
+{
+  mutter_plugin_set_stage_reactive (plugin, TRUE);
+}
+
 static gboolean
 xevent_filter (XEvent *xev)
 {
@@ -843,7 +849,8 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
   PluginPrivate *priv     = plugin->plugin_private;
 
   priv->panel_out_in_progress = FALSE;
-  mutter_plugin_set_stage_reactive (plugin, TRUE);
+
+  enable_stage (plugin);
 }
 
 /*

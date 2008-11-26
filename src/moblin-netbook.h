@@ -106,6 +106,7 @@ struct ActorPrivate
 };
 
 ActorPrivate * get_actor_private (MutterWindow *actor);
-void           disable_stage (MutterPlugin *plugin);
+void           disable_stage     (MutterPlugin *plugin);
+void           enable_stage      (MutterPlugin *plugin);
 
 #endif

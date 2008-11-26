@@ -448,7 +448,7 @@ show_workspace_chooser (const gchar * sn_id)
 
   clutter_actor_set_position (switcher, screen_width/2, screen_height/2);
 
-  mutter_plugin_set_stage_reactive (plugin, TRUE);
+  enable_stage (plugin);
 }
 
 void
