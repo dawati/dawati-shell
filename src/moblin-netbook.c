@@ -753,22 +753,24 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
 void
 enable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
-  MetaScreen   *screen = mutter_plugin_get_screen (plugin);
-  Display      *xdpy   = mutter_plugin_get_xdisplay (plugin);
-  ClutterActor *stage  = mutter_get_stage_for_screen (screen);
-  Window        xwin   = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+  PluginPrivate *priv   = plugin->plugin_private;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  Display       *xdpy   = mutter_plugin_get_xdisplay (plugin);
+  ClutterActor  *stage  = mutter_get_stage_for_screen (screen);
+  Window         xwin   = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
 
-  if (Success == XGrabKeyboard (xdpy, xwin, True,
-                                GrabModeAsync, GrabModeAsync, timestamp))
+  if (!priv->keyboard_grab)
     {
-      PluginPrivate *priv = plugin->plugin_private;
-
-      priv->keyboard_grab = TRUE;
+      if (Success == XGrabKeyboard (xdpy, xwin, True,
+                                    GrabModeAsync, GrabModeAsync, timestamp))
+        {
+          priv->keyboard_grab = TRUE;
+        }
+      else
+        g_warning ("Stage keyboard grab failed!\n");
     }
-  else
-    g_warning ("Stage keyboard grab failed!\n");
 }
 
 static gboolean

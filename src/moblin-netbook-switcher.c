@@ -25,6 +25,7 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-switcher.h"
 #include "moblin-netbook-ui.h"
+#include "moblin-netbook-panel.h"
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -45,6 +46,9 @@ hide_workspace_switcher (guint32 timestamp)
 
   if (!priv->workspace_switcher)
     return;
+
+  if (priv->panel_out && !priv->panel_back_in_progress)
+    hide_panel ();
 
   clutter_actor_destroy (priv->workspace_switcher);
 
@@ -78,6 +82,50 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   meta_workspace_activate (workspace, event->any.time);
 
   return FALSE;
+}
+
+static gboolean
+switcher_keyboard_input_cb (ClutterActor *self,
+                            ClutterEvent *event,
+                            gpointer      data)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  guint          symbol = clutter_key_event_symbol (&event->key);
+  gint           indx;
+
+  if (symbol < CLUTTER_0 || symbol > CLUTTER_9)
+    return FALSE;
+
+  /*
+   * The keyboard shortcuts are 1-based index, and 0 means new workspace.
+   */
+  indx = symbol - CLUTTER_0 - 1;
+
+  if (indx >= MAX_WORKSPACES)
+    indx = MAX_WORKSPACES - 1;
+
+  if (indx < 0)
+    {
+      g_printf ("Request for new WS currently not implemented in switcher.\n");
+    }
+  else
+    {
+      MetaWorkspace *workspace;
+
+      workspace = meta_screen_get_workspace_by_index (screen, indx);
+
+      if (!workspace)
+        {
+          g_warning ("No workspace specified, %s:%d\n", __FILE__, __LINE__);
+          return TRUE;
+        }
+
+      hide_workspace_switcher (event->any.time);
+      meta_workspace_activate (workspace, event->any.time);
+    }
+
+  return TRUE;
 }
 
 static gboolean
@@ -257,6 +305,13 @@ show_workspace_switcher (guint32 timestamp)
   panel_height = clutter_actor_get_height (priv->panel);
   panel_y      = clutter_actor_get_y (priv->panel);
   clutter_actor_set_position (switcher, 0, panel_height);
+
+  clutter_actor_set_reactive (switcher, TRUE);
+
+  g_signal_connect (switcher, "key-press-event",
+                    G_CALLBACK (switcher_keyboard_input_cb), NULL);
+
+  clutter_grab_keyboard (switcher);
 
   enable_stage (plugin, timestamp);
 }
