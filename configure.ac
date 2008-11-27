@@ -37,6 +37,7 @@ AC_SUBST(PLUGIN_LT_LDFLAGS)
 
 AC_OUTPUT([
 Makefile
+data/Makefile
 src/Makefile
 po/Makefile.in
 ])
