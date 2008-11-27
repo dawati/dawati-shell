@@ -181,7 +181,9 @@ make_panel (gint width)
   clutter_actor_set_position (launcher, w + x + 10, 0);
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
 
-  priv->launcher = make_launcher (w + x + 10, clutter_actor_get_height (panel));
+  priv->launcher = make_launcher (width);
+  clutter_actor_set_y (priv->launcher, clutter_actor_get_height (panel));
+
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->launcher);
   clutter_actor_hide (priv->launcher);
 
