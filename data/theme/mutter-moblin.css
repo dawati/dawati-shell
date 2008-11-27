@@ -1,0 +1,87 @@
+/* apps button */
+*#apps-button {
+  background-image: url("file://panel/apps-normal.png");
+}
+*#apps-button:hover {
+  background-image: url("file://panel/apps-hover.png");
+}
+*#apps-button:active {
+  background-image: url("file://panel/apps-active.png");
+}
+
+/* internet button */
+*#internet-button {
+  background-image: url("file://panel/internet-normal.png");
+}
+*#internet-button:hover {
+  background-image: url("file://panel/internet-hover.png");
+}
+*#internet-button:active {
+  background-image: url("file://panel/internet-active.png");
+}
+
+/* media button */
+*#media-button {
+  background-image: url("file://panel/media-normal.png");
+}
+*#media-button:hover {
+  background-image: url("file://panel/media-hover.png");
+}
+*#media-button:active {
+  background-image: url("file://panel/media-active.png");
+}
+
+/* m-space button */
+*#m-space-button {
+  background-image: url("file://panel/m-space-normal.png");
+}
+*#m-space-button:hover {
+  background-image: url("file://panel/m-space-hover.png");
+}
+*#m-space-button:active {
+  background-image: url("file://panel/m-space-active.png");
+}
+
+/* pasteboard button */
+*#pasteboard-button {
+  background-image: url("file://panel/pasteboard-normal.png");
+}
+*#pasteboard-button:hover {
+  background-image: url("file://panel/pasteboard-hover.png");
+}
+*#pasteboard-button:active {
+  background-image: url("file://panel/pasteboard-active.png");
+}
+
+/* people button */
+*#people-button {
+  background-image: url("file://panel/people-normal.png");
+}
+*#people-button:hover {
+  background-image: url("file://panel/people-hover.png");
+}
+*#people-button:active {
+  background-image: url("file://panel/people-active.png");
+}
+
+/* spaces button */
+*#spaces-button {
+  background-image: url("file://panel/spaces-normal.png");
+}
+*#spaces-button:hover {
+  background-image: url("file://panel/spaces-hover.png");
+}
+*#spaces-button:active {
+  background-image: url("file://panel/spaces-active.png");
+}
+
+/* status button */
+*#status-button {
+  background-image: url("file://panel/status-normal.png");
+}
+*#status-button:hover {
+  background-image: url("file://panel/status-hover.png");
+}
+*#status-button:active {
+  background-image: url("file://panel/status-active.png");
+}
