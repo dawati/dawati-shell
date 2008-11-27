@@ -33,8 +33,8 @@
 
 
 #define ICON_SIZE 32
-#define N_COLS 8
-#define PADDING 4
+#define PADDING 2
+#define BORDER_WIDTH 2
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -198,20 +198,36 @@ table_input_cb (ClutterActor *table, ClutterEvent *event, gpointer data)
 }
 
 ClutterActor *
-make_launcher (gint x, gint y)
+make_launcher (gint width)
 {
   GSList *apps, *a;
-  GtkIconTheme *theme;
-  ClutterActor *stage, *launcher;
-  NbtkWidget   *table;
+  GtkIconTheme  *theme;
+  ClutterActor  *stage, *launcher;
+  NbtkWidget    *table;
+  gint           row, col, n_cols, pad;
+  ClutterActor  *group;
+  ClutterColor   bckg_clr = {0xff, 0xff, 0xff, 0xff};
+  ClutterActor  *bckg;
 
-  gint row, col;
+  n_cols = (width - 2*BORDER_WIDTH) / (ICON_SIZE + PADDING);
+
+  /*
+   * Distribute any leftover space into the padding, if possible.
+   */
+  pad = n_cols*(ICON_SIZE + PADDING) - (width - 2*BORDER_WIDTH);
+
+  if (pad >= n_cols)
+    pad /= n_cols;
+  else
+    pad = 0;
+
+  pad += PADDING;
 
   table = nbtk_table_new ();
   launcher = CLUTTER_ACTOR (table);
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (table), 2*PADDING);
-  nbtk_table_set_row_spacing (NBTK_TABLE (table), 2*PADDING);
+  nbtk_table_set_col_spacing (NBTK_TABLE (table), pad);
+  nbtk_table_set_row_spacing (NBTK_TABLE (table), pad);
 
   apps = get_all_applications ();
 
@@ -255,23 +271,40 @@ make_launcher (gint x, gint y)
       clutter_container_child_set (CLUTTER_CONTAINER (launcher), icon,
 				   "keep-aspect-ratio", TRUE, NULL);
 
-      if (++col >= N_COLS)
+      if (++col >= n_cols)
         {
           col = 0;
           ++row;
         }
     }
 
-  clutter_actor_set_size (launcher,
-                          col * (ICON_SIZE + 2 * PADDING),
-                          row * (ICON_SIZE + 2 * PADDING));
-
   g_signal_connect (launcher, "button-press-event",
 		    G_CALLBACK (table_input_cb), NULL);
 
   clutter_actor_set_reactive (launcher, TRUE);
 
-  clutter_actor_set_position (launcher, x, y);
+  clutter_actor_set_size (launcher,
+                          n_cols * (ICON_SIZE + pad),
+                          row * (ICON_SIZE + pad));
 
-  return launcher;
+  /*
+   * FIXME: This is a dirty hack to add border around the launcher. We really
+   *        want to add just padding, but NbtkWidget::allocate() will not run
+   *        for subclasses, so the padding property is ignored.
+   *        Also, we should match the color to the theme, but attempts to
+   *        query the NbtkStylable for background color at this point return
+   *        something completely translucent.
+   */
+  group = clutter_group_new ();
+  bckg  = clutter_rectangle_new_with_color (&bckg_clr);
+
+  clutter_actor_set_size (bckg,
+                          n_cols * (ICON_SIZE + pad) + 2*BORDER_WIDTH,
+                          row * (ICON_SIZE + pad) + 2*BORDER_WIDTH);
+
+  clutter_actor_set_position (launcher, BORDER_WIDTH, BORDER_WIDTH);
+
+  clutter_container_add (CLUTTER_CONTAINER (group), bckg, launcher, NULL);
+
+  return group;
 }
