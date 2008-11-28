@@ -314,4 +314,12 @@ show_workspace_switcher (guint32 timestamp)
   clutter_grab_keyboard (switcher);
 
   enable_stage (plugin, timestamp);
+
+  clutter_actor_move_anchor_point_from_gravity (switcher,
+                                                CLUTTER_GRAVITY_CENTER);
+  
+  clutter_actor_set_scale (switcher, 0.0, 0.0);
+
+  tidy_bounce_scale (switcher, 200);
+
 }

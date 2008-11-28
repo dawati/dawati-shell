@@ -27,6 +27,8 @@
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 
+#include "tidy-behaviour-bounce.h"
+
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
@@ -72,9 +74,18 @@ hide_panel ()
 
 static gboolean
 spaces_button_cb (ClutterActor *actor,
-                           ClutterEvent *event,
-                           gpointer      data)
+                  ClutterEvent *event,
+                  gpointer      data)
 {
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+
+  /* already showing */
+  if (priv->workspace_switcher)
+    return TRUE;
+
+  /* No way to know if showing */
+  clutter_actor_hide (priv->launcher);
   show_workspace_switcher ();
   return TRUE;
 }
@@ -121,13 +132,27 @@ panel_append_toolbar_button (ClutterActor  *container,
 
 static gboolean
 launcher_button_cb (ClutterActor *actor,
-                          ClutterEvent *event,
-                          gpointer      data)
+                    ClutterEvent *event,
+                    gpointer      data)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
 
+  /* if workspace switcher is showing... HACK */
+  if (priv->workspace_switcher)
+    {
+      clutter_actor_destroy (priv->workspace_switcher);
+      priv->workspace_switcher = NULL;
+    }
+
+  clutter_actor_move_anchor_point_from_gravity (priv->launcher,
+                                                CLUTTER_GRAVITY_CENTER);
+  
+  clutter_actor_set_scale (priv->launcher, 0.0, 0.0);
   clutter_actor_show (priv->launcher);
+
+  tidy_bounce_scale (priv->launcher, 200);
+
   return TRUE;
 }
 
