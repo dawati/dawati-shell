@@ -71,7 +71,7 @@ hide_panel ()
 }
 
 static gboolean
-workspace_button_input_cb (ClutterActor *actor,
+spaces_button_cb (ClutterActor *actor,
                            ClutterEvent *event,
                            gpointer      data)
 {
@@ -108,7 +108,7 @@ panel_append_toolbar_button (ClutterActor *container,
 }
 
 static gboolean
-launcher_button_input_cb (ClutterActor *actor,
+launcher_button_cb (ClutterActor *actor,
                           ClutterEvent *event,
                           gpointer      data)
 {
@@ -141,10 +141,10 @@ make_panel (gint width)
 
   panel_append_toolbar_button (panel, "m-space-button", NULL);
   panel_append_toolbar_button (panel, "status-button", NULL);
-  panel_append_toolbar_button (panel, "spaces-button", G_CALLBACK (launcher_button_input_cb));
+  panel_append_toolbar_button (panel, "spaces-button", G_CALLBACK (spaces_button_cb));
   panel_append_toolbar_button (panel, "internet-button", NULL);
   panel_append_toolbar_button (panel, "media-button", NULL);
-  panel_append_toolbar_button (panel, "apps-button", G_CALLBACK (launcher_button_input_cb));
+  panel_append_toolbar_button (panel, "apps-button", G_CALLBACK (launcher_button_cb));
   panel_append_toolbar_button (panel, "people-button", NULL);
   panel_append_toolbar_button (panel, "pasteboard-button", NULL);
 
