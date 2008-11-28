@@ -32,9 +32,9 @@
 #include <string.h>
 
 
-#define ICON_SIZE 32
-#define PADDING 2
-#define BORDER_WIDTH 2
+#define ICON_SIZE 48
+#define PADDING 4
+#define BORDER_WIDTH 4
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -242,24 +242,32 @@ make_launcher (gint width)
       GMenuTreeEntry *entry = a->data;
       GtkIconInfo *info = NULL;
 
-      icon = clutter_texture_new ();
+      name = gmenu_tree_entry_get_icon (entry);
+
+      if (!name)
+        continue;
+
+      exec = g_strdup (gmenu_tree_entry_get_exec (entry));
+
+      if (!exec)
+        continue;
+
+      info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
+
+      if (!info)
+        continue;
+
+      icon = clutter_texture_new_from_file (gtk_icon_info_get_filename (info),
+                                            NULL);
+
+      if (icon == NULL)
+        continue;
+
+      gtk_icon_info_free (info);
+
       clutter_actor_set_size (icon, ICON_SIZE, ICON_SIZE);
       g_object_set (G_OBJECT (icon), "sync-size", TRUE, NULL);
 
-      name = gmenu_tree_entry_get_icon (entry);
-      exec = g_strdup (gmenu_tree_entry_get_exec (entry));
-
-      if (name)
-        info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
-
-      if (info)
-        {
-          clutter_texture_set_from_file (CLUTTER_TEXTURE (icon),
-                                         gtk_icon_info_get_filename (info),
-                                         NULL);
-
-          gtk_icon_info_free (info);
-        }
 
       nbtk_table_add_actor (NBTK_TABLE (table), icon, row, col);
 
