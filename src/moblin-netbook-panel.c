@@ -40,6 +40,8 @@ mutter_get_plugin ()
   return &mutter_plugin;
 }
 
+static void toggle_buttons_cb (NbtkButton *button, PluginPrivate *priv);
+
 /*
  * The slide-out top panel.
  */
@@ -69,6 +71,10 @@ hide_panel ()
                        priv->panel, x, -height,
                        on_panel_back_effect_complete,
                        NULL);
+
+  /* make sure no buttons are 'active' */
+  toggle_buttons_cb (NULL, priv);
+
   priv->panel_out = FALSE;
 }
 
