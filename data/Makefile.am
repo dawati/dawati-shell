@@ -1,8 +1,8 @@
-themedir = $(datadir)/mutter-moblin/theme
+themedir = $(pkgdatadir)/theme
 dist_theme_DATA = \
 	theme/mutter-moblin.css
 
-theme_paneldir = $(datadir)/mutter-moblin/theme/panel
+theme_paneldir = $(pkgdatadir)/theme/panel
 dist_theme_panel_DATA = \
 	theme/panel/apps-active.png \
 	theme/panel/apps-hover.png \
