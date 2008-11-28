@@ -27,6 +27,10 @@
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 
+#define BUTTON_WIDTH 66
+#define BUTTON_HEIGHT 55
+#define BUTTON_SPACING 10
+
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
 mutter_get_plugin ()
@@ -76,35 +80,31 @@ workspace_button_input_cb (ClutterActor *actor,
 }
 
 static ClutterActor *
-make_workspace_switcher_button ()
+panel_append_toolbar_button (ClutterActor *container,
+                             gchar       *name,
+                             GCallback    callback)
 {
-  ClutterColor  bkg_clr = {0, 0, 0, 0xff};
-  ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
-  ClutterActor *group   = clutter_group_new ();
-  ClutterActor *label   = clutter_label_new_full ("Sans 12 Bold",
-                                                  "Spaces", &fg_clr);
-  ClutterActor *bkg     = clutter_rectangle_new_with_color (&bkg_clr);
-  guint         l_width;
+  NbtkWidget *button;
+  static int n_buttons = 0;
 
-  clutter_actor_realize (label);
-  l_width = clutter_actor_get_width (label);
-  l_width += 10;
+  button = nbtk_button_new ();
+  nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
+  clutter_actor_set_name (CLUTTER_ACTOR (button), name);
+  clutter_actor_set_size (CLUTTER_ACTOR (button), BUTTON_WIDTH, BUTTON_HEIGHT);
+  clutter_actor_set_position (CLUTTER_ACTOR (button),
+                              213 + (BUTTON_WIDTH * n_buttons) + (BUTTON_SPACING * n_buttons),
+                              PANEL_HEIGHT - BUTTON_HEIGHT);
 
-  clutter_actor_set_anchor_point_from_gravity (label, CLUTTER_GRAVITY_CENTER);
-  clutter_actor_set_position (label, l_width/2, PANEL_HEIGHT / 2);
+  clutter_container_add_actor (CLUTTER_CONTAINER (container), CLUTTER_ACTOR (button));
 
-  clutter_actor_set_size (bkg, l_width + 5, PANEL_HEIGHT);
+  if (callback)
+    g_signal_connect (button,
+                      "clicked",
+                      callback,
+                      NULL);
 
-  clutter_container_add (CLUTTER_CONTAINER (group), bkg, label, NULL);
-
-  g_signal_connect (group,
-                    "button-press-event",
-                    G_CALLBACK (workspace_button_input_cb),
-                    NULL);
-
-  clutter_actor_set_reactive (group, TRUE);
-
-  return group;
+  n_buttons++;
+  return button;
 }
 
 static gboolean
@@ -119,38 +119,6 @@ launcher_button_input_cb (ClutterActor *actor,
   return TRUE;
 }
 
-static ClutterActor *
-make_launcher_button ()
-{
-  ClutterColor  bkg_clr = {0, 0, 0, 0xff};
-  ClutterColor  fg_clr  = {0xff, 0xff, 0xff, 0xff};
-  ClutterActor *group   = clutter_group_new ();
-  ClutterActor *label   = clutter_label_new_full ("Sans 12 Bold",
-                                                  "Launcher", &fg_clr);
-  ClutterActor *bkg     = clutter_rectangle_new_with_color (&bkg_clr);
-  guint         l_width;
-
-  clutter_actor_realize (label);
-  l_width = clutter_actor_get_width (label);
-  l_width += 10;
-
-  clutter_actor_set_anchor_point_from_gravity (label, CLUTTER_GRAVITY_CENTER);
-  clutter_actor_set_position (label, l_width/2, PANEL_HEIGHT / 2);
-
-  clutter_actor_set_size (bkg, l_width + 5, PANEL_HEIGHT);
-
-  clutter_container_add (CLUTTER_CONTAINER (group), bkg, label, NULL);
-
-  g_signal_connect (group,
-                    "button-press-event",
-                    G_CALLBACK (launcher_button_input_cb),
-                    NULL);
-
-  clutter_actor_set_reactive (group, TRUE);
-
-  return group;
-}
-
 ClutterActor *
 make_panel (gint width)
 {
@@ -158,7 +126,7 @@ make_panel (gint width)
   PluginPrivate *priv   = plugin->plugin_private;
   ClutterActor  *panel;
   ClutterActor  *background;
-  ClutterColor   clr = {0x44, 0x44, 0x44, 0x7f};
+  ClutterColor   clr = {0x0, 0x0, 0x0, 0xff};
   ClutterActor  *launcher, *overlay;
   gint           x, w;
 
@@ -171,15 +139,14 @@ make_panel (gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
   clutter_actor_set_size (background, width, PANEL_HEIGHT);
 
-  launcher = make_workspace_switcher_button ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
-
-  x = clutter_actor_get_x (launcher);
-  w = clutter_actor_get_width (launcher);
-
-  launcher = make_launcher_button ();
-  clutter_actor_set_position (launcher, w + x + 10, 0);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), launcher);
+  panel_append_toolbar_button (panel, "m-space-button", NULL);
+  panel_append_toolbar_button (panel, "status-button", NULL);
+  panel_append_toolbar_button (panel, "spaces-button", G_CALLBACK (launcher_button_input_cb));
+  panel_append_toolbar_button (panel, "internet-button", NULL);
+  panel_append_toolbar_button (panel, "media-button", NULL);
+  panel_append_toolbar_button (panel, "apps-button", G_CALLBACK (launcher_button_input_cb));
+  panel_append_toolbar_button (panel, "people-button", NULL);
+  panel_append_toolbar_button (panel, "pasteboard-button", NULL);
 
   priv->launcher = make_launcher (width);
   clutter_actor_set_y (priv->launcher, clutter_actor_get_height (panel));
