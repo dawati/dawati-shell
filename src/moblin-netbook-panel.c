@@ -138,7 +138,7 @@ make_panel (gint width)
   PluginPrivate *priv   = plugin->plugin_private;
   ClutterActor  *panel;
   ClutterActor  *background;
-  ClutterColor   clr = {0x0, 0x0, 0x0, 0xff};
+  ClutterColor   clr = {0x0, 0x0, 0x0, 0xce};
   ClutterActor  *launcher, *overlay;
   gint           x, w;
 
