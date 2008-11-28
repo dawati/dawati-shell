@@ -24,7 +24,7 @@ dist_theme_panel_DATA = \
 	theme/panel/people-hover.png \
 	theme/panel/people-normal.png \
 	theme/panel/spaces-active.png \
-	theme/panel/spaces-hoever.png \
+	theme/panel/spaces-hover.png \
 	theme/panel/spaces-normal.png \
 	theme/panel/status-active.png \
 	theme/panel/status-hover.png \
