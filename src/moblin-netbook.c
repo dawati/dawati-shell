@@ -1106,10 +1106,20 @@ do_init (const char *params)
   XserverRegion  region;
   Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
+  GError        *err = NULL;
 
   gtk_init (NULL, NULL);
 
   plugin->plugin_private = priv;
+  
+  nbtk_style_load_from_file (nbtk_style_get_default (),
+                             PLUGIN_PKGDATADIR "/theme/mutter-moblin.css",
+                             &err);
+  if (err)
+    {
+      g_warning (err->message);
+      g_error_free (err);
+    }
 
   name = plugin->name;
   plugin->name = _(name);
