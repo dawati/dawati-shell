@@ -79,10 +79,21 @@ spaces_button_cb (ClutterActor *actor,
   return TRUE;
 }
 
-static ClutterActor *
-panel_append_toolbar_button (ClutterActor *container,
-                             gchar       *name,
-                             GCallback    callback)
+static void
+toggle_buttons_cb (NbtkButton *button, PluginPrivate *priv)
+{
+  gint i;
+
+  for (i = 0; i < 8; i++)
+    if (priv->panel_buttons[i] != button)
+      nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
+}
+
+static ClutterActor*
+panel_append_toolbar_button (ClutterActor  *container,
+                             gchar         *name,
+                             GCallback      callback,
+                             PluginPrivate *data)
 {
   NbtkWidget *button;
   static int n_buttons = 0;
@@ -97,14 +108,15 @@ panel_append_toolbar_button (ClutterActor *container,
 
   clutter_container_add_actor (CLUTTER_CONTAINER (container), CLUTTER_ACTOR (button));
 
+  g_signal_connect (button, "clicked", G_CALLBACK (toggle_buttons_cb), data);
   if (callback)
     g_signal_connect (button,
                       "clicked",
                       callback,
-                      NULL);
+                      data);
 
   n_buttons++;
-  return button;
+  return CLUTTER_ACTOR (button);
 }
 
 static gboolean
@@ -139,14 +151,14 @@ make_panel (gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
   clutter_actor_set_size (background, width, PANEL_HEIGHT);
 
-  panel_append_toolbar_button (panel, "m-space-button", NULL);
-  panel_append_toolbar_button (panel, "status-button", NULL);
-  panel_append_toolbar_button (panel, "spaces-button", G_CALLBACK (spaces_button_cb));
-  panel_append_toolbar_button (panel, "internet-button", NULL);
-  panel_append_toolbar_button (panel, "media-button", NULL);
-  panel_append_toolbar_button (panel, "apps-button", G_CALLBACK (launcher_button_cb));
-  panel_append_toolbar_button (panel, "people-button", NULL);
-  panel_append_toolbar_button (panel, "pasteboard-button", NULL);
+  priv->panel_buttons[0] = panel_append_toolbar_button (panel, "m-space-button", NULL, priv);
+  priv->panel_buttons[1]  = panel_append_toolbar_button (panel, "status-button", NULL, priv);
+  priv->panel_buttons[2] = panel_append_toolbar_button (panel, "spaces-button", G_CALLBACK (spaces_button_cb), priv);
+  priv->panel_buttons[3] = panel_append_toolbar_button (panel, "internet-button", NULL, priv);
+  priv->panel_buttons[4] = panel_append_toolbar_button (panel, "media-button", NULL, priv);
+  priv->panel_buttons[5] = panel_append_toolbar_button (panel, "apps-button", G_CALLBACK (launcher_button_cb), priv);
+  priv->panel_buttons[6] = panel_append_toolbar_button (panel, "people-button", NULL, priv);
+  priv->panel_buttons[7] = panel_append_toolbar_button (panel, "pasteboard-button", NULL, priv);
 
   priv->launcher = make_launcher (width);
   clutter_actor_set_y (priv->launcher, clutter_actor_get_height (panel));
