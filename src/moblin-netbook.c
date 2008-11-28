@@ -28,6 +28,7 @@
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
+#include "tidy-behaviour-bounce.h"
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -554,13 +555,19 @@ unmaximize (MutterWindow *mcw,
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_UNMAXIMIZE);
 }
 
+/*
 static void
 on_map_effect_complete (ClutterActor *actor, gpointer data)
+{
+*/
+static void
+on_map_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   /*
    * Must reverse the effect of the effect.
    */
   MutterPlugin *plugin = mutter_get_plugin ();
+  ClutterActor *actor  = CLUTTER_ACTOR(data);
   MutterWindow *mcw    = MUTTER_WINDOW (actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
@@ -627,7 +634,7 @@ map (MutterWindow *mcw)
 
       clutter_actor_set_scale (actor, 0.0, 0.0);
       clutter_actor_show (actor);
-
+      /*
       apriv->tml_map = clutter_effect_scale (priv->map_effect,
                                              actor,
                                              1.0,
@@ -635,6 +642,11 @@ map (MutterWindow *mcw)
                                              (ClutterEffectCompleteFunc)
                                              on_map_effect_complete,
                                              NULL);
+      */
+      apriv->tml_map = tidy_bounce_scale (actor, 200);
+
+      g_signal_connect (apriv->tml_map, "completed", 
+                        G_CALLBACK (on_map_effect_complete), actor);
 
       apriv->is_minimized = FALSE;
     }
@@ -839,7 +851,7 @@ kill_effect (MutterWindow *mcw, gulong event)
   if ((event & MUTTER_PLUGIN_MAP) && apriv->tml_map)
     {
       clutter_timeline_stop (apriv->tml_map);
-      on_map_effect_complete (actor, NULL);
+      on_map_effect_complete (apriv->tml_map, actor);
     }
 
   if ((event & MUTTER_PLUGIN_DESTROY) && apriv->tml_destroy)
