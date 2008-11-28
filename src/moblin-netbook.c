@@ -38,12 +38,12 @@
 #include <compositor-mutter.h>
 #include <display.h>
 
-#define DESTROY_TIMEOUT             250
+#define DESTROY_TIMEOUT             150
 #define MINIMIZE_TIMEOUT            250
 #define MAXIMIZE_TIMEOUT            250
-#define MAP_TIMEOUT                 250
-#define SWITCH_TIMEOUT              500
-#define PANEL_SLIDE_TIMEOUT         250
+#define MAP_TIMEOUT                 200
+#define SWITCH_TIMEOUT              400
+#define PANEL_SLIDE_TIMEOUT         150
 #define PANEL_SLIDE_THRESHOLD       2
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define WS_SWITCHER_SLIDE_THRESHOLD 3
@@ -643,7 +643,7 @@ map (MutterWindow *mcw)
                                              on_map_effect_complete,
                                              NULL);
       */
-      apriv->tml_map = tidy_bounce_scale (actor, 200);
+      apriv->tml_map = tidy_bounce_scale (actor, MAP_TIMEOUT);
 
       g_signal_connect (apriv->tml_map, "completed", 
                         G_CALLBACK (on_map_effect_complete), actor);
@@ -740,7 +740,7 @@ destroy (MutterWindow *mcw)
 
       apriv->tml_destroy = clutter_effect_scale (priv->destroy_effect,
                                                  actor,
-                                                 4.0,
+                                                 0.0,
                                                  0.0,
                                                  (ClutterEffectCompleteFunc)
                                                  on_destroy_effect_complete,
