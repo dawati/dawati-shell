@@ -28,21 +28,7 @@
 #include <nbtk/nbtk.h>
 #include "nutter/nutter-ws-icon.h"
 #include "nutter/nutter-scale-group.h"
-
-#define APP_SWITCHER_CELL_WIDTH  200
-#define APP_SWITCHER_CELL_HEIGHT 200
-
-#define WORKSPACE_CELL_WIDTH  100
-#define WORKSPACE_CELL_HEIGHT 80
-
-#define WORKSPACE_BORDER 20
-
-#define WORKSPACE_CHOOSER_TIMEOUT 3000
-#define WORKSPACE_CHOOSER_BORDER_WIDTH 1
-
-#define PANEL_HEIGHT 40
-
-#define MAX_WORKSPACES 8
+#include "moblin-netbook-ui.h"
 
 void          show_workspace_switcher (guint32 timestamp);
 void          hide_workspace_switcher (guint32 timestamp);
