@@ -1228,6 +1228,9 @@ do_init (const char *params)
    * Must be created before the panel.
    */
   priv->tray_manager = shell_tray_manager_new ();
+  shell_tray_manager_manage_stage (priv->tray_manager,
+                                   CLUTTER_STAGE (
+                                           mutter_plugin_get_stage (plugin)));
 
   /*
    * This also creates the launcher.
