@@ -28,4 +28,5 @@ dist_theme_panel_DATA = \
 	theme/panel/spaces-normal.png \
 	theme/panel/status-active.png \
 	theme/panel/status-hover.png \
-	theme/panel/status-normal.png
+	theme/panel/status-normal.png \
+	theme/panel/background-tile.png

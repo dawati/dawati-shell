@@ -1076,11 +1076,15 @@ setup_parallax_effect (void)
     }
 
   /* FIXME: pull image from theme, css ? */
-  priv->parallax_tex = clutter_texture_new_from_file ("/tmp/bck.jpg", NULL);
+  priv->parallax_tex = clutter_texture_new_from_file 
+                        (PLUGIN_PKGDATADIR "/theme/panel/background-tile.png", 
+                         NULL);
 
   if (priv->parallax_tex == NULL)
     {
-      g_warning ("Failed to load /tmp/bck.jpg, No tiled desktop image");
+      g_warning ("Failed to load '" 
+                 PLUGIN_PKGDATADIR 
+                 "/theme/panel/background-tile.png', No tiled desktop image");
     }
   else
     {
