@@ -900,6 +900,8 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
 
   priv->panel_out_in_progress = FALSE;
 
+  shell_tray_manager_show_windows (priv->tray_manager);
+
   enable_stage (plugin, CurrentTime);
 }
 
@@ -1223,14 +1225,6 @@ do_init (const char *params)
   lowlight = clutter_rectangle_new_with_color (&low_clr);
   priv->lowlight = lowlight;
   clutter_actor_set_size (lowlight, screen_width, screen_height);
-
-  /*
-   * Must be created before the panel.
-   */
-  priv->tray_manager = shell_tray_manager_new ();
-  shell_tray_manager_manage_stage (priv->tray_manager,
-                                   CLUTTER_STAGE (
-                                           mutter_plugin_get_stage (plugin)));
 
   /*
    * This also creates the launcher.

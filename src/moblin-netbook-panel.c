@@ -32,6 +32,7 @@
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
+#define TRAY_PADDING 3
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -73,6 +74,8 @@ hide_panel ()
   gint           x      = clutter_actor_get_x (priv->panel);
 
   priv->panel_back_in_progress  = TRUE;
+
+  shell_tray_manager_hide_windows (priv->tray_manager);
 
   clutter_effect_move (priv->panel_slide_effect,
                        priv->panel, x, -PANEL_HEIGHT,
@@ -199,10 +202,26 @@ update_time_date (PluginPrivate *priv)
 static void
 shell_tray_manager_icon_added (ShellTrayManager *mgr,
                                ClutterActor     *icon,
-                               ClutterActor     *panel)
+                               ClutterActor     *tray)
 {
-  printf ("Tray icon added.");
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), icon);
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  ClutterActor  *panel  = priv->panel;
+
+  /*
+   * FIXME -- the tray should be a container that automatically
+   * lays out its children next to each other so that we do not need to
+   * mess about with the position.
+   */
+  static gint x = 0;
+
+  clutter_actor_set_position (icon, x,
+                              (clutter_actor_get_height (panel) -
+                               clutter_actor_get_height (icon))/2);
+
+  x += clutter_actor_get_width (icon) + TRAY_PADDING;
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (tray), icon);
 }
 
 static void
@@ -210,7 +229,6 @@ shell_tray_manager_icon_removed (ShellTrayManager *mgr,
                                  ClutterActor     *icon,
                                  ClutterActor     *panel)
 {
-  printf ("Tray icon removed.");
   clutter_actor_destroy (icon);
 }
 
@@ -224,6 +242,7 @@ make_panel (gint width)
   ClutterColor   clr = {0x0, 0x0, 0x0, 0xce};
   ClutterColor   lbl_clr = {0xc0, 0xc0, 0xc0, 0xff};
   ClutterActor  *launcher, *overlay;
+  ClutterActor  *tray;
   gint           x, w;
   GError        *err = NULL;
 
@@ -279,11 +298,24 @@ make_panel (gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->launcher);
   clutter_actor_hide (priv->launcher);
 
+  /* FIXME -- get color from theme. */
+  priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
+                                     "bg-color", &clr, NULL);
+
+  priv->tray = tray = clutter_group_new ();
+  clutter_actor_set_x (tray, TRAY_PADDING * 2);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), tray);
+
   g_signal_connect (priv->tray_manager, "tray-icon-added",
-                    G_CALLBACK (shell_tray_manager_icon_added), panel);
+                    G_CALLBACK (shell_tray_manager_icon_added), tray);
 
   g_signal_connect (priv->tray_manager, "tray-icon-removed",
-                    G_CALLBACK (shell_tray_manager_icon_removed), panel);
+                    G_CALLBACK (shell_tray_manager_icon_removed), tray);
+
+  shell_tray_manager_manage_stage (priv->tray_manager,
+                                   CLUTTER_STAGE (
+                                           mutter_plugin_get_stage (plugin)));
 
   return panel;
 }
