@@ -162,6 +162,30 @@ launcher_button_cb (ClutterActor *actor,
   return TRUE;
 }
 
+static gboolean 
+update_time_date (PluginPrivate *priv)
+{
+  time_t         t;
+  struct tm     *tmp;
+  char           time_str[64];
+
+  t = time (NULL);
+  tmp = localtime (&t);
+  if (tmp)
+    strftime (time_str, 64, "%l:%M %P", tmp);
+  else
+    snprintf (time_str, 64, "Time");
+  clutter_label_set_text (CLUTTER_LABEL (priv->panel_time), time_str);
+
+  if (tmp)
+    strftime (time_str, 64, "%B %e, %Y", tmp);
+  else
+    snprintf (time_str, 64, "Date");
+  clutter_label_set_text (CLUTTER_LABEL (priv->panel_date), time_str);
+
+  return TRUE;
+}
+
 ClutterActor *
 make_panel (gint width)
 {
@@ -170,6 +194,7 @@ make_panel (gint width)
   ClutterActor  *panel;
   ClutterActor  *background;
   ClutterColor   clr = {0x0, 0x0, 0x0, 0xce};
+  ClutterColor   lbl_clr = {0xc1, 0xc1, 0xc1, 0xff};
   ClutterActor  *launcher, *overlay;
   gint           x, w;
 
@@ -183,13 +208,31 @@ make_panel (gint width)
   clutter_actor_set_size (background, width, PANEL_HEIGHT);
 
   priv->panel_buttons[0] = panel_append_toolbar_button (panel, "m-space-button", NULL, priv);
-  priv->panel_buttons[1]  = panel_append_toolbar_button (panel, "status-button", NULL, priv);
+  priv->panel_buttons[1] = panel_append_toolbar_button (panel, "status-button", NULL, priv);
   priv->panel_buttons[2] = panel_append_toolbar_button (panel, "spaces-button", G_CALLBACK (spaces_button_cb), priv);
   priv->panel_buttons[3] = panel_append_toolbar_button (panel, "internet-button", NULL, priv);
   priv->panel_buttons[4] = panel_append_toolbar_button (panel, "media-button", NULL, priv);
   priv->panel_buttons[5] = panel_append_toolbar_button (panel, "apps-button", G_CALLBACK (launcher_button_cb), priv);
   priv->panel_buttons[6] = panel_append_toolbar_button (panel, "people-button", NULL, priv);
   priv->panel_buttons[7] = panel_append_toolbar_button (panel, "pasteboard-button", NULL, priv);
+
+  priv->panel_time = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 14", NULL);
+  priv->panel_date = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 10", NULL);
+  update_time_date (priv);
+
+  clutter_label_set_color (CLUTTER_LABEL (priv->panel_time), &lbl_clr);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->panel_time);
+  clutter_actor_set_position (priv->panel_time,
+                              (192 / 2) - clutter_actor_get_width (priv->panel_time) / 2, 8);
+  
+
+  clutter_label_set_color (CLUTTER_LABEL (priv->panel_date), &lbl_clr);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->panel_date);
+  clutter_actor_set_position (priv->panel_date,
+                              (192 / 2) - clutter_actor_get_width (priv->panel_date) / 2, 40);
+
+
+  g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
 
   priv->launcher = make_launcher (width);
   clutter_actor_set_y (priv->launcher, clutter_actor_get_height (panel));

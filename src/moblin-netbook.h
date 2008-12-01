@@ -79,6 +79,8 @@ struct PluginPrivate
   guint                  workspace_chooser_timeout;
 
   ClutterActor          *panel_buttons[8];
+  ClutterActor          *panel_time;
+  ClutterActor          *panel_date;
 
   /* Startup Notification */
   SnDisplay             *sn_display;
