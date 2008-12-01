@@ -54,7 +54,15 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
   priv->panel_back_in_progress = FALSE;
 
   if (!priv->workspace_chooser && !priv->workspace_switcher)
-    disable_stage (plugin, CurrentTime);
+    {
+      guint32         timestamp;
+      MetaScreen     *screen = mutter_plugin_get_screen (plugin);
+      MetaDisplay    *display = meta_screen_get_display (screen);
+
+      timestamp = meta_display_get_current_time_roundtrip (display);
+
+      disable_stage (plugin, timestamp);
+    }
 }
 
 void
@@ -162,7 +170,7 @@ launcher_button_cb (ClutterActor *actor,
   return TRUE;
 }
 
-static gboolean 
+static gboolean
 update_time_date (PluginPrivate *priv)
 {
   time_t         t;
@@ -234,7 +242,7 @@ make_panel (gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->panel_time);
   clutter_actor_set_position (priv->panel_time,
                               (192 / 2) - clutter_actor_get_width (priv->panel_time) / 2, 8);
-  
+
 
   clutter_label_set_color (CLUTTER_LABEL (priv->panel_date), &lbl_clr);
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->panel_date);
