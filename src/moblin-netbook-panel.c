@@ -196,6 +196,24 @@ update_time_date (PluginPrivate *priv)
   return TRUE;
 }
 
+static void
+shell_tray_manager_icon_added (ShellTrayManager *mgr,
+                               ClutterActor     *icon,
+                               ClutterActor     *panel)
+{
+  printf ("Tray icon added.");
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), icon);
+}
+
+static void
+shell_tray_manager_icon_removed (ShellTrayManager *mgr,
+                                 ClutterActor     *icon,
+                                 ClutterActor     *panel)
+{
+  printf ("Tray icon removed.");
+  clutter_actor_destroy (icon);
+}
+
 ClutterActor *
 make_panel (gint width)
 {
@@ -260,6 +278,12 @@ make_panel (gint width)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->launcher);
   clutter_actor_hide (priv->launcher);
+
+  g_signal_connect (priv->tray_manager, "tray-icon-added",
+                    G_CALLBACK (shell_tray_manager_icon_added), panel);
+
+  g_signal_connect (priv->tray_manager, "tray-icon-removed",
+                    G_CALLBACK (shell_tray_manager_icon_removed), panel);
 
   return panel;
 }

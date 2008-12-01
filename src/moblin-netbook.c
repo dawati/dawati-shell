@@ -1225,6 +1225,11 @@ do_init (const char *params)
   clutter_actor_set_size (lowlight, screen_width, screen_height);
 
   /*
+   * Must be created before the panel.
+   */
+  priv->tray_manager = shell_tray_manager_new ();
+
+  /*
    * This also creates the launcher.
    */
   panel = priv->panel = make_panel (screen_width);

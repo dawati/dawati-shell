@@ -34,6 +34,8 @@
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
+#include "shell-tray-manager.h"
+
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
 
@@ -66,6 +68,8 @@ struct PluginPrivate
   ClutterActor          *workspace_chooser;
   ClutterActor          *launcher;
   ClutterActor          *lowlight;
+
+  ShellTrayManager      *tray_manager;
 
   XserverRegion          input_region;
 
