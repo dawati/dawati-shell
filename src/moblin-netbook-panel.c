@@ -102,7 +102,7 @@ toggle_buttons_cb (NbtkButton *button, PluginPrivate *priv)
   gint i;
 
   for (i = 0; i < 8; i++)
-    if (priv->panel_buttons[i] != button)
+    if (priv->panel_buttons[i] != (ClutterActor*)button)
       nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
 }
 
@@ -153,7 +153,7 @@ launcher_button_cb (ClutterActor *actor,
 
   clutter_actor_move_anchor_point_from_gravity (priv->launcher,
                                                 CLUTTER_GRAVITY_CENTER);
-  
+
   clutter_actor_set_scale (priv->launcher, 0.0, 0.0);
   clutter_actor_show (priv->launcher);
 
