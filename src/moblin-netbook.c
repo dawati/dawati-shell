@@ -1238,7 +1238,7 @@ do_init (const char *params)
                                                 CLUTTER_ALPHA_SINE_INC);
 
   clutter_actor_set_position (panel, 0,
-                              -clutter_actor_get_height (panel));
+                              -PANEL_HEIGHT);
 
   /*
    * Set up the stage even processing

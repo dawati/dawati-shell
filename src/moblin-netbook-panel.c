@@ -62,13 +62,12 @@ hide_panel ()
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
-  guint          height = clutter_actor_get_height (priv->panel);
   gint           x      = clutter_actor_get_x (priv->panel);
 
   priv->panel_back_in_progress  = TRUE;
 
   clutter_effect_move (priv->panel_slide_effect,
-                       priv->panel, x, -height,
+                       priv->panel, x, -PANEL_HEIGHT,
                        on_panel_back_effect_complete,
                        NULL);
 
@@ -192,20 +191,30 @@ make_panel (gint width)
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
   ClutterActor  *panel;
-  ClutterActor  *background;
+  ClutterActor  *background, *bg_texture;
   ClutterColor   clr = {0x0, 0x0, 0x0, 0xce};
   ClutterColor   lbl_clr = {0xc0, 0xc0, 0xc0, 0xff};
   ClutterActor  *launcher, *overlay;
   gint           x, w;
+  GError        *err = NULL;
 
   overlay = mutter_plugin_get_overlay_group (plugin);
 
   panel = clutter_group_new ();
 
   /* FIME -- size and color */
-  background = clutter_rectangle_new_with_color (&clr);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
-  clutter_actor_set_size (background, width, PANEL_HEIGHT);
+  bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/panel/panel-background.png", &err);
+  if (err)
+    {
+      g_warning (err->message);
+      g_clear_error (&err);
+    }
+  else
+    {
+      background = nbtk_texture_frame_new (bg_texture, 200, 0, 200, 0);
+      clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
+      clutter_actor_set_size (background, width, 101);
+    }
 
   priv->panel_buttons[0] = panel_append_toolbar_button (panel, "m-space-button", NULL, priv);
   priv->panel_buttons[1] = panel_append_toolbar_button (panel, "status-button", NULL, priv);
@@ -235,7 +244,7 @@ make_panel (gint width)
   g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
 
   priv->launcher = make_launcher (width);
-  clutter_actor_set_y (priv->launcher, clutter_actor_get_height (panel));
+  clutter_actor_set_y (priv->launcher, -PANEL_HEIGHT);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->launcher);
   clutter_actor_hide (priv->launcher);
