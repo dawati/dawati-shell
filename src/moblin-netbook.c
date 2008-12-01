@@ -645,7 +645,7 @@ map (MutterWindow *mcw)
       */
       apriv->tml_map = tidy_bounce_scale (actor, MAP_TIMEOUT);
 
-      g_signal_connect (apriv->tml_map, "completed", 
+      g_signal_connect (apriv->tml_map, "completed",
                         G_CALLBACK (on_map_effect_complete), actor);
 
       apriv->is_minimized = FALSE;
@@ -1123,7 +1123,7 @@ do_init (const char *params)
   gtk_init (NULL, NULL);
 
   plugin->plugin_private = priv;
-  
+
   nbtk_style_load_from_file (nbtk_style_get_default (),
                              PLUGIN_PKGDATADIR "/theme/mutter-moblin.css",
                              &err);

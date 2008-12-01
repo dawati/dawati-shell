@@ -69,7 +69,7 @@ tidy_behaviour_bounce_alpha_notify (ClutterBehaviour *behave,
                                     guint32           alpha_value)
 {
   TidyBehaviourBouncePrivate *priv;
-  guint boing_alpha;                    
+  guint boing_alpha;
   ClutterFixed factor;
 
   BounceFrameClosure closure = { 0, };
@@ -83,15 +83,15 @@ tidy_behaviour_bounce_alpha_notify (ClutterBehaviour *behave,
       factor = CLUTTER_INT_TO_FIXED (alpha_value) / boing_alpha;
 
       closure.scale = factor + CLUTTER_FLOAT_TO_FIXED(0.25);
-      closure.opacity = CLUTTER_FIXED_TO_INT(0xff * factor); 
+      closure.opacity = CLUTTER_FIXED_TO_INT(0xff * factor);
     }
-  else 
+  else
     {
       closure.opacity = 0xff;
 
       /* scale down from 1.25 -> 1.0 */
-      
-      factor = CLUTTER_INT_TO_FIXED (alpha_value - boing_alpha) 
+
+      factor = CLUTTER_INT_TO_FIXED (alpha_value - boing_alpha)
                 / (CLUTTER_ALPHA_MAX_ALPHA  - boing_alpha);
 
       factor /= 4;
@@ -184,11 +184,11 @@ tidy_bounce_scale (ClutterActor *actor, gint duration)
   g_object_ref (actor);
 
   b->actor    = actor;
-  b->timeline = clutter_timeline_new_for_duration (duration);  
-  b->signal_id = g_signal_connect (b->timeline, "completed", 
+  b->timeline = clutter_timeline_new_for_duration (duration);
+  b->signal_id = g_signal_connect (b->timeline, "completed",
                                    G_CALLBACK (on_bounce_complete), b);
 
-  b->alpha = clutter_alpha_new_full (b->timeline, CLUTTER_ALPHA_SINE_INC, 
+  b->alpha = clutter_alpha_new_full (b->timeline, CLUTTER_ALPHA_SINE_INC,
                                      NULL, NULL);
   b->behave = tidy_behaviour_bounce_new (b->alpha);
 
@@ -197,7 +197,7 @@ tidy_bounce_scale (ClutterActor *actor, gint duration)
   clutter_timeline_start (b->timeline);
 
   return b->timeline;
-}                   
+}
 
 
 
