@@ -1,3 +1,4 @@
+SUBDIRS=tray
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
@@ -24,7 +25,7 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
                                 tidy-behaviour-bounce.h
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
-moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@
+moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 
