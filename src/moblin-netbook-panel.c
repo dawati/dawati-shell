@@ -194,7 +194,7 @@ make_panel (gint width)
   ClutterActor  *panel;
   ClutterActor  *background;
   ClutterColor   clr = {0x0, 0x0, 0x0, 0xce};
-  ClutterColor   lbl_clr = {0xc1, 0xc1, 0xc1, 0xff};
+  ClutterColor   lbl_clr = {0xc0, 0xc0, 0xc0, 0xff};
   ClutterActor  *launcher, *overlay;
   gint           x, w;
 
@@ -216,8 +216,8 @@ make_panel (gint width)
   priv->panel_buttons[6] = panel_append_toolbar_button (panel, "people-button", NULL, priv);
   priv->panel_buttons[7] = panel_append_toolbar_button (panel, "pasteboard-button", NULL, priv);
 
-  priv->panel_time = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 14", NULL);
-  priv->panel_date = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 10", NULL);
+  priv->panel_time = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 19px", NULL);
+  priv->panel_date = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 11px", NULL);
   update_time_date (priv);
 
   clutter_label_set_color (CLUTTER_LABEL (priv->panel_time), &lbl_clr);
