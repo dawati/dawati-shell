@@ -769,6 +769,7 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
       Display *xdpy = mutter_plugin_get_xdisplay (plugin);
 
       XUngrabKeyboard (xdpy, timestamp);
+      XSync (xdpy, False);
       priv->keyboard_grab = FALSE;
     }
 }
@@ -1076,14 +1077,14 @@ setup_parallax_effect (void)
     }
 
   /* FIXME: pull image from theme, css ? */
-  priv->parallax_tex = clutter_texture_new_from_file 
-                        (PLUGIN_PKGDATADIR "/theme/panel/background-tile.png", 
+  priv->parallax_tex = clutter_texture_new_from_file
+                        (PLUGIN_PKGDATADIR "/theme/panel/background-tile.png",
                          NULL);
 
   if (priv->parallax_tex == NULL)
     {
-      g_warning ("Failed to load '" 
-                 PLUGIN_PKGDATADIR 
+      g_warning ("Failed to load '"
+                 PLUGIN_PKGDATADIR
                  "/theme/panel/background-tile.png', No tiled desktop image");
     }
   else
