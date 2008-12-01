@@ -268,7 +268,6 @@ show_workspace_switcher (guint32 timestamp)
   gint           grid_y;
   guint          grid_w, grid_h;
   gint           panel_y;
-  guint          panel_height;
   ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0xdd };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
 
@@ -302,9 +301,8 @@ show_workspace_switcher (guint32 timestamp)
   clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
   clutter_actor_set_size (background, switcher_width, switcher_height);
 
-  panel_height = clutter_actor_get_height (priv->panel);
   panel_y      = clutter_actor_get_y (priv->panel);
-  clutter_actor_set_position (switcher, 0, panel_height);
+  clutter_actor_set_position (switcher, 0, PANEL_HEIGHT);
 
   clutter_actor_set_reactive (switcher, TRUE);
 

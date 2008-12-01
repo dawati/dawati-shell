@@ -157,6 +157,7 @@ launcher_button_cb (ClutterActor *actor,
   clutter_actor_show (priv->launcher);
 
   tidy_bounce_scale (priv->launcher, 200);
+  clutter_actor_raise_top (priv->launcher);
 
   return TRUE;
 }
@@ -244,7 +245,7 @@ make_panel (gint width)
   g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
 
   priv->launcher = make_launcher (width);
-  clutter_actor_set_y (priv->launcher, -PANEL_HEIGHT);
+  clutter_actor_set_y (priv->launcher, PANEL_HEIGHT);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->launcher);
   clutter_actor_hide (priv->launcher);
