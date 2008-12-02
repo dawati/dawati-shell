@@ -37,6 +37,7 @@
 
 #include <compositor-mutter.h>
 #include <display.h>
+#include <prefs.h>
 
 #define DESTROY_TIMEOUT             150
 #define MINIMIZE_TIMEOUT            250
@@ -1126,6 +1127,8 @@ do_init (const char *params)
   GError        *err = NULL;
 
   gtk_init (NULL, NULL);
+
+  meta_prefs_set_num_workspaces (1);
 
   plugin->plugin_private = priv;
 
