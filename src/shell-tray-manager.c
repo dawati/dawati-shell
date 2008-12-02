@@ -253,6 +253,18 @@ create_bg_pixmap (GdkColormap  *colormap,
 }
 
 static void
+actor_parent_set (ClutterActor          *actor,
+                  ClutterActor          *parent,
+                  ShellTrayManagerChild *child)
+{
+  /*
+   * FIXME -- we should disconnect our notify:: handler from the original
+   * ancestor hierarchy.
+   */
+  actor_moved (G_OBJECT (actor), NULL, child);
+}
+
+static void
 na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
                     gpointer user_data)
 {
@@ -308,12 +320,23 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   /*
    * Emit the signal *before* we connect our position handlers (this allows
-   * for the actor to be parented, so we can connect out hanler to the entire
+   * for the actor to be parented, so we can connect our handler to the entire
    * ancestor hierarchy.
    */
   g_signal_emit (manager,
                  shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
                  icon);
+
+  /*
+   * Ensure initial position.
+   */
+  actor_moved (G_OBJECT (icon), NULL, child);
+
+  /*
+   * Update position on reparenting.
+   */
+  g_signal_connect (icon, "parent-set",
+                    G_CALLBACK (actor_parent_set), child);
 
   ancestor = icon;
   while (ancestor)
@@ -377,3 +400,4 @@ shell_tray_manager_show_windows (ShellTrayManager *manager)
       gtk_widget_show (child->window);
     }
 }
+
