@@ -266,9 +266,8 @@ show_workspace_switcher (guint32 timestamp)
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
   gint           grid_y;
-  guint          grid_w, grid_h;
   gint           panel_y;
-  ClutterColor   background_clr = { 0x44, 0x44, 0x44, 0xdd };
+  ClutterColor   background_clr = { 0xff, 0xff, 0xff, 0xff };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
@@ -276,19 +275,14 @@ show_workspace_switcher (guint32 timestamp)
   switcher = clutter_group_new ();
   background = clutter_rectangle_new_with_color (&background_clr);
 
-  label = clutter_label_new_full ("Sans 12",
-                                  "You can select a workspace:", &label_clr);
-  clutter_actor_realize (label);
-
-  grid_y = clutter_actor_get_height (label) + 3;
 
   grid = make_workspace_switcher (G_CALLBACK (workspace_input_cb));
   clutter_actor_realize (grid);
-  clutter_actor_set_position (grid, 0, grid_y);
-  clutter_actor_get_size (grid, &grid_w, &grid_h);
+  clutter_actor_set_position (grid, 0, 0);
+  clutter_actor_set_width (grid, screen_width);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, label, grid, NULL);
+                         background, grid, NULL);
 
   if (priv->workspace_switcher)
     hide_workspace_switcher (timestamp);
@@ -298,8 +292,9 @@ show_workspace_switcher (guint32 timestamp)
   overlay = mutter_plugin_get_overlay_group (plugin);
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
 
-  clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
-  clutter_actor_set_size (background, switcher_width, switcher_height);
+  clutter_actor_set_width (switcher, screen_width);
+  clutter_actor_set_size (background, screen_width,
+                          MAX (clutter_actor_get_height (switcher), screen_height / 2));
 
   panel_y      = clutter_actor_get_y (priv->panel);
   clutter_actor_set_position (switcher, 0, PANEL_HEIGHT);
