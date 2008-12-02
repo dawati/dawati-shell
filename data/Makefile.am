@@ -30,3 +30,6 @@ dist_theme_panel_DATA = \
 	theme/panel/status-hover.png \
 	theme/panel/status-normal.png \
 	theme/panel/background-tile.png
+
+theme_dropdowndir = $(pkgdatadir)/theme/drop-down
+dist_theme_dropdown_DATA = theme/drop-down/footer.png

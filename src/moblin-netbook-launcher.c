@@ -205,7 +205,7 @@ make_launcher (gint width)
   ClutterActor  *stage, *launcher;
   NbtkWidget    *table;
   gint           row, col, n_cols, pad;
-  ClutterActor  *group;
+  ClutterActor  *group, *texture, *footer;
   ClutterColor   bckg_clr = {0xff, 0xff, 0xff, 0xff};
   ClutterActor  *bckg;
 
@@ -292,7 +292,7 @@ make_launcher (gint width)
 
   clutter_actor_set_size (launcher,
                           n_cols * (ICON_SIZE + pad),
-                          row+1 * (ICON_SIZE + pad));
+                          (row + 1) * (ICON_SIZE + pad));
 
   /*
    * FIXME: This is a dirty hack to add border around the launcher. We really
@@ -306,12 +306,19 @@ make_launcher (gint width)
   bckg  = clutter_rectangle_new_with_color (&bckg_clr);
 
   clutter_actor_set_size (bckg,
-                          n_cols * (ICON_SIZE + pad) + 2*BORDER_WIDTH,
-                          row+1 * (ICON_SIZE + pad) + 2*BORDER_WIDTH);
+                          width,
+                          (row + 1) * (ICON_SIZE + pad) + 4*BORDER_WIDTH);
 
   clutter_actor_set_position (launcher, BORDER_WIDTH, BORDER_WIDTH);
 
-  clutter_container_add (CLUTTER_CONTAINER (group), bckg, launcher, NULL);
+  texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/drop-down/footer.png", NULL);
+  footer = nbtk_texture_frame_new (CLUTTER_TEXTURE (texture), 10, 0, 10, 10);
+  clutter_actor_set_position (footer, 0, (row + 1) * (ICON_SIZE + pad) + 4*BORDER_WIDTH);
+  clutter_actor_set_size (footer, width, 31);
+
+
+  clutter_container_add (CLUTTER_CONTAINER (group), bckg, launcher, footer, NULL);
+
 
   return group;
 }
