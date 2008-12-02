@@ -344,7 +344,7 @@ switch_workspace (const GList **actors, gint from, gint to,
     }
 
   /* dest group offscreen and on top */
-  clutter_actor_set_position (workspace_slider1, to_x, to_y);
+  clutter_actor_set_position (workspace_slider1, to_x * -1, to_y);
   clutter_actor_raise_top (workspace_slider1);
 
   /* center arrow */
