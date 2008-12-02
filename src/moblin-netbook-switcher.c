@@ -263,6 +263,7 @@ show_workspace_switcher (guint32 timestamp)
   ClutterActor  *background;
   ClutterActor  *label;
   ClutterActor  *grid;
+  ClutterActor  *texture, *footer;
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
   gint           grid_y;
@@ -281,8 +282,11 @@ show_workspace_switcher (guint32 timestamp)
   clutter_actor_set_position (grid, 0, 0);
   clutter_actor_set_width (grid, screen_width);
 
+  texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/drop-down/footer.png", NULL);
+  footer = nbtk_texture_frame_new (CLUTTER_TEXTURE (texture), 10, 0, 10, 10);
+
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, grid, NULL);
+                         background, grid, footer, NULL);
 
   if (priv->workspace_switcher)
     hide_workspace_switcher (timestamp);
@@ -295,6 +299,8 @@ show_workspace_switcher (guint32 timestamp)
   clutter_actor_set_width (switcher, screen_width);
   clutter_actor_set_size (background, screen_width,
                           MAX (clutter_actor_get_height (switcher), screen_height / 2));
+  clutter_actor_set_position (footer, 0, MAX (clutter_actor_get_height (switcher), screen_height / 2));
+  clutter_actor_set_size (footer, screen_width, 31);
 
   panel_y      = clutter_actor_get_y (priv->panel);
   clutter_actor_set_position (switcher, 0, PANEL_HEIGHT);
