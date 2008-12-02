@@ -87,23 +87,20 @@ hide_panel ()
 
 static gboolean
 spaces_button_cb (ClutterActor *actor,
-                  ClutterEvent *event,
+                  GParamSpec   *pspec,
                   gpointer      data)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
+  gboolean       active;
 
-  /* already showing */
-  if (priv->workspace_switcher)
-    {
-      hide_workspace_switcher ();
+  active = nbtk_button_get_active (NBTK_BUTTON (actor));
 
-      return TRUE;
-    }
+  if (!active)
+    hide_workspace_switcher ();
+  else
+    show_workspace_switcher ();
 
-  /* No way to know if showing */
-  clutter_actor_hide (priv->launcher);
-  show_workspace_switcher ();
   return TRUE;
 }
 
@@ -138,10 +135,7 @@ panel_append_toolbar_button (ClutterActor  *container,
 
   g_signal_connect (button, "clicked", G_CALLBACK (toggle_buttons_cb), data);
   if (callback)
-    g_signal_connect (button,
-                      "clicked",
-                      callback,
-                      data);
+    g_signal_connect (button, "notify::active", callback, data);
 
   n_buttons++;
   return CLUTTER_ACTOR (button);
@@ -149,34 +143,31 @@ panel_append_toolbar_button (ClutterActor  *container,
 
 static gboolean
 launcher_button_cb (ClutterActor *actor,
-                    ClutterEvent *event,
+                    GParamSpec   *pspec,
                     gpointer      data)
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
+  gboolean       active;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))
+  active = nbtk_button_get_active (NBTK_BUTTON (actor));
+
+  if (!active)
     {
       clutter_actor_hide (priv->launcher);
-      toggle_buttons_cb (NULL, priv);
-      return TRUE;
     }
-
-  /* if workspace switcher is showing... HACK */
-  if (priv->workspace_switcher)
+  else
     {
-      clutter_actor_destroy (priv->workspace_switcher);
-      priv->workspace_switcher = NULL;
+      clutter_actor_move_anchor_point_from_gravity (priv->launcher,
+                                                    CLUTTER_GRAVITY_CENTER);
+
+      clutter_actor_set_scale (priv->launcher, 0.0, 0.0);
+      clutter_actor_show (priv->launcher);
+
+      tidy_bounce_scale (priv->launcher, 200);
+      clutter_actor_raise_top (priv->launcher);
     }
 
-  clutter_actor_move_anchor_point_from_gravity (priv->launcher,
-                                                CLUTTER_GRAVITY_CENTER);
-
-  clutter_actor_set_scale (priv->launcher, 0.0, 0.0);
-  clutter_actor_show (priv->launcher);
-
-  tidy_bounce_scale (priv->launcher, 200);
-  clutter_actor_raise_top (priv->launcher);
 
   return TRUE;
 }
