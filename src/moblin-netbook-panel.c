@@ -227,7 +227,8 @@ make_panel (gint width)
     }
   else
     {
-      background = nbtk_texture_frame_new (bg_texture, 200, 0, 200, 0);
+      background = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
+                                           200, 0, 200, 0);
       clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
       clutter_actor_set_size (background, width, 101);
     }
