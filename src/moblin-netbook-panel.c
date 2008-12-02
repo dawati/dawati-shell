@@ -69,6 +69,36 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
     }
 }
 
+static void
+on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
+{
+  MutterPlugin  *plugin   = mutter_get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+
+  priv->panel_out_in_progress = FALSE;
+
+  shell_tray_manager_show_windows (priv->tray_manager);
+
+  enable_stage (plugin, CurrentTime);
+}
+
+void
+show_panel ()
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  gint          x = clutter_actor_get_x (priv->panel);
+
+  priv->panel_out_in_progress  = TRUE;
+  clutter_actor_show_all (priv->panel);
+  clutter_effect_move (priv->panel_slide_effect,
+                       priv->panel, x, 0,
+                       on_panel_out_effect_complete,
+                       NULL);
+
+  priv->panel_out = TRUE;
+}
+
 void
 hide_panel ()
 {

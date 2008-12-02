@@ -892,19 +892,6 @@ g_module_check_init (GModule *module)
   return NULL;
 }
 
-static void
-on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
-{
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
-
-  priv->panel_out_in_progress = FALSE;
-
-  shell_tray_manager_show_windows (priv->tray_manager);
-
-  enable_stage (plugin, CurrentTime);
-}
-
 /*
  * Handles input events on stage.
  *
@@ -959,15 +946,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
-          gint  x = clutter_actor_get_x (priv->panel);
-
-          priv->panel_out_in_progress  = TRUE;
-          clutter_effect_move (priv->panel_slide_effect,
-                               priv->panel, x, 0,
-                               on_panel_out_effect_complete,
-                               NULL);
-
-          priv->panel_out = TRUE;
+          show_panel ();
         }
     }
   else if (event->type == CLUTTER_KEY_PRESS)

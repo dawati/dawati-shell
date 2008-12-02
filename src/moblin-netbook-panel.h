@@ -27,5 +27,6 @@
 
 ClutterActor *make_panel (gint width);
 void          hide_panel (void);
+void          show_panel (void);
 
 #endif
