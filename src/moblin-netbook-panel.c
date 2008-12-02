@@ -151,6 +151,13 @@ launcher_button_cb (ClutterActor *actor,
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
 
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))
+    {
+      clutter_actor_hide (priv->launcher);
+      toggle_buttons_cb (NULL, priv);
+      return TRUE;
+    }
+
   /* if workspace switcher is showing... HACK */
   if (priv->workspace_switcher)
     {
