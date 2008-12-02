@@ -40,6 +40,7 @@ void     startup_notification_finalize (void);
 
 void     spawn_app (const gchar *path,
                     guint32      timestamp,
-                    gboolean     without_chooser);
+                    gboolean     without_chooser,
+                    gint         workspace);
 
 #endif
