@@ -268,7 +268,6 @@ make_launcher (gint width)
       clutter_actor_set_size (icon, ICON_SIZE, ICON_SIZE);
       g_object_set (G_OBJECT (icon), "sync-size", TRUE, NULL);
 
-
       nbtk_table_add_actor (NBTK_TABLE (table), icon, row, col);
 
       g_signal_connect (icon, "button-press-event",
@@ -293,7 +292,7 @@ make_launcher (gint width)
 
   clutter_actor_set_size (launcher,
                           n_cols * (ICON_SIZE + pad),
-                          row * (ICON_SIZE + pad));
+                          row+1 * (ICON_SIZE + pad));
 
   /*
    * FIXME: This is a dirty hack to add border around the launcher. We really
@@ -308,7 +307,7 @@ make_launcher (gint width)
 
   clutter_actor_set_size (bckg,
                           n_cols * (ICON_SIZE + pad) + 2*BORDER_WIDTH,
-                          row * (ICON_SIZE + pad) + 2*BORDER_WIDTH);
+                          row+1 * (ICON_SIZE + pad) + 2*BORDER_WIDTH);
 
   clutter_actor_set_position (launcher, BORDER_WIDTH, BORDER_WIDTH);
 
