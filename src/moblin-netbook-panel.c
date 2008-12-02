@@ -29,11 +29,14 @@
 
 #include "tidy-behaviour-bounce.h"
 
+#include "nutter/nutter-grid.h"
+
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
-#define TRAY_PADDING 3
 
+#define TRAY_PADDING   3
+#define TRAY_WIDTH   100
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
 mutter_get_plugin ()
@@ -204,30 +207,13 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
                                ClutterActor     *icon,
                                ClutterActor     *tray)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  ClutterActor  *panel  = priv->panel;
-
-  /*
-   * FIXME -- the tray should be a container that automatically
-   * lays out its children next to each other so that we do not need to
-   * mess about with the position.
-   */
-  static gint x = 0;
-
-  clutter_actor_set_position (icon, x,
-                              (clutter_actor_get_height (panel) -
-                               clutter_actor_get_height (icon))/2);
-
-  x += clutter_actor_get_width (icon) + TRAY_PADDING;
-
   clutter_container_add_actor (CLUTTER_CONTAINER (tray), icon);
 }
 
 static void
 shell_tray_manager_icon_removed (ShellTrayManager *mgr,
                                  ClutterActor     *icon,
-                                 ClutterActor     *panel)
+                                 ClutterActor     *tray)
 {
   clutter_actor_destroy (icon);
 }
@@ -302,8 +288,15 @@ make_panel (gint width)
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr, NULL);
 
-  priv->tray = tray = clutter_group_new ();
-  clutter_actor_set_x (tray, TRAY_PADDING * 2);
+  priv->tray = tray = nutter_grid_new ();
+
+  nutter_grid_set_column_gap (NUTTER_GRID (tray),
+                              CLUTTER_UNITS_FROM_DEVICE (TRAY_PADDING));
+  nutter_grid_set_max_size (NUTTER_GRID (tray), TRAY_WIDTH, PANEL_HEIGHT);
+  clutter_actor_set_size (tray, TRAY_WIDTH, PANEL_HEIGHT);
+  nutter_grid_set_valign (NUTTER_GRID (tray), 0.5);
+  clutter_actor_set_anchor_point (tray, TRAY_WIDTH, PANEL_HEIGHT/2);
+  clutter_actor_set_position (tray, width, PANEL_HEIGHT/2);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), tray);
 
