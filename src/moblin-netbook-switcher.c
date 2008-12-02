@@ -164,13 +164,15 @@ make_workspace_switcher (GCallback  ws_callback)
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   gint           ws_count, active_ws, ws_max_windows = 0;
   gint          *n_windows;
-  gint           i;
+  gint           i, screen_width;
   NbtkWidget    *table;
   GList         *window_list, *l;
 
   table = nbtk_table_new ();
 
   ws_count = meta_screen_get_n_workspaces (screen);
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &i);
 
   /* loop through all the workspaces, adding a label for each */
   for (i = 0; i < ws_count; i++)
@@ -240,7 +242,7 @@ make_workspace_switcher (GCallback  ws_callback)
   g_free (n_windows);
 
   clutter_actor_set_size (CLUTTER_ACTOR (table),
-                          WORKSPACE_CELL_WIDTH * ws_count,
+                          screen_width,
                           WORKSPACE_CELL_HEIGHT * (ws_max_windows + 1));
 
   /* hilight the active workspace */
