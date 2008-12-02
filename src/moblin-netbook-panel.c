@@ -95,7 +95,11 @@ spaces_button_cb (ClutterActor *actor,
 
   /* already showing */
   if (priv->workspace_switcher)
-    return TRUE;
+    {
+      hide_workspace_switcher ();
+
+      return TRUE;
+    }
 
   /* No way to know if showing */
   clutter_actor_hide (priv->launcher);

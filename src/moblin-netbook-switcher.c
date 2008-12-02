@@ -47,12 +47,7 @@ hide_workspace_switcher (guint32 timestamp)
   if (!priv->workspace_switcher)
     return;
 
-  if (priv->panel_out && !priv->panel_back_in_progress)
-    hide_panel ();
-
   clutter_actor_destroy (priv->workspace_switcher);
-
-  disable_stage (plugin, timestamp);
 
   priv->workspace_switcher = NULL;
 }
