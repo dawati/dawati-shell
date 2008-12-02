@@ -173,11 +173,51 @@ entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
   const gchar        *exec            = data;
   ClutterButtonEvent *bev             = (ClutterButtonEvent*)event;
   gboolean            without_chooser = FALSE;
+  gint                workspace       = -2;
 
   if (bev->modifier_state & CLUTTER_MOD1_MASK)
     without_chooser = TRUE;
+  else
+    {
+      MetaScreen *screen = mutter_plugin_get_screen (plugin);
+      gint        n_ws   = meta_screen_get_n_workspaces (screen);
+      gboolean    empty  = FALSE;
 
-  spawn_app (exec, event->any.time, without_chooser);
+      if (n_ws == 1)
+        {
+          GList * l;
+
+          empty = TRUE;
+
+          l = mutter_get_windows (screen);
+          while (l)
+            {
+              MutterWindow *m    = l->data;
+              MetaWindow   *w = mutter_window_get_meta_window (m);
+
+              if (w)
+                {
+                  MetaCompWindowType type = mutter_window_get_window_type (m);
+
+                  if (type == META_COMP_WINDOW_NORMAL)
+                    {
+                      empty = FALSE;
+                      break;
+                    }
+                }
+
+              l = l->next;
+            }
+        }
+
+      if (empty)
+        {
+          without_chooser = TRUE;
+          workspace = 0;
+        }
+    }
+
+  spawn_app (exec, event->any.time, without_chooser, workspace);
 
   clutter_actor_hide (priv->launcher);
 

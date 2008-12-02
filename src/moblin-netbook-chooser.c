@@ -630,16 +630,28 @@ on_sn_monitor_event (SnMonitorEvent *event, void *user_data)
 
           sn_data->state = SN_MONITOR_EVENT_COMPLETED;
 
-          wsc_data = g_slice_new (struct ws_chooser_timeout_data);
-          wsc_data->sn_id = g_strdup (seq_id);
-          wsc_data->workspace = ws_count;
+          if (sn_data->without_chooser)
+            {
+              guint32 timestamp = sn_startup_sequence_get_timestamp (sequence);
 
-          priv->workspace_chooser_timeout =
-            g_timeout_add_full (G_PRIORITY_DEFAULT,
+              printf ("Event completed for %s, ws %d\n",
+                      seq_id, sn_data->workspace);
+
+              finalize_app_startup (seq_id, sn_data->workspace, timestamp);
+            }
+          else
+            {
+              wsc_data = g_slice_new (struct ws_chooser_timeout_data);
+              wsc_data->sn_id = g_strdup (seq_id);
+              wsc_data->workspace = ws_count;
+
+              priv->workspace_chooser_timeout =
+                g_timeout_add_full (G_PRIORITY_DEFAULT,
                                 WORKSPACE_CHOOSER_TIMEOUT,
                                 workspace_chooser_timeout_cb,
                                 wsc_data,
                                 (GDestroyNotify)free_ws_chooser_timeout_data);
+            }
         }
       break;
     case SN_MONITOR_EVENT_CANCELED:
@@ -785,7 +797,8 @@ startup_notification_finalize (void)
 }
 
 void
-spawn_app (const gchar *path, guint32 timestamp, gboolean without_chooser)
+spawn_app (const gchar *path, guint32 timestamp,
+           gboolean without_chooser, gint workspace)
 {
   MutterPlugin      *plugin  = mutter_get_plugin ();
   PluginPrivate     *priv    = plugin->plugin_private;
@@ -815,7 +828,7 @@ spawn_app (const gchar *path, guint32 timestamp, gboolean without_chooser)
 
   sn_id = sn_launcher_context_get_startup_id (context);
 
-  sn_data->workspace = -2;
+  sn_data->workspace = workspace;
   sn_data->without_chooser = without_chooser;
 
   g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
