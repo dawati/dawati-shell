@@ -210,7 +210,6 @@ make_workspace_switcher (GCallback  ws_callback)
           mutter_window_is_override_redirect (mw) ||
           type != META_COMP_WINDOW_NORMAL)
         {
-          l = l->next;
           continue;
         }
 
