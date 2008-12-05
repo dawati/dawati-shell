@@ -844,6 +844,8 @@ spawn_app (const gchar *path, guint32 timestamp,
                       NULL))
     {
       g_warning ("Failed to launch [%s]", path);
+      g_hash_table_remove (priv->sn_hash, sn_id);
+      sn_launcher_context_complete (context);
     }
 
   sn_launcher_context_unref (context);
