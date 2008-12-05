@@ -15,7 +15,12 @@ struct _PengeTilePrivate {
 };
 
 #define PADDING 10
-#define BG_FILENAME "frame-bg.png"
+#define BG_FILENAME "data/frame-bg.png"
+
+#define FRAME_LEFT 7
+#define FRAME_TOP 5
+#define FRAME_RIGHT 64
+#define FRAME_BOTTOM 58
 
 enum {
   PROP0,
@@ -167,10 +172,10 @@ penge_tile_init (PengeTile *self)
   if (bg_tex)
   {
     priv->frame = nbtk_texture_frame_new ((ClutterTexture *)bg_tex,
-                                          15,
-                                          15,
-                                          15,
-                                          15);
+                                          FRAME_LEFT,
+                                          FRAME_TOP,
+                                          FRAME_RIGHT,
+                                          FRAME_BOTTOM);
     clutter_actor_set_parent (priv->frame, (ClutterActor *)self);
   } else {
     g_warning (G_STRLOC ": Unable to find texture for frame: %s", 
