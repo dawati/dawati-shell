@@ -239,9 +239,7 @@ make_workspace_switcher (GCallback  ws_callback)
 
   g_free (n_windows);
 
-  /* hilight the active workspace */
-  active_ws = meta_screen_get_active_workspace_index (screen);
-  nbtk_table_set_active_col (NBTK_TABLE (table), active_ws);
+  /* TODO: hilight the active workspace */
 
   return CLUTTER_ACTOR (table);
 }
