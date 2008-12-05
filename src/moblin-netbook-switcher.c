@@ -193,10 +193,11 @@ make_workspace_switcher (GCallback  ws_callback)
   window_list = mutter_plugin_get_windows (plugin);
   for (l = window_list; l; l = g_list_next (l))
     {
-      MutterWindow      *mw = l->data;
-      ClutterActor      *texture, *clone;
+      MutterWindow       *mw = l->data;
+      ClutterActor       *texture, *clone;
       gint                ws_indx;
       MetaCompWindowType  type;
+      gint                w, h;
 
       ws_indx = mutter_window_get_workspace (mw);
       type = mutter_window_get_window_type (mw);
@@ -230,14 +231,13 @@ make_workspace_switcher (GCallback  ws_callback)
       clutter_container_child_set (CLUTTER_CONTAINER (table), clone,
                                    "keep-aspect-ratio", TRUE, NULL);
 
+      clutter_actor_get_size (clone, &h, &w);
+      clutter_actor_set_size (clone, h/(gdouble)w * 80.0, 80);
+
       ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
 
   g_free (n_windows);
-
-  clutter_actor_set_size (CLUTTER_ACTOR (table),
-                          screen_width,
-                          WORKSPACE_CELL_HEIGHT * (ws_max_windows + 1));
 
   /* hilight the active workspace */
   active_ws = meta_screen_get_active_workspace_index (screen);
@@ -292,14 +292,11 @@ show_workspace_switcher (guint32 timestamp)
   overlay = mutter_plugin_get_overlay_group (plugin);
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
 
-  clutter_actor_set_width (switcher, screen_width);
-  clutter_actor_set_size (background, screen_width,
-                          MAX (clutter_actor_get_height (switcher), screen_height / 2));
-  clutter_actor_set_position (footer, 0, MAX (clutter_actor_get_height (switcher), screen_height / 2));
+  clutter_actor_set_position (grid, 0, 0);
+  clutter_actor_set_position (footer, 0, clutter_actor_get_height (grid));
   clutter_actor_set_size (footer, screen_width, 31);
 
   panel_y      = clutter_actor_get_y (priv->panel);
-  clutter_actor_set_position (switcher, 0, PANEL_HEIGHT);
 
   clutter_actor_set_reactive (switcher, TRUE);
 
@@ -310,6 +307,7 @@ show_workspace_switcher (guint32 timestamp)
 
   enable_stage (plugin, timestamp);
 
+  clutter_actor_set_position (switcher, 0, PANEL_HEIGHT);
   clutter_actor_move_anchor_point_from_gravity (switcher,
                                                 CLUTTER_GRAVITY_CENTER);
 
