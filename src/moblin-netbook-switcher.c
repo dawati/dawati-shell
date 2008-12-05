@@ -256,7 +256,6 @@ show_workspace_switcher (guint32 timestamp)
   PluginPrivate *priv     = plugin->plugin_private;
   ClutterActor  *overlay;
   ClutterActor  *switcher;
-  ClutterActor  *background;
   ClutterActor  *label;
   ClutterActor  *grid;
   ClutterActor  *texture, *footer;
@@ -264,13 +263,11 @@ show_workspace_switcher (guint32 timestamp)
   gint           switcher_width, switcher_height;
   gint           grid_y;
   gint           panel_y;
-  ClutterColor   background_clr = { 0xff, 0xff, 0xff, 0xff };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   switcher = clutter_group_new ();
-  background = clutter_rectangle_new_with_color (&background_clr);
 
 
   grid = make_workspace_switcher (G_CALLBACK (workspace_input_cb));
@@ -282,7 +279,7 @@ show_workspace_switcher (guint32 timestamp)
   footer = nbtk_texture_frame_new (CLUTTER_TEXTURE (texture), 10, 0, 10, 10);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, grid, footer, NULL);
+                         grid, footer, NULL);
 
   if (priv->workspace_switcher)
     hide_workspace_switcher (timestamp);
