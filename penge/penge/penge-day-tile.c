@@ -2,6 +2,7 @@
 
 #include <clutter/clutter.h>
 #include <libjana/jana.h>
+#include <nbtk/nbtk.h>
 
 G_DEFINE_TYPE (PengeDayTile, penge_day_tile, PENGE_TYPE_TILE)
 
@@ -15,6 +16,7 @@ struct _PengeDayTilePrivate {
 
     ClutterActor *day_label;
     ClutterActor *date_label;
+    ClutterActor *table;
 };
 
 enum
@@ -84,6 +86,12 @@ penge_day_tile_dispose (GObject *object)
 {
   PengeDayTilePrivate *priv = GET_PRIVATE (object);
 
+  if (priv->table)
+  {
+    g_object_unref (priv->table);
+    priv->table = NULL;
+  }
+
   if (priv->day_label)
   {
     g_object_unref (priv->day_label);
@@ -105,6 +113,7 @@ penge_day_tile_finalize (GObject *object)
   G_OBJECT_CLASS (penge_day_tile_parent_class)->finalize (object);
 }
 
+#if 0
 static void
 _day_tile_paint (ClutterActor *actor)
 {
@@ -166,7 +175,7 @@ _day_tile_allocate (ClutterActor          *actor,
   g_debug (G_STRLOC ": Allocate called.");
 }
 
-
+#endif
 static void
 penge_day_tile_class_init (PengeDayTileClass *klass)
 {
@@ -181,9 +190,6 @@ penge_day_tile_class_init (PengeDayTileClass *klass)
   object_class->dispose = penge_day_tile_dispose;
   object_class->finalize = penge_day_tile_finalize;
 
-  actor_class->allocate = _day_tile_allocate;
-  actor_class->paint = _day_tile_paint;
-
   pspec = g_param_spec_object ("date",
                                "date",
                                "Date to show",
@@ -192,8 +198,8 @@ penge_day_tile_class_init (PengeDayTileClass *klass)
   g_object_class_install_property (object_class, PROP_TIME, pspec);
 }
 
-#define DAY_LABEL_FONT "Sans 12"
-#define DATE_LABEL_FONT "Sans 32"
+#define DAY_LABEL_FONT "Sans 18"
+#define DATE_LABEL_FONT "Sans 52"
 static void
 penge_day_tile_init (PengeDayTile *self)
 {
@@ -209,6 +215,19 @@ penge_day_tile_init (PengeDayTile *self)
                                             "XX",
                                             &color_blue);
 
-  clutter_actor_set_parent (priv->day_label, self);
-  clutter_actor_set_parent (priv->date_label, self);
+  priv->table = nbtk_table_new ();
+  nbtk_table_add_actor (NBTK_TABLE (priv->table), priv->day_label, 0, 0);
+  nbtk_table_add_actor (NBTK_TABLE (priv->table), priv->date_label, 1, 0);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
+                               priv->day_label,
+                               "keep-aspect-ratio",
+                               TRUE,
+                               NULL);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
+                               priv->date_label,
+                               "keep-aspect-ratio",
+                               TRUE,
+                               NULL);
+
+  g_object_set (self, "child", priv->table, NULL);
 }
