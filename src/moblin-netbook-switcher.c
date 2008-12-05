@@ -271,7 +271,7 @@ show_workspace_switcher (guint32 timestamp)
   grid = make_workspace_switcher (G_CALLBACK (workspace_input_cb));
   clutter_actor_realize (grid);
   clutter_actor_set_position (grid, 0, 0);
-  clutter_actor_set_width (grid, screen_width);
+  clutter_actor_set_width (grid, screen_width - PANEL_X_PADDING * 2);
 
   texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/drop-down/footer.png", NULL);
   footer = nbtk_texture_frame_new (CLUTTER_TEXTURE (texture), 10, 0, 10, 10);
@@ -289,7 +289,7 @@ show_workspace_switcher (guint32 timestamp)
 
   clutter_actor_set_position (grid, 0, 0);
   clutter_actor_set_position (footer, 0, clutter_actor_get_height (grid));
-  clutter_actor_set_size (footer, screen_width, 31);
+  clutter_actor_set_size (footer, screen_width - PANEL_X_PADDING * 2, 31);
 
   panel_y      = clutter_actor_get_y (priv->panel);
 
@@ -302,7 +302,7 @@ show_workspace_switcher (guint32 timestamp)
 
   enable_stage (plugin, timestamp);
 
-  clutter_actor_set_position (switcher, 0, PANEL_HEIGHT);
+  clutter_actor_set_position (switcher, 4, PANEL_HEIGHT);
   clutter_actor_move_anchor_point_from_gravity (switcher,
                                                 CLUTTER_GRAVITY_CENTER);
 
