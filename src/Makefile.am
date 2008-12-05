@@ -5,14 +5,23 @@ INCLUDES=@MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\"
 
 AM_CFLAGS   = -Werror=missing-prototypes -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
+				nutter/nutter-scale-group.h     \
 				nutter/nutter-ws-icon.c		\
+				nutter/nutter-ws-icon.h		\
 				moblin-netbook.c		\
+				moblin-netbook.h		\
 				moblin-netbook-ui.c		\
+				moblin-netbook-ui.h		\
 				moblin-netbook-chooser.c	\
+				moblin-netbook-chooser.h	\
 				moblin-netbook-switcher.c	\
+				moblin-netbook-switcher.h	\
 				moblin-netbook-panel.c		\
+				moblin-netbook-panel.h		\
 				moblin-netbook-launcher.c       \
-                                tidy-behaviour-bounce.c
+				moblin-netbook-launcher.h       \
+                                tidy-behaviour-bounce.c		\
+                                tidy-behaviour-bounce.h
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@
