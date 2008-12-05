@@ -1,3 +1,9 @@
+/* generic classes */
+NbtkTable {
+  background-color: #fff;
+}
+
+
 /* apps button */
 *#apps-button {
   background-image: url("file://panel/apps-normal.png");
