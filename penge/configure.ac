@@ -22,4 +22,5 @@ AC_OUTPUT([
         Makefile
         penge/Makefile
         examples/Makefile
+        data/Makefile
 ])

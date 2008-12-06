@@ -1,1 +1,1 @@
-SUBDIRS = penge examples
+SUBDIRS = penge examples data
