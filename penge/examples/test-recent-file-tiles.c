@@ -10,7 +10,7 @@ main (int    argc,
       char **argv)
 {
   ClutterActor *stage;
-  ClutterActor *table;
+  NbtkWidget *table;
   GtkRecentManager *manager;
   GList *items;
   GList *l;
@@ -23,7 +23,7 @@ main (int    argc,
   stage = clutter_stage_get_default ();
   table = nbtk_table_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               table);
+                               (ClutterActor *)table);
 
   manager = gtk_recent_manager_get_default ();
   items = gtk_recent_manager_get_items (manager);
@@ -35,7 +35,7 @@ main (int    argc,
                          "uri",
                          gtk_recent_info_get_uri (info),
                          NULL);
-    nbtk_table_add_actor (table, tile, count / 2, count % 2);
+    nbtk_table_add_actor (NBTK_TABLE (table), tile, count / 2, count % 2);
     clutter_container_child_set (CLUTTER_CONTAINER (table),
                                  tile,
                                  "keep-aspect-ratio",
