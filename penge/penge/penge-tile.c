@@ -67,7 +67,7 @@ penge_tile_set_property (GObject      *object,
 
       priv->child = g_value_dup_object (value);
       clutter_actor_set_position (priv->child, PADDING, PADDING);
-      clutter_actor_set_parent (priv->child, object);
+      clutter_actor_set_parent (priv->child, (ClutterActor *)object);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
