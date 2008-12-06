@@ -16,7 +16,7 @@ struct _PengeDayTilePrivate {
 
     ClutterActor *day_label;
     ClutterActor *date_label;
-    ClutterActor *table;
+    NbtkWidget *table;
 };
 
 enum
@@ -35,7 +35,7 @@ penge_day_tile_get_property (GObject    *object,
 
   switch (property_id) {
     case PROP_TIME:
-      g_value_set_object (value, time);
+      g_value_set_object (value, priv->time);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -180,7 +180,6 @@ static void
 penge_day_tile_class_init (PengeDayTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (PengeDayTilePrivate));
