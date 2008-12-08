@@ -33,3 +33,11 @@ dist_theme_panel_DATA = \
 
 theme_dropdowndir = $(pkgdatadir)/theme/drop-down
 dist_theme_dropdown_DATA = theme/drop-down/footer.png
+
+theme_chooserdir = $(pkgdatadir)/theme/chooser
+dist_theme_chooser_DATA = \
+	theme/chooser/background.png		\
+	theme/chooser/thumb-selected.png	\
+	theme/chooser/thumb-unselected.png	\
+	theme/chooser/space-selected.png	\
+	theme/chooser/space-unselected.png
