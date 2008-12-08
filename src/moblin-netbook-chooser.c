@@ -31,6 +31,9 @@
 #define WORKSPACE_CHOOSER_BORDER_TOP    4
 #define WORKSPACE_CHOOSER_BORDER_BOTTOM 4
 #define WORKSPACE_CHOOSER_BORDER_PAD    8
+#define WORKSPACE_CHOOSER_CELL_WIDTH    200
+#define WORKSPACE_CHOOSER_CELL_HEIGHT   160
+#define WORKSPACE_CHOOSER_CELL_PAD      4
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -200,6 +203,93 @@ chooser_keyboard_input_cb (ClutterActor *self,
 }
 
 /*
+ * Creates an iconic representation of the workspace with the label provided.
+ */
+static ClutterActor *
+make_label (const gchar *text, guint width, guint height, gboolean selected)
+{
+  ClutterActor *group, *bck, *frame, *label_actor;
+  ClutterLabel *label;
+  ClutterColor  white = { 0xff, 0xff, 0xff, 0xff };
+  guint         l_w, l_h;
+
+  if (selected)
+    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/thumb-selected.png", NULL);
+  else
+    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/thumb-unselected.png", NULL);
+
+  frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
+
+  clutter_actor_set_size (frame, width, height);
+
+  /*
+   * Release the original pixmap, so we do not leak.
+   * TODO -- check this is legal.
+   */
+  g_object_unref (bck);
+
+  label_actor = clutter_label_new ();
+  label = CLUTTER_LABEL (label_actor);
+
+  clutter_label_set_font_name (label, "Sans 12");
+  clutter_label_set_color (label, &white);
+  clutter_label_set_text (label, text);
+
+  clutter_actor_realize (label_actor);
+  clutter_actor_get_size (label_actor, &l_w, &l_h);
+
+  clutter_actor_set_position (label_actor, (width - l_w)/2, (height - l_h)/2);
+
+  group = clutter_group_new ();
+  clutter_container_add (CLUTTER_CONTAINER (group), frame, label, NULL);
+
+  return group;
+}
+
+static ClutterActor *
+make_nth_workspace (GList **list, gint n, gint active)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  GList         *l      = *list;
+  GList         *tmp    = NULL;
+  gint           i      = 0;
+  gint           screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  while (l)
+    {
+      if (i == n)
+        return l->data;
+
+      l = l->next;
+      ++i;
+    }
+
+  g_assert (i <= n);
+
+  while (i <= n)
+    {
+      ClutterActor *group;
+      /*
+       * For non-expanded group, we use NutterScaleGroup container, which
+       * allows us to apply scale to the workspace en mass.
+       */
+      group = nutter_scale_group_new ();
+
+      tmp = g_list_append (tmp, group);
+
+      ++i;
+    }
+
+  g_assert (tmp);
+
+  *list = g_list_concat (*list, tmp);
+
+  return g_list_last (*list)->data;
+}
+
+/*
  * Creates a grid of workspaces, which contains a header row with
  * workspace symbolic icon, and the workspaces below it.
  */
@@ -215,18 +305,22 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
   gdouble        ws_scale_x, ws_scale_y;
   gint           ws_count = 0;
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  gint           active_ws;
+  gint           active_ws, n_ws;
   gint           i;
-  ClutterActor  *ws_label;
 
-  active_ws = meta_screen_get_n_workspaces (screen);
+  active_ws = meta_screen_get_active_workspace_index (screen);
+  n_ws = meta_screen_get_n_workspaces (screen);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  ws_scale_x = (gdouble) WORKSPACE_CELL_WIDTH  / (gdouble) screen_width;
-  ws_scale_y = (gdouble) WORKSPACE_CELL_HEIGHT / (gdouble) screen_height;
+  ws_scale_x = (gdouble) (WORKSPACE_CHOOSER_CELL_WIDTH -
+                          2*WORKSPACE_CHOOSER_CELL_PAD)/ (gdouble)screen_width;
+  ws_scale_y = (gdouble) (WORKSPACE_CHOOSER_CELL_HEIGHT -
+                          2*WORKSPACE_CHOOSER_CELL_PAD) /(gdouble)screen_height;
 
   table = nbtk_table_new ();
+
+  nbtk_table_set_col_spacing (NBTK_TABLE (table), WORKSPACE_CHOOSER_BORDER_PAD);
 
   l = mutter_plugin_get_windows (plugin);
 
@@ -268,7 +362,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
 
-      workspace = ensure_nth_workspace (&workspaces, ws_indx, active_ws);
+      workspace = make_nth_workspace (&workspaces, ws_indx, active_ws);
       g_assert (workspace);
 
 
@@ -279,9 +373,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
        * (The entiery WS container is then scaled.)
        */
       clutter_actor_get_position (CLUTTER_ACTOR (mw), &x, &y);
-      clutter_actor_set_position (clone,
-                                  x + WORKSPACE_BORDER / 2,
-                                  y + WORKSPACE_BORDER / 2);
+      clutter_actor_set_position (clone, x, y);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (workspace), clone);
 
@@ -291,46 +383,51 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
   l = workspaces;
   while (l)
     {
-      gchar *s = g_strdup_printf ("%d", ws_count + 1);
       ClutterActor  *ws = l->data;
+      gchar         *s = g_strdup_printf ("%d", i + 1);
+      ClutterActor  *cell;
+
       struct ws_grid_cb_data * wsg_data =
         g_slice_new (struct ws_grid_cb_data);
 
       wsg_data->sn_id = g_strdup (sn_id);
       wsg_data->workspace = ws_count;
 
-      /*
-       * Scale unexpanded workspaces to fit the predefined size of the grid cell
-       */
-      clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
+      cell = make_label (s,
+                         WORKSPACE_CHOOSER_CELL_WIDTH,
+                         WORKSPACE_CHOOSER_CELL_HEIGHT,
+                         (ws_count == active_ws));
 
-      ws_label = make_workspace_label (s);
       g_free (s);
 
       /*
        * We connect to the label, as the workspace size depends on its content
        * so we do not get the signal reliably for the entire cell.
        */
-      g_signal_connect_data (ws_label, "button-press-event",
+      g_signal_connect_data (cell, "button-press-event",
                              G_CALLBACK (workspace_chooser_input_cb), wsg_data,
                              (GClosureNotify)free_ws_grid_cb_data, 0);
 
-      clutter_actor_set_reactive (ws_label, TRUE);
+      clutter_actor_set_reactive (cell, TRUE);
 
+      /*
+       * Scale unexpanded workspaces to fit the predefined size of the grid cell
+       */
+      clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
+      clutter_actor_set_position (ws,
+                                  WORKSPACE_CHOOSER_CELL_PAD,
+                                  WORKSPACE_CHOOSER_CELL_PAD);
 
-      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, ws_count);
-      nbtk_table_add_actor (NBTK_TABLE (table), ws, 0, ws_count);
+      clutter_container_add_actor (CLUTTER_CONTAINER (cell), ws);
+
+      nbtk_table_add_actor (NBTK_TABLE (table), cell, 0, ws_count);
 
       ++ws_count;
       l = l->next;
     }
 
-  clutter_actor_set_size (CLUTTER_ACTOR (table),
-                          active_ws * WORKSPACE_CELL_WIDTH,
-                          WORKSPACE_CELL_HEIGHT);
-
   if (n_workspaces)
-    *n_workspaces = active_ws;
+    *n_workspaces = n_ws;
 
   return CLUTTER_ACTOR (table);
 }
@@ -442,7 +539,9 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   clutter_actor_get_size (grid, &grid_width, &grid_height);
 
   new_ws = clutter_group_new ();
-  clutter_actor_set_position (new_ws, grid_width + 5, label_height);
+  clutter_actor_set_position (new_ws,
+                              grid_width + WORKSPACE_CHOOSER_BORDER_PAD,
+                              label_height);
 
   new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
   clutter_actor_set_size (new_ws_background, WORKSPACE_CELL_WIDTH, grid_height);

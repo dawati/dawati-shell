@@ -47,8 +47,6 @@
 void          switcher_clone_weak_notify (gpointer data, GObject *object);
 void          switcher_origin_weak_notify (gpointer data, GObject *object);
 
-ClutterActor *ensure_nth_workspace (GList **list, gint n, gint active);
-
 ClutterActor *make_workspace_label (const gchar *text);
 
 #endif
