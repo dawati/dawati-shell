@@ -32,6 +32,7 @@
 #define WORKSPACE_CHOOSER_BORDER_BOTTOM 4
 #define WORKSPACE_CHOOSER_BORDER_PAD    8
 #define WORKSPACE_CHOOSER_CELL_PAD      4
+#define WORKSPACE_CHOOSER_LABEL_HEIGHT  40
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -204,30 +205,51 @@ chooser_keyboard_input_cb (ClutterActor *self,
  * Creates an iconic representation of the workspace with the label provided.
  */
 static ClutterActor *
-make_label (const gchar *text, guint width, guint height, gboolean selected)
+make_background (const gchar *text, guint width, guint height,
+                 gboolean selected)
 {
-  ClutterActor *group, *bck, *frame, *label_actor;
+  ClutterActor *group, *bck, *label_actor;
   ClutterLabel *label;
   ClutterColor  white = { 0xff, 0xff, 0xff, 0xff };
   guint         l_w, l_h;
+
+  group = clutter_group_new ();
+
+  if (selected)
+    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/space-selected.png", NULL);
+  else
+    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/space-unselected.png", NULL);
+
+  if (bck)
+    {
+      ClutterActor *frame;
+
+      frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
+
+      clutter_actor_set_size (frame, width, WORKSPACE_CHOOSER_LABEL_HEIGHT);
+
+      g_object_unref (bck);
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), frame);
+    }
+
 
   if (selected)
     bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/thumb-selected.png", NULL);
   else
     bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/thumb-unselected.png", NULL);
 
-  frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
+  if (bck)
+    {
+      ClutterActor *frame;
+      frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
 
-  clutter_actor_set_size (frame, width, height);
+      clutter_actor_set_size (frame, width, height);
+      clutter_actor_set_y (frame, WORKSPACE_CHOOSER_LABEL_HEIGHT +
+                           WORKSPACE_CHOOSER_CELL_PAD);
 
-  /*
-   * Release the original pixmap, so we do not leak.
-   * TODO -- check this is legal.
-   */
-  g_object_unref (bck);
-
-  group = clutter_group_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), frame);
+      g_object_unref (bck);
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), frame);
+    }
 
   if (text)
     {
@@ -242,13 +264,15 @@ make_label (const gchar *text, guint width, guint height, gboolean selected)
       clutter_actor_get_size (label_actor, &l_w, &l_h);
 
       clutter_actor_set_position (label_actor,
-                                  (width - l_w)/2, (height - l_h)/2);
+                                  (width - l_w)/2,
+                                  (WORKSPACE_CHOOSER_LABEL_HEIGHT - l_h)/2);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (group), label_actor);
     }
 
   return group;
 }
+
 
 static ClutterActor *
 make_nth_workspace (GList **list, gint n, gint active)
@@ -426,7 +450,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
   while (l)
     {
       ClutterActor  *ws = l->data;
-      gchar         *s = g_strdup_printf ("%d", i + 1);
+      gchar         *s = g_strdup_printf ("space %d", i + 1);
       ClutterActor  *cell;
 
       struct ws_grid_cb_data * wsg_data =
@@ -435,7 +459,8 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       wsg_data->sn_id = g_strdup (sn_id);
       wsg_data->workspace = ws_count;
 
-      cell = make_label (s, cell_width, cell_height, (ws_count == active_ws));
+      cell = make_background (s,
+                              cell_width, cell_height, (ws_count == active_ws));
 
       g_free (s);
 
@@ -455,7 +480,8 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       clutter_actor_set_scale (ws, ws_scale_x, ws_scale_y);
       clutter_actor_set_position (ws,
                                   WORKSPACE_CHOOSER_CELL_PAD,
-                                  WORKSPACE_CHOOSER_CELL_PAD);
+                                  2 * WORKSPACE_CHOOSER_CELL_PAD +
+                                  WORKSPACE_CHOOSER_LABEL_HEIGHT);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (cell), ws);
 
@@ -465,7 +491,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       l = l->next;
     }
 
-  new_ws = make_label (NULL, cell_width, cell_height, FALSE);
+  new_ws = make_background ("new space (0)", cell_width, cell_height, FALSE);
 
   new_wsg_data->sn_id     = g_strdup (sn_id);
   new_wsg_data->workspace = ws_count;
