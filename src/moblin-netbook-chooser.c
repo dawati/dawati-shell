@@ -31,8 +31,6 @@
 #define WORKSPACE_CHOOSER_BORDER_TOP    4
 #define WORKSPACE_CHOOSER_BORDER_BOTTOM 4
 #define WORKSPACE_CHOOSER_BORDER_PAD    8
-#define WORKSPACE_CHOOSER_CELL_WIDTH    200
-#define WORKSPACE_CHOOSER_CELL_HEIGHT   160
 #define WORKSPACE_CHOOSER_CELL_PAD      4
 
 extern MutterPlugin mutter_plugin;
@@ -335,6 +333,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
   GList         *l;
   NbtkWidget    *table;
   gint           screen_width, screen_height;
+  gint           cell_width, cell_height;
   GList         *workspaces = NULL;
   gdouble        ws_scale_x, ws_scale_y;
   gint           ws_count = 0;
@@ -350,9 +349,15 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  ws_scale_x = (gdouble) (WORKSPACE_CHOOSER_CELL_WIDTH -
+  cell_width = (screen_width -
+                MAX_WORKSPACES * 2 * WORKSPACE_CHOOSER_CELL_PAD) /
+    MAX_WORKSPACES;
+
+  cell_height = screen_height * cell_width / screen_width;
+
+  ws_scale_x = (gdouble) (cell_width -
                           2*WORKSPACE_CHOOSER_CELL_PAD)/ (gdouble)screen_width;
-  ws_scale_y = (gdouble) (WORKSPACE_CHOOSER_CELL_HEIGHT -
+  ws_scale_y = (gdouble) (cell_height -
                           2*WORKSPACE_CHOOSER_CELL_PAD) /(gdouble)screen_height;
 
   table = nbtk_table_new ();
@@ -430,10 +435,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       wsg_data->sn_id = g_strdup (sn_id);
       wsg_data->workspace = ws_count;
 
-      cell = make_label (s,
-                         WORKSPACE_CHOOSER_CELL_WIDTH,
-                         WORKSPACE_CHOOSER_CELL_HEIGHT,
-                         (ws_count == active_ws));
+      cell = make_label (s, cell_width, cell_height, (ws_count == active_ws));
 
       g_free (s);
 
@@ -463,10 +465,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       l = l->next;
     }
 
-  new_ws = make_label (NULL,
-                       WORKSPACE_CHOOSER_CELL_WIDTH,
-                       WORKSPACE_CHOOSER_CELL_HEIGHT,
-                       FALSE);
+  new_ws = make_label (NULL, cell_width, cell_height, FALSE);
 
   new_wsg_data->sn_id     = g_strdup (sn_id);
   new_wsg_data->workspace = ws_count;
