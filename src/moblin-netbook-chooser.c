@@ -302,7 +302,7 @@ make_background (const gchar *text, guint width, guint height,
       label_actor = clutter_label_new ();
       label = CLUTTER_LABEL (label_actor);
 
-      clutter_label_set_font_name (label, "Sans 12");
+      clutter_label_set_font_name (label, "Sans 8");
       clutter_label_set_color (label, &white);
       clutter_label_set_text (label, text);
 
@@ -629,8 +629,8 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
    */
   clutter_actor_set_size (frame, 0, 0);
 
-  label = clutter_label_new_full ("Sans 12",
-                                  "You can select a workspace:", &label_clr);
+  label = clutter_label_new_full ("Sans 9",
+                                  "Choose space for application:", &label_clr);
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;
 
