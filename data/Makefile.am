@@ -41,3 +41,8 @@ dist_theme_chooser_DATA = \
 	theme/chooser/thumb-unselected.png	\
 	theme/chooser/space-selected.png	\
 	theme/chooser/space-unselected.png
+
+theme_genericdir = $(pkgdatadir)/theme/generic
+dist_theme_generic_DATA = \
+	theme/generic/checkbox.png		\
+	theme/generic/spinner.png
