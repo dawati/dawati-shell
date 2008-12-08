@@ -24,6 +24,14 @@
 
 #include "moblin-netbook-chooser.h"
 
+#include <nbtk/nbtk-texture-frame.h>
+
+#define WORKSPACE_CHOOSER_BORDER_LEFT   2
+#define WORKSPACE_CHOOSER_BORDER_RIGHT  3
+#define WORKSPACE_CHOOSER_BORDER_TOP    4
+#define WORKSPACE_CHOOSER_BORDER_BOTTOM 4
+#define WORKSPACE_CHOOSER_BORDER_PAD    8
+
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
 mutter_get_plugin ()
@@ -381,14 +389,13 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   PluginPrivate *priv     = plugin->plugin_private;
   ClutterActor  *overlay;
   ClutterActor  *switcher;
-  ClutterActor  *background;
+  ClutterActor  *bck, *frame;
   ClutterActor  *grid;
   ClutterActor  *label;
   gint           screen_width, screen_height;
   guint          switcher_width, switcher_height;
   guint          grid_width, grid_height;
   guint          label_height;
-  ClutterColor   background_clr = { 0, 0, 0, 0xaf };
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
   ClutterActor  *new_ws;
@@ -402,14 +409,27 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   switcher = clutter_group_new ();
-  background = clutter_rectangle_new_with_color (&background_clr);
-  clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (background),
-                                      WORKSPACE_CHOOSER_BORDER_WIDTH);
-  clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (background),
-                                      &label_clr);
-  clutter_actor_set_position (background,
-                              -2*WORKSPACE_CHOOSER_BORDER_WIDTH,
-                              -2*WORKSPACE_CHOOSER_BORDER_WIDTH);
+  bck =clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/background.png", NULL);
+
+  frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
+
+  /*
+   * Release the original pixmap, so we do not leak.
+   * TODO -- check this is legal.
+   */
+  g_object_unref (bck);
+
+  clutter_actor_set_position (frame,
+                              -(WORKSPACE_CHOOSER_BORDER_LEFT +
+                                WORKSPACE_CHOOSER_BORDER_PAD),
+                              -(WORKSPACE_CHOOSER_BORDER_TOP +
+                                WORKSPACE_CHOOSER_BORDER_PAD));
+
+  /*
+   * Set initial size to 0 so we can measure the size of the switcher without
+   * the background.
+   */
+  clutter_actor_set_size (frame, 0, 0);
 
   label = clutter_label_new_full ("Sans 12",
                                   "You can select a workspace:", &label_clr);
@@ -455,7 +475,7 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   clutter_actor_set_reactive (new_ws, TRUE);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         background, label, grid, new_ws, NULL);
+                         frame, label, grid, new_ws, NULL);
 
   set_lowlight (TRUE);
 
@@ -469,9 +489,14 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
 
   clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
-  clutter_actor_set_size (background,
-                          switcher_width  + 4 * WORKSPACE_CHOOSER_BORDER_WIDTH,
-                          switcher_height + 4 * WORKSPACE_CHOOSER_BORDER_WIDTH);
+
+  clutter_actor_set_size (frame,
+                          switcher_width  + WORKSPACE_CHOOSER_BORDER_LEFT +
+                          WORKSPACE_CHOOSER_BORDER_RIGHT +
+                          2 * WORKSPACE_CHOOSER_BORDER_PAD,
+                          switcher_height + WORKSPACE_CHOOSER_BORDER_TOP +
+                          WORKSPACE_CHOOSER_BORDER_BOTTOM +
+                          2 * WORKSPACE_CHOOSER_BORDER_PAD);
 
   clutter_actor_set_anchor_point (switcher,
                                   switcher_width/2, switcher_height/2);
