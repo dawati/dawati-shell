@@ -202,11 +202,57 @@ chooser_keyboard_input_cb (ClutterActor *self,
 }
 
 /*
+ * Creates a simple busy spinner; the returned actor has anchor point set
+ * in its center for convenience.
+ */
+static ClutterActor *
+make_spinner (void)
+{
+  ClutterActor *spinner;
+  guint         s_w, s_h;
+
+  static ClutterBehaviour *beh = NULL;
+
+  spinner = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/generic/spinner.png", NULL);
+
+  if (!spinner)
+    return NULL;
+
+  clutter_actor_realize (spinner);
+  clutter_actor_get_size (spinner, &s_w, &s_h);
+
+  clutter_actor_set_anchor_point (spinner, s_w/2, s_h/2);
+
+  if (!beh)
+    {
+      ClutterAlpha    *alpha;
+      ClutterTimeline *timeline;
+
+      timeline = clutter_timeline_new_for_duration (MNBTK_SPINNER_ITERVAL);
+      clutter_timeline_set_loop (timeline, TRUE);
+
+      alpha = clutter_alpha_new_full (timeline,
+                                      CLUTTER_ALPHA_RAMP_INC,
+                                      NULL, NULL);
+
+      beh = clutter_behaviour_rotate_new (alpha, CLUTTER_Z_AXIS,
+                                          CLUTTER_ROTATE_CW,
+                                          0.0, 360.0);
+
+      clutter_timeline_start (timeline);
+    }
+
+  clutter_behaviour_apply (beh, spinner);
+
+  return spinner;
+}
+
+/*
  * Creates an iconic representation of the workspace with the label provided.
  */
 static ClutterActor *
 make_background (const gchar *text, guint width, guint height,
-                 gboolean selected)
+                 gboolean selected, gboolean with_spinner)
 {
   ClutterActor *group, *bck, *label_actor;
   ClutterLabel *label;
@@ -268,6 +314,17 @@ make_background (const gchar *text, guint width, guint height,
                                   (WORKSPACE_CHOOSER_LABEL_HEIGHT - l_h)/2);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (group), label_actor);
+    }
+
+  if (with_spinner)
+    {
+      ClutterActor *spinner = make_spinner ();
+      clutter_actor_set_position (spinner,
+                                  width / 2,
+                                  height /2 + WORKSPACE_CHOOSER_LABEL_HEIGHT +
+                                  WORKSPACE_CHOOSER_CELL_PAD);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), spinner);
     }
 
   return group;
@@ -460,7 +517,8 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       wsg_data->workspace = ws_count;
 
       cell = make_background (s,
-                              cell_width, cell_height, (ws_count == active_ws));
+                              cell_width, cell_height, (ws_count == active_ws),
+                              FALSE);
 
       g_free (s);
 
@@ -491,7 +549,8 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       l = l->next;
     }
 
-  new_ws = make_background ("new space (0)", cell_width, cell_height, FALSE);
+  new_ws = make_background ("new space (0)", cell_width, cell_height,
+                            FALSE, TRUE);
 
   new_wsg_data->sn_id     = g_strdup (sn_id);
   new_wsg_data->workspace = ws_count;

@@ -44,6 +44,8 @@
 
 #define MAX_WORKSPACES 8
 
+#define MNBTK_SPINNER_ITERVAL 2000
+
 void          switcher_clone_weak_notify (gpointer data, GObject *object);
 void          switcher_origin_weak_notify (gpointer data, GObject *object);
 
