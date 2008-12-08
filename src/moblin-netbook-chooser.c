@@ -420,7 +420,6 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
   gint           ws_count = 0;
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   gint           active_ws, n_ws;
-  gint           i;
   ClutterActor  *new_ws;
   struct ws_grid_cb_data * new_wsg_data =
         g_slice_new (struct ws_grid_cb_data);
@@ -507,7 +506,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
   while (l)
     {
       ClutterActor  *ws = l->data;
-      gchar         *s = g_strdup_printf ("space %d", i + 1);
+      gchar         *s = g_strdup_printf ("space %d", ws_count + 1);
       ClutterActor  *cell;
 
       struct ws_grid_cb_data * wsg_data =
