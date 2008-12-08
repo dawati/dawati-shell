@@ -228,20 +228,26 @@ make_label (const gchar *text, guint width, guint height, gboolean selected)
    */
   g_object_unref (bck);
 
-  label_actor = clutter_label_new ();
-  label = CLUTTER_LABEL (label_actor);
-
-  clutter_label_set_font_name (label, "Sans 12");
-  clutter_label_set_color (label, &white);
-  clutter_label_set_text (label, text);
-
-  clutter_actor_realize (label_actor);
-  clutter_actor_get_size (label_actor, &l_w, &l_h);
-
-  clutter_actor_set_position (label_actor, (width - l_w)/2, (height - l_h)/2);
-
   group = clutter_group_new ();
-  clutter_container_add (CLUTTER_CONTAINER (group), frame, label, NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (group), frame);
+
+  if (text)
+    {
+      label_actor = clutter_label_new ();
+      label = CLUTTER_LABEL (label_actor);
+
+      clutter_label_set_font_name (label, "Sans 12");
+      clutter_label_set_color (label, &white);
+      clutter_label_set_text (label, text);
+
+      clutter_actor_realize (label_actor);
+      clutter_actor_get_size (label_actor, &l_w, &l_h);
+
+      clutter_actor_set_position (label_actor,
+                                  (width - l_w)/2, (height - l_h)/2);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), label_actor);
+    }
 
   return group;
 }
@@ -290,8 +296,36 @@ make_nth_workspace (GList **list, gint n, gint active)
 }
 
 /*
- * Creates a grid of workspaces, which contains a header row with
- * workspace symbolic icon, and the workspaces below it.
+ * Handles click on the New Workspace area in the chooser by placing the
+ * starting application on a new workspace.
+ */
+static gboolean
+new_workspace_input_cb (ClutterActor *clone,
+                        ClutterEvent *event,
+                        gpointer      data)
+{
+  MutterPlugin  *plugin    = mutter_get_plugin ();
+  PluginPrivate *priv      = plugin->plugin_private;
+  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
+  struct ws_grid_cb_data * wsg_data = data;
+  const char    *sn_id     = wsg_data->sn_id;
+
+  hide_workspace_chooser (event->any.time);
+
+  priv->desktop_switch_in_progress = TRUE;
+
+  if (wsg_data->workspace >= MAX_WORKSPACES)
+    wsg_data->workspace = MAX_WORKSPACES - 1;
+  else
+    meta_screen_append_new_workspace (screen, FALSE, event->any.time);
+
+  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time);
+
+  return FALSE;
+}
+
+/*
+ * Creates a grid of workspaces.
  */
 static ClutterActor *
 make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
@@ -307,6 +341,9 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   gint           active_ws, n_ws;
   gint           i;
+  ClutterActor  *new_ws;
+  struct ws_grid_cb_data * new_wsg_data =
+        g_slice_new (struct ws_grid_cb_data);
 
   active_ws = meta_screen_get_active_workspace_index (screen);
   n_ws = meta_screen_get_n_workspaces (screen);
@@ -426,39 +463,27 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       l = l->next;
     }
 
+  new_ws = make_label (NULL,
+                       WORKSPACE_CHOOSER_CELL_WIDTH,
+                       WORKSPACE_CHOOSER_CELL_HEIGHT,
+                       FALSE);
+
+  new_wsg_data->sn_id     = g_strdup (sn_id);
+  new_wsg_data->workspace = ws_count;
+
+  g_signal_connect_data (new_ws, "button-press-event",
+                         G_CALLBACK (new_workspace_input_cb),
+                         new_wsg_data,
+                         (GClosureNotify)free_ws_grid_cb_data, 0);
+
+  clutter_actor_set_reactive (new_ws, TRUE);
+
+  nbtk_table_add_actor (NBTK_TABLE (table), new_ws, 0, ws_count);
+
   if (n_workspaces)
     *n_workspaces = n_ws;
 
   return CLUTTER_ACTOR (table);
-}
-
-/*
- * Handles click on the New Workspace area in the chooser by placing the
- * starting application on a new workspace.
- */
-static gboolean
-new_workspace_input_cb (ClutterActor *clone,
-                        ClutterEvent *event,
-                        gpointer      data)
-{
-  MutterPlugin  *plugin    = mutter_get_plugin ();
-  PluginPrivate *priv      = plugin->plugin_private;
-  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
-  struct ws_grid_cb_data * wsg_data = data;
-  const char    *sn_id     = wsg_data->sn_id;
-
-  hide_workspace_chooser (event->any.time);
-
-  priv->desktop_switch_in_progress = TRUE;
-
-  if (wsg_data->workspace >= MAX_WORKSPACES)
-    wsg_data->workspace = MAX_WORKSPACES - 1;
-  else
-    meta_screen_append_new_workspace (screen, FALSE, event->any.time);
-
-  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time);
-
-  return FALSE;
 }
 
 /*
@@ -495,13 +520,6 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   guint          label_height;
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
-  ClutterActor  *new_ws;
-  ClutterActor  *new_ws_background;
-  ClutterActor  *new_ws_label;
-  ClutterColor   new_ws_clr = { 0xfd, 0xd9, 0x09, 0x7f};
-  ClutterColor   new_ws_text_clr = { 0, 0, 0, 0xff };
-  struct ws_grid_cb_data * wsg_data =
-        g_slice_new (struct ws_grid_cb_data);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -538,43 +556,8 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   clutter_actor_realize (grid);
   clutter_actor_get_size (grid, &grid_width, &grid_height);
 
-  new_ws = clutter_group_new ();
-  clutter_actor_set_position (new_ws,
-                              grid_width + WORKSPACE_CHOOSER_BORDER_PAD,
-                              label_height);
-
-  new_ws_background = clutter_rectangle_new_with_color (&new_ws_clr);
-  clutter_actor_set_size (new_ws_background, WORKSPACE_CELL_WIDTH, grid_height);
-
-  new_ws_label = clutter_label_new_full ("Sans 10", "New Workspace",
-                                         &new_ws_text_clr);
-  clutter_actor_realize (new_ws_label);
-
-  /*
-   * Tried to use anchor point in the middle of the label here, but it would
-   * appear that the group does not take anchor point into account when
-   * caluculating it's size, so it ends up wider than it should by the
-   * offset.
-   */
-  clutter_actor_set_position (new_ws_label, 2,
-                              (grid_height -
-                               clutter_actor_get_height (new_ws_label))/2);
-
-  clutter_container_add (CLUTTER_CONTAINER (new_ws),
-                         new_ws_background, new_ws_label, NULL);
-
-  wsg_data->sn_id     = g_strdup (sn_id);
-  wsg_data->workspace = ws_count;
-
-  g_signal_connect_data (new_ws, "button-press-event",
-                         G_CALLBACK (new_workspace_input_cb),
-                         wsg_data,
-                         (GClosureNotify)free_ws_grid_cb_data, 0);
-
-  clutter_actor_set_reactive (new_ws, TRUE);
-
   clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         frame, label, grid, new_ws, NULL);
+                         frame, label, grid, NULL);
 
   set_lowlight (TRUE);
 
