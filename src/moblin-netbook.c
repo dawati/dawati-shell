@@ -1128,7 +1128,9 @@ do_init (const char *params)
 
   gtk_init (NULL, NULL);
 
-  meta_prefs_set_num_workspaces (1);
+  /* tweak with env var as then possible to develop in desktop env. */
+  if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
+    meta_prefs_set_num_workspaces (1);
 
   plugin->plugin_private = priv;
 

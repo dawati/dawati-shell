@@ -64,6 +64,35 @@ bounce_frame_foreach (ClutterBehaviour *behaviour,
   clutter_actor_set_scalex (actor, closure->scale, closure->scale);
 }
 
+static gfloat 
+ease_out_bounce (gfloat t)
+{
+  gfloat b = 0.0, c = 1.0, d = 1.0;
+
+  if ((t/=d) < (1/2.75)) {
+    return c*(7.5625*t*t);
+  } else if (t < (2/2.75)) {
+    return c*(7.5625*(t-=(1.5/2.75))*t + .75);
+  } else if (t < (2.5/2.75)) {
+    return c*(7.5625*(t-=(2.25/2.75))*t + .9375);
+  } else {
+    return c*(7.5625*(t-=(2.625/2.75))*t + .984375);
+  }
+}
+
+static gfloat
+ease_in_bounce (gfloat t) 
+{
+  return 1.0 - ease_out_bounce (1.0-t);
+}
+
+static gfloat 
+ease_in_elastic (gfloat t)
+{
+  /* Likely could be optimised */
+  return (1 - cos(t*M_PI) + (1 - cos(t*t*M_PI*4))*(1 - t)*(2 - t))*0.5;
+}
+
 static void
 tidy_behaviour_bounce_alpha_notify (ClutterBehaviour *behave,
                                     guint32           alpha_value)
@@ -71,11 +100,17 @@ tidy_behaviour_bounce_alpha_notify (ClutterBehaviour *behave,
   TidyBehaviourBouncePrivate *priv;
   guint boing_alpha;
   ClutterFixed factor;
+  gfloat       af, ff;
 
   BounceFrameClosure closure = { 0, };
 
   priv = TIDY_BEHAVIOUR_BOUNCE (behave)->priv;
 
+  af = (gfloat)(alpha_value)/(gfloat)CLUTTER_ALPHA_MAX_ALPHA;
+
+  ff = ease_in_elastic (af);
+
+#if 0
   boing_alpha = (CLUTTER_ALPHA_MAX_ALPHA/4)*3;
 
   if (alpha_value < boing_alpha)
@@ -89,6 +124,11 @@ tidy_behaviour_bounce_alpha_notify (ClutterBehaviour *behave,
     {
       closure.opacity = 0xff;
 
+      if (alpha_value < boing_alpha/4)
+        boing_alpha /= 4;
+      else
+        boing_alpha -= (boing_alpha/4);
+
       /* scale down from 1.25 -> 1.0 */
 
       factor = CLUTTER_INT_TO_FIXED (alpha_value - boing_alpha)
@@ -98,6 +138,12 @@ tidy_behaviour_bounce_alpha_notify (ClutterBehaviour *behave,
 
       closure.scale = CLUTTER_FLOAT_TO_FIXED(1.25) - factor;
     }
+#endif
+
+  closure.scale = CLUTTER_FLOAT_TO_FIXED(ff);
+  closure.opacity = 0xff;
+
+  //closure.opacity = CLUTTER_FIXED_TO_INT(0xff * factor);
 
   clutter_behaviour_actors_foreach (behave,
                                     bounce_frame_foreach,
