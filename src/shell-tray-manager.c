@@ -10,6 +10,14 @@
 
 #include "shell-tray-manager.h"
 #include "tray/na-tray-manager.h"
+#include "moblin-netbook.h"
+
+extern MutterPlugin mutter_plugin;
+static inline MutterPlugin *
+mutter_get_plugin ()
+{
+  return &mutter_plugin;
+}
 
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
@@ -231,7 +239,41 @@ create_bg_pixmap (GdkColormap  *colormap,
 static gboolean
 actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 {
-  printf ("Actor %p clicked\n", actor);
+  static Atom            msg_type_atom = 0;
+
+  MutterPlugin          *plugin = mutter_get_plugin ();
+  MetaScreen            *screen = mutter_plugin_get_screen (plugin);
+  Display               *xdpy   = mutter_plugin_get_xdisplay (plugin);
+  ShellTrayManagerChild *child  = data;
+  GtkSocket             *socket = GTK_SOCKET (child->socket);
+  Window                 xwin   = GDK_WINDOW_XWINDOW (socket->plug_window);
+  XClientMessageEvent    xev;
+
+  /*
+   * Dispatch ClientMessage MOBLIN_SYSTEM_TRAY_EVENT to the associated
+   * tray icon window.
+   *
+   * In this message we pass on the event type, the button, modifier state
+   * and click count; we do not pass the event coords (for one, we do not
+   * have enough fields in the ClientMessage for this, and also, this does
+   * not really matter to this protocol; either the user clicked the icon or
+   * not).
+   */
+  if (!msg_type_atom)
+    msg_type_atom = XInternAtom (xdpy, "MOBLIN_SYSTEM_TRAY_EVENT", False);
+
+  xev.type = ClientMessage;
+  xev.window = xwin;
+  xev.message_type = msg_type_atom;
+
+  xev.format = 32;
+  xev.data.l[0] = event->button.type;
+  xev.data.l[1] = event->button.button;
+  xev.data.l[2] = event->button.modifier_state;
+  xev.data.l[3] = event->button.click_count;
+
+  XSendEvent (xdpy, xwin,
+              False, StructureNotifyMask, (XEvent *)&xev);
 
   return TRUE;
 }
