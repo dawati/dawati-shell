@@ -1224,15 +1224,6 @@ do_init (const char *params)
 						ws_switcher_slide_timeout),
                                                 CLUTTER_ALPHA_SINE_INC);
 
-  /*
-   * FIXME -- for some reason the Tray container does not get alloated until
-   * after the first time the panel slides out, and this results in the
-   * position of the tray actors being out of sync with the position of their
-   * correspnding windows. Calling show_panel() here temporarily displays the
-   * panel, working around the problem.
-   */
-  show_panel();
-
   clutter_actor_set_position (panel, 0,
                               -PANEL_HEIGHT);
 

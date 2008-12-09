@@ -269,8 +269,6 @@ na_tray_manager_handle_dock_request (NaTrayManager       *manager,
   Window icon_window = xevent->data.l[2];
   GtkWidget *child;
 
-  printf ("DOCK REQUEST\n");
-
   if (g_hash_table_lookup (manager->socket_table, GINT_TO_POINTER (icon_window)))
     {
       /* We already got this notification earlier, ignore this one */
