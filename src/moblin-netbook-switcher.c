@@ -165,6 +165,8 @@ make_workspace_switcher (GCallback  ws_callback)
 
   table = nbtk_table_new ();
 
+  clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
+
   ws_count = meta_screen_get_n_workspaces (screen);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &i);

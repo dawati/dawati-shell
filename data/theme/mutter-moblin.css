@@ -3,6 +3,10 @@ NbtkTable {
   background-color: #f000;
 }
 
+/* spaces switcher table */
+*#switcher-table {
+  background-color: #ffff;
+}
 
 /* apps button */
 *#apps-button {
