@@ -220,22 +220,7 @@ actor_moved (GObject *object, GParamSpec *param, gpointer user_data)
   if (!child->visible)
     return;
 
-  /* Find the actor's new coordinates in terms of the stage (which is
-   * child->window's parent window.
-   *
-   * FIXME -- only works for untransformed actors; do this properly the clutter
-   * way.
-   */
-  while (actor)
-    {
-      clutter_actor_get_position (actor, &x, &y);
-      clutter_actor_get_anchor_point (actor, &ax, &ay);
-
-      wx += x - ax;
-      wy += y - ay;
-
-      actor = clutter_actor_get_parent (actor);
-    }
+  clutter_actor_get_transformed_position (actor, &wx, &wy);
 
   gtk_window_move (GTK_WINDOW (child->window), wx, wy);
 }
