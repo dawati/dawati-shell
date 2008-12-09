@@ -77,8 +77,6 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
 
   priv->panel_out_in_progress = FALSE;
 
-  shell_tray_manager_show_windows (priv->tray_manager);
-
   enable_stage (plugin, CurrentTime);
 }
 
@@ -107,8 +105,6 @@ hide_panel ()
   gint           x      = clutter_actor_get_x (priv->panel);
 
   priv->panel_back_in_progress  = TRUE;
-
-  shell_tray_manager_hide_windows (priv->tray_manager);
 
   clutter_effect_move (priv->panel_slide_effect,
                        priv->panel, x, -PANEL_HEIGHT,

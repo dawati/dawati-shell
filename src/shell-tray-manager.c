@@ -18,8 +18,6 @@ struct _ShellTrayManagerPrivate {
   ClutterColor bg_color;
 
   GHashTable *icons;
-
-  gboolean visible : 1;
 };
 
 typedef struct {
@@ -27,7 +25,6 @@ typedef struct {
   GtkWidget *socket;
   GtkWidget *window;
   ClutterActor *actor;
-  gboolean visible : 1;
 } ShellTrayManagerChild;
 
 enum {
@@ -210,21 +207,6 @@ shell_tray_manager_manage_stage (ShellTrayManager *manager,
                                  gdk_drawable_get_screen (GDK_DRAWABLE (manager->priv->stage_window)));
 }
 
-static void
-actor_moved (GObject *object, GParamSpec *param, gpointer user_data)
-{
-  ShellTrayManagerChild *child = user_data;
-  ClutterActor *actor = child->actor;
-  int wx = 0, wy = 0, x, y, ax, ay;
-
-  if (!child->visible)
-    return;
-
-  clutter_actor_get_transformed_position (actor, &wx, &wy);
-
-  gtk_window_move (GTK_WINDOW (child->window), wx, wy);
-}
-
 static GdkPixmap *
 create_bg_pixmap (GdkColormap  *colormap,
                   ClutterColor *color)
@@ -246,16 +228,12 @@ create_bg_pixmap (GdkColormap  *colormap,
   return pixmap;
 }
 
-static void
-actor_parent_set (ClutterActor          *actor,
-                  ClutterActor          *parent,
-                  ShellTrayManagerChild *child)
+static gboolean
+actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 {
-  /*
-   * FIXME -- we should disconnect our notify:: handler from the original
-   * ancestor hierarchy.
-   */
-  actor_moved (G_OBJECT (actor), NULL, child);
+  printf ("Actor %p clicked\n", actor);
+
+  return TRUE;
 }
 
 static void
@@ -300,11 +278,13 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   gtk_widget_set_parent_window (win, manager->priv->stage_window);
   gdk_window_reparent (win->window, manager->priv->stage_window, 0, 0);
   gtk_widget_show_all (socket);
+  gtk_window_move (GTK_WINDOW (win), -200, -200);
   gtk_widget_show (win);
 
   icon = clutter_glx_texture_pixmap_new_with_window (GDK_WINDOW_XWINDOW (win->window));
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (icon), TRUE);
   clutter_actor_set_size (icon, 24, 24);
+  clutter_actor_set_reactive (icon, TRUE);
 
   child = g_slice_new (ShellTrayManagerChild);
   child->window = win;
@@ -312,40 +292,12 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   child->actor = g_object_ref (icon);
   g_hash_table_insert (manager->priv->icons, socket, child);
 
-  /*
-   * Emit the signal *before* we connect our position handlers (this allows
-   * for the actor to be parented, so we can connect our handler to the entire
-   * ancestor hierarchy.
-   */
   g_signal_emit (manager,
                  shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
                  icon);
 
-  /*
-   * Ensure initial position.
-   */
-  child->visible = manager->priv->visible;
-  actor_moved (G_OBJECT (icon), NULL, child);
-
-  /*
-   * Update position on reparenting.
-   */
-  g_signal_connect (icon, "parent-set",
-                    G_CALLBACK (actor_parent_set), child);
-
-  ancestor = icon;
-  while (ancestor)
-    {
-      g_signal_connect (ancestor, "notify::x",
-                        G_CALLBACK (actor_moved), child);
-      g_signal_connect (ancestor, "notify::y",
-                        G_CALLBACK (actor_moved), child);
-
-      ancestor = clutter_actor_get_parent (ancestor);
-
-      if (ancestor && CLUTTER_IS_STAGE (ancestor))
-        break;
-    }
+  g_signal_connect (icon, "button-press-event",
+                    G_CALLBACK (actor_clicked), child);
 }
 
 static void
@@ -363,42 +315,3 @@ na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *socket,
                  child->actor);
   g_hash_table_remove (manager->priv->icons, socket);
 }
-
-void
-shell_tray_manager_hide_windows (ShellTrayManager *manager)
-{
-  GHashTableIter         iter;
-  gpointer               key, value;
-
-  manager->priv->visible = FALSE;
-
-  g_hash_table_iter_init (&iter, manager->priv->icons);
-
-  while (g_hash_table_iter_next (&iter, &key, &value))
-    {
-      ShellTrayManagerChild *child = value;
-
-      child->visible = FALSE;
-      gtk_window_move (GTK_WINDOW (child->window), -200, -200);
-    }
-}
-
-void
-shell_tray_manager_show_windows (ShellTrayManager *manager)
-{
-  GHashTableIter         iter;
-  gpointer               key, value;
-
-  manager->priv->visible = TRUE;
-
-  g_hash_table_iter_init (&iter, manager->priv->icons);
-
-  while (g_hash_table_iter_next (&iter, &key, &value))
-    {
-      ShellTrayManagerChild *child = value;
-
-      child->visible = TRUE;
-      actor_moved (NULL, NULL, child);
-    }
-}
-
