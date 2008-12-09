@@ -599,7 +599,6 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   ClutterActor  *label;
   gint           screen_width, screen_height;
   guint          switcher_width, switcher_height;
-  guint          grid_width, grid_height;
   guint          label_height;
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint           ws_count = 0;
@@ -636,8 +635,6 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
 
   grid = make_workspace_chooser (sn_id, &ws_count);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
-  clutter_actor_realize (grid);
-  clutter_actor_get_size (grid, &grid_width, &grid_height);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          frame, label, grid, NULL);
@@ -653,6 +650,7 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
 
+  clutter_actor_realize (switcher);
   clutter_actor_get_size (switcher, &switcher_width, &switcher_height);
 
   clutter_actor_set_size (frame,
