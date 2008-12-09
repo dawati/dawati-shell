@@ -255,7 +255,7 @@ make_panel (gint width)
   PluginPrivate *priv   = plugin->plugin_private;
   ClutterActor  *panel;
   ClutterActor  *background, *bg_texture;
-  ClutterColor   clr = {0x0, 0x0, 0x0, 0xce};
+  ClutterColor   clr = {0, 0, 0, 0};
   ClutterColor   lbl_clr = {0xc0, 0xc0, 0xc0, 0xff};
   ClutterActor  *launcher, *overlay;
   ClutterActor  *tray;
@@ -314,7 +314,6 @@ make_panel (gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->launcher);
   clutter_actor_hide (priv->launcher);
 
-  /* FIXME -- get color from theme. */
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr, NULL);
 
