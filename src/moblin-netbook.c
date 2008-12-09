@@ -42,7 +42,7 @@
 #define DESTROY_TIMEOUT             150
 #define MINIMIZE_TIMEOUT            250
 #define MAXIMIZE_TIMEOUT            250
-#define MAP_TIMEOUT                 200
+#define MAP_TIMEOUT                 350
 #define SWITCH_TIMEOUT              400
 #define PANEL_SLIDE_TIMEOUT         150
 #define PANEL_SLIDE_THRESHOLD       2
