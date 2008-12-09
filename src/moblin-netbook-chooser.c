@@ -566,6 +566,14 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
   if (n_workspaces)
     *n_workspaces = n_ws;
 
+  /*
+   * FIXME -- this is a workaround for clutter bug 1338; remove once fixed.
+   */
+  clutter_actor_set_size (CLUTTER_ACTOR (table),
+                          clutter_actor_get_width (CLUTTER_ACTOR (table)),
+                          cell_height + WORKSPACE_CHOOSER_CELL_PAD +
+                          WORKSPACE_CHOOSER_LABEL_HEIGHT);
+
   return CLUTTER_ACTOR (table);
 }
 
