@@ -191,9 +191,9 @@ launcher_button_cb (ClutterActor *actor,
   else
     {
       clutter_actor_lower_bottom (priv->launcher);
-      clutter_actor_set_position (priv->launcher, 
-                                  4, 
-                                  -clutter_actor_get_height(priv->launcher)); 
+      clutter_actor_set_position (priv->launcher,
+                                  4,
+                                  -clutter_actor_get_height(priv->launcher));
 
       clutter_actor_show (priv->launcher);
       clutter_effect_move (priv->panel_slide_effect,
