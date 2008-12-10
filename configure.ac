@@ -32,6 +32,8 @@ AM_PATH_GLIB_2_0()
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0 libstartup-notification-1.0 gtk+-2.0 libgnome-menu)
 
+PKG_CHECK_MODULES(GTK, gtk+-2.0)
+
 MUTTER_PLUGIN_DIR=$($PKG_CONFIG metacity-plugins --variable=mutterplugindir)
 AC_SUBST(MUTTER_PLUGIN_DIR)
 
@@ -44,6 +46,7 @@ data/Makefile
 src/Makefile
 src/tray/Makefile
 po/Makefile.in
+tests/Makefile
 ])
 
 echo "
