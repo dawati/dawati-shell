@@ -1,5 +1,14 @@
 #include "moblin-netbook.h"
 
+
+/* Needing to do this for every C file is an absolute joke :( */
+extern MutterPlugin mutter_plugin;
+static inline MutterPlugin *
+mutter_get_plugin ()
+{
+  return &mutter_plugin;
+}
+
 static void
 on_notification_added (MoblinNetbookNotifyStore *store, 
                        Notification *n, 

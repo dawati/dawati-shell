@@ -1269,6 +1269,8 @@ do_init (const char *params)
 
   setup_startup_notification ();
 
+  moblin_netbook_notify_init ();
+
   return TRUE;
 }
 
