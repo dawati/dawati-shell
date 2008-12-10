@@ -252,12 +252,6 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   /*
    * Dispatch ClientMessage MOBLIN_SYSTEM_TRAY_EVENT to the associated
    * tray icon window.
-   *
-   * In this message we pass on the event type, the button, modifier state
-   * and click count; we do not pass the event coords (for one, we do not
-   * have enough fields in the ClientMessage for this, and also, this does
-   * not really matter to this protocol; either the user clicked the icon or
-   * not).
    */
   if (!msg_type_atom)
     msg_type_atom = XInternAtom (xdpy, "MOBLIN_SYSTEM_TRAY_EVENT", False);
@@ -268,9 +262,11 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 
   xev.format = 32;
   xev.data.l[0] = event->button.type;
-  xev.data.l[1] = event->button.button;
-  xev.data.l[2] = event->button.modifier_state;
-  xev.data.l[3] = event->button.click_count;
+  xev.data.l[1] = (event->button.button & 0xffff) |
+    (event->button.click_count << 16);
+  xev.data.l[2] = event->button.x;
+  xev.data.l[3] = event->button.y;
+  xev.data.l[4] = event->button.modifier_state;
 
   XSendEvent (xdpy, xwin,
               False, StructureNotifyMask, (XEvent *)&xev);
