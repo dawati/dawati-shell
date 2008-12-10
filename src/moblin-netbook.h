@@ -26,6 +26,7 @@
 #define MOBLIN_NETBOOK_H
 
 #include <mutter-plugin.h>
+#include "moblin-netbook-notify-store.h"
 
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
@@ -87,6 +88,10 @@ struct PluginPrivate
   SnMonitorContext      *sn_context;
   GHashTable            *sn_hash;
 
+  /* Application notification, ala libnotify */
+  MoblinNetbookNotifyStore *notify_store;
+
+  /* Background parallax texture */
   gint                   parallax_paint_offset;
   ClutterActor          *parallax_tex;
 };
@@ -113,5 +118,7 @@ struct ActorPrivate
 ActorPrivate * get_actor_private (MutterWindow *actor);
 void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
 void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
+
+void moblin_netbook_notify_init (void);
 
 #endif
