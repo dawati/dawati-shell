@@ -29,14 +29,14 @@
 
 #include "tidy-behaviour-bounce.h"
 
-#include "nutter/nutter-grid.h"
-
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
 
 #define TRAY_PADDING   3
-#define TRAY_WIDTH   100
+#define TRAY_WIDTH   200
+#define TRAY_HEIGHT   24
+
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
 mutter_get_plugin ()
@@ -235,7 +235,10 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
                                ClutterActor     *icon,
                                ClutterActor     *tray)
 {
-  clutter_container_add_actor (CLUTTER_CONTAINER (tray), icon);
+  static col = 0;
+  nbtk_table_add_actor (NBTK_TABLE (tray), icon, 0, col++);
+  clutter_container_child_set (CLUTTER_CONTAINER (tray), icon,
+                               "keep-aspect-ratio", TRUE, NULL);
 }
 
 static void
@@ -315,14 +318,11 @@ make_panel (gint width)
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr, NULL);
 
-  priv->tray = tray = nutter_grid_new ();
+  priv->tray = tray = CLUTTER_ACTOR (nbtk_table_new ());
 
-  nutter_grid_set_column_gap (NUTTER_GRID (tray),
-                              CLUTTER_UNITS_FROM_DEVICE (TRAY_PADDING));
-  nutter_grid_set_max_size (NUTTER_GRID (tray), TRAY_WIDTH, PANEL_HEIGHT);
-  clutter_actor_set_size (tray, TRAY_WIDTH, PANEL_HEIGHT);
-  nutter_grid_set_valign (NUTTER_GRID (tray), 0.5);
-  clutter_actor_set_anchor_point (tray, TRAY_WIDTH, PANEL_HEIGHT/2);
+  nbtk_table_set_col_spacing (NBTK_TABLE (tray), TRAY_PADDING);
+  clutter_actor_set_size (tray, TRAY_WIDTH, TRAY_HEIGHT);
+  clutter_actor_set_anchor_point (tray, TRAY_WIDTH, TRAY_HEIGHT/2);
   clutter_actor_set_position (tray, width, PANEL_HEIGHT/2);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), tray);
