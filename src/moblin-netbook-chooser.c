@@ -739,6 +739,12 @@ workspace_chooser_timeout_cb (gpointer data)
 
   struct ws_chooser_timeout_data *wsc_data = data;
 
+  if (!priv->workspace_chooser_timeout)
+    {
+      g_message ("Workspace timeout triggered after user input, ignoring\n");
+      return FALSE;
+    }
+
   priv->desktop_switch_in_progress = TRUE;
 
   hide_workspace_chooser (timestamp);
