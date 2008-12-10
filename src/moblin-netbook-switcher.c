@@ -305,8 +305,8 @@ show_workspace_switcher (guint32 timestamp)
 
   clutter_actor_lower_bottom (switcher);
 
-  clutter_actor_set_position (switcher, 
-                              4, -(clutter_actor_get_height (switcher))); 
+  clutter_actor_set_position (switcher,
+                              4, -(clutter_actor_get_height (switcher)));
 
   clutter_effect_move (priv->panel_slide_effect,
                        switcher,
