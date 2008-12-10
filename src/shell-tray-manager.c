@@ -11,6 +11,7 @@
 #include "shell-tray-manager.h"
 #include "tray/na-tray-manager.h"
 #include "moblin-netbook.h"
+#include "moblin-netbook-panel.h"
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -270,6 +271,8 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 
   XSendEvent (xdpy, xwin,
               False, StructureNotifyMask, (XEvent *)&xev);
+
+  hide_panel ();
 
   return TRUE;
 }
