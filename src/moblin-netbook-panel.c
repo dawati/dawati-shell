@@ -190,16 +190,18 @@ launcher_button_cb (ClutterActor *actor,
     }
   else
     {
-      clutter_actor_move_anchor_point_from_gravity (priv->launcher,
-                                                    CLUTTER_GRAVITY_CENTER);
+      clutter_actor_lower_bottom (priv->launcher);
+      clutter_actor_set_position (priv->launcher, 
+                                  4, 
+                                  -clutter_actor_get_height(priv->launcher)); 
 
-      clutter_actor_set_scale (priv->launcher, 0.0, 0.0);
       clutter_actor_show (priv->launcher);
-
-      tidy_bounce_scale (priv->launcher, 200);
-      clutter_actor_raise_top (priv->launcher);
+      clutter_effect_move (priv->panel_slide_effect,
+                           priv->launcher,
+                           4,
+                           PANEL_HEIGHT,
+                           NULL, NULL);
     }
-
 
   return TRUE;
 }

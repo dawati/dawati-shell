@@ -269,7 +269,6 @@ show_workspace_switcher (guint32 timestamp)
 
   switcher = clutter_group_new ();
 
-
   grid = make_workspace_switcher (G_CALLBACK (workspace_input_cb));
   clutter_actor_realize (grid);
   clutter_actor_set_position (grid, 0, 0);
@@ -304,12 +303,14 @@ show_workspace_switcher (guint32 timestamp)
 
   enable_stage (plugin, timestamp);
 
-  clutter_actor_set_position (switcher, 4, PANEL_HEIGHT);
-  clutter_actor_move_anchor_point_from_gravity (switcher,
-                                                CLUTTER_GRAVITY_CENTER);
+  clutter_actor_lower_bottom (switcher);
 
-  clutter_actor_set_scale (switcher, 0.0, 0.0);
+  clutter_actor_set_position (switcher, 
+                              4, -(clutter_actor_get_height (switcher))); 
 
-  tidy_bounce_scale (switcher, 200);
-
+  clutter_effect_move (priv->panel_slide_effect,
+                       switcher,
+                       4,
+                       PANEL_HEIGHT,
+                       NULL, NULL);
 }
