@@ -156,14 +156,19 @@ workspace_chooser_input_cb (ClutterActor *clone,
   MetaWorkspace *workspace;
   gpointer       key, value;
   const char    *sn_id = wsg_data->sn_id;
+  gint           active;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
+  active    = meta_screen_get_active_workspace_index (screen);
 
   if (!workspace)
     {
       g_warning ("No workspace specified, %s:%d\n", __FILE__, __LINE__);
       return FALSE;
     }
+
+  if (active != indx)
+    priv->desktop_switch_in_progress = TRUE;
 
   hide_workspace_chooser (event->any.time);
 
@@ -177,9 +182,13 @@ chooser_keyboard_input_cb (ClutterActor *self,
                            ClutterEvent *event,
                            gpointer      data)
 {
-  const char      *sn_id  = data;
-  guint            symbol = clutter_key_event_symbol (&event->key);
-  gint             indx;
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  const char    *sn_id  = data;
+  guint          symbol = clutter_key_event_symbol (&event->key);
+  gint           indx;
+  gint           active;
 
   if (symbol < CLUTTER_0 || symbol > CLUTTER_9)
     return FALSE;
@@ -193,6 +202,11 @@ chooser_keyboard_input_cb (ClutterActor *self,
     indx = MAX_WORKSPACES - 1;
   else if (indx == -1)
     indx = -2;
+
+  active = meta_screen_get_active_workspace_index (screen);
+
+  if (active != indx)
+    priv->desktop_switch_in_progress = TRUE;
 
   hide_workspace_chooser (event->any.time);
 
@@ -836,9 +850,6 @@ on_sn_monitor_event (SnMonitorEvent *event, void *user_data)
             {
               guint32 timestamp = sn_startup_sequence_get_timestamp (sequence);
 
-              printf ("Event completed for %s, ws %d\n",
-                      seq_id, sn_data->workspace);
-
               finalize_app_startup (seq_id, sn_data->workspace, timestamp);
             }
           else
@@ -929,7 +940,7 @@ startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
           if (!priv->desktop_switch_in_progress)
             {
               /*
-               * If the WS effect is no longer in progress, we
+               * If the WS effect is not in progress, we
                * reset the SN flag and remove the window from hash.
                *
                * We then move the window onto the appropriate workspace.
@@ -940,6 +951,11 @@ startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
             }
 
           move_window_to_workspace (mcw, workspace_index, CurrentTime);
+
+          if (priv->desktop_switch_in_progress)
+            {
+              return FALSE;
+            }
         }
       else
         {
@@ -993,7 +1009,9 @@ startup_notification_finalize (void)
           g_hash_table_iter_init (&iter, priv->sn_hash);
 
           if (mcw)
-            plugin->map (mcw);
+            {
+              plugin->map (mcw);
+            }
         }
     }
 }
