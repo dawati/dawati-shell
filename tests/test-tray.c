@@ -30,13 +30,13 @@
 static void
 activate_cb (GtkStatusIcon *status_icon, gpointer data)
 {
-  g_message ("Received activate signal\n");
+  g_message ("Received activate signal.");
 }
 
 static void
 popup_menu_cb (GtkStatusIcon *icon, guint button, guint atime, gpointer data)
 {
-  g_message ("Received pop-up menu signal with coords %d, %d\n",
+  g_message ("Received pop-up menu signal with coords %d, %d.",
 	     mnbk_event_x, mnbk_event_y);
 }
 
