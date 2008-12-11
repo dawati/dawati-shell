@@ -34,7 +34,7 @@
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
-#include "shell-tray-manager.h"
+#include "moblin-netbook-tray-manager.h"
 
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;

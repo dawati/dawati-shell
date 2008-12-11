@@ -1,14 +1,14 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Taken from Gnome Shell.
+ * Based on Gnome Shell.
  */
 #include <clutter/clutter.h>
 #include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gtk/gtk.h>
 
-#include "shell-tray-manager.h"
+#include "moblin-netbook-tray-manager.h"
 #include "tray/na-tray-manager.h"
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"

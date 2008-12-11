@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Taken from Gnome Shell.
+ * Based on Gnome Shell.
  */
 #ifndef __SHELL_TRAY_MANAGER_H__
 #define __SHELL_TRAY_MANAGER_H__
