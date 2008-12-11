@@ -39,7 +39,7 @@ mutter_get_plugin ()
  */
 
 void
-hide_workspace_switcher (guint32 timestamp)
+hide_workspace_switcher ()
 {
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
@@ -73,7 +73,7 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
       return FALSE;
     }
 
-  hide_workspace_switcher (event->any.time);
+  hide_workspace_switcher ();
   meta_workspace_activate (workspace, event->any.time);
 
   return FALSE;
@@ -116,7 +116,7 @@ switcher_keyboard_input_cb (ClutterActor *self,
           return TRUE;
         }
 
-      hide_workspace_switcher (event->any.time);
+      hide_workspace_switcher ();
       meta_workspace_activate (workspace, event->any.time);
     }
 
@@ -152,7 +152,7 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
 }
 
 static ClutterActor*
-make_workspace_switcher (GCallback  ws_callback)
+make_contents (GCallback  ws_callback)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -249,8 +249,8 @@ make_workspace_switcher (GCallback  ws_callback)
 /*
  * Constructs and shows the workspace switcher actor.
  */
-void
-show_workspace_switcher (guint32 timestamp)
+ClutterActor *
+make_workspace_switcher ()
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
@@ -269,7 +269,7 @@ show_workspace_switcher (guint32 timestamp)
 
   switcher = clutter_group_new ();
 
-  grid = make_workspace_switcher (G_CALLBACK (workspace_input_cb));
+  grid = make_contents (G_CALLBACK (workspace_input_cb));
   clutter_actor_realize (grid);
   clutter_actor_set_position (grid, 0, 0);
   clutter_actor_set_width (grid, screen_width - PANEL_X_PADDING * 2);
@@ -281,14 +281,13 @@ show_workspace_switcher (guint32 timestamp)
                          grid, footer, NULL);
 
   if (priv->workspace_switcher)
-    hide_workspace_switcher (timestamp);
+    hide_workspace_switcher ();
 
   priv->workspace_switcher = switcher;
 
   overlay = mutter_plugin_get_overlay_group (plugin);
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
-
-  clutter_actor_set_position (grid, 0, 0);
+clutter_actor_set_position (grid, 0, 0);
   clutter_actor_set_position (footer, 0, clutter_actor_get_height (grid));
   clutter_actor_set_size (footer, screen_width - PANEL_X_PADDING * 2, 31);
 
@@ -301,16 +300,7 @@ show_workspace_switcher (guint32 timestamp)
 
   clutter_grab_keyboard (switcher);
 
-  enable_stage (plugin, timestamp);
-
   clutter_actor_lower_bottom (switcher);
 
-  clutter_actor_set_position (switcher,
-                              4, -(clutter_actor_get_height (switcher)));
-
-  clutter_effect_move (priv->panel_slide_effect,
-                       switcher,
-                       4,
-                       PANEL_HEIGHT,
-                       NULL, NULL);
+  return switcher;
 }

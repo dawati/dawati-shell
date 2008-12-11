@@ -767,6 +767,14 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
 
   if (priv->keyboard_grab)
     {
+      if (timestamp == CurrentTime)
+        {
+          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+          MetaDisplay *display = meta_screen_get_display (screen);
+
+          timestamp = meta_display_get_current_time_roundtrip (display);
+        }
+
       Display *xdpy = mutter_plugin_get_xdisplay (plugin);
 
       XUngrabKeyboard (xdpy, timestamp);
@@ -788,6 +796,13 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
 
   if (!priv->keyboard_grab)
     {
+      if (timestamp == CurrentTime)
+        {
+          MetaDisplay *display = meta_screen_get_display (screen);
+
+          timestamp = meta_display_get_current_time_roundtrip (display);
+        }
+
       if (Success == XGrabKeyboard (xdpy, xwin, True,
                                     GrabModeAsync, GrabModeAsync, timestamp))
         {

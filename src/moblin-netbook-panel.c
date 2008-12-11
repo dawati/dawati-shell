@@ -55,13 +55,7 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
 
   if (!priv->workspace_chooser && !priv->workspace_switcher)
     {
-      guint32         timestamp;
-      MetaScreen     *screen = mutter_plugin_get_screen (plugin);
-      MetaDisplay    *display = meta_screen_get_display (screen);
-
-      timestamp = meta_display_get_current_time_roundtrip (display);
-
-      disable_stage (plugin, timestamp);
+      disable_stage (plugin, CurrentTime);
     }
 }
 
@@ -96,10 +90,7 @@ spaces_button_cb (ClutterActor *actor,
 
   active = nbtk_button_get_active (NBTK_BUTTON (actor));
 
-  if (!active)
-    hide_workspace_switcher ();
-  else
-    show_workspace_switcher ();
+  toggle_control (MNBK_CONTROL_SPACES, active);
 
   return TRUE;
 }
@@ -154,24 +145,7 @@ launcher_button_cb (ClutterActor *actor,
 
   active = nbtk_button_get_active (NBTK_BUTTON (actor));
 
-  if (!active)
-    {
-      clutter_actor_hide (priv->launcher);
-    }
-  else
-    {
-      clutter_actor_lower_bottom (priv->launcher);
-      clutter_actor_set_position (priv->launcher,
-                                  4,
-                                  -clutter_actor_get_height(priv->launcher));
-
-      clutter_actor_show (priv->launcher);
-      clutter_effect_move (priv->panel_slide_effect,
-                           priv->launcher,
-                           4,
-                           PANEL_HEIGHT,
-                           NULL, NULL);
-    }
+  toggle_control (MNBK_CONTROL_APPLICATIONS, active);
 
   return TRUE;
 }

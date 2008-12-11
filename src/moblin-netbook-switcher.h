@@ -30,7 +30,7 @@
 #include "nutter/nutter-scale-group.h"
 #include "moblin-netbook-ui.h"
 
-void          show_workspace_switcher (guint32 timestamp);
-void          hide_workspace_switcher (guint32 timestamp);
+ClutterActor *make_workspace_switcher (void);
+void          hide_workspace_switcher (void);
 
 #endif
