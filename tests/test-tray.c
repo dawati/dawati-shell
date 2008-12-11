@@ -27,6 +27,19 @@
 
 #include "../src/moblin-netbook-system-tray.h"
 
+static void
+activate_cb (GtkStatusIcon *status_icon, gpointer data)
+{
+  g_message ("Received activate signal\n");
+}
+
+static void
+popup_menu_cb (GtkStatusIcon *icon, guint button, guint atime, gpointer data)
+{
+  g_message ("Received pop-up menu signal with coords %d, %d\n",
+	     mnbk_event_x, mnbk_event_y);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -35,6 +48,9 @@ main (int argc, char *argv[])
   gtk_init (&argc, &argv);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
+
+  g_signal_connect (icon, "activate", G_CALLBACK (activate_cb), NULL);
+  g_signal_connect (icon, "popup-menu", G_CALLBACK (popup_menu_cb), NULL);
 
   gdk_add_client_message_filter (gdk_atom_intern (MOBLIN_SYSTEM_TRAY_EVENT,
 						  FALSE),

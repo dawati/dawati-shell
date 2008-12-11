@@ -55,9 +55,15 @@ typedef struct
  *                                                  FALSE),
  *				   mnbtk_client_message_handler, icon);
  *
- * Where icon is a GtkStatusIcon instance. See tests/test-tray.c for a simple
- * example.
+ * Where icon is a GtkStatusIcon instance. The GtkStatusIcon signal handlers
+ * need to use coords stored in mnbk_event_x and mnbk_event_y instead of
+ * querying the status icon.
+ *
+ * See tests/test-tray.c for a simple example.
  */
+static gint32 mnbk_event_x = 0;
+static gint32 mnbk_event_y = 0;
+
 static GdkFilterReturn
 mnbtk_client_message_handler (GdkXEvent *xevent, GdkEvent *event, gpointer data)
 {
@@ -65,6 +71,7 @@ mnbtk_client_message_handler (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   XClientMessageEvent *xev = (XClientMessageEvent *) xevent;
   MnbkTrayEventData   *td  = (MnbkTrayEventData*)&xev->data;
 
+#if 0
   g_debug ("Got click: \n"
 	   "           button: %d\n"
 	   "             type: %d\n"
@@ -78,9 +85,13 @@ mnbtk_client_message_handler (GdkXEvent *xevent, GdkEvent *event, gpointer data)
 	   td->x,
 	   td->y,
 	   td->modifiers);
+#endif
 
   if (td->type == GDK_BUTTON_PRESS)
     {
+      mnbk_event_x = td->x;
+      mnbk_event_y = td->y;
+
       switch (td->button)
 	{
 	case 1:
