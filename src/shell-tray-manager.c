@@ -284,7 +284,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   ShellTrayManager *manager = user_data;
   GtkWidget *win;
   ClutterActor *icon;
-  ClutterActor *ancestor;
   ShellTrayManagerChild *child;
   GdkPixmap *bg_pixmap;
 
