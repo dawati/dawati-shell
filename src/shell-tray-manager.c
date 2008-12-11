@@ -13,6 +13,9 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
 
+#define MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
+#include "moblin-netbook-system-tray.h"
+
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
 mutter_get_plugin ()
@@ -249,6 +252,7 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   GtkSocket             *socket = GTK_SOCKET (child->socket);
   Window                 xwin   = GDK_WINDOW_XWINDOW (socket->plug_window);
   XClientMessageEvent    xev;
+  MnbkTrayEventData    *td  = (MnbkTrayEventData*)&xev.data;
   GdkEventType           event_type = GDK_BUTTON_PRESS;
 
   /*
@@ -256,7 +260,7 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
    * tray icon window.
    */
   if (!msg_type_atom)
-    msg_type_atom = XInternAtom (xdpy, "MOBLIN_SYSTEM_TRAY_EVENT", False);
+    msg_type_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_EVENT, False);
 
   if (event->button.type == CLUTTER_BUTTON_RELEASE)
     event_type = GDK_BUTTON_RELEASE;
@@ -265,13 +269,14 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   xev.window = xwin;
   xev.message_type = msg_type_atom;
 
-  xev.format = 32;
-  xev.data.l[0] = event_type;
-  xev.data.l[1] = (event->button.button & 0xffff) |
-    (event->button.click_count << 16);
-  xev.data.l[2] = (event->button.x & 0xffff) | (event->button.y << 16);
-  xev.data.l[3] = event->any.time;
-  xev.data.l[4] = event->button.modifier_state;
+  xev.format    = 32;
+  td->type      = event_type;
+  td->button    = (guint16)event->button.button;
+  td->count     = (guint16)event->button.click_count;
+  td->x         = (gint16)event->button.x;
+  td->y         = (gint16)event->button.y;
+  td->time      = event->button.time;
+  td->modifiers = event->button.modifier_state;
 
   XSendEvent (xdpy, xwin,
               False, StructureNotifyMask, (XEvent *)&xev);
