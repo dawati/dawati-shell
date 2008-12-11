@@ -126,6 +126,10 @@ panel_append_toolbar_button (ClutterActor  *container,
 
   clutter_container_add_actor (CLUTTER_CONTAINER (container), CLUTTER_ACTOR (button));
 
+  g_object_set (G_OBJECT (button),
+                "transition-type", NBTK_TRANSITION_BOUNCE,
+                "transition-duration", 500, NULL);
+
   g_signal_connect (button, "clicked", G_CALLBACK (toggle_buttons_cb), data);
   if (callback)
     g_signal_connect (button, "notify::active", callback, data);
