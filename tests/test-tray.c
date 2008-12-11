@@ -27,10 +27,41 @@
 
 #include "../src/moblin-netbook-system-tray.h"
 
+static GtkWidget *message;
+static GtkWidget *popup;
+
 static void
 activate_cb (GtkStatusIcon *status_icon, gpointer data)
 {
+  static int count = 0;
+
   g_message ("Received activate signal.");
+  gtk_dialog_run (GTK_DIALOG (message));
+  gtk_widget_hide (message);
+
+  switch (++count)
+    {
+    case 1:
+      gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (message),
+				     "Come on! Was once not enough ?!");
+      break;
+    case 2:
+      gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (message),
+				     "You are pushing your luck, mate !!!");
+    break;
+    default:
+      gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (message),
+				     "That's it! I am calling your manager.");
+    }
+}
+
+static void
+popup_position_func (GtkMenu *menu, gint *x, gint *y,
+		     gboolean *push, gpointer data)
+{
+  *x    = mnbk_event_x;
+  *y    = mnbk_event_y;
+  *push = FALSE;
 }
 
 static void
@@ -38,14 +69,36 @@ popup_menu_cb (GtkStatusIcon *icon, guint button, guint atime, gpointer data)
 {
   g_message ("Received pop-up menu signal with coords %d, %d.",
 	     mnbk_event_x, mnbk_event_y);
+
+  gtk_menu_popup (GTK_MENU (popup),
+		  NULL, NULL, popup_position_func, NULL,
+		  button, atime);
 }
 
 int
 main (int argc, char *argv[])
 {
   GtkStatusIcon *icon;
+  GtkWidget     *item;
 
   gtk_init (&argc, &argv);
+
+  message  = gtk_message_dialog_new (NULL,
+				     GTK_DIALOG_MODAL,
+				     GTK_MESSAGE_INFO,
+				     GTK_BUTTONS_OK,
+                                     "Thank you for activating the applet.\n"
+				     "Now go and do something more useful!");
+
+  popup = gtk_menu_new ();
+
+  item = gtk_menu_item_new_with_label ("Really?");
+  gtk_widget_show (item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup), item);
+
+  item = gtk_menu_item_new_with_label ("Nothing better to do?");
+  gtk_widget_show (item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup), item);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
 
