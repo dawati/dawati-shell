@@ -317,9 +317,8 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   gtk_widget_set_parent_window (win, manager->priv->stage_window);
   gdk_window_reparent (win->window, manager->priv->stage_window, 0, 0);
-  gtk_widget_show_all (socket);
   gtk_window_move (GTK_WINDOW (win), -200, -200);
-  gtk_widget_show (win);
+  gtk_widget_show_all (win);
 
   icon = clutter_glx_texture_pixmap_new_with_window (GDK_WINDOW_XWINDOW (win->window));
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (icon), TRUE);
