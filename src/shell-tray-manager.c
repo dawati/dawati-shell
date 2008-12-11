@@ -269,8 +269,8 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   xev.data.l[0] = event_type;
   xev.data.l[1] = (event->button.button & 0xffff) |
     (event->button.click_count << 16);
-  xev.data.l[2] = event->button.x;
-  xev.data.l[3] = event->button.y;
+  xev.data.l[2] = (event->button.x & 0xffff) | (event->button.y << 16);
+  xev.data.l[3] = event->any.time;
   xev.data.l[4] = event->button.modifier_state;
 
   XSendEvent (xdpy, xwin,
