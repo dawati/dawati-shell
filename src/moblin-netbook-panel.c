@@ -149,6 +149,7 @@ toggle_buttons_cb (NbtkButton *button, PluginPrivate *priv)
 static ClutterActor*
 panel_append_toolbar_button (ClutterActor  *container,
                              gchar         *name,
+                             gchar         *tooltip,
                              GCallback      callback,
                              PluginPrivate *data)
 {
@@ -157,6 +158,7 @@ panel_append_toolbar_button (ClutterActor  *container,
 
   button = nbtk_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
+  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
   clutter_actor_set_size (CLUTTER_ACTOR (button), BUTTON_WIDTH, BUTTON_HEIGHT);
   clutter_actor_set_position (CLUTTER_ACTOR (button),
@@ -282,14 +284,14 @@ make_panel (gint width)
       clutter_actor_set_size (background, width, 101);
     }
 
-  priv->panel_buttons[0] = panel_append_toolbar_button (panel, "m-space-button", NULL, priv);
-  priv->panel_buttons[1] = panel_append_toolbar_button (panel, "status-button", NULL, priv);
-  priv->panel_buttons[2] = panel_append_toolbar_button (panel, "spaces-button", G_CALLBACK (spaces_button_cb), priv);
-  priv->panel_buttons[3] = panel_append_toolbar_button (panel, "internet-button", NULL, priv);
-  priv->panel_buttons[4] = panel_append_toolbar_button (panel, "media-button", NULL, priv);
-  priv->panel_buttons[5] = panel_append_toolbar_button (panel, "apps-button", G_CALLBACK (launcher_button_cb), priv);
-  priv->panel_buttons[6] = panel_append_toolbar_button (panel, "people-button", NULL, priv);
-  priv->panel_buttons[7] = panel_append_toolbar_button (panel, "pasteboard-button", NULL, priv);
+  priv->panel_buttons[0] = panel_append_toolbar_button (panel, "m-space-button", "m_zone", NULL, priv);
+  priv->panel_buttons[1] = panel_append_toolbar_button (panel, "status-button", "status", NULL, priv);
+  priv->panel_buttons[2] = panel_append_toolbar_button (panel, "spaces-button", "spaces", G_CALLBACK (spaces_button_cb), priv);
+  priv->panel_buttons[3] = panel_append_toolbar_button (panel, "internet-button", "internet", NULL, priv);
+  priv->panel_buttons[4] = panel_append_toolbar_button (panel, "media-button", "media", NULL, priv);
+  priv->panel_buttons[5] = panel_append_toolbar_button (panel, "apps-button", "applications", G_CALLBACK (launcher_button_cb), priv);
+  priv->panel_buttons[6] = panel_append_toolbar_button (panel, "people-button", "people", NULL, priv);
+  priv->panel_buttons[7] = panel_append_toolbar_button (panel, "pasteboard-button", "pasteboard", NULL, priv);
 
   priv->panel_time = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 19px", NULL);
   priv->panel_date = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 11px", NULL);

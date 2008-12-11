@@ -44,5 +44,6 @@ dist_theme_chooser_DATA = \
 
 theme_genericdir = $(pkgdatadir)/theme/generic
 dist_theme_generic_DATA = \
-	theme/generic/checkbox.png		\
-	theme/generic/spinner.png
+	theme/generic/checkbox.png	\
+	theme/generic/spinner.png	\
+	theme/generic/tooltip-background.png
