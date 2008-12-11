@@ -249,6 +249,7 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   GtkSocket             *socket = GTK_SOCKET (child->socket);
   Window                 xwin   = GDK_WINDOW_XWINDOW (socket->plug_window);
   XClientMessageEvent    xev;
+  GdkEventType           event_type = GDK_BUTTON_PRESS;
 
   /*
    * Dispatch ClientMessage MOBLIN_SYSTEM_TRAY_EVENT to the associated
@@ -257,12 +258,15 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   if (!msg_type_atom)
     msg_type_atom = XInternAtom (xdpy, "MOBLIN_SYSTEM_TRAY_EVENT", False);
 
+  if (event->button.type == CLUTTER_BUTTON_RELEASE)
+    event_type = GDK_BUTTON_RELEASE;
+
   xev.type = ClientMessage;
   xev.window = xwin;
   xev.message_type = msg_type_atom;
 
   xev.format = 32;
-  xev.data.l[0] = event->button.type;
+  xev.data.l[0] = event_type;
   xev.data.l[1] = (event->button.button & 0xffff) |
     (event->button.click_count << 16);
   xev.data.l[2] = event->button.x;
