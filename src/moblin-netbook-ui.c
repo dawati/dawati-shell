@@ -24,6 +24,7 @@
 
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
+#include "moblin-netbook-switcher.h"
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -97,4 +98,67 @@ make_workspace_label (const gchar *text)
 
   return actor;
 }
+
+void
+toggle_control (MnbkControl control, gboolean show)
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  ClutterActor  *actor  = NULL;
+
+  if (show)
+    {
+      if (control != MNBK_CONTROL_SPACES && priv->workspace_switcher)
+        hide_workspace_switcher ();
+
+      if (control != MNBK_CONTROL_APPLICATIONS)
+        clutter_actor_hide (priv->launcher);
+
+      switch (control)
+        {
+        case MNBK_CONTROL_SPACES:
+          actor = make_workspace_switcher ();
+          break;
+        case MNBK_CONTROL_APPLICATIONS:
+          actor = priv->launcher;
+          break;
+        default:
+          break;
+        }
+
+      if (actor)
+        {
+          clutter_actor_lower_bottom (actor);
+          clutter_actor_set_position (actor,
+                                      4,
+                                      -clutter_actor_get_height(actor));
+
+          clutter_actor_show (actor);
+          clutter_effect_move (priv->panel_slide_effect,
+                               actor,
+                               4,
+                               PANEL_HEIGHT,
+                               NULL, NULL);
+
+        }
+    }
+  else
+    {
+      switch (control)
+        {
+        case MNBK_CONTROL_SPACES:
+          hide_workspace_switcher ();
+          break;
+        case MNBK_CONTROL_APPLICATIONS:
+          actor = priv->launcher;
+          break;
+        default:
+          break;
+        }
+
+      if (actor)
+        clutter_actor_hide (actor);
+    }
+}
+
 
