@@ -605,6 +605,12 @@ map (MutterWindow *mcw)
     {
       gint screen_width, screen_height;
 
+      /*
+       * FIXME -- the way it currently works means we still have a fullscreen
+       * GLX texture in place which serves no purpose. We should make this work
+       * without needing the desktop window. The parallax texture could simply
+       * be placed directly on stage, underneath the Mutter windows group.
+       */
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
       clutter_actor_set_size (priv->parallax_tex,
