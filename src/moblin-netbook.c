@@ -247,12 +247,6 @@ switch_workspace (const GList **actors, gint from, gint to,
       ClutterActor *a    = CLUTTER_ACTOR (mcw);
       gint          workspace;
 
-      /*
-       * We do not show windows that are in SN flux.
-       */
-      if (priv->sn_in_progress)
-        continue;
-
       /* We don't care about minimized windows */
       if (!mutter_window_showing_on_its_workspace (mcw))
 	continue;
@@ -272,7 +266,18 @@ switch_workspace (const GList **actors, gint from, gint to,
           priv->orig_parent = clutter_actor_get_parent (a);
 
           clutter_actor_reparent (a, slider);
-          clutter_actor_show_all (a);
+
+          /*
+           * If the window is in SN flux, we will hide it; we still need to
+           * reparent it, otherwise we screw up the stack order.
+           *
+           * The map effect will take care of showing the actor again.
+           */
+          if (priv->sn_in_progress)
+            clutter_actor_hide (a);
+          else
+            clutter_actor_show_all (a);
+
           clutter_actor_raise_top (a);
         }
       else if (workspace < 0)
