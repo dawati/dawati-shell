@@ -254,7 +254,6 @@ make_workspace_switcher ()
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
-  ClutterActor  *overlay;
   ClutterActor  *switcher;
   ClutterActor  *label;
   ClutterActor  *grid;
@@ -285,9 +284,8 @@ make_workspace_switcher ()
 
   priv->workspace_switcher = switcher;
 
-  overlay = mutter_plugin_get_overlay_group (plugin);
-  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
-clutter_actor_set_position (grid, 0, 0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), switcher);
+  clutter_actor_set_position (grid, 0, 0);
   clutter_actor_set_position (footer, 0, clutter_actor_get_height (grid));
   clutter_actor_set_size (footer, screen_width - PANEL_X_PADDING * 2, 31);
 
@@ -300,7 +298,7 @@ clutter_actor_set_position (grid, 0, 0);
 
   clutter_grab_keyboard (switcher);
 
-  clutter_actor_lower_bottom (switcher);
+  clutter_actor_raise (switcher, priv->panel_shadow);
 
   return switcher;
 }

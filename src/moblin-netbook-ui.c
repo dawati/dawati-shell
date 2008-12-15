@@ -128,7 +128,7 @@ toggle_control (MnbkControl control, gboolean show)
 
       if (actor)
         {
-          clutter_actor_lower_bottom (actor);
+          clutter_actor_raise (actor, priv->panel_shadow);
           clutter_actor_set_position (actor,
                                       4,
                                       -clutter_actor_get_height(actor));

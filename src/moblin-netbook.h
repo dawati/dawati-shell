@@ -60,6 +60,7 @@ struct PluginPrivate
 
   ClutterActor          *d_overlay ; /* arrow indicator */
   ClutterActor          *panel;
+  ClutterActor          *panel_shadow;
 
   ClutterActor          *switcher;
   ClutterActor          *workspace_switcher;

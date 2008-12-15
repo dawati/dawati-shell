@@ -974,7 +974,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
            (!priv->switcher && !priv->workspace_switcher &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))))
         {
-          guint height = clutter_actor_get_height (priv->panel);
+          guint height = clutter_actor_get_height (priv->panel_shadow);
 
           if (event_y > (gint)height)
             {
@@ -1254,6 +1254,8 @@ do_init (const char *params)
    * This also creates the launcher.
    */
   panel = priv->panel = make_panel (screen_width);
+  clutter_actor_realize (priv->panel_shadow);
+  clutter_actor_set_y (panel, -clutter_actor_get_height (priv->panel_shadow));
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
 
@@ -1268,9 +1270,6 @@ do_init (const char *params)
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
 						ws_switcher_slide_timeout),
                                                 CLUTTER_ALPHA_SINE_INC);
-
-  clutter_actor_set_position (panel, 0,
-                              -PANEL_HEIGHT);
 
   /*
    * Set up the stage even processing
