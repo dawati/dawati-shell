@@ -605,6 +605,12 @@ map (MutterWindow *mcw)
     {
       gint screen_width, screen_height;
 
+      /*
+       * FIXME -- the way it currently works means we still have a fullscreen
+       * GLX texture in place which serves no purpose. We should make this work
+       * without needing the desktop window. The parallax texture could simply
+       * be placed directly on stage, underneath the Mutter windows group.
+       */
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
       clutter_actor_set_size (priv->parallax_tex,
@@ -957,7 +963,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
            (!priv->switcher && !priv->workspace_switcher &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))))
         {
-          guint height = clutter_actor_get_height (priv->panel);
+          guint height = clutter_actor_get_height (priv->panel_shadow);
 
           if (event_y > (gint)height)
             {
@@ -1229,6 +1235,8 @@ do_init (const char *params)
    * This also creates the launcher.
    */
   panel = priv->panel = make_panel (screen_width);
+  clutter_actor_realize (priv->panel_shadow);
+  clutter_actor_set_y (panel, -clutter_actor_get_height (priv->panel_shadow));
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
 
@@ -1243,9 +1251,6 @@ do_init (const char *params)
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
 						ws_switcher_slide_timeout),
                                                 CLUTTER_ALPHA_SINE_INC);
-
-  clutter_actor_set_position (panel, 0,
-                              -PANEL_HEIGHT);
 
   /*
    * Set up the stage even processing

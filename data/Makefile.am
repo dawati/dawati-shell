@@ -17,6 +17,7 @@ dist_theme_panel_DATA = \
 	theme/panel/m-space-hover.png \
 	theme/panel/m-space-normal.png \
 	theme/panel/panel-background.png \
+	theme/panel/panel-shadow.png \
 	theme/panel/pasteboard-active.png \
 	theme/panel/pasteboard-hover.png \
 	theme/panel/pasteboard-normal.png \

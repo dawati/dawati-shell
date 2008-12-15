@@ -97,11 +97,12 @@ hide_panel ()
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
   gint           x      = clutter_actor_get_x (priv->panel);
+  guint          h      = clutter_actor_get_height (priv->panel_shadow);
 
   priv->panel_back_in_progress  = TRUE;
 
   clutter_effect_move (priv->panel_slide_effect,
-                       priv->panel, x, -PANEL_HEIGHT,
+                       priv->panel, x, -h,
                        on_panel_back_effect_complete,
                        NULL);
 
@@ -213,6 +214,7 @@ make_panel (gint width)
   MutterPlugin  *plugin = mutter_get_plugin ();
   PluginPrivate *priv   = plugin->plugin_private;
   ClutterActor  *panel;
+  ClutterActor  *shadow;
   ClutterActor  *background, *bg_texture;
   ClutterColor   clr = {0, 0, 0, 0};
   ClutterColor   lbl_clr = {0xc0, 0xc0, 0xc0, 0xff};
@@ -226,6 +228,21 @@ make_panel (gint width)
   panel = clutter_group_new ();
 
   /* FIME -- size and color */
+  bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/panel/panel-shadow.png", &err);
+  if (err)
+    {
+      g_warning (err->message);
+      g_clear_error (&err);
+    }
+  else
+    {
+      shadow = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
+                                       200, 0, 200, 0);
+      clutter_actor_set_size (shadow, width, 101);
+      clutter_container_add_actor (CLUTTER_CONTAINER (panel), shadow);
+      priv->panel_shadow = shadow;
+    }
+
   bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/panel/panel-background.png", &err);
   if (err)
     {
@@ -236,8 +253,9 @@ make_panel (gint width)
     {
       background = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
                                            200, 0, 200, 0);
+      clutter_actor_set_size (background, width - 8, PANEL_HEIGHT);
+      clutter_actor_set_x (background, 4);
       clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
-      clutter_actor_set_size (background, width, 101);
     }
 
   priv->panel_buttons[0] = panel_append_toolbar_button (panel,
@@ -301,7 +319,8 @@ make_panel (gint width)
   priv->launcher = make_launcher (width - PANEL_X_PADDING * 2);
   clutter_actor_set_position (priv->launcher, PANEL_X_PADDING, PANEL_HEIGHT);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->launcher);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->launcher);
+
   clutter_actor_hide (priv->launcher);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
