@@ -162,8 +162,16 @@ make_contents (GCallback  ws_callback)
   gint           i, screen_width;
   NbtkWidget    *table;
   GList         *window_list, *l;
+  NbtkWidget  **spaces;
+  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (6),
+                            CLUTTER_UNITS_FROM_INT (6),
+                            CLUTTER_UNITS_FROM_INT (6),
+                            CLUTTER_UNITS_FROM_INT (6)};
 
   table = nbtk_table_new ();
+  nbtk_table_set_row_spacing (NBTK_TABLE (table), 4);
+  nbtk_table_set_col_spacing (NBTK_TABLE (table), 7);
+  nbtk_widget_set_padding (table, &padding);
 
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
 
@@ -197,6 +205,7 @@ make_contents (GCallback  ws_callback)
   /* iterate through the windows, adding them to the correct workspace */
 
   n_windows = g_new0 (gint, ws_count);
+  spaces = g_new0 (NbtkWidget*, ws_count);
   window_list = mutter_plugin_get_windows (plugin);
   for (l = window_list; l; l = g_list_next (l))
     {
@@ -221,6 +230,19 @@ make_contents (GCallback  ws_callback)
           continue;
         }
 
+      /* create the table for this workspace if we don't already have one */
+      if (!spaces[ws_indx])
+        {
+          spaces[ws_indx] = nbtk_table_new ();
+          nbtk_table_set_row_spacing (NBTK_TABLE (table), 6);
+          nbtk_table_set_col_spacing (NBTK_TABLE (table), 6);
+          nbtk_widget_set_padding (spaces[ws_indx], &padding);
+          nbtk_widget_set_style_class_name (NBTK_WIDGET (spaces[ws_indx]), "switcher-workspace");
+          if (ws_indx == active_ws)
+            clutter_actor_set_name (CLUTTER_ACTOR (spaces[ws_indx]), "switcher-workspace-active");
+          nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 2, ws_indx);
+        }
+
       texture = mutter_window_get_texture (mw);
       clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
 
@@ -233,9 +255,9 @@ make_contents (GCallback  ws_callback)
                         G_CALLBACK (workspace_switcher_clone_input_cb), mw);
 
       n_windows[ws_indx]++;
-      nbtk_table_add_actor (NBTK_TABLE (table), clone,
-                            n_windows[ws_indx], ws_indx);
-      clutter_container_child_set (CLUTTER_CONTAINER (table), clone,
+      nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
+                            n_windows[ws_indx], 0);
+      clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "keep-aspect-ratio", TRUE, NULL);
 
       clutter_actor_get_size (clone, &h, &w);
@@ -244,6 +266,7 @@ make_contents (GCallback  ws_callback)
       ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
 
+  g_free (spaces);
   g_free (n_windows);
 
   /* TODO: hilight the active workspace */
