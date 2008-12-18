@@ -104,3 +104,18 @@ NbtkTooltip {
   padding: 13 13 13 13;
   font-size: 15px;
 }
+
+/* workspace switcher */
+*.workspace-title {
+  background-image: url("file://switcher/workspace-title.png");
+  border-width: 3;
+  padding: 3;
+  color: white;
+}
+
+*#workspace-title-active {
+  background-image: url("file://switcher/workspace-title-active.png");
+  border-width: 3;
+  padding: 3;
+  color: white;
+}
