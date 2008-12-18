@@ -48,3 +48,13 @@ dist_theme_generic_DATA = \
 	theme/generic/checkbox.png	\
 	theme/generic/spinner.png	\
 	theme/generic/tooltip-background.png
+
+
+theme_switcherdir = $(pkgdatadir)/theme/switcher
+dist_theme_switcher_DATA = \
+	theme/switcher/application-thumbnail-border.png \
+	theme/switcher/workspace-background-active.png \
+	theme/switcher/workspace-background.png \
+	theme/switcher/workspace-title-active.png \
+	theme/switcher/workspace-title.png
+
