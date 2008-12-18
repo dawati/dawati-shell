@@ -168,25 +168,30 @@ make_contents (GCallback  ws_callback)
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
 
   ws_count = meta_screen_get_n_workspaces (screen);
+  active_ws = meta_screen_get_active_workspace_index (screen);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &i);
 
   /* loop through all the workspaces, adding a label for each */
   for (i = 0; i < ws_count; i++)
     {
-      ClutterActor *ws_label;
+      NbtkWidget *ws_label;
       gchar *s;
 
       s = g_strdup_printf ("%d", i + 1);
 
-      ws_label = make_workspace_label (s);
+      ws_label = nbtk_label_new (s);
 
-      clutter_actor_set_reactive (ws_label, TRUE);
+      if (i == active_ws)
+        clutter_actor_set_name (CLUTTER_ACTOR (ws_label), "workspace-title-active");
+      nbtk_widget_set_style_class_name (ws_label, "workspace-title");
+
+      clutter_actor_set_reactive (CLUTTER_ACTOR (ws_label), TRUE);
 
       g_signal_connect (ws_label, "button-press-event",
                         ws_callback, GINT_TO_POINTER (i));
 
-      nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, i);
+      nbtk_table_add_widget (NBTK_TABLE (table), ws_label, 0, i);
     }
 
   /* iterate through the windows, adding them to the correct workspace */
