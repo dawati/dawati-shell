@@ -240,7 +240,9 @@ make_contents (GCallback  ws_callback)
           nbtk_widget_set_style_class_name (NBTK_WIDGET (spaces[ws_indx]), "switcher-workspace");
           if (ws_indx == active_ws)
             clutter_actor_set_name (CLUTTER_ACTOR (spaces[ws_indx]), "switcher-workspace-active");
-          nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 2, ws_indx);
+          nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1, ws_indx);
+          clutter_container_child_set (CLUTTER_CONTAINER (table), spaces[ws_indx],
+                                       "y-expand", TRUE, NULL);
         }
 
       texture = mutter_window_get_texture (mw);
