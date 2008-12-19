@@ -234,8 +234,8 @@ make_contents (GCallback  ws_callback)
       if (!spaces[ws_indx])
         {
           spaces[ws_indx] = nbtk_table_new ();
-          nbtk_table_set_row_spacing (NBTK_TABLE (table), 6);
-          nbtk_table_set_col_spacing (NBTK_TABLE (table), 6);
+          nbtk_table_set_row_spacing (NBTK_TABLE (spaces[ws_indx]), 6);
+          nbtk_table_set_col_spacing (NBTK_TABLE (spaces[ws_indx]), 6);
           nbtk_widget_set_padding (spaces[ws_indx], &padding);
           nbtk_widget_set_style_class_name (NBTK_WIDGET (spaces[ws_indx]), "switcher-workspace");
           if (ws_indx == active_ws)
