@@ -2,7 +2,7 @@
 #define _PENGE_RECENT_FILE_TILE
 
 #include <glib-object.h>
-#include "penge-tile.h"
+#include <nbtk/nbtk.h>
 
 G_BEGIN_DECLS
 
@@ -24,15 +24,16 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_RECENT_FILE_TILE, PengeRecentFileTileClass))
 
 typedef struct {
-  PengeTile parent;
+  NbtkWidget parent;
 } PengeRecentFileTile;
 
 typedef struct {
-  PengeTileClass parent_class;
+  NbtkWidgetClass parent_class;
 } PengeRecentFileTileClass;
 
 GType penge_recent_file_tile_get_type (void);
 
+const gchar *penge_recent_file_tile_get_uri (PengeRecentFileTile *tile);
 G_END_DECLS
 
 #endif /* _PENGE_RECENT_FILE_TILE */
