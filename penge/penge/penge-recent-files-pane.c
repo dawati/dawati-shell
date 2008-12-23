@@ -24,6 +24,20 @@ struct _PengeRecentFilesPanePrivate {
 static void
 penge_recent_files_pane_dispose (GObject *object)
 {
+  PengeRecentFilesPanePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->uri_to_actor)
+  {
+    g_hash_table_unref (priv->uri_to_actor);
+    priv->uri_to_actor = NULL;
+  }
+
+  if (priv->manager)
+  {
+    g_object_unref (priv->manager);
+    priv->manager = NULL;
+  }
+
   G_OBJECT_CLASS (penge_recent_files_pane_parent_class)->dispose (object);
 }
 
@@ -170,7 +184,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
     gtk_recent_info_unref (info);
   }
 
-  for (l = old_actors; l; l = l->next)
+  for (l = old_actors; l; l = g_list_delete_link (l, l))
   {
     actor = CLUTTER_ACTOR (l->data);
     tile = PENGE_RECENT_FILE_TILE (actor);
