@@ -287,7 +287,7 @@ make_workspace_switcher ()
   ClutterActor  *switcher;
   ClutterActor  *label;
   ClutterActor  *grid;
-  ClutterActor  *texture, *footer;
+  NbtkWidget    *texture, *footer, *up_button;
   gint           screen_width, screen_height;
   gint           switcher_width, switcher_height;
   gint           grid_y;
@@ -303,8 +303,19 @@ make_workspace_switcher ()
   clutter_actor_set_position (grid, 0, 0);
   clutter_actor_set_width (grid, screen_width - PANEL_X_PADDING * 2);
 
-  texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/drop-down/footer.png", NULL);
-  footer = nbtk_texture_frame_new (CLUTTER_TEXTURE (texture), 10, 0, 10, 10);
+  footer = nbtk_table_new ();
+  nbtk_widget_set_style_class_name (footer, "drop-down-footer");
+
+  up_button = nbtk_button_new ();
+  nbtk_widget_set_style_class_name (up_button, "drop-down-up-button");
+  nbtk_table_add_actor (NBTK_TABLE (footer), CLUTTER_ACTOR (up_button), 0, 0);
+  clutter_actor_set_size (CLUTTER_ACTOR (up_button), 23, 21);
+  clutter_container_child_set (CLUTTER_CONTAINER (footer),
+                               CLUTTER_ACTOR (up_button),
+                               "keep-aspect-ratio", TRUE,
+                               "x-align", 1.0,
+                               NULL);
+  g_signal_connect (up_button, "clicked", G_CALLBACK (hide_workspace_switcher), NULL);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          grid, footer, NULL);
