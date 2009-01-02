@@ -27,8 +27,6 @@
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 
-#include "tidy-behaviour-bounce.h"
-
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10

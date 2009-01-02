@@ -28,7 +28,7 @@
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
-#include "tidy-behaviour-bounce.h"
+#include "nbtk-behaviour-bounce.h"
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -655,7 +655,7 @@ map (MutterWindow *mcw)
                                              on_map_effect_complete,
                                              NULL);
       */
-      apriv->tml_map = tidy_bounce_scale (actor, MAP_TIMEOUT);
+      apriv->tml_map = nbtk_bounce_scale (actor, MAP_TIMEOUT);
 
       g_signal_connect (apriv->tml_map, "completed",
                         G_CALLBACK (on_map_effect_complete), actor);
