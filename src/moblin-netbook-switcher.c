@@ -49,6 +49,8 @@ hide_workspace_switcher ()
 
   clutter_actor_destroy (priv->workspace_switcher);
 
+  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[2]), FALSE);
+
   priv->workspace_switcher = NULL;
 }
 
