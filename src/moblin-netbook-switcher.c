@@ -293,6 +293,10 @@ make_workspace_switcher ()
   gint           grid_y;
   gint           panel_y;
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
+  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (4),
+                            CLUTTER_UNITS_FROM_INT (4),
+                            CLUTTER_UNITS_FROM_INT (4),
+                            CLUTTER_UNITS_FROM_INT (4)};
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -304,6 +308,7 @@ make_workspace_switcher ()
   clutter_actor_set_width (grid, screen_width - PANEL_X_PADDING * 2);
 
   footer = nbtk_table_new ();
+  nbtk_widget_set_padding (footer, &padding);
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
 
   up_button = nbtk_button_new ();
