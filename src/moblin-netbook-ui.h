@@ -26,7 +26,6 @@
 #define MOBLIN_NETBOOK_UI_H
 
 #include <nbtk/nbtk.h>
-#include "nutter/nutter-ws-icon.h"
 #include "nutter/nutter-scale-group.h"
 
 #define APP_SWITCHER_CELL_WIDTH  200
@@ -61,8 +60,6 @@ typedef enum
 
 void          switcher_clone_weak_notify (gpointer data, GObject *object);
 void          switcher_origin_weak_notify (gpointer data, GObject *object);
-
-ClutterActor* make_workspace_label (const gchar *text);
 
 void          toggle_control (MnbkControl control, gboolean show);
 

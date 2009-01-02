@@ -26,7 +26,6 @@
 #define MOBLIN_NETBOOK_SWITCHER_H
 
 #include <nbtk/nbtk.h>
-#include "nutter/nutter-ws-icon.h"
 #include "nutter/nutter-scale-group.h"
 #include "moblin-netbook-ui.h"
 

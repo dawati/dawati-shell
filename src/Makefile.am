@@ -6,8 +6,6 @@ INCLUDES=@MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\"
 AM_CFLAGS   = -Werror=missing-prototypes -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				nutter/nutter-scale-group.h     \
-				nutter/nutter-ws-icon.c		\
-				nutter/nutter-ws-icon.h		\
 				moblin-netbook.c		\
 				moblin-netbook.h		\
 				moblin-netbook-ui.c		\
