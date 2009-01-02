@@ -131,3 +131,18 @@ NbtkTooltip {
   border-width: 4;
   padding: 5;
 }
+
+/* drop down */
+*.drop-down-up-button {
+  background-image: url("file://drop-down/up-button.png");
+}
+*.drop-down-up-button:active {
+  background-image: url("file://drop-down/up-button-active.png");
+}
+
+
+*.drop-down-footer {
+  background-image: url("file://drop-down/footer.png");
+  border-width: 5;
+  padding: 5;
+}

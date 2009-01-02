@@ -58,3 +58,9 @@ dist_theme_switcher_DATA = \
 	theme/switcher/workspace-title-active.png \
 	theme/switcher/workspace-title.png
 
+theme_dropdowndir = $(pkgdatadir)/theme/drop-down
+dist_theme_dropdown_DATA = \
+	theme/drop-down/footer.png	\
+	theme/drop-down/up-button.png	\
+	theme/drop-down/up-button-active.png
+
