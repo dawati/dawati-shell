@@ -241,7 +241,7 @@ make_contents (GCallback  ws_callback)
           if (ws_indx == active_ws)
             clutter_actor_set_name (CLUTTER_ACTOR (spaces[ws_indx]), "switcher-workspace-active");
           nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1, ws_indx);
-          clutter_container_child_set (CLUTTER_CONTAINER (table), spaces[ws_indx],
+          clutter_container_child_set (CLUTTER_CONTAINER (table), CLUTTER_ACTOR (spaces[ws_indx]),
                                        "y-expand", TRUE, NULL);
         }
 
@@ -327,8 +327,8 @@ make_workspace_switcher ()
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), switcher);
   clutter_actor_set_position (grid, 0, 0);
-  clutter_actor_set_position (footer, 0, clutter_actor_get_height (grid));
-  clutter_actor_set_size (footer, screen_width - PANEL_X_PADDING * 2, 31);
+  clutter_actor_set_position (CLUTTER_ACTOR (footer), 0, clutter_actor_get_height (grid));
+  clutter_actor_set_size (CLUTTER_ACTOR (footer), screen_width - PANEL_X_PADDING * 2, 31);
 
   panel_y      = clutter_actor_get_y (priv->panel);
 
