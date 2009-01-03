@@ -15,51 +15,31 @@ G_DEFINE_TYPE (PengePeoplePane, penge_people_pane, NBTK_TYPE_TABLE)
 typedef struct _PengePeoplePanePrivate PengePeoplePanePrivate;
 
 struct _PengePeoplePanePrivate {
-    MojitoClientView *view;
-    GHashTable *uuid_to_actor;
-};
-
-enum
-{
-  PROP_0,
-  PROP_VIEW
+  MojitoClient *client;
+  MojitoClientView *view;
+  GHashTable *uuid_to_actor;
 };
 
 #define NUMBER_COLS 2
-
-static void
-penge_people_pane_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
-{
-  PengePeoplePanePrivate *priv = GET_PRIVATE (object);
-
-  switch (property_id) {
-    case PROP_VIEW:
-      g_value_set_object (value, priv->view);
-      break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
-
-static void
-penge_people_pane_set_property (GObject *object, guint property_id,
-                              const GValue *value, GParamSpec *pspec)
-{
-  PengePeoplePanePrivate *priv = GET_PRIVATE (object);
-
-  switch (property_id) {
-    case PROP_VIEW:
-      priv->view = g_value_dup_object (value);
-      break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
+#define MAX_ITEMS 6
 
 static void
 penge_people_pane_dispose (GObject *object)
 {
+  PengePeoplePanePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->client)
+  {
+    g_object_unref (priv->client);
+    priv->client = NULL;
+  }
+
+  if (priv->view)
+  {
+    g_object_unref (priv->view);
+    priv->view = NULL;
+  }
+
   G_OBJECT_CLASS (penge_people_pane_parent_class)->dispose (object);
 }
 
@@ -189,14 +169,23 @@ _client_view_item_removed_cb (MojitoClientView *view,
 
 
 static void
-penge_people_pane_constructed (GObject *object)
+_client_open_view_cb (MojitoClient     *client,
+                      MojitoClientView *view,
+                      gpointer          userdata)
 {
-  PengePeoplePanePrivate *priv = GET_PRIVATE (object);
+  PengePeoplePane *pane = PENGE_PEOPLE_PANE (userdata);
+  PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
+
+  /* Save out the view */
+  priv->view = g_object_ref (view);
+
+  /* and start it ... */
+  mojito_client_view_start (priv->view);
 
   g_signal_connect (priv->view, 
                     "item-added",
                     (GCallback)_client_view_item_added_cb,
-                    object);
+                    pane);
 /*
   g_signal_connect (priv->view, 
                     "item-changed",
@@ -206,29 +195,43 @@ penge_people_pane_constructed (GObject *object)
   g_signal_connect (priv->view, 
                     "item-removed",
                     (GCallback)_client_view_item_removed_cb,
-                    object);
+                    pane);
+}
+
+static void
+_client_get_sources_cb (MojitoClient *client,
+                        GList        *sources,
+                        gpointer      userdata)
+{
+  GList *filtered_sources = NULL;
+  GList *l;
+
+  for (l = sources; l; l = l->next)
+  {
+    if (!g_str_equal (l->data, "dummy"))
+    {
+      filtered_sources = g_list_append (filtered_sources, l->data);
+    }
+  }
+
+  mojito_client_open_view (client, 
+                           filtered_sources, 
+                           MAX_ITEMS, 
+                           _client_open_view_cb, 
+                           userdata);
+
+  g_list_free (filtered_sources);
 }
 
 static void
 penge_people_pane_class_init (PengePeoplePaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (PengePeoplePanePrivate));
 
-  object_class->get_property = penge_people_pane_get_property;
-  object_class->set_property = penge_people_pane_set_property;
   object_class->dispose = penge_people_pane_dispose;
   object_class->finalize = penge_people_pane_finalize;
-  object_class->constructed = penge_people_pane_constructed;
-
-  pspec = g_param_spec_object ("view",
-                               "View",
-                               "Mojito client view to show",
-                               MOJITO_TYPE_CLIENT_VIEW,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
-  g_object_class_install_property (object_class, PROP_VIEW, pspec);
 }
 
 static void
@@ -249,6 +252,10 @@ penge_people_pane_init (PengePeoplePane *self)
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
 
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
+
+  /* Create the client and request the sources list */
+  priv->client = mojito_client_new ();
+  mojito_client_get_sources (priv->client, _client_get_sources_cb, self);
 }
 
 
