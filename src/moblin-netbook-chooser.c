@@ -1052,13 +1052,19 @@ spawn_app (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
   Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   SnLauncherContext          *context = NULL;
   const gchar                *sn_id;
-  gchar                      *argv[2] = {NULL, NULL};
+  gchar                     **argv;
+  gint                        argc;
   SnHashData                 *sn_data = g_slice_new0 (SnHashData);
-
-  argv[0] = g_strdup (path);
+  GError                     *err = NULL;
 
   if (!path)
     return;
+
+  if (!g_shell_parse_argv (path, &argc, &argv, &err))
+    {
+      g_warning ("Error parsing command line: %s", err->message);
+      g_clear_error (&err);
+    }
 
   context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
 
@@ -1094,4 +1100,5 @@ spawn_app (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
     }
 
   sn_launcher_context_unref (context);
+  g_strfreev (argv);
 }

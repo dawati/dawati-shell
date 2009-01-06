@@ -3,6 +3,16 @@ NbtkTable {
   background-color: #f000;
 }
 
+*#time-label {
+  color: #c0c0c0;
+  font-size: 19px; 
+}
+
+*#date-label {
+  color: #c0c0c0;
+  font-size: 11px;
+}
+
 /* spaces switcher table */
 *#switcher-table {
   background-color: #ffff;

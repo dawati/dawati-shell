@@ -26,6 +26,7 @@
 #define MOBLIN_NETBOOK_H
 
 #include <mutter-plugin.h>
+#include <nbtk.h>
 
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
@@ -105,8 +106,8 @@ struct _MoblinNetbookPluginPrivate
   guint                  workspace_chooser_timeout;
 
   ClutterActor          *panel_buttons[8];
-  ClutterActor          *panel_time;
-  ClutterActor          *panel_date;
+  NbtkWidget            *panel_time;
+  NbtkWidget            *panel_date;
 
   /* Startup Notification */
   SnDisplay             *sn_display;

@@ -28,6 +28,6 @@ pkglib_LTLIBRARIES = moblin-netbook.la
 # (There is no way to stop libtool generating static libs locally, and we
 # cannot do this globally because of libmetacity-private.so).
 install-exec-hook:
-	rm $(DESTDIR)$(pkglibdir)/*.a
-	rm $(DESTDIR)$(pkglibdir)/*.la
+	rm -f $(DESTDIR)$(pkglibdir)/*.a
+	rm -f $(DESTDIR)$(pkglibdir)/*.la
 

@@ -152,13 +152,13 @@ update_time_date (MoblinNetbookPluginPrivate *priv)
     strftime (time_str, 64, "%l:%M %P", tmp);
   else
     snprintf (time_str, 64, "Time");
-  clutter_label_set_text (CLUTTER_LABEL (priv->panel_time), time_str);
+  nbtk_label_set_text (NBTK_LABEL (priv->panel_time), time_str);
 
   if (tmp)
     strftime (time_str, 64, "%B %e, %Y", tmp);
   else
     snprintf (time_str, 64, "Date");
-  clutter_label_set_text (CLUTTER_LABEL (priv->panel_date), time_str);
+  nbtk_label_set_text (NBTK_LABEL (priv->panel_date), time_str);
 
   return TRUE;
 }
@@ -171,7 +171,6 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterActor               *shadow;
   ClutterActor               *background, *bg_texture;
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
-  ClutterColor                lbl_clr = {0xc0, 0xc0, 0xc0, 0xff};
   ClutterActor               *launcher, *overlay;
   gint                        x, w;
   GError                     *err = NULL;
@@ -263,22 +262,23 @@ make_panel (MutterPlugin *plugin, gint width)
                                                         "pasteboard",
                                                      MNBK_CONTROL_PASTEBOARD);
 
-  priv->panel_time = g_object_new (CLUTTER_TYPE_LABEL,
-                                   "font-name", "Sans 19px", NULL);
-  priv->panel_date = g_object_new (CLUTTER_TYPE_LABEL,
-                                   "font-name", "Sans 11px", NULL);
+  priv->panel_time = nbtk_label_new ("");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_time), "time-label");
+  priv->panel_date = nbtk_label_new ("");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_date), "date-label");
   update_time_date (priv);
 
-  clutter_label_set_color (CLUTTER_LABEL (priv->panel_time), &lbl_clr);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->panel_time);
-  clutter_actor_set_position (priv->panel_time,
-                              (192 / 2) - clutter_actor_get_width (priv->panel_time) / 2, 8);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel),
+                               CLUTTER_ACTOR (priv->panel_time));
+  clutter_actor_set_position (CLUTTER_ACTOR (priv->panel_time),
+       (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->panel_time)) /
+                              2, 8);
 
 
-  clutter_label_set_color (CLUTTER_LABEL (priv->panel_date), &lbl_clr);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->panel_date);
-  clutter_actor_set_position (priv->panel_date,
-                              (192 / 2) - clutter_actor_get_width (priv->panel_date) / 2, 40);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), CLUTTER_ACTOR (priv->panel_date));
+  clutter_actor_set_position (CLUTTER_ACTOR (priv->panel_date),
+       (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->panel_date)) /
+                              2, 40);
 
 
   g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
