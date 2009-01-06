@@ -26,6 +26,7 @@
 #define MOBLIN_NETBOOK_H
 
 #include <mutter-plugin.h>
+#include <nbtk.h>
 
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
@@ -36,13 +37,38 @@
 
 #include "moblin-netbook-tray-manager.h"
 
-typedef struct PluginPrivate PluginPrivate;
+#define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
+#define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
+#define MOBLIN_NETBOOK_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginClass))
+#define MUTTER_IS_DEFAULT_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MOBLIN_NETBOOK_PLUGIN_TYPE))
+#define MUTTER_IS_DEFAULT_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  MOBLIN_TYPE_NETBOOK_PLUGIN))
+#define MOBLIN_NETBOOK_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginClass))
+
+#define MOBLIN_NETBOOK_PLUGIN_GET_PRIVATE(obj) \
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginPrivate))
+
+typedef struct _MoblinNetbookPlugin        MoblinNetbookPlugin;
+typedef struct _MoblinNetbookPluginClass   MoblinNetbookPluginClass;
+typedef struct _MoblinNetbookPluginPrivate MoblinNetbookPluginPrivate;
+
+struct _MoblinNetbookPlugin
+{
+  MutterPlugin parent;
+
+  MoblinNetbookPluginPrivate *priv;
+};
+
+struct _MoblinNetbookPluginClass
+{
+  MutterPluginClass parent_class;
+};
+
 typedef struct ActorPrivate  ActorPrivate;
 
 /*
  * Plugin private data that we store in the .plugin_private member.
  */
-struct PluginPrivate
+struct _MoblinNetbookPluginPrivate
 {
   ClutterEffectTemplate *destroy_effect;
   ClutterEffectTemplate *minimize_effect;
@@ -85,8 +111,8 @@ struct PluginPrivate
   guint                  workspace_chooser_timeout;
 
   ClutterActor          *panel_buttons[8];
-  ClutterActor          *panel_time;
-  ClutterActor          *panel_date;
+  NbtkWidget            *panel_time;
+  NbtkWidget            *panel_date;
 
   /* Startup Notification */
   SnDisplay             *sn_display;
@@ -95,6 +121,8 @@ struct PluginPrivate
 
   gint                   parallax_paint_offset;
   ClutterActor          *parallax_tex;
+
+  MutterPluginInfo       info;
 };
 
 /*

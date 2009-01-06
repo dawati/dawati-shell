@@ -27,8 +27,6 @@
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 
-#include "tidy-behaviour-bounce.h"
-
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
@@ -36,13 +34,6 @@
 #define TRAY_PADDING   3
 #define TRAY_WIDTH   200
 #define TRAY_HEIGHT   24
-
-extern MutterPlugin mutter_plugin;
-static inline MutterPlugin *
-mutter_get_plugin ()
-{
-  return &mutter_plugin;
-}
 
 static void toggle_buttons_cb (NbtkButton *button, gpointer data);
 
@@ -52,8 +43,8 @@ static void toggle_buttons_cb (NbtkButton *button, gpointer data);
 static void
 on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
 {
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
+  MutterPlugin               *plugin = data;
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   priv->panel_back_in_progress = FALSE;
 
@@ -63,51 +54,31 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
     }
 }
 
-static void
-on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
+struct button_data
 {
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
-
-  priv->panel_out_in_progress = FALSE;
-
-  enable_stage (plugin, CurrentTime);
-}
+  MutterPlugin *plugin;
+  MnbkControl   control;
+};
 
 void
-show_panel ()
+hide_panel (MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  gint          x = clutter_actor_get_x (priv->panel);
-
-  priv->panel_out_in_progress  = TRUE;
-  clutter_actor_show_all (priv->panel);
-  clutter_effect_move (priv->panel_slide_effect,
-                       priv->panel, x, 0,
-                       on_panel_out_effect_complete,
-                       NULL);
-
-  priv->panel_out = TRUE;
-}
-
-void
-hide_panel ()
-{
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  gint           x      = clutter_actor_get_x (priv->panel);
-  guint          h      = clutter_actor_get_height (priv->panel_shadow);
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gint                        x = clutter_actor_get_x (priv->panel);
+  guint                       h = clutter_actor_get_height (priv->panel_shadow);
+  struct button_data button_data;
 
   priv->panel_back_in_progress  = TRUE;
 
   clutter_effect_move (priv->panel_slide_effect,
                        priv->panel, x, -h,
                        on_panel_back_effect_complete,
-                       NULL);
+                       plugin);
 
   /* make sure no buttons are 'active' */
-  toggle_buttons_cb (NULL, MNBK_CONTROL_UNKNOWN);
+  button_data.plugin = plugin;
+  button_data.control = MNBK_CONTROL_UNKNOWN;
+  toggle_buttons_cb (NULL, &button_data);
 
   priv->panel_out = FALSE;
 }
@@ -115,10 +86,11 @@ hide_panel ()
 static void
 toggle_buttons_cb (NbtkButton *button, gpointer data)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  gint i;
-  MnbkControl control = GPOINTER_TO_INT (data);
+  struct button_data         *button_data = data;
+  MutterPlugin               *plugin = button_data->plugin;
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gint                        i;
+  MnbkControl                 control = button_data->control;
 
   for (i = 0; i < 8; i++)
     if (priv->panel_buttons[i] != (ClutterActor*)button)
@@ -128,18 +100,24 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
     {
       gboolean active = nbtk_button_get_active (button);
 
-      toggle_control (control, active);
+      toggle_control (plugin, control, active);
     }
 }
 
 static ClutterActor*
-panel_append_toolbar_button (ClutterActor  *container,
+panel_append_toolbar_button (MutterPlugin  *plugin,
+                             ClutterActor  *container,
                              gchar         *name,
                              gchar         *tooltip,
                              MnbkControl    control)
 {
-  NbtkWidget *button;
   static int n_buttons = 0;
+
+  NbtkWidget *button;
+  struct button_data *button_data = g_new (struct button_data, 1);
+
+  button_data->control = control;
+  button_data->plugin  = plugin;
 
   button = nbtk_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
@@ -158,15 +136,15 @@ panel_append_toolbar_button (ClutterActor  *container,
                 "transition-type", NBTK_TRANSITION_BOUNCE,
                 "transition-duration", 500, NULL);
 
-  g_signal_connect (button, "clicked", G_CALLBACK (toggle_buttons_cb),
-                    GINT_TO_POINTER (control));
+  g_signal_connect_data (button, "clicked", G_CALLBACK (toggle_buttons_cb),
+                         button_data, (GClosureNotify)g_free, 0);
 
   n_buttons++;
   return CLUTTER_ACTOR (button);
 }
 
 static gboolean
-update_time_date (PluginPrivate *priv)
+update_time_date (MoblinNetbookPluginPrivate *priv)
 {
   time_t         t;
   struct tm     *tmp;
@@ -178,13 +156,13 @@ update_time_date (PluginPrivate *priv)
     strftime (time_str, 64, "%l:%M %P", tmp);
   else
     snprintf (time_str, 64, "Time");
-  clutter_label_set_text (CLUTTER_LABEL (priv->panel_time), time_str);
+  nbtk_label_set_text (NBTK_LABEL (priv->panel_time), time_str);
 
   if (tmp)
     strftime (time_str, 64, "%B %e, %Y", tmp);
   else
     snprintf (time_str, 64, "Date");
-  clutter_label_set_text (CLUTTER_LABEL (priv->panel_date), time_str);
+  nbtk_label_set_text (NBTK_LABEL (priv->panel_date), time_str);
 
   return TRUE;
 }
@@ -209,26 +187,26 @@ shell_tray_manager_icon_removed (ShellTrayManager *mgr,
 }
 
 ClutterActor *
-make_panel (gint width)
+make_panel (MutterPlugin *plugin, gint width)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  ClutterActor  *panel;
-  ClutterActor  *shadow;
-  ClutterActor  *background, *bg_texture;
-  ClutterColor   clr = {0, 0, 0, 0};
-  ClutterColor   lbl_clr = {0xc0, 0xc0, 0xc0, 0xff};
-  ClutterActor  *launcher, *overlay;
-  ClutterActor  *tray;
-  gint           x, w;
-  GError        *err = NULL;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  ClutterActor               *panel;
+  ClutterActor               *shadow;
+  ClutterActor               *tray;
+  ClutterActor               *background, *bg_texture;
+  ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
+  ClutterActor               *launcher, *overlay;
+  gint                        x, w;
+  GError                     *err = NULL;
 
   overlay = mutter_plugin_get_overlay_group (plugin);
 
   panel = clutter_group_new ();
 
   /* FIME -- size and color */
-  bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/panel/panel-shadow.png", &err);
+  bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                              "/theme/panel/panel-shadow.png",
+                                              &err);
   if (err)
     {
       g_warning (err->message);
@@ -243,7 +221,9 @@ make_panel (gint width)
       priv->panel_shadow = shadow;
     }
 
-  bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/panel/panel-background.png", &err);
+  bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                            "/theme/panel/panel-background.png",
+                                              &err);
   if (err)
     {
       g_warning (err->message);
@@ -258,65 +238,76 @@ make_panel (gint width)
       clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
     }
 
-  priv->panel_buttons[0] = panel_append_toolbar_button (panel,
+  priv->panel_buttons[0] = panel_append_toolbar_button (plugin,
+                                                        panel,
                                                         "m-space-button",
                                                         "m_zone",
                                                         MNBK_CONTROL_MSPACE);
 
-  priv->panel_buttons[1] = panel_append_toolbar_button (panel,
+  priv->panel_buttons[1] = panel_append_toolbar_button (plugin,
+                                                        panel,
                                                         "status-button",
                                                         "status",
                                                         MNBK_CONTROL_STATUS);
 
-  priv->panel_buttons[2] = panel_append_toolbar_button (panel,
+  priv->panel_buttons[2] = panel_append_toolbar_button (plugin,
+                                                        panel,
                                                         "spaces-button",
                                                         "spaces",
                                                         MNBK_CONTROL_SPACES);
 
-  priv->panel_buttons[3] = panel_append_toolbar_button (panel,
+  priv->panel_buttons[3] = panel_append_toolbar_button (plugin,
+                                                        panel,
                                                         "internet-button",
                                                         "internet",
                                                         MNBK_CONTROL_INTERNET);
 
-  priv->panel_buttons[4] = panel_append_toolbar_button (panel,
+  priv->panel_buttons[4] = panel_append_toolbar_button (plugin,
+                                                        panel,
                                                         "media-button",
                                                         "media",
                                                         MNBK_CONTROL_MEDIA);
 
-  priv->panel_buttons[5] = panel_append_toolbar_button (panel,
+  priv->panel_buttons[5] = panel_append_toolbar_button (plugin,
+                                                        panel,
                                                         "apps-button",
                                                         "applications",
                                                      MNBK_CONTROL_APPLICATIONS);
 
-  priv->panel_buttons[6] = panel_append_toolbar_button (panel,
+  priv->panel_buttons[6] = panel_append_toolbar_button (plugin,
+                                                        panel,
                                                         "people-button",
                                                         "people",
                                                         MNBK_CONTROL_PEOPLE);
 
-  priv->panel_buttons[7] = panel_append_toolbar_button (panel,
+  priv->panel_buttons[7] = panel_append_toolbar_button (plugin,
+                                                        panel,
                                                         "pasteboard-button",
                                                         "pasteboard",
                                                      MNBK_CONTROL_PASTEBOARD);
 
-  priv->panel_time = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 19px", NULL);
-  priv->panel_date = g_object_new (CLUTTER_TYPE_LABEL, "font-name", "Sans 11px", NULL);
+  priv->panel_time = nbtk_label_new ("");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_time), "time-label");
+  priv->panel_date = nbtk_label_new ("");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_date), "date-label");
   update_time_date (priv);
 
-  clutter_label_set_color (CLUTTER_LABEL (priv->panel_time), &lbl_clr);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->panel_time);
-  clutter_actor_set_position (priv->panel_time,
-                              (192 / 2) - clutter_actor_get_width (priv->panel_time) / 2, 8);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel),
+                               CLUTTER_ACTOR (priv->panel_time));
+  clutter_actor_set_position (CLUTTER_ACTOR (priv->panel_time),
+       (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->panel_time)) /
+                              2, 8);
 
 
-  clutter_label_set_color (CLUTTER_LABEL (priv->panel_date), &lbl_clr);
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->panel_date);
-  clutter_actor_set_position (priv->panel_date,
-                              (192 / 2) - clutter_actor_get_width (priv->panel_date) / 2, 40);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), CLUTTER_ACTOR (priv->panel_date));
+  clutter_actor_set_position (CLUTTER_ACTOR (priv->panel_date),
+       (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->panel_date)) /
+                              2, 40);
 
 
   g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
 
-  priv->launcher = make_launcher (width - PANEL_X_PADDING * 2);
+  priv->launcher = make_launcher (plugin, width - PANEL_X_PADDING * 2);
   clutter_actor_set_position (priv->launcher, PANEL_X_PADDING, PANEL_HEIGHT);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->launcher);

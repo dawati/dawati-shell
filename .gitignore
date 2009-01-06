@@ -3,6 +3,7 @@
 *.lo
 *.la
 *.loT
+*.swp
 .deps
 .libs
 Makefile
