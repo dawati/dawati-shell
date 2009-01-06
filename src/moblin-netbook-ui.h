@@ -61,6 +61,7 @@ typedef enum
 void          switcher_clone_weak_notify (gpointer data, GObject *object);
 void          switcher_origin_weak_notify (gpointer data, GObject *object);
 
-void          toggle_control (MnbkControl control, gboolean show);
+void          toggle_control (MutterPlugin *plugin, MnbkControl control,
+                              gboolean show);
 
 #endif

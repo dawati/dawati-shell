@@ -36,13 +36,6 @@
 #define PADDING 4
 #define BORDER_WIDTH 4
 
-extern MutterPlugin mutter_plugin;
-static inline MutterPlugin *
-mutter_get_plugin ()
-{
-  return &mutter_plugin;
-}
-
 /* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
 static int
 compare_applications (GMenuTreeEntry *a,
@@ -165,12 +158,26 @@ get_all_applications (void)
   return retval;
 }
 
+struct entry_data
+{
+  gchar        *exec;
+  MutterPlugin *plugin;
+};
+
+static void
+entry_data_free (struct entry_data *data)
+{
+  g_free (data->exec);
+  g_free (data);
+}
+
 static gboolean
 entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
 {
-  MutterPlugin       *plugin          = mutter_get_plugin ();
-  PluginPrivate      *priv            = plugin->plugin_private;
-  const gchar        *exec            = data;
+  struct entry_data  *entry_data = data;
+  MutterPlugin       *plugin = entry_data->plugin;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  const gchar        *exec = entry_data->exec;
   ClutterButtonEvent *bev             = (ClutterButtonEvent*)event;
   gboolean            without_chooser = FALSE;
   gint                workspace       = -2;
@@ -217,7 +224,7 @@ entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
         }
     }
 
-  spawn_app (exec, event->any.time, without_chooser, workspace);
+  spawn_app (plugin, exec, event->any.time, without_chooser, workspace);
 
   clutter_actor_hide (priv->launcher);
 
@@ -238,7 +245,7 @@ table_input_cb (ClutterActor *table, ClutterEvent *event, gpointer data)
 }
 
 ClutterActor *
-make_launcher (gint width)
+make_launcher (MutterPlugin *plugin, gint width)
 {
   GSList *apps, *a;
   GtkIconTheme  *theme;
@@ -248,6 +255,7 @@ make_launcher (gint width)
   ClutterActor  *group, *texture, *footer;
   ClutterColor   bckg_clr = {0xff, 0xff, 0xff, 0xff};
   ClutterActor  *bckg;
+  struct entry_data *entry_data;
 
   n_cols = (width - 2*BORDER_WIDTH) / (ICON_SIZE + PADDING);
 
@@ -310,8 +318,13 @@ make_launcher (gint width)
 
       nbtk_table_add_actor (NBTK_TABLE (table), icon, row, col);
 
-      g_signal_connect (icon, "button-press-event",
-                        G_CALLBACK (entry_input_cb), exec);
+      entry_data = g_new (struct entry_data, 1);
+      entry_data->exec = exec;
+      entry_data->plugin = plugin;
+
+      g_signal_connect_data (icon, "button-press-event",
+                             G_CALLBACK (entry_input_cb), entry_data,
+                             (GClosureNotify)entry_data_free, 0);
 
       clutter_actor_set_reactive (icon, TRUE);
 
@@ -351,13 +364,16 @@ make_launcher (gint width)
 
   clutter_actor_set_position (launcher, BORDER_WIDTH, BORDER_WIDTH);
 
-  texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/drop-down/footer.png", NULL);
+  texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                           "/theme/drop-down/footer.png", NULL);
   footer = nbtk_texture_frame_new (CLUTTER_TEXTURE (texture), 10, 0, 10, 10);
-  clutter_actor_set_position (footer, 0, (row + 1) * (ICON_SIZE + pad) + 4*BORDER_WIDTH);
+  clutter_actor_set_position (footer, 0,
+                              (row + 1) * (ICON_SIZE + pad) + 4*BORDER_WIDTH);
   clutter_actor_set_size (footer, width, 31);
 
 
-  clutter_container_add (CLUTTER_CONTAINER (group), bckg, launcher, footer, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (group), bckg, launcher, footer,
+                         NULL);
 
 
   return group;

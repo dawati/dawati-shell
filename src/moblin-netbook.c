@@ -22,8 +22,6 @@
  * 02111-1307, USA.
  */
 
-#define MUTTER_BUILDING_PLUGIN 1
-
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-chooser.h"
@@ -47,30 +45,42 @@
 #define PANEL_SLIDE_TIMEOUT         150
 #define PANEL_SLIDE_THRESHOLD       2
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
-#define WS_SWITCHER_SLIDE_THRESHOLD 3
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
+
+static gboolean stage_input_cb (ClutterActor *stage, ClutterEvent *event,
+                                gpointer data);
+static gboolean stage_capture_cb (ClutterActor *stage, ClutterEvent *event,
+                                  gpointer data);
+
+static void setup_parallax_effect (MutterPlugin *plugin);
 
 static GQuark actor_data_quark = 0;
 
-static gboolean do_init  (const char *params);
-static void     minimize (MutterWindow *actor);
-static void     map      (MutterWindow *actor);
-static void     destroy  (MutterWindow *actor);
-static void     maximize (MutterWindow *actor,
-                          gint x, gint y, gint width, gint height);
-static void     unmaximize (MutterWindow *actor,
+static void     minimize   (MutterPlugin *plugin,
+                            MutterWindow *actor);
+static void     map        (MutterPlugin *plugin,
+                            MutterWindow *actor);
+static void     destroy    (MutterPlugin *plugin,
+                            MutterWindow *actor);
+static void     maximize   (MutterPlugin *plugin,
+                            MutterWindow *actor,
                             gint x, gint y, gint width, gint height);
-static void     switch_workspace (const GList **actors, gint from, gint to,
-                                  MetaMotionDirection direction);
-static void     kill_effect (MutterWindow *actor, gulong event);
-static gboolean xevent_filter (XEvent *xev);
-static gboolean reload (const char *params);
+static void     unmaximize (MutterPlugin *plugin,
+                            MutterWindow *actor,
+                            gint x, gint y, gint width, gint height);
 
-/*
- * Create the plugin struct; function pointers initialized in
- * g_module_check_init().
- */
-MUTTER_DECLARE_PLUGIN ();
+static void     switch_workspace (MutterPlugin *plugin,
+                                  const GList **actors, gint from, gint to,
+                                  MetaMotionDirection direction);
+
+static void     kill_effect (MutterPlugin *plugin,
+                             MutterWindow *actor, gulong event);
+
+static const MutterPluginInfo * plugin_info (MutterPlugin *plugin);
+
+static gboolean xevent_filter (MutterPlugin *plugin, XEvent *xev);
+
+MUTTER_PLUGIN_DECLARE (MoblinNetbookPlugin, moblin_netbook_plugin);
 
 /*
  * Actor private data accessor
@@ -103,11 +113,258 @@ get_actor_private (MutterWindow *actor)
 }
 
 static void
-on_desktop_pre_paint (ClutterActor *actor,
-                      gpointer      user_data)
+moblin_netbook_plugin_dispose (GObject *object)
 {
-  MutterPlugin      *plugin = mutter_get_plugin ();
-  PluginPrivate     *priv   = plugin->plugin_private;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (object)->priv;
+  Display                    *xdpy;
+
+  xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (object));
+
+  if (priv->input_region)
+    XFixesDestroyRegion (xdpy, priv->input_region);
+
+  g_object_unref (priv->destroy_effect);
+  g_object_unref (priv->minimize_effect);
+  g_object_unref (priv->maximize_effect);
+  g_object_unref (priv->switch_workspace_effect);
+  g_object_unref (priv->switch_workspace_arrow_effect);
+
+  G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->dispose (object);
+}
+
+static void
+moblin_netbook_plugin_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->finalize (object);
+}
+
+static void
+moblin_netbook_plugin_set_property (GObject      *object,
+                                    guint         prop_id,
+                                    const GValue *value,
+                                    GParamSpec   *pspec)
+{
+  switch (prop_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+moblin_netbook_plugin_get_property (GObject    *object,
+                                    guint       prop_id,
+                                    GValue     *value,
+                                    GParamSpec *pspec)
+{
+  switch (prop_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+moblin_netbook_plugin_constructed (GObject *object)
+{
+  MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
+  MoblinNetbookPluginPrivate *priv   = plugin->priv;
+
+  guint destroy_timeout           = DESTROY_TIMEOUT;
+  guint minimize_timeout          = MINIMIZE_TIMEOUT;
+  guint maximize_timeout          = MAXIMIZE_TIMEOUT;
+  guint map_timeout               = MAP_TIMEOUT;
+  guint switch_timeout            = SWITCH_TIMEOUT;
+  guint panel_slide_timeout       = PANEL_SLIDE_TIMEOUT;
+  guint ws_switcher_slide_timeout = WS_SWITCHER_SLIDE_TIMEOUT;
+
+  ClutterActor  *overlay;
+  ClutterActor  *panel;
+  ClutterActor  *lowlight;
+  gint           screen_width, screen_height;
+  XRectangle     rect[1];
+  XserverRegion  region;
+  Display       *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
+  ClutterColor   low_clr = { 0, 0, 0, 0x7f };
+  GError        *err = NULL;
+
+  gtk_init (NULL, NULL);
+
+  /* tweak with env var as then possible to develop in desktop env. */
+  if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
+    meta_prefs_set_num_workspaces (1);
+
+  nbtk_style_load_from_file (nbtk_style_get_default (),
+                             PLUGIN_PKGDATADIR "/theme/mutter-moblin.css",
+                             &err);
+  if (err)
+    {
+      g_warning (err->message);
+      g_error_free (err);
+    }
+
+  mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
+                                   &screen_width, &screen_height);
+
+  rect[0].x = 0;
+  rect[0].y = 0;
+  rect[0].width = screen_width;
+  rect[0].height = 1;
+
+  region = XFixesCreateRegion (xdpy, &rect[0], 1);
+
+  priv->input_region = region;
+
+  if (mutter_plugin_debug_mode (MUTTER_PLUGIN (plugin)))
+    {
+      g_debug ("%s: Entering debug mode.", priv->info.name);
+
+      priv->debug_mode = TRUE;
+
+      /*
+       * Double the effect duration to make them easier to observe.
+       */
+      destroy_timeout           *= 2;
+      minimize_timeout          *= 2;
+      maximize_timeout          *= 2;
+      map_timeout               *= 2;
+      switch_timeout            *= 2;
+      panel_slide_timeout       *= 2;
+      ws_switcher_slide_timeout *= 2;
+    }
+
+  priv->destroy_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							destroy_timeout),
+                                    CLUTTER_ALPHA_SINE_INC);
+
+
+  priv->minimize_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							minimize_timeout),
+                                    CLUTTER_ALPHA_SINE_INC);
+
+  priv->maximize_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							maximize_timeout),
+                                    CLUTTER_ALPHA_SINE_INC);
+
+  priv->map_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							map_timeout),
+                                    CLUTTER_ALPHA_SINE_INC);
+
+  priv->switch_workspace_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							switch_timeout),
+                                    CLUTTER_ALPHA_SINE_INC);
+
+  /* better syncing as multiple groups run off this */
+  clutter_effect_template_set_timeline_clone (priv->switch_workspace_effect,
+                                              TRUE);
+
+  priv->switch_workspace_arrow_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							switch_timeout*4),
+                                    CLUTTER_ALPHA_SINE_INC);
+
+  overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
+
+  lowlight = clutter_rectangle_new_with_color (&low_clr);
+  priv->lowlight = lowlight;
+  clutter_actor_set_size (lowlight, screen_width, screen_height);
+
+  /*
+   * This also creates the launcher.
+   */
+  panel = priv->panel = make_panel (MUTTER_PLUGIN (plugin), screen_width);
+  clutter_actor_realize (priv->panel_shadow);
+  clutter_actor_set_y (panel, -clutter_actor_get_height (priv->panel_shadow));
+
+  clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
+
+  clutter_actor_hide (lowlight);
+
+  priv->panel_slide_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							panel_slide_timeout),
+                                    CLUTTER_ALPHA_SINE_INC);
+
+  priv->ws_switcher_slide_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+						ws_switcher_slide_timeout),
+                                                CLUTTER_ALPHA_SINE_INC);
+
+  /*
+   * Set up the stage even processing
+   */
+  disable_stage (MUTTER_PLUGIN (plugin), CurrentTime);
+
+  /*
+   * Hook to the captured signal, so we get to see all events before our
+   * children and do not interfere with their event processing.
+   */
+  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
+                    "captured-event", G_CALLBACK (stage_capture_cb),
+                    plugin);
+
+  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
+                    "button-press-event", G_CALLBACK (stage_input_cb),
+                    plugin);
+
+  clutter_set_motion_events_enabled (TRUE);
+
+  setup_parallax_effect (MUTTER_PLUGIN (plugin));
+
+  setup_startup_notification (MUTTER_PLUGIN (plugin));
+}
+
+static void
+moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
+{
+  GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
+  MutterPluginClass *plugin_class  = MUTTER_PLUGIN_CLASS (klass);
+
+  gobject_class->finalize        = moblin_netbook_plugin_finalize;
+  gobject_class->dispose         = moblin_netbook_plugin_dispose;
+  gobject_class->constructed     = moblin_netbook_plugin_constructed;
+  gobject_class->set_property    = moblin_netbook_plugin_set_property;
+  gobject_class->get_property    = moblin_netbook_plugin_get_property;
+
+  plugin_class->map              = map;
+  plugin_class->minimize         = minimize;
+  plugin_class->maximize         = maximize;
+  plugin_class->unmaximize       = unmaximize;
+  plugin_class->destroy          = destroy;
+  plugin_class->switch_workspace = switch_workspace;
+  plugin_class->kill_effect      = kill_effect;
+  plugin_class->plugin_info      = plugin_info;
+  plugin_class->xevent_filter    = xevent_filter;
+
+  g_type_class_add_private (gobject_class, sizeof (MoblinNetbookPluginPrivate));
+}
+
+static void
+moblin_netbook_plugin_init (MoblinNetbookPlugin *self)
+{
+  MoblinNetbookPluginPrivate *priv;
+
+  self->priv = priv = MOBLIN_NETBOOK_PLUGIN_GET_PRIVATE (self);
+
+  priv->info.name        = _("Moblin Netbook Effects");
+  priv->info.version     = "0.1";
+  priv->info.author      = "Intel Corp.";
+  priv->info.license     = "GPL";
+  priv->info.description = _("Effects for Moblin Netbooks");
+}
+
+static void
+on_desktop_pre_paint (ClutterActor *actor, gpointer data)
+{
+  MoblinNetbookPlugin *plugin = data;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterActor      *parent_texture;
   gint               x_1, y_1, x_2, y_2;
   ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
@@ -146,12 +403,19 @@ on_desktop_pre_paint (ClutterActor *actor,
   g_signal_stop_emission_by_name (actor, "paint");
 }
 
+struct ws_switch_data
+{
+  GList **actors;
+  MutterPlugin *plugin;
+};
+
 static void
 on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 {
-  MutterPlugin   *plugin = mutter_get_plugin ();
-  PluginPrivate  *ppriv  = plugin->plugin_private;
-  GList          *l      = *((GList**)data);
+  struct ws_switch_data *switch_data = data;
+  MutterPlugin   *plugin = switch_data->plugin;
+  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GList          *l      = *(switch_data->actors);
   MutterWindow   *actor_for_cb = l->data;
 
   while (l)
@@ -180,29 +444,37 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   ppriv->desktop2 = NULL;
   ppriv->desktop_switch_in_progress = FALSE;
 
-  startup_notification_finalize ();
+  startup_notification_finalize (plugin);
+
+  g_free (switch_data);
 
   mutter_plugin_effect_completed (plugin, actor_for_cb,
                                   MUTTER_PLUGIN_SWITCH_WORKSPACE);
 }
+
+struct parallax_data
+{
+  gint direction;
+  MoblinNetbookPlugin *plugin;
+};
 
 static void
 on_workspace_frame_change (ClutterTimeline *timeline,
                            gint             frame_num,
                            gpointer         data)
 {
-  MutterPlugin   *plugin = mutter_get_plugin ();
-  PluginPrivate  *priv  = plugin->plugin_private;
+  struct parallax_data *parallax_data = data;
+  MoblinNetbookPluginPrivate  *priv  = parallax_data->plugin->priv;
 
-  priv->parallax_paint_offset += GPOINTER_TO_INT (data) * -1;
+  priv->parallax_paint_offset += parallax_data->direction * -1;
 }
 
 static void
-switch_workspace (const GList **actors, gint from, gint to,
+switch_workspace (MutterPlugin *plugin, const GList **actors,
+                  gint from, gint to,
                   MetaMotionDirection direction)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *ppriv  = plugin->plugin_private;
+  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   GList         *l;
   gint           n_workspaces;
   ClutterActor  *workspace_slider0  = clutter_group_new ();
@@ -216,6 +488,9 @@ switch_workspace (const GList **actors, gint from, gint to,
   gint           screen_width;
   gint           screen_height;
   guint		 indicator_width, indicator_height;
+  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
+  struct parallax_data *parallax_data = g_new (struct parallax_data, 1);
+  struct ws_switch_data *switch_data = g_new (struct ws_switch_data, 1);
 
   if (from == to)
     {
@@ -238,7 +513,7 @@ switch_workspace (const GList **actors, gint from, gint to,
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay_layer),
 			       indicator_group);
 
-  n_workspaces = g_list_length (plugin->work_areas);
+  n_workspaces = meta_screen_get_n_workspaces (screen);
 
   for (l = g_list_last (*((GList**) actors)); l != NULL; l = l->prev)
     {
@@ -360,12 +635,15 @@ switch_workspace (const GList **actors, gint from, gint to,
 
   ppriv->desktop_switch_in_progress = TRUE;
 
+  switch_data->actors = (GList**)actors;
+  switch_data->plugin = plugin;
+
   /* workspace were going too */
   ppriv->tml_switch_workspace1 =
     clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider1,
                          0, 0,
                          on_switch_workspace_effect_complete,
-                         actors);
+                         switch_data);
   /* coming from */
   ppriv->tml_switch_workspace0 =
     clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider0,
@@ -378,10 +656,14 @@ switch_workspace (const GList **actors, gint from, gint to,
                        NULL, NULL);
 
   /* desktop parallax */
-  g_signal_connect (ppriv->tml_switch_workspace1,
-                    "new-frame",
-                    G_CALLBACK (on_workspace_frame_change),
-                    GINT_TO_POINTER(para_dir));
+  parallax_data->direction = para_dir;
+  parallax_data->plugin = MOBLIN_NETBOOK_PLUGIN (plugin);
+
+  g_signal_connect_data (ppriv->tml_switch_workspace1,
+                         "new-frame",
+                         G_CALLBACK (on_workspace_frame_change),
+                         parallax_data,
+                         (GClosureNotify)g_free, 0);
 }
 
 /*
@@ -395,7 +677,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
    * Must reverse the effect of the effect; must hide it first to ensure
    * that the restoration will not be visible.
    */
-  MutterPlugin *plugin = mutter_get_plugin ();
+  MutterPlugin *plugin = data;
   ActorPrivate *apriv;
   MutterWindow *mcw = MUTTER_WINDOW (actor);
 
@@ -418,11 +700,10 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
  * completion).
  */
 static void
-minimize (MutterWindow *mcw)
+minimize (MutterPlugin * plugin, MutterWindow *mcw)
 
 {
-  MutterPlugin      *plugin = mutter_get_plugin ();
-  PluginPrivate     *priv   = plugin->plugin_private;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaCompWindowType type;
   ClutterActor      *actor  = CLUTTER_ACTOR (mcw);
 
@@ -443,7 +724,7 @@ minimize (MutterWindow *mcw)
                                                   0.0,
                                                   (ClutterEffectCompleteFunc)
                                                   on_minimize_effect_complete,
-                                                  NULL);
+                                                  plugin);
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MINIMIZE);
@@ -459,7 +740,7 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
   /*
    * Must reverse the effect of the effect.
    */
-  MutterPlugin *plugin = mutter_get_plugin ();
+  MutterPlugin *plugin = data;
   MutterWindow *mcw    = MUTTER_WINDOW (actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
@@ -482,13 +763,12 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
  * (Something like a sound would be more appropriate.)
  */
 static void
-maximize (MutterWindow *mcw,
+maximize (MutterPlugin *plugin, MutterWindow *mcw,
           gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MutterPlugin       *plugin = mutter_get_plugin ();
-  PluginPrivate      *priv   = plugin->plugin_private;
-  MetaCompWindowType  type;
-  ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
+  MoblinNetbookPluginPrivate *priv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  ClutterActor               *actor = CLUTTER_ACTOR (mcw);
+  MetaCompWindowType          type;
 
   gdouble  scale_x  = 1.0;
   gdouble  scale_y  = 1.0;
@@ -528,7 +808,7 @@ maximize (MutterWindow *mcw,
                                                   scale_y,
                                                   (ClutterEffectCompleteFunc)
                                                   on_maximize_effect_complete,
-                                                  NULL);
+                                                  plugin);
 
       return;
     }
@@ -542,10 +822,9 @@ maximize (MutterWindow *mcw,
  * (Just a skeleton code.)
  */
 static void
-unmaximize (MutterWindow *mcw,
+unmaximize (MutterPlugin *plugin, MutterWindow *mcw,
             gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MutterPlugin       *plugin = mutter_get_plugin ();
   MetaCompWindowType  type;
 
   type = mutter_window_get_window_type (mcw);
@@ -561,26 +840,29 @@ unmaximize (MutterWindow *mcw,
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_UNMAXIMIZE);
 }
 
-/*
-static void
-on_map_effect_complete (ClutterActor *actor, gpointer data)
+struct map_data
 {
-*/
+  MutterPlugin *plugin;
+  ClutterActor *actor;
+};
+
 static void
 on_map_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   /*
    * Must reverse the effect of the effect.
    */
-  MutterPlugin *plugin = mutter_get_plugin ();
-  ClutterActor *actor  = CLUTTER_ACTOR(data);
-  MutterWindow *mcw    = MUTTER_WINDOW (actor);
+  struct map_data *map_data = data;
+  MutterPlugin *plugin = map_data->plugin;
+  MutterWindow *mcw    = MUTTER_WINDOW (map_data->actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_map = NULL;
 
-  clutter_actor_move_anchor_point_from_gravity (actor,
+  clutter_actor_move_anchor_point_from_gravity (map_data->actor,
                                                 CLUTTER_GRAVITY_NORTH_WEST);
+
+  g_free (map_data);
 
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
@@ -591,17 +873,15 @@ on_map_effect_complete (ClutterTimeline *timeline, gpointer data)
  * completion).
  */
 static void
-map (MutterWindow *mcw)
+map (MutterPlugin *plugin, MutterWindow *mcw)
 {
-  MutterPlugin       *plugin = mutter_get_plugin ();
-  PluginPrivate      *priv   = plugin->plugin_private;
-  MetaCompWindowType  type;
-  ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  ClutterActor               *actor = CLUTTER_ACTOR (mcw);
+  MetaCompWindowType          type;
 
   type = mutter_window_get_window_type (mcw);
 
-  if (type == META_COMP_WINDOW_DESKTOP
-      && priv->parallax_tex != NULL ) /* FIXME */
+  if (type == META_COMP_WINDOW_DESKTOP && priv->parallax_tex != NULL )
     {
       gint screen_width, screen_height;
 
@@ -621,7 +901,7 @@ map (MutterWindow *mcw)
 
       g_signal_connect (actor,
                         "paint", G_CALLBACK (on_desktop_pre_paint),
-                        NULL);
+                        plugin);
 
       mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
       return;
@@ -632,12 +912,13 @@ map (MutterWindow *mcw)
       ActorPrivate *apriv = get_actor_private (mcw);
       MetaWindow   *mw = mutter_window_get_meta_window (mcw);
       gint          workspace_index = -2;
+      struct map_data *map_data;
 
       if (mw)
         {
           const char *sn_id = meta_window_get_startup_id (mw);
 
-          if (!startup_notification_should_map (mcw, sn_id))
+          if (!startup_notification_should_map (plugin, mcw, sn_id))
             return;
         }
 
@@ -657,8 +938,12 @@ map (MutterWindow *mcw)
       */
       apriv->tml_map = nbtk_bounce_scale (actor, MAP_TIMEOUT);
 
+      map_data = g_new (struct map_data, 1);
+      map_data->plugin = plugin;
+      map_data->actor = actor;
+
       g_signal_connect (apriv->tml_map, "completed",
-                        G_CALLBACK (on_map_effect_complete), actor);
+                        G_CALLBACK (on_map_effect_complete), map_data);
 
       apriv->is_minimized = FALSE;
     }
@@ -673,7 +958,7 @@ map (MutterWindow *mcw)
 static void
 on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 {
-  MutterPlugin *plugin = mutter_get_plugin ();
+  MutterPlugin *plugin = data;
   MutterWindow *mcw    = MUTTER_WINDOW (actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
@@ -683,13 +968,13 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 }
 
 static void
-check_for_empty_workspaces (gint workspace, MutterWindow *ignore)
+check_for_empty_workspaces (MutterPlugin *plugin,
+                            gint workspace, MutterWindow *ignore)
 {
-  MutterPlugin   *plugin = mutter_get_plugin ();
-  PluginPrivate  *priv   = plugin->plugin_private;
-  MetaScreen     *screen = mutter_plugin_get_screen (plugin);
-  gboolean        workspace_empty = TRUE;
-  GList          *l;
+  MoblinNetbookPluginPrivate  *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                  *screen = mutter_plugin_get_screen (plugin);
+  gboolean                     workspace_empty = TRUE;
+  GList                        *l;
 
   l = mutter_get_windows (screen);
   while (l)
@@ -729,15 +1014,14 @@ check_for_empty_workspaces (gint workspace, MutterWindow *ignore)
  * Simple TV-out like effect.
  */
 static void
-destroy (MutterWindow *mcw)
+destroy (MutterPlugin *plugin, MutterWindow *mcw)
 {
-  MutterPlugin       *plugin = mutter_get_plugin ();
-  PluginPrivate      *priv   = plugin->plugin_private;
-  MetaScreen         *screen;
-  MetaCompWindowType  type;
-  ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
-  gint                workspace;
-  gboolean            workspace_empty = TRUE;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen;
+  MetaCompWindowType          type;
+  ClutterActor               *actor = CLUTTER_ACTOR (mcw);
+  gint                        workspace;
+  gboolean                    workspace_empty = TRUE;
 
   type      = mutter_window_get_window_type (mcw);
   workspace = mutter_window_get_workspace (mcw);
@@ -756,12 +1040,12 @@ destroy (MutterWindow *mcw)
                                                  0.0,
                                                  (ClutterEffectCompleteFunc)
                                                  on_destroy_effect_complete,
-                                                 NULL);
+                                                 plugin);
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 
-  check_for_empty_workspaces (workspace, mcw);
+  check_for_empty_workspaces (plugin, workspace, mcw);
 }
 
 /*
@@ -772,21 +1056,24 @@ destroy (MutterWindow *mcw)
 void
 disable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
-  PluginPrivate *priv = plugin->plugin_private;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  mutter_plugin_set_stage_input_region (plugin, priv->input_region);
+  mutter_plugin_set_stage_input_region (MUTTER_PLUGIN (plugin),
+                                        priv->input_region);
 
   if (priv->keyboard_grab)
     {
       if (timestamp == CurrentTime)
         {
-          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+          MetaScreen  *screen  =
+            mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+
           MetaDisplay *display = meta_screen_get_display (screen);
 
           timestamp = meta_display_get_current_time_roundtrip (display);
         }
 
-      Display *xdpy = mutter_plugin_get_xdisplay (plugin);
+      Display *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
 
       XUngrabKeyboard (xdpy, timestamp);
       XSync (xdpy, False);
@@ -797,13 +1084,15 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
 void
 enable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
-  PluginPrivate *priv   = plugin->plugin_private;
-  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  Display       *xdpy   = mutter_plugin_get_xdisplay (plugin);
-  ClutterActor  *stage  = mutter_get_stage_for_screen (screen);
-  Window         xwin   = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  Display                    *xdpy   = mutter_plugin_get_xdisplay (plugin);
+  ClutterActor               *stage  = mutter_get_stage_for_screen (screen);
+  Window                      xwin;
 
-  mutter_plugin_set_stage_reactive (plugin, TRUE);
+  xwin   = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+  mutter_plugin_set_stage_reactive (MUTTER_PLUGIN (plugin), TRUE);
 
   if (!priv->keyboard_grab)
     {
@@ -825,10 +1114,9 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
 }
 
 static gboolean
-xevent_filter (XEvent *xev)
+xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv  = plugin->plugin_private;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   sn_display_process_event (priv->sn_display, xev);
 
@@ -838,21 +1126,26 @@ xevent_filter (XEvent *xev)
 }
 
 static void
-kill_effect (MutterWindow *mcw, gulong event)
+kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
 {
-  MutterPlugin *plugin = mutter_get_plugin ();
   ActorPrivate *apriv;
   ClutterActor *actor = CLUTTER_ACTOR (mcw);
 
   if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
     {
-      PluginPrivate *ppriv  = plugin->plugin_private;
+      MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
       if (ppriv->tml_switch_workspace0)
         {
           clutter_timeline_stop (ppriv->tml_switch_workspace0);
           clutter_timeline_stop (ppriv->tml_switch_workspace1);
-          on_switch_workspace_effect_complete (ppriv->desktop1, ppriv->actors);
+
+          /*
+           * Force emission of the "completed" signal so that the necessary
+           * cleanup is done (we cannot readily supply the data necessary to
+           * call our callback directly).
+           */
+          g_signal_emit_by_name (ppriv->tml_switch_workspace1, "completed");
         }
 
       if (!(event & ~MUTTER_PLUGIN_SWITCH_WORKSPACE))
@@ -867,118 +1160,70 @@ kill_effect (MutterWindow *mcw, gulong event)
   if ((event & MUTTER_PLUGIN_MINIMIZE) && apriv->tml_minimize)
     {
       clutter_timeline_stop (apriv->tml_minimize);
-      on_minimize_effect_complete (actor, NULL);
+      on_minimize_effect_complete (actor, plugin);
     }
 
   if ((event & MUTTER_PLUGIN_MAXIMIZE) && apriv->tml_maximize)
     {
       clutter_timeline_stop (apriv->tml_maximize);
-      on_maximize_effect_complete (actor, NULL);
+      on_maximize_effect_complete (actor, plugin);
     }
 
   if ((event & MUTTER_PLUGIN_MAP) && apriv->tml_map)
     {
       clutter_timeline_stop (apriv->tml_map);
-      on_map_effect_complete (apriv->tml_map, actor);
+
+      /*
+       * Force emission of the "completed" signal so that the necessary
+       * cleanup is done (we cannot readily supply the data necessary to
+       * call our callback directly).
+       */
+      g_signal_emit_by_name (apriv->tml_map, "completed");
     }
 
   if ((event & MUTTER_PLUGIN_DESTROY) && apriv->tml_destroy)
     {
       clutter_timeline_stop (apriv->tml_destroy);
-      on_destroy_effect_complete (actor, NULL);
+      on_destroy_effect_complete (actor, plugin);
     }
-}
-
-
-const gchar * g_module_check_init (GModule *module);
-const gchar *
-g_module_check_init (GModule *module)
-{
-  MutterPlugin *plugin = mutter_get_plugin ();
-
-  /* Human readable name (for use in UI) */
-  plugin->name = "Moblin Netbook",
-
-  /* Plugin load time initialiser */
-  plugin->do_init = do_init;
-
-  /* Effect handlers */
-  plugin->minimize         = minimize;
-  plugin->destroy          = destroy;
-  plugin->map              = map;
-  plugin->maximize         = maximize;
-  plugin->unmaximize       = unmaximize;
-  plugin->switch_workspace = switch_workspace;
-  plugin->kill_effect      = kill_effect;
-  plugin->xevent_filter    = xevent_filter;
-
-  /* The reload handler */
-  plugin->reload           = reload;
-
-  return NULL;
 }
 
 static void
 on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
 {
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
+  MutterPlugin               *plugin = data;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   priv->panel_out_in_progress = FALSE;
 
   enable_stage (plugin, CurrentTime);
 }
 
-/*
- * Handles input events on stage.
- *
- * NB: used both during capture and bubble stages.
- */
 static gboolean
-stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
+stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
-  gboolean capture = GPOINTER_TO_INT (data);
+  MoblinNetbookPlugin *plugin = data;
 
-  if ((capture && event->type == CLUTTER_MOTION) ||
-      (!capture && event->type == CLUTTER_BUTTON_PRESS))
+  if (event->type == CLUTTER_MOTION)
     {
-      gint           event_y, event_x;
-      MutterPlugin  *plugin = mutter_get_plugin ();
-      PluginPrivate *priv   = plugin->plugin_private;
+      gint                        event_y, event_x;
+      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-      if (event->type == CLUTTER_MOTION)
-        {
-          event_x = ((ClutterMotionEvent*)event)->x;
-          event_y = ((ClutterMotionEvent*)event)->y;
-        }
-      else
-        {
-          event_x = ((ClutterButtonEvent*)event)->x;
-          event_y = ((ClutterButtonEvent*)event)->y;
-        }
+      event_x = ((ClutterMotionEvent*)event)->x;
+      event_y = ((ClutterMotionEvent*)event)->y;
 
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
 
-      if (!capture && event->type == CLUTTER_BUTTON_PRESS)
-        {
-          if (priv->workspace_switcher)
-            hide_workspace_switcher ();
-
-          if (priv->launcher)
-            clutter_actor_hide (priv->launcher);
-        }
-
       if (priv->panel_out &&
-          (event->type == CLUTTER_BUTTON_PRESS ||
-           (!priv->switcher && !priv->workspace_switcher &&
+          ((!priv->switcher && !priv->workspace_switcher &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))))
         {
           guint height = clutter_actor_get_height (priv->panel_shadow);
 
           if (event_y > (gint)height)
             {
-              hide_panel ();
+              hide_panel (MUTTER_PLUGIN (plugin));
             }
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
@@ -989,9 +1234,49 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
           clutter_effect_move (priv->panel_slide_effect,
                                priv->panel, x, 0,
                                on_panel_out_effect_complete,
-                               NULL);
+                               plugin);
 
           priv->panel_out = TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+/*
+ * Handles input events on stage.
+ *
+ */
+static gboolean
+stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
+{
+  MutterPlugin *plugin = data;
+
+  if (event->type == CLUTTER_BUTTON_PRESS)
+    {
+      gint           event_y, event_x;
+      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+      event_x = ((ClutterButtonEvent*)event)->x;
+      event_y = ((ClutterButtonEvent*)event)->y;
+
+      if (priv->panel_out_in_progress || priv->panel_back_in_progress)
+        return FALSE;
+
+      if (priv->workspace_switcher)
+        hide_workspace_switcher ();
+
+      if (priv->launcher)
+        clutter_actor_hide (priv->launcher);
+
+      if (priv->panel_out)
+        {
+          guint height = clutter_actor_get_height (priv->panel_shadow);
+
+          if (event_y > (gint)height)
+            {
+              hide_panel (plugin);
+            }
         }
     }
   else if (event->type == CLUTTER_KEY_PRESS)
@@ -1007,23 +1292,23 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 }
 
 static void
-setup_parallax_effect (void)
+setup_parallax_effect (MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv  = plugin->plugin_private;
-  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  MetaDisplay   *display = meta_screen_get_display (screen);
-  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
-  gboolean       have_desktop = FALSE;
-  gint           screen_width, screen_height;
-  Window        *children, *l;
-  guint          n_children;
-  Window         root_win;
-  Window         parent_win, root_win2;
-  Status         status;
-  Atom           desktop_atom;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  Display                    *xdpy = mutter_plugin_get_xdisplay (plugin);
+  gboolean                    have_desktop = FALSE;
+  gint                        screen_width, screen_height;
+  Window                     *children, *l;
+  guint                       n_children;
+  Window                      root_win;
+  Window                      parent_win, root_win2;
+  Status                      status;
+  Atom                        desktop_atom;
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
+                                   &screen_width, &screen_height);
 
   /*
    * The do_init() method is called before the Manager starts managing
@@ -1127,233 +1412,10 @@ setup_parallax_effect (void)
  * Core of the plugin init function, called for initial initialization and
  * by the reload() function. Returns TRUE on success.
  */
-static gboolean
-do_init (const char *params)
+static const MutterPluginInfo *
+plugin_info (MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv = g_new0 (PluginPrivate, 1);
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  guint          destroy_timeout           = DESTROY_TIMEOUT;
-  guint          minimize_timeout          = MINIMIZE_TIMEOUT;
-  guint          maximize_timeout          = MAXIMIZE_TIMEOUT;
-  guint          map_timeout               = MAP_TIMEOUT;
-  guint          switch_timeout            = SWITCH_TIMEOUT;
-  guint          panel_slide_timeout       = PANEL_SLIDE_TIMEOUT;
-  guint          ws_switcher_slide_timeout = WS_SWITCHER_SLIDE_TIMEOUT;
-
-  const gchar   *name;
-  ClutterActor  *overlay;
-  ClutterActor  *panel;
-  ClutterActor  *lowlight;
-  gint           screen_width, screen_height;
-  XRectangle     rect[2];
-  XserverRegion  region;
-  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
-  ClutterColor   low_clr = { 0, 0, 0, 0x7f };
-  GError        *err = NULL;
-
-  gtk_init (NULL, NULL);
-
-  /* tweak with env var as then possible to develop in desktop env. */
-  if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
-    meta_prefs_set_num_workspaces (1);
-
-  plugin->plugin_private = priv;
-
-  nbtk_style_load_from_file (nbtk_style_get_default (),
-                             PLUGIN_PKGDATADIR "/theme/mutter-moblin.css",
-                             &err);
-  if (err)
-    {
-      g_warning (err->message);
-      g_error_free (err);
-    }
-
-  name = plugin->name;
-  plugin->name = _(name);
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  rect[0].x = 0;
-  rect[0].y = 0;
-  rect[0].width = screen_width;
-  rect[0].height = 1;
-
-  rect[1].x = screen_width - WS_SWITCHER_SLIDE_THRESHOLD;
-  rect[1].y = 0;
-  rect[1].width = WS_SWITCHER_SLIDE_THRESHOLD;
-  rect[1].height = screen_height;
-
-  region = XFixesCreateRegion (xdpy, &rect[0], 2);
-
-  priv->input_region = region;
-
-  if (params)
-    {
-      if (strstr (params, "debug"))
-        {
-          g_debug ("%s: Entering debug mode.",
-                   plugin->name);
-
-          priv->debug_mode = TRUE;
-
-          /*
-           * Double the effect duration to make them easier to observe.
-           */
-          destroy_timeout           *= 2;
-          minimize_timeout          *= 2;
-          maximize_timeout          *= 2;
-          map_timeout               *= 2;
-          switch_timeout            *= 2;
-          panel_slide_timeout       *= 2;
-          ws_switcher_slide_timeout *= 2;
-        }
-    }
-
-  priv->destroy_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							destroy_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-
-  priv->minimize_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							minimize_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  priv->maximize_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							maximize_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  priv->map_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							map_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  priv->switch_workspace_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							switch_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  /* better syncing as multiple groups run off this */
-  clutter_effect_template_set_timeline_clone (priv->switch_workspace_effect,
-                                              TRUE);
-
-  priv->switch_workspace_arrow_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							switch_timeout*4),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  overlay = mutter_plugin_get_overlay_group (plugin);
-
-  lowlight = clutter_rectangle_new_with_color (&low_clr);
-  priv->lowlight = lowlight;
-  clutter_actor_set_size (lowlight, screen_width, screen_height);
-
-  /*
-   * This also creates the launcher.
-   */
-  panel = priv->panel = make_panel (screen_width);
-  clutter_actor_realize (priv->panel_shadow);
-  clutter_actor_set_y (panel, -clutter_actor_get_height (priv->panel_shadow));
-
-  clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
-
-  clutter_actor_hide (lowlight);
-
-  priv->panel_slide_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							panel_slide_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  priv->ws_switcher_slide_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-						ws_switcher_slide_timeout),
-                                                CLUTTER_ALPHA_SINE_INC);
-
-  /*
-   * Set up the stage even processing
-   */
-  disable_stage (plugin, CurrentTime);
-
-  /*
-   * Hook to the captured signal, so we get to see all events before our
-   * children and do not interfere with their event processing.
-   */
-  g_signal_connect (mutter_plugin_get_stage (plugin),
-                    "captured-event", G_CALLBACK (stage_input_cb),
-                    GINT_TO_POINTER (TRUE));
-
-  g_signal_connect (mutter_plugin_get_stage (plugin),
-                    "button-press-event", G_CALLBACK (stage_input_cb),
-                    GINT_TO_POINTER (FALSE));
-
-  clutter_set_motion_events_enabled (TRUE);
-
-  setup_parallax_effect ();
-
-  setup_startup_notification ();
-
-  return TRUE;
-}
-
-static void
-free_plugin_private (PluginPrivate *priv)
-{
-  MutterPlugin *plugin;
-  Display      *xdpy;
-
-  if (!priv)
-    return;
-
-  xdpy = mutter_plugin_get_xdisplay (plugin);
-
-  if (priv->input_region)
-    XFixesDestroyRegion (xdpy, priv->input_region);
-
-  g_object_unref (priv->destroy_effect);
-  g_object_unref (priv->minimize_effect);
-  g_object_unref (priv->maximize_effect);
-  g_object_unref (priv->switch_workspace_effect);
-  g_object_unref (priv->switch_workspace_arrow_effect);
-
-  g_free (priv);
-
-  mutter_get_plugin()->plugin_private = NULL;
-}
-
-/*
- * Called by the plugin manager when we stuff like the command line parameters
- * changed.
- */
-static gboolean
-reload (const char *params)
-{
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-
-  if (do_init (params))
-    {
-      /* Success; free the old private struct */
-      free_plugin_private (priv);
-      return TRUE;
-    }
-  else
-    {
-      /* Fail -- fall back to the old private. */
-      plugin->plugin_private = priv;
-    }
-
-  return FALSE;
-}
-
-/*
- * GModule unload function -- do any cleanup required.
- */
-G_MODULE_EXPORT void g_module_unload (GModule *module);
-G_MODULE_EXPORT void g_module_unload (GModule *module)
-{
-  PluginPrivate *priv = mutter_get_plugin()->plugin_private;
-
-  free_plugin_private (priv);
+  return &priv->info;
 }

@@ -26,13 +26,6 @@
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-switcher.h"
 
-extern MutterPlugin mutter_plugin;
-static inline MutterPlugin *
-mutter_get_plugin ()
-{
-  return &mutter_plugin;
-}
-
 /*
  * Clone lifecycle house keeping.
  *
@@ -71,16 +64,15 @@ switcher_clone_weak_notify (gpointer data, GObject *object)
 }
 
 void
-toggle_control (MnbkControl control, gboolean show)
+toggle_control (MutterPlugin *plugin, MnbkControl control, gboolean show)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  ClutterActor  *actor  = NULL;
+  MoblinNetbookPluginPrivate *priv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  ClutterActor               *actor = NULL;
 
   if (show)
     {
       if (control != MNBK_CONTROL_SPACES && priv->workspace_switcher)
-        hide_workspace_switcher ();
+        hide_workspace_switcher (plugin);
 
       if (control != MNBK_CONTROL_APPLICATIONS)
         clutter_actor_hide (priv->launcher);
@@ -88,7 +80,7 @@ toggle_control (MnbkControl control, gboolean show)
       switch (control)
         {
         case MNBK_CONTROL_SPACES:
-          actor = make_workspace_switcher ();
+          actor = make_workspace_switcher (plugin);
           break;
         case MNBK_CONTROL_APPLICATIONS:
           actor = priv->launcher;
@@ -118,7 +110,7 @@ toggle_control (MnbkControl control, gboolean show)
       switch (control)
         {
         case MNBK_CONTROL_SPACES:
-          hide_workspace_switcher ();
+          hide_workspace_switcher (plugin);
           break;
         case MNBK_CONTROL_APPLICATIONS:
           actor = priv->launcher;

@@ -28,17 +28,20 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
 
-void     show_workspace_chooser (const gchar * sn_id, guint32 timestamp);
-void     hide_workspace_chooser (guint32 timestamp);
+void     show_workspace_chooser (MutterPlugin *plugin,
+                                 const gchar  *sn_id, guint32 timestamp);
+void     hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp);
 
-void     setup_startup_notification (void);
+void     setup_startup_notification (MutterPlugin *plugin);
 
-gboolean startup_notification_should_map (MutterWindow *mcw,
+gboolean startup_notification_should_map (MutterPlugin *plugin,
+                                          MutterWindow *mcw,
                                           const gchar  *sn_id);
 
-void     startup_notification_finalize (void);
+void     startup_notification_finalize (MutterPlugin *plugin);
 
-void     spawn_app (const gchar *path,
+void     spawn_app (MutterPlugin *plugin,
+                    const gchar *path,
                     guint32      timestamp,
                     gboolean     without_chooser,
                     gint         workspace);
