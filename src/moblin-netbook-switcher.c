@@ -202,6 +202,8 @@ make_contents (GCallback  ws_callback)
                         ws_callback, GINT_TO_POINTER (i));
 
       nbtk_table_add_widget (NBTK_TABLE (table), ws_label, 0, i);
+      clutter_container_child_set (CLUTTER_CONTAINER (table), CLUTTER_ACTOR (ws_label),
+                                   "y-expand", FALSE, NULL);
     }
 
   /* iterate through the windows, adding them to the correct workspace */
@@ -243,8 +245,6 @@ make_contents (GCallback  ws_callback)
           if (ws_indx == active_ws)
             clutter_actor_set_name (CLUTTER_ACTOR (spaces[ws_indx]), "switcher-workspace-active");
           nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1, ws_indx);
-          clutter_container_child_set (CLUTTER_CONTAINER (table), CLUTTER_ACTOR (spaces[ws_indx]),
-                                       "y-expand", TRUE, NULL);
         }
 
       texture = mutter_window_get_texture (mw);
@@ -270,10 +270,21 @@ make_contents (GCallback  ws_callback)
       ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
 
+  /* add an "empty" message for empty workspaces */
+  for (i = 0; i < ws_count; i++)
+    {
+      if (!spaces[i])
+        {
+          NbtkWidget *label;
+
+          label = nbtk_label_new ("No applications on this space");
+
+          nbtk_table_add_widget (NBTK_TABLE (table), label, 1, i);
+        }
+    }
+
   g_free (spaces);
   g_free (n_windows);
-
-  /* TODO: hilight the active workspace */
 
   return CLUTTER_ACTOR (table);
 }
