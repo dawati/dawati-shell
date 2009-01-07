@@ -24,6 +24,7 @@
 
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
+#include "moblin-netbook-switcher.h"
 
 extern MutterPlugin mutter_plugin;
 static inline MutterPlugin *
@@ -69,32 +70,66 @@ switcher_clone_weak_notify (gpointer data, GObject *object)
   g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
 }
 
-/*
- * Creates an iconic representation of the workspace with the label provided.
- *
- * We use the custom NutterWsIcon actor, which automatically handles layout
- * when the icon is resized.
- */
-ClutterActor *
-make_workspace_label (const gchar *text)
+void
+toggle_control (MnbkControl control, gboolean show)
 {
-  NutterWsIcon *icon;
-  ClutterActor *actor;
-  ClutterColor  b_clr = { 0x44, 0x44, 0x44, 0xff };
-  ClutterColor  f_clr = { 0xff, 0xff, 0xff, 0xff };
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  ClutterActor  *actor  = NULL;
 
-  actor = nutter_ws_icon_new ();
-  icon  = NUTTER_WS_ICON (actor);
+  if (show)
+    {
+      if (control != MNBK_CONTROL_SPACES && priv->workspace_switcher)
+        hide_workspace_switcher ();
 
-  clutter_actor_set_size (actor, WORKSPACE_CELL_WIDTH, WORKSPACE_CELL_HEIGHT);
+      if (control != MNBK_CONTROL_APPLICATIONS)
+        clutter_actor_hide (priv->launcher);
 
-  nutter_ws_icon_set_font_name (icon, "Sans 16");
-  nutter_ws_icon_set_text (icon, text);
-  nutter_ws_icon_set_color (icon, &b_clr);
-  nutter_ws_icon_set_border_width (icon, 3);
-  nutter_ws_icon_set_text_color (icon, &f_clr);
-  nutter_ws_icon_set_border_color (icon, &f_clr);
+      switch (control)
+        {
+        case MNBK_CONTROL_SPACES:
+          actor = make_workspace_switcher ();
+          break;
+        case MNBK_CONTROL_APPLICATIONS:
+          actor = priv->launcher;
+          break;
+        default:
+          break;
+        }
 
-  return actor;
+      if (actor)
+        {
+          clutter_actor_raise (actor, priv->panel_shadow);
+          clutter_actor_set_position (actor,
+                                      4,
+                                      -clutter_actor_get_height(actor));
+
+          clutter_actor_show (actor);
+          clutter_effect_move (priv->panel_slide_effect,
+                               actor,
+                               4,
+                               PANEL_HEIGHT,
+                               NULL, NULL);
+
+        }
+    }
+  else
+    {
+      switch (control)
+        {
+        case MNBK_CONTROL_SPACES:
+          hide_workspace_switcher ();
+          break;
+        case MNBK_CONTROL_APPLICATIONS:
+          actor = priv->launcher;
+          break;
+        default:
+          break;
+        }
+
+      if (actor)
+        clutter_actor_hide (actor);
+    }
 }
+
 

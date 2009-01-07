@@ -26,7 +26,7 @@
 #define MOBLIN_NETBOOK_H
 
 #include <mutter-plugin.h>
-#include "moblin-netbook-notify-store.h"
+#include <nbtk.h>
 
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
@@ -34,6 +34,8 @@
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
+
+#include "moblin-netbook-notify-store.h"
 
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
@@ -61,6 +63,7 @@ struct PluginPrivate
 
   ClutterActor          *d_overlay ; /* arrow indicator */
   ClutterActor          *panel;
+  ClutterActor          *panel_shadow;
 
   ClutterActor          *switcher;
   ClutterActor          *workspace_switcher;
@@ -80,8 +83,8 @@ struct PluginPrivate
   guint                  workspace_chooser_timeout;
 
   ClutterActor          *panel_buttons[8];
-  ClutterActor          *panel_time;
-  ClutterActor          *panel_date;
+  NbtkWidget            *panel_time;
+  NbtkWidget            *panel_date;
 
   /* Startup Notification */
   SnDisplay             *sn_display;

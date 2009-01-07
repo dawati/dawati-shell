@@ -28,7 +28,7 @@
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
-#include "tidy-behaviour-bounce.h"
+#include "nbtk-behaviour-bounce.h"
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -247,12 +247,6 @@ switch_workspace (const GList **actors, gint from, gint to,
       ClutterActor *a    = CLUTTER_ACTOR (mcw);
       gint          workspace;
 
-      /*
-       * We do not show windows that are in SN flux.
-       */
-      if (priv->sn_in_progress)
-        continue;
-
       /* We don't care about minimized windows */
       if (!mutter_window_showing_on_its_workspace (mcw))
 	continue;
@@ -272,7 +266,18 @@ switch_workspace (const GList **actors, gint from, gint to,
           priv->orig_parent = clutter_actor_get_parent (a);
 
           clutter_actor_reparent (a, slider);
-          clutter_actor_show_all (a);
+
+          /*
+           * If the window is in SN flux, we will hide it; we still need to
+           * reparent it, otherwise we screw up the stack order.
+           *
+           * The map effect will take care of showing the actor again.
+           */
+          if (priv->sn_in_progress)
+            clutter_actor_hide (a);
+          else
+            clutter_actor_show_all (a);
+
           clutter_actor_raise_top (a);
         }
       else if (workspace < 0)
@@ -600,6 +605,12 @@ map (MutterWindow *mcw)
     {
       gint screen_width, screen_height;
 
+      /*
+       * FIXME -- the way it currently works means we still have a fullscreen
+       * GLX texture in place which serves no purpose. We should make this work
+       * without needing the desktop window. The parallax texture could simply
+       * be placed directly on stage, underneath the Mutter windows group.
+       */
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
       clutter_actor_set_size (priv->parallax_tex,
@@ -644,7 +655,7 @@ map (MutterWindow *mcw)
                                              on_map_effect_complete,
                                              NULL);
       */
-      apriv->tml_map = tidy_bounce_scale (actor, MAP_TIMEOUT);
+      apriv->tml_map = nbtk_bounce_scale (actor, MAP_TIMEOUT);
 
       g_signal_connect (apriv->tml_map, "completed",
                         G_CALLBACK (on_map_effect_complete), actor);
@@ -767,6 +778,14 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
 
   if (priv->keyboard_grab)
     {
+      if (timestamp == CurrentTime)
+        {
+          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+          MetaDisplay *display = meta_screen_get_display (screen);
+
+          timestamp = meta_display_get_current_time_roundtrip (display);
+        }
+
       Display *xdpy = mutter_plugin_get_xdisplay (plugin);
 
       XUngrabKeyboard (xdpy, timestamp);
@@ -788,6 +807,13 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
 
   if (!priv->keyboard_grab)
     {
+      if (timestamp == CurrentTime)
+        {
+          MetaDisplay *display = meta_screen_get_display (screen);
+
+          timestamp = meta_display_get_current_time_roundtrip (display);
+        }
+
       if (Success == XGrabKeyboard (xdpy, xwin, True,
                                     GrabModeAsync, GrabModeAsync, timestamp))
         {
@@ -948,7 +974,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
            (!priv->switcher && !priv->workspace_switcher &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))))
         {
-          guint height = clutter_actor_get_height (priv->panel);
+          guint height = clutter_actor_get_height (priv->panel_shadow);
 
           if (event_y > (gint)height)
             {
@@ -1228,6 +1254,8 @@ do_init (const char *params)
    * This also creates the launcher.
    */
   panel = priv->panel = make_panel (screen_width);
+  clutter_actor_realize (priv->panel_shadow);
+  clutter_actor_set_y (panel, -clutter_actor_get_height (priv->panel_shadow));
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
 
@@ -1242,9 +1270,6 @@ do_init (const char *params)
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
 						ws_switcher_slide_timeout),
                                                 CLUTTER_ALPHA_SINE_INC);
-
-  clutter_actor_set_position (panel, 0,
-                              -PANEL_HEIGHT);
 
   /*
    * Set up the stage even processing

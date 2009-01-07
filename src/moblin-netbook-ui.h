@@ -26,7 +26,6 @@
 #define MOBLIN_NETBOOK_UI_H
 
 #include <nbtk/nbtk.h>
-#include "nutter/nutter-ws-icon.h"
 #include "nutter/nutter-scale-group.h"
 
 #define APP_SWITCHER_CELL_WIDTH  200
@@ -46,9 +45,22 @@
 
 #define MNBTK_SPINNER_ITERVAL 2000
 
+typedef enum
+{
+  MNBK_CONTROL_UNKNOWN = 0,
+  MNBK_CONTROL_MSPACE,
+  MNBK_CONTROL_STATUS,
+  MNBK_CONTROL_SPACES,
+  MNBK_CONTROL_INTERNET,
+  MNBK_CONTROL_MEDIA,
+  MNBK_CONTROL_APPLICATIONS,
+  MNBK_CONTROL_PEOPLE,
+  MNBK_CONTROL_PASTEBOARD,
+} MnbkControl;
+
 void          switcher_clone_weak_notify (gpointer data, GObject *object);
 void          switcher_origin_weak_notify (gpointer data, GObject *object);
 
-ClutterActor *make_workspace_label (const gchar *text);
+void          toggle_control (MnbkControl control, gboolean show);
 
 #endif
