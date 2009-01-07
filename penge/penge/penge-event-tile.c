@@ -145,8 +145,8 @@ penge_event_tile_init (PengeEventTile *self)
                         1);
   nbtk_table_add_actor (NBTK_TABLE (self),
                         (ClutterActor *)priv->location_label,
-                        0,
-                        2);
+                        1,
+                        1);
 
   /* Make the time label span two rows */
   clutter_container_child_set (CLUTTER_CONTAINER (self),
