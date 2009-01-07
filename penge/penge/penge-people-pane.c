@@ -153,7 +153,7 @@ _client_view_item_removed_cb (MojitoClientView *view,
                                item->uuid);
 
   g_hash_table_remove (priv->uuid_to_actor, item->uuid);
-  clutter_container_remove_actor (CLUTTER_CONTAINER (view), actor);
+  clutter_container_remove_actor (CLUTTER_CONTAINER (pane), actor);
   penge_people_pane_update (pane);
 }
 
