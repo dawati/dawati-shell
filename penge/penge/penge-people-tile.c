@@ -230,6 +230,8 @@ penge_people_tile_init (PengePeopleTile *self)
                                2,
                                "keep-aspect-ratio",
                                TRUE,
+                               "y-expand",
+                               FALSE,
                                NULL);
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);

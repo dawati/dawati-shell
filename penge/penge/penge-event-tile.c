@@ -138,6 +138,11 @@ penge_event_tile_init (PengeEventTile *self)
                         (ClutterActor *)priv->time_label,
                         0,
                         0);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               (ClutterActor *)priv->time_label,
+                               "x-expand",
+                               FALSE,
+                               NULL);
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         (ClutterActor *)priv->summary_label,
