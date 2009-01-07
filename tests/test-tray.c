@@ -100,6 +100,8 @@ main (int argc, char *argv[])
   gtk_widget_show (item);
   gtk_menu_shell_append (GTK_MENU_SHELL (popup), item);
 
+  mnbtk_mark_menu (popup);
+
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
 
   g_signal_connect (icon, "activate", G_CALLBACK (activate_cb), NULL);

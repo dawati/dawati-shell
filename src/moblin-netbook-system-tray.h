@@ -26,8 +26,10 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
+#include <X11/Xatom.h>
 
 #define MOBLIN_SYSTEM_TRAY_EVENT "MOBLIN_SYSTEM_TRAY_EVENT"
+#define MOBLIN_SYSTEM_TRAY_MENU  "MOBLIN_SYSTEM_TRAY_MENU"
 
 /*
  * NB: this can be at most 20 bytes. If necessary the type, button and count
@@ -105,6 +107,25 @@ mnbtk_client_message_handler (GdkXEvent *xevent, GdkEvent *event, gpointer data)
 	}
     }
 }
+
+/*
+ * Marks a pop up window as being associated with the tray. Should be called
+ * on any menus/windows that the tray icon might want to show (otherwise, such
+ * windows will not be able to receive events).
+ */
+static void
+mnbtk_mark_menu (GtkWidget *menu)
+{
+  Atom tray_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_MENU);
+  int  dummy_value = 0;
+
+  gtk_widget_realize (menu);
+
+  XChangeProperty (GDK_DISPLAY(), GDK_WINDOW_XID (menu->window),
+                   tray_atom, XA_CARDINAL,
+                   32, PropModeReplace, (unsigned char*)&dummy_value, 1);
+}
+
 #else
 /*
  * Compile time assert to ensure we do not try to pack more than we can
