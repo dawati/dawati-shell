@@ -351,6 +351,8 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   child->window = win;
   child->socket = socket;
   child->actor = g_object_ref (icon);
+  child->manager = manager;
+
   g_hash_table_insert (manager->priv->icons, socket, child);
 
   g_signal_emit (manager,
