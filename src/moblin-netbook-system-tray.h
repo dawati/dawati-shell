@@ -28,8 +28,8 @@
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 
-#define MOBLIN_SYSTEM_TRAY_EVENT "MOBLIN_SYSTEM_TRAY_EVENT"
-#define MOBLIN_SYSTEM_TRAY_MENU  "MOBLIN_SYSTEM_TRAY_MENU"
+#define MOBLIN_SYSTEM_TRAY_EVENT          "MOBLIN_SYSTEM_TRAY_EVENT"
+#define MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW  "MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW"
 
 /*
  * NB: this can be at most 20 bytes. If necessary the type, button and count
@@ -109,21 +109,43 @@ mnbtk_client_message_handler (GdkXEvent *xevent, GdkEvent *event, gpointer data)
 }
 
 /*
- * Marks a pop up window as being associated with the tray. Should be called
- * on any menus/windows that the tray icon might want to show (otherwise, such
- * windows will not be able to receive events).
+ * Hangs the window id for a config window onto the xwindow of the icon.
+ *
+ * Returns FALSE on failure.
  */
-static void
-mnbtk_mark_menu (GtkWidget *menu)
+static gboolean
+mnbtk_setup_config_window (GtkStatusIcon *icon, Window config_win)
 {
-  Atom tray_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_MENU);
-  int  dummy_value = 0;
+  Atom tray_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW);
+  Window    icon_win;
+  gpointer *plug_location;
+  GtkPlug  *plug;
 
-  gtk_widget_realize (menu);
+  /*
+   * This is very, very evil, but GtkStatusIcon does not provide API
+   * to get at the icon xwindow ...
+   *
+   * The tray icon is a GtkPlug subclass, and is stored as the first
+   * item in the private structure of GtkSystemIcon.
+   */
+  plug_location = (gpointer*)icon->priv;
 
-  XChangeProperty (GDK_DISPLAY(), GDK_WINDOW_XID (menu->window),
-                   tray_atom, XA_CARDINAL,
-                   32, PropModeReplace, (unsigned char*)&dummy_value, 1);
+  if (!plug_location || !*plug_location || !GTK_IS_PLUG (*plug_location))
+    {
+      g_warning ("Attempted to set up config window before status icon got"
+                 "embedded !!!");
+      return FALSE;
+    }
+
+  plug = GTK_PLUG (*plug_location);
+
+  icon_win = gtk_plug_get_id (plug);
+
+  XChangeProperty (GDK_DISPLAY(), icon_win,
+                   tray_atom, XA_WINDOW,
+                   32, PropModeReplace, (unsigned char*)&config_win, 1);
+
+  return TRUE;
 }
 
 #else

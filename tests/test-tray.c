@@ -29,6 +29,7 @@
 
 static GtkWidget *message;
 static GtkWidget *popup;
+static GtkStatusIcon *icon;
 
 static void
 activate_cb (GtkStatusIcon *status_icon, gpointer data)
@@ -75,10 +76,25 @@ popup_menu_cb (GtkStatusIcon *icon, guint button, guint atime, gpointer data)
 		  button, atime);
 }
 
+/*
+ * We use an idle callback to set up the config window attachment, because
+ * we need the GtkStatusIcon to have an x window.
+ */
+static gboolean
+idle_config_setup (gpointer data)
+{
+  if (gtk_status_icon_is_embedded (icon))
+    {
+      if (mnbtk_setup_config_window (icon, GDK_WINDOW_XID (popup->window)))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
 int
 main (int argc, char *argv[])
 {
-  GtkStatusIcon *icon;
   GtkWidget     *item;
 
   gtk_init (&argc, &argv);
@@ -100,7 +116,7 @@ main (int argc, char *argv[])
   gtk_widget_show (item);
   gtk_menu_shell_append (GTK_MENU_SHELL (popup), item);
 
-  mnbtk_mark_menu (popup);
+  gtk_widget_realize (popup);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
 
@@ -112,6 +128,8 @@ main (int argc, char *argv[])
 				 mnbtk_client_message_handler, icon);
 
   gtk_status_icon_set_visible (icon, TRUE);
+
+  g_idle_add (idle_config_setup, NULL);
 
   gtk_main ();
 
