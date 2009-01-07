@@ -102,6 +102,10 @@ static void
 penge_date_tile_init (PengeDateTile *self)
 {
   PengeDateTilePrivate *priv = GET_PRIVATE (self);
+  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
+                          CLUTTER_UNITS_FROM_DEVICE (8),
+                          CLUTTER_UNITS_FROM_DEVICE (8),
+                          CLUTTER_UNITS_FROM_DEVICE (8) };
 
   priv->day_label = nbtk_label_new ("Day");
   priv->date_label = nbtk_label_new ("XX");
@@ -121,6 +125,7 @@ penge_date_tile_init (PengeDateTile *self)
                                "x-expand",
                                TRUE,
                                NULL);
+  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 }
 
 static void
