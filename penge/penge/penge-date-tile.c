@@ -108,7 +108,12 @@ penge_date_tile_init (PengeDateTile *self)
                           CLUTTER_UNITS_FROM_DEVICE (8) };
 
   priv->day_label = nbtk_label_new ("Day");
+  nbtk_widget_set_style_class_name (priv->day_label,
+                                    "PengeDayLabel");
   priv->date_label = nbtk_label_new ("XX");
+  nbtk_widget_set_style_class_name (priv->date_label,
+                                    "PengeDateLabel");
+
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         (ClutterActor *)priv->day_label,
