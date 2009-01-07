@@ -27,10 +27,11 @@ AM_PROG_LIBTOOL
 
 AM_GLIB_GNU_GETTEXT
 
-# For GLIB_GENMARSHAL
-AM_PATH_GLIB_2_0()
+PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0 libstartup-notification-1.0 gtk+-2.0 libgnome-menu dbus-glib-1)
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0 libstartup-notification-1.0 gtk+-2.0 libgnome-menu)
+# glib-genmarshal
+GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
+AC_SUBST(GLIB_GENMARSHAL)
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0)
 

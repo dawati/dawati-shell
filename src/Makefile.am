@@ -19,7 +19,23 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-panel.h		\
 				moblin-netbook-launcher.c       \
 				moblin-netbook-launcher.h	\
-				moblin-netbook-tray-manager.c
+				moblin-netbook-tray-manager.c	\
+				moblin-netbook-notify-store.c   \
+				moblin-netbook-notify-store.h   \
+				moblin-netbook-notify.c         \
+	                        $(DBUS_GLUE)                    \
+				$(MARSHALS)
+
+DBUS_GLUE=notification-manager-glue.h
+%-glue.h: %.xml
+	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
+
+MARSHALS = marshal.c marshal.h
+%.c: %.list
+	echo '#include "marshal.h"' > $@ && \
+	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --body >> $@
+%.h: %.list
+	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --header > $@
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la
@@ -33,3 +49,5 @@ install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.a
 	rm -f $(DESTDIR)$(pkglibdir)/*.la
 
+BUILT_SOURCES = $(DBUS_GLUE) $(MARSHALS)
+CLEANFILES = $(BUILT_SOURCES)

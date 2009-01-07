@@ -36,6 +36,7 @@
 #define N_(x) x
 
 #include "moblin-netbook-tray-manager.h"
+#include "moblin-netbook-notify-store.h"
 
 #define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
 #define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
@@ -119,6 +120,10 @@ struct _MoblinNetbookPluginPrivate
   SnMonitorContext      *sn_context;
   GHashTable            *sn_hash;
 
+  /* Application notification, ala libnotify */
+  MoblinNetbookNotifyStore *notify_store;
+
+  /* Background parallax texture */
   gint                   parallax_paint_offset;
   ClutterActor          *parallax_tex;
 
@@ -147,5 +152,7 @@ struct ActorPrivate
 ActorPrivate * get_actor_private (MutterWindow *actor);
 void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
 void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
+
+void moblin_netbook_notify_init (MutterPlugin *plugin);
 
 #endif

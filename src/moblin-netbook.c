@@ -319,6 +319,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   setup_parallax_effect (MUTTER_PLUGIN (plugin));
 
   setup_startup_notification (MUTTER_PLUGIN (plugin));
+
+  moblin_netbook_notify_init (MUTTER_PLUGIN (plugin));
 }
 
 static void
