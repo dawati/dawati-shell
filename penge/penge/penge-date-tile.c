@@ -142,8 +142,8 @@ penge_date_tile_update (PengeDateTile *tile)
   g_return_if_fail (tile != NULL);
 
   tmp_str = jana_utils_strftime (priv->time, "%d");
-  nbtk_label_set_text (NBTK_LABEL (priv->day_label), tmp_str);
+  nbtk_label_set_text (NBTK_LABEL (priv->date_label), tmp_str);
 
   tmp_str = jana_utils_strftime (priv->time, "%A");
-  nbtk_label_set_text (NBTK_LABEL (priv->date_label), tmp_str);
+  nbtk_label_set_text (NBTK_LABEL (priv->day_label), tmp_str);
 }
