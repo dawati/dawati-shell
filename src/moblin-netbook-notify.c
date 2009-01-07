@@ -1,17 +1,9 @@
 #include "moblin-netbook.h"
 
 
-/* Needing to do this for every C file is an absolute joke :( */
-extern MutterPlugin mutter_plugin;
-static inline MutterPlugin *
-mutter_get_plugin ()
-{
-  return &mutter_plugin;
-}
-
 static void
-on_notification_added (MoblinNetbookNotifyStore *store, 
-                       Notification *n, 
+on_notification_added (MoblinNetbookNotifyStore *store,
+                       Notification *n,
                        gpointer foo)
 {
   printf("[NOTIFICATION]: *new*: id:%i\n", n->id);
@@ -22,29 +14,28 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 }
 
 static void
-on_notification_closed (MoblinNetbookNotifyStore *store, 
-                        guint id, 
-                        guint reason, 
+on_notification_closed (MoblinNetbookNotifyStore *store,
+                        guint id,
+                        guint reason,
                         gpointer foo)
 {
   printf("[NOTIFICATION]: closed: %i, reason: %i\n", id, reason);
 }
 
 void
-moblin_netbook_notify_init ()
+moblin_netbook_notify_init (MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   if (priv->notify_store)
     return;
 
   priv->notify_store = moblin_netbook_notify_store_new ();
 
-  g_signal_connect (priv->notify_store, 
-                    "notification-added", 
+  g_signal_connect (priv->notify_store,
+                    "notification-added",
                     G_CALLBACK (on_notification_added), NULL);
-  g_signal_connect (priv->notify_store, 
-                    "notification-closed", 
+  g_signal_connect (priv->notify_store,
+                    "notification-closed",
                     G_CALLBACK (on_notification_closed), NULL);
 }

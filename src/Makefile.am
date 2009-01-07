@@ -20,8 +20,6 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-launcher.h       \
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
-                                tidy-behaviour-bounce.c		\
-                                tidy-behaviour-bounce.h         \
 				moblin-netbook-notify.c         \
 	                        $(DBUS_GLUE)                    \
 				$(MARSHALS)

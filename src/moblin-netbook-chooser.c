@@ -34,13 +34,6 @@
 #define WORKSPACE_CHOOSER_CELL_PAD      4
 #define WORKSPACE_CHOOSER_LABEL_HEIGHT  40
 
-extern MutterPlugin mutter_plugin;
-static inline MutterPlugin *
-mutter_get_plugin ()
-{
-  return &mutter_plugin;
-}
-
 /******************************************************************
  * Workspace chooser
  */
@@ -59,6 +52,7 @@ struct ws_grid_cb_data
 {
   gchar *sn_id;
   gint   workspace;
+  MutterPlugin *plugin;
 };
 
 static void
@@ -104,11 +98,11 @@ move_window_to_workspace (MutterWindow *mcw,
 }
 
 static void
-finalize_app_startup (const char * sn_id, gint workspace, guint32 timestamp)
+finalize_app_startup (const char * sn_id, gint workspace, guint32 timestamp,
+                      MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  gpointer       key, value;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gpointer                    key, value;
 
   if (workspace >= MAX_WORKSPACES)
     workspace = MAX_WORKSPACES - 1;
@@ -134,7 +128,8 @@ finalize_app_startup (const char * sn_id, gint workspace, guint32 timestamp)
 
       if (sn_data->mcw && !priv->desktop_switch_in_progress)
         {
-          plugin->map (sn_data->mcw);
+          MutterPluginClass *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
+          klass->map (plugin, sn_data->mcw);
         }
     }
 }
@@ -148,15 +143,15 @@ workspace_chooser_input_cb (ClutterActor *clone,
                             ClutterEvent *event,
                             gpointer      data)
 {
-  struct ws_grid_cb_data * wsg_data = data;
-  gint           indx   = wsg_data->workspace;
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  MetaWorkspace *workspace;
-  gpointer       key, value;
-  const char    *sn_id = wsg_data->sn_id;
-  gint           active;
+  struct ws_grid_cb_data     *wsg_data = data;
+  gint                        indx   = wsg_data->workspace;
+  MutterPlugin               *plugin = wsg_data->plugin;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  MetaWorkspace              *workspace;
+  gpointer                    key, value;
+  const char                 *sn_id = wsg_data->sn_id;
+  gint                        active;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
   active    = meta_screen_get_active_workspace_index (screen);
@@ -170,11 +165,24 @@ workspace_chooser_input_cb (ClutterActor *clone,
   if (active != indx)
     priv->desktop_switch_in_progress = TRUE;
 
-  hide_workspace_chooser (event->any.time);
+  hide_workspace_chooser (plugin, event->any.time);
 
-  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time);
+  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time, plugin);
 
   return FALSE;
+}
+
+struct kbd_data
+{
+  char         *sn_id;
+  MutterPlugin *plugin;
+};
+
+static void
+kbd_data_free (struct kbd_data *kbd_data)
+{
+  g_free (kbd_data->sn_id);
+  g_free (kbd_data);
 }
 
 static gboolean
@@ -182,13 +190,14 @@ chooser_keyboard_input_cb (ClutterActor *self,
                            ClutterEvent *event,
                            gpointer      data)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  const char    *sn_id  = data;
-  guint          symbol = clutter_key_event_symbol (&event->key);
-  gint           indx;
-  gint           active;
+  struct kbd_data            *kbd_data = data;
+  MutterPlugin               *plugin = kbd_data->plugin;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  const char                 *sn_id = kbd_data->sn_id;
+  guint                       symbol = clutter_key_event_symbol (&event->key);
+  gint                        indx;
+  gint                        active;
 
   if (symbol < CLUTTER_0 || symbol > CLUTTER_9)
     return FALSE;
@@ -208,9 +217,9 @@ chooser_keyboard_input_cb (ClutterActor *self,
   if (active != indx)
     priv->desktop_switch_in_progress = TRUE;
 
-  hide_workspace_chooser (event->any.time);
+  hide_workspace_chooser (plugin, event->any.time);
 
-  finalize_app_startup (sn_id, indx, event->any.time);
+  finalize_app_startup (sn_id, indx, event->any.time, plugin);
 
   return TRUE;
 }
@@ -227,7 +236,8 @@ make_spinner (void)
 
   static ClutterBehaviour *beh = NULL;
 
-  spinner = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/generic/spinner.png", NULL);
+  spinner = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                           "/theme/generic/spinner.png", NULL);
 
   if (!spinner)
     return NULL;
@@ -276,9 +286,11 @@ make_background (const gchar *text, guint width, guint height,
   group = clutter_group_new ();
 
   if (selected)
-    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/space-selected.png", NULL);
+    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                         "/theme/chooser/space-selected.png", NULL);
   else
-    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/space-unselected.png", NULL);
+    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                         "/theme/chooser/space-unselected.png", NULL);
 
   if (bck)
     {
@@ -294,9 +306,13 @@ make_background (const gchar *text, guint width, guint height,
 
 
   if (selected)
-    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/thumb-selected.png", NULL);
+    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                         "/theme/chooser/thumb-selected.png",
+                                         NULL);
   else
-    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/thumb-unselected.png", NULL);
+    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                         "/theme/chooser/thumb-unselected.png",
+                                         NULL);
 
   if (bck)
     {
@@ -346,9 +362,8 @@ make_background (const gchar *text, guint width, guint height,
 
 
 static ClutterActor *
-make_nth_workspace (GList **list, gint n, gint active)
+make_nth_workspace (GList **list, gint n, gint active, MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
   GList         *l      = *list;
   GList         *tmp    = NULL;
   gint           i      = 0;
@@ -397,13 +412,13 @@ new_workspace_input_cb (ClutterActor *clone,
                         ClutterEvent *event,
                         gpointer      data)
 {
-  MutterPlugin  *plugin    = mutter_get_plugin ();
-  PluginPrivate *priv      = plugin->plugin_private;
-  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
-  struct ws_grid_cb_data * wsg_data = data;
-  const char    *sn_id     = wsg_data->sn_id;
+  struct ws_grid_cb_data     *wsg_data = data;
+  MutterPlugin               *plugin   = wsg_data->plugin;
+  MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
+  const char                 *sn_id    = wsg_data->sn_id;
 
-  hide_workspace_chooser (event->any.time);
+  hide_workspace_chooser (plugin, event->any.time);
 
   priv->desktop_switch_in_progress = TRUE;
 
@@ -412,7 +427,8 @@ new_workspace_input_cb (ClutterActor *clone,
   else
     meta_screen_append_new_workspace (screen, FALSE, event->any.time);
 
-  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time);
+  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time,
+                        wsg_data->plugin);
 
   return FALSE;
 }
@@ -421,22 +437,22 @@ new_workspace_input_cb (ClutterActor *clone,
  * Creates a grid of workspaces.
  */
 static ClutterActor *
-make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
+make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
+                        MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
-  GList         *l;
-  NbtkWidget    *table;
-  gint           screen_width, screen_height;
-  gint           cell_width, cell_height;
-  GList         *workspaces = NULL;
-  gdouble        ws_scale_x, ws_scale_y;
-  gint           ws_count = 0;
-  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  gint           active_ws, n_ws;
-  ClutterActor  *new_ws;
-  struct ws_grid_cb_data * new_wsg_data =
-        g_slice_new (struct ws_grid_cb_data);
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GList                      *l;
+  NbtkWidget                 *table;
+  gint                        screen_width, screen_height;
+  gint                        cell_width, cell_height;
+  GList                      *workspaces = NULL;
+  gdouble                     ws_scale_x, ws_scale_y;
+  gint                        ws_count = 0;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  gint                        active_ws, n_ws;
+  ClutterActor               *new_ws;
+  struct ws_grid_cb_data     *new_wsg_data =
+    g_slice_new (struct ws_grid_cb_data);
 
   active_ws = meta_screen_get_active_workspace_index (screen);
   n_ws = meta_screen_get_n_workspaces (screen);
@@ -498,7 +514,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
 
-      workspace = make_nth_workspace (&workspaces, ws_indx, active_ws);
+      workspace = make_nth_workspace (&workspaces, ws_indx, active_ws, plugin);
       g_assert (workspace);
 
 
@@ -528,6 +544,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
 
       wsg_data->sn_id = g_strdup (sn_id);
       wsg_data->workspace = ws_count;
+      wsg_data->plugin = plugin;
 
       cell = make_background (s,
                               cell_width, cell_height, (ws_count == active_ws),
@@ -567,6 +584,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
 
   new_wsg_data->sn_id     = g_strdup (sn_id);
   new_wsg_data->workspace = ws_count;
+  new_wsg_data->plugin    = plugin;
 
   g_signal_connect_data (new_ws, "button-press-event",
                          G_CALLBACK (new_workspace_input_cb),
@@ -595,10 +613,9 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces)
  * Low-lights and un-low-lights the entire screen below the plugin UI elements.
  */
 static void
-set_lowlight (gboolean on)
+set_lowlight (MutterPlugin *plugin, gboolean on)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   if (on)
     clutter_actor_show (priv->lowlight);
@@ -610,25 +627,27 @@ set_lowlight (gboolean on)
  * Creates and shows the workspace chooser.
  */
 void
-show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
+show_workspace_chooser (MutterPlugin *plugin,
+                        const gchar * sn_id, guint32 timestamp)
 {
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
-  ClutterActor  *overlay;
-  ClutterActor  *switcher;
-  ClutterActor  *bck, *frame;
-  ClutterActor  *grid;
-  ClutterActor  *label;
-  gint           screen_width, screen_height;
-  guint          switcher_width, switcher_height;
-  guint          label_height;
-  ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
-  gint           ws_count = 0;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  ClutterActor               *overlay;
+  ClutterActor               *switcher;
+  ClutterActor               *bck, *frame;
+  ClutterActor               *grid;
+  ClutterActor               *label;
+  gint                        screen_width, screen_height;
+  guint                       switcher_width, switcher_height;
+  guint                       label_height;
+  ClutterColor                label_clr = { 0xff, 0xff, 0xff, 0xff };
+  gint                        ws_count = 0;
+  struct kbd_data            *kbd_data;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   switcher = clutter_group_new ();
-  bck =clutter_texture_new_from_file (PLUGIN_PKGDATADIR "/theme/chooser/background.png", NULL);
+  bck =clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                      "/theme/chooser/background.png", NULL);
 
   frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
 
@@ -655,16 +674,16 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;
 
-  grid = make_workspace_chooser (sn_id, &ws_count);
+  grid = make_workspace_chooser (sn_id, &ws_count, plugin);
   clutter_actor_set_position (CLUTTER_ACTOR (grid), 0, label_height);
 
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          frame, label, grid, NULL);
 
-  set_lowlight (TRUE);
+  set_lowlight (plugin, TRUE);
 
   if (priv->workspace_chooser)
-    hide_workspace_chooser (timestamp);
+    hide_workspace_chooser (plugin, timestamp);
 
   priv->workspace_chooser = switcher;
 
@@ -690,9 +709,13 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
 
   clutter_actor_set_reactive (switcher, TRUE);
 
+  kbd_data = g_new (struct kbd_data, 1);
+  kbd_data->sn_id = g_strdup (sn_id);
+  kbd_data->plugin = plugin;
+
   g_signal_connect_data (switcher, "key-press-event",
                          G_CALLBACK (chooser_keyboard_input_cb),
-                         g_strdup (sn_id), (GClosureNotify) g_free, 0);
+                         kbd_data, (GClosureNotify) kbd_data_free, 0);
 
   clutter_grab_keyboard (switcher);
 
@@ -700,10 +723,9 @@ show_workspace_chooser (const gchar * sn_id, guint32 timestamp)
 }
 
 void
-hide_workspace_chooser (guint32 timestamp)
+hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   if (!priv->workspace_chooser)
     return;
@@ -714,9 +736,9 @@ hide_workspace_chooser (guint32 timestamp)
       priv->workspace_chooser_timeout = 0;
     }
 
-  set_lowlight (FALSE);
+  set_lowlight (plugin, FALSE);
 
-  hide_panel ();
+  hide_panel (plugin);
 
   clutter_actor_destroy (priv->workspace_chooser);
 
@@ -731,8 +753,9 @@ hide_workspace_chooser (guint32 timestamp)
  */
 struct ws_chooser_timeout_data
 {
-  gchar * sn_id;
-  gint    workspace;
+  gchar        *sn_id;
+  gint          workspace;
+  MutterPlugin *plugin;
 };
 
 static void
@@ -745,13 +768,14 @@ free_ws_chooser_timeout_data (struct ws_chooser_timeout_data *data)
 static gboolean
 workspace_chooser_timeout_cb (gpointer data)
 {
-  MutterPlugin  *plugin    = mutter_get_plugin ();
-  PluginPrivate *priv      = plugin->plugin_private;
-  MetaScreen    *screen    = mutter_plugin_get_screen (plugin);
-  MetaDisplay   *display   = meta_screen_get_display (screen);
-  guint32        timestamp = meta_display_get_current_time_roundtrip (display);
-
   struct ws_chooser_timeout_data *wsc_data = data;
+  MutterPlugin                   *plugin   = wsc_data->plugin;
+  MoblinNetbookPluginPrivate     *priv = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
+  MetaScreen                     *screen   = mutter_plugin_get_screen (plugin);
+  MetaDisplay                    *display  = meta_screen_get_display (screen);
+  guint32                         timestamp;
+
+  timestamp = meta_display_get_current_time_roundtrip (display);
 
   if (!priv->workspace_chooser_timeout)
     {
@@ -761,28 +785,29 @@ workspace_chooser_timeout_cb (gpointer data)
 
   priv->desktop_switch_in_progress = TRUE;
 
-  hide_workspace_chooser (timestamp);
+  hide_workspace_chooser (plugin, timestamp);
 
   if (wsc_data->workspace >= MAX_WORKSPACES)
     wsc_data->workspace = MAX_WORKSPACES - 1;
   else
     meta_screen_append_new_workspace (screen, FALSE, timestamp);
 
-  finalize_app_startup (wsc_data->sn_id, wsc_data->workspace, timestamp);
+  finalize_app_startup (wsc_data->sn_id, wsc_data->workspace, timestamp,
+                        plugin);
 
   /* One off */
   return FALSE;
 }
 
 static void
-on_sn_monitor_event (SnMonitorEvent *event, void *user_data)
+on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
 {
-  MutterPlugin      *plugin = mutter_get_plugin ();
-  PluginPrivate     *priv   = plugin->plugin_private;
-  SnStartupSequence *sequence;
-  const char        *seq_id = NULL, *bin_name = NULL;
-  gint               workspace_indx = -2;
-  gpointer           key, value;
+  MutterPlugin               *plugin = data;
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  SnStartupSequence          *sequence;
+  const char                 *seq_id = NULL, *bin_name = NULL;
+  gint                        workspace_indx = -2;
+  gpointer                    key, value;
 
   sequence = sn_monitor_event_get_startup_sequence (event);
 
@@ -824,7 +849,7 @@ on_sn_monitor_event (SnMonitorEvent *event, void *user_data)
           sn_data->state = SN_MONITOR_EVENT_INITIATED;
 
           if (!sn_data->without_chooser)
-            show_workspace_chooser (seq_id, timestamp);
+            show_workspace_chooser (plugin, seq_id, timestamp);
       }
 
       break;
@@ -850,13 +875,15 @@ on_sn_monitor_event (SnMonitorEvent *event, void *user_data)
             {
               guint32 timestamp = sn_startup_sequence_get_timestamp (sequence);
 
-              finalize_app_startup (seq_id, sn_data->workspace, timestamp);
+              finalize_app_startup (seq_id, sn_data->workspace, timestamp,
+                                    plugin);
             }
           else
             {
               wsc_data = g_slice_new (struct ws_chooser_timeout_data);
               wsc_data->sn_id = g_strdup (seq_id);
               wsc_data->workspace = ws_count;
+              wsc_data->plugin = plugin;
 
               priv->workspace_chooser_timeout =
                 g_timeout_add_full (G_PRIORITY_DEFAULT,
@@ -891,18 +918,17 @@ free_sn_hash_data (SnHashData *data)
 }
 
 void
-setup_startup_notification (void)
+setup_startup_notification (MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  Display       *xdpy   = mutter_plugin_get_xdisplay (plugin);
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  Display                    *xdpy = mutter_plugin_get_xdisplay (plugin);
 
   /* startup notification */
   priv->sn_display = sn_display_new (xdpy, NULL, NULL);
   priv->sn_context = sn_monitor_context_new (priv->sn_display,
                                              DefaultScreen (xdpy),
                                              on_sn_monitor_event,
-                                             (void *)priv, NULL);
+                                             plugin, NULL);
 
   priv->sn_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
                                          g_free,
@@ -910,11 +936,11 @@ setup_startup_notification (void)
 }
 
 gboolean
-startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
+startup_notification_should_map (MutterPlugin *plugin, MutterWindow *mcw,
+                                 const gchar * sn_id)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  gpointer       key, value;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gpointer                    key, value;
 
   if (!sn_id || !mcw)
     return TRUE;
@@ -976,12 +1002,11 @@ startup_notification_should_map (MutterWindow *mcw, const gchar * sn_id)
  * (Called at the end of WS switching effect.)
  */
 void
-startup_notification_finalize (void)
+startup_notification_finalize (MutterPlugin *plugin)
 {
-  MutterPlugin  *plugin = mutter_get_plugin ();
-  PluginPrivate *priv   = plugin->plugin_private;
-  gpointer       key, value;
-  GHashTableIter iter;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gpointer                    key, value;
+  GHashTableIter              iter;
 
   if (priv->desktop_switch_in_progress)
     return;
@@ -1010,27 +1035,27 @@ startup_notification_finalize (void)
 
           if (mcw)
             {
-              plugin->map (mcw);
+              MutterPluginClass *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
+              klass->map (plugin, mcw);
             }
         }
     }
 }
 
 void
-spawn_app (const gchar *path, guint32 timestamp,
+spawn_app (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
            gboolean without_chooser, gint workspace)
 {
-  MutterPlugin      *plugin  = mutter_get_plugin ();
-  PluginPrivate     *priv    = plugin->plugin_private;
-  MetaScreen        *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay       *display = meta_screen_get_display (screen);
-  Display           *xdpy    = mutter_plugin_get_xdisplay (plugin);
-  SnLauncherContext *context = NULL;
-  const gchar       *sn_id;
-  gchar            **argv = NULL;
-  gint               argc = 0;
-  SnHashData        *sn_data = g_slice_new0 (SnHashData);
-  GError            *err = NULL;
+  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  SnLauncherContext          *context = NULL;
+  const gchar                *sn_id;
+  gchar                     **argv;
+  gint                        argc;
+  SnHashData                 *sn_data = g_slice_new0 (SnHashData);
+  GError                     *err = NULL;
 
   if (!path)
     return;
