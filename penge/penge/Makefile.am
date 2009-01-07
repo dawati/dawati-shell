@@ -9,6 +9,8 @@ libpenge_la_SOURCES = \
 		      penge-date-tile.h penge-date-tile.c \
 		      penge-event-tile.h penge-event-tile.c \
 		      penge-events-pane.h penge-events-pane.c \
+		      penge-calendar-pane.h penge-calendar-pane.c \
+		      penge-grid-view.h penge-grid-view.c \
 		      penge-utils.h penge-utils.c
 libpenge_la_CFLAGS = -Wall $(GLIB_CFLAGS) $(NBTK_CFLAGS) $(JANA_ECAL_CFLAGS) \
 		     $(MOJITO_CLIENT_CFLAGS) $(GTK_CFLAGS)
