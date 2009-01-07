@@ -115,6 +115,7 @@ penge_event_tile_init (PengeEventTile *self)
   priv->time_label = nbtk_label_new ("XX:XX");
   nbtk_widget_set_style_class_name (priv->time_label,
                                     "PengeEventTime");
+  nbtk_widget_set_padding (priv->time_label, &padding);
 
   priv->summary_label = nbtk_label_new ("Summary text");
   nbtk_widget_set_style_class_name (priv->summary_label,
