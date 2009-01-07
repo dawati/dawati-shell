@@ -174,6 +174,7 @@ penge_people_tile_init (PengePeopleTile *self)
                           CLUTTER_UNITS_FROM_DEVICE (8) };
 
   priv->primary_text = nbtk_label_new ("Primary text");
+  nbtk_widget_set_alignment (priv->primary_text, 0, 0.5);
   tmp_label = nbtk_label_get_clutter_label (NBTK_LABEL (priv->primary_text));
   clutter_label_set_alignment (CLUTTER_LABEL (tmp_label),
                                PANGO_ALIGN_LEFT);
@@ -181,6 +182,7 @@ penge_people_tile_init (PengePeopleTile *self)
                                PANGO_ELLIPSIZE_END);
 
   priv->secondary_text = nbtk_label_new ("Secondary text");
+  nbtk_widget_set_alignment (priv->secondary_text, 0, 0.5);
   tmp_label = nbtk_label_get_clutter_label (NBTK_LABEL (priv->secondary_text));
   clutter_label_set_alignment (CLUTTER_LABEL (tmp_label),
                                PANGO_ALIGN_LEFT);
@@ -199,12 +201,11 @@ penge_people_tile_init (PengePeopleTile *self)
                                (ClutterActor *)priv->primary_text,
                                "x-expand",
                                TRUE,
+                               "y-expand",
+                               FALSE,
                                NULL);
 
-  g_object_set (priv->primary_text,
-                "x-align",
-                0,
-                NULL);
+
   nbtk_table_add_actor (NBTK_TABLE (self),
                         (ClutterActor *)priv->secondary_text,
                         2,
@@ -213,14 +214,11 @@ penge_people_tile_init (PengePeopleTile *self)
                                (ClutterActor *)priv->secondary_text,
                                "x-expand",
                                TRUE,
+                               "y-expand",
+                               FALSE,
                                NULL);
 
 
-
-  g_object_set (priv->secondary_text,
-                "x-align",
-                0,
-                NULL);
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->icon,
