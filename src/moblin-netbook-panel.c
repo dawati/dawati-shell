@@ -206,7 +206,7 @@ make_panel (gint width)
   priv->panel_buttons[0] = panel_append_toolbar_button (panel,
                                                         "m-space-button",
                                                         "m_zone",
-                                                        MNBK_CONTROL_MSPACE);
+                                                        MNBK_CONTROL_MZONE);
 
   priv->panel_buttons[1] = panel_append_toolbar_button (panel,
                                                         "status-button",
