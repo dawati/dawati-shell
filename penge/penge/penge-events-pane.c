@@ -134,8 +134,6 @@ penge_events_pane_update (PengeEventsPane *pane)
     event = (JanaEvent *)l->data;
     uid = jana_component_get_uid (JANA_COMPONENT (event));
 
-    g_debug (G_STRLOC ": Considering uid: %s", uid);
-
     actor = g_hash_table_lookup (priv->uid_to_actors,
                                  uid);
     old_actors = g_list_remove (old_actors, actor);
@@ -155,6 +153,7 @@ penge_events_pane_update (PengeEventsPane *pane)
                             "event",
                             event,
                             NULL);
+
       clutter_actor_set_size (actor, 216, 44);
       nbtk_table_add_actor (NBTK_TABLE (pane),
                             actor,
@@ -215,7 +214,6 @@ _store_view_added_cb (JanaStoreView *view,
        g_hash_table_insert (priv->uid_to_events,
                              uid,
                              g_object_ref (event));
-       g_debug (G_STRLOC ": Received uid: %s", uid);
       }
     }
   }
@@ -243,8 +241,6 @@ _store_view_modified_cb (JanaStoreView *view,
     uid = jana_component_get_uid (component);
     old_event = g_hash_table_lookup (priv->uid_to_events,
                                      uid);
-    g_debug (G_STRLOC ": Told to modify uid: %s",
-             uid);
 
     if (old_event)
     {
@@ -289,7 +285,6 @@ _store_view_removed_cb (JanaStoreView *view,
   {
     uid = (const gchar *)l->data;
 
-    g_debug (G_STRLOC ": Told to remove uid: %s", uid);
 
     if (!g_hash_table_remove (priv->uid_to_events,
                          uid))

@@ -113,10 +113,6 @@ penge_people_pane_update (PengePeoplePane *pane)
       g_hash_table_insert (priv->uuid_to_actor,
                            g_strdup (item->uuid),
                            g_object_ref (actor));
-      g_debug (G_STRLOC ": Putting new item (%s) in (%d, %d)",
-               item->uuid,
-               count / NUMBER_COLS,
-               count / NUMBER_COLS);
     } else {
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
@@ -125,10 +121,6 @@ penge_people_pane_update (PengePeoplePane *pane)
                                    "column",
                                    count % NUMBER_COLS,
                                    NULL);
-      g_debug (G_STRLOC ": Moving item (%s) to (%d, %d)",
-               item->uuid,
-               count / NUMBER_COLS,
-               count % NUMBER_COLS);
     }
     count++;
   }
@@ -139,7 +131,6 @@ _client_view_item_added_cb (MojitoClientView *view,
                          MojitoItem       *item,
                          gpointer          userdata)
 {
-  g_debug (G_STRLOC ": Item added: %s", item->uuid);
   penge_people_pane_update (userdata);
 }
 
@@ -158,7 +149,6 @@ _client_view_item_removed_cb (MojitoClientView *view,
   PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
   ClutterActor *actor;
  
-  g_debug (G_STRLOC ": Item removed: %s", item->uuid);
   actor = g_hash_table_lookup (priv->uuid_to_actor,
                                item->uuid);
 
