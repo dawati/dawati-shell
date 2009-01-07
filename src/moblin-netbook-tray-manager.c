@@ -16,13 +16,6 @@
 #define MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 #include "moblin-netbook-system-tray.h"
 
-extern MutterPlugin mutter_plugin;
-static inline MutterPlugin *
-mutter_get_plugin ()
-{
-  return &mutter_plugin;
-}
-
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
   ClutterStage *stage;
@@ -30,6 +23,8 @@ struct _ShellTrayManagerPrivate {
   ClutterColor bg_color;
 
   GHashTable *icons;
+
+  MutterPlugin *plugin;
 };
 
 typedef struct {
@@ -42,7 +37,8 @@ typedef struct {
 enum {
   PROP_0,
 
-  PROP_BG_COLOR
+  PROP_BG_COLOR,
+  PROP_MUTTER_PLUGIN,
 };
 
 /* Signals */
@@ -95,6 +91,11 @@ shell_tray_manager_set_property(GObject         *object,
           manager->priv->bg_color = default_color;
       }
       break;
+    case PROP_MUTTER_PLUGIN:
+      {
+        manager->priv->plugin = g_value_get_object (value);
+      }
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -113,6 +114,9 @@ shell_tray_manager_get_property(GObject         *object,
     {
     case PROP_BG_COLOR:
       g_value_set_boxed (value, &manager->priv->bg_color);
+      break;
+    case PROP_MUTTER_PLUGIN:
+      g_value_set_object (value, manager->priv->plugin);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -191,6 +195,14 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
                                                        "Background color (only if we don't have transparency)",
                                                        CLUTTER_TYPE_COLOR,
                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_MUTTER_PLUGIN,
+                                   g_param_spec_object ("mutter-plugin",
+                                                        "Mutter Plugin",
+                                                        "Mutter Plugin",
+                                                        MUTTER_TYPE_PLUGIN,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 ShellTrayManager *
@@ -245,14 +257,15 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 {
   static Atom            msg_type_atom = 0;
 
-  MutterPlugin          *plugin = mutter_get_plugin ();
+  ShellTrayManagerChild *child  = data;
+  ShellTrayManager      *manager = child->manager;
+  MutterPlugin          *plugin = manager->priv->plugin;
   MetaScreen            *screen = mutter_plugin_get_screen (plugin);
   Display               *xdpy   = mutter_plugin_get_xdisplay (plugin);
-  ShellTrayManagerChild *child  = data;
   GtkSocket             *socket = GTK_SOCKET (child->socket);
   Window                 xwin   = GDK_WINDOW_XWINDOW (socket->plug_window);
   XClientMessageEvent    xev;
-  MnbkTrayEventData    *td  = (MnbkTrayEventData*)&xev.data;
+  MnbkTrayEventData     *td  = (MnbkTrayEventData*)&xev.data;
   GdkEventType           event_type = GDK_BUTTON_PRESS;
 
   /*
@@ -281,7 +294,7 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   XSendEvent (xdpy, xwin,
               False, StructureNotifyMask, (XEvent *)&xev);
 
-  hide_panel ();
+  hide_panel (plugin);
 
   return TRUE;
 }

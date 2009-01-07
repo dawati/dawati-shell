@@ -315,7 +315,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_hide (priv->launcher);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
-                                     "bg-color", &clr, NULL);
+                                     "bg-color", &clr,
+                                     "mutter-plugin", plugin,
+                                     NULL);
 
   priv->tray = tray = CLUTTER_ACTOR (nbtk_table_new ());
 
