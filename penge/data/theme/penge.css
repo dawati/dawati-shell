@@ -1,6 +1,12 @@
-PengeEventsPane, PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile
+PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile
 {
   background-image: url('file://general-background.png');
+  border-width: 16;
+}
+
+PengeFlickrTile:hover, PengeTwitterTile:hover, PengeRecentFileTile:hover
+{
+  background-image: url('file://general-background-dark.png');
   border-width: 16;
 }
 
@@ -8,6 +14,12 @@ PengeDateTile
 {
   background-image: url('file://date-background.png');
   border-width: 16;
+}
+
+PengeEventTile:hover
+{
+  background-image: url('file://event-background-dark.png');
+  border-width: 8;
 }
 
 *.PengeDateTileBackground
@@ -22,7 +34,7 @@ PengePeoplePane
   border-width: 16;
 }
 
-PengeCalendarPane
+PengeEventsPane, PengeCalendarPane
 {
   background-image: url('file://date-background.png');
   border-width: 16;
@@ -40,6 +52,8 @@ PengeRecentFilesPane
   color: white;
   font-size:12;
 }
+
+
 
 *.PengeDayLabel
 
