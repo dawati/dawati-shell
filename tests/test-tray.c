@@ -27,54 +27,8 @@
 
 #include "../src/moblin-netbook-system-tray.h"
 
-static GtkWidget *message;
-static GtkWidget *popup;
+static GtkWidget     *config;
 static GtkStatusIcon *icon;
-
-static void
-activate_cb (GtkStatusIcon *status_icon, gpointer data)
-{
-  static int count = 0;
-
-  g_message ("Received activate signal.");
-  gtk_dialog_run (GTK_DIALOG (message));
-  gtk_widget_hide (message);
-
-  switch (++count)
-    {
-    case 1:
-      gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (message),
-				     "Come on! Was once not enough ?!");
-      break;
-    case 2:
-      gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (message),
-				     "You are pushing your luck, mate !!!");
-    break;
-    default:
-      gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (message),
-				     "That's it! I am calling your manager.");
-    }
-}
-
-static void
-popup_position_func (GtkMenu *menu, gint *x, gint *y,
-		     gboolean *push, gpointer data)
-{
-  *x    = mnbk_event_x;
-  *y    = mnbk_event_y;
-  *push = FALSE;
-}
-
-static void
-popup_menu_cb (GtkStatusIcon *icon, guint button, guint atime, gpointer data)
-{
-  g_message ("Received pop-up menu signal with coords %d, %d.",
-	     mnbk_event_x, mnbk_event_y);
-
-  gtk_menu_popup (GTK_MENU (popup),
-		  NULL, NULL, popup_position_func, NULL,
-		  button, atime);
-}
 
 /*
  * We use an idle callback to set up the config window attachment, because
@@ -85,7 +39,14 @@ idle_config_setup (gpointer data)
 {
   if (gtk_status_icon_is_embedded (icon))
     {
-      if (mnbtk_setup_config_window (icon, GDK_WINDOW_XID (message->window)))
+      if (!GTK_WIDGET_REALIZED (config))
+        {
+          XSync (GDK_DISPLAY (), False);
+          return TRUE;
+        }
+
+      if (mnbtk_setup_config_window (icon,
+                                     gtk_plug_get_id (GTK_PLUG (config))))
         return FALSE;
     }
 
@@ -95,40 +56,17 @@ idle_config_setup (gpointer data)
 int
 main (int argc, char *argv[])
 {
-  GtkWidget     *item;
-
   gtk_init (&argc, &argv);
 
-  message  = gtk_message_dialog_new (NULL,
-				     GTK_DIALOG_MODAL,
-				     GTK_MESSAGE_INFO,
-				     GTK_BUTTONS_OK,
-                                     "Thank you for activating the applet.\n"
-				     "Now go and do something more useful!");
+  config = gtk_plug_new (0);
 
-  gtk_widget_realize (message);
+  gtk_container_add (GTK_CONTAINER (config),
+                     gtk_image_new_from_stock (GTK_STOCK_QUIT,
+                                               GTK_ICON_SIZE_LARGE_TOOLBAR));
 
-  popup = gtk_menu_new ();
-
-  item = gtk_menu_item_new_with_label ("Really?");
-  gtk_widget_show (item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (popup), item);
-
-  item = gtk_menu_item_new_with_label ("Nothing better to do?");
-  gtk_widget_show (item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (popup), item);
-
-  gtk_widget_realize (popup);
+  gtk_widget_show_all (config);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
-
-  g_signal_connect (icon, "activate", G_CALLBACK (activate_cb), NULL);
-  g_signal_connect (icon, "popup-menu", G_CALLBACK (popup_menu_cb), NULL);
-
-  gdk_add_client_message_filter (gdk_atom_intern (MOBLIN_SYSTEM_TRAY_EVENT,
-						  FALSE),
-				 mnbtk_client_message_handler, icon);
-
   gtk_status_icon_set_visible (icon, TRUE);
 
   g_idle_add (idle_config_setup, NULL);

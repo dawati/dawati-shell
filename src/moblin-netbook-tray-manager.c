@@ -267,6 +267,9 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   GtkSocket             *socket = GTK_SOCKET (child->socket);
   ClutterActor          *stage  = mutter_plugin_get_stage (plugin);
   Window                 stage_win;
+  GtkWidget             *config;
+  GtkWidget             *win;
+
   stage_win = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
   if (!child->config_xwin)
@@ -292,11 +295,14 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
       XFree (config_win);
     }
 
-  XReparentWindow (xdpy, child->config_xwin, stage_win, 0, 0);
-  XMapWindow (xdpy, child->config_xwin);
-  XSync (xdpy, False);
+    config = gtk_socket_new ();
+    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-  return TRUE;
+    gtk_container_add (GTK_CONTAINER (win), config);
+    gtk_socket_add_id (GTK_SOCKET (config), child->config_xwin);
+    gtk_widget_show_all (win);
+
+    return TRUE;
 }
 
 static void
