@@ -224,6 +224,15 @@ entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
   return TRUE;
 }
 
+static gboolean
+table_input_cb (ClutterActor *table, ClutterEvent *event, gpointer data)
+{
+  /*
+   * Processing stops here.
+   */
+  return TRUE;
+}
+
 ClutterActor *
 make_launcher (gint width)
 {
@@ -254,7 +263,12 @@ make_launcher (gint width)
   table = nbtk_table_new ();
   nbtk_widget_set_padding (table, &padding);
   launcher = CLUTTER_ACTOR (table);
-  clutter_actor_set_name (CLUTTER_ACTOR (table), "launcher-table");
+  clutter_actor_set_name (launcher, "launcher-table");
+
+  g_signal_connect (launcher, "button-press-event",
+                    G_CALLBACK (table_input_cb), NULL);
+
+  clutter_actor_set_reactive (launcher, TRUE);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (table), pad);
   nbtk_table_set_row_spacing (NBTK_TABLE (table), pad);
