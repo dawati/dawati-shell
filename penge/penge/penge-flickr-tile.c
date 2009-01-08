@@ -102,7 +102,6 @@ penge_flickr_tile_constructed (GObject *object)
   const gchar *title;
   const gchar *author;
   gchar *date;
-  gchar *secondary_text;
   const gchar *thumbnail_path;
   const gchar *buddyicon_path;
   ClutterActor *body;
@@ -119,16 +118,14 @@ penge_flickr_tile_constructed (GObject *object)
   thumbnail_path = g_hash_table_lookup (priv->item->props,
                                         "thumbnail");
   date = penge_utils_format_time (&(priv->item->date));
-  secondary_text = g_strdup_printf ("From %s", author);
   g_object_set (tile,
                 "primary-text",
                 title,
                 "secondary-text",
-                secondary_text,
+                author,
                 "icon-path",
                 buddyicon_path,
                 NULL);
-  g_free (secondary_text);
   g_free (date);
 
   body = clutter_texture_new_from_file (thumbnail_path, &error);
