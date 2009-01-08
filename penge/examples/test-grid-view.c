@@ -1,4 +1,5 @@
 #include "penge-grid-view.h"
+#include "penge-utils.h"
 
 int
 main (int    argc,
@@ -8,6 +9,8 @@ main (int    argc,
   ClutterActor *grid;
 
   clutter_init (&argc, &argv);
+
+  penge_utils_load_stylesheet ();
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 1024, 600);
