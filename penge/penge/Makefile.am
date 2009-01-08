@@ -28,7 +28,8 @@ libpenge_la_SOURCES = \
 		      penge-grid-view.c \
 		      penge-utils.c
 libpenge_la_CFLAGS = -Wall $(GLIB_CFLAGS) $(NBTK_CFLAGS) $(JANA_ECAL_CFLAGS) \
-		     $(MOJITO_CLIENT_CFLAGS) $(GTK_CFLAGS)
+		     $(MOJITO_CLIENT_CFLAGS) $(GTK_CFLAGS) \
+		     -DPKG_DATADIR=\"$(pkgdatadir)\"
 libpenge_la_LIBADD = $(GLIB_LIBS) $(NBTK_LIBS) $(JANA_ECAL_LIBS) \
 		     $(MOJITO_CLIENT_LIBS) $(GTK_LIBS)
 
