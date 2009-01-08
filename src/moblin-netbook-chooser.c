@@ -1031,6 +1031,7 @@ spawn_app (const gchar *path, guint32 timestamp,
   gint               argc = 0;
   SnHashData        *sn_data = g_slice_new0 (SnHashData);
   GError            *err = NULL;
+  gint               i;
 
   if (!path)
     return;
@@ -1039,6 +1040,13 @@ spawn_app (const gchar *path, guint32 timestamp,
     {
       g_warning ("Error parsing command line: %s", err->message);
       g_clear_error (&err);
+    }
+
+  for (i = 0; i < argc; i++)
+    {
+      /* we don't support any % arguments in the desktop entry spec yet */
+      if (argv[i][0] == '%')
+        argv[i][0] = '\0';
     }
 
   context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
