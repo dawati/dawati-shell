@@ -1,0 +1,62 @@
+PengeEventsPane, PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile
+{
+  background-image: url('file://general-background.png');
+  border-width: 16;
+}
+
+PengeDateTile
+{
+  background-image: url('file://date-background.png');
+  border-width: 16;
+}
+
+*.PengeDateTileBackground
+{
+  background-image: url('file://date-background-background.png');
+  border-width: 16;
+}
+
+PengePeoplePane
+{
+  background-image: url('file://people-background.png');
+  border-width: 16;
+}
+
+PengeCalendarPane
+{
+  background-image: url('file://date-background.png');
+  border-width: 16;
+}
+
+PengeRecentFilesPane
+{
+  background-image: url('file://recent-files-background.png');
+  border-width: 16;
+}
+
+*.PengeEventTime
+{
+  background-image: url('file://time-bg.png');
+  color: white;
+  font-size:12;
+}
+
+*.PengeDayLabel
+
+{
+  font-size: 18;
+  font-family: "Liberation Sans"
+}
+
+*.PengeDateLabel
+{
+  font-size: 78;
+  color: #4eb9f1ff;
+  font-family: "Liberation Sans"
+}
+
+NbtkLabel
+{
+  font-family: "Liberation Sans"
+  font-size: 8;
+}
