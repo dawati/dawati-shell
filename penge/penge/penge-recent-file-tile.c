@@ -83,6 +83,39 @@ penge_recent_file_tile_finalize (GObject *object)
 }
 
 static void
+_button_press_event (ClutterActor *actor,
+                     ClutterEvent *event,
+                     gpointer      userdata)
+{
+  PengeRecentFileTilePrivate *priv = GET_PRIVATE (userdata);
+  gchar *app_exec = NULL;
+  gchar *last_application;
+  GError *error = NULL;
+
+  last_application = gtk_recent_info_last_application (priv->info);
+
+  if (!gtk_recent_info_get_application_info (priv->info,
+                                             last_application,
+                                             &app_exec,
+                                             NULL,
+                                             NULL))
+  {
+    g_warning (G_STRLOC ": Error getting application command line: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    if (!g_spawn_command_line_async (app_exec, &error))
+    {
+      g_warning (G_STRLOC ": Error launching: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+  }
+
+  g_free (last_application);
+}
+
+static void
 penge_recent_file_tile_constructed (GObject *object)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (object);
@@ -101,6 +134,11 @@ penge_recent_file_tile_constructed (GObject *object)
     clutter_container_add_actor (CLUTTER_CONTAINER (object),
                                  tex);
   }
+
+  g_signal_connect (object, 
+                    "button-press-event",
+                    (GCallback)_button_press_event,
+                    object);
 }
 
 static void
