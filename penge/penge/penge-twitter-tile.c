@@ -1,5 +1,6 @@
 #include <mojito-client/mojito-item.h>
 #include <nbtk/nbtk.h>
+#include <gio/gio.h>
 
 #include "penge-twitter-tile.h"
 #include "penge-utils.h"
@@ -74,6 +75,28 @@ penge_twitter_tile_finalize (GObject *object)
 
 
 static void
+_button_press_event (ClutterActor *actor,
+                     ClutterEvent *event,
+                     gpointer      userdata)
+{
+  PengeTwitterTilePrivate *priv = GET_PRIVATE (userdata);
+  const gchar *url;
+  GError *error = NULL;
+
+  url = g_hash_table_lookup (priv->item->props,
+                             "url");
+
+  if (!g_app_info_launch_default_for_uri (url,
+                                     NULL,
+                                     &error))
+  {
+    g_warning (G_STRLOC ": Error launching uri: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
 penge_twitter_tile_constructed (GObject *object)
 {
   PengeTwitterTile *tile = PENGE_TWITTER_TILE (object);
@@ -120,6 +143,11 @@ penge_twitter_tile_constructed (GObject *object)
                 "body",
                 body,
                 NULL);
+
+  g_signal_connect (tile, 
+                    "button-press-event",
+                   (GCallback)_button_press_event,
+                   tile);
 }
 
 static void
