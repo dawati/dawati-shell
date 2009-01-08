@@ -24,4 +24,5 @@ AC_OUTPUT([
         penge/Makefile
         examples/Makefile
         data/Makefile
+        penge.pc
 ])
