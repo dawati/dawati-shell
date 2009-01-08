@@ -101,6 +101,7 @@ struct _MoblinNetbookPluginPrivate
   ShellTrayManager      *tray_manager;
 
   XserverRegion          input_region;
+  XserverRegion          screen_region;
 
   gboolean               debug_mode                 : 1;
   gboolean               panel_out                  : 1;

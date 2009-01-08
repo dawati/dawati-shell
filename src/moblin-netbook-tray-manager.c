@@ -32,6 +32,8 @@ typedef struct {
   GtkWidget *socket;
   GtkWidget *window;
   ClutterActor *actor;
+  Window orig_parent;
+  Window config_xwin;
 } ShellTrayManagerChild;
 
 enum {
@@ -255,7 +257,7 @@ create_bg_pixmap (GdkColormap  *colormap,
 static gboolean
 actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 {
-  static Atom            msg_type_atom = 0;
+  static Atom            tray_atom = 0;
 
   ShellTrayManagerChild *child  = data;
   ShellTrayManager      *manager = child->manager;
@@ -263,38 +265,36 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   MetaScreen            *screen = mutter_plugin_get_screen (plugin);
   Display               *xdpy   = mutter_plugin_get_xdisplay (plugin);
   GtkSocket             *socket = GTK_SOCKET (child->socket);
-  Window                 xwin   = GDK_WINDOW_XWINDOW (socket->plug_window);
-  XClientMessageEvent    xev;
-  MnbkTrayEventData     *td  = (MnbkTrayEventData*)&xev.data;
-  GdkEventType           event_type = GDK_BUTTON_PRESS;
+  ClutterActor          *stage  = mutter_plugin_get_stage (plugin);
+  Window                 stage_win;
+  stage_win = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-  /*
-   * Dispatch ClientMessage MOBLIN_SYSTEM_TRAY_EVENT to the associated
-   * tray icon window.
-   */
-  if (!msg_type_atom)
-    msg_type_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_EVENT, False);
+  if (!child->config_xwin)
+    {
+      Window  xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
+      Window *config_win;
+      gulong  n_items, left;
+      gint    ret_fmt;
+      Atom    ret_type;
 
-  if (event->button.type == CLUTTER_BUTTON_RELEASE)
-    event_type = GDK_BUTTON_RELEASE;
+      if (!tray_atom)
+        tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW, False);
 
-  xev.type = ClientMessage;
-  xev.window = xwin;
-  xev.message_type = msg_type_atom;
+      XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
+                          XA_WINDOW, &ret_type, &ret_fmt, &n_items, &left,
+                          (unsigned char **)&config_win);
 
-  xev.format    = 32;
-  td->type      = event_type;
-  td->button    = (guint16)event->button.button;
-  td->count     = (guint16)event->button.click_count;
-  td->x         = (gint16)event->button.x;
-  td->y         = (gint16)event->button.y;
-  td->time      = event->button.time;
-  td->modifiers = event->button.modifier_state;
+      if (!config_win)
+        return;
 
-  XSendEvent (xdpy, xwin,
-              False, StructureNotifyMask, (XEvent *)&xev);
+      child->config_xwin = *config_win;
 
-  hide_panel (plugin);
+      XFree (config_win);
+    }
+
+  XReparentWindow (xdpy, child->config_xwin, stage_win, 0, 0);
+  XMapWindow (xdpy, child->config_xwin);
+  XSync (xdpy, False);
 
   return TRUE;
 }
@@ -377,4 +377,30 @@ na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *socket,
                  shell_tray_manager_signals[TRAY_ICON_REMOVED], 0,
                  child->actor);
   g_hash_table_remove (manager->priv->icons, socket);
+}
+
+static XserverRegion
+create_input_shape (MutterPlugin *plugin,
+                    gint x, gint y, gint width, gint height)
+{
+  XserverRegion  dst, src2;
+  XRectangle     r;
+  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
+
+  r.x = 0;
+  r.y = 0;
+  r.width = width;
+  r.height = height;
+
+  src2 = XFixesCreateRegion (xdpy, &r, 1);
+
+  dst = XFixesCreateRegion (xdpy, NULL, 0);
+
+  XFixesSubtractRegion (xdpy, dst,
+                        MOBLIN_NETBOOK_PLUGIN (plugin)->priv->screen_region,
+                        src2);
+
+  XFixesDestroyRegion (xdpy, src2);
+
+  return dst;
 }

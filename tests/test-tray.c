@@ -85,7 +85,7 @@ idle_config_setup (gpointer data)
 {
   if (gtk_status_icon_is_embedded (icon))
     {
-      if (mnbtk_setup_config_window (icon, GDK_WINDOW_XID (popup->window)))
+      if (mnbtk_setup_config_window (icon, GDK_WINDOW_XID (message->window)))
         return FALSE;
     }
 
@@ -105,6 +105,8 @@ main (int argc, char *argv[])
 				     GTK_BUTTONS_OK,
                                      "Thank you for activating the applet.\n"
 				     "Now go and do something more useful!");
+
+  gtk_widget_realize (message);
 
   popup = gtk_menu_new ();
 

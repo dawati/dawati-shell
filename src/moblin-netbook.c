@@ -123,6 +123,9 @@ moblin_netbook_plugin_dispose (GObject *object)
   if (priv->input_region)
     XFixesDestroyRegion (xdpy, priv->input_region);
 
+  if (priv->screen_region)
+    XFixesDestroyRegion (xdpy, priv->screen_region);
+
   g_object_unref (priv->destroy_effect);
   g_object_unref (priv->minimize_effect);
   g_object_unref (priv->maximize_effect);
@@ -216,6 +219,12 @@ moblin_netbook_plugin_constructed (GObject *object)
   region = XFixesCreateRegion (xdpy, &rect[0], 1);
 
   priv->input_region = region;
+
+  rect[0].height = screen_height;
+
+  region = XFixesCreateRegion (xdpy, &rect[0], 1);
+
+  priv->screen_region = region;
 
   if (mutter_plugin_debug_mode (MUTTER_PLUGIN (plugin)))
     {
