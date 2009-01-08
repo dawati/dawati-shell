@@ -3,6 +3,8 @@
 #include <string.h>
 #include <glib/gi18n.h>
 
+#include <nbtk/nbtk.h>
+
 /* Code here is stolen from Tweet (C) Emmanuele Bassi */
 gchar *
 penge_utils_format_time (GTimeVal *time_)
@@ -123,3 +125,31 @@ penge_utils_get_thumbnail_path (const gchar *uri)
     return NULL;
   }
 }
+
+void
+penge_utils_load_stylesheet ()
+{
+  NbtkStyle *style;
+  GError *error = NULL;
+  gchar *path;
+
+  path = g_build_filename (PKG_DATADIR,
+                           "theme",
+                           "penge.css",
+                           NULL);
+
+  /* register the styling */
+  style = nbtk_style_get_default ();
+
+  if (!nbtk_style_load_from_file (style,
+                             path,
+                             &error))
+  {
+    g_warning (G_STRLOC ": Error opening style: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  g_free (path);
+}
+
