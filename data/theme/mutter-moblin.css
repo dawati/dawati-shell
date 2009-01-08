@@ -18,6 +18,10 @@ NbtkTable {
   background-color: #ffff;
 }
 
+*#launcher-table {
+  background-color: #ffff;
+}
+
 /* apps button */
 *#apps-button {
   background-image: url("file://panel/apps-normal.png");

@@ -33,7 +33,7 @@
 
 
 #define ICON_SIZE 48
-#define PADDING 4
+#define PADDING 8
 #define BORDER_WIDTH 4
 
 /* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
@@ -231,10 +231,6 @@ entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
   return TRUE;
 }
 
-/*
- * FIXME -- this is bit lame; what we really need is for NbtkTable to have
- * row-clicked signal to which we can connect on per-row basis.
- */
 static gboolean
 table_input_cb (ClutterActor *table, ClutterEvent *event, gpointer data)
 {
@@ -250,12 +246,13 @@ make_launcher (MutterPlugin *plugin, gint width)
   GSList *apps, *a;
   GtkIconTheme  *theme;
   ClutterActor  *stage, *launcher;
-  NbtkWidget    *table;
   gint           row, col, n_cols, pad;
-  ClutterActor  *group, *texture, *footer;
-  ClutterColor   bckg_clr = {0xff, 0xff, 0xff, 0xff};
-  ClutterActor  *bckg;
   struct entry_data *entry_data;
+  NbtkWidget    *table, *footer, *up_button;
+  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (4),
+                            CLUTTER_UNITS_FROM_INT (4),
+                            CLUTTER_UNITS_FROM_INT (4),
+                            CLUTTER_UNITS_FROM_INT (4)};
 
   n_cols = (width - 2*BORDER_WIDTH) / (ICON_SIZE + PADDING);
 
@@ -272,7 +269,14 @@ make_launcher (MutterPlugin *plugin, gint width)
   pad += PADDING;
 
   table = nbtk_table_new ();
+  nbtk_widget_set_padding (table, &padding);
   launcher = CLUTTER_ACTOR (table);
+  clutter_actor_set_name (launcher, "launcher-table");
+
+  g_signal_connect (launcher, "button-press-event",
+                    G_CALLBACK (table_input_cb), NULL);
+
+  clutter_actor_set_reactive (launcher, TRUE);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (table), pad);
   nbtk_table_set_row_spacing (NBTK_TABLE (table), pad);
@@ -338,43 +342,30 @@ make_launcher (MutterPlugin *plugin, gint width)
         }
     }
 
-  g_signal_connect (launcher, "button-press-event",
-		    G_CALLBACK (table_input_cb), NULL);
+  table = nbtk_table_new ();
 
-  clutter_actor_set_reactive (launcher, TRUE);
+  /* footer with "up" button */
+  footer = nbtk_table_new ();
+  nbtk_widget_set_padding (footer, &padding);
+  nbtk_widget_set_style_class_name (footer, "drop-down-footer");
 
-  clutter_actor_set_size (launcher,
-                          n_cols * (ICON_SIZE + pad),
-                          (row + 1) * (ICON_SIZE + pad));
-
-  /*
-   * FIXME: This is a dirty hack to add border around the launcher. We really
-   *        want to add just padding, but NbtkWidget::allocate() will not run
-   *        for subclasses, so the padding property is ignored.
-   *        Also, we should match the color to the theme, but attempts to
-   *        query the NbtkStylable for background color at this point return
-   *        something completely translucent.
-   */
-  group = clutter_group_new ();
-  bckg  = clutter_rectangle_new_with_color (&bckg_clr);
-
-  clutter_actor_set_size (bckg,
-                          width,
-                          (row + 1) * (ICON_SIZE + pad) + 4*BORDER_WIDTH);
-
-  clutter_actor_set_position (launcher, BORDER_WIDTH, BORDER_WIDTH);
-
-  texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                           "/theme/drop-down/footer.png", NULL);
-  footer = nbtk_texture_frame_new (CLUTTER_TEXTURE (texture), 10, 0, 10, 10);
-  clutter_actor_set_position (footer, 0,
-                              (row + 1) * (ICON_SIZE + pad) + 4*BORDER_WIDTH);
-  clutter_actor_set_size (footer, width, 31);
+  up_button = nbtk_button_new ();
+  nbtk_widget_set_style_class_name (up_button, "drop-down-up-button");
+  nbtk_table_add_actor (NBTK_TABLE (footer), CLUTTER_ACTOR (up_button), 0, 0);
+  clutter_actor_set_size (CLUTTER_ACTOR (up_button), 23, 21);
+  clutter_container_child_set (CLUTTER_CONTAINER (footer),
+                               CLUTTER_ACTOR (up_button),
+                               "keep-aspect-ratio", TRUE,
+                               "x-align", 1.0,
+                               NULL);
+  g_signal_connect_swapped (up_button, "clicked", G_CALLBACK (clutter_actor_hide), table);
 
 
-  clutter_container_add (CLUTTER_CONTAINER (group), bckg, launcher, footer,
-                         NULL);
+  /* add all the actors to the group */
+  nbtk_table_add_actor (NBTK_TABLE (table), launcher, 0, 0);
+  nbtk_table_add_widget (NBTK_TABLE (table), footer, 1, 0);
 
+  clutter_actor_set_width (CLUTTER_ACTOR (table), width);
 
-  return group;
+  return CLUTTER_ACTOR (table);
 }
