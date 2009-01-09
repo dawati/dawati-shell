@@ -101,13 +101,13 @@ toggle_control (MnbkControl control, gboolean show)
         {
           clutter_actor_raise (actor, priv->panel_shadow);
           clutter_actor_set_position (actor,
-                                      4,
+                                      0,
                                       -clutter_actor_get_height(actor));
 
           clutter_actor_show (actor);
           clutter_effect_move (priv->panel_slide_effect,
                                actor,
-                               4,
+                               0,
                                PANEL_HEIGHT,
                                NULL, NULL);
 

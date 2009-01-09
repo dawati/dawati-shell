@@ -241,10 +241,8 @@ make_launcher (gint width)
   ClutterActor  *stage, *launcher;
   gint           row, col, n_cols, pad;
   NbtkWidget    *table, *footer, *up_button;
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4)};
+  NbtkPadding    padding = MN_PADDING (4, 4, 4, 4);
+  NbtkPadding    bg_padding = MN_PADDING (0, 4, 37, 4);
 
   n_cols = (width - 2*BORDER_WIDTH) / (ICON_SIZE + PADDING);
 
@@ -261,7 +259,6 @@ make_launcher (gint width)
   pad += PADDING;
 
   table = nbtk_table_new ();
-  nbtk_widget_set_padding (table, &padding);
   launcher = CLUTTER_ACTOR (table);
   clutter_actor_set_name (launcher, "launcher-table");
 
@@ -330,6 +327,8 @@ make_launcher (gint width)
     }
 
   table = nbtk_table_new ();
+  nbtk_widget_set_style_class_name (table, "drop-down-background");
+  nbtk_widget_set_padding (table, &bg_padding);
 
   /* footer with "up" button */
   footer = nbtk_table_new ();

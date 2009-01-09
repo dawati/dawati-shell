@@ -262,8 +262,7 @@ make_panel (gint width)
 
   g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
 
-  priv->launcher = make_launcher (width - PANEL_X_PADDING * 2);
-  clutter_actor_set_position (priv->launcher, PANEL_X_PADDING, PANEL_HEIGHT);
+  priv->launcher = make_launcher (width);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->launcher);
 

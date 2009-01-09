@@ -35,6 +35,9 @@
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
+
+#define MN_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d)}
+
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
 
