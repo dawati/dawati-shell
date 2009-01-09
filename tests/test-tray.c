@@ -27,20 +27,30 @@
 
 #include "../src/moblin-netbook-system-tray.h"
 
+static void
+button_clicked_cb (GtkButton *button, gpointer data)
+{
+  GtkWidget *config = data;
+
+  gtk_widget_unrealize (config);
+}
 
 int
 main (int argc, char *argv[])
 {
-  GtkWidget     *config;
+  GtkWidget     *config, *button;
   GtkStatusIcon *icon;
 
   gtk_init (&argc, &argv);
 
   config = gtk_plug_new (0);
 
-  gtk_container_add (GTK_CONTAINER (config),
-                     gtk_image_new_from_stock (GTK_STOCK_QUIT,
-                                               GTK_ICON_SIZE_LARGE_TOOLBAR));
+  button = gtk_button_new_from_stock (GTK_STOCK_QUIT);
+
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (button_clicked_cb), config);
+
+  gtk_container_add (GTK_CONTAINER (config), button);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
 
