@@ -140,6 +140,27 @@ penge_people_tile_class_init (PengePeopleTileClass *klass)
                                G_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_SECONDARY_TEXT, pspec);
 }
+
+static gboolean
+_enter_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+                                      "hover");
+  return FALSE;
+}
+
+static gboolean
+_leave_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+                                      NULL);
+  return FALSE;
+}
+
 /*
  *        0                   1 
  *  *************************************
@@ -248,6 +269,15 @@ penge_people_tile_init (PengePeopleTile *self)
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
 
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
+
+  g_signal_connect (self,
+                    "enter-event",
+                    (GCallback)_enter_event_cb,
+                    NULL);
+  g_signal_connect (self,
+                    "leave-event",
+                    (GCallback)_leave_event_cb,
+                    NULL);
 }
 
 

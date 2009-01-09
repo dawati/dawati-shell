@@ -171,9 +171,37 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
   g_object_class_install_property (object_class, PROP_INFO, pspec);
 }
 
+static gboolean
+_enter_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+                                      "hover");
+  return FALSE;
+}
+
+static gboolean
+_leave_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+                                      NULL);
+  return FALSE;
+}
+
 static void
 penge_recent_file_tile_init (PengeRecentFileTile *self)
 {
+  g_signal_connect (self,
+                    "enter-event",
+                    (GCallback)_enter_event_cb,
+                    NULL);
+  g_signal_connect (self,
+                    "leave-event",
+                    (GCallback)_leave_event_cb,
+                    NULL);
 }
 
 
