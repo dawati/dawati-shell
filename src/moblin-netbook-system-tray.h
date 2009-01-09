@@ -49,7 +49,15 @@ typedef struct
 #ifndef MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 /*
  * Utility code to set up Tray code in the application. Simply call
+ *
  * mnbk_system_tray_init (icon, config_plug);
+ *
+ * icon: GtkStatusIcon* instance.
+ *
+ * config_plug: GtkPlug* instance; this is the top level container that
+ * holding the application configuration window. Unlike in the normal X
+ * tray set up, this window is shown *by the netbook plugin*, not the
+ * application, in response to click on the status icon.
  *
  * See tests/test-tray.c for an example.
  */
