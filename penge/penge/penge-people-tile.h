@@ -1,8 +1,8 @@
 #ifndef _PENGE_PEOPLE_TILE
 #define _PENGE_PEOPLE_TILE
 
-#include <nbtk/nbtk.h>
 #include <glib-object.h>
+#include <nbtk/nbtk.h>
 
 G_BEGIN_DECLS
 
