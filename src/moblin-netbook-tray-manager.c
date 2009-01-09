@@ -31,9 +31,8 @@ typedef struct {
   ShellTrayManager *manager;
   GtkWidget *socket;
   GtkWidget *window;
+  GtkWidget *config;
   ClutterActor *actor;
-  Window orig_parent;
-  Window config_xwin;
 } ShellTrayManagerChild;
 
 enum {
@@ -255,52 +254,66 @@ create_bg_pixmap (GdkColormap  *colormap,
 }
 
 static gboolean
+config_plug_removed_cb (GtkSocket *socket, gpointer data)
+{
+  ShellTrayManagerChild *child = data;
+  GtkWidget *config = child->config;
+
+  child->config = NULL;
+  gtk_widget_destroy (config);
+
+  return FALSE;
+}
+
+static gboolean
 actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 {
   static Atom            tray_atom = 0;
 
-  ShellTrayManagerChild *child  = data;
+  ShellTrayManagerChild *child   = data;
   ShellTrayManager      *manager = child->manager;
-  MutterPlugin          *plugin = manager->priv->plugin;
-  MetaScreen            *screen = mutter_plugin_get_screen (plugin);
-  Display               *xdpy   = mutter_plugin_get_xdisplay (plugin);
-  GtkSocket             *socket = GTK_SOCKET (child->socket);
-  ClutterActor          *stage  = mutter_plugin_get_stage (plugin);
+  MutterPlugin          *plugin  = manager->priv->plugin;
+  MetaScreen            *screen  = mutter_plugin_get_screen (plugin);
+  Display               *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  GtkSocket             *socket  = GTK_SOCKET (child->socket);
+  ClutterActor          *stage   = mutter_plugin_get_stage (plugin);
   Window                 stage_win;
-  GtkWidget             *config;
-  GtkWidget             *win;
 
   stage_win = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-  if (!child->config_xwin)
+  if (!child->config)
     {
-      Window  xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
-      Window *config_win;
-      gulong  n_items, left;
-      gint    ret_fmt;
-      Atom    ret_type;
+      Window     xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
+      Window    *config_xwin;
+      GtkWidget *config;
+      GtkWidget *config_socket;
+      gulong     n_items, left;
+      gint       ret_fmt;
+      Atom       ret_type;
 
       if (!tray_atom)
         tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW, False);
 
       XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
                           XA_WINDOW, &ret_type, &ret_fmt, &n_items, &left,
-                          (unsigned char **)&config_win);
+                          (unsigned char **)&config_xwin);
 
-      if (!config_win)
+      if (!config_xwin)
         return;
 
-      child->config_xwin = *config_win;
+      config_socket = gtk_socket_new ();
+      child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
 
-      XFree (config_win);
+      gtk_container_add (GTK_CONTAINER (config), config_socket);
+      gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
+
+      g_signal_connect (config_socket, "plug-removed",
+                        G_CALLBACK (config_plug_removed_cb), child);
+
+      XFree (config_xwin);
     }
 
-    config = gtk_socket_new ();
-    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-
-    gtk_container_add (GTK_CONTAINER (win), config);
-    gtk_socket_add_id (GTK_SOCKET (config), child->config_xwin);
-    gtk_widget_show_all (win);
+    gtk_widget_show_all (child->config);
 
     return TRUE;
 }
@@ -358,6 +371,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   child->socket = socket;
   child->actor = g_object_ref (icon);
   child->manager = manager;
+  child->config = NULL;
 
   g_hash_table_insert (manager->priv->icons, socket, child);
 
