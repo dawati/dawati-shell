@@ -130,6 +130,7 @@ penge_twitter_tile_constructed (GObject *object)
   g_free (date);
 
   body = nbtk_label_new (content);
+  nbtk_widget_set_style_class_name (body, "PengeTwitterTileLabel");
   label = nbtk_label_get_clutter_label (NBTK_LABEL (body));
   clutter_label_set_line_wrap (CLUTTER_LABEL (label), TRUE);
   clutter_label_set_ellipsize (CLUTTER_LABEL (label),
