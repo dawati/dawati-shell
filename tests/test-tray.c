@@ -27,35 +27,13 @@
 
 #include "../src/moblin-netbook-system-tray.h"
 
-static GtkWidget     *config;
-static GtkStatusIcon *icon;
-
-/*
- * We use an idle callback to set up the config window attachment, because
- * we need the GtkStatusIcon to have an x window.
- */
-static gboolean
-idle_config_setup (gpointer data)
-{
-  if (gtk_status_icon_is_embedded (icon))
-    {
-      if (!GTK_WIDGET_REALIZED (config))
-        {
-          XSync (GDK_DISPLAY (), False);
-          return TRUE;
-        }
-
-      if (mnbtk_setup_config_window (icon,
-                                     gtk_plug_get_id (GTK_PLUG (config))))
-        return FALSE;
-    }
-
-  return TRUE;
-}
 
 int
 main (int argc, char *argv[])
 {
+  GtkWidget     *config;
+  GtkStatusIcon *icon;
+
   gtk_init (&argc, &argv);
 
   config = gtk_plug_new (0);
@@ -64,12 +42,9 @@ main (int argc, char *argv[])
                      gtk_image_new_from_stock (GTK_STOCK_QUIT,
                                                GTK_ICON_SIZE_LARGE_TOOLBAR));
 
-  gtk_widget_show_all (config);
-
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
-  gtk_status_icon_set_visible (icon, TRUE);
 
-  g_idle_add (idle_config_setup, NULL);
+  mnbk_system_tray_init (icon, GTK_PLUG (config));
 
   gtk_main ();
 

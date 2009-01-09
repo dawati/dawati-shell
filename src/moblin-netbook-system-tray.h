@@ -48,73 +48,13 @@ typedef struct
 
 #ifndef MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 /*
- * Client-side message filter which takes care of dispatching the appropriate
- * activate and popup-menu signals.
+ * Utility code to set up Tray code in the application. Simply call
+ * mnbk_system_tray_init (icon, config_plug);
  *
- * Install in the client application as
- *
- *  gdk_add_client_message_filter (gdk_atom_intern (MOBLIN_SYSTEM_TRAY_EVENT,
- *                                                  FALSE),
- *				   mnbtk_client_message_handler, icon);
- *
- * Where icon is a GtkStatusIcon instance. The GtkStatusIcon signal handlers
- * need to use coords stored in mnbk_event_x and mnbk_event_y instead of
- * querying the status icon.
- *
- * See tests/test-tray.c for a simple example.
- */
-static gint32 mnbk_event_x = 0;
-static gint32 mnbk_event_y = 0;
-
-static GdkFilterReturn
-mnbtk_client_message_handler (GdkXEvent *xevent, GdkEvent *event, gpointer data)
-{
-  GtkStatusIcon       *icon = GTK_STATUS_ICON (data);
-  XClientMessageEvent *xev = (XClientMessageEvent *) xevent;
-  MnbkTrayEventData   *td  = (MnbkTrayEventData*)&xev->data;
-
-#if 0
-  g_debug ("Got click: \n"
-	   "           button: %d\n"
-	   "             type: %d\n"
-	   "            count: %d\n"
-	   "                x: %d\n"
-	   "                y: %d\n"
-	   "        modifiers: 0x%x\n\n",
-	   td->button,
-	   td->type,
-	   td->count,
-	   td->x,
-	   td->y,
-	   td->modifiers);
-#endif
-
-  if (td->type == GDK_BUTTON_PRESS)
-    {
-      mnbk_event_x = td->x;
-      mnbk_event_y = td->y;
-
-      switch (td->button)
-	{
-	case 1:
-	  g_signal_emit_by_name (icon, "activate", 0);
-	  break;
-	case 3:
-	  g_signal_emit_by_name (icon, "popup-menu", 0, td->button, td->time);
-	  break;
-	default:
-	  break;
-	}
-    }
-}
-
-/*
- * Hangs the window id for a config window onto the xwindow of the icon.
- *
- * Returns FALSE on failure.
+ * See tests/test-tray.c for an example.
  */
 static gboolean
-mnbtk_setup_config_window (GtkStatusIcon *icon, Window config_win)
+_mnbk_setup_config_window (GtkStatusIcon *icon, Window config_win)
 {
   Atom tray_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW);
   Window    icon_win;
@@ -146,6 +86,48 @@ mnbtk_setup_config_window (GtkStatusIcon *icon, Window config_win)
                    32, PropModeReplace, (unsigned char*)&config_win, 1);
 
   return TRUE;
+}
+
+struct mnbk_tray_setup_data
+{
+  GtkStatusIcon *icon;
+  GtkPlug       *config;
+};
+
+static struct mnbk_tray_setup_data _mnbk_tray_setup_data;
+
+static gboolean
+_mnbk_idle_config_setup (gpointer data)
+{
+  struct mnbk_tray_setup_data *tray_data = data;
+  GtkStatusIcon               *icon      = tray_data->icon;
+  GtkPlug                     *config    = tray_data->config;
+
+  if (gtk_status_icon_is_embedded (icon))
+    {
+      if (!GTK_WIDGET_REALIZED (config))
+        {
+          XSync (GDK_DISPLAY (), False);
+          return TRUE;
+        }
+
+      if (_mnbk_setup_config_window (icon, gtk_plug_get_id (config)))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+mnbk_system_tray_init (GtkStatusIcon *icon, GtkPlug *config)
+{
+  _mnbk_tray_setup_data.icon = icon;
+  _mnbk_tray_setup_data.config = config;
+
+  gtk_widget_show_all (GTK_WIDGET (config));
+  gtk_status_icon_set_visible (icon, TRUE);
+
+  g_idle_add (_mnbk_idle_config_setup, &_mnbk_tray_setup_data);
 }
 
 #else
