@@ -245,6 +245,9 @@ make_contents (GCallback  ws_callback)
           if (ws_indx == active_ws)
             clutter_actor_set_name (CLUTTER_ACTOR (spaces[ws_indx]), "switcher-workspace-active");
           nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1, ws_indx);
+          /* switch workspace when the workspace is selected */
+          g_signal_connect (spaces[ws_indx], "button-press-event",
+                            ws_callback, GINT_TO_POINTER (ws_indx));
         }
 
       texture = mutter_window_get_texture (mw);
