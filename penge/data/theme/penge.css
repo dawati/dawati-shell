@@ -53,24 +53,34 @@ PengeRecentFilesPane
   font-size:12;
 }
 
-
-
 *.PengeDayLabel
-
 {
   font-size: 18;
-  font-family: "Liberation Sans"
 }
 
 *.PengeDateLabel
 {
   font-size: 78;
   color: #4eb9f1ff;
-  font-family: "Liberation Sans"
+}
+
+*.PengePeopleTilePrimaryLabel
+{
+}
+
+*.PengePeopleTileSecondaryLabel
+{
+  font-size: 11;
+  color: #3a3a3aff;
+}
+
+*.PengeTwitterTileText
+{
+  font-size: 12;
 }
 
 NbtkLabel
 {
-  font-family: "Liberation Sans"
-  font-size: 8;
+  font-family: "Liberation Sans";
+  font-size: 12;
 }
