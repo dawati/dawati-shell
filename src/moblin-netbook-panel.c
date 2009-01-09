@@ -268,6 +268,13 @@ make_panel (gint width)
 
   clutter_actor_hide (priv->launcher);
 
+  priv->mzone_grid = make_mzone_grid (width - PANEL_X_PADDING * 2);
+  clutter_actor_set_position (priv->mzone_grid, PANEL_X_PADDING, PANEL_HEIGHT);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
+
+  clutter_actor_hide (priv->mzone_grid);
+
   return panel;
 }
 

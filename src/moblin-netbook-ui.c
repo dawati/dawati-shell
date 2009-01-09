@@ -85,6 +85,9 @@ toggle_control (MnbkControl control, gboolean show)
       if (control != MNBK_CONTROL_APPLICATIONS)
         clutter_actor_hide (priv->launcher);
 
+      if (control != MNBK_CONTROL_MZONE)
+        clutter_actor_hide (priv->mzone_grid);
+
       switch (control)
         {
         case MNBK_CONTROL_SPACES:
@@ -92,6 +95,9 @@ toggle_control (MnbkControl control, gboolean show)
           break;
         case MNBK_CONTROL_APPLICATIONS:
           actor = priv->launcher;
+          break;
+        case MNBK_CONTROL_MZONE:
+          actor = priv->mzone_grid;
           break;
         default:
           break;
@@ -122,6 +128,9 @@ toggle_control (MnbkControl control, gboolean show)
           break;
         case MNBK_CONTROL_APPLICATIONS:
           actor = priv->launcher;
+          break;
+        case MNBK_CONTROL_MZONE:
+          actor = priv->mzone_grid;
           break;
         default:
           break;

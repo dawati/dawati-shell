@@ -27,7 +27,8 @@ AM_PROG_LIBTOOL
 
 AM_GLIB_GNU_GETTEXT
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0 libstartup-notification-1.0 gtk+-2.0 libgnome-menu)
+PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0
+                  libstartup-notification-1.0 gtk+-2.0 libgnome-menu bijou)
 
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.14 gio-2.0)
 PKG_CHECK_MODULES(NBTK, nbtk-1.0)

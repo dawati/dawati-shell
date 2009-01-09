@@ -967,12 +967,16 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
           if (priv->launcher)
             clutter_actor_hide (priv->launcher);
+
+          if (priv->mzone_grid)
+            clutter_actor_hide (priv->mzone_grid);
         }
 
       if (priv->panel_out &&
           (event->type == CLUTTER_BUTTON_PRESS ||
            (!priv->switcher && !priv->workspace_switcher &&
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))))
+            !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
+            !CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid))))
         {
           guint height = clutter_actor_get_height (priv->panel_shadow);
 
