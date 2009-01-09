@@ -297,7 +297,7 @@ make_workspace_switcher ()
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
-  ClutterActor  *switcher;
+  NbtkWidget    *switcher;
   ClutterActor  *label;
   ClutterActor  *grid;
   NbtkWidget    *texture, *footer, *up_button;
@@ -306,14 +306,14 @@ make_workspace_switcher ()
   gint           grid_y;
   gint           panel_y;
   ClutterColor   label_clr = { 0xff, 0xff, 0xff, 0xff };
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4)};
+  NbtkPadding    padding = MN_PADDING (4, 4, 4, 4);
+  NbtkPadding    bg_padding = MN_PADDING (0, 4, 36, 4);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  switcher = clutter_group_new ();
+  switcher = nbtk_table_new ();
+  nbtk_widget_set_padding (switcher, &bg_padding);
+  nbtk_widget_set_style_class_name (switcher, "drop-down-background");
 
   grid = make_contents (G_CALLBACK (workspace_input_cb));
   clutter_actor_realize (grid);
@@ -335,29 +335,29 @@ make_workspace_switcher ()
                                NULL);
   g_signal_connect (up_button, "clicked", G_CALLBACK (hide_workspace_switcher), NULL);
 
-  clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         grid, footer, NULL);
+  nbtk_table_add_actor (NBTK_TABLE (switcher), grid, 0, 0);
+  nbtk_table_add_widget (NBTK_TABLE (switcher), footer, 1, 0);
 
   if (priv->workspace_switcher)
     hide_workspace_switcher ();
 
-  priv->workspace_switcher = switcher;
+  priv->workspace_switcher = CLUTTER_ACTOR (switcher);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), switcher);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), CLUTTER_ACTOR (switcher));
   clutter_actor_set_position (grid, 0, 0);
   clutter_actor_set_position (CLUTTER_ACTOR (footer), 0, clutter_actor_get_height (grid));
   clutter_actor_set_size (CLUTTER_ACTOR (footer), screen_width - PANEL_X_PADDING * 2, 31);
 
   panel_y      = clutter_actor_get_y (priv->panel);
 
-  clutter_actor_set_reactive (switcher, TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (switcher), TRUE);
 
   g_signal_connect (switcher, "key-press-event",
                     G_CALLBACK (switcher_keyboard_input_cb), NULL);
 
-  clutter_grab_keyboard (switcher);
+  clutter_grab_keyboard (CLUTTER_ACTOR (switcher));
 
-  clutter_actor_raise (switcher, priv->panel_shadow);
+  clutter_actor_raise (CLUTTER_ACTOR (switcher), priv->panel_shadow);
 
-  return switcher;
+  return CLUTTER_ACTOR (switcher);
 }
