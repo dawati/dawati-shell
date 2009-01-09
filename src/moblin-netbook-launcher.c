@@ -242,7 +242,7 @@ make_launcher (gint width)
   gint           row, col, n_cols, pad;
   NbtkWidget    *table, *footer, *up_button;
   NbtkPadding    padding = MN_PADDING (4, 4, 4, 4);
-  NbtkPadding    bg_padding = MN_PADDING (0, 4, 37, 4);
+  NbtkPadding    bg_padding = MN_PADDING (0, 4, 36, 4);
 
   n_cols = (width - 2*BORDER_WIDTH) / (ICON_SIZE + PADDING);
 
