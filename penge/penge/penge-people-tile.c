@@ -222,7 +222,13 @@ penge_people_tile_init (PengePeopleTile *self)
                                FALSE,
                                NULL);
 
-
+  /*
+   * Explicitly set the width to 100 to avoid overflowing text. Slightly
+   * hackyish but works around a strange bug in NbtkTable where if the text
+   * is too long it will cause negative positioning of the icon.
+   */
+  clutter_actor_set_width ((ClutterActor *)priv->primary_text, 100);
+  clutter_actor_set_width ((ClutterActor *)priv->secondary_text, 100);
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->icon,
