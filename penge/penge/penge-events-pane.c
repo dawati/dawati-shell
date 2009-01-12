@@ -367,9 +367,11 @@ penge_events_pane_update_duration (PengeEventsPane *pane)
 
   now = jana_ecal_utils_time_now_local ();
   jana_time_set_minutes (now, 0);
+  jana_time_set_seconds (now, 0);
   end_of_day = jana_ecal_utils_time_now_local ();
   jana_time_set_hours (end_of_day, 23);
   jana_time_set_minutes (end_of_day, 59);
+  jana_time_set_seconds (end_of_day, 59);
 
   if (priv->duration)
     jana_duration_free (priv->duration);
