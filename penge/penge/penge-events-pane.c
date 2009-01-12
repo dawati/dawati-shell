@@ -21,7 +21,7 @@ struct _PengeEventsPanePrivate {
     GHashTable *uid_to_actors;
 };
 
-#define MAX_COUNT 4
+#define MAX_COUNT 6
 
 static void
 penge_events_pane_get_property (GObject *object, guint property_id,
@@ -129,7 +129,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   events = g_hash_table_get_values (priv->uid_to_events);
   events = g_list_sort (events, _event_compare_func);
 
-  for (l = events; l; l = l->next)
+  for (l = events; l && (count < MAX_COUNT); l = l->next)
   {
     event = (JanaEvent *)l->data;
     uid = jana_component_get_uid (JANA_COMPONENT (event));
