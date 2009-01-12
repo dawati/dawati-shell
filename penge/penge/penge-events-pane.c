@@ -303,20 +303,12 @@ _store_opened_cb (JanaStore *store,
 {
   PengeEventsPane *pane = (PengeEventsPane *)userdata;
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
-  JanaTime *now;
-  JanaTime *end_of_day;
+
 
   priv->view = jana_store_get_view (priv->store);
 
   /* Set it up to only show events from nowish until the end of the day. */
-  now = jana_ecal_utils_time_now_local ();
-  jana_time_set_minutes (now, 0);
-  end_of_day = jana_ecal_utils_time_now_local ();
-  jana_time_set_hours (end_of_day, 23);
-  jana_time_set_minutes (end_of_day, 59);
-  priv->duration = jana_duration_new (now, end_of_day);
-
-  jana_store_view_set_range (priv->view, now, end_of_day);
+  penge_events_pane_update_duration (pane);
 
   g_signal_connect (priv->view,
                     "added",
@@ -364,4 +356,25 @@ penge_events_pane_init (PengeEventsPane *self)
   jana_store_open (priv->store);
 
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
+}
+
+void
+penge_events_pane_update_duration (PengeEventsPane *pane)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
+  JanaTime *now;
+  JanaTime *end_of_day;
+
+  now = jana_ecal_utils_time_now_local ();
+  jana_time_set_minutes (now, 0);
+  end_of_day = jana_ecal_utils_time_now_local ();
+  jana_time_set_hours (end_of_day, 23);
+  jana_time_set_minutes (end_of_day, 59);
+
+  if (priv->duration)
+    jana_duration_free (priv->duration);
+
+  priv->duration = jana_duration_new (now, end_of_day);
+
+  jana_store_view_set_range (priv->view, now, end_of_day);
 }
