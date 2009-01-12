@@ -918,7 +918,44 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       return;
     }
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  /*
+   * The OR test must come first, since GTK_WINDOW_POPUP type windows are
+   * both override redirect, but also have a _NET_WM_WINDOW_TYPE set to NORMAL
+   */
+  if (mutter_window_is_override_redirect (mcw))
+    {
+      Window xwin = mutter_window_get_x_window (mcw);
+
+      if (shell_tray_manager_is_config_window (priv->tray_manager, xwin))
+        {
+          /* FIXME
+           * For now, just apply the same kind of an effect we do for
+           * application windows.
+           */
+          struct map_data *map_data;
+          ActorPrivate    *apriv = get_actor_private (mcw);
+
+          clutter_actor_move_anchor_point_from_gravity (actor,
+                                                        CLUTTER_GRAVITY_CENTER);
+
+          clutter_actor_set_scale (actor, 0.0, 0.0);
+          clutter_actor_show (actor);
+
+          apriv->tml_map = nbtk_bounce_scale (actor, MAP_TIMEOUT);
+
+          map_data = g_new (struct map_data, 1);
+          map_data->plugin = plugin;
+          map_data->actor = actor;
+
+          g_signal_connect (apriv->tml_map, "completed",
+                            G_CALLBACK (on_map_effect_complete), map_data);
+
+          apriv->is_minimized = FALSE;
+        }
+      else
+        mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+    }
+  else if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mcw);
       MetaWindow   *mw = mutter_window_get_meta_window (mcw);

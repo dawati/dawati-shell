@@ -24,6 +24,8 @@ struct _ShellTrayManagerPrivate {
 
   GHashTable *icons;
 
+  GList *config_windows;
+
   MutterPlugin *plugin;
 };
 
@@ -32,6 +34,7 @@ typedef struct {
   GtkWidget *socket;
   GtkWidget *window;
   GtkWidget *config;
+  Window     config_xwin;
   ClutterActor *actor;
 } ShellTrayManagerChild;
 
@@ -256,11 +259,19 @@ create_bg_pixmap (GdkColormap  *colormap,
 static gboolean
 config_plug_removed_cb (GtkSocket *socket, gpointer data)
 {
-  ShellTrayManagerChild *child = data;
-  GtkWidget             *config = child->config;
+  ShellTrayManagerChild *child   = data;
+  GtkWidget             *config  = child->config;
+  ShellTrayManager      *manager = child->manager;
 
-  child->config = NULL;
-  gtk_widget_destroy (config);
+  if (child->config)
+    {
+      manager->priv->config_windows =
+        g_list_remove (manager->priv->config_windows,
+                       GINT_TO_POINTER (child->config_xwin));
+
+      child->config = NULL;
+      gtk_widget_destroy (config);
+    }
 
   return FALSE;
 }
@@ -283,6 +294,11 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
     {
       ShellTrayManagerChild *child = data;
       GtkWidget             *config = child->config;
+      ShellTrayManager      *manager = child->manager;
+
+      manager->priv->config_windows =
+        g_list_remove (manager->priv->config_windows,
+                       GINT_TO_POINTER (child->config_xwin));
 
       child->config = NULL;
       gtk_widget_destroy (config);
@@ -327,6 +343,7 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 
       config_socket = gtk_socket_new ();
       child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
+      child->config_xwin = *config_xwin;
 
       gtk_container_add (GTK_CONTAINER (config), config_socket);
       gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
@@ -334,10 +351,22 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
       if (!GTK_SOCKET (config_socket)->is_mapped)
         {
           child->config = NULL;
+          child->config_xwin = None;
+
           gtk_widget_destroy (config);
         }
       else
         {
+          GList *wins = manager->priv->config_windows;
+
+          gtk_widget_realize (config);
+
+          printf ("Config window is 0x%x\n", (guint) *config_xwin);
+
+          manager->priv->config_windows =
+            g_list_prepend (wins,
+                            GINT_TO_POINTER (*config_xwin));
+
           gtk_widget_show_all (config);
 
           g_signal_connect (config_socket, "plug-removed",
@@ -460,4 +489,22 @@ create_input_shape (MutterPlugin *plugin,
   XFixesDestroyRegion (xdpy, src2);
 
   return dst;
+}
+
+gboolean
+shell_tray_manager_is_config_window (ShellTrayManager *manager, Window xwindow)
+{
+  GList *l = manager->priv->config_windows;
+
+  while (l)
+    {
+      Window xwin = GPOINTER_TO_INT (l->data);
+
+      if (xwin == xwindow)
+        return TRUE;
+
+      l = l->next;
+    }
+
+  return FALSE;
 }

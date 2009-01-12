@@ -44,6 +44,9 @@ GType             shell_tray_manager_get_type     (void);
 ShellTrayManager *shell_tray_manager_new          (void);
 void              shell_tray_manager_manage_stage (ShellTrayManager *manager,
                                                    ClutterStage     *stage);
+gboolean          shell_tray_manager_is_config_window (ShellTrayManager *manager,
+                                                       Window xwindow);
+
 G_END_DECLS
 
 #endif /* __SHELL_TRAY_MANAGER_H__ */
