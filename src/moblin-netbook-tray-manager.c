@@ -331,13 +331,21 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
       gtk_container_add (GTK_CONTAINER (config), config_socket);
       gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
 
-      gtk_widget_show_all (config);
+      if (!GTK_SOCKET (config_socket)->is_mapped)
+        {
+          child->config = NULL;
+          gtk_widget_destroy (config);
+        }
+      else
+        {
+          gtk_widget_show_all (config);
 
-      g_signal_connect (config_socket, "plug-removed",
-                        G_CALLBACK (config_plug_removed_cb), child);
+          g_signal_connect (config_socket, "plug-removed",
+                            G_CALLBACK (config_plug_removed_cb), child);
 
-      g_signal_connect (config_socket, "size-allocate",
-                        G_CALLBACK (config_socket_size_allocate_cb), child);
+          g_signal_connect (config_socket, "size-allocate",
+                            G_CALLBACK (config_socket_size_allocate_cb), child);
+        }
 
       XFree (config_xwin);
     }
