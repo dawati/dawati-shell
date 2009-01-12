@@ -32,25 +32,28 @@ button_clicked_cb (GtkButton *button, gpointer data)
 {
   GtkWidget *config = data;
 
-  gtk_widget_unrealize (config);
+  gtk_widget_hide (config);
 }
 
 int
 main (int argc, char *argv[])
 {
-  GtkWidget     *config, *button;
+  GtkWidget     *config, *button, *table;
   GtkStatusIcon *icon;
 
   gtk_init (&argc, &argv);
 
+  table = gtk_table_new (3, 3, TRUE);
+
   config = gtk_plug_new (0);
+  gtk_container_add (GTK_CONTAINER (config), table);
 
   button = gtk_button_new_from_stock (GTK_STOCK_QUIT);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (button_clicked_cb), config);
 
-  gtk_container_add (GTK_CONTAINER (config), button);
+  gtk_table_attach_defaults (GTK_TABLE (table), button, 1, 2, 1, 2);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
 

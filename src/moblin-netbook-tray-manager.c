@@ -257,12 +257,36 @@ static gboolean
 config_plug_removed_cb (GtkSocket *socket, gpointer data)
 {
   ShellTrayManagerChild *child = data;
-  GtkWidget *config = child->config;
+  GtkWidget             *config = child->config;
 
   child->config = NULL;
   gtk_widget_destroy (config);
 
   return FALSE;
+}
+
+/*
+ * GtkSocket does not provide any mechanism for tracking when the plug window
+ * (un)maps (it would be easy to do by just adding couple of signals since
+ * it the socket actually tracks the map state). But at least the socket gets
+ * resized when the plug unmaps, so we track the size changes and watch it's
+ * is_mapped member.
+ */
+static void
+config_socket_size_allocate_cb (GtkWidget     *widget,
+                                GtkAllocation *allocation,
+                                gpointer       data)
+{
+  GtkSocket *socket = GTK_SOCKET (widget);
+
+  if (!socket->is_mapped)
+    {
+      ShellTrayManagerChild *child = data;
+      GtkWidget             *config = child->config;
+
+      child->config = NULL;
+      gtk_widget_destroy (config);
+    }
 }
 
 static gboolean
@@ -307,12 +331,17 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
       gtk_container_add (GTK_CONTAINER (config), config_socket);
       gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
 
+      gtk_widget_show_all (config);
+
       g_signal_connect (config_socket, "plug-removed",
                         G_CALLBACK (config_plug_removed_cb), child);
 
+      g_signal_connect (config_socket, "size-allocate",
+                        G_CALLBACK (config_socket_size_allocate_cb), child);
+
       XFree (config_xwin);
     }
-
+  else
     gtk_widget_show_all (child->config);
 
     return TRUE;
