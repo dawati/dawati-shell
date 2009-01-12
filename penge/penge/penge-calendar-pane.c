@@ -16,6 +16,8 @@ typedef struct _PengeCalendarPanePrivate PengeCalendarPanePrivate;
 struct _PengeCalendarPanePrivate {
     ClutterActor *date_tile;
     ClutterActor *events_pane;
+
+    guint hourly_timeout_id;
 };
 
 static void
@@ -41,6 +43,14 @@ penge_calendar_pane_set_property (GObject *object, guint property_id,
 static void
 penge_calendar_pane_dispose (GObject *object)
 {
+  PengeCalendarPanePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->hourly_timeout_id)
+  {
+    g_source_remove (priv->hourly_timeout_id);
+    priv->hourly_timeout_id = 0;
+  }
+
   G_OBJECT_CLASS (penge_calendar_pane_parent_class)->dispose (object);
 }
 
@@ -64,6 +74,44 @@ penge_calendar_pane_class_init (PengeCalendarPaneClass *klass)
 }
 
 static void
+penge_calendar_pane_update (PengeCalendarPane *pane)
+{
+  PengeCalendarPanePrivate *priv = GET_PRIVATE (pane);
+  JanaTime *now;
+
+  now = jana_ecal_utils_time_now_local ();
+
+  g_object_set (priv->date_tile,
+                "time",
+                now,
+                NULL);
+  g_object_unref (now);
+
+  g_debug (G_STRLOC ": Updating the time, woohoo!!!!");
+}
+
+static gboolean
+_hourly_timeout_cb (gpointer userdata)
+{
+  penge_calendar_pane_update ((PengeCalendarPane *)userdata);
+
+  return TRUE;
+}
+
+static gboolean
+_first_hourly_timeout_cb (gpointer userdata)
+{
+  PengeCalendarPanePrivate *priv = GET_PRIVATE (userdata);
+
+  penge_calendar_pane_update ((PengeCalendarPane *)userdata);
+
+  priv->hourly_timeout_id = g_timeout_add_seconds (3600,
+                                                   _hourly_timeout_cb,
+                                                   userdata);
+  return FALSE;
+}
+
+static void
 penge_calendar_pane_init (PengeCalendarPane *self)
 {
   PengeCalendarPanePrivate *priv = GET_PRIVATE (self);
@@ -72,10 +120,13 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                           CLUTTER_UNITS_FROM_DEVICE (8),
                           CLUTTER_UNITS_FROM_DEVICE (8) };
   JanaTime *now;
+  JanaTime *next_timeout;
   NbtkWidget *table;
   ClutterActor *padding_rectangle;
+  glong next_timeout_seconds;
 
   now = jana_ecal_utils_time_now_local ();
+
   priv->date_tile = g_object_new (PENGE_TYPE_DATE_TILE,
                                   "time",
                                   now,
@@ -137,5 +188,32 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                TRUE,
                                NULL);
                                */
+
+  /* When we should next wake up. On the next hour. */
+  next_timeout = jana_ecal_utils_time_now_local ();
+  jana_time_set_minutes (next_timeout, 0);
+  jana_utils_time_adjust (next_timeout, 
+                          0,
+                          0,
+                          0,
+                          1,
+                          0,
+                          0);
+
+  jana_utils_time_diff (now,
+                        next_timeout,
+                        NULL,
+                        NULL,
+                        NULL,
+                        NULL,
+                        NULL,
+                        &next_timeout_seconds);
+
+  priv->hourly_timeout_id = g_timeout_add_seconds (next_timeout_seconds,
+                                                   _first_hourly_timeout_cb,
+                                                   self);
+
+  g_object_unref (now);
+  g_object_unref (next_timeout);
 }
 
