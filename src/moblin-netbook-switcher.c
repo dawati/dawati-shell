@@ -240,6 +240,10 @@ make_contents (MutterPlugin *plugin, GCallback  ws_callback)
       /* create the table for this workspace if we don't already have one */
       if (!spaces[ws_indx])
         {
+          struct input_data *input_data = g_new (struct input_data, 1);
+          input_data->index = ws_indx;
+          input_data->plugin = plugin;
+
           spaces[ws_indx] = nbtk_table_new ();
           nbtk_table_set_row_spacing (NBTK_TABLE (spaces[ws_indx]), 6);
           nbtk_table_set_col_spacing (NBTK_TABLE (spaces[ws_indx]), 6);
@@ -252,8 +256,9 @@ make_contents (MutterPlugin *plugin, GCallback  ws_callback)
           nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1,
                                  ws_indx);
           /* switch workspace when the workspace is selected */
-          g_signal_connect (spaces[ws_indx], "button-press-event",
-                            ws_callback, GINT_TO_POINTER (ws_indx));
+          g_signal_connect_data (table, "button-press-event",
+                                 ws_callback, input_data,
+                                 (GClosureNotify)g_free, 0);
         }
 
       texture = mutter_window_get_texture (mw);
