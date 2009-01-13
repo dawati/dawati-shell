@@ -1195,9 +1195,17 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
 {
   MutterPlugin               *plugin = data;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  int i;
 
   priv->panel_out_in_progress = FALSE;
 
+  /* enable events for the buttons while the panel after the panel has stopped
+   * moving 
+   */
+  for (i = 0; i < 8; i++)
+    {
+      clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
+    }
   enable_stage (plugin, CurrentTime);
 }
 
@@ -1230,6 +1238,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
+          int i;
           gint  x = clutter_actor_get_x (priv->panel);
 
           priv->panel_out_in_progress  = TRUE;
@@ -1237,6 +1246,12 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
                                priv->panel, x, 0,
                                on_panel_out_effect_complete,
                                plugin);
+
+          /* disable events for the buttons while the panel is moving */
+          for (i = 0; i < 8; i++)
+            {
+              clutter_actor_set_reactive (priv->panel_buttons[i], FALSE);
+            }
 
           priv->panel_out = TRUE;
         }
