@@ -45,7 +45,8 @@
 #define MAP_TIMEOUT                 350
 #define SWITCH_TIMEOUT              400
 #define PANEL_SLIDE_TIMEOUT         150
-#define PANEL_SLIDE_THRESHOLD       2
+#define PANEL_SLIDE_THRESHOLD       1
+#define PANEL_SLIDE_THRESHOLD_TIMEOUT 500
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define WS_SWITCHER_SLIDE_THRESHOLD 3
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
@@ -918,23 +919,26 @@ g_module_check_init (GModule *module)
   return NULL;
 }
 
-static void
-on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
+static gboolean
+panel_slide_timeout_cb (gpointer data)
 {
-  MutterPlugin  *plugin   = mutter_get_plugin ();
-  PluginPrivate *priv     = plugin->plugin_private;
-  int i;
+  MutterPlugin  *plugin = data;
+  PluginPrivate *priv  = plugin->plugin_private;
 
-  priv->panel_out_in_progress = FALSE;
+  printf ("last_y %d\n", priv->last_y);
 
-  /* enable events for the buttons while the panel after the panel has stopped
-   * moving 
-   */
-  for (i = 0; i < 8; i++)
+  if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
-      clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
+      show_panel ();
     }
-  enable_stage (plugin, CurrentTime);
+  else
+    {
+      disable_stage (plugin, CurrentTime);
+    }
+
+  priv->panel_slide_timeout_id = 0;
+
+  return FALSE;
 }
 
 /*
@@ -964,6 +968,8 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
           event_x = ((ClutterButtonEvent*)event)->x;
           event_y = ((ClutterButtonEvent*)event)->y;
         }
+
+      priv->last_y = event_y;
 
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
@@ -995,22 +1001,15 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
-          int i;
-          gint  x = clutter_actor_get_x (priv->panel);
-
-          priv->panel_out_in_progress  = TRUE;
-          clutter_effect_move (priv->panel_slide_effect,
-                               priv->panel, x, 0,
-                               on_panel_out_effect_complete,
-                               NULL);
-
-          /* disable events for the buttons while the panel is moving */
-          for (i = 0; i < 8; i++)
+          if (!priv->panel_slide_timeout_id)
             {
-              clutter_actor_set_reactive (priv->panel_buttons[i], FALSE);
-            }
+              mutter_plugin_set_stage_input_region (plugin,
+                                                    priv->input_region2);
 
-          priv->panel_out = TRUE;
+              priv->panel_slide_timeout_id =
+                g_timeout_add (PANEL_SLIDE_THRESHOLD_TIMEOUT,
+                               panel_slide_timeout_cb, plugin);
+            }
         }
     }
   else if (event->type == CLUTTER_KEY_PRESS)
@@ -1195,7 +1194,7 @@ do_init (const char *params)
   rect[0].x = 0;
   rect[0].y = 0;
   rect[0].width = screen_width;
-  rect[0].height = 1;
+  rect[0].height = PANEL_SLIDE_THRESHOLD;
 
   rect[1].x = screen_width - WS_SWITCHER_SLIDE_THRESHOLD;
   rect[1].y = 0;
@@ -1205,6 +1204,20 @@ do_init (const char *params)
   region = XFixesCreateRegion (xdpy, &rect[0], 2);
 
   priv->input_region = region;
+
+  /*
+   * The second region is touch higher than input_region;
+   * we need it to be able to determine if the pointer stayed withing
+   * input_region for the required timeout.
+   *
+   * +5 is a heuristic value; the region need to be sufficiently big so that
+   * even for a fast movement of the pointer we get at least one event reported
+   * that falls into the input_region2 window.
+   */
+  rect[0].height = PANEL_SLIDE_THRESHOLD + 5;
+
+  region = XFixesCreateRegion (xdpy, &rect[0], 1);
+  priv->input_region2 = region;
 
   if (params)
     {
@@ -1329,6 +1342,9 @@ free_plugin_private (PluginPrivate *priv)
 
   if (priv->input_region)
     XFixesDestroyRegion (xdpy, priv->input_region);
+
+  if (priv->input_region2)
+    XFixesDestroyRegion (xdpy, priv->input_region2);
 
   g_object_unref (priv->destroy_effect);
   g_object_unref (priv->minimize_effect);

@@ -74,6 +74,7 @@ struct PluginPrivate
   ClutterActor          *lowlight;
 
   XserverRegion          input_region;
+  XserverRegion          input_region2;
 
   gboolean               debug_mode                 : 1;
   gboolean               panel_out                  : 1;
@@ -95,6 +96,9 @@ struct PluginPrivate
 
   gint                   parallax_paint_offset;
   ClutterActor          *parallax_tex;
+
+  gint                   last_y;
+  guint                  panel_slide_timeout_id;
 };
 
 /*

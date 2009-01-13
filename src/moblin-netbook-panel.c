@@ -57,6 +57,49 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
     }
 }
 
+static void
+on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
+{
+  MutterPlugin  *plugin   = mutter_get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+  int i;
+
+  priv->panel_out_in_progress = FALSE;
+
+  /* enable events for the buttons while the panel after the panel has stopped
+   * moving
+   */
+  for (i = 0; i < 8; i++)
+    {
+      clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
+    }
+  enable_stage (plugin, CurrentTime);
+}
+
+void
+show_panel ()
+{
+  MutterPlugin  *plugin = mutter_get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+  int            i;
+  gint           x = clutter_actor_get_x (priv->panel);
+
+  priv->panel_out_in_progress  = TRUE;
+
+  clutter_effect_move (priv->panel_slide_effect,
+                       priv->panel, x, 0,
+                       on_panel_out_effect_complete,
+                       NULL);
+
+  /* disable events for the buttons while the panel is moving */
+  for (i = 0; i < 8; i++)
+    {
+      clutter_actor_set_reactive (priv->panel_buttons[i], FALSE);
+    }
+
+  priv->panel_out = TRUE;
+}
+
 void
 hide_panel ()
 {
@@ -243,7 +286,7 @@ make_panel (gint width)
                                                         "pasteboard",
                                                      MNBK_CONTROL_PASTEBOARD);
 
-  priv->panel_time = nbtk_label_new (""); 
+  priv->panel_time = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_time), "time-label");
   priv->panel_date = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_date), "date-label");
