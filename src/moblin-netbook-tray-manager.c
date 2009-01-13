@@ -64,16 +64,14 @@ static const ClutterColor default_color = { 0xbb, 0xff, 0xaa };
 static void na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *child, gpointer manager);
 static void na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *child, gpointer manager);
 
+static void destroy_config_window (ShellTrayManagerChild *child);
+
 static void
 free_tray_icon (gpointer data)
 {
   ShellTrayManagerChild *child = data;
 
-  if (child->config)
-    {
-      gtk_widget_hide (child->config);
-      gtk_widget_destroy (child->config);
-    }
+  destroy_config_window (child);
 
   gtk_widget_hide (child->window);
   gtk_widget_destroy (child->window);
@@ -263,15 +261,18 @@ create_bg_pixmap (GdkColormap  *colormap,
   return pixmap;
 }
 
-static gboolean
-config_plug_removed_cb (GtkSocket *socket, gpointer data)
+static void
+destroy_config_window (ShellTrayManagerChild *child)
 {
-  ShellTrayManagerChild *child   = data;
-  GtkWidget             *config  = child->config;
-  ShellTrayManager      *manager = child->manager;
-
   if (child->config)
     {
+      GtkWidget                  *config  = child->config;
+      ShellTrayManager           *manager = child->manager;
+      MutterPlugin               *plugin  = manager->priv->plugin;
+      MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
+
+      enable_stage (plugin, CurrentTime);
+
       manager->priv->config_windows =
         g_list_remove (manager->priv->config_windows,
                        GINT_TO_POINTER (child->config_xwin));
@@ -279,6 +280,14 @@ config_plug_removed_cb (GtkSocket *socket, gpointer data)
       child->config = NULL;
       gtk_widget_destroy (config);
     }
+}
+
+static gboolean
+config_plug_removed_cb (GtkSocket *socket, gpointer data)
+{
+  ShellTrayManagerChild *child = data;
+
+  destroy_config_window (child);
 
   return FALSE;
 }
@@ -300,15 +309,8 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
   if (!socket->is_mapped)
     {
       ShellTrayManagerChild *child = data;
-      GtkWidget             *config = child->config;
-      ShellTrayManager      *manager = child->manager;
 
-      manager->priv->config_windows =
-        g_list_remove (manager->priv->config_windows,
-                       GINT_TO_POINTER (child->config_xwin));
-
-      child->config = NULL;
-      gtk_widget_destroy (config);
+      destroy_config_window (child);
     }
 }
 
@@ -364,8 +366,12 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
         }
       else
         {
-          gint   x = 0, y = 0, w, h, sw, sh;
-          GList *wins = manager->priv->config_windows;
+          MoblinNetbookPluginPrivate *priv =
+            MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+          XserverRegion window_region, comb_region;
+          XRectangle    rect;
+          gint          x = 0, y = 0, w, h, sw, sh;
+          GList        *wins = manager->priv->config_windows;
 
           if (child->actor)
             clutter_actor_get_transformed_position (child->actor, &x, &y);
@@ -387,6 +393,27 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
             }
 
           gtk_window_move (GTK_WINDOW (config), x, y);
+
+          /*
+           * Cut out a hole into the stage input mask matching the config
+           * window.
+           */
+          rect.x      = x;
+          rect.y      = y;
+          rect.width  = w;
+          rect.height = h;
+
+          window_region = XFixesCreateRegion (xdpy, &rect, 1);
+          comb_region = XFixesCreateRegion (xdpy, NULL, 0);
+
+          XFixesSubtractRegion (xdpy, comb_region,
+                                priv->screen_region,
+                                window_region);
+
+          mutter_plugin_set_stage_input_region (plugin, comb_region);
+
+          XFixesDestroyRegion (xdpy, window_region);
+          XFixesDestroyRegion (xdpy, comb_region);
 
           manager->priv->config_windows =
             g_list_prepend (wins,
