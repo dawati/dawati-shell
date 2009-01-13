@@ -1,4 +1,4 @@
-#include "penge-recent-files-pane.h"
+#include <penge/penge-recent-files-pane.h>
 
 typedef struct
 {

@@ -1,5 +1,5 @@
-#include "penge-grid-view.h"
-#include "penge-utils.h"
+#include <penge/penge-grid-view.h>
+#include <penge/penge-utils.h>
 
 int
 main (int    argc,

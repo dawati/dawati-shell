@@ -1,7 +1,7 @@
 #include <clutter/clutter.h>
 #include <mojito-client/mojito-client.h>
 
-#include "penge-people-pane.h"
+#include <penge/penge-people-pane.h>
 
 int
 main (int    argc,
