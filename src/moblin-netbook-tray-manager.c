@@ -68,6 +68,12 @@ free_tray_icon (gpointer data)
 {
   ShellTrayManagerChild *child = data;
 
+  if (child->config)
+    {
+      gtk_widget_hide (child->config);
+      gtk_widget_destroy (child->config);
+    }
+
   gtk_widget_hide (child->window);
   gtk_widget_destroy (child->window);
   g_signal_handlers_disconnect_matched (child->actor, G_SIGNAL_MATCH_DATA,
@@ -360,8 +366,6 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
           GList *wins = manager->priv->config_windows;
 
           gtk_widget_realize (config);
-
-          printf ("Config window is 0x%x\n", (guint) *config_xwin);
 
           manager->priv->config_windows =
             g_list_prepend (wins,
