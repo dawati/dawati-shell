@@ -12,6 +12,7 @@
 #include "tray/na-tray-manager.h"
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
+#include "moblin-netbook-ui.h"
 
 #define MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 #include "moblin-netbook-system-tray.h"
@@ -363,9 +364,29 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
         }
       else
         {
+          gint   x = 0, y = 0, w, h, sw, sh;
           GList *wins = manager->priv->config_windows;
 
+          if (child->actor)
+            clutter_actor_get_transformed_position (child->actor, &x, &y);
+
           gtk_widget_realize (config);
+          gtk_window_get_size (GTK_WINDOW (config), &w, &h);
+
+          mutter_plugin_query_screen_size (plugin, &sw, &sh);
+
+          y = PANEL_HEIGHT;
+
+          if (x + w > (sw - 10)) /* FIXME -- query panel padding */
+            {
+              /*
+               * The window would be stretching past the screen edge, move
+               * it left.
+               */
+              x = (sw - 10) - w;
+            }
+
+          gtk_window_move (GTK_WINDOW (config), x, y);
 
           manager->priv->config_windows =
             g_list_prepend (wins,
