@@ -64,3 +64,14 @@ dist_theme_dropdown_DATA = \
 	theme/drop-down/up-button.png	\
 	theme/drop-down/up-button-active.png
 
+theme_mzonedir = $(pkgdatadir)/theme/mzone
+dist_theme_mzone_DATA = \
+	theme/mzone/date-background-background.png \
+	theme/mzone/date-background.png \
+	theme/mzone/general-background.png \
+	theme/mzone/general-background-dark.png \
+	theme/mzone/people-background.png \
+	theme/mzone/recent-files-background.png \
+	theme/mzone/time-bg.png \
+	theme/mzone/event-background-dark.png
+
