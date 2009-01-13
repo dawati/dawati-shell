@@ -1,7 +1,8 @@
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-INCLUDES=@MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\"
+INCLUDES=@MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
+	 -I$(top_srcdir)/penge
 
 AM_CFLAGS   = -Werror=missing-prototypes -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
@@ -17,10 +18,11 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-panel.c		\
 				moblin-netbook-panel.h		\
 				moblin-netbook-launcher.c       \
-				moblin-netbook-launcher.h
+				moblin-netbook-launcher.h       
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
-moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@
+moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ \
+			     $(top_srcdir)/penge/penge/libpenge.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 
