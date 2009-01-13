@@ -91,6 +91,8 @@ _button_press_event (ClutterActor *actor,
     g_warning (G_STRLOC ": Error launching uri: %s",
                error->message);
     g_clear_error (&error);
+  } else {
+    penge_utils_signal_activated (actor);
   }
 }
 
