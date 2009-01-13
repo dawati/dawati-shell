@@ -5,6 +5,8 @@
 
 #include <nbtk/nbtk.h>
 
+#include "penge-grid-view.h"
+
 /* Code here is stolen from Tweet (C) Emmanuele Bassi */
 gchar *
 penge_utils_format_time (GTimeVal *time_)
@@ -151,5 +153,20 @@ penge_utils_load_stylesheet ()
   }
 
   g_free (path);
+}
+
+void
+penge_utils_signal_activated (ClutterActor *actor)
+{
+  while (actor)
+  {
+    if (PENGE_IS_GRID_VIEW (actor))
+    {
+      g_signal_emit_by_name (actor, "activated", NULL);
+      return;
+    }
+
+    actor = clutter_actor_get_parent (actor);
+  }
 }
 
