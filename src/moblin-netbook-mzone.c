@@ -1,12 +1,12 @@
 #include <penge/penge-grid-view.h>
-
+#include "moblin-netbook.h"
 #include "moblin-netbook-mzone.h"
 
 static void
 _activated_cb (PengeGridView *view,
                NbtkTable     *table)
 {
-  clutter_actor_hide (table);
+  clutter_actor_hide ((ClutterActor *)table);
 }
 
 ClutterActor *
@@ -16,17 +16,17 @@ make_mzone_grid (gint width)
   ClutterActor *grid;
   NbtkWidget *footer;
   NbtkWidget *up_button;
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4)};
+  NbtkPadding padding = MN_PADDING (4, 4, 4, 4);
+  NbtkPadding bg_padding = MN_PADDING (0, 4, 36, 4);
 
   grid = g_object_new (PENGE_TYPE_GRID_VIEW,
                        NULL);
   clutter_actor_set_size (grid, 1024, 500);
-
+  nbtk_widget_set_padding ((NbtkWidget *)grid, &padding);
 
   table = nbtk_table_new ();
+
+  nbtk_widget_set_padding (NBTK_WIDGET (table), &bg_padding);
 
   /* footer with "up" button */
   footer = nbtk_table_new ();
