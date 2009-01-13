@@ -79,6 +79,11 @@ PengeRecentFilesPane
   font-size: 12;
 }
 
+*.PengeNoMoreEventsText
+{
+  font-size: 18;
+}
+
 NbtkLabel
 {
   font-family: "Liberation Sans";

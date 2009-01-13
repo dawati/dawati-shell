@@ -19,6 +19,8 @@ struct _PengeEventsPanePrivate {
 
     GHashTable *uid_to_events;
     GHashTable *uid_to_actors;
+
+    NbtkWidget *no_events_label;
 };
 
 #define MAX_COUNT 6
@@ -128,6 +130,28 @@ penge_events_pane_update (PengeEventsPane *pane)
 
   events = g_hash_table_get_values (priv->uid_to_events);
   events = g_list_sort (events, _event_compare_func);
+
+
+  if (!events)
+  {
+    if (!priv->no_events_label)
+    {
+      priv->no_events_label = nbtk_label_new ("No upcoming events.");
+      nbtk_table_add_actor (NBTK_TABLE (pane),
+                            priv->no_events_label,
+                            0,
+                            0);
+      nbtk_widget_set_style_class_name (priv->no_events_label,
+                                        "PengeNoMoreEventsText");
+    }
+  } else {
+    if (priv->no_events_label)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                      priv->no_events_label);
+      priv->no_events_label = NULL;
+    }
+  }
 
   for (l = events; l && (count < MAX_COUNT); l = l->next)
   {
@@ -356,6 +380,8 @@ penge_events_pane_init (PengeEventsPane *self)
   jana_store_open (priv->store);
 
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
+
+  penge_events_pane_update (self);
 }
 
 void
