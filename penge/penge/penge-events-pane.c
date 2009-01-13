@@ -138,7 +138,7 @@ penge_events_pane_update (PengeEventsPane *pane)
     {
       priv->no_events_label = nbtk_label_new ("No upcoming events.");
       nbtk_table_add_actor (NBTK_TABLE (pane),
-                            priv->no_events_label,
+                            (ClutterActor *)priv->no_events_label,
                             0,
                             0);
       nbtk_widget_set_style_class_name (priv->no_events_label,
@@ -148,7 +148,7 @@ penge_events_pane_update (PengeEventsPane *pane)
     if (priv->no_events_label)
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                      priv->no_events_label);
+                                      (ClutterActor *)priv->no_events_label);
       priv->no_events_label = NULL;
     }
   }

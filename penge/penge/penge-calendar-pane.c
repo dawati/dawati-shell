@@ -87,7 +87,7 @@ penge_calendar_pane_update (PengeCalendarPane *pane)
                 NULL);
   g_object_unref (now);
 
-  penge_events_pane_update_duration (priv->events_pane);
+  penge_events_pane_update_duration ((PengeEventsPane *)priv->events_pane);
   g_debug (G_STRLOC ": Updating the time, woohoo!!!!");
 }
 
@@ -123,7 +123,6 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   JanaTime *now;
   JanaTime *next_timeout;
   NbtkWidget *table;
-  ClutterActor *padding_rectangle;
   glong next_timeout_seconds;
 
   now = jana_ecal_utils_time_now_local ();
@@ -157,7 +156,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                         0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               table,
+                               (ClutterActor *)table,
                                "y-expand",
                                FALSE,
                                NULL);
