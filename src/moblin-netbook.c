@@ -43,7 +43,8 @@
 #define MAP_TIMEOUT                 350
 #define SWITCH_TIMEOUT              400
 #define PANEL_SLIDE_TIMEOUT         150
-#define PANEL_SLIDE_THRESHOLD       2
+#define PANEL_SLIDE_THRESHOLD       1
+#define PANEL_SLIDE_THRESHOLD_TIMEOUT 500
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
@@ -1190,23 +1191,27 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
     }
 }
 
-static void
-on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
+static gboolean
+panel_slide_timeout_cb (gpointer data)
 {
-  MutterPlugin               *plugin = data;
+  MutterPlugin  *plugin = data;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   int i;
 
-  priv->panel_out_in_progress = FALSE;
+  printf ("last_y %d\n", priv->last_y);
 
-  /* enable events for the buttons while the panel after the panel has stopped
-   * moving 
-   */
-  for (i = 0; i < 8; i++)
+  if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
-      clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
+      show_panel (plugin);
     }
-  enable_stage (plugin, CurrentTime);
+  else
+    {
+      disable_stage (plugin, CurrentTime);
+    }
+
+  priv->panel_slide_timeout_id = 0;
+
+  return FALSE;
 }
 
 static gboolean
@@ -1221,6 +1226,8 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
       event_x = ((ClutterMotionEvent*)event)->x;
       event_y = ((ClutterMotionEvent*)event)->y;
+
+      priv->last_y = event_y;
 
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
@@ -1238,22 +1245,15 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
-          int i;
-          gint  x = clutter_actor_get_x (priv->panel);
-
-          priv->panel_out_in_progress  = TRUE;
-          clutter_effect_move (priv->panel_slide_effect,
-                               priv->panel, x, 0,
-                               on_panel_out_effect_complete,
-                               plugin);
-
-          /* disable events for the buttons while the panel is moving */
-          for (i = 0; i < 8; i++)
+          if (!priv->panel_slide_timeout_id)
             {
-              clutter_actor_set_reactive (priv->panel_buttons[i], FALSE);
-            }
+              mutter_plugin_set_stage_input_region (MUTTER_PLUGIN (plugin),
+                                                    priv->input_region2);
 
-          priv->panel_out = TRUE;
+              priv->panel_slide_timeout_id =
+                g_timeout_add (PANEL_SLIDE_THRESHOLD_TIMEOUT,
+                               panel_slide_timeout_cb, plugin);
+            }
         }
     }
 

@@ -97,6 +97,7 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *lowlight;
 
   XserverRegion          input_region;
+  XserverRegion          input_region2;
 
   gboolean               debug_mode                 : 1;
   gboolean               panel_out                  : 1;
@@ -124,6 +125,9 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *parallax_tex;
 
   MutterPluginInfo       info;
+
+  gint                   last_y;
+  guint                  panel_slide_timeout_id;
 };
 
 /*
