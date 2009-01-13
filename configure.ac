@@ -29,6 +29,12 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0 libstartup-notification-1.0 gtk+-2.0 libgnome-menu)
 
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.14 gio-2.0)
+PKG_CHECK_MODULES(NBTK, nbtk-1.0)
+PKG_CHECK_MODULES(JANA_ECAL, libjana-ecal)
+PKG_CHECK_MODULES(GTK, gtk+-2.0)
+PKG_CHECK_MODULES(MOJITO_CLIENT, mojito-client-0.0)
+
 MUTTER_PLUGIN_DIR=$($PKG_CONFIG metacity-plugins --variable=mutterplugindir)
 AC_SUBST(MUTTER_PLUGIN_DIR)
 
@@ -40,6 +46,9 @@ Makefile
 data/Makefile
 src/Makefile
 po/Makefile.in
+penge/Makefile
+penge/penge/Makefile
+penge/examples/Makefile
 ])
 
 echo "
