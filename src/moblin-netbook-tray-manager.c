@@ -317,6 +317,27 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
     }
 }
 
+static void
+combine_config_windows_input_shape (ShellTrayManager *manager,
+                                    Display          *xdpy,
+                                    XserverRegion     dest)
+{
+  GList *l = manager->priv->config_windows;
+
+  while (l)
+    {
+      Window xwin = GPOINTER_TO_INT (l->data);
+      XserverRegion win_region;
+
+      win_region = XFixesCreateRegionFromWindow (xdpy, xwin, 0);
+
+      XFixesSubtractRegion (xdpy, dest, dest, win_region);
+      XFixesDestroyRegion  (xdpy, win_region);
+
+      l = l->next;
+    }
+}
+
 static gboolean
 actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 {
@@ -412,6 +433,12 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
           XFixesSubtractRegion (xdpy, comb_region,
                                 priv->screen_region,
                                 window_region);
+
+          /*
+           * Subtract regions corresponding to any other config windows we
+           * might be showing.
+           */
+          combine_config_windows_input_shape (manager, xdpy, comb_region);
 
           mutter_plugin_set_stage_input_region (plugin, comb_region);
 
