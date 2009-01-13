@@ -75,6 +75,7 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
     }
 
   hide_workspace_switcher (plugin);
+  hide_panel (plugin);
   meta_workspace_activate (workspace, event->any.time);
 
   return FALSE;
