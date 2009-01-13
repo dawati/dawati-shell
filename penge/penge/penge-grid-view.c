@@ -17,6 +17,14 @@ struct _PengeGridViewPrivate {
   ClutterActor *people_pane;
 };
 
+enum
+{
+  ACTIVATED_SIGNAL,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 static void
 penge_grid_view_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -60,6 +68,17 @@ penge_grid_view_class_init (PengeGridViewClass *klass)
   object_class->set_property = penge_grid_view_set_property;
   object_class->dispose = penge_grid_view_dispose;
   object_class->finalize = penge_grid_view_finalize;
+
+  signals[ACTIVATED_SIGNAL] =
+    g_signal_new ("activated",
+                  PENGE_TYPE_GRID_VIEW,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
 }
 
 static void
