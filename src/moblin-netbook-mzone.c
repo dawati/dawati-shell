@@ -3,9 +3,10 @@
 #include "moblin-netbook-mzone.h"
 
 static void
-_activated_cb (PengeGridView *view)
+_activated_cb (PengeGridView *view,
+               NbtkTable     *table)
 {
-  clutter_actor_hide (view);
+  clutter_actor_hide (table);
 }
 
 ClutterActor *
@@ -42,7 +43,7 @@ make_mzone_grid (gint width)
                                "x-align", 1.0,
                                NULL);
   g_signal_connect_swapped (up_button, "clicked", G_CALLBACK (clutter_actor_hide), table);
-  g_signal_connect (grid, "activated", (GCallback)_activated_cb, NULL);
+  g_signal_connect (grid, "activated", (GCallback)_activated_cb, table);
 
   /* add all the actors to the group */
   nbtk_table_add_actor (NBTK_TABLE (table), grid, 0, 0);
