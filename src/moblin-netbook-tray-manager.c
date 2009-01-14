@@ -590,3 +590,12 @@ shell_tray_manager_is_config_window (ShellTrayManager *manager, Window xwindow)
 
   return FALSE;
 }
+
+gboolean
+shell_tray_manager_config_windows_showing (ShellTrayManager *manager)
+{
+  if (!manager->priv->config_windows)
+    return FALSE;
+
+  return TRUE;
+}

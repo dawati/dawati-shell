@@ -46,6 +46,7 @@ void              shell_tray_manager_manage_stage (ShellTrayManager *manager,
                                                    ClutterStage     *stage);
 gboolean          shell_tray_manager_is_config_window (ShellTrayManager *manager,
                                                        Window xwindow);
+gboolean          shell_tray_manager_config_windows_showing (ShellTrayManager *manager);
 
 G_END_DECLS
 
