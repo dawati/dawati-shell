@@ -124,6 +124,11 @@ moblin_netbook_plugin_dispose (GObject *object)
   if (priv->input_region)
     XFixesDestroyRegion (xdpy, priv->input_region);
 
+#ifndef WORKING_STAGE_ENTER_LEAVE
+  if (priv->input_region)
+    XFixesDestroyRegion (xdpy, priv->input_region2);
+#endif
+
   g_object_unref (priv->destroy_effect);
   g_object_unref (priv->minimize_effect);
   g_object_unref (priv->maximize_effect);
@@ -212,11 +217,19 @@ moblin_netbook_plugin_constructed (GObject *object)
   rect[0].x = 0;
   rect[0].y = 0;
   rect[0].width = screen_width;
-  rect[0].height = 1;
+  rect[0].height = PANEL_SLIDE_THRESHOLD;
 
   region = XFixesCreateRegion (xdpy, &rect[0], 1);
 
   priv->input_region = region;
+
+#ifndef WORKING_STAGE_ENTER_LEAVE
+  rect[0].height += 5;
+
+  region = XFixesCreateRegion (xdpy, &rect[0], 1);
+
+  priv->input_region2 = region;
+#endif
 
   if (mutter_plugin_debug_mode (MUTTER_PLUGIN (plugin)))
     {
@@ -1198,6 +1211,7 @@ panel_slide_timeout_cb (gpointer data)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   int i;
 
+#ifndef WORKING_STAGE_ENTER_LEAVE
   printf ("last_y %d\n", priv->last_y);
 
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
@@ -1208,6 +1222,10 @@ panel_slide_timeout_cb (gpointer data)
     {
       disable_stage (plugin, CurrentTime);
     }
+#else
+  if (priv->pointer_on_stage)
+    show_panel (plugin);
+#endif
 
   priv->panel_slide_timeout_id = 0;
 
@@ -1227,7 +1245,9 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       event_x = ((ClutterMotionEvent*)event)->x;
       event_y = ((ClutterMotionEvent*)event)->y;
 
+#ifndef WORKING_STAGE_ENTER_LEAVE
       priv->last_y = event_y;
+#endif
 
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
@@ -1247,14 +1267,27 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         {
           if (!priv->panel_slide_timeout_id)
             {
+#ifndef WORKING_STAGE_ENTER_LEAVE
               mutter_plugin_set_stage_input_region (MUTTER_PLUGIN (plugin),
                                                     priv->input_region2);
-
+#endif
               priv->panel_slide_timeout_id =
                 g_timeout_add (PANEL_SLIDE_THRESHOLD_TIMEOUT,
                                panel_slide_timeout_cb, plugin);
             }
         }
+    }
+  else if (event->any.source == stage &&
+           event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE)
+    {
+      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+      if (event->type == CLUTTER_ENTER)
+        priv->pointer_on_stage = TRUE;
+      else
+        priv->pointer_on_stage = FALSE;
+
+      return TRUE;
     }
 
   return FALSE;

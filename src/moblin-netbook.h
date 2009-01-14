@@ -37,6 +37,11 @@
 
 #include "moblin-netbook-notify-store.h"
 
+/*
+ * FIXME once clutter bug #1178 is fixed.
+ */
+#undef WORKING_STAGE_ENTER_LEAVE
+
 #define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
 #define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
 #define MOBLIN_NETBOOK_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginClass))
@@ -97,7 +102,9 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *lowlight;
 
   XserverRegion          input_region;
+#ifndef WORKING_STAGE_ENTER_LEAVE
   XserverRegion          input_region2;
+#endif
 
   gboolean               debug_mode                 : 1;
   gboolean               panel_out                  : 1;
@@ -105,6 +112,7 @@ struct _MoblinNetbookPluginPrivate
   gboolean               panel_back_in_progress     : 1;
   gboolean               desktop_switch_in_progress : 1;
   gboolean               keyboard_grab              : 1;
+  gboolean               pointer_on_stage           : 1;
 
   guint                  workspace_chooser_timeout;
 
@@ -126,7 +134,9 @@ struct _MoblinNetbookPluginPrivate
 
   MutterPluginInfo       info;
 
+#ifndef WORKING_STAGE_ENTER_LEAVE
   gint                   last_y;
+#endif
   guint                  panel_slide_timeout_id;
 };
 
