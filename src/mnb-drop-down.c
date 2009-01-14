@@ -20,6 +20,8 @@
  */
 
 #include "mnb-drop-down.h"
+
+#define SLIDE_DURATION 150
 #define MNB_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), \
                                  CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d) }
 
@@ -28,9 +30,9 @@ G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_DROP_DOWN, MnbDropDownPrivate))
 
-
 struct _MnbDropDownPrivate {
     ClutterActor *child;
+    ClutterEffectTemplate *slide_effect;
 };
 
 static void
@@ -65,10 +67,39 @@ mnb_drop_down_finalize (GObject *object)
   G_OBJECT_CLASS (mnb_drop_down_parent_class)->finalize (object);
 }
 
+
+static void
+mnb_drop_down_show (ClutterActor *actor)
+{
+  ClutterTimeline *timeline;
+  gint x, y, height;
+  CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->show (actor);
+
+  clutter_actor_get_position (actor, &x, &y);
+  height = clutter_actor_get_height (actor);
+
+
+  clutter_actor_set_position (actor, x, -height);
+  clutter_actor_show (actor);
+  clutter_effect_move (MNB_DROP_DOWN (actor)->priv->slide_effect,
+                       actor,
+                       x,
+                       y,
+                       NULL, NULL);
+}
+
+static void
+mnb_drop_down_hide (ClutterActor *actor)
+{
+  /* may have a different effect in the future */
+  CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->hide (actor);
+}
+
 static void
 mnb_drop_down_class_init (MnbDropDownClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *clutter_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbDropDownPrivate));
 
@@ -76,6 +107,11 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
   object_class->set_property = mnb_drop_down_set_property;
   object_class->dispose = mnb_drop_down_dispose;
   object_class->finalize = mnb_drop_down_finalize;
+
+  clutter_class->show = mnb_drop_down_show;
+  clutter_class->hide = mnb_drop_down_hide;
+
+
 }
 
 static void
@@ -83,8 +119,10 @@ mnb_drop_down_init (MnbDropDown *self)
 {
   NbtkWidget *footer, *up_button;
   NbtkPadding padding = MNB_PADDING (4, 4, 4, 4);
+  ClutterTimeline *timeline;
+  MnbDropDownPrivate *priv;
 
-  self->priv = GET_PRIVATE (self);
+  priv = self->priv = GET_PRIVATE (self);
 
   /* footer with "up" button */
   footer = nbtk_table_new ();
@@ -104,12 +142,17 @@ mnb_drop_down_init (MnbDropDown *self)
                             G_CALLBACK (clutter_actor_hide), self);
 
   nbtk_table_add_widget (NBTK_TABLE (self), footer, 1, 0);
+
+
+  timeline = clutter_timeline_new_for_duration (SLIDE_DURATION);
+  priv->slide_effect = clutter_effect_template_new (timeline,
+                                                    CLUTTER_ALPHA_SINE_INC);
 }
 
 MnbDropDown*
 mnb_drop_down_new (void)
 {
-  return g_object_new (MNB_TYPE_DROP_DOWN, NULL);
+  return g_object_new (MNB_TYPE_DROP_DOWN, "show-on-set-parent", FALSE, NULL);
 }
 
 void

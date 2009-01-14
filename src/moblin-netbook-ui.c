@@ -83,7 +83,9 @@ toggle_control (MutterPlugin *plugin, MnbkControl control, gboolean show)
           actor = make_workspace_switcher (plugin);
           break;
         case MNBK_CONTROL_APPLICATIONS:
-          actor = priv->launcher;
+          clutter_actor_set_position (priv->launcher, 4, PANEL_HEIGHT);
+          clutter_actor_raise (priv->launcher, priv->panel_shadow);
+          clutter_actor_show (priv->launcher);
           break;
         default:
           break;
