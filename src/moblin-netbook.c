@@ -960,23 +960,49 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (shell_tray_manager_is_config_window (priv->tray_manager, xwin))
         {
-          ClutterColor clr = {0xff, 0, 0, 0x7f};
+          /*
+           * Insert the actor into a custom frame, and then animate it to
+           * position.
+           *
+           * Because of the way Mutter stacking we are unable to insert an actor
+           * into the MutterWindow stack at an arbitrary position; instead
+           * any actor we insert will end up on the very top. Additionally,
+           * we do not want to reparent the MutterWindow, as that would
+           * wreak havoc with the stacking.
+           *
+           * Consequently we have two options:
+           *
+           * (a) The center of our frame is transparent, and we overlay it over
+           * the MutterWindow.
+           *
+           * (b) We reparent the actual glx texture inside Mutter window to
+           * our frame, and destroy it manually when we close the window.
+           *
+           * At present we do (a) as a proof of concept.
+           */
+          ClutterColor clr = {0xff, 0, 0, 0x3f};
+          ClutterColor clr_clear = {0, 0, 0, 0};
+
           ClutterActor *background;
           ClutterActor *parent;
-
+          ClutterActor *texture = mutter_window_get_texture (mcw);
 
           gint  x = clutter_actor_get_x (actor);
           gint  y = clutter_actor_get_y (actor);
-          guint h = clutter_actor_get_height (actor);
-          guint w = clutter_actor_get_width (actor);
+          guint h = clutter_actor_get_height (texture);
+          guint w = clutter_actor_get_width (texture);
 
-          background = clutter_rectangle_new_with_color (&clr);
+          background = clutter_rectangle_new_with_color (&clr_clear);
+
+          clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (background),
+                                              10);
+          clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (background),
+                                              &clr);
 
           parent = clutter_actor_get_parent (actor);
 
           clutter_actor_set_size (background, w + 2*10, h + 2*10);
-          clutter_actor_set_y (background, -(y + h + 2*10));
-          clutter_actor_set_x (background, x - 10);
+          clutter_actor_set_position (background, x - 10, -(y + h + 2*10));
 
           clutter_actor_set_y (actor, -(y + h));
 
@@ -984,7 +1010,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           clutter_actor_show (background);
 
           clutter_container_add_actor (CLUTTER_CONTAINER (parent), background);
-          clutter_actor_raise (background, actor);
+          clutter_actor_raise_top (background);
 
           g_signal_connect (actor, "destroy",
                             G_CALLBACK (on_config_actor_destroy), background);
