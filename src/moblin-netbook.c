@@ -198,8 +198,17 @@ moblin_netbook_plugin_constructed (GObject *object)
   Display       *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
+  MetaScreen    *screen;
+  Window         root_xwin;
 
   gtk_init (NULL, NULL);
+
+  screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
+
+  XGrabKey (xdpy, XKeysymToKeycode (xdpy, MOBLIN_PANEL_SHORTCUT_KEY),
+            AnyModifier,
+            root_xwin, True, GrabModeAsync, GrabModeAsync);
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
@@ -335,6 +344,9 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
                     "button-press-event", G_CALLBACK (stage_input_cb),
+                    plugin);
+  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
+                    "key-press-event", G_CALLBACK (stage_input_cb),
                     plugin);
 
   clutter_set_motion_events_enabled (TRUE);
@@ -1239,6 +1251,14 @@ static gboolean
 xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (xev->type == KeyPress &&
+      XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) ==
+                                                    MOBLIN_PANEL_SHORTCUT_KEY)
+    {
+      show_panel (plugin);
+      return TRUE;
+    }
 
   sn_display_process_event (priv->sn_display, xev);
 
