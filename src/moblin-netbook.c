@@ -903,6 +903,14 @@ on_map_config_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
+static void
+on_config_actor_destroy (ClutterActor *actor, gpointer data)
+{
+  ClutterActor *background = data;
+
+  clutter_actor_destroy (background);
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -952,21 +960,42 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (shell_tray_manager_is_config_window (priv->tray_manager, xwin))
         {
-          /* FIXME
-           * For now, just apply the same kind of an effect we do for
-           * application windows.
-           */
+          ClutterColor clr = {0xff, 0, 0, 0x7f};
+          ClutterActor *background;
+          ClutterActor *parent;
+
+
           gint  x = clutter_actor_get_x (actor);
           gint  y = clutter_actor_get_y (actor);
-          guint h = clutter_actor_get_width (actor);
+          guint h = clutter_actor_get_height (actor);
+          guint w = clutter_actor_get_width (actor);
+
+          background = clutter_rectangle_new_with_color (&clr);
+
+          parent = clutter_actor_get_parent (actor);
+
+          clutter_actor_set_size (background, w + 2*10, h + 2*10);
+          clutter_actor_set_y (background, -(y + h + 2*10));
+          clutter_actor_set_x (background, x - 10);
 
           clutter_actor_set_y (actor, -(y + h));
+
           clutter_actor_show (actor);
+          clutter_actor_show (background);
+
+          clutter_container_add_actor (CLUTTER_CONTAINER (parent), background);
+          clutter_actor_raise (background, actor);
+
+          g_signal_connect (actor, "destroy",
+                            G_CALLBACK (on_config_actor_destroy), background);
 
           /*
            * FIXME -- should use a different template here (once we refactor
            * there will be suitable slide template for all the UI conteainers).
            */
+          clutter_effect_move (priv->panel_slide_effect,
+                               background, x-10, y-10,
+                               NULL, NULL);
           clutter_effect_move (priv->panel_slide_effect,
                                actor, x, y,
                                on_map_config_effect_complete, plugin);
