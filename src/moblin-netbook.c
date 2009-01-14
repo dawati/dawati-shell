@@ -44,7 +44,7 @@
 #define SWITCH_TIMEOUT              400
 #define PANEL_SLIDE_TIMEOUT         150
 #define PANEL_SLIDE_THRESHOLD       1
-#define PANEL_SLIDE_THRESHOLD_TIMEOUT 500
+#define PANEL_SLIDE_THRESHOLD_TIMEOUT 300
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
