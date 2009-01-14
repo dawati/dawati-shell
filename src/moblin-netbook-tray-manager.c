@@ -376,7 +376,6 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 
       config_socket = gtk_socket_new ();
       child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
-      child->config_xwin = *config_xwin;
 
       gtk_container_add (GTK_CONTAINER (config), config_socket);
       gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
@@ -448,6 +447,8 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
           manager->priv->config_windows =
             g_list_prepend (wins,
                             GINT_TO_POINTER (GDK_WINDOW_XID (config->window)));
+
+          child->config_xwin = GDK_WINDOW_XID (config->window);
 
           gtk_widget_show_all (config);
 
