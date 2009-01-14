@@ -102,13 +102,25 @@ show_panel (MutterPlugin *plugin)
   priv->panel_out = TRUE;
 }
 
-void
+/*
+ * Returns TRUE if panel was hidden, FALSE otherwise.
+ */
+gboolean
 hide_panel (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  gint                        x = clutter_actor_get_x (priv->panel);
-  guint                       h = clutter_actor_get_height (priv->panel_shadow);
+  gint                        x;
+  guint                       h;
   struct button_data button_data;
+
+  /*
+   * Refuse to hide the panel if a config window is up.
+   */
+  if (shell_tray_manager_config_windows_showing (priv->tray_manager))
+    return FALSE;
+
+  x = clutter_actor_get_x (priv->panel);
+  h = clutter_actor_get_height (priv->panel_shadow);
 
   priv->panel_back_in_progress  = TRUE;
 
@@ -123,6 +135,8 @@ hide_panel (MutterPlugin *plugin)
   toggle_buttons_cb (NULL, &button_data);
 
   priv->panel_out = FALSE;
+
+  return TRUE;
 }
 
 static void

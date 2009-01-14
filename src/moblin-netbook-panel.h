@@ -26,7 +26,7 @@
 #define MOBLIN_NETBOOK_PANEL_H
 
 ClutterActor *make_panel (MutterPlugin *plugin, gint width);
-void          hide_panel (MutterPlugin *plugin);
+gboolean      hide_panel (MutterPlugin *plugin);
 void          show_panel (MutterPlugin *plugin);
 
 #endif
