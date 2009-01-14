@@ -447,7 +447,7 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
 
           manager->priv->config_windows =
             g_list_prepend (wins,
-                            GINT_TO_POINTER (*config_xwin));
+                            GINT_TO_POINTER (GDK_WINDOW_XID (config->window)));
 
           gtk_widget_show_all (config);
 
