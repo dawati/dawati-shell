@@ -893,6 +893,16 @@ on_map_effect_complete (ClutterTimeline *timeline, gpointer data)
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
+static void
+on_map_config_effect_complete (ClutterActor *actor, gpointer data)
+{
+  MutterPlugin *plugin = data;
+  MutterWindow *mcw    = MUTTER_WINDOW (actor);
+
+  /* Notify the manager that we are done with this effect */
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -946,25 +956,20 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * For now, just apply the same kind of an effect we do for
            * application windows.
            */
-          struct map_data *map_data;
-          ActorPrivate    *apriv = get_actor_private (mcw);
+          gint  x = clutter_actor_get_x (actor);
+          gint  y = clutter_actor_get_y (actor);
+          guint h = clutter_actor_get_width (actor);
 
-          clutter_actor_move_anchor_point_from_gravity (actor,
-                                                        CLUTTER_GRAVITY_CENTER);
-
-          clutter_actor_set_scale (actor, 0.0, 0.0);
+          clutter_actor_set_y (actor, -(y + h));
           clutter_actor_show (actor);
 
-          apriv->tml_map = nbtk_bounce_scale (actor, MAP_TIMEOUT);
-
-          map_data = g_new (struct map_data, 1);
-          map_data->plugin = plugin;
-          map_data->actor = actor;
-
-          g_signal_connect (apriv->tml_map, "completed",
-                            G_CALLBACK (on_map_effect_complete), map_data);
-
-          apriv->is_minimized = FALSE;
+          /*
+           * FIXME -- should use a different template here (once we refactor
+           * there will be suitable slide template for all the UI conteainers).
+           */
+          clutter_effect_move (priv->panel_slide_effect,
+                               actor, x, y,
+                               on_map_config_effect_complete, plugin);
         }
       else
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
