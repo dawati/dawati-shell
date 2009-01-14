@@ -33,6 +33,10 @@ G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
 struct _MnbDropDownPrivate {
     ClutterActor *child;
     ClutterEffectTemplate *slide_effect;
+    gint x;
+    gint y;
+    gint width;
+    gint height;
 };
 
 static void
@@ -71,12 +75,19 @@ mnb_drop_down_finalize (GObject *object)
 static void
 mnb_drop_down_show (ClutterActor *actor)
 {
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
   ClutterTimeline *timeline;
-  gint x, y, height;
+  gint x, y, height, width;
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->show (actor);
 
   clutter_actor_get_position (actor, &x, &y);
-  height = clutter_actor_get_height (actor);
+  clutter_actor_get_size (actor, &width, &height);
+
+  /* save the size/position so we can clip while we are moving */
+  priv->x = x;
+  priv->y = y;
+  priv->width = width;
+  priv->height = height;
 
 
   clutter_actor_set_position (actor, x, -height);
@@ -96,6 +107,23 @@ mnb_drop_down_hide (ClutterActor *actor)
 }
 
 static void
+mnb_drop_down_paint (ClutterActor *actor)
+{
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+  ClutterGeometry geom;
+
+  clutter_actor_get_allocation_geometry (actor, &geom);
+
+  cogl_clip_set (CLUTTER_INT_TO_FIXED (priv->x - geom.x),
+                 CLUTTER_INT_TO_FIXED (priv->y - geom.y),
+                 CLUTTER_INT_TO_FIXED (priv->width),
+                 CLUTTER_INT_TO_FIXED (priv->height));
+
+  CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->paint (actor);
+  cogl_clip_unset ();
+}
+
+static void
 mnb_drop_down_class_init (MnbDropDownClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -110,6 +138,7 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
 
   clutter_class->show = mnb_drop_down_show;
   clutter_class->hide = mnb_drop_down_hide;
+  clutter_class->paint = mnb_drop_down_paint;
 
 
 }
