@@ -1256,7 +1256,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) ==
                                                     MOBLIN_PANEL_SHORTCUT_KEY)
     {
-      show_panel (plugin);
+      show_panel (plugin, TRUE);
       return TRUE;
     }
 
@@ -1342,7 +1342,7 @@ panel_slide_timeout_cb (gpointer data)
 
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
-      show_panel (plugin);
+      show_panel (plugin, FALSE);
     }
   else
     {
@@ -1350,7 +1350,7 @@ panel_slide_timeout_cb (gpointer data)
     }
 #else
   if (priv->pointer_on_stage)
-    show_panel (plugin);
+    show_panel (plugin, FALSE);
 #endif
 
   priv->panel_slide_timeout_id = 0;

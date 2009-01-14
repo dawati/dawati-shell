@@ -117,6 +117,7 @@ struct _MoblinNetbookPluginPrivate
   gboolean               panel_out                  : 1;
   gboolean               panel_out_in_progress      : 1;
   gboolean               panel_back_in_progress     : 1;
+  gboolean               panel_wait_for_pointer     : 1;
   gboolean               desktop_switch_in_progress : 1;
   gboolean               keyboard_grab              : 1;
   gboolean               pointer_on_stage           : 1;

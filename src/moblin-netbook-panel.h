@@ -27,6 +27,6 @@
 
 ClutterActor *make_panel (MutterPlugin *plugin, gint width);
 gboolean      hide_panel (MutterPlugin *plugin);
-void          show_panel (MutterPlugin *plugin);
+void          show_panel (MutterPlugin *plugin, gboolean from_keyboard);
 
 #endif
