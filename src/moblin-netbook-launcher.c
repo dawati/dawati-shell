@@ -26,6 +26,7 @@
 
 #include "moblin-netbook.h"
 #include "moblin-netbook-launcher.h"
+#include "mnb-drop-down.h"
 #include <nbtk/nbtk.h>
 #include <gmenu-tree.h>
 #include <gtk/gtk.h>
@@ -245,10 +246,10 @@ make_launcher (MutterPlugin *plugin, gint width)
 {
   GSList *apps, *a;
   GtkIconTheme  *theme;
-  ClutterActor  *stage, *launcher;
+  ClutterActor  *stage, *launcher, *table;
   gint           row, col, n_cols, pad;
   struct entry_data *entry_data;
-  NbtkWidget    *table, *footer, *up_button;
+  NbtkWidget    *drop_down, *footer, *up_button;
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (4),
                             CLUTTER_UNITS_FROM_INT (4),
                             CLUTTER_UNITS_FROM_INT (4),
@@ -342,30 +343,12 @@ make_launcher (MutterPlugin *plugin, gint width)
         }
     }
 
-  table = nbtk_table_new ();
+  drop_down = mnb_drop_down_new ();
 
-  /* footer with "up" button */
-  footer = nbtk_table_new ();
-  nbtk_widget_set_padding (footer, &padding);
-  nbtk_widget_set_style_class_name (footer, "drop-down-footer");
+  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
 
-  up_button = nbtk_button_new ();
-  nbtk_widget_set_style_class_name (up_button, "drop-down-up-button");
-  nbtk_table_add_actor (NBTK_TABLE (footer), CLUTTER_ACTOR (up_button), 0, 0);
-  clutter_actor_set_size (CLUTTER_ACTOR (up_button), 23, 21);
-  clutter_container_child_set (CLUTTER_CONTAINER (footer),
-                               CLUTTER_ACTOR (up_button),
-                               "keep-aspect-ratio", TRUE,
-                               "x-align", 1.0,
-                               NULL);
-  g_signal_connect_swapped (up_button, "clicked", G_CALLBACK (clutter_actor_hide), table);
-
-
-  /* add all the actors to the group */
-  nbtk_table_add_actor (NBTK_TABLE (table), launcher, 0, 0);
-  nbtk_table_add_widget (NBTK_TABLE (table), footer, 1, 0);
 
   clutter_actor_set_width (CLUTTER_ACTOR (table), width);
 
-  return CLUTTER_ACTOR (table);
+  return CLUTTER_ACTOR (drop_down);
 }
