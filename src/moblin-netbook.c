@@ -1393,7 +1393,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       else
         priv->pointer_on_stage = FALSE;
 
-      return TRUE;
+      return FALSE;
     }
 
   return FALSE;
