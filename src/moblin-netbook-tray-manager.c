@@ -271,7 +271,7 @@ destroy_config_window (ShellTrayManagerChild *child)
       MutterPlugin               *plugin  = manager->priv->plugin;
       MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+      if (priv->panel_out || priv->panel_out_in_progress)
         enable_stage (plugin, CurrentTime);
       else
         disable_stage (plugin, CurrentTime);
