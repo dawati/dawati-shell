@@ -43,7 +43,8 @@
 #define MAP_TIMEOUT                 350
 #define SWITCH_TIMEOUT              400
 #define PANEL_SLIDE_TIMEOUT         150
-#define PANEL_SLIDE_THRESHOLD       2
+#define PANEL_SLIDE_THRESHOLD       1
+#define PANEL_SLIDE_THRESHOLD_TIMEOUT 300
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
@@ -120,11 +121,16 @@ moblin_netbook_plugin_dispose (GObject *object)
 
   xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (object));
 
+  if (priv->screen_region)
+    XFixesDestroyRegion (xdpy, priv->screen_region);
+
   if (priv->input_region)
     XFixesDestroyRegion (xdpy, priv->input_region);
 
-  if (priv->screen_region)
-    XFixesDestroyRegion (xdpy, priv->screen_region);
+#ifndef WORKING_STAGE_ENTER_LEAVE
+  if (priv->input_region)
+    XFixesDestroyRegion (xdpy, priv->input_region2);
+#endif
 
   g_object_unref (priv->destroy_effect);
   g_object_unref (priv->minimize_effect);
@@ -214,11 +220,19 @@ moblin_netbook_plugin_constructed (GObject *object)
   rect[0].x = 0;
   rect[0].y = 0;
   rect[0].width = screen_width;
-  rect[0].height = 1;
+  rect[0].height = PANEL_SLIDE_THRESHOLD;
 
   region = XFixesCreateRegion (xdpy, &rect[0], 1);
 
   priv->input_region = region;
+
+#ifndef WORKING_STAGE_ENTER_LEAVE
+  rect[0].height += 5;
+
+  region = XFixesCreateRegion (xdpy, &rect[0], 1);
+
+  priv->input_region2 = region;
+#endif
 
   rect[0].height = screen_height;
 
@@ -1236,15 +1250,32 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
     }
 }
 
-static void
-on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
+static gboolean
+panel_slide_timeout_cb (gpointer data)
 {
-  MutterPlugin               *plugin = data;
+  MutterPlugin  *plugin = data;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  int i;
 
-  priv->panel_out_in_progress = FALSE;
+#ifndef WORKING_STAGE_ENTER_LEAVE
+  printf ("last_y %d\n", priv->last_y);
 
-  enable_stage (plugin, CurrentTime);
+  if (priv->last_y < PANEL_SLIDE_THRESHOLD)
+    {
+      show_panel (plugin);
+    }
+  else
+    {
+      disable_stage (plugin, CurrentTime);
+    }
+#else
+  if (priv->pointer_on_stage)
+    show_panel (plugin);
+#endif
+
+  priv->panel_slide_timeout_id = 0;
+
+  return FALSE;
 }
 
 static gboolean
@@ -1259,6 +1290,10 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
       event_x = ((ClutterMotionEvent*)event)->x;
       event_y = ((ClutterMotionEvent*)event)->y;
+
+#ifndef WORKING_STAGE_ENTER_LEAVE
+      priv->last_y = event_y;
+#endif
 
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
@@ -1276,16 +1311,29 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
-          gint  x = clutter_actor_get_x (priv->panel);
-
-          priv->panel_out_in_progress  = TRUE;
-          clutter_effect_move (priv->panel_slide_effect,
-                               priv->panel, x, 0,
-                               on_panel_out_effect_complete,
-                               plugin);
-
-          priv->panel_out = TRUE;
+          if (!priv->panel_slide_timeout_id)
+            {
+#ifndef WORKING_STAGE_ENTER_LEAVE
+              mutter_plugin_set_stage_input_region (MUTTER_PLUGIN (plugin),
+                                                    priv->input_region2);
+#endif
+              priv->panel_slide_timeout_id =
+                g_timeout_add (PANEL_SLIDE_THRESHOLD_TIMEOUT,
+                               panel_slide_timeout_cb, plugin);
+            }
         }
+    }
+  else if (event->any.source == stage &&
+           event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE)
+    {
+      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+      if (event->type == CLUTTER_ENTER)
+        priv->pointer_on_stage = TRUE;
+      else
+        priv->pointer_on_stage = FALSE;
+
+      return TRUE;
     }
 
   return FALSE;
