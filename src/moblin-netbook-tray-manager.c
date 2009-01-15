@@ -600,3 +600,39 @@ shell_tray_manager_config_windows_showing (ShellTrayManager *manager)
 
   return TRUE;
 }
+
+static gboolean
+find_child_data (gpointer key, gpointer value, gpointer data)
+{
+  ShellTrayManagerChild *child   = value;
+  Window                 xwindow = GPOINTER_TO_INT (data);
+
+  if (child->config_xwin == xwindow)
+    return TRUE;
+
+  return FALSE;
+}
+
+void
+shell_tray_manager_close_config_window (ShellTrayManager *manager,
+                                        Window            xwindow)
+{
+  GHashTable            *icons = manager->priv->icons;
+  ShellTrayManagerChild *child;
+
+  child = g_hash_table_find (icons, find_child_data, GINT_TO_POINTER (xwindow));
+
+  if (child)
+    {
+      GtkWidget *config = child->config;
+
+      child->config = 0;
+      child->config_xwin = None;
+
+      gtk_widget_destroy (config);
+    }
+  else
+    g_warning ("No tray child associated with config window 0x%x",
+               (guint)xwindow);
+}
+

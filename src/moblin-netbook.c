@@ -933,6 +933,21 @@ on_config_actor_show_completed_cb (ClutterActor *actor, gpointer data)
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
+struct config_hide_data
+{
+  MoblinNetbookPlugin *plugin;
+  Window               config_xwin;
+};
+
+static void
+on_config_actor_hide_cb (ClutterActor *actor, gpointer data)
+{
+  struct config_hide_data *hide_data = data;
+
+  shell_tray_manager_close_config_window (hide_data->plugin->priv->tray_manager,
+                                          hide_data->config_xwin);
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -1002,7 +1017,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            *
            * We do (b).
            */
-          struct config_map_data *map_data;
+          struct config_map_data  *map_data;
+          struct config_hide_data *hide_data;
+
           ClutterActor *background;
           ClutterActor *parent;
           ClutterActor *texture = mutter_window_get_texture (mcw);
@@ -1029,6 +1046,15 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           g_signal_connect (background, "show-completed",
                             G_CALLBACK (on_config_actor_show_completed_cb),
                             map_data);
+
+          hide_data              = g_new (struct config_hide_data, 1);
+          hide_data->plugin      = MOBLIN_NETBOOK_PLUGIN (plugin);
+          hide_data->config_xwin = xwin;
+
+          g_signal_connect_data (background, "hide",
+                                 G_CALLBACK (on_config_actor_hide_cb),
+                                 hide_data,
+                                 (GClosureNotify)g_free, 0);
 
           clutter_actor_set_position (background, x, y);
 
