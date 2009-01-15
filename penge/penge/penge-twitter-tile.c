@@ -90,7 +90,8 @@ _button_press_event (ClutterActor *actor,
                                      NULL,
                                      &error))
   {
-    g_warning (G_STRLOC ": Error launching uri: %s",
+    g_warning (G_STRLOC ": Error launching uri (%s): %s",
+               url,
                error->message);
     g_clear_error (&error);
   } else {
