@@ -623,14 +623,7 @@ shell_tray_manager_close_config_window (ShellTrayManager *manager,
   child = g_hash_table_find (icons, find_child_data, GINT_TO_POINTER (xwindow));
 
   if (child)
-    {
-      GtkWidget *config = child->config;
-
-      child->config = 0;
-      child->config_xwin = None;
-
-      gtk_widget_destroy (config);
-    }
+    destroy_config_window (child);
   else
     g_warning ("No tray child associated with config window 0x%x",
                (guint)xwindow);
