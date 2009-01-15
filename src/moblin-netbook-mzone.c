@@ -23,6 +23,7 @@ make_mzone_grid (gint width)
                        NULL);
   clutter_actor_set_size (grid, 1024, 500);
   nbtk_widget_set_padding ((NbtkWidget *)grid, &padding);
+  clutter_actor_set_reactive (grid, TRUE);
 
   table = nbtk_table_new ();
 
