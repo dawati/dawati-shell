@@ -246,7 +246,7 @@ make_launcher (MutterPlugin *plugin, gint width)
 {
   GSList *apps, *a;
   GtkIconTheme  *theme;
-  ClutterActor  *stage, *launcher, *table;
+  ClutterActor  *stage, *table;
   gint           row, col, n_cols, pad;
   struct entry_data *entry_data;
   NbtkWidget    *drop_down, *footer, *up_button;
@@ -269,15 +269,14 @@ make_launcher (MutterPlugin *plugin, gint width)
 
   pad += PADDING;
 
-  table = nbtk_table_new ();
-  nbtk_widget_set_padding (table, &padding);
-  launcher = CLUTTER_ACTOR (table);
-  clutter_actor_set_name (launcher, "launcher-table");
+  table = CLUTTER_ACTOR (nbtk_table_new ());
+  nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
+  clutter_actor_set_name (table, "launcher-table");
 
-  g_signal_connect (launcher, "button-press-event",
+  g_signal_connect (table, "button-press-event",
                     G_CALLBACK (table_input_cb), NULL);
 
-  clutter_actor_set_reactive (launcher, TRUE);
+  clutter_actor_set_reactive (table, TRUE);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (table), pad);
   nbtk_table_set_row_spacing (NBTK_TABLE (table), pad);
@@ -333,7 +332,7 @@ make_launcher (MutterPlugin *plugin, gint width)
 
       clutter_actor_set_reactive (icon, TRUE);
 
-      clutter_container_child_set (CLUTTER_CONTAINER (launcher), icon,
+      clutter_container_child_set (CLUTTER_CONTAINER (table), icon,
 				   "keep-aspect-ratio", TRUE, NULL);
 
       if (++col >= n_cols)
@@ -343,7 +342,7 @@ make_launcher (MutterPlugin *plugin, gint width)
         }
     }
 
-  drop_down = mnb_drop_down_new ();
+  drop_down = NBTK_WIDGET (mnb_drop_down_new ());
 
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
 
