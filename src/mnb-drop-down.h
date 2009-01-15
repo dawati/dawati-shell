@@ -55,6 +55,8 @@ typedef struct {
 
 typedef struct {
   NbtkTableClass parent_class;
+
+  void (*show_completed) (MnbDropDown *drop_down);
 } MnbDropDownClass;
 
 GType mnb_drop_down_get_type (void);

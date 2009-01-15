@@ -30,6 +30,15 @@ G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_DROP_DOWN, MnbDropDownPrivate))
 
+enum
+{
+  SHOW_COMPLETED,
+
+  LAST_SIGNAL
+};
+
+static guint dropdown_signals[LAST_SIGNAL] = { 0 };
+
 struct _MnbDropDownPrivate {
     ClutterActor *child;
     ClutterEffectTemplate *slide_effect;
@@ -71,6 +80,11 @@ mnb_drop_down_finalize (GObject *object)
   G_OBJECT_CLASS (mnb_drop_down_parent_class)->finalize (object);
 }
 
+static void
+mnb_drop_down_show_completed_cb (ClutterActor *actor, gpointer data)
+{
+  g_signal_emit (actor, dropdown_signals[SHOW_COMPLETED], 0);
+}
 
 static void
 mnb_drop_down_show (ClutterActor *actor)
@@ -96,7 +110,7 @@ mnb_drop_down_show (ClutterActor *actor)
                        actor,
                        x,
                        y,
-                       NULL, NULL);
+                       mnb_drop_down_show_completed_cb, NULL);
 }
 
 static void
@@ -140,7 +154,14 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
   clutter_class->hide = mnb_drop_down_hide;
   clutter_class->paint = mnb_drop_down_paint;
 
-
+  dropdown_signals[SHOW_COMPLETED] =
+    g_signal_new ("show-completed",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (MnbDropDownClass, show_completed),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 }
 
 static void
