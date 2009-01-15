@@ -162,6 +162,13 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
     {
       gboolean active = nbtk_button_get_active (button);
 
+      /*
+       * If we showing some UI element, we forcefully close any tray config
+       * windows.
+       */
+      if (active)
+        shell_tray_manager_close_all_config_windows (priv->tray_manager);
+
       toggle_control (plugin, control, active);
     }
 }
