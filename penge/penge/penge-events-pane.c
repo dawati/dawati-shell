@@ -144,7 +144,7 @@ penge_events_pane_update (PengeEventsPane *pane)
       nbtk_widget_set_style_class_name (priv->no_events_label,
                                         "PengeNoMoreEventsText");
 
-      clutter_actor_set_size (priv->no_events_label, 216, 44);
+      clutter_actor_set_size ((ClutterActor *)priv->no_events_label, 216, 44);
     }
   } else {
     if (priv->no_events_label)
