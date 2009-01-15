@@ -2,6 +2,7 @@
 
 #include "penge-recent-file-tile.h"
 #include "penge-magic-texture.h"
+#include "penge-utils.h"
 
 G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_TABLE)
 
