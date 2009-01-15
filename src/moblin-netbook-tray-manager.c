@@ -636,3 +636,18 @@ shell_tray_manager_close_config_window (ShellTrayManager *manager,
                (guint)xwindow);
 }
 
+void
+shell_tray_manager_close_all_config_windows (ShellTrayManager *manager)
+{
+  GList *l = manager->priv->config_windows;
+
+  while (l)
+    {
+      Window xwin = GPOINTER_TO_INT (l->data);
+
+      shell_tray_manager_close_config_window (manager, xwin);
+
+      l = l->next;
+    }
+}
+

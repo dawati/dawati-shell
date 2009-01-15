@@ -51,6 +51,8 @@ gboolean          shell_tray_manager_config_windows_showing (ShellTrayManager *m
 void              shell_tray_manager_close_config_window (ShellTrayManager *manager,
                                                           Window            xwindow);
 
+void              shell_tray_manager_close_all_config_windows (ShellTrayManager *manager);
+
 G_END_DECLS
 
 #endif /* __SHELL_TRAY_MANAGER_H__ */
