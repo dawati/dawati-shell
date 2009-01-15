@@ -925,8 +925,6 @@ panel_slide_timeout_cb (gpointer data)
   MutterPlugin  *plugin = data;
   PluginPrivate *priv  = plugin->plugin_private;
 
-  printf ("last_y %d\n", priv->last_y);
-
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
       show_panel ();
