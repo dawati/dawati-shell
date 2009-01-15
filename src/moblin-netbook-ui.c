@@ -83,9 +83,7 @@ toggle_control (MutterPlugin *plugin, MnbkControl control, gboolean show)
           actor = make_workspace_switcher (plugin);
           break;
         case MNBK_CONTROL_APPLICATIONS:
-          clutter_actor_set_position (priv->launcher, 4, PANEL_HEIGHT);
-          clutter_actor_raise (priv->launcher, priv->panel_shadow);
-          clutter_actor_show (priv->launcher);
+          actor = priv->launcher;
           break;
         default:
           break;
@@ -93,18 +91,9 @@ toggle_control (MutterPlugin *plugin, MnbkControl control, gboolean show)
 
       if (actor)
         {
+          clutter_actor_set_position (actor, 4, PANEL_HEIGHT);
           clutter_actor_raise (actor, priv->panel_shadow);
-          clutter_actor_set_position (actor,
-                                      4,
-                                      -clutter_actor_get_height(actor));
-
           clutter_actor_show (actor);
-          clutter_effect_move (priv->panel_slide_effect,
-                               actor,
-                               4,
-                               PANEL_HEIGHT,
-                               NULL, NULL);
-
         }
     }
   else

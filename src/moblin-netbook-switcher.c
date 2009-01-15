@@ -26,6 +26,7 @@
 #include "moblin-netbook-switcher.h"
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-panel.h"
+#include "mnb-drop-down.h"
 
 /*******************************************************************
  * Workspace switcher, used to switch between existing workspaces.
@@ -310,10 +311,9 @@ ClutterActor *
 make_workspace_switcher (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  ClutterActor               *switcher;
+  NbtkWidget                 *switcher;
   ClutterActor               *label;
   ClutterActor               *grid;
-  NbtkWidget                 *texture, *footer, *up_button;
   gint                        screen_width, screen_height;
   gint                        switcher_width, switcher_height;
   gint                        grid_y;
@@ -326,54 +326,28 @@ make_workspace_switcher (MutterPlugin *plugin)
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  switcher = clutter_group_new ();
-
   grid = make_contents (plugin, G_CALLBACK (workspace_input_cb));
   clutter_actor_realize (grid);
   clutter_actor_set_position (grid, 0, 0);
   clutter_actor_set_width (grid, screen_width - PANEL_X_PADDING * 2);
 
-  footer = nbtk_table_new ();
-  nbtk_widget_set_padding (footer, &padding);
-  nbtk_widget_set_style_class_name (footer, "drop-down-footer");
-
-  up_button = nbtk_button_new ();
-  nbtk_widget_set_style_class_name (up_button, "drop-down-up-button");
-  nbtk_table_add_actor (NBTK_TABLE (footer), CLUTTER_ACTOR (up_button), 0, 0);
-  clutter_actor_set_size (CLUTTER_ACTOR (up_button), 23, 21);
-  clutter_container_child_set (CLUTTER_CONTAINER (footer),
-                               CLUTTER_ACTOR (up_button),
-                               "keep-aspect-ratio", TRUE,
-                               "x-align", 1.0,
-                               NULL);
-  g_signal_connect (up_button, "clicked",
-                    G_CALLBACK (hide_workspace_switcher), NULL);
-
-  clutter_container_add (CLUTTER_CONTAINER (switcher),
-                         grid, footer, NULL);
+  switcher = mnb_drop_down_new ();
+  mnb_drop_down_set_child (MNB_DROP_DOWN (switcher), grid);
 
   if (priv->workspace_switcher)
     hide_workspace_switcher (plugin);
 
-  priv->workspace_switcher = switcher;
+  priv->workspace_switcher = CLUTTER_ACTOR (switcher);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), switcher);
-  clutter_actor_set_position (grid, 0, 0);
-  clutter_actor_set_position (CLUTTER_ACTOR (footer), 0,
-                              clutter_actor_get_height (grid));
-  clutter_actor_set_size (CLUTTER_ACTOR (footer),
-                          screen_width - PANEL_X_PADDING * 2, 31);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel),
+                               CLUTTER_ACTOR (switcher));
 
   panel_y      = clutter_actor_get_y (priv->panel);
-
-  clutter_actor_set_reactive (switcher, TRUE);
 
   g_signal_connect (switcher, "key-press-event",
                     G_CALLBACK (switcher_keyboard_input_cb), plugin);
 
-  clutter_grab_keyboard (switcher);
+  clutter_grab_keyboard (CLUTTER_ACTOR (switcher));
 
-  clutter_actor_raise (switcher, priv->panel_shadow);
-
-  return switcher;
+  return CLUTTER_ACTOR (switcher);
 }
