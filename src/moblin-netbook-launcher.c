@@ -232,15 +232,6 @@ entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
   return TRUE;
 }
 
-static gboolean
-table_input_cb (ClutterActor *table, ClutterEvent *event, gpointer data)
-{
-  /*
-   * Processing stops here.
-   */
-  return TRUE;
-}
-
 ClutterActor *
 make_launcher (MutterPlugin *plugin, gint width)
 {
@@ -272,9 +263,6 @@ make_launcher (MutterPlugin *plugin, gint width)
   table = CLUTTER_ACTOR (nbtk_table_new ());
   nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
   clutter_actor_set_name (table, "launcher-table");
-
-  g_signal_connect (table, "button-press-event",
-                    G_CALLBACK (table_input_cb), NULL);
 
   clutter_actor_set_reactive (table, TRUE);
 
