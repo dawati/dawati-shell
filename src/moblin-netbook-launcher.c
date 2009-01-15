@@ -342,7 +342,7 @@ make_launcher (MutterPlugin *plugin, gint width)
         }
     }
 
-  drop_down = NBTK_WIDGET (mnb_drop_down_new ());
+  drop_down = mnb_drop_down_new ();
 
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
 

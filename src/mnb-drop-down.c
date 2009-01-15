@@ -201,7 +201,7 @@ mnb_drop_down_init (MnbDropDown *self)
                                                     CLUTTER_ALPHA_SINE_INC);
 }
 
-MnbDropDown*
+NbtkWidget*
 mnb_drop_down_new (void)
 {
   return g_object_new (MNB_TYPE_DROP_DOWN, "show-on-set-parent", FALSE, NULL);
