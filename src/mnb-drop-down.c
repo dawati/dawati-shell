@@ -140,10 +140,10 @@ mnb_drop_down_paint (ClutterActor *actor)
 }
 
 static gboolean
-mnb_button_event_capture (ClutterActor *actor, ClutterEvent *event)
+mnb_button_event_capture (ClutterActor *actor, ClutterButtonEvent *event)
 {
   /* prevent the event from moving up the scene graph, since we don't want
-   * any events to accidently fall onto application windows below the 
+   * any events to accidently fall onto application windows below the
    * drop down.
    */
   return TRUE;
