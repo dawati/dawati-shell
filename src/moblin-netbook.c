@@ -26,6 +26,7 @@
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
+#include "mnb-drop-down.h"
 #include "nbtk-behaviour-bounce.h"
 
 #include <clutter/clutter.h>
@@ -906,21 +907,30 @@ on_map_effect_complete (ClutterTimeline *timeline, gpointer data)
 }
 
 static void
-on_map_config_effect_complete (ClutterActor *actor, gpointer data)
-{
-  MutterPlugin *plugin = data;
-  MutterWindow *mcw    = MUTTER_WINDOW (actor);
-
-  /* Notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-}
-
-static void
 on_config_actor_destroy (ClutterActor *actor, gpointer data)
 {
   ClutterActor *background = data;
 
   clutter_actor_destroy (background);
+}
+
+struct config_map_data
+{
+  MutterPlugin *plugin;
+  MutterWindow *mcw;
+};
+
+static void
+on_config_actor_show_completed_cb (ClutterActor *actor, gpointer data)
+{
+  struct config_map_data *map_data = data;
+  MutterPlugin           *plugin   = map_data->plugin;
+  MutterWindow           *mcw      = map_data->mcw;
+
+  g_free (map_data);
+
+  /* Notify the manager that we are done with this effect */
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
 /*
@@ -990,11 +1000,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * (b) We reparent the actual glx texture inside Mutter window to
            * our frame, and destroy it manually when we close the window.
            *
-           * At present we do (a) as a proof of concept.
+           * We do (b).
            */
-          ClutterColor clr = {0xff, 0, 0, 0x3f};
-          ClutterColor clr_clear = {0, 0, 0, 0};
-
+          struct config_map_data *map_data;
           ClutterActor *background;
           ClutterActor *parent;
           ClutterActor *texture = mutter_window_get_texture (mcw);
@@ -1004,39 +1012,30 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           guint h = clutter_actor_get_height (texture);
           guint w = clutter_actor_get_width (texture);
 
-          background = clutter_rectangle_new_with_color (&clr_clear);
+          background = CLUTTER_ACTOR (mnb_drop_down_new ());
 
-          clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (background),
-                                              10);
-          clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (background),
-                                              &clr);
-
-          parent = clutter_actor_get_parent (actor);
-
-          clutter_actor_set_size (background, w + 2*10, h + 2*10);
-          clutter_actor_set_position (background, x - 10, -(y + h + 2*10));
-
-          clutter_actor_set_y (actor, -(y + h));
-
-          clutter_actor_show (actor);
-          clutter_actor_show (background);
-
-          clutter_container_add_actor (CLUTTER_CONTAINER (parent), background);
-          clutter_actor_raise_top (background);
+          g_object_ref (texture);
+          clutter_actor_unparent (texture);
+          mnb_drop_down_set_child (MNB_DROP_DOWN (background), texture);
+          g_object_unref (texture);
 
           g_signal_connect (actor, "destroy",
                             G_CALLBACK (on_config_actor_destroy), background);
 
-          /*
-           * FIXME -- should use a different template here (once we refactor
-           * there will be suitable slide template for all the UI conteainers).
-           */
-          clutter_effect_move (priv->panel_slide_effect,
-                               background, x-10, y-10,
-                               NULL, NULL);
-          clutter_effect_move (priv->panel_slide_effect,
-                               actor, x, y,
-                               on_map_config_effect_complete, plugin);
+          map_data         = g_new (struct config_map_data, 1);
+          map_data->plugin = plugin;
+          map_data->mcw    = mcw;
+
+          g_signal_connect (background, "show-completed",
+                            G_CALLBACK (on_config_actor_show_completed_cb),
+                            map_data);
+
+          clutter_actor_set_position (background, x, y);
+
+          parent = clutter_actor_get_parent (actor);
+
+          clutter_container_add_actor (CLUTTER_CONTAINER (parent), background);
+          clutter_actor_show_all (background);
         }
       else
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
