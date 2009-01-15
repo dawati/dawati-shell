@@ -63,7 +63,7 @@ typedef struct {
 
 GType mnb_drop_down_get_type (void);
 
-MnbDropDown* mnb_drop_down_new (void);
+NbtkWidget* mnb_drop_down_new (void);
 
 void          mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child);
 ClutterActor* mnb_drop_down_get_child (MnbDropDown *drop_down);
