@@ -24,11 +24,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_RECENT_FILE_TILE, PengeRecentFileTileClass))
 
 typedef struct {
-  NbtkWidget parent;
+  NbtkTable parent;
 } PengeRecentFileTile;
 
 typedef struct {
-  NbtkWidgetClass parent_class;
+  NbtkTableClass parent_class;
 } PengeRecentFileTileClass;
 
 GType penge_recent_file_tile_get_type (void);

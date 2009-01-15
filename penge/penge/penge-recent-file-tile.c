@@ -1,8 +1,9 @@
 #include <gtk/gtk.h>
 
 #include "penge-recent-file-tile.h"
+#include "penge-magic-texture.h"
 
-G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_WIDGET)
+G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_RECENT_FILE_TILE, PengeRecentFileTilePrivate))
@@ -124,17 +125,21 @@ penge_recent_file_tile_constructed (GObject *object)
   ClutterActor *tex;
   GError *error = NULL;
 
-  tex = clutter_texture_new_from_file (priv->thumbnail_path,
-                                       &error);
+  tex = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
+                      NULL);
 
-  if (!tex)
+  if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (tex),
+                                      priv->thumbnail_path,
+                                      &error))
   {
     g_warning (G_STRLOC ": Error opening thumbnail: %s",
                error->message);
     g_clear_error (&error);
   } else {
-    clutter_container_add_actor (CLUTTER_CONTAINER (object),
-                                 tex);
+    nbtk_table_add_actor (NBTK_TABLE (object),
+                          tex,
+                          0,
+                          0);
   }
 
   g_signal_connect (object, 
@@ -196,6 +201,10 @@ _leave_event_cb (ClutterActor *actor,
 static void
 penge_recent_file_tile_init (PengeRecentFileTile *self)
 {
+  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (4),
+                          CLUTTER_UNITS_FROM_DEVICE (4),
+                          CLUTTER_UNITS_FROM_DEVICE (4),
+                          CLUTTER_UNITS_FROM_DEVICE (4) };
   g_signal_connect (self,
                     "enter-event",
                     (GCallback)_enter_event_cb,
@@ -204,6 +213,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
                     "leave-event",
                     (GCallback)_leave_event_cb,
                     NULL);
+  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 }
 
 
