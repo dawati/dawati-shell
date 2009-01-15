@@ -11,7 +11,8 @@ libpenge_la_HEADERS = penge-people-pane.h \
 		   penge-events-pane.h \
 		   penge-calendar-pane.h \
 		   penge-grid-view.h \
-		   penge-utils.h
+		   penge-utils.h \
+		   penge-magic-texture.h
 
 libpenge_la_SOURCES = \
 		      $(libpenge_la_HEADERS) \
@@ -26,7 +27,8 @@ libpenge_la_SOURCES = \
 		      penge-events-pane.c \
 		      penge-calendar-pane.c \
 		      penge-grid-view.c \
-		      penge-utils.c
+		      penge-utils.c \
+		      penge-magic-texture.c
 libpenge_la_CFLAGS = -Wall $(GLIB_CFLAGS) $(NBTK_CFLAGS) $(JANA_ECAL_CFLAGS) \
 		     $(MOJITO_CLIENT_CFLAGS) $(GTK_CFLAGS) \
 		     -DPKG_DATADIR=\"$(pkgdatadir)\"
