@@ -139,6 +139,16 @@ mnb_drop_down_paint (ClutterActor *actor)
   cogl_clip_unset ();
 }
 
+static gboolean
+mnb_button_event_capture (ClutterActor *actor, ClutterEvent *event)
+{
+  /* prevent the event from moving up the scene graph, since we don't want
+   * any events to accidently fall onto application windows below the 
+   * drop down.
+   */
+  return TRUE;
+}
+
 static void
 mnb_drop_down_class_init (MnbDropDownClass *klass)
 {
@@ -155,6 +165,8 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
   clutter_class->show = mnb_drop_down_show;
   clutter_class->hide = mnb_drop_down_hide;
   clutter_class->paint = mnb_drop_down_paint;
+  clutter_class->button_press_event = mnb_button_event_capture;
+  clutter_class->button_release_event = mnb_button_event_capture;
 
   dropdown_signals[SHOW_COMPLETED] =
     g_signal_new ("show-completed",
@@ -204,7 +216,10 @@ mnb_drop_down_init (MnbDropDown *self)
 NbtkWidget*
 mnb_drop_down_new (void)
 {
-  return g_object_new (MNB_TYPE_DROP_DOWN, "show-on-set-parent", FALSE, NULL);
+  return g_object_new (MNB_TYPE_DROP_DOWN,
+                       "show-on-set-parent", FALSE,
+                       "reactive", TRUE,
+                       NULL);
 }
 
 void
