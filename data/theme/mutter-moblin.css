@@ -252,6 +252,11 @@ PengeRecentFilesPane
   font-size: 18;
 }
 
+PengeGridView
+{
+  background-image: url('file://mzone/linus.png');
+}
+
 NbtkLabel
 {
   font-family: "Liberation Sans";
