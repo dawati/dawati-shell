@@ -169,7 +169,21 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
       if (active)
         shell_tray_manager_close_all_config_windows (priv->tray_manager);
 
-      toggle_control (plugin, control, active);
+      if (control == MNBK_CONTROL_SPACES)
+        {
+          if (active)
+            {
+              ClutterActor *actor;
+              actor = make_workspace_switcher (plugin);
+              clutter_actor_set_position (actor, 4, PANEL_HEIGHT);
+              clutter_actor_raise (actor, priv->panel_shadow);
+              clutter_actor_show (actor);
+            }
+          else
+            {
+              hide_workspace_switcher (plugin);
+            }
+        }
     }
 }
 
