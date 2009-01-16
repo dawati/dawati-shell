@@ -166,8 +166,6 @@ MnbDropDown {
   padding:  0 4 37 4;
 }
 
-}
-
 PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile
 {
   background-image: url('file://mzone/general-background.png');
