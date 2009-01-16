@@ -115,7 +115,6 @@ NbtkTooltip {
   background-image: url("file://generic/tooltip-background.png");
   border-width: 13 11 13 11;
   color: white;
-  padding: 13 13 13 13;
   font-size: 15px;
 }
 
