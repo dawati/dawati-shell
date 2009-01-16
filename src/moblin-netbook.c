@@ -1065,8 +1065,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         }
       else
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+
     }
-  else if (type == META_COMP_WINDOW_NORMAL)
+  else if (type == META_COMP_WINDOW_NORMAL ||
+           type == META_COMP_WINDOW_SPLASHSCREEN)
     {
       ActorPrivate *apriv = get_actor_private (mcw);
       MetaWindow   *mw = mutter_window_get_meta_window (mcw);
@@ -1108,6 +1110,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+
 }
 
 /*
@@ -1204,7 +1207,13 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 
-  check_for_empty_workspaces (plugin, workspace, mcw);
+  /*
+   * Do not destroy workspace if the closing window is a splash screen.
+   * (Sometimes the splash gets destroyed before the application window
+   * maps, e.g., Gimp.)
+   */
+  if (type != META_COMP_WINDOW_SPLASHSCREEN)
+    check_for_empty_workspaces (plugin, workspace, mcw);
 }
 
 /*
