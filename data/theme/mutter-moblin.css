@@ -160,7 +160,7 @@ NbtkTooltip {
   padding: 5;
 }
 
-*.drop-down-background {
+MnbDropDown {
   background-image: url("file://panel/panel-shadow.png");
   border-width: 0 4 37 4;
   padding:  0 4 37 4;

@@ -150,6 +150,17 @@ mnb_button_event_capture (ClutterActor *actor, ClutterButtonEvent *event)
 }
 
 static void
+mnb_button_toggled_cb (NbtkWidget  *button,
+                       GParamSpec  *pspec,
+                       MnbDropDown *drop_down)
+{
+  if (nbtk_button_get_active (button))
+    clutter_actor_show (drop_down);
+  else
+    clutter_actor_hide (drop_down);
+}
+
+static void
 mnb_drop_down_class_init (MnbDropDownClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -187,8 +198,6 @@ mnb_drop_down_init (MnbDropDown *self)
   MnbDropDownPrivate *priv;
 
   priv = self->priv = GET_PRIVATE (self);
-
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (self), "drop-down-background");
 
   /* footer with "up" button */
   footer = nbtk_table_new ();
@@ -246,4 +255,16 @@ mnb_drop_down_get_child (MnbDropDown *drop_down)
   g_return_if_fail (MNB_DROP_DOWN (drop_down));
 
   return drop_down->priv->child;
+}
+
+void
+mnb_drop_down_set_button (MnbDropDown *drop_down,
+                          NbtkButton *button)
+{
+
+  g_return_if_fail (MNB_IS_DROP_DOWN (drop_down));
+  g_return_if_fail (NBTK_IS_BUTTON (button));
+
+  g_signal_connect (button, "notify::active", mnb_button_toggled_cb, drop_down);
+
 }

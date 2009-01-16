@@ -69,6 +69,7 @@ void          mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *chi
 ClutterActor* mnb_drop_down_get_child (MnbDropDown *drop_down);
 
 
+void          mnb_drop_down_set_button (MnbDropDown *drop_down, NbtkButton *button);
 
 G_END_DECLS
 

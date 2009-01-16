@@ -423,7 +423,7 @@ make_panel (MutterPlugin *plugin, gint width)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->launcher);
 
-  clutter_actor_hide (priv->launcher);
+  mnb_drop_down_set_button (priv->launcher, priv->panel_buttons[5]);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr,
