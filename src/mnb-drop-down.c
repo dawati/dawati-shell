@@ -188,6 +188,8 @@ mnb_drop_down_init (MnbDropDown *self)
 
   priv = self->priv = GET_PRIVATE (self);
 
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (self), "drop-down-background");
+
   /* footer with "up" button */
   footer = nbtk_table_new ();
   nbtk_widget_set_padding (footer, &padding);
