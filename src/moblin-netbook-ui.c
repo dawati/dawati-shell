@@ -83,7 +83,6 @@ toggle_control (MutterPlugin *plugin, MnbkControl control, gboolean show)
           actor = make_workspace_switcher (plugin);
           break;
         case MNBK_CONTROL_APPLICATIONS:
-          actor = priv->launcher;
           break;
         default:
           break;
@@ -104,7 +103,6 @@ toggle_control (MutterPlugin *plugin, MnbkControl control, gboolean show)
           hide_workspace_switcher (plugin);
           break;
         case MNBK_CONTROL_APPLICATIONS:
-          actor = priv->launcher;
           break;
         default:
           break;
