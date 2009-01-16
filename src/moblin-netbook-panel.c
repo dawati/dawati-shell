@@ -26,6 +26,7 @@
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
+#include "penge/penge-grid-view.h"
 
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
@@ -467,7 +468,12 @@ make_panel (MutterPlugin *plugin, gint width)
   g_signal_connect (background, "enter-event",
                     G_CALLBACK (panel_enter_event_cb), plugin);
 
-  priv->mzone_grid = make_mzone_grid (width);
+  priv->mzone_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
+
+  mnb_drop_down_set_child (priv->mzone_grid, g_object_new (PENGE_TYPE_GRID_VIEW, NULL));
+  mnb_drop_down_set_button (priv->mzone_grid, priv->panel_buttons[0]);
+  clutter_actor_set_size (priv->mzone_grid, 1024 - 8, 500);
+  clutter_actor_set_position (priv->mzone_grid, 4, PANEL_HEIGHT);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
 
