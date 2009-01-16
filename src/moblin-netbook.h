@@ -71,6 +71,8 @@ struct _MoblinNetbookPluginClass
   MutterPluginClass parent_class;
 };
 
+#define MN_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d)}
+
 typedef struct ActorPrivate  ActorPrivate;
 
 /*
@@ -103,6 +105,7 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *workspace_switcher;
   ClutterActor          *workspace_chooser;
   ClutterActor          *launcher;
+  ClutterActor          *mzone_grid;
   ClutterActor          *lowlight;
 
   ShellTrayManager      *tray_manager;

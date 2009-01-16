@@ -228,6 +228,8 @@ entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
   spawn_app (plugin, exec, event->any.time, without_chooser, workspace);
 
   clutter_actor_hide (priv->launcher);
+  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
+  hide_panel ();
 
   return TRUE;
 }
