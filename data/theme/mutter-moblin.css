@@ -5,7 +5,7 @@ NbtkTable {
 
 *#time-label {
   color: #c0c0c0;
-  font-size: 19px; 
+  font-size: 19px;
 }
 
 *#date-label {
@@ -166,3 +166,101 @@ MnbDropDown {
   padding:  0 4 37 4;
 }
 
+}
+
+PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile
+{
+  background-image: url('file://mzone/general-background.png');
+  border-width: 16;
+}
+
+PengeFlickrTile:hover, PengeTwitterTile:hover, PengeRecentFileTile:hover
+{
+  background-image: url('file://mzone/general-background-dark.png');
+  border-width: 16;
+}
+
+PengeDateTile
+{
+  background-image: url('file://mzone/date-background.png');
+  border-width: 16;
+}
+
+PengeEventTile:hover
+{
+  background-image: url('file://mzone/event-background-dark.png');
+  border-width: 8;
+}
+
+*.PengeDateTileBackground
+{
+  background-image: url('file://mzone/date-background-background.png');
+  border-width: 16;
+}
+
+PengePeoplePane
+{
+  background-image: url('file://mzone/people-background.png');
+  border-width: 16;
+}
+
+PengeEventsPane, PengeCalendarPane
+{
+  background-image: url('file://mzone/date-background.png');
+  border-width: 16;
+}
+
+PengeRecentFilesPane
+{
+  background-image: url('file://mzone/recent-files-background.png');
+  border-width: 16;
+}
+
+*.PengeEventTime
+{
+  background-image: url('file://mzone/time-bg.png');
+  color: white;
+  font-size:12;
+}
+
+*.PengeDayLabel
+{
+  font-size: 18;
+}
+
+*.PengeDateLabel
+{
+  font-size: 78;
+  color: #4eb9f1ff;
+}
+
+*.PengePeopleTilePrimaryLabel
+{
+}
+
+*.PengePeopleTileSecondaryLabel
+{
+  font-size: 11;
+  color: #3a3a3aff;
+}
+
+*.PengeTwitterTileText
+{
+  font-size: 12;
+}
+
+*.PengeNoMoreEventsText
+{
+  font-size: 18;
+}
+
+PengeGridView
+{
+  background-image: url('file://mzone/linus.png');
+}
+
+NbtkLabel
+{
+  font-family: "Liberation Sans";
+  font-size: 12;
+}

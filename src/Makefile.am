@@ -2,7 +2,8 @@ SUBDIRS=tray
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-INCLUDES=@MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\"
+INCLUDES=@MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
+	 -I$(top_srcdir)/penge
 
 AM_CFLAGS   = -Werror=missing-prototypes -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
@@ -24,9 +25,11 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-notify-store.h   \
 				moblin-netbook-notify.c         \
 	                        $(DBUS_GLUE)                    \
-				$(MARSHALS)                    \
-				mnb-drop-down.h                    \
-				mnb-drop-down.c
+				$(MARSHALS)                     \
+				mnb-drop-down.h                 \
+				mnb-drop-down.c			\
+				moblin-netbook-mzone.c		\
+				moblin-netbook-mzone.h
 
 DBUS_GLUE=notification-manager-glue.h
 %-glue.h: %.xml
@@ -40,7 +43,8 @@ MARSHALS = marshal.c marshal.h
 	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --header > $@
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
-moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la
+moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la \
+			     $(top_srcdir)/penge/penge/libpenge.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 

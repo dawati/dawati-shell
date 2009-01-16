@@ -29,6 +29,8 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0 libstartup-notification-1.0 gtk+-2.0 libgnome-menu dbus-glib-1)
 
+PKG_CHECK_MODULES(PENGE, libjana-ecal mojito-client-0.0 gtk+-2.0 nbtk-1.0)
+
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
@@ -48,6 +50,9 @@ src/Makefile
 src/tray/Makefile
 po/Makefile.in
 tests/Makefile
+penge/Makefile
+penge/penge/Makefile
+penge/examples/Makefile
 ])
 
 echo "
