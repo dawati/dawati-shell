@@ -42,3 +42,9 @@ The following Metacity preferences are of possible interest:
                    75% of the screen. If no other windows are subsequently
                    placed on the same workspace later, it is automatically
                    removed when the window closes.
+
+Dependencies:
+
+NBTK: git.moblin.org/nbtk.git
+jana: svn.gnome.org/svn/jana
+mojito: git.moblin.org/mojito.git

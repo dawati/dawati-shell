@@ -332,7 +332,7 @@ make_panel (MutterPlugin *plugin, gint width)
                                                         panel,
                                                         "m-space-button",
                                                         "m_zone",
-                                                        MNBK_CONTROL_MSPACE);
+                                                        MNBK_CONTROL_MZONE);
   g_signal_connect (priv->panel_buttons[0], "enter-event",
                     G_CALLBACK (panel_enter_event_cb), plugin);
 
@@ -452,6 +452,12 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_reactive (background, TRUE);
   g_signal_connect (background, "enter-event",
                     G_CALLBACK (panel_enter_event_cb), plugin);
+
+  priv->mzone_grid = make_mzone_grid (width);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
+
+  clutter_actor_hide (priv->mzone_grid);
 
   return panel;
 }
