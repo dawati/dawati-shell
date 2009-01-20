@@ -229,7 +229,7 @@ entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
 
   clutter_actor_hide (priv->launcher);
   nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
-  hide_panel ();
+  hide_panel (plugin);
 
   return TRUE;
 }
