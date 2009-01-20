@@ -154,6 +154,33 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+static void
+dnd_begin_cb (NbtkWidget *switcher, ClutterActor *child, gint x, gint y)
+{
+  printf ("@@@@ Child %p dragged from %d,%d\n", child, x, y);
+
+  clutter_actor_set_rotation (child, CLUTTER_Y_AXIS, 40.0, 0, 0, 0);
+}
+
+static void
+dnd_motion_cb (NbtkWidget *switcher, ClutterActor *child, gint x, gint y)
+{
+  printf ("@@@@ Child %p dragged to %d,%d\n", child, x, y);
+}
+
+static void
+dnd_end_cb (NbtkWidget *switcher, ClutterActor *child, gint x, gint y)
+{
+  printf ("@@@@ Child %p drag ended at %d,%d\n", child, x, y);
+  clutter_actor_set_rotation (child, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
+}
+
+static void
+dnd_dropped_cb (NbtkWidget *switcher, ClutterActor *child, gint x, gint y)
+{
+  printf ("@@@@ Child %p dropped at %d,%d\n", child, x, y);
+}
+
 static ClutterActor*
 make_contents (MutterPlugin *plugin, GCallback  ws_callback)
 {
@@ -254,6 +281,21 @@ make_contents (MutterPlugin *plugin, GCallback  ws_callback)
           if (ws_indx == active_ws)
             clutter_actor_set_name (CLUTTER_ACTOR (spaces[ws_indx]),
                                     "switcher-workspace-active");
+
+          nbtk_widget_set_dnd_threshold (spaces[ws_indx], 5);
+
+          g_signal_connect (spaces[ws_indx], "dnd-begin",
+                            G_CALLBACK (dnd_begin_cb), plugin);
+
+          g_signal_connect (spaces[ws_indx], "dnd-end",
+                            G_CALLBACK (dnd_end_cb), plugin);
+
+          g_signal_connect (spaces[ws_indx], "dnd-dropped",
+                            G_CALLBACK (dnd_dropped_cb), plugin);
+
+          g_signal_connect (spaces[ws_indx], "dnd-motion",
+                            G_CALLBACK (dnd_motion_cb), plugin);
+
           nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1,
                                  ws_indx);
           /* switch workspace when the workspace is selected */
