@@ -41,6 +41,7 @@ static guint dropdown_signals[LAST_SIGNAL] = { 0 };
 
 struct _MnbDropDownPrivate {
     ClutterActor *child;
+    NbtkButton *button;
     ClutterEffectTemplate *slide_effect;
     gint x;
     gint y;
@@ -116,7 +117,20 @@ mnb_drop_down_show (ClutterActor *actor)
 static void
 mnb_drop_down_hide (ClutterActor *actor)
 {
-  /* may have a different effect in the future */
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+
+
+  /* de-activate the button */
+  if (priv->button)
+    {
+      /* hide is hooked into the notify::active signal from the button, so
+       * make sure we don't get into a loop by checking active first
+       */
+      if (nbtk_button_get_active (priv->button))
+        nbtk_button_set_active (priv->button, FALSE);
+    }
+
+  /* chain up */
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->hide (actor);
 }
 
@@ -265,6 +279,8 @@ mnb_drop_down_set_button (MnbDropDown *drop_down,
 
   g_return_if_fail (MNB_IS_DROP_DOWN (drop_down));
   g_return_if_fail (NBTK_IS_BUTTON (button));
+
+  drop_down->priv->button = button;
 
   g_signal_connect (button,
                     "notify::active",
