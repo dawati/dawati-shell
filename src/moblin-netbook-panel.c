@@ -27,6 +27,7 @@
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 #include "penge/penge-grid-view.h"
+#include "mnb-switcher.h"
 
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
@@ -170,21 +171,6 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
       if (active)
         shell_tray_manager_close_all_config_windows (priv->tray_manager);
 
-      if (control == MNBK_CONTROL_SPACES)
-        {
-          if (active)
-            {
-              ClutterActor *actor;
-              actor = make_workspace_switcher (plugin);
-              clutter_actor_set_position (actor, 4, PANEL_HEIGHT);
-              clutter_actor_raise (actor, priv->panel_shadow);
-              clutter_actor_show (actor);
-            }
-          else
-            {
-              hide_workspace_switcher (plugin);
-            }
-        }
     }
 }
 
@@ -432,6 +418,14 @@ make_panel (MutterPlugin *plugin, gint width)
 
 
   g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
+
+  priv->switcher = (ClutterActor *) mnb_switcher_new (plugin);
+  clutter_container_add (CLUTTER_CONTAINER (panel),
+                         CLUTTER_ACTOR (priv->switcher), NULL);
+  mnb_drop_down_set_button (MNB_DROP_DOWN (priv->switcher),
+                            NBTK_BUTTON (priv->panel_buttons[2]));
+  clutter_actor_set_width (priv->switcher, 1024 - 8);
+  clutter_actor_set_position (priv->switcher, 4, PANEL_HEIGHT);
 
   priv->launcher = make_launcher (plugin, width - PANEL_X_PADDING * 2);
   clutter_actor_set_position (priv->launcher, PANEL_X_PADDING, PANEL_HEIGHT);
