@@ -24,8 +24,6 @@
 #include "mnb-drop-down.h"
 
 #define SLIDE_DURATION 150
-#define MNB_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), \
-                                 CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d) }
 
 G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
 
