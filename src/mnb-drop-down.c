@@ -238,14 +238,17 @@ mnb_drop_down_set_child (MnbDropDown *drop_down,
                          ClutterActor *child)
 {
   g_return_if_fail (MNB_IS_DROP_DOWN (drop_down));
-  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (child == NULL || CLUTTER_IS_ACTOR (child));
 
   if (drop_down->priv->child)
     {
-      clutter_container_remove (CLUTTER_CONTAINER (drop_down), child);
+      clutter_container_remove_actor (CLUTTER_CONTAINER (drop_down),
+                                      drop_down->priv->child);
     }
 
-  nbtk_table_add_actor (NBTK_TABLE (drop_down), child, 0, 0);
+  if (child)
+    nbtk_table_add_actor (NBTK_TABLE (drop_down), child, 0, 0);
+
   drop_down->priv->child = child;
 }
 
