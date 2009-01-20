@@ -948,6 +948,60 @@ on_config_actor_hide_cb (ClutterActor *actor, gpointer data)
                                           hide_data->config_xwin);
 }
 
+static void
+check_for_empty_workspace (MutterPlugin *plugin,
+                           gint workspace, MetaWindow *ignore)
+{
+  MoblinNetbookPluginPrivate  *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                  *screen = mutter_plugin_get_screen (plugin);
+  gboolean                     workspace_empty = TRUE;
+  GList                        *l;
+
+  l = mutter_get_windows (screen);
+  while (l)
+    {
+      MutterWindow *m = l->data;
+      MetaWindow   *mw = mutter_window_get_meta_window (m);
+
+      if (mw != ignore)
+        {
+          gint w = mutter_window_get_workspace (m);
+
+          if (w == workspace)
+            {
+              workspace_empty = FALSE;
+              break;
+            }
+        }
+
+      l = l->next;
+    }
+
+  if (workspace_empty)
+    {
+      MetaWorkspace *mws;
+      MetaDisplay   *display;
+      guint32        timestamp;
+
+      display = meta_screen_get_display (screen);
+      timestamp = meta_display_get_current_time_roundtrip (display);
+
+      mws = meta_screen_get_workspace_by_index (screen, workspace);
+
+      meta_screen_remove_workspace (screen, mws, timestamp);
+    }
+}
+
+static void
+meta_window_workspace_changed_cb (MetaWindow *mw,
+                                  gint        old_workspace,
+                                  gpointer    data)
+{
+  MutterPlugin *plugin = MUTTER_PLUGIN (data);
+
+  check_for_empty_workspace (plugin, old_workspace, mw);
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -1103,10 +1157,16 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       map_data->plugin = plugin;
       map_data->actor = actor;
 
-      g_signal_connect (apriv->tml_map, "completed",
-                        G_CALLBACK (on_map_effect_complete), map_data);
+      if (!apriv->workspace_changed_id)
+        apriv->workspace_changed_id =
+          g_signal_connect (apriv->tml_map, "completed",
+                            G_CALLBACK (on_map_effect_complete), map_data);
 
       apriv->is_minimized = FALSE;
+
+      g_signal_connect (mw, "workspace-changed",
+                        G_CALLBACK (meta_window_workspace_changed_cb),
+                        plugin);
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
@@ -1129,48 +1189,6 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
-static void
-check_for_empty_workspaces (MutterPlugin *plugin,
-                            gint workspace, MutterWindow *ignore)
-{
-  MoblinNetbookPluginPrivate  *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                  *screen = mutter_plugin_get_screen (plugin);
-  gboolean                     workspace_empty = TRUE;
-  GList                        *l;
-
-  l = mutter_get_windows (screen);
-  while (l)
-    {
-      MutterWindow *m = l->data;
-
-      if (m != ignore)
-        {
-          gint w = mutter_window_get_workspace (m);
-
-          if (w == workspace)
-            {
-              workspace_empty = FALSE;
-              break;
-            }
-        }
-
-      l = l->next;
-    }
-
-  if (workspace_empty)
-    {
-      MetaWorkspace *mws;
-      MetaDisplay   *display;
-      guint32        timestamp;
-
-      display = meta_screen_get_display (screen);
-      timestamp = meta_display_get_current_time_roundtrip (display);
-
-      mws = meta_screen_get_workspace_by_index (screen, workspace);
-
-      meta_screen_remove_workspace (screen, mws, timestamp);
-    }
-}
 
 /*
  * Simple TV-out like effect.
@@ -1213,7 +1231,8 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
    * maps, e.g., Gimp.)
    */
   if (type != META_COMP_WINDOW_SPLASHSCREEN)
-    check_for_empty_workspaces (plugin, workspace, mcw);
+    check_for_empty_workspace (plugin, workspace,
+                                mutter_window_get_meta_window (mcw));
 }
 
 /*
