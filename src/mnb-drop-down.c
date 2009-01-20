@@ -106,12 +106,23 @@ mnb_drop_down_show (ClutterActor *actor)
 
 
   clutter_actor_set_position (actor, x, -height);
-  clutter_actor_show (actor);
   clutter_effect_move (MNB_DROP_DOWN (actor)->priv->slide_effect,
                        actor,
                        x,
                        y,
                        mnb_drop_down_show_completed_cb, NULL);
+}
+
+static void
+mnb_drop_down_hide_completed_cb (ClutterActor *actor, gpointer data)
+{
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+
+  /* the hide animation has finished, so now really hide the actor */
+  CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->hide (actor);
+
+  /* now that it's hidden we can put it back to where it is suppoed to be */
+  clutter_actor_set_position (actor, priv->x, priv->y);
 }
 
 static void
@@ -130,8 +141,11 @@ mnb_drop_down_hide (ClutterActor *actor)
         nbtk_button_set_active (priv->button, FALSE);
     }
 
-  /* chain up */
-  CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->hide (actor);
+  clutter_effect_move (MNB_DROP_DOWN (actor)->priv->slide_effect,
+                       actor,
+                       priv->x,
+                       -priv->height,
+                       mnb_drop_down_hide_completed_cb, NULL);
 }
 
 static void
