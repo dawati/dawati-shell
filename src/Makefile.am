@@ -27,7 +27,9 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 	                        $(DBUS_GLUE)                    \
 				$(MARSHALS)                     \
 				mnb-drop-down.h                 \
-				mnb-drop-down.c
+				mnb-drop-down.c                 \
+				mnb-switcher.c                  \
+				mnb-switcher.h
 
 DBUS_GLUE=notification-manager-glue.h
 %-glue.h: %.xml
