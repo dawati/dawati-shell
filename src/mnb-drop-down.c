@@ -152,10 +152,10 @@ mnb_button_toggled_cb (NbtkWidget  *button,
                        GParamSpec  *pspec,
                        MnbDropDown *drop_down)
 {
-  if (nbtk_button_get_active (button))
-    clutter_actor_show (drop_down);
+  if (nbtk_button_get_active (NBTK_BUTTON (button)))
+    clutter_actor_show (CLUTTER_ACTOR (drop_down));
   else
-    clutter_actor_hide (drop_down);
+    clutter_actor_hide (CLUTTER_ACTOR (drop_down));
 }
 
 static void
@@ -266,6 +266,9 @@ mnb_drop_down_set_button (MnbDropDown *drop_down,
   g_return_if_fail (MNB_IS_DROP_DOWN (drop_down));
   g_return_if_fail (NBTK_IS_BUTTON (button));
 
-  g_signal_connect (button, "notify::active", mnb_button_toggled_cb, drop_down);
+  g_signal_connect (button,
+                    "notify::active",
+                    G_CALLBACK (mnb_button_toggled_cb),
+                    drop_down);
 
 }
