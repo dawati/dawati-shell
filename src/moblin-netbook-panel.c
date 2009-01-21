@@ -419,21 +419,24 @@ make_panel (MutterPlugin *plugin, gint width)
 
   g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
 
+
+  /* switcher drop down */
   priv->switcher = (ClutterActor *) mnb_switcher_new (plugin);
   clutter_container_add (CLUTTER_CONTAINER (panel),
                          CLUTTER_ACTOR (priv->switcher), NULL);
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->switcher),
                             NBTK_BUTTON (priv->panel_buttons[2]));
-  clutter_actor_set_width (priv->switcher, 1024 - 8);
-  clutter_actor_set_position (priv->switcher, 4, PANEL_HEIGHT);
+  clutter_actor_set_width (priv->switcher, 1024);
+  clutter_actor_set_position (priv->switcher, 0, PANEL_HEIGHT);
 
+  /* launcher drop down */
   priv->launcher = make_launcher (plugin, width - PANEL_X_PADDING * 2);
-  clutter_actor_set_position (priv->launcher, PANEL_X_PADDING, PANEL_HEIGHT);
-
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->launcher);
-
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->launcher),
                             NBTK_BUTTON (priv->panel_buttons[5]));
+  clutter_actor_set_position (priv->launcher, 0, PANEL_HEIGHT);
+  clutter_actor_set_width (priv->switcher, 1024);
+
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr,
@@ -463,18 +466,16 @@ make_panel (MutterPlugin *plugin, gint width)
   g_signal_connect (background, "enter-event",
                     G_CALLBACK (panel_enter_event_cb), plugin);
 
+  /* m-zone drop down */
   priv->mzone_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
+  clutter_actor_set_width (priv->mzone_grid, 1024);
 
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->mzone_grid),
                            CLUTTER_ACTOR (g_object_new (PENGE_TYPE_GRID_VIEW, NULL)));
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->mzone_grid),
                             NBTK_BUTTON (priv->panel_buttons[0]));
-  clutter_actor_set_size (priv->mzone_grid, 1024 - 8, 500);
-  clutter_actor_set_position (priv->mzone_grid, 4, PANEL_HEIGHT);
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
-
-  clutter_actor_hide (priv->mzone_grid);
+  clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
 
   return panel;
 }
