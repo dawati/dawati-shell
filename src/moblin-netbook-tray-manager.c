@@ -295,6 +295,34 @@ config_plug_removed_cb (GtkSocket *socket, gpointer data)
   return FALSE;
 }
 
+static void
+combine_config_windows_input_shape (ShellTrayManager *manager,
+                                    Display          *xdpy,
+                                    XserverRegion     dest,
+                                    Window            skip)
+{
+  GList *l = manager->priv->config_windows;
+
+  while (l)
+    {
+      Window xwin = GPOINTER_TO_INT (l->data);
+      XserverRegion win_region;
+
+      if (xwin != skip)
+        {
+          /* FIXME -- this does not work, need to translate the created region
+           * to the window coords.
+           */
+          win_region = XFixesCreateRegionFromWindow (xdpy, xwin, 0);
+
+          XFixesSubtractRegion (xdpy, dest, dest, win_region);
+          XFixesDestroyRegion  (xdpy, win_region);
+        }
+
+      l = l->next;
+    }
+}
+
 /*
  * GtkSocket does not provide any mechanism for tracking when the plug window
  * (un)maps (it would be easy to do by just adding couple of signals since
@@ -315,27 +343,64 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
 
       destroy_config_window (child);
     }
-}
-
-static void
-combine_config_windows_input_shape (ShellTrayManager *manager,
-                                    Display          *xdpy,
-                                    XserverRegion     dest)
-{
-  GList *l = manager->priv->config_windows;
-
-  while (l)
+  else
     {
-      Window xwin = GPOINTER_TO_INT (l->data);
-      XserverRegion win_region;
+      ShellTrayManagerChild *child = data;
+      ShellTrayManager *manager = child->manager;
+      MutterPlugin *plugin = manager->priv->plugin;
+      MoblinNetbookPluginPrivate *priv =
+        MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      Display *xdpy    = mutter_plugin_get_xdisplay (plugin);
+      XserverRegion comb_region, win_region;
+      XRectangle    rect;
+      gint          x = 0, y = 0, w, h, sw, sh;
+      GList        *wins = manager->priv->config_windows;
 
-      win_region = XFixesCreateRegionFromWindow (xdpy, xwin, 0);
+      if (child->actor)
+        clutter_actor_get_transformed_position (child->actor, &x, &y);
 
-      XFixesSubtractRegion (xdpy, dest, dest, win_region);
-      XFixesDestroyRegion  (xdpy, win_region);
+      w = child->config->allocation.width;
+      h = child->config->allocation.height;
 
-      l = l->next;
-    }
+      mutter_plugin_query_screen_size (plugin, &sw, &sh);
+
+      y = PANEL_HEIGHT;
+
+      if (x + w > (sw - 10)) /* FIXME -- query panel padding */
+        {
+          /*
+           * The window would be stretching past the screen edge, move
+           * it left.
+           */
+          x = (sw - 10) - w;
+        }
+
+      gtk_window_move (GTK_WINDOW (child->config), x, y);
+
+      /*
+       * Cut out a hole into the stage input mask matching the config
+       * window.
+       */
+      rect.x      = x;
+      rect.y      = y;
+      rect.width  = w;
+      rect.height = h;
+
+      comb_region = XFixesCreateRegion (xdpy, NULL, 0);
+      win_region = XFixesCreateRegion (xdpy, &rect, 1);
+      XFixesCopyRegion (xdpy, comb_region, priv->screen_region);
+      XFixesSubtractRegion (xdpy, comb_region, comb_region, win_region);
+
+      /*
+       * Subtract regions corresponding to any other config windows we
+       * might be showing.
+       */
+      combine_config_windows_input_shape (manager, xdpy, comb_region,
+                                        GDK_WINDOW_XID(child->config->window));
+
+      mutter_plugin_set_stage_input_region (plugin, comb_region);
+
+      XFixesDestroyRegion (xdpy, comb_region);}
 }
 
 static gboolean
@@ -396,67 +461,21 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
           gint          x = 0, y = 0, w, h, sw, sh;
           GList        *wins = manager->priv->config_windows;
 
-          if (child->actor)
-            clutter_actor_get_transformed_position (child->actor, &x, &y);
-
-          gtk_widget_realize (config);
-          gtk_window_get_size (GTK_WINDOW (config), &w, &h);
-
-          mutter_plugin_query_screen_size (plugin, &sw, &sh);
-
-          y = PANEL_HEIGHT;
-
-          if (x + w > (sw - 10)) /* FIXME -- query panel padding */
-            {
-              /*
-               * The window would be stretching past the screen edge, move
-               * it left.
-               */
-              x = (sw - 10) - w;
-            }
-
-          gtk_window_move (GTK_WINDOW (config), x, y);
-
-          /*
-           * Cut out a hole into the stage input mask matching the config
-           * window.
-           */
-          rect.x      = x;
-          rect.y      = y;
-          rect.width  = w;
-          rect.height = h;
-
-          window_region = XFixesCreateRegion (xdpy, &rect, 1);
-          comb_region = XFixesCreateRegion (xdpy, NULL, 0);
-
-          XFixesSubtractRegion (xdpy, comb_region,
-                                priv->screen_region,
-                                window_region);
-
-          /*
-           * Subtract regions corresponding to any other config windows we
-           * might be showing.
-           */
-          combine_config_windows_input_shape (manager, xdpy, comb_region);
-
-          mutter_plugin_set_stage_input_region (plugin, comb_region);
-
-          XFixesDestroyRegion (xdpy, window_region);
-          XFixesDestroyRegion (xdpy, comb_region);
-
           manager->priv->config_windows =
             g_list_prepend (wins,
                             GINT_TO_POINTER (GDK_WINDOW_XID (config->window)));
 
+          gtk_widget_realize (config);
+
           child->config_xwin = GDK_WINDOW_XID (config->window);
+
+          g_signal_connect (config_socket, "size-allocate",
+                            G_CALLBACK (config_socket_size_allocate_cb), child);
 
           gtk_widget_show_all (config);
 
           g_signal_connect (config_socket, "plug-removed",
                             G_CALLBACK (config_plug_removed_cb), child);
-
-          g_signal_connect (config_socket, "size-allocate",
-                            G_CALLBACK (config_socket_size_allocate_cb), child);
         }
 
       XFree (config_xwin);
