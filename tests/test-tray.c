@@ -39,7 +39,7 @@ button_clicked_cb (GtkButton *button, gpointer data)
  * Re-enable showing of the widget once we are removed from the socket.
  */
 static gboolean
-plug_show_on_delete (GtkWidget *widget)
+plug_show_on_delete (GtkWidget *widget, gpointer data)
 {
   gtk_widget_show_all (widget);
   return TRUE;
