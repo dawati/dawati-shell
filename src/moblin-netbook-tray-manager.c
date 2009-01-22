@@ -295,34 +295,6 @@ config_plug_removed_cb (GtkSocket *socket, gpointer data)
   return FALSE;
 }
 
-static void
-combine_config_windows_input_shape (ShellTrayManager *manager,
-                                    Display          *xdpy,
-                                    XserverRegion     dest,
-                                    Window            skip)
-{
-  GList *l = manager->priv->config_windows;
-
-  while (l)
-    {
-      Window xwin = GPOINTER_TO_INT (l->data);
-      XserverRegion win_region;
-
-      if (xwin != skip)
-        {
-          /* FIXME -- this does not work, need to translate the created region
-           * to the window coords.
-           */
-          win_region = XFixesCreateRegionFromWindow (xdpy, xwin, 0);
-
-          XFixesSubtractRegion (xdpy, dest, dest, win_region);
-          XFixesDestroyRegion  (xdpy, win_region);
-        }
-
-      l = l->next;
-    }
-}
-
 /*
  * GtkSocket does not provide any mechanism for tracking when the plug window
  * (un)maps (it would be easy to do by just adding couple of signals since
@@ -390,13 +362,6 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
       win_region = XFixesCreateRegion (xdpy, &rect, 1);
       XFixesCopyRegion (xdpy, comb_region, priv->screen_region);
       XFixesSubtractRegion (xdpy, comb_region, comb_region, win_region);
-
-      /*
-       * Subtract regions corresponding to any other config windows we
-       * might be showing.
-       */
-      combine_config_windows_input_shape (manager, xdpy, comb_region,
-                                        GDK_WINDOW_XID(child->config->window));
 
       mutter_plugin_set_stage_input_region (plugin, comb_region);
 
