@@ -25,6 +25,12 @@ AC_ISC_POSIX
 AC_HEADER_STDC
 AM_PROG_LIBTOOL
 
+# Make libtool respect the make -s switch (kudos to jacob berman)
+changequote(,)dnl
+LIBTOOL="${LIBTOOL} \$(shell echo \"\$(MFLAGS)\" | awk '/^[^ ]*s/ { print \"--silent\" }')"
+changequote([,])dnl
+
+
 AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0 libstartup-notification-1.0 gtk+-2.0 libgnome-menu dbus-glib-1)
