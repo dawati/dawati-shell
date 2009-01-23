@@ -28,6 +28,7 @@
 #include "moblin-netbook-launcher.h"
 #include "penge/penge-grid-view.h"
 #include "mnb-switcher.h"
+#include "mnb-panel-button.h"
 
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
@@ -189,15 +190,20 @@ panel_append_toolbar_button (MutterPlugin  *plugin,
   button_data->control = control;
   button_data->plugin  = plugin;
 
-  button = nbtk_button_new ();
+  button = mnb_panel_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
   clutter_actor_set_size (CLUTTER_ACTOR (button), BUTTON_WIDTH, BUTTON_HEIGHT);
   clutter_actor_set_position (CLUTTER_ACTOR (button),
-                              213 + (BUTTON_WIDTH * n_buttons) +
-                              (BUTTON_SPACING * n_buttons),
+                              213 + (BUTTON_WIDTH * n_buttons)
+                              + (BUTTON_SPACING * n_buttons),
                               PANEL_HEIGHT - BUTTON_HEIGHT);
+  mnb_panel_button_set_reactive_area (MNB_PANEL_BUTTON (button),
+                                      0,
+                                      -(PANEL_HEIGHT - BUTTON_HEIGHT),
+                                      BUTTON_WIDTH,
+                                      PANEL_HEIGHT);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (container),
                                CLUTTER_ACTOR (button));
