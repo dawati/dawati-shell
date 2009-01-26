@@ -93,30 +93,35 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
 }
 
 static void
-dnd_begin_cb (NbtkWidget *switcher, ClutterActor *child, gint x, gint y)
+dnd_begin_cb (NbtkWidget   *switcher,
+	      ClutterActor *dragged,
+	      ClutterActor *icon,
+	      gint          x,
+	      gint          y)
 {
-  printf ("@@@@ Child %p dragged from %d,%d\n", child, x, y);
-
-  clutter_actor_set_rotation (child, CLUTTER_Y_AXIS, 40.0, 0, 0, 0);
+  clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 40.0, 0, 0, 0);
+  clutter_actor_set_opacity (dragged, 0x4f);
 }
 
 static void
-dnd_motion_cb (NbtkWidget *switcher, ClutterActor *child, gint x, gint y)
+dnd_end_cb (NbtkWidget   *switcher,
+	    ClutterActor *dragged,
+	    ClutterActor *icon,
+	    gint          x,
+	    gint          y)
 {
-  printf ("@@@@ Child %p dragged to %d,%d\n", child, x, y);
+  clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
+  clutter_actor_set_opacity (dragged, 0xff);
 }
 
 static void
-dnd_end_cb (NbtkWidget *switcher, ClutterActor *child, gint x, gint y)
+dnd_dropped_cb (NbtkWidget   *switcher,
+		ClutterActor *dragged,
+		ClutterActor *icon,
+		gint          x,
+		gint          y)
 {
-  printf ("@@@@ Child %p drag ended at %d,%d\n", child, x, y);
-  clutter_actor_set_rotation (child, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
-}
-
-static void
-dnd_dropped_cb (NbtkWidget *switcher, ClutterActor *child, gint x, gint y)
-{
-  printf ("@@@@ Child %p dropped at %d,%d\n", child, x, y);
+  printf ("@@@@ Child %p dropped at %d,%d\n", dragged, x, y);
 }
 
 static void
@@ -229,9 +234,6 @@ mnb_switcher_show (ClutterActor *self)
 
           g_signal_connect (spaces[ws_indx], "dnd-dropped",
                             G_CALLBACK (dnd_dropped_cb), priv->plugin);
-
-          g_signal_connect (spaces[ws_indx], "dnd-motion",
-                            G_CALLBACK (dnd_motion_cb), priv->plugin);
 
           nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1,
                                  ws_indx);
