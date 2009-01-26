@@ -183,7 +183,7 @@ make_hover_data (ClutterActor *actor, const gchar *text)
 {
   struct hover_data *hover_data = g_new0 (struct hover_data, 1);
 
-  hover_data->tooltip = nbtk_tooltip_new (actor, text);
+  hover_data->tooltip = CLUTTER_ACTOR (nbtk_tooltip_new (actor, text));
 
   return hover_data;
 }
@@ -386,7 +386,7 @@ mnb_switcher_show (ClutterActor *self)
       g_signal_connect (clone, "leave-event",
                         G_CALLBACK (clone_leave_event_cb), hover_data);
 
-      g_object_set_qdata (clone, child_data_quark, mw);
+      g_object_set_qdata (G_OBJECT (clone), child_data_quark, mw);
 
       n_windows[ws_indx]++;
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
