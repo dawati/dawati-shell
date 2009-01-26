@@ -62,17 +62,3 @@ switcher_clone_weak_notify (gpointer data, GObject *object)
   g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
 }
 
-void
-hide_workspace_switcher (MutterPlugin *plugin)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  if (!priv->workspace_switcher)
-    return;
-
-  clutter_actor_destroy (priv->workspace_switcher);
-
-  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[2]), FALSE);
-
-  priv->workspace_switcher = NULL;
-}

@@ -1432,7 +1432,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         return FALSE;
 
       if (priv->panel_out &&
-          ((!priv->switcher && !priv->workspace_switcher &&
+          ((!priv->switcher &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid))))
         {
@@ -1495,8 +1495,8 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
 
-      if (priv->workspace_switcher)
-        hide_workspace_switcher (plugin);
+      if (CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+        clutter_actor_hide (priv->switcher);
 
       if (priv->launcher)
         clutter_actor_hide (priv->launcher);

@@ -19,6 +19,7 @@
 
 #include "mnb-switcher.h"
 #include "moblin-netbook-ui.h"
+#include "moblin-netbook.h"
 
 #define CHILD_DATA_KEY "MNB_SWITCHER_CHILD_DATA"
 static GQuark child_data_quark = 0;
@@ -51,6 +52,7 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   MutterPlugin      *plugin     = input_data->plugin;
   MetaScreen        *screen     = mutter_plugin_get_screen (plugin);
   MetaWorkspace     *workspace;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
 
@@ -60,7 +62,7 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
       return FALSE;
     }
 
-  hide_workspace_switcher (plugin);
+  clutter_actor_hide (priv->switcher);
   hide_panel (plugin);
   meta_workspace_activate (workspace, event->any.time);
 
