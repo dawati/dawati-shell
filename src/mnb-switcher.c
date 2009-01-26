@@ -33,8 +33,10 @@ G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER, MnbSwitcherPrivate))
 
 struct _MnbSwitcherPrivate {
-    MutterPlugin *plugin;
-    NbtkWidget *table;
+  MutterPlugin *plugin;
+  NbtkWidget   *table;
+
+  gboolean      dnd_in_progress : 1;
 };
 
 struct input_data
@@ -100,14 +102,23 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
-static MutterWindow *
+struct child_data
+{
+  MnbSwitcher  *switcher;
+  MutterWindow *mw;
+  guint         hover_timeout_id;
+  ClutterActor *tooltip;
+};
+
+static struct child_data *
 get_child_data (ClutterActor *child)
 {
-  MutterWindow *mw;
+  struct child_data * child_data;
 
-  mw = g_object_get_qdata (G_OBJECT (child), child_data_quark);
 
-  return mw;
+  child_data = g_object_get_qdata (G_OBJECT (child), child_data_quark);
+
+  return child_data;
 }
 
 static void
@@ -118,6 +129,20 @@ dnd_begin_cb (NbtkWidget   *table,
 	      gint          y,
 	      gpointer      data)
 {
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
+  struct child_data  *child_data = get_child_data (dragged);
+
+  priv->dnd_in_progress = TRUE;
+
+  if (child_data->hover_timeout_id)
+    {
+      g_source_remove (child_data->hover_timeout_id);
+      child_data->hover_timeout_id = 0;
+    }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (child_data->tooltip))
+    nbtk_tooltip_hide (NBTK_TOOLTIP (child_data->tooltip));
+
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 60.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0x4f);
 }
@@ -130,6 +155,10 @@ dnd_end_cb (NbtkWidget   *table,
 	    gint          y,
 	    gpointer      data)
 {
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
+
+  priv->dnd_in_progress = FALSE;
+
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0xff);
 }
@@ -149,7 +178,7 @@ dnd_dropped_cb (NbtkWidget   *table,
   MetaWindow       *mw;
   gint              col;
 
-  if (!(mcw = get_child_data (dragged)) ||
+  if (!(mcw = get_child_data (dragged)->mw) ||
       !(mw = mutter_window_get_meta_window (mcw)))
     {
       g_warning ("No MutterWindow associated with this item.");
@@ -172,41 +201,43 @@ dnd_dropped_cb (NbtkWidget   *table,
   meta_window_change_workspace_by_index (mw, col, TRUE, CurrentTime);
 }
 
-struct hover_data
+static struct child_data *
+make_child_data (MnbSwitcher  *switcher,
+		 MutterWindow *mw,
+		 ClutterActor *actor,
+		 const gchar  *text)
 {
-  guint         timeout_id;
-  ClutterActor *tooltip;
-};
+  struct child_data *child_data = g_new0 (struct child_data, 1);
 
-static struct hover_data *
-make_hover_data (ClutterActor *actor, const gchar *text)
-{
-  struct hover_data *hover_data = g_new0 (struct hover_data, 1);
+  child_data->switcher = switcher;
+  child_data->mw = mw;
+  child_data->tooltip = CLUTTER_ACTOR (nbtk_tooltip_new (actor, text));
 
-  hover_data->tooltip = CLUTTER_ACTOR (nbtk_tooltip_new (actor, text));
-
-  return hover_data;
+  return child_data;
 }
 
 static void
-free_hover_data (struct hover_data *hover_data)
+free_child_data (struct child_data *child_data)
 {
-  if (hover_data->timeout_id)
-    g_source_remove (hover_data->timeout_id);
+  if (child_data->hover_timeout_id)
+    g_source_remove (child_data->hover_timeout_id);
 
-  if (hover_data->tooltip)
-    clutter_actor_destroy (hover_data->tooltip);
+  if (child_data->tooltip)
+    clutter_actor_destroy (child_data->tooltip);
 
-  g_free (hover_data);
+  g_free (child_data);
 }
 
 static gboolean
 clone_hover_timeout_cb (gpointer data)
 {
-  struct hover_data *hover_data = data;
+  struct child_data  *child_data = data;
+  MnbSwitcherPrivate *priv       = child_data->switcher->priv;
 
-  nbtk_tooltip_show (NBTK_TOOLTIP (hover_data->tooltip));
-  hover_data->timeout_id = 0;
+  if (!priv->dnd_in_progress)
+    nbtk_tooltip_show (NBTK_TOOLTIP (child_data->tooltip));
+
+  child_data->hover_timeout_id = 0;
 
   return FALSE;
 }
@@ -216,10 +247,13 @@ clone_enter_event_cb (ClutterActor *actor,
 		      ClutterCrossingEvent *event,
 		      gpointer data)
 {
-  struct hover_data *hover_data = data;
+  struct child_data  *child_data = data;
+  MnbSwitcherPrivate *priv       = child_data->switcher->priv;
 
-  hover_data->timeout_id = g_timeout_add (HOVER_TIMEOUT, clone_hover_timeout_cb,
-					  data);
+  if (!priv->dnd_in_progress)
+    child_data->hover_timeout_id = g_timeout_add (HOVER_TIMEOUT,
+						  clone_hover_timeout_cb,
+						  data);
 
   return FALSE;
 }
@@ -229,16 +263,16 @@ clone_leave_event_cb (ClutterActor *actor,
 		      ClutterCrossingEvent *event,
 		      gpointer data)
 {
-  struct hover_data *hover_data = data;
+  struct child_data *child_data = data;
 
-  if (hover_data->timeout_id)
+  if (child_data->hover_timeout_id)
     {
-      g_source_remove (hover_data->timeout_id);
-      hover_data->timeout_id = 0;
+      g_source_remove (child_data->hover_timeout_id);
+      child_data->hover_timeout_id = 0;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (hover_data->tooltip))
-    nbtk_tooltip_hide (NBTK_TOOLTIP (hover_data->tooltip));
+  if (CLUTTER_ACTOR_IS_VISIBLE (child_data->tooltip))
+    nbtk_tooltip_hide (NBTK_TOOLTIP (child_data->tooltip));
 
   return FALSE;
 }
@@ -310,7 +344,7 @@ mnb_switcher_show (ClutterActor *self)
       gint                ws_indx;
       MetaCompWindowType  type;
       gint                w, h;
-      struct hover_data  *hover_data;
+      struct child_data  *child_data;
       MetaWindow         *meta_win = mutter_window_get_meta_window (mw);
       gchar              *title;
 
@@ -349,13 +383,13 @@ mnb_switcher_show (ClutterActor *self)
           nbtk_widget_set_dnd_threshold (spaces[ws_indx], 5);
 
           g_signal_connect (spaces[ws_indx], "dnd-begin",
-                            G_CALLBACK (dnd_begin_cb), priv->plugin);
+                            G_CALLBACK (dnd_begin_cb), self);
 
           g_signal_connect (spaces[ws_indx], "dnd-end",
-                            G_CALLBACK (dnd_end_cb), priv->plugin);
+                            G_CALLBACK (dnd_end_cb), self);
 
           g_signal_connect (spaces[ws_indx], "dnd-dropped",
-                            G_CALLBACK (dnd_dropped_cb), priv->plugin);
+                            G_CALLBACK (dnd_dropped_cb), self);
 
           nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1,
                                  ws_indx);
@@ -377,16 +411,16 @@ mnb_switcher_show (ClutterActor *self)
                         G_CALLBACK (workspace_switcher_clone_input_cb), mw);
 
       g_object_get (meta_win, "title", &title, NULL);
-      hover_data = make_hover_data (clone, title);
+      child_data = make_child_data (MNB_SWITCHER (self), mw, clone, title);
       g_free (title);
 
-      g_signal_connect_data (clone, "enter-event",
-			     G_CALLBACK (clone_enter_event_cb), hover_data,
-			     (GClosureNotify)free_hover_data, 0);
-      g_signal_connect (clone, "leave-event",
-                        G_CALLBACK (clone_leave_event_cb), hover_data);
+      g_object_set_qdata (G_OBJECT (clone), child_data_quark, child_data);
 
-      g_object_set_qdata (G_OBJECT (clone), child_data_quark, mw);
+      g_signal_connect_data (clone, "enter-event",
+			     G_CALLBACK (clone_enter_event_cb), child_data,
+			     (GClosureNotify)free_child_data, 0);
+      g_signal_connect (clone, "leave-event",
+                        G_CALLBACK (clone_leave_event_cb), child_data);
 
       n_windows[ws_indx]++;
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
