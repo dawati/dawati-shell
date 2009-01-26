@@ -99,7 +99,7 @@ dnd_begin_cb (NbtkWidget   *switcher,
 	      gint          x,
 	      gint          y)
 {
-  clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 40.0, 0, 0, 0);
+  clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 60.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0x4f);
 }
 
