@@ -373,7 +373,7 @@ mnb_switcher_show (ClutterActor *self)
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
 
-      g_signal_connect (clone, "button-press-event",
+      g_signal_connect (clone, "button-release-event",
                         G_CALLBACK (workspace_switcher_clone_input_cb), mw);
 
       g_object_get (meta_win, "title", &title, NULL);
