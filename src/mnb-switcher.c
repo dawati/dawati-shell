@@ -20,6 +20,9 @@
 #include "mnb-switcher.h"
 #include "moblin-netbook-ui.h"
 
+#define CHILD_DATA_KEY "MNB_SWITCHER_CHILD_DATA"
+static GQuark child_data_quark = 0;
+
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
 
 #define GET_PRIVATE(o) \
@@ -92,36 +95,76 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+static MutterWindow *
+get_child_data (ClutterActor *child)
+{
+  MutterWindow *mw;
+
+  mw = g_object_get_qdata (G_OBJECT (child), child_data_quark);
+
+  return mw;
+}
+
 static void
-dnd_begin_cb (NbtkWidget   *switcher,
+dnd_begin_cb (NbtkWidget   *table,
 	      ClutterActor *dragged,
 	      ClutterActor *icon,
 	      gint          x,
-	      gint          y)
+	      gint          y,
+	      gpointer      data)
 {
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 60.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0x4f);
 }
 
 static void
-dnd_end_cb (NbtkWidget   *switcher,
+dnd_end_cb (NbtkWidget   *table,
 	    ClutterActor *dragged,
 	    ClutterActor *icon,
 	    gint          x,
-	    gint          y)
+	    gint          y,
+	    gpointer      data)
 {
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0xff);
 }
 
 static void
-dnd_dropped_cb (NbtkWidget   *switcher,
+dnd_dropped_cb (NbtkWidget   *table,
 		ClutterActor *dragged,
 		ClutterActor *icon,
 		gint          x,
-		gint          y)
+		gint          y,
+		gpointer      data)
 {
-  printf ("@@@@ Child %p dropped at %d,%d\n", dragged, x, y);
+  ClutterChildMeta *meta;
+  ClutterActor     *parent;
+  ClutterActor     *table_actor = CLUTTER_ACTOR (table);
+  MutterWindow     *mcw;
+  MetaWindow       *mw;
+  gint              col;
+
+  if (!(mcw = get_child_data (dragged)) ||
+      !(mw = mutter_window_get_meta_window (mcw)))
+    {
+      g_warning ("No MutterWindow associated with this item.");
+      return;
+    }
+
+  parent = clutter_actor_get_parent (table_actor);
+
+  g_assert (NBTK_IS_TABLE (parent));
+
+  meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (parent),
+					   table_actor);
+
+  g_object_get (meta, "column", &col, NULL);
+
+  /*
+   * TODO -- perhaps we should expose the timestamp from the pointer event,
+   * or event the entire Clutter event.
+   */
+  meta_window_change_workspace_by_index (mw, col, TRUE, CurrentTime);
 }
 
 static void
@@ -254,6 +297,8 @@ mnb_switcher_show (ClutterActor *self)
       g_signal_connect (clone, "button-press-event",
                         G_CALLBACK (workspace_switcher_clone_input_cb), mw);
 
+      g_object_set_qdata (clone, child_data_quark, mw);
+
       n_windows[ws_indx]++;
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
                             n_windows[ws_indx], 0);
@@ -316,6 +361,8 @@ mnb_switcher_class_init (MnbSwitcherClass *klass)
   actor_class->hide = mnb_switcher_hide;
 
   g_type_class_add_private (klass, sizeof (MnbSwitcherPrivate));
+
+  child_data_quark = g_quark_from_static_string (CHILD_DATA_KEY);
 }
 
 static void
