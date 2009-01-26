@@ -14,8 +14,6 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-ui.h		\
 				moblin-netbook-chooser.c	\
 				moblin-netbook-chooser.h	\
-				moblin-netbook-switcher.c	\
-				moblin-netbook-switcher.h	\
 				moblin-netbook-panel.c		\
 				moblin-netbook-panel.h		\
 				moblin-netbook-launcher.c       \
