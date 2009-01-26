@@ -20,8 +20,11 @@
 #include "mnb-switcher.h"
 #include "moblin-netbook-ui.h"
 #include "moblin-netbook.h"
+#include <nbtk/nbtk-tooltip.h>
 
 #define CHILD_DATA_KEY "MNB_SWITCHER_CHILD_DATA"
+#define HOVER_TIMEOUT  800
+
 static GQuark child_data_quark = 0;
 
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
@@ -169,6 +172,77 @@ dnd_dropped_cb (NbtkWidget   *table,
   meta_window_change_workspace_by_index (mw, col, TRUE, CurrentTime);
 }
 
+struct hover_data
+{
+  guint         timeout_id;
+  ClutterActor *tooltip;
+};
+
+static struct hover_data *
+make_hover_data (ClutterActor *actor, const gchar *text)
+{
+  struct hover_data *hover_data = g_new0 (struct hover_data, 1);
+
+  hover_data->tooltip = nbtk_tooltip_new (actor, text);
+
+  return hover_data;
+}
+
+static void
+free_hover_data (struct hover_data *hover_data)
+{
+  if (hover_data->timeout_id)
+    g_source_remove (hover_data->timeout_id);
+
+  if (hover_data->tooltip)
+    clutter_actor_destroy (hover_data->tooltip);
+
+  g_free (hover_data);
+}
+
+static gboolean
+clone_hover_timeout_cb (gpointer data)
+{
+  struct hover_data *hover_data = data;
+
+  nbtk_tooltip_show (NBTK_TOOLTIP (hover_data->tooltip));
+  hover_data->timeout_id = 0;
+
+  return FALSE;
+}
+
+static gboolean
+clone_enter_event_cb (ClutterActor *actor,
+		      ClutterCrossingEvent *event,
+		      gpointer data)
+{
+  struct hover_data *hover_data = data;
+
+  hover_data->timeout_id = g_timeout_add (HOVER_TIMEOUT, clone_hover_timeout_cb,
+					  data);
+
+  return FALSE;
+}
+
+static gboolean
+clone_leave_event_cb (ClutterActor *actor,
+		      ClutterCrossingEvent *event,
+		      gpointer data)
+{
+  struct hover_data *hover_data = data;
+
+  if (hover_data->timeout_id)
+    {
+      g_source_remove (hover_data->timeout_id);
+      hover_data->timeout_id = 0;
+    }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (hover_data->tooltip))
+    nbtk_tooltip_hide (NBTK_TOOLTIP (hover_data->tooltip));
+
+  return FALSE;
+}
+
 static void
 mnb_switcher_show (ClutterActor *self)
 {
@@ -236,6 +310,9 @@ mnb_switcher_show (ClutterActor *self)
       gint                ws_indx;
       MetaCompWindowType  type;
       gint                w, h;
+      struct hover_data  *hover_data;
+      MetaWindow         *meta_win = mutter_window_get_meta_window (mw);
+      gchar              *title;
 
       ws_indx = mutter_window_get_workspace (mw);
       type = mutter_window_get_window_type (mw);
@@ -298,6 +375,16 @@ mnb_switcher_show (ClutterActor *self)
 
       g_signal_connect (clone, "button-press-event",
                         G_CALLBACK (workspace_switcher_clone_input_cb), mw);
+
+      g_object_get (meta_win, "title", &title, NULL);
+      hover_data = make_hover_data (clone, title);
+      g_free (title);
+
+      g_signal_connect_data (clone, "enter-event",
+			     G_CALLBACK (clone_enter_event_cb), hover_data,
+			     (GClosureNotify)free_hover_data, 0);
+      g_signal_connect (clone, "leave-event",
+                        G_CALLBACK (clone_leave_event_cb), hover_data);
 
       g_object_set_qdata (clone, child_data_quark, mw);
 
