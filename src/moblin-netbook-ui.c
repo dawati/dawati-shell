@@ -24,7 +24,6 @@
 
 #include "moblin-netbook.h"
 #include "moblin-netbook-ui.h"
-#include "moblin-netbook-switcher.h"
 
 /*
  * Clone lifecycle house keeping.
