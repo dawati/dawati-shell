@@ -1496,7 +1496,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         return FALSE;
 
       if (priv->workspace_switcher)
-        hide_workspace_switcher ();
+        hide_workspace_switcher (plugin);
 
       if (priv->launcher)
         clutter_actor_hide (priv->launcher);
