@@ -74,34 +74,6 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
-static gboolean
-workspace_switcher_clone_input_cb (ClutterActor *clone,
-                                   ClutterEvent *event,
-                                   gpointer      data)
-{
-  MutterWindow  *mw = data;
-  MetaWindow    *window;
-  MetaWorkspace *workspace;
-  MetaWorkspace *active_workspace;
-  MetaScreen    *screen;
-
-  window           = mutter_window_get_meta_window (mw);
-  screen           = meta_window_get_screen (window);
-  workspace        = meta_window_get_workspace (window);
-  active_workspace = meta_screen_get_active_workspace (screen);
-
-  if (!active_workspace || (active_workspace == workspace))
-    {
-      meta_window_activate_with_workspace (window, event->any.time, workspace);
-    }
-  else
-    {
-      meta_workspace_activate_with_focus (workspace, window, event->any.time);
-    }
-
-  return FALSE;
-}
-
 struct child_data
 {
   MnbSwitcher  *switcher;
@@ -119,6 +91,68 @@ get_child_data (ClutterActor *child)
   child_data = g_object_get_qdata (G_OBJECT (child), child_data_quark);
 
   return child_data;
+}
+
+static struct child_data *
+make_child_data (MnbSwitcher  *switcher,
+		 MutterWindow *mw,
+		 ClutterActor *actor,
+		 const gchar  *text)
+{
+  struct child_data *child_data = g_new0 (struct child_data, 1);
+
+  child_data->switcher = switcher;
+  child_data->mw = mw;
+  child_data->tooltip = CLUTTER_ACTOR (nbtk_tooltip_new (actor, text));
+
+  return child_data;
+}
+
+static void
+free_child_data (struct child_data *child_data)
+{
+  if (child_data->hover_timeout_id)
+    g_source_remove (child_data->hover_timeout_id);
+
+  if (child_data->tooltip)
+    clutter_actor_destroy (child_data->tooltip);
+
+  g_free (child_data);
+}
+
+static gboolean
+workspace_switcher_clone_input_cb (ClutterActor *clone,
+                                   ClutterEvent *event,
+                                   gpointer      data)
+{
+  struct child_data          *child_data = data;
+  MutterWindow               *mw = child_data->mw;
+  MetaWindow                 *window;
+  MetaWorkspace              *workspace;
+  MetaWorkspace              *active_workspace;
+  MetaScreen                 *screen;
+  MnbSwitcher                *switcher = child_data->switcher;
+  MutterPlugin               *plugin = switcher->priv->plugin;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  window           = mutter_window_get_meta_window (mw);
+  screen           = meta_window_get_screen (window);
+  workspace        = meta_window_get_workspace (window);
+  active_workspace = meta_screen_get_active_workspace (screen);
+
+  clutter_actor_hide (CLUTTER_ACTOR (switcher));
+  hide_panel (plugin);
+
+  if (!active_workspace || (active_workspace == workspace))
+    {
+      meta_window_activate_with_workspace (window, event->any.time, workspace);
+    }
+  else
+    {
+      meta_workspace_activate_with_focus (workspace, window, event->any.time);
+    }
+
+  return FALSE;
 }
 
 static void
@@ -199,33 +233,6 @@ dnd_dropped_cb (NbtkWidget   *table,
    * or event the entire Clutter event.
    */
   meta_window_change_workspace_by_index (mw, col, TRUE, CurrentTime);
-}
-
-static struct child_data *
-make_child_data (MnbSwitcher  *switcher,
-		 MutterWindow *mw,
-		 ClutterActor *actor,
-		 const gchar  *text)
-{
-  struct child_data *child_data = g_new0 (struct child_data, 1);
-
-  child_data->switcher = switcher;
-  child_data->mw = mw;
-  child_data->tooltip = CLUTTER_ACTOR (nbtk_tooltip_new (actor, text));
-
-  return child_data;
-}
-
-static void
-free_child_data (struct child_data *child_data)
-{
-  if (child_data->hover_timeout_id)
-    g_source_remove (child_data->hover_timeout_id);
-
-  if (child_data->tooltip)
-    clutter_actor_destroy (child_data->tooltip);
-
-  g_free (child_data);
 }
 
 static gboolean
@@ -407,15 +414,15 @@ mnb_switcher_show (ClutterActor *self)
       g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
 
-      g_signal_connect (clone, "button-release-event",
-                        G_CALLBACK (workspace_switcher_clone_input_cb), mw);
-
       g_object_get (meta_win, "title", &title, NULL);
       child_data = make_child_data (MNB_SWITCHER (self), mw, clone, title);
       g_free (title);
 
       g_object_set_qdata (G_OBJECT (clone), child_data_quark, child_data);
 
+      g_signal_connect (clone, "button-release-event",
+                        G_CALLBACK (workspace_switcher_clone_input_cb),
+			child_data);
       g_signal_connect_data (clone, "enter-event",
 			     G_CALLBACK (clone_enter_event_cb), child_data,
 			     (GClosureNotify)free_child_data, 0);
