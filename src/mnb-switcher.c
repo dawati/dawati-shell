@@ -78,6 +78,7 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
 
 struct child_data
 {
+  ClutterActor *self;
   MnbSwitcher  *switcher;
   MutterWindow *mw;
   guint         hover_timeout_id;
@@ -103,6 +104,7 @@ make_child_data (MnbSwitcher  *switcher,
 {
   struct child_data *child_data = g_new0 (struct child_data, 1);
 
+  child_data->self = actor;
   child_data->switcher = switcher;
   child_data->mw = mw;
   child_data->tooltip = CLUTTER_ACTOR (nbtk_tooltip_new (actor, text));
@@ -113,11 +115,15 @@ make_child_data (MnbSwitcher  *switcher,
 static void
 free_child_data (struct child_data *child_data)
 {
+  g_object_set_qdata (G_OBJECT (child_data->self),
+		      child_data_quark, NULL);
+
   if (child_data->hover_timeout_id)
     g_source_remove (child_data->hover_timeout_id);
 
-  if (child_data->tooltip)
-    clutter_actor_destroy (child_data->tooltip);
+  /*
+   * Do not destroy the tooltip, this is happens automatically.
+   */
 
   g_free (child_data);
 }
@@ -328,6 +334,7 @@ mnb_switcher_show (ClutterActor *self)
 
       if (i == active_ws)
         clutter_actor_set_name (CLUTTER_ACTOR (ws_label), "workspace-title-active");
+
       nbtk_widget_set_style_class_name (ws_label, "workspace-title");
 
       clutter_actor_set_reactive (CLUTTER_ACTOR (ws_label), TRUE);
@@ -458,7 +465,6 @@ mnb_switcher_show (ClutterActor *self)
 
   g_free (spaces);
   g_free (n_windows);
-
 
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
