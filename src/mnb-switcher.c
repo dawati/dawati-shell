@@ -485,6 +485,8 @@ mnb_switcher_show (ClutterActor *self)
     nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
                                       "switcher-workspace-new");
 
+    nbtk_widget_set_dnd_threshold (new_ws, 5);
+
     label = nbtk_label_new ("+");
     nbtk_table_add_widget (NBTK_TABLE (new_ws), label, 0, 0);
 
@@ -493,6 +495,15 @@ mnb_switcher_show (ClutterActor *self)
 
     if (child)
       g_object_set (child, "dnd-disabled", TRUE, NULL);
+
+    g_signal_connect (new_ws, "dnd-begin",
+                      G_CALLBACK (dnd_begin_cb), self);
+
+    g_signal_connect (new_ws, "dnd-end",
+                      G_CALLBACK (dnd_end_cb), self);
+
+    g_signal_connect (new_ws, "dnd-dropped",
+                      G_CALLBACK (dnd_dropped_cb), self);
 
     nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, ws_count);
 #if 0
