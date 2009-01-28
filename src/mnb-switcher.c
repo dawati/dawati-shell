@@ -477,6 +477,7 @@ mnb_switcher_show (ClutterActor *self)
   {
     NbtkWidget *new_ws = nbtk_table_new ();
     NbtkWidget *label;
+    ClutterChildMeta *child;
 
     nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
@@ -486,6 +487,12 @@ mnb_switcher_show (ClutterActor *self)
 
     label = nbtk_label_new ("+");
     nbtk_table_add_widget (NBTK_TABLE (new_ws), label, 0, 0);
+
+    child = clutter_container_get_child_meta (CLUTTER_CONTAINER (new_ws),
+                                              CLUTTER_ACTOR (label));
+
+    if (child)
+      g_object_set (child, "dnd-disabled", TRUE, NULL);
 
     nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, ws_count);
 #if 0
