@@ -81,7 +81,7 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
   /* enable events for the buttons while the panel after the panel has stopped
    * moving
    */
-  for (i = 0; i < 8; i++)
+  for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     {
       clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
     }
@@ -171,7 +171,7 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
   gint                        i;
   MnbkControl                 control = button_data->control;
 
-  for (i = 0; i < 8; i++)
+  for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     if (priv->panel_buttons[i] != (ClutterActor*)button)
       nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
 
