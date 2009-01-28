@@ -1432,7 +1432,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         return FALSE;
 
       if (priv->panel_out &&
-          ((!priv->switcher &&
+          ((!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid))))
         {
