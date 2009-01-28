@@ -37,6 +37,7 @@ G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
 struct _MnbSwitcherPrivate {
   MutterPlugin *plugin;
   NbtkWidget   *table;
+  NbtkWidget   *new_workspace;
 
   gboolean      dnd_in_progress : 1;
 };
@@ -249,6 +250,64 @@ dnd_dropped_cb (NbtkWidget   *table,
   meta_window_change_workspace_by_index (mw, col, TRUE, CurrentTime);
 }
 
+static NbtkTable *
+mnb_switcher_append_workspace (MnbSwitcher *switcher);
+
+static void
+dnd_new_dropped_cb (NbtkWidget   *table,
+                    ClutterActor *dragged,
+                    ClutterActor *icon,
+                    gint          x,
+                    gint          y,
+                    gpointer      data)
+{
+  MnbSwitcher      *switcher = MNB_SWITCHER (data);
+  ClutterChildMeta *meta, *d_meta;
+  ClutterActor     *parent;
+  ClutterActor     *table_actor = CLUTTER_ACTOR (table);
+  MutterWindow     *mcw;
+  MetaWindow       *mw;
+  gint              col;
+  NbtkTable        *new_ws;
+  gboolean          keep_ratio = FALSE;
+
+  if (!(mcw = get_child_data (dragged)->mw) ||
+      !(mw = mutter_window_get_meta_window (mcw)))
+    {
+      g_warning ("No MutterWindow associated with this item.");
+      return;
+    }
+
+  parent = clutter_actor_get_parent (table_actor);
+
+  g_assert (NBTK_IS_TABLE (parent));
+
+  meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (parent),
+					   table_actor);
+  d_meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (table),
+                                             dragged);
+
+  g_object_get (meta, "column", &col, NULL);
+  g_object_get (d_meta, "keep-aspect-ratio", &keep_ratio, NULL);
+
+  new_ws = mnb_switcher_append_workspace (switcher);
+
+  g_object_ref (dragged);
+  clutter_container_remove_actor (CLUTTER_CONTAINER (table), dragged);
+  nbtk_table_add_actor (new_ws, dragged, 1, 0);
+
+  clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
+			       "keep-aspect-ratio", keep_ratio, NULL);
+
+  g_object_unref (dragged);
+
+  /*
+   * TODO -- perhaps we should expose the timestamp from the pointer event,
+   * or event the entire Clutter event.
+   */
+  meta_window_change_workspace_by_index (mw, col, TRUE, CurrentTime);
+}
+
 static gboolean
 clone_hover_timeout_cb (gpointer data)
 {
@@ -298,6 +357,86 @@ clone_leave_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
+static NbtkWidget *
+make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+  NbtkWidget         *table = priv->table;
+  NbtkWidget         *new_ws;
+  struct input_data  *input_data = g_new (struct input_data, 1);
+  NbtkPadding         padding = MNB_PADDING (6, 6, 6, 6);
+
+  input_data = g_new (struct input_data, 1);
+  input_data->index = col;
+  input_data->plugin = priv->plugin;
+
+  new_ws = nbtk_table_new ();
+  nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
+  nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
+  nbtk_widget_set_padding (new_ws, &padding);
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
+                                    "switcher-workspace");
+
+  if (active)
+    clutter_actor_set_name (CLUTTER_ACTOR (new_ws),
+                            "switcher-workspace-active");
+
+  nbtk_widget_set_dnd_threshold (new_ws, 5);
+
+  g_signal_connect (new_ws, "dnd-begin",
+                    G_CALLBACK (dnd_begin_cb), switcher);
+
+  g_signal_connect (new_ws, "dnd-end",
+                    G_CALLBACK (dnd_end_cb), switcher);
+
+  g_signal_connect (new_ws, "dnd-dropped",
+                    G_CALLBACK (dnd_dropped_cb), switcher);
+
+  nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, col);
+
+  /* switch workspace when the workspace is selected */
+  g_signal_connect_data (new_ws, "button-press-event",
+                         G_CALLBACK (workspace_input_cb), input_data,
+                         (GClosureNotify)g_free, 0);
+
+  return new_ws;
+}
+
+static NbtkWidget *
+make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+  NbtkWidget         *table = priv->table;
+  NbtkWidget         *ws_label;
+  gchar              *s;
+  struct input_data  *input_data = g_new (struct input_data, 1);
+
+  input_data->index = col;
+  input_data->plugin = priv->plugin;
+
+  s = g_strdup_printf ("%d", col + 1);
+
+  ws_label = nbtk_label_new (s);
+
+  if (active)
+    clutter_actor_set_name (CLUTTER_ACTOR (ws_label), "workspace-title-active");
+
+  nbtk_widget_set_style_class_name (ws_label, "workspace-title");
+
+  clutter_actor_set_reactive (CLUTTER_ACTOR (ws_label), TRUE);
+
+  g_signal_connect_data (ws_label, "button-press-event",
+                         G_CALLBACK (workspace_input_cb), input_data,
+                         (GClosureNotify) g_free, 0);
+
+  nbtk_table_add_widget (NBTK_TABLE (table), ws_label, 0, col);
+  clutter_container_child_set (CLUTTER_CONTAINER (table),
+                               CLUTTER_ACTOR (ws_label),
+                               "y-expand", FALSE, NULL);
+
+  return ws_label;
+}
+
 static void
 mnb_switcher_show (ClutterActor *self)
 {
@@ -314,6 +453,7 @@ mnb_switcher_show (ClutterActor *self)
   /* create the contents */
 
   table = nbtk_table_new ();
+  priv->table = table;
   nbtk_table_set_row_spacing (NBTK_TABLE (table), 4);
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 7);
   nbtk_widget_set_padding (table, &padding);
@@ -328,30 +468,12 @@ mnb_switcher_show (ClutterActor *self)
   /* loop through all the workspaces, adding a label for each */
   for (i = 0; i < ws_count; i++)
     {
-      NbtkWidget *ws_label;
-      gchar *s;
-      struct input_data *input_data = g_new (struct input_data, 1);
-      input_data->index = i;
-      input_data->plugin = priv->plugin;
-
-      s = g_strdup_printf ("%d", i + 1);
-
-      ws_label = nbtk_label_new (s);
+      gboolean active = FALSE;
 
       if (i == active_ws)
-        clutter_actor_set_name (CLUTTER_ACTOR (ws_label), "workspace-title-active");
+        active = TRUE;
 
-      nbtk_widget_set_style_class_name (ws_label, "workspace-title");
-
-      clutter_actor_set_reactive (CLUTTER_ACTOR (ws_label), TRUE);
-
-      g_signal_connect_data (ws_label, "button-press-event",
-                             G_CALLBACK (workspace_input_cb), input_data,
-                             (GClosureNotify) g_free, 0);
-
-      nbtk_table_add_widget (NBTK_TABLE (table), ws_label, 0, i);
-      clutter_container_child_set (CLUTTER_CONTAINER (table), CLUTTER_ACTOR (ws_label),
-                                   "y-expand", FALSE, NULL);
+      make_workspace_label (MNB_SWITCHER (self), active, i);
     }
 
   /* iterate through the windows, adding them to the correct workspace */
@@ -388,38 +510,13 @@ mnb_switcher_show (ClutterActor *self)
       /* create the table for this workspace if we don't already have one */
       if (!spaces[ws_indx])
         {
-          struct input_data *input_data = g_new (struct input_data, 1);
-          input_data->index = ws_indx;
-          input_data->plugin = priv->plugin;
+          gboolean active = FALSE;
 
-          spaces[ws_indx] = nbtk_table_new ();
-          nbtk_table_set_row_spacing (NBTK_TABLE (spaces[ws_indx]), 6);
-          nbtk_table_set_col_spacing (NBTK_TABLE (spaces[ws_indx]), 6);
-          nbtk_widget_set_padding (spaces[ws_indx], &padding);
-          nbtk_widget_set_style_class_name (NBTK_WIDGET (spaces[ws_indx]),
-                                            "switcher-workspace");
           if (ws_indx == active_ws)
-            clutter_actor_set_name (CLUTTER_ACTOR (spaces[ws_indx]),
-                                    "switcher-workspace-active");
+            active = TRUE;
 
-          nbtk_widget_set_dnd_threshold (spaces[ws_indx], 5);
-
-          g_signal_connect (spaces[ws_indx], "dnd-begin",
-                            G_CALLBACK (dnd_begin_cb), self);
-
-          g_signal_connect (spaces[ws_indx], "dnd-end",
-                            G_CALLBACK (dnd_end_cb), self);
-
-          g_signal_connect (spaces[ws_indx], "dnd-dropped",
-                            G_CALLBACK (dnd_dropped_cb), self);
-
-          nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1,
-                                 ws_indx);
-
-          /* switch workspace when the workspace is selected */
-          g_signal_connect_data (spaces[ws_indx], "button-press-event",
-                                 G_CALLBACK (workspace_input_cb), input_data,
-                                 (GClosureNotify)g_free, 0);
+          spaces[ws_indx] =
+            make_workspace_content (MNB_SWITCHER (self), active, ws_indx);
         }
 
       texture = mutter_window_get_texture (mw);
@@ -503,7 +600,9 @@ mnb_switcher_show (ClutterActor *self)
                       G_CALLBACK (dnd_end_cb), self);
 
     g_signal_connect (new_ws, "dnd-dropped",
-                      G_CALLBACK (dnd_dropped_cb), self);
+                      G_CALLBACK (dnd_new_dropped_cb), self);
+
+    priv->new_workspace = new_ws;
 
     nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, ws_count);
 #if 0
@@ -522,9 +621,35 @@ mnb_switcher_show (ClutterActor *self)
                            CLUTTER_ACTOR (table));
 
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
+}
 
-  priv->table = table;
+static NbtkTable *
+mnb_switcher_append_workspace (MnbSwitcher *switcher)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+  NbtkWidget         *table = priv->table;
+  NbtkWidget         *last_ws = priv->new_workspace;
+  NbtkTable          *new_ws;
+  gint                row, col;
+  ClutterChildMeta   *meta;
 
+  meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (table),
+                                           CLUTTER_ACTOR (last_ws));
+
+  g_object_get (meta, "column", &col, NULL);
+
+  clutter_container_child_set (CLUTTER_CONTAINER (table),
+                               CLUTTER_ACTOR (last_ws),
+                               "column", col + 1, NULL);
+
+  /*
+   * Insert new workspace label and content pane where the new workspace
+   * area was.
+   */
+  make_workspace_label   (switcher, FALSE, col);
+  new_ws = NBTK_TABLE (make_workspace_content (switcher, FALSE, col));
+
+  return new_ws;
 }
 
 static void
