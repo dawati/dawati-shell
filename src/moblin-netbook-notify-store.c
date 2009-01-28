@@ -169,8 +169,8 @@ notification_manager_get_server_information (MoblinNetbookNotifyStore *notify,
                                              gchar **version,
                                              GError *error)
 {
-  *name = g_strdup ("Matchbox Panel Notification Manager");
-  *vendor = g_strdup ("OpenedHand");
+  *name = g_strdup ("Moblin Netbook Notification Manager");
+  *vendor = g_strdup ("Moblin Netbook");
   *version = g_strdup (VERSION);
   return TRUE;
 }
