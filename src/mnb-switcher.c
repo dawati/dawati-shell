@@ -38,6 +38,7 @@ struct _MnbSwitcherPrivate {
   MutterPlugin *plugin;
   NbtkWidget   *table;
   NbtkWidget   *new_workspace;
+  NbtkWidget   *new_label;
 
   gboolean      dnd_in_progress : 1;
 };
@@ -576,6 +577,10 @@ mnb_switcher_show (ClutterActor *self)
     NbtkWidget *label;
     ClutterChildMeta *child;
 
+    label = nbtk_label_new ("+");
+    nbtk_table_add_widget (NBTK_TABLE (table), label, 0, ws_count);
+    nbtk_widget_set_style_class_name (label, "workspace-title-new");
+
     nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_widget_set_padding (new_ws, &padding);
@@ -583,15 +588,6 @@ mnb_switcher_show (ClutterActor *self)
                                       "switcher-workspace-new");
 
     nbtk_widget_set_dnd_threshold (new_ws, 5);
-
-    label = nbtk_label_new ("+");
-    nbtk_table_add_widget (NBTK_TABLE (new_ws), label, 0, 0);
-
-    child = clutter_container_get_child_meta (CLUTTER_CONTAINER (new_ws),
-                                              CLUTTER_ACTOR (label));
-
-    if (child)
-      g_object_set (child, "dnd-disabled", TRUE, NULL);
 
     g_signal_connect (new_ws, "dnd-begin",
                       G_CALLBACK (dnd_begin_cb), self);
@@ -603,15 +599,9 @@ mnb_switcher_show (ClutterActor *self)
                       G_CALLBACK (dnd_new_dropped_cb), self);
 
     priv->new_workspace = new_ws;
+    priv->new_label = label;
 
     nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, ws_count);
-#if 0
-    /*
-     * FIXME -- inserting the ws into the 1st row and setting span to 2
-     * rows screws up the layout.
-     */
-    nbtk_table_set_widget_rowspan (NBTK_TABLE (table), new_ws, 2);
-#endif
   }
 
   g_free (spaces);
@@ -629,6 +619,7 @@ mnb_switcher_append_workspace (MnbSwitcher *switcher)
   MnbSwitcherPrivate *priv = switcher->priv;
   NbtkWidget         *table = priv->table;
   NbtkWidget         *last_ws = priv->new_workspace;
+  NbtkWidget         *last_label = priv->new_label;
   NbtkTable          *new_ws;
   gint                row, col;
   ClutterChildMeta   *meta;
@@ -641,6 +632,11 @@ mnb_switcher_append_workspace (MnbSwitcher *switcher)
   clutter_container_child_set (CLUTTER_CONTAINER (table),
                                CLUTTER_ACTOR (last_ws),
                                "column", col + 1, NULL);
+
+  clutter_container_child_set (CLUTTER_CONTAINER (table),
+                               CLUTTER_ACTOR (last_label),
+                               "column", col + 1,
+                               "y-expand", FALSE, NULL);
 
   /*
    * Insert new workspace label and content pane where the new workspace
