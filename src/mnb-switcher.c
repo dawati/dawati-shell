@@ -39,6 +39,7 @@ struct _MnbSwitcherPrivate {
   NbtkWidget   *table;
   NbtkWidget   *new_workspace;
   NbtkWidget   *new_label;
+  GList        *last_workspaces;
 
   gboolean      dnd_in_progress : 1;
 };
@@ -439,6 +440,70 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
 }
 
 static void
+screen_n_workspaces_notify (MetaScreen *screen,
+                            GParamSpec *pspec,
+                            gpointer    data)
+{
+  MnbSwitcher *switcher = MNB_SWITCHER (data);
+  gint   n_c_workspaces = meta_screen_get_n_workspaces (screen);
+  GList *c_workspaces = meta_screen_get_workspaces (screen);
+  GList *o_workspaces = switcher->priv->last_workspaces;
+  gint   n_o_workspaces = g_list_length (o_workspaces);
+  gboolean *map;
+  gint i;
+  GList *k;
+
+  if (n_o_workspaces < n_c_workspaces)
+    {
+      g_warning ("Adding workspaces into running switcher is currently not "
+                 "supported.");
+
+      g_list_free (switcher->priv->last_workspaces);
+      switcher->priv->last_workspaces = g_list_copy (c_workspaces);
+      return;
+    }
+
+  map = g_slice_alloc0 (sizeof (gboolean) * n_o_workspaces);
+
+  k = c_workspaces;
+
+  while (k)
+    {
+      MetaWorkspace *w = k->data;
+      GList         *l = o_workspaces;
+
+      i = 0;
+
+      while (l)
+        {
+          MetaWorkspace *w2 = l->data;
+
+          if (w == w2)
+            {
+              map[i] = TRUE;
+              break;
+            }
+
+          ++i;
+          l = l->next;
+        }
+
+      k = k->next;
+    }
+
+  for (i = 0; i < n_o_workspaces; ++i)
+    {
+      if (!map[i])
+        {
+          printf ("Workspace %d removed\n", i);
+        }
+    }
+
+  g_list_free (switcher->priv->last_workspaces);
+  switcher->priv->last_workspaces = g_list_copy (c_workspaces);
+}
+
+static void
 mnb_switcher_show (ClutterActor *self)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
@@ -450,6 +515,9 @@ mnb_switcher_show (ClutterActor *self)
   GList        *window_list, *l;
   NbtkWidget  **spaces;
   NbtkPadding   padding = MNB_PADDING (6, 6, 6, 6);
+  GList        *workspaces = meta_screen_get_workspaces (screen);
+
+  priv->last_workspaces = g_list_copy (workspaces);
 
   /* create the contents */
 
@@ -610,6 +678,9 @@ mnb_switcher_show (ClutterActor *self)
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
 
+  g_signal_connect (screen, "notify::n-workspaces",
+                    G_CALLBACK (screen_n_workspaces_notify), self);
+
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
 }
 
@@ -663,10 +734,22 @@ mnb_switcher_hide (ClutterActor *self)
 }
 
 static void
+mnb_switcher_finalize (GObject *object)
+{
+  MnbSwitcher *switcher = MNB_SWITCHER (object);
+
+  g_list_free (switcher->priv->last_workspaces);
+
+  G_OBJECT_CLASS (mnb_switcher_parent_class)->finalize (object);
+}
+
+static void
 mnb_switcher_class_init (MnbSwitcherClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+
+  object_class->finalize = mnb_switcher_finalize;
 
   actor_class->show = mnb_switcher_show;
   actor_class->hide = mnb_switcher_hide;
