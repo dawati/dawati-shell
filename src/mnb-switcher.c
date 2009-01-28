@@ -479,8 +479,14 @@ mnb_switcher_show (ClutterActor *self)
     label = nbtk_label_new ("+");
     nbtk_table_add_widget (NBTK_TABLE (new_ws), label, 0, 0);
 
-    nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 0, ws_count);
+    nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, ws_count);
+#if 0
+    /*
+     * FIXME -- inserting the ws into the 1st row and setting span to 2
+     * rows screws up the layout.
+     */
     nbtk_table_set_widget_rowspan (NBTK_TABLE (table), new_ws, 2);
+#endif
   }
 
   g_free (spaces);
