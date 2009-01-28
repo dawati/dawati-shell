@@ -439,6 +439,59 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
   return ws_label;
 }
 
+struct ws_remove_data
+{
+  MnbSwitcher *switcher;
+  gint         col;
+  GList       *remove;
+};
+
+static void
+table_foreach_remove_ws (ClutterActor *child, gpointer data)
+{
+  struct ws_remove_data *remove_data = data;
+  MnbSwitcher           *switcher    = remove_data->switcher;
+  NbtkWidget            *table       = switcher->priv->table;
+  ClutterChildMeta      *meta;
+  gint                   row, col;
+
+  meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (table), child);
+
+  g_assert (meta);
+  g_object_get (meta, "row", &row, "column", &col, NULL);
+
+  /*
+   * Children below the column we are removing are unaffected.
+   */
+  if (col < remove_data->col)
+    return;
+
+  /*
+   * We cannot remove the actors in the foreach function, as that potentially
+   * affects a list in which the container holds the data (e.g., NbtkTable).
+   * We schedule it for removal, and then remove all once we are finished with
+   * the foreach.
+   */
+  if (col == remove_data->col)
+    {
+      remove_data->remove = g_list_prepend (remove_data->remove, child);
+    }
+  else
+    {
+      /*
+       * For some reason changing the colum clears the y-expand property :-(
+       * Need to preserve it on the first row.
+       */
+      if (!row)
+        clutter_container_child_set (CLUTTER_CONTAINER (table), child,
+                                     "column", col - 1,
+                                     "y-expand", FALSE, NULL);
+      else
+        clutter_container_child_set (CLUTTER_CONTAINER (table), child,
+                                     "column", col - 1, NULL);
+    }
+}
+
 static void
 screen_n_workspaces_notify (MetaScreen *screen,
                             GParamSpec *pspec,
@@ -452,6 +505,7 @@ screen_n_workspaces_notify (MetaScreen *screen,
   gboolean *map;
   gint i;
   GList *k;
+  struct ws_remove_data remove_data;
 
   if (n_o_workspaces < n_c_workspaces)
     {
@@ -462,6 +516,9 @@ screen_n_workspaces_notify (MetaScreen *screen,
       switcher->priv->last_workspaces = g_list_copy (c_workspaces);
       return;
     }
+
+  remove_data.switcher = switcher;
+  remove_data.remove = NULL;
 
   map = g_slice_alloc0 (sizeof (gboolean) * n_o_workspaces);
 
@@ -495,7 +552,25 @@ screen_n_workspaces_notify (MetaScreen *screen,
     {
       if (!map[i])
         {
-          printf ("Workspace %d removed\n", i);
+          GList *l;
+          ClutterContainer *table = CLUTTER_CONTAINER (switcher->priv->table);
+
+          remove_data.col = i;
+          clutter_container_foreach (table,
+                                     (ClutterCallback) table_foreach_remove_ws,
+                                     &remove_data);
+
+          l = remove_data.remove;
+          while (l)
+            {
+              ClutterActor *child = l->data;
+
+              clutter_container_remove_actor (table, child);
+
+              l = l->next;
+            }
+
+          g_list_free (remove_data.remove);
         }
     }
 
