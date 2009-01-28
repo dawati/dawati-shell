@@ -61,6 +61,9 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   MetaWorkspace     *workspace;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  if (MNB_SWITCHER (priv->switcher)->priv->dnd_in_progress)
+    return FALSE;
+
   workspace = meta_screen_get_workspace_by_index (screen, indx);
 
   if (!workspace)
@@ -142,6 +145,9 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   MnbSwitcher                *switcher = child_data->switcher;
   MutterPlugin               *plugin = switcher->priv->plugin;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (MNB_SWITCHER (priv->switcher)->priv->dnd_in_progress)
+    return FALSE;
 
   window           = mutter_window_get_meta_window (mw);
   screen           = meta_window_get_screen (window);
@@ -409,6 +415,7 @@ mnb_switcher_show (ClutterActor *self)
 
           nbtk_table_add_widget (NBTK_TABLE (table), spaces[ws_indx], 1,
                                  ws_indx);
+
           /* switch workspace when the workspace is selected */
           g_signal_connect_data (spaces[ws_indx], "button-press-event",
                                  G_CALLBACK (workspace_input_cb), input_data,
@@ -429,9 +436,6 @@ mnb_switcher_show (ClutterActor *self)
 
       g_object_set_qdata (G_OBJECT (clone), child_data_quark, child_data);
 
-      g_signal_connect (clone, "button-release-event",
-                        G_CALLBACK (workspace_switcher_clone_input_cb),
-			child_data);
       g_signal_connect_data (clone, "enter-event",
 			     G_CALLBACK (clone_enter_event_cb), child_data,
 			     (GClosureNotify)free_child_data, 0);
@@ -446,6 +450,10 @@ mnb_switcher_show (ClutterActor *self)
 
       clutter_actor_get_size (clone, &h, &w);
       clutter_actor_set_size (clone, h/(gdouble)w * 80.0, 80);
+
+      g_signal_connect (clone, "button-release-event",
+                        G_CALLBACK (workspace_switcher_clone_input_cb),
+			child_data);
 
       ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
