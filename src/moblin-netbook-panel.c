@@ -48,8 +48,20 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
 {
   MutterPlugin               *plugin = data;
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gint i;
 
   priv->panel_back_in_progress = FALSE;
+
+  /*
+   * Hide the panel when not visible, and then any components with tooltips;
+   * this ensures that also the tooltips get hidden.
+   */
+  clutter_actor_hide (panel);
+
+  for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
+    {
+      clutter_actor_hide (priv->panel_buttons[i]);
+    }
 
   if (!priv->workspace_chooser && !CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
     {
@@ -86,21 +98,23 @@ void
 show_panel (MutterPlugin *plugin, gboolean from_keyboard)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  int            i;
+  gint           i;
   gint           x = clutter_actor_get_x (priv->panel);
 
   priv->panel_out_in_progress  = TRUE;
+
+  for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
+    {
+      clutter_actor_show (priv->panel_buttons[i]);
+      clutter_actor_set_reactive (priv->panel_buttons[i], FALSE);
+    }
+
+  clutter_actor_show (priv->panel);
 
   clutter_effect_move (priv->panel_slide_effect,
                        priv->panel, x, 0,
                        on_panel_out_effect_complete,
                        plugin);
-
-  /* disable events for the buttons while the panel is moving */
-  for (i = 0; i < 8; i++)
-    {
-      clutter_actor_set_reactive (priv->panel_buttons[i], FALSE);
-    }
 
   priv->panel_out = TRUE;
 
