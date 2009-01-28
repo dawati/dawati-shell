@@ -1436,6 +1436,11 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid))))
         {
+          /*
+           * FIXME -- we should use the height of the panel background here;
+           *          when we refactor the panel code, we should expose that
+           *          value as a property on the object.
+           */
           guint height = clutter_actor_get_height (priv->panel_shadow);
 
           if (event_y > (gint)height)
