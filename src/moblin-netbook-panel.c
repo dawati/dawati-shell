@@ -262,13 +262,6 @@ shell_tray_manager_icon_removed (ShellTrayManager *mgr,
   clutter_actor_destroy (icon);
 }
 
-/*
- * It would appear that the enter-event does not bubble up the same way
- * as, for example, pointer events. So, even if we connect to capture-event
- * on the panel background, we will not see an enter-event if the pointer
- * enters one of the children first. Consequently, we have to connect this to
- * all our children.
- */
 static gboolean
 panel_enter_event_cb (ClutterActor *panel, ClutterEvent *event, gpointer data)
 {
@@ -299,6 +292,10 @@ make_panel (MutterPlugin *plugin, gint width)
   overlay = mutter_plugin_get_overlay_group (plugin);
 
   panel = clutter_group_new ();
+  clutter_actor_set_reactive (panel, TRUE);
+
+  g_signal_connect (panel, "captured-event",
+                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   /* FIME -- size and color */
   bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
@@ -340,72 +337,52 @@ make_panel (MutterPlugin *plugin, gint width)
                                                         "m-space-button",
                                                         "m_zone",
                                                         MNBK_CONTROL_MZONE);
-  g_signal_connect (priv->panel_buttons[0], "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   priv->panel_buttons[1] = panel_append_toolbar_button (plugin,
                                                         panel,
                                                         "status-button",
                                                         "status",
                                                         MNBK_CONTROL_STATUS);
-  g_signal_connect (priv->panel_buttons[1], "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   priv->panel_buttons[2] = panel_append_toolbar_button (plugin,
                                                         panel,
                                                         "spaces-button",
                                                         "spaces",
                                                         MNBK_CONTROL_SPACES);
-  g_signal_connect (priv->panel_buttons[2], "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   priv->panel_buttons[3] = panel_append_toolbar_button (plugin,
                                                         panel,
                                                         "internet-button",
                                                         "internet",
                                                         MNBK_CONTROL_INTERNET);
-  g_signal_connect (priv->panel_buttons[3], "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   priv->panel_buttons[4] = panel_append_toolbar_button (plugin,
                                                         panel,
                                                         "media-button",
                                                         "media",
                                                         MNBK_CONTROL_MEDIA);
-  g_signal_connect (priv->panel_buttons[4], "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   priv->panel_buttons[5] = panel_append_toolbar_button (plugin,
                                                         panel,
                                                         "apps-button",
                                                         "applications",
                                                      MNBK_CONTROL_APPLICATIONS);
-  g_signal_connect (priv->panel_buttons[5], "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   priv->panel_buttons[6] = panel_append_toolbar_button (plugin,
                                                         panel,
                                                         "people-button",
                                                         "people",
                                                         MNBK_CONTROL_PEOPLE);
-  g_signal_connect (priv->panel_buttons[6], "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   priv->panel_buttons[7] = panel_append_toolbar_button (plugin,
                                                         panel,
                                                         "pasteboard-button",
                                                         "pasteboard",
                                                      MNBK_CONTROL_PASTEBOARD);
-  g_signal_connect (priv->panel_buttons[7], "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   priv->panel_time = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_time), "time-label");
-  g_signal_connect (priv->panel_time, "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
   priv->panel_date = nbtk_label_new ("");
-  g_signal_connect (priv->panel_date, "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
   clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_date), "date-label");
   update_time_date (priv);
 
@@ -467,10 +444,6 @@ make_panel (MutterPlugin *plugin, gint width)
   shell_tray_manager_manage_stage (priv->tray_manager,
                                    CLUTTER_STAGE (
                                            mutter_plugin_get_stage (plugin)));
-
-  clutter_actor_set_reactive (background, TRUE);
-  g_signal_connect (background, "enter-event",
-                    G_CALLBACK (panel_enter_event_cb), plugin);
 
   /* m-zone drop down */
   priv->mzone_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
