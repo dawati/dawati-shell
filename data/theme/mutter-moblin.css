@@ -145,6 +145,12 @@ NbtkTooltip {
   padding: 5;
 }
 
+*#switcher-workspace-new {
+  background-image: url("file://switcher/workspace-background-new.png");
+  border-width: 4;
+  padding: 5;
+}
+
 /* drop down */
 *.drop-down-up-button {
   background-image: url("file://drop-down/up-button.png");

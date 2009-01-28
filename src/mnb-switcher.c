@@ -463,6 +463,26 @@ mnb_switcher_show (ClutterActor *self)
         }
     }
 
+  /*
+   * Now create the new workspace column.
+   */
+  {
+    NbtkWidget *new_ws = nbtk_table_new ();
+    NbtkWidget *label;
+
+    nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
+    nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
+    nbtk_widget_set_padding (new_ws, &padding);
+    nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
+                                      "switcher-workspace-new");
+
+    label = nbtk_label_new ("+");
+    nbtk_table_add_widget (NBTK_TABLE (new_ws), label, 0, 0);
+
+    nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 0, ws_count);
+    nbtk_table_set_widget_rowspan (NBTK_TABLE (table), new_ws, 2);
+  }
+
   g_free (spaces);
   g_free (n_windows);
 
