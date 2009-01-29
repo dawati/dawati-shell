@@ -344,7 +344,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_actor_set_y (panel, -clutter_actor_get_height (priv->panel_shadow));
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
-
+  clutter_actor_hide (panel);
   clutter_actor_hide (lowlight);
 
   priv->panel_slide_effect
