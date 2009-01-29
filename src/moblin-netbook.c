@@ -27,7 +27,6 @@
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
-#include "nbtk-behaviour-bounce.h"
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>

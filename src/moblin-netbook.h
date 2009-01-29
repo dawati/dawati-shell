@@ -26,7 +26,7 @@
 #define MOBLIN_NETBOOK_H
 
 #include <mutter-plugin.h>
-#include <nbtk.h>
+#include <nbtk/nbtk.h>
 
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
