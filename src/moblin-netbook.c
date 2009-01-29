@@ -196,7 +196,10 @@ alt_tab_key_handler (MetaDisplay    *display,
       else
         clutter_actor_show (priv->switcher);
     }
-
+  else
+    {
+      meta_keybindings_switch_window (display, screen, window, event, binding);
+    }
 }
 
 
