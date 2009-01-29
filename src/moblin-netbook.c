@@ -36,6 +36,7 @@
 #include <compositor-mutter.h>
 #include <display.h>
 #include <prefs.h>
+#include <keybindings.h>
 
 #define DESTROY_TIMEOUT             150
 #define MINIMIZE_TIMEOUT            250
@@ -174,6 +175,18 @@ moblin_netbook_plugin_get_property (GObject    *object,
       break;
     }
 }
+
+static void
+alt_tab_key_handler (MetaDisplay    *display,
+                     MetaScreen     *screen,
+                     MetaWindow     *window,
+                     XEvent         *event,
+                     MetaKeyBinding *binding,
+                     gpointer        user_data)
+{
+  printf ("Alt+TAB received\n");
+}
+
 
 static void
 moblin_netbook_plugin_constructed (GObject *object)
@@ -356,6 +369,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   setup_startup_notification (MUTTER_PLUGIN (plugin));
 
   moblin_netbook_notify_init (MUTTER_PLUGIN (plugin));
+
+  meta_keybindings_set_custom_handler ("switch_windows",
+                                       alt_tab_key_handler, plugin, NULL);
 }
 
 static void
