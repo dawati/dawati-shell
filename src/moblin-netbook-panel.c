@@ -69,10 +69,17 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
     }
 }
 
+struct panel_out_data
+{
+  MutterPlugin *plugin;
+  gboolean      show_switcher;
+};
+
 static void
 on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
 {
-  MutterPlugin               *plugin = data;
+  struct panel_out_data      *panel_data = data;
+  MutterPlugin               *plugin = panel_data->plugin;
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   int i;
 
@@ -86,6 +93,11 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
       clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
     }
   enable_stage (plugin, CurrentTime);
+
+  if (panel_data->show_switcher && !CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+    clutter_actor_show (priv->switcher);
+
+  g_free (data);
 }
 
 struct button_data
@@ -94,14 +106,20 @@ struct button_data
   MnbkControl   control;
 };
 
-void
-show_panel (MutterPlugin *plugin, gboolean from_keyboard)
+static void
+show_panel_maybe_switcher (MutterPlugin *plugin,
+                           gboolean      from_keyboard,
+                           gboolean      show_switcher)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gint           i;
   gint           x = clutter_actor_get_x (priv->panel);
+  struct panel_out_data *panel_data = g_new0 (struct panel_out_data, 1);
 
   priv->panel_out_in_progress  = TRUE;
+
+  panel_data->plugin = plugin;
+  panel_data->show_switcher = show_switcher;
 
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     {
@@ -114,12 +132,24 @@ show_panel (MutterPlugin *plugin, gboolean from_keyboard)
   clutter_effect_move (priv->panel_slide_effect,
                        priv->panel, x, 0,
                        on_panel_out_effect_complete,
-                       plugin);
+                       panel_data);
 
   priv->panel_out = TRUE;
 
   if (from_keyboard)
     priv->panel_wait_for_pointer = TRUE;
+}
+
+void
+show_panel (MutterPlugin *plugin, gboolean from_keyboard)
+{
+  show_panel_maybe_switcher (plugin, from_keyboard, FALSE);
+}
+
+void
+show_panel_and_switcher (MutterPlugin *plugin, gboolean from_keyboard)
+{
+  show_panel_maybe_switcher (plugin, from_keyboard, TRUE);
 }
 
 /*

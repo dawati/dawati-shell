@@ -182,9 +182,21 @@ alt_tab_key_handler (MetaDisplay    *display,
                      MetaWindow     *window,
                      XEvent         *event,
                      MetaKeyBinding *binding,
-                     gpointer        user_data)
+                     gpointer        data)
 {
+  MutterPlugin               *plugin = MUTTER_PLUGIN (data);
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
   printf ("Alt+TAB received\n");
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+    {
+      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+        show_panel_and_switcher (plugin, TRUE);
+      else
+        clutter_actor_show (priv->switcher);
+    }
+
 }
 
 
