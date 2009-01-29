@@ -723,6 +723,9 @@ mnb_switcher_show (ClutterActor *self)
     label = nbtk_label_new ("+");
     nbtk_table_add_widget (NBTK_TABLE (table), label, 0, ws_count);
     nbtk_widget_set_style_class_name (label, "workspace-title-new");
+    clutter_container_child_set (CLUTTER_CONTAINER (table),
+                                 CLUTTER_ACTOR (label),
+                                 "y-expand", FALSE, NULL);
 
     nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
