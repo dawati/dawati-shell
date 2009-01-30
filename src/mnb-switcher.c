@@ -579,6 +579,36 @@ screen_n_workspaces_notify (MetaScreen *screen,
 }
 
 static void
+dnd_new_enter_cb (NbtkWidget   *table,
+                  ClutterActor *dragged,
+                  ClutterActor *icon,
+                  gint          x,
+                  gint          y,
+                  gpointer      data)
+{
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
+
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace),
+                          "switcher-workspace-new-active");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label),
+                          "switcher-workspace-new-active");
+}
+
+static void
+dnd_new_leave_cb (NbtkWidget   *table,
+                  ClutterActor *dragged,
+                  ClutterActor *icon,
+                  gint          x,
+                  gint          y,
+                  gpointer      data)
+{
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
+
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
+}
+
+static void
 mnb_switcher_show (ClutterActor *self)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
@@ -720,7 +750,7 @@ mnb_switcher_show (ClutterActor *self)
     NbtkWidget *label;
     ClutterChildMeta *child;
 
-    label = nbtk_label_new ("+");
+    label = nbtk_label_new ("");
     nbtk_table_add_widget (NBTK_TABLE (table), label, 0, ws_count);
     nbtk_widget_set_style_class_name (label, "workspace-title-new");
     clutter_container_child_set (CLUTTER_CONTAINER (table),
@@ -743,6 +773,12 @@ mnb_switcher_show (ClutterActor *self)
 
     g_signal_connect (new_ws, "dnd-dropped",
                       G_CALLBACK (dnd_new_dropped_cb), self);
+
+    g_signal_connect (new_ws, "dnd-enter",
+                      G_CALLBACK (dnd_new_enter_cb), self);
+
+    g_signal_connect (new_ws, "dnd-leave",
+                      G_CALLBACK (dnd_new_leave_cb), self);
 
     priv->new_workspace = new_ws;
     priv->new_label = label;
