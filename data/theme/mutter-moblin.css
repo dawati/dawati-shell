@@ -133,8 +133,15 @@ NbtkTooltip {
   color: white;
 }
 
-*#workspace-title-new {
+*.workspace-title-new {
   background-image: url("file://switcher/workspace-title-new.png");
+  border-width: 4;
+  padding: 4;
+  color: white;
+}
+
+*#workspace-title-new-active {
+  background-image: url("file://switcher/workspace-title-new-active.png");
   border-width: 4;
   padding: 4;
   color: white;
@@ -152,8 +159,14 @@ NbtkTooltip {
   padding: 5;
 }
 
-*#switcher-workspace-new {
+*.switcher-workspace-new {
   background-image: url("file://switcher/workspace-background-new.png");
+  border-width: 4;
+  padding: 5;
+}
+
+*#switcher-workspace-new-active {
+  background-image: url("file://switcher/workspace-background-new-active.png");
   border-width: 4;
   padding: 5;
 }
