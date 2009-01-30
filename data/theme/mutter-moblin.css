@@ -171,6 +171,18 @@ NbtkTooltip {
   padding: 5;
 }
 
+*.switcher-application {
+  background-image: url("file://switcher/application-inactive.png");
+  border-width: 4;
+  padding: 2;
+}
+
+*#switcher-application-active {
+  background-image: url("file://switcher/application-active.png");
+  border-width: 4;
+  padding: 2;
+}
+
 /* drop down */
 *.drop-down-up-button {
   background-image: url("file://drop-down/up-button.png");

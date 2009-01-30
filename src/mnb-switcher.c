@@ -29,6 +29,47 @@
 
 static GQuark child_data_quark = 0;
 
+/*
+ * MnbSwitcherApp
+ *
+ * A NbtkWidget subclass represening a single thumb in the switcher.
+ */
+#define MNB_TYPE_SWITCHER_APP                 (mnb_switcher_app_get_type ())
+#define MNB_SWITCHER_APP(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_SWITCHER_APP, MnbSwitcherApp))
+#define MNB_IS_SWITCHER_APP(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNB_TYPE_SWITCHER_APP))
+#define MNB_SWITCHER_APP_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), MNB_TYPE_SWITCHER_APP, MnbSwitcherAppClass))
+#define MNB_IS_SWITCHER_APP_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), MNB_TYPE_SWITCHER_APP))
+#define MNB_SWITCHER_APP_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_SWITCHER_APP, MnbSwitcherAppClass))
+
+typedef struct _MnbSwitcherApp               MnbSwitcherApp;
+typedef struct _MnbSwitcherAppClass          MnbSwitcherAppClass;
+
+struct _MnbSwitcherApp
+{
+  /*< private >*/
+  NbtkWidget parent_instance;
+};
+
+struct _MnbSwitcherAppClass
+{
+  /*< private >*/
+  NbtkWidgetClass parent_class;
+};
+
+GType mnb_switcher_app_get_type (void);
+
+G_DEFINE_TYPE (MnbSwitcherApp, mnb_switcher_app, NBTK_TYPE_WIDGET)
+
+static void
+mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
+{
+}
+
+static void
+mnb_switcher_app_init (MnbSwitcherApp *self)
+{
+}
+
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
 
 #define GET_PRIVATE(o) \
@@ -113,7 +154,10 @@ make_child_data (MnbSwitcher  *switcher,
   child_data->self = actor;
   child_data->switcher = switcher;
   child_data->mw = mw;
-  child_data->tooltip = NULL;
+  child_data->tooltip = g_object_new (NBTK_TYPE_TOOLTIP,
+                                      "widget", actor,
+                                      "label", text,
+                                      NULL);
 
   return child_data;
 }
@@ -658,7 +702,7 @@ mnb_switcher_show (ClutterActor *self)
   for (l = window_list; l; l = g_list_next (l))
     {
       MutterWindow       *mw = l->data;
-      ClutterActor       *texture, *clone;
+      ClutterActor       *texture, *c_tx, *clone;
       gint                ws_indx;
       MetaCompWindowType  type;
       gint                w, h;
@@ -694,7 +738,12 @@ mnb_switcher_show (ClutterActor *self)
         }
 
       texture = mutter_window_get_texture (mw);
-      clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+      c_tx    = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+      clone   = g_object_new (MNB_TYPE_SWITCHER_APP, NULL);
+      nbtk_widget_set_style_class_name (NBTK_WIDGET (clone),
+                                        "switcher-application");
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
 
       clutter_actor_set_reactive (clone, TRUE);
 
