@@ -248,15 +248,17 @@ mnb_drop_down_init (MnbDropDown *self)
   timeline = clutter_timeline_new_for_duration (SLIDE_DURATION);
   priv->slide_effect = clutter_effect_template_new (timeline,
                                                     CLUTTER_ALPHA_SINE_INC);
+
+  g_object_set (self,
+                "show-on-set-parent", FALSE,
+                "reactive", TRUE,
+                NULL);
 }
 
 NbtkWidget*
 mnb_drop_down_new (void)
 {
-  return g_object_new (MNB_TYPE_DROP_DOWN,
-                       "show-on-set-parent", FALSE,
-                       "reactive", TRUE,
-                       NULL);
+  return g_object_new (MNB_TYPE_DROP_DOWN, NULL);
 }
 
 void

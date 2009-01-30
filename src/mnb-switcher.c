@@ -113,7 +113,7 @@ make_child_data (MnbSwitcher  *switcher,
   child_data->self = actor;
   child_data->switcher = switcher;
   child_data->mw = mw;
-  child_data->tooltip = CLUTTER_ACTOR (nbtk_tooltip_new (actor, text));
+  child_data->tooltip = NULL;
 
   return child_data;
 }
@@ -886,9 +886,7 @@ mnb_switcher_new (MutterPlugin *plugin)
 
   g_return_val_if_fail (MUTTER_PLUGIN (plugin), NULL);
 
-  switcher = g_object_new (MNB_TYPE_SWITCHER,
-                           "show-on-set-parent", FALSE,
-                           "reactive", TRUE, NULL);
+  switcher = g_object_new (MNB_TYPE_SWITCHER, NULL);
   switcher->priv->plugin = plugin;
 
   return NBTK_WIDGET (switcher);
