@@ -25,6 +25,7 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
+#include "moblin-netbook-status.h"
 #include "penge/penge-grid-view.h"
 #include "mnb-switcher.h"
 #include "mnb-panel-button.h"
@@ -537,6 +538,13 @@ make_panel (MutterPlugin *plugin, gint width)
 
   g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
 
+  /* status drop down */
+  priv->status = make_status (plugin, width - PANEL_X_PADDING * 2);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->status);
+  mnb_drop_down_set_button (MNB_DROP_DOWN (priv->status),
+                            NBTK_BUTTON (priv->panel_buttons[1]));
+  clutter_actor_set_width (priv->status, 1024);
+  clutter_actor_set_position (priv->status, 0, PANEL_HEIGHT);
 
   /* switcher drop down */
   priv->switcher = (ClutterActor *) mnb_switcher_new (plugin);

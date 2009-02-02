@@ -98,6 +98,7 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *launcher;
   ClutterActor          *mzone_grid;
   ClutterActor          *lowlight;
+  ClutterActor          *status;
 
   GList                 *global_tab_list;
 
