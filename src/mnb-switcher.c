@@ -743,6 +743,9 @@ mnb_switcher_show (ClutterActor *self)
       nbtk_widget_set_style_class_name (NBTK_WIDGET (clone),
                                         "switcher-application");
 
+      if (meta_window_has_focus (meta_win))
+          clutter_actor_set_name (clone, "switcher-application-active");
+
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
 
       clutter_actor_set_reactive (clone, TRUE);
