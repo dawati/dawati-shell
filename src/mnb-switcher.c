@@ -133,6 +133,7 @@ struct child_data
   guint         hover_timeout_id;
   ClutterActor *tooltip;
   guint         focus_id;
+  guint         raised_id;
 };
 
 static struct child_data *
@@ -180,6 +181,9 @@ free_child_data (struct child_data *child_data)
 
   if (child_data->focus_id)
     g_signal_handler_disconnect (meta_win, child_data->focus_id);
+
+  if (child_data->raised_id)
+    g_signal_handler_disconnect (meta_win, child_data->raised_id);
 
   /*
    * Do not destroy the tooltip, this is happens automatically.
@@ -669,6 +673,9 @@ meta_window_focus_cb (MetaWindow *mw, gpointer data)
   MnbSwitcher        *switcher = child_data->switcher;
   MnbSwitcherPrivate *priv = switcher->priv;
 
+  if (priv->last_focused == child_data->self)
+    return;
+
   if (priv->last_focused)
     clutter_actor_set_name (priv->last_focused, "");
 
@@ -793,6 +800,9 @@ mnb_switcher_show (ClutterActor *self)
 
       child_data->focus_id =
         g_signal_connect (meta_win, "focus",
+                          G_CALLBACK (meta_window_focus_cb), child_data);
+      child_data->raised_id =
+        g_signal_connect (meta_win, "raised",
                           G_CALLBACK (meta_window_focus_cb), child_data);
 
       n_windows[ws_indx]++;
