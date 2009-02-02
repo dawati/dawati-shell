@@ -82,6 +82,8 @@ struct _MnbSwitcherPrivate {
   NbtkWidget   *new_label;
   GList        *last_workspaces;
 
+  ClutterActor *last_focused;
+
   gboolean      dnd_in_progress : 1;
 };
 
@@ -130,6 +132,7 @@ struct child_data
   MutterWindow *mw;
   guint         hover_timeout_id;
   ClutterActor *tooltip;
+  guint         focus_id;
 };
 
 static struct child_data *
@@ -165,11 +168,18 @@ make_child_data (MnbSwitcher  *switcher,
 static void
 free_child_data (struct child_data *child_data)
 {
+  MetaWindow *meta_win;
+
   g_object_set_qdata (G_OBJECT (child_data->self),
 		      child_data_quark, NULL);
 
+  meta_win = mutter_window_get_meta_window (child_data->mw);
+
   if (child_data->hover_timeout_id)
     g_source_remove (child_data->hover_timeout_id);
+
+  if (child_data->focus_id)
+    g_signal_handler_disconnect (meta_win, child_data->focus_id);
 
   /*
    * Do not destroy the tooltip, this is happens automatically.
@@ -653,6 +663,20 @@ dnd_new_leave_cb (NbtkWidget   *table,
 }
 
 static void
+meta_window_focus_cb (MetaWindow *mw, gpointer data)
+{
+  struct child_data  *child_data = data;
+  MnbSwitcher        *switcher = child_data->switcher;
+  MnbSwitcherPrivate *priv = switcher->priv;
+
+  if (priv->last_focused)
+    clutter_actor_set_name (priv->last_focused, "");
+
+  clutter_actor_set_name (child_data->self, "switcher-application-active");
+  priv->last_focused = child_data->self;
+}
+
+static void
 mnb_switcher_show (ClutterActor *self)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
@@ -746,6 +770,8 @@ mnb_switcher_show (ClutterActor *self)
       if (meta_window_has_focus (meta_win))
           clutter_actor_set_name (clone, "switcher-application-active");
 
+      priv->last_focused = clone;
+
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
 
       clutter_actor_set_reactive (clone, TRUE);
@@ -764,6 +790,10 @@ mnb_switcher_show (ClutterActor *self)
 			     (GClosureNotify)free_child_data, 0);
       g_signal_connect (clone, "leave-event",
                         G_CALLBACK (clone_leave_event_cb), child_data);
+
+      child_data->focus_id =
+        g_signal_connect (meta_win, "focus",
+                          G_CALLBACK (meta_window_focus_cb), child_data);
 
       n_windows[ws_indx]++;
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
