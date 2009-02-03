@@ -1644,7 +1644,7 @@ setup_parallax_effect (MutterPlugin *plugin)
       dwin = XCreateWindow (xdpy,
                             RootWindow (xdpy,
                                         meta_screen_get_screen_number (screen)),
-                            0, 0, screen_width, screen_height, 0,
+                            0, 0, 1, 1, 0,
                             CopyFromParent, InputOnly, CopyFromParent,
                             CWEventMask, &attr);
 
