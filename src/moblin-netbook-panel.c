@@ -164,13 +164,19 @@ hide_panel (MutterPlugin *plugin)
   struct button_data button_data;
 
   if (priv->panel_wait_for_pointer)
-    return FALSE;
+    {
+      g_debug ("Cannot hide panel -- waiting for pointer\n");
+      return FALSE;
+    }
 
   /*
    * Refuse to hide the panel if a config window is up.
    */
   if (shell_tray_manager_config_windows_showing (priv->tray_manager))
-    return FALSE;
+    {
+      g_debug ("Cannot hide panel while config window is visible\n");
+      return FALSE;
+    }
 
   x = clutter_actor_get_x (priv->panel);
   h = clutter_actor_get_height (priv->panel_shadow);
