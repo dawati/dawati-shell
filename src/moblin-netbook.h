@@ -123,6 +123,7 @@ struct _MoblinNetbookPluginPrivate
   gboolean               desktop_switch_in_progress : 1;
   gboolean               keyboard_grab              : 1;
   gboolean               pointer_on_stage           : 1;
+  gboolean               in_alt_grab                : 1;
 
   guint                  workspace_chooser_timeout;
 
