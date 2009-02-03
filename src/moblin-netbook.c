@@ -246,6 +246,15 @@ handle_alt_tab (MetaDisplay    *display,
   if (event->type != KeyPress)
     return;
 
+#if 0
+  printf ("got key event (%d) for keycode %d on window 0x%x, sub 0x%x, state %d\n",
+          event->type,
+          event->xkey.keycode,
+          (guint) event->xkey.window,
+          (guint) event->xkey.subwindow,
+          event->xkey.state);
+#endif
+
   /* reverse direction if shift is down */
   if (event->xkey.state & ShiftMask)
     backward = !backward;
@@ -255,6 +264,8 @@ handle_alt_tab (MetaDisplay    *display,
   if (priv->in_alt_grab)
     {
       MetaWindow *selected = mnb_switcher_get_selection (switcher);
+
+      printf ("In alt grab, selected %p\n", selected);
 
       next = mnb_switcher_get_next_window (switcher, selected);
 
@@ -267,6 +278,8 @@ handle_alt_tab (MetaDisplay    *display,
       mnb_switcher_select_window (MNB_SWITCHER (priv->switcher), next);
       return;
     }
+
+  printf ("NOT in alt grab\n");
 
   next = mnb_switcher_get_next_window (switcher, NULL);
 

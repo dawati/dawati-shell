@@ -1009,6 +1009,7 @@ select_inner_foreach_cb (ClutterActor *child, gpointer data)
   if (meta_win == my_win)
     {
       clutter_actor_set_name (child, "switcher-application-active");
+
       child_data->switcher->priv->selected = child_data->mw;
     }
   else
@@ -1097,7 +1098,7 @@ mnb_switcher_get_selection (MnbSwitcher *switcher)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
 
-  if (priv->selected)
+  if (!priv->selected)
     return NULL;
 
   g_debug ("currently selected %p\n",
@@ -1111,11 +1112,15 @@ mnb_switcher_get_selection (MnbSwitcher *switcher)
  *
  * The current parameter indicates where we should start from; if NULL, start
  * from the beginning of our Alt+Tab cycle list.
+ *
+ * FIXME -- this just a stub using the complete list of mutter windows.
  */
 MetaWindow *
 mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
+  GList *l, *copy;
+  MetaWindow *next = NULL;
 
   if (!current)
     {
@@ -1125,6 +1130,58 @@ mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
       return mutter_window_get_meta_window (priv->selected);
     }
 
-  return NULL;
+  copy = l = g_list_copy (mutter_plugin_get_windows (priv->plugin));
+
+  while (l)
+    {
+      MutterWindow *mw = l->data;
+
+      if (mutter_window_get_meta_window (mw) == current)
+        {
+          while (l->next)
+            {
+              MutterWindow *next_win = l->next->data;
+
+              if (!mutter_window_is_override_redirect (next_win) &&
+                  mutter_window_get_window_type (next_win) ==
+                  META_COMP_WINDOW_NORMAL &&
+                  mutter_window_get_workspace (next_win) >=0)
+                {
+                  next = mutter_window_get_meta_window (next_win);
+                  break;
+                }
+
+              l = l->next;
+            }
+
+          if (next)
+            break;
+
+          l = copy;
+          while (l)
+            {
+              MutterWindow *next_win = l->data;
+
+              if (!mutter_window_is_override_redirect (next_win) &&
+                  mutter_window_get_window_type (next_win) ==
+                  META_COMP_WINDOW_NORMAL &&
+                  mutter_window_get_workspace (next_win) >=0)
+                {
+                  next = mutter_window_get_meta_window (next_win);
+                  break;
+                }
+
+              l = l->next;
+            }
+
+          break;
+        }
+
+      l = l->next;
+    }
+
+  g_list_free (copy);
+
+  return next;
 }
 
