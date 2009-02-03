@@ -62,6 +62,10 @@ GType mnb_switcher_get_type (void);
 
 NbtkWidget* mnb_switcher_new (MutterPlugin *plugin);
 
+void mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win);
+void mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
+                                      guint timestamp);
+
 G_END_DECLS
 
 #endif /* _MNB_SWITCHER */

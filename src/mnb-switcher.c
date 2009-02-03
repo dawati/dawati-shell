@@ -83,6 +83,7 @@ struct _MnbSwitcherPrivate {
   GList        *last_workspaces;
 
   ClutterActor *last_focused;
+  MutterWindow *selected;
 
   gboolean      dnd_in_progress : 1;
 };
@@ -681,6 +682,7 @@ meta_window_focus_cb (MetaWindow *mw, gpointer data)
 
   clutter_actor_set_name (child_data->self, "switcher-application-active");
   priv->last_focused = child_data->self;
+  priv->selected = child_data->mw;
 }
 
 static void
@@ -778,6 +780,7 @@ mnb_switcher_show (ClutterActor *self)
           clutter_actor_set_name (clone, "switcher-application-active");
 
       priv->last_focused = clone;
+      priv->selected = mw;
 
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
 
@@ -985,4 +988,103 @@ mnb_switcher_new (MutterPlugin *plugin)
   return NBTK_WIDGET (switcher);
 }
 
+
+static void
+select_inner_foreach_cb (ClutterActor *child, gpointer data)
+{
+  struct child_data *child_data = get_child_data (child);
+  MetaWindow        *meta_win = data;
+  MetaWindow        *my_win;
+
+  if (!child_data)
+    {
+      g_warning ("No child data found!\n");
+      return;
+    }
+
+  my_win = mutter_window_get_meta_window (child_data->mw);
+
+  if (meta_win == my_win)
+    {
+      clutter_actor_set_name (child, "switcher-application-active");
+      child_data->switcher->priv->selected = child_data->mw;
+    }
+  else
+    clutter_actor_set_name (child, "");
+}
+
+static void
+select_outer_foreach_cb (ClutterActor *child, gpointer data)
+{
+  gint          row;
+  ClutterActor *parent;
+  MetaWindow   *meta_win = data;
+
+  parent = clutter_actor_get_parent (child);
+
+  clutter_container_child_get (CLUTTER_CONTAINER (parent), child,
+                               "row", &row, NULL);
+
+  /* Skip the header row */
+  if (!row)
+    return;
+
+  if (!NBTK_IS_TABLE (child))
+    return;
+
+  clutter_container_foreach (CLUTTER_CONTAINER (child),
+                             select_inner_foreach_cb,
+                             meta_win);
+}
+
+void
+mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+
+  if (!priv->table)
+    return;
+
+  g_debug ("selecting window %p\n");
+
+  clutter_container_foreach (CLUTTER_CONTAINER (priv->table),
+                             select_outer_foreach_cb, meta_win);
+}
+
+void
+mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
+                                 guint timestamp)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+
+  MetaWindow                 *window;
+  MetaWorkspace              *workspace;
+  MetaWorkspace              *active_workspace;
+  MetaScreen                 *screen;
+  MutterPlugin               *plugin;
+
+  if (!priv->selected)
+    return;
+
+  plugin           = switcher->priv->plugin;
+  window           = mutter_window_get_meta_window (priv->selected);
+  screen           = meta_window_get_screen (window);
+  workspace        = meta_window_get_workspace (window);
+  active_workspace = meta_screen_get_active_workspace (screen);
+
+  if (close)
+    {
+      clutter_actor_hide (CLUTTER_ACTOR (switcher));
+      hide_panel (plugin);
+    }
+
+  if (!active_workspace || (active_workspace == workspace))
+    {
+      meta_window_activate_with_workspace (window, timestamp, workspace);
+    }
+  else
+    {
+      meta_workspace_activate_with_focus (workspace, window, timestamp);
+    }
+}
 
