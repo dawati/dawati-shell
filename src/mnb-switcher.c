@@ -939,6 +939,8 @@ mnb_switcher_hide (ClutterActor *self)
 
   mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
   priv->table = NULL;
+  priv->last_focused = NULL;
+  priv->selected = NULL;
 
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
 }
@@ -1045,7 +1047,7 @@ mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win)
   if (!priv->table)
     return;
 
-  g_debug ("selecting window %p\n");
+  g_debug ("selecting window %p\n", meta_win);
 
   clutter_container_foreach (CLUTTER_CONTAINER (priv->table),
                              select_outer_foreach_cb, meta_win);
@@ -1072,6 +1074,8 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
   workspace        = meta_window_get_workspace (window);
   active_workspace = meta_screen_get_active_workspace (screen);
 
+  g_debug ("activating %p\n", window);
+
   if (close)
     {
       clutter_actor_hide (CLUTTER_ACTOR (switcher));
@@ -1086,5 +1090,41 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
     {
       meta_workspace_activate_with_focus (workspace, window, timestamp);
     }
+}
+
+MetaWindow *
+mnb_switcher_get_selection (MnbSwitcher *switcher)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+
+  if (priv->selected)
+    return NULL;
+
+  g_debug ("currently selected %p\n",
+           mutter_window_get_meta_window (priv->selected));
+
+  return mutter_window_get_meta_window (priv->selected);
+}
+
+/*
+ * Return the next window that Alt+Tab should advance to.
+ *
+ * The current parameter indicates where we should start from; if NULL, start
+ * from the beginning of our Alt+Tab cycle list.
+ */
+MetaWindow *
+mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+
+  if (!current)
+    {
+      if (!priv->selected)
+        return NULL;
+
+      return mutter_window_get_meta_window (priv->selected);
+    }
+
+  return NULL;
 }
 

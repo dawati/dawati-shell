@@ -147,9 +147,9 @@ show_panel (MutterPlugin *plugin, gboolean from_keyboard)
 }
 
 void
-show_panel_and_switcher (MutterPlugin *plugin, gboolean from_keyboard)
+show_panel_and_switcher (MutterPlugin *plugin)
 {
-  show_panel_maybe_switcher (plugin, from_keyboard, TRUE);
+  show_panel_maybe_switcher (plugin, FALSE, TRUE);
 }
 
 /*

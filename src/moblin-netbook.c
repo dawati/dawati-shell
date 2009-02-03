@@ -239,55 +239,53 @@ handle_alt_tab (MetaDisplay    *display,
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gboolean                    backward = FALSE;
-  MetaWindow                 *initial_selection;
+  MetaWindow                 *next;
   MetaWorkspace              *workspace;
+  MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
 
   if (event->type != KeyPress)
     return;
-
-  workspace = meta_screen_get_active_workspace (screen);
 
   /* reverse direction if shift is down */
   if (event->xkey.state & ShiftMask)
     backward = !backward;
 
-  initial_selection = meta_display_get_tab_next (display,
-                                                 META_TAB_LIST_NORMAL,
-                                                 screen,
-                                                 workspace,
-                                                 NULL,
-                                                 backward);
+  workspace = meta_screen_get_active_workspace (screen);
 
-  if (!initial_selection)
-    initial_selection = meta_display_get_tab_next (display,
-                                          META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL,
-                                          screen,
-                                          workspace,
-                                          NULL,
-                                          backward);
+  if (priv->in_alt_grab)
+    {
+      MetaWindow *selected = mnb_switcher_get_selection (switcher);
 
-  if (!initial_selection)
+      next = mnb_switcher_get_next_window (switcher, selected);
+
+      if (!next)
+        {
+          g_warning ("No idea what the next selected window should be.\n");
+          return;
+        }
+
+      mnb_switcher_select_window (MNB_SWITCHER (priv->switcher), next);
+      return;
+    }
+
+  next = mnb_switcher_get_next_window (switcher, NULL);
+
+  if (!next)
     {
       g_warning ("No idea what the next selected window should be.\n");
       return;
     }
 
-  if (priv->in_alt_grab)
-    {
-      printf ("Already in grab; advancing\n");
-      mnb_switcher_select_window (MNB_SWITCHER (priv->switcher),
-                                  initial_selection);
-    }
-  else if (meta_display_begin_grab_op (display,
-                                       screen,
-                                       NULL,
-                                       META_GRAB_OP_KEYBOARD_TABBING_NORMAL,
-                                       FALSE,
-                                       FALSE,
-                                       0,
-                                       binding->mask,
-                                       event->xkey.time,
-                                       0, 0))
+  if (meta_display_begin_grab_op (display,
+                                  screen,
+                                  NULL,
+                                  META_GRAB_OP_KEYBOARD_TABBING_NORMAL,
+                                  FALSE,
+                                  FALSE,
+                                  0,
+                                  binding->mask,
+                                  event->xkey.time,
+                                  0, 0))
     {
       ClutterActor *stage = mutter_get_stage_for_screen (screen);
       Window        xwin;
@@ -301,12 +299,10 @@ handle_alt_tab (MetaDisplay    *display,
           MetaWorkspace *workspace;
           MetaWorkspace *active_workspace;
 
-          printf ("Alt key released; activating.\n");
-
           meta_display_end_grab_op (display, event->xkey.time);
           priv->in_alt_grab = FALSE;
 
-          workspace        = meta_window_get_workspace (initial_selection);
+          workspace        = meta_window_get_workspace (next);
           active_workspace = meta_screen_get_active_workspace (screen);
 
           clutter_actor_hide (priv->switcher);
@@ -314,23 +310,20 @@ handle_alt_tab (MetaDisplay    *display,
 
           if (!active_workspace || (active_workspace == workspace))
             {
-              meta_window_activate_with_workspace (initial_selection,
+              meta_window_activate_with_workspace (next,
                                                    event->xkey.time,
                                                    workspace);
             }
           else
             {
               meta_workspace_activate_with_focus (workspace,
-                                                  initial_selection,
+                                                  next,
                                                   event->xkey.time);
             }
         }
       else
         {
-          printf ("alt still down, advancing\n");
-
-          mnb_switcher_select_window (MNB_SWITCHER (priv->switcher),
-                                      initial_selection);
+          mnb_switcher_select_window (switcher, next);
         }
     }
 }
@@ -346,12 +339,12 @@ alt_tab_key_handler (MetaDisplay    *display,
   MutterPlugin               *plugin = MUTTER_PLUGIN (data);
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  printf ("Alt+TAB received\n");
-
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
     {
       if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
-        show_panel_and_switcher (plugin, TRUE);
+        {
+          show_panel_and_switcher (plugin);
+        }
       else
         clutter_actor_show (priv->switcher);
     }
@@ -1503,15 +1496,8 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
       MetaDisplay *display = meta_screen_get_display (screen);
 
-      printf ("Ending Alt+Tab grab\n");
-
       meta_display_end_grab_op (display, xev->xkey.time);
       priv->in_alt_grab = FALSE;
-
-      /*
-       * Clear the wait-for-pointer flag, so that the panel can close.
-       */
-      priv->panel_wait_for_pointer = FALSE;
 
       mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher),
                                        xev->xkey.time, TRUE);
