@@ -934,8 +934,9 @@ mnb_switcher_hide (ClutterActor *self)
 
   priv = MNB_SWITCHER (self)->priv;
 
-  mnb_drop_down_set_child (MNB_DROP_DOWN (self),
-                           NULL);
+  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
+  priv->table = NULL;
+
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
 }
 
