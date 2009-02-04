@@ -256,8 +256,7 @@ make_spinner (void)
       clutter_timeline_set_loop (timeline, TRUE);
 
       alpha = clutter_alpha_new_full (timeline,
-                                      CLUTTER_ALPHA_RAMP_INC,
-                                      NULL, NULL);
+                                      CLUTTER_LINEAR);
 
       beh = clutter_behaviour_rotate_new (alpha, CLUTTER_Z_AXIS,
                                           CLUTTER_ROTATE_CW,
@@ -279,7 +278,7 @@ make_background (const gchar *text, guint width, guint height,
                  gboolean selected, gboolean with_spinner)
 {
   ClutterActor *group, *bck, *label_actor;
-  ClutterLabel *label;
+  ClutterText *label;
   ClutterColor  white = { 0xff, 0xff, 0xff, 0xff };
   guint         l_w, l_h;
 
@@ -329,12 +328,12 @@ make_background (const gchar *text, guint width, guint height,
 
   if (text)
     {
-      label_actor = clutter_label_new ();
-      label = CLUTTER_LABEL (label_actor);
+      label_actor = clutter_text_new ();
+      label = CLUTTER_TEXT (label_actor);
 
-      clutter_label_set_font_name (label, "Sans 8");
-      clutter_label_set_color (label, &white);
-      clutter_label_set_text (label, text);
+      clutter_text_set_font_name (label, "Sans 8");
+      clutter_text_set_color (label, &white);
+      clutter_text_set_text (label, text);
 
       clutter_actor_realize (label_actor);
       clutter_actor_get_size (label_actor, &l_w, &l_h);
@@ -507,7 +506,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
         }
 
       texture = mutter_window_get_texture (mw);
-      clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+      clone   = clutter_clone_new (texture);
 
       clutter_actor_set_reactive (clone, FALSE);
 
@@ -669,7 +668,7 @@ show_workspace_chooser (MutterPlugin *plugin,
    */
   clutter_actor_set_size (frame, 0, 0);
 
-  label = clutter_label_new_full ("Sans 9",
+  label = clutter_text_new_full ("Sans 9",
                                   "Choose space for application:", &label_clr);
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;

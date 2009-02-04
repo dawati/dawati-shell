@@ -44,7 +44,7 @@ static void toggle_buttons_cb (NbtkButton *button, gpointer data);
  * The slide-out top panel.
  */
 static void
-on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
+on_panel_back_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   MutterPlugin               *plugin = data;
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -56,7 +56,7 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
    * Hide the panel when not visible, and then any components with tooltips;
    * this ensures that also the tooltips get hidden.
    */
-  clutter_actor_hide (panel);
+  clutter_actor_hide (priv->panel);
 
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     {
@@ -76,7 +76,7 @@ struct panel_out_data
 };
 
 static void
-on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
+on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   struct panel_out_data      *panel_data = data;
   MutterPlugin               *plugin = panel_data->plugin;
@@ -115,6 +115,7 @@ show_panel_maybe_switcher (MutterPlugin *plugin,
   gint           i;
   gint           x = clutter_actor_get_x (priv->panel);
   struct panel_out_data *panel_data = g_new0 (struct panel_out_data, 1);
+  ClutterAnimation *animation;
 
   priv->panel_out_in_progress  = TRUE;
 
@@ -129,10 +130,16 @@ show_panel_maybe_switcher (MutterPlugin *plugin,
 
   clutter_actor_show (priv->panel);
 
-  clutter_effect_move (priv->panel_slide_effect,
-                       priv->panel, x, 0,
-                       on_panel_out_effect_complete,
-                       panel_data);
+  animation = clutter_actor_animate (priv->panel,
+                                     CLUTTER_EASE_IN_SINE,
+                                     /* PANEL_SLIDE_TIMEOUT */ 150,
+                                     "y", 0,
+                                     NULL);
+
+  g_signal_connect (clutter_animation_get_timeline (animation),
+                    "completed",
+                    G_CALLBACK (on_panel_out_effect_complete),
+                    panel_data);
 
   priv->panel_out = TRUE;
 
@@ -162,6 +169,7 @@ hide_panel (MutterPlugin *plugin)
   gint                        x;
   guint                       h;
   struct button_data button_data;
+  ClutterAnimation *animation;
 
   if (priv->panel_wait_for_pointer)
     return FALSE;
@@ -177,10 +185,16 @@ hide_panel (MutterPlugin *plugin)
 
   priv->panel_back_in_progress  = TRUE;
 
-  clutter_effect_move (priv->panel_slide_effect,
-                       priv->panel, x, -h,
-                       on_panel_back_effect_complete,
-                       plugin);
+  animation = clutter_actor_animate (priv->panel,
+                                     CLUTTER_EASE_IN_SINE,
+                                     /* PANEL_SLIDE_TIMEOUT */ 150,
+                                     "y", -h,
+                                     NULL);
+
+  g_signal_connect (clutter_animation_get_timeline (animation),
+                    "completed",
+                    G_CALLBACK (on_panel_back_effect_complete),
+                    plugin);
 
   /* make sure no buttons are 'active' */
   button_data.plugin = plugin;

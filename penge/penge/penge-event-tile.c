@@ -2,6 +2,7 @@
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
+#include <clutter/clutter.h>
 
 G_DEFINE_TYPE (PengeEventTile, penge_event_tile, NBTK_TYPE_TABLE)
 
@@ -141,17 +142,17 @@ penge_event_tile_init (PengeEventTile *self)
   nbtk_widget_set_style_class_name (priv->summary_label,
                                     "PengeEventSummary");
   nbtk_widget_set_alignment (priv->summary_label, 0, 0.5);
-  label = nbtk_label_get_clutter_label (NBTK_LABEL (priv->summary_label));
-  clutter_label_set_ellipsize (CLUTTER_LABEL (label), PANGO_ELLIPSIZE_END);
-  clutter_label_set_alignment (CLUTTER_LABEL (label), PANGO_ALIGN_LEFT);
+  label = nbtk_label_get_clutter_text (NBTK_LABEL (priv->summary_label));
+  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
+  clutter_text_set_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
 
   priv->location_label = nbtk_label_new ("Location text");
   nbtk_widget_set_alignment (priv->location_label, 0, 0.5);
   nbtk_widget_set_style_class_name (priv->location_label,
                                     "PengeEventLocation");
-  label = nbtk_label_get_clutter_label (NBTK_LABEL (priv->location_label));
-  clutter_label_set_ellipsize (CLUTTER_LABEL (label), PANGO_ELLIPSIZE_END);
-  clutter_label_set_alignment (CLUTTER_LABEL (label), PANGO_ALIGN_LEFT);
+  label = nbtk_label_get_clutter_text (NBTK_LABEL (priv->location_label));
+  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
+  clutter_text_set_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
 
   /* Populate the table */
   nbtk_table_add_actor (NBTK_TABLE (self),

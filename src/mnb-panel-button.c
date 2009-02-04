@@ -43,7 +43,10 @@ mnb_panel_button_pick (ClutterActor       *actor,
   MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
   gint trans_x, trans_y;
 
-  cogl_color (pick_color);
+  cogl_set_source_color4ub (pick_color->red,
+                            pick_color->green,
+                            pick_color->blue,
+                            pick_color->alpha);
 
   cogl_rectangle (priv->pick.x,
                   priv->pick.y,

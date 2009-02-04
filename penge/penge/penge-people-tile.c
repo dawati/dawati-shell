@@ -198,20 +198,20 @@ penge_people_tile_init (PengePeopleTile *self)
   nbtk_widget_set_style_class_name (priv->primary_text, 
                                     "PengePeopleTilePrimaryLabel");
   nbtk_widget_set_alignment (priv->primary_text, 0, 0.5);
-  tmp_label = nbtk_label_get_clutter_label (NBTK_LABEL (priv->primary_text));
-  clutter_label_set_alignment (CLUTTER_LABEL (tmp_label),
+  tmp_label = nbtk_label_get_clutter_text (NBTK_LABEL (priv->primary_text));
+  clutter_text_set_alignment (CLUTTER_TEXT (tmp_label),
                                PANGO_ALIGN_LEFT);
-  clutter_label_set_ellipsize (CLUTTER_LABEL (tmp_label), 
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_label), 
                                PANGO_ELLIPSIZE_END);
 
   priv->secondary_text = nbtk_label_new ("Secondary text");
   nbtk_widget_set_style_class_name (priv->secondary_text, 
                                     "PengePeopleTileSecondaryLabel");
   nbtk_widget_set_alignment (priv->secondary_text, 0, 0.5);
-  tmp_label = nbtk_label_get_clutter_label (NBTK_LABEL (priv->secondary_text));
-  clutter_label_set_alignment (CLUTTER_LABEL (tmp_label),
+  tmp_label = nbtk_label_get_clutter_text (NBTK_LABEL (priv->secondary_text));
+  clutter_text_set_alignment (CLUTTER_TEXT (tmp_label),
                                PANGO_ALIGN_LEFT);
-  clutter_label_set_ellipsize (CLUTTER_LABEL (tmp_label), 
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_label), 
                                PANGO_ELLIPSIZE_END);
 
   priv->icon = clutter_texture_new ();

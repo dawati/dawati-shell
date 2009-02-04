@@ -23,8 +23,7 @@
 #define __NUTTER_SCALE_GROUP_H__
 
 #include <glib-object.h>
-#include <clutter/clutter-types.h>
-#include <clutter/clutter-group.h>
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 
