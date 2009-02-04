@@ -4,6 +4,8 @@
 #include "penge-recent-files-pane.h"
 #include "penge-people-pane.h"
 
+#include "penge-view-background.h"
+
 G_DEFINE_TYPE (PengeGridView, penge_grid_view, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -15,6 +17,8 @@ struct _PengeGridViewPrivate {
   ClutterActor *calendar_pane;
   ClutterActor *recent_files_pane;
   ClutterActor *people_pane;
+
+  ClutterActor *background;
 };
 
 enum
@@ -58,9 +62,41 @@ penge_grid_view_finalize (GObject *object)
 }
 
 static void
+penge_grid_view_paint (ClutterActor *actor)
+{
+  PengeGridViewPrivate *priv = GET_PRIVATE (actor);
+
+  /* Paint the background */
+  clutter_actor_paint (priv->background);
+
+  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->paint (actor);
+}
+
+static void
+penge_grid_view_allocate (ClutterActor          *actor,
+                          const ClutterActorBox *box,
+                          gboolean               absolute_origin_changed)
+{
+  PengeGridViewPrivate *priv = GET_PRIVATE (actor);
+  ClutterActorBox child_box;
+
+  /* Allocate the background to be the same area as the grid view */
+  child_box.x1 = 0;
+  child_box.y1 = 0;
+  child_box.x2 = box->x2 - box->x1;
+  child_box.y2 = box->y2 - box->y1;
+  clutter_actor_allocate (priv->background, &child_box, absolute_origin_changed);
+
+  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->allocate (actor,
+                                                                box,
+                                                                absolute_origin_changed);
+}
+
+static void
 penge_grid_view_class_init (PengeGridViewClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (PengeGridViewPrivate));
 
@@ -68,6 +104,9 @@ penge_grid_view_class_init (PengeGridViewClass *klass)
   object_class->set_property = penge_grid_view_set_property;
   object_class->dispose = penge_grid_view_dispose;
   object_class->finalize = penge_grid_view_finalize;
+
+  actor_class->paint = penge_grid_view_paint;
+  actor_class->allocate = penge_grid_view_allocate;
 
   signals[ACTIVATED_SIGNAL] =
     g_signal_new ("activated",
@@ -113,5 +152,13 @@ penge_grid_view_init (PengeGridView *self)
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
+
+  /* 
+   * Create a background and parent it to the grid. We paint and allocate this
+   * in the overridden vfuncs
+   */
+  priv->background = g_object_new (PENGE_TYPE_VIEW_BACKGROUND, NULL);
+  clutter_actor_set_parent (priv->background, (ClutterActor *)self);
+  clutter_actor_show (priv->background);
 }
 
