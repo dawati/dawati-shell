@@ -121,6 +121,15 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
 
   clutter_actor_hide (priv->switcher);
   hide_panel (plugin);
+
+  if (priv->in_alt_grab)
+    {
+      MetaDisplay *display = meta_screen_get_display (screen);
+
+      meta_display_end_grab_op (display, event->key.time);
+      priv->in_alt_grab = FALSE;
+    }
+
   meta_workspace_activate (workspace, event->any.time);
 
   return FALSE;
