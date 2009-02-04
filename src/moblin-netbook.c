@@ -1432,32 +1432,25 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
                                 mutter_window_get_meta_window (mcw));
 }
 
-/*
- * Use this function to disable stage input
- *
- * Used by the completion callback for the panel in/out effects
- */
 void
-disable_stage (MutterPlugin *plugin, guint32 timestamp)
+release_keyboard (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  mutter_plugin_set_stage_input_region (MUTTER_PLUGIN (plugin),
-                                        priv->input_region);
-
+  /*
+   * FIXME -- use metacity grab API, not xlib directly
+   */
   if (priv->keyboard_grab)
     {
       if (timestamp == CurrentTime)
         {
-          MetaScreen  *screen  =
-            mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
-
+          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
           MetaDisplay *display = meta_screen_get_display (screen);
 
           timestamp = meta_display_get_current_time_roundtrip (display);
         }
 
-      Display *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
+      Display *xdpy = mutter_plugin_get_xdisplay (plugin);
 
       XUngrabKeyboard (xdpy, timestamp);
       XSync (xdpy, False);
@@ -1466,20 +1459,20 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
 }
 
 void
-enable_stage (MutterPlugin *plugin, guint32 timestamp)
+grab_keyboard (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
-  Display                    *xdpy   = mutter_plugin_get_xdisplay (plugin);
-  ClutterActor               *stage  = mutter_get_stage_for_screen (screen);
-  Window                      xwin;
 
-  xwin   = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-  mutter_plugin_set_stage_reactive (MUTTER_PLUGIN (plugin), TRUE);
-
+  /*
+   * FIXME -- use metacity grab API, not xlib directly
+   */
   if (!priv->keyboard_grab)
     {
+      MetaScreen   *screen = mutter_plugin_get_screen (plugin);
+      Display      *xdpy = mutter_plugin_get_xdisplay (plugin);
+      ClutterActor *stage = mutter_get_stage_for_screen (screen);
+      Window        xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
       if (timestamp == CurrentTime)
         {
           MetaDisplay *display = meta_screen_get_display (screen);
@@ -1495,6 +1488,31 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
       else
         g_warning ("Stage keyboard grab failed!\n");
     }
+}
+
+/*
+ * Use this function to disable stage input
+ *
+ * Used by the completion callback for the panel in/out effects
+ */
+void
+disable_stage (MutterPlugin *plugin, guint32 timestamp)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  mutter_plugin_set_stage_input_region (plugin, priv->input_region);
+
+  release_keyboard (plugin, timestamp);
+}
+
+void
+enable_stage (MutterPlugin *plugin, guint32 timestamp)
+{
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  mutter_plugin_set_stage_reactive (plugin, TRUE);
+
+  grab_keyboard (plugin, timestamp);
 }
 
 static gboolean
