@@ -1119,9 +1119,17 @@ mnb_switcher_new (MutterPlugin *plugin)
 static void
 select_inner_foreach_cb (ClutterActor *child, gpointer data)
 {
-  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (child)->priv;
+  MnbSwitcherAppPrivate *app_priv;
   MetaWindow            *meta_win = data;
   MetaWindow            *my_win;
+
+  /*
+   * Skip anything that is not a MnbSwitcherApp
+   */
+  if (!MNB_IS_SWITCHER_APP (child))
+    return;
+
+  app_priv = MNB_SWITCHER_APP (child)->priv;
 
   my_win = mutter_window_get_meta_window (app_priv->mw);
 
