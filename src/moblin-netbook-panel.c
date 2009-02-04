@@ -92,10 +92,11 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
     {
       clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
     }
-  enable_stage (plugin, CurrentTime);
 
   if (panel_data->show_switcher && !CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
     clutter_actor_show (priv->switcher);
+
+  enable_stage (plugin, CurrentTime);
 
   g_free (data);
 }
