@@ -1579,7 +1579,8 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
 
   mutter_plugin_set_stage_reactive (plugin, TRUE);
 
-  grab_keyboard (plugin, timestamp);
+  if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+    grab_keyboard (plugin, timestamp);
 }
 
 static gboolean
