@@ -290,11 +290,6 @@ PengeRecentFilesPane
   font-size: 18;
 }
 
-PengeGridView
-{
-  background-image: url('file://mzone/linus.png');
-}
-
 *.PengeRecentFileTileDetails
 {
   background: black;
