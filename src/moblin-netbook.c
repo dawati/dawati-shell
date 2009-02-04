@@ -301,12 +301,12 @@ try_alt_tab_grab (MutterPlugin *plugin,
                                                   next,
                                                   timestamp);
             }
-
-          if (advance)
-            mnb_switcher_select_window (switcher, next);
         }
       else
         {
+          if (advance)
+            next = mnb_switcher_get_next_window (switcher, next, backward);
+
           mnb_switcher_select_window (switcher, next);
         }
     }
@@ -348,8 +348,6 @@ handle_alt_tab (MetaDisplay    *display,
     {
       MetaWindow *selected = mnb_switcher_get_selection (switcher);
 
-      printf ("In alt grab, selected %p\n", selected);
-
       next = mnb_switcher_get_next_window (switcher, selected, backward);
 
       if (!next)
@@ -362,7 +360,7 @@ handle_alt_tab (MetaDisplay    *display,
       return;
     }
 
-  try_alt_tab_grab (plugin, binding->mask, event->xkey.time, backward, TRUE);
+  try_alt_tab_grab (plugin, binding->mask, event->xkey.time, backward, FALSE);
 }
 
 struct alt_tab_show_complete_data
@@ -1660,8 +1658,6 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) == XK_Tab)
     {
       gboolean backward = FALSE;
-
-      printf ("trying alt+tab\n");
 
       if (xev->xkey.state & ShiftMask)
         backward = !backward;
