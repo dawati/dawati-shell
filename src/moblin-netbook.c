@@ -1511,18 +1511,16 @@ release_keyboard (MutterPlugin *plugin, guint32 timestamp)
    */
   if (priv->keyboard_grab)
     {
+      MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+
       if (timestamp == CurrentTime)
         {
-          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
           MetaDisplay *display = meta_screen_get_display (screen);
 
           timestamp = meta_display_get_current_time_roundtrip (display);
         }
 
-      Display *xdpy = mutter_plugin_get_xdisplay (plugin);
-
-      XUngrabKeyboard (xdpy, timestamp);
-      XSync (xdpy, False);
+      meta_screen_ungrab_all_keys (screen, timestamp);
       priv->keyboard_grab = FALSE;
 
       return TRUE;
@@ -1542,9 +1540,6 @@ grab_keyboard (MutterPlugin *plugin, guint32 timestamp)
   if (!priv->keyboard_grab)
     {
       MetaScreen   *screen = mutter_plugin_get_screen (plugin);
-      Display      *xdpy = mutter_plugin_get_xdisplay (plugin);
-      ClutterActor *stage = mutter_get_stage_for_screen (screen);
-      Window        xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
       if (timestamp == CurrentTime)
         {
@@ -1553,8 +1548,7 @@ grab_keyboard (MutterPlugin *plugin, guint32 timestamp)
           timestamp = meta_display_get_current_time_roundtrip (display);
         }
 
-      if (Success == XGrabKeyboard (xdpy, xwin, True,
-                                    GrabModeAsync, GrabModeAsync, timestamp))
+      if (meta_screen_grab_all_keys (screen, timestamp))
         {
           priv->keyboard_grab = TRUE;
         }
