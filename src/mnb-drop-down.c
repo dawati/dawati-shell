@@ -154,7 +154,7 @@ mnb_drop_down_hide (ClutterActor *actor)
 
   g_signal_connect (clutter_animation_get_timeline (animation),
                     "completed",
-                    G_CALLBACK (mnb_drop_down_show_completed_cb),
+                    G_CALLBACK (mnb_drop_down_hide_completed_cb),
                     actor);
 }
 
