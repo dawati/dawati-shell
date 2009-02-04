@@ -1057,6 +1057,7 @@ spawn_app (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
   SnHashData                 *sn_data = g_slice_new0 (SnHashData);
   GError                     *err = NULL;
   gint                        i;
+  gboolean                    had_kbd_grab;
 
   if (!path)
     return;
@@ -1092,6 +1093,8 @@ spawn_app (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
 
   g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
 
+  had_kbd_grab = release_keyboard (plugin, timestamp);
+
   if (!g_spawn_async (NULL,
                       &argv[0],
                       NULL,
@@ -1103,6 +1106,10 @@ spawn_app (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
                       NULL))
     {
       g_warning ("Failed to launch [%s]", path);
+
+      if (had_kbd_grab)
+        grab_keyboard (plugin, timestamp);
+
       g_hash_table_remove (priv->sn_hash, sn_id);
       sn_launcher_context_complete (context);
     }
