@@ -229,6 +229,9 @@ alt_still_down (MetaDisplay *display, MetaScreen *screen, Window xwin,
     return TRUE;
 }
 
+/*
+ * Helper function for metacity_alt_tab_key_handler().
+ */
 static void
 handle_alt_tab (MetaDisplay    *display,
                 MetaScreen     *screen,
@@ -341,13 +344,16 @@ handle_alt_tab (MetaDisplay    *display,
     }
 }
 
+/*
+ * The handler for Alt+Tab that we register with metacity.
+ */
 static void
-alt_tab_key_handler (MetaDisplay    *display,
-                     MetaScreen     *screen,
-                     MetaWindow     *window,
-                     XEvent         *event,
-                     MetaKeyBinding *binding,
-                     gpointer        data)
+metacity_alt_tab_key_handler (MetaDisplay    *display,
+                              MetaScreen     *screen,
+                              MetaWindow     *window,
+                              XEvent         *event,
+                              MetaKeyBinding *binding,
+                              gpointer        data)
 {
   MutterPlugin               *plugin = MUTTER_PLUGIN (data);
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -367,6 +373,22 @@ alt_tab_key_handler (MetaDisplay    *display,
     }
 }
 
+/*
+ * Metacity key handler for default Metacity bindings we want disabled.
+ *
+ * (This is necessary for keybidings that are related to the Alt+Tab shortcut.
+ * In metacity these all use the src/ui/tabpopup.c object, which we have
+ * disabled, so we need to take over all of those.)
+ */
+static void
+metacity_nop_key_handler (MetaDisplay    *display,
+                          MetaScreen     *screen,
+                          MetaWindow     *window,
+                          XEvent         *event,
+                          MetaKeyBinding *binding,
+                          gpointer        data)
+{
+}
 
 static void
 moblin_netbook_plugin_constructed (GObject *object)
@@ -552,8 +574,52 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   meta_prefs_override_no_tab_popup (TRUE);
 
+  /*
+   * Install our custom Alt+Tab handler.
+   */
   meta_keybindings_set_custom_handler ("switch_windows",
-                                       alt_tab_key_handler, plugin, NULL);
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("switch_windows_backward",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+
+  /*
+   * Install NOP handler for shortcuts that are related to Alt+Tab.
+   */
+  meta_keybindings_set_custom_handler ("switch_group",
+                                       metacity_nop_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("switch_group_backward",
+                                       metacity_nop_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("switch_group_backward",
+                                       metacity_nop_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("switch_panels",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("switch_panels_backward",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("cycle_group",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("cycle_group_backward",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("cycle_windows",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("cycle_windows_backward",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("cycle_panels",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
+  meta_keybindings_set_custom_handler ("cycle_panels_backward",
+                                       metacity_alt_tab_key_handler,
+                                       plugin, NULL);
 }
 
 static void
