@@ -75,18 +75,6 @@ G_DEFINE_TYPE (MnbSwitcherApp, mnb_switcher_app, NBTK_TYPE_WIDGET)
                                 MnbSwitcherAppPrivate))
 
 static void
-mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
-{
-  g_type_class_add_private (klass, sizeof (MnbSwitcherAppPrivate));
-}
-
-static void
-mnb_switcher_app_init (MnbSwitcherApp *self)
-{
-  self->priv = MNB_SWITCHER_APP_GET_PRIVATE (self);
-}
-
-static void
 mnb_switcher_app_dispose (GObject *object)
 {
   MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (object)->priv;
@@ -117,6 +105,22 @@ mnb_switcher_app_dispose (GObject *object)
    */
 
   G_OBJECT_CLASS (mnb_switcher_app_parent_class)->dispose (object);
+}
+
+static void
+mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = mnb_switcher_app_dispose;
+
+  g_type_class_add_private (klass, sizeof (MnbSwitcherAppPrivate));
+}
+
+static void
+mnb_switcher_app_init (MnbSwitcherApp *self)
+{
+  self->priv = MNB_SWITCHER_APP_GET_PRIVATE (self);
 }
 
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
@@ -884,10 +888,12 @@ mnb_switcher_show (ClutterActor *self)
                                         "switcher-application");
 
       if (meta_window_has_focus (meta_win))
+        {
           clutter_actor_set_name (clone, "switcher-application-active");
 
-      priv->last_focused = clone;
-      priv->selected = mw;
+          priv->last_focused = clone;
+          priv->selected = mw;
+        }
 
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
 
