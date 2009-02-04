@@ -666,11 +666,11 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   switch_data->plugin = plugin;
 
   /* arrow */
-  /*
-  clutter_effect_fade (ppriv->switch_workspace_arrow_effect, indicator_group,
-                       0,
-                       NULL, NULL);
-                       */
+  clutter_actor_animate (indicator_group,
+                         CLUTTER_LINEAR,
+                         WS_SWITCHER_SLIDE_TIMEOUT,
+                         "opacity", 0,
+                         NULL);
 
   /* desktop parallax */
   parallax_data->direction = para_dir;
