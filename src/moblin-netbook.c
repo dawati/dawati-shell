@@ -231,7 +231,86 @@ alt_still_down (MetaDisplay *display, MetaScreen *screen, Window xwin,
 
 /*
  * Helper function for metacity_alt_tab_key_handler().
+ *
+ * The advance parameter indicates whether if the grab succeeds the switcher
+ * selection should be advanced.
  */
+static void
+try_alt_tab_grab (MutterPlugin *plugin,
+                  gulong        mask,
+                  guint         timestamp,
+                  gboolean      advance)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
+  MetaWindow                 *next;
+
+  next = mnb_switcher_get_next_window (switcher, NULL);
+
+  if (!next)
+    {
+      g_warning ("No idea what the next selected window should be.\n");
+      return;
+    }
+
+
+  if (meta_display_begin_grab_op (display,
+                                  screen,
+                                  NULL,
+                                  META_GRAB_OP_KEYBOARD_TABBING_NORMAL,
+                                  FALSE,
+                                  FALSE,
+                                  0,
+                                  mask,
+                                  timestamp,
+                                  0, 0))
+    {
+      ClutterActor               *stage = mutter_get_stage_for_screen (screen);
+      Window                      xwin;
+
+      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+      priv->in_alt_grab = TRUE;
+
+      if (!alt_still_down (display, screen, xwin, mask))
+        {
+          MetaWorkspace *workspace;
+          MetaWorkspace *active_workspace;
+
+          meta_display_end_grab_op (display, timestamp);
+          priv->in_alt_grab = FALSE;
+
+          workspace        = meta_window_get_workspace (next);
+          active_workspace = meta_screen_get_active_workspace (screen);
+
+          clutter_actor_hide (priv->switcher);
+          hide_panel (plugin);
+
+          if (!active_workspace || (active_workspace == workspace))
+            {
+              meta_window_activate_with_workspace (next,
+                                                   timestamp,
+                                                   workspace);
+            }
+          else
+            {
+              meta_workspace_activate_with_focus (workspace,
+                                                  next,
+                                                  timestamp);
+            }
+
+          if (advance)
+            mnb_switcher_select_window (switcher, next);
+        }
+      else
+        {
+          mnb_switcher_select_window (switcher, next);
+        }
+    }
+}
+
 static void
 handle_alt_tab (MetaDisplay    *display,
                 MetaScreen     *screen,
@@ -282,66 +361,7 @@ handle_alt_tab (MetaDisplay    *display,
       return;
     }
 
-  printf ("NOT in alt grab\n");
-
-  next = mnb_switcher_get_next_window (switcher, NULL);
-
-  if (!next)
-    {
-      g_warning ("No idea what the next selected window should be.\n");
-      return;
-    }
-
-  if (meta_display_begin_grab_op (display,
-                                  screen,
-                                  NULL,
-                                  META_GRAB_OP_KEYBOARD_TABBING_NORMAL,
-                                  FALSE,
-                                  FALSE,
-                                  0,
-                                  binding->mask,
-                                  event->xkey.time,
-                                  0, 0))
-    {
-      ClutterActor *stage = mutter_get_stage_for_screen (screen);
-      Window        xwin;
-
-      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-      priv->in_alt_grab = TRUE;
-
-      if (!alt_still_down (display, screen, xwin, binding->mask))
-        {
-          MetaWorkspace *workspace;
-          MetaWorkspace *active_workspace;
-
-          meta_display_end_grab_op (display, event->xkey.time);
-          priv->in_alt_grab = FALSE;
-
-          workspace        = meta_window_get_workspace (next);
-          active_workspace = meta_screen_get_active_workspace (screen);
-
-          clutter_actor_hide (priv->switcher);
-          hide_panel (plugin);
-
-          if (!active_workspace || (active_workspace == workspace))
-            {
-              meta_window_activate_with_workspace (next,
-                                                   event->xkey.time,
-                                                   workspace);
-            }
-          else
-            {
-              meta_workspace_activate_with_focus (workspace,
-                                                  next,
-                                                  event->xkey.time);
-            }
-        }
-      else
-        {
-          mnb_switcher_select_window (switcher, next);
-        }
-    }
+  try_alt_tab_grab (plugin, binding->mask, event->xkey.time, FALSE);
 }
 
 /*
@@ -1588,6 +1608,27 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  /*
+   * Handle the case where Alt+Tab is pressed while we have a global kbd grab
+   * (e.g., if the mouse is used to bring up the Switcher, and then the user
+   * presses Alt+Tab to navigate it).
+   */
+  if (priv->keyboard_grab && !priv->in_alt_grab && xev->type == KeyPress &&
+      (xev->xkey.state & Mod1Mask) &&
+      XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) == XK_Tab)
+    {
+      printf ("trying alt+tab\n");
+
+      /*
+       * We need to release the global keyboard grab first, then establish the
+       * Alt+Tab grab in its place. Because the switcher is already up, we also
+       * want to adance the selection, hence the TRUE.
+       */
+      release_keyboard  (plugin, xev->xkey.time);
+      try_alt_tab_grab (plugin, Mod1Mask, xev->xkey.time, TRUE);
+      return TRUE;
+    }
+
   if (priv->in_alt_grab &&
       xev->type == KeyRelease &&
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) == XK_Alt_L)
@@ -1600,6 +1641,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
       mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher),
                                        xev->xkey.time, TRUE);
+      return TRUE;
     }
 
   if (xev->type == KeyPress &&
