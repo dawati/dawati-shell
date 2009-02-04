@@ -66,7 +66,9 @@ void mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win);
 void mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
                                       guint timestamp);
 MetaWindow *mnb_switcher_get_selection (MnbSwitcher *switcher);
-MetaWindow *mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current);
+MetaWindow *mnb_switcher_get_next_window (MnbSwitcher *switcher,
+                                          MetaWindow  *current,
+                                          gboolean     backward);
 G_END_DECLS
 
 #endif /* _MNB_SWITCHER */

@@ -239,15 +239,16 @@ static void
 try_alt_tab_grab (MutterPlugin *plugin,
                   gulong        mask,
                   guint         timestamp,
+                  gboolean      backward,
                   gboolean      advance)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay                *display = meta_screen_get_display (screen);
+  MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display  = meta_screen_get_display (screen);
   MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
   MetaWindow                 *next;
 
-  next = mnb_switcher_get_next_window (switcher, NULL);
+  next = mnb_switcher_get_next_window (switcher, NULL, backward);
 
   if (!next)
     {
@@ -349,7 +350,7 @@ handle_alt_tab (MetaDisplay    *display,
 
       printf ("In alt grab, selected %p\n", selected);
 
-      next = mnb_switcher_get_next_window (switcher, selected);
+      next = mnb_switcher_get_next_window (switcher, selected, backward);
 
       if (!next)
         {
@@ -361,7 +362,7 @@ handle_alt_tab (MetaDisplay    *display,
       return;
     }
 
-  try_alt_tab_grab (plugin, binding->mask, event->xkey.time, FALSE);
+  try_alt_tab_grab (plugin, binding->mask, event->xkey.time, backward, FALSE);
 }
 
 /*
@@ -1617,7 +1618,12 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       (xev->xkey.state & Mod1Mask) &&
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) == XK_Tab)
     {
+      gboolean backward = FALSE;
+
       printf ("trying alt+tab\n");
+
+      if (xev->xkey.state & ShiftMask)
+        backward = !backward;
 
       /*
        * We need to release the global keyboard grab first, then establish the
@@ -1625,7 +1631,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
        * want to adance the selection, hence the TRUE.
        */
       release_keyboard  (plugin, xev->xkey.time);
-      try_alt_tab_grab (plugin, Mod1Mask, xev->xkey.time, TRUE);
+      try_alt_tab_grab (plugin, Mod1Mask, xev->xkey.time, backward, TRUE);
       return TRUE;
     }
 

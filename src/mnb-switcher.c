@@ -1251,7 +1251,9 @@ tablist_find_func (gconstpointer a, gconstpointer b)
  * FIXME -- this just a stub using the complete list of mutter windows.
  */
 MetaWindow *
-mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
+mnb_switcher_get_next_window (MnbSwitcher *switcher,
+                              MetaWindow  *current,
+                              gboolean     backward)
 {
   MnbSwitcherPrivate    *priv = switcher->priv;
   GList                 *l;
@@ -1275,10 +1277,20 @@ mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
 
   l = g_list_find_custom (priv->tab_list, current, tablist_find_func);
 
-  if (!l || !l->next)
-    next = priv->tab_list->data;
+  if (!backward)
+    {
+      if (!l || !l->next)
+        next = priv->tab_list->data;
+      else
+        next = l->next->data;
+    }
   else
-    next = l->next->data;
+    {
+      if (!l || !l->prev)
+        next = g_list_last (priv->tab_list)->data;
+      else
+        next = l->prev->data;
+    }
 
   next_priv = MNB_SWITCHER_APP (next)->priv;
 
