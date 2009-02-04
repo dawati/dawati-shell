@@ -1432,7 +1432,10 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
                                 mutter_window_get_meta_window (mcw));
 }
 
-void
+/*
+ * Returns TRUE if keyboard was released, FALSE if no kbd grab was in place.
+ */
+gboolean
 release_keyboard (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -1455,7 +1458,11 @@ release_keyboard (MutterPlugin *plugin, guint32 timestamp)
       XUngrabKeyboard (xdpy, timestamp);
       XSync (xdpy, False);
       priv->keyboard_grab = FALSE;
+
+      return TRUE;
     }
+
+  return FALSE;
 }
 
 void

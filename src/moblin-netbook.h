@@ -175,7 +175,7 @@ struct ActorPrivate
 ActorPrivate * get_actor_private (MutterWindow *actor);
 void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
 void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
-void           release_keyboard  (MutterPlugin *plugin, guint32 timestamp);
+gboolean       release_keyboard  (MutterPlugin *plugin, guint32 timestamp);
 void           grab_keyboard     (MutterPlugin *plugin, guint32 timestamp);
 void           moblin_netbook_notify_init (MutterPlugin *plugin);
 
