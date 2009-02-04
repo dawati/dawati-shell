@@ -56,14 +56,14 @@ penge_people_pane_fabricate_actor (PengePeoplePane *pane,
   ClutterActor *actor;
   ClutterColor blue = {0, 0, 255, 127};
 
-  if (g_str_equal (item->source, "flickr"))
+  if (g_str_equal (item->service, "flickr"))
   {
     actor = g_object_new (PENGE_TYPE_FLICKR_TILE,
                           "item",
                           item,
                           NULL);
 
-  } else if (g_str_equal (item->source, "twitter")) {
+  } else if (g_str_equal (item->service, "twitter")) {
     actor = g_object_new (PENGE_TYPE_TWITTER_TILE,
                           "item",
                           item,
@@ -189,28 +189,28 @@ _client_open_view_cb (MojitoClient     *client,
 }
 
 static void
-_client_get_sources_cb (MojitoClient *client,
-                        GList        *sources,
-                        gpointer      userdata)
+_client_get_services_cb (MojitoClient *client,
+                         GList        *services,
+                         gpointer      userdata)
 {
-  GList *filtered_sources = NULL;
+  GList *filtered_services = NULL;
   GList *l;
 
-  for (l = sources; l; l = l->next)
+  for (l = services; l; l = l->next)
   {
     if (!g_str_equal (l->data, "dummy"))
     {
-      filtered_sources = g_list_append (filtered_sources, l->data);
+      filtered_services = g_list_append (filtered_services, l->data);
     }
   }
 
   mojito_client_open_view (client, 
-                           filtered_sources, 
+                           filtered_services, 
                            MAX_ITEMS, 
                            _client_open_view_cb, 
                            userdata);
 
-  g_list_free (filtered_sources);
+  g_list_free (filtered_services);
 }
 
 static void
@@ -243,9 +243,9 @@ penge_people_pane_init (PengePeoplePane *self)
 
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
-  /* Create the client and request the sources list */
+  /* Create the client and request the services list */
   priv->client = mojito_client_new ();
-  mojito_client_get_sources (priv->client, _client_get_sources_cb, self);
+  mojito_client_get_services (priv->client, _client_get_services_cb, self);
 }
 
 
