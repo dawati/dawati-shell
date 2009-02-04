@@ -282,6 +282,60 @@ dnd_end_cb (NbtkWidget   *table,
   clutter_actor_set_opacity (dragged, 0xff);
 }
 
+static gint
+tablist_sort_func (gconstpointer a, gconstpointer b)
+{
+  ClutterActor      *clone1 = CLUTTER_ACTOR (a);
+  ClutterActor      *clone2 = CLUTTER_ACTOR (b);
+  ClutterActor      *parent1 = clutter_actor_get_parent (clone1);
+  ClutterActor      *parent2 = clutter_actor_get_parent (clone2);
+  ClutterActor      *gparent1 = clutter_actor_get_parent (parent1);
+  ClutterActor      *gparent2 = clutter_actor_get_parent (parent2);
+  struct child_data *child_data1 = get_child_data (clone1);
+  struct child_data *child_data2 = get_child_data (clone2);
+  gint pcol1, pcol2;
+
+  if (parent1 == parent2)
+    {
+      /*
+       * The simple case of both clones on the same workspace.
+       */
+      gint row1, row2, col1, col2;
+
+      clutter_container_child_get (CLUTTER_CONTAINER (parent1), clone1,
+                                   "row", &row1, "column", &col1, NULL);
+      clutter_container_child_get (CLUTTER_CONTAINER (parent1), clone2,
+                                   "row", &row2, "column", &col2, NULL);
+
+      if (row1 < row2)
+        return -1;
+
+      if (row1 > row2)
+        return 1;
+
+      if (col1 < col2)
+        return -1;
+
+      if (col1 > col2)
+        return 1;
+
+      return 0;
+    }
+
+  clutter_container_child_get (CLUTTER_CONTAINER (gparent1), parent1,
+                               "column", &pcol1, NULL);
+  clutter_container_child_get (CLUTTER_CONTAINER (gparent2), parent2,
+                               "column", &pcol2, NULL);
+
+  if (pcol1 < pcol2)
+    return -1;
+
+  if (pcol1 > pcol2)
+    return 1;
+
+  return 0;
+}
+
 static void
 dnd_dropped_cb (NbtkWidget   *table,
 		ClutterActor *dragged,
@@ -290,12 +344,14 @@ dnd_dropped_cb (NbtkWidget   *table,
 		gint          y,
 		gpointer      data)
 {
-  ClutterChildMeta *meta;
-  ClutterActor     *parent;
-  ClutterActor     *table_actor = CLUTTER_ACTOR (table);
-  MutterWindow     *mcw;
-  MetaWindow       *mw;
-  gint              col;
+  MnbSwitcher        *switcher = MNB_SWITCHER (data);
+  MnbSwitcherPrivate *priv = switcher->priv;
+  ClutterChildMeta   *meta;
+  ClutterActor       *parent;
+  ClutterActor       *table_actor = CLUTTER_ACTOR (table);
+  MutterWindow       *mcw;
+  MetaWindow         *mw;
+  gint                col;
 
   if (!(mcw = get_child_data (dragged)->mw) ||
       !(mw = mutter_window_get_meta_window (mcw)))
@@ -312,6 +368,11 @@ dnd_dropped_cb (NbtkWidget   *table,
 					   table_actor);
 
   g_object_get (meta, "column", &col, NULL);
+
+  if (priv->tab_list)
+    {
+      priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
+    }
 
   /*
    * TODO -- perhaps we should expose the timestamp from the pointer event,
@@ -331,15 +392,16 @@ dnd_new_dropped_cb (NbtkWidget   *table,
                     gint          y,
                     gpointer      data)
 {
-  MnbSwitcher      *switcher = MNB_SWITCHER (data);
-  ClutterChildMeta *meta, *d_meta;
-  ClutterActor     *parent;
-  ClutterActor     *table_actor = CLUTTER_ACTOR (table);
-  MutterWindow     *mcw;
-  MetaWindow       *mw;
-  gint              col;
-  NbtkTable        *new_ws;
-  gboolean          keep_ratio = FALSE;
+  MnbSwitcher        *switcher = MNB_SWITCHER (data);
+  MnbSwitcherPrivate *priv = switcher->priv;
+  ClutterChildMeta   *meta, *d_meta;
+  ClutterActor       *parent;
+  ClutterActor       *table_actor = CLUTTER_ACTOR (table);
+  MutterWindow       *mcw;
+  MetaWindow         *mw;
+  gint                col;
+  NbtkTable          *new_ws;
+  gboolean            keep_ratio = FALSE;
 
   if (!(mcw = get_child_data (dragged)->mw) ||
       !(mw = mutter_window_get_meta_window (mcw)))
@@ -370,6 +432,11 @@ dnd_new_dropped_cb (NbtkWidget   *table,
 			       "keep-aspect-ratio", keep_ratio, NULL);
 
   g_object_unref (dragged);
+
+  if (priv->tab_list)
+    {
+      priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
+    }
 
   /*
    * TODO -- perhaps we should expose the timestamp from the pointer event,
@@ -694,16 +761,17 @@ meta_window_focus_cb (MetaWindow *mw, gpointer data)
   priv->selected = child_data->mw;
 }
 
-static void switcher_clone_weak_notify (gpointer data, GObject *object);
+static void mnb_switcher_clone_weak_notify (gpointer data, GObject *object);
 
 struct origin_data
 {
   ClutterActor *clone;
+  MutterWindow *mw;
   MnbSwitcher  *switcher;
 };
 
 static void
-switcher_origin_weak_notify (gpointer data, GObject *object)
+mnb_switcher_origin_weak_notify (gpointer data, GObject *obj)
 {
   struct origin_data *origin_data = data;
   ClutterActor       *clone = origin_data->clone;
@@ -719,77 +787,24 @@ switcher_origin_weak_notify (gpointer data, GObject *object)
    * we added to the clone referencing the original window, then
    * destroy the clone.
    */
-  g_object_weak_unref (G_OBJECT (clone), switcher_clone_weak_notify, object);
+  g_object_weak_unref (G_OBJECT (clone), mnb_switcher_clone_weak_notify, data);
   clutter_actor_destroy (clone);
 
   g_free (data);
 }
 
 static void
-switcher_clone_weak_notify (gpointer data, GObject *object)
+mnb_switcher_clone_weak_notify (gpointer data, GObject *obj)
 {
-  ClutterActor *origin = data;
+  struct origin_data *origin_data = data;
+  GObject            *origin = G_OBJECT (origin_data->mw);
 
   /*
    * Clone destroyed -- this function gets only called whent the clone
    * is destroyed while the original MutterWindow still exists, so remove
    * the weak reference we added on the origin for sake of the clone.
    */
-  g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
-}
-
-static gint
-tablist_sort_func (gconstpointer a, gconstpointer b)
-{
-  ClutterActor      *clone1 = CLUTTER_ACTOR (a);
-  ClutterActor      *clone2 = CLUTTER_ACTOR (b);
-  ClutterActor      *parent1 = clutter_actor_get_parent (clone1);
-  ClutterActor      *parent2 = clutter_actor_get_parent (clone2);
-  ClutterActor      *gparent1 = clutter_actor_get_parent (parent1);
-  ClutterActor      *gparent2 = clutter_actor_get_parent (parent2);
-  struct child_data *child_data1 = get_child_data (clone1);
-  struct child_data *child_data2 = get_child_data (clone2);
-  gint pcol1, pcol2;
-
-  if (parent1 == parent2)
-    {
-      /*
-       * The simple case of both clones on the same workspace.
-       */
-      gint row1, row2, col1, col2;
-
-      clutter_container_child_get (CLUTTER_CONTAINER (parent1), clone1,
-                                   "row", &row1, "col", &col1, NULL);
-      clutter_container_child_get (CLUTTER_CONTAINER (parent1), clone2,
-                                   "row", &row2, "col", &col2, NULL);
-
-      if (row1 < row2)
-        return -1;
-
-      if (row1 > row2)
-        return 1;
-
-      if (col1 < col2)
-        return -1;
-
-      if (col1 > col2)
-        return 1;
-
-      return 0;
-    }
-
-  clutter_container_child_get (CLUTTER_CONTAINER (gparent1), parent1,
-                               "col", &pcol1, NULL);
-  clutter_container_child_get (CLUTTER_CONTAINER (gparent2), parent2,
-                               "col", &pcol2, NULL);
-
-  if (pcol1 < pcol2)
-    return -1;
-
-  if (pcol1 > pcol2)
-    return 1;
-
-  return 0;
+  g_object_weak_unref (origin, mnb_switcher_origin_weak_notify, data);
 }
 
 static void
@@ -902,13 +917,14 @@ mnb_switcher_show (ClutterActor *self)
 
       origin_data = g_new0 (struct origin_data, 1);
       origin_data->clone = clone;
+      origin_data->mw = mw;
       origin_data->switcher = MNB_SWITCHER (self);
       priv->tab_list = g_list_prepend (priv->tab_list, clone);
 
       g_object_weak_ref (G_OBJECT (mw),
-                         switcher_origin_weak_notify, origin_data);
+                         mnb_switcher_origin_weak_notify, origin_data);
       g_object_weak_ref (G_OBJECT (clone),
-                         switcher_clone_weak_notify, mw);
+                         mnb_switcher_clone_weak_notify, origin_data);
 
       g_object_get (meta_win, "title", &title, NULL);
       child_data = make_child_data (MNB_SWITCHER (self), mw, clone, title);
@@ -1236,6 +1252,25 @@ mnb_switcher_get_selection (MnbSwitcher *switcher)
   return mutter_window_get_meta_window (priv->selected);
 }
 
+static gint
+tablist_find_func (gconstpointer a, gconstpointer b)
+{
+  ClutterActor      *clone      = CLUTTER_ACTOR (a);
+  MetaWindow        *meta_win   = META_WINDOW (b);
+  MetaWindow        *my_win;
+  struct child_data *child_data = get_child_data (clone);
+
+  if (!child_data)
+    return 1;
+
+  my_win = mutter_window_get_meta_window (child_data->mw);
+
+  if (my_win == meta_win)
+    return 0;
+
+  return 1;
+}
+
 /*
  * Return the next window that Alt+Tab should advance to.
  *
@@ -1248,8 +1283,9 @@ MetaWindow *
 mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
-  GList *l, *copy;
-  MetaWindow *next = NULL;
+  GList              *l;
+  ClutterActor       *next = NULL;
+  struct child_data  *child_data;
 
   if (!current)
     {
@@ -1259,58 +1295,25 @@ mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
       return mutter_window_get_meta_window (priv->selected);
     }
 
-  copy = l = g_list_copy (mutter_plugin_get_windows (priv->plugin));
-
-  while (l)
+  if (!priv->tab_list)
     {
-      MutterWindow *mw = l->data;
+      g_warning ("No tablist in existence!\n");
 
-      if (mutter_window_get_meta_window (mw) == current)
-        {
-          while (l->next)
-            {
-              MutterWindow *next_win = l->next->data;
-
-              if (!mutter_window_is_override_redirect (next_win) &&
-                  mutter_window_get_window_type (next_win) ==
-                  META_COMP_WINDOW_NORMAL &&
-                  mutter_window_get_workspace (next_win) >=0)
-                {
-                  next = mutter_window_get_meta_window (next_win);
-                  break;
-                }
-
-              l = l->next;
-            }
-
-          if (next)
-            break;
-
-          l = copy;
-          while (l)
-            {
-              MutterWindow *next_win = l->data;
-
-              if (!mutter_window_is_override_redirect (next_win) &&
-                  mutter_window_get_window_type (next_win) ==
-                  META_COMP_WINDOW_NORMAL &&
-                  mutter_window_get_workspace (next_win) >=0)
-                {
-                  next = mutter_window_get_meta_window (next_win);
-                  break;
-                }
-
-              l = l->next;
-            }
-
-          break;
-        }
-
-      l = l->next;
+      return NULL;
     }
 
-  g_list_free (copy);
+  l = g_list_find_custom (priv->tab_list, current, tablist_find_func);
 
-  return next;
+  if (!l || !l->next)
+    next = priv->tab_list->data;
+  else
+    next = l->next->data;
+
+  child_data = get_child_data (next);
+
+  if (!child_data)
+    return NULL;
+
+  return mutter_window_get_meta_window (child_data->mw);
 }
 
