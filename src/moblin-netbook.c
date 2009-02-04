@@ -400,7 +400,7 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
 
   clutter_actor_get_size (priv->parallax_tex, &w, &h);
 
-  cogl_translate (priv->parallax_paint_offset - w/4 , 0 , 0);
+  cogl_translate (priv->parallax_paint_offset - (gint)w/4, 0 , 0);
 
   cogl_texture
        = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(priv->parallax_tex));
