@@ -362,7 +362,35 @@ handle_alt_tab (MetaDisplay    *display,
       return;
     }
 
-  try_alt_tab_grab (plugin, binding->mask, event->xkey.time, backward, FALSE);
+  try_alt_tab_grab (plugin, binding->mask, event->xkey.time, backward, TRUE);
+}
+
+struct alt_tab_show_complete_data
+{
+  MutterPlugin   *plugin;
+  MetaDisplay    *display;
+  MetaScreen     *screen;
+  MetaWindow     *window;
+  MetaKeyBinding *binding;
+  XEvent          xevent;
+};
+
+static void
+alt_tab_switcher_show_completed_cb (ClutterActor *switcher, gpointer data)
+{
+  struct alt_tab_show_complete_data *alt_data = data;
+
+  handle_alt_tab (alt_data->display, alt_data->screen, alt_data->window,
+                  &alt_data->xevent, alt_data->binding, alt_data->plugin);
+
+  /*
+   * This is a one-off, disconnect ourselves.
+   */
+  g_signal_handlers_disconnect_by_func (switcher,
+                                        alt_tab_switcher_show_completed_cb,
+                                        data);
+
+  g_free (data);
 }
 
 /*
@@ -383,15 +411,28 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
     {
       if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
         {
+          struct alt_tab_show_complete_data *alt_data;
+
+          alt_data = g_new (struct alt_tab_show_complete_data, 1);
+          alt_data->display = display;
+          alt_data->screen  = screen;
+          alt_data->plugin  = plugin;
+          alt_data->binding = binding;
+
+          memcpy (&alt_data->xevent, event, sizeof (XEvent));
+
+          g_signal_connect (priv->switcher, "show-completed",
+                            G_CALLBACK (alt_tab_switcher_show_completed_cb),
+                            alt_data);
+
           show_panel_and_switcher (plugin);
+          return;
         }
       else
         clutter_actor_show (priv->switcher);
     }
-  else
-    {
-      handle_alt_tab (display, screen, window, event, binding, plugin);
-    }
+
+  handle_alt_tab (display, screen, window, event, binding, plugin);
 }
 
 /*
