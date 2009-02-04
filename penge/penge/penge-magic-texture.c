@@ -43,17 +43,13 @@ penge_magic_texture_paint (ClutterActor *actor)
   }
 
   col.alpha = clutter_actor_get_paint_opacity (actor);
-  cogl_color (&col);
-
-  cogl_texture_rectangle (tex,
-                          0,
-                          0,
-                          CLUTTER_INT_TO_FIXED (aw),
-                          CLUTTER_INT_TO_FIXED (ah),
-                          tx1,
-                          ty1,
-                          tx2,
-                          ty2);
+  cogl_set_source_color4ub (col.red, col.green, col.blue, col.alpha);
+  cogl_rectangle (0, 0, aw, ah);
+  cogl_set_source_texture (tex);
+  cogl_rectangle_with_texture_coords (0, 0,
+                                      aw, ah,
+                                      tx1, ty1,
+                                      tx2, ty2);
 }
 
 static void
