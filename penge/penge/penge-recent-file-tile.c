@@ -294,7 +294,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
                           CLUTTER_UNITS_FROM_DEVICE (4) };
 
   ClutterAlpha *alpha;
-  ClutterActor *tmp_label;
+  ClutterActor *tmp_text;
 
   g_signal_connect (self,
                     "enter-event",
@@ -313,12 +313,12 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
 
   priv->details_filename_label = nbtk_label_new ("Filename");
   nbtk_widget_set_alignment (priv->details_filename_label, 0, 0.5);
-  tmp_label =
-    nbtk_label_get_clutter_label (NBTK_LABEL (priv->details_filename_label));
-  clutter_label_set_alignment (CLUTTER_LABEL (tmp_label),
-                               PANGO_ALIGN_LEFT);
-  clutter_label_set_ellipsize (CLUTTER_LABEL (tmp_label), 
-                               PANGO_ELLIPSIZE_END);
+  tmp_text =
+    nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_filename_label));
+  clutter_text_set_alignment (CLUTTER_TEXT (tmp_text),
+                              PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
+                              PANGO_ELLIPSIZE_END);
 
   nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
                         (ClutterActor *)priv->details_filename_label,
@@ -327,12 +327,12 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
 
   priv->details_type_label = nbtk_label_new ("Type");
   nbtk_widget_set_alignment (priv->details_type_label, 0, 0.5);
-  tmp_label =
-    nbtk_label_get_clutter_label (NBTK_LABEL (priv->details_type_label));
-  clutter_label_set_alignment (CLUTTER_LABEL (tmp_label),
-                               PANGO_ALIGN_LEFT);
-  clutter_label_set_ellipsize (CLUTTER_LABEL (tmp_label), 
-                               PANGO_ELLIPSIZE_END);
+  tmp_text =
+    nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_type_label));
+  clutter_text_set_alignment (CLUTTER_TEXT (tmp_text),
+                              PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
+                              PANGO_ELLIPSIZE_END);
 
 
   nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
