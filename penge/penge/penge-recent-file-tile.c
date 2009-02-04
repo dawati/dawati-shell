@@ -352,9 +352,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   priv->timeline = clutter_timeline_new_for_duration (300);
 
   alpha = clutter_alpha_new_full (priv->timeline,
-                                  CLUTTER_ALPHA_RAMP_INC,
-                                  NULL,
-                                  NULL);
+                                  CLUTTER_LINEAR);
   priv->behave = clutter_behaviour_opacity_new (alpha, 0x00, 0xc0);
   clutter_behaviour_apply (priv->behave,
                            (ClutterActor *)priv->details_overlay);
