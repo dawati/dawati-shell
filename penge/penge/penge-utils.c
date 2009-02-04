@@ -137,7 +137,7 @@ penge_utils_load_stylesheet ()
 
   path = g_build_filename (PKG_DATADIR,
                            "theme",
-                           "penge.css",
+                           "mutter-moblin.css",
                            NULL);
 
   /* register the styling */
