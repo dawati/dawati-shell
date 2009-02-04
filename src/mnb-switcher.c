@@ -24,10 +24,7 @@
 #include "moblin-netbook.h"
 #include <nbtk/nbtk-tooltip.h>
 
-#define CHILD_DATA_KEY "MNB_SWITCHER_CHILD_DATA"
 #define HOVER_TIMEOUT  800
-
-static GQuark child_data_quark = 0;
 
 /*
  * MnbSwitcherApp
@@ -42,12 +39,15 @@ static GQuark child_data_quark = 0;
 #define MNB_SWITCHER_APP_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_SWITCHER_APP, MnbSwitcherAppClass))
 
 typedef struct _MnbSwitcherApp               MnbSwitcherApp;
+typedef struct _MnbSwitcherAppPrivate        MnbSwitcherAppPrivate;
 typedef struct _MnbSwitcherAppClass          MnbSwitcherAppClass;
 
 struct _MnbSwitcherApp
 {
   /*< private >*/
   NbtkWidget parent_instance;
+
+  MnbSwitcherAppPrivate *priv;
 };
 
 struct _MnbSwitcherAppClass
@@ -56,23 +56,72 @@ struct _MnbSwitcherAppClass
   NbtkWidgetClass parent_class;
 };
 
+struct _MnbSwitcherAppPrivate
+{
+  MnbSwitcher  *switcher;
+  MutterWindow *mw;
+  guint         hover_timeout_id;
+  ClutterActor *tooltip;
+  guint         focus_id;
+  guint         raised_id;
+};
+
 GType mnb_switcher_app_get_type (void);
 
 G_DEFINE_TYPE (MnbSwitcherApp, mnb_switcher_app, NBTK_TYPE_WIDGET)
 
+#define MNB_SWITCHER_APP_GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_APP,\
+                                MnbSwitcherAppPrivate))
+
 static void
 mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
 {
+  g_type_class_add_private (klass, sizeof (MnbSwitcherAppPrivate));
 }
 
 static void
 mnb_switcher_app_init (MnbSwitcherApp *self)
 {
+  self->priv = MNB_SWITCHER_APP_GET_PRIVATE (self);
+}
+
+static void
+mnb_switcher_app_dispose (GObject *object)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (object)->priv;
+  MetaWindow            *meta_win;
+
+  meta_win = mutter_window_get_meta_window (priv->mw);
+
+  if (priv->hover_timeout_id)
+    {
+      g_source_remove (priv->hover_timeout_id);
+      priv->hover_timeout_id = 0;
+    }
+
+  if (priv->focus_id)
+    {
+      g_signal_handler_disconnect (meta_win, priv->focus_id);
+      priv->focus_id = 0;
+    }
+
+  if (priv->raised_id)
+    {
+      g_signal_handler_disconnect (meta_win, priv->raised_id);
+      priv->raised_id = 0;
+    }
+
+  /*
+   * Do not destroy the tooltip, this is happens automatically.
+   */
+
+  G_OBJECT_CLASS (mnb_switcher_app_parent_class)->dispose (object);
 }
 
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
 
-#define GET_PRIVATE(o) \
+#define MNB_SWITCHER_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER, MnbSwitcherPrivate))
 
 struct _MnbSwitcherPrivate {
@@ -135,85 +184,18 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
-struct child_data
-{
-  ClutterActor *self;
-  MnbSwitcher  *switcher;
-  MutterWindow *mw;
-  guint         hover_timeout_id;
-  ClutterActor *tooltip;
-  guint         focus_id;
-  guint         raised_id;
-};
-
-static struct child_data *
-get_child_data (ClutterActor *child)
-{
-  struct child_data * child_data;
-
-
-  child_data = g_object_get_qdata (G_OBJECT (child), child_data_quark);
-
-  return child_data;
-}
-
-static struct child_data *
-make_child_data (MnbSwitcher  *switcher,
-		 MutterWindow *mw,
-		 ClutterActor *actor,
-		 const gchar  *text)
-{
-  struct child_data *child_data = g_new0 (struct child_data, 1);
-
-  child_data->self = actor;
-  child_data->switcher = switcher;
-  child_data->mw = mw;
-  child_data->tooltip = g_object_new (NBTK_TYPE_TOOLTIP,
-                                      "widget", actor,
-                                      "label", text,
-                                      NULL);
-
-  return child_data;
-}
-
-static void
-free_child_data (struct child_data *child_data)
-{
-  MetaWindow *meta_win;
-
-  g_object_set_qdata (G_OBJECT (child_data->self),
-		      child_data_quark, NULL);
-
-  meta_win = mutter_window_get_meta_window (child_data->mw);
-
-  if (child_data->hover_timeout_id)
-    g_source_remove (child_data->hover_timeout_id);
-
-  if (child_data->focus_id)
-    g_signal_handler_disconnect (meta_win, child_data->focus_id);
-
-  if (child_data->raised_id)
-    g_signal_handler_disconnect (meta_win, child_data->raised_id);
-
-  /*
-   * Do not destroy the tooltip, this is happens automatically.
-   */
-
-  g_free (child_data);
-}
-
 static gboolean
 workspace_switcher_clone_input_cb (ClutterActor *clone,
                                    ClutterEvent *event,
                                    gpointer      data)
 {
-  struct child_data          *child_data = data;
-  MutterWindow               *mw = child_data->mw;
+  MnbSwitcherAppPrivate      *app_priv = MNB_SWITCHER_APP (clone)->priv;
+  MutterWindow               *mw = app_priv->mw;
   MetaWindow                 *window;
   MetaWorkspace              *workspace;
   MetaWorkspace              *active_workspace;
   MetaScreen                 *screen;
-  MnbSwitcher                *switcher = child_data->switcher;
+  MnbSwitcher                *switcher = app_priv->switcher;
   MutterPlugin               *plugin = switcher->priv->plugin;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -248,19 +230,19 @@ dnd_begin_cb (NbtkWidget   *table,
 	      gint          y,
 	      gpointer      data)
 {
-  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
-  struct child_data  *child_data = get_child_data (dragged);
+  MnbSwitcherPrivate    *priv         = MNB_SWITCHER (data)->priv;
+  MnbSwitcherAppPrivate *dragged_priv = MNB_SWITCHER_APP (dragged)->priv;
 
   priv->dnd_in_progress = TRUE;
 
-  if (child_data->hover_timeout_id)
+  if (dragged_priv->hover_timeout_id)
     {
-      g_source_remove (child_data->hover_timeout_id);
-      child_data->hover_timeout_id = 0;
+      g_source_remove (dragged_priv->hover_timeout_id);
+      dragged_priv->hover_timeout_id = 0;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (child_data->tooltip))
-    nbtk_tooltip_hide (NBTK_TOOLTIP (child_data->tooltip));
+  if (CLUTTER_ACTOR_IS_VISIBLE (dragged_priv->tooltip))
+    nbtk_tooltip_hide (NBTK_TOOLTIP (dragged_priv->tooltip));
 
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 60.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0x4f);
@@ -285,15 +267,13 @@ dnd_end_cb (NbtkWidget   *table,
 static gint
 tablist_sort_func (gconstpointer a, gconstpointer b)
 {
-  ClutterActor      *clone1 = CLUTTER_ACTOR (a);
-  ClutterActor      *clone2 = CLUTTER_ACTOR (b);
-  ClutterActor      *parent1 = clutter_actor_get_parent (clone1);
-  ClutterActor      *parent2 = clutter_actor_get_parent (clone2);
-  ClutterActor      *gparent1 = clutter_actor_get_parent (parent1);
-  ClutterActor      *gparent2 = clutter_actor_get_parent (parent2);
-  struct child_data *child_data1 = get_child_data (clone1);
-  struct child_data *child_data2 = get_child_data (clone2);
-  gint pcol1, pcol2;
+  ClutterActor          *clone1 = CLUTTER_ACTOR (a);
+  ClutterActor          *clone2 = CLUTTER_ACTOR (b);
+  ClutterActor          *parent1 = clutter_actor_get_parent (clone1);
+  ClutterActor          *parent2 = clutter_actor_get_parent (clone2);
+  ClutterActor          *gparent1 = clutter_actor_get_parent (parent1);
+  ClutterActor          *gparent2 = clutter_actor_get_parent (parent2);
+  gint                   pcol1, pcol2;
 
   if (parent1 == parent2)
     {
@@ -344,17 +324,16 @@ dnd_dropped_cb (NbtkWidget   *table,
 		gint          y,
 		gpointer      data)
 {
-  MnbSwitcher        *switcher = MNB_SWITCHER (data);
-  MnbSwitcherPrivate *priv = switcher->priv;
-  ClutterChildMeta   *meta;
-  ClutterActor       *parent;
-  ClutterActor       *table_actor = CLUTTER_ACTOR (table);
-  MutterWindow       *mcw;
-  MetaWindow         *mw;
-  gint                col;
+  MnbSwitcher           *switcher = MNB_SWITCHER (data);
+  MnbSwitcherPrivate    *priv = switcher->priv;
+  MnbSwitcherAppPrivate *dragged_priv = MNB_SWITCHER_APP (dragged)->priv;
+  ClutterChildMeta      *meta;
+  ClutterActor          *parent;
+  ClutterActor          *table_actor = CLUTTER_ACTOR (table);
+  MetaWindow            *meta_win;
+  gint                   col;
 
-  if (!(mcw = get_child_data (dragged)->mw) ||
-      !(mw = mutter_window_get_meta_window (mcw)))
+  if (!(meta_win = mutter_window_get_meta_window (dragged_priv->mw)))
     {
       g_warning ("No MutterWindow associated with this item.");
       return;
@@ -378,7 +357,7 @@ dnd_dropped_cb (NbtkWidget   *table,
    * TODO -- perhaps we should expose the timestamp from the pointer event,
    * or event the entire Clutter event.
    */
-  meta_window_change_workspace_by_index (mw, col, TRUE, CurrentTime);
+  meta_window_change_workspace_by_index (meta_win, col, TRUE, CurrentTime);
 }
 
 static NbtkTable *
@@ -392,19 +371,18 @@ dnd_new_dropped_cb (NbtkWidget   *table,
                     gint          y,
                     gpointer      data)
 {
-  MnbSwitcher        *switcher = MNB_SWITCHER (data);
-  MnbSwitcherPrivate *priv = switcher->priv;
-  ClutterChildMeta   *meta, *d_meta;
-  ClutterActor       *parent;
-  ClutterActor       *table_actor = CLUTTER_ACTOR (table);
-  MutterWindow       *mcw;
-  MetaWindow         *mw;
-  gint                col;
-  NbtkTable          *new_ws;
-  gboolean            keep_ratio = FALSE;
+  MnbSwitcher           *switcher = MNB_SWITCHER (data);
+  MnbSwitcherPrivate    *priv = switcher->priv;
+  MnbSwitcherAppPrivate *dragged_priv = MNB_SWITCHER_APP (dragged)->priv;
+  ClutterChildMeta      *meta, *d_meta;
+  ClutterActor          *parent;
+  ClutterActor          *table_actor = CLUTTER_ACTOR (table);
+  MetaWindow            *meta_win;
+  gint                   col;
+  NbtkTable             *new_ws;
+  gboolean               keep_ratio = FALSE;
 
-  if (!(mcw = get_child_data (dragged)->mw) ||
-      !(mw = mutter_window_get_meta_window (mcw)))
+  if (!(meta_win = mutter_window_get_meta_window (dragged_priv->mw)))
     {
       g_warning ("No MutterWindow associated with this item.");
       return;
@@ -442,19 +420,19 @@ dnd_new_dropped_cb (NbtkWidget   *table,
    * TODO -- perhaps we should expose the timestamp from the pointer event,
    * or event the entire Clutter event.
    */
-  meta_window_change_workspace_by_index (mw, col, TRUE, CurrentTime);
+  meta_window_change_workspace_by_index (meta_win, col, TRUE, CurrentTime);
 }
 
 static gboolean
 clone_hover_timeout_cb (gpointer data)
 {
-  struct child_data  *child_data = data;
-  MnbSwitcherPrivate *priv       = child_data->switcher->priv;
+  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (data)->priv;
+  MnbSwitcherPrivate    *priv     = app_priv->switcher->priv;
 
   if (!priv->dnd_in_progress)
-    nbtk_tooltip_show (NBTK_TOOLTIP (child_data->tooltip));
+    nbtk_tooltip_show (NBTK_TOOLTIP (app_priv->tooltip));
 
-  child_data->hover_timeout_id = 0;
+  app_priv->hover_timeout_id = 0;
 
   return FALSE;
 }
@@ -464,13 +442,13 @@ clone_enter_event_cb (ClutterActor *actor,
 		      ClutterCrossingEvent *event,
 		      gpointer data)
 {
-  struct child_data  *child_data = data;
-  MnbSwitcherPrivate *priv       = child_data->switcher->priv;
+  MnbSwitcherAppPrivate *child_priv = MNB_SWITCHER_APP (actor)->priv;
+  MnbSwitcherPrivate    *priv       = child_priv->switcher->priv;
 
   if (!priv->dnd_in_progress)
-    child_data->hover_timeout_id = g_timeout_add (HOVER_TIMEOUT,
+    child_priv->hover_timeout_id = g_timeout_add (HOVER_TIMEOUT,
 						  clone_hover_timeout_cb,
-						  data);
+						  actor);
 
   return FALSE;
 }
@@ -480,16 +458,16 @@ clone_leave_event_cb (ClutterActor *actor,
 		      ClutterCrossingEvent *event,
 		      gpointer data)
 {
-  struct child_data *child_data = data;
+  MnbSwitcherAppPrivate *child_priv = MNB_SWITCHER_APP (actor)->priv;
 
-  if (child_data->hover_timeout_id)
+  if (child_priv->hover_timeout_id)
     {
-      g_source_remove (child_data->hover_timeout_id);
-      child_data->hover_timeout_id = 0;
+      g_source_remove (child_priv->hover_timeout_id);
+      child_priv->hover_timeout_id = 0;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (child_data->tooltip))
-    nbtk_tooltip_hide (NBTK_TOOLTIP (child_data->tooltip));
+  if (CLUTTER_ACTOR_IS_VISIBLE (child_priv->tooltip))
+    nbtk_tooltip_hide (NBTK_TOOLTIP (child_priv->tooltip));
 
   return FALSE;
 }
@@ -746,19 +724,19 @@ dnd_new_leave_cb (NbtkWidget   *table,
 static void
 meta_window_focus_cb (MetaWindow *mw, gpointer data)
 {
-  struct child_data  *child_data = data;
-  MnbSwitcher        *switcher = child_data->switcher;
-  MnbSwitcherPrivate *priv = switcher->priv;
+  MnbSwitcherAppPrivate *child_priv = MNB_SWITCHER_APP (data)->priv;
+  MnbSwitcher           *switcher = child_priv->switcher;
+  MnbSwitcherPrivate    *priv = switcher->priv;
 
-  if (priv->last_focused == child_data->self)
+  if (priv->last_focused == data)
     return;
 
   if (priv->last_focused)
     clutter_actor_set_name (priv->last_focused, "");
 
-  clutter_actor_set_name (child_data->self, "switcher-application-active");
-  priv->last_focused = child_data->self;
-  priv->selected = child_data->mw;
+  clutter_actor_set_name (CLUTTER_ACTOR (data), "switcher-application-active");
+  priv->last_focused = data;
+  priv->selected = child_priv->mw;
 }
 
 static void mnb_switcher_clone_weak_notify (gpointer data, GObject *object);
@@ -862,15 +840,15 @@ mnb_switcher_show (ClutterActor *self)
   window_list = mutter_plugin_get_windows (priv->plugin);
   for (l = window_list; l; l = g_list_next (l))
     {
-      MutterWindow       *mw = l->data;
-      ClutterActor       *texture, *c_tx, *clone;
-      gint                ws_indx;
-      MetaCompWindowType  type;
-      gint                w, h;
-      struct child_data  *child_data;
-      struct origin_data *origin_data;
-      MetaWindow         *meta_win = mutter_window_get_meta_window (mw);
-      gchar              *title;
+      MutterWindow          *mw = l->data;
+      ClutterActor          *texture, *c_tx, *clone;
+      gint                   ws_indx;
+      MetaCompWindowType     type;
+      gint                   w, h;
+      struct origin_data    *origin_data;
+      MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
+      gchar                 *title;
+      MnbSwitcherAppPrivate *app_priv;
 
       ws_indx = mutter_window_get_workspace (mw);
       type = mutter_window_get_window_type (mw);
@@ -927,23 +905,27 @@ mnb_switcher_show (ClutterActor *self)
                          mnb_switcher_clone_weak_notify, origin_data);
 
       g_object_get (meta_win, "title", &title, NULL);
-      child_data = make_child_data (MNB_SWITCHER (self), mw, clone, title);
+
+      app_priv = MNB_SWITCHER_APP (clone)->priv;
+      app_priv->switcher = MNB_SWITCHER (self);
+      app_priv->mw       = mw;
+      app_priv->tooltip  = g_object_new (NBTK_TYPE_TOOLTIP,
+                                         "widget", clone,
+                                         "label", title,
+                                         NULL);
       g_free (title);
 
-      g_object_set_qdata (G_OBJECT (clone), child_data_quark, child_data);
-
-      g_signal_connect_data (clone, "enter-event",
-			     G_CALLBACK (clone_enter_event_cb), child_data,
-			     (GClosureNotify)free_child_data, 0);
+      g_signal_connect (clone, "enter-event",
+                        G_CALLBACK (clone_enter_event_cb), NULL);
       g_signal_connect (clone, "leave-event",
-                        G_CALLBACK (clone_leave_event_cb), child_data);
+                        G_CALLBACK (clone_leave_event_cb), NULL);
 
-      child_data->focus_id =
+      app_priv->focus_id =
         g_signal_connect (meta_win, "focus",
-                          G_CALLBACK (meta_window_focus_cb), child_data);
-      child_data->raised_id =
+                          G_CALLBACK (meta_window_focus_cb), clone);
+      app_priv->raised_id =
         g_signal_connect (meta_win, "raised",
-                          G_CALLBACK (meta_window_focus_cb), child_data);
+                          G_CALLBACK (meta_window_focus_cb), clone);
 
       n_windows[ws_indx]++;
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
@@ -956,7 +938,7 @@ mnb_switcher_show (ClutterActor *self)
 
       g_signal_connect (clone, "button-release-event",
                         G_CALLBACK (workspace_switcher_clone_input_cb),
-			child_data);
+			NULL);
 
       ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
@@ -1112,14 +1094,12 @@ mnb_switcher_class_init (MnbSwitcherClass *klass)
   actor_class->hide = mnb_switcher_hide;
 
   g_type_class_add_private (klass, sizeof (MnbSwitcherPrivate));
-
-  child_data_quark = g_quark_from_static_string (CHILD_DATA_KEY);
 }
 
 static void
 mnb_switcher_init (MnbSwitcher *self)
 {
-  self->priv = GET_PRIVATE (self);
+  self->priv = MNB_SWITCHER_GET_PRIVATE (self);
 }
 
 NbtkWidget*
@@ -1139,23 +1119,17 @@ mnb_switcher_new (MutterPlugin *plugin)
 static void
 select_inner_foreach_cb (ClutterActor *child, gpointer data)
 {
-  struct child_data *child_data = get_child_data (child);
-  MetaWindow        *meta_win = data;
-  MetaWindow        *my_win;
+  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (child)->priv;
+  MetaWindow            *meta_win = data;
+  MetaWindow            *my_win;
 
-  if (!child_data)
-    {
-      g_warning ("No child data found!\n");
-      return;
-    }
-
-  my_win = mutter_window_get_meta_window (child_data->mw);
+  my_win = mutter_window_get_meta_window (app_priv->mw);
 
   if (meta_win == my_win)
     {
       clutter_actor_set_name (child, "switcher-application-active");
 
-      child_data->switcher->priv->selected = child_data->mw;
+      app_priv->switcher->priv->selected = app_priv->mw;
     }
   else
     clutter_actor_set_name (child, "");
@@ -1255,15 +1229,12 @@ mnb_switcher_get_selection (MnbSwitcher *switcher)
 static gint
 tablist_find_func (gconstpointer a, gconstpointer b)
 {
-  ClutterActor      *clone      = CLUTTER_ACTOR (a);
-  MetaWindow        *meta_win   = META_WINDOW (b);
-  MetaWindow        *my_win;
-  struct child_data *child_data = get_child_data (clone);
+  ClutterActor          *clone    = CLUTTER_ACTOR (a);
+  MetaWindow            *meta_win = META_WINDOW (b);
+  MetaWindow            *my_win;
+  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (clone)->priv;
 
-  if (!child_data)
-    return 1;
-
-  my_win = mutter_window_get_meta_window (child_data->mw);
+  my_win = mutter_window_get_meta_window (app_priv->mw);
 
   if (my_win == meta_win)
     return 0;
@@ -1282,10 +1253,10 @@ tablist_find_func (gconstpointer a, gconstpointer b)
 MetaWindow *
 mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
 {
-  MnbSwitcherPrivate *priv = switcher->priv;
-  GList              *l;
-  ClutterActor       *next = NULL;
-  struct child_data  *child_data;
+  MnbSwitcherPrivate    *priv = switcher->priv;
+  GList                 *l;
+  ClutterActor          *next = NULL;
+  MnbSwitcherAppPrivate *next_priv;
 
   if (!current)
     {
@@ -1309,11 +1280,8 @@ mnb_switcher_get_next_window (MnbSwitcher *switcher, MetaWindow *current)
   else
     next = l->next->data;
 
-  child_data = get_child_data (next);
+  next_priv = MNB_SWITCHER_APP (next)->priv;
 
-  if (!child_data)
-    return NULL;
-
-  return mutter_window_get_meta_window (child_data->mw);
+  return mutter_window_get_meta_window (next_priv->mw);
 }
 
