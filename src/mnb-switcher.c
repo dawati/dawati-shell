@@ -84,7 +84,7 @@ struct _MnbSwitcherPrivate {
 
   ClutterActor *last_focused;
   MutterWindow *selected;
-
+  GList        *tab_list;
   gboolean      dnd_in_progress : 1;
 };
 
@@ -696,10 +696,23 @@ meta_window_focus_cb (MetaWindow *mw, gpointer data)
 
 static void switcher_clone_weak_notify (gpointer data, GObject *object);
 
+struct origin_data
+{
+  ClutterActor *clone;
+  MnbSwitcher  *switcher;
+};
+
 static void
 switcher_origin_weak_notify (gpointer data, GObject *object)
 {
-  ClutterActor *clone = data;
+  struct origin_data *origin_data = data;
+  ClutterActor       *clone = origin_data->clone;
+  MnbSwitcherPrivate *priv  = origin_data->switcher->priv;
+
+  if (priv->tab_list)
+    {
+      priv->tab_list = g_list_remove (priv->tab_list, clone);
+    }
 
   /*
    * The original MutterWindow destroyed; remove the weak reference the
@@ -708,6 +721,8 @@ switcher_origin_weak_notify (gpointer data, GObject *object)
    */
   g_object_weak_unref (G_OBJECT (clone), switcher_clone_weak_notify, object);
   clutter_actor_destroy (clone);
+
+  g_free (data);
 }
 
 static void
@@ -723,6 +738,59 @@ switcher_clone_weak_notify (gpointer data, GObject *object)
   g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
 }
 
+static gint
+tablist_sort_func (gconstpointer a, gconstpointer b)
+{
+  ClutterActor      *clone1 = CLUTTER_ACTOR (a);
+  ClutterActor      *clone2 = CLUTTER_ACTOR (b);
+  ClutterActor      *parent1 = clutter_actor_get_parent (clone1);
+  ClutterActor      *parent2 = clutter_actor_get_parent (clone2);
+  ClutterActor      *gparent1 = clutter_actor_get_parent (parent1);
+  ClutterActor      *gparent2 = clutter_actor_get_parent (parent2);
+  struct child_data *child_data1 = get_child_data (clone1);
+  struct child_data *child_data2 = get_child_data (clone2);
+  gint pcol1, pcol2;
+
+  if (parent1 == parent2)
+    {
+      /*
+       * The simple case of both clones on the same workspace.
+       */
+      gint row1, row2, col1, col2;
+
+      clutter_container_child_get (CLUTTER_CONTAINER (parent1), clone1,
+                                   "row", &row1, "col", &col1, NULL);
+      clutter_container_child_get (CLUTTER_CONTAINER (parent1), clone2,
+                                   "row", &row2, "col", &col2, NULL);
+
+      if (row1 < row2)
+        return -1;
+
+      if (row1 > row2)
+        return 1;
+
+      if (col1 < col2)
+        return -1;
+
+      if (col1 > col2)
+        return 1;
+
+      return 0;
+    }
+
+  clutter_container_child_get (CLUTTER_CONTAINER (gparent1), parent1,
+                               "col", &pcol1, NULL);
+  clutter_container_child_get (CLUTTER_CONTAINER (gparent2), parent2,
+                               "col", &pcol2, NULL);
+
+  if (pcol1 < pcol2)
+    return -1;
+
+  if (pcol1 > pcol2)
+    return 1;
+
+  return 0;
+}
 
 static void
 mnb_switcher_show (ClutterActor *self)
@@ -739,6 +807,12 @@ mnb_switcher_show (ClutterActor *self)
   GList        *workspaces = meta_screen_get_workspaces (screen);
 
   priv->last_workspaces = g_list_copy (workspaces);
+
+  if (priv->tab_list)
+    {
+      g_list_free (priv->tab_list);
+      priv->tab_list = NULL;
+    }
 
   /* create the contents */
 
@@ -779,6 +853,7 @@ mnb_switcher_show (ClutterActor *self)
       MetaCompWindowType  type;
       gint                w, h;
       struct child_data  *child_data;
+      struct origin_data *origin_data;
       MetaWindow         *meta_win = mutter_window_get_meta_window (mw);
       gchar              *title;
 
@@ -825,8 +900,15 @@ mnb_switcher_show (ClutterActor *self)
 
       clutter_actor_set_reactive (clone, TRUE);
 
-      g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
-      g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
+      origin_data = g_new0 (struct origin_data, 1);
+      origin_data->clone = clone;
+      origin_data->switcher = MNB_SWITCHER (self);
+      priv->tab_list = g_list_prepend (priv->tab_list, clone);
+
+      g_object_weak_ref (G_OBJECT (mw),
+                         switcher_origin_weak_notify, origin_data);
+      g_object_weak_ref (G_OBJECT (clone),
+                         switcher_clone_weak_notify, mw);
 
       g_object_get (meta_win, "title", &title, NULL);
       child_data = make_child_data (MNB_SWITCHER (self), mw, clone, title);
@@ -923,6 +1005,8 @@ mnb_switcher_show (ClutterActor *self)
   g_free (spaces);
   g_free (n_windows);
 
+  priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
+
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
 
@@ -975,6 +1059,12 @@ mnb_switcher_hide (ClutterActor *self)
   g_return_if_fail (MNB_IS_SWITCHER (self));
 
   priv = MNB_SWITCHER (self)->priv;
+
+  if (priv->tab_list)
+    {
+      g_list_free (priv->tab_list);
+      priv->tab_list = NULL;
+    }
 
   mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
   priv->table = NULL;
