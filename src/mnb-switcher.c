@@ -694,6 +694,36 @@ meta_window_focus_cb (MetaWindow *mw, gpointer data)
   priv->selected = child_data->mw;
 }
 
+static void switcher_clone_weak_notify (gpointer data, GObject *object);
+
+static void
+switcher_origin_weak_notify (gpointer data, GObject *object)
+{
+  ClutterActor *clone = data;
+
+  /*
+   * The original MutterWindow destroyed; remove the weak reference the
+   * we added to the clone referencing the original window, then
+   * destroy the clone.
+   */
+  g_object_weak_unref (G_OBJECT (clone), switcher_clone_weak_notify, object);
+  clutter_actor_destroy (clone);
+}
+
+static void
+switcher_clone_weak_notify (gpointer data, GObject *object)
+{
+  ClutterActor *origin = data;
+
+  /*
+   * Clone destroyed -- this function gets only called whent the clone
+   * is destroyed while the original MutterWindow still exists, so remove
+   * the weak reference we added on the origin for sake of the clone.
+   */
+  g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
+}
+
+
 static void
 mnb_switcher_show (ClutterActor *self)
 {

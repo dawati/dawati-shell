@@ -433,6 +433,35 @@ new_workspace_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+static void chooser_clone_weak_notify (gpointer data, GObject *object);
+
+static void
+chooser_origin_weak_notify (gpointer data, GObject *object)
+{
+  ClutterActor *clone = data;
+
+  /*
+   * The original MutterWindow destroyed; remove the weak reference the
+   * we added to the clone referencing the original window, then
+   * destroy the clone.
+   */
+  g_object_weak_unref (G_OBJECT (clone), chooser_clone_weak_notify, object);
+  clutter_actor_destroy (clone);
+}
+
+static void
+chooser_clone_weak_notify (gpointer data, GObject *object)
+{
+  ClutterActor *origin = data;
+
+  /*
+   * Clone destroyed -- this function gets only called whent the clone
+   * is destroyed while the original MutterWindow still exists, so remove
+   * the weak reference we added on the origin for sake of the clone.
+   */
+  g_object_weak_unref (G_OBJECT (origin), chooser_origin_weak_notify, object);
+}
+
 /*
  * Creates a grid of workspaces.
  */
@@ -511,8 +540,8 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
 
       clutter_actor_set_reactive (clone, FALSE);
 
-      g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
-      g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
+      g_object_weak_ref (G_OBJECT (mw), chooser_origin_weak_notify, clone);
+      g_object_weak_ref (G_OBJECT (clone), chooser_clone_weak_notify, mw);
 
       workspace = make_nth_workspace (&workspaces, ws_indx, active_ws, plugin);
       g_assert (workspace);
