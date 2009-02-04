@@ -1612,9 +1612,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
   sn_display_process_event (priv->sn_display, xev);
 
-  clutter_x11_handle_event (xev);
-
-  return FALSE;
+  return (clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE);
 }
 
 static void
