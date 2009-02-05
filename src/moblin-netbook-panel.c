@@ -72,7 +72,7 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
 struct panel_out_data
 {
   MutterPlugin *plugin;
-  gboolean      show_switcher;
+  MnbkControl   control;
 };
 
 static void
@@ -81,7 +81,34 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
   struct panel_out_data      *panel_data = data;
   MutterPlugin               *plugin = panel_data->plugin;
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  ClutterActor               *control_actor = NULL;
   int i;
+
+  switch (panel_data->control)
+    {
+    case MNBK_CONTROL_MZONE:
+      control_actor = priv->mzone_grid;
+      break;
+
+    case MNBK_CONTROL_SPACES:
+      control_actor = priv->switcher;
+      break;
+
+    case MNBK_CONTROL_APPLICATIONS:
+      control_actor = priv->launcher;
+      break;
+
+    case MNBK_CONTROL_STATUS:
+    case MNBK_CONTROL_INTERNET:
+    case MNBK_CONTROL_MEDIA:
+    case MNBK_CONTROL_PEOPLE:
+    case MNBK_CONTROL_PASTEBOARD:
+      g_warning ("Control %d not handled (%s:%d)\n",
+                 panel_data->control, __FILE__, __LINE__);
+    default:
+    case   MNBK_CONTROL_UNKNOWN:
+      control_actor = NULL;
+    }
 
   priv->panel_out_in_progress = FALSE;
 
@@ -93,8 +120,8 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
       clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
     }
 
-  if (panel_data->show_switcher && !CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
-    clutter_actor_show (priv->switcher);
+  if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
+    clutter_actor_show (control_actor);
 
   enable_stage (plugin, CurrentTime);
 
@@ -108,9 +135,9 @@ struct button_data
 };
 
 static void
-show_panel_maybe_switcher (MutterPlugin *plugin,
-                           gboolean      from_keyboard,
-                           gboolean      show_switcher)
+show_panel_maybe_control (MutterPlugin *plugin,
+                          gboolean      from_keyboard,
+                          MnbkControl   control)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gint           i;
@@ -120,7 +147,7 @@ show_panel_maybe_switcher (MutterPlugin *plugin,
   priv->panel_out_in_progress  = TRUE;
 
   panel_data->plugin = plugin;
-  panel_data->show_switcher = show_switcher;
+  panel_data->control = control;
 
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     {
@@ -144,13 +171,13 @@ show_panel_maybe_switcher (MutterPlugin *plugin,
 void
 show_panel (MutterPlugin *plugin, gboolean from_keyboard)
 {
-  show_panel_maybe_switcher (plugin, from_keyboard, FALSE);
+  show_panel_maybe_control (plugin, from_keyboard, MNBK_CONTROL_UNKNOWN);
 }
 
 void
-show_panel_and_switcher (MutterPlugin *plugin)
+show_panel_and_control (MutterPlugin *plugin, MnbkControl control)
 {
-  show_panel_maybe_switcher (plugin, FALSE, TRUE);
+  show_panel_maybe_control (plugin, FALSE, control);
 }
 
 /*

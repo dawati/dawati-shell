@@ -485,7 +485,7 @@ alt_tab_timeout_cb (gpointer data)
                         alt_data);
 
       if (alt_data->show_panel)
-        show_panel_and_switcher (alt_data->plugin);
+        show_panel_and_control (alt_data->plugin, MNBK_CONTROL_SPACES);
       else
         clutter_actor_show (priv->switcher);
     }
