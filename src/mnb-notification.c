@@ -21,7 +21,7 @@
  * 02111-1307, USA.
  */
 
-#include "mnb-drop-down.h"
+#include "mnb-notification.h"
 
 #define SLIDE_DURATION 150
 
@@ -50,17 +50,16 @@ static guint notification_signals[LAST_SIGNAL] = { 0 };
 struct _MnbNotificationPrivate {
   ClutterActor *label;
   ClutterActor *icon;
-  NbtkButton   *dismiss_button;
-  NbtkButton   *action_button;
+  NbtkWidget   *dismiss_button;
+  NbtkWidget   *action_button;
 
   gchar        *app_name;
   guint         id;
-  gchar        *icon;
   gchar        *summary;
   gchar        *body;
   gchar       **actions; 
   GHashTable   *hints;
-  gint          timeout
+  gint          timeout;
 };
 
 static void
@@ -197,7 +196,7 @@ mnb_notification_class_init (MnbNotificationClass *klass)
 #if 0
   clutter_class->button_press_event = mnb_button_event_capture;
   clutter_class->button_release_event = mnb_button_event_capture;
-#endif
+
 
   notification_signals[SHOW_COMPLETED] =
     g_signal_new ("show-completed",
@@ -207,7 +206,13 @@ mnb_notification_class_init (MnbNotificationClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+#endif
 }
+
+/* FIXME, this is duped from drop-down.h, should be global ? */
+#define MNB_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), \
+                                 CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d) }
+
 
 static void
 mnb_notification_init (MnbNotification *self)
@@ -219,8 +224,8 @@ mnb_notification_init (MnbNotification *self)
 
   priv = self->priv = GET_PRIVATE (self);
 
-  nbtk_widget_set_padding (NBTK_TABLE (self), &padding);
-  nbtk_widget_set_style_class_name (NBTK_TABLE (self), "notification");
+  // nbtk_widget_set_padding (NBTK_WIDGET (self), padding);
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (self), "notification");
 
   priv->dismiss_button = nbtk_button_new ();
   priv->action_button  = nbtk_button_new ();
@@ -229,11 +234,11 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_table_add_actor (NBTK_TABLE (self), priv->label, 0, 0);
   
-  nbtk_widget_set_style_class_name (priv->label, "notification-label");
-
-  clutter_actor_set_size (CLUTTER_ACTOR (up_button), 23, 21);
+  //nbtk_widget_set_style_class_name (priv->label, "notification-label");
 
 #if 0
+  clutter_actor_set_size (CLUTTER_ACTOR (up_button), 23, 21);
+
   clutter_container_child_set (CLUTTER_CONTAINER (footer),
                                CLUTTER_ACTOR (up_button),
                                "keep-aspect-ratio", TRUE,
@@ -259,7 +264,7 @@ mnb_notification_set_details (MnbNotification *notification,
 
   g_return_if_fail (MNB_IS_NOTIFICATION (notification));
 
-  priv = GET_PRIVATE (notification)
+  priv = GET_PRIVATE (notification);
 
   clutter_label_set_text (priv->label, label_text);
 }

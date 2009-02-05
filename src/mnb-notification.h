@@ -65,6 +65,10 @@ GType mnb_notification_get_type (void);
 
 NbtkWidget* mnb_notification_new (void);
 
+void
+mnb_notification_set_details (MnbNotification *notification,
+                              gchar           *label_text);
+
 G_END_DECLS
 
 #endif /* _MNB_NOTIFICATION */
