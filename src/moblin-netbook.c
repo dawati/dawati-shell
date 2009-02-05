@@ -371,6 +371,7 @@ struct alt_tab_show_complete_data
   MetaWindow     *window;
   MetaKeyBinding *binding;
   XEvent          xevent;
+  gboolean        show_panel;
 };
 
 static void
@@ -391,6 +392,49 @@ alt_tab_switcher_show_completed_cb (ClutterActor *switcher, gpointer data)
   g_free (data);
 }
 
+static gboolean
+alt_tab_timeout_cb (gpointer data)
+{
+  struct alt_tab_show_complete_data *alt_data = data;
+  MoblinNetbookPluginPrivate        *priv;
+  ClutterActor                      *stage;
+  Window                             xwin;
+
+  priv  = MOBLIN_NETBOOK_PLUGIN (alt_data->plugin)->priv;
+  stage = mutter_get_stage_for_screen (alt_data->screen);
+  xwin  = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+  /*
+   * Check wether the Alt key is still down; if so, show the Switcher, and
+   * wait for the show-completed signal to process the Alt+Tab.
+   */
+  if (alt_still_down (alt_data->display, alt_data->screen, xwin, Mod1Mask))
+    {
+      g_signal_connect (priv->switcher, "show-completed",
+                        G_CALLBACK (alt_tab_switcher_show_completed_cb),
+                        alt_data);
+
+      if (alt_data->show_panel)
+        show_panel_and_switcher (alt_data->plugin);
+      else
+        clutter_actor_show (priv->switcher);
+    }
+  else
+    {
+      gboolean backward = FALSE;
+
+      if (alt_data->xevent.xkey.state & ShiftMask)
+        backward = !backward;
+
+      try_alt_tab_grab (alt_data->plugin, alt_data->binding->mask,
+                        alt_data->xevent.xkey.time, backward, TRUE);
+      g_free (data);
+    }
+
+  /* One off */
+  return FALSE;
+}
+
 /*
  * The handler for Alt+Tab that we register with metacity.
  */
@@ -407,27 +451,43 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
 
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
     {
+      struct alt_tab_show_complete_data *alt_data;
+
+      /*
+       * If the switcher is not visible we want to show it; this is, however,
+       * complicated by several factors:
+       *
+       *  a) If the panel is visible, we have to show the panel first. In this
+       *     case, the Panel slides out, when the effect finishes, the Switcher
+       *     slides from underneath -- clutter_actor_show() is only called on
+       *     the switcher when the Panel effect completes, and as the contents
+       *     of the Switcher are being built in the _show() virtual, we do not
+       *     have those until the effects are all over. We need the switcher
+       *     contents initialized before we can start the actual processing of
+       *     the Alt+Tab key, so we need to wait for the "show-completed" signal
+       *
+       *  b) If the user just hits and immediately releases Alt+Tab, we need to
+       *     avoid initiating the effects alltogether, otherwise we just get
+       *     bit of a flicker as the Switcher starts coming out and immediately
+       *     disappears.
+       *
+       *  So, instead of showing the switcher, we install a timeout to introduce
+       *  a short delay, so we can test whether the Alt key is still down. We
+       *  then handle the actual show from the timeout.
+       */
+      alt_data = g_new0 (struct alt_tab_show_complete_data, 1);
+      alt_data->display = display;
+      alt_data->screen  = screen;
+      alt_data->plugin  = plugin;
+      alt_data->binding = binding;
+
+      memcpy (&alt_data->xevent, event, sizeof (XEvent));
+
       if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
-        {
-          struct alt_tab_show_complete_data *alt_data;
+        alt_data->show_panel = TRUE;
 
-          alt_data = g_new (struct alt_tab_show_complete_data, 1);
-          alt_data->display = display;
-          alt_data->screen  = screen;
-          alt_data->plugin  = plugin;
-          alt_data->binding = binding;
-
-          memcpy (&alt_data->xevent, event, sizeof (XEvent));
-
-          g_signal_connect (priv->switcher, "show-completed",
-                            G_CALLBACK (alt_tab_switcher_show_completed_cb),
-                            alt_data);
-
-          show_panel_and_switcher (plugin);
-          return;
-        }
-      else
-        clutter_actor_show (priv->switcher);
+      g_timeout_add (100, alt_tab_timeout_cb, alt_data);
+      return;
     }
 
   handle_alt_tab (display, screen, window, event, binding, plugin);
