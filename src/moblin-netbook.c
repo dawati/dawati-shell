@@ -718,11 +718,12 @@ moblin_netbook_plugin_constructed (GObject *object)
    */
   panel = priv->panel = make_panel (MUTTER_PLUGIN (plugin), screen_width);
   clutter_actor_realize (priv->panel_shadow);
-  clutter_actor_set_y (panel, -clutter_actor_get_height (priv->panel_shadow));
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
-  clutter_actor_hide (panel);
   clutter_actor_hide (lowlight);
+  clutter_actor_show (priv->mzone_grid);
+  priv->panel_out = TRUE;
+  priv->panel_wait_for_pointer = TRUE;
 
   priv->panel_slide_effect
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
@@ -737,7 +738,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   /*
    * Set up the stage even processing
    */
-  disable_stage (MUTTER_PLUGIN (plugin), CurrentTime);
+  enable_stage (MUTTER_PLUGIN (plugin), CurrentTime);
 
   /*
    * Hook to the captured signal, so we get to see all events before our

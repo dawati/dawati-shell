@@ -492,6 +492,7 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[2]));
   clutter_actor_set_width (priv->switcher, screen_width);
   clutter_actor_set_position (priv->switcher, 0, PANEL_HEIGHT);
+  clutter_actor_hide (priv->switcher);
 
   /* launcher drop down */
   priv->launcher = make_launcher (plugin, width - PANEL_X_PADDING * 2);
@@ -500,7 +501,7 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[5]));
   clutter_actor_set_position (priv->launcher, 0, PANEL_HEIGHT);
   clutter_actor_set_width (priv->launcher, screen_width);
-
+  clutter_actor_hide (priv->launcher);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr,
