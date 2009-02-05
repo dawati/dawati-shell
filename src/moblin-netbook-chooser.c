@@ -34,6 +34,12 @@
 #define WORKSPACE_CHOOSER_CELL_PAD      4
 #define WORKSPACE_CHOOSER_LABEL_HEIGHT  40
 
+#define WORKSPACE_CHOOSER_TIMEOUT 3000
+
+#define MAX_WORKSPACES 8
+
+#define MNBTK_SPINNER_ITERVAL 2000
+
 /******************************************************************
  * Workspace chooser
  */

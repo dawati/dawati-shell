@@ -41,6 +41,11 @@
 #define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
 
 /*
+ * FIXME -- should not be hardcoded; used in panel and system tray.
+ */
+#define PANEL_HEIGHT 64
+
+/*
  * FIXME once clutter bug #1178 is fixed.
  */
 #undef WORKING_STAGE_ENTER_LEAVE

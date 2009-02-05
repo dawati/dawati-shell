@@ -20,7 +20,6 @@
  */
 
 #include "mnb-switcher.h"
-#include "moblin-netbook-ui.h"
 #include "moblin-netbook.h"
 #include <nbtk/nbtk-tooltip.h>
 

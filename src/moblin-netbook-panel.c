@@ -23,7 +23,6 @@
  */
 
 #include "moblin-netbook.h"
-#include "moblin-netbook-ui.h"
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 #include "penge/penge-grid-view.h"
@@ -37,6 +36,8 @@
 #define TRAY_PADDING   3
 #define TRAY_WIDTH   200
 #define TRAY_HEIGHT   24
+
+#define PANEL_X_PADDING 4
 
 static void toggle_buttons_cb (NbtkButton *button, gpointer data);
 
