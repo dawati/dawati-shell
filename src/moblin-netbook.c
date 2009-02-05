@@ -1572,6 +1572,10 @@ release_keyboard (MutterPlugin *plugin, guint32 timestamp)
   if (priv->keyboard_grab)
     {
       MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+      Display     *xdpy = mutter_plugin_get_xdisplay (plugin);
+      Window       root;
+
+      root = RootWindow (xdpy, meta_screen_get_screen_number (screen));;
 
       if (timestamp == CurrentTime)
         {
@@ -1582,6 +1586,13 @@ release_keyboard (MutterPlugin *plugin, guint32 timestamp)
 
       meta_screen_ungrab_all_keys (screen, timestamp);
       priv->keyboard_grab = FALSE;
+
+      /*
+       * Re-establish grab on our panel key.
+       */
+      XGrabKey (xdpy, XKeysymToKeycode (xdpy, MOBLIN_PANEL_SHORTCUT_KEY),
+                AnyModifier,
+                root, True, GrabModeAsync, GrabModeAsync);
 
       return TRUE;
     }
