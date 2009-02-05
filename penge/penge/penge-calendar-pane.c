@@ -88,7 +88,6 @@ penge_calendar_pane_update (PengeCalendarPane *pane)
   g_object_unref (now);
 
   penge_events_pane_update_duration ((PengeEventsPane *)priv->events_pane);
-  g_debug (G_STRLOC ": Updating the time, woohoo!!!!");
 }
 
 static gboolean

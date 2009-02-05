@@ -3,6 +3,7 @@
 
 #include "penge-utils.h"
 #include "penge-flickr-tile.h"
+#include "penge-magic-texture.h"
 
 G_DEFINE_TYPE (PengeFlickrTile, penge_flickr_tile, PENGE_TYPE_PEOPLE_TILE)
 
@@ -131,20 +132,16 @@ penge_flickr_tile_constructed (GObject *object)
                 NULL);
   g_free (date);
 
-  body = clutter_texture_new_from_file (thumbnail_path, &error);
+  body = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
 
-  if (body)
+  if (clutter_texture_set_from_file (CLUTTER_TEXTURE (body),
+                                     thumbnail_path, 
+                                     &error))
   {
     g_object_set (tile,
                   "body",
                   body,
                   NULL);
-    clutter_container_child_set (CLUTTER_CONTAINER (tile),
-                                 body,
-                                 "keep-aspect-ratio",
-                                 TRUE,
-                                 NULL);
-
     g_object_unref (body);
   } else {
     g_critical (G_STRLOC ": Loading thumbnail failed: %s",

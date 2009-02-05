@@ -12,7 +12,8 @@ libpenge_la_HEADERS = penge-people-pane.h \
 		   penge-calendar-pane.h \
 		   penge-grid-view.h \
 		   penge-utils.h \
-		   penge-magic-texture.h
+		   penge-magic-texture.h \
+		   penge-view-background.h
 
 libpenge_la_SOURCES = \
 		      $(libpenge_la_HEADERS) \
@@ -28,7 +29,8 @@ libpenge_la_SOURCES = \
 		      penge-calendar-pane.c \
 		      penge-grid-view.c \
 		      penge-utils.c \
-		      penge-magic-texture.c
+		      penge-magic-texture.c \
+		      penge-view-background.c
 libpenge_la_CFLAGS = -Wall $(PENGE_CFLAGS) \
 		     -DPKG_DATADIR=\"$(pkgdatadir)\"
 libpenge_la_LIBADD = $(PENGE_LIBS)

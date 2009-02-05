@@ -1,0 +1,39 @@
+#ifndef _PENGE_VIEW_BACKGROUND
+#define _PENGE_VIEW_BACKGROUND
+
+#include <glib-object.h>
+#include "penge-magic-texture.h"
+
+G_BEGIN_DECLS
+
+#define PENGE_TYPE_VIEW_BACKGROUND penge_view_background_get_type()
+
+#define PENGE_VIEW_BACKGROUND(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), PENGE_TYPE_VIEW_BACKGROUND, PengeViewBackground))
+
+#define PENGE_VIEW_BACKGROUND_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), PENGE_TYPE_VIEW_BACKGROUND, PengeViewBackgroundClass))
+
+#define PENGE_IS_VIEW_BACKGROUND(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), PENGE_TYPE_VIEW_BACKGROUND))
+
+#define PENGE_IS_VIEW_BACKGROUND_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), PENGE_TYPE_VIEW_BACKGROUND))
+
+#define PENGE_VIEW_BACKGROUND_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_VIEW_BACKGROUND, PengeViewBackgroundClass))
+
+typedef struct {
+  PengeMagicTexture parent;
+} PengeViewBackground;
+
+typedef struct {
+  PengeMagicTextureClass parent_class;
+} PengeViewBackgroundClass;
+
+GType penge_view_background_get_type (void);
+
+G_END_DECLS
+
+#endif /* _PENGE_VIEW_BACKGROUND */
+
