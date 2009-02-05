@@ -437,7 +437,7 @@ struct ws_switch_data
 };
 
 static void
-on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
+on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   struct ws_switch_data *switch_data = data;
   MutterPlugin   *plugin = switch_data->plugin;
@@ -518,6 +518,7 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   struct parallax_data *parallax_data = g_new (struct parallax_data, 1);
   struct ws_switch_data *switch_data = g_new (struct ws_switch_data, 1);
+  ClutterAnimation *animation;
 
   if (from == to)
     {
@@ -664,6 +665,25 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
 
   switch_data->actors = (GList**)actors;
   switch_data->plugin = plugin;
+
+  /* workspace were going too */
+  animation = clutter_actor_animate (workspace_slider1,
+                                     CLUTTER_LINEAR,
+                                     WS_SWITCHER_SLIDE_TIMEOUT,
+                                     "x", 0,
+                                     "y", 0);
+
+  g_signal_connect (clutter_animation_get_timeline (animation),
+                    "completed",
+                    G_CALLBACK (on_switch_workspace_effect_complete),
+                    switch_data);
+
+  /* coming from */
+  animation = clutter_actor_animate (workspace_slider0,
+                                     CLUTTER_LINEAR,
+                                     WS_SWITCHER_SLIDE_TIMEOUT,
+                                     "x", to_x,
+                                     "y", to_y);
 
   /* arrow */
   clutter_actor_animate (indicator_group,
@@ -1142,17 +1162,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                                          NULL);
       data->plugin = plugin;
       data->actor = actor;
-      g_signal_connect (clutter_animation_get_timeline (animation),
-                        "completed",
-                        G_CALLBACK (on_map_effect_complete),
-                        data);
+      apriv->tml_map = clutter_animation_get_timeline (animation);
 
-      /* XXX: what is this for?
       if (!apriv->workspace_changed_id)
-        apriv->workspace_changed_id =
-          g_signal_connect (apriv->tml_map, "completed",
-                            G_CALLBACK (on_map_effect_complete), map_data);
-      */
+          g_signal_connect (apriv->tml_map,
+                            "completed",
+                            G_CALLBACK (on_map_effect_complete),
+                            data);
 
       apriv->is_minimized = FALSE;
 
