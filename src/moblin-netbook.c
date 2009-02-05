@@ -928,7 +928,9 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   clutter_actor_destroy (ppriv->d_overlay);
 
   ppriv->actors = NULL;
+  g_object_unref (ppriv->tml_switch_workspace0);
   ppriv->tml_switch_workspace0 = NULL;
+  g_object_unref (ppriv->tml_switch_workspace1);
   ppriv->tml_switch_workspace1 = NULL;
   ppriv->desktop1 = NULL;
   ppriv->desktop2 = NULL;
@@ -940,21 +942,6 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 
   mutter_plugin_effect_completed (plugin, actor_for_cb,
                                   MUTTER_PLUGIN_SWITCH_WORKSPACE);
-}
-
-static void
-ws_timeline_weak_ref_cb (gpointer data, GObject *tml)
-{
-  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
-
-  if (ppriv->tml_switch_workspace0 == (gpointer)tml)
-    {
-      ppriv->tml_switch_workspace0 = NULL;
-    }
-  else if (ppriv->tml_switch_workspace1 == (gpointer)tml)
-    {
-      ppriv->tml_switch_workspace1 = NULL;
-    }
 }
 
 struct parallax_data
@@ -1144,23 +1131,16 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   switch_data->plugin = plugin;
 
   /* workspace were going too */
-  ppriv->tml_switch_workspace1 =
+  ppriv->tml_switch_workspace1 = g_object_ref (
     clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider1,
                          0, 0,
                          on_switch_workspace_effect_complete,
-                         switch_data);
-
-  g_object_weak_ref (G_OBJECT (ppriv->tml_switch_workspace1),
-                     ws_timeline_weak_ref_cb, plugin);
-
+                         switch_data));
   /* coming from */
-  ppriv->tml_switch_workspace0 =
+  ppriv->tml_switch_workspace0 = g_object_ref (
     clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider0,
                          to_x, to_y,
-                         NULL, NULL);
-
-  g_object_weak_ref (G_OBJECT (ppriv->tml_switch_workspace0),
-                     ws_timeline_weak_ref_cb, plugin);
+                         NULL, NULL));
 
   /* arrow */
   clutter_effect_fade (ppriv->switch_workspace_arrow_effect, indicator_group,
