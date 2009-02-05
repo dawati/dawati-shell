@@ -367,7 +367,10 @@ make_panel (MutterPlugin *plugin, gint width)
   else
     {
       shadow = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
-                                       200, 0, 200, 0);
+                                       0,   /* top */
+                                       200, /* right */
+                                       0,   /* bottom */
+                                       200  /* left */);
       clutter_actor_set_size (shadow, width, 101);
       clutter_container_add_actor (CLUTTER_CONTAINER (panel), shadow);
       priv->panel_shadow = shadow;
@@ -384,7 +387,10 @@ make_panel (MutterPlugin *plugin, gint width)
   else
     {
       background = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
-                                           200, 0, 200, 0);
+                                           0,   /* top */
+                                           200, /* right */
+                                           0,   /* bottom */
+                                           200  /* left */);
       clutter_actor_set_size (background, width - 8, PANEL_HEIGHT);
       clutter_actor_set_x (background, 4);
       clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
