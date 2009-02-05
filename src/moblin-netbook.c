@@ -929,7 +929,9 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   clutter_actor_destroy (ppriv->d_overlay);
 
   ppriv->actors = NULL;
+  g_object_unref (ppriv->tml_switch_workspace0);
   ppriv->tml_switch_workspace0 = NULL;
+  g_object_unref (ppriv->tml_switch_workspace1);
   ppriv->tml_switch_workspace1 = NULL;
   ppriv->desktop1 = NULL;
   ppriv->desktop2 = NULL;
@@ -1130,16 +1132,16 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   switch_data->plugin = plugin;
 
   /* workspace were going too */
-  ppriv->tml_switch_workspace1 =
+  ppriv->tml_switch_workspace1 = g_object_ref (
     clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider1,
                          0, 0,
                          on_switch_workspace_effect_complete,
-                         switch_data);
+                         switch_data));
   /* coming from */
-  ppriv->tml_switch_workspace0 =
+  ppriv->tml_switch_workspace0 = g_object_ref (
     clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider0,
                          to_x, to_y,
-                         NULL, NULL);
+                         NULL, NULL));
 
   /* arrow */
   clutter_effect_fade (ppriv->switch_workspace_arrow_effect, indicator_group,
@@ -1897,17 +1899,31 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
     {
       MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-      if (ppriv->tml_switch_workspace0)
+      if (ppriv->tml_switch_workspace1)
         {
-          clutter_timeline_stop (ppriv->tml_switch_workspace0);
-          clutter_timeline_stop (ppriv->tml_switch_workspace1);
+          ClutterTimeline *t0, *t1;
+
+          t0 = ppriv->tml_switch_workspace0;
+          t1 = ppriv->tml_switch_workspace1;
+
+          if (t0)
+            {
+              clutter_timeline_stop (t0);
+            }
+
+          clutter_timeline_stop (t1);
 
           /*
            * Force emission of the "completed" signal so that the necessary
            * cleanup is done (we cannot readily supply the data necessary to
            * call our callback directly).
            */
-          g_signal_emit_by_name (ppriv->tml_switch_workspace1, "completed");
+          if (t0)
+            {
+              g_signal_emit_by_name (t0, "completed");
+            }
+
+          g_signal_emit_by_name (t1, "completed");
         }
 
       if (!(event & ~MUTTER_PLUGIN_SWITCH_WORKSPACE))
