@@ -38,7 +38,7 @@
 #include "moblin-netbook-tray-manager.h"
 #include "moblin-netbook-notify-store.h"
 
-#define MOBLIN_PANEL_SHORTCUT_KEY XK_F12
+#define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
 
 /*
  * FIXME once clutter bug #1178 is fixed.

@@ -1691,7 +1691,14 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) ==
                                                     MOBLIN_PANEL_SHORTCUT_KEY)
     {
-      show_panel (plugin, TRUE);
+      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+        show_panel (plugin, TRUE);
+      else
+        {
+          priv->panel_wait_for_pointer = FALSE;
+          hide_panel (plugin);
+        }
+
       return TRUE;
     }
 
