@@ -40,6 +40,12 @@ penge_people_pane_dispose (GObject *object)
     priv->view = NULL;
   }
 
+  if (priv->uuid_to_actor)
+  {
+    g_hash_table_unref (priv->uuid_to_actor);
+    priv->uuid_to_actor = NULL;
+  }
+
   G_OBJECT_CLASS (penge_people_pane_parent_class)->dispose (object);
 }
 
