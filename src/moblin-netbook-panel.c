@@ -377,6 +377,7 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterActor               *background, *bg_texture;
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
   ClutterActor               *launcher, *overlay;
+  ClutterActor               *mzone_grid_view;
   gint                        x, w;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
@@ -550,9 +551,10 @@ make_panel (MutterPlugin *plugin, gint width)
   priv->mzone_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
   clutter_actor_set_width (priv->mzone_grid, screen_width);
-
+  mzone_grid_view = g_object_new (PENGE_TYPE_GRID_VIEW, NULL);
+  clutter_actor_set_height (mzone_grid_view, screen_height - PANEL_HEIGHT * 2);
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->mzone_grid),
-                           CLUTTER_ACTOR (g_object_new (PENGE_TYPE_GRID_VIEW, NULL)));
+                           CLUTTER_ACTOR (mzone_grid_view));
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->mzone_grid),
                             NBTK_BUTTON (priv->panel_buttons[0]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
