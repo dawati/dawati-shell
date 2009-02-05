@@ -118,7 +118,6 @@ struct _MoblinNetbookPluginPrivate
 #endif
 
   gboolean               debug_mode                 : 1;
-  gboolean               panel_out                  : 1;
   gboolean               panel_out_in_progress      : 1;
   gboolean               panel_back_in_progress     : 1;
   gboolean               panel_wait_for_pointer     : 1;

@@ -722,7 +722,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
   clutter_actor_hide (lowlight);
   clutter_actor_show (priv->mzone_grid);
-  priv->panel_out = TRUE;
   priv->panel_wait_for_pointer = TRUE;
 
   priv->panel_slide_effect
@@ -2035,7 +2034,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
 
-      if (priv->panel_out &&
+      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) &&
           ((!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid))))
@@ -2113,7 +2112,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->mzone_grid)
         clutter_actor_hide (priv->mzone_grid);
 
-      if (priv->panel_out)
+      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
         {
           guint height = clutter_actor_get_height (priv->panel_shadow);
 

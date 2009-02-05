@@ -162,8 +162,6 @@ show_panel_maybe_control (MutterPlugin *plugin,
                        on_panel_out_effect_complete,
                        panel_data);
 
-  priv->panel_out = TRUE;
-
   if (from_keyboard)
     priv->panel_wait_for_pointer = TRUE;
 }
@@ -220,8 +218,6 @@ hide_panel (MutterPlugin *plugin)
   button_data.plugin = plugin;
   button_data.control = MNBK_CONTROL_UNKNOWN;
   toggle_buttons_cb (NULL, &button_data);
-
-  priv->panel_out = FALSE;
 
   return TRUE;
 }
