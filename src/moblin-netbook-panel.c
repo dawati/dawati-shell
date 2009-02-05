@@ -23,7 +23,6 @@
  */
 
 #include "moblin-netbook.h"
-#include "moblin-netbook-ui.h"
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 #include "penge/penge-grid-view.h"
@@ -37,6 +36,8 @@
 #define TRAY_PADDING   3
 #define TRAY_WIDTH   200
 #define TRAY_HEIGHT   24
+
+#define PANEL_X_PADDING 4
 
 static void toggle_buttons_cb (NbtkButton *button, gpointer data);
 
@@ -72,7 +73,7 @@ on_panel_back_effect_complete (ClutterTimeline *timeline, gpointer data)
 struct panel_out_data
 {
   MutterPlugin *plugin;
-  gboolean      show_switcher;
+  MnbkControl   control;
 };
 
 static void
@@ -81,7 +82,34 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
   struct panel_out_data      *panel_data = data;
   MutterPlugin               *plugin = panel_data->plugin;
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  ClutterActor               *control_actor = NULL;
   int i;
+
+  switch (panel_data->control)
+    {
+    case MNBK_CONTROL_MZONE:
+      control_actor = priv->mzone_grid;
+      break;
+
+    case MNBK_CONTROL_SPACES:
+      control_actor = priv->switcher;
+      break;
+
+    case MNBK_CONTROL_APPLICATIONS:
+      control_actor = priv->launcher;
+      break;
+
+    case MNBK_CONTROL_STATUS:
+    case MNBK_CONTROL_INTERNET:
+    case MNBK_CONTROL_MEDIA:
+    case MNBK_CONTROL_PEOPLE:
+    case MNBK_CONTROL_PASTEBOARD:
+      g_warning ("Control %d not handled (%s:%d)\n",
+                 panel_data->control, __FILE__, __LINE__);
+    default:
+    case   MNBK_CONTROL_UNKNOWN:
+      control_actor = NULL;
+    }
 
   priv->panel_out_in_progress = FALSE;
 
@@ -92,10 +120,13 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
     {
       clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
     }
-  enable_stage (plugin, CurrentTime);
+  if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
+    clutter_actor_show (control_actor);
 
-  if (panel_data->show_switcher && !CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
-    clutter_actor_show (priv->switcher);
+  if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
+    clutter_actor_show (control_actor);
+
+  enable_stage (plugin, CurrentTime);
 
   g_free (data);
 }
@@ -107,9 +138,9 @@ struct button_data
 };
 
 static void
-show_panel_maybe_switcher (MutterPlugin *plugin,
-                           gboolean      from_keyboard,
-                           gboolean      show_switcher)
+show_panel_maybe_control (MutterPlugin *plugin,
+                          gboolean      from_keyboard,
+                          MnbkControl   control)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gint           i;
@@ -120,7 +151,7 @@ show_panel_maybe_switcher (MutterPlugin *plugin,
   priv->panel_out_in_progress  = TRUE;
 
   panel_data->plugin = plugin;
-  panel_data->show_switcher = show_switcher;
+  panel_data->control = control;
 
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     {
@@ -141,8 +172,6 @@ show_panel_maybe_switcher (MutterPlugin *plugin,
                     G_CALLBACK (on_panel_out_effect_complete),
                     panel_data);
 
-  priv->panel_out = TRUE;
-
   if (from_keyboard)
     priv->panel_wait_for_pointer = TRUE;
 }
@@ -150,13 +179,13 @@ show_panel_maybe_switcher (MutterPlugin *plugin,
 void
 show_panel (MutterPlugin *plugin, gboolean from_keyboard)
 {
-  show_panel_maybe_switcher (plugin, from_keyboard, FALSE);
+  show_panel_maybe_control (plugin, from_keyboard, MNBK_CONTROL_UNKNOWN);
 }
 
 void
-show_panel_and_switcher (MutterPlugin *plugin, gboolean from_keyboard)
+show_panel_and_control (MutterPlugin *plugin, MnbkControl control)
 {
-  show_panel_maybe_switcher (plugin, from_keyboard, TRUE);
+  show_panel_maybe_control (plugin, FALSE, control);
 }
 
 /*
@@ -172,13 +201,19 @@ hide_panel (MutterPlugin *plugin)
   ClutterAnimation *animation;
 
   if (priv->panel_wait_for_pointer)
-    return FALSE;
+    {
+      g_debug ("Cannot hide panel -- waiting for pointer\n");
+      return FALSE;
+    }
 
   /*
    * Refuse to hide the panel if a config window is up.
    */
   if (shell_tray_manager_config_windows_showing (priv->tray_manager))
-    return FALSE;
+    {
+      g_debug ("Cannot hide panel while config window is visible\n");
+      return FALSE;
+    }
 
   x = clutter_actor_get_x (priv->panel);
   h = clutter_actor_get_height (priv->panel_shadow);
@@ -200,8 +235,6 @@ hide_panel (MutterPlugin *plugin)
   button_data.plugin = plugin;
   button_data.control = MNBK_CONTROL_UNKNOWN;
   toggle_buttons_cb (NULL, &button_data);
-
-  priv->panel_out = FALSE;
 
   return TRUE;
 }
@@ -346,6 +379,9 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterActor               *launcher, *overlay;
   gint                        x, w;
   GError                     *err = NULL;
+  gint                        screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   overlay = mutter_plugin_get_overlay_group (plugin);
 
@@ -475,6 +511,7 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[2]));
   clutter_actor_set_width (priv->switcher, 1024);
   clutter_actor_set_position (priv->switcher, 0, PANEL_HEIGHT);
+  clutter_actor_hide (priv->switcher);
 
   /* launcher drop down */
   priv->launcher = make_launcher (plugin, width - PANEL_X_PADDING * 2);
@@ -482,8 +519,8 @@ make_panel (MutterPlugin *plugin, gint width)
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->launcher),
                             NBTK_BUTTON (priv->panel_buttons[5]));
   clutter_actor_set_position (priv->launcher, 0, PANEL_HEIGHT);
-  clutter_actor_set_width (priv->switcher, 1024);
-
+  clutter_actor_set_width (priv->launcher, screen_width);
+  clutter_actor_hide (priv->launcher);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr,
@@ -512,7 +549,7 @@ make_panel (MutterPlugin *plugin, gint width)
   /* m-zone drop down */
   priv->mzone_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
-  clutter_actor_set_width (priv->mzone_grid, 1024);
+  clutter_actor_set_width (priv->mzone_grid, screen_width);
 
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->mzone_grid),
                            CLUTTER_ACTOR (g_object_new (PENGE_TYPE_GRID_VIEW, NULL)));

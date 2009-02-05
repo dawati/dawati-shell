@@ -12,7 +12,6 @@
 #include "tray/na-tray-manager.h"
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
-#include "moblin-netbook-ui.h"
 
 #define MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 #include "moblin-netbook-system-tray.h"
@@ -271,7 +270,7 @@ destroy_config_window (ShellTrayManagerChild *child)
       MutterPlugin               *plugin  = manager->priv->plugin;
       MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
 
-      if (priv->panel_out || priv->panel_out_in_progress)
+      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) || priv->panel_out_in_progress)
         enable_stage (plugin, CurrentTime);
       else
         disable_stage (plugin, CurrentTime);

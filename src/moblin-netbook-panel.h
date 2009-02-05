@@ -25,10 +25,23 @@
 #ifndef MOBLIN_NETBOOK_PANEL_H
 #define MOBLIN_NETBOOK_PANEL_H
 
+typedef enum
+{
+  MNBK_CONTROL_UNKNOWN = 0,
+  MNBK_CONTROL_MZONE,
+  MNBK_CONTROL_STATUS,
+  MNBK_CONTROL_SPACES,
+  MNBK_CONTROL_INTERNET,
+  MNBK_CONTROL_MEDIA,
+  MNBK_CONTROL_APPLICATIONS,
+  MNBK_CONTROL_PEOPLE,
+  MNBK_CONTROL_PASTEBOARD,
+} MnbkControl;
+
 ClutterActor *make_panel (MutterPlugin *plugin, gint width);
 gboolean      hide_panel (MutterPlugin *plugin);
 void          show_panel (MutterPlugin *plugin, gboolean from_keyboard);
-void          show_panel_and_switcher (MutterPlugin *plugin,
-                                       gboolean from_keyboard);
+void          show_panel_and_control (MutterPlugin *plugin,
+                                      MnbkControl   control);
 
 #endif

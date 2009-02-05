@@ -5,13 +5,11 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 INCLUDES=@MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
 	 -I$(top_srcdir)/penge
 
-AM_CFLAGS   = -DHANDLE_LIBICAL_MEMORY=1 -Werror=missing-prototypes -fPIC
+AM_CFLAGS   = -Werror=missing-prototypes -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				nutter/nutter-scale-group.h     \
 				moblin-netbook.c		\
 				moblin-netbook.h		\
-				moblin-netbook-ui.c		\
-				moblin-netbook-ui.h		\
 				moblin-netbook-chooser.c	\
 				moblin-netbook-chooser.h	\
 				moblin-netbook-panel.c		\

@@ -26,7 +26,6 @@
 #define MOBLIN_NETBOOK_CHOOSER_H
 
 #include "moblin-netbook.h"
-#include "moblin-netbook-ui.h"
 
 void     show_workspace_chooser (MutterPlugin *plugin,
                                  const gchar  *sn_id, guint32 timestamp);

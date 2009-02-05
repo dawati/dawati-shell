@@ -38,7 +38,12 @@
 #include "moblin-netbook-tray-manager.h"
 #include "moblin-netbook-notify-store.h"
 
-#define MOBLIN_PANEL_SHORTCUT_KEY XK_F12
+#define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
+
+/*
+ * FIXME -- should not be hardcoded; used in panel and system tray.
+ */
+#define PANEL_HEIGHT 64
 
 /*
  * FIXME once clutter bug #1178 is fixed.
@@ -98,6 +103,8 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *mzone_grid;
   ClutterActor          *lowlight;
 
+  GList                 *global_tab_list;
+
   ShellTrayManager      *tray_manager;
 
   XserverRegion          screen_region;
@@ -107,13 +114,13 @@ struct _MoblinNetbookPluginPrivate
 #endif
 
   gboolean               debug_mode                 : 1;
-  gboolean               panel_out                  : 1;
   gboolean               panel_out_in_progress      : 1;
   gboolean               panel_back_in_progress     : 1;
   gboolean               panel_wait_for_pointer     : 1;
   gboolean               desktop_switch_in_progress : 1;
   gboolean               keyboard_grab              : 1;
   gboolean               pointer_on_stage           : 1;
+  gboolean               in_alt_grab                : 1;
 
   guint                  workspace_chooser_timeout;
 
@@ -165,6 +172,8 @@ struct ActorPrivate
 ActorPrivate * get_actor_private (MutterWindow *actor);
 void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
 void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
+gboolean       release_keyboard  (MutterPlugin *plugin, guint32 timestamp);
+void           grab_keyboard     (MutterPlugin *plugin, guint32 timestamp);
 
 void moblin_netbook_notify_init (MutterPlugin *plugin);
 
