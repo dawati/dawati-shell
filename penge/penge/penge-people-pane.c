@@ -173,7 +173,7 @@ _client_open_view_cb (MojitoClient     *client,
   PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
 
   /* Save out the view */
-  priv->view = g_object_ref (view);
+  priv->view = view;
 
   /* and start it ... */
   mojito_client_view_start (priv->view);
