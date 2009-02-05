@@ -107,6 +107,8 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *mzone_grid;
   ClutterActor          *lowlight;
 
+  GList                 *global_tab_list;
+
   ShellTrayManager      *tray_manager;
 
   XserverRegion          screen_region;

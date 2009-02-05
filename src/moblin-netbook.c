@@ -146,6 +146,10 @@ moblin_netbook_plugin_dispose (GObject *object)
 static void
 moblin_netbook_plugin_finalize (GObject *object)
 {
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (object)->priv;
+
+  g_list_free (priv->global_tab_list);
+
   G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->finalize (object);
 }
 
@@ -250,12 +254,78 @@ try_alt_tab_grab (MutterPlugin *plugin,
 
   next = mnb_switcher_get_next_window (switcher, NULL, backward);
 
-  if (!next)
+  /*
+   * If we cannot get a window from the switcher (i.e., the switcher is not
+   * visible), get the next suitable window from the global tab list.
+   */
+  if (!next && priv->global_tab_list)
     {
-      g_warning ("No idea what the next selected window should be.\n");
-      return;
+      GList *l;
+      MetaWindow *focused = NULL;
+
+      l = priv->global_tab_list;
+
+      while (l)
+        {
+          MetaWindow *mw = l->data;
+          gboolean    sticky;
+
+          sticky = meta_window_is_on_all_workspaces (mw);
+
+          if (sticky)
+            {
+              /*
+               * The loop runs forward when looking for the focused window and
+               * when looking for the next window in forward direction; when
+               * looking for the next window in backward direction, runs, ehm,
+               * backward.
+               */
+              if (focused && backward)
+                l = l->prev;
+              else
+                l = l->next;
+              continue;
+            }
+
+          if (!focused)
+            {
+              if (meta_window_has_focus (mw))
+                focused = mw;
+            }
+          else
+            {
+              next = mw;
+              break;
+            }
+
+          /*
+           * The loop runs forward when looking for the focused window and
+           * when looking for the next window in forward direction; when
+           * looking for the next window in backward direction, runs, ehm,
+           * backward.
+           */
+          if (focused && backward)
+            l = l->prev;
+          else
+            l = l->next;
+        }
+
+      /*
+       * If all fails, fall back at the start/end of the list.
+       */
+      if (!next && priv->global_tab_list)
+        {
+          if (backward)
+            next = META_WINDOW (priv->global_tab_list->data);
+          else
+            next = META_WINDOW (g_list_last (priv->global_tab_list->data));
+        }
     }
 
+  if (!next)
+    {
+      return;
+    }
 
   if (meta_display_begin_grab_op (display,
                                   screen,
@@ -1386,6 +1456,34 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
 }
 
 /*
+ * The following two functions are used to maintain the global tab list.
+ * When a window is focused, we move it to the top of the list, when it
+ * is destroyed, we remove it.
+ *
+ * NB: the global tab list is a fallback when we cannot use the Switcher list
+ * (e.g., for fast Alt+Tab switching without the Switcher.
+ */
+static void
+tablist_meta_window_focus_cb (MetaWindow *mw, gpointer data)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
+
+  /*
+   * Push to the top of the global tablist.
+   */
+  priv->global_tab_list = g_list_remove (priv->global_tab_list, mw);
+  priv->global_tab_list = g_list_prepend (priv->global_tab_list, mw);
+}
+
+static void
+tablist_meta_window_weak_ref_cb (gpointer data, GObject *mw)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
+
+  priv->global_tab_list = g_list_remove (priv->global_tab_list, mw);
+}
+
+/*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
  */
@@ -1550,6 +1648,17 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       g_signal_connect (mw, "workspace-changed",
                         G_CALLBACK (meta_window_workspace_changed_cb),
                         plugin);
+
+      if (type == META_COMP_WINDOW_NORMAL)
+        {
+          g_signal_connect (mw, "focus",
+                            G_CALLBACK (tablist_meta_window_focus_cb),
+                            plugin);
+
+          g_object_weak_ref (G_OBJECT (mw),
+                             tablist_meta_window_weak_ref_cb,
+                             plugin);
+        }
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
