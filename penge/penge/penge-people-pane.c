@@ -104,7 +104,7 @@ penge_people_pane_update (PengePeoplePane *pane)
 
   items = mojito_client_view_get_sorted_items (priv->view);
 
-  for (l = items; l; l = l->next)
+  for (l = items; l; l = g_list_delete_link (l, l))
   {
     item = (MojitoItem *)l->data;
     actor = g_hash_table_lookup (priv->uuid_to_actor, item->uuid);
