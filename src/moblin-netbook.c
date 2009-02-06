@@ -1095,7 +1095,8 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
                                      CLUTTER_LINEAR,
                                      WS_SWITCHER_SLIDE_TIMEOUT,
                                      "x", 0,
-                                     "y", 0);
+                                     "y", 0,
+                                     NULL);
 
   g_signal_connect (clutter_animation_get_timeline (animation),
                     "completed",
@@ -1107,7 +1108,8 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
                                      CLUTTER_LINEAR,
                                      WS_SWITCHER_SLIDE_TIMEOUT,
                                      "x", to_x,
-                                     "y", to_y);
+                                     "y", to_y,
+                                     NULL);
 
   /* arrow */
   clutter_actor_animate (indicator_group,
