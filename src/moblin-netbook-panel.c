@@ -45,7 +45,7 @@ static void toggle_buttons_cb (NbtkButton *button, gpointer data);
  * The slide-out top panel.
  */
 static void
-on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
+on_panel_back_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   MutterPlugin               *plugin = data;
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -57,7 +57,7 @@ on_panel_back_effect_complete (ClutterActor *panel, gpointer data)
    * Hide the panel when not visible, and then any components with tooltips;
    * this ensures that also the tooltips get hidden.
    */
-  clutter_actor_hide (panel);
+  clutter_actor_hide (priv->panel);
 
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     {
@@ -77,7 +77,7 @@ struct panel_out_data
 };
 
 static void
-on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
+on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   struct panel_out_data      *panel_data = data;
   MutterPlugin               *plugin = panel_data->plugin;
@@ -120,6 +120,8 @@ on_panel_out_effect_complete (ClutterActor *panel, gpointer data)
     {
       clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
     }
+  if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
+    clutter_actor_show (control_actor);
 
   if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
     clutter_actor_show (control_actor);
@@ -144,6 +146,7 @@ show_panel_maybe_control (MutterPlugin *plugin,
   gint           i;
   gint           x = clutter_actor_get_x (priv->panel);
   struct panel_out_data *panel_data = g_new0 (struct panel_out_data, 1);
+  ClutterAnimation *animation;
 
   priv->panel_out_in_progress  = TRUE;
 
@@ -158,10 +161,16 @@ show_panel_maybe_control (MutterPlugin *plugin,
 
   clutter_actor_show (priv->panel);
 
-  clutter_effect_move (priv->panel_slide_effect,
-                       priv->panel, x, 0,
-                       on_panel_out_effect_complete,
-                       panel_data);
+  animation = clutter_actor_animate (priv->panel,
+                                     CLUTTER_EASE_IN_SINE,
+                                     /* PANEL_SLIDE_TIMEOUT */ 150,
+                                     "y", 0,
+                                     NULL);
+
+  g_signal_connect (clutter_animation_get_timeline (animation),
+                    "completed",
+                    G_CALLBACK (on_panel_out_effect_complete),
+                    panel_data);
 
   if (from_keyboard)
     priv->panel_wait_for_pointer = TRUE;
@@ -189,6 +198,7 @@ hide_panel (MutterPlugin *plugin)
   gint                        x;
   guint                       h;
   struct button_data button_data;
+  ClutterAnimation *animation;
 
   if (priv->panel_wait_for_pointer)
     {
@@ -210,10 +220,16 @@ hide_panel (MutterPlugin *plugin)
 
   priv->panel_back_in_progress  = TRUE;
 
-  clutter_effect_move (priv->panel_slide_effect,
-                       priv->panel, x, -h,
-                       on_panel_back_effect_complete,
-                       plugin);
+  animation = clutter_actor_animate (priv->panel,
+                                     CLUTTER_EASE_IN_SINE,
+                                     /* PANEL_SLIDE_TIMEOUT */ 150,
+                                     "y", -h,
+                                     NULL);
+
+  g_signal_connect (clutter_animation_get_timeline (animation),
+                    "completed",
+                    G_CALLBACK (on_panel_back_effect_complete),
+                    plugin);
 
   /* make sure no buttons are 'active' */
   button_data.plugin = plugin;
@@ -361,6 +377,7 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterActor               *background, *bg_texture;
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
   ClutterActor               *launcher, *overlay;
+  ClutterActor               *mzone_grid_view;
   gint                        x, w;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
@@ -387,7 +404,10 @@ make_panel (MutterPlugin *plugin, gint width)
   else
     {
       shadow = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
-                                       200, 0, 200, 0);
+                                       0,   /* top */
+                                       200, /* right */
+                                       0,   /* bottom */
+                                       200  /* left */);
       clutter_actor_set_size (shadow, width, 101);
       clutter_container_add_actor (CLUTTER_CONTAINER (panel), shadow);
       priv->panel_shadow = shadow;
@@ -404,7 +424,10 @@ make_panel (MutterPlugin *plugin, gint width)
   else
     {
       background = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
-                                           200, 0, 200, 0);
+                                           0,   /* top */
+                                           200, /* right */
+                                           0,   /* bottom */
+                                           200  /* left */);
       clutter_actor_set_size (background, width - 8, PANEL_HEIGHT);
       clutter_actor_set_x (background, 4);
       clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
@@ -487,7 +510,7 @@ make_panel (MutterPlugin *plugin, gint width)
                          CLUTTER_ACTOR (priv->switcher), NULL);
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->switcher),
                             NBTK_BUTTON (priv->panel_buttons[2]));
-  clutter_actor_set_width (priv->switcher, screen_width);
+  clutter_actor_set_width (priv->switcher, 1024);
   clutter_actor_set_position (priv->switcher, 0, PANEL_HEIGHT);
   clutter_actor_hide (priv->switcher);
 
@@ -528,9 +551,10 @@ make_panel (MutterPlugin *plugin, gint width)
   priv->mzone_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
   clutter_actor_set_width (priv->mzone_grid, screen_width);
-
+  mzone_grid_view = g_object_new (PENGE_TYPE_GRID_VIEW, NULL);
+  clutter_actor_set_height (mzone_grid_view, screen_height - PANEL_HEIGHT * 2);
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->mzone_grid),
-                           CLUTTER_ACTOR (g_object_new (PENGE_TYPE_GRID_VIEW, NULL)));
+                           CLUTTER_ACTOR (mzone_grid_view));
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->mzone_grid),
                             NBTK_BUTTON (priv->panel_buttons[0]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);

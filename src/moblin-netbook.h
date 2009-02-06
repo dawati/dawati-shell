@@ -85,15 +85,6 @@ typedef struct ActorPrivate  ActorPrivate;
  */
 struct _MoblinNetbookPluginPrivate
 {
-  ClutterEffectTemplate *destroy_effect;
-  ClutterEffectTemplate *minimize_effect;
-  ClutterEffectTemplate *maximize_effect;
-  ClutterEffectTemplate *map_effect;
-  ClutterEffectTemplate *switch_workspace_effect;
-  ClutterEffectTemplate *switch_workspace_arrow_effect;
-  ClutterEffectTemplate *panel_slide_effect;
-  ClutterEffectTemplate *ws_switcher_slide_effect;
-
   /* Valid only when switch_workspace effect is in progress */
   ClutterTimeline       *tml_switch_workspace0;
   ClutterTimeline       *tml_switch_workspace1;
@@ -183,6 +174,7 @@ void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
 void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
 gboolean       release_keyboard  (MutterPlugin *plugin, guint32 timestamp);
 void           grab_keyboard     (MutterPlugin *plugin, guint32 timestamp);
-void           moblin_netbook_notify_init (MutterPlugin *plugin);
+
+void moblin_netbook_notify_init (MutterPlugin *plugin);
 
 #endif

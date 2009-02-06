@@ -49,6 +49,14 @@
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
+
+/* callback data for when animations complete */
+typedef struct
+{
+  ClutterActor *actor;
+  MutterPlugin *plugin;
+} EffectCompleteData;
+
 static gboolean stage_input_cb (ClutterActor *stage, ClutterEvent *event,
                                 gpointer data);
 static gboolean stage_capture_cb (ClutterActor *stage, ClutterEvent *event,
@@ -132,12 +140,6 @@ moblin_netbook_plugin_dispose (GObject *object)
   if (priv->input_region)
     XFixesDestroyRegion (xdpy, priv->input_region2);
 #endif
-
-  g_object_unref (priv->destroy_effect);
-  g_object_unref (priv->minimize_effect);
-  g_object_unref (priv->maximize_effect);
-  g_object_unref (priv->switch_workspace_effect);
-  g_object_unref (priv->switch_workspace_arrow_effect);
 
   G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->dispose (object);
 }
@@ -518,6 +520,8 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
   MutterPlugin               *plugin = MUTTER_PLUGIN (data);
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  printf ("Alt+TAB received\n");
+
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
     {
       struct alt_tab_show_complete_data *alt_data;
@@ -671,41 +675,6 @@ moblin_netbook_plugin_constructed (GObject *object)
       ws_switcher_slide_timeout *= 2;
     }
 
-  priv->destroy_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							destroy_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-
-  priv->minimize_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							minimize_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  priv->maximize_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							maximize_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  priv->map_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							map_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  priv->switch_workspace_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							switch_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  /* better syncing as multiple groups run off this */
-  clutter_effect_template_set_timeline_clone (priv->switch_workspace_effect,
-                                              TRUE);
-
-  priv->switch_workspace_arrow_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							switch_timeout*4),
-                                    CLUTTER_ALPHA_SINE_INC);
-
   overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
@@ -722,16 +691,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_actor_hide (lowlight);
   clutter_actor_show (priv->mzone_grid);
   priv->panel_wait_for_pointer = TRUE;
-
-  priv->panel_slide_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							panel_slide_timeout),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-  priv->ws_switcher_slide_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-						ws_switcher_slide_timeout),
-                                                CLUTTER_ALPHA_SINE_INC);
 
   /*
    * Set up the stage even processing
@@ -865,7 +824,7 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
 
   clutter_actor_get_size (priv->parallax_tex, &w, &h);
 
-  cogl_translate (priv->parallax_paint_offset - w/4 , 0 , 0);
+  cogl_translate (priv->parallax_paint_offset - (gint)w/4, 0 , 0);
 
   cogl_texture
        = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(priv->parallax_tex));
@@ -874,21 +833,23 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
     return;
 
   col.alpha = clutter_actor_get_paint_opacity (actor);
-  cogl_color (&col);
+  cogl_set_source_color4ub (col.red,
+                            col.green,
+                            col.blue,
+                            col.alpha);
 
   tex_width = cogl_texture_get_width (cogl_texture);
   tex_height = cogl_texture_get_height (cogl_texture);
 
-  t_w = CFX_QDIV (CLUTTER_INT_TO_FIXED (w),
-                  CLUTTER_INT_TO_FIXED (tex_width));
-  t_h = CFX_QDIV (CLUTTER_INT_TO_FIXED (h),
-                  CLUTTER_INT_TO_FIXED (tex_height));
+  t_w = w / tex_width;
+  t_h = h / tex_height;
 
   /* Parent paint translated us into position */
-  cogl_texture_rectangle (cogl_texture, 0, 0,
-			  CLUTTER_INT_TO_FIXED (w),
-			  CLUTTER_INT_TO_FIXED (h),
-			  0, 0, t_w, t_h);
+  cogl_set_source_texture (cogl_texture);
+  cogl_rectangle_with_texture_coords (0, 0,
+                                      w, h,
+                                      0, 0,
+                                      t_w, t_h);
 
   g_signal_stop_emission_by_name (actor, "paint");
 }
@@ -900,7 +861,7 @@ struct ws_switch_data
 };
 
 static void
-on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
+on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   struct ws_switch_data *switch_data = data;
   MutterPlugin   *plugin = switch_data->plugin;
@@ -981,6 +942,7 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   MetaScreen    *screen = mutter_plugin_get_screen (plugin);
   struct parallax_data *parallax_data = g_new (struct parallax_data, 1);
   struct ws_switch_data *switch_data = g_new (struct ws_switch_data, 1);
+  ClutterAnimation *animation;
 
   if (from == to)
     {
@@ -1063,9 +1025,9 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &white);
   clutter_container_add_actor (CLUTTER_CONTAINER (indicator_group), rect);
 
-  label = clutter_label_new ();
-  clutter_label_set_font_name (CLUTTER_LABEL (label), "Sans Bold 148");
-  clutter_label_set_color (CLUTTER_LABEL (label), &black);
+  label = clutter_text_new ();
+  clutter_text_set_font_name (CLUTTER_TEXT (label), "Sans Bold 148");
+  clutter_text_set_color (CLUTTER_TEXT (label), &black);
   clutter_container_add_actor (CLUTTER_CONTAINER (indicator_group), label);
 
   clutter_actor_set_size (rect,
@@ -1080,21 +1042,21 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   switch (direction)
     {
     case META_MOTION_UP:
-      clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\221");
+      clutter_text_set_text (CLUTTER_TEXT (label), "\342\206\221");
 
       to_x = 0;
       to_y = -screen_height;
       break;
 
     case META_MOTION_DOWN:
-      clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\223");
+      clutter_text_set_text (CLUTTER_TEXT (label), "\342\206\223");
 
       to_x = 0;
       to_y = -screen_height;
       break;
 
     case META_MOTION_LEFT:
-      clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\220");
+      clutter_text_set_text (CLUTTER_TEXT (label), "\342\206\220");
 
       to_x = -screen_width * -1;
       to_y = 0;
@@ -1103,7 +1065,7 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
       break;
 
     case META_MOTION_RIGHT:
-      clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\222");
+      clutter_text_set_text (CLUTTER_TEXT (label), "\342\206\222");
 
       to_x = -screen_width;
       to_y = 0;
@@ -1129,21 +1091,36 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   switch_data->plugin = plugin;
 
   /* workspace were going too */
-  ppriv->tml_switch_workspace1 =
-    clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider1,
-                         0, 0,
-                         on_switch_workspace_effect_complete,
-                         switch_data);
+  animation = clutter_actor_animate (workspace_slider1,
+                                     CLUTTER_LINEAR,
+                                     WS_SWITCHER_SLIDE_TIMEOUT,
+                                     "x", 0,
+                                     "y", 0);
+
+  g_signal_connect (clutter_animation_get_timeline (animation),
+                    "completed",
+                    G_CALLBACK (on_switch_workspace_effect_complete),
+                    switch_data);
+
+  g_object_weak_ref (G_OBJECT (ppriv->tml_switch_workspace1),
+                     ws_timeline_weak_ref_cb, plugin);
+
   /* coming from */
-  ppriv->tml_switch_workspace0 =
-    clutter_effect_move (ppriv->switch_workspace_effect, workspace_slider0,
-                         to_x, to_y,
-                         NULL, NULL);
+  animation = clutter_actor_animate (workspace_slider0,
+                                     CLUTTER_LINEAR,
+                                     WS_SWITCHER_SLIDE_TIMEOUT,
+                                     "x", to_x,
+                                     "y", to_y);
+
+  g_object_weak_ref (G_OBJECT (ppriv->tml_switch_workspace0),
+                     ws_timeline_weak_ref_cb, plugin);
 
   /* arrow */
-  clutter_effect_fade (ppriv->switch_workspace_arrow_effect, indicator_group,
-                       0,
-                       NULL, NULL);
+  clutter_actor_animate (indicator_group,
+                         CLUTTER_LINEAR,
+                         WS_SWITCHER_SLIDE_TIMEOUT,
+                         "opacity", 0,
+                         NULL);
 
   /* desktop parallax */
   parallax_data->direction = para_dir;
@@ -1161,23 +1138,23 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
  * calls the manager callback function.
  */
 static void
-on_minimize_effect_complete (ClutterActor *actor, gpointer data)
+on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 {
   /*
    * Must reverse the effect of the effect; must hide it first to ensure
    * that the restoration will not be visible.
    */
-  MutterPlugin *plugin = data;
+  MutterPlugin *plugin = data->plugin;
   ActorPrivate *apriv;
-  MutterWindow *mcw = MUTTER_WINDOW (actor);
+  MutterWindow *mcw = MUTTER_WINDOW (data->actor);
 
-  apriv = get_actor_private (MUTTER_WINDOW (actor));
+  apriv = get_actor_private (mcw);
   apriv->tml_minimize = NULL;
 
-  clutter_actor_hide (actor);
+  clutter_actor_hide (data->actor);
 
-  clutter_actor_set_scale (actor, 1.0, 1.0);
-  clutter_actor_move_anchor_point_from_gravity (actor,
+  clutter_actor_set_scale (data->actor, 1.0, 1.0);
+  clutter_actor_move_anchor_point_from_gravity (data->actor,
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
@@ -1202,19 +1179,28 @@ minimize (MutterPlugin * plugin, MutterWindow *mcw)
   if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mcw);
+      ClutterAnimation *animation;
+      EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
 
       apriv->is_minimized = TRUE;
 
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
 
-      apriv->tml_minimize = clutter_effect_scale (priv->minimize_effect,
-                                                  actor,
-                                                  0.0,
-                                                  0.0,
-                                                  (ClutterEffectCompleteFunc)
-                                                  on_minimize_effect_complete,
-                                                  plugin);
+      animation = clutter_actor_animate (actor,
+                                         CLUTTER_EASE_IN_SINE,
+                                         MINIMIZE_TIMEOUT,
+                                         "scale-x", 0.0,
+                                         "scale-y", 0.0,
+                                         NULL);
+
+      data->actor = actor;
+      data->plugin = plugin;
+
+      g_signal_connect (clutter_animation_get_timeline (animation),
+                        "completed",
+                        G_CALLBACK (on_minimize_effect_complete),
+                        data);
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MINIMIZE);
@@ -1225,23 +1211,25 @@ minimize (MutterPlugin * plugin, MutterWindow *mcw)
  * calls the manager callback function.
  */
 static void
-on_maximize_effect_complete (ClutterActor *actor, gpointer data)
+on_maximize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 {
   /*
    * Must reverse the effect of the effect.
    */
-  MutterPlugin *plugin = data;
-  MutterWindow *mcw    = MUTTER_WINDOW (actor);
+  MutterPlugin *plugin = data->plugin;
+  MutterWindow *mcw    = MUTTER_WINDOW (data->actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_maximize = NULL;
 
-  clutter_actor_set_scale (actor, 1.0, 1.0);
-  clutter_actor_move_anchor_point_from_gravity (actor,
+  clutter_actor_set_scale (data->actor, 1.0, 1.0);
+  clutter_actor_move_anchor_point_from_gravity (data->actor,
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAXIMIZE);
+
+  g_free (data);
 }
 
 /*
@@ -1270,6 +1258,8 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
   if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mcw);
+      ClutterAnimation *animation;
+      EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       guint width, height;
       gint  x, y;
 
@@ -1292,14 +1282,20 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
 
       clutter_actor_move_anchor_point (actor, anchor_x, anchor_y);
 
-      apriv->tml_maximize = clutter_effect_scale (priv->maximize_effect,
-                                                  actor,
-                                                  scale_x,
-                                                  scale_y,
-                                                  (ClutterEffectCompleteFunc)
-                                                  on_maximize_effect_complete,
-                                                  plugin);
+      animation = clutter_actor_animate (actor,
+                                         CLUTTER_EASE_IN_SINE,
+                                         MAXIMIZE_TIMEOUT,
+                                         "scale-x", scale_x,
+                                         "scale-y", scale_y,
+                                         NULL);
 
+      data->actor = actor;
+      data->plugin = plugin;
+
+      g_signal_connect (clutter_animation_get_timeline (animation),
+                        "completed",
+                        G_CALLBACK (on_maximize_effect_complete),
+                        data);
       return;
     }
 
@@ -1330,29 +1326,22 @@ unmaximize (MutterPlugin *plugin, MutterWindow *mcw,
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_UNMAXIMIZE);
 }
 
-struct map_data
-{
-  MutterPlugin *plugin;
-  ClutterActor *actor;
-};
-
 static void
-on_map_effect_complete (ClutterTimeline *timeline, gpointer data)
+on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 {
   /*
    * Must reverse the effect of the effect.
    */
-  struct map_data *map_data = data;
-  MutterPlugin *plugin = map_data->plugin;
-  MutterWindow *mcw    = MUTTER_WINDOW (map_data->actor);
+  MutterPlugin *plugin = data->plugin;
+  MutterWindow *mcw    = MUTTER_WINDOW (data->actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_map = NULL;
 
-  clutter_actor_move_anchor_point_from_gravity (map_data->actor,
+  clutter_actor_move_anchor_point_from_gravity (data->actor,
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
-  g_free (map_data);
+  g_free (data);
 
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
@@ -1604,10 +1593,11 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   else if (type == META_COMP_WINDOW_NORMAL ||
            type == META_COMP_WINDOW_SPLASHSCREEN)
     {
+      ClutterAnimation *animation;
+      EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (mcw);
       MetaWindow   *mw = mutter_window_get_meta_window (mcw);
       gint          workspace_index = -2;
-      struct map_data *map_data;
 
       if (mw)
         {
@@ -1622,25 +1612,21 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       clutter_actor_set_scale (actor, 0.0, 0.0);
       clutter_actor_show (actor);
-      /*
-      apriv->tml_map = clutter_effect_scale (priv->map_effect,
-                                             actor,
-                                             1.0,
-                                             1.0,
-                                             (ClutterEffectCompleteFunc)
-                                             on_map_effect_complete,
-                                             NULL);
-      */
-      apriv->tml_map = nbtk_bounce_scale (actor, MAP_TIMEOUT);
 
-      map_data = g_new (struct map_data, 1);
-      map_data->plugin = plugin;
-      map_data->actor = actor;
+      animation = clutter_actor_animate (actor, CLUTTER_EASE_OUT_ELASTIC,
+                                         MAP_TIMEOUT,
+                                         "scale-x", 1.0,
+                                         "scale-y", 1.0,
+                                         NULL);
+      data->plugin = plugin;
+      data->actor = actor;
+      apriv->tml_map = clutter_animation_get_timeline (animation);
 
       if (!apriv->workspace_changed_id)
-        apriv->workspace_changed_id =
-          g_signal_connect (apriv->tml_map, "completed",
-                            G_CALLBACK (on_map_effect_complete), map_data);
+          g_signal_connect (apriv->tml_map,
+                            "completed",
+                            G_CALLBACK (on_map_effect_complete),
+                            data);
 
       apriv->is_minimized = FALSE;
 
@@ -1669,10 +1655,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
  * further action than notifying the manager that the effect is completed.
  */
 static void
-on_destroy_effect_complete (ClutterActor *actor, gpointer data)
+on_destroy_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 {
-  MutterPlugin *plugin = data;
-  MutterWindow *mcw    = MUTTER_WINDOW (actor);
+  MutterPlugin *plugin = data->plugin;
+  MutterWindow *mcw    = MUTTER_WINDOW (data->actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_destroy = NULL;
@@ -1701,17 +1687,25 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
   if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv  = get_actor_private (mcw);
+      ClutterAnimation *animation;
+      EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
 
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
 
-      apriv->tml_destroy = clutter_effect_scale (priv->destroy_effect,
-                                                 actor,
-                                                 0.0,
-                                                 0.0,
-                                                 (ClutterEffectCompleteFunc)
-                                                 on_destroy_effect_complete,
-                                                 plugin);
+      animation = clutter_actor_animate (actor,
+                                         CLUTTER_EASE_IN_SINE,
+                                         DESTROY_TIMEOUT,
+                                         "scale-x", 0.0,
+                                         "scale-y", 0.0,
+                                         NULL);
+      data->plugin = plugin;
+      data->actor = actor;
+      g_signal_connect (clutter_animation_get_timeline (animation),
+                        "completed",
+                        G_CALLBACK (on_destroy_effect_complete),
+                        data);
+
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
@@ -1826,7 +1820,6 @@ static gboolean
 xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
   /*
    * Handle the case where Alt+Tab is pressed while we have a global kbd grab
    * (e.g., if the mouse is used to bring up the Switcher, and then the user
@@ -1921,13 +1914,13 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
   if ((event & MUTTER_PLUGIN_MINIMIZE) && apriv->tml_minimize)
     {
       clutter_timeline_stop (apriv->tml_minimize);
-      on_minimize_effect_complete (actor, plugin);
+      g_signal_emit_by_name (apriv->tml_minimize, "completed", NULL);
     }
 
   if ((event & MUTTER_PLUGIN_MAXIMIZE) && apriv->tml_maximize)
     {
       clutter_timeline_stop (apriv->tml_maximize);
-      on_maximize_effect_complete (actor, plugin);
+      g_signal_emit_by_name (apriv->tml_maximize, "completed", NULL);
     }
 
   if ((event & MUTTER_PLUGIN_MAP) && apriv->tml_map)
@@ -1945,7 +1938,7 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
   if ((event & MUTTER_PLUGIN_DESTROY) && apriv->tml_destroy)
     {
       clutter_timeline_stop (apriv->tml_destroy);
-      on_destroy_effect_complete (actor, plugin);
+      g_signal_emit_by_name (apriv->tml_destroy, "completed", NULL);
     }
 }
 

@@ -881,7 +881,7 @@ mnb_switcher_show (ClutterActor *self)
         }
 
       texture = mutter_window_get_texture (mw);
-      c_tx    = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+      c_tx    = clutter_clone_new (CLUTTER_TEXTURE (texture));
       clone   = g_object_new (MNB_TYPE_SWITCHER_APP, NULL);
       nbtk_widget_set_style_class_name (NBTK_WIDGET (clone),
                                         "switcher-application");

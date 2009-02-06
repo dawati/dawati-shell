@@ -26,7 +26,7 @@
 
 #include "nutter-scale-group.h"
 
-#include <clutter/clutter-container.h>
+#include <clutter/clutter.h>
 
 /*
  * Custom ClutterGroup subclass that takes it's scale into account when
