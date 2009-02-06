@@ -1885,16 +1885,21 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
     {
       MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+      /*
+       * Force emission of the "completed" signal so that the necessary
+       * cleanup is done (we cannot readily supply the data necessary to
+       * call our callback directly).
+       */
+
       if (ppriv->tml_switch_workspace0)
         {
           clutter_timeline_stop (ppriv->tml_switch_workspace0);
-          clutter_timeline_stop (ppriv->tml_switch_workspace1);
+          g_signal_emit_by_name (ppriv->tml_switch_workspace0, "completed");
+        }
 
-          /*
-           * Force emission of the "completed" signal so that the necessary
-           * cleanup is done (we cannot readily supply the data necessary to
-           * call our callback directly).
-           */
+      if (ppriv->tml_switch_workspace1)
+        {
+          clutter_timeline_stop (ppriv->tml_switch_workspace1);
           g_signal_emit_by_name (ppriv->tml_switch_workspace1, "completed");
         }
 
