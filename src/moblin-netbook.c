@@ -1102,18 +1102,12 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
                     G_CALLBACK (on_switch_workspace_effect_complete),
                     switch_data);
 
-  g_object_weak_ref (G_OBJECT (ppriv->tml_switch_workspace1),
-                     ws_timeline_weak_ref_cb, plugin);
-
   /* coming from */
   animation = clutter_actor_animate (workspace_slider0,
                                      CLUTTER_LINEAR,
                                      WS_SWITCHER_SLIDE_TIMEOUT,
                                      "x", to_x,
                                      "y", to_y);
-
-  g_object_weak_ref (G_OBJECT (ppriv->tml_switch_workspace0),
-                     ws_timeline_weak_ref_cb, plugin);
 
   /* arrow */
   clutter_actor_animate (indicator_group,
