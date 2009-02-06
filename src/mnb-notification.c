@@ -22,6 +22,7 @@
  */
 
 #include "mnb-notification.h"
+#include "moblin-netbook-notify-store.h"
 
 #define SLIDE_DURATION 150
 
@@ -257,8 +258,8 @@ mnb_notification_new (void)
 }
 
 void
-mnb_notification_set_details (MnbNotification *notification,
-                              gchar           *label_text)
+mnb_notification_update (MnbNotification *notification,
+                         Notification    *details)
 {
   MnbNotificationPrivate *priv;
 
@@ -266,6 +267,20 @@ mnb_notification_set_details (MnbNotification *notification,
 
   priv = GET_PRIVATE (notification);
 
-  clutter_label_set_text (priv->label, label_text);
+  priv->id = details->id;
+
+  //clutter_label_set_text (priv->label, details->body);
+}
+
+guint
+mnb_notification_get_id (MnbNotification *notification)
+{
+  MnbNotificationPrivate *priv;
+
+  g_return_if_fail (MNB_IS_NOTIFICATION (notification));
+
+  priv = GET_PRIVATE (notification);
+
+  return priv->id;
 }
 

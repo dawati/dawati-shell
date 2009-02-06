@@ -20,7 +20,6 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-tray-manager.c	\
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
-				moblin-netbook-notify.c         \
 	                        $(DBUS_GLUE)                    \
 				$(MARSHALS)                     \
 				mnb-drop-down.h                 \
@@ -29,6 +28,8 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				mnb-switcher.h                  \
 				mnb-notification.c              \
 				mnb-notification.h              \
+				mnb-notification-cluster.c      \
+				mnb-notification-cluster.h      \
 				mnb-panel-button.c              \
 				mnb-panel-button.h
 

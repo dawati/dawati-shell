@@ -28,6 +28,8 @@
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
 
+#include "moblin-netbook-notify-store.h"
+
 G_BEGIN_DECLS
 
 #define MNB_TYPE_NOTIFICATION mnb_notification_get_type()
@@ -66,8 +68,11 @@ GType mnb_notification_get_type (void);
 NbtkWidget* mnb_notification_new (void);
 
 void
-mnb_notification_set_details (MnbNotification *notification,
-                              gchar           *label_text);
+mnb_notification_update (MnbNotification *notification,
+                         Notification    *details);
+
+guint
+mnb_notification_get_id (MnbNotification *notification);
 
 G_END_DECLS
 
