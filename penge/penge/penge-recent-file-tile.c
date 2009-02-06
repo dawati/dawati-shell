@@ -315,8 +315,8 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   nbtk_widget_set_alignment (priv->details_filename_label, 0, 0.5);
   tmp_text =
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_filename_label));
-  clutter_text_set_alignment (CLUTTER_TEXT (tmp_text),
-                              PANGO_ALIGN_LEFT);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
+				   PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);
 
@@ -329,7 +329,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   nbtk_widget_set_alignment (priv->details_type_label, 0, 0.5);
   tmp_text =
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_type_label));
-  clutter_text_set_alignment (CLUTTER_TEXT (tmp_text),
+  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                               PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);

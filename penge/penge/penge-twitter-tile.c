@@ -138,8 +138,8 @@ penge_twitter_tile_constructed (GObject *object)
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
-  clutter_text_set_alignment (CLUTTER_TEXT (tmp_text),
-                              PANGO_ALIGN_LEFT);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
+                                   PANGO_ALIGN_LEFT);
   nbtk_widget_set_alignment (NBTK_WIDGET (body),
                              0,
                              0);

@@ -199,8 +199,8 @@ penge_people_tile_init (PengePeopleTile *self)
                                     "PengePeopleTilePrimaryLabel");
   nbtk_widget_set_alignment (priv->primary_text, 0, 0.5);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->primary_text));
-  clutter_text_set_alignment (CLUTTER_TEXT (tmp_text),
-                              PANGO_ALIGN_LEFT);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
+                                   PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);
 
@@ -209,8 +209,8 @@ penge_people_tile_init (PengePeopleTile *self)
                                     "PengePeopleTileSecondaryLabel");
   nbtk_widget_set_alignment (priv->secondary_text, 0, 0.5);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->secondary_text));
-  clutter_text_set_alignment (CLUTTER_TEXT (tmp_text),
-                              PANGO_ALIGN_LEFT);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
+                                   PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);
 
