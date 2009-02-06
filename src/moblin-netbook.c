@@ -1098,6 +1098,8 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
                                      "y", 0,
                                      NULL);
 
+  ppriv->tml_switch_workspace1 = clutter_animation_get_timeline (animation);
+
   g_signal_connect (clutter_animation_get_timeline (animation),
                     "completed",
                     G_CALLBACK (on_switch_workspace_effect_complete),
@@ -1110,6 +1112,8 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
                                      "x", to_x,
                                      "y", to_y,
                                      NULL);
+
+  ppriv->tml_switch_workspace0 = clutter_animation_get_timeline (animation);
 
   /* arrow */
   clutter_actor_animate (indicator_group,
