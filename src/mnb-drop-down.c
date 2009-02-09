@@ -48,6 +48,8 @@ struct _MnbDropDownPrivate {
   gint width;
   gint height;
 
+  guint reparent_cb;
+
   gboolean in_show_animation : 1;
   gboolean in_hide_animation : 1;
 };
@@ -319,24 +321,42 @@ mnb_drop_down_new (void)
 }
 
 static void
-mnb_drop_down_weak_ref_cb (gpointer data, GObject *child)
+mnb_drop_down_reparent_cb (ClutterActor *child,
+                           ClutterActor *old_parent,
+                           gpointer      data)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (data)->priv;
 
-  priv->child = NULL;
+  if (clutter_actor_get_parent (child) != data)
+    {
+      if (priv->reparent_cb)
+        {
+          g_signal_handler_disconnect (priv->child, priv->reparent_cb);
+          priv->reparent_cb = 0;
+        }
+
+      priv->child = NULL;
+    }
 }
 
 void
 mnb_drop_down_set_child (MnbDropDown *drop_down,
                          ClutterActor *child)
 {
+  MnbDropDownPrivate *priv;
+
   g_return_if_fail (MNB_IS_DROP_DOWN (drop_down));
   g_return_if_fail (child == NULL || CLUTTER_IS_ACTOR (child));
 
-  if (drop_down->priv->child)
+  priv = drop_down->priv;
+
+  if (priv->child)
     {
-      g_object_weak_unref (G_OBJECT (drop_down->priv->child),
-                           mnb_drop_down_weak_ref_cb, drop_down);
+      if (priv->reparent_cb)
+        {
+          g_signal_handler_disconnect (priv->child, priv->reparent_cb);
+          priv->reparent_cb = 0;
+        }
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (drop_down),
                                       drop_down->priv->child);
@@ -344,8 +364,10 @@ mnb_drop_down_set_child (MnbDropDown *drop_down,
 
   if (child)
     {
-      g_object_weak_ref (G_OBJECT (child),
-                         mnb_drop_down_weak_ref_cb, drop_down);
+      drop_down->priv->reparent_cb =
+        g_signal_connect (child, "parent-set",
+                          G_CALLBACK (mnb_drop_down_reparent_cb),
+                          drop_down);
       nbtk_table_add_actor (NBTK_TABLE (drop_down), child, 0, 0);
     }
 
