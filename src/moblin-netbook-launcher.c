@@ -27,6 +27,7 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-launcher.h"
 #include "mnb-drop-down.h"
+#include "mnb-launcher-button.h"
 #include <nbtk/nbtk.h>
 #include <gmenu-tree.h>
 #include <gtk/gtk.h>
@@ -36,6 +37,7 @@
 #define ICON_SIZE 48
 #define PADDING 8
 #define BORDER_WIDTH 4
+#define N_COLS 4
 
 /* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
 static int
@@ -172,66 +174,60 @@ entry_data_free (struct entry_data *data)
   g_free (data);
 }
 
-static gboolean
-entry_input_cb (ClutterActor *icon, ClutterEvent *event, gpointer data)
+static void
+launcher_activated_cb (MnbLauncherButton  *launcher,
+                       ClutterButtonEvent *event,
+                       gpointer            data)
 {
-  struct entry_data  *entry_data = data;
-  MutterPlugin       *plugin = entry_data->plugin;
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  const gchar        *exec = entry_data->exec;
-  ClutterButtonEvent *bev             = (ClutterButtonEvent*)event;
-  gboolean            without_chooser = FALSE;
-  gint                workspace       = -2;
+  struct entry_data           *entry_data = data;
+  MutterPlugin                *plugin = entry_data->plugin;
+  MoblinNetbookPluginPrivate  *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  const gchar                 *exec = entry_data->exec;
+  gboolean                     without_chooser = FALSE;
+  gint                         workspace       = -2;
 
-  if (bev->modifier_state & CLUTTER_MOD1_MASK)
-    without_chooser = TRUE;
-  else
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  gint        n_ws   = meta_screen_get_n_workspaces (screen);
+  gboolean    empty  = FALSE;
+
+  if (n_ws == 1)
     {
-      MetaScreen *screen = mutter_plugin_get_screen (plugin);
-      gint        n_ws   = meta_screen_get_n_workspaces (screen);
-      gboolean    empty  = FALSE;
+      GList * l;
 
-      if (n_ws == 1)
+      empty = TRUE;
+
+      l = mutter_get_windows (screen);
+      while (l)
         {
-          GList * l;
+          MutterWindow *m    = l->data;
+          MetaWindow   *w = mutter_window_get_meta_window (m);
 
-          empty = TRUE;
-
-          l = mutter_get_windows (screen);
-          while (l)
+          if (w)
             {
-              MutterWindow *m    = l->data;
-              MetaWindow   *w = mutter_window_get_meta_window (m);
+              MetaCompWindowType type = mutter_window_get_window_type (m);
 
-              if (w)
+              if (type == META_COMP_WINDOW_NORMAL)
                 {
-                  MetaCompWindowType type = mutter_window_get_window_type (m);
-
-                  if (type == META_COMP_WINDOW_NORMAL)
-                    {
-                      empty = FALSE;
-                      break;
-                    }
+                  empty = FALSE;
+                  break;
                 }
-
-              l = l->next;
             }
-        }
 
-      if (empty)
-        {
-          without_chooser = TRUE;
-          workspace = 0;
+          l = l->next;
         }
     }
 
-  spawn_app (plugin, exec, event->any.time, without_chooser, workspace);
+  if (empty)
+    {
+      without_chooser = TRUE;
+      workspace = 0;
+    }
+
+  spawn_app (plugin, exec, event->time, without_chooser, workspace);
 
   clutter_actor_hide (priv->launcher);
   nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
   hide_panel (plugin);
-
-  return TRUE;
 }
 
 ClutterActor *
@@ -240,7 +236,7 @@ make_launcher (MutterPlugin *plugin, gint width)
   GSList *apps, *a;
   GtkIconTheme  *theme;
   ClutterActor  *stage, *table;
-  gint           row, col, n_cols, pad;
+  gint           row, col;
   struct entry_data *entry_data;
   NbtkWidget    *drop_down, *footer, *up_button;
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (4),
@@ -248,28 +244,14 @@ make_launcher (MutterPlugin *plugin, gint width)
                             CLUTTER_UNITS_FROM_INT (4),
                             CLUTTER_UNITS_FROM_INT (4)};
 
-  n_cols = (width - 2*BORDER_WIDTH) / (ICON_SIZE + PADDING);
-
-  /*
-   * Distribute any leftover space into the padding, if possible.
-   */
-  pad = n_cols*(ICON_SIZE + PADDING) - (width - 2*BORDER_WIDTH);
-
-  if (pad >= n_cols)
-    pad /= n_cols;
-  else
-    pad = 0;
-
-  pad += PADDING;
-
   table = CLUTTER_ACTOR (nbtk_table_new ());
-  nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
+//  nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
   clutter_actor_set_name (table, "launcher-table");
 
-  clutter_actor_set_reactive (table, TRUE);
+//  clutter_actor_set_reactive (table, TRUE);
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (table), pad);
-  nbtk_table_set_row_spacing (NBTK_TABLE (table), pad);
+//  nbtk_table_set_col_spacing (NBTK_TABLE (table), pad);
+//  nbtk_table_set_row_spacing (NBTK_TABLE (table), pad);
 
   apps = get_all_applications ();
 
@@ -277,67 +259,55 @@ make_launcher (MutterPlugin *plugin, gint width)
 
   for (a = apps, row = 0, col = 0; a; a = a->next)
     {
-      ClutterActor *icon, *item, *label;
-      const gchar  *name;
-      gchar        *exec;
+      const gchar       *name, *icon_file;
+      gchar             *exec;
 
       GMenuTreeEntry *entry = a->data;
       GtkIconInfo *info = NULL;
 
+      icon_file = NULL;
+
       name = gmenu_tree_entry_get_icon (entry);
-
-      if (!name)
-        continue;
-
       exec = g_strdup (gmenu_tree_entry_get_exec (entry));
-
-      if (!exec)
-        continue;
-
       info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
-
-      if (!info)
-        continue;
-
-      icon = clutter_texture_new_from_file (gtk_icon_info_get_filename (info),
-                                            NULL);
-
-      if (icon == NULL)
-        continue;
-
-      gtk_icon_info_free (info);
-
-      clutter_actor_set_size (icon, ICON_SIZE, ICON_SIZE);
-      g_object_set (G_OBJECT (icon), "sync-size", TRUE, NULL);
-
-      nbtk_table_add_actor (NBTK_TABLE (table), icon, row, col);
-
-      entry_data = g_new (struct entry_data, 1);
-      entry_data->exec = exec;
-      entry_data->plugin = plugin;
-
-      g_signal_connect_data (icon, "button-press-event",
-                             G_CALLBACK (entry_input_cb), entry_data,
-                             (GClosureNotify)entry_data_free, 0);
-
-      clutter_actor_set_reactive (icon, TRUE);
-
-      clutter_container_child_set (CLUTTER_CONTAINER (table), icon,
-				   "keep-aspect-ratio", TRUE, NULL);
-
-      if (++col >= n_cols)
+      if (info)
         {
-          col = 0;
-          ++row;
+          icon_file = gtk_icon_info_get_filename (info);
+        }
+
+      if (name && exec && info && icon_file)
+        {
+          MnbLauncherButton *button;
+
+          button = mnb_launcher_button_new (icon_file, ICON_SIZE,
+                                            name, NULL, NULL);
+          nbtk_table_add_widget (NBTK_TABLE (table), button, row, col);
+
+          entry_data = g_new (struct entry_data, 1);
+          entry_data->exec = exec;
+          entry_data->plugin = plugin;
+
+          g_signal_connect_data (button, "activated",
+                                 G_CALLBACK (launcher_activated_cb), entry_data,
+                                 (GClosureNotify) entry_data_free, 0);
+
+          if (++col >= N_COLS)
+            {
+              col = 0;
+              ++row;
+            }
+
+          gtk_icon_info_free (info);
+        }
+      else
+        {
+          g_free (exec);
         }
     }
 
-  drop_down = mnb_drop_down_new ();
-
-  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
-
-
   clutter_actor_set_width (CLUTTER_ACTOR (table), width);
+  drop_down = mnb_drop_down_new ();
+  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
 
   return CLUTTER_ACTOR (drop_down);
 }
