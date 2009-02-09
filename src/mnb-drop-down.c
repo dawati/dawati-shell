@@ -343,11 +343,14 @@ mnb_drop_down_set_child (MnbDropDown *drop_down,
     }
 
   if (child)
-    nbtk_table_add_actor (NBTK_TABLE (drop_down), child, 0, 0);
+    {
+      g_object_weak_ref (G_OBJECT (child),
+                         mnb_drop_down_weak_ref_cb, drop_down);
+      nbtk_table_add_actor (NBTK_TABLE (drop_down), child, 0, 0);
+    }
 
   drop_down->priv->child = child;
 
-  g_object_weak_ref (G_OBJECT (child), mnb_drop_down_weak_ref_cb, drop_down);
 }
 
 ClutterActor*
