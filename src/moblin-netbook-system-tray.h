@@ -28,23 +28,7 @@
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 
-#define MOBLIN_SYSTEM_TRAY_EVENT          "MOBLIN_SYSTEM_TRAY_EVENT"
 #define MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW  "MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW"
-
-/*
- * NB: this can be at most 20 bytes. If necessary the type, button and count
- *     fields could be collapsed further.
- */
-typedef struct
-{
-  guint32 type;
-  guint16 button;
-  guint16 count;
-  gint16  x;
-  gint16  y;
-  guint32 time;
-  guint32 modifiers;
-} MnbkTrayEventData;
 
 #ifndef MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 /*
@@ -57,7 +41,8 @@ typedef struct
  * config_plug: GtkPlug* instance; this is the top level container that
  * holding the application configuration window. Unlike in the normal X
  * tray set up, this window is shown *by the netbook plugin*, not the
- * application, in response to click on the status icon.
+ * application, in response to click on the status icon (your application will
+ * no receive this click directly).
  *
  * See tests/test-tray.c for an example.
  */
@@ -138,12 +123,6 @@ mnbk_system_tray_init (GtkStatusIcon *icon, GtkPlug *config)
   g_idle_add (_mnbk_idle_config_setup, &_mnbk_tray_setup_data);
 }
 
-#else
-/*
- * Compile time assert to ensure we do not try to pack more than we can
- * into the MnbkTrayData structure.
- */
-int assert_tray_data_fits_ClientMessage__[sizeof(MnbkTrayEventData)<=20 ? 0:-1];
 #endif
 
 #endif
