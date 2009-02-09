@@ -227,9 +227,14 @@ mnb_launcher_button_new (const gchar *icon_file,
                                0.5, 0.5);
   }
 
-  nbtk_label_set_text (self->priv->app_name, app_name);
-  nbtk_label_set_text (self->priv->category, category);
-  nbtk_label_set_text (self->priv->comment, comment);
+  if (app_name)
+    nbtk_label_set_text (self->priv->app_name, app_name);
+
+  if (category)
+    nbtk_label_set_text (self->priv->category, category);
+
+  if (comment)
+    nbtk_label_set_text (self->priv->comment, comment);
 
   return NBTK_WIDGET (self);
 }
