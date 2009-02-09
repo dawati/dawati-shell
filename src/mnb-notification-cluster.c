@@ -41,6 +41,8 @@ struct _MnbNotificationClusterPrivate {
   ClutterGroup *notifiers;
   ClutterActor *control;
   ClutterActor *lowlight;
+  gint          n_notifiers;
+  NbtkWidget   *active_notifier;
 };
 
 static void
@@ -78,20 +80,34 @@ mnb_notification_cluster_finalize (GObject *object)
 static void
 mnb_notification_cluster_paint (ClutterActor *actor)
 {
-  MnbNotificationClusterPrivate *priv = MNB_NOTIFICATION_CLUSTER (actor)->priv;
-  ClutterGeometry geom;
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
 
-  clutter_actor_get_allocation_geometry (actor, &geom);
-
-#if 0
-  cogl_clip_set (CLUTTER_INT_TO_FIXED (priv->x - geom.x),
-                 CLUTTER_INT_TO_FIXED (priv->y - geom.y),
-                 CLUTTER_INT_TO_FIXED (priv->width),
-                 CLUTTER_INT_TO_FIXED (priv->height));
-#endif
-  CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class)->paint (actor);
+  if (priv->notifiers)
+    clutter_actor_paint (CLUTTER_ACTOR(priv->notifiers));
 }
 
+static void
+mnb_notification_cluster_allocate (ClutterActor          *actor,
+                                   const ClutterActorBox *box,
+                                   gboolean               origin_changed)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
+  ClutterActorClass *klass;
+
+  printf("allocate\n");
+
+  klass = CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class);
+
+  klass->allocate (actor, box, origin_changed);
+
+  if (priv->notifiers)
+    clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers), 
+                            box, origin_changed);
+
+  if (priv->control)
+    clutter_actor_allocate (CLUTTER_ACTOR(priv->control), 
+                            box, origin_changed);
+}
 
 static void
 mnb_notification_cluster_class_init (MnbNotificationClusterClass *klass)
@@ -106,6 +122,7 @@ mnb_notification_cluster_class_init (MnbNotificationClusterClass *klass)
   object_class->dispose = mnb_notification_cluster_dispose;
   object_class->finalize = mnb_notification_cluster_finalize;
 
+  clutter_class->allocate = mnb_notification_cluster_allocate;
   clutter_class->paint = mnb_notification_cluster_paint;
 }
 
@@ -114,7 +131,7 @@ id_compare (gconstpointer a, gconstpointer b)
 {
   MnbNotification *notification = MNB_NOTIFICATION (a);
   guint find_id = GPOINTER_TO_INT (b);
-  return moblin_netbook_notification_get_id (notification) - find_id;
+  return mnb_notification_get_id (notification) - find_id;
 }
 
 static NbtkWidget*
@@ -138,6 +155,8 @@ on_notification_added (MoblinNetbookNotifyStore *store,
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
   NbtkWidget *w;
 
+  printf("******** notification added ***********\n");
+
   w = find_widget (priv->notifiers, notification->id);
 
   if (!w) 
@@ -148,9 +167,17 @@ on_notification_added (MoblinNetbookNotifyStore *store,
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), 
                                    CLUTTER_ACTOR(w));
       clutter_actor_hide (CLUTTER_ACTOR(w));
+
+      priv->n_notifiers++;
     }
 
   mnb_notification_update (MNB_NOTIFICATION (w), notification);
+
+  if (priv->n_notifiers == 1)
+    {
+      priv->active_notifier = w; 
+      clutter_actor_show (CLUTTER_ACTOR(w));
+    }
 
   /* 
      need to check anim is not already running...
@@ -206,8 +233,11 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
 
   notify_store = moblin_netbook_notify_store_new ();
 
+  printf("ok 2\n");
+
   if (notify_store)
     {
+
       g_signal_connect (notify_store, 
                         "notification-added", 
                         G_CALLBACK (on_notification_added), 
@@ -217,12 +247,15 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
                         "notification-closed", 
                         G_CALLBACK (on_notification_closed), 
                         self);
+
     }
 
   priv->notifiers = CLUTTER_GROUP(clutter_group_new ());
-  /* FIXME: Need to pass down allocate */
+
   clutter_actor_set_parent (CLUTTER_ACTOR(priv->notifiers), 
                             CLUTTER_ACTOR(self));
+
+  printf("ok 3\n");
 
 }
 

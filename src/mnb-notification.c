@@ -269,7 +269,9 @@ mnb_notification_update (MnbNotification *notification,
 
   priv->id = details->id;
 
-  //clutter_label_set_text (priv->label, details->body);
+  clutter_label_set_text (CLUTTER_LABEL(priv->label), details->body);
+
+  printf("setting label details to '%s'\n", details->body);
 }
 
 guint

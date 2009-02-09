@@ -37,6 +37,7 @@
 
 #include "moblin-netbook-tray-manager.h"
 #include "moblin-netbook-notify-store.h"
+#include "mnb-notification-cluster.h"
 
 #define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
 
@@ -151,6 +152,9 @@ struct _MoblinNetbookPluginPrivate
   gint                   last_y;
 #endif
   guint                  panel_slide_timeout_id;
+
+  /* Notification 'widget' */
+  ClutterActor          *notification_cluster;
 };
 
 /*

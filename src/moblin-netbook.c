@@ -760,7 +760,15 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   setup_startup_notification (MUTTER_PLUGIN (plugin));
 
-  moblin_netbook_notify_init (MUTTER_PLUGIN (plugin));
+  // moblin_netbook_notify_init (MUTTER_PLUGIN (plugin));
+
+  /* Notifications */
+
+  priv->notification_cluster = mnb_notification_cluster_new ();
+
+  clutter_container_add (CLUTTER_CONTAINER (overlay), 
+                         priv->notification_cluster, NULL);
+  /* Keys */
 
   meta_prefs_override_no_tab_popup (TRUE);
 
@@ -810,6 +818,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   meta_keybindings_set_custom_handler ("cycle_panels_backward",
                                        metacity_alt_tab_key_handler,
                                        plugin, NULL);
+
 }
 
 static void
