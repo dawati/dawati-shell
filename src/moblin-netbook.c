@@ -1352,7 +1352,6 @@ on_config_actor_destroy (ClutterActor *actor, gpointer data)
 {
   ClutterActor *background = data;
 
-  clutter_actor_hide (background);
   clutter_actor_unparent (background);
 }
 
