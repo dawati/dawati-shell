@@ -176,6 +176,12 @@ mnb_drop_down_hide (ClutterActor *actor)
         nbtk_button_set_active (priv->button, FALSE);
     }
 
+  if (!priv->child)
+    {
+      CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->hide (actor);
+      return;
+    }
+
   priv->in_hide_animation = TRUE;
 
   g_object_ref (actor);
@@ -312,6 +318,14 @@ mnb_drop_down_new (void)
   return g_object_new (MNB_TYPE_DROP_DOWN, NULL);
 }
 
+static void
+mnb_drop_down_weak_ref_cb (gpointer data, GObject *child)
+{
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (data)->priv;
+
+  priv->child = NULL;
+}
+
 void
 mnb_drop_down_set_child (MnbDropDown *drop_down,
                          ClutterActor *child)
@@ -321,6 +335,9 @@ mnb_drop_down_set_child (MnbDropDown *drop_down,
 
   if (drop_down->priv->child)
     {
+      g_object_weak_unref (G_OBJECT (drop_down->priv->child),
+                           mnb_drop_down_weak_ref_cb, drop_down);
+
       clutter_container_remove_actor (CLUTTER_CONTAINER (drop_down),
                                       drop_down->priv->child);
     }
@@ -329,6 +346,8 @@ mnb_drop_down_set_child (MnbDropDown *drop_down,
     nbtk_table_add_actor (NBTK_TABLE (drop_down), child, 0, 0);
 
   drop_down->priv->child = child;
+
+  g_object_weak_ref (G_OBJECT (child), mnb_drop_down_weak_ref_cb, drop_down);
 }
 
 ClutterActor*
