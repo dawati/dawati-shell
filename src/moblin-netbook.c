@@ -1351,8 +1351,12 @@ static void
 on_config_actor_destroy (ClutterActor *actor, gpointer data)
 {
   ClutterActor *background = data;
+  ClutterActor *parent = clutter_actor_get_parent (background);
 
-  clutter_actor_unparent (background);
+  if (CLUTTER_IS_CONTAINER (parent))
+    clutter_container_remove_actor (CLUTTER_CONTAINER (parent), background);
+  else
+    clutter_actor_unparent (background);
 }
 
 struct config_map_data
