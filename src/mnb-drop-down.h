@@ -33,7 +33,6 @@ G_BEGIN_DECLS
 /* useful macro, probably ought to be defined somewhere more generic */
 #define MNB_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), \
                                  CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d) }
-
 #define MNB_TYPE_DROP_DOWN mnb_drop_down_get_type()
 
 #define MNB_DROP_DOWN(obj) \
@@ -63,6 +62,7 @@ typedef struct {
   NbtkTableClass parent_class;
 
   void (*show_completed) (MnbDropDown *drop_down);
+  void (*hide_completed) (MnbDropDown *drop_down);
 } MnbDropDownClass;
 
 GType mnb_drop_down_get_type (void);

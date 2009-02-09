@@ -1352,7 +1352,8 @@ on_config_actor_destroy (ClutterActor *actor, gpointer data)
 {
   ClutterActor *background = data;
 
-  clutter_actor_destroy (background);
+  clutter_actor_hide (background);
+  clutter_actor_unparent (background);
 }
 
 struct config_map_data
@@ -1381,7 +1382,7 @@ struct config_hide_data
 };
 
 static void
-on_config_actor_hide_cb (ClutterActor *actor, gpointer data)
+on_config_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
 {
   struct config_hide_data *hide_data = data;
 
@@ -1553,6 +1554,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           guint w = clutter_actor_get_width (texture);
 
           background = CLUTTER_ACTOR (mnb_drop_down_new ());
+          clutter_actor_set_reactive (background, TRUE);
 
           g_object_ref (texture);
           clutter_actor_unparent (texture);
@@ -1574,8 +1576,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           hide_data->plugin      = MOBLIN_NETBOOK_PLUGIN (plugin);
           hide_data->config_xwin = xwin;
 
-          g_signal_connect_data (background, "hide",
-                                 G_CALLBACK (on_config_actor_hide_cb),
+          g_signal_connect_data (background, "hide-completed",
+                                 G_CALLBACK (on_config_actor_hide_completed_cb),
                                  hide_data,
                                  (GClosureNotify)g_free, 0);
 

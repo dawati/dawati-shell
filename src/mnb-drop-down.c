@@ -33,6 +33,7 @@ G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
 enum
 {
   SHOW_COMPLETED,
+  HIDE_COMPLETED,
 
   LAST_SIGNAL
 };
@@ -40,12 +41,15 @@ enum
 static guint dropdown_signals[LAST_SIGNAL] = { 0 };
 
 struct _MnbDropDownPrivate {
-    ClutterActor *child;
-    NbtkButton *button;
-    gint x;
-    gint y;
-    gint width;
-    gint height;
+  ClutterActor *child;
+  NbtkButton *button;
+  gint x;
+  gint y;
+  gint width;
+  gint height;
+
+  gboolean in_show_animation : 1;
+  gboolean in_hide_animation : 1;
 };
 
 static void
@@ -83,7 +87,11 @@ mnb_drop_down_finalize (GObject *object)
 static void
 mnb_drop_down_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 {
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+
+  priv->in_show_animation = FALSE;
   g_signal_emit (actor, dropdown_signals[SHOW_COMPLETED], 0);
+  g_object_unref (actor);
 }
 
 static void
@@ -92,8 +100,15 @@ mnb_drop_down_show (ClutterActor *actor)
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
   ClutterTimeline *timeline;
   gint x, y, height, width;
-  CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->show (actor);
   ClutterAnimation *animation;
+
+  if (priv->in_show_animation)
+    {
+      g_signal_stop_emission_by_name (actor, "show");
+      return;
+    }
+
+  CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->show (actor);
 
   clutter_actor_get_position (actor, &x, &y);
   clutter_actor_get_size (actor, &width, &height);
@@ -106,6 +121,11 @@ mnb_drop_down_show (ClutterActor *actor)
 
 
   clutter_actor_set_position (actor, x, -height);
+
+  priv->in_show_animation = TRUE;
+
+  g_object_ref (actor);
+
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
                                      "x", x,
@@ -116,7 +136,6 @@ mnb_drop_down_show (ClutterActor *actor)
                     "completed",
                     G_CALLBACK (mnb_drop_down_show_completed_cb),
                     actor);
-
 }
 
 static void
@@ -129,6 +148,10 @@ mnb_drop_down_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 
   /* now that it's hidden we can put it back to where it is suppoed to be */
   clutter_actor_set_position (actor, priv->x, priv->y);
+
+  priv->in_hide_animation = FALSE;
+  g_signal_emit (actor, dropdown_signals[HIDE_COMPLETED], 0);
+  g_object_unref (actor);
 }
 
 static void
@@ -136,6 +159,12 @@ mnb_drop_down_hide (ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
   ClutterAnimation *animation;
+
+  if (priv->in_hide_animation)
+    {
+      g_signal_stop_emission_by_name (actor, "hide");
+      return;
+    }
 
   /* de-activate the button */
   if (priv->button)
@@ -146,6 +175,10 @@ mnb_drop_down_hide (ClutterActor *actor)
       if (nbtk_button_get_active (priv->button))
         nbtk_button_set_active (priv->button, FALSE);
     }
+
+  priv->in_hide_animation = TRUE;
+
+  g_object_ref (actor);
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
@@ -223,6 +256,16 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  dropdown_signals[HIDE_COMPLETED] =
+    g_signal_new ("hide-completed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbDropDownClass, hide_completed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
 }
 
 static void
