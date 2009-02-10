@@ -175,6 +175,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_container_add (CLUTTER_CONTAINER (self),
                          CLUTTER_ACTOR (self->priv->table),
                          NULL);
+  nbtk_widget_set_alignment (NBTK_WIDGET (self), 0.0, 0.0);
 
   self->priv->icon = NULL;
 
