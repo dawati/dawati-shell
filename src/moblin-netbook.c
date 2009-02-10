@@ -1557,7 +1557,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           guint w = clutter_actor_get_width (texture);
 
           background = CLUTTER_ACTOR (mnb_drop_down_new ());
-          clutter_actor_set_reactive (background, TRUE);
 
           g_object_ref (texture);
           clutter_actor_unparent (texture);
@@ -1586,7 +1585,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           clutter_actor_set_position (background, x, y);
 
-          parent = clutter_actor_get_parent (actor);
+          clutter_actor_hide (actor);
+
+          parent = mutter_plugin_get_overlay_group (plugin);
 
           clutter_container_add_actor (CLUTTER_CONTAINER (parent), background);
           clutter_actor_show_all (background);
