@@ -1,4 +1,4 @@
-SUBDIRS=penge src po data
+SUBDIRS=penge src po data tests
 
 EXTRA_DIST = intltool-extract.in intltool-merge.in intltool-update.in
 
