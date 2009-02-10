@@ -236,12 +236,6 @@ PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile
   border-width: 16;
 }
 
-PengeFlickrTile:hover, PengeTwitterTile:hover, PengeRecentFileTile:hover
-{
-  background-image: url('file://mzone/general-background-dark.png');
-  border-width: 16;
-}
-
 PengeDateTile
 {
   background-image: url('file://mzone/date-background.png');
