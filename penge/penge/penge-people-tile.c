@@ -12,6 +12,9 @@ struct _PengePeopleTilePrivate {
     ClutterActor *icon;
     NbtkWidget *primary_text;
     NbtkWidget *secondary_text;
+    ClutterActor *details_overlay;
+    ClutterTimeline *timeline;
+    ClutterBehaviour *behave;
 };
 
 enum
@@ -89,7 +92,20 @@ penge_people_tile_set_property (GObject *object, guint property_id,
 static void
 penge_people_tile_dispose (GObject *object)
 {
-  /* TODO: Ensure we don't leave anything un'freed */
+  PengePeopleTilePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->timeline)
+  {
+    g_object_unref (priv->timeline);
+    priv->timeline = NULL;
+  }
+
+  if (priv->behave)
+  {
+    g_object_unref (priv->behave);
+    priv->behave = NULL;
+  }
+
   G_OBJECT_CLASS (penge_people_tile_parent_class)->dispose (object);
 }
 
@@ -146,8 +162,21 @@ _enter_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer      userdata)
 {
+  PengePeopleTilePrivate *priv = GET_PRIVATE (userdata);
+
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
                                       "hover");
+
+  clutter_timeline_set_direction (priv->timeline,
+                                  CLUTTER_TIMELINE_FORWARD);
+  if (!clutter_timeline_is_playing (priv->timeline))
+    clutter_timeline_start (priv->timeline);
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->primary_text),
+                                      "hover");
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->secondary_text),
+                                      "hover");
+
   return FALSE;
 }
 
@@ -156,8 +185,23 @@ _leave_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer      userdata)
 {
+  PengePeopleTilePrivate *priv = GET_PRIVATE (userdata);
+
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
                                       NULL);
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->primary_text),
+                                     NULL);
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->secondary_text),
+                                      NULL);
+
+  clutter_timeline_set_direction (priv->timeline,
+                                  CLUTTER_TIMELINE_BACKWARD);
+  if (!clutter_timeline_is_playing (priv->timeline))
+    clutter_timeline_start (priv->timeline);
+
+
+
   return FALSE;
 }
 
@@ -193,6 +237,8 @@ penge_people_tile_init (PengePeopleTile *self)
                           CLUTTER_UNITS_FROM_DEVICE (8),
                           CLUTTER_UNITS_FROM_DEVICE (8),
                           CLUTTER_UNITS_FROM_DEVICE (8) };
+  ClutterColor black = { 0x0, 0x0, 0x0, 0xff };
+  ClutterAlpha *alpha;
 
   priv->primary_text = nbtk_label_new ("Primary text");
   nbtk_widget_set_style_class_name (priv->primary_text, 
@@ -216,6 +262,37 @@ penge_people_tile_init (PengePeopleTile *self)
 
   priv->icon = clutter_texture_new ();
   clutter_actor_set_size (priv->icon, 28, 28);
+
+  /* For mouse over effect that darkens the background we need this magic
+   * rectangle
+   */
+  priv->details_overlay = clutter_rectangle_new_with_color (&black);
+  clutter_actor_set_opacity (priv->details_overlay, 0x0);
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        priv->details_overlay,
+                        1,
+                        0);
+
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               priv->details_overlay,
+                               "row-span",
+                               2,
+                               "col-span",
+                               2,
+                               "x-expand",
+                               TRUE,
+                               "y-expand",
+                               FALSE,
+                               NULL);
+
+  priv->timeline = clutter_timeline_new_for_duration (300);
+
+  alpha = clutter_alpha_new_full (priv->timeline,
+                                  CLUTTER_LINEAR);
+  priv->behave = clutter_behaviour_opacity_new (alpha, 0x00, 0xc0);
+  clutter_behaviour_apply (priv->behave,
+                           (ClutterActor *)priv->details_overlay);
+
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         (ClutterActor *)priv->primary_text,
@@ -268,16 +345,19 @@ penge_people_tile_init (PengePeopleTile *self)
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
 
+
+
+
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
   g_signal_connect (self,
                     "enter-event",
                     (GCallback)_enter_event_cb,
-                    NULL);
+                    self);
   g_signal_connect (self,
                     "leave-event",
                     (GCallback)_leave_event_cb,
-                    NULL);
+                    self);
 }
 
 

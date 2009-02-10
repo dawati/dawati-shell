@@ -306,6 +306,11 @@ PengeRecentFilesPane
   color: #3a3a3aff;
 }
 
+*.PengePeopleTilePrimaryLabel:hover, *.PengePeopleTileSecondaryLabel:hover
+{
+  color: white;
+}
+
 *.PengeTwitterTileText
 {
   font-size: 12;
