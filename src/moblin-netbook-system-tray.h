@@ -89,6 +89,36 @@ struct mnbk_tray_setup_data
 
 static struct mnbk_tray_setup_data _mnbk_tray_setup_data;
 
+static void
+_mnbk_embedded_notify (GObject *gobject, GParamSpec *arg1, gpointer data)
+{
+  GtkStatusIcon *icon = GTK_STATUS_ICON (gobject);
+  GtkPlug       *config = GTK_PLUG (data);
+
+  if (gtk_status_icon_is_embedded (icon))
+    {
+      /*
+       * When we get embedded, we need to set up the config window again,
+       * as the releavent XID is different.
+       */
+      _mnbk_setup_config_window (icon, gtk_plug_get_id (config));
+    }
+}
+
+static gboolean
+_mnbk_config_show_on_delete (GtkWidget *config, GdkEvent *event, gpointer data)
+{
+  /*
+   * Ensure the config window will be visible the next time we need it.
+   */
+  gtk_widget_show_all (config);
+
+  /*
+   * Returning TRUE here stops the widget from getting destroyed.
+   */
+  return TRUE;
+}
+
 static gboolean
 _mnbk_idle_config_setup (gpointer data)
 {
@@ -96,21 +126,61 @@ _mnbk_idle_config_setup (gpointer data)
   GtkStatusIcon               *icon      = tray_data->icon;
   GtkPlug                     *config    = tray_data->config;
 
+  /*
+   * We can only set up the config window after the status icon has been
+   * embedded (we need an XID of the embedded plug).
+   */
   if (gtk_status_icon_is_embedded (icon))
     {
+      /*
+       * Make sure that the config window is realized before we do anything.
+       * if not, try to sync X and wait.
+       */
       if (!GTK_WIDGET_REALIZED (config))
         {
           XSync (GDK_DISPLAY (), False);
           return TRUE;
         }
 
+      /*
+       * Set up the config window; should this fail for any reason, wait
+       * another until the next time.
+       */
       if (_mnbk_setup_config_window (icon, gtk_plug_get_id (config)))
-        return FALSE;
+        {
+          /*
+           * We connect to notify on the status embedded property; when this
+           * changes to TRUE (after the status icon got un-embedded first), we
+           * need to re-run the setup, because the XID of the window we are
+           * hanging the MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW property on has
+           * changed.
+           */
+          g_signal_connect (icon, "notify::embedded",
+                            G_CALLBACK (_mnbk_embedded_notify), config);
+
+          /*
+           * If the application hides the config window, the tray manager will
+           * remove it from it's container; this triggers the delete-event; we
+           * want to (a) stop this event from destroying the plug (so we can
+           * show it again) and (b) call _show_all() on the plug, to make sure
+           * that when it is needed again it can be made visible by the socket.
+           */
+          g_signal_connect (config, "delete-event",
+                            G_CALLBACK (_mnbk_config_show_on_delete), icon);
+
+          /*
+           * We are done; remove this idle call back.
+           */
+          return FALSE;
+        }
     }
 
   return TRUE;
 }
 
+/*
+ * This is the funtion that the application will use to set itself up.
+ */
 static void
 mnbk_system_tray_init (GtkStatusIcon *icon, GtkPlug *config)
 {
