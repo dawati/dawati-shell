@@ -1585,6 +1585,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           clutter_actor_set_position (background, x, y);
 
+          g_object_set (actor, "no-shadow", TRUE, NULL);
+
           clutter_actor_hide (actor);
 
           parent = mutter_plugin_get_overlay_group (plugin);
