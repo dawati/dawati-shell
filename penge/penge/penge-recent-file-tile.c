@@ -316,7 +316,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   tmp_text =
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_filename_label));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
-				   PANGO_ALIGN_LEFT);
+                                   PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);
 
