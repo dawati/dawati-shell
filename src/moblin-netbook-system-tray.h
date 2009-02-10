@@ -1,5 +1,11 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+/* FIXME -- We can license this under any license we want, as there is no code
+ *          in here that links against the plugin in any way. The only thing
+ *          that the plugin uses from here is the
+ *          MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW define.
+ */
+
 /*
  * Copyright (c) 2008 Intel Corp.
  *
