@@ -254,24 +254,6 @@ PengeEventTile:hover
   border-width: 16;
 }
 
-PengePeoplePane
-{
-  background-image: url('file://mzone/people-background.png');
-  border-width: 16;
-}
-
-PengeEventsPane, PengeCalendarPane
-{
-  background-image: url('file://mzone/date-background.png');
-  border-width: 16;
-}
-
-PengeRecentFilesPane
-{
-  background-image: url('file://mzone/recent-files-background.png');
-  border-width: 16;
-}
-
 *.PengeEventTime
 {
   background-image: url('file://mzone/time-bg.png');
