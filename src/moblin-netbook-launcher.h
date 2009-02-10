@@ -25,6 +25,6 @@
 #ifndef MOBLIN_NETBOOK_LAUNCHER_H
 #define MOBLIN_NETBOOK_LAUNCHER_H
 
-ClutterActor *make_launcher (MutterPlugin *plugin, gint width);
+ClutterActor *make_launcher (MutterPlugin *plugin, gint width, gint height);
 
 #endif

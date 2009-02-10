@@ -231,27 +231,27 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
 }
 
 ClutterActor *
-make_launcher (MutterPlugin *plugin, gint width)
+make_launcher (MutterPlugin *plugin,
+               gint          width,
+               gint          height)
 {
   GSList *apps, *a;
   GtkIconTheme  *theme;
-  ClutterActor  *stage, *table;
+  ClutterActor  *table, *view, *scroll;
   gint           row, col;
   struct entry_data *entry_data;
   NbtkWidget    *drop_down, *footer, *up_button;
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4),
-                            CLUTTER_UNITS_FROM_INT (4)};
+  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
+                            CLUTTER_UNITS_FROM_INT (PADDING),
+                            CLUTTER_UNITS_FROM_INT (PADDING),
+                            CLUTTER_UNITS_FROM_INT (PADDING)};
 
   table = CLUTTER_ACTOR (nbtk_table_new ());
-//  nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
+  nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
   clutter_actor_set_name (table, "launcher-table");
 
-//  clutter_actor_set_reactive (table, TRUE);
-
-//  nbtk_table_set_col_spacing (NBTK_TABLE (table), pad);
-//  nbtk_table_set_row_spacing (NBTK_TABLE (table), pad);
+  nbtk_table_set_col_spacing (NBTK_TABLE (table), PADDING);
+  nbtk_table_set_row_spacing (NBTK_TABLE (table), PADDING);
 
   apps = get_all_applications ();
 
@@ -263,25 +263,26 @@ make_launcher (MutterPlugin *plugin, gint width)
       gchar             *exec;
 
       GMenuTreeEntry *entry = a->data;
-      GtkIconInfo *info = NULL;
+      GtkIconInfo *info;
 
+      info = NULL;
       icon_file = NULL;
 
-      name = gmenu_tree_entry_get_icon (entry);
       exec = g_strdup (gmenu_tree_entry_get_exec (entry));
-      info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
+      name = gmenu_tree_entry_get_icon (entry);
+      if (name)
+        info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
       if (info)
-        {
-          icon_file = gtk_icon_info_get_filename (info);
-        }
+        icon_file = gtk_icon_info_get_filename (info);
 
-      if (name && exec && info && icon_file)
+      if (exec && icon_file)
         {
-          MnbLauncherButton *button;
+          NbtkWidget *button;
 
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
                                             name, NULL, NULL);
-          nbtk_table_add_widget (NBTK_TABLE (table), button, row, col);
+          nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
+                                      1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
 
           entry_data = g_new (struct entry_data, 1);
           entry_data->exec = exec;
@@ -305,9 +306,18 @@ make_launcher (MutterPlugin *plugin, gint width)
         }
     }
 
-  clutter_actor_set_width (CLUTTER_ACTOR (table), width);
+  view = nbtk_viewport_new ();
+  clutter_container_add (CLUTTER_CONTAINER (view), table, NULL);
+
+  scroll = nbtk_scroll_view_new ();
+  clutter_container_add (CLUTTER_CONTAINER (scroll), CLUTTER_ACTOR (view), NULL);
+
   drop_down = mnb_drop_down_new ();
-  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
+  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), scroll);
+
+  clutter_actor_set_size (scroll, width, height);
+  /* TODO Rob: retrieve the scroll's client rect and occupy all.
+   * clutter_actor_set_width (table, width); */
 
   return CLUTTER_ACTOR (drop_down);
 }

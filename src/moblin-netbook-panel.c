@@ -515,7 +515,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_hide (priv->switcher);
 
   /* launcher drop down */
-  priv->launcher = make_launcher (plugin, width - PANEL_X_PADDING * 2);
+  priv->launcher = make_launcher (plugin,
+                                  width - PANEL_X_PADDING * 2,
+                                  screen_height - PANEL_HEIGHT);
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->launcher);
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->launcher),
                             NBTK_BUTTON (priv->panel_buttons[5]));
@@ -561,4 +563,3 @@ make_panel (MutterPlugin *plugin, gint width)
 
   return panel;
 }
-
