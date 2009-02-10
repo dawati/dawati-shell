@@ -32,17 +32,12 @@ button_clicked_cb (GtkButton *button, gpointer data)
 {
   GtkWidget *config = data;
 
+  /*
+   * Whatever you do, do not destroy the config window; if you need to replace
+   * it with a different one, you will need to run mnbk_system_tray_init()
+   * again.
+   */
   gtk_widget_hide (config);
-}
-
-/*
- * Re-enable showing of the widget once we are removed from the socket.
- */
-static gboolean
-plug_show_on_delete (GtkWidget *widget, gpointer data)
-{
-  gtk_widget_show_all (widget);
-  return TRUE;
 }
 
 int
@@ -56,16 +51,6 @@ main (int argc, char *argv[])
   table = gtk_table_new (3, 3, TRUE);
 
   config = gtk_plug_new (0);
-
-  /*
-   * When we hide the config, the tray manager will remove the window
-   * from it's container; this triggers the delete-event; we want to (a) stop
-   * this event from destroying our plug (so we can show it again) and (b)
-   * call _show_all() on the plug, to make sure that when it is needed again
-   * it can be made visible by the socket.
-   */
-  g_signal_connect (config, "delete-event",
-                    G_CALLBACK (plug_show_on_delete), NULL);
 
   gtk_container_add (GTK_CONTAINER (config), table);
 
