@@ -60,7 +60,7 @@ typedef struct {
 typedef struct {
   NbtkTableClass parent_class;
 
-  void (*show_completed) (MnbNotification *notification);
+  void (*closed) (MnbNotification *notification);
 } MnbNotificationClass;
 
 GType mnb_notification_get_type (void);

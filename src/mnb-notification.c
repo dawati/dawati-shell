@@ -31,11 +31,11 @@ G_DEFINE_TYPE (MnbNotification, mnb_notification, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_NOTIFICATION, MnbNotificationPrivate))
 
-enum
-{
-  DISMISSED,
-  LAST_SIGNAL
+enum {
+  CLOSED,
+  N_SIGNALS,
 };
+
 
 enum {
   PROP_0,
@@ -44,12 +44,10 @@ enum {
   PROP_TEXT
 };
 
-
-
-static guint notification_signals[LAST_SIGNAL] = { 0 };
+static guint signals[N_SIGNALS] = {0};
 
 struct _MnbNotificationPrivate {
-  ClutterActor *label;
+  NbtkWidget   *label;
   ClutterActor *icon;
   NbtkWidget   *dismiss_button;
   NbtkWidget   *action_button;
@@ -192,12 +190,22 @@ mnb_notification_class_init (MnbNotificationClass *klass)
   object_class->dispose = mnb_notification_dispose;
   object_class->finalize = mnb_notification_finalize;
 
+  signals[CLOSED] 
+    = g_signal_new ("closed",
+                    G_OBJECT_CLASS_TYPE (klass),
+                    G_SIGNAL_RUN_FIRST,
+                    G_STRUCT_OFFSET (MnbNotificationClass, closed),
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
+
+
+#if 0
   clutter_class->show = mnb_notification_show;
   clutter_class->hide = mnb_notification_hide;
-#if 0
+
   clutter_class->button_press_event = mnb_button_event_capture;
   clutter_class->button_release_event = mnb_button_event_capture;
-
 
   notification_signals[SHOW_COMPLETED] =
     g_signal_new ("show-completed",
@@ -231,10 +239,16 @@ mnb_notification_init (MnbNotification *self)
   priv->dismiss_button = nbtk_button_new ();
   priv->action_button  = nbtk_button_new ();
   //priv->icon           = clutter_texture_new ();
-  priv->label          = clutter_label_new ();
+  priv->label          = nbtk_label_new ("");
 
-  nbtk_table_add_actor (NBTK_TABLE (self), priv->label, 0, 0);
-  
+  //clutter_label_set_use_markup (CLUTTER_LABEL(priv->label),TRUE);
+
+  nbtk_table_add_widget (NBTK_TABLE (self), priv->label, 0, 0);
+  nbtk_table_set_widget_colspan (NBTK_TABLE (self), priv->label, 2);
+
+  nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
+  nbtk_table_add_widget (NBTK_TABLE (self), priv->dismiss_button, 1, 1);
+
   //nbtk_widget_set_style_class_name (priv->label, "notification-label");
 
 #if 0
@@ -269,7 +283,7 @@ mnb_notification_update (MnbNotification *notification,
 
   priv->id = details->id;
 
-  clutter_label_set_text (CLUTTER_LABEL(priv->label), details->body);
+  nbtk_label_set_text (NBTK_LABEL(priv->label), details->body);
 
   printf("setting label details to '%s'\n", details->body);
 }

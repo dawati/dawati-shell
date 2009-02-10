@@ -148,6 +148,14 @@ find_widget (ClutterGroup *container, guint32 id)
 }
 
 static void
+on_closed (MnbNotification *notification, MoblinNetbookNotifyStore *store)
+{
+  moblin_netbook_notify_store_close (store, 
+                                     mnb_notification_get_id (notification), 
+                                     ClosedDismissed);
+}
+
+static void
 on_notification_added (MoblinNetbookNotifyStore *store, 
                        Notification             *notification, 
                        MnbNotificationCluster   *cluster)
@@ -162,11 +170,16 @@ on_notification_added (MoblinNetbookNotifyStore *store,
   if (!w) 
     {
       w = mnb_notification_new ();
-      // g_signal_connect (w, "closed", G_CALLBACK (on_closed), store);
+      g_signal_connect (w, "closed", G_CALLBACK (on_closed), store);
       
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), 
                                    CLUTTER_ACTOR(w));
       clutter_actor_hide (CLUTTER_ACTOR(w));
+
+      clutter_actor_set_size (CLUTTER_ACTOR(w),
+                              /*CLUTTER_STAGE_WIDTH ()/6,*/
+                              200,
+                              200);
 
       priv->n_notifiers++;
     }
@@ -213,6 +226,17 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
   if (w)
     {
+
+      printf("******** notification added ***********\n");
+
+      if (priv->n_notifiers == 1)
+        {
+          /* XXX, wed actually run anim to remove then close */
+          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers), 
+                                          CLUTTER_ACTOR(w));
+          priv->n_notifiers--;
+        }
+
       /* Remove and run animation */
       /*
       if (n_notifiers == 1)
