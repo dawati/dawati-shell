@@ -252,6 +252,12 @@ try_alt_tab_grab (MutterPlugin *plugin,
   MetaDisplay                *display  = meta_screen_get_display (screen);
   MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
   MetaWindow                 *next;
+  MetaWindow                 *current;
+
+  current = meta_display_get_tab_current (display,
+                                          META_TAB_LIST_NORMAL,
+                                          screen,
+                                          NULL);
 
   next = mnb_switcher_get_next_window (switcher, NULL, backward);
 
@@ -319,13 +325,28 @@ try_alt_tab_grab (MutterPlugin *plugin,
           if (backward)
             next = META_WINDOW (priv->global_tab_list->data);
           else
-            next = META_WINDOW (g_list_last (priv->global_tab_list->data));
+            next = META_WINDOW (g_list_last (priv->global_tab_list)->data);
         }
     }
 
-  if (!next)
+  /*
+   * If we still do not have the next window, or the one we got so far matches
+   * the current window, we fall back onto metacity's focus list and try to
+   * switch to that.
+   */
+  if (current && (!next || next == current))
     {
-      return;
+      MetaWorkspace *ws = meta_window_get_workspace (current);
+
+      next = meta_display_get_tab_next (display,
+                                        META_TAB_LIST_NORMAL,
+                                        screen,
+                                        ws,
+                                        current,
+                                        backward);
+
+      if (!next || next == current)
+        return;
     }
 
   if (meta_display_begin_grab_op (display,
@@ -519,8 +540,6 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
 {
   MutterPlugin               *plugin = MUTTER_PLUGIN (data);
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  printf ("Alt+TAB received\n");
 
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
     {
