@@ -31,6 +31,9 @@
 #define MNB_LAUNCHER_BUTTON_GET_PRIVATE(obj)    \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER_BUTTON, MnbLauncherButtonPrivate))
 
+/* Distance between icon and text. */
+#define COL_SPACING 10
+
 enum
 {
   ACTIVATED,
@@ -42,7 +45,7 @@ struct _MnbLauncherButtonPrivate
 {
   NbtkWidget    *table;
   ClutterActor  *icon;
-  NbtkLabel     *app_name;
+  NbtkLabel     *app;
   NbtkLabel     *category;
   NbtkLabel     *comment;
 
@@ -70,10 +73,10 @@ dispose (GObject *object)
       self->priv->icon = NULL;
     }
 
-  if (self->priv->app_name)
+  if (self->priv->app)
     {
-      clutter_actor_unparent (CLUTTER_ACTOR (self->priv->app_name));
-      self->priv->app_name = NULL;
+      clutter_actor_unparent (CLUTTER_ACTOR (self->priv->app));
+      self->priv->app = NULL;
     }
 
   if (self->priv->category)
@@ -89,6 +92,181 @@ dispose (GObject *object)
     }
 
   G_OBJECT_CLASS (mnb_launcher_button_parent_class)->dispose (object);
+}
+
+static void
+get_preferred_width (ClutterActor *actor,
+                     ClutterUnit   for_height,
+                     ClutterUnit  *min_width,
+                     ClutterUnit  *natural_width)
+{
+  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+  ClutterUnit natural_text_width;
+
+  *min_width = 0;
+  *natural_width = 0;
+
+  if (self->priv->icon)
+    {
+      *min_width += clutter_actor_get_widthu (self->priv->icon);
+      *natural_width += clutter_actor_get_widthu (self->priv->icon);
+    }
+
+  natural_text_width = 0;
+  natural_text_width = MAX (natural_text_width,
+                            clutter_actor_get_widthu (CLUTTER_ACTOR (self->priv->app)));
+  natural_text_width = MAX (natural_text_width,
+                            clutter_actor_get_widthu (CLUTTER_ACTOR (self->priv->category)));
+  natural_text_width = MAX (natural_text_width,
+                            clutter_actor_get_widthu (CLUTTER_ACTOR (self->priv->category)));
+
+  *natural_width += COL_SPACING + natural_text_width;
+}
+
+static void
+get_preferred_height (ClutterActor *actor,
+                      ClutterUnit   for_width,
+                      ClutterUnit  *min_height,
+                      ClutterUnit  *natural_height)
+{
+  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+  ClutterUnit natural_text_height;
+
+  *min_height = 0;
+  *natural_height = 0;
+
+  if (self->priv->icon)
+    {
+      *min_height += clutter_actor_get_heightu (self->priv->icon);
+      *natural_height += clutter_actor_get_heightu (self->priv->icon);
+    }
+
+  natural_text_height = 0;
+  natural_text_height += clutter_actor_get_heightu (CLUTTER_ACTOR (self->priv->app));
+  natural_text_height += clutter_actor_get_heightu (CLUTTER_ACTOR (self->priv->category));
+  natural_text_height += clutter_actor_get_heightu (CLUTTER_ACTOR (self->priv->comment));
+
+  *natural_height += natural_text_height;
+}
+
+static void
+allocate (ClutterActor          *actor,
+          const ClutterActorBox *box,
+          gboolean               origin_changed)
+{
+  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+  ClutterActorBox child_box;
+  NbtkPadding *padding;
+  gint border_top, border_right, border_bottom, border_left;
+  ClutterUnit client_width, client_height, text_x;
+
+  CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)->allocate (actor, box, origin_changed);
+
+  nbtk_stylable_get (NBTK_STYLABLE (self),
+                    "border-top-width", &border_top,
+                    "border-bottom-width", &border_bottom,
+                    "border-right-width", &border_right,
+                    "border-left-width", &border_left,
+                    "padding", &padding,
+                    NULL);
+
+  child_box.x1 = CLUTTER_UNITS_FROM_INT (border_left) + padding->left;
+  child_box.y1 = CLUTTER_UNITS_FROM_INT (border_top) + padding->top;
+  child_box.x2 = box->x2 - box->x1 - child_box.x1 - CLUTTER_UNITS_FROM_INT (border_right) - padding->right;
+  child_box.y2 = box->y2 - box->y1 - child_box.y1 - CLUTTER_UNITS_FROM_INT (border_bottom) - padding->bottom;
+
+#define CLAMP_INSIDE(box_, bounding_box_)                 \
+          box_.x1 = MIN ((box_).x1, (bounding_box_).x2);  \
+          box_.y1 = MIN ((box_).y1, (bounding_box_).y2);  \
+          box_.x2 = MAX ((box_).x1, (box_).x2);           \
+          box_.y2 = MAX ((box_).y1, (box_).y2);
+
+  /* Clamp for sanity, so values stay inside of the allocation box. */
+  CLAMP_INSIDE (child_box, *box);
+
+  client_width = child_box.x2 - child_box.x1;
+  client_height = child_box.y2 - child_box.y1;
+  /* Left-align text. */
+  text_x = child_box.x1;
+
+  /* Icon goes vertically centered in the left column. */
+  if (self->priv->icon)
+    {
+      ClutterActorBox icon_box;
+
+      icon_box.x1 = child_box.x1;
+      icon_box.y1 = child_box.y1 +
+                    (client_height - clutter_actor_get_heightu (self->priv->icon)) / 2;
+      icon_box.x2 = icon_box.x1 + clutter_actor_get_widthu (self->priv->icon);
+      icon_box.y2 = icon_box.y1 + clutter_actor_get_heightu (self->priv->icon);
+
+      CLAMP_INSIDE (icon_box, child_box);
+      clutter_actor_allocate (self->priv->icon, &icon_box, origin_changed);
+
+      /* Have icon, text to the right of it. */
+      text_x = icon_box.x2 + COL_SPACING;
+    }
+
+  /* App label goes on top of the right column. */
+  if (self->priv->app)
+    {
+      ClutterActorBox app_box;
+      ClutterUnit app_width, app_height;
+
+      clutter_actor_get_preferred_size (CLUTTER_ACTOR (self->priv->app),
+                                        NULL, NULL,
+                                        &app_width, &app_height);
+      app_box.x1 = text_x;
+      app_box.y1 = child_box.y1;
+      app_box.x2 = MIN (app_box.x1 + app_width, child_box.x2);
+      app_box.y2 = app_box.y1 + app_height;
+
+      CLAMP_INSIDE (app_box, child_box);
+      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->app),
+                              &app_box, origin_changed);
+    }
+
+  /* Category label goes vertically centered in the right column. */
+  if (self->priv->category)
+    {
+      ClutterActorBox category_box;
+      ClutterUnit category_width, category_height;
+
+      clutter_actor_get_preferred_size (CLUTTER_ACTOR (self->priv->category),
+                                        NULL, NULL,
+                                        &category_width, &category_height);
+      category_box.x1 = text_x;
+      category_box.y1 = child_box.y1 +
+                        (client_height - clutter_actor_get_heightu (CLUTTER_ACTOR (self->priv->category))) / 2;
+      category_box.x2 = MIN (category_box.x1 + category_width, child_box.x2);
+      category_box.y2 = category_box.y1 +
+                        clutter_actor_get_heightu (CLUTTER_ACTOR (self->priv->category));
+
+      CLAMP_INSIDE (category_box, child_box);
+      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->category),
+                              &category_box, origin_changed);
+    }
+
+  /* Comment label to bottom of the right column. */
+  if (self->priv->comment)
+    {
+      ClutterActorBox comment_box;
+      ClutterUnit comment_width, comment_height;
+
+      clutter_actor_get_preferred_size (CLUTTER_ACTOR (self->priv->comment),
+                                        NULL, NULL,
+                                        &comment_width, &comment_height);
+      comment_box.x1 = text_x;
+      comment_box.y1 = child_box.y2 - clutter_actor_get_heightu (CLUTTER_ACTOR (self->priv->comment));
+      comment_box.x2 = MIN (comment_box.x1 + comment_width, child_box.x2);
+      comment_box.y2 = child_box.y2;
+
+      CLAMP_INSIDE (comment_box, child_box);
+      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->comment),
+                              &comment_box, origin_changed);
+    }
+
+#undef CLAMP_INSIDE
 }
 
 static gboolean
@@ -157,6 +335,47 @@ leave_event (ClutterActor         *actor,
 }
 
 static void
+pick (ClutterActor       *actor,
+      const ClutterColor *pick_color)
+{
+  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)->pick (actor, pick_color);
+
+  if (self->priv->icon && CLUTTER_ACTOR_IS_VISIBLE (self->priv->icon))
+    clutter_actor_paint (self->priv->icon);
+
+  if (self->priv->app && CLUTTER_ACTOR_IS_VISIBLE (self->priv->app))
+    clutter_actor_paint (CLUTTER_ACTOR (self->priv->app));
+
+  if (self->priv->category && CLUTTER_ACTOR_IS_VISIBLE (self->priv->category))
+    clutter_actor_paint (CLUTTER_ACTOR (self->priv->category));
+
+  if (self->priv->comment && CLUTTER_ACTOR_IS_VISIBLE (self->priv->comment))
+    clutter_actor_paint (CLUTTER_ACTOR (self->priv->comment));
+}
+
+static void
+paint (ClutterActor *actor)
+{
+  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)->paint (actor);
+
+  if (self->priv->icon && CLUTTER_ACTOR_IS_VISIBLE (self->priv->icon))
+    clutter_actor_paint (self->priv->icon);
+
+  if (self->priv->app && CLUTTER_ACTOR_IS_VISIBLE (self->priv->app))
+    clutter_actor_paint (CLUTTER_ACTOR (self->priv->app));
+
+  if (self->priv->category && CLUTTER_ACTOR_IS_VISIBLE (self->priv->category))
+    clutter_actor_paint (CLUTTER_ACTOR (self->priv->category));
+
+  if (self->priv->comment && CLUTTER_ACTOR_IS_VISIBLE (self->priv->comment))
+    clutter_actor_paint (CLUTTER_ACTOR (self->priv->comment));
+}
+
+static void
 mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -166,10 +385,15 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 
   object_class->dispose = dispose;
 
+  actor_class->get_preferred_height = get_preferred_height;
+  actor_class->get_preferred_width = get_preferred_width;
+  actor_class->allocate = allocate;
   actor_class->button_press_event = button_press_event;
   actor_class->button_release_event = button_release_event;
   actor_class->enter_event = enter_event;
   actor_class->leave_event = leave_event;
+  actor_class->pick = pick;
+  actor_class->paint = paint;
 
   _signals[ACTIVATED] = g_signal_new ("activated",
                                     G_TYPE_FROM_CLASS (klass),
@@ -180,58 +404,88 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
                                     G_TYPE_NONE, 1, G_TYPE_POINTER);
 }
 
+/* TODO Rob delete
+static gboolean
+enter_cb (ClutterActor      *actor,
+          ClutterEvent      *event,
+          MnbLauncherButton *self)
+{
+  return enter_event (CLUTTER_ACTOR (self), (ClutterCrossingEvent *) event);
+}
+
+static gboolean
+leave_cb (ClutterActor      *actor,
+          ClutterEvent      *event,
+          MnbLauncherButton *self)
+{
+  return leave_event (CLUTTER_ACTOR (self), (ClutterCrossingEvent *) event);
+}
+*/
+
 static void
 mnb_launcher_button_init (MnbLauncherButton *self)
 {
   ClutterActor *label;
-  NbtkTableChildOptions table_child_flags = NBTK_Y_EXPAND | NBTK_Y_FILL;
+
+//  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
+//  g_signal_connect (G_OBJECT (self), "enter-event", G_CALLBACK (enter_cb), self);
+//  g_signal_connect (G_OBJECT (self), "leave-event", G_CALLBACK (leave_cb), self);
 
   self->priv = MNB_LAUNCHER_BUTTON_GET_PRIVATE (self);
 
-  self->priv->table = nbtk_table_new ();
-  nbtk_table_set_col_spacing (NBTK_TABLE (self->priv->table), 10);
-  clutter_container_add (CLUTTER_CONTAINER (self),
-                         CLUTTER_ACTOR (self->priv->table),
-                         NULL);
-  nbtk_widget_set_alignment (NBTK_WIDGET (self), 0.0, 0.0);
-
+  /* icon */
   self->priv->icon = NULL;
 
-  self->priv->app_name = (NbtkLabel *) nbtk_label_new (NULL);
-  label = nbtk_label_get_clutter_text (self->priv->app_name);
+  /* "app" label */
+  self->priv->app = (NbtkLabel *) nbtk_label_new (NULL);
+  clutter_actor_set_name (CLUTTER_ACTOR (self->priv->app), "launcher-text");
+//  clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->app), TRUE);
+//  g_signal_connect (G_OBJECT (self->priv->app), "enter-event", G_CALLBACK (enter_cb), self);
+//  g_signal_connect (G_OBJECT (self->priv->app), "leave-event", G_CALLBACK (leave_cb), self);
+  clutter_actor_set_parent (CLUTTER_ACTOR (self->priv->app), CLUTTER_ACTOR (self));
+
+  label = nbtk_label_get_clutter_text (self->priv->app);
+//  clutter_actor_set_reactive (CLUTTER_ACTOR (label), TRUE);
+//  g_signal_connect (G_OBJECT (label), "enter-event", G_CALLBACK (enter_cb), self);
+//  g_signal_connect (G_OBJECT (label), "leave-event", G_CALLBACK (leave_cb), self);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
-  clutter_actor_set_name (label, "launcher-text");
-  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
-                              NBTK_WIDGET (self->priv->app_name),
-                              0, 1, 1, 1, table_child_flags,
-                              0, 0);
 
+  /* "category" label */
   self->priv->category = (NbtkLabel *) nbtk_label_new (NULL);
-  label = nbtk_label_get_clutter_text (self->priv->app_name);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
-  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
-  clutter_actor_set_name (label, "launcher-category");
-  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
-                              NBTK_WIDGET (self->priv->category),
-                              1, 1, 1, 1, table_child_flags,
-                              0, 0);
+  clutter_actor_set_name (CLUTTER_ACTOR (self->priv->category), "launcher-category");
+//  clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->category), TRUE);
+//  g_signal_connect (G_OBJECT (self->priv->category), "enter-event", G_CALLBACK (enter_cb), self);
+//  g_signal_connect (G_OBJECT (self->priv->category), "leave-event", G_CALLBACK (leave_cb), self);
+  clutter_actor_set_parent (CLUTTER_ACTOR (self->priv->category), CLUTTER_ACTOR (self));
 
-  self->priv->comment = (NbtkLabel *) nbtk_label_new (NULL);
-  label = nbtk_label_get_clutter_text (self->priv->app_name);
+  label = nbtk_label_get_clutter_text (self->priv->category);
+//  clutter_actor_set_reactive (CLUTTER_ACTOR (label), TRUE);
+//  g_signal_connect (G_OBJECT (label), "enter-event", G_CALLBACK (enter_cb), self);
+//  g_signal_connect (G_OBJECT (label), "leave-event", G_CALLBACK (leave_cb), self);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
-  clutter_actor_set_name (label, "launcher-comment");
-  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
-                              NBTK_WIDGET (self->priv->comment),
-                              2, 1, 1, 1, table_child_flags,
-                              0, 0);
+
+  /* "comment" label */
+  self->priv->comment = (NbtkLabel *) nbtk_label_new (NULL);
+  clutter_actor_set_name (CLUTTER_ACTOR (self->priv->comment), "launcher-comment");
+//  clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->comment), TRUE);
+//  g_signal_connect (G_OBJECT (self->priv->comment), "enter-event", G_CALLBACK (enter_cb), self);
+//  g_signal_connect (G_OBJECT (self->priv->comment), "leave-event", G_CALLBACK (leave_cb), self);
+  clutter_actor_set_parent (CLUTTER_ACTOR (self->priv->comment), CLUTTER_ACTOR (self));
+
+  label = nbtk_label_get_clutter_text (self->priv->comment);
+//  clutter_actor_set_reactive (CLUTTER_ACTOR (label), TRUE);
+//  g_signal_connect (G_OBJECT (label), "enter-event", G_CALLBACK (enter_cb), self);
+//  g_signal_connect (G_OBJECT (label), "leave-event", G_CALLBACK (leave_cb), self);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
 }
 
 NbtkWidget *
 mnb_launcher_button_new (const gchar *icon_file,
                          gint         icon_size,
-                         const gchar *app_name,
+                         const gchar *app,
                          const gchar *category,
                          const gchar *comment)
 {
@@ -253,16 +507,11 @@ mnb_launcher_button_new (const gchar *icon_file,
       clutter_actor_set_size (self->priv->icon, icon_size, icon_size);
       g_object_set (G_OBJECT (self->priv->icon), "sync-size", TRUE, NULL);
     }
-
-    nbtk_table_add_actor_full (NBTK_TABLE (self->priv->table),
-                               self->priv->icon,
-                               0, 0, 3, 1,
-                               NBTK_KEEP_ASPECT_RATIO | NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
-                               0.5, 0.5);
+    clutter_actor_set_parent (CLUTTER_ACTOR (self->priv->icon), CLUTTER_ACTOR (self));
   }
 
-  if (app_name)
-    nbtk_label_set_text (self->priv->app_name, app_name);
+  if (app)
+    nbtk_label_set_text (self->priv->app, app);
 
   if (category)
     nbtk_label_set_text (self->priv->category, category);
