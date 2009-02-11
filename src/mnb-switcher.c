@@ -21,6 +21,8 @@
 
 #include "mnb-switcher.h"
 #include "moblin-netbook.h"
+#include "moblin-netbook-panel.h"
+#include <display.h>
 #include <nbtk/nbtk-tooltip.h>
 
 #define HOVER_TIMEOUT  800
@@ -847,7 +849,7 @@ mnb_switcher_show (ClutterActor *self)
       ClutterActor          *texture, *c_tx, *clone;
       gint                   ws_indx;
       MetaCompWindowType     type;
-      gint                   w, h;
+      guint                  w, h;
       struct origin_data    *origin_data;
       MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
       gchar                 *title;
@@ -881,7 +883,7 @@ mnb_switcher_show (ClutterActor *self)
         }
 
       texture = mutter_window_get_texture (mw);
-      c_tx    = clutter_clone_new (CLUTTER_TEXTURE (texture));
+      c_tx    = clutter_clone_new (texture);
       clone   = g_object_new (MNB_TYPE_SWITCHER_APP, NULL);
       nbtk_widget_set_style_class_name (NBTK_WIDGET (clone),
                                         "switcher-application");
@@ -967,7 +969,6 @@ mnb_switcher_show (ClutterActor *self)
   {
     NbtkWidget *new_ws = nbtk_table_new ();
     NbtkWidget *label;
-    ClutterChildMeta *child;
 
     label = nbtk_label_new ("");
     nbtk_table_add_widget (NBTK_TABLE (table), label, 0, ws_count);
@@ -1027,7 +1028,7 @@ mnb_switcher_append_workspace (MnbSwitcher *switcher)
   NbtkWidget         *last_ws = priv->new_workspace;
   NbtkWidget         *last_label = priv->new_label;
   NbtkTable          *new_ws;
-  gint                row, col;
+  gint                col;
   ClutterChildMeta   *meta;
 
   meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (table),
