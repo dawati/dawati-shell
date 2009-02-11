@@ -1,7 +1,9 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <clutter/clutter.h>
+#include <nbtk/nbtk.h>
 #include "mnb-launcher-button.h"
 
 static void
@@ -16,9 +18,7 @@ int
 main (int argc, char *argv[])
 {
   NbtkWidget *launcher;
-  ClutterColor stage_color =  { 0xff, 0xff, 0xff, 0xff };
   ClutterActor *stage;
-  GError *err = NULL;
 
   clutter_init (&argc, &argv);
 
