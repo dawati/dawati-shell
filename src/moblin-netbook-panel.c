@@ -143,8 +143,7 @@ show_panel_maybe_control (MutterPlugin *plugin,
                           MnbkControl   control)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  gint           i;
-  gint           x = clutter_actor_get_x (priv->panel);
+  gint i;
   struct panel_out_data *panel_data = g_new0 (struct panel_out_data, 1);
   ClutterAnimation *animation;
 
@@ -339,7 +338,7 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
                                ClutterActor     *icon,
                                ClutterActor     *tray)
 {
-  static col = 0;
+  static gint col = 0;
   nbtk_table_add_actor (NBTK_TABLE (tray), icon, 0, col++);
   clutter_container_child_set (CLUTTER_CONTAINER (tray), icon,
                                "keep-aspect-ratio", TRUE, NULL);
@@ -376,9 +375,8 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterActor               *tray;
   ClutterActor               *background, *bg_texture;
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
-  ClutterActor               *launcher, *overlay;
+  ClutterActor               *overlay;
   ClutterActor               *mzone_grid_view;
-  gint                        x, w;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
 
