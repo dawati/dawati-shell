@@ -94,8 +94,6 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
 
-  printf("allocate\n");
-
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class);
 
   klass->allocate (actor, box, origin_changed);
@@ -163,8 +161,6 @@ on_notification_added (MoblinNetbookNotifyStore *store,
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
   NbtkWidget *w;
 
-  printf("******** notification added ***********\n");
-
   w = find_widget (priv->notifiers, notification->id);
 
   if (!w) 
@@ -177,8 +173,7 @@ on_notification_added (MoblinNetbookNotifyStore *store,
       clutter_actor_hide (CLUTTER_ACTOR(w));
 
       clutter_actor_set_size (CLUTTER_ACTOR(w),
-                              /*CLUTTER_STAGE_WIDTH ()/6,*/
-                              200,
+                              CLUTTER_STAGE_WIDTH ()/6,
                               200);
 
       priv->n_notifiers++;
@@ -227,8 +222,6 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
   if (w)
     {
 
-      printf("******** notification added ***********\n");
-
       if (priv->n_notifiers == 1)
         {
           /* XXX, wed actually run anim to remove then close */
@@ -257,8 +250,6 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
 
   notify_store = moblin_netbook_notify_store_new ();
 
-  printf("ok 2\n");
-
   if (notify_store)
     {
 
@@ -278,8 +269,6 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
 
   clutter_actor_set_parent (CLUTTER_ACTOR(priv->notifiers), 
                             CLUTTER_ACTOR(self));
-
-  printf("ok 3\n");
 
 }
 

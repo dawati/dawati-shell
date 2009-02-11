@@ -259,7 +259,6 @@ connect_to_dbus (MoblinNetbookNotifyStore *self)
   dbus_g_connection_register_g_object (connection,
                                        "/org/freedesktop/Notifications",
                                        G_OBJECT (self));
-  printf("ok\n");
 }
 
 static void
