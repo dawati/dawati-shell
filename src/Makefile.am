@@ -44,7 +44,7 @@ MARSHALS = marshal.c marshal.h
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la \
-			     $(top_srcdir)/penge/penge/libpenge.la
+			     $(top_builddir)/penge/penge/libpenge.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 
