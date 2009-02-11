@@ -1,0 +1,291 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+/*
+ * Copyright (c) 2008 Intel Corp.
+ *
+ * Author: Thomas Wood <thomas@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+#include "mnb-notification-cluster.h"
+#include "mnb-notification.h"
+#include "moblin-netbook-notify-store.h"
+
+#define SLIDE_DURATION 150
+
+G_DEFINE_TYPE (MnbNotificationCluster,   \
+               mnb_notification_cluster, \
+               CLUTTER_TYPE_ACTOR)
+
+#define GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
+   MNB_TYPE_NOTIFICATION_CLUSTER,    \
+   MnbNotificationClusterPrivate))
+
+
+struct _MnbNotificationClusterPrivate {
+  ClutterGroup *notifiers;
+  ClutterActor *control;
+  ClutterActor *lowlight;
+  gint          n_notifiers;
+  NbtkWidget   *active_notifier;
+};
+
+static void
+mnb_notification_cluster_get_property (GObject *object, guint property_id,
+                                       GValue *value, GParamSpec *pspec)
+{
+  switch (property_id) {
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
+mnb_notification_cluster_set_property (GObject *object, guint property_id,
+                                       const GValue *value, GParamSpec *pspec)
+{
+  switch (property_id) {
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
+mnb_notification_cluster_dispose (GObject *object)
+{
+  G_OBJECT_CLASS (mnb_notification_cluster_parent_class)->dispose (object);
+}
+
+static void
+mnb_notification_cluster_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (mnb_notification_cluster_parent_class)->finalize (object);
+}
+
+static void
+mnb_notification_cluster_paint (ClutterActor *actor)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
+
+  if (priv->notifiers)
+    clutter_actor_paint (CLUTTER_ACTOR(priv->notifiers));
+}
+
+static void
+mnb_notification_cluster_allocate (ClutterActor          *actor,
+                                   const ClutterActorBox *box,
+                                   gboolean               origin_changed)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
+  ClutterActorClass *klass;
+
+  printf("allocate\n");
+
+  klass = CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class);
+
+  klass->allocate (actor, box, origin_changed);
+
+  if (priv->notifiers)
+    clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers), 
+                            box, origin_changed);
+
+  if (priv->control)
+    clutter_actor_allocate (CLUTTER_ACTOR(priv->control), 
+                            box, origin_changed);
+}
+
+static void
+mnb_notification_cluster_class_init (MnbNotificationClusterClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *clutter_class = CLUTTER_ACTOR_CLASS (klass);
+
+  g_type_class_add_private (klass, sizeof (MnbNotificationClusterPrivate));
+
+  object_class->get_property = mnb_notification_cluster_get_property;
+  object_class->set_property = mnb_notification_cluster_set_property;
+  object_class->dispose = mnb_notification_cluster_dispose;
+  object_class->finalize = mnb_notification_cluster_finalize;
+
+  clutter_class->allocate = mnb_notification_cluster_allocate;
+  clutter_class->paint = mnb_notification_cluster_paint;
+}
+
+static gint
+id_compare (gconstpointer a, gconstpointer b)
+{
+  MnbNotification *notification = MNB_NOTIFICATION (a);
+  guint find_id = GPOINTER_TO_INT (b);
+  return mnb_notification_get_id (notification) - find_id;
+}
+
+static NbtkWidget*
+find_widget (ClutterGroup *container, guint32 id)
+{
+  GList *children, *l;
+  NbtkWidget *w;
+  
+  children = clutter_container_get_children (CLUTTER_CONTAINER(container));
+  l = g_list_find_custom (children, GINT_TO_POINTER (id), id_compare);
+  w = l ? l->data : NULL;
+  g_list_free (children);
+  return w;
+}
+
+static void
+on_closed (MnbNotification *notification, MoblinNetbookNotifyStore *store)
+{
+  moblin_netbook_notify_store_close (store, 
+                                     mnb_notification_get_id (notification), 
+                                     ClosedDismissed);
+}
+
+static void
+on_notification_added (MoblinNetbookNotifyStore *store, 
+                       Notification             *notification, 
+                       MnbNotificationCluster   *cluster)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
+  NbtkWidget *w;
+
+  printf("******** notification added ***********\n");
+
+  w = find_widget (priv->notifiers, notification->id);
+
+  if (!w) 
+    {
+      w = mnb_notification_new ();
+      g_signal_connect (w, "closed", G_CALLBACK (on_closed), store);
+      
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), 
+                                   CLUTTER_ACTOR(w));
+      clutter_actor_hide (CLUTTER_ACTOR(w));
+
+      clutter_actor_set_size (CLUTTER_ACTOR(w),
+                              /*CLUTTER_STAGE_WIDTH ()/6,*/
+                              200,
+                              200);
+
+      priv->n_notifiers++;
+    }
+
+  mnb_notification_update (MNB_NOTIFICATION (w), notification);
+
+  if (priv->n_notifiers == 1)
+    {
+      priv->active_notifier = w; 
+      clutter_actor_show (CLUTTER_ACTOR(w));
+    }
+
+  /* 
+     need to check anim is not already running...
+
+     if (n_notifiers == 1)
+       {
+         simply fade in;
+         set current notifier
+       }
+     else if (n_notifiers == 2)
+       {
+         slide up current notifier.   
+         display control below
+       }
+     else
+       {
+         simply update the control
+       }
+
+   */
+}
+
+static void
+on_notification_closed (MoblinNetbookNotifyStore *store, 
+                        guint id, 
+                        guint reason, 
+                        MnbNotificationCluster *cluster)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
+  NbtkWidget *w;
+
+  w = find_widget (priv->notifiers, id);
+
+  if (w)
+    {
+
+      printf("******** notification added ***********\n");
+
+      if (priv->n_notifiers == 1)
+        {
+          /* XXX, wed actually run anim to remove then close */
+          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers), 
+                                          CLUTTER_ACTOR(w));
+          priv->n_notifiers--;
+        }
+
+      /* Remove and run animation */
+      /*
+      if (n_notifiers == 1)
+        {
+          simply fade out current notifier
+          set to NULL
+        }
+      else if (n_notifiers == 1)
+      */
+    }
+}
+
+static void
+mnb_notification_cluster_init (MnbNotificationCluster *self)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (self);
+  MoblinNetbookNotifyStore *notify_store;
+
+  notify_store = moblin_netbook_notify_store_new ();
+
+  printf("ok 2\n");
+
+  if (notify_store)
+    {
+
+      g_signal_connect (notify_store, 
+                        "notification-added", 
+                        G_CALLBACK (on_notification_added), 
+                        self);
+
+      g_signal_connect (notify_store, 
+                        "notification-closed", 
+                        G_CALLBACK (on_notification_closed), 
+                        self);
+
+    }
+
+  priv->notifiers = CLUTTER_GROUP(clutter_group_new ());
+
+  clutter_actor_set_parent (CLUTTER_ACTOR(priv->notifiers), 
+                            CLUTTER_ACTOR(self));
+
+  printf("ok 3\n");
+
+}
+
+ClutterActor*
+mnb_notification_cluster_new (void)
+{
+  return g_object_new (MNB_TYPE_NOTIFICATION_CLUSTER, NULL);
+}
+

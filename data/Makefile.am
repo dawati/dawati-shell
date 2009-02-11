@@ -80,3 +80,8 @@ dist_theme_mzone_DATA = \
 	theme/mzone/time-bg.png \
 	theme/mzone/event-background-dark.png \
 	theme/mzone/linus.png
+
+theme_notifiersdir = $(pkgdatadir)/theme/notifiers
+dist_theme_notifiers_DATA = \
+	theme/notifiers/notification-bg.png 
+

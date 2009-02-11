@@ -339,3 +339,11 @@ NbtkLabel
   font-family: "Liberation Sans";
   font-size: 12;
 }
+
+
+MnbNotification
+{
+  background-image: url('file://notifiers/notification-bg.png');
+  border-width: 16 16 16 16;
+  padding: 18 18 18 18;
+}
