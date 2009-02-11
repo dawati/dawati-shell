@@ -201,8 +201,6 @@ alt_still_down (MetaDisplay *display, MetaScreen *screen, Window xwin,
 {
   gint        x, y, root_x, root_y, i;
   Window      root, child;
-  MetaScreen *random_screen;
-  Window      random_xwindow;
   guint       mask, primary_modifier = 0;
   Display    *xdpy = meta_display_get_xdisplay (display);
   guint       masks[] = { Mod5Mask, Mod4Mask, Mod3Mask,
@@ -628,8 +626,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   MetaScreen    *screen;
   Window         root_xwin;
 
-  gtk_init (NULL, NULL);
-
   screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
   root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
 
@@ -833,8 +829,6 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
 {
   MoblinNetbookPlugin *plugin = data;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  ClutterActor      *parent_texture;
-  gint               x_1, y_1, x_2, y_2;
   ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
   CoglHandle         cogl_texture;
   ClutterFixed       t_w, t_h;
@@ -951,7 +945,7 @@ switch_workspace (MutterPlugin *plugin, const GList **actors,
   ClutterActor  *workspace_slider1  = clutter_group_new ();
   ClutterActor  *indicator_group  = clutter_group_new ();
   ClutterActor  *stage, *label, *rect, *window_layer, *overlay_layer;
-  gint           to_x, to_y, from_x = 0, from_y = 0;
+  gint           to_x, to_y;
   gint           para_dir = 2;
   ClutterColor   white = { 0xff, 0xff, 0xff, 0xff };
   ClutterColor   black = { 0x33, 0x33, 0x33, 0xff };
@@ -1189,7 +1183,6 @@ static void
 minimize (MutterPlugin * plugin, MutterWindow *mcw)
 
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaCompWindowType type;
   ClutterActor      *actor  = CLUTTER_ACTOR (mcw);
 
@@ -1263,7 +1256,6 @@ static void
 maximize (MutterPlugin *plugin, MutterWindow *mcw,
           gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MoblinNetbookPluginPrivate *priv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterActor               *actor = CLUTTER_ACTOR (mcw);
   MetaCompWindowType          type;
 
@@ -1416,10 +1408,9 @@ static void
 check_for_empty_workspace (MutterPlugin *plugin,
                            gint workspace, MetaWindow *ignore)
 {
-  MoblinNetbookPluginPrivate  *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                  *screen = mutter_plugin_get_screen (plugin);
-  gboolean                     workspace_empty = TRUE;
-  GList                        *l;
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  gboolean    workspace_empty = TRUE;
+  GList      *l;
 
   l = mutter_get_windows (screen);
   while (l)
@@ -1572,8 +1563,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           gint  x = clutter_actor_get_x (actor);
           gint  y = clutter_actor_get_y (actor);
-          guint h = clutter_actor_get_height (texture);
-          guint w = clutter_actor_get_width (texture);
 
           background = CLUTTER_ACTOR (mnb_drop_down_new ());
 
@@ -1624,7 +1613,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (mcw);
       MetaWindow   *mw = mutter_window_get_meta_window (mcw);
-      gint          workspace_index = -2;
 
       if (mw)
         {
@@ -1700,12 +1688,10 @@ on_destroy_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 static void
 destroy (MutterPlugin *plugin, MutterWindow *mcw)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen;
   MetaCompWindowType          type;
   ClutterActor               *actor = CLUTTER_ACTOR (mcw);
   gint                        workspace;
-  gboolean                    workspace_empty = TRUE;
 
   type      = mutter_window_get_window_type (mcw);
   workspace = mutter_window_get_workspace (mcw);
@@ -1713,7 +1699,6 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mcw);
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
 
@@ -1921,7 +1906,6 @@ static void
 kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
 {
   ActorPrivate *apriv;
-  ClutterActor *actor = CLUTTER_ACTOR (mcw);
 
   if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
     {
@@ -1990,7 +1974,6 @@ panel_slide_timeout_cb (gpointer data)
 {
   MutterPlugin  *plugin = data;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  int i;
 
 #ifndef WORKING_STAGE_ENTER_LEAVE
   printf ("last_y %d\n", priv->last_y);
@@ -2067,7 +2050,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         }
     }
   else if (event->any.source == stage &&
-           event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE)
+           (event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE))
     {
       MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -2147,7 +2130,7 @@ setup_parallax_effect (MutterPlugin *plugin)
   Window                     *children, *l;
   guint                       n_children;
   Window                      root_win;
-  Window                      parent_win, root_win2;
+  Window                      parent_win;
   Status                      status;
   Atom                        desktop_atom;
 
