@@ -317,8 +317,6 @@ make_launcher (MutterPlugin *plugin,
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), scroll);
 
   clutter_actor_set_size (scroll, width, height);
-  /* TODO Rob: retrieve the scroll's client rect and occupy all.
-   * clutter_actor_set_width (table, width); */
 
   return CLUTTER_ACTOR (drop_down);
 }
