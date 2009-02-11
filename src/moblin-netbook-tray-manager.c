@@ -325,7 +325,6 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
       XserverRegion comb_region, win_region;
       XRectangle    rect;
       gint          x = 0, y = 0, w, h, sw, sh;
-      GList        *wins = manager->priv->config_windows;
 
       if (child->actor)
         clutter_actor_get_transformed_position (child->actor, &x, &y);
@@ -375,7 +374,6 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
   ShellTrayManagerChild *child   = data;
   ShellTrayManager      *manager = child->manager;
   MutterPlugin          *plugin  = manager->priv->plugin;
-  MetaScreen            *screen  = mutter_plugin_get_screen (plugin);
   Display               *xdpy    = mutter_plugin_get_xdisplay (plugin);
   GtkSocket             *socket  = GTK_SOCKET (child->socket);
   ClutterActor          *stage   = mutter_plugin_get_stage (plugin);
@@ -401,7 +399,7 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
                           (unsigned char **)&config_xwin);
 
       if (!config_xwin)
-        return;
+        return TRUE;
 
       config_socket = gtk_socket_new ();
       child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
@@ -418,12 +416,7 @@ actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
         }
       else
         {
-          MoblinNetbookPluginPrivate *priv =
-            MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-          XserverRegion window_region, comb_region;
-          XRectangle    rect;
-          gint          x = 0, y = 0, w, h, sw, sh;
-          GList        *wins = manager->priv->config_windows;
+          GList *wins = manager->priv->config_windows;
 
           manager->priv->config_windows =
             g_list_prepend (wins,
@@ -531,6 +524,7 @@ na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *socket,
   g_hash_table_remove (manager->priv->icons, socket);
 }
 
+#if 0
 static XserverRegion
 create_input_shape (MutterPlugin *plugin,
                     gint x, gint y, gint width, gint height)
@@ -556,6 +550,7 @@ create_input_shape (MutterPlugin *plugin,
 
   return dst;
 }
+#endif
 
 gboolean
 shell_tray_manager_is_config_window (ShellTrayManager *manager, Window xwindow)
