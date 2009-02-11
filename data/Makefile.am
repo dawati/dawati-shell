@@ -32,9 +32,6 @@ dist_theme_panel_DATA = \
 	theme/panel/status-normal.png \
 	theme/panel/background-tile.png
 
-theme_dropdowndir = $(pkgdatadir)/theme/drop-down
-dist_theme_dropdown_DATA = theme/drop-down/footer.png
-
 theme_chooserdir = $(pkgdatadir)/theme/chooser
 dist_theme_chooser_DATA = \
 	theme/chooser/background.png		\
@@ -49,6 +46,9 @@ dist_theme_generic_DATA = \
 	theme/generic/spinner.png	\
 	theme/generic/tooltip-background.png
 
+theme_launcherdir = $(pkgdatadir)/theme/launcher
+dist_theme_launcher_DATA = \
+	theme/launcher/launcher-hover.png
 
 theme_switcherdir = $(pkgdatadir)/theme/switcher
 dist_theme_switcher_DATA = \
@@ -80,4 +80,3 @@ dist_theme_mzone_DATA = \
 	theme/mzone/time-bg.png \
 	theme/mzone/event-background-dark.png \
 	theme/mzone/linus.png
-

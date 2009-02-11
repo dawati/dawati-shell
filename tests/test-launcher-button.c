@@ -31,6 +31,7 @@ main (int argc, char *argv[])
   launcher = mnb_launcher_button_new ("../data/theme/panel/internet-active.png",
                                       32, "Launcher Button", "Test", "Comment");
   clutter_actor_set_position (CLUTTER_ACTOR (launcher), 50, 50);
+  /* clutter_actor_set_width (CLUTTER_ACTOR (launcher), 150); */
   clutter_container_add (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (launcher), NULL);
   g_signal_connect (launcher, "activated", G_CALLBACK (clicked_cb), NULL);
 

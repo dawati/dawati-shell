@@ -260,7 +260,7 @@ make_launcher (MutterPlugin *plugin,
 
   for (a = apps, row = 0, col = 0; a; a = a->next)
     {
-      const gchar       *name, *icon_file;
+      const gchar       *name, *comment, *icon_file;
       gchar             *exec;
 
       GMenuTreeEntry *entry = a->data;
@@ -271,6 +271,7 @@ make_launcher (MutterPlugin *plugin,
 
       exec = g_strdup (gmenu_tree_entry_get_exec (entry));
       name = gmenu_tree_entry_get_icon (entry);
+      comment = gmenu_tree_entry_get_comment (entry);
       if (name)
         info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
       if (info)
@@ -281,7 +282,8 @@ make_launcher (MutterPlugin *plugin,
           NbtkWidget *button;
 
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
-                                            name, NULL, NULL);
+                                            name, comment, NULL);
+          /* clutter_actor_set_width (CLUTTER_ACTOR (button), 150); */
           nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
                                       1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
 

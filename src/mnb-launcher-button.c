@@ -129,10 +129,23 @@ button_release_event (ClutterActor       *actor,
 }
 
 static gboolean
+enter_event (ClutterActor         *actor,
+             ClutterCrossingEvent *event)
+{
+  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), "hover");
+
+  return FALSE;
+}
+
+static gboolean
 leave_event (ClutterActor         *actor,
              ClutterCrossingEvent *event)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
 
   if (self->priv->is_pressed)
     {
@@ -155,6 +168,7 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 
   actor_class->button_press_event = button_press_event;
   actor_class->button_release_event = button_release_event;
+  actor_class->enter_event = enter_event;
   actor_class->leave_event = leave_event;
 
   _signals[ACTIVATED] = g_signal_new ("activated",
@@ -169,9 +183,13 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 static void
 mnb_launcher_button_init (MnbLauncherButton *self)
 {
+  ClutterActor *label;
+  NbtkTableChildOptions table_child_flags = NBTK_Y_EXPAND | NBTK_Y_FILL;
+
   self->priv = MNB_LAUNCHER_BUTTON_GET_PRIVATE (self);
 
   self->priv->table = nbtk_table_new ();
+  nbtk_table_set_col_spacing (NBTK_TABLE (self->priv->table), 10);
   clutter_container_add (CLUTTER_CONTAINER (self),
                          CLUTTER_ACTOR (self->priv->table),
                          NULL);
@@ -180,19 +198,34 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   self->priv->icon = NULL;
 
   self->priv->app_name = (NbtkLabel *) nbtk_label_new (NULL);
-  nbtk_table_add_widget (NBTK_TABLE (self->priv->table),
-                         NBTK_WIDGET (self->priv->app_name),
-                         0, 1);
+  label = nbtk_label_get_clutter_text (self->priv->app_name);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
+  clutter_actor_set_name (label, "launcher-text");
+  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
+                              NBTK_WIDGET (self->priv->app_name),
+                              0, 1, 1, 1, table_child_flags,
+                              0, 0);
 
   self->priv->category = (NbtkLabel *) nbtk_label_new (NULL);
-  nbtk_table_add_widget (NBTK_TABLE (self->priv->table),
-                         NBTK_WIDGET (self->priv->category),
-                         1, 1);
+  label = nbtk_label_get_clutter_text (self->priv->app_name);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
+  clutter_actor_set_name (label, "launcher-category");
+  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
+                              NBTK_WIDGET (self->priv->category),
+                              1, 1, 1, 1, table_child_flags,
+                              0, 0);
 
   self->priv->comment = (NbtkLabel *) nbtk_label_new (NULL);
-  nbtk_table_add_widget (NBTK_TABLE (self->priv->table),
-                         NBTK_WIDGET (self->priv->comment),
-                         2, 1);
+  label = nbtk_label_get_clutter_text (self->priv->app_name);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
+  clutter_actor_set_name (label, "launcher-comment");
+  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
+                              NBTK_WIDGET (self->priv->comment),
+                              2, 1, 1, 1, table_child_flags,
+                              0, 0);
 }
 
 NbtkWidget *
