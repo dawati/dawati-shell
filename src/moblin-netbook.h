@@ -148,6 +148,8 @@ struct _MoblinNetbookPluginPrivate
   guint                  panel_slide_timeout_id;
 };
 
+GType moblin_netbook_plugin_get_type (void);
+
 /*
  * Per actor private data we attach to each actor.
  */
