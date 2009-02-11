@@ -23,6 +23,7 @@
  */
 
 #include "moblin-netbook-chooser.h"
+#include "nutter/nutter-scale-group.h"
 
 #include <nbtk/nbtk-texture-frame.h>
 
