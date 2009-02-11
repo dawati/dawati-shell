@@ -25,14 +25,15 @@
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 
 #include "moblin-netbook.h"
+#include "moblin-netbook-chooser.h"
 #include "moblin-netbook-launcher.h"
+#include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-launcher-button.h"
 #include <nbtk/nbtk.h>
 #include <gmenu-tree.h>
 #include <gtk/gtk.h>
 #include <string.h>
-
 
 #define ICON_SIZE 48
 #define PADDING 8
@@ -240,7 +241,7 @@ make_launcher (MutterPlugin *plugin,
   ClutterActor  *table, *view, *scroll;
   gint           row, col;
   struct entry_data *entry_data;
-  NbtkWidget    *drop_down, *footer, *up_button;
+  NbtkWidget    *drop_down;
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING),
