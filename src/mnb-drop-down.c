@@ -100,8 +100,8 @@ static void
 mnb_drop_down_show (ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
-  ClutterTimeline *timeline;
-  gint x, y, height, width;
+  gint x, y;
+  guint height, width;
   ClutterAnimation *animation;
 
   if (priv->in_show_animation)
@@ -378,7 +378,7 @@ mnb_drop_down_set_child (MnbDropDown *drop_down,
 ClutterActor*
 mnb_drop_down_get_child (MnbDropDown *drop_down)
 {
-  g_return_if_fail (MNB_DROP_DOWN (drop_down));
+  g_return_val_if_fail (MNB_DROP_DOWN (drop_down), NULL);
 
   return drop_down->priv->child;
 }
