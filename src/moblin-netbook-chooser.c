@@ -23,8 +23,10 @@
  */
 
 #include "moblin-netbook-chooser.h"
+#include "moblin-netbook-panel.h"
 #include "nutter/nutter-scale-group.h"
 
+#include <display.h>
 #include <nbtk/nbtk-texture-frame.h>
 
 #define WORKSPACE_CHOOSER_BORDER_LEFT   2
@@ -90,7 +92,6 @@ move_window_to_workspace (MutterWindow *mcw,
 
           if (workspace_index > -1)
             {
-              MetaDisplay   *display = meta_screen_get_display (screen);
               MetaWorkspace *workspace;
 
               workspace =
@@ -156,7 +157,6 @@ workspace_chooser_input_cb (ClutterActor *clone,
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   MetaWorkspace              *workspace;
-  gpointer                    key, value;
   const char                 *sn_id = wsg_data->sn_id;
   gint                        active;
 
@@ -475,7 +475,6 @@ static ClutterActor *
 make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
                         MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   GList                      *l;
   NbtkWidget                 *table;
   gint                        screen_width, screen_height;
@@ -514,15 +513,12 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
   while (l)
     {
       MutterWindow       *mw = l->data;
-      ClutterActor       *a  = CLUTTER_ACTOR (mw);
       MetaCompWindowType  type;
       gint                ws_indx;
       ClutterActor       *texture;
       ClutterActor       *clone;
       ClutterActor       *workspace = NULL;
-      guint               x, y, w, h;
-      gdouble             s_x, s_y, s;
-      gboolean            active;
+      gint                x, y;
 
       type = mutter_window_get_window_type (mw);
       ws_indx = mutter_window_get_workspace (mw);
@@ -840,7 +836,6 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   SnStartupSequence          *sequence;
   const char                 *seq_id = NULL, *bin_name = NULL;
-  gint                        workspace_indx = -2;
   gpointer                    key, value;
 
   sequence = sn_monitor_event_get_startup_sequence (event);
@@ -1081,8 +1076,6 @@ spawn_app (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
            gboolean without_chooser, gint workspace)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay                *display = meta_screen_get_display (screen);
   Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   SnLauncherContext          *context = NULL;
   const gchar                *sn_id;
