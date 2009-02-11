@@ -41,7 +41,6 @@ mnb_panel_button_pick (ClutterActor       *actor,
                        const ClutterColor *pick_color)
 {
   MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
-  gint trans_x, trans_y;
 
   cogl_set_source_color4ub (pick_color->red,
                             pick_color->green,
