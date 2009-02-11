@@ -1827,6 +1827,17 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  /*
+   * Refuse to disable the stage while the UI is showing.
+   */
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) ||
+      priv->panel_out_in_progress ||
+      priv->workspace_chooser)
+    {
+      g_warning ("Cannot disable stage while the panel/chooser is showing\n");
+      return;
+    }
+
   mutter_plugin_set_stage_input_region (plugin, priv->input_region);
 
   release_keyboard (plugin, timestamp);
@@ -2041,7 +2052,9 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
-          if (!priv->panel_slide_timeout_id)
+          if (!priv->panel_slide_timeout_id &&
+              !CLUTTER_ACTOR_IS_VISIBLE (priv->panel) &&
+              !priv->workspace_chooser)
             {
 #ifndef WORKING_STAGE_ENTER_LEAVE
               mutter_plugin_set_stage_input_region (MUTTER_PLUGIN (plugin),

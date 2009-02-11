@@ -775,10 +775,9 @@ hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
   hide_panel (plugin);
 
   clutter_actor_destroy (priv->workspace_chooser);
+  priv->workspace_chooser = NULL;
 
   disable_stage (plugin, timestamp);
-
-  priv->workspace_chooser = NULL;
 }
 
 /*
