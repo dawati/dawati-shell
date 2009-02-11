@@ -795,14 +795,22 @@ mnb_switcher_show (ClutterActor *self)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
   MetaScreen   *screen = mutter_plugin_get_screen (priv->plugin);
-  gint          ws_count, active_ws, ws_max_windows = 0;
-  gint         *n_windows;
-  gint          i, screen_width;
+  gint          ws_count, active_ws;
+  gint          i, screen_width, screen_height;
   NbtkWidget   *table;
   GList        *window_list, *l;
   NbtkWidget  **spaces;
   NbtkPadding   padding = MNB_PADDING (6, 6, 6, 6);
   GList        *workspaces = meta_screen_get_workspaces (screen);
+
+  struct win_location
+  {
+    gint  row;
+    gint  col;
+    guint height;
+  } *win_locs;
+
+  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
   priv->last_workspaces = g_list_copy (workspaces);
 
@@ -825,8 +833,6 @@ mnb_switcher_show (ClutterActor *self)
   ws_count = meta_screen_get_n_workspaces (screen);
   active_ws = meta_screen_get_active_workspace_index (screen);
 
-  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &i);
-
   /* loop through all the workspaces, adding a label for each */
   for (i = 0; i < ws_count; i++)
     {
@@ -840,9 +846,10 @@ mnb_switcher_show (ClutterActor *self)
 
   /* iterate through the windows, adding them to the correct workspace */
 
-  n_windows = g_new0 (gint, ws_count);
-  spaces = g_new0 (NbtkWidget*, ws_count);
+  win_locs    = g_slice_alloc0 (sizeof (struct win_location) * ws_count);
+  spaces      = g_slice_alloc0 (sizeof (NbtkWidget*) * ws_count);
   window_list = mutter_plugin_get_windows (priv->plugin);
+
   for (l = window_list; l; l = g_list_next (l))
     {
       MutterWindow          *mw = l->data;
@@ -850,6 +857,7 @@ mnb_switcher_show (ClutterActor *self)
       gint                   ws_indx;
       MetaCompWindowType     type;
       guint                  w, h;
+      guint                  clone_h;
       struct origin_data    *origin_data;
       MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
       gchar                 *title;
@@ -934,20 +942,32 @@ mnb_switcher_show (ClutterActor *self)
         g_signal_connect (meta_win, "raised",
                           G_CALLBACK (meta_window_focus_cb), clone);
 
-      n_windows[ws_indx]++;
+      clutter_actor_get_size (clone, &h, &w);
+
+      clone_h = (guint)((double)h/(gdouble)w * 80.0);
+      clutter_actor_set_size (clone, clone_h, 80);
+
+      /*
+       * FIXME -- this depends on the styling, should not be hardcoded.
+       */
+      win_locs[ws_indx].height += (clone_h + 10);
+
+      if (win_locs[ws_indx].height >= screen_height - 100 )
+        {
+          win_locs[ws_indx].col++;
+          win_locs[ws_indx].row = 0;
+          win_locs[ws_indx].height = 0;
+        }
+
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
-                            n_windows[ws_indx], 0);
+                            win_locs[ws_indx].row++, win_locs[ws_indx].col);
+
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "keep-aspect-ratio", TRUE, NULL);
-
-      clutter_actor_get_size (clone, &h, &w);
-      clutter_actor_set_size (clone, h/(gdouble)w * 80.0, 80);
 
       g_signal_connect (clone, "button-release-event",
                         G_CALLBACK (workspace_switcher_clone_input_cb),
 			NULL);
-
-      ws_max_windows = MAX (ws_max_windows, n_windows[ws_indx]);
     }
 
   /* add an "empty" message for empty workspaces */
@@ -1006,8 +1026,8 @@ mnb_switcher_show (ClutterActor *self)
     nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, ws_count);
   }
 
-  g_free (spaces);
-  g_free (n_windows);
+  g_slice_free1 (sizeof (NbtkWidget*) * ws_count, spaces);
+  g_slice_free1 (sizeof (struct win_location) * ws_count, win_locs);
 
   priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
 
