@@ -24,16 +24,19 @@
 
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 
+#include <string.h>
+#include <sys/stat.h>
+
+#include <gtk/gtk.h>
+#include <gmenu-tree.h>
+#include <nbtk/nbtk.h>
+
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-launcher.h"
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-launcher-button.h"
-#include <nbtk/nbtk.h>
-#include <gmenu-tree.h>
-#include <gtk/gtk.h>
-#include <string.h>
 
 #define ICON_SIZE 48
 #define PADDING 8
@@ -260,8 +263,11 @@ make_launcher (MutterPlugin *plugin,
 
   for (a = apps, row = 0, col = 0; a; a = a->next)
     {
-      const gchar       *name, *comment, *icon_file;
-      gchar             *exec;
+      const gchar   *name, *category, *icon_file;
+      gchar         *exec;
+      struct stat    exec_stat;
+      GDate          exec_date;
+      gchar          comment[128];
 
       GMenuTreeEntry *entry = a->data;
       GtkIconInfo *info;
@@ -269,9 +275,9 @@ make_launcher (MutterPlugin *plugin,
       info = NULL;
       icon_file = NULL;
 
-      exec = g_strdup (gmenu_tree_entry_get_exec (entry));
+      exec = g_find_program_in_path (gmenu_tree_entry_get_exec (entry));
       name = gmenu_tree_entry_get_icon (entry);
-      comment = gmenu_tree_entry_get_comment (entry);
+      category = gmenu_tree_entry_get_comment (entry);
       if (name)
         info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
       if (info)
@@ -281,8 +287,18 @@ make_launcher (MutterPlugin *plugin,
         {
           NbtkWidget *button;
 
+          comment[0] = '\0';
+          if (0 == stat (exec, &exec_stat))
+            {
+              g_date_set_time_t (&exec_date, exec_stat.st_atime);
+              /* TODO Rob: l10n / categorise. */
+              g_date_strftime (comment, sizeof (comment),
+                               "Last opened %c",
+                               &exec_date);
+            }
+
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
-                                            name, comment, NULL);
+                                            name, category, comment);
           clutter_actor_set_width (CLUTTER_ACTOR (button), 180);
           nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
                                       1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
