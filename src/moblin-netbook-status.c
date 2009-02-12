@@ -31,9 +31,9 @@
 #include <string.h>
 
 
-#define ICON_SIZE 48
-#define PADDING 8
-#define BORDER_WIDTH 4
+#define ICON_SIZE       48
+#define PADDING         8
+#define BORDER_WIDTH    4
 
 ClutterActor *
 make_status (MutterPlugin *plugin, gint width)
@@ -48,10 +48,8 @@ make_status (MutterPlugin *plugin, gint width)
 
   n_cols = (width - 2 * BORDER_WIDTH) / (ICON_SIZE + PADDING);
 
-  /*
-   * Distribute any leftover space into the padding, if possible.
-   */
-  pad = n_cols*(ICON_SIZE + PADDING) - (width - 2*BORDER_WIDTH);
+  /* Distribute any leftover space into the padding, if possible */
+  pad = n_cols * (ICON_SIZE + PADDING) - (width - 2 * BORDER_WIDTH);
 
   if (pad >= n_cols)
     pad /= n_cols;
