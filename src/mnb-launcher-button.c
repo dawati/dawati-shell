@@ -43,7 +43,6 @@ enum
 
 struct _MnbLauncherButtonPrivate
 {
-  NbtkWidget    *table;
   ClutterActor  *icon;
   NbtkLabel     *app;
   NbtkLabel     *category;
@@ -60,12 +59,6 @@ static void
 dispose (GObject *object)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (object);
-
-  if (self->priv->table)
-    {
-      clutter_actor_unparent (CLUTTER_ACTOR (self->priv->table));
-      self->priv->table = NULL;
-    }
 
   if (self->priv->icon)
     {
