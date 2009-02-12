@@ -48,8 +48,8 @@ MARSHALS = marshal.c marshal.h
 	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --header > $@
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
-moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la \
-			     $(top_builddir)/penge/penge/libpenge.la
+moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la $(PENGE_LIBS)\
+			     $(top_builddir)/penge/penge/libpenge.a
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 

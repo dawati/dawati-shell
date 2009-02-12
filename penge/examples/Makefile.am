@@ -2,7 +2,7 @@
 noinst_PROGRAMS = test-people-pane test-recent-files-pane test-events-pane \
 		  test-grid-view
 AM_CFLAGS = $(PENGE_CFLAGS) -I$(top_srcdir)/penge
-AM_LDFLAGS = $(PENGE_LIBS) ../penge/libpenge.la
+AM_LDFLAGS = $(PENGE_LIBS) ../penge/libpenge.a
 
 #test_tiles_SOURCES = test-tiles.c
 #test_recent_file_tiles_SOURCES = test-recent-file-tiles.c

@@ -1,7 +1,6 @@
-lib_LTLIBRARIES = libpenge.la
-libpenge_ladir = $(includedir)/penge/penge
+noinst_LIBRARIES = libpenge.a
 
-libpenge_la_HEADERS = penge-people-pane.h \
+libpenge_headers = penge-people-pane.h \
 		   penge-people-tile.h \
 		   penge-flickr-tile.h \
 		   penge-twitter-tile.h \
@@ -16,8 +15,8 @@ libpenge_la_HEADERS = penge-people-pane.h \
 		   penge-magic-texture.h \
 		   penge-view-background.h
 
-libpenge_la_SOURCES = \
-		      $(libpenge_la_HEADERS) \
+libpenge_a_SOURCES = \
+		      $(libpenge_headers) \
 		      penge-people-pane.c \
 		      penge-people-tile.c \
 		      penge-flickr-tile.c \
@@ -32,7 +31,7 @@ libpenge_la_SOURCES = \
 		      penge-utils.c \
 		      penge-magic-texture.c \
 		      penge-view-background.c
-libpenge_la_CFLAGS = -Wall $(PENGE_CFLAGS) \
-		     -DPKG_DATADIR=\"$(pkgdatadir)\"
-libpenge_la_LIBADD = $(PENGE_LIBS)
+AM_CFLAGS = -Wall $(PENGE_CFLAGS) \
+	    -DPKG_DATADIR=\"$(pkgdatadir)\"
+AM_LDFLAGS = $(PENGE_LIBS)
 
