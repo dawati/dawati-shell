@@ -8,7 +8,7 @@ m4_define([plugin_version],
 
 AC_PREREQ(2.50)
 
-AC_INIT([mutter-moblin-netbook-plugin], [plugin_version], [http://moblin.org])
+AC_INIT([mutter-moblin], [plugin_version], [http://moblin.org])
 
 AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 
