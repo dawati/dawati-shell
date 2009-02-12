@@ -131,14 +131,23 @@ moblin_netbook_plugin_dispose (GObject *object)
   xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (object));
 
   if (priv->screen_region)
-    XFixesDestroyRegion (xdpy, priv->screen_region);
+    {
+      XFixesDestroyRegion (xdpy, priv->screen_region);
+      priv->screen_region = None;
+    }
 
   if (priv->input_region)
-    XFixesDestroyRegion (xdpy, priv->input_region);
+    {
+      XFixesDestroyRegion (xdpy, priv->input_region);
+      priv->input_region = None;
+    }
 
 #ifndef WORKING_STAGE_ENTER_LEAVE
-  if (priv->input_region)
-    XFixesDestroyRegion (xdpy, priv->input_region2);
+  if (priv->input_region2)
+    {
+      XFixesDestroyRegion (xdpy, priv->input_region2);
+      priv->input_region2 = None;
+    }
 #endif
 
   G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->dispose (object);
@@ -739,7 +748,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   priv->notification_cluster = mnb_notification_cluster_new ();
 
-  clutter_container_add (CLUTTER_CONTAINER (overlay), 
+  clutter_container_add (CLUTTER_CONTAINER (overlay),
                          priv->notification_cluster, NULL);
   /* Keys */
 
