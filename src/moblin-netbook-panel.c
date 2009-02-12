@@ -400,6 +400,35 @@ panel_enter_event_cb (ClutterActor *panel, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
+enum
+{
+  PANEL_PAGE_M_ZONE             = 0,
+  PANEL_PAGE_STATUS             = 1,
+  PANEL_PAGE_SPACES             = 2,
+  PANEL_PAGE_INTERNET           = 3,
+  PANEL_PAGE_MEDIA              = 4,
+  PANEL_PAGE_APPS               = 5,
+  PANEL_PAGE_PEOPLE             = 6,
+  PANEL_PAGE_PASTERBOARD        = 7
+};
+
+static inline void
+make_toolbar_button (MutterPlugin *plugin,
+                     ClutterActor *panel,
+                     const gchar  *icon_name,
+                     const gchar  *name,
+                     MnbkControl   control,
+                     gint          index_)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  ClutterActor *button;
+
+  button = panel_append_toolbar_button (plugin, panel,
+                                        icon_name, name,
+                                        control);
+  priv->panel_buttons[index_] = button;
+}
+
 ClutterActor *
 make_panel (MutterPlugin *plugin, gint width)
 {
@@ -411,6 +440,7 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
   ClutterActor               *overlay;
   ClutterActor               *mzone_grid_view;
+  ClutterActor               *button;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
   NbtkPadding                 no_padding = { 0, 0, 0, 0 };
@@ -466,55 +496,55 @@ make_panel (MutterPlugin *plugin, gint width)
       clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
     }
 
-  priv->panel_buttons[0] = panel_append_toolbar_button (plugin,
-                                                        panel,
-                                                        "m-space-button",
-                                                        "m_zone",
-                                                        MNBK_CONTROL_MZONE);
+  make_toolbar_button (plugin, panel,
+                       "m-space-button",
+                       "m_zone",
+                       MNBK_CONTROL_MZONE,
+                       PANEL_PAGE_M_ZONE);
+  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]),
+                          TRUE);
 
-  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[0]), TRUE);
+  make_toolbar_button (plugin, panel,
+                       "status-button",
+                       "status",
+                       MNBK_CONTROL_STATUS,
+                       PANEL_PAGE_STATUS);
 
-  priv->panel_buttons[1] = panel_append_toolbar_button (plugin,
-                                                        panel,
-                                                        "status-button",
-                                                        "status",
-                                                        MNBK_CONTROL_STATUS);
+  make_toolbar_button (plugin, panel,
+                       "spaces-button",
+                       "spaces",
+                       MNBK_CONTROL_SPACES,
+                       PANEL_PAGE_SPACES);
 
-  priv->panel_buttons[2] = panel_append_toolbar_button (plugin,
-                                                        panel,
-                                                        "spaces-button",
-                                                        "spaces",
-                                                        MNBK_CONTROL_SPACES);
+  make_toolbar_button (plugin, panel,
+                       "internet-button",
+                       "internet",
+                       MNBK_CONTROL_INTERNET,
+                       PANEL_PAGE_INTERNET);
 
-  priv->panel_buttons[3] = panel_append_toolbar_button (plugin,
-                                                        panel,
-                                                        "internet-button",
-                                                        "internet",
-                                                        MNBK_CONTROL_INTERNET);
+  make_toolbar_button (plugin, panel,
+                       "media-button",
+                       "media",
+                       MNBK_CONTROL_MEDIA,
+                       PANEL_PAGE_MEDIA);
 
-  priv->panel_buttons[4] = panel_append_toolbar_button (plugin,
-                                                        panel,
-                                                        "media-button",
-                                                        "media",
-                                                        MNBK_CONTROL_MEDIA);
+  make_toolbar_button (plugin, panel,
+                       "apps-button",
+                       "applications",
+                       MNBK_CONTROL_APPLICATIONS,
+                       PANEL_PAGE_APPS);
 
-  priv->panel_buttons[5] = panel_append_toolbar_button (plugin,
-                                                        panel,
-                                                        "apps-button",
-                                                        "applications",
-                                                     MNBK_CONTROL_APPLICATIONS);
+  make_toolbar_button (plugin, panel,
+                       "people-button",
+                       "people",
+                       MNBK_CONTROL_PEOPLE,
+                       PANEL_PAGE_PEOPLE);
 
-  priv->panel_buttons[6] = panel_append_toolbar_button (plugin,
-                                                        panel,
-                                                        "people-button",
-                                                        "people",
-                                                        MNBK_CONTROL_PEOPLE);
-
-  priv->panel_buttons[7] = panel_append_toolbar_button (plugin,
-                                                        panel,
-                                                        "pasteboard-button",
-                                                        "pasteboard",
-                                                     MNBK_CONTROL_PASTEBOARD);
+  make_toolbar_button (plugin, panel,
+                       "pasteboard-button",
+                       "pasteboard",
+                       MNBK_CONTROL_PASTEBOARD,
+                       PANEL_PAGE_PASTERBOARD);
 
   priv->panel_time = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_time), "time-label");
