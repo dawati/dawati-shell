@@ -17,8 +17,10 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-launcher.c       \
 				moblin-netbook-launcher.h	\
 				moblin-netbook-tray-manager.c	\
+				moblin-netbook-tray-manager.h	\
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
+                                moblin-netbook-system-tray.h    \
 	                        $(DBUS_GLUE)                    \
 				$(MARSHALS)                     \
 				mnb-drop-down.h                 \

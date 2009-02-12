@@ -50,6 +50,6 @@ libtray_la_SOURCES =		\
 libtray_la_CPPFLAGS = $(tray_cflags)
 libtray_la_LDFLAGS = $(LDADD)
 
-CLEANFILES = $(TRAY_STAMP_FILES)
+CLEANFILES = $(TRAY_STAMP_FILES) $(tray_built_sources)
 
 EXTRA_DIST = na-marshal.list

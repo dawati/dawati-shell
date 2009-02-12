@@ -4,6 +4,7 @@ libpenge_ladir = $(includedir)/penge/penge
 libpenge_la_HEADERS = penge-people-pane.h \
 		   penge-people-tile.h \
 		   penge-flickr-tile.h \
+		   penge-twitter-tile.h \
 		   penge-recent-files-pane.h \
 		   penge-recent-file-tile.h \
 		   penge-date-tile.h \
