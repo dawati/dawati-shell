@@ -31,6 +31,8 @@
 #include <gmenu-tree.h>
 #include <nbtk/nbtk.h>
 
+#include <penge/penge-utils.h>
+
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-launcher.h"
@@ -264,10 +266,9 @@ make_launcher (MutterPlugin *plugin,
   for (a = apps, row = 0, col = 0; a; a = a->next)
     {
       const gchar   *name, *category, *icon_file;
-      gchar         *exec;
+      gchar         *exec, *comment;
       struct stat    exec_stat;
       GDate          exec_date;
-      gchar          comment[128];
 
       GMenuTreeEntry *entry = a->data;
       GtkIconInfo *info;
@@ -287,18 +288,20 @@ make_launcher (MutterPlugin *plugin,
         {
           NbtkWidget *button;
 
-          comment[0] = '\0';
-          if (0 == stat (exec, &exec_stat))
+          /* TODO robsta: read "last launched" from persist cache once we have that.
+           * For now approximate. */
+          comment = NULL;
+          if (0 == stat (exec, &exec_stat) &&
+              exec_stat.st_atime != exec_stat.st_mtime)
             {
-              g_date_set_time_t (&exec_date, exec_stat.st_atime);
-              /* TODO Rob: l10n / categorise. */
-              g_date_strftime (comment, sizeof (comment),
-                               "Last opened %c",
-                               &exec_date);
+              GTimeVal atime = { 0 ,0 };
+              atime.tv_sec = exec_stat.st_atime;
+              comment = penge_utils_format_time (&atime);
             }
 
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
                                             name, category, comment);
+          g_free (comment);
           clutter_actor_set_width (CLUTTER_ACTOR (button), 180);
           nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
                                       1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
