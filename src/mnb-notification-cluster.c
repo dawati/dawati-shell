@@ -27,7 +27,7 @@
 
 G_DEFINE_TYPE (MnbNotificationCluster,   \
                mnb_notification_cluster, \
-               CLUTTER_TYPE_ACTOR)
+               NBTK_TYPE_WIDGET)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
@@ -82,10 +82,11 @@ mnb_notification_cluster_paint (ClutterActor *actor)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
 
-  if (priv->notifiers)
+  if (priv->notifiers && CLUTTER_ACTOR_IS_VISIBLE (priv->notifiers))
     clutter_actor_paint (CLUTTER_ACTOR(priv->notifiers));
 
-  clutter_actor_paint (CLUTTER_ACTOR(priv->control));
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->control))
+    clutter_actor_paint (CLUTTER_ACTOR(priv->control));
 }
 
 static void
@@ -105,8 +106,17 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
                             box, origin_changed);
 
   if (priv->control)
-    clutter_actor_allocate (CLUTTER_ACTOR(priv->control), 
-                            box, origin_changed);
+    {
+      ClutterActorBox control_box = { 
+        box->x1, 
+        box->y1 + clutter_actor_get_y (CLUTTER_ACTOR(priv->control)),
+        box->x2 + clutter_actor_get_width (CLUTTER_ACTOR(priv->control)), 
+        box->y2 + clutter_actor_get_y (CLUTTER_ACTOR(priv->control))
+                + clutter_actor_get_height (CLUTTER_ACTOR(priv->control))
+      };
+      clutter_actor_allocate (CLUTTER_ACTOR(priv->control), 
+                              &control_box, origin_changed);
+    }
 }
 
 static void
@@ -176,10 +186,15 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
       clutter_actor_set_width (CLUTTER_ACTOR(w), CLUSTER_WIDTH);
 
+      mnb_notification_update (MNB_NOTIFICATION (w), notification);
+
       priv->n_notifiers++;
     }
-
-  mnb_notification_update (MNB_NOTIFICATION (w), notification);
+  else
+    {
+      mnb_notification_update (MNB_NOTIFICATION (w), notification);
+      return;
+    }
 
   if (priv->n_notifiers == 1)
     {
@@ -191,6 +206,7 @@ on_notification_added (MoblinNetbookNotifyStore *store,
       clutter_actor_set_y (CLUTTER_ACTOR(priv->control), 
                            clutter_actor_get_height 
                                 (CLUTTER_ACTOR(priv->active_notifier)));
+
       nbtk_label_set_text (NBTK_LABEL(priv->control_text),
                            "1 pending message");
       clutter_actor_show (CLUTTER_ACTOR(priv->control));
@@ -240,14 +256,24 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
   if (w)
     {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers), 
+                                      CLUTTER_ACTOR(w));
+
       priv->n_notifiers--;          
+
+      if (w == priv->active_notifier && priv->n_notifiers > 0)
+        {
+          priv->active_notifier =
+            clutter_group_get_nth_child (CLUTTER_CONTAINER (priv->notifiers), 
+                                         0);
+          if (priv->active_notifier)
+            clutter_actor_show (CLUTTER_ACTOR(priv->active_notifier));
+        }
       
       if (priv->n_notifiers == 0)
         {
           /* XXX, wed actually run anim to remove then close */
-          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers), 
-                                          CLUTTER_ACTOR(w));
-          
+          priv->active_notifier = NULL;
         }
       else if (priv->n_notifiers == 1)
         {
@@ -256,13 +282,12 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
       else
         {
           gchar *msg;
-          
           msg = g_strdup_printf ("%i pending messages", priv->n_notifiers);
-
           nbtk_label_set_text (NBTK_LABEL(priv->control_text), msg);
-          
           g_free (msg);
         }
+
+      printf("removing a notification: %i\n", priv->n_notifiers);
     }
       /* Remove and run animation */
       /*
@@ -307,12 +332,13 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
 
   /* 'Overflow' control */
   priv->control = nbtk_table_new ();
+
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->control), 
                                     "notification-control");
 
   widget = nbtk_button_new ();
   nbtk_button_set_label (NBTK_BUTTON (widget), "Dismiss All");
-  nbtk_table_add_widget (NBTK_TABLE (priv->control), widget, 1, 0);
+  nbtk_table_add_widget (NBTK_TABLE (priv->control), widget, 0, 1);
 
   priv->control_text = nbtk_label_new ("");
   nbtk_table_add_widget (NBTK_TABLE (priv->control), priv->control_text, 0, 0);
@@ -322,6 +348,7 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
   clutter_actor_set_parent (CLUTTER_ACTOR(priv->control), 
                             CLUTTER_ACTOR(self));
 
+  clutter_actor_hide (CLUTTER_ACTOR(priv->control));
 }
 
 ClutterActor*

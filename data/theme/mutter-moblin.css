@@ -328,3 +328,10 @@ MnbNotification
   border-width: 16 16 16 16;
   padding: 18 18 18 18;
 }
+
+*.notification-control
+{
+  background-image: url('file://notifiers/notification-bg.png');
+  border-width: 16 16 16 16;
+  padding: 18 18 18 18;
+}
