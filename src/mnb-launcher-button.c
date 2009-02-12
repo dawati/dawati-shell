@@ -151,7 +151,7 @@ allocate (ClutterActor          *actor,
   ClutterActorBox child_box;
   NbtkPadding *padding;
   gint border_top, border_right, border_bottom, border_left;
-  ClutterUnit client_width, client_height, text_x;
+  ClutterUnit client_width, client_height, text_x, app_bottom, comment_top;
 
   CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)->allocate (actor, box, origin_changed);
 
@@ -181,6 +181,8 @@ allocate (ClutterActor          *actor,
   client_height = child_box.y2 - child_box.y1;
   /* Left-align text. */
   text_x = child_box.x1;
+  app_bottom = client_height;
+  comment_top = 0;
 
   /* Icon goes vertically centered in the left column. */
   if (self->priv->icon)
@@ -198,25 +200,6 @@ allocate (ClutterActor          *actor,
 
       /* Have icon, text to the right of it. */
       text_x = icon_box.x2 + COL_SPACING;
-    }
-
-  /* App label goes on top of the right column. */
-  if (self->priv->app)
-    {
-      ClutterActorBox app_box;
-      ClutterUnit app_width, app_height;
-
-      clutter_actor_get_preferred_size (CLUTTER_ACTOR (self->priv->app),
-                                        NULL, NULL,
-                                        &app_width, &app_height);
-      app_box.x1 = text_x;
-      app_box.y1 = child_box.y1;
-      app_box.x2 = MIN (app_box.x1 + app_width, child_box.x2);
-      app_box.y2 = app_box.y1 + app_height;
-
-      CLAMP_INSIDE (app_box, child_box);
-      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->app),
-                              &app_box, origin_changed);
     }
 
   /* Category label goes vertically centered in the right column. */
@@ -238,7 +221,31 @@ allocate (ClutterActor          *actor,
       CLAMP_INSIDE (category_box, child_box);
       clutter_actor_allocate (CLUTTER_ACTOR (self->priv->category),
                               &category_box, origin_changed);
+
+      /* "app name" and "commment" go to top and bottom of this. */
+      app_bottom = category_box.y1;
+      comment_top = category_box.y2;
     }
+
+  /* App label goes on top of the right column. */
+  if (self->priv->app)
+    {
+      ClutterActorBox app_box;
+      ClutterUnit app_width, app_height;
+
+      clutter_actor_get_preferred_size (CLUTTER_ACTOR (self->priv->app),
+                                        NULL, NULL,
+                                        &app_width, &app_height);
+      app_box.x1 = text_x;
+      app_box.y1 = app_bottom - app_height;
+      app_box.x2 = MIN (app_box.x1 + app_width, child_box.x2);
+      app_box.y2 = app_box.y1 + app_height;
+
+      CLAMP_INSIDE (app_box, child_box);
+      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->app),
+                              &app_box, origin_changed);
+    }
+
 
   /* Comment label to bottom of the right column. */
   if (self->priv->comment)
@@ -250,9 +257,9 @@ allocate (ClutterActor          *actor,
                                         NULL, NULL,
                                         &comment_width, &comment_height);
       comment_box.x1 = text_x;
-      comment_box.y1 = child_box.y2 - clutter_actor_get_heightu (CLUTTER_ACTOR (self->priv->comment));
+      comment_box.y1 = comment_top;
       comment_box.x2 = MIN (comment_box.x1 + comment_width, child_box.x2);
-      comment_box.y2 = child_box.y2;
+      comment_box.y2 = comment_top + comment_height;
 
       CLAMP_INSIDE (comment_box, child_box);
       clutter_actor_allocate (CLUTTER_ACTOR (self->priv->comment),
