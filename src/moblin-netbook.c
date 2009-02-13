@@ -1710,9 +1710,11 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
   MetaCompWindowType          type;
   ClutterActor               *actor = CLUTTER_ACTOR (mcw);
   gint                        workspace;
+  MetaWindow                 *meta_win;
 
   type      = mutter_window_get_window_type (mcw);
   workspace = mutter_window_get_workspace (mcw);
+  meta_win  = mutter_window_get_meta_window (mcw);
   screen    = mutter_plugin_get_screen (plugin);
 
   if (type == META_COMP_WINDOW_NORMAL)
@@ -1746,8 +1748,7 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
    * maps, e.g., Gimp.)
    */
   if (type != META_COMP_WINDOW_SPLASHSCREEN)
-    check_for_empty_workspace (plugin, workspace,
-                                mutter_window_get_meta_window (mcw));
+    check_for_empty_workspace (plugin, workspace, meta_win);
 }
 
 /*
