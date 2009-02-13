@@ -36,6 +36,7 @@ typedef struct {
   GtkWidget *config;
   Window     config_xwin;
   ClutterActor *actor;
+  MnbInputRegion mir;
 } ShellTrayManagerChild;
 
 enum {
@@ -68,7 +69,9 @@ static void destroy_config_window (ShellTrayManagerChild *child);
 static void
 free_tray_icon (gpointer data)
 {
-  ShellTrayManagerChild *child = data;
+  ShellTrayManagerChild *child   = data;
+  ShellTrayManager      *manager = child->manager;
+  MutterPlugin          *plugin  = manager->priv->plugin;
 
   destroy_config_window (child);
 
@@ -76,6 +79,10 @@ free_tray_icon (gpointer data)
   gtk_widget_destroy (child->window);
   g_signal_handlers_disconnect_matched (child->actor, G_SIGNAL_MATCH_DATA,
                                         0, 0, NULL, NULL, child);
+
+  if (child->mir)
+    moblin_netbook_input_region_remove (plugin, child->mir);
+
   g_object_unref (child->actor);
   g_slice_free (ShellTrayManagerChild, child);
 }
@@ -270,10 +277,11 @@ destroy_config_window (ShellTrayManagerChild *child)
       MutterPlugin               *plugin  = manager->priv->plugin;
       MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) || priv->panel_out_in_progress)
-        enable_stage (plugin, CurrentTime);
-      else
-        disable_stage (plugin, CurrentTime);
+      if (child->mir)
+        {
+          moblin_netbook_input_region_remove (plugin, child->mir);
+          child->mir = NULL;
+        }
 
       manager->priv->config_windows =
         g_list_remove (manager->priv->config_windows,
@@ -319,12 +327,8 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
       ShellTrayManagerChild *child = data;
       ShellTrayManager *manager = child->manager;
       MutterPlugin *plugin = manager->priv->plugin;
-      MoblinNetbookPluginPrivate *priv =
-        MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-      Display *xdpy    = mutter_plugin_get_xdisplay (plugin);
-      XserverRegion comb_region, win_region;
-      XRectangle    rect;
-      gint          x = 0, y = 0, w, h, sw, sh;
+      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      gint x = 0, y = 0, w, h, sw, sh;
 
       if (child->actor)
         clutter_actor_get_transformed_position (child->actor, &x, &y);
@@ -351,19 +355,12 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
        * Cut out a hole into the stage input mask matching the config
        * window.
        */
-      rect.x      = x;
-      rect.y      = y;
-      rect.width  = w;
-      rect.height = h;
+      if (child->mir)
+        moblin_netbook_input_region_remove_without_update (plugin, child->mir);
 
-      comb_region = XFixesCreateRegion (xdpy, NULL, 0);
-      win_region = XFixesCreateRegion (xdpy, &rect, 1);
-      XFixesCopyRegion (xdpy, comb_region, priv->screen_region);
-      XFixesSubtractRegion (xdpy, comb_region, comb_region, win_region);
-
-      mutter_plugin_set_stage_input_region (plugin, comb_region);
-
-      XFixesDestroyRegion (xdpy, comb_region);}
+      child->mir = moblin_netbook_input_region_push (plugin, x, y,
+                                                     (guint)w, (guint)h, TRUE);
+    }
 }
 
 static gboolean
@@ -497,6 +494,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   child->actor = g_object_ref (icon);
   child->manager = manager;
   child->config = NULL;
+  child->mir = NULL;
 
   g_hash_table_insert (manager->priv->icons, socket, child);
 

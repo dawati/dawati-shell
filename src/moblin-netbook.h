@@ -109,10 +109,14 @@ struct _MoblinNetbookPluginPrivate
   ShellTrayManager      *tray_manager;
 
   XserverRegion          screen_region;
-  XserverRegion          input_region;
+  XserverRegion          panel_trigger_region;
 #ifndef WORKING_STAGE_ENTER_LEAVE
-  XserverRegion          input_region2;
+  XserverRegion          panel_trigger_region2;
 #endif
+  XserverRegion          current_input_region;
+  XserverRegion          current_input_base_region;
+
+  GList                 *input_region_stack;
 
   gboolean               debug_mode                 : 1;
   gboolean               panel_out_in_progress      : 1;
@@ -182,5 +186,20 @@ gboolean       release_keyboard  (MutterPlugin *plugin, guint32 timestamp);
 void           grab_keyboard     (MutterPlugin *plugin, guint32 timestamp);
 
 void moblin_netbook_notify_init (MutterPlugin *plugin);
+
+typedef struct MnbInputRegion * MnbInputRegion;
+
+MnbInputRegion moblin_netbook_input_region_push (MutterPlugin *plugin,
+                                                 gint          x,
+                                                 gint          y,
+                                                 guint         width,
+                                                 guint         height,
+                                                 gboolean      inverse);
+
+void moblin_netbook_input_region_remove_without_update (MutterPlugin  *plugin,
+                                                        MnbInputRegion mir);
+
+void moblin_netbook_input_region_remove (MutterPlugin   *plugin,
+                                         MnbInputRegion  mir);
 
 #endif
