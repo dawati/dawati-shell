@@ -10,3 +10,4 @@ AM_LDFLAGS = $(PENGE_LIBS) ../penge/libpenge.a
 #test_recent_files_pane_SOURCES = test-recent-files-pane.c
 #test_events_pane_SOURCES = test-events-pane.c
 test_grid_view_SOURCES = test-grid-view.c
+test_grid_view_DEPENDENCIES = ../penge/libpenge.a
