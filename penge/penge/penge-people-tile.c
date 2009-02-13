@@ -170,7 +170,10 @@ _enter_event_cb (ClutterActor *actor,
   clutter_timeline_set_direction (priv->timeline,
                                   CLUTTER_TIMELINE_FORWARD);
   if (!clutter_timeline_is_playing (priv->timeline))
+  {
+    clutter_timeline_rewind (priv->timeline);
     clutter_timeline_start (priv->timeline);
+  }
 
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->primary_text),
                                       "hover");
