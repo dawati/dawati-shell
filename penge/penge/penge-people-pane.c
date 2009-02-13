@@ -204,7 +204,8 @@ _client_get_services_cb (MojitoClient *client,
 
   for (l = services; l; l = l->next)
   {
-    if (!g_str_equal (l->data, "dummy"))
+    if (g_str_equal (l->data, "twitter") ||
+        g_str_equal (l->data, "flickr"))
     {
       filtered_services = g_list_append (filtered_services, l->data);
     }
