@@ -323,7 +323,7 @@ PengeEventTile:hover
 
 *.PengeRecentFileTileDetails
 {
-  background: black;
+  background-color: black;
 }
 
 *.PengeRecentFileTileDetailsFilename
