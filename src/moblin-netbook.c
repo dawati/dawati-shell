@@ -144,13 +144,11 @@ moblin_netbook_plugin_dispose (GObject *object)
       priv->panel_trigger_region = None;
     }
 
-#ifndef WORKING_STAGE_ENTER_LEAVE
   if (priv->panel_trigger_region2)
     {
       XFixesDestroyRegion (xdpy, priv->panel_trigger_region2);
       priv->panel_trigger_region2 = None;
     }
-#endif
 
   if (priv->current_input_region)
     {
@@ -675,13 +673,11 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   priv->panel_trigger_region = region;
 
-#ifndef WORKING_STAGE_ENTER_LEAVE
   rect[0].height += 5;
 
   region = XFixesCreateRegion (xdpy, &rect[0], 1);
 
   priv->panel_trigger_region2 = region;
-#endif
 
   rect[0].height = screen_height;
 
@@ -2012,9 +2008,6 @@ panel_slide_timeout_cb (gpointer data)
   MutterPlugin  *plugin = data;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-#ifndef WORKING_STAGE_ENTER_LEAVE
-  printf ("last_y %d\n", priv->last_y);
-
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
       show_panel (plugin, FALSE);
@@ -2023,10 +2016,6 @@ panel_slide_timeout_cb (gpointer data)
     {
       disable_stage (plugin, CurrentTime);
     }
-#else
-  if (priv->pointer_on_stage)
-    show_panel (plugin, FALSE);
-#endif
 
   priv->panel_slide_timeout_id = 0;
 
@@ -2046,9 +2035,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       event_x = ((ClutterMotionEvent*)event)->x;
       event_y = ((ClutterMotionEvent*)event)->y;
 
-#ifndef WORKING_STAGE_ENTER_LEAVE
       priv->last_y = event_y;
-#endif
 
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
@@ -2076,10 +2063,9 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
               !CLUTTER_ACTOR_IS_VISIBLE (priv->panel) &&
               !priv->workspace_chooser)
             {
-#ifndef WORKING_STAGE_ENTER_LEAVE
               priv->current_input_base_region = priv->panel_trigger_region2;
               moblin_netbook_input_region_apply (MUTTER_PLUGIN (plugin));
-#endif
+
               priv->panel_slide_timeout_id =
                 g_timeout_add (PANEL_SLIDE_THRESHOLD_TIMEOUT,
                                panel_slide_timeout_cb, plugin);

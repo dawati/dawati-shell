@@ -46,11 +46,6 @@
  */
 #define PANEL_HEIGHT 64
 
-/*
- * FIXME once clutter bug #1178 is fixed.
- */
-#undef WORKING_STAGE_ENTER_LEAVE
-
 #define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
 #define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
 #define MOBLIN_NETBOOK_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginClass))
@@ -110,9 +105,7 @@ struct _MoblinNetbookPluginPrivate
 
   XserverRegion          screen_region;
   XserverRegion          panel_trigger_region;
-#ifndef WORKING_STAGE_ENTER_LEAVE
   XserverRegion          panel_trigger_region2;
-#endif
   XserverRegion          current_input_region;
   XserverRegion          current_input_base_region;
 
@@ -147,9 +140,7 @@ struct _MoblinNetbookPluginPrivate
 
   MutterPluginInfo       info;
 
-#ifndef WORKING_STAGE_ENTER_LEAVE
   gint                   last_y;
-#endif
   guint                  panel_slide_timeout_id;
 
   /* Notification 'widget' */
