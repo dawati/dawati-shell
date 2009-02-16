@@ -1072,8 +1072,11 @@ moblin_netbook_sn_finalize (MutterPlugin *plugin)
 }
 
 void
-moblin_netbook_spawn (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
-           gboolean without_chooser, gint workspace)
+moblin_netbook_spawn (MutterPlugin *plugin,
+                      const  gchar *path,
+                      guint32       timestamp,
+                      gboolean      without_chooser,
+                      gint          workspace)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
