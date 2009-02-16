@@ -616,20 +616,28 @@ screen_n_workspaces_notify (MetaScreen *screen,
                             gpointer    data)
 {
   MnbSwitcher *switcher = MNB_SWITCHER (data);
-  gint   n_c_workspaces = meta_screen_get_n_workspaces (screen);
-  GList *c_workspaces = meta_screen_get_workspaces (screen);
-  GList *o_workspaces = switcher->priv->last_workspaces;
-  gint   n_o_workspaces = g_list_length (o_workspaces);
-  gboolean *map;
-  gint i;
-  GList *k;
+  gint         n_c_workspaces;
+  GList       *c_workspaces;
+  GList       *o_workspaces;
+  gint         n_o_workspaces;
+  gboolean    *map;
+  gint         i;
+  GList       *k;
   struct ws_remove_data remove_data;
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (switcher)))
+    return;
+
+  n_c_workspaces = meta_screen_get_n_workspaces (screen);
+  c_workspaces   = meta_screen_get_workspaces (screen);
+  o_workspaces   = switcher->priv->last_workspaces;
+  n_o_workspaces = g_list_length (o_workspaces);
 
   if (n_o_workspaces < n_c_workspaces)
     {
-      g_warning ("Adding workspaces into running switcher is currently not "
-                 "supported.");
-
+      /*
+       * The relayout is handled in the dnd_dropped callback.
+       */
       g_list_free (switcher->priv->last_workspaces);
       switcher->priv->last_workspaces = g_list_copy (c_workspaces);
       return;
@@ -1037,9 +1045,6 @@ mnb_switcher_show (ClutterActor *self)
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
 
-  g_signal_connect (screen, "notify::n-workspaces",
-                    G_CALLBACK (screen_n_workspaces_notify), self);
-
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
 }
 
@@ -1135,11 +1140,17 @@ NbtkWidget*
 mnb_switcher_new (MutterPlugin *plugin)
 {
   MnbSwitcher *switcher;
+  MetaScreen  *screen;
 
   g_return_val_if_fail (MUTTER_PLUGIN (plugin), NULL);
 
   switcher = g_object_new (MNB_TYPE_SWITCHER, NULL);
   switcher->priv->plugin = plugin;
+
+  screen = mutter_plugin_get_screen (plugin);
+
+  g_signal_connect (screen, "notify::n-workspaces",
+                    G_CALLBACK (screen_n_workspaces_notify), switcher);
 
   return NBTK_WIDGET (switcher);
 }
