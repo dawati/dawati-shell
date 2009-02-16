@@ -795,7 +795,7 @@ mnb_switcher_clone_weak_notify (gpointer data, GObject *obj)
    * is destroyed while the original MutterWindow still exists, so remove
    * the weak reference we added on the origin for sake of the clone.
    */
-  if (origin_data->switcher->priv->last_focused == obj)
+  if (origin_data->switcher->priv->last_focused == (ClutterActor*)obj)
     origin_data->switcher->priv->last_focused = NULL;
 
   g_object_weak_unref (origin, mnb_switcher_origin_weak_notify, data);
