@@ -947,7 +947,7 @@ free_sn_hash_data (SnHashData *data)
 }
 
 void
-setup_startup_notification (MutterPlugin *plugin)
+moblin_netbook_sn_setup (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   Display                    *xdpy = mutter_plugin_get_xdisplay (plugin);
@@ -965,7 +965,7 @@ setup_startup_notification (MutterPlugin *plugin)
 }
 
 gboolean
-startup_notification_should_map (MutterPlugin *plugin, MutterWindow *mcw,
+moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
                                  const gchar * sn_id)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -1031,7 +1031,7 @@ startup_notification_should_map (MutterPlugin *plugin, MutterWindow *mcw,
  * (Called at the end of WS switching effect.)
  */
 void
-startup_notification_finalize (MutterPlugin *plugin)
+moblin_netbook_sn_finalize (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gpointer                    key, value;
@@ -1072,7 +1072,7 @@ startup_notification_finalize (MutterPlugin *plugin)
 }
 
 void
-spawn_app (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
+moblin_netbook_spawn (MutterPlugin *plugin, const gchar *path, guint32 timestamp,
            gboolean without_chooser, gint workspace)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;

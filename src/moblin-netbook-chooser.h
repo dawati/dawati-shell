@@ -31,18 +31,18 @@ void     show_workspace_chooser (MutterPlugin *plugin,
                                  const gchar  *sn_id, guint32 timestamp);
 void     hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp);
 
-void     setup_startup_notification (MutterPlugin *plugin);
+void     moblin_netbook_sn_setup (MutterPlugin *plugin);
 
-gboolean startup_notification_should_map (MutterPlugin *plugin,
-                                          MutterWindow *mcw,
-                                          const gchar  *sn_id);
+gboolean moblin_netbook_sn_should_map (MutterPlugin *plugin,
+                                       MutterWindow *mcw,
+                                       const gchar  *sn_id);
 
-void     startup_notification_finalize (MutterPlugin *plugin);
+void     moblin_netbook_sn_finalize (MutterPlugin *plugin);
 
-void     spawn_app (MutterPlugin *plugin,
-                    const gchar *path,
-                    guint32      timestamp,
-                    gboolean     without_chooser,
-                    gint         workspace);
+void     moblin_netbook_spawn (MutterPlugin *plugin,
+                               const gchar *path,
+                               guint32      timestamp,
+                               gboolean     without_chooser,
+                               gint         workspace);
 
 #endif

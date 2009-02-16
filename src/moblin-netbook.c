@@ -750,7 +750,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   setup_parallax_effect (MUTTER_PLUGIN (plugin));
 
-  setup_startup_notification (MUTTER_PLUGIN (plugin));
+  moblin_netbook_sn_setup (MUTTER_PLUGIN (plugin));
 
   // moblin_netbook_notify_init (MUTTER_PLUGIN (plugin));
 
@@ -936,7 +936,7 @@ on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
   ppriv->desktop2 = NULL;
   ppriv->desktop_switch_in_progress = FALSE;
 
-  startup_notification_finalize (plugin);
+  moblin_netbook_sn_finalize (plugin);
 
   g_free (switch_data);
 
@@ -1646,7 +1646,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         {
           const char *sn_id = meta_window_get_startup_id (mw);
 
-          if (!startup_notification_should_map (plugin, mcw, sn_id))
+          if (!moblin_netbook_sn_should_map (plugin, mcw, sn_id))
             return;
         }
 
