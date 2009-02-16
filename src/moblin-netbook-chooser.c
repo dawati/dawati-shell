@@ -54,7 +54,8 @@ struct SnHashData
   MutterWindow       *mcw;
   gint                workspace;
   SnMonitorEventType  state;
-  gboolean            without_chooser : 1;
+  gboolean            without_chooser    : 1;
+  gboolean            workspace_appended : 1;
 };
 
 struct ws_grid_cb_data
@@ -107,7 +108,7 @@ move_window_to_workspace (MutterWindow *mcw,
 
 static void
 finalize_app_startup (const char * sn_id, gint workspace, guint32 timestamp,
-                      MutterPlugin *plugin)
+                      MutterPlugin *plugin, gboolean workspace_appended)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gpointer                    key, value;
@@ -123,6 +124,7 @@ finalize_app_startup (const char * sn_id, gint workspace, guint32 timestamp,
        * Update the workspace index.
        */
       sn_data->workspace = workspace;
+      sn_data->workspace_appended = workspace_appended;
 
       /*
        * If the window has already mapped (i.e., we have its MutterWindow),
@@ -174,7 +176,8 @@ workspace_chooser_input_cb (ClutterActor *clone,
 
   hide_workspace_chooser (plugin, event->any.time);
 
-  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time, plugin);
+  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time, plugin,
+                        FALSE);
 
   return FALSE;
 }
@@ -226,7 +229,7 @@ chooser_keyboard_input_cb (ClutterActor *self,
 
   hide_workspace_chooser (plugin, event->any.time);
 
-  finalize_app_startup (sn_id, indx, event->any.time, plugin);
+  finalize_app_startup (sn_id, indx, event->any.time, plugin, FALSE);
 
   return TRUE;
 }
@@ -423,6 +426,7 @@ new_workspace_input_cb (ClutterActor *clone,
   MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   const char                 *sn_id    = wsg_data->sn_id;
+  gboolean                    appended = FALSE;
 
   hide_workspace_chooser (plugin, event->any.time);
 
@@ -431,10 +435,13 @@ new_workspace_input_cb (ClutterActor *clone,
   if (wsg_data->workspace >= MAX_WORKSPACES)
     wsg_data->workspace = MAX_WORKSPACES - 1;
   else
-    meta_screen_append_new_workspace (screen, FALSE, event->any.time);
+    {
+      meta_screen_append_new_workspace (screen, FALSE, event->any.time);
+      appended = TRUE;
+    }
 
   finalize_app_startup (sn_id, wsg_data->workspace, event->any.time,
-                        wsg_data->plugin);
+                        wsg_data->plugin, appended);
 
   return FALSE;
 }
@@ -804,6 +811,7 @@ workspace_chooser_timeout_cb (gpointer data)
   MetaScreen                     *screen   = mutter_plugin_get_screen (plugin);
   MetaDisplay                    *display  = meta_screen_get_display (screen);
   guint32                         timestamp;
+  gboolean                        appended = FALSE;
 
   timestamp = meta_display_get_current_time_roundtrip (display);
 
@@ -820,15 +828,130 @@ workspace_chooser_timeout_cb (gpointer data)
   if (wsc_data->workspace >= MAX_WORKSPACES)
     wsc_data->workspace = MAX_WORKSPACES - 1;
   else
-    meta_screen_append_new_workspace (screen, FALSE, timestamp);
+    {
+      meta_screen_append_new_workspace (screen, FALSE, timestamp);
+      appended = TRUE;
+    }
 
   finalize_app_startup (wsc_data->sn_id, wsc_data->workspace, timestamp,
-                        plugin);
+                        plugin, appended);
 
   /* One off */
   return FALSE;
 }
 
+struct ws_chooser_map_data
+{
+  gchar        *sn_id;
+  MutterPlugin *plugin;
+};
+
+static gboolean
+is_last_workspace_empty (MutterPlugin *plugin)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  GList      *l;
+  gint        last_ws;
+
+  last_ws = meta_screen_get_n_workspaces (screen) - 1;
+
+  l = mutter_get_windows (screen);
+  while (l)
+    {
+      MutterWindow *m = l->data;
+      MetaWindow   *mw = mutter_window_get_meta_window (m);
+
+      gint w = mutter_window_get_workspace (m);
+
+      if (w == last_ws)
+        return FALSE;
+
+      l = l->next;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+workspace_chooser_map_timeout (gpointer data)
+{
+  struct ws_chooser_map_data *map_data = data;
+  gpointer                    key, value;
+  MoblinNetbookPluginPrivate *priv =
+    MOBLIN_NETBOOK_PLUGIN (map_data->plugin)->priv;
+
+  if (g_hash_table_lookup_extended (priv->sn_hash, map_data->sn_id,
+                                    &key, &value))
+    {
+      SnHashData *sn_data = value;
+
+      if (sn_data->workspace_appended &&
+          is_last_workspace_empty (map_data->plugin))
+        {
+          MetaScreen    *screen = mutter_plugin_get_screen (map_data->plugin);
+          MetaWorkspace *mws;
+          MetaDisplay   *display;
+          guint32        timestamp;
+          gint           last_ws;
+
+          last_ws = meta_screen_get_n_workspaces (screen) - 1;
+          display = meta_screen_get_display (screen);
+          timestamp = meta_display_get_current_time_roundtrip (display);
+
+          mws = meta_screen_get_workspace_by_index (screen, last_ws);
+
+          meta_screen_remove_workspace (screen, mws, timestamp);
+        }
+
+      g_hash_table_remove (priv->sn_hash, key);
+    }
+
+  g_free (map_data->sn_id);
+  g_slice_free (struct ws_chooser_map_data, data);
+
+  return FALSE;
+}
+
+/*
+ * The start up notification handling.
+ *
+ * In essence it works like this:
+ *
+ * 1. We spawn an application.
+ * 2. SN_MONITOR_EVENT_INITIATED
+ * 3. SN_MONITOR_EVENT_COMPLETED: application started up successfully.
+ * 4. The application window maps (maybe, see below).
+ *
+ * This we need to combine with user interactions and automatic timeout.
+ *
+ * a) Application should go onto a new workspace (unless 8 workspaces already).
+ * b) Application should go onto existing workspace.
+ *
+ * So, in most cases we actually have to move the application to a different
+ * workspace than it starts on.
+ *
+ * Additional caveats:
+ *
+ * i.  Workspace must not be created until we know application started,
+ *     i.e., not before SN_MONITOR_EVENT_COMPLETED.
+ *
+ * ii. Application must be moved to the new workspace before we run the
+ *     map effect, to avoid it flickering on the wrong workspace.
+ *
+ * Corner cases:
+ *
+ * I. Application starts, but does not create a new window (e.g., a single
+ *    instance application re-uses existing window, see bug 670).
+ *
+ *    * Because of ii. we create a new workspace with nothing in it.
+ *
+ *    * Because there is no map event associated with this starup, we do not
+ *      know which window matches the application.
+ *
+ *    Partial workaround: we install an additional timeout once we get
+ *    SN_MONITOR_EVENT_COMPLETED; when the timeout fires, we check whether
+ *    the window is still in the hash; if it is, we remove the last workspace.
+ */
 static void
 on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
 {
@@ -897,15 +1020,29 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
           gint        ws_count = meta_screen_get_n_workspaces (screen);
           SnHashData *sn_data = value;
           struct ws_chooser_timeout_data * wsc_data;
+          struct ws_chooser_map_data     * wsc_map_data;
 
           sn_data->state = SN_MONITOR_EVENT_COMPLETED;
+
+          wsc_map_data = g_slice_new (struct ws_chooser_map_data);
+          wsc_map_data->plugin = plugin;
+          wsc_map_data->sn_id = g_strdup (seq_id);
 
           if (sn_data->without_chooser)
             {
               guint32 timestamp = sn_startup_sequence_get_timestamp (sequence);
 
+              /*
+               * Install timeout the check something has actually mapped here.
+               */
+              g_timeout_add (1000,
+                             workspace_chooser_map_timeout, wsc_map_data);
+
+              /*
+               * Finalized the application startup.
+               */
               finalize_app_startup (seq_id, sn_data->workspace, timestamp,
-                                    plugin);
+                                    plugin, FALSE);
             }
           else
             {
@@ -914,12 +1051,22 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
               wsc_data->workspace = ws_count;
               wsc_data->plugin = plugin;
 
+              /*
+               * Start the timeout that automatically moves the application
+               * to a new workspace if the user does not choose one manually.
+               */
               priv->workspace_chooser_timeout =
                 g_timeout_add_full (G_PRIORITY_DEFAULT,
                                 WORKSPACE_CHOOSER_TIMEOUT,
                                 workspace_chooser_timeout_cb,
                                 wsc_data,
                                 (GDestroyNotify)free_ws_chooser_timeout_data);
+
+              /*
+               * Install timeout the check something has actually mapped here.
+               */
+              g_timeout_add (WORKSPACE_CHOOSER_TIMEOUT + 1000,
+                             workspace_chooser_map_timeout, wsc_map_data);
             }
         }
       break;
