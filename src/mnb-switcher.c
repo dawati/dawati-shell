@@ -1313,7 +1313,7 @@ mnb_switcher_get_next_window (MnbSwitcher *switcher,
       if (!priv->selected)
         return NULL;
 
-      current = priv->selected;
+      current = mutter_window_get_meta_window (priv->selected);
     }
 
   if (!priv->tab_list)
