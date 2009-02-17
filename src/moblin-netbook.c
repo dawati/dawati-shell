@@ -619,6 +619,38 @@ metacity_nop_key_handler (MetaDisplay    *display,
 }
 
 static void
+sync_notification_input_region_cb (ClutterActor        *notify_cluster,
+                                   MoblinNetbookPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv   = plugin->priv;
+
+  if (priv->notification_input_region != NULL)
+    {
+      moblin_netbook_input_region_remove (MUTTER_PLUGIN(plugin), 
+                                          priv->notification_input_region);
+      priv->notification_input_region = NULL;
+    }
+  
+  if (CLUTTER_ACTOR_IS_VISIBLE (notify_cluster))
+    {
+      gint x,y;
+      guint width,height;
+      
+      clutter_actor_get_transformed_position (notify_cluster, &x, &y);
+      clutter_actor_get_transformed_size (notify_cluster, &width, &height);
+      
+  
+      if (width != 0 && height != 0)
+        {
+          priv->notification_input_region 
+            = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin), 
+                                                x, y, width, height,FALSE);
+        }      
+    }
+}
+
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -770,6 +802,12 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_actor_set_position (priv->notification_cluster, 
                               screen_width, 
                               screen_height);
+
+  g_signal_connect (priv->notification_cluster,
+                    "sync-input-region",
+                    G_CALLBACK (sync_notification_input_region_cb),
+                    MUTTER_PLUGIN (plugin));
+
 
 #if 0
   {

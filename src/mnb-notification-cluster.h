@@ -57,6 +57,9 @@ typedef struct {
 
 typedef struct {
   NbtkTableClass parent_class;
+
+  void (*sync_input_region) (MnbNotificationCluster *cluster);
+
 } MnbNotificationClusterClass;
 
 GType mnb_notification_cluster_get_type (void);

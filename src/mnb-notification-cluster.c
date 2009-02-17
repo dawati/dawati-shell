@@ -45,6 +45,14 @@ struct _MnbNotificationClusterPrivate {
   NbtkWidget   *active_notifier;
 };
 
+enum
+{
+  SYNC_INPUT_REGION,
+  LAST_SIGNAL
+};
+
+static guint cluster_signals[LAST_SIGNAL] = { 0 };
+
 static void
 mnb_notification_cluster_get_property (GObject *object, guint property_id,
                                        GValue *value, GParamSpec *pspec)
@@ -172,6 +180,19 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
 }
 
 static void
+mnb_notification_cluster_pick (ClutterActor       *actor,
+                               const ClutterColor *color)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class)->pick (actor, 
+                                                                     color);
+
+  mnb_notification_cluster_paint (actor);
+}
+
+
+static void
 mnb_notification_cluster_class_init (MnbNotificationClusterClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -190,6 +211,17 @@ mnb_notification_cluster_class_init (MnbNotificationClusterClass *klass)
     = mnb_notification_cluster_get_preferred_height;
   clutter_class->get_preferred_width 
     = mnb_notification_cluster_get_preferred_width;
+  clutter_class->pick = mnb_notification_cluster_pick;
+
+  cluster_signals[SYNC_INPUT_REGION] =
+    g_signal_new ("sync-input-region",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbNotificationClusterClass, 
+                                   sync_input_region),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
 }
 
@@ -298,6 +330,9 @@ on_notification_added (MoblinNetbookNotifyStore *store,
        }
 
    */
+
+  g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
+
 }
 
 static void
@@ -343,8 +378,6 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
           nbtk_label_set_text (NBTK_LABEL(priv->control_text), msg);
           g_free (msg);
         }
-
-      printf("removing a notification: %i\n", priv->n_notifiers);
     }
       /* Remove and run animation */
       /*
@@ -355,6 +388,27 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
         }
       else if (n_notifiers == 1)
       */
+
+  g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
+}
+
+static void
+on_dismiss_all_foreach (ClutterActor *notifier)
+{
+  g_signal_emit (notifier, "closed", 0);
+}
+
+static void
+on_dismiss_all_click (ClutterActor *button, MnbNotificationCluster *cluster)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
+
+  /* FIXME: Should actually run an animation here */
+  clutter_actor_hide (CLUTTER_ACTOR(cluster));
+
+  clutter_container_foreach (CLUTTER_CONTAINER(priv->notifiers),
+                             (ClutterCallback)on_dismiss_all_foreach,
+                             NULL);
 }
 
 static void
@@ -397,6 +451,9 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
   nbtk_button_set_label (NBTK_BUTTON (widget), "Dismiss All");
   nbtk_table_add_widget (NBTK_TABLE (priv->control), widget, 0, 1);
 
+  g_signal_connect (widget, "clicked",
+                    G_CALLBACK (on_dismiss_all_click), self);
+
   priv->control_text = nbtk_label_new ("");
   nbtk_table_add_widget (NBTK_TABLE (priv->control), priv->control_text, 0, 0);
 
@@ -406,6 +463,9 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
                             CLUTTER_ACTOR(self));
 
   clutter_actor_hide (CLUTTER_ACTOR(priv->control));
+
+  clutter_actor_set_reactive (CLUTTER_ACTOR(priv->notifiers), TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR(self), TRUE);
 }
 
 ClutterActor*

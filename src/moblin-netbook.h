@@ -72,10 +72,11 @@ struct _MoblinNetbookPluginClass
   MutterPluginClass parent_class;
 };
 
+
 #define MN_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d)}
 
 typedef struct ActorPrivate  ActorPrivate;
-
+typedef struct MnbInputRegion * MnbInputRegion;
 /*
  * Plugin private data that we store in the .plugin_private member.
  */
@@ -145,6 +146,7 @@ struct _MoblinNetbookPluginPrivate
 
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
+  MnbInputRegion         notification_input_region; 
 };
 
 GType moblin_netbook_plugin_get_type (void);
@@ -178,7 +180,7 @@ void           grab_keyboard     (MutterPlugin *plugin, guint32 timestamp);
 
 void moblin_netbook_notify_init (MutterPlugin *plugin);
 
-typedef struct MnbInputRegion * MnbInputRegion;
+
 
 MnbInputRegion moblin_netbook_input_region_push (MutterPlugin *plugin,
                                                  gint          x,

@@ -222,6 +222,11 @@ mnb_notification_class_init (MnbNotificationClass *klass)
 #define MNB_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), \
                                  CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d) }
 
+static void
+on_dismiss_click (ClutterActor *button, MnbNotification *self)
+{
+  g_signal_emit (self, signals[CLOSED], 0);
+}
 
 static void
 mnb_notification_init (MnbNotification *self)
@@ -248,6 +253,10 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
   nbtk_table_add_widget (NBTK_TABLE (self), priv->dismiss_button, 1, 1);
+
+  g_signal_connect (priv->dismiss_button, "clicked",
+                    G_CALLBACK (on_dismiss_click), self);
+
 
   //nbtk_widget_set_style_class_name (priv->label, "notification-label");
 
