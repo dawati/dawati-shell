@@ -55,7 +55,7 @@ struct SnHashData
   gint                workspace;
   SnMonitorEventType  state;
   gboolean            without_chooser    : 1;
-  gboolean            workspace_appended : 1;
+  gboolean            configured         : 1;
 };
 
 struct ws_grid_cb_data
@@ -106,9 +106,51 @@ move_window_to_workspace (MutterWindow *mcw,
     }
 }
 
+/*
+ * Finalizes the sn arrangements for this application.
+ *
+ *  Creates the appropriate workspace if necessary, and moves the window to it.
+ */
 static void
-finalize_app_startup (const char * sn_id, gint workspace, guint32 timestamp,
-                      MutterPlugin *plugin, gboolean workspace_appended)
+finalize_app (const char * sn_id, gint workspace, guint32 timestamp,
+              MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gpointer                    key, value;
+
+  if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
+    {
+      SnHashData *sn_data = value;
+
+      /*
+       * Move the window to the requested workspace so that the switcher
+       * workspace effect is triggered. If the window is supposed to go onto a
+       * new workspace, we create it.
+       *
+       * If the WS effect is no longer in progress, we map the window.
+       *
+       */
+      if (workspace == -2)
+        {
+          MetaScreen *screen = mutter_plugin_get_screen (plugin);
+
+          meta_screen_append_new_workspace (screen, FALSE, timestamp);
+        }
+
+      move_window_to_workspace (sn_data->mcw, sn_data->workspace,
+                                timestamp);
+    }
+}
+
+/*
+ * Configures the application.
+ *
+ * This function is called in response to either the user interaction, or the
+ * new workspace timeout. It sets the workspace where the application should
+ * go, and if the window has already mapped, it initiates the map effect.
+ */
+static void
+configure_app (const char *sn_id, gint workspace, MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gpointer                    key, value;
@@ -121,22 +163,15 @@ finalize_app_startup (const char * sn_id, gint workspace, guint32 timestamp,
       SnHashData *sn_data = value;
 
       /*
-       * Update the workspace index.
+       * Update the workspace index if the start up has not been finalized.
        */
-      sn_data->workspace = workspace;
-      sn_data->workspace_appended = workspace_appended;
+      if (!sn_data->configured)
+        {
+          sn_data->workspace = workspace;
+          sn_data->configured = TRUE;
+        }
 
-      /*
-       * If the window has already mapped (i.e., we have its MutterWindow),
-       * we move it to the requested workspace so that the switche workspace
-       * effect is triggered.
-       *
-       * If the WS effect is no longer in progress, we map the window.
-       */
       if (sn_data->mcw)
-        move_window_to_workspace (sn_data->mcw, workspace, timestamp);
-
-      if (sn_data->mcw && !priv->desktop_switch_in_progress)
         {
           MutterPluginClass *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
           klass->map (plugin, sn_data->mcw);
@@ -176,8 +211,7 @@ workspace_chooser_input_cb (ClutterActor *clone,
 
   hide_workspace_chooser (plugin, event->any.time);
 
-  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time, plugin,
-                        FALSE);
+  configure_app (sn_id, wsg_data->workspace, plugin);
 
   return FALSE;
 }
@@ -229,7 +263,7 @@ chooser_keyboard_input_cb (ClutterActor *self,
 
   hide_workspace_chooser (plugin, event->any.time);
 
-  finalize_app_startup (sn_id, indx, event->any.time, plugin, FALSE);
+  configure_app (sn_id, indx, plugin);
 
   return TRUE;
 }
@@ -432,16 +466,7 @@ new_workspace_input_cb (ClutterActor *clone,
 
   priv->desktop_switch_in_progress = TRUE;
 
-  if (wsg_data->workspace >= MAX_WORKSPACES)
-    wsg_data->workspace = MAX_WORKSPACES - 1;
-  else
-    {
-      meta_screen_append_new_workspace (screen, FALSE, event->any.time);
-      appended = TRUE;
-    }
-
-  finalize_app_startup (sn_id, wsg_data->workspace, event->any.time,
-                        wsg_data->plugin, appended);
+  configure_app (sn_id, wsg_data->workspace, wsg_data->plugin);
 
   return FALSE;
 }
@@ -825,16 +850,7 @@ workspace_chooser_timeout_cb (gpointer data)
 
   hide_workspace_chooser (plugin, timestamp);
 
-  if (wsc_data->workspace >= MAX_WORKSPACES)
-    wsc_data->workspace = MAX_WORKSPACES - 1;
-  else
-    {
-      meta_screen_append_new_workspace (screen, FALSE, timestamp);
-      appended = TRUE;
-    }
-
-  finalize_app_startup (wsc_data->sn_id, wsc_data->workspace, timestamp,
-                        plugin, appended);
+  configure_app (wsc_data->sn_id, wsc_data->workspace, plugin);
 
   /* One off */
   return FALSE;
@@ -872,46 +888,6 @@ is_last_workspace_empty (MutterPlugin *plugin)
   return TRUE;
 }
 
-static gboolean
-workspace_chooser_map_timeout (gpointer data)
-{
-  struct ws_chooser_map_data *map_data = data;
-  gpointer                    key, value;
-  MoblinNetbookPluginPrivate *priv =
-    MOBLIN_NETBOOK_PLUGIN (map_data->plugin)->priv;
-
-  if (g_hash_table_lookup_extended (priv->sn_hash, map_data->sn_id,
-                                    &key, &value))
-    {
-      SnHashData *sn_data = value;
-
-      if (sn_data->workspace_appended &&
-          is_last_workspace_empty (map_data->plugin))
-        {
-          MetaScreen    *screen = mutter_plugin_get_screen (map_data->plugin);
-          MetaWorkspace *mws;
-          MetaDisplay   *display;
-          guint32        timestamp;
-          gint           last_ws;
-
-          last_ws = meta_screen_get_n_workspaces (screen) - 1;
-          display = meta_screen_get_display (screen);
-          timestamp = meta_display_get_current_time_roundtrip (display);
-
-          mws = meta_screen_get_workspace_by_index (screen, last_ws);
-
-          meta_screen_remove_workspace (screen, mws, timestamp);
-        }
-
-      g_hash_table_remove (priv->sn_hash, key);
-    }
-
-  g_free (map_data->sn_id);
-  g_slice_free (struct ws_chooser_map_data, data);
-
-  return FALSE;
-}
-
 /*
  * The start up notification handling.
  *
@@ -920,7 +896,7 @@ workspace_chooser_map_timeout (gpointer data)
  * 1. We spawn an application.
  * 2. SN_MONITOR_EVENT_INITIATED
  * 3. SN_MONITOR_EVENT_COMPLETED: application started up successfully.
- * 4. The application window maps (maybe, see below).
+ * 4. MapNotify: maybe, see below.
  *
  * This we need to combine with user interactions and automatic timeout.
  *
@@ -941,16 +917,29 @@ workspace_chooser_map_timeout (gpointer data)
  * Corner cases:
  *
  * I. Application starts, but does not create a new window (e.g., a single
- *    instance application re-uses existing window, see bug 670).
+ *    instance application re-uses existing window, see bug 670). We need to
+ *    avoid creating an empty workspace; we do this by delaying the workspace
+ *    creation until the window has mapped.
  *
- *    * Because of ii. we create a new workspace with nothing in it.
+ * The start up process is split into two phases: configuration and
+ * finalization.
  *
- *    * Because there is no map event associated with this starup, we do not
- *      know which window matches the application.
+ * Configuration (configure_app()):
  *
- *    Partial workaround: we install an additional timeout once we get
- *    SN_MONITOR_EVENT_COMPLETED; when the timeout fires, we check whether
- *    the window is still in the hash; if it is, we remove the last workspace.
+ *   Configuration is triggered either by user interaction or by the new
+ *   workspace timeout. The application is tagged with the workspace needed,
+ *   and marked as configured. If the window has already mapped, the map effect
+ *   is triggered.
+ *
+ * Finalization (finalize_app()):
+ *
+ *   Finalization alsways happens after the application has been configured and
+ *   is tirggered either by the window mapping effect (this in turn can be
+ *   initiated directly by the map event, or synthesized by the configure_app()
+ *   function.
+ *
+ *   During finalization a new workspace is created, if required, and the window
+ *   is moved to this workspace.
  */
 static void
 on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
@@ -1030,19 +1019,10 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
 
           if (sn_data->without_chooser)
             {
-              guint32 timestamp = sn_startup_sequence_get_timestamp (sequence);
-
               /*
-               * Install timeout the check something has actually mapped here.
+               * Configure the application
                */
-              g_timeout_add (1000,
-                             workspace_chooser_map_timeout, wsc_map_data);
-
-              /*
-               * Finalized the application startup.
-               */
-              finalize_app_startup (seq_id, sn_data->workspace, timestamp,
-                                    plugin, FALSE);
+              configure_app (seq_id, sn_data->workspace, plugin);
             }
           else
             {
@@ -1061,12 +1041,6 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
                                 workspace_chooser_timeout_cb,
                                 wsc_data,
                                 (GDestroyNotify)free_ws_chooser_timeout_data);
-
-              /*
-               * Install timeout the check something has actually mapped here.
-               */
-              g_timeout_add (WORKSPACE_CHOOSER_TIMEOUT + 1000,
-                             workspace_chooser_map_timeout, wsc_map_data);
             }
         }
       break;
@@ -1111,9 +1085,25 @@ moblin_netbook_sn_setup (MutterPlugin *plugin)
                                          (GDestroyNotify) free_sn_hash_data);
 }
 
+/*
+ * Public function called by the plugin map() handler to determine if the
+ * window in question should be mapped.
+ *
+ * We have the following scenarios:
+ *
+ * 1. Window is not part of SN process, should be mapped, just return TRUE.
+ *
+ * 2. Window is part of SN process and has already been configured by
+ *    configure_app(); we finalize the application, and if the desktop switch
+ *    effect is not running, return TRUE, so that application window is mapped.
+ *
+ * 3. Window is part of SN process, but has not been configured yet; we return
+ *    FALSE, to prevent window from mapping at this point (the map will be
+ *    take care of once the window is actually configured).
+ */
 gboolean
 moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
-                                 const gchar * sn_id)
+                              const gchar * sn_id)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gpointer                    key, value;
@@ -1131,14 +1121,20 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
       apriv->sn_in_progress = TRUE;
       sn_data->mcw = mcw;
 
-      workspace_index = sn_data->workspace;
-
-      /*
-       * If a workspace is set to a meaninful value, remove the
-       * window from hash and move it to the appropriate WS.
-       */
-      if (workspace_index > -2)
+      if (sn_data->configured)
         {
+          /* The start up process has already been configured before the
+           * the window mapped; we need to re-run the finalize function to
+           * take care of the actual workspace creation, etc.
+           */
+          guint32      timestamp;
+          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+          MetaDisplay *display = meta_screen_get_display (screen);
+
+          timestamp = meta_display_get_current_time_roundtrip (display);
+
+          finalize_app (sn_id, sn_data->workspace, timestamp, plugin);
+
           if (!priv->desktop_switch_in_progress)
             {
               /*
@@ -1151,8 +1147,6 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
 
               g_hash_table_remove (priv->sn_hash, sn_id);
             }
-
-          move_window_to_workspace (mcw, workspace_index, CurrentTime);
 
           if (priv->desktop_switch_in_progress)
             {
@@ -1181,39 +1175,38 @@ void
 moblin_netbook_sn_finalize (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MutterPluginClass          *klass;
   gpointer                    key, value;
   GHashTableIter              iter;
 
   if (priv->desktop_switch_in_progress)
     return;
 
+  klass = MUTTER_PLUGIN_GET_CLASS (plugin);
+
   g_hash_table_iter_init (&iter, priv->sn_hash);
 
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
-      SnHashData *sn_data = value;
-      gint        workspace_index;
+      SnHashData   *sn_data = value;
+      gint          workspace_index;
+      MutterWindow *mcw;
 
       workspace_index = sn_data->workspace;
 
       /*
-       * If a workspace is set to a meaninful value, remove the
-       * window from hash and move it to the appropriate WS.
+       * If the app is already configured, trigger the map effect (this
+       * takes care of everything else).
        */
-      if (workspace_index > -2)
+      if (sn_data->configured && (mcw = sn_data->mcw))
         {
-          MutterWindow *mcw = sn_data->mcw;
           ActorPrivate *apriv = get_actor_private (mcw);
 
           apriv->sn_in_progress = FALSE;
           g_hash_table_remove (priv->sn_hash, key);
           g_hash_table_iter_init (&iter, priv->sn_hash);
 
-          if (mcw)
-            {
-              MutterPluginClass *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
-              klass->map (plugin, mcw);
-            }
+          klass->map (plugin, mcw);
         }
     }
 }
