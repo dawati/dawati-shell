@@ -763,6 +763,33 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   clutter_container_add (CLUTTER_CONTAINER (overlay),
                          priv->notification_cluster, NULL);
+
+  clutter_actor_set_anchor_point_from_gravity (priv->notification_cluster,
+                                               CLUTTER_GRAVITY_SOUTH_EAST);
+
+  clutter_actor_set_position (priv->notification_cluster, 
+                              screen_width, 
+                              screen_height);
+
+#if 0
+  {
+    ClutterActor *foo;
+
+    foo = clutter_rectangle_new ();
+    clutter_actor_set_size (foo, 200, 200);
+
+    clutter_container_add (CLUTTER_CONTAINER (overlay),
+                           foo, NULL);
+
+    clutter_actor_set_anchor_point_from_gravity (foo,
+                                                 CLUTTER_GRAVITY_SOUTH_EAST);
+
+    clutter_actor_set_position (foo, 
+                                screen_width - 400, 
+                                screen_height - 400);
+  }
+#endif
+
   /* Keys */
 
   meta_prefs_override_no_tab_popup (TRUE);

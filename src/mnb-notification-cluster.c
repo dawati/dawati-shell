@@ -82,12 +82,51 @@ mnb_notification_cluster_paint (ClutterActor *actor)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
 
-  if (priv->notifiers && CLUTTER_ACTOR_IS_VISIBLE (priv->notifiers))
-    clutter_actor_paint (CLUTTER_ACTOR(priv->notifiers));
-
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->control))
     clutter_actor_paint (CLUTTER_ACTOR(priv->control));
+
+  if (priv->notifiers && CLUTTER_ACTOR_IS_VISIBLE (priv->notifiers))
+    clutter_actor_paint (CLUTTER_ACTOR(priv->notifiers));
 }
+
+static void
+mnb_notification_cluster_get_preferred_width (ClutterActor *actor,
+                                              ClutterUnit   for_height,
+                                              ClutterUnit  *min_width,
+                                              ClutterUnit  *natural_width)
+{
+  *min_width = CLUTTER_UNITS_FROM_DEVICE(CLUSTER_WIDTH);
+  *natural_width = CLUTTER_UNITS_FROM_DEVICE(CLUSTER_WIDTH);
+}
+
+static void
+mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
+                                               ClutterUnit   for_width,
+                                               ClutterUnit  *min_height,
+                                               ClutterUnit  *natural_height)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
+
+  *min_height = 0;
+  *natural_height = 0;
+
+  if (priv->notifiers)
+    {
+      *min_height 
+           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->notifiers));
+      *natural_height 
+           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->notifiers));
+    }
+
+  if (priv->control && CLUTTER_ACTOR_IS_VISIBLE (priv->control))
+    {
+      *min_height 
+           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->control));
+      *natural_height 
+           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->control));
+    }
+}
+
 
 static void
 mnb_notification_cluster_allocate (ClutterActor          *actor,
@@ -101,21 +140,34 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
 
   klass->allocate (actor, box, origin_changed);
 
-  if (priv->notifiers)
-    clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers), 
-                            box, origin_changed);
+  /* <rant>*sigh* and composite actors used to be so simple...</rant> */
 
   if (priv->control)
     {
       ClutterActorBox control_box = { 
-        box->x1, 
-        box->y1 + clutter_actor_get_y (CLUTTER_ACTOR(priv->control)),
-        box->x2 + clutter_actor_get_width (CLUTTER_ACTOR(priv->control)), 
-        box->y2 + clutter_actor_get_y (CLUTTER_ACTOR(priv->control))
-                + clutter_actor_get_height (CLUTTER_ACTOR(priv->control))
+        clutter_actor_get_x (CLUTTER_ACTOR(priv->control)),
+        clutter_actor_get_y (CLUTTER_ACTOR(priv->control)),
+        clutter_actor_get_x (CLUTTER_ACTOR(priv->control)) +
+          clutter_actor_get_width (CLUTTER_ACTOR(priv->control)),
+        clutter_actor_get_y (CLUTTER_ACTOR(priv->control)) + 
+          clutter_actor_get_height (CLUTTER_ACTOR(priv->control))
       };
+
       clutter_actor_allocate (CLUTTER_ACTOR(priv->control), 
                               &control_box, origin_changed);
+    }
+
+  if (priv->notifiers)
+    {
+      ClutterActorBox notifier_box = { 
+        0,
+        0,
+        clutter_actor_get_width (CLUTTER_ACTOR(priv->notifiers)), 
+        clutter_actor_get_height (CLUTTER_ACTOR(priv->notifiers))
+      };
+
+      clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers), 
+                              &notifier_box, origin_changed);
     }
 }
 
@@ -134,6 +186,11 @@ mnb_notification_cluster_class_init (MnbNotificationClusterClass *klass)
 
   clutter_class->allocate = mnb_notification_cluster_allocate;
   clutter_class->paint = mnb_notification_cluster_paint;
+  clutter_class->get_preferred_height 
+    = mnb_notification_cluster_get_preferred_height;
+  clutter_class->get_preferred_width 
+    = mnb_notification_cluster_get_preferred_width;
+
 }
 
 static gint
@@ -205,7 +262,7 @@ on_notification_added (MoblinNetbookNotifyStore *store,
     {
       clutter_actor_set_y (CLUTTER_ACTOR(priv->control), 
                            clutter_actor_get_height 
-                                (CLUTTER_ACTOR(priv->active_notifier)));
+                                (CLUTTER_ACTOR(priv->active_notifier)) - 30);
 
       nbtk_label_set_text (NBTK_LABEL(priv->control_text),
                            "1 pending message");
@@ -264,7 +321,7 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
       if (w == priv->active_notifier && priv->n_notifiers > 0)
         {
           priv->active_notifier =
-            clutter_group_get_nth_child (CLUTTER_CONTAINER (priv->notifiers), 
+            clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers), 
                                          0);
           if (priv->active_notifier)
             clutter_actor_show (CLUTTER_ACTOR(priv->active_notifier));

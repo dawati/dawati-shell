@@ -324,14 +324,12 @@ NbtkLabel
 
 MnbNotification
 {
-  background-image: url('file://notifiers/notification-bg.png');
-  border-width: 16 16 16 16;
-  padding: 18 18 18 18;
+  border-image: url('file://notifiers/notification-bg.png') 10 21 33 22;
+  padding: 15 26 38 27;
 }
 
 *.notification-control
 {
-  background-image: url('file://notifiers/notification-bg.png');
-  border-width: 16 16 16 16;
-  padding: 18 18 18 18;
+  border-image: url('file://notifiers/notification-bg.png') 10 21 33 22;
+  padding: 15 26 38 27;
 }
