@@ -347,7 +347,7 @@ try_alt_tab_grab (MutterPlugin *plugin,
    * the current window, we fall back onto metacity's focus list and try to
    * switch to that.
    */
-  if (!next || (advance && current && (next == current)))
+  if (current && !next || (advance  && (next == current)))
     {
       MetaWorkspace *ws = meta_window_get_workspace (current);
 
