@@ -35,6 +35,7 @@ G_DEFINE_TYPE (MnbNotificationCluster,   \
    MnbNotificationClusterPrivate))
 
 #define CLUSTER_WIDTH 300
+#define FADE_DURATION 300
 
 struct _MnbNotificationClusterPrivate {
   ClutterGroup *notifiers;
@@ -129,9 +130,11 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
   if (priv->control && CLUTTER_ACTOR_IS_VISIBLE (priv->control))
     {
       *min_height 
-           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->control));
+           = clutter_actor_get_yu (CLUTTER_ACTOR (priv->control))
+             + clutter_actor_get_heightu (CLUTTER_ACTOR (priv->control));
       *natural_height 
-           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->control));
+           = clutter_actor_get_yu (CLUTTER_ACTOR (priv->control))
+             + clutter_actor_get_heightu (CLUTTER_ACTOR (priv->control));
     }
 }
 
@@ -255,12 +258,20 @@ on_closed (MnbNotification *notification, MoblinNetbookNotifyStore *store)
 }
 
 static void
+on_control_appear_anim_completed (ClutterAnimation *anim,
+                                  MnbNotificationCluster *cluster)
+{
+  g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
+}
+
+static void
 on_notification_added (MoblinNetbookNotifyStore *store, 
                        Notification             *notification, 
                        MnbNotificationCluster   *cluster)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
   NbtkWidget *w;
+  ClutterAnimation *anim;
 
   w = find_widget (priv->notifiers, notification->id);
 
@@ -287,21 +298,47 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
   if (priv->n_notifiers == 1)
     {
+      /* show just the single notification */
       priv->active_notifier = w; 
+      clutter_actor_set_opacity (CLUTTER_ACTOR(w), 0);
       clutter_actor_show (CLUTTER_ACTOR(w));
-    }
+
+      clutter_actor_animate (CLUTTER_ACTOR(w), 
+                             CLUTTER_EASE_IN_SINE,
+                             FADE_DURATION,
+                             "opacity", 0xff,
+                             NULL);
+
+      g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0); 
+     }
   else if (priv->n_notifiers == 2)
     {
-      clutter_actor_set_y (CLUTTER_ACTOR(priv->control), 
-                           clutter_actor_get_height 
-                                (CLUTTER_ACTOR(priv->active_notifier)) - 30);
-
+      /* slide the control into view */
       nbtk_label_set_text (NBTK_LABEL(priv->control_text),
                            "1 pending message");
+
+      clutter_actor_set_opacity (CLUTTER_ACTOR(priv->control), 0);
+      clutter_actor_set_y (CLUTTER_ACTOR(priv->control),
+              clutter_actor_get_height (CLUTTER_ACTOR(priv->active_notifier)) 
+                 - clutter_actor_get_height (CLUTTER_ACTOR(priv->control)));
+
       clutter_actor_show (CLUTTER_ACTOR(priv->control));
+
+      anim = clutter_actor_animate (CLUTTER_ACTOR(priv->control), 
+                                    CLUTTER_EASE_IN_SINE,
+                                    FADE_DURATION,
+                                    "opacity", 0xff,
+                                    "y", clutter_actor_get_height 
+                                    (CLUTTER_ACTOR(priv->active_notifier))- 30,
+                                    NULL);
+      g_signal_connect (anim, 
+                        "completed",
+                        G_CALLBACK (on_control_appear_anim_completed),
+                        cluster);
     }
   else
     {
+      /* simply update the control */
       gchar *msg;
 
       msg = g_strdup_printf ("%i pending messages", priv->n_notifiers-1);
@@ -311,29 +348,8 @@ on_notification_added (MoblinNetbookNotifyStore *store,
       g_free (msg);
     }
 
-  /* 
-     need to check anim is not already running...
-
-     if (n_notifiers == 1)
-       {
-         simply fade in;
-         set current notifier
-       }
-     else if (n_notifiers == 2)
-       {
-         slide up current notifier.   
-         display control below
-       }
-     else
-       {
-         simply update the control
-       }
-
-   */
-
-  g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
-
 }
+
 
 static void
 on_notification_closed (MoblinNetbookNotifyStore *store, 
@@ -379,15 +395,6 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
           g_free (msg);
         }
     }
-      /* Remove and run animation */
-      /*
-      if (n_notifiers == 1)
-        {
-          simply fade out current notifier
-          set to NULL
-        }
-      else if (n_notifiers == 1)
-      */
 
   g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
 }
@@ -395,7 +402,7 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 static void
 on_dismiss_all_foreach (ClutterActor *notifier)
 {
-  g_signal_emit (notifier, "closed", 0);
+  g_signal_emit_by_name (notifier, "closed", 0);
 }
 
 static void

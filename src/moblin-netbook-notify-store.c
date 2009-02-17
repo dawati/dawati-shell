@@ -152,12 +152,13 @@ notification_manager_close_notification (MoblinNetbookNotifyStore *notify, guint
 static gboolean
 notification_manager_get_capabilities (MoblinNetbookNotifyStore *notify, gchar ***caps, GError *error)
 {
-  *caps = g_new0 (gchar *, 4);
+  *caps = g_new0 (gchar *, 5);
   
   (*caps)[0] = g_strdup ("body");
   (*caps)[1] = g_strdup ("body-markup");
-  (*caps)[2] = g_strdup ("icon-static");
-  (*caps)[3] = NULL;
+  (*caps)[2] = g_strdup ("summary");
+  (*caps)[3] = g_strdup ("icon-static");
+  (*caps)[4] = NULL;
   
   return TRUE;
 }
