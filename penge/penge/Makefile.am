@@ -13,7 +13,8 @@ libpenge_headers = penge-people-pane.h \
 		   penge-grid-view.h \
 		   penge-utils.h \
 		   penge-magic-texture.h \
-		   penge-view-background.h
+		   penge-view-background.h \
+		   penge-app-bookmark-manager.h
 
 libpenge_a_SOURCES = \
 		      $(libpenge_headers) \
@@ -30,7 +31,8 @@ libpenge_a_SOURCES = \
 		      penge-grid-view.c \
 		      penge-utils.c \
 		      penge-magic-texture.c \
-		      penge-view-background.c
+		      penge-view-background.c \
+		      penge-app-bookmark-manager.c
 AM_CFLAGS = -Wall $(PENGE_CFLAGS) \
 	    -DPKG_DATADIR=\"$(pkgdatadir)\"
 AM_LDFLAGS = $(PENGE_LIBS)
