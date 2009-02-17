@@ -437,6 +437,8 @@ make_panel (MutterPlugin *plugin, gint width)
                                                         "m_zone",
                                                         MNBK_CONTROL_MZONE);
 
+  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[0]), TRUE);
+
   priv->panel_buttons[1] = panel_append_toolbar_button (plugin,
                                                         panel,
                                                         "status-button",
