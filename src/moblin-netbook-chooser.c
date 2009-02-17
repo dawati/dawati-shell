@@ -26,6 +26,7 @@
 #include "moblin-netbook-panel.h"
 #include "nutter/nutter-scale-group.h"
 
+#include <string.h>
 #include <display.h>
 #include <nbtk/nbtk-texture-frame.h>
 
@@ -142,6 +143,121 @@ finalize_app (const char * sn_id, gint workspace, guint32 timestamp,
     }
 }
 
+struct map_timeout_data
+{
+  MutterPlugin *plugin;
+  gchar        *sn_id;
+};
+
+/*
+ * This timeout is installed when the application is configured; it handles the
+ * awkward case where the start up sequence completes, but the application
+ * reuses pre-existing window -- we try to activate that window.
+ */
+static gboolean
+sn_map_timeout_cb (gpointer data)
+{
+  GList *l;
+  struct map_timeout_data    *map_data = data;
+  MutterPlugin               *plugin   = map_data->plugin;
+  gchar                      *sn_id    = map_data->sn_id;
+  MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gpointer                    key, value;
+
+  if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
+    {
+      gboolean    removed = FALSE;
+      SnHashData *sn_data = value;
+      gchar      *s, *e;
+
+      if (sn_data->state != SN_MONITOR_EVENT_COMPLETED)
+        {
+          /*
+           * The timeout triggered before the sn process completed,
+           * give it more time.
+           */
+          return TRUE;
+        }
+
+      /*
+       * The startup id has the form:
+       *
+       *  launcher/app/numid-id-machine_timestamp.
+       *
+       * Isolate the app/numid part.
+       */
+      s = strchr (sn_id, '/');
+      s = g_strdup (s+1);
+
+      e = strchr (s, '-');
+      *e = 0;
+
+      /*
+       * Now iterate all windows and look for an sn_id that matches.
+       */
+      l = mutter_plugin_get_windows (map_data->plugin);
+
+      while (l)
+        {
+          MutterWindow *mcw = l->data;
+          MetaWindow   *mw  = mutter_window_get_meta_window (mcw);
+          const gchar  *id  = meta_window_get_startup_id (mw);
+
+          if (id && strstr (id, s))
+            {
+              MetaScreen    *screen  = mutter_plugin_get_screen (plugin);
+              MetaDisplay   *display = meta_screen_get_display (screen);
+              MetaWorkspace *active_workspace;
+              MetaWorkspace *workspace;
+              guint32        timestamp;
+
+              timestamp = meta_display_get_current_time_roundtrip (display);
+
+              sn_data->mcw = mcw;
+
+              /*
+               * Apply the configuration settings to this application.
+               */
+              finalize_app (sn_id, sn_data->workspace, timestamp, plugin);
+
+              /*
+               * Remove it from the hash to ensure that it will not be handled
+               * somewhere again.
+               */
+              removed = TRUE;
+              g_hash_table_remove (priv->sn_hash, sn_id);
+
+              /*
+               * If the application is supposed to be on the same workspace
+               * as the currently active one, then simply finalizing it does
+               * not bring it to the forefront; do so now.
+               */
+              active_workspace = meta_screen_get_active_workspace (screen);
+              workspace = meta_window_get_workspace (mw);
+
+              if (!active_workspace || (active_workspace == workspace))
+                {
+                  meta_window_activate_with_workspace (mw, timestamp,
+                                                       workspace);
+                }
+              break;
+            }
+
+          l = l->next;
+        }
+
+      g_free (s);
+
+      if (!removed)
+        g_hash_table_remove (priv->sn_hash, sn_id);
+    }
+
+  g_free (map_data->sn_id);
+  g_slice_free (struct map_timeout_data, data);
+
+  return FALSE;
+}
+
 /*
  * Configures the application.
  *
@@ -175,6 +291,20 @@ configure_app (const char *sn_id, gint workspace, MutterPlugin *plugin)
         {
           MutterPluginClass *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
           klass->map (plugin, sn_data->mcw);
+        }
+      else if (sn_data->state == SN_MONITOR_EVENT_COMPLETED)
+        {
+          struct map_timeout_data *map_data;
+
+          /*
+           * If we do not have the window yet, install the map timeout.
+           */
+          map_data = g_slice_new (struct map_timeout_data);
+
+          map_data->plugin = plugin;
+          map_data->sn_id = g_strdup (sn_id);
+
+          g_timeout_add (500, sn_map_timeout_cb, map_data);
         }
     }
 }
@@ -914,13 +1044,6 @@ is_last_workspace_empty (MutterPlugin *plugin)
  * ii. Application must be moved to the new workspace before we run the
  *     map effect, to avoid it flickering on the wrong workspace.
  *
- * Corner cases:
- *
- * I. Application starts, but does not create a new window (e.g., a single
- *    instance application re-uses existing window, see bug 670). We need to
- *    avoid creating an empty workspace; we do this by delaying the workspace
- *    creation until the window has mapped.
- *
  * The start up process is split into two phases: configuration and
  * finalization.
  *
@@ -940,6 +1063,22 @@ is_last_workspace_empty (MutterPlugin *plugin)
  *
  *   During finalization a new workspace is created, if required, and the window
  *   is moved to this workspace.
+ *
+ * Corner cases:
+ *
+ * I. Application starts, but does not create a new window (e.g., a single
+ *    instance application re-uses existing window, see bug 670). We need to
+ *    avoid creating an empty workspace; we do this by delaying the workspace
+ *    creation until the window has mapped. We also need to activate the
+ *    application.
+ *
+ *    We install sn_map_timeout_cb () when the application is configured for
+ *    a suitable period (500ms?), and when the timeout fires, check whether
+ *    the application has mapped a window; if not, we query the start up ids
+ *    of all currently running applications and try to find one that corresponds
+ *    to ours. If we find it, we apply the configuration settings to this
+ *    application.
+ *
  */
 static void
 on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
@@ -1016,6 +1155,25 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
           wsc_map_data = g_slice_new (struct ws_chooser_map_data);
           wsc_map_data->plugin = plugin;
           wsc_map_data->sn_id = g_strdup (seq_id);
+
+          /*
+           * If the application has been configured already, we install
+           * the map timeout here.
+           */
+          if (sn_data->configured)
+            {
+              struct map_timeout_data *map_data;
+
+              /*
+               * If we do not have the window yet, install the map timeout.
+               */
+              map_data = g_slice_new (struct map_timeout_data);
+
+              map_data->plugin = plugin;
+              map_data->sn_id = g_strdup (seq_id);
+
+              g_timeout_add (500, sn_map_timeout_cb, map_data);
+            }
 
           if (sn_data->without_chooser)
             {
