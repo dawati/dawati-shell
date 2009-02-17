@@ -264,8 +264,8 @@ try_alt_tab_grab (MutterPlugin *plugin,
   MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display  = meta_screen_get_display (screen);
   MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
-  MetaWindow                 *next;
-  MetaWindow                 *current;
+  MetaWindow                 *next     = NULL;
+  MetaWindow                 *current  = NULL;
 
   current = meta_display_get_tab_current (display,
                                           META_TAB_LIST_NORMAL,
@@ -347,7 +347,7 @@ try_alt_tab_grab (MutterPlugin *plugin,
    * the current window, we fall back onto metacity's focus list and try to
    * switch to that.
    */
-  if (current && (!next || next == current))
+  if (!next || (advance && current && (next == current)))
     {
       MetaWorkspace *ws = meta_window_get_workspace (current);
 
@@ -358,8 +358,11 @@ try_alt_tab_grab (MutterPlugin *plugin,
                                         current,
                                         backward);
 
-      if (!next || next == current)
-        return;
+      if (!next || (advance && (next == current)))
+        {
+          return;
+        }
+
     }
 
   if (meta_display_begin_grab_op (display,
@@ -410,9 +413,9 @@ try_alt_tab_grab (MutterPlugin *plugin,
       else
         {
           if (advance)
-            next = mnb_switcher_get_next_window (switcher, next, backward);
-
-          mnb_switcher_select_window (switcher, next);
+            mnb_switcher_select_window (switcher, next);
+          else if (current)
+            mnb_switcher_select_window (switcher, current);
         }
     }
 }
