@@ -191,6 +191,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   /* When we should next wake up. On the next hour. */
   next_timeout = jana_ecal_utils_time_now_local ();
   jana_time_set_minutes (next_timeout, 0);
+  jana_time_set_seconds (next_timeout, 0);
   jana_utils_time_adjust (next_timeout, 
                           0,
                           0,
