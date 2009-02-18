@@ -2,6 +2,7 @@
 
 #include "penge-calendar-pane.h"
 #include "penge-recent-files-pane.h"
+#include "penge-apps-pane.h"
 #include "penge-people-pane.h"
 
 #include "penge-view-background.h"
@@ -16,6 +17,7 @@ typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 struct _PengeGridViewPrivate {
   ClutterActor *calendar_pane;
   ClutterActor *recent_files_pane;
+  ClutterActor *favourite_apps_pane;
   ClutterActor *people_pane;
 
   ClutterActor *background;
@@ -141,13 +143,21 @@ penge_grid_view_init (PengeGridView *self)
                         0,
                         1);
 
+  priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
+                                            NULL);
+
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        priv->favourite_apps_pane,
+                        0,
+                        2);
+
   priv->people_pane = g_object_new (PENGE_TYPE_PEOPLE_PANE,
                                     NULL);
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->people_pane,
                         0,
-                        2);
+                        3);
 
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
