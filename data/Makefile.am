@@ -44,6 +44,9 @@ theme_genericdir = $(pkgdatadir)/theme/generic
 dist_theme_generic_DATA = \
 	theme/generic/checkbox.png	\
 	theme/generic/spinner.png	\
+	theme/generic/button.png	\
+	theme/generic/button_active.png	\
+	theme/generic/button_hover.png	\
 	theme/generic/tooltip-background.png
 
 theme_launcherdir = $(pkgdatadir)/theme/launcher

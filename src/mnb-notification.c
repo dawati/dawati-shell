@@ -151,10 +151,13 @@ mnb_notification_init (MnbNotification *self)
   NbtkWidget *footer, *up_button;
   ClutterTimeline *timeline;
   MnbNotificationPrivate *priv;
+  ClutterText *txt;
 
   priv = self->priv = GET_PRIVATE (self);
 
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (self), "notification");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (self), "Notification");
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
 
   priv->dismiss_button = nbtk_button_new ();
   priv->action_button  = nbtk_button_new ();
@@ -162,20 +165,38 @@ mnb_notification_init (MnbNotification *self)
   priv->body           = nbtk_label_new ("");
   priv->summary        = nbtk_label_new ("");
 
-  clutter_text_set_use_markup 
-    (CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->body))), TRUE);
-
   nbtk_table_add_actor (NBTK_TABLE (self), priv->icon, 0, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->icon),
                                "keep-aspect-ratio", TRUE,
-                               "x-align", 1.0,
+                               "y-expand", FALSE,
+                               "x-expand", FALSE,
+                               "x-align", 0.0,
                                NULL);
+
+  txt = nbtk_label_get_clutter_text(NBTK_LABEL(priv->summary));
+  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->summary, 0, 1);
 
+  nbtk_widget_set_alignment (priv->summary, 0, 0.5);
+
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               CLUTTER_ACTOR (priv->summary),
+                               "y-expand", TRUE,
+                               "x-expand", TRUE,
+                               NULL);
+
   nbtk_table_add_widget (NBTK_TABLE (self), priv->body, 1, 0);
   nbtk_table_set_widget_colspan (NBTK_TABLE (self), priv->body, 2);
+
+  nbtk_widget_set_alignment (priv->body, 0, 0.5);
+
+  txt = nbtk_label_get_clutter_text(NBTK_LABEL(priv->body));
+  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
+  clutter_text_set_single_line_mode (CLUTTER_TEXT (txt), FALSE);
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->action_button, 2, 0);
   clutter_actor_hide (CLUTTER_ACTOR(priv->action_button));
@@ -183,8 +204,21 @@ mnb_notification_init (MnbNotification *self)
   nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
   nbtk_table_add_widget (NBTK_TABLE (self), priv->dismiss_button, 2, 1);
 
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               CLUTTER_ACTOR (priv->dismiss_button),
+                               "y-expand", FALSE,
+                               "x-expand", FALSE,
+                               "x-align",  0.0,
+                               NULL);
+
   g_signal_connect (priv->dismiss_button, "clicked",
                     G_CALLBACK (on_dismiss_click), self);
+
+  nbtk_widget_set_style_class_name (priv->summary,
+                                    "NotificationSummary");
+  nbtk_widget_set_style_class_name (priv->body,
+                                    "NotificationBody");
+
 }
 
 NbtkWidget*

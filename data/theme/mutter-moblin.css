@@ -1,4 +1,28 @@
 /* generic classes */
+NbtkButton {
+  background-image: url("file://generic/button.png");
+  border-width: 4;
+  padding: 4;
+  font-size: 12px;
+  color: #333;
+}
+
+NbtkButton:hover {
+  background-image: url("file://generic/button_hover.png");
+  border-width: 4;
+  padding: 4;
+  font-size: 12px;
+  color: #fff;
+}
+
+NbtkButton:active {
+  background-image: url("file://generic/button_active.png");
+  border-width: 4;
+  padding: 4;
+  font-size: 12px;
+  color: #333;
+}
+
 NbtkTable {
   background-color: #f000;
 }
@@ -318,7 +342,7 @@ PengeEventTile:hover
 NbtkLabel
 {
   font-family: "Liberation Sans";
-  font-size: 12;
+  font-size: 12px;
 }
 
 
@@ -326,10 +350,25 @@ MnbNotification
 {
   border-image: url('file://notifiers/notification-bg.png') 10 21 33 22;
   padding: 15 26 38 27;
+  font-size: 12px;
 }
 
 *.notification-control
 {
   border-image: url('file://notifiers/notification-bg.png') 10 21 33 22;
   padding: 15 26 38 27;
+}
+
+*.NotificationSummary
+{
+    font-family: "Liberation Sans Bold";
+    font-size: 16px;
+    color: #009bceff;
+}
+
+*.NotificationBody
+{
+    font-family: "Liberation Sans";
+    font-size: 13px;
+    color: #333;
 }

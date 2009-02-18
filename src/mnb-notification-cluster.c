@@ -44,6 +44,7 @@ struct _MnbNotificationClusterPrivate {
   ClutterActor *lowlight;
   gint          n_notifiers;
   NbtkWidget   *active_notifier;
+  ClutterActor *pending_removed;  /* notification pending removal on anim */
 };
 
 enum
@@ -350,6 +351,21 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
 }
 
+static void
+on_control_disappear_anim_completed (ClutterAnimation *anim,
+                                     MnbNotificationCluster *cluster)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
+
+  if (priv->pending_removed)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers), 
+                                      priv->pending_removed);
+      priv->pending_removed = NULL;
+    }
+
+  g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
+}
 
 static void
 on_notification_closed (MoblinNetbookNotifyStore *store, 
@@ -358,45 +374,89 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
                         MnbNotificationCluster *cluster)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
+  ClutterAnimation *anim;
   NbtkWidget *w;
 
   w = find_widget (priv->notifiers, id);
 
   if (w)
     {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers), 
-                                      CLUTTER_ACTOR(w));
+      /* needed for callback */
+      priv->pending_removed = CLUTTER_ACTOR(w);
 
       priv->n_notifiers--;          
 
+      /* fade out closed notifier */
+      if (w == priv->active_notifier)
+        {
+          anim = clutter_actor_animate (CLUTTER_ACTOR(w), 
+                                        CLUTTER_EASE_IN_SINE,
+                                        FADE_DURATION,
+                                        "opacity", 0,
+                                        NULL);
+          g_signal_connect (anim, 
+                            "completed",
+                            G_CALLBACK 
+                            (on_control_disappear_anim_completed),
+                            cluster);
+        }
+      else
+        {
+          /* simplky remove no need for anim */
+          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers), 
+                                          CLUTTER_ACTOR(w));
+        }
+
+      /* Fade in newer notifier from below stack */
       if (w == priv->active_notifier && priv->n_notifiers > 0)
         {
           priv->active_notifier = NBTK_WIDGET (
             clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers), 
-                                         0));
+                                         1); /* Next, not 0 */
+
           if (priv->active_notifier)
-            clutter_actor_show (CLUTTER_ACTOR(priv->active_notifier));
+            {
+              clutter_actor_set_opacity (CLUTTER_ACTOR(priv->active_notifier),
+                                         0);
+              clutter_actor_show (CLUTTER_ACTOR(priv->active_notifier));
+              clutter_actor_animate (CLUTTER_ACTOR(priv->active_notifier), 
+                                     CLUTTER_EASE_IN_SINE,
+                                     FADE_DURATION,
+                                     "opacity", 0xff,
+                                     NULL);
+            }
         }
       
       if (priv->n_notifiers == 0)
         {
-          /* XXX, wed actually run anim to remove then close */
+          /* Animation above would have removed */
           priv->active_notifier = NULL;
         }
       else if (priv->n_notifiers == 1)
         {
-          clutter_actor_hide (CLUTTER_ACTOR(priv->control));
+          /* slide the control out of view */
+          clutter_actor_animate (CLUTTER_ACTOR(priv->control), 
+                                 CLUTTER_EASE_IN_SINE,
+                                 FADE_DURATION,
+                                 "opacity", 0x0,
+                                 "y", clutter_actor_get_height 
+                                        (CLUTTER_ACTOR(priv->active_notifier)) 
+                                      - clutter_actor_get_height 
+                                        (CLUTTER_ACTOR(priv->control)),
+                                 NULL);
+ 
+          /* clutter_actor_hide (CLUTTER_ACTOR(priv->control)); */
+          /* make need above and input regiion sync from above */
         }
       else
         {
+          /* Just Update control text */
           gchar *msg;
           msg = g_strdup_printf ("%i pending messages", priv->n_notifiers);
           nbtk_label_set_text (NBTK_LABEL(priv->control_text), msg);
           g_free (msg);
         }
     }
-
-  g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
 }
 
 static void
@@ -424,7 +484,7 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
   NbtkWidget *widget;
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (self);
   MoblinNetbookNotifyStore *notify_store;
-
+  ClutterText *txt;
 
   notify_store = moblin_netbook_notify_store_new ();
 
