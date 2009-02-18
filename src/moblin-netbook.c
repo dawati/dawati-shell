@@ -365,6 +365,11 @@ try_alt_tab_grab (MutterPlugin *plugin,
 
     }
 
+  /*
+   * For some reaon, XGrabKeyboard() does not like real timestamps, or
+   * we are getting rubish out of clutter ... using CurrentTime here makes it
+   * work.
+   */
   if (meta_display_begin_grab_op (display,
                                   screen,
                                   NULL,
@@ -373,7 +378,7 @@ try_alt_tab_grab (MutterPlugin *plugin,
                                   FALSE,
                                   0,
                                   mask,
-                                  timestamp,
+                                  CurrentTime,
                                   0, 0))
     {
       ClutterActor               *stage = mutter_get_stage_for_screen (screen);
