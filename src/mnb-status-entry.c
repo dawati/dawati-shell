@@ -379,14 +379,16 @@ mnb_status_entry_init (MnbStatusEntry *self)
   clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (self));
 
   priv->text = CLUTTER_ACTOR (nbtk_entry_new ("Enter your status here..."));
-  clutter_actor_set_name (priv->text, "status-text");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->text),
+                                    "MnbStatusEntryText");
   clutter_actor_set_parent (priv->text, CLUTTER_ACTOR (self));
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->text));
   clutter_text_set_selectable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_cursor_visible (CLUTTER_TEXT (text), FALSE);
 
   priv->button = CLUTTER_ACTOR (nbtk_button_new_with_label ("Edit"));
-  clutter_actor_set_name (priv->button, "status-button");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
+                                    "MnbStatusEntryButton");
   clutter_actor_hide (priv->button);
   clutter_actor_set_parent (priv->button, CLUTTER_ACTOR (self));
 }

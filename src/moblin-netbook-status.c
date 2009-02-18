@@ -47,56 +47,33 @@ add_status_entries (NbtkTable *table)
   gint i;
 
   for (i = 0; i < n_services; i++)
-    nbtk_table_add_widget (table, mnb_status_entry_new (services[i]), i, 0);
+    nbtk_table_add_widget (table, mnb_status_entry_new (services[i]), i + 1, 0);
 }
 
 ClutterActor *
 make_status (MutterPlugin *plugin, gint width)
 {
   ClutterActor  *stage, *table;
-  gint           row, col, n_cols, pad;
   NbtkWidget    *drop_down, *footer, *up_button;
-  NbtkWidget    *label;
-  NbtkPadding    padding = { CLUTTER_UNITS_FROM_INT (4),
-                             CLUTTER_UNITS_FROM_INT (4),
-                             CLUTTER_UNITS_FROM_INT (4),
-                             CLUTTER_UNITS_FROM_INT (4)};
-
-  n_cols = (width - 2 * BORDER_WIDTH) / (ICON_SIZE + PADDING);
-
-  /* Distribute any leftover space into the padding, if possible */
-  pad = n_cols * (ICON_SIZE + PADDING) - (width - 2 * BORDER_WIDTH);
-
-  if (pad >= n_cols)
-    pad /= n_cols;
-  else
-    pad = 0;
-
-  pad += PADDING;
+  NbtkWidget    *header;
 
   table = CLUTTER_ACTOR (nbtk_table_new ());
-  nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
-
-  clutter_actor_set_name (table, "status-table");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (table), "MnbStatusPageTable");
+  clutter_actor_set_width (CLUTTER_ACTOR (table), width);
   clutter_actor_set_reactive (table, TRUE);
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (table), pad);
-  nbtk_table_set_row_spacing (NBTK_TABLE (table), pad);
-
-  drop_down = mnb_drop_down_new ();
-
-  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
-
-  clutter_actor_set_width (CLUTTER_ACTOR (table), width);
-
-  nbtk_table_add_widget_full (NBTK_TABLE (table),
-                              nbtk_label_new ("Your current status"),
+  header = nbtk_label_new ("Your current status");
+  nbtk_widget_set_style_class_name (header, "MnbStatusPageHeader");
+  nbtk_table_add_widget_full (NBTK_TABLE (table), header,
                               0, 0,
                               1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL,
+                              0,
                               0.0, 0.5);
 
   add_status_entries (NBTK_TABLE (table));
+
+  drop_down = mnb_drop_down_new ();
+  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
 
   return CLUTTER_ACTOR (drop_down);
 }
