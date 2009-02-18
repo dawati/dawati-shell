@@ -341,6 +341,7 @@ dnd_dropped_cb (NbtkWidget   *table,
   ClutterActor          *table_actor = CLUTTER_ACTOR (table);
   MetaWindow            *meta_win;
   gint                   col;
+  guint32                timestamp;
 
   if (!(meta_win = mutter_window_get_meta_window (dragged_priv->mw)))
     {
@@ -362,11 +363,8 @@ dnd_dropped_cb (NbtkWidget   *table,
       priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
     }
 
-  /*
-   * TODO -- perhaps we should expose the timestamp from the pointer event,
-   * or event the entire Clutter event.
-   */
-  meta_window_change_workspace_by_index (meta_win, col, TRUE, CurrentTime);
+  timestamp = clutter_x11_get_current_event_time ();
+  meta_window_change_workspace_by_index (meta_win, col, TRUE, timestamp);
 }
 
 static NbtkTable *
@@ -390,6 +388,7 @@ dnd_new_dropped_cb (NbtkWidget   *table,
   gint                   col;
   NbtkTable             *new_ws;
   gboolean               keep_ratio = FALSE;
+  guint32                timestamp;
 
   if (!(meta_win = mutter_window_get_meta_window (dragged_priv->mw)))
     {
@@ -425,11 +424,8 @@ dnd_new_dropped_cb (NbtkWidget   *table,
       priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
     }
 
-  /*
-   * TODO -- perhaps we should expose the timestamp from the pointer event,
-   * or event the entire Clutter event.
-   */
-  meta_window_change_workspace_by_index (meta_win, col, TRUE, CurrentTime);
+  timestamp = clutter_x11_get_current_event_time ();
+  meta_window_change_workspace_by_index (meta_win, col, TRUE, timestamp);
 }
 
 static gboolean
