@@ -10,7 +10,7 @@
 #define MNB_STATUS_ENTRY_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_STATUS_ENTRY, MnbStatusEntryPrivate))
 
 #define ICON_SIZE       (CLUTTER_UNITS_FROM_FLOAT (48.0))
-#define H_PADDING       (CLUTTER_UNITS_FROM_FLOAT (6.0))
+#define H_PADDING       (CLUTTER_UNITS_FROM_FLOAT (9.0))
 
 struct _MnbStatusEntryPrivate
 {
@@ -27,6 +27,8 @@ struct _MnbStatusEntryPrivate
 
   guint in_hover  : 1;
   guint is_active : 1;
+
+  ClutterUnit icon_separator_x;
 };
 
 enum
@@ -37,6 +39,49 @@ enum
 };
 
 G_DEFINE_TYPE (MnbStatusEntry, mnb_status_entry, NBTK_TYPE_WIDGET);
+
+static void
+on_button_clicked (NbtkButton *button,
+                   MnbStatusEntry *entry)
+{
+  MnbStatusEntryPrivate *priv = entry->priv;
+  ClutterActor *text;
+
+  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->text));
+
+  if (!priv->is_active)
+    {
+      nbtk_button_set_label (NBTK_BUTTON (priv->button), "Post");
+
+      clutter_actor_set_reactive (text, TRUE);
+
+      clutter_text_set_editable (CLUTTER_TEXT (text), TRUE);
+      clutter_text_set_activatable (CLUTTER_TEXT (text), TRUE);
+
+      clutter_actor_grab_key_focus (priv->text);
+
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), "active");
+
+      priv->is_active = TRUE;
+
+      g_debug (G_STRLOC ": edit status");
+    }
+  else
+    {
+      nbtk_button_set_label (NBTK_BUTTON (priv->button), "Edit");
+
+      clutter_actor_set_reactive (text, FALSE);
+
+      clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
+      clutter_text_set_activatable (CLUTTER_TEXT (text), FALSE);
+
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), "active");
+
+      priv->is_active = FALSE;
+
+      g_debug (G_STRLOC ": send status");
+    }
+}
 
 static void
 mnb_status_entry_get_preferred_width (ClutterActor *actor,
@@ -145,6 +190,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   clutter_actor_allocate (priv->icon, &child_box, origin_changed);
 
   /* separator */
+  priv->icon_separator_x = child_box.x2 + H_PADDING;
 
   /* text */
   text_width = available_width - button_width;
@@ -157,8 +203,8 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                + H_PADDING;
   child_box.y1 = (int) border.top + priv->padding.top
                + ((ICON_SIZE - text_height) / 2);
-  child_box.x2 = child_box.x1 + text_width;
-  child_box.y2 = child_box.y1 + ICON_SIZE;
+  child_box.x2 = child_box.x1 + (text_width - ICON_SIZE - H_PADDING);
+  child_box.y2 = child_box.y1 + text_height;
   clutter_actor_allocate (priv->text, &child_box, origin_changed);
 
   /* button */
@@ -215,9 +261,10 @@ mnb_status_entry_enter (ClutterActor *actor,
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
 
   if (!priv->is_active)
-    nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor), "hover");
-
-  clutter_actor_show (priv->button);
+    {
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), "hover");
+      clutter_actor_show (priv->button);
+    }
 
   priv->in_hover = TRUE;
 }
@@ -229,11 +276,12 @@ mnb_status_entry_leave (ClutterActor *actor,
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
 
   if (!priv->is_active)
-    nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor), NULL);
+    {
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), NULL);
+      clutter_actor_hide (priv->button);
+    }
   else
-    nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor), "active");
-
-  clutter_actor_hide (priv->button);
+    nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), "active");
 
   priv->in_hover = FALSE;
 }
@@ -365,32 +413,47 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
 static void
 mnb_status_entry_init (MnbStatusEntry *self)
 {
-  const ClutterColor default_icon_color = { 255, 255, 0, 255 };
-  const ClutterColor default_button_color = { 204, 204, 204, 255 };
   MnbStatusEntryPrivate *priv;
   ClutterActor *text;
+  gchar *no_icon_file;
 
   self->priv = priv = MNB_STATUS_ENTRY_GET_PRIVATE (self);
 
-  priv->icon = clutter_rectangle_new ();
-  clutter_rectangle_set_color (CLUTTER_RECTANGLE (priv->icon),
-                               &default_icon_color);
+  no_icon_file = g_build_filename (PLUGIN_PKGDATADIR,
+                                   "theme",
+                                   "status",
+                                   "no_image_icon.png",
+                                   NULL);
+  priv->icon = clutter_texture_new_from_file (no_icon_file, NULL);
+  if (G_UNLIKELY (priv->icon == NULL))
+    {
+      const ClutterColor color = { 204, 204, 0, 255 };
+
+      priv->icon = clutter_rectangle_new_with_color (&color);
+    }
+
   clutter_actor_set_size (priv->icon, ICON_SIZE, ICON_SIZE);
   clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (self));
+
+  g_free (no_icon_file);
 
   priv->text = CLUTTER_ACTOR (nbtk_entry_new ("Enter your status here..."));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->text),
                                     "MnbStatusEntryText");
   clutter_actor_set_parent (priv->text, CLUTTER_ACTOR (self));
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->text));
-  clutter_text_set_selectable (CLUTTER_TEXT (text), FALSE);
-  clutter_text_set_cursor_visible (CLUTTER_TEXT (text), FALSE);
+  clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
+  clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
 
   priv->button = CLUTTER_ACTOR (nbtk_button_new_with_label ("Edit"));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
                                     "MnbStatusEntryButton");
   clutter_actor_hide (priv->button);
+  clutter_actor_set_reactive (priv->button, TRUE);
   clutter_actor_set_parent (priv->button, CLUTTER_ACTOR (self));
+  g_signal_connect (priv->button, "clicked",
+                    G_CALLBACK (on_button_clicked),
+                    self);
 }
 
 NbtkWidget *
