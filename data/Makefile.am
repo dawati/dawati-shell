@@ -95,4 +95,9 @@ dist_theme_mzone_DATA = \
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
-	theme/notifiers/notification-bg.png
+	theme/notifiers/notification-bg.png 
+
+theme_statusdir = $(pkgdatadir)/theme/status
+dist_theme_status_DATA = \
+	theme/status/decoration-frame.png \
+	theme/status/no_image_icon.png

@@ -461,33 +461,51 @@ MnbStatusEntry
   padding: 4 4 4 4;
 }
 
-MnbStatusEntry:hover
-{
-  background-color: #ccccccff;
-  padding: 4 4 4 4;
-}
-
 *.MnbStatusEntryText
 {
   font-size: 16px;
+  color: #595959ff;
+  background-color: #ffffffff;
+  padding: 0 15 0 15;
+}
+
+*.MnbStatusEntryText:hover
+{
+  font-size: 16px;
+  color: #595959ff;
+  background-color: #ccccccff;
+  padding: 0 15 0 15;
+}
+
+*.MnbStatusEntryText:active
+{
+  font-size: 16px;
+  color: #595959ff;
+  background-color: #ffffffff;
+  padding: 0 15 0 15;
 }
 
 *.MnbStatusEntryButton
 {
   background-color: #ffffffff;
-  font-size: 16px;
+  color: #7dbe0cff;
+  font-family: "Liberation Sans Bold";
+  font-size: 13px;
   padding: 4 4 4 4;
 }
 
 *.MnbStatusPageTable
 {
-  background-color: #ffffffff;
-  padding: 4 4 4 4;
+  background-image: url("file://status/decoration-frame.png");
+  border-width: 17 17 17 17;
+  padding: 17;
 }
 
 
 *.MnbStatusPageHeader
 {
-  font-size: 19px;
-  color: #3b3b3bff;
+  font-family: "Liberation Sans Bold";
+  font-size: 17px;
+  color: #3e3e3eff;
+  padding: 0 0 0 4;
 }
