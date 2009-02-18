@@ -177,7 +177,7 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
     }
 
     g_free (bookmark->icon_name);
-    if (g_bookmark_file_get_icon (priv->bookmarks,
+    if (!g_bookmark_file_get_icon (priv->bookmarks,
                                   uri,
                                   &(bookmark->icon_name),
                                   NULL,
@@ -189,7 +189,7 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
     }
 
     g_free (bookmark->app_exec);
-    if (g_bookmark_file_get_app_info (priv->bookmarks,
+    if (!g_bookmark_file_get_app_info (priv->bookmarks,
                                       uri,
                                       PENGE_APP_NAME,
                                       &(bookmark->app_exec),
