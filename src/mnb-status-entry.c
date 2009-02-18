@@ -9,26 +9,17 @@
 
 #define MNB_STATUS_ENTRY_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_STATUS_ENTRY, MnbStatusEntryPrivate))
 
-#define ICON_SIZE       (CLUTTER_UNITS_FROM_FLOAT (48.0))
-#define H_PADDING       (CLUTTER_UNITS_FROM_FLOAT (9.0))
-
 struct _MnbStatusEntryPrivate
 {
-  ClutterActor *icon;
   ClutterActor *text;
   ClutterActor *button;
 
   gchar *service_name;
 
-  gchar *status_text;
-  gchar *status_time;
-
   NbtkPadding padding;
 
   guint in_hover  : 1;
   guint is_active : 1;
-
-  ClutterUnit icon_separator_x;
 };
 
 enum
@@ -60,7 +51,7 @@ on_button_clicked (NbtkButton *button,
 
       clutter_actor_grab_key_focus (priv->text);
 
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), "active");
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
 
       priv->is_active = TRUE;
 
@@ -75,7 +66,7 @@ on_button_clicked (NbtkButton *button,
       clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
       clutter_text_set_activatable (CLUTTER_TEXT (text), FALSE);
 
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), "active");
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
 
       priv->is_active = FALSE;
 
@@ -97,11 +88,11 @@ mnb_status_entry_get_preferred_width (ClutterActor *actor,
                                      &natural_width);
 
   if (min_width_p)
-    *min_width_p = priv->padding.left + ICON_SIZE + priv->padding.right;
+    *min_width_p = priv->padding.left + min_width + priv->padding.right;
 
   if (natural_width_p)
     *natural_width_p = priv->padding.left
-                     + ICON_SIZE + natural_width + H_PADDING * 2
+                     + natural_width
                      + priv->padding.right;
 }
 
@@ -112,12 +103,19 @@ mnb_status_entry_get_preferred_height (ClutterActor *actor,
                                        ClutterUnit  *natural_height_p)
 {
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  ClutterUnit min_height, natural_height;
+
+  clutter_actor_get_preferred_height (priv->text, for_width,
+                                      &min_height,
+                                      &natural_height);
 
   if (min_height_p)
-    *min_height_p = priv->padding.top + ICON_SIZE + priv->padding.bottom;
+    *min_height_p = priv->padding.top + min_height + priv->padding.bottom;
 
   if (natural_height_p)
-    *natural_height_p = priv->padding.top + ICON_SIZE + priv->padding.bottom;
+    *natural_height_p = priv->padding.top
+                      + natural_height
+                      + priv->padding.bottom;
 }
 
 static void
@@ -173,24 +171,14 @@ mnb_status_entry_allocate (ClutterActor          *actor,
 
   /* layout
    *
-   * +--------------------------------------------------------+
-   * | +---+ | +-----------------------------------+--------+ |
-   * | | X | | |xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx... | xxxxxx | |
-   * | +---+ | +-----------------------------------+--------+ |
-   * +--------------------------------------------------------+
+   * +------------------------------------------------+
+   * | +-----------------------------------+--------+ |
+   * | |xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx... | xxxxxx | |
+   * | +-----------------------------------+--------+ |
+   * +------------------------------------------------+
    *
-   *   icon  |  text                               | button
+   *    text                               | button
    */
-
-  /* icon */
-  child_box.x1 = border.left + priv->padding.left;
-  child_box.y1 = border.top  + priv->padding.top;
-  child_box.x2 = child_box.x1 + ICON_SIZE;
-  child_box.y2 = child_box.y1 + ICON_SIZE;
-  clutter_actor_allocate (priv->icon, &child_box, origin_changed);
-
-  /* separator */
-  priv->icon_separator_x = child_box.x2 + H_PADDING;
 
   /* text */
   text_width = available_width - button_width;
@@ -198,21 +186,17 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                                       NULL,
                                       &text_height);
 
-  child_box.x1 = border.left + priv->padding.left
-               + ICON_SIZE
-               + H_PADDING;
-  child_box.y1 = (int) border.top + priv->padding.top
-               + ((ICON_SIZE - text_height) / 2);
-  child_box.x2 = child_box.x1 + (text_width - ICON_SIZE - H_PADDING);
-  child_box.y2 = child_box.y1 + text_height;
+  child_box.x1 = (int) border.left + priv->padding.left;
+  child_box.y1 = (int) border.top + priv->padding.top;
+  child_box.x2 = (int) child_box.x1 + text_width;
+  child_box.y2 = (int) child_box.y1 + text_height;
   clutter_actor_allocate (priv->text, &child_box, origin_changed);
 
   /* button */
   child_box.x1 = available_width
                - (border.right + priv->padding.right)
                - button_width;
-  child_box.y1 = border.top + priv->padding.top
-               + ((ICON_SIZE - button_height) / 2);
+  child_box.y1 = border.top + priv->padding.top;
   child_box.x2 = child_box.x1 + button_width;
   child_box.y2 = child_box.y1 + button_height;
   clutter_actor_allocate (priv->button, &child_box, origin_changed);
@@ -224,9 +208,6 @@ mnb_status_entry_paint (ClutterActor *actor)
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->paint (actor);
-
-  if (priv->icon && CLUTTER_ACTOR_IS_VISIBLE (priv->icon))
-    clutter_actor_paint (priv->icon);
 
   if (priv->text && CLUTTER_ACTOR_IS_VISIBLE (priv->text))
     clutter_actor_paint (priv->text);
@@ -244,46 +225,11 @@ mnb_status_entry_pick (ClutterActor       *actor,
   CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->pick (actor,
                                                              pick_color);
 
-  if (priv->icon && clutter_actor_should_pick_paint (priv->icon))
-    clutter_actor_paint (priv->icon);
-
   if (priv->text && clutter_actor_should_pick_paint (priv->text))
     clutter_actor_paint (priv->text);
 
   if (priv->button && clutter_actor_should_pick_paint (priv->button))
     clutter_actor_paint (priv->button);
-}
-
-static gboolean
-mnb_status_entry_enter (ClutterActor *actor,
-                        ClutterCrossingEvent *event)
-{
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
-
-  if (!priv->is_active)
-    {
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), "hover");
-      clutter_actor_show (priv->button);
-    }
-
-  priv->in_hover = TRUE;
-}
-
-static gboolean
-mnb_status_entry_leave (ClutterActor *actor,
-                        ClutterCrossingEvent *event)
-{
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
-
-  if (!priv->is_active)
-    {
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), NULL);
-      clutter_actor_hide (priv->button);
-    }
-  else
-    nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->text), "active");
-
-  priv->in_hover = FALSE;
 }
 
 static void
@@ -314,10 +260,6 @@ mnb_status_entry_finalize (GObject *gobject)
 
   g_free (priv->service_name);
 
-  g_free (priv->status_text);
-  g_free (priv->status_time);
-
-  clutter_actor_destroy (priv->icon);
   clutter_actor_destroy (priv->text);
   clutter_actor_destroy (priv->button);
 
@@ -397,8 +339,6 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
   actor_class->allocate = mnb_status_entry_allocate;
   actor_class->paint = mnb_status_entry_paint;
   actor_class->pick = mnb_status_entry_pick;
-  actor_class->enter_event = mnb_status_entry_enter;
-  actor_class->leave_event = mnb_status_entry_leave;
 
   widget_class->style_changed = mnb_status_entry_style_changed;
 
@@ -415,27 +355,8 @@ mnb_status_entry_init (MnbStatusEntry *self)
 {
   MnbStatusEntryPrivate *priv;
   ClutterActor *text;
-  gchar *no_icon_file;
 
   self->priv = priv = MNB_STATUS_ENTRY_GET_PRIVATE (self);
-
-  no_icon_file = g_build_filename (PLUGIN_PKGDATADIR,
-                                   "theme",
-                                   "status",
-                                   "no_image_icon.png",
-                                   NULL);
-  priv->icon = clutter_texture_new_from_file (no_icon_file, NULL);
-  if (G_UNLIKELY (priv->icon == NULL))
-    {
-      const ClutterColor color = { 204, 204, 0, 255 };
-
-      priv->icon = clutter_rectangle_new_with_color (&color);
-    }
-
-  clutter_actor_set_size (priv->icon, ICON_SIZE, ICON_SIZE);
-  clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (self));
-
-  g_free (no_icon_file);
 
   priv->text = CLUTTER_ACTOR (nbtk_entry_new ("Enter your status here..."));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->text),
@@ -464,4 +385,76 @@ mnb_status_entry_new (const gchar *service_name)
   return g_object_new (MNB_TYPE_STATUS_ENTRY,
                        "service-name", service_name,
                        NULL);
+}
+
+void
+mnb_status_entry_show_button (MnbStatusEntry *entry,
+                              gboolean        show)
+{
+  g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
+
+  if (show)
+    clutter_actor_show (entry->priv->button);
+  else
+    clutter_actor_hide (entry->priv->button);
+}
+
+gboolean
+mnb_status_entry_get_is_active (MnbStatusEntry *entry)
+{
+  g_return_val_if_fail (MNB_IS_STATUS_ENTRY (entry), FALSE);
+
+  return entry->priv->is_active;
+}
+
+void
+mnb_status_entry_set_is_active (MnbStatusEntry *entry,
+                                gboolean        is_active)
+{
+  g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
+
+  if (entry->priv->is_active != is_active)
+    {
+      entry->priv->is_active = is_active;
+
+      if (entry->priv->is_active)
+        nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
+      else
+        {
+          if (entry->priv->in_hover)
+            nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "hover");
+          else
+            nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), NULL);
+        }
+    }
+}
+
+gboolean
+mnb_status_entry_get_in_hover (MnbStatusEntry *entry)
+{
+  g_return_val_if_fail (MNB_IS_STATUS_ENTRY (entry), FALSE);
+
+  return entry->priv->in_hover;
+}
+
+void
+mnb_status_entry_set_in_hover (MnbStatusEntry *entry,
+                               gboolean        in_hover)
+{
+  g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
+
+  if (entry->priv->in_hover != in_hover)
+    {
+      entry->priv->in_hover = in_hover;
+
+      if (entry->priv->in_hover)
+        nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "hover");
+      else
+        {
+          if (entry->priv->is_active)
+            nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
+          else
+            nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), NULL);
+        }
+    }
 }

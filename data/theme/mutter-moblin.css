@@ -458,36 +458,29 @@ MnbNotification
 MnbStatusEntry
 {
   background-color: #ffffffff;
-  padding: 4 4 4 4;
+  padding: 6 15 6 15;
+}
+
+MnbStatusEntry:hover
+{
+  background-image: url("file://status/entry-frame-hover.png");
+  border-width: 6 6 6 6;
+}
+
+MnbStatusEntry:active
+{
+  background-image: url("file://status/entry-frame-edit.png");
+  border-width: 6 6 6 6;
 }
 
 *.MnbStatusEntryText
 {
   font-size: 16px;
   color: #595959ff;
-  background-color: #ffffffff;
-  padding: 0 15 0 15;
-}
-
-*.MnbStatusEntryText:hover
-{
-  font-size: 16px;
-  color: #595959ff;
-  background-color: #ccccccff;
-  padding: 0 15 0 15;
-}
-
-*.MnbStatusEntryText:active
-{
-  font-size: 16px;
-  color: #595959ff;
-  background-color: #ffffffff;
-  padding: 0 15 0 15;
 }
 
 *.MnbStatusEntryButton
 {
-  background-color: #ffffffff;
   color: #7dbe0cff;
   font-family: "Liberation Sans Bold";
   font-size: 13px;

@@ -47,7 +47,7 @@ add_status_entries (NbtkTable *table)
   gint i;
 
   for (i = 0; i < n_services; i++)
-    nbtk_table_add_widget (table, mnb_status_entry_new (services[i]), i + 1, 0);
+    nbtk_table_add_widget (table, mnb_status_row_new (services[i]), i + 1, 0);
 }
 
 ClutterActor *

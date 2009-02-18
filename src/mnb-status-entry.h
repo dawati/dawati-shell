@@ -32,9 +32,15 @@ GType mnb_status_entry_get_type (void);
 
 NbtkWidget *mnb_status_entry_new (const gchar *service_name);
 
-void mnb_status_entry_set_status (MnbStatusEntry *entry,
-                                  const gchar    *status_text,
-                                  const gchar    *status_time);
+void mnb_status_entry_show_button (MnbStatusEntry *entry,
+                                   gboolean        show);
+
+gboolean mnb_status_entry_get_is_active (MnbStatusEntry *entry);
+void     mnb_status_entry_set_is_active (MnbStatusEntry *entry,
+                                         gboolean        is_active);
+gboolean mnb_status_entry_get_in_hover  (MnbStatusEntry *entry);
+void     mnb_status_entry_set_in_hover  (MnbStatusEntry *entry,
+                                         gboolean        in_hover);
 
 G_END_DECLS
 

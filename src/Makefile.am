@@ -37,6 +37,8 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				mnb-panel-button.h              \
 				mnb-launcher-button.c           \
 				mnb-launcher-button.h		\
+				mnb-status-row.c		\
+				mnb-status-row.h		\
 				mnb-status-entry.c		\
 				mnb-status-entry.h
 
