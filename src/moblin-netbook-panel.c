@@ -120,11 +120,16 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
     {
       clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
     }
-  if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
-    clutter_actor_show (control_actor);
 
   if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
-    clutter_actor_show (control_actor);
+    {
+      /*
+       * Must reset the y in case a previous animation ended prematurely
+       * and the y is not set correctly; see bug 900.
+       */
+      clutter_actor_set_y (control_actor, PANEL_HEIGHT);
+      clutter_actor_show (control_actor);
+    }
 
   enable_stage (plugin, CurrentTime);
 

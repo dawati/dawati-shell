@@ -22,6 +22,7 @@
  */
 
 #include "mnb-drop-down.h"
+#include "moblin-netbook.h" /* For PANEL_HEIGHT */
 
 #define SLIDE_DURATION 150
 
@@ -231,10 +232,19 @@ mnb_button_toggled_cb (NbtkWidget  *button,
                        GParamSpec  *pspec,
                        MnbDropDown *drop_down)
 {
+  ClutterActor *actor = CLUTTER_ACTOR (drop_down);
+
   if (nbtk_button_get_active (NBTK_BUTTON (button)))
-    clutter_actor_show (CLUTTER_ACTOR (drop_down));
+    {
+      /*
+       * Must reset the y in case a previous animation ended prematurely
+       * and the y is not set correctly; see bug 900.
+       */
+      clutter_actor_set_y (actor, PANEL_HEIGHT);
+      clutter_actor_show (actor);
+    }
   else
-    clutter_actor_hide (CLUTTER_ACTOR (drop_down));
+    clutter_actor_hide (actor);
 }
 
 static void
