@@ -371,9 +371,9 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
       if (w == priv->active_notifier && priv->n_notifiers > 0)
         {
-          priv->active_notifier =
+          priv->active_notifier = NBTK_WIDGET (
             clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers), 
-                                         0);
+                                         0));
           if (priv->active_notifier)
             clutter_actor_show (CLUTTER_ACTOR(priv->active_notifier));
         }
