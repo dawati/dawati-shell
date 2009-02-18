@@ -146,7 +146,7 @@ struct _MoblinNetbookPluginPrivate
 
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
-  MnbInputRegion         notification_input_region; 
+  MnbInputRegion         notification_input_region;
 };
 
 GType moblin_netbook_plugin_get_type (void);

@@ -263,6 +263,7 @@ try_alt_tab_grab (MutterPlugin *plugin,
   MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display  = meta_screen_get_display (screen);
+  Display                    *xdpy     = meta_display_get_xdisplay (display);
   MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
   MetaWindow                 *next     = NULL;
   MetaWindow                 *current  = NULL;
@@ -378,7 +379,7 @@ try_alt_tab_grab (MutterPlugin *plugin,
                                   FALSE,
                                   0,
                                   mask,
-                                  CurrentTime,
+                                  timestamp,
                                   0, 0))
     {
       ClutterActor               *stage = mutter_get_stage_for_screen (screen);
@@ -443,7 +444,7 @@ handle_alt_tab (MetaDisplay    *display,
   if (event->type != KeyPress)
     return;
 
-  timestamp = clutter_x11_get_current_event_time ();
+  timestamp = meta_display_get_current_time_roundtrip (display);
 
 #if 0
   printf ("got key event (%d) for keycode %d on window 0x%x, sub 0x%x, state %d\n",
@@ -538,13 +539,12 @@ alt_tab_timeout_cb (gpointer data)
   else
     {
       gboolean backward  = FALSE;
-      guint32  timestamp = clutter_x11_get_current_event_time ();
 
       if (alt_data->xevent.xkey.state & ShiftMask)
         backward = !backward;
 
       try_alt_tab_grab (alt_data->plugin, alt_data->binding->mask,
-                        timestamp, backward, TRUE);
+                        alt_data->xevent.xkey.time, backward, TRUE);
       g_free (data);
     }
 
@@ -1947,7 +1947,6 @@ static gboolean
 xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  guint32                     timestamp = clutter_x11_get_current_event_time ();
 
   /*
    * Handle the case where Alt+Tab is pressed while we have a global kbd grab
@@ -1968,8 +1967,8 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
        * Alt+Tab grab in its place. Because the switcher is already up, we also
        * want to adance the selection, hence the TRUE.
        */
-      release_keyboard  (plugin, timestamp);
-      try_alt_tab_grab (plugin, Mod1Mask, timestamp, backward, TRUE);
+      release_keyboard  (plugin, xev->xkey.time);
+      try_alt_tab_grab (plugin, Mod1Mask, xev->xkey.time, backward, TRUE);
       return TRUE;
     }
 
@@ -1980,11 +1979,11 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
       MetaDisplay *display = meta_screen_get_display (screen);
 
-      meta_display_end_grab_op (display, timestamp);
+      meta_display_end_grab_op (display, xev->xkey.time);
       priv->in_alt_grab = FALSE;
 
       mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
-                                       timestamp);
+                                       xev->xkey.time);
       return TRUE;
     }
 

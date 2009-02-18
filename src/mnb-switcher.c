@@ -182,6 +182,11 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
     {
       MetaDisplay *display = meta_screen_get_display (screen);
 
+      /*
+       * Make sure our stamp is recent enough.
+       */
+      timestamp = meta_display_get_current_time_roundtrip (display);
+
       meta_display_end_grab_op (display, timestamp);
       priv->in_alt_grab = FALSE;
     }
