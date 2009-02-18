@@ -206,12 +206,11 @@ sn_map_timeout_cb (gpointer data)
           if (id && strstr (id, s))
             {
               MetaScreen    *screen  = mutter_plugin_get_screen (plugin);
-              MetaDisplay   *display = meta_screen_get_display (screen);
               MetaWorkspace *active_workspace;
               MetaWorkspace *workspace;
               guint32        timestamp;
 
-              timestamp = meta_display_get_current_time_roundtrip (display);
+              timestamp = clutter_x11_get_current_event_time ();
 
               sn_data->mcw = mcw;
 
@@ -963,12 +962,10 @@ workspace_chooser_timeout_cb (gpointer data)
   struct ws_chooser_timeout_data *wsc_data = data;
   MutterPlugin                   *plugin   = wsc_data->plugin;
   MoblinNetbookPluginPrivate     *priv = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
-  MetaScreen                     *screen   = mutter_plugin_get_screen (plugin);
-  MetaDisplay                    *display  = meta_screen_get_display (screen);
   guint32                         timestamp;
   gboolean                        appended = FALSE;
 
-  timestamp = meta_display_get_current_time_roundtrip (display);
+  timestamp = clutter_x11_get_current_event_time ();
 
   if (!priv->workspace_chooser_timeout)
     {
@@ -1286,10 +1283,8 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
            * take care of the actual workspace creation, etc.
            */
           guint32      timestamp;
-          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
-          MetaDisplay *display = meta_screen_get_display (screen);
 
-          timestamp = meta_display_get_current_time_roundtrip (display);
+          timestamp = clutter_x11_get_current_event_time ();
 
           finalize_app (sn_id, sn_data->workspace, timestamp, plugin);
 

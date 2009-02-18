@@ -1017,7 +1017,7 @@ mnb_switcher_show (ClutterActor *self)
       priv->last_focused = top_most_clone;
       priv->selected = top_most_mw;
 
-      timestamp = meta_display_get_current_time_roundtrip (display);
+      timestamp = clutter_x11_get_current_event_time ();
       workspace = meta_window_get_workspace (meta_win);
 
       meta_window_activate_with_workspace (meta_win, timestamp, workspace);

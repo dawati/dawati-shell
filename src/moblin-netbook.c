@@ -626,26 +626,26 @@ sync_notification_input_region_cb (ClutterActor        *notify_cluster,
 
   if (priv->notification_input_region != NULL)
     {
-      moblin_netbook_input_region_remove (MUTTER_PLUGIN(plugin), 
+      moblin_netbook_input_region_remove (MUTTER_PLUGIN(plugin),
                                           priv->notification_input_region);
       priv->notification_input_region = NULL;
     }
-  
+
   if (CLUTTER_ACTOR_IS_VISIBLE (notify_cluster))
     {
       gint x,y;
       guint width,height;
-      
+
       clutter_actor_get_transformed_position (notify_cluster, &x, &y);
       clutter_actor_get_transformed_size (notify_cluster, &width, &height);
-      
-  
+
+
       if (width != 0 && height != 0)
         {
-          priv->notification_input_region 
-            = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin), 
+          priv->notification_input_region
+            = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin),
                                                 x, y, width, height,FALSE);
-        }      
+        }
     }
 }
 
@@ -799,8 +799,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_actor_set_anchor_point_from_gravity (priv->notification_cluster,
                                                CLUTTER_GRAVITY_SOUTH_EAST);
 
-  clutter_actor_set_position (priv->notification_cluster, 
-                              screen_width, 
+  clutter_actor_set_position (priv->notification_cluster,
+                              screen_width,
                               screen_height);
 
   g_signal_connect (priv->notification_cluster,
@@ -822,8 +822,8 @@ moblin_netbook_plugin_constructed (GObject *object)
     clutter_actor_set_anchor_point_from_gravity (foo,
                                                  CLUTTER_GRAVITY_SOUTH_EAST);
 
-    clutter_actor_set_position (foo, 
-                                screen_width - 400, 
+    clutter_actor_set_position (foo,
+                                screen_width - 400,
                                 screen_height - 400);
   }
 #endif
@@ -1531,11 +1531,9 @@ check_for_empty_workspace (MutterPlugin *plugin,
   if (workspace_empty)
     {
       MetaWorkspace *mws;
-      MetaDisplay   *display;
       guint32        timestamp;
 
-      display = meta_screen_get_display (screen);
-      timestamp = meta_display_get_current_time_roundtrip (display);
+      timestamp = clutter_x11_get_current_event_time ();
 
       mws = meta_screen_get_workspace_by_index (screen, workspace);
 
@@ -1850,9 +1848,7 @@ release_keyboard (MutterPlugin *plugin, guint32 timestamp)
 
       if (timestamp == CurrentTime)
         {
-          MetaDisplay *display = meta_screen_get_display (screen);
-
-          timestamp = meta_display_get_current_time_roundtrip (display);
+          timestamp = clutter_x11_get_current_event_time ();
         }
 
       meta_screen_ungrab_all_keys (screen, timestamp);
@@ -1885,9 +1881,7 @@ grab_keyboard (MutterPlugin *plugin, guint32 timestamp)
 
       if (timestamp == CurrentTime)
         {
-          MetaDisplay *display = meta_screen_get_display (screen);
-
-          timestamp = meta_display_get_current_time_roundtrip (display);
+          timestamp = clutter_x11_get_current_event_time ();
         }
 
       if (meta_screen_grab_all_keys (screen, timestamp))
