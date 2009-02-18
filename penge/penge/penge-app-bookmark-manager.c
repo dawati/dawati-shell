@@ -202,6 +202,9 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
       g_clear_error (&error);
     }
 
+    g_hash_table_insert (priv->uris_to_bookmarks,
+                         g_strdup (uri),
+                         bookmark);
     i++;
   }
 
