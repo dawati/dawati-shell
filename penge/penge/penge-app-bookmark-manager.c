@@ -113,6 +113,7 @@ penge_app_bookmark_manager_class_init (PengeAppBookmarkManagerClass *klass)
                   NULL,
                   g_cclosure_marshal_VOID__BOXED,
                   G_TYPE_NONE,
+                  1,
                   PENGE_TYPE_APP_BOOKMARK);
 
   signals[BOOKMARK_REMOVED_SIGNAL] =
@@ -124,6 +125,7 @@ penge_app_bookmark_manager_class_init (PengeAppBookmarkManagerClass *klass)
                   NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE,
+                  1,
                   G_TYPE_STRING);
 }
 
