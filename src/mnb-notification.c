@@ -196,7 +196,7 @@ mnb_notification_init (MnbNotification *self)
   txt = nbtk_label_get_clutter_text(NBTK_LABEL(priv->body));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
-  clutter_text_set_single_line_mode (CLUTTER_TEXT (txt), FALSE);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->action_button, 2, 0);
   clutter_actor_hide (CLUTTER_ACTOR(priv->action_button));
