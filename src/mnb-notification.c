@@ -174,7 +174,7 @@ mnb_notification_init (MnbNotification *self)
                                "x-align", 0.0,
                                NULL);
 
-  txt = nbtk_label_get_clutter_text(NBTK_LABEL(priv->summary));
+  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->summary)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
 
@@ -193,10 +193,16 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_widget_set_alignment (priv->body, 0, 0.5);
 
-  txt = nbtk_label_get_clutter_text(NBTK_LABEL(priv->body));
+  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->body)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
   clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
+
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               CLUTTER_ACTOR (priv->body),
+                               "y-expand", FALSE,
+                               "x-expand", FALSE,
+                               NULL);
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->action_button, 2, 0);
   clutter_actor_hide (CLUTTER_ACTOR(priv->action_button));
