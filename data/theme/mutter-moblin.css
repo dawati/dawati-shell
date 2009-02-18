@@ -452,3 +452,32 @@ MnbNotification
     font-size: 13px;
     color: #333;
 }
+
+/* status */
+
+MnbStatusEntry
+{
+  background-color: #ffffffff;
+  padding: 4 4 4 4;
+  font-size: 14px;
+}
+
+MnbStatusEntry:hover
+{
+  background-color: #ccccccff;
+  padding: 4 4 4 4;
+}
+
+MnbStatusEntry > *#status-button
+{
+  background-color: #ffffffff;
+  color: black;
+  font-size: 14px;
+}
+
+*#status-table
+{
+  background-color: #ffffffdd;
+  padding: 4 4 4 4;
+  font-size: 19px;
+}

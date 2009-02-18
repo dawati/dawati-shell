@@ -16,6 +16,8 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-panel.h		\
 				moblin-netbook-launcher.c       \
 				moblin-netbook-launcher.h	\
+				moblin-netbook-status.c		\
+				moblin-netbook-status.h		\
 				moblin-netbook-tray-manager.c	\
 				moblin-netbook-tray-manager.h	\
 				moblin-netbook-notify-store.c   \
@@ -34,7 +36,9 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				mnb-panel-button.c              \
 				mnb-panel-button.h              \
 				mnb-launcher-button.c           \
-				mnb-launcher-button.h
+				mnb-launcher-button.h		\
+				mnb-status-entry.c		\
+				mnb-status-entry.h
 
 DBUS_GLUE=notification-manager-glue.h
 %-glue.h: %.xml

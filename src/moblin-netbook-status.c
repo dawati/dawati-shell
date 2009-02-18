@@ -35,12 +35,28 @@
 #define PADDING         8
 #define BORDER_WIDTH    4
 
+static const gchar *services[] = {
+  "twitter"
+};
+
+static const guint n_services = G_N_ELEMENTS (services);
+
+static void
+add_status_entries (NbtkTable *table)
+{
+  gint i;
+
+  for (i = 0; i < n_services; i++)
+    nbtk_table_add_widget (table, mnb_status_entry_new (services[i]), i, 0);
+}
+
 ClutterActor *
 make_status (MutterPlugin *plugin, gint width)
 {
   ClutterActor  *stage, *table;
   gint           row, col, n_cols, pad;
   NbtkWidget    *drop_down, *footer, *up_button;
+  NbtkWidget    *label;
   NbtkPadding    padding = { CLUTTER_UNITS_FROM_INT (4),
                              CLUTTER_UNITS_FROM_INT (4),
                              CLUTTER_UNITS_FROM_INT (4),
@@ -72,6 +88,15 @@ make_status (MutterPlugin *plugin, gint width)
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
 
   clutter_actor_set_width (CLUTTER_ACTOR (table), width);
+
+  nbtk_table_add_widget_full (NBTK_TABLE (table),
+                              nbtk_label_new ("Your current status"),
+                              0, 0,
+                              1, 1,
+                              NBTK_X_EXPAND | NBTK_X_FILL,
+                              0.0, 0.5);
+
+  add_status_entries (NBTK_TABLE (table));
 
   return CLUTTER_ACTOR (drop_down);
 }
