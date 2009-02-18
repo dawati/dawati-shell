@@ -162,6 +162,7 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   MetaScreen        *screen     = mutter_plugin_get_screen (plugin);
   MetaWorkspace     *workspace;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  guint32            timestamp = clutter_x11_get_current_event_time ();
 
   if (MNB_SWITCHER (priv->switcher)->priv->dnd_in_progress)
     return FALSE;
@@ -181,11 +182,11 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
     {
       MetaDisplay *display = meta_screen_get_display (screen);
 
-      meta_display_end_grab_op (display, event->key.time);
+      meta_display_end_grab_op (display, timestamp);
       priv->in_alt_grab = FALSE;
     }
 
-  meta_workspace_activate (workspace, event->any.time);
+  meta_workspace_activate (workspace, timestamp);
 
   return FALSE;
 }
@@ -204,6 +205,7 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   MnbSwitcher                *switcher = app_priv->switcher;
   MutterPlugin               *plugin = switcher->priv->plugin;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  guint32                     timestamp;
 
   if (MNB_SWITCHER (priv->switcher)->priv->dnd_in_progress)
     return FALSE;
@@ -212,17 +214,18 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   screen           = meta_window_get_screen (window);
   workspace        = meta_window_get_workspace (window);
   active_workspace = meta_screen_get_active_workspace (screen);
+  timestamp        = clutter_x11_get_current_event_time ();
 
   clutter_actor_hide (CLUTTER_ACTOR (switcher));
   hide_panel (plugin);
 
   if (!active_workspace || (active_workspace == workspace))
     {
-      meta_window_activate_with_workspace (window, event->any.time, workspace);
+      meta_window_activate_with_workspace (window, timestamp, workspace);
     }
   else
     {
-      meta_workspace_activate_with_focus (workspace, window, event->any.time);
+      meta_workspace_activate_with_focus (workspace, window, timestamp);
     }
 
   return FALSE;

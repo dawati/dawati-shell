@@ -325,6 +325,7 @@ workspace_chooser_input_cb (ClutterActor *clone,
   MetaWorkspace              *workspace;
   const char                 *sn_id = wsg_data->sn_id;
   gint                        active;
+  guint32                     timestamp;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
   active    = meta_screen_get_active_workspace_index (screen);
@@ -335,10 +336,12 @@ workspace_chooser_input_cb (ClutterActor *clone,
       return FALSE;
     }
 
+  timestamp = clutter_x11_get_current_event_time ();
+
   if (active != indx)
     priv->desktop_switch_in_progress = TRUE;
 
-  hide_workspace_chooser (plugin, event->any.time);
+  hide_workspace_chooser (plugin, timestamp);
 
   configure_app (sn_id, wsg_data->workspace, plugin);
 
@@ -371,6 +374,7 @@ chooser_keyboard_input_cb (ClutterActor *self,
   guint                       symbol = clutter_key_event_symbol (&event->key);
   gint                        indx;
   gint                        active;
+  guint32                     timestamp;
 
   if (symbol < CLUTTER_0 || symbol > CLUTTER_9)
     return FALSE;
@@ -390,7 +394,9 @@ chooser_keyboard_input_cb (ClutterActor *self,
   if (active != indx)
     priv->desktop_switch_in_progress = TRUE;
 
-  hide_workspace_chooser (plugin, event->any.time);
+  timestamp = clutter_x11_get_current_event_time ();
+
+  hide_workspace_chooser (plugin, timestamp);
 
   configure_app (sn_id, indx, plugin);
 
@@ -590,8 +596,9 @@ new_workspace_input_cb (ClutterActor *clone,
   MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   const char                 *sn_id    = wsg_data->sn_id;
   gboolean                    appended = FALSE;
+  guint32                     timestamp = clutter_x11_get_current_event_time ();
 
-  hide_workspace_chooser (plugin, event->any.time);
+  hide_workspace_chooser (plugin, timestamp);
 
   priv->desktop_switch_in_progress = TRUE;
 
