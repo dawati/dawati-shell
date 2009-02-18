@@ -140,6 +140,7 @@ struct _MnbSwitcherPrivate {
   MutterWindow *selected;
   GList        *tab_list;
   gboolean      dnd_in_progress : 1;
+  gboolean      constructing    : 1;
 };
 
 struct input_data
@@ -741,7 +742,7 @@ meta_window_focus_cb (MetaWindow *mw, gpointer data)
   MnbSwitcher           *switcher = child_priv->switcher;
   MnbSwitcherPrivate    *priv = switcher->priv;
 
-  if (priv->last_focused == data)
+  if (priv->constructing || priv->last_focused == data)
     return;
 
   if (priv->last_focused)
@@ -806,6 +807,7 @@ mnb_switcher_show (ClutterActor *self)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
   MetaScreen   *screen = mutter_plugin_get_screen (priv->plugin);
+  MetaDisplay  *display = meta_screen_get_display (screen);
   gint          ws_count, active_ws;
   gint          i, screen_width, screen_height;
   NbtkWidget   *table;
@@ -813,6 +815,9 @@ mnb_switcher_show (ClutterActor *self)
   NbtkWidget  **spaces;
   NbtkPadding   padding = MNB_PADDING (6, 6, 6, 6);
   GList        *workspaces = meta_screen_get_workspaces (screen);
+  MetaWindow   *current_focus;
+  ClutterActor *top_most_clone = NULL;
+  MutterWindow *top_most_mw = NULL;
 
   struct win_location
   {
@@ -820,6 +825,10 @@ mnb_switcher_show (ClutterActor *self)
     gint  col;
     guint height;
   } *win_locs;
+
+  priv->constructing = TRUE;
+
+  current_focus = meta_display_get_focus_window (display);
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -907,12 +916,25 @@ mnb_switcher_show (ClutterActor *self)
       nbtk_widget_set_style_class_name (NBTK_WIDGET (clone),
                                         "switcher-application");
 
+      /*
+       * If the window has focus, apply the active style.
+       */
       if (meta_window_has_focus (meta_win))
         {
           clutter_actor_set_name (clone, "switcher-application-active");
 
           priv->last_focused = clone;
           priv->selected = mw;
+        }
+
+      /*
+       * Find the topmost window on the current workspace. We will used this
+       * in case no window currently has focus.
+       */
+      if (active_ws == ws_indx)
+        {
+          top_most_clone = clone;
+          top_most_mw = mw;
         }
 
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
@@ -981,6 +1003,26 @@ mnb_switcher_show (ClutterActor *self)
 			NULL);
     }
 
+  /*
+   * If no window is currenlty focused, then try to focus the topmost window.
+   */
+  if (!current_focus && top_most_clone)
+    {
+      MetaWindow    *meta_win = mutter_window_get_meta_window (top_most_mw);
+      MetaWorkspace *workspace;
+      guint32        timestamp;
+
+      clutter_actor_set_name (top_most_clone, "switcher-application-active");
+
+      priv->last_focused = top_most_clone;
+      priv->selected = top_most_mw;
+
+      timestamp = meta_display_get_current_time_roundtrip (display);
+      workspace = meta_window_get_workspace (meta_win);
+
+      meta_window_activate_with_workspace (meta_win, timestamp, workspace);
+    }
+
   /* add an "empty" message for empty workspaces */
   for (i = 0; i < ws_count; i++)
     {
@@ -1044,6 +1086,8 @@ mnb_switcher_show (ClutterActor *self)
 
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
+
+  priv->constructing = FALSE;
 
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
 }
