@@ -134,6 +134,10 @@ static void
 penge_app_tile_init (PengeAppTile *self)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (self);
+  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (4),
+                          CLUTTER_UNITS_FROM_DEVICE (4),
+                          CLUTTER_UNITS_FROM_DEVICE (4),
+                          CLUTTER_UNITS_FROM_DEVICE (4) };
 
   priv->tex = clutter_texture_new ();
   nbtk_table_add_actor (NBTK_TABLE (self),
@@ -141,5 +145,6 @@ penge_app_tile_init (PengeAppTile *self)
                         0,
                         0);
 
+  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 }
 
