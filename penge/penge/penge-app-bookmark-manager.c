@@ -134,7 +134,6 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
 {
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
   GError *error = NULL;
-  GList *to_remove = NULL;
   gchar **uris, *uri;
   gint i = 0;
   PengeAppBookmark *bookmark;
@@ -147,8 +146,6 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
                error->message);
     g_clear_error (&error);
   }
-
-  to_remove = g_hash_table_get_keys (priv->uris_to_bookmarks);
 
   uris = g_bookmark_file_get_uris (priv->bookmarks, NULL);
 
