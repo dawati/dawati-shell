@@ -86,8 +86,6 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
 
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
-  g_object_set (self, "homogeneous", TRUE, NULL);
-
   priv->manager = gtk_recent_manager_get_default ();
   g_signal_connect (priv->manager, 
                     "changed",
