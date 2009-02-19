@@ -165,6 +165,13 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                               actor,
                               count / NUMBER_COLS,
                               count % NUMBER_COLS);
+        clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                     actor,
+                                     "y-expand",
+                                     FALSE,
+                                     "x-expand",
+                                     FALSE,
+                                     NULL);
         clutter_actor_set_size (actor, 150, 150);
         g_hash_table_insert (priv->uri_to_actor,
                              g_strdup (uri),
