@@ -1,5 +1,5 @@
 #noinst_PROGRAMS = test-tiles test-recent-file-tiles test-date-tiles
-noinst_PROGRAMS = test-grid-view
+noinst_PROGRAMS = test-grid-view test-app-bookmarks
 AM_CFLAGS = $(PENGE_CFLAGS) -I$(top_srcdir)/penge
 AM_LDFLAGS = $(PENGE_LIBS) ../penge/libpenge.a
 
@@ -11,3 +11,6 @@ AM_LDFLAGS = $(PENGE_LIBS) ../penge/libpenge.a
 #test_events_pane_SOURCES = test-events-pane.c
 test_grid_view_SOURCES = test-grid-view.c
 test_grid_view_DEPENDENCIES = ../penge/libpenge.a
+
+test_grid_app_bookmarks_SOURCES = test-grid-app_bookmarks.c
+test_grid_app_bookmarks_DEPENDENCIES = ../penge/libpenge.a
