@@ -13,6 +13,9 @@ typedef struct _PengeAppTilePrivate PengeAppTilePrivate;
 struct _PengeAppTilePrivate {
   PengeAppBookmark *bookmark;
   ClutterActor *tex;
+  ClutterActor *underlay;
+  ClutterTimeline *timeline;
+  ClutterBehaviour *behave;
 };
 
 enum
@@ -130,6 +133,39 @@ penge_app_tile_class_init (PengeAppTileClass *klass)
   g_object_class_install_property (object_class, PROP_BOOKMARK, pspec);
 }
 
+static gboolean
+_enter_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
+
+  clutter_timeline_set_direction (priv->timeline,
+                                  CLUTTER_TIMELINE_FORWARD);
+  if (!clutter_timeline_is_playing (priv->timeline))
+  {
+    clutter_timeline_rewind (priv->timeline);
+    clutter_timeline_start (priv->timeline);
+  }
+
+  return FALSE;
+}
+
+static gboolean
+_leave_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
+
+  clutter_timeline_set_direction (priv->timeline,
+                                  CLUTTER_TIMELINE_BACKWARD);
+  if (!clutter_timeline_is_playing (priv->timeline))
+    clutter_timeline_start (priv->timeline);
+
+  return FALSE;
+}
+
 static void
 penge_app_tile_init (PengeAppTile *self)
 {
@@ -138,6 +174,25 @@ penge_app_tile_init (PengeAppTile *self)
                           CLUTTER_UNITS_FROM_DEVICE (4),
                           CLUTTER_UNITS_FROM_DEVICE (4),
                           CLUTTER_UNITS_FROM_DEVICE (4) };
+  ClutterAlpha *alpha;
+  ClutterColor black = { 0x0, 0x0, 0x0, 0xff };
+
+  /* For mouse over effect that darkens the background we need this magic
+   * rectangle
+   */
+  priv->underlay = clutter_rectangle_new_with_color (&black);
+  clutter_actor_set_opacity (priv->underlay, 0x0);
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        priv->underlay,
+                        0,
+                        0);
+  priv->timeline = clutter_timeline_new_for_duration (300);
+
+  alpha = clutter_alpha_new_full (priv->timeline,
+                                  CLUTTER_LINEAR);
+  priv->behave = clutter_behaviour_opacity_new (alpha, 0x00, 0x60);
+  clutter_behaviour_apply (priv->behave,
+                           (ClutterActor *)priv->underlay);
 
   priv->tex = clutter_texture_new ();
   nbtk_table_add_actor (NBTK_TABLE (self),
@@ -145,6 +200,16 @@ penge_app_tile_init (PengeAppTile *self)
                         0,
                         0);
 
+
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
+
+  g_signal_connect (self,
+                    "enter-event",
+                    (GCallback)_enter_event_cb,
+                    self);
+  g_signal_connect (self,
+                    "leave-event",
+                    (GCallback)_leave_event_cb,
+                    self);
 }
 
