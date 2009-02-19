@@ -112,14 +112,16 @@ struct _MoblinNetbookPluginPrivate
 
   GList                 *input_region_stack;
 
+  MetaWindow            *last_focused;
+
   gboolean               debug_mode                 : 1;
   gboolean               panel_out_in_progress      : 1;
   gboolean               panel_back_in_progress     : 1;
   gboolean               panel_wait_for_pointer     : 1;
   gboolean               desktop_switch_in_progress : 1;
-  gboolean               keyboard_grab              : 1;
   gboolean               pointer_on_stage           : 1;
   gboolean               in_alt_grab                : 1;
+  gboolean               blocking_input             : 1;
 
   guint                  workspace_chooser_timeout;
 
@@ -175,8 +177,6 @@ struct ActorPrivate
 ActorPrivate * get_actor_private (MutterWindow *actor);
 void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
 void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
-gboolean       release_keyboard  (MutterPlugin *plugin, guint32 timestamp);
-void           grab_keyboard     (MutterPlugin *plugin, guint32 timestamp);
 
 void moblin_netbook_notify_init (MutterPlugin *plugin);
 

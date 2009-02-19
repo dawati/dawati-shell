@@ -1836,69 +1836,17 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
     check_for_empty_workspace (plugin, workspace, meta_win);
 }
 
-/*
- * Returns TRUE if keyboard was released, FALSE if no kbd grab was in place.
- */
-gboolean
-release_keyboard (MutterPlugin *plugin, guint32 timestamp)
+static void
+last_focus_weak_notify_cb (gpointer data, GObject *meta_win)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
 
-  /*
-   * FIXME -- use metacity grab API, not xlib directly
-   */
-  if (priv->keyboard_grab)
+  if ((MetaWindow*)meta_win == priv->last_focused)
     {
-      MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
-      Display     *xdpy = mutter_plugin_get_xdisplay (plugin);
-      Window       root;
+      priv->last_focused = NULL;
 
-      root = RootWindow (xdpy, meta_screen_get_screen_number (screen));;
-
-      if (timestamp == CurrentTime)
-        {
-          timestamp = clutter_x11_get_current_event_time ();
-        }
-
-      meta_screen_ungrab_all_keys (screen, timestamp);
-      priv->keyboard_grab = FALSE;
-
-      /*
-       * Re-establish grab on our panel key.
-       */
-      XGrabKey (xdpy, XKeysymToKeycode (xdpy, MOBLIN_PANEL_SHORTCUT_KEY),
-                AnyModifier,
-                root, True, GrabModeAsync, GrabModeAsync);
-
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
-void
-grab_keyboard (MutterPlugin *plugin, guint32 timestamp)
-{
-  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  /*
-   * FIXME -- use metacity grab API, not xlib directly
-   */
-  if (!priv->keyboard_grab)
-    {
-      MetaScreen   *screen = mutter_plugin_get_screen (plugin);
-
-      if (timestamp == CurrentTime)
-        {
-          timestamp = clutter_x11_get_current_event_time ();
-        }
-
-      if (meta_screen_grab_all_keys (screen, timestamp))
-        {
-          priv->keyboard_grab = TRUE;
-        }
-      else
-        g_warning ("Stage keyboard grab failed!\n");
+      /* FIXME */
+      g_warning ("just lost the last focused window during grab!\n");
     }
 }
 
@@ -1910,7 +1858,11 @@ grab_keyboard (MutterPlugin *plugin, guint32 timestamp)
 void
 disable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  MetaWindow                 *focus;
 
   /*
    * Refuse to disable the stage while the UI is showing.
@@ -1923,54 +1875,79 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
       return;
     }
 
+  if (timestamp == CurrentTime)
+    timestamp = clutter_x11_get_current_event_time ();
+
   priv->current_input_base_region = priv->panel_trigger_region;
 
   moblin_netbook_input_region_apply (plugin);
 
-  release_keyboard (plugin, timestamp);
+  /*
+   * Work out what we should focus next.
+   *
+   * First, we tray to get the window from metacity tablist, if that fails
+   * fall back on the cached last_focused window.
+   */
+  focus = meta_display_get_tab_current (display,
+                                        META_TAB_LIST_NORMAL,
+                                        screen,
+                                        NULL);
+
+
+  if (!focus)
+    focus = priv->last_focused;
+
+  if (priv->last_focused)
+    {
+      g_object_weak_unref (G_OBJECT (priv->last_focused),
+                           last_focus_weak_notify_cb, plugin);
+
+      priv->last_focused = NULL;
+    }
+
+  if (focus)
+    meta_display_set_input_focus_window (display, focus, FALSE, timestamp);
+
+  priv->blocking_input = FALSE;
 }
 
 void
 enable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+
+  if (timestamp == CurrentTime)
+    timestamp = clutter_x11_get_current_event_time ();
 
   priv->current_input_base_region = priv->screen_region;
 
   moblin_netbook_input_region_apply (plugin);
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
-    grab_keyboard (plugin, timestamp);
+  /*
+   * Map the input blocker window so keystrokes, etc., are not reaching apps.
+   */
+  if (priv->last_focused)
+    g_object_weak_unref (G_OBJECT (priv->last_focused),
+                         last_focus_weak_notify_cb, plugin);
+
+  priv->last_focused = meta_display_get_focus_window (display);
+
+  if (priv->last_focused)
+    g_object_weak_ref (G_OBJECT (priv->last_focused),
+                       last_focus_weak_notify_cb, plugin);
+
+  meta_display_focus_the_no_focus_window (display, screen, timestamp);
+
+  priv->blocking_input = TRUE;
 }
 
 static gboolean
 xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  /*
-   * Handle the case where Alt+Tab is pressed while we have a global kbd grab
-   * (e.g., if the mouse is used to bring up the Switcher, and then the user
-   * presses Alt+Tab to navigate it).
-   */
-  if (priv->keyboard_grab && !priv->in_alt_grab && xev->type == KeyPress &&
-      (xev->xkey.state & Mod1Mask) &&
-      XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) == XK_Tab)
-    {
-      gboolean backward = FALSE;
-
-      if (xev->xkey.state & ShiftMask)
-        backward = !backward;
-
-      /*
-       * We need to release the global keyboard grab first, then establish the
-       * Alt+Tab grab in its place. Because the switcher is already up, we also
-       * want to adance the selection, hence the TRUE.
-       */
-      release_keyboard  (plugin, xev->xkey.time);
-      try_alt_tab_grab (plugin, Mod1Mask, xev->xkey.time, backward, TRUE);
-      return TRUE;
-    }
 
   if (priv->in_alt_grab &&
       xev->type == KeyRelease &&
