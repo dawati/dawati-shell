@@ -61,7 +61,7 @@ GList *penge_app_bookmark_manager_get_bookmarks (PengeAppBookmarkManager *manage
 
 void penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager);
 void penge_app_bookmark_manager_save (PengeAppBookmarkManager *manager);
-
+PengeAppBookmarkManager *penge_app_bookmark_manager_get_default (void);
 
 G_END_DECLS
 
