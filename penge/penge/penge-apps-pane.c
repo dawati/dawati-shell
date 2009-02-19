@@ -68,6 +68,10 @@ static void
 penge_apps_pane_init (PengeAppsPane *self)
 {
   PengeAppsPanePrivate *priv = GET_PRIVATE (self);
+  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
+                          CLUTTER_UNITS_FROM_DEVICE (8),
+                          CLUTTER_UNITS_FROM_DEVICE (8),
+                          CLUTTER_UNITS_FROM_DEVICE (8) };
 
   priv->manager = penge_app_bookmark_manager_get_default ();
   penge_app_bookmark_manager_load (priv->manager);
@@ -76,6 +80,10 @@ penge_apps_pane_init (PengeAppsPane *self)
                                                 g_str_equal,
                                                 g_free,
                                                 NULL);
+
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
+  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
+
   penge_apps_pane_populate (self);
 }
 
