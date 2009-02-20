@@ -40,19 +40,12 @@ button_clicked_cb (GtkButton *button, gpointer data)
   gtk_widget_hide (config);
 }
 
-int
-main (int argc, char *argv[])
+static void
+make_menu_content (GtkPlug *config)
 {
-  GtkWidget     *config, *button, *table;
-  GtkStatusIcon *icon;
-
-  gtk_init (&argc, &argv);
+  GtkWidget *table, *button, *old_child;
 
   table = gtk_table_new (3, 3, TRUE);
-
-  config = gtk_plug_new (0);
-
-  gtk_container_add (GTK_CONTAINER (config), table);
 
   button = gtk_button_new_from_stock (GTK_STOCK_QUIT);
 
@@ -60,6 +53,39 @@ main (int argc, char *argv[])
                     G_CALLBACK (button_clicked_cb), config);
 
   gtk_table_attach_defaults (GTK_TABLE (table), button, 1, 2, 1, 2);
+
+  old_child = gtk_bin_get_child (GTK_BIN (config));
+
+  if (old_child)
+    gtk_container_remove (GTK_CONTAINER (config), old_child);
+
+  gtk_widget_show_all (table);
+
+  gtk_container_add (GTK_CONTAINER (config), table);
+}
+
+static void
+config_embedded_cb (GtkPlug *config, gpointer data)
+{
+  gboolean embedded;
+
+  g_object_get (config, "embedded", &embedded, NULL);
+
+  if (embedded)
+    make_menu_content (config);
+}
+
+int
+main (int argc, char *argv[])
+{
+  GtkWidget     *config;
+  GtkStatusIcon *icon;
+
+  gtk_init (&argc, &argv);
+
+  config = gtk_plug_new (0);
+
+  g_signal_connect (config, "embedded", G_CALLBACK (config_embedded_cb), NULL);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
 
