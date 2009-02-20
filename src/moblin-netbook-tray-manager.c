@@ -590,6 +590,22 @@ find_child_data (gpointer key, gpointer value, gpointer data)
 }
 
 void
+shell_tray_manager_hide_config_window (ShellTrayManager *manager,
+                                       Window            xwindow)
+{
+  GHashTable            *icons = manager->priv->icons;
+  ShellTrayManagerChild *child;
+
+  child = g_hash_table_find (icons, find_child_data, GINT_TO_POINTER (xwindow));
+
+  if (child)
+    gtk_widget_hide (child->config);
+  else
+    g_warning ("No tray child associated with config window 0x%x",
+               (guint)xwindow);
+}
+
+void
 shell_tray_manager_close_config_window (ShellTrayManager *manager,
                                         Window            xwindow)
 {

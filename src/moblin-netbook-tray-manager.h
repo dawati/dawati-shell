@@ -48,6 +48,9 @@ gboolean          shell_tray_manager_is_config_window (ShellTrayManager *manager
                                                        Window xwindow);
 gboolean          shell_tray_manager_config_windows_showing (ShellTrayManager *manager);
 
+void              shell_tray_manager_hide_config_window (ShellTrayManager *manager,
+                                                         Window xwindow);
+
 void              shell_tray_manager_close_config_window (ShellTrayManager *manager,
                                                           Window            xwindow);
 
