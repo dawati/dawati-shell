@@ -1510,6 +1510,15 @@ on_config_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
 }
 
 static void
+on_config_actor_hide_begin_cb (ClutterActor *actor, gpointer data)
+{
+  struct config_hide_data *hide_data = data;
+
+  shell_tray_manager_hide_config_window (hide_data->plugin->priv->tray_manager,
+                                         hide_data->config_xwin);
+}
+
+static void
 check_for_empty_workspace (MutterPlugin *plugin,
                            gint workspace, MetaWindow *ignore)
 {
@@ -1688,6 +1697,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           hide_data              = g_new (struct config_hide_data, 1);
           hide_data->plugin      = MOBLIN_NETBOOK_PLUGIN (plugin);
           hide_data->config_xwin = xwin;
+
+          g_signal_connect (background, "hide-begin",
+                            G_CALLBACK (on_config_actor_hide_begin_cb),
+                            hide_data);
 
           g_signal_connect_data (background, "hide-completed",
                                  G_CALLBACK (on_config_actor_hide_completed_cb),
