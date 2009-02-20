@@ -34,6 +34,7 @@ G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
 enum
 {
   SHOW_COMPLETED,
+  HIDE_BEGIN,
   HIDE_COMPLETED,
 
   LAST_SIGNAL
@@ -169,6 +170,8 @@ mnb_drop_down_hide (ClutterActor *actor)
       return;
     }
 
+  g_signal_emit (actor, dropdown_signals[HIDE_BEGIN], 0);
+
   /* de-activate the button */
   if (priv->button)
     {
@@ -271,6 +274,15 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbDropDownClass, show_completed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  dropdown_signals[HIDE_BEGIN] =
+    g_signal_new ("hide-begin",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbDropDownClass, hide_begin),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
