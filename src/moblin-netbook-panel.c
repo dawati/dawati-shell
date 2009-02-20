@@ -517,6 +517,7 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[2]));
   clutter_actor_set_width (priv->switcher, 1024);
   clutter_actor_set_position (priv->switcher, 0, PANEL_HEIGHT);
+  clutter_actor_lower_bottom (priv->switcher);
   clutter_actor_hide (priv->switcher);
 
   /* launcher drop down */
@@ -528,6 +529,7 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[5]));
   clutter_actor_set_position (priv->launcher, 0, PANEL_HEIGHT);
   clutter_actor_set_width (priv->launcher, screen_width);
+  clutter_actor_lower_bottom (priv->launcher);
   clutter_actor_hide (priv->launcher);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
@@ -565,6 +567,10 @@ make_panel (MutterPlugin *plugin, gint width)
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->mzone_grid),
                             NBTK_BUTTON (priv->panel_buttons[0]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
+  clutter_actor_lower_bottom (priv->mzone_grid);
+
+  if (shadow)
+    clutter_actor_lower_bottom (shadow);
 
   return panel;
 }
