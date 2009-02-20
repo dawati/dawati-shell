@@ -208,13 +208,13 @@ mnb_drop_down_paint (ClutterActor *actor)
 
   clutter_actor_get_allocation_geometry (actor, &geom);
 
-  cogl_clip_set (CLUTTER_INT_TO_FIXED (priv->x - geom.x),
-                 CLUTTER_INT_TO_FIXED (priv->y - geom.y),
-                 CLUTTER_INT_TO_FIXED (priv->width),
-                 CLUTTER_INT_TO_FIXED (priv->height));
+  cogl_clip_push (priv->x - geom.x,
+                  priv->y - geom.y,
+                  priv->width,
+                  priv->height);
 
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->paint (actor);
-  cogl_clip_unset ();
+  cogl_clip_pop ();
 }
 
 static gboolean
