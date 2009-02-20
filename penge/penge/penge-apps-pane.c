@@ -17,7 +17,7 @@ struct _PengeAppsPanePrivate {
   GHashTable *uris_to_actors;
 };
 
-static void penge_apps_pane_populate (PengeAppsPane *pane);
+static void penge_apps_pane_update (PengeAppsPane *pane);
 
 static void
 penge_apps_pane_get_property (GObject *object, guint property_id,
@@ -65,6 +65,22 @@ penge_apps_pane_class_init (PengeAppsPaneClass *klass)
 }
 
 static void
+_manager_bookmark_added_cb (PengeAppBookmarkManager *manager,
+                            PengeAppBookmark        *bookmark,
+                            gpointer                 userdata)
+{
+  penge_apps_pane_update ((PengeAppsPane *)userdata);
+}
+
+static void
+_manager_bookmark_removed_cb (PengeAppBookmarkManager *manager,
+                              const gchar             *uri,
+                              gpointer                 userdata)
+{
+  penge_apps_pane_update ((PengeAppsPane *)userdata);
+}
+
+static void
 penge_apps_pane_init (PengeAppsPane *self)
 {
   PengeAppsPanePrivate *priv = GET_PRIVATE (self);
@@ -76,6 +92,15 @@ penge_apps_pane_init (PengeAppsPane *self)
   priv->manager = penge_app_bookmark_manager_get_default ();
   penge_app_bookmark_manager_load (priv->manager);
 
+  g_signal_connect (priv->manager,
+                    "bookmark-added",
+                    _manager_bookmark_added_cb,
+                    self);
+  g_signal_connect (priv->manager,
+                    "bookmark-removed",
+                    _manager_bookmark_removed_cb,
+                    self);
+
   priv->uris_to_actors = g_hash_table_new_full (g_str_hash,
                                                 g_str_equal,
                                                 g_free,
@@ -84,19 +109,21 @@ penge_apps_pane_init (PengeAppsPane *self)
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
-  penge_apps_pane_populate (self);
+  penge_apps_pane_update (self);
 }
 
 static void
-penge_apps_pane_populate (PengeAppsPane *pane)
+penge_apps_pane_update (PengeAppsPane *pane)
 {
   PengeAppsPanePrivate *priv = GET_PRIVATE (pane);
-  GList *bookmarks, *l;
+  GList *bookmarks, *l, *to_remove;
   ClutterActor *actor;
   gint count = 0;
   PengeAppBookmark *bookmark;
 
   bookmarks = penge_app_bookmark_manager_get_bookmarks (priv->manager);
+
+  to_remove = g_hash_table_get_keys (priv->uris_to_actors);
 
   for (l = bookmarks; l; l = l->next)
   {
@@ -116,24 +143,20 @@ penge_apps_pane_populate (PengeAppsPane *pane)
                                  "y-expand",
                                  FALSE,
                                  NULL);
+    /* Found, so don't remove */
+    to_remove = g_list_remove (to_remove, bookmark->uri);
     count++;
   }
 
   g_list_free (bookmarks);
+
+  for (l = to_remove; l; l = g_list_delete_link (l, l))
+  {
+    actor = g_hash_table_lookup (priv->uris_to_actors,
+                                 (gchar *)(l->data));
+    clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                    actor);
+    g_hash_table_remove (priv->uris_to_actors, (gchar *)(l->data));
+  }
 }
 
-static void
-_manager_bookmark_added_cb (PengeAppBookmarkManager *manager,
-                            PengeAppBookmark        *bookmark,
-                            gpointer                 userdata)
-{
-
-}
-
-static void
-_manager_bookmark_removed_cb (PengeAppBookmarkManager *manager,
-                              const gchar             *uri,
-                              gpointer                 userdata)
-{
-
-}
