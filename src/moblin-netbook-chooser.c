@@ -735,7 +735,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
   while (l)
     {
       ClutterActor  *ws = l->data;
-      gchar         *s = g_strdup_printf ("space %d", ws_count + 1);
+      gchar         *s = g_strdup_printf ("Zone %d", ws_count + 1);
       ClutterActor  *cell;
 
       struct ws_grid_cb_data * wsg_data =
@@ -745,7 +745,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
       wsg_data->workspace = ws_count;
       wsg_data->plugin = plugin;
 
-      cell = make_background (s,
+      cell = make_background (_(s),
                               cell_width, cell_height, (ws_count == active_ws),
                               FALSE);
 
@@ -778,7 +778,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
       l = l->next;
     }
 
-  new_ws = make_background ("new space (0)", cell_width, cell_height,
+  new_ws = make_background (_("New zone (0)"), cell_width, cell_height,
                             FALSE, TRUE);
 
   new_wsg_data->sn_id     = g_strdup (sn_id);
