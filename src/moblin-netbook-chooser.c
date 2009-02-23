@@ -569,6 +569,8 @@ make_nth_workspace (GList **list, gint n, gint active, MutterPlugin *plugin)
        */
       group = nutter_scale_group_new ();
 
+      clutter_actor_set_clip (group, 0, 0, screen_width, screen_height);
+
       tmp = g_list_append (tmp, group);
 
       ++i;
