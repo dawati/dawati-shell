@@ -94,11 +94,11 @@ penge_apps_pane_init (PengeAppsPane *self)
 
   g_signal_connect (priv->manager,
                     "bookmark-added",
-                    _manager_bookmark_added_cb,
+                    (GCallback)_manager_bookmark_added_cb,
                     self);
   g_signal_connect (priv->manager,
                     "bookmark-removed",
-                    _manager_bookmark_removed_cb,
+                    (GCallback)_manager_bookmark_removed_cb,
                     self);
 
   priv->uris_to_actors = g_hash_table_new_full (g_str_hash,
