@@ -5,6 +5,8 @@
 #include <glib.h>
 #include <stdlib.h>
 
+#include <mojito-client/mojito-client.h>
+
 #include "mnb-status-row.h"
 #include "mnb-status-entry.h"
 
@@ -28,6 +30,9 @@ struct _MnbStatusRowPrivate
   guint in_hover  : 1;
 
   ClutterUnit icon_separator_x;
+
+  MojitoClient *client;
+  MojitoClientView *view;
 };
 
 enum
@@ -229,9 +234,33 @@ mnb_status_row_style_changed (NbtkWidget *widget)
 }
 
 static void
+on_mojito_view_open (MojitoClient     *client,
+                     MojitoClientView *view,
+                     gpointer          user_data)
+{
+  MnbStatusRow *row = user_data;
+  MnbStatusRowPrivate *priv = row->priv;
+  GList *items = mojito_client_view_get_sorted_items (view);
+  MojitoItem *item = (items != NULL && items->data != NULL) ? items->data
+                                                            : NULL;
+
+  if (item)
+    {
+      const gchar *status_text;
+
+      status_text = g_hash_table_lookup (item->props, "content");
+      mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
+                                        status_text,
+                                        NULL);
+    }
+}
+
+static void
 mnb_status_row_finalize (GObject *gobject)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (gobject)->priv;
+
+  g_object_unref (priv->client);
 
   g_free (priv->service_name);
 
@@ -292,6 +321,11 @@ mnb_status_row_constructed (GObject *gobject)
   MnbStatusRowPrivate *priv = row->priv;
 
   g_assert (priv->service_name != NULL);
+
+  priv->client = mojito_client_new ();
+  mojito_client_open_view_for_service (priv->client, priv->service_name, 1,
+                                       on_mojito_view_open,
+                                       row);
 
   priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->service_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
