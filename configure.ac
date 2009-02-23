@@ -33,7 +33,14 @@ changequote([,])dnl
 
 AM_GLIB_GNU_GETTEXT
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins >= mutter_version nbtk-1.0 libstartup-notification-1.0 gtk+-2.0 libgnome-menu dbus-glib-1)
+PKG_CHECK_MODULES(MUTTER_PLUGIN,
+                  metacity-plugins >= mutter_version dnl
+                  nbtk-1.0                           dnl
+                  libstartup-notification-1.0        dnl
+                  gtk+-2.0                           dnl
+                  libgnome-menu                      dnl
+                  dbus-glib-1                        dnl
+                  mojito-client)
 
 PKG_CHECK_MODULES(PENGE, libjana-ecal mojito-client gtk+-2.0 nbtk-1.0 gconf-2.0)
 
