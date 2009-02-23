@@ -409,7 +409,10 @@ actor_clicked (ClutterActor *actor, gpointer data)
                               (unsigned char **)&config_xwin);
 
           if (!config_xwin)
-            return TRUE;
+            {
+              nbtk_button_set_active (NBTK_BUTTON (actor), FALSE);
+              return TRUE;
+            }
 
           config_socket = gtk_socket_new ();
           child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
