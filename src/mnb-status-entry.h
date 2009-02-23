@@ -42,6 +42,10 @@ gboolean mnb_status_entry_get_in_hover  (MnbStatusEntry *entry);
 void     mnb_status_entry_set_in_hover  (MnbStatusEntry *entry,
                                          gboolean        in_hover);
 
+void     mnb_status_entry_set_status_text (MnbStatusEntry *entry,
+                                           const gchar    *status_text,
+                                           const gchar    *status_time);
+
 G_END_DECLS
 
 #endif /* __MNB_STATUS_ENTRY_H__ */

@@ -458,3 +458,24 @@ mnb_status_entry_set_in_hover (MnbStatusEntry *entry,
         }
     }
 }
+
+void
+mnb_status_entry_set_status_text (MnbStatusEntry *entry,
+                                  const gchar    *status_text,
+                                  const gchar    *status_time)
+{
+  gchar *status_line;
+
+  g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
+  g_return_if_fail (status_text != NULL);
+
+  status_line = g_strdup_printf ("%s <small>%s - %s</small>",
+                                 status_text,
+                                 status_time != NULL ? status_time
+                                                     : "",
+                                 entry->priv->service_name);
+
+  nbtk_entry_set_text (NBTK_ENTRY (entry->priv->text), status_line);
+
+  g_free (status_line);
+}
