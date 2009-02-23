@@ -10,7 +10,7 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_RECENT_FILES_PANE, PengeRecentFilesPanePrivate))
 
 #define NUMBER_COLS 2
-#define NUMBER_OF_ITEMS 8
+#define NUMBER_OF_ITEMS 6
 
 static void penge_recent_files_pane_update (PengeRecentFilesPane *pane);
 
