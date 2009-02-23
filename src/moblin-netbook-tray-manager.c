@@ -42,6 +42,7 @@ typedef struct {
   Window     config_xwin;
   ClutterActor *actor;
   MnbInputRegion mir;
+  guint timeout_count;
 } ShellTrayManagerChild;
 
 enum {
@@ -370,89 +371,106 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
     }
 }
 
+/*
+ * Retrieves the ID of the child config window and embeds it in a socket.
+ * Returns TRUE if succeeded, FALSE if fail.
+ *
+ * The set up is done once when the tray icon is added (mainly to verify that
+ * given application is one of `ours'), and then each time the config window
+ * is getting shown after previous hide.
+ */
+static gboolean
+setup_child_config (ShellTrayManagerChild *child)
+{
+  if (!child->config)
+    {
+      static Atom tray_atom = 0;
+
+      ShellTrayManager      *manager = child->manager;
+      MutterPlugin          *plugin  = manager->priv->plugin;
+      Display               *xdpy    = mutter_plugin_get_xdisplay (plugin);
+      GtkSocket             *socket  = GTK_SOCKET (child->socket);
+      Window                 xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
+      Window                *config_xwin;
+      GtkWidget             *config;
+      GtkWidget             *config_socket;
+      gulong                 n_items, left;
+      gint                   ret_fmt;
+      Atom                   ret_type;
+
+      if (!tray_atom)
+        tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW,
+                                 False);
+
+      XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
+                          XA_WINDOW, &ret_type, &ret_fmt, &n_items, &left,
+                          (unsigned char **)&config_xwin);
+
+      if (!config_xwin)
+        {
+          nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
+          return FALSE;
+        }
+
+      config_socket = gtk_socket_new ();
+      child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
+
+      gtk_container_add (GTK_CONTAINER (config), config_socket);
+      gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
+
+      if (!GTK_SOCKET (config_socket)->is_mapped)
+        {
+          child->config = NULL;
+          child->config_xwin = None;
+
+          gtk_widget_destroy (config);
+          return FALSE;
+        }
+      else
+        {
+          GList *wins = manager->priv->config_windows;
+
+          manager->priv->config_windows =
+            g_list_prepend (wins,
+                            GINT_TO_POINTER (
+                                             GDK_WINDOW_XID (config->window)));
+
+          gtk_widget_realize (config);
+
+          child->config_xwin = GDK_WINDOW_XID (config->window);
+
+          g_signal_connect (config_socket, "size-allocate",
+                            G_CALLBACK (config_socket_size_allocate_cb),
+                            child);
+
+          g_signal_connect (config_socket, "plug-removed",
+                            G_CALLBACK (config_plug_removed_cb), child);
+        }
+
+      XFree (config_xwin);
+    }
+
+  return TRUE;
+}
+
+/*
+ * Callback for the "clicked" signal from NbtkButton.
+ */
 static gboolean
 actor_clicked (ClutterActor *actor, gpointer data)
 {
-  static Atom            tray_atom = 0;
-
-  ShellTrayManagerChild *child   = data;
-  ShellTrayManager      *manager = child->manager;
-  MutterPlugin          *plugin  = manager->priv->plugin;
-  Display               *xdpy    = mutter_plugin_get_xdisplay (plugin);
-  GtkSocket             *socket  = GTK_SOCKET (child->socket);
-  ClutterActor          *stage   = mutter_plugin_get_stage (plugin);
-  Window                 stage_win;
+  ShellTrayManagerChild *child = data;
   gboolean               active;
-
-  stage_win = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
   active = nbtk_button_get_active (NBTK_BUTTON (actor));
 
   if (active)
     {
-      if (!child->config)
-        {
-          Window     xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
-          Window    *config_xwin;
-          GtkWidget *config;
-          GtkWidget *config_socket;
-          gulong     n_items, left;
-          gint       ret_fmt;
-          Atom       ret_type;
-
-          if (!tray_atom)
-            tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW,
-                                     False);
-
-          XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
-                              XA_WINDOW, &ret_type, &ret_fmt, &n_items, &left,
-                              (unsigned char **)&config_xwin);
-
-          if (!config_xwin)
-            {
-              nbtk_button_set_active (NBTK_BUTTON (actor), FALSE);
-              return TRUE;
-            }
-
-          config_socket = gtk_socket_new ();
-          child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
-
-          gtk_container_add (GTK_CONTAINER (config), config_socket);
-          gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
-
-          if (!GTK_SOCKET (config_socket)->is_mapped)
-            {
-              child->config = NULL;
-              child->config_xwin = None;
-
-              gtk_widget_destroy (config);
-            }
-          else
-            {
-              GList *wins = manager->priv->config_windows;
-
-              manager->priv->config_windows =
-                g_list_prepend (wins,
-                                GINT_TO_POINTER (
-                                          GDK_WINDOW_XID (config->window)));
-
-              gtk_widget_realize (config);
-
-              child->config_xwin = GDK_WINDOW_XID (config->window);
-
-              g_signal_connect (config_socket, "size-allocate",
-                                G_CALLBACK (config_socket_size_allocate_cb),
-                                child);
-
-              gtk_widget_show_all (config);
-
-              g_signal_connect (config_socket, "plug-removed",
-                                G_CALLBACK (config_plug_removed_cb), child);
-            }
-
-          XFree (config_xwin);
-        }
-      else
+      /*
+       * If we have a config window already constructed, show it, otherwise
+       * create it first.
+       */
+      if (child->config || setup_child_config (child))
         gtk_widget_show_all (child->config);
     }
   else if (child->config)
@@ -460,7 +478,63 @@ actor_clicked (ClutterActor *actor, gpointer data)
       destroy_config_window (child);
     }
 
-    return TRUE;
+  return TRUE;
+}
+
+/*
+ * The application can only attache the config window id to the icon
+ * once the icons has been embedded; because of the assynchronous nature of
+ * this all, we cannot check for this in the in the tray-icon-added signal
+ * handler. So we use a short timeout, which we allow to run up to 6 times.
+ * If the application does not tag the icon with the config window, we
+ * shun it.
+ */
+static gboolean
+tray_icon_tagged_timeout_cb (gpointer data)
+{
+  ShellTrayManagerChild *child = data;
+
+  printf ("idle data %p\n", data);
+
+  if (child->config)
+    return FALSE;
+
+  if (!setup_child_config (child))
+    {
+      if (child->timeout_count++ < 5)
+        {
+          /*
+           * Give the application a bit longer ...
+           */
+          return TRUE;
+        }
+
+        g_warning ("No config window attached, expelling tray application\n.");
+
+      /*
+       * We leave the child in the hashtable; this keep the status icon formally
+       * embedded and prevents the application from trying to get embedded
+       * again and again and again.
+       */
+    }
+  else
+    {
+      ShellTrayManager *manager = child->manager;
+
+      /*
+       * Ok, only now that we know this application is OK we emit the
+       * tray-icon-added signal (this results in the button being inserted
+       * into the panel), and connect to the button's "clicked" signal.
+       */
+      g_signal_emit (manager,
+                     shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
+                     child->actor);
+
+      g_signal_connect (child->actor, "clicked",
+                        G_CALLBACK (actor_clicked), child);
+    }
+
+  return FALSE;
 }
 
 static void
@@ -541,11 +615,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   g_hash_table_insert (manager->priv->icons, socket, child);
 
-  g_signal_emit (manager,
-                 shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
-                 button);
-
-  g_signal_connect (button, "clicked", G_CALLBACK (actor_clicked), child);
+  g_timeout_add (100, tray_icon_tagged_timeout_cb, child);
 }
 
 static void
@@ -556,11 +626,15 @@ na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *socket,
   ShellTrayManagerChild *child;
 
   child = g_hash_table_lookup (manager->priv->icons, socket);
-  g_return_if_fail (child != NULL);
 
-  g_signal_emit (manager,
-                 shell_tray_manager_signals[TRAY_ICON_REMOVED], 0,
-                 child->actor);
+  if (!child)
+    return;
+
+  if (child->config)
+    g_signal_emit (manager,
+                   shell_tray_manager_signals[TRAY_ICON_REMOVED], 0,
+                   child->actor);
+
   g_hash_table_remove (manager->priv->icons, socket);
 }
 
