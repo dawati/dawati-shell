@@ -1994,6 +1994,23 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
   sn_display_process_event (priv->sn_display, xev);
 
+  if (!priv->in_alt_grab &&
+      (xev->type == KeyPress || xev->type == KeyRelease))
+    {
+      MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+      MetaDisplay  *display = meta_screen_get_display (screen);
+      ClutterActor *stage   = mutter_get_stage_for_screen (screen);
+      Window        xwin;
+
+      /*
+       * We only get key events on the no-focus window, but for clutter we
+       * need to pretend they come from the stage window.
+       */
+      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+      xev->xany.window = xwin;
+    }
+
   return (clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE);
 }
 
@@ -2190,14 +2207,6 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
               hide_panel (plugin);
             }
         }
-    }
-  else if (event->type == CLUTTER_KEY_PRESS)
-    {
-      ClutterKeyEvent *kev = (ClutterKeyEvent *) event;
-
-      g_print ("*** key press event (key:%c) ***\n",
-	       clutter_key_event_symbol (kev));
-
     }
 
   return FALSE;
