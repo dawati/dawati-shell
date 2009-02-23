@@ -15,6 +15,8 @@ struct _MnbStatusEntryPrivate
   ClutterActor *button;
 
   gchar *service_name;
+  gchar *status_text;
+  gchar *status_time;
 
   NbtkPadding padding;
 
@@ -48,6 +50,7 @@ on_button_clicked (NbtkButton *button,
 
       clutter_text_set_editable (CLUTTER_TEXT (text), TRUE);
       clutter_text_set_activatable (CLUTTER_TEXT (text), TRUE);
+      clutter_text_set_text (CLUTTER_TEXT (text), priv->status_text);
 
       clutter_actor_grab_key_focus (priv->text);
 
@@ -259,6 +262,8 @@ mnb_status_entry_finalize (GObject *gobject)
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (gobject)->priv;
 
   g_free (priv->service_name);
+  g_free (priv->status_text);
+  g_free (priv->status_time);
 
   clutter_actor_destroy (priv->text);
   clutter_actor_destroy (priv->button);
@@ -365,6 +370,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->text));
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
+  clutter_text_set_use_markup (CLUTTER_TEXT (text), TRUE);
 
   priv->button = CLUTTER_ACTOR (nbtk_button_new_with_label ("Edit"));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
@@ -464,10 +470,20 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
                                   const gchar    *status_text,
                                   const gchar    *status_time)
 {
+  MnbStatusEntryPrivate *priv;
+  ClutterActor *text;
   gchar *status_line;
 
   g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
   g_return_if_fail (status_text != NULL);
+
+  priv = entry->priv;
+
+  g_free (priv->status_text);
+  g_free (priv->status_time);
+
+  priv->status_text = g_strdup (status_text);
+  priv->status_time = g_strdup (status_time);
 
   status_line = g_strdup_printf ("%s <small>%s - %s</small>",
                                  status_text,
@@ -475,7 +491,8 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
                                                      : "",
                                  entry->priv->service_name);
 
-  nbtk_entry_set_text (NBTK_ENTRY (entry->priv->text), status_line);
+  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->text));
+  clutter_text_set_markup (CLUTTER_TEXT (text), status_line);
 
   g_free (status_line);
 }
