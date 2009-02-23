@@ -233,22 +233,18 @@ mnb_status_row_style_changed (NbtkWidget *widget)
   NBTK_WIDGET_CLASS (mnb_status_row_parent_class)->style_changed (widget);
 }
 
-static void
-on_mojito_view_open (MojitoClient     *client,
-                     MojitoClientView *view,
-                     gpointer          user_data)
+static inline void
+mnb_status_row_update_status (MnbStatusRow *row,
+                              MojitoItem   *item)
 {
-  MnbStatusRow *row = user_data;
   MnbStatusRowPrivate *priv = row->priv;
-  GList *items = mojito_client_view_get_sorted_items (view);
-  MojitoItem *item = (items != NULL && items->data != NULL) ? items->data
-                                                            : NULL;
 
   if (item)
     {
       const gchar *status_text;
 
       status_text = g_hash_table_lookup (item->props, "content");
+
       mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
                                         status_text,
                                         NULL);
@@ -256,11 +252,53 @@ on_mojito_view_open (MojitoClient     *client,
 }
 
 static void
+on_mojito_view_item_added (MojitoClientView *view,
+                           MojitoItem       *item,
+                           gpointer          user_data)
+{
+  MnbStatusRow *row = user_data;
+
+  mnb_status_row_update_status (row, item);
+}
+
+static void
+on_mojito_view_open (MojitoClient     *client,
+                     MojitoClientView *view,
+                     gpointer          user_data)
+{
+  MnbStatusRow *row = user_data;
+  MnbStatusRowPrivate *priv = row->priv;
+  GList *items;
+  MojitoItem *item;
+
+  g_assert (priv->view == NULL);
+
+  priv->view = g_object_ref (view);
+
+  mojito_client_view_start (view);
+
+  items = mojito_client_view_get_sorted_items (view);
+  item = (items != NULL && items->data != NULL) ? items->data : NULL;
+
+  mnb_status_row_update_status (row, item);
+
+  g_list_free (items);
+
+  g_signal_connect (priv->view, "item-added",
+                    G_CALLBACK (on_mojito_view_item_added),
+                    row);
+}
+
+static void
 mnb_status_row_finalize (GObject *gobject)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (gobject)->priv;
 
-  g_object_unref (priv->client);
+  if (priv->view)
+    g_object_unref (priv->view);
+
+  if (priv->client)
+    g_object_unref (priv->client);
 
   g_free (priv->service_name);
 
