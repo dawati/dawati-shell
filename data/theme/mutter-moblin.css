@@ -130,6 +130,17 @@ NbtkTable {
   background-image: url("file://panel/status-active.png");
 }
 
+/* tray buttons */
+*#tray-button {
+  background-image: url("file://panel/tray-normal.png");
+}
+*#tray-button:hover {
+  background-image: url("file://panel/tray-hover.png");
+}
+*#tray-button:active {
+  background-image: url("file://panel/tray-active.png");
+}
+
 /* tooltips */
 NbtkTooltip {
   background-image: url("file://generic/tooltip-background.png");

@@ -7,7 +7,9 @@
 #include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gtk/gtk.h>
+#include <nbtk/nbtk.h>
 
+#include "mnb-panel-button.h"
 #include "moblin-netbook-tray-manager.h"
 #include "tray/na-tray-manager.h"
 #include "moblin-netbook.h"
@@ -15,6 +17,9 @@
 
 #define MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 #include "moblin-netbook-system-tray.h"
+
+#define TRAY_BUTTON_HEIGHT 55
+#define TRAY_BUTTON_WIDTH 44
 
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
@@ -364,7 +369,7 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
 }
 
 static gboolean
-actor_clicked (ClutterActor *actor, ClutterEvent *event, gpointer data)
+actor_clicked (ClutterActor *actor, gpointer data)
 {
   static Atom            tray_atom = 0;
 
@@ -449,6 +454,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   ClutterActor *icon;
   ShellTrayManagerChild *child;
   GdkPixmap *bg_pixmap;
+  NbtkWidget *button;
 
   win = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_container_add (GTK_CONTAINER (win), socket);
@@ -485,13 +491,32 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   icon = clutter_glx_texture_pixmap_new_with_window (GDK_WINDOW_XWINDOW (win->window));
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (icon), TRUE);
+
+  button = mnb_panel_button_new ();
+  nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
+
+  clutter_actor_set_size (CLUTTER_ACTOR (button),
+                          TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
+  clutter_actor_set_name (CLUTTER_ACTOR (button), "tray-button");
+  mnb_panel_button_set_reactive_area (MNB_PANEL_BUTTON (button),
+                                      0,
+                                      -(PANEL_HEIGHT - TRAY_BUTTON_HEIGHT),
+                                      TRAY_BUTTON_WIDTH,
+                                      PANEL_HEIGHT);
+
+  g_object_set (G_OBJECT (button),
+                "transition-type", NBTK_TRANSITION_BOUNCE,
+                "transition-duration", 500, NULL);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (button), icon);
+
   clutter_actor_set_size (icon, 24, 24);
   clutter_actor_set_reactive (icon, TRUE);
 
   child = g_slice_new (ShellTrayManagerChild);
   child->window = win;
   child->socket = socket;
-  child->actor = g_object_ref (icon);
+  child->actor = g_object_ref (button);
   child->manager = manager;
   child->config = NULL;
   child->mir = NULL;
@@ -500,10 +525,9 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   g_signal_emit (manager,
                  shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
-                 icon);
+                 button);
 
-  g_signal_connect (icon, "button-press-event",
-                    G_CALLBACK (actor_clicked), child);
+  g_signal_connect (button, "clicked", G_CALLBACK (actor_clicked), child);
 }
 
 static void

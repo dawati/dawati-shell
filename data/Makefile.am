@@ -30,7 +30,10 @@ dist_theme_panel_DATA = \
 	theme/panel/status-active.png \
 	theme/panel/status-hover.png \
 	theme/panel/status-normal.png \
-	theme/panel/background-tile.png
+	theme/panel/background-tile.png \
+	theme/panel/tray-active.png \
+	theme/panel/tray-hover.png \
+	theme/panel/tray-normal.png
 
 theme_chooserdir = $(pkgdatadir)/theme/chooser
 dist_theme_chooser_DATA = \
@@ -86,5 +89,5 @@ dist_theme_mzone_DATA = \
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
-	theme/notifiers/notification-bg.png 
+	theme/notifiers/notification-bg.png
 

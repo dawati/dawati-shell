@@ -36,6 +36,7 @@
 #define TRAY_PADDING   3
 #define TRAY_WIDTH   200
 #define TRAY_HEIGHT   24
+#define TRAY_BUTTON_WIDTH 44
 
 #define PANEL_X_PADDING 4
 
@@ -344,6 +345,7 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
                                ClutterActor     *tray)
 {
   static gint col = 0;
+
   nbtk_table_add_actor (NBTK_TABLE (tray), icon, 0, col++);
   clutter_container_child_set (CLUTTER_CONTAINER (tray), icon,
                                "keep-aspect-ratio", TRUE, NULL);
@@ -384,6 +386,7 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterActor               *mzone_grid_view;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
+  NbtkPadding                 no_padding = { 0, 0, 0, 0 };
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -539,10 +542,14 @@ make_panel (MutterPlugin *plugin, gint width)
 
   priv->tray = tray = CLUTTER_ACTOR (nbtk_table_new ());
 
+  nbtk_widget_set_padding (NBTK_WIDGET (priv->tray), &no_padding);
   nbtk_table_set_col_spacing (NBTK_TABLE (tray), TRAY_PADDING);
-  clutter_actor_set_size (tray, TRAY_WIDTH, TRAY_HEIGHT);
-  clutter_actor_set_anchor_point (tray, TRAY_WIDTH, TRAY_HEIGHT/2);
-  clutter_actor_set_position (tray, width, PANEL_HEIGHT/2);
+  nbtk_table_set_row_spacing (NBTK_TABLE (tray), 0);
+  clutter_actor_set_size (tray, TRAY_WIDTH, PANEL_HEIGHT);
+  clutter_actor_set_anchor_point (tray, TRAY_WIDTH, 0);
+
+  /* FIXME -- there is a 6 pixel padding sneaking in somehow here */
+  clutter_actor_set_position (tray, width, PANEL_HEIGHT  - BUTTON_HEIGHT - 6);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), tray);
 
