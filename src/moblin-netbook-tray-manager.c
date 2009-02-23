@@ -294,6 +294,8 @@ destroy_config_window (ShellTrayManagerChild *child)
 
       child->config = NULL;
       gtk_widget_destroy (config);
+
+      nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
     }
 }
 
@@ -380,67 +382,80 @@ actor_clicked (ClutterActor *actor, gpointer data)
   GtkSocket             *socket  = GTK_SOCKET (child->socket);
   ClutterActor          *stage   = mutter_plugin_get_stage (plugin);
   Window                 stage_win;
+  gboolean               active;
 
   stage_win = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-  if (!child->config)
+  active = nbtk_button_get_active (NBTK_BUTTON (actor));
+
+  if (active)
     {
-      Window     xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
-      Window    *config_xwin;
-      GtkWidget *config;
-      GtkWidget *config_socket;
-      gulong     n_items, left;
-      gint       ret_fmt;
-      Atom       ret_type;
-
-      if (!tray_atom)
-        tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW, False);
-
-      XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
-                          XA_WINDOW, &ret_type, &ret_fmt, &n_items, &left,
-                          (unsigned char **)&config_xwin);
-
-      if (!config_xwin)
-        return TRUE;
-
-      config_socket = gtk_socket_new ();
-      child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
-
-      gtk_container_add (GTK_CONTAINER (config), config_socket);
-      gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
-
-      if (!GTK_SOCKET (config_socket)->is_mapped)
+      if (!child->config)
         {
-          child->config = NULL;
-          child->config_xwin = None;
+          Window     xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
+          Window    *config_xwin;
+          GtkWidget *config;
+          GtkWidget *config_socket;
+          gulong     n_items, left;
+          gint       ret_fmt;
+          Atom       ret_type;
 
-          gtk_widget_destroy (config);
+          if (!tray_atom)
+            tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW,
+                                     False);
+
+          XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
+                              XA_WINDOW, &ret_type, &ret_fmt, &n_items, &left,
+                              (unsigned char **)&config_xwin);
+
+          if (!config_xwin)
+            return TRUE;
+
+          config_socket = gtk_socket_new ();
+          child->config = config = gtk_window_new (GTK_WINDOW_POPUP);
+
+          gtk_container_add (GTK_CONTAINER (config), config_socket);
+          gtk_socket_add_id (GTK_SOCKET (config_socket), *config_xwin);
+
+          if (!GTK_SOCKET (config_socket)->is_mapped)
+            {
+              child->config = NULL;
+              child->config_xwin = None;
+
+              gtk_widget_destroy (config);
+            }
+          else
+            {
+              GList *wins = manager->priv->config_windows;
+
+              manager->priv->config_windows =
+                g_list_prepend (wins,
+                                GINT_TO_POINTER (
+                                          GDK_WINDOW_XID (config->window)));
+
+              gtk_widget_realize (config);
+
+              child->config_xwin = GDK_WINDOW_XID (config->window);
+
+              g_signal_connect (config_socket, "size-allocate",
+                                G_CALLBACK (config_socket_size_allocate_cb),
+                                child);
+
+              gtk_widget_show_all (config);
+
+              g_signal_connect (config_socket, "plug-removed",
+                                G_CALLBACK (config_plug_removed_cb), child);
+            }
+
+          XFree (config_xwin);
         }
       else
-        {
-          GList *wins = manager->priv->config_windows;
-
-          manager->priv->config_windows =
-            g_list_prepend (wins,
-                            GINT_TO_POINTER (GDK_WINDOW_XID (config->window)));
-
-          gtk_widget_realize (config);
-
-          child->config_xwin = GDK_WINDOW_XID (config->window);
-
-          g_signal_connect (config_socket, "size-allocate",
-                            G_CALLBACK (config_socket_size_allocate_cb), child);
-
-          gtk_widget_show_all (config);
-
-          g_signal_connect (config_socket, "plug-removed",
-                            G_CALLBACK (config_plug_removed_cb), child);
-        }
-
-      XFree (config_xwin);
+        gtk_widget_show_all (child->config);
     }
-  else
-    gtk_widget_show_all (child->config);
+  else if (child->config)
+    {
+      destroy_config_window (child);
+    }
 
     return TRUE;
 }
@@ -622,11 +637,8 @@ shell_tray_manager_hide_config_window (ShellTrayManager *manager,
 
   child = g_hash_table_find (icons, find_child_data, GINT_TO_POINTER (xwindow));
 
-  if (child)
+  if (child && child->config)
     gtk_widget_hide (child->config);
-  else
-    g_warning ("No tray child associated with config window 0x%x",
-               (guint)xwindow);
 }
 
 void
@@ -640,9 +652,6 @@ shell_tray_manager_close_config_window (ShellTrayManager *manager,
 
   if (child)
     destroy_config_window (child);
-  else
-    g_warning ("No tray child associated with config window 0x%x",
-               (guint)xwindow);
 }
 
 void
