@@ -281,6 +281,8 @@ make_launcher (MutterPlugin *plugin,
       category = gmenu_tree_entry_get_comment (entry);
       if (name)
         info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
+      else
+        info = gtk_icon_theme_lookup_icon (theme, "gtk-file", ICON_SIZE, 0);
       if (info)
         icon_file = gtk_icon_info_get_filename (info);
 
