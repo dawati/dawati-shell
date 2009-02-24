@@ -34,8 +34,7 @@
 #define BUTTON_SPACING 10
 
 #define TRAY_PADDING   3
-#define TRAY_WIDTH   200
-#define TRAY_HEIGHT   24
+#define TRAY_BUTTON_HEIGHT 55
 #define TRAY_BUTTON_WIDTH 44
 
 #define PANEL_X_PADDING 4
@@ -342,10 +341,15 @@ update_time_date (MoblinNetbookPluginPrivate *priv)
 static void
 shell_tray_manager_icon_added (ShellTrayManager *mgr,
                                ClutterActor     *icon,
-                               ClutterActor     *tray)
+                               MutterPlugin     *plugin)
 {
-  const gchar *name;
-  gint         col = -1;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  const gchar                *name;
+  gint                        col = -1;
+  gint                        screen_width, screen_height;
+  gint                        x, y;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   name = clutter_actor_get_name (icon);
 
@@ -353,28 +357,30 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
     return;
 
   if (!strcmp (name, "tray-button-bluetooth"))
-    col = 0;
-  else if (!strcmp (name, "tray-button-wifi"))
-    col = 1;
-  else if (!strcmp (name, "tray-button-sound"))
-    col = 2;
-  else if (!strcmp (name, "tray-button-battery"))
     col = 3;
-  else if (!strcmp (name, "tray-button-test"))
+  else if (!strcmp (name, "tray-button-wifi"))
+    col = 2;
+  else if (!strcmp (name, "tray-button-sound"))
+    col = 1;
+  else if (!strcmp (name, "tray-button-battery"))
     col = 0;
+  else if (!strcmp (name, "tray-button-test"))
+    col = 4;
 
   if (col < 0)
     return;
 
-  nbtk_table_add_actor (NBTK_TABLE (tray), icon, 0, col);
-  clutter_container_child_set (CLUTTER_CONTAINER (tray), icon,
-                               "keep-aspect-ratio", TRUE, NULL);
+  y = PANEL_HEIGHT - TRAY_BUTTON_HEIGHT;
+  x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
+
+  clutter_actor_set_position (icon, x, y);
+  clutter_container_add_actor (priv->panel, icon);
 }
 
 static void
 shell_tray_manager_icon_removed (ShellTrayManager *mgr,
                                  ClutterActor     *icon,
-                                 ClutterActor     *tray)
+                                 MutterPlugin     *plugin)
 {
   clutter_actor_destroy (icon);
 }
@@ -560,24 +566,11 @@ make_panel (MutterPlugin *plugin, gint width)
                                      "mutter-plugin", plugin,
                                      NULL);
 
-  priv->tray = tray = CLUTTER_ACTOR (nbtk_table_new ());
-
-  nbtk_widget_set_padding (NBTK_WIDGET (priv->tray), &no_padding);
-  nbtk_table_set_col_spacing (NBTK_TABLE (tray), TRAY_PADDING);
-  nbtk_table_set_row_spacing (NBTK_TABLE (tray), 0);
-  clutter_actor_set_size (tray, TRAY_WIDTH, PANEL_HEIGHT);
-  clutter_actor_set_anchor_point (tray, TRAY_WIDTH, 0);
-
-  /* FIXME -- there is a 6 pixel padding sneaking in somehow here */
-  clutter_actor_set_position (tray, width, PANEL_HEIGHT  - BUTTON_HEIGHT - 6);
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel), tray);
-
   g_signal_connect (priv->tray_manager, "tray-icon-added",
-                    G_CALLBACK (shell_tray_manager_icon_added), tray);
+                    G_CALLBACK (shell_tray_manager_icon_added), plugin);
 
   g_signal_connect (priv->tray_manager, "tray-icon-removed",
-                    G_CALLBACK (shell_tray_manager_icon_removed), tray);
+                    G_CALLBACK (shell_tray_manager_icon_removed), plugin);
 
   shell_tray_manager_manage_stage (priv->tray_manager,
                                    CLUTTER_STAGE (
