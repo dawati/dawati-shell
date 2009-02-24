@@ -344,9 +344,29 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
                                ClutterActor     *icon,
                                ClutterActor     *tray)
 {
-  static gint col = 0;
+  const gchar *name;
+  gint         col = -1;
 
-  nbtk_table_add_actor (NBTK_TABLE (tray), icon, 0, col++);
+  name = clutter_actor_get_name (icon);
+
+  if (!name || !*name)
+    return;
+
+  if (!strcmp (name, "tray-button-bluetooth"))
+    col = 0;
+  else if (!strcmp (name, "tray-button-wifi"))
+    col = 1;
+  else if (!strcmp (name, "tray-button-sound"))
+    col = 2;
+  else if (!strcmp (name, "tray-button-battery"))
+    col = 3;
+  else if (!strcmp (name, "tray-button-test"))
+    col = 0;
+
+  if (col < 0)
+    return;
+
+  nbtk_table_add_actor (NBTK_TABLE (tray), icon, 0, col);
   clutter_container_child_set (CLUTTER_CONTAINER (tray), icon,
                                "keep-aspect-ratio", TRUE, NULL);
 }

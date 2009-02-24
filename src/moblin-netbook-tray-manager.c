@@ -21,6 +21,16 @@
 #define TRAY_BUTTON_HEIGHT 55
 #define TRAY_BUTTON_WIDTH 44
 
+typedef enum
+{
+  CHILD_UNKNOWN = 0,
+  CHILD_BLUETOOTH,
+  CHILD_WIFI,
+  CHILD_SOUND,
+  CHILD_BATTERY,
+  CHILD_TEST,
+} ChildType;
+
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
   ClutterStage *stage;
@@ -372,8 +382,15 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
 }
 
 /*
- * Retrieves the ID of the child config window and embeds it in a socket.
- * Returns TRUE if succeeded, FALSE if fail.
+ * Retrieves the type of the application and, if it exists, the ID of the child
+ * config window and embeds it in a socket.
+ *
+ * The caller must check that child->config actually exist after calling this
+ * function.
+ *
+ * Return: FALSE if the application is not one of the supported ones, TRUE
+ * otherwise (NB: as per the comment above, return value of TRUE does not mean
+ * there is a config window).
  *
  * The set up is done once when the tray icon is added (mainly to verify that
  * given application is one of `ours'), and then each time the config window
@@ -385,6 +402,7 @@ setup_child_config (ShellTrayManagerChild *child)
   if (!child->config)
     {
       static Atom tray_atom = 0;
+      static Atom tray_type = None;
 
       ShellTrayManager      *manager = child->manager;
       MutterPlugin          *plugin  = manager->priv->plugin;
@@ -397,10 +415,56 @@ setup_child_config (ShellTrayManagerChild *child)
       gulong                 n_items, left;
       gint                   ret_fmt;
       Atom                   ret_type;
+      ChildType              child_type = 0;
+      unsigned char         *my_type = NULL;
+
 
       if (!tray_atom)
-        tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW,
-                                 False);
+        tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW, False);
+
+      if (!tray_type)
+        tray_type = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_TYPE, False);
+
+      XGetWindowProperty (xdpy, xwin, tray_type, 0, 8192, False,
+                          XA_STRING, &ret_type, &ret_fmt, &n_items, &left,
+                          &my_type);
+
+      if (my_type && *my_type)
+        {
+          if (!strcmp (my_type, "bluetooth"))
+            {
+              child_type = CHILD_BLUETOOTH;
+              clutter_actor_set_name (child->actor, "tray-button-bluetooth");
+            }
+          else if (!strcmp (my_type, "wifi"))
+            {
+              child_type = CHILD_WIFI;
+              clutter_actor_set_name (child->actor, "tray-button-wifi");
+            }
+          else if (!strcmp (my_type, "sound"))
+            {
+              child_type = CHILD_SOUND;
+              clutter_actor_set_name (child->actor, "tray-button-sound");
+            }
+          else if (!strcmp (my_type, "battery"))
+            {
+              child_type = CHILD_BATTERY;
+              clutter_actor_set_name (child->actor, "tray-button-battery");
+            }
+          else if (!strcmp (my_type, "test"))
+            {
+              child_type = CHILD_TEST;
+              clutter_actor_set_name (child->actor, "tray-button-test");
+            }
+
+          XFree (my_type);
+        }
+
+      if (child_type == CHILD_UNKNOWN)
+        {
+          nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
+          return FALSE;
+        }
 
       XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
                           XA_WINDOW, &ret_type, &ret_fmt, &n_items, &left,
@@ -408,8 +472,12 @@ setup_child_config (ShellTrayManagerChild *child)
 
       if (!config_xwin)
         {
+          /*
+           * This is a supported application, but it does not provide a
+           * config window, return TRUE.
+           */
           nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
-          return FALSE;
+          return TRUE;
         }
 
       config_socket = gtk_socket_new ();
@@ -429,11 +497,6 @@ setup_child_config (ShellTrayManagerChild *child)
       else
         {
           GList *wins = manager->priv->config_windows;
-
-          manager->priv->config_windows =
-            g_list_prepend (wins,
-                            GINT_TO_POINTER (
-                                             GDK_WINDOW_XID (config->window)));
 
           gtk_widget_realize (config);
 
@@ -470,8 +533,17 @@ actor_clicked (ClutterActor *actor, gpointer data)
        * If we have a config window already constructed, show it, otherwise
        * create it first.
        */
-      if (child->config || setup_child_config (child))
-        gtk_widget_show_all (child->config);
+      if (child->config || (setup_child_config (child) && child->config))
+        {
+          ShellTrayManager *manager = child->manager;
+
+          manager->priv->config_windows =
+            g_list_prepend (manager->priv->config_windows,
+                            GINT_TO_POINTER (
+                                       GDK_WINDOW_XID (child->config->window)));
+
+          gtk_widget_show_all (child->config);
+        }
     }
   else if (child->config)
     {
@@ -482,7 +554,7 @@ actor_clicked (ClutterActor *actor, gpointer data)
 }
 
 /*
- * The application can only attache the config window id to the icon
+ * The application can only attach the config window id to the icon
  * once the icons has been embedded; because of the assynchronous nature of
  * this all, we cannot check for this in the in the tray-icon-added signal
  * handler. So we use a short timeout, which we allow to run up to 6 times.
@@ -493,8 +565,6 @@ static gboolean
 tray_icon_tagged_timeout_cb (gpointer data)
 {
   ShellTrayManagerChild *child = data;
-
-  printf ("idle data %p\n", data);
 
   if (child->config)
     return FALSE;
@@ -511,11 +581,11 @@ tray_icon_tagged_timeout_cb (gpointer data)
 
         g_warning ("No config window attached, expelling tray application\n.");
 
-      /*
-       * We leave the child in the hashtable; this keep the status icon formally
-       * embedded and prevents the application from trying to get embedded
-       * again and again and again.
-       */
+        /*
+         * We leave the child in the hashtable; this keep the status icon
+         * formally embedded and prevents the application from trying to get
+         * embedded again and again and again.
+         */
     }
   else
     {
@@ -581,8 +651,10 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   gtk_window_move (GTK_WINDOW (win), -200, -200);
   gtk_widget_show_all (win);
 
-  icon = clutter_glx_texture_pixmap_new_with_window (GDK_WINDOW_XWINDOW (win->window));
-  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (icon), TRUE);
+  icon = clutter_glx_texture_pixmap_new_with_window (
+                                             GDK_WINDOW_XWINDOW (win->window));
+  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (icon),
+                                            TRUE);
 
   button = mnb_panel_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
@@ -605,13 +677,11 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   clutter_actor_set_size (icon, 24, 24);
   clutter_actor_set_reactive (icon, TRUE);
 
-  child = g_slice_new (ShellTrayManagerChild);
+  child = g_slice_new0 (ShellTrayManagerChild);
   child->window = win;
   child->socket = socket;
   child->actor = g_object_ref (button);
   child->manager = manager;
-  child->config = NULL;
-  child->mir = NULL;
 
   g_hash_table_insert (manager->priv->icons, socket, child);
 
@@ -638,34 +708,6 @@ na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *socket,
   g_hash_table_remove (manager->priv->icons, socket);
 }
 
-#if 0
-static XserverRegion
-create_input_shape (MutterPlugin *plugin,
-                    gint x, gint y, gint width, gint height)
-{
-  XserverRegion  dst, src2;
-  XRectangle     r;
-  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
-
-  r.x = 0;
-  r.y = 0;
-  r.width = width;
-  r.height = height;
-
-  src2 = XFixesCreateRegion (xdpy, &r, 1);
-
-  dst = XFixesCreateRegion (xdpy, NULL, 0);
-
-  XFixesSubtractRegion (xdpy, dst,
-                        MOBLIN_NETBOOK_PLUGIN (plugin)->priv->screen_region,
-                        src2);
-
-  XFixesDestroyRegion (xdpy, src2);
-
-  return dst;
-}
-#endif
-
 gboolean
 shell_tray_manager_is_config_window (ShellTrayManager *manager, Window xwindow)
 {
@@ -687,7 +729,9 @@ shell_tray_manager_is_config_window (ShellTrayManager *manager, Window xwindow)
 gboolean
 shell_tray_manager_config_windows_showing (ShellTrayManager *manager)
 {
-  if (!manager->priv->config_windows)
+  GList *l = manager->priv->config_windows;
+
+  if (!l)
     return FALSE;
 
   return TRUE;

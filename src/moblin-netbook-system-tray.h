@@ -36,11 +36,17 @@
 
 #define MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW  "MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW"
 
+/*
+ * Type of the icon; the cline needs to set this to one of "wifi", "volume",
+ * "bluetooth", "battery".
+ */
+#define MOBLIN_SYSTEM_TRAY_TYPE           "MOBLIN_SYSTEM_TRAY_TYPE"
+
 #ifndef MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 /*
  * Utility code to set up Tray code in the application. Simply call
  *
- * mnbk_system_tray_init (icon, config_plug);
+ * mnbk_system_tray_init (icon, config_plug, type);
  *
  * icon: GtkStatusIcon* instance.
  *
@@ -50,12 +56,30 @@
  * application, in response to click on the status icon (your application will
  * no receive this click directly).
  *
+ * type: string identifying the application; valid options are "wifi",
+ * "bluetooth", "sound", "battery".
+ *
  * See tests/test-tray.c for an example.
  */
+
+#include <string.h>
+
+struct mnbk_tray_setup_data
+{
+  GtkStatusIcon *icon;
+  GtkPlug       *config;
+  gchar         *type;
+};
+
+static struct mnbk_tray_setup_data _mnbk_tray_setup_data;
+
 static gboolean
-_mnbk_setup_config_window (GtkStatusIcon *icon, Window config_win)
+_mnbk_setup_config_window (GtkStatusIcon               *icon,
+                           Window                       config_win,
+                           struct mnbk_tray_setup_data *tray_data)
 {
   Atom tray_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW);
+  Atom type_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_TYPE);
   Window    icon_win;
   gpointer *plug_location;
   GtkPlug  *plug;
@@ -84,16 +108,14 @@ _mnbk_setup_config_window (GtkStatusIcon *icon, Window config_win)
                    tray_atom, XA_WINDOW,
                    32, PropModeReplace, (unsigned char*)&config_win, 1);
 
+  XChangeProperty (GDK_DISPLAY(), icon_win,
+                   type_atom, XA_STRING,
+                   8, PropModeReplace,
+                   (unsigned char*)tray_data->type,
+                   strlen (tray_data->type));
+
   return TRUE;
 }
-
-struct mnbk_tray_setup_data
-{
-  GtkStatusIcon *icon;
-  GtkPlug       *config;
-};
-
-static struct mnbk_tray_setup_data _mnbk_tray_setup_data;
 
 static void
 _mnbk_embedded_notify (GObject *gobject, GParamSpec *arg1, gpointer data)
@@ -107,7 +129,8 @@ _mnbk_embedded_notify (GObject *gobject, GParamSpec *arg1, gpointer data)
        * When we get embedded, we need to set up the config window again,
        * as the releavent XID is different.
        */
-      _mnbk_setup_config_window (icon, gtk_plug_get_id (config));
+      _mnbk_setup_config_window (icon, gtk_plug_get_id (config),
+                                 &_mnbk_tray_setup_data);
     }
 }
 
@@ -152,7 +175,7 @@ _mnbk_idle_config_setup (gpointer data)
        * Set up the config window; should this fail for any reason, wait
        * another until the next time.
        */
-      if (_mnbk_setup_config_window (icon, gtk_plug_get_id (config)))
+      if (_mnbk_setup_config_window (icon, gtk_plug_get_id (config), tray_data))
         {
           /*
            * We connect to notify on the status embedded property; when this
@@ -188,10 +211,12 @@ _mnbk_idle_config_setup (gpointer data)
  * This is the funtion that the application will use to set itself up.
  */
 static void
-mnbk_system_tray_init (GtkStatusIcon *icon, GtkPlug *config)
+mnbk_system_tray_init (GtkStatusIcon *icon, GtkPlug *config,
+                       const gchar *type)
 {
   _mnbk_tray_setup_data.icon = icon;
   _mnbk_tray_setup_data.config = config;
+  _mnbk_tray_setup_data.type = g_strdup (type);
 
   gtk_widget_show_all (GTK_WIDGET (config));
   gtk_status_icon_set_visible (icon, TRUE);

@@ -89,7 +89,7 @@ main (int argc, char *argv[])
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
 
-  mnbk_system_tray_init (icon, GTK_PLUG (config));
+  mnbk_system_tray_init (icon, GTK_PLUG (config), "test");
 
   gtk_main ();
 
