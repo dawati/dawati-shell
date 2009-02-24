@@ -27,6 +27,11 @@
 
 #include "../src/moblin-netbook-system-tray.h"
 
+/*
+ * This is a callback to demonstrate how the application can close the config
+ * window; however, you probably should not do that in your applicaiton, as
+ * the hiding of the config window is taken care of by the mobling UI.
+ */
 static void
 button_clicked_cb (GtkButton *button, gpointer data)
 {
@@ -40,6 +45,16 @@ button_clicked_cb (GtkButton *button, gpointer data)
   gtk_widget_hide (config);
 }
 
+/*
+ * Function to create the content of the config window.
+ *
+ * This is to demonstrate how the contents can be created dynamically when the
+ * window is getting shown. If your config window has static content, you
+ * can construct it when creating the GtkPlug (i.e., in this example that would
+ * be in the main() function.
+ *
+ * This function is hooked into the "embedded" signal on the GtkPlug you create.
+ */
 static void
 make_menu_content (GtkPlug *config)
 {
@@ -64,6 +79,10 @@ make_menu_content (GtkPlug *config)
   gtk_container_add (GTK_CONTAINER (config), table);
 }
 
+/*
+ * The embedded signal on the GtkPlug can be used to construct the contents
+ * of the config window when the window is getting shown.
+ */
 static void
 config_embedded_cb (GtkPlug *config, gpointer data)
 {
@@ -85,6 +104,14 @@ main (int argc, char *argv[])
 
   config = gtk_plug_new (0);
 
+  /*
+   * If the content of the config window needs to be created dynamically
+   * each time the window is shown, hook into the "embedded" signal on the
+   * plug.
+   *
+   * If your config window has static content, you can just create it here and
+   * pack it directly into the plug.
+   */
   g_signal_connect (config, "embedded", G_CALLBACK (config_embedded_cb), NULL);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
