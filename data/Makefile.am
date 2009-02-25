@@ -50,12 +50,13 @@ dist_theme_generic_DATA = \
 	theme/generic/button.png	\
 	theme/generic/button_active.png	\
 	theme/generic/button_hover.png	\
-	theme/generic/scrollbar_backward_hover.png \
-	theme/generic/scrollbar_backward.png \
-	theme/generic/scrollbar_forward_hover.png \
-	theme/generic/scrollbar_forward.png \
-	theme/generic/scrollbar_handle.png \
-	theme/generic/tooltip-background.png
+	theme/generic/tooltip-background.png \
+	theme/generic/vscroll-backwards-hover.png \
+  theme/generic/vscroll-backwards.png \
+	theme/generic/vscroll-forward-hover.png \
+	theme/generic/vscroll-forward.png \
+	theme/generic/vscroll-handle-hover.png \
+	theme/generic/vscroll-handle.png
 
 theme_launcherdir = $(pkgdatadir)/theme/launcher
 dist_theme_launcher_DATA = \
