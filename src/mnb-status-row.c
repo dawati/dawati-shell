@@ -22,6 +22,8 @@ struct _MnbStatusRowPrivate
 
   gchar *service_name;
 
+  gchar *no_icon_file;
+
   gchar *status_text;
   gchar *status_time;
 
@@ -32,7 +34,7 @@ struct _MnbStatusRowPrivate
   ClutterUnit icon_separator_x;
 
   MojitoClient *client;
-  MojitoClientView *view;
+  MojitoClientService *service;
 };
 
 enum
@@ -233,13 +235,26 @@ mnb_status_row_style_changed (NbtkWidget *widget)
   NBTK_WIDGET_CLASS (mnb_status_row_parent_class)->style_changed (widget);
 }
 
-static inline void
-mnb_status_row_update_status (MnbStatusRow *row,
-                              MojitoItem   *item)
+static void
+on_mojito_get_last_item (MojitoClientService *service,
+                         MojitoItem          *item,
+                         const GError        *error,
+                         gpointer             data)
 {
+  MnbStatusRow *row = data;
   MnbStatusRowPrivate *priv = row->priv;
 
-  if (item)
+  g_debug ("%s: GetLastItem: %s", G_STRLOC, priv->service_name);
+
+  if (error)
+    {
+      g_warning ("Unable to retrieve the last item on '%s': %s",
+                 priv->service_name,
+                 error->message);
+      return;
+    }
+
+  if (item && item->props)
     {
       const gchar *status_text;
 
@@ -252,41 +267,26 @@ mnb_status_row_update_status (MnbStatusRow *row,
 }
 
 static void
-on_mojito_view_item_added (MojitoClientView *view,
-                           MojitoItem       *item,
-                           gpointer          user_data)
-{
-  MnbStatusRow *row = user_data;
-
-  mnb_status_row_update_status (row, item);
-}
-
-static void
-on_mojito_view_open (MojitoClient     *client,
-                     MojitoClientView *view,
-                     gpointer          user_data)
+on_mojito_get_persona_icon (MojitoClientService *service,
+                            const gchar         *persona_icon,
+                            GError              *error,
+                            gpointer             user_data)
 {
   MnbStatusRow *row = user_data;
   MnbStatusRowPrivate *priv = row->priv;
-  GList *items;
-  MojitoItem *item;
 
-  g_assert (priv->view == NULL);
+  if (error)
+    {
+      g_warning ("Unable to retrieve the icon on '%s': %s",
+                 priv->service_name,
+                 error->message);
+      return;
+    }
 
-  priv->view = g_object_ref (view);
-
-  mojito_client_view_start (view);
-
-  items = mojito_client_view_get_sorted_items (view);
-  item = (items != NULL && items->data != NULL) ? items->data : NULL;
-
-  mnb_status_row_update_status (row, item);
-
-  g_list_free (items);
-
-  g_signal_connect (priv->view, "item-added",
-                    G_CALLBACK (on_mojito_view_item_added),
-                    row);
+  g_debug ("%s: GetPersonaIcon: %s -> %s",
+           G_STRLOC,
+           priv->service_name,
+           persona_icon);
 }
 
 static void
@@ -294,13 +294,15 @@ mnb_status_row_finalize (GObject *gobject)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (gobject)->priv;
 
-  if (priv->view)
-    g_object_unref (priv->view);
+  if (priv->service)
+    g_object_unref (priv->service);
 
   if (priv->client)
     g_object_unref (priv->client);
 
   g_free (priv->service_name);
+
+  g_free (priv->no_icon_file);
 
   g_free (priv->status_text);
   g_free (priv->status_time);
@@ -359,15 +361,23 @@ mnb_status_row_constructed (GObject *gobject)
   MnbStatusRowPrivate *priv = row->priv;
 
   g_assert (priv->service_name != NULL);
+  g_assert (priv->client != NULL);
 
-  priv->client = mojito_client_new ();
-  mojito_client_open_view_for_service (priv->client, priv->service_name, 1,
-                                       on_mojito_view_open,
-                                       row);
+  priv->service = mojito_client_get_service (priv->client, priv->service_name);
+  g_assert (priv->service  != NULL);
 
   priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->service_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
+
+  mojito_client_service_get_last_item (priv->service,
+                                       on_mojito_get_last_item,
+                                       row);
+#if 0
+  mojito_client_service_get_persona_icon (priv->service,
+                                          on_mojito_get_persona_icon,
+                                          row);
+#endif
 
   if (G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed (gobject);
@@ -411,27 +421,37 @@ mnb_status_row_init (MnbStatusRow *self)
 {
   MnbStatusRowPrivate *priv;
   ClutterActor *text;
-  gchar *no_icon_file;
+  GError *error;
 
   self->priv = priv = MNB_STATUS_ROW_GET_PRIVATE (self);
 
-  no_icon_file = g_build_filename (PLUGIN_PKGDATADIR,
-                                   "theme",
-                                   "status",
-                                   "no_image_icon.png",
-                                   NULL);
-  priv->icon = clutter_texture_new_from_file (no_icon_file, NULL);
+  priv->no_icon_file = g_build_filename (PLUGIN_PKGDATADIR,
+                                         "theme",
+                                         "status",
+                                         "no_image_icon.png",
+                                         NULL);
+
+  error = NULL;
+  priv->icon = clutter_texture_new_from_file (priv->no_icon_file, &error);
   if (G_UNLIKELY (priv->icon == NULL))
     {
       const ClutterColor color = { 204, 204, 0, 255 };
 
       priv->icon = clutter_rectangle_new_with_color (&color);
+
+      if (error)
+        {
+          g_warning ("Unable to load '%s': %s",
+                     priv->no_icon_file,
+                     error->message);
+          g_error_free (error);
+        }
     }
+
+  priv->client = mojito_client_new ();
 
   clutter_actor_set_size (priv->icon, ICON_SIZE, ICON_SIZE);
   clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (self));
-
-  g_free (no_icon_file);
 }
 
 NbtkWidget *
