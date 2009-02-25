@@ -50,6 +50,11 @@ dist_theme_generic_DATA = \
 	theme/generic/button.png	\
 	theme/generic/button_active.png	\
 	theme/generic/button_hover.png	\
+	theme/generic/scrollbar_backward_hover.png \
+	theme/generic/scrollbar_backward.png \
+	theme/generic/scrollbar_forward_hover.png \
+	theme/generic/scrollbar_forward.png \
+	theme/generic/scrollbar_handle.png \
 	theme/generic/tooltip-background.png
 
 theme_launcherdir = $(pkgdatadir)/theme/launcher
@@ -90,4 +95,3 @@ dist_theme_mzone_DATA = \
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
 	theme/notifiers/notification-bg.png
-

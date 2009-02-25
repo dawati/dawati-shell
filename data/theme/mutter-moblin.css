@@ -23,6 +23,31 @@ NbtkButton:active {
   color: #333;
 }
 
+NbtkScrollBar {
+  background-color: #e7ebee;
+  padding: 3;
+}
+
+NbtkScrollBar > *#backward-stepper {
+  border-image: url("file://generic/scrollbar_backward.png") 2 2 4 2 stretch stretch;
+}
+
+NbtkScrollBar > *#backward-stepper:hover {
+  border-image: url("file://generic/scrollbar_backward_hover.png") 2 2 4 2 stretch stretch;
+}
+
+NbtkScrollBar > *#forward-stepper {
+  border-image: url("file://generic/scrollbar_forward.png") 2 2 4 2 stretch stretch;
+}
+
+NbtkScrollBar > *#forward-stepper:hover {
+  border-image: url("file://generic/scrollbar_forward_hover.png") 2 2 4 2 stretch stretch;
+}
+
+NbtkScrollBar *#handle {
+  border-image: url("file://generic/scrollbar_handle.png") 2 2 4 2 stretch stretch;
+}
+
 NbtkTable {
   background-color: #f000;
 }
