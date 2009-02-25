@@ -630,7 +630,7 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->mzone_grid, screen_width);
   mzone_grid_view = g_object_new (PENGE_TYPE_GRID_VIEW, NULL);
   g_signal_connect (mzone_grid_view, "activated", _mzone_activated_cb, plugin);
-  clutter_actor_set_height (mzone_grid_view, screen_height - PANEL_HEIGHT * 2);
+  clutter_actor_set_height (mzone_grid_view, screen_height - PANEL_HEIGHT * 1.5);
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->mzone_grid),
                            CLUTTER_ACTOR (mzone_grid_view));
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->mzone_grid),
