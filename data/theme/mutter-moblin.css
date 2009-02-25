@@ -53,7 +53,7 @@ NbtkScrollBar *#handle:hover {
 }
 
 NbtkTable {
-  background-color: #ff000;
+  background-color: #f000;
 }
 
 *#time-label {
@@ -68,7 +68,7 @@ NbtkTable {
 
 /* spaces switcher table */
 *#switcher-table {
-  background-color: #ffffffff;
+  background-color: #ffff;
 }
 
 /* apps button */
@@ -306,7 +306,7 @@ MnbDropDown, MnbSwitcher {
 /* launcher  */
 
 *#launcher-table {
-  background-color: #ffffffff;
+  background-color: #ffff;
 }
 
 MnbLauncherButton {
@@ -318,17 +318,17 @@ MnbLauncherButton:hover {
 }
 
 MnbLauncherButton > *#launcher-text {
-  color: #3b3b3bff;
+  color: #3b3b3b;
   font-size: 13;
 }
 
 MnbLauncherButton > *#launcher-category {
-  color: #7e7e7eff;
+  color: #7e7e7e;
   font-size: 12;
 }
 
 MnbLauncherButton > *#launcher-comment {
-  color: #a2adb6ff;
+  color: #a2adb6;
   font-size: 11;
 }
 
