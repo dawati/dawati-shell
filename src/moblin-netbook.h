@@ -169,8 +169,6 @@ struct ActorPrivate
   gboolean      is_minimized   : 1;
   gboolean      is_maximized   : 1;
   gboolean      sn_in_progress : 1;
-
-  guint         workspace_changed_id;
 };
 
 ActorPrivate * get_actor_private (MutterWindow *actor);

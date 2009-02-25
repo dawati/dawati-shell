@@ -1759,11 +1759,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       data->actor = actor;
       apriv->tml_map = clutter_animation_get_timeline (animation);
 
-      if (!apriv->workspace_changed_id)
-          g_signal_connect (apriv->tml_map,
-                            "completed",
-                            G_CALLBACK (on_map_effect_complete),
-                            data);
+      g_signal_connect (apriv->tml_map,
+                        "completed",
+                        G_CALLBACK (on_map_effect_complete),
+                        data);
 
       apriv->is_minimized = FALSE;
 
