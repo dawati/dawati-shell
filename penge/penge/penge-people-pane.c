@@ -204,7 +204,7 @@ _client_open_view_cb (MojitoClient     *client,
 
 static void
 _client_get_services_cb (MojitoClient *client,
-                         GList        *services,
+                         const GList  *services,
                          gpointer      userdata)
 {
   GList *filtered_services = NULL;
