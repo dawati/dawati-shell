@@ -304,7 +304,7 @@ make_launcher (MutterPlugin *plugin,
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
                                             name, category, comment);
           g_free (comment);
-          clutter_actor_set_width (CLUTTER_ACTOR (button), 180);
+          clutter_actor_set_width (CLUTTER_ACTOR (button), 236);
           nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
                                       1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
 
