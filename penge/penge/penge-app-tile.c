@@ -1,7 +1,9 @@
 #include <gtk/gtk.h>
+#include <gio/gio.h>
 
 #include "penge-app-tile.h"
 #include "penge-app-bookmark-manager.h"
+#include "penge-utils.h"
 
 G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_TABLE)
 
@@ -166,6 +168,41 @@ _leave_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
+static gboolean
+_button_press_event (ClutterActor *actor,
+                     ClutterEvent *event,
+                     gpointer      userdata)
+{
+  PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
+  GError *error = NULL;
+  gchar **argv = NULL;
+
+  if (!(priv->bookmark && priv->bookmark->app_exec))
+    return TRUE;
+
+  argv = g_strsplit (priv->bookmark->app_exec, " ", 0);
+
+  if (!g_spawn_async  (NULL,
+                       argv,
+                       NULL,
+                       G_SPAWN_SEARCH_PATH,
+                       NULL,
+                       NULL,
+                       NULL,
+                       &error))
+  {
+    g_warning (G_STRLOC ": Error launching application): %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    penge_utils_signal_activated (actor);
+  }
+
+  g_strfreev (argv);
+
+  return TRUE;
+}
+
 static void
 penge_app_tile_init (PengeAppTile *self)
 {
@@ -210,6 +247,10 @@ penge_app_tile_init (PengeAppTile *self)
   g_signal_connect (self,
                     "leave-event",
                     (GCallback)_leave_event_cb,
+                    self);
+  g_signal_connect (self,
+                    "button-press-event",
+                    (GCallback)_button_press_event,
                     self);
 }
 
