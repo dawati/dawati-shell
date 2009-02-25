@@ -505,14 +505,17 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
               if (prev_height != new_height && priv->n_notifiers > 1)
                 {
-                  
+                  gint new_y;
+
+                  new_y = clutter_actor_get_y (CLUTTER_ACTOR(priv->control))
+                                 - (prev_height - new_height);
+             
+                  /* if (new_y < 0) new_y = 0; */
+     
                   clutter_actor_animate (CLUTTER_ACTOR(priv->control), 
                                          CLUTTER_EASE_IN_SINE,
                                          FADE_DURATION,
-                                         "y",
-                                         clutter_actor_get_y 
-                                           (CLUTTER_ACTOR(priv->control))
-                                             - (prev_height - new_height),
+                                         "y", new_y,
                                          NULL);
                 }
             }
