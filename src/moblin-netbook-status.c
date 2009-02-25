@@ -63,14 +63,14 @@ on_mojito_get_capabilities (MojitoClientService *service,
            "[get-last-item: %s, update-status: %s, get-persona-icon: %s][%d]",
            G_STRLOC,
            closure->service_name,
-           caps & SERVICE_CAN_GET_LAST_ITEM    ? "y" : "n",
-           caps & SERVICE_CAN_UPDATE_STATUS    ? "y" : "n",
-           caps & SERVICE_CAN_GET_PERSONA_ICON ? "y" : "n",
+           caps & MOJITO_CLIENT_SERVICE_CAN_GET_LAST_ITEM    ? "y" : "n",
+           caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS    ? "y" : "n",
+           caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON ? "y" : "n",
            closure->row_number);
 
-  if ((caps & SERVICE_CAN_GET_LAST_ITEM) &&
-      (caps & SERVICE_CAN_UPDATE_STATUS) &&
-      (caps & SERVICE_CAN_GET_PERSONA_ICON))
+  if ((caps & MOJITO_CLIENT_SERVICE_CAN_GET_LAST_ITEM) &&
+      (caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS) &&
+      (caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON))
     {
       NbtkWidget *row = g_object_new (MNB_TYPE_STATUS_ROW,
                                       "service-name", closure->service_name,
@@ -101,7 +101,7 @@ on_mojito_get_services (MojitoClient *client,
   const GList *l;
   gint i;
 
-  for (l = services, i = 0; l != NULL; l = l->next, i++)
+  for (l = services, i = 1; l != NULL; l = l->next, i++)
     {
       const gchar *service_name = l->data;
       MojitoClientService *service;
