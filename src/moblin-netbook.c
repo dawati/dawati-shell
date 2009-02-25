@@ -1715,7 +1715,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           parent = mutter_plugin_get_overlay_group (plugin);
 
-          clutter_container_add_actor (CLUTTER_CONTAINER (parent), background);
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel),
+                                       background);
+          /*
+           * Raise the tray just above all the other dropdowns, but below
+           * the actual panel background (the switcher is the topmost dropdown).
+           */
+          clutter_actor_raise (background, priv->switcher);
           clutter_actor_show_all (background);
         }
       else
