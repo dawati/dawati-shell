@@ -269,11 +269,12 @@ on_mojito_get_last_item (MojitoClientService *service,
 static void
 on_mojito_get_persona_icon (MojitoClientService *service,
                             const gchar         *persona_icon,
-                            GError              *error,
+                            const GError        *error,
                             gpointer             user_data)
 {
   MnbStatusRow *row = user_data;
   MnbStatusRowPrivate *priv = row->priv;
+  GError *internal_error;
 
   if (error)
     {
@@ -287,6 +288,22 @@ on_mojito_get_persona_icon (MojitoClientService *service,
            G_STRLOC,
            priv->service_name,
            persona_icon);
+
+  if (G_UNLIKELY (CLUTTER_IS_RECTANGLE (priv->icon)))
+    return;
+
+  internal_error = NULL;
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                 persona_icon,
+                                 &internal_error);
+
+  if (internal_error)
+    {
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                     priv->no_icon_file,
+                                     NULL);
+      g_error_free (internal_error);
+    }
 }
 
 static void
@@ -373,11 +390,9 @@ mnb_status_row_constructed (GObject *gobject)
   mojito_client_service_get_last_item (priv->service,
                                        on_mojito_get_last_item,
                                        row);
-#if 0
   mojito_client_service_get_persona_icon (priv->service,
                                           on_mojito_get_persona_icon,
                                           row);
-#endif
 
   if (G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed (gobject);
