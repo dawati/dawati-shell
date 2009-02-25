@@ -104,7 +104,7 @@ penge_recent_file_tile_finalize (GObject *object)
   G_OBJECT_CLASS (penge_recent_file_tile_parent_class)->finalize (object);
 }
 
-static void
+static gboolean
 _button_press_event (ClutterActor *actor,
                      ClutterEvent *event,
                      gpointer      userdata)
@@ -137,6 +137,8 @@ _button_press_event (ClutterActor *actor,
   }
 
   g_free (last_application);
+
+  return TRUE;
 }
 
 static void

@@ -73,7 +73,7 @@ penge_flickr_tile_finalize (GObject *object)
   G_OBJECT_CLASS (penge_flickr_tile_parent_class)->finalize (object);
 }
 
-static void
+static gboolean
 _button_press_event (ClutterActor *actor,
                      ClutterEvent *event,
                      gpointer      userdata)
@@ -96,6 +96,8 @@ _button_press_event (ClutterActor *actor,
   } else {
     penge_utils_signal_activated (actor);
   }
+
+  return TRUE;
 }
 
 static void
