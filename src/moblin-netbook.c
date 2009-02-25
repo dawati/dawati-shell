@@ -1566,6 +1566,23 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
 {
   MutterPlugin *plugin = MUTTER_PLUGIN (data);
 
+  /*
+   * Flush any pending changes to the visibility of the window.
+   * (bug 1008 suggests that the removal of an empty workspace is sometimes
+   * causing a race condition on calculating the window visibility, along the
+   * lines of the window changing status
+   *
+   *  visible -> hidden -> visible
+   *
+   * As this is queued up, by the time the status is calculated this might
+   * appear as the visibility has not changed, but in fact somewhere along the
+   * line it the window has already been pushed down the stack.
+   *
+   * Needs further investigation; this is an attempt to work around the problem
+   * by flushing the state in the intermediate stage for the alpha2 release.
+   */
+  meta_window_calc_showing (mw);
+
   check_for_empty_workspace (plugin, old_workspace, mw);
 }
 
