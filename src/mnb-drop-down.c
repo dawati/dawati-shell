@@ -189,7 +189,7 @@ mnb_drop_down_hide (ClutterActor *actor)
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "y", -priv->height,
+                                     "y", -clutter_actor_get_height (actor),
                                      NULL);
 
   g_signal_connect (clutter_animation_get_timeline (animation),
