@@ -390,12 +390,13 @@ void
 penge_events_pane_update_duration (PengeEventsPane *pane)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
-  JanaTime *now;
+  JanaTime *start_of_day;
   JanaTime *end_of_day;
 
-  now = jana_ecal_utils_time_now_local ();
-  jana_time_set_minutes (now, 0);
-  jana_time_set_seconds (now, 0);
+  start_of_day = jana_ecal_utils_time_now_local ();
+  jana_time_set_hours (start_of_day, 0);
+  jana_time_set_minutes (start_of_day, 0);
+  jana_time_set_seconds (start_of_day, 0);
   end_of_day = jana_ecal_utils_time_now_local ();
   jana_time_set_hours (end_of_day, 23);
   jana_time_set_minutes (end_of_day, 59);
@@ -404,7 +405,7 @@ penge_events_pane_update_duration (PengeEventsPane *pane)
   if (priv->duration)
     jana_duration_free (priv->duration);
 
-  priv->duration = jana_duration_new (now, end_of_day);
+  priv->duration = jana_duration_new (start_of_day, end_of_day);
 
-  jana_store_view_set_range (priv->view, now, end_of_day);
+  jana_store_view_set_range (priv->view, start_of_day, end_of_day);
 }
