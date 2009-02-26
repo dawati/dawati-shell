@@ -55,6 +55,7 @@ struct SnHashData
   MutterWindow       *mcw;
   gint                workspace;
   SnMonitorEventType  state;
+  guint               timeout_id;
   gboolean            without_chooser    : 1;
   gboolean            configured         : 1;
 };
@@ -303,7 +304,8 @@ configure_app (const char *sn_id, gint workspace, MutterPlugin *plugin)
           map_data->plugin = plugin;
           map_data->sn_id = g_strdup (sn_id);
 
-          g_timeout_add (500, sn_map_timeout_cb, map_data);
+          sn_data->timeout_id =
+            g_timeout_add (500, sn_map_timeout_cb, map_data);
         }
     }
 }
@@ -1284,6 +1286,12 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
 
       apriv->sn_in_progress = TRUE;
       sn_data->mcw = mcw;
+
+      if (sn_data->timeout_id)
+        {
+          g_source_remove (sn_data->timeout_id);
+          sn_data->timeout_id = 0;
+        }
 
       if (sn_data->configured)
         {
