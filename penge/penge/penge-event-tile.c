@@ -12,6 +12,7 @@ typedef struct _PengeEventTilePrivate PengeEventTilePrivate;
 
 struct _PengeEventTilePrivate {
   JanaEvent *event;
+  JanaTime *today;
 
   NbtkWidget *time_label;
   NbtkWidget *summary_label;
@@ -21,7 +22,8 @@ struct _PengeEventTilePrivate {
 enum
 {
   PROP_0,
-  PROP_EVENT
+  PROP_EVENT,
+  PROP_TODAY
 };
 
 static void penge_event_tile_update (PengeEventTile *tile);
@@ -35,6 +37,9 @@ penge_event_tile_get_property (GObject *object, guint property_id,
   switch (property_id) {
     case PROP_EVENT:
       g_value_set_object (value, priv->event);
+      break;
+    case PROP_TODAY:
+      g_value_set_object (value, priv->today);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -56,6 +61,14 @@ penge_event_tile_set_property (GObject *object, guint property_id,
 
       penge_event_tile_update ((PengeEventTile *)object);
       break;
+    case PROP_TODAY:
+      if (priv->today)
+        g_object_unref (priv->today);
+
+      priv->today = g_value_dup_object (value);
+
+      penge_event_tile_update ((PengeEventTile *)object);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -70,6 +83,12 @@ penge_event_tile_dispose (GObject *object)
   {
     g_object_unref (priv->event);
     priv->event = NULL;
+  }
+
+  if (priv->today)
+  {
+    g_object_unref (priv->today);
+    priv->today = NULL;
   }
 
   G_OBJECT_CLASS (penge_event_tile_parent_class)->dispose (object);
@@ -100,6 +119,13 @@ penge_event_tile_class_init (PengeEventTileClass *klass)
                                JANA_TYPE_EVENT,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_EVENT, pspec);
+
+  pspec = g_param_spec_object ("today",
+                               "The day today",
+                               "The day today",
+                               JANA_TYPE_TIME,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_TODAY, pspec);
 }
 
 static gboolean
