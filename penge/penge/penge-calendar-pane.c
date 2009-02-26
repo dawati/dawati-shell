@@ -86,8 +86,6 @@ penge_calendar_pane_update (PengeCalendarPane *pane)
                 now,
                 NULL);
   g_object_unref (now);
-
-  penge_events_pane_update_duration ((PengeEventsPane *)priv->events_pane);
 }
 
 static gboolean
