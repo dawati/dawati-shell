@@ -1,6 +1,6 @@
 
 AM_CPPFLAGS = \
-  @GTK_CFLAGS@ \
+  @MUTTER_PLUGIN_CFLAGS@ \
   -I$(top_srcdir)/src \
   -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\"
 

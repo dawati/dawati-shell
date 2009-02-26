@@ -54,6 +54,9 @@ struct _MnbLauncherSearchbar
 struct _MnbLauncherSearchbarClass
 {
   NbtkWidgetClass parent_class;
+
+  /* signals */
+  void (* activated) (MnbLauncherSearchbar *self);
 };
 
 GType mnb_launcher_searchbar_get_type (void) G_GNUC_CONST;
