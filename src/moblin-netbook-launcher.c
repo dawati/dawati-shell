@@ -236,6 +236,48 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
   hide_panel (plugin);
 }
 
+static gchar *
+get_generic_name (GMenuTreeEntry *entry)
+{
+  const gchar *desktop_file;
+  GKeyFile    *key_file = NULL;
+  GError      *error = NULL;
+  gchar       *generic_name = NULL;
+
+  g_return_val_if_fail (entry, NULL);
+
+  desktop_file = gmenu_tree_entry_get_desktop_file_path (entry);
+  if (!desktop_file)
+    goto bail;
+
+  key_file = g_key_file_new ();
+  g_key_file_load_from_file (key_file, desktop_file, G_KEY_FILE_NONE, &error);
+  if (error)
+    {
+      g_warning ("%s", error->message);
+      goto bail;
+    }
+
+  generic_name = g_key_file_get_string (key_file,
+                                        G_KEY_FILE_DESKTOP_GROUP,
+                                        G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
+                                        &error);
+  if (error)
+    {
+      /* g_message ("%s", error->message); */
+      goto bail;
+    }
+
+bail:
+  if (key_file) g_key_file_free (key_file);
+  if (error) g_error_free (error);
+  /* Fall back to "Name" if no "GenericName" available. */
+  if (!generic_name)
+    generic_name = g_strdup (gmenu_tree_entry_get_name (entry));
+
+  return generic_name;
+}
+
 ClutterActor *
 make_launcher (MutterPlugin *plugin,
                gint          width,
@@ -266,9 +308,8 @@ make_launcher (MutterPlugin *plugin,
   for (a = apps, row = 0, col = 0; a; a = a->next)
     {
       const gchar   *name, *category, *icon_file;
-      gchar         *exec, *comment;
+      gchar         *generic_name, *exec, *comment;
       struct stat    exec_stat;
-      GDate          exec_date;
 
       GMenuTreeEntry *entry = a->data;
       GtkIconInfo *info;
@@ -276,6 +317,7 @@ make_launcher (MutterPlugin *plugin,
       info = NULL;
       icon_file = NULL;
 
+      generic_name = get_generic_name (entry);
       exec = g_find_program_in_path (gmenu_tree_entry_get_exec (entry));
       name = gmenu_tree_entry_get_icon (entry);
       category = gmenu_tree_entry_get_comment (entry);
@@ -286,7 +328,7 @@ make_launcher (MutterPlugin *plugin,
       if (info)
         icon_file = gtk_icon_info_get_filename (info);
 
-      if (exec && icon_file)
+      if (generic_name && exec && icon_file)
         {
           NbtkWidget *button;
 
@@ -302,7 +344,7 @@ make_launcher (MutterPlugin *plugin,
             }
 
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
-                                            name, category, comment);
+                                            generic_name, category, comment);
           g_free (comment);
           clutter_actor_set_width (CLUTTER_ACTOR (button), 236);
           nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
@@ -328,6 +370,8 @@ make_launcher (MutterPlugin *plugin,
         {
           g_free (exec);
         }
+
+      g_free (generic_name);
     }
 
   view = nbtk_viewport_new ();
