@@ -47,8 +47,6 @@ struct _MnbDropDownPrivate {
   NbtkButton *button;
   gint x;
   gint y;
-  gint width;
-  gint height;
 
   guint reparent_cb;
 
@@ -120,9 +118,6 @@ mnb_drop_down_show (ClutterActor *actor)
   /* save the size/position so we can clip while we are moving */
   priv->x = x;
   priv->y = y;
-  priv->width = width;
-  priv->height = height;
-
 
   clutter_actor_set_position (actor, x, -height);
 
@@ -213,8 +208,8 @@ mnb_drop_down_paint (ClutterActor *actor)
 
   cogl_clip_push (priv->x - geom.x,
                   priv->y - geom.y,
-                  priv->width,
-                  priv->height);
+                  geom.width,
+                  geom.height);
 
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->paint (actor);
   cogl_clip_pop ();
