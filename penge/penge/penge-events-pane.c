@@ -13,14 +13,14 @@ G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, NBTK_TYPE_TABLE)
 typedef struct _PengeEventsPanePrivate PengeEventsPanePrivate;
 
 struct _PengeEventsPanePrivate {
-    JanaStore *store;
-    JanaStoreView *view;
-    JanaDuration *duration;
+  JanaStore *store;
+  JanaStoreView *view;
+  JanaDuration *duration;
 
-    GHashTable *uid_to_events;
-    GHashTable *uid_to_actors;
+  GHashTable *uid_to_events;
+  GHashTable *uid_to_actors;
 
-    NbtkWidget *no_events_label;
+  NbtkWidget *no_events_label;
 };
 
 #define MAX_COUNT 6
@@ -124,6 +124,9 @@ penge_events_pane_update (PengeEventsPane *pane)
   ClutterActor *actor;
   gchar *uid;
   GList *old_actors;
+  JanaTime *now;
+  GList *window_start = NULL, *window_end = NULL;
+  JanaTime *t;
 
   /* So we can remove the "old" actors */
   old_actors = g_hash_table_get_values (priv->uid_to_actors);
@@ -155,7 +158,75 @@ penge_events_pane_update (PengeEventsPane *pane)
     }
   }
 
-  for (l = events; l && (count < MAX_COUNT); l = l->next)
+  now = jana_ecal_utils_time_now_local ();
+  jana_time_set_minutes (now, 0);
+  jana_time_set_seconds (now, 0);
+
+  /* Find the first approx. of the window. We try and find the first event after
+   * the current time or if we are on the same hour the current events */
+
+  /* Ideally we should show ongoing events and stuff like that. Kinda hard. */
+  window_start = events;
+  for (l = events; l; l = l->next)
+  {
+    event = (JanaEvent *)l->data;
+    t = jana_event_get_start (event);
+
+    if (jana_utils_time_compare (t, now, FALSE) < 0)
+    {
+      if (l->next)
+      {
+        window_start = l->next;
+      }
+      else
+      {
+        window_start = l;
+      }
+    } else if (jana_utils_time_compare (t, now, FALSE) == 0) {
+      window_start = l;
+      break;
+    } else {
+      window_start = l;
+      break;
+    }
+  }
+
+  /* We have at least one thing */
+  if (window_start)
+    count++;
+
+  /* Next try and find the end of the window */
+  window_end = window_start;
+  for (l = window_start; l && count < MAX_COUNT; l = l->next)
+  {
+    event = (JanaEvent *)l->data;
+    t = jana_event_get_start (event);
+
+    if (l->next)
+    {
+      window_end = l->next;
+      count++;
+    } else {
+    }
+  }
+
+  /* Try and extend the window forward */
+  if (count < MAX_COUNT)
+  {
+    for (l = window_start; l && count < MAX_COUNT; l = l->prev)
+    {
+      if (l->prev)
+      {
+        window_start = l->prev;
+        count++;
+      } else {
+        break;
+      }
+    }
+  }
+
+  count = 0;
+  for (l = window_start; l; l = l->next)
   {
     event = (JanaEvent *)l->data;
     uid = jana_component_get_uid (JANA_COMPONENT (event));
@@ -191,6 +262,9 @@ penge_events_pane_update (PengeEventsPane *pane)
     }
 
     count++;
+
+    if (l == window_end)
+      break;
   }
 
   /* Kill off the old actors */
