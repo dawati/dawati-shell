@@ -24,6 +24,7 @@ AC_PROG_CC
 AC_ISC_POSIX
 AC_HEADER_STDC
 AM_PROG_LIBTOOL
+AC_CHECK_FUNCS([localtime_r])
 
 # Make libtool respect the make -s switch (kudos to jacob berman)
 changequote(,)dnl
