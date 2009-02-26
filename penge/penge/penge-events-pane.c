@@ -25,6 +25,8 @@ struct _PengeEventsPanePrivate {
 
 #define MAX_COUNT 6
 
+static void penge_events_pane_update_duration (PengeEventsPane *pane);
+
 static void
 penge_events_pane_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -460,7 +462,7 @@ penge_events_pane_init (PengeEventsPane *self)
   penge_events_pane_update (self);
 }
 
-void
+static void
 penge_events_pane_update_duration (PengeEventsPane *pane)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);

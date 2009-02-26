@@ -32,7 +32,6 @@ typedef struct {
 } PengeEventsPaneClass;
 
 GType penge_events_pane_get_type (void);
-void penge_events_pane_update_duration (PengeEventsPane *pane);
 
 G_END_DECLS
 
