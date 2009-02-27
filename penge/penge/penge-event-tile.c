@@ -244,12 +244,25 @@ penge_event_tile_update (PengeEventTile *tile)
   gchar *time_str;
   gchar *summary_str;
   gchar *location_str;
+  JanaTime *t;
 
-  g_return_if_fail (priv->event != NULL);
+  if (!priv->event)
+    return;
 
-  time_str = jana_utils_strftime (jana_event_get_start (priv->event), "%H:%M");
-  nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
-  g_free (time_str);
+  if (priv->today)
+  {
+    t = jana_event_get_start (priv->event);
+    if (jana_time_get_day (priv->today) == jana_time_get_day (t))
+    {
+      time_str = jana_utils_strftime (t, "%H:%M");
+    } else {
+      time_str = jana_utils_strftime (t, "%a");
+    }
+
+    nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
+    g_object_unref (t);
+    g_free (time_str);
+  }
 
   summary_str = jana_event_get_summary (priv->event);
   nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
