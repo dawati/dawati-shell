@@ -259,10 +259,10 @@ on_mojito_get_last_item (MojitoClientService *service,
       const gchar *status_text;
 
       status_text = g_hash_table_lookup (item->props, "content");
-
-      mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
-                                        status_text,
-                                        NULL);
+      if (status_text != NULL && *status_text != '\0')
+        mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
+                                          status_text,
+                                          NULL);
     }
 }
 
