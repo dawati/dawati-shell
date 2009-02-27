@@ -16,6 +16,7 @@ struct _PengeEventsPanePrivate {
   JanaStore *store;
   JanaStoreView *view;
   JanaDuration *duration;
+  JanaTime *time;
 
   GHashTable *uid_to_events;
   GHashTable *uid_to_actors;
@@ -23,15 +24,27 @@ struct _PengeEventsPanePrivate {
   NbtkWidget *no_events_label;
 };
 
+enum
+{
+  PROP_0,
+  PROP_TIME
+};
+
 #define MAX_COUNT 6
 
 static void penge_events_pane_update_duration (PengeEventsPane *pane);
+static void penge_events_pane_update (PengeEventsPane *pane);
 
 static void
 penge_events_pane_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  PengeEventsPanePrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_TIME:
+      g_value_set_object (value, priv->time);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -41,7 +54,17 @@ static void
 penge_events_pane_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
+  PengeEventsPanePrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_TIME:
+      if (priv->time)
+        g_object_unref (priv->time);
+
+      priv->time = g_value_dup_object (value);
+      penge_events_pane_update_duration ((PengeEventsPane *)object);
+      penge_events_pane_update ((PengeEventsPane *)object);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -94,6 +117,7 @@ static void
 penge_events_pane_class_init (PengeEventsPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (PengeEventsPanePrivate));
 
@@ -101,6 +125,13 @@ penge_events_pane_class_init (PengeEventsPaneClass *klass)
   object_class->set_property = penge_events_pane_set_property;
   object_class->dispose = penge_events_pane_dispose;
   object_class->finalize = penge_events_pane_finalize;
+
+  pspec = g_param_spec_object ("time",
+                               "The time",
+                               "The time now",
+                               JANA_TYPE_TIME,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_TIME, pspec);
 }
 
 static gint
