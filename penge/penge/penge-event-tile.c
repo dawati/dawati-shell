@@ -133,8 +133,20 @@ _enter_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer      userdata)
 {
+  PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
+  JanaTime *t;
+  gchar *time_str;
+
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
                                       "hover");
+
+  t = jana_event_get_start (priv->event);
+  time_str = jana_utils_strftime (t, "%H:%M");
+
+  nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
+  g_object_unref (t);
+  g_free (time_str);
+
   return FALSE;
 }
 
@@ -143,8 +155,25 @@ _leave_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer      userdata)
 {
+  PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
+  JanaTime *t;
+  gchar *time_str;
+
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
                                       NULL);
+
+  if (priv->today)
+  {
+    t = jana_event_get_start (priv->event);
+    if (jana_time_get_day (priv->today) != jana_time_get_day (t))
+    {
+      time_str = jana_utils_strftime (t, "%a");
+      nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
+      g_free (time_str);
+    }
+    g_object_unref (t);
+  }
+
   return FALSE;
 }
 
@@ -230,11 +259,11 @@ penge_event_tile_init (PengeEventTile *self)
   g_signal_connect (self,
                     "enter-event",
                     (GCallback)_enter_event_cb,
-                    NULL);
+                    self);
   g_signal_connect (self,
                     "leave-event",
                     (GCallback)_leave_event_cb,
-                    NULL);
+                    self);
 }
 
 static void
