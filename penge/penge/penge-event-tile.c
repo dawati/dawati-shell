@@ -188,6 +188,8 @@ penge_event_tile_init (PengeEventTile *self)
                           CLUTTER_UNITS_FROM_DEVICE (8) };
 
   priv->time_label = nbtk_label_new ("XX:XX");
+  clutter_actor_set_width ((ClutterActor *)priv->time_label,
+                           50);
   nbtk_widget_set_style_class_name (priv->time_label,
                                     "PengeEventTime");
   nbtk_widget_set_padding (priv->time_label, &padding);
