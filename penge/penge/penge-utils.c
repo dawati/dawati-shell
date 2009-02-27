@@ -112,20 +112,36 @@ penge_utils_get_thumbnail_path (const gchar *uri)
   thumbnail_filename = g_strconcat (csum, ".png", NULL);
   thumbnail_path = g_build_filename (g_get_home_dir (),
                                      ".thumbnails",
-                                     "normal",
+                                     "large",
                                      thumbnail_filename,
                                      NULL);
 
   g_free (csum);
-  g_free (thumbnail_filename);
 
   if (g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
   {
-    return thumbnail_path;
+    goto success;
   } else {
     g_free (thumbnail_path);
-    return NULL;
+    thumbnail_path = g_build_filename (g_get_home_dir (),
+                                       ".thumbnails",
+                                       "normal",
+                                       thumbnail_filename,
+                                       NULL);
+
+    if (g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
+    {
+      goto success;
+    }
   }
+
+  g_free (thumbnail_filename);
+  g_free (thumbnail_path);
+  return NULL;
+
+success:
+  g_free (thumbnail_filename);
+  return thumbnail_path;
 }
 
 void
