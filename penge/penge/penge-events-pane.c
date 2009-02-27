@@ -278,10 +278,13 @@ penge_events_pane_update (PengeEventsPane *pane)
                                    "column",
                                    0,
                                    NULL);
+      g_object_set (actor, "today", priv->time, NULL);
     } else {
       actor = g_object_new (PENGE_TYPE_EVENT_TILE,
                             "event",
                             event,
+                            "today",
+                            priv->time,
                             NULL);
 
       clutter_actor_set_size (actor, 216, 44);
