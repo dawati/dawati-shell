@@ -514,5 +514,6 @@ penge_events_pane_update_duration (PengeEventsPane *pane)
 
   priv->duration = jana_duration_new (start_of_week, end_of_week);
 
-  jana_store_view_set_range (priv->view, start_of_week, end_of_week);
+  if (priv->view)
+    jana_store_view_set_range (priv->view, start_of_week, end_of_week);
 }
