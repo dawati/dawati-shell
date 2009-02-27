@@ -3,3 +3,4 @@ penge/penge/penge-utils.c
 src/moblin-netbook.c
 src/tray/na-tray-child.c
 src/moblin-netbook-chooser.c
+src/mnb-launcher-searchbar.c
