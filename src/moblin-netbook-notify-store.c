@@ -6,6 +6,10 @@
  * Licensed under the GPL v2 or greater.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "moblin-netbook-notify-store.h"
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>

@@ -2,8 +2,9 @@ SUBDIRS=tray
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-INCLUDES=@MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
-	 -I$(top_srcdir)/penge
+INCLUDES = @MUTTER_PLUGIN_CFLAGS@ \
+	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
+	-I$(top_srcdir)/penge
 
 AM_CFLAGS   = -Werror=missing-prototypes -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\

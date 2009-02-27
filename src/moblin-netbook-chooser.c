@@ -22,6 +22,10 @@
  * 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
 #include "nutter/nutter-scale-group.h"
