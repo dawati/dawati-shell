@@ -167,14 +167,14 @@ get_all_applications (void)
   return retval;
 }
 
-struct entry_data
+typedef struct
 {
   gchar        *exec;
   MutterPlugin *plugin;
-};
+} entry_data_t;
 
 static void
-entry_data_free (struct entry_data *data)
+entry_data_free (entry_data_t *data)
 {
   g_free (data->exec);
   g_free (data);
@@ -183,9 +183,8 @@ entry_data_free (struct entry_data *data)
 static void
 launcher_activated_cb (MnbLauncherButton  *launcher,
                        ClutterButtonEvent *event,
-                       gpointer            data)
+                       entry_data_t       *entry_data)
 {
-  struct entry_data           *entry_data = data;
   MutterPlugin                *plugin = entry_data->plugin;
   MoblinNetbookPluginPrivate  *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   const gchar                 *exec = entry_data->exec;
@@ -278,17 +277,16 @@ bail:
   return generic_name;
 }
 
-ClutterActor *
-make_launcher (MutterPlugin *plugin,
-               gint          width,
-               gint          height)
+static ClutterActor *
+make_table (MutterPlugin  *self,
+            const gchar   *filter)
 {
+  ClutterActor  *table;
   GSList *apps, *a;
   GtkIconTheme  *theme;
-  ClutterActor  *table, *view, *scroll;
+  entry_data_t  *entry_data;
   gint           row, col;
-  struct entry_data *entry_data;
-  NbtkWidget    *drop_down;
+
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING),
@@ -302,7 +300,6 @@ make_launcher (MutterPlugin *plugin,
   nbtk_table_set_row_spacing (NBTK_TABLE (table), PADDING);
 
   apps = get_all_applications ();
-
   theme = gtk_icon_theme_get_default ();
 
   for (a = apps, row = 0, col = 0; a; a = a->next)
@@ -350,10 +347,9 @@ make_launcher (MutterPlugin *plugin,
           nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
                                       1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
 
-          entry_data = g_new (struct entry_data, 1);
+          entry_data = g_new (entry_data_t, 1);
           entry_data->exec = exec;
-          entry_data->plugin = plugin;
-
+          entry_data->plugin = self;
           g_signal_connect_data (button, "activated",
                                  G_CALLBACK (launcher_activated_cb), entry_data,
                                  (GClosureNotify) entry_data_free, 0);
@@ -373,6 +369,19 @@ make_launcher (MutterPlugin *plugin,
 
       g_free (generic_name);
     }
+
+    return table;
+}
+
+ClutterActor *
+make_launcher (MutterPlugin *plugin,
+               gint          width,
+               gint          height)
+{
+  ClutterActor  *table, *view, *scroll;
+  NbtkWidget    *drop_down;
+
+  table = make_table (plugin, NULL);
 
   view = nbtk_viewport_new ();
   clutter_container_add (CLUTTER_CONTAINER (view), table, NULL);
