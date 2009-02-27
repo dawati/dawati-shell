@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <gio/gio.h>
 
 #include "penge-recent-files-pane.h"
 #include "penge-utils.h"
@@ -121,6 +122,8 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
   const gchar *uri;
   GList *old_actors;
   PengeRecentFileTile *tile;
+  GFile *file;
+  GFileType type;
 
   items = gtk_recent_manager_get_items (priv->manager);
   items = g_list_sort (items, (GCompareFunc)_recent_files_sort_func);
@@ -132,6 +135,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
     info = (GtkRecentInfo *)l->data;
 
     uri = gtk_recent_info_get_uri (info);
+
     /* Check if we already have an actor for this URI if so then position */
     actor = g_hash_table_lookup (priv->uri_to_actor, uri);
 
@@ -152,7 +156,12 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
        */
       thumbnail_path = penge_utils_get_thumbnail_path (uri);
 
-      if (thumbnail_path)
+      /* Test if file exists (by testing for regular.) */
+      file = g_file_new_for_uri (uri);
+      type = g_file_query_file_type (file,
+                                     G_FILE_QUERY_INFO_NONE,
+                                     NULL);
+      if (thumbnail_path && (type == G_FILE_TYPE_REGULAR))
       {
         actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
                               "thumbnail-path",
@@ -177,6 +186,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                              g_strdup (uri),
                              g_object_ref (actor));
       }
+      g_object_unref (file);
     }
 
     if (actor)
