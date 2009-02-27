@@ -305,7 +305,7 @@ MnbDropDown, MnbSwitcher {
 
 /* launcher  */
 
-*#launcher-table {
+*#app-launcher-vbox {
   background-color: #ffff;
 }
 
