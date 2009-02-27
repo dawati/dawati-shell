@@ -85,6 +85,11 @@ penge_calendar_pane_update (PengeCalendarPane *pane)
                 "time",
                 now,
                 NULL);
+
+  g_object_set (priv->events_pane,
+                "time",
+                now,
+                NULL);
   g_object_unref (now);
 }
 
@@ -131,6 +136,8 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   clutter_actor_set_size (priv->date_tile, 150, 130);
 
   priv->events_pane = g_object_new (PENGE_TYPE_EVENTS_PANE,
+                                    "time",
+                                    now,
                                     NULL);
 
   /* This in an enclosing table to let us set the background */
