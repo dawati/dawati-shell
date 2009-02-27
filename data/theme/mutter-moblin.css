@@ -479,12 +479,18 @@ MnbStatusEntry:active
   color: #595959ff;
 }
 
+*.MnbStatusEntrySubText
+{
+  font-size: 12px;
+  font-family: "Liberation Sans Reg Italic";
+  color: #7dbe0cff;
+}
+
 *.MnbStatusEntryButton
 {
   color: #7dbe0cff;
   font-family: "Liberation Sans Bold";
   font-size: 13px;
-  padding: 4 4 4 4;
 }
 
 *.MnbStatusPageTable

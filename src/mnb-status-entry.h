@@ -26,6 +26,9 @@ struct _MnbStatusEntry
 struct _MnbStatusEntryClass
 {
   NbtkWidgetClass parent_class;
+
+  void (* status_changed) (MnbStatusEntry *entry,
+                           const gchar    *new_status_text);
 };
 
 GType mnb_status_entry_get_type (void);
@@ -42,9 +45,10 @@ gboolean mnb_status_entry_get_in_hover  (MnbStatusEntry *entry);
 void     mnb_status_entry_set_in_hover  (MnbStatusEntry *entry,
                                          gboolean        in_hover);
 
-void     mnb_status_entry_set_status_text (MnbStatusEntry *entry,
-                                           const gchar    *status_text,
-                                           const gchar    *status_time);
+void                  mnb_status_entry_set_status_text (MnbStatusEntry *entry,
+                                                        const gchar    *status_text,
+                                                        GTimeVal       *status_time);
+G_CONST_RETURN gchar *mnb_status_entry_get_status_text (MnbStatusEntry *entry);
 
 G_END_DECLS
 

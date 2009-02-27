@@ -3,15 +3,20 @@
 #endif
 
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <stdlib.h>
 
 #include "mnb-status-entry.h"
+#include "marshal.h"
+
+#define H_PADDING       (6.0)
 
 #define MNB_STATUS_ENTRY_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_STATUS_ENTRY, MnbStatusEntryPrivate))
 
 struct _MnbStatusEntryPrivate
 {
-  ClutterActor *text;
+  ClutterActor *status_entry;
+  ClutterActor *service_label;
   ClutterActor *button;
 
   gchar *service_name;
@@ -31,7 +36,109 @@ enum
   PROP_SERVICE_NAME
 };
 
+enum
+{
+  STATUS_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint entry_signals[LAST_SIGNAL] = { 0, };
+
 G_DEFINE_TYPE (MnbStatusEntry, mnb_status_entry, NBTK_TYPE_WIDGET);
+
+static gchar *
+format_time_for_display (GTimeVal *time_)
+{
+  GTimeVal now;
+  struct tm tm_mtime;
+  const gchar *format = NULL;
+  gchar *locale_format = NULL;
+  gchar buf[256];
+  gchar *retval = NULL;
+  gint secs_diff;
+ 
+  g_return_val_if_fail (time_->tv_usec >= 0 && time_->tv_usec < G_USEC_PER_SEC, NULL);
+ 
+  g_get_current_time (&now);
+ 
+#ifdef HAVE_LOCALTIME_R
+  localtime_r ((time_t *) &(time_->tv_sec), &tm_mtime);
+#else
+  {
+    struct tm *ptm = localtime ((time_t *) &(time_->tv_usec));
+ 
+    if (!ptm)
+      {
+        g_warning ("ptm != NULL failed");
+        return NULL;
+      }
+    else
+      memcpy ((void *) &tm_mtime, (void *) ptm, sizeof (struct tm));
+  }
+#endif /* HAVE_LOCALTIME_R */
+ 
+  secs_diff = now.tv_sec - time_->tv_sec;
+ 
+  /* within the hour */
+  if (secs_diff < 60)
+    retval = g_strdup (_("Less than a minute ago"));
+  else
+    {
+      gint mins_diff = secs_diff / 60;
+ 
+      if (mins_diff < 60)
+        retval = g_strdup_printf (ngettext ("About a minute ago",
+                                            "About %d minutes ago",
+                                            mins_diff),
+                                  mins_diff);
+      else if (mins_diff < 360)
+        {
+          gint hours_diff = mins_diff / 60;
+ 
+          retval = g_strdup_printf (ngettext ("About an hour ago",
+                                              "About %d hours ago",
+                                              hours_diff),
+                                    hours_diff);
+        }
+    }
+ 
+  if (retval)
+    return retval;
+  else
+    {
+      GDate d1, d2;
+      gint days_diff;
+ 
+      g_date_set_time_t (&d1, now.tv_sec);
+      g_date_set_time_t (&d2, time_->tv_sec);
+ 
+      days_diff = g_date_get_julian (&d1) - g_date_get_julian (&d2);
+ 
+      if (days_diff == 0)
+        format = _("Today at %H:%M");
+      else if (days_diff == 1)
+        format = _("Yesterday at %H:%M");
+      else
+        {
+          if (days_diff > 1 && days_diff < 7)
+            format = _("Last %A at %H:%M"); /* day of the week */
+          else
+            format = _("%x at %H:%M"); /* any other date */
+        }
+    }
+ 
+  locale_format = g_locale_from_utf8 (format, -1, NULL, NULL, NULL);
+ 
+  if (strftime (buf, sizeof (buf), locale_format, &tm_mtime) != 0)
+    retval = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL);
+  else
+    retval = g_strdup (_("Unknown"));
+ 
+  g_free (locale_format);
+ 
+  return retval;
+}
 
 static void
 on_button_clicked (NbtkButton *button,
@@ -40,7 +147,7 @@ on_button_clicked (NbtkButton *button,
   MnbStatusEntryPrivate *priv = entry->priv;
   ClutterActor *text;
 
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->text));
+  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
 
   if (!priv->is_active)
     {
@@ -52,13 +159,13 @@ on_button_clicked (NbtkButton *button,
       clutter_text_set_activatable (CLUTTER_TEXT (text), TRUE);
       clutter_text_set_text (CLUTTER_TEXT (text), priv->status_text);
 
-      clutter_actor_grab_key_focus (priv->text);
+      clutter_actor_hide (priv->service_label);
+
+      clutter_actor_grab_key_focus (priv->status_entry);
 
       nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
 
       priv->is_active = TRUE;
-
-      g_debug (G_STRLOC ": edit status");
     }
   else
     {
@@ -69,11 +176,14 @@ on_button_clicked (NbtkButton *button,
       clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
       clutter_text_set_activatable (CLUTTER_TEXT (text), FALSE);
 
+      clutter_actor_show (priv->service_label);
+
       nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
 
       priv->is_active = FALSE;
 
-      g_debug (G_STRLOC ": send status");
+      g_signal_emit (entry, entry_signals[STATUS_CHANGED], 0,
+                     clutter_text_get_text (CLUTTER_TEXT (text)));
     }
 }
 
@@ -86,7 +196,7 @@ mnb_status_entry_get_preferred_width (ClutterActor *actor,
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
   ClutterUnit min_width, natural_width;
 
-  clutter_actor_get_preferred_width (priv->text, for_height,
+  clutter_actor_get_preferred_width (priv->status_entry, for_height,
                                      &min_width,
                                      &natural_width);
 
@@ -108,7 +218,7 @@ mnb_status_entry_get_preferred_height (ClutterActor *actor,
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
   ClutterUnit min_height, natural_height;
 
-  clutter_actor_get_preferred_height (priv->text, for_width,
+  clutter_actor_get_preferred_height (priv->status_entry, for_width,
                                       &min_height,
                                       &natural_height);
 
@@ -132,6 +242,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   ClutterUnit min_width, min_height;
   ClutterUnit natural_width, natural_height;
   ClutterUnit button_width, button_height;
+  ClutterUnit service_width, service_height;
   ClutterUnit text_width, text_height;
   NbtkPadding border = { 0, };
   ClutterActorBox child_box = { 0, };
@@ -175,17 +286,26 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   /* layout
    *
    * +------------------------------------------------+
-   * | +-----------------------------------+--------+ |
-   * | |xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx... | xxxxxx | |
-   * | +-----------------------------------+--------+ |
+   * | +---------------------+-------------+--------+ |
+   * | |xxxxxxxxxxxxxxxxx... |xxxxxxxxxxxxx| xxxxxx | |
+   * | +---------------------+-------------+--------+ |
    * +------------------------------------------------+
    *
-   *    text                               | button
+   *    status               | service     | button
    */
 
-  /* text */
-  text_width = available_width - button_width;
-  clutter_actor_get_preferred_height (priv->text, text_width,
+  clutter_actor_get_preferred_width (priv->service_label,
+                                     available_height,
+                                     NULL,
+                                     &service_width);
+
+  /* status entry */
+  text_width = available_width
+             - button_width
+             - service_width
+             - (2 * H_PADDING);
+
+  clutter_actor_get_preferred_height (priv->status_entry, text_width,
                                       NULL,
                                       &text_height);
 
@@ -193,7 +313,18 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   child_box.y1 = (int) border.top + priv->padding.top;
   child_box.x2 = (int) child_box.x1 + text_width;
   child_box.y2 = (int) child_box.y1 + text_height;
-  clutter_actor_allocate (priv->text, &child_box, origin_changed);
+  clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
+
+  /* service label */
+  child_box.x1 = available_width
+               - (border.right + priv->padding.right)
+               - button_width
+               - H_PADDING
+               - service_width;
+  child_box.y1 = border.top + priv->padding.top;
+  child_box.x2 = child_box.x1 + service_width;
+  child_box.y2 = child_box.y1 + text_height;
+  clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
 
   /* button */
   child_box.x1 = available_width
@@ -201,7 +332,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                - button_width;
   child_box.y1 = border.top + priv->padding.top;
   child_box.x2 = child_box.x1 + button_width;
-  child_box.y2 = child_box.y1 + button_height;
+  child_box.y2 = child_box.y1 + text_height;
   clutter_actor_allocate (priv->button, &child_box, origin_changed);
 }
 
@@ -212,8 +343,11 @@ mnb_status_entry_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->paint (actor);
 
-  if (priv->text && CLUTTER_ACTOR_IS_VISIBLE (priv->text))
-    clutter_actor_paint (priv->text);
+  if (priv->status_entry && CLUTTER_ACTOR_IS_VISIBLE (priv->status_entry))
+    clutter_actor_paint (priv->status_entry);
+
+  if (priv->service_label && CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+    clutter_actor_paint (priv->service_label);
 
   if (priv->button && CLUTTER_ACTOR_IS_VISIBLE (priv->button))
     clutter_actor_paint (priv->button);
@@ -228,8 +362,11 @@ mnb_status_entry_pick (ClutterActor       *actor,
   CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->pick (actor,
                                                              pick_color);
 
-  if (priv->text && clutter_actor_should_pick_paint (priv->text))
-    clutter_actor_paint (priv->text);
+  if (priv->status_entry && clutter_actor_should_pick_paint (priv->status_entry))
+    clutter_actor_paint (priv->status_entry);
+
+  if (priv->service_label && clutter_actor_should_pick_paint (priv->service_label))
+    clutter_actor_paint (priv->service_label);
 
   if (priv->button && clutter_actor_should_pick_paint (priv->button))
     clutter_actor_paint (priv->button);
@@ -265,7 +402,8 @@ mnb_status_entry_finalize (GObject *gobject)
   g_free (priv->status_text);
   g_free (priv->status_time);
 
-  clutter_actor_destroy (priv->text);
+  clutter_actor_destroy (priv->service_label);
+  clutter_actor_destroy (priv->status_entry);
   clutter_actor_destroy (priv->button);
 
   G_OBJECT_CLASS (mnb_status_entry_parent_class)->finalize (gobject);
@@ -353,6 +491,16 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
                                NULL,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (gobject_class, PROP_SERVICE_NAME, pspec);
+
+  entry_signals[STATUS_CHANGED] =
+    g_signal_new ("status-changed",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbStatusEntryClass, status_changed),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
 }
 
 static void
@@ -363,14 +511,25 @@ mnb_status_entry_init (MnbStatusEntry *self)
 
   self->priv = priv = MNB_STATUS_ENTRY_GET_PRIVATE (self);
 
-  priv->text = CLUTTER_ACTOR (nbtk_entry_new ("Enter your status here..."));
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->text),
+  priv->status_entry =
+    CLUTTER_ACTOR (nbtk_entry_new ("Enter your status here..."));
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->status_entry),
                                     "MnbStatusEntryText");
-  clutter_actor_set_parent (priv->text, CLUTTER_ACTOR (self));
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->text));
+  clutter_actor_set_parent (priv->status_entry, CLUTTER_ACTOR (self));
+  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_use_markup (CLUTTER_TEXT (text), TRUE);
+
+  priv->service_label =
+    CLUTTER_ACTOR (nbtk_label_new (""));
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->service_label),
+                                    "MnbStatusEntrySubText");
+  clutter_actor_set_parent (priv->service_label, CLUTTER_ACTOR (self));
+  text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->service_label));
+  clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
+  clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
+  clutter_text_set_use_markup (CLUTTER_TEXT (text), FALSE);
 
   priv->button = CLUTTER_ACTOR (nbtk_button_new_with_label ("Edit"));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
@@ -424,6 +583,12 @@ mnb_status_entry_set_is_active (MnbStatusEntry *entry,
       entry->priv->is_active = is_active;
 
       if (entry->priv->is_active)
+        clutter_actor_hide (entry->priv->service_label);
+      else
+        clutter_actor_show (entry->priv->service_label);
+
+      /* styling */
+      if (entry->priv->is_active)
         nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
       else
         {
@@ -468,11 +633,11 @@ mnb_status_entry_set_in_hover (MnbStatusEntry *entry,
 void
 mnb_status_entry_set_status_text (MnbStatusEntry *entry,
                                   const gchar    *status_text,
-                                  const gchar    *status_time)
+                                  GTimeVal       *status_time)
 {
   MnbStatusEntryPrivate *priv;
   ClutterActor *text;
-  gchar *status_line;
+  gchar *service_line;
 
   g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
   g_return_if_fail (status_text != NULL);
@@ -483,16 +648,26 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
   g_free (priv->status_time);
 
   priv->status_text = g_strdup (status_text);
-  priv->status_time = g_strdup (status_time);
 
-  status_line = g_strdup_printf ("%s <small>%s - %s</small>",
-                                 status_text,
-                                 status_time != NULL ? status_time
-                                                     : "",
-                                 entry->priv->service_name);
+  if (status_time)
+    priv->status_time = format_time_for_display (status_time);
 
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->text));
-  clutter_text_set_markup (CLUTTER_TEXT (text), status_line);
+  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
+  clutter_text_set_markup (CLUTTER_TEXT (text), priv->status_text);
 
-  g_free (status_line);
+  service_line = g_strdup_printf ("%s - %s",
+                                  priv->status_time == NULL,
+                                  priv->service_name);
+
+  text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->service_label));
+  clutter_text_set_markup (CLUTTER_TEXT (text), service_line);
+  g_free (service_line);
+}
+
+G_CONST_RETURN gchar *
+mnb_status_entry_get_status_text (MnbStatusEntry *entry)
+{
+  g_return_val_if_fail (MNB_IS_STATUS_ENTRY (entry), NULL);
+
+  return entry->priv->status_text;
 }

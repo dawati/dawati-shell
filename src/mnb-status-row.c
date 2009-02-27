@@ -24,8 +24,7 @@ struct _MnbStatusRowPrivate
 
   gchar *no_icon_file;
 
-  gchar *status_text;
-  gchar *status_time;
+  gchar *last_status_text;
 
   NbtkPadding padding;
 
@@ -236,6 +235,50 @@ mnb_status_row_style_changed (NbtkWidget *widget)
 }
 
 static void
+on_mojito_update_status (MojitoClientService *service,
+                         gboolean             success,
+                         const GError        *error,
+                         gpointer             user_data)
+{
+  MnbStatusRow *row = user_data;
+  MnbStatusRowPrivate *priv = row->priv;
+
+  if (!success)
+    {
+      g_warning ("Unable to update the status: %s", error->message);
+
+      mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
+                                        priv->last_status_text,
+                                        NULL);
+    }
+  else
+    g_debug (G_STRLOC ": status updated!");
+}
+
+static void
+on_status_entry_changed (MnbStatusEntry *entry,
+                         const gchar    *new_status_text,
+                         MnbStatusRow   *row)
+{
+  MnbStatusRowPrivate *priv = row->priv;
+
+  /* save the last status */
+  g_free (priv->last_status_text);
+  priv->last_status_text =
+    g_strdup (mnb_status_entry_get_status_text (MNB_STATUS_ENTRY (priv->entry)));
+
+  g_debug ("%s: updating status ('%s' -> '%s')",
+           G_STRLOC,
+           priv->last_status_text,
+           new_status_text);
+
+  mojito_client_service_update_status (priv->service,
+                                       on_mojito_update_status,
+                                       new_status_text,
+                                       row);
+}
+
+static void
 on_mojito_get_last_item (MojitoClientService *service,
                          MojitoItem          *item,
                          const GError        *error,
@@ -262,7 +305,7 @@ on_mojito_get_last_item (MojitoClientService *service,
       if (status_text != NULL && *status_text != '\0')
         mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
                                           status_text,
-                                          NULL);
+                                          &item->date);
     }
 }
 
@@ -321,8 +364,7 @@ mnb_status_row_finalize (GObject *gobject)
 
   g_free (priv->no_icon_file);
 
-  g_free (priv->status_text);
-  g_free (priv->status_time);
+  g_free (priv->last_status_text);
 
   clutter_actor_destroy (priv->icon);
   clutter_actor_destroy (priv->entry);
@@ -386,6 +428,9 @@ mnb_status_row_constructed (GObject *gobject)
   priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->service_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
+  g_signal_connect (priv->entry, "status-changed",
+                    G_CALLBACK (on_status_entry_changed),
+                    row);
 
   mojito_client_service_get_last_item (priv->service,
                                        on_mojito_get_last_item,
