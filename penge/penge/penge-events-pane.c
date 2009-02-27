@@ -489,8 +489,6 @@ penge_events_pane_init (PengeEventsPane *self)
   jana_store_open (priv->store);
 
   nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
-
-  penge_events_pane_update (self);
 }
 
 static void
