@@ -191,7 +191,7 @@ penge_events_pane_update (PengeEventsPane *pane)
     }
   }
 
-  now = jana_ecal_utils_time_now_local ();
+  now = jana_utils_time_copy (priv->time, jana_ecal_time_new ());
   jana_time_set_minutes (now, 0);
   jana_time_set_seconds (now, 0);
 
