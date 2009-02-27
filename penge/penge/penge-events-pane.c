@@ -313,6 +313,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   }
 
   g_list_free (events);
+  g_object_unref (now);
 }
 
 static void
