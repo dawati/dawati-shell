@@ -4,6 +4,7 @@
 
 #include "penge-flickr-tile.h"
 #include "penge-twitter-tile.h"
+#include "penge-lastfm-tile.h"
 
 #include "penge-people-pane.h"
 
@@ -71,6 +72,11 @@ penge_people_pane_fabricate_actor (PengePeoplePane *pane,
 
   } else if (g_str_equal (item->service, "twitter")) {
     actor = g_object_new (PENGE_TYPE_TWITTER_TILE,
+                          "item",
+                          item,
+                          NULL);
+  } else if (g_str_equal (item->service, "lastfm")) {
+    actor = g_object_new (PENGE_TYPE_LASTFM_TILE,
                           "item",
                           item,
                           NULL);
@@ -213,7 +219,8 @@ _client_get_services_cb (MojitoClient *client,
   for (l = services; l; l = l->next)
   {
     if (g_str_equal (l->data, "twitter") ||
-        g_str_equal (l->data, "flickr"))
+        g_str_equal (l->data, "flickr") ||
+        g_str_equal (l->data, "lastfm"))
     {
       filtered_services = g_list_append (filtered_services, l->data);
     }
