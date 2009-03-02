@@ -334,7 +334,7 @@ MnbLauncherButton > *#launcher-comment {
 
 /* Penge */
 
-PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile
+PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile
 {
   background-image: url('file://mzone/general-background.png');
   border-width: 16;
