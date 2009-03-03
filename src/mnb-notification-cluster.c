@@ -138,10 +138,13 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
 
   if (priv->notifiers)
     {
-      *min_height 
-           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->notifiers));
-      *natural_height 
-           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->notifiers));
+      ClutterUnit m_height, p_height;
+
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
+                                          CLUSTER_WIDTH, &m_height, &p_height);
+
+      *min_height += m_height;
+      *natural_height += p_height;
     }
 
   if (priv->control && CLUTTER_ACTOR_IS_VISIBLE (priv->control))
@@ -187,12 +190,14 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
 
   if (priv->notifiers)
     {
-      ClutterActorBox notifier_box = { 
-        0,
-        0,
-        clutter_actor_get_width (CLUTTER_ACTOR(priv->notifiers)), 
-        clutter_actor_get_height (CLUTTER_ACTOR(priv->notifiers))
-      };
+      ClutterUnit m_height, p_height;
+      ClutterActorBox notifier_box = { 0, };
+
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
+                                          CLUSTER_WIDTH, &m_height, &p_height);
+
+      notifier_box.x2 = CLUTTER_UNITS_FROM_DEVICE (CLUSTER_WIDTH);
+      notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers), 
                               &notifier_box, origin_changed);
