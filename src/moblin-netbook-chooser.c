@@ -48,6 +48,8 @@
 
 #define MNBTK_SPINNER_ITERVAL 2000
 
+#define MNBTK_SN_MAP_TIMEOUT 800
+
 /******************************************************************
  * Workspace chooser
  */
@@ -158,6 +160,11 @@ struct map_timeout_data
  * This timeout is installed when the application is configured; it handles the
  * awkward case where the start up sequence completes, but the application
  * reuses pre-existing window -- we try to activate that window.
+ *
+ * The timeout can also trigger for regular applications that are slow to map
+ * their window; this should be OK, because when this happens we remove the app
+ * from the hash here, so when the window finally maps normal processing should
+ * ensue.
  */
 static gboolean
 sn_map_timeout_cb (gpointer data)
@@ -309,7 +316,7 @@ configure_app (const char *sn_id, gint workspace, MutterPlugin *plugin)
           map_data->sn_id = g_strdup (sn_id);
 
           sn_data->timeout_id =
-            g_timeout_add (500, sn_map_timeout_cb, map_data);
+            g_timeout_add (MNBTK_SN_MAP_TIMEOUT, sn_map_timeout_cb, map_data);
         }
     }
 }
