@@ -1,23 +1,20 @@
 /* generic classes */
 NbtkButton {
-  background-image: url("file://generic/button.png");
-  border-width: 4;
+  border-image: url("file://generic/button.png") 4 stretch;
   padding: 4;
   font-size: 12px;
   color: #333;
 }
 
 NbtkButton:hover {
-  background-image: url("file://generic/button_hover.png");
-  border-width: 4;
+  border-image: url("file://generic/button_hover.png") 4 stretch;
   padding: 4;
   font-size: 12px;
   color: #fff;
 }
 
 NbtkButton:active {
-  background-image: url("file://generic/button_active.png");
-  border-width: 4;
+  border-image: url("file://generic/button_active.png") 4 stretch;
   padding: 4;
   font-size: 12px;
   color: #333;
@@ -285,10 +282,10 @@ NbtkTooltip {
 
 /* drop down */
 *.drop-down-up-button {
-  background-image: url("file://drop-down/up-button.png");
+  border-image: url("file://drop-down/up-button.png") 2 stretch;
 }
 *.drop-down-up-button:active {
-  background-image: url("file://drop-down/up-button-active.png");
+  border-image: url("file://drop-down/up-button-active.png") 2 stretch;
 }
 
 *.drop-down-footer {
@@ -488,6 +485,7 @@ MnbStatusEntry:active
 
 *.MnbStatusEntryButton
 {
+  border-image: none;
   color: #7dbe0cff;
   font-family: "Liberation Sans Bold";
   font-size: 13px;
