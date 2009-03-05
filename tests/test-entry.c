@@ -4,14 +4,13 @@
 
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
-#include "mnb-status-entry.h"
+#include "mnb-entry.h"
 
 static void
-status_changed_cb (MnbStatusEntry *entry,
-                   const gchar    *status,
-                   gpointer        user_data)
+button_clicked_cb (MnbEntry *entry,
+                   gpointer  user_data)
 {
-  printf ("%s() %s\n", __FUNCTION__, status);
+  printf ("%s() %s\n", __FUNCTION__, mnb_entry_get_text (entry));
 }
 
 int
@@ -28,11 +27,17 @@ main (int argc, char *argv[])
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 400, 200);
 
-  entry = mnb_status_entry_new ("foo");
-  mnb_status_entry_show_button (MNB_STATUS_ENTRY (entry), TRUE);
+  entry = mnb_entry_new ("Foo");
+/*
+  entry = (NbtkWidget *) g_object_new (MNB_TYPE_ENTRY, 
+                                       "text", "foo",
+                                       "label", "bar",
+                                       NULL);
+*/
+  clutter_actor_set_widthu (CLUTTER_ACTOR (entry), CLUTTER_UNITS_FROM_DEVICE (200));
   clutter_actor_set_position (CLUTTER_ACTOR (entry), 50, 50);
   clutter_container_add (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (entry), NULL);
-  g_signal_connect (entry, "status-changed", G_CALLBACK (status_changed_cb), NULL);
+  g_signal_connect (entry, "button-clicked", G_CALLBACK (button_clicked_cb), NULL);
 
   clutter_actor_show (stage);
 
