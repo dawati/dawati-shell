@@ -362,13 +362,11 @@ try_alt_tab_grab (MutterPlugin *plugin,
                                         ws,
                                         current,
                                         backward);
-
-      if (!next || (advance && (next == current)))
-        {
-          return;
-        }
-
     }
+
+  if (!next || (advance && (next == current)))
+    return;
+
 
   /*
    * For some reaon, XGrabKeyboard() does not like real timestamps, or
