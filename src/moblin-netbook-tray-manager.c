@@ -53,6 +53,7 @@ typedef struct {
   ClutterActor *actor;
   MnbInputRegion mir;
   guint timeout_count;
+  guint timeout_id;
 } ShellTrayManagerChild;
 
 enum {
@@ -90,6 +91,9 @@ free_tray_icon (gpointer data)
   MutterPlugin          *plugin  = manager->priv->plugin;
 
   destroy_config_window (child);
+
+  if (child->timeout_id > 0)
+    g_source_remove (child->timeout_id);
 
   gtk_widget_hide (child->window);
   gtk_widget_destroy (child->window);
@@ -568,7 +572,10 @@ tray_icon_tagged_timeout_cb (gpointer data)
   ShellTrayManagerChild *child = data;
 
   if (child->config)
+  {
+    child->timeout_id = 0;
     return FALSE;
+  }
 
   if (!setup_child_config (child))
     {
@@ -605,6 +612,7 @@ tray_icon_tagged_timeout_cb (gpointer data)
                         G_CALLBACK (actor_clicked), child);
     }
 
+  child->timeout_id = 0;
   return FALSE;
 }
 
@@ -686,7 +694,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   g_hash_table_insert (manager->priv->icons, socket, child);
 
-  g_timeout_add (100, tray_icon_tagged_timeout_cb, child);
+  child->timeout_id = g_timeout_add (100, tray_icon_tagged_timeout_cb, child);
 }
 
 static void
