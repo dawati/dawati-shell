@@ -24,6 +24,10 @@
 
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <string.h>
 #include <sys/stat.h>
 
@@ -38,8 +42,8 @@
 #include "moblin-netbook-launcher.h"
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
+#include "mnb-entry.h"
 #include "mnb-launcher-button.h"
-#include "mnb-launcher-searchbar.h"
 
 #define VBOX_ROW_SPACING 5
 #define ICON_SIZE 48
@@ -423,15 +427,15 @@ typedef struct
 } search_data_t;
 
 static void
-search_activated_cb (MnbLauncherSearchbar *searchbar,
-                     search_data_t        *data)
+search_activated_cb (MnbEntry       *entry,
+                     search_data_t  *data)
 {
   ClutterActor  *launcher_table;
   GList         *children, *child;
   gchar         *filter, *key;
 
   filter = NULL;
-  g_object_get (searchbar, "text", &filter, NULL);
+  g_object_get (entry, "text", &filter, NULL);
   key = g_utf8_strdown (filter, -1);
   g_free (filter), filter = NULL;
 
@@ -460,7 +464,7 @@ make_launcher (MutterPlugin *plugin,
                gint          height)
 {
   ClutterActor  *viewport, *scroll;
-  NbtkWidget    *vbox, *searchbar, *drop_down;
+  NbtkWidget    *vbox, *entry, *drop_down;
   search_data_t *search_data;
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
                             0, 0, 0};
@@ -473,8 +477,11 @@ make_launcher (MutterPlugin *plugin,
   nbtk_widget_set_padding (NBTK_WIDGET (vbox), &padding);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
 
-  searchbar = mnb_launcher_searchbar_new ();
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), searchbar,
+  /* TODO Robsta: "Applications" label. */
+  entry = mnb_entry_new (_("Search"));
+  clutter_actor_set_width (CLUTTER_ACTOR (entry),
+                           CLUTTER_UNITS_FROM_DEVICE (640));
+  nbtk_table_add_widget_full (NBTK_TABLE (vbox), entry,
                               0, 0, 1, 1,
                               NBTK_Y_EXPAND | NBTK_Y_FILL,
                               0, 0.5);
@@ -484,21 +491,21 @@ make_launcher (MutterPlugin *plugin,
   search_data = g_new0 (search_data_t, 1);
   search_data->plugin = plugin;
   search_data->viewport = NBTK_VIEWPORT (viewport);
-  search_activated_cb (MNB_LAUNCHER_SEARCHBAR (searchbar), search_data);
+  search_activated_cb (MNB_ENTRY (entry), search_data);
 
   scroll = nbtk_scroll_view_new ();
   clutter_container_add (CLUTTER_CONTAINER (scroll),
                          CLUTTER_ACTOR (viewport), NULL);
   clutter_actor_set_size (scroll,
                           width,
-                          height - clutter_actor_get_height (CLUTTER_ACTOR (searchbar)) - VBOX_ROW_SPACING);
+                          height - clutter_actor_get_height (CLUTTER_ACTOR (entry)) - VBOX_ROW_SPACING);
   nbtk_table_add_widget_full (NBTK_TABLE (vbox), NBTK_WIDGET (scroll),
                               1, 0, 1, 1,
                               NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
                               0., 0.);
 
   /* Hook up search. */
-  g_signal_connect_data (searchbar, "activated",
+  g_signal_connect_data (entry, "button-clicked",
                          G_CALLBACK (search_activated_cb), search_data,
                          (GClosureNotify) g_free, 0);
 

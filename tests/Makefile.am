@@ -16,16 +16,11 @@ LDADD = $(PENGE_LIBS)
 noinst_PROGRAMS = \
 	test-entry \
 	test-launcher-button \
-	test-launcher-searchbar \
 	test-tray
 
 test_launcher_button_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-button.c \
 	test-launcher-button.c
-
-test_launcher_searchbar_SOURCES = \
-	$(top_srcdir)/src/mnb-launcher-searchbar.c \
-	test-launcher-searchbar.c
 
 test_entry_LDADD = \
 	$(PENGE_LIBS) \
