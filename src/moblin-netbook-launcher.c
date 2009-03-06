@@ -45,7 +45,7 @@
 #include "mnb-entry.h"
 #include "mnb-launcher-button.h"
 
-#define VBOX_ROW_SPACING 5
+#define WIDGET_SPACING 5
 #define ICON_SIZE 48
 #define PADDING 8
 #define BORDER_WIDTH 4
@@ -464,7 +464,7 @@ make_launcher (MutterPlugin *plugin,
                gint          height)
 {
   ClutterActor  *viewport, *scroll;
-  NbtkWidget    *vbox, *entry, *drop_down;
+  NbtkWidget    *vbox, *hbox, *label, *entry, *drop_down;
   search_data_t *search_data;
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
                             0, 0, 0};
@@ -473,18 +473,28 @@ make_launcher (MutterPlugin *plugin,
 
   vbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "app-launcher-vbox");
-  nbtk_table_set_row_spacing (NBTK_TABLE (vbox), VBOX_ROW_SPACING);
+  nbtk_table_set_row_spacing (NBTK_TABLE (vbox), WIDGET_SPACING);
   nbtk_widget_set_padding (NBTK_WIDGET (vbox), &padding);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
 
-  /* TODO Robsta: "Applications" label. */
+  /* 1st row: Filter. */
+  hbox = nbtk_table_new ();
+  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), WIDGET_SPACING);
+  nbtk_table_add_widget (NBTK_TABLE (vbox), hbox, 0, 0);
+
+  label = nbtk_label_new (_("Applications"));
+  nbtk_table_add_widget_full (NBTK_TABLE (hbox), label, 
+                              0, 0, 1, 1,
+                              0,
+                              0., 0.);
+
   entry = mnb_entry_new (_("Search"));
   clutter_actor_set_width (CLUTTER_ACTOR (entry),
-                           CLUTTER_UNITS_FROM_DEVICE (640));
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), entry,
-                              0, 0, 1, 1,
-                              NBTK_Y_EXPAND | NBTK_Y_FILL,
-                              0, 0.5);
+                           CLUTTER_UNITS_FROM_DEVICE (600));
+  nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry, 
+                              0, 1, 1, 1,
+                              0,
+                              0., 0.);
 
   viewport = nbtk_viewport_new ();
   /* Add launcher table. */
@@ -498,7 +508,7 @@ make_launcher (MutterPlugin *plugin,
                          CLUTTER_ACTOR (viewport), NULL);
   clutter_actor_set_size (scroll,
                           width,
-                          height - clutter_actor_get_height (CLUTTER_ACTOR (entry)) - VBOX_ROW_SPACING);
+                          height - clutter_actor_get_height (CLUTTER_ACTOR (entry)) - WIDGET_SPACING);
   nbtk_table_add_widget_full (NBTK_TABLE (vbox), NBTK_WIDGET (scroll),
                               1, 0, 1, 1,
                               NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
