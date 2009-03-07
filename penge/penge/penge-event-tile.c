@@ -12,7 +12,7 @@ typedef struct _PengeEventTilePrivate PengeEventTilePrivate;
 
 struct _PengeEventTilePrivate {
   JanaEvent *event;
-  JanaTime *today;
+  JanaTime *time;
 
   NbtkWidget *time_label;
   NbtkWidget *summary_label;
@@ -23,7 +23,7 @@ enum
 {
   PROP_0,
   PROP_EVENT,
-  PROP_TODAY
+  PROP_TIME
 };
 
 static void penge_event_tile_update (PengeEventTile *tile);
@@ -38,8 +38,8 @@ penge_event_tile_get_property (GObject *object, guint property_id,
     case PROP_EVENT:
       g_value_set_object (value, priv->event);
       break;
-    case PROP_TODAY:
-      g_value_set_object (value, priv->today);
+    case PROP_TIME:
+      g_value_set_object (value, priv->time);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -61,11 +61,11 @@ penge_event_tile_set_property (GObject *object, guint property_id,
 
       penge_event_tile_update ((PengeEventTile *)object);
       break;
-    case PROP_TODAY:
-      if (priv->today)
-        g_object_unref (priv->today);
+    case PROP_TIME:
+      if (priv->time)
+        g_object_unref (priv->time);
 
-      priv->today = g_value_dup_object (value);
+      priv->time = g_value_dup_object (value);
 
       penge_event_tile_update ((PengeEventTile *)object);
       break;
@@ -85,10 +85,10 @@ penge_event_tile_dispose (GObject *object)
     priv->event = NULL;
   }
 
-  if (priv->today)
+  if (priv->time)
   {
-    g_object_unref (priv->today);
-    priv->today = NULL;
+    g_object_unref (priv->time);
+    priv->time = NULL;
   }
 
   G_OBJECT_CLASS (penge_event_tile_parent_class)->dispose (object);
@@ -120,12 +120,12 @@ penge_event_tile_class_init (PengeEventTileClass *klass)
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_EVENT, pspec);
 
-  pspec = g_param_spec_object ("today",
-                               "The day today",
-                               "The day today",
+  pspec = g_param_spec_object ("time",
+                               "The time now",
+                               "The time now",
                                JANA_TYPE_TIME,
                                G_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_TODAY, pspec);
+  g_object_class_install_property (object_class, PROP_TIME, pspec);
 }
 
 static gboolean
@@ -162,10 +162,10 @@ _leave_event_cb (ClutterActor *actor,
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
                                       NULL);
 
-  if (priv->today)
+  if (priv->time)
   {
     t = jana_event_get_start (priv->event);
-    if (jana_time_get_day (priv->today) != jana_time_get_day (t))
+    if (jana_time_get_day (priv->time) != jana_time_get_day (t))
     {
       time_str = jana_utils_strftime (t, "%a");
       nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
@@ -280,10 +280,10 @@ penge_event_tile_update (PengeEventTile *tile)
   if (!priv->event)
     return;
 
-  if (priv->today)
+  if (priv->time)
   {
     t = jana_event_get_start (priv->event);
-    if (jana_time_get_day (priv->today) == jana_time_get_day (t))
+    if (jana_time_get_day (priv->time) == jana_time_get_day (t))
     {
       time_str = jana_utils_strftime (t, "%H:%M");
     } else {

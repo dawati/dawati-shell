@@ -279,12 +279,12 @@ penge_events_pane_update (PengeEventsPane *pane)
                                    "column",
                                    0,
                                    NULL);
-      g_object_set (actor, "today", priv->time, NULL);
+      g_object_set (actor, "time", priv->time, NULL);
     } else {
       actor = g_object_new (PENGE_TYPE_EVENT_TILE,
                             "event",
                             event,
-                            "today",
+                            "time",
                             priv->time,
                             NULL);
 
