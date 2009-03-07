@@ -157,7 +157,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   ClutterActor *actor;
   gchar *uid;
   GList *old_actors;
-  JanaTime *now;
+  JanaTime *on_the_hour;
   GList *window_start = NULL, *window_end = NULL;
   JanaTime *t;
 
@@ -191,9 +191,10 @@ penge_events_pane_update (PengeEventsPane *pane)
     }
   }
 
-  now = jana_utils_time_copy (priv->time, jana_ecal_time_new ());
-  jana_time_set_minutes (now, 0);
-  jana_time_set_seconds (now, 0);
+  /* TODO: Copy priv->time and reuse that. */
+  on_the_hour = jana_ecal_utils_time_now_local ();
+  jana_time_set_minutes (on_the_hour, 0);
+  jana_time_set_seconds (on_the_hour, 0);
 
   /* Find the first approx. of the window. We try and find the first event after
    * the current time or if we are on the same hour the current events */
@@ -205,7 +206,7 @@ penge_events_pane_update (PengeEventsPane *pane)
     event = (JanaEvent *)l->data;
     t = jana_event_get_start (event);
 
-    if (jana_utils_time_compare (t, now, FALSE) < 0)
+    if (jana_utils_time_compare (t, on_the_hour, FALSE) < 0)
     {
       if (l->next)
       {
@@ -215,7 +216,7 @@ penge_events_pane_update (PengeEventsPane *pane)
       {
         window_start = l;
       }
-    } else if (jana_utils_time_compare (t, now, FALSE) == 0) {
+    } else if (jana_utils_time_compare (t, on_the_hour, FALSE) == 0) {
       window_start = l;
       break;
     } else {
@@ -316,7 +317,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   }
 
   g_list_free (events);
-  g_object_unref (now);
+  g_object_unref (on_the_hour);
 }
 
 static void
