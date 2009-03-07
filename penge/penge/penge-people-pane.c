@@ -216,7 +216,7 @@ _client_get_services_cb (MojitoClient *client,
   GList *filtered_services = NULL;
   GList *l;
 
-  for (l = services; l; l = l->next)
+  for (l = (GList *)services; l; l = l->next)
   {
     if (g_str_equal (l->data, "twitter") ||
         g_str_equal (l->data, "flickr") ||
