@@ -274,7 +274,6 @@ penge_event_tile_update (PengeEventTile *tile)
   PengeEventTilePrivate *priv = GET_PRIVATE (tile);
   gchar *time_str;
   gchar *summary_str;
-  gchar *location_str;
   gchar *details_str;
   JanaTime *t;
 
@@ -309,20 +308,38 @@ penge_event_tile_update (PengeEventTile *tile)
     g_free (summary_str);
   }
 
-  location_str = jana_event_get_location (priv->event);
-  if (!location_str)
+  details_str = jana_event_get_location (priv->event);
+
+  if (!details_str)
   {
     details_str = jana_event_get_description (priv->event);
-    if (details_str)
-    {
-      nbtk_label_set_text (NBTK_LABEL (priv->details_label), details_str);
-      g_free (details_str);
-    } else {
-      nbtk_label_set_text (NBTK_LABEL (priv->details_label), "");
-    }
+  }
+
+  if (!details_str)
+  {
+    nbtk_label_set_text (NBTK_LABEL (priv->details_label), "");
+
+    /* 
+     * If we fail to get some kind of description make the summary text
+     * cover both rows in the tile
+     */
+    clutter_actor_hide (CLUTTER_ACTOR (priv->details_label));
+    clutter_container_child_set (CLUTTER_CONTAINER (tile),
+                                 (ClutterActor *)priv->summary_label,
+                                 "row-span",
+                                 2,
+                                 NULL);
   } else {
-    nbtk_label_set_text (NBTK_LABEL (priv->details_label), location_str);
-    g_free (location_str);
+    nbtk_label_set_text (NBTK_LABEL (priv->details_label), details_str);
+    g_free (details_str);
+
+    clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
+    clutter_container_child_set (CLUTTER_CONTAINER (tile),
+                                 (ClutterActor *)priv->summary_label,
+                                 "row-span",
+                                 1,
+                                 NULL);
+
   }
 }
 
