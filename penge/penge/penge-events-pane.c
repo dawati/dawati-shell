@@ -161,12 +161,13 @@ penge_events_pane_update (PengeEventsPane *pane)
   GList *window_start = NULL, *window_end = NULL;
   JanaTime *t;
 
+  g_return_if_fail (priv->time);
+
   /* So we can remove the "old" actors */
   old_actors = g_hash_table_get_values (priv->uid_to_actors);
 
   events = g_hash_table_get_values (priv->uid_to_events);
   events = g_list_sort (events, _event_compare_func);
-
 
   if (!events)
   {
