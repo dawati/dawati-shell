@@ -290,6 +290,12 @@ penge_event_tile_update (PengeEventTile *tile)
       time_str = jana_utils_strftime (t, "%a");
     }
 
+    if (jana_utils_time_compare (t, priv->time,FALSE) < 0)
+    {
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_label),
+                                          "past");
+    }
+
     nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
     g_object_unref (t);
     g_free (time_str);

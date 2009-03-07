@@ -90,6 +90,7 @@ dist_theme_mzone_DATA = \
 	theme/mzone/people-background.png \
 	theme/mzone/recent-files-background.png \
 	theme/mzone/time-bg.png \
+	theme/mzone/time-bg-past.png \
 	theme/mzone/event-background-dark.png \
 	theme/mzone/linus.png \
 	theme/mzone/default-album-artwork.png

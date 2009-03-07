@@ -362,6 +362,13 @@ PengeEventTile:hover
   font-size:12;
 }
 
+*.PengeEventTime:past
+{
+  background-image: url('file://mzone/time-bg-past.png');
+  color: white;
+  font-size:12;
+}
+
 *.PengeDayLabel
 {
   font-size: 18;
