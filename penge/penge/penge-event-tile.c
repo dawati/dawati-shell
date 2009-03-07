@@ -16,7 +16,7 @@ struct _PengeEventTilePrivate {
 
   NbtkWidget *time_label;
   NbtkWidget *summary_label;
-  NbtkWidget *location_label;
+  NbtkWidget *details_label;
 };
 
 enum
@@ -202,11 +202,11 @@ penge_event_tile_init (PengeEventTile *self)
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text), PANGO_ALIGN_LEFT);
 
-  priv->location_label = nbtk_label_new ("Location text");
-  nbtk_widget_set_alignment (priv->location_label, 0, 0.5);
-  nbtk_widget_set_style_class_name (priv->location_label,
-                                    "PengeEventLocation");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->location_label));
+  priv->details_label = nbtk_label_new ("Details text");
+  nbtk_widget_set_alignment (priv->details_label, 0, 0.5);
+  nbtk_widget_set_style_class_name (priv->details_label,
+                                    "PengeEventDetails");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text), PANGO_ALIGN_LEFT);
 
@@ -226,7 +226,7 @@ penge_event_tile_init (PengeEventTile *self)
                         0,
                         1);
   nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)priv->location_label,
+                        (ClutterActor *)priv->details_label,
                         1,
                         1);
 
@@ -238,7 +238,7 @@ penge_event_tile_init (PengeEventTile *self)
                                NULL);
 
   /* 
-   * Make the summary and location labels consume the remaining horizontal
+   * Make the summary and detail labels consume the remaining horizontal
    * space
    */
   clutter_container_child_set (CLUTTER_CONTAINER (self),
@@ -247,7 +247,7 @@ penge_event_tile_init (PengeEventTile *self)
                                TRUE,
                                NULL);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               (ClutterActor *)priv->location_label,
+                               (ClutterActor *)priv->details_label,
                                "x-expand",
                                TRUE,
                                NULL);
@@ -275,6 +275,7 @@ penge_event_tile_update (PengeEventTile *tile)
   gchar *time_str;
   gchar *summary_str;
   gchar *location_str;
+  gchar *details_str;
   JanaTime *t;
 
   if (!priv->event)
@@ -302,12 +303,27 @@ penge_event_tile_update (PengeEventTile *tile)
   }
 
   summary_str = jana_event_get_summary (priv->event);
-  nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
-  g_free (summary_str);
+  if (summary_str)
+  {
+    nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
+    g_free (summary_str);
+  }
 
   location_str = jana_event_get_location (priv->event);
-  nbtk_label_set_text (NBTK_LABEL (priv->location_label), location_str);
-  g_free (location_str);
+  if (!location_str)
+  {
+    details_str = jana_event_get_description (priv->event);
+    if (details_str)
+    {
+      nbtk_label_set_text (NBTK_LABEL (priv->details_label), details_str);
+      g_free (details_str);
+    } else {
+      nbtk_label_set_text (NBTK_LABEL (priv->details_label), "");
+    }
+  } else {
+    nbtk_label_set_text (NBTK_LABEL (priv->details_label), location_str);
+    g_free (location_str);
+  }
 }
 
 gchar *
