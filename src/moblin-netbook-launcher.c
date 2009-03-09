@@ -493,7 +493,7 @@ make_launcher (MutterPlugin *plugin,
   nbtk_table_add_widget_full (NBTK_TABLE (hbox), label, 
                               0, 0, 1, 1,
                               0,
-                              0., 0.);
+                              0., 0.5);
 
   entry = mnb_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (entry), "app-launcher-search-entry");
@@ -502,7 +502,7 @@ make_launcher (MutterPlugin *plugin,
   nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry, 
                               0, 1, 1, 1,
                               0,
-                              0., 0.);
+                              0., 0.5);
 
   viewport = nbtk_viewport_new ();
   /* Add launcher table. */
