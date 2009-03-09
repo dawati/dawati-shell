@@ -1191,7 +1191,9 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
               map_data->plugin = plugin;
               map_data->sn_id = g_strdup (seq_id);
 
-              g_timeout_add (500, sn_map_timeout_cb, map_data);
+              sn_data->timeout_id =
+                g_timeout_add (MNBTK_SN_MAP_TIMEOUT, sn_map_timeout_cb,
+                               map_data);
             }
 
           if (sn_data->without_chooser)
