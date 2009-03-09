@@ -993,7 +993,7 @@ mnb_switcher_show (ClutterActor *self)
         {
           win_locs[ws_indx].col++;
           win_locs[ws_indx].row = 0;
-          win_locs[ws_indx].height = 0;
+          win_locs[ws_indx].height = clone_h + 10;
         }
 
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
