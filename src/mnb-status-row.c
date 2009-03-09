@@ -463,6 +463,10 @@ mnb_status_row_constructed (GObject *gobject)
   priv->service = mojito_client_get_service (priv->client, priv->service_name);
   g_assert (priv->service  != NULL);
 
+  g_debug ("%s: Creating entry for service '%s'",
+           G_STRLOC,
+           priv->service_name);
+
   priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->service_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
@@ -471,10 +475,7 @@ mnb_status_row_constructed (GObject *gobject)
                     row);
 
   mnb_status_row_update (row);
-
-  priv->update_id = g_timeout_add_seconds (60 * 5,
-                                           do_update_timeout,
-                                           row);
+  priv->update_id = g_timeout_add_seconds (60 * 5, do_update_timeout, row);
 
   if (G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed (gobject);
