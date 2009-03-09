@@ -61,6 +61,8 @@ typedef struct {
   NbtkTableClass parent_class;
 
   void (*closed) (MnbNotification *notification);
+  void (*action) (MnbNotification *notification, gchar *desc);
+
 } MnbNotificationClass;
 
 GType mnb_notification_get_type (void);

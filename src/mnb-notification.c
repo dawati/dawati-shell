@@ -35,6 +35,7 @@ G_DEFINE_TYPE (MnbNotification, mnb_notification, NBTK_TYPE_TABLE)
 
 enum {
   CLOSED,
+  ACTION,
   N_SIGNALS,
 };
 
@@ -137,6 +138,16 @@ mnb_notification_class_init (MnbNotificationClass *klass)
                     NULL, NULL,
                     g_cclosure_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
+
+  signals[ACTION] 
+    = g_signal_new ("action",
+                    G_OBJECT_CLASS_TYPE (klass),
+                    G_SIGNAL_RUN_FIRST,
+                    G_STRUCT_OFFSET (MnbNotificationClass, action),
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__CHAR,
+                    G_TYPE_NONE, 0);
+
 }
 
 static void
@@ -144,6 +155,13 @@ on_dismiss_click (ClutterActor *button, MnbNotification *self)
 {
   g_signal_emit (self, signals[CLOSED], 0);
 }
+
+static void
+on_action_click (ClutterActor *button, ActionData *data)
+{
+  g_signal_emit (self, signals[ACTION], 0);
+}
+
 
 static void
 mnb_notification_init (MnbNotification *self)
@@ -203,9 +221,29 @@ mnb_notification_init (MnbNotification *self)
                                "y-expand", FALSE,
                                "x-expand", FALSE,
                                NULL);
+#if 0
+  /* Action Buttons */
+  {
+    GHashTableIter iter;
+    gpointer key, value;
+
+    g_hash_table_iter_init (&iter, hash_table);
+    while (g_hash_table_iter_next (&iter, &key, &value)) 
+      {
+        if (strcasecmp(key, "default"))
+          {
+            nbtk_table_add_widget (NBTK_TABLE (self), 
+                                   priv->action_button, 2, 0);
+
+            g_signal_connect (priv->dismiss_button, "clicked",
+                              G_CALLBACK (on_dismiss_click), self);
+          }
+      }
+  }
+#endif
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->action_button, 2, 0);
-  clutter_actor_hide (CLUTTER_ACTOR(priv->action_button));
+  // clutter_actor_hide (CLUTTER_ACTOR(priv->action_button));
 
   nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
   nbtk_table_add_widget (NBTK_TABLE (self), priv->dismiss_button, 2, 1);

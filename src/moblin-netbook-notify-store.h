@@ -32,7 +32,10 @@ typedef struct {
   char *summary;
   char *body;
   char *icon_name;
+  char *sender;
   guint timeout_id;
+  GHashTable *actions;
+
 } Notification;
 
 typedef enum {

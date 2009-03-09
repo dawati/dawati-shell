@@ -13,6 +13,7 @@
 #include "moblin-netbook-notify-store.h"
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <dbus/dbus.h>
 #include "marshal.h"
 
 G_DEFINE_TYPE (MoblinNetbookNotifyStore, moblin_netbook_notify_store, G_TYPE_OBJECT);
@@ -27,6 +28,8 @@ enum {
 };
 
 static guint signals[N_SIGNALS];
+
+static DBusConnection *_dbus_conn = NULL;
 
 #define DEFAULT_TIMEOUT 3000
 
@@ -72,6 +75,7 @@ free_notification (Notification *n)
   g_free (n->summary);
   g_free (n->body);
   g_free (n->icon_name);
+  g_hash_table_destroy (n->actions);
   g_source_remove (n->timeout_id);
   g_slice_free (Notification, n);
 }
@@ -83,7 +87,6 @@ notification_timeout (TimeoutData *data)
   g_slice_free (TimeoutData, data);
   return FALSE;
 }
-
 
 /*
  * Notification Manager implementation.
@@ -97,10 +100,12 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
                              const gchar *icon, const gchar *summary,
                              const gchar *body,
                              const gchar **actions, GHashTable *hints,
-                             gint timeout, guint *new_id, GError *error)
+                             gint timeout, 
+			     DBusGMethodInvocation *context)
 {
   MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
   Notification *notification;
+  gint i;
 
   /* TODO: Sanity check the required arguments */
   
@@ -113,6 +118,10 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
     /* This is a new notification, create a new structure and allocate an ID */
     notification = g_slice_new0 (Notification);
     notification->id = get_next_id (notify);
+    notification->actions = g_hash_table_new_full (g_str_hash, 
+						   g_str_hash,
+						   g_free,
+						   g_free); 
     /* TODO: use _insert_sorted with some magic sorting algorithm */
     priv->notifications = g_list_append (priv->notifications, notification);
   }
@@ -120,6 +129,24 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
   notification->summary = g_strdup (summary);
   notification->body = g_strdup (body);
   notification->icon_name = g_strdup (icon);
+
+  /* 
+     urgency;
+     g_hash_table_get_key ("urgency"); 0 -> 2 (2 being critical)
+
+   */
+
+  for (i = 0; actions[i] != NULL; i += 2)
+    {
+      gchar *label = actions[i + 1];
+
+      if (label == NULL || actions[i] == NULL)
+	continue;
+
+      g_hash_table_insert (notification->actions, 
+			   g_strdup (actions[i]),
+			   g_strdup (label));
+    }
 
   /* A timeout of -1 means implementation defined */
   if (timeout == -1)
@@ -136,9 +163,12 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
       (timeout, (GSourceFunc)notification_timeout, data);
   }
   
+  notification->sender = dbus_g_method_get_sender(context);
+
   g_signal_emit (notify, signals[NOTIFICATION_ADDED], 0, notification);
-  
-  *new_id = notification->id;
+
+  dbus_g_method_return(context, notification->id);
+
   return TRUE;
 }
 
@@ -154,15 +184,17 @@ notification_manager_close_notification (MoblinNetbookNotifyStore *notify, guint
 }
 
 static gboolean
-notification_manager_get_capabilities (MoblinNetbookNotifyStore *notify, gchar ***caps, GError *error)
+notification_manager_get_capabilities (MoblinNetbookNotifyStore *notify, 
+				       gchar ***caps, GError *error)
 {
-  *caps = g_new0 (gchar *, 5);
+  *caps = g_new0 (gchar *, 6);
   
   (*caps)[0] = g_strdup ("body");
   (*caps)[1] = g_strdup ("body-markup");
   (*caps)[2] = g_strdup ("summary");
   (*caps)[3] = g_strdup ("icon-static");
-  (*caps)[4] = NULL;
+  (*caps)[4] = g_strdup ("actions");
+  (*caps)[5] = NULL;
   
   return TRUE;
 }
@@ -243,6 +275,8 @@ connect_to_dbus (MoblinNetbookNotifyStore *self)
     return;
   }
 
+  _dbus_conn = dbus_g_connection_get_connection(connection);
+
   bus_proxy = dbus_g_proxy_new_for_name (connection,
                                          DBUS_SERVICE_DBUS,
                                          DBUS_PATH_DBUS,
@@ -294,4 +328,39 @@ moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify,
   } else {
     return FALSE;
   }
+}
+
+static DBusMessage*
+create_signal_for_notification (Notification *n, const char *signal_name)
+{
+  DBusMessage *message;
+
+  g_assert(dest != NULL);
+
+  message = dbus_message_new_signal("/org/freedesktop/Notifications",
+				    "org.freedesktop.Notifications",
+				    signal_name);
+
+  dbus_message_set_destination(message, n->sender);
+  dbus_message_append_args(message,
+			   DBUS_TYPE_UINT32, &n->id,
+			   DBUS_TYPE_INVALID);
+
+  return message;
+}
+
+static void
+invoke_action_for_notification (Notification *n, const char *key)
+{
+  DBusMessage *message;
+
+  message = create_signal_for_notification (n, "ActionInvoked");
+  dbus_message_append_args(message,
+			   DBUS_TYPE_STRING, &key,
+			   DBUS_TYPE_INVALID);
+
+  dbus_connection_send(_dbus_conn, message, NULL);
+  dbus_message_unref(message);
+
+  /* _close_notification(daemon, id, TRUE); - FIXME */
 }

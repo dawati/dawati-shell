@@ -4,6 +4,7 @@
   <interface name="org.freedesktop.Notifications">
 
     <method name="Notify">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="app_name" direction="in" />
       <arg type="u" name="id" direction="in" />
       <arg type="s" name="icon" direction="in" />
