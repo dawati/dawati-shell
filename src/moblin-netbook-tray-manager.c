@@ -435,6 +435,7 @@ setup_child_config (ShellTrayManagerChild *child)
       XGetWindowProperty (xdpy, xwin, tray_type, 0, 8192, False,
                           XA_STRING, &ret_type, &ret_fmt, &n_items, &left,
                           &my_type);
+      gdk_flush ();
 
       if ((error_code = gdk_error_trap_pop ()))
         {
