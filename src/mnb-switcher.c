@@ -638,6 +638,11 @@ screen_n_workspaces_notify (MetaScreen *screen,
   o_workspaces   = switcher->priv->last_workspaces;
   n_o_workspaces = g_list_length (o_workspaces);
 
+  if (n_c_workspaces < 8)
+      nbtk_widget_set_dnd_threshold (switcher->priv->new_workspace, 5);
+  else
+      nbtk_widget_set_dnd_threshold (switcher->priv->new_workspace, 0);
+
   if (n_o_workspaces < n_c_workspaces)
     {
       /*
@@ -1060,7 +1065,8 @@ mnb_switcher_show (ClutterActor *self)
     nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
                                       "switcher-workspace-new");
 
-    nbtk_widget_set_dnd_threshold (new_ws, 5);
+    if (ws_count < 8)
+      nbtk_widget_set_dnd_threshold (new_ws, 5);
 
     g_signal_connect (new_ws, "dnd-begin",
                       G_CALLBACK (dnd_begin_cb), self);
