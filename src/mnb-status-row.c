@@ -146,8 +146,8 @@ mnb_status_row_allocate (ClutterActor          *actor,
   child_box.x1 = border.left + priv->padding.left
                + ICON_SIZE
                + H_PADDING;
-  child_box.y1 = (int) border.top + priv->padding.top
-               + ((ICON_SIZE - text_height) / 2);
+  child_box.y1 = (int) (border.top + priv->padding.top
+               + ((ICON_SIZE - text_height) / 2));
   child_box.x2 = child_box.x1 + text_width;
   child_box.y2 = child_box.y1 + text_height;
   clutter_actor_allocate (priv->entry, &child_box, origin_changed);
