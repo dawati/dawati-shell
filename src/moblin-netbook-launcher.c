@@ -468,6 +468,11 @@ make_launcher (MutterPlugin *plugin,
   search_data_t *search_data;
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
                             0, 0, 0};
+  NbtkPadding    hbox_padding = { CLUTTER_UNITS_FROM_INT (PADDING),
+                                  CLUTTER_UNITS_FROM_INT (PADDING),
+                                  CLUTTER_UNITS_FROM_INT (PADDING),
+                                  CLUTTER_UNITS_FROM_INT (PADDING)};
+
 
   drop_down = mnb_drop_down_new ();
 
@@ -481,6 +486,7 @@ make_launcher (MutterPlugin *plugin,
   hbox = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (hbox), WIDGET_SPACING);
   nbtk_table_add_widget (NBTK_TABLE (vbox), hbox, 0, 0);
+  nbtk_widget_set_padding (NBTK_WIDGET (hbox), &hbox_padding);
 
   label = nbtk_label_new (_("Applications"));
   nbtk_table_add_widget_full (NBTK_TABLE (hbox), label, 
