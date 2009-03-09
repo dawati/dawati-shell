@@ -393,15 +393,15 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
  * The caller must check that child->config actually exist after calling this
  * function.
  *
- * Return: FALSE if the application is not one of the supported ones, TRUE
- * otherwise (NB: as per the comment above, return value of TRUE does not mean
- * there is a config window).
+ * Return: 0 if the application is not one of the supported ones, 1 if it is
+ * supported and < 0 on error. (NB: as per the comment above, return value of 1
+ * does not mean there is a config window).
  *
  * The set up is done once when the tray icon is added (mainly to verify that
  * given application is one of `ours'), and then each time the config window
  * is getting shown after previous hide.
  */
-static gboolean
+static gint
 setup_child_config (ShellTrayManagerChild *child)
 {
   if (!child->config)
@@ -422,7 +422,7 @@ setup_child_config (ShellTrayManagerChild *child)
       Atom                   ret_type;
       ChildType              child_type = 0;
       unsigned char         *my_type = NULL;
-
+      gint                   error_code;
 
       if (!tray_atom)
         tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW, False);
@@ -430,9 +430,19 @@ setup_child_config (ShellTrayManagerChild *child)
       if (!tray_type)
         tray_type = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_TYPE, False);
 
+
+      gdk_error_trap_push ();
       XGetWindowProperty (xdpy, xwin, tray_type, 0, 8192, False,
                           XA_STRING, &ret_type, &ret_fmt, &n_items, &left,
                           &my_type);
+
+      if ((error_code = gdk_error_trap_pop ()))
+        {
+          g_debug ("Got X Error %d when trying to query properties on 0x%x\n",
+                   error_code, (guint)xwin);
+
+          return -1;
+        }
 
       if (my_type && *my_type)
         {
@@ -468,7 +478,7 @@ setup_child_config (ShellTrayManagerChild *child)
       if (child_type == CHILD_UNKNOWN)
         {
           nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
-          return FALSE;
+          return 0;
         }
 
       XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
@@ -482,7 +492,7 @@ setup_child_config (ShellTrayManagerChild *child)
            * config window, return TRUE.
            */
           nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
-          return TRUE;
+          return 1;
         }
 
       config_socket = gtk_socket_new ();
@@ -497,7 +507,7 @@ setup_child_config (ShellTrayManagerChild *child)
           child->config_xwin = None;
 
           gtk_widget_destroy (config);
-          return FALSE;
+          return 0;
         }
       else
         {
@@ -518,7 +528,7 @@ setup_child_config (ShellTrayManagerChild *child)
       XFree (config_xwin);
     }
 
-  return TRUE;
+  return 1;
 }
 
 /*
@@ -538,7 +548,7 @@ actor_clicked (ClutterActor *actor, gpointer data)
        * If we have a config window already constructed, show it, otherwise
        * create it first.
        */
-      if (child->config || (setup_child_config (child) && child->config))
+      if (child->config || ((setup_child_config (child) > 0) && child->config))
         {
           ShellTrayManager *manager = child->manager;
 
@@ -570,6 +580,7 @@ static gboolean
 tray_icon_tagged_timeout_cb (gpointer data)
 {
   ShellTrayManagerChild *child = data;
+  gint                   config_status;
 
   if (child->config)
   {
@@ -577,7 +588,7 @@ tray_icon_tagged_timeout_cb (gpointer data)
     return FALSE;
   }
 
-  if (!setup_child_config (child))
+  if ((config_status = setup_child_config (child)) == 0)
     {
       if (child->timeout_count++ < 5)
         {
@@ -595,7 +606,7 @@ tray_icon_tagged_timeout_cb (gpointer data)
          * embedded again and again and again.
          */
     }
-  else
+  else if (config_status > 0)
     {
       ShellTrayManager *manager = child->manager;
 
