@@ -339,6 +339,15 @@ update_time_date (MoblinNetbookPluginPrivate *priv)
   return TRUE;
 }
 
+static gboolean
+start_update_time_date (MoblinNetbookPluginPrivate *priv)
+{
+  update_time_date (priv);
+  g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
+
+  return FALSE;
+}
+
 static void
 shell_tray_manager_icon_added (ShellTrayManager *mgr,
                                ClutterActor     *icon,
@@ -454,6 +463,8 @@ make_panel (MutterPlugin *plugin, gint width)
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
   NbtkPadding                 no_padding = { 0, 0, 0, 0 };
+  time_t         t;
+  struct tm     *tmp;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -575,8 +586,12 @@ make_panel (MutterPlugin *plugin, gint width)
        (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->panel_date)) /
                               2, 40);
 
-
-  g_timeout_add_seconds (60, (GSourceFunc) update_time_date, priv);
+  /* update the clock at :00 seconds */
+  t = time (NULL);
+  tmp = localtime (&t);
+  g_timeout_add_seconds (60 - tmp->tm_sec,
+                         (GSourceFunc) start_update_time_date,
+                         priv);
 
   /* status drop down */
   priv->status = make_status (plugin, width - PANEL_X_PADDING * 2);
