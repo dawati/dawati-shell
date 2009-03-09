@@ -489,12 +489,14 @@ make_launcher (MutterPlugin *plugin,
   nbtk_widget_set_padding (NBTK_WIDGET (hbox), &hbox_padding);
 
   label = nbtk_label_new (_("Applications"));
+  clutter_actor_set_name (CLUTTER_ACTOR (label), "app-launcher-search-label");
   nbtk_table_add_widget_full (NBTK_TABLE (hbox), label, 
                               0, 0, 1, 1,
                               0,
                               0., 0.);
 
   entry = mnb_entry_new (_("Search"));
+  clutter_actor_set_name (CLUTTER_ACTOR (entry), "app-launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (entry),
                            CLUTTER_UNITS_FROM_DEVICE (600));
   nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry, 
