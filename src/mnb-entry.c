@@ -132,7 +132,7 @@ mnb_entry_allocate (ClutterActor          *actor,
 
   button_box.x2 = box->x2 - box->x1 - padding.right;
   button_box.x1 = button_box.x2 - button_width;
-  button_box.y1 = padding.top;
+  button_box.y1 = ((box->y2 - box->y1) - button_height) / 2;
   button_box.y2 = button_box.y1 + button_height;
 
   /* Sanity check. */  
@@ -145,8 +145,8 @@ mnb_entry_allocate (ClutterActor          *actor,
                                     &entry_width, &entry_height);
 
   entry_box.x1 = padding.left;
-  entry_box.y1 = padding.top;
   entry_box.x2 = button_box.x1;
+  entry_box.y1 = ((box->y2 - box->y1) - entry_height) / 2;
   entry_box.y2 = entry_box.y1 + entry_height;
 
   clutter_actor_allocate (priv->entry, &entry_box, origin_changed);
