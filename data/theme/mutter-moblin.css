@@ -306,6 +306,27 @@ MnbDropDown, MnbSwitcher {
   background-color: #ffff;
 }
 
+*#app-launcher-search-label {
+  background-color: #ffff;
+  font-size: 18;
+}
+
+*#app-launcher-search-entry {
+  background-image: url('file://launcher/launcher-search-bg.png');
+  border-width: 5 5 6 5;
+  padding: 4;
+}
+
+*.MnbEntryEntry {
+  font-size: 18;
+}
+
+*.MnbEntryButton {
+  border-image: none;
+  color: #be1011ff;
+  font-size: 18;
+}
+
 MnbLauncherButton {
   padding: 10;
 }
