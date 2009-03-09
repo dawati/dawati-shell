@@ -300,9 +300,13 @@ mnb_entry_init (MnbEntry *self)
 
   priv->entry = CLUTTER_ACTOR (nbtk_entry_new (""));
   clutter_actor_set_parent (priv->entry, CLUTTER_ACTOR (self));
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->entry),
+                                    "MnbEntryEntry");
 
   priv->button = CLUTTER_ACTOR (nbtk_button_new ());
   clutter_actor_set_parent (priv->button, CLUTTER_ACTOR (self));
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
+                                    "MnbEntryButton");
   g_signal_connect (priv->button, "clicked",
                     G_CALLBACK (button_clicked_cb),
                     self);
