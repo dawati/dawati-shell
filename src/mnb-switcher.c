@@ -606,9 +606,18 @@ table_foreach_remove_ws (ClutterActor *child, gpointer data)
        * Need to preserve it on the first row.
        */
       if (!row)
-        clutter_container_child_set (CLUTTER_CONTAINER (table), child,
-                                     "column", col - 1,
-                                     "y-expand", FALSE, NULL);
+        {
+          gchar *s;
+
+          clutter_container_child_set (CLUTTER_CONTAINER (table), child,
+                                       "column", col - 1,
+                                       "y-expand", FALSE, NULL);
+
+          s = g_strdup_printf ("%d", col);
+
+          nbtk_label_set_text (NBTK_LABEL (child), s);
+          g_free (s);
+        }
       else
         clutter_container_child_set (CLUTTER_CONTAINER (table), child,
                                      "column", col - 1, NULL);
