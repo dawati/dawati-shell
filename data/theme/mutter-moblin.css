@@ -68,15 +68,23 @@ NbtkTable {
   background-color: #ffff;
 }
 
+MnbPanelButton:active {
+  border-image: url("file://panel/toolbar-button-active.png") 0 stretch;
+}
+
+MnbPanelButton:hover {
+  border-image: url("file://panel/toolbar-button-hover.png") 0 stretch;
+}
+
 /* apps button */
 *#apps-button {
   background-image: url("file://panel/apps-normal.png");
 }
 *#apps-button:hover {
-  background-image: url("file://panel/apps-hover.png");
+  background-image: url("file://panel/apps-coloured.png");
 }
 *#apps-button:active {
-  background-image: url("file://panel/apps-active.png");
+  background-image: url("file://panel/apps-coloured.png");
 }
 
 /* internet button */
@@ -84,10 +92,10 @@ NbtkTable {
   background-image: url("file://panel/internet-normal.png");
 }
 *#internet-button:hover {
-  background-image: url("file://panel/internet-hover.png");
+  background-image: url("file://panel/internet-coloured.png");
 }
 *#internet-button:active {
-  background-image: url("file://panel/internet-active.png");
+  background-image: url("file://panel/internet-coloured.png");
 }
 
 /* media button */
@@ -95,21 +103,21 @@ NbtkTable {
   background-image: url("file://panel/media-normal.png");
 }
 *#media-button:hover {
-  background-image: url("file://panel/media-hover.png");
+  background-image: url("file://panel/media-coloured.png");
 }
 *#media-button:active {
-  background-image: url("file://panel/media-active.png");
+  background-image: url("file://panel/media-coloured.png");
 }
 
 /* m-space button */
 *#m-space-button {
-  background-image: url("file://panel/m-space-normal.png");
+  background-image: url("file://panel/m_zone-normal.png");
 }
 *#m-space-button:hover {
-  background-image: url("file://panel/m-space-hover.png");
+  background-image: url("file://panel/m_zone-coloured.png");
 }
 *#m-space-button:active {
-  background-image: url("file://panel/m-space-active.png");
+  background-image: url("file://panel/m_zone-coloured.png");
 }
 
 /* pasteboard button */
@@ -117,10 +125,10 @@ NbtkTable {
   background-image: url("file://panel/pasteboard-normal.png");
 }
 *#pasteboard-button:hover {
-  background-image: url("file://panel/pasteboard-hover.png");
+  background-image: url("file://panel/pasteboard-coloured.png");
 }
 *#pasteboard-button:active {
-  background-image: url("file://panel/pasteboard-active.png");
+  background-image: url("file://panel/pasteboard-coloured.png");
 }
 
 /* people button */
@@ -128,10 +136,10 @@ NbtkTable {
   background-image: url("file://panel/people-normal.png");
 }
 *#people-button:hover {
-  background-image: url("file://panel/people-hover.png");
+  background-image: url("file://panel/people-coloured.png");
 }
 *#people-button:active {
-  background-image: url("file://panel/people-active.png");
+  background-image: url("file://panel/people-coloured.png");
 }
 
 /* spaces button */
@@ -139,10 +147,10 @@ NbtkTable {
   background-image: url("file://panel/spaces-normal.png");
 }
 *#spaces-button:hover {
-  background-image: url("file://panel/spaces-hover.png");
+  background-image: url("file://panel/spaces-coloured.png");
 }
 *#spaces-button:active {
-  background-image: url("file://panel/spaces-active.png");
+  background-image: url("file://panel/spaces-coloured.png");
 }
 
 /* status button */
@@ -150,10 +158,10 @@ NbtkTable {
   background-image: url("file://panel/status-normal.png");
 }
 *#status-button:hover {
-  background-image: url("file://panel/status-hover.png");
+  background-image: url("file://panel/status-coloured.png");
 }
 *#status-button:active {
-  background-image: url("file://panel/status-active.png");
+  background-image: url("file://panel/status-coloured.png");
 }
 
 /* tray buttons */

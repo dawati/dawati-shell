@@ -4,36 +4,30 @@ dist_theme_DATA = \
 
 theme_paneldir = $(pkgdatadir)/theme/panel
 dist_theme_panel_DATA = \
-	theme/panel/apps-active.png \
-	theme/panel/apps-hover.png \
+	theme/panel/apps-coloured.png \
 	theme/panel/apps-normal.png \
-	theme/panel/internet-active.png \
-	theme/panel/internet-hover.png \
+	theme/panel/internet-coloured.png \
 	theme/panel/internet-normal.png \
-	theme/panel/media-active.png \
-	theme/panel/media-hover.png \
+	theme/panel/media-coloured.png \
 	theme/panel/media-normal.png \
-	theme/panel/m-space-active.png \
-	theme/panel/m-space-hover.png \
-	theme/panel/m-space-normal.png \
+	theme/panel/m_zone-coloured.png \
+	theme/panel/m_zone-normal.png \
 	theme/panel/panel-background.png \
 	theme/panel/panel-shadow.png \
-	theme/panel/pasteboard-active.png \
-	theme/panel/pasteboard-hover.png \
+	theme/panel/pasteboard-coloured.png \
 	theme/panel/pasteboard-normal.png \
-	theme/panel/people-active.png \
-	theme/panel/people-hover.png \
+	theme/panel/people-coloured.png \
 	theme/panel/people-normal.png \
-	theme/panel/spaces-active.png \
-	theme/panel/spaces-hover.png \
+	theme/panel/spaces-coloured.png \
 	theme/panel/spaces-normal.png \
-	theme/panel/status-active.png \
-	theme/panel/status-hover.png \
+	theme/panel/status-coloured.png \
 	theme/panel/status-normal.png \
 	theme/panel/background-tile.png \
 	theme/panel/tray-active.png \
 	theme/panel/tray-hover.png \
-	theme/panel/tray-normal.png
+	theme/panel/tray-normal.png \
+	theme/panel/toolbar-button-active.png \
+	theme/panel/toolbar-button-hover.png
 
 theme_chooserdir = $(pkgdatadir)/theme/chooser
 dist_theme_chooser_DATA = \
