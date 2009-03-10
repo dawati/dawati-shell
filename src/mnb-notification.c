@@ -149,8 +149,8 @@ mnb_notification_class_init (MnbNotificationClass *klass)
                     G_SIGNAL_RUN_FIRST,
                     G_STRUCT_OFFSET (MnbNotificationClass, action),
                     NULL, NULL,
-                    g_cclosure_marshal_VOID__CHAR,
-                    G_TYPE_NONE, 0);
+                    g_cclosure_marshal_VOID__STRING,
+                    G_TYPE_NONE, 1, G_TYPE_STRING);
 
 }
 

@@ -335,6 +335,7 @@ invoke_action_for_notification (Notification *n, const char *key)
 
   dbus_connection_send(_dbus_conn, message, NULL);
   dbus_message_unref(message);
+
 }
 
 MoblinNetbookNotifyStore *
