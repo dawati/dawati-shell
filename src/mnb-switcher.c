@@ -1150,23 +1150,6 @@ mnb_switcher_append_workspace (MnbSwitcher *switcher)
 static void
 mnb_switcher_hide (ClutterActor *self)
 {
-  MnbSwitcherPrivate *priv;
-
-  g_return_if_fail (MNB_IS_SWITCHER (self));
-
-  priv = MNB_SWITCHER (self)->priv;
-
-  if (priv->tab_list)
-    {
-      g_list_free (priv->tab_list);
-      priv->tab_list = NULL;
-    }
-
-  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
-  priv->table = NULL;
-  priv->last_focused = NULL;
-  priv->selected = NULL;
-
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
 }
 
@@ -1195,9 +1178,33 @@ mnb_switcher_class_init (MnbSwitcherClass *klass)
 }
 
 static void
+on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
+{
+  MnbSwitcherPrivate *priv;
+
+  g_return_if_fail (MNB_IS_SWITCHER (self));
+
+  priv = MNB_SWITCHER (self)->priv;
+
+  if (priv->tab_list)
+    {
+      g_list_free (priv->tab_list);
+      priv->tab_list = NULL;
+    }
+
+  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
+  priv->table = NULL;
+  priv->last_focused = NULL;
+  priv->selected = NULL;
+}
+
+static void
 mnb_switcher_init (MnbSwitcher *self)
 {
   self->priv = MNB_SWITCHER_GET_PRIVATE (self);
+
+  g_signal_connect (self, "hide-completed",
+                    G_CALLBACK (on_switcher_hide_completed_cb), NULL);
 }
 
 NbtkWidget*
