@@ -118,8 +118,8 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
     /* This is a new notification, create a new structure and allocate an ID */
     notification = g_slice_new0 (Notification);
     notification->id = get_next_id (notify);
-    notification->actions = g_hash_table_new_full (g_str_hash, 
-						   g_str_hash,
+    notification->actions = g_hash_table_new_full (NULL,
+						   NULL,
 						   g_free,
 						   g_free); 
     /* TODO: use _insert_sorted with some magic sorting algorithm */
@@ -138,7 +138,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
 
   for (i = 0; actions[i] != NULL; i += 2)
     {
-      gchar *label = actions[i + 1];
+      const gchar *label = actions[i + 1];
 
       if (label == NULL || actions[i] == NULL)
 	continue;
@@ -163,7 +163,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
       (timeout, (GSourceFunc)notification_timeout, data);
   }
   
-  notification->sender = dbus_g_method_get_sender(context);
+  notification->sender = dbus_g_method_get_sender (context);
 
   g_signal_emit (notify, signals[NOTIFICATION_ADDED], 0, notification);
 
@@ -306,36 +306,10 @@ moblin_netbook_notify_store_init (MoblinNetbookNotifyStore *self)
   connect_to_dbus (self);
 }
 
-MoblinNetbookNotifyStore *
-moblin_netbook_notify_store_new (void)
-{
-  return g_object_new (MOBLIN_NETBOOK_TYPE_NOTIFY_STORE, NULL);
-}
-
-gboolean
-moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify, 
-                                   guint                               id, 
-                                   MoblinNetbookNotifyStoreCloseReason reason)
-{
-  MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
-  Notification *notification;
-
-  if (find_notification (notify, id, &notification)) {
-    priv->notifications = g_list_remove (priv->notifications, notification);
-    free_notification (notification);
-    g_signal_emit (notify, signals[NOTIFICATION_CLOSED], 0, id, reason);
-    return TRUE;
-  } else {
-    return FALSE;
-  }
-}
-
 static DBusMessage*
 create_signal_for_notification (Notification *n, const char *signal_name)
 {
   DBusMessage *message;
-
-  g_assert(dest != NULL);
 
   message = dbus_message_new_signal("/org/freedesktop/Notifications",
 				    "org.freedesktop.Notifications",
@@ -361,6 +335,46 @@ invoke_action_for_notification (Notification *n, const char *key)
 
   dbus_connection_send(_dbus_conn, message, NULL);
   dbus_message_unref(message);
-
-  /* _close_notification(daemon, id, TRUE); - FIXME */
 }
+
+MoblinNetbookNotifyStore *
+moblin_netbook_notify_store_new (void)
+{
+  return g_object_new (MOBLIN_NETBOOK_TYPE_NOTIFY_STORE, NULL);
+}
+
+gboolean
+moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify, 
+                                   guint                               id, 
+                                   MoblinNetbookNotifyStoreCloseReason reason)
+{
+  MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
+  Notification *notification;
+
+  if (find_notification (notify, id, &notification)) 
+    {
+      priv->notifications = g_list_remove (priv->notifications, notification);
+      free_notification (notification);
+      g_signal_emit (notify, signals[NOTIFICATION_CLOSED], 0, id, reason);
+      return TRUE;
+    } 
+
+  return FALSE;
+}
+
+void
+moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify, 
+				    guint                        id,
+				    gchar                       *action)
+{
+  MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
+  Notification *notification;
+
+  if (find_notification (notify, id, &notification)) 
+    {
+      invoke_action_for_notification (notification, action);
+      moblin_netbook_notify_store_close (notify, id, ClosedProgramatically); 
+    }
+}
+
+

@@ -53,16 +53,20 @@ struct _MnbNotificationPrivate {
   NbtkWidget   *summary;
   ClutterActor *icon;
   NbtkWidget   *dismiss_button;
-  NbtkWidget   *action_button;
 
   guint         id;
-  gchar       **actions; 
+
   GHashTable   *hints;
   gint          timeout;
 
   gboolean      hide_anim_lock;
 
 };
+
+typedef struct {
+  MnbNotification *notification;
+  gchar *action;
+} ActionData;
 
 static void
 mnb_notification_get_property (GObject *object, guint property_id,
@@ -159,7 +163,7 @@ on_dismiss_click (ClutterActor *button, MnbNotification *self)
 static void
 on_action_click (ClutterActor *button, ActionData *data)
 {
-  g_signal_emit (self, signals[ACTION], 0);
+  g_signal_emit (data->notification, signals[ACTION], 0, data->action);
 }
 
 
@@ -178,7 +182,6 @@ mnb_notification_init (MnbNotification *self)
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
 
   priv->dismiss_button = nbtk_button_new ();
-  priv->action_button  = nbtk_button_new ();
   priv->icon           = clutter_texture_new ();
   priv->body           = nbtk_label_new ("");
   priv->summary        = nbtk_label_new ("");
@@ -221,29 +224,6 @@ mnb_notification_init (MnbNotification *self)
                                "y-expand", FALSE,
                                "x-expand", FALSE,
                                NULL);
-#if 0
-  /* Action Buttons */
-  {
-    GHashTableIter iter;
-    gpointer key, value;
-
-    g_hash_table_iter_init (&iter, hash_table);
-    while (g_hash_table_iter_next (&iter, &key, &value)) 
-      {
-        if (strcasecmp(key, "default"))
-          {
-            nbtk_table_add_widget (NBTK_TABLE (self), 
-                                   priv->action_button, 2, 0);
-
-            g_signal_connect (priv->dismiss_button, "clicked",
-                              G_CALLBACK (on_dismiss_click), self);
-          }
-      }
-  }
-#endif
-
-  nbtk_table_add_widget (NBTK_TABLE (self), priv->action_button, 2, 0);
-  // clutter_actor_hide (CLUTTER_ACTOR(priv->action_button));
 
   nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
   nbtk_table_add_widget (NBTK_TABLE (self), priv->dismiss_button, 2, 1);
@@ -306,6 +286,51 @@ mnb_notification_update (MnbNotification *notification,
                                          gtk_icon_info_get_filename (info), 
                                          NULL);
           gtk_icon_info_free (info);
+        }
+    }
+
+  if (details->actions)
+    {
+      ClutterActor *layout = NULL; 
+      GHashTableIter iter;
+      gchar *key, *value;
+      
+      g_hash_table_iter_init (&iter, details->actions);
+      while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value)) 
+        {
+          if (strcasecmp(key, "default"))
+            {
+              ActionData *data;
+              NbtkWidget *button;
+              
+              if (layout == NULL)
+                {
+                  layout = g_object_new (NBTK_TYPE_GRID,
+                                         /*
+                                           "x", 5,
+                                           "y", 5,
+                                           "width", 0,
+                                         */
+                                         NULL);
+                  
+                  nbtk_table_add_widget (NBTK_TABLE (notification), 
+                                         NBTK_WIDGET (layout), 2, 0);
+                }
+              
+              data = g_slice_new (ActionData);
+              data->notification = notification;
+              data->action = g_strdup (key);
+              
+              button = nbtk_button_new ();
+              
+              nbtk_button_set_label (NBTK_BUTTON (button), value);
+              
+              clutter_container_add_actor (CLUTTER_CONTAINER (layout), 
+                                           CLUTTER_ACTOR(button));
+              
+              g_signal_connect (button, "clicked", 
+                                G_CALLBACK (on_action_click), data);
+            }
         }
     }
 }

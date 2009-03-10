@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 2008 Intel Corp.
  *
- * Author: Thomas Wood <thomas@linux.intel.com>
+ * Author: Matthew Allum <mallum@linux.intel.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -280,6 +280,17 @@ on_closed (MnbNotification *notification, MoblinNetbookNotifyStore *store)
 }
 
 static void
+on_action (MnbNotification *notification, 
+           gchar           *action,
+           MoblinNetbookNotifyStore *store)
+{
+  moblin_netbook_notify_store_action (store,
+                                      mnb_notification_get_id (notification), 
+                                      action);
+}
+
+
+static void
 on_control_appear_anim_completed (ClutterAnimation *anim,
                                   MnbNotificationCluster *cluster)
 {
@@ -301,7 +312,8 @@ on_notification_added (MoblinNetbookNotifyStore *store,
     {
       w = mnb_notification_new ();
       g_signal_connect (w, "closed", G_CALLBACK (on_closed), store);
-      
+      g_signal_connect (w, "action", G_CALLBACK (on_action), store);      
+
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), 
                                    CLUTTER_ACTOR(w));
       clutter_actor_hide (CLUTTER_ACTOR(w));
