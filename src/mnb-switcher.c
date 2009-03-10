@@ -223,6 +223,7 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
 
   clutter_actor_hide (CLUTTER_ACTOR (switcher));
   hide_panel (plugin);
+  clutter_ungrab_pointer ();
 
   if (!active_workspace || (active_workspace == workspace))
     {
