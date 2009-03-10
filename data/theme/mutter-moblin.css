@@ -523,7 +523,7 @@ MnbStatusEntry:active
 {
   background-image: url("file://status/decoration-frame.png");
   border-width: 17 17 17 17;
-  padding: 17;
+  padding: 19;
 }
 
 
@@ -532,5 +532,5 @@ MnbStatusEntry:active
   font-family: "Liberation Sans Bold";
   font-size: 17px;
   color: #3e3e3eff;
-  padding: 0 0 0 4;
+  padding: 6;
 }
