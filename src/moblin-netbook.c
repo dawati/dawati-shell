@@ -2223,6 +2223,8 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->mzone_grid)
         clutter_actor_hide (priv->mzone_grid);
 
+      shell_tray_manager_close_all_config_windows (priv->tray_manager);
+
       if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
         {
           guint height = clutter_actor_get_height (priv->panel_shadow);
