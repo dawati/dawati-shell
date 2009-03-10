@@ -217,37 +217,33 @@ MnbPanelButton:hover {
 
 /* tooltips */
 NbtkTooltip {
-  background-image: url("file://generic/tooltip-background.png");
-  border-width: 13 11 13 11;
+  border-image: url("file://generic/tooltip-background.png")  13 11;
+  padding: 13 11;
   color: white;
   font-size: 15px;
 }
 
 /* workspace switcher */
 *.workspace-title {
-  background-image: url("file://switcher/workspace-title.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title.png") 4;
   padding: 4;
   color: white;
 }
 
 *#workspace-title-active {
-  background-image: url("file://switcher/workspace-title-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-active.png") 4;
   padding: 4;
   color: white;
 }
 
 *.workspace-title-new {
-  background-image: url("file://switcher/workspace-title-new.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-new.png") 4;
   padding: 4;
   color: white;
 }
 
 *#workspace-title-new-active {
-  background-image: url("file://switcher/workspace-title-new-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-new-active.png") 4;
   padding: 4;
   color: white;
 }
@@ -291,26 +287,22 @@ NbtkTooltip {
 }
 
 *.switcher-workspace {
-  background-image: url("file://switcher/workspace-background.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background.png") 4;
   padding: 5;
 }
 
 *#switcher-workspace-active {
-  background-image: url("file://switcher/workspace-background-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background-active.png") 4;
   padding: 5;
 }
 
 *.switcher-workspace-new {
-  background-image: url("file://switcher/workspace-background-new.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background-new.png") 4;
   padding: 5;
 }
 
 *#switcher-workspace-new-active {
-  background-image: url("file://switcher/workspace-background-new-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background-new-active.png") 4;
   padding: 5;
 }
 
@@ -327,14 +319,12 @@ NbtkTooltip {
 }
 
 *.switcher-application {
-  background-image: url("file://switcher/application-inactive.png");
-  border-width: 4;
+  border-image: url("file://switcher/application-inactive.png") 4;
   padding: 2;
 }
 
 *#switcher-application-active {
-  background-image: url("file://switcher/application-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/application-active.png") 4;
   padding: 2;
 }
 
@@ -347,14 +337,12 @@ NbtkTooltip {
 }
 
 *.drop-down-footer {
-  background-image: url("file://drop-down/footer.png");
-  border-width: 5;
+  border-image: url("file://drop-down/footer.png") 5;
   padding: 5;
 }
 
 MnbDropDown, MnbSwitcher {
-  background-image: url("file://panel/panel-shadow.png");
-  border-width: 0 4 37 4;
+  border-image: url("file://panel/panel-shadow.png") 0 4 37 4;
   padding: 0 4 37 4;
 }
 
@@ -412,38 +400,34 @@ MnbLauncherButton > *#launcher-comment {
 
 PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile
 {
-  background-image: url('file://mzone/general-background.png');
-  border-width: 16;
+  border-image: url('file://mzone/general-background.png') 16;
 }
 
 PengeDateTile
 {
-  background-image: url('file://mzone/date-background.png');
-  border-width: 16;
+  border-image: url('file://mzone/date-background.png') 16;
 }
 
 PengeEventTile:hover
 {
-  background-image: url('file://mzone/event-background-dark.png');
-  border-width: 8;
+  border-image: url('file://mzone/event-background-dark.png') 8;
 }
 
 *.PengeDateTileBackground
 {
-  background-image: url('file://mzone/date-background-background.png');
-  border-width: 16;
+  border-image: url('file://mzone/date-background-background.png') 16;
 }
 
 *.PengeEventTime
 {
-  background-image: url('file://mzone/time-bg.png');
+  border-image: url('file://mzone/time-bg.png') 0;
   color: white;
   font-size:12;
 }
 
 *.PengeEventTime:past
 {
-  background-image: url('file://mzone/time-bg-past.png');
+  border-image: url('file://mzone/time-bg-past.png') 0;
   color: white;
   font-size:12;
 }
@@ -546,14 +530,12 @@ MnbStatusEntry
 
 MnbStatusEntry:hover
 {
-  background-image: url("file://status/entry-frame-hover.png");
-  border-width: 6 6 6 6;
+  border-image: url("file://status/entry-frame-hover.png") 6;
 }
 
 MnbStatusEntry:active
 {
-  background-image: url("file://status/entry-frame-edit.png");
-  border-width: 6 6 6 6;
+  border-image: url("file://status/entry-frame-edit.png") 6;
 }
 
 *.MnbStatusEntryText
@@ -579,8 +561,7 @@ MnbStatusEntry:active
 
 *.MnbStatusPageTable
 {
-  background-image: url("file://status/decoration-frame.png");
-  border-width: 17 17 17 17;
+  border-image: url("file://status/decoration-frame.png") 17 stretch;
   padding: 19;
 }
 
