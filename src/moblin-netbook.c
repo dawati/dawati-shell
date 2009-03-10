@@ -938,7 +938,7 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
   CoglHandle         cogl_texture;
-  ClutterFixed       t_w, t_h;
+  float              t_w, t_h;
   guint              tex_width, tex_height;
   guint              w, h;
 
@@ -961,8 +961,8 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
   tex_width = cogl_texture_get_width (cogl_texture);
   tex_height = cogl_texture_get_height (cogl_texture);
 
-  t_w = w / tex_width;
-  t_h = h / tex_height;
+  t_w = (float) w / tex_width;
+  t_h = (float) h / tex_height;
 
   /* Parent paint translated us into position */
   cogl_set_source_texture (cogl_texture);
