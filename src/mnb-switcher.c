@@ -134,11 +134,15 @@ struct _MnbSwitcherPrivate {
   NbtkWidget   *table;
   NbtkWidget   *new_workspace;
   NbtkWidget   *new_label;
+  NbtkTooltip  *active_tooltip;
   GList        *last_workspaces;
 
   ClutterActor *last_focused;
   MutterWindow *selected;
   GList        *tab_list;
+
+  guint         show_completed_id;
+
   gboolean      dnd_in_progress : 1;
   gboolean      constructing    : 1;
 };
@@ -257,7 +261,12 @@ dnd_begin_cb (NbtkWidget   *table,
     }
 
   if (CLUTTER_ACTOR_IS_VISIBLE (dragged_priv->tooltip))
-    nbtk_tooltip_hide (NBTK_TOOLTIP (dragged_priv->tooltip));
+    {
+      nbtk_tooltip_hide (NBTK_TOOLTIP (dragged_priv->tooltip));
+
+      if (priv->active_tooltip == (NbtkTooltip*)dragged_priv->tooltip)
+        priv->active_tooltip = NULL;
+    }
 
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 60.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0x4f);
@@ -441,7 +450,13 @@ clone_hover_timeout_cb (gpointer data)
   MnbSwitcherPrivate    *priv     = app_priv->switcher->priv;
 
   if (!priv->dnd_in_progress)
-    nbtk_tooltip_show (NBTK_TOOLTIP (app_priv->tooltip));
+    {
+      if (priv->active_tooltip)
+        nbtk_tooltip_hide (priv->active_tooltip);
+
+      priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
+      nbtk_tooltip_show (priv->active_tooltip);
+    }
 
   app_priv->hover_timeout_id = 0;
 
@@ -470,6 +485,7 @@ clone_leave_event_cb (ClutterActor *actor,
 		      gpointer data)
 {
   MnbSwitcherAppPrivate *child_priv = MNB_SWITCHER_APP (actor)->priv;
+  MnbSwitcherPrivate    *priv       = child_priv->switcher->priv;
 
   if (child_priv->hover_timeout_id)
     {
@@ -478,7 +494,12 @@ clone_leave_event_cb (ClutterActor *actor,
     }
 
   if (CLUTTER_ACTOR_IS_VISIBLE (child_priv->tooltip))
-    nbtk_tooltip_hide (NBTK_TOOLTIP (child_priv->tooltip));
+    {
+      nbtk_tooltip_hide (NBTK_TOOLTIP (child_priv->tooltip));
+
+      if (priv->active_tooltip == (NbtkTooltip*)child_priv->tooltip)
+        priv->active_tooltip = NULL;
+    }
 
   return FALSE;
 }
@@ -822,6 +843,25 @@ mnb_switcher_clone_weak_notify (gpointer data, GObject *obj)
 }
 
 static void
+on_show_completed_cb (ClutterActor *self, gpointer data)
+{
+  MnbSwitcherPrivate    *priv     = MNB_SWITCHER (self)->priv;
+  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (data)->priv;
+
+  if (priv->active_tooltip)
+    {
+      nbtk_tooltip_hide (priv->active_tooltip);
+      priv->active_tooltip = NULL;
+    }
+
+  if (app_priv->tooltip)
+    {
+      priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
+      nbtk_tooltip_show (priv->active_tooltip);
+    }
+}
+
+static void
 mnb_switcher_show (ClutterActor *self)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
@@ -834,7 +874,8 @@ mnb_switcher_show (ClutterActor *self)
   NbtkWidget  **spaces;
   NbtkPadding   padding = MNB_PADDING (6, 6, 6, 6);
   GList        *workspaces = meta_screen_get_workspaces (screen);
-  MetaWindow   *current_focus;
+  MetaWindow   *current_focus = NULL;
+  ClutterActor *current_focus_clone = NULL;
   ClutterActor *top_most_clone = NULL;
   MutterWindow *top_most_mw = NULL;
 
@@ -944,6 +985,8 @@ mnb_switcher_show (ClutterActor *self)
 
           priv->last_focused = clone;
           priv->selected = mw;
+
+          current_focus_clone = clone;
         }
 
       /*
@@ -1039,6 +1082,8 @@ mnb_switcher_show (ClutterActor *self)
       timestamp = clutter_x11_get_current_event_time ();
       workspace = meta_window_get_workspace (meta_win);
 
+      current_focus_clone = top_most_clone;
+
       meta_window_activate_with_workspace (meta_win, timestamp, workspace);
     }
 
@@ -1109,6 +1154,29 @@ mnb_switcher_show (ClutterActor *self)
 
   priv->constructing = FALSE;
 
+#if 0
+  /* FIXME -- disable this until after the next demo; for some reason the
+   *          initial tooltip is not positioned correctly, looks like a NBTK
+   *          bug. Better not to have the initial tooltip than to have it
+   *          at the wrong place.
+   */
+  /*
+   * We connect to the show-completed signal, and if there is something focused
+   * in the switcher (should be most of the time), we try to pop up the
+   * tooltip from the callback.
+   */
+  if (priv->show_completed_id)
+    {
+      g_signal_handler_disconnect (self, priv->show_completed_id);
+    }
+
+  if (current_focus_clone)
+    priv->show_completed_id =
+      g_signal_connect (self, "show-completed",
+                        G_CALLBACK (on_show_completed_cb),
+                        current_focus_clone);
+#endif
+
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
 }
 
@@ -1150,6 +1218,14 @@ mnb_switcher_append_workspace (MnbSwitcher *switcher)
 static void
 mnb_switcher_hide (ClutterActor *self)
 {
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
+
+  if (priv->show_completed_id)
+    {
+      g_signal_handler_disconnect (self, priv->show_completed_id);
+      priv->show_completed_id = 0;
+    }
+
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
 }
 
@@ -1233,6 +1309,7 @@ select_inner_foreach_cb (ClutterActor *child, gpointer data)
   MnbSwitcherAppPrivate *app_priv;
   MetaWindow            *meta_win = data;
   MetaWindow            *my_win;
+  MnbSwitcherPrivate    *priv;
 
   /*
    * Skip anything that is not a MnbSwitcherApp
@@ -1241,6 +1318,7 @@ select_inner_foreach_cb (ClutterActor *child, gpointer data)
     return;
 
   app_priv = MNB_SWITCHER_APP (child)->priv;
+  priv     = app_priv->switcher->priv;
 
   my_win = mutter_window_get_meta_window (app_priv->mw);
 
@@ -1249,9 +1327,29 @@ select_inner_foreach_cb (ClutterActor *child, gpointer data)
       clutter_actor_set_name (child, "switcher-application-active");
 
       app_priv->switcher->priv->selected = app_priv->mw;
+
+      if (app_priv->tooltip)
+        {
+          if (priv->active_tooltip)
+            nbtk_tooltip_hide (priv->active_tooltip);
+
+          priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
+          nbtk_tooltip_show (priv->active_tooltip);
+        }
+
     }
   else
-    clutter_actor_set_name (child, "");
+    {
+      clutter_actor_set_name (child, "");
+
+      if (app_priv->tooltip)
+        {
+          if (priv->active_tooltip == (NbtkTooltip*)app_priv->tooltip)
+            priv->active_tooltip = NULL;
+
+          nbtk_tooltip_hide (NBTK_TOOLTIP (app_priv->tooltip));
+        }
+    }
 }
 
 static void
