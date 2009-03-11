@@ -360,7 +360,7 @@ make_table (MutterPlugin  *self,
       icon_file = NULL;
 
       generic_name = get_generic_name (entry);
-      exec = g_find_program_in_path (gmenu_tree_entry_get_exec (entry));
+      exec = g_strdup (gmenu_tree_entry_get_exec (entry));
       name = gmenu_tree_entry_get_icon (entry);
       description = gmenu_tree_entry_get_comment (entry);
 
