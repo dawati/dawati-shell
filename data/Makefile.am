@@ -78,6 +78,9 @@ dist_theme_switcher_DATA = \
 	theme/switcher/workspace-title-new-active.png \
 	theme/switcher/workspace-title-new-over.png \
 	theme/switcher/workspace-title-new-disabled.png \
+	theme/switcher/workspace-title-new-symbol-active.png \
+	theme/switcher/workspace-title-new-symbol-over.png \
+	theme/switcher/workspace-title-new-symbol-disabled.png \
 	theme/switcher/workspace-title.png
 
 theme_dropdowndir = $(pkgdatadir)/theme/drop-down
@@ -102,7 +105,7 @@ dist_theme_mzone_DATA = \
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
-	theme/notifiers/notification-bg.png 
+	theme/notifiers/notification-bg.png
 
 theme_statusdir = $(pkgdatadir)/theme/status
 dist_theme_status_DATA = \
