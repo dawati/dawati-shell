@@ -2349,11 +2349,20 @@ setup_parallax_effect (MutterPlugin *plugin)
     }
   else
     {
+      ClutterActor *bg_clone;
+      ClutterActor *stage = mutter_get_stage_for_screen (screen);
+
       g_object_set (priv->parallax_tex,
                     "repeat-x", TRUE,
                     "repeat-y", TRUE,
                     NULL);
+
+      bg_clone = clutter_clone_new (priv->parallax_tex);
+      clutter_actor_set_size (bg_clone, screen_width, screen_height);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), bg_clone);
+      clutter_actor_lower_bottom (bg_clone);
     }
+
 }
 
 /*
