@@ -274,8 +274,8 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
 static ClutterActor*
 panel_append_toolbar_button (MutterPlugin  *plugin,
                              ClutterActor  *container,
-                             gchar         *name,
-                             gchar         *tooltip,
+                             const gchar   *name,
+                             const gchar   *tooltip,
                              MnbkControl    control)
 {
   static int n_buttons = 0;
@@ -384,7 +384,7 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
 
   clutter_actor_set_position (icon, x, y);
-  clutter_container_add_actor (priv->panel, icon);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), icon);
 }
 
 static void
@@ -644,7 +644,8 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->mzone_grid);
   clutter_actor_set_width (priv->mzone_grid, screen_width);
   mzone_grid_view = g_object_new (PENGE_TYPE_GRID_VIEW, NULL);
-  g_signal_connect (mzone_grid_view, "activated", _mzone_activated_cb, plugin);
+  g_signal_connect (mzone_grid_view, "activated",
+                    G_CALLBACK (_mzone_activated_cb), plugin);
   clutter_actor_set_height (mzone_grid_view, screen_height - PANEL_HEIGHT * 1.5);
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->mzone_grid),
                            CLUTTER_ACTOR (mzone_grid_view));
