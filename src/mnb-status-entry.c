@@ -86,56 +86,9 @@ static void
 on_button_clicked (NbtkButton *button,
                    MnbStatusEntry *entry)
 {
-  MnbStatusEntryPrivate *priv = entry->priv;
-  ClutterActor *text;
-
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
-
-  if (!priv->is_active)
-    {
-      nbtk_button_set_label (NBTK_BUTTON (priv->button), "Post");
-
-      g_free (priv->old_status_text);
-      priv->old_status_text =
-        g_strdup (clutter_text_get_text (CLUTTER_TEXT (text)));
-
-      clutter_actor_set_reactive (text, TRUE);
-
-      clutter_text_set_editable (CLUTTER_TEXT (text), TRUE);
-      clutter_text_set_activatable (CLUTTER_TEXT (text), TRUE);
-      clutter_text_set_text (CLUTTER_TEXT (text), "");
-
-      clutter_actor_hide (priv->service_label);
-      clutter_actor_show (priv->cancel_icon);
-
-      clutter_actor_grab_key_focus (priv->status_entry);
-
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
-
-      priv->is_active = TRUE;
-    }
-  else
-    {
-      nbtk_button_set_label (NBTK_BUTTON (priv->button), "Edit");
-
-      clutter_actor_set_reactive (text, FALSE);
-
-      clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
-      clutter_text_set_activatable (CLUTTER_TEXT (text), FALSE);
-
-      clutter_actor_show (priv->service_label);
-      clutter_actor_hide (priv->cancel_icon);
-
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "hover");
-
-      g_free (priv->old_status_text);
-      priv->old_status_text = NULL;
-
-      priv->is_active = FALSE;
-
-      g_signal_emit (entry, entry_signals[STATUS_CHANGED], 0,
-                     clutter_text_get_text (CLUTTER_TEXT (text)));
-    }
+  mnb_status_entry_set_is_active (entry,
+                                  entry->priv->is_active == TRUE ? FALSE
+                                                                 : TRUE);
 }
 
 static void
@@ -505,6 +458,8 @@ mnb_status_entry_init (MnbStatusEntry *self)
 
   self->priv = priv = MNB_STATUS_ENTRY_GET_PRIVATE (self);
 
+  priv->is_active = FALSE;
+
   priv->status_entry =
     CLUTTER_ACTOR (nbtk_entry_new ("Enter your status here..."));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->status_entry),
@@ -595,33 +550,61 @@ void
 mnb_status_entry_set_is_active (MnbStatusEntry *entry,
                                 gboolean        is_active)
 {
+  MnbStatusEntryPrivate *priv;
+  ClutterActor *text;
+
   g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
 
-  if (entry->priv->is_active != is_active)
+  priv = entry->priv;
+
+  if (priv->is_active == is_active)
+    return;
+
+  priv->is_active = is_active;
+  g_debug (G_STRLOC ": setting active = %s", priv->is_active ? "true" : "false");
+
+  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
+
+  if (priv->is_active)
     {
-      entry->priv->is_active = is_active;
+      nbtk_button_set_label (NBTK_BUTTON (priv->button), "Post");
 
-      if (entry->priv->is_active)
-        {
-          clutter_actor_hide (entry->priv->service_label);
-          clutter_actor_hide (entry->priv->cancel_icon);
-        }
-      else
-        {
-          clutter_actor_show (entry->priv->service_label);
-          clutter_actor_show (entry->priv->cancel_icon);
-        }
+      g_free (priv->old_status_text);
+      priv->old_status_text =
+        g_strdup (clutter_text_get_text (CLUTTER_TEXT (text)));
 
-      /* styling */
-      if (entry->priv->is_active)
-        nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
-      else
-        {
-          if (entry->priv->in_hover)
-            nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "hover");
-          else
-            nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), NULL);
-        }
+      clutter_actor_set_reactive (text, TRUE);
+
+      clutter_text_set_editable (CLUTTER_TEXT (text), TRUE);
+      clutter_text_set_activatable (CLUTTER_TEXT (text), TRUE);
+      clutter_text_set_text (CLUTTER_TEXT (text), "");
+
+      clutter_actor_hide (priv->service_label);
+      clutter_actor_show (priv->cancel_icon);
+
+      clutter_actor_grab_key_focus (priv->status_entry);
+
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
+    }
+  else
+    {
+      nbtk_button_set_label (NBTK_BUTTON (priv->button), "Edit");
+
+      clutter_actor_set_reactive (text, FALSE);
+
+      clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
+      clutter_text_set_activatable (CLUTTER_TEXT (text), FALSE);
+
+      clutter_actor_show (priv->service_label);
+      clutter_actor_hide (priv->cancel_icon);
+
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "hover");
+
+      g_free (priv->old_status_text);
+      priv->old_status_text = NULL;
+
+      g_signal_emit (entry, entry_signals[STATUS_CHANGED], 0,
+                     clutter_text_get_text (CLUTTER_TEXT (text)));
     }
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
