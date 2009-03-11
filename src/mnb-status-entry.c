@@ -10,7 +10,8 @@
 #include "mnb-status-entry.h"
 #include "marshal.h"
 
-#define H_PADDING       (6.0)
+#define H_PADDING               (6.0)
+#define CANCEL_ICON_SIZE        (22)
 
 #define MNB_STATUS_ENTRY_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_STATUS_ENTRY, MnbStatusEntryPrivate))
 
@@ -18,10 +19,12 @@ struct _MnbStatusEntryPrivate
 {
   ClutterActor *status_entry;
   ClutterActor *service_label;
+  ClutterActor *cancel_icon;
   ClutterActor *button;
 
   gchar *service_name;
   gchar *status_text;
+  gchar *old_status_text;
   gchar *status_time;
 
   NbtkPadding padding;
@@ -40,6 +43,7 @@ enum
 enum
 {
   STATUS_CHANGED,
+  UPDATE_CANCELLED,
 
   LAST_SIGNAL
 };
@@ -47,6 +51,36 @@ enum
 static guint entry_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (MnbStatusEntry, mnb_status_entry, NBTK_TYPE_WIDGET);
+
+static void
+on_cancel_clicked (NbtkButton *button,
+                   MnbStatusEntry *entry)
+{
+  MnbStatusEntryPrivate *priv = entry->priv;
+  ClutterActor *text;
+
+  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
+
+  nbtk_button_set_label (NBTK_BUTTON (priv->button), "Edit");
+
+  clutter_actor_set_reactive (text, FALSE);
+
+  clutter_text_set_text (CLUTTER_TEXT (text), priv->old_status_text);
+  clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
+  clutter_text_set_activatable (CLUTTER_TEXT (text), FALSE);
+
+  clutter_actor_show (priv->service_label);
+  clutter_actor_hide (priv->cancel_icon);
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "hover");
+
+  g_free (priv->old_status_text);
+  priv->old_status_text = NULL;
+
+  priv->is_active = FALSE;
+
+  g_signal_emit (entry, entry_signals[UPDATE_CANCELLED], 0);
+}
 
 static void
 on_button_clicked (NbtkButton *button,
@@ -61,13 +95,18 @@ on_button_clicked (NbtkButton *button,
     {
       nbtk_button_set_label (NBTK_BUTTON (priv->button), "Post");
 
+      g_free (priv->old_status_text);
+      priv->old_status_text =
+        g_strdup (clutter_text_get_text (CLUTTER_TEXT (text)));
+
       clutter_actor_set_reactive (text, TRUE);
 
       clutter_text_set_editable (CLUTTER_TEXT (text), TRUE);
       clutter_text_set_activatable (CLUTTER_TEXT (text), TRUE);
-      clutter_text_set_text (CLUTTER_TEXT (text), priv->status_text);
+      clutter_text_set_text (CLUTTER_TEXT (text), "");
 
       clutter_actor_hide (priv->service_label);
+      clutter_actor_show (priv->cancel_icon);
 
       clutter_actor_grab_key_focus (priv->status_entry);
 
@@ -85,8 +124,12 @@ on_button_clicked (NbtkButton *button,
       clutter_text_set_activatable (CLUTTER_TEXT (text), FALSE);
 
       clutter_actor_show (priv->service_label);
+      clutter_actor_hide (priv->cancel_icon);
 
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "active");
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), "hover");
+
+      g_free (priv->old_status_text);
+      priv->old_status_text = NULL;
 
       priv->is_active = FALSE;
 
@@ -151,6 +194,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   ClutterUnit natural_width, natural_height;
   ClutterUnit button_width, button_height;
   ClutterUnit service_width, service_height;
+  ClutterUnit icon_width, icon_height;
   ClutterUnit text_width, text_height;
   NbtkPadding border = { 0, };
   ClutterActorBox child_box = { 0, };
@@ -193,14 +237,23 @@ mnb_status_entry_allocate (ClutterActor          *actor,
 
   /* layout
    *
-   * +------------------------------------------------+
-   * | +---------------------+-------------+--------+ |
-   * | |xxxxxxxxxxxxxxxxx... |xxxxxxxxxxxxx| xxxxxx | |
-   * | +---------------------+-------------+--------+ |
-   * +------------------------------------------------+
+   * +----------------------------------------------------+
+   * | +---------------------+-------------+---+--------+ |
+   * | |xxxxxxxxxxxxxxxxx... |xxxxxxxxxxxxx| X | xxxxxx | |
+   * | +---------------------+-------------+---+--------+ |
+   * +----------------------------------------------------+
    *
-   *    status               | service     | button
+   *    status               | service     |   | button
    */
+
+  icon_height = CANCEL_ICON_SIZE;
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+    clutter_actor_get_preferred_width (priv->cancel_icon,
+                                       icon_height,
+                                       NULL,
+                                       &icon_width);
+  else
+    icon_width = 0;
 
   clutter_actor_get_preferred_width (priv->service_label,
                                      available_height,
@@ -211,7 +264,8 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   text_width = (int) (available_width
              - button_width
              - service_width
-             - (2 * H_PADDING));
+             - icon_width
+             - (3 * H_PADDING));
 
   clutter_actor_get_preferred_height (priv->status_entry, text_width,
                                       NULL,
@@ -228,11 +282,27 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                - (border.right + priv->padding.right)
                - button_width
                - H_PADDING
+               - icon_width
+               - H_PADDING
                - service_width);
   child_box.y1 = (int) (border.top + priv->padding.top);
   child_box.x2 = (int) (child_box.x1 + service_width);
   child_box.y2 = (int) (child_box.y1 + text_height);
   clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
+
+  /* cancel icon */
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+    {
+      child_box.x1 = (int) (available_width
+                   - (border.right + priv->padding.right)
+                   - button_width
+                   - H_PADDING
+                   - icon_width);
+      child_box.y1 = (int) (border.top + priv->padding.top);
+      child_box.x2 = (int) (child_box.x1 + icon_width);
+      child_box.y2 = (int) (child_box.y1 + text_height);
+      clutter_actor_allocate (priv->cancel_icon, &child_box, origin_changed);
+    }
 
   /* button */
   child_box.x1 = (int) (available_width
@@ -257,6 +327,9 @@ mnb_status_entry_paint (ClutterActor *actor)
   if (priv->service_label && CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
     clutter_actor_paint (priv->service_label);
 
+  if (priv->cancel_icon && CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+    clutter_actor_paint (priv->cancel_icon);
+
   if (priv->button && CLUTTER_ACTOR_IS_VISIBLE (priv->button))
     clutter_actor_paint (priv->button);
 }
@@ -275,6 +348,9 @@ mnb_status_entry_pick (ClutterActor       *actor,
 
   if (priv->service_label && clutter_actor_should_pick_paint (priv->service_label))
     clutter_actor_paint (priv->service_label);
+
+  if (priv->cancel_icon && clutter_actor_should_pick_paint (priv->cancel_icon))
+    clutter_actor_paint (priv->cancel_icon);
 
   if (priv->button && clutter_actor_should_pick_paint (priv->button))
     clutter_actor_paint (priv->button);
@@ -309,7 +385,9 @@ mnb_status_entry_finalize (GObject *gobject)
   g_free (priv->service_name);
   g_free (priv->status_text);
   g_free (priv->status_time);
+  g_free (priv->old_status_text);
 
+  clutter_actor_destroy (priv->cancel_icon);
   clutter_actor_destroy (priv->service_label);
   clutter_actor_destroy (priv->status_entry);
   clutter_actor_destroy (priv->button);
@@ -409,6 +487,14 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
                   moblin_netbook_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
+  entry_signals[UPDATE_CANCELLED] =
+    g_signal_new ("update-cancelled",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbStatusEntryClass, update_cancelled),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -438,6 +524,31 @@ mnb_status_entry_init (MnbStatusEntry *self)
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_use_markup (CLUTTER_TEXT (text), FALSE);
+
+  {
+    ClutterActor *cancel_icon = NULL;
+    ClutterColor cancel_icon_color = { 255, 255, 255, 0 };
+
+    cancel_icon = clutter_rectangle_new ();
+    clutter_rectangle_set_color (CLUTTER_RECTANGLE (cancel_icon),
+                                 &cancel_icon_color);
+    clutter_actor_set_size (cancel_icon,
+                            CANCEL_ICON_SIZE,
+                            CANCEL_ICON_SIZE);
+
+    priv->cancel_icon = CLUTTER_ACTOR (nbtk_button_new ());
+    nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->cancel_icon),
+                                      "MnbStatusEntryCancel");
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->cancel_icon),
+                                 cancel_icon);
+
+    clutter_actor_hide (priv->cancel_icon);
+    clutter_actor_set_reactive (priv->cancel_icon, TRUE);
+    clutter_actor_set_parent (priv->cancel_icon, CLUTTER_ACTOR (self));
+    g_signal_connect (priv->cancel_icon, "clicked",
+                      G_CALLBACK (on_cancel_clicked),
+                      self);
+  }
 
   priv->button = CLUTTER_ACTOR (nbtk_button_new_with_label ("Edit"));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
@@ -491,9 +602,15 @@ mnb_status_entry_set_is_active (MnbStatusEntry *entry,
       entry->priv->is_active = is_active;
 
       if (entry->priv->is_active)
-        clutter_actor_hide (entry->priv->service_label);
+        {
+          clutter_actor_hide (entry->priv->service_label);
+          clutter_actor_hide (entry->priv->cancel_icon);
+        }
       else
-        clutter_actor_show (entry->priv->service_label);
+        {
+          clutter_actor_show (entry->priv->service_label);
+          clutter_actor_show (entry->priv->cancel_icon);
+        }
 
       /* styling */
       if (entry->priv->is_active)
@@ -506,6 +623,8 @@ mnb_status_entry_set_is_active (MnbStatusEntry *entry,
             nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (entry), NULL);
         }
     }
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
 }
 
 gboolean
@@ -570,6 +689,8 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
   text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->service_label));
   clutter_text_set_markup (CLUTTER_TEXT (text), service_line);
   g_free (service_line);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
 }
 
 G_CONST_RETURN gchar *
