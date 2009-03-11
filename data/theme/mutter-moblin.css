@@ -20,9 +20,14 @@ NbtkButton:active {
   color: #333;
 }
 
+NbtkScrollView {
+  xthickness: 26;
+  ythickness: 26;
+}
+
 NbtkScrollBar {
   background-color: #e7ebee;
-  padding: 2;
+  padding: 3;
 }
 
 NbtkScrollBar > *#backward-stepper {
@@ -350,6 +355,7 @@ MnbDropDown, MnbSwitcher {
 
 *#app-launcher-vbox {
   background-color: #ffff;
+  padding: 5;
 }
 
 *#app-launcher-search-label {

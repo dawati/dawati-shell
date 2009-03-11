@@ -390,7 +390,7 @@ make_table (MutterPlugin  *self,
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
                                             generic_name, description, last_used);
           g_free (last_used);
-          clutter_actor_set_width (CLUTTER_ACTOR (button), 236);
+          clutter_actor_set_width (CLUTTER_ACTOR (button), 235);
           nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
                                       1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
 
@@ -479,7 +479,6 @@ make_launcher (MutterPlugin *plugin,
   vbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "app-launcher-vbox");
   nbtk_table_set_row_spacing (NBTK_TABLE (vbox), WIDGET_SPACING);
-  nbtk_widget_set_padding (NBTK_WIDGET (vbox), &padding);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
 
   /* 1st row: Filter. */
