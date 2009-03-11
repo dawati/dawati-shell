@@ -750,7 +750,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
   while (l)
     {
       ClutterActor  *ws = l->data;
-      gchar         *s = g_strdup_printf ("Zone %d", ws_count + 1);
+      gchar         *s = g_strdup_printf (_("Zone %d"), ws_count + 1);
       ClutterActor  *cell;
 
       struct ws_grid_cb_data * wsg_data =
@@ -884,7 +884,7 @@ show_workspace_chooser (MutterPlugin *plugin,
   clutter_actor_set_size (frame, 0, 0);
 
   label = clutter_text_new_full ("Sans 9",
-                                  "Choose space for application:", &label_clr);
+                                 _("Choose zone for application:"), &label_clr);
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;
 
