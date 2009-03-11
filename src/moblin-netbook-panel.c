@@ -533,7 +533,7 @@ make_panel (MutterPlugin *plugin, gint width)
 
   make_toolbar_button (plugin, panel,
                        "spaces-button",
-                       "spaces",
+                       "zones",
                        MNBK_CONTROL_SPACES,
                        PANEL_PAGE_SPACES);
 
