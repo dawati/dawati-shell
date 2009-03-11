@@ -270,6 +270,11 @@ dnd_begin_cb (NbtkWidget   *table,
 
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 60.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0x4f);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace),
+                          "switcher-workspace-new-active");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label),
+                          "workspace-title-new-active");
 }
 
 static void
@@ -286,6 +291,9 @@ dnd_end_cb (NbtkWidget   *table,
 
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0xff);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
 }
 
 static gint
@@ -756,9 +764,9 @@ dnd_new_enter_cb (NbtkWidget   *table,
   MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
 
   clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace),
-                          "switcher-workspace-new-active");
+                          "switcher-workspace-new-over");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label),
-                          "switcher-workspace-new-active");
+                          "workspace-title-new-over");
 }
 
 static void
