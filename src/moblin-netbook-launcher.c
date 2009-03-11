@@ -48,8 +48,8 @@
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48
 #define PADDING 8
-#define BORDER_WIDTH 4
 #define N_COLS 4
+#define LAUNCHER_WIDTH 236
 
 /* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
 static int
@@ -356,28 +356,28 @@ static ClutterActor *
 make_table (MutterPlugin  *self,
             const gchar   *filter_key)
 {
-  ClutterActor  *table;
+  ClutterActor  *grid;
   GSList *apps, *a;
   GtkIconTheme  *theme;
   entry_data_t  *entry_data;
-  gint           row, col;
 
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING)};
 
-  table = CLUTTER_ACTOR (nbtk_table_new ());
-  nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
-  clutter_actor_set_name (table, "app-launcher-table");
+  grid = nbtk_grid_new ();
+  clutter_actor_set_width (grid, 4 * LAUNCHER_WIDTH + 5 * PADDING);
+  nbtk_widget_set_padding (NBTK_WIDGET (grid), &padding);
+  clutter_actor_set_name (grid, "app-launcher-table");
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (table), PADDING);
-  nbtk_table_set_row_spacing (NBTK_TABLE (table), PADDING);
+  nbtk_grid_set_row_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
+  nbtk_grid_set_column_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
 
   apps = get_all_applications ();
   theme = gtk_icon_theme_get_default ();
 
-  for (a = apps, row = 0, col = 0; a; a = a->next)
+  for (a = apps; a; a = a->next)
     {
       const gchar   *name, *description, *icon_file;
       gchar         *generic_name, *exec, *last_used;
@@ -406,7 +406,7 @@ make_table (MutterPlugin  *self,
         {
           NbtkWidget *button;
 
-          /* TODO robsta: read "last launched" from persist cache once we have that.
+          /* FIXME robsta: read "last launched" from persist cache once we have that.
            * For now approximate. */
           last_used = NULL;
           if (0 == stat (exec, &exec_stat) &&
@@ -420,9 +420,9 @@ make_table (MutterPlugin  *self,
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
                                             generic_name, description, last_used);
           g_free (last_used);
-          clutter_actor_set_width (CLUTTER_ACTOR (button), 235);
-          nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
-                                      1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
+          clutter_actor_set_width (CLUTTER_ACTOR (button), LAUNCHER_WIDTH);
+          clutter_container_add (CLUTTER_CONTAINER (grid),
+                                 CLUTTER_ACTOR (button), NULL);
 
           entry_data = g_new (entry_data_t, 1);
           entry_data->exec = exec;
@@ -430,13 +430,6 @@ make_table (MutterPlugin  *self,
           g_signal_connect_data (button, "activated",
                                  G_CALLBACK (launcher_activated_cb), entry_data,
                                  (GClosureNotify) entry_data_free, 0);
-
-          if (++col >= N_COLS)
-            {
-              col = 0;
-              ++row;
-            }
-
         }
       else
         {
@@ -447,7 +440,7 @@ make_table (MutterPlugin  *self,
       g_free (generic_name);
     }
 
-    return table;
+    return grid;
 }
 
 typedef struct
