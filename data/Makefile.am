@@ -104,6 +104,8 @@ dist_theme_notifiers_DATA = \
 theme_statusdir = $(pkgdatadir)/theme/status
 dist_theme_status_DATA = \
 	theme/status/decoration-frame.png \
+	theme/status/edit_close_hover.png \
+	theme/status/edit_close.png \
 	theme/status/entry-frame-hover.png \
 	theme/status/entry-frame-edit.png \
 	theme/status/no_image_icon.png

@@ -556,12 +556,25 @@ MnbStatusEntry:active
   color: #7dbe0cff;
 }
 
+*.MnbStatusEntryCancel
+{
+  border-image: none;
+  background-image: url("file://status/edit_close.png");
+}
+
+*.MnbStatusEntryCancel:hover
+{
+  border-image: none;
+  background-image: url("file://status/edit_close_hover.png");
+}
+
 *.MnbStatusEntryButton
 {
   border-image: none;
   color: #7dbe0cff;
   font-family: "Liberation Sans Bold";
   font-size: 13px;
+  padding: 0;
 }
 
 *.MnbStatusPageTable
