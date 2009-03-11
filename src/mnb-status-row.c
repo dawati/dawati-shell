@@ -561,3 +561,20 @@ mnb_status_row_new (const gchar *service_name)
                        "service-name", service_name,
                        NULL);
 }
+
+void
+mnb_status_row_force_update (MnbStatusRow *row)
+{
+  MnbStatusRowPrivate *priv;
+
+  g_return_if_fail (MNB_IS_STATUS_ROW (row));
+
+  priv = row->priv;
+
+  /* remove the timeout first, then update and reinstate it */
+  g_source_remove (priv->update_id);
+  priv->update_id = 0;
+
+  mnb_status_row_update (row);
+  priv->update_id = g_timeout_add_seconds (60 * 5, do_update_timeout, row);
+}

@@ -135,6 +135,23 @@ on_mojito_get_services (MojitoClient *client,
     }
 }
 
+static void
+on_drop_down_show_completed (MnbDropDown *drop_down,
+                             NbtkTable   *table)
+{
+  ClutterContainer *container = CLUTTER_CONTAINER (table);
+  GList *children, *l;
+
+  children = clutter_container_get_children (container);
+  for (l = children; l != NULL; l = l->next)
+    {
+      if (MNB_IS_STATUS_ROW (l->data))
+        mnb_status_row_force_update (l->data);
+    }
+
+  g_list_free (children);
+}
+
 ClutterActor *
 make_status (MutterPlugin *plugin, gint width)
 {
@@ -164,6 +181,9 @@ make_status (MutterPlugin *plugin, gint width)
 
   drop_down = mnb_drop_down_new ();
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
+  g_signal_connect (drop_down, "show-completed",
+                    G_CALLBACK (on_drop_down_show_completed),
+                    table);
 
   return CLUTTER_ACTOR (drop_down);
 }

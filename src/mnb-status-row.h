@@ -32,6 +32,8 @@ GType mnb_status_row_get_type (void);
 
 NbtkWidget *mnb_status_row_new (const gchar *service_name);
 
+void mnb_status_row_force_update (MnbStatusRow *row);
+
 G_END_DECLS
 
 #endif /* __MNB_STATUS_ROW_H__ */
