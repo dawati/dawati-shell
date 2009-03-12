@@ -255,6 +255,14 @@ mnb_entry_constructed (GObject *gobject)
 }
 
 static void
+mnb_entry_focus_in (ClutterActor *actor)
+{
+  MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
+
+  clutter_actor_grab_key_focus (priv->entry);
+}
+
+static void
 mnb_entry_class_init (MnbEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -272,6 +280,7 @@ mnb_entry_class_init (MnbEntryClass *klass)
   actor_class->get_preferred_width = mnb_entry_get_preferred_width;
   actor_class->get_preferred_height = mnb_entry_get_preferred_height;
   actor_class->allocate = mnb_entry_allocate;
+  actor_class->focus_in = mnb_entry_focus_in;
   actor_class->paint = mnb_entry_paint;
   actor_class->pick = mnb_entry_pick;
 

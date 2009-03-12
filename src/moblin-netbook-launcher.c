@@ -488,6 +488,13 @@ search_activated_cb (MnbEntry       *entry,
                              key);
 }
 
+static void
+dropdown_show_cb (MnbDropDown   *dropdown,
+                  ClutterActor  *filter_entry)
+{
+  clutter_actor_grab_key_focus (filter_entry);
+}
+
 ClutterActor *
 make_launcher (MutterPlugin *plugin,
                gint          width,
@@ -532,6 +539,8 @@ make_launcher (MutterPlugin *plugin,
                               0, 1, 1, 1,
                               0,
                               0., 0.5);
+  g_signal_connect (drop_down, "show-completed",
+                    G_CALLBACK (dropdown_show_cb), entry);
 
   viewport = nbtk_viewport_new ();
   /* Add launcher table. */
