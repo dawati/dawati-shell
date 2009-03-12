@@ -40,6 +40,12 @@
 
 #define PANEL_X_PADDING 4
 
+struct button_data
+{
+  MutterPlugin *plugin;
+  MnbkControl   control;
+};
+
 static void toggle_buttons_cb (NbtkButton *button, gpointer data);
 
 /*
@@ -124,6 +130,15 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
 
   if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
     {
+      /* make sure no buttons are 'active' */
+      struct button_data button_data;
+      NbtkButton *button = priv->panel_buttons[(guint)panel_data->control-1];
+
+      button_data.control = panel_data->control;
+      button_data.plugin  = plugin;
+      toggle_buttons_cb (button, &button_data);
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (button), "active");
+
       /*
        * Must reset the y in case a previous animation ended prematurely
        * and the y is not set correctly; see bug 900.
@@ -136,12 +151,6 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
 
   g_free (data);
 }
-
-struct button_data
-{
-  MutterPlugin *plugin;
-  MnbkControl   control;
-};
 
 static void
 show_panel_maybe_control (MutterPlugin *plugin,
@@ -255,7 +264,11 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
 
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     if (priv->panel_buttons[i] != (ClutterActor*)button)
-      nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
+      {
+        nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
+        nbtk_widget_set_style_pseudo_class (NBTK_WIDGET(priv->panel_buttons[i]),
+                                            NULL);
+      }
 
   if (control != MNBK_CONTROL_UNKNOWN)
     {
