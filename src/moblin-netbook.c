@@ -1986,19 +1986,31 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  if (priv->in_alt_grab &&
-      xev->type == KeyRelease &&
-      XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) == XK_Alt_L)
+  if (priv->in_alt_grab)
     {
-      MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
-      MetaDisplay *display = meta_screen_get_display (screen);
+      if (xev->type == KeyRelease &&
+          XKeycodeToKeysym (xev->xkey.display,
+                            xev->xkey.keycode, 0) == XK_Alt_L)
+        {
+          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+          MetaDisplay *display = meta_screen_get_display (screen);
 
-      meta_display_end_grab_op (display, xev->xkey.time);
-      priv->in_alt_grab = FALSE;
+          meta_display_end_grab_op (display, xev->xkey.time);
+          priv->in_alt_grab = FALSE;
 
-      mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
-                                       xev->xkey.time);
-      return TRUE;
+          mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
+                                           xev->xkey.time);
+          return TRUE;
+        }
+
+      /*
+       * Block processing of pointer events by clutter. We do not want the
+       * user to be doing stuff like d&d, etc., while in grab mode.
+       */
+      if (xev->type == ButtonPress   ||
+          xev->type == ButtonRelease ||
+          xev->type == MotionNotify)
+        return TRUE;
     }
 
   if (xev->type == KeyPress &&
