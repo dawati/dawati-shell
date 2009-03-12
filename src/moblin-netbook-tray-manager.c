@@ -689,10 +689,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
                                       TRAY_BUTTON_WIDTH,
                                       PANEL_HEIGHT);
 
-  g_object_set (G_OBJECT (button),
-                "transition-type", NBTK_TRANSITION_BOUNCE,
-                "transition-duration", 500, NULL);
-
   clutter_container_add_actor (CLUTTER_CONTAINER (button), icon);
 
   clutter_actor_set_size (icon, 24, 24);

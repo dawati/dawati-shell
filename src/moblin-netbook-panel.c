@@ -304,10 +304,6 @@ panel_append_toolbar_button (MutterPlugin  *plugin,
   clutter_container_add_actor (CLUTTER_CONTAINER (container),
                                CLUTTER_ACTOR (button));
 
-  g_object_set (G_OBJECT (button),
-                "transition-type", NBTK_TRANSITION_BOUNCE,
-                "transition-duration", 500, NULL);
-
   g_signal_connect_data (button, "clicked", G_CALLBACK (toggle_buttons_cb),
                          button_data, (GClosureNotify)g_free, 0);
 
