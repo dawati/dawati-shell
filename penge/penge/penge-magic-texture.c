@@ -12,7 +12,7 @@ penge_magic_texture_paint (ClutterActor *actor)
   gint bw, bh;
   gint aw, ah;
   float v;
-  ClutterFixed tx1, tx2, ty1, ty2;
+  float tx1, tx2, ty1, ty2;
   ClutterColor col = { 0xff, 0xff, 0xff, 0xff };
 
   clutter_actor_get_allocation_box (actor, &box);
@@ -30,16 +30,16 @@ penge_magic_texture_paint (ClutterActor *actor)
     /* fit width */
     v = (((float)ah * bw) / ((float)aw * bh)) / 2;
     tx1 = 0;
-    tx2 = CLUTTER_INT_TO_FIXED (1);
-    ty1 = CLUTTER_FLOAT_TO_FIXED (0.5 - v);
-    ty2 = CLUTTER_FLOAT_TO_FIXED (0.5 + v);
+    tx2 = 1;
+    ty1 = (0.5 - v);
+    ty2 = (0.5 + v);
   } else {
     /* fit height */
     v = (((float)aw * bh) / ((float)ah * bw)) / 2;
-    tx1 = CLUTTER_FLOAT_TO_FIXED (0.5 - v);
-    tx2 = CLUTTER_FLOAT_TO_FIXED (0.5 + v);
+    tx1 = (0.5 - v);
+    tx2 = (0.5 + v);
     ty1 = 0;
-    ty2 = CLUTTER_INT_TO_FIXED (1);
+    ty2 = 1;
   }
 
   col.alpha = clutter_actor_get_paint_opacity (actor);

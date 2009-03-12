@@ -45,11 +45,11 @@
 #include "mnb-entry.h"
 #include "mnb-launcher-button.h"
 
-#define VBOX_ROW_SPACING 5
+#define WIDGET_SPACING 5
 #define ICON_SIZE 48
 #define PADDING 8
-#define BORDER_WIDTH 4
 #define N_COLS 4
+#define LAUNCHER_WIDTH 235
 
 /* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
 static int
@@ -283,71 +283,61 @@ bail:
   return generic_name;
 }
 
-static gboolean
-filter_launcher (const gchar *filter_key,
-                 const gchar *name,
-                 const gchar *generic_name,
-                 const gchar *description)
+/*
+ * Get executable from menu entry and check it's available in the path.
+ * Returns: absolute path if found, otherwise NULL.
+ */
+static gchar *
+get_exec (GMenuTreeEntry *entry)
 {
-  if (!filter_key || strlen (filter_key) == 0)
-    return TRUE;
+  const gchar  *exec;
+  gint          argc;
+  gchar       **argv;
+  GError       *error;
 
-  if (name)
+  exec = gmenu_tree_entry_get_exec (entry);
+  if (!exec)
+    return NULL;
+
+  error = NULL;
+  if (g_shell_parse_argv (exec, &argc, &argv, &error))
     {
-      gchar *name_key = g_utf8_strdown (name, -1);
-      gboolean is_matching = (gboolean) strstr (name_key, filter_key);
-      g_free (name_key);
-      if (is_matching)
-        return TRUE;
+      char *binary = g_find_program_in_path (argv[0]);
+      g_strfreev (argv);
+      return binary;
     }
 
-  if (generic_name)
-    {
-      gchar *generic_name_key = g_utf8_strdown (generic_name, -1);
-      gboolean is_matching = (gboolean) strstr (generic_name_key, filter_key);
-      g_free (generic_name_key);
-      if (is_matching)
-        return TRUE;
-    }
+  g_warning ("%s", error->message);
+  g_error_free (error);
 
-  if (description)
-    {
-      gchar *description_key = g_utf8_strdown (description, -1);
-      gboolean is_matching = (gboolean) strstr (description_key, filter_key);
-      g_free (description_key);
-      if (is_matching)
-        return TRUE;
-    }
-
-    return FALSE;
+  return NULL;
 }
 
-static ClutterActor *
-make_table (MutterPlugin  *self,
-            const gchar   *filter_key)
+static NbtkGrid *
+make_table (MutterPlugin  *self)
 {
-  ClutterActor  *table;
+  ClutterActor  *grid;
   GSList *apps, *a;
   GtkIconTheme  *theme;
   entry_data_t  *entry_data;
-  gint           row, col;
 
   NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING)};
 
-  table = CLUTTER_ACTOR (nbtk_table_new ());
-  nbtk_widget_set_padding (NBTK_WIDGET (table), &padding);
-  clutter_actor_set_name (table, "app-launcher-table");
+  grid = nbtk_grid_new ();
+  clutter_actor_set_width (grid, 4 * LAUNCHER_WIDTH + 5 * PADDING);
+  nbtk_widget_set_padding (NBTK_WIDGET (grid), &padding);
+  clutter_actor_set_name (grid, "app-launcher-table");
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (table), PADDING);
-  nbtk_table_set_row_spacing (NBTK_TABLE (table), PADDING);
+  nbtk_grid_set_row_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
+  nbtk_grid_set_column_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
 
   apps = get_all_applications ();
   theme = gtk_icon_theme_get_default ();
 
-  for (a = apps, row = 0, col = 0; a; a = a->next)
+  for (a = apps; a; a = a->next)
     {
       const gchar   *name, *description, *icon_file;
       gchar         *generic_name, *exec, *last_used;
@@ -360,7 +350,7 @@ make_table (MutterPlugin  *self,
       icon_file = NULL;
 
       generic_name = get_generic_name (entry);
-      exec = g_find_program_in_path (gmenu_tree_entry_get_exec (entry));
+      exec = get_exec (entry);
       name = gmenu_tree_entry_get_icon (entry);
       description = gmenu_tree_entry_get_comment (entry);
 
@@ -371,12 +361,11 @@ make_table (MutterPlugin  *self,
       if (info)
         icon_file = gtk_icon_info_get_filename (info);
 
-      if (generic_name && exec && icon_file &&
-          filter_launcher (filter_key, name, generic_name, description))
+      if (generic_name && exec && icon_file)
         {
           NbtkWidget *button;
 
-          /* TODO robsta: read "last launched" from persist cache once we have that.
+          /* FIXME robsta: read "last launched" from persist cache once we have that.
            * For now approximate. */
           last_used = NULL;
           if (0 == stat (exec, &exec_stat) &&
@@ -390,9 +379,9 @@ make_table (MutterPlugin  *self,
           button = mnb_launcher_button_new (icon_file, ICON_SIZE,
                                             generic_name, description, last_used);
           g_free (last_used);
-          clutter_actor_set_width (CLUTTER_ACTOR (button), 236);
-          nbtk_table_add_widget_full (NBTK_TABLE (table), button, row, col,
-                                      1, 1, NBTK_KEEP_ASPECT_RATIO, 0, 0);
+          clutter_actor_set_width (CLUTTER_ACTOR (button), LAUNCHER_WIDTH);
+          clutter_container_add (CLUTTER_CONTAINER (grid),
+                                 CLUTTER_ACTOR (button), NULL);
 
           entry_data = g_new (entry_data_t, 1);
           entry_data->exec = exec;
@@ -400,13 +389,6 @@ make_table (MutterPlugin  *self,
           g_signal_connect_data (button, "activated",
                                  G_CALLBACK (launcher_activated_cb), entry_data,
                                  (GClosureNotify) entry_data_free, 0);
-
-          if (++col >= N_COLS)
-            {
-              col = 0;
-              ++row;
-            }
-
         }
       else
         {
@@ -417,45 +399,98 @@ make_table (MutterPlugin  *self,
       g_free (generic_name);
     }
 
-    return table;
+    return NBTK_GRID (grid);
+}
+
+static void
+filter_cb (ClutterActor *actor,
+           const gchar *filter_key)
+{
+  MnbLauncherButton *button;
+  const char        *title;
+  const char        *description;
+  const char        *comment;
+
+  button = MNB_LAUNCHER_BUTTON (actor);
+  g_return_if_fail (button);
+
+  /* Show all? */
+  if (!filter_key || strlen (filter_key) == 0)
+    {
+      clutter_actor_show (CLUTTER_ACTOR (button));
+      return;
+    }
+
+  title = mnb_launcher_button_get_title (button);
+  if (title)
+    {
+      gchar *title_key = g_utf8_strdown (title, -1);
+      gboolean is_matching = (gboolean) strstr (title_key, filter_key);
+      g_free (title_key);
+      if (is_matching)
+        {
+          clutter_actor_show (CLUTTER_ACTOR (button));
+          return;
+        }
+    }
+
+  description = mnb_launcher_button_get_description (button);
+  if (description)
+    {
+      gchar *description_key = g_utf8_strdown (description, -1);
+      gboolean is_matching = (gboolean) strstr (description_key, filter_key);
+      g_free (description_key);
+      if (is_matching)
+        {
+          clutter_actor_show (CLUTTER_ACTOR (button));
+          return;
+        }
+    }
+
+  comment = mnb_launcher_button_get_comment (button);
+  if (comment)
+    {
+      gchar *comment_key = g_utf8_strdown (comment, -1);
+      gboolean is_matching = (gboolean) strstr (comment_key, filter_key);
+      g_free (comment_key);
+      if (is_matching)
+        {
+          clutter_actor_show (CLUTTER_ACTOR (button));
+          return;
+        }
+    }
+
+  /* No match. */
+  clutter_actor_hide (CLUTTER_ACTOR (button));
 }
 
 typedef struct
 {
   MutterPlugin  *plugin;
-  NbtkViewport  *viewport;
+  NbtkGrid      *grid;
 } search_data_t;
 
 static void
 search_activated_cb (MnbEntry       *entry,
                      search_data_t  *data)
 {
-  ClutterActor  *launcher_table;
-  GList         *children, *child;
-  gchar         *filter, *key;
+  gchar *filter, *key;
 
   filter = NULL;
   g_object_get (entry, "text", &filter, NULL);
   key = g_utf8_strdown (filter, -1);
   g_free (filter), filter = NULL;
 
-  /* Create new table. */
-  launcher_table = make_table (data->plugin, key);
-  g_free (key), key = NULL;
+  clutter_container_foreach (CLUTTER_CONTAINER (data->grid),
+                             (ClutterCallback) filter_cb,
+                             key);
+}
 
-  /* Remove old table. */
-  children = clutter_container_get_children (CLUTTER_CONTAINER (data->viewport));
-  for (child = children; child; child = child->next)
-    {
-      clutter_container_remove (CLUTTER_CONTAINER (data->viewport),
-                                CLUTTER_ACTOR (child->data), NULL);
-    }
-  if (children)
-    g_list_free (children);
-
-  /* Add new table. */
-  clutter_container_add (CLUTTER_CONTAINER (data->viewport),
-                         launcher_table, NULL);
+static void
+dropdown_show_cb (MnbDropDown   *dropdown,
+                  ClutterActor  *filter_entry)
+{
+  clutter_actor_grab_key_focus (filter_entry);
 }
 
 ClutterActor *
@@ -464,41 +499,61 @@ make_launcher (MutterPlugin *plugin,
                gint          height)
 {
   ClutterActor  *viewport, *scroll;
-  NbtkWidget    *vbox, *entry, *drop_down;
+  NbtkWidget    *vbox, *hbox, *label, *entry, *drop_down;
   search_data_t *search_data;
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
-                            0, 0, 0};
+
+  NbtkPadding    hbox_padding = { CLUTTER_UNITS_FROM_INT (PADDING),
+                                  CLUTTER_UNITS_FROM_INT (PADDING),
+                                  CLUTTER_UNITS_FROM_INT (PADDING),
+                                  CLUTTER_UNITS_FROM_INT (PADDING)};
+
 
   drop_down = mnb_drop_down_new ();
 
   vbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "app-launcher-vbox");
-  nbtk_table_set_row_spacing (NBTK_TABLE (vbox), VBOX_ROW_SPACING);
-  nbtk_widget_set_padding (NBTK_WIDGET (vbox), &padding);
+  nbtk_table_set_row_spacing (NBTK_TABLE (vbox), WIDGET_SPACING);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
 
-  /* TODO Robsta: "Applications" label. */
-  entry = mnb_entry_new (_("Search"));
-  clutter_actor_set_width (CLUTTER_ACTOR (entry),
-                           CLUTTER_UNITS_FROM_DEVICE (640));
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), entry,
+  /* 1st row: Filter. */
+  hbox = nbtk_table_new ();
+  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), WIDGET_SPACING);
+  nbtk_table_add_widget (NBTK_TABLE (vbox), hbox, 0, 0);
+  nbtk_widget_set_padding (NBTK_WIDGET (hbox), &hbox_padding);
+
+  label = nbtk_label_new (_("Applications"));
+  clutter_actor_set_name (CLUTTER_ACTOR (label), "app-launcher-search-label");
+  nbtk_table_add_widget_full (NBTK_TABLE (hbox), label,
                               0, 0, 1, 1,
-                              NBTK_Y_EXPAND | NBTK_Y_FILL,
-                              0, 0.5);
+                              0,
+                              0., 0.5);
+
+  entry = mnb_entry_new (_("Search"));
+  clutter_actor_set_name (CLUTTER_ACTOR (entry), "app-launcher-search-entry");
+  clutter_actor_set_width (CLUTTER_ACTOR (entry),
+                           CLUTTER_UNITS_FROM_DEVICE (600));
+  nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry,
+                              0, 1, 1, 1,
+                              0,
+                              0., 0.5);
+  g_signal_connect (drop_down, "show-completed",
+                    G_CALLBACK (dropdown_show_cb), entry);
 
   viewport = nbtk_viewport_new ();
   /* Add launcher table. */
   search_data = g_new0 (search_data_t, 1);
   search_data->plugin = plugin;
-  search_data->viewport = NBTK_VIEWPORT (viewport);
-  search_activated_cb (MNB_ENTRY (entry), search_data);
+  search_data->grid = make_table (plugin);
+  clutter_container_add (CLUTTER_CONTAINER (viewport),
+                         CLUTTER_ACTOR (search_data->grid), NULL);
+
 
   scroll = nbtk_scroll_view_new ();
   clutter_container_add (CLUTTER_CONTAINER (scroll),
                          CLUTTER_ACTOR (viewport), NULL);
   clutter_actor_set_size (scroll,
                           width,
-                          height - clutter_actor_get_height (CLUTTER_ACTOR (entry)) - VBOX_ROW_SPACING);
+                          height - clutter_actor_get_height (CLUTTER_ACTOR (entry)) - WIDGET_SPACING);
   nbtk_table_add_widget_full (NBTK_TABLE (vbox), NBTK_WIDGET (scroll),
                               1, 0, 1, 1,
                               NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
@@ -508,6 +563,9 @@ make_launcher (MutterPlugin *plugin,
   g_signal_connect_data (entry, "button-clicked",
                          G_CALLBACK (search_activated_cb), search_data,
                          (GClosureNotify) g_free, 0);
+  /* `search_data' lifecycle is managed above. */
+  g_signal_connect (entry, "text-changed",
+                    G_CALLBACK (search_activated_cb), search_data);
 
   return CLUTTER_ACTOR (drop_down);
 }

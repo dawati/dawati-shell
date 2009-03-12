@@ -2,9 +2,20 @@
 m4_define([mutter_version], [2.25.55-0.1])
 m4_define([plugin_major_version], [0])
 m4_define([plugin_minor_version], [9])
-m4_define([plugin_micro_version], [0])
+m4_define([plugin_micro_version], [6])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
+
+m4_define([plugin_api_version], [1.0])
+
+# increase the interface age of 2 for each release
+# set to 0 if the API changes
+m4_define([plugin_interface_age], [0])
+m4_define([plugin_binary_age], [m4_eval(100 * plugin_minor_version + plugin_micro_version)])
+
+m4_define([lt_current], [m4_eval(100 * plugin_minor_version + plugin_micro_version - plugin_interface_age)])
+m4_define([lt_revision], [plugin_interface_age])
+m4_define([lt_age], [m4_eval(plugin_binary_age - plugin_interface_age)])
 
 AC_PREREQ(2.50)
 
@@ -56,7 +67,14 @@ PKG_CHECK_MODULES(GTK, gtk+-2.0)
 MUTTER_PLUGIN_DIR=$($PKG_CONFIG metacity-plugins --variable=mutterplugindir)
 AC_SUBST(MUTTER_PLUGIN_DIR)
 
-PLUGIN_LT_LDFLAGS="-version-info plugin_major_version:plugin_minor_version:plugin_micro_version"
+PLUGIN_LT_CURRENT=lt_current
+PLUGIN_LT_REV=lt_revision
+PLUGIN_AGE=lt_age
+PLUGIN_LT_VERSION="$PLUGIN_LT_CURRENT:$PLUGIN_LT_REV:$PLUGIN_LT_AGE"
+
+PLUGIN_LT_LDFLAGS="-version-info $PLUGIN_LT_VERSION"
+
+AC_SUBST(PLUGIN_LT_VERSION)
 AC_SUBST(PLUGIN_LT_LDFLAGS)
 
 AC_OUTPUT([

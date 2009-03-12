@@ -39,7 +39,7 @@ libpenge_a_SOURCES = \
 		      penge-app-bookmark-manager.c \
 		      penge-apps-pane.c \
 		      penge-app-tile.c
-AM_CFLAGS = -Wall $(PENGE_CFLAGS) \
+AM_CFLAGS = -Wall -fPIC $(PENGE_CFLAGS) \
 	    -DPKG_DATADIR=\"$(pkgdatadir)\"
 AM_LDFLAGS = $(PENGE_LIBS)
 

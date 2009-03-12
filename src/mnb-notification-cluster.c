@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 2008 Intel Corp.
  *
- * Author: Thomas Wood <thomas@linux.intel.com>
+ * Author: Matthew Allum <mallum@linux.intel.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -138,10 +138,13 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
 
   if (priv->notifiers)
     {
-      *min_height 
-           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->notifiers));
-      *natural_height 
-           += clutter_actor_get_heightu (CLUTTER_ACTOR (priv->notifiers));
+      ClutterUnit m_height, p_height;
+
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
+                                          CLUSTER_WIDTH, &m_height, &p_height);
+
+      *min_height += m_height;
+      *natural_height += p_height;
     }
 
   if (priv->control && CLUTTER_ACTOR_IS_VISIBLE (priv->control))
@@ -187,12 +190,14 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
 
   if (priv->notifiers)
     {
-      ClutterActorBox notifier_box = { 
-        0,
-        0,
-        clutter_actor_get_width (CLUTTER_ACTOR(priv->notifiers)), 
-        clutter_actor_get_height (CLUTTER_ACTOR(priv->notifiers))
-      };
+      ClutterUnit m_height, p_height;
+      ClutterActorBox notifier_box = { 0, };
+
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
+                                          CLUSTER_WIDTH, &m_height, &p_height);
+
+      notifier_box.x2 = CLUTTER_UNITS_FROM_DEVICE (CLUSTER_WIDTH);
+      notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers), 
                               &notifier_box, origin_changed);
@@ -275,6 +280,17 @@ on_closed (MnbNotification *notification, MoblinNetbookNotifyStore *store)
 }
 
 static void
+on_action (MnbNotification *notification, 
+           gchar           *action,
+           MoblinNetbookNotifyStore *store)
+{
+  moblin_netbook_notify_store_action (store,
+                                      mnb_notification_get_id (notification), 
+                                      action);
+}
+
+
+static void
 on_control_appear_anim_completed (ClutterAnimation *anim,
                                   MnbNotificationCluster *cluster)
 {
@@ -296,7 +312,8 @@ on_notification_added (MoblinNetbookNotifyStore *store,
     {
       w = mnb_notification_new ();
       g_signal_connect (w, "closed", G_CALLBACK (on_closed), store);
-      
+      g_signal_connect (w, "action", G_CALLBACK (on_action), store);      
+
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), 
                                    CLUTTER_ACTOR(w));
       clutter_actor_hide (CLUTTER_ACTOR(w));
@@ -500,14 +517,17 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
               if (prev_height != new_height && priv->n_notifiers > 1)
                 {
-                  
+                  gint new_y;
+
+                  new_y = clutter_actor_get_y (CLUTTER_ACTOR(priv->control))
+                                 - (prev_height - new_height);
+             
+                  /* if (new_y < 0) new_y = 0; */
+     
                   clutter_actor_animate (CLUTTER_ACTOR(priv->control), 
                                          CLUTTER_EASE_IN_SINE,
                                          FADE_DURATION,
-                                         "y",
-                                         clutter_actor_get_y 
-                                           (CLUTTER_ACTOR(priv->control))
-                                             - (prev_height - new_height),
+                                         "y", new_y,
                                          NULL);
                 }
             }

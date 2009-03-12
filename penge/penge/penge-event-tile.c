@@ -12,18 +12,18 @@ typedef struct _PengeEventTilePrivate PengeEventTilePrivate;
 
 struct _PengeEventTilePrivate {
   JanaEvent *event;
-  JanaTime *today;
+  JanaTime *time;
 
   NbtkWidget *time_label;
   NbtkWidget *summary_label;
-  NbtkWidget *location_label;
+  NbtkWidget *details_label;
 };
 
 enum
 {
   PROP_0,
   PROP_EVENT,
-  PROP_TODAY
+  PROP_TIME
 };
 
 static void penge_event_tile_update (PengeEventTile *tile);
@@ -38,8 +38,8 @@ penge_event_tile_get_property (GObject *object, guint property_id,
     case PROP_EVENT:
       g_value_set_object (value, priv->event);
       break;
-    case PROP_TODAY:
-      g_value_set_object (value, priv->today);
+    case PROP_TIME:
+      g_value_set_object (value, priv->time);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -61,11 +61,11 @@ penge_event_tile_set_property (GObject *object, guint property_id,
 
       penge_event_tile_update ((PengeEventTile *)object);
       break;
-    case PROP_TODAY:
-      if (priv->today)
-        g_object_unref (priv->today);
+    case PROP_TIME:
+      if (priv->time)
+        g_object_unref (priv->time);
 
-      priv->today = g_value_dup_object (value);
+      priv->time = g_value_dup_object (value);
 
       penge_event_tile_update ((PengeEventTile *)object);
       break;
@@ -85,10 +85,10 @@ penge_event_tile_dispose (GObject *object)
     priv->event = NULL;
   }
 
-  if (priv->today)
+  if (priv->time)
   {
-    g_object_unref (priv->today);
-    priv->today = NULL;
+    g_object_unref (priv->time);
+    priv->time = NULL;
   }
 
   G_OBJECT_CLASS (penge_event_tile_parent_class)->dispose (object);
@@ -120,12 +120,12 @@ penge_event_tile_class_init (PengeEventTileClass *klass)
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_EVENT, pspec);
 
-  pspec = g_param_spec_object ("today",
-                               "The day today",
-                               "The day today",
+  pspec = g_param_spec_object ("time",
+                               "The time now",
+                               "The time now",
                                JANA_TYPE_TIME,
                                G_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_TODAY, pspec);
+  g_object_class_install_property (object_class, PROP_TIME, pspec);
 }
 
 static gboolean
@@ -162,10 +162,10 @@ _leave_event_cb (ClutterActor *actor,
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
                                       NULL);
 
-  if (priv->today)
+  if (priv->time)
   {
     t = jana_event_get_start (priv->event);
-    if (jana_time_get_day (priv->today) != jana_time_get_day (t))
+    if (jana_time_get_day (priv->time) != jana_time_get_day (t))
     {
       time_str = jana_utils_strftime (t, "%a");
       nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
@@ -202,11 +202,11 @@ penge_event_tile_init (PengeEventTile *self)
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text), PANGO_ALIGN_LEFT);
 
-  priv->location_label = nbtk_label_new ("Location text");
-  nbtk_widget_set_alignment (priv->location_label, 0, 0.5);
-  nbtk_widget_set_style_class_name (priv->location_label,
-                                    "PengeEventLocation");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->location_label));
+  priv->details_label = nbtk_label_new ("Details text");
+  nbtk_widget_set_alignment (priv->details_label, 0, 0.5);
+  nbtk_widget_set_style_class_name (priv->details_label,
+                                    "PengeEventDetails");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text), PANGO_ALIGN_LEFT);
 
@@ -226,7 +226,7 @@ penge_event_tile_init (PengeEventTile *self)
                         0,
                         1);
   nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)priv->location_label,
+                        (ClutterActor *)priv->details_label,
                         1,
                         1);
 
@@ -238,7 +238,7 @@ penge_event_tile_init (PengeEventTile *self)
                                NULL);
 
   /* 
-   * Make the summary and location labels consume the remaining horizontal
+   * Make the summary and detail labels consume the remaining horizontal
    * space
    */
   clutter_container_child_set (CLUTTER_CONTAINER (self),
@@ -247,7 +247,7 @@ penge_event_tile_init (PengeEventTile *self)
                                TRUE,
                                NULL);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               (ClutterActor *)priv->location_label,
+                               (ClutterActor *)priv->details_label,
                                "x-expand",
                                TRUE,
                                NULL);
@@ -274,20 +274,29 @@ penge_event_tile_update (PengeEventTile *tile)
   PengeEventTilePrivate *priv = GET_PRIVATE (tile);
   gchar *time_str;
   gchar *summary_str;
-  gchar *location_str;
+  gchar *details_str;
   JanaTime *t;
 
   if (!priv->event)
     return;
 
-  if (priv->today)
+  if (priv->time)
   {
     t = jana_event_get_start (priv->event);
-    if (jana_time_get_day (priv->today) == jana_time_get_day (t))
+    if (jana_time_get_day (priv->time) == jana_time_get_day (t))
     {
       time_str = jana_utils_strftime (t, "%H:%M");
     } else {
       time_str = jana_utils_strftime (t, "%a");
+    }
+
+    if (jana_utils_time_compare (t, priv->time, FALSE) < 0)
+    {
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_label),
+                                          "past");
+    } else {
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_label),
+                                          NULL);
     }
 
     nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
@@ -296,12 +305,45 @@ penge_event_tile_update (PengeEventTile *tile)
   }
 
   summary_str = jana_event_get_summary (priv->event);
-  nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
-  g_free (summary_str);
+  if (summary_str)
+  {
+    nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
+    g_free (summary_str);
+  }
 
-  location_str = jana_event_get_location (priv->event);
-  nbtk_label_set_text (NBTK_LABEL (priv->location_label), location_str);
-  g_free (location_str);
+  details_str = jana_event_get_location (priv->event);
+
+  if (!details_str)
+  {
+    details_str = jana_event_get_description (priv->event);
+  }
+
+  if (!details_str)
+  {
+    nbtk_label_set_text (NBTK_LABEL (priv->details_label), "");
+
+    /* 
+     * If we fail to get some kind of description make the summary text
+     * cover both rows in the tile
+     */
+    clutter_actor_hide (CLUTTER_ACTOR (priv->details_label));
+    clutter_container_child_set (CLUTTER_CONTAINER (tile),
+                                 (ClutterActor *)priv->summary_label,
+                                 "row-span",
+                                 2,
+                                 NULL);
+  } else {
+    nbtk_label_set_text (NBTK_LABEL (priv->details_label), details_str);
+    g_free (details_str);
+
+    clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
+    clutter_container_child_set (CLUTTER_CONTAINER (tile),
+                                 (ClutterActor *)priv->summary_label,
+                                 "row-span",
+                                 1,
+                                 NULL);
+
+  }
 }
 
 gchar *

@@ -23,6 +23,8 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
 #include <display.h>
+#include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
 #include <nbtk/nbtk-tooltip.h>
 
 #define HOVER_TIMEOUT  800
@@ -134,11 +136,15 @@ struct _MnbSwitcherPrivate {
   NbtkWidget   *table;
   NbtkWidget   *new_workspace;
   NbtkWidget   *new_label;
+  NbtkTooltip  *active_tooltip;
   GList        *last_workspaces;
 
   ClutterActor *last_focused;
   MutterWindow *selected;
   GList        *tab_list;
+
+  guint         show_completed_id;
+
   gboolean      dnd_in_progress : 1;
   gboolean      constructing    : 1;
 };
@@ -176,7 +182,6 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
     }
 
   clutter_actor_hide (priv->switcher);
-  hide_panel (plugin);
 
   if (priv->in_alt_grab)
     {
@@ -222,7 +227,7 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   timestamp        = clutter_x11_get_current_event_time ();
 
   clutter_actor_hide (CLUTTER_ACTOR (switcher));
-  hide_panel (plugin);
+  clutter_ungrab_pointer ();
 
   if (!active_workspace || (active_workspace == workspace))
     {
@@ -256,10 +261,20 @@ dnd_begin_cb (NbtkWidget   *table,
     }
 
   if (CLUTTER_ACTOR_IS_VISIBLE (dragged_priv->tooltip))
-    nbtk_tooltip_hide (NBTK_TOOLTIP (dragged_priv->tooltip));
+    {
+      nbtk_tooltip_hide (NBTK_TOOLTIP (dragged_priv->tooltip));
+
+      if (priv->active_tooltip == (NbtkTooltip*)dragged_priv->tooltip)
+        priv->active_tooltip = NULL;
+    }
 
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 60.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0x4f);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace),
+                          "switcher-workspace-new-active");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label),
+                          "workspace-title-new-active");
 }
 
 static void
@@ -276,6 +291,9 @@ dnd_end_cb (NbtkWidget   *table,
 
   clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0xff);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
 }
 
 static gint
@@ -440,7 +458,13 @@ clone_hover_timeout_cb (gpointer data)
   MnbSwitcherPrivate    *priv     = app_priv->switcher->priv;
 
   if (!priv->dnd_in_progress)
-    nbtk_tooltip_show (NBTK_TOOLTIP (app_priv->tooltip));
+    {
+      if (priv->active_tooltip)
+        nbtk_tooltip_hide (priv->active_tooltip);
+
+      priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
+      nbtk_tooltip_show (priv->active_tooltip);
+    }
 
   app_priv->hover_timeout_id = 0;
 
@@ -469,6 +493,7 @@ clone_leave_event_cb (ClutterActor *actor,
 		      gpointer data)
 {
   MnbSwitcherAppPrivate *child_priv = MNB_SWITCHER_APP (actor)->priv;
+  MnbSwitcherPrivate    *priv       = child_priv->switcher->priv;
 
   if (child_priv->hover_timeout_id)
     {
@@ -477,7 +502,12 @@ clone_leave_event_cb (ClutterActor *actor,
     }
 
   if (CLUTTER_ACTOR_IS_VISIBLE (child_priv->tooltip))
-    nbtk_tooltip_hide (NBTK_TOOLTIP (child_priv->tooltip));
+    {
+      nbtk_tooltip_hide (NBTK_TOOLTIP (child_priv->tooltip));
+
+      if (priv->active_tooltip == (NbtkTooltip*)child_priv->tooltip)
+        priv->active_tooltip = NULL;
+    }
 
   return FALSE;
 }
@@ -606,9 +636,18 @@ table_foreach_remove_ws (ClutterActor *child, gpointer data)
        * Need to preserve it on the first row.
        */
       if (!row)
-        clutter_container_child_set (CLUTTER_CONTAINER (table), child,
-                                     "column", col - 1,
-                                     "y-expand", FALSE, NULL);
+        {
+          gchar *s;
+
+          clutter_container_child_set (CLUTTER_CONTAINER (table), child,
+                                       "column", col - 1,
+                                       "y-expand", FALSE, NULL);
+
+          s = g_strdup_printf ("%d", col);
+
+          nbtk_label_set_text (NBTK_LABEL (child), s);
+          g_free (s);
+        }
       else
         clutter_container_child_set (CLUTTER_CONTAINER (table), child,
                                      "column", col - 1, NULL);
@@ -637,6 +676,11 @@ screen_n_workspaces_notify (MetaScreen *screen,
   c_workspaces   = meta_screen_get_workspaces (screen);
   o_workspaces   = switcher->priv->last_workspaces;
   n_o_workspaces = g_list_length (o_workspaces);
+
+  if (n_c_workspaces < 8)
+      nbtk_widget_set_dnd_threshold (switcher->priv->new_workspace, 5);
+  else
+      nbtk_widget_set_dnd_threshold (switcher->priv->new_workspace, 0);
 
   if (n_o_workspaces < n_c_workspaces)
     {
@@ -720,9 +764,9 @@ dnd_new_enter_cb (NbtkWidget   *table,
   MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
 
   clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace),
-                          "switcher-workspace-new-active");
+                          "switcher-workspace-new-over");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label),
-                          "switcher-workspace-new-active");
+                          "workspace-title-new-over");
 }
 
 static void
@@ -807,6 +851,25 @@ mnb_switcher_clone_weak_notify (gpointer data, GObject *obj)
 }
 
 static void
+on_show_completed_cb (ClutterActor *self, gpointer data)
+{
+  MnbSwitcherPrivate    *priv     = MNB_SWITCHER (self)->priv;
+  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (data)->priv;
+
+  if (priv->active_tooltip)
+    {
+      nbtk_tooltip_hide (priv->active_tooltip);
+      priv->active_tooltip = NULL;
+    }
+
+  if (app_priv->tooltip)
+    {
+      priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
+      nbtk_tooltip_show (priv->active_tooltip);
+    }
+}
+
+static void
 mnb_switcher_show (ClutterActor *self)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
@@ -819,7 +882,8 @@ mnb_switcher_show (ClutterActor *self)
   NbtkWidget  **spaces;
   NbtkPadding   padding = MNB_PADDING (6, 6, 6, 6);
   GList        *workspaces = meta_screen_get_workspaces (screen);
-  MetaWindow   *current_focus;
+  MetaWindow   *current_focus = NULL;
+  ClutterActor *current_focus_clone = NULL;
   ClutterActor *top_most_clone = NULL;
   MutterWindow *top_most_mw = NULL;
 
@@ -929,6 +993,8 @@ mnb_switcher_show (ClutterActor *self)
 
           priv->last_focused = clone;
           priv->selected = mw;
+
+          current_focus_clone = clone;
         }
 
       /*
@@ -993,7 +1059,7 @@ mnb_switcher_show (ClutterActor *self)
         {
           win_locs[ws_indx].col++;
           win_locs[ws_indx].row = 0;
-          win_locs[ws_indx].height = 0;
+          win_locs[ws_indx].height = clone_h + 10;
         }
 
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
@@ -1023,6 +1089,8 @@ mnb_switcher_show (ClutterActor *self)
 
       timestamp = clutter_x11_get_current_event_time ();
       workspace = meta_window_get_workspace (meta_win);
+
+      current_focus_clone = top_most_clone;
 
       meta_window_activate_with_workspace (meta_win, timestamp, workspace);
     }
@@ -1060,7 +1128,8 @@ mnb_switcher_show (ClutterActor *self)
     nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
                                       "switcher-workspace-new");
 
-    nbtk_widget_set_dnd_threshold (new_ws, 5);
+    if (ws_count < 8)
+      nbtk_widget_set_dnd_threshold (new_ws, 5);
 
     g_signal_connect (new_ws, "dnd-begin",
                       G_CALLBACK (dnd_begin_cb), self);
@@ -1092,6 +1161,29 @@ mnb_switcher_show (ClutterActor *self)
                            CLUTTER_ACTOR (table));
 
   priv->constructing = FALSE;
+
+#if 0
+  /* FIXME -- disable this until after the next demo; for some reason the
+   *          initial tooltip is not positioned correctly, looks like a NBTK
+   *          bug. Better not to have the initial tooltip than to have it
+   *          at the wrong place.
+   */
+  /*
+   * We connect to the show-completed signal, and if there is something focused
+   * in the switcher (should be most of the time), we try to pop up the
+   * tooltip from the callback.
+   */
+  if (priv->show_completed_id)
+    {
+      g_signal_handler_disconnect (self, priv->show_completed_id);
+    }
+
+  if (current_focus_clone)
+    priv->show_completed_id =
+      g_signal_connect (self, "show-completed",
+                        G_CALLBACK (on_show_completed_cb),
+                        current_focus_clone);
+#endif
 
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
 }
@@ -1134,22 +1226,13 @@ mnb_switcher_append_workspace (MnbSwitcher *switcher)
 static void
 mnb_switcher_hide (ClutterActor *self)
 {
-  MnbSwitcherPrivate *priv;
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
 
-  g_return_if_fail (MNB_IS_SWITCHER (self));
-
-  priv = MNB_SWITCHER (self)->priv;
-
-  if (priv->tab_list)
+  if (priv->show_completed_id)
     {
-      g_list_free (priv->tab_list);
-      priv->tab_list = NULL;
+      g_signal_handler_disconnect (self, priv->show_completed_id);
+      priv->show_completed_id = 0;
     }
-
-  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
-  priv->table = NULL;
-  priv->last_focused = NULL;
-  priv->selected = NULL;
 
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
 }
@@ -1179,9 +1262,35 @@ mnb_switcher_class_init (MnbSwitcherClass *klass)
 }
 
 static void
+on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
+{
+  MnbSwitcherPrivate *priv;
+
+  g_return_if_fail (MNB_IS_SWITCHER (self));
+
+  priv = MNB_SWITCHER (self)->priv;
+
+  hide_panel (priv->plugin);
+
+  if (priv->tab_list)
+    {
+      g_list_free (priv->tab_list);
+      priv->tab_list = NULL;
+    }
+
+  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
+  priv->table = NULL;
+  priv->last_focused = NULL;
+  priv->selected = NULL;
+}
+
+static void
 mnb_switcher_init (MnbSwitcher *self)
 {
   self->priv = MNB_SWITCHER_GET_PRIVATE (self);
+
+  g_signal_connect (self, "hide-completed",
+                    G_CALLBACK (on_switcher_hide_completed_cb), NULL);
 }
 
 NbtkWidget*
@@ -1210,6 +1319,7 @@ select_inner_foreach_cb (ClutterActor *child, gpointer data)
   MnbSwitcherAppPrivate *app_priv;
   MetaWindow            *meta_win = data;
   MetaWindow            *my_win;
+  MnbSwitcherPrivate    *priv;
 
   /*
    * Skip anything that is not a MnbSwitcherApp
@@ -1218,6 +1328,7 @@ select_inner_foreach_cb (ClutterActor *child, gpointer data)
     return;
 
   app_priv = MNB_SWITCHER_APP (child)->priv;
+  priv     = app_priv->switcher->priv;
 
   my_win = mutter_window_get_meta_window (app_priv->mw);
 
@@ -1226,9 +1337,29 @@ select_inner_foreach_cb (ClutterActor *child, gpointer data)
       clutter_actor_set_name (child, "switcher-application-active");
 
       app_priv->switcher->priv->selected = app_priv->mw;
+
+      if (app_priv->tooltip)
+        {
+          if (priv->active_tooltip)
+            nbtk_tooltip_hide (priv->active_tooltip);
+
+          priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
+          nbtk_tooltip_show (priv->active_tooltip);
+        }
+
     }
   else
-    clutter_actor_set_name (child, "");
+    {
+      clutter_actor_set_name (child, "");
+
+      if (app_priv->tooltip)
+        {
+          if (priv->active_tooltip == (NbtkTooltip*)app_priv->tooltip)
+            priv->active_tooltip = NULL;
+
+          nbtk_tooltip_hide (NBTK_TOOLTIP (app_priv->tooltip));
+        }
+    }
 }
 
 static void
@@ -1289,10 +1420,7 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
   active_workspace = meta_screen_get_active_workspace (screen);
 
   if (close)
-    {
-      clutter_actor_hide (CLUTTER_ACTOR (switcher));
-      hide_panel (plugin);
-    }
+    clutter_actor_hide (CLUTTER_ACTOR (switcher));
 
   if (!active_workspace || (active_workspace == workspace))
     {

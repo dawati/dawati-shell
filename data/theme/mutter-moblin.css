@@ -20,9 +20,14 @@ NbtkButton:active {
   color: #333;
 }
 
+NbtkScrollView {
+  xthickness: 26;
+  ythickness: 26;
+}
+
 NbtkScrollBar {
   background-color: #e7ebee;
-  padding: 2;
+  padding: 3;
 }
 
 NbtkScrollBar > *#backward-stepper {
@@ -68,15 +73,23 @@ NbtkTable {
   background-color: #ffff;
 }
 
+MnbPanelButton:active {
+  border-image: url("file://panel/toolbar-button-active.png") 0 stretch;
+}
+
+MnbPanelButton:hover {
+  border-image: url("file://panel/toolbar-button-hover.png") 0 stretch;
+}
+
 /* apps button */
 *#apps-button {
   background-image: url("file://panel/apps-normal.png");
 }
 *#apps-button:hover {
-  background-image: url("file://panel/apps-hover.png");
+  background-image: url("file://panel/apps-coloured.png");
 }
 *#apps-button:active {
-  background-image: url("file://panel/apps-active.png");
+  background-image: url("file://panel/apps-coloured.png");
 }
 
 /* internet button */
@@ -84,10 +97,10 @@ NbtkTable {
   background-image: url("file://panel/internet-normal.png");
 }
 *#internet-button:hover {
-  background-image: url("file://panel/internet-hover.png");
+  background-image: url("file://panel/internet-coloured.png");
 }
 *#internet-button:active {
-  background-image: url("file://panel/internet-active.png");
+  background-image: url("file://panel/internet-coloured.png");
 }
 
 /* media button */
@@ -95,21 +108,21 @@ NbtkTable {
   background-image: url("file://panel/media-normal.png");
 }
 *#media-button:hover {
-  background-image: url("file://panel/media-hover.png");
+  background-image: url("file://panel/media-coloured.png");
 }
 *#media-button:active {
-  background-image: url("file://panel/media-active.png");
+  background-image: url("file://panel/media-coloured.png");
 }
 
 /* m-space button */
 *#m-space-button {
-  background-image: url("file://panel/m-space-normal.png");
+  background-image: url("file://panel/m_zone-normal.png");
 }
 *#m-space-button:hover {
-  background-image: url("file://panel/m-space-hover.png");
+  background-image: url("file://panel/m_zone-coloured.png");
 }
 *#m-space-button:active {
-  background-image: url("file://panel/m-space-active.png");
+  background-image: url("file://panel/m_zone-coloured.png");
 }
 
 /* pasteboard button */
@@ -117,10 +130,10 @@ NbtkTable {
   background-image: url("file://panel/pasteboard-normal.png");
 }
 *#pasteboard-button:hover {
-  background-image: url("file://panel/pasteboard-hover.png");
+  background-image: url("file://panel/pasteboard-coloured.png");
 }
 *#pasteboard-button:active {
-  background-image: url("file://panel/pasteboard-active.png");
+  background-image: url("file://panel/pasteboard-coloured.png");
 }
 
 /* people button */
@@ -128,10 +141,10 @@ NbtkTable {
   background-image: url("file://panel/people-normal.png");
 }
 *#people-button:hover {
-  background-image: url("file://panel/people-hover.png");
+  background-image: url("file://panel/people-coloured.png");
 }
 *#people-button:active {
-  background-image: url("file://panel/people-active.png");
+  background-image: url("file://panel/people-coloured.png");
 }
 
 /* spaces button */
@@ -139,10 +152,10 @@ NbtkTable {
   background-image: url("file://panel/spaces-normal.png");
 }
 *#spaces-button:hover {
-  background-image: url("file://panel/spaces-hover.png");
+  background-image: url("file://panel/spaces-coloured.png");
 }
 *#spaces-button:active {
-  background-image: url("file://panel/spaces-active.png");
+  background-image: url("file://panel/spaces-coloured.png");
 }
 
 /* status button */
@@ -150,10 +163,10 @@ NbtkTable {
   background-image: url("file://panel/status-normal.png");
 }
 *#status-button:hover {
-  background-image: url("file://panel/status-hover.png");
+  background-image: url("file://panel/status-coloured.png");
 }
 *#status-button:active {
-  background-image: url("file://panel/status-active.png");
+  background-image: url("file://panel/status-coloured.png");
 }
 
 /* tray buttons */
@@ -209,74 +222,114 @@ NbtkTable {
 
 /* tooltips */
 NbtkTooltip {
-  background-image: url("file://generic/tooltip-background.png");
-  border-width: 13 11 13 11;
+  border-image: url("file://generic/tooltip-background.png")  13 11;
+  padding: 13 11;
   color: white;
   font-size: 15px;
 }
 
 /* workspace switcher */
 *.workspace-title {
-  background-image: url("file://switcher/workspace-title.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title.png") 4;
   padding: 4;
   color: white;
 }
 
 *#workspace-title-active {
-  background-image: url("file://switcher/workspace-title-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-active.png") 4;
   padding: 4;
   color: white;
 }
 
 *.workspace-title-new {
-  background-image: url("file://switcher/workspace-title-new.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-new.png") 4;
   padding: 4;
   color: white;
 }
 
 *#workspace-title-new-active {
-  background-image: url("file://switcher/workspace-title-new-active.png");
+  border-image: url("file://switcher/workspace-title-new-active.png") 4;
+  padding: 4;
+  color: white;
+}
+
+*#workspace-title-new-over {
+  background-image: url("file://switcher/workspace-title-new-over.png");
+  border-width: 4;
+  padding: 4;
+  color: white;
+}
+
+*#workspace-title-new-disabled {
+  background-image: url("file://switcher/workspace-title-new-disabled.png");
+  border-width: 4;
+  padding: 4;
+  color: white;
+}
+
+*.workspace-title-new-symbol {
+}
+
+*#workspace-title-new-symbol-active {
+  background-image: url("file://switcher/workspace-title-new-symbol-active.png");
+  border-width: 4;
+  padding: 4;
+  color: white;
+}
+
+*#workspace-title-new-symbol-over {
+  background-image: url("file://switcher/workspace-title-new-symbol-over.png");
+  border-width: 4;
+  padding: 4;
+  color: white;
+}
+
+*#workspace-title-new-symbol-disabled {
+  background-image: url("file://switcher/workspace-title-new-symbol-disabled.png");
   border-width: 4;
   padding: 4;
   color: white;
 }
 
 *.switcher-workspace {
-  background-image: url("file://switcher/workspace-background.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background.png") 4;
   padding: 5;
 }
 
 *#switcher-workspace-active {
-  background-image: url("file://switcher/workspace-background-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background-active.png") 4;
   padding: 5;
 }
 
 *.switcher-workspace-new {
-  background-image: url("file://switcher/workspace-background-new.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background-new.png") 4;
   padding: 5;
 }
 
 *#switcher-workspace-new-active {
-  background-image: url("file://switcher/workspace-background-new-active.png");
+  border-image: url("file://switcher/workspace-background-new-active.png") 4;
+  padding: 5;
+}
+
+*#switcher-workspace-new-over {
+  background-image: url("file://switcher/workspace-background-new-over.png");
+  border-width: 4;
+  padding: 5;
+}
+
+*#switcher-workspace-new-disabled {
+  background-image: url("file://switcher/workspace-background-new-disabled.png");
   border-width: 4;
   padding: 5;
 }
 
 *.switcher-application {
-  background-image: url("file://switcher/application-inactive.png");
-  border-width: 4;
+  border-image: url("file://switcher/application-inactive.png") 4;
   padding: 2;
 }
 
 *#switcher-application-active {
-  background-image: url("file://switcher/application-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/application-active.png") 4;
   padding: 2;
 }
 
@@ -289,14 +342,12 @@ NbtkTooltip {
 }
 
 *.drop-down-footer {
-  background-image: url("file://drop-down/footer.png");
-  border-width: 5;
+  border-image: url("file://drop-down/footer.png") 5;
   padding: 5;
 }
 
 MnbDropDown, MnbSwitcher {
-  background-image: url("file://panel/panel-shadow.png");
-  border-width: 0 4 37 4;
+  border-image: url("file://panel/panel-shadow.png") 0 4 37 4;
   padding: 0 4 37 4;
 }
 
@@ -304,6 +355,27 @@ MnbDropDown, MnbSwitcher {
 
 *#app-launcher-vbox {
   background-color: #ffff;
+  padding: 5;
+}
+
+*#app-launcher-search-label {
+  background-color: #ffff;
+  font-size: 18;
+}
+
+*#app-launcher-search-entry {
+  border-image: url('file://launcher/launcher-search-bg.png') 5 5 6 5 stretch stretch;
+  padding: 4;
+}
+
+*.MnbEntryEntry {
+  font-size: 18;
+}
+
+*.MnbEntryButton {
+  border-image: none;
+  color: #be1011ff;
+  font-size: 18;
 }
 
 MnbLauncherButton {
@@ -333,31 +405,34 @@ MnbLauncherButton > *#launcher-comment {
 
 PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile
 {
-  background-image: url('file://mzone/general-background.png');
-  border-width: 16;
+  border-image: url('file://mzone/general-background.png') 16;
 }
 
 PengeDateTile
 {
-  background-image: url('file://mzone/date-background.png');
-  border-width: 16;
+  border-image: url('file://mzone/date-background.png') 16;
 }
 
 PengeEventTile:hover
 {
-  background-image: url('file://mzone/event-background-dark.png');
-  border-width: 8;
+  border-image: url('file://mzone/event-background-dark.png') 8;
 }
 
 *.PengeDateTileBackground
 {
-  background-image: url('file://mzone/date-background-background.png');
-  border-width: 16;
+  border-image: url('file://mzone/date-background-background.png') 16;
 }
 
 *.PengeEventTime
 {
-  background-image: url('file://mzone/time-bg.png');
+  border-image: url('file://mzone/time-bg.png') 0;
+  color: white;
+  font-size:12;
+}
+
+*.PengeEventTime:past
+{
+  border-image: url('file://mzone/time-bg-past.png') 0;
   color: white;
   font-size:12;
 }
@@ -460,14 +535,12 @@ MnbStatusEntry
 
 MnbStatusEntry:hover
 {
-  background-image: url("file://status/entry-frame-hover.png");
-  border-width: 6 6 6 6;
+  border-image: url("file://status/entry-frame-hover.png") 6;
 }
 
 MnbStatusEntry:active
 {
-  background-image: url("file://status/entry-frame-edit.png");
-  border-width: 6 6 6 6;
+  border-image: url("file://status/entry-frame-edit.png") 6;
 }
 
 *.MnbStatusEntryText
@@ -483,19 +556,31 @@ MnbStatusEntry:active
   color: #7dbe0cff;
 }
 
+*.MnbStatusEntryCancel
+{
+  border-image: none;
+  background-image: url("file://status/edit_close.png");
+}
+
+*.MnbStatusEntryCancel:hover
+{
+  border-image: none;
+  background-image: url("file://status/edit_close_hover.png");
+}
+
 *.MnbStatusEntryButton
 {
   border-image: none;
   color: #7dbe0cff;
   font-family: "Liberation Sans Bold";
   font-size: 13px;
+  padding: 0;
 }
 
 *.MnbStatusPageTable
 {
-  background-image: url("file://status/decoration-frame.png");
-  border-width: 17 17 17 17;
-  padding: 17;
+  border-image: url("file://status/decoration-frame.png") 17 stretch;
+  padding: 19;
 }
 
 
@@ -504,5 +589,5 @@ MnbStatusEntry:active
   font-family: "Liberation Sans Bold";
   font-size: 17px;
   color: #3e3e3eff;
-  padding: 0 0 0 4;
+  padding: 6;
 }

@@ -34,6 +34,8 @@ struct _MnbStatusRowPrivate
 
   MojitoClient *client;
   MojitoClientService *service;
+
+  gulong update_id;
 };
 
 enum
@@ -146,8 +148,8 @@ mnb_status_row_allocate (ClutterActor          *actor,
   child_box.x1 = border.left + priv->padding.left
                + ICON_SIZE
                + H_PADDING;
-  child_box.y1 = (int) border.top + priv->padding.top
-               + ((ICON_SIZE - text_height) / 2);
+  child_box.y1 = (int) (border.top + priv->padding.top
+               + ((ICON_SIZE - text_height) / 2));
   child_box.x2 = child_box.x1 + text_width;
   child_box.y2 = child_box.y1 + text_height;
   clutter_actor_allocate (priv->entry, &child_box, origin_changed);
@@ -321,6 +323,10 @@ on_mojito_get_persona_icon (MojitoClientService *service,
 
   if (error)
     {
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                     priv->no_icon_file,
+                                     NULL);
+
       g_warning ("Unable to retrieve the icon on '%s': %s",
                  priv->service_name,
                  error->message);
@@ -339,20 +345,52 @@ on_mojito_get_persona_icon (MojitoClientService *service,
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
                                  persona_icon,
                                  &internal_error);
-
   if (internal_error)
     {
+      g_warning ("Unable to set icon '%s' on '%s': %s",
+                 priv->service_name,
+                 persona_icon,
+                 internal_error->message);
+
       clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
                                      priv->no_icon_file,
                                      NULL);
+
       g_error_free (internal_error);
     }
+}
+
+static void
+mnb_status_row_update (MnbStatusRow *row)
+{
+  MnbStatusRowPrivate *priv = row->priv;
+
+  mojito_client_service_get_last_item (priv->service,
+                                       on_mojito_get_last_item,
+                                       row);
+  mojito_client_service_get_persona_icon (priv->service,
+                                          on_mojito_get_persona_icon,
+                                          row);
+}
+
+static gboolean
+do_update_timeout (gpointer data)
+{
+  mnb_status_row_update (data);
+
+  return TRUE;
 }
 
 static void
 mnb_status_row_finalize (GObject *gobject)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (gobject)->priv;
+
+  if (priv->update_id)
+    {
+      g_source_remove (priv->update_id);
+      priv->update_id = 0;
+    }
 
   if (priv->service)
     g_object_unref (priv->service);
@@ -425,6 +463,10 @@ mnb_status_row_constructed (GObject *gobject)
   priv->service = mojito_client_get_service (priv->client, priv->service_name);
   g_assert (priv->service  != NULL);
 
+  g_debug ("%s: Creating entry for service '%s'",
+           G_STRLOC,
+           priv->service_name);
+
   priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->service_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
@@ -432,12 +474,8 @@ mnb_status_row_constructed (GObject *gobject)
                     G_CALLBACK (on_status_entry_changed),
                     row);
 
-  mojito_client_service_get_last_item (priv->service,
-                                       on_mojito_get_last_item,
-                                       row);
-  mojito_client_service_get_persona_icon (priv->service,
-                                          on_mojito_get_persona_icon,
-                                          row);
+  mnb_status_row_update (row);
+  priv->update_id = g_timeout_add_seconds (60 * 5, do_update_timeout, row);
 
   if (G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed (gobject);
@@ -522,4 +560,21 @@ mnb_status_row_new (const gchar *service_name)
   return g_object_new (MNB_TYPE_STATUS_ROW,
                        "service-name", service_name,
                        NULL);
+}
+
+void
+mnb_status_row_force_update (MnbStatusRow *row)
+{
+  MnbStatusRowPrivate *priv;
+
+  g_return_if_fail (MNB_IS_STATUS_ROW (row));
+
+  priv = row->priv;
+
+  /* remove the timeout first, then update and reinstate it */
+  g_source_remove (priv->update_id);
+  priv->update_id = 0;
+
+  mnb_status_row_update (row);
+  priv->update_id = g_timeout_add_seconds (60 * 5, do_update_timeout, row);
 }

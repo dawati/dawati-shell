@@ -29,6 +29,7 @@ struct _MnbStatusEntryClass
 
   void (* status_changed) (MnbStatusEntry *entry,
                            const gchar    *new_status_text);
+  void (* update_cancelled) (MnbStatusEntry *entry);
 };
 
 GType mnb_status_entry_get_type (void);

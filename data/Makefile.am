@@ -4,36 +4,30 @@ dist_theme_DATA = \
 
 theme_paneldir = $(pkgdatadir)/theme/panel
 dist_theme_panel_DATA = \
-	theme/panel/apps-active.png \
-	theme/panel/apps-hover.png \
+	theme/panel/apps-coloured.png \
 	theme/panel/apps-normal.png \
-	theme/panel/internet-active.png \
-	theme/panel/internet-hover.png \
+	theme/panel/internet-coloured.png \
 	theme/panel/internet-normal.png \
-	theme/panel/media-active.png \
-	theme/panel/media-hover.png \
+	theme/panel/media-coloured.png \
 	theme/panel/media-normal.png \
-	theme/panel/m-space-active.png \
-	theme/panel/m-space-hover.png \
-	theme/panel/m-space-normal.png \
+	theme/panel/m_zone-coloured.png \
+	theme/panel/m_zone-normal.png \
 	theme/panel/panel-background.png \
 	theme/panel/panel-shadow.png \
-	theme/panel/pasteboard-active.png \
-	theme/panel/pasteboard-hover.png \
+	theme/panel/pasteboard-coloured.png \
 	theme/panel/pasteboard-normal.png \
-	theme/panel/people-active.png \
-	theme/panel/people-hover.png \
+	theme/panel/people-coloured.png \
 	theme/panel/people-normal.png \
-	theme/panel/spaces-active.png \
-	theme/panel/spaces-hover.png \
+	theme/panel/spaces-coloured.png \
 	theme/panel/spaces-normal.png \
-	theme/panel/status-active.png \
-	theme/panel/status-hover.png \
+	theme/panel/status-coloured.png \
 	theme/panel/status-normal.png \
 	theme/panel/background-tile.png \
 	theme/panel/tray-active.png \
 	theme/panel/tray-hover.png \
-	theme/panel/tray-normal.png
+	theme/panel/tray-normal.png \
+	theme/panel/toolbar-button-active.png \
+	theme/panel/toolbar-button-hover.png
 
 theme_chooserdir = $(pkgdatadir)/theme/chooser
 dist_theme_chooser_DATA = \
@@ -60,7 +54,8 @@ dist_theme_generic_DATA = \
 
 theme_launcherdir = $(pkgdatadir)/theme/launcher
 dist_theme_launcher_DATA = \
-	theme/launcher/launcher-hover.png
+	theme/launcher/launcher-hover.png \
+	theme/launcher/launcher-search-bg.png
 
 theme_switcherdir = $(pkgdatadir)/theme/switcher
 dist_theme_switcher_DATA = \
@@ -69,10 +64,17 @@ dist_theme_switcher_DATA = \
 	theme/switcher/workspace-background-active.png \
 	theme/switcher/workspace-background-new.png \
 	theme/switcher/workspace-background-new-active.png \
+	theme/switcher/workspace-background-new-over.png \
+	theme/switcher/workspace-background-new-disabled.png \
 	theme/switcher/workspace-background.png \
 	theme/switcher/workspace-title-active.png \
 	theme/switcher/workspace-title-new.png \
 	theme/switcher/workspace-title-new-active.png \
+	theme/switcher/workspace-title-new-over.png \
+	theme/switcher/workspace-title-new-disabled.png \
+	theme/switcher/workspace-title-new-symbol-active.png \
+	theme/switcher/workspace-title-new-symbol-over.png \
+	theme/switcher/workspace-title-new-symbol-disabled.png \
 	theme/switcher/workspace-title.png
 
 theme_dropdowndir = $(pkgdatadir)/theme/drop-down
@@ -90,17 +92,20 @@ dist_theme_mzone_DATA = \
 	theme/mzone/people-background.png \
 	theme/mzone/recent-files-background.png \
 	theme/mzone/time-bg.png \
+	theme/mzone/time-bg-past.png \
 	theme/mzone/event-background-dark.png \
 	theme/mzone/linus.png \
 	theme/mzone/default-album-artwork.png
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
-	theme/notifiers/notification-bg.png 
+	theme/notifiers/notification-bg.png
 
 theme_statusdir = $(pkgdatadir)/theme/status
 dist_theme_status_DATA = \
 	theme/status/decoration-frame.png \
+	theme/status/edit_close_hover.png \
+	theme/status/edit_close.png \
 	theme/status/entry-frame-hover.png \
 	theme/status/entry-frame-edit.png \
 	theme/status/no_image_icon.png

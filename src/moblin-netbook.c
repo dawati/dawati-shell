@@ -267,7 +267,6 @@ try_alt_tab_grab (MutterPlugin *plugin,
   MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display  = meta_screen_get_display (screen);
-  Display                    *xdpy     = meta_display_get_xdisplay (display);
   MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
   MetaWindow                 *next     = NULL;
   MetaWindow                 *current  = NULL;
@@ -362,13 +361,11 @@ try_alt_tab_grab (MutterPlugin *plugin,
                                         ws,
                                         current,
                                         backward);
-
-      if (!next || (advance && (next == current)))
-        {
-          return;
-        }
-
     }
+
+  if (!next || (advance && (next == current)))
+    return;
+
 
   /*
    * For some reaon, XGrabKeyboard() does not like real timestamps, or
@@ -940,7 +937,7 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
   CoglHandle         cogl_texture;
-  ClutterFixed       t_w, t_h;
+  float              t_w, t_h;
   guint              tex_width, tex_height;
   guint              w, h;
 
@@ -963,8 +960,8 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
   tex_width = cogl_texture_get_width (cogl_texture);
   tex_height = cogl_texture_get_height (cogl_texture);
 
-  t_w = w / tex_width;
-  t_h = h / tex_height;
+  t_w = (float) w / tex_width;
+  t_h = (float) h / tex_height;
 
   /* Parent paint translated us into position */
   cogl_set_source_texture (cogl_texture);
@@ -1563,6 +1560,12 @@ check_for_empty_workspace (MutterPlugin *plugin,
     }
 }
 
+/*
+ * Protype; don't want to add this the public includes in metacity,
+ * should be able to get rid of this call eventually.
+ */
+void meta_window_calc_showing (MetaWindow  *window);
+
 static void
 meta_window_workspace_changed_cb (MetaWindow *mw,
                                   gint        old_workspace,
@@ -1898,7 +1901,6 @@ void
 disable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   MetaWindow                 *focus;
@@ -1954,7 +1956,6 @@ void
 enable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
 
@@ -1988,19 +1989,31 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  if (priv->in_alt_grab &&
-      xev->type == KeyRelease &&
-      XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) == XK_Alt_L)
+  if (priv->in_alt_grab)
     {
-      MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
-      MetaDisplay *display = meta_screen_get_display (screen);
+      if (xev->type == KeyRelease &&
+          XKeycodeToKeysym (xev->xkey.display,
+                            xev->xkey.keycode, 0) == XK_Alt_L)
+        {
+          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+          MetaDisplay *display = meta_screen_get_display (screen);
 
-      meta_display_end_grab_op (display, xev->xkey.time);
-      priv->in_alt_grab = FALSE;
+          meta_display_end_grab_op (display, xev->xkey.time);
+          priv->in_alt_grab = FALSE;
 
-      mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
-                                       xev->xkey.time);
-      return TRUE;
+          mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
+                                           xev->xkey.time);
+          return TRUE;
+        }
+
+      /*
+       * Block processing of pointer events by clutter. We do not want the
+       * user to be doing stuff like d&d, etc., while in grab mode.
+       */
+      if (xev->type == ButtonPress   ||
+          xev->type == ButtonRelease ||
+          xev->type == MotionNotify)
+        return TRUE;
     }
 
   if (xev->type == KeyPress &&
@@ -2024,7 +2037,6 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       (xev->type == KeyPress || xev->type == KeyRelease))
     {
       MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-      MetaDisplay  *display = meta_screen_get_display (screen);
       ClutterActor *stage   = mutter_get_stage_for_screen (screen);
       Window        xwin;
 
@@ -2225,6 +2237,8 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->mzone_grid)
         clutter_actor_hide (priv->mzone_grid);
 
+      shell_tray_manager_close_all_config_windows (priv->tray_manager);
+
       if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
         {
           guint height = clutter_actor_get_height (priv->panel_shadow);
@@ -2349,11 +2363,20 @@ setup_parallax_effect (MutterPlugin *plugin)
     }
   else
     {
+      ClutterActor *bg_clone;
+      ClutterActor *stage = mutter_get_stage_for_screen (screen);
+
       g_object_set (priv->parallax_tex,
                     "repeat-x", TRUE,
                     "repeat-y", TRUE,
                     NULL);
+
+      bg_clone = clutter_clone_new (priv->parallax_tex);
+      clutter_actor_set_size (bg_clone, screen_width, screen_height);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), bg_clone);
+      clutter_actor_lower_bottom (bg_clone);
     }
+
 }
 
 /*

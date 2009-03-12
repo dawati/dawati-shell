@@ -32,7 +32,10 @@ typedef struct {
   char *summary;
   char *body;
   char *icon_name;
+  gchar *sender;
   guint timeout_id;
+  GHashTable *actions;
+
 } Notification;
 
 typedef enum {
@@ -56,7 +59,15 @@ GType moblin_netbook_notify_store_get_type (void);
 
 MoblinNetbookNotifyStore* moblin_netbook_notify_store_new (void);
 
-gboolean moblin_netbook_notify_store_close (MoblinNetbookNotifyStore *notify, guint id, MoblinNetbookNotifyStoreCloseReason reason);
+gboolean 
+moblin_netbook_notify_store_close (MoblinNetbookNotifyStore *notify, 
+				   guint id, 
+				   MoblinNetbookNotifyStoreCloseReason reason);
+
+void
+moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify, 
+				    guint                        id,
+				    gchar                       *action);
 
 G_END_DECLS
 

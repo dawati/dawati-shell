@@ -27,7 +27,7 @@ penge_utils_format_time (GTimeVal *time_)
   localtime_r ((time_t *) &(time_->tv_sec), &tm_mtime);
 #else
   {
-    struct tm *ptm = localtime ((time_t *) &(time_->tv_usec));
+    struct tm *ptm = localtime ((time_t *) &(time_->tv_sec));
  
     if (!ptm)
       {
