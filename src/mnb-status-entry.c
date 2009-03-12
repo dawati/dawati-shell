@@ -309,6 +309,25 @@ mnb_status_entry_pick (ClutterActor       *actor,
     clutter_actor_paint (priv->button);
 }
 
+static gboolean
+mnb_status_entry_button_release (ClutterActor *actor,
+                                 ClutterButtonEvent *event)
+{
+  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+
+  if (event->button == 1)
+    {
+      if (!priv->is_active)
+        {
+          mnb_status_entry_set_is_active (MNB_STATUS_ENTRY (actor), TRUE);
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 static void
 mnb_status_entry_style_changed (NbtkWidget *widget)
 {
@@ -421,6 +440,7 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
   actor_class->allocate = mnb_status_entry_allocate;
   actor_class->paint = mnb_status_entry_paint;
   actor_class->pick = mnb_status_entry_pick;
+  actor_class->button_release_event = mnb_status_entry_button_release;
 
   widget_class->style_changed = mnb_status_entry_style_changed;
 

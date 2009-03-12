@@ -186,6 +186,24 @@ mnb_status_row_pick (ClutterActor       *actor,
 }
 
 static gboolean
+mnb_status_row_button_release (ClutterActor *actor,
+                               ClutterButtonEvent *event)
+{
+  if (event->button == 1)
+    {
+      MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
+
+      if (!mnb_status_entry_get_is_active (MNB_STATUS_ENTRY (priv->entry)))
+        {
+          mnb_status_entry_set_is_active (MNB_STATUS_ENTRY (priv->entry), TRUE);
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+static gboolean
 mnb_status_row_enter (ClutterActor *actor,
                       ClutterCrossingEvent *event)
 {
@@ -198,6 +216,8 @@ mnb_status_row_enter (ClutterActor *actor,
     }
 
   priv->in_hover = TRUE;
+
+  return TRUE;
 }
 
 static gboolean
@@ -213,6 +233,8 @@ mnb_status_row_leave (ClutterActor *actor,
     }
 
   priv->in_hover = FALSE;
+
+  return TRUE;
 }
 
 static void
@@ -503,6 +525,7 @@ mnb_status_row_class_init (MnbStatusRowClass *klass)
   actor_class->pick = mnb_status_row_pick;
   actor_class->enter_event = mnb_status_row_enter;
   actor_class->leave_event = mnb_status_row_leave;
+  actor_class->button_release_event = mnb_status_row_button_release;
 
   widget_class->style_changed = mnb_status_row_style_changed;
 
@@ -522,6 +545,8 @@ mnb_status_row_init (MnbStatusRow *self)
   GError *error;
 
   self->priv = priv = MNB_STATUS_ROW_GET_PRIVATE (self);
+
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
   priv->no_icon_file = g_build_filename (PLUGIN_PKGDATADIR,
                                          "theme",
