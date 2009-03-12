@@ -283,6 +283,36 @@ bail:
   return generic_name;
 }
 
+/*
+ * Get executable from menu entry and check it's available in the path.
+ * Returns: absolute path if found, otherwise NULL.
+ */
+static gchar *
+get_exec (GMenuTreeEntry *entry)
+{
+  const gchar  *exec;
+  gint          argc;
+  gchar       **argv;
+  GError       *error;
+  
+  exec = gmenu_tree_entry_get_exec (entry);
+  if (!exec)
+    return NULL;
+    
+  error = NULL;
+  if (g_shell_parse_argv (exec, &argc, &argv, &error))
+    {
+      char *binary = g_find_program_in_path (argv[0]);
+      g_strfreev (argv);
+      return binary;      
+    }
+    
+  g_warning ("%s", error->message);
+  g_error_free (error);
+    
+  return NULL;
+}
+
 static gboolean
 filter_launcher (const gchar *filter_key,
                  const gchar *name,
@@ -360,7 +390,7 @@ make_table (MutterPlugin  *self,
       icon_file = NULL;
 
       generic_name = get_generic_name (entry);
-      exec = g_strdup (gmenu_tree_entry_get_exec (entry));
+      exec = get_exec (entry);
       name = gmenu_tree_entry_get_icon (entry);
       description = gmenu_tree_entry_get_comment (entry);
 
