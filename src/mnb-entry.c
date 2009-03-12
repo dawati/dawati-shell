@@ -29,6 +29,7 @@ enum
 enum
 {
   BUTTON_CLICKED,
+  TEXT_CHANGED,
 
   LAST_SIGNAL
 };
@@ -42,6 +43,13 @@ button_clicked_cb (NbtkButton *button,
                    MnbEntry *entry)
 {
   g_signal_emit (entry, _signals[BUTTON_CLICKED], 0);
+}
+
+static void
+text_changed_cb (ClutterText  *text,
+                 MnbEntry     *entry)
+{
+  g_signal_emit (entry, _signals[TEXT_CHANGED], 0);
 }
 
 static void
@@ -289,12 +297,22 @@ mnb_entry_class_init (MnbEntryClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  _signals[TEXT_CHANGED] =
+    g_signal_new ("text-changed",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbEntryClass, text_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
 mnb_entry_init (MnbEntry *self)
 {
   MnbEntryPrivate *priv;
+  ClutterActor    *text;
 
   self->priv = priv = MNB_ENTRY_GET_PRIVATE (self);
 
@@ -302,6 +320,10 @@ mnb_entry_init (MnbEntry *self)
   clutter_actor_set_parent (priv->entry, CLUTTER_ACTOR (self));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->entry),
                                     "MnbEntryEntry");
+  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry));
+  g_signal_connect (text, "text-changed",
+                    G_CALLBACK (text_changed_cb),
+                    self);
 
   priv->button = CLUTTER_ACTOR (nbtk_button_new ());
   clutter_actor_set_parent (priv->button, CLUTTER_ACTOR (self));

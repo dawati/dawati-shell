@@ -485,7 +485,7 @@ search_activated_cb (MnbEntry       *entry,
 
   clutter_container_foreach (CLUTTER_CONTAINER (data->grid), 
                              (ClutterCallback) filter_cb,
-                             key);  
+                             key);
 }
 
 ClutterActor *
@@ -557,6 +557,9 @@ make_launcher (MutterPlugin *plugin,
   g_signal_connect_data (entry, "button-clicked",
                          G_CALLBACK (search_activated_cb), search_data,
                          (GClosureNotify) g_free, 0);
+  /* `search_data' lifecycle is managed above. */
+  g_signal_connect (entry, "text-changed",
+                    G_CALLBACK (search_activated_cb), search_data);
 
   return CLUTTER_ACTOR (drop_down);
 }
