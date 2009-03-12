@@ -313,48 +313,8 @@ get_exec (GMenuTreeEntry *entry)
   return NULL;
 }
 
-static gboolean
-filter_launcher (const gchar *filter_key,
-                 const gchar *name,
-                 const gchar *generic_name,
-                 const gchar *description)
-{
-  if (!filter_key || strlen (filter_key) == 0)
-    return TRUE;
-
-  if (name)
-    {
-      gchar *name_key = g_utf8_strdown (name, -1);
-      gboolean is_matching = (gboolean) strstr (name_key, filter_key);
-      g_free (name_key);
-      if (is_matching)
-        return TRUE;
-    }
-
-  if (generic_name)
-    {
-      gchar *generic_name_key = g_utf8_strdown (generic_name, -1);
-      gboolean is_matching = (gboolean) strstr (generic_name_key, filter_key);
-      g_free (generic_name_key);
-      if (is_matching)
-        return TRUE;
-    }
-
-  if (description)
-    {
-      gchar *description_key = g_utf8_strdown (description, -1);
-      gboolean is_matching = (gboolean) strstr (description_key, filter_key);
-      g_free (description_key);
-      if (is_matching)
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-static ClutterActor *
-make_table (MutterPlugin  *self,
-            const gchar   *filter_key)
+static NbtkGrid *
+make_table (MutterPlugin  *self)
 {
   ClutterActor  *grid;
   GSList *apps, *a;
@@ -401,8 +361,7 @@ make_table (MutterPlugin  *self,
       if (info)
         icon_file = gtk_icon_info_get_filename (info);
 
-      if (generic_name && exec && icon_file &&
-          filter_launcher (filter_key, name, generic_name, description))
+      if (generic_name && exec && icon_file)
         {
           NbtkWidget *button;
 
@@ -440,13 +399,75 @@ make_table (MutterPlugin  *self,
       g_free (generic_name);
     }
 
-    return grid;
+    return NBTK_GRID (grid);
+}
+
+static void
+filter_cb (ClutterActor *actor,
+           const gchar *filter_key)
+{
+  MnbLauncherButton *button;
+  const char        *title;
+  const char        *description;
+  const char        *comment;
+
+  button = MNB_LAUNCHER_BUTTON (actor);
+  g_return_if_fail (button);
+
+  /* Show all? */    
+  if (!filter_key || strlen (filter_key) == 0)
+    {
+      clutter_actor_show (CLUTTER_ACTOR (button));
+      return;
+    }
+
+  title = mnb_launcher_button_get_title (button);
+  if (title)
+    {
+      gchar *title_key = g_utf8_strdown (title, -1);
+      gboolean is_matching = (gboolean) strstr (title_key, filter_key);
+      g_free (title_key);
+      if (is_matching)
+        {
+          clutter_actor_show (CLUTTER_ACTOR (button));
+          return;
+        }
+    }
+
+  description = mnb_launcher_button_get_description (button);
+  if (description)
+    {
+      gchar *description_key = g_utf8_strdown (description, -1);
+      gboolean is_matching = (gboolean) strstr (description_key, filter_key);
+      g_free (description_key);
+      if (is_matching)
+        {
+          clutter_actor_show (CLUTTER_ACTOR (button));
+          return;        
+        }
+    }
+
+  comment = mnb_launcher_button_get_comment (button);
+  if (comment)
+    {
+      gchar *comment_key = g_utf8_strdown (comment, -1);
+      gboolean is_matching = (gboolean) strstr (comment_key, filter_key);
+      g_free (comment_key);
+      if (is_matching)
+        {
+          clutter_actor_show (CLUTTER_ACTOR (button));
+          return;        
+        }
+    }
+
+  /* No match. */
+  clutter_actor_hide (CLUTTER_ACTOR (button));
 }
 
 typedef struct
 {
   MutterPlugin  *plugin;
-  NbtkViewport  *viewport;
+  NbtkGrid      *grid;
 } search_data_t;
 
 static void
@@ -462,23 +483,9 @@ search_activated_cb (MnbEntry       *entry,
   key = g_utf8_strdown (filter, -1);
   g_free (filter), filter = NULL;
 
-  /* Create new table. */
-  launcher_table = make_table (data->plugin, key);
-  g_free (key), key = NULL;
-
-  /* Remove old table. */
-  children = clutter_container_get_children (CLUTTER_CONTAINER (data->viewport));
-  for (child = children; child; child = child->next)
-    {
-      clutter_container_remove (CLUTTER_CONTAINER (data->viewport),
-                                CLUTTER_ACTOR (child->data), NULL);
-    }
-  if (children)
-    g_list_free (children);
-
-  /* Add new table. */
-  clutter_container_add (CLUTTER_CONTAINER (data->viewport),
-                         launcher_table, NULL);
+  clutter_container_foreach (CLUTTER_CONTAINER (data->grid), 
+                             (ClutterCallback) filter_cb,
+                             key);  
 }
 
 ClutterActor *
@@ -530,8 +537,10 @@ make_launcher (MutterPlugin *plugin,
   /* Add launcher table. */
   search_data = g_new0 (search_data_t, 1);
   search_data->plugin = plugin;
-  search_data->viewport = NBTK_VIEWPORT (viewport);
-  search_activated_cb (MNB_ENTRY (entry), search_data);
+  search_data->grid = make_table (plugin);
+  clutter_container_add (CLUTTER_CONTAINER (viewport),
+                         CLUTTER_ACTOR (search_data->grid), NULL);
+
 
   scroll = nbtk_scroll_view_new ();
   clutter_container_add (CLUTTER_CONTAINER (scroll),

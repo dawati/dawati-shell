@@ -59,9 +59,13 @@ GType mnb_launcher_button_get_type (void) G_GNUC_CONST;
 
 NbtkWidget * mnb_launcher_button_new (const gchar *icon_file,
                                       gint         icon_size,
-                                      const gchar *app_name,
-                                      const gchar *category,
+                                      const gchar *title,
+                                      const gchar *description,
                                       const gchar *comment);
+
+const char *  mnb_launcher_button_get_title       (MnbLauncherButton *self);
+const char *  mnb_launcher_button_get_description (MnbLauncherButton *self);
+const char *  mnb_launcher_button_get_comment     (MnbLauncherButton *self);
 
 G_END_DECLS
 
