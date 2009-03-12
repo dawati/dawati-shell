@@ -203,8 +203,6 @@ mnb_entry_set_property (GObject      *gobject,
                         const GValue *value,
                         GParamSpec   *pspec)
 {
-  MnbEntryPrivate *priv = MNB_ENTRY (gobject)->priv;
-
   switch (prop_id)
     {
     case PROP_LABEL:
@@ -227,8 +225,6 @@ mnb_entry_get_property (GObject    *gobject,
                         GValue     *value,
                         GParamSpec *pspec)
 {
-  MnbEntryPrivate *priv = MNB_ENTRY (gobject)->priv;
-
   switch (prop_id)
     {
     case PROP_LABEL:
@@ -248,8 +244,6 @@ mnb_entry_get_property (GObject    *gobject,
 static void
 mnb_entry_constructed (GObject *gobject)
 {
-  MnbEntryPrivate *priv = MNB_ENTRY (gobject)->priv;
-
   if (G_OBJECT_CLASS (mnb_entry_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_entry_parent_class)->constructed (gobject);
 }
@@ -267,7 +261,7 @@ mnb_entry_class_init (MnbEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
+  /* unused: NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass); */
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MnbEntryPrivate));

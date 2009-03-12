@@ -474,9 +474,7 @@ static void
 search_activated_cb (MnbEntry       *entry,
                      search_data_t  *data)
 {
-  ClutterActor  *launcher_table;
-  GList         *children, *child;
-  gchar         *filter, *key;
+  gchar *filter, *key;
 
   filter = NULL;
   g_object_get (entry, "text", &filter, NULL);
@@ -503,8 +501,7 @@ make_launcher (MutterPlugin *plugin,
   ClutterActor  *viewport, *scroll;
   NbtkWidget    *vbox, *hbox, *label, *entry, *drop_down;
   search_data_t *search_data;
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
-                            0, 0, 0};
+
   NbtkPadding    hbox_padding = { CLUTTER_UNITS_FROM_INT (PADDING),
                                   CLUTTER_UNITS_FROM_INT (PADDING),
                                   CLUTTER_UNITS_FROM_INT (PADDING),
