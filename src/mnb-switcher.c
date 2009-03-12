@@ -180,7 +180,6 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
     }
 
   clutter_actor_hide (priv->switcher);
-  hide_panel (plugin);
 
   if (priv->in_alt_grab)
     {
@@ -226,7 +225,6 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   timestamp        = clutter_x11_get_current_event_time ();
 
   clutter_actor_hide (CLUTTER_ACTOR (switcher));
-  hide_panel (plugin);
   clutter_ungrab_pointer ();
 
   if (!active_workspace || (active_workspace == workspace))
@@ -1270,6 +1268,8 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
 
   priv = MNB_SWITCHER (self)->priv;
 
+  hide_panel (priv->plugin);
+
   if (priv->tab_list)
     {
       g_list_free (priv->tab_list);
@@ -1418,10 +1418,7 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
   active_workspace = meta_screen_get_active_workspace (screen);
 
   if (close)
-    {
-      clutter_actor_hide (CLUTTER_ACTOR (switcher));
-      hide_panel (plugin);
-    }
+    clutter_actor_hide (CLUTTER_ACTOR (switcher));
 
   if (!active_workspace || (active_workspace == workspace))
     {
