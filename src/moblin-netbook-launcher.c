@@ -294,22 +294,22 @@ get_exec (GMenuTreeEntry *entry)
   gint          argc;
   gchar       **argv;
   GError       *error;
-  
+
   exec = gmenu_tree_entry_get_exec (entry);
   if (!exec)
     return NULL;
-    
+
   error = NULL;
   if (g_shell_parse_argv (exec, &argc, &argv, &error))
     {
       char *binary = g_find_program_in_path (argv[0]);
       g_strfreev (argv);
-      return binary;      
+      return binary;
     }
-    
+
   g_warning ("%s", error->message);
   g_error_free (error);
-    
+
   return NULL;
 }
 
@@ -414,7 +414,7 @@ filter_cb (ClutterActor *actor,
   button = MNB_LAUNCHER_BUTTON (actor);
   g_return_if_fail (button);
 
-  /* Show all? */    
+  /* Show all? */
   if (!filter_key || strlen (filter_key) == 0)
     {
       clutter_actor_show (CLUTTER_ACTOR (button));
@@ -443,7 +443,7 @@ filter_cb (ClutterActor *actor,
       if (is_matching)
         {
           clutter_actor_show (CLUTTER_ACTOR (button));
-          return;        
+          return;
         }
     }
 
@@ -456,7 +456,7 @@ filter_cb (ClutterActor *actor,
       if (is_matching)
         {
           clutter_actor_show (CLUTTER_ACTOR (button));
-          return;        
+          return;
         }
     }
 
@@ -483,7 +483,7 @@ search_activated_cb (MnbEntry       *entry,
   key = g_utf8_strdown (filter, -1);
   g_free (filter), filter = NULL;
 
-  clutter_container_foreach (CLUTTER_CONTAINER (data->grid), 
+  clutter_container_foreach (CLUTTER_CONTAINER (data->grid),
                              (ClutterCallback) filter_cb,
                              key);
 }
@@ -519,7 +519,7 @@ make_launcher (MutterPlugin *plugin,
 
   label = nbtk_label_new (_("Applications"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "app-launcher-search-label");
-  nbtk_table_add_widget_full (NBTK_TABLE (hbox), label, 
+  nbtk_table_add_widget_full (NBTK_TABLE (hbox), label,
                               0, 0, 1, 1,
                               0,
                               0., 0.5);
@@ -528,7 +528,7 @@ make_launcher (MutterPlugin *plugin,
   clutter_actor_set_name (CLUTTER_ACTOR (entry), "app-launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (entry),
                            CLUTTER_UNITS_FROM_DEVICE (600));
-  nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry, 
+  nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry,
                               0, 1, 1, 1,
                               0,
                               0., 0.5);
