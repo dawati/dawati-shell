@@ -55,21 +55,127 @@ mnb_panel_button_pick (ClutterActor       *actor,
   CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->pick (actor, pick_color);
 }
 
+static gboolean
+mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
+{
+  const gchar *pseudo_class;
+  gint duration;
+  ClutterActor *bg_image;
+  ClutterActor *icon;
+  NbtkButtonPrivate *priv = button->priv;
+
+  pseudo_class = nbtk_stylable_get_pseudo_class (NBTK_STYLABLE (button));
+
+  bg_image = nbtk_widget_get_border_image (NBTK_WIDGET (button));
+  if (!bg_image)
+    return TRUE;
+
+  icon = nbtk_widget_get_background_image (NBTK_WIDGET (button));
+  g_object_set (G_OBJECT (icon),
+                "scale-gravity", CLUTTER_GRAVITY_CENTER,
+                NULL);
+  if (!icon)
+    return TRUE; /* no icon? this surely isn't a real panel button! */
+
+  g_object_get (button, "transition-duration", &duration, NULL);
+
+  if (!g_strcmp0 (pseudo_class, "hover"))
+    {
+      /* bounce the (semi-transparent) background and icon */
+      clutter_actor_set_opacity (bg_image, 0x26);
+      clutter_actor_set_scale_with_gravity (bg_image, 0.5, 0.5,
+                                            CLUTTER_GRAVITY_CENTER);
+
+      clutter_actor_animate (bg_image, CLUTTER_EASE_OUT_ELASTIC,
+                             duration,
+                             "scale-x", 1.0,
+                             "scale-y", 1.0,
+                             NULL);
+
+      clutter_actor_set_scale_with_gravity (icon, 0.5, 0.5,
+                                            CLUTTER_GRAVITY_CENTER);
+
+      clutter_actor_animate (icon, CLUTTER_EASE_OUT_ELASTIC,
+                             duration * 1.5,
+                             "scale-x", 1.0,
+                             "scale-y", 1.0,
+                             NULL);
+    }
+  else if (!g_strcmp0 (pseudo_class, "active"))
+    {
+      /* shrink the background and the icon */
+      clutter_actor_set_scale_with_gravity (icon, 1.0, 1.0,
+                                            CLUTTER_GRAVITY_CENTER);
+      clutter_actor_set_scale_with_gravity (bg_image, 1.0, 1.0,
+                                            CLUTTER_GRAVITY_CENTER);
+      clutter_actor_set_opacity (bg_image, 0x26);
+      if (old_bg)
+        clutter_actor_set_opacity (old_bg, 0x0);
+      clutter_actor_animate (bg_image, CLUTTER_LINEAR,
+                             150,
+                             "opacity", 0xff,
+                             "scale-x", 0.8,
+                             "scale-y", 0.8,
+                             NULL);
+      clutter_actor_animate (icon, CLUTTER_LINEAR,
+                             150,
+                             "scale-x", 0.7,
+                             "scale-y", 0.7,
+                             NULL);
+    }
+  else if (!g_strcmp0 (pseudo_class, "checked"))
+    {
+      /* - restore the icon and old (hover) background to full size
+       * - fade in new background */
+      if (old_bg)
+        {
+          clutter_actor_set_scale_with_gravity (old_bg, 0.8, 0.8,
+                                                CLUTTER_GRAVITY_CENTER);
+          clutter_actor_animate (old_bg, CLUTTER_LINEAR,
+                                 150,
+                                 "scale-x", 1.0,
+                                 "scale-y", 1.0,
+                                 NULL);
+        }
+
+      clutter_actor_set_opacity (bg_image, 0x0);
+      clutter_actor_animate (bg_image, CLUTTER_EASE_IN_EXPO,
+                             150,
+                             "opacity", 0xff,
+                             NULL);
+
+      clutter_actor_set_scale (icon, 0.8, 0.8);
+      clutter_actor_animate (icon, CLUTTER_EASE_OUT_BACK,
+                             150,
+                             "scale-x", 1.0,
+                             "scale-y", 1.0,
+                             NULL);
+      return FALSE;
+    }
+
+  return TRUE;
+
+}
 
 static void
 mnb_panel_button_class_init (MnbPanelButtonClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  NbtkButtonClass *button_class = NBTK_BUTTON_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbPanelButtonPrivate));
 
   actor_class->pick = mnb_panel_button_pick;
+
+  button_class->transition = mnb_panel_button_transition;
 }
 
 static void
 mnb_panel_button_init (MnbPanelButton *self)
 {
   self->priv = MNB_PANEL_BUTTON_GET_PRIVATE (self);
+
+  g_object_set (self, "transition-duration", 500, NULL);
 }
 
 NbtkWidget*
