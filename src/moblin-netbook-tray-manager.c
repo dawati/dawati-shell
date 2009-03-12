@@ -8,6 +8,7 @@
 #include <clutter/x11/clutter-x11.h>
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
+#include <string.h>
 
 #include "mnb-panel-button.h"
 #include "moblin-netbook-tray-manager.h"
@@ -295,7 +296,6 @@ destroy_config_window (ShellTrayManagerChild *child)
       GtkWidget                  *config  = child->config;
       ShellTrayManager           *manager = child->manager;
       MutterPlugin               *plugin  = manager->priv->plugin;
-      MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
 
       if (child->mir)
         {
@@ -350,7 +350,6 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
       ShellTrayManagerChild *child = data;
       ShellTrayManager *manager = child->manager;
       MutterPlugin *plugin = manager->priv->plugin;
-      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
       gint x = 0, y = 0, w, h, sw, sh;
 
       if (child->actor)
@@ -421,7 +420,7 @@ setup_child_config (ShellTrayManagerChild *child)
       gint                   ret_fmt;
       Atom                   ret_type;
       ChildType              child_type = 0;
-      unsigned char         *my_type = NULL;
+      char                  *my_type = NULL;
       gint                   error_code;
 
       if (!tray_atom)
@@ -434,7 +433,7 @@ setup_child_config (ShellTrayManagerChild *child)
       gdk_error_trap_push ();
       XGetWindowProperty (xdpy, xwin, tray_type, 0, 8192, False,
                           XA_STRING, &ret_type, &ret_fmt, &n_items, &left,
-                          &my_type);
+                          (unsigned char**)&my_type);
       gdk_flush ();
 
       if ((error_code = gdk_error_trap_pop ()))
@@ -512,8 +511,6 @@ setup_child_config (ShellTrayManagerChild *child)
         }
       else
         {
-          GList *wins = manager->priv->config_windows;
-
           gtk_widget_realize (config);
 
           child->config_xwin = GDK_WINDOW_XID (config->window);

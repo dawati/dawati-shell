@@ -267,7 +267,6 @@ try_alt_tab_grab (MutterPlugin *plugin,
   MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display  = meta_screen_get_display (screen);
-  Display                    *xdpy     = meta_display_get_xdisplay (display);
   MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
   MetaWindow                 *next     = NULL;
   MetaWindow                 *current  = NULL;
@@ -1561,6 +1560,12 @@ check_for_empty_workspace (MutterPlugin *plugin,
     }
 }
 
+/*
+ * Protype; don't want to add this the public includes in metacity,
+ * should be able to get rid of this call eventually.
+ */
+void meta_window_calc_showing (MetaWindow  *window);
+
 static void
 meta_window_workspace_changed_cb (MetaWindow *mw,
                                   gint        old_workspace,
@@ -1896,7 +1901,6 @@ void
 disable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   MetaWindow                 *focus;
@@ -1952,7 +1956,6 @@ void
 enable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
 
@@ -2034,7 +2037,6 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       (xev->type == KeyPress || xev->type == KeyRelease))
     {
       MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-      MetaDisplay  *display = meta_screen_get_display (screen);
       ClutterActor *stage   = mutter_get_stage_for_screen (screen);
       Window        xwin;
 

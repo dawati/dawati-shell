@@ -23,6 +23,8 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
 #include <display.h>
+#include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
 #include <nbtk/nbtk-tooltip.h>
 
 #define HOVER_TIMEOUT  800

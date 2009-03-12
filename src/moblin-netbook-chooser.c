@@ -30,6 +30,8 @@
 #include "moblin-netbook-panel.h"
 #include "nutter/nutter-scale-group.h"
 
+#include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
 #include <string.h>
 #include <display.h>
 #include <nbtk/nbtk-texture-frame.h>
@@ -608,9 +610,7 @@ new_workspace_input_cb (ClutterActor *clone,
   struct ws_grid_cb_data     *wsg_data = data;
   MutterPlugin               *plugin   = wsg_data->plugin;
   MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   const char                 *sn_id    = wsg_data->sn_id;
-  gboolean                    appended = FALSE;
   guint32                     timestamp = clutter_x11_get_current_event_time ();
 
   hide_workspace_chooser (plugin, timestamp);
@@ -985,7 +985,6 @@ workspace_chooser_timeout_cb (gpointer data)
   MutterPlugin                   *plugin   = wsc_data->plugin;
   MoblinNetbookPluginPrivate     *priv = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
   guint32                         timestamp;
-  gboolean                        appended = FALSE;
 
   timestamp = clutter_x11_get_current_event_time ();
 
@@ -1010,32 +1009,6 @@ struct ws_chooser_map_data
   gchar        *sn_id;
   MutterPlugin *plugin;
 };
-
-static gboolean
-is_last_workspace_empty (MutterPlugin *plugin)
-{
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
-  GList      *l;
-  gint        last_ws;
-
-  last_ws = meta_screen_get_n_workspaces (screen) - 1;
-
-  l = mutter_get_windows (screen);
-  while (l)
-    {
-      MutterWindow *m = l->data;
-      MetaWindow   *mw = mutter_window_get_meta_window (m);
-
-      gint w = mutter_window_get_workspace (m);
-
-      if (w == last_ws)
-        return FALSE;
-
-      l = l->next;
-    }
-
-  return TRUE;
-}
 
 /*
  * The start up notification handling.
@@ -1294,7 +1267,6 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
                                     &key, &value))
     {
       SnHashData   *sn_data = value;
-      gint          workspace_index;
       ActorPrivate *apriv = get_actor_private (mcw);
 
       apriv->sn_in_progress = TRUE;
