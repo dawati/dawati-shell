@@ -49,7 +49,7 @@
 #define ICON_SIZE 48
 #define PADDING 8
 #define N_COLS 4
-#define LAUNCHER_WIDTH 236
+#define LAUNCHER_WIDTH 235
 
 /* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
 static int
