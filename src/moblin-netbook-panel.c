@@ -26,6 +26,7 @@
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 #include "moblin-netbook-status.h"
+#include "moblin-netbook-netpanel.h"
 #include "penge/penge-grid-view.h"
 #include "mnb-switcher.h"
 #include "mnb-panel-button.h"
@@ -100,8 +101,11 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       control_actor = priv->launcher;
       break;
 
-    case MNBK_CONTROL_STATUS:
     case MNBK_CONTROL_INTERNET:
+      control_actor = priv->net_grid;
+      break;
+
+    case MNBK_CONTROL_STATUS:
     case MNBK_CONTROL_MEDIA:
     case MNBK_CONTROL_PEOPLE:
     case MNBK_CONTROL_PASTEBOARD:
@@ -450,6 +454,7 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
   ClutterActor               *overlay;
   ClutterActor               *mzone_grid_view;
+  ClutterActor               *net_grid_view;
   ClutterActor               *button;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
@@ -637,6 +642,19 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[0]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->mzone_grid);
+
+  /* Internet panel drop-down */
+  priv->net_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->net_grid);
+  clutter_actor_set_width (priv->net_grid, screen_width);
+  net_grid_view = CLUTTER_ACTOR (moblin_netbook_netpanel_new);
+  clutter_actor_set_height (net_grid_view, screen_height - PANEL_HEIGHT * 1.5);
+  mnb_drop_down_set_child (MNB_DROP_DOWN (priv->net_grid),
+                           CLUTTER_ACTOR (net_grid_view));
+  mnb_drop_down_set_button (MNB_DROP_DOWN (priv->net_grid),
+                            NBTK_BUTTON (priv->panel_buttons[3]));
+  clutter_actor_set_position (priv->net_grid, 0, PANEL_HEIGHT);
+  clutter_actor_lower_bottom (priv->net_grid);
 
   if (shadow)
     clutter_actor_lower_bottom (shadow);

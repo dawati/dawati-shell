@@ -24,6 +24,12 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
                                 moblin-netbook-system-tray.h    \
+				moblin-netbook-netpanel.c	\
+				moblin-netbook-netpanel.h	\
+				mwb-radical-bar.c		\
+				mwb-radical-bar.h		\
+				mwb-utils.c			\
+				mwb-utils.h			\
 	                        $(DBUS_GLUE)                    \
 				$(MARSHALS)                     \
 				mnb-drop-down.h                 \

@@ -42,6 +42,7 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   gtk+-2.0                           dnl
                   libgnome-menu                      dnl
                   dbus-glib-1                        dnl
+		  cluttermozembed                    dnl
                   mojito-client)
 
 PKG_CHECK_MODULES(PENGE, libjana-ecal mojito-client gtk+-2.0 nbtk-1.0 gconf-2.0)

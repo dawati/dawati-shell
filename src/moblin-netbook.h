@@ -97,6 +97,7 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *workspace_chooser;
   ClutterActor          *launcher;
   ClutterActor          *mzone_grid;
+  ClutterActor          *net_grid;
   ClutterActor          *lowlight;
   ClutterActor          *status;
 
