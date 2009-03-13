@@ -1,4 +1,4 @@
-noinst_LIBRARIES = libpenge.a
+noinst_LTLIBRARIES = libpenge.la
 
 libpenge_headers = penge-people-pane.h \
 		   penge-people-tile.h \
@@ -19,7 +19,7 @@ libpenge_headers = penge-people-pane.h \
 		   penge-apps-pane.h \
 		   penge-app-tile.h
 
-libpenge_a_SOURCES = \
+libpenge_la_SOURCES = \
 		      $(libpenge_headers) \
 		      penge-people-pane.c \
 		      penge-people-tile.c \
@@ -39,7 +39,7 @@ libpenge_a_SOURCES = \
 		      penge-app-bookmark-manager.c \
 		      penge-apps-pane.c \
 		      penge-app-tile.c
-AM_CFLAGS = -Wall -fPIC $(PENGE_CFLAGS) \
+AM_CFLAGS = -Wall $(PENGE_CFLAGS) \
 	    -DPKG_DATADIR=\"$(pkgdatadir)\"
 AM_LDFLAGS = $(PENGE_LIBS)
 
