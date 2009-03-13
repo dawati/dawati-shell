@@ -78,14 +78,14 @@ lookup_entry_list (GHashTable   *apps_hash,
                    const gchar  *category)
 {
   entry_list_head_t *category_list;
-  
+
   category_list = g_hash_table_lookup (apps_hash, category);
   if (!category_list)
     {
       category_list = g_new0 (entry_list_head_t, 1);
       g_hash_table_insert (apps_hash, g_strdup (category), category_list);
     }
-    
+
   return category_list;
 }
 
@@ -131,7 +131,7 @@ get_all_applications_from_dir (GMenuTreeDirectory *directory,
   category_list = NULL;
   if (category)
     category_list = lookup_entry_list (apps_hash, category);
-  
+
   list = gmenu_tree_directory_get_contents (directory);
 
   for (iter = list; iter; iter = iter->next)
@@ -155,7 +155,7 @@ get_all_applications_from_dir (GMenuTreeDirectory *directory,
 
         	case GMENU_TREE_ITEM_ALIAS:
         	  get_all_applications_from_alias (
-        	      GMENU_TREE_ALIAS (iter->data), 
+        	      GMENU_TREE_ALIAS (iter->data),
         	      category,
         	      apps_hash);
             gmenu_tree_item_unref (iter->data);
@@ -173,14 +173,14 @@ static void
 entry_list_free (entry_list_head_t *list)
 {
   GSList *iter;
-  
+
   iter = list->head;
   while (iter)
     {
       gmenu_tree_item_unref (GMENU_TREE_ITEM (iter->data));
       iter = g_slist_delete_link (iter, iter);
     }
-    
+
   g_free (list);
 }
 
@@ -399,7 +399,7 @@ make_table (MutterPlugin  *self)
   theme = gtk_icon_theme_get_default ();
 
   g_hash_table_iter_init (&iter, apps);
-  while (g_hash_table_iter_next (&iter, (gpointer *) &category, (gpointer *) &list)) 
+  while (g_hash_table_iter_next (&iter, (gpointer *) &category, (gpointer *) &list))
     {
       GSList        *category_iter;
       ClutterActor  *expander, *inner_grid;
@@ -559,7 +559,7 @@ search_data_new (MutterPlugin *plugin,
                  NbtkGrid     *grid)
 {
   search_data_t *search_data;
-  
+
   search_data = g_new0 (search_data_t, 1);
   search_data->plugin = plugin;
   search_data->grid = grid;
@@ -572,7 +572,7 @@ static void
 search_data_fill_cb (ClutterActor   *expander,
                      search_data_t  *search_data)
 {
-  g_hash_table_insert (search_data->expanders, 
+  g_hash_table_insert (search_data->expanders,
                        (gpointer) nbtk_expander_get_label (NBTK_EXPANDER (expander)),
                        expander);
 }
@@ -626,20 +626,20 @@ search_activated_cb (MnbEntry       *entry,
           /* Go thru expanders, hide them, and reparent the buttons
            * into the main grid. */
           g_hash_table_iter_init (&iter, search_data->expanders);
-          while (g_hash_table_iter_next (&iter, (gpointer *) &category, (gpointer *) &expander)) 
+          while (g_hash_table_iter_next (&iter, (gpointer *) &category, (gpointer *) &expander))
             {
               ClutterActor *child;
               reparent_t    containers;
 
               clutter_actor_hide (expander);
-              
+
               child = nbtk_expander_get_child (NBTK_EXPANDER (expander));
               containers.from = CLUTTER_CONTAINER (child);
               containers.to = CLUTTER_CONTAINER (search_data->grid);
               clutter_container_foreach (CLUTTER_CONTAINER (child),
                                          (ClutterCallback) reparent_cb,
                                          &containers);
-            }         
+            }
         }
 
       /* Update search result. */
@@ -659,7 +659,7 @@ search_activated_cb (MnbEntry       *entry,
       while (children)
         {
           ClutterActor *child = CLUTTER_ACTOR (children->data);
-          
+
           if (NBTK_IS_EXPANDER (child))
             {
               /* Expanders are visible again. */
@@ -675,19 +675,19 @@ search_activated_cb (MnbEntry       *entry,
                                           category);
               ClutterActor *inner_grid = nbtk_expander_get_child (
                                           NBTK_EXPANDER (expander));
-              
+
               g_object_ref (child);
-              clutter_container_remove (CLUTTER_CONTAINER (search_data->grid), 
+              clutter_container_remove (CLUTTER_CONTAINER (search_data->grid),
                                         child, NULL);
-              clutter_container_add (CLUTTER_CONTAINER (inner_grid), 
+              clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                      child, NULL);
               g_object_unref (child);
             }
-          
+
           children = g_list_delete_link (children, children);
-        }      
+        }
     }
-                             
+
   g_free (key);
 }
 
