@@ -513,6 +513,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_use_markup (CLUTTER_TEXT (text), TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (text), FALSE);
 
   priv->service_label =
     CLUTTER_ACTOR (nbtk_label_new (""));
