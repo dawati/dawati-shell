@@ -124,6 +124,10 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
 
   if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
     {
+      NbtkButton *button = priv->panel_buttons[(guint)panel_data->control-1];
+
+      nbtk_button_set_checked (button, TRUE);
+
       /*
        * Must reset the y in case a previous animation ended prematurely
        * and the y is not set correctly; see bug 900.
