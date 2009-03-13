@@ -122,8 +122,8 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
   const gchar *uri;
   GList *old_actors;
   PengeRecentFileTile *tile;
-  GFile *file;
   GFileType type;
+  gchar *filename = NULL;
 
   items = gtk_recent_manager_get_items (priv->manager);
   items = g_list_sort (items, (GCompareFunc)_recent_files_sort_func);
@@ -156,12 +156,17 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
        */
       thumbnail_path = penge_utils_get_thumbnail_path (uri);
 
-      /* Test if file exists (by testing for regular.) */
-      file = g_file_new_for_uri (uri);
-      type = g_file_query_file_type (file,
-                                     G_FILE_QUERY_INFO_NONE,
-                                     NULL);
-      if (thumbnail_path && (type == G_FILE_TYPE_REGULAR))
+
+      /* 
+       * *Try* and convert URI to a filename, don't worry if it's remote or if
+       * we get an error. We'll just skip that file
+       */
+      filename = g_filename_from_uri (uri,
+                                      NULL,
+                                      NULL);
+
+      if (thumbnail_path && filename &&
+          g_file_test (filename, G_FILE_TEST_IS_REGULAR))
       {
         actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
                               "thumbnail-path",
@@ -186,7 +191,8 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                              g_strdup (uri),
                              g_object_ref (actor));
       }
-      g_object_unref (file);
+
+      g_free (filename);
     }
 
     if (actor)
