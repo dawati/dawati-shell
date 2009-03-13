@@ -148,6 +148,12 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       clutter_actor_hide (priv->launcher);
     }
 
+  if (control_actor != priv->net_grid &&
+      CLUTTER_ACTOR_IS_VISIBLE (priv->net_grid))
+    {
+      clutter_actor_hide (priv->net_grid);
+    }
+
   /* enable events for the buttons while the panel after the panel has stopped
    * moving
    */

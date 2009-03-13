@@ -45,9 +45,6 @@ GType moblin_netbook_netpanel_get_type (void);
 
 NbtkWidget* moblin_netbook_netpanel_new (void);
 
-void moblin_netbook_netpanel_show_contents (MoblinNetbookNetpanel *netpanel);
-void moblin_netbook_netpanel_hide_contents (MoblinNetbookNetpanel *netpanel);
-
 G_END_DECLS
 
 #endif /* _MOBLIN_NETBOOK_NETPANEL_H */
