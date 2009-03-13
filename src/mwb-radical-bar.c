@@ -132,10 +132,7 @@ mwb_radical_bar_resize_progress (MwbRadicalBar         *self,
   
   padding = CLUTTER_UNITS_FROM_INT (6);
   
-  width = CLUTTER_UNITS_FROM_FIXED (
-    CLUTTER_FIXED_MUL (
-      CLUTTER_UNITS_TO_FIXED (box->x2 - box->x1 - (padding * 2)),
-      CLUTTER_FLOAT_TO_FIXED (priv->progress)));
+  width = (box->x2 - box->x1 - (padding * 2)) * priv->progress;
 
   child_box.x1 = child_box.y1 = padding;
   child_box.x2 = child_box.x1 + width;
@@ -355,10 +352,10 @@ mwb_radical_bar_update_button (MwbRadicalBar *self)
   
   nbtk_button_set_icon_from_file (NBTK_BUTTON (priv->button),
                                   priv->loading ?
-                                    MWB_PKGDATADIR "/stop.png" :
+                                    PKGDATADIR "/stop.png" :
                                     (priv->text_changed ?
-                                       MWB_PKGDATADIR "/play.png" :
-                                       MWB_PKGDATADIR "/reload.png"));
+                                       PKGDATADIR "/play.png" :
+                                       PKGDATADIR "/reload.png"));
 }
 
 static void
@@ -398,7 +395,7 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   priv->button = nbtk_button_new ();
   
   loading_texture =
-    clutter_texture_new_from_file (MWB_PKGDATADIR "/progress.png", NULL);
+    clutter_texture_new_from_file (PKGDATADIR "/progress.png", NULL);
   priv->progress_bar =
     nbtk_texture_frame_new (CLUTTER_TEXTURE (loading_texture),
                             3, 3, 3, 3);
@@ -426,8 +423,8 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   nbtk_table_add_widget_full (NBTK_TABLE (priv->table), priv->entry, 0, 1, 1, 1,
                               NBTK_X_EXPAND | NBTK_X_FILL | NBTK_Y_EXPAND,
                               0.0, 0.5);
-  separator =
-    clutter_texture_new_from_file (MWB_PKGDATADIR "/entry-separator.png", NULL);
+  separator = clutter_texture_new_from_file (PKGDATADIR "/entry-separator.png",
+                                             NULL);
   nbtk_table_add_actor_full (NBTK_TABLE (priv->table), separator,
                              0, 2, 1, 1, 0, 0.5, 0.5);
   nbtk_table_add_widget_full (NBTK_TABLE (priv->table), priv->button,

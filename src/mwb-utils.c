@@ -15,12 +15,9 @@ mwb_utils_focus_on_click_cb (ClutterActor       *actor,
 }
 
 NbtkWidget *
-mwb_utils_button_new (void)
+mwb_utils_button_new ()
 {
-  NbtkWidget *button = nbtk_button_new ();
-  g_object_set (G_OBJECT (button),
-                "transition-duration", 150,
-                "transition-type", NBTK_TRANSITION_FADE, NULL);
+  NbtkWidget *button = nbtk_fade_button_new ();
   return button;
 }
 
