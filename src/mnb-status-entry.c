@@ -27,6 +27,8 @@ struct _MnbStatusEntryPrivate
   gchar *old_status_text;
   gchar *status_time;
 
+  ClutterUnit separator_x;
+
   NbtkPadding padding;
 
   guint in_hover  : 1;
@@ -257,6 +259,12 @@ mnb_status_entry_allocate (ClutterActor          *actor,
       clutter_actor_allocate (priv->cancel_icon, &child_box, origin_changed);
     }
 
+  /* separator */
+  priv->separator_x = available_width
+                    - (border.right + priv->padding.right)
+                    - button_width
+                    - (H_PADDING - 1);
+
   /* button */
   child_box.x1 = (int) (available_width
                - (border.right + priv->padding.right)
@@ -282,6 +290,22 @@ mnb_status_entry_paint (ClutterActor *actor)
 
   if (priv->cancel_icon && CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
     clutter_actor_paint (priv->cancel_icon);
+
+  if (priv->in_hover && priv->separator_x != 0)
+    {
+      ClutterActorBox alloc = { 0, };
+      gfloat x_pos, start_y, end_y;
+
+      clutter_actor_get_allocation_box (actor, &alloc);
+      x_pos = CLUTTER_UNITS_TO_FLOAT (priv->separator_x);
+      start_y = CLUTTER_UNITS_TO_FLOAT (priv->padding.top);
+      end_y = CLUTTER_UNITS_TO_FLOAT (alloc.y2 - priv->padding.bottom - 8);
+
+      cogl_set_source_color4ub (204, 204, 204, 255);
+      cogl_path_move_to (x_pos, start_y);
+      cogl_path_line_to (x_pos, end_y);
+      cogl_path_stroke ();
+    }
 
   if (priv->button && CLUTTER_ACTOR_IS_VISIBLE (priv->button))
     clutter_actor_paint (priv->button);
