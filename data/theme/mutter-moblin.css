@@ -73,11 +73,11 @@ NbtkTable {
   background-color: #ffff;
 }
 
-MnbPanelButton:active {
+MnbPanelButton:checked {
   border-image: url("file://panel/toolbar-button-active.png") 0 stretch;
 }
 
-MnbPanelButton:hover {
+MnbPanelButton:hover, MnbPanelButton:active {
   border-image: url("file://panel/toolbar-button-hover.png") 0 stretch;
 }
 
@@ -85,10 +85,7 @@ MnbPanelButton:hover {
 *#apps-button {
   background-image: url("file://panel/apps-normal.png");
 }
-*#apps-button:hover {
-  background-image: url("file://panel/apps-coloured.png");
-}
-*#apps-button:active {
+*#apps-button:hover, *#apps-button:active, *#apps-button:checked  {
   background-image: url("file://panel/apps-coloured.png");
 }
 
@@ -96,10 +93,7 @@ MnbPanelButton:hover {
 *#internet-button {
   background-image: url("file://panel/internet-normal.png");
 }
-*#internet-button:hover {
-  background-image: url("file://panel/internet-coloured.png");
-}
-*#internet-button:active {
+*#internet-button:hover, *#internet-button:active, *#internet-button:checked {
   background-image: url("file://panel/internet-coloured.png");
 }
 
@@ -107,10 +101,7 @@ MnbPanelButton:hover {
 *#media-button {
   background-image: url("file://panel/media-normal.png");
 }
-*#media-button:hover {
-  background-image: url("file://panel/media-coloured.png");
-}
-*#media-button:active {
+*#media-button:hover, *#media-button:active, *#media-button:checked {
   background-image: url("file://panel/media-coloured.png");
 }
 
@@ -118,21 +109,15 @@ MnbPanelButton:hover {
 *#m-space-button {
   background-image: url("file://panel/m_zone-normal.png");
 }
-*#m-space-button:hover {
+*#m-space-button:hover, *#m-space-button:active, *#m-space-button:checked {
   background-image: url("file://panel/m_zone-coloured.png");
 }
-*#m-space-button:active {
-  background-image: url("file://panel/m_zone-coloured.png");
-}
-
+ 
 /* pasteboard button */
 *#pasteboard-button {
   background-image: url("file://panel/pasteboard-normal.png");
 }
-*#pasteboard-button:hover {
-  background-image: url("file://panel/pasteboard-coloured.png");
-}
-*#pasteboard-button:active {
+*#pasteboard-button:hover, *#pasteboard-button:active, *#pasteboard-button:checked {
   background-image: url("file://panel/pasteboard-coloured.png");
 }
 
@@ -140,10 +125,7 @@ MnbPanelButton:hover {
 *#people-button {
   background-image: url("file://panel/people-normal.png");
 }
-*#people-button:hover {
-  background-image: url("file://panel/people-coloured.png");
-}
-*#people-button:active {
+*#people-button:hover, *#people-button:active, *#people-button:checked {
   background-image: url("file://panel/people-coloured.png");
 }
 
@@ -151,10 +133,7 @@ MnbPanelButton:hover {
 *#spaces-button {
   background-image: url("file://panel/spaces-normal.png");
 }
-*#spaces-button:hover {
-  background-image: url("file://panel/spaces-coloured.png");
-}
-*#spaces-button:active {
+*#spaces-button:hover, *#spaces-button:active, *#spaces-button:checked {
   background-image: url("file://panel/spaces-coloured.png");
 }
 
@@ -162,10 +141,7 @@ MnbPanelButton:hover {
 *#status-button {
   background-image: url("file://panel/status-normal.png");
 }
-*#status-button:hover {
-  background-image: url("file://panel/status-coloured.png");
-}
-*#status-button:active {
+*#status-button:hover, *#status-button:active, *#status-button:checked {
   background-image: url("file://panel/status-coloured.png");
 }
 

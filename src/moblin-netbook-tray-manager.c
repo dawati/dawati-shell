@@ -310,7 +310,7 @@ destroy_config_window (ShellTrayManagerChild *child)
       child->config = NULL;
       gtk_widget_destroy (config);
 
-      nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
+      nbtk_button_set_checked (NBTK_BUTTON (child->actor), FALSE);
     }
 }
 
@@ -477,7 +477,7 @@ setup_child_config (ShellTrayManagerChild *child)
 
       if (child_type == CHILD_UNKNOWN)
         {
-          nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
+          nbtk_button_set_checked (NBTK_BUTTON (child->actor), FALSE);
           return 0;
         }
 
@@ -491,7 +491,7 @@ setup_child_config (ShellTrayManagerChild *child)
            * This is a supported application, but it does not provide a
            * config window, return TRUE.
            */
-          nbtk_button_set_active (NBTK_BUTTON (child->actor), FALSE);
+          nbtk_button_set_checked (NBTK_BUTTON (child->actor), FALSE);
           return 1;
         }
 
@@ -538,7 +538,7 @@ actor_clicked (ClutterActor *actor, gpointer data)
   ShellTrayManagerChild *child = data;
   gboolean               active;
 
-  active = nbtk_button_get_active (NBTK_BUTTON (actor));
+  active = nbtk_button_get_checked (NBTK_BUTTON (actor));
 
   if (active)
     {

@@ -25,7 +25,7 @@ test_launcher_button_SOURCES = \
 test_entry_LDADD = \
 	$(PENGE_LIBS) \
 	$(MUTTER_PLUGIN_LIBS) \
-	$(top_builddir)/penge/penge/libpenge.a
+	$(top_builddir)/penge/penge/libpenge.la
 
 test_entry_SOURCES = \
 	$(top_srcdir)/src/mnb-entry.c \

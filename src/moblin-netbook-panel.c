@@ -91,6 +91,7 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
   MutterPlugin               *plugin = panel_data->plugin;
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterActor               *control_actor = NULL;
+  struct button_data          button_data;
   int i;
 
   switch (panel_data->control)
@@ -124,6 +125,29 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
 
   priv->panel_out_in_progress = FALSE;
 
+  /* make sure no buttons are 'active' */
+  button_data.plugin = plugin;
+  button_data.control = MNBK_CONTROL_UNKNOWN;
+  toggle_buttons_cb (NULL, &button_data);
+
+  if (control_actor != priv->mzone_grid &&
+      CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid))
+    {
+      clutter_actor_hide (priv->mzone_grid);
+    }
+
+  if (control_actor != priv->switcher &&
+      CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+    {
+      clutter_actor_hide (priv->switcher);
+    }
+
+  if (control_actor != priv->launcher &&
+      CLUTTER_ACTOR_IS_VISIBLE (priv->launcher))
+    {
+      clutter_actor_hide (priv->launcher);
+    }
+
   /* enable events for the buttons while the panel after the panel has stopped
    * moving
    */
@@ -134,14 +158,10 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
 
   if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
     {
-      /* make sure no buttons are 'active' */
-      struct button_data button_data;
-      NbtkButton *button = priv->panel_buttons[(guint)panel_data->control-1];
+      NbtkButton *button =
+        NBTK_BUTTON (priv->panel_buttons[(guint)panel_data->control-1]);
 
-      button_data.control = panel_data->control;
-      button_data.plugin  = plugin;
-      toggle_buttons_cb (button, &button_data);
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (button), "active");
+      nbtk_button_set_checked (button, TRUE);
 
       /*
        * Must reset the y in case a previous animation ended prematurely
@@ -177,18 +197,23 @@ show_panel_maybe_control (MutterPlugin *plugin,
       clutter_actor_set_reactive (priv->panel_buttons[i], FALSE);
     }
 
-  clutter_actor_show (priv->panel);
+  if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+    {
+      clutter_actor_show (priv->panel);
 
-  animation = clutter_actor_animate (priv->panel,
-                                     CLUTTER_EASE_IN_SINE,
-                                     /* PANEL_SLIDE_TIMEOUT */ 150,
-                                     "y", 0,
-                                     NULL);
+      animation = clutter_actor_animate (priv->panel,
+                                         CLUTTER_EASE_IN_SINE,
+                                         /* PANEL_SLIDE_TIMEOUT */ 150,
+                                         "y", 0,
+                                         NULL);
 
-  g_signal_connect (clutter_animation_get_timeline (animation),
-                    "completed",
-                    G_CALLBACK (on_panel_out_effect_complete),
-                    panel_data);
+      g_signal_connect (clutter_animation_get_timeline (animation),
+                        "completed",
+                        G_CALLBACK (on_panel_out_effect_complete),
+                        panel_data);
+    }
+  else
+    on_panel_out_effect_complete (NULL, panel_data);
 
   if (from_keyboard)
     priv->panel_wait_for_pointer = TRUE;
@@ -268,15 +293,11 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
 
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     if (priv->panel_buttons[i] != (ClutterActor*)button)
-      {
-        nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
-        nbtk_widget_set_style_pseudo_class (NBTK_WIDGET(priv->panel_buttons[i]),
-                                            NULL);
-      }
+      nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
 
   if (control != MNBK_CONTROL_UNKNOWN)
     {
-      gboolean active = nbtk_button_get_active (button);
+      gboolean active = nbtk_button_get_checked (button);
 
       /*
        * If we showing some UI element, we forcefully close any tray config
@@ -536,7 +557,7 @@ make_panel (MutterPlugin *plugin, gint width)
                        "m_zone",
                        MNBK_CONTROL_MZONE,
                        PANEL_PAGE_M_ZONE);
-  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]),
+  nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]),
                           TRUE);
 
   make_toolbar_button (plugin, panel,
