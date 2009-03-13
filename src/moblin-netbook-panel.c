@@ -255,11 +255,11 @@ toggle_buttons_cb (NbtkButton *button, gpointer data)
 
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     if (priv->panel_buttons[i] != (ClutterActor*)button)
-      nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
+      nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[i]), FALSE);
 
   if (control != MNBK_CONTROL_UNKNOWN)
     {
-      gboolean active = nbtk_button_get_active (button);
+      gboolean active = nbtk_button_get_checked (button);
 
       /*
        * If we showing some UI element, we forcefully close any tray config
@@ -518,7 +518,7 @@ make_panel (MutterPlugin *plugin, gint width)
                        "m_zone",
                        MNBK_CONTROL_MZONE,
                        PANEL_PAGE_M_ZONE);
-  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]),
+  nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]),
                           TRUE);
 
   make_toolbar_button (plugin, panel,

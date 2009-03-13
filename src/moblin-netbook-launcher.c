@@ -237,7 +237,7 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
   moblin_netbook_spawn (plugin, exec, event->time, without_chooser, workspace);
 
   clutter_actor_hide (priv->launcher);
-  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
+  nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
   hide_panel (plugin);
 }
 
