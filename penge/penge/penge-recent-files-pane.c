@@ -122,7 +122,6 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
   const gchar *uri;
   GList *old_actors;
   PengeRecentFileTile *tile;
-  GFileType type;
   gchar *filename = NULL;
 
   items = gtk_recent_manager_get_items (priv->manager);
