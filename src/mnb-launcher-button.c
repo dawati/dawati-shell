@@ -48,6 +48,8 @@ struct _MnbLauncherButtonPrivate
   NbtkLabel     *description;
   NbtkLabel     *comment;
 
+  char          *category;
+
   guint is_pressed : 1;
 };
 
@@ -70,6 +72,12 @@ dispose (GObject *object)
     {
       clutter_actor_unparent (CLUTTER_ACTOR (self->priv->title));
       self->priv->title = NULL;
+    }
+
+  if (self->priv->category)
+    {
+      g_free (self->priv->category);
+      self->priv->category = NULL;
     }
 
   if (self->priv->description)
@@ -446,6 +454,7 @@ NbtkWidget *
 mnb_launcher_button_new (const gchar *icon_file,
                          gint         icon_size,
                          const gchar *title,
+                         const gchar *category,
                          const gchar *description,
                          const gchar *comment)
 {
@@ -473,6 +482,9 @@ mnb_launcher_button_new (const gchar *icon_file,
   if (title)
     nbtk_label_set_text (self->priv->title, title);
 
+  if (category)
+    self->priv->category = g_strdup (category);
+
   if (description)
     nbtk_label_set_text (self->priv->description, description);
 
@@ -488,6 +500,14 @@ mnb_launcher_button_get_title (MnbLauncherButton *self)
   g_return_val_if_fail (self, NULL);
 
   return nbtk_label_get_text (self->priv->title);
+}
+
+const char *
+mnb_launcher_button_get_category (MnbLauncherButton *self)
+{
+  g_return_val_if_fail (self, NULL);
+
+  return self->priv->category;
 }
 
 const char *
