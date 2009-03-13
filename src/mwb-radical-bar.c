@@ -352,10 +352,10 @@ mwb_radical_bar_update_button (MwbRadicalBar *self)
   
   nbtk_button_set_icon_from_file (NBTK_BUTTON (priv->button),
                                   priv->loading ?
-                                    PKGDATADIR "/stop.png" :
+                                    MWB_PKGDATADIR "/stop.png" :
                                     (priv->text_changed ?
-                                       PKGDATADIR "/play.png" :
-                                       PKGDATADIR "/reload.png"));
+                                       MWB_PKGDATADIR "/play.png" :
+                                       MWB_PKGDATADIR "/reload.png"));
 }
 
 static void
@@ -395,7 +395,7 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   priv->button = nbtk_button_new ();
   
   loading_texture =
-    clutter_texture_new_from_file (PKGDATADIR "/progress.png", NULL);
+    clutter_texture_new_from_file (MWB_PKGDATADIR "/progress.png", NULL);
   priv->progress_bar =
     nbtk_texture_frame_new (CLUTTER_TEXTURE (loading_texture),
                             3, 3, 3, 3);
@@ -423,7 +423,7 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   nbtk_table_add_widget_full (NBTK_TABLE (priv->table), priv->entry, 0, 1, 1, 1,
                               NBTK_X_EXPAND | NBTK_X_FILL | NBTK_Y_EXPAND,
                               0.0, 0.5);
-  separator = clutter_texture_new_from_file (PKGDATADIR "/entry-separator.png",
+  separator = clutter_texture_new_from_file (MWB_PKGDATADIR "/entry-separator.png",
                                              NULL);
   nbtk_table_add_actor_full (NBTK_TABLE (priv->table), separator,
                              0, 2, 1, 1, 0, 0.5, 0.5);

@@ -16,7 +16,7 @@ mwb_utils_focus_on_click_cb (ClutterActor       *actor,
                              gpointer            swallow_event);
 
 NbtkWidget *
-mwb_utils_button_new ();
+mwb_utils_button_new (void);
 
 G_END_DECLS
 
