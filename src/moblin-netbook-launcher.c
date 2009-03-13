@@ -326,7 +326,7 @@ make_table (MutterPlugin  *self)
                             CLUTTER_UNITS_FROM_INT (PADDING),
                             CLUTTER_UNITS_FROM_INT (PADDING)};
 
-  grid = nbtk_grid_new ();
+  grid = CLUTTER_ACTOR (nbtk_grid_new ());
   clutter_actor_set_width (grid, 4 * LAUNCHER_WIDTH + 5 * PADDING);
   nbtk_widget_set_padding (NBTK_WIDGET (grid), &padding);
   clutter_actor_set_name (grid, "app-launcher-table");
@@ -539,7 +539,7 @@ make_launcher (MutterPlugin *plugin,
   g_signal_connect (drop_down, "show-completed",
                     G_CALLBACK (dropdown_show_cb), entry);
 
-  viewport = nbtk_viewport_new ();
+  viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   /* Add launcher table. */
   search_data = g_new0 (search_data_t, 1);
   search_data->plugin = plugin;
@@ -548,7 +548,7 @@ make_launcher (MutterPlugin *plugin,
                          CLUTTER_ACTOR (search_data->grid), NULL);
 
 
-  scroll = nbtk_scroll_view_new ();
+  scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   clutter_container_add (CLUTTER_CONTAINER (scroll),
                          CLUTTER_ACTOR (viewport), NULL);
   clutter_actor_set_size (scroll,
