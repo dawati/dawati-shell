@@ -489,7 +489,6 @@ struct alt_tab_show_complete_data
   MetaWindow     *window;
   MetaKeyBinding *binding;
   XEvent          xevent;
-  gboolean        show_panel;
 };
 
 static void
@@ -532,10 +531,8 @@ alt_tab_timeout_cb (gpointer data)
                         G_CALLBACK (alt_tab_switcher_show_completed_cb),
                         alt_data);
 
-      if (alt_data->show_panel)
-        show_panel_and_control (alt_data->plugin, MNBK_CONTROL_SPACES);
-      else
-        clutter_actor_show (priv->switcher);
+      show_panel_and_control (alt_data->plugin, MNBK_CONTROL_SPACES);
+      priv->panel_wait_for_pointer = FALSE;
     }
   else
     {
@@ -600,9 +597,6 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
       alt_data->binding = binding;
 
       memcpy (&alt_data->xevent, event, sizeof (XEvent));
-
-      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
-        alt_data->show_panel = TRUE;
 
       g_timeout_add (100, alt_tab_timeout_cb, alt_data);
       return;
