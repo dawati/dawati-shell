@@ -394,6 +394,8 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   priv->entry = nbtk_entry_new ("");
   priv->button = nbtk_button_new ();
   
+  clutter_actor_set_parent (CLUTTER_ACTOR (priv->table), CLUTTER_ACTOR (self));
+
   loading_texture =
     clutter_texture_new_from_file (MWB_PKGDATADIR "/progress.png", NULL);
   priv->progress_bar =
@@ -429,8 +431,6 @@ mwb_radical_bar_init (MwbRadicalBar *self)
                              0, 2, 1, 1, 0, 0.5, 0.5);
   nbtk_table_add_widget_full (NBTK_TABLE (priv->table), priv->button,
                               0, 3, 1, 1, NBTK_KEEP_ASPECT_RATIO, 1.0, 0.5);
-  
-  clutter_actor_set_parent (CLUTTER_ACTOR (priv->table), CLUTTER_ACTOR (self));
 }
 
 NbtkWidget*

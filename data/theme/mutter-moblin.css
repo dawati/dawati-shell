@@ -581,6 +581,7 @@ MoblinNetbookNetpanel NbtkLabel
   font-family: "Liberation Sans Bold";
   font-size: 13px;
   color: #6e6e6e;
+  padding: 0 4;
 }
 
 MwbRadicalBar
@@ -605,7 +606,7 @@ MwbRadicalBar NbtkButton
 *#netpanel-entrytable
 {
   background-color: #F5F2FD;
-  padding: 4;
+  padding: 6 24;
 }
 
 *#netpanel-entrytable NbtkLabel
@@ -613,5 +614,6 @@ MwbRadicalBar NbtkButton
   font-family: "Liberation Sans Bold" ! important;
   font-size: 17px ! important;
   color: #000000 ! important;
+  padding: 0 20 0 0;
 }
 
