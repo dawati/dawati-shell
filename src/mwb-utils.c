@@ -15,7 +15,7 @@ mwb_utils_focus_on_click_cb (ClutterActor       *actor,
 }
 
 NbtkWidget *
-mwb_utils_button_new ()
+mwb_utils_button_new (void)
 {
   NbtkWidget *button = nbtk_button_new ();
   g_object_set (G_OBJECT (button),

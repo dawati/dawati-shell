@@ -29,8 +29,12 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   MOBLIN_TYPE_NETBOOK_NETPANEL, MoblinNetbookNetpanelClass))
 
+typedef struct _MoblinNetbookNetpanelPrivate MoblinNetbookNetpanelPrivate;
+
 typedef struct {
   NbtkTable parent;
+  
+  MoblinNetbookNetpanelPrivate *priv;
 } MoblinNetbookNetpanel;
 
 typedef struct {

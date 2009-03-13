@@ -4,6 +4,7 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 
 INCLUDES = @MUTTER_PLUGIN_CFLAGS@ \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
+	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
 	-I$(top_srcdir)/penge
 
 AM_CFLAGS   = -Werror=missing-prototypes -fPIC

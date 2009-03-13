@@ -3,10 +3,8 @@
 
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
 
-#define NETBOOK_NETPANEL_PRIVATE(o) \
+#define NETPANEL_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MOBLIN_TYPE_NETBOOK_NETPANEL, MoblinNetbookNetpanelPrivate))
-
-typedef struct _MoblinNetbookNetpanelPrivate MoblinNetbookNetpanelPrivate;
 
 struct _MoblinNetbookNetpanelPrivate
 {
@@ -51,6 +49,8 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 {
   NbtkWidget *table, *bar, *label, *more_button;
   
+  MoblinNetbookNetpanelPrivate *priv = self->priv = NETPANEL_PRIVATE (self);
+  
   /* Construct internet panel (except tab/page previews) */
   
   /* First construct entry */
@@ -87,7 +87,7 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                               NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);
 }
 
-MoblinNetbookNetpanel*
+NbtkWidget*
 moblin_netbook_netpanel_new (void)
 {
   return g_object_new (MOBLIN_TYPE_NETBOOK_NETPANEL, NULL);
