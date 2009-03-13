@@ -60,16 +60,14 @@ on_mojito_get_capabilities (MojitoClientService *service,
     }
 
   g_debug ("%s: GetCapabilities %s "
-           "[get-last-item: %s, update-status: %s, get-persona-icon: %s][%d]",
+           "[update-status: %s, get-persona-icon: %s][%d]",
            G_STRLOC,
            closure->service_name,
-           caps & MOJITO_CLIENT_SERVICE_CAN_GET_LAST_ITEM    ? "y" : "n",
            caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS    ? "y" : "n",
            caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON ? "y" : "n",
            closure->row_number);
 
-  if ((caps & MOJITO_CLIENT_SERVICE_CAN_GET_LAST_ITEM) &&
-      (caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS) &&
+  if ((caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS) &&
       (caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON))
     {
       NbtkWidget *row = g_object_new (MNB_TYPE_STATUS_ROW,
