@@ -693,8 +693,7 @@ make_panel (MutterPlugin *plugin, gint width)
   priv->net_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->net_grid);
   clutter_actor_set_width (priv->net_grid, screen_width);
-  net_grid_view = CLUTTER_ACTOR (moblin_netbook_netpanel_new);
-  clutter_actor_set_height (net_grid_view, screen_height - PANEL_HEIGHT * 1.5);
+  net_grid_view = CLUTTER_ACTOR (moblin_netbook_netpanel_new ());
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->net_grid),
                            CLUTTER_ACTOR (net_grid_view));
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->net_grid),
