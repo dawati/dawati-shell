@@ -366,7 +366,7 @@ on_mojito_view_item_added (MojitoClientView *view,
   if (status_text != NULL && *status_text != '\0')
     mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
                                       status_text,
-                                      &item->date);
+                                      &(item->date));
 }
 
 static void
