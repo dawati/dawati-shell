@@ -686,6 +686,14 @@ dropdown_show_cb (MnbDropDown   *dropdown,
   clutter_actor_grab_key_focus (filter_entry);
 }
 
+static void
+dropdown_hide_cb (MnbDropDown   *dropdown,
+                  ClutterActor  *filter_entry)
+{
+  /* Reset search. */
+  mnb_entry_set_text (MNB_ENTRY (filter_entry), "");
+}
+
 ClutterActor *
 make_launcher (MutterPlugin *plugin,
                gint          width,
@@ -725,6 +733,8 @@ make_launcher (MutterPlugin *plugin,
                               0., 0.5);
   g_signal_connect (drop_down, "show-completed",
                     G_CALLBACK (dropdown_show_cb), entry);
+  g_signal_connect (drop_down, "hide-completed",
+                    G_CALLBACK (dropdown_hide_cb), entry);
 
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   /* Add launcher table. */
