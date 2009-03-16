@@ -20,6 +20,14 @@ NbtkButton:active {
   color: #333;
 }
 
+NbtkExpander > NbtkButton {
+  border-image: url("file://generic/expander-header.png") 4 5 5 4 stretch;
+  font-size: 16;
+  padding-top: 11;
+  padding-bottom: 12;
+  padding-left: 40;
+}
+
 NbtkScrollView {
   xthickness: 26;
   ythickness: 26;

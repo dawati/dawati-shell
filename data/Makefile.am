@@ -44,6 +44,7 @@ dist_theme_generic_DATA = \
 	theme/generic/button.png	\
 	theme/generic/button_active.png	\
 	theme/generic/button_hover.png	\
+	theme/generic/expander-header.png \
 	theme/generic/tooltip-background.png \
 	theme/generic/vscroll-backwards-hover.png \
   theme/generic/vscroll-backwards.png \
