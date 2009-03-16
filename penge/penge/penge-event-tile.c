@@ -13,6 +13,7 @@ typedef struct _PengeEventTilePrivate PengeEventTilePrivate;
 struct _PengeEventTilePrivate {
   JanaEvent *event;
   JanaTime *time;
+  JanaStore *store;
 
   NbtkWidget *time_label;
   NbtkWidget *summary_label;
@@ -23,7 +24,8 @@ enum
 {
   PROP_0,
   PROP_EVENT,
-  PROP_TIME
+  PROP_TIME,
+  PROP_STORE
 };
 
 static void penge_event_tile_update (PengeEventTile *tile);
@@ -40,6 +42,9 @@ penge_event_tile_get_property (GObject *object, guint property_id,
       break;
     case PROP_TIME:
       g_value_set_object (value, priv->time);
+      break;
+    case PROP_STORE:
+      g_value_set_object (value, priv->store);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -69,6 +74,9 @@ penge_event_tile_set_property (GObject *object, guint property_id,
 
       penge_event_tile_update ((PengeEventTile *)object);
       break;
+    case PROP_STORE:
+      priv->store = g_value_dup_object (value);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -89,6 +97,12 @@ penge_event_tile_dispose (GObject *object)
   {
     g_object_unref (priv->time);
     priv->time = NULL;
+  }
+
+  if (priv->store)
+  {
+    g_object_unref (priv->store);
+    priv->store = NULL;
   }
 
   G_OBJECT_CLASS (penge_event_tile_parent_class)->dispose (object);
@@ -126,6 +140,13 @@ penge_event_tile_class_init (PengeEventTileClass *klass)
                                JANA_TYPE_TIME,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TIME, pspec);
+
+  pspec = g_param_spec_object ("store",
+                               "The store.",
+                               "The store this event came from.",
+                               JANA_ECAL_TYPE_STORE,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_STORE, pspec);
 }
 
 static gboolean

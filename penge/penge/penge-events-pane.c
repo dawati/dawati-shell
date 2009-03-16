@@ -287,6 +287,8 @@ penge_events_pane_update (PengeEventsPane *pane)
                             event,
                             "time",
                             priv->time,
+                            "store",
+                            priv->store,
                             NULL);
 
       clutter_actor_set_size (actor, 216, 44);
