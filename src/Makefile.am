@@ -1,4 +1,4 @@
-SUBDIRS=tray
+SUBDIRS=tray effects
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
@@ -57,8 +57,11 @@ MARSHALS = marshal.c marshal.h
 	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --header > $@
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
-moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la $(PENGE_LIBS)\
-			     $(top_builddir)/penge/penge/libpenge.la
+moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
+				tray/libtray.la 	\
+				effects/libeffects.la	\
+				$(PENGE_LIBS)		\
+				$(top_builddir)/penge/penge/libpenge.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 

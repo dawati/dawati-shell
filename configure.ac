@@ -81,6 +81,7 @@ Makefile
 data/Makefile
 src/Makefile
 src/tray/Makefile
+src/effects/Makefile
 po/Makefile.in
 tests/Makefile
 penge/Makefile
