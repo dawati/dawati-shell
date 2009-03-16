@@ -534,6 +534,10 @@ filter_cb (ClutterActor *actor,
   clutter_actor_hide (CLUTTER_ACTOR (button));
 }
 
+/*
+ * Helper struct that contains all the info needed to switch between
+ * browser- and filter-mode.
+ */
 typedef struct
 {
   MutterPlugin  *plugin;
@@ -542,6 +546,32 @@ typedef struct
   gboolean       is_filtering;
 } search_data_t;
 
+static void
+expander_notify_cb (NbtkExpander   *expander,
+                    GParamSpec     *pspec,
+                    search_data_t  *search_data)
+{
+  NbtkExpander    *e;
+  const gchar     *category;
+  GHashTableIter   iter;
+
+  /* Close other open expander, so that just the newly opended one is expanded. */
+  if (nbtk_expander_get_expanded (expander))
+    {
+      g_hash_table_iter_init (&iter, search_data->expanders);
+      while (g_hash_table_iter_next (&iter,
+                                     (gpointer *) &category,
+                                     (gpointer *) &e))
+        {
+          if (e != expander)
+            nbtk_expander_set_expanded (e, FALSE);
+        }    
+    }
+}
+
+/*
+ * Ctor.
+ */
 static search_data_t *
 search_data_new (MutterPlugin *plugin,
                  NbtkGrid     *grid)
@@ -556,6 +586,9 @@ search_data_new (MutterPlugin *plugin,
   return search_data;
 }
 
+/*
+ * Set up expander widgets.
+ */
 static void
 search_data_fill_cb (ClutterActor   *expander,
                      search_data_t  *search_data)
@@ -563,8 +596,14 @@ search_data_fill_cb (ClutterActor   *expander,
   g_hash_table_insert (search_data->expanders,
                        (gpointer) nbtk_expander_get_label (NBTK_EXPANDER (expander)),
                        expander);
+                       
+  g_signal_connect (expander, "notify::expanded", 
+                    G_CALLBACK (expander_notify_cb), search_data);
 }
 
+/*
+ * Dtor.
+ */
 static void
 search_data_free_cb (search_data_t *search_data)
 {
