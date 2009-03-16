@@ -45,6 +45,7 @@ dist_theme_generic_DATA = \
 	theme/generic/button_active.png	\
 	theme/generic/button_hover.png	\
 	theme/generic/expander-header.png \
+	theme/generic/expander-header-expanded.png \
 	theme/generic/expander-header-hover.png \
 	theme/generic/tooltip-background.png \
 	theme/generic/vscroll-backwards-hover.png \
@@ -57,7 +58,8 @@ dist_theme_generic_DATA = \
 theme_launcherdir = $(pkgdatadir)/theme/launcher
 dist_theme_launcher_DATA = \
 	theme/launcher/launcher-hover.png \
-	theme/launcher/launcher-search-bg.png
+	theme/launcher/launcher-search-bg.png \
+	theme/launcher/launcher-search-entry-bg.png
 
 theme_switcherdir = $(pkgdatadir)/theme/switcher
 dist_theme_switcher_DATA = \

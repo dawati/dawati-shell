@@ -3,8 +3,9 @@
 /*
  * Copyright (c) 2008 Intel Corp.
  *
- * Author: Tomas Frydrych <tf@linux.intel.com>
- *         Chris Lord     <christopher.lord@intel.com>
+ * Author: Tomas Frydrych    <tf@linux.intel.com>
+ *         Chris Lord        <christopher.lord@intel.com>
+ *         Robert Staudinger <robertx.staudinger@intel.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -56,13 +57,6 @@ typedef struct {
 } entry_list_head_t;
 
 /* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
-static int
-compare_applications (GMenuTreeEntry *a,
-		      GMenuTreeEntry *b)
-{
-  return g_utf8_collate (gmenu_tree_entry_get_name (a),
-			 gmenu_tree_entry_get_name (b));
-}
 
 static void get_all_applications_from_dir (GMenuTreeDirectory *directory,
                                            const gchar        *category,
@@ -382,14 +376,8 @@ make_table (MutterPlugin  *self)
   const gchar       *category;
   GtkIconTheme      *theme;
 
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
-                            CLUTTER_UNITS_FROM_INT (PADDING),
-                            CLUTTER_UNITS_FROM_INT (PADDING),
-                            CLUTTER_UNITS_FROM_INT (PADDING)};
-
   grid = CLUTTER_ACTOR (nbtk_grid_new ());
   clutter_actor_set_width (grid, 4 * LAUNCHER_WIDTH + 5 * PADDING);
-  nbtk_widget_set_padding (NBTK_WIDGET (grid), &padding);
   clutter_actor_set_name (grid, "app-launcher-table");
 
   nbtk_grid_set_row_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
@@ -707,12 +695,6 @@ make_launcher (MutterPlugin *plugin,
   NbtkWidget    *vbox, *hbox, *label, *entry, *drop_down;
   search_data_t *search_data;
 
-  NbtkPadding    hbox_padding = { CLUTTER_UNITS_FROM_INT (PADDING),
-                                  CLUTTER_UNITS_FROM_INT (PADDING),
-                                  CLUTTER_UNITS_FROM_INT (PADDING),
-                                  CLUTTER_UNITS_FROM_INT (PADDING)};
-
-
   drop_down = mnb_drop_down_new ();
 
   vbox = nbtk_table_new ();
@@ -722,9 +704,9 @@ make_launcher (MutterPlugin *plugin,
 
   /* 1st row: Filter. */
   hbox = nbtk_table_new ();
-  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), WIDGET_SPACING);
+  clutter_actor_set_name (CLUTTER_ACTOR (hbox), "app-launcher-search");
+  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
   nbtk_table_add_widget (NBTK_TABLE (vbox), hbox, 0, 0);
-  nbtk_widget_set_padding (NBTK_WIDGET (hbox), &hbox_padding);
 
   label = nbtk_label_new (_("Applications"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "app-launcher-search-label");
