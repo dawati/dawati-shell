@@ -28,6 +28,10 @@ NbtkExpander > NbtkButton {
   padding-left: 40;
 }
 
+NbtkExpander > NbtkButton:hover {
+  border-image: url("file://generic/expander-header-hover.png") 4 5 5 4 stretch;
+}
+
 NbtkScrollView {
   xthickness: 26;
   ythickness: 26;
