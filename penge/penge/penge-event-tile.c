@@ -1,4 +1,5 @@
 #include "penge-event-tile.h"
+#include "penge-utils.h"
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
@@ -198,6 +199,50 @@ _leave_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
+static gboolean
+_button_press_event_cb (ClutterActor *actor,
+                        ClutterEvent *event,
+                        gpointer      userdata)
+{
+  PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
+  gchar *argv[4];
+  GError *error;
+  ECal *ecal;
+  gchar *uid;
+
+  g_object_get (priv->store, "ecal", &ecal, NULL);
+  uid = jana_component_get_uid ((JanaComponent *)priv->event);
+
+  argv[0] = "dates";
+  argv[1] = "--edit-event";
+  argv[2] = g_strdup_printf ("%s %s",
+                             e_cal_get_uri (ecal),
+                             uid);
+  argv[3] = NULL;
+
+  g_free (uid);
+
+  if (!g_spawn_async (NULL,
+                      &argv[0],
+                      NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      NULL,
+                      NULL,
+                      NULL,
+                      &error))
+  {
+    g_warning (G_STRLOC ": Error starting dates: %s",
+               error->message);
+    g_clear_error (&error);
+  } else{
+    penge_utils_signal_activated ((ClutterActor *)userdata);
+  }
+
+  g_free (argv[2]);
+
+  return FALSE;
+}
+
 static void
 penge_event_tile_init (PengeEventTile *self)
 {
@@ -286,6 +331,10 @@ penge_event_tile_init (PengeEventTile *self)
   g_signal_connect (self,
                     "leave-event",
                     (GCallback)_leave_event_cb,
+                    self);
+  g_signal_connect (self,
+                    "button-press-event",
+                    (GCallback)_button_press_event_cb,
                     self);
 }
 
