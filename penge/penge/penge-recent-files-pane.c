@@ -157,15 +157,25 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
 
 
       /* 
-       * *Try* and convert URI to a filename, don't worry if it's remote or if
-       * we get an error. We'll just skip that file
+       * *Try* and convert URI to a filename. If it's local and it doesn't
+       * exist then just skip this one. If it's non local then show it.
        */
-      filename = g_filename_from_uri (uri,
-                                      NULL,
-                                      NULL);
 
-      if (thumbnail_path && filename &&
-          g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+      if (g_str_has_prefix (uri, "file:/"))
+      {
+        filename = g_filename_from_uri (uri,
+                                        NULL,
+                                        NULL);
+
+        if (filename && !g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+        {
+          continue;
+        }
+
+        g_free (filename);
+      }
+
+      if (thumbnail_path && filename)
       {
         actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
                               "thumbnail-path",
@@ -190,8 +200,6 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                              g_strdup (uri),
                              g_object_ref (actor));
       }
-
-      g_free (filename);
     }
 
     if (actor)
