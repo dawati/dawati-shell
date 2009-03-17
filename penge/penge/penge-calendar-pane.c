@@ -14,7 +14,6 @@ G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, NBTK_TYPE_TABLE)
 typedef struct _PengeCalendarPanePrivate PengeCalendarPanePrivate;
 
 struct _PengeCalendarPanePrivate {
-    ClutterActor *date_tile;
     ClutterActor *events_pane;
 
     guint hourly_timeout_id;
@@ -81,11 +80,6 @@ penge_calendar_pane_update (PengeCalendarPane *pane)
 
   now = jana_ecal_utils_time_now_local ();
 
-  g_object_set (priv->date_tile,
-                "time",
-                now,
-                NULL);
-
   g_object_set (priv->events_pane,
                 "time",
                 now,
@@ -120,45 +114,14 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   PengeCalendarPanePrivate *priv = GET_PRIVATE (self);
   JanaTime *now;
   JanaTime *next_timeout;
-  NbtkWidget *table;
   glong next_timeout_seconds;
 
   now = jana_ecal_utils_time_now_local ();
-
-  priv->date_tile = g_object_new (PENGE_TYPE_DATE_TILE,
-                                  "time",
-                                  now,
-                                  NULL);
-  clutter_actor_set_size (priv->date_tile, 150, 130);
 
   priv->events_pane = g_object_new (PENGE_TYPE_EVENTS_PANE,
                                     "time",
                                     now,
                                     NULL);
-
-  /* This in an enclosing table to let us set the background */
-  table = nbtk_table_new ();
-  nbtk_widget_set_style_class_name (table, "PengeDateTileBackground");
-  nbtk_table_add_actor (NBTK_TABLE (table),
-                        priv->date_tile,
-                        0,
-                        0);
-  clutter_container_child_set (CLUTTER_CONTAINER (table),
-                               priv->date_tile,
-                               "keep-aspect-ratio",
-                               TRUE,
-                               NULL);
-
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)table,
-                        0,
-                        0);
-
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               (ClutterActor *)table,
-                               "y-expand",
-                               FALSE,
-                               NULL);
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->events_pane,
