@@ -81,7 +81,6 @@ static void
 on_strip_animation_completed (ClutterAnimation *anim, gpointer data)
 {
   struct effect_data         *edata  = data;
-  MutterPlugin               *plugin = edata->plugin;
 
   switch (estage)
     {
