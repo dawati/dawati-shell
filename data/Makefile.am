@@ -48,8 +48,8 @@ dist_theme_generic_DATA = \
 	theme/generic/expander-header-expanded.png \
 	theme/generic/expander-header-hover.png \
 	theme/generic/tooltip-background.png \
-	theme/generic/vscroll-backwards-hover.png \
-  theme/generic/vscroll-backwards.png \
+	theme/generic/vscroll-backward-hover.png \
+  theme/generic/vscroll-backward.png \
 	theme/generic/vscroll-forward-hover.png \
 	theme/generic/vscroll-forward.png \
 	theme/generic/vscroll-handle-hover.png \

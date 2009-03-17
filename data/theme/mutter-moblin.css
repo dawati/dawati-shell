@@ -47,11 +47,11 @@ NbtkScrollBar {
 }
 
 NbtkScrollBar > *#backward-stepper {
-  border-image: url("file://generic/vscroll-backwards.png") 2 4 2 2 stretch stretch;
+  border-image: url("file://generic/vscroll-backward.png") 2 4 2 2 stretch stretch;
 }
 
 NbtkScrollBar > *#backward-stepper:hover {
-  border-image: url("file://generic/vscroll-backwards-hover.png") 2 4 2 2 stretch stretch;
+  border-image: url("file://generic/vscroll-backward-hover.png") 2 4 2 2 stretch stretch;
 }
 
 NbtkScrollBar > *#forward-stepper {
