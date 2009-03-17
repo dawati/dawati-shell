@@ -250,10 +250,6 @@ static void
 penge_people_pane_init (PengePeoplePane *self)
 {
   PengePeoplePanePrivate *priv = GET_PRIVATE (self);
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8) };
 
   priv->uuid_to_actor = g_hash_table_new_full (g_str_hash,
                                                g_str_equal,
@@ -262,8 +258,6 @@ penge_people_pane_init (PengePeoplePane *self)
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
-
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
   /* Create the client and request the services list */
   priv->client = mojito_client_new ();

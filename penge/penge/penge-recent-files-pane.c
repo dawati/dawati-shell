@@ -72,10 +72,6 @@ static void
 penge_recent_files_pane_init (PengeRecentFilesPane *self)
 {
   PengeRecentFilesPanePrivate *priv = GET_PRIVATE (self);
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8) };
 
   priv->uri_to_actor = g_hash_table_new_full (g_str_hash,
                                               g_str_equal,
@@ -84,8 +80,6 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
-
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
   priv->manager = gtk_recent_manager_get_default ();
   g_signal_connect (priv->manager, 

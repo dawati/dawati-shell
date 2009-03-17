@@ -207,10 +207,7 @@ static void
 penge_app_tile_init (PengeAppTile *self)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (self);
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (4),
-                          CLUTTER_UNITS_FROM_DEVICE (4),
-                          CLUTTER_UNITS_FROM_DEVICE (4),
-                          CLUTTER_UNITS_FROM_DEVICE (4) };
+
   ClutterAlpha *alpha;
   ClutterColor black = { 0x0, 0x0, 0x0, 0xff };
 
@@ -236,9 +233,6 @@ penge_app_tile_init (PengeAppTile *self)
                         priv->tex,
                         0,
                         0);
-
-
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
   g_signal_connect (self,
                     "enter-event",

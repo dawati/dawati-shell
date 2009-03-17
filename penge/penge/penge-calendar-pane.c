@@ -118,10 +118,6 @@ static void
 penge_calendar_pane_init (PengeCalendarPane *self)
 {
   PengeCalendarPanePrivate *priv = GET_PRIVATE (self);
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8) };
   JanaTime *now;
   JanaTime *next_timeout;
   NbtkWidget *table;
@@ -143,7 +139,6 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   /* This in an enclosing table to let us set the background */
   table = nbtk_table_new ();
   nbtk_widget_set_style_class_name (table, "PengeDateTileBackground");
-  nbtk_widget_set_padding (table, &padding);
   nbtk_table_add_actor (NBTK_TABLE (table),
                         priv->date_tile,
                         0,
@@ -179,7 +174,6 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
 
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 /*
   padding_rectangle = clutter_rectangle_new ();
   nbtk_table_add_actor (NBTK_TABLE (self),

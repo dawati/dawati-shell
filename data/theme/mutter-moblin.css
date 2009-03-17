@@ -399,9 +399,21 @@ MnbLauncherButton > *#launcher-comment {
 
 /* Penge */
 
-PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile
+PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEventTile
+{
+  padding: 8;
+}
+
+PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile, PengeDateTile
 {
   border-image: url('file://mzone/general-background.png') 16;
+  padding: 8;
+}
+
+PengeAppTile
+{
+  border-image: url('file://mzone/general-background.png') 16;
+  padding: 4;
 }
 
 PengeDateTile
@@ -419,18 +431,28 @@ PengeEventTile:hover
   border-image: url('file://mzone/date-background-background.png') 16;
 }
 
-*.PengeEventTime
+*.PengeEventTimeLabel
 {
-  border-image: url('file://mzone/time-bg.png') 0;
   color: white;
   font-size:12;
+  padding: 8;
 }
 
-*.PengeEventTime:past
+*.PengeEventTimeLabel:past
 {
-  border-image: url('file://mzone/time-bg-past.png') 0;
   color: white;
   font-size:12;
+  padding: 8;
+}
+
+*.PengeEventTimeBin
+{
+  border-image: url('file://mzone/time-bg.png') 0;
+}
+
+*.PengeEventTimeBin:past
+{
+  border-image: url('file://mzone/time-bg-past.png') 0;
 }
 
 *.PengeDayLabel
