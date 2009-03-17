@@ -23,8 +23,6 @@
  * 02111-1307, USA.
  */
 
-#define GMENU_I_KNOW_THIS_IS_UNSTABLE
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -33,7 +31,6 @@
 #include <sys/stat.h>
 
 #include <gtk/gtk.h>
-#include <gmenu-tree.h>
 #include <nbtk/nbtk.h>
 
 #include <penge/penge-utils.h>
@@ -44,6 +41,7 @@
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-entry.h"
+#include "mnb-launcher-entry.h"
 #include "mnb-launcher-button.h"
 
 #define WIDGET_SPACING 5
@@ -51,180 +49,6 @@
 #define PADDING 8
 #define N_COLS 4
 #define LAUNCHER_WIDTH 235
-
-typedef struct {
-  GSList *head;
-} entry_list_head_t;
-
-/* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
-
-static void get_all_applications_from_dir (GMenuTreeDirectory *directory,
-                                           const gchar        *category,
-					                                 GHashTable         *apps_hash);
-
-/*
- * Lookup the list-head for a category of entries.
- *
- * Empty list is instantiated if it doesn't already exist.
- */
-static entry_list_head_t *
-lookup_entry_list (GHashTable   *apps_hash,
-                   const gchar  *category)
-{
-  entry_list_head_t *category_list;
-
-  category_list = g_hash_table_lookup (apps_hash, category);
-  if (!category_list)
-    {
-      category_list = g_new0 (entry_list_head_t, 1);
-      g_hash_table_insert (apps_hash, g_strdup (category), category_list);
-    }
-
-  return category_list;
-}
-
-static void
-get_all_applications_from_alias (GMenuTreeAlias *alias,
-                                 const gchar    *category,
-                                 GHashTable     *apps_hash)
-{
-  GMenuTreeItem     *aliased_item;
-  entry_list_head_t *category_list;
-
-  aliased_item = gmenu_tree_alias_get_item (alias);
-
-  switch (gmenu_tree_item_get_type (aliased_item))
-    {
-    case GMENU_TREE_ITEM_ENTRY:
-      category_list = lookup_entry_list (apps_hash, category);
-      /* Consume aliased_item ref. */
-      category_list->head = g_slist_prepend (category_list->head, aliased_item);
-      break;
-
-    case GMENU_TREE_ITEM_DIRECTORY:
-      get_all_applications_from_dir (
-            GMENU_TREE_DIRECTORY (aliased_item),
-            gmenu_tree_directory_get_name (GMENU_TREE_DIRECTORY (aliased_item)),
-            apps_hash);
-      gmenu_tree_item_unref (aliased_item);
-      break;
-
-    default:
-      break;
-  }
-}
-
-static void
-get_all_applications_from_dir (GMenuTreeDirectory *directory,
-                               const gchar        *category,
-                               GHashTable         *apps_hash)
-{
-  entry_list_head_t *category_list;
-  GSList            *list, *iter;
-
-  category_list = NULL;
-  if (category)
-    category_list = lookup_entry_list (apps_hash, category);
-
-  list = gmenu_tree_directory_get_contents (directory);
-
-  for (iter = list; iter; iter = iter->next)
-    {
-      switch (gmenu_tree_item_get_type (iter->data))
-      	{
-        	case GMENU_TREE_ITEM_ENTRY:
-            /* Consume entry ref. */
-            if (category_list)
-              category_list->head = g_slist_prepend (category_list->head,
-                                                     iter->data);
-        	  break;
-
-        	case GMENU_TREE_ITEM_DIRECTORY:
-        	  get_all_applications_from_dir (
-        	      GMENU_TREE_DIRECTORY (iter->data),
-        	      gmenu_tree_directory_get_name (GMENU_TREE_DIRECTORY (iter->data)),
-        	      apps_hash);
-            gmenu_tree_item_unref (iter->data);
-        	  break;
-
-        	case GMENU_TREE_ITEM_ALIAS:
-        	  get_all_applications_from_alias (
-        	      GMENU_TREE_ALIAS (iter->data),
-        	      category,
-        	      apps_hash);
-            gmenu_tree_item_unref (iter->data);
-        	  break;
-
-        	default:
-        	  break;
-      	}
-  }
-
-  g_slist_free (list);
-}
-
-static void
-entry_list_free (entry_list_head_t *list)
-{
-  GSList *iter;
-
-  iter = list->head;
-  while (iter)
-    {
-      gmenu_tree_item_unref (GMENU_TREE_ITEM (iter->data));
-      iter = g_slist_delete_link (iter, iter);
-    }
-
-  g_free (list);
-}
-
-static GHashTable *
-get_all_applications (void)
-{
-  GMenuTree          *tree;
-  GMenuTreeDirectory *root;
-  GHashTable         *apps_hash;
-#if 0
-  GSList             *l, *next;
-  const gchar        *prev_name;
-#endif
-  /* FIXME: also merge "settings.menu" or whatever its called. */
-  tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
-
-  root = gmenu_tree_get_root_directory (tree);
-  apps_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                     g_free, (GDestroyNotify) entry_list_free);
-
-  get_all_applications_from_dir (root, NULL, apps_hash);
-
-  gmenu_tree_item_unref (root);
-  gmenu_tree_unref (tree);
-
-  /* TODO: strip duplicates: really needed? */
-#if 0
-  prev_name = NULL;
-  for (l = retval; l; l = next)
-    {
-      GMenuTreeEntry *entry = l->data;
-      const char     *entry_name;
-
-      next = l->next;
-
-      entry_name = gmenu_tree_entry_get_name (entry);
-      if (prev_name && entry_name && strcmp (entry_name, prev_name) == 0)
-      	{
-      	  gmenu_tree_item_unref (entry);
-
-      	  retval = g_slist_delete_link (retval, l);
-      	}
-      else
-      	{
-      	  prev_name = entry_name;
-      	}
-    }
-#endif
-  return apps_hash;
-}
 
 typedef struct
 {
@@ -294,87 +118,15 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
   hide_panel (plugin);
 }
 
-static gchar *
-get_generic_name (GMenuTreeEntry *entry)
-{
-  const gchar *desktop_file;
-  GKeyFile    *key_file = NULL;
-  GError      *error = NULL;
-  gchar       *generic_name = NULL;
-
-  g_return_val_if_fail (entry, NULL);
-
-  desktop_file = gmenu_tree_entry_get_desktop_file_path (entry);
-  if (!desktop_file)
-    goto bail;
-
-  key_file = g_key_file_new ();
-  g_key_file_load_from_file (key_file, desktop_file, G_KEY_FILE_NONE, &error);
-  if (error)
-    {
-      g_warning ("%s", error->message);
-      goto bail;
-    }
-
-  generic_name = g_key_file_get_string (key_file,
-                                        G_KEY_FILE_DESKTOP_GROUP,
-                                        G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
-                                        &error);
-  if (error)
-    {
-      /* g_message ("%s", error->message); */
-      goto bail;
-    }
-
-bail:
-  if (key_file) g_key_file_free (key_file);
-  if (error) g_error_free (error);
-  /* Fall back to "Name" if no "GenericName" available. */
-  if (!generic_name)
-    generic_name = g_strdup (gmenu_tree_entry_get_name (entry));
-
-  return generic_name;
-}
-
-/*
- * Get executable from menu entry and check it's available in the path.
- * Returns: absolute path if found, otherwise NULL.
- */
-static gchar *
-get_exec (GMenuTreeEntry *entry)
-{
-  const gchar  *exec;
-  gint          argc;
-  gchar       **argv;
-  GError       *error;
-
-  exec = gmenu_tree_entry_get_exec (entry);
-  if (!exec)
-    return NULL;
-
-  error = NULL;
-  if (g_shell_parse_argv (exec, &argc, &argv, &error))
-    {
-      char *binary = g_find_program_in_path (argv[0]);
-      g_strfreev (argv);
-      return binary;
-    }
-
-  g_warning ("%s", error->message);
-  g_error_free (error);
-
-  return NULL;
-}
-
 static NbtkGrid *
 make_table (MutterPlugin  *self)
 {
-  ClutterActor      *grid;
-  GHashTable        *apps;
-  GHashTableIter     iter;
-  entry_list_head_t *list;
-  const gchar       *category;
-  GtkIconTheme      *theme;
+  ClutterActor          *grid;
+  GHashTable            *apps;
+  GHashTableIter        iter;
+  MnbLauncherEntryList *list;
+  const gchar           *category;
+  GtkIconTheme          *theme;
 
   grid = CLUTTER_ACTOR (nbtk_grid_new ());
   clutter_actor_set_width (grid, 4 * LAUNCHER_WIDTH + 5 * PADDING);
@@ -383,7 +135,7 @@ make_table (MutterPlugin  *self)
   nbtk_grid_set_row_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
   nbtk_grid_set_column_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
 
-  apps = get_all_applications ();
+  apps = mnb_launcher_entry_build_hash ();
   theme = gtk_icon_theme_get_default ();
 
   g_hash_table_iter_init (&iter, apps);
@@ -401,23 +153,23 @@ make_table (MutterPlugin  *self)
 
       for (category_iter = list->head; category_iter; category_iter = category_iter->next)
         {
-          const gchar   *name, *description, *icon_file;
-          gchar         *generic_name, *exec, *last_used;
+          const gchar   *generic_name, *description, *icon_name, *icon_file;
+          gchar         *exec, *last_used;
           struct stat    exec_stat;
 
-          GMenuTreeEntry *entry = category_iter->data;
-          GtkIconInfo *info;
+          GtkIconInfo       *info;
+          MnbLauncherEntry  *entry = category_iter->data;
 
           info = NULL;
           icon_file = NULL;
 
-          generic_name = get_generic_name (entry);
-          exec = get_exec (entry);
-          name = gmenu_tree_entry_get_icon (entry);
-          description = gmenu_tree_entry_get_comment (entry);
+          generic_name = mnb_launcher_entry_get_name (entry);
+          exec = mnb_launcher_entry_get_exec (entry);
+          icon_name = mnb_launcher_entry_get_icon (entry);
+          description = mnb_launcher_entry_get_comment (entry);
 
-          if (name)
-            info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
+          if (icon_name)
+            info = gtk_icon_theme_lookup_icon (theme, icon_name, ICON_SIZE, 0);
           else
             info = gtk_icon_theme_lookup_icon (theme, "gtk-file", ICON_SIZE, 0);
           if (info)
@@ -460,7 +212,6 @@ make_table (MutterPlugin  *self)
             }
 
           if (info) gtk_icon_info_free (info);
-          g_free (generic_name);
         }
     }
 
@@ -565,7 +316,7 @@ expander_notify_cb (NbtkExpander   *expander,
         {
           if (e != expander)
             nbtk_expander_set_expanded (e, FALSE);
-        }    
+        }
     }
 }
 
@@ -596,8 +347,8 @@ search_data_fill_cb (ClutterActor   *expander,
   g_hash_table_insert (search_data->expanders,
                        (gpointer) nbtk_expander_get_label (NBTK_EXPANDER (expander)),
                        expander);
-                       
-  g_signal_connect (expander, "notify::expanded", 
+
+  g_signal_connect (expander, "notify::expanded",
                     G_CALLBACK (expander_notify_cb), search_data);
 }
 
