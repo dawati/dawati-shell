@@ -132,8 +132,6 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
          */
         estage = MNBZE_ZOOM_OUT;
 
-        priv->desktop_switch_in_progress = FALSE;
-
         zoom_anim = NULL;
 
         clutter_actor_hide (desktop);
@@ -325,7 +323,6 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
                              NULL);
 
   actor_for_cb = (*actors)->data;
-  priv->desktop_switch_in_progress = TRUE;
 
   /*
    * The reference management of the animation in clutter is somewhat peculiar.
