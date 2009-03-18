@@ -400,7 +400,7 @@ MnbLauncherButton > *#launcher-comment {
 
 /* Penge */
 
-PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEventTile
+PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEventTile, PengePeoplePane
 {
   padding: 8;
 }
