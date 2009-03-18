@@ -43,7 +43,6 @@ enum
 
 struct _MnbLauncherButtonPrivate
 {
-  ClutterActor  *table;
   ClutterActor  *icon;
   NbtkLabel     *title;
   NbtkLabel     *description;
@@ -56,18 +55,12 @@ struct _MnbLauncherButtonPrivate
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbLauncherButton, mnb_launcher_button, NBTK_TYPE_BIN);
+G_DEFINE_TYPE (MnbLauncherButton, mnb_launcher_button, NBTK_TYPE_TABLE);
 
 static void
 dispose (GObject *object)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (object);
-
-  if (self->priv->table)
-    {
-      clutter_actor_unparent (self->priv->table);
-      self->priv->table = NULL;
-    }
 
   if (self->priv->category)
     {
@@ -76,72 +69,6 @@ dispose (GObject *object)
     }
 
   G_OBJECT_CLASS (mnb_launcher_button_parent_class)->dispose (object);
-}
-
-static void
-get_preferred_width (ClutterActor *actor,
-                     ClutterUnit   for_height,
-                     ClutterUnit  *min_width_p,
-                     ClutterUnit  *natural_width_p)
-{
-  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
-  NbtkPadding        padding;
-  ClutterUnit        min_width, natural_width;
-
-  nbtk_bin_get_padding (NBTK_BIN (self), &padding);
-
-  clutter_actor_get_preferred_width (self->priv->table, for_height,
-                                     &min_width, &natural_width);
-
-  if (min_width_p)
-    *min_width_p = padding.left + min_width + padding.right;
-
-  if (natural_width_p)
-    *natural_width_p = padding.left + natural_width + padding.right;
-}
-
-static void
-get_preferred_height (ClutterActor *actor,
-                      ClutterUnit   for_width,
-                      ClutterUnit  *min_height_p,
-                      ClutterUnit  *natural_height_p)
-{
-  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
-  NbtkPadding        padding;
-  ClutterUnit        min_height, natural_height;
-
-  nbtk_bin_get_padding (NBTK_BIN (self), &padding);
-
-  clutter_actor_get_preferred_height (self->priv->table, for_width,
-                                      &min_height, &natural_height);
-
-  if (min_height_p)
-    *min_height_p = padding.left + min_height + padding.right;
-
-  if (natural_height_p)
-    *natural_height_p = padding.left + natural_height + padding.right;
-}
-
-static void
-allocate (ClutterActor          *actor,
-          const ClutterActorBox *box,
-          gboolean               origin_changed)
-{
-  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
-  ClutterActorBox    child_box;
-  NbtkPadding        padding;
-
-  CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)
-    ->allocate (actor, box, origin_changed);
-
-  nbtk_bin_get_padding (NBTK_BIN (self), &padding);
-
-  child_box.x1 = padding.left;
-  child_box.y1 = padding.top;
-  child_box.x2 = box->x2 - box->x1 - padding.right;
-  child_box.y2 = box->y2 - box->y1 - padding.bottom;
-
-  clutter_actor_allocate (self->priv->table, &child_box, origin_changed);
 }
 
 static gboolean
@@ -210,27 +137,6 @@ leave_event (ClutterActor         *actor,
 }
 
 static void
-pick (ClutterActor       *actor,
-      const ClutterColor *pick_color)
-{
-  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
-
-  CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)->pick (actor, pick_color);
-
-  clutter_actor_paint (self->priv->table);
-}
-
-static void
-paint (ClutterActor *actor)
-{
-  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
-
-  CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)->paint (actor);
-
-  clutter_actor_paint (self->priv->table);
-}
-
-static void
 mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -240,15 +146,10 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 
   object_class->dispose = dispose;
 
-  actor_class->get_preferred_height = get_preferred_height;
-  actor_class->get_preferred_width = get_preferred_width;
-  actor_class->allocate = allocate;
   actor_class->button_press_event = button_press_event;
   actor_class->button_release_event = button_release_event;
   actor_class->enter_event = enter_event;
   actor_class->leave_event = leave_event;
-  actor_class->pick = pick;
-  actor_class->paint = paint;
 
   _signals[ACTIVATED] = g_signal_new ("activated",
                                     G_TYPE_FROM_CLASS (klass),
@@ -266,10 +167,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   self->priv = MNB_LAUNCHER_BUTTON_GET_PRIVATE (self);
 
-  /* table */
-  self->priv->table = CLUTTER_ACTOR (nbtk_table_new ());
-  clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->table), FALSE);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self->priv->table), COL_SPACING);
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
 
   /* icon */
   self->priv->icon = NULL;
@@ -278,7 +176,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   self->priv->title = (NbtkLabel *) nbtk_label_new (NULL);
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->title), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->title), "mnb-launcher-button-title");
-  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
+  nbtk_table_add_widget_full (NBTK_TABLE (self),
                               NBTK_WIDGET (self->priv->title),
                               0, 1, 1, 1,
                               NBTK_X_EXPAND | NBTK_X_FILL,
@@ -292,7 +190,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   self->priv->description = (NbtkLabel *) nbtk_label_new (NULL);
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->description), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->description), "mnb-launcher-button-description");
-  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
+  nbtk_table_add_widget_full (NBTK_TABLE (self),
                               NBTK_WIDGET (self->priv->description),
                               1, 1, 1, 1,
                               NBTK_X_EXPAND | NBTK_X_FILL,
@@ -306,7 +204,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   self->priv->comment = (NbtkLabel *) nbtk_label_new (NULL);
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->comment), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->comment), "mnb-launcher-button-comment");
-  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
+  nbtk_table_add_widget_full (NBTK_TABLE (self),
                               NBTK_WIDGET (self->priv->comment),
                               2, 1, 1, 1,
                               NBTK_X_EXPAND | NBTK_X_FILL,
@@ -343,7 +241,7 @@ mnb_launcher_button_new (const gchar *icon_file,
       clutter_actor_set_size (self->priv->icon, icon_size, icon_size);
       g_object_set (G_OBJECT (self->priv->icon), "sync-size", TRUE, NULL);
     }
-    nbtk_table_add_actor_full (NBTK_TABLE (self->priv->table),
+    nbtk_table_add_actor_full (NBTK_TABLE (self),
                                self->priv->icon,
                                0, 0, 3, 1,
                                0,

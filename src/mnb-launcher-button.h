@@ -24,6 +24,7 @@
 #define __MNB_LAUNCHER_BUTTON_H__
 
 #include <nbtk/nbtk-widget.h>
+#include <nbtk/nbtk-table.h>
 
 G_BEGIN_DECLS
 
@@ -41,14 +42,14 @@ typedef struct _MnbLauncherButtonClass         MnbLauncherButtonClass;
 struct _MnbLauncherButton
 {
   /*< private >*/
-  NbtkWidget parent;
+  NbtkTable parent;
 
   MnbLauncherButtonPrivate *priv;
 };
 
 struct _MnbLauncherButtonClass
 {
-  NbtkWidgetClass parent;
+  NbtkTableClass parent;
 
   /* signals */
   void (* activated) (MnbLauncherButton     *self,
