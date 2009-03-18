@@ -87,6 +87,7 @@ NbtkTable {
 /* spaces switcher table */
 *#switcher-table {
   background-color: #ffff;
+  padding: 5;
 }
 
 MnbPanelButton:checked {
@@ -128,7 +129,7 @@ MnbPanelButton:hover, MnbPanelButton:active {
 *#m-space-button:hover, *#m-space-button:active, *#m-space-button:checked {
   background-image: url("file://panel/m_zone-coloured.png");
 }
- 
+
 /* pasteboard button */
 *#pasteboard-button {
   background-image: url("file://panel/pasteboard-normal.png");
