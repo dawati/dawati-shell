@@ -48,7 +48,7 @@ typedef struct _MnbSwitcherAppClass          MnbSwitcherAppClass;
 struct _MnbSwitcherApp
 {
   /*< private >*/
-  NbtkWidget parent_instance;
+  NbtkBin parent_instance;
 
   MnbSwitcherAppPrivate *priv;
 };
@@ -56,7 +56,7 @@ struct _MnbSwitcherApp
 struct _MnbSwitcherAppClass
 {
   /*< private >*/
-  NbtkWidgetClass parent_class;
+  NbtkBinClass parent_class;
 };
 
 struct _MnbSwitcherAppPrivate
@@ -519,7 +519,6 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   NbtkWidget         *table = priv->table;
   NbtkWidget         *new_ws;
   struct input_data  *input_data = g_new (struct input_data, 1);
-  NbtkPadding         padding = MNB_PADDING (6, 6, 6, 6);
 
   input_data = g_new (struct input_data, 1);
   input_data->index = col;
@@ -528,9 +527,6 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   new_ws = nbtk_table_new ();
   nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
   nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
-  nbtk_widget_set_padding (new_ws, &padding);
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
-                                    "switcher-workspace");
 
   if (active)
     clutter_actor_set_name (CLUTTER_ACTOR (new_ws),
@@ -880,7 +876,6 @@ mnb_switcher_show (ClutterActor *self)
   NbtkWidget   *table;
   GList        *window_list, *l;
   NbtkWidget  **spaces;
-  NbtkPadding   padding = MNB_PADDING (6, 6, 6, 6);
   GList        *workspaces = meta_screen_get_workspaces (screen);
   MetaWindow   *current_focus = NULL;
   ClutterActor *current_focus_clone = NULL;
@@ -914,7 +909,6 @@ mnb_switcher_show (ClutterActor *self)
   priv->table = table;
   nbtk_table_set_row_spacing (NBTK_TABLE (table), 4);
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 7);
-  nbtk_widget_set_padding (table, &padding);
 
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
 
@@ -1124,7 +1118,6 @@ mnb_switcher_show (ClutterActor *self)
 
     nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
-    nbtk_widget_set_padding (new_ws, &padding);
     nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
                                       "switcher-workspace-new");
 
