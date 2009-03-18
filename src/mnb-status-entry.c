@@ -202,13 +202,10 @@ mnb_status_entry_allocate (ClutterActor          *actor,
    */
 
   icon_height = CANCEL_ICON_SIZE;
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
-    clutter_actor_get_preferred_width (priv->cancel_icon,
-                                       icon_height,
-                                       NULL,
-                                       &icon_width);
-  else
-    icon_width = 0;
+  clutter_actor_get_preferred_width (priv->cancel_icon,
+                                     icon_height,
+                                     NULL,
+                                     &icon_width);
 
   clutter_actor_get_preferred_width (priv->service_label,
                                      available_height,
