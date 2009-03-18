@@ -1,4 +1,5 @@
 
+#include <dbus/dbus-glib.h>
 #include <clutter-mozembed.h>
 
 #include "moblin-netbook-netpanel.h"
@@ -11,6 +12,7 @@ G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
 
 struct _MoblinNetbookNetpanelPrivate
 {
+  DBusGProxy *proxy;
   NbtkWidget *tabs_table;
   NbtkWidget *favs_table;
 };
@@ -19,6 +21,12 @@ static void
 moblin_netbook_netpanel_dispose (GObject *object)
 {
   MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (object)->priv;
+
+  if (priv->proxy)
+    {
+      g_object_unref (priv->proxy);
+      priv->proxy = NULL;
+    }
 
   if (priv->tabs_table)
     {
@@ -127,8 +135,10 @@ moblin_netbook_netpanel_class_init (MoblinNetbookNetpanelClass *klass)
 static void
 moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 {
+  DBusGConnection *connection;
   NbtkWidget *table, *bar, *label, *more_button;
-  
+
+  GError *error = NULL;
   MoblinNetbookNetpanelPrivate *priv = self->priv = NETPANEL_PRIVATE (self);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
@@ -177,6 +187,21 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   label = nbtk_label_new ("Favourite pages");
   nbtk_table_add_widget_full (NBTK_TABLE (priv->favs_table), label, 0, 0, 1, 5,
                               0, 0.0, 0.5);
+
+  /* Connect to DBus */
+  connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (!connection)
+    {
+      g_warning ("Failed to connect to session bus: %s", error->message);
+      g_error_free (error);
+    }
+  else
+    {
+      priv->proxy = dbus_g_proxy_new_for_name (connection,
+                                               "org.moblin.MoblinWebBrowser",
+                                               "/org/moblin/MoblinWebBrowser",
+                                               "org.moblin.MoblinWebBrowser");
+    }
 }
 
 NbtkWidget*
