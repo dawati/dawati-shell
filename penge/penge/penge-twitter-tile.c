@@ -142,9 +142,7 @@ penge_twitter_tile_constructed (GObject *object)
                               PANGO_ELLIPSIZE_NONE);
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
-  nbtk_widget_set_alignment (NBTK_WIDGET (body),
-                             0,
-                             0);
+
   g_object_set (tile,
                 "body",
                 body,

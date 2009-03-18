@@ -28,8 +28,9 @@ main (int argc, char *argv[])
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 400, 200);
 
-  launcher = mnb_launcher_button_new ("../data/theme/panel/internet-active.png",
-                                      32, "Launcher Button Launcher Button ", "Test", "Comment");
+  launcher = mnb_launcher_button_new ("../data/theme/panel/internet-coloured.png",
+                                      32, "Launcher Button Launcher Button ", 
+                                      "Category", "Test", "Comment");
   clutter_actor_set_position (CLUTTER_ACTOR (launcher), 50, 50);
   clutter_actor_set_width (CLUTTER_ACTOR (launcher), 200);
   clutter_container_add (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (launcher), NULL);

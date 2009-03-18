@@ -1,4 +1,5 @@
 #include "penge-event-tile.h"
+#include "penge-utils.h"
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
@@ -13,17 +14,20 @@ typedef struct _PengeEventTilePrivate PengeEventTilePrivate;
 struct _PengeEventTilePrivate {
   JanaEvent *event;
   JanaTime *time;
+  JanaStore *store;
 
   NbtkWidget *time_label;
   NbtkWidget *summary_label;
   NbtkWidget *details_label;
+  ClutterActor *time_bin;
 };
 
 enum
 {
   PROP_0,
   PROP_EVENT,
-  PROP_TIME
+  PROP_TIME,
+  PROP_STORE
 };
 
 static void penge_event_tile_update (PengeEventTile *tile);
@@ -40,6 +44,9 @@ penge_event_tile_get_property (GObject *object, guint property_id,
       break;
     case PROP_TIME:
       g_value_set_object (value, priv->time);
+      break;
+    case PROP_STORE:
+      g_value_set_object (value, priv->store);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -69,6 +76,9 @@ penge_event_tile_set_property (GObject *object, guint property_id,
 
       penge_event_tile_update ((PengeEventTile *)object);
       break;
+    case PROP_STORE:
+      priv->store = g_value_dup_object (value);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -89,6 +99,12 @@ penge_event_tile_dispose (GObject *object)
   {
     g_object_unref (priv->time);
     priv->time = NULL;
+  }
+
+  if (priv->store)
+  {
+    g_object_unref (priv->store);
+    priv->store = NULL;
   }
 
   G_OBJECT_CLASS (penge_event_tile_parent_class)->dispose (object);
@@ -126,6 +142,13 @@ penge_event_tile_class_init (PengeEventTileClass *klass)
                                JANA_TYPE_TIME,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TIME, pspec);
+
+  pspec = g_param_spec_object ("store",
+                               "The store.",
+                               "The store this event came from.",
+                               JANA_ECAL_TYPE_STORE,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_STORE, pspec);
 }
 
 static gboolean
@@ -177,33 +200,81 @@ _leave_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
+static gboolean
+_button_press_event_cb (ClutterActor *actor,
+                        ClutterEvent *event,
+                        gpointer      userdata)
+{
+  PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
+  gchar *argv[4];
+  GError *error;
+  ECal *ecal;
+  gchar *uid;
+
+  g_object_get (priv->store, "ecal", &ecal, NULL);
+  uid = jana_component_get_uid ((JanaComponent *)priv->event);
+
+  argv[0] = "dates";
+  argv[1] = "--edit-event";
+  argv[2] = g_strdup_printf ("%s %s",
+                             e_cal_get_uri (ecal),
+                             uid);
+  argv[3] = NULL;
+
+  g_free (uid);
+
+  if (!g_spawn_async (NULL,
+                      &argv[0],
+                      NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      NULL,
+                      NULL,
+                      NULL,
+                      &error))
+  {
+    g_warning (G_STRLOC ": Error starting dates: %s",
+               error->message);
+    g_clear_error (&error);
+  } else{
+    penge_utils_signal_activated ((ClutterActor *)userdata);
+  }
+
+  g_free (argv[2]);
+
+  return FALSE;
+}
+
 static void
 penge_event_tile_init (PengeEventTile *self)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8) };
+
+  priv->time_bin = nbtk_bin_new ();
+  clutter_actor_set_width (priv->time_bin,
+                           50);
+  nbtk_widget_set_style_class_name ((NbtkWidget *)priv->time_bin,
+                                    "PengeEventTimeBin");
 
   priv->time_label = nbtk_label_new ("XX:XX");
-  clutter_actor_set_width ((ClutterActor *)priv->time_label,
-                           50);
   nbtk_widget_set_style_class_name (priv->time_label,
-                                    "PengeEventTime");
-  nbtk_widget_set_padding (priv->time_label, &padding);
+                                    "PengeEventTimeLabel");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->time_label));
+
+  nbtk_bin_set_child ((NbtkBin *)priv->time_bin,
+                      (ClutterActor *)priv->time_label);
+  nbtk_bin_set_alignment ((NbtkBin *)priv->time_bin,
+                          NBTK_ALIGN_CENTER,
+                          NBTK_ALIGN_CENTER);
 
   priv->summary_label = nbtk_label_new ("Summary text");
   nbtk_widget_set_style_class_name (priv->summary_label,
                                     "PengeEventSummary");
-  nbtk_widget_set_alignment (priv->summary_label, 0, 0.5);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->summary_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text), PANGO_ALIGN_LEFT);
 
   priv->details_label = nbtk_label_new ("Details text");
-  nbtk_widget_set_alignment (priv->details_label, 0, 0.5);
   nbtk_widget_set_style_class_name (priv->details_label,
                                     "PengeEventDetails");
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_label));
@@ -212,12 +283,18 @@ penge_event_tile_init (PengeEventTile *self)
 
   /* Populate the table */
   nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)priv->time_label,
+                        (ClutterActor *)priv->time_bin,
                         0,
                         0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               (ClutterActor *)priv->time_label,
+                               (ClutterActor *)priv->time_bin,
                                "x-expand",
+                               FALSE,
+                               "x-fill",
+                               FALSE,
+                               "y-expand",
+                               FALSE,
+                               "y-fill",
                                FALSE,
                                NULL);
 
@@ -232,7 +309,7 @@ penge_event_tile_init (PengeEventTile *self)
 
   /* Make the time label span two rows */
   clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               (ClutterActor *)priv->time_label,
+                               (ClutterActor *)priv->time_bin,
                                "row-span",
                                2,
                                NULL);
@@ -245,18 +322,20 @@ penge_event_tile_init (PengeEventTile *self)
                                (ClutterActor *)priv->summary_label,
                                "x-expand",
                                TRUE,
+                               "y-fill",
+                               FALSE,
                                NULL);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                (ClutterActor *)priv->details_label,
                                "x-expand",
                                TRUE,
+                               "y-fill",
+                               FALSE,
                                NULL);
 
   /* Setup spacing and padding */
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
-
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
   g_signal_connect (self,
                     "enter-event",
@@ -265,6 +344,10 @@ penge_event_tile_init (PengeEventTile *self)
   g_signal_connect (self,
                     "leave-event",
                     (GCallback)_leave_event_cb,
+                    self);
+  g_signal_connect (self,
+                    "button-press-event",
+                    (GCallback)_button_press_event_cb,
                     self);
 }
 
@@ -294,8 +377,12 @@ penge_event_tile_update (PengeEventTile *tile)
     {
       nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_label),
                                           "past");
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_bin),
+                                          "past");
     } else {
       nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_label),
+                                          NULL);
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_bin),
                                           NULL);
     }
 

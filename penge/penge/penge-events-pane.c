@@ -287,6 +287,8 @@ penge_events_pane_update (PengeEventsPane *pane)
                             event,
                             "time",
                             priv->time,
+                            "store",
+                            priv->store,
                             NULL);
 
       clutter_actor_set_size (actor, 216, 44);
@@ -468,10 +470,6 @@ static void
 penge_events_pane_init (PengeEventsPane *self)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (self);
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8) };
 
   /* Create hashes to store our view membership in */
   priv->uid_to_events = g_hash_table_new_full (g_str_hash,
@@ -493,8 +491,6 @@ penge_events_pane_init (PengeEventsPane *self)
                     (GCallback)_store_opened_cb,
                     self);
   jana_store_open (priv->store);
-
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 }
 
 static void

@@ -33,6 +33,7 @@ struct _MnbStatusRowPrivate
   ClutterUnit icon_separator_x;
 
   MojitoClient *client;
+  MojitoClientView *view;
   MojitoClientService *service;
 
   gulong update_id;
@@ -275,8 +276,6 @@ on_mojito_update_status (MojitoClientService *service,
                                         priv->last_status_text,
                                         NULL);
     }
-  else
-    g_debug (G_STRLOC ": status updated!");
 }
 
 static void
@@ -291,46 +290,21 @@ on_status_entry_changed (MnbStatusEntry *entry,
   priv->last_status_text =
     g_strdup (mnb_status_entry_get_status_text (MNB_STATUS_ENTRY (priv->entry)));
 
-  g_debug ("%s: updating status ('%s' -> '%s')",
-           G_STRLOC,
-           priv->last_status_text,
-           new_status_text);
-
   mojito_client_service_update_status (priv->service,
                                        on_mojito_update_status,
                                        new_status_text,
                                        row);
 }
 
-static void
-on_mojito_get_last_item (MojitoClientService *service,
-                         MojitoItem          *item,
-                         const GError        *error,
-                         gpointer             data)
+static gboolean
+do_update_timeout (gpointer data)
 {
   MnbStatusRow *row = data;
-  MnbStatusRowPrivate *priv = row->priv;
 
-  g_debug ("%s: GetLastItem: %s", G_STRLOC, priv->service_name);
+  if (row->priv->view != NULL)
+    mojito_client_view_refresh (row->priv->view);
 
-  if (error)
-    {
-      g_warning ("Unable to retrieve the last item on '%s': %s",
-                 priv->service_name,
-                 error->message);
-      return;
-    }
-
-  if (item && item->props)
-    {
-      const gchar *status_text;
-
-      status_text = g_hash_table_lookup (item->props, "content");
-      if (status_text != NULL && *status_text != '\0')
-        mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
-                                          status_text,
-                                          &item->date);
-    }
+  return TRUE;
 }
 
 static void
@@ -355,11 +329,6 @@ on_mojito_get_persona_icon (MojitoClientService *service,
       return;
     }
 
-  g_debug ("%s: GetPersonaIcon: %s -> %s",
-           G_STRLOC,
-           priv->service_name,
-           persona_icon);
-
   if (G_UNLIKELY (CLUTTER_IS_RECTANGLE (priv->icon)))
     return;
 
@@ -383,24 +352,39 @@ on_mojito_get_persona_icon (MojitoClientService *service,
 }
 
 static void
-mnb_status_row_update (MnbStatusRow *row)
+on_mojito_view_item_added (MojitoClientView *view,
+                           MojitoItem       *item,
+                           MnbStatusRow     *row)
 {
   MnbStatusRowPrivate *priv = row->priv;
+  const gchar *status_text;
 
-  mojito_client_service_get_last_item (priv->service,
-                                       on_mojito_get_last_item,
-                                       row);
-  mojito_client_service_get_persona_icon (priv->service,
-                                          on_mojito_get_persona_icon,
-                                          row);
+  if (item == NULL || item->props == NULL)
+    return;
+
+  status_text = g_hash_table_lookup (item->props, "content");
+  if (status_text != NULL && *status_text != '\0')
+    mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
+                                      status_text,
+                                      &(item->date));
 }
 
-static gboolean
-do_update_timeout (gpointer data)
+static void
+on_mojito_view_open (MojitoClient     *client,
+                     MojitoClientView *view,
+                     gpointer          user_data)
 {
-  mnb_status_row_update (data);
+  MnbStatusRow *row = user_data;
+  MnbStatusRowPrivate *priv = row->priv;
 
-  return TRUE;
+  priv->view = g_object_ref (view);
+
+  g_signal_connect (view, "item-added",
+                    G_CALLBACK (on_mojito_view_item_added),
+                    row);
+
+  /* start the view to retrieve the last item */
+  mojito_client_view_start (view);
 }
 
 static void
@@ -413,6 +397,9 @@ mnb_status_row_finalize (GObject *gobject)
       g_source_remove (priv->update_id);
       priv->update_id = 0;
     }
+
+  if (priv->view)
+    g_object_unref (priv->view);
 
   if (priv->service)
     g_object_unref (priv->service);
@@ -478,16 +465,10 @@ mnb_status_row_constructed (GObject *gobject)
 {
   MnbStatusRow *row = MNB_STATUS_ROW (gobject);
   MnbStatusRowPrivate *priv = row->priv;
+  gchar *service_name;
 
   g_assert (priv->service_name != NULL);
   g_assert (priv->client != NULL);
-
-  priv->service = mojito_client_get_service (priv->client, priv->service_name);
-  g_assert (priv->service  != NULL);
-
-  g_debug ("%s: Creating entry for service '%s'",
-           G_STRLOC,
-           priv->service_name);
 
   priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->service_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
@@ -496,8 +477,19 @@ mnb_status_row_constructed (GObject *gobject)
                     G_CALLBACK (on_status_entry_changed),
                     row);
 
-  mnb_status_row_update (row);
-  priv->update_id = g_timeout_add_seconds (60 * 5, do_update_timeout, row);
+  /* we need the service for UpdateStatus and GetPersonaIcon */
+  priv->service = mojito_client_get_service (priv->client, priv->service_name);
+  mojito_client_service_get_persona_icon (priv->service,
+                                          on_mojito_get_persona_icon,
+                                          row);
+
+  /* for the View we need a parametrized service name */
+  service_name = g_strdup_printf ("%s:own=1", priv->service_name);
+  mojito_client_open_view_for_service (priv->client,
+                                       service_name, 1,
+                                       on_mojito_view_open,
+                                       row);
+  g_free (service_name);
 
   if (G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed (gobject);
@@ -596,10 +588,6 @@ mnb_status_row_force_update (MnbStatusRow *row)
 
   priv = row->priv;
 
-  /* remove the timeout first, then update and reinstate it */
-  g_source_remove (priv->update_id);
-  priv->update_id = 0;
-
-  mnb_status_row_update (row);
-  priv->update_id = g_timeout_add_seconds (60 * 5, do_update_timeout, row);
+  if (priv->view)
+    mojito_client_view_refresh (priv->view);
 }

@@ -297,15 +297,12 @@ static void
 mnb_drop_down_init (MnbDropDown *self)
 {
   NbtkWidget *footer, *up_button;
-  NbtkPadding padding = MNB_PADDING (4, 4, 4, 4);
-  ClutterTimeline *timeline;
   MnbDropDownPrivate *priv;
 
   priv = self->priv = GET_PRIVATE (self);
 
   /* footer with "up" button */
   footer = nbtk_table_new ();
-  nbtk_widget_set_padding (footer, &padding);
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
 
   up_button = nbtk_button_new ();
@@ -321,9 +318,6 @@ mnb_drop_down_init (MnbDropDown *self)
                             G_CALLBACK (clutter_actor_hide), self);
 
   nbtk_table_add_widget (NBTK_TABLE (self), footer, 1, 0);
-
-
-  timeline = clutter_timeline_new_for_duration (SLIDE_DURATION);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,

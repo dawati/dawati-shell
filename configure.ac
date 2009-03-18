@@ -1,8 +1,8 @@
 
-m4_define([mutter_version], [2.25.55-0.1])
+m4_define([mutter_version], [2.25.55~0.4])
 m4_define([plugin_major_version], [0])
 m4_define([plugin_minor_version], [9])
-m4_define([plugin_micro_version], [7])
+m4_define([plugin_micro_version], [8])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
 
@@ -82,6 +82,7 @@ Makefile
 data/Makefile
 src/Makefile
 src/tray/Makefile
+src/effects/Makefile
 po/Makefile.in
 tests/Makefile
 penge/Makefile

@@ -36,7 +36,7 @@ enum
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbEntry, mnb_entry, NBTK_TYPE_WIDGET);
+G_DEFINE_TYPE (MnbEntry, mnb_entry, NBTK_TYPE_BIN);
 
 static void
 button_clicked_cb (NbtkButton *button,
@@ -63,7 +63,7 @@ mnb_entry_get_preferred_width (ClutterActor *actor,
   ClutterUnit min_width_entry, min_width_button;
   ClutterUnit natural_width_entry, natural_width_button;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  nbtk_bin_get_padding (NBTK_BIN (actor), &padding);
 
   clutter_actor_get_preferred_width (priv->entry, for_height,
                                      &min_width_entry,
@@ -97,7 +97,7 @@ mnb_entry_get_preferred_height (ClutterActor *actor,
   ClutterUnit min_height_entry, min_height_button;
   ClutterUnit natural_height_entry, natural_height_button;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  nbtk_bin_get_padding (NBTK_BIN (actor), &padding);
 
   clutter_actor_get_preferred_height (priv->entry, for_width,
                                       &min_height_entry,
@@ -109,12 +109,12 @@ mnb_entry_get_preferred_height (ClutterActor *actor,
 
   if (min_height_p)
     *min_height_p = padding.top +
-                    MAX (min_height_entry, min_height_button) + 
+                    MAX (min_height_entry, min_height_button) +
                     padding.bottom;
 
   if (natural_height_p)
     *natural_height_p = padding.top +
-                        MAX (natural_height_entry, natural_height_button) + 
+                        MAX (natural_height_entry, natural_height_button) +
                         padding.bottom;
 }
 
@@ -131,7 +131,7 @@ mnb_entry_allocate (ClutterActor          *actor,
   CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->
     allocate (actor, box, origin_changed);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  nbtk_bin_get_padding (NBTK_BIN (actor), &padding);
 
   /* Button is right-aligned. */
   clutter_actor_get_preferred_size (priv->button,
@@ -143,10 +143,10 @@ mnb_entry_allocate (ClutterActor          *actor,
   button_box.y1 = ((box->y2 - box->y1) - button_height) / 2;
   button_box.y2 = button_box.y1 + button_height;
 
-  /* Sanity check. */  
+  /* Sanity check. */
   button_box.x1 = MAX (padding.left, button_box.x1);
   button_box.x2 = MAX (padding.left, button_box.x2);
-  
+
   /* Entry is left-aligned. */
   clutter_actor_get_preferred_size (priv->entry,
                                     NULL, NULL,
@@ -348,7 +348,7 @@ mnb_entry_new (const char *label)
 const gchar *
 mnb_entry_get_label (MnbEntry *self)
 {
-  g_return_val_if_fail (MNB_IS_ENTRY (self), NULL);  
+  g_return_val_if_fail (MNB_IS_ENTRY (self), NULL);
 
   return nbtk_button_get_label (NBTK_BUTTON (self->priv->button));
 }
@@ -365,7 +365,7 @@ mnb_entry_set_label (MnbEntry     *self,
 const gchar *
 mnb_entry_get_text (MnbEntry *self)
 {
-  g_return_val_if_fail (MNB_IS_ENTRY (self), NULL);  
+  g_return_val_if_fail (MNB_IS_ENTRY (self), NULL);
 
   return nbtk_entry_get_text (NBTK_ENTRY (self->priv->entry));
 }
@@ -375,7 +375,7 @@ mnb_entry_set_text (MnbEntry     *self,
                     const gchar  *text)
 {
   g_return_if_fail (self);
-  
+
   if (text)
     nbtk_entry_set_text (NBTK_ENTRY (self->priv->entry), text);
 }

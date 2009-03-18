@@ -343,7 +343,6 @@ workspace_chooser_input_cb (ClutterActor *clone,
   guint32                     timestamp;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
-  active    = meta_screen_get_active_workspace_index (screen);
 
   if (!workspace)
     {
@@ -352,9 +351,6 @@ workspace_chooser_input_cb (ClutterActor *clone,
     }
 
   timestamp = clutter_x11_get_current_event_time ();
-
-  if (active != indx)
-    priv->desktop_switch_in_progress = TRUE;
 
   hide_workspace_chooser (plugin, timestamp);
 
@@ -403,11 +399,6 @@ chooser_keyboard_input_cb (ClutterActor *self,
     indx = MAX_WORKSPACES - 1;
   else if (indx == -1)
     indx = -2;
-
-  active = meta_screen_get_active_workspace_index (screen);
-
-  if (active != indx)
-    priv->desktop_switch_in_progress = TRUE;
 
   timestamp = clutter_x11_get_current_event_time ();
 
@@ -614,8 +605,6 @@ new_workspace_input_cb (ClutterActor *clone,
   guint32                     timestamp = clutter_x11_get_current_event_time ();
 
   hide_workspace_chooser (plugin, timestamp);
-
-  priv->desktop_switch_in_progress = TRUE;
 
   configure_app (sn_id, wsg_data->workspace, wsg_data->plugin);
 
@@ -994,8 +983,6 @@ workspace_chooser_timeout_cb (gpointer data)
       return FALSE;
     }
 
-  priv->desktop_switch_in_progress = TRUE;
-
   hide_workspace_chooser (plugin, timestamp);
 
   configure_app (wsc_data->sn_id, wsc_data->workspace, plugin);
@@ -1290,23 +1277,9 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
 
           finalize_app (sn_id, sn_data->workspace, timestamp, plugin);
 
-          if (!priv->desktop_switch_in_progress)
-            {
-              /*
-               * If the WS effect is not in progress, we
-               * reset the SN flag and remove the window from hash.
-               *
-               * We then move the window onto the appropriate workspace.
-               */
-              apriv->sn_in_progress = FALSE;
+          apriv->sn_in_progress = FALSE;
 
-              g_hash_table_remove (priv->sn_hash, sn_id);
-            }
-
-          if (priv->desktop_switch_in_progress)
-            {
-              return FALSE;
-            }
+          g_hash_table_remove (priv->sn_hash, sn_id);
         }
       else
         {
@@ -1333,9 +1306,6 @@ moblin_netbook_sn_finalize (MutterPlugin *plugin)
   MutterPluginClass          *klass;
   gpointer                    key, value;
   GHashTableIter              iter;
-
-  if (priv->desktop_switch_in_progress)
-    return;
 
   klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 

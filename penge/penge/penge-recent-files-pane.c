@@ -72,10 +72,6 @@ static void
 penge_recent_files_pane_init (PengeRecentFilesPane *self)
 {
   PengeRecentFilesPanePrivate *priv = GET_PRIVATE (self);
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8) };
 
   priv->uri_to_actor = g_hash_table_new_full (g_str_hash,
                                               g_str_equal,
@@ -84,8 +80,6 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
-
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
   priv->manager = gtk_recent_manager_get_default ();
   g_signal_connect (priv->manager, 
@@ -122,7 +116,6 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
   const gchar *uri;
   GList *old_actors;
   PengeRecentFileTile *tile;
-  GFileType type;
   gchar *filename = NULL;
 
   items = gtk_recent_manager_get_items (priv->manager);
@@ -158,15 +151,25 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
 
 
       /* 
-       * *Try* and convert URI to a filename, don't worry if it's remote or if
-       * we get an error. We'll just skip that file
+       * *Try* and convert URI to a filename. If it's local and it doesn't
+       * exist then just skip this one. If it's non local then show it.
        */
-      filename = g_filename_from_uri (uri,
-                                      NULL,
-                                      NULL);
 
-      if (thumbnail_path && filename &&
-          g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+      if (g_str_has_prefix (uri, "file:/"))
+      {
+        filename = g_filename_from_uri (uri,
+                                        NULL,
+                                        NULL);
+
+        if (filename && !g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+        {
+          continue;
+        }
+
+        g_free (filename);
+      }
+
+      if (thumbnail_path && filename)
       {
         actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
                               "thumbnail-path",
@@ -191,8 +194,6 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                              g_strdup (uri),
                              g_object_ref (actor));
       }
-
-      g_free (filename);
     }
 
     if (actor)

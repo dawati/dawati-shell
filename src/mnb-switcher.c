@@ -48,7 +48,7 @@ typedef struct _MnbSwitcherAppClass          MnbSwitcherAppClass;
 struct _MnbSwitcherApp
 {
   /*< private >*/
-  NbtkWidget parent_instance;
+  NbtkBin parent_instance;
 
   MnbSwitcherAppPrivate *priv;
 };
@@ -56,7 +56,7 @@ struct _MnbSwitcherApp
 struct _MnbSwitcherAppClass
 {
   /*< private >*/
-  NbtkWidgetClass parent_class;
+  NbtkBinClass parent_class;
 };
 
 struct _MnbSwitcherAppPrivate
@@ -71,7 +71,7 @@ struct _MnbSwitcherAppPrivate
 
 GType mnb_switcher_app_get_type (void);
 
-G_DEFINE_TYPE (MnbSwitcherApp, mnb_switcher_app, NBTK_TYPE_WIDGET)
+G_DEFINE_TYPE (MnbSwitcherApp, mnb_switcher_app, NBTK_TYPE_BIN)
 
 #define MNB_SWITCHER_APP_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_APP,\
@@ -519,7 +519,6 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   NbtkWidget         *table = priv->table;
   NbtkWidget         *new_ws;
   struct input_data  *input_data = g_new (struct input_data, 1);
-  NbtkPadding         padding = MNB_PADDING (6, 6, 6, 6);
 
   input_data = g_new (struct input_data, 1);
   input_data->index = col;
@@ -528,9 +527,8 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   new_ws = nbtk_table_new ();
   nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
   nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
-  nbtk_widget_set_padding (new_ws, &padding);
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
-                                    "switcher-workspace");
+
+  nbtk_widget_set_style_class_name (new_ws, "switcher-workspace");
 
   if (active)
     clutter_actor_set_name (CLUTTER_ACTOR (new_ws),
@@ -562,7 +560,8 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
   NbtkWidget         *table = priv->table;
-  NbtkWidget         *ws_label;
+  ClutterActor       *ws_label;
+  NbtkWidget         *label;
   gchar              *s;
   struct input_data  *input_data = g_new (struct input_data, 1);
 
@@ -571,12 +570,19 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
 
   s = g_strdup_printf ("%d", col + 1);
 
-  ws_label = nbtk_label_new (s);
+  ws_label = nbtk_bin_new ();
+  label = nbtk_label_new (s);
+
+  nbtk_widget_set_style_class_name (label, "workspace-title-label");
+
+  nbtk_bin_set_child (NBTK_BIN (ws_label), CLUTTER_ACTOR (label));
+  nbtk_bin_set_alignment (NBTK_BIN (ws_label),
+                          NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
 
   if (active)
     clutter_actor_set_name (CLUTTER_ACTOR (ws_label), "workspace-title-active");
 
-  nbtk_widget_set_style_class_name (ws_label, "workspace-title");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (ws_label), "workspace-title");
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (ws_label), TRUE);
 
@@ -584,12 +590,12 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
                          G_CALLBACK (workspace_input_cb), input_data,
                          (GClosureNotify) g_free, 0);
 
-  nbtk_table_add_widget (NBTK_TABLE (table), ws_label, 0, col);
+  nbtk_table_add_widget (NBTK_TABLE (table), NBTK_WIDGET (ws_label), 0, col);
   clutter_container_child_set (CLUTTER_CONTAINER (table),
                                CLUTTER_ACTOR (ws_label),
                                "y-expand", FALSE, NULL);
 
-  return ws_label;
+  return NBTK_WIDGET (ws_label);
 }
 
 struct ws_remove_data
@@ -880,7 +886,6 @@ mnb_switcher_show (ClutterActor *self)
   NbtkWidget   *table;
   GList        *window_list, *l;
   NbtkWidget  **spaces;
-  NbtkPadding   padding = MNB_PADDING (6, 6, 6, 6);
   GList        *workspaces = meta_screen_get_workspaces (screen);
   MetaWindow   *current_focus = NULL;
   ClutterActor *current_focus_clone = NULL;
@@ -914,7 +919,6 @@ mnb_switcher_show (ClutterActor *self)
   priv->table = table;
   nbtk_table_set_row_spacing (NBTK_TABLE (table), 4);
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 7);
-  nbtk_widget_set_padding (table, &padding);
 
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
 
@@ -1115,7 +1119,7 @@ mnb_switcher_show (ClutterActor *self)
     NbtkWidget *new_ws = nbtk_table_new ();
     NbtkWidget *label;
 
-    label = nbtk_label_new ("");
+    label = NBTK_WIDGET (nbtk_bin_new ());
     nbtk_table_add_widget (NBTK_TABLE (table), label, 0, ws_count);
     nbtk_widget_set_style_class_name (label, "workspace-title-new");
     clutter_container_child_set (CLUTTER_CONTAINER (table),
@@ -1124,7 +1128,6 @@ mnb_switcher_show (ClutterActor *self)
 
     nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
-    nbtk_widget_set_padding (new_ws, &padding);
     nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
                                       "switcher-workspace-new");
 

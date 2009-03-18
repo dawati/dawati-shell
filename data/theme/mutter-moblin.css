@@ -20,6 +20,22 @@ NbtkButton:active {
   color: #333;
 }
 
+NbtkExpander > NbtkButton {
+  border-image: url("file://generic/expander-header.png") 4 5 5 4 stretch;
+  font-size: 16;
+  padding-top: 11;
+  padding-bottom: 12;
+  padding-left: 40;
+}
+
+NbtkExpander > NbtkButton:checked {
+  border-image: url("file://generic/expander-header-expanded.png") 4 5 5 4 stretch;
+}
+
+NbtkExpander > NbtkButton:hover {
+  border-image: url("file://generic/expander-header-hover.png") 4 5 5 4 stretch;
+}
+
 NbtkScrollView {
   xthickness: 26;
   ythickness: 26;
@@ -31,11 +47,11 @@ NbtkScrollBar {
 }
 
 NbtkScrollBar > *#backward-stepper {
-  border-image: url("file://generic/vscroll-backwards.png") 2 4 2 2 stretch stretch;
+  border-image: url("file://generic/vscroll-backward.png") 2 4 2 2 stretch stretch;
 }
 
 NbtkScrollBar > *#backward-stepper:hover {
-  border-image: url("file://generic/vscroll-backwards-hover.png") 2 4 2 2 stretch stretch;
+  border-image: url("file://generic/vscroll-backward-hover.png") 2 4 2 2 stretch stretch;
 }
 
 NbtkScrollBar > *#forward-stepper {
@@ -71,6 +87,7 @@ NbtkTable {
 /* spaces switcher table */
 *#switcher-table {
   background-color: #ffff;
+  padding: 5;
 }
 
 MnbPanelButton:checked {
@@ -112,7 +129,7 @@ MnbPanelButton:hover, MnbPanelButton:active {
 *#m-space-button:hover, *#m-space-button:active, *#m-space-button:checked {
   background-image: url("file://panel/m_zone-coloured.png");
 }
- 
+
 /* pasteboard button */
 *#pasteboard-button {
   background-image: url("file://panel/pasteboard-normal.png");
@@ -205,6 +222,10 @@ NbtkTooltip {
 }
 
 /* workspace switcher */
+*.workspace-title-label {
+  color: white;
+}
+
 *.workspace-title {
   border-image: url("file://switcher/workspace-title.png") 4;
   padding: 4;
@@ -230,15 +251,12 @@ NbtkTooltip {
 }
 
 *#workspace-title-new-over {
-  background-image: url("file://switcher/workspace-title-new-over.png");
-  border-width: 4;
-  padding: 4;
+  border-image: url("file://switcher/workspace-title-new-over.png") 4;
   color: white;
 }
 
 *#workspace-title-new-disabled {
-  background-image: url("file://switcher/workspace-title-new-disabled.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-new-disabled.png") 4;
   padding: 4;
   color: white;
 }
@@ -247,22 +265,19 @@ NbtkTooltip {
 }
 
 *#workspace-title-new-symbol-active {
-  background-image: url("file://switcher/workspace-title-new-symbol-active.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-new-symbol-active.png") 4;
   padding: 4;
   color: white;
 }
 
 *#workspace-title-new-symbol-over {
-  background-image: url("file://switcher/workspace-title-new-symbol-over.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-new-symbol-over.png") 4;
   padding: 4;
   color: white;
 }
 
 *#workspace-title-new-symbol-disabled {
-  background-image: url("file://switcher/workspace-title-new-symbol-disabled.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-title-new-symbol-disabled.png") 4;
   padding: 4;
   color: white;
 }
@@ -288,14 +303,12 @@ NbtkTooltip {
 }
 
 *#switcher-workspace-new-over {
-  background-image: url("file://switcher/workspace-background-new-over.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background-new-over.png") 4;
   padding: 5;
 }
 
 *#switcher-workspace-new-disabled {
-  background-image: url("file://switcher/workspace-background-new-disabled.png");
-  border-width: 4;
+  border-image: url("file://switcher/workspace-background-new-disabled.png") 4;
   padding: 5;
 }
 
@@ -334,13 +347,17 @@ MnbDropDown, MnbSwitcher {
   padding: 5;
 }
 
+*#app-launcher-search {
+  border-image: url('file://launcher/launcher-search-bg.png') 4 stretch;
+  padding: 4;
+}
+
 *#app-launcher-search-label {
-  background-color: #ffff;
   font-size: 18;
 }
 
 *#app-launcher-search-entry {
-  border-image: url('file://launcher/launcher-search-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
   padding: 4;
 }
 
@@ -362,26 +379,38 @@ MnbLauncherButton:hover {
   border-image: url("file://launcher/launcher-hover.png") 5 5 7 5 stretch stretch;
 }
 
-MnbLauncherButton > *#launcher-text {
+*#mnb-launcher-button-title {
   color: #3b3b3b;
   font-size: 13;
 }
 
-MnbLauncherButton > *#launcher-category {
+*#mnb-launcher-button-description {
   color: #7e7e7e;
   font-size: 12;
 }
 
-MnbLauncherButton > *#launcher-comment {
+*#mnb-launcher-button-comment {
   color: #a2adb6;
   font-size: 11;
 }
 
 /* Penge */
 
-PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile
+PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEventTile, PengePeoplePane
+{
+  padding: 8;
+}
+
+PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile, PengeDateTile
 {
   border-image: url('file://mzone/general-background.png') 16;
+  padding: 8;
+}
+
+PengeAppTile
+{
+  border-image: url('file://mzone/general-background.png') 16;
+  padding: 4;
 }
 
 PengeDateTile
@@ -399,18 +428,28 @@ PengeEventTile:hover
   border-image: url('file://mzone/date-background-background.png') 16;
 }
 
-*.PengeEventTime
+*.PengeEventTimeLabel
 {
-  border-image: url('file://mzone/time-bg.png') 0;
   color: white;
   font-size:12;
+  padding: 8;
 }
 
-*.PengeEventTime:past
+*.PengeEventTimeLabel:past
 {
-  border-image: url('file://mzone/time-bg-past.png') 0;
   color: white;
   font-size:12;
+  padding: 8;
+}
+
+*.PengeEventTimeBin
+{
+  border-image: url('file://mzone/time-bg.png') 0;
+}
+
+*.PengeEventTimeBin:past
+{
+  border-image: url('file://mzone/time-bg-past.png') 0;
 }
 
 *.PengeDayLabel

@@ -513,6 +513,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_use_markup (CLUTTER_TEXT (text), TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (text), FALSE);
 
   priv->service_label =
     CLUTTER_ACTOR (nbtk_label_new (""));
@@ -605,7 +606,6 @@ mnb_status_entry_set_is_active (MnbStatusEntry *entry,
     return;
 
   priv->is_active = is_active;
-  g_debug (G_STRLOC ": setting active = %s", priv->is_active ? "true" : "false");
 
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
 
@@ -710,7 +710,7 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
   clutter_text_set_markup (CLUTTER_TEXT (text), priv->status_text);
 
   service_line = g_strdup_printf ("%s - %s",
-                                  priv->status_time == NULL,
+                                  priv->status_time,
                                   priv->service_name);
 
   text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->service_label));

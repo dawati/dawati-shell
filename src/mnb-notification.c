@@ -22,6 +22,7 @@
  */
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"
@@ -82,7 +83,7 @@ static void
 mnb_notification_set_property (GObject *object, guint property_id,
                                const GValue *value, GParamSpec *pspec)
 {
-  switch (property_id) 
+  switch (property_id)
     {
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -92,9 +93,9 @@ mnb_notification_set_property (GObject *object, guint property_id,
 static void
 mnb_notification_dispose (GObject *object)
 {
+#if 0
   MnbNotificationPrivate *priv = GET_PRIVATE (object);
 
-#if 0
   /* FIXME : free up others.. */
   if (priv->icon)
     clutter_actor_destroy (priv->icon);
@@ -125,7 +126,6 @@ static void
 mnb_notification_class_init (MnbNotificationClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *clutter_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbNotificationPrivate));
 
@@ -134,7 +134,7 @@ mnb_notification_class_init (MnbNotificationClass *klass)
   object_class->dispose = mnb_notification_dispose;
   object_class->finalize = mnb_notification_finalize;
 
-  signals[CLOSED] 
+  signals[CLOSED]
     = g_signal_new ("closed",
                     G_OBJECT_CLASS_TYPE (klass),
                     G_SIGNAL_RUN_FIRST,
@@ -143,7 +143,7 @@ mnb_notification_class_init (MnbNotificationClass *klass)
                     g_cclosure_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
 
-  signals[ACTION] 
+  signals[ACTION]
     = g_signal_new ("action",
                     G_OBJECT_CLASS_TYPE (klass),
                     G_SIGNAL_RUN_FIRST,
@@ -170,8 +170,6 @@ on_action_click (ClutterActor *button, ActionData *data)
 static void
 mnb_notification_init (MnbNotification *self)
 {
-  NbtkWidget *footer, *up_button;
-  ClutterTimeline *timeline;
   MnbNotificationPrivate *priv;
   ClutterText *txt;
 
@@ -201,8 +199,6 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->summary, 0, 1);
 
-  nbtk_widget_set_alignment (priv->summary, 0.0, 0.0);
-
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->summary),
                                "y-expand", TRUE,
@@ -211,8 +207,6 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->body, 1, 0);
   nbtk_table_set_widget_colspan (NBTK_TABLE (self), priv->body, 2);
-
-  nbtk_widget_set_alignment (priv->body, 0.0, 0.0);
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->body)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
@@ -282,8 +276,8 @@ mnb_notification_update (MnbNotification *notification,
 
       if (info)
         {
-          clutter_texture_set_from_file (CLUTTER_TEXTURE(priv->icon), 
-                                         gtk_icon_info_get_filename (info), 
+          clutter_texture_set_from_file (CLUTTER_TEXTURE(priv->icon),
+                                         gtk_icon_info_get_filename (info),
                                          NULL);
           gtk_icon_info_free (info);
         }
@@ -291,18 +285,18 @@ mnb_notification_update (MnbNotification *notification,
 
   if (details->actions)
     {
-      ClutterActor *layout = NULL; 
+      ClutterActor *layout = NULL;
       GHashTableIter iter;
       gchar *key, *value;
-      
+
       g_hash_table_iter_init (&iter, details->actions);
-      while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value)) 
+      while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value))
         {
           if (strcasecmp(key, "default"))
             {
               ActionData *data;
               NbtkWidget *button;
-              
+
               if (layout == NULL)
                 {
                   layout = g_object_new (NBTK_TYPE_GRID,
@@ -312,23 +306,23 @@ mnb_notification_update (MnbNotification *notification,
                                            "width", 0,
                                          */
                                          NULL);
-                  
-                  nbtk_table_add_widget (NBTK_TABLE (notification), 
+
+                  nbtk_table_add_widget (NBTK_TABLE (notification),
                                          NBTK_WIDGET (layout), 2, 0);
                 }
-              
+
               data = g_slice_new (ActionData);
               data->notification = notification;
               data->action = g_strdup (key);
-              
+
               button = nbtk_button_new ();
-              
+
               nbtk_button_set_label (NBTK_BUTTON (button), value);
-              
-              clutter_container_add_actor (CLUTTER_CONTAINER (layout), 
+
+              clutter_container_add_actor (CLUTTER_CONTAINER (layout),
                                            CLUTTER_ACTOR(button));
-              
-              g_signal_connect (button, "clicked", 
+
+              g_signal_connect (button, "clicked",
                                 G_CALLBACK (on_action_click), data);
             }
         }
@@ -340,7 +334,7 @@ mnb_notification_get_id (MnbNotification *notification)
 {
   MnbNotificationPrivate *priv;
 
-  g_return_if_fail (MNB_IS_NOTIFICATION (notification));
+  g_return_val_if_fail (MNB_IS_NOTIFICATION (notification), 0);
 
   priv = GET_PRIVATE (notification);
 
