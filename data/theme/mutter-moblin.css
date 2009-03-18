@@ -387,17 +387,17 @@ MnbLauncherButton:hover {
   border-image: url("file://launcher/launcher-hover.png") 5 5 7 5 stretch stretch;
 }
 
-MnbLauncherButton > *#launcher-text {
+*#mnb-launcher-button-title {
   color: #3b3b3b;
   font-size: 13;
 }
 
-MnbLauncherButton > *#launcher-category {
+*#mnb-launcher-button-description {
   color: #7e7e7e;
   font-size: 12;
 }
 
-MnbLauncherButton > *#launcher-comment {
+*#mnb-launcher-button-comment {
   color: #a2adb6;
   font-size: 11;
 }
