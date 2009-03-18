@@ -297,14 +297,12 @@ static void
 mnb_drop_down_init (MnbDropDown *self)
 {
   NbtkWidget *footer, *up_button;
-  NbtkPadding padding = MNB_PADDING (4, 4, 4, 4);
   MnbDropDownPrivate *priv;
 
   priv = self->priv = GET_PRIVATE (self);
 
   /* footer with "up" button */
   footer = nbtk_table_new ();
-  nbtk_widget_set_padding (footer, &padding);
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
 
   up_button = nbtk_button_new ();
