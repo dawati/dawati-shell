@@ -593,7 +593,7 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
                                CLUTTER_ACTOR (ws_label),
                                "y-expand", FALSE, NULL);
 
-  return ws_label;
+  return NBTK_WIDGET (ws_label);
 }
 
 struct ws_remove_data
