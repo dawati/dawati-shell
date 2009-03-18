@@ -1273,8 +1273,6 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
 
   priv = MNB_SWITCHER (self)->priv;
 
-  hide_panel (priv->plugin);
-
   if (priv->tab_list)
     {
       g_list_free (priv->tab_list);
