@@ -1117,7 +1117,7 @@ mnb_switcher_show (ClutterActor *self)
     NbtkWidget *new_ws = nbtk_table_new ();
     NbtkWidget *label;
 
-    label = nbtk_label_new ("");
+    label = NBTK_WIDGET (nbtk_bin_new ());
     nbtk_table_add_widget (NBTK_TABLE (table), label, 0, ws_count);
     nbtk_widget_set_style_class_name (label, "workspace-title-new");
     clutter_container_child_set (CLUTTER_CONTAINER (table),
