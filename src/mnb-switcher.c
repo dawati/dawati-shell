@@ -558,7 +558,8 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
   NbtkWidget         *table = priv->table;
-  NbtkWidget         *ws_label;
+  ClutterActor       *ws_label;
+  NbtkWidget         *label;
   gchar              *s;
   struct input_data  *input_data = g_new (struct input_data, 1);
 
@@ -567,12 +568,19 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
 
   s = g_strdup_printf ("%d", col + 1);
 
-  ws_label = nbtk_label_new (s);
+  ws_label = nbtk_bin_new ();
+  label = nbtk_label_new (s);
+
+  nbtk_widget_set_style_class_name (label, "workspace-title-label");
+
+  nbtk_bin_set_child (NBTK_BIN (ws_label), CLUTTER_ACTOR (label));
+  nbtk_bin_set_alignment (NBTK_BIN (ws_label),
+                          NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
 
   if (active)
     clutter_actor_set_name (CLUTTER_ACTOR (ws_label), "workspace-title-active");
 
-  nbtk_widget_set_style_class_name (ws_label, "workspace-title");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (ws_label), "workspace-title");
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (ws_label), TRUE);
 
@@ -580,7 +588,7 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
                          G_CALLBACK (workspace_input_cb), input_data,
                          (GClosureNotify) g_free, 0);
 
-  nbtk_table_add_widget (NBTK_TABLE (table), ws_label, 0, col);
+  nbtk_table_add_widget (NBTK_TABLE (table), NBTK_WIDGET (ws_label), 0, col);
   clutter_container_child_set (CLUTTER_CONTAINER (table),
                                CLUTTER_ACTOR (ws_label),
                                "y-expand", FALSE, NULL);

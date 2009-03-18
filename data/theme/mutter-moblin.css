@@ -222,6 +222,10 @@ NbtkTooltip {
 }
 
 /* workspace switcher */
+*.workspace-title-label {
+  color: white;
+}
+
 *.workspace-title {
   border-image: url("file://switcher/workspace-title.png") 4;
   padding: 4;
