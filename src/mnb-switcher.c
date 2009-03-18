@@ -71,7 +71,7 @@ struct _MnbSwitcherAppPrivate
 
 GType mnb_switcher_app_get_type (void);
 
-G_DEFINE_TYPE (MnbSwitcherApp, mnb_switcher_app, NBTK_TYPE_WIDGET)
+G_DEFINE_TYPE (MnbSwitcherApp, mnb_switcher_app, NBTK_TYPE_BIN)
 
 #define MNB_SWITCHER_APP_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_APP,\
