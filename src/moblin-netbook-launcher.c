@@ -48,7 +48,8 @@
 #define ICON_SIZE 48
 #define PADDING 8
 #define N_COLS 4
-#define LAUNCHER_WIDTH 235
+#define LAUNCHER_WIDTH  235
+#define LAUNCHER_HEIGHT 64
 
 typedef struct
 {
@@ -195,7 +196,9 @@ make_table (MutterPlugin  *self)
                                                 generic_name, category,
                                                 description, last_used);
               g_free (last_used);
-              clutter_actor_set_width (CLUTTER_ACTOR (button), LAUNCHER_WIDTH);
+              clutter_actor_set_size (CLUTTER_ACTOR (button),
+                                      LAUNCHER_WIDTH,
+                                      LAUNCHER_HEIGHT);
               clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                      CLUTTER_ACTOR (button), NULL);
 
