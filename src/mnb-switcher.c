@@ -528,6 +528,8 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
   nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
 
+  nbtk_widget_set_style_class_name (new_ws, "switcher-workspace");
+
   if (active)
     clutter_actor_set_name (CLUTTER_ACTOR (new_ws),
                             "switcher-workspace-active");
