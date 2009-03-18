@@ -199,8 +199,6 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->summary, 0, 1);
 
-  nbtk_widget_set_alignment (priv->summary, 0.0, 0.0);
-
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->summary),
                                "y-expand", TRUE,
@@ -209,8 +207,6 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_table_add_widget (NBTK_TABLE (self), priv->body, 1, 0);
   nbtk_table_set_widget_colspan (NBTK_TABLE (self), priv->body, 2);
-
-  nbtk_widget_set_alignment (priv->body, 0.0, 0.0);
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->body)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
