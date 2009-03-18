@@ -55,7 +55,11 @@ struct _MnbLauncherButtonPrivate
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbLauncherButton, mnb_launcher_button, NBTK_TYPE_WIDGET)
+static void nbtk_stylable_iface_init (NbtkStylableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MnbLauncherButton, mnb_launcher_button, NBTK_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE,
+                                                nbtk_stylable_iface_init));
 
 static void
 dispose (GObject *object)
@@ -524,5 +528,24 @@ mnb_launcher_button_get_comment (MnbLauncherButton *self)
   g_return_val_if_fail (self, NULL);
 
   return nbtk_label_get_text (self->priv->comment);
+}
+
+static void
+nbtk_stylable_iface_init (NbtkStylableIface *iface)
+{
+  static gboolean is_initialized = FALSE;
+
+  if (G_UNLIKELY (!is_initialized))
+    {
+      GParamSpec *pspec;
+
+      pspec = g_param_spec_boxed ("padding",
+                                  "Padding",
+                                  "Padding between the widgets borders "
+                                  "and its content",
+                                  NBTK_TYPE_PADDING,
+                                  G_PARAM_READWRITE);
+      nbtk_stylable_iface_install_property (iface, MNB_TYPE_LAUNCHER_BUTTON, pspec);
+    }
 }
 
