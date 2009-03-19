@@ -1501,6 +1501,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       if (type == META_COMP_WINDOW_DIALOG)
         {
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+          return;
         }
 
       clutter_actor_move_anchor_point_from_gravity (actor,
