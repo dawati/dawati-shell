@@ -69,6 +69,8 @@ static gboolean stage_capture_cb (ClutterActor *stage, ClutterEvent *event,
 
 static void setup_parallax_effect (MutterPlugin *plugin);
 
+static void setup_focus_window (MutterPlugin *plugin);
+
 static GQuark actor_data_quark = 0;
 
 static void     minimize   (MutterPlugin *plugin,
@@ -785,6 +787,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_set_motion_events_enabled (TRUE);
 
   setup_parallax_effect (MUTTER_PLUGIN (plugin));
+
+  setup_focus_window (MUTTER_PLUGIN (plugin));
 
   moblin_netbook_sn_setup (MUTTER_PLUGIN (plugin));
 
@@ -1676,6 +1680,7 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
 
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
@@ -1697,7 +1702,10 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
     g_object_weak_ref (G_OBJECT (priv->last_focused),
                        last_focus_weak_notify_cb, plugin);
 
-  meta_display_focus_the_no_focus_window (display, screen, timestamp);
+  XSetInputFocus (xdpy,
+                  priv->focus_xwin,
+                  RevertToPointerRoot,
+                  timestamp);
 
   priv->blocking_input = TRUE;
 }
@@ -1949,6 +1957,42 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
     }
 
   return FALSE;
+}
+
+static void
+setup_focus_window (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  Window                      xwin;
+  XSetWindowAttributes        attr;
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  Atom                        type_atom;
+
+  type_atom = meta_display_get_atom (display,
+                                     META_ATOM__NET_WM_WINDOW_TYPE_DOCK);
+
+  attr.event_mask        = KeyPressMask | KeyReleaseMask;
+  attr.override_redirect = True;
+
+  xwin = XCreateWindow (xdpy,
+                        RootWindow (xdpy,
+                                    meta_screen_get_screen_number (screen)),
+                        -100, -100, 1, 1, 0,
+                        CopyFromParent, InputOutput, CopyFromParent,
+                        CWEventMask | CWOverrideRedirect, &attr);
+
+  XChangeProperty (xdpy, xwin,
+                   meta_display_get_atom (display,
+                                          META_ATOM__NET_WM_WINDOW_TYPE),
+                   XA_ATOM, 32, PropModeReplace,
+                   (unsigned char *) &type_atom,
+                   1);
+
+  XMapWindow (xdpy, xwin);
+
+  priv->focus_xwin = xwin;
 }
 
 static void
