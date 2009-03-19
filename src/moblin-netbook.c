@@ -1474,8 +1474,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 
     }
+  /*
+   * Anything that might be associated with startup notification needs to be
+   * handled here; if this list grows, we should just split it further.
+   */
   else if (type == META_COMP_WINDOW_NORMAL ||
-           type == META_COMP_WINDOW_SPLASHSCREEN)
+           type == META_COMP_WINDOW_SPLASHSCREEN ||
+           type == META_COMP_WINDOW_DIALOG)
     {
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
@@ -1488,6 +1493,14 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           if (!moblin_netbook_sn_should_map (plugin, mcw, sn_id))
             return;
+        }
+
+      /*
+       * Anything that we do not animated exits at this point.
+       */
+      if (type == META_COMP_WINDOW_DIALOG)
+        {
+          mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
         }
 
       clutter_actor_move_anchor_point_from_gravity (actor,
