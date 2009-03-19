@@ -157,6 +157,30 @@ mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
 
 }
 
+static gboolean
+mnb_panel_button_press (ClutterActor       *actor,
+                        ClutterButtonEvent *event)
+{
+  /* don't react to button press when already active */
+  if (nbtk_button_get_checked (NBTK_BUTTON (actor)))
+    return TRUE;
+  else
+    return CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->button_press_event (actor,
+                                                                       event);
+}
+
+static gboolean
+mnb_panel_button_enter (ClutterActor         *actor,
+                        ClutterCrossingEvent *event)
+{
+  /* don't show a tooltip when the button is "checked" */
+  if (nbtk_button_get_checked (NBTK_BUTTON (actor)))
+    return TRUE;
+  else
+    return CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->enter_event (actor,
+                                                                             event);
+}
+
 static void
 mnb_panel_button_class_init (MnbPanelButtonClass *klass)
 {
@@ -166,6 +190,8 @@ mnb_panel_button_class_init (MnbPanelButtonClass *klass)
   g_type_class_add_private (klass, sizeof (MnbPanelButtonPrivate));
 
   actor_class->pick = mnb_panel_button_pick;
+  actor_class->button_press_event = mnb_panel_button_press;
+  actor_class->enter_event = mnb_panel_button_enter;
 
   button_class->transition = mnb_panel_button_transition;
 }
