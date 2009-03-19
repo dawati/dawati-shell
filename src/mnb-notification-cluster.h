@@ -28,6 +28,8 @@
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
 
+#include "moblin-netbook-notify-store.h"
+
 G_BEGIN_DECLS
 
 #define MNB_TYPE_NOTIFICATION_CLUSTER mnb_notification_cluster_get_type()
@@ -65,6 +67,10 @@ typedef struct {
 GType mnb_notification_cluster_get_type (void);
 
 ClutterActor* mnb_notification_cluster_new (void);
+
+void
+mnb_notification_cluster_set_store (MnbNotificationCluster    *self,
+                                    MoblinNetbookNotifyStore  *notify_store);
 
 G_END_DECLS
 

@@ -304,6 +304,10 @@ on_notification_added (MoblinNetbookNotifyStore *store,
   NbtkWidget *w;
   ClutterAnimation *anim;
 
+  /* Handled by mnb-notification-urgent */
+  if (notification->is_urgent)
+    return;
+
   w = find_widget (priv->notifiers, notification->id);
 
   if (!w)
@@ -434,6 +438,10 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
   ClutterAnimation *anim;
   NbtkWidget *w;
+
+  /* Handled by mnb-notification-urgent */
+  if (notification->is_urgent)
+    return;
 
   if (priv->anim_lock == TRUE)
     {
@@ -579,29 +587,28 @@ on_dismiss_all_click (ClutterActor *button, MnbNotificationCluster *cluster)
                              NULL);
 }
 
+void
+mnb_notification_cluster_set_store (MnbNotificationCluster    *self,
+                                    MoblinNetbookNotifyStore  *notify_store)
+{
+  g_signal_connect (notify_store, 
+                    "notification-added", 
+                    G_CALLBACK (on_notification_added), 
+                    self);
+
+  g_signal_connect (notify_store, 
+                    "notification-closed", 
+                    G_CALLBACK (on_notification_closed), 
+                    self);
+}
+
+
 static void
 mnb_notification_cluster_init (MnbNotificationCluster *self)
 {
   NbtkWidget *widget;
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (self);
-  MoblinNetbookNotifyStore *notify_store;
-
-  notify_store = moblin_netbook_notify_store_new ();
-
-  if (notify_store)
-    {
-
-      g_signal_connect (notify_store,
-                        "notification-added",
-                        G_CALLBACK (on_notification_added),
-                        self);
-
-      g_signal_connect (notify_store,
-                        "notification-closed",
-                        G_CALLBACK (on_notification_closed),
-                        self);
-
-    }
+  ClutterText *txt;
 
   priv->notifiers = CLUTTER_GROUP(clutter_group_new ());
 

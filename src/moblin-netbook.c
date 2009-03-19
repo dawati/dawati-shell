@@ -679,6 +679,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   MetaScreen    *screen;
   Window         root_xwin;
 
+  MoblinNetbookNotifyStore *notify_store;
+
   screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
   root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
 
@@ -792,11 +794,15 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   moblin_netbook_sn_setup (MUTTER_PLUGIN (plugin));
 
-  // moblin_netbook_notify_init (MUTTER_PLUGIN (plugin));
-
   /* Notifications */
 
+  priv->notify_store = moblin_netbook_notify_store_new ();
+
   priv->notification_cluster = mnb_notification_cluster_new ();
+
+  mnb_notification_cluster_set_store 
+                    (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster), 
+                     priv->notify_store);
 
   clutter_container_add (CLUTTER_CONTAINER (overlay),
                          priv->notification_cluster, NULL);
@@ -814,24 +820,17 @@ moblin_netbook_plugin_constructed (GObject *object)
                     MUTTER_PLUGIN (plugin));
 
 
-#if 0
-  {
-    ClutterActor *foo;
+  priv->notification_urgent = mnb_notification_urgent_new ();
 
-    foo = clutter_rectangle_new ();
-    clutter_actor_set_size (foo, 200, 200);
+  clutter_container_add (CLUTTER_CONTAINER (overlay),
+                         priv->notification_urgent, NULL);
 
-    clutter_container_add (CLUTTER_CONTAINER (overlay),
-                           foo, NULL);
+  mnb_notification_urgent_set_store 
+                        (MNB_NOTIFICATION_URGENT(priv->notification_urgent), 
+                         priv->notify_store);
 
-    clutter_actor_set_anchor_point_from_gravity (foo,
-                                                 CLUTTER_GRAVITY_SOUTH_EAST);
-
-    clutter_actor_set_position (foo,
-                                screen_width - 400,
-                                screen_height - 400);
-  }
-#endif
+  clutter_actor_set_size (priv->notification_urgent, 
+                          screen_width, screen_height);
 
   /* Keys */
 

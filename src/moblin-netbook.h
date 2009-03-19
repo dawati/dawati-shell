@@ -38,6 +38,7 @@
 #include "moblin-netbook-tray-manager.h"
 #include "moblin-netbook-notify-store.h"
 #include "mnb-notification-cluster.h"
+#include "mnb-notification-urgent.h"
 
 #define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
 
@@ -147,6 +148,7 @@ struct _MoblinNetbookPluginPrivate
 
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
+  ClutterActor          *notification_urgent;
   MnbInputRegion         notification_input_region;
 
   Window                 focus_xwin;

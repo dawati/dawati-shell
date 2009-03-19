@@ -580,6 +580,14 @@ MnbNotification
     color: #009bceff;
 }
 
+*.NotificationSummaryUrgent
+{
+    font-family: "Liberation Sans Bold";
+    font-size: 16px;
+    color: #e73035ff;
+}
+
+
 *.NotificationBody
 {
     font-family: "Liberation Sans";

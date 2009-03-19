@@ -131,11 +131,8 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
   notification->body = g_strdup (body);
   notification->icon_name = g_strdup (icon);
 
-  /*
-     urgency;
-     g_hash_table_get_key ("urgency"); 0 -> 2 (2 being critical)
-
-   */
+  notification->is_urgent 
+    = ((gint)g_hash_table_lookup (hints, "urgency") == 2) ? TRUE : FALSE;
 
   for (i = 0; actions[i] != NULL; i += 2)
     {
