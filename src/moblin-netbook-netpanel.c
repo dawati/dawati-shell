@@ -12,9 +12,13 @@ G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
 
 struct _MoblinNetbookNetpanelPrivate
 {
-  DBusGProxy *proxy;
-  NbtkWidget *tabs_table;
-  NbtkWidget *favs_table;
+  DBusGProxy     *proxy;
+  GList          *calls;
+
+  NbtkWidget     *tabs_table;
+  gint            previews;
+
+  NbtkWidget     *favs_table;
 };
 
 static void
@@ -24,6 +28,13 @@ moblin_netbook_netpanel_dispose (GObject *object)
 
   if (priv->proxy)
     {
+      while (priv->calls)
+        {
+          DBusGProxyCall *call = priv->calls->data;
+          dbus_g_proxy_cancel_call (priv->proxy, call);
+          priv->calls = g_list_delete_link (priv->calls, priv->calls);
+        }
+
       g_object_unref (priv->proxy);
       priv->proxy = NULL;
     }
@@ -50,6 +61,131 @@ moblin_netbook_netpanel_finalize (GObject *object)
 }
 
 static void
+destroy_live_previews (MoblinNetbookNetpanel *self)
+{
+  GList *c, *children;
+
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  /* Cancel any dbus calls */
+  while (priv->calls)
+    {
+      DBusGProxyCall *call = priv->calls->data;
+      dbus_g_proxy_cancel_call (priv->proxy, call);
+      priv->calls = g_list_delete_link (priv->calls, priv->calls);
+    }
+
+  /* Destroy live previews */
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (priv->tabs_table));
+  for (c = children; c; c = c->next)
+    {
+      ClutterActor *child = c->data;
+
+      if (CLUTTER_IS_MOZEMBED (child))
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->tabs_table),
+                                        child);
+    }
+  g_list_free (children);
+}
+
+static void
+notify_connect_view (DBusGProxy     *proxy,
+                     DBusGProxyCall *call_id,
+                     void           *user_data)
+{
+  GError *error = NULL;
+  ClutterActor *mozembed = CLUTTER_ACTOR (user_data);
+  MoblinNetbookNetpanel *self =
+    g_object_get_data (G_OBJECT (mozembed), "netpanel");
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  priv->calls = g_list_remove (priv->calls, call_id);
+  if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID))
+    {
+      gint w, h;
+      clutter_texture_get_base_size (CLUTTER_TEXTURE (mozembed), &w, &h);
+      clutter_actor_set_size (mozembed, w, h);
+      nbtk_table_add_actor_full (NBTK_TABLE (priv->tabs_table), mozembed,
+                                 1, priv->previews, 1, 1,
+                                 NBTK_KEEP_ASPECT_RATIO, 0.5, 0.5);
+      priv->previews ++;
+
+      /* Add the tabs table if this is the first preview we've received */
+      if (priv->previews == 1)
+        nbtk_table_add_widget_full (NBTK_TABLE (self), priv->tabs_table, 1, 0,
+                                    1, 1, NBTK_X_EXPAND | NBTK_X_FILL,
+                                    0.5, 0.5);
+    }
+  else
+    {
+      /* TODO: Log the error if it's pertinent? */
+      g_error_free (error);
+    }
+}
+
+static void
+notify_get_ntabs (DBusGProxy     *proxy,
+                  DBusGProxyCall *call_id,
+                  void           *user_data)
+{
+  guint n_tabs;
+
+  GError *error = NULL;
+  MoblinNetbookNetpanel *self = MOBLIN_NETBOOK_NETPANEL (user_data);
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  priv->calls = g_list_remove (priv->calls, call_id);
+  priv->previews = 0;
+  if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_UINT, &n_tabs,
+                             G_TYPE_INVALID))
+    {
+      guint i;
+      for (i = 0; i < n_tabs; i++)
+        {
+          gchar *input, *output;
+          ClutterActor *mozembed;
+
+          mozembed = clutter_mozembed_new_view ();
+          g_object_set_data (G_OBJECT (mozembed), "netpanel", self);
+          g_object_get (G_OBJECT (mozembed),
+                        "input", &input,
+                        "output", &output,
+                        NULL);
+
+          priv->calls = g_list_prepend (priv->calls,
+            dbus_g_proxy_begin_call (priv->proxy, "ConnectView",
+                                     notify_connect_view,
+                                     g_object_ref_sink (mozembed),
+                                     g_object_unref,
+                                     G_TYPE_STRING, input,
+                                     G_TYPE_STRING, output,
+                                     G_TYPE_INVALID));
+
+          g_free (input);
+          g_free (output);
+        }
+    }
+  else
+    {
+      /* TODO: Log the error if it's pertinent? */
+      g_error_free (error);
+    }
+}
+
+static void
+request_live_previews (MoblinNetbookNetpanel *self)
+{
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  /* Get the number of tabs */
+  priv->calls = g_list_prepend (priv->calls,
+    dbus_g_proxy_begin_call (priv->proxy, "GetNTabs", notify_get_ntabs,
+                             g_object_ref (self), g_object_unref,
+                             G_TYPE_INVALID));
+}
+
+static void
 moblin_netbook_netpanel_show (ClutterActor *actor)
 {
   gint n_previews;
@@ -58,29 +194,9 @@ moblin_netbook_netpanel_show (ClutterActor *actor)
   MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
 
-  /* Get live previews */
-  n_previews = 0;
-  previews = clutter_mozembed_get_live_previews ();
-  for (p = previews; p; p = p->next)
-    {
-      ClutterActor *preview = p->data;
+  request_live_previews (netpanel);
 
-      if (n_previews < 4)
-        {
-          nbtk_table_add_actor_full (NBTK_TABLE (priv->tabs_table), preview,
-                                     1, n_previews, 1, 1,
-                                     NBTK_KEEP_ASPECT_RATIO, 0.5, 0.5);
-          g_object_ref (G_OBJECT (preview));
-          n_previews ++;
-        }
-
-      g_object_unref (G_OBJECT (preview));
-    }
-
-  if (n_previews)
-    nbtk_table_add_widget_full (NBTK_TABLE (netpanel), priv->tabs_table, 1, 0,
-                                1, 1, NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);
-
+  /* TODO: Favourites table */
 /*  nbtk_table_add_widget_full (NBTK_TABLE (netpanel), priv->favs_table, 2, 0,
                               1, 1, NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);*/
 
@@ -96,17 +212,7 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
 
   /* Destroy live previews */
-  children =
-    clutter_container_get_children (CLUTTER_CONTAINER (priv->tabs_table));
-  for (c = children; c; c = c->next)
-    {
-      ClutterActor *child = c->data;
-
-      if (CLUTTER_IS_MOZEMBED (child))
-        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->tabs_table),
-                                        child);
-    }
-  g_list_free (children);
+  destroy_live_previews (netpanel);
 
   /* Hide tabs/favs tables */
   clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
