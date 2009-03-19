@@ -17,7 +17,8 @@ libpenge_headers = penge-people-pane.h \
 		   penge-view-background.h \
 		   penge-app-bookmark-manager.h \
 		   penge-apps-pane.h \
-		   penge-app-tile.h
+		   penge-app-tile.h \
+		   penge-task-tile.h
 
 libpenge_la_SOURCES = \
 		      $(libpenge_headers) \
@@ -38,7 +39,9 @@ libpenge_la_SOURCES = \
 		      penge-view-background.c \
 		      penge-app-bookmark-manager.c \
 		      penge-apps-pane.c \
-		      penge-app-tile.c
+		      penge-app-tile.c \
+		      penge-task-tile.c
+
 AM_CFLAGS = -Wall $(PENGE_CFLAGS) \
 	    -DPKG_DATADIR=\"$(pkgdatadir)\"
 AM_LDFLAGS = $(PENGE_LIBS)
