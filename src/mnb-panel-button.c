@@ -161,10 +161,13 @@ static gboolean
 mnb_panel_button_press (ClutterActor       *actor,
                         ClutterButtonEvent *event)
 {
+#if 0
+  /* Disable until a more complete solution is ready */
   /* don't react to button press when already active */
   if (nbtk_button_get_checked (NBTK_BUTTON (actor)))
     return TRUE;
   else
+#endif
     return CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->button_press_event (actor,
                                                                        event);
 }
