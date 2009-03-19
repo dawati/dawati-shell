@@ -272,14 +272,14 @@ penge_event_tile_init (PengeEventTile *self)
                                     "PengeEventSummary");
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->summary_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
-  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text), PANGO_ALIGN_LEFT);
+  clutter_test_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   priv->details_label = nbtk_label_new ("Details text");
   nbtk_widget_set_style_class_name (priv->details_label,
                                     "PengeEventDetails");
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
-  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text), PANGO_ALIGN_LEFT);
+  clutter_test_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   /* Populate the table */
   nbtk_table_add_actor (NBTK_TABLE (self),
