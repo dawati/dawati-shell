@@ -275,11 +275,11 @@ penge_tasks_pane_update (PengeTasksPane *pane)
 
     actor = g_hash_table_lookup (priv->uid_to_actors,
                                  uid);
-    old_actors = g_list_remove (old_actors, actor);
     g_free (uid);
 
     if (actor)
     {
+      old_actors = g_list_remove (old_actors, actor);
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
                                    "row",
