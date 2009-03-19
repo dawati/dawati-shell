@@ -87,8 +87,6 @@ _store_view_added_cb (JanaStoreView *view,
     component = (JanaComponent *)l->data;
     uid = jana_component_get_uid (component);
 
-    g_debug (G_STRLOC ": added: %s", uid);
-
     if (g_hash_table_lookup (priv->uid_to_tasks, uid) != NULL)
     {
       g_warning (G_STRLOC ": added signal for an already known uid: %s",
@@ -123,8 +121,6 @@ _store_view_modified_cb (JanaStoreView *view,
   {
     component = (JanaComponent *)l->data;
     uid = jana_component_get_uid (component);
-
-    g_debug (G_STRLOC ": modified: %s", uid);
 
     if (g_hash_table_lookup (priv->uid_to_tasks, uid) == NULL)
     {
@@ -165,8 +161,6 @@ _store_view_removed_cb (JanaStoreView *view,
   for (l = uids; l; l = l->next)
   {
     uid = (gchar *)l->data;
-
-    g_debug (G_STRLOC ": removed: %s", uid);
 
     if (!g_hash_table_remove (priv->uid_to_tasks, uid))
     {
