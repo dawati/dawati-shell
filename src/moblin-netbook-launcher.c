@@ -123,10 +123,8 @@ static NbtkGrid *
 make_table (MutterPlugin  *self)
 {
   ClutterActor          *grid;
-  GHashTable            *apps;
-  GHashTableIter        iter;
-  MnbLauncherEntryList *list;
-  const gchar           *category;
+  GSList                *tree;
+  GSList                *tree_iter;
   GtkIconTheme          *theme;
 
   grid = CLUTTER_ACTOR (nbtk_grid_new ());
@@ -136,30 +134,31 @@ make_table (MutterPlugin  *self)
   nbtk_grid_set_row_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
   nbtk_grid_set_column_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
 
-  apps = mnb_launcher_entry_build_hash ();
+  tree = mnb_launcher_tree_create ();
   theme = gtk_icon_theme_get_default ();
 
-  g_hash_table_iter_init (&iter, apps);
-  while (g_hash_table_iter_next (&iter, (gpointer *) &category, (gpointer *) &list))
+  for (tree_iter = tree; tree_iter; tree_iter = tree_iter->next)
     {
-      GSList        *category_iter;
-      ClutterActor  *expander, *inner_grid;
+      MnbLauncherDirectory  *directory;
+      GSList                *directory_iter;
+      ClutterActor          *expander, *inner_grid;
 
-      expander = CLUTTER_ACTOR (nbtk_expander_new (category));
+      directory = (MnbLauncherDirectory *) tree_iter->data;
+      expander = CLUTTER_ACTOR (nbtk_expander_new (directory->name));
       clutter_actor_set_width (expander, 4 * LAUNCHER_WIDTH + 5 * PADDING);
       clutter_container_add (CLUTTER_CONTAINER (grid), expander, NULL);
 
       inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
       clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
-      for (category_iter = list->head; category_iter; category_iter = category_iter->next)
+      for (directory_iter = directory->entries; directory_iter; directory_iter = directory_iter->next)
         {
           const gchar   *generic_name, *description, *icon_name, *icon_file;
           gchar         *exec, *last_used;
           struct stat    exec_stat;
 
           GtkIconInfo       *info;
-          MnbLauncherEntry  *entry = category_iter->data;
+          MnbLauncherEntry  *entry = directory_iter->data;
 
           info = NULL;
           icon_file = NULL;
@@ -193,7 +192,7 @@ make_table (MutterPlugin  *self)
                 }
 
               button = mnb_launcher_button_new (icon_file, ICON_SIZE,
-                                                generic_name, category,
+                                                generic_name, directory->name,
                                                 description, last_used);
               g_free (last_used);
               clutter_actor_set_size (CLUTTER_ACTOR (button),
@@ -218,7 +217,10 @@ make_table (MutterPlugin  *self)
         }
     }
 
-    return NBTK_GRID (grid);
+  if (tree)
+    mnb_launcher_tree_free (tree);
+
+  return NBTK_GRID (grid);
 }
 
 static void

@@ -28,13 +28,24 @@
 
 G_BEGIN_DECLS
 
-typedef struct MnbLauncherEntry_ MnbLauncherEntry;
+/*
+ * The "tree" is a GSList of MnbLauncherDirectory-s.
+ */
+GSList *  mnb_launcher_tree_create (void);
+void      mnb_launcher_tree_free   (GSList *tree);
 
+/*
+ * MnbLauncherDirectory represents a "folder" item in the main menu.
+ */
 typedef struct {
-  GSList *head;
-} MnbLauncherEntryList;
+  gchar   *name;
+  GSList  *entries;
+} MnbLauncherDirectory;
 
-GHashTable *  mnb_launcher_entry_build_hash   (void);
+/*
+ * MnbLauncherEntry represents a "launcher" item in the main menu.
+ */
+typedef struct MnbLauncherEntry_ MnbLauncherEntry;
 
 const gchar * mnb_launcher_entry_get_name     (MnbLauncherEntry *entry);
 gchar *       mnb_launcher_entry_get_exec     (MnbLauncherEntry *entry);
