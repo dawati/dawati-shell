@@ -20,7 +20,7 @@ NbtkButton:active {
   color: #333;
 }
 
-NbtkExpander > NbtkButton {
+NbtkExpander NbtkButton#nbtk-expander-header {
   border-image: url("file://generic/expander-header.png") 4 5 5 4 stretch;
   font-size: 16;
   padding-top: 11;
@@ -28,12 +28,16 @@ NbtkExpander > NbtkButton {
   padding-left: 40;
 }
 
-NbtkExpander > NbtkButton:checked {
+NbtkExpander NbtkButton#nbtk-expander-header:checked {
   border-image: url("file://generic/expander-header-expanded.png") 4 5 5 4 stretch;
 }
 
-NbtkExpander > NbtkButton:hover {
+NbtkExpander NbtkButton#nbtk-expander-header:hover {
   border-image: url("file://generic/expander-header-hover.png") 4 5 5 4 stretch;
+}
+
+NbtkExpander NbtkBin#nbtk-expander-body {
+  border-image: url("file://generic/expander-body.png") 2 10 8 8 stretch;
 }
 
 NbtkScrollView {
