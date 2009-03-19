@@ -63,7 +63,7 @@ mnb_entry_get_preferred_width (ClutterActor *actor,
   ClutterUnit min_width_entry, min_width_button;
   ClutterUnit natural_width_entry, natural_width_button;
 
-  nbtk_bin_get_padding (NBTK_BIN (actor), &padding);
+  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
   clutter_actor_get_preferred_width (priv->entry, for_height,
                                      &min_width_entry,
@@ -97,7 +97,7 @@ mnb_entry_get_preferred_height (ClutterActor *actor,
   ClutterUnit min_height_entry, min_height_button;
   ClutterUnit natural_height_entry, natural_height_button;
 
-  nbtk_bin_get_padding (NBTK_BIN (actor), &padding);
+  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
   clutter_actor_get_preferred_height (priv->entry, for_width,
                                       &min_height_entry,
@@ -131,7 +131,7 @@ mnb_entry_allocate (ClutterActor          *actor,
   CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->
     allocate (actor, box, origin_changed);
 
-  nbtk_bin_get_padding (NBTK_BIN (actor), &padding);
+  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
   /* Button is right-aligned. */
   clutter_actor_get_preferred_size (priv->button,
