@@ -428,7 +428,7 @@ _store_view_removed_cb (JanaStoreView *view,
 
 
     if (!g_hash_table_remove (priv->uid_to_events,
-                         uid))
+                              uid))
     {
       g_warning (G_STRLOC ": Asked to remove event for unknown uid:%s",
                  uid);
