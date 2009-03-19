@@ -106,6 +106,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
 {
   MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
   Notification *notification;
+  GValue *val;
   gint i;
 
   /* TODO: Sanity check the required arguments */
@@ -131,8 +132,9 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
   notification->body = g_strdup (body);
   notification->icon_name = g_strdup (icon);
 
-  notification->is_urgent 
-    = ((gint)g_hash_table_lookup (hints, "urgency") == 2) ? TRUE : FALSE;
+  val = g_hash_table_lookup (hints, "urgency");
+
+  notification->is_urgent = (g_value_get_uchar(val) == 2) ? TRUE : FALSE;
 
   for (i = 0; actions[i] != NULL; i += 2)
     {

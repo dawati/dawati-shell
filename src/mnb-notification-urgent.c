@@ -92,27 +92,39 @@ mnb_notification_urgent_paint (ClutterActor *actor)
   if (priv->n_notifiers == 0 || priv->active == NULL)
     return;
 
+  printf("paining...\n");
+
   clutter_actor_paint (CLUTTER_ACTOR(priv->background));
   clutter_actor_paint (CLUTTER_ACTOR(priv->active));
 }
 
 static void
 mnb_notification_urgent_allocate (ClutterActor          *actor,
-                                   const ClutterActorBox *box,
-                                   gboolean               origin_changed)
+                                  const ClutterActorBox *box,
+                                  gboolean               origin_changed)
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
+  ClutterActorBox bg_box = { 0, };
   gint x1, y1, x2, y2;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class);
 
-  klass->allocate (actor, box, origin_changed);
+  /* both box & bg_box always all 0's */
 
-  /* <rant>*sigh* and composite actors used to be so simple...</rant> */
+  bg_box.x1 = box->x1;
+  bg_box.y1 = box->y1;
+
+  bg_box.x2 = box->x1 + clutter_actor_get_width (actor);
+  bg_box.y2 = box->y1 + clutter_actor_get_height (actor);
+
+  klass->allocate (actor, &bg_box, origin_changed);
 
   clutter_actor_allocate (CLUTTER_ACTOR(priv->background), 
-                          &box, origin_changed);
+                          &bg_box, origin_changed);
+
+  printf("allocating box... %i,%i,%i,%i\n", 
+         bg_box.x1, bg_box.y1, bg_box.x2, bg_box.y2);
 
   if (priv->active)
     {
@@ -123,14 +135,14 @@ mnb_notification_urgent_allocate (ClutterActor          *actor,
                                           URGENT_WIDTH, &m_height, &p_height);
 
 
-      notifier_box.x1 = ((control_box.x2 - control_box.x1) - URGENT_WIDTH)/2;
+      notifier_box.x1 = ((bg_box.x2 - bg_box.x1) - URGENT_WIDTH)/2;
       notifier_box.x2 = notifier_box.x1 + URGENT_WIDTH;
 
-      notifier_box.y1 = ((control_box.y2 - control_box.y1) - p_height)/2;
-      notifier_box.y2 = notifier_box.y1 +p_height;
+      notifier_box.y1 = ((bg_box.y2 - bg_box.y1) - p_height)/2;
+      notifier_box.y2 = notifier_box.y1 + p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->active), 
-                              &control_box, origin_changed);
+                              &notifier_box, origin_changed);
     }
 }
 
@@ -237,6 +249,8 @@ on_notification_added (MoblinNetbookNotifyStore *store,
   if (!notification->is_urgent)
     return;
 
+  printf("Added an urgent notification!\n");
+
   w = find_widget (priv->notifiers, notification->id);
 
   if (!w) 
@@ -266,6 +280,7 @@ on_notification_added (MoblinNetbookNotifyStore *store,
       priv->active == w;
       /* run appear anim ? */
       clutter_actor_show_all (CLUTTER_ACTOR(w));
+      clutter_actor_show_all (CLUTTER_ACTOR(urgent));
     }
 }
 
@@ -332,6 +347,8 @@ mnb_notification_urgent_init (MnbNotificationUrgent *self)
 
   clutter_actor_set_parent (CLUTTER_ACTOR(priv->background), 
                             CLUTTER_ACTOR(self));
+
+  clutter_actor_show (CLUTTER_ACTOR(priv->background));
 
   clutter_actor_set_reactive (CLUTTER_ACTOR(priv->notifiers), TRUE);
   clutter_actor_set_reactive (CLUTTER_ACTOR(self), TRUE);

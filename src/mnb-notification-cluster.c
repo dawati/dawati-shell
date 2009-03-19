@@ -439,10 +439,6 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
   ClutterAnimation *anim;
   NbtkWidget *w;
 
-  /* Handled by mnb-notification-urgent */
-  if (notification->is_urgent)
-    return;
-
   if (priv->anim_lock == TRUE)
     {
       /* We are already running a removal animation - therefor we postpone
