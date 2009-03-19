@@ -125,7 +125,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->events_pane,
-                        1,
+                        0,
                         0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
