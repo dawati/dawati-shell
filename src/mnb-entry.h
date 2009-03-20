@@ -18,14 +18,14 @@ typedef struct _MnbEntryClass     MnbEntryClass;
 
 struct _MnbEntry
 {
-  NbtkWidget parent_instance;
+  NbtkBin parent_instance;
 
   MnbEntryPrivate *priv;
 };
 
 struct _MnbEntryClass
 {
-  NbtkWidgetClass parent_class;
+  NbtkBinClass parent_class;
 
   /* Signals. */
   void (* button_clicked) (MnbEntry *self);

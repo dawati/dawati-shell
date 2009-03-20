@@ -118,7 +118,6 @@ struct _MoblinNetbookPluginPrivate
   gboolean               panel_out_in_progress      : 1;
   gboolean               panel_back_in_progress     : 1;
   gboolean               panel_wait_for_pointer     : 1;
-  gboolean               desktop_switch_in_progress : 1;
   gboolean               pointer_on_stage           : 1;
   gboolean               in_alt_grab                : 1;
   gboolean               blocking_input             : 1;
@@ -149,6 +148,8 @@ struct _MoblinNetbookPluginPrivate
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
   MnbInputRegion         notification_input_region;
+
+  Window                 focus_xwin;
 };
 
 GType moblin_netbook_plugin_get_type (void);

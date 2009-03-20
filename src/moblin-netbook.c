@@ -31,6 +31,7 @@
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-switcher.h"
+#include "effects/mnb-switch-zones-effect.h"
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -68,6 +69,8 @@ static gboolean stage_capture_cb (ClutterActor *stage, ClutterEvent *event,
 
 static void setup_parallax_effect (MutterPlugin *plugin);
 
+static void setup_focus_window (MutterPlugin *plugin);
+
 static GQuark actor_data_quark = 0;
 
 static void     minimize   (MutterPlugin *plugin,
@@ -82,10 +85,6 @@ static void     maximize   (MutterPlugin *plugin,
 static void     unmaximize (MutterPlugin *plugin,
                             MutterWindow *actor,
                             gint x, gint y, gint width, gint height);
-
-static void     switch_workspace (MutterPlugin *plugin,
-                                  const GList **actors, gint from, gint to,
-                                  MetaMotionDirection direction);
 
 static void     kill_effect (MutterPlugin *plugin,
                              MutterWindow *actor, gulong event);
@@ -267,7 +266,6 @@ try_alt_tab_grab (MutterPlugin *plugin,
   MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display  = meta_screen_get_display (screen);
-  Display                    *xdpy     = meta_display_get_xdisplay (display);
   MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
   MetaWindow                 *next     = NULL;
   MetaWindow                 *current  = NULL;
@@ -490,7 +488,6 @@ struct alt_tab_show_complete_data
   MetaWindow     *window;
   MetaKeyBinding *binding;
   XEvent          xevent;
-  gboolean        show_panel;
 };
 
 static void
@@ -533,10 +530,8 @@ alt_tab_timeout_cb (gpointer data)
                         G_CALLBACK (alt_tab_switcher_show_completed_cb),
                         alt_data);
 
-      if (alt_data->show_panel)
-        show_panel_and_control (alt_data->plugin, MNBK_CONTROL_SPACES);
-      else
-        clutter_actor_show (priv->switcher);
+      show_panel_and_control (alt_data->plugin, MNBK_CONTROL_SPACES);
+      priv->panel_wait_for_pointer = FALSE;
     }
   else
     {
@@ -601,9 +596,6 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
       alt_data->binding = binding;
 
       memcpy (&alt_data->xevent, event, sizeof (XEvent));
-
-      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
-        alt_data->show_panel = TRUE;
 
       g_timeout_add (100, alt_tab_timeout_cb, alt_data);
       return;
@@ -796,6 +788,8 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   setup_parallax_effect (MUTTER_PLUGIN (plugin));
 
+  setup_focus_window (MUTTER_PLUGIN (plugin));
+
   moblin_netbook_sn_setup (MUTTER_PLUGIN (plugin));
 
   // moblin_netbook_notify_init (MUTTER_PLUGIN (plugin));
@@ -909,7 +903,7 @@ moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
   plugin_class->maximize         = maximize;
   plugin_class->unmaximize       = unmaximize;
   plugin_class->destroy          = destroy;
-  plugin_class->switch_workspace = switch_workspace;
+  plugin_class->switch_workspace = mnb_switch_zones_effect;
   plugin_class->kill_effect      = kill_effect;
   plugin_class->plugin_info      = plugin_info;
   plugin_class->xevent_filter    = xevent_filter;
@@ -974,284 +968,11 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
   g_signal_stop_emission_by_name (actor, "paint");
 }
 
-struct ws_switch_data
-{
-  GList **actors;
-  MutterPlugin *plugin;
-};
-
-static void
-on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
-{
-  struct ws_switch_data *switch_data = data;
-  MutterPlugin   *plugin = switch_data->plugin;
-  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  GList          *l      = *(switch_data->actors);
-  MutterWindow   *actor_for_cb = l->data;
-
-  while (l)
-    {
-      ClutterActor *a    = l->data;
-      MutterWindow *mcw  = MUTTER_WINDOW (a);
-      ActorPrivate *priv = get_actor_private (mcw);
-
-      if (priv->orig_parent)
-        {
-          clutter_actor_reparent (a, priv->orig_parent);
-          priv->orig_parent = NULL;
-        }
-
-      l = l->next;
-    }
-
-  clutter_actor_destroy (ppriv->desktop1);
-  clutter_actor_destroy (ppriv->desktop2);
-  clutter_actor_destroy (ppriv->d_overlay);
-
-  ppriv->actors = NULL;
-  ppriv->tml_switch_workspace0 = NULL;
-  ppriv->tml_switch_workspace1 = NULL;
-  ppriv->desktop1 = NULL;
-  ppriv->desktop2 = NULL;
-  ppriv->desktop_switch_in_progress = FALSE;
-
-  moblin_netbook_sn_finalize (plugin);
-
-  g_free (switch_data);
-
-  mutter_plugin_effect_completed (plugin, actor_for_cb,
-                                  MUTTER_PLUGIN_SWITCH_WORKSPACE);
-}
-
 struct parallax_data
 {
   gint direction;
   MoblinNetbookPlugin *plugin;
 };
-
-static void
-on_workspace_frame_change (ClutterTimeline *timeline,
-                           gint             frame_num,
-                           gpointer         data)
-{
-  struct parallax_data *parallax_data = data;
-  MoblinNetbookPluginPrivate  *priv  = parallax_data->plugin->priv;
-
-  priv->parallax_paint_offset += parallax_data->direction * -1;
-}
-
-static void
-switch_workspace (MutterPlugin *plugin, const GList **actors,
-                  gint from, gint to,
-                  MetaMotionDirection direction)
-{
-  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  GList         *l;
-  gint           n_workspaces;
-  ClutterActor  *workspace_slider0  = clutter_group_new ();
-  ClutterActor  *workspace_slider1  = clutter_group_new ();
-  ClutterActor  *indicator_group  = clutter_group_new ();
-  ClutterActor  *stage, *label, *rect, *window_layer, *overlay_layer;
-  gint           to_x, to_y;
-  gint           para_dir = 2;
-  ClutterColor   white = { 0xff, 0xff, 0xff, 0xff };
-  ClutterColor   black = { 0x33, 0x33, 0x33, 0xff };
-  gint           screen_width;
-  gint           screen_height;
-  guint		 indicator_width, indicator_height;
-  MetaScreen    *screen = mutter_plugin_get_screen (plugin);
-  struct parallax_data *parallax_data = g_new (struct parallax_data, 1);
-  struct ws_switch_data *switch_data = g_new (struct ws_switch_data, 1);
-  ClutterAnimation *animation;
-
-  if (from == to)
-    {
-      mutter_plugin_effect_completed (plugin, NULL,
-				      MUTTER_PLUGIN_SWITCH_WORKSPACE);
-      return;
-    }
-
-  stage = mutter_plugin_get_stage (plugin);
-
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  window_layer = mutter_plugin_get_window_group (plugin);
-  overlay_layer = mutter_plugin_get_overlay_group (plugin);
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (window_layer),
-			       workspace_slider0);
-  clutter_container_add_actor (CLUTTER_CONTAINER (window_layer),
-			       workspace_slider1);
-  clutter_container_add_actor (CLUTTER_CONTAINER (overlay_layer),
-			       indicator_group);
-
-  n_workspaces = meta_screen_get_n_workspaces (screen);
-
-  for (l = g_list_last (*((GList**) actors)); l != NULL; l = l->prev)
-    {
-      MutterWindow *mcw  = l->data;
-      ActorPrivate *priv = get_actor_private (mcw);
-      ClutterActor *a    = CLUTTER_ACTOR (mcw);
-      gint          workspace;
-
-      /* We don't care about minimized windows */
-      if (!mutter_window_showing_on_its_workspace (mcw))
-	continue;
-
-      workspace = mutter_window_get_workspace (mcw);
-
-      if (workspace == to || workspace == from)
-        {
-	  ClutterActor *slider =
-	    workspace == to ? workspace_slider1 : workspace_slider0;
-          gint x, y;
-          guint w, h;
-
-          clutter_actor_get_position (a, &x, &y);
-          clutter_actor_get_size (a, &w, &h);
-
-          priv->orig_parent = clutter_actor_get_parent (a);
-
-          clutter_actor_reparent (a, slider);
-
-          /*
-           * If the window is in SN flux, we will hide it; we still need to
-           * reparent it, otherwise we screw up the stack order.
-           *
-           * The map effect will take care of showing the actor again.
-           */
-          if (priv->sn_in_progress)
-            clutter_actor_hide (a);
-          else
-            clutter_actor_show_all (a);
-
-          clutter_actor_raise_top (a);
-        }
-      else if (workspace < 0)
-        {
-          /* Sticky window */
-          priv->orig_parent = NULL;
-        }
-      else
-        {
-          /* Window on some other desktop */
-          clutter_actor_hide (a);
-          priv->orig_parent = NULL;
-        }
-    }
-
-  /* Make arrow indicator */
-  rect = clutter_rectangle_new ();
-  clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &white);
-  clutter_container_add_actor (CLUTTER_CONTAINER (indicator_group), rect);
-
-  label = clutter_text_new ();
-  clutter_text_set_font_name (CLUTTER_TEXT (label), "Sans Bold 148");
-  clutter_text_set_color (CLUTTER_TEXT (label), &black);
-  clutter_container_add_actor (CLUTTER_CONTAINER (indicator_group), label);
-
-  clutter_actor_set_size (rect,
-                          clutter_actor_get_width (label),
-                          clutter_actor_get_height (label));
-
-  ppriv->actors  = (GList **)actors;
-  ppriv->desktop1 = workspace_slider0;
-  ppriv->desktop2 = workspace_slider1;
-  ppriv->d_overlay = indicator_group;
-
-  switch (direction)
-    {
-    case META_MOTION_UP:
-      clutter_text_set_text (CLUTTER_TEXT (label), "\342\206\221");
-
-      to_x = 0;
-      to_y = -screen_height;
-      break;
-
-    case META_MOTION_DOWN:
-      clutter_text_set_text (CLUTTER_TEXT (label), "\342\206\223");
-
-      to_x = 0;
-      to_y = -screen_height;
-      break;
-
-    case META_MOTION_LEFT:
-      clutter_text_set_text (CLUTTER_TEXT (label), "\342\206\220");
-
-      to_x = -screen_width * -1;
-      to_y = 0;
-
-      para_dir = -2;
-      break;
-
-    case META_MOTION_RIGHT:
-      clutter_text_set_text (CLUTTER_TEXT (label), "\342\206\222");
-
-      to_x = -screen_width;
-      to_y = 0;
-      break;
-
-    default:
-      break;
-    }
-
-  /* dest group offscreen and on top */
-  clutter_actor_set_position (workspace_slider1, to_x * -1, to_y);
-  clutter_actor_raise_top (workspace_slider1);
-
-  /* center arrow */
-  clutter_actor_get_size (indicator_group, &indicator_width, &indicator_height);
-  clutter_actor_set_position (indicator_group,
-			      (screen_width - indicator_width) / 2,
-			      (screen_height - indicator_height) / 2);
-
-  ppriv->desktop_switch_in_progress = TRUE;
-
-  switch_data->actors = (GList**)actors;
-  switch_data->plugin = plugin;
-
-  /* workspace were going too */
-  animation = clutter_actor_animate (workspace_slider1,
-                                     CLUTTER_LINEAR,
-                                     WS_SWITCHER_SLIDE_TIMEOUT,
-                                     "x", 0,
-                                     "y", 0,
-                                     NULL);
-
-  ppriv->tml_switch_workspace1 = clutter_animation_get_timeline (animation);
-
-  g_signal_connect (clutter_animation_get_timeline (animation),
-                    "completed",
-                    G_CALLBACK (on_switch_workspace_effect_complete),
-                    switch_data);
-
-  /* coming from */
-  animation = clutter_actor_animate (workspace_slider0,
-                                     CLUTTER_LINEAR,
-                                     WS_SWITCHER_SLIDE_TIMEOUT,
-                                     "x", to_x,
-                                     "y", to_y,
-                                     NULL);
-
-  ppriv->tml_switch_workspace0 = clutter_animation_get_timeline (animation);
-
-  /* arrow */
-  clutter_actor_animate (indicator_group,
-                         CLUTTER_LINEAR,
-                         WS_SWITCHER_SLIDE_TIMEOUT,
-                         "opacity", 0,
-                         NULL);
-
-  /* desktop parallax */
-  parallax_data->direction = para_dir;
-  parallax_data->plugin = MOBLIN_NETBOOK_PLUGIN (plugin);
-
-  g_signal_connect_data (ppriv->tml_switch_workspace1,
-                         "new-frame",
-                         G_CALLBACK (on_workspace_frame_change),
-                         parallax_data,
-                         (GClosureNotify)g_free, 0);
-}
 
 /*
  * Minimize effect completion callback; this function restores actor state, and
@@ -1561,6 +1282,12 @@ check_for_empty_workspace (MutterPlugin *plugin,
     }
 }
 
+/*
+ * Protype; don't want to add this the public includes in metacity,
+ * should be able to get rid of this call eventually.
+ */
+void meta_window_calc_showing (MetaWindow  *window);
+
 static void
 meta_window_workspace_changed_cb (MetaWindow *mw,
                                   gint        old_workspace,
@@ -1747,8 +1474,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 
     }
+  /*
+   * Anything that might be associated with startup notification needs to be
+   * handled here; if this list grows, we should just split it further.
+   */
   else if (type == META_COMP_WINDOW_NORMAL ||
-           type == META_COMP_WINDOW_SPLASHSCREEN)
+           type == META_COMP_WINDOW_SPLASHSCREEN ||
+           type == META_COMP_WINDOW_DIALOG)
     {
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
@@ -1761,6 +1493,15 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           if (!moblin_netbook_sn_should_map (plugin, mcw, sn_id))
             return;
+        }
+
+      /*
+       * Anything that we do not animated exits at this point.
+       */
+      if (type == META_COMP_WINDOW_DIALOG)
+        {
+          mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+          return;
         }
 
       clutter_actor_move_anchor_point_from_gravity (actor,
@@ -1896,7 +1637,6 @@ void
 disable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   MetaWindow                 *focus;
@@ -1952,9 +1692,9 @@ void
 enable_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
 
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
@@ -1976,7 +1716,10 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
     g_object_weak_ref (G_OBJECT (priv->last_focused),
                        last_focus_weak_notify_cb, plugin);
 
-  meta_display_focus_the_no_focus_window (display, screen, timestamp);
+  XSetInputFocus (xdpy,
+                  priv->focus_xwin,
+                  RevertToPointerRoot,
+                  timestamp);
 
   priv->blocking_input = TRUE;
 }
@@ -2034,7 +1777,6 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       (xev->type == KeyPress || xev->type == KeyRelease))
     {
       MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-      MetaDisplay  *display = meta_screen_get_display (screen);
       ClutterActor *stage   = mutter_get_stage_for_screen (screen);
       Window        xwin;
 
@@ -2057,31 +1799,11 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
 
   if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
     {
-      MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
       /*
-       * Force emission of the "completed" signal so that the necessary
-       * cleanup is done (we cannot readily supply the data necessary to
-       * call our callback directly).
+       * We never kill the zone switching effect; since the effect does not
+       * use the MutterWindows directly, it does not screw up the layout.
        */
-
-      if (ppriv->tml_switch_workspace0)
-        {
-          clutter_timeline_stop (ppriv->tml_switch_workspace0);
-          g_signal_emit_by_name (ppriv->tml_switch_workspace0, "completed");
-        }
-
-      if (ppriv->tml_switch_workspace1)
-        {
-          clutter_timeline_stop (ppriv->tml_switch_workspace1);
-          g_signal_emit_by_name (ppriv->tml_switch_workspace1, "completed");
-        }
-
-      if (!(event & ~MUTTER_PLUGIN_SWITCH_WORKSPACE))
-        {
-          /* Workspace switch only, nothing more to do */
-          return;
-        }
+      return;
     }
 
   apriv = get_actor_private (mcw);
@@ -2249,6 +1971,42 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
     }
 
   return FALSE;
+}
+
+static void
+setup_focus_window (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  Window                      xwin;
+  XSetWindowAttributes        attr;
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  Atom                        type_atom;
+
+  type_atom = meta_display_get_atom (display,
+                                     META_ATOM__NET_WM_WINDOW_TYPE_DOCK);
+
+  attr.event_mask        = KeyPressMask | KeyReleaseMask;
+  attr.override_redirect = True;
+
+  xwin = XCreateWindow (xdpy,
+                        RootWindow (xdpy,
+                                    meta_screen_get_screen_number (screen)),
+                        -100, -100, 1, 1, 0,
+                        CopyFromParent, InputOutput, CopyFromParent,
+                        CWEventMask | CWOverrideRedirect, &attr);
+
+  XChangeProperty (xdpy, xwin,
+                   meta_display_get_atom (display,
+                                          META_ATOM__NET_WM_WINDOW_TYPE),
+                   XA_ATOM, 32, PropModeReplace,
+                   (unsigned char *) &type_atom,
+                   1);
+
+  XMapWindow (xdpy, xwin);
+
+  priv->focus_xwin = xwin;
 }
 
 static void

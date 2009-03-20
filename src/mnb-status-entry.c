@@ -27,6 +27,8 @@ struct _MnbStatusEntryPrivate
   gchar *old_status_text;
   gchar *status_time;
 
+  ClutterUnit separator_x;
+
   NbtkPadding padding;
 
   guint in_hover  : 1;
@@ -208,10 +210,13 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   else
     icon_width = 0;
 
-  clutter_actor_get_preferred_width (priv->service_label,
-                                     available_height,
-                                     NULL,
-                                     &service_width);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+    clutter_actor_get_preferred_width (priv->service_label,
+                                       available_height,
+                                       NULL,
+                                       &service_width);
+  else
+    service_width = (2 * H_PADDING);
 
   /* status entry */
   text_width = (int) (available_width
@@ -231,17 +236,20 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
 
   /* service label */
-  child_box.x1 = (int) (available_width
-               - (border.right + priv->padding.right)
-               - button_width
-               - H_PADDING
-               - icon_width
-               - H_PADDING
-               - service_width);
-  child_box.y1 = (int) (border.top + priv->padding.top);
-  child_box.x2 = (int) (child_box.x1 + service_width);
-  child_box.y2 = (int) (child_box.y1 + text_height);
-  clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+    {
+      child_box.x1 = (int) (available_width
+                   - (border.right + priv->padding.right)
+                   - button_width
+                   - H_PADDING
+                   - icon_width
+                   - H_PADDING
+                   - service_width);
+      child_box.y1 = (int) (border.top + priv->padding.top);
+      child_box.x2 = (int) (child_box.x1 + service_width);
+      child_box.y2 = (int) (child_box.y1 + text_height);
+      clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
+    }
 
   /* cancel icon */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
@@ -256,6 +264,12 @@ mnb_status_entry_allocate (ClutterActor          *actor,
       child_box.y2 = (int) (child_box.y1 + text_height);
       clutter_actor_allocate (priv->cancel_icon, &child_box, origin_changed);
     }
+
+  /* separator */
+  priv->separator_x = available_width
+                    - (border.right + priv->padding.right)
+                    - button_width
+                    - (H_PADDING - 1);
 
   /* button */
   child_box.x1 = (int) (available_width
@@ -283,6 +297,25 @@ mnb_status_entry_paint (ClutterActor *actor)
   if (priv->cancel_icon && CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
     clutter_actor_paint (priv->cancel_icon);
 
+  if (priv->button &&
+      CLUTTER_ACTOR_IS_VISIBLE (priv->button) &&
+      priv->in_hover &&
+      priv->separator_x != 0)
+    {
+      ClutterActorBox alloc = { 0, };
+      gfloat x_pos, start_y, end_y;
+
+      clutter_actor_get_allocation_box (actor, &alloc);
+      x_pos = CLUTTER_UNITS_TO_FLOAT (priv->separator_x);
+      start_y = CLUTTER_UNITS_TO_FLOAT (priv->padding.top);
+      end_y = CLUTTER_UNITS_TO_FLOAT (alloc.y2 - priv->padding.bottom - 8);
+
+      cogl_set_source_color4ub (204, 204, 204, 255);
+      cogl_path_move_to (x_pos, start_y);
+      cogl_path_line_to (x_pos, end_y);
+      cogl_path_stroke ();
+    }
+
   if (priv->button && CLUTTER_ACTOR_IS_VISIBLE (priv->button))
     clutter_actor_paint (priv->button);
 }
@@ -307,6 +340,25 @@ mnb_status_entry_pick (ClutterActor       *actor,
 
   if (priv->button && clutter_actor_should_pick_paint (priv->button))
     clutter_actor_paint (priv->button);
+}
+
+static gboolean
+mnb_status_entry_button_release (ClutterActor *actor,
+                                 ClutterButtonEvent *event)
+{
+  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+
+  if (event->button == 1)
+    {
+      if (!priv->is_active)
+        {
+          mnb_status_entry_set_is_active (MNB_STATUS_ENTRY (actor), TRUE);
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
 }
 
 static void
@@ -421,6 +473,7 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
   actor_class->allocate = mnb_status_entry_allocate;
   actor_class->paint = mnb_status_entry_paint;
   actor_class->pick = mnb_status_entry_pick;
+  actor_class->button_release_event = mnb_status_entry_button_release;
 
   widget_class->style_changed = mnb_status_entry_style_changed;
 
@@ -469,6 +522,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_use_markup (CLUTTER_TEXT (text), TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (text), FALSE);
 
   priv->service_label =
     CLUTTER_ACTOR (nbtk_label_new (""));
@@ -561,7 +615,6 @@ mnb_status_entry_set_is_active (MnbStatusEntry *entry,
     return;
 
   priv->is_active = is_active;
-  g_debug (G_STRLOC ": setting active = %s", priv->is_active ? "true" : "false");
 
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
 
@@ -666,7 +719,7 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
   clutter_text_set_markup (CLUTTER_TEXT (text), priv->status_text);
 
   service_line = g_strdup_printf ("%s - %s",
-                                  priv->status_time == NULL,
+                                  priv->status_time,
                                   priv->service_name);
 
   text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->service_label));

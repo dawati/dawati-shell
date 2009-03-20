@@ -170,11 +170,11 @@ mnb_drop_down_hide (ClutterActor *actor)
   /* de-activate the button */
   if (priv->button)
     {
-      /* hide is hooked into the notify::active signal from the button, so
-       * make sure we don't get into a loop by checking active first
+      /* hide is hooked into the notify::checked signal from the button, so
+       * make sure we don't get into a loop by checking checked first
        */
-      if (nbtk_button_get_active (priv->button))
-        nbtk_button_set_active (priv->button, FALSE);
+      if (nbtk_button_get_checked (priv->button))
+        nbtk_button_set_checked (priv->button, FALSE);
     }
 
   if (!priv->child)
@@ -232,7 +232,7 @@ mnb_button_toggled_cb (NbtkWidget  *button,
 {
   ClutterActor *actor = CLUTTER_ACTOR (drop_down);
 
-  if (nbtk_button_get_active (NBTK_BUTTON (button)))
+  if (nbtk_button_get_checked (NBTK_BUTTON (button)))
     {
       /*
        * Must reset the y in case a previous animation ended prematurely
@@ -297,15 +297,12 @@ static void
 mnb_drop_down_init (MnbDropDown *self)
 {
   NbtkWidget *footer, *up_button;
-  NbtkPadding padding = MNB_PADDING (4, 4, 4, 4);
-  ClutterTimeline *timeline;
   MnbDropDownPrivate *priv;
 
   priv = self->priv = GET_PRIVATE (self);
 
   /* footer with "up" button */
   footer = nbtk_table_new ();
-  nbtk_widget_set_padding (footer, &padding);
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
 
   up_button = nbtk_button_new ();
@@ -321,9 +318,6 @@ mnb_drop_down_init (MnbDropDown *self)
                             G_CALLBACK (clutter_actor_hide), self);
 
   nbtk_table_add_widget (NBTK_TABLE (self), footer, 1, 0);
-
-
-  timeline = clutter_timeline_new_for_duration (SLIDE_DURATION);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,
@@ -411,7 +405,7 @@ mnb_drop_down_set_button (MnbDropDown *drop_down,
   drop_down->priv->button = button;
 
   g_signal_connect (button,
-                    "notify::active",
+                    "notify::checked",
                     G_CALLBACK (mnb_button_toggled_cb),
                     drop_down);
 

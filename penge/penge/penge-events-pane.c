@@ -268,11 +268,12 @@ penge_events_pane_update (PengeEventsPane *pane)
 
     actor = g_hash_table_lookup (priv->uid_to_actors,
                                  uid);
-    old_actors = g_list_remove (old_actors, actor);
-    g_free (uid);
 
+    g_free (uid);
     if (actor)
     {
+      old_actors = g_list_remove (old_actors, actor);
+
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
                                    "row",
@@ -287,6 +288,8 @@ penge_events_pane_update (PengeEventsPane *pane)
                             event,
                             "time",
                             priv->time,
+                            "store",
+                            priv->store,
                             NULL);
 
       clutter_actor_set_size (actor, 216, 44);
@@ -309,12 +312,17 @@ penge_events_pane_update (PengeEventsPane *pane)
   for (l = old_actors; l; l = g_list_delete_link (l, l))
   {
     actor = (ClutterActor *)l->data;
-    clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                    actor);
-    uid = penge_event_tile_get_uid (PENGE_EVENT_TILE (actor));
-    g_hash_table_remove (priv->uid_to_actors,
-                         uid);
-    g_free (uid);
+
+    /* TODO: Try and find where we're getting NULL from in here.. */
+    if (actor)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                      actor);
+      uid = penge_event_tile_get_uid (PENGE_EVENT_TILE (actor));
+      g_hash_table_remove (priv->uid_to_actors,
+                           uid);
+      g_free (uid);
+    }
   }
 
   g_list_free (events);
@@ -426,7 +434,7 @@ _store_view_removed_cb (JanaStoreView *view,
 
 
     if (!g_hash_table_remove (priv->uid_to_events,
-                         uid))
+                              uid))
     {
       g_warning (G_STRLOC ": Asked to remove event for unknown uid:%s",
                  uid);
@@ -468,10 +476,6 @@ static void
 penge_events_pane_init (PengeEventsPane *self)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (self);
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8) };
 
   /* Create hashes to store our view membership in */
   priv->uid_to_events = g_hash_table_new_full (g_str_hash,
@@ -493,8 +497,6 @@ penge_events_pane_init (PengeEventsPane *self)
                     (GCallback)_store_opened_cb,
                     self);
   jana_store_open (priv->store);
-
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 }
 
 static void

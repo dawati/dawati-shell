@@ -292,12 +292,6 @@ static void
 penge_recent_file_tile_init (PengeRecentFileTile *self)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (self);
-
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (4),
-                          CLUTTER_UNITS_FROM_DEVICE (4),
-                          CLUTTER_UNITS_FROM_DEVICE (4),
-                          CLUTTER_UNITS_FROM_DEVICE (4) };
-
   ClutterAlpha *alpha;
   ClutterActor *tmp_text;
 
@@ -309,15 +303,12 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
                     "leave-event",
                     (GCallback)_leave_event_cb,
                     NULL);
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
   priv->details_overlay = nbtk_table_new ();
   clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay,
                              0x0);
-  nbtk_widget_set_padding (priv->details_overlay, &padding);
 
   priv->details_filename_label = nbtk_label_new ("Filename");
-  nbtk_widget_set_alignment (priv->details_filename_label, 0, 0.5);
   tmp_text =
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_filename_label));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
@@ -331,7 +322,6 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
                         0);
 
   priv->details_type_label = nbtk_label_new ("Type");
-  nbtk_widget_set_alignment (priv->details_type_label, 0, 0.5);
   tmp_text =
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_type_label));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),

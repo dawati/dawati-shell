@@ -15,6 +15,7 @@ LDADD = $(PENGE_LIBS)
 noinst_PROGRAMS = \
 	test-entry \
 	test-launcher-button \
+	test-launcher-tree \
 	test-tray
 
 test_launcher_button_SOURCES = \
@@ -24,10 +25,17 @@ test_launcher_button_SOURCES = \
 test_entry_LDADD = \
 	$(PENGE_LIBS) \
 	$(MUTTER_PLUGIN_LIBS) \
-	$(top_builddir)/penge/penge/libpenge.a
+	$(top_builddir)/penge/penge/libpenge.la
 
 test_entry_SOURCES = \
 	$(top_srcdir)/src/mnb-entry.c \
 	test-entry.c
+
+test_launcher_tree_LDADD = \
+  $(MUTTER_PLUGIN_LIBS)
+
+test_launcher_tree_SOURCES = \
+	$(top_srcdir)/src/mnb-launcher-tree.c \
+	test-launcher-tree.c
 
 test_tray_SOURCES = test-tray.c

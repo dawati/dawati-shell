@@ -1,4 +1,4 @@
-SUBDIRS=tray
+SUBDIRS=tray effects
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
@@ -40,6 +40,8 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				mnb-panel-button.h              \
 				mnb-launcher-button.c           \
 				mnb-launcher-button.h		\
+				mnb-launcher-tree.c \
+				mnb-launcher-tree.h \
 				mnb-status-row.c		\
 				mnb-status-row.h		\
 				mnb-status-entry.c		\
@@ -57,8 +59,11 @@ MARSHALS = marshal.c marshal.h
 	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --header > $@
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
-moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@ tray/libtray.la $(PENGE_LIBS)\
-			     $(top_builddir)/penge/penge/libpenge.a
+moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
+				tray/libtray.la 	\
+				effects/libeffects.la	\
+				$(PENGE_LIBS)		\
+				$(top_builddir)/penge/penge/libpenge.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 

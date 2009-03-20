@@ -61,8 +61,12 @@ penge_people_tile_set_property (GObject *object, guint property_id,
                                    priv->body,
                                    "col-span",
                                    2,
-                                   "y-expand",
+                                   "y-fill",
                                    TRUE,
+                                   "y-align",
+                                   0.0,
+                                   "x-align",
+                                   0.0,
                                    NULL);
       break;
     case PROP_ICON_PATH:
@@ -236,17 +240,13 @@ penge_people_tile_init (PengePeopleTile *self)
 {
   PengePeopleTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
-  NbtkPadding padding = { CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8),
-                          CLUTTER_UNITS_FROM_DEVICE (8) };
   ClutterColor black = { 0x0, 0x0, 0x0, 0xff };
   ClutterAlpha *alpha;
 
   priv->primary_text = nbtk_label_new ("Primary text");
   nbtk_widget_set_style_class_name (priv->primary_text, 
                                     "PengePeopleTilePrimaryLabel");
-  nbtk_widget_set_alignment (priv->primary_text, 0, 0.5);
+  //nbtk_widget_set_alignment (priv->primary_text, 0, 0.5);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->primary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
@@ -256,7 +256,7 @@ penge_people_tile_init (PengePeopleTile *self)
   priv->secondary_text = nbtk_label_new ("Secondary text");
   nbtk_widget_set_style_class_name (priv->secondary_text, 
                                     "PengePeopleTileSecondaryLabel");
-  nbtk_widget_set_alignment (priv->secondary_text, 0, 0.5);
+  //nbtk_widget_set_alignment (priv->secondary_text, 0, 0.5);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->secondary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
@@ -347,11 +347,6 @@ penge_people_tile_init (PengePeopleTile *self)
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
-
-
-
-
-  nbtk_widget_set_padding (NBTK_WIDGET (self), &padding);
 
   g_signal_connect (self,
                     "enter-event",

@@ -1,4 +1,4 @@
-/* 
+/*
  * (C) 2008 OpenedHand Ltd.
  *
  * Author: Ross Burton <ross@openedhand.com>
@@ -13,6 +13,7 @@
 #include "moblin-netbook-notify-store.h"
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
 #include "marshal.h"
 
@@ -65,7 +66,7 @@ find_notification (MoblinNetbookNotifyStore *notify, guint id, Notification **fo
       return TRUE;
     }
   }
-  
+
   return FALSE;
 }
 
@@ -100,7 +101,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
                              const gchar *icon, const gchar *summary,
                              const gchar *body,
                              const gchar **actions, GHashTable *hints,
-                             gint timeout, 
+                             gint timeout,
 			     DBusGMethodInvocation *context)
 {
   MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
@@ -108,7 +109,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
   gint i;
 
   /* TODO: Sanity check the required arguments */
-  
+
   if (find_notification (notify, id, &notification)) {
     /* Found an existing notification, clear it */
     g_free (notification->summary);
@@ -121,7 +122,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
     notification->actions = g_hash_table_new_full (NULL,
 						   NULL,
 						   g_free,
-						   g_free); 
+						   g_free);
     /* TODO: use _insert_sorted with some magic sorting algorithm */
     priv->notifications = g_list_append (priv->notifications, notification);
   }
@@ -130,7 +131,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
   notification->body = g_strdup (body);
   notification->icon_name = g_strdup (icon);
 
-  /* 
+  /*
      urgency;
      g_hash_table_get_key ("urgency"); 0 -> 2 (2 being critical)
 
@@ -143,7 +144,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
       if (label == NULL || actions[i] == NULL)
 	continue;
 
-      g_hash_table_insert (notification->actions, 
+      g_hash_table_insert (notification->actions,
 			   g_strdup (actions[i]),
 			   g_strdup (label));
     }
@@ -151,7 +152,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
   /* A timeout of -1 means implementation defined */
   if (timeout == -1)
     timeout = DEFAULT_TIMEOUT;
-  
+
   if (timeout) {
     /* This struct is a bit annoying, maybe add a store pointer to the
        Notification struct? */
@@ -162,7 +163,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
     notification->timeout_id = g_timeout_add
       (timeout, (GSourceFunc)notification_timeout, data);
   }
-  
+
   notification->sender = dbus_g_method_get_sender (context);
 
   g_signal_emit (notify, signals[NOTIFICATION_ADDED], 0, notification);
@@ -184,18 +185,18 @@ notification_manager_close_notification (MoblinNetbookNotifyStore *notify, guint
 }
 
 static gboolean
-notification_manager_get_capabilities (MoblinNetbookNotifyStore *notify, 
+notification_manager_get_capabilities (MoblinNetbookNotifyStore *notify,
 				       gchar ***caps, GError *error)
 {
   *caps = g_new0 (gchar *, 6);
-  
+
   (*caps)[0] = g_strdup ("body");
   (*caps)[1] = g_strdup ("body-markup");
   (*caps)[2] = g_strdup ("summary");
   (*caps)[3] = g_strdup ("icon-static");
   (*caps)[4] = g_strdup ("actions");
   (*caps)[5] = NULL;
-  
+
   return TRUE;
 }
 
@@ -224,7 +225,7 @@ moblin_netbook_notify_store_finalize (GObject *object)
 
   g_list_foreach (priv->notifications, (GFunc)free_notification, NULL);
   g_list_free (priv->notifications);
-  
+
   G_OBJECT_CLASS (moblin_netbook_notify_store_parent_class)->finalize (object);
 }
 
@@ -255,7 +256,7 @@ moblin_netbook_notify_store_class_init (MoblinNetbookNotifyStoreClass *klass)
                   NULL, NULL,
                   moblin_netbook_marshal_VOID__UINT_UINT,
                   G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
-  
+
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
                                    &dbus_glib_notification_manager_object_info);
 }
@@ -281,7 +282,7 @@ connect_to_dbus (MoblinNetbookNotifyStore *self)
                                          DBUS_SERVICE_DBUS,
                                          DBUS_PATH_DBUS,
                                          DBUS_INTERFACE_DBUS);
-  
+
   if (!org_freedesktop_DBus_request_name (bus_proxy, "org.freedesktop.Notifications",
                                           DBUS_NAME_FLAG_DO_NOT_QUEUE,
                                           &request_name_ret, &error)) {
@@ -289,12 +290,12 @@ connect_to_dbus (MoblinNetbookNotifyStore *self)
     g_error_free (error);
     return;
   }
-  
+
   if (request_name_ret == DBUS_REQUEST_NAME_REPLY_EXISTS) {
     g_printerr ("Notification manager already running, not taking over\n");
     return;
   }
-  
+
   dbus_g_connection_register_g_object (connection,
                                        "/org/freedesktop/Notifications",
                                        G_OBJECT (self));
@@ -345,36 +346,35 @@ moblin_netbook_notify_store_new (void)
 }
 
 gboolean
-moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify, 
-                                   guint                               id, 
+moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify,
+                                   guint                               id,
                                    MoblinNetbookNotifyStoreCloseReason reason)
 {
   MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
   Notification *notification;
 
-  if (find_notification (notify, id, &notification)) 
+  if (find_notification (notify, id, &notification))
     {
       priv->notifications = g_list_remove (priv->notifications, notification);
       free_notification (notification);
       g_signal_emit (notify, signals[NOTIFICATION_CLOSED], 0, id, reason);
       return TRUE;
-    } 
+    }
 
   return FALSE;
 }
 
 void
-moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify, 
+moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify,
 				    guint                        id,
 				    gchar                       *action)
 {
-  MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
   Notification *notification;
 
-  if (find_notification (notify, id, &notification)) 
+  if (find_notification (notify, id, &notification))
     {
       invoke_action_for_notification (notification, action);
-      moblin_netbook_notify_store_close (notify, id, ClosedProgramatically); 
+      moblin_netbook_notify_store_close (notify, id, ClosedProgramatically);
     }
 }
 

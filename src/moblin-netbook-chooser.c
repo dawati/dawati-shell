@@ -30,6 +30,8 @@
 #include "moblin-netbook-panel.h"
 #include "nutter/nutter-scale-group.h"
 
+#include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
 #include <string.h>
 #include <display.h>
 #include <nbtk/nbtk-texture-frame.h>
@@ -341,7 +343,6 @@ workspace_chooser_input_cb (ClutterActor *clone,
   guint32                     timestamp;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
-  active    = meta_screen_get_active_workspace_index (screen);
 
   if (!workspace)
     {
@@ -350,9 +351,6 @@ workspace_chooser_input_cb (ClutterActor *clone,
     }
 
   timestamp = clutter_x11_get_current_event_time ();
-
-  if (active != indx)
-    priv->desktop_switch_in_progress = TRUE;
 
   hide_workspace_chooser (plugin, timestamp);
 
@@ -401,11 +399,6 @@ chooser_keyboard_input_cb (ClutterActor *self,
     indx = MAX_WORKSPACES - 1;
   else if (indx == -1)
     indx = -2;
-
-  active = meta_screen_get_active_workspace_index (screen);
-
-  if (active != indx)
-    priv->desktop_switch_in_progress = TRUE;
 
   timestamp = clutter_x11_get_current_event_time ();
 
@@ -608,14 +601,10 @@ new_workspace_input_cb (ClutterActor *clone,
   struct ws_grid_cb_data     *wsg_data = data;
   MutterPlugin               *plugin   = wsg_data->plugin;
   MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   const char                 *sn_id    = wsg_data->sn_id;
-  gboolean                    appended = FALSE;
   guint32                     timestamp = clutter_x11_get_current_event_time ();
 
   hide_workspace_chooser (plugin, timestamp);
-
-  priv->desktop_switch_in_progress = TRUE;
 
   configure_app (sn_id, wsg_data->workspace, wsg_data->plugin);
 
@@ -985,7 +974,6 @@ workspace_chooser_timeout_cb (gpointer data)
   MutterPlugin                   *plugin   = wsc_data->plugin;
   MoblinNetbookPluginPrivate     *priv = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
   guint32                         timestamp;
-  gboolean                        appended = FALSE;
 
   timestamp = clutter_x11_get_current_event_time ();
 
@@ -994,8 +982,6 @@ workspace_chooser_timeout_cb (gpointer data)
       g_message ("Workspace timeout triggered after user input, ignoring\n");
       return FALSE;
     }
-
-  priv->desktop_switch_in_progress = TRUE;
 
   hide_workspace_chooser (plugin, timestamp);
 
@@ -1010,32 +996,6 @@ struct ws_chooser_map_data
   gchar        *sn_id;
   MutterPlugin *plugin;
 };
-
-static gboolean
-is_last_workspace_empty (MutterPlugin *plugin)
-{
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
-  GList      *l;
-  gint        last_ws;
-
-  last_ws = meta_screen_get_n_workspaces (screen) - 1;
-
-  l = mutter_get_windows (screen);
-  while (l)
-    {
-      MutterWindow *m = l->data;
-      MetaWindow   *mw = mutter_window_get_meta_window (m);
-
-      gint w = mutter_window_get_workspace (m);
-
-      if (w == last_ws)
-        return FALSE;
-
-      l = l->next;
-    }
-
-  return TRUE;
-}
 
 /*
  * The start up notification handling.
@@ -1294,7 +1254,6 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
                                     &key, &value))
     {
       SnHashData   *sn_data = value;
-      gint          workspace_index;
       ActorPrivate *apriv = get_actor_private (mcw);
 
       apriv->sn_in_progress = TRUE;
@@ -1318,23 +1277,9 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
 
           finalize_app (sn_id, sn_data->workspace, timestamp, plugin);
 
-          if (!priv->desktop_switch_in_progress)
-            {
-              /*
-               * If the WS effect is not in progress, we
-               * reset the SN flag and remove the window from hash.
-               *
-               * We then move the window onto the appropriate workspace.
-               */
-              apriv->sn_in_progress = FALSE;
+          apriv->sn_in_progress = FALSE;
 
-              g_hash_table_remove (priv->sn_hash, sn_id);
-            }
-
-          if (priv->desktop_switch_in_progress)
-            {
-              return FALSE;
-            }
+          g_hash_table_remove (priv->sn_hash, sn_id);
         }
       else
         {
@@ -1361,9 +1306,6 @@ moblin_netbook_sn_finalize (MutterPlugin *plugin)
   MutterPluginClass          *klass;
   gpointer                    key, value;
   GHashTableIter              iter;
-
-  if (priv->desktop_switch_in_progress)
-    return;
 
   klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 

@@ -3,8 +3,9 @@
 /*
  * Copyright (c) 2008 Intel Corp.
  *
- * Author: Tomas Frydrych <tf@linux.intel.com>
- *         Chris Lord     <christopher.lord@intel.com>
+ * Author: Tomas Frydrych    <tf@linux.intel.com>
+ *         Chris Lord        <christopher.lord@intel.com>
+ *         Robert Staudinger <robertx.staudinger@intel.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,8 +23,6 @@
  * 02111-1307, USA.
  */
 
-#define GMENU_I_KNOW_THIS_IS_UNSTABLE
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -32,7 +31,6 @@
 #include <sys/stat.h>
 
 #include <gtk/gtk.h>
-#include <gmenu-tree.h>
 #include <nbtk/nbtk.h>
 
 #include <penge/penge-utils.h>
@@ -44,158 +42,24 @@
 #include "mnb-drop-down.h"
 #include "mnb-entry.h"
 #include "mnb-launcher-button.h"
+#include "mnb-launcher-tree.h"
 
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48
 #define PADDING 8
 #define N_COLS 4
-#define LAUNCHER_WIDTH 235
-
-/* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
-static int
-compare_applications (GMenuTreeEntry *a,
-		      GMenuTreeEntry *b)
-{
-  return g_utf8_collate (gmenu_tree_entry_get_name (a),
-			 gmenu_tree_entry_get_name (b));
-}
-
-static GSList *get_all_applications_from_dir (GMenuTreeDirectory *directory,
-					      GSList             *list);
-
-static GSList *
-get_all_applications_from_alias (GMenuTreeAlias *alias,
-				 GSList         *list)
-{
-  GMenuTreeItem *aliased_item;
-
-  aliased_item = gmenu_tree_alias_get_item (alias);
-
-  switch (gmenu_tree_item_get_type (aliased_item))
-    {
-    case GMENU_TREE_ITEM_ENTRY:
-      list = g_slist_append (list, gmenu_tree_item_ref (aliased_item));
-      break;
-
-    case GMENU_TREE_ITEM_DIRECTORY:
-      list = get_all_applications_from_dir (GMENU_TREE_DIRECTORY (aliased_item),
-					    list);
-      break;
-
-    default:
-      break;
-  }
-
-  gmenu_tree_item_unref (aliased_item);
-
-  return list;
-}
-
-static GSList *
-get_all_applications_from_dir (GMenuTreeDirectory *directory, GSList *list)
-{
-  GSList *items;
-  GSList *l;
-
-  items = gmenu_tree_directory_get_contents (directory);
-
-  for (l = items; l; l = l->next)
-    {
-      switch (gmenu_tree_item_get_type (l->data))
-	{
-	case GMENU_TREE_ITEM_ENTRY:
-	  list = g_slist_append (list, gmenu_tree_item_ref (l->data));
-	  break;
-
-	case GMENU_TREE_ITEM_DIRECTORY:
-	  //list = g_slist_append (list, gmenu_tree_item_ref (l->data));
-	  list = get_all_applications_from_dir (l->data, list);
-	  break;
-
-	case GMENU_TREE_ITEM_ALIAS:
-	  list = get_all_applications_from_alias (l->data, list);
-	  break;
-
-	default:
-	  break;
-	}
-
-    gmenu_tree_item_unref (l->data);
-  }
-
-  g_slist_free (items);
-
-  return list;
-}
-
-static GSList *
-get_all_applications (void)
-{
-  GMenuTree          *tree;
-  GMenuTreeDirectory *root;
-  GSList             *retval, *l, *next;
-  const gchar        *prev_name;
-
-  tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
-
-  root = gmenu_tree_get_root_directory (tree);
-
-  retval = get_all_applications_from_dir (root, NULL);
-
-  gmenu_tree_item_unref (root);
-  gmenu_tree_unref (tree);
-
-  retval = g_slist_sort (retval,
-			 (GCompareFunc) compare_applications);
-
-  /* Strip duplicates */
-  prev_name = NULL;
-  for (l = retval; l; l = next)
-    {
-      GMenuTreeEntry *entry = l->data;
-      const char     *entry_name;
-
-      next = l->next;
-
-      entry_name = gmenu_tree_entry_get_name (entry);
-      if (prev_name && entry_name && strcmp (entry_name, prev_name) == 0)
-	{
-	  gmenu_tree_item_unref (entry);
-
-	  retval = g_slist_delete_link (retval, l);
-	}
-      else
-	{
-	  prev_name = entry_name;
-	}
-  }
-
-  return retval;
-}
-
-typedef struct
-{
-  gchar        *exec;
-  MutterPlugin *plugin;
-} entry_data_t;
-
-static void
-entry_data_free (entry_data_t *data)
-{
-  g_free (data->exec);
-  g_free (data);
-}
+#define LAUNCHER_WIDTH  235
+#define LAUNCHER_HEIGHT 64
 
 static void
 launcher_activated_cb (MnbLauncherButton  *launcher,
                        ClutterButtonEvent *event,
-                       entry_data_t       *entry_data)
+                       MutterPlugin       *plugin)
 {
-  MutterPlugin                *plugin = entry_data->plugin;
-  MoblinNetbookPluginPrivate  *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  const gchar                 *exec = entry_data->exec;
-  gboolean                     without_chooser = FALSE;
-  gint                         workspace       = -2;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  const gchar                *exec = mnb_launcher_button_get_executable (launcher);
+  gboolean                    without_chooser = FALSE;
+  gint                        workspace       = -2;
 
   MetaScreen *screen = mutter_plugin_get_screen (plugin);
   gint        n_ws   = meta_screen_get_n_workspaces (screen);
@@ -237,179 +101,195 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
   moblin_netbook_spawn (plugin, exec, event->time, without_chooser, workspace);
 
   clutter_actor_hide (priv->launcher);
-  nbtk_button_set_active (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
+  nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
   hide_panel (plugin);
 }
 
-static gchar *
-get_generic_name (GMenuTreeEntry *entry)
+/*
+ * Helper struct that contains all the info needed to switch between
+ * browser- and filter-mode.
+ */
+typedef struct
 {
-  const gchar *desktop_file;
-  GKeyFile    *key_file = NULL;
-  GError      *error = NULL;
-  gchar       *generic_name = NULL;
+  ClutterActor  *grid;
+  GHashTable    *expanders;
+  GSList        *launchers;
+  gboolean       is_filtering;
+} launcher_data_t;
 
-  g_return_val_if_fail (entry, NULL);
+static void
+expander_notify_cb (NbtkExpander    *expander,
+                    GParamSpec      *pspec,
+                    launcher_data_t *launcher_data)
+{
+  NbtkExpander    *e;
+  const gchar     *category;
+  GHashTableIter   iter;
 
-  desktop_file = gmenu_tree_entry_get_desktop_file_path (entry);
-  if (!desktop_file)
-    goto bail;
-
-  key_file = g_key_file_new ();
-  g_key_file_load_from_file (key_file, desktop_file, G_KEY_FILE_NONE, &error);
-  if (error)
+  /* Close other open expander, so that just the newly opended one is expanded. */
+  if (nbtk_expander_get_expanded (expander))
     {
-      g_warning ("%s", error->message);
-      goto bail;
+      g_hash_table_iter_init (&iter, launcher_data->expanders);
+      while (g_hash_table_iter_next (&iter,
+                                     (gpointer *) &category,
+                                     (gpointer *) &e))
+        {
+          if (e != expander)
+            nbtk_expander_set_expanded (e, FALSE);
+        }
     }
-
-  generic_name = g_key_file_get_string (key_file,
-                                        G_KEY_FILE_DESKTOP_GROUP,
-                                        G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
-                                        &error);
-  if (error)
-    {
-      /* g_message ("%s", error->message); */
-      goto bail;
-    }
-
-bail:
-  if (key_file) g_key_file_free (key_file);
-  if (error) g_error_free (error);
-  /* Fall back to "Name" if no "GenericName" available. */
-  if (!generic_name)
-    generic_name = g_strdup (gmenu_tree_entry_get_name (entry));
-
-  return generic_name;
 }
 
 /*
- * Get executable from menu entry and check it's available in the path.
- * Returns: absolute path if found, otherwise NULL.
+ * Ctor.
  */
-static gchar *
-get_exec (GMenuTreeEntry *entry)
+static launcher_data_t *
+launcher_data_new (MutterPlugin *self)
 {
-  const gchar  *exec;
-  gint          argc;
-  gchar       **argv;
-  GError       *error;
+  launcher_data_t *launcher_data;
+  GSList          *tree;
+  GSList          *tree_iter;
+  GtkIconTheme    *theme;
 
-  exec = gmenu_tree_entry_get_exec (entry);
-  if (!exec)
-    return NULL;
+  /* Launcher data instance. */
+  launcher_data = g_new0 (launcher_data_t, 1);
 
-  error = NULL;
-  if (g_shell_parse_argv (exec, &argc, &argv, &error))
-    {
-      char *binary = g_find_program_in_path (argv[0]);
-      g_strfreev (argv);
-      return binary;
-    }
+  launcher_data->grid = CLUTTER_ACTOR (nbtk_grid_new ());
+  clutter_actor_set_width (launcher_data->grid,
+                           4 * LAUNCHER_WIDTH + 5 * PADDING);
+  clutter_actor_set_name (launcher_data->grid, "app-launcher-table");
+  nbtk_grid_set_row_gap (NBTK_GRID (launcher_data->grid),
+                         CLUTTER_UNITS_FROM_INT (PADDING));
+  nbtk_grid_set_column_gap (NBTK_GRID (launcher_data->grid),
+                            CLUTTER_UNITS_FROM_INT (PADDING));
 
-  g_warning ("%s", error->message);
-  g_error_free (error);
+  launcher_data->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                    g_free, NULL);
 
-  return NULL;
-}
 
-static NbtkGrid *
-make_table (MutterPlugin  *self)
-{
-  ClutterActor  *grid;
-  GSList *apps, *a;
-  GtkIconTheme  *theme;
-  entry_data_t  *entry_data;
-
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
-                            CLUTTER_UNITS_FROM_INT (PADDING),
-                            CLUTTER_UNITS_FROM_INT (PADDING),
-                            CLUTTER_UNITS_FROM_INT (PADDING)};
-
-  grid = nbtk_grid_new ();
-  clutter_actor_set_width (grid, 4 * LAUNCHER_WIDTH + 5 * PADDING);
-  nbtk_widget_set_padding (NBTK_WIDGET (grid), &padding);
-  clutter_actor_set_name (grid, "app-launcher-table");
-
-  nbtk_grid_set_row_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
-  nbtk_grid_set_column_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
-
-  apps = get_all_applications ();
+  tree = mnb_launcher_tree_create ();
   theme = gtk_icon_theme_get_default ();
 
-  for (a = apps; a; a = a->next)
+  for (tree_iter = tree; tree_iter; tree_iter = tree_iter->next)
     {
-      const gchar   *name, *description, *icon_file;
-      gchar         *generic_name, *exec, *last_used;
-      struct stat    exec_stat;
+      MnbLauncherDirectory  *directory;
+      GSList                *directory_iter;
+      ClutterActor          *expander, *inner_grid;
 
-      GMenuTreeEntry *entry = a->data;
-      GtkIconInfo *info;
+      directory = (MnbLauncherDirectory *) tree_iter->data;
 
-      info = NULL;
-      icon_file = NULL;
+      /* Expander. */
+      expander = CLUTTER_ACTOR (nbtk_expander_new (directory->name));
+      clutter_actor_set_width (expander, 4 * LAUNCHER_WIDTH + 5 * PADDING);
+      clutter_container_add (CLUTTER_CONTAINER (launcher_data->grid),
+                             expander, NULL);
+      g_hash_table_insert (launcher_data->expanders,
+                           g_strdup (directory->name), expander);
+      g_signal_connect (expander, "notify::expanded",
+                        G_CALLBACK (expander_notify_cb), launcher_data);
 
-      generic_name = get_generic_name (entry);
-      exec = get_exec (entry);
-      name = gmenu_tree_entry_get_icon (entry);
-      description = gmenu_tree_entry_get_comment (entry);
+      inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
+      clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
-      if (name)
-        info = gtk_icon_theme_lookup_icon (theme, name, ICON_SIZE, 0);
-      else
-        info = gtk_icon_theme_lookup_icon (theme, "gtk-file", ICON_SIZE, 0);
-      if (info)
-        icon_file = gtk_icon_info_get_filename (info);
-
-      if (generic_name && exec && icon_file)
+      for (directory_iter = directory->entries; directory_iter; directory_iter = directory_iter->next)
         {
-          NbtkWidget *button;
+          const gchar   *generic_name, *description, *icon_name, *icon_file;
+          gchar         *exec, *last_used;
+          struct stat    exec_stat;
 
-          /* FIXME robsta: read "last launched" from persist cache once we have that.
-           * For now approximate. */
-          last_used = NULL;
-          if (0 == stat (exec, &exec_stat) &&
-              exec_stat.st_atime != exec_stat.st_mtime)
+          GtkIconInfo       *info;
+          MnbLauncherEntry  *entry = directory_iter->data;
+
+          info = NULL;
+          icon_file = NULL;
+
+          generic_name = mnb_launcher_entry_get_name (entry);
+          exec = mnb_launcher_entry_get_exec (entry);
+          icon_name = mnb_launcher_entry_get_icon (entry);
+          description = mnb_launcher_entry_get_comment (entry);
+
+          if (icon_name)
+            info = gtk_icon_theme_lookup_icon (theme, icon_name, ICON_SIZE, 0);
+          else
+            info = gtk_icon_theme_lookup_icon (theme, "gtk-file", ICON_SIZE, 0);
+          if (info)
+            icon_file = gtk_icon_info_get_filename (info);
+
+          if (generic_name && exec && icon_file)
             {
-              GTimeVal atime = { 0 ,0 };
-              atime.tv_sec = exec_stat.st_atime;
-              last_used = penge_utils_format_time (&atime);
+              NbtkWidget    *button;
+
+              /* FIXME robsta: read "last launched" from persist cache once we have that.
+               * For now approximate. */
+              last_used = NULL;
+              if (0 == stat (exec, &exec_stat) &&
+                  exec_stat.st_atime != exec_stat.st_mtime)
+                {
+                  GTimeVal atime = { 0 ,0 };
+                  atime.tv_sec = exec_stat.st_atime;
+                  last_used = penge_utils_format_time (&atime);
+                }
+
+              /* Launcher button */
+              button = mnb_launcher_button_new (icon_file, ICON_SIZE,
+                                                generic_name, directory->name,
+                                                description, last_used, exec);
+              g_free (last_used);
+              clutter_actor_set_size (CLUTTER_ACTOR (button),
+                                      LAUNCHER_WIDTH,
+                                      LAUNCHER_HEIGHT);
+              clutter_container_add (CLUTTER_CONTAINER (inner_grid),
+                                     CLUTTER_ACTOR (button), NULL);
+              g_signal_connect (button, "activated",
+                                G_CALLBACK (launcher_activated_cb), self);
+              launcher_data->launchers = g_slist_prepend (launcher_data->launchers,
+                                                          button);
+            }
+          else
+            {
+              g_free (exec);
             }
 
-          button = mnb_launcher_button_new (icon_file, ICON_SIZE,
-                                            generic_name, description, last_used);
-          g_free (last_used);
-          clutter_actor_set_width (CLUTTER_ACTOR (button), LAUNCHER_WIDTH);
-          clutter_container_add (CLUTTER_CONTAINER (grid),
-                                 CLUTTER_ACTOR (button), NULL);
-
-          entry_data = g_new (entry_data_t, 1);
-          entry_data->exec = exec;
-          entry_data->plugin = self;
-          g_signal_connect_data (button, "activated",
-                                 G_CALLBACK (launcher_activated_cb), entry_data,
-                                 (GClosureNotify) entry_data_free, 0);
+          if (info) gtk_icon_info_free (info);
         }
-      else
-        {
-          g_free (exec);
-        }
-
-      if (info) gtk_icon_info_free (info);
-      g_free (generic_name);
     }
 
-    return NBTK_GRID (grid);
+  /* Alphabetically sort buttons, so they are in order while filtering. */
+  launcher_data->launchers = g_slist_sort (launcher_data->launchers,
+                                           (GCompareFunc) mnb_launcher_button_compare);
+  if (tree)
+    mnb_launcher_tree_free (tree);
+
+  return launcher_data;
+}
+
+/*
+ * Dtor.
+ */
+static void
+launcher_data_free_cb (launcher_data_t *launcher_data)
+{
+  g_hash_table_destroy (launcher_data->expanders);
+
+  /* Launchers themselves are managed by clutter. */
+  g_slist_free (launcher_data->launchers);
+
+  g_free (launcher_data);
 }
 
 static void
 filter_cb (ClutterActor *actor,
-           const gchar *filter_key)
+           const gchar  *filter_key)
 {
   MnbLauncherButton *button;
   const char        *title;
   const char        *description;
   const char        *comment;
+
+  /* The grid contains both, buttons and expanders for the respective search
+   * mode. Skip over expanders while searching, they are invisible anyway. */
+  if (!MNB_IS_LAUNCHER_BUTTON (actor))
+    return;
 
   button = MNB_LAUNCHER_BUTTON (actor);
   g_return_if_fail (button);
@@ -464,28 +344,82 @@ filter_cb (ClutterActor *actor,
   clutter_actor_hide (CLUTTER_ACTOR (button));
 }
 
-typedef struct
-{
-  MutterPlugin  *plugin;
-  NbtkGrid      *grid;
-} search_data_t;
-
 static void
-search_activated_cb (MnbEntry       *entry,
-                     search_data_t  *data)
+search_activated_cb (MnbEntry         *entry,
+                     launcher_data_t  *launcher_data)
 {
-  ClutterActor  *launcher_table;
-  GList         *children, *child;
-  gchar         *filter, *key;
+  gchar *filter, *key;
 
   filter = NULL;
   g_object_get (entry, "text", &filter, NULL);
   key = g_utf8_strdown (filter, -1);
   g_free (filter), filter = NULL;
 
-  clutter_container_foreach (CLUTTER_CONTAINER (data->grid),
-                             (ClutterCallback) filter_cb,
-                             key);
+  if (key && strlen (key) > 0)
+    {
+      /* Do filter.
+       * Need to switch to filter mode? */
+      if (!launcher_data->is_filtering)
+        {
+          GSList          *iter;
+          GHashTableIter   expander_iter;
+          ClutterActor    *expander;
+
+          launcher_data->is_filtering = TRUE;
+
+          /* Hide expanders. */
+          g_hash_table_iter_init (&expander_iter, launcher_data->expanders);
+          while (g_hash_table_iter_next (&expander_iter,
+                                         NULL,
+                                         (gpointer *) &expander))
+            {
+              clutter_actor_hide (expander);
+            }
+
+          /* Reparent launchers onto grid. */
+          for (iter = launcher_data->launchers; iter; iter = iter->next)
+            {
+              MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (iter->data);
+              clutter_actor_reparent (CLUTTER_ACTOR (launcher),
+                                      launcher_data->grid);
+            }
+        }
+
+      /* Update search result. */
+      clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->grid),
+                                 (ClutterCallback) filter_cb,
+                                 key);
+    }
+  else if (launcher_data->is_filtering &&
+           (!key || strlen (key) == 0))
+    {
+      /* Did filter, now switch back to normal mode */
+      GSList          *iter;
+      GHashTableIter   expander_iter;
+      ClutterActor    *expander;
+
+      launcher_data->is_filtering = FALSE;
+
+      /* Reparent launchers into expanders. */
+      for (iter = launcher_data->launchers; iter; iter = iter->next)
+        {
+          MnbLauncherButton *launcher   = MNB_LAUNCHER_BUTTON (iter->data);
+          const gchar       *category   = mnb_launcher_button_get_category (launcher);
+          ClutterActor      *e          = g_hash_table_lookup (launcher_data->expanders, category);
+          ClutterActor      *inner_grid = nbtk_expander_get_child (NBTK_EXPANDER (e));
+
+          clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
+        }
+
+      /* Show expanders. */
+      g_hash_table_iter_init (&expander_iter, launcher_data->expanders);
+      while (g_hash_table_iter_next (&expander_iter, NULL, (gpointer *) &expander))
+        {
+          clutter_actor_show (expander);
+        }
+    }
+
+  g_free (key);
 }
 
 static void
@@ -495,21 +429,22 @@ dropdown_show_cb (MnbDropDown   *dropdown,
   clutter_actor_grab_key_focus (filter_entry);
 }
 
+static void
+dropdown_hide_cb (MnbDropDown   *dropdown,
+                  ClutterActor  *filter_entry)
+{
+  /* Reset search. */
+  mnb_entry_set_text (MNB_ENTRY (filter_entry), "");
+}
+
 ClutterActor *
 make_launcher (MutterPlugin *plugin,
                gint          width,
                gint          height)
 {
-  ClutterActor  *viewport, *scroll;
-  NbtkWidget    *vbox, *hbox, *label, *entry, *drop_down;
-  search_data_t *search_data;
-  NbtkPadding    padding = {CLUTTER_UNITS_FROM_INT (PADDING),
-                            0, 0, 0};
-  NbtkPadding    hbox_padding = { CLUTTER_UNITS_FROM_INT (PADDING),
-                                  CLUTTER_UNITS_FROM_INT (PADDING),
-                                  CLUTTER_UNITS_FROM_INT (PADDING),
-                                  CLUTTER_UNITS_FROM_INT (PADDING)};
-
+  ClutterActor    *viewport, *scroll;
+  NbtkWidget      *vbox, *hbox, *label, *entry, *drop_down;
+  launcher_data_t *launcher_data;
 
   drop_down = mnb_drop_down_new ();
 
@@ -520,9 +455,9 @@ make_launcher (MutterPlugin *plugin,
 
   /* 1st row: Filter. */
   hbox = nbtk_table_new ();
-  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), WIDGET_SPACING);
+  clutter_actor_set_name (CLUTTER_ACTOR (hbox), "app-launcher-search");
+  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
   nbtk_table_add_widget (NBTK_TABLE (vbox), hbox, 0, 0);
-  nbtk_widget_set_padding (NBTK_WIDGET (hbox), &hbox_padding);
 
   label = nbtk_label_new (_("Applications"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "app-launcher-search-label");
@@ -541,17 +476,16 @@ make_launcher (MutterPlugin *plugin,
                               0., 0.5);
   g_signal_connect (drop_down, "show-completed",
                     G_CALLBACK (dropdown_show_cb), entry);
+  g_signal_connect (drop_down, "hide-completed",
+                    G_CALLBACK (dropdown_hide_cb), entry);
 
-  viewport = nbtk_viewport_new ();
+  viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   /* Add launcher table. */
-  search_data = g_new0 (search_data_t, 1);
-  search_data->plugin = plugin;
-  search_data->grid = make_table (plugin);
+  launcher_data = launcher_data_new (plugin);
   clutter_container_add (CLUTTER_CONTAINER (viewport),
-                         CLUTTER_ACTOR (search_data->grid), NULL);
+                         CLUTTER_ACTOR (launcher_data->grid), NULL);
 
-
-  scroll = nbtk_scroll_view_new ();
+  scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   clutter_container_add (CLUTTER_CONTAINER (scroll),
                          CLUTTER_ACTOR (viewport), NULL);
   clutter_actor_set_size (scroll,
@@ -564,11 +498,11 @@ make_launcher (MutterPlugin *plugin,
 
   /* Hook up search. */
   g_signal_connect_data (entry, "button-clicked",
-                         G_CALLBACK (search_activated_cb), search_data,
-                         (GClosureNotify) g_free, 0);
-  /* `search_data' lifecycle is managed above. */
+                         G_CALLBACK (search_activated_cb), launcher_data,
+                         (GClosureNotify) launcher_data_free_cb, 0);
+  /* `launcher_data' lifecycle is managed above. */
   g_signal_connect (entry, "text-changed",
-                    G_CALLBACK (search_activated_cb), search_data);
+                    G_CALLBACK (search_activated_cb), launcher_data);
 
   return CLUTTER_ACTOR (drop_down);
 }
