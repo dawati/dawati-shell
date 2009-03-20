@@ -11,6 +11,15 @@ G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
 #define NETPANEL_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MOBLIN_TYPE_NETBOOK_NETPANEL, MoblinNetbookNetpanelPrivate))
 
+enum
+{
+  LAUNCH,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
 struct _MoblinNetbookNetpanelPrivate
 {
   DBusGProxy     *proxy;
@@ -83,11 +92,30 @@ destroy_live_previews (MoblinNetbookNetpanel *self)
     {
       ClutterActor *child = c->data;
 
-      if (CLUTTER_IS_MOZEMBED (child))
+      if (NBTK_IS_BUTTON (child))
         clutter_container_remove_actor (CLUTTER_CONTAINER (priv->tabs_table),
                                         child);
     }
   g_list_free (children);
+}
+
+static void
+mozembed_button_clicked_cb (NbtkBin *button, MoblinNetbookNetpanel *self)
+{
+  guint tab;
+
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  ClutterActor *mozembed = nbtk_bin_get_child (button);
+
+  tab = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (mozembed), "tab"));
+
+  /* FIXME: Check if dbus_g_proxy_call_no_reply is async... Gotta love
+   *        those docs!
+   */
+  dbus_g_proxy_call_no_reply (priv->proxy, "SwitchTab", G_TYPE_UINT, tab,
+                              G_TYPE_INVALID);
+  dbus_g_proxy_call_no_reply (priv->proxy, "Raise", G_TYPE_INVALID);
+  g_debug ("Switching to tab: %d", tab);
 }
 
 static void
@@ -104,9 +132,13 @@ notify_connect_view (DBusGProxy     *proxy,
   priv->calls = g_list_remove (priv->calls, call_id);
   if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID))
     {
-      nbtk_table_add_actor_full (NBTK_TABLE (priv->tabs_table), mozembed,
-                                 1, priv->previews, 1, 1,
-                                 NBTK_KEEP_ASPECT_RATIO, 0.5, 0.5);
+      NbtkWidget *button = nbtk_button_new ();
+      clutter_container_add_actor (CLUTTER_CONTAINER (button), mozembed);
+      g_signal_connect (button, "clicked",
+                        G_CALLBACK (mozembed_button_clicked_cb), self);
+      nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), button,
+                                  1, priv->previews, 1, 1,
+                                  NBTK_KEEP_ASPECT_RATIO, 0.5, 0.5);
       priv->previews ++;
 
       /* Add the tabs table if this is the first preview we've received */
@@ -166,7 +198,9 @@ notify_get_ntabs (DBusGProxy     *proxy,
 
           mozembed = clutter_mozembed_new_view ();
           clutter_actor_set_widthu (mozembed, cell_width);
+          clutter_actor_set_reactive (mozembed, FALSE);
           g_object_set_data (G_OBJECT (mozembed), "netpanel", self);
+          g_object_set_data (G_OBJECT (mozembed), "tab", GUINT_TO_POINTER (i));
           g_object_get (G_OBJECT (mozembed),
                         "input", &input,
                         "output", &output,
@@ -260,6 +294,15 @@ moblin_netbook_netpanel_class_init (MoblinNetbookNetpanelClass *klass)
 
   actor_class->show = moblin_netbook_netpanel_show;
   actor_class->hide = moblin_netbook_netpanel_hide;
+
+  signals[LAUNCH] =
+    g_signal_new ("launch",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MoblinNetbookNetpanelClass, launch),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1, G_TYPE_STRING);
 }
 
 static void

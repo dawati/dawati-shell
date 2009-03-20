@@ -39,6 +39,9 @@ typedef struct {
 
 typedef struct {
   NbtkTableClass parent_class;
+
+  /* Signals */
+  void (* launch) (MoblinNetbookNetpanel *netpanel, const gchar *url);
 } MoblinNetbookNetpanelClass;
 
 GType moblin_netbook_netpanel_get_type (void);
