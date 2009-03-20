@@ -63,12 +63,14 @@ NbtkWidget * mnb_launcher_button_new (const gchar *icon_file,
                                       const gchar *title,
                                       const gchar *category,
                                       const gchar *description,
-                                      const gchar *comment);
+                                      const gchar *comment,
+                                      const gchar *executable);
 
 const char *  mnb_launcher_button_get_title       (MnbLauncherButton *self);
 const char *  mnb_launcher_button_get_category    (MnbLauncherButton *self);
 const char *  mnb_launcher_button_get_description (MnbLauncherButton *self);
 const char *  mnb_launcher_button_get_comment     (MnbLauncherButton *self);
+const char *  mnb_launcher_button_get_executable  (MnbLauncherButton *self);
 
 G_END_DECLS
 
