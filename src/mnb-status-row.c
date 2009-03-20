@@ -29,6 +29,7 @@ struct _MnbStatusRowPrivate
   NbtkPadding padding;
 
   guint in_hover  : 1;
+  guint is_online : 1;
 
   ClutterUnit icon_separator_x;
 
@@ -381,6 +382,9 @@ do_update_timeout (gpointer data)
 {
   MnbStatusRow *row = data;
 
+  if (!row->priv->is_online)
+    return TRUE;
+
   if (row->priv->view != NULL)
     mojito_client_view_refresh (row->priv->view);
 
@@ -390,6 +394,82 @@ do_update_timeout (gpointer data)
                                             row);
 
   return TRUE;
+}
+
+static void
+on_mojito_online_changed (MojitoClient *client,
+                          gboolean      is_online,
+                          MnbStatusRow *row)
+{
+  MnbStatusRowPrivate *priv = row->priv;
+
+  priv->is_online = is_online;
+
+  g_debug ("%s: we are now %s", G_STRLOC, is_online ? "online" : "offline");
+
+  if (!priv->is_online)
+    return;
+  else
+    {
+      if (row->priv->service != NULL)
+        mojito_client_service_get_persona_icon (priv->service,
+                                                on_mojito_get_persona_icon,
+                                                row);
+      else
+        {
+          /* we need the service for UpdateStatus and GetPersonaIcon */
+          priv->service = mojito_client_get_service (priv->client, priv->service_name);
+          mojito_client_service_get_persona_icon (priv->service,
+                                                  on_mojito_get_persona_icon,
+                                                  row);
+        }
+
+      if (priv->view != NULL)
+        mojito_client_view_refresh (row->priv->view);
+      else
+        {
+          gchar *service_name;
+
+          /* for the View we need a parametrized service name */
+          service_name = g_strdup_printf ("%s:own=1", priv->service_name);
+          mojito_client_open_view_for_service (priv->client,
+                                               service_name, 1,
+                                               on_mojito_view_open,
+                                               row);
+          g_free (service_name);
+        }
+    }
+}
+
+static void
+on_mojito_is_online (MojitoClient *client,
+                     gboolean      is_online,
+                     gpointer      data)
+{
+  MnbStatusRow *row = data;
+  MnbStatusRowPrivate *priv = row->priv;
+  gchar *service_name;
+
+  priv->is_online = is_online;
+
+  g_debug ("%s: we are now %s", G_STRLOC, is_online ? "online" : "offline");
+
+  if (!priv->is_online)
+    return;
+
+  /* we need the service for UpdateStatus and GetPersonaIcon */
+  priv->service = mojito_client_get_service (priv->client, priv->service_name);
+  mojito_client_service_get_persona_icon (priv->service,
+                                          on_mojito_get_persona_icon,
+                                          row);
+
+  /* for the View we need a parametrized service name */
+  service_name = g_strdup_printf ("%s:own=1", priv->service_name);
+  mojito_client_open_view_for_service (priv->client,
+                                       service_name, 1,
+                                       on_mojito_view_open,
+                                       row);
+  g_free (service_name);
 }
 
 static void
@@ -482,19 +562,9 @@ mnb_status_row_constructed (GObject *gobject)
                     G_CALLBACK (on_status_entry_changed),
                     row);
 
-  /* we need the service for UpdateStatus and GetPersonaIcon */
-  priv->service = mojito_client_get_service (priv->client, priv->service_name);
-  mojito_client_service_get_persona_icon (priv->service,
-                                          on_mojito_get_persona_icon,
-                                          row);
-
-  /* for the View we need a parametrized service name */
-  service_name = g_strdup_printf ("%s:own=1", priv->service_name);
-  mojito_client_open_view_for_service (priv->client,
-                                       service_name, 1,
-                                       on_mojito_view_open,
-                                       row);
-  g_free (service_name);
+  /* we check if we're online first */
+  priv->is_online = FALSE;
+  mojito_client_is_online (priv->client, on_mojito_is_online, row);
 
   priv->update_id = g_timeout_add_seconds (5 * 60, do_update_timeout, row);
 
@@ -571,6 +641,9 @@ mnb_status_row_init (MnbStatusRow *self)
     }
 
   priv->client = mojito_client_new ();
+  g_signal_connect (priv->client, "online-changed",
+                    G_CALLBACK (on_mojito_online_changed),
+                    self);
 
   clutter_actor_set_size (priv->icon, ICON_SIZE, ICON_SIZE);
   clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (self));
