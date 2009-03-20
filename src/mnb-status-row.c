@@ -214,7 +214,9 @@ mnb_status_row_enter (ClutterActor *actor,
   if (!mnb_status_entry_get_is_active (MNB_STATUS_ENTRY (priv->entry)))
     {
       mnb_status_entry_set_in_hover (MNB_STATUS_ENTRY (priv->entry), TRUE);
-      mnb_status_entry_show_button (MNB_STATUS_ENTRY (priv->entry), TRUE);
+
+      if (priv->is_online)
+        mnb_status_entry_show_button (MNB_STATUS_ENTRY (priv->entry), TRUE);
     }
 
   priv->in_hover = TRUE;
@@ -231,7 +233,9 @@ mnb_status_row_leave (ClutterActor *actor,
   if (!mnb_status_entry_get_is_active (MNB_STATUS_ENTRY (priv->entry)))
     {
       mnb_status_entry_set_in_hover (MNB_STATUS_ENTRY (priv->entry), FALSE);
-      mnb_status_entry_show_button (MNB_STATUS_ENTRY (priv->entry), FALSE);
+
+      if (priv->is_online)
+        mnb_status_entry_show_button (MNB_STATUS_ENTRY (priv->entry), FALSE);
     }
 
   priv->in_hover = FALSE;
@@ -407,9 +411,9 @@ on_mojito_online_changed (MojitoClient *client,
 
   g_debug ("%s: we are now %s", G_STRLOC, is_online ? "online" : "offline");
 
-  if (!priv->is_online)
-    return;
-  else
+  clutter_actor_set_reactive (CLUTTER_ACTOR (row), priv->is_online);
+
+  if (priv->is_online)
     {
       if (row->priv->service != NULL)
         mojito_client_service_get_persona_icon (priv->service,

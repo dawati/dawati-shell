@@ -297,7 +297,10 @@ mnb_status_entry_paint (ClutterActor *actor)
   if (priv->cancel_icon && CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
     clutter_actor_paint (priv->cancel_icon);
 
-  if (priv->in_hover && priv->separator_x != 0)
+  if (priv->button &&
+      CLUTTER_ACTOR_IS_VISIBLE (priv->button) &&
+      priv->in_hover &&
+      priv->separator_x != 0)
     {
       ClutterActorBox alloc = { 0, };
       gfloat x_pos, start_y, end_y;
