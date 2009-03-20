@@ -628,7 +628,7 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->status);
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->status),
                             NBTK_BUTTON (priv->panel_buttons[1]));
-  clutter_actor_set_width (priv->status, 1024);
+  clutter_actor_set_width (priv->status, screen_width);
   clutter_actor_set_position (priv->status, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->status);
 
