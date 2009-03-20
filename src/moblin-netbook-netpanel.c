@@ -103,9 +103,6 @@ notify_connect_view (DBusGProxy     *proxy,
   priv->calls = g_list_remove (priv->calls, call_id);
   if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID))
     {
-      gint w, h;
-      clutter_texture_get_base_size (CLUTTER_TEXTURE (mozembed), &w, &h);
-      clutter_actor_set_size (mozembed, w, h);
       nbtk_table_add_actor_full (NBTK_TABLE (priv->tabs_table), mozembed,
                                  1, priv->previews, 1, 1,
                                  NBTK_KEEP_ASPECT_RATIO, 0.5, 0.5);
@@ -119,7 +116,7 @@ notify_connect_view (DBusGProxy     *proxy,
     }
   else
     {
-      /* TODO: Log the error if it's pertinent? */
+      g_warning ("Error connecting tab: %s", error->message);
       g_error_free (error);
     }
 }
@@ -158,6 +155,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
                                      notify_connect_view,
                                      g_object_ref_sink (mozembed),
                                      g_object_unref,
+                                     G_TYPE_UINT, i,
                                      G_TYPE_STRING, input,
                                      G_TYPE_STRING, output,
                                      G_TYPE_INVALID));
@@ -169,6 +167,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
   else
     {
       /* TODO: Log the error if it's pertinent? */
+      /*g_warning ("Error getting tabs: %s", error->message);*/
       g_error_free (error);
     }
 }
@@ -177,6 +176,9 @@ static void
 request_live_previews (MoblinNetbookNetpanel *self)
 {
   MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  if (!priv->proxy)
+    return;
 
   /* Get the number of tabs */
   priv->calls = g_list_prepend (priv->calls,
@@ -197,7 +199,7 @@ moblin_netbook_netpanel_show (ClutterActor *actor)
   request_live_previews (netpanel);
 
   /* TODO: Favourites table */
-/*  nbtk_table_add_widget_full (NBTK_TABLE (netpanel), priv->favs_table, 2, 0,
+  /*nbtk_table_add_widget_full (NBTK_TABLE (netpanel), priv->favs_table, 2, 0,
                               1, 1, NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);*/
 
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->show (actor);
@@ -313,6 +315,6 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 NbtkWidget*
 moblin_netbook_netpanel_new (void)
 {
-  return g_object_new (MOBLIN_TYPE_NETBOOK_NETPANEL, NULL);
+  return g_object_new (MOBLIN_TYPE_NETBOOK_NETPANEL, "visible", FALSE, NULL);
 }
 

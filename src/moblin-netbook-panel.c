@@ -488,6 +488,22 @@ _mzone_activated_cb (PengeGridView *view, gpointer userdata)
   hide_panel ((MutterPlugin *)plugin);
 }
 
+static void
+_netgrid_show_cb (MnbDropDown *drop_down)
+{
+  ClutterActor *child = mnb_drop_down_get_child (drop_down);
+  if (child)
+    clutter_actor_show (child);
+}
+
+static void
+_netgrid_hide_cb (MnbDropDown *drop_down)
+{
+  ClutterActor *child = mnb_drop_down_get_child (drop_down);
+  if (child)
+    clutter_actor_hide (child);
+}
+
 ClutterActor *
 make_panel (MutterPlugin *plugin, gint width)
 {
@@ -706,6 +722,11 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[3]));
   clutter_actor_set_position (priv->net_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->net_grid);
+
+  g_signal_connect (priv->net_grid, "hide-completed",
+                    G_CALLBACK (_netgrid_hide_cb), NULL);
+  g_signal_connect (priv->net_grid, "show",
+                    G_CALLBACK (_netgrid_show_cb), NULL);
 
   if (shadow)
     clutter_actor_lower_bottom (shadow);
