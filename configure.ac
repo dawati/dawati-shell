@@ -20,6 +20,7 @@ m4_define([lt_age], [m4_eval(plugin_binary_age - plugin_interface_age)])
 AC_PREREQ(2.50)
 
 AC_INIT([mutter-moblin], [plugin_version], [http://moblin.org])
+AC_CONFIG_MACRO_DIR([build/autotools])
 
 AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 
@@ -76,8 +77,14 @@ PLUGIN_LT_LDFLAGS="-version-info $PLUGIN_LT_VERSION"
 AC_SUBST(PLUGIN_LT_VERSION)
 AC_SUBST(PLUGIN_LT_LDFLAGS)
 
+SHAVE_INIT([build/autotools], [enable])
+
 AC_OUTPUT([
 Makefile
+build/Makefile
+build/autotools/Makefile
+build/autotools/shave
+build/autotools/shave-libtool
 data/Makefile
 src/Makefile
 src/tray/Makefile
