@@ -190,6 +190,12 @@ launcher_data_new (MutterPlugin *self)
       g_signal_connect (expander, "notify::expanded",
                         G_CALLBACK (expander_notify_cb), launcher_data);
 
+      /* Open first expander by default. */
+      if (tree_iter == tree)
+        {
+          nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
+        }
+
       inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
       clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
