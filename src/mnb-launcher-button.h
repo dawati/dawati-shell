@@ -72,6 +72,9 @@ const char *  mnb_launcher_button_get_description (MnbLauncherButton *self);
 const char *  mnb_launcher_button_get_comment     (MnbLauncherButton *self);
 const char *  mnb_launcher_button_get_executable  (MnbLauncherButton *self);
 
+gint          mnb_launcher_button_compare         (MnbLauncherButton *self,
+                                                   MnbLauncherButton *other);
+
 G_END_DECLS
 
 #endif /* __MNB_LAUNCHER_BUTTON_H__ */

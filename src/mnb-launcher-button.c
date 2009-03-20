@@ -314,3 +314,14 @@ mnb_launcher_button_get_executable (MnbLauncherButton *self)
   return self->priv->executable;
 }
 
+gint
+mnb_launcher_button_compare (MnbLauncherButton *self,
+                             MnbLauncherButton *other)
+{
+  g_return_val_if_fail (self, 0);
+  g_return_val_if_fail (other, 0);
+
+  return g_utf8_collate (nbtk_label_get_text (NBTK_LABEL (self->priv->title)), 
+                         nbtk_label_get_text (NBTK_LABEL (other->priv->title)));
+}
+
