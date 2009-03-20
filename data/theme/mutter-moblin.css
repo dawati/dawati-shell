@@ -522,6 +522,7 @@ PengeEventTile:hover, PengeTaskTile:hover
 *.PengeRecentFileTileDetails, *.PengePeopleTileDetails
 {
   background-color: black;
+  padding: 2;
 }
 
 *.PengeRecentFileTileDetailsFilename
