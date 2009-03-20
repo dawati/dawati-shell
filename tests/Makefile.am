@@ -36,7 +36,7 @@ test_launcher_tree_LDADD = \
   $(MUTTER_PLUGIN_LIBS)
 
 test_launcher_tree_SOURCES = \
-	$(top_srcdir)/src/mnb-launcher-entry.c \
+	$(top_srcdir)/src/mnb-launcher-tree.c \
 	test-launcher-tree.c
 
 test_tray_SOURCES = test-tray.c

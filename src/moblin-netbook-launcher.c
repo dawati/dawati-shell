@@ -41,8 +41,8 @@
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-entry.h"
-#include "mnb-launcher-entry.h"
 #include "mnb-launcher-button.h"
+#include "mnb-launcher-tree.h"
 
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48

@@ -25,7 +25,7 @@
 
 #include <gmenu-tree.h>
 
-#include "mnb-launcher-entry.h"
+#include "mnb-launcher-tree.h"
 
 /*
  * MnbLauncherEntry.

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "mnb-launcher-entry.h"
+#include "mnb-launcher-tree.h"
 
 int
 main (int argc, char *argv[])
