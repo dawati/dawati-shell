@@ -279,12 +279,9 @@ launcher_data_free_cb (launcher_data_t *launcher_data)
 
 static void
 filter_cb (ClutterActor *actor,
-           const gchar  *filter_key)
+           const gchar  *lcase_needle)
 {
   MnbLauncherButton *button;
-  const char        *title;
-  const char        *description;
-  const char        *comment;
 
   /* The grid contains both, buttons and expanders for the respective search
    * mode. Skip over expanders while searching, they are invisible anyway. */
@@ -294,68 +291,23 @@ filter_cb (ClutterActor *actor,
   button = MNB_LAUNCHER_BUTTON (actor);
   g_return_if_fail (button);
 
-  /* Show all? */
-  if (!filter_key || strlen (filter_key) == 0)
-    {
-      clutter_actor_show (CLUTTER_ACTOR (button));
-      return;
-    }
-
-  title = mnb_launcher_button_get_title (button);
-  if (title)
-    {
-      gchar *title_key = g_utf8_strdown (title, -1);
-      gboolean is_matching = (gboolean) strstr (title_key, filter_key);
-      g_free (title_key);
-      if (is_matching)
-        {
-          clutter_actor_show (CLUTTER_ACTOR (button));
-          return;
-        }
-    }
-
-  description = mnb_launcher_button_get_description (button);
-  if (description)
-    {
-      gchar *description_key = g_utf8_strdown (description, -1);
-      gboolean is_matching = (gboolean) strstr (description_key, filter_key);
-      g_free (description_key);
-      if (is_matching)
-        {
-          clutter_actor_show (CLUTTER_ACTOR (button));
-          return;
-        }
-    }
-
-  comment = mnb_launcher_button_get_comment (button);
-  if (comment)
-    {
-      gchar *comment_key = g_utf8_strdown (comment, -1);
-      gboolean is_matching = (gboolean) strstr (comment_key, filter_key);
-      g_free (comment_key);
-      if (is_matching)
-        {
-          clutter_actor_show (CLUTTER_ACTOR (button));
-          return;
-        }
-    }
-
-  /* No match. */
-  clutter_actor_hide (CLUTTER_ACTOR (button));
+  mnb_launcher_button_match (button, lcase_needle) ?
+    clutter_actor_show (CLUTTER_ACTOR (button)) :
+    clutter_actor_hide (CLUTTER_ACTOR (button));
 }
 
 static void
 search_activated_cb (MnbEntry         *entry,
                      launcher_data_t  *launcher_data)
 {
-  gchar *filter, *key;
+  gchar *needle, *lcase_needle;
 
-  filter = NULL;
-  g_object_get (entry, "text", &filter, NULL);
-  key = g_utf8_strdown (filter, -1);
-  g_free (filter), filter = NULL;
+  needle = NULL;
+  g_object_get (entry, "text", &needle, NULL);
+  lcase_needle = g_utf8_strdown (needle, -1);
+  g_free (needle), needle = NULL;
 
-  if (key && strlen (key) > 0)
+  if (lcase_needle && strlen (lcase_needle) > 0)
     {
       /* Do filter.
        * Need to switch to filter mode? */
@@ -388,10 +340,10 @@ search_activated_cb (MnbEntry         *entry,
       /* Update search result. */
       clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->grid),
                                  (ClutterCallback) filter_cb,
-                                 key);
+                                 lcase_needle);
     }
   else if (launcher_data->is_filtering &&
-           (!key || strlen (key) == 0))
+           (!lcase_needle || strlen (lcase_needle) == 0))
     {
       /* Did filter, now switch back to normal mode */
       GSList          *iter;
@@ -419,7 +371,7 @@ search_activated_cb (MnbEntry         *entry,
         }
     }
 
-  g_free (key);
+  g_free (lcase_needle);
 }
 
 static void

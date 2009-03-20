@@ -75,6 +75,9 @@ const char *  mnb_launcher_button_get_executable  (MnbLauncherButton *self);
 gint          mnb_launcher_button_compare         (MnbLauncherButton *self,
                                                    MnbLauncherButton *other);
 
+gboolean      mnb_launcher_button_match           (MnbLauncherButton *self,
+                                                   const gchar       *lcase_needle);
+
 G_END_DECLS
 
 #endif /* __MNB_LAUNCHER_BUTTON_H__ */
