@@ -105,20 +105,69 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
   hide_panel (plugin);
 }
 
-static NbtkGrid *
-make_table (MutterPlugin  *self)
+/*
+ * Helper struct that contains all the info needed to switch between
+ * browser- and filter-mode.
+ */
+typedef struct
 {
-  ClutterActor          *grid;
-  GSList                *tree;
-  GSList                *tree_iter;
-  GtkIconTheme          *theme;
+  ClutterActor  *grid;
+  GHashTable    *expanders;
+  GSList        *launchers;
+  gboolean       is_filtering;
+  GSList        *launchers_iter;
+  char          *lcase_needle;
+} launcher_data_t;
 
-  grid = CLUTTER_ACTOR (nbtk_grid_new ());
-  clutter_actor_set_width (grid, 4 * LAUNCHER_WIDTH + 5 * PADDING);
-  clutter_actor_set_name (grid, "app-launcher-table");
+static void
+expander_notify_cb (NbtkExpander    *expander,
+                    GParamSpec      *pspec,
+                    launcher_data_t *launcher_data)
+{
+  NbtkExpander    *e;
+  const gchar     *category;
+  GHashTableIter   iter;
 
-  nbtk_grid_set_row_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
-  nbtk_grid_set_column_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
+  /* Close other open expander, so that just the newly opended one is expanded. */
+  if (nbtk_expander_get_expanded (expander))
+    {
+      g_hash_table_iter_init (&iter, launcher_data->expanders);
+      while (g_hash_table_iter_next (&iter,
+                                     (gpointer *) &category,
+                                     (gpointer *) &e))
+        {
+          if (e != expander)
+            nbtk_expander_set_expanded (e, FALSE);
+        }
+    }
+}
+
+/*
+ * Ctor.
+ */
+static launcher_data_t *
+launcher_data_new (MutterPlugin *self)
+{
+  launcher_data_t *launcher_data;
+  GSList          *tree;
+  GSList          *tree_iter;
+  GtkIconTheme    *theme;
+
+  /* Launcher data instance. */
+  launcher_data = g_new0 (launcher_data_t, 1);
+
+  launcher_data->grid = CLUTTER_ACTOR (nbtk_grid_new ());
+  clutter_actor_set_width (launcher_data->grid,
+                           4 * LAUNCHER_WIDTH + 5 * PADDING);
+  clutter_actor_set_name (launcher_data->grid, "app-launcher-table");
+  nbtk_grid_set_row_gap (NBTK_GRID (launcher_data->grid),
+                         CLUTTER_UNITS_FROM_INT (PADDING));
+  nbtk_grid_set_column_gap (NBTK_GRID (launcher_data->grid),
+                            CLUTTER_UNITS_FROM_INT (PADDING));
+
+  launcher_data->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                    g_free, NULL);
+
 
   tree = mnb_launcher_tree_create ();
   theme = gtk_icon_theme_get_default ();
@@ -130,9 +179,16 @@ make_table (MutterPlugin  *self)
       ClutterActor          *expander, *inner_grid;
 
       directory = (MnbLauncherDirectory *) tree_iter->data;
+
+      /* Expander. */
       expander = CLUTTER_ACTOR (nbtk_expander_new (directory->name));
       clutter_actor_set_width (expander, 4 * LAUNCHER_WIDTH + 5 * PADDING);
-      clutter_container_add (CLUTTER_CONTAINER (grid), expander, NULL);
+      clutter_container_add (CLUTTER_CONTAINER (launcher_data->grid),
+                             expander, NULL);
+      g_hash_table_insert (launcher_data->expanders,
+                           g_strdup (directory->name), expander);
+      g_signal_connect (expander, "notify::expanded",
+                        G_CALLBACK (expander_notify_cb), launcher_data);
 
       inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
       clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
@@ -176,6 +232,7 @@ make_table (MutterPlugin  *self)
                   last_used = penge_utils_format_time (&atime);
                 }
 
+              /* Launcher button */
               button = mnb_launcher_button_new (icon_file, ICON_SIZE,
                                                 generic_name, directory->name,
                                                 description, last_used, exec);
@@ -185,9 +242,10 @@ make_table (MutterPlugin  *self)
                                       LAUNCHER_HEIGHT);
               clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                      CLUTTER_ACTOR (button), NULL);
-
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_activated_cb), self);
+              launcher_data->launchers = g_slist_prepend (launcher_data->launchers,
+                                                          button);
             }
           else
             {
@@ -198,258 +256,145 @@ make_table (MutterPlugin  *self)
         }
     }
 
+  /* Alphabetically sort buttons, so they are in order while filtering. */
+  launcher_data->launchers = g_slist_sort (launcher_data->launchers,
+                                           (GCompareFunc) mnb_launcher_button_compare);
   if (tree)
     mnb_launcher_tree_free (tree);
 
-  return NBTK_GRID (grid);
-}
-
-static void
-filter_cb (ClutterActor *actor,
-           const gchar  *filter_key)
-{
-  MnbLauncherButton *button;
-  const char        *title;
-  const char        *description;
-  const char        *comment;
-
-  /* The grid contains both, buttons and expanders for the respective search
-   * mode. Skip over expanders while searching, they are invisible anyway. */
-  if (!MNB_IS_LAUNCHER_BUTTON (actor))
-    return;
-
-  button = MNB_LAUNCHER_BUTTON (actor);
-  g_return_if_fail (button);
-
-  /* Show all? */
-  if (!filter_key || strlen (filter_key) == 0)
-    {
-      clutter_actor_show (CLUTTER_ACTOR (button));
-      return;
-    }
-
-  title = mnb_launcher_button_get_title (button);
-  if (title)
-    {
-      gchar *title_key = g_utf8_strdown (title, -1);
-      gboolean is_matching = (gboolean) strstr (title_key, filter_key);
-      g_free (title_key);
-      if (is_matching)
-        {
-          clutter_actor_show (CLUTTER_ACTOR (button));
-          return;
-        }
-    }
-
-  description = mnb_launcher_button_get_description (button);
-  if (description)
-    {
-      gchar *description_key = g_utf8_strdown (description, -1);
-      gboolean is_matching = (gboolean) strstr (description_key, filter_key);
-      g_free (description_key);
-      if (is_matching)
-        {
-          clutter_actor_show (CLUTTER_ACTOR (button));
-          return;
-        }
-    }
-
-  comment = mnb_launcher_button_get_comment (button);
-  if (comment)
-    {
-      gchar *comment_key = g_utf8_strdown (comment, -1);
-      gboolean is_matching = (gboolean) strstr (comment_key, filter_key);
-      g_free (comment_key);
-      if (is_matching)
-        {
-          clutter_actor_show (CLUTTER_ACTOR (button));
-          return;
-        }
-    }
-
-  /* No match. */
-  clutter_actor_hide (CLUTTER_ACTOR (button));
-}
-
-/*
- * Helper struct that contains all the info needed to switch between
- * browser- and filter-mode.
- */
-typedef struct
-{
-  NbtkGrid      *grid;
-  GHashTable    *expanders;
-  gboolean       is_filtering;
-} search_data_t;
-
-static void
-expander_notify_cb (NbtkExpander   *expander,
-                    GParamSpec     *pspec,
-                    search_data_t  *search_data)
-{
-  NbtkExpander    *e;
-  const gchar     *category;
-  GHashTableIter   iter;
-
-  /* Close other open expander, so that just the newly opended one is expanded. */
-  if (nbtk_expander_get_expanded (expander))
-    {
-      g_hash_table_iter_init (&iter, search_data->expanders);
-      while (g_hash_table_iter_next (&iter,
-                                     (gpointer *) &category,
-                                     (gpointer *) &e))
-        {
-          if (e != expander)
-            nbtk_expander_set_expanded (e, FALSE);
-        }
-    }
-}
-
-/*
- * Ctor.
- */
-static search_data_t *
-search_data_new (NbtkGrid *grid)
-{
-  search_data_t *search_data;
-
-  search_data = g_new0 (search_data_t, 1);
-  search_data->grid = grid;
-  search_data->expanders = g_hash_table_new (g_str_hash, g_str_equal);
-
-  return search_data;
-}
-
-/*
- * Set up expander widgets.
- */
-static void
-search_data_fill_cb (ClutterActor   *expander,
-                     search_data_t  *search_data)
-{
-  g_hash_table_insert (search_data->expanders,
-                       (gpointer) nbtk_expander_get_label (NBTK_EXPANDER (expander)),
-                       expander);
-
-  g_signal_connect (expander, "notify::expanded",
-                    G_CALLBACK (expander_notify_cb), search_data);
+  return launcher_data;
 }
 
 /*
  * Dtor.
  */
 static void
-search_data_free_cb (search_data_t *search_data)
+launcher_data_free_cb (launcher_data_t *launcher_data)
 {
-  g_hash_table_destroy (search_data->expanders);
-  g_free (search_data);
+  g_hash_table_destroy (launcher_data->expanders);
+
+  /* Launchers themselves are managed by clutter. */
+  g_slist_free (launcher_data->launchers);
+
+  g_free (launcher_data);
 }
 
-typedef struct
+static gboolean
+filter_cb (launcher_data_t *launcher_data)
 {
-  ClutterContainer *from;
-  ClutterContainer *to;
-} reparent_t;
+  MnbLauncherButton *button;
 
-static void
-reparent_cb (ClutterActor *button,
-             reparent_t   *containers)
-{
-  g_object_ref (button);
-  clutter_container_remove (containers->from, button, NULL);
-  clutter_container_add (containers->to, button, NULL);
-  g_object_unref (button);
+  /* Start search? */
+  if (launcher_data->launchers_iter == NULL)
+    {
+      g_return_val_if_fail (launcher_data->launchers, FALSE);
+      launcher_data->launchers_iter = launcher_data->launchers;
+    }
+
+  button = MNB_LAUNCHER_BUTTON (launcher_data->launchers_iter->data);
+
+  /* Do search. */
+  mnb_launcher_button_match (button, launcher_data->lcase_needle) ?
+    clutter_actor_show (CLUTTER_ACTOR (button)) :
+    clutter_actor_hide (CLUTTER_ACTOR (button));
+
+  launcher_data->launchers_iter = launcher_data->launchers_iter->next;
+
+  /* Done searching? */
+  if (launcher_data->launchers_iter == NULL)
+    {
+      g_free (launcher_data->lcase_needle);
+      launcher_data->lcase_needle = NULL;
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
 static void
-search_activated_cb (MnbEntry       *entry,
-                     search_data_t  *search_data)
+search_activated_cb (MnbEntry         *entry,
+                     launcher_data_t  *launcher_data)
 {
-  gchar *filter, *key;
+  gchar *needle, *lcase_needle;
 
-  filter = NULL;
-  g_object_get (entry, "text", &filter, NULL);
-  key = g_utf8_strdown (filter, -1);
-  g_free (filter), filter = NULL;
+  /* Abort current search if any. */
+  if (launcher_data->lcase_needle)
+    {
+      g_idle_remove_by_data (launcher_data);
+      launcher_data->launchers_iter = NULL;
+      g_free (launcher_data->lcase_needle);
+      launcher_data->lcase_needle = NULL;
+    }
 
-  if (key && strlen (key) > 0)
+  needle = NULL;
+  g_object_get (entry, "text", &needle, NULL);
+  lcase_needle = g_utf8_strdown (needle, -1);
+  g_free (needle), needle = NULL;
+
+  if (lcase_needle && strlen (lcase_needle) > 0)
     {
       /* Do filter.
        * Need to switch to filter mode? */
-      if (!search_data->is_filtering)
+      if (!launcher_data->is_filtering)
         {
-          const gchar     *category;
+          GSList          *iter;
+          GHashTableIter   expander_iter;
           ClutterActor    *expander;
-          GHashTableIter   iter;
 
-          search_data->is_filtering = TRUE;
+          launcher_data->is_filtering = TRUE;
 
-          /* Go thru expanders, hide them, and reparent the buttons
-           * into the main grid. */
-          g_hash_table_iter_init (&iter, search_data->expanders);
-          while (g_hash_table_iter_next (&iter, (gpointer *) &category, (gpointer *) &expander))
+          /* Hide expanders. */
+          g_hash_table_iter_init (&expander_iter, launcher_data->expanders);
+          while (g_hash_table_iter_next (&expander_iter,
+                                         NULL,
+                                         (gpointer *) &expander))
             {
-              ClutterActor *child;
-              reparent_t    containers;
-
               clutter_actor_hide (expander);
+            }
 
-              child = nbtk_expander_get_child (NBTK_EXPANDER (expander));
-              containers.from = CLUTTER_CONTAINER (child);
-              containers.to = CLUTTER_CONTAINER (search_data->grid);
-              clutter_container_foreach (CLUTTER_CONTAINER (child),
-                                         (ClutterCallback) reparent_cb,
-                                         &containers);
+          /* Reparent launchers onto grid. */
+          for (iter = launcher_data->launchers; iter; iter = iter->next)
+            {
+              MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (iter->data);
+              clutter_actor_reparent (CLUTTER_ACTOR (launcher),
+                                      launcher_data->grid);
             }
         }
 
       /* Update search result. */
-      clutter_container_foreach (CLUTTER_CONTAINER (search_data->grid),
-                                 (ClutterCallback) filter_cb,
-                                 key);
+      launcher_data->lcase_needle = g_strdup (lcase_needle);
+      g_idle_add ((GSourceFunc) filter_cb, launcher_data);
     }
-  else if (search_data->is_filtering &&
-           (!key || strlen (key) == 0))
+  else if (launcher_data->is_filtering &&
+           (!lcase_needle || strlen (lcase_needle) == 0))
     {
       /* Did filter, now switch back to normal mode */
-      GList *children;
+      GSList          *iter;
+      GHashTableIter   expander_iter;
+      ClutterActor    *expander;
 
-      search_data->is_filtering = FALSE;
+      launcher_data->is_filtering = FALSE;
 
-      children = clutter_container_get_children (CLUTTER_CONTAINER (search_data->grid));
-      while (children)
+      /* Reparent launchers into expanders. */
+      for (iter = launcher_data->launchers; iter; iter = iter->next)
         {
-          ClutterActor *child = CLUTTER_ACTOR (children->data);
+          MnbLauncherButton *launcher   = MNB_LAUNCHER_BUTTON (iter->data);
+          const gchar       *category   = mnb_launcher_button_get_category (launcher);
+          ClutterActor      *e          = g_hash_table_lookup (launcher_data->expanders, category);
+          ClutterActor      *inner_grid = nbtk_expander_get_child (NBTK_EXPANDER (e));
 
-          if (NBTK_IS_EXPANDER (child))
-            {
-              /* Expanders are visible again. */
-              clutter_actor_show (child);
-            }
-          else
-            {
-              /* Buttons go back into category expanders. */
-              const gchar *category = mnb_launcher_button_get_category (
-                                          MNB_LAUNCHER_BUTTON (child));
-              ClutterActor  *expander = g_hash_table_lookup (
-                                          search_data->expanders,
-                                          category);
-              ClutterActor *inner_grid = nbtk_expander_get_child (
-                                          NBTK_EXPANDER (expander));
+          clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
+        }
 
-              g_object_ref (child);
-              clutter_container_remove (CLUTTER_CONTAINER (search_data->grid),
-                                        child, NULL);
-              clutter_container_add (CLUTTER_CONTAINER (inner_grid),
-                                     child, NULL);
-              g_object_unref (child);
-            }
-
-          children = g_list_delete_link (children, children);
+      /* Show expanders. */
+      g_hash_table_iter_init (&expander_iter, launcher_data->expanders);
+      while (g_hash_table_iter_next (&expander_iter, NULL, (gpointer *) &expander))
+        {
+          clutter_actor_show (expander);
         }
     }
 
-  g_free (key);
+  g_free (lcase_needle);
 }
 
 static void
@@ -472,9 +417,9 @@ make_launcher (MutterPlugin *plugin,
                gint          width,
                gint          height)
 {
-  ClutterActor  *viewport, *scroll;
-  NbtkWidget    *vbox, *hbox, *label, *entry, *drop_down;
-  search_data_t *search_data;
+  ClutterActor    *viewport, *scroll;
+  NbtkWidget      *vbox, *hbox, *label, *entry, *drop_down;
+  launcher_data_t *launcher_data;
 
   drop_down = mnb_drop_down_new ();
 
@@ -511,14 +456,9 @@ make_launcher (MutterPlugin *plugin,
 
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   /* Add launcher table. */
-  search_data = search_data_new (make_table (plugin));
+  launcher_data = launcher_data_new (plugin);
   clutter_container_add (CLUTTER_CONTAINER (viewport),
-                         CLUTTER_ACTOR (search_data->grid), NULL);
-  /* Keep all launcher buttons to switch between browse- and filter-mode. */
-  clutter_container_foreach (CLUTTER_CONTAINER (search_data->grid),
-                             (ClutterCallback) search_data_fill_cb,
-                             search_data);
-
+                         CLUTTER_ACTOR (launcher_data->grid), NULL);
 
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   clutter_container_add (CLUTTER_CONTAINER (scroll),
@@ -533,11 +473,11 @@ make_launcher (MutterPlugin *plugin,
 
   /* Hook up search. */
   g_signal_connect_data (entry, "button-clicked",
-                         G_CALLBACK (search_activated_cb), search_data,
-                         (GClosureNotify) search_data_free_cb, 0);
-  /* `search_data' lifecycle is managed above. */
+                         G_CALLBACK (search_activated_cb), launcher_data,
+                         (GClosureNotify) launcher_data_free_cb, 0);
+  /* `launcher_data' lifecycle is managed above. */
   g_signal_connect (entry, "text-changed",
-                    G_CALLBACK (search_activated_cb), search_data);
+                    G_CALLBACK (search_activated_cb), launcher_data);
 
   return CLUTTER_ACTOR (drop_down);
 }

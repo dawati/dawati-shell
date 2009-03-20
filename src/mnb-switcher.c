@@ -147,6 +147,8 @@ struct _MnbSwitcherPrivate {
 
   gboolean      dnd_in_progress : 1;
   gboolean      constructing    : 1;
+
+  gint          active_ws;
 };
 
 struct input_data
@@ -512,6 +514,93 @@ clone_leave_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
+static ClutterActor *
+table_find_child (ClutterContainer *table, gint row, gint col)
+{
+  ClutterActor *child = NULL;
+  GList        *l, *kids;
+
+  kids = l = clutter_container_get_children (CLUTTER_CONTAINER (table));
+
+  while (l)
+    {
+      ClutterActor *a = l->data;
+      gint r, c;
+
+      clutter_container_child_get (table, a, "row", &r, "column", &c, NULL);
+
+      if ((r == row) && (c == col))
+        {
+          child = a;
+          break;
+        }
+
+      l = l->next;
+    }
+
+  g_list_free (kids);
+
+  return child;
+}
+
+static void
+dnd_enter_cb (NbtkWidget   *table,
+              ClutterActor *dragged,
+              ClutterActor *icon,
+              gint          x,
+              gint          y,
+              gpointer      data)
+{
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
+  ClutterActor *label;
+  gint          col;
+
+  clutter_container_child_get (CLUTTER_CONTAINER (priv->table),
+                               CLUTTER_ACTOR (table),
+                               "column", &col, NULL);
+
+  label = table_find_child (CLUTTER_CONTAINER (priv->table), 0, col);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-workspace-new-over");
+
+  if (label)
+    clutter_actor_set_name (label, "workspace-title-new-over");
+}
+
+static void
+dnd_leave_cb (NbtkWidget   *table,
+              ClutterActor *dragged,
+              ClutterActor *icon,
+              gint          x,
+              gint          y,
+              gpointer      data)
+{
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
+  ClutterActor *label;
+  gint          col;
+
+  clutter_container_child_get (CLUTTER_CONTAINER (priv->table),
+                               CLUTTER_ACTOR (table), "column", &col, NULL);
+
+  label = table_find_child (CLUTTER_CONTAINER (priv->table), 0, col);
+
+  if (priv->active_ws == col)
+    {
+      clutter_actor_set_name (CLUTTER_ACTOR (table),
+                              "switcher-workspace-active");
+
+      if (label)
+        clutter_actor_set_name (label, "workspace-title-active");
+    }
+  else
+    {
+      clutter_actor_set_name (CLUTTER_ACTOR (table), "");
+
+      if (label)
+        clutter_actor_set_name (label, "");
+    }
+}
+
 static NbtkWidget *
 make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
 {
@@ -544,6 +633,12 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
 
   g_signal_connect (new_ws, "dnd-dropped",
                     G_CALLBACK (dnd_dropped_cb), switcher);
+
+  g_signal_connect (new_ws, "dnd-enter",
+                    G_CALLBACK (dnd_enter_cb), switcher);
+
+  g_signal_connect (new_ws, "dnd-leave",
+                    G_CALLBACK (dnd_leave_cb), switcher);
 
   nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, col);
 
@@ -923,7 +1018,7 @@ mnb_switcher_show (ClutterActor *self)
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
 
   ws_count = meta_screen_get_n_workspaces (screen);
-  active_ws = meta_screen_get_active_workspace_index (screen);
+  priv->active_ws = active_ws = meta_screen_get_active_workspace_index (screen);
 
   /* loop through all the workspaces, adding a label for each */
   for (i = 0; i < ws_count; i++)

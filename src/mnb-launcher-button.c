@@ -24,6 +24,7 @@
 #include "config.h"
 #endif
 
+#include <string.h>
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
 #include "mnb-launcher-button.h"
@@ -52,6 +53,11 @@ struct _MnbLauncherButtonPrivate
   char          *executable;
 
   guint is_pressed : 1;
+
+  /* Cached for matching. */
+  char          *title_key;
+  char          *description_key;
+  char          *comment_key;
 };
 
 static guint _signals[LAST_SIGNAL] = { 0, };
@@ -59,23 +65,20 @@ static guint _signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE (MnbLauncherButton, mnb_launcher_button, NBTK_TYPE_TABLE);
 
 static void
-dispose (GObject *object)
+finalize (GObject *object)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (object);
 
-  if (self->priv->category)
-    {
-      g_free (self->priv->category);
-      self->priv->category = NULL;
-    }
+  /* Child actors are managed by clutter. */
 
-  if (self->priv->executable)
-    {
-      g_free (self->priv->executable);
-      self->priv->executable = NULL;
-    }
+  g_free (self->priv->category);
+  g_free (self->priv->executable);
 
-  G_OBJECT_CLASS (mnb_launcher_button_parent_class)->dispose (object);
+  g_free (self->priv->title_key);
+  g_free (self->priv->description_key);
+  g_free (self->priv->comment_key);
+
+  G_OBJECT_CLASS (mnb_launcher_button_parent_class)->finalize (object);
 }
 
 static gboolean
@@ -151,7 +154,7 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 
   g_type_class_add_private (klass, sizeof (MnbLauncherButtonPrivate));
 
-  object_class->dispose = dispose;
+  object_class->finalize = finalize;
 
   actor_class->button_press_event = button_press_event;
   actor_class->button_release_event = button_release_event;
@@ -312,5 +315,65 @@ mnb_launcher_button_get_executable (MnbLauncherButton *self)
   g_return_val_if_fail (self, NULL);
 
   return self->priv->executable;
+}
+
+gint
+mnb_launcher_button_compare (MnbLauncherButton *self,
+                             MnbLauncherButton *other)
+{
+  g_return_val_if_fail (self, 0);
+  g_return_val_if_fail (other, 0);
+
+  return g_utf8_collate (nbtk_label_get_text (NBTK_LABEL (self->priv->title)),
+                         nbtk_label_get_text (NBTK_LABEL (other->priv->title)));
+}
+
+gboolean
+mnb_launcher_button_match (MnbLauncherButton *self,
+                           const gchar       *lcase_needle)
+{
+  g_return_val_if_fail (self, 0);
+
+  /* Empty key matches. */
+  if (g_utf8_strlen (lcase_needle, -1) == 0)
+    return TRUE;
+
+  /* Title. */
+  if (!self->priv->title_key)
+    self->priv->title_key =
+      g_utf8_strdown (nbtk_label_get_text (NBTK_LABEL (self->priv->title)),
+                      -1);
+
+  if (self->priv->title_key &&
+      NULL != strstr (self->priv->title_key, lcase_needle))
+    {
+      return TRUE;
+    }
+
+  /* Description. */
+  if (!self->priv->description_key)
+    self->priv->description_key =
+      g_utf8_strdown (nbtk_label_get_text (NBTK_LABEL (self->priv->description)),
+                      -1);
+
+  if (self->priv->description_key &&
+      NULL != strstr (self->priv->description_key, lcase_needle))
+    {
+      return TRUE;
+    }
+
+  /* Comment. */
+  if (!self->priv->comment_key)
+    self->priv->comment_key =
+      g_utf8_strdown (nbtk_label_get_text (NBTK_LABEL (self->priv->comment)),
+                      -1);
+
+  if (self->priv->comment_key &&
+      NULL != strstr (self->priv->comment_key, lcase_needle))
+    {
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
