@@ -629,7 +629,7 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-MoblinNetbookNetpanel NbtkLabel
+*#netpanel-subtable NbtkLabel
 {
   font-family: "Liberation Sans Bold";
   font-size: 13px;
@@ -640,11 +640,11 @@ MoblinNetbookNetpanel NbtkLabel
 MwbRadicalBar
 {
   background-color: #ffffff;
-  border-image: url('file://launcher/launcher-search-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
   padding: 4;
 }
 
-MwbRadicalBar NbtkEntry
+*#netpanel-entry
 {
   font-family: "Liberation Sans";
   font-size: 13px;

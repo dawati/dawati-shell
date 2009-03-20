@@ -3,6 +3,7 @@
 #include <clutter-mozembed.h>
 
 #include "moblin-netbook-netpanel.h"
+#include "moblin-netbook.h"
 #include "mwb-radical-bar.h"
 
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
@@ -137,13 +138,34 @@ notify_get_ntabs (DBusGProxy     *proxy,
   if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_UINT, &n_tabs,
                              G_TYPE_INVALID))
     {
+      NbtkPadding padding;
+      ClutterActor *parent;
+      ClutterUnit cell_width;
       guint i;
+
+      /* Calculate width of preview */
+      /* We use the parent actor because we know we're contained in an
+       * MnbDropDown with a constant width. This is horribly hacky though,
+       * we should really just have an allocate function and not use table...
+       */
+      if ((parent = clutter_actor_get_parent (CLUTTER_ACTOR (self))))
+        {
+          nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+          cell_width = (clutter_actor_get_widthu (CLUTTER_ACTOR (parent)) -
+                        padding.left - padding.right -
+                        (nbtk_table_get_col_spacing (NBTK_TABLE (self)) * 4)) /
+                       5.f;
+        }
+      else
+        cell_width = 0;
+
       for (i = 0; i < n_tabs; i++)
         {
           gchar *input, *output;
           ClutterActor *mozembed;
 
           mozembed = clutter_mozembed_new_view ();
+          clutter_actor_set_widthu (mozembed, cell_width);
           g_object_set_data (G_OBJECT (mozembed), "netpanel", self);
           g_object_get (G_OBJECT (mozembed),
                         "input", &input,
@@ -219,8 +241,8 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   /* Hide tabs/favs tables */
   clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
                                   CLUTTER_ACTOR (priv->tabs_table));
-  clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
-                                  CLUTTER_ACTOR (priv->favs_table));
+  /*clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
+                                  CLUTTER_ACTOR (priv->favs_table));*/
 
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->hide (actor);
 }
@@ -276,6 +298,8 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   priv->tabs_table = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (priv->tabs_table), 6);
   nbtk_table_set_row_spacing (NBTK_TABLE (priv->tabs_table), 6);
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->tabs_table),
+                          "netpanel-subtable");
 
   g_object_ref_sink (G_OBJECT (priv->tabs_table));
 
@@ -288,6 +312,8 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   priv->favs_table = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (priv->favs_table), 6);
   nbtk_table_set_row_spacing (NBTK_TABLE (priv->favs_table), 6);
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->favs_table),
+                          "netpanel-subtable");
 
   g_object_ref_sink (G_OBJECT (priv->favs_table));
 
@@ -315,6 +341,8 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 NbtkWidget*
 moblin_netbook_netpanel_new (void)
 {
-  return g_object_new (MOBLIN_TYPE_NETBOOK_NETPANEL, "visible", FALSE, NULL);
+  return g_object_new (MOBLIN_TYPE_NETBOOK_NETPANEL,
+                       "visible", FALSE,
+                       NULL);
 }
 
