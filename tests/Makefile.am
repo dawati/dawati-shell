@@ -8,7 +8,6 @@ AM_CPPFLAGS = \
 
 AM_CFLAGS = \
 	$(PENGE_CFLAGS) \
-	-Werror=missing-prototypes \
 	-fPIC
 
 LDADD = $(PENGE_LIBS)
