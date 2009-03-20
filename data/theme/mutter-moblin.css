@@ -518,7 +518,7 @@ PengeEventTile:hover, PengeTaskTile:hover
   font-size: 18;
 }
 
-*.PengeRecentFileTileDetails
+*.PengeRecentFileTileDetails, *.PengePeopleTileDetails
 {
   background-color: black;
 }
