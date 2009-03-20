@@ -630,6 +630,7 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[1]));
   clutter_actor_set_width (priv->status, 1024);
   clutter_actor_set_position (priv->status, 0, PANEL_HEIGHT);
+  clutter_actor_lower_bottom (priv->status);
 
   /* switcher drop down */
   priv->switcher = (ClutterActor *) mnb_switcher_new (plugin);
