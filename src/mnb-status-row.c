@@ -458,6 +458,8 @@ on_mojito_is_online (MojitoClient *client,
 
   g_debug ("%s: we are now %s", G_STRLOC, is_online ? "online" : "offline");
 
+  clutter_actor_set_reactive (CLUTTER_ACTOR (row), priv->is_online);
+
   if (!priv->is_online)
     return;
 
