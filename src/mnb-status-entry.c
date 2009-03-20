@@ -202,15 +202,21 @@ mnb_status_entry_allocate (ClutterActor          *actor,
    */
 
   icon_height = CANCEL_ICON_SIZE;
-  clutter_actor_get_preferred_width (priv->cancel_icon,
-                                     icon_height,
-                                     NULL,
-                                     &icon_width);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+    clutter_actor_get_preferred_width (priv->cancel_icon,
+                                       icon_height,
+                                       NULL,
+                                       &icon_width);
+  else
+    icon_width = 0;
 
-  clutter_actor_get_preferred_width (priv->service_label,
-                                     available_height,
-                                     NULL,
-                                     &service_width);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+    clutter_actor_get_preferred_width (priv->service_label,
+                                       available_height,
+                                       NULL,
+                                       &service_width);
+  else
+    service_width = (2 * H_PADDING);
 
   /* status entry */
   text_width = (int) (available_width
@@ -230,17 +236,20 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
 
   /* service label */
-  child_box.x1 = (int) (available_width
-               - (border.right + priv->padding.right)
-               - button_width
-               - H_PADDING
-               - icon_width
-               - H_PADDING
-               - service_width);
-  child_box.y1 = (int) (border.top + priv->padding.top);
-  child_box.x2 = (int) (child_box.x1 + service_width);
-  child_box.y2 = (int) (child_box.y1 + text_height);
-  clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+    {
+      child_box.x1 = (int) (available_width
+                   - (border.right + priv->padding.right)
+                   - button_width
+                   - H_PADDING
+                   - icon_width
+                   - H_PADDING
+                   - service_width);
+      child_box.y1 = (int) (border.top + priv->padding.top);
+      child_box.x2 = (int) (child_box.x1 + service_width);
+      child_box.y2 = (int) (child_box.y1 + text_height);
+      clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
+    }
 
   /* cancel icon */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
