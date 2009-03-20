@@ -25,7 +25,11 @@
 
 #include <gmenu-tree.h>
 
-#include "mnb-launcher-entry.h"
+#include "mnb-launcher-tree.h"
+
+/*
+ * MnbLauncherEntry.
+ */
 
 struct MnbLauncherEntry_ {
   GMenuTreeEntry  *entry;
@@ -63,56 +67,87 @@ mnb_launcher_entry_compare (MnbLauncherEntry *self,
                          mnb_launcher_entry_get_name (b));
 }
 
-/* gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later */
-
-static void get_all_applications_from_dir (GMenuTreeDirectory *directory,
-                                           const gchar        *category,
-					                                 GHashTable         *apps_hash);
-
 /*
- * Lookup the list-head for a category of entries.
- *
- * Empty list is instantiated if it doesn't already exist.
+ * MnbLauncherDirectory.
  */
-static MnbLauncherEntryList *
-lookup_entry_list (GHashTable   *apps_hash,
-                   const gchar  *category)
+
+static MnbLauncherDirectory *
+mnb_launcher_directory_new (GMenuTreeDirectory *branch)
 {
-  MnbLauncherEntryList *entry_list;
+  MnbLauncherDirectory *self;
 
-  entry_list = g_hash_table_lookup (apps_hash, category);
-  if (!entry_list)
-    {
-      entry_list = g_new0 (MnbLauncherEntryList, 1);
-      g_hash_table_insert (apps_hash, g_strdup (category), entry_list);
-    }
+  g_return_val_if_fail (branch, NULL);
 
-  return entry_list;
+  self = g_new0 (MnbLauncherDirectory, 1);
+  self->name = g_strdup (gmenu_tree_directory_get_name (branch));
+
+  return self;
 }
 
 static void
+mnb_launcher_directory_free (MnbLauncherDirectory *self)
+{
+  GSList *iter;
+
+  g_free (self->name);
+
+  iter = self->entries;
+  while (iter)
+    {
+      mnb_launcher_entry_free ((MnbLauncherEntry *) iter->data);
+      iter = g_slist_delete_link (iter, iter);
+    }
+
+  g_free (self);
+}
+
+static gint
+mnb_launcher_directory_compare (MnbLauncherDirectory *self,
+                                MnbLauncherDirectory *b)
+{
+  return g_utf8_collate (self->name, b->name);
+}
+
+static void
+mnb_launcher_directory_sort_entries (MnbLauncherDirectory *self)
+{
+  self->entries = g_slist_sort (self->entries,
+                                (GCompareFunc) mnb_launcher_entry_compare);
+}
+
+/*
+ * gmenu functions derived from/inspired by gnome-panel, LGPLv2 or later.
+ */
+
+GSList * get_all_applications_from_dir (GMenuTreeDirectory *branch,
+					                              GSList             *tree,
+					                              gboolean            is_root);
+
+static GSList *
 get_all_applications_from_alias (GMenuTreeAlias *alias,
-                                 const gchar    *category,
-                                 GHashTable     *apps_hash)
+                                 GSList         *tree)
 {
   GMenuTreeItem         *aliased_item;
-  MnbLauncherEntryList  *entry_list;
+  MnbLauncherDirectory  *directory;
+  GSList                *ret;
+
+  g_return_val_if_fail (tree, NULL);
 
   aliased_item = gmenu_tree_alias_get_item (alias);
+  directory = (MnbLauncherDirectory *) tree->data;
+  ret = tree;
 
   switch (gmenu_tree_item_get_type (aliased_item))
     {
     case GMENU_TREE_ITEM_ENTRY:
-      entry_list = lookup_entry_list (apps_hash, category);
-      entry_list->head = g_slist_prepend (entry_list->head,
-                                          mnb_launcher_entry_new (GMENU_TREE_ENTRY (aliased_item)));
+      directory->entries = g_slist_prepend (directory->entries,
+                                            mnb_launcher_entry_new (GMENU_TREE_ENTRY (aliased_item)));
       break;
 
     case GMENU_TREE_ITEM_DIRECTORY:
-      get_all_applications_from_dir (
-            GMENU_TREE_DIRECTORY (aliased_item),
-            gmenu_tree_directory_get_name (GMENU_TREE_DIRECTORY (aliased_item)),
-            apps_hash);
+      ret = get_all_applications_from_dir (
+              GMENU_TREE_DIRECTORY (aliased_item),
+              tree, FALSE);
       break;
 
     default:
@@ -120,21 +155,26 @@ get_all_applications_from_alias (GMenuTreeAlias *alias,
   }
 
   gmenu_tree_item_unref (aliased_item);
+  return ret;
 }
 
-static void
-get_all_applications_from_dir (GMenuTreeDirectory *directory,
-                               const gchar        *category,
-                               GHashTable         *apps_hash)
+GSList *
+get_all_applications_from_dir (GMenuTreeDirectory *branch,
+                               GSList             *tree,
+                               gboolean            is_root)
 {
-  MnbLauncherEntryList  *entry_list;
+  MnbLauncherDirectory  *directory;
   GSList                *list, *iter;
+  GSList                *ret;
 
-  entry_list = NULL;
-  if (category)
-    entry_list = lookup_entry_list (apps_hash, category);
-
-  list = gmenu_tree_directory_get_contents (directory);
+  directory = NULL;
+  ret = NULL;
+  list = gmenu_tree_directory_get_contents (branch);
+  if (!is_root)
+    {
+      ret = g_slist_prepend (tree, mnb_launcher_directory_new (branch));
+      directory = (MnbLauncherDirectory *) ret->data;
+    }
 
   for (iter = list; iter; iter = iter->next)
     {
@@ -142,26 +182,24 @@ get_all_applications_from_dir (GMenuTreeDirectory *directory,
       	{
           case GMENU_TREE_ITEM_ENTRY:
         	  /* Can be NULL for root dir. */
-        	  if (entry_list)
+        	  if (directory)
         	    {
-                entry_list->head =
-                    g_slist_prepend (entry_list->head,
+                directory->entries =
+                    g_slist_prepend (directory->entries,
                                      mnb_launcher_entry_new (GMENU_TREE_ENTRY (iter->data)));
         	    }
         	  break;
 
         	case GMENU_TREE_ITEM_DIRECTORY:
-        	  get_all_applications_from_dir (
-        	      GMENU_TREE_DIRECTORY (iter->data),
-        	      gmenu_tree_directory_get_name (GMENU_TREE_DIRECTORY (iter->data)),
-        	      apps_hash);
+        	  ret = get_all_applications_from_dir (
+        	          GMENU_TREE_DIRECTORY (iter->data),
+        	          ret, FALSE);
         	  break;
 
         	case GMENU_TREE_ITEM_ALIAS:
-        	  get_all_applications_from_alias (
-        	      GMENU_TREE_ALIAS (iter->data),
-        	      category,
-        	      apps_hash);
+        	  ret = get_all_applications_from_alias (
+        	          GMENU_TREE_ALIAS (iter->data),
+        	          ret);
         	  break;
 
         	default:
@@ -171,56 +209,52 @@ get_all_applications_from_dir (GMenuTreeDirectory *directory,
   }
 
   g_slist_free (list);
+  return ret;
 }
 
-static void
-entry_list_free (MnbLauncherEntryList *list)
+GSList *
+mnb_launcher_tree_create (void)
+{
+  GMenuTree             *menu_tree;
+  GMenuTreeDirectory    *root;
+  GSList                *tree;
+  GSList                *tree_iter;
+
+  /* FIXME: also merge "settings.menu" or whatever its called. */
+  menu_tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
+  root = gmenu_tree_get_root_directory (menu_tree);
+
+  tree = NULL;
+  tree = get_all_applications_from_dir (root, tree, TRUE);
+
+  gmenu_tree_item_unref (root);
+  gmenu_tree_unref (menu_tree);
+
+  /* Sort directories. */
+  tree = g_slist_sort (tree, (GCompareFunc) mnb_launcher_directory_compare);
+
+  /* Sort entries inside directories. */
+  for (tree_iter = tree; tree_iter; tree_iter = tree_iter->next)
+    {
+      mnb_launcher_directory_sort_entries ((MnbLauncherDirectory *) tree_iter->data);
+    }
+
+  return tree;
+}
+
+void
+mnb_launcher_tree_free (GSList *tree)
 {
   GSList *iter;
 
-  iter = list->head;
+  g_return_if_fail (tree);
+
+  iter = tree;
   while (iter)
     {
-      mnb_launcher_entry_free ((MnbLauncherEntry *) iter->data);
+      mnb_launcher_directory_free ((MnbLauncherDirectory *) iter->data);
       iter = g_slist_delete_link (iter, iter);
     }
-
-  g_free (list);
-}
-
-GHashTable *
-mnb_launcher_entry_build_hash (void)
-{
-  GMenuTree          *tree;
-  GMenuTreeDirectory *root;
-  GHashTable         *apps_hash;
-  GHashTableIter      iter;
-  const gchar        *category;
-  MnbLauncherEntryList  *list_head;
-
-  /* FIXME: also merge "settings.menu" or whatever its called. */
-  tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
-
-  root = gmenu_tree_get_root_directory (tree);
-  apps_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                     g_free, (GDestroyNotify) entry_list_free);
-
-  get_all_applications_from_dir (root, NULL, apps_hash);
-
-  gmenu_tree_item_unref (root);
-  gmenu_tree_unref (tree);
-
-  /* Sort each categories' entries alphabetically. */
-  g_hash_table_iter_init (&iter, apps_hash);
-  while (g_hash_table_iter_next (&iter,
-                                 (gpointer *) &category,
-                                 (gpointer *) &list_head))
-    {
-      list_head->head = g_slist_sort (list_head->head,
-                                      (GCompareFunc) mnb_launcher_entry_compare);
-    }
-
-  return apps_hash;
 }
 
 const gchar *

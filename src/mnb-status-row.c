@@ -296,17 +296,6 @@ on_status_entry_changed (MnbStatusEntry *entry,
                                        row);
 }
 
-static gboolean
-do_update_timeout (gpointer data)
-{
-  MnbStatusRow *row = data;
-
-  if (row->priv->view != NULL)
-    mojito_client_view_refresh (row->priv->view);
-
-  return TRUE;
-}
-
 static void
 on_mojito_get_persona_icon (MojitoClientService *service,
                             const gchar         *persona_icon,
@@ -385,6 +374,22 @@ on_mojito_view_open (MojitoClient     *client,
 
   /* start the view to retrieve the last item */
   mojito_client_view_start (view);
+}
+
+static gboolean
+do_update_timeout (gpointer data)
+{
+  MnbStatusRow *row = data;
+
+  if (row->priv->view != NULL)
+    mojito_client_view_refresh (row->priv->view);
+
+  if (row->priv->service != NULL)
+    mojito_client_service_get_persona_icon (row->priv->service,
+                                            on_mojito_get_persona_icon,
+                                            row);
+
+  return TRUE;
 }
 
 static void
@@ -490,6 +495,8 @@ mnb_status_row_constructed (GObject *gobject)
                                        on_mojito_view_open,
                                        row);
   g_free (service_name);
+
+  priv->update_id = g_timeout_add_seconds (5 * 60, do_update_timeout, row);
 
   if (G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_status_row_parent_class)->constructed (gobject);

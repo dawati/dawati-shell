@@ -1,8 +1,8 @@
 
 m4_define([mutter_version], [2.25.55~0.4])
 m4_define([plugin_major_version], [0])
-m4_define([plugin_minor_version], [9])
-m4_define([plugin_micro_version], [8])
+m4_define([plugin_minor_version], [10])
+m4_define([plugin_micro_version], [0])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
 
@@ -20,6 +20,7 @@ m4_define([lt_age], [m4_eval(plugin_binary_age - plugin_interface_age)])
 AC_PREREQ(2.50)
 
 AC_INIT([mutter-moblin], [plugin_version], [http://moblin.org])
+AC_CONFIG_MACRO_DIR([build/autotools])
 
 AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 
@@ -48,7 +49,7 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   metacity-plugins >= mutter_version dnl
-                  nbtk-1.0                           dnl
+                  nbtk-1.0 >= 0.2.0                  dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
                   libgnome-menu                      dnl
@@ -77,8 +78,14 @@ PLUGIN_LT_LDFLAGS="-version-info $PLUGIN_LT_VERSION"
 AC_SUBST(PLUGIN_LT_VERSION)
 AC_SUBST(PLUGIN_LT_LDFLAGS)
 
+SHAVE_INIT([build/autotools], [enable])
+
 AC_OUTPUT([
 Makefile
+build/Makefile
+build/autotools/Makefile
+build/autotools/shave
+build/autotools/shave-libtool
 data/Makefile
 src/Makefile
 src/tray/Makefile

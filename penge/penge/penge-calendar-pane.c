@@ -5,6 +5,7 @@
 
 #include "penge-date-tile.h"
 #include "penge-events-pane.h"
+#include "penge-tasks-pane.h"
 
 G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, NBTK_TYPE_TABLE)
 
@@ -15,6 +16,7 @@ typedef struct _PengeCalendarPanePrivate PengeCalendarPanePrivate;
 
 struct _PengeCalendarPanePrivate {
     ClutterActor *events_pane;
+    ClutterActor *tasks_pane;
 
     guint hourly_timeout_id;
 };
@@ -133,6 +135,19 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                "y-expand",
                                FALSE,
                                NULL);
+
+  priv->tasks_pane = g_object_new (PENGE_TYPE_TASKS_PANE,
+                                   NULL);
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        priv->tasks_pane,
+                        1,
+                        0);
+
+ clutter_container_child_set (CLUTTER_CONTAINER (self),
+                              priv->tasks_pane,
+                              "y-expand",
+                              FALSE,
+                              NULL);
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);

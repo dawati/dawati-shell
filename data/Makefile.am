@@ -47,6 +47,7 @@ dist_theme_generic_DATA = \
 	theme/generic/expander-header.png \
 	theme/generic/expander-header-expanded.png \
 	theme/generic/expander-header-hover.png \
+	theme/generic/expander-body.png \
 	theme/generic/tooltip-background.png \
 	theme/generic/vscroll-backward-hover.png \
   theme/generic/vscroll-backward.png \
@@ -99,7 +100,9 @@ dist_theme_mzone_DATA = \
 	theme/mzone/time-bg-past.png \
 	theme/mzone/event-background-dark.png \
 	theme/mzone/linus.png \
-	theme/mzone/default-album-artwork.png
+	theme/mzone/default-album-artwork.png \
+	theme/mzone/check_box.png \
+	theme/mzone/checked_box.png
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \

@@ -20,7 +20,7 @@ NbtkButton:active {
   color: #333;
 }
 
-NbtkExpander > NbtkButton {
+NbtkExpander NbtkButton#nbtk-expander-header {
   border-image: url("file://generic/expander-header.png") 4 5 5 4 stretch;
   font-size: 16;
   padding-top: 11;
@@ -28,12 +28,16 @@ NbtkExpander > NbtkButton {
   padding-left: 40;
 }
 
-NbtkExpander > NbtkButton:checked {
+NbtkExpander NbtkButton#nbtk-expander-header:checked {
   border-image: url("file://generic/expander-header-expanded.png") 4 5 5 4 stretch;
 }
 
-NbtkExpander > NbtkButton:hover {
+NbtkExpander NbtkButton#nbtk-expander-header:hover {
   border-image: url("file://generic/expander-header-hover.png") 4 5 5 4 stretch;
+}
+
+NbtkExpander NbtkBin#nbtk-expander-body {
+  border-image: url("file://generic/expander-body.png") 2 10 8 8 stretch;
 }
 
 NbtkScrollView {
@@ -396,7 +400,7 @@ MnbLauncherButton:hover {
 
 /* Penge */
 
-PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEventTile, PengePeoplePane
+PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEventTile, PengePeoplePane, PengeTasksPane, PengeTaskTile
 {
   padding: 8;
 }
@@ -405,6 +409,16 @@ PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppT
 {
   border-image: url('file://mzone/general-background.png') 16;
   padding: 8;
+}
+
+*.PengeTaskToggleButton
+{
+  border-image: url('file://mzone/check_box.png') 0;
+}
+
+*.PengeTaskToggleButton:hover, *.PengeTaskToggleButton:checked
+{
+  border-image: url('file://mzone/checked_box.png') 0;
 }
 
 PengeAppTile
@@ -418,7 +432,7 @@ PengeDateTile
   border-image: url('file://mzone/date-background.png') 16;
 }
 
-PengeEventTile:hover
+PengeEventTile:hover, PengeTaskTile:hover
 {
   border-image: url('file://mzone/event-background-dark.png') 8;
 }
@@ -483,7 +497,7 @@ PengeEventTile:hover
   font-size: 12;
 }
 
-*.PengeNoMoreEventsText
+*.PengeNoMoreEventsText, *.PengeNoMoreTasksText
 {
   font-size: 18;
 }

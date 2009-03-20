@@ -41,8 +41,8 @@
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-entry.h"
-#include "mnb-launcher-entry.h"
 #include "mnb-launcher-button.h"
+#include "mnb-launcher-tree.h"
 
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48
@@ -51,29 +51,15 @@
 #define LAUNCHER_WIDTH  235
 #define LAUNCHER_HEIGHT 64
 
-typedef struct
-{
-  gchar        *exec;
-  MutterPlugin *plugin;
-} entry_data_t;
-
-static void
-entry_data_free (entry_data_t *data)
-{
-  g_free (data->exec);
-  g_free (data);
-}
-
 static void
 launcher_activated_cb (MnbLauncherButton  *launcher,
                        ClutterButtonEvent *event,
-                       entry_data_t       *entry_data)
+                       MutterPlugin       *plugin)
 {
-  MutterPlugin                *plugin = entry_data->plugin;
-  MoblinNetbookPluginPrivate  *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  const gchar                 *exec = entry_data->exec;
-  gboolean                     without_chooser = FALSE;
-  gint                         workspace       = -2;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  const gchar                *exec = mnb_launcher_button_get_executable (launcher);
+  gboolean                    without_chooser = FALSE;
+  gint                        workspace       = -2;
 
   MetaScreen *screen = mutter_plugin_get_screen (plugin);
   gint        n_ws   = meta_screen_get_n_workspaces (screen);
@@ -123,10 +109,8 @@ static NbtkGrid *
 make_table (MutterPlugin  *self)
 {
   ClutterActor          *grid;
-  GHashTable            *apps;
-  GHashTableIter        iter;
-  MnbLauncherEntryList *list;
-  const gchar           *category;
+  GSList                *tree;
+  GSList                *tree_iter;
   GtkIconTheme          *theme;
 
   grid = CLUTTER_ACTOR (nbtk_grid_new ());
@@ -136,30 +120,31 @@ make_table (MutterPlugin  *self)
   nbtk_grid_set_row_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
   nbtk_grid_set_column_gap (NBTK_GRID (grid), CLUTTER_UNITS_FROM_INT (PADDING));
 
-  apps = mnb_launcher_entry_build_hash ();
+  tree = mnb_launcher_tree_create ();
   theme = gtk_icon_theme_get_default ();
 
-  g_hash_table_iter_init (&iter, apps);
-  while (g_hash_table_iter_next (&iter, (gpointer *) &category, (gpointer *) &list))
+  for (tree_iter = tree; tree_iter; tree_iter = tree_iter->next)
     {
-      GSList        *category_iter;
-      ClutterActor  *expander, *inner_grid;
+      MnbLauncherDirectory  *directory;
+      GSList                *directory_iter;
+      ClutterActor          *expander, *inner_grid;
 
-      expander = CLUTTER_ACTOR (nbtk_expander_new (category));
+      directory = (MnbLauncherDirectory *) tree_iter->data;
+      expander = CLUTTER_ACTOR (nbtk_expander_new (directory->name));
       clutter_actor_set_width (expander, 4 * LAUNCHER_WIDTH + 5 * PADDING);
       clutter_container_add (CLUTTER_CONTAINER (grid), expander, NULL);
 
       inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
       clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
-      for (category_iter = list->head; category_iter; category_iter = category_iter->next)
+      for (directory_iter = directory->entries; directory_iter; directory_iter = directory_iter->next)
         {
           const gchar   *generic_name, *description, *icon_name, *icon_file;
           gchar         *exec, *last_used;
           struct stat    exec_stat;
 
           GtkIconInfo       *info;
-          MnbLauncherEntry  *entry = category_iter->data;
+          MnbLauncherEntry  *entry = directory_iter->data;
 
           info = NULL;
           icon_file = NULL;
@@ -179,7 +164,6 @@ make_table (MutterPlugin  *self)
           if (generic_name && exec && icon_file)
             {
               NbtkWidget    *button;
-              entry_data_t  *entry_data;
 
               /* FIXME robsta: read "last launched" from persist cache once we have that.
                * For now approximate. */
@@ -193,8 +177,8 @@ make_table (MutterPlugin  *self)
                 }
 
               button = mnb_launcher_button_new (icon_file, ICON_SIZE,
-                                                generic_name, category,
-                                                description, last_used);
+                                                generic_name, directory->name,
+                                                description, last_used, exec);
               g_free (last_used);
               clutter_actor_set_size (CLUTTER_ACTOR (button),
                                       LAUNCHER_WIDTH,
@@ -202,12 +186,8 @@ make_table (MutterPlugin  *self)
               clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                      CLUTTER_ACTOR (button), NULL);
 
-              entry_data = g_new (entry_data_t, 1);
-              entry_data->exec = exec;
-              entry_data->plugin = self;
-              g_signal_connect_data (button, "activated",
-                                     G_CALLBACK (launcher_activated_cb), entry_data,
-                                     (GClosureNotify) entry_data_free, 0);
+              g_signal_connect (button, "activated",
+                                G_CALLBACK (launcher_activated_cb), self);
             }
           else
             {
@@ -218,7 +198,10 @@ make_table (MutterPlugin  *self)
         }
     }
 
-    return NBTK_GRID (grid);
+  if (tree)
+    mnb_launcher_tree_free (tree);
+
+  return NBTK_GRID (grid);
 }
 
 static void
@@ -294,7 +277,6 @@ filter_cb (ClutterActor *actor,
  */
 typedef struct
 {
-  MutterPlugin  *plugin;
   NbtkGrid      *grid;
   GHashTable    *expanders;
   gboolean       is_filtering;
@@ -327,13 +309,11 @@ expander_notify_cb (NbtkExpander   *expander,
  * Ctor.
  */
 static search_data_t *
-search_data_new (MutterPlugin *plugin,
-                 NbtkGrid     *grid)
+search_data_new (NbtkGrid *grid)
 {
   search_data_t *search_data;
 
   search_data = g_new0 (search_data_t, 1);
-  search_data->plugin = plugin;
   search_data->grid = grid;
   search_data->expanders = g_hash_table_new (g_str_hash, g_str_equal);
 
@@ -531,8 +511,7 @@ make_launcher (MutterPlugin *plugin,
 
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   /* Add launcher table. */
-  search_data = search_data_new (plugin,
-                                 make_table (plugin));
+  search_data = search_data_new (make_table (plugin));
   clutter_container_add (CLUTTER_CONTAINER (viewport),
                          CLUTTER_ACTOR (search_data->grid), NULL);
   /* Keep all launcher buttons to switch between browse- and filter-mode. */
