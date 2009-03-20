@@ -962,12 +962,24 @@ mnb_switcher_show (ClutterActor *self)
        * right for sticky windows would be really hard, and since they appear
        * on each workspace, they do not help in identifying which workspace
        * it is).
+       *
+       * We show dialogs transient to root, as these can be top level
+       * application windows.
        */
       if (ws_indx < 0                             ||
           mutter_window_is_override_redirect (mw) ||
-          type != META_COMP_WINDOW_NORMAL)
+          (type != META_COMP_WINDOW_NORMAL  &&
+           type != META_COMP_WINDOW_DIALOG))
         {
           continue;
+        }
+
+      if (type ==  META_COMP_WINDOW_DIALOG)
+        {
+          MetaWindow *parent = meta_window_find_root_ancestor (meta_win);
+
+          if (parent != meta_win)
+            continue;
         }
 
       /* create the table for this workspace if we don't already have one */
