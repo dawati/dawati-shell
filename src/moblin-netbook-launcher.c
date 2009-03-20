@@ -115,6 +115,8 @@ typedef struct
   GHashTable    *expanders;
   GSList        *launchers;
   gboolean       is_filtering;
+  GSList        *launchers_iter;
+  char          *lcase_needle;
 } launcher_data_t;
 
 static void
@@ -277,23 +279,36 @@ launcher_data_free_cb (launcher_data_t *launcher_data)
   g_free (launcher_data);
 }
 
-static void
-filter_cb (ClutterActor *actor,
-           const gchar  *lcase_needle)
+static gboolean
+filter_cb (launcher_data_t *launcher_data)
 {
   MnbLauncherButton *button;
 
-  /* The grid contains both, buttons and expanders for the respective search
-   * mode. Skip over expanders while searching, they are invisible anyway. */
-  if (!MNB_IS_LAUNCHER_BUTTON (actor))
-    return;
+  /* Start search? */
+  if (launcher_data->launchers_iter == NULL)
+    {
+      g_return_val_if_fail (launcher_data->launchers, FALSE);
+      launcher_data->launchers_iter = launcher_data->launchers;
+    }
 
-  button = MNB_LAUNCHER_BUTTON (actor);
-  g_return_if_fail (button);
+  button = MNB_LAUNCHER_BUTTON (launcher_data->launchers_iter->data);
 
-  mnb_launcher_button_match (button, lcase_needle) ?
+  /* Do search. */
+  mnb_launcher_button_match (button, launcher_data->lcase_needle) ?
     clutter_actor_show (CLUTTER_ACTOR (button)) :
     clutter_actor_hide (CLUTTER_ACTOR (button));
+
+  launcher_data->launchers_iter = launcher_data->launchers_iter->next;
+
+  /* Done searching? */
+  if (launcher_data->launchers_iter == NULL)
+    {
+      g_free (launcher_data->lcase_needle);
+      launcher_data->lcase_needle = NULL;
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
 static void
@@ -301,6 +316,15 @@ search_activated_cb (MnbEntry         *entry,
                      launcher_data_t  *launcher_data)
 {
   gchar *needle, *lcase_needle;
+
+  /* Abort current search if any. */
+  if (launcher_data->lcase_needle)
+    {
+      g_idle_remove_by_data (launcher_data);
+      launcher_data->launchers_iter = NULL;
+      g_free (launcher_data->lcase_needle);
+      launcher_data->lcase_needle = NULL;
+    }
 
   needle = NULL;
   g_object_get (entry, "text", &needle, NULL);
@@ -338,9 +362,8 @@ search_activated_cb (MnbEntry         *entry,
         }
 
       /* Update search result. */
-      clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->grid),
-                                 (ClutterCallback) filter_cb,
-                                 lcase_needle);
+      launcher_data->lcase_needle = g_strdup (lcase_needle);
+      g_idle_add ((GSourceFunc) filter_cb, launcher_data);
     }
   else if (launcher_data->is_filtering &&
            (!lcase_needle || strlen (lcase_needle) == 0))
