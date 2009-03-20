@@ -528,13 +528,13 @@ PengeEventTile:hover, PengeTaskTile:hover
 *.PengeRecentFileTileDetailsFilename
 {
   color: white;
-  font-size: 16;
+  font-size: 12;
 }
 
 *.PengeRecentFileTileDetailsType
 {
   color: white;
-  font-size: 14;
+  font-size: 11;
 }
 
 
