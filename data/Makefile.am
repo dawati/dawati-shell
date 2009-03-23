@@ -47,6 +47,9 @@ dist_theme_generic_DATA = \
 	theme/generic/expander-header.png \
 	theme/generic/expander-header-expanded.png \
 	theme/generic/expander-header-hover.png \
+  theme/generic/expander-icon-checked.png \
+  theme/generic/expander-icon-hover.png \
+  theme/generic/expander-icon.png \
 	theme/generic/expander-body.png \
 	theme/generic/tooltip-arrow.png \
 	theme/generic/tooltip-background.png \
