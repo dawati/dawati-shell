@@ -421,10 +421,17 @@ PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEv
   padding: 8;
 }
 
-PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile, PengeDateTile
+PengeRecentFileTile, PengeTwitterTile, PengeFlickrTile, PengeLastfmTile
 {
-  border-image: url('file://mzone/general-background.png') 16;
-  padding: 4;
+  border-image: url('file://mzone/tile-bg.png') 7 8 9 8;
+  padding: 6 7 8 7;
+}
+
+
+PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover
+{
+  border-image: url('file://mzone/tile-glow.png') 7 8 9 8;
+  padding: 6 7 8 7;
 }
 
 *.PengeTaskToggleButton

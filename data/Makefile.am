@@ -107,6 +107,8 @@ dist_theme_mzone_DATA = \
 	theme/mzone/default-album-artwork.png \
 	theme/mzone/check_box.png \
 	theme/mzone/checked_box.png \
+	theme/mzone/tile-bg.png \
+	theme/mzone/tile-glow.png \
 	theme/mzone/quotebackground.png
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
