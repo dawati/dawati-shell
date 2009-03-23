@@ -514,6 +514,12 @@ PengeEventTile:hover, PengeTaskTile:hover
   font-size: 12;
 }
 
+*.PengeTwitterTileBackground
+{
+  border-image: url('file://mzone/quotebackground.png') 45 51 46 52;
+  padding: 8;
+}
+
 *.PengeNoMoreEventsText, *.PengeNoMoreTasksText
 {
   font-size: 18;

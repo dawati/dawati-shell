@@ -110,7 +110,8 @@ penge_twitter_tile_constructed (GObject *object)
   const gchar *author;
   const gchar *authoricon_path;
   gchar *date;
-  NbtkWidget *body;
+  ClutterActor *body;
+  NbtkWidget *label;
   ClutterActor *tmp_text;
 
   g_return_if_fail (priv->item != NULL);
@@ -134,9 +135,14 @@ penge_twitter_tile_constructed (GObject *object)
                 NULL);
   g_free (date);
 
-  body = nbtk_label_new (content);
-  nbtk_widget_set_style_class_name (body, "PengeTwitterTileLabel");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (body));
+  body = nbtk_bin_new ();
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (body),
+                                    "PengeTwitterTileBackground");
+  label = nbtk_label_new (content);
+  nbtk_widget_set_style_class_name (label, "PengeTwitterTileLabel");
+  nbtk_bin_set_child (NBTK_BIN (body), (ClutterActor *)label);
+  nbtk_bin_set_alignment (NBTK_BIN (body), NBTK_ALIGN_TOP, NBTK_ALIGN_TOP);
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
