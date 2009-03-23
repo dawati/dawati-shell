@@ -416,10 +416,21 @@ MnbLauncherButton:hover {
 
 /* Penge */
 
-PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEventTile, PengePeoplePane, PengeTasksPane, PengeTaskTile
+PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengePeoplePane, PengeTasksPane
 {
   padding: 8;
 }
+
+PengeEventTile, PengeTaskTile, PengeAppTile
+{
+  padding: 9 10 11 10;
+}
+
+PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover
+{
+  border-image: url('file://mzone/tile-partial-glow.png') 7 8 9 8;
+}
+
 
 PengeRecentFileTile, PengeTwitterTile, PengeFlickrTile, PengeLastfmTile
 {
@@ -447,11 +458,6 @@ PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeL
 PengeDateTile
 {
   border-image: url('file://mzone/date-background.png') 16;
-}
-
-PengeEventTile:hover, PengeTaskTile:hover
-{
-  border-image: url('file://mzone/event-background-dark.png') 8;
 }
 
 *.PengeDateTileBackground

@@ -292,7 +292,7 @@ penge_events_pane_update (PengeEventsPane *pane)
                             priv->store,
                             NULL);
 
-      clutter_actor_set_size (actor, 216, 44);
+      clutter_actor_set_size (actor, 216, 52);
       nbtk_table_add_actor (NBTK_TABLE (pane),
                             actor,
                             count,
