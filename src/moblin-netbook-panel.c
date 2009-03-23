@@ -504,6 +504,26 @@ _netgrid_hide_cb (MnbDropDown *drop_down)
     clutter_actor_hide (child);
 }
 
+static void
+_netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
+                    const gchar           *url,
+                    MutterPlugin          *plugin)
+{
+  gchar *exec, *esc_url;
+  gint workspace;
+
+  /* FIXME: Should not be hard-coded? */
+  esc_url = g_strescape (url, NULL);
+  exec = g_strdup_printf ("%s \"%s\"", "moblin-web-browser", esc_url);
+
+  workspace =
+    meta_screen_get_active_workspace_index (mutter_plugin_get_screen (plugin));
+  moblin_netbook_spawn (plugin, exec, 0L, TRUE, workspace);
+
+  g_free (exec);
+  g_free (esc_url);
+}
+
 ClutterActor *
 make_panel (MutterPlugin *plugin, gint width)
 {
@@ -728,6 +748,8 @@ make_panel (MutterPlugin *plugin, gint width)
                     G_CALLBACK (_netgrid_hide_cb), NULL);
   g_signal_connect (priv->net_grid, "show",
                     G_CALLBACK (_netgrid_show_cb), NULL);
+  g_signal_connect (mnb_drop_down_get_child (MNB_DROP_DOWN (priv->net_grid)),
+                    "launch", G_CALLBACK (_netgrid_launch_cb), plugin);
 
   if (shadow)
     clutter_actor_lower_bottom (shadow);

@@ -25,10 +25,14 @@ struct _MoblinNetbookNetpanelPrivate
   DBusGProxy     *proxy;
   GList          *calls;
 
+  NbtkWidget     *radical_bar;
+
   NbtkWidget     *tabs_table;
+  NbtkWidget     *tabs_more;
   gint            previews;
 
   NbtkWidget     *favs_table;
+  NbtkWidget     *favs_more;
 };
 
 static void
@@ -92,7 +96,8 @@ destroy_live_previews (MoblinNetbookNetpanel *self)
     {
       ClutterActor *child = c->data;
 
-      if (NBTK_IS_BUTTON (child))
+      if (NBTK_IS_BIN (child) &&
+          CLUTTER_IS_MOZEMBED (nbtk_bin_get_child (NBTK_BIN (child))))
         clutter_container_remove_actor (CLUTTER_CONTAINER (priv->tabs_table),
                                         child);
     }
@@ -191,7 +196,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
       else
         cell_width = 0;
 
-      for (i = 0; i < n_tabs; i++)
+      for (i = 0; i < MIN (4, n_tabs); i++)
         {
           gchar *input, *output;
           ClutterActor *mozembed;
@@ -219,6 +224,9 @@ notify_get_ntabs (DBusGProxy     *proxy,
           g_free (input);
           g_free (output);
         }
+
+      if (n_tabs > 4)
+        clutter_actor_show (CLUTTER_ACTOR (priv->tabs_more));
     }
   else
     {
@@ -269,10 +277,15 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
 
+  /* Clear the entry */
+  mwb_radical_bar_set_text (MWB_RADICAL_BAR (priv->radical_bar), "");
+  mwb_radical_bar_set_loading (MWB_RADICAL_BAR (priv->radical_bar), FALSE);
+
   /* Destroy live previews */
   destroy_live_previews (netpanel);
 
   /* Hide tabs/favs tables */
+  clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_more));
   clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
                                   CLUTTER_ACTOR (priv->tabs_table));
   /*clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
@@ -306,10 +319,30 @@ moblin_netbook_netpanel_class_init (MoblinNetbookNetpanelClass *klass)
 }
 
 static void
+radical_bar_go_cb (MwbRadicalBar         *radical_bar,
+                   const gchar           *url,
+                   MoblinNetbookNetpanel *self)
+{
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  if (url && (url[0] != '\0'))
+    {
+      g_signal_emit (self, signals[LAUNCH], 0, url);
+      mwb_radical_bar_set_loading (radical_bar, TRUE);
+    }
+}
+
+static void
+tabs_more_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
+{
+  g_signal_emit (self, signals[LAUNCH], 0, "");
+}
+
+static void
 moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 {
   DBusGConnection *connection;
-  NbtkWidget *table, *bar, *label, *more_button;
+  NbtkWidget *table, *label, *more_button;
 
   GError *error = NULL;
   MoblinNetbookNetpanelPrivate *priv = self->priv = NETPANEL_PRIVATE (self);
@@ -331,11 +364,13 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   /* Construct entry table widgets */
 
   label = nbtk_label_new ("Internet");
-  bar = mwb_radical_bar_new ();
+  priv->radical_bar = mwb_radical_bar_new ();
   nbtk_table_add_widget_full (NBTK_TABLE (table), label, 0, 0, 1, 1,
                               0, 0.0, 0.5);
-  nbtk_table_add_widget_full (NBTK_TABLE (table), bar, 0, 1, 1, 1,
+  nbtk_table_add_widget_full (NBTK_TABLE (table), priv->radical_bar, 0, 1, 1, 1,
                               NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);
+  g_signal_connect (priv->radical_bar, "go",
+                    G_CALLBACK (radical_bar_go_cb), self);
 
   /* Construct tabs preview table */
   priv->tabs_table = nbtk_table_new ();
@@ -350,6 +385,13 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   label = nbtk_label_new ("Tabs");
   nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), label, 0, 0, 1, 5,
                               0, 0.0, 0.5);
+  priv->tabs_more = nbtk_button_new_with_label ("More...");
+  nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), priv->tabs_more,
+                              1, 5, 1, 1, 0, 0.5, 0.5);
+  clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_more));
+
+  g_signal_connect (priv->tabs_more, "clicked",
+                    G_CALLBACK (tabs_more_clicked_cb), self);
 
   /* Construct favourites preview table */
   priv->favs_table = nbtk_table_new ();
@@ -364,6 +406,10 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   label = nbtk_label_new ("Favourite pages");
   nbtk_table_add_widget_full (NBTK_TABLE (priv->favs_table), label, 0, 0, 1, 5,
                               0, 0.0, 0.5);
+  priv->favs_more = nbtk_button_new_with_label ("More...");
+  nbtk_table_add_widget_full (NBTK_TABLE (priv->favs_table), priv->favs_more,
+                              1, 5, 1, 1, 0, 0.5, 0.5);
+  clutter_actor_hide (CLUTTER_ACTOR (priv->favs_more));
 
   /* Connect to DBus */
   connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
