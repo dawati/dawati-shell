@@ -321,7 +321,7 @@ static void
 search_activated_cb (MnbEntry         *entry,
                      launcher_data_t  *launcher_data)
 {
-  gchar *needle, *lcase_needle;
+  const gchar *needle;
 
   /* Abort current search if any. */
   if (launcher_data->lcase_needle)
@@ -332,15 +332,15 @@ search_activated_cb (MnbEntry         *entry,
       launcher_data->lcase_needle = NULL;
     }
 
-  needle = NULL;
-  g_object_get (entry, "text", &needle, NULL);
-  lcase_needle = g_utf8_strdown (needle, -1);
-  g_free (needle), needle = NULL;
+  needle = mnb_entry_get_text (entry);
 
-  if (lcase_needle && strlen (lcase_needle) > 0)
+  if (needle && strlen (needle) > 0)
     {
-      /* Do filter.
-       * Need to switch to filter mode? */
+      /* Do filter */
+
+      gchar *lcase_needle = g_utf8_strdown (needle, -1);
+      
+      /* Need to switch to filter mode? */
       if (!launcher_data->is_filtering)
         {
           GSList          *iter;
@@ -358,10 +358,12 @@ search_activated_cb (MnbEntry         *entry,
               clutter_actor_hide (expander);
             }
 
-          /* Reparent launchers onto grid. */
+          /* Reparent launchers onto grid. 
+           * Launchers are initially invisible to avoid bogus matches. */
           for (iter = launcher_data->launchers; iter; iter = iter->next)
             {
               MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (iter->data);
+              clutter_actor_hide (CLUTTER_ACTOR (launcher));
               clutter_actor_reparent (CLUTTER_ACTOR (launcher),
                                       launcher_data->grid);
             }
@@ -370,9 +372,11 @@ search_activated_cb (MnbEntry         *entry,
       /* Update search result. */
       launcher_data->lcase_needle = g_strdup (lcase_needle);
       g_idle_add ((GSourceFunc) filter_cb, launcher_data);
+
+      g_free (lcase_needle);
     }
   else if (launcher_data->is_filtering &&
-           (!lcase_needle || strlen (lcase_needle) == 0))
+           (!needle || strlen (needle) == 0))
     {
       /* Did filter, now switch back to normal mode */
       GSList          *iter;
@@ -399,8 +403,6 @@ search_activated_cb (MnbEntry         *entry,
           clutter_actor_show (expander);
         }
     }
-
-  g_free (lcase_needle);
 }
 
 static void
