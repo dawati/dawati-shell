@@ -437,13 +437,6 @@ PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppT
   border-image: url('file://mzone/checked_box.png') 0;
 }
 
-PengeAppTile
-{
-  border-image: url('file://mzone/general-background.png') 16;
-  padding: 4;
-}
-
-
 PengeDateTile
 {
   border-image: url('file://mzone/date-background.png') 16;
