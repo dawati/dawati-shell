@@ -11,6 +11,7 @@ libdalston_la_CFLAGS = -I$(top_srcdir) \
 		    $(GLIB_CFLAGS)
 
 libdalston_la_LIBADD = $(top_builddir)/libhal-glib/libhal-glib.la \
-		    $(DBUS_GLIB_LIBS) \
-		    $(GLIB_LIBS)
+		       $(top_builddir)/libhal-panel-glib/libhal-panel-glib.la \
+		       $(DBUS_GLIB_LIBS) \
+		       $(GLIB_LIBS)
 
