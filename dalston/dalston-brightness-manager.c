@@ -254,8 +254,6 @@ dalston_brightness_manager_new (void)
   return g_object_new (DALSTON_TYPE_BRIGHTNESS_MANAGER, NULL);
 }
 
-
-
 static gboolean
 _brightness_monitoring_timeout_cb (gpointer data)
 {
@@ -306,3 +304,31 @@ dalston_brightness_manager_stop_monitoring (DalstonBrightnessManager *manager)
   priv->monitoring_timeout = 0;
 }
 
+static void
+_panel_proxy_set_brightness_cb (HalPanelProxy *proxy,
+                                const GError  *error,
+                                GObject       *weak_object,
+                                gpointer       userdata)
+{
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error setting brightness: %s",
+               error->message);
+  }
+}
+
+void
+dalston_brightness_manager_set_brightness (DalstonBrightnessManager *manager,
+                                           gint                      value)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  if (!priv->panel_proxy)
+    return;
+
+  hal_panel_proxy_set_brightness_async (priv->panel_proxy,
+                                        value,
+                                        _panel_proxy_set_brightness_cb,
+                                        (GObject *)manager,
+                                        NULL);
+}

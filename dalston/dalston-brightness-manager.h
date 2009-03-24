@@ -38,7 +38,8 @@ DalstonBrightnessManager *dalston_brightness_manager_new (void);
 
 void dalston_brightness_manager_start_monitoring (DalstonBrightnessManager *manager);
 void dalston_brightness_manager_stop_monitoring (DalstonBrightnessManager *manager);
-
+void dalston_brightness_manager_set_brightness (DalstonBrightnessManager *manager,
+                                                gint                      value);
 G_END_DECLS
 
 #endif /* _DALSTON_BRIGHTNESS_MANAGER */
