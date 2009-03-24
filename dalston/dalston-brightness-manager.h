@@ -29,11 +29,15 @@ typedef struct {
 typedef struct {
   GObjectClass parent_class;
   void (*num_levels_changed) (DalstonBrightnessManager *manager, gint num_levels);
+  void (*brightness_changed) (DalstonBrightnessManager *manager, gint new_value);
 } DalstonBrightnessManagerClass;
 
 GType dalston_brightness_manager_get_type (void);
 
 DalstonBrightnessManager *dalston_brightness_manager_new (void);
+
+void dalston_brightness_manager_start_monitoring (DalstonBrightnessManager *manager);
+void dalston_brightness_manager_stop_monitoring (DalstonBrightnessManager *manager);
 
 G_END_DECLS
 

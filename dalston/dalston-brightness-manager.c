@@ -3,6 +3,8 @@
 #include <libhal-glib/hal-manager.h>
 #include <libhal-glib/hal-device.h>
 
+#include <libhal-panel-glib/hal-panel-proxy.h>
+
 G_DEFINE_TYPE (DalstonBrightnessManager, dalston_brightness_manager, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
@@ -14,19 +16,25 @@ struct _DalstonBrightnessManagerPrivate {
   HalManager *manager;
   HalDevice *panel_device;
   gchar *panel_udi;
+  HalPanelProxy *panel_proxy;
 
   guint num_levels_discover_idle;
-
+  guint monitoring_timeout;
   gint num_levels;
+
+  gint previous_brightness;
 };
 
 enum
 {
   NUM_LEVELS_CHANGED,
+  BRIGHTNESS_CHANGED,
   LAST_SIGNAL
 };
 
 static guint signals[LAST_SIGNAL];
+
+#define MONITORING_SECONDS_TIMEOUT 5
 
 static void
 dalston_brightness_manager_get_property (GObject *object, guint property_id,
@@ -71,6 +79,18 @@ dalston_brightness_manager_dispose (GObject *object)
     priv->num_levels_discover_idle = 0;
   }
 
+  if (priv->monitoring_timeout)
+  {
+    g_source_remove (priv->monitoring_timeout);
+    priv->monitoring_timeout = 0;
+  }
+
+  if (priv->panel_proxy)
+  {
+    g_object_unref (priv->panel_proxy);
+    priv->panel_proxy = NULL;
+  }
+
   G_OBJECT_CLASS (dalston_brightness_manager_parent_class)->dispose (object);
 }
 
@@ -112,6 +132,18 @@ dalston_brightness_manager_class_init (DalstonBrightnessManagerClass *klass)
                   DALSTON_TYPE_BRIGHTNESS_MANAGER,
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET(DalstonBrightnessManagerClass, num_levels_changed),
+                  0,
+                  NULL,
+                  g_cclosure_marshal_VOID__INT,
+                  G_TYPE_NONE,
+                  1,
+                  G_TYPE_INT);
+
+  signals[BRIGHTNESS_CHANGED] =
+    g_signal_new ("brightness-changed",
+                  DALSTON_TYPE_BRIGHTNESS_MANAGER,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET(DalstonBrightnessManagerClass, brightness_changed),
                   0,
                   NULL,
                   g_cclosure_marshal_VOID__INT,
@@ -172,7 +204,15 @@ dalston_brightness_manager_init (DalstonBrightnessManager *self)
   priv->panel_device = hal_device_new ();
   hal_device_set_udi (priv->panel_device, priv->panel_udi);
 
-  priv->num_levels_discover_idle = g_idle_add (_num_levels_discover_idle_cb, self);
+  priv->num_levels_discover_idle = g_idle_add (_num_levels_discover_idle_cb, 
+                                               self);
+
+  priv->panel_proxy = hal_panel_proxy_new (priv->panel_udi);
+
+  if (!priv->panel_proxy)
+  {
+    g_warning (G_STRLOC ": Unable to get panel proxy for %s", priv->panel_udi);
+  }
 }
 
 DalstonBrightnessManager *
@@ -181,4 +221,81 @@ dalston_brightness_manager_new (void)
   return g_object_new (DALSTON_TYPE_BRIGHTNESS_MANAGER, NULL);
 }
 
+static void
+_panel_proxy_get_brightness_cb (HalPanelProxy *proxy,
+                                gint           value,
+                                const GError  *error,
+                                GObject       *weak_object,
+                                gpointer       userdata)
+{
+  DalstonBrightnessManager *manager = (DalstonBrightnessManager *)weak_object;
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (weak_object);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error querying brightness: %s",
+               error->message);
+    g_warning (G_STRLOC ": Stopping monitoring");
+    dalston_brightness_manager_stop_monitoring (manager);
+  }
+
+  if (priv->previous_brightness != value)
+  {
+    priv->previous_brightness = value;
+    g_signal_emit (weak_object,
+                   signals[BRIGHTNESS_CHANGED], 
+                   0,
+                   value);
+  }
+}
+
+static gboolean
+_brightness_monitoring_timeout_cb (gpointer data)
+{
+  DalstonBrightnessManager *manager = (DalstonBrightnessManager *)data;
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (data);
+
+  if (!priv->panel_proxy)
+    return FALSE;
+
+  hal_panel_proxy_get_brightness_async (priv->panel_proxy,
+                                        _panel_proxy_get_brightness_cb,
+                                        (GObject *)manager,
+                                        NULL);
+
+  return TRUE;
+}
+
+void
+dalston_brightness_manager_start_monitoring (DalstonBrightnessManager *manager)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  if (priv->monitoring_timeout)
+  {
+    g_warning (G_STRLOC ": Monitoring already running.");
+    return;
+  }
+
+  priv->monitoring_timeout =
+    g_timeout_add_seconds (MONITORING_SECONDS_TIMEOUT,
+                           _brightness_monitoring_timeout_cb,
+                           manager);
+
+}
+
+void
+dalston_brightness_manager_stop_monitoring (DalstonBrightnessManager *manager)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  if (!priv->monitoring_timeout)
+  {
+    g_warning (G_STRLOC ": Monitoring not running.");
+    return;
+  }
+
+  g_source_remove (priv->monitoring_timeout);
+  priv->monitoring_timeout = 0;
+}
 
