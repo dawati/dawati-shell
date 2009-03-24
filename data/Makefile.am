@@ -64,7 +64,9 @@ theme_launcherdir = $(pkgdatadir)/theme/launcher
 dist_theme_launcher_DATA = \
 	theme/launcher/launcher-hover.png \
 	theme/launcher/launcher-search-bg.png \
-	theme/launcher/launcher-search-entry-bg.png
+	theme/launcher/launcher-search-entry-bg.png \
+  theme/launcher/launcher-search-entry-clear-hover.png \
+  theme/launcher/launcher-search-entry-clear.png
 
 theme_switcherdir = $(pkgdatadir)/theme/switcher
 dist_theme_switcher_DATA = \

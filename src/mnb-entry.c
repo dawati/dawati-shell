@@ -15,7 +15,9 @@
 struct _MnbEntryPrivate
 {
   ClutterActor *entry;
-  ClutterActor *button;
+  ClutterActor *table;
+  ClutterActor *clear_button;
+  ClutterActor *search_button;
 };
 
 enum
@@ -39,16 +41,31 @@ static guint _signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE (MnbEntry, mnb_entry, NBTK_TYPE_BIN);
 
 static void
-button_clicked_cb (NbtkButton *button,
-                   MnbEntry *entry)
+search_button_clicked_cb (NbtkButton  *button,
+                          MnbEntry    *entry)
 {
   g_signal_emit (entry, _signals[BUTTON_CLICKED], 0);
 }
 
 static void
-text_changed_cb (ClutterText  *text,
+clear_button_clicked_cb (NbtkButton *button,
+                         MnbEntry   *entry)
+{
+  nbtk_entry_set_text (NBTK_ENTRY (entry->priv->entry), NULL);
+}
+
+static void
+text_changed_cb (ClutterText  *actor,
                  MnbEntry     *entry)
 {
+  gchar const *text;
+  
+  text = clutter_text_get_text (actor);
+  if (text && strlen (text) > 0)
+    clutter_actor_show (entry->priv->clear_button);
+  else
+    clutter_actor_hide (entry->priv->clear_button);  
+
   g_signal_emit (entry, _signals[TEXT_CHANGED], 0);
 }
 
@@ -69,7 +86,7 @@ mnb_entry_get_preferred_width (ClutterActor *actor,
                                      &min_width_entry,
                                      &natural_width_entry);
 
-  clutter_actor_get_preferred_width (priv->button, for_height,
+  clutter_actor_get_preferred_width (priv->table, for_height,
                                      &min_width_button,
                                      &natural_width_button);
 
@@ -103,7 +120,7 @@ mnb_entry_get_preferred_height (ClutterActor *actor,
                                       &min_height_entry,
                                       &natural_height_entry);
 
-  clutter_actor_get_preferred_height (priv->button, for_width,
+  clutter_actor_get_preferred_height (priv->table, for_width,
                                      &min_height_button,
                                      &natural_height_button);
 
@@ -134,7 +151,7 @@ mnb_entry_allocate (ClutterActor          *actor,
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
   /* Button is right-aligned. */
-  clutter_actor_get_preferred_size (priv->button,
+  clutter_actor_get_preferred_size (priv->table,
                                     NULL, NULL,
                                     &button_width, &button_height);
 
@@ -158,7 +175,7 @@ mnb_entry_allocate (ClutterActor          *actor,
   entry_box.y2 = entry_box.y1 + entry_height;
 
   clutter_actor_allocate (priv->entry, &entry_box, origin_changed);
-  clutter_actor_allocate (priv->button, &button_box, origin_changed);
+  clutter_actor_allocate (priv->table, &button_box, origin_changed);
 }
 
 static void
@@ -170,7 +187,7 @@ mnb_entry_paint (ClutterActor *actor)
 
   clutter_actor_paint (priv->entry);
 
-  clutter_actor_paint (priv->button);
+  clutter_actor_paint (priv->table);
 }
 
 static void
@@ -183,7 +200,7 @@ mnb_entry_pick (ClutterActor       *actor,
 
   clutter_actor_paint (priv->entry);
 
-  clutter_actor_paint (priv->button);
+  clutter_actor_paint (priv->table);
 }
 
 static void
@@ -192,7 +209,7 @@ mnb_entry_finalize (GObject *gobject)
   MnbEntryPrivate *priv = MNB_ENTRY (gobject)->priv;
 
   clutter_actor_destroy (priv->entry), priv->entry = NULL;
-  clutter_actor_destroy (priv->button), priv->button = NULL;
+  clutter_actor_destroy (priv->table), priv->table = NULL;
 
   G_OBJECT_CLASS (mnb_entry_parent_class)->finalize (gobject);
 }
@@ -312,6 +329,37 @@ mnb_entry_class_init (MnbEntryClass *klass)
 }
 
 static void
+set_clear_button_size (ClutterActor *clear_button)
+{
+  GValue background_image = { 0, };
+
+  g_value_init (&background_image, G_TYPE_STRING);
+  nbtk_stylable_get_property (NBTK_STYLABLE (clear_button),
+                              "background-image", &background_image);
+  if (g_value_get_string (&background_image))
+    {
+      GError        *error = NULL;
+      ClutterActor  *background_texture = clutter_texture_new_from_file (
+                                            g_value_get_string (&background_image),
+                                            &error);
+      if (error)
+        {
+          g_warning ("%s", error->message);
+          g_error_free (error);
+        }
+      else
+        {
+          gint width, height;
+          clutter_texture_get_base_size (CLUTTER_TEXTURE (background_texture),
+                                         &width, &height);
+          clutter_actor_set_size (clear_button, width, height);
+          g_object_unref (background_texture);
+        }
+      g_value_unset (&background_image);
+    }
+}
+
+static void
 mnb_entry_init (MnbEntry *self)
 {
   MnbEntryPrivate *priv;
@@ -328,12 +376,29 @@ mnb_entry_init (MnbEntry *self)
                     G_CALLBACK (text_changed_cb),
                     self);
 
-  priv->button = CLUTTER_ACTOR (nbtk_button_new ());
-  clutter_actor_set_parent (priv->button, CLUTTER_ACTOR (self));
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
+  priv->table = CLUTTER_ACTOR (nbtk_table_new ());
+  clutter_actor_set_parent (priv->table, CLUTTER_ACTOR (self));
+
+  priv->clear_button = CLUTTER_ACTOR (nbtk_button_new ());
+  clutter_actor_hide (priv->clear_button);
+  nbtk_table_add_widget (NBTK_TABLE (priv->table),
+                         NBTK_WIDGET (priv->clear_button),
+                         0, 0);
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->clear_button),
+                                    "MnbEntryClearButton");
+  set_clear_button_size (priv->clear_button);
+  g_signal_connect (priv->clear_button, "clicked",
+                    G_CALLBACK (clear_button_clicked_cb),
+                    self);
+
+  priv->search_button = CLUTTER_ACTOR (nbtk_button_new ());
+  nbtk_table_add_widget (NBTK_TABLE (priv->table),
+                         NBTK_WIDGET (priv->search_button),
+                         0, 1);
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->search_button),
                                     "MnbEntryButton");
-  g_signal_connect (priv->button, "clicked",
-                    G_CALLBACK (button_clicked_cb),
+  g_signal_connect (priv->search_button, "clicked",
+                    G_CALLBACK (search_button_clicked_cb),
                     self);
 }
 
@@ -350,7 +415,7 @@ mnb_entry_get_label (MnbEntry *self)
 {
   g_return_val_if_fail (MNB_IS_ENTRY (self), NULL);
 
-  return nbtk_button_get_label (NBTK_BUTTON (self->priv->button));
+  return nbtk_button_get_label (NBTK_BUTTON (self->priv->search_button));
 }
 
 void
@@ -359,7 +424,7 @@ mnb_entry_set_label (MnbEntry     *self,
 {
   g_return_if_fail (self);
 
-  nbtk_button_set_label (NBTK_BUTTON (self->priv->button), text);
+  nbtk_button_set_label (NBTK_BUTTON (self->priv->search_button), text);
 }
 
 const gchar *

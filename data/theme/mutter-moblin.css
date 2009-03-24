@@ -394,6 +394,15 @@ MnbDropDown, MnbSwitcher {
   font-size: 18;
 }
 
+*.MnbEntryClearButton {
+  background-image: url('file://launcher/launcher-search-entry-clear.png');
+  border-image: none;
+}
+
+*.MnbEntryClearButton:hover {
+  background-image: url('file://launcher/launcher-search-entry-clear-hover.png');
+}
+
 MnbLauncherButton {
   padding: 10;
 }
