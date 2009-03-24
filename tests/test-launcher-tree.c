@@ -12,16 +12,18 @@ int
 main (int     argc,
       char  **argv)
 {
-  GtkIconTheme  *theme;
-  GSList        *tree;
-  GSList        *tree_iter;
+  GtkIconTheme    *theme;
+  MnbLauncherTree *tree;
+  GSList const    *tree_iter;
 
   gtk_init (&argc, &argv);
 
   theme = gtk_icon_theme_get_default ();
   tree = mnb_launcher_tree_create ();
 
-  for (tree_iter = tree; tree_iter; tree_iter = tree_iter->next)
+  for (tree_iter = mnb_launcher_tree_get_directories (tree); 
+       tree_iter;
+       tree_iter = tree_iter->next)
     {
       MnbLauncherDirectory  *directory;
       GSList                *directory_iter;
@@ -68,7 +70,7 @@ main (int     argc,
           if (generic_name && exec && icon_file)
             {
               printf ("  '%s' icon: %s\n", mnb_launcher_entry_get_name (entry),
-                                         is_fallback ? "fallback" : "ok");
+                                         is_fallback ? "fallback" : icon_file);
             }
           else
             {
@@ -78,7 +80,7 @@ main (int     argc,
                       icon_file ? 
                         is_fallback ? 
                           "fallback" :
-                          "ok" :
+                          icon_file :
                         "not found");
             }
 

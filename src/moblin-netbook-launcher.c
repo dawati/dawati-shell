@@ -111,13 +111,17 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
  */
 typedef struct
 {
-  ClutterActor  *grid;
-  GHashTable    *expanders;
-  GSList        *launchers;
-  gboolean       is_filtering;
-  GSList        *launchers_iter;
-  char          *lcase_needle;
+  MnbLauncherMonitor  *monitor;
+  ClutterActor        *grid;
+  GHashTable          *expanders;
+  GSList              *launchers;
+  gboolean             is_filtering;
+  GSList              *launchers_iter;
+  char                *lcase_needle;
 } launcher_data_t;
+
+static void
+launcher_data_changed_cb (launcher_data_t *launcher_data);
 
 static void
 expander_notify_cb (NbtkExpander    *expander,
@@ -149,8 +153,8 @@ static launcher_data_t *
 launcher_data_new (MutterPlugin *self)
 {
   launcher_data_t *launcher_data;
-  GSList          *tree;
-  GSList          *tree_iter;
+  MnbLauncherTree *tree;
+  GSList const    *tree_iter;
   GtkIconTheme    *theme;
 
   /* Launcher data instance. */
@@ -172,7 +176,9 @@ launcher_data_new (MutterPlugin *self)
   tree = mnb_launcher_tree_create ();
   theme = gtk_icon_theme_get_default ();
 
-  for (tree_iter = tree; tree_iter; tree_iter = tree_iter->next)
+  for (tree_iter = mnb_launcher_tree_get_directories (tree);
+       tree_iter;
+       tree_iter = tree_iter->next)
     {
       MnbLauncherDirectory  *directory;
       GSList                *directory_iter;
@@ -191,7 +197,7 @@ launcher_data_new (MutterPlugin *self)
                         G_CALLBACK (expander_notify_cb), launcher_data);
 
       /* Open first expander by default. */
-      if (tree_iter == tree)
+      if (tree_iter == mnb_launcher_tree_get_directories (tree))
         {
           nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
         }
@@ -221,13 +227,13 @@ launcher_data_new (MutterPlugin *self)
                                                  icon_name,
                                                  ICON_SIZE,
                                                  GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-            }            
+            }
           if (!info)
             {
               info = gtk_icon_theme_lookup_icon (theme,
-                                                 "application-x-executable", 
+                                                 "application-x-executable",
                                                  ICON_SIZE,
-                                                 GTK_ICON_LOOKUP_GENERIC_FALLBACK);            
+                                                 GTK_ICON_LOOKUP_GENERIC_FALLBACK);
             }
           if (info)
             {
@@ -268,15 +274,20 @@ launcher_data_new (MutterPlugin *self)
           if (exec)
             g_free (exec);
           if (info)
-              gtk_icon_info_free (info);            
+              gtk_icon_info_free (info);
         }
     }
 
   /* Alphabetically sort buttons, so they are in order while filtering. */
   launcher_data->launchers = g_slist_sort (launcher_data->launchers,
                                            (GCompareFunc) mnb_launcher_button_compare);
-  if (tree)
-    mnb_launcher_tree_free (tree);
+  launcher_data->monitor =
+    mnb_launcher_tree_create_monitor (
+      tree,
+      (MnbLauncherMonitorFunction) launcher_data_changed_cb,
+       launcher_data);
+
+  mnb_launcher_tree_free (tree);
 
   return launcher_data;
 }
@@ -287,12 +298,20 @@ launcher_data_new (MutterPlugin *self)
 static void
 launcher_data_free_cb (launcher_data_t *launcher_data)
 {
+  mnb_launcher_monitor_free (launcher_data->monitor);
+
   g_hash_table_destroy (launcher_data->expanders);
 
   /* Launchers themselves are managed by clutter. */
   g_slist_free (launcher_data->launchers);
 
   g_free (launcher_data);
+}
+
+static void
+launcher_data_changed_cb (launcher_data_t *launcher_data)
+{
+  g_message (__FUNCTION__);
 }
 
 static gboolean
@@ -349,7 +368,7 @@ search_activated_cb (MnbEntry         *entry,
       /* Do filter */
 
       gchar *lcase_needle = g_utf8_strdown (needle, -1);
-      
+
       /* Need to switch to filter mode? */
       if (!launcher_data->is_filtering)
         {
@@ -368,7 +387,7 @@ search_activated_cb (MnbEntry         *entry,
               clutter_actor_hide (expander);
             }
 
-          /* Reparent launchers onto grid. 
+          /* Reparent launchers onto grid.
            * Launchers are initially invisible to avoid bogus matches. */
           for (iter = launcher_data->launchers; iter; iter = iter->next)
             {

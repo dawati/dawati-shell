@@ -29,10 +29,27 @@
 G_BEGIN_DECLS
 
 /*
- * The "tree" is a GSList of MnbLauncherDirectory-s.
+ * MnbLauncherMonitor to monitor menu changes.
  */
-GSList *  mnb_launcher_tree_create (void);
-void      mnb_launcher_tree_free   (GSList *tree);
+typedef struct MnbLauncherMonitor_ MnbLauncherMonitor;
+
+typedef void (*MnbLauncherMonitorFunction) (MnbLauncherMonitor *monitor,
+                                            gpointer            user_data);
+
+void mnb_launcher_monitor_free (MnbLauncherMonitor *monitor);
+
+/*
+ * MnbLauncherTree represents the entire menu hierarchy.
+ */
+
+typedef struct MnbLauncherTree_ MnbLauncherTree;
+
+MnbLauncherTree *     mnb_launcher_tree_create          (void);
+MnbLauncherMonitor *  mnb_launcher_tree_create_monitor  (MnbLauncherTree            *tree,
+                                                         MnbLauncherMonitorFunction  monitor_function,
+                                                         gpointer                    user_data);
+GSList const *        mnb_launcher_tree_get_directories (MnbLauncherTree            *tree);
+void                  mnb_launcher_tree_free            (MnbLauncherTree            *tree);
 
 /*
  * MnbLauncherDirectory represents a "folder" item in the main menu.
