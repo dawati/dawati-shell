@@ -87,7 +87,7 @@ _setup_proxy (HalPanelProxy *proxy,
   HalPanelProxyPrivate *priv = GET_PRIVATE (proxy);
   GError *error = NULL;
 
-  priv->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  priv->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
 
   if (error)
   {
