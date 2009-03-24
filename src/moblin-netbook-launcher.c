@@ -213,15 +213,26 @@ launcher_data_new (MutterPlugin *self)
 
           generic_name = mnb_launcher_entry_get_name (entry);
           exec = mnb_launcher_entry_get_exec (entry);
-          icon_name = mnb_launcher_entry_get_icon (entry);
           description = mnb_launcher_entry_get_comment (entry);
-
+          icon_name = mnb_launcher_entry_get_icon (entry);
           if (icon_name)
-            info = gtk_icon_theme_lookup_icon (theme, icon_name, ICON_SIZE, 0);
-          else
-            info = gtk_icon_theme_lookup_icon (theme, "gtk-file", ICON_SIZE, 0);
+            {
+              info = gtk_icon_theme_lookup_icon (theme,
+                                                 icon_name,
+                                                 ICON_SIZE,
+                                                 GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+            }            
+          if (!info)
+            {
+              info = gtk_icon_theme_lookup_icon (theme,
+                                                 "application-x-executable", 
+                                                 ICON_SIZE,
+                                                 GTK_ICON_LOOKUP_GENERIC_FALLBACK);            
+            }
           if (info)
-            icon_file = gtk_icon_info_get_filename (info);
+            {
+              icon_file = gtk_icon_info_get_filename (info);
+            }
 
           if (generic_name && exec && icon_file)
             {
@@ -253,12 +264,11 @@ launcher_data_new (MutterPlugin *self)
               launcher_data->launchers = g_slist_prepend (launcher_data->launchers,
                                                           button);
             }
-          else
-            {
-              g_free (exec);
-            }
 
-          if (info) gtk_icon_info_free (info);
+          if (exec)
+            g_free (exec);
+          if (info)
+              gtk_icon_info_free (info);            
         }
     }
 

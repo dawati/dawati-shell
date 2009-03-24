@@ -21,8 +21,8 @@
  * 02111-1307, USA.
  */
 
-#ifndef MNB_LAUNCHER_ENTRY_H
-#define MNB_LAUNCHER_ENTRY_H
+#ifndef MNB_LAUNCHER_TREE_H
+#define MNB_LAUNCHER_TREE_H
 
 #include <glib.h>
 
@@ -54,5 +54,5 @@ const gchar * mnb_launcher_entry_get_comment  (MnbLauncherEntry *entry);
 
 G_END_DECLS
 
-#endif /* MNB_LAUNCHER_ENTRY_H */
+#endif /* MNB_LAUNCHER_TREE_H */
 
