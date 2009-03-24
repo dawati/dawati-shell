@@ -38,7 +38,6 @@ G_DEFINE_TYPE (MnbNotificationUrgent,   \
 #define FADE_DURATION 300
 
 struct _MnbNotificationUrgentPrivate {
-  ClutterActor *background;
   ClutterGroup *notifiers;
   NbtkWidget   *active;
   gint          n_notifiers;
@@ -89,14 +88,43 @@ mnb_notification_urgent_paint (ClutterActor *actor)
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
 
-  if (priv->n_notifiers == 0 || priv->active == NULL)
-    return;
-
-  printf("paining...\n");
-
-  clutter_actor_paint (CLUTTER_ACTOR(priv->background));
-  clutter_actor_paint (CLUTTER_ACTOR(priv->active));
+  if (priv->notifiers && CLUTTER_ACTOR_IS_VISIBLE (priv->notifiers))
+      clutter_actor_paint (CLUTTER_ACTOR(priv->notifiers));
 }
+
+static void
+mnb_notification_urgent_get_preferred_width (ClutterActor *actor,
+                                             ClutterUnit   for_height,
+                                             ClutterUnit  *min_width,
+                                             ClutterUnit  *natural_width)
+{
+  *min_width = CLUTTER_UNITS_FROM_DEVICE(URGENT_WIDTH);
+  *natural_width = CLUTTER_UNITS_FROM_DEVICE(URGENT_WIDTH);
+}
+
+static void
+mnb_notification_urgent_get_preferred_height (ClutterActor *actor,
+                                               ClutterUnit   for_width,
+                                               ClutterUnit  *min_height,
+                                               ClutterUnit  *natural_height)
+{
+  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
+
+  *min_height = 0;
+  *natural_height = 0;
+
+  if (priv->notifiers)
+    {
+      ClutterUnit m_height, p_height;
+
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
+                                          URGENT_WIDTH, &m_height, &p_height);
+
+      *min_height += m_height;
+      *natural_height += p_height;
+    }
+}
+
 
 static void
 mnb_notification_urgent_allocate (ClutterActor          *actor,
@@ -105,43 +133,23 @@ mnb_notification_urgent_allocate (ClutterActor          *actor,
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
-  ClutterActorBox bg_box = { 0, };
-  gint x1, y1, x2, y2;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class);
 
-  /* both box & bg_box always all 0's */
+  klass->allocate (actor, box, origin_changed);
 
-  bg_box.x1 = box->x1;
-  bg_box.y1 = box->y1;
-
-  bg_box.x2 = box->x1 + clutter_actor_get_width (actor);
-  bg_box.y2 = box->y1 + clutter_actor_get_height (actor);
-
-  klass->allocate (actor, &bg_box, origin_changed);
-
-  clutter_actor_allocate (CLUTTER_ACTOR(priv->background), 
-                          &bg_box, origin_changed);
-
-  printf("allocating box... %i,%i,%i,%i\n", 
-         bg_box.x1, bg_box.y1, bg_box.x2, bg_box.y2);
-
-  if (priv->active)
+  if (priv->notifiers)
     {
       ClutterUnit m_height, p_height;
       ClutterActorBox notifier_box = { 0, };
 
-      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->active),
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           URGENT_WIDTH, &m_height, &p_height);
 
+      notifier_box.x2 = CLUTTER_UNITS_FROM_DEVICE (URGENT_WIDTH);
+      notifier_box.y2 = p_height;
 
-      notifier_box.x1 = ((bg_box.x2 - bg_box.x1) - URGENT_WIDTH)/2;
-      notifier_box.x2 = notifier_box.x1 + URGENT_WIDTH;
-
-      notifier_box.y1 = ((bg_box.y2 - bg_box.y1) - p_height)/2;
-      notifier_box.y2 = notifier_box.y1 + p_height;
-
-      clutter_actor_allocate (CLUTTER_ACTOR(priv->active), 
+      clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
                               &notifier_box, origin_changed);
     }
 }
@@ -152,12 +160,8 @@ mnb_notification_urgent_pick (ClutterActor       *actor,
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
 
-  if (priv->n_notifiers == 0 || priv->active == NULL)
-    return;
-
   CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class)->pick (actor, 
                                                                      color);
-
   mnb_notification_urgent_paint (actor);
 }
 
@@ -178,6 +182,10 @@ mnb_notification_urgent_class_init (MnbNotificationUrgentClass *klass)
   clutter_class->allocate = mnb_notification_urgent_allocate;
   clutter_class->paint = mnb_notification_urgent_paint;
   clutter_class->pick = mnb_notification_urgent_pick;
+  clutter_class->get_preferred_height
+    = mnb_notification_urgent_get_preferred_height;
+  clutter_class->get_preferred_width
+    = mnb_notification_urgent_get_preferred_width;
 
   urgent_signals[SYNC_INPUT_REGION] =
     g_signal_new ("sync-input-region",
@@ -249,8 +257,6 @@ on_notification_added (MoblinNetbookNotifyStore *store,
   if (!notification->is_urgent)
     return;
 
-  printf("Added an urgent notification!\n");
-
   w = find_widget (priv->notifiers, notification->id);
 
   if (!w) 
@@ -279,9 +285,12 @@ on_notification_added (MoblinNetbookNotifyStore *store,
     {
       priv->active == w;
       /* run appear anim ? */
-      clutter_actor_show_all (CLUTTER_ACTOR(w));
+      clutter_actor_show (CLUTTER_ACTOR(priv->notifiers));
+      clutter_actor_show (CLUTTER_ACTOR(w));
       clutter_actor_show_all (CLUTTER_ACTOR(urgent));
     }
+
+  g_signal_emit (urgent, urgent_signals[SYNC_INPUT_REGION], 0);
 }
 
 
@@ -311,7 +320,15 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
           priv->active = NBTK_WIDGET (
             clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers), 
                                          0));
+          clutter_actor_show (CLUTTER_ACTOR(priv->active));
         }
+      else
+        {
+          clutter_actor_hide (CLUTTER_ACTOR(urgent));
+          clutter_actor_hide (CLUTTER_ACTOR(priv->notifiers));
+        }
+
+      g_signal_emit (urgent, urgent_signals[SYNC_INPUT_REGION], 0);
     }
 }
 
@@ -343,12 +360,7 @@ mnb_notification_urgent_init (MnbNotificationUrgent *self)
   clutter_actor_set_parent (CLUTTER_ACTOR(priv->notifiers), 
                             CLUTTER_ACTOR(self));
 
-  priv->background = clutter_rectangle_new_with_color (&bg_col);
-
-  clutter_actor_set_parent (CLUTTER_ACTOR(priv->background), 
-                            CLUTTER_ACTOR(self));
-
-  clutter_actor_show (CLUTTER_ACTOR(priv->background));
+  clutter_actor_hide (CLUTTER_ACTOR(priv->notifiers));
 
   clutter_actor_set_reactive (CLUTTER_ACTOR(priv->notifiers), TRUE);
   clutter_actor_set_reactive (CLUTTER_ACTOR(self), TRUE);

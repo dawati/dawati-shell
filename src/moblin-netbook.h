@@ -196,4 +196,7 @@ void moblin_netbook_input_region_remove_without_update (MutterPlugin  *plugin,
 void moblin_netbook_input_region_remove (MutterPlugin   *plugin,
                                          MnbInputRegion  mir);
 
+void
+moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on);
+
 #endif
