@@ -349,6 +349,9 @@ NbtkTooltip {
 *.drop-down-up-button:active {
   border-image: url("file://drop-down/up-button-active.png") 2 stretch;
 }
+*.drop-down-up-button:hover {
+  border-image: url("file://drop-down/up-button-hover.png") 2 stretch;
+}
 
 *.drop-down-footer {
   border-image: url("file://drop-down/footer.png") 5;
