@@ -177,6 +177,33 @@ _num_levels_discover_idle_cb (gpointer data)
   return FALSE;
 }
 
+static void
+_panel_proxy_get_brightness_cb (HalPanelProxy *proxy,
+                                gint           value,
+                                const GError  *error,
+                                GObject       *weak_object,
+                                gpointer       userdata)
+{
+  DalstonBrightnessManager *manager = (DalstonBrightnessManager *)weak_object;
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (weak_object);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error querying brightness: %s",
+               error->message);
+    g_warning (G_STRLOC ": Stopping monitoring");
+    dalston_brightness_manager_stop_monitoring (manager);
+  }
+
+  if (priv->previous_brightness != value)
+  {
+    priv->previous_brightness = value;
+    g_signal_emit (weak_object,
+                   signals[BRIGHTNESS_CHANGED], 
+                   0,
+                   value);
+  }
+}
 
 static void
 dalston_brightness_manager_init (DalstonBrightnessManager *self)
@@ -212,7 +239,13 @@ dalston_brightness_manager_init (DalstonBrightnessManager *self)
   if (!priv->panel_proxy)
   {
     g_warning (G_STRLOC ": Unable to get panel proxy for %s", priv->panel_udi);
+    return;
   }
+
+  hal_panel_proxy_get_brightness_async (priv->panel_proxy,
+                                        _panel_proxy_get_brightness_cb,
+                                        (GObject *)self,
+                                        NULL);
 }
 
 DalstonBrightnessManager *
@@ -221,33 +254,7 @@ dalston_brightness_manager_new (void)
   return g_object_new (DALSTON_TYPE_BRIGHTNESS_MANAGER, NULL);
 }
 
-static void
-_panel_proxy_get_brightness_cb (HalPanelProxy *proxy,
-                                gint           value,
-                                const GError  *error,
-                                GObject       *weak_object,
-                                gpointer       userdata)
-{
-  DalstonBrightnessManager *manager = (DalstonBrightnessManager *)weak_object;
-  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (weak_object);
 
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error querying brightness: %s",
-               error->message);
-    g_warning (G_STRLOC ": Stopping monitoring");
-    dalston_brightness_manager_stop_monitoring (manager);
-  }
-
-  if (priv->previous_brightness != value)
-  {
-    priv->previous_brightness = value;
-    g_signal_emit (weak_object,
-                   signals[BRIGHTNESS_CHANGED], 
-                   0,
-                   value);
-  }
-}
 
 static gboolean
 _brightness_monitoring_timeout_cb (gpointer data)
