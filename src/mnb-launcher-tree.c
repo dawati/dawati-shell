@@ -168,14 +168,14 @@ get_all_applications_from_dir (GMenuTreeDirectory *branch,
   GSList                *ret;
 
   directory = NULL;
-  ret = NULL;
-  list = gmenu_tree_directory_get_contents (branch);
+  ret = tree;
   if (!is_root)
     {
       ret = g_slist_prepend (tree, mnb_launcher_directory_new (branch));
       directory = (MnbLauncherDirectory *) ret->data;
     }
 
+  list = gmenu_tree_directory_get_contents (branch);
   for (iter = list; iter; iter = iter->next)
     {
       switch (gmenu_tree_item_get_type (iter->data))
@@ -220,11 +220,20 @@ mnb_launcher_tree_create (void)
   GSList                *tree;
   GSList                *tree_iter;
 
-  /* FIXME: also merge "settings.menu" or whatever its called. */
+  /* Applications. */
   menu_tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
   root = gmenu_tree_get_root_directory (menu_tree);
 
   tree = NULL;
+  tree = get_all_applications_from_dir (root, tree, TRUE);
+
+  gmenu_tree_item_unref (root);
+  gmenu_tree_unref (menu_tree);
+
+  /* Settings. */
+  menu_tree = gmenu_tree_lookup ("settings.menu", GMENU_TREE_FLAGS_NONE);
+  root = gmenu_tree_get_root_directory (menu_tree);
+
   tree = get_all_applications_from_dir (root, tree, TRUE);
 
   gmenu_tree_item_unref (root);
