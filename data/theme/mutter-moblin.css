@@ -69,7 +69,7 @@ NbtkScrollBar > *#backward-stepper {
   border-image: url("file://generic/vscroll-backward.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkScrollBar > *#backward-stepper:hover {
+NbtkScrollBar > *#backward-stepper:active {
   border-image: url("file://generic/vscroll-backward-hover.png") 2 4 2 2 stretch stretch;
 }
 
@@ -77,16 +77,12 @@ NbtkScrollBar > *#forward-stepper {
   border-image: url("file://generic/vscroll-forward.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkScrollBar > *#forward-stepper:hover {
+NbtkScrollBar > *#forward-stepper:active {
   border-image: url("file://generic/vscroll-forward-hover.png") 2 4 2 2 stretch stretch;
 }
 
 NbtkScrollBar *#handle {
   border-image: url("file://generic/vscroll-handle.png") 2 4 2 2 stretch stretch;
-}
-
-NbtkScrollBar *#handle:hover {
-  border-image: url("file://generic/vscroll-handle-hover.png") 2 4 2 2 stretch stretch;
 }
 
 NbtkTable {
