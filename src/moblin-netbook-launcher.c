@@ -232,7 +232,7 @@ launcher_data_new (MutterPlugin *self)
           if (!info)
             {
               info = gtk_icon_theme_lookup_icon (theme,
-                                                 "application-x-executable",
+                                                 "applications-other",
                                                  ICON_SIZE,
                                                  GTK_ICON_LOOKUP_GENERIC_FALLBACK);
             }
