@@ -15,6 +15,7 @@ LDADD = $(PENGE_LIBS)
 
 noinst_PROGRAMS = \
 	test-entry \
+	test-expander \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree \
@@ -32,6 +33,10 @@ test_entry_LDADD = \
 test_entry_SOURCES = \
 	$(top_srcdir)/src/mnb-entry.c \
 	test-entry.c
+
+test_expander_SOURCES = \
+	$(top_srcdir)/src/mnb-expander.c \
+	test-expander.c
 
 test_launcher_monitor_LDADD = \
   $(MUTTER_PLUGIN_LIBS)

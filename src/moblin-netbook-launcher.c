@@ -41,6 +41,7 @@
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-entry.h"
+#include "mnb-expander.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-tree.h"
 
@@ -124,16 +125,16 @@ static void
 launcher_data_changed_cb (launcher_data_t *launcher_data);
 
 static void
-expander_notify_cb (NbtkExpander    *expander,
+expander_notify_cb (MnbExpander    *expander,
                     GParamSpec      *pspec,
                     launcher_data_t *launcher_data)
 {
-  NbtkExpander    *e;
+  MnbExpander    *e;
   const gchar     *category;
   GHashTableIter   iter;
 
   /* Close other open expander, so that just the newly opended one is expanded. */
-  if (nbtk_expander_get_expanded (expander))
+  if (mnb_expander_get_expanded (expander))
     {
       g_hash_table_iter_init (&iter, launcher_data->expanders);
       while (g_hash_table_iter_next (&iter,
@@ -141,7 +142,7 @@ expander_notify_cb (NbtkExpander    *expander,
                                      (gpointer *) &e))
         {
           if (e != expander)
-            nbtk_expander_set_expanded (e, FALSE);
+            mnb_expander_set_expanded (e, FALSE);
         }
     }
 }
@@ -187,7 +188,7 @@ launcher_data_new (MutterPlugin *self)
       directory = (MnbLauncherDirectory *) tree_iter->data;
 
       /* Expander. */
-      expander = CLUTTER_ACTOR (nbtk_expander_new (directory->name));
+      expander = CLUTTER_ACTOR (mnb_expander_new (directory->name));
       clutter_actor_set_width (expander, 4 * LAUNCHER_WIDTH + 5 * PADDING);
       clutter_container_add (CLUTTER_CONTAINER (launcher_data->grid),
                              expander, NULL);
@@ -199,7 +200,7 @@ launcher_data_new (MutterPlugin *self)
       /* Open first expander by default. */
       if (tree_iter == mnb_launcher_tree_get_directories (tree))
         {
-          nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
+          mnb_expander_set_expanded (MNB_EXPANDER (expander), TRUE);
         }
 
       inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
@@ -420,7 +421,7 @@ search_activated_cb (MnbEntry         *entry,
           MnbLauncherButton *launcher   = MNB_LAUNCHER_BUTTON (iter->data);
           const gchar       *category   = mnb_launcher_button_get_category (launcher);
           ClutterActor      *e          = g_hash_table_lookup (launcher_data->expanders, category);
-          ClutterActor      *inner_grid = nbtk_expander_get_child (NBTK_EXPANDER (e));
+          ClutterActor      *inner_grid = mnb_expander_get_child (MNB_EXPANDER (e));
 
           clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
         }
