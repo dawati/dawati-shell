@@ -8,6 +8,13 @@ _manager_num_levels_changed_cb (DalstonBrightnessManager *manager,
            num_levels);
 }
 
+static void
+_brightness_changed_cb (DalstonBrightnessManager *manager,
+                        gint                      value)
+{
+  g_debug (G_STRLOC ": Brightness: %d", value);
+}
+
 int
 main (int    argc,
       char **argv)
@@ -25,5 +32,11 @@ main (int    argc,
                     _manager_num_levels_changed_cb,
                     NULL);
 
+  dalston_brightness_manager_start_monitoring (manager);
+
+  g_signal_connect (manager,
+                    "brightness-changed",
+                    _brightness_changed_cb,
+                    NULL);
   g_main_loop_run (loop);
 }
