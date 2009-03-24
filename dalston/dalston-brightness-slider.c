@@ -166,6 +166,7 @@ dalston_brightness_slider_init (DalstonBrightnessSlider *self)
                     "value-changed",
                     (GCallback)_range_value_changed_cb,
                     self);
+  gtk_scale_set_value_pos (GTK_SCALE (self), GTK_POS_BOTTOM);
 }
 
 DalstonBrightnessSlider *
