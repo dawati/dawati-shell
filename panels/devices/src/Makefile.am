@@ -8,5 +8,6 @@ test_battery_monitor_LDADD = $(top_builddir)/dalston/libdalston.la \
 test_battery_monitor_SOURCES = test-battery-monitor.c
 test_brightness_manager_LDADD = $(top_builddir)/dalston/libdalston.la \
 	     $(top_builddir)/libhal-glib/libhal-glib.la \
+	     $(top_builddir)/libhal-panel-glib/libhal-panel-glib.la \
 	     $(DBUS_GLIB_LIBS) $(GLIB_LIBS)
 test_brightness_manager_SOURCES = test-brightness-manager.c
