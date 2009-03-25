@@ -45,10 +45,11 @@ void mnb_launcher_monitor_free (MnbLauncherMonitor *monitor);
 typedef struct MnbLauncherTree_ MnbLauncherTree;
 
 MnbLauncherTree *     mnb_launcher_tree_create          (void);
+GSList *              mnb_launcher_tree_list_entries    (MnbLauncherTree            *tree);
 MnbLauncherMonitor *  mnb_launcher_tree_create_monitor  (MnbLauncherTree            *tree,
                                                          MnbLauncherMonitorFunction  monitor_function,
                                                          gpointer                    user_data);
-GSList const *        mnb_launcher_tree_get_directories (MnbLauncherTree            *tree);
+void                  mnb_launcher_tree_free_entries    (GSList                     *entries);
 void                  mnb_launcher_tree_free            (MnbLauncherTree            *tree);
 
 /*

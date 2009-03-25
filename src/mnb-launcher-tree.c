@@ -38,25 +38,39 @@ struct MnbLauncherMonitor_ {
   gpointer                     user_data;
 };
 
+static gboolean
+menu_changed_idle_cb (MnbLauncherMonitor *self)
+{
+  self->monitor_function (self, self->user_data);
+
+  return FALSE;
+}
+
 static void
 applications_menu_changed_cb (GMenuTree           *tree,
                               MnbLauncherMonitor  *self)
 {
   g_return_if_fail (self);
 
-  self->monitor_function (self, self->user_data);
+  /* Filter multiple notifications. */
+  g_idle_remove_by_data (self);
+  g_idle_add_full (G_PRIORITY_LOW,
+                   (GSourceFunc) menu_changed_idle_cb,
+                   self, NULL);
 }
 
-/*
 static void
 settings_menu_changed_cb (GMenuTree           *tree,
                           MnbLauncherMonitor  *self)
 {
   g_return_if_fail (self);
 
-  self->monitor_function (self, self->user_data);
+  /* Filter multiple notifications. */
+  g_idle_remove_by_data (self);
+  g_idle_add_full (G_PRIORITY_LOW,
+                   (GSourceFunc) menu_changed_idle_cb,
+                   self, NULL);
 }
-*/
 
 void
 mnb_launcher_monitor_free (MnbLauncherMonitor *self)
@@ -67,11 +81,10 @@ mnb_launcher_monitor_free (MnbLauncherMonitor *self)
                              (GMenuTreeChangedFunc) applications_menu_changed_cb,
                              self);
   gmenu_tree_unref (self->applications);
-/*
+
   gmenu_tree_remove_monitor (self->settings,
                              (GMenuTreeChangedFunc) settings_menu_changed_cb,
                              self);
-*/
   gmenu_tree_unref (self->settings);
 
   g_free (self);
@@ -269,41 +282,53 @@ get_all_applications_from_dir (GMenuTreeDirectory *branch,
 struct MnbLauncherTree_ {
   GMenuTree *applications;
   GMenuTree *settings;
-  GSList    *tree;
 };
 
 MnbLauncherTree *
 mnb_launcher_tree_create (void)
 {
-  MnbLauncherTree     *self;
-  GMenuTreeDirectory  *root;
-  GSList              *tree_iter;
+  MnbLauncherTree *self;
 
   self = g_new0 (MnbLauncherTree, 1);
 
+  self->applications = gmenu_tree_lookup ("applications.menu",
+                                          GMENU_TREE_FLAGS_NONE);
+  self->settings = gmenu_tree_lookup ("settings.menu",
+                                      GMENU_TREE_FLAGS_NONE);
+  return self;
+}
+
+GSList *
+mnb_launcher_tree_list_entries (MnbLauncherTree *self)
+{
+  GMenuTreeDirectory  *root;
+  GSList              *tree;
+  GSList              *tree_iter;
+
+  g_return_val_if_fail (tree, NULL);
+
+  tree = NULL;
+
   /* Applications. */
-  self->applications = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
   root = gmenu_tree_get_root_directory (self->applications);
-  self->tree = get_all_applications_from_dir (root, self->tree, TRUE);
+  tree = get_all_applications_from_dir (root, tree, TRUE);
   gmenu_tree_item_unref (root);
 
   /* Settings. */
-  self->settings = gmenu_tree_lookup ("settings.menu", GMENU_TREE_FLAGS_NONE);
   root = gmenu_tree_get_root_directory (self->settings);
-  self->tree = get_all_applications_from_dir (root, self->tree, TRUE);
+  tree = get_all_applications_from_dir (root, tree, TRUE);
   gmenu_tree_item_unref (root);
 
   /* Sort directories. */
-  self->tree = g_slist_sort (self->tree,
-                             (GCompareFunc) mnb_launcher_directory_compare);
+  tree = g_slist_sort (tree, (GCompareFunc) mnb_launcher_directory_compare);
 
   /* Sort entries inside directories. */
-  for (tree_iter = self->tree; tree_iter; tree_iter = tree_iter->next)
+  for (tree_iter = tree; tree_iter; tree_iter = tree_iter->next)
     {
       mnb_launcher_directory_sort_entries ((MnbLauncherDirectory *) tree_iter->data);
     }
 
-  return self;
+  return tree;
 }
 
 MnbLauncherMonitor *
@@ -323,11 +348,10 @@ mnb_launcher_tree_create_monitor  (MnbLauncherTree            *tree,
                           self);
 
   self->settings = gmenu_tree_ref (tree->settings);
-/* Avoid double notifications
   gmenu_tree_add_monitor (self->settings,
                           (GMenuTreeChangedFunc) settings_menu_changed_cb,
                           self);
-*/
+
   self->monitor_function = monitor_function;
   self->user_data = user_data;
 
@@ -335,30 +359,28 @@ mnb_launcher_tree_create_monitor  (MnbLauncherTree            *tree,
 
 }
 
-GSList const *
-mnb_launcher_tree_get_directories (MnbLauncherTree *tree)
-{
-  g_return_val_if_fail (tree, NULL);
-
-  return tree->tree;
-}
-
 void
-mnb_launcher_tree_free (MnbLauncherTree *tree)
+mnb_launcher_tree_free_entries (GSList *entries)
 {
   GSList *iter;
 
-  g_return_if_fail (tree);
-
-  gmenu_tree_unref (tree->applications);
-  gmenu_tree_unref (tree->settings);
-
-  iter = tree->tree;
+  iter = entries;
   while (iter)
     {
       mnb_launcher_directory_free ((MnbLauncherDirectory *) iter->data);
       iter = g_slist_delete_link (iter, iter);
     }
+}
+
+void
+mnb_launcher_tree_free (MnbLauncherTree *tree)
+{
+  g_return_if_fail (tree);
+
+  gmenu_tree_unref (tree->applications);
+  gmenu_tree_unref (tree->settings);
+
+  g_free (tree);
 }
 
 const gchar *

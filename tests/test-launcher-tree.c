@@ -14,26 +14,28 @@ main (int     argc,
 {
   GtkIconTheme    *theme;
   MnbLauncherTree *tree;
-  GSList const    *tree_iter;
+  GSList          *directories;
+  GSList const    *directory_iter;
 
   gtk_init (&argc, &argv);
 
   theme = gtk_icon_theme_get_default ();
   tree = mnb_launcher_tree_create ();
+  directories = mnb_launcher_tree_list_entries (tree);
 
-  for (tree_iter = mnb_launcher_tree_get_directories (tree); 
-       tree_iter;
-       tree_iter = tree_iter->next)
+  for (directory_iter = directories; 
+       directory_iter;
+       directory_iter = directory_iter->next)
     {
       MnbLauncherDirectory  *directory;
-      GSList                *directory_iter;
+      GSList                *entry_iter;
 
-      directory = (MnbLauncherDirectory *) tree_iter->data;
+      directory = (MnbLauncherDirectory *) directory_iter->data;
       printf ("%s\n", directory->name);
 
-      for (directory_iter = directory->entries;
-            directory_iter;
-            directory_iter = directory_iter->next)
+      for (entry_iter = directory->entries;
+            entry_iter;
+            entry_iter = entry_iter->next)
         {
           MnbLauncherEntry  *entry;
           GtkIconInfo       *info;
@@ -41,7 +43,7 @@ main (int     argc,
           gchar             *exec;
           gboolean           is_fallback;
 
-          entry = directory_iter->data;
+          entry = entry_iter->data;
           info = NULL;
           icon_file = NULL;
           is_fallback = FALSE;
@@ -91,6 +93,7 @@ main (int     argc,
         }
     }
 
+  mnb_launcher_tree_free_entries (directories);
   mnb_launcher_tree_free (tree);
 
   return EXIT_SUCCESS;

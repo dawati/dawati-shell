@@ -8,36 +8,37 @@
 
 static void
 launchers_change_cb (MnbLauncherMonitor *monitor,
-                     const gchar        *message)
+                     MnbLauncherTree    *tree)
 {
-  printf ("%s() '%s'\n", __FUNCTION__, message);
-}
+  GSList *directories;
 
-/* This leaks. */
-static gboolean
-test_launcher_monitor (void)
-{
-  MnbLauncherTree     *tree;
-  MnbLauncherMonitor  *monitor;
+  printf ("%s()\n", __FUNCTION__);
 
-  tree = mnb_launcher_tree_create ();
-  monitor = mnb_launcher_tree_create_monitor (tree,
-                                              (MnbLauncherMonitorFunction) launchers_change_cb,
-                                              "apps changed");
-  mnb_launcher_tree_free (tree);
-
-  return FALSE;
+  /* GMenu requires walking the tree in order to keep the monitor active. */
+  directories = mnb_launcher_tree_list_entries (tree);
+  mnb_launcher_tree_free_entries (directories);
 }
 
 int
 main (int     argc,
       char  **argv)
 {
+  MnbLauncherTree     *tree;
+  MnbLauncherMonitor  *monitor;
+  GSList              *directories;
+
   gtk_init (&argc, &argv);
 
-  test_launcher_monitor ();
+  tree = mnb_launcher_tree_create ();
+  directories = mnb_launcher_tree_list_entries (tree);
+  monitor = mnb_launcher_tree_create_monitor (tree,
+                                              (MnbLauncherMonitorFunction) launchers_change_cb,
+                                              tree);
+  mnb_launcher_tree_free_entries (directories);
 
   gtk_main ();
+
+  mnb_launcher_tree_free (tree);
 
   return EXIT_SUCCESS;
 }

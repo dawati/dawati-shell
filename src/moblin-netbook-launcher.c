@@ -112,6 +112,7 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
  */
 typedef struct
 {
+  MutterPlugin        *self;
   MnbLauncherMonitor  *monitor;
   ClutterActor        *grid;
   GHashTable          *expanders;
@@ -121,8 +122,9 @@ typedef struct
   char                *lcase_needle;
 } launcher_data_t;
 
-static void
-launcher_data_changed_cb (launcher_data_t *launcher_data);
+static void launcher_data_monitor_cb (MnbLauncherMonitor  *monitor,
+                                      launcher_data_t     *launcher_data);
+
 
 static void
 expander_notify_cb (MnbExpander    *expander,
@@ -147,19 +149,41 @@ expander_notify_cb (MnbExpander    *expander,
     }
 }
 
-/*
- * Ctor.
- */
-static launcher_data_t *
-launcher_data_new (MutterPlugin *self)
+static void
+launcher_data_cancel_search (launcher_data_t *launcher_data)
 {
-  launcher_data_t *launcher_data;
-  MnbLauncherTree *tree;
-  GSList const    *tree_iter;
-  GtkIconTheme    *theme;
+  /* Abort current search if any. */
+  if (launcher_data->lcase_needle)
+    {
+      g_idle_remove_by_data (launcher_data);
+      launcher_data->launchers_iter = NULL;
+      g_free (launcher_data->lcase_needle);
+      launcher_data->lcase_needle = NULL;
+    }
+}
 
-  /* Launcher data instance. */
-  launcher_data = g_new0 (launcher_data_t, 1);
+static void
+launcher_data_reset (launcher_data_t *launcher_data)
+{
+  launcher_data_cancel_search (launcher_data);
+
+  clutter_actor_destroy (launcher_data->grid);
+  launcher_data->grid = NULL;
+
+  g_hash_table_destroy (launcher_data->expanders);
+  launcher_data->expanders = NULL;
+
+  g_slist_free (launcher_data->launchers);
+  launcher_data->launchers = NULL;
+}
+
+static void
+launcher_data_fill (launcher_data_t *launcher_data)
+{
+  MnbLauncherTree *tree;
+  GSList          *directories;
+  GSList const    *directory_iter;
+  GtkIconTheme    *theme;
 
   launcher_data->grid = CLUTTER_ACTOR (nbtk_grid_new ());
   clutter_actor_set_width (launcher_data->grid,
@@ -173,19 +197,19 @@ launcher_data_new (MutterPlugin *self)
   launcher_data->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                     g_free, NULL);
 
-
-  tree = mnb_launcher_tree_create ();
   theme = gtk_icon_theme_get_default ();
+  tree = mnb_launcher_tree_create ();
+  directories = mnb_launcher_tree_list_entries (tree);
 
-  for (tree_iter = mnb_launcher_tree_get_directories (tree);
-       tree_iter;
-       tree_iter = tree_iter->next)
+  for (directory_iter = directories;
+       directory_iter;
+       directory_iter = directory_iter->next)
     {
       MnbLauncherDirectory  *directory;
-      GSList                *directory_iter;
+      GSList                *entry_iter;
       ClutterActor          *expander, *inner_grid;
 
-      directory = (MnbLauncherDirectory *) tree_iter->data;
+      directory = (MnbLauncherDirectory *) directory_iter->data;
 
       /* Expander. */
       expander = CLUTTER_ACTOR (mnb_expander_new (directory->name));
@@ -198,7 +222,7 @@ launcher_data_new (MutterPlugin *self)
                         G_CALLBACK (expander_notify_cb), launcher_data);
 
       /* Open first expander by default. */
-      if (tree_iter == mnb_launcher_tree_get_directories (tree))
+      if (directory_iter == directories)
         {
           mnb_expander_set_expanded (MNB_EXPANDER (expander), TRUE);
         }
@@ -206,14 +230,14 @@ launcher_data_new (MutterPlugin *self)
       inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
       clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
-      for (directory_iter = directory->entries; directory_iter; directory_iter = directory_iter->next)
+      for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
         {
           const gchar   *generic_name, *description, *icon_name, *icon_file;
           gchar         *exec, *last_used;
           struct stat    exec_stat;
 
           GtkIconInfo       *info;
-          MnbLauncherEntry  *entry = directory_iter->data;
+          MnbLauncherEntry  *entry = entry_iter->data;
 
           info = NULL;
           icon_file = NULL;
@@ -267,7 +291,8 @@ launcher_data_new (MutterPlugin *self)
               clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                      CLUTTER_ACTOR (button), NULL);
               g_signal_connect (button, "activated",
-                                G_CALLBACK (launcher_activated_cb), self);
+                                G_CALLBACK (launcher_activated_cb),
+                                launcher_data->self);
               launcher_data->launchers = g_slist_prepend (launcher_data->launchers,
                                                           button);
             }
@@ -282,13 +307,34 @@ launcher_data_new (MutterPlugin *self)
   /* Alphabetically sort buttons, so they are in order while filtering. */
   launcher_data->launchers = g_slist_sort (launcher_data->launchers,
                                            (GCompareFunc) mnb_launcher_button_compare);
-  launcher_data->monitor =
-    mnb_launcher_tree_create_monitor (
-      tree,
-      (MnbLauncherMonitorFunction) launcher_data_changed_cb,
-       launcher_data);
 
+  /* Create monitor only once. */
+  if (!launcher_data->monitor)
+    {
+      launcher_data->monitor =
+        mnb_launcher_tree_create_monitor (
+          tree,
+          (MnbLauncherMonitorFunction) launcher_data_monitor_cb,
+           launcher_data);    
+    }
+
+  mnb_launcher_tree_free_entries (directories);
   mnb_launcher_tree_free (tree);
+}
+
+/*
+ * Ctor.
+ */
+static launcher_data_t *
+launcher_data_new (MutterPlugin *self)
+{
+  launcher_data_t *launcher_data;
+
+  /* Launcher data instance. */
+  launcher_data = g_new0 (launcher_data_t, 1);
+  launcher_data->self = self;
+
+  launcher_data_fill (launcher_data);
 
   return launcher_data;
 }
@@ -301,18 +347,23 @@ launcher_data_free_cb (launcher_data_t *launcher_data)
 {
   mnb_launcher_monitor_free (launcher_data->monitor);
 
-  g_hash_table_destroy (launcher_data->expanders);
-
-  /* Launchers themselves are managed by clutter. */
-  g_slist_free (launcher_data->launchers);
-
+  launcher_data_reset (launcher_data);
   g_free (launcher_data);
 }
 
 static void
-launcher_data_changed_cb (launcher_data_t *launcher_data)
+launcher_data_monitor_cb (MnbLauncherMonitor  *monitor,
+                          launcher_data_t     *launcher_data)
 {
-  g_message (__FUNCTION__);
+  ClutterActor *viewport;
+
+  viewport = clutter_actor_get_parent (launcher_data->grid);
+
+  launcher_data_reset (launcher_data);
+  launcher_data_fill (launcher_data);
+
+  clutter_container_add (CLUTTER_CONTAINER (viewport),
+                         CLUTTER_ACTOR (launcher_data->grid), NULL);
 }
 
 static gboolean
@@ -353,14 +404,7 @@ search_activated_cb (MnbEntry         *entry,
 {
   const gchar *needle;
 
-  /* Abort current search if any. */
-  if (launcher_data->lcase_needle)
-    {
-      g_idle_remove_by_data (launcher_data);
-      launcher_data->launchers_iter = NULL;
-      g_free (launcher_data->lcase_needle);
-      launcher_data->lcase_needle = NULL;
-    }
+  launcher_data_cancel_search (launcher_data);
 
   needle = mnb_entry_get_text (entry);
 
