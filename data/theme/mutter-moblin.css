@@ -422,6 +422,11 @@ MnbLauncherButton:hover {
   font-size: 11;
 }
 
+*#mnb-launcher-button-fav-toggle {
+  background-color: red;
+  border-image: none;
+}
+
 /* Penge */
 
 PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengePeoplePane, PengeTasksPane

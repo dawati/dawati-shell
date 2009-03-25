@@ -52,8 +52,9 @@ struct _MnbLauncherButtonClass
   NbtkTableClass parent;
 
   /* signals */
-  void (* activated) (MnbLauncherButton     *self,
-                      ClutterButtonEvent    *event);
+  void (* activated)    (MnbLauncherButton     *self,
+                         ClutterButtonEvent    *event);
+  void (* fav_toggled)  (MnbLauncherButton     *self);
 };
 
 GType mnb_launcher_button_get_type (void) G_GNUC_CONST;
@@ -73,6 +74,7 @@ const char *  mnb_launcher_button_get_comment     (MnbLauncherButton *self);
 void          mnb_launcher_button_set_comment     (MnbLauncherButton *self,
                                                    const gchar       *comment);
 const char *  mnb_launcher_button_get_executable  (MnbLauncherButton *self);
+gboolean      mnb_launcher_button_get_favorite    (MnbLauncherButton *self);
 
 gint          mnb_launcher_button_compare         (MnbLauncherButton *self,
                                                    MnbLauncherButton *other);
