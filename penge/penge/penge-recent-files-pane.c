@@ -11,7 +11,7 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_RECENT_FILES_PANE, PengeRecentFilesPanePrivate))
 
 #define NUMBER_COLS 2
-#define NUMBER_OF_ITEMS 6
+#define NUMBER_OF_ITEMS 8
 
 static void penge_recent_files_pane_update (PengeRecentFilesPane *pane);
 
@@ -189,7 +189,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                      "x-expand",
                                      FALSE,
                                      NULL);
-        clutter_actor_set_size (actor, 150, 150);
+        clutter_actor_set_size (actor, 170, 115);
         g_hash_table_insert (priv->uri_to_actor,
                              g_strdup (uri),
                              g_object_ref (actor));
