@@ -380,6 +380,12 @@ MnbDropDown, MnbSwitcher {
   padding: 4;
 }
 
+*#app-launcher-apps-label {
+  font-family: "Liberation Sans Bold";
+  font-size: 14;
+  color: #7e7e7e;
+}
+
 *.MnbEntryEntry {
   font-size: 18;
 }

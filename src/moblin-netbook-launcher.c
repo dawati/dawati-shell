@@ -32,6 +32,8 @@
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
 
+#include <penge/penge-app-bookmark-manager.h>
+
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-launcher.h"
@@ -108,20 +110,181 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
   hide_panel (plugin);
 }
 
+static NbtkWidget *
+create_launcher_button_from_entry (MnbLauncherEntry *entry,
+                                   const gchar      *category,
+                                   GtkIconTheme     *theme)
+{
+  const gchar *generic_name, *description, *icon_name, *icon_file;
+  gchar       *exec;
+  GtkIconInfo *info;
+  NbtkWidget  *button;
+
+  info = NULL;
+  icon_file = NULL;
+  button = NULL;
+
+  generic_name = mnb_launcher_entry_get_name (entry);
+  exec = mnb_launcher_entry_get_exec (entry);
+  description = mnb_launcher_entry_get_comment (entry);
+  icon_name = mnb_launcher_entry_get_icon (entry);
+  if (icon_name)
+    {
+      info = gtk_icon_theme_lookup_icon (theme,
+                                          icon_name,
+                                          ICON_SIZE,
+                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+    }
+  if (!info)
+    {
+      info = gtk_icon_theme_lookup_icon (theme,
+                                          "applications-other",
+                                          ICON_SIZE,
+                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+    }
+  if (info)
+    {
+      icon_file = gtk_icon_info_get_filename (info);
+    }
+
+  if (generic_name && exec && icon_file)
+    {
+      gchar *last_used;
+
+      /* Launcher button */
+      last_used = mnb_launcher_utils_get_last_used (exec);
+      button = mnb_launcher_button_new (icon_file, ICON_SIZE,
+                                        generic_name, category,
+                                        description, last_used, exec);
+      g_free (last_used);
+      clutter_actor_set_size (CLUTTER_ACTOR (button),
+                              LAUNCHER_WIDTH,
+                              LAUNCHER_HEIGHT);
+    }
+
+  if (exec)
+    g_free (exec);
+  if (info)
+    gtk_icon_info_free (info);
+
+  return button;
+}
+
+static NbtkWidget *
+create_launcher_button_from_uri (gchar const  *uri,
+                                 GtkIconTheme *theme)
+{
+  GKeyFile    *file;
+  gchar       *generic_name, *description, *icon_name;
+  gchar       *file_path, *exec;
+  const gchar *icon_file;
+  GtkIconInfo *info;
+  GError      *error;
+  NbtkWidget  *button;
+
+  error = NULL;
+  file_path = g_filename_from_uri (uri, NULL, &error);
+  if (error)
+    {
+      g_warning ("%s", error->message);
+      g_free (error);
+      return NULL;
+    }
+
+  file = g_key_file_new ();
+  g_key_file_load_from_file (file, file_path, G_KEY_FILE_NONE, &error);
+  g_free (file_path);
+  if (error)
+    {
+      g_warning ("%s", error->message);
+      g_free (error);
+      return NULL;
+    }
+
+  generic_name = NULL;
+  description = NULL;
+  icon_name = NULL;
+  file_path = NULL;
+  exec = NULL;
+  info = NULL;
+  icon_file = NULL;
+  button = NULL;
+
+#define READ_OR_BAIL(key_, ret_)                                              \
+  ret_ = g_key_file_get_value (file, G_KEY_FILE_DESKTOP_GROUP, key_, &error); \
+  if (error) goto bail;
+
+  READ_OR_BAIL (G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME, generic_name);
+  if (!generic_name)
+    READ_OR_BAIL (G_KEY_FILE_DESKTOP_KEY_NAME, generic_name);
+  READ_OR_BAIL (G_KEY_FILE_DESKTOP_KEY_EXEC, exec);
+  /* FIXME: factor out the binary extraction into a util func and use here. */
+  READ_OR_BAIL (G_KEY_FILE_DESKTOP_KEY_COMMENT, description);
+  READ_OR_BAIL (G_KEY_FILE_DESKTOP_KEY_ICON, icon_name);
+
+#undef READ_OR_BAIL
+
+  if (icon_name)
+    {
+      info = gtk_icon_theme_lookup_icon (theme,
+                                          icon_name,
+                                          ICON_SIZE,
+                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+    }
+  if (!info)
+    {
+      info = gtk_icon_theme_lookup_icon (theme,
+                                          "applications-other",
+                                          ICON_SIZE,
+                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+    }
+  if (info)
+    {
+      icon_file = gtk_icon_info_get_filename (info);
+    }
+
+  if (generic_name && exec && icon_file)
+    {
+      gchar *last_used;
+
+      /* Launcher button */
+      last_used = mnb_launcher_utils_get_last_used (exec);
+      button = mnb_launcher_button_new (icon_file, ICON_SIZE,
+                                        generic_name, NULL,
+                                        description, last_used, exec);
+      g_free (last_used);
+      clutter_actor_set_size (CLUTTER_ACTOR (button),
+                              LAUNCHER_WIDTH,
+                              LAUNCHER_HEIGHT);
+    }
+
+bail:
+  g_free (generic_name);
+  g_free (description);
+  g_free (icon_name);
+  g_free (exec);
+  gtk_icon_info_free (info);
+  g_key_file_free (file);
+
+  return button;
+}
+
 /*
  * Helper struct that contains all the info needed to switch between
  * browser- and filter-mode.
  */
 typedef struct
 {
-  MutterPlugin        *self;
-  MnbLauncherMonitor  *monitor;
-  ClutterActor        *grid;
-  GHashTable          *expanders;
-  GSList              *launchers;
-  gboolean             is_filtering;
-  GSList              *launchers_iter;
-  char                *lcase_needle;
+  MutterPlugin            *self;
+  PengeAppBookmarkManager *manager;
+  MnbLauncherMonitor      *monitor;
+  ClutterActor            *scrolled_vbox;
+  ClutterActor            *grid;
+  GHashTable              *expanders;
+  GSList                  *launchers;
+  gboolean                 is_filtering;
+  GSList                  *launchers_iter;
+  char                    *lcase_needle;
 } launcher_data_t;
 
 static void launcher_data_monitor_cb (MnbLauncherMonitor  *monitor,
@@ -169,8 +332,8 @@ launcher_data_reset (launcher_data_t *launcher_data)
 {
   launcher_data_cancel_search (launcher_data);
 
-  clutter_actor_destroy (launcher_data->grid);
-  launcher_data->grid = NULL;
+  clutter_actor_destroy (launcher_data->scrolled_vbox);
+  launcher_data->scrolled_vbox = NULL;
 
   g_hash_table_destroy (launcher_data->expanders);
   launcher_data->expanders = NULL;
@@ -182,11 +345,82 @@ launcher_data_reset (launcher_data_t *launcher_data)
 static void
 launcher_data_fill (launcher_data_t *launcher_data)
 {
+  GList           *fav_apps;
+  ClutterActor    *label;
   MnbLauncherTree *tree;
   GSList          *directories;
   GSList const    *directory_iter;
   GtkIconTheme    *theme;
+  gint             row = 0;
 
+  theme = gtk_icon_theme_get_default ();
+
+  launcher_data->scrolled_vbox = CLUTTER_ACTOR (nbtk_table_new ());
+
+  /*
+   * Fav apps.
+   */
+  fav_apps = penge_app_bookmark_manager_get_bookmarks (launcher_data->manager);
+  if (fav_apps)
+    {
+      ClutterActor  *fav_grid;
+      GList         *fav_apps_iter;
+
+      /* Label */
+      label = CLUTTER_ACTOR (nbtk_label_new (_("Favourite Applications")));
+      clutter_actor_set_name (label, "app-launcher-apps-label");
+      nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
+                                  NBTK_WIDGET (label),
+                                  row++, 0, 1, 1,
+                                  NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
+                                  0., 0.);
+
+      /* Grid */
+      fav_grid = CLUTTER_ACTOR (nbtk_grid_new ());
+      nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
+                                  NBTK_WIDGET (fav_grid),
+                                  row++, 0, 1, 1,
+                                  NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
+                                  0., 0.);
+
+      for (fav_apps_iter = fav_apps;
+           fav_apps_iter;
+           fav_apps_iter = fav_apps_iter->next)
+        {
+          PengeAppBookmark *bookmark;
+          NbtkWidget        *button;
+
+          bookmark = (PengeAppBookmark *) fav_apps_iter->data;
+          button = create_launcher_button_from_uri (bookmark->uri, theme);
+
+          if (button)
+            {
+              mnb_launcher_button_set_favorite (MNB_LAUNCHER_BUTTON (button),
+                                                TRUE);
+              clutter_container_add (CLUTTER_CONTAINER (fav_grid),
+                                     CLUTTER_ACTOR (button), NULL);
+              g_signal_connect (button, "activated",
+                                G_CALLBACK (launcher_activated_cb),
+                                launcher_data->self);
+            }
+        }
+      g_list_free (fav_apps);
+    }
+
+  /*
+   * Apps browser.
+   */
+
+  /* Label */
+  label = CLUTTER_ACTOR (nbtk_label_new (_("Applications")));
+  clutter_actor_set_name (label, "app-launcher-apps-label");
+  nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
+                              NBTK_WIDGET (label),
+                              row++, 0, 1, 1,
+                              NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
+                              0., 0.);
+
+  /* Grid */
   launcher_data->grid = CLUTTER_ACTOR (nbtk_grid_new ());
   clutter_actor_set_width (launcher_data->grid,
                            4 * LAUNCHER_WIDTH + 5 * PADDING);
@@ -195,11 +429,15 @@ launcher_data_fill (launcher_data_t *launcher_data)
                          CLUTTER_UNITS_FROM_INT (PADDING));
   nbtk_grid_set_column_gap (NBTK_GRID (launcher_data->grid),
                             CLUTTER_UNITS_FROM_INT (PADDING));
+  nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
+                              NBTK_WIDGET (launcher_data->grid),
+                              row++, 0, 1, 1,
+                              NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
+                              0., 0.);
 
   launcher_data->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                     g_free, NULL);
 
-  theme = gtk_icon_theme_get_default ();
   tree = mnb_launcher_tree_create ();
   directories = mnb_launcher_tree_list_entries (tree);
 
@@ -234,65 +472,21 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
       for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
         {
-          const gchar       *generic_name, *description, *icon_name, *icon_file;
-          gchar             *exec;
-          GtkIconInfo       *info;
-          MnbLauncherEntry  *entry;
+          NbtkWidget *button;
 
-          info = NULL;
-          icon_file = NULL;
-          entry = entry_iter->data;
-
-          generic_name = mnb_launcher_entry_get_name (entry);
-          exec = mnb_launcher_entry_get_exec (entry);
-          description = mnb_launcher_entry_get_comment (entry);
-          icon_name = mnb_launcher_entry_get_icon (entry);
-          if (icon_name)
+          button = create_launcher_button_from_entry ((MnbLauncherEntry *) entry_iter->data,
+                                                      directory->name,
+                                                      theme);
+          if (button)
             {
-              info = gtk_icon_theme_lookup_icon (theme,
-                                                 icon_name,
-                                                 ICON_SIZE,
-                                                 GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-            }
-          if (!info)
-            {
-              info = gtk_icon_theme_lookup_icon (theme,
-                                                 "applications-other",
-                                                 ICON_SIZE,
-                                                 GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-            }
-          if (info)
-            {
-              icon_file = gtk_icon_info_get_filename (info);
-            }
-
-          if (generic_name && exec && icon_file)
-            {
-              NbtkWidget  *button;
-              gchar       *last_used;
-
-              /* Launcher button */
-              last_used = mnb_launcher_utils_get_last_used (exec);
-              button = mnb_launcher_button_new (icon_file, ICON_SIZE,
-                                                generic_name, directory->name,
-                                                description, last_used, exec);
-              g_free (last_used);
-              clutter_actor_set_size (CLUTTER_ACTOR (button),
-                                      LAUNCHER_WIDTH,
-                                      LAUNCHER_HEIGHT);
               clutter_container_add (CLUTTER_CONTAINER (inner_grid),
-                                     CLUTTER_ACTOR (button), NULL);
+                                      CLUTTER_ACTOR (button), NULL);
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_activated_cb),
                                 launcher_data->self);
               launcher_data->launchers = g_slist_prepend (launcher_data->launchers,
                                                           button);
             }
-
-          if (exec)
-            g_free (exec);
-          if (info)
-              gtk_icon_info_free (info);
         }
     }
 
@@ -307,7 +501,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
         mnb_launcher_tree_create_monitor (
           tree,
           (MnbLauncherMonitorFunction) launcher_data_monitor_cb,
-           launcher_data);    
+           launcher_data);
     }
 
   mnb_launcher_tree_free_entries (directories);
@@ -325,6 +519,8 @@ launcher_data_new (MutterPlugin *self)
   /* Launcher data instance. */
   launcher_data = g_new0 (launcher_data_t, 1);
   launcher_data->self = self;
+  launcher_data->manager = penge_app_bookmark_manager_get_default ();
+  penge_app_bookmark_manager_load (launcher_data->manager);
 
   launcher_data_fill (launcher_data);
 
@@ -337,6 +533,7 @@ launcher_data_new (MutterPlugin *self)
 static void
 launcher_data_free_cb (launcher_data_t *launcher_data)
 {
+  g_object_unref (launcher_data->manager);
   mnb_launcher_monitor_free (launcher_data->monitor);
 
   launcher_data_reset (launcher_data);
@@ -349,13 +546,13 @@ launcher_data_monitor_cb (MnbLauncherMonitor  *monitor,
 {
   ClutterActor *viewport;
 
-  viewport = clutter_actor_get_parent (launcher_data->grid);
+  viewport = clutter_actor_get_parent (launcher_data->scrolled_vbox);
 
   launcher_data_reset (launcher_data);
   launcher_data_fill (launcher_data);
 
   clutter_container_add (CLUTTER_CONTAINER (viewport),
-                         CLUTTER_ACTOR (launcher_data->grid), NULL);
+                         CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
 }
 
 static gboolean
@@ -502,7 +699,7 @@ make_launcher (MutterPlugin *plugin,
   nbtk_table_set_row_spacing (NBTK_TABLE (vbox), WIDGET_SPACING);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
 
-  /* 1st row: Filter. */
+  /* Filter row. */
   hbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (hbox), "app-launcher-search");
   nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
@@ -528,11 +725,14 @@ make_launcher (MutterPlugin *plugin,
   g_signal_connect (drop_down, "hide-completed",
                     G_CALLBACK (dropdown_hide_cb), entry);
 
+  /*
+   * Applications
+   */
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   /* Add launcher table. */
   launcher_data = launcher_data_new (plugin);
   clutter_container_add (CLUTTER_CONTAINER (viewport),
-                         CLUTTER_ACTOR (launcher_data->grid), NULL);
+                         CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
 
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   clutter_container_add (CLUTTER_CONTAINER (scroll),

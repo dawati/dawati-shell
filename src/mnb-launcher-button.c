@@ -275,7 +275,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   label = nbtk_label_get_clutter_text (self->priv->comment);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
-  
+
   /* "fav app" toggle */
   self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (nbtk_button_new ()));
   nbtk_button_set_toggle_mode (NBTK_BUTTON (self->priv->fav_toggle), TRUE);
@@ -288,7 +288,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
                               0, 2, 3, 1,
                               0,
                               0., 0.);
-  g_signal_connect (self->priv->fav_toggle, "clicked", 
+  g_signal_connect (self->priv->fav_toggle, "clicked",
                     G_CALLBACK (fav_button_clicked_cb), self);
 }
 
@@ -382,7 +382,7 @@ mnb_launcher_button_set_comment (MnbLauncherButton *self,
 {
   g_return_if_fail (self);
 
-  nbtk_label_set_text (self->priv->comment, comment);  
+  nbtk_label_set_text (self->priv->comment, comment);
 }
 
 const char *
@@ -405,6 +405,17 @@ mnb_launcher_button_get_favorite (MnbLauncherButton *self)
                 NULL);
 
   return is_checked;
+}
+
+void
+mnb_launcher_button_set_favorite (MnbLauncherButton *self,
+                                  gboolean           is_favorite)
+{
+  g_return_if_fail (self);
+
+  g_object_set (self->priv->fav_toggle,
+                "checked", is_favorite,
+                NULL);
 }
 
 gint
