@@ -70,6 +70,7 @@ void connman_client_connect(ConnmanClient *client, const gchar *network);
 void connman_client_disconnect(ConnmanClient *client, const gchar *network);
 
 void connman_client_set_offline_mode(ConnmanClient *client, gboolean offline);
+gboolean connman_client_get_offline_mode(ConnmanClient *client);
 
 guint connman_client_get_security(ConnmanClient *client, const gchar *network);
 gchar *connman_client_get_passphrase(ConnmanClient *client, const gchar *network);

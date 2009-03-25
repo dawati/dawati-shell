@@ -632,3 +632,24 @@ void connman_client_set_offline_mode(ConnmanClient *client,
 
   g_value_unset(&value);
 }
+
+void _is_offline_mode(gpointer key, gpointer value, gpointer user_data)
+{
+  gchar *skey = (gchar *)key;
+  if (g_strcmp0(skey, "OfflineMode")) {
+    user_data = (gboolean *) value;
+  }
+}
+
+gboolean connman_client_get_offline_mode(ConnmanClient *client)
+{
+  ConnmanClientPrivate *priv = CONNMAN_CLIENT_GET_PRIVATE(client);
+  gboolean offline;
+  GHashTable *properties;
+  GError *error = NULL;
+
+  connman_get_properties(priv->manager, &properties, &error);
+  g_hash_table_foreach(properties, _is_offline_mode, &offline);
+
+  return offline;
+}

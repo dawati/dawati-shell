@@ -18,4 +18,8 @@ libtool
 ltmain.sh
 missing
 stamp-h1
-
+*.libs
+*.la
+*.lo
+*.o
+*.a
