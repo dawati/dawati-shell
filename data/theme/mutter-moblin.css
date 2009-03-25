@@ -423,8 +423,12 @@ MnbLauncherButton:hover {
 }
 
 *#mnb-launcher-button-fav-toggle {
-  background-color: red;
+  background-image: url("file://launcher/launcher-button-fav-toggle-unpinned.png");
   border-image: none;
+}
+
+*#mnb-launcher-button-fav-toggle:checked {
+  background-image: url("file://launcher/launcher-button-fav-toggle-pinned.png");
 }
 
 /* Penge */
