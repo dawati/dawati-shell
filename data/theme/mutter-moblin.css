@@ -439,9 +439,14 @@ MnbLauncherButton:hover {
 
 /* Penge */
 
-PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengePeoplePane, PengeTasksPane
+PengeGridView
 {
   padding: 8;
+}
+
+PengeCalendarPane, PengeAppsPane
+{
+  border-image: url('file://mzone/backdrop.png') 5 5 5 5;
 }
 
 PengeEventTile, PengeTaskTile, PengeAppTile
