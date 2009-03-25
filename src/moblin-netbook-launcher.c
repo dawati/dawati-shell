@@ -28,12 +28,9 @@
 #endif
 
 #include <string.h>
-#include <sys/stat.h>
 
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
-
-#include <penge/penge-utils.h>
 
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
@@ -59,6 +56,7 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   const gchar                *exec = mnb_launcher_button_get_executable (launcher);
+  gchar                      *last_used;
   gboolean                    without_chooser = FALSE;
   gint                        workspace       = -2;
 
@@ -100,6 +98,10 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
     }
 
   moblin_netbook_spawn (plugin, exec, event->time, without_chooser, workspace);
+
+  last_used = mnb_launcher_utils_get_last_used (exec);
+  mnb_launcher_button_set_comment (launcher, last_used);
+  g_free (last_used);
 
   clutter_actor_hide (priv->launcher);
   nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
@@ -232,15 +234,14 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
       for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
         {
-          const gchar   *generic_name, *description, *icon_name, *icon_file;
-          gchar         *exec, *last_used;
-          struct stat    exec_stat;
-
+          const gchar       *generic_name, *description, *icon_name, *icon_file;
+          gchar             *exec;
           GtkIconInfo       *info;
-          MnbLauncherEntry  *entry = entry_iter->data;
+          MnbLauncherEntry  *entry;
 
           info = NULL;
           icon_file = NULL;
+          entry = entry_iter->data;
 
           generic_name = mnb_launcher_entry_get_name (entry);
           exec = mnb_launcher_entry_get_exec (entry);
@@ -267,20 +268,11 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
           if (generic_name && exec && icon_file)
             {
-              NbtkWidget    *button;
-
-              /* FIXME robsta: read "last launched" from persist cache once we have that.
-               * For now approximate. */
-              last_used = NULL;
-              if (0 == stat (exec, &exec_stat) &&
-                  exec_stat.st_atime != exec_stat.st_mtime)
-                {
-                  GTimeVal atime = { 0 ,0 };
-                  atime.tv_sec = exec_stat.st_atime;
-                  last_used = penge_utils_format_time (&atime);
-                }
+              NbtkWidget  *button;
+              gchar       *last_used;
 
               /* Launcher button */
+              last_used = mnb_launcher_utils_get_last_used (exec);
               button = mnb_launcher_button_new (icon_file, ICON_SIZE,
                                                 generic_name, directory->name,
                                                 description, last_used, exec);

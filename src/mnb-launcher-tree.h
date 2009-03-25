@@ -70,6 +70,12 @@ gchar *       mnb_launcher_entry_get_exec     (MnbLauncherEntry *entry);
 const gchar * mnb_launcher_entry_get_icon     (MnbLauncherEntry *entry);
 const gchar * mnb_launcher_entry_get_comment  (MnbLauncherEntry *entry);
 
+/*
+ * Utils.
+ */
+
+gchar * mnb_launcher_utils_get_last_used (const gchar *executable);
+
 G_END_DECLS
 
 #endif /* MNB_LAUNCHER_TREE_H */

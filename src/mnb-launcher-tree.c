@@ -21,11 +21,20 @@
  * 02111-1307, USA.
  */
 
-#define GMENU_I_KNOW_THIS_IS_UNSTABLE
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <sys/stat.h>
+
+#define GMENU_I_KNOW_THIS_IS_UNSTABLE
 #include <gmenu-tree.h>
 
+#include <penge/penge-utils.h>
+
 #include "mnb-launcher-tree.h"
+#include "moblin-netbook.h"
 
 /*
  * MnbLauncherMonitor.
@@ -474,5 +483,26 @@ mnb_launcher_entry_get_comment (MnbLauncherEntry *entry)
   g_return_val_if_fail (entry, NULL);
 
   return gmenu_tree_entry_get_comment (entry->entry);
+}
+
+gchar *
+mnb_launcher_utils_get_last_used (const gchar *executable)
+{
+  struct stat  exec_stat;
+  gchar       *last_used;
+
+  if (0 == stat (executable, &exec_stat) &&
+      exec_stat.st_atime != exec_stat.st_mtime)
+    {
+      GTimeVal atime = { 0 ,0 };
+      atime.tv_sec = exec_stat.st_atime;
+      last_used = penge_utils_format_time (&atime);
+    }
+  else
+    {
+      last_used = g_strdup (_("Never opened"));
+    }
+    
+  return last_used;
 }
 

@@ -309,6 +309,15 @@ mnb_launcher_button_get_comment (MnbLauncherButton *self)
   return nbtk_label_get_text (self->priv->comment);
 }
 
+void
+mnb_launcher_button_set_comment (MnbLauncherButton *self,
+                                 const gchar       *comment)
+{
+  g_return_if_fail (self);
+
+  nbtk_label_set_text (self->priv->comment, comment);  
+}
+
 const char *
 mnb_launcher_button_get_executable (MnbLauncherButton *self)
 {
