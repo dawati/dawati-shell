@@ -44,7 +44,7 @@ gint dalston_battery_monitor_get_time_remaining (DalstonBatteryMonitor *monitor)
 gint dalston_battery_monitor_get_charge_percentage (DalstonBatteryMonitor *monitor);
 
 DalstonBatteryMonitorState dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor);
-
+gboolean dalston_battery_monitor_get_ac_connected (DalstonBatteryMonitor *monitor);
 G_END_DECLS
 
 #endif /* _DALSTON_BATTERY_MONITOR */

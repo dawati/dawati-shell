@@ -131,6 +131,26 @@ _hal_battery_device_property_modified (HalDevice   *device,
 }
 
 static void
+_hal_ac_device_property_modified (HalDevice   *device,
+                                  const gchar *key,
+                                  gboolean     is_added,
+                                  gboolean     is_removed,
+                                  gboolean     finally,
+                                  gpointer     userdata)
+{
+  DalstonBatteryMonitor *monitor = DALSTON_BATTERY_MONITOR (userdata);
+  const gchar *key_name;
+
+  key_name = g_intern_string (key);
+
+  if (key_name == g_intern_static_string ("ac_adapter.present"))
+  {
+    g_debug (G_STRLOC ": Key changed: %s", key);
+    g_signal_emit (monitor, signals[STATUS_CHANGED], 0);
+  }
+}
+
+static void
 dalston_battery_monitor_init (DalstonBatteryMonitor *self)
 {
   DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
@@ -159,6 +179,28 @@ dalston_battery_monitor_init (DalstonBatteryMonitor *self)
   g_signal_connect (priv->battery_device,
                     "property-modified",
                     (GCallback)_hal_battery_device_property_modified,
+                    self);
+
+  if (!hal_manager_find_capability (priv->manager,
+                                    "ac_adapter",
+                                    &names,
+                                    &error))
+  {
+    g_warning (G_STRLOC ": Unable to find device with capability 'ac_adapter': %s",
+               error->message);
+    g_clear_error (&error);
+    return;
+  }
+
+  priv->ac_udi = g_strdup (names[0]);
+  hal_manager_free_capability (names);
+
+  priv->ac_device = hal_device_new ();
+  hal_device_set_udi (priv->ac_device, priv->ac_udi);
+  hal_device_watch_property_modified (priv->ac_device);
+  g_signal_connect (priv->ac_device,
+                    "property-modified",
+                    (GCallback)_hal_ac_device_property_modified,
                     self);
 }
 
@@ -244,3 +286,22 @@ dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor)
   return DALSTON_BATTERY_MONITOR_STATE_OTHER;
 }
 
+gboolean
+dalston_battery_monitor_get_ac_connected (DalstonBatteryMonitor *monitor)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (monitor);
+  gboolean value = FALSE;
+  GError *error = NULL;
+
+  if (!hal_device_get_bool (priv->ac_device,
+                            "ac_adapter.present",
+                            &value,
+                            &error))
+  {
+    g_warning (G_STRLOC ": Error getting value ac_adapter.present: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  return value;
+}
