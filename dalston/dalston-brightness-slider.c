@@ -1,6 +1,8 @@
 #include "dalston-brightness-slider.h"
 #include <dalston/dalston-brightness-manager.h>
 
+#include <glib/gi18n.h>
+
 G_DEFINE_TYPE (DalstonBrightnessSlider, dalston_brightness_slider, GTK_TYPE_HSCALE)
 
 #define GET_PRIVATE(o) \
@@ -157,6 +159,26 @@ dalston_brightness_slider_class_init (DalstonBrightnessSliderClass *klass)
   g_object_class_install_property (object_class, PROP_MANAGER, pspec);
 }
 
+static gchar *
+_scale_format_value_cb (GtkScale *scale,
+                        gdouble   value,
+                        gpointer  userdata)
+{
+  DalstonBrightnessSlider *slider = (DalstonBrightnessSlider *)userdata;
+  DalstonBrightnessSliderPrivate *priv = GET_PRIVATE (userdata);
+
+  if ((int)value == 0)
+  {
+    return g_strdup (_("Very dim"));
+  } else if ((int)value == (priv->num_levels - 1)) {
+    return g_strdup (_("Very bright"));
+  } else if ((int)value == (priv->num_levels -1)) {
+    return g_strdup (_("Somewhere in the middle"));
+  } else {
+    return g_strdup ("");
+  }
+}
+
 static void
 dalston_brightness_slider_init (DalstonBrightnessSlider *self)
 {
@@ -167,6 +189,12 @@ dalston_brightness_slider_init (DalstonBrightnessSlider *self)
                     (GCallback)_range_value_changed_cb,
                     self);
   gtk_scale_set_value_pos (GTK_SCALE (self), GTK_POS_BOTTOM);
+
+  g_signal_connect (self,
+                    "format-value",
+                    _scale_format_value_cb,
+                    self);
+
 }
 
 DalstonBrightnessSlider *
