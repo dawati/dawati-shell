@@ -202,5 +202,45 @@ dalston_battery_monitor_get_charge_percentage (DalstonBatteryMonitor *monitor)
   return value;
 }
 
+DalstonBatteryMonitorState
+dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (monitor);
+  DalstonBatteryMonitorState state = DALSTON_BATTERY_MONITOR_STATE_UNKNOWN;
+  gboolean value = FALSE;
+  GError *error = NULL;
 
+  if (!hal_device_get_bool (priv->battery_device,
+                            "battery.rechargeable.is_charging",
+                            &value,
+                            &error))
+  {
+    g_warning (G_STRLOC ": Error getting charge is_charging: %s",
+               error->message);
+    g_clear_error (&error);
+
+    return state;
+  }
+
+  if (value)
+    return DALSTON_BATTERY_MONITOR_STATE_CHARGING;
+
+  if (!hal_device_get_bool (priv->battery_device,
+                            "battery.rechargeable.is_discharging",
+                            &value,
+                            &error))
+  {
+    g_warning (G_STRLOC ": Error getting charge is_discharging: %s",
+               error->message);
+    g_clear_error (&error);
+
+    return state;
+  }
+
+  if (value)
+    return DALSTON_BATTERY_MONITOR_STATE_DISCHARGING;
+
+
+  return DALSTON_BATTERY_MONITOR_STATE_OTHER;
+}
 

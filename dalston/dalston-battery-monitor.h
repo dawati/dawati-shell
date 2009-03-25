@@ -30,10 +30,20 @@ typedef struct {
   GObjectClass parent_class;
 } DalstonBatteryMonitorClass;
 
+typedef enum
+{
+  DALSTON_BATTERY_MONITOR_STATE_UNKNOWN,
+  DALSTON_BATTERY_MONITOR_STATE_CHARGING,
+  DALSTON_BATTERY_MONITOR_STATE_DISCHARGING,
+  DALSTON_BATTERY_MONITOR_STATE_OTHER
+} DalstonBatteryMonitorState;
+
 GType dalston_battery_monitor_get_type (void);
 
 gint dalston_battery_monitor_get_time_remaining (DalstonBatteryMonitor *monitor);
 gint dalston_battery_monitor_get_charge_percentage (DalstonBatteryMonitor *monitor);
+
+DalstonBatteryMonitorState dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor);
 
 G_END_DECLS
 
