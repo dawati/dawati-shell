@@ -210,6 +210,8 @@ penge_grid_view_init (PengeGridView *self)
                                priv->recent_files_pane,
                                "row-span",
                                2,
+                               "x-expand",
+                               TRUE,
                                NULL);
 
   div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
@@ -247,6 +249,8 @@ penge_grid_view_init (PengeGridView *self)
                                priv->people_pane,
                                "row-span",
                                2,
+                               "x-expand",
+                               FALSE,
                                NULL);
 
 
