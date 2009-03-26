@@ -256,8 +256,8 @@ penge_people_pane_init (PengePeoplePane *self)
                                                g_free,
                                                g_object_unref);
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
 
   /* Create the client and request the services list */
   priv->client = mojito_client_new ();

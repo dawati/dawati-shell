@@ -254,8 +254,8 @@ penge_grid_view_init (PengeGridView *self)
                                NULL);
 
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
 
   /* 
    * Create a background and parent it to the grid. We paint and allocate this
