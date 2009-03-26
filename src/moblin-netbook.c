@@ -1907,6 +1907,9 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 #ifdef WITH_NETPANEL
             !CLUTTER_ACTOR_IS_VISIBLE (priv->net_grid) &&
 #endif
+#ifdef USE_AHOGHILL
+            !CLUTTER_ACTOR_IS_VISIBLE (priv->media_drop_down) &&
+#endif
             !CLUTTER_ACTOR_IS_VISIBLE (priv->status))))
         {
           /*
