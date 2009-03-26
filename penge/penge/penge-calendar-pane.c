@@ -155,7 +155,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                  NULL);
   }
 
-  label = nbtk_label_new (_("<b>Today's appointments</b>"));
+  label = nbtk_label_new (_("<b>Appointments</b>"));
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
   clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text), TRUE);
   nbtk_widget_set_style_class_name (NBTK_WIDGET (label),
