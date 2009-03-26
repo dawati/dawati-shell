@@ -85,10 +85,11 @@ mux_switch_box_set_property (GObject *object, guint property_id,
   case PROP_NAME:
 		gtk_label_set_text (GTK_LABEL (priv->switch_label),
 												g_value_get_string (value));
-          break;
+    break;
 	case PROP_SWITCH_ACTIVE:
 		mux_light_switch_set_active ((MuxLightSwitch *) priv->lightswitch,
 																 g_value_get_boolean (value));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -124,11 +125,23 @@ mux_switch_box_class_init (MuxSwitchBoxClass *klass)
         object_class->get_property = mux_switch_box_get_property;
         object_class->set_property = mux_switch_box_set_property;
 
-        pspec = g_param_spec_string ("name", "name", "name of label",
+        pspec = g_param_spec_string ("name",
+                                     "name",
+                                     "name of label",
                                      NULL,
                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+        g_object_class_install_property (object_class,
+                                         PROP_NAME,
+                                         pspec);
 
-        g_object_class_install_property (object_class, PROP_NAME, pspec);
+        pspec = g_param_spec_boolean ("switch-active",
+                                      "switch-active",
+                                      "whether the switch is on",
+                                      FALSE,
+                                      G_PARAM_READWRITE);
+        g_object_class_install_property (object_class,
+                                         PROP_SWITCH_ACTIVE,
+                                         pspec);
 }
 
 static void
