@@ -686,3 +686,54 @@ MnbStatusEntry:active
   color: #3e3e3eff;
   padding: 6;
 }
+
+*#media-pane-vbox {
+  background-color: #ffff;
+  padding: 5;
+}
+
+*#media-pane-search {
+  border-image: url('file://media-panel/media_search_bkgrd.png') 4 stretch;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 12px;
+}
+
+*#media-pane-search-label {
+  font-family: "Liberation Sans Bold";
+  font-size: 17px;
+  color: #0e0e0e;
+}
+
+*#media-pane-search-entry {
+  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
+  padding: 4;
+}
+
+*#media-pane-results {
+  padding: 14px;
+}
+
+*#media-pane-results-label {
+  font-family: "Liberation Sans Bold";
+  font-size: 14;
+}
+
+*#media-pane-album-art {
+  border-image: url("file://media-panel/thumbnail.png") 7 12 12 10 stretch;
+}
+
+*#media-pane-album-art:hover {
+  border-image: url("file://media-panel/thumbnail_hover.png") 7 12 12 10 stretch;
+}
+
+*#media-tile-title-label {
+  font-size: 13px;
+  color: #3b3b3b;
+}
+
+*#media-tile-artist-label {
+  font-size: 12px;
+  color: #7e7e7e;
+}
+
