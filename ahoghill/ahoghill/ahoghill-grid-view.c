@@ -120,7 +120,7 @@ test_results (Source *source)
 
       while (i < source->items->len)
       {
-        BklItem *item = source->items->pdata[i]
+        BklItem *item = source->items->pdata[i];
 
         if (bkl_item_extended_get_thumbnail ((BklItemExtended *) item)) {
             g_ptr_array_add (results, g_object_ref (item));
