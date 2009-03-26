@@ -1,4 +1,9 @@
-SUBDIRS=build penge ahoghill src po data tests
+SUBDIRS=build
+SUBDIRS+=penge
+if WITH_AHOGHILL
+SUBDIRS+=ahoghill
+endif
+SUBDIRS+=src po data tests
 
 EXTRA_DIST =
 

@@ -62,6 +62,8 @@ moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
 				moblin-netbook-netpanel.h
 endif
 
+
+
 DBUS_GLUE=notification-manager-glue.h
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
@@ -78,10 +80,13 @@ moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				@NETPANEL_LIBS@		\
 				tray/libtray.la 	\
 				effects/libeffects.la	\
-				$(PENGE_LIBS)		\
-				$(top_builddir)/penge/penge/libpenge.la \
+				$(PENGE_LIBS)
+
+if WITH_AHOGHILL
+moblin_netbook_la_LIBADD += 				\
 				$(AHOGHILL_LIBS)	\
 				$(top_builddir)/ahoghill/ahoghill/libahoghill.la
+endif
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 
