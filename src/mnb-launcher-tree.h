@@ -65,10 +65,14 @@ typedef struct {
  */
 typedef struct MnbLauncherEntry_ MnbLauncherEntry;
 
-const gchar * mnb_launcher_entry_get_name     (MnbLauncherEntry *entry);
-gchar *       mnb_launcher_entry_get_exec     (MnbLauncherEntry *entry);
-const gchar * mnb_launcher_entry_get_icon     (MnbLauncherEntry *entry);
-const gchar * mnb_launcher_entry_get_comment  (MnbLauncherEntry *entry);
+MnbLauncherEntry *  mnb_launcher_entry_create                 (const gchar *desktop_file_path);
+void                mnb_launcher_entry_free                   (MnbLauncherEntry *entry);
+
+const gchar *       mnb_launcher_entry_get_name               (MnbLauncherEntry *entry);
+gchar *             mnb_launcher_entry_get_exec               (MnbLauncherEntry *entry);
+gchar *             mnb_launcher_entry_get_icon               (MnbLauncherEntry *entry);
+gchar *             mnb_launcher_entry_get_comment            (MnbLauncherEntry *entry);
+const gchar *       mnb_launcher_entry_get_desktop_file_path  (MnbLauncherEntry *entry);
 
 /*
  * Utils.

@@ -53,6 +53,9 @@ struct _MnbLauncherButtonPrivate
 
   char          *category;
   char          *executable;
+  char          *desktop_file_path;
+  char          *icon_file;
+  gint           icon_size;
 
   guint is_pressed  : 1;
 
@@ -82,6 +85,8 @@ finalize (GObject *object)
 
   g_free (self->priv->category);
   g_free (self->priv->executable);
+  g_free (self->priv->desktop_file_path);
+  g_free (self->priv->icon_file);
 
   g_free (self->priv->title_key);
   g_free (self->priv->description_key);
@@ -299,15 +304,21 @@ mnb_launcher_button_new (const gchar *icon_file,
                          const gchar *category,
                          const gchar *description,
                          const gchar *comment,
-                         const gchar *executable)
+                         const gchar *executable,
+                         const gchar *desktop_file_path)
 {
   MnbLauncherButton *self;
   GError            *error;
 
   self = g_object_new (MNB_TYPE_LAUNCHER_BUTTON, NULL);
 
+  self->priv->icon_file = g_strdup (icon_file);
+
+  self->priv->icon_size = icon_size;
+
   error = NULL;
-  self->priv->icon = clutter_texture_new_from_file (icon_file, &error);
+  self->priv->icon = clutter_texture_new_from_file (self->priv->icon_file,
+                                                    &error);
   if (error) {
     g_warning ("%s", error->message);
     g_error_free (error);
@@ -315,8 +326,10 @@ mnb_launcher_button_new (const gchar *icon_file,
 
   if (self->priv->icon) {
 
-    if (icon_size > -1) {
-      clutter_actor_set_size (self->priv->icon, icon_size, icon_size);
+    if (self->priv->icon_size > -1) {
+      clutter_actor_set_size (self->priv->icon,
+                              self->priv->icon_size,
+                              self->priv->icon_size);
       g_object_set (G_OBJECT (self->priv->icon), "sync-size", TRUE, NULL);
     }
     nbtk_table_add_actor_full (NBTK_TABLE (self),
@@ -341,7 +354,30 @@ mnb_launcher_button_new (const gchar *icon_file,
   if (executable)
     self->priv->executable = g_strdup (executable);
 
+  if (desktop_file_path)
+    self->priv->desktop_file_path = g_strdup (desktop_file_path);
+
   return NBTK_WIDGET (self);
+}
+
+NbtkWidget *
+mnb_launcher_button_create_favorite (MnbLauncherButton *self)
+{
+  NbtkWidget *clone;
+
+  g_return_val_if_fail (self, NULL);
+  clone = mnb_launcher_button_new (self->priv->icon_file,
+                                   self->priv->icon_size,
+                                   nbtk_label_get_text (self->priv->title),
+                                   self->priv->category,
+                                   nbtk_label_get_text (self->priv->description),
+                                   nbtk_label_get_text (self->priv->comment),
+                                   self->priv->executable,
+                                   self->priv->desktop_file_path);
+
+  mnb_launcher_button_set_favorite (MNB_LAUNCHER_BUTTON (clone), TRUE);
+
+  return clone;
 }
 
 const char *
@@ -391,6 +427,14 @@ mnb_launcher_button_get_executable (MnbLauncherButton *self)
   g_return_val_if_fail (self, NULL);
 
   return self->priv->executable;
+}
+
+const char *
+mnb_launcher_button_get_desktop_file_path (MnbLauncherButton *self)
+{
+  g_return_val_if_fail (self, NULL);
+
+  return self->priv->desktop_file_path;
 }
 
 gboolean
