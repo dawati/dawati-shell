@@ -171,7 +171,7 @@ init_bickley (gpointer data)
 
     /* Get 12 random entries with thumbnails for testing purposes */
     i = 0;
-    while (results == NULL && i < priv->dbs->len) {
+    while (i < priv->dbs->len) {
         Source *source = priv->dbs->pdata[i];
 
         /* Find local database */
@@ -181,6 +181,11 @@ init_bickley (gpointer data)
         }
 
         results = test_results (priv->dbs->pdata[i]);
+
+        if (results)
+          break;
+
+        i++;
     }
 
     if (results) {
