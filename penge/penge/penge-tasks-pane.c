@@ -218,6 +218,24 @@ penge_tasks_pane_init (PengeTasksPane *self)
   jana_store_open (priv->store);
 }
 
+gint
+_tasks_list_sort_cb (gconstpointer a,
+                     gconstpointer b)
+{
+  JanaTask *task_a, *task_b;
+
+  task_a = (JanaTask *)a;
+  task_b = (JanaTask *)b;
+
+  /* TODO: Do more interesting things here */
+  if (!jana_task_get_completed (task_a) && jana_task_get_completed (task_b))
+    return -1;
+  else if (!jana_task_get_completed (task_b) && jana_task_get_completed (task_a))
+    return 1;
+  else
+    return 0;
+}
+
 static void
 penge_tasks_pane_update (PengeTasksPane *pane)
 {
@@ -233,6 +251,7 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   old_actors = g_hash_table_get_values (priv->uid_to_actors);
 
   tasks = g_hash_table_get_values (priv->uid_to_tasks);
+  tasks = g_list_sort (tasks, _tasks_list_sort_cb);
 
   if (!tasks)
   {
