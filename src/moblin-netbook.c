@@ -1881,7 +1881,9 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
           ((!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid) &&
+#ifdef WITH_NETPANEL
             !CLUTTER_ACTOR_IS_VISIBLE (priv->net_grid) &&
+#endif
             !CLUTTER_ACTOR_IS_VISIBLE (priv->status))))
         {
           /*

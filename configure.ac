@@ -54,10 +54,21 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   gtk+-2.0                           dnl
                   libgnome-menu                      dnl
                   dbus-glib-1                        dnl
-		  cluttermozembed                    dnl
                   mojito-client)
 
 PKG_CHECK_MODULES(PENGE, libjana-ecal mojito-client gtk+-2.0 nbtk-1.0 gconf-2.0)
+
+AC_ARG_ENABLE([netpanel],
+	AC_HELP_STRING([--enable-netpanel],
+		[Enable building of the internet panel]),
+		[build_netpanel=yes])
+
+if test x"$enable_netpanel" = xyes; then
+	AC_DEFINE(WITH_NETPANEL, 1, [Defined when building the netpanel])
+	PKG_CHECK_MODULES(NETPANEL, cluttermozembed)
+fi
+
+AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`

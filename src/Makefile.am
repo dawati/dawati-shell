@@ -2,7 +2,7 @@ SUBDIRS=tray effects
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-INCLUDES = @MUTTER_PLUGIN_CFLAGS@ \
+INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
 	-I$(top_srcdir)/penge
@@ -25,8 +25,6 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
                                 moblin-netbook-system-tray.h    \
-				moblin-netbook-netpanel.c	\
-				moblin-netbook-netpanel.h	\
 				mwb-radical-bar.c		\
 				mwb-radical-bar.h		\
 				mwb-utils.c			\
@@ -54,6 +52,11 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				mnb-status-entry.c		\
 				mnb-status-entry.h
 
+if WITH_NETPANEL
+moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
+				moblin-netbook-netpanel.h
+endif
+
 DBUS_GLUE=notification-manager-glue.h
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
@@ -67,6 +70,7 @@ MARSHALS = marshal.c marshal.h
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
+				@NETPANEL_LIBS@		\
 				tray/libtray.la 	\
 				effects/libeffects.la	\
 				$(PENGE_LIBS)		\
