@@ -22,12 +22,17 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
+
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 #include "moblin-netbook-status.h"
 #include "penge/penge-grid-view.h"
+
+#ifdef USE_AHOGHILL
 #include "ahoghill/ahoghill-grid-view.h"
+#endif
 
 #include "mnb-switcher.h"
 #include "mnb-panel-button.h"
@@ -110,8 +115,10 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       break;
 
     case MNBK_CONTROL_MEDIA:
+#ifdef USE_AHOGHILL
       control_actor = priv->media_drop_down;
       break;
+#endif
 
     case MNBK_CONTROL_STATUS:
     case MNBK_CONTROL_INTERNET:
@@ -691,6 +698,7 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->mzone_grid);
 
+#ifdef USE_AHOGHILL
   /* Ahoghill media drop down */
   priv->media_drop_down = CLUTTER_ACTOR (mnb_drop_down_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (panel),
@@ -706,6 +714,7 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_MEDIA]));
   clutter_actor_set_position (priv->media_drop_down, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->media_drop_down);
+#endif
 
   if (shadow)
     clutter_actor_lower_bottom (shadow);
