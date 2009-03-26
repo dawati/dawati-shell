@@ -76,7 +76,7 @@ if test x"$enable_netpanel" = xyes; then
 fi
 
 AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
-AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_netpanel" = xyes)
+AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
