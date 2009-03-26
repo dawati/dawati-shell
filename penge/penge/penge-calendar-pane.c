@@ -14,6 +14,8 @@ G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, NBTK_TYPE_TABLE)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPanePrivate))
 
 #define CALENDAR_ICON PKG_DATADIR "/theme/mzone/calendar-icon.png"
+#define SINGLE_DIV_LINE PKG_DATADIR "/theme/mzone/single-div-line.png"
+#define DOUBLE_DIV_LINE PKG_DATADIR "/theme/mzone/double-div-line.png"
 
 typedef struct _PengeCalendarPanePrivate PengeCalendarPanePrivate;
 
@@ -174,6 +176,25 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                FALSE,
                                NULL);
 
+  tex = clutter_texture_new_from_file (SINGLE_DIV_LINE, &error);
+
+  if (!tex)
+  {
+    g_warning (G_STRLOC ": Error loading single divider: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    nbtk_table_add_actor (NBTK_TABLE (self),
+                          tex,
+                          1,
+                          0);
+    clutter_container_child_set (CLUTTER_CONTAINER (self),
+                                 tex,
+                                 "col-span",
+                                 2,
+                                 NULL);
+  }
+
   priv->events_pane = g_object_new (PENGE_TYPE_EVENTS_PANE,
                                     "time",
                                     now,
@@ -181,7 +202,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->events_pane,
-                        1,
+                        2,
                         0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
@@ -192,11 +213,30 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                2,
                                NULL);
 
+  tex = clutter_texture_new_from_file (DOUBLE_DIV_LINE, &error);
+
+  if (!tex)
+  {
+    g_warning (G_STRLOC ": Error loading double divider: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    nbtk_table_add_actor (NBTK_TABLE (self),
+                          tex,
+                          3,
+                          0);
+    clutter_container_child_set (CLUTTER_CONTAINER (self),
+                                 tex,
+                                 "col-span",
+                                 2,
+                                 NULL);
+  }
+
   priv->tasks_pane = g_object_new (PENGE_TYPE_TASKS_PANE,
                                    NULL);
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->tasks_pane,
-                        2,
+                        4,
                         0);
 
  clutter_container_child_set (CLUTTER_CONTAINER (self),
