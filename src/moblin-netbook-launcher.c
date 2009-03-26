@@ -179,7 +179,7 @@ create_launcher_button_from_uri (gchar const  *uri,
   gchar       *file_path, *exec;
   const gchar *icon_file;
   GtkIconInfo *info;
-  GError      *error;
+  GError      *error = NULL;
   NbtkWidget  *button;
 
   error = NULL;
@@ -187,7 +187,7 @@ create_launcher_button_from_uri (gchar const  *uri,
   if (error)
     {
       g_warning ("%s", error->message);
-      g_free (error);
+      g_clear_error (&error);
       return NULL;
     }
 
@@ -197,7 +197,7 @@ create_launcher_button_from_uri (gchar const  *uri,
   if (error)
     {
       g_warning ("%s", error->message);
-      g_free (error);
+      g_clear_error (&error);
       return NULL;
     }
 
