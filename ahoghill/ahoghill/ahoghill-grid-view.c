@@ -111,6 +111,22 @@ test_results (Source *source)
     GPtrArray *results;
     int i = 0;
 
+    if (sources->items->len < 12)
+    {
+      results = g_ptr_array_sized_new (sources->items->len);
+
+      while (i < sources->items->len)
+      {
+        BklItem *item = source->items->pdata[i]
+
+        if (bkl_item_extended_get_thumbnail ((BklItemExtended *) item)) {
+            g_ptr_array_add (results, g_object_ref (item));
+        }
+      }
+
+      return results;
+    }
+
     results = g_ptr_array_sized_new (12);
     while (i < 200 && results->len < 12) {
         BklItem *item = source->items->pdata[rand () % source->items->len];
