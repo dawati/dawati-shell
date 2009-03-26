@@ -80,6 +80,7 @@ moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				@NETPANEL_LIBS@		\
 				tray/libtray.la 	\
 				effects/libeffects.la	\
+				$(top_builddir)/penge/penge/libpenge.la \
 				$(PENGE_LIBS)
 
 if WITH_AHOGHILL
