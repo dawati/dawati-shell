@@ -116,9 +116,9 @@ test_results (Source *source)
 
     if (sources->items->len < 12)
     {
-      results = g_ptr_array_sized_new (sources->items->len);
+      results = g_ptr_array_sized_new (source->items->len);
 
-      while (i < sources->items->len)
+      while (i < source->items->len)
       {
         BklItem *item = source->items->pdata[i]
 
