@@ -561,9 +561,10 @@ PengeDateTile
   padding: 8;
 }
 
-*.PengeNoMoreEventsText, *.PengeNoMoreTasksText
+*.PengeNoMoreEventsLabel, *.PengeNoMoreTasksText
 {
-  font-size: 18;
+  font-size: 16;
+  color: #2c2c2cff;
 }
 
 *.PengeRecentFileTileDetails, *.PengePeopleTileDetails

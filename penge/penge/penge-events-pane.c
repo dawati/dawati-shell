@@ -2,6 +2,7 @@
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
+#include <glib/gi18n.h>
 
 #include "penge-event-tile.h"
 
@@ -21,7 +22,7 @@ struct _PengeEventsPanePrivate {
   GHashTable *uid_to_events;
   GHashTable *uid_to_actors;
 
-  NbtkWidget *no_events_label;
+  ClutterActor *no_events_bin;
 };
 
 enum
@@ -160,6 +161,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   JanaTime *on_the_hour;
   GList *window_start = NULL, *window_end = NULL;
   JanaTime *t;
+  NbtkWidget *label;
 
   g_return_if_fail (priv->time);
 
@@ -171,24 +173,27 @@ penge_events_pane_update (PengeEventsPane *pane)
 
   if (!events)
   {
-    if (!priv->no_events_label)
+    if (!priv->no_events_bin)
     {
-      priv->no_events_label = nbtk_label_new ("No upcoming events.");
+      label = nbtk_label_new (_("No calendar entries this week"));
+      priv->no_events_bin = nbtk_bin_new ();
+      nbtk_bin_set_child (NBTK_BIN (priv->no_events_bin),
+                          (ClutterActor *)label);
       nbtk_table_add_actor (NBTK_TABLE (pane),
-                            (ClutterActor *)priv->no_events_label,
+                            (ClutterActor *)priv->no_events_bin,
                             0,
                             0);
-      nbtk_widget_set_style_class_name (priv->no_events_label,
-                                        "PengeNoMoreEventsText");
+      nbtk_widget_set_style_class_name (label,
+                                        "PengeNoMoreEventsLabel");
 
-      clutter_actor_set_size ((ClutterActor *)priv->no_events_label, 216, 44);
+      clutter_actor_set_height ((ClutterActor *)priv->no_events_bin, 46);
     }
   } else {
-    if (priv->no_events_label)
+    if (priv->no_events_bin)
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                      (ClutterActor *)priv->no_events_label);
-      priv->no_events_label = NULL;
+                                      (ClutterActor *)priv->no_events_bin);
+      priv->no_events_bin = NULL;
     }
   }
 
