@@ -22,10 +22,15 @@
  * 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
 #include "moblin-netbook-status.h"
+#include "moblin-netbook-netpanel.h"
 #include "penge/penge-grid-view.h"
 #include "mnb-switcher.h"
 #include "mnb-panel-button.h"
@@ -107,8 +112,13 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       control_actor = priv->launcher;
       break;
 
-    case MNBK_CONTROL_STATUS:
     case MNBK_CONTROL_INTERNET:
+#ifdef WITH_NETPANEL
+      control_actor = priv->net_grid;
+      break;
+#endif
+
+    case MNBK_CONTROL_STATUS:
     case MNBK_CONTROL_MEDIA:
     case MNBK_CONTROL_PEOPLE:
     case MNBK_CONTROL_PASTEBOARD:
@@ -143,6 +153,14 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
     {
       clutter_actor_hide (priv->launcher);
     }
+
+#ifdef WITH_NETPANEL
+  if (control_actor != priv->net_grid &&
+      CLUTTER_ACTOR_IS_VISIBLE (priv->net_grid))
+    {
+      clutter_actor_hide (priv->net_grid);
+    }
+#endif
 
   /* enable events for the buttons while the panel after the panel has stopped
    * moving
@@ -478,6 +496,44 @@ _mzone_activated_cb (PengeGridView *view, gpointer userdata)
   hide_panel ((MutterPlugin *)plugin);
 }
 
+#ifdef WITH_NETPANEL
+static void
+_netgrid_show_cb (MnbDropDown *drop_down)
+{
+  ClutterActor *child = mnb_drop_down_get_child (drop_down);
+  if (child)
+    clutter_actor_show (child);
+}
+
+static void
+_netgrid_hide_cb (MnbDropDown *drop_down)
+{
+  ClutterActor *child = mnb_drop_down_get_child (drop_down);
+  if (child)
+    clutter_actor_hide (child);
+}
+
+static void
+_netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
+                    const gchar           *url,
+                    MutterPlugin          *plugin)
+{
+  gchar *exec, *esc_url;
+  gint workspace;
+
+  /* FIXME: Should not be hard-coded? */
+  esc_url = g_strescape (url, NULL);
+  exec = g_strdup_printf ("%s \"%s\"", "moblin-web-browser", esc_url);
+
+  workspace =
+    meta_screen_get_active_workspace_index (mutter_plugin_get_screen (plugin));
+  moblin_netbook_spawn (plugin, exec, 0L, TRUE, workspace);
+
+  g_free (exec);
+  g_free (esc_url);
+}
+#endif
+
 ClutterActor *
 make_panel (MutterPlugin *plugin, gint width)
 {
@@ -489,6 +545,9 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
   ClutterActor               *overlay;
   ClutterActor               *mzone_grid_view;
+#ifdef WITH_NETPANEL
+  ClutterActor               *net_grid_view;
+#endif
   ClutterActor               *button;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
@@ -684,6 +743,27 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[0]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->mzone_grid);
+
+#ifdef WITH_NETPANEL
+  /* Internet panel drop-down */
+  priv->net_grid = CLUTTER_ACTOR (mnb_drop_down_new ());
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->net_grid);
+  clutter_actor_set_width (priv->net_grid, screen_width);
+  net_grid_view = CLUTTER_ACTOR (moblin_netbook_netpanel_new ());
+  mnb_drop_down_set_child (MNB_DROP_DOWN (priv->net_grid),
+                           CLUTTER_ACTOR (net_grid_view));
+  mnb_drop_down_set_button (MNB_DROP_DOWN (priv->net_grid),
+                            NBTK_BUTTON (priv->panel_buttons[3]));
+  clutter_actor_set_position (priv->net_grid, 0, PANEL_HEIGHT);
+  clutter_actor_lower_bottom (priv->net_grid);
+
+  g_signal_connect (priv->net_grid, "hide-completed",
+                    G_CALLBACK (_netgrid_hide_cb), NULL);
+  g_signal_connect (priv->net_grid, "show",
+                    G_CALLBACK (_netgrid_show_cb), NULL);
+  g_signal_connect (mnb_drop_down_get_child (MNB_DROP_DOWN (priv->net_grid)),
+                    "launch", G_CALLBACK (_netgrid_launch_cb), plugin);
+#endif
 
   if (shadow)
     clutter_actor_lower_bottom (shadow);
