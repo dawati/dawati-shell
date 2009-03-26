@@ -4,7 +4,7 @@
 #include <glib/gi18n-lib.h>
 
 #include "ahoghill-search-pane.h"
-#include "mnb-entry.h"
+#include <src/mnb-entry.h>
 
 enum {
     PROP_0,

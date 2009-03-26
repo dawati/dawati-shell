@@ -13,6 +13,6 @@ libahoghill_la_SOURCES = $(libahoghill_headers) \
 	ahoghill-results-pane.c \
 	ahoghill-search-pane.c
 AM_CFLAGS = -Wall -fPIC $(AHOGHILL_CFLAGS) \
-	    -DPKG_DATADIR=\"$(pkgdatadir)\"
+	    -DPKG_DATADIR=\"$(pkgdatadir)\" -I$(top_srcdir)
 AM_LDFLAGS = $(AHOGHILL_LIBS)
 
