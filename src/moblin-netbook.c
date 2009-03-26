@@ -622,7 +622,7 @@ metacity_nop_key_handler (MetaDisplay    *display,
 }
 
 static void
-sync_notification_input_region_cb (ClutterActor        *notify_cluster,
+sync_notification_input_region_cb (ClutterActor        *notify_actor,
                                    MoblinNetbookPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv   = plugin->priv;
@@ -634,14 +634,13 @@ sync_notification_input_region_cb (ClutterActor        *notify_cluster,
       priv->notification_input_region = NULL;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (notify_cluster))
+  if (CLUTTER_ACTOR_IS_VISIBLE (notify_actor))
     {
       gint x,y;
       guint width,height;
 
-      clutter_actor_get_transformed_position (notify_cluster, &x, &y);
-      clutter_actor_get_transformed_size (notify_cluster, &width, &height);
-
+      clutter_actor_get_transformed_position (notify_actor, &x, &y);
+      clutter_actor_get_transformed_size (notify_actor, &width, &height);
 
       if (width != 0 && height != 0)
         {
@@ -652,6 +651,14 @@ sync_notification_input_region_cb (ClutterActor        *notify_cluster,
     }
 }
 
+static void
+on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
+                              GParamSpec      *pspec,
+                              MutterPlugin *plugin)
+{
+  moblin_netbook_set_lowlight (plugin, 
+                               CLUTTER_ACTOR_IS_VISIBLE(notify_urgent));
+}
 
 static void
 moblin_netbook_plugin_constructed (GObject *object)
@@ -679,6 +686,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   MetaScreen    *screen;
   Window         root_xwin;
 
+  MoblinNetbookNotifyStore *notify_store;
+
   screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
   root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
 
@@ -695,7 +704,7 @@ moblin_netbook_plugin_constructed (GObject *object)
                              &err);
   if (err)
     {
-      g_warning (err->message);
+      g_warning ("%s", err->message);
       g_error_free (err);
     }
 
@@ -792,11 +801,15 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   moblin_netbook_sn_setup (MUTTER_PLUGIN (plugin));
 
-  // moblin_netbook_notify_init (MUTTER_PLUGIN (plugin));
-
   /* Notifications */
 
+  priv->notify_store = moblin_netbook_notify_store_new ();
+
   priv->notification_cluster = mnb_notification_cluster_new ();
+
+  mnb_notification_cluster_set_store 
+                    (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster), 
+                     priv->notify_store);
 
   clutter_container_add (CLUTTER_CONTAINER (overlay),
                          priv->notification_cluster, NULL);
@@ -814,24 +827,34 @@ moblin_netbook_plugin_constructed (GObject *object)
                     MUTTER_PLUGIN (plugin));
 
 
-#if 0
-  {
-    ClutterActor *foo;
+  priv->notification_urgent = mnb_notification_urgent_new ();
 
-    foo = clutter_rectangle_new ();
-    clutter_actor_set_size (foo, 200, 200);
+  clutter_actor_set_anchor_point_from_gravity (priv->notification_urgent,
+                                               CLUTTER_GRAVITY_CENTER);
 
-    clutter_container_add (CLUTTER_CONTAINER (overlay),
-                           foo, NULL);
+  clutter_actor_set_position (priv->notification_urgent,
+                              screen_width/2,
+                              screen_height/2);
 
-    clutter_actor_set_anchor_point_from_gravity (foo,
-                                                 CLUTTER_GRAVITY_SOUTH_EAST);
+  clutter_container_add (CLUTTER_CONTAINER (overlay),
+                         priv->notification_urgent, NULL);
 
-    clutter_actor_set_position (foo,
-                                screen_width - 400,
-                                screen_height - 400);
-  }
-#endif
+  mnb_notification_urgent_set_store 
+                        (MNB_NOTIFICATION_URGENT(priv->notification_urgent), 
+                         priv->notify_store);
+
+  g_signal_connect (priv->notification_urgent,
+                    "sync-input-region",
+                    G_CALLBACK (sync_notification_input_region_cb),
+                    MUTTER_PLUGIN (plugin));
+
+  clutter_actor_hide (CLUTTER_ACTOR(priv->notification_urgent));
+
+  g_signal_connect (priv->notification_urgent,
+                    "notify::visible",
+                    G_CALLBACK (on_urgent_notifiy_visible_cb),
+                    MUTTER_PLUGIN (plugin));
+
 
   /* Keys */
 
@@ -2341,4 +2364,14 @@ moblin_netbook_input_region_apply (MutterPlugin *plugin)
   mutter_plugin_set_stage_input_region (plugin, result);
 }
 
+void
+moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (on)
+    clutter_actor_show (priv->lowlight);
+  else
+    clutter_actor_hide (priv->lowlight);
+}
 

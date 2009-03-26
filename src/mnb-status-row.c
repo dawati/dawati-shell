@@ -371,14 +371,17 @@ on_mojito_view_open (MojitoClient     *client,
   MnbStatusRow *row = user_data;
   MnbStatusRowPrivate *priv = row->priv;
 
-  priv->view = g_object_ref (view);
+  if (G_LIKELY (view != NULL))
+    {
+      priv->view = g_object_ref (view);
 
-  g_signal_connect (view, "item-added",
-                    G_CALLBACK (on_mojito_view_item_added),
-                    row);
+      g_signal_connect (view, "item-added",
+                        G_CALLBACK (on_mojito_view_item_added),
+                        row);
 
-  /* start the view to retrieve the last item */
-  mojito_client_view_start (view);
+      /* start the view to retrieve the last item */
+      mojito_client_view_start (view);
+    }
 }
 
 static gboolean
@@ -412,6 +415,7 @@ on_mojito_online_changed (MojitoClient *client,
   g_debug ("%s: we are now %s", G_STRLOC, is_online ? "online" : "offline");
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (row), priv->is_online);
+  clutter_actor_set_reactive (priv->entry, priv->is_online);
 
   if (priv->is_online)
     {
@@ -457,6 +461,9 @@ on_mojito_is_online (MojitoClient *client,
   priv->is_online = is_online;
 
   g_debug ("%s: we are now %s", G_STRLOC, is_online ? "online" : "offline");
+
+  clutter_actor_set_reactive (CLUTTER_ACTOR (row), priv->is_online);
+  clutter_actor_set_reactive (priv->entry, priv->is_online);
 
   if (!priv->is_online)
     return;

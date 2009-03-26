@@ -20,23 +20,38 @@ NbtkButton:active {
   color: #333;
 }
 
-NbtkExpander NbtkButton#nbtk-expander-header {
+/*
+ * Expander
+ */
+
+/* Header */
+MnbExpander NbtkButton#mnb-expander-header {
   border-image: url("file://generic/expander-header.png") 4 5 5 4 stretch;
   font-size: 16;
   padding-top: 11;
   padding-bottom: 12;
-  padding-left: 40;
+  padding-left: 10;
 }
-
-NbtkExpander NbtkButton#nbtk-expander-header:checked {
+MnbExpander NbtkButton#mnb-expander-header:checked {
   border-image: url("file://generic/expander-header-expanded.png") 4 5 5 4 stretch;
 }
-
-NbtkExpander NbtkButton#nbtk-expander-header:hover {
+MnbExpander NbtkButton#mnb-expander-header:hover {
   border-image: url("file://generic/expander-header-hover.png") 4 5 5 4 stretch;
 }
 
-NbtkExpander NbtkBin#nbtk-expander-body {
+/* Icon */
+MnbExpander *#mnb-expander-header-icon {
+  background-image: url("file://generic/expander-icon.png");
+}
+MnbExpander *#mnb-expander-header-icon:hover {
+  background-image: url("file://generic/expander-icon-hover.png");
+}
+MnbExpander *#mnb-expander-header-icon:checked {
+  background-image: url("file://generic/expander-icon-checked.png");
+}
+
+/* Payload container */
+MnbExpander NbtkBin#mnb-expander-body {
   border-image: url("file://generic/expander-body.png") 2 10 8 8 stretch;
 }
 
@@ -54,7 +69,7 @@ NbtkScrollBar > *#backward-stepper {
   border-image: url("file://generic/vscroll-backward.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkScrollBar > *#backward-stepper:hover {
+NbtkScrollBar > *#backward-stepper:active {
   border-image: url("file://generic/vscroll-backward-hover.png") 2 4 2 2 stretch stretch;
 }
 
@@ -62,16 +77,12 @@ NbtkScrollBar > *#forward-stepper {
   border-image: url("file://generic/vscroll-forward.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkScrollBar > *#forward-stepper:hover {
+NbtkScrollBar > *#forward-stepper:active {
   border-image: url("file://generic/vscroll-forward-hover.png") 2 4 2 2 stretch stretch;
 }
 
 NbtkScrollBar *#handle {
   border-image: url("file://generic/vscroll-handle.png") 2 4 2 2 stretch stretch;
-}
-
-NbtkScrollBar *#handle:hover {
-  border-image: url("file://generic/vscroll-handle-hover.png") 2 4 2 2 stretch stretch;
 }
 
 NbtkTable {
@@ -219,9 +230,10 @@ MnbPanelButton:hover, MnbPanelButton:active {
 
 /* tooltips */
 NbtkTooltip {
-  border-image: url("file://generic/tooltip-background.png")  13 11;
-  padding: 13 11;
   color: white;
+  padding: 4 10 12 10;
+  background-image: url('file://generic/tooltip-arrow.png');
+  border-image: url('file://generic/tooltip-background.png') 4 11 12 11;
   font-size: 15px;
 }
 
@@ -333,6 +345,9 @@ NbtkTooltip {
 *.drop-down-up-button:active {
   border-image: url("file://drop-down/up-button-active.png") 2 stretch;
 }
+*.drop-down-up-button:hover {
+  border-image: url("file://drop-down/up-button-hover.png") 2 stretch;
+}
 
 *.drop-down-footer {
   border-image: url("file://drop-down/footer.png") 5;
@@ -365,6 +380,12 @@ MnbDropDown, MnbSwitcher {
   padding: 4;
 }
 
+*#app-launcher-apps-label {
+  font-family: "Liberation Sans Bold";
+  font-size: 14;
+  color: #7e7e7e;
+}
+
 *.MnbEntryEntry {
   font-size: 18;
 }
@@ -373,6 +394,15 @@ MnbDropDown, MnbSwitcher {
   border-image: none;
   color: #be1011ff;
   font-size: 18;
+}
+
+*.MnbEntryClearButton {
+  background-image: url('file://launcher/launcher-search-entry-clear.png');
+  border-image: none;
+}
+
+*.MnbEntryClearButton:hover {
+  background-image: url('file://launcher/launcher-search-entry-clear-hover.png');
 }
 
 MnbLauncherButton {
@@ -398,17 +428,49 @@ MnbLauncherButton:hover {
   font-size: 11;
 }
 
+*#mnb-launcher-button-fav-toggle {
+  background-image: url("file://launcher/launcher-button-fav-toggle-unpinned.png");
+  border-image: none;
+}
+
+*#mnb-launcher-button-fav-toggle:checked {
+  background-image: url("file://launcher/launcher-button-fav-toggle-pinned.png");
+}
+
 /* Penge */
 
-PengeAppsPane, PengeRecentFilesPane, PengeCalendarPane, PengeEventsPane, PengeEventTile, PengePeoplePane, PengeTasksPane, PengeTaskTile
+PengeGridView
 {
   padding: 8;
 }
 
-PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppTile, PengeLastfmTile, PengeDateTile
+PengeCalendarPane, PengeAppsPane
 {
-  border-image: url('file://mzone/general-background.png') 16;
-  padding: 8;
+  border-image: url('file://mzone/backdrop.png') 5 5 5 5;
+}
+
+PengeEventTile, PengeTaskTile, PengeAppTile
+{
+  padding: 9 10 11 10;
+}
+
+PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover
+{
+  border-image: url('file://mzone/tile-partial-glow.png') 7 8 9 8;
+}
+
+
+PengeRecentFileTile, PengeTwitterTile, PengeFlickrTile, PengeLastfmTile
+{
+  border-image: url('file://mzone/tile-bg.png') 7 8 9 8;
+  padding: 6 7 8 7;
+}
+
+
+PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover
+{
+  border-image: url('file://mzone/tile-glow.png') 7 8 9 8;
+  padding: 6 7 8 7;
 }
 
 *.PengeTaskToggleButton
@@ -421,20 +483,9 @@ PengeDateTile, PengeRecentFileTile, PengeFlickrTile, PengeTwitterTile, PengeAppT
   border-image: url('file://mzone/checked_box.png') 0;
 }
 
-PengeAppTile
-{
-  border-image: url('file://mzone/general-background.png') 16;
-  padding: 4;
-}
-
 PengeDateTile
 {
   border-image: url('file://mzone/date-background.png') 16;
-}
-
-PengeEventTile:hover, PengeTaskTile:hover
-{
-  border-image: url('file://mzone/event-background-dark.png') 8;
 }
 
 *.PengeDateTileBackground
@@ -497,26 +548,33 @@ PengeEventTile:hover, PengeTaskTile:hover
   font-size: 12;
 }
 
+*.PengeTwitterTileBackground
+{
+  border-image: url('file://mzone/quotebackground.png') 45 51 46 52;
+  padding: 8;
+}
+
 *.PengeNoMoreEventsText, *.PengeNoMoreTasksText
 {
   font-size: 18;
 }
 
-*.PengeRecentFileTileDetails
+*.PengeRecentFileTileDetails, *.PengePeopleTileDetails
 {
   background-color: black;
+  padding: 2;
 }
 
 *.PengeRecentFileTileDetailsFilename
 {
   color: white;
-  font-size: 16;
+  font-size: 12;
 }
 
 *.PengeRecentFileTileDetailsType
 {
   color: white;
-  font-size: 14;
+  font-size: 11;
 }
 
 
@@ -546,6 +604,14 @@ MnbNotification
     font-size: 16px;
     color: #009bceff;
 }
+
+*.NotificationSummaryUrgent
+{
+    font-family: "Liberation Sans Bold";
+    font-size: 16px;
+    color: #e73035ff;
+}
+
 
 *.NotificationBody
 {

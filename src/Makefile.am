@@ -30,12 +30,16 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				mnb-drop-down.c                 \
 				mnb-entry.c                     \
 				mnb-entry.h                     \
+				mnb-expander.c                  \
+				mnb-expander.h                  \
 				mnb-switcher.c                  \
 				mnb-switcher.h                  \
 				mnb-notification.c              \
 				mnb-notification.h              \
 				mnb-notification-cluster.c      \
 				mnb-notification-cluster.h      \
+				mnb-notification-urgent.c       \
+				mnb-notification-urgent.h       \
 				mnb-panel-button.c              \
 				mnb-panel-button.h              \
 				mnb-launcher-button.c           \

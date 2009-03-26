@@ -12,7 +12,7 @@ struct _PengePeopleTilePrivate {
     ClutterActor *icon;
     NbtkWidget *primary_text;
     NbtkWidget *secondary_text;
-    ClutterActor *details_overlay;
+    NbtkWidget *details_overlay;
     ClutterTimeline *timeline;
     ClutterBehaviour *behave;
 };
@@ -59,14 +59,33 @@ penge_people_tile_set_property (GObject *object, guint property_id,
                             0);
       clutter_container_child_set (CLUTTER_CONTAINER (object),
                                    priv->body,
-                                   "col-span",
-                                   2,
-                                   "y-fill",
-                                   TRUE,
                                    "y-align",
                                    0.0,
                                    "x-align",
                                    0.0,
+                                   "row-span",
+                                   2,
+                                   "y-fill",
+                                   TRUE,
+                                   "y-expand",
+                                   TRUE,
+                                   NULL);
+
+      nbtk_table_add_actor (NBTK_TABLE (object),
+                            (ClutterActor *)priv->details_overlay,
+                            1,
+                            0);
+
+      clutter_container_child_set (CLUTTER_CONTAINER (object),
+                                   (ClutterActor *)priv->details_overlay,
+                                   "x-expand",
+                                   TRUE,
+                                   "y-expand",
+                                   TRUE,
+                                   "y-fill",
+                                   FALSE,
+                                   "y-align",
+                                   1.0,
                                    NULL);
       break;
     case PROP_ICON_PATH:
@@ -212,41 +231,16 @@ _leave_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
-/*
- *        0                   1 
- *  *************************************
- *  *           |                       *
- *  *           |                       *
- *  *           | Body                  *   0
- *  *           |                       *
- *  *           |                       *
- *  *           |                       *
- *  *-----------------------------------*
- *  *  ******** |                       *   1
- *  *  *      * |  Primary text         *
- *  * -* Icon *-|-----------------------*
- *  *  *      * |  Secondary text       * 
- *  *  ******** |                       *   2
- *  *           |                       *
- *  *************************************
- *
- *  Body is in 0,0 with column span of 2
- *  Icon is in 1,0 with row span of 2
- *  Primary text is in 1,1;
- *  Secondary text is in 2,1
- */
 static void
 penge_people_tile_init (PengePeopleTile *self)
 {
   PengePeopleTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
-  ClutterColor black = { 0x0, 0x0, 0x0, 0xff };
   ClutterAlpha *alpha;
 
   priv->primary_text = nbtk_label_new ("Primary text");
   nbtk_widget_set_style_class_name (priv->primary_text, 
                                     "PengePeopleTilePrimaryLabel");
-  //nbtk_widget_set_alignment (priv->primary_text, 0, 0.5);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->primary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
@@ -256,7 +250,6 @@ penge_people_tile_init (PengePeopleTile *self)
   priv->secondary_text = nbtk_label_new ("Secondary text");
   nbtk_widget_set_style_class_name (priv->secondary_text, 
                                     "PengePeopleTileSecondaryLabel");
-  //nbtk_widget_set_alignment (priv->secondary_text, 0, 0.5);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->secondary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
@@ -266,27 +259,11 @@ penge_people_tile_init (PengePeopleTile *self)
   priv->icon = clutter_texture_new ();
   clutter_actor_set_size (priv->icon, 28, 28);
 
-  /* For mouse over effect that darkens the background we need this magic
-   * rectangle
-   */
-  priv->details_overlay = clutter_rectangle_new_with_color (&black);
-  clutter_actor_set_opacity (priv->details_overlay, 0x0);
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->details_overlay,
-                        1,
-                        0);
-
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               priv->details_overlay,
-                               "row-span",
-                               2,
-                               "col-span",
-                               2,
-                               "x-expand",
-                               TRUE,
-                               "y-expand",
-                               FALSE,
-                               NULL);
+  /* This gets added to ourself table after our body because of ordering */
+  priv->details_overlay = nbtk_table_new ();
+  nbtk_widget_set_style_class_name (priv->details_overlay,
+                                    "PengePeopleTileDetails");
+  clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay, 0x0);
 
   priv->timeline = clutter_timeline_new_for_duration (300);
 
@@ -296,13 +273,12 @@ penge_people_tile_init (PengePeopleTile *self)
   clutter_behaviour_apply (priv->behave,
                            (ClutterActor *)priv->details_overlay);
 
-
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
                         (ClutterActor *)priv->primary_text,
-                        1,
+                        0,
                         1);
 
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                (ClutterActor *)priv->primary_text,
                                "x-expand",
                                TRUE,
@@ -310,12 +286,11 @@ penge_people_tile_init (PengePeopleTile *self)
                                FALSE,
                                NULL);
 
-
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
                         (ClutterActor *)priv->secondary_text,
-                        2,
+                        1,
                         1);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                (ClutterActor *)priv->secondary_text,
                                "x-expand",
                                TRUE,
@@ -331,11 +306,11 @@ penge_people_tile_init (PengePeopleTile *self)
   clutter_actor_set_width ((ClutterActor *)priv->primary_text, 100);
   clutter_actor_set_width ((ClutterActor *)priv->secondary_text, 100);
 
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
                         priv->icon,
-                        1,
+                        0,
                         0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                priv->icon,
                                "row-span",
                                2,
@@ -344,9 +319,6 @@ penge_people_tile_init (PengePeopleTile *self)
                                "y-expand",
                                FALSE,
                                NULL);
-
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
 
   g_signal_connect (self,
                     "enter-event",

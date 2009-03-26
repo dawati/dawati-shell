@@ -207,7 +207,7 @@ _button_press_event_cb (ClutterActor *actor,
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
   gchar *argv[4];
-  GError *error;
+  GError *error = NULL;
   ECal *ecal;
   gchar *uid;
 

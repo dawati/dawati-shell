@@ -30,7 +30,7 @@ enum
   PROP_TIME
 };
 
-#define MAX_COUNT 6
+#define MAX_COUNT 4
 
 static void penge_events_pane_update_duration (PengeEventsPane *pane);
 static void penge_events_pane_update (PengeEventsPane *pane);
@@ -292,7 +292,7 @@ penge_events_pane_update (PengeEventsPane *pane)
                             priv->store,
                             NULL);
 
-      clutter_actor_set_size (actor, 216, 44);
+      clutter_actor_set_size (actor, 216, 52);
       nbtk_table_add_actor (NBTK_TABLE (pane),
                             actor,
                             count,

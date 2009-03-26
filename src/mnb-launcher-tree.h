@@ -21,18 +21,36 @@
  * 02111-1307, USA.
  */
 
-#ifndef MNB_LAUNCHER_ENTRY_H
-#define MNB_LAUNCHER_ENTRY_H
+#ifndef MNB_LAUNCHER_TREE_H
+#define MNB_LAUNCHER_TREE_H
 
 #include <glib.h>
 
 G_BEGIN_DECLS
 
 /*
- * The "tree" is a GSList of MnbLauncherDirectory-s.
+ * MnbLauncherMonitor to monitor menu changes.
  */
-GSList *  mnb_launcher_tree_create (void);
-void      mnb_launcher_tree_free   (GSList *tree);
+typedef struct MnbLauncherMonitor_ MnbLauncherMonitor;
+
+typedef void (*MnbLauncherMonitorFunction) (MnbLauncherMonitor *monitor,
+                                            gpointer            user_data);
+
+void mnb_launcher_monitor_free (MnbLauncherMonitor *monitor);
+
+/*
+ * MnbLauncherTree represents the entire menu hierarchy.
+ */
+
+typedef struct MnbLauncherTree_ MnbLauncherTree;
+
+MnbLauncherTree *     mnb_launcher_tree_create          (void);
+GSList *              mnb_launcher_tree_list_entries    (MnbLauncherTree            *tree);
+MnbLauncherMonitor *  mnb_launcher_tree_create_monitor  (MnbLauncherTree            *tree,
+                                                         MnbLauncherMonitorFunction  monitor_function,
+                                                         gpointer                    user_data);
+void                  mnb_launcher_tree_free_entries    (GSList                     *entries);
+void                  mnb_launcher_tree_free            (MnbLauncherTree            *tree);
 
 /*
  * MnbLauncherDirectory represents a "folder" item in the main menu.
@@ -47,12 +65,22 @@ typedef struct {
  */
 typedef struct MnbLauncherEntry_ MnbLauncherEntry;
 
-const gchar * mnb_launcher_entry_get_name     (MnbLauncherEntry *entry);
-gchar *       mnb_launcher_entry_get_exec     (MnbLauncherEntry *entry);
-const gchar * mnb_launcher_entry_get_icon     (MnbLauncherEntry *entry);
-const gchar * mnb_launcher_entry_get_comment  (MnbLauncherEntry *entry);
+MnbLauncherEntry *  mnb_launcher_entry_create                 (const gchar *desktop_file_path);
+void                mnb_launcher_entry_free                   (MnbLauncherEntry *entry);
+
+const gchar *       mnb_launcher_entry_get_name               (MnbLauncherEntry *entry);
+gchar *             mnb_launcher_entry_get_exec               (MnbLauncherEntry *entry);
+gchar *             mnb_launcher_entry_get_icon               (MnbLauncherEntry *entry);
+gchar *             mnb_launcher_entry_get_comment            (MnbLauncherEntry *entry);
+const gchar *       mnb_launcher_entry_get_desktop_file_path  (MnbLauncherEntry *entry);
+
+/*
+ * Utils.
+ */
+
+gchar * mnb_launcher_utils_get_last_used (const gchar *executable);
 
 G_END_DECLS
 
-#endif /* MNB_LAUNCHER_ENTRY_H */
+#endif /* MNB_LAUNCHER_TREE_H */
 

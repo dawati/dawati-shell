@@ -135,6 +135,15 @@ penge_grid_view_init (PengeGridView *self)
                         0,
                         0);
 
+  priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
+                                            NULL);
+
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        priv->favourite_apps_pane,
+                        1,
+                        0);
+
+
   priv->recent_files_pane = g_object_new (PENGE_TYPE_RECENT_FILES_PANE, 
                                           NULL);
 
@@ -142,14 +151,12 @@ penge_grid_view_init (PengeGridView *self)
                         priv->recent_files_pane,
                         0,
                         1);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               priv->recent_files_pane,
+                               "row-span",
+                               2,
+                               NULL);
 
-  priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
-                                            NULL);
-
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->favourite_apps_pane,
-                        0,
-                        2);
 
   priv->people_pane = g_object_new (PENGE_TYPE_PEOPLE_PANE,
                                     NULL);
@@ -157,7 +164,12 @@ penge_grid_view_init (PengeGridView *self)
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->people_pane,
                         0,
-                        3);
+                        2);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               priv->people_pane,
+                               "row-span",
+                               2,
+                               NULL);
 
 
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);

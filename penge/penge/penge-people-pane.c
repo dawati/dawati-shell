@@ -22,7 +22,7 @@ struct _PengePeoplePanePrivate {
 };
 
 #define NUMBER_COLS 2
-#define MAX_ITEMS 6
+#define MAX_ITEMS 8
 
 static void
 penge_people_pane_dispose (GObject *object)
@@ -86,7 +86,7 @@ penge_people_pane_fabricate_actor (PengePeoplePane *pane,
                                &blue);
   }
 
-  clutter_actor_set_size (actor, 150, 150);
+  clutter_actor_set_size (actor, 170, 115);
   
   return actor;
 }

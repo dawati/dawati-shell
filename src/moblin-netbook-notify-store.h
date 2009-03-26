@@ -35,6 +35,7 @@ typedef struct {
   gchar *sender;
   guint timeout_id;
   GHashTable *actions;
+  gboolean    is_urgent; 
 
 } Notification;
 

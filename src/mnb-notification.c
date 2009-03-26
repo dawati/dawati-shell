@@ -253,6 +253,7 @@ mnb_notification_update (MnbNotification *notification,
                          Notification    *details)
 {
   MnbNotificationPrivate *priv;
+  gboolean                has_action = FALSE;
 
   g_return_if_fail (MNB_IS_NOTIFICATION (notification));
 
@@ -324,7 +325,23 @@ mnb_notification_update (MnbNotification *notification,
 
               g_signal_connect (button, "clicked",
                                 G_CALLBACK (on_action_click), data);
+
+              has_action = TRUE;
             }
+        }
+    }
+
+  if (details->is_urgent)
+    {
+      /* Essentially change title color to Red and  remove dismiss button */
+      nbtk_widget_set_style_class_name (priv->summary,
+                                        "NotificationSummaryUrgent");
+
+      if (has_action == TRUE)
+        {
+          /* Remove the dismiss button.. */
+          clutter_container_remove_actor(CLUTTER_CONTAINER (notification),
+                                         CLUTTER_ACTOR (priv->dismiss_button));
         }
     }
 }

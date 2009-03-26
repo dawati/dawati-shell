@@ -47,7 +47,11 @@ dist_theme_generic_DATA = \
 	theme/generic/expander-header.png \
 	theme/generic/expander-header-expanded.png \
 	theme/generic/expander-header-hover.png \
+  theme/generic/expander-icon-checked.png \
+  theme/generic/expander-icon-hover.png \
+  theme/generic/expander-icon.png \
 	theme/generic/expander-body.png \
+	theme/generic/tooltip-arrow.png \
 	theme/generic/tooltip-background.png \
 	theme/generic/vscroll-backward-hover.png \
   theme/generic/vscroll-backward.png \
@@ -60,7 +64,11 @@ theme_launcherdir = $(pkgdatadir)/theme/launcher
 dist_theme_launcher_DATA = \
 	theme/launcher/launcher-hover.png \
 	theme/launcher/launcher-search-bg.png \
-	theme/launcher/launcher-search-entry-bg.png
+	theme/launcher/launcher-search-entry-bg.png \
+  theme/launcher/launcher-search-entry-clear-hover.png \
+  theme/launcher/launcher-search-entry-clear.png \
+  theme/launcher/launcher-button-fav-toggle-pinned.png \
+  theme/launcher/launcher-button-fav-toggle-unpinned.png
 
 theme_switcherdir = $(pkgdatadir)/theme/switcher
 dist_theme_switcher_DATA = \
@@ -86,7 +94,8 @@ theme_dropdowndir = $(pkgdatadir)/theme/drop-down
 dist_theme_dropdown_DATA = \
 	theme/drop-down/footer.png	\
 	theme/drop-down/up-button.png	\
-	theme/drop-down/up-button-active.png
+	theme/drop-down/up-button-active.png \
+	theme/drop-down/up-button-hover.png
 
 theme_mzonedir = $(pkgdatadir)/theme/mzone
 dist_theme_mzone_DATA = \
@@ -102,7 +111,12 @@ dist_theme_mzone_DATA = \
 	theme/mzone/linus.png \
 	theme/mzone/default-album-artwork.png \
 	theme/mzone/check_box.png \
-	theme/mzone/checked_box.png
+	theme/mzone/checked_box.png \
+	theme/mzone/tile-bg.png \
+	theme/mzone/tile-glow.png \
+	theme/mzone/quotebackground.png \
+	theme/mzone/tile-partial-glow.png \
+	theme/mzone/backdrop.png
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \

@@ -17,6 +17,8 @@ struct _PengeAppsPanePrivate {
   GHashTable *uris_to_actors;
 };
 
+#define ROW_SIZE 3
+
 static void penge_apps_pane_update (PengeAppsPane *pane);
 
 static void
@@ -129,8 +131,8 @@ penge_apps_pane_update (PengeAppsPane *pane)
                           NULL);
     nbtk_table_add_actor (NBTK_TABLE (pane),
                           actor,
-                          count,
-                          0);
+                          count / ROW_SIZE,
+                          count % ROW_SIZE);
     clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                  actor,
                                  "x-expand",
