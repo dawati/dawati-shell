@@ -1,7 +1,7 @@
 
 m4_define([mutter_version], [2.25.55~0.4])
 m4_define([plugin_major_version], [0])
-m4_define([plugin_minor_version], [11])
+m4_define([plugin_minor_version], [12])
 m4_define([plugin_micro_version], [0])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
@@ -64,6 +64,18 @@ PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.2 kozo gdk-pixbuf-2.0)
 if test "x$enable_ahoghill" = "xyes"; then
   AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
 fi
+
+AC_ARG_ENABLE([netpanel],
+	AC_HELP_STRING([--enable-netpanel],
+		[Enable building of the internet panel]),
+		[build_netpanel=yes])
+
+if test x"$enable_netpanel" = xyes; then
+	AC_DEFINE(WITH_NETPANEL, 1, [Defined when building the netpanel])
+	PKG_CHECK_MODULES(NETPANEL, cluttermozembed)
+fi
+
+AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`

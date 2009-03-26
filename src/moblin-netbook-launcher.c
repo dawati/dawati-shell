@@ -136,16 +136,40 @@ static void
 launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
                          launcher_data_t    *launcher_data)
 {
-  printf ("%s\n", mnb_launcher_button_get_desktop_file_path (launcher));
-/* TODO */
+  gchar   *uri = NULL;
+  GError  *error = NULL;
+
   if (mnb_launcher_button_get_favorite (launcher))
     {
-    
+      NbtkWidget *clone = mnb_launcher_button_create_favorite (launcher);
+      clutter_container_add (CLUTTER_CONTAINER (launcher_data->fav_grid),
+                             CLUTTER_ACTOR (clone), NULL);
+      /* Update bookmarks. */
+      uri = g_strdup_printf ("file://%s",
+              mnb_launcher_button_get_desktop_file_path (
+                MNB_LAUNCHER_BUTTON (clone)));
+      penge_app_bookmark_manager_add_from_uri (launcher_data->manager,
+                                               uri,
+                                               &error);
     }
   else
     {
-    
+      uri = g_strdup_printf ("file://%s",
+              mnb_launcher_button_get_desktop_file_path (
+                MNB_LAUNCHER_BUTTON (launcher)));
+      penge_app_bookmark_manager_remove_by_uri (launcher_data->manager,
+                                                uri,
+                                                &error);
     }
+
+  if (error)
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+    }
+
+  g_free (uri);
+  penge_app_bookmark_manager_save (launcher_data->manager);
 }
 
 static NbtkWidget *
@@ -297,6 +321,8 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
       /* Grid */
       launcher_data->fav_grid = CLUTTER_ACTOR (nbtk_grid_new ());
+      clutter_actor_set_width (launcher_data->fav_grid,
+                               4 * LAUNCHER_WIDTH + 5 * PADDING);
       nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
                                   NBTK_WIDGET (launcher_data->fav_grid),
                                   row++, 0, 1, 1,
@@ -321,13 +347,13 @@ launcher_data_fill (launcher_data_t *launcher_data)
               g_clear_error (&error);
               continue;
             }
-          
+
           entry = mnb_launcher_entry_create (desktop_file_path);
           g_free (desktop_file_path);
           if (entry)
             {
               button = create_launcher_button_from_entry (entry, NULL, theme);
-              mnb_launcher_entry_free (entry);            
+              mnb_launcher_entry_free (entry);
             }
 
           if (button)
@@ -419,6 +445,14 @@ launcher_data_fill (launcher_data_t *launcher_data)
                                                       theme);
           if (button)
             {
+              /* Assuming limited number of fav apps, linear search should do for now. */
+              if (launcher_data->fav_grid)
+                {
+                  clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->fav_grid),
+                                             (ClutterCallback) mnb_launcher_button_sync_favourite,
+                                             button);
+                }
+
               clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                       CLUTTER_ACTOR (button), NULL);
               g_signal_connect (button, "activated",

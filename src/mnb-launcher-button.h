@@ -90,6 +90,9 @@ gint          mnb_launcher_button_compare         (MnbLauncherButton *self,
 gboolean      mnb_launcher_button_match           (MnbLauncherButton *self,
                                                    const gchar       *lcase_needle);
 
+void          mnb_launcher_button_sync_favourite  (MnbLauncherButton *self,
+                                                   MnbLauncherButton *other);
+
 G_END_DECLS
 
 #endif /* __MNB_LAUNCHER_BUTTON_H__ */

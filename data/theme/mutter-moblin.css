@@ -687,6 +687,56 @@ MnbStatusEntry:active
   padding: 6;
 }
 
+/* Internet panel */
+
+MoblinNetbookNetpanel
+{
+  background-color: #ffffff;
+  padding: 6;
+}
+
+*#netpanel-subtable NbtkLabel
+{
+  font-family: "Liberation Sans Bold";
+  font-size: 13px;
+  color: #6e6e6e;
+  padding: 0 4;
+}
+
+MwbRadicalBar
+{
+  background-color: #ffffff;
+  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
+  padding: 4;
+}
+
+MwbRadicalBar *.NbtkEntry
+{
+  font-family: "Liberation Sans";
+  font-size: 15px;
+  color: #000000;
+}
+
+MwbRadicalBar NbtkButton
+{
+  border-image: none;
+  padding: 0;
+}
+
+*#netpanel-entrytable
+{
+  background-color: #F5F2FD;
+  padding: 6 24;
+}
+
+*#netpanel-entrytable NbtkLabel
+{
+  font-family: "Liberation Sans Bold" ! important;
+  font-size: 17px ! important;
+  color: #000000 ! important;
+  padding: 0 20 0 0;
+}
+
 *#media-pane-vbox {
   background-color: #ffff;
   padding: 5;
@@ -736,4 +786,3 @@ MnbStatusEntry:active
   font-size: 12px;
   color: #7e7e7e;
 }
-
