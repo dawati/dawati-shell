@@ -111,6 +111,9 @@ test_results (Source *source)
     GPtrArray *results;
     int i = 0;
 
+    if (sources->items->len == 0)
+      return NULL;
+
     if (sources->items->len < 12)
     {
       results = g_ptr_array_sized_new (sources->items->len);
@@ -177,8 +180,11 @@ init_bickley (gpointer data)
 
         results = test_results (priv->dbs->pdata[i]);
     }
-    ahoghill_results_pane_set_results
-        (AHOGHILL_RESULTS_PANE (priv->results_pane), results);
+
+    if (results) {
+        ahoghill_results_pane_set_results
+            (AHOGHILL_RESULTS_PANE (priv->results_pane), results);
+    }
 
     return FALSE;
 }
