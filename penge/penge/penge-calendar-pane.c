@@ -3,6 +3,7 @@
 #include <libjana-ecal/jana-ecal.h>
 #include <libjana/jana.h>
 
+#include <glib/gi18n.h>
 #include "penge-date-tile.h"
 #include "penge-events-pane.h"
 #include "penge-tasks-pane.h"
@@ -11,6 +12,8 @@ G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPanePrivate))
+
+#define CALENDAR_ICON PKG_DATADIR "/theme/mzone/calendar-icon.png"
 
 typedef struct _PengeCalendarPanePrivate PengeCalendarPanePrivate;
 
@@ -117,8 +120,59 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   JanaTime *now;
   JanaTime *next_timeout;
   glong next_timeout_seconds;
+  ClutterActor *tex;
+  NbtkWidget *label;
+  GError *error = NULL;
+  ClutterActor *tmp_text;
 
   now = jana_ecal_utils_time_now_local ();
+
+  /* Title bit at the top */
+  tex = clutter_texture_new_from_file (CALENDAR_ICON, &error);
+
+  if (!tex)
+  {
+    g_warning (G_STRLOC ": Error loading calendar icon: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    nbtk_table_add_actor (NBTK_TABLE (self),
+                          tex,
+                          0,
+                          0);
+
+    /* Use expand TRUE and fill FALSE to center valign with label */
+    clutter_container_child_set (CLUTTER_CONTAINER (self),
+                                 tex,
+                                 "x-expand",
+                                 FALSE,
+                                 "x-fill",
+                                 FALSE,
+                                 "y-expand",
+                                 TRUE,
+                                 "y-fill",
+                                 FALSE,
+                                 NULL);
+  }
+
+  label = nbtk_label_new (_("<b>Today's appointments</b>"));
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text), TRUE);
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (label),
+                                    "PengeCalendarPaneTitle");
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        (ClutterActor *)label,
+                        0,
+                        1);
+
+  /* Use expand TRUE and fill FALSE to center valign with icon */
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               (ClutterActor *)label,
+                               "y-expand",
+                               TRUE,
+                               "y-fill",
+                               FALSE,
+                               NULL);
 
   priv->events_pane = g_object_new (PENGE_TYPE_EVENTS_PANE,
                                     "time",
@@ -127,26 +181,30 @@ penge_calendar_pane_init (PengeCalendarPane *self)
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->events_pane,
-                        0,
+                        1,
                         0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->events_pane,
                                "y-expand",
                                FALSE,
+                               "col-span",
+                               2,
                                NULL);
 
   priv->tasks_pane = g_object_new (PENGE_TYPE_TASKS_PANE,
                                    NULL);
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->tasks_pane,
-                        1,
+                        2,
                         0);
 
  clutter_container_child_set (CLUTTER_CONTAINER (self),
                               priv->tasks_pane,
                               "y-expand",
                               FALSE,
+                              "col-span",
+                              2,
                               NULL);
 
 

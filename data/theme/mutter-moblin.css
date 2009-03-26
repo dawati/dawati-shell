@@ -447,6 +447,13 @@ PengeGridView
 PengeCalendarPane, PengeAppsPane
 {
   border-image: url('file://mzone/backdrop.png') 5 5 5 5;
+  padding: 8;
+}
+
+*.PengeCalendarPaneTitle
+{
+  font-size: 17;
+  color: #3e3e3eff;
 }
 
 PengeEventTile, PengeTaskTile, PengeAppTile
