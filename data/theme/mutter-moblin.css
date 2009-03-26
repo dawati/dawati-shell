@@ -710,10 +710,10 @@ MwbRadicalBar
   padding: 4;
 }
 
-*#netpanel-entry
+MwbRadicalBar *.NbtkEntry
 {
   font-family: "Liberation Sans";
-  font-size: 13px;
+  font-size: 15px;
   color: #000000;
 }
 

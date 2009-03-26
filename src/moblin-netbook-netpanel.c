@@ -36,46 +36,7 @@ struct _MoblinNetbookNetpanelPrivate
 };
 
 static void
-moblin_netbook_netpanel_dispose (GObject *object)
-{
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (object)->priv;
-
-  if (priv->proxy)
-    {
-      while (priv->calls)
-        {
-          DBusGProxyCall *call = priv->calls->data;
-          dbus_g_proxy_cancel_call (priv->proxy, call);
-          priv->calls = g_list_delete_link (priv->calls, priv->calls);
-        }
-
-      g_object_unref (priv->proxy);
-      priv->proxy = NULL;
-    }
-
-  if (priv->tabs_table)
-    {
-      g_object_unref (G_OBJECT (priv->tabs_table));
-      priv->tabs_table = NULL;
-    }
-
-  if (priv->favs_table)
-    {
-      g_object_unref (G_OBJECT (priv->favs_table));
-      priv->favs_table = NULL;
-    }
-
-  G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->dispose (object);
-}
-
-static void
-moblin_netbook_netpanel_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->finalize (object);
-}
-
-static void
-destroy_live_previews (MoblinNetbookNetpanel *self)
+cancel_dbus_calls (MoblinNetbookNetpanel *self)
 {
   GList *c, *children;
 
@@ -88,20 +49,66 @@ destroy_live_previews (MoblinNetbookNetpanel *self)
       dbus_g_proxy_cancel_call (priv->proxy, call);
       priv->calls = g_list_delete_link (priv->calls, priv->calls);
     }
+}
 
-  /* Destroy live previews */
-  children =
-    clutter_container_get_children (CLUTTER_CONTAINER (priv->tabs_table));
-  for (c = children; c; c = c->next)
+static void
+moblin_netbook_netpanel_dispose (GObject *object)
+{
+  MoblinNetbookNetpanel *self = MOBLIN_NETBOOK_NETPANEL (object);
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  if (priv->proxy)
     {
-      ClutterActor *child = c->data;
-
-      if (NBTK_IS_BIN (child) &&
-          CLUTTER_IS_MOZEMBED (nbtk_bin_get_child (NBTK_BIN (child))))
-        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->tabs_table),
-                                        child);
+      cancel_dbus_calls (self);
+      g_object_unref (priv->proxy);
+      priv->proxy = NULL;
     }
-  g_list_free (children);
+
+  G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->dispose (object);
+}
+
+static void
+moblin_netbook_netpanel_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->finalize (object);
+}
+
+static void
+tabs_more_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
+{
+  g_signal_emit (self, signals[LAUNCH], 0, "");
+}
+
+static void
+create_tabs_table (MoblinNetbookNetpanel *self)
+{
+  NbtkWidget *label;
+
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  /* Construct tabs preview table */
+  priv->tabs_table = nbtk_table_new ();
+
+  nbtk_table_add_widget_full (NBTK_TABLE (self), priv->tabs_table, 1, 0,
+                              1, 1, NBTK_X_EXPAND | NBTK_X_FILL,
+                              0.5, 0.5);
+
+  nbtk_table_set_col_spacing (NBTK_TABLE (priv->tabs_table), 6);
+  nbtk_table_set_row_spacing (NBTK_TABLE (priv->tabs_table), 6);
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->tabs_table),
+                          "netpanel-subtable");
+
+  /* Construct tabs previews table widgets */
+  label = nbtk_label_new ("Tabs");
+  nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), label, 0, 0, 1, 5,
+                              0, 0.0, 0.5);
+  priv->tabs_more = nbtk_button_new_with_label ("More...");
+  nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), priv->tabs_more,
+                              1, 5, 1, 1, 0, 0.5, 0.5);
+  clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_more));
+
+  g_signal_connect (priv->tabs_more, "clicked",
+                    G_CALLBACK (tabs_more_clicked_cb), self);
 }
 
 static void
@@ -120,7 +127,6 @@ mozembed_button_clicked_cb (NbtkBin *button, MoblinNetbookNetpanel *self)
   dbus_g_proxy_call_no_reply (priv->proxy, "SwitchTab", G_TYPE_UINT, tab,
                               G_TYPE_INVALID);
   dbus_g_proxy_call_no_reply (priv->proxy, "Raise", G_TYPE_INVALID);
-  g_debug ("Switching to tab: %d", tab);
 }
 
 static void
@@ -137,7 +143,12 @@ notify_connect_view (DBusGProxy     *proxy,
   priv->calls = g_list_remove (priv->calls, call_id);
   if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID))
     {
-      NbtkWidget *button = nbtk_button_new ();
+      NbtkWidget *button;
+
+      if (!priv->tabs_table)
+        create_tabs_table (self);
+
+      button = nbtk_button_new ();
       clutter_container_add_actor (CLUTTER_CONTAINER (button), mozembed);
       g_signal_connect (button, "clicked",
                         G_CALLBACK (mozembed_button_clicked_cb), self);
@@ -145,12 +156,6 @@ notify_connect_view (DBusGProxy     *proxy,
                                   1, priv->previews, 1, 1,
                                   NBTK_KEEP_ASPECT_RATIO, 0.5, 0.5);
       priv->previews ++;
-
-      /* Add the tabs table if this is the first preview we've received */
-      if (priv->previews == 1)
-        nbtk_table_add_widget_full (NBTK_TABLE (self), priv->tabs_table, 1, 0,
-                                    1, 1, NBTK_X_EXPAND | NBTK_X_FILL,
-                                    0.5, 0.5);
     }
   else
     {
@@ -262,10 +267,6 @@ moblin_netbook_netpanel_show (ClutterActor *actor)
 
   request_live_previews (netpanel);
 
-  /* TODO: Favourites table */
-  /*nbtk_table_add_widget_full (NBTK_TABLE (netpanel), priv->favs_table, 2, 0,
-                              1, 1, NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);*/
-
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->show (actor);
 }
 
@@ -281,15 +282,15 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   mwb_radical_bar_set_text (MWB_RADICAL_BAR (priv->radical_bar), "");
   mwb_radical_bar_set_loading (MWB_RADICAL_BAR (priv->radical_bar), FALSE);
 
-  /* Destroy live previews */
-  destroy_live_previews (netpanel);
-
-  /* Hide tabs/favs tables */
-  clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_more));
-  clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
-                                  CLUTTER_ACTOR (priv->tabs_table));
-  /*clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
-                                  CLUTTER_ACTOR (priv->favs_table));*/
+  /* Destroy tab table */
+  cancel_dbus_calls (netpanel);
+  if (priv->tabs_table)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
+                                      CLUTTER_ACTOR (priv->tabs_table));
+      priv->tabs_table = NULL;
+      priv->tabs_more = NULL;
+    }
 
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->hide (actor);
 }
@@ -333,12 +334,6 @@ radical_bar_go_cb (MwbRadicalBar         *radical_bar,
 }
 
 static void
-tabs_more_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
-{
-  g_signal_emit (self, signals[LAUNCH], 0, "");
-}
-
-static void
 moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 {
   DBusGConnection *connection;
@@ -349,8 +344,6 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-  
-  /* Construct internet panel (except tab/page previews) */
   
   /* Construct entry table */
   table = nbtk_table_new ();
@@ -371,45 +364,6 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                               NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);
   g_signal_connect (priv->radical_bar, "go",
                     G_CALLBACK (radical_bar_go_cb), self);
-
-  /* Construct tabs preview table */
-  priv->tabs_table = nbtk_table_new ();
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->tabs_table), 6);
-  nbtk_table_set_row_spacing (NBTK_TABLE (priv->tabs_table), 6);
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->tabs_table),
-                          "netpanel-subtable");
-
-  g_object_ref_sink (G_OBJECT (priv->tabs_table));
-
-  /* Construct tabs previews table widgets */
-  label = nbtk_label_new ("Tabs");
-  nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), label, 0, 0, 1, 5,
-                              0, 0.0, 0.5);
-  priv->tabs_more = nbtk_button_new_with_label ("More...");
-  nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), priv->tabs_more,
-                              1, 5, 1, 1, 0, 0.5, 0.5);
-  clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_more));
-
-  g_signal_connect (priv->tabs_more, "clicked",
-                    G_CALLBACK (tabs_more_clicked_cb), self);
-
-  /* Construct favourites preview table */
-  priv->favs_table = nbtk_table_new ();
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->favs_table), 6);
-  nbtk_table_set_row_spacing (NBTK_TABLE (priv->favs_table), 6);
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->favs_table),
-                          "netpanel-subtable");
-
-  g_object_ref_sink (G_OBJECT (priv->favs_table));
-
-  /* Construct favourites previews table widgets */
-  label = nbtk_label_new ("Favourite pages");
-  nbtk_table_add_widget_full (NBTK_TABLE (priv->favs_table), label, 0, 0, 1, 5,
-                              0, 0.0, 0.5);
-  priv->favs_more = nbtk_button_new_with_label ("More...");
-  nbtk_table_add_widget_full (NBTK_TABLE (priv->favs_table), priv->favs_more,
-                              1, 5, 1, 1, 0, 0.5, 0.5);
-  clutter_actor_hide (CLUTTER_ACTOR (priv->favs_more));
 
   /* Connect to DBus */
   connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
