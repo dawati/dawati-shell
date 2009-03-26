@@ -117,7 +117,10 @@ dist_theme_mzone_DATA = \
 	theme/mzone/quotebackground.png \
 	theme/mzone/tile-partial-glow.png \
 	theme/mzone/backdrop.png \
-	theme/mzone/calendar-icon.png
+	theme/mzone/calendar-icon.png \
+	theme/mzone/v-div-line.png \
+	theme/mzone/single-div-line.png \
+	theme/mzone/double-div-line.png
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
