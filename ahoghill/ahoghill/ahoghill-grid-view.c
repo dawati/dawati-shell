@@ -111,10 +111,10 @@ test_results (Source *source)
     GPtrArray *results;
     int i = 0;
 
-    if (sources->items->len == 0)
+    if (source->items->len == 0)
       return NULL;
 
-    if (sources->items->len < 12)
+    if (source->items->len < 12)
     {
       results = g_ptr_array_sized_new (source->items->len);
 
