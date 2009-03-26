@@ -508,19 +508,15 @@ _mzone_activated_cb (PengeGridView *view, gpointer userdata)
 
 #ifdef WITH_NETPANEL
 static void
-_netgrid_show_cb (MnbDropDown *drop_down)
+_netgrid_show_cb (ClutterActor *netpanel)
 {
-  ClutterActor *child = mnb_drop_down_get_child (drop_down);
-  if (child)
-    clutter_actor_show (child);
+  clutter_actor_show (netpanel);
 }
 
 static void
-_netgrid_hide_cb (MnbDropDown *drop_down)
+_netgrid_hide_cb (ClutterActor *netpanel)
 {
-  ClutterActor *child = mnb_drop_down_get_child (drop_down);
-  if (child)
-    clutter_actor_hide (child);
+  clutter_actor_hide (netpanel);
 }
 
 static void
@@ -788,12 +784,12 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_position (priv->net_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->net_grid);
 
-  g_signal_connect (priv->net_grid, "hide-completed",
-                    G_CALLBACK (_netgrid_hide_cb), NULL);
-  g_signal_connect (priv->net_grid, "show",
-                    G_CALLBACK (_netgrid_show_cb), NULL);
-  g_signal_connect (mnb_drop_down_get_child (MNB_DROP_DOWN (priv->net_grid)),
-                    "launch", G_CALLBACK (_netgrid_launch_cb), plugin);
+  g_signal_connect_swapped (panel, "hide",
+                            G_CALLBACK (_netgrid_hide_cb), net_grid_view);
+  g_signal_connect_swapped (panel, "show",
+                            G_CALLBACK (_netgrid_show_cb), net_grid_view);
+  g_signal_connect (net_grid_view, "launch",
+                    G_CALLBACK (_netgrid_launch_cb), plugin);
 #endif
 
   if (shadow)

@@ -30,9 +30,6 @@ struct _MoblinNetbookNetpanelPrivate
   NbtkWidget     *tabs_table;
   NbtkWidget     *tabs_more;
   gint            previews;
-
-  NbtkWidget     *favs_table;
-  NbtkWidget     *favs_more;
 };
 
 static void
