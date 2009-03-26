@@ -2,6 +2,7 @@
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
+#include <glib/gi18n.h>
 
 #include "penge-task-tile.h"
 
@@ -19,7 +20,7 @@ struct _PengeTasksPanePrivate {
   GHashTable *uid_to_tasks;
   GHashTable *uid_to_actors;
 
-  NbtkWidget *no_tasks_label;
+  ClutterActor *no_tasks_bin;
 };
 
 static void penge_tasks_pane_update (PengeTasksPane *pane);
@@ -248,6 +249,7 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   gchar *uid;
   ClutterActor *actor;
   JanaTask *first_task = NULL;
+  NbtkWidget *label;
 
   old_actors = g_hash_table_get_values (priv->uid_to_actors);
 
@@ -259,22 +261,27 @@ penge_tasks_pane_update (PengeTasksPane *pane)
 
   if (first_task && jana_task_get_completed (first_task))
   {
-    if (!priv->no_tasks_label)
+    if (!priv->no_tasks_bin)
     {
-      priv->no_tasks_label = nbtk_label_new ("No pending tasks.");
+      label = nbtk_label_new (_("Nothing to do today"));
+      priv->no_tasks_bin = nbtk_bin_new ();
+      nbtk_bin_set_child (NBTK_BIN (priv->no_tasks_bin),
+                          (ClutterActor *)label);
       nbtk_table_add_actor (NBTK_TABLE (pane),
-                            (ClutterActor *)priv->no_tasks_label,
+                            (ClutterActor *)priv->no_tasks_bin,
                             0,
                             0);
-      nbtk_widget_set_style_class_name (priv->no_tasks_label,
-                                        "PengeNoMoreTasksText");
+      nbtk_widget_set_style_class_name (label,
+                                        "PengeNoMoreTasksLabel");
+
+      clutter_actor_set_height ((ClutterActor *)priv->no_tasks_bin, 46);
     }
   } else {
-    if (priv->no_tasks_label)
+    if (priv->no_tasks_bin)
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                      (ClutterActor *)priv->no_tasks_label);
-      priv->no_tasks_label = NULL;
+                                      (ClutterActor *)priv->no_tasks_bin);
+      priv->no_tasks_bin = NULL;
     }
   }
 
