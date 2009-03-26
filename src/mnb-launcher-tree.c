@@ -314,7 +314,7 @@ mnb_launcher_tree_list_entries (MnbLauncherTree *self)
   GSList              *tree;
   GSList              *tree_iter;
 
-  g_return_val_if_fail (tree, NULL);
+  g_return_val_if_fail (self, NULL);
 
   tree = NULL;
 
