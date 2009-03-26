@@ -60,9 +60,9 @@ PKG_CHECK_MODULES(PENGE, libjana-ecal mojito-client gtk+-2.0 nbtk-1.0 gconf-2.0)
 
 AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
 
-PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.2 kozo gdk-pixbuf-2.0)
 if test "x$enable_ahoghill" = "xyes"; then
-  AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
+	AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
+	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.2 kozo gdk-pixbuf-2.0)
 fi
 
 AC_ARG_ENABLE([netpanel],
