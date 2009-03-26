@@ -27,6 +27,8 @@
 #include "moblin-netbook-launcher.h"
 #include "moblin-netbook-status.h"
 #include "penge/penge-grid-view.h"
+#include "ahoghill/ahoghill-grid-view.h"
+
 #include "mnb-switcher.h"
 #include "mnb-panel-button.h"
 
@@ -107,9 +109,12 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       control_actor = priv->launcher;
       break;
 
+    case MNBK_CONTROL_MEDIA:
+      control_actor = priv->media_drop_down;
+      break;
+
     case MNBK_CONTROL_STATUS:
     case MNBK_CONTROL_INTERNET:
-    case MNBK_CONTROL_MEDIA:
     case MNBK_CONTROL_PEOPLE:
     case MNBK_CONTROL_PASTEBOARD:
       g_warning ("Control %d not handled (%s:%d)\n",
@@ -489,6 +494,7 @@ make_panel (MutterPlugin *plugin, gint width)
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
   ClutterActor               *overlay;
   ClutterActor               *mzone_grid_view;
+  ClutterActor               *ahoghill_grid_view;
   ClutterActor               *button;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
@@ -684,6 +690,22 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[0]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->mzone_grid);
+
+  /* Ahoghill media drop down */
+  priv->media_drop_down = CLUTTER_ACTOR (mnb_drop_down_new ());
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel),
+                               priv->media_drop_down);
+  clutter_actor_set_width (priv->media_drop_down, screen_width);
+
+  ahoghill_grid_view = g_object_new (AHOGHILL_TYPE_GRID_VIEW, NULL);
+  clutter_actor_set_height (mzone_grid_view,
+                            screen_height - PANEL_HEIGHT * 1.5);
+  mnb_drop_down_set_child (MNB_DROP_DOWN (priv->media_drop_down),
+                           CLUTTER_ACTOR (ahoghill_grid_view));
+  mnb_drop_down_set_button (MNB_DROP_DOWN (priv->media_drop_down),
+                            NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_MEDIA]));
+  clutter_actor_set_position (priv->media_drop_down, 0, PANEL_HEIGHT);
+  clutter_actor_lower_bottom (priv->media_drop_down);
 
   if (shadow)
     clutter_actor_lower_bottom (shadow);

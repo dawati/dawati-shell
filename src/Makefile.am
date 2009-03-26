@@ -4,7 +4,8 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 
 INCLUDES = @MUTTER_PLUGIN_CFLAGS@ \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
-	-I$(top_srcdir)/penge
+	-I$(top_srcdir)/penge \
+	-I$(top_srcdir)/ahoghill
 
 AM_CFLAGS   = -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
@@ -67,7 +68,9 @@ moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				tray/libtray.la 	\
 				effects/libeffects.la	\
 				$(PENGE_LIBS)		\
-				$(top_builddir)/penge/penge/libpenge.la
+				$(top_builddir)/penge/penge/libpenge.la \
+				$(AHOGHILL_LIBS)	\
+				$(top_builddir)/ahoghill/ahoghill/libahoghill.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 
