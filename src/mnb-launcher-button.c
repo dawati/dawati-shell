@@ -63,6 +63,12 @@ struct _MnbLauncherButtonPrivate
   char          *title_key;
   char          *description_key;
   char          *comment_key;
+
+  /* Those are mutually exclusive.
+   * fav_sibling:   sibling in the fav pane.
+   * plain_sibling: sibling in the expander. */
+  MnbLauncherButton *fav_sibling;
+  MnbLauncherButton *plain_sibling;
 };
 
 static guint _signals[LAST_SIGNAL] = { 0, };
@@ -74,6 +80,34 @@ fav_button_clicked_cb (NbtkButton         *button,
                        MnbLauncherButton  *self)
 {
   g_signal_emit (self, _signals[FAV_TOGGLED], 0);
+
+  if (!nbtk_button_get_checked (button))
+    {
+      if (self->priv->fav_sibling)
+        {
+          clutter_actor_destroy (CLUTTER_ACTOR (self->priv->fav_sibling));
+          self->priv->fav_sibling = NULL;
+        }
+
+      if (self->priv->plain_sibling)
+        {
+          MnbLauncherButton *plain_sibling = self->priv->plain_sibling;
+
+          if (plain_sibling->priv->fav_sibling)
+            plain_sibling->priv->fav_sibling = NULL;
+
+          g_signal_handlers_block_by_func (plain_sibling,
+                                           fav_button_clicked_cb,
+                                           self);
+          nbtk_button_set_checked (NBTK_BUTTON (plain_sibling->priv->fav_toggle),
+                                                FALSE);
+          g_signal_handlers_unblock_by_func (plain_sibling,
+                                             fav_button_clicked_cb,
+                                             self);
+
+          clutter_actor_destroy (CLUTTER_ACTOR (self));
+        }
+    }
 }
 
 static void
@@ -363,10 +397,10 @@ mnb_launcher_button_new (const gchar *icon_file,
 NbtkWidget *
 mnb_launcher_button_create_favorite (MnbLauncherButton *self)
 {
-  NbtkWidget *clone;
+  MnbLauncherButton *fav_sibling;
 
   g_return_val_if_fail (self, NULL);
-  clone = mnb_launcher_button_new (self->priv->icon_file,
+  fav_sibling = (MnbLauncherButton *) mnb_launcher_button_new (self->priv->icon_file,
                                    self->priv->icon_size,
                                    nbtk_label_get_text (self->priv->title),
                                    self->priv->category,
@@ -375,9 +409,21 @@ mnb_launcher_button_create_favorite (MnbLauncherButton *self)
                                    self->priv->executable,
                                    self->priv->desktop_file_path);
 
-  mnb_launcher_button_set_favorite (MNB_LAUNCHER_BUTTON (clone), TRUE);
+  clutter_actor_set_size (CLUTTER_ACTOR (fav_sibling),
+                          clutter_actor_get_width (CLUTTER_ACTOR (self)),
+                          clutter_actor_get_height (CLUTTER_ACTOR (self)));
 
-  return clone;
+  mnb_launcher_button_set_favorite (fav_sibling, TRUE);
+
+/*
+  g_object_add_weak_pointer (G_OBJECT (fav_sibling), (gpointer *) &(self->priv->fav_sibling));
+  g_object_add_weak_pointer (G_OBJECT (self), (gpointer *) &(fav_sibling->priv->plain_sibling));
+*/
+  /* Let's try without fancyness */
+  self->priv->fav_sibling = fav_sibling;
+  fav_sibling->priv->plain_sibling = self;
+
+  return NBTK_WIDGET (fav_sibling);
 }
 
 const char *
@@ -440,15 +486,9 @@ mnb_launcher_button_get_desktop_file_path (MnbLauncherButton *self)
 gboolean
 mnb_launcher_button_get_favorite (MnbLauncherButton *self)
 {
-  gboolean is_checked;
-
   g_return_val_if_fail (self, FALSE);
 
-  g_object_get (self->priv->fav_toggle,
-                "checked", &is_checked,
-                NULL);
-
-  return is_checked;
+  return nbtk_button_get_checked (NBTK_BUTTON (self->priv->fav_toggle));
 }
 
 void
@@ -457,9 +497,7 @@ mnb_launcher_button_set_favorite (MnbLauncherButton *self,
 {
   g_return_if_fail (self);
 
-  g_object_set (self->priv->fav_toggle,
-                "checked", is_favorite,
-                NULL);
+  nbtk_button_set_checked (NBTK_BUTTON (self->priv->fav_toggle), is_favorite);
 }
 
 gint
@@ -520,5 +558,31 @@ mnb_launcher_button_match (MnbLauncherButton *self,
     }
 
   return FALSE;
+}
+
+void
+mnb_launcher_button_sync_favourite (MnbLauncherButton *self,
+                                    MnbLauncherButton *plain_sibling)
+{
+  g_return_if_fail (self);
+  g_return_if_fail (plain_sibling);
+
+  if (0 == g_strcmp0 (self->priv->desktop_file_path,
+                      plain_sibling->priv->desktop_file_path))
+    {
+      mnb_launcher_button_set_favorite (plain_sibling, TRUE);
+      self->priv->category = g_strdup (plain_sibling->priv->category);
+/*
+      g_object_add_weak_pointer (G_OBJECT (self), (gpointer *) &(plain_sibling->priv->fav_sibling));
+      g_object_add_weak_pointer (G_OBJECT (plain_sibling), (gpointer *) &(self->priv->plain_sibling));
+*/
+      /* Let's try without fancyness */
+      self->priv->plain_sibling = plain_sibling;
+      plain_sibling->priv->fav_sibling = self;
+    }
+  else
+    {
+      mnb_launcher_button_set_favorite (plain_sibling, FALSE);
+    }
 }
 
