@@ -143,6 +143,10 @@ penge_grid_view_init (PengeGridView *self)
                                FALSE,
                                "y-align",
                                0.0,
+                               "x-expand",
+                               FALSE,
+                               "x-fill",
+                               FALSE,
                                NULL);
 
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
@@ -161,6 +165,10 @@ penge_grid_view_init (PengeGridView *self)
                                FALSE,
                                "y-align",
                                1.0,
+                               "x-expand",
+                               FALSE,
+                               "x-fill",
+                               FALSE,
                                NULL);
 
 
