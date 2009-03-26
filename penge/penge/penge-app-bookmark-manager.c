@@ -154,10 +154,13 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
     bookmark = g_hash_table_lookup (priv->uris_to_bookmarks,
                                     uri);
 
-    if (!bookmark)
+    if (bookmark)
     {
-      bookmark = penge_app_bookmark_new ();
+      i++;
+      continue;
     }
+
+    bookmark = penge_app_bookmark_new ();
 
     g_free (bookmark->uri);
     bookmark->uri = g_strdup (uri);;
@@ -201,7 +204,9 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
 
     g_hash_table_insert (priv->uris_to_bookmarks,
                          g_strdup (uri),
-                         bookmark);
+                         penge_app_bookmark_ref (bookmark));
+
+    penge_app_bookmark_unref (bookmark);
     i++;
   }
 
