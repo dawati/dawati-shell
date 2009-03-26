@@ -12,6 +12,8 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_GRID_VIEW, PengeGridViewPrivate))
 
+#define V_DIV_LINE PKG_DATADIR "/theme/mzone/v-div-line.png"
+
 typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 
 struct _PengeGridViewPrivate {
@@ -126,6 +128,8 @@ static void
 penge_grid_view_init (PengeGridView *self)
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (self);
+  ClutterActor *div_tex;
+  GError *error = NULL;
 
   priv->calendar_pane = g_object_new (PENGE_TYPE_CALENDAR_PANE,
                                       NULL);
@@ -172,18 +176,64 @@ penge_grid_view_init (PengeGridView *self)
                                NULL);
 
 
+  div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
+
+  if (!div_tex)
+  {
+    g_warning (G_STRLOC ": Error loading vertical divider: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    nbtk_table_add_actor (NBTK_TABLE (self),
+                          div_tex,
+                          0,
+                          1);
+    clutter_container_child_set (CLUTTER_CONTAINER (self),
+                                 div_tex,
+                                 "x-expand",
+                                 FALSE,
+                                 "x-fill",
+                                 FALSE,
+                                 "row-span",
+                                 2,
+                                 NULL);
+  }
+
   priv->recent_files_pane = g_object_new (PENGE_TYPE_RECENT_FILES_PANE, 
                                           NULL);
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->recent_files_pane,
                         0,
-                        1);
+                        2);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->recent_files_pane,
                                "row-span",
                                2,
                                NULL);
+
+  div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
+
+  if (!div_tex)
+  {
+    g_warning (G_STRLOC ": Error loading vertical divider: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    nbtk_table_add_actor (NBTK_TABLE (self),
+                          div_tex,
+                          0,
+                          3);
+    clutter_container_child_set (CLUTTER_CONTAINER (self),
+                                 div_tex,
+                                 "x-expand",
+                                 FALSE,
+                                 "x-fill",
+                                 FALSE,
+                                 "row-span",
+                                 2,
+                                 NULL);
+  }
 
 
   priv->people_pane = g_object_new (PENGE_TYPE_PEOPLE_PANE,
@@ -192,7 +242,7 @@ penge_grid_view_init (PengeGridView *self)
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->people_pane,
                         0,
-                        2);
+                        4);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->people_pane,
                                "row-span",
