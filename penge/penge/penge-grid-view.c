@@ -129,6 +129,7 @@ penge_grid_view_init (PengeGridView *self)
 
   priv->calendar_pane = g_object_new (PENGE_TYPE_CALENDAR_PANE,
                                       NULL);
+  clutter_actor_set_width (priv->calendar_pane, 280);
 
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->calendar_pane,
@@ -147,6 +148,7 @@ penge_grid_view_init (PengeGridView *self)
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
                                             NULL);
 
+  clutter_actor_set_width (priv->favourite_apps_pane, 280);
   nbtk_table_add_actor (NBTK_TABLE (self),
                         priv->favourite_apps_pane,
                         1,
