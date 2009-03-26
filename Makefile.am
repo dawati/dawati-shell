@@ -1,4 +1,4 @@
-SUBDIRS=build penge src po data tests
+SUBDIRS=build penge ahoghill src po data tests
 
 EXTRA_DIST =
 

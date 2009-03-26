@@ -57,6 +57,7 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mojito-client)
 
 PKG_CHECK_MODULES(PENGE, libjana-ecal mojito-client gtk+-2.0 nbtk-1.0 gconf-2.0)
+PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.2 kozo gdk-pixbuf-2.0)
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
@@ -94,6 +95,9 @@ tests/Makefile
 penge/Makefile
 penge/penge/Makefile
 penge/examples/Makefile
+ahoghill/Makefile
+ahoghill/ahoghill/Makefile
+ahoghill/examples/Makefile
 ])
 
 echo "
