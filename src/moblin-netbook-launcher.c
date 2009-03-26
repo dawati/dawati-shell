@@ -60,18 +60,45 @@ typedef struct
   MutterPlugin            *self;
   PengeAppBookmarkManager *manager;
   MnbLauncherMonitor      *monitor;
+
   ClutterActor            *scrolled_vbox;
+  ClutterActor            *fav_label;
   ClutterActor            *fav_grid;
+  ClutterActor            *apps_label;
   ClutterActor            *apps_grid;
+
   GHashTable              *expanders;
   GSList                  *launchers;
+
   gboolean                 is_filtering;
   GSList                  *launchers_iter;
   char                    *lcase_needle;
 } launcher_data_t;
 
-static void launcher_data_monitor_cb (MnbLauncherMonitor  *monitor,
-                                      launcher_data_t     *launcher_data);
+static void launcher_data_monitor_cb        (MnbLauncherMonitor  *monitor,
+                                             launcher_data_t     *launcher_data);
+
+static void launcher_data_set_show_fav_apps (launcher_data_t      *launcher_data,
+                                             gboolean              show);
+
+static void
+mnb_clutter_container_has_children_cb (ClutterActor  *actor,
+                                       gboolean      *ret)
+{
+  *ret = TRUE;
+}
+
+static gboolean
+mnb_clutter_container_has_children (ClutterContainer *container)
+{
+  gboolean ret = FALSE;
+
+  clutter_container_foreach (container,
+                             (ClutterCallback) mnb_clutter_container_has_children_cb,
+                             &ret);
+
+  return ret;
+}
 
 static void
 launcher_activated_cb (MnbLauncherButton  *launcher,
@@ -144,6 +171,8 @@ launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
       NbtkWidget *clone = mnb_launcher_button_create_favorite (launcher);
       clutter_container_add (CLUTTER_CONTAINER (launcher_data->fav_grid),
                              CLUTTER_ACTOR (clone), NULL);
+      launcher_data_set_show_fav_apps (launcher_data, TRUE);
+
       /* Update bookmarks. */
       uri = g_strdup_printf ("file://%s",
               mnb_launcher_button_get_desktop_file_path (
@@ -154,12 +183,18 @@ launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
     }
   else
     {
+      /* Update bookmarks. */
       uri = g_strdup_printf ("file://%s",
               mnb_launcher_button_get_desktop_file_path (
                 MNB_LAUNCHER_BUTTON (launcher)));
       penge_app_bookmark_manager_remove_by_uri (launcher_data->manager,
                                                 uri,
                                                 &error);
+
+      if (!mnb_clutter_container_has_children (CLUTTER_CONTAINER (launcher_data->fav_grid)))
+        {
+          launcher_data_set_show_fav_apps (launcher_data, FALSE);
+        }
     }
 
   if (error)
@@ -280,6 +315,15 @@ launcher_data_reset (launcher_data_t *launcher_data)
   clutter_actor_destroy (launcher_data->scrolled_vbox);
   launcher_data->scrolled_vbox = NULL;
 
+  g_object_unref (launcher_data->fav_label);
+  launcher_data->fav_label = NULL;
+
+  g_object_unref (launcher_data->fav_grid);
+  launcher_data->fav_grid = NULL;
+
+  g_object_unref (launcher_data->apps_label);
+  launcher_data->apps_label = NULL;
+
   g_hash_table_destroy (launcher_data->expanders);
   launcher_data->expanders = NULL;
 
@@ -288,15 +332,47 @@ launcher_data_reset (launcher_data_t *launcher_data)
 }
 
 static void
+launcher_data_set_show_fav_apps (launcher_data_t *launcher_data,
+                                 gboolean         show)
+{
+  if (show && !CLUTTER_ACTOR_IS_VISIBLE (launcher_data->fav_label))
+    {
+      nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
+                                  NBTK_WIDGET (launcher_data->fav_label),
+                                  0, 0, 1, 1,
+                                  NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
+                                  0., 0.);
+      clutter_actor_show (launcher_data->fav_label);
+
+      nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
+                                  NBTK_WIDGET (launcher_data->fav_grid),
+                                  1, 0, 1, 1,
+                                  NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
+                                  0., 0.);
+      clutter_actor_show (launcher_data->fav_grid);
+    }
+  else if (!show && CLUTTER_ACTOR_IS_VISIBLE (launcher_data->fav_label))
+    {
+      if (clutter_actor_get_parent (launcher_data->fav_label))
+        clutter_container_remove (CLUTTER_CONTAINER (launcher_data->scrolled_vbox),
+                                                    launcher_data->fav_label, NULL);
+      clutter_actor_hide (launcher_data->fav_label);
+
+      if (clutter_actor_get_parent (launcher_data->fav_grid))
+        clutter_container_remove (CLUTTER_CONTAINER (launcher_data->scrolled_vbox),
+                                                    launcher_data->fav_grid, NULL);
+      clutter_actor_hide (launcher_data->fav_grid);
+    }
+}
+
+static void
 launcher_data_fill (launcher_data_t *launcher_data)
 {
   GList           *fav_apps;
-  ClutterActor    *label;
   MnbLauncherTree *tree;
   GSList          *directories;
   GSList const    *directory_iter;
   GtkIconTheme    *theme;
-  gint             row = 0;
 
   theme = gtk_icon_theme_get_default ();
 
@@ -305,29 +381,24 @@ launcher_data_fill (launcher_data_t *launcher_data)
   /*
    * Fav apps.
    */
+
+  /* Label */
+  launcher_data->fav_label = CLUTTER_ACTOR (nbtk_label_new (_("Favourite Applications")));
+  g_object_ref (launcher_data->fav_label);
+  clutter_actor_set_name (launcher_data->fav_label, "app-launcher-apps-label");
+
+  /* Grid */
+  launcher_data->fav_grid = CLUTTER_ACTOR (nbtk_grid_new ());
+  g_object_ref (launcher_data->fav_grid);
+  clutter_actor_set_width (launcher_data->fav_grid,
+                            4 * LAUNCHER_WIDTH + 5 * PADDING);
+
   fav_apps = penge_app_bookmark_manager_get_bookmarks (launcher_data->manager);
   if (fav_apps)
     {
       GList *fav_apps_iter;
 
-      /* Label */
-      label = CLUTTER_ACTOR (nbtk_label_new (_("Favourite Applications")));
-      clutter_actor_set_name (label, "app-launcher-apps-label");
-      nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
-                                  NBTK_WIDGET (label),
-                                  row++, 0, 1, 1,
-                                  NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
-                                  0., 0.);
-
-      /* Grid */
-      launcher_data->fav_grid = CLUTTER_ACTOR (nbtk_grid_new ());
-      clutter_actor_set_width (launcher_data->fav_grid,
-                               4 * LAUNCHER_WIDTH + 5 * PADDING);
-      nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
-                                  NBTK_WIDGET (launcher_data->fav_grid),
-                                  row++, 0, 1, 1,
-                                  NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
-                                  0., 0.);
+      launcher_data_set_show_fav_apps (launcher_data, TRUE);
 
       for (fav_apps_iter = fav_apps;
            fav_apps_iter;
@@ -372,17 +443,21 @@ launcher_data_fill (launcher_data_t *launcher_data)
         }
       g_list_free (fav_apps);
     }
+  else
+    {
+      launcher_data_set_show_fav_apps (launcher_data, FALSE);
+    }
 
   /*
    * Apps browser.
    */
 
   /* Label */
-  label = CLUTTER_ACTOR (nbtk_label_new (_("Applications")));
-  clutter_actor_set_name (label, "app-launcher-apps-label");
+  launcher_data->apps_label = CLUTTER_ACTOR (nbtk_label_new (_("Applications")));
+  clutter_actor_set_name (launcher_data->apps_label, "app-launcher-apps-label");
   nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
-                              NBTK_WIDGET (label),
-                              row++, 0, 1, 1,
+                              NBTK_WIDGET (launcher_data->apps_label),
+                              2, 0, 1, 1,
                               NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
                               0., 0.);
 
@@ -397,7 +472,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
                             CLUTTER_UNITS_FROM_INT (PADDING));
   nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
                               NBTK_WIDGET (launcher_data->apps_grid),
-                              row++, 0, 1, 1,
+                              3, 0, 1, 1,
                               NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
                               0., 0.);
 
@@ -588,6 +663,7 @@ search_activated_cb (MnbEntry         *entry,
           ClutterActor    *expander;
 
           launcher_data->is_filtering = TRUE;
+          launcher_data_set_show_fav_apps (launcher_data, FALSE);
 
           /* Hide expanders. */
           g_hash_table_iter_init (&expander_iter, launcher_data->expanders);
@@ -624,6 +700,9 @@ search_activated_cb (MnbEntry         *entry,
       ClutterActor    *expander;
 
       launcher_data->is_filtering = FALSE;
+
+      if (mnb_clutter_container_has_children (CLUTTER_CONTAINER (launcher_data->fav_grid)))
+        launcher_data_set_show_fav_apps (launcher_data, TRUE);
 
       /* Reparent launchers into expanders. */
       for (iter = launcher_data->launchers; iter; iter = iter->next)

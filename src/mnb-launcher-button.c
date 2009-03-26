@@ -79,18 +79,23 @@ static void
 fav_button_clicked_cb (NbtkButton         *button,
                        MnbLauncherButton  *self)
 {
-  g_signal_emit (self, _signals[FAV_TOGGLED], 0);
-
-  if (!nbtk_button_get_checked (button))
+  if (nbtk_button_get_checked (button))
+    {
+      g_signal_emit (self, _signals[FAV_TOGGLED], 0);
+    }
+  else
     {
       if (self->priv->fav_sibling)
         {
+          /* Remove sibling from fav apps pane. */
           clutter_actor_destroy (CLUTTER_ACTOR (self->priv->fav_sibling));
           self->priv->fav_sibling = NULL;
+          g_signal_emit (self, _signals[FAV_TOGGLED], 0);
         }
 
       if (self->priv->plain_sibling)
         {
+          /* Remove self from fav apps pane and update sibling. */
           MnbLauncherButton *plain_sibling = self->priv->plain_sibling;
 
           if (plain_sibling->priv->fav_sibling)
@@ -106,6 +111,7 @@ fav_button_clicked_cb (NbtkButton         *button,
                                              self);
 
           clutter_actor_destroy (CLUTTER_ACTOR (self));
+          g_signal_emit (plain_sibling, _signals[FAV_TOGGLED], 0);
         }
     }
 }
