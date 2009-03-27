@@ -155,24 +155,24 @@ mnb_entry_allocate (ClutterActor          *actor,
                                     NULL, NULL,
                                     &button_width, &button_height);
 
-  button_box.x2 = box->x2 - box->x1 - padding.right;
-  button_box.x1 = button_box.x2 - button_width;
-  button_box.y1 = ((box->y2 - box->y1) - button_height) / 2;
-  button_box.y2 = button_box.y1 + button_height;
+  button_box.x2 = (int) (box->x2 - box->x1 - padding.right);
+  button_box.x1 = (int) (button_box.x2 - button_width);
+  button_box.y1 = (int) (((box->y2 - box->y1) - button_height) / 2);
+  button_box.y2 = (int) (button_box.y1 + button_height);
 
   /* Sanity check. */
-  button_box.x1 = MAX (padding.left, button_box.x1);
-  button_box.x2 = MAX (padding.left, button_box.x2);
+  button_box.x1 = (int) (MAX (padding.left, button_box.x1));
+  button_box.x2 = (int) (MAX (padding.left, button_box.x2));
 
   /* Entry is left-aligned. */
   clutter_actor_get_preferred_size (priv->entry,
                                     NULL, NULL,
                                     &entry_width, &entry_height);
 
-  entry_box.x1 = padding.left;
-  entry_box.x2 = button_box.x1;
-  entry_box.y1 = ((box->y2 - box->y1) - entry_height) / 2;
-  entry_box.y2 = entry_box.y1 + entry_height;
+  entry_box.x1 = (int) (padding.left);
+  entry_box.x2 = (int) (button_box.x1);
+  entry_box.y1 = (int) (((box->y2 - box->y1) - entry_height) / 2);
+  entry_box.y2 = (int) (entry_box.y1 + entry_height);
 
   clutter_actor_allocate (priv->entry, &entry_box, origin_changed);
   clutter_actor_allocate (priv->table, &button_box, origin_changed);
