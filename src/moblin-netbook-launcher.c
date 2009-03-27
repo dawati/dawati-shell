@@ -44,6 +44,8 @@
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-tree.h"
 
+#define SEARCH_APPLY_TIMEOUT 500
+
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48
 #define PADDING 8
@@ -71,7 +73,7 @@ typedef struct
   GSList                  *launchers;
 
   gboolean                 is_filtering;
-  GSList                  *launchers_iter;
+  guint                    timeout_id;
   char                    *lcase_needle;
 } launcher_data_t;
 
@@ -298,10 +300,10 @@ static void
 launcher_data_cancel_search (launcher_data_t *launcher_data)
 {
   /* Abort current search if any. */
-  if (launcher_data->lcase_needle)
+  if (launcher_data->timeout_id)
     {
-      g_idle_remove_by_data (launcher_data);
-      launcher_data->launchers_iter = NULL;
+      g_source_remove (launcher_data->timeout_id);
+      launcher_data->timeout_id = 0;
       g_free (launcher_data->lcase_needle);
       launcher_data->lcase_needle = NULL;
     }
@@ -608,35 +610,52 @@ launcher_data_monitor_cb (MnbLauncherMonitor  *monitor,
 }
 
 static gboolean
-filter_cb (launcher_data_t *launcher_data)
+search_apply_cb (launcher_data_t *launcher_data)
 {
-  MnbLauncherButton *button;
+  GSList *iter;
 
-  /* Start search? */
-  if (launcher_data->launchers_iter == NULL)
+  /* Need to switch to filter mode? */
+  if (!launcher_data->is_filtering)
     {
-      g_return_val_if_fail (launcher_data->launchers, FALSE);
-      launcher_data->launchers_iter = launcher_data->launchers;
+      GSList          *iter;
+      GHashTableIter   expander_iter;
+      ClutterActor    *expander;
+
+      launcher_data->is_filtering = TRUE;
+      launcher_data_set_show_fav_apps (launcher_data, FALSE);
+
+      /* Hide expanders. */
+      g_hash_table_iter_init (&expander_iter, launcher_data->expanders);
+      while (g_hash_table_iter_next (&expander_iter,
+                                      NULL,
+                                      (gpointer *) &expander))
+        {
+          clutter_actor_hide (expander);
+        }
+
+      /* Reparent launchers onto grid.
+        * Launchers are initially invisible to avoid bogus matches. */
+      for (iter = launcher_data->launchers; iter; iter = iter->next)
+        {
+          MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (iter->data);
+          clutter_actor_hide (CLUTTER_ACTOR (launcher));
+          clutter_actor_reparent (CLUTTER_ACTOR (launcher),
+                                  launcher_data->apps_grid);
+        }
     }
 
-  button = MNB_LAUNCHER_BUTTON (launcher_data->launchers_iter->data);
-
-  /* Do search. */
-  mnb_launcher_button_match (button, launcher_data->lcase_needle) ?
-    clutter_actor_show (CLUTTER_ACTOR (button)) :
-    clutter_actor_hide (CLUTTER_ACTOR (button));
-
-  launcher_data->launchers_iter = launcher_data->launchers_iter->next;
-
-  /* Done searching? */
-  if (launcher_data->launchers_iter == NULL)
+  /* Perform search. */
+  for (iter = launcher_data->launchers; iter; iter = iter->next)
     {
-      g_free (launcher_data->lcase_needle);
-      launcher_data->lcase_needle = NULL;
-      return FALSE;
+      MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+      mnb_launcher_button_match (button, launcher_data->lcase_needle) ?
+        clutter_actor_show (CLUTTER_ACTOR (button)) :
+        clutter_actor_hide (CLUTTER_ACTOR (button));
     }
 
-  return TRUE;
+  g_free (launcher_data->lcase_needle);
+  launcher_data->lcase_needle = NULL;
+  return FALSE;
 }
 
 static void
@@ -655,40 +674,11 @@ search_activated_cb (MnbEntry         *entry,
 
       gchar *lcase_needle = g_utf8_strdown (needle, -1);
 
-      /* Need to switch to filter mode? */
-      if (!launcher_data->is_filtering)
-        {
-          GSList          *iter;
-          GHashTableIter   expander_iter;
-          ClutterActor    *expander;
-
-          launcher_data->is_filtering = TRUE;
-          launcher_data_set_show_fav_apps (launcher_data, FALSE);
-
-          /* Hide expanders. */
-          g_hash_table_iter_init (&expander_iter, launcher_data->expanders);
-          while (g_hash_table_iter_next (&expander_iter,
-                                         NULL,
-                                         (gpointer *) &expander))
-            {
-              clutter_actor_hide (expander);
-            }
-
-          /* Reparent launchers onto grid.
-           * Launchers are initially invisible to avoid bogus matches. */
-          for (iter = launcher_data->launchers; iter; iter = iter->next)
-            {
-              MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (iter->data);
-              clutter_actor_hide (CLUTTER_ACTOR (launcher));
-              clutter_actor_reparent (CLUTTER_ACTOR (launcher),
-                                      launcher_data->apps_grid);
-            }
-        }
-
       /* Update search result. */
       launcher_data->lcase_needle = g_strdup (lcase_needle);
-      g_idle_add ((GSourceFunc) filter_cb, launcher_data);
-
+      launcher_data->timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
+                                                 (GSourceFunc) search_apply_cb,
+                                                 launcher_data);
       g_free (lcase_needle);
     }
   else if (launcher_data->is_filtering &&
