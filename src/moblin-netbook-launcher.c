@@ -46,12 +46,16 @@
 
 #define SEARCH_APPLY_TIMEOUT 500
 
-#define WIDGET_SPACING 5
 #define ICON_SIZE 48
-#define PADDING 8
-#define N_COLS 4
-#define LAUNCHER_WIDTH  235
+
+#define SCROLLBAR_RESERVED_WIDTH 50
+#define SCROLLVIEW_RESERVED_WIDTH 20
+#define EXPANDER_GRID_ROW_GAP 8
+
+#define LAUNCHER_WIDTH  205
 #define LAUNCHER_HEIGHT 64
+#define LAUNCHER_GRID_COLUMN_GAP 32
+#define LAUNCHER_GRID_ROW_GAP 12
 
 /*
  * Helper struct that contains all the info needed to switch between
@@ -63,6 +67,7 @@ typedef struct
   PengeAppBookmarkManager *manager;
   MnbLauncherMonitor      *monitor;
 
+  ClutterUnit              width;
   ClutterActor            *scrolled_vbox;
   ClutterActor            *fav_label;
   ClutterActor            *fav_grid;
@@ -387,13 +392,15 @@ launcher_data_fill (launcher_data_t *launcher_data)
   /* Label */
   launcher_data->fav_label = CLUTTER_ACTOR (nbtk_label_new (_("Favourite Applications")));
   g_object_ref (launcher_data->fav_label);
-  clutter_actor_set_name (launcher_data->fav_label, "app-launcher-apps-label");
+  clutter_actor_set_name (launcher_data->fav_label, "launcher-group-label");
 
   /* Grid */
   launcher_data->fav_grid = CLUTTER_ACTOR (nbtk_grid_new ());
+  nbtk_grid_set_row_gap (NBTK_GRID (launcher_data->fav_grid), LAUNCHER_GRID_ROW_GAP);
+  nbtk_grid_set_column_gap (NBTK_GRID (launcher_data->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
+  clutter_actor_set_name (launcher_data->fav_grid, "launcher-fav-grid");
   g_object_ref (launcher_data->fav_grid);
-  clutter_actor_set_width (launcher_data->fav_grid,
-                            4 * LAUNCHER_WIDTH + 5 * PADDING);
+  clutter_actor_set_width (launcher_data->fav_grid, launcher_data->width);
 
   fav_apps = penge_app_bookmark_manager_get_bookmarks (launcher_data->manager);
   if (fav_apps)
@@ -456,7 +463,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
   /* Label */
   launcher_data->apps_label = CLUTTER_ACTOR (nbtk_label_new (_("Applications")));
-  clutter_actor_set_name (launcher_data->apps_label, "app-launcher-apps-label");
+  clutter_actor_set_name (launcher_data->apps_label, "launcher-group-label");
   nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
                               NBTK_WIDGET (launcher_data->apps_label),
                               2, 0, 1, 1,
@@ -465,13 +472,10 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
   /* Grid */
   launcher_data->apps_grid = CLUTTER_ACTOR (nbtk_grid_new ());
-  clutter_actor_set_width (launcher_data->apps_grid,
-                           4 * LAUNCHER_WIDTH + 5 * PADDING);
-  clutter_actor_set_name (launcher_data->apps_grid, "app-launcher-table");
+  clutter_actor_set_name (launcher_data->apps_grid, "launcher-apps-grid");
+  clutter_actor_set_width (launcher_data->apps_grid, launcher_data->width);
   nbtk_grid_set_row_gap (NBTK_GRID (launcher_data->apps_grid),
-                         CLUTTER_UNITS_FROM_INT (PADDING));
-  nbtk_grid_set_column_gap (NBTK_GRID (launcher_data->apps_grid),
-                            CLUTTER_UNITS_FROM_INT (PADDING));
+                         CLUTTER_UNITS_FROM_INT (EXPANDER_GRID_ROW_GAP));
   nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
                               NBTK_WIDGET (launcher_data->apps_grid),
                               3, 0, 1, 1,
@@ -496,7 +500,8 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
       /* Expander. */
       expander = CLUTTER_ACTOR (mnb_expander_new (directory->name));
-      clutter_actor_set_width (expander, 4 * LAUNCHER_WIDTH + 5 * PADDING);
+      clutter_actor_set_width (expander,
+                               launcher_data->width - SCROLLVIEW_RESERVED_WIDTH);
       clutter_container_add (CLUTTER_CONTAINER (launcher_data->apps_grid),
                              expander, NULL);
       g_hash_table_insert (launcher_data->expanders,
@@ -511,6 +516,9 @@ launcher_data_fill (launcher_data_t *launcher_data)
         }
 
       inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
+      nbtk_grid_set_column_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
+      nbtk_grid_set_row_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
+      clutter_actor_set_name (inner_grid, "launcher-expander-grid");
       clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
       for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
@@ -566,7 +574,8 @@ launcher_data_fill (launcher_data_t *launcher_data)
  * Ctor.
  */
 static launcher_data_t *
-launcher_data_new (MutterPlugin *self)
+launcher_data_new (MutterPlugin *self,
+                   gint          width)
 {
   launcher_data_t *launcher_data;
 
@@ -576,6 +585,7 @@ launcher_data_new (MutterPlugin *self)
   launcher_data->manager = penge_app_bookmark_manager_get_default ();
   penge_app_bookmark_manager_load (launcher_data->manager);
 
+  launcher_data->width = width;
   launcher_data_fill (launcher_data);
 
   return launcher_data;
@@ -623,6 +633,11 @@ search_apply_cb (launcher_data_t *launcher_data)
 
       launcher_data->is_filtering = TRUE;
       launcher_data_set_show_fav_apps (launcher_data, FALSE);
+
+      nbtk_grid_set_row_gap (NBTK_GRID (launcher_data->apps_grid),
+                             LAUNCHER_GRID_ROW_GAP);
+      nbtk_grid_set_column_gap (NBTK_GRID (launcher_data->apps_grid),
+                                LAUNCHER_GRID_COLUMN_GAP);
 
       /* Hide expanders. */
       g_hash_table_iter_init (&expander_iter, launcher_data->expanders);
@@ -691,6 +706,10 @@ search_activated_cb (MnbEntry         *entry,
 
       launcher_data->is_filtering = FALSE;
 
+      nbtk_grid_set_row_gap (NBTK_GRID (launcher_data->apps_grid),
+                             CLUTTER_UNITS_FROM_INT (EXPANDER_GRID_ROW_GAP));
+      nbtk_grid_set_column_gap (NBTK_GRID (launcher_data->apps_grid), 0);
+
       if (mnb_clutter_container_has_children (CLUTTER_CONTAINER (launcher_data->fav_grid)))
         launcher_data_set_show_fav_apps (launcher_data, TRUE);
 
@@ -741,24 +760,24 @@ make_launcher (MutterPlugin *plugin,
   drop_down = mnb_drop_down_new ();
 
   vbox = nbtk_table_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (vbox), "app-launcher-vbox");
+  clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
 
   /* Filter row. */
   hbox = nbtk_table_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (hbox), "app-launcher-search");
+  clutter_actor_set_name (CLUTTER_ACTOR (hbox), "launcher-filter-pane");
   nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
   nbtk_table_add_widget (NBTK_TABLE (vbox), hbox, 0, 0);
 
   label = nbtk_label_new (_("Applications"));
-  clutter_actor_set_name (CLUTTER_ACTOR (label), "app-launcher-search-label");
+  clutter_actor_set_name (CLUTTER_ACTOR (label), "launcher-filter-label");
   nbtk_table_add_widget_full (NBTK_TABLE (hbox), label,
                               0, 0, 1, 1,
                               0,
                               0., 0.5);
 
   entry = mnb_entry_new (_("Search"));
-  clutter_actor_set_name (CLUTTER_ACTOR (entry), "app-launcher-search-entry");
+  clutter_actor_set_name (CLUTTER_ACTOR (entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (entry),
                            CLUTTER_UNITS_FROM_DEVICE (600));
   nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry,
@@ -775,7 +794,7 @@ make_launcher (MutterPlugin *plugin,
    */
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   /* Add launcher table. */
-  launcher_data = launcher_data_new (plugin);
+  launcher_data = launcher_data_new (plugin, width - SCROLLBAR_RESERVED_WIDTH);
   clutter_container_add (CLUTTER_CONTAINER (viewport),
                          CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
 
@@ -784,7 +803,7 @@ make_launcher (MutterPlugin *plugin,
                          CLUTTER_ACTOR (viewport), NULL);
   clutter_actor_set_size (scroll,
                           width,
-                          height - clutter_actor_get_height (CLUTTER_ACTOR (entry)) - WIDGET_SPACING);
+                          height - clutter_actor_get_height (CLUTTER_ACTOR (hbox)));
   nbtk_table_add_widget_full (NBTK_TABLE (vbox), NBTK_WIDGET (scroll),
                               1, 0, 1, 1,
                               NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,

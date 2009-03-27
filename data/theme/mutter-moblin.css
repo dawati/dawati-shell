@@ -363,27 +363,39 @@ MnbDropDown, MnbSwitcher {
 
 /* launcher  */
 
-*#app-launcher-vbox {
+*#launcher-vbox {
   background-color: #ffff;
   padding: 5;
 }
 
-*#app-launcher-search {
+*#launcher-filter-pane {
   border-image: url('file://launcher/launcher-search-bg.png') 4 stretch;
   padding: 4;
 }
 
-*#app-launcher-search-label {
+*#launcher-filter-label {
   font-family: "Liberation Sans Bold";
   font-size: 18;
   padding-left: 12;
 }
 
-*#app-launcher-apps-label {
+*#launcher-group-label {
   font-family: "Liberation Sans Bold";
   font-size: 14;
   color: #7e7e7e;
-  padding: 12;
+  padding: 12 12 6 12;
+}
+
+*#launcher-fav-grid {
+  padding-left: 24;
+}
+
+*#launcher-apps-grid {
+  padding-left: 24;
+}
+
+*#launcher-expander-grid {
+  padding: 8 5 10 18;
 }
 
 MnbEntry {
