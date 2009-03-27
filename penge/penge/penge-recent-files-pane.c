@@ -169,7 +169,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
         g_free (filename);
       }
 
-      if (thumbnail_path && filename)
+      if (thumbnail_path)
       {
         actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
                               "thumbnail-path",
