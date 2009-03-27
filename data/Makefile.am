@@ -164,3 +164,6 @@ dist_theme_netpanel_DATA = \
 	theme/netpanel/thumbnail.png		\
 	theme/netpanel/thumbnail_hover.png
 
+theme_pasteboarddir = $(pkgdatadir)/theme/pasteboard
+dist_theme_pasteboard_DATA = \
+	theme/pasteboard/pasteboard-search-bg.png
