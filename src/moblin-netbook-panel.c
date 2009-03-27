@@ -31,6 +31,7 @@
 #include "moblin-netbook-launcher.h"
 #include "moblin-netbook-status.h"
 #include "moblin-netbook-netpanel.h"
+#include "moblin-netbook-pasteboard.h"
 #include "penge/penge-grid-view.h"
 
 #ifdef USE_AHOGHILL
@@ -693,7 +694,7 @@ make_panel (MutterPlugin *plugin, gint width)
   priv->status = make_status (plugin, width - PANEL_X_PADDING * 2);
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->status);
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->status),
-                            NBTK_BUTTON (priv->panel_buttons[1]));
+                            NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_STATUS]));
   clutter_actor_set_width (priv->status, screen_width);
   clutter_actor_set_position (priv->status, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->status);
@@ -703,7 +704,7 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_container_add (CLUTTER_CONTAINER (panel),
                          CLUTTER_ACTOR (priv->switcher), NULL);
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->switcher),
-                            NBTK_BUTTON (priv->panel_buttons[2]));
+                            NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_SPACES]));
   clutter_actor_set_width (priv->switcher, screen_width);
   clutter_actor_set_position (priv->switcher, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->switcher);
@@ -715,11 +716,23 @@ make_panel (MutterPlugin *plugin, gint width)
                                   screen_height - 2 * PANEL_HEIGHT);
   clutter_container_add_actor (CLUTTER_CONTAINER (panel), priv->launcher);
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->launcher),
-                            NBTK_BUTTON (priv->panel_buttons[5]));
+                            NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_APPS]));
   clutter_actor_set_position (priv->launcher, 0, PANEL_HEIGHT);
   clutter_actor_set_width (priv->launcher, screen_width);
   clutter_actor_lower_bottom (priv->launcher);
   clutter_actor_hide (priv->launcher);
+
+  /* pasteboard drop down */
+  priv->pasteboard = make_pasteboard (plugin,
+                                      width - PANEL_X_PADDING * 2);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel),
+                               priv->pasteboard);
+  mnb_drop_down_set_button (MNB_DROP_DOWN (priv->pasteboard),
+                            NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_PASTERBOARD]));
+  clutter_actor_set_position (priv->pasteboard, 0, PANEL_HEIGHT);
+  clutter_actor_set_width (priv->pasteboard, screen_width);
+  clutter_actor_lower_bottom (priv->pasteboard);
+  clutter_actor_hide (priv->pasteboard);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr,
@@ -747,7 +760,7 @@ make_panel (MutterPlugin *plugin, gint width)
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->mzone_grid),
                            CLUTTER_ACTOR (mzone_grid_view));
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->mzone_grid),
-                            NBTK_BUTTON (priv->panel_buttons[0]));
+                            NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->mzone_grid);
 
@@ -778,7 +791,7 @@ make_panel (MutterPlugin *plugin, gint width)
   mnb_drop_down_set_child (MNB_DROP_DOWN (priv->net_grid),
                            CLUTTER_ACTOR (net_grid_view));
   mnb_drop_down_set_button (MNB_DROP_DOWN (priv->net_grid),
-                            NBTK_BUTTON (priv->panel_buttons[3]));
+                            NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_INTERNET]));
   clutter_actor_set_position (priv->net_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->net_grid);
 

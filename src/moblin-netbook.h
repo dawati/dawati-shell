@@ -102,6 +102,7 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *lowlight;
   ClutterActor          *status;
   ClutterActor          *media_drop_down;
+  ClutterActor          *pasteboard;
 
   GList                 *global_tab_list;
 
