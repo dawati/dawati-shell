@@ -33,6 +33,11 @@ struct _MnbClipboardStore
 struct _MnbClipboardStoreClass
 {
   ClutterListModelClass parent_class;
+
+  void (* item_added) (MnbClipboardStore    *store,
+                       MnbClipboardItemType  item_type,
+                       gint                  row,
+                       gboolean              is_selection);
 };
 
 GType mnb_clipboard_store_get_type (void) G_GNUC_CONST;

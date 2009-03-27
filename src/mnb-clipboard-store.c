@@ -3,6 +3,7 @@
 #endif
 
 #include "mnb-clipboard-store.h"
+#include "marshal.h"
 
 #include <gtk/gtk.h>
 
@@ -23,8 +24,16 @@ enum
   COLUMN_ITEM_URIS,
   COLUMN_ITEM_IMAGE,
   COLUMN_ITEM_MTIME,
+  COLUMN_ITEM_IS_SELECTION,
 
   N_COLUMNS
+};
+
+enum
+{
+  ITEM_ADDED,
+
+  LAST_SIGNAL
 };
 
 G_DEFINE_TYPE (MnbClipboardStore, mnb_clipboard_store, CLUTTER_TYPE_LIST_MODEL);
@@ -36,7 +45,11 @@ struct _ClipboardItem
   MnbClipboardStore *store;
 
   gint64 mtime;
+
+  guint is_selection : 1;
 };
+
+static gulong store_signals[LAST_SIGNAL] = { 0, };
 
 static void
 on_clipboard_request_text (GtkClipboard *clipboard,
@@ -52,6 +65,7 @@ on_clipboard_request_text (GtkClipboard *clipboard,
                          COLUMN_ITEM_TYPE, item->type,
                          COLUMN_ITEM_MTIME, item->mtime,
                          COLUMN_ITEM_TEXT, text,
+                         COLUMN_ITEM_IS_SELECTION, item->is_selection,
                          -1);
 
   {
@@ -70,6 +84,11 @@ on_clipboard_request_text (GtkClipboard *clipboard,
     g_free (str);
   }
 
+  g_signal_emit (item->store, store_signals[ITEM_ADDED], 0,
+                 item->type,
+                 0,
+                 item->is_selection);
+
   g_object_unref (item->store);
   g_slice_free (ClipboardItem, item);
 }
@@ -86,7 +105,13 @@ on_clipboard_request_uris (GtkClipboard  *clipboard,
                          COLUMN_ITEM_TYPE, item->type,
                          COLUMN_ITEM_MTIME, item->mtime,
                          COLUMN_ITEM_URIS, uris,
+                         COLUMN_ITEM_IS_SELECTION, item->is_selection,
                          -1);
+
+  g_signal_emit (item->store, store_signals[ITEM_ADDED], 0,
+                 item->type,
+                 0,
+                 item->is_selection);
 
   g_object_unref (item->store);
   g_slice_free (ClipboardItem, item);
@@ -176,6 +201,7 @@ on_clipboard_owner_change (GtkClipboard      *clipboard,
   tmp->type = MNB_CLIPBOARD_ITEM_INVALID;
   tmp->store = g_object_ref (store);
   tmp->mtime = now.tv_sec;
+  tmp->is_selection = FALSE;
 
   /* step 1: we ask what the clipboard is holding */
   gtk_clipboard_request_targets (clipboard,
@@ -187,6 +213,18 @@ static void
 mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
 {
   g_type_class_add_private (klass, sizeof (MnbClipboardStorePrivate));
+
+  store_signals[ITEM_ADDED] =
+    g_signal_new (g_intern_static_string ("item-added"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbClipboardStoreClass, item_added),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__INT_INT_BOOLEAN,
+                  G_TYPE_NONE, 3,
+                  G_TYPE_INT,
+                  G_TYPE_INT,
+                  G_TYPE_BOOLEAN);
 }
 
 static void
@@ -199,6 +237,7 @@ mnb_clipboard_store_init (MnbClipboardStore *self)
     G_TYPE_STRV,        /* COLUMN_ITEM_URIS */
     G_TYPE_POINTER,     /* COLUMN_ITEM_IMAGE */
     G_TYPE_INT64,       /* COLUMN_ITEM_MTIME */
+    G_TYPE_BOOLEAN,     /* COLUMN_ITEM_IS_SELECTION */
   };
 
   self->priv = MNB_CLIPBOARD_STORE_GET_PRIVATE (self);
