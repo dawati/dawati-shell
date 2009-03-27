@@ -76,7 +76,7 @@ on_clipboard_request_text (GtkClipboard *clipboard,
 
 #if GTK_CHECK_VERSION(2, 14, 0)
 static void
-on_clipboard_request_uris (GtkClipboard  *clipboard
+on_clipboard_request_uris (GtkClipboard  *clipboard,
                            gchar        **uris,
                            gpointer       data)
 {
