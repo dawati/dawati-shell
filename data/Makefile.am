@@ -47,14 +47,14 @@ dist_theme_generic_DATA = \
 	theme/generic/expander-header.png \
 	theme/generic/expander-header-expanded.png \
 	theme/generic/expander-header-hover.png \
-  theme/generic/expander-icon-checked.png \
-  theme/generic/expander-icon-hover.png \
-  theme/generic/expander-icon.png \
+	theme/generic/expander-icon-checked.png \
+	theme/generic/expander-icon-hover.png \
+	theme/generic/expander-icon.png \
 	theme/generic/expander-body.png \
 	theme/generic/tooltip-arrow.png \
 	theme/generic/tooltip-background.png \
 	theme/generic/vscroll-backward-hover.png \
-  theme/generic/vscroll-backward.png \
+	theme/generic/vscroll-backward.png \
 	theme/generic/vscroll-forward-hover.png \
 	theme/generic/vscroll-forward.png \
 	theme/generic/vscroll-handle-hover.png \
@@ -65,11 +65,11 @@ dist_theme_launcher_DATA = \
 	theme/launcher/launcher-hover.png \
 	theme/launcher/launcher-search-bg.png \
 	theme/launcher/launcher-search-entry-bg.png \
-  theme/launcher/launcher-search-entry-clear-hover.png \
-  theme/launcher/launcher-search-entry-clear.png \
-  theme/launcher/launcher-search-entry-separator.png \
-  theme/launcher/launcher-button-fav-toggle-pinned.png \
-  theme/launcher/launcher-button-fav-toggle-unpinned.png
+	theme/launcher/launcher-search-entry-clear-hover.png \
+	theme/launcher/launcher-search-entry-clear.png \
+	theme/launcher/launcher-search-entry-separator.png \
+	theme/launcher/launcher-button-fav-toggle-pinned.png \
+	theme/launcher/launcher-button-fav-toggle-unpinned.png
 
 theme_switcherdir = $(pkgdatadir)/theme/switcher
 dist_theme_switcher_DATA = \
@@ -156,3 +156,9 @@ dist_theme_mediapanel_DATA = \
 	theme/media-panel/top_playque_closed.png \
 	theme/media-panel/top_playque_hover.png \
 	theme/media-panel/top_playque_selected.png
+
+theme_netpaneldir = $(pkgdatadir)/theme/netpanel
+dist_theme_netpanel_DATA = \
+	theme/netpanel/thumbnail.png		\
+	theme/netpanel/thumbnail_hover.png
+

@@ -724,7 +724,7 @@ MwbRadicalBar
   padding: 4;
 }
 
-MwbRadicalBar *.NbtkEntry
+MwbRadicalBar NbtkEntry
 {
   font-family: "Liberation Sans";
   font-size: 15px;
@@ -750,6 +750,23 @@ MwbRadicalBar NbtkButton
   color: #000000 ! important;
   padding: 0 20 0 0;
 }
+
+MoblinNetbookNetpanel NbtkButton {
+  border-image: url("file://netpanel/thumbnail.png") 7 8 9;
+  padding: 7 8 9;
+}
+
+MoblinNetbookNetpanel NbtkButton:hover {
+  border-image: url("file://netpanel/thumbnail_hover.png") 7 8 9;
+  padding: 7 8 9;
+}
+
+MoblinNetbookNetpanel NbtkButton:active {
+  border-image: url("file://netpanel/thumbnail_hover.png") 7 8 9;
+  padding: 7 8 9;
+}
+
+/* Media panel */
 
 *#media-pane-vbox {
   background-color: #ffff;
