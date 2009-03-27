@@ -167,12 +167,15 @@ on_clipboard_owner_change (GtkClipboard      *clipboard,
                            MnbClipboardStore *store)
 {
   ClipboardItem *tmp;
+  GTimeVal now;
+
+  g_get_current_time (&now);
 
   tmp = g_slice_new (ClipboardItem);
 
   tmp->type = MNB_CLIPBOARD_ITEM_INVALID;
   tmp->store = g_object_ref (store);
-  tmp->mtime = gdk_event_get_time (event);
+  tmp->mtime = now.tv_sec;
 
   /* step 1: we ask what the clipboard is holding */
   gtk_clipboard_request_targets (clipboard,
