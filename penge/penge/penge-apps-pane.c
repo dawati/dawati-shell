@@ -125,23 +125,45 @@ penge_apps_pane_update (PengeAppsPane *pane)
   for (l = bookmarks; l; l = l->next)
   {
     bookmark = (PengeAppBookmark *)l->data;
-    actor = g_object_new (PENGE_TYPE_APP_TILE,
-                          "bookmark",
-                          bookmark,
-                          NULL);
-    nbtk_table_add_actor (NBTK_TABLE (pane),
-                          actor,
-                          count / ROW_SIZE,
-                          count % ROW_SIZE);
-    clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                 actor,
-                                 "x-expand",
-                                 FALSE,
-                                 "y-expand",
-                                 FALSE,
-                                 NULL);
+
+    actor = g_hash_table_lookup (priv->uris_to_actors,
+                                 bookmark->uri);
+    if (actor)
+    {
+      clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                   actor,
+                                   "row",
+                                   count / ROW_SIZE,
+                                   "column",
+                                   count % ROW_SIZE,
+                                   NULL);
+    } else {
+      actor = g_object_new (PENGE_TYPE_APP_TILE,
+                            "bookmark",
+                            bookmark,
+                            NULL);
+      nbtk_table_add_actor (NBTK_TABLE (pane),
+                            actor,
+                            count / ROW_SIZE,
+                            count % ROW_SIZE);
+      clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                   actor,
+                                   "x-expand",
+                                   FALSE,
+                                   "y-expand",
+                                   FALSE,
+                                   NULL);
+      g_hash_table_insert (priv->uris_to_actors,
+                           g_strdup (bookmark->uri),
+                           actor);
+    }
+
     /* Found, so don't remove */
-    to_remove = g_list_remove (to_remove, bookmark->uri);
+    /* This craziness is because the allocated string is probably different */
+    to_remove = g_list_delete_link (to_remove,
+                                    g_list_find_custom (to_remove,
+                                                        bookmark->uri,
+                                                        (GCompareFunc)g_strcmp0));
     count++;
   }
 
