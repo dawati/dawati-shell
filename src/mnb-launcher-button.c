@@ -567,8 +567,8 @@ mnb_launcher_button_match (MnbLauncherButton *self,
 }
 
 void
-mnb_launcher_button_sync_favourite (MnbLauncherButton *self,
-                                    MnbLauncherButton *plain_sibling)
+mnb_launcher_button_sync_if_favorite (MnbLauncherButton *self,
+                                      MnbLauncherButton *plain_sibling)
 {
   g_return_if_fail (self);
   g_return_if_fail (plain_sibling);
@@ -585,10 +585,6 @@ mnb_launcher_button_sync_favourite (MnbLauncherButton *self,
       /* Let's try without fancyness */
       self->priv->plain_sibling = plain_sibling;
       plain_sibling->priv->fav_sibling = self;
-    }
-  else
-    {
-      mnb_launcher_button_set_favorite (plain_sibling, FALSE);
     }
 }
 

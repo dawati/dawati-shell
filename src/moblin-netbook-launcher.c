@@ -524,7 +524,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
               if (launcher_data->fav_grid)
                 {
                   clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->fav_grid),
-                                             (ClutterCallback) mnb_launcher_button_sync_favourite,
+                                             (ClutterCallback) mnb_launcher_button_sync_if_favorite,
                                              button);
                 }
 
