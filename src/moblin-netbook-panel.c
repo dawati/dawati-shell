@@ -516,18 +516,6 @@ _mzone_activated_cb (PengeGridView *view, gpointer userdata)
 
 #ifdef WITH_NETPANEL
 static void
-_netgrid_show_cb (ClutterActor *netpanel)
-{
-  clutter_actor_show (netpanel);
-}
-
-static void
-_netgrid_hide_cb (ClutterActor *netpanel)
-{
-  clutter_actor_hide (netpanel);
-}
-
-static void
 _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
                     const gchar           *url,
                     MutterPlugin          *plugin)
@@ -545,6 +533,8 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
 
   g_free (exec);
   g_free (esc_url);
+
+  hide_panel (plugin);
 }
 #endif
 
@@ -793,11 +783,13 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_lower_bottom (priv->net_grid);
 
   g_signal_connect_swapped (panel, "hide",
-                            G_CALLBACK (_netgrid_hide_cb), net_grid_view);
+                            G_CALLBACK (clutter_actor_hide), net_grid_view);
   g_signal_connect_swapped (panel, "show",
-                            G_CALLBACK (_netgrid_show_cb), net_grid_view);
+                            G_CALLBACK (clutter_actor_show), net_grid_view);
   g_signal_connect (net_grid_view, "launch",
                     G_CALLBACK (_netgrid_launch_cb), plugin);
+  g_signal_connect_swapped (net_grid_view, "launched",
+                            G_CALLBACK (hide_panel), plugin);
 #endif
 
   if (shadow)

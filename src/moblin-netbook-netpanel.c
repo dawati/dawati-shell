@@ -14,6 +14,7 @@ G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
 enum
 {
   LAUNCH,
+  LAUNCHED,
 
   LAST_SIGNAL
 };
@@ -124,6 +125,8 @@ mozembed_button_clicked_cb (NbtkBin *button, MoblinNetbookNetpanel *self)
   dbus_g_proxy_call_no_reply (priv->proxy, "SwitchTab", G_TYPE_UINT, tab,
                               G_TYPE_INVALID);
   dbus_g_proxy_call_no_reply (priv->proxy, "Raise", G_TYPE_INVALID);
+
+  g_signal_emit (self, signals[LAUNCHED], 0);
 }
 
 static void
@@ -314,6 +317,15 @@ moblin_netbook_netpanel_class_init (MoblinNetbookNetpanelClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1, G_TYPE_STRING);
+
+  signals[LAUNCHED] =
+    g_signal_new ("launched",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MoblinNetbookNetpanelClass, launched),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
