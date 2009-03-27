@@ -15,6 +15,7 @@ typedef struct _PengeAppTilePrivate PengeAppTilePrivate;
 struct _PengeAppTilePrivate {
   PengeAppBookmark *bookmark;
   ClutterActor *tex;
+  GtkIconTheme *icon_theme;
 };
 
 enum
@@ -67,6 +68,12 @@ penge_app_tile_dispose (GObject *object)
     priv->bookmark = NULL;
   }
 
+  if (priv->icon_theme)
+  {
+    g_object_unref (priv->icon_theme);
+    priv->icon_theme = NULL;
+  }
+
   G_OBJECT_CLASS (penge_app_tile_parent_class)->dispose (object);
 }
 
@@ -77,24 +84,14 @@ penge_app_tile_finalize (GObject *object)
 }
 
 static void
-penge_app_tile_constructed (GObject *object)
+_update_icon_from_icon_theme (PengeAppTile *tile)
 {
-  PengeAppTilePrivate *priv = GET_PRIVATE (object);
-  GtkIconTheme *icon_theme;
-  GtkIconInfo *info;
+  PengeAppTilePrivate *priv = GET_PRIVATE (tile);
   const gchar *path;
   GError *error = NULL;
+  GtkIconInfo *info;
 
-  g_return_if_fail (priv->bookmark);
-
-  if (!priv->bookmark)
-    return;
-
-  if (!priv->bookmark->icon_name)
-    return;
-
-  icon_theme = gtk_icon_theme_new ();
-  info = gtk_icon_theme_lookup_icon (icon_theme,
+  info = gtk_icon_theme_lookup_icon (priv->icon_theme,
                                      priv->bookmark->icon_name,
                                      ICON_SIZE,
                                      0); /* no flags */
@@ -108,6 +105,37 @@ penge_app_tile_constructed (GObject *object)
                error->message);
     g_clear_error (&error);
   }
+}
+
+void
+_icon_theme_changed_cb (GtkIconTheme *icon_theme,
+                        gpointer      userdata)
+{
+  PengeAppTile *tile = (PengeAppTile *)userdata;
+
+  _update_icon_from_icon_theme (tile);
+}
+
+static void
+penge_app_tile_constructed (GObject *object)
+{
+  PengeAppTilePrivate *priv = GET_PRIVATE (object);
+
+  g_return_if_fail (priv->bookmark);
+
+  if (!priv->bookmark)
+    return;
+
+  if (!priv->bookmark->icon_name)
+    return;
+
+  priv->icon_theme = gtk_icon_theme_new ();
+  g_signal_connect (priv->icon_theme,
+                    "changed",
+                    (GCallback)_icon_theme_changed_cb,
+                    object);
+
+  _update_icon_from_icon_theme ((PengeAppTile *)object);
 }
 
 static void
