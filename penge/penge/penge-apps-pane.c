@@ -18,6 +18,7 @@ struct _PengeAppsPanePrivate {
 };
 
 #define ROW_SIZE 3
+#define MAX_COUNT 6
 
 static void penge_apps_pane_update (PengeAppsPane *pane);
 
@@ -122,7 +123,7 @@ penge_apps_pane_update (PengeAppsPane *pane)
 
   to_remove = g_hash_table_get_keys (priv->uris_to_actors);
 
-  for (l = bookmarks; l; l = l->next)
+  for (l = bookmarks; l && count < MAX_COUNT; l = l->next)
   {
     bookmark = (PengeAppBookmark *)l->data;
 
