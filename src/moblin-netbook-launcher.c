@@ -752,7 +752,6 @@ make_launcher (MutterPlugin *plugin,
 
   vbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "app-launcher-vbox");
-  nbtk_table_set_row_spacing (NBTK_TABLE (vbox), WIDGET_SPACING);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
 
   /* Filter row. */

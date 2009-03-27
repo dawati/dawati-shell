@@ -27,7 +27,9 @@ NbtkButton:active {
 /* Header */
 MnbExpander NbtkButton#mnb-expander-header {
   border-image: url("file://generic/expander-header.png") 4 5 5 4 stretch;
-  font-size: 16;
+  border-spacing: 10;
+  font-family: "Liberation Sans Bold";
+  font-size: 18;
   padding-top: 11;
   padding-bottom: 12;
   padding-left: 10;
@@ -372,13 +374,16 @@ MnbDropDown, MnbSwitcher {
 }
 
 *#app-launcher-search-label {
+  font-family: "Liberation Sans Bold";
   font-size: 18;
+  padding-left: 12;
 }
 
 *#app-launcher-apps-label {
   font-family: "Liberation Sans Bold";
   font-size: 14;
   color: #7e7e7e;
+  padding: 12;
 }
 
 MnbEntry {
