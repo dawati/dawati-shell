@@ -366,8 +366,16 @@ panel_append_toolbar_button (MutterPlugin  *plugin,
   clutter_container_add_actor (CLUTTER_CONTAINER (container),
                                CLUTTER_ACTOR (button));
 
-  g_signal_connect_data (button, "clicked", G_CALLBACK (toggle_buttons_cb),
-                         button_data, (GClosureNotify)g_free, 0);
+  /* XXX Hack to disable people button for now XXX */
+  if (!strcmp(tooltip, "people"))
+    {
+      clutter_actor_set_opacity (CLUTTER_ACTOR (button), 0x60);
+      nbtk_button_set_tooltip (NBTK_BUTTON (button), 
+                               "☠ NOT IMPLEMENTED ☠");
+    }
+  else
+    g_signal_connect_data (button, "clicked", G_CALLBACK (toggle_buttons_cb),
+                           button_data, (GClosureNotify)g_free, 0);
 
   n_buttons++;
   return CLUTTER_ACTOR (button);
