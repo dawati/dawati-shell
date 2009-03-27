@@ -68,12 +68,6 @@ penge_app_tile_dispose (GObject *object)
     priv->bookmark = NULL;
   }
 
-  if (priv->icon_theme)
-  {
-    g_object_unref (priv->icon_theme);
-    priv->icon_theme = NULL;
-  }
-
   G_OBJECT_CLASS (penge_app_tile_parent_class)->dispose (object);
 }
 
@@ -129,7 +123,7 @@ penge_app_tile_constructed (GObject *object)
   if (!priv->bookmark->icon_name)
     return;
 
-  priv->icon_theme = gtk_icon_theme_new ();
+  priv->icon_theme = gtk_icon_theme_get_default ();
   g_signal_connect (priv->icon_theme,
                     "changed",
                     (GCallback)_icon_theme_changed_cb,
