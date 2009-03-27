@@ -375,25 +375,26 @@ MnbDropDown, MnbSwitcher {
   font-size: 18;
 }
 
-*#app-launcher-search-entry {
-  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
-  padding: 4;
-}
-
 *#app-launcher-apps-label {
   font-family: "Liberation Sans Bold";
   font-size: 14;
   color: #7e7e7e;
 }
 
+MnbEntry {
+  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
+  padding: 7 10 7 10;
+}
+
 *.MnbEntryEntry {
-  font-size: 18;
+  font-size: 15;
 }
 
 *.MnbEntryButton {
-  border-image: none;
+  border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 1 stretch stretch;
   color: #be1011ff;
-  font-size: 18;
+  font-size: 13;
+  padding: 0 2 0 10;
 }
 
 *.MnbEntryClearButton {
@@ -761,11 +762,6 @@ MwbRadicalBar NbtkButton
   font-family: "Liberation Sans Bold";
   font-size: 17px;
   color: #0e0e0e;
-}
-
-*#media-pane-search-entry {
-  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
-  padding: 4;
 }
 
 *#media-pane-results {
