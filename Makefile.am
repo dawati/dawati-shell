@@ -1,3 +1,6 @@
+
+ACLOCAL_AMFLAGS = -I build/autotools
+
 SUBDIRS=build
 SUBDIRS+=penge
 if WITH_AHOGHILL
