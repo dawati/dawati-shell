@@ -198,9 +198,9 @@ mnb_entry_pick (ClutterActor       *actor,
 
   CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->pick (actor, pick_color);
 
-  clutter_actor_paint (priv->entry);
+  clutter_actor_pick (priv->entry, pick_color);
 
-  clutter_actor_paint (priv->table);
+  clutter_actor_pick (priv->table, pick_color);
 }
 
 static void
