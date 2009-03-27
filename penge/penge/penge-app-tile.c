@@ -94,7 +94,7 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
   info = gtk_icon_theme_lookup_icon (priv->icon_theme,
                                      priv->bookmark->icon_name,
                                      ICON_SIZE,
-                                     0); /* no flags */
+                                     GTK_ICON_LOOKUP_GENERIC_FALLBACK);
   path = gtk_icon_info_get_filename (info);
 
   if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
