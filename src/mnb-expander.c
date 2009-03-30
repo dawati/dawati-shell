@@ -181,10 +181,24 @@ natural_width_notify_cb (MnbExpander *self,
 }
 
 static void
+mnb_expander_pick (ClutterActor       *actor,
+                   const ClutterColor *color)
+{
+  MnbExpanderPrivate *priv = MNB_EXPANDER (actor)->priv;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->header_button))
+    clutter_actor_paint (priv->header_button);
+
+  /* pick the payload */
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->payload_bin))
+    clutter_actor_paint (priv->payload_bin);
+}
+
+static void
 mnb_expander_class_init (MnbExpanderClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
-  /* ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass); */
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec        *pspec;
 
   g_type_class_add_private (klass, sizeof (MnbExpanderPrivate));
@@ -192,6 +206,8 @@ mnb_expander_class_init (MnbExpanderClass *klass)
   gobject_class->finalize = mnb_expander_finalize;
   gobject_class->get_property = mnb_expander_get_property;
   gobject_class->set_property = mnb_expander_set_property;
+
+  actor_class->pick = mnb_expander_pick;
 
   pspec = g_param_spec_string ("expanded",
                                "Expanded",
