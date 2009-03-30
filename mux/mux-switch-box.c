@@ -59,11 +59,11 @@ mux_switch_box_get_property (GObject *object, guint property_id,
   switch (property_id) {
   case PROP_NAME:
 		g_value_set_string (value,
-												gtk_label_get_text (GTK_LABEL (priv->switch_label)));
+		  gtk_label_get_text (GTK_LABEL (priv->switch_label)));
 		break;
 	case PROP_SWITCH_ACTIVE:
 		g_value_set_boolean (value,
-												 mux_light_switch_get_active ((MuxLightSwitch *) priv->lightswitch));
+		  mux_light_switch_get_active ((MuxLightSwitch *) priv->lightswitch));
 		break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
