@@ -178,6 +178,9 @@ launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
       NbtkWidget *clone = mnb_launcher_button_create_favorite (launcher);
       clutter_container_add (CLUTTER_CONTAINER (launcher_data->fav_grid),
                              CLUTTER_ACTOR (clone), NULL);
+      g_signal_connect (clone, "activated",
+                        G_CALLBACK (launcher_activated_cb),
+                        launcher_data->self);
       launcher_data_set_show_fav_apps (launcher_data, TRUE);
 
       /* Update bookmarks. */
