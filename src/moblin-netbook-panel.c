@@ -81,7 +81,7 @@ on_panel_back_effect_complete (ClutterTimeline *timeline, gpointer data)
       clutter_actor_hide (priv->panel_buttons[i]);
     }
 
-  if (!priv->workspace_chooser && !CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+  if (!priv->workspace_chooser)
     {
       disable_stage (plugin, CurrentTime);
     }
@@ -370,7 +370,7 @@ panel_append_toolbar_button (MutterPlugin  *plugin,
   if (!strcmp(tooltip, "people"))
     {
       clutter_actor_set_opacity (CLUTTER_ACTOR (button), 0x60);
-      nbtk_button_set_tooltip (NBTK_BUTTON (button), 
+      nbtk_button_set_tooltip (NBTK_BUTTON (button),
                                "☠ NOT IMPLEMENTED ☠");
     }
   else
