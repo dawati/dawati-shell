@@ -34,6 +34,7 @@
 
 /* Distance between icon and text. */
 #define COL_SPACING 10
+#define FAV_TOGGLE_SIZE 24
 
 enum
 {
@@ -235,6 +236,11 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->comment), &child_box);
   child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->comment), &child_box, origin_changed);
+
+  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->fav_toggle), &child_box);
+  child_box.y1 = 6;
+  child_box.y2 = child_box.y1 + FAV_TOGGLE_SIZE;
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->fav_toggle), &child_box, origin_changed);
 }
 
 static void
@@ -333,7 +339,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_hide (self->priv->fav_toggle);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->fav_toggle),
                           "mnb-launcher-button-fav-toggle");
-  clutter_actor_set_size (self->priv->fav_toggle, 24, 24);
+  clutter_actor_set_size (self->priv->fav_toggle, FAV_TOGGLE_SIZE, FAV_TOGGLE_SIZE);
   nbtk_table_add_widget_full (NBTK_TABLE (self),
                               NBTK_WIDGET (self->priv->fav_toggle),
                               0, 2, 3, 1,
