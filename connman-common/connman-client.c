@@ -632,3 +632,55 @@ void connman_client_set_offline_mode(ConnmanClient *client,
 
   g_value_unset(&value);
 }
+
+void connman_client_join_network(ConnmanClient *client, const gchar *network,
+                                 const gchar *secret, gchar *security)
+{
+	ConnmanClientPrivate *priv = CONNMAN_CLIENT_GET_PRIVATE(client);
+	DBusGProxy *proxy;
+        GHashTable *net_props;
+        GError *err = NULL;
+
+	DBG("client %p", client);
+
+        net_props = g_hash_table_new (NULL, NULL);
+
+        g_hash_table_insert (net_props,
+                             g_strdup ("WiFi.Mode"),
+                             g_string_new ("managed"));
+
+	if (network == NULL) {
+		return;
+        } else {
+                g_hash_table_insert (net_props,
+                                     g_strdup ("WiFi.SSID"),
+                                     g_string_new (network));
+        }
+
+        if (secret && security) {
+                g_hash_table_insert (net_props,
+                                     g_strdup ("WiFi.Passphrase"),
+                                     g_string_new (secret));
+        }
+
+        if (security) {
+                g_hash_table_insert (net_props,
+                                     g_strdup ("WiFi.Security"),
+                                     g_string_new (security));
+        }
+
+	proxy = priv->manager;
+	if (proxy == NULL)
+		return;
+
+	connman_join_network(proxy, net_props, &err);
+
+        if (err) {
+                g_warning ("Error joining network: %s",
+                           err->message);
+                g_free (err);
+        }
+
+	g_object_unref(proxy);
+        g_free (net_props);
+}

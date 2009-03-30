@@ -79,6 +79,9 @@ void connman_client_set_passphrase(ConnmanClient *client, const gchar *network,
 void connman_client_set_remember(ConnmanClient *client, const gchar *network,
 							gboolean remember);
 
+void connman_client_join_network(ConnmanClient *client, const gchar *network,
+                                 const gchar *secret, gchar *security);
+
 typedef void (* ConnmanClientCallback) (const char *status, void *user_data);
 
 void connman_client_set_callback(ConnmanClient *client,

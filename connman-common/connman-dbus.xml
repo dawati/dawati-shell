@@ -15,5 +15,8 @@
     </method>
     <method name="Disconnect">
     </method>
+    <method name="JoinNetwork">
+      <arg name="net_props" direction="in" type="a{sv}" />
+    </method>
   </interface>
 </node>
