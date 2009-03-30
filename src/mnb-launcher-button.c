@@ -219,6 +219,7 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
   /* Hack allocation of the labels, so the fav toggle overlaps. */
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->icon), &child_box);
+  child_box.y1 = (int) ((box->y2 - box->y1 - self->priv->icon_size) / 2);
   child_box.x2 = child_box.x1 + self->priv->icon_size;
   child_box.y2 = child_box.y1 + self->priv->icon_size;
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &child_box, origin_changed);
