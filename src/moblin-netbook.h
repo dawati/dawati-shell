@@ -169,7 +169,6 @@ struct ActorPrivate
 
   ClutterTimeline *tml_minimize;
   ClutterTimeline *tml_maximize;
-  ClutterTimeline *tml_destroy;
   ClutterTimeline *tml_map;
 
   gboolean      is_minimized   : 1;

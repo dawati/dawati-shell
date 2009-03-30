@@ -43,7 +43,6 @@
 #include <prefs.h>
 #include <keybindings.h>
 
-#define DESTROY_TIMEOUT             150
 #define MINIMIZE_TIMEOUT            250
 #define MAXIMIZE_TIMEOUT            250
 #define MAP_TIMEOUT                 350
@@ -656,7 +655,7 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
                               GParamSpec      *pspec,
                               MutterPlugin *plugin)
 {
-  moblin_netbook_set_lowlight (plugin, 
+  moblin_netbook_set_lowlight (plugin,
                                CLUTTER_ACTOR_IS_VISIBLE(notify_urgent));
 }
 
@@ -666,7 +665,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
   MoblinNetbookPluginPrivate *priv   = plugin->priv;
 
-  guint destroy_timeout           = DESTROY_TIMEOUT;
   guint minimize_timeout          = MINIMIZE_TIMEOUT;
   guint maximize_timeout          = MAXIMIZE_TIMEOUT;
   guint map_timeout               = MAP_TIMEOUT;
@@ -747,7 +745,6 @@ moblin_netbook_plugin_constructed (GObject *object)
       /*
        * Double the effect duration to make them easier to observe.
        */
-      destroy_timeout           *= 2;
       minimize_timeout          *= 2;
       maximize_timeout          *= 2;
       map_timeout               *= 2;
@@ -807,8 +804,8 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   priv->notification_cluster = mnb_notification_cluster_new ();
 
-  mnb_notification_cluster_set_store 
-                    (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster), 
+  mnb_notification_cluster_set_store
+                    (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster),
                      priv->notify_store);
 
   clutter_container_add (CLUTTER_CONTAINER (overlay),
@@ -839,8 +836,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_container_add (CLUTTER_CONTAINER (overlay),
                          priv->notification_urgent, NULL);
 
-  mnb_notification_urgent_set_store 
-                        (MNB_NOTIFICATION_URGENT(priv->notification_urgent), 
+  mnb_notification_urgent_set_store
+                        (MNB_NOTIFICATION_URGENT(priv->notification_urgent),
                          priv->notify_store);
 
   g_signal_connect (priv->notification_urgent,
@@ -1569,26 +1566,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
 }
 
-/*
- * Destroy effect completion callback; this is a simple effect that requires no
- * further action than notifying the manager that the effect is completed.
- */
-static void
-on_destroy_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
-{
-  MutterPlugin *plugin = data->plugin;
-  MutterWindow *mcw    = MUTTER_WINDOW (data->actor);
-  ActorPrivate *apriv  = get_actor_private (mcw);
-
-  apriv->tml_destroy = NULL;
-
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
-}
-
-
-/*
- * Simple TV-out like effect.
- */
 static void
 destroy (MutterPlugin *plugin, MutterWindow *mcw)
 {
@@ -1601,32 +1578,8 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
   type      = mutter_window_get_window_type (mcw);
   workspace = mutter_window_get_workspace (mcw);
   meta_win  = mutter_window_get_meta_window (mcw);
-  screen    = mutter_plugin_get_screen (plugin);
 
-  if (type == META_COMP_WINDOW_NORMAL)
-    {
-      ClutterAnimation *animation;
-      EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
-
-      clutter_actor_move_anchor_point_from_gravity (actor,
-                                                    CLUTTER_GRAVITY_CENTER);
-
-      animation = clutter_actor_animate (actor,
-                                         CLUTTER_EASE_IN_SINE,
-                                         DESTROY_TIMEOUT,
-                                         "scale-x", 0.0,
-                                         "scale-y", 0.0,
-                                         NULL);
-      data->plugin = plugin;
-      data->actor = actor;
-      g_signal_connect (clutter_animation_get_timeline (animation),
-                        "completed",
-                        G_CALLBACK (on_destroy_effect_complete),
-                        data);
-
-    }
-  else
-    mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 
   /*
    * Do not destroy workspace if the closing window is a splash screen.
@@ -1853,12 +1806,6 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
        * call our callback directly).
        */
       g_signal_emit_by_name (apriv->tml_map, "completed");
-    }
-
-  if ((event & MUTTER_PLUGIN_DESTROY) && apriv->tml_destroy)
-    {
-      clutter_timeline_stop (apriv->tml_destroy);
-      g_signal_emit_by_name (apriv->tml_destroy, "completed", NULL);
     }
 }
 
