@@ -244,6 +244,24 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
 }
 
 static void
+mnb_launcher_button_pick (ClutterActor       *actor,
+                          const ClutterColor *color)
+{
+  MnbLauncherButtonPrivate *priv = MNB_LAUNCHER_BUTTON (actor)->priv;
+  ClutterGeometry geom;
+
+  /* draw a rectangle to conver the entire actor */
+
+  clutter_actor_get_allocation_geometry (actor, &geom);
+
+  cogl_set_source_color4ub (color->red, color->green, color->blue, color->alpha);
+  cogl_rectangle (0, 0, geom.width, geom.height);
+
+  if (priv->fav_toggle)
+    clutter_actor_paint (priv->fav_toggle);
+}
+
+static void
 mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -258,6 +276,7 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
   actor_class->enter_event = mnb_launcher_button_enter_event;
   actor_class->leave_event = mnb_launcher_button_leave_event;
   actor_class->allocate = mnb_launcher_button_allocate;
+  actor_class->pick = mnb_launcher_button_pick;
 
   _signals[ACTIVATED] = g_signal_new ("activated",
                                     G_TYPE_FROM_CLASS (klass),
