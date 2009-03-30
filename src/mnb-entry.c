@@ -198,9 +198,9 @@ mnb_entry_pick (ClutterActor       *actor,
 
   CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->pick (actor, pick_color);
 
-  clutter_actor_pick (priv->entry, pick_color);
+  clutter_actor_paint (priv->entry);
 
-  clutter_actor_pick (priv->table, pick_color);
+  clutter_actor_paint (priv->table);
 }
 
 static void
@@ -372,6 +372,7 @@ mnb_entry_init (MnbEntry *self)
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->entry),
                                     "MnbEntryEntry");
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry));
+  clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   g_signal_connect (text, "text-changed",
                     G_CALLBACK (text_changed_cb),
                     self);
