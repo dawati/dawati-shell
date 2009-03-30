@@ -391,7 +391,8 @@ MnbDropDown, MnbSwitcher {
 }
 
 *#launcher-apps-grid {
-  padding-left: 24;
+  padding-left: 12;
+  padding-top: 12;
 }
 
 *#launcher-expander-grid {

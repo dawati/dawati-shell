@@ -71,7 +71,6 @@ typedef struct
   ClutterActor            *scrolled_vbox;
   ClutterActor            *fav_label;
   ClutterActor            *fav_grid;
-  ClutterActor            *apps_label;
   ClutterActor            *apps_grid;
 
   GHashTable              *expanders;
@@ -331,9 +330,6 @@ launcher_data_reset (launcher_data_t *launcher_data)
   g_object_unref (launcher_data->fav_grid);
   launcher_data->fav_grid = NULL;
 
-  g_object_unref (launcher_data->apps_label);
-  launcher_data->apps_label = NULL;
-
   g_hash_table_destroy (launcher_data->expanders);
   launcher_data->expanders = NULL;
 
@@ -464,15 +460,6 @@ launcher_data_fill (launcher_data_t *launcher_data)
    * Apps browser.
    */
 
-  /* Label */
-  launcher_data->apps_label = CLUTTER_ACTOR (nbtk_label_new (_("Applications")));
-  clutter_actor_set_name (launcher_data->apps_label, "launcher-group-label");
-  nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
-                              NBTK_WIDGET (launcher_data->apps_label),
-                              2, 0, 1, 1,
-                              NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
-                              0., 0.);
-
   /* Grid */
   launcher_data->apps_grid = CLUTTER_ACTOR (nbtk_grid_new ());
   clutter_actor_set_name (launcher_data->apps_grid, "launcher-apps-grid");
@@ -481,7 +468,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
                          CLUTTER_UNITS_FROM_INT (EXPANDER_GRID_ROW_GAP));
   nbtk_table_add_widget_full (NBTK_TABLE (launcher_data->scrolled_vbox),
                               NBTK_WIDGET (launcher_data->apps_grid),
-                              3, 0, 1, 1,
+                              2, 0, 1, 1,
                               NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
                               0., 0.);
 
