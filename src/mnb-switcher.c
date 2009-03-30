@@ -1219,7 +1219,7 @@ mnb_switcher_show (ClutterActor *self)
         {
           NbtkWidget *label;
 
-          label = nbtk_label_new ("No applications on this space");
+          label = nbtk_label_new ("No applications on this zone");
 
           nbtk_table_add_widget (NBTK_TABLE (table), label, 1, i);
         }
