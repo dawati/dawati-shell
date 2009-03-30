@@ -68,8 +68,9 @@ dist_theme_launcher_DATA = \
 	theme/launcher/launcher-search-entry-clear-hover.png \
 	theme/launcher/launcher-search-entry-clear.png \
 	theme/launcher/launcher-search-entry-separator.png \
-	theme/launcher/launcher-button-fav-toggle-pinned.png \
-	theme/launcher/launcher-button-fav-toggle-unpinned.png
+	theme/launcher/launcher-button-fav-toggle.png \
+	theme/launcher/launcher-button-fav-toggle-checked.png \
+	theme/launcher/launcher-button-fav-toggle-hover.png
 
 theme_switcherdir = $(pkgdatadir)/theme/switcher
 dist_theme_switcher_DATA = \

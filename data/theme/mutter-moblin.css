@@ -449,12 +449,16 @@ MnbLauncherButton:hover {
 }
 
 *#mnb-launcher-button-fav-toggle {
-  background-image: url("file://launcher/launcher-button-fav-toggle-unpinned.png");
+  background-image: url("file://launcher/launcher-button-fav-toggle.png");
   border-image: none;
 }
 
 *#mnb-launcher-button-fav-toggle:checked {
-  background-image: url("file://launcher/launcher-button-fav-toggle-pinned.png");
+  background-image: url("file://launcher/launcher-button-fav-toggle-checked.png");
+}
+
+*#mnb-launcher-button-fav-toggle:hover {
+  background-image: url("file://launcher/launcher-button-fav-toggle-hover.png");
 }
 
 /* Penge */
