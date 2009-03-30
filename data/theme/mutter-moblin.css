@@ -428,7 +428,7 @@ MnbLauncherButton {
 }
 
 MnbLauncherButton:hover {
-  border-image: url("file://launcher/launcher-hover.png") 5 5 7 5 stretch stretch;
+  border-image: url("file://launcher/launcher-hover.png") 4 6 6 4 stretch stretch;
 }
 
 *#mnb-launcher-button-title {
