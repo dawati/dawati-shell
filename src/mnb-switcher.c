@@ -986,6 +986,7 @@ mnb_switcher_show (ClutterActor *self)
   ClutterActor *current_focus_clone = NULL;
   ClutterActor *top_most_clone = NULL;
   MutterWindow *top_most_mw = NULL;
+  gboolean      found_focus = FALSE;
 
   struct win_location
   {
@@ -1098,8 +1099,13 @@ mnb_switcher_show (ClutterActor *self)
       /*
        * If the window has focus, apply the active style.
        */
-      if (meta_window_has_focus (meta_win))
+      if (!found_focus &&
+          (current_focus == meta_win ||
+           (current_focus &&
+            meta_window_is_ancestor_of_transient (meta_win, current_focus))))
         {
+          found_focus = TRUE;
+
           clutter_actor_set_name (clone, "switcher-application-active");
 
           priv->last_focused = clone;
