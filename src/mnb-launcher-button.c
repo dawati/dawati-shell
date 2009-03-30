@@ -35,6 +35,8 @@
 /* Distance between icon and text. */
 #define COL_SPACING 10
 #define FAV_TOGGLE_SIZE 24
+#define FAV_TOGGLE_X_OFFSET 7
+#define FAV_TOGGLE_Y_OFFSET 4
 
 enum
 {
@@ -237,8 +239,10 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
   child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->comment), &child_box, origin_changed);
 
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->fav_toggle), &child_box);
-  child_box.y1 = 6;
+  /* Pin location hardcoded, designers want this to fit perfectly. */
+  child_box.x1 = box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET;
+  child_box.x2 = child_box.x1 + FAV_TOGGLE_SIZE;
+  child_box.y1 = FAV_TOGGLE_Y_OFFSET;
   child_box.y2 = child_box.y1 + FAV_TOGGLE_SIZE;
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->fav_toggle), &child_box, origin_changed);
 }
