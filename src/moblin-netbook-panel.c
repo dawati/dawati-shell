@@ -786,6 +786,12 @@ make_panel (MutterPlugin *plugin, gint width)
                             G_CALLBACK (clutter_actor_hide), net_grid_view);
   g_signal_connect_swapped (panel, "show",
                             G_CALLBACK (clutter_actor_show), net_grid_view);
+  g_signal_connect_swapped (priv->net_grid, "hide-completed",
+                            G_CALLBACK (moblin_netbook_netpanel_clear),
+                            net_grid_view);
+  g_signal_connect_swapped (priv->net_grid, "show-completed",
+                            G_CALLBACK (moblin_netbook_netpanel_focus),
+                            net_grid_view);
   g_signal_connect (net_grid_view, "launch",
                     G_CALLBACK (_netgrid_launch_cb), plugin);
   g_signal_connect_swapped (net_grid_view, "launched",

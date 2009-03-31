@@ -398,3 +398,17 @@ moblin_netbook_netpanel_new (void)
                        NULL);
 }
 
+void
+moblin_netbook_netpanel_focus (MoblinNetbookNetpanel *netpanel)
+{
+  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  mwb_radical_bar_focus (MWB_RADICAL_BAR (priv->radical_bar));
+}
+
+void
+moblin_netbook_netpanel_clear (MoblinNetbookNetpanel *netpanel)
+{
+  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  mwb_radical_bar_set_text (MWB_RADICAL_BAR (priv->radical_bar), "");
+}
+
