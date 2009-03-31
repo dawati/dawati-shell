@@ -15,6 +15,11 @@ struct _MnbClipboardStorePrivate
 {
   /* XXX owned by GTK+ - DO NOT UNREF */
   GtkClipboard *clipboard;
+
+  /* expiration delta */
+  gint64 max_time;
+
+  gulong expire_id;
 };
 
 enum
@@ -51,15 +56,59 @@ struct _ClipboardItem
 
 static gulong store_signals[LAST_SIGNAL] = { 0, };
 
+static gboolean
+expire_clipboard_items (gpointer data)
+{
+  MnbClipboardStore *store = data;
+  ClutterModelIter *iter;
+  GArray *expire_list = g_array_new (FALSE, FALSE, sizeof (guint));
+  GTimeVal now;
+  gint i;
+
+  g_get_current_time (&now);
+
+  iter = clutter_model_get_last_iter (CLUTTER_MODEL (store));
+  while (!clutter_model_iter_is_first (iter));
+    {
+      guint row = clutter_model_iter_get_row (iter);
+      gint64 item_mtime = 0;
+
+      clutter_model_iter_get (iter, COLUMN_ITEM_MTIME, &item_mtime, -1);
+
+      /* we should not remove while iterating */
+      if ((now.tv_sec - item_mtime) > store->priv->max_time)
+        g_array_append_val (expire_list, row);
+
+      iter = clutter_model_iter_prev (iter);
+    }
+
+  g_object_unref (iter);
+
+  for (i = 0; i < expire_list->len; i++)
+    {
+      clutter_model_remove (CLUTTER_MODEL (store),
+                            g_array_index (expire_list, guint, i));
+    }
+
+  g_array_free (expire_list, TRUE);
+
+  store->priv->expire_id = 0;
+
+  return FALSE;
+}
+
 static void
 on_clipboard_request_text (GtkClipboard *clipboard,
                            const gchar  *text,
                            gpointer      data)
 {
+  MnbClipboardStorePrivate *priv;
   ClipboardItem *item = data;
 
   if (text == NULL || *text == '\0')
     return;
+
+  priv = item->store->priv;
 
   clutter_model_prepend (CLUTTER_MODEL (item->store),
                          COLUMN_ITEM_TYPE, item->type,
@@ -91,6 +140,13 @@ on_clipboard_request_text (GtkClipboard *clipboard,
 
   g_object_unref (item->store);
   g_slice_free (ClipboardItem, item);
+
+  /* if an expiration has already been schedule, coalesce it */
+  if (priv->expire_id == 0)
+    priv->expire_id = g_idle_add_full (G_PRIORITY_LOW,
+                                       expire_clipboard_items,
+                                       g_object_ref (item->store),
+                                       (GDestroyNotify) g_object_unref);
 }
 
 #if GTK_CHECK_VERSION(2, 14, 0)
@@ -236,14 +292,19 @@ mnb_clipboard_store_init (MnbClipboardStore *self)
     G_TYPE_BOOLEAN,     /* COLUMN_ITEM_IS_SELECTION */
   };
 
-  self->priv = MNB_CLIPBOARD_STORE_GET_PRIVATE (self);
+  self->priv = priv = MNB_CLIPBOARD_STORE_GET_PRIVATE (self);
 
   clutter_model_set_types (model, N_COLUMNS, column_types);
 
-  self->priv->clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+  priv->clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
   g_signal_connect (self->priv->clipboard,
                     "owner-change", G_CALLBACK (on_clipboard_owner_change),
                     self);
+
+  /* XXX - keep an item around for two hours; this should be
+   * hooked into GConf
+   */
+  priv->max_time = (60 * 60 * 2);
 }
 
 MnbClipboardStore *
