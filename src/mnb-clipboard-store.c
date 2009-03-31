@@ -141,12 +141,14 @@ on_clipboard_request_text (GtkClipboard *clipboard,
   g_object_unref (item->store);
   g_slice_free (ClipboardItem, item);
 
+#if 0
   /* if an expiration has already been schedule, coalesce it */
   if (priv->expire_id == 0)
     priv->expire_id = g_idle_add_full (G_PRIORITY_LOW,
                                        expire_clipboard_items,
                                        g_object_ref (item->store),
                                        (GDestroyNotify) g_object_unref);
+#endif
 }
 
 #if GTK_CHECK_VERSION(2, 14, 0)
