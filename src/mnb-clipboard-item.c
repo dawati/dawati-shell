@@ -9,6 +9,8 @@
 
 #include "mnb-clipboard-item.h"
 
+#include "marshal.h"
+
 enum
 {
   PROP_0,
@@ -17,7 +19,31 @@ enum
   PROP_MTIME
 };
 
+enum
+{
+  REMOVE_CLICKED,
+  ACTION_CLICKED,
+
+  LAST_SIGNAL
+};
+
 G_DEFINE_TYPE (MnbClipboardItem, mnb_clipboard_item, NBTK_TYPE_WIDGET);
+
+static guint item_signals[LAST_SIGNAL] = { 0, };
+
+static void
+on_remove_clicked (NbtkButton *button,
+                   MnbClipboardItem *self)
+{
+  g_signal_emit (self, item_signals[REMOVE_CLICKED], 0);
+}
+
+static void
+on_action_clicked (NbtkButton *button,
+                   MnbClipboardItem *self)
+{
+  g_signal_emit (self, item_signals[ACTION_CLICKED], 0);
+}
 
 static void
 mnb_clipboard_item_allocate (ClutterActor *actor,
@@ -367,14 +393,37 @@ mnb_clipboard_item_class_init (MnbClipboardItemClass *klass)
                               0, G_MAXINT64, 0,
                               G_PARAM_WRITABLE);
   g_object_class_install_property (gobject_class, PROP_MTIME, pspec);
+
+  item_signals[REMOVE_CLICKED] =
+    g_signal_new (g_intern_static_string ("remove-clicked"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbClipboardItemClass, remove_clicked),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  item_signals[ACTION_CLICKED] =
+    g_signal_new (g_intern_static_string ("action-clicked"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbClipboardItemClass, action_clicked),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
 mnb_clipboard_item_init (MnbClipboardItem *self)
 {
+  ClutterActor *text;
+
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
   self->contents = CLUTTER_ACTOR (nbtk_label_new (""));
+  text = nbtk_label_get_clutter_text (NBTK_LABEL (self->contents));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (text), TRUE);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (text), PANGO_ELLIPSIZE_NONE);
   clutter_actor_set_parent (self->contents, CLUTTER_ACTOR (self));
 
   self->remove_button = CLUTTER_ACTOR (nbtk_button_new ());
@@ -383,11 +432,17 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
                                     "MnbClipboardItemDeleteButton");
   clutter_actor_set_reactive (self->remove_button, TRUE);
   clutter_actor_hide (self->remove_button);
+  g_signal_connect (self->remove_button, "clicked",
+                    G_CALLBACK (on_remove_clicked),
+                    self);
 
   self->action_button = CLUTTER_ACTOR (nbtk_button_new ());
   nbtk_button_set_label (NBTK_BUTTON (self->action_button), _("Copy"));
   clutter_actor_set_parent (self->action_button, CLUTTER_ACTOR (self));
   clutter_actor_set_reactive (self->action_button, TRUE);
+  g_signal_connect (self->action_button, "clicked",
+                    G_CALLBACK (on_action_clicked),
+                    self);
 
   self->time_label = CLUTTER_ACTOR (nbtk_label_new (""));
   clutter_actor_set_parent (self->time_label, CLUTTER_ACTOR (self));

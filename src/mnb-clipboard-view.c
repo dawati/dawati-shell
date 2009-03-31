@@ -26,9 +26,21 @@ enum
   PROP_STORE
 };
 
-G_DEFINE_TYPE (MnbClipboardView,
-               mnb_clipboard_view,
-               NBTK_TYPE_WIDGET);
+G_DEFINE_TYPE (MnbClipboardView, mnb_clipboard_view, NBTK_TYPE_WIDGET);
+
+static void
+on_action_clicked (MnbClipboardItem *item,
+                   MnbClipboardView *view)
+{
+  g_debug ("%s: Action clicked", G_STRLOC);
+}
+
+static void
+on_remove_clicked (MnbClipboardItem *item,
+                   MnbClipboardView *view)
+{
+  g_debug ("%s: Remove clicked", G_STRLOC);
+}
 
 static void
 on_store_item_added (MnbClipboardStore    *store,
@@ -51,6 +63,13 @@ on_store_item_added (MnbClipboardStore    *store,
             row = g_object_new (MNB_TYPE_CLIPBOARD_ITEM,
                                 "contents", text,
                                 NULL);
+
+            g_signal_connect (row, "remove-clicked",
+                              G_CALLBACK (on_remove_clicked),
+                              view);
+            g_signal_connect (row, "action-clicked",
+                              G_CALLBACK (on_action_clicked),
+                              view);
 
             g_free (text);
           }
@@ -193,6 +212,17 @@ mnb_clipboard_view_paint (ClutterActor *actor)
         }
 
       clutter_actor_paint (child);
+
+      if (i != 0)
+        {
+          ClutterActorBox box = { 0, };
+
+          clutter_actor_get_allocation_box (child, &box);
+
+          cogl_set_source_color4ub (0x1a, 0x1a, 0x1a, 255);
+          cogl_path_move_to (box.x1, box.y1);
+          cogl_path_line_to (box.x2, box.y1);
+        }
     }
 }
 

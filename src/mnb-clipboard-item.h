@@ -30,6 +30,9 @@ struct _MnbClipboardItem
 struct _MnbClipboardItemClass
 {
   NbtkWidgetClass parent_class;
+
+  void (* remove_clicked) (MnbClipboardItem *item);
+  void (* action_clicked) (MnbClipboardItem *item);
 };
 
 G_END_DECLS
