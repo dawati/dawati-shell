@@ -386,26 +386,17 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
 }
 
 /*
- * Retrieves the type of the application and, if it exists, the ID of the child
- * config window and embeds it in a socket.
- *
- * The caller must check that child->config actually exist after calling this
- * function.
+ * Retrieves the type of the application.
  *
  * Return: 0 if the application is not one of the supported ones, 1 if it is
- * supported and < 0 on error. (NB: as per the comment above, return value of 1
- * does not mean there is a config window).
- *
- * The set up is done once when the tray icon is added (mainly to verify that
- * given application is one of `ours'), and then each time the config window
- * is getting shown after previous hide.
+ * supported and < 0 on error. (NB: return value of 1 does not mean there is a
+ * config window).
  */
 static gint
-setup_child_config (ShellTrayManagerChild *child)
+check_child (ShellTrayManagerChild *child)
 {
   if (!child->config)
     {
-      static Atom tray_atom = 0;
       static Atom tray_type = None;
 
       ShellTrayManager      *manager = child->manager;
@@ -413,18 +404,12 @@ setup_child_config (ShellTrayManagerChild *child)
       Display               *xdpy    = mutter_plugin_get_xdisplay (plugin);
       GtkSocket             *socket  = GTK_SOCKET (child->socket);
       Window                 xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
-      Window                *config_xwin;
-      GtkWidget             *config;
-      GtkWidget             *config_socket;
       gulong                 n_items, left;
       gint                   ret_fmt;
       Atom                   ret_type;
       ChildType              child_type = 0;
       char                  *my_type = NULL;
       gint                   error_code;
-
-      if (!tray_atom)
-        tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW, False);
 
       if (!tray_type)
         tray_type = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_TYPE, False);
@@ -475,11 +460,45 @@ setup_child_config (ShellTrayManagerChild *child)
           XFree (my_type);
         }
 
-      if (child_type == CHILD_UNKNOWN)
-        {
-          nbtk_button_set_checked (NBTK_BUTTON (child->actor), FALSE);
-          return 0;
-        }
+      nbtk_button_set_checked (NBTK_BUTTON (child->actor), FALSE);
+
+      if (child_type != CHILD_UNKNOWN)
+        return 1;
+    }
+
+  return 0;
+}
+
+/*
+ * Retrieves, if it exists, the ID of the child config window and embeds it in a
+ * socket.
+ *
+ * The caller must check that child->config actually exist after calling this
+ * function.
+ *
+ * Return: TRUE if config window was found.
+ */
+static gboolean
+setup_child_config (ShellTrayManagerChild *child)
+{
+  if (!child->config)
+    {
+      static Atom tray_atom = None;
+
+      ShellTrayManager      *manager = child->manager;
+      MutterPlugin          *plugin  = manager->priv->plugin;
+      Display               *xdpy    = mutter_plugin_get_xdisplay (plugin);
+      GtkSocket             *socket  = GTK_SOCKET (child->socket);
+      Window                 xwin = GDK_WINDOW_XWINDOW (socket->plug_window);
+      Window                *config_xwin;
+      GtkWidget             *config;
+      GtkWidget             *config_socket;
+      gulong                 n_items, left;
+      gint                   ret_fmt;
+      Atom                   ret_type;
+
+      if (!tray_atom)
+        tray_atom = XInternAtom (xdpy, MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW, False);
 
       XGetWindowProperty (xdpy, xwin, tray_atom, 0, 8192, False,
                           XA_WINDOW, &ret_type, &ret_fmt, &n_items, &left,
@@ -492,7 +511,7 @@ setup_child_config (ShellTrayManagerChild *child)
            * config window, return TRUE.
            */
           nbtk_button_set_checked (NBTK_BUTTON (child->actor), FALSE);
-          return 1;
+          return TRUE;
         }
 
       config_socket = gtk_socket_new ();
@@ -507,7 +526,7 @@ setup_child_config (ShellTrayManagerChild *child)
           child->config_xwin = None;
 
           gtk_widget_destroy (config);
-          return 0;
+          return FALSE;
         }
       else
         {
@@ -526,7 +545,7 @@ setup_child_config (ShellTrayManagerChild *child)
       XFree (config_xwin);
     }
 
-  return 1;
+  return TRUE;
 }
 
 /*
@@ -546,7 +565,7 @@ actor_clicked (ClutterActor *actor, gpointer data)
        * If we have a config window already constructed, show it, otherwise
        * create it first.
        */
-      if (child->config || ((setup_child_config (child) > 0) && child->config))
+      if (child->config || (setup_child_config (child) && child->config))
         {
           ShellTrayManager *manager = child->manager;
 
@@ -586,7 +605,7 @@ tray_icon_tagged_timeout_cb (gpointer data)
     return FALSE;
   }
 
-  if ((config_status = setup_child_config (child)) == 0)
+  if ((config_status = check_child (child)) == 0)
     {
       if (child->timeout_count++ < 5)
         {
