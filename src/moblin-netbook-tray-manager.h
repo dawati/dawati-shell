@@ -56,6 +56,10 @@ void              shell_tray_manager_close_config_window (ShellTrayManager *mana
 
 void              shell_tray_manager_close_all_config_windows (ShellTrayManager *manager);
 
+void              shell_tray_manager_close_all_other_config_windows (ShellTrayManager *manager,
+                                                                     Window            xwindow);
+
+
 G_END_DECLS
 
 #endif /* __SHELL_TRAY_MANAGER_H__ */

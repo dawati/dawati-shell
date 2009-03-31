@@ -819,7 +819,27 @@ shell_tray_manager_close_all_config_windows (ShellTrayManager *manager)
 
       shell_tray_manager_close_config_window (manager, xwin);
 
-      l = l->next;
+      l = manager->priv->config_windows;
+    }
+}
+
+void
+shell_tray_manager_close_all_other_config_windows (ShellTrayManager *manager,
+                                                   Window            xwindow)
+{
+  GList *l = manager->priv->config_windows;
+
+  while (l)
+    {
+      Window xwin = GPOINTER_TO_INT (l->data);
+
+      if (xwindow != xwin)
+        {
+          shell_tray_manager_close_config_window (manager, xwin);
+          l = manager->priv->config_windows;
+        }
+      else
+        l = l->next;
     }
 }
 

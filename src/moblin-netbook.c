@@ -1505,7 +1505,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * Hide all other dropdowns.
            */
           show_panel_and_control (plugin, MNBK_CONTROL_UNKNOWN);
-
+          shell_tray_manager_close_all_other_config_windows (priv->tray_manager,
+                                                             xwin);
           clutter_actor_show_all (background);
         }
       else
