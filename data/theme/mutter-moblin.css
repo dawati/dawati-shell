@@ -727,6 +727,13 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
+*#netpanel-placeholder
+{
+  font-family: "Liberation Sans";
+  font-size: 17px;
+  padding: 8;
+}
+
 *#netpanel-subtable NbtkLabel
 {
   font-family: "Liberation Sans Bold";

@@ -145,9 +145,6 @@ notify_connect_view (DBusGProxy     *proxy,
     {
       NbtkWidget *button;
 
-      if (!priv->tabs_table)
-        create_tabs_table (self);
-
       button = nbtk_button_new ();
       clutter_container_add_actor (CLUTTER_CONTAINER (button), mozembed);
       g_signal_connect (button, "clicked",
@@ -177,13 +174,24 @@ notify_get_ntabs (DBusGProxy     *proxy,
 
   priv->calls = g_list_remove (priv->calls, call_id);
   priv->previews = 0;
-  if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_UINT, &n_tabs,
-                             G_TYPE_INVALID))
+  if (!dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_UINT, &n_tabs,
+                              G_TYPE_INVALID))
+    {
+      /* TODO: Log the error if it's pertinent? */
+      /*g_warning ("Error getting tabs: %s", error->message);*/
+      g_error_free (error);
+      n_tabs = 0;
+    }
+
+  if (n_tabs)
     {
       NbtkPadding padding;
       ClutterActor *parent;
       ClutterUnit cell_width;
       guint i;
+
+      /* Create tabs table */
+      create_tabs_table (self);
 
       /* Calculate width of preview */
       /* We use the parent actor because we know we're contained in an
@@ -235,9 +243,13 @@ notify_get_ntabs (DBusGProxy     *proxy,
     }
   else
     {
-      /* TODO: Log the error if it's pertinent? */
-      /*g_warning ("Error getting tabs: %s", error->message);*/
-      g_error_free (error);
+      /* Add a placeholder text label */
+      priv->tabs_table = nbtk_label_new ("Type an address or load the browser "
+                                         "to see your tabs here.");
+      clutter_actor_set_name (CLUTTER_ACTOR (priv->tabs_table),
+                              "netpanel-placeholder");
+      nbtk_table_add_widget_full (NBTK_TABLE (self), priv->tabs_table, 1, 0,
+                                  1, 1, 0, 0.5, 0.5);
     }
 }
 
