@@ -1482,9 +1482,7 @@ select_inner_foreach_cb (ClutterActor *child, gpointer data)
             nbtk_tooltip_hide (priv->active_tooltip);
 
           priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
-          nbtk_tooltip_show (priv->active_tooltip);
         }
-
     }
   else
     {
@@ -1528,12 +1526,25 @@ void
 mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
+  ClutterActorBox     box;
 
   if (!priv->table)
     return;
 
   clutter_container_foreach (CLUTTER_CONTAINER (priv->table),
                              select_outer_foreach_cb, meta_win);
+
+  if (priv->active_tooltip)
+    {
+      /*
+       * The above changes styling of the contents and hence leaves the actor in
+       * unallocated state -- this brute forces allocation, which is necessary
+       * before we can show the tooltip.
+       */
+      clutter_actor_get_allocation_box (priv->table, &box);
+
+      nbtk_tooltip_show (priv->active_tooltip);
+    }
 }
 
 void
