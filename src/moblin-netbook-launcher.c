@@ -44,20 +44,20 @@
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-tree.h"
 
-#define INITIAL_FILL_TIMEOUT_S 4
-#define SEARCH_APPLY_TIMEOUT 500
+#define INITIAL_FILL_TIMEOUT_S    4
+#define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S 2
 
-#define ICON_SIZE 48
+#define SCROLLBAR_RESERVED_WIDTH  37
+#define SCROLLVIEW_RESERVED_WIDTH  3
+#define SCROLLVIEW_ROW_SIZE       50
+#define EXPANDER_GRID_ROW_GAP      8
 
-#define SCROLLBAR_RESERVED_WIDTH 37
-#define SCROLLVIEW_RESERVED_WIDTH 3
-#define EXPANDER_GRID_ROW_GAP 8
-
-#define LAUNCHER_WIDTH  215
-#define LAUNCHER_HEIGHT 79
-#define LAUNCHER_GRID_COLUMN_GAP 32
-#define LAUNCHER_GRID_ROW_GAP 12
+#define LAUNCHER_GRID_COLUMN_GAP   32
+#define LAUNCHER_GRID_ROW_GAP      12
+#define LAUNCHER_WIDTH            215
+#define LAUNCHER_HEIGHT            79
+#define LAUNCHER_ICON_SIZE         48
 
 /*
  * Helper struct that contains all the info needed to switch between
@@ -263,14 +263,14 @@ create_launcher_button_from_entry (MnbLauncherEntry *entry,
     {
       info = gtk_icon_theme_lookup_icon (theme,
                                           icon_name,
-                                          ICON_SIZE,
+                                          LAUNCHER_ICON_SIZE,
                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
     }
   if (!info)
     {
       info = gtk_icon_theme_lookup_icon (theme,
                                           "applications-other",
-                                          ICON_SIZE,
+                                          LAUNCHER_ICON_SIZE,
                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
     }
   if (info)
@@ -284,7 +284,7 @@ create_launcher_button_from_entry (MnbLauncherEntry *entry,
 
       /* Launcher button */
       last_used = mnb_launcher_utils_get_last_used (exec);
-      button = mnb_launcher_button_new (icon_file, ICON_SIZE,
+      button = mnb_launcher_button_new (icon_file, LAUNCHER_ICON_SIZE,
                                         generic_name, category,
                                         description, last_used, exec,
                                         mnb_launcher_entry_get_desktop_file_path (entry));
@@ -824,6 +824,7 @@ make_launcher (MutterPlugin *plugin,
                                      width - SCROLLBAR_RESERVED_WIDTH);
 
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
+  nbtk_scroll_view_set_row_size (NBTK_SCROLL_VIEW (scroll), SCROLLVIEW_ROW_SIZE);
   clutter_container_add (CLUTTER_CONTAINER (scroll),
                          CLUTTER_ACTOR (viewport), NULL);
   clutter_actor_set_size (scroll,
