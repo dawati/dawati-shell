@@ -181,6 +181,7 @@ _store_opened_cb (JanaStore *store,
   PengeTasksPanePrivate *priv = GET_PRIVATE (pane);
 
   priv->view = jana_store_get_view (priv->store);
+  penge_tasks_pane_update (pane);
 
   g_signal_connect (priv->view,
                     "added",
@@ -259,7 +260,7 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   if (tasks)
     first_task = (JanaTask *)tasks->data;
 
-  if (first_task && jana_task_get_completed (first_task))
+  if (!tasks || (first_task && jana_task_get_completed (first_task)))
   {
     if (!priv->no_tasks_bin)
     {
