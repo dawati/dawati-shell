@@ -128,7 +128,6 @@ draw (GtkWidget *lightswitch, cairo_t *cr)
         PangoLayout *layout;
         PangoContext *context;
         GString *on, *off;
-        GtkStateType trough_state;
 
         priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
         style = lightswitch->style;
@@ -139,22 +138,29 @@ draw (GtkWidget *lightswitch, cairo_t *cr)
 
         on_label_x = (trough_width / 5) * 0.75;
         off_label_x =  (trough_width / 8) * 5;
-        if (priv->active)
-          trough_state = GTK_STATE_SELECTED;
-        else
-          trough_state = GTK_STATE_NORMAL;
 
         /* draw the trough */
         gtk_paint_box (style,
                        lightswitch->window,
-                       trough_state,
+                       GTK_STATE_SELECTED,
                        GTK_SHADOW_ETCHED_IN,
                        NULL,
                        NULL,
                        NULL,
                        0,
                        0,
-                       trough_width,
+                       (trough_width / 2),
+                       switch_height);
+        gtk_paint_box (style,
+                       lightswitch->window,
+                       GTK_STATE_NORMAL,
+                       GTK_SHADOW_ETCHED_IN,
+                       NULL,
+                       NULL,
+                       NULL,
+                       (trough_width / 2),
+                       0,
+                       (trough_width / 2),
                        switch_height);
 
         /* Draw the first label; "On" */
