@@ -989,7 +989,15 @@ on_show_completed_cb (ClutterActor *self, gpointer data)
 
   if (app_priv->tooltip)
     {
+      ClutterActorBox box;
+
       priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
+
+      /*
+       * Make sure there is no pending allocation.
+       */
+      clutter_actor_get_allocation_box (CLUTTER_ACTOR (priv->table), &box);
+
       nbtk_tooltip_show (priv->active_tooltip);
     }
 }
@@ -1302,12 +1310,6 @@ mnb_switcher_show (ClutterActor *self)
 
   priv->constructing = FALSE;
 
-#if 0
-  /* FIXME -- disable this until after the next demo; for some reason the
-   *          initial tooltip is not positioned correctly, looks like a NBTK
-   *          bug. Better not to have the initial tooltip than to have it
-   *          at the wrong place.
-   */
   /*
    * We connect to the show-completed signal, and if there is something focused
    * in the switcher (should be most of the time), we try to pop up the
@@ -1323,7 +1325,6 @@ mnb_switcher_show (ClutterActor *self)
       g_signal_connect (self, "show-completed",
                         G_CALLBACK (on_show_completed_cb),
                         current_focus_clone);
-#endif
 
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
 }
@@ -1541,7 +1542,7 @@ mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win)
        * unallocated state -- this brute forces allocation, which is necessary
        * before we can show the tooltip.
        */
-      clutter_actor_get_allocation_box (priv->table, &box);
+      clutter_actor_get_allocation_box (CLUTTER_ACTOR (priv->table), &box);
 
       nbtk_tooltip_show (priv->active_tooltip);
     }
