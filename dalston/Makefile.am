@@ -7,6 +7,8 @@ libdalston_la_SOURCES = dalston-battery-monitor.c \
 			dalston-brightness-manager.h \
 			dalston-brightness-slider.c \
 			dalston-brightness-slider.h \
+			dalston-power-applet.h \
+			dalston-power-applet.c \
 			dalston-volume-status-icon.c \
 			dalston-volume-status-icon.h \
 			dalston-volume-slider.c \
@@ -21,7 +23,8 @@ libdalston_la_CFLAGS = -I$(top_srcdir) \
 		       $(GLIB_CFLAGS) \
 		       $(GTK_CFLAGS) \
 		       $(PULSE_CFLAGS) \
-		       $(CANBERRA_CFLAGS)
+		       $(CANBERRA_CFLAGS) \
+		       -DPKG_DATA_DIR=\"$(pkgdatadir)\"
 
 libdalston_la_LIBADD = $(top_builddir)/libhal-glib/libhal-glib.la \
 		       $(top_builddir)/libhal-panel-glib/libhal-panel-glib.la \
