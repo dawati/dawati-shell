@@ -108,8 +108,8 @@ mux_light_switch_init (MuxLightSwitch *self)
                                      &label_height);
 
         trough_width = label_width * 5;
-        switch_width = trough_width / 2;
-        switch_height = label_height * 2;
+        switch_width = (trough_width / 2) * 1.1;
+        switch_height = (label_height * 2) * 1.1;
 
         /* add events, do initial draw/update, etc */
         gtk_widget_add_events (GTK_WIDGET (self),
