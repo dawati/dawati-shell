@@ -92,22 +92,20 @@ make_pasteboard (MutterPlugin *plugin,
   g_signal_connect (drop_down, "hide-completed",
                     G_CALLBACK (on_dropdown_hide), entry);
 
-  bin = NBTK_WIDGET (nbtk_bin_new ());
-  clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-items-list");
-
+  /* the actual view */
   view = CLUTTER_ACTOR (mnb_clipboard_view_new (NULL));
-  clutter_container_add_actor (CLUTTER_CONTAINER (bin), view);
   clutter_actor_set_width (view, 700);
 
-#if 0
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
-
   clutter_container_add_actor (CLUTTER_CONTAINER (viewport), view);
 
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
-  clutter_container_add (CLUTTER_CONTAINER (scroll),
-                         CLUTTER_ACTOR (viewport), NULL);
-#endif
+  clutter_actor_set_size (scroll, 700, 300);
+  clutter_container_add_actor (CLUTTER_CONTAINER (scroll), viewport);
+
+  bin = NBTK_WIDGET (nbtk_bin_new ());
+  clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-items-list");
+  clutter_container_add_actor (CLUTTER_CONTAINER (bin), scroll);
 
   nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
                               1, 0, 1, 1,

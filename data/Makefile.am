@@ -170,4 +170,5 @@ dist_theme_pasteboard_DATA = \
 	theme/pasteboard/pasteboard-delete-hover.png \
 	theme/pasteboard/pasteboard-delete.png \
 	theme/pasteboard/pasteboard-item-hover.png \
+	theme/pasteboard/pasteboard-items-list-bg.png \
 	theme/pasteboard/pasteboard-search-bg.png

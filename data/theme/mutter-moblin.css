@@ -857,7 +857,8 @@ MoblinNetbookNetpanel NbtkButton:active {
 }
 
 *#pasteboard-items-list {
-  padding: 4;
+  border-image: url('file://pasteboard/pasteboard-items-list-bg.png') 10 stretch;
+  padding: 10;
 }
 
 MnbClipboardItem {
