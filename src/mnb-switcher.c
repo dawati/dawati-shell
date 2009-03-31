@@ -994,9 +994,10 @@ on_show_completed_cb (ClutterActor *self, gpointer data)
       priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
 
       /*
-       * Make sure there is no pending allocation.
+       * Make sure there is no pending allocation (without this the initial
+       * tooltip is place incorrectly).
        */
-      clutter_actor_get_allocation_box (CLUTTER_ACTOR (priv->table), &box);
+      clutter_actor_get_allocation_box (self, &box);
 
       nbtk_tooltip_show (priv->active_tooltip);
     }
