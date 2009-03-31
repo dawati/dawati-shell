@@ -313,6 +313,50 @@ mnb_clipboard_store_new (void)
   return g_object_new (MNB_TYPE_CLIPBOARD_STORE, NULL);
 }
 
+gchar *
+mnb_clipboard_store_get_last_text (MnbClipboardStore *store)
+{
+  ClutterModelIter *iter;
+  MnbClipboardItemType item_type = MNB_CLIPBOARD_ITEM_INVALID;
+  gchar *text = NULL;
+
+  g_return_val_if_fail (MNB_IS_CLIPBOARD_STORE (store), NULL);
+
+  iter = clutter_model_get_first_iter (CLUTTER_MODEL (store));
+  clutter_model_iter_get (iter,
+                          COLUMN_ITEM_TYPE, &item_type,
+                          COLUMN_ITEM_TEXT, &text,
+                          NULL);
+
+  if (item_type != MNB_CLIPBOARD_ITEM_TEXT)
+    {
+      GEnumClass *enum_class;
+      GEnumValue *enum_value;
+
+      enum_class = g_type_class_peek (MNB_TYPE_CLIPBOARD_ITEM_TYPE);
+      if (G_LIKELY (enum_class != NULL))
+        {
+          const gchar *nick;
+
+          enum_value = g_enum_get_value (enum_class, item_type);
+          if (G_LIKELY (enum_value != NULL))
+            nick = enum_value->value_nick;
+          else
+            nick = "<unknown>";
+
+          g_warning ("Requested text, but the last column has type '%s'",
+                     nick);
+        }
+      else
+        g_warning ("Requested text, but the last column has type <unknown>");
+
+      g_free (text);
+      text = NULL;
+    }
+
+  return text;
+}
+
 GType
 mnb_clipboard_item_type_get_type (void)
 {

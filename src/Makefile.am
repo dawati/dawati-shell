@@ -36,6 +36,8 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				$(MARSHALS)                     \
 				mnb-clipboard-store.h		\
 				mnb-clipboard-store.c		\
+				mnb-clipboard-view.c		\
+				mnb-clipboard-view.h		\
 				mnb-drop-down.h                 \
 				mnb-drop-down.c                 \
 				mnb-entry.c                     \

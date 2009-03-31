@@ -16,6 +16,7 @@
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-pasteboard.h"
 #include "mnb-clipboard-store.h"
+#include "mnb-clipboard-view.h"
 #include "mnb-drop-down.h"
 #include "mnb-entry.h"
 
@@ -56,7 +57,7 @@ make_pasteboard (MutterPlugin *plugin,
                  gint          width)
 {
   NbtkWidget   *vbox, *hbox, *label, *entry, *drop_down;
-  ClutterActor *viewport, *scroll;
+  ClutterActor *view, *viewport, *scroll;
 
   drop_down = mnb_drop_down_new ();
 
@@ -91,16 +92,13 @@ make_pasteboard (MutterPlugin *plugin,
   g_signal_connect (drop_down, "hide-completed",
                     G_CALLBACK (on_dropdown_hide), entry);
 
-  clipboard = mnb_clipboard_store_new ();
 
-#if 0
-  /*
-   * Applications
-   */
+  view = CLUTTER_ACTOR (mnb_clipboard_view_new (NULL));
+  clutter_actor_set_width (view, 600);
+
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
 
-  clutter_container_add (CLUTTER_CONTAINER (viewport),
-                         CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (viewport), view);
 
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   clutter_container_add (CLUTTER_CONTAINER (scroll),
@@ -109,7 +107,6 @@ make_pasteboard (MutterPlugin *plugin,
                               1, 0, 1, 1,
                               NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
                               0., 0.);
-#endif
 
   g_signal_connect (entry, "button-clicked",
                     G_CALLBACK (on_search_activated), NULL);
