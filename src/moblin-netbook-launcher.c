@@ -44,6 +44,7 @@
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-tree.h"
 
+#define INITIAL_FILL_TIMEOUT_S 4
 #define SEARCH_APPLY_TIMEOUT 500
 
 #define ICON_SIZE 48
@@ -66,16 +67,23 @@ typedef struct
   MutterPlugin            *self;
   PengeAppBookmarkManager *manager;
   MnbLauncherMonitor      *monitor;
+  GHashTable              *expanders;
+  GSList                  *launchers;
+  guint                    fill_timeout_id;
 
+  /* Static widgets, managed by clutter. */
   ClutterUnit              width;
+  ClutterActor            *filter_entry;
+  ClutterActor            *viewport;
+
+  /* "Dynamic" widgets (browser vs. filter mode).
+   * These are explicitely ref'd and destroyed. */
   ClutterActor            *scrolled_vbox;
   ClutterActor            *fav_label;
   ClutterActor            *fav_grid;
   ClutterActor            *apps_grid;
 
-  GHashTable              *expanders;
-  GSList                  *launchers;
-
+  /* While filtering. */
   gboolean                 is_filtering;
   guint                    timeout_id;
   char                    *lcase_needle;
@@ -371,7 +379,7 @@ launcher_data_set_show_fav_apps (launcher_data_t *launcher_data,
     }
 }
 
-static void
+static gboolean
 launcher_data_fill (launcher_data_t *launcher_data)
 {
   GList           *fav_apps;
@@ -380,9 +388,13 @@ launcher_data_fill (launcher_data_t *launcher_data)
   GSList const    *directory_iter;
   GtkIconTheme    *theme;
 
+  launcher_data->fill_timeout_id = 0;
+
   theme = gtk_icon_theme_get_default ();
 
   launcher_data->scrolled_vbox = CLUTTER_ACTOR (nbtk_table_new ());
+  clutter_container_add (CLUTTER_CONTAINER (launcher_data->viewport),
+                         CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
 
   /*
    * Fav apps.
@@ -558,6 +570,9 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
   mnb_launcher_tree_free_entries (directories);
   mnb_launcher_tree_free (tree);
+
+  /* When used as a GSourceFunc this should just run once. */
+  return FALSE;
 }
 
 /*
@@ -565,6 +580,8 @@ launcher_data_fill (launcher_data_t *launcher_data)
  */
 static launcher_data_t *
 launcher_data_new (MutterPlugin *self,
+                   ClutterActor *filter_entry,
+                   ClutterActor *viewport,
                    gint          width)
 {
   launcher_data_t *launcher_data;
@@ -576,6 +593,15 @@ launcher_data_new (MutterPlugin *self,
   penge_app_bookmark_manager_load (launcher_data->manager);
 
   launcher_data->width = width;
+  launcher_data->filter_entry = filter_entry;
+  launcher_data->viewport = viewport;
+
+  /* Initial fill delayed. */
+  /* Doesn't work just yet.
+  launcher_data->fill_timeout_id = g_timeout_add_seconds (INITIAL_FILL_TIMEOUT_S,
+                                                          (GSourceFunc) launcher_data_fill,
+                                                          launcher_data);
+  */
   launcher_data_fill (launcher_data);
 
   return launcher_data;
@@ -598,15 +624,8 @@ static void
 launcher_data_monitor_cb (MnbLauncherMonitor  *monitor,
                           launcher_data_t     *launcher_data)
 {
-  ClutterActor *viewport;
-
-  viewport = clutter_actor_get_parent (launcher_data->scrolled_vbox);
-
   launcher_data_reset (launcher_data);
   launcher_data_fill (launcher_data);
-
-  clutter_container_add (CLUTTER_CONTAINER (viewport),
-                         CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
 }
 
 static gboolean
@@ -724,18 +743,25 @@ search_activated_cb (MnbEntry         *entry,
 }
 
 static void
-dropdown_show_cb (MnbDropDown   *dropdown,
-                  ClutterActor  *filter_entry)
+dropdown_show_cb (MnbDropDown     *dropdown,
+                  launcher_data_t *launcher_data)
 {
-  clutter_actor_grab_key_focus (filter_entry);
+  /* Cancel timeout and fill if still waiting. */
+  if (launcher_data->fill_timeout_id)
+    {
+      g_source_remove (launcher_data->fill_timeout_id);
+      launcher_data_fill (launcher_data);
+    }
+
+  clutter_actor_grab_key_focus (launcher_data->filter_entry);
 }
 
 static void
-dropdown_hide_cb (MnbDropDown   *dropdown,
-                  ClutterActor  *filter_entry)
+dropdown_hide_cb (MnbDropDown     *dropdown,
+                  launcher_data_t *launcher_data)
 {
   /* Reset search. */
-  mnb_entry_set_text (MNB_ENTRY (filter_entry), "");
+  mnb_entry_set_text (MNB_ENTRY (launcher_data->filter_entry), "");
 }
 
 ClutterActor *
@@ -774,19 +800,13 @@ make_launcher (MutterPlugin *plugin,
                               0, 1, 1, 1,
                               0,
                               0., 0.5);
-  g_signal_connect (drop_down, "show-completed",
-                    G_CALLBACK (dropdown_show_cb), entry);
-  g_signal_connect (drop_down, "hide-completed",
-                    G_CALLBACK (dropdown_hide_cb), entry);
 
   /*
    * Applications
    */
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
-  /* Add launcher table. */
-  launcher_data = launcher_data_new (plugin, width - SCROLLBAR_RESERVED_WIDTH);
-  clutter_container_add (CLUTTER_CONTAINER (viewport),
-                         CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
+  launcher_data = launcher_data_new (plugin, CLUTTER_ACTOR (entry), viewport,
+                                     width - SCROLLBAR_RESERVED_WIDTH);
 
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   clutter_container_add (CLUTTER_CONTAINER (scroll),
@@ -806,6 +826,11 @@ make_launcher (MutterPlugin *plugin,
   /* `launcher_data' lifecycle is managed above. */
   g_signal_connect (entry, "text-changed",
                     G_CALLBACK (search_activated_cb), launcher_data);
+
+  g_signal_connect_after (drop_down, "show-completed",
+                          G_CALLBACK (dropdown_show_cb), launcher_data);
+  g_signal_connect (drop_down, "hide-completed",
+                    G_CALLBACK (dropdown_hide_cb), launcher_data);
 
   return CLUTTER_ACTOR (drop_down);
 }
