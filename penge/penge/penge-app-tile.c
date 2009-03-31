@@ -89,15 +89,28 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
                                      priv->bookmark->icon_name,
                                      ICON_SIZE,
                                      GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-  path = gtk_icon_info_get_filename (info);
 
-  if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
-                                      path,
-                                      &error))
+  if (!info)
   {
-    g_warning (G_STRLOC ": Error loading texture from file: %s",
-               error->message);
-    g_clear_error (&error);
+    /* try falling back */
+    info = gtk_icon_theme_lookup_icon (priv->icon_theme,
+                                       "applications-other",
+                                       ICON_SIZE,
+                                       GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+  }
+
+  if (info)
+  {
+    path = gtk_icon_info_get_filename (info);
+
+    if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
+                                        path,
+                                        &error))
+    {
+      g_warning (G_STRLOC ": Error loading texture from file: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
   }
 }
 
