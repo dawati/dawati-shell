@@ -5,6 +5,8 @@
 
 G_BEGIN_DECLS
 
+#define MNB_TYPE_CLIPBOARD_ITEM_TYPE            (mnb_clipboard_item_type_get_type ())
+
 #define MNB_TYPE_CLIPBOARD_STORE                (mnb_clipboard_store_get_type ())
 #define MNB_CLIPBOARD_STORE(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_CLIPBOARD_STORE, MnbClipboardStore))
 #define MNB_IS_CLIPBOARD_STORE(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNB_TYPE_CLIPBOARD_STORE))
@@ -35,11 +37,10 @@ struct _MnbClipboardStoreClass
   ClutterListModelClass parent_class;
 
   void (* item_added) (MnbClipboardStore    *store,
-                       MnbClipboardItemType  item_type,
-                       gint                  row,
-                       gboolean              is_selection);
+                       MnbClipboardItemType  item_type);
 };
 
+GType mnb_clipboard_item_type_get_type (void) G_GNUC_CONST;
 GType mnb_clipboard_store_get_type (void) G_GNUC_CONST;
 
 MnbClipboardStore *mnb_clipboard_store_new (void);

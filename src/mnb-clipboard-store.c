@@ -108,10 +108,7 @@ on_clipboard_request_uris (GtkClipboard  *clipboard,
                          COLUMN_ITEM_IS_SELECTION, item->is_selection,
                          -1);
 
-  g_signal_emit (item->store, store_signals[ITEM_ADDED], 0,
-                 item->type,
-                 0,
-                 item->is_selection);
+  g_signal_emit (item->store, store_signals[ITEM_ADDED], 0, item->type);
 
   g_object_unref (item->store);
   g_slice_free (ClipboardItem, item);
@@ -220,16 +217,15 @@ mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbClipboardStoreClass, item_added),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__INT_INT_BOOLEAN,
-                  G_TYPE_NONE, 3,
-                  G_TYPE_INT,
-                  G_TYPE_INT,
-                  G_TYPE_BOOLEAN);
+                  moblin_netbook_marshal_VOID__ENUM,
+                  G_TYPE_NONE, 1,
+                  MNB_TYPE_CLIPBOARD_ITEM_TYPE);
 }
 
 static void
 mnb_clipboard_store_init (MnbClipboardStore *self)
 {
+  MnbClipboardStorePrivate *priv;
   ClutterModel *model = CLUTTER_MODEL (self);
   GType column_types[] = {
     G_TYPE_INT,         /* COLUMN_ITEM_TYPE */
@@ -254,4 +250,26 @@ MnbClipboardStore *
 mnb_clipboard_store_new (void)
 {
   return g_object_new (MNB_TYPE_CLIPBOARD_STORE, NULL);
+}
+
+GType
+mnb_clipboard_item_type_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (G_UNLIKELY (our_type == 0))
+    {
+      static const GEnumValue values[] = {
+        { MNB_CLIPBOARD_ITEM_INVALID, "MNB_CLIPBOARD_ITEM_INVALID", "invalid" },
+        { MNB_CLIPBOARD_ITEM_TEXT, "MNB_CLIPBOARD_ITEM_TEXT", "text" },
+        { MNB_CLIPBOARD_ITEM_URIS, "MNB_CLIPBOARD_ITEM_URIS", "uris" },
+        { MNB_CLIPBOARD_ITEM_IMAGE, "MNB_CLIPBOARD_ITEM_IMAGE", "image" },
+        { 0, NULL, NULL }
+      };
+
+      our_type = g_enum_register_static (g_intern_static_string ("MnbClipboardItemType"),
+                                         values);
+    }
+
+  return our_type;
 }
