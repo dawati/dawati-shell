@@ -541,6 +541,15 @@ mnb_launcher_button_set_favorite (MnbLauncherButton *self,
   nbtk_button_set_checked (NBTK_BUTTON (self->priv->fav_toggle), is_favorite);
 }
 
+void
+mnb_launcher_button_reset (MnbLauncherButton *self)
+{
+  g_return_if_fail (self);
+
+  clutter_actor_hide (self->priv->fav_toggle);
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
+}
+
 gint
 mnb_launcher_button_compare (MnbLauncherButton *self,
                              MnbLauncherButton *other)
