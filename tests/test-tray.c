@@ -84,11 +84,14 @@ make_menu_content (GtkPlug *config)
  * of the config window when the window is getting shown.
  */
 static void
-config_embedded_cb (GtkPlug *config, gpointer data)
+config_embedded_cb (GtkPlug    *config,
+                    GParamSpec *pspec,
+                    gpointer    data)
 {
   gboolean embedded;
 
   g_object_get (config, "embedded", &embedded, NULL);
+  g_debug ("Embedded: %s", embedded ? "yes" : "no");
 
   if (embedded)
     make_menu_content (config);
@@ -112,7 +115,7 @@ main (int argc, char *argv[])
    * If your config window has static content, you can just create it here and
    * pack it directly into the plug.
    */
-  g_signal_connect (config, "embedded", G_CALLBACK (config_embedded_cb), NULL);
+  g_signal_connect (config, "notify::embedded", G_CALLBACK (config_embedded_cb), NULL);
 
   icon = gtk_status_icon_new_from_stock (GTK_STOCK_INFO);
 
