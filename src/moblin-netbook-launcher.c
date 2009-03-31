@@ -136,7 +136,7 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
   mnb_launcher_button_reset (launcher);
-  g_timeout_add_seconds (LAUNCH_REACTIVE_TIMEOUT_S, 
+  g_timeout_add_seconds (LAUNCH_REACTIVE_TIMEOUT_S,
                          (GSourceFunc) mnb_launcher_button_set_reactive_cb,
                          launcher);
 
@@ -784,7 +784,7 @@ make_launcher (MutterPlugin *plugin,
                gint          width,
                gint          height)
 {
-  ClutterActor    *viewport, *scroll;
+  ClutterActor    *viewport, *scroll, *bar;
   NbtkWidget      *vbox, *hbox, *label, *entry, *drop_down;
   launcher_data_t *launcher_data;
 
@@ -825,6 +825,8 @@ make_launcher (MutterPlugin *plugin,
 
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   nbtk_scroll_view_set_row_size (NBTK_SCROLL_VIEW (scroll), SCROLLVIEW_ROW_SIZE);
+  bar = nbtk_scroll_view_get_vscroll_bar (NBTK_SCROLL_VIEW (scroll));
+  nbtk_scroll_bar_set_mode (NBTK_SCROLL_BAR (bar), NBTK_SCROLL_BAR_MODE_IDLE);
   clutter_container_add (CLUTTER_CONTAINER (scroll),
                          CLUTTER_ACTOR (viewport), NULL);
   clutter_actor_set_size (scroll,
