@@ -6,6 +6,7 @@
 
 #include "mnb-clipboard-view.h"
 #include "mnb-clipboard-store.h"
+#include "mnb-clipboard-item.h"
 
 #define MNB_CLIPBOARD_VIEW_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_CLIPBOARD_VIEW, MnbClipboardViewPrivate))
 
@@ -41,19 +42,15 @@ on_store_item_added (MnbClipboardStore    *store,
     {
     case MNB_CLIPBOARD_ITEM_TEXT:
       {
-        NbtkWidget *label;
-        gchar *text;
+        gint64 mtime = 0;
+        gchar *text = NULL;
 
-        text = mnb_clipboard_store_get_last_text (store);
+        text = mnb_clipboard_store_get_last_text (store, &mtime);
         if (text != NULL)
           {
-            label = nbtk_label_new (text);
-
-            row = nbtk_bin_new ();
-            nbtk_bin_set_child (NBTK_BIN (row), CLUTTER_ACTOR (label));
-            nbtk_bin_set_alignment (NBTK_BIN (row),
-                                    NBTK_ALIGN_LEFT,
-                                    NBTK_ALIGN_CENTER);
+            row = g_object_new (MNB_TYPE_CLIPBOARD_ITEM,
+                                "contents", text,
+                                NULL);
 
             g_free (text);
           }
@@ -177,21 +174,39 @@ mnb_clipboard_view_paint (ClutterActor *actor)
   for (l = priv->rows, i = 0; l != NULL; l = l->next, i++)
     {
       ClutterActor *child = l->data;
-      ClutterActorBox box = { 0, };
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
-        continue;
+        {
+          i--;
+          continue;
+        }
 
-      clutter_actor_get_allocation_box (child, &box);
+      if (i == 0)
+        {
+          ClutterActorBox box = { 0, };
 
-      g_debug ("%s: row[%d] = { %.2f, %.2f, %.2f, %.2f }",
-               G_STRLOC,
-               i,
-               box.x1, box.y1,
-               box.x2 - box.x1, box.y2 - box.y1);
+          clutter_actor_get_allocation_box (child, &box);
+
+          cogl_set_source_color4ub (0xef, 0xef, 0xef, 255);
+          cogl_rectangle (box.x1 + 1, box.y1 + 1,
+                          box.x2 - 1, box.y2 - 1);
+        }
 
       clutter_actor_paint (child);
     }
+}
+
+static void
+mnb_clipboard_view_pick (ClutterActor *actor,
+                         const ClutterColor *pick_color)
+{
+  MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (actor)->priv;
+  GSList *l;
+
+  CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->pick (actor, pick_color);
+
+  for (l = priv->rows; l != NULL; l = l->next)
+    clutter_actor_paint (l->data);
 }
 
 static void
@@ -274,6 +289,7 @@ mnb_clipboard_view_class_init (MnbClipboardViewClass *klass)
   actor_class->get_preferred_height = mnb_clipboard_view_get_preferred_height;
   actor_class->allocate = mnb_clipboard_view_allocate;
   actor_class->paint = mnb_clipboard_view_paint;
+  actor_class->pick = mnb_clipboard_view_pick;
 
   pspec = g_param_spec_object ("store",
                                "Store",

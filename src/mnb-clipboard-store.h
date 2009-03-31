@@ -45,8 +45,10 @@ GType mnb_clipboard_store_get_type (void) G_GNUC_CONST;
 
 MnbClipboardStore *mnb_clipboard_store_new (void);
 
-gchar * mnb_clipboard_store_get_last_text (MnbClipboardStore *store);
-gchar **mnb_clipboard_store_get_last_uris (MnbClipboardStore *store);
+gchar * mnb_clipboard_store_get_last_text (MnbClipboardStore *store,
+                                           gint64            *mtime);
+gchar **mnb_clipboard_store_get_last_uris (MnbClipboardStore *store,
+                                           gint64            *mtime);
 
 G_END_DECLS
 

@@ -314,11 +314,13 @@ mnb_clipboard_store_new (void)
 }
 
 gchar *
-mnb_clipboard_store_get_last_text (MnbClipboardStore *store)
+mnb_clipboard_store_get_last_text (MnbClipboardStore *store,
+                                   gint64            *mtime)
 {
   ClutterModelIter *iter;
   MnbClipboardItemType item_type = MNB_CLIPBOARD_ITEM_INVALID;
   gchar *text = NULL;
+  gint64 timestamp = 0;
 
   g_return_val_if_fail (MNB_IS_CLIPBOARD_STORE (store), NULL);
 
@@ -326,7 +328,10 @@ mnb_clipboard_store_get_last_text (MnbClipboardStore *store)
   clutter_model_iter_get (iter,
                           COLUMN_ITEM_TYPE, &item_type,
                           COLUMN_ITEM_TEXT, &text,
-                          NULL);
+                          COLUMN_ITEM_MTIME, &timestamp,
+                          -1);
+
+  g_object_unref (iter);
 
   if (item_type != MNB_CLIPBOARD_ITEM_TEXT)
     {
@@ -352,7 +357,12 @@ mnb_clipboard_store_get_last_text (MnbClipboardStore *store)
 
       g_free (text);
       text = NULL;
+
+      timestamp = 0;
     }
+
+  if (mtime)
+    *mtime = timestamp;
 
   return text;
 }

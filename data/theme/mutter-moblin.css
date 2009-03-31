@@ -855,3 +855,23 @@ MoblinNetbookNetpanel NbtkButton:active {
   font-size: 18;
   padding-left: 12;
 }
+
+*#pasteboard-items-list {
+  padding: 4;
+}
+
+MnbClipboardItem {
+  padding: 4;
+}
+
+*.MnbClipboardItemText {
+  font-family: "Liberation Sans";
+  font-size: 14;
+  color: #1a1a1a;
+  padding: 4;
+}
+
+*.MnbClipboardItemDeleteButton {
+  border-image: url('file://pasteboard/pasteboard-delete-bg.png') 4 stretch;
+  padding: 4;
+}
