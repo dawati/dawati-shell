@@ -1500,6 +1500,12 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * the actual panel background (the switcher is the topmost dropdown).
            */
           clutter_actor_raise (background, priv->switcher);
+
+          /*
+           * Hide all other dropdowns.
+           */
+          show_panel_and_control (plugin, MNBK_CONTROL_UNKNOWN);
+
           clutter_actor_show_all (background);
         }
       else
