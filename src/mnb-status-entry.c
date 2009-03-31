@@ -231,7 +231,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
 
   child_box.x1 = (int) (border.left + priv->padding.left);
   child_box.y1 = (int) (border.top + priv->padding.top);
-  child_box.x2 = (int) (child_box.x1 + text_width);
+  child_box.x2 = (int) (child_box.x1 + (text_width - service_width));
   child_box.y2 = (int) (child_box.y1 + text_height);
   clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
 
@@ -522,6 +522,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_use_markup (CLUTTER_TEXT (text), TRUE);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (text), PANGO_ELLIPSIZE_END);
   clutter_actor_set_reactive (CLUTTER_ACTOR (text), FALSE);
 
   priv->service_label =
