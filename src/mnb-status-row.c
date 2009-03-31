@@ -375,6 +375,19 @@ on_mojito_view_open (MojitoClient     *client,
     {
       priv->view = g_object_ref (view);
 
+      if (row->priv->service != NULL)
+        mojito_client_service_get_persona_icon (priv->service,
+                                                on_mojito_get_persona_icon,
+                                                row);
+      else
+        {
+          /* we need the service for UpdateStatus and GetPersonaIcon */
+          priv->service = mojito_client_get_service (priv->client, priv->service_name);
+          mojito_client_service_get_persona_icon (priv->service,
+                                                  on_mojito_get_persona_icon,
+                                                  row);
+        }
+
       g_signal_connect (view, "item-added",
                         G_CALLBACK (on_mojito_view_item_added),
                         row);
@@ -388,13 +401,29 @@ static gboolean
 do_update_timeout (gpointer data)
 {
   MnbStatusRow *row = data;
+  MnbStatusRowPrivate *priv = row->priv;
 
   if (!row->priv->is_online)
     return TRUE;
 
   if (row->priv->view != NULL)
     mojito_client_view_refresh (row->priv->view);
+  else
+    {
+      gchar *service_name;
 
+      /* for the View we need a parametrized service name */
+      service_name = g_strdup_printf ("%s:own=1", priv->service_name);
+      mojito_client_open_view_for_service (priv->client,
+                                           service_name, 1,
+                                           on_mojito_view_open,
+                                           row);
+      g_free (service_name);
+
+      return TRUE;
+    }
+
+  /* we only call GetPersonaIcon if we have a view open */
   if (row->priv->service != NULL)
     mojito_client_service_get_persona_icon (row->priv->service,
                                             on_mojito_get_persona_icon,
@@ -419,19 +448,6 @@ on_mojito_online_changed (MojitoClient *client,
 
   if (priv->is_online)
     {
-      if (row->priv->service != NULL)
-        mojito_client_service_get_persona_icon (priv->service,
-                                                on_mojito_get_persona_icon,
-                                                row);
-      else
-        {
-          /* we need the service for UpdateStatus and GetPersonaIcon */
-          priv->service = mojito_client_get_service (priv->client, priv->service_name);
-          mojito_client_service_get_persona_icon (priv->service,
-                                                  on_mojito_get_persona_icon,
-                                                  row);
-        }
-
       if (priv->view != NULL)
         mojito_client_view_refresh (row->priv->view);
       else
@@ -467,12 +483,6 @@ on_mojito_is_online (MojitoClient *client,
 
   if (!priv->is_online)
     return;
-
-  /* we need the service for UpdateStatus and GetPersonaIcon */
-  priv->service = mojito_client_get_service (priv->client, priv->service_name);
-  mojito_client_service_get_persona_icon (priv->service,
-                                          on_mojito_get_persona_icon,
-                                          row);
 
   /* for the View we need a parametrized service name */
   service_name = g_strdup_printf ("%s:own=1", priv->service_name);
