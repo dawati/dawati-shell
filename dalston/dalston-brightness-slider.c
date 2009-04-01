@@ -178,7 +178,6 @@ _scale_format_value_cb (GtkScale *scale,
                         gdouble   value,
                         gpointer  userdata)
 {
-  DalstonBrightnessSlider *slider = (DalstonBrightnessSlider *)userdata;
   DalstonBrightnessSliderPrivate *priv = GET_PRIVATE (userdata);
 
   if ((int)value == 0)
@@ -206,12 +205,12 @@ dalston_brightness_slider_init (DalstonBrightnessSlider *self)
 
   g_signal_connect (self,
                     "format-value",
-                    _scale_format_value_cb,
+                    (GCallback)_scale_format_value_cb,
                     self);
 
 }
 
-DalstonBrightnessSlider *
+GtkWidget *
 dalston_brightness_slider_new (DalstonBrightnessManager *manager)
 {
   return g_object_new (DALSTON_TYPE_BRIGHTNESS_SLIDER, 

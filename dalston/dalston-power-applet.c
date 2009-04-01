@@ -257,7 +257,7 @@ dalston_power_applet_init (DalstonPowerApplet *self)
                                         NULL);
   g_signal_connect (priv->battery_monitor,
                     "status-changed",
-                    _battery_monitor_status_changed_cb,
+                    (GCallback)_battery_monitor_status_changed_cb,
                     self);
 
   /* Brightness manager. We pass this into the slider when we create it */

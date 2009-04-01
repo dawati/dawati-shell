@@ -82,8 +82,6 @@ dalston_volume_pane_dispose (GObject *object)
 static void
 dalston_volume_pane_finalize (GObject *object)
 {
-  DalstonVolumePanePrivate *priv = GET_PRIVATE (object);
-
   G_OBJECT_CLASS (dalston_volume_pane_parent_class)->finalize (object);
 }
 

@@ -35,7 +35,7 @@ typedef struct {
 
 GType dalston_brightness_slider_get_type (void);
 
-DalstonBrightnessSlider *dalston_brightness_slider_new (DalstonBrightnessManager *manager);
+GtkWidget *dalston_brightness_slider_new (DalstonBrightnessManager *manager);
 
 G_END_DECLS
 
