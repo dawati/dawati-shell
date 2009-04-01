@@ -36,8 +36,10 @@ struct _MnbClipboardStoreClass
 {
   ClutterListModelClass parent_class;
 
-  void (* item_added) (MnbClipboardStore    *store,
-                       MnbClipboardItemType  item_type);
+  void (* item_added)   (MnbClipboardStore    *store,
+                         MnbClipboardItemType  item_type);
+  void (* item_removed) (MnbClipboardStore    *store,
+                         gint64                serial);
 };
 
 GType mnb_clipboard_item_type_get_type (void) G_GNUC_CONST;

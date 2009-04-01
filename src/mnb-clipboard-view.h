@@ -33,6 +33,8 @@ GType mnb_clipboard_view_get_type (void) G_GNUC_CONST;
 
 NbtkWidget *mnb_clipboard_view_new (MnbClipboardStore *store);
 
+MnbClipboardStore *mnb_clipboard_view_get_store (MnbClipboardView *view);
+
 G_END_DECLS
 
 #endif /* __MNB_CLIPBOARD_VIEW_H__ */

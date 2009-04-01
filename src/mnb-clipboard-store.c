@@ -41,6 +41,7 @@ enum
 enum
 {
   ITEM_ADDED,
+  ITEM_REMOVED,
 
   LAST_SIGNAL
 };
@@ -73,7 +74,7 @@ expire_clipboard_items (gpointer data)
   g_get_current_time (&now);
 
   iter = clutter_model_get_last_iter (CLUTTER_MODEL (store));
-  while (!clutter_model_iter_is_first (iter));
+  do
     {
       guint row = clutter_model_iter_get_row (iter);
       gint64 item_mtime = 0;
@@ -86,6 +87,7 @@ expire_clipboard_items (gpointer data)
 
       iter = clutter_model_iter_prev (iter);
     }
+  while (!clutter_model_iter_is_first (iter));
 
   g_object_unref (iter);
 
@@ -145,17 +147,15 @@ on_clipboard_request_text (GtkClipboard *clipboard,
                  0,
                  item->is_selection);
 
-  g_object_unref (item->store);
-  g_slice_free (ClipboardItem, item);
-
-#if 0
   /* if an expiration has already been schedule, coalesce it */
   if (priv->expire_id == 0)
     priv->expire_id = g_idle_add_full (G_PRIORITY_LOW,
                                        expire_clipboard_items,
                                        g_object_ref (item->store),
                                        (GDestroyNotify) g_object_unref);
-#endif
+
+  g_object_unref (item->store);
+  g_slice_free (ClipboardItem, item);
 }
 
 #if GTK_CHECK_VERSION(2, 14, 0)
@@ -276,9 +276,24 @@ on_clipboard_owner_change (GtkClipboard      *clipboard,
 }
 
 static void
+mnb_clipboard_store_row_removed (ClutterModel     *model,
+                                 ClutterModelIter *iter)
+{
+  gint64 serial = 0;
+
+  clutter_model_iter_get (iter, COLUMN_ITEM_SERIAL, &serial, -1);
+
+  g_signal_emit (model, store_signals[ITEM_REMOVED], 0, serial);
+}
+
+static void
 mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
 {
+  ClutterModelClass *model_class = CLUTTER_MODEL_CLASS (klass);
+
   g_type_class_add_private (klass, sizeof (MnbClipboardStorePrivate));
+
+  model_class->row_removed = mnb_clipboard_store_row_removed;
 
   store_signals[ITEM_ADDED] =
     g_signal_new (g_intern_static_string ("item-added"),
@@ -289,6 +304,16 @@ mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
                   moblin_netbook_marshal_VOID__ENUM,
                   G_TYPE_NONE, 1,
                   MNB_TYPE_CLIPBOARD_ITEM_TYPE);
+
+  store_signals[ITEM_REMOVED] =
+    g_signal_new (g_intern_static_string ("item-removed"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbClipboardStoreClass, item_removed),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__INT64,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_INT64);
 }
 
 static void

@@ -19,6 +19,9 @@ struct _MnbClipboardViewPrivate
   MnbClipboardStore *store;
 
   GSList *rows;
+
+  guint add_id;
+  guint remove_id;
 };
 
 enum
@@ -74,6 +77,13 @@ on_remove_clicked (MnbClipboardItem *item,
 
     g_object_unref (item);
   }
+}
+
+static void
+on_store_item_removed (MnbClipboardStore *store,
+                       gint64             serial,
+                       MnbClipboardView  *view)
+{
 }
 
 static void
@@ -280,6 +290,8 @@ mnb_clipboard_view_finalize (GObject *gobject)
   MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (gobject)->priv;
   GSList *l;
 
+  g_signal_handler_disconnect (priv->store, priv->add_id);
+  g_signal_handler_disconnect (priv->store, priv->remove_id);
   g_object_unref (priv->store);
 
   g_slist_foreach (priv->rows, (GFunc) clutter_actor_destroy, NULL);
@@ -300,16 +312,33 @@ mnb_clipboard_view_set_property (GObject      *gobject,
     {
     case PROP_STORE:
       if (priv->store != NULL)
-        g_object_unref (priv->store);
+        {
+          if (priv->add_id != 0)
+            {
+              g_signal_handler_disconnect (priv->store, priv->add_id);
+              priv->add_id = 0;
+            }
+
+          if (priv->remove_id != 0)
+            {
+              g_signal_handler_disconnect (priv->store, priv->remove_id);
+              priv->remove_id = 0;
+            }
+
+          g_object_unref (priv->store);
+        }
 
       if (g_value_get_object (value) != NULL)
         priv->store = g_value_dup_object (value);
       else
         priv->store = mnb_clipboard_store_new ();
 
-      g_signal_connect (priv->store, "item-added",
-                        G_CALLBACK (on_store_item_added),
-                        gobject);
+      priv->add_id = g_signal_connect (priv->store, "item-added",
+                                       G_CALLBACK (on_store_item_added),
+                                       gobject);
+      priv->remove_id = g_signal_connect (priv->store, "item-removed",
+                                          G_CALLBACK (on_store_item_removed),
+                                          gobject);
       break;
 
     default:
@@ -379,4 +408,12 @@ mnb_clipboard_view_new (MnbClipboardStore *store)
   return g_object_new (MNB_TYPE_CLIPBOARD_VIEW,
                        "store", store,
                        NULL);
+}
+
+MnbClipboardStore *
+mnb_clipboard_view_get_store (MnbClipboardView *view)
+{
+  g_return_val_if_fail (MNB_IS_CLIPBOARD_VIEW (view), NULL);
+
+  return view->priv->store;
 }

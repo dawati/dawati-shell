@@ -2,6 +2,7 @@
 #include "config.h"
 #endif
 
+#include <glib.h>
 #include <string.h>
 #include <glib/gi18n.h>
 
@@ -451,6 +452,8 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
 
   self->action_button = CLUTTER_ACTOR (nbtk_button_new ());
   nbtk_button_set_label (NBTK_BUTTON (self->action_button), _("Copy"));
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (self->action_button),
+                                    "MnbClipboardItemCopyButton");
   clutter_actor_set_parent (self->action_button, CLUTTER_ACTOR (self));
   clutter_actor_set_reactive (self->action_button, TRUE);
   g_signal_connect (self->action_button, "clicked",

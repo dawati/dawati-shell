@@ -52,11 +52,17 @@ on_search_activated (MnbEntry *entry,
 
 }
 
+static void
+on_clear_clicked (NbtkButton *button,
+                  MnbClipboardStore *store)
+{
+}
+
 ClutterActor *
 make_pasteboard (MutterPlugin *plugin,
                  gint          width)
 {
-  NbtkWidget   *vbox, *hbox, *label, *entry, *drop_down, *bin;
+  NbtkWidget   *vbox, *hbox, *label, *entry, *drop_down, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
 
   drop_down = mnb_drop_down_new ();
@@ -117,6 +123,20 @@ make_pasteboard (MutterPlugin *plugin,
                     G_CALLBACK (on_search_activated), NULL);
   g_signal_connect (entry, "text-changed",
                     G_CALLBACK (on_search_activated), NULL);
+
+  /* side controls */
+  bin = NBTK_WIDGET (nbtk_bin_new ());
+  clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-controls");
+  nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
+                              1, 2, 1, 1,
+                              0,
+                              0.0, 0.0);
+
+  button = nbtk_button_new_with_label (_("Clear pasteboard"));
+  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (button));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (on_clear_clicked),
+                    mnb_clipboard_view_get_store (MNB_CLIPBOARD_VIEW (view)));
 
   return CLUTTER_ACTOR (drop_down);
 }

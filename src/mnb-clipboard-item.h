@@ -37,6 +37,8 @@ struct _MnbClipboardItemClass
   void (* action_clicked) (MnbClipboardItem *item);
 };
 
+GType mnb_clipboard_item_get_type (void) G_GNUC_CONST;
+
 G_CONST_RETURN gchar *mnb_clipboard_item_get_contents (MnbClipboardItem *item);
 gint64                mnb_clipboard_item_get_serial   (MnbClipboardItem *item);
 
