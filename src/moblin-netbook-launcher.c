@@ -403,13 +403,18 @@ launcher_data_fill (launcher_data_t *launcher_data)
   GSList const    *directory_iter;
   GtkIconTheme    *theme;
 
+printf ("%s()\n", __FUNCTION__);
+
   launcher_data->fill_timeout_id = 0;
 
   theme = gtk_icon_theme_get_default ();
 
-  launcher_data->scrolled_vbox = CLUTTER_ACTOR (nbtk_table_new ());
-  clutter_container_add (CLUTTER_CONTAINER (launcher_data->viewport),
-                         CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
+  if (launcher_data->scrolled_vbox == NULL)
+    {
+      launcher_data->scrolled_vbox = CLUTTER_ACTOR (nbtk_table_new ());
+      clutter_container_add (CLUTTER_CONTAINER (launcher_data->viewport),
+                             CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);    
+    }
 
   /*
    * Fav apps.
@@ -612,13 +617,15 @@ launcher_data_new (MutterPlugin *self,
   launcher_data->filter_entry = filter_entry;
   launcher_data->viewport = viewport;
 
+  launcher_data->scrolled_vbox = CLUTTER_ACTOR (nbtk_table_new ());
+  clutter_container_add (CLUTTER_CONTAINER (launcher_data->viewport),
+                          CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);    
+
   /* Initial fill delayed. */
-  /* Doesn't work just yet.
   launcher_data->fill_timeout_id = g_timeout_add_seconds (INITIAL_FILL_TIMEOUT_S,
                                                           (GSourceFunc) launcher_data_fill,
                                                           launcher_data);
-  */
-  launcher_data_fill (launcher_data);
+  /* launcher_data_fill (launcher_data); */
 
   return launcher_data;
 }
@@ -759,7 +766,7 @@ search_activated_cb (MnbEntry         *entry,
 }
 
 static void
-dropdown_show_cb (MnbDropDown     *dropdown,
+dropdown_show_cb (ClutterActor    *actor,
                   launcher_data_t *launcher_data)
 {
   /* Cancel timeout and fill if still waiting. */
@@ -768,7 +775,12 @@ dropdown_show_cb (MnbDropDown     *dropdown,
       g_source_remove (launcher_data->fill_timeout_id);
       launcher_data_fill (launcher_data);
     }
+}
 
+static void
+dropdown_show_completed_cb (MnbDropDown     *dropdown,
+                            launcher_data_t *launcher_data)
+{
   clutter_actor_grab_key_focus (launcher_data->filter_entry);
 }
 
@@ -846,8 +858,10 @@ make_launcher (MutterPlugin *plugin,
   g_signal_connect (entry, "text-changed",
                     G_CALLBACK (search_activated_cb), launcher_data);
 
-  g_signal_connect_after (drop_down, "show-completed",
+  g_signal_connect_after (drop_down, "show",
                           G_CALLBACK (dropdown_show_cb), launcher_data);
+  g_signal_connect_after (drop_down, "show-completed",
+                          G_CALLBACK (dropdown_show_completed_cb), launcher_data);
   g_signal_connect (drop_down, "hide-completed",
                     G_CALLBACK (dropdown_hide_cb), launcher_data);
 
