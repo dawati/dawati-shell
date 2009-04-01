@@ -60,23 +60,10 @@ on_remove_clicked (MnbClipboardItem *item,
                    MnbClipboardView *view)
 {
   MnbClipboardViewPrivate *priv = view->priv;
-  gint64 serial;
+  gint64 serial = mnb_clipboard_item_get_serial (item);
 
-  g_debug ("%s: Remove clicked", G_STRLOC);
-
-  serial = mnb_clipboard_item_get_serial (item);
+  g_debug ("%s: Remove clicked (serial: %lld)", G_STRLOC, serial);
   mnb_clipboard_store_remove (priv->store, serial);
-
-  {
-    g_object_ref (item);
-
-    priv->rows = g_slist_remove (priv->rows, item);
-    clutter_actor_unparent (CLUTTER_ACTOR (item));
-
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (view));
-
-    g_object_unref (item);
-  }
 }
 
 static void
@@ -84,6 +71,36 @@ on_store_item_removed (MnbClipboardStore *store,
                        gint64             serial,
                        MnbClipboardView  *view)
 {
+  MnbClipboardViewPrivate *priv = view->priv;
+  MnbClipboardItem *item = NULL;
+  gboolean item_found = FALSE;
+  GSList *l;
+
+  for (l = priv->rows; l != NULL; l = l->next)
+    {
+      item = l->data;
+
+      if (mnb_clipboard_item_get_serial (item) == serial)
+        {
+          item_found = TRUE;
+          break;
+        }
+    }
+
+  if (!item_found)
+    return;
+
+  g_object_ref (item);
+
+  g_debug ("%s: Removing item[%p] (serial: %lld)",
+           G_STRLOC, item, serial);
+
+  priv->rows = g_slist_remove (priv->rows, item);
+  clutter_actor_unparent (CLUTTER_ACTOR (item));
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (view));
+
+  g_object_unref (item);
 }
 
 static void
