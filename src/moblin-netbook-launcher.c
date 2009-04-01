@@ -424,6 +424,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
   launcher_data->fav_grid = CLUTTER_ACTOR (nbtk_grid_new ());
   nbtk_grid_set_row_gap (NBTK_GRID (launcher_data->fav_grid), LAUNCHER_GRID_ROW_GAP);
   nbtk_grid_set_column_gap (NBTK_GRID (launcher_data->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
+  clutter_actor_set_width (launcher_data->fav_grid, launcher_data->width);
   clutter_actor_set_name (launcher_data->fav_grid, "launcher-fav-grid");
   g_object_ref (launcher_data->fav_grid);
   clutter_actor_set_width (launcher_data->fav_grid, launcher_data->width);
