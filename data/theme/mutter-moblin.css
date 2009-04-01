@@ -861,6 +861,17 @@ MoblinNetbookNetpanel NbtkButton:active {
   padding: 10;
 }
 
+*#pasteboard-controls {
+  border-image: url('file://pasteboard/pasteboard-items-list-bg.png') 10 stretch;
+  padding: 12;
+}
+
+*#pasteboard-controls NbtkButton {
+  font-family: "Liberation Sans";
+  font-size: 13;
+  color: #027061;
+}
+
 MnbClipboardItem {
   padding: 4;
 }
@@ -875,4 +886,10 @@ MnbClipboardItem {
 *.MnbClipboardItemDeleteButton {
   border-image: url('file://pasteboard/pasteboard-delete-bg.png') 4 stretch;
   padding: 4;
+}
+
+*.MnbClipboardItemCopyButton {
+  font-family: "Liberation Sans";
+  font-size: 13;
+  color: #027061;
 }
