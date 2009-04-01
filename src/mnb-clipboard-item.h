@@ -25,6 +25,8 @@ struct _MnbClipboardItem
 
   ClutterActor *remove_button;
   ClutterActor *action_button;
+
+  gint64 serial;
 };
 
 struct _MnbClipboardItemClass
@@ -34,6 +36,9 @@ struct _MnbClipboardItemClass
   void (* remove_clicked) (MnbClipboardItem *item);
   void (* action_clicked) (MnbClipboardItem *item);
 };
+
+G_CONST_RETURN gchar *mnb_clipboard_item_get_contents (MnbClipboardItem *item);
+gint64                mnb_clipboard_item_get_serial   (MnbClipboardItem *item);
 
 G_END_DECLS
 

@@ -16,7 +16,8 @@ enum
   PROP_0,
 
   PROP_CONTENTS,
-  PROP_MTIME
+  PROP_MTIME,
+  PROP_SERIAL
 };
 
 enum
@@ -342,6 +343,10 @@ mnb_clipboard_item_set_property (GObject      *gobject,
       }
       break;
 
+    case PROP_SERIAL:
+      self->serial = g_value_get_int64 (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -393,6 +398,14 @@ mnb_clipboard_item_class_init (MnbClipboardItemClass *klass)
                               0, G_MAXINT64, 0,
                               G_PARAM_WRITABLE);
   g_object_class_install_property (gobject_class, PROP_MTIME, pspec);
+
+  pspec = g_param_spec_int64 ("serial",
+                              "Serial",
+                              "Serial number of the item",
+                              0, G_MAXINT64, 0,
+                              G_PARAM_WRITABLE |
+                              G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (gobject_class, PROP_SERIAL, pspec);
 
   item_signals[REMOVE_CLICKED] =
     g_signal_new (g_intern_static_string ("remove-clicked"),
@@ -446,4 +459,20 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
 
   self->time_label = CLUTTER_ACTOR (nbtk_label_new (""));
   clutter_actor_set_parent (self->time_label, CLUTTER_ACTOR (self));
+}
+
+G_CONST_RETURN gchar *
+mnb_clipboard_item_get_contents (MnbClipboardItem *item)
+{
+  g_return_val_if_fail (MNB_IS_CLIPBOARD_ITEM (item), NULL);
+
+  return nbtk_label_get_text (NBTK_LABEL (item->contents));
+}
+
+gint64
+mnb_clipboard_item_get_serial (MnbClipboardItem *item)
+{
+  g_return_val_if_fail (MNB_IS_CLIPBOARD_ITEM (item), 0);
+
+  return item->serial;
 }
