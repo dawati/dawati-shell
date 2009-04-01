@@ -283,6 +283,10 @@ mnb_clipboard_store_row_removed (ClutterModel     *model,
 
   clutter_model_iter_get (iter, COLUMN_ITEM_SERIAL, &serial, -1);
 
+  CLUTTER_MODEL_CLASS (mnb_clipboard_store_parent_class)->row_removed (model, iter);
+
+  /* now the row does not exist anymore and we can emit the signal */
+
   g_signal_emit (model, store_signals[ITEM_REMOVED], 0, serial);
 }
 
