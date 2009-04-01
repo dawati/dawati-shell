@@ -30,16 +30,16 @@
 static MnbClipboardStore *clipboard = NULL;
 
 static void
-on_dropdown_show (MnbDropDown   *dropdown,
-                  ClutterActor  *filter_entry)
+on_dropdown_show (MnbDropDown  *dropdown,
+                  ClutterActor *filter_entry)
 {
   /* give focus to the actor */
   clutter_actor_grab_key_focus (filter_entry);
 }
 
 static void
-on_dropdown_hide (MnbDropDown   *dropdown,
-                  ClutterActor  *filter_entry)
+on_dropdown_hide (MnbDropDown  *dropdown,
+                  ClutterActor *filter_entry)
 {
   /* Reset search. */
   mnb_entry_set_text (MNB_ENTRY (filter_entry), "");
@@ -53,9 +53,11 @@ on_search_activated (MnbEntry *entry,
 }
 
 static void
-on_clear_clicked (NbtkButton *button,
+on_clear_clicked (NbtkButton        *button,
                   MnbClipboardStore *store)
 {
+  while (clutter_model_get_n_rows (CLUTTER_MODEL (store)))
+    clutter_model_remove (CLUTTER_MODEL (store), 0);
 }
 
 ClutterActor *
