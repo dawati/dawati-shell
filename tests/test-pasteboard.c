@@ -15,6 +15,17 @@
 #include "mnb-clipboard-view.h"
 #include "mnb-entry.h"
 
+static void
+on_clear_clicked (NbtkButton *button,
+                  MnbClipboardView *view)
+{
+  MnbClipboardStore *store = mnb_clipboard_view_get_store (view);
+  ClutterModelIter *iter;
+
+  while (clutter_model_get_n_rows (CLUTTER_MODEL (store)))
+    clutter_model_remove (CLUTTER_MODEL (store), 0);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -90,6 +101,9 @@ main (int argc, char *argv[])
 
   button = nbtk_button_new_with_label (_("Clear pasteboard"));
   nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (button));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (on_clear_clicked),
+                    view);
 
   clutter_actor_show_all (stage);
 
