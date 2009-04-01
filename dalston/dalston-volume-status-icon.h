@@ -34,7 +34,8 @@ typedef struct {
 GType dalston_volume_status_icon_get_type (void);
 
 GtkStatusIcon *dalston_volume_status_icon_new (void);
-
+void dalston_volume_status_icon_set_active (DalstonVolumeStatusIcon *icon,
+                                            gboolean                 active);
 G_END_DECLS
 
 #endif /* _DALSTON_VOLUME_STATUS_ICON */

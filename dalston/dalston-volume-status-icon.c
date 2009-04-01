@@ -10,6 +10,8 @@ typedef struct _DalstonVolumeStatusIconPrivate DalstonVolumeStatusIconPrivate;
 
 struct _DalstonVolumeStatusIconPrivate {
   GvcMixerStream *sink;
+
+  gboolean active;
 };
 
 enum
@@ -21,10 +23,31 @@ enum
 static void dalston_volume_status_icon_update_sink (DalstonVolumeStatusIcon *icon,
                                                     GvcMixerStream           *new_sink);
 
-#define VOLUME_STATUS_ICON_MUTED  "audio-volume-muted"
-#define VOLUME_STATUS_ICON_LOW    "audio-volume-low"
-#define VOLUME_STATUS_ICON_MEDIUM "audio-volume-medium"
-#define VOLUME_STATUS_ICON_HIGH   "audio-volume-high"
+
+typedef enum
+{
+  VOLUME_STATUS_ICON_MUTED,
+  VOLUME_STATUS_ICON_MUTED_ACTIVE,
+  VOLUME_STATUS_ICON_LOW,
+  VOLUME_STATUS_ICON_LOW_ACTIVE,
+  VOLUME_STATUS_ICON_MEDIUM,
+  VOLUME_STATUS_ICON_MEDIUM_ACTIVE,
+  VOLUME_STATUS_ICON_HIGH,
+  VOLUME_STATUS_ICON_HIGH_ACTIVE,
+} VolumeIconState;
+
+#define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
+
+static const gchar *icon_names[] = {
+  PKG_ICON_DIR "/" "dalston-volume-applet-0-normal.png",
+  PKG_ICON_DIR "/" "dalston-volume-applet-0-active.png",
+  PKG_ICON_DIR "/" "dalston-volume-applet-1-normal.png",
+  PKG_ICON_DIR "/" "dalston-volume-applet-1-active.png",
+  PKG_ICON_DIR "/" "dalston-volume-applet-2-normal.png",
+  PKG_ICON_DIR "/" "dalston-volume-applet-2-active.png",
+  PKG_ICON_DIR "/" "dalston-volume-applet-3-normal.png",
+  PKG_ICON_DIR "/" "dalston-volume-applet-3-active.png"
+};
 
 static void
 dalston_volume_status_icon_get_property (GObject *object, guint property_id,
@@ -110,27 +133,29 @@ dalston_volume_status_icon_update (DalstonVolumeStatusIcon *icon)
 {
   DalstonVolumeStatusIconPrivate *priv = GET_PRIVATE (icon);
   guint volume;
+  VolumeIconState icon_state;
 
   if (gvc_mixer_stream_get_is_muted (priv->sink))
   {
-    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (icon),
-                                        VOLUME_STATUS_ICON_MUTED);
+    icon_state = VOLUME_STATUS_ICON_MUTED;
   } else {
     volume = 100 * 
       ((float)gvc_mixer_stream_get_volume (priv->sink) / PA_VOLUME_NORM);
     if (volume < 45)
     {
-      gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (icon),
-                                          VOLUME_STATUS_ICON_LOW);
+      icon_state = VOLUME_STATUS_ICON_LOW;
     } else if (volume < 75) {
-      gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (icon),
-                                          VOLUME_STATUS_ICON_MEDIUM);
+      icon_state = VOLUME_STATUS_ICON_MEDIUM;
     } else {
-      gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (icon),
-                                          VOLUME_STATUS_ICON_HIGH);
-
+      icon_state = VOLUME_STATUS_ICON_HIGH;
     }
   }
+
+  if (priv->active)
+    icon_state++;
+
+  gtk_status_icon_set_from_file (GTK_STATUS_ICON (icon),
+                                 icon_names[icon_state]);
 }
 
 static void
@@ -181,4 +206,14 @@ dalston_volume_status_icon_update_sink (DalstonVolumeStatusIcon *icon,
                       icon);
     dalston_volume_status_icon_update (icon);
   }
+}
+
+void
+dalston_volume_status_icon_set_active (DalstonVolumeStatusIcon *icon,
+                                       gboolean                 active)
+{
+  DalstonVolumeStatusIconPrivate *priv = GET_PRIVATE (icon);
+
+  priv->active = active;
+  dalston_volume_status_icon_update (icon);
 }
