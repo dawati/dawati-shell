@@ -36,7 +36,8 @@ GType dalston_power_applet_get_type (void);
 DalstonPowerApplet *dalston_power_applet_new (void);
 GtkStatusIcon *dalston_power_applet_get_status_icon (DalstonPowerApplet *applet);
 GtkWidget *dalston_power_applet_get_pane (DalstonPowerApplet *applet);
-
+void dalston_power_applet_set_active (DalstonPowerApplet *applet,
+                                      gboolean            active);
 G_END_DECLS
 
 #endif /* _DALSTON_POWER_APPLET */

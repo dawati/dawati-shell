@@ -24,15 +24,47 @@ struct _DalstonPowerAppletPrivate {
   GtkWidget *battery_image;
   GtkWidget *battery_primary_label;
   GtkWidget *battery_secondary_label;
+
+  gboolean active;
 };
 
-#define BATTERY_ICON_STATE_UNKNOWN        "dalston-power-applet-empty-normal.png"
-#define BATTERY_ICON_STATE_CHARGE_0       "dalston-power-applet-empty-normal.png"
-#define BATTERY_ICON_STATE_CHARGE_25      "dalston-power-applet-25-normal.png"
-#define BATTERY_ICON_STATE_CHARGE_50      "dalston-power-applet-50-normal.png"
-#define BATTERY_ICON_STATE_CHARGE_75      "dalston-power-applet-75-normal.png"
-#define BATTERY_ICON_STATE_CHARGE_100     "dalston-power-applet-full-normal.png"
-#define BATTERY_ICON_STATE_AC_CONNECTED   "dalston-power-applet-plugged-normal.png"
+typedef enum {
+  BATTERY_ICON_STATE_UNKNOWN,
+  BATTERY_ICON_STATE_UNKNOWN_ACTIVE,
+  BATTERY_ICON_STATE_CHARGE_0,
+  BATTERY_ICON_STATE_CHARGE_0_ACTIVE,
+  BATTERY_ICON_STATE_CHARGE_25,
+  BATTERY_ICON_STATE_CHARGE_25_ACTIVE,
+  BATTERY_ICON_STATE_CHARGE_50,
+  BATTERY_ICON_STATE_CHARGE_50_ACTIVE,
+  BATTERY_ICON_STATE_CHARGE_75,
+  BATTERY_ICON_STATE_CHARGE_75_ACTIVE,
+  BATTERY_ICON_STATE_CHARGE_100,
+  BATTERY_ICON_STATE_CHARGE_100_ACTIVE,
+  BATTERY_ICON_STATE_AC_CONNECTED,
+  BATTERY_ICON_STATE_AC_CONNECTED_ACTIVE
+} BatteryIconState;
+
+
+#define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
+
+static const gchar *icon_names[] = {
+  PKG_ICON_DIR "/" "dalston-power-applet-empty-normal.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-empty-active.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-empty-normal.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-empty-active.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-25-normal.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-25-active.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-50-normal.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-50-active.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-75-normal.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-75-active.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-full-normal.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-full-active.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-plugged-normal.png",
+  PKG_ICON_DIR "/" "dalston-power-applet-plugged-active.png"
+};
+
 
 #define BATTERY_IMAGE_STATE_UNKNOWN        "dalston-power-applet-empty.svg"
 #define BATTERY_IMAGE_STATE_CHARGE_0       "dalston-power-applet-empty.svg"
@@ -41,7 +73,6 @@ struct _DalstonPowerAppletPrivate {
 #define BATTERY_IMAGE_STATE_CHARGE_75      "dalston-power-75.svg"
 #define BATTERY_IMAGE_STATE_CHARGE_100     "dalston-power-full.svg"
 
-#define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
 
 static void
 dalston_power_applet_get_property (GObject *object, guint property_id,
@@ -112,6 +143,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   DalstonBatteryMonitorState state;
   gboolean ac_connected = FALSE;
   gchar *label_text;
+  BatteryIconState icon_state;
 
   time_remaining =
     dalston_battery_monitor_get_time_remaining (priv->battery_monitor);
@@ -124,30 +156,29 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 
   if (ac_connected)
   {
-    gtk_status_icon_set_from_file (priv->status_icon,
-                                   PKG_ICON_DIR "/" BATTERY_ICON_STATE_AC_CONNECTED);
+    icon_state = BATTERY_ICON_STATE_AC_CONNECTED;
   } else if (percentage < 0) {
-    gtk_status_icon_set_from_file (priv->status_icon,
-                                   PKG_ICON_DIR "/" BATTERY_ICON_STATE_UNKNOWN);
+    icon_state = BATTERY_ICON_STATE_UNKNOWN;
   } else if (percentage < 25) {
-    gtk_status_icon_set_from_file (priv->status_icon,
-                                   PKG_ICON_DIR "/" BATTERY_ICON_STATE_CHARGE_0);
-
+    icon_state = BATTERY_ICON_STATE_CHARGE_0;
   } else if (percentage >= 25 && percentage < 50) {
-    gtk_status_icon_set_from_file (priv->status_icon,
-                                   PKG_ICON_DIR "/" BATTERY_ICON_STATE_CHARGE_25);
-
+    icon_state = BATTERY_ICON_STATE_CHARGE_25;
   } else if (percentage >= 50 && percentage < 75){
-    gtk_status_icon_set_from_file (priv->status_icon,
-                                   PKG_ICON_DIR "/" BATTERY_ICON_STATE_CHARGE_50);
-
+    icon_state = BATTERY_ICON_STATE_CHARGE_50;
   } else if (percentage >= 75 && percentage < 100){
-    gtk_status_icon_set_from_file (priv->status_icon,
-                                   PKG_ICON_DIR "/" BATTERY_ICON_STATE_CHARGE_75);
+    icon_state = BATTERY_ICON_STATE_CHARGE_75;
   } else {
-    gtk_status_icon_set_from_file (priv->status_icon,
-                                   PKG_ICON_DIR "/" BATTERY_ICON_STATE_CHARGE_100);
+    icon_state = BATTERY_ICON_STATE_CHARGE_100;
   }
+
+  if (priv->active)
+  {
+    icon_state++;
+  }
+
+  g_debug ("Using icon file: %s", icon_names[icon_state]);
+  gtk_status_icon_set_from_file (priv->status_icon,
+                                 icon_names[icon_state]);
 
   if (percentage < 0) {
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
@@ -309,4 +340,23 @@ dalston_power_applet_get_pane (DalstonPowerApplet *applet)
   DalstonPowerAppletPrivate *priv = GET_PRIVATE (applet);
 
   return priv->main_hbox;
+}
+
+void
+dalston_power_applet_set_active (DalstonPowerApplet *applet,
+                                 gboolean            active)
+{
+  DalstonPowerAppletPrivate *priv = GET_PRIVATE (applet);
+
+  priv->active = active;
+
+  if (active)
+  {
+    /* TODO: Update the icon to be in the active state */
+    dalston_brightness_manager_start_monitoring (priv->brightness_manager);
+  } else {
+    dalston_brightness_manager_stop_monitoring (priv->brightness_manager);
+  }
+
+  dalston_power_applet_update_battery_state (applet);
 }
