@@ -22,7 +22,8 @@ noinst_PROGRAMS = \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree \
-	test-tray
+	test-tray \
+	test-pasteboard
 
 test_launcher_button_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-button.c \
@@ -45,5 +46,12 @@ test_launcher_tree_SOURCES = \
 	test-launcher-tree.c
 
 test_tray_SOURCES = \
-  test-tray.c
+	test-tray.c
 
+test_pasteboard_SOURCES = \
+	$(top_srcdir)/src/mnb-clipboard-item.c \
+	$(top_srcdir)/src/mnb-clipboard-store.c \
+	$(top_srcdir)/src/mnb-clipboard-view.c \
+	$(top_srcdir)/src/mnb-entry.c \
+	$(top_srcdir)/src/marshal.c \
+	test-pasteboard.c

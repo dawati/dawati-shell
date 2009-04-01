@@ -6,7 +6,8 @@ INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
 	-I$(top_srcdir)/ahoghill \
-	-I$(top_srcdir)/penge
+	-I$(top_srcdir)/penge \
+	-I$(top_srcdir)/src
 
 AM_CFLAGS   = -fPIC
 moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
