@@ -137,10 +137,6 @@ on_store_item_added (MnbClipboardStore    *store,
 
   g_debug ("%s: Adding new row to Pasteboard", G_STRLOC);
 
-  /* FIXME - hack hack hack; we need NbtkBox */
-  view_width = clutter_actor_get_widthu (CLUTTER_ACTOR (view));
-  clutter_actor_set_widthu (row, view_width - 1);
-
   view->priv->rows = g_slist_prepend (view->priv->rows, row);
   clutter_actor_set_parent (row, CLUTTER_ACTOR (view));
   clutter_actor_queue_relayout (CLUTTER_ACTOR (row));
