@@ -6,3 +6,11 @@ src/moblin-netbook-chooser.c
 src/mnb-entry.c
 src/moblin-netbook-launcher.c
 src/mnb-status-entry.c
+ahoghill/ahoghill/ahoghill-results-pane.c
+ahoghill/ahoghill/ahoghill-search-pane.c
+penge/penge/penge-calendar-pane.c
+penge/penge/penge-events-pane.c
+penge/penge/penge-tasks-pane.c
+src/mnb-clipboard-item.c
+src/mnb-launcher-tree.c
+src/moblin-netbook-pasteboard.c
