@@ -28,4 +28,4 @@ icons_DATA = \
 	     dalston-volume-applet-3-active.png \
 	     dalston-volume-applet-3-normal.png
 
-
+EXTRA_DIST = $(icons_DATA)
