@@ -136,6 +136,7 @@ _mute_button_toggled_cb (GtkToggleButton *toggle_button,
 
   toggled = gtk_toggle_button_get_active (toggle_button);
   gvc_mixer_stream_change_is_muted (priv->sink, toggled);
+  gtk_widget_set_sensitive (priv->volume_slider, !toggled);
 }
 
 static void
@@ -198,6 +199,8 @@ dalston_volume_pane_update_mute (DalstonVolumePane *pane)
   g_signal_handlers_unblock_by_func (priv->mute_button,
                                      _mute_button_toggled_cb,
                                      pane);
+  gtk_widget_set_sensitive (priv->volume_slider,
+                            !gvc_mixer_stream_get_is_muted (priv->sink));
 }
 
 static void
