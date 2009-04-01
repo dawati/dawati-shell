@@ -51,6 +51,12 @@ struct _ConnmanClientPrivate {
 
 G_DEFINE_TYPE(ConnmanClient, connman_client, G_TYPE_OBJECT)
 
+static void _free_g_value (GValue *value)
+{
+  g_value_unset (value);
+  g_free (value);
+}
+
 static void name_owner_changed(DBusGProxy *dbus, const char *name,
 			const char *prev, const char *new, gpointer user_data)
 {
@@ -620,17 +626,17 @@ void connman_client_set_callback(ConnmanClient *client,
 }
 
 void connman_client_set_offline_mode(ConnmanClient *client,
-    gboolean offline)
+                                     gboolean offline)
 {
-  ConnmanClientPrivate *priv = CONNMAN_CLIENT_GET_PRIVATE(client);
-  GValue value = { 0 };
+        ConnmanClientPrivate *priv = CONNMAN_CLIENT_GET_PRIVATE(client);
+        GValue value = { 0 };
 
-  g_value_init(&value, G_TYPE_BOOLEAN);
-  g_value_set_boolean(&value, offline);
+        g_value_init(&value, G_TYPE_BOOLEAN);
+        g_value_set_boolean(&value, offline);
 
-  connman_set_property(priv->manager, "OfflineMode", &value, NULL);
+        connman_set_property(priv->manager, "OfflineMode", &value, NULL);
 
-  g_value_unset(&value);
+        g_value_unset(&value);
 }
 
 void connman_client_join_network(ConnmanClient *client, const gchar *network,
@@ -640,10 +646,41 @@ void connman_client_join_network(ConnmanClient *client, const gchar *network,
 	DBusGProxy *proxy;
         GHashTable *net_props;
         GError *err = NULL;
+        gchar *path;
+	DBusGProxy *device;
+        GtkTreeIter iter;
+        guint type;
+        gboolean cont;
+        GValue *value;
 
 	DBG("client %p", client);
 
-        net_props = g_hash_table_new (NULL, NULL);
+        cont = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(priv->store),
+                                             &iter);
+        while (cont) {
+                gtk_tree_model_get(GTK_TREE_MODEL(priv->store), &iter,
+                                   CONNMAN_COLUMN_TYPE, &type,
+                                   CONNMAN_COLUMN_PROXY, &device,
+                                   -1);
+
+                if (type == CONNMAN_TYPE_WIFI) {
+                        //path = g_strdup (dbus_g_proxy_get_path (device));
+                        //proxy = connman_dbus_get_proxy(priv->store, path);
+                        cont = FALSE;
+                } else {
+                        cont = gtk_tree_model_iter_next(GTK_TREE_MODEL(
+                                                                priv->store),
+                                                        &iter);
+                }
+        }
+
+        if (proxy == NULL)
+                return;
+
+        net_props = g_hash_table_new_full (g_str_hash,
+					   g_str_equal,
+					   g_free,
+					   (GDestroyNotify) _free_g_value);
 
         g_hash_table_insert (net_props,
                              g_strdup ("WiFi.Mode"),
@@ -652,28 +689,33 @@ void connman_client_join_network(ConnmanClient *client, const gchar *network,
 	if (network == NULL) {
 		return;
         } else {
+                value = g_new0 (GValue, 1);
+                g_value_init (value, G_TYPE_STRING);
+                g_value_set_string (value, network);
                 g_hash_table_insert (net_props,
                                      g_strdup ("WiFi.SSID"),
-                                     g_string_new (network));
+                                     value);
         }
 
-        if (secret && security) {
+        if (secret) {
+                value = g_new0 (GValue, 1);
+                g_value_init (value, G_TYPE_STRING);
+                g_value_set_string (value, secret);
                 g_hash_table_insert (net_props,
                                      g_strdup ("WiFi.Passphrase"),
-                                     g_string_new (secret));
+                                     value);
         }
 
         if (security) {
+                value = g_new0 (GValue, 1);
+                g_value_init (value, G_TYPE_STRING);
+                g_value_set_string (value, security);
                 g_hash_table_insert (net_props,
                                      g_strdup ("WiFi.Security"),
-                                     g_string_new (security));
+                                     value);
         }
 
-	proxy = priv->manager;
-	if (proxy == NULL)
-		return;
-
-	connman_join_network(proxy, net_props, &err);
+	connman_join_network(device, net_props, &err);
 
         if (err) {
                 g_warning ("Error joining network: %s",
@@ -682,5 +724,4 @@ void connman_client_join_network(ConnmanClient *client, const gchar *network,
         }
 
 	g_object_unref(proxy);
-        g_free (net_props);
 }
