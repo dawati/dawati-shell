@@ -14,7 +14,7 @@ dalston_volume_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			      $(GLIB_LIBS) \
 			      $(GTK_LIBS) \
 			      $(CANBERRA_LIBS)
-dalston_volume_applet_SOURCES = dalston-volume-applet.c
+dalston_volume_applet_SOURCES = dalston-volume-applet.c moblin-netbook-system-tray.h
 
 dalston_power_applet_CFLAGS = -I$(top_srcdir) \
 			      $(DBUS_GLIB_CFLAGS) \
@@ -30,4 +30,4 @@ dalston_power_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			     $(GLIB_LIBS) \
 			     $(GTK_LIBS) \
 			     $(CANBERRA_LIBS)
-dalston_power_applet_SOURCES = dalston-power-applet.c
+dalston_power_applet_SOURCES = dalston-power-applet.c moblin-netbook-system-tray.h
