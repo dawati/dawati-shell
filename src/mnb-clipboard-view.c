@@ -37,8 +37,10 @@ static void
 on_action_clicked (MnbClipboardItem *item,
                    MnbClipboardView *view)
 {
+  MnbClipboardViewPrivate *priv = view->priv;
   GtkClipboard *clipboard;
   const gchar *text;
+  gint64 serial;
   GSList *l;
 
   l = view->priv->rows;
@@ -51,6 +53,11 @@ on_action_clicked (MnbClipboardItem *item,
   if (text == NULL || *text == '\0')
     return;
 
+  /* remove the item from the view */
+  serial = mnb_clipboard_item_get_serial (item);
+  mnb_clipboard_store_remove (priv->store, serial);
+
+  /* this will add another item at the beginning of the view */
   clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
   gtk_clipboard_set_text (clipboard, text, -1);
 }
