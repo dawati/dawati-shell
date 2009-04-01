@@ -80,6 +80,9 @@ _range_value_changed_cb (GtkRange *range,
   gint value;
 
   value = (gint)gtk_range_get_value (range);
+  gtk_range_set_fill_level (GTK_RANGE (range),
+                            (gdouble)value);
+
   dalston_brightness_manager_set_brightness (priv->manager,
                                              value);
 }
@@ -97,6 +100,8 @@ _manager_brightness_changed_cb (DalstonBrightnessManager *manager,
     g_signal_handlers_block_by_func (slider,
                                      _range_value_changed_cb, slider);
     gtk_range_set_value (GTK_RANGE (slider), value);
+    gtk_range_set_fill_level (GTK_RANGE (slider),
+                            (gdouble)value);
     g_signal_handlers_unblock_by_func (slider,
                                        _range_value_changed_cb, 
                                        slider);
@@ -118,6 +123,7 @@ _manager_num_levels_changed_cb (DalstonBrightnessManager *manager,
 static void
 dalston_brightness_slider_constructed (GObject *object)
 {
+  DalstonBrightnessSlider *slider = (DalstonBrightnessSlider *)object;
   DalstonBrightnessSliderPrivate *priv = GET_PRIVATE (object);
 
   g_signal_connect (priv->manager,
@@ -129,6 +135,14 @@ dalston_brightness_slider_constructed (GObject *object)
                     "brightness-changed",
                     (GCallback)_manager_brightness_changed_cb,
                     object);
+
+  gtk_scale_set_digits (GTK_SCALE (slider),
+                        0);
+
+  gtk_range_set_restrict_to_fill_level (GTK_RANGE (slider),
+                                        FALSE);
+  gtk_range_set_show_fill_level (GTK_RANGE (slider),
+                                 TRUE);
 
   if (G_OBJECT_CLASS (dalston_brightness_slider_parent_class)->constructed)
   {
