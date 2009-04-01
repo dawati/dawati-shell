@@ -8,6 +8,7 @@ INCLUDES = -I$(top_srcdir)/connman-common
 
 connection_panel_CFLAGS = -I$(top_srcdir) \
 			$(GTK_CFLAGS) \
+			$(DBUS_CFLAGS) \
 			-DPKG_DATADIR=\"$(pkgdatadir)\" -Wall
 
 connection_panel_LDADD= $(top_builddir)/mux/libmux.la \
