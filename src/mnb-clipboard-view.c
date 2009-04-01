@@ -4,6 +4,8 @@
 
 #include <clutter/clutter.h>
 
+#include <gtk/gtk.h>
+
 #include "mnb-clipboard-view.h"
 #include "mnb-clipboard-store.h"
 #include "mnb-clipboard-item.h"
@@ -32,14 +34,46 @@ static void
 on_action_clicked (MnbClipboardItem *item,
                    MnbClipboardView *view)
 {
+  GtkClipboard *clipboard;
+  const gchar *text;
+  GSList *l;
+
+  l = view->priv->rows;
+  if (item == l->data)
+    return;
+
   g_debug ("%s: Action clicked", G_STRLOC);
+
+  text = mnb_clipboard_item_get_contents (item);
+  if (text == NULL || *text == '\0')
+    return;
+
+  clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+  gtk_clipboard_set_text (clipboard, text, -1);
 }
 
 static void
 on_remove_clicked (MnbClipboardItem *item,
                    MnbClipboardView *view)
 {
+  MnbClipboardViewPrivate *priv = view->priv;
+  gint64 serial;
+
   g_debug ("%s: Remove clicked", G_STRLOC);
+
+  serial = mnb_clipboard_item_get_serial (item);
+  mnb_clipboard_store_remove (priv->store, serial);
+
+  {
+    g_object_ref (item);
+
+    priv->rows = g_slist_remove (priv->rows, item);
+    clutter_actor_unparent (CLUTTER_ACTOR (item));
+
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (view));
+
+    g_object_unref (item);
+  }
 }
 
 static void
@@ -54,14 +88,15 @@ on_store_item_added (MnbClipboardStore    *store,
     {
     case MNB_CLIPBOARD_ITEM_TEXT:
       {
-        gint64 mtime = 0;
         gchar *text = NULL;
+        gint64 mtime = 0, serial = 0;
 
-        text = mnb_clipboard_store_get_last_text (store, &mtime);
+        text = mnb_clipboard_store_get_last_text (store, &mtime, &serial);
         if (text != NULL)
           {
             row = g_object_new (MNB_TYPE_CLIPBOARD_ITEM,
                                 "contents", text,
+                                "serial", serial,
                                 NULL);
 
             g_signal_connect (row, "remove-clicked",

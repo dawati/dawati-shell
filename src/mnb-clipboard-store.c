@@ -19,6 +19,9 @@ struct _MnbClipboardStorePrivate
   /* expiration delta */
   gint64 max_time;
 
+  /* serial */
+  gint64 last_serial;
+
   gulong expire_id;
 };
 
@@ -30,6 +33,7 @@ enum
   COLUMN_ITEM_IMAGE,
   COLUMN_ITEM_MTIME,
   COLUMN_ITEM_IS_SELECTION,
+  COLUMN_ITEM_SERIAL,
 
   N_COLUMNS
 };
@@ -50,6 +54,7 @@ struct _ClipboardItem
   MnbClipboardStore *store;
 
   gint64 mtime;
+  gint64 serial;
 
   guint is_selection : 1;
 };
@@ -112,6 +117,7 @@ on_clipboard_request_text (GtkClipboard *clipboard,
 
   clutter_model_prepend (CLUTTER_MODEL (item->store),
                          COLUMN_ITEM_TYPE, item->type,
+                         COLUMN_ITEM_SERIAL, item->serial,
                          COLUMN_ITEM_MTIME, item->mtime,
                          COLUMN_ITEM_TEXT, text,
                          COLUMN_ITEM_IS_SELECTION, item->is_selection,
@@ -124,11 +130,12 @@ on_clipboard_request_text (GtkClipboard *clipboard,
     if (strcmp (str, text) != 0)
       ellipsized = TRUE;
 
-    g_debug ("%s: Added '%s%s' (mtime: %lld)",
+    g_debug ("%s: Added '%s%s' (mtime: %lld, serial: %lld)",
              G_STRLOC,
              str,
              ellipsized ? "..." : "",
-             item->mtime);
+             item->mtime,
+             item->serial);
 
     g_free (str);
   }
@@ -161,6 +168,7 @@ on_clipboard_request_uris (GtkClipboard  *clipboard,
 
   clutter_model_prepend (CLUTTER_MODEL (item->store),
                          COLUMN_ITEM_TYPE, item->type,
+                         COLUMN_ITEM_SERIAL, item->serial,
                          COLUMN_ITEM_MTIME, item->mtime,
                          COLUMN_ITEM_URIS, uris,
                          COLUMN_ITEM_IS_SELECTION, item->is_selection,
@@ -254,9 +262,12 @@ on_clipboard_owner_change (GtkClipboard      *clipboard,
   tmp = g_slice_new (ClipboardItem);
 
   tmp->type = MNB_CLIPBOARD_ITEM_INVALID;
+  tmp->serial = store->priv->last_serial;
   tmp->store = g_object_ref (store);
   tmp->mtime = now.tv_sec;
   tmp->is_selection = FALSE;
+
+  store->priv->last_serial += 1;
 
   /* step 1: we ask what the clipboard is holding */
   gtk_clipboard_request_targets (clipboard,
@@ -292,6 +303,7 @@ mnb_clipboard_store_init (MnbClipboardStore *self)
     G_TYPE_POINTER,     /* COLUMN_ITEM_IMAGE */
     G_TYPE_INT64,       /* COLUMN_ITEM_MTIME */
     G_TYPE_BOOLEAN,     /* COLUMN_ITEM_IS_SELECTION */
+    G_TYPE_INT64,       /* COLUMN_ITEM_SERIAL */
   };
 
   self->priv = priv = MNB_CLIPBOARD_STORE_GET_PRIVATE (self);
@@ -307,6 +319,8 @@ mnb_clipboard_store_init (MnbClipboardStore *self)
    * hooked into GConf
    */
   priv->max_time = (60 * 60 * 2);
+
+  priv->last_serial = 1;
 }
 
 MnbClipboardStore *
@@ -317,12 +331,14 @@ mnb_clipboard_store_new (void)
 
 gchar *
 mnb_clipboard_store_get_last_text (MnbClipboardStore *store,
-                                   gint64            *mtime)
+                                   gint64            *mtime,
+                                   gint64            *serial)
 {
   ClutterModelIter *iter;
   MnbClipboardItemType item_type = MNB_CLIPBOARD_ITEM_INVALID;
   gchar *text = NULL;
   gint64 timestamp = 0;
+  gint64 id = 0;
 
   g_return_val_if_fail (MNB_IS_CLIPBOARD_STORE (store), NULL);
 
@@ -331,6 +347,7 @@ mnb_clipboard_store_get_last_text (MnbClipboardStore *store,
                           COLUMN_ITEM_TYPE, &item_type,
                           COLUMN_ITEM_TEXT, &text,
                           COLUMN_ITEM_MTIME, &timestamp,
+                          COLUMN_ITEM_SERIAL, &id,
                           -1);
 
   g_object_unref (iter);
@@ -361,12 +378,49 @@ mnb_clipboard_store_get_last_text (MnbClipboardStore *store,
       text = NULL;
 
       timestamp = 0;
+      id = 0;
     }
 
   if (mtime)
     *mtime = timestamp;
 
+  if (serial)
+    *serial = id;
+
   return text;
+}
+
+void
+mnb_clipboard_store_remove (MnbClipboardStore *store,
+                            gint64             serial)
+{
+  ClutterModelIter *iter;
+  gint row_id = -1;
+
+  g_return_if_fail (MNB_IS_CLIPBOARD_STORE (store));
+  g_return_if_fail (serial > 0);
+
+  iter = clutter_model_get_first_iter (CLUTTER_MODEL (store));
+  while (!clutter_model_iter_is_last (iter))
+    {
+      gint64 serial_iter = 0;
+
+      clutter_model_iter_get (iter, COLUMN_ITEM_SERIAL, &serial_iter, -1);
+      if (serial_iter == serial)
+        {
+          row_id = clutter_model_iter_get_row (iter);
+          break;
+        }
+
+      iter = clutter_model_iter_next (iter);
+    }
+
+  g_object_unref (iter);
+
+  if (row_id == -1)
+    return;
+
+  clutter_model_remove (CLUTTER_MODEL (store), row_id);
 }
 
 GType
