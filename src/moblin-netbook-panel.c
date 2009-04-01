@@ -579,7 +579,7 @@ make_panel (MutterPlugin *plugin, gint width)
                                               &err);
   if (err)
     {
-      g_warning (err->message);
+      g_warning ("%s", err->message);
       g_clear_error (&err);
     }
   else
@@ -599,7 +599,7 @@ make_panel (MutterPlugin *plugin, gint width)
                                               &err);
   if (err)
     {
-      g_warning (err->message);
+      g_warning ("%s", err->message);
       g_clear_error (&err);
     }
   else

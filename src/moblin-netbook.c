@@ -96,6 +96,12 @@ MUTTER_PLUGIN_DECLARE (MoblinNetbookPlugin, moblin_netbook_plugin);
 
 static void moblin_netbook_input_region_apply (MutterPlugin *plugin);
 
+static gboolean
+on_lowlight_button_event (ClutterActor *actor,
+                          ClutterEvent *event,
+                          gpointer      user_data);
+
+
 /*
  * Actor private data accessor
  */
@@ -767,7 +773,11 @@ moblin_netbook_plugin_constructed (GObject *object)
   lowlight = clutter_rectangle_new_with_color (&low_clr);
   priv->lowlight = lowlight;
   clutter_actor_set_size (lowlight, screen_width, screen_height);
+  clutter_actor_set_reactive (lowlight, TRUE);
 
+  g_signal_connect (priv->lowlight, "captured-event",
+                    G_CALLBACK (on_lowlight_button_event),
+                    NULL);
   /*
    * This also creates the launcher.
    */
@@ -1866,6 +1876,9 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
 
+      if (priv->panel_disabled)
+        return FALSE;
+
       if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) &&
           ((!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
@@ -1894,8 +1907,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
           if (!priv->panel_slide_timeout_id &&
-              !CLUTTER_ACTOR_IS_VISIBLE (priv->panel) &&
-              !priv->workspace_chooser)
+              !CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
             {
               priv->current_input_base_region = priv->panel_trigger_region2;
               moblin_netbook_input_region_apply (MUTTER_PLUGIN (plugin));
@@ -2214,6 +2226,44 @@ struct MnbInputRegion
   gboolean      inverse;
 };
 
+#if 0
+/* Ignore the stack of regions and simply direct all input to Clutter stage */
+void
+moblin_netbook_input_region_disable (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (!priv->input_region_disabled)
+    {
+      mutter_plugin_set_stage_input_region (plugin, priv->screen_region);
+      priv->input_region_disabled = TRUE;
+    }
+}
+
+/* Reable input through punched out regions in stack */
+void
+moblin_netbook_input_region_enable (MutterPlugin *plugin)
+{
+  if (priv->input_region_disabled)
+    {
+      priv->input_region_disabled = FALSE;
+      moblin_netbook_input_region_apply (plugin);
+    }
+}
+
+void
+moblin_netbook_stash_window_focus (MutterPlugin *plugin)
+{
+
+}
+
+void
+moblin_netbook_unstash_window_focus (MutterPlugin *plugin)
+{
+
+}
+#endif
+
 /*
  * moblin_netbook_input_region_push()
  *
@@ -2320,6 +2370,11 @@ moblin_netbook_input_region_apply (MutterPlugin *plugin)
   GList *l = priv->input_region_stack;
   XserverRegion result = priv->current_input_region;
 
+#if 0                           /* See above  */
+  if (priv->input_region_disabled)
+    return;
+#endif
+
   XFixesCopyRegion (xdpy, result, priv->current_input_base_region);
 
   while (l)
@@ -2337,14 +2392,43 @@ moblin_netbook_input_region_apply (MutterPlugin *plugin)
   mutter_plugin_set_stage_input_region (plugin, result);
 }
 
+static gboolean
+on_lowlight_button_event (ClutterActor *actor,
+                          ClutterEvent *event,
+                          gpointer      user_data) 
+{
+  return TRUE;                  /* Simply block events being handled */
+}
+
 void
 moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  static MnbInputRegion input_region;
+  static gboolean active = FALSE;
 
-  if (on)
-    clutter_actor_show (priv->lowlight);
+  if (on && !active)
+    {
+      gint screen_width, screen_height;
+
+      mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+      input_region 
+        = moblin_netbook_input_region_push (plugin,
+                                            0, 0, screen_width, screen_height,
+                                            FALSE);
+
+      clutter_actor_show (priv->lowlight);
+      priv->panel_disabled = active = TRUE;
+    }
   else
-    clutter_actor_hide (priv->lowlight);
+    {
+      if (active)
+        {
+          clutter_actor_hide (priv->lowlight);
+          moblin_netbook_input_region_remove (plugin, input_region);
+          priv->panel_disabled = active = FALSE;
+        }
+    }
 }
 

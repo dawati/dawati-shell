@@ -283,6 +283,12 @@ mnb_notification_update (MnbNotification *notification,
           gtk_icon_info_free (info);
         }
     }
+  else
+    {
+      clutter_container_remove (CLUTTER_CONTAINER (notification), priv->icon);
+      nbtk_table_set_widget_colspan (NBTK_TABLE (notification), 
+                                     priv->summary, 2);
+    }
 
   if (details->actions)
     {

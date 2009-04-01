@@ -813,20 +813,6 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
 }
 
 /*
- * Low-lights and un-low-lights the entire screen below the plugin UI elements.
- */
-static void
-set_lowlight (MutterPlugin *plugin, gboolean on)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  if (on)
-    clutter_actor_show (priv->lowlight);
-  else
-    clutter_actor_hide (priv->lowlight);
-}
-
-/*
  * Creates and shows the workspace chooser.
  */
 void
@@ -883,7 +869,7 @@ show_workspace_chooser (MutterPlugin *plugin,
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          frame, label, grid, NULL);
 
-  set_lowlight (plugin, TRUE);
+  moblin_netbook_set_lowlight (plugin, TRUE);
 
   if (priv->workspace_chooser)
     hide_workspace_chooser (plugin, timestamp);
@@ -939,7 +925,7 @@ hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
       priv->workspace_chooser_timeout = 0;
     }
 
-  set_lowlight (plugin, FALSE);
+  moblin_netbook_set_lowlight (plugin, FALSE);
 
   hide_panel (plugin);
 

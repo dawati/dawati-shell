@@ -154,6 +154,8 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *notification_urgent;
   MnbInputRegion         notification_input_region;
 
+  gboolean               panel_disabled;
+
   Window                 focus_xwin;
 };
 
