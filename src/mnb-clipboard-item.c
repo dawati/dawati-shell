@@ -431,6 +431,9 @@ static void
 mnb_clipboard_item_init (MnbClipboardItem *self)
 {
   ClutterActor *text;
+  ClutterActor *texture;
+  NbtkTextureCache *texture_cache;
+  gchar *remove_icon_path;
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
@@ -449,6 +452,19 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
   g_signal_connect (self->remove_button, "clicked",
                     G_CALLBACK (on_remove_clicked),
                     self);
+
+  remove_icon_path = g_build_filename (PLUGIN_PKGDATADIR,
+                                       "theme", "pasteboard",
+                                       "pasteboard-item-delete-hover.png",
+                                       NULL);
+
+  texture_cache = nbtk_texture_cache_get_default ();
+  texture = nbtk_texture_cache_get_texture (texture_cache,
+                                            remove_icon_path,
+                                            TRUE);
+  nbtk_bin_set_child (NBTK_BIN (self->remove_button), texture);
+
+  g_free (remove_icon_path);
 
   self->action_button = CLUTTER_ACTOR (nbtk_button_new ());
   nbtk_button_set_label (NBTK_BUTTON (self->action_button), _("Copy"));
