@@ -204,6 +204,29 @@ mnb_entry_pick (ClutterActor       *actor,
 }
 
 static void
+mnb_entry_style_changed (NbtkWidget *widget)
+{
+  MnbEntryPrivate *priv = MNB_ENTRY (widget)->priv;
+  NbtkWidget *entry = NBTK_WIDGET (priv->entry);
+  NbtkWidget *table = NBTK_WIDGET (priv->table);
+  NbtkWidget *clear = NBTK_WIDGET (priv->clear_button);
+  NbtkWidget *search = NBTK_WIDGET (priv->search_button);
+
+  NBTK_WIDGET_CLASS (mnb_entry_parent_class)->style_changed (widget);
+
+  /* XXX - this is needed to propagate the ::style-changed signal to
+   * the internal children on MnbEntry, otherwise the style changes
+   * will not reach them
+   */
+
+  /* FIXME - we really need nbtk_widget_style_changed() */
+  NBTK_WIDGET_GET_CLASS (entry)->style_changed (entry);
+  NBTK_WIDGET_GET_CLASS (table)->style_changed (table);
+  NBTK_WIDGET_GET_CLASS (clear)->style_changed (clear);
+  NBTK_WIDGET_GET_CLASS (search)->style_changed (search);
+}
+
+static void
 mnb_entry_finalize (GObject *gobject)
 {
   MnbEntryPrivate *priv = MNB_ENTRY (gobject)->priv;
@@ -278,7 +301,7 @@ mnb_entry_class_init (MnbEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  /* unused: NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass); */
+  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MnbEntryPrivate));
@@ -294,6 +317,8 @@ mnb_entry_class_init (MnbEntryClass *klass)
   actor_class->focus_in = mnb_entry_focus_in;
   actor_class->paint = mnb_entry_paint;
   actor_class->pick = mnb_entry_pick;
+
+  widget_class->style_changed = mnb_entry_style_changed;
 
   pspec = g_param_spec_string ("label",
                                "Label",
