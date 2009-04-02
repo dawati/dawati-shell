@@ -2,6 +2,8 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include <clutter/clutter.h>
 
 #include <gtk/gtk.h>
@@ -47,8 +49,6 @@ on_action_clicked (MnbClipboardItem *item,
   if (item == l->data)
     return;
 
-  g_debug ("%s: Action clicked", G_STRLOC);
-
   text = mnb_clipboard_item_get_contents (item);
   if (text == NULL || *text == '\0')
     return;
@@ -69,7 +69,6 @@ on_remove_clicked (MnbClipboardItem *item,
   MnbClipboardViewPrivate *priv = view->priv;
   gint64 serial = mnb_clipboard_item_get_serial (item);
 
-  g_debug ("%s: Remove clicked (serial: %lld)", G_STRLOC, serial);
   mnb_clipboard_store_remove (priv->store, serial);
 }
 
@@ -98,9 +97,6 @@ on_store_item_removed (MnbClipboardStore *store,
     return;
 
   g_object_ref (item);
-
-  g_debug ("%s: Removing item[%p] (serial: %lld)",
-           G_STRLOC, item, serial);
 
   priv->rows = g_slist_remove (priv->rows, item);
   clutter_actor_unparent (CLUTTER_ACTOR (item));
@@ -158,8 +154,6 @@ on_store_item_added (MnbClipboardStore    *store,
 
   if (row == NULL)
     return;
-
-  g_debug ("%s: Adding new row to Pasteboard", G_STRLOC);
 
   view->priv->rows = g_slist_prepend (view->priv->rows, row);
   clutter_actor_set_parent (row, CLUTTER_ACTOR (view));
@@ -230,6 +224,9 @@ mnb_clipboard_view_allocate (ClutterActor *actor,
       ClutterActor *child = l->data;
       ClutterUnit child_height;
       ClutterActorBox child_box = { 0, };
+
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
 
       clutter_actor_get_preferred_height (child, available_width,
                                           NULL,
@@ -436,4 +433,46 @@ mnb_clipboard_view_get_store (MnbClipboardView *view)
   g_return_val_if_fail (MNB_IS_CLIPBOARD_VIEW (view), NULL);
 
   return view->priv->store;
+}
+
+void
+mnb_clipboard_view_filter (MnbClipboardView *view,
+                           const gchar      *filter)
+{
+  MnbClipboardViewPrivate *priv;
+
+  g_return_if_fail (MNB_IS_CLIPBOARD_VIEW (view));
+
+  priv = view->priv;
+
+  if (priv->rows == NULL)
+    return;
+
+  if (filter == NULL || *filter == '\0')
+    g_slist_foreach (priv->rows, (GFunc) clutter_actor_show, NULL);
+  else
+    {
+      gchar *needle;
+      GSList *l;
+
+      needle = g_utf8_strdown (filter, -1);
+
+      for (l = priv->rows; l != NULL; l = l->next)
+        {
+          MnbClipboardItem *row = l->data;
+          gchar *contents;
+
+          contents = g_utf8_strdown (mnb_clipboard_item_get_contents (row), -1);
+          if (strstr (contents, needle) == NULL)
+            clutter_actor_hide (CLUTTER_ACTOR (row));
+          else
+            clutter_actor_show (CLUTTER_ACTOR (row));
+
+          g_free (contents);
+        }
+
+      g_free (needle);
+    }
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (view));
 }

@@ -35,6 +35,9 @@ NbtkWidget *mnb_clipboard_view_new (MnbClipboardStore *store);
 
 MnbClipboardStore *mnb_clipboard_view_get_store (MnbClipboardView *view);
 
+void mnb_clipboard_view_filter (MnbClipboardView *view,
+                                const gchar      *filter);
+
 G_END_DECLS
 
 #endif /* __MNB_CLIPBOARD_VIEW_H__ */
