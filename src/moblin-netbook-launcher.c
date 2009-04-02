@@ -403,8 +403,6 @@ launcher_data_fill (launcher_data_t *launcher_data)
   GSList const    *directory_iter;
   GtkIconTheme    *theme;
 
-printf ("%s()\n", __FUNCTION__);
-
   launcher_data->fill_timeout_id = 0;
 
   theme = gtk_icon_theme_get_default ();
@@ -413,7 +411,7 @@ printf ("%s()\n", __FUNCTION__);
     {
       launcher_data->scrolled_vbox = CLUTTER_ACTOR (nbtk_table_new ());
       clutter_container_add (CLUTTER_CONTAINER (launcher_data->viewport),
-                             CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);    
+                             CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
     }
 
   /*
@@ -619,7 +617,7 @@ launcher_data_new (MutterPlugin *self,
 
   launcher_data->scrolled_vbox = CLUTTER_ACTOR (nbtk_table_new ());
   clutter_container_add (CLUTTER_CONTAINER (launcher_data->viewport),
-                          CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);    
+                          CLUTTER_ACTOR (launcher_data->scrolled_vbox), NULL);
 
   /* Initial fill delayed. */
   launcher_data->fill_timeout_id = g_timeout_add_seconds (INITIAL_FILL_TIMEOUT_S,
@@ -720,7 +718,7 @@ search_activated_cb (MnbEntry         *entry,
       /* Do filter */
 
       gchar *lcase_needle = g_utf8_strdown (needle, -1);
-printf ("%s() '%s'\n", __FUNCTION__, lcase_needle);
+
       /* Update search result. */
       launcher_data->lcase_needle = g_strdup (lcase_needle);
       launcher_data->timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
