@@ -720,7 +720,7 @@ search_activated_cb (MnbEntry         *entry,
       /* Do filter */
 
       gchar *lcase_needle = g_utf8_strdown (needle, -1);
-
+printf ("%s() '%s'\n", __FUNCTION__, lcase_needle);
       /* Update search result. */
       launcher_data->lcase_needle = g_strdup (lcase_needle);
       launcher_data->timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,

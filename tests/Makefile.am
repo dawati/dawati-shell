@@ -53,5 +53,5 @@ test_pasteboard_SOURCES = \
 	$(top_srcdir)/src/mnb-clipboard-store.c \
 	$(top_srcdir)/src/mnb-clipboard-view.c \
 	$(top_srcdir)/src/mnb-entry.c \
-	$(top_srcdir)/src/marshal.c \
+	$(top_builddir)/src/marshal.c \
 	test-pasteboard.c
