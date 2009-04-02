@@ -2,7 +2,8 @@
 
 #include <bognor-regis/br-queue.h>
 
-#include "mnb-entry.h"
+#include <src/mnb-entry.h>
+
 #include "ahoghill-grid-view.h"
 #include "ahoghill-results-pane.h"
 #include "ahoghill-search-pane.h"
