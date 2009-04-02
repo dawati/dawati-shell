@@ -162,12 +162,76 @@ finish_init (gpointer data)
     return FALSE;
 }
 
+struct _QueryData {
+    int word_count;
+    GList *results;
+};
+
+static void
+get_results (gpointer key,
+             gpointer value,
+             gpointer userdata)
+{
+    struct _QueryData *qd = (struct _QueryData *) userdata;
+    int count = GPOINTER_TO_INT (value);
+
+    if (count == qd->word_count) {
+        qd->results = g_list_prepend (qd->results, key);
+    }
+}
+
+static GList *
+search_for_words (KozoDB *db,
+                  char  **words)
+{
+    struct _QueryData *qd;
+    GError *error = NULL;
+    GHashTable *set;
+    int i;
+
+    set = g_hash_table_new (g_str_hash, g_str_equal);
+    for (i = 0; words[i]; i++) {
+        GList *results, *r;
+
+        results = kozo_db_index_lookup (db, words[i], &error);
+        if (error) {
+            g_warning ("Error searching for %s in %s: %s", words[i],
+                       kozo_db_get_name (db), error->message);
+            g_error_free (error);
+
+            continue;
+        }
+
+        for (r = results; r; r = r->next) {
+            gpointer key, value;
+
+            if (g_hash_table_lookup_extended (set, r->data, &key, &value)) {
+                guint count = GPOINTER_TO_INT (value);
+                g_hash_table_insert (set, r->data, GINT_TO_POINTER (count + 1));
+            } else {
+                g_hash_table_insert (set, r->data, GINT_TO_POINTER (1));
+            }
+        }
+    }
+
+    qd = g_newa (struct _QueryData, 1);
+    qd->word_count = i;
+    qd->results = NULL;
+
+    g_hash_table_foreach (set, get_results, qd);
+    g_hash_table_destroy (set);
+
+    return qd->results;
+}
+
 static void
 search_clicked_cb (MnbEntry         *entry,
                    AhoghillGridView *grid)
 {
     AhoghillGridViewPrivate *priv = grid->priv;
     const char *text;
+    char *search_text;
+    char **search_words;
     GPtrArray *items;
     int i;
 
@@ -176,20 +240,15 @@ search_clicked_cb (MnbEntry         *entry,
         return;
     }
 
+    search_text = g_ascii_strup (text, -1);
+    search_words = g_strsplit (search_text, " ", -1);
+
     items = g_ptr_array_new ();
     for (i = 0; i < priv->dbs->len; i++) {
-        GError *error = NULL;
         Source *source = priv->dbs->pdata[i];
         GList *results;
 
-        results = kozo_db_index_lookup (source->db, text, &error);
-        if (error) {
-            g_warning ("Error searching for %s in %s: %s", text,
-                       kozo_db_get_name (source->db), error->message);
-            g_error_free (error);
-
-            continue;
-        }
+        results = search_for_words (source->db, search_words);
 
         if (results) {
             GList *r;
@@ -208,6 +267,9 @@ search_clicked_cb (MnbEntry         *entry,
             g_list_free (results);
         }
     }
+
+    g_strfreev (search_words);
+    g_free (search_text);
 
     ahoghill_results_pane_set_results
         (AHOGHILL_RESULTS_PANE (priv->results_pane), items);
