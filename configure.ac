@@ -1,4 +1,3 @@
-
 m4_define([mutter_version], [2.25.55~0.4])
 m4_define([plugin_major_version], [0])
 m4_define([plugin_minor_version], [14])
@@ -17,7 +16,7 @@ m4_define([lt_current], [m4_eval(100 * plugin_minor_version + plugin_micro_versi
 m4_define([lt_revision], [plugin_interface_age])
 m4_define([lt_age], [m4_eval(plugin_binary_age - plugin_interface_age)])
 
-AC_PREREQ(2.50)
+AC_PREREQ([2.59])
 
 AC_INIT([mutter-moblin], [plugin_version], [http://moblin.org])
 AC_CONFIG_MACRO_DIR([build/autotools])
@@ -25,7 +24,6 @@ AC_CONFIG_MACRO_DIR([build/autotools])
 AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 
 AM_INIT_AUTOMAKE
-AM_MAINTAINER_MODE
 AM_CONFIG_HEADER([config.h])
 
 GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
