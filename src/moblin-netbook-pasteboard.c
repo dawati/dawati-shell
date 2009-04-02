@@ -27,7 +27,10 @@
 #define LAUNCHER_WIDTH  235
 #define LAUNCHER_HEIGHT 64
 
+typedef struct _SearchClosure   SearchClosure;
+
 static MnbClipboardStore *clipboard = NULL;
+static guint search_timeout_id = 0;
 
 static void
 on_dropdown_show (MnbDropDown  *dropdown,
@@ -45,11 +48,56 @@ on_dropdown_hide (MnbDropDown  *dropdown,
   mnb_entry_set_text (MNB_ENTRY (filter_entry), "");
 }
 
+struct _SearchClosure
+{
+  MnbClipboardView *view;
+
+  gchar *filter;
+};
+
+static gboolean
+search_timeout (gpointer data)
+{
+  SearchClosure *closure = data;
+
+  mnb_clipboard_view_filter (closure->view, closure->filter);
+
+  return FALSE;
+}
+
+static void
+search_cleanup (gpointer data)
+{
+  SearchClosure *closure = data;
+
+  search_timeout_id = 0;
+
+  g_object_unref (closure->view);
+  g_free (closure->filter);
+
+  g_slice_free (SearchClosure, closure);
+}
+
 static void
 on_search_activated (MnbEntry *entry,
                      gpointer  data)
 {
+  MnbClipboardView *view = data;
+  SearchClosure *closure;
 
+  closure = g_slice_new (SearchClosure);
+  closure->view = g_object_ref (view);
+  closure->filter = g_strdup (mnb_entry_get_text (entry));
+
+  if (search_timeout_id != 0)
+    {
+      g_source_remove (search_timeout_id);
+      search_timeout_id = 0;
+    }
+
+  search_timeout_id = g_timeout_add_full (G_PRIORITY_LOW, 250,
+                                          search_timeout,
+                                          closure, search_cleanup);
 }
 
 static void
@@ -125,10 +173,11 @@ make_pasteboard (MutterPlugin *plugin,
                               0,
                               0., 0.);
 
+  /* hook up the search entry to the view */
   g_signal_connect (entry, "button-clicked",
-                    G_CALLBACK (on_search_activated), NULL);
+                    G_CALLBACK (on_search_activated), view);
   g_signal_connect (entry, "text-changed",
-                    G_CALLBACK (on_search_activated), NULL);
+                    G_CALLBACK (on_search_activated), view);
 
   /* side controls */
   bin = NBTK_WIDGET (nbtk_bin_new ());
