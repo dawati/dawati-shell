@@ -698,6 +698,8 @@ search_apply_cb (launcher_data_t *launcher_data)
         clutter_actor_hide (CLUTTER_ACTOR (button));
     }
 
+  clutter_actor_queue_relayout (launcher_data->apps_grid);
+
   g_free (launcher_data->lcase_needle);
   launcher_data->lcase_needle = NULL;
   return FALSE;
