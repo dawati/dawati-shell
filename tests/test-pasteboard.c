@@ -15,6 +15,62 @@
 #include "mnb-clipboard-view.h"
 #include "mnb-entry.h"
 
+typedef struct _SearchClosure   SearchClosure;
+
+static guint search_timeout_id = 0;
+
+struct _SearchClosure
+{
+  MnbClipboardView *view;
+
+  gchar *filter;
+};
+
+static gboolean
+search_timeout (gpointer data)
+{
+  SearchClosure *closure = data;
+
+  mnb_clipboard_view_filter (closure->view, closure->filter);
+
+  return FALSE;
+}
+
+static void
+search_cleanup (gpointer data)
+{
+  SearchClosure *closure = data;
+
+  search_timeout_id = 0;
+
+  g_object_unref (closure->view);
+  g_free (closure->filter);
+
+  g_slice_free (SearchClosure, closure);
+}
+
+static void
+on_search_activated (MnbEntry *entry,
+                     gpointer  data)
+{
+  MnbClipboardView *view = data;
+  SearchClosure *closure;
+
+  closure = g_slice_new (SearchClosure);
+  closure->view = g_object_ref (view);
+  closure->filter = g_strdup (mnb_entry_get_text (entry));
+
+  if (search_timeout_id != 0)
+    {
+      g_source_remove (search_timeout_id);
+      search_timeout_id = 0;
+    }
+
+  search_timeout_id = g_timeout_add_full (G_PRIORITY_LOW, 250,
+                                          search_timeout,
+                                          closure, search_cleanup);
+}
+
 static void
 on_clear_clicked (NbtkButton *button,
                   MnbClipboardView *view)
@@ -52,7 +108,10 @@ main (int argc, char *argv[])
   hbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (hbox), "pasteboard-search");
   nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
-  nbtk_table_add_widget (NBTK_TABLE (vbox), hbox, 0, 0);
+  nbtk_table_add_widget_full (NBTK_TABLE (vbox), hbox,
+                              0, 0, 1, 2,
+                              NBTK_X_FILL | NBTK_X_EXPAND,
+                              0.0, 0.0);
 
   label = nbtk_label_new (_("Pasteboard"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "pasteboard-search-label");
@@ -95,7 +154,7 @@ main (int argc, char *argv[])
   bin = NBTK_WIDGET (nbtk_bin_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-controls");
   nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
-                              1, 2, 1, 1,
+                              1, 1, 1, 1,
                               0,
                               0.0, 0.0);
 
@@ -104,6 +163,12 @@ main (int argc, char *argv[])
   g_signal_connect (button, "clicked",
                     G_CALLBACK (on_clear_clicked),
                     view);
+
+  /* hook up search entry */
+  g_signal_connect (entry, "button-clicked",
+                    G_CALLBACK (on_search_activated), view);
+  g_signal_connect (entry, "text-changed",
+                    G_CALLBACK (on_search_activated), view);
 
   clutter_actor_show_all (stage);
 
