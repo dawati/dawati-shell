@@ -138,7 +138,7 @@ ahoghill_media_tile_set_property (GObject      *object,
             g_object_unref (priv->item);
         }
 
-        priv->item = g_value_get_object (value);
+        priv->item = g_value_dup_object (value);
         if (priv->item) {
             update_tile (self);
         } else {
