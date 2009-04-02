@@ -514,7 +514,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
   priv->is_active = FALSE;
 
   priv->status_entry =
-    CLUTTER_ACTOR (nbtk_entry_new ("Enter your status here..."));
+    CLUTTER_ACTOR (nbtk_entry_new (_("Enter your status here...")));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->status_entry),
                                     "MnbStatusEntryText");
   clutter_actor_set_parent (priv->status_entry, CLUTTER_ACTOR (self));

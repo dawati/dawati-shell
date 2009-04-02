@@ -20,6 +20,10 @@ NbtkButton:active {
   color: #333;
 }
 
+NbtkEntry:indeterminate {
+  color: gray;
+}
+
 /*
  * Expander
  */
@@ -361,6 +365,30 @@ MnbDropDown, MnbSwitcher {
   padding: 0 4 37 4;
 }
 
+MnbEntry {
+  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
+  padding: 7 10 7 10;
+}
+
+*.MnbEntryEntry {
+  font-size: 15;
+}
+
+*.MnbEntryButton {
+  border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 1 stretch stretch;
+  font-size: 13;
+  padding: 0 2 0 10;
+}
+
+*.MnbEntryClearButton {
+  background-image: url('file://launcher/launcher-search-entry-clear.png');
+  border-image: none;
+}
+
+*.MnbEntryClearButton:hover {
+  background-image: url('file://launcher/launcher-search-entry-clear-hover.png');
+}
+
 /* launcher  */
 
 *#launcher-vbox {
@@ -399,29 +427,8 @@ MnbDropDown, MnbSwitcher {
   padding: 8 5 10 10;
 }
 
-MnbEntry {
-  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
-  padding: 7 10 7 10;
-}
-
-*.MnbEntryEntry {
-  font-size: 15;
-}
-
-*.MnbEntryButton {
-  border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 1 stretch stretch;
-  color: #be1011ff;
-  font-size: 13;
-  padding: 0 2 0 10;
-}
-
-*.MnbEntryClearButton {
-  background-image: url('file://launcher/launcher-search-entry-clear.png');
-  border-image: none;
-}
-
-*.MnbEntryClearButton:hover {
-  background-image: url('file://launcher/launcher-search-entry-clear-hover.png');
+*#launcher-filter-pane *.MnbEntryButton {
+  color: #be1011;
 }
 
 MnbLauncherButton {
@@ -856,6 +863,10 @@ MoblinNetbookNetpanel NbtkButton:active {
   padding-left: 12;
 }
 
+*#pasteboard-search-entry *.MnbEntryButton {
+  color: #027061;
+}
+
 *#pasteboard-items-list {
   border-image: url('file://pasteboard/pasteboard-items-list-bg.png') 10 stretch;
   padding: 10;
@@ -870,6 +881,7 @@ MoblinNetbookNetpanel NbtkButton:active {
   font-family: "Liberation Sans";
   font-size: 13;
   color: #027061;
+  padding: 4 8 4 8;
 }
 
 MnbClipboardItem {
@@ -892,4 +904,5 @@ MnbClipboardItem {
   font-family: "Liberation Sans";
   font-size: 13;
   color: #027061;
+  padding: 4 8 4 8;
 }
