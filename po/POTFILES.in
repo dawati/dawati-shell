@@ -14,3 +14,4 @@ penge/penge/penge-tasks-pane.c
 src/mnb-clipboard-item.c
 src/mnb-launcher-tree.c
 src/moblin-netbook-pasteboard.c
+tests/test-pasteboard.c
