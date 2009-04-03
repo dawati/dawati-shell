@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Encoding=UTF-8
+TryExec=dalston-power-applet
+Exec=dalston-power-applet
+Icon=dalston-power-applet
+Terminal=false
+Categories=
+Name=Dalston power applet
+Comment=A power indicator / control
+GenericName=A power indicator / control
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
