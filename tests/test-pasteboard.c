@@ -82,12 +82,42 @@ on_clear_clicked (NbtkButton *button,
     clutter_model_remove (CLUTTER_MODEL (store), 0);
 }
 
+static void
+on_selection_changed (MnbClipboardStore *store,
+                      const gchar       *current_selection,
+                      NbtkLabel         *label)
+{
+  gboolean is_ellipsized = FALSE;
+  gchar *text, *str;
+
+  text = g_strndup (current_selection, 42);
+  if (strcmp (text, current_selection) != 0)
+    is_ellipsized = TRUE;
+
+  /* translators: the format should be translated as:
+   *
+   *  Copy "%s%s" to pasteboard
+   *
+   * the first escape is for the selection contents; the second
+   * is for the ellipsis '...' if the contents is too long.
+   */
+  str = g_strdup_printf (_("\"%s%s\" to pasteboard"),
+                         text,
+                         is_ellipsized ? _("...") : "");
+
+  nbtk_label_set_text (label, str);
+
+  g_free (text);
+  g_free (str);
+}
+
 int
 main (int argc, char *argv[])
 {
   ClutterActor *stage;
   NbtkWidget   *vbox, *hbox, *label, *entry, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
+  MnbClipboardStore *store;
 
   gtk_init (&argc, &argv);
   clutter_init (&argc, &argv);
@@ -100,6 +130,9 @@ main (int argc, char *argv[])
   clutter_actor_set_size (stage, 1024, 600);
 
   vbox = nbtk_table_new ();
+  nbtk_table_set_col_spacing (NBTK_TABLE (vbox), 12);
+  nbtk_table_set_row_spacing (NBTK_TABLE (vbox), 6);
+  clutter_actor_set_width (CLUTTER_ACTOR (vbox), 1000);
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "pasteboard-vbox");
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                CLUTTER_ACTOR (vbox));
@@ -129,16 +162,18 @@ main (int argc, char *argv[])
                               0,
                               0., 0.5);
 
+  /* the object proxying the Clipboard changes and storing them */
+  store = mnb_clipboard_store_new ();
+
   /* the actual view */
-  view = CLUTTER_ACTOR (mnb_clipboard_view_new (NULL));
-  clutter_actor_set_width (view, 650);
+  view = CLUTTER_ACTOR (mnb_clipboard_view_new (store));
 
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (viewport), view);
 
   /* the scroll view is bigger to avoid the horizontal scroll bar */
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
-  clutter_actor_set_size (scroll, 680, 300);
+  clutter_actor_set_height (scroll, 300);
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll), viewport);
 
   bin = NBTK_WIDGET (nbtk_bin_new ());
@@ -147,19 +182,50 @@ main (int argc, char *argv[])
 
   nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
                               1, 0, 1, 1,
-                              0,
+                              NBTK_X_EXPAND | NBTK_X_FILL |
+                              NBTK_Y_EXPAND | NBTK_Y_FILL,
                               0., 0.);
 
   /* side controls */
-  bin = NBTK_WIDGET (nbtk_bin_new ());
+  bin = nbtk_table_new ();
+  nbtk_table_set_row_spacing (NBTK_TABLE (bin), 12);
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-controls");
+  clutter_actor_set_width (CLUTTER_ACTOR (bin), 300);
   nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
                               1, 1, 1, 1,
                               0,
                               0.0, 0.0);
 
+  hbox = nbtk_table_new ();
+  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 6);
+  nbtk_table_add_widget_full (NBTK_TABLE (bin), hbox,
+                              0, 0, 1, 1,
+                              0,
+                              0.0, 0.0);
+
+  button = nbtk_button_new_with_label (_("Copy"));
+  nbtk_table_add_widget_full (NBTK_TABLE (hbox), button,
+                              0, 0, 1, 1,
+                              0,
+                              0.0, 0.0);
+
+  label = nbtk_label_new ("current selection to pasteboard");
+  clutter_text_set_line_wrap (CLUTTER_TEXT (nbtk_label_get_clutter_text (NBTK_LABEL (label))), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (nbtk_label_get_clutter_text (NBTK_LABEL (label))), PANGO_WRAP_WORD_CHAR);
+  nbtk_table_add_widget_full (NBTK_TABLE (hbox), label,
+                              0, 1, 1, 1,
+                              0,
+                              0.0, 0.0);
+
+  g_signal_connect (store, "selection-changed",
+                    G_CALLBACK (on_selection_changed),
+                    label);
+
   button = nbtk_button_new_with_label (_("Clear pasteboard"));
-  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (button));
+  nbtk_table_add_widget_full (NBTK_TABLE (bin), button,
+                              1, 0, 1, 1,
+                              0,
+                              0.0, 0.0);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (on_clear_clicked),
                     view);
