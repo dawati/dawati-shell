@@ -24,3 +24,11 @@ stamp-h1
 *.o
 *.a
 *~
+/connman-common/marshal.h
+/connman-common/marshal.c
+/connman-common/instance-glue.h
+/connman-common/connman-demo
+/connman-common/test-client
+/connman-common/connman-dbus-glue.h
+/config.h.in
+/src/connection-panel
