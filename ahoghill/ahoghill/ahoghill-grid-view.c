@@ -1,6 +1,6 @@
 #include <bickley/bkl.h>
 
-#include <bognor-regis/br-queue.h>
+#include <bognor/br-queue.h>
 
 #include <src/mnb-entry.h>
 
