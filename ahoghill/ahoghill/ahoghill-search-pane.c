@@ -2,8 +2,10 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#include "ahoghill-search-pane.h"
+#include <nbtk/nbtk.h>
 #include <src/mnb-entry.h>
+
+#include "ahoghill-search-pane.h"
 
 enum {
     PROP_0,

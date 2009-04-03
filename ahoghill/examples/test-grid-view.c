@@ -1,5 +1,32 @@
 /* Cunningly borrowed from Penge */
+#include <nbtk/nbtk.h>
 #include <ahoghill/ahoghill-grid-view.h>
+
+void
+load_stylesheet (void)
+{
+    NbtkStyle *style;
+    GError *error = NULL;
+    gchar *path;
+
+    path = g_build_filename (PKG_DATADIR,
+                             "theme",
+                             "mutter-moblin.css",
+                             NULL);
+
+    /* register the styling */
+    style = nbtk_style_get_default ();
+
+    if (!nbtk_style_load_from_file (style,
+                                    path,
+                                    &error)) {
+        g_warning (G_STRLOC ": Error opening style: %s",
+                   error->message);
+        g_clear_error (&error);
+    }
+
+    g_free (path);
+}
 
 int
 main (int    argc,
@@ -13,7 +40,7 @@ main (int    argc,
     clutter_init (&argc, &argv);
 
     srand (time (NULL));
-    penge_utils_load_stylesheet ();
+    load_stylesheet ();
 
     stage = clutter_stage_get_default ();
     clutter_actor_set_size (stage, 1024, 600);
