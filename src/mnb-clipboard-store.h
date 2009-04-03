@@ -36,6 +36,9 @@ struct _MnbClipboardStoreClass
 {
   ClutterListModelClass parent_class;
 
+  void (* selection_changed) (MnbClipboardStore *store,
+                              const gchar       *selection);
+
   void (* item_added)   (MnbClipboardStore    *store,
                          MnbClipboardItemType  item_type);
   void (* item_removed) (MnbClipboardStore    *store,

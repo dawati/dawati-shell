@@ -16,6 +16,7 @@ struct _MnbClipboardStorePrivate
 {
   /* XXX owned by GTK+ - DO NOT UNREF */
   GtkClipboard *clipboard;
+  GtkClipboard *primary;
 
   /* expiration delta */
   gint64 max_time;
@@ -43,6 +44,7 @@ enum
 {
   ITEM_ADDED,
   ITEM_REMOVED,
+  SELECTION_CHANGED,
 
   LAST_SIGNAL
 };
@@ -117,6 +119,16 @@ on_clipboard_request_text (GtkClipboard *clipboard,
     return;
 
   priv = item->store->priv;
+
+  if (item->is_selection)
+    {
+      g_signal_emit (item->store, store_signals[SELECTION_CHANGED], 0, text);
+
+      g_object_unref (item->store);
+      g_slice_free (ClipboardItem, item);
+
+      return;
+    }
 
   clutter_model_prepend (CLUTTER_MODEL (item->store),
                          COLUMN_ITEM_TYPE, item->type,
@@ -266,7 +278,7 @@ on_clipboard_owner_change (GtkClipboard      *clipboard,
   tmp->serial = store->priv->last_serial;
   tmp->store = g_object_ref (store);
   tmp->mtime = now.tv_sec;
-  tmp->is_selection = FALSE;
+  tmp->is_selection = (clipboard == store->priv->primary) ? TRUE : FALSE;
 
   store->priv->last_serial += 1;
 
@@ -319,6 +331,16 @@ mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
                   moblin_netbook_marshal_VOID__INT64,
                   G_TYPE_NONE, 1,
                   G_TYPE_INT64);
+
+  store_signals[SELECTION_CHANGED] =
+    g_signal_new (g_intern_static_string ("selection-changed"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbClipboardStoreClass, selection_changed),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
 }
 
 static void
@@ -342,6 +364,11 @@ mnb_clipboard_store_init (MnbClipboardStore *self)
 
   priv->clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
   g_signal_connect (self->priv->clipboard,
+                    "owner-change", G_CALLBACK (on_clipboard_owner_change),
+                    self);
+
+  priv->primary = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
+  g_signal_connect (self->priv->primary,
                     "owner-change", G_CALLBACK (on_clipboard_owner_change),
                     self);
 
