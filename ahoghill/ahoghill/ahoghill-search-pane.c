@@ -1,19 +1,18 @@
 #include <config.h>
-
 #include <glib.h>
-#include <glib/gi18n-lib.h>
+#include <glib/gi18n.h>
+
+#include <nbtk/nbtk.h>
+#include <src/mnb-entry.h>
 
 #include "ahoghill-search-pane.h"
-#include <src/mnb-entry.h>
 
 enum {
     PROP_0,
 };
 
 struct _AhoghillSearchPanePrivate {
-    int dummy;
-    int portishead;
-    int third;
+    NbtkWidget *entry;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_SEARCH_PANE, AhoghillSearchPanePrivate))
@@ -79,7 +78,7 @@ ahoghill_search_pane_init (AhoghillSearchPane *self)
 {
     AhoghillSearchPanePrivate *priv = GET_PRIVATE (self);
     NbtkTable *table = (NbtkTable *) self;
-    NbtkWidget *label, *entry;
+    NbtkWidget *label;
 
     self->priv = priv;
     clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-search");
@@ -90,11 +89,19 @@ ahoghill_search_pane_init (AhoghillSearchPane *self)
     nbtk_table_add_widget_full (table, label, 0, 0, 1, 1,
                                 NBTK_Y_EXPAND, 0.0, 0.5);
 
-    entry = mnb_entry_new (_("Search"));
-    clutter_actor_set_name (CLUTTER_ACTOR (entry), "media-pane-search-entry");
-    clutter_actor_set_width (CLUTTER_ACTOR (entry),
+    priv->entry = mnb_entry_new (_("Search"));
+    clutter_actor_set_name (CLUTTER_ACTOR (priv->entry),
+                            "media-pane-search-entry");
+    clutter_actor_set_width (CLUTTER_ACTOR (priv->entry),
                              CLUTTER_UNITS_FROM_DEVICE (600));
-    nbtk_table_add_widget_full (table, entry, 0, 1, 1, 1,
+    nbtk_table_add_widget_full (table, priv->entry, 0, 1, 1, 1,
                                 NBTK_Y_EXPAND | NBTK_Y_FILL, 0.0, 0.5);
 }
 
+NbtkWidget *
+ahoghill_search_pane_get_entry (AhoghillSearchPane *self)
+{
+    g_return_val_if_fail (IS_AHOGHILL_SEARCH_PANE (self), NULL);
+
+    return self->priv->entry;
+}

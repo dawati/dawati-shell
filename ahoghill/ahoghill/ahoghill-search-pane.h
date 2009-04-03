@@ -3,7 +3,6 @@
 
 #include <nbtk/nbtk-table.h>
 
-
 G_BEGIN_DECLS
 
 #define AHOGHILL_TYPE_SEARCH_PANE                                       \
@@ -44,6 +43,7 @@ struct _AhoghillSearchPaneClass
 };
 
 GType ahoghill_search_pane_get_type (void) G_GNUC_CONST;
+NbtkWidget *ahoghill_search_pane_get_entry (AhoghillSearchPane *self);
 
 G_END_DECLS
 

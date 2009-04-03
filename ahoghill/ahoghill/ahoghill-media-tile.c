@@ -110,6 +110,19 @@ update_tile (AhoghillMediaTile *self)
 }
 
 static void
+clear_tile (AhoghillMediaTile *tile)
+{
+    AhoghillMediaTilePrivate *priv = tile->priv;
+
+    nbtk_label_set_text (NBTK_LABEL (priv->title), "");
+    nbtk_label_set_text (NBTK_LABEL (priv->artist), "");
+
+    g_object_set (priv->icon,
+                  "thumbnail", NULL,
+                  NULL);
+}
+
+static void
 ahoghill_media_tile_set_property (GObject      *object,
                                   guint         prop_id,
                                   const GValue *value,
@@ -125,8 +138,12 @@ ahoghill_media_tile_set_property (GObject      *object,
             g_object_unref (priv->item);
         }
 
-        priv->item = g_value_get_object (value);
-        update_tile (self);
+        priv->item = g_value_dup_object (value);
+        if (priv->item) {
+            update_tile (self);
+        } else {
+            clear_tile (self);
+        }
         break;
 
     default:

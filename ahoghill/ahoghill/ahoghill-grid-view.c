@@ -1,5 +1,9 @@
 #include <bickley/bkl.h>
 
+#include <bognor-regis/br-queue.h>
+
+#include <src/mnb-entry.h>
+
 #include "ahoghill-grid-view.h"
 #include "ahoghill-results-pane.h"
 #include "ahoghill-search-pane.h"
@@ -22,6 +26,8 @@ struct _AhoghillGridViewPrivate {
 
     BklWatcher *watcher;
     GPtrArray *dbs;
+
+    BrQueue *local_queue;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_GRID_VIEW, AhoghillGridViewPrivate))
@@ -83,6 +89,7 @@ create_source (BklDBSource *s)
 {
     Source *source;
     GError *error = NULL;
+    int i;
 
     source = g_new0 (Source, 1);
     source->db = bkl_db_get_for_path (s->db_uri, s->name, &error);
@@ -102,59 +109,23 @@ create_source (BklDBSource *s)
         return NULL;
     }
 
+    source->uri_to_item = g_hash_table_new (g_str_hash, g_str_equal);
+    for (i = 0; i < source->items->len; i++) {
+        BklItem *item = source->items->pdata[i];
+        g_hash_table_insert (source->uri_to_item,
+                             (char *) bkl_item_get_uri (item), item);
+    }
+
     return source;
 }
 
-static GPtrArray *
-test_results (Source *source)
-{
-    GPtrArray *results;
-    int i = 0;
-
-    if (source->items->len == 0)
-      return NULL;
-
-    if (source->items->len < 12)
-    {
-      results = g_ptr_array_sized_new (source->items->len);
-
-      while (i < source->items->len)
-      {
-        BklItem *item = source->items->pdata[i];
-
-        if (bkl_item_extended_get_thumbnail ((BklItemExtended *) item)) {
-            g_ptr_array_add (results, g_object_ref (item));
-        }
-
-        i++;
-      }
-
-      return results;
-    }
-
-    results = g_ptr_array_sized_new (12);
-    while (i < 200 && results->len < 12) {
-        BklItem *item = source->items->pdata[rand () % source->items->len];
-
-        if (bkl_item_extended_get_thumbnail ((BklItemExtended *) item)) {
-            g_ptr_array_add (results, g_object_ref (item));
-        }
-
-        i++;
-    }
-
-    return results;
-}
-
-static gboolean
+static void
 init_bickley (gpointer data)
 {
     AhoghillGridView *view = (AhoghillGridView *) data;
     AhoghillGridViewPrivate *priv = view->priv;
-    GPtrArray *results = NULL;
     GList *sources, *s;
     GError *error = NULL;
-    int i;
 
     priv->watcher = g_object_new (BKL_TYPE_WATCHER, NULL);
     sources = bkl_watcher_get_sources (priv->watcher, &error);
@@ -168,32 +139,170 @@ init_bickley (gpointer data)
 
         g_ptr_array_add (priv->dbs, source);
     }
+}
 
-    /* Get 12 random entries with thumbnails for testing purposes */
-    i = 0;
-    while (i < priv->dbs->len) {
-        Source *source = priv->dbs->pdata[i];
+static void
+init_bognor (AhoghillGridView *grid)
+{
+    AhoghillGridViewPrivate *priv = grid->priv;
 
-        /* Find local database */
-        if (!g_str_equal (kozo_db_get_name (source->db), "local-media")) {
-            i++;
+    priv->local_queue = g_object_new (BR_TYPE_QUEUE,
+                                      "object-path", BR_LOCAL_QUEUE_PATH,
+                                      NULL);
+}
+
+static gboolean
+finish_init (gpointer data)
+{
+    AhoghillGridView *grid = data;
+
+    init_bognor (grid);
+    init_bickley (grid);
+
+    return FALSE;
+}
+
+struct _QueryData {
+    int word_count;
+    GList *results;
+};
+
+static void
+get_results (gpointer key,
+             gpointer value,
+             gpointer userdata)
+{
+    struct _QueryData *qd = (struct _QueryData *) userdata;
+    int count = GPOINTER_TO_INT (value);
+
+    if (count == qd->word_count) {
+        qd->results = g_list_prepend (qd->results, key);
+    }
+}
+
+static GList *
+search_for_words (KozoDB *db,
+                  char  **words)
+{
+    struct _QueryData *qd;
+    GError *error = NULL;
+    GHashTable *set;
+    int i;
+
+    set = g_hash_table_new (g_str_hash, g_str_equal);
+    for (i = 0; words[i]; i++) {
+        GList *results, *r;
+
+        results = kozo_db_index_lookup (db, words[i], &error);
+        if (error) {
+            g_warning ("Error searching for %s in %s: %s", words[i],
+                       kozo_db_get_name (db), error->message);
+            g_error_free (error);
+
             continue;
         }
 
-        results = test_results (priv->dbs->pdata[i]);
+        for (r = results; r; r = r->next) {
+            gpointer key, value;
 
-        if (results)
-          break;
-
-        i++;
+            if (g_hash_table_lookup_extended (set, r->data, &key, &value)) {
+                guint count = GPOINTER_TO_INT (value);
+                g_hash_table_insert (set, r->data, GINT_TO_POINTER (count + 1));
+            } else {
+                g_hash_table_insert (set, r->data, GINT_TO_POINTER (1));
+            }
+        }
     }
 
-    if (results) {
-        ahoghill_results_pane_set_results
-            (AHOGHILL_RESULTS_PANE (priv->results_pane), results);
+    qd = g_newa (struct _QueryData, 1);
+    qd->word_count = i;
+    qd->results = NULL;
+
+    g_hash_table_foreach (set, get_results, qd);
+    g_hash_table_destroy (set);
+
+    return qd->results;
+}
+
+static void
+search_clicked_cb (MnbEntry         *entry,
+                   AhoghillGridView *grid)
+{
+    AhoghillGridViewPrivate *priv = grid->priv;
+    const char *text;
+    char *search_text;
+    char **search_words;
+    GPtrArray *items;
+    int i;
+
+    text = mnb_entry_get_text (entry);
+    if (text == NULL) {
+        return;
     }
 
-    return FALSE;
+    search_text = g_ascii_strup (text, -1);
+    search_words = g_strsplit (search_text, " ", -1);
+
+    items = g_ptr_array_new ();
+    for (i = 0; i < priv->dbs->len; i++) {
+        Source *source = priv->dbs->pdata[i];
+        GList *results;
+
+        results = search_for_words (source->db, search_words);
+
+        if (results) {
+            GList *r;
+
+            for (r = results; r; r = r->next) {
+                BklItem *item;
+
+                item = g_hash_table_lookup (source->uri_to_item, r->data);
+                if (item != NULL) {
+                    g_ptr_array_add (items, item);
+                }
+
+                g_free (r->data);
+            }
+
+            g_list_free (results);
+        }
+    }
+
+    g_strfreev (search_words);
+    g_free (search_text);
+
+    ahoghill_results_pane_set_results
+        (AHOGHILL_RESULTS_PANE (priv->results_pane), items);
+
+    g_ptr_array_free (items, TRUE);
+}
+
+static void
+item_clicked_cb (AhoghillResultsPane *pane,
+                 BklItem             *item,
+                 AhoghillGridView    *grid)
+{
+    AhoghillGridViewPrivate *priv = grid->priv;
+    GError *error = NULL;
+
+    if (bkl_item_get_item_type (item) != BKL_ITEM_TYPE_AUDIO) {
+        return;
+    }
+
+    br_queue_add_uri (priv->local_queue, bkl_item_get_uri (item), &error);
+    if (error != NULL) {
+        g_warning ("%s: Error adding %s to queue: %s", G_STRLOC,
+                   bkl_item_get_uri (item), error->message);
+        g_error_free (error);
+        return;
+    }
+
+    br_queue_play (priv->local_queue, &error);
+    if (error != NULL) {
+        g_warning ("%s: Error playing local queue: %s", G_STRLOC,
+                   error->message);
+        g_error_free (error);
+    }
 }
 
 static void
@@ -201,7 +310,7 @@ ahoghill_grid_view_init (AhoghillGridView *self)
 {
     NbtkTable *table = (NbtkTable *) self;
     AhoghillGridViewPrivate *priv = GET_PRIVATE (self);
-
+    NbtkWidget *entry;
     ClutterColor blue = { 0x00, 0x00, 0xff, 0xff };
 
     bkl_init ();
@@ -215,12 +324,18 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     nbtk_table_add_actor_full (table, priv->search_pane,
                                0, 0, 1, 4, NBTK_X_EXPAND, 0.0, 0.0);
 
+    entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
+    g_signal_connect (entry, "button-clicked",
+                      G_CALLBACK (search_clicked_cb), self);
+
     priv->results_pane = g_object_new (AHOGHILL_TYPE_RESULTS_PANE, NULL);
     clutter_actor_set_size (priv->results_pane, 800, 400);
     nbtk_table_add_actor_full (table, priv->results_pane,
                                1, 0, 1, 3,
                                NBTK_X_FILL | NBTK_Y_FILL | NBTK_X_EXPAND | NBTK_Y_EXPAND,
                                0.0, 0.0);
+    g_signal_connect (priv->results_pane, "item-clicked",
+                      G_CALLBACK (item_clicked_cb), self);
 
     /* priv->playqueues_pane = g_object_new (AHOGHILL_TYPE_PLAYQUEUES_PANE, */
     /*                                        NULL); */
@@ -232,7 +347,7 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     nbtk_table_set_row_spacing (table, 8);
     nbtk_table_set_col_spacing (table, 8);
 
-    /* Init Bickley lazily */
-    g_idle_add (init_bickley, self);
+    /* Init Bickley and Bognor lazily */
+    g_idle_add (finish_init, self);
 }
 
