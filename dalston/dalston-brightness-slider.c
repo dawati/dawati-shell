@@ -14,6 +14,7 @@ struct _DalstonBrightnessSliderPrivate {
   DalstonBrightnessManager *manager;
 
   gint num_levels;
+  gint cur_value;
 };
 
 enum
@@ -88,6 +89,24 @@ _range_value_changed_cb (GtkRange *range,
 }
 
 static void
+dalston_brightness_slider_update (DalstonBrightnessSlider *slider)
+{
+  DalstonBrightnessSliderPrivate *priv = GET_PRIVATE (slider);
+
+  if (priv->num_levels > 0)
+  {
+    g_signal_handlers_block_by_func (slider,
+                                     _range_value_changed_cb, slider);
+    gtk_range_set_value (GTK_RANGE (slider), priv->cur_value);
+    gtk_range_set_fill_level (GTK_RANGE (slider),
+                            (gdouble)priv->cur_value);
+    g_signal_handlers_unblock_by_func (slider,
+                                       _range_value_changed_cb, 
+                                       slider);
+  }
+}
+
+static void
 _manager_brightness_changed_cb (DalstonBrightnessManager *manager,
                                 gint                      value,
                                 gpointer                  userdata)
@@ -95,17 +114,8 @@ _manager_brightness_changed_cb (DalstonBrightnessManager *manager,
   DalstonBrightnessSlider *slider = (DalstonBrightnessSlider *)userdata;
   DalstonBrightnessSliderPrivate *priv = GET_PRIVATE (userdata);
 
-  if (priv->num_levels > 0)
-  {
-    g_signal_handlers_block_by_func (slider,
-                                     _range_value_changed_cb, slider);
-    gtk_range_set_value (GTK_RANGE (slider), value);
-    gtk_range_set_fill_level (GTK_RANGE (slider),
-                            (gdouble)value);
-    g_signal_handlers_unblock_by_func (slider,
-                                       _range_value_changed_cb, 
-                                       slider);
-  }
+  priv->cur_value = value;
+  dalston_brightness_slider_update (slider);
 }
 
 static void
@@ -118,6 +128,7 @@ _manager_num_levels_changed_cb (DalstonBrightnessManager *manager,
 
   priv->num_levels = num_levels;
   gtk_range_set_range (GTK_RANGE (slider), 0, num_levels - 1);
+  dalston_brightness_slider_update (slider);
 }
 
 static void
