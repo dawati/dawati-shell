@@ -212,6 +212,8 @@ dalston_brightness_manager_init (DalstonBrightnessManager *self)
   gchar **names;
   GError *error = NULL;
 
+  priv->previous_brightness = -1;
+
   priv->manager = hal_manager_new ();
 
   if (!hal_manager_find_capability (priv->manager,
