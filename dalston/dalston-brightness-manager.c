@@ -297,6 +297,8 @@ dalston_brightness_manager_start_monitoring (DalstonBrightnessManager *manager)
                    _brightness_monitoring_timeout_cb,
                    manager);
 
+  if (priv->panel_proxy)
+    dalston_brightness_manager_get_brightness (manager);
 }
 
 void
