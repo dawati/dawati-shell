@@ -34,7 +34,7 @@ enum
 
 static guint signals[LAST_SIGNAL];
 
-#define MONITORING_SECONDS_TIMEOUT 5
+#define MONITORING_MILLISECONDS_TIMEOUT 500
 
 static void
 dalston_brightness_manager_get_property (GObject *object, guint property_id,
@@ -283,9 +283,9 @@ dalston_brightness_manager_start_monitoring (DalstonBrightnessManager *manager)
   }
 
   priv->monitoring_timeout =
-    g_timeout_add_seconds (MONITORING_SECONDS_TIMEOUT,
-                           _brightness_monitoring_timeout_cb,
-                           manager);
+    g_timeout_add (MONITORING_MILLISECONDS_TIMEOUT,
+                   _brightness_monitoring_timeout_cb,
+                   manager);
 
 }
 
