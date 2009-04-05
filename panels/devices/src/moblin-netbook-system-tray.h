@@ -69,6 +69,7 @@ struct mnbk_tray_setup_data
   GtkStatusIcon *icon;
   GtkPlug       *config;
   gchar         *type;
+  guint          init_cb_id;
 };
 
 static struct mnbk_tray_setup_data _mnbk_tray_setup_data;
@@ -148,8 +149,10 @@ _mnbk_config_show_on_delete (GtkWidget *config, GdkEvent *event, gpointer data)
   return TRUE;
 }
 
-static gboolean
-_mnbk_idle_config_setup (gpointer data)
+static void
+_mnbk_initial_embedded_notify (GObject    *gobject,
+                               GParamSpec *arg1,
+                               gpointer    data)
 {
   struct mnbk_tray_setup_data *tray_data = data;
   GtkStatusIcon               *icon      = tray_data->icon;
@@ -161,20 +164,6 @@ _mnbk_idle_config_setup (gpointer data)
    */
   if (gtk_status_icon_is_embedded (icon))
     {
-      /*
-       * Make sure that the config window is realized before we do anything.
-       * if not, try to sync X and wait.
-       */
-      if (!GTK_WIDGET_REALIZED (config))
-        {
-          XSync (GDK_DISPLAY (), False);
-          return TRUE;
-        }
-
-      /*
-       * Set up the config window; should this fail for any reason, wait
-       * another until the next time.
-       */
       if (_mnbk_setup_config_window (icon, gtk_plug_get_id (config), tray_data))
         {
           /*
@@ -197,14 +186,10 @@ _mnbk_idle_config_setup (gpointer data)
           g_signal_connect (config, "delete-event",
                             G_CALLBACK (_mnbk_config_show_on_delete), icon);
 
-          /*
-           * We are done; remove this idle call back.
-           */
-          return FALSE;
+          g_signal_handler_disconnect (icon, tray_data->init_cb_id);
+          tray_data->init_cb_id = 0;
         }
     }
-
-  return TRUE;
 }
 
 /*
@@ -221,7 +206,10 @@ mnbk_system_tray_init (GtkStatusIcon *icon, GtkPlug *config,
   gtk_widget_show_all (GTK_WIDGET (config));
   gtk_status_icon_set_visible (icon, TRUE);
 
-  g_idle_add (_mnbk_idle_config_setup, &_mnbk_tray_setup_data);
+  _mnbk_tray_setup_data.init_cb_id =
+    g_signal_connect (icon, "notify::embedded",
+                      G_CALLBACK (_mnbk_initial_embedded_notify),
+                      &_mnbk_tray_setup_data);
 }
 
 #endif
