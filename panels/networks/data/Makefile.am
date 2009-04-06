@@ -1,4 +1,6 @@
-privatedatadir = $(pkgdatadir)
-privatedata_DATA =
+SUBDIRS = icons
 
-EXTRA_DIST = $(privatedata_DATA)
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_DATA = carrick-panel.desktop
+
+EXTRA_DIST = $(autostart_DATA)

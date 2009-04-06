@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Carrick connection panel
+Type=Application
+Enconding=UTF-8
+TryExec=carrick-connection-panel
+Exec=carrick-connection-panel
+Icon=carrick-connection-panel
+Terminal=false
+Categories=
+Comment=A connman user interface
+GenericName=Connection manager
+NoDisplay=true
+X-GNOME-Autostart-enable=true
+Name[en_GB]=Carrick connection panel.desktop
