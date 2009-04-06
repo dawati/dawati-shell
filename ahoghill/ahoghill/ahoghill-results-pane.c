@@ -9,6 +9,7 @@
 
 enum {
     PROP_0,
+    PROP_TITLE,
 };
 
 enum {
@@ -22,6 +23,7 @@ enum {
 
 struct _AhoghillResultsPanePrivate {
     NbtkWidget *title;
+    NbtkWidget *results_table;
     AhoghillMediaTile *tiles[TILES_PER_PAGE];
 
     guint results_page;
@@ -31,8 +33,10 @@ struct _AhoghillResultsPanePrivate {
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_RESULTS_PANE, AhoghillResultsPanePrivate))
 G_DEFINE_TYPE (AhoghillResultsPane, ahoghill_results_pane, NBTK_TYPE_TABLE);
 
-#define ROW_SPACING 28
-#define COL_SPACING 20
+#define ROW_SPACING 14
+
+#define RESULTS_ROW_SPACING 28
+#define RESULTS_COL_SPACING 20
 
 static guint32 signals[LAST_SIGNAL] = { 0, };
 
@@ -51,11 +55,19 @@ ahoghill_results_pane_dispose (GObject *object)
 
 static void
 ahoghill_results_pane_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
+                                    guint         prop_id,
+                                    const GValue *value,
+                                    GParamSpec   *pspec)
 {
+    AhoghillResultsPane *pane = (AhoghillResultsPane *) object;
+    AhoghillResultsPanePrivate *priv = pane->priv;
+
     switch (prop_id) {
+
+    case PROP_TITLE:
+        nbtk_label_set_text (NBTK_LABEL (priv->title),
+                             g_value_get_string (value));
+        break;
 
     default:
         break;
@@ -87,6 +99,10 @@ ahoghill_results_pane_class_init (AhoghillResultsPaneClass *klass)
 
     g_type_class_add_private (klass, sizeof (AhoghillResultsPanePrivate));
 
+    g_object_class_install_property (o_class, PROP_TITLE,
+                                     g_param_spec_string ("title", "", "", "",
+                                                          G_PARAM_WRITABLE |
+                                                          G_PARAM_STATIC_STRINGS));
     signals[ITEM_CLICKED] = g_signal_new ("item-clicked",
                                           G_TYPE_FROM_CLASS (klass),
                                           G_SIGNAL_RUN_FIRST |
@@ -205,14 +221,27 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
     self->priv = priv;
 
     clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-results");
-    nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
     nbtk_table_set_row_spacing (NBTK_TABLE (self), ROW_SPACING);
 
-    priv->title = nbtk_label_new (_("Recent"));
-    clutter_actor_set_name (CLUTTER_ACTOR (priv->title), "media-pane-results-label");
+    priv->title = nbtk_label_new ("");
+    clutter_actor_set_name (CLUTTER_ACTOR (priv->title),
+                            "media-pane-results-label");
     nbtk_table_add_widget_full (NBTK_TABLE (self), priv->title,
-                                0, 0, 1, 6,
-                                0, 0.0, 0.5);
+                                0, 0, 1, 1,
+                                0, 0.0, 0.0);
+
+    priv->results_table = nbtk_table_new ();
+    nbtk_table_add_widget_full (NBTK_TABLE (self), priv->results_table,
+                                1, 0, 1, 1,
+                                NBTK_X_EXPAND | NBTK_Y_EXPAND |
+                                NBTK_X_FILL | NBTK_Y_FILL,
+                                0.0, 0.0);
+    clutter_actor_set_name (CLUTTER_ACTOR (priv->results_table),
+                            "media-pane-results-table");
+    nbtk_table_set_col_spacing (NBTK_TABLE (priv->results_table),
+                                RESULTS_COL_SPACING);
+    nbtk_table_set_row_spacing (NBTK_TABLE (priv->results_table),
+                                RESULTS_ROW_SPACING);
 
     for (i = 0; i < TILES_PER_PAGE; i++) {
         priv->tiles[i] = g_object_new (AHOGHILL_TYPE_MEDIA_TILE, NULL);
@@ -229,10 +258,10 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
         g_signal_connect (priv->tiles[i], "dnd-end",
                           G_CALLBACK (tile_dnd_end_cb), self);
 
-        nbtk_table_add_widget_full (NBTK_TABLE (self),
+        nbtk_table_add_widget_full (NBTK_TABLE (priv->results_table),
                                     (NbtkWidget *) priv->tiles[i],
-                                    (i / TILES_PER_ROW) + 1, i % TILES_PER_ROW,
-                                    1, 1, 0, 0.5, 0.5);
+                                    (i / TILES_PER_ROW), i % TILES_PER_ROW,
+                                    1, 1, 0, 0.5, 0.0);
         clutter_actor_hide ((ClutterActor *) priv->tiles[i]);
     }
 }

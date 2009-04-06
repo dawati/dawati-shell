@@ -818,13 +818,20 @@ MoblinNetbookNetpanel NbtkButton:active {
   color: #0e0e0e;
 }
 
-*#media-pane-results {
+AhoghillResultsPane {
   padding: 14px;
 }
 
 *#media-pane-results-label {
   font-family: "Liberation Sans Bold";
   font-size: 14;
+}
+
+*#media-pane-results-table {
+  padding: 0px;
+}
+
+AhoghillMediaTile {
 }
 
 *#media-pane-album-art {

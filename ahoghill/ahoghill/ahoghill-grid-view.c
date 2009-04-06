@@ -1,3 +1,9 @@
+#include <config.h>
+
+#include <glib.h>
+
+#include <glib/gi18n-lib.h>
+
 #include <bickley/bkl.h>
 
 #include <bognor/br-queue.h>
@@ -243,6 +249,10 @@ search_clicked_cb (MnbEntry         *entry,
     search_text = g_ascii_strup (text, -1);
     search_words = g_strsplit (search_text, " ", -1);
 
+    g_object_set (G_OBJECT (priv->results_pane),
+                  "title", _("Results"),
+                  NULL);
+
     items = g_ptr_array_new ();
     for (i = 0; i < priv->dbs->len; i++) {
         Source *source = priv->dbs->pdata[i];
@@ -328,7 +338,9 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_signal_connect (entry, "button-clicked",
                       G_CALLBACK (search_clicked_cb), self);
 
-    priv->results_pane = g_object_new (AHOGHILL_TYPE_RESULTS_PANE, NULL);
+    priv->results_pane = g_object_new (AHOGHILL_TYPE_RESULTS_PANE,
+                                       "title", _("Recent"),
+                                       NULL);
     clutter_actor_set_size (priv->results_pane, 800, 400);
     nbtk_table_add_actor_full (table, priv->results_pane,
                                1, 0, 1, 3,
@@ -343,9 +355,6 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     clutter_actor_set_size (priv->playqueues_pane, 150, 400);
     nbtk_table_add_actor_full (table, priv->playqueues_pane,
                                1, 3, 1, 1, NBTK_Y_FILL, 0.0, 0.0);
-
-    nbtk_table_set_row_spacing (table, 8);
-    nbtk_table_set_col_spacing (table, 8);
 
     /* Init Bickley and Bognor lazily */
     g_idle_add (finish_init, self);
