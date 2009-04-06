@@ -625,19 +625,12 @@ na_tray_manager_set_visual_property (NaTrayManager *manager)
   visual_atom = gdk_x11_get_xatom_by_name_for_display (display,
 						       "_NET_SYSTEM_TRAY_VISUAL");
 
-#if 0
-  /*
-   * FIXME -- the drawing on argb visual does not appear to work, possibly a
-   * but in the GtkTrayIcon code. This is disabled until we have a proper
-   * fix. See bug 1481.
-   */
   if (gdk_screen_get_rgba_visual (manager->screen) != NULL &&
       gdk_display_supports_composite (display))
     {
       xvisual = GDK_VISUAL_XVISUAL (gdk_screen_get_rgba_visual (manager->screen));
     }
   else
-#endif
     {
       /* We actually want the visual of the tray where the icons will
        * be embedded. In almost all cases, this will be the same as the visual

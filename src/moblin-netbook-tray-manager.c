@@ -644,16 +644,46 @@ tray_icon_tagged_timeout_cb (gpointer data)
   return FALSE;
 }
 
+/*
+ * ARGB icons have to be painted manually on expose.
+ */
+static void
+na_tray_expose_child (GtkWidget             *window,
+                      GdkEventExpose        *event,
+                      ShellTrayManagerChild *child)
+{
+  cairo_t *cr;
+
+  if (!na_tray_child_is_composited (NA_TRAY_CHILD (window)))
+    return;
+
+  cr = gdk_cairo_create (child->window->window);
+
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  gdk_cairo_set_source_pixmap (cr,
+                               child->socket->window,
+                               child->socket->allocation.x,
+                               child->socket->allocation.y);
+
+  cairo_paint (cr);
+  cairo_destroy (cr);
+}
+
 static void
 na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
                     gpointer user_data)
 {
+  static gint offset = 0;
+
   ShellTrayManager *manager = user_data;
   GtkWidget *win;
   ClutterActor *icon;
   ShellTrayManagerChild *child;
   GdkPixmap *bg_pixmap;
   NbtkWidget *button;
+  child = g_slice_new0 (ShellTrayManagerChild);
 
   win = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_container_add (GTK_CONTAINER (win), socket);
@@ -664,6 +694,10 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   gtk_widget_set_size_request (win, 24, 24);
   gtk_widget_realize (win);
+
+  child->window  = win;
+  child->socket  = socket;
+  child->manager = manager;
 
   /* If the tray child is using an RGBA colormap (and so we have real
    * transparency), we don't need to worry about the background. If
@@ -682,10 +716,16 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
       gdk_window_set_back_pixmap (win->window, bg_pixmap, FALSE);
       g_object_unref (bg_pixmap);
     }
+  else
+    {
+      g_signal_connect (win, "expose-event",
+                        G_CALLBACK (na_tray_expose_child), child);
+    }
 
   gtk_widget_set_parent_window (win, manager->priv->stage_window);
   gdk_window_reparent (win->window, manager->priv->stage_window, 0, 0);
-  gtk_window_move (GTK_WINDOW (win), -200, -200);
+  gtk_window_move (GTK_WINDOW (win), -200, offset);
+  offset += 32;
   gtk_widget_show_all (win);
 
   icon = clutter_glx_texture_pixmap_new_with_window (
@@ -710,11 +750,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   clutter_actor_set_size (icon, 24, 24);
   clutter_actor_set_reactive (icon, TRUE);
 
-  child = g_slice_new0 (ShellTrayManagerChild);
-  child->window = win;
-  child->socket = socket;
   child->actor = g_object_ref (button);
-  child->manager = manager;
 
   g_hash_table_insert (manager->priv->icons, socket, child);
 
