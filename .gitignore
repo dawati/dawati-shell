@@ -31,4 +31,4 @@ stamp-h1
 /connman-common/test-client
 /connman-common/connman-dbus-glue.h
 /config.h.in
-/src/connection-panel
+/src/carrick-connection-panel
