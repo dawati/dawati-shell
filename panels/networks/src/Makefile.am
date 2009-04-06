@@ -1,16 +1,16 @@
-bin_PROGRAMS = connection-panel
+bin_PROGRAMS = carrick-connection-panel
 
-connection_panel_SOURCES = \
+carrick_connection_panel_SOURCES = \
 		main.c \
 		$(NULL)
 
 INCLUDES = -I$(top_srcdir)/connman-common
 
-connection_panel_CFLAGS = -I$(top_srcdir) \
-			$(GTK_CFLAGS) \
-			$(DBUS_CFLAGS) \
-			-DPKG_DATADIR=\"$(pkgdatadir)\" -Wall
+carrick_connection_panel_CFLAGS = -I$(top_srcdir) \
+				    $(GTK_CFLAGS) \
+				    $(DBUS_CFLAGS) \
+				    -DPKG_DATA_DIR=\"$(pkgdatadir)\" -Wall
 
-connection_panel_LDADD= $(top_builddir)/mux/libmux.la \
-			$(top_builddir)/connman-common/libcommon.a \
-			$(GTK_LIBS) $(DBUS_LIBS)
+carrick_connection_panel_LDADD= $(top_builddir)/mux/libmux.la \
+				$(top_builddir)/connman-common/libcommon.a \
+				$(GTK_LIBS) $(DBUS_LIBS)
