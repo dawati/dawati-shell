@@ -711,7 +711,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
    * the window we put it in match that as well */
   gtk_widget_set_colormap (win, gtk_widget_get_colormap (socket));
 
-  gtk_widget_set_size_request (win, 24, 24);
   gtk_widget_realize (win);
   gtk_widget_realize (socket);
 
@@ -768,7 +767,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   clutter_container_add_actor (CLUTTER_CONTAINER (button), icon);
 
-  clutter_actor_set_size (icon, 24, 24);
   clutter_actor_set_reactive (icon, TRUE);
 
   child->actor = g_object_ref (button);
