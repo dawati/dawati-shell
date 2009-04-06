@@ -659,15 +659,32 @@ na_tray_expose_child (GtkWidget             *window,
 
   cr = gdk_cairo_create (child->window->window);
 
+  /*
+   * Set up clip region.
+   */
   gdk_cairo_region (cr, event->region);
   cairo_clip (cr);
 
+  /*
+   * Clear contents.
+   */
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_rgba (cr, .0, .0, .0, .0);
+  cairo_paint (cr);
+
+  /*
+   * Composite socket contents over.
+   */
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   gdk_cairo_set_source_pixmap (cr,
                                child->socket->window,
                                child->socket->allocation.x,
                                child->socket->allocation.y);
-
   cairo_paint (cr);
+
+  /*
+   * Dispose of the context.
+   */
   cairo_destroy (cr);
 
   return FALSE;
