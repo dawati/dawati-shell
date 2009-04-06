@@ -655,7 +655,7 @@ na_tray_expose_child (GtkWidget             *window,
   cairo_t *cr;
 
   if (!na_tray_child_is_composited (NA_TRAY_CHILD (child->socket)))
-    return;
+    return FALSE;
 
   cr = gdk_cairo_create (child->window->window);
 
