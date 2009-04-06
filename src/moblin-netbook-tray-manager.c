@@ -647,14 +647,14 @@ tray_icon_tagged_timeout_cb (gpointer data)
 /*
  * ARGB icons have to be painted manually on expose.
  */
-static void
+static gboolean
 na_tray_expose_child (GtkWidget             *window,
                       GdkEventExpose        *event,
                       ShellTrayManagerChild *child)
 {
   cairo_t *cr;
 
-  if (!na_tray_child_is_composited (NA_TRAY_CHILD (window)))
+  if (!na_tray_child_is_composited (NA_TRAY_CHILD (child->socket)))
     return;
 
   cr = gdk_cairo_create (child->window->window);
@@ -669,6 +669,8 @@ na_tray_expose_child (GtkWidget             *window,
 
   cairo_paint (cr);
   cairo_destroy (cr);
+
+  return FALSE;
 }
 
 static void
@@ -694,6 +696,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   gtk_widget_set_size_request (win, 24, 24);
   gtk_widget_realize (win);
+  gtk_widget_realize (socket);
 
   child->window  = win;
   child->socket  = socket;
@@ -718,13 +721,14 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
     }
   else
     {
+      gtk_widget_set_app_paintable (win, TRUE);
       g_signal_connect (win, "expose-event",
                         G_CALLBACK (na_tray_expose_child), child);
     }
 
   gtk_widget_set_parent_window (win, manager->priv->stage_window);
   gdk_window_reparent (win->window, manager->priv->stage_window, 0, 0);
-  gtk_window_move (GTK_WINDOW (win), -200, offset);
+  gtk_window_move (GTK_WINDOW (win), offset, -200);
   offset += 32;
   gtk_widget_show_all (win);
 
