@@ -82,9 +82,10 @@ _mnbk_setup_config_window (GtkStatusIcon               *icon,
   Atom tray_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW);
   Atom type_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_TYPE);
   Window    icon_win;
-  gpointer *plug_location;
-  GtkPlug  *plug;
 
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION >= 14)
+  icon_win = gtk_status_icon_get_x11_window_id (icon);
+#else
   /*
    * This is very, very evil, but GtkStatusIcon does not provide API
    * to get at the icon xwindow ...
@@ -92,18 +93,24 @@ _mnbk_setup_config_window (GtkStatusIcon               *icon,
    * The tray icon is a GtkPlug subclass, and is stored as the first
    * item in the private structure of GtkSystemIcon.
    */
-  plug_location = (gpointer*)icon->priv;
+  {
+    gpointer *plug_location;
+    GtkPlug  *plug;
 
-  if (!plug_location || !*plug_location || !GTK_IS_PLUG (*plug_location))
-    {
-      g_warning ("Attempted to set up config window before status icon got"
-                 "embedded !!!");
-      return FALSE;
-    }
+    plug_location = (gpointer*)icon->priv;
 
-  plug = GTK_PLUG (*plug_location);
+    if (!plug_location || !*plug_location || !GTK_IS_PLUG (*plug_location))
+      {
+        g_warning ("Attempted to set up config window before status icon got"
+                   "embedded !!!");
+        return FALSE;
+      }
 
-  icon_win = gtk_plug_get_id (plug);
+    plug = GTK_PLUG (*plug_location);
+
+    icon_win = gtk_plug_get_id (plug);
+  }
+#endif
 
   XChangeProperty (GDK_DISPLAY(), icon_win,
                    tray_atom, XA_WINDOW,
