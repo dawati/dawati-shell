@@ -178,6 +178,9 @@ natural_width_notify_cb (MnbExpander *self,
 {
   clutter_actor_set_width (self->priv->table,
                            clutter_actor_get_width (CLUTTER_ACTOR (self)));
+
+  clutter_actor_set_width (self->priv->payload_bin,
+                           clutter_actor_get_width (CLUTTER_ACTOR (self)));
 }
 
 static void
