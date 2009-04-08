@@ -36,8 +36,6 @@ struct _MuxLightSwitchPrivate {
         gboolean active; /* boolean state of switch */
         gboolean dragging; /* true if dragging switch */
         gint x; /* the x position of the switch */
-	gint pointer_x;
-	gint pointer_y;
 };
 
 static void
@@ -80,11 +78,14 @@ mux_light_switch_init (MuxLightSwitch *self)
         gint label_width, label_height;
         GtkStyle *style;
 
+        /* FIXME: probably shouldn't init values here? */
         MuxLightSwitchPrivate *priv;
         priv = MUX_LIGHT_SWITCH_GET_PRIVATE (self);
         priv->active = FALSE;
         priv->x = 0;
 
+        /* FIXME:
+         * Do some guess work as to sizes of things. Better elsewhere? */
         style = GTK_WIDGET (self)->style;
         off = g_string_new (_("Off"));
         on = g_string_new (_("On"));
@@ -110,6 +111,7 @@ mux_light_switch_init (MuxLightSwitch *self)
         switch_width = (trough_width / 2) * 1.1;
         switch_height = (label_height * 2) * 1.1;
 
+        /* add events, do initial draw/update, etc */
         gtk_widget_add_events (GTK_WIDGET (self),
                                GDK_BUTTON_PRESS_MASK
                                | GDK_BUTTON_RELEASE_MASK
@@ -255,9 +257,6 @@ mux_light_switch_button_press (GtkWidget *lightswitch,
         if (event->x > priv->x && event->x < (priv->x + switch_width)) {
                 /* we are in the lightswitch */
                 priv->dragging = TRUE;
-		/* grab the pointer to detect a drag */
-		priv->pointer_x = event->x;
-		priv->pointer_y = event->y;
         }
 
         return FALSE;
@@ -304,7 +303,6 @@ mux_light_switch_motion_notify (GtkWidget *lightswitch,
         priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
 
         if (priv->dragging) {
-		/* This needs refinement */
                 if (event->x > (trough_width - switch_width))
                         new_x = (trough_width - switch_width);
                 else if (event->x < 0)
@@ -316,6 +314,33 @@ mux_light_switch_motion_notify (GtkWidget *lightswitch,
         }
 
         return TRUE;
+}
+
+static gboolean
+mux_light_switch_button_release (GtkWidget *lightswitch,
+                                 GdkEventButton *event)
+{
+        MuxLightSwitchPrivate *priv;
+
+        priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
+
+        /* detect whereabouts we are and "drop" into a state */
+        if (priv->dragging) {
+                priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
+                priv->dragging = FALSE;
+                emit_state_changed_signal (MUX_LIGHT_SWITCH (lightswitch),
+                                           event->x);
+        }
+
+        return FALSE;
+}
+
+gboolean
+mux_light_switch_get_active (MuxLightSwitch *lightswitch)
+{
+	MuxLightSwitchPrivate *priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
+
+	return priv->active;
 }
 
 void
@@ -333,39 +358,6 @@ mux_light_switch_set_active (MuxLightSwitch *lightswitch, gboolean active)
 			priv->x = 0;
 		}
 	}
-}
-
-static gboolean
-mux_light_switch_button_release (GtkWidget *lightswitch,
-                                 GdkEventButton *event)
-{
-        MuxLightSwitchPrivate *priv;
-
-        priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
-
-        if (priv->dragging) {
-		if (priv->pointer_x == event->x
-				&& priv->pointer_y == event->y)
-		{
-			mux_light_switch_set_active (lightswitch,
-					!priv->active);
-		} else {
-                	priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
-                	priv->dragging = FALSE;
-                	emit_state_changed_signal (MUX_LIGHT_SWITCH (lightswitch),
-                                           	event->x);
-		}
-        }
-
-        return FALSE;
-}
-
-gboolean
-mux_light_switch_get_active (MuxLightSwitch *lightswitch)
-{
-	MuxLightSwitchPrivate *priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
-
-	return priv->active;
 }
 
 GtkWidget*
