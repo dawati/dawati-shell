@@ -311,7 +311,8 @@ mnb_drop_down_init (MnbDropDown *self)
   clutter_actor_set_size (CLUTTER_ACTOR (up_button), 23, 21);
   clutter_container_child_set (CLUTTER_CONTAINER (footer),
                                CLUTTER_ACTOR (up_button),
-                               "keep-aspect-ratio", TRUE,
+                               "y-fill", FALSE,
+                               "x-fill", FALSE,
                                "x-align", 1.0,
                                NULL);
   g_signal_connect_swapped (up_button, "clicked",
