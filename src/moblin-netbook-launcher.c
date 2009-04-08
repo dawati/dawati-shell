@@ -502,37 +502,19 @@ launcher_data_fill (launcher_data_t *launcher_data)
     {
       MnbLauncherDirectory  *directory;
       GSList                *entry_iter;
-      ClutterActor          *expander, *inner_grid;
+      ClutterActor          *inner_grid;
+      NbtkWidget            *button;
 
       directory = (MnbLauncherDirectory *) directory_iter->data;
-
-      /* Expander. */
-      expander = CLUTTER_ACTOR (mnb_expander_new (directory->name));
-      clutter_actor_set_width (expander,
-                               launcher_data->width - SCROLLVIEW_RESERVED_WIDTH);
-      clutter_container_add (CLUTTER_CONTAINER (launcher_data->apps_grid),
-                             expander, NULL);
-      g_hash_table_insert (launcher_data->expanders,
-                           g_strdup (directory->name), expander);
-      g_signal_connect (expander, "notify::expanded",
-                        G_CALLBACK (expander_notify_cb), launcher_data);
-
-      /* Open first expander by default. */
-      if (directory_iter == directories)
-        {
-          mnb_expander_set_expanded (MNB_EXPANDER (expander), TRUE);
-        }
 
       inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
       nbtk_grid_set_column_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
       nbtk_grid_set_row_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
       clutter_actor_set_name (inner_grid, "launcher-expander-grid");
-      clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
+      button = NULL;
       for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
         {
-          NbtkWidget *button;
-
           button = create_launcher_button_from_entry ((MnbLauncherEntry *) entry_iter->data,
                                                       directory->name,
                                                       theme);
@@ -558,6 +540,34 @@ launcher_data_fill (launcher_data_t *launcher_data)
                                                           button);
             }
         }
+
+        /* Create expander if at least 1 launcher inside. */
+        if (button)
+          {
+            ClutterActor *expander;
+
+            expander = CLUTTER_ACTOR (mnb_expander_new (directory->name));
+            clutter_actor_set_width (expander,
+                                     launcher_data->width - SCROLLVIEW_RESERVED_WIDTH);
+            clutter_container_add (CLUTTER_CONTAINER (launcher_data->apps_grid),
+                                   expander, NULL);
+            g_hash_table_insert (launcher_data->expanders,
+                                 g_strdup (directory->name), expander);
+            g_signal_connect (expander, "notify::expanded",
+                              G_CALLBACK (expander_notify_cb), launcher_data);
+
+            clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
+
+            /* Open first expander by default. */
+            if (directory_iter == directories)
+              {
+                mnb_expander_set_expanded (MNB_EXPANDER (expander), TRUE);
+              }
+          }
+        else
+          {
+            clutter_actor_destroy (inner_grid);
+          }
     }
 
   /* Alphabetically sort buttons, so they are in order while filtering. */
