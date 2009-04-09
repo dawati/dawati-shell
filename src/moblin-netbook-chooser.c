@@ -335,11 +335,9 @@ workspace_chooser_input_cb (ClutterActor *clone,
   struct ws_grid_cb_data     *wsg_data = data;
   gint                        indx   = wsg_data->workspace;
   MutterPlugin               *plugin = wsg_data->plugin;
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   MetaWorkspace              *workspace;
   const char                 *sn_id = wsg_data->sn_id;
-  gint                        active;
   guint32                     timestamp;
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
@@ -379,12 +377,9 @@ chooser_keyboard_input_cb (ClutterActor *self,
 {
   struct kbd_data            *kbd_data = data;
   MutterPlugin               *plugin = kbd_data->plugin;
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   const char                 *sn_id = kbd_data->sn_id;
   guint                       symbol = clutter_key_event_symbol (&event->key);
   gint                        indx;
-  gint                        active;
   guint32                     timestamp;
 
   if (symbol < CLUTTER_0 || symbol > CLUTTER_9)
@@ -600,7 +595,6 @@ new_workspace_input_cb (ClutterActor *clone,
 {
   struct ws_grid_cb_data     *wsg_data = data;
   MutterPlugin               *plugin   = wsg_data->plugin;
-  MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   const char                 *sn_id    = wsg_data->sn_id;
   guint32                     timestamp = clutter_x11_get_current_event_time ();
 

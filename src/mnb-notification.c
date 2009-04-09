@@ -285,7 +285,8 @@ mnb_notification_update (MnbNotification *notification,
     }
   else
     {
-      clutter_container_remove (CLUTTER_CONTAINER (notification), priv->icon);
+      clutter_container_remove_actor (CLUTTER_CONTAINER (notification),
+                                      priv->icon);
       nbtk_table_set_widget_colspan (NBTK_TABLE (notification), 
                                      priv->summary, 2);
     }

@@ -148,7 +148,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   ClutterUnit min_width, min_height;
   ClutterUnit natural_width, natural_height;
   ClutterUnit button_width, button_height;
-  ClutterUnit service_width, service_height;
+  ClutterUnit service_width;
   ClutterUnit icon_width, icon_height;
   ClutterUnit text_width, text_height;
   NbtkPadding border = { 0, };

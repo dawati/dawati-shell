@@ -158,8 +158,6 @@ static void
 mnb_notification_urgent_pick (ClutterActor       *actor,
                                const ClutterColor *color)
 {
-  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
-
   CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class)->pick (actor, 
                                                                      color);
   mnb_notification_urgent_paint (actor);
@@ -237,13 +235,17 @@ on_action (MnbNotification *notification,
                                       action);
 }
 
-
+#if 0
+/*
+ * This should either be connected or deleted.
+ */
 static void
 on_control_appear_anim_completed (ClutterAnimation *anim,
                                   MnbNotificationUrgent *urgent)
 {
   g_signal_emit (urgent, urgent_signals[SYNC_INPUT_REGION], 0);
 }
+#endif
 
 static void
 on_notification_added (MoblinNetbookNotifyStore *store, 
@@ -252,7 +254,6 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (urgent);
   NbtkWidget *w;
-  ClutterAnimation *anim;
 
   if (!notification->is_urgent)
     return;
@@ -283,7 +284,7 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
   if (priv->n_notifiers == 1)
     {
-      priv->active == w;
+      priv->active = w;
       /* run appear anim ? */
       clutter_actor_show (CLUTTER_ACTOR(priv->notifiers));
       clutter_actor_show (CLUTTER_ACTOR(w));
@@ -301,7 +302,6 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
                         MnbNotificationUrgent *urgent)
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (urgent);
-  ClutterAnimation *anim;
   NbtkWidget *w;
 
   w = find_widget (priv->notifiers, id);
@@ -350,10 +350,7 @@ mnb_notification_urgent_set_store (MnbNotificationUrgent    *self,
 static void
 mnb_notification_urgent_init (MnbNotificationUrgent *self)
 {
-  NbtkWidget *widget;
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (self);
-  MoblinNetbookNotifyStore *notify_store;
-  ClutterColor  bg_col = { 0x0, 0x0, 0x0, 0x99 };
 
   priv->notifiers = CLUTTER_GROUP(clutter_group_new ());
 

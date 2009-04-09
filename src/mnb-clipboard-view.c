@@ -112,7 +112,6 @@ on_store_item_added (MnbClipboardStore    *store,
                      MnbClipboardView     *view)
 {
   ClutterActor *row = NULL;
-  ClutterUnit view_width = 0;
 
   switch (item_type)
     {
@@ -305,7 +304,6 @@ static void
 mnb_clipboard_view_finalize (GObject *gobject)
 {
   MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (gobject)->priv;
-  GSList *l;
 
   g_signal_handler_disconnect (priv->store, priv->add_id);
   g_signal_handler_disconnect (priv->store, priv->remove_id);

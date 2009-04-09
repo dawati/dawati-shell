@@ -26,6 +26,8 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include "moblin-netbook.h"
 #include "moblin-netbook-panel.h"
 #include "moblin-netbook-launcher.h"
@@ -545,7 +547,6 @@ make_panel (MutterPlugin *plugin, gint width)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterActor               *panel;
   ClutterActor               *shadow;
-  ClutterActor               *tray;
   ClutterActor               *background, *bg_texture;
   ClutterColor                clr = {0x0, 0x0, 0x0, 0xce};
   ClutterActor               *overlay;
@@ -556,10 +557,8 @@ make_panel (MutterPlugin *plugin, gint width)
 #ifdef WITH_NETPANEL
   ClutterActor               *net_grid_view;
 #endif
-  ClutterActor               *button;
   GError                     *err = NULL;
   gint                        screen_width, screen_height;
-  NbtkPadding                 no_padding = { 0, 0, 0, 0 };
   time_t         t;
   struct tm     *tmp;
 

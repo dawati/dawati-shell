@@ -120,7 +120,6 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
 {
   struct effect_data         *edata  = data;
   MutterPlugin               *plugin = edata->plugin;
-  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   switch (estage)
     {
@@ -239,7 +238,6 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
                          gint                  to,
                          MetaMotionDirection   direction)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterAnimation           *a;
   gdouble                     target_scale_x, target_scale_y;
   gint                        screen_width, screen_height;

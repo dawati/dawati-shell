@@ -96,7 +96,6 @@ mnb_status_row_allocate (ClutterActor          *actor,
   ClutterUnit available_width, available_height;
   ClutterUnit min_width, min_height;
   ClutterUnit natural_width, natural_height;
-  ClutterUnit button_width, button_height;
   ClutterUnit text_width, text_height;
   NbtkPadding border = { 0, };
   ClutterActorBox child_box = { 0, };
@@ -571,7 +570,6 @@ mnb_status_row_constructed (GObject *gobject)
 {
   MnbStatusRow *row = MNB_STATUS_ROW (gobject);
   MnbStatusRowPrivate *priv = row->priv;
-  gchar *service_name;
 
   g_assert (priv->service_name != NULL);
   g_assert (priv->client != NULL);
@@ -631,7 +629,6 @@ static void
 mnb_status_row_init (MnbStatusRow *self)
 {
   MnbStatusRowPrivate *priv;
-  ClutterActor *text;
   GError *error;
 
   self->priv = priv = MNB_STATUS_ROW_GET_PRIVATE (self);

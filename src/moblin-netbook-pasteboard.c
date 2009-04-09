@@ -29,7 +29,6 @@
 
 typedef struct _SearchClosure   SearchClosure;
 
-static MnbClipboardStore *clipboard = NULL;
 static guint search_timeout_id = 0;
 
 static void

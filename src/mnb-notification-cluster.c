@@ -604,7 +604,6 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
 {
   NbtkWidget *widget;
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (self);
-  ClutterText *txt;
 
   priv->notifiers = CLUTTER_GROUP(clutter_group_new ());
 

@@ -153,8 +153,8 @@ on_drop_down_show_completed (MnbDropDown *drop_down,
 ClutterActor *
 make_status (MutterPlugin *plugin, gint width)
 {
-  ClutterActor  *stage, *table;
-  NbtkWidget    *drop_down, *footer, *up_button;
+  ClutterActor  *table;
+  NbtkWidget    *drop_down;
   NbtkWidget    *header;
   MojitoClient  *client;
 

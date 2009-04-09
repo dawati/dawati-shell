@@ -40,4 +40,6 @@ main (int     argc,
   }
 
   g_main_loop_run (loop);
+
+  return 0;
 }

@@ -9,6 +9,7 @@
 #include <nbtk/nbtk.h>
 
 #include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 #include "mnb-clipboard-item.h"
 #include "mnb-clipboard-store.h"
@@ -76,7 +77,6 @@ on_clear_clicked (NbtkButton *button,
                   MnbClipboardView *view)
 {
   MnbClipboardStore *store = mnb_clipboard_view_get_store (view);
-  ClutterModelIter *iter;
 
   while (clutter_model_get_n_rows (CLUTTER_MODEL (store)))
     clutter_model_remove (CLUTTER_MODEL (store), 0);
@@ -86,7 +86,7 @@ int
 main (int argc, char *argv[])
 {
   ClutterActor *stage;
-  NbtkWidget   *vbox, *hbox, *label, *entry, *drop_down, *bin, *button;
+  NbtkWidget   *vbox, *hbox, *label, *entry, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
 
   gtk_init (&argc, &argv);

@@ -6,6 +6,7 @@
 #include "marshal.h"
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 #define MNB_CLIPBOARD_STORE_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_CLIPBOARD_STORE, MnbClipboardStorePrivate))
 

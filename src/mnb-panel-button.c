@@ -62,7 +62,6 @@ mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
   gint duration;
   ClutterActor *bg_image;
   ClutterActor *icon;
-  NbtkButtonPrivate *priv = button->priv;
 
   pseudo_class = nbtk_stylable_get_pseudo_class (NBTK_STYLABLE (button));
 

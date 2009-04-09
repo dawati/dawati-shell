@@ -699,8 +699,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   MetaScreen    *screen;
   Window         root_xwin;
 
-  MoblinNetbookNotifyStore *notify_store;
-
   screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
   root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
 
@@ -1598,9 +1596,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 static void
 destroy (MutterPlugin *plugin, MutterWindow *mcw)
 {
-  MetaScreen                 *screen;
   MetaCompWindowType          type;
-  ClutterActor               *actor = CLUTTER_ACTOR (mcw);
   gint                        workspace;
   MetaWindow                 *meta_win;
 
