@@ -3,6 +3,7 @@
 #include <glib.h>
 
 #include <glib/gi18n-lib.h>
+#include <gtk/gtk.h>
 
 #include <bickley/bkl.h>
 
@@ -29,6 +30,8 @@ struct _AhoghillGridViewPrivate {
     ClutterActor *search_pane;
     ClutterActor *results_pane;
     ClutterActor *playqueues_pane;
+
+    GtkRecentManager *recent_manager;
 
     BklWatcher *watcher;
     GPtrArray *dbs;
@@ -125,12 +128,33 @@ create_source (BklDBSource *s)
     return source;
 }
 
+static BklItem *
+find_item (AhoghillGridView *view,
+           const char       *uri)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    int i;
+
+    for (i = 0; i < priv->dbs->len; i++) {
+        Source *source = priv->dbs->pdata[i];
+        BklItem *item;
+
+        item = g_hash_table_lookup (source->uri_to_item, uri);
+        if (item) {
+            return item;
+        }
+    }
+
+    return NULL;
+}
+
 static void
 init_bickley (gpointer data)
 {
     AhoghillGridView *view = (AhoghillGridView *) data;
     AhoghillGridViewPrivate *priv = view->priv;
     GList *sources, *s;
+    GList *recent_items, *r;
     GError *error = NULL;
 
     priv->watcher = g_object_new (BKL_TYPE_WATCHER, NULL);
@@ -144,6 +168,44 @@ init_bickley (gpointer data)
         Source *source = create_source ((BklDBSource *) s->data);
 
         g_ptr_array_add (priv->dbs, source);
+    }
+
+    recent_items = gtk_recent_manager_get_items (priv->recent_manager);
+    if (recent_items) {
+        GPtrArray *items;
+
+        items = g_ptr_array_new ();
+        for (r = recent_items; r; r = r->next) {
+            GtkRecentInfo *info = r->data;
+            const char *mimetype;
+            const char *uri;
+            BklItem *item;
+
+            mimetype = gtk_recent_info_get_mime_type (info);
+            if (g_str_has_prefix (mimetype, "audio/") == FALSE &&
+                g_str_has_prefix (mimetype, "video/") == FALSE &&
+                g_str_has_prefix (mimetype, "image/") == FALSE) {
+                gtk_recent_info_unref (info);
+                continue;
+            }
+
+            uri = gtk_recent_info_get_uri (info);
+
+            item = find_item (view, uri);
+            if (item == NULL) {
+                gtk_recent_info_unref (info);
+                continue;
+            }
+
+            g_ptr_array_add (items, item);
+            gtk_recent_info_unref (info);
+        }
+
+        g_list_free (recent_items);
+
+        ahoghill_results_pane_set_results
+            (AHOGHILL_RESULTS_PANE (priv->results_pane), items);
+        g_ptr_array_free (items, TRUE);
     }
 }
 
@@ -329,6 +391,9 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     clutter_actor_set_size (CLUTTER_ACTOR (self), 1024, 500);
 
     self->priv = priv;
+
+    priv->recent_manager = gtk_recent_manager_get_default ();
+
     priv->search_pane = g_object_new (AHOGHILL_TYPE_SEARCH_PANE, NULL);
     clutter_actor_set_size (priv->search_pane, 1024, 50);
     nbtk_table_add_actor_full (table, priv->search_pane,
