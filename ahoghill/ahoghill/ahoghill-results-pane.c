@@ -25,6 +25,13 @@ enum {
 
 #define PAGE_CHANGE_DURATION 750
 
+struct _paging_data {
+    guint old_anim_id;
+    ClutterActor *new_page;
+    ClutterAnimation *old_page_anim;
+    ClutterAnimation *new_page_anim;
+};
+
 struct _AhoghillResultsPanePrivate {
     NbtkWidget *title;
     NbtkWidget *fixed;
@@ -36,6 +43,8 @@ struct _AhoghillResultsPanePrivate {
     AhoghillResultsTable *current_page;
     guint current_page_num;
     guint last_page;
+
+    struct _paging_data *animation;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_RESULTS_PANE, AhoghillResultsPanePrivate))
@@ -48,6 +57,18 @@ static guint32 signals[LAST_SIGNAL] = { 0, };
 static void
 ahoghill_results_pane_finalize (GObject *object)
 {
+    AhoghillResultsPane *pane = (AhoghillResultsPane *) object;
+    AhoghillResultsPanePrivate *priv = pane->priv;
+
+    if (priv->animation) {
+        g_signal_handler_disconnect (priv->animation->old_page_anim,
+                                     priv->animation->old_anim_id);
+        clutter_animation_completed (priv->animation->old_page_anim);
+        clutter_animation_completed (priv->animation->new_page_anim);
+
+        g_slice_free (struct _paging_data, priv->animation);
+    }
+
     g_signal_handlers_destroy (object);
     G_OBJECT_CLASS (ahoghill_results_pane_parent_class)->finalize (object);
 }
@@ -132,21 +153,17 @@ item_clicked_cb (AhoghillResultsTable *table,
     g_signal_emit (pane, signals[ITEM_CLICKED], 0, item);
 }
 
-struct _paging_data {
-    AhoghillResultsPane *pane;
-    ClutterActor *new_page;
-};
-
 static void
 page_change_complete (ClutterAnimation    *anim,
-                      struct _paging_data *pd)
+                      AhoghillResultsPane *pane)
 {
-    AhoghillResultsPanePrivate *priv = pd->pane->priv;
+    AhoghillResultsPanePrivate *priv = pane->priv;
 
     clutter_actor_destroy ((ClutterActor *) priv->current_page);
-    priv->current_page = (AhoghillResultsTable *) pd->new_page;
+    priv->current_page = (AhoghillResultsTable *) priv->animation->new_page;
 
-    g_slice_free (struct _paging_data, pd);
+    g_slice_free (struct _paging_data, priv->animation);
+    priv->animation = NULL;
 }
 
 static gboolean
@@ -156,12 +173,27 @@ show_previous_page (ClutterActor        *actor,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
     ClutterActor *new_page;
-    ClutterAnimation *anim;
     guint width, height;
-    struct _paging_data *pd;
 
     if (priv->current_page_num == 0) {
         return FALSE;
+    }
+
+    if (priv->animation) {
+        /* Move the new page to its destination */
+        clutter_actor_set_position (priv->animation->new_page, 0, 0);
+
+        /* Stop the animations */
+        g_signal_handler_disconnect (priv->animation->old_page_anim,
+                                     priv->animation->old_anim_id);
+        clutter_animation_completed (priv->animation->old_page_anim);
+        clutter_animation_completed (priv->animation->new_page_anim);
+
+        /* Destroy old page and replace */
+        clutter_actor_destroy (CLUTTER_ACTOR (priv->current_page));
+        priv->current_page = (AhoghillResultsTable *) priv->animation->new_page;
+    } else {
+        priv->animation = g_slice_new (struct _paging_data);
     }
 
     new_page = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
@@ -171,23 +203,25 @@ show_previous_page (ClutterActor        *actor,
     clutter_actor_get_size (new_page, &width, &height);
     clutter_actor_set_position (new_page, 0 - (int) width, 0);
 
-    pd = g_slice_new (struct _paging_data);
-    pd->pane = pane;
-    pd->new_page = new_page;
+    priv->animation->new_page = new_page;
 
     clutter_actor_get_size ((ClutterActor *) priv->current_page,
                             &width, &height);
-    anim = clutter_actor_animate (CLUTTER_ACTOR (priv->current_page),
-                                  CLUTTER_EASE_OUT_EXPO, PAGE_CHANGE_DURATION,
-                                  "x", (int) width,
-                                  NULL);
-    g_signal_connect (anim, "completed",
-                      G_CALLBACK (page_change_complete), pd);
+    priv->animation->old_page_anim = clutter_actor_animate
+        (CLUTTER_ACTOR (priv->current_page),
+         CLUTTER_EASE_OUT_EXPO, PAGE_CHANGE_DURATION,
+         "x", (int) width,
+         NULL);
+    priv->animation->old_anim_id = g_signal_connect
+        (priv->animation->old_page_anim, "completed",
+         G_CALLBACK (page_change_complete), pane);
 
-    clutter_actor_animate (new_page, CLUTTER_EASE_OUT_EXPO,
-                           PAGE_CHANGE_DURATION,
-                           "x", 0,
-                           NULL);
+    priv->animation->new_page_anim = clutter_actor_animate
+        (new_page, CLUTTER_EASE_OUT_EXPO,
+         PAGE_CHANGE_DURATION,
+         "x", 0,
+         NULL);
+
     priv->current_page_num--;
 
     return FALSE;
@@ -200,12 +234,27 @@ show_next_page (ClutterActor        *actor,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
     ClutterActor *new_page;
-    ClutterAnimation *anim;
     guint width, height;
-    struct _paging_data *pd;
 
     if (priv->current_page_num == priv->last_page) {
         return FALSE;
+    }
+
+    if (priv->animation) {
+        /* Move the new page to its destination */
+        clutter_actor_set_position (priv->animation->new_page, 0, 0);
+
+        /* Stop the animations */
+        g_signal_handler_disconnect (priv->animation->old_page_anim,
+                                     priv->animation->old_anim_id);
+        clutter_animation_completed (priv->animation->old_page_anim);
+        clutter_animation_completed (priv->animation->new_page_anim);
+
+        /* Destroy old page and replace */
+        clutter_actor_destroy (CLUTTER_ACTOR (priv->current_page));
+        priv->current_page = (AhoghillResultsTable *) priv->animation->new_page;
+    } else {
+        priv->animation = g_slice_new (struct _paging_data);
     }
 
     clutter_actor_get_size ((ClutterActor *) priv->current_page,
@@ -219,21 +268,22 @@ show_next_page (ClutterActor        *actor,
     clutter_actor_show (new_page);
     clutter_actor_set_position (new_page, width, 0);
 
-    pd = g_slice_new (struct _paging_data);
-    pd->pane = pane;
-    pd->new_page = new_page;
+    priv->animation->new_page = new_page;
 
-    anim = clutter_actor_animate (CLUTTER_ACTOR (priv->current_page),
-                                  CLUTTER_EASE_OUT_EXPO, PAGE_CHANGE_DURATION,
-                                  "x", 0 - (int) width,
-                                  NULL);
-    g_signal_connect (anim, "completed",
-                      G_CALLBACK (page_change_complete), pd);
+    priv->animation->old_page_anim = clutter_actor_animate
+        (CLUTTER_ACTOR (priv->current_page),
+         CLUTTER_EASE_OUT_EXPO, PAGE_CHANGE_DURATION,
+         "x", 0 - (int) width,
+         NULL);
+    priv->animation->old_anim_id = g_signal_connect
+        (priv->animation->old_page_anim, "completed",
+         G_CALLBACK (page_change_complete), pane);
 
-    clutter_actor_animate (new_page, CLUTTER_EASE_OUT_EXPO,
-                           PAGE_CHANGE_DURATION,
-                           "x", 0,
-                           NULL);
+    priv->animation->new_page_anim = clutter_actor_animate
+        (new_page, CLUTTER_EASE_OUT_EXPO,
+         PAGE_CHANGE_DURATION,
+         "x", 0,
+         NULL);
 
     priv->current_page_num++;
 
