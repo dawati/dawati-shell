@@ -38,6 +38,7 @@ main (int    argc,
     g_thread_init (NULL);
     bkl_init (&argc, &argv);
     clutter_init (&argc, &argv);
+    gtk_init (&argc, &argv);
 
     srand (time (NULL));
     load_stylesheet ();
