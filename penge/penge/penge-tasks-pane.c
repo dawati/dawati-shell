@@ -20,7 +20,7 @@ struct _PengeTasksPanePrivate {
   GHashTable *uid_to_tasks;
   GHashTable *uid_to_actors;
 
-  ClutterActor *no_tasks_bin;
+  NbtkWidget *no_tasks_bin;
 };
 
 static void penge_tasks_pane_update (PengeTasksPane *pane);
