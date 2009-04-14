@@ -230,6 +230,11 @@ dalston_brightness_manager_init (DalstonBrightnessManager *self)
   priv->panel_udi = g_strdup (names[0]);
   hal_manager_free_capability (names);
 
+  if (!priv->panel_udi)
+  {
+    return;
+  }
+
   priv->panel_device = hal_device_new ();
   hal_device_set_udi (priv->panel_device, priv->panel_udi);
 
