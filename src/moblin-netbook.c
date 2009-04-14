@@ -568,6 +568,15 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
   MutterPlugin               *plugin = MUTTER_PLUGIN (data);
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  /*
+   * TODO -- handle this better.
+   *
+   * Because our alt_tab mechanism requires the switcher, we currnetly cannot
+   * make use of it when there are fullscreen apps.
+   */
+  if (priv->fullscreen_apps)
+    return;
+
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
     {
       struct alt_tab_show_complete_data *alt_data;
@@ -1383,6 +1392,32 @@ tablist_meta_window_weak_ref_cb (gpointer data, GObject *mw)
   priv->global_tab_list = g_list_remove (priv->global_tab_list, mw);
 }
 
+static void
+meta_window_fullcreen_notify_cb (GObject    *object,
+                                 GParamSpec *spec,
+                                 gpointer    data)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
+  gboolean                    fullscreen;
+
+  g_object_get (object, "fullscreen", &fullscreen, NULL);
+
+  if (fullscreen)
+    {
+      priv->fullscreen_apps++;
+    }
+  else
+    {
+      priv->fullscreen_apps--;
+
+      if (priv->fullscreen_apps < 0)
+        {
+          g_warning ("Error in fullscreen accounting, fixing up.");
+          priv->fullscreen_apps = 0;
+        }
+    }
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -1529,17 +1564,27 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            type == META_COMP_WINDOW_SPLASHSCREEN ||
            type == META_COMP_WINDOW_DIALOG)
     {
-      ClutterAnimation *animation;
-      EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
-      ActorPrivate *apriv = get_actor_private (mcw);
-      MetaWindow   *mw = mutter_window_get_meta_window (mcw);
+      ClutterAnimation   *animation;
+      EffectCompleteData *data  = g_new0 (EffectCompleteData, 1);
+      ActorPrivate       *apriv = get_actor_private (mcw);
+      MetaWindow         *mw    = mutter_window_get_meta_window (mcw);
 
       if (mw)
         {
+          gboolean    fullscreen;
           const char *sn_id = meta_window_get_startup_id (mw);
 
           if (!moblin_netbook_sn_should_map (plugin, mcw, sn_id))
             return;
+
+          g_object_get (mw, "fullscreen", &fullscreen, NULL);
+
+          if (fullscreen)
+            priv->fullscreen_apps++;
+
+          g_signal_connect (mw, "notify::fullscreen",
+                            G_CALLBACK (meta_window_fullcreen_notify_cb),
+                            plugin);
         }
 
       /*
@@ -1603,6 +1648,35 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
   type      = mutter_window_get_window_type (mcw);
   workspace = mutter_window_get_workspace (mcw);
   meta_win  = mutter_window_get_meta_window (mcw);
+
+  if (type == META_COMP_WINDOW_NORMAL)
+    {
+      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      gboolean                    fullscreen;
+
+      g_object_get (meta_win, "fullscreen", &fullscreen, NULL);
+
+      if (fullscreen)
+        {
+          priv->fullscreen_apps--;
+
+          if (priv->fullscreen_apps < 0)
+            {
+              g_warning ("Error in fullscreen accounting, fixing up.");
+              priv->fullscreen_apps = 0;
+            }
+        }
+
+      /*
+       * Disconnect the fullscreen notification handler; strictly speaking
+       * this should not be necessary, as the MetaWindow should be going away,
+       * but take no chances.
+       */
+      g_signal_handlers_disconnect_by_func (meta_win,
+                                            meta_window_fullcreen_notify_cb,
+                                            plugin);
+
+    }
 
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 
@@ -1902,6 +1976,18 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
+          /*
+           * Panel does not get shown in response to mouse events if a
+           * fullscreen app is present.
+           *
+           * NB: Panel can still be shown using the kbd shortcut; however,
+           *     as the Panel steels kbd focus, this results in the fullscreen
+           *     application being un-fullscreened and also possibly ending up
+           *     lower down in the window stack.
+           */
+          if (priv->fullscreen_apps)
+            return FALSE;
+
           if (!priv->panel_slide_timeout_id &&
               !CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
             {
@@ -2391,7 +2477,7 @@ moblin_netbook_input_region_apply (MutterPlugin *plugin)
 static gboolean
 on_lowlight_button_event (ClutterActor *actor,
                           ClutterEvent *event,
-                          gpointer      user_data) 
+                          gpointer      user_data)
 {
   return TRUE;                  /* Simply block events being handled */
 }
@@ -2409,7 +2495,7 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
 
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-      input_region 
+      input_region
         = moblin_netbook_input_region_push (plugin,
                                             0, 0, screen_width, screen_height,
                                             FALSE);

@@ -126,6 +126,8 @@ struct _MoblinNetbookPluginPrivate
   gboolean               in_alt_grab                : 1;
   gboolean               blocking_input             : 1;
 
+  gint                   fullscreen_apps;
+
   guint                  workspace_chooser_timeout;
 
   ClutterActor          *panel_buttons[8];
