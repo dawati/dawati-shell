@@ -314,9 +314,13 @@ penge_people_tile_init (PengePeopleTile *self)
                                priv->icon,
                                "row-span",
                                2,
-                               "keep-aspect-ratio",
-                               TRUE,
                                "y-expand",
+                               FALSE,
+                               "x-expand",
+                               FALSE,
+                               "y-fill",
+                               FALSE,
+                               "x-fill",
                                FALSE,
                                NULL);
 
