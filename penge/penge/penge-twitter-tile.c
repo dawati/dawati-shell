@@ -110,7 +110,7 @@ penge_twitter_tile_constructed (GObject *object)
   const gchar *author;
   const gchar *authoricon_path;
   gchar *date;
-  ClutterActor *body;
+  NbtkWidget *body;
   NbtkWidget *label;
   ClutterActor *tmp_text;
 
@@ -136,7 +136,7 @@ penge_twitter_tile_constructed (GObject *object)
   g_free (date);
 
   body = nbtk_bin_new ();
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (body),
+  nbtk_widget_set_style_class_name (body,
                                     "PengeTwitterTileBackground");
   label = nbtk_label_new (content);
   nbtk_widget_set_style_class_name (label, "PengeTwitterTileLabel");
