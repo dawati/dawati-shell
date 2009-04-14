@@ -266,6 +266,9 @@ dalston_brightness_manager_get_brightness (DalstonBrightnessManager *manager)
 {
   DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
 
+  if (!priv->panel_proxy)
+    return;
+
   hal_panel_proxy_get_brightness_async (priv->panel_proxy,
                                         _panel_proxy_get_brightness_cb,
                                         (GObject *)manager,
