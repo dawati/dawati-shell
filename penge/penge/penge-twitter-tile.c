@@ -144,6 +144,8 @@ penge_twitter_tile_constructed (GObject *object)
   nbtk_bin_set_alignment (NBTK_BIN (body), NBTK_ALIGN_TOP, NBTK_ALIGN_TOP);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
