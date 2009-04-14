@@ -283,7 +283,7 @@ penge_events_pane_update (PengeEventsPane *pane)
                                    actor,
                                    "row",
                                    count,
-                                   "column",
+                                   "col",
                                    0,
                                    NULL);
       g_object_set (actor, "time", priv->time, NULL);

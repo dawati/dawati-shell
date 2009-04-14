@@ -309,7 +309,7 @@ penge_tasks_pane_update (PengeTasksPane *pane)
                                    actor,
                                    "row",
                                    count,
-                                   "column",
+                                   "col",
                                    0,
                                    NULL);
     } else {

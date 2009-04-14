@@ -135,7 +135,7 @@ penge_apps_pane_update (PengeAppsPane *pane)
                                    actor,
                                    "row",
                                    count / ROW_SIZE,
-                                   "column",
+                                   "col",
                                    count % ROW_SIZE,
                                    NULL);
     } else {

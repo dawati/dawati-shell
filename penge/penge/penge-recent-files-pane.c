@@ -138,7 +138,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                    actor,
                                    "row",
                                    count / NUMBER_COLS,
-                                   "column",
+                                   "col",
                                    count % NUMBER_COLS,
                                    NULL);
       old_actors = g_list_remove (old_actors, actor);

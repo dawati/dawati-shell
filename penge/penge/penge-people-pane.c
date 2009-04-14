@@ -138,7 +138,7 @@ penge_people_pane_update (PengePeoplePane *pane)
                                    actor,
                                    "row",
                                    count / NUMBER_COLS,
-                                   "column",
+                                   "col",
                                    count % NUMBER_COLS,
                                    NULL);
     }
