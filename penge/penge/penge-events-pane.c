@@ -22,7 +22,7 @@ struct _PengeEventsPanePrivate {
   GHashTable *uid_to_events;
   GHashTable *uid_to_actors;
 
-  ClutterActor *no_events_bin;
+  NbtkWidget *no_events_bin;
 };
 
 enum
