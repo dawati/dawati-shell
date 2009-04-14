@@ -23,9 +23,6 @@ dist_theme_panel_DATA = \
 	theme/panel/status-coloured.png \
 	theme/panel/status-normal.png \
 	theme/panel/background-tile.png \
-	theme/panel/tray-active.png \
-	theme/panel/tray-hover.png \
-	theme/panel/tray-normal.png \
 	theme/panel/toolbar-button-active.png \
 	theme/panel/toolbar-button-hover.png
 

@@ -183,57 +183,6 @@ MnbPanelButton:hover, MnbPanelButton:active {
   background-image: url("file://panel/status-coloured.png");
 }
 
-/* tray buttons */
-*#tray-button-test {
-  background-image: url("file://panel/tray-normal.png");
-}
-*#tray-button-test:hover {
-  background-image: url("file://panel/tray-hover.png");
-}
-*#tray-button-test:active {
-  background-image: url("file://panel/tray-active.png");
-}
-
-*#tray-button-wifi {
-  background-image: url("file://panel/tray-normal.png");
-}
-*#tray-button-wifi:hover {
-  background-image: url("file://panel/tray-hover.png");
-}
-*#tray-button-wifi:active {
-  background-image: url("file://panel/tray-active.png");
-}
-
-*#tray-button-sound {
-  background-image: url("file://panel/tray-normal.png");
-}
-*#tray-button-sound:hover {
-  background-image: url("file://panel/tray-hover.png");
-}
-*#tray-button-sound:active {
-  background-image: url("file://panel/tray-active.png");
-}
-
-*#tray-button-bluetooth {
-  background-image: url("file://panel/tray-normal.png");
-}
-*#tray-button-bluetooth:hover {
-  background-image: url("file://panel/tray-hover.png");
-}
-*#tray-button-bluetooth:active {
-  background-image: url("file://panel/tray-active.png");
-}
-
-*#tray-button-battery {
-  background-image: url("file://panel/tray-normal.png");
-}
-*#tray-button-battery:hover {
-  background-image: url("file://panel/tray-hover.png");
-}
-*#tray-button-battery:active {
-  background-image: url("file://panel/tray-active.png");
-}
-
 /* tooltips */
 NbtkTooltip {
   color: white;
