@@ -19,7 +19,7 @@ struct _PengeEventTilePrivate {
   NbtkWidget *time_label;
   NbtkWidget *summary_label;
   NbtkWidget *details_label;
-  ClutterActor *time_bin;
+  NbtkWidget *time_bin;
 };
 
 enum
@@ -251,9 +251,9 @@ penge_event_tile_init (PengeEventTile *self)
   ClutterActor *tmp_text;
 
   priv->time_bin = nbtk_bin_new ();
-  clutter_actor_set_width (priv->time_bin,
+  clutter_actor_set_width ((ClutterActor *)priv->time_bin,
                            50);
-  nbtk_widget_set_style_class_name ((NbtkWidget *)priv->time_bin,
+  nbtk_widget_set_style_class_name (priv->time_bin,
                                     "PengeEventTimeBin");
 
   priv->time_label = nbtk_label_new ("XX:XX");
@@ -261,9 +261,9 @@ penge_event_tile_init (PengeEventTile *self)
                                     "PengeEventTimeLabel");
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->time_label));
 
-  nbtk_bin_set_child ((NbtkBin *)priv->time_bin,
+  nbtk_bin_set_child (NBTK_BIN (priv->time_bin),
                       (ClutterActor *)priv->time_label);
-  nbtk_bin_set_alignment ((NbtkBin *)priv->time_bin,
+  nbtk_bin_set_alignment (NBTK_BIN (priv->time_bin),
                           NBTK_ALIGN_CENTER,
                           NBTK_ALIGN_CENTER);
 
