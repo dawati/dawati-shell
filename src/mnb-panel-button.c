@@ -70,11 +70,10 @@ mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
     return TRUE;
 
   icon = nbtk_widget_get_background_image (NBTK_WIDGET (button));
-  g_object_set (G_OBJECT (icon),
-                "scale-gravity", CLUTTER_GRAVITY_CENTER,
-                NULL);
-  if (!icon)
-    return TRUE; /* no icon? this surely isn't a real panel button! */
+  if (icon)
+    g_object_set (G_OBJECT (icon),
+                  "scale-gravity", CLUTTER_GRAVITY_CENTER,
+                  NULL);
 
   g_object_get (button, "transition-duration", &duration, NULL);
 
@@ -91,20 +90,24 @@ mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
                              "scale-y", 1.0,
                              NULL);
 
-      clutter_actor_set_scale_with_gravity (icon, 0.5, 0.5,
-                                            CLUTTER_GRAVITY_CENTER);
+      if (icon)
+        {
+          clutter_actor_set_scale_with_gravity (icon, 0.5, 0.5,
+                                                CLUTTER_GRAVITY_CENTER);
 
-      clutter_actor_animate (icon, CLUTTER_EASE_OUT_ELASTIC,
-                             duration * 1.5,
-                             "scale-x", 1.0,
-                             "scale-y", 1.0,
-                             NULL);
+          clutter_actor_animate (icon, CLUTTER_EASE_OUT_ELASTIC,
+                                 duration * 1.5,
+                                 "scale-x", 1.0,
+                                 "scale-y", 1.0,
+                                 NULL);
+        }
     }
   else if (!g_strcmp0 (pseudo_class, "active"))
     {
       /* shrink the background and the icon */
-      clutter_actor_set_scale_with_gravity (icon, 1.0, 1.0,
-                                            CLUTTER_GRAVITY_CENTER);
+      if (icon)
+        clutter_actor_set_scale_with_gravity (icon, 1.0, 1.0,
+                                              CLUTTER_GRAVITY_CENTER);
       clutter_actor_set_scale_with_gravity (bg_image, 1.0, 1.0,
                                             CLUTTER_GRAVITY_CENTER);
       clutter_actor_set_opacity (bg_image, 0x26);
@@ -116,11 +119,12 @@ mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
                              "scale-x", 0.8,
                              "scale-y", 0.8,
                              NULL);
-      clutter_actor_animate (icon, CLUTTER_LINEAR,
-                             150,
-                             "scale-x", 0.7,
-                             "scale-y", 0.7,
-                             NULL);
+      if (icon)
+        clutter_actor_animate (icon, CLUTTER_LINEAR,
+                               150,
+                               "scale-x", 0.7,
+                               "scale-y", 0.7,
+                               NULL);
     }
   else if (!g_strcmp0 (pseudo_class, "checked"))
     {
@@ -143,12 +147,15 @@ mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
                              "opacity", 0xff,
                              NULL);
 
-      clutter_actor_set_scale (icon, 0.8, 0.8);
-      clutter_actor_animate (icon, CLUTTER_EASE_OUT_BACK,
-                             150,
-                             "scale-x", 1.0,
-                             "scale-y", 1.0,
-                             NULL);
+      if (icon)
+        {
+          clutter_actor_set_scale (icon, 0.8, 0.8);
+          clutter_actor_animate (icon, CLUTTER_EASE_OUT_BACK,
+                                 150,
+                                 "scale-x", 1.0,
+                                 "scale-y", 1.0,
+                                 NULL);
+        }
       return FALSE;
     }
 
