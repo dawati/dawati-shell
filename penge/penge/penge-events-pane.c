@@ -31,7 +31,7 @@ enum
   PROP_TIME
 };
 
-#define MAX_COUNT 4
+#define MAX_COUNT 3
 
 static void penge_events_pane_update_duration (PengeEventsPane *pane);
 static void penge_events_pane_update (PengeEventsPane *pane);
