@@ -495,15 +495,11 @@ make_background (const gchar *text, guint width, guint height,
 
   if (bck)
     {
-      ClutterActor *frame;
-      frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
-
-      clutter_actor_set_size (frame, width, height);
-      clutter_actor_set_y (frame, WORKSPACE_CHOOSER_LABEL_HEIGHT +
+      clutter_actor_set_size (bck, width, height);
+      clutter_actor_set_y (bck, WORKSPACE_CHOOSER_LABEL_HEIGHT +
                            WORKSPACE_CHOOSER_CELL_PAD);
 
-      g_object_unref (bck);
-      clutter_container_add_actor (CLUTTER_CONTAINER (group), frame);
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), bck);
     }
 
   if (text)
