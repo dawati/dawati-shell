@@ -31,10 +31,6 @@
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
 
-#include <libintl.h>
-#define _(x) dgettext (GETTEXT_PACKAGE, x)
-#define N_(x) x
-
 #include "moblin-netbook-tray-manager.h"
 #include "moblin-netbook-notify-store.h"
 #include "mnb-notification-cluster.h"

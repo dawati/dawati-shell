@@ -33,6 +33,8 @@
 #include "mnb-switcher.h"
 #include "effects/mnb-switch-zones-effect.h"
 
+#include <glib/gi18n.h>
+
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gmodule.h>

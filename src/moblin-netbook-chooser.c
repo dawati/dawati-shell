@@ -26,6 +26,8 @@
 #include "config.h"
 #endif
 
+#include <glib/gi18n.h>
+
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
 #include "nutter/nutter-scale-group.h"

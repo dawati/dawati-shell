@@ -28,6 +28,8 @@
 
 #include <sys/stat.h>
 
+#include <glib/gi18n.h>
+
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 #include <gmenu-tree.h>
 

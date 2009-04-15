@@ -21,13 +21,21 @@
  * 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "moblin-netbook.h"
 #include "moblin-netbook-status.h"
 #include "mnb-drop-down.h"
 #include "mnb-status-row.h"
+
+#include <string.h>
+
+#include <glib/gi18n.h>
+
 #include <nbtk/nbtk.h>
 #include <gtk/gtk.h>
-#include <string.h>
 
 #include <mojito-client/mojito-client.h>
 
