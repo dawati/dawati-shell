@@ -447,6 +447,9 @@ on_mojito_online_changed (MojitoClient *client,
 
   if (priv->is_online)
     {
+      clutter_actor_set_opacity (priv->entry, 255);
+      clutter_actor_set_opacity (priv->icon, 255);
+
       if (priv->view != NULL)
         mojito_client_view_refresh (row->priv->view);
       else
@@ -462,6 +465,11 @@ on_mojito_online_changed (MojitoClient *client,
           g_free (service_name);
         }
     }
+  else
+    {
+      clutter_actor_set_opacity (priv->entry, 128);
+      clutter_actor_set_opacity (priv->icon, 128);
+    }
 }
 
 static void
@@ -471,7 +479,6 @@ on_mojito_is_online (MojitoClient *client,
 {
   MnbStatusRow *row = data;
   MnbStatusRowPrivate *priv = row->priv;
-  gchar *service_name;
 
   priv->is_online = is_online;
 
@@ -481,15 +488,25 @@ on_mojito_is_online (MojitoClient *client,
   clutter_actor_set_reactive (priv->entry, priv->is_online);
 
   if (!priv->is_online)
-    return;
+    {
+      clutter_actor_set_opacity (priv->entry, 128);
+      clutter_actor_set_opacity (priv->icon, 128);
+    }
+  else
+    {
+      gchar *service_name;
 
-  /* for the View we need a parametrized service name */
-  service_name = g_strdup_printf ("%s:own=1", priv->service_name);
-  mojito_client_open_view_for_service (priv->client,
-                                       service_name, 1,
-                                       on_mojito_view_open,
-                                       row);
-  g_free (service_name);
+      clutter_actor_set_opacity (priv->entry, 255);
+      clutter_actor_set_opacity (priv->icon, 255);
+
+      /* for the View we need a parametrized service name */
+      service_name = g_strdup_printf ("%s:own=1", priv->service_name);
+      mojito_client_open_view_for_service (priv->client,
+                                           service_name, 1,
+                                           on_mojito_view_open,
+                                           row);
+      g_free (service_name);
+    }
 }
 
 static void
