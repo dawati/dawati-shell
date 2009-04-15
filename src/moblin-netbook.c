@@ -258,6 +258,29 @@ alt_still_down (MetaDisplay *display, MetaScreen *screen, Window xwin,
 }
 
 /*
+ * Sets up passive key grabs on any dedicated shortcut keys that we cannot
+ * hook into throught metacity key bindings.
+ */
+static void
+moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin)
+{
+  MetaScreen *screen;
+  Display    *xdpy;
+  Window      root_xwin;
+
+  screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  xdpy      = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
+  root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
+
+  /*
+   * Grab the panel shortcut key.
+   */
+  XGrabKey (xdpy, XKeysymToKeycode (xdpy, MOBLIN_PANEL_SHORTCUT_KEY),
+            AnyModifier,
+            root_xwin, True, GrabModeAsync, GrabModeAsync);
+}
+
+/*
  * Helper function for metacity_alt_tab_key_handler().
  *
  * The advance parameter indicates whether if the grab succeeds the switcher
@@ -403,6 +426,8 @@ try_alt_tab_grab (MutterPlugin *plugin,
 
           meta_display_end_grab_op (display, timestamp);
           priv->in_alt_grab = FALSE;
+
+          moblin_netbook_setup_kbd_grabs (plugin);
 
           workspace        = meta_window_get_workspace (next);
           active_workspace = meta_screen_get_active_workspace (screen);
@@ -710,12 +735,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   MetaScreen    *screen;
   Window         root_xwin;
 
-  screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
-  root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
-
-  XGrabKey (xdpy, XKeysymToKeycode (xdpy, MOBLIN_PANEL_SHORTCUT_KEY),
-            AnyModifier,
-            root_xwin, True, GrabModeAsync, GrabModeAsync);
+  moblin_netbook_setup_kbd_grabs (MUTTER_PLUGIN (plugin));
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
@@ -1817,6 +1837,8 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
           meta_display_end_grab_op (display, xev->xkey.time);
           priv->in_alt_grab = FALSE;
+
+          moblin_netbook_setup_kbd_grabs (plugin);
 
           mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
                                            xev->xkey.time);
