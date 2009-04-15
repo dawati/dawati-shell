@@ -689,7 +689,7 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
 
   s = g_strdup_printf ("%d", col + 1);
 
-  ws_label = nbtk_bin_new ();
+  ws_label = CLUTTER_ACTOR (nbtk_bin_new ());
   label = nbtk_label_new (s);
 
   nbtk_widget_set_style_class_name (label, "workspace-title-label");
