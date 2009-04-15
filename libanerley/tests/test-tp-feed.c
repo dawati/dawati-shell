@@ -16,7 +16,7 @@ main (int    argc,
 
   if (argc < 2)
   {
-    g_print ("Usage: ./test-tp-feed <account-name>");
+    g_print ("Usage: ./test-tp-feed <account-name>\n");
     return 1;
   }
 
