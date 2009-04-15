@@ -142,6 +142,34 @@ on_mojito_get_services (MojitoClient *client,
 }
 
 static void
+update_header (NbtkLabel *header,
+               gboolean   is_online)
+{
+  if (is_online)
+    nbtk_label_set_text (header, _("Your current status"));
+  else
+    nbtk_label_set_text (header, _("Your current status - you are offline"));
+}
+
+static void
+on_mojito_online_changed (MojitoClient *client,
+                          gboolean      is_online,
+                          NbtkLabel    *label)
+{
+  update_header (label, is_online);
+}
+
+static void
+on_mojito_is_online (MojitoClient *client,
+                     gboolean      is_online,
+                     gpointer      data)
+{
+  NbtkLabel *label = data;
+
+  update_header (label, is_online);
+}
+
+static void
 on_drop_down_show_completed (MnbDropDown *drop_down,
                              NbtkTable   *table)
 {
@@ -171,7 +199,7 @@ make_status (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (CLUTTER_ACTOR (table), width);
   clutter_actor_set_reactive (table, TRUE);
 
-  header = nbtk_label_new ("Your current status");
+  header = nbtk_label_new (_("Your current status"));
   nbtk_widget_set_style_class_name (header, "MnbStatusPageHeader");
   nbtk_table_add_widget_full (NBTK_TABLE (table), header,
                               0, 0,
@@ -180,6 +208,14 @@ make_status (MutterPlugin *plugin, gint width)
                               0.0, 0.5);
 
   client = mojito_client_new ();
+
+  /* online notification on the header */
+  mojito_client_is_online (client, on_mojito_is_online, header);
+  g_signal_connect (client, "online-changed",
+                    G_CALLBACK (on_mojito_online_changed),
+                    header);
+
+  /* start retrieving the services */
   mojito_client_get_services (client, on_mojito_get_services, table);
   g_object_set_data_full (G_OBJECT (table), "mojito-client",
                           client,
