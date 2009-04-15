@@ -170,9 +170,17 @@ mux_switch_box_init (MuxSwitchBox *self)
                           G_CALLBACK (_switch_flipped_cb), self);
 }
 
-//MuxSwitchBox*
 GtkWidget *
 mux_switch_box_new (const gchar *text)
 {
         return g_object_new (MUX_TYPE_SWITCH_BOX, "name", text, NULL);
+}
+
+void
+mux_switch_box_set_active (MuxSwitchBox *switch_box,
+			   gboolean active)
+{
+	MuxSwitchBoxPrivate *priv = MUX_SWITCH_BOX_GET_PRIVATE (switch_box);
+
+	mux_ligh_switch_set_active (priv->lightswitch), active);
 }

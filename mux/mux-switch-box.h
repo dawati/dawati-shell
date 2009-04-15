@@ -38,6 +38,8 @@ typedef struct {
 
 GType mux_switch_box_get_type (void);
 
+void mux_switch_box_set_active (MuxSwitchBox *switchbox, gboolean active);
+
 GtkWidget* mux_switch_box_new (const gchar *text);
 
 G_END_DECLS
