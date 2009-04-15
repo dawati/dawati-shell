@@ -1,9 +1,15 @@
 #include <libmissioncontrol/mission-control.h>
 #include <telepathy-glib/contact.h>
 
+#include "anerley-feed.h"
 #include "anerley-tp-feed.h"
 
-G_DEFINE_TYPE (AnerleyTpFeed, anerley_tp_feed, G_TYPE_OBJECT)
+static void feed_interface_init (gpointer g_iface, gpointer iface_data);
+G_DEFINE_TYPE_WITH_CODE (AnerleyTpFeed,
+                         anerley_tp_feed,
+                         G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (ANERLEY_TYPE_FEED,
+                                                feed_interface_init));
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ANERLEY_TYPE_TP_FEED, AnerleyTpFeedPrivate))
@@ -475,4 +481,12 @@ anerley_tp_feed_new (MissionControl *mc,
                        "account",
                        account,
                        NULL);
+}
+
+
+static void
+feed_interface_init (gpointer g_iface,
+                     gpointer iface_data)
+{
+  /* Nothing to do here..? */
 }
