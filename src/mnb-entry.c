@@ -471,3 +471,11 @@ mnb_entry_set_text (MnbEntry     *self,
     nbtk_entry_set_text (NBTK_ENTRY (self->priv->entry), text);
 }
 
+NbtkWidget *
+mnb_entry_get_nbtk_entry (MnbEntry *self)
+{
+  g_return_val_if_fail (MNB_IS_ENTRY (self), NULL);
+
+  return NBTK_WIDGET (self->priv->entry);
+}
+

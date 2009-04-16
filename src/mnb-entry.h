@@ -44,6 +44,8 @@ const gchar * mnb_entry_get_text  (MnbEntry     *self);
 void          mnb_entry_set_text  (MnbEntry     *self,
                                    const gchar  *text);
 
+NbtkWidget * mnb_entry_get_nbtk_entry  (MnbEntry     *self);
+
 G_END_DECLS
 
 #endif /* __MNB_ENTRY_H__ */

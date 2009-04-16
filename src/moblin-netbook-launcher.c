@@ -767,6 +767,16 @@ search_activated_cb (MnbEntry         *entry,
     }
 }
 
+static gboolean
+search_key_press_cb (MnbEntry         *entry,
+                     ClutterKeyEvent  *event,
+                     launcher_data_t  *launcher_data)
+{
+  /*  ("%s() %x\n", __FUNCTION__, event->keyval); */
+
+  return FALSE;
+}
+
 static void
 dropdown_show_cb (ClutterActor    *actor,
                   launcher_data_t *launcher_data)
@@ -856,6 +866,9 @@ make_launcher (MutterPlugin *plugin,
   /* `launcher_data' lifecycle is managed above. */
   g_signal_connect (entry, "text-changed",
                     G_CALLBACK (search_activated_cb), launcher_data);
+  /* TODO hook this on the actual ClutterText */
+  g_signal_connect (entry, "key-press-event",
+                    G_CALLBACK (search_key_press_cb), launcher_data);
 
   g_signal_connect_after (drop_down, "show",
                           G_CALLBACK (dropdown_show_cb), launcher_data);
