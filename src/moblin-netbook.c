@@ -1484,7 +1484,20 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
    */
   if (mutter_window_is_override_redirect (mcw))
     {
-      Window xwin = mutter_window_get_x_window (mcw);
+      Window        xwin = mutter_window_get_x_window (mcw);
+      MetaRectangle rect;
+      gint          screen_width, screen_height;
+      MetaScreen    *screen  = mutter_plugin_get_screen (plugin);
+      Display       *xdpy    = mutter_plugin_get_xdisplay (plugin);
+      Screen        *xscreen;
+
+      xscreen = ScreenOfDisplay (xdpy, meta_screen_get_screen_number (screen));
+
+      meta_window_get_outer_rect (mutter_window_get_meta_window (mcw), &rect);
+
+      printf ("Got OR %dx%d (screen %dx%d)\n",
+              rect.width, rect.height,
+              WidthOfScreen (xscreen), HeightOfScreen (xscreen));
 
       if (shell_tray_manager_is_config_window (priv->tray_manager, xwin))
         {
