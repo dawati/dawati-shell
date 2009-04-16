@@ -191,8 +191,8 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
  *
  * The effect is constructed of there layers of actors:
  *
- * desktop: this is the top level container for the effect; it has background
- *          ClutterRectangle of a size that of the screen.
+ * desktop: this is the top level container for the effect; a NbtkBin with the
+ *          *#zone-switch-background style.
  *
  * frame:   this is a window onto the desktop; this actor has the zoom effects
  *          applied to (it needs to be separate from the desktop, so that as we
@@ -227,15 +227,10 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
     {
       ClutterActor *parent;
       ClutterActor *bkg;
-      ClutterColor  clr = { 0x44, 0x44, 0x44, 0xff };
 
-      desktop = clutter_group_new ();
-
-      /*
-       * TODO the color needs to be themable.
-       */
-      bkg = clutter_rectangle_new_with_color (&clr);
-      clutter_actor_set_size (bkg, screen_width, screen_height);
+      desktop = nbtk_bin_new ();
+      clutter_actor_set_name (desktop, "zone-switch-background");
+      clutter_actor_set_size (desktop, screen_width, screen_height);
 
       strip = CLUTTER_ACTOR (nbtk_table_new ());
 
@@ -254,7 +249,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
       clutter_container_add_actor (CLUTTER_CONTAINER (frame), strip);
 
-      clutter_container_add (CLUTTER_CONTAINER (desktop), bkg, frame, NULL);
+      clutter_container_add_actor (CLUTTER_CONTAINER (desktop), frame);
 
       parent = mutter_plugin_get_window_group (plugin);
       clutter_container_add_actor (CLUTTER_CONTAINER (parent), desktop);
