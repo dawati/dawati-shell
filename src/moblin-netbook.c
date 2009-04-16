@@ -432,8 +432,7 @@ try_alt_tab_grab (MutterPlugin *plugin,
           workspace        = meta_window_get_workspace (next);
           active_workspace = meta_screen_get_active_workspace (screen);
 
-          clutter_actor_hide (priv->switcher);
-          hide_panel (plugin);
+          mnb_switcher_hide_with_panel (switcher);
 
           if (!active_workspace || (active_workspace == workspace))
             {

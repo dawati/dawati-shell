@@ -144,6 +144,7 @@ struct _MnbSwitcherPrivate {
   GList        *tab_list;
 
   guint         show_completed_id;
+  guint         hide_panel_cb_id;
 
   gboolean      dnd_in_progress : 1;
   gboolean      constructing    : 1;
@@ -1571,7 +1572,7 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
   active_workspace = meta_screen_get_active_workspace (screen);
 
   if (close)
-    clutter_actor_hide (CLUTTER_ACTOR (switcher));
+    mnb_switcher_hide_with_panel (switcher);
 
   if (!active_workspace || (active_workspace == workspace))
     {
@@ -1665,3 +1666,33 @@ mnb_switcher_get_next_window (MnbSwitcher *switcher,
   return mutter_window_get_meta_window (next_priv->mw);
 }
 
+static void
+hide_panel_on_hide_completed_cb (MnbSwitcher *switcher, gpointer data)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+  MutterPlugin       *plugin = priv->plugin;
+
+  g_signal_handler_disconnect (switcher, priv->hide_panel_cb_id);
+  priv->hide_panel_cb_id = 0;
+
+  hide_panel (plugin);
+}
+
+/*
+ * Hides both switcher and panel, in a sequnce so so as to preserve the
+ * hide animations.
+ */
+void
+mnb_switcher_hide_with_panel (MnbSwitcher *switcher)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+
+  if (priv->hide_panel_cb_id)
+    return;
+
+  priv->hide_panel_cb_id =
+    g_signal_connect (switcher, "hide-completed",
+                      G_CALLBACK (hide_panel_on_hide_completed_cb), NULL);
+
+  clutter_actor_hide (CLUTTER_ACTOR (switcher));
+}

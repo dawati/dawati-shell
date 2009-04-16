@@ -69,6 +69,8 @@ MetaWindow *mnb_switcher_get_selection (MnbSwitcher *switcher);
 MetaWindow *mnb_switcher_get_next_window (MnbSwitcher *switcher,
                                           MetaWindow  *current,
                                           gboolean     backward);
+void        mnb_switcher_hide_with_panel (MnbSwitcher *switcher);
+
 G_END_DECLS
 
 #endif /* _MNB_SWITCHER */
