@@ -382,8 +382,14 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
  * we will probably want to wrap these in NbtkBin so they can be themed.
  */
 static ClutterActor *
-make_nth_workspace (GList **list, gint n, gint screen_width, gint screen_height)
+make_nth_workspace (MutterPlugin  *plugin,
+                    GList        **list,
+                    gint           n,
+                    gint           screen_width,
+                    gint           screen_height)
 {
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
   GList *l   = *list;
   GList *tmp =  NULL;
   gint   i   =  0;
@@ -402,8 +408,13 @@ make_nth_workspace (GList **list, gint n, gint screen_width, gint screen_height)
   while (i <= n)
     {
       ClutterActor *group;
+      ClutterActor *bkg;
 
       group = clutter_group_new ();
+
+      bkg = clutter_clone_new (priv->parallax_tex);
+      clutter_actor_set_size (bkg, screen_width, screen_height);
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), bkg);
 
       clutter_actor_set_clip (group, 0, 0, screen_width, screen_height);
 
@@ -525,7 +536,7 @@ fill_strip (MutterPlugin *plugin,
       g_object_weak_ref (G_OBJECT (mw), origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), clone_weak_notify, mw);
 
-      workspace = make_nth_workspace (&workspaces, ws_indx,
+      workspace = make_nth_workspace (plugin, &workspaces, ws_indx,
                                       screen_width, screen_height);
       g_assert (workspace);
 
