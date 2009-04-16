@@ -2,6 +2,7 @@
 #include <telepathy-glib/contact.h>
 
 #include "anerley-feed.h"
+#include "anerley-item.h"
 #include "anerley-tp-feed.h"
 
 static void feed_interface_init (gpointer g_iface, gpointer iface_data);
@@ -21,6 +22,9 @@ struct _AnerleyTpFeedPrivate {
   McAccount *account;
   TpConnection *conn;
   TpChannel *subscribe_channel;
+
+  GHashTable *ids_to_items;
+  GHashTable *handles_to_ids;
 };
 
 enum
@@ -78,6 +82,22 @@ anerley_tp_feed_dispose (GObject *object)
 {
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (object);
 
+  /*
+   * Do here rather than finalize since this will then cause the TpContact
+   * inside the item to be unreffed.
+   */
+  if (priv->ids_to_items)
+  {
+    g_hash_table_unref (priv->ids_to_items);
+    priv->ids_to_items = NULL;
+  }
+
+  if (priv->handles_to_ids)
+  {
+    g_hash_table_unref (priv->handles_to_ids);
+    priv->handles_to_ids = NULL;
+  }
+
   if (priv->subscribe_channel)
   {
     g_object_unref (priv->subscribe_channel);
@@ -125,6 +145,10 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
   gint i = 0;
   TpContact *contact;
+  AnerleyItem *item;
+  gchar *uid;
+  GList *changed_items = NULL;
+  GList *added_items = NULL;
 
   if (error)
   {
@@ -141,7 +165,68 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
              tp_contact_get_alias (contact),
              tp_contact_get_identifier (contact),
              tp_contact_get_presence_status (contact));
+
+    item = g_hash_table_lookup (priv->ids_to_items,
+                                tp_contact_get_identifier (contact));
+
+    if (item)
+    {
+      /* TODO: Check if this code path ever gets hit, really. */
+
+      if (contact != item->data)
+      {
+        g_object_ref (contact);
+        g_object_unref (item->data);
+
+        changed_items = g_list_append (changed_items, item);
+      }
+    } else {
+      uid = g_strdup_printf ("%s/%s",
+                             mc_account_get_normalized_name (priv->account),
+                             tp_contact_get_identifier (contact));
+      item = anerley_item_new ();
+      item->uid = uid;
+      /* TODO: Actually decide on this;
+      item->type = anerley_tp_feed_get_item_type ();
+      */
+      item->data = g_object_ref (contact);
+      item->data_destroy_notify = g_object_unref;
+
+      added_items = g_list_append (added_items, item);
+
+      /* Move the ownership of the reference to the hash table */
+      g_hash_table_insert (priv->ids_to_items,
+                           g_strdup (tp_contact_get_identifier (contact)),
+                           item);
+
+      /* 
+       * We need to save the handle -> id mapping so that when we deal with a
+       * removal, well, so that we can :-)
+       */
+      g_hash_table_insert (priv->handles_to_ids,
+                           GUINT_TO_POINTER (tp_contact_get_handle (contact)),
+                           g_strdup (tp_contact_get_identifier (contact)));
+    }
   }
+
+  /* TODO: Move to idle to avoid blocking the bus */
+
+  /* We are holding an implicit reference here because the hash table has it.
+   * The expectation is that the UI components take the reference on the item
+   * if they want it.
+   */
+  if (added_items)
+    g_signal_emit_by_name (feed,
+                           "items-added",
+                           added_items);
+
+  if (changed_items)
+    g_signal_emit_by_name (feed,
+                           "items-changed",
+                           changed_items);
+
+  g_list_free (added_items);
+  g_list_free (changed_items);
 }
 
 static void
@@ -152,7 +237,7 @@ anerley_tp_feed_fetch_contacts (AnerleyTpFeed *feed,
   TpContactFeature features[] = {TP_CONTACT_FEATURE_ALIAS,
                                  TP_CONTACT_FEATURE_AVATAR_TOKEN,
                                  TP_CONTACT_FEATURE_PRESENCE };
- 
+
   /* Now we have our members let's request the TpContacts for them */
   tp_connection_get_contacts_by_handle (priv->conn,
                                         members->len,
@@ -179,8 +264,47 @@ _tp_channel_members_changed_on_subscribe_cb (TpChannel    *proxy,
 {
   AnerleyTpFeed *feed = ANERLEY_TP_FEED (weak_object);
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+  TpHandle handle;
+  gchar *id;
+  AnerleyItem *item;
+  gint i = 0;
+  GList *removed_items = NULL;
+  GList *l;
 
   g_debug (G_STRLOC ": Members changed.");
+  anerley_tp_feed_fetch_contacts (feed, added);
+
+  for (i = 0; i < removed->len; i++)
+  {
+    handle = (TpHandle)removed->data[i];
+    id = g_hash_table_lookup (priv->handles_to_ids,
+                              GUINT_TO_POINTER (handle));
+
+    if (id)
+    {
+      item = g_hash_table_lookup (priv->ids_to_items, id);
+
+      if (item)
+      {
+        removed_items = g_list_append (removed_items, item);
+      }
+
+      g_hash_table_remove (priv->handles_to_ids,
+                           GUINT_TO_POINTER (handle));
+    }
+  }
+
+  if (removed_items)
+    g_signal_emit_by_name (feed,
+                           "items-removed",
+                           removed_items);
+
+  for (l = removed_items; l; l = l->next)
+  {
+    item = (AnerleyItem *)l->data;
+    g_hash_table_remove (priv->ids_to_items,
+                         tp_contact_get_identifier ((TpContact *)item->data));
+  }
 }
 
 static void
@@ -469,6 +593,17 @@ static void
 anerley_tp_feed_init (AnerleyTpFeed *self)
 {
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (self);
+
+  priv->ids_to_items = g_hash_table_new_full (g_str_hash,
+                                              g_str_equal,
+                                              g_free,
+                                              (GDestroyNotify)anerley_item_unref);
+
+  priv->handles_to_ids = g_hash_table_new_full (g_direct_hash,
+                                                g_direct_equal,
+                                                NULL,
+                                                g_free);
+
 }
 
 AnerleyTpFeed *
