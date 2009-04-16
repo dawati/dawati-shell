@@ -72,6 +72,9 @@ static void setup_parallax_effect (MutterPlugin *plugin);
 
 static void setup_focus_window (MutterPlugin *plugin);
 
+static void
+toolbar_trigger_region_set_height (MutterPlugin *plugin, gint height);
+
 static GQuark actor_data_quark = 0;
 
 static void     minimize   (MutterPlugin *plugin,
@@ -142,23 +145,6 @@ moblin_netbook_plugin_dispose (GObject *object)
 
   xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (object));
 
-  if (priv->screen_region)
-    {
-      XFixesDestroyRegion (xdpy, priv->screen_region);
-      priv->screen_region = None;
-    }
-
-  if (priv->panel_trigger_region)
-    {
-      XFixesDestroyRegion (xdpy, priv->panel_trigger_region);
-      priv->panel_trigger_region = None;
-    }
-
-  if (priv->panel_trigger_region2)
-    {
-      XFixesDestroyRegion (xdpy, priv->panel_trigger_region2);
-      priv->panel_trigger_region2 = None;
-    }
 
   if (priv->current_input_region)
     {
@@ -752,6 +738,10 @@ moblin_netbook_plugin_constructed (GObject *object)
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
                                    &screen_width, &screen_height);
 
+  priv->screen_width  = screen_width;
+  priv->screen_height = screen_height;
+
+#if 0
   rect[0].x = 0;
   rect[0].y = 0;
   rect[0].width = screen_width;
@@ -772,6 +762,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   region = XFixesCreateRegion (xdpy, &rect[0], 1);
 
   priv->screen_region = region;
+#endif
+
+  toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
 
   /*
    * Create the current_input region; we start with empty, and it gets filled
@@ -1751,9 +1744,7 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
 
-  priv->current_input_base_region = priv->panel_trigger_region;
-
-  moblin_netbook_input_region_apply (plugin);
+  toolbar_trigger_region_set_height (plugin, 0);
 
   /*
    * Work out what we should focus next.
@@ -1795,9 +1786,12 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
 
+
+#if 0
   priv->current_input_base_region = priv->screen_region;
 
   moblin_netbook_input_region_apply (plugin);
+#endif
 
   /*
    * Map the input blocker window so keystrokes, etc., are not reaching apps.
@@ -1931,6 +1925,23 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
     }
 }
 
+static void
+toolbar_trigger_region_set_height (MutterPlugin *plugin, gint height)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (priv->toolbar_trigger_region != NULL)
+    moblin_netbook_input_region_remove (plugin, priv->toolbar_trigger_region);
+
+  priv->toolbar_trigger_region 
+    = moblin_netbook_input_region_push (plugin,
+                                        0,
+                                        0,
+                                        priv->screen_width,
+                                        PANEL_SLIDE_THRESHOLD + height,
+                                        FALSE);
+}
+
 static gboolean
 panel_slide_timeout_cb (gpointer data)
 {
@@ -2014,8 +2025,8 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
           if (!priv->panel_slide_timeout_id &&
               !CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
             {
-              priv->current_input_base_region = priv->panel_trigger_region2;
-              moblin_netbook_input_region_apply (MUTTER_PLUGIN (plugin));
+              /* Increase sensitivity */
+              toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 5);
 
               priv->panel_slide_timeout_id =
                 g_timeout_add (PANEL_SLIDE_THRESHOLD_TIMEOUT,
@@ -2260,130 +2271,79 @@ plugin_info (MutterPlugin *plugin)
   return &priv->info;
 }
 
-/*
- * The machinery for manipulating shape of the stage window.
- *
- * The problem: we are mixing UI done in Clutter with applications using X.
- * When the Clutter stage window receives input events, the X windows (located
- * beneath it) do not. At time we want events on parts of the screen to be
- * handled by Clutter and parts by X; for that we have to change the input
- * shape of the stage window (for which mutter provides API).
- *
- * The are two basic states we start with.
- *
- * (a) All events go to clutter, and nothing to X; this is generally the case
- *     when the UI is visible.
- *
- * (b) All events except for a 1px high strip along the top of the screen go
- *     to X. This is the case when the UI is hidden (the 1px strip is a trigger
- *     zone for showing the pannel).
- *
- * Basic state (a) is represented by screen_region (in the plugin private),
- * state (b) by panel_trigger_region.
- *
- * There are situations in which neither of the basic states is what we
- * require. Sometimes when in state (a) we need to 'cut out' additional holes in
- * to allow events reaching X (e.g., when showing system tray config windows),
- * sometimes when in state (b) we need events at parts of the screen to be
- * handled by Clutter (e.g., the notifications).
- *
- * We can use the XFixes API to modify the input shape to match our
- * requirements; the one complication in this is that while modifying the
- * existing shape is easy (a simple union or subtraction), such modification
- * cannot be trivially undone. For example, let's start with initial state (b):
- *
- *   1. All events go to X, the input shape is empty.
- *
- *   2. Notification appears requring area A to be added to the input shape.
- *
- *   3. User opens Panel; the new required shape is the union of basic state
- *      (a) and area A require by notification (a u A).
- *
- *   4. User deals with notification, which closes; at this point we need to
- *      reverse the union (a u A); unfortunatley, union operation is not
- *      reversible unless we know what the consituent parts of the union were
- *      (e.g., subtracting A from ours shape would leave us with a hole where
- *      A was).
- *
- * So, we maintain a stack of regions that make up the current input shape. This
- * stack consists of:
- *
- *   1. Base region, current_input_base region. This points either to
- *      screen_region (we are in mode (a)), or the panel_trigger_region (mode
- *      (b)).
- *
- *   2. Stack of custom regions required by UI components; each of these can
- *      either be additive (events here go to Clutter) or inverse (events go
- *      to X).
- *
- *   3. The regions are combined in the order in which they were pushed on the
- *      stack, starting from the base. The resulting region is used as the input
- *      shape for stage window.
- *
- *   4. Each region remains on the stack until it is explicitely removed, using
- *      to region ID obtained during the stack push.
- *
- * The individual functions are commented on below.
- */
+
+
+void
+moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
+{
+  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
+
+  if (timestamp == CurrentTime)
+    timestamp = clutter_x11_get_current_event_time ();
+
+  if (priv->last_focused)
+    g_object_weak_unref (G_OBJECT (priv->last_focused),
+                         last_focus_weak_notify_cb, plugin);
+
+  priv->last_focused = meta_display_get_focus_window (display);
+
+  if (priv->last_focused)
+    g_object_weak_ref (G_OBJECT (priv->last_focused),
+                       last_focus_weak_notify_cb, plugin);
+
+  XSetInputFocus (xdpy,
+                  priv->focus_xwin,
+                  RevertToPointerRoot,
+                  timestamp);
+}
+
+void
+moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
+{
+  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  MetaWindow                 *focus;
+
+
+  if (timestamp == CurrentTime)
+    timestamp = clutter_x11_get_current_event_time ();
+
+  /*
+   * Work out what we should focus next.
+   *
+   * First, we tray to get the window from metacity tablist, if that fails
+   * fall back on the cached last_focused window.
+   */
+  focus = meta_display_get_tab_current (display,
+                                        META_TAB_LIST_NORMAL,
+                                        screen,
+                                        NULL);
+
+  if (!focus)
+    focus = priv->last_focused;
+
+  if (priv->last_focused)
+    {
+      g_object_weak_unref (G_OBJECT (priv->last_focused),
+                           last_focus_weak_notify_cb, plugin);
+
+      priv->last_focused = NULL;
+    }
+
+  if (focus)
+    meta_display_set_input_focus_window (display, focus, FALSE, timestamp);
+}
+
 struct MnbInputRegion
 {
   XserverRegion region;
   gboolean      inverse;
 };
 
-#if 0
-/* Ignore the stack of regions and simply direct all input to Clutter stage */
-void
-moblin_netbook_input_region_disable (MutterPlugin *plugin)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  if (!priv->input_region_disabled)
-    {
-      mutter_plugin_set_stage_input_region (plugin, priv->screen_region);
-      priv->input_region_disabled = TRUE;
-    }
-}
-
-/* Reable input through punched out regions in stack */
-void
-moblin_netbook_input_region_enable (MutterPlugin *plugin)
-{
-  if (priv->input_region_disabled)
-    {
-      priv->input_region_disabled = FALSE;
-      moblin_netbook_input_region_apply (plugin);
-    }
-}
-
-void
-moblin_netbook_stash_window_focus (MutterPlugin *plugin)
-{
-
-}
-
-void
-moblin_netbook_unstash_window_focus (MutterPlugin *plugin)
-{
-
-}
-#endif
-
-/*
- * moblin_netbook_input_region_push()
- *
- * Puhses region of the given dimensions onto the input region stack; this is
- * immediately reflected in the actual input shape.
- *
- * x, y, width, height: region position and size (screen-relative)
- *
- * inverse: indicates whether the region should be added to the input shape
- *          (FALSE; input events in this area will go to Clutter) or subtracted
- *          from it (TRUE; input events will go to X)
- *
- * returns: id that identifies this region; used in subsequent call to
- *          moblin_netbook_input_region_remove().
- */
 MnbInputRegion
 moblin_netbook_input_region_push (MutterPlugin *plugin,
                                   gint          x,
@@ -2407,29 +2367,11 @@ moblin_netbook_input_region_push (MutterPlugin *plugin,
 
   priv->input_region_stack = g_list_append (priv->input_region_stack, mir);
 
-  if (inverse)
-    XFixesSubtractRegion (xdpy,
-                          priv->current_input_region,
-                          priv->current_input_region, mir->region);
-  else
-    XFixesUnionRegion (xdpy,
-                       priv->current_input_region,
-                       priv->current_input_region, mir->region);
-
-  mutter_plugin_set_stage_input_region (plugin, priv->current_input_region);
+  moblin_netbook_input_region_apply (plugin);
 
   return mir;
 }
 
-/*
- * moblin_netbook_input_region()
- *
- * Removes region previously pushed onto the stack with
- * moblin_netbook_input_region_push(). This change is immediately applied to the
- * actual input shape.
- *
- * mir: the region ID returned by moblin_netbook_input_region_push().
- */
 void
 moblin_netbook_input_region_remove (MutterPlugin *plugin, MnbInputRegion mir)
 {
@@ -2437,16 +2379,6 @@ moblin_netbook_input_region_remove (MutterPlugin *plugin, MnbInputRegion mir)
   moblin_netbook_input_region_apply (plugin);
 }
 
-/*
- * moblin_netbook_input_region_remove_without_update()
- *
- * Removes region previously pushed onto the stack with
- * moblin_netbook_input_region_push(). This changes does not immediately
- * filter into the actual input shape; this is useful if you need to
- * replace an existing region, as it saves round trip to the server.
- *
- * mir: the region ID returned by moblin_netbook_input_region_push().
- */
 void
 moblin_netbook_input_region_remove_without_update (MutterPlugin  *plugin,
                                                    MnbInputRegion mir)
@@ -2462,33 +2394,24 @@ moblin_netbook_input_region_remove_without_update (MutterPlugin  *plugin,
   g_slice_free (struct MnbInputRegion, mir);
 }
 
-/*
- * Applies the current input shape base and stack to the stage input shape.
- * This function is for internal use only and should not be used outside of the
- * actual implementation of the input shape stack.
- */
 static void
 moblin_netbook_input_region_apply (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   Display *xdpy = mutter_plugin_get_xdisplay (plugin);
   GList *l = priv->input_region_stack;
-  XserverRegion result = priv->current_input_region;
+  XserverRegion result;
 
-#if 0                           /* See above  */
-  if (priv->input_region_disabled)
-    return;
-#endif
+  if (priv->current_input_region)
+    XFixesDestroyRegion (xdpy, priv->current_input_region);
 
-  XFixesCopyRegion (xdpy, result, priv->current_input_base_region);
+  result = priv->current_input_region = XFixesCreateRegion (xdpy, NULL, 0);
 
   while (l)
     {
       MnbInputRegion mir = l->data;
 
-      if (mir->inverse)
-        XFixesSubtractRegion (xdpy, result, result, mir->region);
-      else
+      if (mir->region)
         XFixesUnionRegion (xdpy, result, result, mir->region);
 
       l = l->next;

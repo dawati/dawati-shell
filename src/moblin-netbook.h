@@ -104,15 +104,25 @@ struct _MoblinNetbookPluginPrivate
 
   ShellTrayManager      *tray_manager;
 
+#if 0
   XserverRegion          screen_region;
   XserverRegion          panel_trigger_region;
   XserverRegion          panel_trigger_region2;
-  XserverRegion          current_input_region;
   XserverRegion          current_input_base_region;
+#endif
+
+  XserverRegion          current_input_region;
 
   GList                 *input_region_stack;
 
+  MnbInputRegion         toolbar_trigger_region;
+
+  MnbInputRegion         panel_input_region;
+
   MetaWindow            *last_focused;
+
+  gint                   screen_width;
+  gint                   screen_height;
 
   gboolean               debug_mode                 : 1;
   gboolean               panel_out_in_progress      : 1;
@@ -200,5 +210,12 @@ void moblin_netbook_input_region_remove (MutterPlugin   *plugin,
 
 void
 moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on);
+
+void
+moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp);
+
+void
+moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp);
+
 
 #endif

@@ -86,6 +86,12 @@ on_panel_back_effect_complete (ClutterTimeline *timeline, gpointer data)
 
   if (!priv->workspace_chooser)
     {
+      if (priv->panel_input_region)
+        {
+          moblin_netbook_input_region_remove (plugin,
+                                              priv->panel_input_region);
+          priv->panel_input_region = NULL; /* XXX leaky? */
+        }
       disable_stage (plugin, CurrentTime);
     }
 }
@@ -197,6 +203,15 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       clutter_actor_set_y (control_actor, PANEL_HEIGHT);
       clutter_actor_show (control_actor);
     }
+
+  /* basically make the whole stage go to clutter.. */
+  priv->panel_input_region 
+                = moblin_netbook_input_region_push (plugin,
+                                                    0,
+                                                    0,
+                                                    priv->screen_width,
+                                                    priv->screen_height,
+                                                    FALSE);
 
   enable_stage (plugin, CurrentTime);
 

@@ -861,8 +861,6 @@ show_workspace_chooser (MutterPlugin *plugin,
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          frame, label, grid, NULL);
 
-  moblin_netbook_set_lowlight (plugin, TRUE);
-
   if (priv->workspace_chooser)
     hide_workspace_chooser (plugin, timestamp);
 
@@ -900,7 +898,8 @@ show_workspace_chooser (MutterPlugin *plugin,
 
   clutter_grab_keyboard (switcher);
 
-  enable_stage (plugin, timestamp);
+  moblin_netbook_stash_window_focus (plugin, timestamp);
+  moblin_netbook_set_lowlight (plugin, TRUE);
 }
 
 void
@@ -918,13 +917,12 @@ hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
     }
 
   moblin_netbook_set_lowlight (plugin, FALSE);
+  moblin_netbook_unstash_window_focus (plugin, timestamp);
 
   hide_panel (plugin);
 
   clutter_actor_destroy (priv->workspace_chooser);
   priv->workspace_chooser = NULL;
-
-  disable_stage (plugin, timestamp);
 }
 
 /*
