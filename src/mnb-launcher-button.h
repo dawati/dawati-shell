@@ -52,9 +52,8 @@ struct _MnbLauncherButtonClass
   NbtkTableClass parent;
 
   /* signals */
-  void (* activated)    (MnbLauncherButton     *self,
-                         ClutterButtonEvent    *event);
-  void (* fav_toggled)  (MnbLauncherButton     *self);
+  void (* activated)    (MnbLauncherButton *self);
+  void (* fav_toggled)  (MnbLauncherButton *self);
 };
 
 GType mnb_launcher_button_get_type (void) G_GNUC_CONST;

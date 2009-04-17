@@ -1067,23 +1067,44 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
     {
     case SN_MONITOR_EVENT_INITIATED:
       {
-        SnHashData *sn_data;
+        MetaScreen *screen    = mutter_plugin_get_screen (plugin);
+        gint        n_ws      = meta_screen_get_n_workspaces (screen);
+        gboolean    empty     = FALSE;
+        SnHashData *sn_data   = g_slice_new0 (SnHashData);
         guint32     timestamp = sn_startup_sequence_get_timestamp (sequence);
 
-        if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
+        sn_data->state = SN_MONITOR_EVENT_INITIATED;
+        sn_data->workspace = -2;
+
+        if (n_ws == 1)
           {
-            sn_data = value;
+            GList *l;
+            empty = TRUE;
+            for (l = mutter_get_windows (screen); l; l = l->next)
+              {
+                MutterWindow *m = l->data;
+                MetaWindow   *w = mutter_window_get_meta_window (m);
+
+                if (w)
+                  {
+                    MetaCompWindowType type = mutter_window_get_window_type (m);
+
+                    if (type == META_COMP_WINDOW_NORMAL)
+                      {
+                        empty = FALSE;
+                        break;
+                      }
+                  }
+              }
           }
-        else
+
+        if (empty)
           {
-            sn_data = g_slice_new0 (SnHashData);
-
-            sn_data->workspace = -2;
-
-            g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
+            sn_data->without_chooser = TRUE;
+            sn_data->workspace = 0;
           }
 
-          sn_data->state = SN_MONITOR_EVENT_INITIATED;
+          g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
 
           if (!sn_data->without_chooser)
             show_workspace_chooser (plugin, seq_id, timestamp);

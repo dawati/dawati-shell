@@ -30,6 +30,7 @@
 #include <string.h>
 
 #include <glib/gi18n.h>
+#include <gio/gdesktopappinfo.h>
 
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
@@ -128,14 +129,15 @@ mnb_launcher_button_set_reactive_cb (ClutterActor *launcher)
 
 static void
 launcher_activated_cb (MnbLauncherButton  *launcher,
-                       ClutterButtonEvent *event,
                        MutterPlugin       *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  const gchar                *exec = mnb_launcher_button_get_executable (launcher);
-  gchar                      *last_used;
-  gboolean                    without_chooser = FALSE;
-  gint                        workspace       = -2;
+  GAppLaunchContext          *context;
+  const gchar     *desktop_file_path;
+  const gchar     *exec;
+  GDesktopAppInfo *app_info;
+  gchar           *last_used;
+  GError          *error = NULL;
 
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
@@ -144,45 +146,17 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
                          (GSourceFunc) mnb_launcher_button_set_reactive_cb,
                          launcher);
 
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
-  gint        n_ws   = meta_screen_get_n_workspaces (screen);
-  gboolean    empty  = FALSE;
+  context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+  desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
+  app_info = g_desktop_app_info_new_from_filename (desktop_file_path);
+  g_app_info_launch (G_APP_INFO (app_info), NULL, context, &error);
+  if (error)
+    g_warning (G_STRLOC "%s", error->message);
+  g_clear_error (&error);
+  g_object_unref (app_info);
+  g_object_unref (context);
 
-  if (n_ws == 1)
-    {
-      GList * l;
-
-      empty = TRUE;
-
-      l = mutter_get_windows (screen);
-      while (l)
-        {
-          MutterWindow *m    = l->data;
-          MetaWindow   *w = mutter_window_get_meta_window (m);
-
-          if (w)
-            {
-              MetaCompWindowType type = mutter_window_get_window_type (m);
-
-              if (type == META_COMP_WINDOW_NORMAL)
-                {
-                  empty = FALSE;
-                  break;
-                }
-            }
-
-          l = l->next;
-        }
-    }
-
-  if (empty)
-    {
-      without_chooser = TRUE;
-      workspace = 0;
-    }
-
-  moblin_netbook_spawn (plugin, exec, event->time, without_chooser, workspace);
-
+  exec = mnb_launcher_button_get_executable (launcher);
   last_used = mnb_launcher_utils_get_last_used (exec);
   mnb_launcher_button_set_comment (launcher, last_used);
   g_free (last_used);

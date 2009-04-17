@@ -167,7 +167,7 @@ mnb_launcher_button_button_release_event (ClutterActor       *actor,
 
       clutter_ungrab_pointer ();
       self->priv->is_pressed = FALSE;
-      g_signal_emit (self, _signals[ACTIVATED], 0, event);
+      g_signal_emit (self, _signals[ACTIVATED], 0);
 
       return TRUE;
     }
@@ -287,8 +287,8 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
                                     G_SIGNAL_RUN_LAST,
                                     G_STRUCT_OFFSET (MnbLauncherButtonClass, activated),
                                     NULL, NULL,
-                                    g_cclosure_marshal_VOID__POINTER,
-                                    G_TYPE_NONE, 1, G_TYPE_POINTER);
+                                    g_cclosure_marshal_VOID__VOID,
+                                    G_TYPE_NONE, 0);
 
   _signals[FAV_TOGGLED] = g_signal_new ("fav-toggled",
                                     G_TYPE_FROM_CLASS (klass),
