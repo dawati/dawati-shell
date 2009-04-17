@@ -711,11 +711,12 @@ static void
 search_activated_cb (MnbEntry         *entry,
                      launcher_data_t  *launcher_data)
 {
-  const gchar *needle;
+  gchar *needle;
 
   launcher_data_cancel_search (launcher_data);
 
-  needle = mnb_entry_get_text (entry);
+  needle = g_strdup (mnb_entry_get_text (entry));
+  needle = g_strstrip (needle);
 
   if (needle && strlen (needle) > 0)
     {
@@ -765,6 +766,8 @@ search_activated_cb (MnbEntry         *entry,
           clutter_actor_show (expander);
         }
     }
+
+  g_free (needle);
 }
 
 static gboolean
