@@ -863,6 +863,14 @@ MnbClipboardItem {
   padding: 4 8 4 8;
 }
 
+/* zone switching effect */
 *#zone-switch-background {
   border-image: url("file://effects/zone-switch-background.png") 0 stretch stretch;
+}
+
+*#zone-switch-strip {
+  /* uses same assets as the chooser */
+  border-image: url("file://chooser/background.png") 15 15 15 15 stretch stretch;
+  /* should match the column spacing, currently not themable. */
+  padding: 40;
 }

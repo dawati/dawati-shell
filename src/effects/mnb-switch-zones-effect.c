@@ -26,7 +26,7 @@
 #define MNBZE_ZOOM_IN_DURATION  100
 #define MNBZE_ZOOM_OUT_DURATION 100
 #define MNBZE_MOTION_DURATION   200
-#define MNBZE_PAD 10
+#define MNBZE_PAD 40
 
 /*
  * The three stages of the effect
@@ -234,8 +234,9 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
       strip = CLUTTER_ACTOR (nbtk_table_new ());
 
-      nbtk_table_set_col_spacing (NBTK_TABLE (strip),
-                                  MNBZE_PAD);
+      clutter_actor_set_name (strip, "zone-switch-strip");
+
+      nbtk_table_set_col_spacing (NBTK_TABLE (strip), MNBZE_PAD);
 
       frame = clutter_group_new ();
 
