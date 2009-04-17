@@ -864,5 +864,5 @@ MnbClipboardItem {
 }
 
 *#zone-switch-background {
-  background-color: #7f7f7f;
+  border-image: url("file://effects/zone-switch-background.png") 0 stretch stretch;
 }

@@ -171,3 +171,7 @@ dist_theme_pasteboard_DATA = \
 	theme/pasteboard/pasteboard-item-hover.png \
 	theme/pasteboard/pasteboard-items-list-bg.png \
 	theme/pasteboard/pasteboard-search-bg.png
+
+theme_effectsdir = $(pkgdatadir)/theme/effects
+dist_theme_effects_DATA = \
+	theme/effects/zone-switch-background.png
