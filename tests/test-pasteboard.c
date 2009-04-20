@@ -178,11 +178,21 @@ main (int argc, char *argv[])
                              0,
                              0.0, 0.0);
 
+  button = nbtk_button_new_with_label (_("Clear pasteboard"));
+  nbtk_table_add_actor_full (NBTK_TABLE (bin), CLUTTER_ACTOR (button),
+                             0, 0, 1, 1,
+                             0,
+                             0.0, 0.0);
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (on_clear_clicked),
+                    view);
+
   hbox = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 6);
   nbtk_table_add_actor_full (NBTK_TABLE (bin), CLUTTER_ACTOR (hbox),
-                             0, 0, 1, 1,
-                             NBTK_X_FILL | NBTK_X_EXPAND,
+                             1, 0, 1, 1,
+                             NBTK_X_FILL | NBTK_X_EXPAND |
+                             NBTK_Y_FILL | NBTK_Y_EXPAND,
                              0.0, 0.0);
 
   button = nbtk_button_new_with_label (_("Copy"));
@@ -199,21 +209,13 @@ main (int argc, char *argv[])
   clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_END);
   nbtk_table_add_actor_full (NBTK_TABLE (hbox), CLUTTER_ACTOR (label),
                              0, 1, 1, 1,
-                             NBTK_X_FILL | NBTK_X_EXPAND,
+                             NBTK_X_FILL | NBTK_X_EXPAND |
+                             NBTK_Y_FILL | NBTK_Y_EXPAND,
                              0.0, 0.5);
 
   g_signal_connect (store, "selection-changed",
                     G_CALLBACK (on_selection_changed),
                     label);
-
-  button = nbtk_button_new_with_label (_("Clear pasteboard"));
-  nbtk_table_add_actor_full (NBTK_TABLE (bin), CLUTTER_ACTOR (button),
-                             1, 0, 1, 1,
-                             0,
-                             0.0, 0.0);
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (on_clear_clicked),
-                    view);
 
   /* hook up search entry */
   g_signal_connect (entry, "button-clicked",
