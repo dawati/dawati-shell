@@ -25,11 +25,13 @@ struct _MnbClipboardStorePrivate
   gint64 last_serial;
 
   gulong expire_id;
+
+  gchar *selection;
 };
 
 enum
 {
-  COLUMN_ITEM_TYPE,
+  COLUMN_ITEM_TYPE = 0,
   COLUMN_ITEM_TEXT,
   COLUMN_ITEM_URIS,
   COLUMN_ITEM_IMAGE,
@@ -122,6 +124,9 @@ on_clipboard_request_text (GtkClipboard *clipboard,
 
   if (item->is_selection)
     {
+      g_free (priv->selection);
+      priv->selection = g_strdup (text);
+
       g_signal_emit (item->store, store_signals[SELECTION_CHANGED], 0, text);
 
       g_object_unref (item->store);
@@ -478,6 +483,34 @@ mnb_clipboard_store_remove (MnbClipboardStore *store,
     return;
 
   clutter_model_remove (CLUTTER_MODEL (store), row_id);
+}
+
+void
+mnb_clipboard_store_save_selection (MnbClipboardStore *store)
+{
+  MnbClipboardStorePrivate *priv;
+  GTimeVal now;
+  gint64 serial;
+
+  g_return_if_fail (MNB_IS_CLIPBOARD_STORE (store));
+
+  priv = store->priv;
+
+  g_get_current_time (&now);
+
+  serial = priv->last_serial;
+  priv->last_serial += 1;
+
+  clutter_model_prepend (CLUTTER_MODEL (store),
+                         COLUMN_ITEM_TYPE, MNB_CLIPBOARD_ITEM_TEXT,
+                         COLUMN_ITEM_SERIAL, serial,
+                         COLUMN_ITEM_TEXT, priv->selection,
+                         -1);
+
+  g_free (priv->selection);
+  priv->selection = NULL;
+
+  g_signal_emit (store, store_signals[SELECTION_CHANGED], 0, NULL);
 }
 
 GType
