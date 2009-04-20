@@ -517,12 +517,12 @@ anerley_tp_feed_setup_tp_connection (AnerleyTpFeed *feed)
   }
 
   g_debug (G_STRLOC ": Connection is in state: %s",
-           res==0 ? "connected" :
-           res==1 ? "connecting" :
-           res==2 ? "disconnected" :
+           res==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
+           res==TP_CONNECTION_STATUS_CONNECTING ? "connecting" :
+           res==TP_CONNECTION_STATUS_DISCONNECTED ? "disconnected" :
            "other");
 
-  if (res >= 2)
+  if (res != TP_CONNECTION_STATUS_CONNECTED)
     return;
 
   /* 
