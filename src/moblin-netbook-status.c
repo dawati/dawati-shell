@@ -78,9 +78,9 @@ on_mojito_get_capabilities (MojitoClientService *service,
   if ((caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS) &&
       (caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON))
     {
-      NbtkWidget *row = g_object_new (MNB_TYPE_STATUS_ROW,
-                                      "service-name", closure->service_name,
-                                      NULL);
+      ClutterActor *row = g_object_new (MNB_TYPE_STATUS_ROW,
+                                        "service-name", closure->service_name,
+                                        NULL);
       g_assert (row != NULL);
 
       g_debug ("%s: Adding row %d for service %s",
@@ -88,7 +88,7 @@ on_mojito_get_capabilities (MojitoClientService *service,
                closure->row_number,
                closure->service_name);
 
-      nbtk_table_add_widget (closure->table, row, closure->row_number, 0);
+      nbtk_table_add_actor (closure->table, row, closure->row_number, 0);
     }
 
 out:
@@ -201,11 +201,11 @@ make_status (MutterPlugin *plugin, gint width)
 
   header = nbtk_label_new (_("Your current status"));
   nbtk_widget_set_style_class_name (header, "MnbStatusPageHeader");
-  nbtk_table_add_widget_full (NBTK_TABLE (table), header,
-                              0, 0,
-                              1, 1,
-                              0,
-                              0.0, 0.5);
+  nbtk_table_add_actor_full (NBTK_TABLE (table), CLUTTER_ACTOR (header),
+                             0, 0,
+                             1, 1,
+                             0,
+                             0.0, 0.5);
 
   client = mojito_client_new ();
 

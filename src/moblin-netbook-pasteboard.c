@@ -127,26 +127,26 @@ make_pasteboard (MutterPlugin *plugin,
   /* Filter row. */
   hbox = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), hbox,
-                              0, 0, 1, 2,
-                              NBTK_X_FILL | NBTK_X_EXPAND,
-                              0.0, 0.0);
+  nbtk_table_add_actor_full (NBTK_TABLE (vbox), CLUTTER_ACTOR (hbox),
+                             0, 0, 1, 2,
+                             NBTK_X_FILL | NBTK_X_EXPAND,
+                             0.0, 0.0);
   clutter_actor_set_name (CLUTTER_ACTOR (hbox), "pasteboard-search");
 
   label = nbtk_label_new (_("Pasteboard"));
-  nbtk_table_add_widget_full (NBTK_TABLE (hbox), label,
-                              0, 0, 1, 1,
-                              0,
-                              0., 0.5);
+  nbtk_table_add_actor_full (NBTK_TABLE (hbox), CLUTTER_ACTOR (label),
+                             0, 0, 1, 1,
+                             0,
+                             0., 0.5);
   clutter_actor_set_name (CLUTTER_ACTOR (label), "pasteboard-search-label");
 
   entry = mnb_entry_new (_("Search"));
   clutter_actor_set_width (CLUTTER_ACTOR (entry),
                            CLUTTER_UNITS_FROM_DEVICE (600));
-  nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry,
-                              0, 1, 1, 1,
-                              0,
-                              0., 0.5);
+  nbtk_table_add_actor_full (NBTK_TABLE (hbox), CLUTTER_ACTOR (entry),
+                             0, 1, 1, 1,
+                             0,
+                             0., 0.5);
   clutter_actor_set_name (CLUTTER_ACTOR (entry), "pasteboard-search-entry");
   g_signal_connect (drop_down, "show-completed",
                     G_CALLBACK (on_dropdown_show), entry);
@@ -169,10 +169,10 @@ make_pasteboard (MutterPlugin *plugin,
   clutter_container_add_actor (CLUTTER_CONTAINER (bin), scroll);
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-items-list");
 
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
-                              1, 0, 1, 1,
-                              0,
-                              0., 0.);
+  nbtk_table_add_actor_full (NBTK_TABLE (vbox), CLUTTER_ACTOR (bin),
+                             1, 0, 1, 1,
+                             0,
+                             0., 0.);
 
   /* hook up the search entry to the view */
   g_signal_connect (entry, "button-clicked",
@@ -182,10 +182,10 @@ make_pasteboard (MutterPlugin *plugin,
 
   /* side controls */
   bin = NBTK_WIDGET (nbtk_bin_new ());
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
-                              1, 1, 1, 1,
-                              NBTK_X_FILL | NBTK_X_EXPAND,
-                              0.0, 0.0);
+  nbtk_table_add_actor_full (NBTK_TABLE (vbox), CLUTTER_ACTOR (bin),
+                             1, 1, 1, 1,
+                             NBTK_X_FILL | NBTK_X_EXPAND,
+                             0.0, 0.0);
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-controls");
 
   button = nbtk_button_new_with_label (_("Clear pasteboard"));
