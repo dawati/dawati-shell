@@ -19,6 +19,7 @@
 typedef struct _SearchClosure   SearchClosure;
 
 static guint search_timeout_id = 0;
+static MnbClipboardStore *store = NULL;
 
 struct _SearchClosure
 {
@@ -87,7 +88,19 @@ on_selection_changed (MnbClipboardStore *store,
                       const gchar       *current_selection,
                       NbtkLabel         *label)
 {
-  nbtk_label_set_text (label, current_selection);
+  if (current_selection == NULL || *current_selection == '\0')
+    nbtk_label_set_text (label, _("the current selection to pasteboard"));
+  else
+    nbtk_label_set_text (label, current_selection);
+}
+
+static void
+on_selection_copy_clicked (NbtkButton *button,
+                           gpointer    dummy G_GNUC_UNUSED)
+{
+  g_assert (store != NULL);
+
+  mnb_clipboard_store_save_selection (store);
 }
 
 int
@@ -97,8 +110,7 @@ main (int argc, char *argv[])
   NbtkWidget *vbox, *hbox, *label, *entry, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
   ClutterText *text;
-  MnbClipboardStore *store;
-  guint items_list_height = 0;
+  guint items_list_width = 0, items_list_height = 0;
 
   gtk_init (&argc, &argv);
   clutter_init (&argc, &argv);
@@ -154,8 +166,8 @@ main (int argc, char *argv[])
 
   /* the scroll view is bigger to avoid the horizontal scroll bar */
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
-  clutter_actor_set_height (scroll, 300);
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll), viewport);
+  clutter_actor_set_size (scroll, 650, 300);
 
   bin = NBTK_WIDGET (nbtk_bin_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-items-list");
@@ -166,13 +178,26 @@ main (int argc, char *argv[])
                              NBTK_Y_EXPAND | NBTK_Y_FILL,
                              0., 0.);
 
-  items_list_height = clutter_actor_get_height (CLUTTER_ACTOR (bin));
+  clutter_actor_get_size (CLUTTER_ACTOR (bin),
+                          &items_list_width,
+                          &items_list_height);
+
+  clutter_actor_set_width (view, items_list_width - 50);
+
+  g_debug ("%s: view size: %u, %u, bin size: %u, %u\n",
+           G_STRLOC,
+           clutter_actor_get_width (view),
+           clutter_actor_get_height (view),
+           items_list_width,
+           items_list_height);
 
   /* side controls */
   bin = nbtk_table_new ();
   nbtk_table_set_row_spacing (NBTK_TABLE (bin), 12);
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-controls");
-  clutter_actor_set_size (CLUTTER_ACTOR (bin), 300, items_list_height);
+  clutter_actor_set_size (CLUTTER_ACTOR (bin),
+                          300,
+                          items_list_height);
   nbtk_table_add_actor_full (NBTK_TABLE (vbox), CLUTTER_ACTOR (bin),
                              1, 1, 1, 1,
                              0,
@@ -200,8 +225,11 @@ main (int argc, char *argv[])
                              0, 0, 1, 1,
                              0,
                              0.0, 0.0);
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (on_selection_copy_clicked),
+                    NULL);
 
-  label = nbtk_label_new ("current selection to pasteboard");
+  label = nbtk_label_new (_("the current selection to pasteboard"));
   text = CLUTTER_TEXT (nbtk_label_get_clutter_text (NBTK_LABEL (label)));
   clutter_text_set_single_line_mode (text, FALSE);
   clutter_text_set_line_wrap (text, TRUE);
