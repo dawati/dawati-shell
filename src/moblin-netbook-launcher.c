@@ -181,7 +181,10 @@ launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
       g_signal_connect (clone, "activated",
                         G_CALLBACK (launcher_activated_cb),
                         launcher_data->self);
-      launcher_data_set_show_fav_apps (launcher_data, TRUE);
+
+      /* Make sure fav apps show up. */
+      if (!launcher_data->is_filtering)
+        launcher_data_set_show_fav_apps (launcher_data, TRUE);
 
       /* Update bookmarks. */
       uri = g_strdup_printf ("file://%s",
@@ -201,6 +204,7 @@ launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
                                                 uri,
                                                 &error);
 
+      /* Hide fav apps after last one removed. */
       if (!mnb_clutter_container_has_children (CLUTTER_CONTAINER (launcher_data->fav_grid)))
         {
           launcher_data_set_show_fav_apps (launcher_data, FALSE);
