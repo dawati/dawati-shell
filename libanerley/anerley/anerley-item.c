@@ -1,58 +1,96 @@
-#include <glib.h>
-
 #include "anerley-item.h"
 
-AnerleyItem *
-anerley_item_new ()
+G_DEFINE_TYPE (AnerleyItem, anerley_item, G_TYPE_OBJECT)
+
+enum
 {
-  AnerleyItem *item;
+  DISPLAY_NAME_CHANGED,
+  AVATAR_PATH_CHANGED,
+  PRESENCE_CHANGED,
+  LAST_SIGNAL
+};
 
-  item = g_slice_new0 (AnerleyItem);
+static guint signals[LAST_SIGNAL] = { 0 };
 
-  return anerley_item_ref (item);
-}
-
-AnerleyItem *
-anerley_item_ref (AnerleyItem *item)
+static void
+anerley_item_class_init (AnerleyItemClass *klass)
 {
-  g_atomic_int_inc (&(item->refcount));
-  return item;
+  signals[DISPLAY_NAME_CHANGED] =
+    g_signal_new ("display-name-changed",
+                  ANERLEY_TYPE_ITEM,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (AnerleyItemClass, display_name_changed),
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
+
+  signals[AVATAR_PATH_CHANGED] =
+    g_signal_new ("avatar-path-changed",
+                  ANERLEY_TYPE_ITEM,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (AnerleyItemClass, avatar_path_changed),
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
+  signals[PRESENCE_CHANGED] =
+    g_signal_new ("presence_changed",
+                  ANERLEY_TYPE_ITEM,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (AnerleyItemClass, presence_changed),
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
 }
 
 static void
-anerley_item_free (AnerleyItem *item)
+anerley_item_init (AnerleyItem *self)
 {
-  if (item->data && item->data_destroy_notify)
-  {
-    item->data_destroy_notify (item->data);
-    item->data = NULL;
-  }
+}
 
-  g_free (item->uid);
+const gchar *
+anerley_item_get_display_name (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->get_display_name (item);
+}
 
-  g_slice_free (AnerleyItem, item);
+const gchar *
+anerley_item_get_avatar_path (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->get_avatar_path (item);
+}
+
+const gchar *
+anerley_item_get_presence_status (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->get_presence_status (item);
+}
+
+const gchar *
+anerley_item_get_presence_message (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->get_presence_message (item);
 }
 
 void
-anerley_item_unref (AnerleyItem *item)
+anerley_item_emit_display_name_changed (AnerleyItem *item)
 {
-  if (g_atomic_int_dec_and_test (&(item->refcount)))
-  {
-    anerley_item_free (item);
-  }
+  g_signal_emit (item, signals[DISPLAY_NAME_CHANGED], 0);
 }
 
-GType
-anerley_item_get_type (void)
+void
+anerley_item_emit_avatar_path_changed (AnerleyItem *item)
 {
-  static GType type = 0;
+  g_signal_emit (item, signals[AVATAR_PATH_CHANGED], 0);
+}
 
-  if (G_UNLIKELY (type == 0))
-  {
-    type = g_boxed_type_register_static ("AnerleyItem",
-                                         (GBoxedCopyFunc)anerley_item_ref,
-                                         (GBoxedFreeFunc)anerley_item_unref);
-  }
-
-  return type;
+void
+anerley_item_emit_presence_changed (AnerleyItem *item)
+{
+  g_signal_emit (item, signals[PRESENCE_CHANGED], 0);
 }

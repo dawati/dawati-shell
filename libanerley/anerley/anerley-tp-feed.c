@@ -4,6 +4,7 @@
 #include "anerley-feed.h"
 #include "anerley-item.h"
 #include "anerley-tp-feed.h"
+#include "anerley-tp-item.h"
 
 static void feed_interface_init (gpointer g_iface, gpointer iface_data);
 G_DEFINE_TYPE_WITH_CODE (AnerleyTpFeed,
@@ -26,13 +27,6 @@ struct _AnerleyTpFeedPrivate {
   GHashTable *ids_to_items;
   GHashTable *handles_to_ids;
 };
-
-enum
-{
-  LAST_SIGNAL
-};
-
-static guint signals[LAST_SIGNAL];
 
 enum
 {
@@ -145,7 +139,7 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
   gint i = 0;
   TpContact *contact;
-  AnerleyItem *item;
+  AnerleyTpItem *item;
   gchar *uid;
   GList *changed_items = NULL;
   GList *added_items = NULL;
@@ -171,26 +165,16 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
 
     if (item)
     {
-      /* TODO: Check if this code path ever gets hit, really. */
-
-      if (contact != item->data)
-      {
-        g_object_ref (contact);
-        g_object_unref (item->data);
-
-        changed_items = g_list_append (changed_items, item);
-      }
+      g_object_set (item,
+                    "contact",
+                    contact,
+                    NULL);
+      changed_items = g_list_append (changed_items, item);
     } else {
       uid = g_strdup_printf ("%s/%s",
                              mc_account_get_normalized_name (priv->account),
                              tp_contact_get_identifier (contact));
-      item = anerley_item_new ();
-      item->uid = uid;
-      /* TODO: Actually decide on this;
-      item->type = anerley_tp_feed_get_item_type ();
-      */
-      item->data = g_object_ref (contact);
-      item->data_destroy_notify = g_object_unref;
+      item = anerley_tp_item_new (contact);
 
       added_items = g_list_append (added_items, item);
 
@@ -270,6 +254,7 @@ _tp_channel_members_changed_on_subscribe_cb (TpChannel    *proxy,
   gint i = 0;
   GList *removed_items = NULL;
   GList *l;
+  TpContact *contact;
 
   g_debug (G_STRLOC ": Members changed.");
   anerley_tp_feed_fetch_contacts (feed, added);
@@ -302,8 +287,12 @@ _tp_channel_members_changed_on_subscribe_cb (TpChannel    *proxy,
   for (l = removed_items; l; l = l->next)
   {
     item = (AnerleyItem *)l->data;
+    g_object_get (item,
+                  "contact",
+                  &contact,
+                  NULL);
     g_hash_table_remove (priv->ids_to_items,
-                         tp_contact_get_identifier ((TpContact *)item->data));
+                         tp_contact_get_identifier (contact));
   }
 }
 
@@ -317,7 +306,6 @@ _tp_channel_get_all_members_for_subscribe_cb (TpChannel    *proxy,
                                               GObject      *weak_object)
 {
   AnerleyTpFeed *feed = ANERLEY_TP_FEED (weak_object);
-  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
 
   if (error)
   {
@@ -664,7 +652,7 @@ anerley_tp_feed_init (AnerleyTpFeed *self)
   priv->ids_to_items = g_hash_table_new_full (g_str_hash,
                                               g_str_equal,
                                               g_free,
-                                              (GDestroyNotify)anerley_item_unref);
+                                              (GDestroyNotify)g_object_unref);
 
   priv->handles_to_ids = g_hash_table_new_full (g_direct_hash,
                                                 g_direct_equal,
