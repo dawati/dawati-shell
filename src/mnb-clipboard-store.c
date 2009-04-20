@@ -143,28 +143,6 @@ on_clipboard_request_text (GtkClipboard *clipboard,
                          COLUMN_ITEM_IS_SELECTION, item->is_selection,
                          -1);
 
-  {
-    gchar *str = g_strndup (text, 32);
-    gboolean ellipsized = FALSE;
-
-    if (strcmp (str, text) != 0)
-      ellipsized = TRUE;
-
-    g_debug ("%s: Added '%s%s' (mtime: %lld, serial: %lld)",
-             G_STRLOC,
-             str,
-             ellipsized ? "..." : "",
-             item->mtime,
-             item->serial);
-
-    g_free (str);
-  }
-
-  g_signal_emit (item->store, store_signals[ITEM_ADDED], 0,
-                 item->type,
-                 0,
-                 item->is_selection);
-
   /* if an expiration has already been schedule, coalesce it */
   if (priv->expire_id == 0)
     priv->expire_id = g_idle_add_full (G_PRIORITY_LOW,
@@ -191,8 +169,6 @@ on_clipboard_request_uris (GtkClipboard  *clipboard,
                          COLUMN_ITEM_URIS, uris,
                          COLUMN_ITEM_IS_SELECTION, item->is_selection,
                          -1);
-
-  g_signal_emit (item->store, store_signals[ITEM_ADDED], 0, item->type);
 
   g_object_unref (item->store);
   g_slice_free (ClipboardItem, item);
@@ -294,6 +270,30 @@ on_clipboard_owner_change (GtkClipboard      *clipboard,
 }
 
 static void
+mnb_clipboard_store_row_added (ClutterModel     *model,
+                               ClutterModelIter *iter)
+{
+  MnbClipboardStore *store = MNB_CLIPBOARD_STORE (model);
+  MnbClipboardItemType type = MNB_CLIPBOARD_ITEM_INVALID;
+  gint64 serial = 0, mtime = 0;
+
+  clutter_model_iter_get (iter,
+                          COLUMN_ITEM_TYPE, &type,
+                          COLUMN_ITEM_SERIAL, &serial,
+                          COLUMN_ITEM_MTIME, &mtime,
+                          -1);
+
+  {
+    g_debug ("%s: Added new row (mtime: %lld, serial: %lld)",
+             G_STRLOC,
+             mtime,
+             serial);
+  }
+
+  g_signal_emit (store, store_signals[ITEM_ADDED], 0, type);
+}
+
+static void
 mnb_clipboard_store_row_removed (ClutterModel     *model,
                                  ClutterModelIter *iter)
 {
@@ -315,6 +315,7 @@ mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
 
   g_type_class_add_private (klass, sizeof (MnbClipboardStorePrivate));
 
+  model_class->row_added = mnb_clipboard_store_row_added;
   model_class->row_removed = mnb_clipboard_store_row_removed;
 
   store_signals[ITEM_ADDED] =
