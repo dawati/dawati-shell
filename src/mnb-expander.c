@@ -144,11 +144,14 @@ button_checked_cb (NbtkButton     *button,
 {
   if (nbtk_button_get_checked (button))
     {
-      nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
-                                  NBTK_WIDGET (self->priv->payload_bin),
-                                  1, 0, 1, 1,
-                                  NBTK_X_EXPAND | NBTK_X_FILL | NBTK_Y_EXPAND | NBTK_Y_FILL,
-                                  0., 0.);
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (self->priv->table),
+                                            self->priv->payload_bin, 1, 0,
+                                            "x-expand", TRUE,
+                                            "x-fill", TRUE,
+                                            "y-expand", TRUE,
+                                            "y-fill", TRUE,
+                                            NULL);
+
       clutter_actor_show (self->priv->payload_bin);
     }
   else
@@ -248,11 +251,14 @@ mnb_expander_init (MnbExpander *self)
                                               "x-align", 0.,
                                               NULL);
   clutter_actor_set_name (self->priv->header_button, "mnb-expander-header");
-  nbtk_table_add_widget_full (NBTK_TABLE (self->priv->table),
-                              NBTK_WIDGET (self->priv->header_button),
-                              0, 0, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL | NBTK_Y_EXPAND | NBTK_Y_FILL,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self->priv->table),
+                                        self->priv->header_button, 0, 0,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-expand", TRUE,
+                                        "y-fill", TRUE,
+                                        NULL);
+
   g_signal_connect (self->priv->header_button, "notify::checked",
                     G_CALLBACK (button_checked_cb), self);
 

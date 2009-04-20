@@ -804,23 +804,27 @@ make_launcher (MutterPlugin *plugin,
   hbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (hbox), "launcher-filter-pane");
   nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
-  nbtk_table_add_widget (NBTK_TABLE (vbox), hbox, 0, 0);
+  nbtk_table_add_actor (NBTK_TABLE (vbox), CLUTTER_ACTOR (hbox), 0, 0);
 
   label = nbtk_label_new (_("Applications"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "launcher-filter-label");
-  nbtk_table_add_widget_full (NBTK_TABLE (hbox), label,
-                              0, 0, 1, 1,
-                              0,
-                              0., 0.5);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox), label, 0, 0,
+                                        "y-align", 0.5,
+                                        "x-expand", FALSE,
+                                        "y-expand", TRUE,
+                                        "y-fill", FALSE,
+                                        NULL);
 
   entry = mnb_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (entry),
                            CLUTTER_UNITS_FROM_DEVICE (FILTER_ENTRY_WIDTH));
-  nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry,
-                              0, 1, 1, 1,
-                              0,
-                              0., 0.5);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox), entry, 0, 1,
+                                        "y-align", 0.5,
+                                        "x-expand", FALSE,
+                                        "y-expand", TRUE,
+                                        "y-fill", FALSE,
+                                        NULL);
 
   /*
    * Applications
@@ -832,10 +836,12 @@ make_launcher (MutterPlugin *plugin,
   clutter_actor_set_size (scroll,
                           width - 10, /* account for padding */
                           height - clutter_actor_get_height (CLUTTER_ACTOR (hbox)));
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), NBTK_WIDGET (scroll),
-                              1, 0, 1, 1,
-                              NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox), scroll, 1, 0,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-expand", TRUE,
+                                        "y-fill", TRUE,
+                                        NULL);
 
   launcher_data = launcher_data_new (plugin, CLUTTER_ACTOR (entry), scroll,
                                      width - SCROLLBAR_RESERVED_WIDTH);

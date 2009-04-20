@@ -316,11 +316,12 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->title), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->title),
                           "mnb-launcher-button-title");
-  nbtk_table_add_widget_full (NBTK_TABLE (self),
-                              NBTK_WIDGET (self->priv->title),
-                              0, 1, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (self->priv->title),
+                                        0, 1,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        NULL);
 
   label = nbtk_label_get_clutter_text (self->priv->title);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
@@ -331,11 +332,12 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->description), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->description),
                           "mnb-launcher-button-description");
-  nbtk_table_add_widget_full (NBTK_TABLE (self),
-                              NBTK_WIDGET (self->priv->description),
-                              1, 1, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (self->priv->description),
+                                        1, 1,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        NULL);
 
   label = nbtk_label_get_clutter_text (self->priv->description);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
@@ -346,11 +348,12 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->comment), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->comment),
                           "mnb-launcher-button-comment");
-  nbtk_table_add_widget_full (NBTK_TABLE (self),
-                              NBTK_WIDGET (self->priv->comment),
-                              2, 1, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (self->priv->comment),
+                                        2, 1,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        NULL);
 
   label = nbtk_label_get_clutter_text (self->priv->comment);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
@@ -363,11 +366,12 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->fav_toggle),
                           "mnb-launcher-button-fav-toggle");
   clutter_actor_set_size (self->priv->fav_toggle, FAV_TOGGLE_SIZE, FAV_TOGGLE_SIZE);
-  nbtk_table_add_widget_full (NBTK_TABLE (self),
-                              NBTK_WIDGET (self->priv->fav_toggle),
-                              0, 2, 3, 1,
-                              0,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (self->priv->fav_toggle),
+                                        0, 2,
+                                        "row-span", 3,
+                                        NULL);
+
   g_signal_connect (self->priv->fav_toggle, "clicked",
                     G_CALLBACK (fav_button_clicked_cb), self);
 }
@@ -407,11 +411,11 @@ mnb_launcher_button_new (const gchar *icon_file,
                               self->priv->icon_size);
       g_object_set (G_OBJECT (self->priv->icon), "sync-size", TRUE, NULL);
     }
-    nbtk_table_add_actor_full (NBTK_TABLE (self),
-                               self->priv->icon,
-                               0, 0, 3, 1,
-                               0,
-                               0., 0.5);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          CLUTTER_ACTOR (self->priv->icon),
+                                          0, 0,
+                                          "row-span", 3,
+                                          NULL);
   }
 
   if (title)
