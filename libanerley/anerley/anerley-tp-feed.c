@@ -492,6 +492,67 @@ _tp_connection_ready_cb (TpConnection *connection,
 }
 
 static void
+_mc_account_status_changed_cb (MissionControl           *mc,
+                               TpConnectionStatus        status,
+                               McPresence                presence,
+                               TpConnectionStatusReason  reason,
+                               const gchar              *account_name,
+                               gpointer                  userdata)
+{
+  AnerleyTpFeed *feed = (AnerleyTpFeed *)userdata;
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+  GList *items;
+  GError *error = NULL;
+
+  /* This is so lame. I hear this should get better with MC5 though */
+  if (g_str_equal (account_name, mc_account_get_unique_name (priv->account)))
+  {
+    if (status == TP_CONNECTION_STATUS_CONNECTED)
+    {
+      priv->conn = mission_control_get_tpconnection (priv->mc,
+                                                     priv->account,
+                                                     &error);
+      if (!priv->conn)
+      {
+        g_warning (G_STRLOC ": Error getting TP connection: %s",
+                   error->message);
+        g_clear_error (&error);
+        return;
+      }
+
+      tp_connection_call_when_ready (priv->conn,
+                                     _tp_connection_ready_cb,
+                                     feed);
+    } else {
+      /*
+       * This means our connection has been disconnected. That is :-( so lets
+       * remove these things from our internal store and emit the signals on
+       * the feed.
+       */
+
+      items = g_hash_table_get_values (priv->ids_to_items);
+
+      g_signal_emit_by_name (feed, "items-removed", items);
+      g_list_free (items);
+      g_hash_table_remove_all (priv->ids_to_items);
+      g_hash_table_remove_all (priv->handles_to_ids);
+
+      if (priv->subscribe_channel)
+      {
+        g_object_unref (priv->subscribe_channel);
+        priv->subscribe_channel = NULL;
+      }
+
+      if (priv->conn)
+      {
+        g_object_unref (priv->conn);
+        priv->conn = NULL;
+      }
+    }
+  }
+}
+
+static void
 anerley_tp_feed_setup_tp_connection (AnerleyTpFeed *feed)
 {
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
@@ -515,6 +576,12 @@ anerley_tp_feed_setup_tp_connection (AnerleyTpFeed *feed)
     g_clear_error (&error);
     return;
   }
+
+  dbus_g_proxy_connect_signal (DBUS_G_PROXY (priv->mc),
+                               "AccountStatusChanged",
+                               G_CALLBACK (_mc_account_status_changed_cb),
+                               feed,
+                               NULL);
 
   g_debug (G_STRLOC ": Connection is in state: %s",
            res==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
