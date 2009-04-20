@@ -8,6 +8,8 @@
 
 #include <gtk/gtk.h>
 
+#include <glib/gi18n.h>
+
 #include "mnb-clipboard-view.h"
 #include "mnb-clipboard-store.h"
 #include "mnb-clipboard-item.h"
@@ -98,8 +100,8 @@ on_store_item_removed (MnbClipboardStore *store,
 
   g_object_ref (item);
 
-  priv->rows = g_slist_remove (priv->rows, item);
   clutter_actor_unparent (CLUTTER_ACTOR (item));
+  priv->rows = g_slist_remove (priv->rows, item);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (view));
 
@@ -156,7 +158,51 @@ on_store_item_added (MnbClipboardStore    *store,
 
   view->priv->rows = g_slist_prepend (view->priv->rows, row);
   clutter_actor_set_parent (row, CLUTTER_ACTOR (view));
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (row));
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (view));
+}
+
+static void
+mnb_clipboard_view_get_preferred_width (ClutterActor *actor,
+                                        ClutterUnit   for_height,
+                                        ClutterUnit  *min_width_p,
+                                        ClutterUnit  *natural_width_p)
+{
+  MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (actor)->priv;
+  ClutterUnit min_width, natural_width;
+  GSList *l;
+
+  if (priv->rows == NULL)
+    {
+      if (min_width_p)
+        *min_width_p = 0;
+
+      if (natural_width_p)
+        *natural_width_p = 0;
+
+      return;
+    }
+
+  min_width = natural_width = 0;
+  for (l = priv->rows; l != NULL; l = l->next)
+    {
+      ClutterActor *row = l->data;
+      ClutterUnit row_min, row_natural;
+
+      row_min = row_natural = 0;
+      clutter_actor_get_preferred_width (row, for_height,
+                                         &row_min,
+                                         &row_natural);
+
+      min_width = MAX (min_width, row_min);
+      natural_width = MAX (natural_width, row_natural);
+    }
+
+  if (min_width_p)
+    *min_width_p = min_width;
+
+  if (natural_width_p)
+    *natural_width_p = natural_width;
 }
 
 static void
@@ -250,6 +296,74 @@ mnb_clipboard_view_paint (ClutterActor *actor)
   gint i;
 
   CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->paint (actor);
+
+  if (priv->rows == NULL)
+    {
+      PangoLayout *layout;
+      ClutterColor *text_color = NULL;
+      CoglColor color = { 0, };
+      gchar *font_family = NULL;
+      gchar *font_str;
+      gint font_size = 12;
+      ClutterActorBox box = { 0, };
+      PangoFontDescription *font_desc;
+      PangoRectangle rect = { 0, };
+      gint text_x;
+
+      clutter_actor_get_allocation_box (actor, &box);
+
+      nbtk_stylable_get (NBTK_STYLABLE (actor),
+                         "color", &text_color,
+                         "font-family", &font_family,
+                         "font-size", &font_size,
+                         NULL);
+
+      layout = clutter_actor_create_pango_layout (actor,
+                                                  _("Copy some text to add "
+                                                    "it to the pasteboard"));
+
+      if (font_family != NULL)
+        {
+          font_str = g_strdup_printf ("%s %dpx", font_family, font_size);
+
+          g_free (font_family);
+        }
+      else
+        font_str = g_strdup ("Liberation Sans 12px");
+
+      font_desc = pango_font_description_from_string (font_str);
+      pango_layout_set_font_description (layout, font_desc);
+      pango_layout_set_width (layout, CLUTTER_UNITS_TO_PANGO_UNIT (box.x2 - box.x1));
+      pango_layout_set_height (layout, CLUTTER_UNITS_TO_PANGO_UNIT (box.y2 - box.y1));
+      pango_layout_set_wrap (layout, PANGO_WRAP_WORD);
+
+      g_free (font_str);
+
+      if (text_color != NULL)
+        {
+          cogl_color_set_from_4ub (&color,
+                                   text_color->red,
+                                   text_color->green,
+                                   text_color->blue,
+                                   text_color->alpha);
+          clutter_color_free (text_color);
+        }
+      else
+        cogl_color_set_from_4ub (&color, 0, 0, 0, 255);
+
+      pango_layout_get_extents (layout, NULL, &rect);
+      text_x = (int) ((box.x2 - box.x1) - (rect.width / 1024.0)) / 2.0;
+
+      cogl_pango_render_layout (layout,
+                                text_x, 0,
+                                &color,
+                                0);
+
+      pango_font_description_free (font_desc);
+      g_object_unref (layout);
+
+      return;
+    }
 
   for (l = priv->rows, i = 0; l != NULL; l = l->next, i++)
     {
@@ -395,6 +509,7 @@ mnb_clipboard_view_class_init (MnbClipboardViewClass *klass)
   gobject_class->get_property = mnb_clipboard_view_get_property;
   gobject_class->finalize = mnb_clipboard_view_finalize;
 
+  actor_class->get_preferred_width = mnb_clipboard_view_get_preferred_width;
   actor_class->get_preferred_height = mnb_clipboard_view_get_preferred_height;
   actor_class->allocate = mnb_clipboard_view_allocate;
   actor_class->paint = mnb_clipboard_view_paint;
