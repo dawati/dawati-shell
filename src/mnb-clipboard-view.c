@@ -18,6 +18,8 @@
 
 #define ROW_SPACING     (2.0)
 
+#define EMPTY_TEXT      _("You need to copy some text to use Pasteboard")
+
 struct _MnbClipboardViewPrivate
 {
   MnbClipboardStore *store;
@@ -318,9 +320,7 @@ mnb_clipboard_view_paint (ClutterActor *actor)
                          "font-size", &font_size,
                          NULL);
 
-      layout = clutter_actor_create_pango_layout (actor,
-                                                  _("Copy some text to add "
-                                                    "it to the pasteboard"));
+      layout = clutter_actor_create_pango_layout (actor, EMPTY_TEXT);
 
       if (font_family != NULL)
         {

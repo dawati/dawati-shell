@@ -32,6 +32,7 @@
 typedef struct _SearchClosure   SearchClosure;
 
 static guint search_timeout_id = 0;
+static MnbClipboardStore *store = NULL;
 
 static void
 on_dropdown_show (MnbDropDown  *dropdown,
@@ -102,8 +103,8 @@ on_search_activated (MnbEntry *entry,
 }
 
 static void
-on_clear_clicked (NbtkButton        *button,
-                  MnbClipboardStore *store)
+on_clear_clicked (NbtkButton *button,
+                  gpointer    dummy G_GNUC_UNUSED)
 {
   while (clutter_model_get_n_rows (CLUTTER_MODEL (store)))
     clutter_model_remove (CLUTTER_MODEL (store), 0);
@@ -114,13 +115,17 @@ on_selection_changed (MnbClipboardStore *store,
                       const gchar       *current_selection,
                       NbtkLabel         *label)
 {
-  nbtk_label_set_text (label, current_selection);
+  if (current_selection == NULL || *current_selection == '\0')
+    nbtk_label_set_text (label, _("the current selection to pasteboard"));
+  else
+    nbtk_label_set_text (label, current_selection);
 }
 
 static void
 on_selection_copy_clicked (NbtkButton *button,
-                           gpointer    data)
+                           gpointer    dummy G_GNUC_UNUSED)
 {
+  mnb_clipboard_store_save_selection (store);
 }
 
 ClutterActor *
@@ -130,9 +135,7 @@ make_pasteboard (MutterPlugin *plugin,
   NbtkWidget *vbox, *hbox, *label, *entry, *drop_down, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
   ClutterText *text;
-  MnbClipboardStore *store;
-  guint items_list_height = 0;
-
+  guint items_list_width = 0, items_list_height = 0;
 
   drop_down = mnb_drop_down_new ();
 
@@ -182,8 +185,8 @@ make_pasteboard (MutterPlugin *plugin,
 
   /* the scroll view is bigger to avoid the horizontal scroll bar */
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
-  clutter_actor_set_height (scroll, 300);
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll), viewport);
+  clutter_actor_set_size (scroll, 650, 300);
 
   bin = NBTK_WIDGET (nbtk_bin_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-items-list");
@@ -194,7 +197,10 @@ make_pasteboard (MutterPlugin *plugin,
                              NBTK_Y_EXPAND | NBTK_Y_FILL,
                              0., 0.);
 
-  items_list_height = clutter_actor_get_height (CLUTTER_ACTOR (bin));
+  clutter_actor_get_size (CLUTTER_ACTOR (bin),
+                          &items_list_width,
+                          &items_list_height);
+  clutter_actor_set_width (view, items_list_width - 50);
 
   /* hook up the search entry to the view */
   g_signal_connect (entry, "button-clicked",
@@ -220,7 +226,7 @@ make_pasteboard (MutterPlugin *plugin,
                              0.0, 0.0);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (on_clear_clicked),
-                    view);
+                    NULL);
 
   hbox = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 6);
@@ -239,7 +245,7 @@ make_pasteboard (MutterPlugin *plugin,
                     G_CALLBACK (on_selection_copy_clicked),
                     store);
 
-  label = nbtk_label_new ("current selection to pasteboard");
+  label = nbtk_label_new (_("the current selection to pasteboard"));
   text = CLUTTER_TEXT (nbtk_label_get_clutter_text (NBTK_LABEL (label)));
   clutter_text_set_single_line_mode (text, FALSE);
   clutter_text_set_line_wrap (text, TRUE);
