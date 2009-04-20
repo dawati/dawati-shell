@@ -477,7 +477,7 @@ make_background (const gchar *text, guint width, guint height,
     {
       ClutterActor *frame;
 
-      frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
+      frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 11, 11, 11, 11);
 
       clutter_actor_set_size (frame, width, WORKSPACE_CHOOSER_LABEL_HEIGHT);
 
