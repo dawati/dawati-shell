@@ -228,7 +228,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
       ClutterActor *parent;
       ClutterActor *bkg;
 
-      desktop = nbtk_bin_new ();
+      desktop = CLUTTER_ACTOR (nbtk_bin_new ());
       clutter_actor_set_name (desktop, "zone-switch-background");
       clutter_actor_set_size (desktop, screen_width, screen_height);
 
