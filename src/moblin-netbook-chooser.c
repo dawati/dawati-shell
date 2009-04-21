@@ -201,6 +201,13 @@ sn_map_timeout_cb (gpointer data)
        * Isolate the app/numid part.
        */
       s = strchr (sn_id, '/');
+
+      if (!s)
+        {
+          g_warning ("Unexpected form of sn_id [%s]\n", sn_id);
+          goto finish;
+        }
+
       s = g_strdup (s+1);
 
       e = strchr (s, '-');
@@ -265,6 +272,7 @@ sn_map_timeout_cb (gpointer data)
         g_hash_table_remove (priv->sn_hash, sn_id);
     }
 
+ finish:
   g_free (map_data->sn_id);
   g_slice_free (struct map_timeout_data, data);
 
