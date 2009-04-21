@@ -83,8 +83,6 @@ gboolean      mnb_launcher_button_get_favorite    (MnbLauncherButton *self);
 void          mnb_launcher_button_set_favorite    (MnbLauncherButton *self,
                                                    gboolean           is_favorite);
 
-void          mnb_launcher_button_reset           (MnbLauncherButton *self);
-
 gint          mnb_launcher_button_compare         (MnbLauncherButton *self,
                                                    MnbLauncherButton *other);
 

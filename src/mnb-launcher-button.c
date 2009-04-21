@@ -182,7 +182,6 @@ mnb_launcher_button_enter_event (ClutterActor         *actor,
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), "hover");
-  clutter_actor_show (self->priv->fav_toggle);
 
   return FALSE;
 }
@@ -193,7 +192,6 @@ mnb_launcher_button_leave_event (ClutterActor         *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
-  clutter_actor_hide (self->priv->fav_toggle);
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
 
   if (self->priv->is_pressed)
@@ -362,7 +360,6 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   /* "fav app" toggle */
   self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (nbtk_button_new ()));
   nbtk_button_set_toggle_mode (NBTK_BUTTON (self->priv->fav_toggle), TRUE);
-  clutter_actor_hide (self->priv->fav_toggle);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->fav_toggle),
                           "mnb-launcher-button-fav-toggle");
   clutter_actor_set_size (self->priv->fav_toggle, FAV_TOGGLE_SIZE, FAV_TOGGLE_SIZE);
@@ -543,15 +540,6 @@ mnb_launcher_button_set_favorite (MnbLauncherButton *self,
   g_return_if_fail (self);
 
   nbtk_button_set_checked (NBTK_BUTTON (self->priv->fav_toggle), is_favorite);
-}
-
-void
-mnb_launcher_button_reset (MnbLauncherButton *self)
-{
-  g_return_if_fail (self);
-
-  clutter_actor_hide (self->priv->fav_toggle);
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
 }
 
 gint

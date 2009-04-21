@@ -404,16 +404,21 @@ MnbLauncherButton:hover {
   font-size: 11;
 }
 
-*#mnb-launcher-button-fav-toggle {
+MnbLauncherButton *#mnb-launcher-button-fav-toggle {
+  background-image: none;
+  border-image: none;
+}
+
+MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle {
   background-image: url("file://launcher/launcher-button-fav-toggle.png");
   border-image: none;
 }
 
-*#mnb-launcher-button-fav-toggle:checked {
+MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:checked {
   background-image: url("file://launcher/launcher-button-fav-toggle-checked.png");
 }
 
-*#mnb-launcher-button-fav-toggle:hover {
+MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:hover {
   background-image: url("file://launcher/launcher-button-fav-toggle-hover.png");
 }
 
@@ -874,3 +879,4 @@ MnbClipboardItem {
   /* should match the column spacing, currently not themable. */
   padding: 60;
 }
+

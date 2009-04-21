@@ -141,7 +141,6 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
 
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
-  mnb_launcher_button_reset (launcher);
   g_timeout_add_seconds (LAUNCH_REACTIVE_TIMEOUT_S,
                          (GSourceFunc) mnb_launcher_button_set_reactive_cb,
                          launcher);
