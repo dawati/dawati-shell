@@ -40,6 +40,7 @@
 
 enum
 {
+  HOVERED,
   ACTIVATED,
   FAV_TOGGLED,
 
@@ -181,6 +182,8 @@ mnb_launcher_button_enter_event (ClutterActor         *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
+  g_signal_emit (self, _signals[HOVERED], 0);
+
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), "hover");
 
   return FALSE;
@@ -279,6 +282,14 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
   actor_class->leave_event = mnb_launcher_button_leave_event;
   actor_class->allocate = mnb_launcher_button_allocate;
   actor_class->pick = mnb_launcher_button_pick;
+
+  _signals[HOVERED] = g_signal_new ("hovered",
+                                    G_TYPE_FROM_CLASS (klass),
+                                    G_SIGNAL_RUN_LAST,
+                                    G_STRUCT_OFFSET (MnbLauncherButtonClass, hovered),
+                                    NULL, NULL,
+                                    g_cclosure_marshal_VOID__VOID,
+                                    G_TYPE_NONE, 0);
 
   _signals[ACTIVATED] = g_signal_new ("activated",
                                     G_TYPE_FROM_CLASS (klass),

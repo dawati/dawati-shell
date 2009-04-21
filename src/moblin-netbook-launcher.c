@@ -47,6 +47,277 @@
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-tree.h"
 
+/*
+ * Grid keyboard navigation.
+ */
+
+static void
+grid_find_hovered_widget_cb (ClutterActor   *actor,
+                             NbtkWidget    **hovered_widget)
+{
+  const gchar *pseudo_class;
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
+    return;
+
+  if (!NBTK_IS_STYLABLE (actor))
+    return;
+
+  pseudo_class = nbtk_stylable_get_pseudo_class (NBTK_STYLABLE (actor));
+  if (0 == g_strcmp0 ("hover", pseudo_class))
+    *hovered_widget = NBTK_WIDGET (actor);
+}
+
+static NbtkWidget *
+grid_find_hovered_widget (NbtkGrid *grid)
+{
+  NbtkWidget *widget;
+
+  widget = NULL;
+  clutter_container_foreach (CLUTTER_CONTAINER (grid),
+                             (ClutterCallback) grid_find_hovered_widget_cb,
+                             &widget);
+
+  return widget;
+}
+
+typedef struct {
+  ClutterUnit  x;
+  ClutterUnit  y;
+  NbtkWidget  *widget;
+} grid_point_data_t;
+
+static void
+grid_find_widget_by_point_cb (ClutterActor      *actor,
+                              grid_point_data_t *grid_point_data)
+{
+  if (clutter_actor_get_xu (actor) <= grid_point_data->x &&
+      clutter_actor_get_yu (actor) <= grid_point_data->y &&
+      (clutter_actor_get_xu (actor) + clutter_actor_get_widthu (actor)) >= grid_point_data->x &&
+      (clutter_actor_get_yu (actor) + clutter_actor_get_heightu (actor)) >= grid_point_data->y)
+    {
+      grid_point_data->widget = NBTK_WIDGET (actor);
+    }
+}
+
+static NbtkWidget *
+grid_find_widget_by_point (NbtkGrid     *grid,
+                           ClutterUnit   x,
+                           ClutterUnit   y)
+{
+  grid_point_data_t grid_point_data;
+
+  grid_point_data.x = x;
+  grid_point_data.y = y;
+  grid_point_data.widget = NULL;
+
+  clutter_container_foreach (CLUTTER_CONTAINER (grid),
+                             (ClutterCallback) grid_find_widget_by_point_cb,
+                             &grid_point_data);
+
+  return grid_point_data.widget;
+}
+
+static gboolean
+grid_keynav_up (NbtkGrid *grid)
+{
+  NbtkWidget  *old, *new;
+  ClutterUnit  x, y;
+
+  old = grid_find_hovered_widget (grid);
+  if (old == NULL)
+    return FALSE;
+
+  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+
+  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) -
+      nbtk_grid_get_row_gap (grid) -
+      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+
+  new = grid_find_widget_by_point (grid, x, y);
+  if (new)
+    {
+      nbtk_widget_set_style_pseudo_class (old, NULL);
+      nbtk_widget_set_style_pseudo_class (new, "hover");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+grid_keynav_right (NbtkGrid *grid)
+{
+  NbtkWidget  *old, *new;
+  ClutterUnit  x, y;
+
+  old = grid_find_hovered_widget (grid);
+  if (old == NULL)
+    return FALSE;
+
+  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
+      nbtk_grid_get_column_gap (grid) +
+      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) * 1.5;
+
+  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+
+  new = grid_find_widget_by_point (grid, x, y);
+  if (new)
+    {
+      nbtk_widget_set_style_pseudo_class (old, NULL);
+      nbtk_widget_set_style_pseudo_class (new, "hover");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+grid_keynav_down (NbtkGrid *grid)
+{
+  NbtkWidget  *old, *new;
+  ClutterUnit  x, y;
+
+  old = grid_find_hovered_widget (grid);
+  if (old == NULL)
+    return FALSE;
+
+  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+
+  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+      nbtk_grid_get_row_gap (grid) +
+      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) * 1.5;
+
+  new = grid_find_widget_by_point (grid, x, y);
+  if (new)
+    {
+      nbtk_widget_set_style_pseudo_class (old, NULL);
+      nbtk_widget_set_style_pseudo_class (new, "hover");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+grid_keynav_left (NbtkGrid *grid)
+{
+  NbtkWidget  *old, *new;
+  ClutterUnit  x, y;
+
+  old = grid_find_hovered_widget (grid);
+  if (old == NULL)
+    return FALSE;
+
+  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) -
+      nbtk_grid_get_column_gap (grid) -
+      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+
+  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+
+  new = grid_find_widget_by_point (grid, x, y);
+  if (new)
+    {
+      nbtk_widget_set_style_pseudo_class (old, NULL);
+      nbtk_widget_set_style_pseudo_class (new, "hover");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+grid_keynav_wrap_up (NbtkGrid *grid)
+{
+  NbtkWidget  *old, *new;
+  NbtkPadding  padding;
+  ClutterUnit  x, y;
+
+  old = grid_find_hovered_widget (grid);
+  if (old == NULL)
+    return FALSE;
+
+  nbtk_widget_get_padding (NBTK_WIDGET (grid), &padding);
+
+  x = clutter_actor_get_widthu (CLUTTER_ACTOR (grid)) - 
+      padding.right -
+      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+
+  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) -
+      nbtk_grid_get_row_gap (grid) -
+      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+
+  new = grid_find_widget_by_point (grid, x, y);
+  if (new)
+    {
+      nbtk_widget_set_style_pseudo_class (old, NULL);
+      nbtk_widget_set_style_pseudo_class (new, "hover");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+grid_keynav_wrap_down (NbtkGrid *grid)
+{
+  NbtkWidget  *old, *new;
+  NbtkPadding  padding;
+  ClutterUnit  x, y;
+
+  old = grid_find_hovered_widget (grid);
+  if (old == NULL)
+    return FALSE;
+
+  nbtk_widget_get_padding (NBTK_WIDGET (grid), &padding);
+
+  x = padding.left +
+      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+
+  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+      nbtk_grid_get_row_gap (grid) +
+      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) * 1.5;
+
+  new = grid_find_widget_by_point (grid, x, y);
+  if (new)
+    {
+      nbtk_widget_set_style_pseudo_class (old, NULL);
+      nbtk_widget_set_style_pseudo_class (new, "hover");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+grid_keynav_first (NbtkGrid *grid)
+{
+  NbtkWidget  *widget;
+  NbtkPadding  padding;
+  ClutterUnit  x, y;
+
+  nbtk_widget_get_padding (NBTK_WIDGET (grid), &padding);
+
+  x = padding.left + 1;
+  y = padding.top + 1;
+
+  /* TODO: problems with highlighting first launcher. */
+  x += 300;
+
+  widget = grid_find_widget_by_point (grid, x, y);
+  if (widget)
+    {
+      nbtk_widget_set_style_pseudo_class (widget, "hover");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 #define INITIAL_FILL_TIMEOUT_S    4
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S 2
@@ -128,6 +399,22 @@ mnb_launcher_button_set_reactive_cb (ClutterActor *launcher)
 }
 
 static void
+launcher_hovered_cb (MnbLauncherButton  *launcher,
+                     launcher_data_t    *launcher_data)
+{
+  if (launcher_data->is_filtering)
+    {
+      clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->apps_grid),
+                                 (ClutterCallback) nbtk_widget_set_style_pseudo_class,
+                                 NULL);
+    }
+  else
+    {
+      /* TODO */
+    }
+}
+
+static void
 launcher_activated_cb (MnbLauncherButton  *launcher,
                        MutterPlugin       *plugin)
 {
@@ -177,6 +464,9 @@ launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
       NbtkWidget *clone = mnb_launcher_button_create_favorite (launcher);
       clutter_container_add (CLUTTER_CONTAINER (launcher_data->fav_grid),
                              CLUTTER_ACTOR (clone), NULL);
+      g_signal_connect (clone, "hovered",
+                        G_CALLBACK (launcher_hovered_cb),
+                        launcher_data);
       g_signal_connect (clone, "activated",
                         G_CALLBACK (launcher_activated_cb),
                         launcher_data->self);
@@ -441,6 +731,9 @@ launcher_data_fill (launcher_data_t *launcher_data)
                                                 TRUE);
               clutter_container_add (CLUTTER_CONTAINER (launcher_data->fav_grid),
                                      CLUTTER_ACTOR (button), NULL);
+              g_signal_connect (button, "hovered",
+                                G_CALLBACK (launcher_hovered_cb),
+                                launcher_data);
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_activated_cb),
                                 launcher_data->self);
@@ -509,6 +802,9 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
               clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                       CLUTTER_ACTOR (button), NULL);
+              g_signal_connect (button, "hovered",
+                                G_CALLBACK (launcher_hovered_cb),
+                                launcher_data);
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_activated_cb),
                                 launcher_data->self);
@@ -747,14 +1043,52 @@ search_activated_cb (MnbEntry         *entry,
   g_free (needle);
 }
 
-static gboolean
-search_key_press_cb (MnbEntry         *entry,
-                     ClutterKeyEvent  *event,
-                     launcher_data_t  *launcher_data)
+static void
+search_keynav_cb (MnbEntry         *entry,
+                  guint             keyval,
+                  launcher_data_t  *launcher_data)
 {
-  /*  ("%s() %x\n", __FUNCTION__, event->keyval); */
+  NbtkWidget *launcher;
+  gboolean    ret;
 
-  return FALSE;
+  if (launcher_data->is_filtering)
+    {
+      if (NULL == grid_find_hovered_widget (NBTK_GRID (launcher_data->apps_grid)))
+        {
+          grid_keynav_first (NBTK_GRID (launcher_data->apps_grid));
+          return;
+        }
+
+      switch (keyval)
+        {
+          case CLUTTER_Return:
+            launcher = grid_find_hovered_widget (NBTK_GRID (launcher_data->apps_grid));
+            if (launcher && MNB_IS_LAUNCHER_BUTTON (launcher))
+              launcher_activated_cb (MNB_LAUNCHER_BUTTON (launcher),
+                                     launcher_data->self);
+            break;
+          case CLUTTER_Left:
+            ret = grid_keynav_left (NBTK_GRID (launcher_data->apps_grid));
+            if (!ret)
+              grid_keynav_wrap_up (NBTK_GRID (launcher_data->apps_grid));
+            break;
+          case CLUTTER_Up:
+            grid_keynav_up (NBTK_GRID (launcher_data->apps_grid));
+            break;
+          case CLUTTER_Right:
+            ret = grid_keynav_right (NBTK_GRID (launcher_data->apps_grid));
+            if (!ret)
+              grid_keynav_wrap_down (NBTK_GRID (launcher_data->apps_grid));
+            break;
+          case CLUTTER_Down:
+            grid_keynav_down (NBTK_GRID (launcher_data->apps_grid));
+            break;
+        }
+    }
+  else
+    {
+  /* TODO */
+    }
 }
 
 static void
@@ -807,7 +1141,9 @@ make_launcher (MutterPlugin *plugin,
 
   label = nbtk_label_new (_("Applications"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "launcher-filter-label");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox), label, 0, 0,
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                        CLUTTER_ACTOR (label),
+                                        0, 0,
                                         "y-align", 0.5,
                                         "x-expand", FALSE,
                                         "y-expand", TRUE,
@@ -818,7 +1154,9 @@ make_launcher (MutterPlugin *plugin,
   clutter_actor_set_name (CLUTTER_ACTOR (entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (entry),
                            CLUTTER_UNITS_FROM_DEVICE (FILTER_ENTRY_WIDTH));
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox), entry, 0, 1,
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                        CLUTTER_ACTOR (entry),
+                                        0, 1,
                                         "y-align", 0.5,
                                         "x-expand", FALSE,
                                         "y-expand", TRUE,
@@ -852,9 +1190,8 @@ make_launcher (MutterPlugin *plugin,
   /* `launcher_data' lifecycle is managed above. */
   g_signal_connect (entry, "text-changed",
                     G_CALLBACK (search_activated_cb), launcher_data);
-  /* TODO hook this on the actual ClutterText */
-  g_signal_connect (entry, "key-press-event",
-                    G_CALLBACK (search_key_press_cb), launcher_data);
+  g_signal_connect (entry, "keynav-event",
+                    G_CALLBACK (search_keynav_cb), launcher_data);
 
   g_signal_connect_after (drop_down, "show",
                           G_CALLBACK (dropdown_show_cb), launcher_data);

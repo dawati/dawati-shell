@@ -13,29 +13,36 @@ button_clicked_cb (MnbEntry *entry,
   printf ("%s() %s\n", __FUNCTION__, mnb_entry_get_text (entry));
 }
 
-static gboolean
-text_key_press_cb (ClutterActor    *actor,
-                   ClutterKeyEvent *event,
-                   gpointer         user_data)
+static void
+keynav_cb (ClutterActor *actor,
+           guint         keyval,
+           gpointer      user_data)
 {
-  printf ("%s() '%x'\n", __FUNCTION__, event->keyval);
-  return FALSE;
-}
-
-static gboolean
-entry_key_press_cb (ClutterActor    *actor,
-                    ClutterKeyEvent *event,
-                    gpointer         user_data)
-{
-  printf ("%s() '%x'\n", __FUNCTION__, event->keyval);
-  return FALSE;
+  switch (keyval)
+    {
+      case CLUTTER_Return:
+        printf ("%s() return\n", __FUNCTION__);
+        break;
+      case CLUTTER_Left:
+        printf ("%s() left\n", __FUNCTION__);
+        break;
+      case CLUTTER_Up:
+        printf ("%s() up\n", __FUNCTION__);
+        break;
+      case CLUTTER_Right:
+        printf ("%s() right\n", __FUNCTION__);
+        break;
+      case CLUTTER_Down:
+        printf ("%s() down\n", __FUNCTION__);
+        break;
+    }
 }
 
 int
 main (int argc, char *argv[])
 {
-  NbtkWidget *entry, *inner_entry;
-  ClutterActor *stage, *text;
+  NbtkWidget *entry;
+  ClutterActor *stage;
 
   clutter_init (&argc, &argv);
 
@@ -52,12 +59,7 @@ main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (entry), NULL);
 
   g_signal_connect (entry, "button-clicked", G_CALLBACK (button_clicked_cb), NULL);
-
-  inner_entry = mnb_entry_get_nbtk_entry (MNB_ENTRY (entry));
-  g_signal_connect (inner_entry, "key-press-event", G_CALLBACK (entry_key_press_cb), NULL);
-
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (inner_entry));
-  g_signal_connect (text, "key-press-event", G_CALLBACK (text_key_press_cb), NULL);
+  g_signal_connect (entry, "keynav-event", G_CALLBACK (keynav_cb), NULL);
 
   clutter_actor_show (stage);
 

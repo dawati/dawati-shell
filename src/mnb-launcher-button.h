@@ -52,6 +52,7 @@ struct _MnbLauncherButtonClass
   NbtkTableClass parent;
 
   /* signals */
+  void (* hovered)      (MnbLauncherButton *self);
   void (* activated)    (MnbLauncherButton *self);
   void (* fav_toggled)  (MnbLauncherButton *self);
 };
