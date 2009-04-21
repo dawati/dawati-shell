@@ -43,7 +43,6 @@
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-entry.h"
-#include "mnb-expander.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-tree.h"
 
@@ -243,7 +242,7 @@ grid_keynav_wrap_up (NbtkGrid *grid)
 
   nbtk_widget_get_padding (NBTK_WIDGET (grid), &padding);
 
-  x = clutter_actor_get_widthu (CLUTTER_ACTOR (grid)) - 
+  x = clutter_actor_get_widthu (CLUTTER_ACTOR (grid)) -
       padding.right -
       clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
 
@@ -331,7 +330,7 @@ grid_keynav_first (NbtkGrid *grid)
 
 #define LAUNCHER_GRID_COLUMN_GAP   32
 #define LAUNCHER_GRID_ROW_GAP      12
-#define LAUNCHER_WIDTH            215
+#define LAUNCHER_WIDTH            210
 #define LAUNCHER_HEIGHT            79
 #define LAUNCHER_ICON_SIZE         48
 
@@ -575,16 +574,16 @@ create_launcher_button_from_entry (MnbLauncherEntry *entry,
 }
 
 static void
-expander_notify_cb (MnbExpander    *expander,
+expander_notify_cb (NbtkExpander    *expander,
                     GParamSpec      *pspec,
                     launcher_data_t *launcher_data)
 {
-  MnbExpander    *e;
+  NbtkExpander    *e;
   const gchar     *category;
   GHashTableIter   iter;
 
   /* Close other open expander, so that just the newly opended one is expanded. */
-  if (mnb_expander_get_expanded (expander))
+  if (nbtk_expander_get_expanded (expander))
     {
       g_hash_table_iter_init (&iter, launcher_data->expanders);
       while (g_hash_table_iter_next (&iter,
@@ -592,7 +591,7 @@ expander_notify_cb (MnbExpander    *expander,
                                      (gpointer *) &e))
         {
           if (e != expander)
-            mnb_expander_set_expanded (e, FALSE);
+            nbtk_expander_set_expanded (e, FALSE);
         }
     }
 }
@@ -821,23 +820,23 @@ launcher_data_fill (launcher_data_t *launcher_data)
           {
             ClutterActor *expander;
 
-            expander = CLUTTER_ACTOR (mnb_expander_new (directory->name));
+            expander = CLUTTER_ACTOR (nbtk_expander_new ());
+            nbtk_expander_set_label (NBTK_EXPANDER (expander),
+                                     directory->name);
             clutter_actor_set_width (expander,
                                      launcher_data->width - SCROLLVIEW_RESERVED_WIDTH);
             clutter_container_add (CLUTTER_CONTAINER (launcher_data->apps_grid),
                                    expander, NULL);
             g_hash_table_insert (launcher_data->expanders,
                                  g_strdup (directory->name), expander);
-            g_signal_connect (expander, "notify::expanded",
-                              G_CALLBACK (expander_notify_cb), launcher_data);
-
             clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
             /* Open first expander by default. */
-            if (directory_iter == directories)
-              {
-                mnb_expander_set_expanded (MNB_EXPANDER (expander), TRUE);
-              }
+            if (directory_iter != directories)
+              nbtk_expander_set_expanded (NBTK_EXPANDER (expander), FALSE);
+
+            g_signal_connect (expander, "notify::expanded",
+                              G_CALLBACK (expander_notify_cb), launcher_data);
           }
         else
           {
@@ -1027,7 +1026,7 @@ search_activated_cb (MnbEntry         *entry,
           MnbLauncherButton *launcher   = MNB_LAUNCHER_BUTTON (iter->data);
           const gchar       *category   = mnb_launcher_button_get_category (launcher);
           ClutterActor      *e          = g_hash_table_lookup (launcher_data->expanders, category);
-          ClutterActor      *inner_grid = mnb_expander_get_child (MNB_EXPANDER (e));
+          ClutterActor      *inner_grid = nbtk_bin_get_child (NBTK_BIN (e));
 
           clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
         }

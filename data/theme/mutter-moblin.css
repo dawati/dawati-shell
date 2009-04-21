@@ -28,38 +28,38 @@ NbtkEntry:indeterminate {
  * Expander
  */
 
-/* Header */
-MnbExpander NbtkButton#mnb-expander-header {
-  border-image: url("file://generic/expander-header.png") 4 5 5 4 stretch;
-  border-spacing: 10;
-  font-family: "Liberation Sans Bold";
-  font-size: 18;
-  padding-top: 11;
-  padding-bottom: 12;
-  padding-left: 10;
-}
-MnbExpander NbtkButton#mnb-expander-header:checked {
-  border-image: url("file://generic/expander-header-expanded.png") 4 5 5 4 stretch;
-}
-MnbExpander NbtkButton#mnb-expander-header:hover {
-  border-image: url("file://generic/expander-header-hover.png") 4 5 5 4 stretch;
+NbtkExpander {
+  color: blank;
+  font-size: 15;
+  border-image: url('file://generic/expander-closed.png') 6;
+  padding: 6 12;
 }
 
-/* Icon */
-MnbExpander *#mnb-expander-header-icon {
-  background-image: url("file://generic/expander-icon.png");
-}
-MnbExpander *#mnb-expander-header-icon:hover {
-  background-image: url("file://generic/expander-icon-hover.png");
-}
-MnbExpander *#mnb-expander-header-icon:checked {
-  background-image: url("file://generic/expander-icon-checked.png");
+NbtkExpander:hover {
+  border-image: url('file://generic/expander-hover.png') 6;
 }
 
-/* Payload container */
-MnbExpander NbtkBin#mnb-expander-body {
-  border-image: url("file://generic/expander-body.png") 2 10 8 8 stretch;
+NbtkExpander:active {
+  border-image: url('file://generic/expander-open.png') 36 6 6 6;
 }
+
+*#nbtk-expander-arrow-closed {
+    padding: 0;
+    background-image: url('file://generic/expander-arrow-up.png');
+}
+
+*#nbtk-expander-arrow-closed:hover {
+    background-image: url('file://generic/expander-arrow-up-hover.png');
+}
+
+*#nbtk-expander-arrow-open {
+    background-image: url('file://generic/expander-arrow-down.png');
+}
+
+*#nbtk-expander-arrow-open:hover {
+    background-image: url('file://generic/expander-arrow-down-hover.png');
+}
+
 
 NbtkScrollView {
   xthickness: 26;
