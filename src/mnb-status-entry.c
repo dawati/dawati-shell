@@ -220,10 +220,11 @@ mnb_status_entry_allocate (ClutterActor          *actor,
 
   /* status entry */
   text_width = (int) (available_width
+             - priv->padding.right
              - button_width
              - service_width
              - icon_width
-             - (3 * H_PADDING));
+             - (5 * H_PADDING));
 
   clutter_actor_get_preferred_height (priv->status_entry, text_width,
                                       NULL,
@@ -231,7 +232,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
 
   child_box.x1 = (int) (border.left + priv->padding.left);
   child_box.y1 = (int) (border.top + priv->padding.top);
-  child_box.x2 = (int) (child_box.x1 + (text_width - service_width));
+  child_box.x2 = (int) (child_box.x1 + text_width);
   child_box.y2 = (int) (child_box.y1 + text_height);
   clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
 
