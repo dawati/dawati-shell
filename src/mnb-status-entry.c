@@ -379,6 +379,10 @@ mnb_status_entry_style_changed (NbtkWidget *widget)
       g_boxed_free (NBTK_TYPE_PADDING, padding);
     }
 
+  g_signal_emit_by_name (priv->status_entry, "style-changed");
+  g_signal_emit_by_name (priv->service_label, "style-changed");
+  g_signal_emit_by_name (priv->button, "style-changed");
+
   /* chain up */
   NBTK_WIDGET_CLASS (mnb_status_entry_parent_class)->style_changed (widget);
 }
