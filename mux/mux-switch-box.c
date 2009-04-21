@@ -182,5 +182,5 @@ mux_switch_box_set_active (MuxSwitchBox *switch_box,
 {
 	MuxSwitchBoxPrivate *priv = MUX_SWITCH_BOX_GET_PRIVATE (switch_box);
 
-	mux_ligh_switch_set_active (priv->lightswitch), active);
+	mux_light_switch_set_active (priv->lightswitch, active);
 }
