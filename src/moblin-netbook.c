@@ -766,8 +766,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   priv->screen_region = region;
 #endif
 
+#if 0
   toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
-
+#endif
   /*
    * Create the current_input region; we start with empty, and it gets filled
    * with the initial enable_stage() call.
