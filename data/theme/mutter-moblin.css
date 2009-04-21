@@ -872,5 +872,5 @@ MnbClipboardItem {
   /* uses same assets as the chooser */
   border-image: url("file://chooser/background.png") 11 11 11 11 stretch stretch;
   /* should match the column spacing, currently not themable. */
-  padding: 40;
+  padding: 60;
 }
