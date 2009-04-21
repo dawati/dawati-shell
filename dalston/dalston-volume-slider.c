@@ -145,23 +145,26 @@ _scale_format_value_cb (GtkScale *slider,
     gchar *format = NULL;
 
     if (value == 100.0)
-      format = g_strdup (_("Loudest"));
-    else if (value >= 75.0 && value < 100.0)
+      format = g_strdup (_("Turned up to 11"));
+    else if (value >= 90.0)
+      format = g_strdup (_("Very loud"));
+    else if (value >= 75.0)
       format = g_strdup (_("Loud"));
-    else if (value >= 60.0 && value < 75.0)
+    else if (value > 50.0)
       format = g_strdup (_("Fairly loud"));
-    else if (value >= 45.0 && value < 60.0)
-      format = g_strdup (_("Average"));
-    else if (value >= 25.0 && value < 45.0)
+    else if (value == 50.0)
+      format = g_strdup (_("Middle of the road"));
+    else if (value >= 25.0)
       format = g_strdup (_("Fairly quiet"));
-    else if (value > 0.0 && value < 25.0)
+    else if (value >= 10.0)
       format = g_strdup (_("Quiet"));
+    else if (value > 0.0)
+      format = g_strdup (_("Very quiet"));
     else
       format = g_strdup (_("Silent"));
 
     return format;
 }
-
 
 static void
 dalston_volume_slider_init (DalstonVolumeSlider *self)
