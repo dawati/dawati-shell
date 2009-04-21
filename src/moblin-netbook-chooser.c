@@ -861,10 +861,12 @@ show_workspace_chooser (MutterPlugin *plugin,
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          frame, label, grid, NULL);
 
+#if 0
   if (priv->workspace_chooser)
     hide_workspace_chooser (plugin, timestamp);
 
   priv->workspace_chooser = switcher;
+#endif
 
   overlay = mutter_plugin_get_overlay_group (plugin);
 
@@ -907,8 +909,8 @@ hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  if (!priv->workspace_chooser)
-    return;
+  //if (!priv->workspace_chooser)
+  //  return;
 
   if (priv->workspace_chooser_timeout)
     {
@@ -921,8 +923,8 @@ hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
 
   // hide_panel (plugin);
 
-  clutter_actor_destroy (priv->workspace_chooser);
-  priv->workspace_chooser = NULL;
+  // clutter_actor_destroy (priv->workspace_chooser);
+  // priv->workspace_chooser = NULL;
 }
 
 /*

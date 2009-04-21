@@ -173,8 +173,10 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   guint32            timestamp = clutter_x11_get_current_event_time ();
 
+#if 0 // MA
   if (MNB_SWITCHER (priv->switcher)->priv->dnd_in_progress)
     return FALSE;
+#endif
 
   workspace = meta_screen_get_workspace_by_index (screen, indx);
 
@@ -184,7 +186,9 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
       return FALSE;
     }
 
+#if 0 // MA
   clutter_actor_hide (priv->switcher);
+#endif
 
   if (priv->in_alt_grab)
     {
@@ -220,8 +224,10 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   guint32                     timestamp;
 
+#if 0 // MA
   if (MNB_SWITCHER (priv->switcher)->priv->dnd_in_progress)
     return FALSE;
+#endif
 
   window           = mutter_window_get_meta_window (mw);
   screen           = meta_window_get_screen (window);

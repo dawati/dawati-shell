@@ -89,16 +89,17 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *d_overlay ; /* arrow indicator */
   ClutterActor          *panel;
   ClutterActor          *panel_shadow;
-
+#if 0
   ClutterActor          *switcher;
   ClutterActor          *workspace_chooser;
   ClutterActor          *launcher;
   ClutterActor          *mzone_grid;
   ClutterActor          *net_grid;
-  ClutterActor          *lowlight;
   ClutterActor          *status;
   ClutterActor          *media_drop_down;
   ClutterActor          *pasteboard;
+#endif
+  ClutterActor          *lowlight;
 
   GList                 *global_tab_list;
 

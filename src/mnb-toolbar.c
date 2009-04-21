@@ -226,8 +226,6 @@ mnb_toolbar_init (MnbToolbar *self)
        (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->time)) /
                               2, 8);
 
-
-
   priv->date = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
 

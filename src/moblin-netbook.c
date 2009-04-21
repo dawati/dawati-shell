@@ -282,6 +282,7 @@ try_alt_tab_grab (MutterPlugin *plugin,
                   gboolean      backward,
                   gboolean      advance)
 {
+#if 0
   MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display  = meta_screen_get_display (screen);
@@ -444,6 +445,7 @@ try_alt_tab_grab (MutterPlugin *plugin,
             mnb_switcher_select_window (switcher, current);
         }
     }
+#endif
 }
 
 static void
@@ -454,6 +456,7 @@ handle_alt_tab (MetaDisplay    *display,
                 MetaKeyBinding *binding,
                 MutterPlugin   *plugin)
 {
+#if 0
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gboolean                    backward = FALSE;
   MetaWindow                 *next;
@@ -498,6 +501,7 @@ handle_alt_tab (MetaDisplay    *display,
     }
 
   try_alt_tab_grab (plugin, binding->mask, timestamp, backward, FALSE);
+#endif
 }
 
 struct alt_tab_show_complete_data
@@ -531,6 +535,7 @@ alt_tab_switcher_show_completed_cb (ClutterActor *switcher, gpointer data)
 static gboolean
 alt_tab_timeout_cb (gpointer data)
 {
+#if 0
   struct alt_tab_show_complete_data *alt_data = data;
   MoblinNetbookPluginPrivate        *priv;
   ClutterActor                      *stage;
@@ -567,6 +572,7 @@ alt_tab_timeout_cb (gpointer data)
 
   /* One off */
   return FALSE;
+#endif
 }
 
 /*
@@ -580,6 +586,7 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
                               MetaKeyBinding *binding,
                               gpointer        data)
 {
+#if 0
   MutterPlugin               *plugin = MUTTER_PLUGIN (data);
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -631,6 +638,7 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
     }
 
   handle_alt_tab (display, screen, window, event, binding, plugin);
+#endif
 }
 
 /*
@@ -802,7 +810,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
   clutter_actor_hide (lowlight);
-  clutter_actor_show (priv->mzone_grid);
+
   priv->panel_wait_for_pointer = TRUE;
 
   /*
@@ -1466,6 +1474,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     {
       Window xwin = mutter_window_get_x_window (mcw);
 
+#if 0 // MA
       if (shell_tray_manager_is_config_window (priv->tray_manager, xwin))
         {
           /*
@@ -1543,7 +1552,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * Raise the tray just above all the other dropdowns, but below
            * the actual panel background (the switcher is the topmost dropdown).
            */
-          clutter_actor_raise (background, priv->switcher);
+          // clutter_actor_raise (background, priv->switcher);
 
           /*
            * Hide all other dropdowns.
@@ -1554,9 +1563,12 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           clutter_actor_show_all (background);
         }
       else
+#endif
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 
     }
+
+
   /*
    * Anything that might be associated with startup notification needs to be
    * handled here; if this list grows, we should just split it further.
@@ -1720,6 +1732,7 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
   /*
    * Refuse to disable the stage while the UI is showing.
    */
+#if 0
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) ||
       priv->panel_out_in_progress ||
       priv->workspace_chooser)
@@ -1727,6 +1740,7 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
       g_warning ("Cannot disable stage while the panel/chooser is showing\n");
       return;
     }
+#endif
 
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
@@ -1819,9 +1833,10 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
           priv->in_alt_grab = FALSE;
 
           moblin_netbook_setup_kbd_grabs (plugin);
-
+#if 0
           mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
                                            xev->xkey.time);
+#endif
           return TRUE;
         }
 
@@ -1867,9 +1882,6 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
       xev->xany.window = xwin;
     }
-
-  printf("Xevent filter - returning %i\n",
-         (clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE));
 
   return (clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE);
 }
@@ -1957,6 +1969,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
   MoblinNetbookPlugin *plugin = data;
 
+#if 0
   if (event->type == CLUTTER_MOTION)
     {
       gint                        event_y, event_x;
@@ -2024,6 +2037,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
             }
         }
     }
+#endif
 
   return FALSE;
 }
@@ -2036,7 +2050,7 @@ static gboolean
 stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
   MutterPlugin *plugin = data;
-
+#if 0
   if (event->type == CLUTTER_BUTTON_PRESS)
     {
       gint           event_y, event_x;
@@ -2071,7 +2085,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
             }
         }
     }
-
+#endif
   return FALSE;
 }
 
