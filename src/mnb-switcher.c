@@ -1675,7 +1675,7 @@ hide_panel_on_hide_completed_cb (MnbSwitcher *switcher, gpointer data)
   g_signal_handler_disconnect (switcher, priv->hide_panel_cb_id);
   priv->hide_panel_cb_id = 0;
 
-  hide_panel (plugin);
+  // hide_panel (plugin);
 }
 
 /*

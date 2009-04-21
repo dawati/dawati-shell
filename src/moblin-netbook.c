@@ -31,6 +31,7 @@
 #include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-switcher.h"
+#include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"
 
 #include <glib/gi18n.h>
@@ -192,6 +193,8 @@ moblin_netbook_plugin_get_property (GObject    *object,
       break;
     }
 }
+
+/* XXX Move all Alt handling into workspace code.. */
 
 /*
  * Based on do_choose_window() in metacity keybinding.c
@@ -547,7 +550,7 @@ alt_tab_timeout_cb (gpointer data)
                         G_CALLBACK (alt_tab_switcher_show_completed_cb),
                         alt_data);
 
-      show_panel_and_control (alt_data->plugin, MNBK_CONTROL_SPACES);
+      // show_panel_and_control (alt_data->plugin, MNBK_CONTROL_SPACES);
       priv->panel_wait_for_pointer = FALSE;
     }
   else
@@ -687,15 +690,6 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
 }
 
 static void
-stage_show_cb (ClutterActor *stage, MutterPlugin *plugin)
-{
-  /*
-   * Set up the stage even processing
-   */
-  enable_stage (plugin, CurrentTime);
-}
-
-static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -802,21 +796,14 @@ moblin_netbook_plugin_constructed (GObject *object)
   /*
    * This also creates the launcher.
    */
-  panel = priv->panel = make_panel (MUTTER_PLUGIN (plugin), screen_width);
-  clutter_actor_realize (priv->panel_shadow);
+  // panel = priv->panel = make_panel (MUTTER_PLUGIN (plugin), screen_width);
+  panel = priv->panel = mnb_toolbar_new ();
+  // chlutter_actor_realize (priv->panel_shadow);
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
   clutter_actor_hide (lowlight);
   clutter_actor_show (priv->mzone_grid);
   priv->panel_wait_for_pointer = TRUE;
-
-  /*
-   * Hook into "show" signal on stage, to set up input regions.
-   * (We cannot set up the stage here, because the overlay window, etc.,
-   * is not in place until the stage is shown.)
-   */
-  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
-                    "show", G_CALLBACK (stage_show_cb), plugin);
 
   /*
    * Hook to the captured signal, so we get to see all events before our
@@ -1561,7 +1548,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           /*
            * Hide all other dropdowns.
            */
-          show_panel_and_control (plugin, MNBK_CONTROL_UNKNOWN);
+          // show_panel_and_control (plugin, MNBK_CONTROL_UNKNOWN);
           shell_tray_manager_close_all_other_config_windows (priv->tray_manager,
                                                              xwin);
           clutter_actor_show_all (background);
@@ -1853,11 +1840,11 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
                                                     MOBLIN_PANEL_SHORTCUT_KEY)
     {
       if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
-        show_panel (plugin, TRUE);
+        ; /* MA */ // show_panel (plugin, TRUE);
       else
         {
           priv->panel_wait_for_pointer = FALSE;
-          hide_panel (plugin);
+          /* MA */ // hide_panel (plugin);
         }
 
       return TRUE;
@@ -1880,6 +1867,9 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
       xev->xany.window = xwin;
     }
+
+  printf("Xevent filter - returning %i\n",
+         (clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE));
 
   return (clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE);
 }
@@ -1950,7 +1940,7 @@ panel_slide_timeout_cb (gpointer data)
 
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
-      show_panel (plugin, FALSE);
+      ;// show_panel (plugin, FALSE);
     }
   else
     {
@@ -2001,11 +1991,11 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
            *          when we refactor the panel code, we should expose that
            *          value as a property on the object.
            */
-          guint height = clutter_actor_get_height (priv->panel_shadow);
+          guint height = 64; // clutter_actor_get_height (priv->panel_shadow);
 
           if (event_y > (gint)height)
             {
-              hide_panel (MUTTER_PLUGIN (plugin));
+              // hide_panel (MUTTER_PLUGIN (plugin));
             }
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
@@ -2033,18 +2023,6 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
                                panel_slide_timeout_cb, plugin);
             }
         }
-    }
-  else if (event->any.source == stage &&
-           (event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE))
-    {
-      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-      if (event->type == CLUTTER_ENTER)
-        priv->pointer_on_stage = TRUE;
-      else
-        priv->pointer_on_stage = FALSE;
-
-      return FALSE;
     }
 
   return FALSE;
@@ -2085,11 +2063,11 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
       if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
         {
-          guint height = clutter_actor_get_height (priv->panel_shadow);
+          guint height = 64; // clutter_actor_get_height (priv->panel_shadow);
 
           if (event_y > (gint)height)
             {
-              hide_panel (plugin);
+              /* MA */ // hide_panel (plugin);
             }
         }
     }

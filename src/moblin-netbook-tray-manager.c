@@ -343,7 +343,7 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
       ShellTrayManagerChild *child = data;
 
       destroy_config_window (child);
-      hide_panel (child->manager->priv->plugin);
+      // hide_panel (child->manager->priv->plugin);
     }
   else
     {

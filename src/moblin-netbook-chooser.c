@@ -919,7 +919,7 @@ hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
   moblin_netbook_set_lowlight (plugin, FALSE);
   moblin_netbook_unstash_window_focus (plugin, timestamp);
 
-  hide_panel (plugin);
+  // hide_panel (plugin);
 
   clutter_actor_destroy (priv->workspace_chooser);
   priv->workspace_chooser = NULL;

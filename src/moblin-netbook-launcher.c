@@ -189,7 +189,7 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
 
   clutter_actor_hide (priv->launcher);
   nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
-  hide_panel (plugin);
+  // hide_panel (plugin);
 }
 
 static void

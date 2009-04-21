@@ -16,8 +16,6 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				moblin-netbook.h		\
 				moblin-netbook-chooser.c	\
 				moblin-netbook-chooser.h	\
-				moblin-netbook-panel.c		\
-				moblin-netbook-panel.h		\
 				moblin-netbook-launcher.c       \
 				moblin-netbook-launcher.h	\
 				moblin-netbook-status.c		\
@@ -55,6 +53,8 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				mnb-notification-cluster.h      \
 				mnb-notification-urgent.c       \
 				mnb-notification-urgent.h       \
+                                mnb-toolbar.c                   \
+                                mnb-toolbar.h                   \
 				mnb-panel-button.c              \
 				mnb-panel-button.h              \
 				mnb-launcher-button.c           \
