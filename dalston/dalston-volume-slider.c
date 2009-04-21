@@ -2,6 +2,7 @@
 
 #include <libgvc/gvc-mixer-stream.h>
 #include <glib/gi18n.h>
+#include <canberra-gtk.h>
 
 G_DEFINE_TYPE (DalstonVolumeSlider, dalston_volume_slider, GTK_TYPE_HSCALE)
 
@@ -27,6 +28,9 @@ static void dalston_volume_slider_update_sink (DalstonVolumeSlider *slider,
 static void _stream_volume_notify_cb (GObject    *object,
                                       GParamSpec *pspec,
                                       gpointer    userdata);
+
+#define VOLUME_CHANGED_EVENT "audio-volume-change"
+
 
 static void
 dalston_volume_slider_get_property (GObject *object, guint property_id,
@@ -122,10 +126,12 @@ dalston_volume_slider_class_init (DalstonVolumeSliderClass *klass)
 }
 
 static void
-_range_value_changed_cb (DalstonVolumeSlider *slider)
+_range_value_changed_cb (DalstonVolumeSlider *slider,
+                         gpointer             userdata)
 {
   DalstonVolumeSliderPrivate *priv = GET_PRIVATE (slider);
   guint volume;
+  gint res;
 
   g_signal_handlers_block_by_func (priv->sink,
                                    _stream_volume_notify_cb,
@@ -135,6 +141,18 @@ _range_value_changed_cb (DalstonVolumeSlider *slider)
   g_signal_handlers_unblock_by_func (priv->sink,
                                      _stream_volume_notify_cb,
                                      slider);
+
+  res = ca_gtk_play_for_widget (slider,
+                                0,
+                                CA_PROP_EVENT_ID,
+                                VOLUME_CHANGED_EVENT,
+                                NULL);
+
+  if (res != CA_SUCCESS)
+  {
+    g_warning (G_STRLOC ": Error playing test sound: %s",
+               ca_strerror (res));
+  }
 }
 
 static gchar *
