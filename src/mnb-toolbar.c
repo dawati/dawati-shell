@@ -113,6 +113,8 @@ mnb_toolbar_hide (ClutterActor *actor)
                     actor);
 }
 
+static void mnb_toolbar_constructed (GObject *self);
+
 static void
 mnb_toolbar_class_init (MnbToolbarClass *klass)
 {
@@ -125,6 +127,7 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
   object_class->set_property = mnb_toolbar_set_property;
   object_class->dispose = mnb_toolbar_dispose;
   object_class->finalize = mnb_toolbar_finalize;
+  object_class->constructed = mnb_toolbar_constructed;
 
   clutter_class->show = mnb_toolbar_show;
   clutter_class->hide = mnb_toolbar_hide;
@@ -212,6 +215,12 @@ mnb_toolbar_init (MnbToolbar *self)
   MnbToolbarPrivate *priv;
 
   priv = self->priv = MNB_TOOLBAR_GET_PRIVATE (self);
+}
+
+static void
+mnb_toolbar_constructed (GObject *self)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (self)->priv;
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,
@@ -237,7 +246,6 @@ mnb_toolbar_init (MnbToolbar *self)
 
   mnb_toolbar_update_time_date (priv);
   g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);
-
 }
 
 NbtkWidget*
