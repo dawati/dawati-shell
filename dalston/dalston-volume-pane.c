@@ -31,7 +31,7 @@ enum
 static void dalston_volume_pane_update_sink (DalstonVolumePane *pane,
                                              GvcMixerStream    *new_sink);
 
-#define TEST_SOUND_EVENT "desktop-login"
+#define TEST_SOUND_EVENT "audio-test-signal"
 
 static void
 dalston_volume_pane_get_property (GObject *object, guint property_id,
