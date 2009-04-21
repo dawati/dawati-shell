@@ -38,6 +38,8 @@
 
 #define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
 
+#define MAX_WORKSPACES 8
+
 /*
  * FIXME -- should not be hardcoded; used in panel and system tray.
  */

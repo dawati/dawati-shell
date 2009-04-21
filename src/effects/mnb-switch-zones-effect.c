@@ -27,6 +27,7 @@
 #define MNBZE_ZOOM_OUT_DURATION 100
 #define MNBZE_MOTION_DURATION   200
 #define MNBZE_PAD 40
+#define MNBZE_CELL_PAD 4
 
 /*
  * The three stages of the effect
@@ -48,8 +49,7 @@ static MnbzeStage        estage       = MNBZE_ZOOM_OUT;
 static gint              current_to   = 0;
 static gint              current_from = 0;
 
-static void fill_strip (MutterPlugin*, NbtkTable*, gint, gint,
-                        gdouble*, gdouble*);
+static void fill_strip (MutterPlugin*, NbtkTable*, gint, gint);
 
 /*
  * Release the ClutterClone actors we use for the effect.
@@ -156,7 +156,7 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
                                    MNBZE_MOTION_DURATION,
                                    "x",
                                    -MNBZE_PAD
-                                   -((screen_width + 2*MNBZE_PAD)*current_to),
+                                   -((screen_width + MNBZE_PAD)*current_to),
                                    NULL);
 
         /*
@@ -212,6 +212,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 {
   ClutterAnimation           *a;
   gdouble                     target_scale_x, target_scale_y;
+  gint                        cell_width, cell_height;
   gint                        screen_width, screen_height;
 
   if (from == to)
@@ -222,6 +223,16 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
     }
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  cell_width = (screen_width -
+                MAX_WORKSPACES * 2 * MNBZE_CELL_PAD) / MAX_WORKSPACES;
+
+  cell_height = screen_height * cell_width / screen_width;
+
+  target_scale_x = (gdouble) (cell_width -
+                              MNBZE_CELL_PAD)/ (gdouble)screen_width;
+  target_scale_y = (gdouble) (cell_height -
+                              MNBZE_CELL_PAD) /(gdouble)screen_height;
 
   if (G_UNLIKELY (!frame))
     {
@@ -265,15 +276,13 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   /*
    * Construct the strip.
    */
-  fill_strip (plugin, NBTK_TABLE (strip),
-              screen_width, screen_height,
-              &target_scale_x, &target_scale_y);
+  fill_strip (plugin, NBTK_TABLE (strip), screen_width, screen_height);
 
   /*
    * Position the strip so that the current desktop is in the frame window.
    */
   clutter_actor_set_position (strip,
-                              -MNBZE_PAD - (screen_width + 2*MNBZE_PAD) * from,
+                              -MNBZE_PAD - (screen_width + MNBZE_PAD) * from,
                               0);
 
   clutter_actor_show (desktop);
@@ -364,7 +373,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
                                  MNBZE_MOTION_DURATION,
                                  "x",
                                  -MNBZE_PAD
-                                 -((screen_width + 2*MNBZE_PAD)*current_to),
+                                 -((screen_width + MNBZE_PAD)*current_to),
                                  NULL);
           break;
         }
@@ -469,9 +478,7 @@ static void
 fill_strip (MutterPlugin *plugin,
             NbtkTable    *strip,
             gint          screen_width,
-            gint          screen_height,
-            gdouble      *target_scale_x,
-            gdouble      *target_scale_y)
+            gint          screen_height)
 {
   GList        *l;
   gint          cell_width, cell_height;
@@ -482,18 +489,6 @@ fill_strip (MutterPlugin *plugin,
   guint         w, h;
 
   n_workspaces = meta_screen_get_n_workspaces (screen);
-
-  /*
-   * Calculate the target scale factor so that when the whole strip is zoomed
-   * out, all the workspaces will be visible.
-   */
-  cell_width = (screen_width -
-                n_workspaces * 2 * MNBZE_PAD) / n_workspaces;
-
-  cell_height = screen_height * cell_width / screen_width;
-
-  *target_scale_x = (gdouble) (cell_width)/ (gdouble)screen_width;
-  *target_scale_y = (gdouble) (cell_height) /(gdouble)screen_height;
 
   l = mutter_plugin_get_windows (plugin);
 
