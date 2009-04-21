@@ -100,14 +100,10 @@ on_store_item_removed (MnbClipboardStore *store,
   if (!item_found)
     return;
 
-  g_object_ref (item);
-
-  clutter_actor_unparent (CLUTTER_ACTOR (item));
   priv->rows = g_slist_remove (priv->rows, item);
+  clutter_actor_destroy (CLUTTER_ACTOR (item));
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (view));
-
-  g_object_unref (item);
 }
 
 static void
