@@ -190,17 +190,31 @@ _scale_format_value_cb (GtkScale *scale,
                         gpointer  userdata)
 {
   DalstonBrightnessSliderPrivate *priv = GET_PRIVATE (userdata);
+  gdouble percentage;
+  gchar *format = NULL;
 
-  if ((int)value == 0)
-  {
-    return g_strdup (_("Very dim"));
-  } else if ((int)value == (priv->num_levels - 1)) {
-    return g_strdup (_("Very bright"));
-  } else if ((int)value == (priv->num_levels -1)) {
-    return g_strdup (_("Somewhere in the middle"));
-  } else {
-    return g_strdup ("");
-  }
+  percentage = (double)value/(double)(priv->num_levels - 1);
+
+  if (value == 100.0)
+    format = g_strdup (_("Brighter than the sun"));
+  else if (value >= 90.0)
+    format = g_strdup (_("Very bright"));
+  else if (value >= 75.0)
+    format = g_strdup (_("Bright"));
+  else if (value > 50.0)
+    format = g_strdup (_("Morning has broken"));
+  else if (value == 50.0)
+    format = g_strdup (_("Midday"));
+  else if (value >= 25.0)
+    format = g_strdup (_("Pretty dusky"));
+  else if (value >= 10.0)
+    format = g_strdup (_("Twilight"));
+  else if (value > 0.0)
+    format = g_strdup (_("Very dark"));
+  else
+    format = g_strdup (_("Total eclipse"));
+
+  return format;
 }
 
 static void
