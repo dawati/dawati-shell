@@ -90,10 +90,16 @@ static void
 grid_find_widget_by_point_cb (ClutterActor      *actor,
                               grid_point_data_t *grid_point_data)
 {
-  if (clutter_actor_get_xu (actor) <= grid_point_data->x &&
-      clutter_actor_get_yu (actor) <= grid_point_data->y &&
-      (clutter_actor_get_xu (actor) + clutter_actor_get_widthu (actor)) >= grid_point_data->x &&
-      (clutter_actor_get_yu (actor) + clutter_actor_get_heightu (actor)) >= grid_point_data->y)
+  ClutterUnit left = clutter_actor_get_xu (actor);
+  ClutterUnit top = clutter_actor_get_yu (actor);
+  ClutterUnit right = left + clutter_actor_get_widthu (actor);
+  ClutterUnit bottom = top + clutter_actor_get_heightu (actor);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (actor) &&
+      left <= grid_point_data->x &&
+      top <= grid_point_data->y &&
+      right >= grid_point_data->x &&
+      bottom >= grid_point_data->y)
     {
       grid_point_data->widget = NBTK_WIDGET (actor);
     }
@@ -303,9 +309,6 @@ grid_keynav_first (NbtkGrid *grid)
 
   x = padding.left + 1;
   y = padding.top + 1;
-
-  /* TODO: problems with highlighting first launcher. */
-  x += 300;
 
   widget = grid_find_widget_by_point (grid, x, y);
   if (widget)
