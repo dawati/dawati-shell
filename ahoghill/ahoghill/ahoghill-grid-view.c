@@ -425,3 +425,29 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_idle_add (finish_init, self);
 }
 
+void
+ahoghill_grid_view_clear (AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    NbtkWidget *entry;
+
+    entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
+    mnb_entry_set_text (MNB_ENTRY (entry), "");
+}
+
+void
+ahoghill_grid_view_focus (AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    NbtkWidget *entry;
+
+    entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
+    clutter_actor_grab_key_focus (CLUTTER_ACTOR (entry));
+}
+
+void
+ahoghill_grid_view_unfocus (AhoghillGridView *view)
+{
+    ClutterActor *stage = clutter_stage_get_default ();
+    clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
+}
