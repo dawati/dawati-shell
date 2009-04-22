@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "penge-app-tile.h"
 #include "penge-app-bookmark-manager.h"
@@ -196,30 +197,34 @@ _button_press_event (ClutterActor *actor,
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
   GError *error = NULL;
-  gchar **argv = NULL;
+  gchar *path;
 
-  if (!(priv->bookmark && priv->bookmark->app_exec))
+  if (!(priv->bookmark && priv->bookmark->uri))
     return TRUE;
 
-  argv = g_strsplit (priv->bookmark->app_exec, " ", 0);
+  path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
+  if (path)
+    {
+      GAppLaunchContext *context;
+      GAppInfo *app_info;
 
-  if (!g_spawn_async  (NULL,
-                       argv,
-                       NULL,
-                       G_SPAWN_SEARCH_PATH,
-                       NULL,
-                       NULL,
-                       NULL,
-                       &error))
-  {
-    g_warning (G_STRLOC ": Error launching application): %s",
-               error->message);
-    g_clear_error (&error);
-  } else {
-    penge_utils_signal_activated (actor);
-  }
+      context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+      app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
+      g_free (path);
 
-  g_strfreev (argv);
+      if (g_app_info_launch (app_info, NULL, context, &error))
+        penge_utils_signal_activated (actor);
+
+      g_object_unref (app_info);
+      g_object_unref (context);
+    }
+
+  if (error)
+    {
+      g_warning (G_STRLOC ": Error launching application): %s",
+                 error->message);
+      g_clear_error (&error);
+    }
 
   return TRUE;
 }
