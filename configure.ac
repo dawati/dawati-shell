@@ -47,7 +47,7 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   metacity-plugins >= mutter_version dnl
-                  nbtk-1.0 >= 0.2.2                  dnl
+                  nbtk-1.0 >= 0.3.0                  dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
                   libgnome-menu                      dnl
