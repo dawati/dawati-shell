@@ -201,11 +201,16 @@ make_status (MutterPlugin *plugin, gint width)
 
   header = nbtk_label_new (_("Your current status"));
   nbtk_widget_set_style_class_name (header, "MnbStatusPageHeader");
-  nbtk_table_add_actor_full (NBTK_TABLE (table), CLUTTER_ACTOR (header),
-                             0, 0,
-                             1, 1,
-                             0,
-                             0.0, 0.5);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
+                                        CLUTTER_ACTOR (header),
+                                        0, 0,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
 
   client = mojito_client_new ();
 
