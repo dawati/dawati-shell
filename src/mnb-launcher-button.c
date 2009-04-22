@@ -64,6 +64,7 @@ struct _MnbLauncherButtonPrivate
   guint is_pressed  : 1;
 
   /* Cached for matching. */
+  char          *category_key;
   char          *title_key;
   char          *description_key;
   char          *comment_key;
@@ -132,6 +133,7 @@ finalize (GObject *object)
   g_free (self->priv->desktop_file_path);
   g_free (self->priv->icon_file);
 
+  g_free (self->priv->category_key);
   g_free (self->priv->title_key);
   g_free (self->priv->description_key);
   g_free (self->priv->comment_key);
@@ -573,6 +575,16 @@ mnb_launcher_button_match (MnbLauncherButton *self,
   /* Empty key matches. */
   if (g_utf8_strlen (lcase_needle, -1) == 0)
     return TRUE;
+
+  /* Category */
+  if (!self->priv->category_key)
+    self->priv->category_key = g_utf8_strdown (self->priv->category, -1);
+
+  if (self->priv->category_key &&
+      NULL != strstr (self->priv->category_key, lcase_needle))
+    {
+      return TRUE;
+    }
 
   /* Title. */
   if (!self->priv->title_key)
