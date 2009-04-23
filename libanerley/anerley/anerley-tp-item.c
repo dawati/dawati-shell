@@ -238,9 +238,6 @@ anerley_tp_item_update_contact (AnerleyTpItem *item,
                                           _contact_notify_alias_cb,
                                           item);
     g_signal_handlers_disconnect_by_func (priv->contact,
-                                          _contact_notify_avatar_token_cb,
-                                          item);
-    g_signal_handlers_disconnect_by_func (priv->contact,
                                           _contact_notify_presence_status_cb,
                                           item);
     g_signal_handlers_disconnect_by_func (priv->contact,
@@ -267,10 +264,6 @@ anerley_tp_item_update_contact (AnerleyTpItem *item,
                       (GCallback)_contact_notify_alias_cb,
                       item);
     g_signal_connect (priv->contact,
-                      "notify::avatar-token",
-                      (GCallback)_contact_notify_avatar_token_cb,
-                      item);
-    g_signal_connect (priv->contact,
                       "notify:::presence-status",
                       (GCallback)_contact_notify_presence_status_cb,
                       item);
@@ -283,11 +276,20 @@ anerley_tp_item_update_contact (AnerleyTpItem *item,
     g_object_notify ((GObject *)priv->contact,
                      "alias");
     g_object_notify ((GObject *)priv->contact,
-                     "avatar-token");
-    g_object_notify ((GObject *)priv->contact,
                      "presence-status");
     g_object_notify ((GObject *)priv->contact,
                      "presence-message");
   }
 }
 
+void
+anerley_tp_item_set_avatar_path (AnerleyTpItem *item,
+                                 const gchar    *avatar_path)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+
+  g_free (priv->avatar_path);
+  priv->avatar_path = g_strdup (avatar_path);
+
+  anerley_item_emit_avatar_path_changed ((AnerleyItem *)item);
+}
