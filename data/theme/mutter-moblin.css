@@ -725,7 +725,7 @@ MwbRadicalBar NbtkEntry
 
 MwbRadicalBar NbtkButton
 {
-  border-image: none;
+  border-image: none ! important;
   padding: 0;
 }
 
