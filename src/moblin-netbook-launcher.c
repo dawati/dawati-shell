@@ -47,15 +47,6 @@
 #include "mnb-launcher-tree.h"
 
 /*
-static void
-scrollable_ensure_visible (NbtkScrollable         *scrollable,
-                           const ClutterActorBox  *box)
-{
-
-}
-*/
-
-/*
  * Grid keyboard navigation.
  */
 
@@ -329,6 +320,80 @@ grid_keynav_first (NbtkGrid *grid)
   return NULL;
 }
 
+static void
+scrollable_ensure_box_visible (NbtkScrollable         *scrollable,
+                               const ClutterActorBox  *box)
+{
+  NbtkAdjustment *hadjustment;
+  NbtkAdjustment *vadjustment;
+  gdouble         top, right, bottom, left;
+  gdouble         h_page, v_page;
+
+  g_object_get (scrollable,
+                "hadjustment", &hadjustment,
+                NULL);
+
+  g_object_get (scrollable,
+                "vadjustment", &vadjustment,
+                NULL);
+
+  g_object_get (hadjustment,
+                "value", &left,
+                "page-size", &h_page,
+                NULL);
+  right = left + h_page;
+
+  g_object_get (vadjustment,
+                "value", &top,
+                "page-size", &v_page,
+                NULL);
+  bottom = top + v_page;
+
+  /* Vertical. */
+  if (box->y1 < top)
+    nbtk_adjustment_set_value (vadjustment, box->y1);
+
+  if (box->y2 > bottom)
+    nbtk_adjustment_set_value (vadjustment, box->y2 - v_page);
+}
+
+static void
+scrollable_ensure_actor_visible (NbtkScrollable *scrollable,
+                                 ClutterActor   *actor)
+{
+  ClutterActorBox box;
+  ClutterVertex   allocation[4];
+
+  clutter_actor_get_allocation_vertices (actor,
+                                         CLUTTER_ACTOR (scrollable),
+                                         allocation);
+  box.x1 = allocation[0].x;
+  box.y1 = allocation[0].y;
+  box.x2 = allocation[3].x;
+  box.y2 = allocation[3].y;
+
+  scrollable_ensure_box_visible (scrollable, &box);
+}
+
+static void
+mnb_clutter_container_has_children_cb (ClutterActor  *actor,
+                                       gboolean      *ret)
+{
+  *ret = TRUE;
+}
+
+static gboolean
+mnb_clutter_container_has_children (ClutterContainer *container)
+{
+  gboolean ret = FALSE;
+
+  clutter_container_foreach (container,
+                             (ClutterCallback) mnb_clutter_container_has_children_cb,
+                             &ret);
+
+  return ret;
+}
+
 #define INITIAL_FILL_TIMEOUT_S    4
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S 2
@@ -382,25 +447,6 @@ static void launcher_data_monitor_cb        (MnbLauncherMonitor  *monitor,
 
 static void launcher_data_set_show_fav_apps (launcher_data_t      *launcher_data,
                                              gboolean              show);
-
-static void
-mnb_clutter_container_has_children_cb (ClutterActor  *actor,
-                                       gboolean      *ret)
-{
-  *ret = TRUE;
-}
-
-static gboolean
-mnb_clutter_container_has_children (ClutterContainer *container)
-{
-  gboolean ret = FALSE;
-
-  clutter_container_foreach (container,
-                             (ClutterCallback) mnb_clutter_container_has_children_cb,
-                             &ret);
-
-  return ret;
-}
 
 static gboolean
 launcher_button_set_reactive_cb (ClutterActor *launcher)
@@ -1074,18 +1120,30 @@ entry_keynav_cb (MnbEntry         *entry,
           case CLUTTER_Left:
             launcher = grid_keynav_left (NBTK_GRID (launcher_data->apps_grid));
             if (!launcher)
-              grid_keynav_wrap_up (NBTK_GRID (launcher_data->apps_grid));
+              launcher = grid_keynav_wrap_up (NBTK_GRID (launcher_data->apps_grid));
+            if (launcher)
+              scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                               CLUTTER_ACTOR (launcher));
             break;
           case CLUTTER_Up:
-            grid_keynav_up (NBTK_GRID (launcher_data->apps_grid));
+            launcher = grid_keynav_up (NBTK_GRID (launcher_data->apps_grid));
+            if (launcher)
+              scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                               CLUTTER_ACTOR (launcher));
             break;
           case CLUTTER_Right:
             launcher = grid_keynav_right (NBTK_GRID (launcher_data->apps_grid));
             if (!launcher)
-              grid_keynav_wrap_down (NBTK_GRID (launcher_data->apps_grid));
+              launcher = grid_keynav_wrap_down (NBTK_GRID (launcher_data->apps_grid));
+            if (launcher)
+              scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                               CLUTTER_ACTOR (launcher));
             break;
           case CLUTTER_Down:
-            grid_keynav_down (NBTK_GRID (launcher_data->apps_grid));
+            launcher = grid_keynav_down (NBTK_GRID (launcher_data->apps_grid));
+            if (launcher)
+              scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                               CLUTTER_ACTOR (launcher));
             break;
         }
     }
