@@ -28,6 +28,8 @@ typedef enum
 {
   VOLUME_STATUS_ICON_MUTED,
   VOLUME_STATUS_ICON_MUTED_ACTIVE,
+  VOLUME_STATUS_ICON_SILENT,
+  VOLUME_STATUS_ICON_SILENT_ACTIVE,
   VOLUME_STATUS_ICON_LOW,
   VOLUME_STATUS_ICON_LOW_ACTIVE,
   VOLUME_STATUS_ICON_MEDIUM,
@@ -39,6 +41,8 @@ typedef enum
 #define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
 
 static const gchar *icon_names[] = {
+  PKG_ICON_DIR "/" "dalston-volume-applet-0-normal.png",
+  PKG_ICON_DIR "/" "dalston-volume-applet-0-active.png",
   PKG_ICON_DIR "/" "dalston-volume-applet-0-normal.png",
   PKG_ICON_DIR "/" "dalston-volume-applet-0-active.png",
   PKG_ICON_DIR "/" "dalston-volume-applet-1-normal.png",
@@ -141,8 +145,11 @@ dalston_volume_status_icon_update (DalstonVolumeStatusIcon *icon)
   } else {
     volume = 100 * 
       ((float)gvc_mixer_stream_get_volume (priv->sink) / PA_VOLUME_NORM);
-    if (volume < 45)
+
+    if (volume == 0)
     {
+      icon_state = VOLUME_STATUS_ICON_SILENT;
+    } else if (volume < 45) {
       icon_state = VOLUME_STATUS_ICON_LOW;
     } else if (volume < 75) {
       icon_state = VOLUME_STATUS_ICON_MEDIUM;
