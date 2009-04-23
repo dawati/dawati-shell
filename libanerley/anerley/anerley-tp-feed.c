@@ -126,6 +126,19 @@ anerley_tp_feed_finalize (GObject *object)
 }
 
 static void
+_tp_connection_request_avatars_cb (TpConnection *conn,
+                                   const GError *error,
+                                   gpointer      userdata,
+                                   GObject      *weak_object)
+{
+  if (error)
+  {
+    g_warning (G_STRLOC ": RequestAvatars call failed: %s",
+               error->message);
+  }
+}
+
+static void
 _tp_connection_get_contacts_cb (TpConnection      *connection,
                                 guint              n_contacts,
                                 TpContact * const *contacts,
@@ -143,6 +156,9 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
   gchar *uid;
   GList *changed_items = NULL;
   GList *added_items = NULL;
+  gchar *avatar_path;
+  GArray *missing_avatar_handles;
+  TpHandle handle;
 
   if (error)
   {
@@ -150,6 +166,8 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
                error->message);
     return;
   }
+
+  missing_avatar_handles = g_array_new (TRUE, TRUE, sizeof (TpHandle));
 
   for (i = 0; i < n_contacts; i++)
   {
@@ -191,6 +209,24 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
                            GUINT_TO_POINTER (tp_contact_get_handle (contact)),
                            g_strdup (tp_contact_get_identifier (contact)));
     }
+
+    /* Check if contact's avatar is already downloaded */
+    avatar_path = g_build_filename (g_get_user_cache_dir (),
+                                    "anerley",
+                                    "avatars",
+                                    tp_contact_get_avatar_token (contact),
+                                    NULL);
+    if (g_file_test (avatar_path, G_FILE_TEST_EXISTS))
+    {
+      /* Already download, woot! */
+      anerley_tp_item_set_avatar_path (item, avatar_path);
+    } else {
+      handle = tp_contact_get_handle (contact);
+      g_array_append_val (missing_avatar_handles,
+                          handle);
+    }
+
+    g_free (avatar_path);
   }
 
   /* TODO: Move to idle to avoid blocking the bus */
@@ -211,7 +247,18 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
 
   g_list_free (added_items);
   g_list_free (changed_items);
+
+  tp_cli_connection_interface_avatars_call_request_avatars (priv->conn,
+                                                            -1,
+                                                            missing_avatar_handles,
+                                                            _tp_connection_request_avatars_cb,
+                                                            NULL,
+                                                            NULL,
+                                                            (GObject *)feed);
+  g_array_free (missing_avatar_handles, TRUE);
 }
+
+
 
 static void
 anerley_tp_feed_fetch_contacts (AnerleyTpFeed *feed,
@@ -459,16 +506,67 @@ anerley_tp_feed_setup_subscribe_channel (AnerleyTpFeed *feed)
 }
 
 static void
+_tp_connection_avatar_retrieved_cb (TpConnection *conn,
+                                    TpHandle      handle,
+                                    const gchar  *token,
+                                    const GArray *image_data,
+                                    const char   *type,
+                                    gpointer      userdata,
+                                    GObject      *weak_object)
+{
+  AnerleyTpFeed *feed = (AnerleyTpFeed *)weak_object;
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+  gchar *avatar_path;
+  GError *error = NULL;
+  const gchar *id;
+  AnerleyTpItem *item;
+
+  avatar_path = g_build_filename (g_get_user_cache_dir (),
+                                  "anerley",
+                                  "avatars",
+                                  token,
+                                  NULL);
+
+  if (!g_file_set_contents (avatar_path,
+                            (gchar *)image_data->data,
+                            image_data->len,
+                            &error))
+  {
+    g_warning (G_STRLOC ": Error creating avatar file: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  id = g_hash_table_lookup (priv->handles_to_ids,
+                            GUINT_TO_POINTER (handle));
+
+  if (id)
+  {
+    item = g_hash_table_lookup (priv->ids_to_items,
+                                id);
+
+    if (item)
+    {
+      anerley_tp_item_set_avatar_path (item, avatar_path);
+    }
+  }
+
+  g_free (avatar_path);
+}
+
+static void
 _tp_connection_ready_cb (TpConnection *connection,
-                         const GError *error,
+                         const GError *error_in,
                          gpointer      userdata)
 {
   AnerleyTpFeed *feed = (AnerleyTpFeed *)userdata;
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+  GError *error = NULL;
 
-  if (error)
+  if (error_in)
   {
     g_warning (G_STRLOC ": Error. Connection is now invalid: %s",
-               error->message);
+               error_in->message);
     return;
   }
 
@@ -477,6 +575,21 @@ _tp_connection_ready_cb (TpConnection *connection,
    */
 
   anerley_tp_feed_setup_subscribe_channel (feed);
+
+  /* Connect to the avatar retrieved signal */
+  tp_cli_connection_interface_avatars_connect_to_avatar_retrieved (priv->conn,
+                                                                   _tp_connection_avatar_retrieved_cb,
+                                                                   NULL,
+                                                                   NULL,
+                                                                   (GObject *)feed,
+                                                                   &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error connecting to AvatarRetrieved signal: %s",
+               error->message);
+    g_clear_error (&error);
+  }
 }
 
 static void
@@ -648,6 +761,7 @@ static void
 anerley_tp_feed_init (AnerleyTpFeed *self)
 {
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (self);
+  gchar *avatar_cache_dir;
 
   priv->ids_to_items = g_hash_table_new_full (g_str_hash,
                                               g_str_equal,
@@ -659,6 +773,13 @@ anerley_tp_feed_init (AnerleyTpFeed *self)
                                                 NULL,
                                                 g_free);
 
+  /*  Create cache directory if it doesn't exist */
+  avatar_cache_dir = g_build_filename (g_get_user_cache_dir (),
+                                       "anerley",
+                                       "avatars",
+                                       NULL);
+  g_mkdir_with_parents (avatar_cache_dir, 0755);
+  g_free (avatar_cache_dir);
 }
 
 AnerleyTpFeed *
