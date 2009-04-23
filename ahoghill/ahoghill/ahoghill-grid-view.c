@@ -448,6 +448,18 @@ ahoghill_grid_view_focus (AhoghillGridView *view)
 void
 ahoghill_grid_view_unfocus (AhoghillGridView *view)
 {
-    ClutterActor *stage = clutter_stage_get_default ();
-    clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
+    ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
+    ClutterActor *entry;
+    ClutterActor *current_focus;
+
+    /*
+     * If the entry is focused, than release the focus.
+     */
+    entry = CLUTTER_ACTOR (
+     ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane)));
+
+    current_focus = clutter_stage_get_key_focus (stage);
+
+    if (current_focus == entry)
+      clutter_stage_set_key_focus (stage, NULL);
 }

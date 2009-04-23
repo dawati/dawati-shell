@@ -339,9 +339,9 @@ tablist_sort_func (gconstpointer a, gconstpointer b)
       gint row1, row2, col1, col2;
 
       clutter_container_child_get (CLUTTER_CONTAINER (parent1), clone1,
-                                   "row", &row1, "column", &col1, NULL);
+                                   "row", &row1, "col", &col1, NULL);
       clutter_container_child_get (CLUTTER_CONTAINER (parent1), clone2,
-                                   "row", &row2, "column", &col2, NULL);
+                                   "row", &row2, "col", &col2, NULL);
 
       if (row1 < row2)
         return -1;
@@ -359,9 +359,9 @@ tablist_sort_func (gconstpointer a, gconstpointer b)
     }
 
   clutter_container_child_get (CLUTTER_CONTAINER (gparent1), parent1,
-                               "column", &pcol1, NULL);
+                               "col", &pcol1, NULL);
   clutter_container_child_get (CLUTTER_CONTAINER (gparent2), parent2,
-                               "column", &pcol2, NULL);
+                               "col", &pcol2, NULL);
 
   if (pcol1 < pcol2)
     return -1;
@@ -403,7 +403,7 @@ dnd_dropped_cb (NbtkWidget   *table,
   meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (parent),
 					   table_actor);
 
-  g_object_get (meta, "column", &col, NULL);
+  g_object_get (meta, "col", &col, NULL);
 
   if (priv->tab_list)
     {
@@ -452,7 +452,7 @@ dnd_new_dropped_cb (NbtkWidget   *table,
   d_meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (table),
                                              dragged);
 
-  g_object_get (meta, "column", &col, NULL);
+  g_object_get (meta, "col", &col, NULL);
   g_object_get (d_meta, "keep-aspect-ratio", &keep_ratio, NULL);
 
   new_ws = mnb_switcher_append_workspace (switcher);
@@ -549,7 +549,7 @@ table_find_child (ClutterContainer *table, gint row, gint col)
       ClutterActor *a = l->data;
       gint r, c;
 
-      clutter_container_child_get (table, a, "row", &r, "column", &c, NULL);
+      clutter_container_child_get (table, a, "row", &r, "col", &c, NULL);
 
       if ((r == row) && (c == col))
         {
@@ -579,7 +579,7 @@ dnd_enter_cb (NbtkWidget   *table,
 
   clutter_container_child_get (CLUTTER_CONTAINER (priv->table),
                                CLUTTER_ACTOR (table),
-                               "column", &col, NULL);
+                               "col", &col, NULL);
 
   label = table_find_child (CLUTTER_CONTAINER (priv->table), 0, col);
 
@@ -602,7 +602,7 @@ dnd_leave_cb (NbtkWidget   *table,
   gint          col;
 
   clutter_container_child_get (CLUTTER_CONTAINER (priv->table),
-                               CLUTTER_ACTOR (table), "column", &col, NULL);
+                               CLUTTER_ACTOR (table), "col", &col, NULL);
 
   label = table_find_child (CLUTTER_CONTAINER (priv->table), 0, col);
 
@@ -737,7 +737,7 @@ table_foreach_remove_ws (ClutterActor *child, gpointer data)
   meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (table), child);
 
   g_assert (meta);
-  g_object_get (meta, "row", &row, "column", &col, NULL);
+  g_object_get (meta, "row", &row, "col", &col, NULL);
 
   /*
    * Children below the column we are removing are unaffected.
@@ -766,7 +766,7 @@ table_foreach_remove_ws (ClutterActor *child, gpointer data)
           gchar *s;
 
           clutter_container_child_set (CLUTTER_CONTAINER (table), child,
-                                       "column", col - 1,
+                                       "col", col - 1,
                                        "y-expand", FALSE, NULL);
 
           s = g_strdup_printf ("%d", col);
@@ -776,7 +776,7 @@ table_foreach_remove_ws (ClutterActor *child, gpointer data)
         }
       else
         clutter_container_child_set (CLUTTER_CONTAINER (table), child,
-                                     "column", col - 1, NULL);
+                                     "col", col - 1, NULL);
     }
 }
 
@@ -1345,15 +1345,15 @@ mnb_switcher_append_workspace (MnbSwitcher *switcher)
   meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (table),
                                            CLUTTER_ACTOR (last_ws));
 
-  g_object_get (meta, "column", &col, NULL);
+  g_object_get (meta, "col", &col, NULL);
 
   clutter_container_child_set (CLUTTER_CONTAINER (table),
                                CLUTTER_ACTOR (last_ws),
-                               "column", col + 1, NULL);
+                               "col", col + 1, NULL);
 
   clutter_container_child_set (CLUTTER_CONTAINER (table),
                                CLUTTER_ACTOR (last_label),
-                               "column", col + 1,
+                               "col", col + 1,
                                "y-expand", FALSE, NULL);
 
   /*
