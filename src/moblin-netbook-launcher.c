@@ -47,6 +47,15 @@
 #include "mnb-launcher-tree.h"
 
 /*
+static void
+scrollable_ensure_visible (NbtkScrollable         *scrollable,
+                           const ClutterActorBox  *box)
+{
+
+}
+*/
+
+/*
  * Grid keyboard navigation.
  */
 
@@ -123,7 +132,7 @@ grid_find_widget_by_point (NbtkGrid     *grid,
   return grid_point_data.widget;
 }
 
-static gboolean
+static NbtkWidget *
 grid_keynav_up (NbtkGrid *grid)
 {
   NbtkWidget  *old, *new;
@@ -131,7 +140,7 @@ grid_keynav_up (NbtkGrid *grid)
 
   old = grid_find_hovered_widget (grid);
   if (old == NULL)
-    return FALSE;
+    return NULL;
 
   x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
       clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
@@ -145,13 +154,13 @@ grid_keynav_up (NbtkGrid *grid)
     {
       nbtk_widget_set_style_pseudo_class (old, NULL);
       nbtk_widget_set_style_pseudo_class (new, "hover");
-      return TRUE;
+      return new;
     }
 
-  return FALSE;
+  return NULL;
 }
 
-static gboolean
+static NbtkWidget *
 grid_keynav_right (NbtkGrid *grid)
 {
   NbtkWidget  *old, *new;
@@ -159,7 +168,7 @@ grid_keynav_right (NbtkGrid *grid)
 
   old = grid_find_hovered_widget (grid);
   if (old == NULL)
-    return FALSE;
+    return NULL;
 
   x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_column_gap (grid) +
@@ -173,13 +182,13 @@ grid_keynav_right (NbtkGrid *grid)
     {
       nbtk_widget_set_style_pseudo_class (old, NULL);
       nbtk_widget_set_style_pseudo_class (new, "hover");
-      return TRUE;
+      return new;
     }
 
-  return FALSE;
+  return NULL;
 }
 
-static gboolean
+static NbtkWidget *
 grid_keynav_down (NbtkGrid *grid)
 {
   NbtkWidget  *old, *new;
@@ -187,7 +196,7 @@ grid_keynav_down (NbtkGrid *grid)
 
   old = grid_find_hovered_widget (grid);
   if (old == NULL)
-    return FALSE;
+    return NULL;
 
   x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
       clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
@@ -201,13 +210,13 @@ grid_keynav_down (NbtkGrid *grid)
     {
       nbtk_widget_set_style_pseudo_class (old, NULL);
       nbtk_widget_set_style_pseudo_class (new, "hover");
-      return TRUE;
+      return new;
     }
 
-  return FALSE;
+  return NULL;
 }
 
-static gboolean
+static NbtkWidget *
 grid_keynav_left (NbtkGrid *grid)
 {
   NbtkWidget  *old, *new;
@@ -215,7 +224,7 @@ grid_keynav_left (NbtkGrid *grid)
 
   old = grid_find_hovered_widget (grid);
   if (old == NULL)
-    return FALSE;
+    return NULL;
 
   x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_column_gap (grid) -
@@ -229,13 +238,13 @@ grid_keynav_left (NbtkGrid *grid)
     {
       nbtk_widget_set_style_pseudo_class (old, NULL);
       nbtk_widget_set_style_pseudo_class (new, "hover");
-      return TRUE;
+      return new;
     }
 
-  return FALSE;
+  return NULL;
 }
 
-static gboolean
+static NbtkWidget *
 grid_keynav_wrap_up (NbtkGrid *grid)
 {
   NbtkWidget  *old, *new;
@@ -244,7 +253,7 @@ grid_keynav_wrap_up (NbtkGrid *grid)
 
   old = grid_find_hovered_widget (grid);
   if (old == NULL)
-    return FALSE;
+    return NULL;
 
   nbtk_widget_get_padding (NBTK_WIDGET (grid), &padding);
 
@@ -261,13 +270,13 @@ grid_keynav_wrap_up (NbtkGrid *grid)
     {
       nbtk_widget_set_style_pseudo_class (old, NULL);
       nbtk_widget_set_style_pseudo_class (new, "hover");
-      return TRUE;
+      return new;
     }
 
-  return FALSE;
+  return NULL;
 }
 
-static gboolean
+static NbtkWidget *
 grid_keynav_wrap_down (NbtkGrid *grid)
 {
   NbtkWidget  *old, *new;
@@ -276,7 +285,7 @@ grid_keynav_wrap_down (NbtkGrid *grid)
 
   old = grid_find_hovered_widget (grid);
   if (old == NULL)
-    return FALSE;
+    return NULL;
 
   nbtk_widget_get_padding (NBTK_WIDGET (grid), &padding);
 
@@ -292,13 +301,13 @@ grid_keynav_wrap_down (NbtkGrid *grid)
     {
       nbtk_widget_set_style_pseudo_class (old, NULL);
       nbtk_widget_set_style_pseudo_class (new, "hover");
-      return TRUE;
+      return new;
     }
 
-  return FALSE;
+  return NULL;
 }
 
-static gboolean
+static NbtkWidget *
 grid_keynav_first (NbtkGrid *grid)
 {
   NbtkWidget  *widget;
@@ -314,10 +323,10 @@ grid_keynav_first (NbtkGrid *grid)
   if (widget)
     {
       nbtk_widget_set_style_pseudo_class (widget, "hover");
-      return TRUE;
+      return widget;
     }
 
-  return FALSE;
+  return NULL;
 }
 
 #define INITIAL_FILL_TIMEOUT_S    4
@@ -394,15 +403,15 @@ mnb_clutter_container_has_children (ClutterContainer *container)
 }
 
 static gboolean
-mnb_launcher_button_set_reactive_cb (ClutterActor *launcher)
+launcher_button_set_reactive_cb (ClutterActor *launcher)
 {
   clutter_actor_set_reactive (launcher, TRUE);
   return FALSE;
 }
 
 static void
-launcher_hovered_cb (MnbLauncherButton  *launcher,
-                     launcher_data_t    *launcher_data)
+launcher_button_hovered_cb (MnbLauncherButton  *launcher,
+                            launcher_data_t    *launcher_data)
 {
   if (launcher_data->is_filtering)
     {
@@ -417,8 +426,8 @@ launcher_hovered_cb (MnbLauncherButton  *launcher,
 }
 
 static void
-launcher_activated_cb (MnbLauncherButton  *launcher,
-                       MutterPlugin       *plugin)
+launcher_button_activated_cb (MnbLauncherButton  *launcher,
+                              MutterPlugin       *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   GAppLaunchContext          *context;
@@ -431,7 +440,7 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
   g_timeout_add_seconds (LAUNCH_REACTIVE_TIMEOUT_S,
-                         (GSourceFunc) mnb_launcher_button_set_reactive_cb,
+                         (GSourceFunc) launcher_button_set_reactive_cb,
                          launcher);
 
   context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
@@ -455,8 +464,8 @@ launcher_activated_cb (MnbLauncherButton  *launcher,
 }
 
 static void
-launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
-                         launcher_data_t    *launcher_data)
+launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
+                                launcher_data_t    *launcher_data)
 {
   gchar   *uri = NULL;
   GError  *error = NULL;
@@ -467,10 +476,10 @@ launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
       clutter_container_add (CLUTTER_CONTAINER (launcher_data->fav_grid),
                              CLUTTER_ACTOR (clone), NULL);
       g_signal_connect (clone, "hovered",
-                        G_CALLBACK (launcher_hovered_cb),
+                        G_CALLBACK (launcher_button_hovered_cb),
                         launcher_data);
       g_signal_connect (clone, "activated",
-                        G_CALLBACK (launcher_activated_cb),
+                        G_CALLBACK (launcher_button_activated_cb),
                         launcher_data->self);
 
       /* Make sure fav apps show up. */
@@ -513,7 +522,7 @@ launcher_fav_toggled_cb (MnbLauncherButton  *launcher,
 }
 
 static NbtkWidget *
-create_launcher_button_from_entry (MnbLauncherEntry *entry,
+launcher_button_create_from_entry (MnbLauncherEntry *entry,
                                    const gchar      *category,
                                    GtkIconTheme     *theme)
 {
@@ -577,9 +586,9 @@ create_launcher_button_from_entry (MnbLauncherEntry *entry,
 }
 
 static void
-expander_notify_cb (NbtkExpander    *expander,
-                    GParamSpec      *pspec,
-                    launcher_data_t *launcher_data)
+expander_expanded_notify_cb (NbtkExpander    *expander,
+                             GParamSpec      *pspec,
+                             launcher_data_t *launcher_data)
 {
   NbtkExpander    *e;
   const gchar     *category;
@@ -723,7 +732,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
           g_free (desktop_file_path);
           if (entry)
             {
-              button = create_launcher_button_from_entry (entry, NULL, theme);
+              button = launcher_button_create_from_entry (entry, NULL, theme);
               mnb_launcher_entry_free (entry);
             }
 
@@ -734,13 +743,13 @@ launcher_data_fill (launcher_data_t *launcher_data)
               clutter_container_add (CLUTTER_CONTAINER (launcher_data->fav_grid),
                                      CLUTTER_ACTOR (button), NULL);
               g_signal_connect (button, "hovered",
-                                G_CALLBACK (launcher_hovered_cb),
+                                G_CALLBACK (launcher_button_hovered_cb),
                                 launcher_data);
               g_signal_connect (button, "activated",
-                                G_CALLBACK (launcher_activated_cb),
+                                G_CALLBACK (launcher_button_activated_cb),
                                 launcher_data->self);
               g_signal_connect (button, "fav-toggled",
-                                G_CALLBACK (launcher_fav_toggled_cb),
+                                G_CALLBACK (launcher_button_fav_toggled_cb),
                                 launcher_data);
             }
         }
@@ -789,7 +798,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
       button = NULL;
       for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
         {
-          button = create_launcher_button_from_entry ((MnbLauncherEntry *) entry_iter->data,
+          button = launcher_button_create_from_entry ((MnbLauncherEntry *) entry_iter->data,
                                                       directory->name,
                                                       theme);
           if (button)
@@ -805,13 +814,13 @@ launcher_data_fill (launcher_data_t *launcher_data)
               clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                       CLUTTER_ACTOR (button), NULL);
               g_signal_connect (button, "hovered",
-                                G_CALLBACK (launcher_hovered_cb),
+                                G_CALLBACK (launcher_button_hovered_cb),
                                 launcher_data);
               g_signal_connect (button, "activated",
-                                G_CALLBACK (launcher_activated_cb),
+                                G_CALLBACK (launcher_button_activated_cb),
                                 launcher_data->self);
               g_signal_connect (button, "fav-toggled",
-                                G_CALLBACK (launcher_fav_toggled_cb),
+                                G_CALLBACK (launcher_button_fav_toggled_cb),
                                 launcher_data);
               launcher_data->launchers = g_slist_prepend (launcher_data->launchers,
                                                           button);
@@ -839,7 +848,8 @@ launcher_data_fill (launcher_data_t *launcher_data)
               nbtk_expander_set_expanded (NBTK_EXPANDER (expander), FALSE);
 
             g_signal_connect (expander, "notify::expanded",
-                              G_CALLBACK (expander_notify_cb), launcher_data);
+                              G_CALLBACK (expander_expanded_notify_cb),
+                              launcher_data);
           }
         else
           {
@@ -927,7 +937,7 @@ launcher_data_monitor_cb (MnbLauncherMonitor  *monitor,
 }
 
 static gboolean
-search_apply_cb (launcher_data_t *launcher_data)
+launcher_data_filter_cb (launcher_data_t *launcher_data)
 {
   GSList *iter;
 
@@ -1019,8 +1029,8 @@ search_apply_cb (launcher_data_t *launcher_data)
 }
 
 static void
-search_activated_cb (MnbEntry         *entry,
-                     launcher_data_t  *launcher_data)
+entry_changed_cb (MnbEntry         *entry,
+                  launcher_data_t  *launcher_data)
 {
   gchar *needle;
 
@@ -1032,19 +1042,18 @@ search_activated_cb (MnbEntry         *entry,
   if (needle && *needle)
     launcher_data->lcase_needle = g_utf8_strdown (needle, -1);
   launcher_data->timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
-                                              (GSourceFunc) search_apply_cb,
+                                              (GSourceFunc) launcher_data_filter_cb,
                                               launcher_data);
 
   g_free (needle);
 }
 
 static void
-search_keynav_cb (MnbEntry         *entry,
-                  guint             keyval,
-                  launcher_data_t  *launcher_data)
+entry_keynav_cb (MnbEntry         *entry,
+                 guint             keyval,
+                 launcher_data_t  *launcher_data)
 {
   NbtkWidget *launcher;
-  gboolean    ret;
 
   if (launcher_data->is_filtering)
     {
@@ -1059,20 +1068,20 @@ search_keynav_cb (MnbEntry         *entry,
           case CLUTTER_Return:
             launcher = grid_find_hovered_widget (NBTK_GRID (launcher_data->apps_grid));
             if (launcher && MNB_IS_LAUNCHER_BUTTON (launcher))
-              launcher_activated_cb (MNB_LAUNCHER_BUTTON (launcher),
-                                     launcher_data->self);
+              launcher_button_activated_cb (MNB_LAUNCHER_BUTTON (launcher),
+                                            launcher_data->self);
             break;
           case CLUTTER_Left:
-            ret = grid_keynav_left (NBTK_GRID (launcher_data->apps_grid));
-            if (!ret)
+            launcher = grid_keynav_left (NBTK_GRID (launcher_data->apps_grid));
+            if (!launcher)
               grid_keynav_wrap_up (NBTK_GRID (launcher_data->apps_grid));
             break;
           case CLUTTER_Up:
             grid_keynav_up (NBTK_GRID (launcher_data->apps_grid));
             break;
           case CLUTTER_Right:
-            ret = grid_keynav_right (NBTK_GRID (launcher_data->apps_grid));
-            if (!ret)
+            launcher = grid_keynav_right (NBTK_GRID (launcher_data->apps_grid));
+            if (!launcher)
               grid_keynav_wrap_down (NBTK_GRID (launcher_data->apps_grid));
             break;
           case CLUTTER_Down:
@@ -1180,13 +1189,13 @@ make_launcher (MutterPlugin *plugin,
 
   /* Hook up search. */
   g_signal_connect_data (entry, "button-clicked",
-                         G_CALLBACK (search_activated_cb), launcher_data,
+                         G_CALLBACK (entry_changed_cb), launcher_data,
                          (GClosureNotify) launcher_data_free_cb, 0);
   /* `launcher_data' lifecycle is managed above. */
   g_signal_connect (entry, "text-changed",
-                    G_CALLBACK (search_activated_cb), launcher_data);
+                    G_CALLBACK (entry_changed_cb), launcher_data);
   g_signal_connect (entry, "keynav-event",
-                    G_CALLBACK (search_keynav_cb), launcher_data);
+                    G_CALLBACK (entry_keynav_cb), launcher_data);
 
   g_signal_connect_after (drop_down, "show",
                           G_CALLBACK (dropdown_show_cb), launcher_data);
