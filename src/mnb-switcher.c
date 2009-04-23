@@ -28,7 +28,7 @@
 #include <nbtk/nbtk-tooltip.h>
 
 #define HOVER_TIMEOUT  800
-
+#define CLONE_HEIGHT   80  /* Height of the window thumb */
 /*
  * MnbSwitcherApp
  *
@@ -1142,7 +1142,7 @@ mnb_switcher_show (ClutterActor *self)
       gint                   ws_indx;
       MetaCompWindowType     type;
       guint                  w, h;
-      guint                  clone_h;
+      guint                  clone_w;
       struct origin_data    *origin_data;
       MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
       gchar                 *title;
@@ -1226,8 +1226,8 @@ mnb_switcher_show (ClutterActor *self)
       MNB_SWITCHER_APP (clone)->priv->natural_width = (ClutterUnit)w;
       MNB_SWITCHER_APP (clone)->priv->w_h_ratio = (ClutterUnit)w/(ClutterUnit)h;
 
-      clone_h = (guint)((gdouble)h/(gdouble)w * 80.0);
-      clutter_actor_set_size (clone, clone_h, 80);
+      clone_w = (guint)((gdouble)h/(gdouble)w * (gdouble)CLONE_HEIGHT);
+      clutter_actor_set_size (clone, clone_w, CLONE_HEIGHT);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
 
@@ -1270,13 +1270,13 @@ mnb_switcher_show (ClutterActor *self)
       /*
        * FIXME -- this depends on the styling, should not be hardcoded.
        */
-      win_locs[ws_indx].height += (clone_h + 10);
+      win_locs[ws_indx].height += (CLONE_HEIGHT + 10);
 
       if (win_locs[ws_indx].height >= screen_height - 100 )
         {
           win_locs[ws_indx].col++;
           win_locs[ws_indx].row = 0;
-          win_locs[ws_indx].height = clone_h + 10;
+          win_locs[ws_indx].height = CLONE_HEIGHT + 10;
         }
 
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
