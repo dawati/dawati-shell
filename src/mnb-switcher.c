@@ -67,6 +67,9 @@ struct _MnbSwitcherAppPrivate
   ClutterActor *tooltip;
   guint         focus_id;
   guint         raised_id;
+
+  ClutterUnit   w_h_ratio;
+  ClutterUnit   natural_width;
 };
 
 GType mnb_switcher_app_get_type (void);
@@ -111,11 +114,61 @@ mnb_switcher_app_dispose (GObject *object)
 }
 
 static void
+mnb_switcher_app_get_preferred_width (ClutterActor *actor,
+                                      ClutterUnit   for_height,
+                                      ClutterUnit  *min_width_p,
+                                      ClutterUnit  *natural_width_p)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
+
+  if (min_width_p)
+    *min_width_p = 0.0;
+
+  if (natural_width_p)
+    {
+      if (for_height < 0.0)
+        *natural_width_p = priv->natural_width;
+      else
+        *natural_width_p = for_height * priv->w_h_ratio;
+    }
+
+  g_debug ("%p: for_height %f, ratio %f, natural width %f",
+           actor, for_height, priv->w_h_ratio, *natural_width_p);
+}
+
+static void
+mnb_switcher_app_get_preferred_height (ClutterActor *actor,
+                                       ClutterUnit   for_width,
+                                       ClutterUnit  *min_height_p,
+                                       ClutterUnit  *natural_height_p)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
+
+  if (min_height_p)
+    *min_height_p = 0.0;
+
+  if (natural_height_p)
+    {
+      if (for_width < 0.0)
+        *natural_height_p = priv->natural_width / priv->w_h_ratio;
+      else
+        *natural_height_p = for_width / priv->w_h_ratio;
+    }
+
+  g_debug ("%p: for_width %f, ratio %f, natural height %f",
+           actor, for_width, priv->w_h_ratio, *natural_height_p);
+}
+
+static void
 mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass      *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   object_class->dispose = mnb_switcher_app_dispose;
+
+  actor_class->get_preferred_width  = mnb_switcher_app_get_preferred_width;
+  actor_class->get_preferred_height = mnb_switcher_app_get_preferred_height;
 
   g_type_class_add_private (klass, sizeof (MnbSwitcherAppPrivate));
 }
@@ -123,7 +176,11 @@ mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
 static void
 mnb_switcher_app_init (MnbSwitcherApp *self)
 {
-  self->priv = MNB_SWITCHER_APP_GET_PRIVATE (self);
+  MnbSwitcherAppPrivate *priv;
+
+  priv = self->priv = MNB_SWITCHER_APP_GET_PRIVATE (self);
+
+  priv->w_h_ratio = 1.0;
 }
 
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
@@ -453,17 +510,23 @@ dnd_new_dropped_cb (NbtkWidget   *table,
                                              dragged);
 
   g_object_get (meta, "col", &col, NULL);
+#if 1
   g_object_get (d_meta, "keep-aspect-ratio", &keep_ratio, NULL);
-
+#else
+  g_object_get (d_meta, "y-fill", FALSE, NULL);
+#endif
   new_ws = mnb_switcher_append_workspace (switcher);
 
   g_object_ref (dragged);
   clutter_container_remove_actor (CLUTTER_CONTAINER (table), dragged);
   nbtk_table_add_actor (new_ws, dragged, 1, 0);
-
+#if 1
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
 			       "keep-aspect-ratio", keep_ratio, NULL);
-
+#else
+  clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
+			       "y-fill", FALSE, NULL);
+#endif
   g_object_unref (dragged);
 
   if (priv->tab_list)
@@ -1158,6 +1221,14 @@ mnb_switcher_show (ClutterActor *self)
           top_most_mw = mw;
         }
 
+      clutter_actor_get_size (c_tx, &h, &w);
+
+      MNB_SWITCHER_APP (clone)->priv->natural_width = (ClutterUnit)w;
+      MNB_SWITCHER_APP (clone)->priv->w_h_ratio = (ClutterUnit)w/(ClutterUnit)h;
+
+      clone_h = (guint)((gdouble)h/(gdouble)w * 80.0);
+      clutter_actor_set_size (clone, clone_h, 80);
+
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
 
       clutter_actor_set_reactive (clone, TRUE);
@@ -1196,11 +1267,6 @@ mnb_switcher_show (ClutterActor *self)
         g_signal_connect (meta_win, "raised",
                           G_CALLBACK (meta_window_focus_cb), clone);
 
-      clutter_actor_get_size (clone, &h, &w);
-
-      clone_h = (guint)((double)h/(gdouble)w * 80.0);
-      clutter_actor_set_size (clone, clone_h, 80);
-
       /*
        * FIXME -- this depends on the styling, should not be hardcoded.
        */
@@ -1216,9 +1282,13 @@ mnb_switcher_show (ClutterActor *self)
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
                             win_locs[ws_indx].row++, win_locs[ws_indx].col);
 
+#if 1
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "keep-aspect-ratio", TRUE, NULL);
-
+#else
+      clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
+                                   "y-fill", FALSE, NULL);
+#endif
       g_signal_connect (clone, "button-release-event",
                         G_CALLBACK (workspace_switcher_clone_input_cb),
 			NULL);
