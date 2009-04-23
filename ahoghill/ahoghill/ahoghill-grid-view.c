@@ -6,6 +6,8 @@
 #include <gtk/gtk.h>
 
 #include <bickley/bkl.h>
+#include <bickley/bkl-source-client.h>
+#include <bickley/bkl-source-manager-client.h>
 
 #include <bognor/br-queue.h>
 
@@ -20,7 +22,8 @@ enum {
 };
 
 typedef struct _Source {
-    KozoDB *db;
+    BklSourceClient *source;
+    BklDB *db;
 
     GPtrArray *items;
     GHashTable *uri_to_item;
@@ -33,10 +36,11 @@ struct _AhoghillGridViewPrivate {
 
     GtkRecentManager *recent_manager;
 
-    BklWatcher *watcher;
     GPtrArray *dbs;
 
     BrQueue *local_queue;
+
+    BklSourceManagerClient *source_manager;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_GRID_VIEW, AhoghillGridViewPrivate))
@@ -94,26 +98,21 @@ ahoghill_grid_view_class_init (AhoghillGridViewClass *klass)
 }
 
 static Source *
-create_source (BklDBSource *s)
+create_source (BklSourceClient *s)
 {
     Source *source;
     GError *error = NULL;
     int i;
 
     source = g_new0 (Source, 1);
-    source->db = bkl_db_get_for_path (s->db_uri, s->name, &error);
-    if (error != NULL) {
-        g_warning ("Error loading %s (%s): %s", s->name, s->db_uri,
-                   error->message);
-        g_error_free (error);
-        g_free (source);
-        return NULL;
-    }
+
+    source->source = s;
+    source->db = bkl_source_client_get_db (s);
 
     source->items = bkl_db_get_items (source->db, FALSE, &error);
     if (source->items == NULL) {
         g_warning ("Error getting items: %s", error->message);
-        kozo_db_unref (source->db);
+        bkl_db_free (source->db);
         g_free (source);
         return NULL;
     }
@@ -153,19 +152,29 @@ init_bickley (gpointer data)
 {
     AhoghillGridView *view = (AhoghillGridView *) data;
     AhoghillGridViewPrivate *priv = view->priv;
+    BklSourceClient *client;
+    Source *source;
     GList *sources, *s;
     GList *recent_items, *r;
     GError *error = NULL;
 
-    priv->watcher = g_object_new (BKL_TYPE_WATCHER, NULL);
-    sources = bkl_watcher_get_sources (priv->watcher, &error);
+    priv->source_manager = g_object_new (BKL_TYPE_SOURCE_MANAGER_CLIENT, NULL);
+    sources = bkl_source_manager_client_get_sources (priv->source_manager,
+                                                     &error);
     if (error != NULL) {
         g_warning ("Error getting sources\n");
     }
 
-    priv->dbs = g_ptr_array_sized_new (g_list_length (sources));
+    priv->dbs = g_ptr_array_sized_new (g_list_length (sources) + 1);
+
+    /* Local source first */
+    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
+    source = create_source (client);
+    g_ptr_array_add (priv->dbs, source);
+
     for (s = sources; s; s = s->next) {
-        Source *source = create_source ((BklDBSource *) s->data);
+        client = bkl_source_client_new (s->data);
+        source = create_source (client);
 
         g_ptr_array_add (priv->dbs, source);
     }
@@ -320,7 +329,7 @@ search_clicked_cb (MnbEntry         *entry,
         Source *source = priv->dbs->pdata[i];
         GList *results;
 
-        results = search_for_words (source->db, search_words);
+        results = search_for_words (source->db->db, search_words);
 
         if (results) {
             GList *r;
