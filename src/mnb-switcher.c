@@ -132,8 +132,10 @@ mnb_switcher_app_get_preferred_width (ClutterActor *actor,
         *natural_width_p = for_height * priv->w_h_ratio;
     }
 
+#if 0
   g_debug ("%p: for_height %f, ratio %f, natural width %f",
            actor, for_height, priv->w_h_ratio, *natural_width_p);
+#endif
 }
 
 static void
@@ -155,8 +157,10 @@ mnb_switcher_app_get_preferred_height (ClutterActor *actor,
         *natural_height_p = for_width / priv->w_h_ratio;
     }
 
+#if 0
   g_debug ("%p: for_width %f, ratio %f, natural height %f",
            actor, for_width, priv->w_h_ratio, *natural_height_p);
+#endif
 }
 
 static void
