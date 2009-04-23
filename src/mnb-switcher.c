@@ -665,7 +665,7 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   g_signal_connect (new_ws, "dnd-leave",
                     G_CALLBACK (dnd_leave_cb), switcher);
 
-  nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, col);
+  nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws), 1, col);
 
   /* switch workspace when the workspace is selected */
   g_signal_connect_data (new_ws, "button-press-event",
@@ -710,7 +710,7 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
                          G_CALLBACK (workspace_input_cb), input_data,
                          (GClosureNotify) g_free, 0);
 
-  nbtk_table_add_widget (NBTK_TABLE (table), NBTK_WIDGET (ws_label), 0, col);
+  nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, col);
   clutter_container_child_set (CLUTTER_CONTAINER (table),
                                CLUTTER_ACTOR (ws_label),
                                "y-expand", FALSE, NULL);
@@ -1255,7 +1255,8 @@ mnb_switcher_show (ClutterActor *self)
 
           label = nbtk_label_new ("No applications on this zone");
 
-          nbtk_table_add_widget (NBTK_TABLE (table), label, 1, i);
+          nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (label),
+                                1, i);
         }
     }
 
@@ -1267,7 +1268,8 @@ mnb_switcher_show (ClutterActor *self)
     NbtkWidget *label;
 
     label = NBTK_WIDGET (nbtk_bin_new ());
-    nbtk_table_add_widget (NBTK_TABLE (table), label, 0, ws_count);
+    nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (label),
+                          0, ws_count);
     nbtk_widget_set_style_class_name (label, "workspace-title-new");
     clutter_container_child_set (CLUTTER_CONTAINER (table),
                                  CLUTTER_ACTOR (label),
@@ -1299,7 +1301,8 @@ mnb_switcher_show (ClutterActor *self)
     priv->new_workspace = new_ws;
     priv->new_label = label;
 
-    nbtk_table_add_widget (NBTK_TABLE (table), new_ws, 1, ws_count);
+    nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws),
+                          1, ws_count);
   }
 
   g_slice_free1 (sizeof (NbtkWidget*) * ws_count, spaces);
