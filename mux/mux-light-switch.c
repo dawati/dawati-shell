@@ -35,6 +35,7 @@ typedef struct _MuxLightSwitchPrivate MuxLightSwitchPrivate;
 struct _MuxLightSwitchPrivate {
         gboolean active; /* boolean state of switch */
         gboolean dragging; /* true if dragging switch */
+        gboolean single;
         gint x; /* the x position of the switch */
 };
 
@@ -71,21 +72,17 @@ mux_light_switch_class_init (MuxLightSwitchClass *klass)
 static void
 mux_light_switch_init (MuxLightSwitch *self)
 {
-        /* Variables for dynamic guessery */
         PangoLayout *layout;
         PangoContext *context;
         GString *on, *off;
         gint label_width, label_height;
         GtkStyle *style;
 
-        /* FIXME: probably shouldn't init values here? */
         MuxLightSwitchPrivate *priv;
         priv = MUX_LIGHT_SWITCH_GET_PRIVATE (self);
         priv->active = FALSE;
         priv->x = 0;
 
-        /* FIXME:
-         * Do some guess work as to sizes of things. Better elsewhere? */
         style = GTK_WIDGET (self)->style;
         off = g_string_new (_("Off"));
         on = g_string_new (_("On"));
@@ -237,7 +234,7 @@ mux_light_switch_expose (GtkWidget *lightswitch,
                          event->area.width,
                          event->area.height);
 
-                         cairo_clip (cr);
+        cairo_clip (cr);
 
         draw (lightswitch, cr);
 
@@ -254,9 +251,14 @@ mux_light_switch_button_press (GtkWidget *lightswitch,
 
         priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
 
-        if (event->x > priv->x && event->x < (priv->x + switch_width)) {
+        if (event->x > priv->x && event->x < (priv->x + switch_width))
+        {
                 /* we are in the lightswitch */
                 priv->dragging = TRUE;
+        }
+        else
+        {
+          priv->single = TRUE;
         }
 
         return FALSE;
@@ -316,6 +318,31 @@ mux_light_switch_motion_notify (GtkWidget *lightswitch,
         return TRUE;
 }
 
+gboolean
+mux_light_switch_get_active (MuxLightSwitch *lightswitch)
+{
+        MuxLightSwitchPrivate *priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
+
+        return priv->active;
+}
+
+void
+mux_light_switch_set_active (MuxLightSwitch *lightswitch, gboolean active)
+{
+        MuxLightSwitchPrivate *priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
+
+        if (priv->active == active) {
+                return;
+        } else {
+                priv->active = active;
+                if (active == TRUE) {
+                        priv->x = trough_width - switch_width;
+                } else {
+                        priv->x = 0;
+                }
+        }
+}
+
 static gboolean
 mux_light_switch_button_release (GtkWidget *lightswitch,
                                  GdkEventButton *event)
@@ -325,39 +352,23 @@ mux_light_switch_button_release (GtkWidget *lightswitch,
         priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
 
         /* detect whereabouts we are and "drop" into a state */
-        if (priv->dragging) {
-                priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
-                priv->dragging = FALSE;
-                emit_state_changed_signal (MUX_LIGHT_SWITCH (lightswitch),
-                                           event->x);
+        if (priv->dragging)
+        {
+          priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
+          priv->dragging = FALSE;
+          emit_state_changed_signal (MUX_LIGHT_SWITCH (lightswitch),
+                                     event->x);
+        }
+        else if (priv->single)
+        {
+          priv->single = FALSE;
+          emit_state_changed_signal (MUX_LIGHT_SWITCH (lightswitch),
+                                     event->x);
         }
 
+        /* If we aren't dragging we might want to just toggle */
+
         return FALSE;
-}
-
-gboolean
-mux_light_switch_get_active (MuxLightSwitch *lightswitch)
-{
-	MuxLightSwitchPrivate *priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
-
-	return priv->active;
-}
-
-void
-mux_light_switch_set_active (MuxLightSwitch *lightswitch, gboolean active)
-{
-	MuxLightSwitchPrivate *priv = MUX_LIGHT_SWITCH_GET_PRIVATE (lightswitch);
-
-	if (priv->active == active) {
-		return;
-	} else {
-		priv->active = active;
-		if (active == TRUE) {
-			priv->x = trough_width - switch_width;
-		} else {
-			priv->x = 0;
-		}
-	}
 }
 
 GtkWidget*
