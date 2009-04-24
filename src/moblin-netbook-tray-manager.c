@@ -380,8 +380,15 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
       if (child->mir)
         moblin_netbook_input_region_remove_without_update (plugin, child->mir);
 
+#if 0
+      /*
+       * FIXME -- since the input stack no longer supports inverse regions,
+       * we have do this differently. Basically we have to completely clear the
+       * stack, and then push two regions, one above the panel and one below.
+       */
       child->mir = moblin_netbook_input_region_push (plugin, x, y,
                                                      (guint)w, (guint)h, TRUE);
+#endif
     }
 }
 
