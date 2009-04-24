@@ -276,10 +276,13 @@ static void
 mnb_toolbar_constructed (GObject *self)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (self)->priv;
+  ClutterActor *actor = CLUTTER_ACTOR (self);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,
                 NULL);
+
+  clutter_actor_set_size (actor, 1024, TOOLBAR_HEIGHT);
 
   /* create time and date labels */
   priv->time = nbtk_label_new ("");
