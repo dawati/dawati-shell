@@ -1937,11 +1937,11 @@ panel_slide_timeout_cb (gpointer data)
 
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
-      ;// show_panel (plugin, FALSE);
+      clutter_actor_show (priv->panel);
     }
   else
     {
-      disable_stage (plugin, CurrentTime);
+      toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
     }
 
   priv->panel_slide_timeout_id = 0;
@@ -1954,7 +1954,6 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
   MoblinNetbookPlugin *plugin = data;
 
-#if 0
   if (event->type == CLUTTER_MOTION)
     {
       gint                        event_y, event_x;
@@ -1971,18 +1970,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_disabled)
         return FALSE;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) &&
-          ((!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher) &&
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid) &&
-#ifdef WITH_NETPANEL
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->net_grid) &&
-#endif
-#ifdef USE_AHOGHILL
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->media_drop_down) &&
-#endif
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->pasteboard) &&
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->status))))
+      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
         {
           /*
            * FIXME -- we should use the height of the panel background here;
@@ -1993,7 +1981,11 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
           if (event_y > (gint)height)
             {
-              // hide_panel (MUTTER_PLUGIN (plugin));
+              /*
+               * FIXME -- we have to override the Toolbar show() and hide()
+               * methods to deal with when panels are visible.
+               */
+              clutter_actor_hide (priv->panel);
             }
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
@@ -2022,7 +2014,6 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
             }
         }
     }
-#endif
 
   return FALSE;
 }
