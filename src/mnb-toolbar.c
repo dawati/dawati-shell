@@ -173,7 +173,7 @@ mnb_toolbar_append_toolbar_button (MnbToolbar   *toolbar,
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
-  clutter_actor_set_size (CLUTTER_ACTOR (button), 
+  clutter_actor_set_size (CLUTTER_ACTOR (button),
 			  BUTTON_WIDTH, BUTTON_HEIGHT);
   clutter_actor_set_position (CLUTTER_ACTOR (button),
                               213 + (BUTTON_WIDTH * n_buttons)
@@ -248,6 +248,7 @@ mnb_toolbar_constructed (GObject *self)
                               2, 40);
 
   mnb_toolbar_update_time_date (priv);
+
   g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);
 }
 
