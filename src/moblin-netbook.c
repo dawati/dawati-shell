@@ -698,6 +698,15 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
 }
 
 static void
+stage_show_cb (ClutterActor *stage, MutterPlugin *plugin)
+{
+  /*
+   * Set up the stage even processing
+   */
+  toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
+}
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -813,6 +822,14 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_actor_hide (lowlight);
 
   priv->panel_wait_for_pointer = TRUE;
+
+  /*
+   * Hook into "show" signal on stage, to set up input regions.
+   * (We cannot set up the stage here, because the overlay window, etc.,
+   * is not in place until the stage is shown.)
+   */
+  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
+                    "show", G_CALLBACK (stage_show_cb), plugin);
 
   /*
    * Hook to the captured signal, so we get to see all events before our
