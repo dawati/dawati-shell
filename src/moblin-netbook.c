@@ -752,38 +752,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   priv->screen_width  = screen_width;
   priv->screen_height = screen_height;
 
-#if 0
-  rect[0].x = 0;
-  rect[0].y = 0;
-  rect[0].width = screen_width;
-  rect[0].height = PANEL_SLIDE_THRESHOLD;
-
-  region = XFixesCreateRegion (xdpy, &rect[0], 1);
-
-  priv->panel_trigger_region = region;
-
-  rect[0].height += 5;
-
-  region = XFixesCreateRegion (xdpy, &rect[0], 1);
-
-  priv->panel_trigger_region2 = region;
-
-  rect[0].height = screen_height;
-
-  region = XFixesCreateRegion (xdpy, &rect[0], 1);
-
-  priv->screen_region = region;
-#endif
-
-#if 0
-  toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
-#endif
-  /*
-   * Create the current_input region; we start with empty, and it gets filled
-   * with the initial enable_stage() call.
-   */
-  priv->current_input_region = XFixesCreateRegion (xdpy, NULL, 0);
-
   if (mutter_plugin_debug_mode (MUTTER_PLUGIN (plugin)))
     {
       g_debug ("%s: Entering debug mode.", priv->info.name);

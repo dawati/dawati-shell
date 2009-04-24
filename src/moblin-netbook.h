@@ -105,13 +105,6 @@ struct _MoblinNetbookPluginPrivate
 
   ShellTrayManager      *tray_manager;
 
-#if 0
-  XserverRegion          screen_region;
-  XserverRegion          panel_trigger_region;
-  XserverRegion          panel_trigger_region2;
-  XserverRegion          current_input_base_region;
-#endif
-
   XserverRegion          current_input_region;
 
   GList                 *input_region_stack;
