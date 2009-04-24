@@ -1935,13 +1935,15 @@ panel_slide_timeout_cb (gpointer data)
   MutterPlugin  *plugin = data;
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  /*
+   * Reset the trigger region to its normal side; this is needed whether we
+   * end up showing the panel, or not.
+   */
+  toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
+
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
       clutter_actor_show (priv->panel);
-    }
-  else
-    {
-      toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
     }
 
   priv->panel_slide_timeout_id = 0;

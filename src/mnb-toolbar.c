@@ -46,8 +46,10 @@ struct _MnbToolbarPrivate {
   NbtkWidget *time;
   NbtkWidget *date;
 
-    NbtkWidget *buttons[NUM_ZONES];
-    NbtkWidget *drop_downs[NUM_ZONES];
+  NbtkWidget *buttons[NUM_ZONES];
+  NbtkWidget *drop_downs[NUM_ZONES];
+
+  MnbInputRegion input_region;
 };
 
 
@@ -100,6 +102,7 @@ mnb_toolbar_finalize (GObject *object)
 static void
 mnb_toolbar_show (ClutterActor *actor)
 {
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   gint width;
 
   /*
@@ -111,6 +114,14 @@ mnb_toolbar_show (ClutterActor *actor)
   clutter_actor_set_position (actor, 0, -(clutter_actor_get_height (actor)));
   width = clutter_actor_get_width (clutter_actor_get_parent (actor));
   clutter_actor_set_width (actor, width);
+
+  if (priv->input_region)
+    moblin_netbook_input_region_remove_without_update (priv->plugin,
+                                                       priv->input_region);
+
+  priv->input_region =
+    moblin_netbook_input_region_push (priv->plugin, 0, 0,
+                                      1024, TOOLBAR_HEIGHT + 10);
 
   clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
 }
@@ -125,8 +136,17 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline,
 static void
 mnb_toolbar_hide (ClutterActor *actor)
 {
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   gint height;
   ClutterAnimation *animation;
+
+  if (priv->input_region)
+    {
+      moblin_netbook_input_region_remove (priv->plugin,
+                                          priv->input_region);
+
+      priv->input_region = NULL;
+    }
 
   height = clutter_actor_get_height (actor);
 
