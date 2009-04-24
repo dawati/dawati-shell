@@ -1,5 +1,7 @@
 /* mnb-toolbar.c */
 
+#include "moblin-netbook.h"
+
 #include "mnb-toolbar.h"
 
 #include "mnb-panel-button.h"
@@ -32,9 +34,17 @@ enum {
     NUM_ZONES
 };
 
+enum {
+  PROP_0,
+
+  PROP_MUTTER_PLUGIN,
+};
+
 struct _MnbToolbarPrivate {
-    NbtkWidget *time;
-    NbtkWidget *date;
+  MutterPlugin *plugin;
+
+  NbtkWidget *time;
+  NbtkWidget *date;
 
     NbtkWidget *buttons[NUM_ZONES];
     NbtkWidget *drop_downs[NUM_ZONES];
@@ -46,20 +56,33 @@ static void
 mnb_toolbar_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
-  switch (property_id) {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
+  MnbToolbar *self = MNB_TOOLBAR (object);
+
+  switch (property_id)
+    {
+    case PROP_MUTTER_PLUGIN:
+      g_value_set_object (value, self->priv->plugin);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
 }
 
 static void
 mnb_toolbar_set_property (GObject *object, guint property_id,
-                              const GValue *value, GParamSpec *pspec)
+                          const GValue *value, GParamSpec *pspec)
 {
-  switch (property_id) {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
+  MnbToolbar *self = MNB_TOOLBAR (object);
+
+  switch (property_id)
+    {
+    case PROP_MUTTER_PLUGIN:
+      self->priv->plugin = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
 }
 
 static void
@@ -134,6 +157,15 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
 
   clutter_class->show = mnb_toolbar_show;
   clutter_class->hide = mnb_toolbar_hide;
+
+  g_object_class_install_property (object_class,
+                                   PROP_MUTTER_PLUGIN,
+                                   g_param_spec_object ("mutter-plugin",
+                                                        "Mutter Plugin",
+                                                        "Mutter Plugin",
+                                                        MUTTER_TYPE_PLUGIN,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+
 }
 
 static gboolean
@@ -253,9 +285,10 @@ mnb_toolbar_constructed (GObject *self)
 }
 
 NbtkWidget*
-mnb_toolbar_new (void)
+mnb_toolbar_new (MutterPlugin *plugin)
 {
-  return g_object_new (MNB_TYPE_TOOLBAR, NULL);
+  return g_object_new (MNB_TYPE_TOOLBAR,
+                       "mutter-plugin", plugin, NULL);
 }
 
 void

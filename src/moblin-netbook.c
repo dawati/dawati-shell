@@ -783,7 +783,8 @@ moblin_netbook_plugin_constructed (GObject *object)
    * This also creates the launcher.
    */
   // panel = priv->panel = make_panel (MUTTER_PLUGIN (plugin), screen_width);
-  panel = priv->panel = CLUTTER_ACTOR (mnb_toolbar_new ());
+  panel = priv->panel =
+    CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
   clutter_actor_hide (lowlight);

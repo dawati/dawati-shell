@@ -39,7 +39,7 @@ typedef struct {
 
 GType mnb_toolbar_get_type (void);
 
-NbtkWidget* mnb_toolbar_new (void);
+NbtkWidget* mnb_toolbar_new (MutterPlugin *plugin);
 
 G_END_DECLS
 
