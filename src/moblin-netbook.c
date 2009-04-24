@@ -683,7 +683,7 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
         {
           priv->notification_input_region
             = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin),
-                                                x, y, width, height,FALSE);
+                                                x, y, width, height);
         }
     }
 }
@@ -1953,13 +1953,12 @@ toolbar_trigger_region_set_height (MutterPlugin *plugin, gint height)
   if (priv->toolbar_trigger_region != NULL)
     moblin_netbook_input_region_remove (plugin, priv->toolbar_trigger_region);
 
-  priv->toolbar_trigger_region 
+  priv->toolbar_trigger_region
     = moblin_netbook_input_region_push (plugin,
                                         0,
                                         0,
                                         priv->screen_width,
-                                        PANEL_SLIDE_THRESHOLD + height,
-                                        FALSE);
+                                        PANEL_SLIDE_THRESHOLD + height);
 }
 
 static gboolean
@@ -2351,7 +2350,6 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 struct MnbInputRegion
 {
   XserverRegion region;
-  gboolean      inverse;
 };
 
 MnbInputRegion
@@ -2359,8 +2357,7 @@ moblin_netbook_input_region_push (MutterPlugin *plugin,
                                   gint          x,
                                   gint          y,
                                   guint         width,
-                                  guint         height,
-                                  gboolean      inverse)
+                                  guint         height)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MnbInputRegion mir = g_slice_alloc (sizeof (struct MnbInputRegion));
@@ -2372,7 +2369,6 @@ moblin_netbook_input_region_push (MutterPlugin *plugin,
   rect.width   = width;
   rect.height  = height;
 
-  mir->inverse = inverse;
   mir->region  = XFixesCreateRegion (xdpy, &rect, 1);
 
   priv->input_region_stack = g_list_append (priv->input_region_stack, mir);
@@ -2453,8 +2449,7 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
 
       input_region
         = moblin_netbook_input_region_push (plugin,
-                                            0, 0, screen_width, screen_height,
-                                            FALSE);
+                                            0, 0, screen_width, screen_height);
 
       clutter_actor_show (priv->lowlight);
       priv->panel_disabled = active = TRUE;

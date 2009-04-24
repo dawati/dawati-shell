@@ -199,8 +199,7 @@ MnbInputRegion moblin_netbook_input_region_push (MutterPlugin *plugin,
                                                  gint          x,
                                                  gint          y,
                                                  guint         width,
-                                                 guint         height,
-                                                 gboolean      inverse);
+                                                 guint         height);
 
 void moblin_netbook_input_region_remove_without_update (MutterPlugin  *plugin,
                                                         MnbInputRegion mir);
