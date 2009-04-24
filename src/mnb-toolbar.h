@@ -28,13 +28,13 @@ G_BEGIN_DECLS
 typedef struct _MnbToolbarPrivate MnbToolbarPrivate;
 
 typedef struct {
-  NbtkTable parent;
+  NbtkBin parent;
 
   MnbToolbarPrivate *priv;
 } MnbToolbar;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  NbtkBinClass parent_class;
 } MnbToolbarClass;
 
 GType mnb_toolbar_get_type (void);

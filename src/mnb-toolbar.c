@@ -17,7 +17,7 @@
 #define TOOLBAR_HEIGHT 64
 #define TOOLBAR_X_PADDING 4
 
-G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
 
 #define MNB_TOOLBAR_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR, MnbToolbarPrivate))
@@ -42,6 +42,8 @@ enum {
 
 struct _MnbToolbarPrivate {
   MutterPlugin *plugin;
+
+  ClutterActor *hbox;
 
   NbtkWidget *time;
   NbtkWidget *date;
@@ -104,6 +106,9 @@ mnb_toolbar_show (ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   gint width;
+  guint screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
   /*
    * Call the parent show(); this must be done before we do anything else.
@@ -112,8 +117,6 @@ mnb_toolbar_show (ClutterActor *actor)
 
   /* set initial width and height */
   clutter_actor_set_position (actor, 0, -(clutter_actor_get_height (actor)));
-  width = clutter_actor_get_width (clutter_actor_get_parent (actor));
-  clutter_actor_set_width (actor, width);
 
   if (priv->input_region)
     moblin_netbook_input_region_remove_without_update (priv->plugin,
@@ -121,7 +124,7 @@ mnb_toolbar_show (ClutterActor *actor)
 
   priv->input_region =
     moblin_netbook_input_region_push (priv->plugin, 0, 0,
-                                      1024, TOOLBAR_HEIGHT + 10);
+                                      screen_width, TOOLBAR_HEIGHT + 10);
 
   clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
 }
@@ -213,11 +216,13 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
 }
 
 static NbtkWidget*
-mnb_toolbar_append_toolbar_button (MnbToolbar   *toolbar,
+mnb_toolbar_append_toolbar_button (MnbToolbar *toolbar,
 				   gchar      *name,
 				   gchar      *tooltip)
 {
   static int n_buttons = 0;
+
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
   NbtkWidget *button;
 
   /* FIXME: rename to toolbar button */
@@ -238,7 +243,7 @@ mnb_toolbar_append_toolbar_button (MnbToolbar   *toolbar,
                                       BUTTON_WIDTH,
                                       TOOLBAR_HEIGHT);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (toolbar),
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (button));
 
   /* FIXME - errors
@@ -277,32 +282,44 @@ mnb_toolbar_constructed (GObject *self)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (self)->priv;
   ClutterActor *actor = CLUTTER_ACTOR (self);
+  ClutterActor *hbox;
+  guint         screen_width, screen_height;
+
+  hbox = priv->hbox = clutter_group_new ();
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,
                 NULL);
 
-  clutter_actor_set_size (actor, 1024, TOOLBAR_HEIGHT);
+  mutter_plugin_query_screen_size (priv->plugin,
+                                   &screen_width, &screen_height);
+
+  clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
 
   /* create time and date labels */
   priv->time = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->time), "time-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self),
-                               CLUTTER_ACTOR (priv->time));
-  clutter_actor_set_position (CLUTTER_ACTOR (priv->time),
-       (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->time)) /
-                              2, 8);
 
   priv->date = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (self),
-                               CLUTTER_ACTOR (priv->date));
+  clutter_container_add (CLUTTER_CONTAINER (hbox),
+                         CLUTTER_ACTOR (priv->time),
+                         CLUTTER_ACTOR (priv->date),
+                         NULL);
+
+  mnb_toolbar_update_time_date (priv);
+
+  clutter_actor_set_position (CLUTTER_ACTOR (priv->time),
+       (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->time)) /
+                              2, 8);
+
   clutter_actor_set_position (CLUTTER_ACTOR (priv->date),
        (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->date)) /
                               2, 40);
 
-  mnb_toolbar_update_time_date (priv);
+  nbtk_bin_set_alignment (NBTK_BIN (self), NBTK_ALIGN_LEFT, NBTK_ALIGN_TOP);
+  nbtk_bin_set_child (NBTK_BIN (self), hbox);
 
   g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);
 }
