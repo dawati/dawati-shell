@@ -768,7 +768,7 @@ launcher_data_keynav_in_grid (launcher_data_t   *launcher_data,
           else
             {
               scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
-                                                CLUTTER_ACTOR (launcher));
+                                               CLUTTER_ACTOR (launcher));
             }
 
             return TRUE;
@@ -777,7 +777,10 @@ launcher_data_keynav_in_grid (launcher_data_t   *launcher_data,
   else
     {
       /* Nothing focused, jump to first actor. */
-      grid_keynav_first (grid);
+      launcher = grid_keynav_first (grid);
+      if (launcher)
+        scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                         CLUTTER_ACTOR (launcher));
       return TRUE;
     }
 
@@ -1265,7 +1268,10 @@ entry_keynav_cb (MnbEntry         *entry,
           if (nbtk_expander_get_expanded (NBTK_EXPANDER (expander)))
             {
               NbtkWidget *inner_grid = NBTK_WIDGET (nbtk_bin_get_child (NBTK_BIN (expander)));
-              grid_keynav_first (NBTK_GRID (inner_grid));
+              launcher = grid_keynav_first (NBTK_GRID (inner_grid));
+              if (launcher)
+                scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                                 CLUTTER_ACTOR (launcher));
             }
           else
             expander_set_keyboard_focus (NBTK_EXPANDER (expander));
@@ -1300,9 +1306,7 @@ entry_keynav_cb (MnbEntry         *entry,
             {
               /* Move focus to the fav apps pane. */
               grid_keynav_out (NBTK_GRID (inner_grid));
-              grid_keynav_first (NBTK_GRID (launcher_data->fav_grid));
-              launcher = grid_find_widget_by_pseudo_class (NBTK_GRID (launcher_data->fav_grid),
-                                                           "hover");
+              launcher = grid_keynav_first (NBTK_GRID (launcher_data->fav_grid));
               if (launcher)
                 scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
                                                  CLUTTER_ACTOR (launcher));
@@ -1330,7 +1334,10 @@ entry_keynav_cb (MnbEntry         *entry,
   /* Nothing is hovered, get first fav app. */
   if (container_has_children (CLUTTER_CONTAINER (launcher_data->fav_grid)))
     {
-      grid_keynav_first (NBTK_GRID (launcher_data->fav_grid));
+      launcher = grid_keynav_first (NBTK_GRID (launcher_data->fav_grid));
+      if (launcher)
+        scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                         CLUTTER_ACTOR (launcher));
       return;
     }
 
