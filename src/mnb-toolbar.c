@@ -79,12 +79,15 @@ mnb_toolbar_show (ClutterActor *actor)
 {
   gint width;
 
+  /*
+   * Call the parent show(); this must be done before we do anything else.
+   */
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->show (actor);
+
   /* set initial width and height */
   clutter_actor_set_position (actor, 0, -(clutter_actor_get_height (actor)));
   width = clutter_actor_get_width (clutter_actor_get_parent (actor));
   clutter_actor_set_width (actor, width);
-
-  CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->show (actor);
 
   clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
 }
