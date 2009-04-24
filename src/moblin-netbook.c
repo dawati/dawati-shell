@@ -784,7 +784,6 @@ moblin_netbook_plugin_constructed (GObject *object)
    */
   // panel = priv->panel = make_panel (MUTTER_PLUGIN (plugin), screen_width);
   panel = priv->panel = CLUTTER_ACTOR (mnb_toolbar_new ());
-  // chlutter_actor_realize (priv->panel_shadow);
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
   clutter_actor_hide (lowlight);
