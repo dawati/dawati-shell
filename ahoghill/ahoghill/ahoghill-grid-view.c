@@ -448,6 +448,7 @@ ahoghill_grid_view_focus (AhoghillGridView *view)
 void
 ahoghill_grid_view_unfocus (AhoghillGridView *view)
 {
+    AhoghillGridViewPrivate *priv = view->priv;
     ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
     ClutterActor *entry;
     ClutterActor *current_focus;
