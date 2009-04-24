@@ -112,7 +112,7 @@ NbtkTable {
 }
 
 MnbToolbar {
-  background-image: url("file://panel/panel-background.png");
+  border-image: url("file://panel/panel-background.png") 0 200 0 200 stretch;
 }
 
 MnbPanelButton:checked {
