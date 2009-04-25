@@ -13,3 +13,4 @@ icons_DATA = \
 	     carrick-wireless-3-normal.png
 
 EXTRA_DIST = $(icons_DATA)
+-include $(top_srcdir)/git.mk
