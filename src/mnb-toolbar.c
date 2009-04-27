@@ -23,6 +23,10 @@ G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
 #define MNB_TOOLBAR_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR, MnbToolbarPrivate))
 
+static void mnb_toolbar_constructed (GObject *self);
+static void mnb_toolbar_hide (ClutterActor *actor);
+static void mnb_toolbar_show (ClutterActor *actor);
+
 enum {
     M_ZONE = 0,
     STATUS_ZONE,
@@ -54,7 +58,10 @@ struct _MnbToolbarPrivate {
   NbtkWidget *buttons[NUM_ZONES];
   NbtkWidget *panels[NUM_ZONES];
 
-  ShellTrayManager      *tray_manager;
+  ShellTrayManager *tray_manager;
+
+  gboolean in_show_animation : 1;
+  gboolean in_hide_animation : 1;
 
   MnbInputRegion input_region;
 };
@@ -106,12 +113,31 @@ mnb_toolbar_finalize (GObject *object)
   G_OBJECT_CLASS (mnb_toolbar_parent_class)->finalize (object);
 }
 
+/*
+ * show/hide machinery
+ */
+static void
+mnb_toolbar_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+
+  priv->in_show_animation = FALSE;
+  g_object_unref (actor);
+}
+
 static void
 mnb_toolbar_show (ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  gint width;
-  guint screen_width, screen_height;
+  guint              width;
+  guint              screen_width, screen_height;
+  ClutterAnimation  *animation;
+
+  if (priv->in_show_animation)
+    {
+      g_signal_stop_emission_by_name (actor, "show");
+      return;
+    }
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -131,22 +157,42 @@ mnb_toolbar_show (ClutterActor *actor)
     moblin_netbook_input_region_push (priv->plugin, 0, 0,
                                       screen_width, TOOLBAR_HEIGHT + 10);
 
-  clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
+  priv->in_show_animation = TRUE;
+
+  animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
+
+  g_object_ref (actor);
+
+  g_signal_connect (clutter_animation_get_timeline (animation),
+                    "completed",
+                    G_CALLBACK (mnb_toolbar_show_completed_cb),
+                    actor);
 }
 
 static void
-mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline,
-                             ClutterActor    *actor)
+mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 {
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+
+  /* the hide animation has finished, so now really hide the actor */
   CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->hide (actor);
+
+  priv->in_hide_animation = FALSE;
+  g_object_unref (actor);
 }
 
 static void
 mnb_toolbar_hide (ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  gint height;
-  ClutterAnimation *animation;
+  gint               height;
+  ClutterAnimation  *animation;
+
+  if (priv->in_hide_animation)
+    {
+      g_signal_stop_emission_by_name (actor, "hide");
+      return;
+    }
 
   if (priv->input_region)
     {
@@ -155,6 +201,10 @@ mnb_toolbar_hide (ClutterActor *actor)
 
       priv->input_region = NULL;
     }
+
+  priv->in_hide_animation = TRUE;
+
+  g_object_ref (actor);
 
   height = clutter_actor_get_height (actor);
 
@@ -166,8 +216,6 @@ mnb_toolbar_hide (ClutterActor *actor)
                     G_CALLBACK (mnb_toolbar_hide_completed_cb),
                     actor);
 }
-
-static void mnb_toolbar_constructed (GObject *self);
 
 static void
 mnb_toolbar_class_init (MnbToolbarClass *klass)
