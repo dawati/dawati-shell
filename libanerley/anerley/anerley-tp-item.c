@@ -244,7 +244,7 @@ anerley_tp_item_update_contact (AnerleyTpItem *item,
                       (GCallback)_contact_notify_alias_cb,
                       item);
     g_signal_connect (priv->contact,
-                      "notify:::presence-status",
+                      "notify::presence-status",
                       (GCallback)_contact_notify_presence_status_cb,
                       item);
     g_signal_connect (priv->contact,
