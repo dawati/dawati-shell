@@ -7,6 +7,8 @@
 #define __SHELL_TRAY_MANAGER_H__
 
 #include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
+#include <nbtk/nbtk.h>
 
 G_BEGIN_DECLS
 

@@ -22,6 +22,7 @@
  */
 
 #include "mnb-drop-down.h"
+#include "mnb-toolbar.h"    /* For MNB_IS_TOOLBAR */
 #include "moblin-netbook.h" /* For PANEL_HEIGHT */
 
 #define SLIDE_DURATION 150
@@ -97,16 +98,56 @@ mnb_drop_down_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 }
 
 static void
+mnb_toolbar_show_completed_cb (MnbToolbar *toolbar, gpointer data)
+{
+  ClutterActor *dropdown = CLUTTER_ACTOR (data);
+
+  g_signal_handlers_disconnect_by_func (toolbar,
+                                        mnb_toolbar_show_completed_cb,
+                                        data);
+
+  clutter_actor_show (dropdown);
+}
+
+static void
 mnb_drop_down_show (ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
   gint x, y;
   guint height, width;
   ClutterAnimation *animation;
+  ClutterActor *toolbar;
 
   if (priv->in_show_animation)
     {
       g_signal_stop_emission_by_name (actor, "show");
+      return;
+    }
+
+  /*
+   * Check the panel is visible, if not show it.
+   */
+  toolbar = clutter_actor_get_parent (actor);
+  while (toolbar && !MNB_IS_TOOLBAR (toolbar))
+    toolbar = clutter_actor_get_parent (actor);
+
+  if (!toolbar)
+    {
+      g_warning ("Cannot show Panel that is not inside the Toolbar.");
+      return;
+    }
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+    {
+      /*
+       * We need to show the toolbar first, and only when it is visible
+       * to show this panel.
+       */
+      g_signal_connect (toolbar, "show-completed",
+                        G_CALLBACK (mnb_toolbar_show_completed_cb),
+                        actor);
+
+      clutter_actor_show (toolbar);
       return;
     }
 
