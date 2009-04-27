@@ -319,11 +319,11 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                               + (BUTTON_SPACING * index),
                               TOOLBAR_HEIGHT - BUTTON_HEIGHT);
 
-  mnb_panel_button_set_reactive_area (MNB_PANEL_BUTTON (button),
-                                      0,
-                                      -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
-                                      BUTTON_WIDTH,
-                                      TOOLBAR_HEIGHT);
+  mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                        0,
+                                        -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
+                                        BUTTON_WIDTH,
+                                        TOOLBAR_HEIGHT);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (button));

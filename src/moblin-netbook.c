@@ -28,7 +28,6 @@
 
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
-#include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-switcher.h"
 #include "mnb-toolbar.h"

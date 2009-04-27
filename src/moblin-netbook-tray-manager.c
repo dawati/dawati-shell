@@ -766,11 +766,11 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   clutter_actor_set_size (CLUTTER_ACTOR (button),
                           TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
   clutter_actor_set_name (CLUTTER_ACTOR (button), "tray-button");
-  mnb_panel_button_set_reactive_area (MNB_PANEL_BUTTON (button),
-                                      0,
-                                      -(PANEL_HEIGHT - TRAY_BUTTON_HEIGHT),
-                                      TRAY_BUTTON_WIDTH,
-                                      PANEL_HEIGHT);
+  mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                        0,
+                                        -(PANEL_HEIGHT - TRAY_BUTTON_HEIGHT),
+                                        TRAY_BUTTON_WIDTH,
+                                        PANEL_HEIGHT);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (button), icon);
 
