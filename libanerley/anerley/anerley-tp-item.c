@@ -163,29 +163,6 @@ _contact_notify_alias_cb (GObject    *object,
 }
 
 static void
-_contact_notify_avatar_token_cb (GObject    *object,
-                                 GParamSpec *pspec,
-                                 gpointer    userdata)
-{
-  TpContact *contact = (TpContact *)object;
-  AnerleyTpItem *item = (AnerleyTpItem *)userdata;
-  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
-
-  g_free (priv->avatar_path);
-  priv->avatar_path = NULL;
-
-  if (tp_contact_get_avatar_token (contact))
-  {
-    priv->avatar_path = g_build_filename (g_get_user_cache_dir (),
-                                          "anerley",
-                                          tp_contact_get_avatar_token (contact),
-                                          NULL);
-  }
-
-  anerley_item_emit_avatar_path_changed ((AnerleyItem *)item);
-}
-
-static void
 _contact_notify_presence_status_cb (GObject    *object,
                                     GParamSpec *pspec,
                                     gpointer    userdata)
