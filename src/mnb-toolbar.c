@@ -250,7 +250,8 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 static void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           const gchar *name,
-                          const gchar *tooltip)
+                          const gchar *tooltip,
+                          Window       xid)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
   NbtkWidget *button;
