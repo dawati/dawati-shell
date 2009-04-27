@@ -34,7 +34,9 @@ typedef struct {
 
 GType anerley_tp_item_get_type (void);
 
-AnerleyTpItem *anerley_tp_item_new (TpContact *contact);
+AnerleyTpItem *anerley_tp_item_new (MissionControl *mc,
+                                    McAccount      *account,
+                                    TpContact      *contact);
 void anerley_tp_item_set_avatar_path (AnerleyTpItem *item,
                                       const gchar   *avatar_path);
 G_END_DECLS

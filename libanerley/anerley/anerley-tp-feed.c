@@ -193,7 +193,9 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
       uid = g_strdup_printf ("%s/%s",
                              mc_account_get_normalized_name (priv->account),
                              tp_contact_get_identifier (contact));
-      item = anerley_tp_item_new (contact);
+      item = anerley_tp_item_new (priv->mc,
+                                  priv->account,
+                                  contact);
 
       added_items = g_list_append (added_items, item);
 

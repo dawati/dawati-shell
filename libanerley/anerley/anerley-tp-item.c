@@ -1,3 +1,4 @@
+#include <libmissioncontrol/mission-control.h>
 #include "anerley-tp-item.h"
 
 G_DEFINE_TYPE (AnerleyTpItem, anerley_tp_item, ANERLEY_TYPE_ITEM)
@@ -8,6 +9,8 @@ G_DEFINE_TYPE (AnerleyTpItem, anerley_tp_item, ANERLEY_TYPE_ITEM)
 typedef struct _AnerleyTpItemPrivate AnerleyTpItemPrivate;
 
 struct _AnerleyTpItemPrivate {
+  MissionControl *mc;
+  McAccount *account;
   TpContact *contact;
 
   gchar *display_name;
@@ -19,7 +22,9 @@ struct _AnerleyTpItemPrivate {
 enum
 {
   PROP_0,
-  PROP_CONTACT
+  PROP_CONTACT,
+  PROP_ACCOUNT,
+  PROP_MC
 };
 
 static void anerley_tp_item_update_contact (AnerleyTpItem *item,
@@ -35,6 +40,12 @@ anerley_tp_item_get_property (GObject *object, guint property_id,
     case PROP_CONTACT:
       g_value_set_object (value, priv->contact);
       break;
+    case PROP_ACCOUNT:
+      g_value_set_object (value, priv->account);
+      break;
+    case PROP_MC:
+      g_value_set_object (value, priv->mc);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -44,10 +55,18 @@ static void
 anerley_tp_item_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
     case PROP_CONTACT:
       anerley_tp_item_update_contact ((AnerleyTpItem *)object, 
                                       (TpContact *)g_value_get_object (value));
+      break;
+    case PROP_ACCOUNT:
+      priv->account = g_value_dup_object (value);
+      break;
+    case PROP_MC:
+      priv->mc = g_value_dup_object (value);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -58,8 +77,22 @@ static void
 anerley_tp_item_dispose (GObject *object)
 {
   AnerleyTpItem *item = (AnerleyTpItem *)object;
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (object);
 
   anerley_tp_item_update_contact (item, NULL);
+
+  if (priv->account)
+  {
+    g_object_unref (priv->account);
+    priv->account = NULL;
+  }
+
+  if (priv->mc)
+  {
+    g_object_unref (priv->mc);
+    priv->mc = NULL;
+  }
+
   G_OBJECT_CLASS (anerley_tp_item_parent_class)->dispose (object);
 }
 
@@ -120,6 +153,20 @@ anerley_tp_item_class_init (AnerleyTpItemClass *klass)
   item_class->get_presence_status = anerley_tp_item_get_presence_status;
   item_class->get_presence_message = anerley_tp_item_get_presence_message;
 
+  pspec = g_param_spec_object ("mc",
+                               "Mission control",
+                               "The mission control instance",
+                               MISSIONCONTROL_TYPE,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_MC, pspec);
+
+  pspec = g_param_spec_object ("account",
+                               "The account",
+                               "The mission control account",
+                               MC_TYPE_ACCOUNT,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_ACCOUNT, pspec);
+
   pspec = g_param_spec_object ("contact",
                                "The contact",
                                "Underlying contact whose details we represent",
@@ -134,9 +181,15 @@ anerley_tp_item_init (AnerleyTpItem *self)
 }
 
 AnerleyTpItem *
-anerley_tp_item_new (TpContact *contact)
+anerley_tp_item_new (MissionControl *mc,
+                     McAccount      *account,
+                     TpContact      *contact)
 {
-  return g_object_new (ANERLEY_TYPE_TP_ITEM, 
+  return g_object_new (ANERLEY_TYPE_TP_ITEM,
+                       "mc",
+                       mc,
+                       "account",
+                       account,
                        "contact",
                        contact,
                        NULL);
