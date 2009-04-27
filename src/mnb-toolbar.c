@@ -285,6 +285,21 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   else
     return;
 
+  /*
+   * If the respective slot is already occupied, remove the old objects.
+   */
+  if (priv->buttons[index])
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
+                                      CLUTTER_ACTOR (priv->buttons[index]));
+    }
+
+  if (priv->panels[index])
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
+                                      CLUTTER_ACTOR (priv->panels[index]));
+    }
+
   mutter_plugin_query_screen_size (priv->plugin,
                                    &screen_width, &screen_height);
 
