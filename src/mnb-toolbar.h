@@ -37,6 +37,10 @@ typedef struct {
 
 typedef struct {
   NbtkBinClass parent_class;
+
+  void (*show_completed) (MnbToolbar *toolbar);
+  void (*hide_begin)     (MnbToolbar *toolbar);
+  void (*hide_completed) (MnbToolbar *toolbar);
 } MnbToolbarClass;
 
 GType mnb_toolbar_get_type (void);

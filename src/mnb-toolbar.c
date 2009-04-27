@@ -47,6 +47,17 @@ enum {
   PROP_MUTTER_PLUGIN,
 };
 
+enum
+{
+  SHOW_COMPLETED,
+  HIDE_BEGIN,
+  HIDE_COMPLETED,
+
+  LAST_SIGNAL
+};
+
+static guint toolbar_signals[LAST_SIGNAL] = { 0 };
+
 struct _MnbToolbarPrivate {
   MutterPlugin *plugin;
 
@@ -122,6 +133,7 @@ mnb_toolbar_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
 
   priv->in_show_animation = FALSE;
+  g_signal_emit (actor, toolbar_signals[SHOW_COMPLETED], 0);
   g_object_unref (actor);
 }
 
@@ -178,6 +190,7 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->hide (actor);
 
   priv->in_hide_animation = FALSE;
+  g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
   g_object_unref (actor);
 }
 
@@ -193,6 +206,8 @@ mnb_toolbar_hide (ClutterActor *actor)
       g_signal_stop_emission_by_name (actor, "hide");
       return;
     }
+
+  g_signal_emit (actor, toolbar_signals[HIDE_BEGIN], 0);
 
   if (priv->input_region)
     {
@@ -242,6 +257,33 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
                                                         MUTTER_TYPE_PLUGIN,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
+
+  toolbar_signals[SHOW_COMPLETED] =
+    g_signal_new ("show-completed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbToolbarClass, show_completed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  toolbar_signals[HIDE_BEGIN] =
+    g_signal_new ("hide-begin",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbToolbarClass, hide_begin),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  toolbar_signals[HIDE_COMPLETED] =
+    g_signal_new ("hide-completed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbToolbarClass, hide_completed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static gboolean
