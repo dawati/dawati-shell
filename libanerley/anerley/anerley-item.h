@@ -35,6 +35,7 @@ typedef struct {
   const gchar * (*get_avatar_path) (AnerleyItem *item);
   const gchar * (*get_presence_status) (AnerleyItem *item);
   const gchar * (*get_presence_message) (AnerleyItem *item);
+  void (*activate) (AnerleyItem *item);
 } AnerleyItemClass;
 
 GType anerley_item_get_type (void);
@@ -47,6 +48,8 @@ const gchar *anerley_item_get_presence_message (AnerleyItem *item);
 void anerley_item_emit_display_name_changed (AnerleyItem *item);
 void anerley_item_emit_avatar_path_changed (AnerleyItem *item);
 void anerley_item_emit_presence_changed (AnerleyItem *item);
+
+void anerley_item_activate (AnerleyItem *item);
 
 G_END_DECLS
 

@@ -94,3 +94,9 @@ anerley_item_emit_presence_changed (AnerleyItem *item)
 {
   g_signal_emit (item, signals[PRESENCE_CHANGED], 0);
 }
+
+void
+anerley_item_activate (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->activate (item);
+}
