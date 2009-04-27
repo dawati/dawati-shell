@@ -5,6 +5,7 @@
 #include "mnb-toolbar.h"
 #include "mnb-toolbar-button.h"
 #include "mnb-drop-down.h"
+#include "mnb-switcher.h"
 
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
@@ -258,6 +259,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   NbtkWidget *panel;
   guint       screen_width, screen_height;
   guint       index;
+  gboolean    internal = FALSE;
 
   if (!strcmp (name, "m_zone"))
     index = M_ZONE;
@@ -265,6 +267,11 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     index = STATUS_ZONE;
   else if (!strcmp (name, "spaces_zone"))
     index = SPACES_ZONE;
+  else if (!strcmp (name, "spaces_zone_internal"))
+    {
+      index = SPACES_ZONE;
+      internal = TRUE;
+    }
   else if (!strcmp (name, "internet_zone"))
     index = INTERNET_ZONE;
   else if (!strcmp (name, "media_zone"))
@@ -305,7 +312,23 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                     G_CALLBACK (mnb_toolbar_toggle_buttons),
                     toolbar);
 
-  panel = priv->panels[index] = mnb_drop_down_new ();
+  /*
+   * Special case Space; we have an internal component for this, but will
+   * allow it to be replaced by a thirdparty component just like all the
+   * other dropdowns.
+   */
+  if (index == SPACES_ZONE && internal)
+    {
+      panel = priv->panels[index] = mnb_switcher_new (priv->plugin);
+    }
+  else
+    {
+      panel = priv->panels[index] = mnb_drop_down_new ();
+
+      /*
+       * TODO -- create the contents from the xid and insert into the dropdown
+       */
+    }
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
