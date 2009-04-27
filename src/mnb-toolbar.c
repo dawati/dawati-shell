@@ -3,8 +3,8 @@
 #include "moblin-netbook.h"
 
 #include "mnb-toolbar.h"
-
 #include "mnb-toolbar-button.h"
+#include "mnb-drop-down.h"
 
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
@@ -256,6 +256,11 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
   NbtkWidget *button;
+  NbtkWidget *panel;
+  guint       screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (priv->plugin,
+                                   &screen_width, &screen_height);
 
   button = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
@@ -280,6 +285,16 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   g_signal_connect (button, "clicked",
                     G_CALLBACK (mnb_toolbar_toggle_buttons),
                     toolbar);
+
+  panel = priv->panels[priv->n_panels] = mnb_drop_down_new ();
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                               CLUTTER_ACTOR (panel));
+  clutter_actor_set_width (CLUTTER_ACTOR (panel), screen_width);
+
+  mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
+  clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, PANEL_HEIGHT);
+  clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
 
   priv->n_panels++;
 
