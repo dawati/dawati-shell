@@ -156,8 +156,9 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
   gchar *uid;
   GList *changed_items = NULL;
   GList *added_items = NULL;
-  gchar *avatar_path;
+  gchar *avatar_path = NULL;
   GArray *missing_avatar_handles;
+  const gchar *token;
   TpHandle handle;
 
   if (error)
@@ -210,23 +211,29 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
                            g_strdup (tp_contact_get_identifier (contact)));
     }
 
-    /* Check if contact's avatar is already downloaded */
-    avatar_path = g_build_filename (g_get_user_cache_dir (),
-                                    "anerley",
-                                    "avatars",
-                                    tp_contact_get_avatar_token (contact),
-                                    NULL);
-    if (g_file_test (avatar_path, G_FILE_TEST_EXISTS))
-    {
-      /* Already download, woot! */
-      anerley_tp_item_set_avatar_path (item, avatar_path);
-    } else {
-      handle = tp_contact_get_handle (contact);
-      g_array_append_val (missing_avatar_handles,
-                          handle);
-    }
+    /* Only try and find an avatar file if we have an avatar token */
+    token = tp_contact_get_avatar_token (contact);
 
-    g_free (avatar_path);
+    if (token && !g_str_equal (token, ""))
+    {
+      /* Check if contact's avatar is already downloaded */
+      avatar_path = g_build_filename (g_get_user_cache_dir (),
+                                      "anerley",
+                                      "avatars",
+                                      token,
+                                      NULL);
+      if (g_file_test (avatar_path, G_FILE_TEST_EXISTS))
+      {
+        /* Already download, woot! */
+        anerley_tp_item_set_avatar_path (item, avatar_path);
+      } else {
+        handle = tp_contact_get_handle (contact);
+        g_array_append_val (missing_avatar_handles,
+                            handle);
+      }
+
+      g_free (avatar_path);
+    }
   }
 
   /* TODO: Move to idle to avoid blocking the bus */
