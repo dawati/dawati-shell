@@ -10,7 +10,7 @@
 #include <nbtk/nbtk.h>
 #include <string.h>
 
-#include "mnb-panel-button.h"
+#include "mnb-toolbar-button.h"
 #include "moblin-netbook-tray-manager.h"
 #include "tray/na-tray-manager.h"
 #include "moblin-netbook.h"
@@ -760,7 +760,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (icon),
                                             TRUE);
 
-  button = mnb_panel_button_new ();
+  button = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
 
   clutter_actor_set_size (CLUTTER_ACTOR (button),

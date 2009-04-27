@@ -4,7 +4,7 @@
 
 #include "mnb-toolbar.h"
 
-#include "mnb-panel-button.h"
+#include "mnb-toolbar-button.h"
 
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
@@ -226,7 +226,7 @@ mnb_toolbar_append_toolbar_button (MnbToolbar *toolbar,
   NbtkWidget *button;
 
   /* FIXME: rename to toolbar button */
-  button = mnb_panel_button_new ();
+  button = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
