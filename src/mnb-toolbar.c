@@ -53,8 +53,6 @@ struct _MnbToolbarPrivate {
   NbtkWidget *buttons[NUM_ZONES];
   NbtkWidget *panels[NUM_ZONES];
 
-  guint       n_panels;
-
   MnbInputRegion input_region;
 };
 
@@ -249,7 +247,7 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
       }
 }
 
-static NbtkWidget*
+static void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           const gchar *name,
                           const gchar *tooltip)
@@ -258,19 +256,39 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   NbtkWidget *button;
   NbtkWidget *panel;
   guint       screen_width, screen_height;
+  guint       index;
+
+  if (!strcmp (name, "m_zone"))
+    index = M_ZONE;
+  else if (!strcmp (name, "status_zone"))
+    index = STATUS_ZONE;
+  else if (!strcmp (name, "spaces_zone"))
+    index = SPACES_ZONE;
+  else if (!strcmp (name, "internet_zone"))
+    index = INTERNET_ZONE;
+  else if (!strcmp (name, "media_zone"))
+    index = MEDIA_ZONE;
+  else if (!strcmp (name, "applications_zone"))
+    index = APPS_ZONE;
+  else if (!strcmp (name, "people_zone"))
+    index = PEOPLE_ZONE;
+  else if (!strcmp (name, "pasteboard_zone"))
+    index = PASTEBOARD_ZONE;
+  else
+    return;
 
   mutter_plugin_query_screen_size (priv->plugin,
                                    &screen_width, &screen_height);
 
-  button = mnb_toolbar_button_new ();
+  button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
   clutter_actor_set_size (CLUTTER_ACTOR (button),
 			  BUTTON_WIDTH, BUTTON_HEIGHT);
   clutter_actor_set_position (CLUTTER_ACTOR (button),
-                              213 + (BUTTON_WIDTH * priv->n_panels)
-                              + (BUTTON_SPACING * priv->n_panels),
+                              213 + (BUTTON_WIDTH * index)
+                              + (BUTTON_SPACING * index),
                               TOOLBAR_HEIGHT - BUTTON_HEIGHT);
 
   mnb_panel_button_set_reactive_area (MNB_PANEL_BUTTON (button),
@@ -286,7 +304,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                     G_CALLBACK (mnb_toolbar_toggle_buttons),
                     toolbar);
 
-  panel = priv->panels[priv->n_panels] = mnb_drop_down_new ();
+  panel = priv->panels[index] = mnb_drop_down_new ();
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
@@ -295,10 +313,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
-
-  priv->n_panels++;
-
-  return NBTK_WIDGET (button);
 }
 
 static void
