@@ -283,7 +283,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   else if (!strcmp (name, "pasteboard_zone"))
     index = PASTEBOARD_ZONE;
   else
-    return;
+    {
+      g_warning ("Unknown panel [%s]");
+      return;
+    }
 
   /*
    * If the respective slot is already occupied, remove the old objects.
