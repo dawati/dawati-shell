@@ -211,7 +211,7 @@ penge_grid_view_init (PengeGridView *self)
                                "row-span",
                                2,
                                "x-expand",
-                               TRUE,
+                               FALSE,
                                NULL);
 
   div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
@@ -229,9 +229,11 @@ penge_grid_view_init (PengeGridView *self)
     clutter_container_child_set (CLUTTER_CONTAINER (self),
                                  div_tex,
                                  "x-expand",
-                                 FALSE,
+                                 TRUE,
                                  "x-fill",
                                  FALSE,
+                                 "x-align",
+                                 1.0,
                                  "row-span",
                                  2,
                                  NULL);

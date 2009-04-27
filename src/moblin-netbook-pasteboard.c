@@ -32,6 +32,7 @@
 typedef struct _SearchClosure   SearchClosure;
 
 static guint search_timeout_id = 0;
+static MnbClipboardStore *store = NULL;
 
 static void
 on_dropdown_show (MnbDropDown  *dropdown,
@@ -102,77 +103,128 @@ on_search_activated (MnbEntry *entry,
 }
 
 static void
-on_clear_clicked (NbtkButton        *button,
-                  MnbClipboardStore *store)
+on_clear_clicked (NbtkButton *button,
+                  gpointer    dummy G_GNUC_UNUSED)
 {
   while (clutter_model_get_n_rows (CLUTTER_MODEL (store)))
     clutter_model_remove (CLUTTER_MODEL (store), 0);
+}
+
+static void
+on_selection_changed (MnbClipboardStore *store,
+                      const gchar       *current_selection,
+                      NbtkLabel         *label)
+{
+  if (current_selection == NULL || *current_selection == '\0')
+    nbtk_label_set_text (label, _("the current selection to pasteboard"));
+  else
+    nbtk_label_set_text (label, current_selection);
+}
+
+static void
+on_selection_copy_clicked (NbtkButton *button,
+                           gpointer    dummy G_GNUC_UNUSED)
+{
+  mnb_clipboard_store_save_selection (store);
 }
 
 ClutterActor *
 make_pasteboard (MutterPlugin *plugin,
                  gint          width)
 {
-  NbtkWidget   *vbox, *hbox, *label, *entry, *drop_down, *bin, *button;
+  NbtkWidget *vbox, *hbox, *label, *entry, *drop_down, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
+  ClutterText *text;
+  guint items_list_width = 0, items_list_height = 0;
 
   drop_down = mnb_drop_down_new ();
 
   vbox = nbtk_table_new ();
-  nbtk_table_set_col_spacing (NBTK_TABLE (vbox), 4);
-  nbtk_table_set_row_spacing (NBTK_TABLE (vbox), WIDGET_SPACING);
+  nbtk_table_set_col_spacing (NBTK_TABLE (vbox), 12);
+  nbtk_table_set_row_spacing (NBTK_TABLE (vbox), 6);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "pasteboard-vbox");
 
   /* Filter row. */
   hbox = nbtk_table_new ();
-  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), hbox,
-                              0, 0, 1, 2,
-                              NBTK_X_FILL | NBTK_X_EXPAND,
-                              0.0, 0.0);
   clutter_actor_set_name (CLUTTER_ACTOR (hbox), "pasteboard-search");
+  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
+                                        CLUTTER_ACTOR (hbox),
+                                        0, 0,
+                                        "row-span", 1,
+                                        "col-span", 2,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        NULL);
 
   label = nbtk_label_new (_("Pasteboard"));
-  nbtk_table_add_widget_full (NBTK_TABLE (hbox), label,
-                              0, 0, 1, 1,
-                              0,
-                              0., 0.5);
   clutter_actor_set_name (CLUTTER_ACTOR (label), "pasteboard-search-label");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                        CLUTTER_ACTOR (label),
+                                        0, 0,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
 
   entry = mnb_entry_new (_("Search"));
-  clutter_actor_set_width (CLUTTER_ACTOR (entry),
-                           CLUTTER_UNITS_FROM_DEVICE (600));
-  nbtk_table_add_widget_full (NBTK_TABLE (hbox), entry,
-                              0, 1, 1, 1,
-                              0,
-                              0., 0.5);
   clutter_actor_set_name (CLUTTER_ACTOR (entry), "pasteboard-search-entry");
+  clutter_actor_set_width (CLUTTER_ACTOR (entry), 600);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                        CLUTTER_ACTOR (entry),
+                                        0, 1,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
   g_signal_connect (drop_down, "show-completed",
                     G_CALLBACK (on_dropdown_show), entry);
   g_signal_connect (drop_down, "hide-completed",
                     G_CALLBACK (on_dropdown_hide), entry);
 
+  /* the object proxying the Clipboard changes and storing them */
+  store = mnb_clipboard_store_new ();
+
   /* the actual view */
-  view = CLUTTER_ACTOR (mnb_clipboard_view_new (NULL));
-  clutter_actor_set_width (view, 650);
+  view = CLUTTER_ACTOR (mnb_clipboard_view_new (store));
 
   viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (viewport), view);
 
   /* the scroll view is bigger to avoid the horizontal scroll bar */
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
-  clutter_actor_set_size (scroll, 680, 300);
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll), viewport);
+  clutter_actor_set_size (scroll, 650, 300);
 
   bin = NBTK_WIDGET (nbtk_bin_new ());
-  clutter_container_add_actor (CLUTTER_CONTAINER (bin), scroll);
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-items-list");
+  clutter_container_add_actor (CLUTTER_CONTAINER (bin), scroll);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
+                                        CLUTTER_ACTOR (bin),
+                                        1, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        NULL);
 
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
-                              1, 0, 1, 1,
-                              0,
-                              0., 0.);
+  clutter_actor_get_size (CLUTTER_ACTOR (bin),
+                          &items_list_width,
+                          &items_list_height);
+  clutter_actor_set_width (view, items_list_width - 50);
 
   /* hook up the search entry to the view */
   g_signal_connect (entry, "button-clicked",
@@ -180,19 +232,86 @@ make_pasteboard (MutterPlugin *plugin,
   g_signal_connect (entry, "text-changed",
                     G_CALLBACK (on_search_activated), view);
 
+
   /* side controls */
-  bin = NBTK_WIDGET (nbtk_bin_new ());
-  nbtk_table_add_widget_full (NBTK_TABLE (vbox), bin,
-                              1, 1, 1, 1,
-                              NBTK_X_FILL | NBTK_X_EXPAND,
-                              0.0, 0.0);
+  bin = nbtk_table_new ();
+  nbtk_table_set_row_spacing (NBTK_TABLE (bin), 12);
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-controls");
+  clutter_actor_set_size (CLUTTER_ACTOR (bin), 300, items_list_height);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
+                                        CLUTTER_ACTOR (bin),
+                                        1, 1,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        NULL);
 
   button = nbtk_button_new_with_label (_("Clear pasteboard"));
-  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (button));
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (bin),
+                                        CLUTTER_ACTOR (button),
+                                        0, 0,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        NULL);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (on_clear_clicked),
-                    mnb_clipboard_view_get_store (MNB_CLIPBOARD_VIEW (view)));
+                    NULL);
+
+  hbox = nbtk_table_new ();
+  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 6);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (bin),
+                                        CLUTTER_ACTOR (hbox),
+                                        1, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        NULL);
+
+  button = nbtk_button_new_with_label (_("Copy"));
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                        CLUTTER_ACTOR (button),
+                                        0, 0,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        NULL);
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (on_selection_copy_clicked),
+                    store);
+
+  label = nbtk_label_new (_("the current selection to pasteboard"));
+  text = CLUTTER_TEXT (nbtk_label_get_clutter_text (NBTK_LABEL (label)));
+  clutter_text_set_single_line_mode (text, FALSE);
+  clutter_text_set_line_wrap (text, TRUE);
+  clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_END);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                        CLUTTER_ACTOR (label),
+                                        0, 1,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
+
+  g_signal_connect (store, "selection-changed",
+                    G_CALLBACK (on_selection_changed),
+                    label);
 
   return CLUTTER_ACTOR (drop_down);
 }

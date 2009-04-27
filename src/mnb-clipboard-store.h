@@ -60,6 +60,8 @@ gchar **mnb_clipboard_store_get_last_uris (MnbClipboardStore *store,
 void mnb_clipboard_store_remove (MnbClipboardStore *store,
                                  gint64             serial);
 
+void mnb_clipboard_store_save_selection (MnbClipboardStore *store);
+
 G_END_DECLS
 
 #endif /* __MNB_CLIPBOARD_STORE_H__ */

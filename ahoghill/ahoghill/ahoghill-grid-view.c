@@ -425,3 +425,42 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_idle_add (finish_init, self);
 }
 
+void
+ahoghill_grid_view_clear (AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    NbtkWidget *entry;
+
+    entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
+    mnb_entry_set_text (MNB_ENTRY (entry), "");
+}
+
+void
+ahoghill_grid_view_focus (AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    NbtkWidget *entry;
+
+    entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
+    clutter_actor_grab_key_focus (CLUTTER_ACTOR (entry));
+}
+
+void
+ahoghill_grid_view_unfocus (AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
+    ClutterActor *entry;
+    ClutterActor *current_focus;
+
+    /*
+     * If the entry is focused, than release the focus.
+     */
+    entry = CLUTTER_ACTOR (
+     ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane)));
+
+    current_focus = clutter_stage_get_key_focus (stage);
+
+    if (current_focus == entry)
+      clutter_stage_set_key_focus (stage, NULL);
+}

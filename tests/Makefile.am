@@ -18,7 +18,6 @@ LDADD = \
 
 noinst_PROGRAMS = \
 	test-entry \
-	test-expander \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree \
@@ -32,10 +31,6 @@ test_launcher_button_SOURCES = \
 test_entry_SOURCES = \
 	$(top_srcdir)/src/mnb-entry.c \
 	test-entry.c
-
-test_expander_SOURCES = \
-	$(top_srcdir)/src/mnb-expander.c \
-	test-expander.c
 
 test_launcher_monitor_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-tree.c \

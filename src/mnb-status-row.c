@@ -259,6 +259,8 @@ mnb_status_row_style_changed (NbtkWidget *widget)
       g_boxed_free (NBTK_TYPE_PADDING, padding);
     }
 
+  g_signal_emit_by_name (priv->entry, "style-changed");
+
   /* chain up */
   NBTK_WIDGET_CLASS (mnb_status_row_parent_class)->style_changed (widget);
 }
@@ -288,6 +290,9 @@ on_status_entry_changed (MnbStatusEntry *entry,
                          MnbStatusRow   *row)
 {
   MnbStatusRowPrivate *priv = row->priv;
+
+  if (priv->service == NULL)
+    return;
 
   /* save the last status */
   g_free (priv->last_status_text);
@@ -387,6 +392,15 @@ on_mojito_view_open (MojitoClient     *client,
                                                   row);
         }
 
+
+      /* now that we have a service and can update the status message
+       * we need to enable the StatusEntry
+       */
+      clutter_actor_set_reactive (CLUTTER_ACTOR (row), priv->is_online);
+      clutter_actor_set_reactive (priv->entry, priv->is_online);
+      clutter_actor_set_opacity (priv->entry, priv->is_online ? 255 : 128);
+      clutter_actor_set_opacity (priv->icon, priv->is_online ? 255 : 128);
+
       g_signal_connect (view, "item-added",
                         G_CALLBACK (on_mojito_view_item_added),
                         row);
@@ -484,20 +498,9 @@ on_mojito_is_online (MojitoClient *client,
 
   g_debug ("%s: we are now %s", G_STRLOC, is_online ? "online" : "offline");
 
-  clutter_actor_set_reactive (CLUTTER_ACTOR (row), priv->is_online);
-  clutter_actor_set_reactive (priv->entry, priv->is_online);
-
-  if (!priv->is_online)
-    {
-      clutter_actor_set_opacity (priv->entry, 128);
-      clutter_actor_set_opacity (priv->icon, 128);
-    }
-  else
+  if (priv->is_online);
     {
       gchar *service_name;
-
-      clutter_actor_set_opacity (priv->entry, 255);
-      clutter_actor_set_opacity (priv->icon, 255);
 
       /* for the View we need a parametrized service name */
       service_name = g_strdup_printf ("%s:own=1", priv->service_name);
@@ -594,6 +597,8 @@ mnb_status_row_constructed (GObject *gobject)
   priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->service_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
+  clutter_actor_set_reactive (CLUTTER_ACTOR (priv->entry), FALSE);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->entry), 128);
   g_signal_connect (priv->entry, "status-changed",
                     G_CALLBACK (on_status_entry_changed),
                     row);
@@ -650,7 +655,7 @@ mnb_status_row_init (MnbStatusRow *self)
 
   self->priv = priv = MNB_STATUS_ROW_GET_PRIVATE (self);
 
-  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), FALSE);
 
   priv->no_icon_file = g_build_filename (PLUGIN_PKGDATADIR,
                                          "theme",
@@ -675,13 +680,14 @@ mnb_status_row_init (MnbStatusRow *self)
         }
     }
 
+  clutter_actor_set_opacity (priv->icon, 128);
+  clutter_actor_set_size (priv->icon, ICON_SIZE, ICON_SIZE);
+  clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (self));
+
   priv->client = mojito_client_new ();
   g_signal_connect (priv->client, "online-changed",
                     G_CALLBACK (on_mojito_online_changed),
                     self);
-
-  clutter_actor_set_size (priv->icon, ICON_SIZE, ICON_SIZE);
-  clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (self));
 }
 
 NbtkWidget *

@@ -26,7 +26,8 @@
 #define MNBZE_ZOOM_IN_DURATION  100
 #define MNBZE_ZOOM_OUT_DURATION 100
 #define MNBZE_MOTION_DURATION   200
-#define MNBZE_PAD 10
+#define MNBZE_PAD 40
+#define MNBZE_CELL_PAD 4
 
 /*
  * The three stages of the effect
@@ -45,17 +46,10 @@ static ClutterAnimation *zoom_anim    = NULL;
 static ClutterAnimation *move_anim    = NULL;
 static MutterWindow     *actor_for_cb = NULL;
 static MnbzeStage        estage       = MNBZE_ZOOM_OUT;
-static gint              parallax_dir = 2;
 static gint              current_to   = 0;
 static gint              current_from = 0;
 
-static void fill_strip (MutterPlugin*, NbtkTable*, gint, gint,
-                        gdouble*, gdouble*);
-static void on_desktop_paint (ClutterActor *actor, gpointer data);
-
-static void parallax_new_frame_cb (ClutterTimeline *timeline,
-                                   gint             frame_num,
-                                   gpointer         data);
+static void fill_strip (MutterPlugin*, NbtkTable*, gint, gint);
 
 /*
  * Release the ClutterClone actors we use for the effect.
@@ -162,7 +156,7 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
                                    MNBZE_MOTION_DURATION,
                                    "x",
                                    -MNBZE_PAD
-                                   -((screen_width + 2*MNBZE_PAD)*current_to),
+                                   -((screen_width + MNBZE_PAD)*current_to),
                                    NULL);
 
         /*
@@ -176,32 +170,12 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
                             strip_data);
 
         if (move_anim != a)
-          {
-            move_anim = a;
-
-            g_signal_connect (clutter_animation_get_timeline (a),
-                              "new-frame",
-                              G_CALLBACK (parallax_new_frame_cb),
-                              plugin);
-          }
+          move_anim = a;
       }
       break;
 
     default:;
     }
-}
-
-/*
- * The parallax paint function.
- */
-static void
-parallax_new_frame_cb (ClutterTimeline *timeline,
-                       gint             frame_num,
-                       gpointer         data)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
-
-  priv->parallax_paint_offset += parallax_dir * -1;
 }
 
 /*
@@ -217,10 +191,8 @@ parallax_new_frame_cb (ClutterTimeline *timeline,
  *
  * The effect is constructed of there layers of actors:
  *
- * desktop: this is the top level container for the effect; it has a dummy
- *          background constructed with a ClutterRectangle of a size that
- *          matches the size of the screen; the pain function of the rectangle
- *          is overridden by the parallax effects.
+ * desktop: this is the top level container for the effect; a NbtkBin with the
+ *          *#zone-switch-background style.
  *
  * frame:   this is a window onto the desktop; this actor has the zoom effects
  *          applied to (it needs to be separate from the desktop, so that as we
@@ -240,6 +212,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 {
   ClutterAnimation           *a;
   gdouble                     target_scale_x, target_scale_y;
+  gint                        cell_width, cell_height;
   gint                        screen_width, screen_height;
 
   if (from == to)
@@ -249,32 +222,37 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
       return;
     }
 
-  parallax_dir = direction == META_MOTION_LEFT ? -2 : 2;
-
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  cell_width = (screen_width -
+                MAX_WORKSPACES * 2 * MNBZE_CELL_PAD) / MAX_WORKSPACES;
+
+  cell_height = screen_height * cell_width / screen_width;
+
+  target_scale_x = (gdouble) (cell_width -
+                              MNBZE_CELL_PAD)/ (gdouble)screen_width;
+  target_scale_y = (gdouble) (cell_height -
+                              MNBZE_CELL_PAD) /(gdouble)screen_height;
 
   if (G_UNLIKELY (!frame))
     {
       ClutterActor *parent;
       ClutterActor *bkg;
 
-      desktop = clutter_group_new ();
-
-      bkg = clutter_rectangle_new ();
-
-      g_signal_connect (bkg,
-                        "paint", G_CALLBACK (on_desktop_paint),
-                        plugin);
+      desktop = CLUTTER_ACTOR (nbtk_bin_new ());
+      clutter_actor_set_name (desktop, "zone-switch-background");
+      clutter_actor_set_size (desktop, screen_width, screen_height);
 
       strip = CLUTTER_ACTOR (nbtk_table_new ());
 
-      nbtk_table_set_col_spacing (NBTK_TABLE (strip),
-                                  MNBZE_PAD);
+      clutter_actor_set_name (strip, "zone-switch-strip");
+
+      nbtk_table_set_col_spacing (NBTK_TABLE (strip), MNBZE_PAD);
 
       frame = clutter_group_new ();
 
       /*
-       * set up the frame so that any zooming is down around its center.
+       * set up the frame so that any zooming is done around its center.
        */
       g_object_set (frame,
                     "scale-center-x", screen_width / 2,
@@ -283,7 +261,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
       clutter_container_add_actor (CLUTTER_CONTAINER (frame), strip);
 
-      clutter_container_add (CLUTTER_CONTAINER (desktop), bkg, frame, NULL);
+      clutter_container_add_actor (CLUTTER_CONTAINER (desktop), frame);
 
       parent = mutter_plugin_get_window_group (plugin);
       clutter_container_add_actor (CLUTTER_CONTAINER (parent), desktop);
@@ -298,15 +276,13 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   /*
    * Construct the strip.
    */
-  fill_strip (plugin, NBTK_TABLE (strip),
-              screen_width, screen_height,
-              &target_scale_x, &target_scale_y);
+  fill_strip (plugin, NBTK_TABLE (strip), screen_width, screen_height);
 
   /*
    * Position the strip so that the current desktop is in the frame window.
    */
   clutter_actor_set_position (strip,
-                              -MNBZE_PAD - (screen_width + 2*MNBZE_PAD) * from,
+                              -MNBZE_PAD - (screen_width + MNBZE_PAD) * from,
                               0);
 
   clutter_actor_show (desktop);
@@ -347,7 +323,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
       /*
        * New animation object, take extra reference and connect to signals
-       * for completion and parallax.
+       * for completion.
        */
       zoom_anim = g_object_ref (a);
 
@@ -397,7 +373,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
                                  MNBZE_MOTION_DURATION,
                                  "x",
                                  -MNBZE_PAD
-                                 -((screen_width + 2*MNBZE_PAD)*current_to),
+                                 -((screen_width + MNBZE_PAD)*current_to),
                                  NULL);
           break;
         }
@@ -411,8 +387,14 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
  * we will probably want to wrap these in NbtkBin so they can be themed.
  */
 static ClutterActor *
-make_nth_workspace (GList **list, gint n, gint screen_width, gint screen_height)
+make_nth_workspace (MutterPlugin  *plugin,
+                    GList        **list,
+                    gint           n,
+                    gint           screen_width,
+                    gint           screen_height)
 {
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
   GList *l   = *list;
   GList *tmp =  NULL;
   gint   i   =  0;
@@ -431,8 +413,13 @@ make_nth_workspace (GList **list, gint n, gint screen_width, gint screen_height)
   while (i <= n)
     {
       ClutterActor *group;
+      ClutterActor *bkg;
 
       group = clutter_group_new ();
+
+      bkg = clutter_clone_new (priv->parallax_tex);
+      clutter_actor_set_size (bkg, screen_width, screen_height);
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), bkg);
 
       clutter_actor_set_clip (group, 0, 0, screen_width, screen_height);
 
@@ -491,9 +478,7 @@ static void
 fill_strip (MutterPlugin *plugin,
             NbtkTable    *strip,
             gint          screen_width,
-            gint          screen_height,
-            gdouble      *target_scale_x,
-            gdouble      *target_scale_y)
+            gint          screen_height)
 {
   GList        *l;
   gint          cell_width, cell_height;
@@ -504,18 +489,6 @@ fill_strip (MutterPlugin *plugin,
   guint         w, h;
 
   n_workspaces = meta_screen_get_n_workspaces (screen);
-
-  /*
-   * Calculate the target scale factor so that when the whole strip is zoomed
-   * out, all the workspaces will be visible.
-   */
-  cell_width = (screen_width -
-                n_workspaces * 2 * MNBZE_PAD) / n_workspaces;
-
-  cell_height = screen_height * cell_width / screen_width;
-
-  *target_scale_x = (gdouble) (cell_width)/ (gdouble)screen_width;
-  *target_scale_y = (gdouble) (cell_height) /(gdouble)screen_height;
 
   l = mutter_plugin_get_windows (plugin);
 
@@ -554,7 +527,7 @@ fill_strip (MutterPlugin *plugin,
       g_object_weak_ref (G_OBJECT (mw), origin_weak_notify, clone);
       g_object_weak_ref (G_OBJECT (clone), clone_weak_notify, mw);
 
-      workspace = make_nth_workspace (&workspaces, ws_indx,
+      workspace = make_nth_workspace (plugin, &workspaces, ws_indx,
                                       screen_width, screen_height);
       g_assert (workspace);
 
@@ -582,48 +555,3 @@ fill_strip (MutterPlugin *plugin,
 
 }
 
-/*
- * The desktop paint function for parallax effect.
- */
-static void
-on_desktop_paint (ClutterActor *actor, gpointer data)
-{
-  MoblinNetbookPlugin *plugin = data;
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
-  CoglHandle         cogl_texture;
-  float              t_w, t_h;
-  guint              tex_width, tex_height;
-  guint              w, h;
-
-  clutter_actor_get_size (priv->parallax_tex, &w, &h);
-
-  cogl_translate (priv->parallax_paint_offset - (gint)w/4, 0 , 0);
-
-  cogl_texture
-       = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(priv->parallax_tex));
-
-  if (cogl_texture == COGL_INVALID_HANDLE)
-    return;
-
-  col.alpha = clutter_actor_get_paint_opacity (actor);
-  cogl_set_source_color4ub (col.red,
-                            col.green,
-                            col.blue,
-                            col.alpha);
-
-  tex_width = cogl_texture_get_width (cogl_texture);
-  tex_height = cogl_texture_get_height (cogl_texture);
-
-  t_w = (float) w / tex_width;
-  t_h = (float) h / tex_height;
-
-  /* Parent paint translated us into position */
-  cogl_set_source_texture (cogl_texture);
-  cogl_rectangle_with_texture_coords (0, 0,
-                                      w, h,
-                                      0, 0,
-                                      t_w, t_h);
-
-  g_signal_stop_emission_by_name (actor, "paint");
-}

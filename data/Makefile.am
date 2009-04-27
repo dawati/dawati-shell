@@ -41,13 +41,13 @@ dist_theme_generic_DATA = \
 	theme/generic/button.png	\
 	theme/generic/button_active.png	\
 	theme/generic/button_hover.png	\
-	theme/generic/expander-header.png \
-	theme/generic/expander-header-expanded.png \
-	theme/generic/expander-header-hover.png \
-	theme/generic/expander-icon-checked.png \
-	theme/generic/expander-icon-hover.png \
-	theme/generic/expander-icon.png \
-	theme/generic/expander-body.png \
+	theme/generic/expander-arrow-down-hover.png \
+	theme/generic/expander-arrow-down.png \
+	theme/generic/expander-arrow-up-hover.png \
+	theme/generic/expander-arrow-up.png \
+	theme/generic/expander-closed.png \
+	theme/generic/expander-hover.png \
+	theme/generic/expander-open.png \
 	theme/generic/tooltip-arrow.png \
 	theme/generic/tooltip-background.png \
 	theme/generic/vscroll-backward-hover.png \
@@ -171,3 +171,7 @@ dist_theme_pasteboard_DATA = \
 	theme/pasteboard/pasteboard-item-hover.png \
 	theme/pasteboard/pasteboard-items-list-bg.png \
 	theme/pasteboard/pasteboard-search-bg.png
+
+theme_effectsdir = $(pkgdatadir)/theme/effects
+dist_theme_effects_DATA = \
+	theme/effects/zone-switch-background.png

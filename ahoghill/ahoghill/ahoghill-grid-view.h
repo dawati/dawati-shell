@@ -44,6 +44,9 @@ struct _AhoghillGridViewClass
 };
 
 GType ahoghill_grid_view_get_type (void) G_GNUC_CONST;
+void ahoghill_grid_view_clear (AhoghillGridView *view);
+void ahoghill_grid_view_focus (AhoghillGridView *view);
+void ahoghill_grid_view_unfocus (AhoghillGridView *view);
 
 G_END_DECLS
 

@@ -532,6 +532,24 @@ _mzone_activated_cb (PengeGridView *view, gpointer userdata)
   hide_panel ((MutterPlugin *)plugin);
 }
 
+#ifdef USE_AHOGHILL
+/* FIXME: Focus should really be done by the panel */
+static void
+_media_drop_down_hidden (MnbDropDown      *drop_down,
+                         AhoghillGridView *view)
+{
+  ahoghill_grid_view_clear (view);
+  ahoghill_grid_view_unfocus (view);
+}
+
+static void
+_media_drop_down_shown (MnbDropDown      *drop_down,
+                        AhoghillGridView *view)
+{
+  ahoghill_grid_view_focus (view);
+}
+#endif
+
 #ifdef WITH_NETPANEL
 static void
 _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
@@ -794,6 +812,13 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_MEDIA]));
   clutter_actor_set_position (priv->media_drop_down, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->media_drop_down);
+
+  g_signal_connect (priv->media_drop_down, "hide-completed",
+                    G_CALLBACK (_media_drop_down_hidden),
+                    ahoghill_grid_view);
+  g_signal_connect (priv->media_drop_down, "show-completed",
+                    G_CALLBACK (_media_drop_down_shown),
+                    ahoghill_grid_view);
 #endif
 
 #ifdef WITH_NETPANEL

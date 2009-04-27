@@ -1,5 +1,5 @@
 #noinst_PROGRAMS = test-tiles test-recent-file-tiles test-date-tiles
-noinst_PROGRAMS = test-grid-view test-app-bookmarks
+noinst_PROGRAMS = test-grid-view test-app-bookmarks test-time-formatting
 AM_CFLAGS = $(PENGE_CFLAGS) -I$(top_srcdir)/penge
 AM_LDFLAGS = $(PENGE_LIBS) ../penge/libpenge.la
 
@@ -14,3 +14,6 @@ test_grid_view_DEPENDENCIES = ../penge/libpenge.la
 
 test_grid_app_bookmarks_SOURCES = test-grid-app_bookmarks.c
 test_grid_app_bookmarks_DEPENDENCIES = ../penge/libpenge.la
+
+test_time_formatting_bookmarks_SOURCES = test-time-formatting.c
+test_time_formatting_bookmarks_DEPENDENCIES = ../penge/libpenge.la

@@ -1,7 +1,7 @@
 m4_define([mutter_version], [2.25.55~0.4])
 m4_define([plugin_major_version], [0])
-m4_define([plugin_minor_version], [16])
-m4_define([plugin_micro_version], [0])
+m4_define([plugin_minor_version], [17])
+m4_define([plugin_micro_version], [4])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
 
@@ -47,15 +47,16 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   metacity-plugins >= mutter_version dnl
-                  nbtk-1.0 >= 0.2.2                  dnl
+                  nbtk-1.0 >= 0.3.0                  dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
                   libgnome-menu                      dnl
                   dbus-glib-1                        dnl
-                  mojito-client)
+                  mojito-client                      dnl
+                  gio-unix-2.0)
 
 PKG_CHECK_MODULES(PENGE, libjana-ecal mojito-client gtk+-2.0 nbtk-1.0 gconf-2.0
-                  gio-2.0)
+                  gio-2.0 gio-unix-2.0)
 
 AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
 

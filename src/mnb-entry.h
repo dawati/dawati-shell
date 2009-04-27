@@ -30,6 +30,7 @@ struct _MnbEntryClass
   /* Signals. */
   void (* button_clicked) (MnbEntry *self);
   void (* text_changed)   (MnbEntry *self);
+  void (* keynav_event)   (MnbEntry *self);
 };
 
 GType mnb_entry_get_type (void) G_GNUC_CONST;

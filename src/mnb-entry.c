@@ -32,6 +32,7 @@ enum
 {
   BUTTON_CLICKED,
   TEXT_CHANGED,
+  KEYNAV_EVENT,
 
   LAST_SIGNAL
 };
@@ -67,6 +68,36 @@ text_changed_cb (ClutterText  *actor,
     clutter_actor_hide (entry->priv->clear_button);  
 
   g_signal_emit (entry, _signals[TEXT_CHANGED], 0);
+}
+
+static gboolean
+text_key_press_cb (ClutterActor     *actor,
+                   ClutterKeyEvent  *event,
+                   MnbEntry         *entry)
+{
+  MnbEntryPrivate *priv = entry->priv;
+  ClutterText     *text;
+  gint             pos;
+
+  text = CLUTTER_TEXT (nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry)));
+  pos = clutter_text_get_cursor_position (text);
+
+  switch (event->keyval)
+    {
+      case CLUTTER_Return:
+      case CLUTTER_Left:
+      case CLUTTER_Up:
+      case CLUTTER_Right:
+      case CLUTTER_Down:
+        /* Only emit if caret at end of text. */
+        if (pos == -1)
+          {
+            g_signal_emit (entry, _signals[KEYNAV_EVENT], 0, event->keyval);
+            return TRUE;         
+          }
+    }
+
+  return FALSE;
 }
 
 static void
@@ -351,6 +382,15 @@ mnb_entry_class_init (MnbEntryClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  _signals[KEYNAV_EVENT] =
+    g_signal_new ("keynav-event",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbEntryClass, keynav_event),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__UINT,
+                  G_TYPE_NONE, 1, G_TYPE_UINT);
 }
 
 static void
@@ -401,15 +441,16 @@ mnb_entry_init (MnbEntry *self)
   g_signal_connect (text, "text-changed",
                     G_CALLBACK (text_changed_cb),
                     self);
+  g_signal_connect (text, "key-press-event",
+                    G_CALLBACK (text_key_press_cb),
+                    self);
 
   priv->table = CLUTTER_ACTOR (nbtk_table_new ());
   clutter_actor_set_parent (priv->table, CLUTTER_ACTOR (self));
 
   priv->clear_button = CLUTTER_ACTOR (nbtk_button_new ());
   clutter_actor_hide (priv->clear_button);
-  nbtk_table_add_widget (NBTK_TABLE (priv->table),
-                         NBTK_WIDGET (priv->clear_button),
-                         0, 0);
+  nbtk_table_add_actor (NBTK_TABLE (priv->table), priv->clear_button, 0, 0);
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->clear_button),
                                     "MnbEntryClearButton");
   set_clear_button_size (priv->clear_button);
@@ -418,9 +459,7 @@ mnb_entry_init (MnbEntry *self)
                     self);
 
   priv->search_button = CLUTTER_ACTOR (nbtk_button_new ());
-  nbtk_table_add_widget (NBTK_TABLE (priv->table),
-                         NBTK_WIDGET (priv->search_button),
-                         0, 1);
+  nbtk_table_add_actor (NBTK_TABLE (priv->table), priv->search_button, 0, 1);
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->search_button),
                                     "MnbEntryButton");
   g_signal_connect (priv->search_button, "clicked",

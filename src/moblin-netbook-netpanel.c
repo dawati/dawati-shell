@@ -373,7 +373,8 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   clutter_actor_set_name (CLUTTER_ACTOR (table), "netpanel-entrytable");
 
   nbtk_table_add_widget_full (NBTK_TABLE (self), table, 0, 0, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);
+                              NBTK_X_EXPAND | NBTK_X_FILL |
+                              NBTK_Y_EXPAND | NBTK_Y_FILL, 0.5, 0.5);
 
   /* Construct entry table widgets */
 
@@ -382,7 +383,8 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   nbtk_table_add_widget_full (NBTK_TABLE (table), label, 0, 0, 1, 1,
                               0, 0.0, 0.5);
   nbtk_table_add_widget_full (NBTK_TABLE (table), priv->radical_bar, 0, 1, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL, 0.5, 0.5);
+                              NBTK_X_EXPAND | NBTK_X_FILL |
+                              NBTK_Y_EXPAND | NBTK_Y_FILL, 0.5, 0.5);
   g_signal_connect (priv->radical_bar, "go",
                     G_CALLBACK (radical_bar_go_cb), self);
 

@@ -40,6 +40,7 @@
 
 enum
 {
+  HOVERED,
   ACTIVATED,
   FAV_TOGGLED,
 
@@ -63,6 +64,7 @@ struct _MnbLauncherButtonPrivate
   guint is_pressed  : 1;
 
   /* Cached for matching. */
+  char          *category_key;
   char          *title_key;
   char          *description_key;
   char          *comment_key;
@@ -131,6 +133,7 @@ finalize (GObject *object)
   g_free (self->priv->desktop_file_path);
   g_free (self->priv->icon_file);
 
+  g_free (self->priv->category_key);
   g_free (self->priv->title_key);
   g_free (self->priv->description_key);
   g_free (self->priv->comment_key);
@@ -167,7 +170,7 @@ mnb_launcher_button_button_release_event (ClutterActor       *actor,
 
       clutter_ungrab_pointer ();
       self->priv->is_pressed = FALSE;
-      g_signal_emit (self, _signals[ACTIVATED], 0, event);
+      g_signal_emit (self, _signals[ACTIVATED], 0);
 
       return TRUE;
     }
@@ -181,8 +184,9 @@ mnb_launcher_button_enter_event (ClutterActor         *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
+  g_signal_emit (self, _signals[HOVERED], 0);
+
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), "hover");
-  clutter_actor_show (self->priv->fav_toggle);
 
   return FALSE;
 }
@@ -193,7 +197,6 @@ mnb_launcher_button_leave_event (ClutterActor         *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
-  clutter_actor_hide (self->priv->fav_toggle);
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
 
   if (self->priv->is_pressed)
@@ -282,13 +285,21 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
   actor_class->allocate = mnb_launcher_button_allocate;
   actor_class->pick = mnb_launcher_button_pick;
 
+  _signals[HOVERED] = g_signal_new ("hovered",
+                                    G_TYPE_FROM_CLASS (klass),
+                                    G_SIGNAL_RUN_LAST,
+                                    G_STRUCT_OFFSET (MnbLauncherButtonClass, hovered),
+                                    NULL, NULL,
+                                    g_cclosure_marshal_VOID__VOID,
+                                    G_TYPE_NONE, 0);
+
   _signals[ACTIVATED] = g_signal_new ("activated",
                                     G_TYPE_FROM_CLASS (klass),
                                     G_SIGNAL_RUN_LAST,
                                     G_STRUCT_OFFSET (MnbLauncherButtonClass, activated),
                                     NULL, NULL,
-                                    g_cclosure_marshal_VOID__POINTER,
-                                    G_TYPE_NONE, 1, G_TYPE_POINTER);
+                                    g_cclosure_marshal_VOID__VOID,
+                                    G_TYPE_NONE, 0);
 
   _signals[FAV_TOGGLED] = g_signal_new ("fav-toggled",
                                     G_TYPE_FROM_CLASS (klass),
@@ -316,11 +327,12 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->title), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->title),
                           "mnb-launcher-button-title");
-  nbtk_table_add_widget_full (NBTK_TABLE (self),
-                              NBTK_WIDGET (self->priv->title),
-                              0, 1, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (self->priv->title),
+                                        0, 1,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        NULL);
 
   label = nbtk_label_get_clutter_text (self->priv->title);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
@@ -331,11 +343,12 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->description), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->description),
                           "mnb-launcher-button-description");
-  nbtk_table_add_widget_full (NBTK_TABLE (self),
-                              NBTK_WIDGET (self->priv->description),
-                              1, 1, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (self->priv->description),
+                                        1, 1,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        NULL);
 
   label = nbtk_label_get_clutter_text (self->priv->description);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
@@ -346,11 +359,12 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->comment), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->comment),
                           "mnb-launcher-button-comment");
-  nbtk_table_add_widget_full (NBTK_TABLE (self),
-                              NBTK_WIDGET (self->priv->comment),
-                              2, 1, 1, 1,
-                              NBTK_X_EXPAND | NBTK_X_FILL,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (self->priv->comment),
+                                        2, 1,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        NULL);
 
   label = nbtk_label_get_clutter_text (self->priv->comment);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
@@ -359,15 +373,15 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   /* "fav app" toggle */
   self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (nbtk_button_new ()));
   nbtk_button_set_toggle_mode (NBTK_BUTTON (self->priv->fav_toggle), TRUE);
-  clutter_actor_hide (self->priv->fav_toggle);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->fav_toggle),
                           "mnb-launcher-button-fav-toggle");
   clutter_actor_set_size (self->priv->fav_toggle, FAV_TOGGLE_SIZE, FAV_TOGGLE_SIZE);
-  nbtk_table_add_widget_full (NBTK_TABLE (self),
-                              NBTK_WIDGET (self->priv->fav_toggle),
-                              0, 2, 3, 1,
-                              0,
-                              0., 0.);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (self->priv->fav_toggle),
+                                        0, 2,
+                                        "row-span", 3,
+                                        NULL);
+
   g_signal_connect (self->priv->fav_toggle, "clicked",
                     G_CALLBACK (fav_button_clicked_cb), self);
 }
@@ -407,11 +421,11 @@ mnb_launcher_button_new (const gchar *icon_file,
                               self->priv->icon_size);
       g_object_set (G_OBJECT (self->priv->icon), "sync-size", TRUE, NULL);
     }
-    nbtk_table_add_actor_full (NBTK_TABLE (self),
-                               self->priv->icon,
-                               0, 0, 3, 1,
-                               0,
-                               0., 0.5);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          CLUTTER_ACTOR (self->priv->icon),
+                                          0, 0,
+                                          "row-span", 3,
+                                          NULL);
   }
 
   if (title)
@@ -541,15 +555,6 @@ mnb_launcher_button_set_favorite (MnbLauncherButton *self,
   nbtk_button_set_checked (NBTK_BUTTON (self->priv->fav_toggle), is_favorite);
 }
 
-void
-mnb_launcher_button_reset (MnbLauncherButton *self)
-{
-  g_return_if_fail (self);
-
-  clutter_actor_hide (self->priv->fav_toggle);
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
-}
-
 gint
 mnb_launcher_button_compare (MnbLauncherButton *self,
                              MnbLauncherButton *other)
@@ -570,6 +575,16 @@ mnb_launcher_button_match (MnbLauncherButton *self,
   /* Empty key matches. */
   if (g_utf8_strlen (lcase_needle, -1) == 0)
     return TRUE;
+
+  /* Category */
+  if (!self->priv->category_key)
+    self->priv->category_key = g_utf8_strdown (self->priv->category, -1);
+
+  if (self->priv->category_key &&
+      NULL != strstr (self->priv->category_key, lcase_needle))
+    {
+      return TRUE;
+    }
 
   /* Title. */
   if (!self->priv->title_key)
