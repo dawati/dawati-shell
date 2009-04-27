@@ -668,5 +668,5 @@ mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
 
-  return shell_tray_manger_is_config_window (priv->tray_manager, xwin);
+  return shell_tray_manager_is_config_window (priv->tray_manager, xwin);
 }
