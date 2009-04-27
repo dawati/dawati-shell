@@ -235,13 +235,16 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
       }
     else
       {
-        if (checked && !CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+        if (priv->panels[i])
           {
-            clutter_actor_show (CLUTTER_ACTOR (priv->panels[i]));
-          }
-        else if (!checked && CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
-          {
-            clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
+            if (checked && !CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+              {
+                clutter_actor_show (CLUTTER_ACTOR (priv->panels[i]));
+              }
+            else if (!checked && CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+              {
+                clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
+              }
           }
       }
 }
