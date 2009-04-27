@@ -57,6 +57,9 @@ anerley_tp_item_set_property (GObject *object, guint property_id,
 static void
 anerley_tp_item_dispose (GObject *object)
 {
+  AnerleyTpItem *item = (AnerleyTpItem *)object;
+
+  anerley_tp_item_update_contact (item, NULL);
   G_OBJECT_CLASS (anerley_tp_item_parent_class)->dispose (object);
 }
 
