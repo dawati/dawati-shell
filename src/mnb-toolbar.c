@@ -23,7 +23,7 @@ G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR, MnbToolbarPrivate))
 
 enum {
-    M_ZONE,
+    M_ZONE = 0,
     STATUS_ZONE,
     SPACES_ZONE,
     INTERNET_ZONE,
@@ -31,6 +31,8 @@ enum {
     APPS_ZONE,
     PEOPLE_ZONE,
     PASTEBOARD_ZONE,
+
+    /* LAST */
     NUM_ZONES
 };
 
@@ -49,7 +51,9 @@ struct _MnbToolbarPrivate {
   NbtkWidget *date;
 
   NbtkWidget *buttons[NUM_ZONES];
-  NbtkWidget *drop_downs[NUM_ZONES];
+  NbtkWidget *panels[NUM_ZONES];
+
+  guint       n_panels;
 
   MnbInputRegion input_region;
 };
@@ -215,17 +219,41 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
   return TRUE;
 }
 
-static NbtkWidget*
-mnb_toolbar_append_toolbar_button (MnbToolbar *toolbar,
-				   gchar      *name,
-				   gchar      *tooltip)
+static void
+mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 {
-  static int n_buttons = 0;
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (data)->priv;
+  gint               i;
+  gboolean           checked;
 
+  checked = nbtk_button_get_checked (button);
+
+  for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
+    if ((priv->buttons[i] != (NbtkWidget*)button))
+      {
+        nbtk_button_set_checked (NBTK_BUTTON (priv->buttons[i]), FALSE);
+      }
+    else
+      {
+        if (checked && !CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+          {
+            clutter_actor_show (CLUTTER_ACTOR (priv->panels[i]));
+          }
+        else if (!checked && CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+          {
+            clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
+          }
+      }
+}
+
+static NbtkWidget*
+mnb_toolbar_append_panel (MnbToolbar  *toolbar,
+                          const gchar *name,
+                          const gchar *tooltip)
+{
   MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
   NbtkWidget *button;
 
-  /* FIXME: rename to toolbar button */
   button = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
@@ -233,8 +261,8 @@ mnb_toolbar_append_toolbar_button (MnbToolbar *toolbar,
   clutter_actor_set_size (CLUTTER_ACTOR (button),
 			  BUTTON_WIDTH, BUTTON_HEIGHT);
   clutter_actor_set_position (CLUTTER_ACTOR (button),
-                              213 + (BUTTON_WIDTH * n_buttons)
-                              + (BUTTON_SPACING * n_buttons),
+                              213 + (BUTTON_WIDTH * priv->n_panels)
+                              + (BUTTON_SPACING * priv->n_panels),
                               TOOLBAR_HEIGHT - BUTTON_HEIGHT);
 
   mnb_panel_button_set_reactive_area (MNB_PANEL_BUTTON (button),
@@ -246,25 +274,11 @@ mnb_toolbar_append_toolbar_button (MnbToolbar *toolbar,
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (button));
 
-  /* FIXME - errors
-  g_object_set (G_OBJECT (button),
-                "transition-type", NBTK_TRANSITION_BOUNCE,
-                "transition-duration", 500, NULL);
-  */
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (mnb_toolbar_toggle_buttons),
+                    toolbar);
 
-  if (!strcmp(tooltip, "people"))
-    {
-      clutter_actor_set_opacity (CLUTTER_ACTOR (button), 0x60);
-      nbtk_button_set_tooltip (NBTK_BUTTON (button),
-                               "☠ NOT IMPLEMENTED ☠");
-    }
-  /*
-  else
-    g_signal_connect_data (button, "clicked", G_CALLBACK (toggle_buttons_cb),
-                           button_data, (GClosureNotify)g_free, 0);
-  */
-
-  n_buttons++;
+  priv->n_panels++;
 
   return NBTK_WIDGET (button);
 }
