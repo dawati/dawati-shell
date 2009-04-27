@@ -6,6 +6,8 @@
 #include <glib-object.h>
 #include <nbtk/nbtk.h>
 
+#include "moblin-netbook-tray-manager.h"
+
 G_BEGIN_DECLS
 
 #define MNB_TYPE_TOOLBAR mnb_toolbar_get_type()
@@ -40,6 +42,8 @@ typedef struct {
 GType mnb_toolbar_get_type (void);
 
 NbtkWidget* mnb_toolbar_new (MutterPlugin *plugin);
+
+ShellTrayManager *mnb_toolbar_get_tray_manager (MnbToolbar *toolbar);
 
 G_END_DECLS
 

@@ -54,6 +54,8 @@ struct _MnbToolbarPrivate {
   NbtkWidget *buttons[NUM_ZONES];
   NbtkWidget *panels[NUM_ZONES];
 
+  ShellTrayManager      *tray_manager;
+
   MnbInputRegion input_region;
 };
 
@@ -366,12 +368,61 @@ mnb_toolbar_init (MnbToolbar *self)
 }
 
 static void
+shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
+                                  ClutterActor     *icon,
+                                  MutterPlugin     *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  const gchar                *name;
+  gint                        col = -1;
+  gint                        screen_width, screen_height;
+  gint                        x, y;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  name = clutter_actor_get_name (icon);
+
+  if (!name || !*name)
+    return;
+
+  if (!strcmp (name, "tray-button-bluetooth"))
+    col = 3;
+  else if (!strcmp (name, "tray-button-wifi"))
+    col = 2;
+  else if (!strcmp (name, "tray-button-sound"))
+    col = 1;
+  else if (!strcmp (name, "tray-button-battery"))
+    col = 0;
+  else if (!strcmp (name, "tray-button-test"))
+    col = 4;
+
+  if (col < 0)
+    return;
+
+  y = PANEL_HEIGHT - TRAY_BUTTON_HEIGHT;
+  x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
+
+  clutter_actor_set_position (icon, x, y);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), icon);
+}
+
+static void
+shell_tray_manager_icon_removed_cb (ShellTrayManager *mgr,
+                                    ClutterActor     *icon,
+                                    MutterPlugin     *plugin)
+{
+  clutter_actor_destroy (icon);
+}
+
+static void
 mnb_toolbar_constructed (GObject *self)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (self)->priv;
-  ClutterActor *actor = CLUTTER_ACTOR (self);
-  ClutterActor *hbox;
-  guint         screen_width, screen_height;
+  MutterPlugin      *plugin = priv->plugin;
+  ClutterActor      *actor = CLUTTER_ACTOR (self);
+  ClutterActor      *hbox;
+  guint              screen_width, screen_height;
+  ClutterColor       clr = {0x0, 0x0, 0x0, 0xce};
 
   hbox = priv->hbox = clutter_group_new ();
 
@@ -379,8 +430,7 @@ mnb_toolbar_constructed (GObject *self)
                 "show-on-set-parent", FALSE,
                 NULL);
 
-  mutter_plugin_query_screen_size (priv->plugin,
-                                   &screen_width, &screen_height);
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
 
@@ -410,6 +460,24 @@ mnb_toolbar_constructed (GObject *self)
   nbtk_bin_set_child (NBTK_BIN (self), hbox);
 
   g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);
+
+  /*
+   * Tray area
+   */
+  priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
+                                     "bg-color", &clr,
+                                     "mutter-plugin", plugin,
+                                     NULL);
+
+  g_signal_connect (priv->tray_manager, "tray-icon-added",
+                    G_CALLBACK (shell_tray_manager_icon_added_cb), plugin);
+
+  g_signal_connect (priv->tray_manager, "tray-icon-removed",
+                    G_CALLBACK (shell_tray_manager_icon_removed_cb), plugin);
+
+  shell_tray_manager_manage_stage (priv->tray_manager,
+                                   CLUTTER_STAGE (
+                                           mutter_plugin_get_stage (plugin)));
 }
 
 NbtkWidget*
@@ -437,4 +505,12 @@ gboolean
 mnb_toolbar_in_transition (MnbToolbar *toolbar)
 {
 
+}
+
+ShellTrayManager *
+mnb_toolbar_get_tray_manager (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  return priv->tray_manager;
 }

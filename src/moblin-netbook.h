@@ -31,7 +31,6 @@
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
 
-#include "moblin-netbook-tray-manager.h"
 #include "moblin-netbook-notify-store.h"
 #include "mnb-notification-cluster.h"
 #include "mnb-notification-urgent.h"
@@ -92,8 +91,6 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *lowlight;
 
   GList                 *global_tab_list;
-
-  ShellTrayManager      *tray_manager;
 
   XserverRegion          current_input_region;
 

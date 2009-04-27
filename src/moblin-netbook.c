@@ -1267,21 +1267,28 @@ struct config_hide_data
   Window               config_xwin;
 };
 
+/*
+ * TODO -- extract the entire dropdown creation for the tray panels out of here
+ * into MnbToolbar.
+ */
 static void
 on_config_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
 {
   struct config_hide_data *hide_data = data;
+  MnbToolbar *toolbar = MNB_TOOLBAR (hide_data->plugin->priv->panel);
+  ShellTrayManager *tmgr = mnb_toolbar_get_tray_manager (toolbar);
 
-  shell_tray_manager_close_config_window (hide_data->plugin->priv->tray_manager,
-                                          hide_data->config_xwin);
+  shell_tray_manager_close_config_window (tmgr, hide_data->config_xwin);
 }
 
 static void
 on_config_actor_hide_begin_cb (ClutterActor *actor, gpointer data)
 {
   struct config_hide_data *hide_data = data;
+  MnbToolbar *toolbar = MNB_TOOLBAR (hide_data->plugin->priv->panel);
+  ShellTrayManager *tmgr = mnb_toolbar_get_tray_manager (toolbar);
 
-  shell_tray_manager_hide_config_window (hide_data->plugin->priv->tray_manager,
+  shell_tray_manager_hide_config_window (tmgr,
                                          hide_data->config_xwin);
 }
 
