@@ -43,7 +43,8 @@ GType mnb_toolbar_get_type (void);
 
 NbtkWidget* mnb_toolbar_new (MutterPlugin *plugin);
 
-ShellTrayManager *mnb_toolbar_get_tray_manager (MnbToolbar *toolbar);
+gboolean
+mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin);
 
 G_END_DECLS
 

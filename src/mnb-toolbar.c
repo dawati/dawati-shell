@@ -507,10 +507,166 @@ mnb_toolbar_in_transition (MnbToolbar *toolbar)
 
 }
 
-ShellTrayManager *
-mnb_toolbar_get_tray_manager (MnbToolbar *toolbar)
+static void
+tray_actor_destroy_cb (ClutterActor *actor, gpointer data)
+{
+  ClutterActor *background = data;
+  ClutterActor *parent = clutter_actor_get_parent (background);
+
+  if (CLUTTER_IS_CONTAINER (parent))
+    clutter_container_remove_actor (CLUTTER_CONTAINER (parent), background);
+  else
+    clutter_actor_unparent (background);
+}
+
+struct config_map_data
+{
+  MnbToolbar   *toolbar;
+  MutterWindow *mcw;
+};
+
+static void
+tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
+{
+  struct config_map_data *map_data = data;
+  MutterPlugin           *plugin   = map_data->toolbar->priv->plugin;
+  MutterWindow           *mcw      = map_data->mcw;
+
+  g_free (map_data);
+
+  /* Notify the manager that we are done with this effect */
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+}
+
+struct config_hide_data
+{
+  MnbToolbar *toolbar;
+  Window      config_xwin;
+};
+
+/*
+ * TODO -- extract the entire dropdown creation for the tray panels out of here
+ * into MnbToolbar.
+ */
+static void
+tray_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
+{
+  struct config_hide_data *hide_data = data;
+  MnbToolbar              *toolbar = hide_data->toolbar;
+  ShellTrayManager        *tmgr = toolbar->priv->tray_manager;
+
+  shell_tray_manager_close_config_window (tmgr, hide_data->config_xwin);
+}
+
+static void
+tray_actor_hide_begin_cb (ClutterActor *actor, gpointer data)
+{
+  struct config_hide_data *hide_data = data;
+  MnbToolbar              *toolbar = hide_data->toolbar;
+  ShellTrayManager        *tmgr = toolbar->priv->tray_manager;
+
+  shell_tray_manager_hide_config_window (tmgr,
+                                         hide_data->config_xwin);
+}
+
+void
+mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
+{
+  /*
+   * Insert the actor into a custom frame, and then animate it to
+   * position.
+   *
+   * Because of the way Mutter stacking we are unable to insert an actor
+   * into the MutterWindow stack at an arbitrary position; instead
+   * any actor we insert will end up on the very top. Additionally,
+   * we do not want to reparent the MutterWindow, as that would
+   * wreak havoc with the stacking.
+   *
+   * Consequently we have two options:
+   *
+   * (a) The center of our frame is transparent, and we overlay it over
+   * the MutterWindow.
+   *
+   * (b) We reparent the actual glx texture inside Mutter window to
+   * our frame, and destroy it manually when we close the window.
+   *
+   * We do (b).
+   */
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  struct config_map_data  *map_data;
+  struct config_hide_data *hide_data;
+
+  ClutterActor *actor = CLUTTER_ACTOR (mcw);
+  ClutterActor *background;
+  ClutterActor *parent;
+  ClutterActor *texture = mutter_window_get_texture (mcw);
+
+  Window xwin = mutter_window_get_x_window (mcw);
+
+  gint  x = clutter_actor_get_x (actor);
+  gint  y = clutter_actor_get_y (actor);
+
+  background = CLUTTER_ACTOR (mnb_drop_down_new ());
+
+  g_object_ref (texture);
+  clutter_actor_unparent (texture);
+  mnb_drop_down_set_child (MNB_DROP_DOWN (background), texture);
+  g_object_unref (texture);
+
+  g_signal_connect (actor, "destroy",
+                    G_CALLBACK (tray_actor_destroy_cb), background);
+
+  map_data          = g_new (struct config_map_data, 1);
+  map_data->toolbar = toolbar;
+  map_data->mcw     = mcw;
+
+  g_signal_connect (background, "show-completed",
+                    G_CALLBACK (tray_actor_show_completed_cb),
+                    map_data);
+
+  hide_data              = g_new (struct config_hide_data, 1);
+  hide_data->toolbar     = toolbar;
+  hide_data->config_xwin = xwin;
+
+  g_signal_connect (background, "hide-begin",
+                    G_CALLBACK (tray_actor_hide_begin_cb),
+                    hide_data);
+
+  g_signal_connect_data (background, "hide-completed",
+                         G_CALLBACK (tray_actor_hide_completed_cb),
+                         hide_data,
+                         (GClosureNotify)g_free, 0);
+
+  clutter_actor_set_position (background, x, y);
+
+  g_object_set (actor, "no-shadow", TRUE, NULL);
+
+  clutter_actor_hide (actor);
+
+  parent = mutter_plugin_get_overlay_group (priv->plugin);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (toolbar), background);
+
+#if 0
+  /* TODO */
+  /*
+   * Hide all other dropdowns.
+   */
+  show_panel_and_control (plugin, MNBK_CONTROL_UNKNOWN);
+#endif
+
+  /*
+   * Hide all config windows.
+   */
+  shell_tray_manager_close_all_other_config_windows (priv->tray_manager, xwin);
+  clutter_actor_show_all (background);
+}
+
+gboolean
+mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
 
-  return priv->tray_manager;
+  return shell_tray_manger_is_config_window (priv->tray_manager, xwin);
 }
