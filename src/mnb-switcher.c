@@ -21,7 +21,8 @@
 
 #include "mnb-switcher.h"
 #include "moblin-netbook.h"
-#include "moblin-netbook-panel.h"
+#include "mnb-toolbar.h"
+
 #include <display.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -1094,6 +1095,7 @@ mnb_switcher_show (ClutterActor *self)
   ClutterActor *top_most_clone = NULL;
   MutterWindow *top_most_mw = NULL;
   gboolean      found_focus = FALSE;
+  ClutterActor *toolbar;
 
   struct win_location
   {
@@ -1101,6 +1103,26 @@ mnb_switcher_show (ClutterActor *self)
     gint  col;
     guint height;
   } *win_locs;
+
+  /*
+   * Check the panel is visible, if not get the parent class to take care of
+   * it.
+   */
+  toolbar = clutter_actor_get_parent (self);
+  while (toolbar && !MNB_IS_TOOLBAR (toolbar))
+    toolbar = clutter_actor_get_parent (toolbar);
+
+  if (!toolbar)
+    {
+      g_warning ("Cannot show switcher that is not inside the Toolbar.");
+      return;
+    }
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+    {
+      CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
+      return;
+    }
 
   priv->constructing = TRUE;
 
