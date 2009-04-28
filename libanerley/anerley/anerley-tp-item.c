@@ -135,6 +135,20 @@ anerley_tp_item_get_presence_message (AnerleyItem *item)
 }
 
 static void
+anerley_tp_item_activate (AnerleyItem *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+
+  mission_control_request_channel (priv->mc,
+                                   priv->account,
+                                   TP_IFACE_CHANNEL_TYPE_TEXT,
+                                   tp_contact_get_handle (priv->contact),
+                                   TP_HANDLE_TYPE_CONTACT,
+                                   NULL,
+                                   NULL);
+}
+
+static void
 anerley_tp_item_class_init (AnerleyTpItemClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -152,6 +166,7 @@ anerley_tp_item_class_init (AnerleyTpItemClass *klass)
   item_class->get_avatar_path = anerley_tp_item_get_avatar_path;
   item_class->get_presence_status = anerley_tp_item_get_presence_status;
   item_class->get_presence_message = anerley_tp_item_get_presence_message;
+  item_class->activate = anerley_tp_item_activate;
 
   pspec = g_param_spec_object ("mc",
                                "Mission control",
