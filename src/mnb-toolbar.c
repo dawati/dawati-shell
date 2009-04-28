@@ -58,7 +58,7 @@ enum {
     BT_APPLET,
     VOLUME_APPLET,
     BATTERY_APPLET,
-
+    TEST_APPLET,
     /* LAST */
     NUM_ZONES
 };
@@ -414,14 +414,16 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     index = PEOPLE_ZONE;
   else if (!strcmp (name, "pasteboard-zone"))
     index = PASTEBOARD_ZONE;
-  else if (!strcmp (name, "wifi-applet"))
+  else if (!strcmp (name, "tray-button-wifi"))
     index = WIFI_APPLET;
-  else if (!strcmp (name, "bt-applet"))
+  else if (!strcmp (name, "tray-button-bluetooth"))
     index = BT_APPLET;
-  else if (!strcmp (name, "volume-applet"))
+  else if (!strcmp (name, "tray-button-sound"))
     index = VOLUME_APPLET;
-  else if (!strcmp (name, "battery-applet"))
+  else if (!strcmp (name, "tray-button-battery"))
     index = BATTERY_APPLET;
+  else if (!strcmp (name, "tray-button-test"))
+    index = TEST_APPLET;
   else
     {
       g_warning ("Unknown panel [%s]");
@@ -486,19 +488,14 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     {
       gint zones   = APPLETS_START;
       gint applets = index - APPLETS_START;
+      gint x, y;
+
+      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
 
       clutter_actor_set_size (CLUTTER_ACTOR (button),
                               TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
-
-      /*
-       * FIME -- this should probably go into a table as in the old code.
-       */
-      clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                  213 + (BUTTON_WIDTH * zones)
-                                  + (BUTTON_SPACING * zones)
-                                  + (TRAY_BUTTON_WIDTH * applets)
-                                  + (BUTTON_SPACING * applets),
-                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+      clutter_actor_set_position (CLUTTER_ACTOR (button), x, y);
 
       mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
                                          0,
