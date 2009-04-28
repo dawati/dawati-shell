@@ -598,6 +598,14 @@ mnb_toolbar_init (MnbToolbar *self)
   priv = self->priv = MNB_TOOLBAR_GET_PRIVATE (self);
 }
 
+#if 1
+/*
+ * TODO -- the tray manager will only be used for the legacy System Tray icons;
+ *         this should be moved into a separate MnbSystemTray component (
+ *         MnbDropDown sublass), together with the tray manager object.
+ *
+ *         The regular applets will be added via mnb_toolbar_append_panel().
+ */
 static void
 shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
                                   ClutterActor     *icon,
@@ -644,6 +652,7 @@ shell_tray_manager_icon_removed_cb (ShellTrayManager *mgr,
 {
   clutter_actor_destroy (icon);
 }
+#endif
 
 static void
 mnb_toolbar_constructed (GObject *self)
