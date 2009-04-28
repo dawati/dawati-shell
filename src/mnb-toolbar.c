@@ -360,26 +360,26 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   guint       index;
   gboolean    internal = FALSE;
 
-  if (!strcmp (name, "m_zone"))
+  if (!strcmp (name, "m-zone"))
     index = M_ZONE;
-  else if (!strcmp (name, "status_zone"))
+  else if (!strcmp (name, "status-zone"))
     index = STATUS_ZONE;
-  else if (!strcmp (name, "spaces_zone"))
+  else if (!strcmp (name, "spaces-zone"))
     index = SPACES_ZONE;
-  else if (!strcmp (name, "spaces_zone_internal"))
+  else if (!strcmp (name, "spaces-zone-internal"))
     {
       index = SPACES_ZONE;
       internal = TRUE;
     }
-  else if (!strcmp (name, "internet_zone"))
+  else if (!strcmp (name, "internet-zone"))
     index = INTERNET_ZONE;
-  else if (!strcmp (name, "media_zone"))
+  else if (!strcmp (name, "media-zone"))
     index = MEDIA_ZONE;
-  else if (!strcmp (name, "applications_zone"))
+  else if (!strcmp (name, "applications-zone"))
     index = APPS_ZONE;
-  else if (!strcmp (name, "people_zone"))
+  else if (!strcmp (name, "people-zone"))
     index = PEOPLE_ZONE;
-  else if (!strcmp (name, "pasteboard_zone"))
+  else if (!strcmp (name, "pasteboard-zone"))
     index = PASTEBOARD_ZONE;
   else
     {
