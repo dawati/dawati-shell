@@ -461,6 +461,29 @@ mnb_toolbar_panel_name_to_index (const gchar *name)
   return index;
 }
 
+static const gchar *
+mnb_toolbar_panel_index_to_name (gint index)
+{
+  switch (index)
+    {
+    case M_ZONE: return "m-zone";
+    case STATUS_ZONE: return "status-zone";
+    case SPACES_ZONE: return "spaces-zone";
+    case INTERNET_ZONE: return "internet-zone";
+    case MEDIA_ZONE: return "media-zone";
+    case APPS_ZONE: return "applications-zone";
+    case PEOPLE_ZONE: return "people-zone";
+    case PASTEBOARD_ZONE: return "pasteboard-zone";
+    case WIFI_APPLET: return "tray-button-wifi";
+    case BT_APPLET: return "tray-button-bluetooth";
+    case VOLUME_APPLET: return "tray-button-volume";
+    case BATTERY_APPLET: return "tray-button-battery";
+    case TEST_APPLET: return "tray-button-test";
+
+    default: return NULL;
+    }
+}
+
 void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           const gchar *name,
@@ -859,7 +882,21 @@ mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
 const gchar *
 mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
 {
+  MnbToolbarPrivate *priv  = toolbar->priv;
+  gint               index = -1;
+  gint               i;
 
+  for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
+    if (priv->panels[i] && CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+      {
+        index = i;
+        break;
+      }
+
+  if (index < 0)
+    return;
+
+  return mnb_toolbar_panel_index_to_name (index);
 }
 
 /* Are we animating in or out */

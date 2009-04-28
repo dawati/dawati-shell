@@ -57,6 +57,7 @@ void mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                                Window       xid);
 
 void mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name);
+const gchar * mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar);
 
 NbtkWidget * mnb_toolbar_get_switcher (MnbToolbar *toolbar);
 
