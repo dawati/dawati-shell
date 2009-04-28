@@ -165,6 +165,7 @@ mnb_toolbar_show (ClutterActor *actor)
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   guint              width;
   guint              screen_width, screen_height;
+  gint               i;
   ClutterAnimation  *animation;
 
   if (priv->in_show_animation)
@@ -174,6 +175,14 @@ mnb_toolbar_show (ClutterActor *actor)
     }
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
+
+  /*
+   * Show all of the buttons -- see comments in _hide_completed_cb() on why we
+   * do this.
+   */
+  for (i = 0; i < NUM_ZONES; ++i)
+    if (priv->buttons[i])
+      clutter_actor_show (CLUTTER_ACTOR (priv->buttons[i]));
 
   /*
    * Call the parent show(); this must be done before we do anything else.
@@ -207,9 +216,21 @@ static void
 mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+  gint i;
 
   /* the hide animation has finished, so now really hide the actor */
   CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->hide (actor);
+
+  /*
+   * We need to explicitely hide all the individual buttons, otherwise the
+   * button tooltips will stay on screen.
+   */
+  for (i = 0; i < NUM_ZONES; ++i)
+    if (priv->buttons[i])
+      {
+        clutter_actor_hide (CLUTTER_ACTOR (priv->buttons[i]));
+        nbtk_button_set_checked (NBTK_BUTTON (priv->buttons[i]), FALSE);
+      }
 
   priv->in_hide_animation = FALSE;
   g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
@@ -434,7 +455,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
 
   if (!button_style)
     button_style = g_strdup_printf ("%s-button", name);
-  
+
   /*
    * If the respective slot is already occupied, remove the old objects.
    */
