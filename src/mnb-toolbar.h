@@ -48,8 +48,13 @@ GType mnb_toolbar_get_type (void);
 
 NbtkWidget* mnb_toolbar_new (MutterPlugin *plugin);
 
-gboolean
-mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin);
+gboolean mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin);
+
+void mnb_toolbar_append_panel (MnbToolbar  *toolbar,
+                               const gchar *name,
+                               const gchar *tooltip,
+                               const gchar *icon,
+                               Window       xid);
 
 G_END_DECLS
 

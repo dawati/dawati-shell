@@ -369,7 +369,7 @@ _mzone_activated_cb (PengeGridView *view, gpointer data)
 }
 #endif
 
-static void
+void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           const gchar *name,
                           const gchar *tooltip,
