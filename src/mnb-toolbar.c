@@ -188,7 +188,10 @@ mnb_toolbar_show (ClutterActor *actor)
    */
   for (i = 0; i < NUM_ZONES; ++i)
     if (priv->buttons[i])
-      clutter_actor_show (CLUTTER_ACTOR (priv->buttons[i]));
+      {
+        clutter_actor_show (CLUTTER_ACTOR (priv->buttons[i]));
+        clutter_actor_set_reactive (CLUTTER_ACTOR (priv->buttons[i]), FALSE);
+      }
 
   /*
    * Call the parent show(); this must be done before we do anything else.
