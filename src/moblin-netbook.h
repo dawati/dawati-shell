@@ -77,32 +77,14 @@ typedef struct MnbInputRegion * MnbInputRegion;
  */
 struct _MoblinNetbookPluginPrivate
 {
-  /* Valid only when switch_workspace effect is in progress */
-  ClutterTimeline       *tml_switch_workspace0;
-  ClutterTimeline       *tml_switch_workspace1;
-  GList                **actors;
-  ClutterActor          *desktop1;
-  ClutterActor          *desktop2;
-
-  ClutterActor          *d_overlay ; /* arrow indicator */
   ClutterActor          *toolbar;
   ClutterActor          *lowlight;
 
   XserverRegion          current_input_region;
-
   GList                 *input_region_stack;
-
   MnbInputRegion         toolbar_trigger_region;
 
-  MnbInputRegion         panel_input_region;
-
   MetaWindow            *last_focused;
-
-  gint                   screen_width;
-  gint                   screen_height;
-
-  gboolean               debug_mode                 : 1;
-  gboolean               blocking_input             : 1;
 
   gint                   fullscreen_apps;
 
@@ -112,16 +94,16 @@ struct _MoblinNetbookPluginPrivate
   NbtkWidget            *panel_time;
   NbtkWidget            *panel_date;
 
-  /* Startup Notification */
+  /*
+   * Startup Notification
+   *
+   * TODO -- make the chooser into an object and keep all of this in there.
+   */
   SnDisplay             *sn_display;
   SnMonitorContext      *sn_context;
   GHashTable            *sn_hash;
 
-  /* Application notification, ala libnotify */
-  MoblinNetbookNotifyStore *notify_store;
-
   /* Background parallax texture */
-  gint                   parallax_paint_offset;
   ClutterActor          *parallax_tex;
 
   MutterPluginInfo       info;

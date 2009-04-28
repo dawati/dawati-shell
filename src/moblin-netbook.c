@@ -49,7 +49,6 @@
 #define MAXIMIZE_TIMEOUT            250
 #define MAP_TIMEOUT                 350
 #define SWITCH_TIMEOUT              400
-#define PANEL_SLIDE_TIMEOUT         150
 #define PANEL_SLIDE_THRESHOLD       1
 #define PANEL_SLIDE_THRESHOLD_TIMEOUT 300
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
@@ -266,8 +265,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   guint maximize_timeout          = MAXIMIZE_TIMEOUT;
   guint map_timeout               = MAP_TIMEOUT;
   guint switch_timeout            = SWITCH_TIMEOUT;
-  guint panel_slide_timeout       = PANEL_SLIDE_TIMEOUT;
-  guint ws_switcher_slide_timeout = WS_SWITCHER_SLIDE_TIMEOUT;
 
   ClutterActor  *overlay;
   ClutterActor  *toolbar;
@@ -280,6 +277,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   GError        *err = NULL;
   MetaScreen    *screen;
   Window         root_xwin;
+  MoblinNetbookNotifyStore *notify_store;
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
@@ -297,15 +295,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
                                    &screen_width, &screen_height);
 
-  priv->screen_width  = screen_width;
-  priv->screen_height = screen_height;
-
   if (mutter_plugin_debug_mode (MUTTER_PLUGIN (plugin)))
     {
       g_debug ("%s: Entering debug mode.", priv->info.name);
-
-      priv->debug_mode = TRUE;
-
       /*
        * Double the effect duration to make them easier to observe.
        */
@@ -313,8 +305,6 @@ moblin_netbook_plugin_constructed (GObject *object)
       maximize_timeout          *= 2;
       map_timeout               *= 2;
       switch_timeout            *= 2;
-      panel_slide_timeout       *= 2;
-      ws_switcher_slide_timeout *= 2;
     }
 
   overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
@@ -390,14 +380,13 @@ moblin_netbook_plugin_constructed (GObject *object)
   moblin_netbook_sn_setup (MUTTER_PLUGIN (plugin));
 
   /* Notifications */
-
-  priv->notify_store = moblin_netbook_notify_store_new ();
+  notify_store = moblin_netbook_notify_store_new ();
 
   priv->notification_cluster = mnb_notification_cluster_new ();
 
   mnb_notification_cluster_set_store
                     (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster),
-                     priv->notify_store);
+                     notify_store);
 
   clutter_container_add (CLUTTER_CONTAINER (overlay),
                          priv->notification_cluster, NULL);
@@ -429,7 +418,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   mnb_notification_urgent_set_store
                         (MNB_NOTIFICATION_URGENT(priv->notification_urgent),
-                         priv->notify_store);
+                         notify_store);
 
   g_signal_connect (priv->notification_urgent,
                     "sync-input-region",
@@ -514,7 +503,7 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
 
   clutter_actor_get_size (priv->parallax_tex, &w, &h);
 
-  cogl_translate (priv->parallax_paint_offset - (gint)w/4, 0 , 0);
+  cogl_translate (-(gint)w/4, 0 , 0);
 
   cogl_texture
        = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(priv->parallax_tex));
@@ -1123,8 +1112,6 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
 
   if (focus)
     meta_display_set_input_focus_window (display, focus, FALSE, timestamp);
-
-  priv->blocking_input = FALSE;
 }
 
 void
@@ -1162,8 +1149,6 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
                   priv->focus_xwin,
                   RevertToPointerRoot,
                   timestamp);
-
-  priv->blocking_input = TRUE;
 }
 
 static gboolean
@@ -1267,6 +1252,9 @@ static void
 toolbar_trigger_region_set_height (MutterPlugin *plugin, gint height)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gint screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   if (priv->toolbar_trigger_region != NULL)
     moblin_netbook_input_region_remove (plugin, priv->toolbar_trigger_region);
@@ -1275,7 +1263,7 @@ toolbar_trigger_region_set_height (MutterPlugin *plugin, gint height)
     = moblin_netbook_input_region_push (plugin,
                                         0,
                                         0,
-                                        priv->screen_width,
+                                        screen_width,
                                         PANEL_SLIDE_THRESHOLD + height);
 }
 
