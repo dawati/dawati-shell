@@ -784,6 +784,28 @@ moblin_netbook_plugin_constructed (GObject *object)
   toolbar = priv->toolbar =
     CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
 
+#if 1
+  /*
+   * TODO this needs to be hooked into the dbus API exposed by the out of
+   * process applets, once we have them.
+   */
+  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "m-zone",
+                            "m_zone", NULL, None);
+
+  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "spaces-zone-internal",
+                            "zones", NULL, None);
+
+  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "status-zone",
+                            "status", NULL, None);
+
+  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "applications-zone",
+                            "applications", NULL, None);
+
+  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "pasteboard-zone",
+                            "pastboard", NULL, None);
+
+#endif
+
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, toolbar, NULL);
   clutter_actor_hide (lowlight);
 
@@ -925,7 +947,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   meta_keybindings_set_custom_handler ("cycle_panels_backward",
                                        metacity_alt_tab_key_handler,
                                        plugin, NULL);
-
 }
 
 static void
