@@ -26,6 +26,7 @@ typedef struct _Source {
     BklDB *db;
 
     GPtrArray *items;
+    GPtrArray *index;
     GHashTable *uri_to_item;
 } Source;
 
@@ -132,6 +133,8 @@ create_source (BklSourceClient *s)
                              (char *) bkl_item_get_uri (item), item);
     }
 
+    /* Index is a sorted array of strings */
+    source->index = bkl_db_get_index_words (source->db);
     return source;
 }
 
@@ -316,6 +319,7 @@ search_for_words (KozoDB *db,
     return qd->results;
 }
 
+#if 0
 static void
 search_clicked_cb (MnbEntry         *entry,
                    AhoghillGridView *grid)
@@ -372,6 +376,7 @@ search_clicked_cb (MnbEntry         *entry,
 
     g_ptr_array_free (items, TRUE);
 }
+#endif
 
 static void
 item_clicked_cb (AhoghillResultsPane *pane,
@@ -399,6 +404,12 @@ item_clicked_cb (AhoghillResultsPane *pane,
                    error->message);
         g_error_free (error);
     }
+}
+
+static void
+search_text_changed (MnbEntry         *entry,
+                     AhoghillGridView *view)
+{
 }
 
 static void
@@ -431,8 +442,8 @@ ahoghill_grid_view_init (AhoghillGridView *self)
                                           NULL);
 
     entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
-    g_signal_connect (entry, "button-clicked",
-                      G_CALLBACK (search_clicked_cb), self);
+    g_signal_connect (entry, "text-changed",
+                      G_CALLBACK (search_text_changed), self);
 
     priv->results_pane = g_object_new (AHOGHILL_TYPE_RESULTS_PANE,
                                        "title", _("Recent"),
