@@ -24,4 +24,5 @@ AC_OUTPUT([
         Makefile
         anerley/Makefile
         tests/Makefile
+        data/Makefile
 ])

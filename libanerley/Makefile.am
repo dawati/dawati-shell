@@ -1,1 +1,1 @@
-SUBDIRS=anerley tests
+SUBDIRS = anerley tests data

@@ -1,0 +1,29 @@
+*.AnerleyTileAvatar
+{
+  border-image: url("file://avatar-bg.png") 7 8 9 8;
+  padding: 9 10 11 10;
+}
+
+AnerleyTile
+{
+  padding: 7 8 9 8;
+}
+
+AnerleyTile:hover
+{
+  border-image: url("file://tile-bg-hover.png") 5 6 7 6;
+}
+
+*.AnerleyTilePrimaryLabel
+{
+  font-family: "Liberation Sans";
+  font-size: 14;
+}
+
+*.AnerleyTileSecondaryLabel
+{
+  font-family: "Liberation Sans";
+  font-size: 13;
+  color: #3e3e3eff;
+}
+
