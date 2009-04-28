@@ -1,51 +1,19 @@
 Post multiproc needed work;
 
-* Remove moblin-netbook-panel, replacing with gobject mnb-toolbar
-
-* Rename moblin-netbook-panel-button -> mnb-toolbar-button
-
 * mnb-toolbar;
-  - Contains just date/time and systray. Panels to be added externally in 
+  - Contains just date/time and systray. Panels to be added externally in
     moblin-netbook.c. See below for API.
-  - Use Actor show(), Hide() to control toolbar visibility over custom funcs.
   - New public API;
-    
-  void
-  mnb_toolbar_append_panel (MnbToolbar   *toolbar,
-	     		    gchar        *panel_name,
-                            gchar        *icon_name,
-			    ClutterActor *panel_actor)
-
-  /* - Would automatically show() the panel if not shown
-   * - Would hide an existing open panel.
-   */
-  void
-  mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
 
   void
   mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name)
 
-  /* return NULL if no panel active */
-  const gchar *
-  mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar);
-
   /* Are we animating (either panel or itself */
   gboolean
   mnb_toolbar_in_transition (MnbToolbar *toolbar)
-  
-* Fix up naming thoughout. 
-   - Toolbar is the toolbar, not panel
-   - A 'panel' is a toolbar menu. 
 
-* Nothing other than netbook-panel.c itself should directly touch its 
-  priv structure !! Use accesors. 
-
-* Remove unused moblin-netbook.c priv members. 
-
-* alt-tab handling should be moved into mnb-switcher.c
-
-* enable/disable_stage to go. replace with key focus stash/unstash
-  and calls to input_region stack.
+* Nothing other than netbook-panel.c itself should directly touch its
+  priv structure !! Use accesors.
 
 * there should be no unnamespaced funcs.
 
