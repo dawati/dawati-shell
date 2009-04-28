@@ -124,66 +124,66 @@ MnbToolbarButton:hover, MnbToolbarButton:active {
 }
 
 /* apps button */
-*#apps-button {
+*#applications-zone-button {
   background-image: url("file://panel/apps-normal.png");
 }
-*#apps-button:hover, *#apps-button:active, *#apps-button:checked  {
+*#applications-zone-button:hover, *#applications-zone-button:active, *#applications-zone-button:checked  {
   background-image: url("file://panel/apps-coloured.png");
 }
 
 /* internet button */
-*#internet-button {
+*#internet-zone-button {
   background-image: url("file://panel/internet-normal.png");
 }
-*#internet-button:hover, *#internet-button:active, *#internet-button:checked {
+*#internet-zone-button:hover, *#internet-zone-button:active, *#internet-zone-button:checked {
   background-image: url("file://panel/internet-coloured.png");
 }
 
 /* media button */
-*#media-button {
+*#media-zone-button {
   background-image: url("file://panel/media-normal.png");
 }
-*#media-button:hover, *#media-button:active, *#media-button:checked {
+*#media-zone-button:hover, *#media-zone-button:active, *#media-zone-button:checked {
   background-image: url("file://panel/media-coloured.png");
 }
 
 /* m-space button */
-*#m-space-button {
+*#m-zone-button {
   background-image: url("file://panel/m_zone-normal.png");
 }
-*#m-space-button:hover, *#m-space-button:active, *#m-space-button:checked {
+*#m-zone-button:hover, *#m-zone-button:active, *#m-zone-button:checked {
   background-image: url("file://panel/m_zone-coloured.png");
 }
 
 /* pasteboard button */
-*#pasteboard-button {
+*#pasteboard-zone-button {
   background-image: url("file://panel/pasteboard-normal.png");
 }
-*#pasteboard-button:hover, *#pasteboard-button:active, *#pasteboard-button:checked {
+*#pasteboard-zone-button:hover, *#pasteboard-zone-button:active, *#pasteboard-zone-button:checked {
   background-image: url("file://panel/pasteboard-coloured.png");
 }
 
 /* people button */
-*#people-button {
+*#people-zone-button {
   background-image: url("file://panel/people-normal.png");
 }
-*#people-button:hover, *#people-button:active, *#people-button:checked {
+*#people-zone-button:hover, *#people-zone-button:active, *#people-zone-button:checked {
   background-image: url("file://panel/people-coloured.png");
 }
 
 /* spaces button */
-*#spaces-button {
+*#spaces-zone-button {
   background-image: url("file://panel/spaces-normal.png");
 }
-*#spaces-button:hover, *#spaces-button:active, *#spaces-button:checked {
+*#spaces-zone-button:hover, *#spaces-zone-button:active, *#spaces-zone-button:checked {
   background-image: url("file://panel/spaces-coloured.png");
 }
 
 /* status button */
-*#status-button {
+*#status-zone-button {
   background-image: url("file://panel/status-normal.png");
 }
-*#status-button:hover, *#status-button:active, *#status-button:checked {
+*#status-zone-button:hover, *#status-zone-button:active, *#status-zone-button:checked {
   background-image: url("file://panel/status-coloured.png");
 }
 

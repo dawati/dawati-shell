@@ -392,6 +392,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   guint              screen_width, screen_height;
   guint              index;
   gboolean           internal = FALSE;
+  gchar             *button_style = NULL;
 
   if (!strcmp (name, "m-zone"))
     index = M_ZONE;
@@ -403,6 +404,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     {
       index = SPACES_ZONE;
       internal = TRUE;
+      button_style = g_strdup ("spaces-zone-button");
     }
   else if (!strcmp (name, "internet-zone"))
     index = INTERNET_ZONE;
@@ -430,6 +432,9 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
       return;
     }
 
+  if (!button_style)
+    button_style = g_strdup_printf ("%s-button", name);
+  
   /*
    * If the respective slot is already occupied, remove the old objects.
    */
@@ -450,7 +455,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
-  clutter_actor_set_name (CLUTTER_ACTOR (button), name);
+  clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
 
   if (icon)
     {
