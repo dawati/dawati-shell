@@ -115,11 +115,11 @@ MnbToolbar {
   border-image: url("file://panel/panel-background.png") 0 200 0 200 stretch;
 }
 
-MnbPanelButton:checked {
+MnbToolbarButton:checked {
   border-image: url("file://panel/toolbar-button-active.png") 0 stretch;
 }
 
-MnbPanelButton:hover, MnbPanelButton:active {
+MnbToolbarButton:hover, MnbToolbarButton:active {
   border-image: url("file://panel/toolbar-button-hover.png") 0 stretch;
 }
 
