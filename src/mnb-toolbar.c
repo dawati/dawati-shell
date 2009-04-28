@@ -375,7 +375,8 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if ((priv->buttons[i] != (NbtkWidget*)button))
       {
-        nbtk_button_set_checked (NBTK_BUTTON (priv->buttons[i]), FALSE);
+        if (priv->buttons[i])
+          nbtk_button_set_checked (NBTK_BUTTON (priv->buttons[i]), FALSE);
       }
     else
       {
