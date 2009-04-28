@@ -25,7 +25,7 @@
 #include <display.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#include <nbtk/nbtk-tooltip.h>
+#include <nbtk/nbtk.h>
 
 #define HOVER_TIMEOUT  800
 #define CLONE_HEIGHT   80  /* Height of the window thumb */

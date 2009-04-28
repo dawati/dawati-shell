@@ -36,7 +36,7 @@
 #include <clutter/x11/clutter-x11.h>
 #include <string.h>
 #include <display.h>
-#include <nbtk/nbtk-texture-frame.h>
+#include <nbtk/nbtk.h>
 
 #define WORKSPACE_CHOOSER_BORDER_LEFT   2
 #define WORKSPACE_CHOOSER_BORDER_RIGHT  3
