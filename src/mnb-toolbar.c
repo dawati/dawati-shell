@@ -381,6 +381,14 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     index = PEOPLE_ZONE;
   else if (!strcmp (name, "pasteboard-zone"))
     index = PASTEBOARD_ZONE;
+  else if (!strcmp (name, "wifi-applet"))
+    index = WIFI_APPLET;
+  else if (!strcmp (name, "bt-applet"))
+    index = BT_APPLET;
+  else if (!strcmp (name, "volume-applet"))
+    index = VOLUME_APPLET;
+  else if (!strcmp (name, "battery-applet"))
+    index = BATTERY_APPLET;
   else
     {
       g_warning ("Unknown panel [%s]");
@@ -409,21 +417,67 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
-  clutter_actor_set_size (CLUTTER_ACTOR (button),
-			  BUTTON_WIDTH, BUTTON_HEIGHT);
-  clutter_actor_set_position (CLUTTER_ACTOR (button),
-                              213 + (BUTTON_WIDTH * index)
-                              + (BUTTON_SPACING * index),
-                              TOOLBAR_HEIGHT - BUTTON_HEIGHT);
 
-  mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
-                                        0,
-                                        -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
-                                        BUTTON_WIDTH,
-                                        TOOLBAR_HEIGHT);
+  if (icon)
+    {
+      ClutterActor *icon_actor;
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+      icon_actor = clutter_texture_new_from_file (icon, NULL);
+
+      if (icon_actor)
+        {
+          clutter_container_add_actor (CLUTTER_CONTAINER (button), icon_actor);
+          clutter_actor_set_reactive (icon_actor, TRUE);
+        }
+    }
+
+  if (index < APPLETS_START)
+    {
+      clutter_actor_set_size (CLUTTER_ACTOR (button),
+                              BUTTON_WIDTH, BUTTON_HEIGHT);
+
+      clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                  213 + (BUTTON_WIDTH * index)
+                                  + (BUTTON_SPACING * index),
+                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+
+      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                            0,
+                                            -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
+                                            BUTTON_WIDTH,
+                                            TOOLBAR_HEIGHT);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                   CLUTTER_ACTOR (button));
+    }
+  else
+    {
+      gint zones   = APPLETS_START;
+      gint applets = index - APPLETS_START;
+
+      clutter_actor_set_size (CLUTTER_ACTOR (button),
+                              TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
+
+      /*
+       * FIME -- this should probably go into a table as in the old code.
+       */
+      clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                  213 + (BUTTON_WIDTH * zones)
+                                  + (BUTTON_SPACING * zones)
+                                  + (TRAY_BUTTON_WIDTH * applets)
+                                  + (BUTTON_SPACING * applets),
+                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+
+      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                           0,
+                                           -(PANEL_HEIGHT - TRAY_BUTTON_HEIGHT),
+                                           TRAY_BUTTON_WIDTH,
+                                           PANEL_HEIGHT);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (button));
+    }
+
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (mnb_toolbar_toggle_buttons),
