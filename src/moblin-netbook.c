@@ -341,7 +341,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "m-zone",
                             "m_zone", NULL, None);
 
-  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "spaces-zone-internal",
+  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "spaces-zone",
                             "zones", NULL, None);
 
   mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "status-zone",
