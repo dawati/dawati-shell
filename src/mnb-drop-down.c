@@ -129,7 +129,7 @@ mnb_drop_down_show (ClutterActor *actor)
    */
   toolbar = clutter_actor_get_parent (actor);
   while (toolbar && !MNB_IS_TOOLBAR (toolbar))
-    toolbar = clutter_actor_get_parent (actor);
+    toolbar = clutter_actor_get_parent (toolbar);
 
   if (!toolbar)
     {
