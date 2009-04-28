@@ -22,7 +22,16 @@
 #define TRAY_BUTTON_HEIGHT 55
 #define TRAY_BUTTON_WIDTH 44
 
+#if 0
+/*
+ * TODO
+ * This is currently define in moblin-netbook.h, as it is needed by the
+ * tray manager and MnbDropDown -- this should not be hardcoded, and we need
+ * a way for the drop down to query it from the panel.
+ */
 #define TOOLBAR_HEIGHT 64
+#endif
+
 #define TOOLBAR_X_PADDING 4
 
 G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
@@ -492,10 +501,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                                   TOOLBAR_HEIGHT - BUTTON_HEIGHT);
 
       mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
-                                           0,
-                                           -(PANEL_HEIGHT - TRAY_BUTTON_HEIGHT),
-                                           TRAY_BUTTON_WIDTH,
-                                           PANEL_HEIGHT);
+                                         0,
+                                         -(TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT),
+                                         TRAY_BUTTON_WIDTH,
+                                         TOOLBAR_HEIGHT);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (button));
@@ -628,7 +637,7 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
 
   clutter_actor_set_position (icon, x, y);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), icon);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->toolbar), icon);
 }
 
 static void

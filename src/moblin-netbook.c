@@ -719,7 +719,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   guint ws_switcher_slide_timeout = WS_SWITCHER_SLIDE_TIMEOUT;
 
   ClutterActor  *overlay;
-  ClutterActor  *panel;
+  ClutterActor  *toolbar;
   ClutterActor  *lowlight;
   gint           screen_width, screen_height;
   XRectangle     rect[1];
@@ -781,11 +781,10 @@ moblin_netbook_plugin_constructed (GObject *object)
   /*
    * This also creates the launcher.
    */
-  // panel = priv->panel = make_panel (MUTTER_PLUGIN (plugin), screen_width);
-  panel = priv->panel =
+  toolbar = priv->toolbar =
     CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
 
-  clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, panel, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, toolbar, NULL);
   clutter_actor_hide (lowlight);
 
   priv->panel_wait_for_pointer = TRUE;
@@ -1403,10 +1402,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   if (mutter_window_is_override_redirect (mcw))
     {
       Window      xwin = mutter_window_get_x_window (mcw);
-      MnbToolbar *toolbar = MNB_TOOLBAR (priv->panel);
+      MnbToolbar *toolbar = MNB_TOOLBAR (priv->toolbar);
 
       if (mnb_toolbar_is_tray_config_window (toolbar, xwin))
-        mnb_toolbar_append_tray_window (MNB_TOOLBAR (priv->panel), mcw);
+        mnb_toolbar_append_tray_window (toolbar, mcw);
       else
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 
@@ -1698,12 +1697,12 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) ==
                                                     MOBLIN_PANEL_SHORTCUT_KEY)
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
-        ; /* MA */ // show_panel (plugin, TRUE);
+      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
+        clutter_actor_show (priv->toolbar);
       else
         {
           priv->panel_wait_for_pointer = FALSE;
-          /* MA */ // hide_panel (plugin);
+          clutter_actor_hide (priv->toolbar);
         }
 
       return TRUE;
@@ -1801,7 +1800,7 @@ panel_slide_timeout_cb (gpointer data)
 
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
-      clutter_actor_show (priv->panel);
+      clutter_actor_show (priv->toolbar);
     }
 
   priv->panel_slide_timeout_id = 0;
@@ -1830,7 +1829,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_disabled)
         return FALSE;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+      if (CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
         {
           /*
            * FIXME -- we should use the height of the panel background here;
@@ -1845,7 +1844,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
                * FIXME -- we have to override the Toolbar show() and hide()
                * methods to deal with when panels are visible.
                */
-              clutter_actor_hide (priv->panel);
+              clutter_actor_hide (priv->toolbar);
             }
         }
       else if (event_y < PANEL_SLIDE_THRESHOLD)
@@ -1863,7 +1862,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
             return FALSE;
 
           if (!priv->panel_slide_timeout_id &&
-              !CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+              !CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
             {
               /* Increase sensitivity */
               toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 5);

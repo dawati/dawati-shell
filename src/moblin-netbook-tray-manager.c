@@ -360,7 +360,7 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
 
       mutter_plugin_query_screen_size (plugin, &sw, &sh);
 
-      y = PANEL_HEIGHT;
+      y = TOOLBAR_HEIGHT;
 
       if (x + w > (sw - 10)) /* FIXME -- query panel padding */
         {
@@ -768,9 +768,9 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   clutter_actor_set_name (CLUTTER_ACTOR (button), "tray-button");
   mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
                                         0,
-                                        -(PANEL_HEIGHT - TRAY_BUTTON_HEIGHT),
+                                        -(TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT),
                                         TRAY_BUTTON_WIDTH,
-                                        PANEL_HEIGHT);
+                                        TOOLBAR_HEIGHT);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (button), icon);
 

@@ -39,10 +39,7 @@
 
 #define MAX_WORKSPACES 8
 
-/*
- * FIXME -- should not be hardcoded; used in panel and system tray.
- */
-#define PANEL_HEIGHT 64
+#define TOOLBAR_HEIGHT 64
 
 #define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
 #define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
@@ -88,8 +85,7 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *desktop2;
 
   ClutterActor          *d_overlay ; /* arrow indicator */
-  ClutterActor          *panel;
-  ClutterActor          *panel_shadow;
+  ClutterActor          *toolbar;
   ClutterActor          *lowlight;
 
   GList                 *global_tab_list;

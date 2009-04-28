@@ -279,7 +279,7 @@ mnb_button_toggled_cb (NbtkWidget  *button,
        * Must reset the y in case a previous animation ended prematurely
        * and the y is not set correctly; see bug 900.
        */
-      clutter_actor_set_y (actor, PANEL_HEIGHT);
+      clutter_actor_set_y (actor, TOOLBAR_HEIGHT);
       clutter_actor_show (actor);
     }
   else
