@@ -142,8 +142,11 @@ struct ActorPrivate
 };
 
 ActorPrivate * get_actor_private (MutterWindow *actor);
-void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
-void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
+void           moblin_netbook_focus_stage (MutterPlugin *plugin,
+                                           guint32       timestamp);
+
+void           moblin_netbook_unfocus_stage (MutterPlugin *plugin,
+                                             guint32 timestamp);
 
 void moblin_netbook_notify_init (MutterPlugin *plugin);
 

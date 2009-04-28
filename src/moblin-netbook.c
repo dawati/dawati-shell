@@ -1056,36 +1056,16 @@ last_focus_weak_notify_cb (gpointer data, GObject *meta_win)
     }
 }
 
-/*
- * Use this function to disable stage input
- *
- * Used by the completion callback for the panel in/out effects
- */
 void
-disable_stage (MutterPlugin *plugin, guint32 timestamp)
+moblin_netbook_unfocus_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   MetaWindow                 *focus;
 
-  /*
-   * Refuse to disable the stage while the UI is showing.
-   */
-#if 0
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) ||
-      priv->panel_out_in_progress ||
-      priv->workspace_chooser)
-    {
-      g_warning ("Cannot disable stage while the panel/chooser is showing\n");
-      return;
-    }
-#endif
-
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
-
-  toolbar_trigger_region_set_height (plugin, 0);
 
   /*
    * Work out what we should focus next.
@@ -1115,7 +1095,7 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
 }
 
 void
-enable_stage (MutterPlugin *plugin, guint32 timestamp)
+moblin_netbook_focus_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
@@ -1125,12 +1105,6 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
 
-
-#if 0
-  priv->current_input_base_region = priv->screen_region;
-
-  moblin_netbook_input_region_apply (plugin);
-#endif
 
   /*
    * Map the input blocker window so keystrokes, etc., are not reaching apps.
