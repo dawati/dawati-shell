@@ -405,8 +405,15 @@ ahoghill_grid_view_init (AhoghillGridView *self)
 
     priv->search_pane = g_object_new (AHOGHILL_TYPE_SEARCH_PANE, NULL);
     clutter_actor_set_size (priv->search_pane, 1024, 50);
-    nbtk_table_add_actor_full (table, priv->search_pane,
-                               0, 0, 1, 4, NBTK_X_EXPAND, 0.0, 0.0);
+    nbtk_table_add_actor_with_properties (table, priv->search_pane,
+                                          0, 0,
+                                          "col-span", 4,
+                                          "x-fill", FALSE,
+                                          "y-expand", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 0.0,
+                                          "y-align", 0.0,
+                                          NULL);
 
     entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
     g_signal_connect (entry, "button-clicked",
@@ -416,10 +423,13 @@ ahoghill_grid_view_init (AhoghillGridView *self)
                                        "title", _("Recent"),
                                        NULL);
     clutter_actor_set_size (priv->results_pane, 800, 400);
-    nbtk_table_add_actor_full (table, priv->results_pane,
-                               1, 0, 1, 3,
-                               NBTK_X_FILL | NBTK_Y_FILL | NBTK_X_EXPAND | NBTK_Y_EXPAND,
-                               0.0, 0.0);
+    nbtk_table_add_actor_with_properties (table, priv->results_pane,
+                                          1, 0,
+                                          "row-span", 1,
+                                          "col-span", 3,
+                                          "x-align", 0.0,
+                                          "y-align", 0.0,
+                                          NULL);
     g_signal_connect (priv->results_pane, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
 
@@ -427,8 +437,14 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     /*                                        NULL); */
     priv->playqueues_pane = clutter_rectangle_new_with_color (&blue);
     clutter_actor_set_size (priv->playqueues_pane, 150, 400);
-    nbtk_table_add_actor_full (table, priv->playqueues_pane,
-                               1, 3, 1, 1, NBTK_Y_FILL, 0.0, 0.0);
+    nbtk_table_add_actor_with_properties (table, priv->playqueues_pane,
+                                          1, 3,
+                                          "x-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-expand", FALSE,
+                                          "x-align", 0.0,
+                                          "y-align", 0.0,
+                                          NULL);
 
     /* Init Bickley and Bognor lazily */
     g_idle_add (finish_init, self);

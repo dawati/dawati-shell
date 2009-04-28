@@ -303,14 +303,25 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
     priv->title = nbtk_label_new ("");
     clutter_actor_set_name (CLUTTER_ACTOR (priv->title),
                             "media-pane-results-label");
-    nbtk_table_add_widget_full (NBTK_TABLE (self), priv->title,
-                                0, 0, 1, 1, 0, 0.0, 0.0);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->title,
+                                          0, 0,
+                                          "x-expand", FALSE,
+                                          "y-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 0.0,
+                                          "y-align", 0.0,
+                                          NULL);
 
     priv->fixed = g_object_new (NBTK_TYPE_FIXED, NULL);
-    nbtk_table_add_widget_full (NBTK_TABLE (self), priv->fixed,
-                                1, 0, 1, 2,
-                                NBTK_X_EXPAND | NBTK_Y_EXPAND |
-                                NBTK_X_FILL | NBTK_Y_FILL, 0.0, 0.0);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->fixed,
+                                          1, 0,
+                                          "col-span", 2,
+                                          "x-align", 0.0,
+                                          "y-align", 0.0,
+                                          NULL);
 
     priv->current_page = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
     g_signal_connect (priv->current_page, "item-clicked",
@@ -326,16 +337,30 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
     g_signal_connect (CLUTTER_ACTOR (priv->previous_button),
                       "button-release-event",
                       G_CALLBACK (show_previous_page), self);
-    nbtk_table_add_widget_full (NBTK_TABLE (self), priv->previous_button,
-                                2, 0, 1, 1, 0, 0.0, 0.5);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->previous_button,
+                                          2, 0,
+                                          "x-expand", FALSE,
+                                          "y-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 0.0,
+                                          NULL);
 
     priv->next_button = nbtk_button_new_with_label ("Next");
     clutter_actor_set_name (CLUTTER_ACTOR (priv->next_button),
                             "media-pane-next-page");
     g_signal_connect (CLUTTER_ACTOR (priv->next_button), "button-release-event",
                       G_CALLBACK (show_next_page), self);
-    nbtk_table_add_widget_full (NBTK_TABLE (self), priv->next_button,
-                                2, 1, 1, 1, 0, 1.0, 0.5);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->next_button,
+                                          2, 1,
+                                          "x-expand", FALSE,
+                                          "y-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 1.0,
+                                          NULL);
 }
 
 static void

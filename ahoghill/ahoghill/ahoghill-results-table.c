@@ -209,10 +209,12 @@ ahoghill_results_table_init (AhoghillResultsTable *self)
         g_signal_connect (priv->tiles[i], "dnd-end",
                           G_CALLBACK (tile_dnd_end_cb), self);
 
-        nbtk_table_add_widget_full (NBTK_TABLE (self),
-                                    (NbtkWidget *) priv->tiles[i],
-                                    (i / TILES_PER_ROW), i % TILES_PER_ROW,
-                                    1, 1, 0, 0.5, 0.0);
+        nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                              (ClutterActor *) priv->tiles[i],
+                                              (i / TILES_PER_ROW),
+                                              i % TILES_PER_ROW,
+                                              "x-align", 0.5,
+                                              NULL);
         clutter_actor_hide ((ClutterActor *) priv->tiles[i]);
     }
 }

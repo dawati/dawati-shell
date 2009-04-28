@@ -198,20 +198,29 @@ ahoghill_media_tile_init (AhoghillMediaTile *self)
                             THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
     clutter_actor_show (CLUTTER_ACTOR (priv->icon));
 
-    nbtk_table_add_widget_full (NBTK_TABLE (self), priv->icon,
-                                0, 0, 1, 1,
-                                NBTK_X_EXPAND | NBTK_Y_EXPAND | NBTK_X_FILL | NBTK_Y_FILL,
-                                0.5, 0.5);
+    nbtk_table_add_actor (NBTK_TABLE (self), (ClutterActor *) priv->icon, 0, 0);
 
     priv->title = nbtk_label_new ("");
     clutter_actor_set_name (CLUTTER_ACTOR (priv->title),
                             "media-tile-title-label");
-    nbtk_table_add_widget_full (NBTK_TABLE (self), priv->title,
-                                1, 0, 1, 1, 0, 0.0, 0.5);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->title, 1, 0,
+                                          "x-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-expand", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 0.0,
+                                          NULL);
 
     priv->artist = nbtk_label_new ("");
     clutter_actor_set_name (CLUTTER_ACTOR (priv->artist),
                             "media-tile-artist-label");
-    nbtk_table_add_widget_full (NBTK_TABLE (self), priv->artist,
-                                2, 0, 1, 1, 0, 0.0, 0.5);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->artist, 2, 0,
+                                          "x-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-expand", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 0.0,
+                                          NULL);
 }
