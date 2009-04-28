@@ -203,28 +203,29 @@ _button_press_event (ClutterActor *actor,
     return TRUE;
 
   path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
+
   if (path)
-    {
-      GAppLaunchContext *context;
-      GAppInfo *app_info;
+  {
+    GAppLaunchContext *context;
+    GAppInfo *app_info;
 
-      context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
-      app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
-      g_free (path);
+    context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+    app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
+    g_free (path);
 
-      if (g_app_info_launch (app_info, NULL, context, &error))
-        penge_utils_signal_activated (actor);
+    if (g_app_info_launch (app_info, NULL, context, &error))
+      penge_utils_signal_activated (actor);
 
-      g_object_unref (app_info);
-      g_object_unref (context);
-    }
+    g_object_unref (app_info);
+    g_object_unref (context);
+  }
 
   if (error)
-    {
-      g_warning (G_STRLOC ": Error launching application): %s",
+  {
+    g_warning (G_STRLOC ": Error launching application): %s",
                  error->message);
-      g_clear_error (&error);
-    }
+    g_clear_error (&error);
+  }
 
   return TRUE;
 }
