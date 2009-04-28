@@ -153,6 +153,11 @@ static void
 mnb_toolbar_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+  gint               i;
+
+  for (i = 0; i < NUM_ZONES; ++i)
+    if (priv->buttons[i])
+      clutter_actor_set_reactive (CLUTTER_ACTOR (priv->buttons[i]), TRUE);
 
   priv->in_show_animation = FALSE;
   g_signal_emit (actor, toolbar_signals[SHOW_COMPLETED], 0);
@@ -242,6 +247,7 @@ mnb_toolbar_hide (ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   gint               height;
+  gint               i;
   ClutterAnimation  *animation;
 
   if (priv->in_hide_animation)
@@ -249,6 +255,10 @@ mnb_toolbar_hide (ClutterActor *actor)
       g_signal_stop_emission_by_name (actor, "hide");
       return;
     }
+
+  for (i = 0; i < NUM_ZONES; ++i)
+    if (priv->buttons[i])
+      clutter_actor_set_reactive (CLUTTER_ACTOR (priv->buttons[i]), FALSE);
 
   g_signal_emit (actor, toolbar_signals[HIDE_BEGIN], 0);
 
