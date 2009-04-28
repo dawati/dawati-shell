@@ -18,6 +18,7 @@ CFLAGS="$CFLAGS -Wall"
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.14 gobject-2.0)
 PKG_CHECK_MODULES(TELEPATHY, telepathy-glib)
 PKG_CHECK_MODULES(MC, libmissioncontrol)
+PKG_CHECK_MODULES(NBTK, nbtk-1.0)
 
 AC_OUTPUT([
         Makefile

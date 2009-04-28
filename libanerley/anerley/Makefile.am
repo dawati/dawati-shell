@@ -7,7 +7,12 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-item.c \
 			anerley-item.h \
 			anerley-tp-item.c \
-			anerley-tp-item.h
-libanerley_la_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS)
-libanerley_la_LIBADD = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MC_LIBS)
+			anerley-tp-item.h \
+			anerley-tile.c \
+			anerley-tile.h 
+libanerley_la_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) \
+		       $(NBTK_CFLAGS) \
+		       -DPKG_DATA_DIR=\"$(pkgdatadir)\"
+libanerley_la_LIBADD = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MC_LIBS) \
+		       $(NBTK_LIBS)
 
