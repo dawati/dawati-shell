@@ -1171,11 +1171,11 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
-  MnbSwitcher                *switcher;
+  NbtkWidget                 *switcher;
 
-  switcher = MNB_SWITCHER (mnb_toolbar_get_switcher (toolbar));
+  switcher = mnb_toolbar_get_switcher (toolbar);
 
-  if (mnb_switcher_handle_xevent (switcher, xev))
+  if (switcher && mnb_switcher_handle_xevent (MNB_SWITCHER (switcher), xev))
     return TRUE;
 
   if (xev->type == KeyPress &&
