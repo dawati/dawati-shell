@@ -9,7 +9,9 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-tp-item.c \
 			anerley-tp-item.h \
 			anerley-tile.c \
-			anerley-tile.h 
+			anerley-tile.h \
+			anerley-simple-grid-view.c \
+			anerley-simple-grid-view.h
 libanerley_la_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) \
 		       $(NBTK_CFLAGS) \
 		       -DPKG_DATA_DIR=\"$(pkgdatadir)\"
