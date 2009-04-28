@@ -188,5 +188,7 @@ moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp);
 void
 moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp);
 
+void
+moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin);
 
 #endif

@@ -794,6 +794,8 @@ mnb_toolbar_constructed (GObject *self)
                                    CLUTTER_STAGE (
                                            mutter_plugin_get_stage (plugin)));
 
+  mnb_toolbar_setup_kbd_grabs (MNB_TOOLBAR (self));
+
   /*
    * Disable autohiding of the panel to start with.
    */
@@ -1007,3 +1009,29 @@ mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont)
   priv->dont_autohide = dont;
 }
 
+/*
+ * Sets up passive key grabs on any dedicated shortcut keys that we cannot
+ * hook into throught metacity key bindings.
+ *
+ * Needs to be public, because the kbd grabs need to be re-establised by the
+ * alt_tab handler.
+ */
+void
+mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar)
+{
+  MutterPlugin *plugin = toolbar->priv->plugin;
+  MetaScreen   *screen;
+  Display      *xdpy;
+  Window        root_xwin;
+
+  screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  xdpy      = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
+  root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
+
+  /*
+   * Grab the panel shortcut key.
+   */
+  XGrabKey (xdpy, XKeysymToKeycode (xdpy, MOBLIN_PANEL_SHORTCUT_KEY),
+            AnyModifier,
+            root_xwin, True, GrabModeAsync, GrabModeAsync);
+}

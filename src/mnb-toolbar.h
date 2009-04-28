@@ -60,6 +60,8 @@ NbtkWidget * mnb_toolbar_get_switcher (MnbToolbar *toolbar);
 
 void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);
 
+void mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar);
+
 G_END_DECLS
 
 #endif /* _MNB_TOOLBAR */
