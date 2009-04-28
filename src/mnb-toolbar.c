@@ -846,7 +846,7 @@ mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if (i != index)
       {
-        if (CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+        if (priv->panels[i] && CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
           clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
       }
     else
