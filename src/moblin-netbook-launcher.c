@@ -492,6 +492,10 @@ typedef struct
   gboolean                 is_filtering;
   guint                    timeout_id;
   char                    *lcase_needle;
+
+  /* Keyboard navigation. */
+  guint                    expand_timeout_id;
+  NbtkExpander            *expand_expander;
 } launcher_data_t;
 
 static void launcher_data_monitor_cb        (MnbLauncherMonitor  *monitor,
@@ -697,6 +701,51 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
   return button;
 }
 
+static gboolean
+expander_expand_complete_idle_cb (launcher_data_t *launcher_data)
+{
+  if (nbtk_expander_get_expanded (launcher_data->expand_expander))
+    {
+      ClutterActor *inner_grid, *launcher;
+      inner_grid = nbtk_bin_get_child (NBTK_BIN (launcher_data->expand_expander));
+      launcher = (ClutterActor *) grid_keynav_first (NBTK_GRID (inner_grid));
+
+      scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                       launcher);
+
+      launcher_data->expand_timeout_id = 0;
+      launcher_data->expand_expander = NULL;
+    }
+
+  return FALSE;
+}
+
+static void
+expander_expand_complete_cb (NbtkExpander     *expander,
+                             launcher_data_t  *launcher_data)
+{
+  /* Cancel keyboard navigation to not interfere with the mouse. */
+  if (launcher_data->expand_timeout_id)
+    {
+      g_source_remove (launcher_data->expand_timeout_id);
+      launcher_data->expand_timeout_id = 0;
+      launcher_data->expand_expander = NULL;
+    }
+
+  if (nbtk_expander_get_expanded (expander))
+    {
+      launcher_data->expand_expander = expander;
+      launcher_data->expand_timeout_id = g_idle_add ((GSourceFunc) expander_expand_complete_idle_cb,
+                                                     launcher_data);
+    }
+  else
+    {
+      ClutterActor *inner_grid;
+      inner_grid = nbtk_bin_get_child (NBTK_BIN (expander));
+      grid_keynav_out (NBTK_GRID (inner_grid));
+    }
+}
+
 static void
 expander_expanded_notify_cb (NbtkExpander    *expander,
                              GParamSpec      *pspec,
@@ -705,6 +754,14 @@ expander_expanded_notify_cb (NbtkExpander    *expander,
   NbtkExpander    *e;
   const gchar     *category;
   GHashTableIter   iter;
+
+  /* Cancel keyboard navigation to not interfere with the mouse. */
+  if (launcher_data->expand_timeout_id)
+    {
+      g_source_remove (launcher_data->expand_timeout_id);
+      launcher_data->expand_timeout_id = 0;
+      launcher_data->expand_expander = NULL;
+    }
 
   /* Close other open expander, so that just the newly opended one is expanded. */
   if (nbtk_expander_get_expanded (expander))
@@ -729,21 +786,37 @@ expander_expanded_notify_cb (NbtkExpander    *expander,
     }
 }
 
-static void
-expander_set_keyboard_focus (NbtkExpander *expander)
+static gboolean
+expander_expand_cb (launcher_data_t *launcher_data)
 {
-  /* TODO:
-   * - Set "hover".
-   * - Expand with cancellable delay.
-   * - Focus first child.
-   */
+  launcher_data->expand_timeout_id = 0;
+  nbtk_expander_set_expanded (launcher_data->expand_expander, TRUE);
+  launcher_data->expand_expander = NULL;
 
-  nbtk_expander_set_expanded (expander, TRUE);
-/* Do when opening finished
-  ClutterActor *inner_grid;
-  inner_grid = nbtk_bin_get_child (NBTK_BIN (expander));
-  grid_keynav_first (NBTK_GRID (inner_grid));
-*/
+  return FALSE;
+}
+
+static void
+launcher_data_hover_expander (launcher_data_t *launcher_data,
+                              NbtkExpander    *expander)
+{
+  if (launcher_data->expand_timeout_id)
+    {
+      g_source_remove (launcher_data->expand_timeout_id);
+      launcher_data->expand_timeout_id = 0;
+      launcher_data->expand_expander = NULL;
+    }
+
+  if (expander)
+    {
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (expander), "hover");
+      launcher_data->expand_expander = expander;
+      launcher_data->expand_timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
+                                                        (GSourceFunc) expander_expand_cb,
+                                                        launcher_data);
+      scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
+                                       CLUTTER_ACTOR (expander));
+    }
 }
 
 static gboolean
@@ -1029,6 +1102,9 @@ launcher_data_fill (launcher_data_t *launcher_data)
             g_signal_connect (expander, "notify::expanded",
                               G_CALLBACK (expander_expanded_notify_cb),
                               launcher_data);
+            g_signal_connect (expander, "expand-complete",
+                              G_CALLBACK (expander_expand_complete_cb),
+                              launcher_data);
           }
         else
           {
@@ -1274,14 +1350,46 @@ entry_keynav_cb (MnbEntry         *entry,
                                                  CLUTTER_ACTOR (launcher));
             }
           else
-            expander_set_keyboard_focus (NBTK_EXPANDER (expander));
+            launcher_data_hover_expander (launcher_data,
+                                          NBTK_EXPANDER (expander));
         }
       return;
     }
 
-  /* Expander pane. */
+  /* Expander pane - keyboard navigation. */
   expander = grid_find_widget_by_pseudo_class (NBTK_GRID (launcher_data->apps_grid),
-                                                "active");
+                                               "hover");
+  if (expander)
+    {
+      switch (keyval)
+        {
+          case CLUTTER_Up:
+            expander = grid_keynav_up (NBTK_GRID (launcher_data->apps_grid));
+            if (expander)
+              {
+                launcher_data_hover_expander (launcher_data,
+                                              NBTK_EXPANDER (expander));
+              }
+            break;
+          case CLUTTER_Down:
+            expander = grid_keynav_down (NBTK_GRID (launcher_data->apps_grid));
+              {
+                launcher_data_hover_expander (launcher_data,
+                                              NBTK_EXPANDER (expander));
+              }
+            break;
+          case CLUTTER_Return:
+            launcher_data_hover_expander (launcher_data, NULL);
+            nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
+            break;
+        }
+
+      return;
+    }
+
+
+  expander = grid_find_widget_by_pseudo_class (NBTK_GRID (launcher_data->apps_grid),
+                                               "active");
   if (expander)
     {
       NbtkWidget *inner_grid = NBTK_WIDGET (nbtk_bin_get_child (NBTK_BIN (expander)));
@@ -1301,7 +1409,8 @@ entry_keynav_cb (MnbEntry         *entry,
                                                 x + 1,
                                                 y - gap - 1);
           if (NBTK_IS_EXPANDER (expander))
-            expander_set_keyboard_focus (NBTK_EXPANDER (expander));
+            launcher_data_hover_expander (launcher_data,
+                                          NBTK_EXPANDER (expander));
           else
             {
               /* Move focus to the fav apps pane. */
@@ -1325,7 +1434,8 @@ entry_keynav_cb (MnbEntry         *entry,
           expander = grid_find_widget_by_point (NBTK_GRID (launcher_data->apps_grid),
                                                 x + 1,
                                                 y + gap + 1);
-          expander_set_keyboard_focus (NBTK_EXPANDER (expander));
+          launcher_data_hover_expander (launcher_data,
+                                        NBTK_EXPANDER (expander));
         }
 
       return;
@@ -1349,7 +1459,8 @@ entry_keynav_cb (MnbEntry         *entry,
     expander = grid_find_widget_by_point (NBTK_GRID (launcher_data->apps_grid),
                                           padding.left + 1,
                                           padding.top + 1);
-    expander_set_keyboard_focus (NBTK_EXPANDER (expander));
+    launcher_data_hover_expander (launcher_data,
+                                  NBTK_EXPANDER (expander));
     return;
   }
 }
