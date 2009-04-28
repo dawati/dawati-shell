@@ -56,6 +56,8 @@ void mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                                const gchar *icon,
                                Window       xid);
 
+void mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name);
+
 NbtkWidget * mnb_toolbar_get_switcher (MnbToolbar *toolbar);
 
 void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);

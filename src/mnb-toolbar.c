@@ -416,20 +416,15 @@ _mzone_activated_cb (PengeGridView *view, gpointer data)
 }
 #endif
 
-void
-mnb_toolbar_append_panel (MnbToolbar  *toolbar,
-                          const gchar *name,
-                          const gchar *tooltip,
-                          const gchar *icon,
-                          Window       xid)
+/*
+ * Translates panel name to the corresponding enum value.
+ *
+ * Returns -1 if there is no match.
+ */
+static gint
+mnb_toolbar_panel_name_to_index (const gchar *name)
 {
-  MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
-  MutterPlugin      *plugin = priv->plugin;
-  NbtkWidget        *button;
-  NbtkWidget        *panel;
-  guint              screen_width, screen_height;
-  guint              index;
-  gchar             *button_style;
+  gint index;
 
   if (!strcmp (name, "m-zone"))
     index = M_ZONE;
@@ -460,8 +455,31 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   else
     {
       g_warning ("Unknown panel [%s]");
-      return;
+      index = -1;
     }
+
+  return index;
+}
+
+void
+mnb_toolbar_append_panel (MnbToolbar  *toolbar,
+                          const gchar *name,
+                          const gchar *tooltip,
+                          const gchar *icon,
+                          Window       xid)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
+  MutterPlugin      *plugin = priv->plugin;
+  NbtkWidget        *button;
+  NbtkWidget        *panel;
+  guint              screen_width, screen_height;
+  gint               index;
+  gchar             *button_style;
+
+  index = mnb_toolbar_panel_name_to_index (name);
+
+  if (index < 0)
+    return;
 
   button_style = g_strdup_printf ("%s-button", name);
 
@@ -815,7 +833,26 @@ mnb_toolbar_new (MutterPlugin *plugin)
 void
 mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
 {
+  MnbToolbarPrivate *priv  = toolbar->priv;
+  gint               index = mnb_toolbar_panel_name_to_index (panel_name);
+  gint               i;
 
+  if (index < 0 || !priv->panels[index] ||
+      CLUTTER_ACTOR_IS_VISIBLE (priv->panels[index]))
+    {
+      return;
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
+    if (i != index)
+      {
+        if (CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+          clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
+      }
+    else
+      {
+        clutter_actor_show (CLUTTER_ACTOR (priv->panels[i]));
+      }
 }
 
 /* return NULL if no panel active */
