@@ -7,6 +7,13 @@
 #include "mnb-drop-down.h"
 #include "mnb-switcher.h"
 
+/* TODO -- remove these after multiprocing */
+#include "penge/penge-grid-view.h"
+#include "moblin-netbook-launcher.h"
+#include "moblin-netbook-status.h"
+#include "moblin-netbook-netpanel.h"
+#include "moblin-netbook-pasteboard.h"
+
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
@@ -346,6 +353,22 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
       }
 }
 
+#if 1
+/*
+ * TODO Remove.
+ */
+static void
+_mzone_activated_cb (PengeGridView *view, gpointer data)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (data)->priv;
+
+  if (priv->panels[M_ZONE])
+    clutter_actor_hide (CLUTTER_ACTOR (priv->panels[M_ZONE]));
+
+  clutter_actor_hide (CLUTTER_ACTOR (data));
+}
+#endif
+
 static void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           const gchar *name,
@@ -354,11 +377,12 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           Window       xid)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
-  NbtkWidget *button;
-  NbtkWidget *panel;
-  guint       screen_width, screen_height;
-  guint       index;
-  gboolean    internal = FALSE;
+  MutterPlugin      *plugin = priv->plugin;
+  NbtkWidget        *button;
+  NbtkWidget        *panel;
+  guint              screen_width, screen_height;
+  guint              index;
+  gboolean           internal = FALSE;
 
   if (!strcmp (name, "m-zone"))
     index = M_ZONE;
@@ -410,8 +434,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                                       CLUTTER_ACTOR (priv->panels[index]));
     }
 
-  mutter_plugin_query_screen_size (priv->plugin,
-                                   &screen_width, &screen_height);
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
@@ -490,23 +513,74 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
    */
   if (index == SPACES_ZONE && internal)
     {
-      panel = priv->panels[index] = mnb_switcher_new (priv->plugin);
+      panel = priv->panels[index] = mnb_switcher_new (plugin);
     }
   else
     {
-      panel = priv->panels[index] = mnb_drop_down_new ();
-
       /*
        * TODO -- create the contents from the xid and insert into the dropdown
        */
+
+#if 1
+      /*
+       * For now we load the internal components, so we can get the toolbar
+       * to a working state before we move onto the the actual multiproc
+       * separation.
+       */
+      {
+        ClutterActor *child = NULL;
+
+      switch (index)
+        {
+        case STATUS_ZONE:
+          panel = priv->panels[index] = NBTK_WIDGET (
+            make_status (plugin, screen_width - TOOLBAR_X_PADDING * 2));
+          break;
+        case APPS_ZONE:
+          panel = priv->panels[index] = NBTK_WIDGET (
+            make_launcher (plugin,
+                           screen_width - TOOLBAR_X_PADDING * 2,
+                           screen_height - 2 * TOOLBAR_HEIGHT));
+          break;
+        case PASTEBOARD_ZONE:
+          panel = priv->panels[index] = NBTK_WIDGET (
+            make_pasteboard (plugin,
+                             screen_width - TOOLBAR_X_PADDING * 2));
+          break;
+        case M_ZONE:
+          {
+            ClutterActor *grid;
+
+            panel = priv->panels[index] =
+              mnb_drop_down_new ();
+
+            grid = g_object_new (PENGE_TYPE_GRID_VIEW, NULL);
+
+            g_signal_connect (grid, "activated",
+                              G_CALLBACK (_mzone_activated_cb), toolbar);
+
+            clutter_actor_set_height (grid,
+                                      screen_height - TOOLBAR_HEIGHT * 1.5);
+
+            mnb_drop_down_set_child (MNB_DROP_DOWN (panel), grid);
+          }
+          break;
+        default:
+          g_warning ("Zone %s is currently not implemented", name);
+        }
+      }
+#endif
     }
+
+  if (!panel)
+    return;
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
   clutter_actor_set_width (CLUTTER_ACTOR (panel), screen_width);
 
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
-  clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, PANEL_HEIGHT);
+  clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
 }
 
@@ -550,7 +624,7 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
   if (col < 0)
     return;
 
-  y = PANEL_HEIGHT - TRAY_BUTTON_HEIGHT;
+  y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
 
   clutter_actor_set_position (icon, x, y);
