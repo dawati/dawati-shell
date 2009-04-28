@@ -350,6 +350,7 @@ static void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           const gchar *name,
                           const gchar *tooltip,
+                          const gchar *icon,
                           Window       xid)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
