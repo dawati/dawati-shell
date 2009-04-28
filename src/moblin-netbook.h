@@ -88,8 +88,6 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *toolbar;
   ClutterActor          *lowlight;
 
-  GList                 *global_tab_list;
-
   XserverRegion          current_input_region;
 
   GList                 *input_region_stack;
@@ -104,10 +102,6 @@ struct _MoblinNetbookPluginPrivate
   gint                   screen_height;
 
   gboolean               debug_mode                 : 1;
-  gboolean               panel_out_in_progress      : 1;
-  gboolean               panel_back_in_progress     : 1;
-  gboolean               panel_wait_for_pointer     : 1;
-  gboolean               in_alt_grab                : 1;
   gboolean               blocking_input             : 1;
 
   gint                   fullscreen_apps;

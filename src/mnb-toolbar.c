@@ -95,6 +95,7 @@ struct _MnbToolbarPrivate {
 
   gboolean in_show_animation : 1;
   gboolean in_hide_animation : 1;
+  gboolean dont_autohide     : 1;
 
   MnbInputRegion input_region;
 };
@@ -238,6 +239,8 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
       }
 
   priv->in_hide_animation = FALSE;
+  priv->dont_autohide = FALSE;
+
   g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
   g_object_unref (actor);
 }
@@ -423,8 +426,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   NbtkWidget        *panel;
   guint              screen_width, screen_height;
   guint              index;
-  gboolean           internal = FALSE;
-  gchar             *button_style = NULL;
+  gchar             *button_style;
 
   if (!strcmp (name, "m-zone"))
     index = M_ZONE;
@@ -432,12 +434,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     index = STATUS_ZONE;
   else if (!strcmp (name, "spaces-zone"))
     index = SPACES_ZONE;
-  else if (!strcmp (name, "spaces-zone-internal"))
-    {
-      index = SPACES_ZONE;
-      internal = TRUE;
-      button_style = g_strdup ("spaces-zone-button");
-    }
   else if (!strcmp (name, "internet-zone"))
     index = INTERNET_ZONE;
   else if (!strcmp (name, "media-zone"))
@@ -464,20 +460,31 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
       return;
     }
 
-  if (!button_style)
-    button_style = g_strdup_printf ("%s-button", name);
+  button_style = g_strdup_printf ("%s-button", name);
 
   /*
    * If the respective slot is already occupied, remove the old objects.
    */
   if (priv->buttons[index])
     {
+      if (index == SPACES_ZONE)
+        {
+          g_warning ("The Spaces Zone cannot be replaced\n");
+          return;
+        }
+
       clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
                                       CLUTTER_ACTOR (priv->buttons[index]));
     }
 
   if (priv->panels[index])
     {
+      if (index == SPACES_ZONE)
+        {
+          g_warning ("The Spaces Zone cannot be replaced\n");
+          return;
+        }
+
       clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
                                       CLUTTER_ACTOR (priv->panels[index]));
     }
@@ -554,9 +561,40 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
    * allow it to be replaced by a thirdparty component just like all the
    * other dropdowns.
    */
-  if (index == SPACES_ZONE && internal)
+  if (index == SPACES_ZONE)
     {
       panel = priv->panels[index] = mnb_switcher_new (plugin);
+
+      meta_keybindings_set_custom_handler ("switch_windows",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("switch_windows_backward",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("switch_panels",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("switch_panels_backward",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("cycle_group",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("cycle_group_backward",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("cycle_windows",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("cycle_windows_backward",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("cycle_panels",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
+      meta_keybindings_set_custom_handler ("cycle_panels_backward",
+                                           mnb_switcher_alt_tab_key_handler,
+                                           panel, NULL);
     }
   else
     {
@@ -755,6 +793,11 @@ mnb_toolbar_constructed (GObject *self)
   shell_tray_manager_manage_stage (priv->tray_manager,
                                    CLUTTER_STAGE (
                                            mutter_plugin_get_stage (plugin)));
+
+  /*
+   * Disable autohiding of the panel to start with.
+   */
+  priv->dont_autohide = TRUE;
 }
 
 NbtkWidget*
@@ -947,3 +990,20 @@ mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin)
 
   return shell_tray_manager_is_config_window (priv->tray_manager, xwin);
 }
+
+NbtkWidget *
+mnb_toolbar_get_switcher (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  return priv->panels[SPACES_ZONE];
+}
+
+void
+mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  priv->dont_autohide = dont;
+}
+

@@ -160,8 +160,6 @@ moblin_netbook_plugin_finalize (GObject *object)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (object)->priv;
 
-  g_list_free (priv->global_tab_list);
-
   G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->finalize (object);
 }
 
@@ -193,58 +191,6 @@ moblin_netbook_plugin_get_property (GObject    *object,
     }
 }
 
-/* XXX Move all Alt handling into workspace code.. */
-
-/*
- * Based on do_choose_window() in metacity keybinding.c
- *
- * This is the machinery we need for handling Alt+Tab
- *
- * To start with, Metacity has a passive grab on this key, so we hook up a
- * custom handler to its keybingins.
- *
- * Once we get the initial Alt+Tab, we establish a global key grab (we use
- * metacity API for this, as we need the regular bindings to be correctly
- * restored when we are finished). When the alt key is released, we
- * release the grab.
- */
-static gboolean
-alt_still_down (MetaDisplay *display, MetaScreen *screen, Window xwin,
-                guint entire_binding_mask)
-{
-  gint        x, y, root_x, root_y, i;
-  Window      root, child;
-  guint       mask, primary_modifier = 0;
-  Display    *xdpy = meta_display_get_xdisplay (display);
-  guint       masks[] = { Mod5Mask, Mod4Mask, Mod3Mask,
-                          Mod2Mask, Mod1Mask, ControlMask,
-                          ShiftMask, LockMask };
-
-  i = 0;
-  while (i < (int) G_N_ELEMENTS (masks))
-    {
-      if (entire_binding_mask & masks[i])
-        {
-          primary_modifier = masks[i];
-          break;
-        }
-
-      ++i;
-    }
-
-  XQueryPointer (xdpy,
-                 xwin, /* some random window */
-                 &root, &child,
-                 &root_x, &root_y,
-                 &x, &y,
-                 &mask);
-
-  if ((mask & primary_modifier) == 0)
-    return FALSE;
-  else
-    return TRUE;
-}
-
 /*
  * Sets up passive key grabs on any dedicated shortcut keys that we cannot
  * hook into throught metacity key bindings.
@@ -266,378 +212,6 @@ moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin)
   XGrabKey (xdpy, XKeysymToKeycode (xdpy, MOBLIN_PANEL_SHORTCUT_KEY),
             AnyModifier,
             root_xwin, True, GrabModeAsync, GrabModeAsync);
-}
-
-/*
- * Helper function for metacity_alt_tab_key_handler().
- *
- * The advance parameter indicates whether if the grab succeeds the switcher
- * selection should be advanced.
- */
-static void
-try_alt_tab_grab (MutterPlugin *plugin,
-                  gulong        mask,
-                  guint         timestamp,
-                  gboolean      backward,
-                  gboolean      advance)
-{
-#if 0
-  MoblinNetbookPluginPrivate *priv     = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen   = mutter_plugin_get_screen (plugin);
-  MetaDisplay                *display  = meta_screen_get_display (screen);
-  MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
-  MetaWindow                 *next     = NULL;
-  MetaWindow                 *current  = NULL;
-
-  current = meta_display_get_tab_current (display,
-                                          META_TAB_LIST_NORMAL,
-                                          screen,
-                                          NULL);
-
-  next = mnb_switcher_get_next_window (switcher, NULL, backward);
-
-  /*
-   * If we cannot get a window from the switcher (i.e., the switcher is not
-   * visible), get the next suitable window from the global tab list.
-   */
-  if (!next && priv->global_tab_list)
-    {
-      GList *l;
-      MetaWindow *focused = NULL;
-
-      l = priv->global_tab_list;
-
-      while (l)
-        {
-          MetaWindow *mw = l->data;
-          gboolean    sticky;
-
-          sticky = meta_window_is_on_all_workspaces (mw);
-
-          if (sticky)
-            {
-              /*
-               * The loop runs forward when looking for the focused window and
-               * when looking for the next window in forward direction; when
-               * looking for the next window in backward direction, runs, ehm,
-               * backward.
-               */
-              if (focused && backward)
-                l = l->prev;
-              else
-                l = l->next;
-              continue;
-            }
-
-          if (!focused)
-            {
-              if (meta_window_has_focus (mw))
-                focused = mw;
-            }
-          else
-            {
-              next = mw;
-              break;
-            }
-
-          /*
-           * The loop runs forward when looking for the focused window and
-           * when looking for the next window in forward direction; when
-           * looking for the next window in backward direction, runs, ehm,
-           * backward.
-           */
-          if (focused && backward)
-            l = l->prev;
-          else
-            l = l->next;
-        }
-
-      /*
-       * If all fails, fall back at the start/end of the list.
-       */
-      if (!next && priv->global_tab_list)
-        {
-          if (backward)
-            next = META_WINDOW (priv->global_tab_list->data);
-          else
-            next = META_WINDOW (g_list_last (priv->global_tab_list)->data);
-        }
-    }
-
-  /*
-   * If we still do not have the next window, or the one we got so far matches
-   * the current window, we fall back onto metacity's focus list and try to
-   * switch to that.
-   */
-  if (current && (!next || (advance  && (next == current))))
-    {
-      MetaWorkspace *ws = meta_window_get_workspace (current);
-
-      next = meta_display_get_tab_next (display,
-                                        META_TAB_LIST_NORMAL,
-                                        screen,
-                                        ws,
-                                        current,
-                                        backward);
-    }
-
-  if (!next || (advance && (next == current)))
-    return;
-
-
-  /*
-   * For some reaon, XGrabKeyboard() does not like real timestamps, or
-   * we are getting rubish out of clutter ... using CurrentTime here makes it
-   * work.
-   */
-  if (meta_display_begin_grab_op (display,
-                                  screen,
-                                  NULL,
-                                  META_GRAB_OP_KEYBOARD_TABBING_NORMAL,
-                                  FALSE,
-                                  FALSE,
-                                  0,
-                                  mask,
-                                  timestamp,
-                                  0, 0))
-    {
-      ClutterActor               *stage = mutter_get_stage_for_screen (screen);
-      Window                      xwin;
-
-      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-      priv->in_alt_grab = TRUE;
-
-      if (!alt_still_down (display, screen, xwin, mask))
-        {
-          MetaWorkspace *workspace;
-          MetaWorkspace *active_workspace;
-
-          meta_display_end_grab_op (display, timestamp);
-          priv->in_alt_grab = FALSE;
-
-          moblin_netbook_setup_kbd_grabs (plugin);
-
-          workspace        = meta_window_get_workspace (next);
-          active_workspace = meta_screen_get_active_workspace (screen);
-
-          mnb_switcher_hide_with_panel (switcher);
-
-          if (!active_workspace || (active_workspace == workspace))
-            {
-              meta_window_activate_with_workspace (next,
-                                                   timestamp,
-                                                   workspace);
-            }
-          else
-            {
-              meta_workspace_activate_with_focus (workspace,
-                                                  next,
-                                                  timestamp);
-            }
-        }
-      else
-        {
-          if (advance)
-            mnb_switcher_select_window (switcher, next);
-          else if (current)
-            mnb_switcher_select_window (switcher, current);
-        }
-    }
-#endif
-}
-
-static void
-handle_alt_tab (MetaDisplay    *display,
-                MetaScreen     *screen,
-                MetaWindow     *event_window,
-                XEvent         *event,
-                MetaKeyBinding *binding,
-                MutterPlugin   *plugin)
-{
-#if 0
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  gboolean                    backward = FALSE;
-  MetaWindow                 *next;
-  MetaWorkspace              *workspace;
-  MnbSwitcher                *switcher = MNB_SWITCHER (priv->switcher);
-  guint32                     timestamp;
-
-  if (event->type != KeyPress)
-    return;
-
-  timestamp = meta_display_get_current_time_roundtrip (display);
-
-#if 0
-  printf ("got key event (%d) for keycode %d on window 0x%x, sub 0x%x, state %d\n",
-          event->type,
-          event->xkey.keycode,
-          (guint) event->xkey.window,
-          (guint) event->xkey.subwindow,
-          event->xkey.state);
-#endif
-
-  /* reverse direction if shift is down */
-  if (event->xkey.state & ShiftMask)
-    backward = !backward;
-
-  workspace = meta_screen_get_active_workspace (screen);
-
-  if (priv->in_alt_grab)
-    {
-      MetaWindow *selected = mnb_switcher_get_selection (switcher);
-
-      next = mnb_switcher_get_next_window (switcher, selected, backward);
-
-      if (!next)
-        {
-          g_warning ("No idea what the next selected window should be.\n");
-          return;
-        }
-
-      mnb_switcher_select_window (MNB_SWITCHER (priv->switcher), next);
-      return;
-    }
-
-  try_alt_tab_grab (plugin, binding->mask, timestamp, backward, FALSE);
-#endif
-}
-
-struct alt_tab_show_complete_data
-{
-  MutterPlugin   *plugin;
-  MetaDisplay    *display;
-  MetaScreen     *screen;
-  MetaWindow     *window;
-  MetaKeyBinding *binding;
-  XEvent          xevent;
-};
-
-static void
-alt_tab_switcher_show_completed_cb (ClutterActor *switcher, gpointer data)
-{
-  struct alt_tab_show_complete_data *alt_data = data;
-
-  handle_alt_tab (alt_data->display, alt_data->screen, alt_data->window,
-                  &alt_data->xevent, alt_data->binding, alt_data->plugin);
-
-  /*
-   * This is a one-off, disconnect ourselves.
-   */
-  g_signal_handlers_disconnect_by_func (switcher,
-                                        alt_tab_switcher_show_completed_cb,
-                                        data);
-
-  g_free (data);
-}
-
-static gboolean
-alt_tab_timeout_cb (gpointer data)
-{
-#if 0
-  struct alt_tab_show_complete_data *alt_data = data;
-  MoblinNetbookPluginPrivate        *priv;
-  ClutterActor                      *stage;
-  Window                             xwin;
-
-  priv  = MOBLIN_NETBOOK_PLUGIN (alt_data->plugin)->priv;
-  stage = mutter_get_stage_for_screen (alt_data->screen);
-  xwin  = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-  /*
-   * Check wether the Alt key is still down; if so, show the Switcher, and
-   * wait for the show-completed signal to process the Alt+Tab.
-   */
-  if (alt_still_down (alt_data->display, alt_data->screen, xwin, Mod1Mask))
-    {
-      g_signal_connect (priv->switcher, "show-completed",
-                        G_CALLBACK (alt_tab_switcher_show_completed_cb),
-                        alt_data);
-
-      // show_panel_and_control (alt_data->plugin, MNBK_CONTROL_SPACES);
-      priv->panel_wait_for_pointer = FALSE;
-    }
-  else
-    {
-      gboolean backward  = FALSE;
-
-      if (alt_data->xevent.xkey.state & ShiftMask)
-        backward = !backward;
-
-      try_alt_tab_grab (alt_data->plugin, alt_data->binding->mask,
-                        alt_data->xevent.xkey.time, backward, TRUE);
-      g_free (data);
-    }
-
-  /* One off */
-  return FALSE;
-#endif
-}
-
-/*
- * The handler for Alt+Tab that we register with metacity.
- */
-static void
-metacity_alt_tab_key_handler (MetaDisplay    *display,
-                              MetaScreen     *screen,
-                              MetaWindow     *window,
-                              XEvent         *event,
-                              MetaKeyBinding *binding,
-                              gpointer        data)
-{
-#if 0
-  MutterPlugin               *plugin = MUTTER_PLUGIN (data);
-  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  /*
-   * TODO -- handle this better.
-   *
-   * Because our alt_tab mechanism requires the switcher, we currnetly cannot
-   * make use of it when there are fullscreen apps.
-   */
-  if (priv->fullscreen_apps)
-    return;
-
-  if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
-    {
-      struct alt_tab_show_complete_data *alt_data;
-
-      /*
-       * If the switcher is not visible we want to show it; this is, however,
-       * complicated by several factors:
-       *
-       *  a) If the panel is visible, we have to show the panel first. In this
-       *     case, the Panel slides out, when the effect finishes, the Switcher
-       *     slides from underneath -- clutter_actor_show() is only called on
-       *     the switcher when the Panel effect completes, and as the contents
-       *     of the Switcher are being built in the _show() virtual, we do not
-       *     have those until the effects are all over. We need the switcher
-       *     contents initialized before we can start the actual processing of
-       *     the Alt+Tab key, so we need to wait for the "show-completed" signal
-       *
-       *  b) If the user just hits and immediately releases Alt+Tab, we need to
-       *     avoid initiating the effects alltogether, otherwise we just get
-       *     bit of a flicker as the Switcher starts coming out and immediately
-       *     disappears.
-       *
-       *  So, instead of showing the switcher, we install a timeout to introduce
-       *  a short delay, so we can test whether the Alt key is still down. We
-       *  then handle the actual show from the timeout.
-       */
-      alt_data = g_new0 (struct alt_tab_show_complete_data, 1);
-      alt_data->display = display;
-      alt_data->screen  = screen;
-      alt_data->plugin  = plugin;
-      alt_data->binding = binding;
-
-      memcpy (&alt_data->xevent, event, sizeof (XEvent));
-
-      g_timeout_add (100, alt_tab_timeout_cb, alt_data);
-      return;
-    }
-
-  handle_alt_tab (display, screen, window, event, binding, plugin);
-#endif
 }
 
 /*
@@ -809,8 +383,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, toolbar, NULL);
   clutter_actor_hide (lowlight);
 
-  priv->panel_wait_for_pointer = TRUE;
-
   /*
    * Hook into "show" signal on stage, to set up input regions.
    * (We cannot set up the stage here, because the overlay window, etc.,
@@ -902,16 +474,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   meta_prefs_override_no_tab_popup (TRUE);
 
   /*
-   * Install our custom Alt+Tab handler.
-   */
-  meta_keybindings_set_custom_handler ("switch_windows",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("switch_windows_backward",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-
-  /*
    * Install NOP handler for shortcuts that are related to Alt+Tab.
    */
   meta_keybindings_set_custom_handler ("switch_group",
@@ -922,30 +484,6 @@ moblin_netbook_plugin_constructed (GObject *object)
                                        plugin, NULL);
   meta_keybindings_set_custom_handler ("switch_group_backward",
                                        metacity_nop_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("switch_panels",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("switch_panels_backward",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("cycle_group",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("cycle_group_backward",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("cycle_windows",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("cycle_windows_backward",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("cycle_panels",
-                                       metacity_alt_tab_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("cycle_panels_backward",
-                                       metacity_alt_tab_key_handler,
                                        plugin, NULL);
 }
 
@@ -1323,34 +861,6 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
   check_for_empty_workspace (plugin, old_workspace, mw);
 }
 
-/*
- * The following two functions are used to maintain the global tab list.
- * When a window is focused, we move it to the top of the list, when it
- * is destroyed, we remove it.
- *
- * NB: the global tab list is a fallback when we cannot use the Switcher list
- * (e.g., for fast Alt+Tab switching without the Switcher.
- */
-static void
-tablist_meta_window_focus_cb (MetaWindow *mw, gpointer data)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
-
-  /*
-   * Push to the top of the global tablist.
-   */
-  priv->global_tab_list = g_list_remove (priv->global_tab_list, mw);
-  priv->global_tab_list = g_list_prepend (priv->global_tab_list, mw);
-}
-
-static void
-tablist_meta_window_weak_ref_cb (gpointer data, GObject *mw)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
-
-  priv->global_tab_list = g_list_remove (priv->global_tab_list, mw);
-}
-
 static void
 meta_window_fullcreen_notify_cb (GObject    *object,
                                  GParamSpec *spec,
@@ -1502,12 +1012,14 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       if (type == META_COMP_WINDOW_NORMAL)
         {
           g_signal_connect (mw, "focus",
-                            G_CALLBACK (tablist_meta_window_focus_cb),
-                            plugin);
+                            G_CALLBACK (mnb_switcher_meta_window_focus_cb),
+                            mnb_toolbar_get_switcher (MNB_TOOLBAR (
+                                                              priv->toolbar)));
 
           g_object_weak_ref (G_OBJECT (mw),
-                             tablist_meta_window_weak_ref_cb,
-                             plugin);
+                             mnb_switcher_meta_window_weak_ref_cb,
+                             mnb_toolbar_get_switcher (MNB_TOOLBAR (
+                                                              priv->toolbar)));
         }
     }
   else
@@ -1683,46 +1195,32 @@ static gboolean
 xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
+  MnbSwitcher                *switcher;
 
-  if (priv->in_alt_grab)
-    {
-      if (xev->type == KeyRelease &&
-          XKeycodeToKeysym (xev->xkey.display,
-                            xev->xkey.keycode, 0) == XK_Alt_L)
-        {
-          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
-          MetaDisplay *display = meta_screen_get_display (screen);
+  switcher = MNB_SWITCHER (mnb_toolbar_get_switcher (toolbar));
 
-          meta_display_end_grab_op (display, xev->xkey.time);
-          priv->in_alt_grab = FALSE;
-
-          moblin_netbook_setup_kbd_grabs (plugin);
-#if 0
-          mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
-                                           xev->xkey.time);
-#endif
-          return TRUE;
-        }
-
-      /*
-       * Block processing of pointer events by clutter. We do not want the
-       * user to be doing stuff like d&d, etc., while in grab mode.
-       */
-      if (xev->type == ButtonPress   ||
-          xev->type == ButtonRelease ||
-          xev->type == MotionNotify)
-        return TRUE;
-    }
+  if (mnb_switcher_handle_xevent (switcher, xev))
+    return TRUE;
 
   if (xev->type == KeyPress &&
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) ==
                                                     MOBLIN_PANEL_SHORTCUT_KEY)
     {
       if (!CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
-        clutter_actor_show (priv->toolbar);
+        {
+          /*
+           * Set the dont_autohide flag on the toolbar; this stops the panel
+           * hiding due to mouse pointer movement until the pointer re-enters
+           * the panel (i.e., if the toolbar opens, but the pointer is outside
+           * of it, we do not want the toolbar to hide as soon as the user
+           * moves the pointer).
+           */
+          mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (priv->toolbar), TRUE);
+          clutter_actor_show (priv->toolbar);
+        }
       else
         {
-          priv->panel_wait_for_pointer = FALSE;
           clutter_actor_hide (priv->toolbar);
         }
 
@@ -1731,8 +1229,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
   sn_display_process_event (priv->sn_display, xev);
 
-  if (!priv->in_alt_grab &&
-      (xev->type == KeyPress || xev->type == KeyRelease))
+  if (xev->type == KeyPress || xev->type == KeyRelease)
     {
       MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
       ClutterActor *stage   = mutter_get_stage_for_screen (screen);
@@ -1844,8 +1341,10 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
       priv->last_y = event_y;
 
+#if 0
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
+#endif
 
       if (priv->panel_disabled)
         return FALSE;

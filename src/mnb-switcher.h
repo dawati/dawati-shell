@@ -69,7 +69,18 @@ MetaWindow *mnb_switcher_get_selection (MnbSwitcher *switcher);
 MetaWindow *mnb_switcher_get_next_window (MnbSwitcher *switcher,
                                           MetaWindow  *current,
                                           gboolean     backward);
-void        mnb_switcher_hide_with_panel (MnbSwitcher *switcher);
+
+void        mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
+                                              MetaScreen     *screen,
+                                              MetaWindow     *window,
+                                              XEvent         *event,
+                                              MetaKeyBinding *binding,
+                                              gpointer        data);
+
+void        mnb_switcher_meta_window_focus_cb (MetaWindow *mw, gpointer data);
+void        mnb_switcher_meta_window_weak_ref_cb (gpointer data, GObject *mw);
+
+gboolean    mnb_switcher_handle_xevent (MnbSwitcher *switcher, XEvent *xev);
 
 G_END_DECLS
 
