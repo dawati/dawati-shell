@@ -53,6 +53,7 @@ struct _MnbDropDownPrivate {
 
   gboolean in_show_animation : 1;
   gboolean in_hide_animation : 1;
+  gboolean hide_toolbar      : 1;
 };
 
 static void
@@ -93,6 +94,7 @@ mnb_drop_down_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
 
   priv->in_show_animation = FALSE;
+  priv->hide_toolbar = FALSE;
   g_signal_emit (actor, dropdown_signals[SHOW_COMPLETED], 0);
   g_object_unref (actor);
 }
@@ -188,6 +190,23 @@ mnb_drop_down_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 
   /* now that it's hidden we can put it back to where it is suppoed to be */
   clutter_actor_set_position (actor, priv->x, priv->y);
+
+  if (priv->hide_toolbar)
+    {
+      /*
+       * If the hide_toolbar flag is set, we attempt to hide the Toolbar now
+       * that the panel is hidden.
+       */
+      ClutterActor *toolbar = clutter_actor_get_parent (actor);
+
+      while (toolbar && !MNB_IS_TOOLBAR (toolbar))
+        toolbar = clutter_actor_get_parent (toolbar);
+
+      if (toolbar)
+        clutter_actor_hide (toolbar);
+
+      priv->hide_toolbar = FALSE;
+    }
 
   priv->in_hide_animation = FALSE;
   g_signal_emit (actor, dropdown_signals[HIDE_COMPLETED], 0);
@@ -451,4 +470,21 @@ mnb_drop_down_set_button (MnbDropDown *drop_down,
                     G_CALLBACK (mnb_button_toggled_cb),
                     drop_down);
 
+}
+
+/*
+ * Hides both dropdown and toolbar, in a sequnce so as to preserve the
+ * hide animations.
+ */
+void
+mnb_drop_down_hide_with_toolbar (MnbDropDown *self)
+{
+  MnbDropDownPrivate *priv = self->priv;
+
+  priv->hide_toolbar = TRUE;
+
+  if (priv->in_hide_animation)
+    return;
+
+  clutter_actor_hide (CLUTTER_ACTOR (self));
 }

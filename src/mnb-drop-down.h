@@ -76,6 +76,8 @@ ClutterActor* mnb_drop_down_get_child (MnbDropDown *drop_down);
 
 void          mnb_drop_down_set_button (MnbDropDown *drop_down, NbtkButton *button);
 
+void          mnb_drop_down_hide_with_toolbar (MnbDropDown *drop_down);
+
 G_END_DECLS
 
 #endif /* _MNB_DROP_DOWN */

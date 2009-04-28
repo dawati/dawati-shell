@@ -33,8 +33,6 @@
 #define HOVER_TIMEOUT  800
 #define CLONE_HEIGHT   80  /* Height of the window thumb */
 
-static void mnb_switcher_hide_with_panel (MnbSwitcher *switcher);
-
 /*
  * MnbSwitcherApp
  *
@@ -1679,7 +1677,7 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
   active_workspace = meta_screen_get_active_workspace (screen);
 
   if (close)
-    mnb_switcher_hide_with_panel (switcher);
+    mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
 
   if (!active_workspace || (active_workspace == workspace))
     {
@@ -1769,45 +1767,6 @@ mnb_switcher_get_next_window (MnbSwitcher *switcher,
   next_priv = MNB_SWITCHER_APP (next)->priv;
 
   return mutter_window_get_meta_window (next_priv->mw);
-}
-
-static void
-hide_panel_on_hide_completed_cb (MnbSwitcher *switcher, gpointer data)
-{
-  MnbSwitcherPrivate *priv = switcher->priv;
-  MutterPlugin       *plugin = priv->plugin;
-  ClutterActor       *toolbar;
-
-  g_signal_handler_disconnect (switcher, priv->hide_panel_cb_id);
-  priv->hide_panel_cb_id = 0;
-
-  toolbar = clutter_actor_get_parent (CLUTTER_ACTOR (switcher));
-  while (toolbar && !MNB_IS_TOOLBAR (toolbar))
-    toolbar = clutter_actor_get_parent (toolbar);
-
-  if (toolbar)
-    clutter_actor_hide (toolbar);
-}
-
-/*
- * Hides both switcher and panel, in a sequnce so so as to preserve the
- * hide animations.
- *
- * TODO -- this should probably be turned into generic MnbDropDown API.
- */
-static void
-mnb_switcher_hide_with_panel (MnbSwitcher *switcher)
-{
-  MnbSwitcherPrivate *priv = switcher->priv;
-
-  if (priv->hide_panel_cb_id)
-    return;
-
-  priv->hide_panel_cb_id =
-    g_signal_connect (switcher, "hide-completed",
-                      G_CALLBACK (hide_panel_on_hide_completed_cb), NULL);
-
-  clutter_actor_hide (CLUTTER_ACTOR (switcher));
 }
 
 /*
@@ -2012,7 +1971,7 @@ try_alt_tab_grab (MnbSwitcher  *switcher,
           workspace        = meta_window_get_workspace (next);
           active_workspace = meta_screen_get_active_workspace (screen);
 
-          mnb_switcher_hide_with_panel (switcher);
+          mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
 
           if (!active_workspace || (active_workspace == workspace))
             {
