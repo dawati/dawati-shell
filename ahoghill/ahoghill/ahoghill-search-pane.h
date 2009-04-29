@@ -1,7 +1,7 @@
 #ifndef __AHOGHILL_SEARCH_PANE_H__
 #define __AHOGHILL_SEARCH_PANE_H__
 
-#include <nbtk/nbtk-table.h>
+#include <nbtk/nbtk.h>
 
 G_BEGIN_DECLS
 

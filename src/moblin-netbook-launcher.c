@@ -1488,6 +1488,12 @@ static void
 dropdown_hide_cb (MnbDropDown     *dropdown,
                   launcher_data_t *launcher_data)
 {
+  ClutterActor *stage;
+
+  /* Reset focus. */
+  stage = clutter_actor_get_stage (CLUTTER_ACTOR (dropdown));
+  clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
+
   /* Reset search. */
   mnb_entry_set_text (MNB_ENTRY (launcher_data->filter_entry), "");
 }

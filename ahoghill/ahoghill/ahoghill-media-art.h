@@ -1,7 +1,7 @@
 #ifndef __AHOGHILL_MEDIA_ART_H__
 #define __AHOGHILL_MEDIA_ART_H__
 
-#include <nbtk/nbtk-widget.h>
+#include <nbtk/nbtk.h>
 
 G_BEGIN_DECLS
 

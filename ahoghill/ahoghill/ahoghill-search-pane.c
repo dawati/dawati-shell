@@ -86,16 +86,25 @@ ahoghill_search_pane_init (AhoghillSearchPane *self)
 
     label = nbtk_label_new (_("Media"));
     clutter_actor_set_name (CLUTTER_ACTOR (label), "media-pane-search-label");
-    nbtk_table_add_widget_full (table, label, 0, 0, 1, 1,
-                                NBTK_Y_EXPAND, 0.0, 0.5);
+    nbtk_table_add_actor_with_properties (table, (ClutterActor *) label,
+                                          0, 0,
+                                          "x-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 0.0,
+                                          NULL);
 
     priv->entry = mnb_entry_new (_("Search"));
     clutter_actor_set_name (CLUTTER_ACTOR (priv->entry),
                             "media-pane-search-entry");
     clutter_actor_set_width (CLUTTER_ACTOR (priv->entry),
                              CLUTTER_UNITS_FROM_DEVICE (600));
-    nbtk_table_add_widget_full (table, priv->entry, 0, 1, 1, 1,
-                                NBTK_Y_EXPAND | NBTK_Y_FILL, 0.0, 0.5);
+    nbtk_table_add_actor_with_properties (table, (ClutterActor *) priv->entry,
+                                          0, 1,
+                                          "x-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "x-align", 0.0,
+                                          NULL);
 }
 
 NbtkWidget *
