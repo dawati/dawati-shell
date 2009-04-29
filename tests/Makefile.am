@@ -22,7 +22,8 @@ noinst_PROGRAMS = \
 	test-launcher-monitor \
 	test-launcher-tree \
 	test-tray \
-	test-pasteboard
+	test-pasteboard \
+	test-screensized
 
 test_launcher_button_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-button.c \
@@ -50,3 +51,6 @@ test_pasteboard_SOURCES = \
 	$(top_srcdir)/src/mnb-entry.c \
 	$(top_builddir)/src/marshal.c \
 	test-pasteboard.c
+
+test_screensized_SOURCES = \
+	test-screensized.c

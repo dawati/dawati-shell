@@ -23,8 +23,8 @@
 #ifndef __MNB_LAUNCHER_BUTTON_H__
 #define __MNB_LAUNCHER_BUTTON_H__
 
-#include <nbtk/nbtk-widget.h>
-#include <nbtk/nbtk-table.h>
+#include <nbtk/nbtk.h>
+#include <nbtk/nbtk.h>
 
 G_BEGIN_DECLS
 

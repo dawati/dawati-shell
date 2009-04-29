@@ -27,7 +27,7 @@
 #include <display.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#include <nbtk/nbtk-tooltip.h>
+#include <nbtk/nbtk.h>
 #include <keybindings.h>
 
 #define HOVER_TIMEOUT  800
