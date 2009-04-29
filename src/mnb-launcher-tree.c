@@ -432,11 +432,11 @@ mnb_launcher_entry_get_name (MnbLauncherEntry *entry)
   if (entry->name)
     return entry->name;
 
-  entry->name = g_key_file_get_value (
-                          entry->desktop_file,
-                          G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
-                          &error);
+  entry->name = g_key_file_get_locale_string (entry->desktop_file,
+                                              G_KEY_FILE_DESKTOP_GROUP,
+                                              G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
+                                              NULL,
+                                              &error);
   if (error)
     {
       /* Missing generic name is very common, so just ignore.
@@ -448,11 +448,11 @@ mnb_launcher_entry_get_name (MnbLauncherEntry *entry)
     return entry->name;
 
   /* Fall back to "Name" */
-  entry->name = g_key_file_get_value (
-                          entry->desktop_file,
-                          G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_NAME,
-                          &error);
+  entry->name = g_key_file_get_locale_string (entry->desktop_file,
+                                              G_KEY_FILE_DESKTOP_GROUP,
+                                              G_KEY_FILE_DESKTOP_KEY_NAME,
+                                              NULL,
+                                              &error);
   if (error)
     {
       g_warning ("%s", error->message);
@@ -515,9 +515,11 @@ mnb_launcher_entry_get_icon (MnbLauncherEntry *entry)
 
   g_return_val_if_fail (entry, NULL);
 
-  ret = g_key_file_get_value (entry->desktop_file,
-                              G_KEY_FILE_DESKTOP_GROUP,
-                              G_KEY_FILE_DESKTOP_KEY_ICON, &error);
+  ret = g_key_file_get_locale_string (entry->desktop_file,
+                                      G_KEY_FILE_DESKTOP_GROUP,
+                                      G_KEY_FILE_DESKTOP_KEY_ICON, 
+                                      NULL,
+                                      &error);
   if (error)
     {
       g_warning ("%s", error->message);
@@ -535,9 +537,11 @@ mnb_launcher_entry_get_comment (MnbLauncherEntry *entry)
 
   g_return_val_if_fail (entry, NULL);
 
-  ret = g_key_file_get_value (entry->desktop_file,
-                              G_KEY_FILE_DESKTOP_GROUP,
-                              G_KEY_FILE_DESKTOP_KEY_COMMENT, &error);
+  ret = g_key_file_get_locale_string (entry->desktop_file,
+                                      G_KEY_FILE_DESKTOP_GROUP,
+                                      G_KEY_FILE_DESKTOP_KEY_COMMENT,
+                                      NULL,
+                                      &error);
   if (error)
     {
       g_warning ("%s", error->message);
