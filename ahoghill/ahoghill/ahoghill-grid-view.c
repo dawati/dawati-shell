@@ -14,6 +14,7 @@
 #include <src/mnb-entry.h>
 
 #include "ahoghill-grid-view.h"
+#include "ahoghill-results-model.h"
 #include "ahoghill-results-pane.h"
 #include "ahoghill-search-pane.h"
 
@@ -35,6 +36,7 @@ struct _AhoghillGridViewPrivate {
     ClutterActor *results_pane;
     ClutterActor *playqueues_pane;
 
+    AhoghillResultsModel *model;
     GtkRecentManager *recent_manager;
 
     GPtrArray *dbs;
@@ -230,8 +232,10 @@ init_bickley (gpointer data)
 
         g_list_free (recent_items);
 
+#if 0
         ahoghill_results_pane_set_results
             (AHOGHILL_RESULTS_PANE (priv->results_pane), items);
+#endif
         g_ptr_array_free (items, TRUE);
     }
 }
@@ -422,6 +426,8 @@ ahoghill_grid_view_init (AhoghillGridView *self)
 
     bkl_init ();
 
+    priv->model = g_object_new (AHOGHILL_TYPE_RESULTS_MODEL, NULL);
+
     clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-vbox");
     clutter_actor_set_size (CLUTTER_ACTOR (self), 1024, 500);
 
@@ -445,9 +451,10 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_signal_connect (entry, "text-changed",
                       G_CALLBACK (search_text_changed), self);
 
-    priv->results_pane = g_object_new (AHOGHILL_TYPE_RESULTS_PANE,
-                                       "title", _("Recent"),
-                                       NULL);
+    priv->results_pane = (ClutterActor *) ahoghill_results_pane_new (priv->model);
+    g_object_set (priv->results_pane,
+                  "title", _("Recent"),
+                  NULL);
     clutter_actor_set_size (priv->results_pane, 800, 400);
     nbtk_table_add_actor_with_properties (table, priv->results_pane,
                                           1, 0,

@@ -103,3 +103,29 @@ ahoghill_results_model_remove_item (AhoghillResultsModel *model,
     g_object_weak_unref ((GObject *) item, remove_item, model);
     remove_item (model, (GObject *) item);
 }
+
+BklItem *
+ahoghill_results_model_get_item (AhoghillResultsModel *model,
+                                 int                   item_no)
+{
+    AhoghillResultsModelPrivate *priv;
+
+    priv = model->priv;
+
+    /* Check we have that many items */
+    if (item_no >= priv->items->len) {
+        return NULL;
+    }
+
+    return priv->items->pdata[item_no];
+}
+
+int
+ahoghill_results_model_get_count (AhoghillResultsModel *model)
+{
+    AhoghillResultsModelPrivate *priv;
+
+    priv = model->priv;
+
+    return priv->items->len;
+}

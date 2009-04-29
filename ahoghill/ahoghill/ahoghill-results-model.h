@@ -50,7 +50,9 @@ void ahoghill_results_model_add_item (AhoghillResultsModel *model,
                                       BklItem              *item);
 void ahoghill_results_model_remove_item (AhoghillResultsModel *model,
                                          BklItem              *item);
-
+BklItem *ahoghill_results_model_get_item (AhoghillResultsModel *model,
+                                          int                   item_no);
+int ahoghill_results_model_get_count (AhoghillResultsModel *model);
 G_END_DECLS
 
 #endif /* __AHOGHILL_RESULTS_MODEL_H__ */
