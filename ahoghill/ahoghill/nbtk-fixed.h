@@ -1,7 +1,7 @@
 #ifndef __NBTK_FIXED_H__
 #define __NBTK_FIXED_H__
 
-#include <nbtk/nbtk-widget.h>
+#include <nbtk/nbtk.h>
 
 
 G_BEGIN_DECLS

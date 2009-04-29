@@ -1,7 +1,7 @@
 #include <bickley/bkl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include <nbtk/nbtk-label.h>
+#include <nbtk/nbtk.h>
 
 #include "ahoghill-media-art.h"
 #include "ahoghill-media-tile.h"

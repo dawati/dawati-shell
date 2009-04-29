@@ -1,7 +1,7 @@
 #ifndef __AHOGHILL_RESULTS_TABLE_H__
 #define __AHOGHILL_RESULTS_TABLE_H__
 
-#include <nbtk/nbtk-table.h>
+#include <nbtk/nbtk.h>
 
 
 G_BEGIN_DECLS
