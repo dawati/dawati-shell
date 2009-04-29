@@ -878,6 +878,21 @@ mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
       }
 }
 
+void
+mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name)
+{
+  MnbToolbarPrivate *priv  = toolbar->priv;
+  gint               index = mnb_toolbar_panel_name_to_index (panel_name);
+
+  if (index < 0 || !priv->panels[index] ||
+      !CLUTTER_ACTOR_IS_VISIBLE (priv->panels[index]))
+    {
+      return;
+    }
+
+  clutter_actor_hide (CLUTTER_ACTOR (priv->panels[index]));
+}
+
 /* return NULL if no panel active */
 const gchar *
 mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)

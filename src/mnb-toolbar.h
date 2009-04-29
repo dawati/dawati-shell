@@ -57,6 +57,8 @@ void mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                                Window       xid);
 
 void mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name);
+void mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name);
+
 const gchar * mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar);
 
 gboolean mnb_toolbar_in_transition (MnbToolbar *toolbar);
