@@ -903,7 +903,9 @@ mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
 gboolean
 mnb_toolbar_in_transition (MnbToolbar *toolbar)
 {
+  MnbToolbarPrivate *priv  = toolbar->priv;
 
+  return (priv->in_show_animation || priv->in_hide_animation);
 }
 
 static void
