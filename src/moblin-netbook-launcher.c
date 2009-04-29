@@ -474,7 +474,6 @@ typedef struct
   MnbLauncherMonitor      *monitor;
   GHashTable              *expanders;
   GSList                  *launchers;
-  guint                    fill_timeout_id;
 
   /* Static widgets, managed by clutter. */
   ClutterUnit              width;
@@ -496,6 +495,13 @@ typedef struct
   /* Keyboard navigation. */
   guint                    expand_timeout_id;
   NbtkExpander            *expand_expander;
+
+  /* During incremental fill. */
+  guint                    fill_id;
+  MnbLauncherTree         *tree;
+  GSList                  *directories;
+  GSList const            *directory_iter;
+  GtkIconTheme            *theme;
 } launcher_data_t;
 
 static void launcher_data_monitor_cb        (MnbLauncherMonitor  *monitor,
@@ -911,17 +917,137 @@ launcher_data_set_show_fav_apps (launcher_data_t *launcher_data,
 }
 
 static gboolean
+launcher_data_fill_category (launcher_data_t *launcher_data)
+{
+  MnbLauncherDirectory  *directory;
+  GSList                *entry_iter;
+  ClutterActor          *inner_grid;
+  NbtkWidget            *button;
+
+  if (launcher_data->tree == NULL)
+    {
+      /* First invocation. */
+      launcher_data->tree = mnb_launcher_tree_create ();
+      launcher_data->directories = mnb_launcher_tree_list_entries (launcher_data->tree);
+      launcher_data->directory_iter = launcher_data->directories;
+    }
+  else
+    {
+      /* N-th invocation. */
+      launcher_data->directory_iter = launcher_data->directory_iter->next;
+    }
+
+  if (launcher_data->directory_iter == NULL)
+    {
+      /* Last invocation. */
+
+      /* Alphabetically sort buttons, so they are in order while filtering. */
+      launcher_data->launchers = g_slist_sort (launcher_data->launchers,
+                                               (GCompareFunc) mnb_launcher_button_compare);
+
+      /* Create monitor only once. */
+      if (!launcher_data->monitor)
+        {
+          launcher_data->monitor =
+            mnb_launcher_tree_create_monitor (
+              launcher_data->tree,
+              (MnbLauncherMonitorFunction) launcher_data_monitor_cb,
+               launcher_data);
+        }
+
+      launcher_data->fill_id = 0;
+      mnb_launcher_tree_free_entries (launcher_data->directories);
+      launcher_data->directories = NULL;
+      launcher_data->directory_iter = NULL;
+      mnb_launcher_tree_free (launcher_data->tree);
+      launcher_data->tree = NULL;
+      launcher_data->theme = NULL;
+
+      return FALSE;
+    }
+
+  /* Create and fill one category. */
+
+  directory = (MnbLauncherDirectory *) launcher_data->directory_iter->data;
+
+  inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
+  nbtk_grid_set_column_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
+  nbtk_grid_set_row_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
+  clutter_actor_set_name (inner_grid, "launcher-expander-grid");
+
+  button = NULL;
+  for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
+    {
+      button = launcher_button_create_from_entry ((MnbLauncherEntry *) entry_iter->data,
+                                                  directory->name,
+                                                  launcher_data->theme);
+      if (button)
+        {
+          /* Assuming limited number of fav apps, linear search should do for now. */
+          if (launcher_data->fav_grid)
+            {
+              clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->fav_grid),
+                                          (ClutterCallback) mnb_launcher_button_sync_if_favorite,
+                                          button);
+            }
+
+          clutter_container_add (CLUTTER_CONTAINER (inner_grid),
+                                  CLUTTER_ACTOR (button), NULL);
+          g_signal_connect (button, "hovered",
+                            G_CALLBACK (launcher_button_hovered_cb),
+                            launcher_data);
+          g_signal_connect (button, "activated",
+                            G_CALLBACK (launcher_button_activated_cb),
+                            launcher_data->self);
+          g_signal_connect (button, "fav-toggled",
+                            G_CALLBACK (launcher_button_fav_toggled_cb),
+                            launcher_data);
+          launcher_data->launchers = g_slist_prepend (launcher_data->launchers,
+                                                      button);
+        }
+    }
+
+    /* Create expander if at least 1 launcher inside. */
+    if (button)
+      {
+        ClutterActor *expander;
+
+        expander = CLUTTER_ACTOR (nbtk_expander_new ());
+        nbtk_expander_set_label (NBTK_EXPANDER (expander),
+                                  directory->name);
+        clutter_actor_set_width (expander,
+                                  launcher_data->width - SCROLLVIEW_RESERVED_WIDTH);
+        clutter_container_add (CLUTTER_CONTAINER (launcher_data->apps_grid),
+                                expander, NULL);
+        g_hash_table_insert (launcher_data->expanders,
+                              g_strdup (directory->name), expander);
+        clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
+
+        /* Open first expander by default. */
+        if (launcher_data->directory_iter != launcher_data->directories)
+          nbtk_expander_set_expanded (NBTK_EXPANDER (expander), FALSE);
+
+        g_signal_connect (expander, "notify::expanded",
+                          G_CALLBACK (expander_expanded_notify_cb),
+                          launcher_data);
+        g_signal_connect (expander, "expand-complete",
+                          G_CALLBACK (expander_expand_complete_cb),
+                          launcher_data);
+      }
+    else
+      {
+        clutter_actor_destroy (inner_grid);
+      }
+
+  return TRUE;
+}
+
+static gboolean
 launcher_data_fill (launcher_data_t *launcher_data)
 {
-  GList           *fav_apps;
-  MnbLauncherTree *tree;
-  GSList          *directories;
-  GSList const    *directory_iter;
-  GtkIconTheme    *theme;
+  GList *fav_apps;
 
-  launcher_data->fill_timeout_id = 0;
-
-  theme = gtk_icon_theme_get_default ();
+  launcher_data->theme = gtk_icon_theme_get_default ();
 
   if (launcher_data->scrolled_vbox == NULL)
     {
@@ -984,7 +1110,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
           g_free (desktop_file_path);
           if (entry)
             {
-              button = launcher_button_create_from_entry (entry, NULL, theme);
+              button = launcher_button_create_from_entry (entry, NULL, launcher_data->theme);
               mnb_launcher_entry_free (entry);
             }
 
@@ -1028,109 +1154,30 @@ launcher_data_fill (launcher_data_t *launcher_data)
   launcher_data->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                     g_free, NULL);
 
-  tree = mnb_launcher_tree_create ();
-  directories = mnb_launcher_tree_list_entries (tree);
+  launcher_data->fill_id = g_idle_add ((GSourceFunc) launcher_data_fill_category,
+                                       launcher_data);
 
-  for (directory_iter = directories;
-       directory_iter;
-       directory_iter = directory_iter->next)
+  return FALSE;
+}
+
+static void
+launcher_data_force_fill (launcher_data_t *launcher_data)
+{
+  /* Force fill if idle-fill in progress. */
+  if (launcher_data->fill_id)
     {
-      MnbLauncherDirectory  *directory;
-      GSList                *entry_iter;
-      ClutterActor          *inner_grid;
-      NbtkWidget            *button;
+      g_source_remove (launcher_data->fill_id);
 
-      directory = (MnbLauncherDirectory *) directory_iter->data;
-
-      inner_grid = CLUTTER_ACTOR (nbtk_grid_new ());
-      nbtk_grid_set_column_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
-      nbtk_grid_set_row_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
-      clutter_actor_set_name (inner_grid, "launcher-expander-grid");
-
-      button = NULL;
-      for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
+      if (launcher_data->tree == NULL)
         {
-          button = launcher_button_create_from_entry ((MnbLauncherEntry *) entry_iter->data,
-                                                      directory->name,
-                                                      theme);
-          if (button)
-            {
-              /* Assuming limited number of fav apps, linear search should do for now. */
-              if (launcher_data->fav_grid)
-                {
-                  clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->fav_grid),
-                                             (ClutterCallback) mnb_launcher_button_sync_if_favorite,
-                                             button);
-                }
-
-              clutter_container_add (CLUTTER_CONTAINER (inner_grid),
-                                      CLUTTER_ACTOR (button), NULL);
-              g_signal_connect (button, "hovered",
-                                G_CALLBACK (launcher_button_hovered_cb),
-                                launcher_data);
-              g_signal_connect (button, "activated",
-                                G_CALLBACK (launcher_button_activated_cb),
-                                launcher_data->self);
-              g_signal_connect (button, "fav-toggled",
-                                G_CALLBACK (launcher_button_fav_toggled_cb),
-                                launcher_data);
-              launcher_data->launchers = g_slist_prepend (launcher_data->launchers,
-                                                          button);
-            }
+          launcher_data_fill (launcher_data);
         }
 
-        /* Create expander if at least 1 launcher inside. */
-        if (button)
-          {
-            ClutterActor *expander;
+      g_source_remove (launcher_data->fill_id);
 
-            expander = CLUTTER_ACTOR (nbtk_expander_new ());
-            nbtk_expander_set_label (NBTK_EXPANDER (expander),
-                                     directory->name);
-            clutter_actor_set_width (expander,
-                                     launcher_data->width - SCROLLVIEW_RESERVED_WIDTH);
-            clutter_container_add (CLUTTER_CONTAINER (launcher_data->apps_grid),
-                                   expander, NULL);
-            g_hash_table_insert (launcher_data->expanders,
-                                 g_strdup (directory->name), expander);
-            clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
-
-            /* Open first expander by default. */
-            if (directory_iter != directories)
-              nbtk_expander_set_expanded (NBTK_EXPANDER (expander), FALSE);
-
-            g_signal_connect (expander, "notify::expanded",
-                              G_CALLBACK (expander_expanded_notify_cb),
-                              launcher_data);
-            g_signal_connect (expander, "expand-complete",
-                              G_CALLBACK (expander_expand_complete_cb),
-                              launcher_data);
-          }
-        else
-          {
-            clutter_actor_destroy (inner_grid);
-          }
+      while (launcher_data_fill_category (launcher_data))
+        ;
     }
-
-  /* Alphabetically sort buttons, so they are in order while filtering. */
-  launcher_data->launchers = g_slist_sort (launcher_data->launchers,
-                                           (GCompareFunc) mnb_launcher_button_compare);
-
-  /* Create monitor only once. */
-  if (!launcher_data->monitor)
-    {
-      launcher_data->monitor =
-        mnb_launcher_tree_create_monitor (
-          tree,
-          (MnbLauncherMonitorFunction) launcher_data_monitor_cb,
-           launcher_data);
-    }
-
-  mnb_launcher_tree_free_entries (directories);
-  mnb_launcher_tree_free (tree);
-
-  /* When used as a GSourceFunc this should just run once. */
-  return FALSE;
 }
 
 /*
@@ -1161,11 +1208,10 @@ launcher_data_new (MutterPlugin *self,
   clutter_container_add (CLUTTER_CONTAINER (launcher_data->scrollview),
                          launcher_data->scrolled_vbox, NULL);
 
-  /* Initial fill delayed. */
-  launcher_data->fill_timeout_id = g_timeout_add_seconds (INITIAL_FILL_TIMEOUT_S,
-                                                          (GSourceFunc) launcher_data_fill,
-                                                          launcher_data);
-  /* launcher_data_fill (launcher_data); */
+  /* Wait for gsd to get icons ready. */
+  launcher_data->fill_id = g_timeout_add_seconds (INITIAL_FILL_TIMEOUT_S,
+                                                  (GSourceFunc) launcher_data_fill,
+                                                  launcher_data);
 
   return launcher_data;
 }
@@ -1469,12 +1515,7 @@ static void
 dropdown_show_cb (ClutterActor    *actor,
                   launcher_data_t *launcher_data)
 {
-  /* Cancel timeout and fill if still waiting. */
-  if (launcher_data->fill_timeout_id)
-    {
-      g_source_remove (launcher_data->fill_timeout_id);
-      launcher_data_fill (launcher_data);
-    }
+  launcher_data_force_fill (launcher_data);
 }
 
 static void
