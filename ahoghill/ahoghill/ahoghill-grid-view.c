@@ -44,10 +44,14 @@ struct _AhoghillGridViewPrivate {
     BrQueue *local_queue;
 
     BklSourceManagerClient *source_manager;
+
+    guint32 search_id;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_GRID_VIEW, AhoghillGridViewPrivate))
 G_DEFINE_TYPE (AhoghillGridView, ahoghill_grid_view, NBTK_TYPE_TABLE);
+
+#define SEARCH_TIMEOUT 500
 
 static void
 ahoghill_grid_view_finalize (GObject *object)
@@ -161,16 +165,12 @@ find_item (AhoghillGridView *view,
 }
 
 static void
-init_bickley (gpointer data)
+set_recent_items (AhoghillGridView *view)
 {
-    AhoghillGridView *view = (AhoghillGridView *) data;
-    AhoghillGridViewPrivate *priv = view->priv;
-    BklSourceClient *client;
-    Source *source;
-    GList *sources, *s;
+    AhoghillGridViewPrivate *priv;
     GList *recent_items, *r;
-    GError *error = NULL;
 
+    priv = view->priv;
     priv->source_manager = g_object_new (BKL_TYPE_SOURCE_MANAGER_CLIENT, NULL);
     sources = bkl_source_manager_client_get_sources (priv->source_manager,
                                                      &error);
@@ -201,9 +201,10 @@ init_bickley (gpointer data)
 
     recent_items = gtk_recent_manager_get_items (priv->recent_manager);
     if (recent_items) {
-        GPtrArray *items;
+        /* Freeze and clear the old results before adding anything new */
+        ahoghill_results_model_freeze (priv->model);
+        ahoghill_results_model_clear (priv->model);
 
-        items = g_ptr_array_new ();
         for (r = recent_items; r; r = r->next) {
             GtkRecentInfo *info = r->data;
             const char *mimetype;
@@ -226,18 +227,50 @@ init_bickley (gpointer data)
                 continue;
             }
 
-            g_ptr_array_add (items, item);
+            ahoghill_results_model_add_item (priv->model, item);
+
             gtk_recent_info_unref (info);
         }
 
         g_list_free (recent_items);
 
-#if 0
-        ahoghill_results_pane_set_results
-            (AHOGHILL_RESULTS_PANE (priv->results_pane), items);
-#endif
-        g_ptr_array_free (items, TRUE);
+        /* And thaw the results */
+        ahoghill_results_model_thaw (priv->model);
     }
+}
+
+static void
+init_bickley (gpointer data)
+{
+    AhoghillGridView *view = (AhoghillGridView *) data;
+    AhoghillGridViewPrivate *priv = view->priv;
+    BklSourceClient *client;
+    Source *source;
+    GList *sources, *s;
+    GError *error = NULL;
+
+    priv->source_manager = g_object_new (BKL_TYPE_SOURCE_MANAGER_CLIENT, NULL);
+    sources = bkl_source_manager_client_get_sources (priv->source_manager,
+                                                     &error);
+    if (error != NULL) {
+        g_warning ("Error getting sources\n");
+    }
+
+    priv->dbs = g_ptr_array_sized_new (g_list_length (sources) + 1);
+
+    /* Local source first */
+    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
+    source = create_source (client);
+    g_ptr_array_add (priv->dbs, source);
+
+    for (s = sources; s; s = s->next) {
+        client = bkl_source_client_new (s->data);
+        source = create_source (client);
+
+        g_ptr_array_add (priv->dbs, source);
+    }
+
+    set_recent_items (view);
 }
 
 static void
@@ -410,10 +443,41 @@ item_clicked_cb (AhoghillResultsPane *pane,
     }
 }
 
+static gboolean
+do_search_cb (gpointer data)
+{
+    AhoghillGridView *view = (AhoghillGridView *) data;
+    AhoghillGridViewPrivate *priv = view->priv;
+    NbtkWidget *entry;
+    const char *text;
+
+    entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
+    text = mnb_entry_get_text ((MnbEntry *) entry);
+
+    if (text == NULL || *text == 0) {
+        g_print ("Setting recent items\n");
+        set_recent_items (view);
+    } else {
+        g_print ("Searching for %s\n", text);
+    }
+
+    priv->search_id = 0;
+    return FALSE;
+}
+
 static void
 search_text_changed (MnbEntry         *entry,
                      AhoghillGridView *view)
 {
+    AhoghillGridViewPrivate *priv;
+
+    priv = view->priv;
+    if (priv->search_id != 0) {
+        /* Reset timeout */
+        g_source_remove (priv->search_id);
+    }
+
+    priv->search_id = g_timeout_add (SEARCH_TIMEOUT, do_search_cb, view);
 }
 
 static void

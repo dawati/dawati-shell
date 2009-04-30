@@ -222,43 +222,6 @@ ahoghill_results_table_init (AhoghillResultsTable *self)
 }
 
 static void
-set_model (AhoghillResultsTable *table,
-           AhoghillResultsModel *model)
-{
-    AhoghillResultsTablePrivate *priv;
-
-    priv = table->priv;
-
-    if (model) {
-        priv->model = g_object_ref (model);
-    }
-}
-
-AhoghillResultsTable *
-ahoghill_results_table_new (AhoghillResultsModel *model)
-{
-    AhoghillResultsTable *table;
-    AhoghillResultsTablePrivate *priv;
-
-    table = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
-    priv = table->priv;
-
-    set_model (table, model);
-
-    return table;
-}
-
-void
-ahoghill_results_table_set_model (AhoghillResultsTable *table,
-                                  AhoghillResultsModel *model)
-{
-    g_return_if_fail (IS_AHOGHILL_RESULTS_TABLE (table));
-    g_return_if_fail (IS_AHOGHILL_RESULTS_MODEL (model));
-
-    set_model (table, model);
-}
-
-static void
 update_items (AhoghillResultsTable *self)
 {
     AhoghillResultsTablePrivate *priv = self->priv;
@@ -286,6 +249,52 @@ update_items (AhoghillResultsTable *self)
                       NULL);
         clutter_actor_hide ((ClutterActor *) priv->tiles[i]);
     }
+}
+
+static void
+results_model_changed (AhoghillResultsModel *model,
+                       AhoghillResultsTable *table)
+{
+    update_items (table);
+}
+
+static void
+set_model (AhoghillResultsTable *table,
+           AhoghillResultsModel *model)
+{
+    AhoghillResultsTablePrivate *priv;
+
+    priv = table->priv;
+
+    if (model) {
+        priv->model = g_object_ref (model);
+        g_signal_connect (priv->model, "changed",
+                          G_CALLBACK (results_model_changed), table);
+    }
+}
+
+AhoghillResultsTable *
+ahoghill_results_table_new (AhoghillResultsModel *model)
+{
+    AhoghillResultsTable *table;
+    AhoghillResultsTablePrivate *priv;
+
+    table = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
+    priv = table->priv;
+
+    set_model (table, model);
+
+    return table;
+}
+
+void
+ahoghill_results_table_set_model (AhoghillResultsTable *table,
+                                  AhoghillResultsModel *model)
+{
+    g_return_if_fail (IS_AHOGHILL_RESULTS_TABLE (table));
+    g_return_if_fail (IS_AHOGHILL_RESULTS_MODEL (model));
+
+    set_model (table, model);
 }
 
 void

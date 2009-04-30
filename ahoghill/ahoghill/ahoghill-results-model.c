@@ -9,6 +9,9 @@ enum {
 
 struct _AhoghillResultsModelPrivate {
     GPtrArray *items;
+
+    gboolean dirty;
+    gboolean frozen;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_RESULTS_MODEL, AhoghillResultsModelPrivate))
@@ -81,7 +84,11 @@ remove_item (gpointer data,
     AhoghillResultsModelPrivate *priv = model->priv;
 
     g_ptr_array_remove (priv->items, dead_object);
-    g_signal_emit (model, signals[CHANGED], 0);
+    if (priv->frozen) {
+        priv->dirty = TRUE;
+    } else {
+        g_signal_emit (model, signals[CHANGED], 0);
+    }
 }
 
 void
@@ -93,7 +100,11 @@ ahoghill_results_model_add_item (AhoghillResultsModel *model,
     g_ptr_array_add (priv->items, item);
     g_object_weak_ref ((GObject *) item, remove_item, model);
 
-    g_signal_emit (model, signals[CHANGED], 0);
+    if (priv->frozen) {
+        priv->dirty = TRUE;
+    } else {
+        g_signal_emit (model, signals[CHANGED], 0);
+    }
 }
 
 void
@@ -128,4 +139,51 @@ ahoghill_results_model_get_count (AhoghillResultsModel *model)
     priv = model->priv;
 
     return priv->items->len;
+}
+
+void
+ahoghill_results_model_clear (AhoghillResultsModel *model)
+{
+    AhoghillResultsModelPrivate *priv;
+    int i;
+
+    priv = model->priv;
+    for (i = 0; i < priv->items->len; i++) {
+        BklItem *item = priv->items->pdata[i];
+        g_object_weak_unref ((GObject *) item, remove_item, model);
+    }
+
+    g_ptr_array_free (priv->items, TRUE);
+    priv->items = g_ptr_array_new ();
+
+    if (priv->frozen) {
+        priv->dirty = TRUE;
+    } else {
+        g_signal_emit (model, signals[CHANGED], 0);
+    }
+}
+
+void
+ahoghill_results_model_freeze (AhoghillResultsModel *model)
+{
+    AhoghillResultsModelPrivate *priv;
+
+    priv = model->priv;
+    priv->frozen = TRUE;
+    priv->dirty = FALSE;
+}
+
+void
+ahoghill_results_model_thaw (AhoghillResultsModel *model)
+{
+    AhoghillResultsModelPrivate *priv;
+
+    priv = model->priv;
+
+    if (priv->frozen && priv->dirty) {
+        priv->frozen = FALSE;
+        priv->dirty = FALSE;
+
+        g_signal_emit (model, signals[CHANGED], 0);
+    }
 }
