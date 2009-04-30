@@ -173,18 +173,25 @@ init_bickley (gpointer data)
         g_warning ("Error getting sources\n");
     }
 
+    /* +1 for the local */
     priv->dbs = g_ptr_array_sized_new (g_list_length (sources) + 1);
 
     /* Local source first */
     client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
     source = create_source (client);
-    g_ptr_array_add (priv->dbs, source);
+    if (source) {
+        g_ptr_array_add (priv->dbs, source);
+    } else {
+        g_warning ("%s: Error, no local database\n", G_STRLOC);
+    }
 
     for (s = sources; s; s = s->next) {
         client = bkl_source_client_new (s->data);
         source = create_source (client);
 
-        g_ptr_array_add (priv->dbs, source);
+        if (source) {
+            g_ptr_array_add (priv->dbs, source);
+        }
     }
 
     recent_items = gtk_recent_manager_get_items (priv->recent_manager);
