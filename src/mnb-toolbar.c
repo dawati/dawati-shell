@@ -608,37 +608,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   if (index == SPACES_ZONE)
     {
       panel = priv->panels[index] = mnb_switcher_new (plugin);
-
-      meta_keybindings_set_custom_handler ("switch_windows",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("switch_windows_backward",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("switch_panels",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("switch_panels_backward",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("cycle_group",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("cycle_group_backward",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("cycle_windows",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("cycle_windows_backward",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("cycle_panels",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
-      meta_keybindings_set_custom_handler ("cycle_panels_backward",
-                                           mnb_switcher_alt_tab_key_handler,
-                                           panel, NULL);
     }
   else
     {

@@ -196,6 +196,13 @@ G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
 #define MNB_SWITCHER_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER, MnbSwitcherPrivate))
 
+static void mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
+                                              MetaScreen     *screen,
+                                              MetaWindow     *window,
+                                              XEvent         *event,
+                                              MetaKeyBinding *binding,
+                                              gpointer        data);
+
 struct _MnbSwitcherPrivate {
   MutterPlugin *plugin;
   NbtkWidget   *table;
@@ -1530,6 +1537,71 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
   priv->selected = NULL;
 }
 
+/*
+ * Metacity key handler for default Metacity bindings we want disabled.
+ *
+ * (This is necessary for keybidings that are related to the Alt+Tab shortcut.
+ * In metacity these all use the src/ui/tabpopup.c object, which we have
+ * disabled, so we need to take over all of those.)
+ */
+static void
+mnb_switcher_nop_key_handler (MetaDisplay    *display,
+                              MetaScreen     *screen,
+                              MetaWindow     *window,
+                              XEvent         *event,
+                              MetaKeyBinding *binding,
+                              gpointer        data)
+{
+}
+
+static void
+mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher)
+{
+  meta_keybindings_set_custom_handler ("switch_windows",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_windows_backward",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_panels",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_panels_backward",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("cycle_group",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("cycle_group_backward",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("cycle_windows",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("cycle_windows_backward",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("cycle_panels",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("cycle_panels_backward",
+                                       mnb_switcher_alt_tab_key_handler,
+                                       switcher, NULL);
+
+  /*
+   * Install NOP handler for shortcuts that are related to Alt+Tab.
+   */
+  meta_keybindings_set_custom_handler ("switch_group",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_group_backward",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_group_backward",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+}
+
 static void
 mnb_switcher_init (MnbSwitcher *self)
 {
@@ -1537,6 +1609,8 @@ mnb_switcher_init (MnbSwitcher *self)
 
   g_signal_connect (self, "hide-completed",
                     G_CALLBACK (on_switcher_hide_completed_cb), NULL);
+
+  mnb_switcher_setup_metacity_keybindings (self);
 }
 
 NbtkWidget*
@@ -2137,7 +2211,7 @@ alt_tab_timeout_cb (gpointer data)
 /*
  * The handler for Alt+Tab that we register with metacity.
  */
-void
+static void
 mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
                                   MetaScreen     *screen,
                                   MetaWindow     *window,

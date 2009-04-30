@@ -190,23 +190,6 @@ moblin_netbook_plugin_get_property (GObject    *object,
     }
 }
 
-/*
- * Metacity key handler for default Metacity bindings we want disabled.
- *
- * (This is necessary for keybidings that are related to the Alt+Tab shortcut.
- * In metacity these all use the src/ui/tabpopup.c object, which we have
- * disabled, so we need to take over all of those.)
- */
-static void
-metacity_nop_key_handler (MetaDisplay    *display,
-                          MetaScreen     *screen,
-                          MetaWindow     *window,
-                          XEvent         *event,
-                          MetaKeyBinding *binding,
-                          gpointer        data)
-{
-}
-
 static void
 sync_notification_input_region_cb (ClutterActor        *notify_actor,
                                    MoblinNetbookPlugin *plugin)
@@ -436,19 +419,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   /* Keys */
 
   meta_prefs_override_no_tab_popup (TRUE);
-
-  /*
-   * Install NOP handler for shortcuts that are related to Alt+Tab.
-   */
-  meta_keybindings_set_custom_handler ("switch_group",
-                                       metacity_nop_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("switch_group_backward",
-                                       metacity_nop_key_handler,
-                                       plugin, NULL);
-  meta_keybindings_set_custom_handler ("switch_group_backward",
-                                       metacity_nop_key_handler,
-                                       plugin, NULL);
 }
 
 static void

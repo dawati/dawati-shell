@@ -70,13 +70,6 @@ MetaWindow *mnb_switcher_get_next_window (MnbSwitcher *switcher,
                                           MetaWindow  *current,
                                           gboolean     backward);
 
-void        mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
-                                              MetaScreen     *screen,
-                                              MetaWindow     *window,
-                                              XEvent         *event,
-                                              MetaKeyBinding *binding,
-                                              gpointer        data);
-
 void        mnb_switcher_meta_window_focus_cb (MetaWindow *mw, gpointer data);
 void        mnb_switcher_meta_window_weak_ref_cb (gpointer data, GObject *mw);
 
