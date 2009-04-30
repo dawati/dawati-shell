@@ -14,6 +14,10 @@
 #include "moblin-netbook-netpanel.h"
 #include "moblin-netbook-pasteboard.h"
 
+#ifdef USE_AHOGHILL
+#include "ahoghill/ahoghill-grid-view.h"
+#endif
+
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
@@ -414,7 +418,25 @@ _mzone_activated_cb (PengeGridView *view, gpointer data)
 
   clutter_actor_hide (CLUTTER_ACTOR (data));
 }
+
+#ifdef USE_AHOGHILL
+static void
+_media_drop_down_hidden (MnbDropDown      *drop_down,
+                         AhoghillGridView *view)
+{
+  ahoghill_grid_view_clear (view);
+  ahoghill_grid_view_unfocus (view);
+}
+
+static void
+_media_drop_down_shown (MnbDropDown      *drop_down,
+                        AhoghillGridView *view)
+{
+  ahoghill_grid_view_focus (view);
+}
 #endif
+
+#endif /* REMOVE ME block */
 
 /*
  * Translates panel name to the corresponding enum value.
@@ -645,8 +667,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
           {
             ClutterActor *grid;
 
-            panel = priv->panels[index] =
-              mnb_drop_down_new ();
+            panel = priv->panels[index] = mnb_drop_down_new ();
 
             grid = g_object_new (PENGE_TYPE_GRID_VIEW, NULL);
 
@@ -659,6 +680,27 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
             mnb_drop_down_set_child (MNB_DROP_DOWN (panel), grid);
           }
           break;
+        case MEDIA_ZONE:
+#ifdef USE_AHOGHILL
+          {
+            ClutterActor *grid;
+
+            panel = priv->panels[index] = mnb_drop_down_new ();
+
+            grid = g_object_new (AHOGHILL_TYPE_GRID_VIEW, NULL);
+
+            clutter_actor_set_height (grid,
+                                      screen_height - TOOLBAR_HEIGHT * 1.5);
+
+            mnb_drop_down_set_child (MNB_DROP_DOWN (panel),
+                                     CLUTTER_ACTOR (grid));
+
+            g_signal_connect (panel, "hide-completed",
+                              G_CALLBACK (_media_drop_down_hidden), grid);
+            g_signal_connect (panel, "show-completed",
+                              G_CALLBACK (_media_drop_down_shown), grid);
+          }
+#endif
         default:
           g_warning ("Zone %s is currently not implemented", name);
         }
