@@ -59,7 +59,8 @@ struct _MnbLauncherButtonClass
 
 GType mnb_launcher_button_get_type (void) G_GNUC_CONST;
 
-NbtkWidget * mnb_launcher_button_new (const gchar *icon_file,
+NbtkWidget * mnb_launcher_button_new (const gchar *icon_name,
+                                      const gchar *icon_file,
                                       gint         icon_size,
                                       const gchar *title,
                                       const gchar *category,
@@ -83,6 +84,11 @@ const char *  mnb_launcher_button_get_desktop_file_path  (MnbLauncherButton *sel
 gboolean      mnb_launcher_button_get_favorite    (MnbLauncherButton *self);
 void          mnb_launcher_button_set_favorite    (MnbLauncherButton *self,
                                                    gboolean           is_favorite);
+
+const gchar * mnb_launcher_button_get_icon_name   (MnbLauncherButton  *self);
+void          mnb_launcher_button_set_icon        (MnbLauncherButton  *self,
+                                                   const gchar        *icon_file,
+                                                   gint                icon_size);
 
 gint          mnb_launcher_button_compare         (MnbLauncherButton *self,
                                                    MnbLauncherButton *other);
