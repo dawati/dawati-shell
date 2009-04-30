@@ -26,6 +26,9 @@
 #define TRAY_BUTTON_HEIGHT 55
 #define TRAY_BUTTON_WIDTH 44
 
+#define TOOLBAR_TRIGGER_THRESHOLD       1
+#define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 300
+
 #if 0
 /*
  * TODO
@@ -46,6 +49,14 @@ G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
 static void mnb_toolbar_constructed (GObject *self);
 static void mnb_toolbar_hide (ClutterActor *actor);
 static void mnb_toolbar_show (ClutterActor *actor);
+static gboolean mnb_toolbar_stage_captured_cb (ClutterActor *stage,
+                                               ClutterEvent *event,
+                                               gpointer      data);
+static gboolean mnb_toolbar_stage_input_cb (ClutterActor *stage,
+                                            ClutterEvent *event,
+                                            gpointer      data);
+static void mnb_toolbar_stage_show_cb (ClutterActor *stage,
+                                       MnbToolbar *toolbar);
 
 enum {
     M_ZONE = 0,
@@ -102,15 +113,19 @@ struct _MnbToolbarPrivate
 
   ShellTrayManager *tray_manager;
 
+  gboolean disabled          : 1;
   gboolean in_show_animation : 1; /* Animation tracking */
   gboolean in_hide_animation : 1;
   gboolean dont_autohide     : 1; /* Whether the panel should hide when the
                                    * pointer goes south
                                    */
 
+  MnbInputRegion trigger_region;  /* The show panel trigger region */
   MnbInputRegion input_region;    /* The panel input region on the region
                                    * stack.
                                    */
+
+  guint trigger_timeout_id;
 };
 
 static void
@@ -986,6 +1001,24 @@ mnb_toolbar_constructed (GObject *self)
    * on startup regardless where the pointer initially is).
    */
   priv->dont_autohide = TRUE;
+
+  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
+                    "captured-event",
+                    G_CALLBACK (mnb_toolbar_stage_captured_cb),
+                    self);
+  g_signal_connect (mutter_plugin_get_stage (plugin),
+                    "button-press-event",
+                    G_CALLBACK (mnb_toolbar_stage_input_cb),
+                    self);
+
+  /*
+   * Hook into "show" signal on stage, to set up input regions.
+   * (We cannot set up the stage here, because the overlay window, etc.,
+   * is not in place until the stage is shown.)
+   */
+  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
+                    "show", G_CALLBACK (mnb_toolbar_stage_show_cb),
+                    self);
 }
 
 NbtkWidget*
@@ -1282,3 +1315,199 @@ mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar)
             AnyModifier,
             root_xwin, True, GrabModeAsync, GrabModeAsync);
 }
+
+static gboolean
+mnb_toolbar_trigger_timeout_cb (gpointer data)
+{
+  MnbToolbar *toolbar = MNB_TOOLBAR (data);
+
+  clutter_actor_show (CLUTTER_ACTOR (toolbar));
+  toolbar->priv->trigger_timeout_id = 0;
+
+  return FALSE;
+}
+
+static void
+mnb_toolbar_trigger_region_set_height (MnbToolbar *toolbar, gint height)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
+  gint               screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  if (priv->trigger_region != NULL)
+    moblin_netbook_input_region_remove (plugin, priv->trigger_region);
+
+  priv->trigger_region
+    = moblin_netbook_input_region_push (plugin,
+                                        0,
+                                        0,
+                                        screen_width,
+                                        TOOLBAR_TRIGGER_THRESHOLD + height);
+}
+
+static gboolean
+mnb_toolbar_stage_captured_cb (ClutterActor *stage,
+                               ClutterEvent *event,
+                               gpointer      data)
+{
+  MnbToolbar        *toolbar = MNB_TOOLBAR (data);
+  MnbToolbarPrivate *priv    = toolbar->priv;
+  gboolean           show_toolbar;
+
+  /*
+   * Shortcircuit what we can:
+   *
+   * a) toolbar is disabled (e.g., in lowlight),
+   * b) the event is something other than enter/leave
+   * c) we got an enter event on something other than stage,
+   * d) we are already animating.
+   */
+  if (!(((event->type == CLUTTER_ENTER) && (event->crossing.source == stage)) ||
+        (event->type == CLUTTER_LEAVE)) ||
+      priv->disabled ||
+      mnb_toolbar_in_transition (toolbar))
+    return FALSE;
+
+  /*
+   * This is when we want to show the toolbar:
+   *
+   *  a) we got an enter event on stage,
+   *
+   *    OR
+   *
+   *  b) we got a leave event on stage at the very top of the screen (when the
+   *     pointer is at the position that coresponds to the top of the window,
+   *     it is considered to have left the window; when the user slides pointer
+   *     to the top, we get an enter event immediately followed by a leave
+   *     event).
+   *
+   *  In all cases, only if the toolbar is not already visible.
+   */
+  show_toolbar  = (event->type == CLUTTER_ENTER);
+  show_toolbar |= ((event->type == CLUTTER_LEAVE) && (event->crossing.y == 0));
+  show_toolbar &= !CLUTTER_ACTOR_IS_VISIBLE (toolbar);
+
+  if (show_toolbar)
+    {
+      /*
+       * If any fullscreen apps are present, then bail out.
+       */
+      if (moblin_netbook_fullscreen_apps_present (priv->plugin))
+            return FALSE;
+
+      /*
+       * Increase sensitivity -- increasing size of the trigger zone while the
+       * timeout reduces the effect of a shaking hand.
+       */
+      mnb_toolbar_trigger_region_set_height (toolbar, 5);
+
+      priv->trigger_timeout_id =
+        g_timeout_add (TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT,
+                       mnb_toolbar_trigger_timeout_cb, toolbar);
+    }
+  else if (event->type == CLUTTER_LEAVE)
+    {
+      /*
+       * The most reliable way of detecting that the pointer is leaving the
+       * stage is from the related actor -- no related == pointer gone
+       * elsewhere.
+       */
+      if (event->crossing.related != NULL)
+        return FALSE;
+
+      if (priv->trigger_timeout_id)
+        {
+          /*
+           * Pointer left us before the required timeout triggered; clean up.
+           */
+          mnb_toolbar_trigger_region_set_height (toolbar, 0);
+          g_source_remove (priv->trigger_timeout_id);
+          priv->trigger_timeout_id = 0;
+        }
+      else if (CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+        {
+          mnb_toolbar_trigger_region_set_height (toolbar, 0);
+          clutter_actor_hide (CLUTTER_ACTOR (toolbar));
+        }
+    }
+
+  return FALSE;
+}
+
+/*
+ * Handles input events on stage.
+ */
+static gboolean
+mnb_toolbar_stage_input_cb (ClutterActor *stage,
+                            ClutterEvent *event,
+                            gpointer      data)
+{
+  MnbToolbar *toolbar = MNB_TOOLBAR (data);
+
+  if (event->type == CLUTTER_BUTTON_PRESS)
+    {
+      if (mnb_toolbar_in_transition (toolbar))
+        return FALSE;
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+        clutter_actor_hide (CLUTTER_ACTOR (toolbar));
+    }
+
+  return FALSE;
+}
+
+static void
+mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
+{
+  MutterPlugin      *plugin = toolbar->priv->plugin;
+  XWindowAttributes  attr;
+  long               event_mask;
+  Window             xwin;
+  MetaScreen        *screen;
+  Display           *xdpy;
+  ClutterStage      *stg;
+
+  xdpy   = mutter_plugin_get_xdisplay (plugin);
+  stg    = CLUTTER_STAGE (mutter_plugin_get_stage (plugin));
+  screen = mutter_plugin_get_screen (plugin);
+
+  /*
+   * Set up the stage input region
+   */
+  mnb_toolbar_trigger_region_set_height (toolbar, 0);
+
+  /*
+   * Make sure we are getting enter and leave events for stage (set up both
+   * stage and overlay windows).
+   */
+  xwin       = clutter_x11_get_stage_window (stg);
+  event_mask = EnterWindowMask | LeaveWindowMask;
+
+  if (XGetWindowAttributes (xdpy, xwin, &attr))
+    {
+      event_mask |= attr.your_event_mask;
+    }
+
+  XSelectInput (xdpy, xwin, event_mask);
+
+  xwin = mutter_get_overlay_window (screen);
+  event_mask = EnterWindowMask | LeaveWindowMask;
+
+  if (XGetWindowAttributes (xdpy, xwin, &attr))
+    {
+      event_mask |= attr.your_event_mask;
+    }
+
+  XSelectInput (xdpy, xwin, event_mask);
+}
+
+void
+mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  priv->disabled = disabled;
+}
+

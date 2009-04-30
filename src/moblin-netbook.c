@@ -49,8 +49,6 @@
 #define MAXIMIZE_TIMEOUT            250
 #define MAP_TIMEOUT                 350
 #define SWITCH_TIMEOUT              400
-#define PANEL_SLIDE_THRESHOLD       1
-#define PANEL_SLIDE_THRESHOLD_TIMEOUT 300
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
@@ -62,17 +60,9 @@ typedef struct
   MutterPlugin *plugin;
 } EffectCompleteData;
 
-static gboolean stage_input_cb (ClutterActor *stage, ClutterEvent *event,
-                                gpointer data);
-static gboolean stage_capture_cb (ClutterActor *stage, ClutterEvent *event,
-                                  gpointer data);
-
 static void setup_parallax_effect (MutterPlugin *plugin);
 
 static void setup_focus_window (MutterPlugin *plugin);
-
-static void
-toolbar_trigger_region_set_height (MutterPlugin *plugin, gint height);
 
 static GQuark actor_data_quark = 0;
 
@@ -230,15 +220,6 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
 }
 
 static void
-stage_show_cb (ClutterActor *stage, MutterPlugin *plugin)
-{
-  /*
-   * Set up the stage even processing
-   */
-  toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
-}
-
-static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -330,29 +311,6 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, toolbar, NULL);
   clutter_actor_hide (lowlight);
-
-  /*
-   * Hook into "show" signal on stage, to set up input regions.
-   * (We cannot set up the stage here, because the overlay window, etc.,
-   * is not in place until the stage is shown.)
-   */
-  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
-                    "show", G_CALLBACK (stage_show_cb), plugin);
-
-  /*
-   * Hook to the captured signal, so we get to see all events before our
-   * children and do not interfere with their event processing.
-   */
-  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
-                    "captured-event", G_CALLBACK (stage_capture_cb),
-                    plugin);
-
-  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
-                    "button-press-event", G_CALLBACK (stage_input_cb),
-                    plugin);
-  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
-                    "key-press-event", G_CALLBACK (stage_input_cb),
-                    plugin);
 
   clutter_set_motion_events_enabled (TRUE);
 
@@ -1193,165 +1151,6 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
 }
 
 static void
-toolbar_trigger_region_set_height (MutterPlugin *plugin, gint height)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  gint screen_width, screen_height;
-
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  if (priv->toolbar_trigger_region != NULL)
-    moblin_netbook_input_region_remove (plugin, priv->toolbar_trigger_region);
-
-  priv->toolbar_trigger_region
-    = moblin_netbook_input_region_push (plugin,
-                                        0,
-                                        0,
-                                        screen_width,
-                                        PANEL_SLIDE_THRESHOLD + height);
-}
-
-static gboolean
-panel_slide_timeout_cb (gpointer data)
-{
-  MutterPlugin  *plugin = data;
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  /*
-   * Reset the trigger region to its normal side; this is needed whether we
-   * end up showing the panel, or not.
-   */
-  toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 0);
-
-  if (priv->last_y < PANEL_SLIDE_THRESHOLD)
-    {
-      clutter_actor_show (priv->toolbar);
-    }
-
-  priv->panel_slide_timeout_id = 0;
-
-  return FALSE;
-}
-
-static gboolean
-stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
-{
-  MoblinNetbookPlugin *plugin = data;
-
-  if (event->type == CLUTTER_MOTION)
-    {
-      gint                        event_y, event_x;
-      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-      event_x = ((ClutterMotionEvent*)event)->x;
-      event_y = ((ClutterMotionEvent*)event)->y;
-
-      priv->last_y = event_y;
-
-#if 0
-      if (priv->panel_out_in_progress || priv->panel_back_in_progress)
-        return FALSE;
-#endif
-
-      if (priv->panel_disabled)
-        return FALSE;
-
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
-        {
-          /*
-           * FIXME -- we should use the height of the panel background here;
-           *          when we refactor the panel code, we should expose that
-           *          value as a property on the object.
-           */
-          guint height = 64; // clutter_actor_get_height (priv->panel_shadow);
-
-          if (event_y > (gint)height)
-            {
-              /*
-               * FIXME -- we have to override the Toolbar show() and hide()
-               * methods to deal with when panels are visible.
-               */
-              clutter_actor_hide (priv->toolbar);
-            }
-        }
-      else if (event_y < PANEL_SLIDE_THRESHOLD)
-        {
-          /*
-           * Panel does not get shown in response to mouse events if a
-           * fullscreen app is present.
-           *
-           * NB: Panel can still be shown using the kbd shortcut; however,
-           *     as the Panel steels kbd focus, this results in the fullscreen
-           *     application being un-fullscreened and also possibly ending up
-           *     lower down in the window stack.
-           */
-          if (priv->fullscreen_apps)
-            return FALSE;
-
-          if (!priv->panel_slide_timeout_id &&
-              !CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
-            {
-              /* Increase sensitivity */
-              toolbar_trigger_region_set_height (MUTTER_PLUGIN (plugin), 5);
-
-              priv->panel_slide_timeout_id =
-                g_timeout_add (PANEL_SLIDE_THRESHOLD_TIMEOUT,
-                               panel_slide_timeout_cb, plugin);
-            }
-        }
-    }
-
-  return FALSE;
-}
-
-/*
- * Handles input events on stage.
- *
- */
-static gboolean
-stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
-{
-  MutterPlugin *plugin = data;
-#if 0
-  if (event->type == CLUTTER_BUTTON_PRESS)
-    {
-      gint           event_y, event_x;
-      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-      event_x = ((ClutterButtonEvent*)event)->x;
-      event_y = ((ClutterButtonEvent*)event)->y;
-
-      priv->last_y = event_y;
-
-      if (priv->panel_out_in_progress || priv->panel_back_in_progress)
-        return FALSE;
-
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
-        clutter_actor_hide (priv->switcher);
-
-      if (priv->launcher)
-        clutter_actor_hide (priv->launcher);
-
-      if (priv->mzone_grid)
-        clutter_actor_hide (priv->mzone_grid);
-
-      shell_tray_manager_close_all_config_windows (priv->tray_manager);
-
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
-        {
-          guint height = 64; // clutter_actor_get_height (priv->panel_shadow);
-
-          if (event_y > (gint)height)
-            {
-              /* MA */ // hide_panel (plugin);
-            }
-        }
-    }
-#endif
-  return FALSE;
-}
-
-static void
 setup_focus_window (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -1697,7 +1496,8 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
                                             0, 0, screen_width, screen_height);
 
       clutter_actor_show (priv->lowlight);
-      priv->panel_disabled = active = TRUE;
+      active = TRUE;
+      mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), TRUE);
     }
   else
     {
@@ -1705,8 +1505,17 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
         {
           clutter_actor_hide (priv->lowlight);
           moblin_netbook_input_region_remove (plugin, input_region);
-          priv->panel_disabled = active = FALSE;
+          active = FALSE;
+          mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), FALSE);
         }
     }
+}
+
+gboolean
+moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  return (priv->fullscreen_apps > 0);
 }
 

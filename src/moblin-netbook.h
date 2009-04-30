@@ -82,17 +82,12 @@ struct _MoblinNetbookPluginPrivate
 
   XserverRegion          current_input_region;
   GList                 *input_region_stack;
-  MnbInputRegion         toolbar_trigger_region;
 
   MetaWindow            *last_focused;
 
   gint                   fullscreen_apps;
 
   guint                  workspace_chooser_timeout;
-
-  ClutterActor          *panel_buttons[8];
-  NbtkWidget            *panel_time;
-  NbtkWidget            *panel_date;
 
   /*
    * Startup Notification
@@ -108,15 +103,10 @@ struct _MoblinNetbookPluginPrivate
 
   MutterPluginInfo       info;
 
-  gint                   last_y;
-  guint                  panel_slide_timeout_id;
-
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
   ClutterActor          *notification_urgent;
   MnbInputRegion         notification_input_region;
-
-  gboolean               panel_disabled;
 
   Window                 focus_xwin;
 };
@@ -175,5 +165,8 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp);
 
 void
 moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin);
+
+gboolean
+moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin);
 
 #endif
