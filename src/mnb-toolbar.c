@@ -436,6 +436,31 @@ _media_drop_down_shown (MnbDropDown      *drop_down,
 }
 #endif
 
+#ifdef WITH_NETPANEL
+static void
+_netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
+                    const gchar           *url,
+                    MnbToolbar            *toolbar)
+{
+  MutterPlugin *plugin = toolbar->priv->plugin;
+  gchar *exec, *esc_url;
+  gint workspace;
+
+  /* FIXME: Should not be hard-coded? */
+  esc_url = g_strescape (url, NULL);
+  exec = g_strdup_printf ("%s \"%s\"", "moblin-web-browser", esc_url);
+
+  workspace =
+    meta_screen_get_active_workspace_index (mutter_plugin_get_screen (plugin));
+  moblin_netbook_spawn (plugin, exec, 0L, TRUE, workspace);
+
+  g_free (exec);
+  g_free (esc_url);
+
+  clutter_actor_hide (CLUTTER_ACTOR (toolbar));
+}
+#endif
+
 #endif /* REMOVE ME block */
 
 /*
@@ -692,8 +717,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
             clutter_actor_set_height (grid,
                                       screen_height - TOOLBAR_HEIGHT * 1.5);
 
-            mnb_drop_down_set_child (MNB_DROP_DOWN (panel),
-                                     CLUTTER_ACTOR (grid));
+            mnb_drop_down_set_child (MNB_DROP_DOWN (panel), grid);
 
             g_signal_connect (panel, "hide-completed",
                               G_CALLBACK (_media_drop_down_hidden), grid);
@@ -701,6 +725,31 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                               G_CALLBACK (_media_drop_down_shown), grid);
           }
 #endif
+        case INTERNET_ZONE:
+#ifdef WITH_NETPANEL
+          {
+            ClutterActor *grid;
+
+            panel = priv->panels[index] = mnb_drop_down_new ();
+
+            grid = CLUTTER_ACTOR (moblin_netbook_netpanel_new ());
+
+            mnb_drop_down_set_child (MNB_DROP_DOWN (panel), grid);
+
+            g_signal_connect_swapped (panel, "hide-completed",
+                                    G_CALLBACK (moblin_netbook_netpanel_clear),
+                                    grid);
+            g_signal_connect_swapped (panel, "show-completed",
+                                    G_CALLBACK (moblin_netbook_netpanel_focus),
+                                    grid);
+
+            g_signal_connect (grid, "launch",
+                              G_CALLBACK (_netgrid_launch_cb), toolbar);
+            g_signal_connect_swapped (grid, "launched",
+                                      G_CALLBACK (clutter_actor_hide), toolbar);
+          }
+#endif
+
         default:
           g_warning ("Zone %s is currently not implemented", name);
         }
