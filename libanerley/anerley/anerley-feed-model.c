@@ -152,7 +152,6 @@ _feed_items_removed_cb (AnerleyFeed *feed,
                               0,
                               &item,
                               NULL);
-      clutter_model_iter_next (iter);
 
       if (item == item_to_remove)
       {
@@ -160,6 +159,8 @@ _feed_items_removed_cb (AnerleyFeed *feed,
                               clutter_model_iter_get_row (iter));
         break;
       }
+
+      clutter_model_iter_next (iter);
     }
     g_object_unref (iter);
   }
