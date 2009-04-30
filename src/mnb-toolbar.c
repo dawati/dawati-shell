@@ -1280,6 +1280,8 @@ mnb_toolbar_get_switcher (MnbToolbar *toolbar)
  * outside of the toolbar input zone -- this is the normal behaviour, but
  * needs to be disabled, for example, when the toolbar is opened using the
  * kbd shortcut.
+ *
+ * This flag gets cleared automatically when the panel is hidden.
  */
 void
 mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont)
@@ -1316,6 +1318,14 @@ mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar)
             root_xwin, True, GrabModeAsync, GrabModeAsync);
 }
 
+/*
+ * Machinery for showing and hiding the panel in response to pointer position.
+ */
+
+/*
+ * The timeout callback that shows the panel if the pointer stayed long enough
+ * in the trigger region.
+ */
 static gboolean
 mnb_toolbar_trigger_timeout_cb (gpointer data)
 {
@@ -1327,6 +1337,10 @@ mnb_toolbar_trigger_timeout_cb (gpointer data)
   return FALSE;
 }
 
+/*
+ * Changes the size of the trigger region (we increase the size of the trigger
+ * region while wating for the trigger timeout to reduce effects of jitter).
+ */
 static void
 mnb_toolbar_trigger_region_set_height (MnbToolbar *toolbar, gint height)
 {
@@ -1347,6 +1361,12 @@ mnb_toolbar_trigger_region_set_height (MnbToolbar *toolbar, gint height)
                                         TOOLBAR_TRIGGER_THRESHOLD + height);
 }
 
+/*
+ * Callback for ClutterStage::captured-event singal.
+ *
+ * Processes CLUTTER_ENTER and CLUTTER_LEAVE events and shows/hides the
+ * panel as required.
+ */
 static gboolean
 mnb_toolbar_stage_captured_cb (ClutterActor *stage,
                                ClutterEvent *event,
@@ -1437,7 +1457,9 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
 }
 
 /*
- * Handles input events on stage.
+ * Handles ButtonPress events on stage.
+ *
+ * Used to hide the toolbar if the user clicks directly on stage.
  */
 static gboolean
 mnb_toolbar_stage_input_cb (ClutterActor *stage,
@@ -1458,6 +1480,12 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
   return FALSE;
 }
 
+/*
+ * Callback for ClutterStage::show() signal.
+ *
+ * Carries out set up that can only be done once the stage is shown and the
+ * associated X resources are in place.
+ */
 static void
 mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
 {
@@ -1503,6 +1531,13 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
   XSelectInput (xdpy, xwin, event_mask);
 }
 
+/*
+ * Sets the disabled flag which indicates that the toolbar should not be
+ * shown.
+ *
+ * Unlike the dont_autohide flag, this setting remains in force until
+ * explicitely cleared.
+ */
 void
 mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled)
 {
