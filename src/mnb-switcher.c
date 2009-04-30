@@ -36,7 +36,7 @@
 /*
  * MnbSwitcherApp
  *
- * A NbtkWidget subclass represening a single thumb in the switcher.
+ * A NbtkBin subclass represening a single thumb in the switcher.
  */
 #define MNB_TYPE_SWITCHER_APP                 (mnb_switcher_app_get_type ())
 #define MNB_SWITCHER_APP(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_SWITCHER_APP, MnbSwitcherApp))
@@ -279,6 +279,10 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
   return FALSE;
 }
 
+/*
+ * Callback for clicks on an individual application in the switcher; activates
+ * the application.
+ */
 static gboolean
 workspace_switcher_clone_input_cb (ClutterActor *clone,
                                    ClutterEvent *event,
@@ -318,6 +322,9 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   return FALSE;
 }
 
+/*
+ * DND machinery.
+ */
 static void
 dnd_begin_cb (NbtkWidget   *table,
 	      ClutterActor *dragged,
@@ -394,6 +401,10 @@ dnd_motion_cb (NbtkWidget   *table,
                               0, clutter_actor_get_width (icon)/2, 0);
 }
 
+/*
+ * Used for sorting the tablist we maintain for kbd navigation to match the
+ * contents of the switcher.
+ */
 static gint
 tablist_sort_func (gconstpointer a, gconstpointer b)
 {
@@ -555,6 +566,9 @@ dnd_new_dropped_cb (NbtkWidget   *table,
   meta_window_change_workspace_by_index (meta_win, col, TRUE, timestamp);
 }
 
+/*
+ * Tooltip showing machinery.
+ */
 static gboolean
 clone_hover_timeout_cb (gpointer data)
 {
@@ -1621,6 +1635,9 @@ mnb_switcher_new (MutterPlugin *plugin)
 
   g_return_val_if_fail (MUTTER_PLUGIN (plugin), NULL);
 
+  /*
+   * TODO the plugin should be construction time property.
+   */
   switcher = g_object_new (MNB_TYPE_SWITCHER, NULL);
   switcher->priv->plugin = plugin;
 
@@ -1704,6 +1721,9 @@ select_outer_foreach_cb (ClutterActor *child, gpointer data)
                              meta_win);
 }
 
+/*
+ * Selects a thumb in the switcher that matches given MetaWindow.
+ */
 void
 mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win)
 {
@@ -1729,6 +1749,9 @@ mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win)
     }
 }
 
+/*
+ * Activates the window currently selected in the switcher.
+ */
 void
 mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
                                  guint timestamp)
@@ -1844,6 +1867,8 @@ mnb_switcher_get_next_window (MnbSwitcher *switcher,
 }
 
 /*
+ * Alt_tab machinery.
+ *
  * Based on do_choose_window() in metacity keybinding.c
  *
  * This is the machinery we need for handling Alt+Tab
@@ -2291,6 +2316,8 @@ mnb_switcher_meta_window_weak_ref_cb (gpointer data, GObject *mw)
 }
 
 /*
+ * Handles X button and pointer events during Alt_tab grab.
+ *
  * Returns true if handled.
  */
 gboolean
