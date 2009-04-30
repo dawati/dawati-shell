@@ -151,7 +151,7 @@ _feed_items_removed_cb (AnerleyFeed *feed,
       clutter_model_iter_get (iter,
                               0,
                               &item,
-                              NULL);
+                              -1);
 
       if (item == item_to_remove)
       {
