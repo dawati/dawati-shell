@@ -58,6 +58,7 @@ struct _MnbLauncherButtonPrivate
   char          *category;
   char          *executable;
   char          *desktop_file_path;
+  char          *icon_name;
   char          *icon_file;
   gint           icon_size;
 
@@ -131,6 +132,7 @@ finalize (GObject *object)
   g_free (self->priv->category);
   g_free (self->priv->executable);
   g_free (self->priv->desktop_file_path);
+  g_free (self->priv->icon_name);
   g_free (self->priv->icon_file);
 
   g_free (self->priv->category_key);
@@ -387,7 +389,8 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 }
 
 NbtkWidget *
-mnb_launcher_button_new (const gchar *icon_file,
+mnb_launcher_button_new (const gchar *icon_name,
+                         const gchar *icon_file,
                          gint         icon_size,
                          const gchar *title,
                          const gchar *category,
@@ -397,36 +400,11 @@ mnb_launcher_button_new (const gchar *icon_file,
                          const gchar *desktop_file_path)
 {
   MnbLauncherButton *self;
-  GError            *error;
 
   self = g_object_new (MNB_TYPE_LAUNCHER_BUTTON, NULL);
 
-  self->priv->icon_file = g_strdup (icon_file);
-
-  self->priv->icon_size = icon_size;
-
-  error = NULL;
-  self->priv->icon = clutter_texture_new_from_file (self->priv->icon_file,
-                                                    &error);
-  if (error) {
-    g_warning ("%s", error->message);
-    g_error_free (error);
-  }
-
-  if (self->priv->icon) {
-
-    if (self->priv->icon_size > -1) {
-      clutter_actor_set_size (self->priv->icon,
-                              self->priv->icon_size,
-                              self->priv->icon_size);
-      g_object_set (G_OBJECT (self->priv->icon), "sync-size", TRUE, NULL);
-    }
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                          CLUTTER_ACTOR (self->priv->icon),
-                                          0, 0,
-                                          "row-span", 3,
-                                          NULL);
-  }
+  self->priv->icon_name = g_strdup (icon_name);
+  mnb_launcher_button_set_icon (self, icon_file, icon_size);
 
   if (title)
     nbtk_label_set_text (self->priv->title, title);
@@ -455,7 +433,9 @@ mnb_launcher_button_create_favorite (MnbLauncherButton *self)
   MnbLauncherButton *fav_sibling;
 
   g_return_val_if_fail (self, NULL);
-  fav_sibling = (MnbLauncherButton *) mnb_launcher_button_new (self->priv->icon_file,
+  fav_sibling = (MnbLauncherButton *) mnb_launcher_button_new (
+                                   self->priv->icon_name,
+                                   self->priv->icon_file,
                                    self->priv->icon_size,
                                    nbtk_label_get_text (self->priv->title),
                                    self->priv->category,
@@ -553,6 +533,60 @@ mnb_launcher_button_set_favorite (MnbLauncherButton *self,
   g_return_if_fail (self);
 
   nbtk_button_set_checked (NBTK_BUTTON (self->priv->fav_toggle), is_favorite);
+}
+
+const gchar *
+mnb_launcher_button_get_icon_name (MnbLauncherButton *self)
+{
+  g_return_val_if_fail (self, NULL);
+
+  return self->priv->icon_name;
+}
+
+void
+mnb_launcher_button_set_icon (MnbLauncherButton  *self,
+                              const gchar        *icon_file,
+                              gint                icon_size)
+{
+  GError *error;
+
+  if (self->priv->icon_file)
+    {
+      g_free (self->priv->icon_file);
+      self->priv->icon_file = NULL;
+    }
+
+  if (self->priv->icon)
+    {
+      clutter_actor_destroy (self->priv->icon);
+      self->priv->icon = NULL;
+    }
+
+  self->priv->icon_file = g_strdup (icon_file);
+  self->priv->icon_size = icon_size;
+
+  error = NULL;
+  self->priv->icon = clutter_texture_new_from_file (self->priv->icon_file,
+                                                    &error);
+  if (error) {
+    g_warning (G_STRLOC "%s", error->message);
+    g_error_free (error);
+  }
+
+  if (self->priv->icon) {
+
+    if (self->priv->icon_size > -1) {
+      clutter_actor_set_size (self->priv->icon,
+                              self->priv->icon_size,
+                              self->priv->icon_size);
+      g_object_set (G_OBJECT (self->priv->icon), "sync-size", TRUE, NULL);
+    }
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          CLUTTER_ACTOR (self->priv->icon),
+                                          0, 0,
+                                          "row-span", 3,
+                                          NULL);
+  }
 }
 
 gint

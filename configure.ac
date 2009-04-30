@@ -55,8 +55,14 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mojito-client                      dnl
                   gio-unix-2.0)
 
-PKG_CHECK_MODULES(PENGE, libjana-ecal mojito-client gtk+-2.0 nbtk-1.0 gconf-2.0
-                  gio-2.0 gio-unix-2.0)
+PKG_CHECK_MODULES(PENGE,
+                  libjana-ecal
+                  mojito-client
+                  gtk+-2.0 >= 2.14
+                  nbtk-1.0
+                  gconf-2.0
+                  gio-2.0
+                  gio-unix-2.0)
 
 AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
 

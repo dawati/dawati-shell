@@ -108,6 +108,14 @@ create_source (BklSourceClient *s)
 
     source->source = s;
     source->db = bkl_source_client_get_db (s);
+    if (source->db == NULL) {
+        g_warning ("%s: Error getting DB for %s",
+                   G_STRLOC, bkl_source_client_get_path (s));
+
+        g_object_unref (source->source);
+        g_free (source);
+        return NULL;
+    }
 
     source->items = bkl_db_get_items (source->db, FALSE, &error);
     if (source->items == NULL) {
@@ -165,18 +173,25 @@ init_bickley (gpointer data)
         g_warning ("Error getting sources\n");
     }
 
+    /* +1 for the local */
     priv->dbs = g_ptr_array_sized_new (g_list_length (sources) + 1);
 
     /* Local source first */
     client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
     source = create_source (client);
-    g_ptr_array_add (priv->dbs, source);
+    if (source) {
+        g_ptr_array_add (priv->dbs, source);
+    } else {
+        g_warning ("%s: Error, no local database\n", G_STRLOC);
+    }
 
     for (s = sources; s; s = s->next) {
         client = bkl_source_client_new (s->data);
         source = create_source (client);
 
-        g_ptr_array_add (priv->dbs, source);
+        if (source) {
+            g_ptr_array_add (priv->dbs, source);
+        }
     }
 
     recent_items = gtk_recent_manager_get_items (priv->recent_manager);
