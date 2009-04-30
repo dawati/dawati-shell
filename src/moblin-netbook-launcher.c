@@ -446,7 +446,6 @@ container_has_children (ClutterContainer *container)
   return ret;
 }
 
-#define INITIAL_FILL_TIMEOUT_S    4
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S 2
 
@@ -470,6 +469,7 @@ container_has_children (ClutterContainer *container)
 typedef struct
 {
   MutterPlugin            *self;
+  GtkIconTheme            *theme;
   PengeAppBookmarkManager *manager;
   MnbLauncherMonitor      *monitor;
   GHashTable              *expanders;
@@ -501,7 +501,6 @@ typedef struct
   MnbLauncherTree         *tree;
   GSList                  *directories;
   GSList const            *directory_iter;
-  GtkIconTheme            *theme;
 } launcher_data_t;
 
 static void launcher_data_monitor_cb        (MnbLauncherMonitor  *monitor,
@@ -643,26 +642,16 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
   penge_app_bookmark_manager_save (launcher_data->manager);
 }
 
-static NbtkWidget *
-launcher_button_create_from_entry (MnbLauncherEntry *entry,
-                                   const gchar      *category,
-                                   GtkIconTheme     *theme)
+static gchar *
+launcher_button_get_icon_file (const gchar  *icon_name,
+                               GtkIconTheme *theme)
 {
-  const gchar *generic_name, *icon_file;
-  gchar       *description, *exec, *icon_name;
   GtkIconInfo *info;
-  NbtkWidget  *button;
+  gchar *icon_file;
 
-  description = NULL;
-  exec = NULL;
-  icon_name = NULL;
   info = NULL;
-  button = NULL;
+  icon_file = NULL;
 
-  generic_name = mnb_launcher_entry_get_name (entry);
-  exec = mnb_launcher_entry_get_exec (entry);
-  description = mnb_launcher_entry_get_comment (entry);
-  icon_name = mnb_launcher_entry_get_icon (entry);
   if (icon_name)
     {
       info = gtk_icon_theme_lookup_icon (theme,
@@ -679,8 +668,34 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
     }
   if (info)
     {
-      icon_file = gtk_icon_info_get_filename (info);
+      icon_file = g_strdup (gtk_icon_info_get_filename (info));
     }
+
+  if (info)
+    gtk_icon_info_free (info);
+
+  return icon_file;
+}
+
+static NbtkWidget *
+launcher_button_create_from_entry (MnbLauncherEntry *entry,
+                                   const gchar      *category,
+                                   GtkIconTheme     *theme)
+{
+  const gchar *generic_name;
+  gchar       *description, *exec, *icon_name, *icon_file;
+  NbtkWidget  *button;
+
+  description = NULL;
+  exec = NULL;
+  icon_name = NULL;
+  button = NULL;
+
+  generic_name = mnb_launcher_entry_get_name (entry);
+  exec = mnb_launcher_entry_get_exec (entry);
+  description = mnb_launcher_entry_get_comment (entry);
+  icon_name = mnb_launcher_entry_get_icon (entry);
+  icon_file = launcher_button_get_icon_file (icon_name, theme);
 
   if (generic_name && exec && icon_file)
     {
@@ -688,7 +703,7 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
 
       /* Launcher button */
       last_used = mnb_launcher_utils_get_last_used (exec);
-      button = mnb_launcher_button_new (icon_file, LAUNCHER_ICON_SIZE,
+      button = mnb_launcher_button_new (icon_name, icon_file, LAUNCHER_ICON_SIZE,
                                         generic_name, category,
                                         description, last_used, exec,
                                         mnb_launcher_entry_get_desktop_file_path (entry));
@@ -699,10 +714,9 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
     }
 
   g_free (description);
-  g_free (icon_name);
   g_free (exec);
-  if (info)
-    gtk_icon_info_free (info);
+  g_free (icon_name);
+  g_free (icon_file);
 
   return button;
 }
@@ -961,7 +975,6 @@ launcher_data_fill_category (launcher_data_t *launcher_data)
       launcher_data->directory_iter = NULL;
       mnb_launcher_tree_free (launcher_data->tree);
       launcher_data->tree = NULL;
-      launcher_data->theme = NULL;
 
       return FALSE;
     }
@@ -1042,12 +1055,10 @@ launcher_data_fill_category (launcher_data_t *launcher_data)
   return TRUE;
 }
 
-static gboolean
+static void
 launcher_data_fill (launcher_data_t *launcher_data)
 {
   GList *fav_apps;
-
-  launcher_data->theme = gtk_icon_theme_get_default ();
 
   if (launcher_data->scrolled_vbox == NULL)
     {
@@ -1156,8 +1167,6 @@ launcher_data_fill (launcher_data_t *launcher_data)
 
   launcher_data->fill_id = g_idle_add ((GSourceFunc) launcher_data_fill_category,
                                        launcher_data);
-
-  return FALSE;
 }
 
 static void
@@ -1167,16 +1176,26 @@ launcher_data_force_fill (launcher_data_t *launcher_data)
   if (launcher_data->fill_id)
     {
       g_source_remove (launcher_data->fill_id);
-
-      if (launcher_data->tree == NULL)
-        {
-          launcher_data_fill (launcher_data);
-        }
-
-      g_source_remove (launcher_data->fill_id);
-
       while (launcher_data_fill_category (launcher_data))
         ;
+    }
+}
+
+static void
+launcher_data_theme_changed_cb (GtkIconTheme    *theme,
+                                launcher_data_t *launcher_data)
+{
+  GSList *launchers_iter;
+
+  for (launchers_iter = launcher_data->launchers;
+       launchers_iter;
+       launchers_iter = launchers_iter->next)
+    {
+      MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (launchers_iter->data);
+      const gchar *icon_name = mnb_launcher_button_get_icon_name (launcher);
+      gchar *icon_file = launcher_button_get_icon_file (icon_name, launcher_data->theme);
+      mnb_launcher_button_set_icon (launcher, icon_file, LAUNCHER_ICON_SIZE);
+      g_free (icon_file);
     }
 }
 
@@ -1194,6 +1213,9 @@ launcher_data_new (MutterPlugin *self,
   /* Launcher data instance. */
   launcher_data = g_new0 (launcher_data_t, 1);
   launcher_data->self = self;
+  launcher_data->theme = gtk_icon_theme_get_default ();
+  g_signal_connect (launcher_data->theme, "changed",
+                    G_CALLBACK (launcher_data_theme_changed_cb), launcher_data);
   launcher_data->manager = penge_app_bookmark_manager_get_default ();
   penge_app_bookmark_manager_load (launcher_data->manager);
 
@@ -1208,10 +1230,7 @@ launcher_data_new (MutterPlugin *self,
   clutter_container_add (CLUTTER_CONTAINER (launcher_data->scrollview),
                          launcher_data->scrolled_vbox, NULL);
 
-  /* Wait for gsd to get icons ready. */
-  launcher_data->fill_id = g_timeout_add_seconds (INITIAL_FILL_TIMEOUT_S,
-                                                  (GSourceFunc) launcher_data_fill,
-                                                  launcher_data);
+  launcher_data_fill (launcher_data);
 
   return launcher_data;
 }
