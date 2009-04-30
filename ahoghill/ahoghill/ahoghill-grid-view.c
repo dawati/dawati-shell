@@ -108,6 +108,14 @@ create_source (BklSourceClient *s)
 
     source->source = s;
     source->db = bkl_source_client_get_db (s);
+    if (source->db == NULL) {
+        g_warning ("%s: Error getting DB for %s",
+                   G_STRLOC, bkl_source_client_get_path (s));
+
+        g_object_unref (source->source);
+        g_free (source);
+        return NULL;
+    }
 
     source->items = bkl_db_get_items (source->db, FALSE, &error);
     if (source->items == NULL) {
