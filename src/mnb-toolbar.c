@@ -58,6 +58,10 @@ enum {
     PASTEBOARD_ZONE,
 
     APPLETS_START,
+
+    /* Below here are the applets -- with the new dbus API, these are
+     * just extra panels, only the buttons are slightly different in size.
+     */
     WIFI_APPLET = APPLETS_START,
     BT_APPLET,
     VOLUME_APPLET,
@@ -84,31 +88,36 @@ enum
 
 static guint toolbar_signals[LAST_SIGNAL] = { 0 };
 
-struct _MnbToolbarPrivate {
+struct _MnbToolbarPrivate
+{
   MutterPlugin *plugin;
 
-  ClutterActor *hbox;
+  ClutterActor *hbox; /* This is where all the contents are placed */
 
-  NbtkWidget *time;
-  NbtkWidget *date;
+  NbtkWidget   *time; /* The time and date fields, needed for the updates */
+  NbtkWidget   *date;
 
-  NbtkWidget *buttons[NUM_ZONES];
-  NbtkWidget *panels[NUM_ZONES];
+  NbtkWidget   *buttons[NUM_ZONES]; /* Buttons, one per zone & applet */
+  NbtkWidget   *panels[NUM_ZONES];  /* Panels (the dropdowns) */
 
   ShellTrayManager *tray_manager;
 
-  gboolean in_show_animation : 1;
+  gboolean in_show_animation : 1; /* Animation tracking */
   gboolean in_hide_animation : 1;
-  gboolean dont_autohide     : 1;
+  gboolean dont_autohide     : 1; /* Whether the panel should hide when the
+                                   * pointer goes south
+                                   */
 
-  MnbInputRegion input_region;
+  MnbInputRegion input_region;    /* The panel input region on the region
+                                   * stack.
+                                   */
 };
 
-
-
 static void
-mnb_toolbar_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
+mnb_toolbar_get_property (GObject    *object,
+                          guint       property_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
 {
   MnbToolbar *self = MNB_TOOLBAR (object);
 
@@ -215,6 +224,9 @@ mnb_toolbar_show (ClutterActor *actor)
 
   priv->in_show_animation = TRUE;
 
+  /*
+   * Start animation and wait for it to complete.
+   */
   animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
 
   g_object_ref (actor);
@@ -286,6 +298,9 @@ mnb_toolbar_hide (ClutterActor *actor)
 
   height = clutter_actor_get_height (actor);
 
+  /*
+   * Start animation and wait for it to complete.
+   */
   animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
                                      "y", -height, NULL);
 
@@ -315,12 +330,16 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_MUTTER_PLUGIN,
                                    g_param_spec_object ("mutter-plugin",
-                                                        "Mutter Plugin",
-                                                        "Mutter Plugin",
-                                                        MUTTER_TYPE_PLUGIN,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                      "Mutter Plugin",
+                                                      "Mutter Plugin",
+                                                      MUTTER_TYPE_PLUGIN,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT_ONLY));
 
 
+  /*
+   * MnbToolbar::show-completed, emitted when show animation completes.
+   */
   toolbar_signals[SHOW_COMPLETED] =
     g_signal_new ("show-completed",
                   G_TYPE_FROM_CLASS (object_class),
@@ -330,6 +349,9 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /*
+   * MnbToolbar::hide-begin, emitted before hide animation is started.
+   */
   toolbar_signals[HIDE_BEGIN] =
     g_signal_new ("hide-begin",
                   G_TYPE_FROM_CLASS (object_class),
@@ -339,6 +361,9 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /*
+   * MnbToolbar::hide-completed, emitted when hide animation completes.
+   */
   toolbar_signals[HIDE_COMPLETED] =
     g_signal_new ("hide-completed",
                   G_TYPE_FROM_CLASS (object_class),
@@ -373,6 +398,12 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
   return TRUE;
 }
 
+/*
+ * Toolbar button click handler.
+ *
+ * If the new button stage is 'checked' we show the asociated panel and hide
+ * all others; in the oposite case, we hide the associated panel.
+ */
 static void
 mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 {
@@ -407,6 +438,9 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 #if 1
 /*
  * TODO Remove.
+ *
+ * Helper functions for the m_zone, internet zone and media zone -- there will
+ * need to go and be handled internally in the zones/via new dbus API.
  */
 static void
 _mzone_activated_cb (PengeGridView *view, gpointer data)
@@ -420,6 +454,10 @@ _mzone_activated_cb (PengeGridView *view, gpointer data)
 }
 
 #ifdef USE_AHOGHILL
+/*
+ * TODO -- this should be moved inside Ahoghill and the signal handlers
+ * connected on "parent-set".
+ */
 static void
 _media_drop_down_hidden (MnbDropDown      *drop_down,
                          AhoghillGridView *view)
@@ -437,6 +475,10 @@ _media_drop_down_shown (MnbDropDown      *drop_down,
 #endif
 
 #ifdef WITH_NETPANEL
+/*
+ * TODO -- we might need dbus API for launching things to retain control over
+ * the application workspace; investigate further.
+ */
 static void
 _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
                     const gchar           *url,
@@ -467,6 +509,9 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
  * Translates panel name to the corresponding enum value.
  *
  * Returns -1 if there is no match.
+ *
+ * TODO -- stuff all the strings into a single big array used by both this
+ * and the reverse lookup function to avoid duplication.
  */
 static gint
 mnb_toolbar_panel_name_to_index (const gchar *name)
@@ -531,6 +576,13 @@ mnb_toolbar_panel_index_to_name (gint index)
     }
 }
 
+/*
+ * Appends a panel of the given name, using the given tooltip and icon; the xid
+ * is an id of the panel window.
+ *
+ * TODO -- for now the xid is ingored and we fallback on the internal
+ * components.
+ */
 void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           const gchar *name,
@@ -560,6 +612,12 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     {
       if (index == SPACES_ZONE)
         {
+          /*
+           * TODO
+           * The spaces zone exposes some singnal handlers require to track
+           * the focus order, and replacing it would be bit messy. For now
+           * we simply do not allow this.
+           */
           g_warning ("The Spaces Zone cannot be replaced\n");
           return;
         }
@@ -572,6 +630,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     {
       if (index == SPACES_ZONE)
         {
+          /*
+           * BTW -- this code should not be reached; we should have exited
+           * already in the button test.
+           */
           g_warning ("The Spaces Zone cannot be replaced\n");
           return;
         }
@@ -582,6 +644,9 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
+  /*
+   * Create the button for this zone.
+   */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
@@ -600,8 +665,15 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
         }
     }
 
+  /*
+   * The button size and positioning depends on whether this is a regular
+   * zone button, but one of the applet buttons.
+   */
   if (index < APPLETS_START)
     {
+      /*
+       * Zone button
+       */
       clutter_actor_set_size (CLUTTER_ACTOR (button),
                               BUTTON_WIDTH, BUTTON_HEIGHT);
 
@@ -621,6 +693,9 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
     }
   else
     {
+      /*
+       * Applet button.
+       */
       gint zones   = APPLETS_START;
       gint applets = index - APPLETS_START;
       gint x, y;
@@ -642,15 +717,15 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                                CLUTTER_ACTOR (button));
     }
 
-
   g_signal_connect (button, "clicked",
                     G_CALLBACK (mnb_toolbar_toggle_buttons),
                     toolbar);
 
   /*
-   * Special case Space; we have an internal component for this, but will
-   * allow it to be replaced by a thirdparty component just like all the
-   * other dropdowns.
+   * Special case Space; we have an internal component for this.
+   *
+   * TODO -- should we allow it to be replaced by a thirdparty component just
+   * like all the other dropdowns?
    */
   if (index == SPACES_ZONE)
     {
@@ -673,6 +748,12 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
 
       switch (index)
         {
+          /*
+           * TODO: The Status, Apps and Pastboard provide MnbDropDown
+           * subclasses; this will require changes to all of them for the new
+           * dbus API, as the the dropdown is created and owned by the Toolbar,
+           * and the zone implementation only provides the child for it.
+           */
         case STATUS_ZONE:
           panel = priv->panels[index] = NBTK_WIDGET (
             make_status (plugin, screen_width - TOOLBAR_X_PADDING * 2));
@@ -901,7 +982,8 @@ mnb_toolbar_constructed (GObject *self)
   mnb_toolbar_setup_kbd_grabs (MNB_TOOLBAR (self));
 
   /*
-   * Disable autohiding of the panel to start with.
+   * Disable autohiding of the panel to start with (the panel needs to show
+   * on startup regardless where the pointer initially is).
    */
   priv->dont_autohide = TRUE;
 }
@@ -953,7 +1035,7 @@ mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name)
   clutter_actor_hide (CLUTTER_ACTOR (priv->panels[index]));
 }
 
-/* return NULL if no panel active */
+/* returns NULL if no panel active */
 const gchar *
 mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
 {
@@ -1021,8 +1103,7 @@ struct config_hide_data
 };
 
 /*
- * TODO -- extract the entire dropdown creation for the tray panels out of here
- * into MnbToolbar.
+ * The tray machinery -- this will go once the new dbus API is in place.
  */
 static void
 tray_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
@@ -1147,6 +1228,12 @@ mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin)
   return shell_tray_manager_is_config_window (priv->tray_manager, xwin);
 }
 
+/*
+ * Returns the switcher zone if it exists.
+ *
+ * (This is needed because we have to hookup the switcher focus related
+ * callbacks plugin so it can maintain accurate switching order list.)
+ */
 NbtkWidget *
 mnb_toolbar_get_switcher (MnbToolbar *toolbar)
 {
@@ -1155,6 +1242,12 @@ mnb_toolbar_get_switcher (MnbToolbar *toolbar)
   return priv->panels[SPACES_ZONE];
 }
 
+/*
+ * Sets a flag indicating whether the toolbar should hide when the pointer is
+ * outside of the toolbar input zone -- this is the normal behaviour, but
+ * needs to be disabled, for example, when the toolbar is opened using the
+ * kbd shortcut.
+ */
 void
 mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont)
 {
@@ -1167,8 +1260,8 @@ mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont)
  * Sets up passive key grabs on any dedicated shortcut keys that we cannot
  * hook into throught metacity key bindings.
  *
- * Needs to be public, because the kbd grabs need to be re-establised by the
- * alt_tab handler.
+ * Needs to be public, because the kbd grabs need to be re-establised every
+ * time Metacity calls XUngrabKeyboard().
  */
 void
 mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar)
