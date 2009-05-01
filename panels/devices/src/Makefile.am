@@ -5,7 +5,8 @@ dalston_volume_applet_CFLAGS = -I$(top_srcdir) \
 			       $(GLIB_CFLAGS) \
 			       $(GTK_CFLAGS) \
 			       $(PULSE_CFLAGS)\
-			       $(CANBERRA_CFLAGS)
+			       $(CANBERRA_CFLAGS) \
+			     -DLOCALEDIR=\""$(localedir)"\"
 dalston_volume_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			      $(top_builddir)/libgvc/libgvc.la \
 			      $(top_builddir)/libhal-glib/libhal-glib.la \
@@ -21,7 +22,8 @@ dalston_power_applet_CFLAGS = -I$(top_srcdir) \
 			      $(GLIB_CFLAGS) \
 			      $(GTK_CFLAGS) \
 			      $(PULSE_CFLAGS)\
-			      $(CANBERRA_CFLAGS)
+			      $(CANBERRA_CFLAGS) \
+			     -DLOCALEDIR=\""$(localedir)"\"
 dalston_power_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			     $(top_builddir)/libgvc/libgvc.la \
 			     $(top_builddir)/libhal-glib/libhal-glib.la \

@@ -1,11 +1,13 @@
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
 #include <dalston/dalston-volume-applet.h>
 #include <dalston/dalston-volume-status-icon.h>
 #include "moblin-netbook-system-tray.h"
 
-#define PADDING 0
+#include <config.h>
 
+#define PADDING 0
 
 static void
 _plug_notify_embedded (GObject    *object,
@@ -35,6 +37,7 @@ main (int    argc,
   GtkSettings *settings;
   GtkWidget *plug;
 
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   gtk_init (&argc, &argv);
 
   /* Force to the moblin theme */

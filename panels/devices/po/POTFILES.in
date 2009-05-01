@@ -1,0 +1,5 @@
+dalston/dalston-power-applet.c
+dalston/dalston-brightness-slider.c
+dalston/dalston-volume-pane.c
+dalston/dalston-volume-slider.c
+libgvc/gvc-mixer-control.c

@@ -1,8 +1,11 @@
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
 #include <dalston/dalston-volume-applet.h>
 #include <dalston/dalston-power-applet.h>
 #include "moblin-netbook-system-tray.h"
+
+#include <config.h>
 
 #define PADDING 0
 
@@ -33,6 +36,7 @@ main (int    argc,
   GtkSettings *settings;
   GtkWidget *plug;
 
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   gtk_init (&argc, &argv);
 
   /* Force to the moblin theme */
