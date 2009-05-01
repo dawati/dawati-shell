@@ -85,7 +85,7 @@ update_tile (AhoghillMediaTile *self)
             season = bkl_item_video_get_season ((BklItemVideo *) priv->item);
             episode = bkl_item_video_get_episode ((BklItemVideo *) priv->item);
 
-            artist = g_strdup_printf ("Season %u, Episode %u", season, episode);
+            artist = g_strdup_printf (_("Season %u, Episode %u"), season, episode);
         } else {
             artist = g_strdup_printf ("(%u)", year);
         }

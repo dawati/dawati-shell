@@ -331,7 +331,7 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
     clutter_actor_show ((ClutterActor *) priv->current_page);
     clutter_actor_set_position ((ClutterActor *) priv->current_page, 0, 0);
 
-    priv->previous_button = nbtk_button_new_with_label ("Previous");
+    priv->previous_button = nbtk_button_new_with_label (_("Previous"));
     clutter_actor_set_name (CLUTTER_ACTOR (priv->previous_button),
                             "media-pane-previous-page");
     g_signal_connect (CLUTTER_ACTOR (priv->previous_button),
@@ -347,7 +347,7 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
                                           "x-align", 0.0,
                                           NULL);
 
-    priv->next_button = nbtk_button_new_with_label ("Next");
+    priv->next_button = nbtk_button_new_with_label (_("Next"));
     clutter_actor_set_name (CLUTTER_ACTOR (priv->next_button),
                             "media-pane-next-page");
     g_signal_connect (CLUTTER_ACTOR (priv->next_button), "button-release-event",
