@@ -296,29 +296,17 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
 static void
 mnb_drop_down_init (MnbDropDown *self)
 {
-  NbtkWidget *footer, *up_button;
+  NbtkWidget *footer;
   MnbDropDownPrivate *priv;
 
   priv = self->priv = GET_PRIVATE (self);
 
   /* footer with "up" button */
-  footer = nbtk_table_new ();
+  footer = nbtk_button_new ();
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
-
-  up_button = nbtk_button_new ();
-  nbtk_widget_set_style_class_name (up_button, "drop-down-up-button");
-  nbtk_table_add_actor (NBTK_TABLE (footer), CLUTTER_ACTOR (up_button), 0, 0);
-  clutter_actor_set_size (CLUTTER_ACTOR (up_button), 23, 21);
-  clutter_container_child_set (CLUTTER_CONTAINER (footer),
-                               CLUTTER_ACTOR (up_button),
-                               "y-fill", FALSE,
-                               "x-fill", FALSE,
-                               "x-align", 1.0,
-                               NULL);
-  g_signal_connect_swapped (up_button, "clicked",
+  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (footer), 1, 0);
+  g_signal_connect_swapped (footer, "clicked",
                             G_CALLBACK (clutter_actor_hide), self);
-
-  nbtk_table_add_widget (NBTK_TABLE (self), footer, 1, 0);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,

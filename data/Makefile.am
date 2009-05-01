@@ -91,10 +91,10 @@ dist_theme_switcher_DATA = \
 
 theme_dropdowndir = $(pkgdatadir)/theme/drop-down
 dist_theme_dropdown_DATA = \
-	theme/drop-down/footer.png	\
-	theme/drop-down/up-button.png	\
-	theme/drop-down/up-button-active.png \
-	theme/drop-down/up-button-hover.png
+	theme/drop-down/panel_arrow.png \
+	theme/drop-down/panel_arrow_hover.png \
+	theme/drop-down/panel_up_button.png \
+	theme/drop-down/panel_up_button_hover.png
 
 theme_mzonedir = $(pkgdatadir)/theme/mzone
 dist_theme_mzone_DATA = \
