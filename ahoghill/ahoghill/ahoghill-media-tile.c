@@ -1,3 +1,5 @@
+#include <glib/gi18n.h>
+
 #include <bickley/bkl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
