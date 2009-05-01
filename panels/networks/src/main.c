@@ -1,8 +1,11 @@
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
 #include <carrick/carrick-applet.h>
 #include <carrick/carrick-status-icon.h>
 #include "moblin-netbook-system-tray.h"
+
+#include <config.h>
 
 static void
 _plug_notify_embedded (GObject    *object,
@@ -30,6 +33,7 @@ main (int    argc,
   GdkScreen     *screen;
   GtkWidget     *plug;
 
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   gtk_init (&argc, &argv);
 
   applet = carrick_applet_new ();
