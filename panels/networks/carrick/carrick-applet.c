@@ -50,14 +50,15 @@ _notify_connection_changed (CarrickApplet *self)
                                priv->active_service_name);
   }
 
-  icon = carrick_status_icon_get_icon_path (CARRICK_STATUS_ICON (priv->icon));
+  icon = carrick_status_icon_path_for_state
+    (cm_manager_get_active_service (priv->manager));
 
   note = notify_notification_new (title,
                                   message,
                                   icon,
                                   NULL);
   notify_notification_set_timeout (note,
-                                   3000); // 3s
+                                   3000); // FIXME: 3s
 
   notify_notification_show (note,
                             &error);
@@ -78,13 +79,13 @@ manager_state_changed_cb (CmManager *manager,
   gchar *new_name;
   gchar *new_type;
 
-  if (!(g_strcmp0 (priv->state, new_state) == 0))
+  if (g_strcmp0 (priv->state, new_state) != 0)
   {
     g_free (priv->state);
     priv->state = new_state;
 
     new_name = g_strdup (cm_manager_get_active_service_name (manager));
-    if (!(g_strcmp0 (priv->active_service_name, new_name) == 0))
+    if (g_strcmp0 (priv->active_service_name, new_name) != 0)
     {
       g_free (priv->active_service_name);
       priv->active_service_name = new_name;
