@@ -31,13 +31,14 @@ void
 _notify_connection_changed (CarrickApplet *self)
 {
   NotifyNotification *note;
-  GError *error;
+  GError *error = NULL;
   gchar *title;
   gchar *message;
   gchar *icon; // filename
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
 
-  if (g_strcmp0 ("offline", priv->state) == 0)
+  if (priv->state &&
+      g_strcmp0 ("offline", priv->state) == 0)
   {
     title = g_strdup_printf (_("Offline"));
     message = g_strdup_printf (_("No active connection"));
