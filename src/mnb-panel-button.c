@@ -69,6 +69,28 @@ mnb_panel_button_pick (ClutterActor       *actor,
 }
 
 static void
+mnb_panel_button_map (ClutterActor *actor)
+{
+  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->map (actor);
+
+  if (priv->old_bg)
+    clutter_actor_map (priv->old_bg);
+}
+
+static void
+mnb_panel_button_unmap (ClutterActor *actor)
+{
+  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->unmap (actor);
+
+  if (priv->old_bg)
+    clutter_actor_unmap (priv->old_bg);
+}
+
+static void
 mnb_panel_button_paint_background (NbtkWidget         *actor,
                                    ClutterActor       *background,
                                    const ClutterColor *color)
@@ -260,6 +282,8 @@ mnb_panel_button_class_init (MnbPanelButtonClass *klass)
   actor_class->pick = mnb_panel_button_pick;
   actor_class->button_press_event = mnb_panel_button_press;
   actor_class->enter_event = mnb_panel_button_enter;
+  actor_class->map = mnb_panel_button_map;
+  actor_class->unmap = mnb_panel_button_unmap;
 
   widget_class->draw_background = mnb_panel_button_paint_background;
 

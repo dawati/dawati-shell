@@ -326,7 +326,7 @@ dnd_begin_cb (NbtkWidget   *table,
       dragged_priv->hover_timeout_id = 0;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (dragged_priv->tooltip))
+  if (CLUTTER_ACTOR_IS_MAPPED (dragged_priv->tooltip))
     {
       nbtk_tooltip_hide (NBTK_TOOLTIP (dragged_priv->tooltip));
 
@@ -594,7 +594,7 @@ clone_leave_event_cb (ClutterActor *actor,
       child_priv->hover_timeout_id = 0;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (child_priv->tooltip))
+  if (CLUTTER_ACTOR_IS_MAPPED (child_priv->tooltip))
     {
       nbtk_tooltip_hide (NBTK_TOOLTIP (child_priv->tooltip));
 
@@ -864,7 +864,7 @@ screen_n_workspaces_notify (MetaScreen *screen,
   GList       *k;
   struct ws_remove_data remove_data;
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (switcher)))
+  if (!CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (switcher)))
     return;
 
   n_c_workspaces = meta_screen_get_n_workspaces (screen);
@@ -1147,8 +1147,8 @@ mnb_switcher_show (ClutterActor *self)
       ClutterActor          *texture, *c_tx, *clone;
       gint                   ws_indx;
       MetaCompWindowType     type;
-      guint                  w, h;
-      guint                  clone_w;
+      gfloat                 w, h;
+      gfloat                 clone_w;
       struct origin_data    *origin_data;
       MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
       gchar                 *title;

@@ -54,7 +54,7 @@ main (int argc, char *argv[])
 
   entry = mnb_entry_new ("Foo");
 
-  clutter_actor_set_widthu (CLUTTER_ACTOR (entry), CLUTTER_UNITS_FROM_DEVICE (200));
+  clutter_actor_set_width (CLUTTER_ACTOR (entry), 200);
   clutter_actor_set_position (CLUTTER_ACTOR (entry), 50, 50);
   clutter_container_add (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (entry), NULL);
 

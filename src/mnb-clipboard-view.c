@@ -268,7 +268,7 @@ mnb_clipboard_view_allocate (ClutterActor *actor,
       ClutterUnit child_height;
       ClutterActorBox child_box = { 0, };
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!CLUTTER_ACTOR_IS_MAPPED (child))
         continue;
 
       clutter_actor_get_preferred_height (child, available_width,
@@ -365,7 +365,7 @@ mnb_clipboard_view_paint (ClutterActor *actor)
     {
       ClutterActor *child = l->data;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!CLUTTER_ACTOR_IS_MAPPED (child))
         {
           i--;
           continue;
@@ -408,6 +408,30 @@ mnb_clipboard_view_pick (ClutterActor *actor,
 
   for (l = priv->rows; l != NULL; l = l->next)
     clutter_actor_paint (l->data);
+}
+
+static void
+mnb_clipboard_view_map (ClutterActor *actor)
+{
+  MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (actor)->priv;
+  GSList *l;
+
+  CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->map (actor);
+
+  for (l = priv->rows; l != NULL; l = l->next)
+    clutter_actor_map (l->data);
+}
+
+static void
+mnb_clipboard_view_unmap (ClutterActor *actor)
+{
+  MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (actor)->priv;
+  GSList *l;
+
+  CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->unmap (actor);
+
+  for (l = priv->rows; l != NULL; l = l->next)
+    clutter_actor_unmap (l->data);
 }
 
 static void
@@ -510,6 +534,8 @@ mnb_clipboard_view_class_init (MnbClipboardViewClass *klass)
   actor_class->allocate = mnb_clipboard_view_allocate;
   actor_class->paint = mnb_clipboard_view_paint;
   actor_class->pick = mnb_clipboard_view_pick;
+  actor_class->map = mnb_clipboard_view_map;
+  actor_class->unmap = mnb_clipboard_view_unmap;
 
   pspec = g_param_spec_object ("store",
                                "Store",

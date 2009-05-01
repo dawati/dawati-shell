@@ -263,16 +263,16 @@ mnb_clipboard_item_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_clipboard_item_parent_class)->paint (actor);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (item->contents))
+  if (CLUTTER_ACTOR_IS_MAPPED (item->contents))
     clutter_actor_paint (item->contents);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (item->time_label))
+  if (CLUTTER_ACTOR_IS_MAPPED (item->time_label))
     clutter_actor_paint (item->time_label);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (item->remove_button))
+  if (CLUTTER_ACTOR_IS_MAPPED (item->remove_button))
     clutter_actor_paint (item->remove_button);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (item->action_button))
+  if (CLUTTER_ACTOR_IS_MAPPED (item->action_button))
     clutter_actor_paint (item->action_button);
 }
 
@@ -285,7 +285,7 @@ mnb_clipboard_item_pick (ClutterActor *actor,
   CLUTTER_ACTOR_CLASS (mnb_clipboard_item_parent_class)->pick (actor, pick_color);
 
   /* these are all we care about */
-  if (CLUTTER_ACTOR_IS_VISIBLE (item->remove_button))
+  if (CLUTTER_ACTOR_IS_MAPPED (item->remove_button))
     clutter_actor_paint (item->remove_button);
 
   clutter_actor_paint (item->action_button);
@@ -315,6 +315,32 @@ mnb_clipboard_item_leave (ClutterActor *actor,
   clutter_actor_hide (item->remove_button);
 
   return TRUE;
+}
+
+static void
+mnb_clipboard_item_map (ClutterActor *actor)
+{
+  MnbClipboardItem *item = MNB_CLIPBOARD_ITEM (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_clipboard_item_parent_class)->map (actor);
+
+  clutter_actor_map (item->contents);
+  clutter_actor_map (item->time_label);
+  clutter_actor_map (item->remove_button);
+  clutter_actor_map (item->action_button);
+}
+
+static void
+mnb_clipboard_item_unmap (ClutterActor *actor)
+{
+  MnbClipboardItem *item = MNB_CLIPBOARD_ITEM (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_clipboard_item_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (item->contents);
+  clutter_actor_unmap (item->time_label);
+  clutter_actor_unmap (item->remove_button);
+  clutter_actor_unmap (item->action_button);
 }
 
 static void
@@ -384,6 +410,8 @@ mnb_clipboard_item_class_init (MnbClipboardItemClass *klass)
   actor_class->pick = mnb_clipboard_item_pick;
   actor_class->enter_event = mnb_clipboard_item_enter;
   actor_class->leave_event = mnb_clipboard_item_leave;
+  actor_class->map = mnb_clipboard_item_map;
+  actor_class->unmap = mnb_clipboard_item_unmap;
 
   pspec = g_param_spec_string ("contents",
                                "Contents",
@@ -431,7 +459,7 @@ static void
 mnb_clipboard_item_init (MnbClipboardItem *self)
 {
   ClutterActor *text;
-  ClutterActor *texture;
+  ClutterTexture *texture;
   NbtkTextureCache *texture_cache;
   gchar *remove_icon_path;
 
@@ -461,8 +489,9 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
   texture_cache = nbtk_texture_cache_get_default ();
   texture = nbtk_texture_cache_get_texture (texture_cache,
                                             remove_icon_path,
-                                            TRUE);
-  nbtk_bin_set_child (NBTK_BIN (self->remove_button), texture);
+                                            FALSE);
+  nbtk_bin_set_child (NBTK_BIN (self->remove_button),
+                      CLUTTER_ACTOR (texture));
 
   g_free (remove_icon_path);
 

@@ -163,10 +163,10 @@ mnb_status_row_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_status_row_parent_class)->paint (actor);
 
-  if (priv->icon && CLUTTER_ACTOR_IS_VISIBLE (priv->icon))
+  if (priv->icon && CLUTTER_ACTOR_IS_MAPPED (priv->icon))
     clutter_actor_paint (priv->icon);
 
-  if (priv->entry && CLUTTER_ACTOR_IS_VISIBLE (priv->entry))
+  if (priv->entry && CLUTTER_ACTOR_IS_MAPPED (priv->entry))
     clutter_actor_paint (priv->entry);
 }
 
@@ -184,6 +184,34 @@ mnb_status_row_pick (ClutterActor       *actor,
 
   if (priv->entry && clutter_actor_should_pick_paint (priv->entry))
     clutter_actor_paint (priv->entry);
+}
+
+static void
+mnb_status_row_map (ClutterActor *actor)
+{
+  MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_status_row_parent_class)->map (actor);
+
+  if (priv->icon)
+    clutter_actor_map (priv->icon);
+
+  if (priv->entry)
+    clutter_actor_map (priv->entry);
+}
+
+static void
+mnb_status_row_unmap (ClutterActor *actor)
+{
+  MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_status_row_parent_class)->unmap (actor);
+
+  if (priv->icon)
+    clutter_actor_unmap (priv->icon);
+
+  if (priv->entry)
+    clutter_actor_unmap (priv->entry);
 }
 
 static gboolean
@@ -633,6 +661,8 @@ mnb_status_row_class_init (MnbStatusRowClass *klass)
   actor_class->allocate = mnb_status_row_allocate;
   actor_class->paint = mnb_status_row_paint;
   actor_class->pick = mnb_status_row_pick;
+  actor_class->map = mnb_status_row_map;
+  actor_class->unmap = mnb_status_row_unmap;
   actor_class->enter_event = mnb_status_row_enter;
   actor_class->leave_event = mnb_status_row_leave;
   actor_class->button_release_event = mnb_status_row_button_release;

@@ -420,7 +420,7 @@ static ClutterActor *
 make_spinner (void)
 {
   ClutterActor *spinner;
-  guint         s_w, s_h;
+  gfloat s_w, s_h;
 
   static ClutterBehaviour *beh = NULL;
 
@@ -433,7 +433,7 @@ make_spinner (void)
   clutter_actor_realize (spinner);
   clutter_actor_get_size (spinner, &s_w, &s_h);
 
-  clutter_actor_set_anchor_point (spinner, s_w/2, s_h/2);
+  clutter_actor_set_anchor_point (spinner, s_w / 2, s_h / 2);
 
   if (!beh)
     {
@@ -468,7 +468,7 @@ make_background (const gchar *text, guint width, guint height,
   ClutterActor *group, *bck, *label_actor;
   ClutterText *label;
   ClutterColor  white = { 0xff, 0xff, 0xff, 0xff };
-  guint         l_w, l_h;
+  gfloat        l_w, l_h;
 
   group = clutter_group_new ();
 
@@ -688,7 +688,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
       ClutterActor       *texture;
       ClutterActor       *clone;
       ClutterActor       *workspace = NULL;
-      gint                x, y;
+      gfloat              x, y;
 
       type = mutter_window_get_window_type (mw);
       ws_indx = mutter_window_get_workspace (mw);
@@ -824,8 +824,8 @@ show_workspace_chooser (MutterPlugin *plugin,
   ClutterActor               *grid;
   ClutterActor               *label;
   gint                        screen_width, screen_height;
-  guint                       switcher_width, switcher_height;
-  guint                       label_height;
+  gfloat                      switcher_width, switcher_height;
+  gfloat                      label_height;
   ClutterColor                label_clr = { 0xff, 0xff, 0xff, 0xff };
   gint                        ws_count = 0;
   struct kbd_data            *kbd_data;
@@ -833,8 +833,8 @@ show_workspace_chooser (MutterPlugin *plugin,
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   switcher = clutter_group_new ();
-  bck =clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                      "/theme/chooser/background.png", NULL);
+  bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                       "/theme/chooser/background.png", NULL);
 
   frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
 

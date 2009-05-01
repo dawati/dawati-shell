@@ -100,8 +100,8 @@ static void
 mnb_drop_down_show (ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
-  gint x, y;
-  guint height, width;
+  gfloat x, y;
+  gfloat height, width;
   ClutterAnimation *animation;
 
   if (priv->in_show_animation)
@@ -127,8 +127,8 @@ mnb_drop_down_show (ClutterActor *actor)
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "x", x,
-                                     "y", y,
+                                     "x", (int) x,
+                                     "y", (int) y,
                                      NULL);
 
   g_signal_connect (clutter_animation_get_timeline (animation),
@@ -189,7 +189,7 @@ mnb_drop_down_hide (ClutterActor *actor)
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "y", -clutter_actor_get_height (actor),
+                                     "y", (int) -clutter_actor_get_height (actor),
                                      NULL);
 
   g_signal_connect (clutter_animation_get_timeline (animation),

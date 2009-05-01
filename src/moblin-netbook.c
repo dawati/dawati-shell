@@ -603,7 +603,7 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
   if (priv->fullscreen_apps)
     return;
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+  if (!CLUTTER_ACTOR_IS_MAPPED (priv->switcher))
     {
       struct alt_tab_show_complete_data *alt_data;
 
@@ -674,19 +674,19 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
       priv->notification_input_region = NULL;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (notify_actor))
+  if (CLUTTER_ACTOR_IS_MAPPED (notify_actor))
     {
-      gint x,y;
-      guint width,height;
+      gfloat x,y;
+      gfloat width,height;
 
       clutter_actor_get_transformed_position (notify_actor, &x, &y);
       clutter_actor_get_transformed_size (notify_actor, &width, &height);
 
       if (width != 0 && height != 0)
         {
-          priv->notification_input_region
-            = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin),
-                                                x, y, width, height,FALSE);
+          priv->notification_input_region =
+            moblin_netbook_input_region_push (MUTTER_PLUGIN (plugin),
+                                              x, y, width, height,FALSE);
         }
     }
 }
@@ -697,7 +697,7 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
                               MutterPlugin *plugin)
 {
   moblin_netbook_set_lowlight (plugin,
-                               CLUTTER_ACTOR_IS_VISIBLE(notify_urgent));
+                               CLUTTER_ACTOR_IS_MAPPED(notify_urgent));
 }
 
 static void
@@ -1003,8 +1003,8 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
   ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
   CoglHandle         cogl_texture;
   float              t_w, t_h;
-  guint              tex_width, tex_height;
-  guint              w, h;
+  gfloat             tex_width, tex_height;
+  gfloat             w, h;
 
   clutter_actor_get_size (priv->parallax_tex, &w, &h);
 
@@ -1169,8 +1169,8 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
       ActorPrivate *apriv = get_actor_private (mcw);
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
-      guint width, height;
-      gint  x, y;
+      gfloat width, height;
+      gfloat x, y;
 
       apriv->is_maximized = TRUE;
 
@@ -1753,7 +1753,7 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
   /*
    * Refuse to disable the stage while the UI is showing.
    */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) ||
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->panel) ||
       priv->panel_out_in_progress ||
       priv->workspace_chooser)
     {
@@ -1871,7 +1871,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) ==
                                                     MOBLIN_PANEL_SHORTCUT_KEY)
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+      if (!CLUTTER_ACTOR_IS_MAPPED (priv->panel))
         show_panel (plugin, TRUE);
       else
         {
@@ -1985,15 +1985,15 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_disabled)
         return FALSE;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel) &&
-          ((!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher) &&
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->launcher) &&
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->mzone_grid) &&
+      if (CLUTTER_ACTOR_IS_MAPPED (priv->panel) &&
+          ((!CLUTTER_ACTOR_IS_MAPPED (priv->switcher) &&
+            !CLUTTER_ACTOR_IS_MAPPED (priv->launcher) &&
+            !CLUTTER_ACTOR_IS_MAPPED (priv->mzone_grid) &&
 #ifdef WITH_NETPANEL
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->net_grid) &&
+            !CLUTTER_ACTOR_IS_MAPPED (priv->net_grid) &&
 #endif
 #ifdef USE_AHOGHILL
-            !CLUTTER_ACTOR_IS_VISIBLE (priv->media_drop_down) &&
+            !CLUTTER_ACTOR_IS_MAPPED (priv->media_drop_down) &&
 #endif
 #ifdef WITH_PEOPLE
             !CLUTTER_ACTOR_IS_VISIBLE (priv->people) &&
@@ -2028,7 +2028,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
             return FALSE;
 
           if (!priv->panel_slide_timeout_id &&
-              !CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+              !CLUTTER_ACTOR_IS_MAPPED (priv->panel))
             {
               priv->current_input_base_region = priv->panel_trigger_region2;
               moblin_netbook_input_region_apply (MUTTER_PLUGIN (plugin));
@@ -2077,7 +2077,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+      if (CLUTTER_ACTOR_IS_MAPPED (priv->switcher))
         clutter_actor_hide (priv->switcher);
 
       if (priv->launcher)
@@ -2088,7 +2088,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
       shell_tray_manager_close_all_config_windows (priv->tray_manager);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel))
+      if (CLUTTER_ACTOR_IS_MAPPED (priv->panel))
         {
           guint height = clutter_actor_get_height (priv->panel_shadow);
 

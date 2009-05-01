@@ -135,7 +135,7 @@ make_pasteboard (MutterPlugin *plugin,
   NbtkWidget *vbox, *hbox, *label, *entry, *drop_down, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
   ClutterText *text;
-  guint items_list_width = 0, items_list_height = 0;
+  gfloat items_list_width = 0, items_list_height = 0;
 
   drop_down = mnb_drop_down_new ();
 
