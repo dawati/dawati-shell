@@ -617,6 +617,11 @@ _mc_account_status_changed_cb (MissionControl           *mc,
   /* This is so lame. I hear this should get better with MC5 though */
   if (g_str_equal (account_name, mc_account_get_unique_name (priv->account)))
   {
+    g_debug (G_STRLOC ": Connection is in state: %s",
+             status==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
+             status==TP_CONNECTION_STATUS_CONNECTING ? "connecting" :
+             status==TP_CONNECTION_STATUS_DISCONNECTED ? "disconnected" :
+             "other");
     if (status == TP_CONNECTION_STATUS_CONNECTED)
     {
       priv->conn = mission_control_get_tpconnection (priv->mc,
