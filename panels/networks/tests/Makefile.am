@@ -16,8 +16,4 @@ test_applet_SOURCES = test-applet.c
 test_applet_LDADD = $(top_builddir)/carrick/libcarrick.la \
                     $(GTK_LIBS) $(GCONNMAN_LIBS)
 
-test_mux_switch_SOURCES = test-mux-switch.c
-test_mux_switch_LDADD = $(top_builddir)/mux/libmux.la \
-			$(GTK_LIBS)
-
 -include $(top_srcdir)/git.mk
