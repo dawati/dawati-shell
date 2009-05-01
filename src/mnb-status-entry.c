@@ -63,7 +63,7 @@ on_cancel_clicked (NbtkButton *button,
 
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
 
-  nbtk_button_set_label (NBTK_BUTTON (priv->button), "Edit");
+  nbtk_button_set_label (NBTK_BUTTON (priv->button), _("Edit"));
 
   clutter_actor_set_reactive (text, FALSE);
 
@@ -565,7 +565,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
                       self);
   }
 
-  priv->button = CLUTTER_ACTOR (nbtk_button_new_with_label ("Edit"));
+  priv->button = CLUTTER_ACTOR (nbtk_button_new_with_label (_("Edit")));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
                                     "MnbStatusEntryButton");
   clutter_actor_hide (priv->button);
@@ -626,7 +626,7 @@ mnb_status_entry_set_is_active (MnbStatusEntry *entry,
 
   if (priv->is_active)
     {
-      nbtk_button_set_label (NBTK_BUTTON (priv->button), "Post");
+      nbtk_button_set_label (NBTK_BUTTON (priv->button), _("Post"));
 
       g_free (priv->old_status_text);
       priv->old_status_text =
@@ -647,7 +647,7 @@ mnb_status_entry_set_is_active (MnbStatusEntry *entry,
     }
   else
     {
-      nbtk_button_set_label (NBTK_BUTTON (priv->button), "Edit");
+      nbtk_button_set_label (NBTK_BUTTON (priv->button), _("Edit"));
 
       clutter_actor_set_reactive (text, FALSE);
 
