@@ -238,7 +238,7 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       G_CALLBACK (_name_changed_cb),
                       service_item);
     g_signal_connect (priv->service,
-                      "status-changed",
+                      "state-changed",
                       G_CALLBACK (_status_changed_cb),
                       service_item);
   }
