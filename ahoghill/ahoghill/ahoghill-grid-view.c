@@ -51,7 +51,8 @@ struct _AhoghillGridViewPrivate {
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_GRID_VIEW, AhoghillGridViewPrivate))
 G_DEFINE_TYPE (AhoghillGridView, ahoghill_grid_view, NBTK_TYPE_TABLE);
 
-#define SEARCH_TIMEOUT 500
+/* Adjustable length of time between typing a letter and search taking place */
+#define SEARCH_TIMEOUT 50
 
 static void
 ahoghill_grid_view_finalize (GObject *object)
@@ -171,34 +172,6 @@ set_recent_items (AhoghillGridView *view)
     GList *recent_items, *r;
 
     priv = view->priv;
-    priv->source_manager = g_object_new (BKL_TYPE_SOURCE_MANAGER_CLIENT, NULL);
-    sources = bkl_source_manager_client_get_sources (priv->source_manager,
-                                                     &error);
-    if (error != NULL) {
-        g_warning ("Error getting sources\n");
-    }
-
-    /* +1 for the local */
-    priv->dbs = g_ptr_array_sized_new (g_list_length (sources) + 1);
-
-    /* Local source first */
-    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
-    source = create_source (client);
-    if (source) {
-        g_ptr_array_add (priv->dbs, source);
-    } else {
-        g_warning ("%s: Error, no local database\n", G_STRLOC);
-    }
-
-    for (s = sources; s; s = s->next) {
-        client = bkl_source_client_new (s->data);
-        source = create_source (client);
-
-        if (source) {
-            g_ptr_array_add (priv->dbs, source);
-        }
-    }
-
     recent_items = gtk_recent_manager_get_items (priv->recent_manager);
     if (recent_items) {
         /* Freeze and clear the old results before adding anything new */
@@ -237,6 +210,33 @@ set_recent_items (AhoghillGridView *view)
         /* And thaw the results */
         ahoghill_results_model_thaw (priv->model);
     }
+}
+
+static void
+set_result_items (AhoghillGridView *view,
+                  GList            *results)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    GList *r;
+
+    /* Freeze and clear the old results before adding anything new */
+    ahoghill_results_model_freeze (priv->model);
+    ahoghill_results_model_clear (priv->model);
+
+    for (r = results; r; r = r->next) {
+        char *uri = r->data;
+        BklItem *item;
+
+        item = find_item (view, uri);
+        if (item == NULL) {
+            g_warning ("Cannot find item for %s", uri);
+            continue;
+        }
+
+        ahoghill_results_model_add_item (priv->model, item);
+    }
+
+    ahoghill_results_model_thaw (priv->model);
 }
 
 static void
@@ -294,49 +294,45 @@ finish_init (gpointer data)
     return FALSE;
 }
 
-struct _QueryData {
+struct _Bartowski {
     int word_count;
-    GList *results;
+    GList *chuck;
 };
 
 static void
-get_results (gpointer key,
-             gpointer value,
-             gpointer userdata)
+flash_intersect (gpointer key,
+                 gpointer value,
+                 gpointer userdata)
 {
-    struct _QueryData *qd = (struct _QueryData *) userdata;
+    struct _Bartowski *bart = (struct _Bartowski *) userdata;
     int count = GPOINTER_TO_INT (value);
 
-    if (count == qd->word_count) {
-        qd->results = g_list_prepend (qd->results, key);
+    /* We generate the intersection of the sets by including only
+       uris that have a word count equal to the number of sets */
+    if (count == bart->word_count) {
+        bart->chuck = g_list_prepend (bart->chuck, g_strdup (key));
     }
 }
 
 static GList *
-search_for_words (KozoDB *db,
-                  char  **words)
+find_intersect (GPtrArray *sets)
 {
-    struct _QueryData *qd;
-    GError *error = NULL;
+    struct _Bartowski *bart;
     GHashTable *set;
     int i;
 
     set = g_hash_table_new (g_str_hash, g_str_equal);
-    for (i = 0; words[i]; i++) {
+    for (i = 0; i < sets->len; i++) {
         GList *results, *r;
 
-        results = kozo_db_index_lookup (db, words[i], &error);
-        if (error) {
-            g_warning ("Error searching for %s in %s: %s", words[i],
-                       kozo_db_get_name (db), error->message);
-            g_error_free (error);
+        results = sets->pdata[i];
 
-            continue;
-        }
-
+        /* Put each result into the hashtable */
         for (r = results; r; r = r->next) {
             gpointer key, value;
 
+            /* If the result is already in the hash table
+               increment its word count */
             if (g_hash_table_lookup_extended (set, r->data, &key, &value)) {
                 guint count = GPOINTER_TO_INT (value);
                 g_hash_table_insert (set, r->data, GINT_TO_POINTER (count + 1));
@@ -346,74 +342,116 @@ search_for_words (KozoDB *db,
         }
     }
 
-    qd = g_newa (struct _QueryData, 1);
-    qd->word_count = i;
-    qd->results = NULL;
+    bart = g_newa (struct _Bartowski, 1);
+    bart->word_count = sets->len;
+    bart->chuck = NULL;
 
-    g_hash_table_foreach (set, get_results, qd);
+    g_hash_table_foreach (set, flash_intersect, bart);
     g_hash_table_destroy (set);
 
-    return qd->results;
+    return bart->chuck;
 }
 
-#if 0
 static void
-search_clicked_cb (MnbEntry         *entry,
-                   AhoghillGridView *grid)
+steal_keys (gpointer key,
+            gpointer value,
+            gpointer userdata)
 {
-    AhoghillGridViewPrivate *priv = grid->priv;
-    const char *text;
-    char *search_text;
-    char **search_words;
-    GPtrArray *items;
+    GList **results = (GList **) userdata;
+
+    *results = g_list_append (*results, g_strdup ((char *) key));
+}
+
+static GPtrArray *
+search_for_uris (Source    *source,
+                 GPtrArray *possible_words)
+{
+    GPtrArray *possible_uris;
     int i;
 
-    text = mnb_entry_get_text (entry);
-    if (text == NULL) {
-        return;
-    }
+    possible_uris = g_ptr_array_sized_new (possible_words->len);
+    for (i = 0; i < possible_words->len; i++) {
+        GPtrArray *words = possible_words->pdata[i];
+        GList *results = NULL;
+        GHashTable *set;
+        int j;
 
-    search_text = g_ascii_strup (text, -1);
-    search_words = g_strsplit (search_text, " ", -1);
+        set = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+        for (j = 0; j < words->len; j++) {
+            char *word = words->pdata[j];
+            GList *r, *rr;
+            GError *error = NULL;
 
-    g_object_set (G_OBJECT (priv->results_pane),
-                  "title", _("Results"),
-                  NULL);
-
-    items = g_ptr_array_new ();
-    for (i = 0; i < priv->dbs->len; i++) {
-        Source *source = priv->dbs->pdata[i];
-        GList *results;
-
-        results = search_for_words (source->db->db, search_words);
-
-        if (results) {
-            GList *r;
-
-            for (r = results; r; r = r->next) {
-                BklItem *item;
-
-                item = g_hash_table_lookup (source->uri_to_item, r->data);
-                if (item != NULL) {
-                    g_ptr_array_add (items, item);
-                }
-
-                g_free (r->data);
+            r = kozo_db_index_lookup (source->db->db, word, &error);
+            if (error != NULL) {
+                g_warning ("Error getting results for %s: %s", word,
+                           error->message);
+                g_error_free (error);
+                r = NULL;
             }
 
-            g_list_free (results);
+            /* Put uris into the hashtable so we can get only unique
+               entries */
+            for (rr = r; rr; rr = rr->next) {
+                if (g_hash_table_lookup (set, rr->data) == NULL) {
+                    g_hash_table_insert (set, rr->data, rr->data);
+                } else {
+                    g_free (rr->data); /* Free data that doesn't go in @set */
+                }
+            }
+
+            /* The contents of the list are freed either above, or when
+               @set is destroyed */
+            g_list_free (r);
+        }
+
+        /* Can't use g_hash_table_get_keys as it doesn't copy the data */
+        g_hash_table_foreach (set, steal_keys, &results);
+        g_hash_table_destroy (set);
+
+        g_ptr_array_add (possible_uris, results);
+    }
+
+    return possible_uris;
+}
+
+static GPtrArray *
+search_index_for_words (Source     *source,
+                        const char *text)
+{
+    char *search_text;
+    char **search_terms;
+    GPtrArray *words;
+    int j, k;
+
+    search_text = g_ascii_strup (text, -1);
+    search_terms = g_strsplit (search_text, " ", -1);
+
+    /* Search each index for possible substrings in search_words */
+    words = g_ptr_array_new ();
+    for (k = 0; search_terms[k]; k++) {
+        GPtrArray *possible;
+
+        /* If @text ends in a space, then g_strsplit will insert a blank
+           string in @search_terms */
+        if (*(search_terms[k]) == '\0') {
+            continue;
+        }
+
+        possible = g_ptr_array_new ();
+
+        g_ptr_array_add (words, possible);
+        for (j = 0; j < source->index->len; j++) {
+            if (strstr (source->index->pdata[j], search_terms[k])) {
+                g_ptr_array_add (possible, source->index->pdata[j]);
+            }
         }
     }
 
-    g_strfreev (search_words);
-    g_free (search_text);
+    g_strfreev (search_terms);
 
-    ahoghill_results_pane_set_results
-        (AHOGHILL_RESULTS_PANE (priv->results_pane), items);
-
-    g_ptr_array_free (items, TRUE);
+    return words;
 }
-#endif
 
 static void
 item_clicked_cb (AhoghillResultsPane *pane,
@@ -458,7 +496,58 @@ do_search_cb (gpointer data)
         g_print ("Setting recent items\n");
         set_recent_items (view);
     } else {
-        g_print ("Searching for %s\n", text);
+        GList *results = NULL, *u;
+        int i;
+
+        /* FIXME: We should cache results for each word in the sentence,
+           and only recalculate the sets for words that have changed */
+        for (i = 0; i < priv->dbs->len; i++) {
+            Source *source = priv->dbs->pdata[i];
+            GPtrArray *index_words;
+            GPtrArray *possible_results;
+            GList *r;
+            int i;
+
+            /* @index_words is a GPtrArray containing GPtrArrays
+               that contain all the possible words for each word in @text */
+            index_words = search_index_for_words (source, text);
+
+            /* @possible_results is a GPtrArray containing GLists
+               that contain all the possible uris for each array of words
+               in @index_words */
+            possible_results = search_for_uris (source, index_words);
+
+            /* Now we intersect all the results in @possible_results to get
+               the real results */
+            r = find_intersect (possible_results);
+            results = g_list_concat (results, r);
+
+            for (i = 0; i < index_words->len; i++) {
+                GPtrArray *words = index_words->pdata[i];
+
+                /* Don't need to free the words, they're owned by the
+                   index */
+                g_ptr_array_free (words, TRUE);
+            }
+            g_ptr_array_free (index_words, TRUE);
+
+            for (i = 0; i < possible_results->len; i++) {
+                GList *words = possible_results->pdata[i];
+                GList *w;
+
+                for (w = words; w; w = w->next) {
+                    g_free (w->data);
+                }
+                g_list_free (words);
+            }
+            g_ptr_array_free (possible_results, TRUE);
+        }
+
+        set_result_items (view, results);
+        for (u = results; u; u = u->next) {
+            g_free (u->data);
+        }
+        g_list_free (results);
     }
 
     priv->search_id = 0;
