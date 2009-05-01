@@ -246,5 +246,7 @@ carrick_status_icon_path_for_state (CmService *service)
         icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
     }
   }
+  // We want the highlighted version
+  icon_state++;
   return icon_names[icon_state];
 }
