@@ -766,10 +766,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
       switch (index)
         {
           /*
-           * TODO: The Status, Apps and Pastboard provide MnbDropDown
-           * subclasses; this will require changes to all of them for the new
-           * dbus API, as the the dropdown is created and owned by the Toolbar,
-           * and the zone implementation only provides the child for it.
+           * TODO: The Status, Apps and Pasteboard provide MnbDropDown
            */
         case STATUS_ZONE:
           panel = priv->panels[index] = NBTK_WIDGET (
@@ -790,7 +787,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
           {
             ClutterActor *grid;
 
-            panel = priv->panels[index] = mnb_drop_down_new ();
+            panel = priv->panels[index] = mnb_drop_down_new (plugin);
 
             grid = g_object_new (PENGE_TYPE_GRID_VIEW, NULL);
 
@@ -808,7 +805,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
           {
             ClutterActor *grid;
 
-            panel = priv->panels[index] = mnb_drop_down_new ();
+            panel = priv->panels[index] = mnb_drop_down_new (plugin);
 
             grid = g_object_new (AHOGHILL_TYPE_GRID_VIEW, NULL);
 
@@ -828,7 +825,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
           {
             ClutterActor *grid;
 
-            panel = priv->panels[index] = mnb_drop_down_new ();
+            panel = priv->panels[index] = mnb_drop_down_new (plugin);
 
             grid = CLUTTER_ACTOR (moblin_netbook_netpanel_new ());
 
@@ -1224,7 +1221,7 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
   gint  x = clutter_actor_get_x (actor);
   gint  y = clutter_actor_get_y (actor);
 
-  background = CLUTTER_ACTOR (mnb_drop_down_new ());
+  background = CLUTTER_ACTOR (mnb_drop_down_new (priv->plugin));
 
   g_object_ref (texture);
   clutter_actor_unparent (texture);

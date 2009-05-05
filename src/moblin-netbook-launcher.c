@@ -1567,7 +1567,7 @@ make_launcher (MutterPlugin *plugin,
   NbtkWidget      *vbox, *hbox, *label, *entry, *drop_down;
   launcher_data_t *launcher_data;
 
-  drop_down = mnb_drop_down_new ();
+  drop_down = mnb_drop_down_new (plugin);
 
   vbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");

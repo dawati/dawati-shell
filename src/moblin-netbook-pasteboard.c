@@ -137,7 +137,7 @@ make_pasteboard (MutterPlugin *plugin,
   ClutterText *text;
   guint items_list_width = 0, items_list_height = 0;
 
-  drop_down = mnb_drop_down_new ();
+  drop_down = mnb_drop_down_new (plugin);
 
   vbox = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (vbox), 12);

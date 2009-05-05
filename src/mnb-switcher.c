@@ -1640,7 +1640,10 @@ mnb_switcher_new (MutterPlugin *plugin)
   /*
    * TODO the plugin should be construction time property.
    */
-  switcher = g_object_new (MNB_TYPE_SWITCHER, NULL);
+  switcher = g_object_new (MNB_TYPE_SWITCHER,
+                           "mutter-plugin", plugin,
+                           NULL);
+
   switcher->priv->plugin = plugin;
 
   screen = mutter_plugin_get_screen (plugin);

@@ -226,7 +226,7 @@ make_status (MutterPlugin *plugin, gint width)
                           client,
                           (GDestroyNotify) g_object_unref);
 
-  drop_down = mnb_drop_down_new ();
+  drop_down = mnb_drop_down_new (plugin);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
   g_signal_connect (drop_down, "show-completed",
                     G_CALLBACK (on_drop_down_show_completed),

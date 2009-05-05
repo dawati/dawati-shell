@@ -32,6 +32,12 @@ G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_DROP_DOWN, MnbDropDownPrivate))
 
+enum {
+  PROP_0,
+
+  PROP_MUTTER_PLUGIN,
+};
+
 enum
 {
   SHOW_COMPLETED,
@@ -44,12 +50,16 @@ enum
 static guint dropdown_signals[LAST_SIGNAL] = { 0 };
 
 struct _MnbDropDownPrivate {
+  MutterPlugin *plugin;
+
   ClutterActor *child;
   NbtkButton *button;
   gint x;
   gint y;
 
   guint reparent_cb;
+
+  MnbInputRegion input_region;
 
   gboolean in_show_animation : 1;
   gboolean in_hide_animation : 1;
@@ -60,9 +70,15 @@ static void
 mnb_drop_down_get_property (GObject *object, guint property_id,
                             GValue *value, GParamSpec *pspec)
 {
-  switch (property_id) {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  MnbDropDown *self = MNB_DROP_DOWN (object);
+
+  switch (property_id)
+    {
+    case PROP_MUTTER_PLUGIN:
+      g_value_set_object (value, self->priv->plugin);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
 }
 
@@ -70,15 +86,29 @@ static void
 mnb_drop_down_set_property (GObject *object, guint property_id,
                             const GValue *value, GParamSpec *pspec)
 {
-  switch (property_id) {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  MnbDropDown *self = MNB_DROP_DOWN (object);
+
+  switch (property_id)
+    {
+    case PROP_MUTTER_PLUGIN:
+      self->priv->plugin = g_value_get_object (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
 }
 
 static void
 mnb_drop_down_dispose (GObject *object)
 {
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (object)->priv;
+
+  if (priv->input_region)
+    {
+      moblin_netbook_input_region_remove (priv->plugin, priv->input_region);
+      priv->input_region = NULL;
+    }
+
   G_OBJECT_CLASS (mnb_drop_down_parent_class)->dispose (object);
 }
 
@@ -92,6 +122,17 @@ static void
 mnb_drop_down_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+  MutterPlugin *plugin = priv->plugin;
+  guint w, h;
+  gint  y;
+
+  clutter_actor_get_size (actor, &w, &h);
+  y = clutter_actor_get_y (actor);
+
+  if (priv->input_region)
+    moblin_netbook_input_region_remove (plugin, priv->input_region);
+
+  priv->input_region = moblin_netbook_input_region_push (plugin, 0, y, w, h);
 
   priv->in_show_animation = FALSE;
   priv->hide_toolbar = FALSE;
@@ -217,6 +258,7 @@ static void
 mnb_drop_down_hide (ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+  MutterPlugin *plugin = priv->plugin;
   ClutterAnimation *animation;
 
   if (priv->in_hide_animation)
@@ -226,6 +268,12 @@ mnb_drop_down_hide (ClutterActor *actor)
     }
 
   g_signal_emit (actor, dropdown_signals[HIDE_BEGIN], 0);
+
+  if (priv->input_region)
+    {
+      moblin_netbook_input_region_remove (plugin, priv->input_region);
+      priv->input_region = NULL;
+    }
 
   /* de-activate the button */
   if (priv->button)
@@ -351,6 +399,14 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  g_object_class_install_property (object_class,
+                                   PROP_MUTTER_PLUGIN,
+                                   g_param_spec_object ("mutter-plugin",
+                                                      "Mutter Plugin",
+                                                      "Mutter Plugin",
+                                                      MUTTER_TYPE_PLUGIN,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -375,9 +431,11 @@ mnb_drop_down_init (MnbDropDown *self)
 }
 
 NbtkWidget*
-mnb_drop_down_new (void)
+mnb_drop_down_new (MutterPlugin *plugin)
 {
-  return g_object_new (MNB_TYPE_DROP_DOWN, NULL);
+  return g_object_new (MNB_TYPE_DROP_DOWN,
+                       "mutter-plugin", plugin,
+                       NULL);
 }
 
 static void
