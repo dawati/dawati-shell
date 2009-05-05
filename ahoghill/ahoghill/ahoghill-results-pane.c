@@ -375,8 +375,12 @@ static void
 results_changed_cb (AhoghillResultsModel *model,
                     AhoghillResultsPane  *pane)
 {
+    AhoghillResultsPanePrivate *priv = pane->priv;
+
     /* When the results change, we need to check how if the page we're
        on still exists and whether the page buttons should be active */
+
+    priv->last_page = ahoghill_results_model_get_count (model) / TILES_PER_PAGE;
 }
 
 AhoghillResultsPane *
@@ -391,6 +395,7 @@ ahoghill_results_pane_new (AhoghillResultsModel *model)
     priv->model = g_object_ref (model);
     g_signal_connect (priv->model, "changed",
                       G_CALLBACK (results_changed_cb), pane);
+    priv->last_page = ahoghill_results_model_get_count (model) / TILES_PER_PAGE;
 
     ahoghill_results_table_set_model (priv->current_page, priv->model);
 
