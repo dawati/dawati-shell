@@ -67,8 +67,6 @@ carrick_list_drag_begin (GtkWidget         *widget,
 {
   CarrickListPrivate *priv = LIST_PRIVATE (user_data);
 
-  g_debug ("drag_begin");
-
   g_object_ref (widget);
   gtk_container_remove (GTK_CONTAINER (user_data),
                         widget);
@@ -89,8 +87,6 @@ carrick_list_drag_data_get (GtkWidget        *widget,
                             guint             info,
                             guint             time)
 {
-  g_debug ("drag_get");
-
   if (data->target == gdk_atom_intern_static_string (CARRICK_DRAG_TARGET))
   {
     gtk_selection_data_set (data,
@@ -107,14 +103,12 @@ carrick_list_drag_failed (GtkWidget      *widget,
                           GtkDragResult   result,
                           gpointer        user_data)
 {
-  g_debug ("drag_failed");
   guint order;
 
   if (result != GTK_DRAG_RESULT_SUCCESS)
   {
     CarrickListPrivate *priv = LIST_PRIVATE (user_data);
 
-    g_debug ("Drag failed");
     g_object_ref (widget);
     gtk_container_remove (GTK_CONTAINER (priv->drag_window),
                           widget);
@@ -144,7 +138,6 @@ carrick_list_drag_end (GtkWidget      *widget,
 {
   CarrickListPrivate *priv = LIST_PRIVATE (user_data);
 
-  g_debug ("drag_end");
   GTK_BIN (priv->drag_window)->child = NULL;
   gtk_widget_destroy (priv->drag_window);
 }
@@ -157,8 +150,6 @@ carrick_list_add_item (CarrickList *list,
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
   CarrickListPrivate *priv = LIST_PRIVATE (list);
-
-  g_debug ("Adding item to list");
 
   gtk_drag_source_set (widget,
                        GDK_BUTTON1_MASK,
@@ -209,7 +200,6 @@ carrick_list_drag_drop (GtkWidget       *widget,
 {
   GdkAtom target, carrick_target_type;
 
-  g_debug ("drag_drop");
   target = gtk_drag_dest_find_target (widget,
                                       context,
                                       NULL);
@@ -221,11 +211,9 @@ carrick_list_drag_drop (GtkWidget       *widget,
                        context,
                        target,
                        time);
-    g_debug("can has drag");
     return TRUE;
   }
 
-  g_debug ("can't has drag");
   return FALSE;
 }
 
@@ -283,14 +271,11 @@ carrick_list_drag_data_received (GtkWidget        *widget,
   CarrickListPrivate *priv = LIST_PRIVATE (widget);
   GtkWidget *source;
 
-  g_debug ("drag_received_cb");
   source = gtk_drag_get_source_widget (context);
 
   if (source &&
       data->target == gdk_atom_intern_static_string (CARRICK_DRAG_TARGET))
   {
-    g_debug ("got valid drag");
-
     gtk_container_foreach (GTK_CONTAINER (widget),
                            _is_drop_target,
                            GUINT_TO_POINTER (y));
@@ -320,7 +305,6 @@ carrick_list_drag_data_received (GtkWidget        *widget,
   }
   else
   {
-    g_debug ("invalid drag");
     gtk_drag_finish (context,
                      FALSE,
                      FALSE,
