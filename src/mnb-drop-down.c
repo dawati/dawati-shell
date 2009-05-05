@@ -59,8 +59,6 @@ struct _MnbDropDownPrivate {
 
   guint reparent_cb;
 
-  MnbInputRegion input_region;
-
   gboolean in_show_animation : 1;
   gboolean in_hide_animation : 1;
   gboolean hide_toolbar      : 1;
@@ -103,12 +101,6 @@ mnb_drop_down_dispose (GObject *object)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (object)->priv;
 
-  if (priv->input_region)
-    {
-      moblin_netbook_input_region_remove (priv->plugin, priv->input_region);
-      priv->input_region = NULL;
-    }
-
   G_OBJECT_CLASS (mnb_drop_down_parent_class)->dispose (object);
 }
 
@@ -122,17 +114,6 @@ static void
 mnb_drop_down_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
-  MutterPlugin *plugin = priv->plugin;
-  guint w, h;
-  gint  y;
-
-  clutter_actor_get_size (actor, &w, &h);
-  y = clutter_actor_get_y (actor);
-
-  if (priv->input_region)
-    moblin_netbook_input_region_remove (plugin, priv->input_region);
-
-  priv->input_region = moblin_netbook_input_region_push (plugin, 0, y, w, h);
 
   priv->in_show_animation = FALSE;
   priv->hide_toolbar = FALSE;
@@ -268,12 +249,6 @@ mnb_drop_down_hide (ClutterActor *actor)
     }
 
   g_signal_emit (actor, dropdown_signals[HIDE_BEGIN], 0);
-
-  if (priv->input_region)
-    {
-      moblin_netbook_input_region_remove (plugin, priv->input_region);
-      priv->input_region = NULL;
-    }
 
   /* de-activate the button */
   if (priv->button)

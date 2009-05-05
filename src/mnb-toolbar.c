@@ -122,6 +122,7 @@ struct _MnbToolbarPrivate
                                    * pointer goes south
                                    */
 
+  MnbInputRegion dropdown_region;
   MnbInputRegion trigger_region;  /* The show panel trigger region */
   MnbInputRegion input_region;    /* The panel input region on the region
                                    * stack.
@@ -168,6 +169,26 @@ mnb_toolbar_set_property (GObject *object, guint property_id,
 static void
 mnb_toolbar_dispose (GObject *object)
 {
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (object)->priv;
+
+  if (priv->dropdown_region)
+    {
+      moblin_netbook_input_region_remove (priv->plugin, priv->dropdown_region);
+      priv->dropdown_region = NULL;
+    }
+
+  if (priv->input_region)
+    {
+      moblin_netbook_input_region_remove (priv->plugin, priv->input_region);
+      priv->input_region = NULL;
+    }
+
+  if (priv->trigger_region)
+    {
+      moblin_netbook_input_region_remove (priv->plugin, priv->trigger_region);
+      priv->trigger_region = NULL;
+    }
+
   G_OBJECT_CLASS (mnb_toolbar_parent_class)->dispose (object);
 }
 
@@ -593,6 +614,59 @@ mnb_toolbar_panel_index_to_name (gint index)
     }
 }
 
+static void
+mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
+                                             MnbToolbar  *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
+  guint w, h;
+
+  clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
+
+  if (priv->dropdown_region)
+    moblin_netbook_input_region_remove_without_update (plugin,
+                                                       priv->dropdown_region);
+
+  priv->dropdown_region =
+    moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT, w, h);
+}
+
+static void
+mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
+                                                MnbToolbar  *toolbar)
+{
+  /*
+   * TODO -- only the bottom panel should be added to the input region once
+   * we do multiproc
+   */
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
+  guint w, h;
+
+  clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
+
+  if (priv->dropdown_region)
+    moblin_netbook_input_region_remove_without_update (plugin,
+                                                       priv->dropdown_region);
+
+  priv->dropdown_region =
+    moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT, w, h);
+}
+
+static void
+mnb_toolbar_dropdown_hide_begin_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
+
+  if (priv->dropdown_region)
+    {
+      moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
+      priv->dropdown_region = NULL;
+    }
+}
+
 /*
  * Appends a panel of the given name, using the given tooltip and icon; the xid
  * is an id of the panel window.
@@ -607,7 +681,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
                           const gchar *icon,
                           Window       xid)
 {
-  MnbToolbarPrivate *priv = MNB_TOOLBAR (toolbar)->priv;
+  MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   NbtkWidget        *button;
   NbtkWidget        *panel;
@@ -747,6 +821,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   if (index == SPACES_ZONE)
     {
       panel = priv->panels[index] = mnb_switcher_new (plugin);
+
+      g_signal_connect (panel, "show-completed",
+                        G_CALLBACK(mnb_toolbar_dropdown_show_completed_full_cb),
+                        toolbar);
     }
   else
     {
@@ -850,10 +928,19 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
         }
       }
 #endif
+
+      if (panel)
+        g_signal_connect (panel, "show-completed",
+                    G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
+                    toolbar);
     }
 
   if (!panel)
     return;
+
+  g_signal_connect (panel, "hide-begin",
+                    G_CALLBACK(mnb_toolbar_dropdown_hide_begin_cb),
+                    toolbar);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
