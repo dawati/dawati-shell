@@ -1519,12 +1519,27 @@ mnb_switcher_finalize (GObject *object)
 }
 
 static void
+mnb_switcher_constructed (GObject *self)
+{
+  MnbSwitcher *switcher  = MNB_SWITCHER (self);
+  MutterPlugin *plugin;
+
+  g_object_get (self, "mutter-plugin", &plugin, NULL);
+
+  switcher->priv->plugin = plugin;
+
+  g_signal_connect (mutter_plugin_get_screen (plugin), "notify::n-workspaces",
+                    G_CALLBACK (screen_n_workspaces_notify), self);
+}
+
+static void
 mnb_switcher_class_init (MnbSwitcherClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  object_class->finalize = mnb_switcher_finalize;
+  object_class->finalize    = mnb_switcher_finalize;
+  object_class->constructed = mnb_switcher_constructed;
 
   actor_class->show = mnb_switcher_show;
   actor_class->hide = mnb_switcher_hide;
@@ -1643,13 +1658,6 @@ mnb_switcher_new (MutterPlugin *plugin)
   switcher = g_object_new (MNB_TYPE_SWITCHER,
                            "mutter-plugin", plugin,
                            NULL);
-
-  switcher->priv->plugin = plugin;
-
-  screen = mutter_plugin_get_screen (plugin);
-
-  g_signal_connect (screen, "notify::n-workspaces",
-                    G_CALLBACK (screen_n_workspaces_notify), switcher);
 
   return NBTK_WIDGET (switcher);
 }
