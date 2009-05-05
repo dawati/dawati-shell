@@ -20,9 +20,9 @@ typedef struct _CarrickPanePrivate CarrickPanePrivate;
 struct _CarrickPanePrivate {
   CmManager *manager;
   GList     *services;
-  /*GtkWidget *wifi_switch;
+  GtkWidget *wifi_switch;
   GtkWidget *ethernet_switch;
-  GtkWidget *threeg_switch;*/
+  GtkWidget *threeg_switch;
   GtkWidget *flight_mode_switch;
   GtkWidget *flight_mode_label;
   GtkWidget *service_list;
@@ -115,7 +115,7 @@ carrick_pane_class_init (CarrickPaneClass *klass)
   g_object_class_install_property (object_class, PROP_MANAGER, pspec);
 }
 
-/*static void
+static void
 _set_devices_state (gchar       *device_type,
                     gboolean     state,
                     CarrickPane *pane)
@@ -129,13 +129,16 @@ _set_devices_state (gchar       *device_type,
     CmDeviceType type = cm_device_get_type (device);
 
     if (g_strcmp0 (device_type, cm_device_type_to_string (type)) == 0)
+    {
       cm_device_set_powered (device, state);
+      return;
+    }
 
     devices = g_list_next (devices);
   }
-}*/
+}
 
-/*static gboolean
+static gboolean
 _wifi_switch_callback (MuxSwitchBox *wifi_switch,
                        gboolean new_state,
                        CarrickPane *pane)
@@ -169,7 +172,7 @@ _threeg_switch_callback (MuxSwitchBox *threeg_switch,
                       pane);
 
   return TRUE;
-}*/
+}
 
 static gboolean
 _flight_mode_switch_callback (MuxSwitchBox *flight_switch,
@@ -181,75 +184,6 @@ _flight_mode_switch_callback (MuxSwitchBox *flight_switch,
   cm_manager_set_offline_mode (priv->manager, new_state);
 
   return TRUE;
-}
-
-/*static gboolean
-_have_powered_device (gchar *device_type,
-                      CarrickPane *pane)
-{
-  // FIXME: All kinds of broken ... :-(
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = cm_manager_get_devices (priv->manager);
-
-  while (devices)
-  {
-    CmDevice *device = CM_DEVICE (devices->data);
-    //CmDeviceType type = DEVICE_UNKNOWN;
-
-    if (device)
-    {
-      g_debug ("Has a device");
-      g_debug ("Device is %s",
-               cm_device_get_name (device));
-      //type = cm_device_get_type (device);
-      g_signal_connect (G_OBJECT (device),
-                        "device-updated",
-                        G_CALLBACK (_device_updated_cb),
-                        NULL);
-      //g_debug ("Device is of type %s\n",
-      //         cm_device_type_to_string (type));
-    }
-
-    if (type)
-    {
-      g_debug ("Has a type");
-      g_debug ("Type is %s",
-               cm_device_type_to_string (type));
-
-      if (g_strcmp0 (device_type, cm_device_type_to_string (type)) == 0)
-      {
-        if (cm_device_get_powered (device))
-        {
-          g_debug ("Found powered device %s of type %s\n",
-                   cm_device_get_name (device),
-                   cm_device_type_to_string (cm_device_get_type (device)));
-          return TRUE;
-        }
-      }
-    }
-    devices = g_list_next (devices);
-  }
-
-  g_list_free (devices);
-  return FALSE;
-}*/
-
-static void
-_set_states (CarrickPane *pane)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-
-  /*mux_switch_box_set_active (MUX_SWITCH_BOX (priv->wifi_switch),
-                             _have_powered_device ("Wireless",
-                                                   pane));
-  mux_switch_box_set_active (MUX_SWITCH_BOX (priv->ethernet_switch),
-                             _have_powered_device ("Ethernet",
-                                                   pane));
-  mux_switch_box_set_active (MUX_SWITCH_BOX (priv->threeg_switch),
-                             _have_powered_device ("Cellular",
-                                                   pane));*/
-  mux_switch_box_set_active (MUX_SWITCH_BOX (priv->flight_mode_switch),
-                             cm_manager_get_offline_mode (priv->manager));
 }
 
 static void
@@ -380,12 +314,6 @@ _service_updated_cb (CmService *service,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
 
-  g_debug ("Service updated");
-  g_debug ("Service %s of type %s at %s is %s\n",
-           cm_service_get_name (service),
-           cm_service_get_type (service),
-           cm_service_get_object_path (service),
-           cm_service_get_state (service));
   if (cm_service_get_name (service))
   {
     GtkWidget *service_item = carrick_service_item_new (service);
@@ -400,13 +328,45 @@ _service_updated_cb (CmService *service,
   }
 }
 
+void
+_device_updated_cb (CmDevice *device,
+                    gpointer  user_data)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (user_data);
+  CmDeviceType type = cm_device_get_type (device);
+  gboolean state;
+
+  if (type != DEVICE_UNKNOWN)
+  {
+    state = cm_device_get_powered (device);
+    switch (type)
+    {
+      case DEVICE_ETHERNET:
+        mux_switch_box_set_active (MUX_SWITCH_BOX (priv->ethernet_switch),
+                                   state);
+        break;
+      case DEVICE_WIFI:
+        mux_switch_box_set_active (MUX_SWITCH_BOX (priv->wifi_switch),
+                                   state);
+        break;
+      case DEVICE_CELLULAR:
+        mux_switch_box_set_active (MUX_SWITCH_BOX (priv->threeg_switch),
+                                   state);
+        break;
+      default:
+        g_debug ("Unknown device type\n");
+        break;
+    }
+  }
+}
+
 static void
 _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   GList *raw_services;
   CmService *service;
-  gint cnt, len;
+  guint cnt, len;
 
   /* Bin existing services, re-creating cheaper than comparing? */
   while (priv->services)
@@ -423,11 +383,31 @@ _update_services (CarrickPane *pane)
   len = g_list_length (raw_services);
   for (cnt = 0; cnt < len; cnt++)
   {
-    service = CM_SERVICE (g_list_nth(raw_services, cnt)->data);
+    service = CM_SERVICE (g_list_nth (raw_services, cnt)->data);
 
     g_signal_connect (G_OBJECT (service),
                       "service-updated",
                       G_CALLBACK (_service_updated_cb),
+                      pane);
+  }
+}
+
+static void
+_set_states (CarrickPane *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  GList *devices = cm_manager_get_devices (priv->manager);
+  CmDevice *device = NULL;
+  guint len;
+  guint cnt;
+
+  len = g_list_length (devices);
+  for (cnt = 0; cnt < len; cnt++)
+  {
+    device = CM_DEVICE (g_list_nth (devices, cnt)->data);
+    g_signal_connect (G_OBJECT (device),
+                      "device-updated",
+                      G_CALLBACK (_device_updated_cb),
                       pane);
   }
 }
@@ -526,7 +506,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_container_add (GTK_CONTAINER (switch_bin),
                      vbox);
 
-  /*priv->wifi_switch = mux_switch_box_new (_("Wifi"));
+  priv->wifi_switch = mux_switch_box_new (_("Wifi"));
   g_signal_connect (priv->wifi_switch,
                     "switch-toggled",
                     G_CALLBACK (_wifi_switch_callback),
@@ -557,7 +537,7 @@ carrick_pane_init (CarrickPane *self)
                       priv->threeg_switch,
                       TRUE,
                       TRUE,
-                      8);*/
+                      8);
 
   priv->flight_mode_switch = mux_switch_box_new (_("Offline Mode"));
   g_signal_connect (priv->flight_mode_switch,
@@ -579,7 +559,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_table_attach_defaults (GTK_TABLE (self),
                              switch_bin,
                              4, 6,
-                             0, 2); // 2 7
+                             0, 4); // 2 7
 }
 
 GtkWidget*
