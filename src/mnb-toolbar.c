@@ -58,6 +58,8 @@ static gboolean mnb_toolbar_stage_input_cb (ClutterActor *stage,
 static void mnb_toolbar_stage_show_cb (ClutterActor *stage,
                                        MnbToolbar *toolbar);
 
+static void mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar);
+
 enum {
     M_ZONE = 0,
     STATUS_ZONE,
@@ -930,6 +932,23 @@ shell_tray_manager_icon_removed_cb (ShellTrayManager *mgr,
 #endif
 
 static void
+mnb_toolbar_kbd_grab_notify_cb (MetaScreen *screen,
+                                GParamSpec *pspec,
+                                MnbToolbar *toolbar)
+{
+  gboolean grabbed;
+
+  g_object_get (screen, "keyboard-grabbed", &grabbed, NULL);
+
+  /*
+   * If the property has changed to FALSE, i.e., Mutter just called
+   * XUngrabKeyboard(), we have to re-establish our grabs.
+   */
+  if (!grabbed)
+    mnb_toolbar_setup_kbd_grabs (toolbar);
+}
+
+static void
 mnb_toolbar_constructed (GObject *self)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (self)->priv;
@@ -994,7 +1013,15 @@ mnb_toolbar_constructed (GObject *self)
                                    CLUTTER_STAGE (
                                            mutter_plugin_get_stage (plugin)));
 
+  /*
+   * Set up the dedicated kbd grabs and notification callback.
+   */
   mnb_toolbar_setup_kbd_grabs (MNB_TOOLBAR (self));
+
+  g_signal_connect (mutter_plugin_get_screen (plugin),
+                    "notify::keyboard-grabbed",
+                    G_CALLBACK (mnb_toolbar_kbd_grab_notify_cb),
+                    self);
 
   /*
    * Disable autohiding of the panel to start with (the panel needs to show
@@ -1294,11 +1321,8 @@ mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont)
 /*
  * Sets up passive key grabs on any dedicated shortcut keys that we cannot
  * hook into throught metacity key bindings.
- *
- * Needs to be public, because the kbd grabs need to be re-establised every
- * time Metacity calls XUngrabKeyboard().
  */
-void
+static void
 mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar)
 {
   MutterPlugin *plugin = toolbar->priv->plugin;

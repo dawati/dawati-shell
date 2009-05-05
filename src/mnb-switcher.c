@@ -2063,17 +2063,9 @@ try_alt_tab_grab (MnbSwitcher  *switcher,
         {
           MetaWorkspace *workspace;
           MetaWorkspace *active_workspace;
-          ClutterActor  *toolbar;
 
           meta_display_end_grab_op (display, timestamp);
           priv->in_alt_grab = FALSE;
-
-          toolbar = clutter_actor_get_parent (CLUTTER_ACTOR (switcher));
-          while (toolbar && !MNB_IS_TOOLBAR (toolbar))
-            toolbar = clutter_actor_get_parent (toolbar);
-
-          if (toolbar)
-            mnb_toolbar_setup_kbd_grabs (MNB_TOOLBAR (toolbar));
 
           workspace        = meta_window_get_workspace (next);
           active_workspace = meta_screen_get_active_workspace (screen);
@@ -2338,17 +2330,9 @@ mnb_switcher_handle_xevent (MnbSwitcher *switcher, XEvent *xev)
           MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
           MetaDisplay  *display = meta_screen_get_display (screen);
           Time          timestamp = xev->xkey.time;
-          ClutterActor *toolbar;
 
           meta_display_end_grab_op (display, timestamp);
           priv->in_alt_grab = FALSE;
-
-          toolbar = clutter_actor_get_parent (CLUTTER_ACTOR (switcher));
-          while (toolbar && !MNB_IS_TOOLBAR (toolbar))
-            toolbar = clutter_actor_get_parent (toolbar);
-
-          if (toolbar)
-            mnb_toolbar_setup_kbd_grabs (MNB_TOOLBAR (toolbar));
 
           mnb_switcher_activate_selection (switcher, TRUE, timestamp);
         }
