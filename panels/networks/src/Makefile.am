@@ -2,6 +2,7 @@ bin_PROGRAMS = carrick-connection-panel
 
 carrick_connection_panel_SOURCES = \
                 main.c \
+		moblin-netbook-system-tray.h \
                 $(NULL)
 
 INCLUDES = -I$(top_srcdir)/connman-common
