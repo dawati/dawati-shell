@@ -63,22 +63,22 @@ static void mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar);
 enum {
     M_ZONE = 0,
     STATUS_ZONE,
-    SPACES_ZONE,
+    PEOPLE_ZONE,
     INTERNET_ZONE,
     MEDIA_ZONE,
-    APPS_ZONE,
-    PEOPLE_ZONE,
     PASTEBOARD_ZONE,
+    APPS_ZONE,
+    SPACES_ZONE,
 
     APPLETS_START,
 
     /* Below here are the applets -- with the new dbus API, these are
      * just extra panels, only the buttons are slightly different in size.
      */
-    WIFI_APPLET = APPLETS_START,
-    BT_APPLET,
+    BATTERY_APPLET = APPLETS_START,
     VOLUME_APPLET,
-    BATTERY_APPLET,
+    BT_APPLET,
+    WIFI_APPLET,
     TEST_APPLET,
     /* LAST */
     NUM_ZONES
