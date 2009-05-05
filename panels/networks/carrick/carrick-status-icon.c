@@ -132,39 +132,39 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
 {
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
   CarrickIconState icon_state;
-  const gchar *state, *type;
+  const gchar *type;
+  guint strength = 0;
 
-  state = cm_service_get_state (priv->service);
-  type = cm_service_get_type (priv->service);
-
-  if (!state && !type)
+  if (priv->service)
   {
-    icon_state = CARRICK_ICON_NO_NETWORK;
+    strength = cm_service_get_strength (priv->service);
+    type = cm_service_get_type (priv->service);
   }
-  else if (g_strcmp0 ("ready", state))
+
+  if (type)
   {
-    icon_state = CARRICK_ICON_NO_NETWORK;
+    if (g_strcmp0 ("ethernet", type) == 0)
+      icon_state = CARRICK_ICON_WIRED_NETWORK;
+    else if (g_strcmp0 ("wifi", type) == 0)
+    {
+      if (strength > 70)
+        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
+      else if (strength > 35)
+        icon_state = CARRICK_ICON_WIRELESS_NETWORK_2;
+      else
+        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
+    }
   }
   else
   {
-    if (!g_strcmp0 ("ethernet", type))
-      icon_state = CARRICK_ICON_WIRED_NETWORK;
-    if (!g_strcmp0 ("wifi", type))
-    {
-      if (!g_strcmp0 ("wifi_low", state))
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_1;
-      if (!g_strcmp0 ("wifi_med", state))
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_2;
-      if (!g_strcmp0 ("wifi_hight", state))
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
-    }
+    icon_state = CARRICK_ICON_NO_NETWORK;
   }
 
   if (priv->active)
     icon_state++;
 
   gtk_status_icon_set_from_file (GTK_STATUS_ICON (icon),
-                                   icon_names[icon_state]);
+                                 icon_names[icon_state]);
   priv->current_state = icon_state;
 }
 
@@ -218,35 +218,43 @@ carrick_status_icon_get_icon_path (CarrickStatusIcon *icon)
 const gchar *
 carrick_status_icon_path_for_state (CmService *service)
 {
-  CarrickIconState icon_state;
-  const gchar *state, *type;
+  CarrickIconState icon_state = CARRICK_ICON_NO_NETWORK;
+  const gchar *type;
+  guint strength;
 
-  state = cm_service_get_state (service);
-  type = cm_service_get_type (service);
-
-  if (!state && !type)
+  if (service)
   {
-    icon_state = CARRICK_ICON_NO_NETWORK;
-  }
-  else if (g_strcmp0 ("ready", state))
-  {
-    icon_state = CARRICK_ICON_NO_NETWORK;
+    strength = cm_service_get_strength (service);
+    type = cm_service_get_type (service);
   }
   else
   {
-    if (!g_strcmp0 ("ethernet", type))
-      icon_state = CARRICK_ICON_WIRED_NETWORK;
-    if (!g_strcmp0 ("wifi", type))
+    strength = 0;
+    type = NULL;
+  }
+
+  if (type)
+  {
+    if (g_strcmp0 ("ethernet", type) == 0)
     {
-      if (!g_strcmp0 ("wifi_low", state))
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_1;
-      if (!g_strcmp0 ("wifi_med", state))
+      icon_state = CARRICK_ICON_WIRED_NETWORK;
+    }
+    else if (g_strcmp0 ("wifi", type) == 0)
+    {
+      if (strength > 70)
+        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
+      else if (strength > 35)
         icon_state = CARRICK_ICON_WIRELESS_NETWORK_2;
-      if (!g_strcmp0 ("wifi_hight", state))
+      else
         icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
     }
   }
+  else
+  {
+    icon_state = CARRICK_ICON_NO_NETWORK;
+  }
   // We want the highlighted version
   icon_state++;
+
   return icon_names[icon_state];
 }

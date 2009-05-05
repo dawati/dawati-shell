@@ -188,7 +188,8 @@ _status_changed_cb (CmService *service,
                           "Connect");
   }
 
-  priv->icon = gtk_image_new_from_file (carrick_status_icon_path_for_state (service));
+  gtk_image_set_from_file (GTK_IMAGE (priv->icon),
+                           carrick_status_icon_path_for_state (service));
 }
 
 static void
@@ -196,7 +197,6 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                                   CmService          *service)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (service_item);
-  g_debug ("Setting service");
 
   if (priv->service)
   {
@@ -209,7 +209,8 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
     const gchar *status = cm_service_get_state (service);
     const gchar *security = cm_service_get_security (service);
     priv->service = g_object_ref (service);
-    priv->icon = gtk_image_new_from_file (carrick_status_icon_path_for_state (service));
+    gtk_image_set_from_file (GTK_IMAGE (priv->icon),
+                             carrick_status_icon_path_for_state (service));
     gtk_label_set_text (GTK_LABEL (priv->name_label),
                         cm_service_get_name (service));
     if (g_strcmp0 ("none", security) != 0)
@@ -307,8 +308,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_container_add (GTK_CONTAINER (self),
                      priv->table);
 
-  priv->icon = gtk_image_new_from_icon_name ("gtk-stock-network",
-                                             GTK_ICON_SIZE_DIALOG);
+  priv->icon = gtk_image_new_from_file (carrick_status_icon_path_for_state (NULL));
   gtk_table_attach_defaults (GTK_TABLE (priv->table),
                              priv->icon,
                              0, 1,
