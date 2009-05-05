@@ -19,6 +19,8 @@ enum {
 
 struct _AhoghillResultsTablePrivate {
     AhoghillMediaTile *tiles[TILES_PER_PAGE];
+    AhoghillResultsModel *model;
+    guint page_number;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_RESULTS_TABLE, AhoghillResultsTablePrivate))
@@ -219,22 +221,25 @@ ahoghill_results_table_init (AhoghillResultsTable *self)
     }
 }
 
-void
-ahoghill_results_table_update (AhoghillResultsTable *self,
-                               GPtrArray            *results,
-                               guint                 page_number)
+static void
+update_items (AhoghillResultsTable *self)
 {
     AhoghillResultsTablePrivate *priv = self->priv;
     int i, count, start;
+    int results_count;
 
-    start = page_number * TILES_PER_PAGE;
-    count = MIN (results->len - start, TILES_PER_PAGE);
+    results_count = ahoghill_results_model_get_count (priv->model);
+    start = priv->page_number * TILES_PER_PAGE;
+    count = MIN (results_count - start, TILES_PER_PAGE);
 
     for (i = 0; i < count; i++) {
-         g_object_set (priv->tiles[i],
-                       "item", results->pdata[i + start],
-                       NULL);
-         clutter_actor_show ((ClutterActor *) priv->tiles[i]);
+        BklItem *item = ahoghill_results_model_get_item (priv->model,
+                                                         i + start);
+
+        g_object_set (priv->tiles[i],
+                      "item", item,
+                      NULL);
+        clutter_actor_show ((ClutterActor *) priv->tiles[i]);
     }
 
     /* Clear the rest of the results */
@@ -244,4 +249,60 @@ ahoghill_results_table_update (AhoghillResultsTable *self,
                       NULL);
         clutter_actor_hide ((ClutterActor *) priv->tiles[i]);
     }
+}
+
+static void
+results_model_changed (AhoghillResultsModel *model,
+                       AhoghillResultsTable *table)
+{
+    update_items (table);
+}
+
+static void
+set_model (AhoghillResultsTable *table,
+           AhoghillResultsModel *model)
+{
+    AhoghillResultsTablePrivate *priv;
+
+    priv = table->priv;
+
+    if (model) {
+        priv->model = g_object_ref (model);
+        g_signal_connect (priv->model, "changed",
+                          G_CALLBACK (results_model_changed), table);
+    }
+}
+
+AhoghillResultsTable *
+ahoghill_results_table_new (AhoghillResultsModel *model)
+{
+    AhoghillResultsTable *table;
+    AhoghillResultsTablePrivate *priv;
+
+    table = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
+    priv = table->priv;
+
+    set_model (table, model);
+
+    return table;
+}
+
+void
+ahoghill_results_table_set_model (AhoghillResultsTable *table,
+                                  AhoghillResultsModel *model)
+{
+    g_return_if_fail (IS_AHOGHILL_RESULTS_TABLE (table));
+    g_return_if_fail (IS_AHOGHILL_RESULTS_MODEL (model));
+
+    set_model (table, model);
+}
+
+void
+ahoghill_results_table_set_page (AhoghillResultsTable *self,
+                                 guint                 page_number)
+{
+    AhoghillResultsTablePrivate *priv = self->priv;
+
+    priv->page_number = page_number;
+    update_items (self);
 }

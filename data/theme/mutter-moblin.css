@@ -309,8 +309,15 @@ NbtkTooltip {
 }
 
 *.drop-down-footer {
-  border-image: url("file://drop-down/footer.png") 5;
-  padding: 5;
+  border-image: url("file://drop-down/panel_up_button.png") 5;
+  background-image: url("file://drop-down/panel_arrow.png") 5;
+  padding: 15;
+}
+
+*.drop-down-footer:hover {
+  border-image: url("file://drop-down/panel_up_button_hover.png") 5;
+  background-image: url("file://drop-down/panel_arrow_hover.png") 5;
+  padding: 15;
 }
 
 MnbDropDown, MnbSwitcher {

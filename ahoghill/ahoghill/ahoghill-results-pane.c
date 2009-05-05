@@ -38,7 +38,7 @@ struct _AhoghillResultsPanePrivate {
     NbtkWidget *previous_button;
     NbtkWidget *next_button;
 
-    GPtrArray *results;
+    AhoghillResultsModel *model;
 
     AhoghillResultsTable *current_page;
     guint current_page_num;
@@ -69,13 +69,20 @@ ahoghill_results_pane_finalize (GObject *object)
         g_slice_free (struct _paging_data, priv->animation);
     }
 
-    g_signal_handlers_destroy (object);
     G_OBJECT_CLASS (ahoghill_results_pane_parent_class)->finalize (object);
 }
 
 static void
 ahoghill_results_pane_dispose (GObject *object)
 {
+    AhoghillResultsPane *pane = (AhoghillResultsPane *) object;
+    AhoghillResultsPanePrivate *priv = pane->priv;
+
+    if (priv->model) {
+        g_object_unref (priv->model);
+        priv->model = NULL;
+    }
+
     G_OBJECT_CLASS (ahoghill_results_pane_parent_class)->dispose (object);
 }
 
@@ -148,7 +155,7 @@ item_clicked_cb (AhoghillResultsTable *table,
     BklItem *item;
 
     item_no = (TILES_PER_PAGE * priv->current_page_num) + tileno;
-    item = priv->results->pdata[item_no];
+    item = ahoghill_results_model_get_item (priv->model, item_no);
 
     g_signal_emit (pane, signals[ITEM_CLICKED], 0, item);
 }
@@ -196,9 +203,11 @@ show_previous_page (ClutterActor        *actor,
         priv->animation = g_slice_new (struct _paging_data);
     }
 
-    new_page = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
-    ahoghill_results_table_update ((AhoghillResultsTable *) new_page,
-                                   priv->results, priv->current_page_num - 1);
+    new_page = (ClutterActor *) ahoghill_results_table_new (priv->model);
+
+    ahoghill_results_table_set_page ((AhoghillResultsTable *) new_page,
+                                     priv->current_page_num - 1);
+
     nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed), new_page);
     clutter_actor_get_size (new_page, &width, &height);
     clutter_actor_set_position (new_page, 0 - (int) width, 0);
@@ -260,10 +269,9 @@ show_next_page (ClutterActor        *actor,
     clutter_actor_get_size ((ClutterActor *) priv->current_page,
                             &width, &height);
 
-    new_page = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
-    ahoghill_results_table_update ((AhoghillResultsTable *) new_page,
-                                   priv->results,
-                                   priv->current_page_num + 1);
+    new_page = (ClutterActor *) ahoghill_results_table_new (priv->model);
+    ahoghill_results_table_set_page ((AhoghillResultsTable *) new_page,
+                                     priv->current_page_num + 1);
     nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed), new_page);
     clutter_actor_show (new_page);
     clutter_actor_set_position (new_page, width, 0);
@@ -323,7 +331,7 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
                                           "y-align", 0.0,
                                           NULL);
 
-    priv->current_page = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
+    priv->current_page = ahoghill_results_table_new (NULL);
     g_signal_connect (priv->current_page, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
     nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed),
@@ -331,7 +339,7 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
     clutter_actor_show ((ClutterActor *) priv->current_page);
     clutter_actor_set_position ((ClutterActor *) priv->current_page, 0, 0);
 
-    priv->previous_button = nbtk_button_new_with_label ("Previous");
+    priv->previous_button = nbtk_button_new_with_label (_("Previous"));
     clutter_actor_set_name (CLUTTER_ACTOR (priv->previous_button),
                             "media-pane-previous-page");
     g_signal_connect (CLUTTER_ACTOR (priv->previous_button),
@@ -347,7 +355,7 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
                                           "x-align", 0.0,
                                           NULL);
 
-    priv->next_button = nbtk_button_new_with_label ("Next");
+    priv->next_button = nbtk_button_new_with_label (_("Next"));
     clutter_actor_set_name (CLUTTER_ACTOR (priv->next_button),
                             "media-pane-next-page");
     g_signal_connect (CLUTTER_ACTOR (priv->next_button), "button-release-event",
@@ -364,48 +372,27 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
 }
 
 static void
-unref_and_free_array (GPtrArray *array)
+results_changed_cb (AhoghillResultsModel *model,
+                    AhoghillResultsPane  *pane)
 {
-    int i;
-
-    for (i = 0; i < array->len; i++) {
-        g_object_unref (array->pdata[i]);
-    }
-
-    g_ptr_array_free (array, TRUE);
+    /* When the results change, we need to check how if the page we're
+       on still exists and whether the page buttons should be active */
 }
 
-static GPtrArray *
-copy_and_ref_array (GPtrArray *original)
+AhoghillResultsPane *
+ahoghill_results_pane_new (AhoghillResultsModel *model)
 {
-    GPtrArray *clone;
-    int i;
-
-    clone = g_ptr_array_sized_new (original->len);
-    for (i = 0; i < original->len; i++) {
-        g_ptr_array_add (clone, g_object_ref (original->pdata[i]));
-    }
-
-    return clone;
-}
-
-void
-ahoghill_results_pane_set_results (AhoghillResultsPane *self,
-                                   GPtrArray           *results)
-{
+    AhoghillResultsPane *pane;
     AhoghillResultsPanePrivate *priv;
 
-    priv = self->priv;
+    pane = g_object_new (AHOGHILL_TYPE_RESULTS_PANE, NULL);
+    priv = pane->priv;
 
-    if (priv->results) {
-        unref_and_free_array (priv->results);
-        priv->results = NULL;
-    }
+    priv->model = g_object_ref (model);
+    g_signal_connect (priv->model, "changed",
+                      G_CALLBACK (results_changed_cb), pane);
 
-    priv->results = copy_and_ref_array (results);
+    ahoghill_results_table_set_model (priv->current_page, priv->model);
 
-    ahoghill_results_table_update (priv->current_page, priv->results, 0);
-    priv->current_page_num = 0;
-
-    priv->last_page = (results->len / TILES_PER_PAGE);
+    return pane;
 }

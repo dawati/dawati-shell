@@ -91,6 +91,17 @@ nbtk_fixed_paint (ClutterActor *actor)
 }
 
 static void
+nbtk_fixed_pick (ClutterActor       *actor,
+                 const ClutterColor *color)
+{
+    CLUTTER_ACTOR_CLASS (nbtk_fixed_parent_class)->pick (actor, color);
+
+    if (CLUTTER_ACTOR_IS_VISIBLE (actor)) {
+        nbtk_fixed_paint (actor);
+    }
+}
+
+static void
 nbtk_fixed_class_init (NbtkFixedClass *klass)
 {
     GObjectClass *o_class = (GObjectClass *) klass;
@@ -103,6 +114,7 @@ nbtk_fixed_class_init (NbtkFixedClass *klass)
 
     a_class->allocate = nbtk_fixed_allocate;
     a_class->paint = nbtk_fixed_paint;
+    a_class->pick = nbtk_fixed_pick;
 
     g_type_class_add_private (klass, sizeof (NbtkFixedPrivate));
 }

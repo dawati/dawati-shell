@@ -6,6 +6,8 @@
 #include "moblin-netbook.h"
 #include "mwb-radical-bar.h"
 
+#include <glib/gi18n.h>
+
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
 
 #define NETPANEL_PRIVATE(o) \
@@ -97,10 +99,10 @@ create_tabs_table (MoblinNetbookNetpanel *self)
                           "netpanel-subtable");
 
   /* Construct tabs previews table widgets */
-  label = nbtk_label_new ("Tabs");
+  label = nbtk_label_new (_("Tabs"));
   nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), label, 0, 0, 1, 5,
                               0, 0.0, 0.5);
-  priv->tabs_more = nbtk_button_new_with_label ("More...");
+  priv->tabs_more = nbtk_button_new_with_label (_("More..."));
   nbtk_table_add_widget_full (NBTK_TABLE (priv->tabs_table), priv->tabs_more,
                               1, 5, 1, 1, 0, 0.5, 0.5);
   clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_more));
@@ -244,8 +246,8 @@ notify_get_ntabs (DBusGProxy     *proxy,
   else
     {
       /* Add a placeholder text label */
-      priv->tabs_table = nbtk_label_new ("Type an address or load the browser "
-                                         "to see your tabs here.");
+      priv->tabs_table = nbtk_label_new (_("Type an address or load the browser "
+                                         "to see your tabs here."));
       clutter_actor_set_name (CLUTTER_ACTOR (priv->tabs_table),
                               "netpanel-placeholder");
       nbtk_table_add_widget_full (NBTK_TABLE (self), priv->tabs_table, 1, 0,
@@ -378,7 +380,7 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 
   /* Construct entry table widgets */
 
-  label = nbtk_label_new ("Internet");
+  label = nbtk_label_new (_("Internet"));
   priv->radical_bar = mwb_radical_bar_new ();
   nbtk_table_add_widget_full (NBTK_TABLE (table), label, 0, 0, 1, 1,
                               0, 0.0, 0.5);

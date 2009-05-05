@@ -30,6 +30,8 @@
 #include <nbtk/nbtk.h>
 #include <keybindings.h>
 
+#include <glib/gi18n.h>
+
 #define HOVER_TIMEOUT  800
 #define CLONE_HEIGHT   80  /* Height of the window thumb */
 
@@ -1375,7 +1377,7 @@ mnb_switcher_show (ClutterActor *self)
         {
           NbtkWidget *label;
 
-          label = nbtk_label_new ("No applications on this zone");
+          label = nbtk_label_new (_("No applications on this zone"));
 
           nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (label),
                                 1, i);

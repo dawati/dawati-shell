@@ -3,6 +3,7 @@
 
 #include <nbtk/nbtk.h>
 
+#include "ahoghill-results-model.h"
 
 G_BEGIN_DECLS
 
@@ -45,9 +46,11 @@ struct _AhoghillResultsTableClass
 
 GType ahoghill_results_table_get_type (void) G_GNUC_CONST;
 
-void ahoghill_results_table_update (AhoghillResultsTable *self,
-                                    GPtrArray            *results,
-                                    guint                 page_number);
+AhoghillResultsTable *ahoghill_results_table_new (AhoghillResultsModel *model);
+void ahoghill_results_table_set_model (AhoghillResultsTable *table,
+                                       AhoghillResultsModel *model);
+void ahoghill_results_table_set_page (AhoghillResultsTable *table,
+                                      guint                 page_number);
 
 G_END_DECLS
 

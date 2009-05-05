@@ -36,6 +36,8 @@
 #include "moblin-netbook-pasteboard.h"
 #include "penge/penge-grid-view.h"
 
+#include <glib/gi18n.h>
+
 #ifdef USE_AHOGHILL
 #include "ahoghill/ahoghill-grid-view.h"
 #endif
@@ -648,7 +650,7 @@ make_panel (MutterPlugin *plugin, gint width)
 
   make_toolbar_button (plugin, panel,
                        "m-space-button",
-                       "m_zone",
+                       _("m_zone"),
                        MNBK_CONTROL_MZONE,
                        PANEL_PAGE_M_ZONE);
   nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]),
@@ -656,43 +658,43 @@ make_panel (MutterPlugin *plugin, gint width)
 
   make_toolbar_button (plugin, panel,
                        "status-button",
-                       "status",
+                       _("status"),
                        MNBK_CONTROL_STATUS,
                        PANEL_PAGE_STATUS);
 
   make_toolbar_button (plugin, panel,
                        "spaces-button",
-                       "zones",
+                       _("zones"),
                        MNBK_CONTROL_SPACES,
                        PANEL_PAGE_SPACES);
 
   make_toolbar_button (plugin, panel,
                        "internet-button",
-                       "internet",
+                       _("internet"),
                        MNBK_CONTROL_INTERNET,
                        PANEL_PAGE_INTERNET);
 
   make_toolbar_button (plugin, panel,
                        "media-button",
-                       "media",
+                       _("media"),
                        MNBK_CONTROL_MEDIA,
                        PANEL_PAGE_MEDIA);
 
   make_toolbar_button (plugin, panel,
                        "apps-button",
-                       "applications",
+                       _("applications"),
                        MNBK_CONTROL_APPLICATIONS,
                        PANEL_PAGE_APPS);
 
   make_toolbar_button (plugin, panel,
                        "people-button",
-                       "people",
+                       _("people"),
                        MNBK_CONTROL_PEOPLE,
                        PANEL_PAGE_PEOPLE);
 
   make_toolbar_button (plugin, panel,
                        "pasteboard-button",
-                       "pasteboard",
+                       _("pasteboard"),
                        MNBK_CONTROL_PASTEBOARD,
                        PANEL_PAGE_PASTERBOARD);
 

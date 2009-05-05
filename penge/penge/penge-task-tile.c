@@ -2,6 +2,7 @@
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
+#include <glib/gi18n.h>
 
 G_DEFINE_TYPE (PengeTaskTile, penge_task_tile, NBTK_TYPE_TABLE)
 
@@ -303,7 +304,7 @@ penge_task_tile_update (PengeTaskTile *tile)
 
   if (due)
   {
-    details_str = jana_utils_strftime (due, "Due %x");
+    details_str = jana_utils_strftime (due, _("Due %x"));
     nbtk_label_set_text (NBTK_LABEL(priv->details_label), details_str);
     g_free (details_str);
 
