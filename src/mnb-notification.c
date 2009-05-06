@@ -212,6 +212,7 @@ mnb_notification_init (MnbNotification *self)
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
   clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
+  clutter_text_set_use_markup (CLUTTER_TEXT (txt), TRUE);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->body),
