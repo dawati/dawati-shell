@@ -81,8 +81,19 @@ if test x"$enable_netpanel" = xyes; then
 	PKG_CHECK_MODULES(NETPANEL, cluttermozembed)
 fi
 
+AC_ARG_ENABLE([people],
+	AC_HELP_STRING([--enable-people],
+		[Enable building of the people panel]),
+		[enable_people=yes])
+
+if test x"$enable_people" = xyes; then
+	AC_DEFINE(WITH_PEOPLE, 1, [Defined when building the people])
+	PKG_CHECK_MODULES(PEOPLE, anerley)
+fi
+
 AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
+AM_CONDITIONAL(WITH_PEOPLE, test x"$enable_people" = xyes)
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
