@@ -3,6 +3,8 @@ iconsdir = $(pkgdatadir)/icons
 icons_DATA = \
 	     carrick-no-network-active.png \
 	     carrick-no-network-normal.png \
+	     carrick-associating-active.png \
+	     carrick-associating-normal.png \
 	     carrick-wired-active.png \
 	     carrick-wired-normal.png \
 	     carrick-wireless-1-active.png \
