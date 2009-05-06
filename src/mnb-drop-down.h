@@ -62,6 +62,7 @@ typedef struct {
 typedef struct {
   NbtkTableClass parent_class;
 
+  void (*show_begin)     (MnbDropDown *drop_down);
   void (*show_completed) (MnbDropDown *drop_down);
   void (*hide_begin)     (MnbDropDown *drop_down);
   void (*hide_completed) (MnbDropDown *drop_down);

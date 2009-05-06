@@ -40,6 +40,7 @@ enum {
 
 enum
 {
+  SHOW_BEGIN,
   SHOW_COMPLETED,
   HIDE_BEGIN,
   HIDE_COMPLETED,
@@ -147,6 +148,8 @@ mnb_drop_down_show (ClutterActor *actor)
       g_signal_stop_emission_by_name (actor, "show");
       return;
     }
+
+  g_signal_emit (actor, dropdown_signals[SHOW_BEGIN], 0);
 
   /*
    * Check the panel is visible, if not show it.
@@ -346,6 +349,15 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
   clutter_class->paint = mnb_drop_down_paint;
   clutter_class->button_press_event = mnb_button_event_capture;
   clutter_class->button_release_event = mnb_button_event_capture;
+
+  dropdown_signals[SHOW_BEGIN] =
+    g_signal_new ("show-begin",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbDropDownClass, show_begin),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   dropdown_signals[SHOW_COMPLETED] =
     g_signal_new ("show-completed",

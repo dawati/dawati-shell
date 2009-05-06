@@ -62,7 +62,9 @@ moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
 				mnb-status-row.c		\
 				mnb-status-row.h		\
 				mnb-status-entry.c		\
-				mnb-status-entry.h
+				mnb-status-entry.h		\
+				mnb-panel.c			\
+				mnb-panel.h
 
 if WITH_NETPANEL
 moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
@@ -71,9 +73,13 @@ endif
 
 
 
-DBUS_GLUE=notification-manager-glue.h
+DBUS_GLUE=notification-manager-glue.h mnb-dbus-glue.h
+DBUS_BINDINGS=mnb-dbus-bindings.h
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
+
+%-bindings.h: %.xml
+	dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
 
 MARSHALS = marshal.c marshal.h
 %.c: %.list
@@ -105,5 +111,5 @@ install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.a
 	rm -f $(DESTDIR)$(pkglibdir)/*.la
 
-BUILT_SOURCES = $(DBUS_GLUE) $(MARSHALS)
+BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS)
 CLEANFILES = $(BUILT_SOURCES)
