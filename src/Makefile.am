@@ -10,8 +10,8 @@ INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ \
 	-I$(top_srcdir)/src
 
 AM_CFLAGS   = -fPIC
-moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
-				nutter/nutter-scale-group.h     \
+moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
+				mnb-scale-group.h               \
 				moblin-netbook.c		\
 				moblin-netbook.h		\
 				moblin-netbook-chooser.c	\

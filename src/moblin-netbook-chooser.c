@@ -30,7 +30,7 @@
 
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
-#include "nutter/nutter-scale-group.h"
+#include "mnb-scale-group.h"
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -572,7 +572,7 @@ make_nth_workspace (GList **list, gint n, gint active, MutterPlugin *plugin)
        * For non-expanded group, we use NutterScaleGroup container, which
        * allows us to apply scale to the workspace en mass.
        */
-      group = nutter_scale_group_new ();
+      group = mnb_scale_group_new ();
 
       clutter_actor_set_clip (group, 0, 0, screen_width, screen_height);
 

@@ -24,7 +24,7 @@
 
 #include <stdarg.h>
 
-#include "nutter-scale-group.h"
+#include "mnb-scale-group.h"
 
 #include <clutter/clutter.h>
 
@@ -34,19 +34,19 @@
  *
  * (content_width * scale_x) x (content_height * scale_y)
  *
- * NutterScaleGroup is intended for making thumbnails from bigger objects.
+ * MnbScaleGroup is intended for making thumbnails from bigger objects.
  */
-G_DEFINE_TYPE (NutterScaleGroup, nutter_scale_group, CLUTTER_TYPE_GROUP);
+G_DEFINE_TYPE (MnbScaleGroup, mnb_scale_group, CLUTTER_TYPE_GROUP);
 
 static void
-nutter_scale_group_get_preferred_width (ClutterActor *self,
+mnb_scale_group_get_preferred_width (ClutterActor *self,
 					ClutterUnit   for_height,
 					ClutterUnit  *min_width_p,
 					ClutterUnit  *natural_width_p)
 {
   gdouble scale_x, scale_y;
 
-  CLUTTER_ACTOR_CLASS (nutter_scale_group_parent_class)->get_preferred_width (
+  CLUTTER_ACTOR_CLASS (mnb_scale_group_parent_class)->get_preferred_width (
 							      self,
 							      for_height,
 							      min_width_p,
@@ -62,14 +62,14 @@ nutter_scale_group_get_preferred_width (ClutterActor *self,
 }
 
 static void
-nutter_scale_group_get_preferred_height (ClutterActor *self,
+mnb_scale_group_get_preferred_height (ClutterActor *self,
 					 ClutterUnit   for_width,
 					 ClutterUnit  *min_height_p,
 					 ClutterUnit  *natural_height_p)
 {
   gdouble scale_x, scale_y;
 
-  CLUTTER_ACTOR_CLASS (nutter_scale_group_parent_class)->get_preferred_height (
+  CLUTTER_ACTOR_CLASS (mnb_scale_group_parent_class)->get_preferred_height (
 							      self,
 							      for_width,
 							      min_height_p,
@@ -85,18 +85,18 @@ nutter_scale_group_get_preferred_height (ClutterActor *self,
 }
 
 static void
-nutter_scale_group_class_init (NutterScaleGroupClass *klass)
+mnb_scale_group_class_init (MnbScaleGroupClass *klass)
 {
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
 
-  actor_class->get_preferred_width  = nutter_scale_group_get_preferred_width;
-  actor_class->get_preferred_height = nutter_scale_group_get_preferred_height;
+  actor_class->get_preferred_width  = mnb_scale_group_get_preferred_width;
+  actor_class->get_preferred_height = mnb_scale_group_get_preferred_height;
 }
 
 static void
-nutter_scale_group_on_scale_change (GObject     *object,
-				    GParamSpec  *param_spec,
-				    gpointer     data)
+mnb_scale_group_on_scale_change (GObject     *object,
+				 GParamSpec  *param_spec,
+				 gpointer     data)
 {
   ClutterActor *parent = clutter_actor_get_parent (CLUTTER_ACTOR (object));
 
@@ -105,20 +105,20 @@ nutter_scale_group_on_scale_change (GObject     *object,
 }
 
 static void
-nutter_scale_group_init (NutterScaleGroup *self)
+mnb_scale_group_init (MnbScaleGroup *self)
 {
   g_signal_connect (self,
                     "notify::scale-x",
-                    G_CALLBACK(nutter_scale_group_on_scale_change), NULL);
+                    G_CALLBACK(mnb_scale_group_on_scale_change), NULL);
 
   g_signal_connect (self,
                     "notify::scale-y",
-                    G_CALLBACK(nutter_scale_group_on_scale_change), NULL);
+                    G_CALLBACK(mnb_scale_group_on_scale_change), NULL);
 }
 
 ClutterActor *
-nutter_scale_group_new (void)
+mnb_scale_group_new (void)
 {
-  return g_object_new (NUTTER_TYPE_SCALE_GROUP, NULL);
+  return g_object_new (MNB_TYPE_SCALE_GROUP, NULL);
 }
 
