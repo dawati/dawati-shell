@@ -299,7 +299,6 @@ static void
 mnb_panel_init (MnbPanel *self)
 {
   MnbPanelPrivate *priv;
-  MnbPanelClass   *klass = MNB_PANEL_GET_CLASS (self);
 
   priv = self->priv = MNB_PANEL_GET_PRIVATE (self);
 }
@@ -313,7 +312,7 @@ mnb_panel_show_begin (MnbDropDown *self)
 {
   GError *error = NULL;
 
-  if (!mnb_dbus_show_begin (MNB_PANEL (self), &error))
+  if (!mnb_panel_dbus_show_begin (MNB_PANEL (self), &error))
     {
       if (error)
         {
@@ -381,7 +380,6 @@ mnb_panel_connect_to_dbus ()
 {
   DBusGConnection *conn;
   GError          *error = NULL;
-  guint32          request_name_ret;
 
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
 
@@ -401,7 +399,6 @@ mnb_panel_constructed (GObject *self)
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
   DBusGConnection *conn;
   DBusGProxy      *proxy;
-  guint            width, height;
   guint            xid;
   gchar           *name;
   gchar           *tooltip;
@@ -450,10 +447,10 @@ mnb_panel_constructed (GObject *self)
    * Now call the remote init_panel() method to obtain the panel name, tooltip
    * and xid.
    */
-  if (!mnb_panel_init_panel (self, priv->width, priv->height,
-                             &name, &xid, &tooltip, &error))
+  if (!mnb_panel_dbus_init_panel (MNB_PANEL (self), priv->width, priv->height,
+                                  &name, &xid, &tooltip, &error))
     {
-      g_critical ("Panel initialization for %s failed [%s]!",
+      g_critical ("Panel initialization for %s failed!",
                   priv->dbus_path);
 
       if (error)
@@ -536,6 +533,8 @@ mnb_panel_new (MutterPlugin *plugin,
       g_object_unref (panel);
       return NULL;
     }
+
+  return panel;
 }
 
 const gchar *
