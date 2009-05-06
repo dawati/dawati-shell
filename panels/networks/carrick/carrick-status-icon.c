@@ -13,6 +13,8 @@ typedef struct _CarrickStatusIconPrivate CarrickStatusIconPrivate;
 typedef enum {
   CARRICK_ICON_NO_NETWORK,
   CARRICK_ICON_NO_NETWORK_ACTIVE,
+  CARRICK_ICON_ASSOCIATING,
+  CARRICK_ICON_ASSOCIATING_ACTIVE,
   CARRICK_ICON_WIRED_NETWORK,
   CARRICK_ICON_WIRED_NETWORK_ACTIVE,
   CARRICK_ICON_WIRELESS_NETWORK_1,
@@ -43,6 +45,8 @@ static void carrick_status_icon_update_service (CarrickStatusIcon *icon,
 static const gchar *icon_names[] = {
   PKG_ICON_DIR "/" "carrick-no-network-normal.png",
   PKG_ICON_DIR "/" "carrick-no-network-active.png",
+  PKG_ICON_DIR "/" "carrick-associating-normal.png",
+  PKG_ICON_DIR "/" "carrick-associating-active.png",
   PKG_ICON_DIR "/" "carrick-wired-normal.png",
   PKG_ICON_DIR "/" "carrick-wired-active.png",
   PKG_ICON_DIR "/" "carrick-wireless-1-normal.png",
@@ -132,21 +136,31 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
 {
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
   CarrickIconState icon_state;
-  const gchar *type;
+  const gchar *type, *status;
   guint strength;
 
   if (priv->service)
   {
     strength = cm_service_get_strength (priv->service);
     type = cm_service_get_type (priv->service);
+    status = cm_service_get_state (priv->service);
   }
   else
   {
     strength = 0;
     type = g_strdup ("");
+    status = g_strdup ("");
   }
 
-  if (type)
+  if (status && status[0] != '0')
+  {
+    if (g_strcmp0 ("association", status)
+        || g_strcmp0 ("configuration", status))
+    {
+      icon_state = CARRICK_ICON_ASSOCIATING;
+    }
+  }
+  else if (type && type[0] != '0')
   {
     if (g_strcmp0 ("ethernet", type) == 0)
       icon_state = CARRICK_ICON_WIRED_NETWORK;
