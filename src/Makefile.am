@@ -73,8 +73,8 @@ endif
 
 
 
-DBUS_GLUE=notification-manager-glue.h mnb-dbus-glue.h
-DBUS_BINDINGS=mnb-dbus-bindings.h
+DBUS_GLUE=notification-manager-glue.h mnb-panel-dbus-glue.h
+DBUS_BINDINGS=mnb-panel-dbus-bindings.h
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<node name="/">
+  <interface name="com.intel.Mnb.Panel">
+    <method name="InitPanel">
+      <arg name="window_width" type="u" direction="in"/>
+      <arg name="window_height" type="u" direction="in"/>
+      <arg name="panel_name" type="s" direction="out"/>
+      <arg name="xid" type="u" direction="out"/>
+      <arg name="tooltip" type="s" direction="out"/>
+    </method>
+
+    <method name="ShowBegin"/>
+    <method name="ShowEnd"/>
+
+    <method name="HideBegin"/>
+    <method name="HideEnd"/>
+
+    <signal name="RequestIcon">
+      <arg name="icon_name" type="s"/>
+    </signal>
+
+    <signal name="RequestShow"/>
+    <signal name="RequestHide"/>
+    <signal name="RequestFocus"/>
+    <signal name="LaunchApplication">
+      <arg name="application" type="s"/>
+      <arg name="workspace" type="i"/>
+      <arg name="without_chooser" type="b"/>
+    </signal>
+  </interface>
+</node>
