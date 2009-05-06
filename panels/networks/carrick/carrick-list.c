@@ -73,6 +73,9 @@ carrick_list_drag_begin (GtkWidget         *widget,
   priv->drag_window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_container_add (GTK_CONTAINER (priv->drag_window),
                      widget);
+  gtk_widget_set_state (widget,
+                        GTK_STATE_SELECTED);
+
   g_object_unref (widget);
   gtk_drag_set_icon_widget (context,
                             priv->drag_window,
@@ -92,7 +95,7 @@ carrick_list_drag_data_get (GtkWidget        *widget,
     gtk_selection_data_set (data,
                             data->target,
                             8,
-                            (gpointer *)&widget,
+                            (gpointer)&widget,
                             sizeof (gpointer));
   }
 }
@@ -112,6 +115,8 @@ carrick_list_drag_failed (GtkWidget      *widget,
     g_object_ref (widget);
     gtk_container_remove (GTK_CONTAINER (priv->drag_window),
                           widget);
+    gtk_widget_set_state (widget,
+                          GTK_STATE_NORMAL);
     gtk_box_pack_start (GTK_BOX (user_data),
                         widget,
                         TRUE,
@@ -283,7 +288,9 @@ carrick_list_drag_data_received (GtkWidget        *widget,
     g_object_ref (source);
     gtk_container_remove (GTK_CONTAINER (priv->drag_window),
                           source);
-    gtk_box_pack_start ((GtkBox *)widget,
+    gtk_widget_set_state (GTK_WIDGET (source),
+                          GTK_STATE_NORMAL);
+    gtk_box_pack_start (GTK_BOX (widget),
                         source,
                         TRUE,
                         TRUE,

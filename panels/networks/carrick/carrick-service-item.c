@@ -65,10 +65,16 @@ _connect_button_cb (GtkButton *connect_button,
   if (priv->connected)
   {
     cm_service_disconnect (CM_SERVICE (priv->service));
+    gtk_widget_set_state (GTK_WIDGET (user_data),
+                          GTK_STATE_NORMAL);
   }
   else
   {
     gchar *security = g_strdup (cm_service_get_security (CM_SERVICE (priv->service)));
+
+    gtk_widget_set_state (GTK_WIDGET (user_data),
+                          GTK_STATE_SELECTED);
+
     if (g_strcmp0 ("none", security) != 0)
     {
       if (!cm_service_get_passphrase (priv->service))
