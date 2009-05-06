@@ -50,7 +50,7 @@ main (int    argc,
   mnbk_system_tray_init (icon, GTK_PLUG (plug), "wifi");
   screen = gtk_widget_get_screen (plug);
   gtk_widget_set_size_request (pane,
-                               gdk_screen_get_width (screen) - 2,
+                               gdk_screen_get_width (screen) - 10,
                                -1);
 
   gtk_main ();
