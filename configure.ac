@@ -64,6 +64,11 @@ PKG_CHECK_MODULES(PENGE,
                   gio-2.0
                   gio-unix-2.0)
 
+PKG_CHECK_MODULES(LIBMNB,
+                  gtk+-2.0 >= 2.14
+		  dbus-glib-1
+                  nbtk-1.0)
+
 AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
 
 if test "x$enable_ahoghill" = "xyes"; then
@@ -123,6 +128,7 @@ penge/examples/Makefile
 ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile
+libmnb/Makefile
 ])
 
 echo "
