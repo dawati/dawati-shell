@@ -174,6 +174,7 @@ carrick_applet_init (CarrickApplet *self)
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
   GtkWidget *scroll_view;
+  CmService *active = NULL;
 
   notify_init ("Carrick");
 
@@ -187,17 +188,24 @@ carrick_applet_init (CarrickApplet *self)
   if (error) {
     g_debug ("Error initializing connman manager: %s\n",
              error->message);
+    /* FIXME: must do better here */
     return;
   }
   cm_manager_refresh (priv->manager);
   priv->state = g_strdup (cm_manager_get_state (priv->manager));
-  priv->active_service_name = g_strdup (cm_manager_get_active_service_name (priv->manager));
-  if (!priv->active_service_name)
+  active = cm_manager_get_active_service (priv->manager);
+  if (active && cm_service_get_connected (active))
   {
-    priv->active_service_name = g_strdup ("");
+    priv->active_service_name = g_strdup (cm_service_get_name (active));
+    priv->active_service_type = g_strdup (cm_service_get_type (active));
   }
-  priv->active_service_type = g_strdup (cm_manager_get_active_service_type (priv->manager));
-  priv->icon = carrick_status_icon_new (cm_manager_get_active_service (priv->manager));
+  else
+  {
+    active = NULL;
+    priv->active_service_name = g_strdup ("");
+    priv->active_service_type = g_strdup(_("No active service"));
+  }
+  priv->icon = carrick_status_icon_new (active);
   priv->pane = carrick_pane_new (priv->manager);
 
   g_signal_connect (priv->manager,

@@ -133,12 +133,17 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
   CarrickIconState icon_state;
   const gchar *type;
-  guint strength = 0;
+  guint strength;
 
   if (priv->service)
   {
     strength = cm_service_get_strength (priv->service);
     type = cm_service_get_type (priv->service);
+  }
+  else
+  {
+    strength = 0;
+    type = g_strdup ("");
   }
 
   if (type)
@@ -153,6 +158,10 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
         icon_state = CARRICK_ICON_WIRELESS_NETWORK_2;
       else
         icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
+    }
+    else
+    {
+      icon_state = CARRICK_ICON_NO_NETWORK;
     }
   }
   else
@@ -193,9 +202,9 @@ carrick_status_icon_update_service (CarrickStatusIcon *icon,
   if (service)
   {
     priv->service = g_object_ref (service);
-
-    carrick_status_icon_update (icon);
   }
+
+  carrick_status_icon_update (icon);
 }
 
 GtkWidget*
