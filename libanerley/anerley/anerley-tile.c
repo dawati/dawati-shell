@@ -86,9 +86,48 @@ _item_avatar_path_changed_cb (AnerleyItem *item,
 }
 
 static void
+anerley_tile_update_presence_icon (AnerleyTile *tile,
+                                   const gchar *path)
+{
+  AnerleyTilePrivate *priv = GET_PRIVATE (tile);
+  NbtkTextureCache *cache;
+
+  if (priv->presence_icon)
+  {
+    clutter_container_remove_actor (CLUTTER_CONTAINER (tile),
+                                    priv->presence_icon);
+  }
+
+  cache = nbtk_texture_cache_get_default ();
+
+  priv->presence_icon = nbtk_texture_cache_get_texture (cache,
+                                                        path,
+                                                        FALSE);
+  clutter_actor_set_size (priv->presence_icon, 16, 16);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)priv->presence_icon,
+                                        2,
+                                        1,
+                                        "x-fill",
+                                        FALSE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-expand",
+                                        FALSE,
+                                        "y-expand",
+                                        TRUE,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
+
+  clutter_actor_show (priv->presence_icon);
+}
+
+static void
 _item_presence_changed_cb (AnerleyItem *item,
                            gpointer     userdata)
 {
+  AnerleyTile *tile = (AnerleyTile *)userdata;
   AnerleyTilePrivate *priv = GET_PRIVATE (userdata);
   const gchar *presence_message;
   const gchar *presence_status;
@@ -138,14 +177,7 @@ _item_presence_changed_cb (AnerleyItem *item,
                                          presence_icon_name,
                                          NULL);
 
-  if (!clutter_texture_set_from_file ((ClutterTexture *)priv->presence_icon,
-                                      presence_icon_path,
-                                      &error))
-  {
-    g_warning (G_STRLOC ": Error opening presence icon: %s",
-               error->message);
-    g_clear_error (&error);
-  }
+  anerley_tile_update_presence_icon (tile, presence_icon_path);
 
   g_free (presence_icon_path);
 }
@@ -373,23 +405,6 @@ anerley_tile_init (AnerleyTile *self)
   nbtk_widget_set_style_class_name (priv->secondary_label,
                                     "AnerleyTileSecondaryLabel");
 
-  priv->presence_icon = clutter_texture_new ();
-  clutter_actor_set_size (priv->presence_icon, 16, 16);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->presence_icon,
-                                        2,
-                                        1,
-                                        "x-fill",
-                                        FALSE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        FALSE,
-                                        "y-expand",
-                                        TRUE,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
   priv->presence_label = nbtk_label_new ("");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->presence_label,
