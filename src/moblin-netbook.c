@@ -1995,6 +1995,9 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 #ifdef USE_AHOGHILL
             !CLUTTER_ACTOR_IS_VISIBLE (priv->media_drop_down) &&
 #endif
+#ifdef WITH_PEOPLE
+            !CLUTTER_ACTOR_IS_VISIBLE (priv->people) &&
+#endif
             !CLUTTER_ACTOR_IS_VISIBLE (priv->pasteboard) &&
             !CLUTTER_ACTOR_IS_VISIBLE (priv->status))))
         {

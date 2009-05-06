@@ -34,6 +34,8 @@
 #include "moblin-netbook-status.h"
 #include "moblin-netbook-netpanel.h"
 #include "moblin-netbook-pasteboard.h"
+#include "moblin-netbook-people.h"
+
 #include "penge/penge-grid-view.h"
 
 #include <glib/gi18n.h>
@@ -134,8 +136,13 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       break;
 #endif
 
-    case MNBK_CONTROL_STATUS:
+#ifdef WITH_PEOPLE
     case MNBK_CONTROL_PEOPLE:
+      control_actor = priv->people;
+      break;
+#endif
+
+    case MNBK_CONTROL_STATUS:
     case MNBK_CONTROL_PASTEBOARD:
       g_warning ("Control %d not handled (%s:%d)\n",
                  panel_data->control, __FILE__, __LINE__);
@@ -176,6 +183,15 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       clutter_actor_hide (priv->net_grid);
     }
 #endif
+
+#ifdef WITH_PEOPLE
+  if (control_actor != priv->people &&
+      CLUTTER_ACTOR_IS_VISIBLE (priv->people))
+    {
+      clutter_actor_hide (priv->people);
+    }
+#endif
+
 
   /* enable events for the buttons while the panel after the panel has stopped
    * moving
@@ -371,16 +387,8 @@ panel_append_toolbar_button (MutterPlugin  *plugin,
   clutter_container_add_actor (CLUTTER_CONTAINER (container),
                                CLUTTER_ACTOR (button));
 
-  /* XXX Hack to disable people button for now XXX */
-  if (!strcmp(tooltip, "people"))
-    {
-      clutter_actor_set_opacity (CLUTTER_ACTOR (button), 0x60);
-      nbtk_button_set_tooltip (NBTK_BUTTON (button),
-                               "☠ NOT IMPLEMENTED ☠");
-    }
-  else
-    g_signal_connect_data (button, "clicked", G_CALLBACK (toggle_buttons_cb),
-                           button_data, (GClosureNotify)g_free, 0);
+  g_signal_connect_data (button, "clicked", G_CALLBACK (toggle_buttons_cb),
+                         button_data, (GClosureNotify)g_free, 0);
 
   n_buttons++;
   return CLUTTER_ACTOR (button);
@@ -835,6 +843,22 @@ make_panel (MutterPlugin *plugin, gint width)
                     G_CALLBACK (_netgrid_launch_cb), plugin);
   g_signal_connect_swapped (net_grid_view, "launched",
                             G_CALLBACK (hide_panel), plugin);
+#endif
+
+#ifdef WITH_PEOPLE
+  /* people drop down */
+  priv->people = make_people_panel (plugin,
+                                    width - PANEL_X_PADDING * 2);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel),
+                               priv->people);
+  mnb_drop_down_set_button (MNB_DROP_DOWN (priv->people),
+                            NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_PEOPLE]));
+  clutter_actor_set_position (priv->people, 0, PANEL_HEIGHT);
+  clutter_actor_set_width (priv->people, screen_width);
+  clutter_actor_lower_bottom (priv->people);
+  clutter_actor_hide (priv->people);
+  clutter_actor_set_height (priv->people,
+                            screen_height - PANEL_HEIGHT * 1.5);
 #endif
 
   if (shadow)
