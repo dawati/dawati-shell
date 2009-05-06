@@ -25,6 +25,8 @@
 #ifndef MOBLIN_NETBOOK_PANEL_H
 #define MOBLIN_NETBOOK_PANEL_H
 
+#include "moblin-netbook.h"
+
 typedef enum
 {
   MNBK_CONTROL_UNKNOWN = 0,
