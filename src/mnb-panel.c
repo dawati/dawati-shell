@@ -413,6 +413,7 @@ mnb_panel_constructed (GObject *self)
   guint            xid;
   gchar           *name;
   gchar           *tooltip;
+  gchar           *dbus_name;
   GError          *error = NULL;
 
   /*
@@ -431,18 +432,32 @@ mnb_panel_constructed (GObject *self)
 
   priv->dbus_conn = conn;
 
-  dbus_g_connection_register_g_object (conn, priv->dbus_path, self);
+  /*
+   * Set up the proxy to the remote object; we mandate that the remote object
+   * name must match the provided path exactly, except for the '/' being
+   * replaced with '.'. The object must implement the com.intel.Mnb.Panel
+   * interface.
+   */
+  dbus_name = g_strdup (priv->dbus_path);
+
+  g_strdelimit (dbus_name, "/", '.');
 
   proxy = dbus_g_proxy_new_for_name (conn,
-                                     DBUS_SERVICE_DBUS,
-                                     DBUS_PATH_DBUS,
-                                     DBUS_INTERFACE_DBUS);
+                                     dbus_name,
+                                     priv->dbus_path,
+                                     "com.intel.Mnb.Panel");
+
+  g_free (dbus_name);
 
   if (!proxy)
     return;
 
   priv->proxy = proxy;
 
+  /*
+   * Now call the remote init_panel() method to obtain the panel name, tooltip
+   * and xid.
+   */
   if (!mnb_panel_init_panel (self, priv->width, priv->height,
                              &name, &xid, &tooltip, &error))
     {
@@ -458,6 +473,9 @@ mnb_panel_constructed (GObject *self)
       return;
     }
 
+  /*
+   * Hook up to the signals the interface defines.
+   */
   dbus_g_proxy_add_signal (proxy, "RequestShow", G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestShow",
                                G_CALLBACK (mnb_panel_request_show_cb),
