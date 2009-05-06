@@ -198,9 +198,6 @@ mnb_panel_finalize (GObject *object)
 
 #include "mnb-panel-dbus-bindings.h"
 
-/*
- * The functions required by the bindings.
- */
 static gboolean
 mnb_panel_dbus_init_panel (MnbPanel  *self,
                            guint      width,
@@ -248,8 +245,6 @@ mnb_panel_dbus_hide_end (MnbPanel *self, GError **error)
   return com_intel_Mnb_Panel_hide_end (priv->proxy, error);
 }
 
-#include "mnb-panel-dbus-glue.h"
-
 static void
 mnb_panel_class_init (MnbPanelClass *klass)
 {
@@ -268,9 +263,6 @@ mnb_panel_class_init (MnbPanelClass *klass)
   dropdown_class->show_completed = mnb_panel_show_completed;
   dropdown_class->hide_begin     = mnb_panel_hide_begin;
   dropdown_class->hide_completed = mnb_panel_hide_completed;
-
-  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
-                                   &dbus_glib_mnb_panel_dbus_object_info);
 
   g_object_class_install_property (object_class,
                                    PROP_DBUS_PATH,
