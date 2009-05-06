@@ -8,3 +8,5 @@ assets_DATA = style.css \
 	      presence-away.png \
 	      presence-offline.png \
 	      presence-busy.png
+
+EXTRA_DIST=$(assets_DATA)
