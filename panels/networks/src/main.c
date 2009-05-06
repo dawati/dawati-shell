@@ -32,9 +32,17 @@ main (int    argc,
   GtkWidget     *pane;
   GdkScreen     *screen;
   GtkWidget     *plug;
+  GtkSettings   *settings;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   gtk_init (&argc, &argv);
+
+  /* Force to correct theme */
+  settings = gtk_settings_get_default ();
+  gtk_settings_set_string_property (settings,
+                                    "gtk-theme-name",
+                                    "Moblin-Netbook",
+                                    NULL);
 
   applet = carrick_applet_new ();
   icon = carrick_applet_get_icon (applet);
