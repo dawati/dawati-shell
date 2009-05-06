@@ -83,10 +83,10 @@ mnb_panel_get_property (GObject    *object,
       g_value_set_string (value, priv->dbus_path);
       break;
     case PROP_WIDTH:
-      g_value_set_UT_uint32 (value, priv->width);
+      g_value_set_uint (value, priv->width);
       break;
     case PROP_HEIGHT:
-      g_value_set_UT_uint32 (value, priv->height);
+      g_value_set_uint (value, priv->height);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -106,10 +106,10 @@ mnb_panel_set_property (GObject *object, guint property_id,
       priv->dbus_path = g_value_dup_string (value);
       break;
     case PROP_WIDTH:
-      priv->width = g_value_get_UT_uint32 (value);
+      priv->width = g_value_get_uint (value);
       break;
     case PROP_HEIGHT:
-      priv->height = g_value_get_UT_uint32 (value);
+      priv->height = g_value_get_uint (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
