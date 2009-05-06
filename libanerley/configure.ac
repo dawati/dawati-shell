@@ -25,4 +25,5 @@ AC_OUTPUT([
         anerley/Makefile
         tests/Makefile
         data/Makefile
+        anerley.pc
 ])

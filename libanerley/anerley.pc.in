@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@/anerley
+
+Name: anerley
+Description: Anerley people widgets
+Version: @VERSION@
+Libs: -L${libdir} -lanerley
+Cflags: -I${includedir}
+Requires: glib-2.0 dbus-glib-1 telepathy-glib libmissioncontrol nbtk-1.0
+
+
