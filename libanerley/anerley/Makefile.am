@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libanerley.la
+lib_LTLIBRARIES = libanerley.la
 
 libanerley_la_HEADERS = anerley-tp-feed.h \
 			anerley-feed.h \
