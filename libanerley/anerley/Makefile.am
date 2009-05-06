@@ -23,7 +23,8 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			$(libanerley_la_HEADERS)
 libanerley_ladir = $(includedir)/anerley/anerley
 
-libanerley_la_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) \
+libanerley_la_CFLAGS = -I$(top_srcdir) \
+		       $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) \
 		       $(NBTK_CFLAGS) \
 		       -DPKG_DATA_DIR=\"$(pkgdatadir)\"
 libanerley_la_LIBADD = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MC_LIBS) \
