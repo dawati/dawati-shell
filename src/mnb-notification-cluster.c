@@ -587,14 +587,14 @@ void
 mnb_notification_cluster_set_store (MnbNotificationCluster    *self,
                                     MoblinNetbookNotifyStore  *notify_store)
 {
-  g_signal_connect (notify_store, 
-                    "notification-added", 
-                    G_CALLBACK (on_notification_added), 
+  g_signal_connect (notify_store,
+                    "notification-added",
+                    G_CALLBACK (on_notification_added),
                     self);
 
-  g_signal_connect (notify_store, 
-                    "notification-closed", 
-                    G_CALLBACK (on_notification_closed), 
+  g_signal_connect (notify_store,
+                    "notification-closed",
+                    G_CALLBACK (on_notification_closed),
                     self);
 }
 
@@ -618,13 +618,15 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
 
   widget = nbtk_button_new ();
   nbtk_button_set_label (NBTK_BUTTON (widget), "Dismiss All");
-  nbtk_table_add_widget (NBTK_TABLE (priv->control), widget, 0, 1);
+  nbtk_table_add_actor (NBTK_TABLE (priv->control), CLUTTER_ACTOR (widget),
+                        0, 1);
 
   g_signal_connect (widget, "clicked",
                     G_CALLBACK (on_dismiss_all_click), self);
 
   priv->control_text = nbtk_label_new ("");
-  nbtk_table_add_widget (NBTK_TABLE (priv->control), priv->control_text, 0, 0);
+  nbtk_table_add_actor (NBTK_TABLE (priv->control),
+                        CLUTTER_ACTOR (priv->control_text), 0, 0);
 
   clutter_actor_set_width (CLUTTER_ACTOR(priv->control), CLUSTER_WIDTH);
 

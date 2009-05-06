@@ -197,16 +197,18 @@ mnb_notification_init (MnbNotification *self)
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
 
-  nbtk_table_add_widget (NBTK_TABLE (self), priv->summary, 0, 1);
-
+  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->summary), 0, 1);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->summary),
                                "y-expand", TRUE,
                                "x-expand", TRUE,
                                NULL);
 
-  nbtk_table_add_widget (NBTK_TABLE (self), priv->body, 1, 0);
-  nbtk_table_set_widget_colspan (NBTK_TABLE (self), priv->body, 2);
+  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               CLUTTER_ACTOR (priv->body),
+                               "col-span", 2,
+                               NULL);
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->body)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
@@ -221,7 +223,8 @@ mnb_notification_init (MnbNotification *self)
                                NULL);
 
   nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
-  nbtk_table_add_widget (NBTK_TABLE (self), priv->dismiss_button, 2, 1);
+  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->dismiss_button),
+                        2, 1);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->dismiss_button),
@@ -288,8 +291,10 @@ mnb_notification_update (MnbNotification *notification,
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (notification),
                                       priv->icon);
-      nbtk_table_set_widget_colspan (NBTK_TABLE (notification), 
-                                     priv->summary, 2);
+      clutter_container_child_set (CLUTTER_CONTAINER (notification),
+                                   CLUTTER_ACTOR (priv->summary),
+                                   "col-span", 2,
+                                   NULL);
     }
 
   if (details->actions)
@@ -316,8 +321,8 @@ mnb_notification_update (MnbNotification *notification,
                                          */
                                          NULL);
 
-                  nbtk_table_add_widget (NBTK_TABLE (notification),
-                                         NBTK_WIDGET (layout), 2, 0);
+                  nbtk_table_add_actor (NBTK_TABLE (notification),
+                                        layout, 2, 0);
                 }
 
               data = g_slice_new (ActionData);
