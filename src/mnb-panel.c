@@ -53,6 +53,15 @@ enum
   PROP_HEIGHT,
 };
 
+enum
+{
+  REQUEST_ICON,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 struct _MnbPanelPrivate
 {
   DBusGConnection *dbus_conn;
@@ -312,6 +321,16 @@ mnb_panel_class_init (MnbPanelClass *klass)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
 
+
+  signals[REQUEST_ICON] =
+    g_signal_new ("request-icon",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClass, request_icon),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
 }
 
 static void

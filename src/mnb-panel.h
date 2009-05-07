@@ -59,6 +59,7 @@ typedef struct {
 typedef struct {
   MnbDropDownClass parent_class;
 
+  void (*request_icon)  (MnbPanel *panel, const gchar *icon);
 } MnbPanelClass;
 
 GType mnb_panel_get_type (void);
