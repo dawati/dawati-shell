@@ -553,17 +553,11 @@ item_clicked_cb (AhoghillResultsPane *pane,
         return;
     }
 
-    br_queue_add_uri (priv->local_queue, bkl_item_get_uri (item), &error);
+    br_queue_play_uri (priv->local_queue, bkl_item_get_uri (item),
+                       bkl_item_get_mimetype (item), &error);
     if (error != NULL) {
-        g_warning ("%s: Error adding %s to queue: %s", G_STRLOC,
-                   bkl_item_get_uri (item), error->message);
-        g_error_free (error);
-        return;
-    }
-
-    br_queue_play (priv->local_queue, &error);
-    if (error != NULL) {
-        g_warning ("%s: Error playing local queue: %s", G_STRLOC,
+        g_warning ("%s: Error playing %s: %s", G_STRLOC,
+                   bkl_item_get_uri (item),
                    error->message);
         g_error_free (error);
     }
