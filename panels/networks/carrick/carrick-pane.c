@@ -122,20 +122,20 @@ _set_devices_state (gchar       *device_type,
                     CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-
   GList *devices = cm_manager_get_devices (priv->manager);
+  guint cnt, len;
 
-  while (devices) {
-    CmDevice *device = devices->data;
+  len = g_list_length (devices);
+
+  for (cnt = 0; cnt < len; cnt++)
+  {
+    CmDevice *device = CM_DEVICE (g_list_nth_data (devices, cnt));
     CmDeviceType type = cm_device_get_type (device);
 
     if (g_strcmp0 (device_type, cm_device_type_to_string (type)) == 0)
     {
       cm_device_set_powered (device, state);
-      return;
     }
-
-    devices = g_list_next (devices);
   }
 
   g_list_free (devices);
