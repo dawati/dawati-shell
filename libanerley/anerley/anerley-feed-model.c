@@ -92,6 +92,27 @@ anerley_feed_model_class_init (AnerleyFeedModelClass *klass)
   g_object_class_install_property (object_class, PROP_FEED, pspec);
 }
 
+static gint
+_model_sort_func (ClutterModel *model,
+                  const GValue *a,
+                  const GValue *b,
+                  gpointer      userdata)
+{
+  AnerleyItem *item_a;
+  AnerleyItem *item_b;
+  const gchar *str_a;
+  const gchar *str_b;
+
+  item_a = g_value_get_object (a);
+  item_b = g_value_get_object (b);
+
+  /* Already g_utf8_casefold'ed */
+  str_a = anerley_item_get_sortable_name (item_a);
+  str_b = anerley_item_get_sortable_name (item_b);
+
+  return g_utf8_collate (str_a, str_b);
+}
+
 static void
 anerley_feed_model_init (AnerleyFeedModel *self)
 {
@@ -100,6 +121,11 @@ anerley_feed_model_init (AnerleyFeedModel *self)
   clutter_model_set_types (CLUTTER_MODEL (self),
                            1,
                            types);
+  clutter_model_set_sort ((ClutterModel *)self,
+                          0,
+                          _model_sort_func,
+                          NULL,
+                          NULL);
 }
 
 ClutterModel *
