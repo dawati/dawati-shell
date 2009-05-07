@@ -35,7 +35,8 @@ typedef struct {
 GType anerley_feed_model_get_type (void);
 
 ClutterModel *anerley_feed_model_new (AnerleyFeed *feed);
-
+void anerley_feed_model_set_filter_text (AnerleyFeedModel *model,
+                                         const gchar      *filter_text);
 G_END_DECLS
 
 #endif /* _ANERLEY_FEED_MODEL */

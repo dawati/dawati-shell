@@ -1,5 +1,9 @@
 #include "anerley-feed-model.h"
+
 #include <anerley/anerley-item.h>
+
+#define _GNU_SOURCE
+#include <string.h>
 
 G_DEFINE_TYPE (AnerleyFeedModel, anerley_feed_model, CLUTTER_TYPE_LIST_MODEL)
 
@@ -10,12 +14,14 @@ typedef struct _AnerleyFeedModelPrivate AnerleyFeedModelPrivate;
 
 struct _AnerleyFeedModelPrivate {
   AnerleyFeed *feed;
+  gchar *filter_text;
 };
 
 enum
 {
   PROP_0,
-  PROP_FEED
+  PROP_FEED,
+  PROP_FILTER_TEXT
 };
 
 static void anerley_feed_model_update_feed (AnerleyFeedModel *model,
@@ -31,6 +37,9 @@ anerley_feed_model_get_property (GObject *object, guint property_id,
     case PROP_FEED:
       g_value_set_object (value, priv->feed);
       break;
+    case PROP_FILTER_TEXT:
+      g_value_set_string (value, priv->filter_text);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -45,6 +54,9 @@ anerley_feed_model_set_property (GObject *object, guint property_id,
   switch (property_id) {
     case PROP_FEED:
       anerley_feed_model_update_feed (model, g_value_get_object (value));
+      break;
+    case PROP_FILTER_TEXT:
+      anerley_feed_model_set_filter_text (model, g_value_get_string (value));
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -68,6 +80,13 @@ anerley_feed_model_dispose (GObject *object)
 static void
 anerley_feed_model_finalize (GObject *object)
 {
+  AnerleyFeedModelPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->filter_text)
+  {
+    g_free (priv->filter_text);
+  }
+
   G_OBJECT_CLASS (anerley_feed_model_parent_class)->finalize (object);
 }
 
@@ -90,6 +109,13 @@ anerley_feed_model_class_init (AnerleyFeedModelClass *klass)
                                ANERLEY_TYPE_FEED,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_FEED, pspec);
+
+  pspec = g_param_spec_string ("filter-text",
+                               "Filtering text",
+                               "The string on which items should be filtered",
+                               NULL,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_FILTER_TEXT, pspec);
 }
 
 static gint
@@ -157,15 +183,52 @@ _feed_items_added_cb (AnerleyFeed *feed,
   }
 }
 
+static gboolean
+_model_filter_cb (ClutterModel     *model,
+                  ClutterModelIter *iter,
+                  gpointer          userdata)
+{
+  const gchar *filter_text = (const gchar *)userdata;
+  AnerleyItem *item = NULL;
+
+  clutter_model_iter_get (iter, 0, &item, -1);
+
+  if (G_LIKELY (item))
+  {
+    if (strcasestr (anerley_item_get_display_name (item),
+                    filter_text))
+    {
+      g_object_unref (item);
+      return TRUE;
+    } else {
+      g_object_unref (item);
+      return FALSE;;
+    }
+  }
+
+  return FALSE;
+}
+
 static void
 _feed_items_removed_cb (AnerleyFeed *feed,
                         GList       *items,
                         gpointer     userdata)
 {
   AnerleyFeedModel *model = (AnerleyFeedModel *)userdata;
+  AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
   GList *l;
   AnerleyItem *item_to_remove, *item;
   ClutterModelIter *iter;
+
+  /* If we have a filter set we must remove it before we can iterate */
+
+  if (clutter_model_get_filter_set ((ClutterModel *)model))
+  {
+    clutter_model_set_filter ((ClutterModel *)model,
+                              NULL,
+                              NULL,
+                              NULL);
+  }
 
   for (l = items; l; l = l->next)
   {
@@ -188,7 +251,16 @@ _feed_items_removed_cb (AnerleyFeed *feed,
 
       clutter_model_iter_next (iter);
     }
+
     g_object_unref (iter);
+  }
+
+  if (priv->filter_text)
+  {
+    clutter_model_set_filter ((ClutterModel *)model,
+                              _model_filter_cb,
+                              priv->filter_text,
+                              NULL);
   }
 }
 
@@ -222,6 +294,37 @@ anerley_feed_model_update_feed (AnerleyFeedModel *model,
                       (GCallback)_feed_items_removed_cb,
                       model);
   }
+}
+
+void
+anerley_feed_model_set_filter_text (AnerleyFeedModel *model, 
+                                    const gchar      *filter_text)
+{
+  AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
+  gchar *old_filter_text = NULL;
+
+  if (priv->filter_text)
+  {
+    old_filter_text = priv->filter_text;
+    priv->filter_text = NULL;
+  }
+
+  priv->filter_text = g_strdup (filter_text);
+
+  if (priv->filter_text)
+  {
+    clutter_model_set_filter ((ClutterModel *)model,
+                              _model_filter_cb,
+                              priv->filter_text,
+                              NULL);
+  } else {
+    clutter_model_set_filter ((ClutterModel *)model,
+                              NULL,
+                              NULL,
+                              NULL);
+  }
+
+  g_free (old_filter_text);
 }
 
 
