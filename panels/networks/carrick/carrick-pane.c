@@ -357,18 +357,26 @@ _device_updated_cb (CmDevice *device,
       case DEVICE_ETHERNET:
         mux_switch_box_set_active (MUX_SWITCH_BOX (priv->ethernet_switch),
                                    state);
+        gtk_widget_set_sensitive (GTK_WIDGET (priv->ethernet_switch),
+                                  TRUE);
         break;
       case DEVICE_WIFI:
         mux_switch_box_set_active (MUX_SWITCH_BOX (priv->wifi_switch),
                                    state);
+        gtk_widget_set_sensitive (GTK_WIDGET (priv->wifi_switch),
+                                  TRUE);
         break;
       case DEVICE_CELLULAR:
         mux_switch_box_set_active (MUX_SWITCH_BOX (priv->threeg_switch),
                                    state);
+        gtk_widget_set_sensitive (GTK_WIDGET (priv->threeg_switch),
+                                  TRUE);
         break;
       case DEVICE_WIMAX:
         mux_switch_box_set_active (MUX_SWITCH_BOX (priv->wimax_switch),
                                    state);
+        gtk_widget_set_sensitive (GTK_WIDGET (priv->wimax_switch),
+                                  TRUE);
         break;
       default:
         g_debug ("Unknown device type\n");
@@ -528,6 +536,8 @@ carrick_pane_init (CarrickPane *self)
                      vbox);
 
   priv->wifi_switch = mux_switch_box_new (_("Wifi"));
+  gtk_widget_set_sensitive (GTK_WIDGET (priv->wifi_switch),
+                            FALSE);
   g_signal_connect (priv->wifi_switch,
                     "switch-toggled",
                     G_CALLBACK (_wifi_switch_callback),
@@ -539,6 +549,8 @@ carrick_pane_init (CarrickPane *self)
                       8);
 
   priv->ethernet_switch = mux_switch_box_new (_("Ethernet"));
+  gtk_widget_set_sensitive (GTK_WIDGET (priv->ethernet_switch),
+                            FALSE);
   g_signal_connect (priv->ethernet_switch,
                     "switch-toggled",
                     G_CALLBACK (_ethernet_switch_callback),
@@ -550,6 +562,8 @@ carrick_pane_init (CarrickPane *self)
                       8);
 
   priv->threeg_switch = mux_switch_box_new (_("3G"));
+  gtk_widget_set_sensitive (GTK_WIDGET (priv->threeg_switch),
+                            FALSE);
   g_signal_connect (priv->threeg_switch,
                     "switch-toggled",
                     G_CALLBACK (_threeg_switch_callback),
@@ -560,6 +574,8 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       8);
   priv->wimax_switch = mux_switch_box_new (_("WiMax"));
+  gtk_widget_set_sensitive (GTK_WIDGET (priv->wimax_switch),
+                            FALSE);
   g_signal_connect (priv->wimax_switch,
                     "switch-toggled",
                     G_CALLBACK (_wimax_switch_callback),
