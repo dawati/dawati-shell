@@ -32,12 +32,11 @@
 #include "../libmnb/mnb-panel-client.h"
 
 static void
-map_window_cb (MnbPanelClient *panel, guint width, guint height, gpointer data)
+set_size_cb (MnbPanelClient *panel, guint width, guint height, gpointer data)
 {
   GtkWidget *window = GTK_WIDGET (data);
 
   gtk_window_resize (GTK_WINDOW (window), width, height);
-  gtk_widget_show (window);
 }
 
 int
@@ -66,7 +65,7 @@ main (int argc, char *argv[])
                                 "spaces-people",
                                 "people");
 
-  g_signal_connect (panel, "map-window", G_CALLBACK (map_window_cb), window);
+  g_signal_connect (panel, "set-size", G_CALLBACK (set_size_cb), window);
 
   gtk_main ();
 

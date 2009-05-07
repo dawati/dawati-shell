@@ -62,7 +62,7 @@ typedef struct
   /*
    * Public signals -- connect to these from your panel.
    */
-  void (*map_window)         (MnbPanelClient *panel, guint width, guint height);
+  void (*set_size)           (MnbPanelClient *panel, guint width, guint height);
   void (*show_begin)         (MnbPanelClient *panel);
   void (*show_end)           (MnbPanelClient *panel);
   void (*hide_begin)         (MnbPanelClient *panel);

@@ -51,7 +51,7 @@ enum
 
 enum
 {
-  MAP_WINDOW,
+  SET_SIZE,
   SHOW_BEGIN,
   SHOW_END,
   HIDE_BEGIN,
@@ -199,7 +199,7 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
   *name    = g_strdup (priv->name);
   *tooltip = g_strdup (priv->tooltip);
 
-  g_signal_emit (self, signals[MAP_WINDOW], 0, width, height);
+  g_signal_emit (self, signals[SET_SIZE], 0, width, height);
 
   return TRUE;
 }
@@ -310,11 +310,11 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT_ONLY));
 
-  signals[MAP_WINDOW] =
-    g_signal_new ("map-window",
+  signals[SET_SIZE] =
+    g_signal_new ("set-size",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, map_window),
+                  G_STRUCT_OFFSET (MnbPanelClientClass, set_size),
                   NULL, NULL,
                   moblin_netbook_marshal_VOID__UINT_UINT,
                   G_TYPE_NONE, 2,
