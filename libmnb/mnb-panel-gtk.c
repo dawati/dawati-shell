@@ -123,6 +123,9 @@ mnb_panel_gtk_constructed (GObject *self)
   MnbPanelGtkPrivate *priv = MNB_PANEL_GTK (self)->priv;
   GtkWidget *window;
 
+  if (G_OBJECT_CLASS (mnb_panel_gtk_parent_class)->constructed)
+    G_OBJECT_CLASS (mnb_panel_gtk_parent_class)->constructed (self);
+
   priv->window = window = gtk_plug_new (0);
 
   gtk_widget_show (window);
@@ -132,8 +135,8 @@ mnb_panel_gtk_constructed (GObject *self)
 
 MnbPanelClient *
 mnb_panel_gtk_new (const gchar *dbus_path,
-                      const gchar *name,
-                      const gchar *tooltip)
+                   const gchar *name,
+                   const gchar *tooltip)
 {
   MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_GTK,
                                         "dbus-path", dbus_path,
