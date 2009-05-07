@@ -40,7 +40,33 @@
 #include <anerley/anerley-tile.h>
 #include <anerley/anerley-aggregate-tp-feed.h>
 
+#define TIMEOUT 250
 
+static guint filter_timeout_id = 0;
+static AnerleyFeedModel *model = NULL;
+
+static gboolean
+_filter_timeout_cb (gpointer userdata)
+{
+  MnbEntry *entry = (MnbEntry *)userdata;
+  anerley_feed_model_set_filter_text (model,
+                                      mnb_entry_get_text (entry));
+  return FALSE;
+}
+
+static void
+_entry_text_changed_cb (MnbEntry *entry,
+                        gpointer  userdata)
+{
+  if (filter_timeout_id > 0)
+    g_source_remove (filter_timeout_id);
+
+  filter_timeout_id = g_timeout_add_full (G_PRIORITY_LOW,
+                                          TIMEOUT,
+                                          _filter_timeout_cb,
+                                          entry,
+                                          NULL);
+}
 
 ClutterActor *
 make_people_panel (MutterPlugin *plugin,
@@ -54,7 +80,6 @@ make_people_panel (MutterPlugin *plugin,
   MissionControl *mc;
   AnerleyFeed *feed;
   DBusGConnection *conn;
-  ClutterModel *model;
 
   drop_down = mnb_drop_down_new ();
 
@@ -107,6 +132,10 @@ make_people_panel (MutterPlugin *plugin,
                                         "x-align", 0.0,
                                         "y-align", 0.5,
                                         NULL);
+  g_signal_connect (entry,
+                    "text-changed",
+                    (GCallback)_entry_text_changed_cb,
+                    NULL);
 
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
   mc = mission_control_new (conn);
