@@ -68,13 +68,24 @@ _entry_text_changed_cb (MnbEntry *entry,
                                           NULL);
 }
 
+static void
+_view_item_activated_cb (AnerleyTileView *view,
+                         AnerleyItem     *item,
+                         gpointer         userdata)
+{
+  MnbDropDown *drop_down = (MnbDropDown *)userdata;
+
+  anerley_item_activate (item);
+  clutter_actor_hide ((ClutterActor *)drop_down);
+}
+
 ClutterActor *
 make_people_panel (MutterPlugin *plugin,
                    gint          width)
 {
   NbtkWidget *vbox, *hbox, *label, *entry, *drop_down, *bin, *button;
   NbtkWidget *scroll_view;
-  NbtkWidget *icon_view;
+  NbtkWidget *tile_view;
   ClutterText *text;
   guint items_list_width = 0, items_list_height = 0;
   MissionControl *mc;
@@ -141,10 +152,15 @@ make_people_panel (MutterPlugin *plugin,
   mc = mission_control_new (conn);
   feed = anerley_aggregate_tp_feed_new (mc);
   model = anerley_feed_model_new (feed);
-  icon_view = anerley_tile_view_new (model);
+  tile_view = anerley_tile_view_new (model);
   scroll_view = nbtk_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
-                               (ClutterActor *)icon_view);
+                               (ClutterActor *)tile_view);
+  g_signal_connect (tile_view,
+                    "item-activated",
+                    _view_item_activated_cb,
+                    drop_down);
+
   nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
                                         (ClutterActor *)scroll_view,
                                         1,
