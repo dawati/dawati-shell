@@ -54,6 +54,7 @@ struct _MnbDropDownPrivate {
   MutterPlugin *plugin;
 
   ClutterActor *child;
+  ClutterActor *footer;
   NbtkButton *button;
   gint x;
   gint y;
@@ -415,6 +416,8 @@ mnb_drop_down_init (MnbDropDown *self)
                 "show-on-set-parent", FALSE,
                 "reactive", TRUE,
                 NULL);
+
+  priv->footer = CLUTTER_ACTOR (footer);
 }
 
 NbtkWidget*
@@ -521,3 +524,22 @@ mnb_drop_down_hide_with_toolbar (MnbDropDown *self)
 
   clutter_actor_hide (CLUTTER_ACTOR (self));
 }
+
+/*
+ * Returns untransformed geometry of the footer relative to the drop down.
+ */
+void
+mnb_drop_down_get_footer_geometry (MnbDropDown *self,
+                                   gint        *x,
+                                   gint        *y,
+                                   guint       *width,
+                                   guint       *height)
+{
+  MnbDropDownPrivate *priv = self->priv;
+
+  g_return_if_fail (x && y && width && height);
+
+  clutter_actor_get_position (priv->footer, x, y);
+  clutter_actor_get_size (priv->footer, width, height);
+}
+
