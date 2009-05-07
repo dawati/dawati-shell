@@ -453,34 +453,6 @@ search_index_for_words (Source     *source,
     return words;
 }
 
-static void
-item_clicked_cb (AhoghillResultsPane *pane,
-                 BklItem             *item,
-                 AhoghillGridView    *grid)
-{
-    AhoghillGridViewPrivate *priv = grid->priv;
-    GError *error = NULL;
-
-    if (bkl_item_get_item_type (item) != BKL_ITEM_TYPE_AUDIO) {
-        return;
-    }
-
-    br_queue_add_uri (priv->local_queue, bkl_item_get_uri (item), &error);
-    if (error != NULL) {
-        g_warning ("%s: Error adding %s to queue: %s", G_STRLOC,
-                   bkl_item_get_uri (item), error->message);
-        g_error_free (error);
-        return;
-    }
-
-    br_queue_play (priv->local_queue, &error);
-    if (error != NULL) {
-        g_warning ("%s: Error playing local queue: %s", G_STRLOC,
-                   error->message);
-        g_error_free (error);
-    }
-}
-
 static gboolean
 do_search_cb (gpointer data)
 {
@@ -567,6 +539,34 @@ search_text_changed (MnbEntry         *entry,
     }
 
     priv->search_id = g_timeout_add (SEARCH_TIMEOUT, do_search_cb, view);
+}
+
+static void
+item_clicked_cb (AhoghillResultsPane *pane,
+                 BklItem             *item,
+                 AhoghillGridView    *grid)
+{
+    AhoghillGridViewPrivate *priv = grid->priv;
+    GError *error = NULL;
+
+    if (bkl_item_get_item_type (item) != BKL_ITEM_TYPE_AUDIO) {
+        return;
+    }
+
+    br_queue_add_uri (priv->local_queue, bkl_item_get_uri (item), &error);
+    if (error != NULL) {
+        g_warning ("%s: Error adding %s to queue: %s", G_STRLOC,
+                   bkl_item_get_uri (item), error->message);
+        g_error_free (error);
+        return;
+    }
+
+    br_queue_play (priv->local_queue, &error);
+    if (error != NULL) {
+        g_warning ("%s: Error playing local queue: %s", G_STRLOC,
+                   error->message);
+        g_error_free (error);
+    }
 }
 
 static void
