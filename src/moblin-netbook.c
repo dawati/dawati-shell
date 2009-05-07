@@ -193,19 +193,19 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
       priv->notification_input_region = NULL;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (notify_actor))
+  if (CLUTTER_ACTOR_IS_MAPPED (notify_actor))
     {
-      gint x,y;
-      guint width,height;
+      gfloat x,y;
+      gfloat width,height;
 
       clutter_actor_get_transformed_position (notify_actor, &x, &y);
       clutter_actor_get_transformed_size (notify_actor, &width, &height);
 
       if (width != 0 && height != 0)
         {
-          priv->notification_input_region
-            = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin),
-                                                x, y, width, height);
+          priv->notification_input_region =
+            moblin_netbook_input_region_push (MUTTER_PLUGIN (plugin),
+                                              x, y, width, height);
         }
     }
 }
@@ -216,7 +216,7 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
                               MutterPlugin *plugin)
 {
   moblin_netbook_set_lowlight (plugin,
-                               CLUTTER_ACTOR_IS_VISIBLE(notify_urgent));
+                               CLUTTER_ACTOR_IS_MAPPED(notify_urgent));
 }
 
 static void
@@ -423,8 +423,8 @@ on_desktop_pre_paint (ClutterActor *actor, gpointer data)
   ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
   CoglHandle         cogl_texture;
   float              t_w, t_h;
-  guint              tex_width, tex_height;
-  guint              w, h;
+  gfloat             tex_width, tex_height;
+  gfloat             w, h;
 
   clutter_actor_get_size (priv->parallax_tex, &w, &h);
 
@@ -589,8 +589,8 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
       ActorPrivate *apriv = get_actor_private (mcw);
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
-      guint width, height;
-      gint  x, y;
+      gfloat width, height;
+      gfloat x, y;
 
       apriv->is_maximized = TRUE;
 
@@ -1066,7 +1066,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) ==
                                                     MOBLIN_PANEL_SHORTCUT_KEY)
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
+      if (!CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
         {
           /*
            * Set the dont_autohide flag on the toolbar; this stops the panel

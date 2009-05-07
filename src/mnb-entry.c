@@ -60,12 +60,12 @@ text_changed_cb (ClutterText  *actor,
                  MnbEntry     *entry)
 {
   gchar const *text;
-  
+
   text = clutter_text_get_text (actor);
   if (text && strlen (text) > 0)
     clutter_actor_show (entry->priv->clear_button);
   else
-    clutter_actor_hide (entry->priv->clear_button);  
+    clutter_actor_hide (entry->priv->clear_button);
 
   g_signal_emit (entry, _signals[TEXT_CHANGED], 0);
 }
@@ -93,7 +93,7 @@ text_key_press_cb (ClutterActor     *actor,
         if (pos == -1)
           {
             g_signal_emit (entry, _signals[KEYNAV_EVENT], 0, event->keyval);
-            return TRUE;         
+            return TRUE;
           }
     }
 
@@ -235,6 +235,30 @@ mnb_entry_pick (ClutterActor       *actor,
 }
 
 static void
+mnb_entry_map (ClutterActor *actor)
+{
+  MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->map (actor);
+
+  clutter_actor_map (priv->entry);
+
+  clutter_actor_map (priv->table);
+}
+
+static void
+mnb_entry_unmap (ClutterActor *actor)
+{
+  MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (priv->entry);
+
+  clutter_actor_unmap (priv->table);
+}
+
+static void
 mnb_entry_style_changed (NbtkWidget *widget)
 {
   MnbEntryPrivate *priv = MNB_ENTRY (widget)->priv;
@@ -345,9 +369,11 @@ mnb_entry_class_init (MnbEntryClass *klass)
   actor_class->get_preferred_width = mnb_entry_get_preferred_width;
   actor_class->get_preferred_height = mnb_entry_get_preferred_height;
   actor_class->allocate = mnb_entry_allocate;
-  actor_class->focus_in = mnb_entry_focus_in;
+  actor_class->key_focus_in = mnb_entry_focus_in;
   actor_class->paint = mnb_entry_paint;
   actor_class->pick = mnb_entry_pick;
+  actor_class->map = mnb_entry_map;
+  actor_class->unmap = mnb_entry_unmap;
 
   widget_class->style_changed = mnb_entry_style_changed;
 

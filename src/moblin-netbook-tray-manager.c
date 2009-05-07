@@ -350,7 +350,8 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
       ShellTrayManagerChild *child = data;
       ShellTrayManager *manager = child->manager;
       MutterPlugin *plugin = manager->priv->plugin;
-      gint x = 0, y = 0, w, h, sw, sh;
+      gfloat x = 0, y = 0, w, h;
+      gint sw, sh;
 
       if (child->actor)
         clutter_actor_get_transformed_position (child->actor, &x, &y);

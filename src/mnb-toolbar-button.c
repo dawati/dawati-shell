@@ -67,6 +67,28 @@ mnb_toolbar_button_pick (ClutterActor *actor, const ClutterColor *pick_color)
 }
 
 static void
+mnb_toolbar_button_map (ClutterActor *actor)
+{
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->map (actor);
+
+  if (priv->old_bg)
+    clutter_actor_map (priv->old_bg);
+}
+
+static void
+mnb_toolbar_button_unmap (ClutterActor *actor)
+{
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->unmap (actor);
+
+  if (priv->old_bg)
+    clutter_actor_unmap (priv->old_bg);
+}
+
+static void
 mnb_toolbar_button_paint_background (NbtkWidget         *actor,
                                      ClutterActor       *background,
                                      const ClutterColor *color)
@@ -256,6 +278,8 @@ mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
   actor_class->pick               = mnb_toolbar_button_pick;
   actor_class->button_press_event = mnb_toolbar_button_press;
   actor_class->enter_event        = mnb_toolbar_button_enter;
+  actor_class->map                = mnb_toolbar_button_map;
+  actor_class->unmap              = mnb_toolbar_button_unmap;
 
   button_class->transition        = mnb_toolbar_button_transition;
 

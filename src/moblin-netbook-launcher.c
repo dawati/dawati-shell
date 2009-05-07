@@ -62,7 +62,7 @@ grid_find_widget_by_pseudo_class_cb (ClutterActor                           *act
 {
   const gchar *pseudo_class;
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
+  if (!CLUTTER_ACTOR_IS_MAPPED (actor))
     return;
 
   if (!NBTK_IS_STYLABLE (actor))
@@ -99,12 +99,12 @@ static void
 grid_find_widget_by_point_cb (ClutterActor                      *actor,
                               grid_find_widget_by_point_data_t  *data)
 {
-  ClutterUnit left = clutter_actor_get_xu (actor);
-  ClutterUnit top = clutter_actor_get_yu (actor);
-  ClutterUnit right = left + clutter_actor_get_widthu (actor);
-  ClutterUnit bottom = top + clutter_actor_get_heightu (actor);
+  ClutterUnit left = clutter_actor_get_x (actor);
+  ClutterUnit top = clutter_actor_get_y (actor);
+  ClutterUnit right = left + clutter_actor_get_width (actor);
+  ClutterUnit bottom = top + clutter_actor_get_height (actor);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (actor) &&
+  if (CLUTTER_ACTOR_IS_MAPPED (actor) &&
       left <= data->x &&
       top <= data->y &&
       right >= data->x &&
@@ -142,12 +142,12 @@ grid_keynav_up (NbtkGrid *grid)
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) -
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_row_gap (grid) -
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = grid_find_widget_by_point (grid, x, y);
   if (new)
@@ -170,12 +170,12 @@ grid_keynav_right (NbtkGrid *grid)
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_column_gap (grid) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) * 1.5;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = grid_find_widget_by_point (grid, x, y);
   if (new)
@@ -198,12 +198,12 @@ grid_keynav_down (NbtkGrid *grid)
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_row_gap (grid) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
   new = grid_find_widget_by_point (grid, x, y);
   if (new)
@@ -226,12 +226,12 @@ grid_keynav_left (NbtkGrid *grid)
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) -
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_column_gap (grid) -
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = grid_find_widget_by_point (grid, x, y);
   if (new)
@@ -257,13 +257,13 @@ grid_keynav_wrap_up (NbtkGrid *grid)
 
   nbtk_widget_get_padding (NBTK_WIDGET (grid), &padding);
 
-  x = clutter_actor_get_widthu (CLUTTER_ACTOR (grid)) -
+  x = clutter_actor_get_width (CLUTTER_ACTOR (grid)) -
       padding.right -
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) -
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_row_gap (grid) -
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = grid_find_widget_by_point (grid, x, y);
   if (new)
@@ -290,11 +290,11 @@ grid_keynav_wrap_down (NbtkGrid *grid)
   nbtk_widget_get_padding (NBTK_WIDGET (grid), &padding);
 
   x = padding.left +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_row_gap (grid) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
   new = grid_find_widget_by_point (grid, x, y);
   if (new)
@@ -918,12 +918,12 @@ static void
 launcher_data_set_show_fav_apps (launcher_data_t *launcher_data,
                                  gboolean         show)
 {
-  if (show && !CLUTTER_ACTOR_IS_VISIBLE (launcher_data->fav_label))
+  if (show && !CLUTTER_ACTOR_IS_MAPPED (launcher_data->fav_label))
     {
       clutter_actor_show (launcher_data->fav_label);
       clutter_actor_show (launcher_data->fav_grid);
     }
-  else if (!show && CLUTTER_ACTOR_IS_VISIBLE (launcher_data->fav_label))
+  else if (!show && CLUTTER_ACTOR_IS_MAPPED (launcher_data->fav_label))
     {
       clutter_actor_hide (launcher_data->fav_label);
       clutter_actor_hide (launcher_data->fav_grid);
@@ -1467,8 +1467,8 @@ entry_keynav_cb (MnbEntry         *entry,
             keyval == CLUTTER_Left))
         {
           ClutterUnit gap = nbtk_grid_get_row_gap (NBTK_GRID (launcher_data->apps_grid));
-          ClutterUnit x = clutter_actor_get_xu (CLUTTER_ACTOR (expander));
-          ClutterUnit y = clutter_actor_get_yu (CLUTTER_ACTOR (expander));
+          ClutterUnit x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
+          ClutterUnit y = clutter_actor_get_y (CLUTTER_ACTOR (expander));
 
           expander = grid_find_widget_by_point (NBTK_GRID (launcher_data->apps_grid),
                                                 x + 1,
@@ -1492,9 +1492,9 @@ entry_keynav_cb (MnbEntry         *entry,
             keyval == CLUTTER_Right))
         {
           ClutterUnit gap = nbtk_grid_get_row_gap (NBTK_GRID (launcher_data->apps_grid));
-          ClutterUnit x = clutter_actor_get_xu (CLUTTER_ACTOR (expander));
-          ClutterUnit y = clutter_actor_get_yu (CLUTTER_ACTOR (expander)) +
-                          clutter_actor_get_heightu (CLUTTER_ACTOR (expander));
+          ClutterUnit x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
+          ClutterUnit y = clutter_actor_get_y (CLUTTER_ACTOR (expander)) +
+                          clutter_actor_get_height (CLUTTER_ACTOR (expander));
 
           expander = grid_find_widget_by_point (NBTK_GRID (launcher_data->apps_grid),
                                                 x + 1,

@@ -88,8 +88,30 @@ mnb_notification_urgent_paint (ClutterActor *actor)
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
 
-  if (priv->notifiers && CLUTTER_ACTOR_IS_VISIBLE (priv->notifiers))
-      clutter_actor_paint (CLUTTER_ACTOR(priv->notifiers));
+  if (priv->notifiers && CLUTTER_ACTOR_IS_MAPPED (priv->notifiers))
+      clutter_actor_paint (CLUTTER_ACTOR (priv->notifiers));
+}
+
+static void
+mnb_notification_urgent_map (ClutterActor *actor)
+{
+  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class)->map (actor);
+
+  if (priv->notifiers)
+      clutter_actor_map (CLUTTER_ACTOR (priv->notifiers));
+}
+
+static void
+mnb_notification_urgent_unmap (ClutterActor *actor)
+{
+  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class)->unmap (actor);
+
+  if (priv->notifiers)
+      clutter_actor_unmap (CLUTTER_ACTOR (priv->notifiers));
 }
 
 static void
@@ -184,6 +206,8 @@ mnb_notification_urgent_class_init (MnbNotificationUrgentClass *klass)
     = mnb_notification_urgent_get_preferred_height;
   clutter_class->get_preferred_width
     = mnb_notification_urgent_get_preferred_width;
+  clutter_class->map = mnb_notification_urgent_map;
+  clutter_class->unmap = mnb_notification_urgent_unmap;
 
   urgent_signals[SYNC_INPUT_REGION] =
     g_signal_new ("sync-input-region",

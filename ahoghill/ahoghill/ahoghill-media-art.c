@@ -135,7 +135,7 @@ ahoghill_media_art_paint (ClutterActor *actor)
     CLUTTER_ACTOR_CLASS (ahoghill_media_art_parent_class)->paint (actor);
     clutter_actor_paint (priv->art);
 
-    if (CLUTTER_ACTOR_IS_VISIBLE (priv->play_texture)) {
+    if (CLUTTER_ACTOR_IS_MAPPED (priv->play_texture)) {
         clutter_actor_paint (priv->play_texture);
     }
 }

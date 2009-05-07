@@ -202,7 +202,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
    */
 
   icon_height = CANCEL_ICON_SIZE;
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->cancel_icon))
     clutter_actor_get_preferred_width (priv->cancel_icon,
                                        icon_height,
                                        NULL,
@@ -210,7 +210,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   else
     icon_width = 0;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
     clutter_actor_get_preferred_width (priv->service_label,
                                        available_height,
                                        NULL,
@@ -237,7 +237,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
 
   /* service label */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
     {
       child_box.x1 = (int) (available_width
                    - (border.right + priv->padding.right)
@@ -253,7 +253,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
     }
 
   /* cancel icon */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->cancel_icon))
     {
       child_box.x1 = (int) (available_width
                    - (border.right + priv->padding.right)
@@ -289,17 +289,17 @@ mnb_status_entry_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->paint (actor);
 
-  if (priv->status_entry && CLUTTER_ACTOR_IS_VISIBLE (priv->status_entry))
+  if (priv->status_entry && CLUTTER_ACTOR_IS_MAPPED (priv->status_entry))
     clutter_actor_paint (priv->status_entry);
 
-  if (priv->service_label && CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+  if (priv->service_label && CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
     clutter_actor_paint (priv->service_label);
 
-  if (priv->cancel_icon && CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+  if (priv->cancel_icon && CLUTTER_ACTOR_IS_MAPPED (priv->cancel_icon))
     clutter_actor_paint (priv->cancel_icon);
 
   if (priv->button &&
-      CLUTTER_ACTOR_IS_VISIBLE (priv->button) &&
+      CLUTTER_ACTOR_IS_MAPPED (priv->button) &&
       priv->in_hover &&
       priv->separator_x != 0)
     {
@@ -317,7 +317,7 @@ mnb_status_entry_paint (ClutterActor *actor)
       cogl_path_stroke ();
     }
 
-  if (priv->button && CLUTTER_ACTOR_IS_VISIBLE (priv->button))
+  if (priv->button && CLUTTER_ACTOR_IS_MAPPED (priv->button))
     clutter_actor_paint (priv->button);
 }
 
@@ -341,6 +341,46 @@ mnb_status_entry_pick (ClutterActor       *actor,
 
   if (priv->button && clutter_actor_should_pick_paint (priv->button))
     clutter_actor_paint (priv->button);
+}
+
+static void
+mnb_status_entry_map (ClutterActor *actor)
+{
+  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->map (actor);
+
+  if (priv->status_entry)
+    clutter_actor_map (priv->status_entry);
+
+  if (priv->service_label)
+    clutter_actor_map (priv->service_label);
+
+  if (priv->cancel_icon)
+    clutter_actor_map (priv->cancel_icon);
+
+  if (priv->button)
+    clutter_actor_map (priv->button);
+}
+
+static void
+mnb_status_entry_unmap (ClutterActor *actor)
+{
+  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->unmap (actor);
+
+  if (priv->status_entry)
+    clutter_actor_unmap (priv->status_entry);
+
+  if (priv->service_label)
+    clutter_actor_unmap (priv->service_label);
+
+  if (priv->cancel_icon)
+    clutter_actor_unmap (priv->cancel_icon);
+
+  if (priv->button)
+    clutter_actor_unmap (priv->button);
 }
 
 static gboolean
@@ -479,6 +519,8 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
   actor_class->paint = mnb_status_entry_paint;
   actor_class->pick = mnb_status_entry_pick;
   actor_class->button_release_event = mnb_status_entry_button_release;
+  actor_class->map = mnb_status_entry_map;
+  actor_class->unmap = mnb_status_entry_unmap;
 
   widget_class->style_changed = mnb_status_entry_style_changed;
 

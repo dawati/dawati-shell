@@ -486,7 +486,7 @@ fill_strip (MutterPlugin *plugin,
   gint          ws_count = 0;
   MetaScreen   *screen = mutter_plugin_get_screen (plugin);
   gint          n_workspaces;
-  guint         w, h;
+  gfloat        w, h;
 
   n_workspaces = meta_screen_get_n_workspaces (screen);
 
@@ -551,7 +551,8 @@ fill_strip (MutterPlugin *plugin,
     }
 
   clutter_actor_get_size (CLUTTER_ACTOR (strip), &w, &h);
-  clutter_actor_set_position (CLUTTER_ACTOR (strip), 0, (screen_height - h)/2);
-
+  clutter_actor_set_position (CLUTTER_ACTOR (strip),
+                              0,
+                              (screen_height - h) / 2);
 }
 

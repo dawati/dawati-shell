@@ -82,7 +82,6 @@ on_panel_back_effect_complete (ClutterTimeline *timeline, gpointer data)
    * this ensures that also the tooltips get hidden.
    */
   clutter_actor_hide (priv->panel);
-
   for (i = 0; i < G_N_ELEMENTS (priv->panel_buttons); i++)
     {
       clutter_actor_hide (priv->panel_buttons[i]);
@@ -207,7 +206,7 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       clutter_actor_set_reactive (priv->panel_buttons[i], TRUE);
     }
 
-  if (control_actor && !CLUTTER_ACTOR_IS_VISIBLE (control_actor))
+  if (control_actor && !CLUTTER_ACTOR_IS_MAPPED (control_actor))
     {
       NbtkButton *button =
         NBTK_BUTTON (priv->panel_buttons[(guint)panel_data->control-1]);
@@ -636,9 +635,10 @@ make_panel (MutterPlugin *plugin, gint width)
       priv->panel_shadow = shadow;
     }
 
-  bg_texture = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                            "/theme/panel/panel-background.png",
-                                              &err);
+  bg_texture =
+    clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                   "/theme/panel/panel-background.png",
+                                   &err);
   if (err)
     {
       g_warning ("%s", err->message);
