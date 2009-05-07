@@ -55,6 +55,9 @@ _item_display_name_changed_cb (AnerleyItem *item,
     nbtk_label_set_text ((NbtkLabel *)priv->secondary_label,
                          (gchar *)splits[1]);
     g_free (splits[1]);
+  } else {
+    nbtk_label_set_text ((NbtkLabel *)priv->secondary_label,
+                         "");
   }
 
   g_free (splits);
