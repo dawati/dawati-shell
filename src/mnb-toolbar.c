@@ -1,5 +1,7 @@
 /* mnb-toolbar.c */
 
+#include <glib/gi18n.h>
+
 #include "moblin-netbook.h"
 
 #include "mnb-toolbar.h"
@@ -643,16 +645,17 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
    */
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
+  gint  x, y;
   guint w, h;
 
-  clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
+  mnb_drop_down_get_footer_geometry (dropdown, &x, &y, &w, &h);
 
   if (priv->dropdown_region)
     moblin_netbook_input_region_remove_without_update (plugin,
                                                        priv->dropdown_region);
 
   priv->dropdown_region =
-    moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT, w, h);
+    moblin_netbook_input_region_push (plugin, x, TOOLBAR_HEIGHT + y, w, h);
 }
 
 static void
@@ -669,18 +672,16 @@ mnb_toolbar_dropdown_hide_begin_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
 }
 
 /*
- * Appends a panel of the given name, using the given tooltip and icon; the xid
- * is an id of the panel window.
+ * Appends a panel of the given name, using the given tooltip.
  *
- * TODO -- for now the xid is ingored and we fallback on the internal
- * components.
+ * This is a legacy function filling in the gap until we are ready to
+ * switch to the dbus API and mnb_toolbar_append_panel().
+ *
  */
 void
-mnb_toolbar_append_panel (MnbToolbar  *toolbar,
-                          const gchar *name,
-                          const gchar *tooltip,
-                          const gchar *icon,
-                          Window       xid)
+mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
+                              const gchar *name,
+                              const gchar *tooltip)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
@@ -743,19 +744,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
-
-  if (icon)
-    {
-      ClutterActor *icon_actor;
-
-      icon_actor = clutter_texture_new_from_file (icon, NULL);
-
-      if (icon_actor)
-        {
-          clutter_container_add_actor (CLUTTER_CONTAINER (button), icon_actor);
-          clutter_actor_set_reactive (icon_actor, TRUE);
-        }
-    }
 
   /*
    * The button size and positioning depends on whether this is a regular
@@ -938,7 +926,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
 
       if (panel)
         g_signal_connect (panel, "show-completed",
-                    G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
+                    G_CALLBACK(mnb_toolbar_dropdown_show_completed_full_cb),
                     toolbar);
     }
 
@@ -947,6 +935,163 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
 
   g_signal_connect (panel, "hide-begin",
                     G_CALLBACK(mnb_toolbar_dropdown_hide_begin_cb),
+                    toolbar);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                               CLUTTER_ACTOR (panel));
+  clutter_actor_set_width (CLUTTER_ACTOR (panel), screen_width);
+
+  mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
+  clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
+  clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
+}
+
+static void
+mnb_toolbar_panel_request_icon_cb (MnbPanel    *panel,
+                                   const gchar *icon,
+                                   MnbToolbar  *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint index;
+
+  index = mnb_toolbar_panel_name_to_index (mnb_panel_get_name (panel));
+
+  if (index < 0)
+    return;
+
+  nbtk_button_set_icon_from_file (NBTK_BUTTON (priv->buttons[index]),
+                                  (gchar*)icon);
+}
+
+/*
+ * Appends a panel
+ */
+void
+mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
+  NbtkWidget        *button;
+  guint              screen_width, screen_height;
+  gint               index;
+  gchar             *button_style;
+  const gchar       *name;
+  const gchar       *tooltip;
+
+  if (MNB_IS_PANEL (panel))
+    {
+      name    = mnb_panel_get_name (MNB_PANEL (panel));
+      tooltip = mnb_panel_get_tooltip (MNB_PANEL (panel));
+    }
+  else if (MNB_IS_SWICHER (panel))
+    {
+      name    = "spaces-zone";
+      tooltip = _("zones");
+    }
+  else
+    {
+      g_warning ("Unhandled panel type: %s", G_OBJECT_TYPE_NAME (panel));
+      return;
+    }
+
+  index = mnb_toolbar_panel_name_to_index (name);
+
+  if (index < 0)
+    return;
+
+  button_style = g_strdup_printf ("%s-button", name);
+
+  /*
+   * If the respective slot is already occupied, remove the old objects.
+   */
+  if (priv->buttons[index])
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
+                                      CLUTTER_ACTOR (priv->buttons[index]));
+    }
+
+  if (priv->panels[index])
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
+                                      CLUTTER_ACTOR (priv->panels[index]));
+    }
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  /*
+   * Create the button for this zone.
+   */
+  button = priv->buttons[index] = mnb_toolbar_button_new ();
+  nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
+  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
+  clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
+
+  /*
+   * The button size and positioning depends on whether this is a regular
+   * zone button, but one of the applet buttons.
+   */
+  if (index < APPLETS_START)
+    {
+      /*
+       * Zone button
+       */
+      clutter_actor_set_size (CLUTTER_ACTOR (button),
+                              BUTTON_WIDTH, BUTTON_HEIGHT);
+
+      clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                  213 + (BUTTON_WIDTH * index)
+                                  + (BUTTON_SPACING * index),
+                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+
+      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                            0,
+                                            -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
+                                            BUTTON_WIDTH,
+                                            TOOLBAR_HEIGHT);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                   CLUTTER_ACTOR (button));
+    }
+  else
+    {
+      /*
+       * Applet button.
+       */
+      gint zones   = APPLETS_START;
+      gint applets = index - APPLETS_START;
+      gint x, y;
+
+      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
+
+      clutter_actor_set_size (CLUTTER_ACTOR (button),
+                              TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
+      clutter_actor_set_position (CLUTTER_ACTOR (button), x, y);
+
+      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                         0,
+                                         -(TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT),
+                                         TRAY_BUTTON_WIDTH,
+                                         TOOLBAR_HEIGHT);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                               CLUTTER_ACTOR (button));
+    }
+
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (mnb_toolbar_toggle_buttons),
+                    toolbar);
+
+  g_signal_connect (panel, "show-completed",
+                    G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
+                    toolbar);
+
+  g_signal_connect (panel, "hide-begin",
+                    G_CALLBACK (mnb_toolbar_dropdown_hide_begin_cb),
+                    toolbar);
+
+  g_signal_connect (panel, "request-icon",
+                    G_CALLBACK (mnb_toolbar_panel_request_icon_cb),
                     toolbar);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),

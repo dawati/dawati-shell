@@ -292,20 +292,17 @@ moblin_netbook_plugin_constructed (GObject *object)
    * TODO this needs to be hooked into the dbus API exposed by the out of
    * process applets, once we have them.
    */
-  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "m-zone",
-                            "m_zone", NULL, None);
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "m-zone", "m_zone");
 
-  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "spaces-zone",
-                            "zones", NULL, None);
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "spaces-zone", "zones");
 
-  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "status-zone",
-                            "status", NULL, None);
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "status-zone", "status");
 
-  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "applications-zone",
-                            "applications", NULL, None);
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "applications-zone",
+                                "applications");
 
-  mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), "pasteboard-zone",
-                            "pastboard", NULL, None);
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "pasteboard-zone",
+                                "pastboard");
 
 #endif
 
