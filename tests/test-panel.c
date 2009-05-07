@@ -102,7 +102,7 @@ main (int argc, char *argv[])
   gtk_init (&argc, &argv);
 
   panel = mnb_panel_gtk_new ("/com/intel/Mnb/TestPanel",
-                             "spaces-people",
+                             "people-zone",
                              "people");
 
   g_signal_connect (panel, "show-begin",
