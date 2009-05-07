@@ -26,7 +26,8 @@ libanerley_ladir = $(includedir)/anerley/anerley
 libanerley_la_CFLAGS = -I$(top_srcdir) \
 		       $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) \
 		       $(NBTK_CFLAGS) \
-		       -DPKG_DATA_DIR=\"$(pkgdatadir)\"
+		       -DPKG_DATA_DIR=\"$(pkgdatadir)\" \
+		       -D_GNU_SOURCE
 libanerley_la_LIBADD = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MC_LIBS) \
 		       $(NBTK_LIBS)
 

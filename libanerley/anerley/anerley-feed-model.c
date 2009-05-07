@@ -2,7 +2,6 @@
 
 #include <anerley/anerley-item.h>
 
-#define _GNU_SOURCE
 #include <string.h>
 
 G_DEFINE_TYPE (AnerleyFeedModel, anerley_feed_model, CLUTTER_TYPE_LIST_MODEL)
