@@ -10,6 +10,7 @@ typedef struct {
 } AnerleyTileRendererClass;
 
 GType anerley_tile_renderer_get_type (void);
+
 #define ANERLEY_TILE_TYPE_RENDERER anerley_tile_renderer_get_type()
 
 G_DEFINE_TYPE (AnerleyTileRenderer, anerley_tile_renderer, NBTK_TYPE_CELL_RENDERER)
@@ -56,6 +57,14 @@ enum
   PROP_0,
   PROP_MODEL
 };
+
+enum
+{
+  ITEM_ACTIVATED,
+  LAST_SIGNAL
+};
+
+guint signals[LAST_SIGNAL] = { 0 };
 
 static void
 anerley_tile_view_get_property (GObject *object, guint property_id,
@@ -118,6 +127,19 @@ anerley_tile_view_class_init (AnerleyTileViewClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_MODEL,
                                    pspec);
+
+  signals[ITEM_ACTIVATED] =
+    g_signal_new ("item-activated",
+                  ANERLEY_TYPE_TILE_VIEW,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (AnerleyTileViewClass, item_activated),
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__OBJECT,
+                  G_TYPE_NONE,
+                  1,
+                  ANERLEY_TYPE_ITEM);
+
 }
 
 static void

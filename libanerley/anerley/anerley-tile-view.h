@@ -3,6 +3,7 @@
 
 #include <nbtk/nbtk.h>
 #include <anerley/anerley-feed-model.h>
+#include <anerley/anerley-item.h>
 
 G_BEGIN_DECLS
 
@@ -29,6 +30,7 @@ typedef struct {
 
 typedef struct {
   NbtkIconViewClass parent_class;
+  void (*item_activated)(AnerleyTileView *view, AnerleyItem *item);
 } AnerleyTileViewClass;
 
 GType anerley_tile_view_get_type (void);
