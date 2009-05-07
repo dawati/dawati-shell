@@ -118,28 +118,12 @@ mnb_panel_gtk_init (MnbPanelGtk *self)
 }
 
 static void
-mnb_panel_gtk_window_embedded_cb (GtkPlug *window, GParamSpec *pspec,
-                                  gpointer data)
-{
-  MnbPanelGtk *panel = MNB_PANEL_GTK (data);
-  gboolean     embedded;
-
-  g_object_get (window, "embedded", &embedded, NULL);
-
-  if (embedded)
-    g_signal_emit_by_name (panel, "update-content");
-}
-
-static void
 mnb_panel_gtk_constructed (GObject *self)
 {
   MnbPanelGtkPrivate *priv = MNB_PANEL_GTK (self)->priv;
   GtkWidget *window;
 
   priv->window = window = gtk_plug_new (0);
-
-  g_signal_connect (window, "notify::embedded",
-                    G_CALLBACK (mnb_panel_gtk_window_embedded_cb), self);
 
   gtk_widget_show (window);
 

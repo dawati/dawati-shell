@@ -63,8 +63,6 @@ enum
   REQUEST_ICON,
   LAUNCH_APPLICATION,
 
-  UPDATE_CONTENT,
-
   LAST_SIGNAL
 };
 
@@ -410,15 +408,6 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                   G_TYPE_STRING,
                   G_TYPE_INT,
                   G_TYPE_BOOLEAN);
-
-  signals[UPDATE_CONTENT] =
-    g_signal_new ("update-content",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, update_content),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
 }
 
 static void

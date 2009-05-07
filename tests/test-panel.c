@@ -44,7 +44,7 @@ set_size_cb (MnbPanelClient *panel, guint width, guint height, gpointer data)
 /*
  * This is a callback to demonstrate how the application can close the config
  * window; however, you probably should not do that in your applicaiton, as
- * the hiding of the config window is taken care of by the mobling UI.
+ * the hiding of the config window is taken care of by the Moblin UI.
  */
 static void
 button_clicked_cb (GtkButton *button, gpointer data)
@@ -58,11 +58,8 @@ button_clicked_cb (GtkButton *button, gpointer data)
  * Function to create the content of the panel window.
  *
  * This is to demonstrate how the contents can be created dynamically when the
- * window is getting shown. If your config window has static content, you
- * can construct it when creating the GtkPlug (i.e., in this example that would
- * be in the main() function.
- *
- * This function is hooked into the "embedded" signal on the GtkPlug you create.
+ * window is getting shown. If your window has static content, you can construct
+ * it immediately after creating the panel object.
  */
 static void
 make_window_content (GtkWidget *window)
@@ -108,7 +105,7 @@ main (int argc, char *argv[])
                              "spaces-people",
                              "people");
 
-  g_signal_connect (panel, "update-content",
+  g_signal_connect (panel, "show-begin",
                     G_CALLBACK (update_content_cb), NULL);
   gtk_main ();
 
