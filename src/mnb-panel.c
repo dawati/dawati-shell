@@ -646,3 +646,9 @@ mnb_panel_set_mutter_window (MnbPanel *panel, MutterWindow *mcw)
   clutter_actor_hide (CLUTTER_ACTOR (mcw));
 }
 
+guint
+mnb_panel_get_xid (MnbPanel *panel)
+{
+  return panel->priv->xid;
+}
+

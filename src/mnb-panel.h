@@ -73,6 +73,7 @@ void mnb_panel_set_mutter_window (MnbPanel *panel, MutterWindow *mcw);
 
 const gchar *mnb_panel_get_name    (MnbPanel *panel);
 const gchar *mnb_panel_get_tooltip (MnbPanel *panel);
+guint        mnb_panel_get_xid     (MnbPanel *panel);
 
 G_END_DECLS
 
