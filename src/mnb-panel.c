@@ -427,7 +427,7 @@ mnb_panel_constructed (GObject *self)
    * replaced with '.'. The object must implement the com.intel.Mnb.Panel
    * interface.
    */
-  dbus_name = g_strdup (priv->dbus_path);
+  dbus_name = g_strdup (priv->dbus_path + 1);
 
   g_strdelimit (dbus_name, "/", '.');
 
