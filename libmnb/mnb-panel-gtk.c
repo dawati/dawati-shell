@@ -1,0 +1,168 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+/* mnb-panel-gtk.c */
+/*
+ * Copyright (c) 2009 Intel Corp.
+ *
+ * Author: Tomas Frydrych <tf@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+#include <gdk/gdkx.h>
+
+#include "mnb-panel-gtk.h"
+
+G_DEFINE_TYPE (MnbPanelGtk, mnb_panel_gtk, MNB_TYPE_PANEL_CLIENT)
+
+#define MNB_PANEL_GTK_GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PANEL_GTK, MnbPanelGtkPrivate))
+
+static void mnb_panel_gtk_constructed (GObject *self);
+
+enum
+{
+  PROP_0,
+};
+
+struct _MnbPanelGtkPrivate
+{
+  GtkWidget *window;
+};
+
+static void
+mnb_panel_gtk_get_property (GObject    *object,
+                               guint       property_id,
+                               GValue     *value,
+                               GParamSpec *pspec)
+{
+  switch (property_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
+mnb_panel_gtk_set_property (GObject      *object,
+                               guint         property_id,
+                               const GValue *value,
+                               GParamSpec   *pspec)
+{
+  switch (property_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
+mnb_panel_gtk_dispose (GObject *self)
+{
+  G_OBJECT_CLASS (mnb_panel_gtk_parent_class)->dispose (self);
+}
+
+static void
+mnb_panel_gtk_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (mnb_panel_gtk_parent_class)->finalize (object);
+}
+
+static void
+mnb_panel_gtk_set_size (MnbPanelClient *self, guint width, guint height)
+{
+  MnbPanelGtkPrivate *priv   = MNB_PANEL_GTK (self)->priv;
+  GtkWidget          *window = priv->window;
+
+  g_debug ("Setting panel window size to %dx%d", width, height);
+
+  gtk_window_resize (GTK_WINDOW (window), width, height);
+}
+
+static void
+mnb_panel_gtk_class_init (MnbPanelGtkClass *klass)
+{
+  GObjectClass        *object_class = G_OBJECT_CLASS (klass);
+  MnbPanelClientClass *client_class = MNB_PANEL_CLIENT_CLASS (klass);
+
+  g_type_class_add_private (klass, sizeof (MnbPanelGtkPrivate));
+
+  object_class->get_property     = mnb_panel_gtk_get_property;
+  object_class->set_property     = mnb_panel_gtk_set_property;
+  object_class->dispose          = mnb_panel_gtk_dispose;
+  object_class->finalize         = mnb_panel_gtk_finalize;
+  object_class->constructed      = mnb_panel_gtk_constructed;
+
+  client_class->set_size = mnb_panel_gtk_set_size;
+}
+
+static void
+mnb_panel_gtk_init (MnbPanelGtk *self)
+{
+  MnbPanelGtkPrivate *priv;
+
+  priv = self->priv = MNB_PANEL_GTK_GET_PRIVATE (self);
+}
+
+static void
+mnb_panel_gtk_window_embedded_cb (GtkPlug *window, GParamSpec *pspec,
+                                  gpointer data)
+{
+  MnbPanelGtk *panel = MNB_PANEL_GTK (data);
+  gboolean     embedded;
+
+  g_object_get (window, "embedded", &embedded, NULL);
+
+  if (embedded)
+    g_signal_emit_by_name (panel, "update-content");
+}
+
+static void
+mnb_panel_gtk_constructed (GObject *self)
+{
+  MnbPanelGtkPrivate *priv = MNB_PANEL_GTK (self)->priv;
+  GtkWidget *window;
+
+  priv->window = window = gtk_plug_new (0);
+
+  g_signal_connect (window, "notify::embedded",
+                    G_CALLBACK (mnb_panel_gtk_window_embedded_cb), self);
+
+  gtk_widget_show (window);
+
+  g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
+}
+
+MnbPanelClient *
+mnb_panel_gtk_new (const gchar *dbus_path,
+                      const gchar *name,
+                      const gchar *tooltip)
+{
+  MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_GTK,
+                                        "dbus-path", dbus_path,
+                                        "name",      name,
+                                        "tooltip",   tooltip,
+                                        NULL);
+
+  return panel;
+}
+
+GtkWidget *
+mnb_panel_gtk_get_window (MnbPanelGtk *panel)
+{
+  return panel->priv->window;
+}
+

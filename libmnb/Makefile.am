@@ -1,13 +1,14 @@
 
-noinst_LTLIBRARIES = libmnb.la
+noinst_LTLIBRARIES = libmnbgtk.la
 
-libmnb_headers = mnb-panel-client.h
+libmnbgtk_headers = mnb-panel-client.h
 
-libmnb_la_SOURCES = \
+libmnbgtk_la_SOURCES = \
 			$(libmnb_headers) 	\
 			mnb-panel-client.c 	\
+			mnb-panel-gtk.c		\
 			../src/marshal.c
 
-AM_CFLAGS = -Wall $(LIBMNB_CFLAGS) \
-	    -DPKG_DATADIR=\"$(pkgdatadir)\"
-AM_LDFLAGS = $(LIBMNB_LIBS)
+libmnbgtk_la_CFLAGS = -Wall $(LIBMNB_CFLAGS) $(GTK_CFLAGS)
+
+libmnbgtk_la_LDFLAGS = $(LIBMNB_LIBS) $(GTK_LIBS)

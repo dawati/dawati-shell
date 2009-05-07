@@ -67,6 +67,7 @@ typedef struct
   void (*show_end)           (MnbPanelClient *panel);
   void (*hide_begin)         (MnbPanelClient *panel);
   void (*hide_end)           (MnbPanelClient *panel);
+  void (*update_content)     (MnbPanelClient *panel);
 
   /*
    * Private signals

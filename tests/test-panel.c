@@ -29,7 +29,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
-#include "../libmnb/mnb-panel-client.h"
+#include "../libmnb/mnb-panel-gtk.h"
 
 static void
 set_size_cb (MnbPanelClient *panel, guint width, guint height, gpointer data)
@@ -65,7 +65,7 @@ button_clicked_cb (GtkButton *button, gpointer data)
  * This function is hooked into the "embedded" signal on the GtkPlug you create.
  */
 static void
-make_window_content (GtkPlug *window)
+make_window_content (GtkWidget *window)
 {
   GtkWidget *table, *button, *old_child;
 
@@ -89,15 +89,9 @@ make_window_content (GtkPlug *window)
 }
 
 static void
-window_embedded_cb (GtkPlug *window, GParamSpec *pspec, gpointer data)
+update_content_cb (MnbPanelGtk *panel, gpointer data)
 {
-  gboolean embedded;
-
-  g_object_get (window, "embedded", &embedded, NULL);
-  g_debug ("Embedded: %s", embedded ? "yes" : "no");
-
-  if (embedded)
-    make_window_content (window);
+  make_window_content (mnb_panel_gtk_get_window (panel));
 }
 
 
@@ -110,28 +104,12 @@ main (int argc, char *argv[])
 
   gtk_init (&argc, &argv);
 
-  window = gtk_plug_new (0);
+  panel = mnb_panel_gtk_new ("/com/intel/Mnb/TestPanel",
+                             "spaces-people",
+                             "people");
 
-  /*
-   * If the content of the config window needs to be created dynamically
-   * each time the window is shown, hook into the "embedded" signal on the
-   * plug.
-   *
-   * If your config window has static content, you can just create it here and
-   * pack it directly into the plug.
-   */
-  g_signal_connect (window, "notify::embedded",
-                    G_CALLBACK (window_embedded_cb), NULL);
-
-  gtk_widget_show (window);
-
-  panel = mnb_panel_client_new ("/com/intel/Mnb/TestPanel",
-                                GDK_WINDOW_XID (window->window),
-                                "spaces-people",
-                                "people");
-
-  g_signal_connect (panel, "set-size", G_CALLBACK (set_size_cb), window);
-
+  g_signal_connect (panel, "update-content",
+                    G_CALLBACK (update_content_cb), NULL);
   gtk_main ();
 
   return 0;

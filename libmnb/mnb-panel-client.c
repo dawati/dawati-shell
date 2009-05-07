@@ -63,6 +63,8 @@ enum
   REQUEST_ICON,
   LAUNCH_APPLICATION,
 
+  UPDATE_CONTENT,
+
   LAST_SIGNAL
 };
 
@@ -195,6 +197,9 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
 
   g_debug ("%s called", __FUNCTION__);
 
+  if (!priv->xid)
+    return FALSE;
+
   *xid     = priv->xid;
   *name    = g_strdup (priv->name);
   *tooltip = g_strdup (priv->tooltip);
@@ -308,7 +313,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                                                       0, G_MAXUINT,
                                                       1024,
                                                       G_PARAM_READWRITE |
-                                                      G_PARAM_CONSTRUCT_ONLY));
+                                                      G_PARAM_CONSTRUCT));
 
   signals[SET_SIZE] =
     g_signal_new ("set-size",
@@ -405,6 +410,15 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                   G_TYPE_STRING,
                   G_TYPE_INT,
                   G_TYPE_BOOLEAN);
+
+  signals[UPDATE_CONTENT] =
+    g_signal_new ("update-content",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, update_content),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void

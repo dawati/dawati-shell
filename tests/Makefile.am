@@ -60,4 +60,4 @@ test_panel_SOURCES = \
 	test-panel.c
 test_panel_LDADD = \
 	$(MUTTER_PLUGIN_LIBS) \
-	$(top_builddir)/libmnb/libmnb.la
+	$(top_builddir)/libmnb/libmnbgtk.la
