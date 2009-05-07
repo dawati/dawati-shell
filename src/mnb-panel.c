@@ -626,9 +626,6 @@ mnb_panel_set_mutter_window (MnbPanel *panel, MutterWindow *mcw)
     }
 
   texture = mutter_window_get_texture (mcw);
-  xwin    = mutter_window_get_x_window (mcw);
-
-  g_return_if_fail (priv->xid == xwin);
 
   priv->mcw = mcw;
 
