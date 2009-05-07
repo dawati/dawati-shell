@@ -587,7 +587,7 @@ mnb_toolbar_panel_name_to_index (const gchar *name)
     index = TEST_APPLET;
   else
     {
-      g_warning ("Unknown panel [%s]");
+      g_warning ("Unknown panel [%s]", name);
       index = -1;
     }
 
