@@ -86,21 +86,21 @@ typedef struct
 
 GType mnb_panel_client_get_type (void);
 
-MnbPanelClient *mnb_panel_client_new (const gchar *dbus_path,
-                                      guint        xid,
-                                      const gchar *name,
-                                      const gchar *tooltip);
+MnbPanelClient *mnb_panel_client_new     (const gchar *dbus_path,
+                                          guint        xid,
+                                          const gchar *name,
+                                          const gchar *tooltip);
 
+void mnb_panel_client_request_show       (MnbPanelClient *panel);
+void mnb_panel_client_request_hide       (MnbPanelClient *panel);
+void mnb_panel_client_request_focus      (MnbPanelClient *panel);
+void mnb_panel_client_request_icon       (MnbPanelClient *panel,
+                                          const gchar *icon);
 
-void mnb_panel_request_show       (MnbPanelClient *panel);
-void mnb_panel_request_hide       (MnbPanelClient *panel);
-void mnb_panel_request_focus      (MnbPanelClient *panel);
-void mnb_panel_request_icon       (MnbPanelClient *panel, const gchar *icon);
-
-void mnb_panel_launch_application (MnbPanelClient *panel,
-                                   const gchar    *app,
-                                   gint            workspace,
-                                   gboolean        without_chooser);
+void mnb_panel_client_launch_application (MnbPanelClient *panel,
+                                          const gchar    *app,
+                                          gint            workspace,
+                                          gboolean        without_chooser);
 
 G_END_DECLS
 

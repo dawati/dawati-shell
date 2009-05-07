@@ -488,34 +488,34 @@ mnb_panel_client_new (const gchar *dbus_path,
 }
 
 void
-mnb_panel_request_show (MnbPanelClient *panel)
+mnb_panel_client_request_show (MnbPanelClient *panel)
 {
   g_signal_emit (panel, signals[REQUEST_SHOW], 0);
 }
 
 void
-mnb_panel_request_hide (MnbPanelClient *panel)
+mnb_panel_client_request_hide (MnbPanelClient *panel)
 {
   g_signal_emit (panel, signals[REQUEST_HIDE], 0);
 }
 
 void
-mnb_panel_request_focus (MnbPanelClient *panel)
+mnb_panel_client_request_focus (MnbPanelClient *panel)
 {
   g_signal_emit (panel, signals[REQUEST_FOCUS], 0);
 }
 
 void
-mnb_panel_request_icon (MnbPanelClient *panel, const gchar *icon)
+mnb_panel_client_request_icon (MnbPanelClient *panel, const gchar *icon)
 {
   g_signal_emit (panel, signals[REQUEST_ICON], 0, icon);
 }
 
 void
-mnb_panel_launch_application (MnbPanelClient *panel,
-                              const gchar    *app,
-                              gint            workspace,
-                              gboolean        without_chooser)
+mnb_panel_client_launch_application (MnbPanelClient *panel,
+                                     const gchar    *app,
+                                     gint            workspace,
+                                     gboolean        without_chooser)
 {
   g_signal_emit (panel, signals[LAUNCH_APPLICATION], 0,
                  app, workspace, without_chooser);
