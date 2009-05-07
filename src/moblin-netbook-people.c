@@ -59,7 +59,7 @@ make_people_panel (MutterPlugin *plugin,
   drop_down = mnb_drop_down_new ();
 
   vbox = nbtk_table_new ();
-  clutter_actor_set_width (vbox, width);
+  clutter_actor_set_size (vbox, width, 400);
   nbtk_table_set_col_spacing (NBTK_TABLE (vbox), 12);
   nbtk_table_set_row_spacing (NBTK_TABLE (vbox), 6);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
