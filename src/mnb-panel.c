@@ -66,6 +66,8 @@ struct _MnbPanelPrivate
   guint            width;
   guint            height;
 
+  MutterWindow    *mcw;
+
   gboolean         constructed : 1; /* poor man's constructor return value. */
 };
 
@@ -198,6 +200,20 @@ mnb_panel_finalize (GObject *object)
 
 #include "mnb-panel-dbus-bindings.h"
 
+static void
+mnb_panel_show (ClutterActor *actor)
+{
+  MnbPanelPrivate *priv = MNB_PANEL (actor)->priv;
+
+  if (!priv->mcw)
+    {
+      g_signal_stop_emission_by_name (actor, "show");
+      return;
+    }
+
+  CLUTTER_ACTOR_CLASS (mnb_panel_parent_class)->show (actor);
+}
+
 static gboolean
 mnb_panel_dbus_init_panel (MnbPanel  *self,
                            guint      width,
@@ -248,8 +264,9 @@ mnb_panel_dbus_hide_end (MnbPanel *self, GError **error)
 static void
 mnb_panel_class_init (MnbPanelClass *klass)
 {
-  GObjectClass     *object_class   = G_OBJECT_CLASS (klass);
-  MnbDropDownClass *dropdown_class = MNB_DROP_DOWN_CLASS (klass);
+  GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class    = CLUTTER_ACTOR_CLASS (klass);
+  MnbDropDownClass  *dropdown_class = MNB_DROP_DOWN_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbPanelPrivate));
 
@@ -258,6 +275,8 @@ mnb_panel_class_init (MnbPanelClass *klass)
   object_class->dispose          = mnb_panel_dispose;
   object_class->finalize         = mnb_panel_finalize;
   object_class->constructed      = mnb_panel_constructed;
+
+  actor_class->show              = mnb_panel_show;
 
   dropdown_class->show_begin     = mnb_panel_show_begin;
   dropdown_class->show_completed = mnb_panel_show_completed;
@@ -552,3 +571,59 @@ mnb_panel_get_tooltip (MnbPanel *panel)
 
   return priv->tooltip;
 }
+
+static void
+mnb_panel_mutter_window_destroy_cb (ClutterActor *actor, gpointer data)
+{
+  ClutterActor *panel = CLUTTER_ACTOR (data);
+  ClutterActor *parent = clutter_actor_get_parent (panel);
+
+  if (CLUTTER_IS_CONTAINER (parent))
+    clutter_container_remove_actor (CLUTTER_CONTAINER (parent), panel);
+  else
+    clutter_actor_unparent (panel);
+}
+
+void
+mnb_panel_set_mutter_window (MnbPanel *panel, MutterWindow *mcw)
+{
+  MnbPanelPrivate *priv    = panel->priv;
+  ClutterActor    *texture;
+  Window           xwin;
+
+  if (!mcw)
+    {
+      if (priv->mcw)
+        {
+          g_signal_handlers_disconnect_by_func (priv->mcw,
+                                           mnb_panel_mutter_window_destroy_cb,
+                                           panel);
+
+          priv->mcw = NULL;
+        }
+
+      mnb_drop_down_set_child (MNB_DROP_DOWN (panel), NULL);
+      return;
+    }
+
+  texture = mutter_window_get_texture (mcw);
+  xwin    = mutter_window_get_x_window (mcw);
+
+  g_return_if_fail (priv->xid == xwin);
+
+  priv->mcw = mcw;
+
+  g_object_ref (texture);
+  clutter_actor_unparent (texture);
+  mnb_drop_down_set_child (MNB_DROP_DOWN (panel), texture);
+  g_object_unref (texture);
+
+  g_signal_connect (mcw, "destroy",
+                    G_CALLBACK (mnb_panel_mutter_window_destroy_cb),
+                    panel);
+
+  g_object_set (mcw, "no-shadow", TRUE, NULL);
+
+  clutter_actor_hide (CLUTTER_ACTOR (mcw));
+}
+
