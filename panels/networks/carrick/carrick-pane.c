@@ -23,6 +23,7 @@ struct _CarrickPanePrivate {
   GtkWidget *wifi_switch;
   GtkWidget *ethernet_switch;
   GtkWidget *threeg_switch;
+  GtkWidget *wimax_switch;
   GtkWidget *flight_mode_switch;
   GtkWidget *flight_mode_label;
   GtkWidget *service_list;
@@ -174,6 +175,16 @@ _threeg_switch_callback (MuxSwitchBox *threeg_switch,
                       pane);
 
   return TRUE;
+}
+
+static gboolean
+_wimax_switch_callback (MuxSwitchBox *wimax_switch,
+                        gboolean new_state,
+                        CarrickPane *pane)
+{
+  _set_devices_state (g_strdup ("WiMax"),
+                      new_state,
+                      pane);
 }
 
 static gboolean
@@ -353,6 +364,10 @@ _device_updated_cb (CmDevice *device,
         break;
       case DEVICE_CELLULAR:
         mux_switch_box_set_active (MUX_SWITCH_BOX (priv->threeg_switch),
+                                   state);
+        break;
+      case DEVICE_WIMAX:
+        mux_switch_box_set_active (MUX_SWITCH_BOX (priv->wimax_switch),
                                    state);
         break;
       default:
@@ -544,6 +559,16 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       8);
+  priv->wimax_switch = mux_switch_box_new (_("WiMax"));
+  g_signal_connect (priv->wimax_switch,
+                    "switch-toggled",
+                    G_CALLBACK (_wimax_switch_callback),
+                    self);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      priv->wimax_switch,
+                      TRUE,
+                      TRUE,
+                      8);
 
   priv->flight_mode_switch = mux_switch_box_new (_("Offline Mode"));
   g_signal_connect (priv->flight_mode_switch,
@@ -565,7 +590,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_table_attach_defaults (GTK_TABLE (self),
                              switch_bin,
                              4, 6,
-                             0, 4); // 2 7
+                             0, 5);
 }
 
 GtkWidget*
