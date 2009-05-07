@@ -1,5 +1,6 @@
 #include "anerley-tile.h"
 #include "anerley-item.h"
+#include "anerley-tile-view.h"
 
 #include <glib/gi18n.h>
 
@@ -307,8 +308,16 @@ _button_press_event_cb (ClutterActor *actor,
                         gpointer      userdata)
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (actor);
+  ClutterActor *parent;
 
-  anerley_item_activate (priv->item);
+  parent = clutter_actor_get_parent (actor);
+
+  if (ANERLEY_IS_TILE_VIEW (parent))
+  {
+    g_signal_emit_by_name (parent,
+                           "item-activated",
+                           priv->item);
+  }
 
   return TRUE;
 }
