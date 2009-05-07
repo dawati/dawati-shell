@@ -77,6 +77,12 @@ anerley_item_get_presence_message (AnerleyItem *item)
   return ANERLEY_ITEM_GET_CLASS (item)->get_presence_message (item);
 }
 
+const gchar *
+anerley_item_get_sortable_name (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->get_sortable_name (item);
+}
+
 void
 anerley_item_emit_display_name_changed (AnerleyItem *item)
 {

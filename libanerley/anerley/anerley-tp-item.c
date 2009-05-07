@@ -17,6 +17,7 @@ struct _AnerleyTpItemPrivate {
   gchar *avatar_path;
   gchar *presence_status;
   gchar *presence_message;
+  gchar *sortable_name;
 };
 
 enum
@@ -111,6 +112,14 @@ anerley_tp_item_get_display_name (AnerleyItem *item)
 }
 
 static const gchar *
+anerley_tp_item_get_sortable_name (AnerleyItem *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+
+  return priv->sortable_name;
+}
+
+static const gchar *
 anerley_tp_item_get_avatar_path (AnerleyItem *item)
 {
   AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
@@ -163,6 +172,7 @@ anerley_tp_item_class_init (AnerleyTpItemClass *klass)
   object_class->finalize = anerley_tp_item_finalize;
 
   item_class->get_display_name = anerley_tp_item_get_display_name;
+  item_class->get_sortable_name = anerley_tp_item_get_sortable_name;
   item_class->get_avatar_path = anerley_tp_item_get_avatar_path;
   item_class->get_presence_status = anerley_tp_item_get_presence_status;
   item_class->get_presence_message = anerley_tp_item_get_presence_message;
@@ -218,13 +228,19 @@ _contact_notify_alias_cb (GObject    *object,
   TpContact *contact = (TpContact *)object;
   AnerleyTpItem *item = (AnerleyTpItem *)userdata;
   AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  const gchar *alias;
 
   g_free (priv->display_name);
   priv->display_name = NULL;
+  g_free (priv->sortable_name);
+  priv->sortable_name = NULL;
 
-  if (tp_contact_get_alias (contact))
+  alias = tp_contact_get_alias (contact);
+
+  if (alias)
   {
-    priv->display_name = g_strdup (tp_contact_get_alias (contact));
+    priv->display_name = g_strdup (alias);
+    priv->sortable_name = g_utf8_casefold (alias, -1);
   }
 
   anerley_item_emit_display_name_changed ((AnerleyItem *)item);
