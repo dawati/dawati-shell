@@ -416,10 +416,14 @@ mnb_panel_client_init (MnbPanelClient *self)
 }
 
 static DBusGConnection *
-mnb_panel_client_connect_to_dbus ()
+mnb_panel_client_connect_to_dbus (MnbPanelClient *self)
 {
-  DBusGConnection *conn;
-  GError          *error = NULL;
+  MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (self)->priv;
+  DBusGConnection       *conn;
+  DBusGProxy            *proxy;
+  GError                *error = NULL;
+  gchar                 *dbus_name;
+  guint                  status;
 
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
 
@@ -429,6 +433,43 @@ mnb_panel_client_connect_to_dbus ()
       g_error_free (error);
       return NULL;
     }
+
+  proxy = dbus_g_proxy_new_for_name (conn,
+                                     DBUS_SERVICE_DBUS,
+                                     DBUS_PATH_DBUS,
+                                     DBUS_INTERFACE_DBUS);
+
+  if (!proxy)
+    {
+      g_object_unref (conn);
+      return NULL;
+    }
+
+  dbus_name = g_strdup (priv->dbus_path + 1);
+
+  g_strdelimit (dbus_name, "/", '.');
+
+  if (!org_freedesktop_DBus_request_name (proxy,
+                                          dbus_name,
+                                          DBUS_NAME_FLAG_DO_NOT_QUEUE,
+                                          &status, &error))
+    {
+      if (error)
+        {
+          g_warning ("%s: %s", __FUNCTION__, error->message);
+          g_error_free (error);
+        }
+      else
+        {
+          g_warning ("%s: Unknown error", __FUNCTION__);
+        }
+
+      g_object_unref (conn);
+      conn = NULL;
+    }
+
+  g_free (dbus_name);
+  g_object_unref (proxy);
 
   return conn;
 }
@@ -448,7 +489,7 @@ mnb_panel_client_constructed (GObject *self)
   if (!priv->dbus_path)
     return;
 
-  conn = mnb_panel_client_connect_to_dbus ();
+  conn = mnb_panel_client_connect_to_dbus (MNB_PANEL_CLIENT (self));
 
   if (!conn)
     return;
