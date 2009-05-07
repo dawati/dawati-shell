@@ -136,6 +136,8 @@ _set_devices_state (gchar       *device_type,
 
     devices = g_list_next (devices);
   }
+
+  g_list_free (devices);
 }
 
 static gboolean
@@ -390,6 +392,8 @@ _update_services (CarrickPane *pane)
                       G_CALLBACK (_service_updated_cb),
                       pane);
   }
+
+  g_list_free (raw_services);
 }
 
 static void
@@ -410,6 +414,8 @@ _set_states (CarrickPane *pane)
                       G_CALLBACK (_device_updated_cb),
                       pane);
   }
+
+  g_list_free (devices);
 }
 
 static void

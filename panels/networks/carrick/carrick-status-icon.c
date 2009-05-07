@@ -142,8 +142,8 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
   if (priv->service)
   {
     strength = cm_service_get_strength (priv->service);
-    type = cm_service_get_type (priv->service);
-    status = cm_service_get_state (priv->service);
+    type = g_strdup (cm_service_get_type (priv->service));
+    status = g_strdup (cm_service_get_state (priv->service));
   }
   else
   {
@@ -189,6 +189,9 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
   gtk_status_icon_set_from_file (GTK_STATUS_ICON (icon),
                                  icon_names[icon_state]);
   priv->current_state = icon_state;
+
+  g_free (type);
+  g_free (status);
 }
 
 void
