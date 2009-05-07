@@ -985,7 +985,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
       name    = mnb_panel_get_name (MNB_PANEL (panel));
       tooltip = mnb_panel_get_tooltip (MNB_PANEL (panel));
     }
-  else if (MNB_IS_SWICHER (panel))
+  else if (MNB_IS_SWITCHER (panel))
     {
       name    = "spaces-zone";
       tooltip = _("zones");
