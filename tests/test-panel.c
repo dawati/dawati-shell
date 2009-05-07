@@ -37,6 +37,7 @@ map_window_cb (MnbPanelClient *panel, guint width, guint height, gpointer data)
   GtkWidget *window = GTK_WIDGET (data);
 
   gtk_window_resize (GTK_WINDOW (window), width, height);
+  gtk_widget_show (window);
 }
 
 int
