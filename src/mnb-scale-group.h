@@ -19,55 +19,55 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __NUTTER_SCALE_GROUP_H__
-#define __NUTTER_SCALE_GROUP_H__
+#ifndef __MNB_SCALE_GROUP_H__
+#define __MNB_SCALE_GROUP_H__
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 
-#define NUTTER_TYPE_SCALE_GROUP nutter_scale_group_get_type()
+#define MNB_TYPE_SCALE_GROUP mnb_scale_group_get_type()
 
-#define NUTTER_SCALE_GROUP(obj) \
+#define MNB_SCALE_GROUP(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  NUTTER_TYPE_SCALE_GROUP, NutterScaleGroup))
+  MNB_TYPE_SCALE_GROUP, MnbScaleGroup))
 
-#define NUTTER_SCALE_GROUP_CLASS(klass) \
+#define MNB_SCALE_GROUP_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  NUTTER_TYPE_SCALE_GROUP, NutterScaleGroupClass))
+  MNB_TYPE_SCALE_GROUP, MnbScaleGroupClass))
 
-#define NUTTER_IS_SCALE_GROUP(obj) \
+#define MNB_IS_SCALE_GROUP(obj) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  NUTTER_TYPE_SCALE_GROUP))
+  MNB_TYPE_SCALE_GROUP))
 
-#define NUTTER_IS_SCALE_GROUP_CLASS(klass) \
+#define MNB_IS_SCALE_GROUP_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  NUTTER_TYPE_SCALE_GROUP))
+  MNB_TYPE_SCALE_GROUP))
 
-#define NUTTER_SCALE_GROUP_GET_CLASS(obj) \
+#define MNB_SCALE_GROUP_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  NUTTER_TYPE_SCALE_GROUP, NutterScaleGroupClass))
+  MNB_TYPE_SCALE_GROUP, MnbScaleGroupClass))
 
-typedef struct _NutterScaleGroup        NutterScaleGroup;
-typedef struct _NutterScaleGroupClass   NutterScaleGroupClass;
+typedef struct _MnbScaleGroup        MnbScaleGroup;
+typedef struct _MnbScaleGroupClass   MnbScaleGroupClass;
 
-struct _NutterScaleGroup
+struct _MnbScaleGroup
 {
   ClutterGroup parent_instance;
 
   /*< private >*/
 };
 
-struct _NutterScaleGroupClass
+struct _MnbScaleGroupClass
 {
   /*< private >*/
   ClutterGroupClass parent_class;
 };
 
-GType         nutter_scale_group_get_type         (void) G_GNUC_CONST;
-ClutterActor *nutter_scale_group_new              (void);
+GType         mnb_scale_group_get_type         (void) G_GNUC_CONST;
+ClutterActor *mnb_scale_group_new              (void);
 
 G_END_DECLS
 
-#endif /* __NUTTER_SCALE_GROUP_H__ */
+#endif /* __MNB_SCALE_GROUP_H__ */

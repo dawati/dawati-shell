@@ -13,6 +13,7 @@
 #include "moblin-netbook-status.h"
 #include "moblin-netbook-netpanel.h"
 #include "moblin-netbook-pasteboard.h"
+#include "moblin-netbook-people.h"
 
 #ifdef USE_AHOGHILL
 #include "ahoghill/ahoghill-grid-view.h"
@@ -861,6 +862,12 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar,
             make_pasteboard (plugin,
                              screen_width - TOOLBAR_X_PADDING * 2));
           break;
+#if WITH_PEOPLE
+        case PEOPLE_ZONE:
+          panel = priv->panels[index] = NBTK_WIDGET (
+            make_people_panel (plugin, screen_width - TOOLBAR_X_PADDING * 2));
+          break;
+#endif
         case M_ZONE:
           {
             ClutterActor *grid;

@@ -172,6 +172,12 @@ dist_theme_pasteboard_DATA = \
 	theme/pasteboard/pasteboard-items-list-bg.png \
 	theme/pasteboard/pasteboard-search-bg.png
 
+theme_peopledir = $(pkgdatadir)/theme/people
+dist_theme_people_DATA = \
+	theme/people/people-search-bg.png \
+	theme/people/tile-bg-hover.png \
+	theme/people/avatar-bg.png
+
 theme_effectsdir = $(pkgdatadir)/theme/effects
 dist_theme_effects_DATA = \
 	theme/effects/zone-switch-background.png

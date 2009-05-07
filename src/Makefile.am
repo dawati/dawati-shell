@@ -2,7 +2,7 @@ SUBDIRS=tray effects
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ \
+INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@ \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
 	-I$(top_srcdir)/ahoghill \
@@ -10,8 +10,8 @@ INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ \
 	-I$(top_srcdir)/src
 
 AM_CFLAGS   = -fPIC
-moblin_netbook_la_SOURCES  = 	nutter/nutter-scale-group.c	\
-				nutter/nutter-scale-group.h     \
+moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
+				mnb-scale-group.h               \
 				moblin-netbook.c		\
 				moblin-netbook.h		\
 				moblin-netbook-chooser.c	\
@@ -71,6 +71,11 @@ moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
 				moblin-netbook-netpanel.h
 endif
 
+if WITH_PEOPLE
+moblin_netbook_la_SOURCES +=	moblin-netbook-people.h		\
+				moblin-netbook-people.c
+endif
+
 
 
 DBUS_GLUE=notification-manager-glue.h mnb-panel-dbus-glue.h
@@ -91,6 +96,7 @@ MARSHALS = marshal.c marshal.h
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				@NETPANEL_LIBS@		\
+				@PEOPLE_LIBS@		\
 				tray/libtray.la 	\
 				effects/libeffects.la	\
 				$(top_builddir)/penge/penge/libpenge.la \
@@ -101,6 +107,8 @@ moblin_netbook_la_LIBADD += 				\
 				$(AHOGHILL_LIBS)	\
 				$(top_builddir)/ahoghill/ahoghill/libahoghill.la
 endif
+
+
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 
