@@ -22,9 +22,6 @@
  * 02111-1307, USA.
  */
 
-/*
- * Top level container for out-of-process panels.
- */
 #include "mnb-panel-client.h"
 #include "../src/marshal.h"
 
@@ -33,7 +30,7 @@
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
 
-G_DEFINE_TYPE (MnbPanelClient, mnb_panel_client, CLUTTER_TYPE_ACTOR)
+G_DEFINE_TYPE (MnbPanelClient, mnb_panel_client, G_TYPE_OBJECT)
 
 #define MNB_PANEL_CLIENT_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PANEL_CLIENT, MnbPanelClientPrivate))
@@ -47,7 +44,29 @@ enum
   PROP_DBUS_PATH,
   PROP_WIDTH,
   PROP_HEIGHT,
+  PROP_NAME,
+  PROP_TOOLTIP,
+  PROP_XID,
 };
+
+enum
+{
+  MAP_WINDOW,
+  SHOW_BEGIN,
+  SHOW_END,
+  HIDE_BEGIN,
+  HIDE_END,
+
+  REQUEST_SHOW,
+  REQUEST_HIDE,
+  REQUEST_FOCUS,
+  REQUEST_ICON,
+  LAUNCH_APPLICATION,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
 
 struct _MnbPanelClientPrivate
 {
@@ -78,11 +97,20 @@ mnb_panel_client_get_property (GObject    *object,
     case PROP_DBUS_PATH:
       g_value_set_string (value, priv->dbus_path);
       break;
+    case PROP_NAME:
+      g_value_set_string (value, priv->name);
+      break;
+    case PROP_TOOLTIP:
+      g_value_set_string (value, priv->tooltip);
+      break;
     case PROP_WIDTH:
       g_value_set_uint (value, priv->width);
       break;
     case PROP_HEIGHT:
       g_value_set_uint (value, priv->height);
+      break;
+    case PROP_XID:
+      g_value_set_uint (value, priv->xid);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -103,11 +131,22 @@ mnb_panel_client_set_property (GObject      *object,
       g_free (priv->dbus_path);
       priv->dbus_path = g_value_dup_string (value);
       break;
+    case PROP_NAME:
+      g_free (priv->name);
+      priv->name = g_value_dup_string (value);
+      break;
+    case PROP_TOOLTIP:
+      g_free (priv->tooltip);
+      priv->tooltip = g_value_dup_string (value);
+      break;
     case PROP_WIDTH:
       priv->width = g_value_get_uint (value);
       break;
     case PROP_HEIGHT:
       priv->height = g_value_get_uint (value);
+      break;
+    case PROP_XID:
+      priv->xid = g_value_get_uint (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -152,7 +191,15 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
                            gchar          **tooltip,
                            GError         **error)
 {
-  /* MnbPanelClientPrivate *priv = self->priv; */
+  MnbPanelClientPrivate *priv = self->priv;
+
+  g_debug ("%s called", __FUNCTION__);
+
+  *xid     = priv->xid;
+  *name    = g_strdup (priv->name);
+  *tooltip = g_strdup (priv->tooltip);
+
+  g_signal_emit (self, signals[MAP_WINDOW], 0, width, height);
 
   return TRUE;
 }
@@ -160,32 +207,32 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
 static gboolean
 mnb_panel_dbus_show_begin (MnbPanelClient *self, GError **error)
 {
-  /* MnbPanelClientPrivate *priv = self->priv; */
-
+  g_debug ("%s called", __FUNCTION__);
+  g_signal_emit (self, signals[SHOW_BEGIN], 0);
   return TRUE;
 }
 
 static gboolean
 mnb_panel_dbus_show_end (MnbPanelClient *self, GError **error)
 {
-  /* MnbPanelClientPrivate *priv = self->priv; */
-
+  g_debug ("%s called", __FUNCTION__);
+  g_signal_emit (self, signals[SHOW_END], 0);
   return TRUE;
 }
 
 static gboolean
 mnb_panel_dbus_hide_begin (MnbPanelClient *self, GError **error)
 {
-  /* MnbPanelClientPrivate *priv = self->priv; */
-
+  g_debug ("%s called", __FUNCTION__);
+  g_signal_emit (self, signals[HIDE_BEGIN], 0);
   return TRUE;
 }
 
 static gboolean
 mnb_panel_dbus_hide_end (MnbPanelClient *self, GError **error)
 {
-  /* MnbPanelClientPrivate *priv = self->priv; */
-
+  g_debug ("%s called", __FUNCTION__);
+  g_signal_emit (self, signals[HIDE_END], 0);
   return TRUE;
 }
 
@@ -213,8 +260,26 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                                                         "Dbus path",
                                                         "Dbus path",
                                                         NULL,
-                                                        G_PARAM_READABLE |
+                                                        G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
+
+  g_object_class_install_property (object_class,
+                                   PROP_NAME,
+                                   g_param_spec_string ("name",
+                                                        "Name",
+                                                        "Name",
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+                                   PROP_TOOLTIP,
+                                   g_param_spec_string ("tooltip",
+                                                        "Tooltip",
+                                                        "Tooltip",
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class,
                                    PROP_WIDTH,
@@ -234,6 +299,112 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                                                       1024,
                                                       G_PARAM_READWRITE));
 
+
+  g_object_class_install_property (object_class,
+                                   PROP_XID,
+                                   g_param_spec_uint ("xid",
+                                                      "XID",
+                                                      "XID",
+                                                      0, G_MAXUINT,
+                                                      1024,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT_ONLY));
+
+  signals[MAP_WINDOW] =
+    g_signal_new ("map-window",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, map_window),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__UINT_UINT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_UINT,
+                  G_TYPE_UINT);
+
+  signals[SHOW_BEGIN] =
+    g_signal_new ("show-begin",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, show_begin),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[SHOW_END] =
+    g_signal_new ("show-end",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, show_end),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[HIDE_BEGIN] =
+    g_signal_new ("hide-begin",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, hide_begin),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[HIDE_END] =
+    g_signal_new ("hide-end",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, hide_end),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[REQUEST_SHOW] =
+    g_signal_new ("request-show",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, request_show),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[REQUEST_HIDE] =
+    g_signal_new ("request-hide",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, request_hide),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[REQUEST_FOCUS] =
+    g_signal_new ("request-focus",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, request_focus),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[REQUEST_ICON] =
+    g_signal_new ("request-icon",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, request_icon),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
+
+  signals[LAUNCH_APPLICATION] =
+    g_signal_new ("launch-application",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, launch_application),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 3,
+                  G_TYPE_STRING,
+                  G_TYPE_INT,
+                  G_TYPE_BOOLEAN);
 }
 
 static void
@@ -294,10 +465,16 @@ mnb_panel_client_constructed (GObject *self)
 }
 
 MnbPanelClient *
-mnb_panel_client_new (const gchar  *dbus_path)
+mnb_panel_client_new (const gchar *dbus_path,
+                      guint        xid,
+                      const gchar *name,
+                      const gchar *tooltip)
 {
   MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_CLIENT,
-                                        "dbus-path",     dbus_path,
+                                        "dbus-path", dbus_path,
+                                        "xid",       xid,
+                                        "name",      name,
+                                        "tooltip",   tooltip,
                                         NULL);
 
   if (panel && !panel->priv->constructed)
@@ -308,5 +485,39 @@ mnb_panel_client_new (const gchar  *dbus_path)
     }
 
   return panel;
+}
+
+void
+mnb_panel_request_show (MnbPanelClient *panel)
+{
+  g_signal_emit (panel, signals[REQUEST_SHOW], 0);
+}
+
+void
+mnb_panel_request_hide (MnbPanelClient *panel)
+{
+  g_signal_emit (panel, signals[REQUEST_HIDE], 0);
+}
+
+void
+mnb_panel_request_focus (MnbPanelClient *panel)
+{
+  g_signal_emit (panel, signals[REQUEST_FOCUS], 0);
+}
+
+void
+mnb_panel_request_icon (MnbPanelClient *panel, const gchar *icon)
+{
+  g_signal_emit (panel, signals[REQUEST_ICON], 0, icon);
+}
+
+void
+mnb_panel_launch_application (MnbPanelClient *panel,
+                              const gchar    *app,
+                              gint            workspace,
+                              gboolean        without_chooser)
+{
+  g_signal_emit (panel, signals[LAUNCH_APPLICATION], 0,
+                 app, workspace, without_chooser);
 }
 

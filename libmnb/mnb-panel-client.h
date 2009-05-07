@@ -25,7 +25,7 @@
 #ifndef _MNB_PANEL_CLIENT
 #define _MNB_PANEL_CLIENT
 
-#include <clutter/clutter.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
@@ -48,20 +48,59 @@ G_BEGIN_DECLS
 
 typedef struct _MnbPanelClientPrivate MnbPanelClientPrivate;
 
-typedef struct {
-  ClutterActor parent;
+typedef struct
+{
+  GObject parent;
 
   MnbPanelClientPrivate *priv;
 } MnbPanelClient;
 
-typedef struct {
-  ClutterActorClass parent_class;
+typedef struct
+{
+  GObjectClass parent_class;
+
+  /*
+   * Public signals -- connect to these from your panel.
+   */
+  void (*map_window)         (MnbPanelClient *panel, guint width, guint height);
+  void (*show_begin)         (MnbPanelClient *panel);
+  void (*show_end)           (MnbPanelClient *panel);
+  void (*hide_begin)         (MnbPanelClient *panel);
+  void (*hide_end)           (MnbPanelClient *panel);
+
+  /*
+   * Private signals
+   * Signals for DBus -- these are the interface signals.
+   */
+  void (*request_show)       (MnbPanelClient *panel);
+  void (*request_hide)       (MnbPanelClient *panel);
+  void (*request_focus)      (MnbPanelClient *panel);
+  void (*request_icon)       (MnbPanelClient *panel, const gchar *icon);
+
+  void (*launch_application) (MnbPanelClient *panel,
+                              const gchar    *app,
+                              gint            workspace,
+                              gboolean        without_chooser);
 
 } MnbPanelClientClass;
 
 GType mnb_panel_client_get_type (void);
 
-MnbPanelClient *mnb_panel_client_new (const gchar  *dbus_path);
+MnbPanelClient *mnb_panel_client_new (const gchar *dbus_path,
+                                      guint        xid,
+                                      const gchar *name,
+                                      const gchar *tooltip);
+
+
+void mnb_panel_request_show       (MnbPanelClient *panel);
+void mnb_panel_request_hide       (MnbPanelClient *panel);
+void mnb_panel_request_focus      (MnbPanelClient *panel);
+void mnb_panel_request_icon       (MnbPanelClient *panel, const gchar *icon);
+
+void mnb_panel_launch_application (MnbPanelClient *panel,
+                                   const gchar    *app,
+                                   gint            workspace,
+                                   gboolean        without_chooser);
 
 G_END_DECLS
 

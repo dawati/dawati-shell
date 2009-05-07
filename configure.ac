@@ -65,9 +65,7 @@ PKG_CHECK_MODULES(PENGE,
                   gio-unix-2.0)
 
 PKG_CHECK_MODULES(LIBMNB,
-                  gtk+-2.0 >= 2.14
-		  dbus-glib-1
-                  nbtk-1.0)
+		  dbus-glib-1)
 
 AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
 
