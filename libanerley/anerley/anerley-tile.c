@@ -104,9 +104,9 @@ anerley_tile_update_presence_icon (AnerleyTile *tile,
 
   cache = nbtk_texture_cache_get_default ();
 
-  priv->presence_icon = nbtk_texture_cache_get_texture (cache,
-                                                        path,
-                                                        FALSE);
+  priv->presence_icon = (ClutterActor *)nbtk_texture_cache_get_texture (cache,
+                                                                        path,
+                                                                        FALSE);
   clutter_actor_set_size (priv->presence_icon, 16, 16);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
                                         (ClutterActor *)priv->presence_icon,
@@ -138,7 +138,6 @@ _item_presence_changed_cb (AnerleyItem *item,
   const gchar *tmp;
   const gchar *presence_icon_name;
   gchar *presence_icon_path;
-  GError *error = NULL;
 
   presence_message = anerley_item_get_presence_message (item);
   presence_status = anerley_item_get_presence_status (item);

@@ -80,8 +80,6 @@ static void
 anerley_tile_view_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
-  AnerleyTileViewPrivate *priv = GET_PRIVATE (object);
-
   switch (property_id) {
     case PROP_MODEL:
       nbtk_icon_view_set_model (NBTK_ICON_VIEW (object),
@@ -95,8 +93,6 @@ anerley_tile_view_set_property (GObject *object, guint property_id,
 static void
 anerley_tile_view_dispose (GObject *object)
 {
-  AnerleyTileViewPrivate *priv = GET_PRIVATE (object);
-
   G_OBJECT_CLASS (anerley_tile_view_parent_class)->dispose (object);
 }
 
