@@ -491,6 +491,19 @@ mnb_panel_socket_size_allocate_cb (GtkWidget     *widget,
 }
 
 static void
+mnb_panel_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
+{
+  MnbPanelPrivate *priv = MNB_PANEL (data)->priv;
+
+  priv->proxy = NULL;
+
+  /*
+   * TODO - might want to do something else, like try to restart the service.
+   */
+  clutter_actor_destroy (CLUTTER_ACTOR (data));
+}
+
+static void
 mnb_panel_constructed (GObject *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
@@ -542,6 +555,9 @@ mnb_panel_constructed (GObject *self)
     return;
 
   priv->proxy = proxy;
+
+  g_object_weak_ref (G_OBJECT (proxy),
+                     mnb_panel_dbus_proxy_weak_notify_cb, self);
 
   /*
    * Now call the remote init_panel() method to obtain the panel name, tooltip
