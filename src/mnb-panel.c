@@ -139,6 +139,7 @@ static void
 mnb_panel_request_focus_cb (DBusGProxy *proxy, MnbPanel *panel)
 {
   /* TODO */
+  g_warning ("%s is not implemented", __FUNCTION__);
 }
 
 static void
@@ -161,6 +162,7 @@ mnb_panel_launch_application_cb (DBusGProxy  *proxy,
                                  MnbPanel    *panel)
 {
   /* TODO */
+  g_warning ("%s is not implemented", __FUNCTION__);
 }
 
 static void
