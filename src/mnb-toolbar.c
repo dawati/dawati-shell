@@ -965,6 +965,45 @@ mnb_toolbar_panel_request_icon_cb (MnbPanel    *panel,
                                   (gchar*)icon);
 }
 
+static void
+mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint               index;
+  const gchar       *name;
+
+  if (MNB_IS_SWITCHER (panel))
+    {
+      g_warning ("Cannot remove the Switcher !!!");
+      return;
+    }
+
+  if (MNB_IS_PANEL (panel))
+    {
+      name = mnb_panel_get_name (MNB_PANEL (panel));
+    }
+  else
+    {
+      g_warning ("Unhandled panel type: %s", G_OBJECT_TYPE_NAME (panel));
+      return;
+    }
+
+  index = mnb_toolbar_panel_name_to_index (name);
+
+  if (index < 0)
+    return;
+
+  if (priv->buttons[index])
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
+                                      CLUTTER_ACTOR (priv->buttons[index]));
+
+      priv->buttons[index] = NULL;
+    }
+
+  priv->panels[index] = NULL;
+}
+
 /*
  * Appends a panel
  */
@@ -1081,20 +1120,20 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
     }
 
   g_signal_connect (button, "clicked",
-                    G_CALLBACK (mnb_toolbar_toggle_buttons),
-                    toolbar);
+                    G_CALLBACK (mnb_toolbar_toggle_buttons), toolbar);
 
   g_signal_connect (panel, "show-completed",
                     G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
                     toolbar);
 
   g_signal_connect (panel, "hide-begin",
-                    G_CALLBACK (mnb_toolbar_dropdown_hide_begin_cb),
-                    toolbar);
+                    G_CALLBACK (mnb_toolbar_dropdown_hide_begin_cb), toolbar);
 
   g_signal_connect (panel, "request-icon",
-                    G_CALLBACK (mnb_toolbar_panel_request_icon_cb),
-                    toolbar);
+                    G_CALLBACK (mnb_toolbar_panel_request_icon_cb), toolbar);
+
+  g_signal_connect (panel, "destroy",
+                    G_CALLBACK (mnb_toolbar_panel_destroy_cb), toolbar);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
