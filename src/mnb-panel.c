@@ -144,13 +144,13 @@ mnb_panel_request_focus_cb (DBusGProxy *proxy, MnbPanel *panel)
 static void
 mnb_panel_request_show_cb (DBusGProxy *proxy, MnbPanel *panel)
 {
-  /* TODO */
+  clutter_actor_show (CLUTTER_ACTOR (panel));
 }
 
 static void
 mnb_panel_request_hide_cb (DBusGProxy *proxy, MnbPanel *panel)
 {
-  /* TODO */
+  clutter_actor_hide (CLUTTER_ACTOR (panel));
 }
 
 static void
