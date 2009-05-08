@@ -67,6 +67,10 @@ _connect_button_cb (GtkButton *connect_button,
     cm_service_disconnect (CM_SERVICE (priv->service));
     gtk_widget_set_state (GTK_WIDGET (user_data),
                           GTK_STATE_NORMAL);
+    gtk_widget_set_sensitive (GTK_WIDGET (user_data),
+                              FALSE);
+    gtk_button_set_label (connect_button,
+                          _("Disconnecting"));
   }
   else
   {
@@ -74,6 +78,10 @@ _connect_button_cb (GtkButton *connect_button,
 
     gtk_widget_set_state (GTK_WIDGET (user_data),
                           GTK_STATE_SELECTED);
+    gtk_widget_set_sensitive (GTK_WIDGET (user_data),
+                              FALSE);
+    gtk_button_set_label (connect_button,
+                          _("Connecting"));
 
     if (g_strcmp0 ("none", security) != 0)
     {
@@ -194,6 +202,8 @@ _status_changed_cb (CmService *service,
                           "Connect");
   }
 
+  gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
+                            TRUE);
   gtk_image_set_from_file (GTK_IMAGE (priv->icon),
                            carrick_status_icon_path_for_state (service));
 }
