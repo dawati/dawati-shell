@@ -27,7 +27,8 @@ noinst_PROGRAMS = \
 	test-tray \
 	test-pasteboard \
 	test-screensized \
-	test-panel-gtk
+	test-panel-gtk \
+	test-panel-clutter
 
 test_launcher_button_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-button.c \
@@ -66,9 +67,16 @@ test_panel_gtk_LDADD = \
 	$(MUTTER_PLUGIN_LIBS) \
 	$(top_builddir)/libmnb/libmnbgtk.la
 
-CLEANFILES = test-panel-gtk.service
+test_panel_clutter_SOURCES = \
+	test-panel-clutter.c
+
+test_panel_clutter_LDADD = \
+	$(MUTTER_PLUGIN_LIBS) \
+	$(top_builddir)/libmnb/libmnbclutter.la
+
+CLEANFILES = test-panel-gtk.service test-panel-clutter.service
 
 # dont want this installed, just generated
-BUILT_SOURCES = test-panel-gtk.service
+BUILT_SOURCES = test-panel-gtk.service test-panel-clutter.service
 
 EXTRA_DIST = $(service_in_files)
