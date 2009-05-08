@@ -1098,7 +1098,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
-  clutter_actor_set_width (CLUTTER_ACTOR (panel), screen_width);
 
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
