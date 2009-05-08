@@ -1,4 +1,4 @@
-noinst_PROGRAMS = test-battery-monitor test-brightness-manager test-brightness-slider test-gvc
+noinst_PROGRAMS = test-battery-monitor test-brightness-manager test-brightness-slider test-gvc test-power
 
 AM_CFLAGS = -I$(top_srcdir) \
 	    $(DBUS_GLIB_CFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS) $(PULSE_CFLAGS) $(CANBERRA_CFLAGS)
@@ -19,3 +19,6 @@ test_brightness_slider_SOURCES = test-brightness-slider.c
 test_gvc_SOURCES = test-gvc.c
 test_gvc_LDADD = $(top_builddir)/libgvc/libgvc.la \
 		 $(PULSE_LIBS) $(GLIB_LIBS)
+test_power_SOURCES = test-power.c
+test_power_LDADD = $(top_builddir)/libhal-power-glib/libhal-power-glib.la \
+		   $(DBUS_GLIB_LIBS) $(GLIB_LIBS)
