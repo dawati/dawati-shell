@@ -202,6 +202,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   if (time_remaining == 0 && state == DALSTON_BATTERY_MONITOR_STATE_OTHER)
   {
     gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label), _("Fully charged"));
+    gtk_label_set_markup (GTK_LABEL (priv->battery_secondary_label), "");
   } else {
     label_text = dalston_power_applet_format_time_remaining (time_remaining);
     gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label), label_text);
