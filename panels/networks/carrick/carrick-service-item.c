@@ -159,9 +159,23 @@ _name_changed_cb (CmService *service,
                   gpointer user_data)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
+  gchar *label;
+
+  if (priv->connected)
+  {
+    label = g_strdup_printf ("%s - %s",
+                             cm_service_get_name (service),
+                             _("Connected"));
+  }
+  else
+  {
+    label = g_strdup (cm_service_get_name (service));
+  }
 
   gtk_label_set_text (GTK_LABEL (priv->name_label),
-                      cm_service_get_name (service));
+                      label);
+
+  g_free (label);
 }
 
 void
@@ -184,28 +198,37 @@ _security_changed_cb (CmService *service,
 
 void
 _status_changed_cb (CmService *service,
-                   gpointer user_data)
+                    gpointer user_data)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
   gchar *status = g_strdup (cm_service_get_state (service));
+  gchar *label;
 
   if (g_strcmp0 ("ready", status) == 0)
   {
     priv->connected = TRUE;
     gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                           "Disconnect");
+    label = g_strdup_printf ("%s - %s",
+                             cm_service_get_name (service),
+                             _("Connected"));
   }
   else
   {
     priv->connected = FALSE;
     gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                           "Connect");
+    label = g_strdup (cm_service_get_name (service));
   }
+
+  gtk_label_set_text (GTK_LABEL (priv->name_label),
+                      label);
 
   gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                             TRUE);
   gtk_image_set_from_file (GTK_IMAGE (priv->icon),
                            carrick_status_icon_path_for_state (service));
+  g_free (label);
 }
 
 static void
