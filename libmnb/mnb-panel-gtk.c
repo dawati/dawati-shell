@@ -89,7 +89,7 @@ mnb_panel_gtk_set_size (MnbPanelClient *self, guint width, guint height)
 
   g_debug ("Setting panel window size to %dx%d", width, height);
 
-  gtk_window_resize (GTK_WINDOW (window), width, height);
+  gtk_widget_set_size_request (window, width, height);
 }
 
 static void
@@ -117,6 +117,23 @@ mnb_panel_gtk_init (MnbPanelGtk *self)
   priv = self->priv = MNB_PANEL_GTK_GET_PRIVATE (self);
 }
 
+static gboolean
+mnb_panel_gtk_window_delete_event_cb (GtkWidget *window,
+                                      GdkEvent  *event,
+                                      gpointer   data)
+{
+  /*
+   * Ensure the config window will be visible the next time we need it.
+   */
+  g_debug ("delete-event: interupting");
+  gtk_widget_show (window);
+
+  /*
+   * Returning TRUE here stops the widget from getting destroyed.
+   */
+  return TRUE;
+}
+
 static void
 mnb_panel_gtk_constructed (GObject *self)
 {
@@ -129,6 +146,9 @@ mnb_panel_gtk_constructed (GObject *self)
   priv->window = window = gtk_plug_new (0);
 
   gtk_widget_show (window);
+
+  g_signal_connect (window, "delete-event",
+                    G_CALLBACK (mnb_panel_gtk_window_delete_event_cb), self);
 
   g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
 }
