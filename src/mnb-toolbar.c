@@ -1138,6 +1138,8 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
 
+  priv->panels[index] = panel;
+
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
@@ -1844,5 +1846,27 @@ mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled)
   MnbToolbarPrivate *priv = toolbar->priv;
 
   priv->disabled = disabled;
+}
+
+MnbPanel *
+mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint i;
+
+  for (i = 0; i < NUM_ZONES; ++i)
+    {
+      MnbPanel *panel = (MnbPanel*) priv->panels[i];
+
+      if (!panel || !MNB_IS_PANEL (panel))
+        continue;
+
+      if (xid == mnb_panel_get_xid (panel))
+        {
+          return panel;
+        }
+    }
+
+  return NULL;
 }
 

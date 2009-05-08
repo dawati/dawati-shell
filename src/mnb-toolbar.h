@@ -71,6 +71,8 @@ void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);
 
 void mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled);
 
+MnbPanel * mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid);
+
 G_END_DECLS
 
 #endif /* _MNB_TOOLBAR */
