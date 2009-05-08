@@ -1,4 +1,7 @@
 
+%.service: %.service.in ../config.log
+	sed -e "s|\@dir\@|$(abs_builddir)|" $< > $@
+
 AM_CPPFLAGS = \
   $(MUTTER_PLUGIN_CFLAGS) \
   -I$(top_srcdir)/penge \
@@ -58,6 +61,14 @@ test_screensized_SOURCES = \
 
 test_panel_SOURCES = \
 	test-panel.c
+
 test_panel_LDADD = \
 	$(MUTTER_PLUGIN_LIBS) \
 	$(top_builddir)/libmnb/libmnbgtk.la
+
+CLEANFILES = test-panel.service
+
+# dont want this installed, just generated
+BUILT_SOURCES = test-panel.service
+
+EXTRA_DIST = $(service_in_files)
