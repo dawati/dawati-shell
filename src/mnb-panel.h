@@ -69,7 +69,7 @@ MnbPanel *mnb_panel_new (MutterPlugin *plugin,
                          guint         width,
                          guint         height);
 
-void mnb_panel_set_mutter_window (MnbPanel *panel, MutterWindow *mcw);
+void mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw);
 
 const gchar *mnb_panel_get_name    (MnbPanel *panel);
 const gchar *mnb_panel_get_tooltip (MnbPanel *panel);

@@ -32,6 +32,8 @@
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
+#include <gtk/gtk.h>
+#include <gdk/gdkx.h>
 
 G_DEFINE_TYPE (MnbPanel, mnb_panel, MNB_TYPE_DROP_DOWN)
 
@@ -71,6 +73,9 @@ struct _MnbPanelPrivate
   gchar           *name;
   gchar           *tooltip;
   guint            xid;
+  guint            child_xid;
+
+  GtkWidget       *window;
 
   guint            width;
   guint            height;
@@ -161,8 +166,15 @@ mnb_panel_launch_application_cb (DBusGProxy  *proxy,
 static void
 mnb_panel_dispose (GObject *self)
 {
-  MnbPanelPrivate *priv  = MNB_PANEL (self)->priv;
-  DBusGProxy      *proxy = priv->proxy;
+  MnbPanelPrivate *priv   = MNB_PANEL (self)->priv;
+  DBusGProxy      *proxy  = priv->proxy;
+  GtkWidget       *window = priv->window;
+
+  if (priv->window)
+    {
+      priv->window = NULL;
+      gtk_widget_destroy (window);
+    }
 
   if (proxy)
     {
@@ -188,7 +200,7 @@ mnb_panel_dispose (GObject *self)
 
   if (priv->dbus_conn)
     {
-      g_object_unref (priv->dbus_conn);
+      dbus_g_connection_unref (priv->dbus_conn);
       priv->dbus_conn = NULL;
     }
 
@@ -209,18 +221,20 @@ mnb_panel_finalize (GObject *object)
 
 #include "mnb-panel-dbus-bindings.h"
 
+/*
+ * Instead of showing the actor here, we show the associated window.
+ * This triggers call to mnb_panel_show_mutter_window() which then takes
+ * care of the actual chaining up to our parent show().
+ */
 static void
 mnb_panel_show (ClutterActor *actor)
 {
   MnbPanelPrivate *priv = MNB_PANEL (actor)->priv;
 
-  if (!priv->mcw)
+  if (!priv->mcw && priv->window)
     {
-      g_signal_stop_emission_by_name (actor, "show");
-      return;
+      gtk_widget_show_all (priv->window);
     }
-
-  CLUTTER_ACTOR_CLASS (mnb_panel_parent_class)->show (actor);
 }
 
 static gboolean
@@ -243,7 +257,13 @@ mnb_panel_dbus_show_begin (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_show_begin (priv->proxy, error);
+  if (! com_intel_Mnb_Panel_show_begin (priv->proxy, error))
+    {
+      g_warning ("ShowBegin failed");
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
 static gboolean
@@ -399,7 +419,9 @@ mnb_panel_hide_begin (MnbDropDown *self)
 static void
 mnb_panel_hide_completed (MnbDropDown *self)
 {
-  GError *error = NULL;
+  MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
+  GError          *error = NULL;
+  GtkWidget       *window = priv->window;
 
   if (!mnb_panel_dbus_hide_end (MNB_PANEL (self), &error))
     {
@@ -411,6 +433,8 @@ mnb_panel_hide_completed (MnbDropDown *self)
       else
         g_warning ("%s: Unknown error.", __FUNCTION__);
     }
+
+  gtk_widget_hide (window);
 }
 
 static DBusGConnection *
@@ -432,6 +456,34 @@ mnb_panel_connect_to_dbus ()
 }
 
 static void
+mnb_panel_socket_size_allocate_cb (GtkWidget     *widget,
+                                   GtkAllocation *allocation,
+                                   gpointer       data)
+{
+  GtkSocket *socket = GTK_SOCKET (widget);
+
+  if (!socket->is_mapped)
+    {
+      g_debug ("socket deallocated");
+    }
+  else
+    {
+      MnbPanelPrivate *priv = MNB_PANEL (data)->priv;
+      gfloat x = 0, y = 0;
+
+      g_debug ("socket allocated %d,%d;%dx%d",
+               allocation->x,
+               allocation->y,
+               allocation->width,
+               allocation->height);
+
+      clutter_actor_get_position (CLUTTER_ACTOR (data), &x, &y);
+
+      gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
+    }
+}
+
+static void
 mnb_panel_constructed (GObject *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
@@ -442,6 +494,9 @@ mnb_panel_constructed (GObject *self)
   gchar           *tooltip;
   gchar           *dbus_name;
   GError          *error = NULL;
+  GtkWidget       *socket;
+  GtkWidget       *window;
+
 
   /*
    * Make sure our parent gets chance to do what it needs to.
@@ -536,14 +591,30 @@ mnb_panel_constructed (GObject *self)
                                G_CALLBACK (mnb_panel_launch_application_cb),
                                self, NULL);
 
-  priv->name    = name;
-  priv->tooltip = tooltip;
-  priv->xid     = xid;
+  priv->name      = name;
+  priv->tooltip   = tooltip;
+  priv->child_xid = xid;
 
-  /*
-   * TODO -- do something with the xid here, see how the tray manager is
-   * done.
-   */
+  socket = gtk_socket_new ();
+  priv->window = window = gtk_window_new (GTK_WINDOW_POPUP);
+
+  gtk_window_resize (GTK_WINDOW (window), priv->width, priv->height);
+  gtk_window_move (GTK_WINDOW (window), 0, 64);
+
+  gtk_container_add (GTK_CONTAINER (window), socket);
+  gtk_widget_realize (socket);
+  gtk_socket_add_id (GTK_SOCKET (socket), xid);
+
+  if (!GTK_SOCKET (socket)->is_mapped)
+    g_warning ("Socket is not mapped !!!");
+
+  g_signal_connect (socket, "size-allocate",
+                    G_CALLBACK (mnb_panel_socket_size_allocate_cb),
+                    self);
+
+  gtk_widget_realize (window);
+
+  priv->xid = GDK_WINDOW_XWINDOW (window->window);
 
   /*
    * Set the constructed flag, so we can check everything went according to
@@ -594,17 +665,15 @@ mnb_panel_get_tooltip (MnbPanel *panel)
 static void
 mnb_panel_mutter_window_destroy_cb (ClutterActor *actor, gpointer data)
 {
-  ClutterActor *panel = CLUTTER_ACTOR (data);
-  ClutterActor *parent = clutter_actor_get_parent (panel);
+  MnbPanelPrivate *priv = MNB_PANEL (data)->priv;
 
-  if (CLUTTER_IS_CONTAINER (parent))
-    clutter_container_remove_actor (CLUTTER_CONTAINER (parent), panel);
-  else
-    clutter_actor_unparent (panel);
+  priv->mcw = NULL;
+
+  clutter_actor_hide (CLUTTER_ACTOR (data));
 }
 
 void
-mnb_panel_set_mutter_window (MnbPanel *panel, MutterWindow *mcw)
+mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw)
 {
   MnbPanelPrivate *priv    = panel->priv;
   ClutterActor    *texture;
@@ -625,6 +694,12 @@ mnb_panel_set_mutter_window (MnbPanel *panel, MutterWindow *mcw)
       return;
     }
 
+  if (mcw == priv->mcw)
+    {
+      g_debug ("Window already handled.");
+      return;
+    }
+
   texture = mutter_window_get_texture (mcw);
 
   priv->mcw = mcw;
@@ -641,6 +716,8 @@ mnb_panel_set_mutter_window (MnbPanel *panel, MutterWindow *mcw)
   g_object_set (mcw, "no-shadow", TRUE, NULL);
 
   clutter_actor_hide (CLUTTER_ACTOR (mcw));
+
+  CLUTTER_ACTOR_CLASS (mnb_panel_parent_class)->show (CLUTTER_ACTOR (panel));
 }
 
 guint
