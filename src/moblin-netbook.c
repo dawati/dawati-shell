@@ -827,11 +827,25 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
    */
   if (mutter_window_is_override_redirect (mcw))
     {
-      Window      xwin = mutter_window_get_x_window (mcw);
+      Window      xwin    = mutter_window_get_x_window (mcw);
       MnbToolbar *toolbar = MNB_TOOLBAR (priv->toolbar);
+      MnbPanel   *panel   = mnb_toolbar_find_panel_for_xid (toolbar, xwin);
 
-      if (mnb_toolbar_is_tray_config_window (toolbar, xwin))
+      if (panel)
+        {
+          g_debug ("@@@ setting mutter window for panel %s @@@",
+                   mnb_panel_get_name (panel));
+          mnb_panel_show_mutter_window (panel, mcw);
+          mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+        }
+#if 1
+      /*
+       * TODO -- this should go once we convert our applets to the
+       * new dbus API.
+       */
+      else if (mnb_toolbar_is_tray_config_window (toolbar, xwin))
         mnb_toolbar_append_tray_window (toolbar, mcw);
+#endif
       else
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 
