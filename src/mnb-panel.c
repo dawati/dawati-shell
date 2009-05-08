@@ -390,7 +390,13 @@ mnb_panel_show_begin (MnbDropDown *self)
 static void
 mnb_panel_show_completed (MnbDropDown *self)
 {
-  GError *error = NULL;
+  MnbPanelPrivate *priv  = MNB_PANEL (self)->priv;
+  GError          *error = NULL;
+  gfloat           x = 0, y = 0;
+
+  clutter_actor_get_position (CLUTTER_ACTOR (self), &x, &y);
+
+  gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
 
   if (!mnb_panel_dbus_show_end (MNB_PANEL (self), &error))
     {
