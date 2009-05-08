@@ -123,15 +123,28 @@ mnb_panel_gtk_window_delete_event_cb (GtkWidget *window,
                                       gpointer   data)
 {
   /*
-   * Ensure the config window will be visible the next time we need it.
+   * Ensure the config window will be available.
    */
   g_debug ("delete-event: interupting");
-  gtk_widget_show (window);
+  gtk_widget_hide (window);
 
   /*
    * Returning TRUE here stops the widget from getting destroyed.
    */
   return TRUE;
+}
+
+static void
+mnb_panel_gtk_embedded_cb (GtkWidget *widget, GParamSpec *pspec, gpointer data)
+{
+  gboolean embedded;
+
+  g_object_get (widget, "embedded", &embedded, NULL);
+
+  if (embedded)
+    gtk_widget_show (widget);
+  else
+    gtk_widget_hide (widget);
 }
 
 static void
@@ -145,10 +158,13 @@ mnb_panel_gtk_constructed (GObject *self)
 
   priv->window = window = gtk_plug_new (0);
 
-  gtk_widget_show (window);
+  gtk_widget_realize (window);
 
   g_signal_connect (window, "delete-event",
                     G_CALLBACK (mnb_panel_gtk_window_delete_event_cb), self);
+
+  g_signal_connect (window, "notify::embedded",
+                    G_CALLBACK (mnb_panel_gtk_embedded_cb), self);
 
   g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
 }
