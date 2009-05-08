@@ -5,6 +5,8 @@
 #include "penge-magic-texture.h"
 #include "penge-utils.h"
 
+#include <glib/gi18n.h>
+
 G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -148,9 +150,10 @@ penge_recent_file_tile_constructed (GObject *object)
   ClutterActor *tex;
   GError *error = NULL;
   GFile *file;
-  GFileInfo *info;
   const gchar *content_type;
   gchar *type_description;
+  const gchar *uri;
+  GFileInfo *info;
 
   tex = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
                       NULL);
@@ -173,44 +176,60 @@ penge_recent_file_tile_constructed (GObject *object)
                                  2,
                                  NULL);
 
-    file = g_file_new_for_uri (gtk_recent_info_get_uri (priv->info));
-    info = g_file_query_info (file,
-                              G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
-                              ","
-                              G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-                              G_FILE_QUERY_INFO_NONE,
-                              NULL,
-                              &error);
+    uri = gtk_recent_info_get_uri (priv->info);
 
-    if (!info)
+    if (g_str_has_prefix (uri, "file:/"))
     {
-      g_warning (G_STRLOC ": Error getting file info: %s",
-                 error->message);
-      g_clear_error (&error);
-    } else {
-      nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
-                           g_file_info_get_display_name (info));
+      file = g_file_new_for_uri (uri);
+      info = g_file_query_info (file,
+                                G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
+                                ","
+                                G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                                G_FILE_QUERY_INFO_NONE,
+                                NULL,
+                                &error);
 
-      content_type = g_file_info_get_content_type (info);
-      type_description = g_content_type_get_description (content_type);
-      nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
-                           type_description);
-      g_free (type_description);
+      if (!info)
+      {
+        g_warning (G_STRLOC ": Error getting file info: %s",
+                   error->message);
+        g_clear_error (&error);
+      } else {
+        nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
+                             g_file_info_get_display_name (info));
 
-      /* Do this afterwards so that is is on top of the image */
-      nbtk_table_add_actor (NBTK_TABLE (object),
-                            (ClutterActor *)priv->details_overlay,
-                            1,
-                            0);
-      clutter_container_child_set (CLUTTER_CONTAINER (object),
-                                   (ClutterActor *)priv->details_overlay,
-                                   "y-expand",
-                                   FALSE,
-                                   NULL);
+        content_type = g_file_info_get_content_type (info);
+        type_description = g_content_type_get_description (content_type);
+        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                             type_description);
+        g_free (type_description);
+      }
 
       g_object_unref (info);
       g_object_unref (file);
+    } else {
+      nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
+                           gtk_recent_info_get_display_name (priv->info));
+      if (g_str_has_prefix (uri, "http"))
+      {
+        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                             _("Web page"));
+      } else {
+        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                             "");
+      }
     }
+
+    /* Do this afterwards so that is is on top of the image */
+    nbtk_table_add_actor (NBTK_TABLE (object),
+                          (ClutterActor *)priv->details_overlay,
+                          1,
+                          0);
+    clutter_container_child_set (CLUTTER_CONTAINER (object),
+                                 (ClutterActor *)priv->details_overlay,
+                                 "y-expand",
+                                 FALSE,
+                                 NULL);
   }
 
   g_signal_connect (object, 
