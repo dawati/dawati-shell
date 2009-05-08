@@ -506,6 +506,8 @@ mnb_panel_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
   MnbPanelPrivate *priv  = panel->priv;
   gchar           *name;
 
+  g_debug ("Panel died; trying to restart");
+
   priv->proxy = NULL;
 
   name = g_strdup (mnb_panel_get_name (panel));
@@ -522,42 +524,15 @@ mnb_panel_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
 }
 
 static gboolean
-mnb_panel_setup_proxy (MnbPanel *panel)
+mnb_panel_init_owner (MnbPanel *panel)
 {
   MnbPanelPrivate *priv = panel->priv;
-  DBusGProxy      *proxy;
   guint            xid;
   gchar           *name;
   gchar           *tooltip;
-  gchar           *dbus_name;
   GError          *error = NULL;
   GtkWidget       *socket;
   GtkWidget       *window;
-
-  /*
-   * Set up the proxy to the remote object; we mandate that the remote object
-   * name must match the provided path exactly, except for the '/' being
-   * replaced with '.'. The object must implement the com.intel.Mnb.Panel
-   * interface.
-   */
-  dbus_name = g_strdup (priv->dbus_path + 1);
-
-  g_strdelimit (dbus_name, "/", '.');
-
-  proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
-                                     dbus_name,
-                                     priv->dbus_path,
-                                     "com.intel.Mnb.Panel");
-
-  g_free (dbus_name);
-
-  if (!proxy)
-    return FALSE;
-
-  priv->proxy = proxy;
-
-  g_object_weak_ref (G_OBJECT (proxy),
-                     mnb_panel_dbus_proxy_weak_notify_cb, panel);
 
   /*
    * Now call the remote init_panel() method to obtain the panel name, tooltip
@@ -577,6 +552,94 @@ mnb_panel_setup_proxy (MnbPanel *panel)
 
       return FALSE;
     }
+
+
+  if (priv->name)
+    g_free (priv->name);
+
+  priv->name = name;
+
+  if (priv->tooltip)
+    g_free (priv->tooltip);
+
+  priv->tooltip = tooltip;
+
+  priv->child_xid = xid;
+
+  if (priv->window)
+    gtk_widget_destroy (priv->window);
+
+  socket = gtk_socket_new ();
+  priv->window = window = gtk_window_new (GTK_WINDOW_POPUP);
+
+  gtk_window_resize (GTK_WINDOW (window), priv->width, priv->height);
+  gtk_window_move (GTK_WINDOW (window), 0, 64);
+
+  gtk_container_add (GTK_CONTAINER (window), socket);
+  gtk_widget_realize (socket);
+  gtk_socket_add_id (GTK_SOCKET (socket), xid);
+
+  if (!GTK_SOCKET (socket)->is_mapped)
+    g_warning ("Socket is not mapped !!!");
+
+  g_signal_connect (socket, "size-allocate",
+                    G_CALLBACK (mnb_panel_socket_size_allocate_cb),
+                    panel);
+
+  gtk_widget_realize (window);
+
+  priv->xid = GDK_WINDOW_XWINDOW (window->window);
+}
+
+static void
+mnb_panel_proxy_owner_changed_cb (DBusGProxy *proxy,
+                                  const char *name,
+                                  const char *old,
+                                  const char *new,
+                                  gpointer    data)
+{
+  g_debug ("Proxy %s owner changed (old %, new %s).",
+           name, old, new);
+
+  mnb_panel_init_owner (MNB_PANEL (data));
+}
+
+static gboolean
+mnb_panel_setup_proxy (MnbPanel *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+  DBusGProxy      *proxy;
+  gchar           *dbus_name;
+
+  /*
+   * Set up the proxy to the remote object; we mandate that the remote object
+   * name must match the provided path exactly, except for the '/' being
+   * replaced with '.'. The object must implement the com.intel.Mnb.Panel
+   * interface.
+   */
+  dbus_name = g_strdup (priv->dbus_path + 1);
+
+  g_strdelimit (dbus_name, "/", '.');
+
+  proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
+                                     dbus_name,
+                                     priv->dbus_path,
+                                     "com.intel.Mnb.Panel");
+
+  g_free (dbus_name);
+
+  if (!proxy)
+    {
+      g_warning ("Unable to create proxy for % (reason unknown)",
+                 priv->dbus_path);
+
+      return FALSE;
+    }
+
+  priv->proxy = proxy;
+
+  g_object_weak_ref (G_OBJECT (proxy),
+                     mnb_panel_dbus_proxy_weak_notify_cb, panel);
 
   /*
    * Hook up to the signals the interface defines.
@@ -614,43 +677,19 @@ mnb_panel_setup_proxy (MnbPanel *panel)
                                G_CALLBACK (mnb_panel_launch_application_cb),
                                panel, NULL);
 
-  if (priv->name)
-    g_free (priv->name);
+  dbus_g_proxy_add_signal (proxy, "NameOwnerChanged",
+                           G_TYPE_STRING,
+                           G_TYPE_STRING,
+                           G_TYPE_STRING,
+                           G_TYPE_INVALID);
 
-  priv->name = name;
+  dbus_g_proxy_connect_signal (proxy, "NameOwnerChanged",
+                               G_CALLBACK (mnb_panel_proxy_owner_changed_cb),
+                               panel, NULL);
 
-  if (priv->tooltip)
-    g_free (priv->tooltip);
 
-  priv->tooltip = tooltip;
 
-  priv->child_xid = xid;
-
-  if (priv->window)
-    gtk_widget_destroy (priv->window);
-
-  socket = gtk_socket_new ();
-  priv->window = window = gtk_window_new (GTK_WINDOW_POPUP);
-
-  gtk_window_resize (GTK_WINDOW (window), priv->width, priv->height);
-  gtk_window_move (GTK_WINDOW (window), 0, 64);
-
-  gtk_container_add (GTK_CONTAINER (window), socket);
-  gtk_widget_realize (socket);
-  gtk_socket_add_id (GTK_SOCKET (socket), xid);
-
-  if (!GTK_SOCKET (socket)->is_mapped)
-    g_warning ("Socket is not mapped !!!");
-
-  g_signal_connect (socket, "size-allocate",
-                    G_CALLBACK (mnb_panel_socket_size_allocate_cb),
-                    panel);
-
-  gtk_widget_realize (window);
-
-  priv->xid = GDK_WINDOW_XWINDOW (window->window);
-
-  return TRUE;
+  return mnb_panel_init_owner (panel);
 }
 
 static void
