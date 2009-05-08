@@ -419,18 +419,28 @@ chooser_keyboard_input_cb (ClutterActor *self,
 static ClutterActor *
 make_spinner (void)
 {
-  ClutterActor *spinner;
+  static ClutterActor *tmp = NULL;
+
+  ClutterActor *spinner = NULL;
+
   guint         s_w, s_h;
 
   static ClutterBehaviour *beh = NULL;
 
-  spinner = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                           "/theme/generic/spinner.png", NULL);
+  if (tmp == NULL)
+    {
+      tmp = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                               "/theme/generic/spinner.png", 
+                                               NULL);
 
-  if (!spinner)
-    return NULL;
+      if (!tmp)
+        return NULL;
 
-  clutter_actor_realize (spinner);
+      clutter_actor_realize (tmp);
+    }
+
+  spinner = clutter_clone_new (tmp);
+
   clutter_actor_get_size (spinner, &s_w, &s_h);
 
   clutter_actor_set_anchor_point (spinner, s_w/2, s_h/2);
@@ -465,19 +475,42 @@ static ClutterActor *
 make_background (const gchar *text, guint width, guint height,
                  gboolean selected, gboolean with_spinner)
 {
+  static ClutterActor *space_sel = NULL, *space_unsel = NULL, 
+                      *thumb_sel = NULL, *thumb_unsel = NULL;
   ClutterActor *group, *bck, *label_actor;
   ClutterText *label;
   ClutterColor  white = { 0xff, 0xff, 0xff, 0xff };
   guint         l_w, l_h;
 
+
+  if (space_sel == NULL && space_unsel == NULL
+      && thumb_sel == NULL && thumb_unsel == NULL)
+    {
+      space_sel = clutter_texture_new_from_file 
+                          (PLUGIN_PKGDATADIR
+                           "/theme/chooser/space-selected.png", NULL);
+      space_unsel = clutter_texture_new_from_file 
+                          (PLUGIN_PKGDATADIR
+                           "/theme/chooser/space-unselected.png", NULL);
+      thumb_sel = clutter_texture_new_from_file 
+                          (PLUGIN_PKGDATADIR
+                           "/theme/chooser/thumb-selected.png",NULL);
+      thumb_unsel = clutter_texture_new_from_file 
+                          (PLUGIN_PKGDATADIR
+                           "/theme/chooser/thumb-unselected.png", NULL);
+
+      g_object_ref (space_sel);
+      g_object_ref (space_unsel);
+      g_object_ref (thumb_sel);
+      g_object_ref (thumb_unsel);
+    }
+
   group = clutter_group_new ();
 
   if (selected)
-    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                         "/theme/chooser/space-selected.png", NULL);
+    bck = space_sel;
   else
-    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                         "/theme/chooser/space-unselected.png", NULL);
+    bck = space_unsel;
 
   if (bck)
     {
@@ -487,19 +520,14 @@ make_background (const gchar *text, guint width, guint height,
 
       clutter_actor_set_size (frame, width, WORKSPACE_CHOOSER_LABEL_HEIGHT);
 
-      g_object_unref (bck);
       clutter_container_add_actor (CLUTTER_CONTAINER (group), frame);
     }
 
 
   if (selected)
-    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                         "/theme/chooser/thumb-selected.png",
-                                         NULL);
+    bck =  clutter_clone_new (thumb_sel);
   else
-    bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                         "/theme/chooser/thumb-unselected.png",
-                                         NULL);
+    bck =  clutter_clone_new (thumb_unsel);
 
   if (bck)
     {
@@ -817,10 +845,12 @@ void
 show_workspace_chooser (MutterPlugin *plugin,
                         const gchar * sn_id, guint32 timestamp)
 {
+  static ClutterActor *bck = NULL;
+  ClutterActor *frame = NULL;
+
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterActor               *overlay;
   ClutterActor               *switcher;
-  ClutterActor               *bck, *frame;
   ClutterActor               *grid;
   ClutterActor               *label;
   gint                        screen_width, screen_height;
@@ -833,16 +863,16 @@ show_workspace_chooser (MutterPlugin *plugin,
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   switcher = clutter_group_new ();
-  bck =clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                      "/theme/chooser/background.png", NULL);
+  
+  if (bck == NULL)
+    {
+      bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                           "/theme/chooser/background.png", 
+                                           NULL);
+      g_object_ref (bck);       /* extra ref to keep it around.. */
+    }
 
   frame = nbtk_texture_frame_new (CLUTTER_TEXTURE (bck), 15, 15, 15, 15);
-
-  /*
-   * Release the original pixmap, so we do not leak.
-   * TODO -- check this is legal.
-   */
-  g_object_unref (bck);
 
   clutter_actor_set_position (frame,
                               -(WORKSPACE_CHOOSER_BORDER_LEFT +
