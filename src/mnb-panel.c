@@ -40,11 +40,12 @@ G_DEFINE_TYPE (MnbPanel, mnb_panel, MNB_TYPE_DROP_DOWN)
 #define MNB_PANEL_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PANEL, MnbPanelPrivate))
 
-static void mnb_panel_constructed    (GObject *self);
-static void mnb_panel_show_begin     (MnbDropDown *self);
-static void mnb_panel_show_completed (MnbDropDown *self);
-static void mnb_panel_hide_begin     (MnbDropDown *self);
-static void mnb_panel_hide_completed (MnbDropDown *self);
+static void     mnb_panel_constructed    (GObject *self);
+static void     mnb_panel_show_begin     (MnbDropDown *self);
+static void     mnb_panel_show_completed (MnbDropDown *self);
+static void     mnb_panel_hide_begin     (MnbDropDown *self);
+static void     mnb_panel_hide_completed (MnbDropDown *self);
+static gboolean mnb_panel_setup_proxy    (MnbPanel *panel);
 
 enum
 {
@@ -501,21 +502,29 @@ mnb_panel_socket_size_allocate_cb (GtkWidget     *widget,
 static void
 mnb_panel_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
 {
-  MnbPanelPrivate *priv = MNB_PANEL (data)->priv;
+  MnbPanel        *panel = MNB_PANEL (data);
+  MnbPanelPrivate *priv  = panel->priv;
+  gchar           *name;
 
   priv->proxy = NULL;
 
+  name = g_strdup (mnb_panel_get_name (panel));
+
   /*
-   * TODO - might want to do something else, like try to restart the service.
+   * The panel probably crashed; try to restart it, if we fail, just
+   * destroy this panel.
    */
-  clutter_actor_destroy (CLUTTER_ACTOR (data));
+  if (!mnb_panel_setup_proxy (panel))
+    {
+      g_warning ("Unable to restart Panel process '%s'.", name);
+      clutter_actor_destroy (CLUTTER_ACTOR (data));
+    }
 }
 
-static void
-mnb_panel_constructed (GObject *self)
+static gboolean
+mnb_panel_setup_proxy (MnbPanel *panel)
 {
-  MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
-  DBusGConnection *conn;
+  MnbPanelPrivate *priv = panel->priv;
   DBusGProxy      *proxy;
   guint            xid;
   gchar           *name;
@@ -524,23 +533,6 @@ mnb_panel_constructed (GObject *self)
   GError          *error = NULL;
   GtkWidget       *socket;
   GtkWidget       *window;
-
-
-  /*
-   * Make sure our parent gets chance to do what it needs to.
-   */
-  if (G_OBJECT_CLASS (mnb_panel_parent_class)->constructed)
-    G_OBJECT_CLASS (mnb_panel_parent_class)->constructed (self);
-
-  if (!priv->dbus_path)
-    return;
-
-  conn = mnb_panel_connect_to_dbus ();
-
-  if (!conn)
-    return;
-
-  priv->dbus_conn = conn;
 
   /*
    * Set up the proxy to the remote object; we mandate that the remote object
@@ -552,7 +544,7 @@ mnb_panel_constructed (GObject *self)
 
   g_strdelimit (dbus_name, "/", '.');
 
-  proxy = dbus_g_proxy_new_for_name (conn,
+  proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
                                      dbus_name,
                                      priv->dbus_path,
                                      "com.intel.Mnb.Panel");
@@ -560,18 +552,18 @@ mnb_panel_constructed (GObject *self)
   g_free (dbus_name);
 
   if (!proxy)
-    return;
+    return FALSE;
 
   priv->proxy = proxy;
 
   g_object_weak_ref (G_OBJECT (proxy),
-                     mnb_panel_dbus_proxy_weak_notify_cb, self);
+                     mnb_panel_dbus_proxy_weak_notify_cb, panel);
 
   /*
    * Now call the remote init_panel() method to obtain the panel name, tooltip
    * and xid.
    */
-  if (!mnb_panel_dbus_init_panel (MNB_PANEL (self), priv->width, priv->height,
+  if (!mnb_panel_dbus_init_panel (panel, priv->width, priv->height,
                                   &name, &xid, &tooltip, &error))
     {
       g_critical ("Panel initialization for %s failed!",
@@ -583,7 +575,7 @@ mnb_panel_constructed (GObject *self)
           g_error_free (error);
         }
 
-      return;
+      return FALSE;
     }
 
   /*
@@ -592,17 +584,17 @@ mnb_panel_constructed (GObject *self)
   dbus_g_proxy_add_signal (proxy, "RequestShow", G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestShow",
                                G_CALLBACK (mnb_panel_request_show_cb),
-                               self, NULL);
+                               panel, NULL);
 
   dbus_g_proxy_add_signal (proxy, "RequestHide", G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestHide",
                                G_CALLBACK (mnb_panel_request_hide_cb),
-                               self, NULL);
+                               panel, NULL);
 
   dbus_g_proxy_add_signal (proxy, "RequestFocus", G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestFocus",
                                G_CALLBACK (mnb_panel_request_focus_cb),
-                               self, NULL);
+                               panel, NULL);
 
   dbus_g_object_register_marshaller (
                                moblin_netbook_marshal_VOID__STRING_INT_BOOLEAN,
@@ -620,11 +612,22 @@ mnb_panel_constructed (GObject *self)
 
   dbus_g_proxy_connect_signal (proxy, "LaunchApplication",
                                G_CALLBACK (mnb_panel_launch_application_cb),
-                               self, NULL);
+                               panel, NULL);
 
-  priv->name      = name;
-  priv->tooltip   = tooltip;
+  if (priv->name)
+    g_free (priv->name);
+
+  priv->name = name;
+
+  if (priv->tooltip)
+    g_free (priv->tooltip);
+
+  priv->tooltip = tooltip;
+
   priv->child_xid = xid;
+
+  if (priv->window)
+    gtk_widget_destroy (priv->window);
 
   socket = gtk_socket_new ();
   priv->window = window = gtk_window_new (GTK_WINDOW_POPUP);
@@ -641,11 +644,39 @@ mnb_panel_constructed (GObject *self)
 
   g_signal_connect (socket, "size-allocate",
                     G_CALLBACK (mnb_panel_socket_size_allocate_cb),
-                    self);
+                    panel);
 
   gtk_widget_realize (window);
 
   priv->xid = GDK_WINDOW_XWINDOW (window->window);
+
+  return TRUE;
+}
+
+static void
+mnb_panel_constructed (GObject *self)
+{
+  MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
+  DBusGConnection *conn;
+
+  /*
+   * Make sure our parent gets chance to do what it needs to.
+   */
+  if (G_OBJECT_CLASS (mnb_panel_parent_class)->constructed)
+    G_OBJECT_CLASS (mnb_panel_parent_class)->constructed (self);
+
+  if (!priv->dbus_path)
+    return;
+
+  conn = mnb_panel_connect_to_dbus ();
+
+  if (!conn)
+    return;
+
+  priv->dbus_conn = conn;
+
+  if (!mnb_panel_setup_proxy (MNB_PANEL (self)))
+    return;
 
   /*
    * Set the constructed flag, so we can check everything went according to
