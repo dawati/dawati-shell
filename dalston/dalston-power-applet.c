@@ -165,7 +165,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
     icon_state = BATTERY_ICON_STATE_CHARGE_25;
   } else if (percentage >= 50 && percentage < 75){
     icon_state = BATTERY_ICON_STATE_CHARGE_50;
-  } else if (percentage >= 75 && percentage < 100){
+  } else if (percentage >= 75 && percentage < 90){
     icon_state = BATTERY_ICON_STATE_CHARGE_75;
   } else {
     icon_state = BATTERY_ICON_STATE_CHARGE_100;
@@ -191,7 +191,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   } else if (percentage >= 50 && percentage < 75){
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_50);
-  } else if (percentage >= 75 && percentage < 100){
+  } else if (percentage >= 75 && percentage < 90){
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_75);
   } else {
@@ -199,7 +199,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_100);
   }
 
-  if (time_remaining== 0 && state == DALSTON_BATTERY_MONITOR_STATE_OTHER)
+  if (time_remaining == 0 && state == DALSTON_BATTERY_MONITOR_STATE_OTHER)
   {
     gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label), _("Fully charged"));
   } else {
