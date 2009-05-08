@@ -221,20 +221,23 @@ mnb_panel_finalize (GObject *object)
 
 #include "mnb-panel-dbus-bindings.h"
 
-/*
- * Instead of showing the actor here, we show the associated window.
- * This triggers call to mnb_panel_show_mutter_window() which then takes
- * care of the actual chaining up to our parent show().
- */
 static void
 mnb_panel_show (ClutterActor *actor)
 {
   MnbPanelPrivate *priv = MNB_PANEL (actor)->priv;
 
-  if (!priv->mcw && priv->window)
+  if (!priv->mcw)
     {
-      gtk_widget_show_all (priv->window);
+      /*
+       * Instead of showing the actor here, we show the associated window.  This
+       * triggers call to mnb_panel_show_mutter_window() which then takes care
+       * of the actual chaining up to our parent show().
+       */
+      if (priv->window)
+        gtk_widget_show_all (priv->window);
     }
+  else
+    CLUTTER_ACTOR_CLASS (mnb_panel_parent_class)->show (actor);
 }
 
 static gboolean
@@ -434,7 +437,11 @@ mnb_panel_hide_completed (MnbDropDown *self)
         g_warning ("%s: Unknown error.", __FUNCTION__);
     }
 
-  gtk_widget_hide (window);
+  /*
+   * We do not hide the window here, only move it off screen; this significantly
+   * improves the Toolbar button response time.
+   */
+  gtk_window_move (GTK_WINDOW (window), 0, -(priv->height + 100));
 }
 
 static DBusGConnection *
