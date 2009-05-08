@@ -62,16 +62,18 @@ button_clicked_cb (GtkButton *button, gpointer data)
  * it immediately after creating the panel object.
  */
 static void
-make_window_content (GtkWidget *window)
+make_window_content (MnbPanelGtk *panel)
 {
-  GtkWidget *table, *button, *old_child;
+  GtkWidget *window, *table, *button, *old_child;
+
+  window = mnb_panel_gtk_get_window (panel);
 
   table = gtk_table_new (3, 3, TRUE);
 
   button = gtk_button_new_from_stock (GTK_STOCK_QUIT);
 
   g_signal_connect (button, "clicked",
-                    G_CALLBACK (button_clicked_cb), window);
+                    G_CALLBACK (button_clicked_cb), panel);
 
   gtk_table_attach_defaults (GTK_TABLE (table), button, 1, 2, 1, 2);
 
@@ -90,7 +92,7 @@ static void
 update_content_cb (MnbPanelGtk *panel, gpointer data)
 {
   g_debug ("Making content\n");
-  make_window_content (mnb_panel_gtk_get_window (panel));
+  make_window_content (panel);
 }
 
 
