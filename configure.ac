@@ -103,6 +103,7 @@ GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0)
+PKG_CHECK_MODULES(NBTK, nbtk-1.0)
 
 MUTTER_PLUGIN_DIR=$($PKG_CONFIG metacity-plugins --variable=mutterplugindir)
 AC_SUBST(MUTTER_PLUGIN_DIR)
