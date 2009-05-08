@@ -141,6 +141,12 @@ moblin_netbook_plugin_dispose (GObject *object)
       priv->current_input_region = None;
     }
 
+  if (priv->toolbar)
+    {
+      clutter_actor_destroy (priv->toolbar);
+      priv->toolbar = NULL;
+    }
+
   G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->dispose (object);
 }
 
