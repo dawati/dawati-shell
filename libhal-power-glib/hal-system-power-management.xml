@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node name="/SystemPowerManagement_Iface" xmlns:tp="http://telepathy.freedesktop.org/wiki/DbusSpec#extensions-v0">>
+  <interface name="org.freedesktop.Hal.Device.SystemPowerManagement">
+    <method name="Suspend">
+      <arg name="num_seconds_to_sleep" direction="in" type="i"/>
+      <arg name="return_code" direction="out" type="i"/>
+    </method>
+    <method name="SuspendHybrid">
+      <arg name="num_seconds_to_sleep" direction="in" type="i"/>
+      <arg name="return_code" direction="out" type="i"/>
+    </method>
+    <method name="Hibernate">
+      <arg name="return_code" direction="out" type="i"/>
+    </method>
+    <method name="Shutdown">
+      <arg name="return_code" direction="out" type="i"/>
+    </method>
+    <method name="Reboot">
+      <arg name="return_code" direction="out" type="i"/>
+    </method>
+    <method name="SetPowerSave">
+      <arg name="enable_power_save" direction="in" type="b"/>
+      <arg name="return_code" direction="out" type="i"/>
+    </method>
+  </interface>
+
+</node>
+
