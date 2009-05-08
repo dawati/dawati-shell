@@ -308,6 +308,7 @@ _new_connection_cb (GtkButton *button,
                                          network,
                                          security,
                                          secret);
+        device = NULL;
       }
       else
       {
@@ -484,6 +485,7 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *switch_bin = mux_bin_new ();
   GtkWidget *net_list_bin = mux_bin_new ();
   GtkWidget *scrolled_view;
+  GtkWidget *hbox;
 
   /* Set table up */
   gtk_table_resize (GTK_TABLE (self),
@@ -519,15 +521,24 @@ carrick_pane_init (CarrickPane *self)
                              0, 7);
 
   /* New connection button */
+  hbox = gtk_hbox_new (FALSE, 0);
   priv->new_conn_button = gtk_button_new_with_label (_("Add new connection"));
   g_signal_connect (GTK_BUTTON (priv->new_conn_button),
                     "clicked",
                     G_CALLBACK (_new_connection_cb),
                     self);
-  gtk_table_attach_defaults (GTK_TABLE (self),
-                             priv->new_conn_button,
-                             0, 1,
-                             7, 8);
+  gtk_box_pack_start (GTK_BOX (hbox),
+                      priv->new_conn_button,
+                      TRUE,
+                      FALSE,
+                      0);
+  gtk_table_attach (GTK_TABLE (self),
+                    hbox,
+                    0, 1,
+                    7, 8,
+                    GTK_EXPAND,
+                    GTK_EXPAND,
+                    0, 0);
 
   /* Switches */
   GtkWidget *vbox = gtk_vbox_new (TRUE,
