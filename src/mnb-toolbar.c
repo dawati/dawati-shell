@@ -1138,7 +1138,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
 
-  priv->panels[index] = panel;
+  priv->panels[index] = NBTK_WIDGET (panel);
 
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
@@ -1664,6 +1664,32 @@ mnb_toolbar_trigger_region_set_height (MnbToolbar *toolbar, gint height)
 }
 
 /*
+ * Returns TRUE if one of the out of process panels is showing; used to
+ * block Toolbar closing on stage leave event.
+ *
+ * (NB: returns FALSE for panels that are not of MnbPanel type!)
+ */
+static gboolean
+mnb_toolbar_panels_showing (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint i;
+
+  for (i = 0; i < NUM_ZONES; ++i)
+    {
+      MnbPanel *panel = (MnbPanel*)priv->panels[i];
+
+      if (!panel || !MNB_IS_PANEL (panel))
+        continue;
+
+      if (CLUTTER_ACTOR_IS_MAPPED (panel))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+/*
  * Callback for ClutterStage::captured-event singal.
  *
  * Processes CLUTTER_ENTER and CLUTTER_LEAVE events and shows/hides the
@@ -1687,9 +1713,10 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
    * d) we are already animating.
    */
   if (!(((event->type == CLUTTER_ENTER) && (event->crossing.source == stage)) ||
-        (event->type == CLUTTER_LEAVE)) ||
-      priv->disabled ||
-      mnb_toolbar_in_transition (toolbar))
+        ((event->type == CLUTTER_LEAVE) &&
+         !mnb_toolbar_panels_showing (toolbar)) ||
+        priv->disabled ||
+        mnb_toolbar_in_transition (toolbar)))
     return FALSE;
 
   /*
