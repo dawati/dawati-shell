@@ -14,6 +14,8 @@
 #include <src/mnb-entry.h>
 
 #include "ahoghill-grid-view.h"
+#include "ahoghill-playlist.h"
+#include "ahoghill-queue-list.h"
 #include "ahoghill-results-model.h"
 #include "ahoghill-results-pane.h"
 #include "ahoghill-search-pane.h"
@@ -219,6 +221,9 @@ set_result_items (AhoghillGridView *view,
     AhoghillGridViewPrivate *priv = view->priv;
     GList *r;
 
+    /* Set the results pane to the first page */
+    ahoghill_results_pane_set_page (priv->results_pane, 0);
+
     /* Freeze and clear the old results before adding anything new */
     ahoghill_results_model_freeze (priv->model);
     ahoghill_results_model_clear (priv->model);
@@ -313,6 +318,11 @@ init_bognor (AhoghillGridView *grid)
     priv->local_queue = g_object_new (BR_TYPE_QUEUE,
                                       "object-path", BR_LOCAL_QUEUE_PATH,
                                       NULL);
+
+    /* Set the local queue to the playlist */
+    /* FIXME: Generate multiple playlists once more than local queue works */
+    ahoghill_playlist_set_queue ((AhoghillPlaylist *) priv->playqueues_pane,
+                                 priv->local_queue);
 }
 
 static gboolean
@@ -601,7 +611,6 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     NbtkTable *table = (NbtkTable *) self;
     AhoghillGridViewPrivate *priv = GET_PRIVATE (self);
     NbtkWidget *entry;
-    ClutterColor blue = { 0x00, 0x00, 0xff, 0xff };
 
     bkl_init ();
 
@@ -645,9 +654,7 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_signal_connect (priv->results_pane, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
 
-    /* priv->playqueues_pane = g_object_new (AHOGHILL_TYPE_PLAYQUEUES_PANE, */
-    /*                                        NULL); */
-    priv->playqueues_pane = clutter_rectangle_new_with_color (&blue);
+    priv->playqueues_pane = (ClutterActor *) ahoghill_playlist_new (self);
     clutter_actor_set_size (priv->playqueues_pane, 150, 400);
     nbtk_table_add_actor_with_properties (table, priv->playqueues_pane,
                                           1, 3,
@@ -700,4 +707,11 @@ ahoghill_grid_view_unfocus (AhoghillGridView *view)
 
     if (current_focus == entry)
       clutter_stage_set_key_focus (stage, NULL);
+}
+
+BklItem *
+ahoghill_grid_view_get_item (AhoghillGridView *view,
+                             const char       *uri)
+{
+    return find_item (view, uri);
 }

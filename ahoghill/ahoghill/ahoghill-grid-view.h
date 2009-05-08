@@ -2,7 +2,7 @@
 #define __AHOGHILL_GRID_VIEW_H__
 
 #include <nbtk/nbtk.h>
-
+#include <bickley/bkl.h>
 
 G_BEGIN_DECLS
 
@@ -47,6 +47,9 @@ GType ahoghill_grid_view_get_type (void) G_GNUC_CONST;
 void ahoghill_grid_view_clear (AhoghillGridView *view);
 void ahoghill_grid_view_focus (AhoghillGridView *view);
 void ahoghill_grid_view_unfocus (AhoghillGridView *view);
+
+BklItem *ahoghill_grid_view_get_item (AhoghillGridView *view,
+                                      const char       *uri);
 
 G_END_DECLS
 

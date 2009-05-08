@@ -47,6 +47,8 @@ struct _AhoghillResultsPaneClass
 
 GType ahoghill_results_pane_get_type (void) G_GNUC_CONST;
 AhoghillResultsPane *ahoghill_results_pane_new (AhoghillResultsModel *model);
+void ahoghill_results_pane_set_page (AhoghillResultsPane *pane,
+                                     int                  page);
 
 G_END_DECLS
 

@@ -19,16 +19,12 @@ G_DEFINE_TYPE (AhoghillQueueList, ahoghill_queue_list, NBTK_TYPE_SCROLL_VIEW);
 static void
 ahoghill_queue_list_finalize (GObject *object)
 {
-    AhoghillQueueList *self = (AhoghillQueueList *) object;
-
     G_OBJECT_CLASS (ahoghill_queue_list_parent_class)->finalize (object);
 }
 
 static void
 ahoghill_queue_list_dispose (GObject *object)
 {
-    AhoghillQueueList *self = (AhoghillQueueList *) object;
-
     G_OBJECT_CLASS (ahoghill_queue_list_parent_class)->dispose (object);
 }
 
@@ -38,8 +34,6 @@ ahoghill_queue_list_set_property (GObject      *object,
                           const GValue *value,
                           GParamSpec   *pspec)
 {
-    AhoghillQueueList *self = (AhoghillQueueList *) object;
-
     switch (prop_id) {
 
     default:
@@ -53,8 +47,6 @@ ahoghill_queue_list_get_property (GObject    *object,
                           GValue     *value,
                           GParamSpec *pspec)
 {
-    AhoghillQueueList *self = (AhoghillQueueList *) object;
-
     switch (prop_id) {
 
     default:
@@ -93,17 +85,26 @@ ahoghill_queue_list_init (AhoghillQueueList *self)
 
 void
 ahoghill_queue_list_add_item (AhoghillQueueList *list,
-                              BklItem           *item)
+                              BklItem           *item,
+                              int                index)
 {
     AhoghillQueueListPrivate *priv = list->priv;
     AhoghillQueueTile *tile;
 
     tile = g_object_new (AHOGHILL_TYPE_QUEUE_TILE, NULL);
-    /* ahoghill_queue_tile_set_item (tile, item); */
+    if (item) {
+        ahoghill_queue_tile_set_item (tile, item);
+    }
 
     g_ptr_array_add (priv->items, tile);
 
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->grid),
                                  CLUTTER_ACTOR (tile));
     clutter_actor_show ((ClutterActor *) tile);
+}
+
+void
+ahoghill_queue_list_remove (AhoghillQueueList *list,
+                            int                index)
+{
 }

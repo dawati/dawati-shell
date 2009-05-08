@@ -1,4 +1,4 @@
-noinst_PROGRAMS = test-grid-view test-fixed test-list
+noinst_PROGRAMS = test-grid-view test-fixed
 AM_CFLAGS = $(AHOGHILL_CFLAGS) -I$(top_srcdir)/ahoghill \
 	-DPKG_DATADIR=\"$(pkgdatadir)\"
 AM_LDFLAGS = $(AHOGHILL_LIBS) ../ahoghill/libahoghill.la
@@ -8,6 +8,3 @@ test_grid_view_DEPENDENCIES = ../ahoghill/libahoghill.la
 
 test_fixed_SOURCES = test-fixed.c
 test_fixed_DEPENDENCIES = ../ahoghill/libahoghill.la
-
-test_list_SOURCES = test-list.c
-test_list_DEPENDENCIES = ../ahoghill/libahoghill.la
