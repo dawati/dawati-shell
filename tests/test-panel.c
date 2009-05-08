@@ -83,11 +83,13 @@ make_window_content (GtkWidget *window)
   gtk_widget_show_all (table);
 
   gtk_container_add (GTK_CONTAINER (window), table);
+  gtk_widget_show (window);
 }
 
 static void
 update_content_cb (MnbPanelGtk *panel, gpointer data)
 {
+  g_debug ("Making content\n");
   make_window_content (mnb_panel_gtk_get_window (panel));
 }
 
@@ -107,6 +109,7 @@ main (int argc, char *argv[])
 
   g_signal_connect (panel, "show-begin",
                     G_CALLBACK (update_content_cb), NULL);
+
   gtk_main ();
 
   return 0;
