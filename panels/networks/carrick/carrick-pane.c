@@ -483,9 +483,11 @@ carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (self);
   GtkWidget *switch_bin = mux_bin_new ();
+  GtkWidget *flight_bin = mux_bin_new ();
   GtkWidget *net_list_bin = mux_bin_new ();
   GtkWidget *scrolled_view;
   GtkWidget *hbox;
+  GtkWidget *vbox;
 
   /* Set table up */
   gtk_table_resize (GTK_TABLE (self),
@@ -541,7 +543,7 @@ carrick_pane_init (CarrickPane *self)
                     0, 0);
 
   /* Switches */
-  GtkWidget *vbox = gtk_vbox_new (TRUE,
+  vbox = gtk_vbox_new (TRUE,
                                   6);
   gtk_container_add (GTK_CONTAINER (switch_bin),
                      vbox);
@@ -597,6 +599,15 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       8);
 
+  gtk_table_attach_defaults (GTK_TABLE (self),
+                             switch_bin,
+                             4, 6,
+                             0, 3);
+
+  vbox = gtk_vbox_new (TRUE,
+                       6);
+  gtk_container_add (GTK_CONTAINER (flight_bin),
+                     vbox);
   priv->flight_mode_switch = mux_switch_box_new (_("Offline Mode"));
   g_signal_connect (priv->flight_mode_switch,
                     "switch-toggled",
@@ -615,9 +626,10 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       0);
   gtk_table_attach_defaults (GTK_TABLE (self),
-                             switch_bin,
+                             flight_bin,
                              4, 6,
-                             0, 5);
+                             3, 5);
+
 }
 
 GtkWidget*
