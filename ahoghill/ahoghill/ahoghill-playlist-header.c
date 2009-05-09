@@ -5,7 +5,11 @@ enum {
 };
 
 struct _AhoghillPlaylistHeaderPrivate {
-    int dummy;
+    NbtkWidget *playlist_title;
+    NbtkWidget *primary;
+    NbtkWidget *secondary;
+    NbtkWidget *seekbar;
+    NbtkWidget *play_button;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_PLAYLIST_HEADER, AhoghillPlaylistHeaderPrivate))
@@ -66,19 +70,54 @@ static void
 ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
 {
     AhoghillPlaylistHeaderPrivate *priv;
-    ClutterActor *rect;
-    ClutterColor red = {0xff, 0x00, 0x00, 0xff};
 
     self->priv = GET_PRIVATE (self);
     priv = self->priv;
 
-    rect = clutter_rectangle_new_with_color (&red);
-    clutter_actor_set_size (rect, 140, 50);
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (self), rect, 0, 0,
+    priv->playlist_title = nbtk_label_new ("Local");
+    clutter_actor_set_name ((ClutterActor *) priv->playlist_title,
+                            "ahoghill-playlist-title");
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->playlist_title,
+                                          0, 0,
+                                          "y-expand", FALSE,
+                                          "y-fill", TRUE,
+                                          "x-align", 0.0,
+                                          NULL);
+
+    priv->play_button = nbtk_button_new ();
+    nbtk_button_set_toggle_mode (NBTK_BUTTON (priv->play_button), TRUE);
+    nbtk_widget_set_style_class_name (priv->play_button,
+                                      "AhoghillPlayButton");
+    clutter_actor_set_size (CLUTTER_ACTOR (priv->play_button), 28, 31);
+
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->play_button,
+                                          0, 1,
                                           "x-expand", FALSE,
                                           "y-expand", FALSE,
+                                          NULL);
+
+    priv->primary = nbtk_label_new ("Wall-E");
+    clutter_actor_set_name ((ClutterActor *) priv->primary,
+                            "ahoghill-playlist-header-primary");
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->primary,
+                                          1, 0,
+                                          "col-span", 2,
+                                          "y-expand", FALSE,
                                           "x-align", 0.0,
-                                          "y-align", 0.0,
+                                          NULL);
+
+    priv->secondary = nbtk_label_new ("Pixar");
+    clutter_actor_set_name ((ClutterActor *) priv->secondary,
+                            "ahoghill-playlist-header-secondary");
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->secondary,
+                                          2, 0,
+                                          "col-span", 2,
+                                          "y-expand", FALSE,
+                                          "x-align", 0.0,
                                           NULL);
 }
 
