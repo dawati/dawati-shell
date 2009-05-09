@@ -23,6 +23,7 @@ struct _DalstonBrightnessManagerPrivate {
   gint num_levels;
 
   gint previous_brightness;
+  gboolean controllable;
 };
 
 enum
@@ -253,6 +254,8 @@ dalston_brightness_manager_init (DalstonBrightnessManager *self)
                                         _panel_proxy_get_brightness_cb,
                                         (GObject *)self,
                                         NULL);
+
+  priv->controllable = TRUE;
 }
 
 DalstonBrightnessManager *
@@ -351,4 +354,12 @@ dalston_brightness_manager_set_brightness (DalstonBrightnessManager *manager,
                                         _panel_proxy_set_brightness_cb,
                                         (GObject *)manager,
                                         NULL);
+}
+
+gboolean
+dalston_brightness_manager_is_controllable (DalstonBrightnessManager *manager)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  return priv->controllable;
 }

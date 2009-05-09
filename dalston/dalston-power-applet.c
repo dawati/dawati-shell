@@ -274,6 +274,7 @@ dalston_power_applet_init (DalstonPowerApplet *self)
 {
   DalstonPowerAppletPrivate *priv = GET_PRIVATE (self);
   GtkWidget *battery_vbox;
+  GtkWidget *label;
 
   /* The battery monitor that will pull in the battery state */
   priv->battery_monitor = g_object_new (DALSTON_TYPE_BATTERY_MONITOR,
@@ -297,13 +298,26 @@ dalston_power_applet_init (DalstonPowerApplet *self)
 
   /* Create the pane hbox */
   priv->main_hbox = gtk_hbox_new (FALSE, 8);
-  priv->brightness_slider = 
-    dalston_brightness_slider_new (priv->brightness_manager);
-  gtk_box_pack_start (GTK_BOX (priv->main_hbox),
-                      priv->brightness_slider,
-                      TRUE,
-                      TRUE,
-                      8);
+
+  if (dalston_brightness_manager_is_controllable (priv->brightness_manager))
+  {
+    priv->brightness_slider = 
+      dalston_brightness_slider_new (priv->brightness_manager);
+    gtk_box_pack_start (GTK_BOX (priv->main_hbox),
+                        priv->brightness_slider,
+                        TRUE,
+                        TRUE,
+                        8);
+  } else {
+    label = gtk_label_new (_("Sorry, we don't support modifying " \
+                             "the brightness of your screen"));
+    gtk_box_pack_start (GTK_BOX (priv->main_hbox),
+                        label,
+                        TRUE,
+                        FALSE,
+                        8);
+
+  }
   battery_vbox = gtk_vbox_new (FALSE, 8);
   gtk_box_pack_start (GTK_BOX (priv->main_hbox),
                       battery_vbox,

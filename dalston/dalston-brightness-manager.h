@@ -40,6 +40,8 @@ void dalston_brightness_manager_start_monitoring (DalstonBrightnessManager *mana
 void dalston_brightness_manager_stop_monitoring (DalstonBrightnessManager *manager);
 void dalston_brightness_manager_set_brightness (DalstonBrightnessManager *manager,
                                                 gint                      value);
+gboolean dalston_brightness_manager_is_controllable (DalstonBrightnessManager *manager);
+
 G_END_DECLS
 
 #endif /* _DALSTON_BRIGHTNESS_MANAGER */
