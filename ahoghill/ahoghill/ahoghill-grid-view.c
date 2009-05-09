@@ -643,7 +643,7 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_object_set (priv->results_pane,
                   "title", _("Recent"),
                   NULL);
-    clutter_actor_set_size (priv->results_pane, 800, 400);
+    /* clutter_actor_set_size (priv->results_pane, 750, 400); */
     nbtk_table_add_actor_with_properties (table, priv->results_pane,
                                           1, 0,
                                           "row-span", 1,
@@ -655,7 +655,7 @@ ahoghill_grid_view_init (AhoghillGridView *self)
                       G_CALLBACK (item_clicked_cb), self);
 
     priv->playqueues_pane = (ClutterActor *) ahoghill_playlist_new (self);
-    clutter_actor_set_size (priv->playqueues_pane, 150, 400);
+    clutter_actor_set_size (priv->playqueues_pane, 210, 400);
     nbtk_table_add_actor_with_properties (table, priv->playqueues_pane,
                                           1, 3,
                                           "x-expand", FALSE,
