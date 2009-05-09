@@ -193,23 +193,23 @@ _scale_format_value_cb (GtkScale *scale,
   gdouble percentage;
   gchar *format = NULL;
 
-  percentage = (double)value/(double)(priv->num_levels - 1);
+  percentage = (double)value/(double)(priv->num_levels - 1) * 100.0;
 
-  if (value == 100.0)
+  if (percentage == 100.0)
     format = g_strdup (_("Brighter than the sun"));
-  else if (value >= 90.0)
+  else if (percentage >= 90.0)
     format = g_strdup (_("Very bright"));
-  else if (value >= 75.0)
+  else if (percentage >= 75.0)
     format = g_strdup (_("Bright"));
-  else if (value > 50.0)
+  else if (percentage > 50.0)
     format = g_strdup (_("Morning has broken"));
-  else if (value == 50.0)
+  else if (percentage == 50.0)
     format = g_strdup (_("Midday"));
-  else if (value >= 25.0)
+  else if (percentage >= 25.0)
     format = g_strdup (_("Pretty dusky"));
-  else if (value >= 10.0)
+  else if (percentage >= 10.0)
     format = g_strdup (_("Twilight"));
-  else if (value > 0.0)
+  else if (percentage > 0.0)
     format = g_strdup (_("Very dark"));
   else
     format = g_strdup (_("Total eclipse"));
