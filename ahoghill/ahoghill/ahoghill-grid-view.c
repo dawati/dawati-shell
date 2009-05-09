@@ -240,37 +240,69 @@ set_result_items (AhoghillGridView *view,
 }
 
 static void
+source_ready_cb (BklSourceClient  *client,
+                 AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    Source *source;
+
+    source = create_source (client);
+    g_ptr_array_add (priv->dbs, source);
+
+    /* Once we get one source, set the recent files
+       The first source will/should be the local files */
+    if (priv->dbs->len == 1) {
+        set_recent_items (view);
+    }
+}
+
+static void
+get_sources_reply (BklSourceManagerClient *source_manager,
+                   GList                  *sources,
+                   GError                 *error,
+                   gpointer                data)
+{
+    AhoghillGridView *view = (AhoghillGridView *) data;
+    GList *s;
+
+    if (error != NULL) {
+        g_warning ("Error getting sources: %s", error->message);
+    }
+
+    for (s = sources; s; s = s->next) {
+        BklSourceClient *client;
+
+        client = bkl_source_client_new (s->data);
+        g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+    }
+}
+
+static void
+source_manager_ready (BklSourceManagerClient *source_manager,
+                      AhoghillGridView       *view)
+{
+    BklSourceClient *client;
+
+    /* Local source first */
+    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
+    g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+
+    bkl_source_manager_client_get_sources (source_manager,
+                                           get_sources_reply,
+                                           view);
+}
+
+static void
 init_bickley (gpointer data)
 {
     AhoghillGridView *view = (AhoghillGridView *) data;
     AhoghillGridViewPrivate *priv = view->priv;
-    BklSourceClient *client;
-    Source *source;
-    GList *sources, *s;
-    GError *error = NULL;
 
     priv->source_manager = g_object_new (BKL_TYPE_SOURCE_MANAGER_CLIENT, NULL);
-    sources = bkl_source_manager_client_get_sources (priv->source_manager,
-                                                     &error);
-    if (error != NULL) {
-        g_warning ("Error getting sources\n");
-    }
+    g_signal_connect (priv->source_manager, "ready",
+                      G_CALLBACK (source_manager_ready), view);
 
-    priv->dbs = g_ptr_array_sized_new (g_list_length (sources) + 1);
-
-    /* Local source first */
-    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
-    source = create_source (client);
-    g_ptr_array_add (priv->dbs, source);
-
-    for (s = sources; s; s = s->next) {
-        client = bkl_source_client_new (s->data);
-        source = create_source (client);
-
-        g_ptr_array_add (priv->dbs, source);
-    }
-
-    set_recent_items (view);
+    priv->dbs = g_ptr_array_new ();
 }
 
 static void
@@ -554,7 +586,7 @@ item_clicked_cb (AhoghillResultsPane *pane,
     }
 
     br_queue_play_uri (priv->local_queue, bkl_item_get_uri (item),
-                       bkl_item_get_mimetype (item), &error);
+                       bkl_item_get_mimetype (item));
     if (error != NULL) {
         g_warning ("%s: Error playing %s: %s", G_STRLOC,
                    bkl_item_get_uri (item),
