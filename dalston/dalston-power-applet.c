@@ -122,14 +122,36 @@ dalston_power_applet_class_init (DalstonPowerAppletClass *klass)
 static gchar *
 dalston_power_applet_format_time_remaining (guint time_remaining)
 {
+  gchar *hour_string = NULL;
+  gchar *minute_string = NULL;
+  gchar *res;
+
   if (time_remaining >= 3600)
   {
-    /* x hours y minutes */
-    return g_strdup_printf (_("<b>%d</b> hours <b>%d</b> minutes"),
-                            time_remaining / 3600,
-                            (time_remaining % 3600) / 60);
+
+    hour_string = g_strdup_printf (ngettext ("<b>%d</b> hour",
+                                             "<b>%d</b> hours",
+                                             time_remaining / 3600),
+                                   time_remaining / 3600);
+
+    if (((time_remaining % 3600) / 60) > 1)
+    {
+      minute_string = g_strdup_printf (ngettext ("<b>%d</b> minute",
+                                                 "<b>%d</b> minutes",
+                                                 (time_remaining % 3600) / 60),
+                                       (time_remaining % 3600) / 60);
+
+      res = g_strdup_printf ("%s %s", hour_string, minute_string);
+      g_free (minute_string);
+      g_free (hour_string);
+      return res;
+    } else {
+      return hour_string;
+    }
   } else {
-    return g_strdup_printf (_("<b>%d</b> minutes"),
+    return g_strdup_printf (ngettext ("<b>%d</b> minute", 
+                                      "<b>%d</b> minutes",
+                                      (time_remaining / 60)),
                             (time_remaining / 60));
   }
 }
