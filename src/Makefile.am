@@ -5,6 +5,7 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@ \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
+	@AHOGHILL_CFLAGS@ \
 	-I$(top_srcdir)/ahoghill \
 	-I$(top_srcdir)/penge \
 	-I$(top_srcdir)/src
