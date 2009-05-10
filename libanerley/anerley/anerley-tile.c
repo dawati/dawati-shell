@@ -64,6 +64,27 @@ _item_display_name_changed_cb (AnerleyItem *item,
   g_free (splits);
 }
 
+static CoglHandle 
+_get_default_avatar_texture (void)
+{
+  NbtkTextureCache *cache;
+  ClutterTexture *tmp_tex;
+  static CoglHandle handle = NULL;
+
+  if (handle)
+    return handle;
+
+  cache = nbtk_texture_cache_get_default ();
+  tmp_tex = nbtk_texture_cache_get_texture (cache,
+                                            DEFAULT_AVATAR_IMAGE,
+                                            FALSE);
+  handle = clutter_texture_get_cogl_texture (tmp_tex);
+  cogl_handle_ref (handle);
+  g_object_unref (tmp_tex);
+
+  return handle;
+}
+
 static void
 _item_avatar_path_changed_cb (AnerleyItem *item,
                               gpointer     userdata)
@@ -76,16 +97,17 @@ _item_avatar_path_changed_cb (AnerleyItem *item,
 
   if (!avatar_path)
   {
-    avatar_path = DEFAULT_AVATAR_IMAGE;
-  }
-
-  if (!clutter_texture_set_from_file ((ClutterTexture *)priv->avatar,
-                                      avatar_path,
-                                      &error))
-  {
-    g_warning (G_STRLOC ": Error opening avatar image: %s",
-               error->message);
-    g_clear_error (&error);
+    clutter_texture_set_cogl_texture ((ClutterTexture *)priv->avatar,
+                                      _get_default_avatar_texture());
+  } else{
+    if (!clutter_texture_set_from_file ((ClutterTexture *)priv->avatar,
+                                        avatar_path,
+                                        &error))
+    {
+      g_warning (G_STRLOC ": Error opening avatar image: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
   }
 }
 
