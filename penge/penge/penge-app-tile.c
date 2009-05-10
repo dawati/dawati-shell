@@ -6,7 +6,7 @@
 #include "penge-app-bookmark-manager.h"
 #include "penge-utils.h"
 
-G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_APP_TILE, PengeAppTilePrivate))
@@ -169,28 +169,6 @@ penge_app_tile_class_init (PengeAppTileClass *klass)
 }
 
 static gboolean
-_enter_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      "hover");
-
-  return FALSE;
-}
-
-static gboolean
-_leave_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      NULL);
-
-  return FALSE;
-}
-
-static gboolean
 _button_press_event (ClutterActor *actor,
                      ClutterEvent *event,
                      gpointer      userdata)
@@ -236,19 +214,9 @@ penge_app_tile_init (PengeAppTile *self)
   PengeAppTilePrivate *priv = GET_PRIVATE (self);
 
   priv->tex = clutter_texture_new ();
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->tex,
-                        0,
-                        0);
 
-  g_signal_connect (self,
-                    "enter-event",
-                    (GCallback)_enter_event_cb,
-                    self);
-  g_signal_connect (self,
-                    "leave-event",
-                    (GCallback)_leave_event_cb,
-                    self);
+  nbtk_bin_set_child (NBTK_BIN (self),
+                      priv->tex);
   g_signal_connect (self,
                     "button-press-event",
                     (GCallback)_button_press_event,
