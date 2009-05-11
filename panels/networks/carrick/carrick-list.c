@@ -156,11 +156,11 @@ carrick_list_add_item (CarrickList *list,
 
   CarrickListPrivate *priv = LIST_PRIVATE (list);
 
-  gtk_drag_source_set (widget,
+  /*gtk_drag_source_set (widget,
                        GDK_BUTTON1_MASK,
                        carrick_targets,
                        G_N_ELEMENTS (carrick_targets),
-                       GDK_ACTION_MOVE);
+                       GDK_ACTION_MOVE);*/
 
   g_signal_connect (widget,
                     "drag-begin",
@@ -341,11 +341,11 @@ carrick_list_init (CarrickList *self)
   CarrickListPrivate *priv = LIST_PRIVATE (self);
 
   priv->list_count = 0;
-  gtk_drag_dest_set (GTK_WIDGET (self),
+  /*gtk_drag_dest_set (GTK_WIDGET (self),
                      GTK_DEST_DEFAULT_ALL,
                      carrick_targets,
                      G_N_ELEMENTS (carrick_targets),
-                     GDK_ACTION_MOVE);
+                     GDK_ACTION_MOVE);*/
 
   gtk_box_set_homogeneous (GTK_BOX (self),
                            TRUE);
