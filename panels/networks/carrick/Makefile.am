@@ -18,12 +18,14 @@ libcarrick_la_SOURCES = carrick-applet.c \
 libcarrick_la_CFLAGS =  -Wall -I$(top_srcdir) \
                         $(GCONNMAN_CFLAGS) \
                         $(GTK_CFLAGS) \
+                        $(MUX_CFLAGS) \
                         $(LIBNOTIFY_CFLAGS) \
                         -DPKG_DATA_DIR=\"$(pkgdatadir)\"
 
 libcarrick_la_LIBADD = $(top_builddir)/mux/libmux.la \
                        $(GCONNMAN_LIBS) \
                        $(GTK_LIBS) \
+                       $(MUX_LIBS) \
                        $(LIBNOTIFY_LIBS)
 
 -include $(top_srcdir)/git.mk

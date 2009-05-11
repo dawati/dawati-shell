@@ -5,7 +5,7 @@
 #include <config.h>
 #include <gconnman/gconnman.h>
 #include <mux/mux-switch-box.h>
-#include <mux/mux-bin.h>
+#include <mux/mux-frame.h>
 #include <glib/gi18n.h>
 #include <carrick/carrick-list.h>
 #include <carrick/carrick-service-item.h>
@@ -482,9 +482,9 @@ static void
 carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (self);
-  GtkWidget *switch_bin = mux_bin_new ();
-  GtkWidget *flight_bin = mux_bin_new ();
-  GtkWidget *net_list_bin = mux_bin_new ();
+  GtkWidget *switch_bin = mux_frame_new ();
+  GtkWidget *flight_bin = mux_frame_new ();
+  GtkWidget *net_list_bin = mux_frame_new ();
   GtkWidget *scrolled_view;
   GtkWidget *hbox;
   GtkWidget *vbox;
@@ -497,7 +497,7 @@ carrick_pane_init (CarrickPane *self)
                              TRUE);
 
   /* Network list */
-  mux_bin_set_title (MUX_BIN (net_list_bin),
+  gtk_frame_set_label (GTK_FRAME (net_list_bin),
                     _("Networks"));
   priv->service_list = carrick_list_new ();
   scrolled_view = gtk_scrolled_window_new (NULL, NULL);
