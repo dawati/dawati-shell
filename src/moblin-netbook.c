@@ -847,13 +847,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (mw)
         {
-          gboolean    fullscreen;
+          gboolean    fullscreen, modal;
           const char *sn_id = meta_window_get_startup_id (mw);
 
           if (!moblin_netbook_sn_should_map (plugin, mcw, sn_id))
             return;
 
-          g_object_get (mw, "fullscreen", &fullscreen, NULL);
+          g_object_get (mw, "fullscreen", &fullscreen, "modal", &modal, NULL);
 
           if (fullscreen)
             priv->fullscreen_apps++;
@@ -861,6 +861,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           g_signal_connect (mw, "notify::fullscreen",
                             G_CALLBACK (meta_window_fullcreen_notify_cb),
                             plugin);
+
+          /* Hide toolbar etc in presence of modal dialog */ 
+          if (modal == TRUE)
+            clutter_actor_hide (priv->toolbar);
         }
 
       /*
