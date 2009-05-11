@@ -87,8 +87,6 @@ struct _MoblinNetbookPluginPrivate
 
   gint                   fullscreen_apps;
 
-  guint                  workspace_chooser_timeout;
-
   /*
    * Startup Notification
    *
