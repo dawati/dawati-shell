@@ -5,7 +5,7 @@
 #include <config.h>
 #include <glib/gi18n.h>
 #include <gconnman/gconnman.h>
-#include <carrick/carrick-status-icon.h>
+#include "carrick-icon-factory.h"
 
 G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 
@@ -17,21 +17,23 @@ typedef struct _CarrickServiceItemPrivate CarrickServiceItemPrivate;
 enum
 {
   PROP_0,
+  PROP_ICON_FACTORY,
   PROP_SERVICE
 };
 
 struct _CarrickServiceItemPrivate
 {
-  CmService *service;
-  GtkWidget *icon;
-  GtkWidget *name_label;
-  GtkWidget *security_label;
-  GtkWidget *connect_button;
-  GtkWidget *table;
-  gboolean   connected;
-  gchar     *name;
-  gchar     *status;
-  gchar     *icon_name;
+  CmService          *service;
+  GtkWidget          *icon;
+  GtkWidget          *name_label;
+  GtkWidget          *security_label;
+  GtkWidget          *connect_button;
+  GtkWidget          *table;
+  gboolean            connected;
+  gchar              *name;
+  gchar              *status;
+  gchar              *icon_name;
+  CarrickIconFactory *icon_factory;
 };
 
 static void
@@ -47,6 +49,10 @@ carrick_service_item_get_property (GObject *object, guint property_id,
 
   switch (property_id)
     {
+      case PROP_ICON_FACTORY:
+        g_value_set_object (value,
+                            priv->icon_factory);
+        break;
       case PROP_SERVICE:
         g_value_set_object (value,
                             priv->service);
@@ -74,7 +80,7 @@ _connect_button_cb (GtkButton *connect_button,
   }
   else
   {
-    gchar *security = g_strdup (cm_service_get_security (CM_SERVICE (priv->service)));
+    const gchar *security = g_strdup (cm_service_get_security (CM_SERVICE (priv->service)));
 
     gtk_widget_set_state (GTK_WIDGET (user_data),
                           GTK_STATE_SELECTED);
@@ -92,7 +98,7 @@ _connect_button_cb (GtkButton *connect_button,
         GtkWidget *icon;
         GtkWidget *entry;
         GtkWidget *hbox;
-        gchar *passphrase = NULL;
+        const gchar *passphrase = NULL;
 
         dialog = gtk_dialog_new_with_buttons (_("Passphrase required"),
                                               NULL,
@@ -203,6 +209,7 @@ _status_changed_cb (CmService *service,
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
   gchar *status = g_strdup (cm_service_get_state (service));
   gchar *label;
+  GdkPixbuf *pixbuf;
 
   if (g_strcmp0 ("ready", status) == 0)
   {
@@ -226,8 +233,11 @@ _status_changed_cb (CmService *service,
 
   gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                             TRUE);
-  gtk_image_set_from_file (GTK_IMAGE (priv->icon),
-                           carrick_status_icon_path_for_state (service));
+  pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
+                                                        service);
+  gtk_image_set_from_pixbuf (priv->icon,
+                             pixbuf);
+
   g_free (label);
 }
 
@@ -236,6 +246,7 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                                   CmService          *service)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (service_item);
+  GdkPixbuf *pixbuf;
 
   if (priv->service)
   {
@@ -248,8 +259,10 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
     const gchar *status = cm_service_get_state (service);
     const gchar *security = cm_service_get_security (service);
     priv->service = g_object_ref (service);
-    gtk_image_set_from_file (GTK_IMAGE (priv->icon),
-                             carrick_status_icon_path_for_state (service));
+    pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
+                                                         service);
+    gtk_image_set_from_pixbuf (priv->icon,
+                               pixbuf);
     gtk_label_set_text (GTK_LABEL (priv->name_label),
                         cm_service_get_name (service));
     if (g_strcmp0 ("none", security) != 0)
@@ -290,9 +303,13 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 {
   g_return_if_fail (object != NULL);
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (object));
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
 
   switch (property_id)
     {
+      case PROP_ICON_FACTORY:
+        priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
+        break;
       case PROP_SERVICE:
         carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object),
                                           CM_SERVICE (g_value_get_object (value)));
@@ -335,6 +352,15 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_SERVICE,
                                    pspec);
+
+  pspec = g_param_spec_object ("icon-factory",
+                               "icon-factory",
+                               "CarrickIconFactory object",
+                               CARRICK_TYPE_ICON_FACTORY,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_ICON_FACTORY,
+                                   pspec);
 }
 
 static void
@@ -347,7 +373,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_container_add (GTK_CONTAINER (self),
                      priv->table);
 
-  priv->icon = gtk_image_new_from_file (carrick_status_icon_path_for_state (NULL));
+  priv->icon = gtk_image_new_from_file (carrick_icon_factory_get_path_for_service (NULL));
   gtk_table_attach_defaults (GTK_TABLE (priv->table),
                              priv->icon,
                              0, 1,
@@ -374,9 +400,12 @@ carrick_service_item_init (CarrickServiceItem *self)
 }
 
 GtkWidget*
-carrick_service_item_new (CmService *service)
+carrick_service_item_new (CarrickIconFactory *icon_factory,
+                          CmService          *service)
 {
   return g_object_new (CARRICK_TYPE_SERVICE_ITEM,
+                       "icon-factory",
+                       icon_factory,
                        "service",
                        service,
                        NULL);

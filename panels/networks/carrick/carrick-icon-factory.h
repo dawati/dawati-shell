@@ -57,12 +57,12 @@ GType carrick_icon_factory_get_type (void);
 
 CarrickIconFactory* carrick_icon_factory_new (void);
 
-GtkWidget *carrick_icon_factory_image_for_service (CarrickIconFactory *factory,
-                                                   CmService          *service);
+GdkPixbuf *carrick_icon_factory_get_pixbuf_for_service (CarrickIconFactory *factory,
+                                                        CmService          *service);
 
-const gchar *carrick_icon_factory_path_for_state (CarrickIconState state);
-
-CarrickIconState carrick_icon_factory_state_for_service (CmService *service);
+const gchar *carrick_icon_factory_get_path_for_state (CarrickIconState state);
+CarrickIconState carrick_icon_factory_get_state_for_service (CmService *service);
+const gchar *carrick_icon_factory_get_path_for_service (CmService *service);
 
 G_END_DECLS
 

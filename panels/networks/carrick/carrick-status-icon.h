@@ -37,10 +37,6 @@ GtkWidget* carrick_status_icon_new (CmService *service);
 
 void carrick_status_icon_set_active (CarrickStatusIcon *icon,
                                      gboolean           active);
-
-const gchar *carrick_status_icon_path_for_state (CmService *service);
-const gchar *carrick_status_icon_get_icon_path (CarrickStatusIcon *icon);
-
 G_END_DECLS
 
 #endif /* _CARRICK_STATUS_ICON */

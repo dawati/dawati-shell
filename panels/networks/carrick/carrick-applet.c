@@ -10,6 +10,7 @@
 #include <carrick/carrick-pane.h>
 #include <carrick/carrick-status-icon.h>
 #include <carrick/carrick-list.h>
+#include "carrick-icon-factory.h"
 
 G_DEFINE_TYPE (CarrickApplet, carrick_applet, G_TYPE_OBJECT)
 
@@ -34,7 +35,7 @@ _notify_connection_changed (CarrickApplet *self)
   GError *error = NULL;
   gchar *title;
   gchar *message;
-  gchar *icon; // filename
+  const gchar *icon; // filename
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
 
   if (priv->state &&
@@ -50,7 +51,7 @@ _notify_connection_changed (CarrickApplet *self)
                                priv->active_service_name);
   }
 
-  icon = carrick_status_icon_path_for_state
+  icon = carrick_icon_factory_get_path_for_service
     (cm_manager_get_active_service (priv->manager));
 
   note = notify_notification_new (title,

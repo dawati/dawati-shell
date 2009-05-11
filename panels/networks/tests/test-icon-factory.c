@@ -12,6 +12,7 @@ main (int    argc,
   CmManager *manager;
   CmService *service;
   GError *error = NULL;
+  GdkPixbuf *pixbuf;
 
   gtk_init (&argc, &argv);
 
@@ -34,14 +35,15 @@ main (int    argc,
   service = cm_manager_get_active_service (manager);
 
   g_print ("No network icon is: %s\n",
-           carrick_icon_factory_path_for_state (state));
-  state = carrick_icon_factory_state_for_service (NULL);
+           carrick_icon_factory_get_path_for_state (state));
+  state = carrick_icon_factory_get_state_for_service (NULL);
   g_print ("NULL service (%i) icon is :%s\n",
            state,
-           carrick_icon_factory_path_for_state (state));
+           carrick_icon_factory_get_path_for_state (state));
 
-  image = carrick_icon_factory_image_for_service (icon_factory,
-                                                  NULL);
+  pixbuf = carrick_icon_factory_get_pixbuf_for_service (icon_factory,
+                                                       NULL);
+  image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_container_add (GTK_CONTAINER (window),
                      image);
 

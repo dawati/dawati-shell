@@ -9,6 +9,7 @@
 #include <glib/gi18n.h>
 #include <carrick/carrick-list.h>
 #include <carrick/carrick-service-item.h>
+#include "carrick-icon-factory.h"
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
 
@@ -18,16 +19,17 @@ G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
 typedef struct _CarrickPanePrivate CarrickPanePrivate;
 
 struct _CarrickPanePrivate {
-  CmManager *manager;
-  GList     *services;
-  GtkWidget *wifi_switch;
-  GtkWidget *ethernet_switch;
-  GtkWidget *threeg_switch;
-  GtkWidget *wimax_switch;
-  GtkWidget *flight_mode_switch;
-  GtkWidget *flight_mode_label;
-  GtkWidget *service_list;
-  GtkWidget *new_conn_button;
+  CmManager          *manager;
+  GList              *services;
+  GtkWidget          *wifi_switch;
+  GtkWidget          *ethernet_switch;
+  GtkWidget          *threeg_switch;
+  GtkWidget          *wimax_switch;
+  GtkWidget          *flight_mode_switch;
+  GtkWidget          *flight_mode_label;
+  GtkWidget          *service_list;
+  GtkWidget          *new_conn_button;
+  CarrickIconFactory *icon_factory;
 };
 
 enum
@@ -330,7 +332,8 @@ _service_updated_cb (CmService *service,
 
   if (cm_service_get_name (service))
   {
-    GtkWidget *service_item = carrick_service_item_new (service);
+    GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
+                                                        service);
     priv->services = g_list_append (priv->services,
                                     (gpointer) service_item);
     carrick_list_add_item (CARRICK_LIST (priv->service_list),
@@ -501,6 +504,8 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *scrolled_view;
   GtkWidget *hbox;
   GtkWidget *vbox;
+
+  priv->icon_factory = carrick_icon_factory_new ();
 
   /* Set table up */
   gtk_table_resize (GTK_TABLE (self),

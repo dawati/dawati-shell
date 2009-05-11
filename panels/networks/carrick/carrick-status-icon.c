@@ -2,6 +2,7 @@
 
 #include <config.h>
 #include <gconnman/gconnman.h>
+#include "carrick-icon-factory.h"
 
 G_DEFINE_TYPE (CarrickStatusIcon, carrick_status_icon, GTK_TYPE_STATUS_ICON)
 
@@ -9,21 +10,6 @@ G_DEFINE_TYPE (CarrickStatusIcon, carrick_status_icon, GTK_TYPE_STATUS_ICON)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_STATUS_ICON, CarrickStatusIconPrivate))
 
 typedef struct _CarrickStatusIconPrivate CarrickStatusIconPrivate;
-
-typedef enum {
-  CARRICK_ICON_NO_NETWORK,
-  CARRICK_ICON_NO_NETWORK_ACTIVE,
-  CARRICK_ICON_ASSOCIATING,
-  CARRICK_ICON_ASSOCIATING_ACTIVE,
-  CARRICK_ICON_WIRED_NETWORK,
-  CARRICK_ICON_WIRED_NETWORK_ACTIVE,
-  CARRICK_ICON_WIRELESS_NETWORK_1,
-  CARRICK_ICON_WIRELESS_NETWORK_1_ACTIVE,
-  CARRICK_ICON_WIRELESS_NETWORK_2,
-  CARRICK_ICON_WIRELESS_NETWORK_2_ACTIVE,
-  CARRICK_ICON_WIRELESS_NETWORK_3,
-  CARRICK_ICON_WIRELESS_NETWORK_3_ACTIVE
-} CarrickIconState;
 
 struct _CarrickStatusIconPrivate {
   CmService       *service;
@@ -39,23 +25,6 @@ enum
 
 static void carrick_status_icon_update_service (CarrickStatusIcon *icon,
                                                 CmService         *service);
-
-#define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
-
-static const gchar *icon_names[] = {
-  PKG_ICON_DIR "/" "carrick-no-network-normal.png",
-  PKG_ICON_DIR "/" "carrick-no-network-active.png",
-  PKG_ICON_DIR "/" "carrick-associating-normal.png",
-  PKG_ICON_DIR "/" "carrick-associating-active.png",
-  PKG_ICON_DIR "/" "carrick-wired-normal.png",
-  PKG_ICON_DIR "/" "carrick-wired-active.png",
-  PKG_ICON_DIR "/" "carrick-wireless-1-normal.png",
-  PKG_ICON_DIR "/" "carrick-wireless-1-active.png",
-  PKG_ICON_DIR "/" "carrick-wireless-2-normal.png",
-  PKG_ICON_DIR "/" "carrick-wireless-2-active.png",
-  PKG_ICON_DIR "/" "carrick-wireless-3-normal.png",
-  PKG_ICON_DIR "/" "carrick-wireless-3-active.png"
-};
 
 static void
 carrick_status_icon_get_property (GObject *object, guint property_id,
@@ -135,63 +104,16 @@ static void
 carrick_status_icon_update (CarrickStatusIcon *icon)
 {
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
-  CarrickIconState icon_state;
-  const gchar *type, *status;
-  guint strength;
+  CarrickIconState icon_state = CARRICK_ICON_NO_NETWORK;
 
-  if (priv->service)
-  {
-    strength = cm_service_get_strength (priv->service);
-    type = g_strdup (cm_service_get_type (priv->service));
-    status = g_strdup (cm_service_get_state (priv->service));
-  }
-  else
-  {
-    strength = 0;
-    type = g_strdup ("");
-    status = g_strdup ("");
-  }
-
-  if (status && status[0] != '0')
-  {
-    if (g_strcmp0 ("association", status)
-        || g_strcmp0 ("configuration", status))
-    {
-      icon_state = CARRICK_ICON_ASSOCIATING;
-    }
-  }
-  else if (type && type[0] != '0')
-  {
-    if (g_strcmp0 ("ethernet", type) == 0)
-      icon_state = CARRICK_ICON_WIRED_NETWORK;
-    else if (g_strcmp0 ("wifi", type) == 0)
-    {
-      if (strength > 70)
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
-      else if (strength > 35)
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_2;
-      else
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
-    }
-    else
-    {
-      icon_state = CARRICK_ICON_NO_NETWORK;
-    }
-  }
-  else
-  {
-    icon_state = CARRICK_ICON_NO_NETWORK;
-  }
+  icon_state = carrick_icon_factory_get_state_for_service (priv->service);
 
   if (priv->active)
     icon_state++;
 
-  gtk_status_icon_set_from_file (GTK_STATUS_ICON (icon),
-                                 icon_names[icon_state]);
   priv->current_state = icon_state;
-
-  g_free (type);
-  g_free (status);
+  gtk_status_icon_set_from_file (GTK_STATUS_ICON (icon),
+                                 carrick_icon_factory_get_path_for_state (icon_state));
 }
 
 void
@@ -231,56 +153,4 @@ carrick_status_icon_new (CmService *service)
                                   "service",
                                   service,
                                   NULL);
-}
-
-const gchar *
-carrick_status_icon_get_icon_path (CarrickStatusIcon *icon)
-{
-  CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
-
-  return g_strdup (icon_names[priv->current_state]);
-}
-
-const gchar *
-carrick_status_icon_path_for_state (CmService *service)
-{
-  CarrickIconState icon_state = CARRICK_ICON_NO_NETWORK;
-  const gchar *type;
-  guint strength;
-
-  if (service)
-  {
-    strength = cm_service_get_strength (service);
-    type = cm_service_get_type (service);
-  }
-  else
-  {
-    strength = 0;
-    type = NULL;
-  }
-
-  if (type)
-  {
-    if (g_strcmp0 ("ethernet", type) == 0)
-    {
-      icon_state = CARRICK_ICON_WIRED_NETWORK;
-    }
-    else if (g_strcmp0 ("wifi", type) == 0)
-    {
-      if (strength > 70)
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
-      else if (strength > 35)
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_2;
-      else
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
-    }
-  }
-  else
-  {
-    icon_state = CARRICK_ICON_NO_NETWORK;
-  }
-  // We want the highlighted version
-  icon_state++;
-
-  return icon_names[icon_state];
 }

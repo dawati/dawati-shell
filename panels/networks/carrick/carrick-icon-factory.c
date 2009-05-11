@@ -29,11 +29,11 @@ static const gchar *icon_names[] = {
 
 struct _CarrickIconFactoryPrivate
 {
-  GtkWidget  *no_network_img;
-  GtkWidget  *wired_img;
-  GtkWidget  *wireless_1_img;
-  GtkWidget  *wireless_2_img;
-  GtkWidget  *wireless_3_img;
+  GdkPixbuf *no_network_img;
+  GdkPixbuf *wired_img;
+  GdkPixbuf *wireless_1_img;
+  GdkPixbuf *wireless_2_img;
+  GdkPixbuf *wireless_3_img;
 };
 
 static void
@@ -71,7 +71,7 @@ carrick_icon_factory_new (void)
 }
 
 CarrickIconState
-carrick_icon_factory_state_for_service (CmService *service)
+carrick_icon_factory_get_state_for_service (CmService *service)
 {
   CarrickIconState icon_state = CARRICK_ICON_NO_NETWORK;
   guint  strength;
@@ -109,20 +109,27 @@ carrick_icon_factory_state_for_service (CmService *service)
 }
 
 const gchar *
-carrick_icon_factory_path_for_state (CarrickIconState state)
+carrick_icon_factory_get_path_for_state (CarrickIconState state)
 {
   return icon_names[state];
 }
 
-GtkWidget*
-carrick_icon_factory_image_for_service (CarrickIconFactory *factory,
-                                        CmService          *service)
+const gchar *
+carrick_icon_factory_get_path_for_service (CmService *service)
+{
+  CarrickIconState state = carrick_icon_factory_get_state_for_service (service);
+  return carrick_icon_factory_get_path_for_state (state);
+}
+
+GdkPixbuf*
+carrick_icon_factory_get_pixbuf_for_service (CarrickIconFactory *factory,
+                                             CmService          *service)
 {
   CarrickIconFactoryPrivate *priv = ICON_FACTORY_PRIVATE (factory);
   CarrickIconState icon_state;
-  GtkWidget *icon = NULL;
+  GdkPixbuf *icon = NULL;
 
-  icon_state = carrick_icon_factory_state_for_service (service);
+  icon_state = carrick_icon_factory_get_state_for_service (service);
 
   switch (icon_state)
   {
@@ -130,7 +137,8 @@ carrick_icon_factory_image_for_service (CarrickIconFactory *factory,
       if (!priv->wired_img)
       {
         priv->wired_img =
-          gtk_image_new_from_file (icon_names[CARRICK_ICON_WIRED_NETWORK + 1]);
+          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRED_NETWORK + 1],
+                                    NULL);
       }
       icon = priv->wired_img;
       break;
@@ -138,7 +146,8 @@ carrick_icon_factory_image_for_service (CarrickIconFactory *factory,
       if (!priv->wireless_1_img)
       {
         priv->wireless_1_img =
-          gtk_image_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_1 + 1]);
+          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_1 + 1],
+                                    NULL);
       }
       icon = priv->wireless_1_img;
       break;
@@ -146,7 +155,8 @@ carrick_icon_factory_image_for_service (CarrickIconFactory *factory,
       if (!priv->wireless_2_img)
       {
         priv->wireless_2_img =
-          gtk_image_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_2 + 1]);
+          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_2 + 1],
+                                    NULL);
       }
       icon = priv->wireless_2_img;
       break;
@@ -154,7 +164,8 @@ carrick_icon_factory_image_for_service (CarrickIconFactory *factory,
       if (!priv->wireless_3_img)
       {
         priv->wireless_3_img =
-          gtk_image_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_3 + 1]);
+          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_3 + 1],
+                                    NULL);
       }
       icon = priv->wireless_3_img;
       break;
@@ -163,7 +174,8 @@ carrick_icon_factory_image_for_service (CarrickIconFactory *factory,
       if (!priv->no_network_img)
       {
         priv->no_network_img =
-          gtk_image_new_from_file (icon_names[CARRICK_ICON_NO_NETWORK + 1]);
+          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_NO_NETWORK + 1],
+                                    NULL);
       }
       icon = priv->no_network_img;
       break;
