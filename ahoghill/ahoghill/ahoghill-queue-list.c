@@ -122,6 +122,8 @@ ahoghill_queue_list_add_item (AhoghillQueueList *list,
         ahoghill_queue_tile_set_item (tile, item);
     }
 
+    /* Make sure the index is within the bounds of the list */
+    index = CLAMP (index, 0, priv->items->len);
     if (index == priv->items->len) {
         g_ptr_array_add (priv->items, tile);
     } else {
