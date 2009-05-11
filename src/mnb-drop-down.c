@@ -536,10 +536,21 @@ mnb_drop_down_get_footer_geometry (MnbDropDown *self,
                                    gfloat      *height)
 {
   MnbDropDownPrivate *priv = self->priv;
+  gfloat              total_height, footer_height;
 
   g_return_if_fail (x && y && width && height);
 
-  clutter_actor_get_position (priv->footer, x, y);
-  clutter_actor_get_size (priv->footer, width, height);
+  /*
+   * ??? Something borked here; if I query coords of the footer I am getting
+   * what looks like the unexpanded size of the cell, relative to its column
+   * and row position, not to the parent. Work around it.
+   */
+  *x            = clutter_actor_get_x (CLUTTER_ACTOR (self));
+  *width        = clutter_actor_get_width  (CLUTTER_ACTOR (self));
+  footer_height = clutter_actor_get_height (priv->footer);
+  total_height  = clutter_actor_get_height (CLUTTER_ACTOR (self));
+
+  *height = footer_height;
+  *y      = total_height -  footer_height;
 }
 
