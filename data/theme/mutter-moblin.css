@@ -823,6 +823,17 @@ AhoghillMediaTile {
   color: #7e7e7e;
 }
 
+*.AhoghillPrimaryLabel {
+  font-family: "Liberation Sans Bold";
+  font-size: 13px;
+  color:#3b3b3b;
+}
+
+*.AhoghillSecondaryLabel {
+  font-size: 12px;
+  color: #7e7e7e;
+}
+
 /* pasteboard */
 
 *#pasteboard-vbox {
@@ -916,7 +927,7 @@ MnbClipboardItem {
 }
 
 *#people-search-entry *.MnbEntryButton {
-  color: #fba919;
+  color: #fba40b;
 }
 
 /* Anerley */

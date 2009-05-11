@@ -682,8 +682,8 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
                                    const gchar      *category,
                                    GtkIconTheme     *theme)
 {
-  const gchar *generic_name;
-  gchar       *description, *exec, *icon_name, *icon_file;
+  const gchar *generic_name, *description, *exec, *icon_name;
+  gchar *icon_file;
   NbtkWidget  *button;
 
   description = NULL;
@@ -713,9 +713,6 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
                               LAUNCHER_HEIGHT);
     }
 
-  g_free (description);
-  g_free (exec);
-  g_free (icon_name);
   g_free (icon_file);
 
   return button;

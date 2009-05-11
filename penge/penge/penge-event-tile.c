@@ -396,6 +396,8 @@ penge_event_tile_update (PengeEventTile *tile)
   {
     nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
     g_free (summary_str);
+  } else {
+    nbtk_label_set_text (NBTK_LABEL (priv->summary_label), "");
   }
 
   details_str = jana_event_get_location (priv->event);

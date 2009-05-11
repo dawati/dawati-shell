@@ -202,6 +202,8 @@ mnb_notification_init (MnbNotification *self)
                                CLUTTER_ACTOR (priv->summary),
                                "y-expand", TRUE,
                                "x-expand", TRUE,
+                               "y-align", 0.5,
+                               "y-fill", FALSE,
                                NULL);
 
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
@@ -230,7 +232,8 @@ mnb_notification_init (MnbNotification *self)
                                CLUTTER_ACTOR (priv->dismiss_button),
                                "y-expand", FALSE,
                                "x-expand", FALSE,
-                               "x-align",  0.0,
+                               "x-fill", FALSE,
+                               "x-align",  1.0,
                                NULL);
 
   g_signal_connect (priv->dismiss_button, "clicked",
@@ -257,7 +260,8 @@ mnb_notification_update (MnbNotification *notification,
                          Notification    *details)
 {
   MnbNotificationPrivate *priv;
-  gboolean                has_action = FALSE;
+  gboolean                has_action = FALSE, no_icon = TRUE;
+  ClutterActor           *layout = NULL; /* action buttons.. */
 
   g_return_if_fail (MNB_IS_NOTIFICATION (notification));
 
@@ -285,21 +289,23 @@ mnb_notification_update (MnbNotification *notification,
                                          gtk_icon_info_get_filename (info),
                                          NULL);
           gtk_icon_info_free (info);
+          no_icon = FALSE;
         }
     }
-  else
+  
+  if (no_icon)
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (notification),
                                       priv->icon);
       clutter_container_child_set (CLUTTER_CONTAINER (notification),
                                    CLUTTER_ACTOR (priv->summary),
                                    "col-span", 2,
+                                   "col", 0,
                                    NULL);
     }
 
   if (details->actions)
     {
-      ClutterActor *layout = NULL;
       GHashTableIter iter;
       gchar *key, *value;
 
@@ -355,6 +361,12 @@ mnb_notification_update (MnbNotification *notification,
           /* Remove the dismiss button.. */
           clutter_container_remove_actor(CLUTTER_CONTAINER (notification),
                                          CLUTTER_ACTOR (priv->dismiss_button));
+          
+          if (layout != NULL)
+            clutter_container_child_set (CLUTTER_CONTAINER (notification),
+                                         CLUTTER_ACTOR (layout),
+                                         "col-span", 2,
+                                         NULL);
         }
     }
 }

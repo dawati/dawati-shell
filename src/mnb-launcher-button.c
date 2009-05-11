@@ -586,6 +586,11 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
                                           0, 0,
                                           "row-span", 3,
                                           NULL);
+
+    /* Keep sibling in sync. */
+    if (self->priv->fav_sibling)
+        mnb_launcher_button_set_icon (self->priv->fav_sibling,
+                                      icon_file, icon_size);
   }
 }
 

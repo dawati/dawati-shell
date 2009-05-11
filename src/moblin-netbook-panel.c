@@ -872,8 +872,6 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->people, screen_width);
   clutter_actor_lower_bottom (priv->people);
   clutter_actor_hide (priv->people);
-  clutter_actor_set_height (priv->people,
-                            screen_height - PANEL_HEIGHT * 1.5);
 #endif
 
   if (shadow)

@@ -6,7 +6,7 @@
 #include "penge-app-bookmark-manager.h"
 #include "penge-utils.h"
 
-G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_APP_TILE, PengeAppTilePrivate))
@@ -17,6 +17,7 @@ struct _PengeAppTilePrivate {
   PengeAppBookmark *bookmark;
   ClutterActor *tex;
   GtkIconTheme *icon_theme;
+  GAppInfo *app_info;
 };
 
 enum
@@ -67,6 +68,12 @@ penge_app_tile_dispose (GObject *object)
   {
     penge_app_bookmark_unref (priv->bookmark);
     priv->bookmark = NULL;
+  }
+
+  if (priv->app_info)
+  {
+    g_object_unref (priv->app_info);
+    priv->app_info = NULL;
   }
 
   G_OBJECT_CLASS (penge_app_tile_parent_class)->dispose (object);
@@ -128,6 +135,8 @@ static void
 penge_app_tile_constructed (GObject *object)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (object);
+  gchar *path;
+  GError *error = NULL;
 
   g_return_if_fail (priv->bookmark);
 
@@ -144,6 +153,23 @@ penge_app_tile_constructed (GObject *object)
                     object);
 
   _update_icon_from_icon_theme ((PengeAppTile *)object);
+
+  path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
+
+  if (path)
+  {
+    priv->app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
+    nbtk_button_set_tooltip (NBTK_BUTTON (object),
+                             g_app_info_get_name (priv->app_info));
+    g_free (path);
+  }
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error getting info from bookmark: %s",
+               error->message);
+    g_clear_error (&error);
+  }
 }
 
 static void
@@ -169,56 +195,18 @@ penge_app_tile_class_init (PengeAppTileClass *klass)
 }
 
 static gboolean
-_enter_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      "hover");
-
-  return FALSE;
-}
-
-static gboolean
-_leave_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      NULL);
-
-  return FALSE;
-}
-
-static gboolean
 _button_press_event (ClutterActor *actor,
                      ClutterEvent *event,
                      gpointer      userdata)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
   GError *error = NULL;
-  gchar *path;
+  GAppLaunchContext *context;
 
-  if (!(priv->bookmark && priv->bookmark->uri))
-    return TRUE;
+  context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
 
-  path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
-
-  if (path)
-  {
-    GAppLaunchContext *context;
-    GAppInfo *app_info;
-
-    context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
-    app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
-    g_free (path);
-
-    if (g_app_info_launch (app_info, NULL, context, &error))
-      penge_utils_signal_activated (actor);
-
-    g_object_unref (app_info);
-    g_object_unref (context);
-  }
+  if (g_app_info_launch (priv->app_info, NULL, context, &error))
+    penge_utils_signal_activated (actor);
 
   if (error)
   {
@@ -227,6 +215,7 @@ _button_press_event (ClutterActor *actor,
     g_clear_error (&error);
   }
 
+  g_object_unref (context);
   return TRUE;
 }
 
@@ -236,19 +225,9 @@ penge_app_tile_init (PengeAppTile *self)
   PengeAppTilePrivate *priv = GET_PRIVATE (self);
 
   priv->tex = clutter_texture_new ();
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->tex,
-                        0,
-                        0);
 
-  g_signal_connect (self,
-                    "enter-event",
-                    (GCallback)_enter_event_cb,
-                    self);
-  g_signal_connect (self,
-                    "leave-event",
-                    (GCallback)_leave_event_cb,
-                    self);
+  nbtk_bin_set_child (NBTK_BIN (self),
+                      priv->tex);
   g_signal_connect (self,
                     "button-press-event",
                     (GCallback)_button_press_event,

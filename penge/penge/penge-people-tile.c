@@ -26,6 +26,8 @@ enum
   PROP_SECONDARY_TEXT
 };
 
+#define DEFAULT_AVATAR_PATH PKG_DATADIR "/theme/mzone/default-avatar-icon.png"
+
 static void
 penge_people_tile_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -42,6 +44,7 @@ penge_people_tile_set_property (GObject *object, guint property_id,
 {
   PengePeopleTilePrivate *priv = GET_PRIVATE (object);
   GError *error = NULL;
+  const gchar *path;
 
   switch (property_id) {
     case PROP_BODY:
@@ -89,14 +92,23 @@ penge_people_tile_set_property (GObject *object, guint property_id,
                                    NULL);
       break;
     case PROP_ICON_PATH:
+
+      path = g_value_get_string (value);
+
+      if (!path)
+      {
+        path = DEFAULT_AVATAR_PATH;
+      }
+
       if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon), 
-                                          g_value_get_string (value),
+                                          path,
                                           &error))
       {
         g_critical (G_STRLOC ": error setting icon texture from file: %s",
                     error->message);
         g_clear_error (&error);
       }
+
       break;
     case PROP_PRIMARY_TEXT:
       nbtk_label_set_text (NBTK_LABEL (priv->primary_text),
