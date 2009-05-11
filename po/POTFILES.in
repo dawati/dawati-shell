@@ -14,7 +14,6 @@ src/moblin-netbook.c
 src/moblin-netbook-chooser.c
 src/moblin-netbook-launcher.c
 src/moblin-netbook-netpanel.c
-src/moblin-netbook-panel.c
 src/moblin-netbook-pasteboard.c
 src/moblin-netbook-status.c
 src/moblin-netbook-people.c
@@ -24,4 +23,5 @@ src/mnb-entry.c
 src/mnb-launcher-tree.c
 src/mnb-status-entry.c
 src/mnb-switcher.c
+src/mnb-toolbar.c
 tests/test-pasteboard.c

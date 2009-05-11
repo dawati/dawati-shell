@@ -40,7 +40,6 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-launcher.h"
-#include "moblin-netbook-panel.h"
 #include "mnb-drop-down.h"
 #include "mnb-entry.h"
 #include "mnb-launcher-button.h"

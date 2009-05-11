@@ -15,7 +15,6 @@
 
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
-#include "moblin-netbook-panel.h"
 #include "moblin-netbook-pasteboard.h"
 #include "mnb-clipboard-store.h"
 #include "mnb-clipboard-view.h"
