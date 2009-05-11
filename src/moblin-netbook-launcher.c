@@ -724,8 +724,13 @@ expander_expand_complete_idle_cb (launcher_data_t *launcher_data)
   if (nbtk_expander_get_expanded (launcher_data->expand_expander))
     {
       ClutterActor *inner_grid, *launcher;
+
       inner_grid = nbtk_bin_get_child (NBTK_BIN (launcher_data->expand_expander));
-      launcher = (ClutterActor *) grid_keynav_first (NBTK_GRID (inner_grid));
+      launcher = (ClutterActor *) grid_find_widget_by_pseudo_class (NBTK_GRID (inner_grid),
+                                                                    "hover");
+
+      if (!launcher)
+        launcher = (ClutterActor *) grid_keynav_first (NBTK_GRID (inner_grid));
 
       scrollable_ensure_actor_visible (NBTK_SCROLLABLE (launcher_data->scrolled_vbox),
                                        launcher);
