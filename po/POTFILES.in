@@ -3,11 +3,13 @@ ahoghill/ahoghill/ahoghill-grid-view.c
 ahoghill/ahoghill/ahoghill-media-tile.c
 ahoghill/ahoghill/ahoghill-results-pane.c
 ahoghill/ahoghill/ahoghill-search-pane.c
+ahoghill/ahoghill/ahoghill-queue-tile.c
 penge/penge/penge-calendar-pane.c
 penge/penge/penge-events-pane.c
 penge/penge/penge-tasks-pane.c
 penge/penge/penge-task-tile.c
 penge/penge/penge-utils.c
+penge/penge/penge-recent-file-tile.c
 src/moblin-netbook.c
 src/moblin-netbook-chooser.c
 src/moblin-netbook-launcher.c
