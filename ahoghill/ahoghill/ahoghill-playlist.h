@@ -45,7 +45,8 @@ struct _AhoghillPlaylistClass
 };
 
 GType ahoghill_playlist_get_type (void) G_GNUC_CONST;
-AhoghillPlaylist *ahoghill_playlist_new (AhoghillGridView *view);
+AhoghillPlaylist *ahoghill_playlist_new (AhoghillGridView *view,
+                                         const char       *title);
 void ahoghill_playlist_set_queue (AhoghillPlaylist *playlist,
                                   BrQueue          *queue);
 

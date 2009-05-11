@@ -2,7 +2,7 @@
 #define __AHOGHILL_PLAYLIST_HEADER_H__
 
 #include <nbtk/nbtk.h>
-
+#include <bickley/bkl.h>
 
 G_BEGIN_DECLS
 
@@ -44,6 +44,8 @@ struct _AhoghillPlaylistHeaderClass
 };
 
 GType ahoghill_playlist_header_get_type (void) G_GNUC_CONST;
+void ahoghill_playlist_header_set_item (AhoghillPlaylistHeader *header,
+                                        BklItem                *item);
 
 G_END_DECLS
 
