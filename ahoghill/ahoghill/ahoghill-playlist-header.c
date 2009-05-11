@@ -115,16 +115,13 @@ ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
     self->priv = GET_PRIVATE (self);
     priv = self->priv;
 
+    clutter_actor_set_size ((ClutterActor *) self, 210, -1);
     priv->playlist_title = nbtk_label_new (_("Local"));
     clutter_actor_set_name ((ClutterActor *) priv->playlist_title,
                             "ahoghill-playlist-title");
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                          (ClutterActor *) priv->playlist_title,
-                                          0, 0,
-                                          "y-expand", FALSE,
-                                          "y-fill", TRUE,
-                                          "x-align", 0.0,
-                                          NULL);
+    nbtk_table_add_actor (NBTK_TABLE (self),
+                          (ClutterActor *) priv->playlist_title,
+                          0, 0);
 
     priv->play_button = g_object_new (AHOGHILL_TYPE_PLAY_BUTTON, NULL);
     clutter_actor_set_size (CLUTTER_ACTOR (priv->play_button), 28, 31);
@@ -134,8 +131,8 @@ ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           (ClutterActor *) priv->play_button,
                                           0, 1,
-                                          "x-expand", FALSE,
-                                          "y-expand", FALSE,
+                                          "x-expand", TRUE,
+                                          "x-align", 0.0,
                                           NULL);
 
     priv->primary = nbtk_label_new ("");

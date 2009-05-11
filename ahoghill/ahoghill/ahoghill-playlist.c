@@ -121,10 +121,15 @@ ahoghill_playlist_init (AhoghillPlaylist *self)
     priv = self->priv;
 
     priv->header = g_object_new (AHOGHILL_TYPE_PLAYLIST_HEADER, NULL);
+    nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->header), "Top");
     g_signal_connect (priv->header, "playing",
                       G_CALLBACK (header_playing_cb), self);
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           (ClutterActor *) priv->header, 0, 0,
+                                          "x-expand", TRUE,
+                                          "x-fill", TRUE,
+                                          "y-expand", FALSE,
+                                          "y-fill", FALSE,
                                           "x-align", 0.0,
                                           "y-align", 0.0,
                                           NULL);
@@ -132,7 +137,6 @@ ahoghill_playlist_init (AhoghillPlaylist *self)
     priv->list = g_object_new (AHOGHILL_TYPE_QUEUE_LIST, NULL);
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           (ClutterActor *) priv->list, 1, 0,
-                                          "y-fill", FALSE,
                                           "x-align", 0.0,
                                           "y-align", 0.0,
                                           NULL);
@@ -164,7 +168,11 @@ uri_added_cb (BrQueue          *queue,
     AhoghillPlaylistPrivate *priv = playlist->priv;
     BklItem *item;
 
+    g_print ("Got uri: %s\n", uri);
+
     item = ahoghill_grid_view_get_item (priv->gridview, uri);
+    g_print ("No item for %s\n", uri);
+
     ahoghill_queue_list_add_item (priv->list, item, index);
 }
 
@@ -212,7 +220,8 @@ list_uris_reply (BrQueue  *queue,
     for (i = 0; uris[i]; i++) {
         BklItem *item = ahoghill_grid_view_get_item (priv->gridview, uris[i]);
 
-        ahoghill_queue_list_add_item (priv->list, item, 0);
+        g_print ("uri: %s - %p\n", uris[i], item);
+        ahoghill_queue_list_add_item (priv->list, item, i);
     }
 }
 

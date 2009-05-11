@@ -69,8 +69,10 @@ update_tile (AhoghillMediaTile *self)
         title = g_strdup (bkl_item_audio_get_title ((BklItemAudio *) priv->item));
         artists = bkl_item_audio_get_artists ((BklItemAudio *) priv->item);
 
-        /* FIXME: make a string from the array */
-        artist = g_strdup (artists->pdata[0]);
+        if (artists) {
+            /* FIXME: make a string from the array */
+            artist = g_strdup (artists->pdata[0]);
+        }
         break;
 
     case BKL_ITEM_TYPE_IMAGE:

@@ -863,10 +863,11 @@ AhoghillMediaTile {
 }
 
 AhoghillPlaylistHeader {
-  padding-left: 12;
-  padding-right: 12;
-  padding-top: 5;
-  padding-bottom: 5;
+  padding: 4;
+}
+
+AhoghillPlaylistHeader.Top {
+  border-image: url('file://media-panel/top_playque_selected.png') 5 5 5 0 stretch;
 }
 
 *#ahoghill-playlist-title {
@@ -900,6 +901,14 @@ AhoghillPlayButton.Toggled {
 
 AhoghillPlayButton.Toggled:hover {
   background-image: url('file://media-panel/pq_pause_hover.png');
+}
+
+AhoghillQueueList {
+  border-image: url('file://media-panel/playque_background.png') 5 stretch;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
 }
 
 /* pasteboard */
