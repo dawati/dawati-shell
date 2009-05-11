@@ -46,6 +46,7 @@ static void     mnb_panel_show_completed (MnbDropDown *self);
 static void     mnb_panel_hide_begin     (MnbDropDown *self);
 static void     mnb_panel_hide_completed (MnbDropDown *self);
 static gboolean mnb_panel_setup_proxy    (MnbPanel *panel);
+static gboolean mnb_panel_init_owner     (MnbPanel *panel);
 
 enum
 {
@@ -524,6 +525,32 @@ mnb_panel_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
 }
 
 static gboolean
+mnb_panel_plug_removed_cb (GtkSocket *socket, gpointer data)
+{
+  MnbPanel *panel = MNB_PANEL (data);
+
+  /*
+   * If the initialization succeeded, we just return TRUE, to stop the signal
+   * processing (we have already destroyed the socket manually).
+   */
+  if (mnb_panel_init_owner (panel))
+    return TRUE;
+
+  panel->priv->child_xid = None;
+
+  /*
+   * If initialization failed, we return FALSE; the signal closure will cleanup
+   * the socket for us.
+   */
+  return FALSE;
+}
+
+/*
+ * Does the hard work in establishing a connection to the name owner, retrieving
+ * the require information, and constructing the socket into which we embed the
+ * panel window.
+ */
+static gboolean
 mnb_panel_init_owner (MnbPanel *panel)
 {
   MnbPanelPrivate *priv = panel->priv;
@@ -566,6 +593,12 @@ mnb_panel_init_owner (MnbPanel *panel)
 
   priv->child_xid = xid;
 
+  /*
+   * If we already have a window, we are being called because the panel has
+   * died on us; we simply destroy the window and start again. (It should be
+   * possible to just destroy the socket and reuse the window (after unmapping
+   * it, but this is simple and robust.)
+   */
   if (priv->window)
     gtk_widget_destroy (priv->window);
 
@@ -583,8 +616,10 @@ mnb_panel_init_owner (MnbPanel *panel)
     g_warning ("Socket is not mapped !!!");
 
   g_signal_connect (socket, "size-allocate",
-                    G_CALLBACK (mnb_panel_socket_size_allocate_cb),
-                    panel);
+                    G_CALLBACK (mnb_panel_socket_size_allocate_cb), panel);
+
+  g_signal_connect (socket, "plug-removed",
+                    G_CALLBACK (mnb_panel_plug_removed_cb), panel);
 
   gtk_widget_realize (window);
 
