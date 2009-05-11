@@ -236,3 +236,19 @@ ahoghill_playlist_header_set_item (AhoghillPlaylistHeader *header,
     g_free (primary);
     g_free (secondary);
 }
+
+void
+ahoghill_playlist_header_set_can_play (AhoghillPlaylistHeader *header,
+                                       gboolean                can_play)
+{
+    AhoghillPlaylistHeaderPrivate *priv = header->priv;
+
+    clutter_actor_set_reactive ((ClutterActor *) priv->play_button, can_play);
+
+    if (can_play) {
+        nbtk_widget_set_style_pseudo_class (priv->play_button, NULL);
+    } else {
+        /* FIXME: Need an image for inactive state */
+        nbtk_widget_set_style_pseudo_class (priv->play_button, "inactive");
+    }
+}
