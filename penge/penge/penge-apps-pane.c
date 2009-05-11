@@ -118,6 +118,8 @@ penge_apps_pane_update (PengeAppsPane *pane)
   ClutterActor *actor;
   gint count = 0;
   PengeAppBookmark *bookmark;
+  gchar *path;
+  GError *error = NULL;
 
   bookmarks = penge_app_bookmark_manager_get_bookmarks (priv->manager);
 
@@ -129,6 +131,34 @@ penge_apps_pane_update (PengeAppsPane *pane)
 
     actor = g_hash_table_lookup (priv->uris_to_actors,
                                  bookmark->uri);
+
+    /* Check if this URI is on the system */
+    path = g_filename_from_uri (bookmark->uri, NULL, &error);
+
+    if (error)
+    {
+      g_warning (G_STRLOC ": Error converting uri to path: %s",
+                 error->message);
+      g_clear_error (&error);
+
+      if (actor)
+      {
+        clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                        actor);
+      }
+
+      continue;
+    }
+
+    if (!g_file_test (path, G_FILE_TEST_EXISTS))
+    {
+      /* skip those that have a missing .desktop file */
+      g_free (path);
+      continue;
+    }
+
+    g_free (path);
+
     if (actor)
     {
       clutter_container_child_set (CLUTTER_CONTAINER (pane),

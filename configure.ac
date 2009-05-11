@@ -1,7 +1,7 @@
 m4_define([mutter_version], [2.25.55~0.4])
 m4_define([plugin_major_version], [0])
 m4_define([plugin_minor_version], [19])
-m4_define([plugin_micro_version], [0])
+m4_define([plugin_micro_version], [2])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
 
@@ -37,6 +37,15 @@ AC_HEADER_STDC
 AM_PROG_LIBTOOL
 AC_CHECK_FUNCS([localtime_r])
 
+# We have a patch to libgnome-menu that adds an accessor for the
+# GenericName desktop entry field.
+SAVE_LIBS=${LIBS}
+AC_CHECK_LIB([gnome-menu], [gmenu_tree_entry_get_generic_name],
+[
+  AC_DEFINE([GMENU_WITH_GENERIC_NAME], [1], [libgnome-menu has the GenericName accessor])
+])
+LIBS=${SAVE_LIBS}
+
 # Make libtool respect the make -s switch (kudos to jacob berman)
 changequote(,)dnl
 LIBTOOL="${LIBTOOL} \$(shell echo \"\$(MFLAGS)\" | awk '/^[^ ]*s/ { print \"--silent\" }')"
@@ -71,7 +80,7 @@ AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Medi
 
 if test "x$enable_ahoghill" = "xyes"; then
 	AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
-	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.3 gdk-pixbuf-2.0 bognor-regis-0.1 gtk+-2.0)
+	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 gdk-pixbuf-2.0 bognor-regis-0.2 gtk+-2.0)
 fi
 
 AC_ARG_ENABLE([netpanel],

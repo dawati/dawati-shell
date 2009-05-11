@@ -39,8 +39,7 @@ main (int     argc,
         {
           MnbLauncherEntry  *entry;
           GtkIconInfo       *info;
-          const gchar       *generic_name, *icon_name, *icon_file;
-          gchar             *exec;
+          const gchar       *generic_name, *exec, *icon_name, *icon_file;
           gboolean           is_fallback;
 
           entry = entry_iter->data;
@@ -86,8 +85,6 @@ main (int     argc,
                         "not found");
             }
 
-          if (exec)
-            g_free (exec);
           if (info)
             gtk_icon_info_free (info);            
         }
