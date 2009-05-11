@@ -52,6 +52,14 @@
 
 #define MNBTK_SN_MAP_TIMEOUT 800
 
+/*
+ * FIXME -- we should refactor this into a self-contained MnbChooser actor,
+ *          and implement it as a singleton.
+ */
+static MnbInputRegion  input_region = NULL;
+static ClutterActor   *self = NULL;
+static guint           workspace_chooser_timeout = 0;
+
 /******************************************************************
  * Workspace chooser
  */
@@ -897,12 +905,10 @@ show_workspace_chooser (MutterPlugin *plugin,
   clutter_container_add (CLUTTER_CONTAINER (switcher),
                          frame, label, grid, NULL);
 
-#if 0
-  if (priv->workspace_chooser)
+  if (self)
     hide_workspace_chooser (plugin, timestamp);
 
-  priv->workspace_chooser = switcher;
-#endif
+  self = switcher;
 
   overlay = mutter_plugin_get_overlay_group (plugin);
 
@@ -938,6 +944,16 @@ show_workspace_chooser (MutterPlugin *plugin,
 
   moblin_netbook_stash_window_focus (plugin, timestamp);
   moblin_netbook_set_lowlight (plugin, TRUE);
+
+  if (input_region)
+    moblin_netbook_input_region_remove_without_update (plugin, input_region);
+
+  input_region =
+    moblin_netbook_input_region_push (plugin,
+                                      screen_width-((guint)switcher_width)/2,
+                                      screen_height-((guint)switcher_height)/2,
+                                      (guint)switcher_width,
+                                      (guint)switcher_height);
 }
 
 void
@@ -945,22 +961,26 @@ hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  //if (!priv->workspace_chooser)
-  //  return;
+  if (!self)
+    return;
 
-  if (priv->workspace_chooser_timeout)
+  if (workspace_chooser_timeout)
     {
-      g_source_remove (priv->workspace_chooser_timeout);
-      priv->workspace_chooser_timeout = 0;
+      g_source_remove (workspace_chooser_timeout);
+      workspace_chooser_timeout = 0;
     }
 
   moblin_netbook_set_lowlight (plugin, FALSE);
   moblin_netbook_unstash_window_focus (plugin, timestamp);
 
-  // hide_panel (plugin);
+  if (input_region)
+    {
+      moblin_netbook_input_region_remove (plugin, input_region);
+      input_region = NULL;
+    }
 
-  // clutter_actor_destroy (priv->workspace_chooser);
-  // priv->workspace_chooser = NULL;
+  clutter_actor_destroy (self);
+  self = NULL;
 }
 
 /*
@@ -991,7 +1011,7 @@ workspace_chooser_timeout_cb (gpointer data)
 
   timestamp = clutter_x11_get_current_event_time ();
 
-  if (!priv->workspace_chooser_timeout)
+  if (!workspace_chooser_timeout)
     {
       g_message ("Workspace timeout triggered after user input, ignoring\n");
       return FALSE;
@@ -1209,7 +1229,7 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
                * Start the timeout that automatically moves the application
                * to a new workspace if the user does not choose one manually.
                */
-              priv->workspace_chooser_timeout =
+              workspace_chooser_timeout =
                 g_timeout_add_full (G_PRIORITY_DEFAULT,
                                 WORKSPACE_CHOOSER_TIMEOUT,
                                 workspace_chooser_timeout_cb,
