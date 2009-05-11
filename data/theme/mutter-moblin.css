@@ -857,8 +857,20 @@ AhoghillPlaylistHeader {
   color: #3b3b3b;
 }
 
-*.AhoghillPlayButton {
+AhoghillPlayButton {
   background-image: url('file://media-panel/pq_play.png');
+}
+
+AhoghillPlayButton:hover {
+  background-image: url('file://media-panel/pq_play_hover.png');
+}
+
+AhoghillPlayButton.Toggled {
+  background-image: url('file://media-panel/pq_pause.png');
+}
+
+AhoghillPlayButton.Toggled:hover {
+  background-image: url('file://media-panel/pq_pause_hover.png');
 }
 
 /* pasteboard */
