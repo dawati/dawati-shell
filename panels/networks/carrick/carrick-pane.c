@@ -387,6 +387,13 @@ _device_updated_cb (CmDevice *device,
 }
 
 static void
+_remove_list_items (GtkWidget *widget,
+                    gpointer   user_data)
+{
+  gtk_widget_destroy (widget);
+}
+
+static void
 _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
@@ -401,6 +408,12 @@ _update_services (CarrickPane *pane)
     priv->services = g_list_delete_link (priv->services,
                                          priv->services);
   }
+  /* Empty our container widget */
+  gtk_container_foreach (GTK_CONTAINER (priv->service_list),
+                         _remove_list_items,
+                         NULL);
+
+  /* Watch for "service-updated" on each service */
   raw_services = cm_manager_get_services (priv->manager);
   if (!raw_services) /* FIXME: handle this better */
   {
