@@ -344,6 +344,8 @@ penge_people_tile_init (PengePeopleTile *self)
                     "leave-event",
                     (GCallback)_leave_event_cb,
                     self);
+
+  nbtk_table_set_col_spacing (NBTK_TABLE (priv->details_overlay), 4);
 }
 
 
