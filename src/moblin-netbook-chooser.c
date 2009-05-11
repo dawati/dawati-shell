@@ -444,11 +444,13 @@ make_spinner (void)
       if (!tmp)
         return NULL;
 
-      clutter_actor_realize (tmp);
+      clutter_container_add_actor (CLUTTER_CONTAINER (clutter_stage_get_default ()), tmp);
+      clutter_actor_hide (tmp);
     }
 
   spinner = clutter_clone_new (tmp);
 
+  clutter_actor_realize (spinner);
   clutter_actor_get_size (spinner, &s_w, &s_h);
 
   clutter_actor_set_anchor_point (spinner, s_w / 2, s_h / 2);
@@ -506,6 +508,19 @@ make_background (const gchar *text, guint width, guint height,
       thumb_unsel = clutter_texture_new_from_file
                           (PLUGIN_PKGDATADIR
                            "/theme/chooser/thumb-unselected.png", NULL);
+
+      clutter_actor_set_parent (space_sel, clutter_stage_get_default ());
+      clutter_container_add_actor (CLUTTER_CONTAINER (clutter_stage_get_default ()), space_sel);
+      clutter_actor_hide (space_sel);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (clutter_stage_get_default ()), space_unsel);
+      clutter_actor_hide (space_unsel);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (clutter_stage_get_default ()), thumb_sel);
+      clutter_actor_hide (thumb_sel);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (clutter_stage_get_default ()), thumb_unsel);
+      clutter_actor_hide (thumb_unsel);
 
       g_object_ref (space_sel);
       g_object_ref (space_unsel);
@@ -573,6 +588,7 @@ make_background (const gchar *text, guint width, guint height,
                                   height /2 + WORKSPACE_CHOOSER_LABEL_HEIGHT +
                                   WORKSPACE_CHOOSER_CELL_PAD);
 
+      clutter_actor_show_all (spinner);
       clutter_container_add_actor (CLUTTER_CONTAINER (group), spinner);
     }
 
