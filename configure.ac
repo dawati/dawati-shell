@@ -146,7 +146,6 @@ penge/examples/Makefile
 ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile
-libmnb/Makefile
 ])
 
 echo "
