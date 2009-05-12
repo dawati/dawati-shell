@@ -55,6 +55,7 @@
 #define TRAY_BUTTON_HEIGHT 55
 #define TRAY_BUTTON_WIDTH 44
 
+/* IF YOU EVER CHANGE THIS VALUE YOU NEED TO UPDATE CARRICK / DALSTON ETC */
 #define PANEL_X_PADDING 4
 
 struct button_data
@@ -796,7 +797,8 @@ make_panel (MutterPlugin *plugin, gint width)
   priv->media_drop_down = CLUTTER_ACTOR (mnb_drop_down_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (panel),
                                priv->media_drop_down);
-  clutter_actor_set_width (priv->media_drop_down, screen_width);
+  clutter_actor_set_width (priv->media_drop_down,
+                           screen_width - 2 * PANEL_X_PADDING);
 
   ahoghill_grid_view = g_object_new (AHOGHILL_TYPE_GRID_VIEW, NULL);
   clutter_actor_set_height (mzone_grid_view,
