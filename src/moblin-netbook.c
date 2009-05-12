@@ -52,7 +52,6 @@
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
-
 /* callback data for when animations complete */
 typedef struct
 {
@@ -309,6 +308,16 @@ moblin_netbook_plugin_constructed (GObject *object)
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "pasteboard-zone",
                                 "pastboard");
 
+  {
+    MnbPanel *panel = mnb_panel_new (MUTTER_PLUGIN (plugin),
+                                     "/com/intel/Mnb/TestPanel",
+                                     1024, 400);
+
+    if (panel)
+      {
+        mnb_toolbar_append_panel (MNB_TOOLBAR (toolbar), MNB_DROP_DOWN (panel));
+      }
+  }
 #endif
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, toolbar, NULL);
