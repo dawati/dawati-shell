@@ -548,12 +548,12 @@ PengeDateTile
   color: white;
 }
 
-*.PengeTwitterTileText *.PengeMyspaceTileText, 
+*.PengeTwitterTileText, *.PengeMyspaceTileText
 {
   font-size: 12;
 }
 
-*.PengeTwitterTileBackground, *.PengeMyspaceTileBackground,
+*.PengeTwitterTileBackground, *.PengeMyspaceTileBackground
 {
   border-image: url('file://mzone/quotebackground.png') 45 51 46 52;
   padding: 8;
