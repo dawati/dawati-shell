@@ -7,7 +7,7 @@ main (int    argc,
       char **argv)
 {
   GtkWidget *window;
-  GtkWidget *applet;
+  CarrickApplet *applet;
 
   gtk_init (&argc, &argv);
 
