@@ -1123,15 +1123,15 @@ mnb_toolbar_init (MnbToolbar *self)
 static void
 shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
                                   ClutterActor     *icon,
-                                  MutterPlugin     *plugin)
+                                  MnbToolbar       *toolbar)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   const gchar                *name;
   gint                        col = -1;
   gint                        screen_width, screen_height;
   gint                        x, y;
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  mutter_plugin_query_screen_size (toolbar->priv->plugin,
+                                   &screen_width, &screen_height);
 
   name = clutter_actor_get_name (icon);
 
@@ -1156,13 +1156,13 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
 
   clutter_actor_set_position (icon, x, y);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->toolbar), icon);
+  clutter_container_add_actor (CLUTTER_CONTAINER (toolbar->priv->hbox), icon);
 }
 
 static void
 shell_tray_manager_icon_removed_cb (ShellTrayManager *mgr,
                                     ClutterActor     *icon,
-                                    MutterPlugin     *plugin)
+                                    MnbToolbar       *toolbar)
 {
   clutter_actor_destroy (icon);
 }
@@ -1241,10 +1241,10 @@ mnb_toolbar_constructed (GObject *self)
                                      NULL);
 
   g_signal_connect (priv->tray_manager, "tray-icon-added",
-                    G_CALLBACK (shell_tray_manager_icon_added_cb), plugin);
+                    G_CALLBACK (shell_tray_manager_icon_added_cb), self);
 
   g_signal_connect (priv->tray_manager, "tray-icon-removed",
-                    G_CALLBACK (shell_tray_manager_icon_removed_cb), plugin);
+                    G_CALLBACK (shell_tray_manager_icon_removed_cb), self);
 
   shell_tray_manager_manage_stage (priv->tray_manager,
                                    CLUTTER_STAGE (
@@ -1384,10 +1384,24 @@ static void
 tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
 {
   struct config_map_data *map_data = data;
-  MutterPlugin           *plugin   = map_data->toolbar->priv->plugin;
+  MnbToolbarPrivate      *priv     = map_data->toolbar->priv;
+  MutterPlugin           *plugin   = priv->plugin;
   MutterWindow           *mcw      = map_data->mcw;
+  gint  x, y;
+  guint w, h;
 
   g_free (map_data);
+
+  mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (actor), &x, &y, &w, &h);
+
+  if (priv->dropdown_region)
+    moblin_netbook_input_region_remove_without_update (plugin,
+                                                       priv->dropdown_region);
+
+  printf ("adding region %d,%d;%dx%d\n", x, y, w, h);
+
+  priv->dropdown_region =
+    moblin_netbook_input_region_push (plugin, x, TOOLBAR_HEIGHT + y, w, h);
 
   /* Notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
@@ -1500,7 +1514,7 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
 
   parent = mutter_plugin_get_overlay_group (priv->plugin);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (toolbar), background);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), background);
 
 #if 0
   /* TODO */
