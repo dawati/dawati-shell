@@ -124,9 +124,9 @@ penge_myspace_tile_constructed (GObject *object)
 
   body = nbtk_bin_new ();
   nbtk_widget_set_style_class_name (body,
-                                    "PengeTwitterTileBackground");
+                                    "PengeMyspaceTileBackground");
   label = nbtk_label_new (content);
-  nbtk_widget_set_style_class_name (label, "PengeTwitterTileLabel");
+  nbtk_widget_set_style_class_name (label, "PengeMyspaceTileLabel");
   nbtk_bin_set_child (NBTK_BIN (body), (ClutterActor *)label);
   nbtk_bin_set_alignment (NBTK_BIN (body), NBTK_ALIGN_TOP, NBTK_ALIGN_TOP);
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
