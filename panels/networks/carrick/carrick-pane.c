@@ -35,6 +35,7 @@ struct _CarrickPanePrivate {
 enum
 {
   PROP_0,
+  PROP_ICON_FACTORY,
   PROP_MANAGER
 };
 
@@ -51,6 +52,9 @@ carrick_pane_get_property (GObject    *object,
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
   switch (property_id) {
+  case PROP_ICON_FACTORY:
+    g_value_set_object (value, priv->icon_factory);
+    break;
   case PROP_MANAGER:
     g_value_set_object (value, priv->manager);
     break;
@@ -66,8 +70,13 @@ carrick_pane_set_property (GObject      *object,
                            GParamSpec   *pspec)
 {
   CarrickPane *pane = CARRICK_PANE (object);
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
   switch (property_id) {
+  case PROP_ICON_FACTORY:
+    priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
+    break;
+
   case PROP_MANAGER:
     _update_manager (pane,
                      CM_MANAGER (g_value_get_object (value)));
@@ -110,12 +119,23 @@ carrick_pane_class_init (CarrickPaneClass *klass)
   object_class->dispose = carrick_pane_dispose;
   object_class->finalize = carrick_pane_finalize;
 
+  pspec = g_param_spec_object ("icon-factory",
+                               "Icon factory",
+                               "Icon factory to use",
+                               CARRICK_TYPE_ICON_FACTORY,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_ICON_FACTORY,
+                                   pspec);
+
   pspec = g_param_spec_object ("manager",
                                "Manager.",
                                "The gconnman manager to use.",
                                CM_TYPE_MANAGER,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-  g_object_class_install_property (object_class, PROP_MANAGER, pspec);
+  g_object_class_install_property (object_class,
+                                   PROP_MANAGER,
+                                   pspec);
 }
 
 static void
@@ -507,7 +527,7 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *hbox;
   GtkWidget *vbox;
 
-  priv->icon_factory = carrick_icon_factory_new ();
+  priv->icon_factory = NULL;
 
   /* Set table up */
   gtk_table_resize (GTK_TABLE (self),
@@ -653,9 +673,12 @@ carrick_pane_init (CarrickPane *self)
 }
 
 GtkWidget*
-carrick_pane_new (CmManager *manager)
+carrick_pane_new (CarrickIconFactory *icon_factory,
+                  CmManager          *manager)
 {
   return g_object_new (CARRICK_TYPE_PANE,
+                       "icon-factory",
+                       icon_factory,
                        "manager",
                        manager,
                        NULL);

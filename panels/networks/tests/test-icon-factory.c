@@ -6,7 +6,6 @@ main (int    argc,
       char **argv)
 {
   CarrickIconFactory *icon_factory;
-  CarrickIconState state = CARRICK_ICON_NO_NETWORK;
   GtkWidget *window;
   GtkWidget *image;
   CmManager *manager;
@@ -34,12 +33,8 @@ main (int    argc,
   cm_manager_refresh (manager);
   service = cm_manager_get_active_service (manager);
 
-  g_print ("No network icon is: %s\n",
-           carrick_icon_factory_get_path_for_state (state));
-  state = carrick_icon_factory_get_state_for_service (NULL);
-  g_print ("NULL service (%i) icon is :%s\n",
-           state,
-           carrick_icon_factory_get_path_for_state (state));
+  g_print ("NULL service icon is :%s\n",
+           carrick_icon_factory_get_path_for_service(service));
 
   pixbuf = carrick_icon_factory_get_pixbuf_for_service (icon_factory,
                                                        NULL);

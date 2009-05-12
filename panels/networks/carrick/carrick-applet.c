@@ -20,12 +20,13 @@ G_DEFINE_TYPE (CarrickApplet, carrick_applet, G_TYPE_OBJECT)
 typedef struct _CarrickAppletPrivate CarrickAppletPrivate;
 
 struct _CarrickAppletPrivate {
-  CmManager *manager;
-  GtkWidget *icon;
-  GtkWidget *pane;
-  gchar     *state;
-  gchar     *active_service_name;
-  gchar     *active_service_type;
+  CmManager          *manager;
+  GtkWidget          *icon;
+  GtkWidget          *pane;
+  gchar              *state;
+  gchar              *active_service_name;
+  gchar              *active_service_type;
+  CarrickIconFactory *icon_factory;
 };
 
 void
@@ -206,8 +207,11 @@ carrick_applet_init (CarrickApplet *self)
     priv->active_service_name = g_strdup ("");
     priv->active_service_type = g_strdup(_("No active service"));
   }
-  priv->icon = carrick_status_icon_new (active);
-  priv->pane = carrick_pane_new (priv->manager);
+  priv->icon_factory = carrick_icon_factory_new ();
+  priv->icon = carrick_status_icon_new (priv->icon_factory,
+                                        active);
+  priv->pane = carrick_pane_new (priv->icon_factory,
+                                 priv->manager);
 
   g_signal_connect (priv->manager,
                     "state-changed",

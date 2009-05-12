@@ -373,7 +373,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_container_add (GTK_CONTAINER (self),
                      priv->table);
 
-  priv->icon = gtk_image_new_from_file (carrick_icon_factory_get_path_for_service (NULL));
+  priv->icon = gtk_image_new ();
   gtk_table_attach_defaults (GTK_TABLE (priv->table),
                              priv->icon,
                              0, 1,

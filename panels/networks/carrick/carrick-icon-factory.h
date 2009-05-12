@@ -59,8 +59,9 @@ CarrickIconFactory* carrick_icon_factory_new (void);
 
 GdkPixbuf *carrick_icon_factory_get_pixbuf_for_service (CarrickIconFactory *factory,
                                                         CmService          *service);
+GdkPixbuf *carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
+                                                      CarrickIconState    state);
 
-const gchar *carrick_icon_factory_get_path_for_state (CarrickIconState state);
 CarrickIconState carrick_icon_factory_get_state_for_service (CmService *service);
 const gchar *carrick_icon_factory_get_path_for_service (CmService *service);
 

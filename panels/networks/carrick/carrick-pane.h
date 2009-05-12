@@ -5,6 +5,7 @@
 
 #include <gtk/gtk.h>
 #include <gconnman/gconnman.h>
+#include "carrick-icon-factory.h"
 
 G_BEGIN_DECLS
 
@@ -35,7 +36,8 @@ typedef struct {
 
 GType carrick_pane_get_type (void);
 
-GtkWidget* carrick_pane_new (CmManager *manager);
+GtkWidget* carrick_pane_new (CarrickIconFactory *icon_factory,
+                             CmManager          *manager);
 
 G_END_DECLS
 

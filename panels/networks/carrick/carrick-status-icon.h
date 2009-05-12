@@ -3,6 +3,7 @@
 
 #include <gtk/gtk.h>
 #include <gconnman/gconnman.h>
+#include "carrick-icon-factory.h"
 
 G_BEGIN_DECLS
 
@@ -33,7 +34,8 @@ typedef struct {
 
 GType carrick_status_icon_get_type (void);
 
-GtkWidget* carrick_status_icon_new (CmService *service);
+GtkWidget* carrick_status_icon_new (CarrickIconFactory *factory,
+                                    CmService          *service);
 
 void carrick_status_icon_set_active (CarrickStatusIcon *icon,
                                      gboolean           active);
