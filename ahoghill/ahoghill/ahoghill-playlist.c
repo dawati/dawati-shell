@@ -108,7 +108,7 @@ header_playing_cb (AhoghillPlaylistHeader *header,
     if (playing) {
         br_queue_play (priv->queue);
     } else {
-        br_queue_pause (priv->queue);
+        br_queue_stop (priv->queue);
     }
 }
 
@@ -192,6 +192,7 @@ uri_removed_cb (BrQueue          *queue,
 static void
 now_playing_changed_cb (BrQueue          *queue,
                         const char       *uri,
+                        int               type,
                         AhoghillPlaylist *playlist)
 {
     AhoghillPlaylistPrivate *priv = playlist->priv;

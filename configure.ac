@@ -77,7 +77,7 @@ AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Medi
 
 if test "x$enable_ahoghill" = "xyes"; then
 	AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
-	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 gdk-pixbuf-2.0 bognor-regis-0.2 gtk+-2.0)
+	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 gdk-pixbuf-2.0 bognor-regis-0.3 gtk+-2.0)
 fi
 
 AC_ARG_ENABLE([netpanel],
