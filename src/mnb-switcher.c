@@ -552,7 +552,8 @@ dnd_new_dropped_cb (NbtkWidget   *table,
   nbtk_table_add_actor (new_ws, dragged, 1, 0);
 #if 1
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
-			       "keep-aspect-ratio", keep_ratio, NULL);
+			       "keep-aspect-ratio", keep_ratio,
+                               "x-fill", TRUE, NULL);
 #else
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
 			       "y-fill", FALSE, NULL);
@@ -809,7 +810,9 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
   nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, col);
   clutter_container_child_set (CLUTTER_CONTAINER (table),
                                CLUTTER_ACTOR (ws_label),
-                               "y-expand", FALSE, NULL);
+                               "y-expand", FALSE,
+                               "x-fill", TRUE,
+                               NULL);
 
   return NBTK_WIDGET (ws_label);
 }
@@ -1338,7 +1341,8 @@ mnb_switcher_show (ClutterActor *self)
 
 #if 1
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
-                                   "keep-aspect-ratio", TRUE, NULL);
+                                   "keep-aspect-ratio", TRUE,
+                                   "x-fill", TRUE, NULL);
 #else
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "y-fill", FALSE, NULL);
@@ -1392,12 +1396,14 @@ mnb_switcher_show (ClutterActor *self)
     NbtkWidget *label;
 
     label = NBTK_WIDGET (nbtk_bin_new ());
+    clutter_actor_set_width (CLUTTER_ACTOR (label), 22);
     nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (label),
                           0, ws_count);
     nbtk_widget_set_style_class_name (label, "workspace-title-new");
     clutter_container_child_set (CLUTTER_CONTAINER (table),
                                  CLUTTER_ACTOR (label),
-                                 "y-expand", FALSE, NULL);
+                                 "y-expand", FALSE,
+                                 "x-expand", FALSE, NULL);
 
     nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
@@ -1425,8 +1431,14 @@ mnb_switcher_show (ClutterActor *self)
     priv->new_workspace = new_ws;
     priv->new_label = label;
 
+    clutter_actor_set_width (CLUTTER_ACTOR (new_ws), 22);
     nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws),
                           1, ws_count);
+
+    clutter_container_child_set (CLUTTER_CONTAINER (table),
+                                 CLUTTER_ACTOR (new_ws),
+                                 "y-expand", FALSE,
+                                 "x-expand", FALSE, NULL);
   }
 
   g_slice_free1 (sizeof (NbtkWidget*) * ws_count, spaces);
