@@ -167,7 +167,6 @@ destroy_source (Source *source)
     }
     g_ptr_array_free (source->items, TRUE);
 
-    bkl_db_free (source->db);
     g_object_unref (source->source);
 
     g_free (source);
@@ -305,6 +304,7 @@ source_manager_added (BklSourceManagerClient *source_manager,
 {
     BklSourceClient *client;
 
+    g_print ("Adding new source: %s\n", path);
     client = bkl_source_client_new (path);
     g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
 }
@@ -318,6 +318,7 @@ source_manager_removed (BklSourceManagerClient *source_manager,
     Source *source;
     int i;
 
+    g_print ("Removing source: %s\n", path);
     for (i = 0; i < priv->dbs->len; i++) {
         Source *s = priv->dbs->pdata[i];
 
@@ -329,6 +330,8 @@ source_manager_removed (BklSourceManagerClient *source_manager,
     }
 
     destroy_source (source);
+
+    /* FIXME: Need to update results to remove any dead uris */
 }
 
 static void
