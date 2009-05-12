@@ -254,7 +254,7 @@ _new_connection_cb (GtkButton *button,
   gboolean joined = FALSE;
 
   dialog = gtk_dialog_new_with_buttons (_("New connection settings"),
-                                        GTK_WINDOW (user_data),
+                                        GTK_WINDOW (gtk_widget_get_parent (user_data)),
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_STOCK_CANCEL,
@@ -550,8 +550,6 @@ carrick_pane_init (CarrickPane *self)
                      scrolled_view);
   if (priv->manager)
   {
-    //_update_services (self);
-    //_set_states (self);
     g_signal_connect (priv->manager,
                       "manager-updated",
                       G_CALLBACK (_manager_updated_cb),
@@ -642,10 +640,10 @@ carrick_pane_init (CarrickPane *self)
   gtk_table_attach_defaults (GTK_TABLE (self),
                              switch_bin,
                              4, 6,
-                             0, 3);
+                             0, 5);
 
   vbox = gtk_vbox_new (TRUE,
-                       6);
+                       0);
   gtk_container_add (GTK_CONTAINER (flight_bin),
                      vbox);
   priv->flight_mode_switch = mux_switch_box_new (_("Offline Mode"));
@@ -660,6 +658,9 @@ carrick_pane_init (CarrickPane *self)
                       8);
   priv->flight_mode_label = gtk_label_new (_("This will disable all wireless"
                                              " connections."));
+  gtk_misc_set_alignment (GTK_MISC (priv->flight_mode_label),
+                          0.5,
+                          0.0);
   gtk_box_pack_start (GTK_BOX (vbox),
                       priv->flight_mode_label,
                       TRUE,
@@ -668,7 +669,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_table_attach_defaults (GTK_TABLE (self),
                              flight_bin,
                              4, 6,
-                             3, 5);
+                             5, 7);
 
 }
 

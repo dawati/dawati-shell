@@ -6,7 +6,7 @@ int
 main (int    argc,
       char **argv)
 {
-  GtkWidget *window;
+  GtkWidget     *window;
   CarrickApplet *applet;
 
   gtk_init (&argc, &argv);
@@ -23,7 +23,7 @@ main (int    argc,
 
   gtk_widget_set_size_request (GTK_WIDGET (window),
                                1024,
-                               600);
+                               450);
   gtk_widget_show_all (window);
 
   gtk_main ();

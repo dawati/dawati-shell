@@ -7,7 +7,7 @@
 
 #include <config.h>
 
-#define PADDING 2
+#define PADDING 4
 
 static void
 _plug_notify_embedded (GObject    *object,
@@ -63,7 +63,7 @@ main (int    argc,
   screen = gtk_widget_get_screen (plug);
   gtk_widget_set_size_request (pane,
                                gdk_screen_get_width (screen) - 2 * PADDING,
-                               400);
+                               450);
 
   gtk_main ();
 }
