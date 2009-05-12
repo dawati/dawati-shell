@@ -814,6 +814,10 @@ MoblinNetbookNetpanel NbtkButton:active {
   color: #0e0e0e;
 }
 
+*#media-pane-search-entry *.MnbEntryButton {
+  color: #3e42ac;
+}
+
 AhoghillResultsPane {
   padding-left: 14px;
   padding-right: 0px;
