@@ -132,6 +132,11 @@ struct _MnbToolbarPrivate
                                    */
 
   guint trigger_timeout_id;
+
+#if 1
+  /* TODO remove */
+  gboolean systray_window_showing;
+#endif
 };
 
 static void
@@ -1392,6 +1397,8 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
 
   g_free (map_data);
 
+  priv->systray_window_showing = TRUE;
+
   mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (actor), &x, &y, &w, &h);
 
   if (priv->dropdown_region)
@@ -1422,6 +1429,10 @@ tray_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
   struct config_hide_data *hide_data = data;
   MnbToolbar              *toolbar = hide_data->toolbar;
   ShellTrayManager        *tmgr = toolbar->priv->tray_manager;
+
+  printf ("hide completed\n");
+
+  toolbar->priv->systray_window_showing = FALSE;
 
   shell_tray_manager_close_config_window (tmgr, hide_data->config_xwin);
 }
@@ -1660,7 +1671,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
    * d) we are already animating.
    */
   if (!(((event->type == CLUTTER_ENTER) && (event->crossing.source == stage)) ||
-        (event->type == CLUTTER_LEAVE)) ||
+        (event->type == CLUTTER_LEAVE && !priv->systray_window_showing)) ||
       priv->disabled ||
       mnb_toolbar_in_transition (toolbar))
     return FALSE;
