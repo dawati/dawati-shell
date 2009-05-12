@@ -235,7 +235,7 @@ _status_changed_cb (CmService *service,
                             TRUE);
   pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
                                                         service);
-  gtk_image_set_from_pixbuf (priv->icon,
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
                              pixbuf);
 
   g_free (label);
@@ -261,7 +261,7 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
     priv->service = g_object_ref (service);
     pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
                                                          service);
-    gtk_image_set_from_pixbuf (priv->icon,
+    gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
                                pixbuf);
     gtk_label_set_text (GTK_LABEL (priv->name_label),
                         cm_service_get_name (service));

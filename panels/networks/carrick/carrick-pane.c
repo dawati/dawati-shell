@@ -187,6 +187,8 @@ _wimax_switch_callback (MuxSwitchBox *wimax_switch,
   _set_devices_state (g_strdup ("WiMax"),
                       new_state,
                       pane);
+
+  return TRUE;
 }
 
 static gboolean

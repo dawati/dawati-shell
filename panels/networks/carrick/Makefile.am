@@ -22,8 +22,7 @@ libcarrick_la_CFLAGS =  -Wall -I$(top_srcdir) \
                         $(LIBNOTIFY_CFLAGS) \
                         -DPKG_DATA_DIR=\"$(pkgdatadir)\"
 
-libcarrick_la_LIBADD = $(top_builddir)/mux/libmux.la \
-                       $(GCONNMAN_LIBS) \
+libcarrick_la_LIBADD = $(GCONNMAN_LIBS) \
                        $(GTK_LIBS) \
                        $(MUX_LIBS) \
                        $(LIBNOTIFY_LIBS)

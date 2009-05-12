@@ -14,8 +14,7 @@ carrick_connection_panel_CFLAGS = -I$(top_srcdir) \
                                     -DLOCALEDIR=\""$(localedir)"\" \
                                     -DPKG_DATA_DIR=\"$(pkgdatadir)\" -Wall
 
-carrick_connection_panel_LDADD= $(top_builddir)/mux/libmux.la \
-                                $(top_builddir)/carrick/libcarrick.la \
+carrick_connection_panel_LDADD= $(top_builddir)/carrick/libcarrick.la \
                                 $(GTK_LIBS) $(DBUS_LIBS) $(CONNMAN_LIBS)
 
 -include $(top_srcdir)/git.mk
