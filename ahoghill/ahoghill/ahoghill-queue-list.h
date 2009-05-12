@@ -2,7 +2,7 @@
 #define __AHOGHILL_QUEUE_LIST_H__
 
 #include <nbtk/nbtk.h>
-
+#include <bickley/bkl.h>
 
 G_BEGIN_DECLS
 
@@ -44,6 +44,12 @@ struct _AhoghillQueueListClass
 };
 
 GType ahoghill_queue_list_get_type (void) G_GNUC_CONST;
+void ahoghill_queue_list_add_item (AhoghillQueueList *list,
+                                   BklItem           *item,
+                                   int                index);
+void ahoghill_queue_list_remove (AhoghillQueueList *list,
+                                 int                index);
+
 
 G_END_DECLS
 

@@ -19,16 +19,12 @@ G_DEFINE_TYPE (AhoghillQueueTile, ahoghill_queue_tile, NBTK_TYPE_TABLE);
 static void
 ahoghill_queue_tile_finalize (GObject *object)
 {
-    AhoghillQueueTile *self = (AhoghillQueueTile *) object;
-
     G_OBJECT_CLASS (ahoghill_queue_tile_parent_class)->finalize (object);
 }
 
 static void
 ahoghill_queue_tile_dispose (GObject *object)
 {
-    AhoghillQueueTile *self = (AhoghillQueueTile *) object;
-
     G_OBJECT_CLASS (ahoghill_queue_tile_parent_class)->dispose (object);
 }
 
@@ -38,8 +34,6 @@ ahoghill_queue_tile_set_property (GObject      *object,
                           const GValue *value,
                           GParamSpec   *pspec)
 {
-    AhoghillQueueTile *self = (AhoghillQueueTile *) object;
-
     switch (prop_id) {
 
     default:
@@ -53,8 +47,6 @@ ahoghill_queue_tile_get_property (GObject    *object,
                           GValue     *value,
                           GParamSpec *pspec)
 {
-    AhoghillQueueTile *self = (AhoghillQueueTile *) object;
-
     switch (prop_id) {
 
     default:
@@ -126,7 +118,7 @@ ahoghill_queue_tile_set_item (AhoghillQueueTile *tile,
     case BKL_ITEM_TYPE_VIDEO:
         primary = g_strdup (bkl_item_video_get_series_name ((BklItemVideo *) item));
 
-        title = bkl_item_video_get_title ((BklItemVideo *) item);
+        title = (char *) bkl_item_video_get_title ((BklItemVideo *) item);
         if (title) {
             secondary = g_strdup (title);
         } else {

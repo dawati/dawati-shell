@@ -15,11 +15,12 @@ enum {
 #define TILES_PER_PAGE (TILES_PER_ROW * ROWS_PER_PAGE)
 
 #define RESULTS_ROW_SPACING 28
-#define RESULTS_COL_SPACING 20
+#define RESULTS_COL_SPACING 15
 
 struct _AhoghillResultsTablePrivate {
     AhoghillMediaTile *tiles[TILES_PER_PAGE];
     AhoghillResultsModel *model;
+    guint update_id;
     guint page_number;
 };
 
@@ -31,13 +32,21 @@ static guint32 signals[LAST_SIGNAL] = {0, };
 static void
 ahoghill_results_table_finalize (GObject *object)
 {
-    g_signal_handlers_destroy (object);
     G_OBJECT_CLASS (ahoghill_results_table_parent_class)->finalize (object);
 }
 
 static void
 ahoghill_results_table_dispose (GObject *object)
 {
+    AhoghillResultsTable *table = (AhoghillResultsTable *) object;
+    AhoghillResultsTablePrivate *priv = table->priv;
+
+    if (priv->model) {
+        g_signal_handler_disconnect (priv->model, priv->update_id);
+        g_object_unref (priv->model);
+        priv->model = NULL;
+    }
+
     G_OBJECT_CLASS (ahoghill_results_table_parent_class)->dispose (object);
 }
 
@@ -268,8 +277,9 @@ set_model (AhoghillResultsTable *table,
 
     if (model) {
         priv->model = g_object_ref (model);
-        g_signal_connect (priv->model, "changed",
-                          G_CALLBACK (results_model_changed), table);
+        priv->update_id = g_signal_connect (priv->model, "changed",
+                                            G_CALLBACK (results_model_changed),
+                                            table);
     }
 }
 
