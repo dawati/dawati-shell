@@ -14,7 +14,6 @@
 #include "moblin-netbook-tray-manager.h"
 #include "tray/na-tray-manager.h"
 #include "moblin-netbook.h"
-#include "moblin-netbook-panel.h"
 
 #define MOBLIN_SYSTEM_TRAY_FROM_PLUGIN
 #include "moblin-netbook-system-tray.h"

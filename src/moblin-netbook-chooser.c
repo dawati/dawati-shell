@@ -29,7 +29,6 @@
 #include <glib/gi18n.h>
 
 #include "moblin-netbook-chooser.h"
-#include "moblin-netbook-panel.h"
 #include "mnb-scale-group.h"
 
 #include <clutter/clutter.h>

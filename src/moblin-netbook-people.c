@@ -79,6 +79,22 @@ _view_item_activated_cb (AnerleyTileView *view,
   clutter_actor_hide ((ClutterActor *)drop_down);
 }
 
+static void
+dropdown_show_cb (MnbDropDown  *dropdown,
+                  ClutterActor *filter_entry)
+{
+  /* give focus to the actor */
+  clutter_actor_grab_key_focus (filter_entry);
+}
+
+static void
+dropdown_hide_cb (MnbDropDown  *dropdown,
+                  ClutterActor *filter_entry)
+{
+  /* Reset search. */
+  mnb_entry_set_text (MNB_ENTRY (filter_entry), "");
+}
+
 ClutterActor *
 make_people_panel (MutterPlugin *plugin,
                    gint          width)
@@ -160,6 +176,13 @@ make_people_panel (MutterPlugin *plugin,
                     "item-activated",
                     _view_item_activated_cb,
                     drop_down);
+
+  g_signal_connect (drop_down, "show-completed",
+                    G_CALLBACK (dropdown_show_cb),
+                    entry);
+  g_signal_connect (drop_down, "hide-completed",
+                    G_CALLBACK (dropdown_hide_cb),
+                    entry);
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
                                         (ClutterActor *)scroll_view,

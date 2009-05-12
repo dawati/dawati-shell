@@ -790,7 +790,10 @@ MoblinNetbookNetpanel NbtkButton:active {
 }
 
 AhoghillResultsPane {
-  padding: 14px;
+  padding-left: 14px;
+  padding-right: 0px;
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 
 *#media-pane-results-label {
@@ -832,6 +835,46 @@ AhoghillMediaTile {
 *.AhoghillSecondaryLabel {
   font-size: 12px;
   color: #7e7e7e;
+}
+
+AhoghillPlaylistHeader {
+  padding-left: 12;
+  padding-right: 12;
+  padding-top: 5;
+  padding-bottom: 5;
+}
+
+*#ahoghill-playlist-title {
+  font-family: "Liberation Sans Bold";
+  font-size: 17px;
+  color: #3b3b3b;
+}
+
+*#ahoghill-playlist-header-primary {
+  font-family: "Liberation Sans Bold";
+  font-size: 15px;
+  color: #3b3b3b;
+}
+
+*#ahoghill-playlist-header-secondary {
+  font-size: 12px;
+  color: #3b3b3b;
+}
+
+AhoghillPlayButton {
+  background-image: url('file://media-panel/pq_play.png');
+}
+
+AhoghillPlayButton:hover {
+  background-image: url('file://media-panel/pq_play_hover.png');
+}
+
+AhoghillPlayButton.Toggled {
+  background-image: url('file://media-panel/pq_pause.png');
+}
+
+AhoghillPlayButton.Toggled:hover {
+  background-image: url('file://media-panel/pq_pause_hover.png');
 }
 
 /* pasteboard */

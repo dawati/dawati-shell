@@ -9,7 +9,9 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-tray-manager.h"
 
+#if 0
 #include "mnb-panel.h"
+#endif
 
 G_BEGIN_DECLS
 

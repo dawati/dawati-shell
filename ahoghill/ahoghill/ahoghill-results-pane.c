@@ -401,3 +401,15 @@ ahoghill_results_pane_new (AhoghillResultsModel *model)
 
     return pane;
 }
+
+void
+ahoghill_results_pane_set_page (AhoghillResultsPane *pane,
+                                int                  page)
+{
+    AhoghillResultsPanePrivate *priv;
+
+    g_return_if_fail (IS_AHOGHILL_RESULTS_PANE (pane));
+
+    priv = pane->priv;
+    ahoghill_results_table_set_page (priv->current_page, 0);
+}

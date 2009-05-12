@@ -14,6 +14,8 @@
 #include <src/mnb-entry.h>
 
 #include "ahoghill-grid-view.h"
+#include "ahoghill-playlist.h"
+#include "ahoghill-queue-list.h"
 #include "ahoghill-results-model.h"
 #include "ahoghill-results-pane.h"
 #include "ahoghill-search-pane.h"
@@ -46,6 +48,9 @@ struct _AhoghillGridViewPrivate {
     BklSourceManagerClient *source_manager;
 
     guint32 search_id;
+
+    guint32 source_count;
+    guint32 source_replies; /* Keep track of how many sources have replied */
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_GRID_VIEW, AhoghillGridViewPrivate))
@@ -219,6 +224,10 @@ set_result_items (AhoghillGridView *view,
     AhoghillGridViewPrivate *priv = view->priv;
     GList *r;
 
+    /* Set the results pane to the first page */
+    ahoghill_results_pane_set_page
+        ((AhoghillResultsPane *) priv->results_pane, 0);
+
     /* Freeze and clear the old results before adding anything new */
     ahoghill_results_model_freeze (priv->model);
     ahoghill_results_model_clear (priv->model);
@@ -246,13 +255,21 @@ source_ready_cb (BklSourceClient  *client,
     AhoghillGridViewPrivate *priv = view->priv;
     Source *source;
 
+    priv->source_replies++;
+
     source = create_source (client);
     g_ptr_array_add (priv->dbs, source);
 
-    /* Once we get one source, set the recent files
-       The first source will/should be the local files */
-    if (priv->dbs->len == 1) {
+    /* Once we've got all the replies from the sources,
+       set up the queues and the recent items */
+    if (priv->source_count == priv->source_replies) {
         set_recent_items (view);
+
+        /* Set the local queue to the playlist */
+        /* FIXME: Generate multiple playlists once more than
+           local queue works */
+        ahoghill_playlist_set_queue ((AhoghillPlaylist *) priv->playqueues_pane,
+                                     priv->local_queue);
     }
 }
 
@@ -263,17 +280,25 @@ get_sources_reply (BklSourceManagerClient *source_manager,
                    gpointer                data)
 {
     AhoghillGridView *view = (AhoghillGridView *) data;
+    AhoghillGridViewPrivate *priv = view->priv;
+    BklSourceClient *client;
     GList *s;
 
     if (error != NULL) {
         g_warning ("Error getting sources: %s", error->message);
     }
 
+    /* Local source first even if there was an error getting the rest */
+    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
+    g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+
     for (s = sources; s; s = s->next) {
         BklSourceClient *client;
 
         client = bkl_source_client_new (s->data);
         g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+
+        priv->source_count++;
     }
 }
 
@@ -281,11 +306,10 @@ static void
 source_manager_ready (BklSourceManagerClient *source_manager,
                       AhoghillGridView       *view)
 {
-    BklSourceClient *client;
+    AhoghillGridViewPrivate *priv = view->priv;
 
-    /* Local source first */
-    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
-    g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+    priv->source_replies = 0;
+    priv->source_count = 1; /* Set to 1 to count the local */
 
     bkl_source_manager_client_get_sources (source_manager,
                                            get_sources_reply,
@@ -313,6 +337,7 @@ init_bognor (AhoghillGridView *grid)
     priv->local_queue = g_object_new (BR_TYPE_QUEUE,
                                       "object-path", BR_LOCAL_QUEUE_PATH,
                                       NULL);
+
 }
 
 static gboolean
@@ -601,7 +626,6 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     NbtkTable *table = (NbtkTable *) self;
     AhoghillGridViewPrivate *priv = GET_PRIVATE (self);
     NbtkWidget *entry;
-    ClutterColor blue = { 0x00, 0x00, 0xff, 0xff };
 
     bkl_init ();
 
@@ -634,7 +658,7 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_object_set (priv->results_pane,
                   "title", _("Recent"),
                   NULL);
-    clutter_actor_set_size (priv->results_pane, 800, 400);
+    /* clutter_actor_set_size (priv->results_pane, 750, 400); */
     nbtk_table_add_actor_with_properties (table, priv->results_pane,
                                           1, 0,
                                           "row-span", 1,
@@ -645,10 +669,9 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_signal_connect (priv->results_pane, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
 
-    /* priv->playqueues_pane = g_object_new (AHOGHILL_TYPE_PLAYQUEUES_PANE, */
-    /*                                        NULL); */
-    priv->playqueues_pane = clutter_rectangle_new_with_color (&blue);
-    clutter_actor_set_size (priv->playqueues_pane, 150, 400);
+    priv->playqueues_pane = (ClutterActor *) ahoghill_playlist_new (self,
+                                                                    _("Local"));
+    clutter_actor_set_size (priv->playqueues_pane, 210, 400);
     nbtk_table_add_actor_with_properties (table, priv->playqueues_pane,
                                           1, 3,
                                           "x-expand", FALSE,
@@ -700,4 +723,11 @@ ahoghill_grid_view_unfocus (AhoghillGridView *view)
 
     if (current_focus == entry)
       clutter_stage_set_key_focus (stage, NULL);
+}
+
+BklItem *
+ahoghill_grid_view_get_item (AhoghillGridView *view,
+                             const char       *uri)
+{
+    return find_item (view, uri);
 }

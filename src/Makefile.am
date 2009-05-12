@@ -5,6 +5,7 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@ \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
+	@AHOGHILL_CFLAGS@ \
 	-I$(top_srcdir)/ahoghill \
 	-I$(top_srcdir)/penge \
 	-I$(top_srcdir)/src
@@ -62,9 +63,9 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				mnb-status-row.c		\
 				mnb-status-row.h		\
 				mnb-status-entry.c		\
-				mnb-status-entry.h		\
-				mnb-panel.c			\
-				mnb-panel.h
+				mnb-status-entry.h
+#				mnb-panel.c			\
+#				mnb-panel.h
 
 if WITH_NETPANEL
 moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
@@ -119,5 +120,5 @@ install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.a
 	rm -f $(DESTDIR)$(pkglibdir)/*.la
 
-BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS)
+BUILT_SOURCES = $(MARSHALS)
 CLEANFILES = $(BUILT_SOURCES)
