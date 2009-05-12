@@ -7,6 +7,7 @@ icons_DATA = \
 	     dalston-power-empty.svg \
 	     dalston-power-full.svg \
 	     dalston-power-plugged.svg \
+	     dalston-power-battery-missing.svg \
 	     dalston-power-applet-25-active.png \
 	     dalston-power-applet-25-normal.png \
 	     dalston-power-applet-50-active.png \
