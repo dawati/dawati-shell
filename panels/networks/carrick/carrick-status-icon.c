@@ -25,9 +25,6 @@ enum
   PROP_SERVICE
 };
 
-static void carrick_status_icon_update_service (CarrickStatusIcon *icon,
-                                                CmService         *service);
-
 static void
 carrick_status_icon_get_property (GObject *object, guint property_id,
                                   GValue *value, GParamSpec *pspec)
@@ -151,7 +148,7 @@ carrick_status_icon_set_active (CarrickStatusIcon *icon,
   carrick_status_icon_update (icon);
 }
 
-static void
+void
 carrick_status_icon_update_service (CarrickStatusIcon *icon,
                                     CmService         *service)
 {

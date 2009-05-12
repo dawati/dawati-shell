@@ -7,9 +7,9 @@
 #include <glib/gi18n.h>
 #include <gconnman/gconnman.h>
 #include <libnotify/notify.h>
-#include <carrick/carrick-pane.h>
-#include <carrick/carrick-status-icon.h>
-#include <carrick/carrick-list.h>
+#include "carrick-pane.h"
+#include "carrick-status-icon.h"
+#include "carrick-list.h"
 #include "carrick-icon-factory.h"
 
 G_DEFINE_TYPE (CarrickApplet, carrick_applet, G_TYPE_OBJECT)
@@ -72,8 +72,25 @@ _notify_connection_changed (CarrickApplet *self)
 }
 
 static void
+manager_services_changed_cb (CmManager *manager,
+                             gpointer   user_data)
+{
+  CarrickApplet *applet = CARRICK_APPLET (user_data);
+  CarrickAppletPrivate *priv = GET_PRIVATE (applet);
+  CmService *service = NULL;
+  const gchar *service_name = cm_manager_get_active_service_name (manager);
+
+  if (g_strcmp0 (service_name, priv->active_service_name) != 0)
+  {
+    service = cm_manager_get_active_service (manager);
+    carrick_status_icon_update_service (CARRICK_STATUS_ICON (priv->icon),
+                                        service);
+  }
+}
+
+static void
 manager_state_changed_cb (CmManager *manager,
-                          gpointer user_data)
+                          gpointer   user_data)
 {
   CarrickApplet *applet = CARRICK_APPLET (user_data);
   CarrickAppletPrivate *priv = GET_PRIVATE (applet);
@@ -216,6 +233,10 @@ carrick_applet_init (CarrickApplet *self)
   g_signal_connect (priv->manager,
                     "state-changed",
                     G_CALLBACK (manager_state_changed_cb),
+                    self);
+  g_signal_connect (priv->manager,
+                    "services-changed",
+                    G_CALLBACK (manager_services_changed_cb),
                     self);
 }
 

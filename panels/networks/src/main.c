@@ -57,7 +57,9 @@ main (int    argc,
   pane = carrick_applet_get_pane (applet);
   gtk_container_add (GTK_CONTAINER (plug),
                      pane);
-  mnbk_system_tray_init (icon, GTK_PLUG (plug), "wifi");
+  mnbk_system_tray_init (GTK_STATUS_ICON (icon),
+                         GTK_PLUG (plug),
+                         "wifi");
   screen = gtk_widget_get_screen (plug);
   gtk_widget_set_size_request (pane,
                                gdk_screen_get_width (screen) - 2 * PADDING,
