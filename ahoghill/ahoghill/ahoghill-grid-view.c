@@ -258,7 +258,9 @@ source_ready_cb (BklSourceClient  *client,
     priv->source_replies++;
 
     source = create_source (client);
-    g_ptr_array_add (priv->dbs, source);
+    if (source) {
+        g_ptr_array_add (priv->dbs, source);
+    }
 
     /* Once we've got all the replies from the sources,
        set up the queues and the recent items */
