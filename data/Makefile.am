@@ -121,7 +121,11 @@ dist_theme_mzone_DATA = \
 	theme/mzone/single-div-line.png \
 	theme/mzone/double-div-line.png \
 	theme/mzone/toys.jpg \
-	theme/mzone/default-avatar-icon.png
+	theme/mzone/default-avatar-icon.png \
+	theme/mzone/no-content-tile-bg.png \
+	theme/mzone/no-content-tile-glow-bg.png
+
+
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \

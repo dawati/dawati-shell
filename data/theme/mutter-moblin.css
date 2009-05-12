@@ -583,6 +583,35 @@ PengeDateTile
   font-size: 11;
 }
 
+*#penge-no-content-main-message
+{
+  font-size:15px;
+  color: #2c2c2cff;
+}
+
+*#penge-no-content-other-message
+{
+  font-size:14px;
+  color: #2c2c2cff;
+}
+
+*.PengeNoContentTile
+{
+  border-image: url('file://mzone/no-content-tile-bg.png') 7 8 9 8;
+  padding: 10 11 12 11;
+}
+
+*.PengeNoContentTile:hover
+{
+  border-image: url('file://mzone/no-content-tile-glow-bg.png') 7 8 9 8;
+  padding: 10 11 12 11;
+}
+
+PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover
+{
+  border-image: url('file://mzone/tile-glow.png') 7 8 9 8;
+  padding: 6 7 8 7;
+}
 
 NbtkLabel
 {
