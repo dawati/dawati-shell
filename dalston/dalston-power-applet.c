@@ -240,6 +240,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
     }
   }
 
+#if 0
   g_debug (G_STRLOC ": Remaining time: %d. Remaining percentage: %d",
            time_remaining,
            percentage);
@@ -250,6 +251,8 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
            (state==2) ? "discharging": "other");
 
   g_debug (G_STRLOC ": AC adapter: %s", ac_connected ? "yes" : "no");
+
+#endif
 }
 
 static void

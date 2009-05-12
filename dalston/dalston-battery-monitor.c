@@ -125,7 +125,6 @@ _hal_battery_device_property_modified (HalDevice   *device,
       (key_name == g_intern_static_string ("battery.rechargeable.is_charging")) ||
       (key_name == g_intern_static_string ("battery.rechargeable.is_discharging")))
   {
-    g_debug (G_STRLOC ": Key changed: %s", key);
     g_signal_emit (monitor, signals[STATUS_CHANGED], 0);
   }
 }
@@ -145,7 +144,6 @@ _hal_ac_device_property_modified (HalDevice   *device,
 
   if (key_name == g_intern_static_string ("ac_adapter.present"))
   {
-    g_debug (G_STRLOC ": Key changed: %s", key);
     g_signal_emit (monitor, signals[STATUS_CHANGED], 0);
   }
 }
