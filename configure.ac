@@ -104,6 +104,17 @@ AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 AM_CONDITIONAL(WITH_PEOPLE, test x"$enable_people" = xyes)
 
+AC_ARG_ENABLE([debug],
+	AC_HELP_STRING([--enable-debug],
+		[Enable debugging features, whatever that means]),
+		[enable_debug="$enableval"], [enable_debug=no])
+
+echo "enableval: $enableval"
+
+if test x"$enable_debug" = xyes; then
+   CFLAGS="$CFLAGS -g -O0"
+fi
+
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
@@ -153,7 +164,7 @@ echo "
 
             Mutter version   :    mutter_version
             Installation path:    ${MUTTER_PLUGIN_DIR}
-
+	    Debug            :    ${enable_debug} (CFLAGS: ${CFLAGS})
 
         Type make to build the plugin.
 "
