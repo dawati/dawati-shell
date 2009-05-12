@@ -150,6 +150,29 @@ create_source (BklSourceClient *s)
     return source;
 }
 
+static void
+destroy_source (Source *source)
+{
+    int i;
+
+    for (i = 0; i < source->index->len; i++) {
+        g_free (source->index->pdata[i]);
+    }
+    g_ptr_array_free (source->index, TRUE);
+
+    g_hash_table_destroy (source->uri_to_item);
+
+    for (i = 0; i < source->items->len; i++) {
+        g_object_unref (source->items->pdata[i]);
+    }
+    g_ptr_array_free (source->items, TRUE);
+
+    bkl_db_free (source->db);
+    g_object_unref (source->source);
+
+    g_free (source);
+}
+
 static BklItem *
 find_item (AhoghillGridView *view,
            const char       *uri)
@@ -276,6 +299,39 @@ source_ready_cb (BklSourceClient  *client,
 }
 
 static void
+source_manager_added (BklSourceManagerClient *source_manager,
+                      const char             *path,
+                      AhoghillGridView       *view)
+{
+    BklSourceClient *client;
+
+    client = bkl_source_client_new (path);
+    g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+}
+
+static void
+source_manager_removed (BklSourceManagerClient *source_manager,
+                        const char             *path,
+                        AhoghillGridView       *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    Source *source;
+    int i;
+
+    for (i = 0; i < priv->dbs->len; i++) {
+        Source *s = priv->dbs->pdata[i];
+
+        if (g_str_equal (path, bkl_source_client_get_path (s->source))) {
+            source = s;
+            g_ptr_array_remove_index (priv->dbs, i);
+            break;
+        }
+    }
+
+    destroy_source (source);
+}
+
+static void
 get_sources_reply (BklSourceManagerClient *source_manager,
                    GList                  *sources,
                    GError                 *error,
@@ -327,6 +383,10 @@ init_bickley (gpointer data)
     priv->source_manager = g_object_new (BKL_TYPE_SOURCE_MANAGER_CLIENT, NULL);
     g_signal_connect (priv->source_manager, "ready",
                       G_CALLBACK (source_manager_ready), view);
+    g_signal_connect (priv->source_manager, "source-added",
+                      G_CALLBACK (source_manager_added), view);
+    g_signal_connect (priv->source_manager, "source-removed",
+                      G_CALLBACK (source_manager_removed), view);
 
     priv->dbs = g_ptr_array_new ();
 }
