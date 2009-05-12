@@ -7,7 +7,7 @@
 
 #include <config.h>
 
-#define PADDING 0
+#define PADDING 4
 
 static void
 _plug_notify_embedded (GObject    *object,
