@@ -233,6 +233,26 @@ list_uris_reply (BrQueue  *queue,
     }
 }
 
+static void
+get_name_reply (BrQueue *queue,
+                char    *name,
+                GError  *error,
+                gpointer userdata)
+{
+    AhoghillPlaylist *playlist = (AhoghillPlaylist *) userdata;
+    AhoghillPlaylistPrivate *priv = playlist->priv;
+
+    if (error != NULL) {
+        g_warning ("(%s) Error getting name for playlist: %s",
+                   G_STRLOC, error->message);
+        return;
+    }
+
+    g_object_set (priv->header,
+                  "title", name,
+                  NULL);
+}
+
 void
 ahoghill_playlist_set_queue (AhoghillPlaylist *playlist,
                              BrQueue          *queue)
@@ -248,6 +268,7 @@ ahoghill_playlist_set_queue (AhoghillPlaylist *playlist,
                       G_CALLBACK (now_playing_changed_cb), playlist);
 
     br_queue_list_uris (queue, list_uris_reply, playlist);
+    br_queue_get_name (queue, get_name_reply, playlist);
 }
 
 AhoghillQueueList *
