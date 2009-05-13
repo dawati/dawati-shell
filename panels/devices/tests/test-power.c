@@ -1,10 +1,10 @@
 #include <libhal-power-glib/hal-power-proxy.h>
 
 static void
-_power_proxy_shutdown_cb (HalPowerProxy *proxy,
-                          const GError  *error,
-                          GObject       *weak_object,
-                          gpointer       userdata)
+_power_proxy_suspend_cb (HalPowerProxy *proxy,
+                         const GError  *error,
+                         GObject       *weak_object,
+                         gpointer       userdata)
 {
   if (error)
   {
@@ -24,9 +24,9 @@ main (int    argc,
 
   loop = g_main_loop_new (NULL, TRUE);
   proxy = hal_power_proxy_new ();
-  hal_power_proxy_shutdown (proxy,
-                            _power_proxy_shutdown_cb,
-                            NULL,
-                            NULL);
+  hal_power_proxy_suspend (proxy,
+                           _power_proxy_suspend_cb,
+                           NULL,
+                           NULL);
   g_main_loop_run (loop);
 }

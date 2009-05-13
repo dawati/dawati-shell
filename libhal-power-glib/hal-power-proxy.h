@@ -43,6 +43,11 @@ void hal_power_proxy_shutdown (HalPowerProxy         *proxy,
                                GObject               *weak_object,
                                gpointer               userdata);
 
+void hal_power_proxy_suspend (HalPowerProxy         *proxy,
+                              HalPowerProxyCallback  cb,
+                              GObject               *weak_object,
+                              gpointer               userdata);
+
 
 G_END_DECLS
 

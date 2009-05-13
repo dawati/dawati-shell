@@ -105,7 +105,7 @@ _weak_notify_cb (gpointer  data,
 }
 
 static void
-_shutdown_cb (DBusGProxy *proxy,
+_generic_cb (DBusGProxy *proxy,
               gint        OUT_return_code,
               GError     *error,
               gpointer    userdata)
@@ -152,8 +152,38 @@ hal_power_proxy_shutdown (HalPowerProxy         *proxy,
 
   call = 
     org_freedesktop_Hal_Device_SystemPowerManagement_shutdown_async (priv->proxy,
-                                                                     _shutdown_cb,
+                                                                     _generic_cb,
                                                                      closure);
+
+  closure->call = call;
+}
+
+void
+hal_power_proxy_suspend (HalPowerProxy         *proxy,
+                         HalPowerProxyCallback  cb,
+                         GObject               *weak_object,
+                         gpointer               userdata)
+{
+  HalPowerProxyPrivate *priv = GET_PRIVATE (proxy);
+  DBusGProxyCall *call;
+  CallClosure *closure;
+
+  closure = g_slice_new0 (CallClosure);
+  closure->proxy = g_object_ref (proxy);
+  closure->cb = cb;
+  closure->userdata = userdata;
+  closure->weak_object = weak_object;
+
+  if (closure->weak_object)
+  {
+    g_object_weak_ref (closure->weak_object, _weak_notify_cb, closure);
+  }
+
+  call = 
+    org_freedesktop_Hal_Device_SystemPowerManagement_suspend_async (priv->proxy,
+                                                                    0,
+                                                                    _generic_cb,
+                                                                    closure);
 
   closure->call = call;
 }
