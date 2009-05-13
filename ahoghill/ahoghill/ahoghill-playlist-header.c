@@ -168,11 +168,16 @@ ahoghill_playlist_header_set_item (AhoghillPlaylistHeader *header,
     int w, h;
 
     if (item == NULL) {
+        ahoghill_play_button_set_playing ((AhoghillPlayButton *) priv->play_button, FALSE);
+
         /* FIXME: Fade out text? */
         nbtk_label_set_text ((NbtkLabel *) priv->primary, "");
         nbtk_label_set_text ((NbtkLabel *) priv->secondary, "");
         return;
     }
+
+    ahoghill_playlist_header_set_can_play (header, TRUE);
+    ahoghill_play_button_set_playing ((AhoghillPlayButton *) priv->play_button, TRUE);
 
     switch (bkl_item_get_item_type (item)) {
     case BKL_ITEM_TYPE_AUDIO:

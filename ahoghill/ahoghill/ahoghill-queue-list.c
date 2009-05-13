@@ -178,3 +178,11 @@ ahoghill_queue_list_remove (AhoghillQueueList *list,
 
     g_ptr_array_remove_index (priv->items, index);
 }
+
+int
+ahoghill_queue_list_get_item_count (AhoghillQueueList *list)
+{
+    AhoghillQueueListPrivate *priv = list->priv;
+
+    return priv->items->len;
+}

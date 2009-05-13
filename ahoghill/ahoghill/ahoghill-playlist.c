@@ -186,7 +186,8 @@ uri_removed_cb (BrQueue          *queue,
     AhoghillPlaylistPrivate *priv = playlist->priv;
 
     ahoghill_queue_list_remove (priv->list, index);
-    /* FIXME: Set can play */
+    ahoghill_playlist_header_set_can_play (priv->header,
+                                           ahoghill_queue_list_get_item_count (priv->list) > 0);
 }
 
 static void
@@ -198,11 +199,17 @@ now_playing_changed_cb (BrQueue          *queue,
     AhoghillPlaylistPrivate *priv = playlist->priv;
     BklItem *item = NULL;
 
+    /* We don't care about the visual stuff */
+    if (type == BR_QUEUE_VISUAL_TYPE) {
+        return;
+    }
+
     if (uri && *uri != '\0') {
         item = ahoghill_grid_view_get_item (priv->gridview, uri);
     }
 
     ahoghill_playlist_header_set_item (priv->header, item);
+    ahoghill_playlist_header_set_can_play (priv->header, item != NULL);
 }
 
 static void
