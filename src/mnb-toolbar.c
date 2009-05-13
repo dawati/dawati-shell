@@ -1139,6 +1139,7 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   const gchar       *name;
+  const gchar       *tooltip = NULL;
   gint               col = -1;
   gint               screen_width, screen_height;
   gint               x, y;
@@ -1162,6 +1163,29 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
 
   priv->buttons[index] = NBTK_WIDGET (icon);
+
+  switch (index)
+    {
+    case BATTERY_APPLET:
+      tooltip = _("power & brightness");
+      break;
+    case VOLUME_APPLET:
+      tooltip = _("volume");
+      break;
+    case BT_APPLET:
+      tooltip = _("bluetooth");
+      break;
+    case WIFI_APPLET:
+      tooltip = _("networks");
+      break;
+    case TEST_APPLET:
+      tooltip = _("test");
+      break;
+    default:;
+    }
+
+  if (tooltip)
+    nbtk_button_set_tooltip_text (NBTK_BUTTON (icon), tooltip);
 
   clutter_actor_set_position (icon, x, y);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), icon);
