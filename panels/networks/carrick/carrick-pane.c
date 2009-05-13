@@ -4,11 +4,10 @@
 
 #include <config.h>
 #include <gconnman/gconnman.h>
-#include <mux/mux-switch-box.h>
-#include <mux/mux-frame.h>
+#include <nbtk/nbtk-gtk.h>
 #include <glib/gi18n.h>
-#include <carrick/carrick-list.h>
-#include <carrick/carrick-service-item.h>
+#include "carrick-list.h"
+#include "carrick-service-item.h"
 #include "carrick-icon-factory.h"
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
@@ -164,9 +163,9 @@ _set_devices_state (gchar       *device_type,
 }
 
 static gboolean
-_wifi_switch_callback (MuxSwitchBox *wifi_switch,
-                       gboolean new_state,
-                       CarrickPane *pane)
+_wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
+                       gboolean            new_state,
+                       CarrickPane        *pane)
 {
   _set_devices_state (g_strdup ("Wireless"),
                       new_state,
@@ -176,9 +175,9 @@ _wifi_switch_callback (MuxSwitchBox *wifi_switch,
 }
 
 static gboolean
-_ethernet_switch_callback (MuxSwitchBox *ethernet_switch,
-                           gboolean new_state,
-                           CarrickPane *pane)
+_ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
+                           gboolean            new_state,
+                           CarrickPane        *pane)
 {
   _set_devices_state (g_strdup ("Ethernet"),
                       new_state,
@@ -188,9 +187,9 @@ _ethernet_switch_callback (MuxSwitchBox *ethernet_switch,
 }
 
 static gboolean
-_threeg_switch_callback (MuxSwitchBox *threeg_switch,
-                         gboolean new_state,
-                         CarrickPane *pane)
+_threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
+                         gboolean            new_state,
+                         CarrickPane        *pane)
 {
   _set_devices_state (g_strdup ("Cellular"),
                       new_state,
@@ -200,9 +199,9 @@ _threeg_switch_callback (MuxSwitchBox *threeg_switch,
 }
 
 static gboolean
-_wimax_switch_callback (MuxSwitchBox *wimax_switch,
-                        gboolean new_state,
-                        CarrickPane *pane)
+_wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
+                        gboolean            new_state,
+                        CarrickPane        *pane)
 {
   _set_devices_state (g_strdup ("WiMax"),
                       new_state,
@@ -212,9 +211,9 @@ _wimax_switch_callback (MuxSwitchBox *wimax_switch,
 }
 
 static gboolean
-_flight_mode_switch_callback (MuxSwitchBox *flight_switch,
-                              gboolean new_state,
-                              CarrickPane *pane)
+_flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
+                              gboolean            new_state,
+                              CarrickPane        *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
@@ -225,7 +224,7 @@ _flight_mode_switch_callback (MuxSwitchBox *flight_switch,
 
 static void
 _secret_check_toggled(GtkToggleButton *toggle,
-                     gpointer         user_data)
+                      gpointer         user_data)
 {
         GtkEntry *entry = GTK_ENTRY(user_data);
         gboolean vis = gtk_toggle_button_get_active(toggle);
@@ -381,27 +380,27 @@ _device_updated_cb (CmDevice *device,
     switch (type)
     {
       case DEVICE_ETHERNET:
-        mux_switch_box_set_active (MUX_SWITCH_BOX (priv->ethernet_switch),
-                                   state);
-        gtk_widget_set_sensitive (GTK_WIDGET (priv->ethernet_switch),
+        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+                                      state);
+        gtk_widget_set_sensitive (priv->ethernet_switch,
                                   TRUE);
         break;
       case DEVICE_WIFI:
-        mux_switch_box_set_active (MUX_SWITCH_BOX (priv->wifi_switch),
+        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
                                    state);
-        gtk_widget_set_sensitive (GTK_WIDGET (priv->wifi_switch),
+        gtk_widget_set_sensitive (priv->wifi_switch,
                                   TRUE);
         break;
       case DEVICE_CELLULAR:
-        mux_switch_box_set_active (MUX_SWITCH_BOX (priv->threeg_switch),
+        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
                                    state);
-        gtk_widget_set_sensitive (GTK_WIDGET (priv->threeg_switch),
+        gtk_widget_set_sensitive (priv->threeg_switch,
                                   TRUE);
         break;
       case DEVICE_WIMAX:
-        mux_switch_box_set_active (MUX_SWITCH_BOX (priv->wimax_switch),
+        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
                                    state);
-        gtk_widget_set_sensitive (GTK_WIDGET (priv->wimax_switch),
+        gtk_widget_set_sensitive (priv->wimax_switch,
                                   TRUE);
         break;
       default:
@@ -520,12 +519,13 @@ static void
 carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (self);
-  GtkWidget *switch_bin = mux_frame_new ();
-  GtkWidget *flight_bin = mux_frame_new ();
-  GtkWidget *net_list_bin = mux_frame_new ();
+  GtkWidget *switch_bin = nbtk_gtk_frame_new ();
+  GtkWidget *flight_bin = nbtk_gtk_frame_new ();
+  GtkWidget *net_list_bin = nbtk_gtk_frame_new ();
   GtkWidget *scrolled_view;
-  GtkWidget *hbox;
+  GtkWidget *hbox, *switch_box;
   GtkWidget *vbox;
+  GtkWidget *switch_label;
 
   priv->icon_factory = NULL;
 
@@ -582,57 +582,110 @@ carrick_pane_init (CarrickPane *self)
 
   /* Switches */
   vbox = gtk_vbox_new (TRUE,
-                                  6);
+                       6);
   gtk_container_add (GTK_CONTAINER (switch_bin),
                      vbox);
 
-  priv->wifi_switch = mux_switch_box_new (_("Wifi"));
+  switch_box = gtk_hbox_new (TRUE,
+                             6);
+  priv->wifi_switch = nbtk_gtk_light_switch_new ();
   gtk_widget_set_sensitive (GTK_WIDGET (priv->wifi_switch),
                             FALSE);
   g_signal_connect (priv->wifi_switch,
                     "switch-toggled",
                     G_CALLBACK (_wifi_switch_callback),
                     self);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  switch_label = gtk_label_new (_("WiFi"));
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      switch_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->wifi_switch,
                       TRUE,
                       TRUE,
                       8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
+                      TRUE,
+                      TRUE,
+                      8);
 
-  priv->ethernet_switch = mux_switch_box_new (_("Ethernet"));
+  priv->ethernet_switch = nbtk_gtk_light_switch_new ();
+  switch_box = gtk_hbox_new (TRUE,
+                             6);
+  switch_label = gtk_label_new (_("Ethernet"));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->ethernet_switch),
                             FALSE);
   g_signal_connect (priv->ethernet_switch,
                     "switch-toggled",
                     G_CALLBACK (_ethernet_switch_callback),
                     self);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      switch_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->ethernet_switch,
                       TRUE,
                       TRUE,
                       8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
+                      TRUE,
+                      TRUE,
+                      8);
 
-  priv->threeg_switch = mux_switch_box_new (_("3G"));
+  priv->threeg_switch = nbtk_gtk_light_switch_new ();
+  switch_box = gtk_hbox_new (TRUE,
+                            6);
+  switch_label = gtk_label_new (_("3G"));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->threeg_switch),
                             FALSE);
   g_signal_connect (priv->threeg_switch,
                     "switch-toggled",
                     G_CALLBACK (_threeg_switch_callback),
                     self);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      switch_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->threeg_switch,
                       TRUE,
                       TRUE,
                       8);
-  priv->wimax_switch = mux_switch_box_new (_("WiMax"));
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
+                      TRUE,
+                      TRUE,
+                      8);
+
+  priv->wimax_switch = nbtk_gtk_light_switch_new ();
+  switch_box = gtk_hbox_new (TRUE,
+                             6);
+  switch_label = gtk_label_new (_("WiMax"));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->wimax_switch),
                             FALSE);
   g_signal_connect (priv->wimax_switch,
                     "switch-toggled",
                     G_CALLBACK (_wimax_switch_callback),
                     self);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      switch_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->wimax_switch,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
                       TRUE,
                       TRUE,
                       8);
@@ -646,13 +699,26 @@ carrick_pane_init (CarrickPane *self)
                        0);
   gtk_container_add (GTK_CONTAINER (flight_bin),
                      vbox);
-  priv->flight_mode_switch = mux_switch_box_new (_("Offline Mode"));
+  priv->flight_mode_switch = nbtk_gtk_light_switch_new ();
+  switch_box = gtk_hbox_new (TRUE,
+                             6);
+  switch_label = gtk_label_new (_("Offline mode"));
   g_signal_connect (priv->flight_mode_switch,
                     "switch-toggled",
                     G_CALLBACK (_flight_mode_switch_callback),
                     self);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      switch_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->flight_mode_switch,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
                       TRUE,
                       FALSE,
                       8);
