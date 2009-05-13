@@ -280,6 +280,23 @@ moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin)
             root_xwin, True, GrabModeAsync, GrabModeAsync);
 }
 
+static void
+moblin_netbook_kbd_grab_notify_cb (MetaScreen   *screen,
+                                   GParamSpec   *pspec,
+                                   MutterPlugin *plugin)
+{
+  gboolean grabbed;
+
+  g_object_get (screen, "keyboard-grabbed", &grabbed, NULL);
+
+  /*
+   * If the property has changed to FALSE, i.e., Mutter just called
+   * XUngrabKeyboard(), we have to re-establish our grabs.
+   */
+  if (!grabbed)
+    moblin_netbook_setup_kbd_grabs (plugin);
+}
+
 /*
  * Helper function for metacity_alt_tab_key_handler().
  *
@@ -426,8 +443,6 @@ try_alt_tab_grab (MutterPlugin *plugin,
 
           meta_display_end_grab_op (display, timestamp);
           priv->in_alt_grab = FALSE;
-
-          moblin_netbook_setup_kbd_grabs (plugin);
 
           workspace        = meta_window_get_workspace (next);
           active_workspace = meta_screen_get_active_workspace (screen);
@@ -731,10 +746,14 @@ moblin_netbook_plugin_constructed (GObject *object)
   Display       *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
-  MetaScreen    *screen;
   Window         root_xwin;
 
   moblin_netbook_setup_kbd_grabs (MUTTER_PLUGIN (plugin));
+
+  g_signal_connect (mutter_plugin_get_screen (MUTTER_PLUGIN (plugin)),
+                    "notify::keyboard-grabbed",
+                    G_CALLBACK (moblin_netbook_kbd_grab_notify_cb),
+                    plugin);
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
@@ -1849,8 +1868,6 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
           meta_display_end_grab_op (display, xev->xkey.time);
           priv->in_alt_grab = FALSE;
-
-          moblin_netbook_setup_kbd_grabs (plugin);
 
           mnb_switcher_activate_selection (MNB_SWITCHER (priv->switcher), TRUE,
                                            xev->xkey.time);
