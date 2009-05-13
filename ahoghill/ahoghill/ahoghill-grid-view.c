@@ -718,10 +718,6 @@ item_clicked_cb (AhoghillResultsPane *pane,
     AhoghillGridViewPrivate *priv = grid->priv;
     GError *error = NULL;
 
-    if (bkl_item_get_item_type (item) != BKL_ITEM_TYPE_AUDIO) {
-        return;
-    }
-
     br_queue_play_uri (priv->local_queue, bkl_item_get_uri (item),
                        bkl_item_get_mimetype (item));
     if (error != NULL) {

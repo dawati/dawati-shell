@@ -115,3 +115,15 @@ ahoghill_play_button_init (AhoghillPlayButton *self)
     nbtk_button_set_toggle_mode (NBTK_BUTTON (self), TRUE);
 }
 
+void
+ahoghill_play_button_set_playing (AhoghillPlayButton *button,
+                                  gboolean            playing)
+{
+    nbtk_button_set_checked ((NbtkButton *) button, playing);
+    if (playing) {
+        nbtk_widget_set_style_class_name ((NbtkWidget *) button,
+                                          "Toggled");
+    } else {
+        nbtk_widget_set_style_class_name ((NbtkWidget *) button, NULL);
+    }
+}

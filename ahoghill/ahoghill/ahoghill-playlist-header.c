@@ -11,6 +11,7 @@ enum {
 
 enum {
     PLAYING,
+    POS_CHANGED,
     LAST_SIGNAL
 };
 
@@ -18,8 +19,12 @@ struct _AhoghillPlaylistHeaderPrivate {
     NbtkWidget *playlist_title;
     NbtkWidget *primary;
     NbtkWidget *secondary;
-    NbtkWidget *seekbar;
+
     NbtkWidget *play_button;
+
+    NbtkAdjustment *audio_progress;
+    guint32 pos_changed_id;
+    NbtkWidget *seekbar;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_PLAYLIST_HEADER, AhoghillPlaylistHeaderPrivate))
@@ -95,6 +100,12 @@ ahoghill_playlist_header_class_init (AhoghillPlaylistHeaderClass *klass)
                                      G_SIGNAL_NO_RECURSE, 0, NULL, NULL,
                                      g_cclosure_marshal_VOID__BOOLEAN,
                                      G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+    signals[POS_CHANGED] = g_signal_new ("position-changed",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_FIRST |
+                                         G_SIGNAL_NO_RECURSE, 0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__DOUBLE,
+                                         G_TYPE_NONE, 1, G_TYPE_DOUBLE);
 }
 
 static void
@@ -108,6 +119,16 @@ play_button_clicked_cb (NbtkButton             *button,
 }
 
 static void
+seek_position_changed (NbtkAdjustment         *adjustment,
+                       GParamSpec             *pspec,
+                       AhoghillPlaylistHeader *header)
+{
+    double position = nbtk_adjustment_get_value (adjustment);
+
+    g_signal_emit (header, signals[POS_CHANGED], 0, position);
+}
+
+static void
 ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
 {
     AhoghillPlaylistHeaderPrivate *priv;
@@ -116,6 +137,7 @@ ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
     priv = self->priv;
 
     clutter_actor_set_size ((ClutterActor *) self, 210, -1);
+
     priv->playlist_title = nbtk_label_new ("");
     clutter_actor_set_name ((ClutterActor *) priv->playlist_title,
                             "ahoghill-playlist-title");
@@ -156,6 +178,22 @@ ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
                                           "y-expand", FALSE,
                                           "x-align", 0.0,
                                           NULL);
+
+    priv->audio_progress = nbtk_adjustment_new (0.0, 0.0, 1.0, 0.0, 0.0, 0.0);
+    priv->pos_changed_id = g_signal_connect
+        (priv->audio_progress, "notify::value",
+         G_CALLBACK (seek_position_changed), self);
+    priv->seekbar = nbtk_scroll_bar_new (priv->audio_progress);
+    nbtk_widget_set_style_class_name (priv->seekbar, "AhoghillProgressBar");
+    clutter_actor_set_size ((ClutterActor *) priv->seekbar, -1, 20);
+    clutter_actor_set_reactive ((ClutterActor *) priv->seekbar, FALSE);
+
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->seekbar,
+                                          3, 0,
+                                          "col-span", 2,
+                                          "x-align", 0.0,
+                                          NULL);
 }
 
 void
@@ -168,11 +206,18 @@ ahoghill_playlist_header_set_item (AhoghillPlaylistHeader *header,
     int w, h;
 
     if (item == NULL) {
+        ahoghill_play_button_set_playing ((AhoghillPlayButton *) priv->play_button, FALSE);
+        clutter_actor_set_reactive ((ClutterActor *) priv->seekbar, FALSE);
+
         /* FIXME: Fade out text? */
         nbtk_label_set_text ((NbtkLabel *) priv->primary, "");
         nbtk_label_set_text ((NbtkLabel *) priv->secondary, "");
         return;
     }
+
+    clutter_actor_set_reactive ((ClutterActor *) priv->seekbar, TRUE);
+    ahoghill_playlist_header_set_can_play (header, TRUE);
+    ahoghill_play_button_set_playing ((AhoghillPlayButton *) priv->play_button, TRUE);
 
     switch (bkl_item_get_item_type (item)) {
     case BKL_ITEM_TYPE_AUDIO:
@@ -251,4 +296,15 @@ ahoghill_playlist_header_set_can_play (AhoghillPlaylistHeader *header,
         /* FIXME: Need an image for inactive state */
         nbtk_widget_set_style_pseudo_class (priv->play_button, "inactive");
     }
+}
+
+void
+ahoghill_playlist_header_set_position (AhoghillPlaylistHeader *header,
+                                       double                  position)
+{
+    AhoghillPlaylistHeaderPrivate *priv = header->priv;
+
+    g_signal_handler_block (priv->audio_progress, priv->pos_changed_id);
+    nbtk_adjustment_set_value (priv->audio_progress, position);
+    g_signal_handler_unblock (priv->audio_progress, priv->pos_changed_id);
 }

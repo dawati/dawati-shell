@@ -306,7 +306,6 @@ penge_people_pane_update (PengePeoplePane *pane)
 
   if (items)
   {
-    g_debug ("content");
     /* Hide the nothing configured tile */
     if (priv->no_content_tile)
     {
@@ -320,7 +319,6 @@ penge_people_pane_update (PengePeoplePane *pane)
     /* Add the nothing configured tile */
     if (!priv->no_content_tile)
     {
-      g_debug ("no content");
       priv->no_content_tile = _make_no_content_tile ();
       nbtk_table_add_actor_with_properties (NBTK_TABLE (pane),
                                             priv->no_content_tile,

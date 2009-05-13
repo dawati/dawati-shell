@@ -145,6 +145,8 @@ theme_mediapaneldir = $(pkgdatadir)/theme/media-panel
 dist_theme_mediapanel_DATA = \
 	theme/media-panel/bot_playque_closed.png \
 	theme/media-panel/bot_playque_hover.png \
+	theme/media-panel/hrn-progress-bar-handle.png \
+	theme/media-panel/hrn-progress-bar-through.png \
 	theme/media-panel/media_search_bkgrd.png \
 	theme/media-panel/mid_playque_closed.png \
 	theme/media-panel/mid_playque_hover.png \

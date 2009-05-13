@@ -371,13 +371,6 @@ penge_app_bookmark_manager_add_from_uri (PengeAppBookmarkManager *manager,
   }
 
   app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
-  if (!app_info)
-  {
-    /* TODO: Set error_out to a correct GError. */
-    *error_out = g_error_new (0, 0, G_STRLOC ": Error loading desktop file: %s",
-                              path);
-    goto error;
-  }
 
   bookmark = penge_app_bookmark_new ();
   bookmark->uri = g_strdup (uri);
