@@ -43,7 +43,7 @@ _notify_connection_changed (CarrickApplet *self)
       g_strcmp0 ("offline", priv->state) == 0)
   {
     title = g_strdup_printf (_("Offline"));
-    message = g_strdup_printf (_("No active connection"));
+    message = g_strdup_printf (_("No active connection."));
   }
   else
   {
@@ -110,7 +110,7 @@ manager_state_changed_cb (CmManager *manager,
       priv->active_service_name = new_name;
 
       new_type = g_strdup (cm_manager_get_active_service_type (manager));
-      if (!(g_strcmp0 (priv->active_service_type, new_type) == 0))
+      if (g_strcmp0 (priv->active_service_type, new_type) != 0)
       {
         g_free (priv->active_service_type);
         priv->active_service_type = new_type;
