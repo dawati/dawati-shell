@@ -2,7 +2,7 @@
 #define __AHOGHILL_EXAMPLE_TABLE_H__
 
 #include <nbtk/nbtk.h>
-
+#include <ahoghill/ahoghill-results-model.h>
 
 G_BEGIN_DECLS
 
@@ -44,6 +44,7 @@ struct _AhoghillExampleTableClass
 };
 
 GType ahoghill_example_table_get_type (void) G_GNUC_CONST;
+AhoghillExampleTable *ahoghill_example_table_new (AhoghillResultsModel *model);
 
 G_END_DECLS
 

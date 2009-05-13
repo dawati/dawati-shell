@@ -206,7 +206,7 @@ show_previous_page (ClutterActor        *actor,
         priv->animation = g_slice_new (struct _paging_data);
     }
 
-    new_page = (ClutterActor *) ahoghill_results_table_new (priv->model);
+    new_page = (ClutterActor *) ahoghill_results_table_new (priv->model, 2);
 
     ahoghill_results_table_set_page ((AhoghillResultsTable *) new_page,
                                      priv->current_page_num - 1);
@@ -272,7 +272,7 @@ show_next_page (ClutterActor        *actor,
     clutter_actor_get_size ((ClutterActor *) priv->current_page,
                             &width, &height);
 
-    new_page = (ClutterActor *) ahoghill_results_table_new (priv->model);
+    new_page = (ClutterActor *) ahoghill_results_table_new (priv->model, 2);
     ahoghill_results_table_set_page ((AhoghillResultsTable *) new_page,
                                      priv->current_page_num + 1);
     nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed), new_page);
@@ -334,7 +334,7 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
                                           "y-align", 0.0,
                                           NULL);
 
-    priv->current_page = ahoghill_results_table_new (NULL);
+    priv->current_page = ahoghill_results_table_new (NULL, 2);
     g_signal_connect (priv->current_page, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
     nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed),
@@ -424,17 +424,19 @@ ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
     AhoghillResultsPanePrivate *priv = pane->priv;
 
     if (show) {
-        clutter_actor_hide (priv->current_page);
-        priv->example_page = g_object_new (AHOGHILL_TYPE_EXAMPLE_TABLE, NULL);
+        clutter_actor_hide ((ClutterActor *) priv->current_page);
+        priv->example_page = ahoghill_example_table_new (priv->model);
+        g_signal_connect (priv->example_page, "item-clicked",
+                          G_CALLBACK (item_clicked_cb), pane);
 
         nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed),
                               (ClutterActor *) priv->example_page);
         clutter_actor_show ((ClutterActor *) priv->example_page);
         clutter_actor_set_position ((ClutterActor *) priv->example_page, 0, 0);
     } else {
-        clutter_actor_show (priv->current_page);
+        clutter_actor_show ((ClutterActor *) priv->current_page);
         if (priv->example_page) {
-            clutter_actor_destroy (priv->example_page);
+            clutter_actor_destroy ((ClutterActor *) priv->example_page);
             priv->example_page = NULL;
         }
     }

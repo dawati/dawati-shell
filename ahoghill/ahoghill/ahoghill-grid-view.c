@@ -195,6 +195,33 @@ find_item (AhoghillGridView *view,
 }
 
 static void
+generate_example_results (AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    int i, count = 0;
+
+    for (i = 0; i < priv->dbs->len; i++) {
+        Source *source = priv->dbs->pdata[i];
+        int j;
+
+        for (j = 0; j < source->items->len; j++) {
+            BklItem *item = source->items->pdata[rand () % source->items->len];
+            const char *uri;
+
+            uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) item);
+            if (uri) {
+                ahoghill_results_model_add_item (priv->model, source->source,
+                                                 item);
+                count++;
+                if (count == 6) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
+static void
 set_recent_items (AhoghillGridView *view)
 {
     AhoghillGridViewPrivate *priv;
@@ -202,12 +229,13 @@ set_recent_items (AhoghillGridView *view)
     gboolean added_something = FALSE;
 
     priv = view->priv;
+
+    /* Freeze and clear the old results before adding anything new */
+    ahoghill_results_model_freeze (priv->model);
+    ahoghill_results_model_clear (priv->model);
+
     recent_items = gtk_recent_manager_get_items (priv->recent_manager);
     if (recent_items) {
-        /* Freeze and clear the old results before adding anything new */
-        ahoghill_results_model_freeze (priv->model);
-        ahoghill_results_model_clear (priv->model);
-
         for (r = recent_items; r; r = r->next) {
             Source *source;
             GtkRecentInfo *info = r->data;
@@ -238,13 +266,17 @@ set_recent_items (AhoghillGridView *view)
         }
 
         g_list_free (recent_items);
+    }
 
-        /* And thaw the results */
-        ahoghill_results_model_thaw (priv->model);
+    if (!added_something) {
+        generate_example_results (view);
     }
 
     ahoghill_results_pane_show_example_media
         ((AhoghillResultsPane *) priv->results_pane, !added_something);
+
+    /* And thaw the results */
+    ahoghill_results_model_thaw (priv->model);
 }
 
 static void
