@@ -116,7 +116,7 @@ ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
     priv = self->priv;
 
     clutter_actor_set_size ((ClutterActor *) self, 210, -1);
-    priv->playlist_title = nbtk_label_new (_("Local"));
+    priv->playlist_title = nbtk_label_new ("");
     clutter_actor_set_name ((ClutterActor *) priv->playlist_title,
                             "ahoghill-playlist-title");
     nbtk_table_add_actor (NBTK_TABLE (self),

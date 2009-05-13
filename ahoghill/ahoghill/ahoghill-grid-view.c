@@ -174,17 +174,19 @@ destroy_source (Source *source)
 
 static BklItem *
 find_item (AhoghillGridView *view,
-           const char       *uri)
+           const char       *uri,
+           Source          **source)
 {
     AhoghillGridViewPrivate *priv = view->priv;
     int i;
 
     for (i = 0; i < priv->dbs->len; i++) {
-        Source *source = priv->dbs->pdata[i];
+        Source *s = priv->dbs->pdata[i];
         BklItem *item;
 
-        item = g_hash_table_lookup (source->uri_to_item, uri);
+        item = g_hash_table_lookup (s->uri_to_item, uri);
         if (item) {
+            *source = s;
             return item;
         }
     }
@@ -193,19 +195,49 @@ find_item (AhoghillGridView *view,
 }
 
 static void
+generate_example_results (AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    int i, count = 0;
+
+    for (i = 0; i < priv->dbs->len; i++) {
+        Source *source = priv->dbs->pdata[i];
+        int j;
+
+        for (j = 0; j < source->items->len; j++) {
+            BklItem *item = source->items->pdata[rand () % source->items->len];
+            const char *uri;
+
+            uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) item);
+            if (uri) {
+                ahoghill_results_model_add_item (priv->model, source->source,
+                                                 item);
+                count++;
+                if (count == 6) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
+static void
 set_recent_items (AhoghillGridView *view)
 {
     AhoghillGridViewPrivate *priv;
     GList *recent_items, *r;
+    gboolean added_something = FALSE;
 
     priv = view->priv;
+
+    /* Freeze and clear the old results before adding anything new */
+    ahoghill_results_model_freeze (priv->model);
+    ahoghill_results_model_clear (priv->model);
+
     recent_items = gtk_recent_manager_get_items (priv->recent_manager);
     if (recent_items) {
-        /* Freeze and clear the old results before adding anything new */
-        ahoghill_results_model_freeze (priv->model);
-        ahoghill_results_model_clear (priv->model);
-
         for (r = recent_items; r; r = r->next) {
+            Source *source;
             GtkRecentInfo *info = r->data;
             const char *mimetype;
             const char *uri;
@@ -221,22 +253,30 @@ set_recent_items (AhoghillGridView *view)
 
             uri = gtk_recent_info_get_uri (info);
 
-            item = find_item (view, uri);
+            item = find_item (view, uri, &source);
             if (item == NULL) {
                 gtk_recent_info_unref (info);
                 continue;
             }
 
-            ahoghill_results_model_add_item (priv->model, item);
+            added_something = TRUE;
+            ahoghill_results_model_add_item (priv->model, source->source, item);
 
             gtk_recent_info_unref (info);
         }
 
         g_list_free (recent_items);
-
-        /* And thaw the results */
-        ahoghill_results_model_thaw (priv->model);
     }
+
+    if (!added_something) {
+        generate_example_results (view);
+    }
+
+    ahoghill_results_pane_show_example_media
+        ((AhoghillResultsPane *) priv->results_pane, !added_something);
+
+    /* And thaw the results */
+    ahoghill_results_model_thaw (priv->model);
 }
 
 static void
@@ -250,6 +290,13 @@ set_result_items (AhoghillGridView *view,
     ahoghill_results_pane_set_page
         ((AhoghillResultsPane *) priv->results_pane, 0);
 
+    ahoghill_results_pane_show_example_media
+        ((AhoghillResultsPane *) priv->results_pane, FALSE);
+
+    g_object_set (priv->results_pane,
+                  "title", _("Search results"),
+                  NULL);
+
     /* Freeze and clear the old results before adding anything new */
     ahoghill_results_model_freeze (priv->model);
     ahoghill_results_model_clear (priv->model);
@@ -257,14 +304,15 @@ set_result_items (AhoghillGridView *view,
     for (r = results; r; r = r->next) {
         char *uri = r->data;
         BklItem *item;
+        Source *source;
 
-        item = find_item (view, uri);
+        item = find_item (view, uri, &source);
         if (item == NULL) {
             g_warning ("Cannot find item for %s", uri);
             continue;
         }
 
-        ahoghill_results_model_add_item (priv->model, item);
+        ahoghill_results_model_add_item (priv->model, source->source, item);
     }
 
     ahoghill_results_model_thaw (priv->model);
@@ -329,9 +377,8 @@ source_manager_removed (BklSourceManagerClient *source_manager,
         }
     }
 
+    ahoghill_results_model_remove_source_items (priv->model, source->source);
     destroy_source (source);
-
-    /* FIXME: Need to update results to remove any dead uris */
 }
 
 static void
@@ -721,7 +768,7 @@ ahoghill_grid_view_init (AhoghillGridView *self)
 
     priv->results_pane = (ClutterActor *) ahoghill_results_pane_new (priv->model);
     g_object_set (priv->results_pane,
-                  "title", _("Recent"),
+                  "title", _("Recently played"),
                   NULL);
     /* clutter_actor_set_size (priv->results_pane, 750, 400); */
     nbtk_table_add_actor_with_properties (table, priv->results_pane,
@@ -794,5 +841,10 @@ BklItem *
 ahoghill_grid_view_get_item (AhoghillGridView *view,
                              const char       *uri)
 {
-    return find_item (view, uri);
+    Source *source;
+    BklItem *item;
+
+    item = find_item (view, uri, &source);
+
+    return item;
 }
