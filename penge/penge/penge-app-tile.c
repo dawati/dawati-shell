@@ -99,7 +99,6 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
                                          icon,
                                          ICON_SIZE,
                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-  g_object_unref (icon);
 
   if (!info)
   {
