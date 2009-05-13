@@ -92,11 +92,14 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
   const gchar *path;
   GError *error = NULL;
   GtkIconInfo *info;
+  GIcon *icon;
 
-  info = gtk_icon_theme_lookup_icon (priv->icon_theme,
-                                     priv->bookmark->icon_name,
-                                     ICON_SIZE,
-                                     GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+  icon = g_app_info_get_icon (priv->app_info);
+  info = gtk_icon_theme_lookup_by_gicon (priv->icon_theme,
+                                         icon,
+                                         ICON_SIZE,
+                                         GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+  g_object_unref (icon);
 
   if (!info)
   {

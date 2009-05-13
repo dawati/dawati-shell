@@ -1093,6 +1093,7 @@ mnb_switcher_show (ClutterActor *self)
   ClutterActor *top_most_clone = NULL;
   MutterWindow *top_most_mw = NULL;
   gboolean      found_focus = FALSE;
+  gboolean      switcher_empty = FALSE;
 
   struct win_location
   {
@@ -1126,6 +1127,89 @@ mnb_switcher_show (ClutterActor *self)
 
   ws_count = meta_screen_get_n_workspaces (screen);
   priv->active_ws = active_ws = meta_screen_get_active_workspace_index (screen);
+  window_list = mutter_plugin_get_windows (priv->plugin);
+
+  /* Handle case where no apps open.. */
+  if (ws_count == 1)
+    {
+      switcher_empty = TRUE;
+
+      for (l = window_list; l; l = g_list_next (l))
+        {
+          MutterWindow          *mw = l->data;
+          MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
+
+          if (mutter_window_get_window_type (mw) == META_COMP_WINDOW_NORMAL)
+            {
+              switcher_empty = FALSE;
+              break;
+            }
+          else if (mutter_window_get_window_type (mw)
+                                         == META_COMP_WINDOW_DIALOG)
+            {
+              MetaWindow *parent = meta_window_find_root_ancestor (meta_win);
+
+              if (parent == meta_win)
+                {
+                  switcher_empty = FALSE;
+                  break;
+                }
+            }
+        }
+
+      if (switcher_empty)
+        {
+          NbtkWidget         *table = priv->table;
+          ClutterActor       *bin;
+          NbtkWidget         *label;
+
+          bin = CLUTTER_ACTOR (nbtk_bin_new ());
+          label = nbtk_label_new (_("No Zones yet"));
+
+          nbtk_widget_set_style_class_name (label, "workspace-title-label");
+
+          nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+          nbtk_bin_set_alignment (NBTK_BIN (bin),
+                                  NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
+
+          clutter_actor_set_name (CLUTTER_ACTOR (bin), 
+                                  "workspace-title-active");
+
+          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin), 
+                                            "workspace-title");
+
+          nbtk_table_add_actor (NBTK_TABLE (table), bin, 0, 0);
+          clutter_container_child_set (CLUTTER_CONTAINER (table),
+                                       CLUTTER_ACTOR (bin),
+                                       "y-expand", FALSE,
+                                       "x-fill", TRUE,
+                                       NULL);
+
+          bin = CLUTTER_ACTOR (nbtk_bin_new ());
+          label = nbtk_label_new (_("Applications you’re using will show up here. You will be able to switch and organise them to your hearts content."));
+
+          nbtk_widget_set_style_class_name (label, "workspace-no-wins-label");
+
+          nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+          nbtk_bin_set_alignment (NBTK_BIN (bin),
+                                  NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
+
+          clutter_actor_set_name (CLUTTER_ACTOR (bin), 
+                                  "workspace-no-wins-bin");
+
+          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin), 
+                                            "workspace-no-wins-bin");
+
+          nbtk_table_add_actor (NBTK_TABLE (table), bin, 1, 0);
+          clutter_container_child_set (CLUTTER_CONTAINER (table),
+                                       CLUTTER_ACTOR (bin),
+                                       "y-expand", FALSE,
+                                       "x-fill", TRUE,
+                                       NULL);
+
+          goto finish_up;
+        }
+    }
 
   /* loop through all the workspaces, adding a label for each */
   for (i = 0; i < ws_count; i++)
@@ -1142,7 +1226,6 @@ mnb_switcher_show (ClutterActor *self)
 
   win_locs    = g_slice_alloc0 (sizeof (struct win_location) * ws_count);
   spaces      = g_slice_alloc0 (sizeof (NbtkWidget*) * ws_count);
-  window_list = mutter_plugin_get_windows (priv->plugin);
 
   for (l = window_list; l; l = g_list_next (l))
     {
@@ -1398,6 +1481,7 @@ mnb_switcher_show (ClutterActor *self)
 
   priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
 
+ finish_up:
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
 
