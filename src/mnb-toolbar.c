@@ -753,7 +753,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
    */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip_text (NBTK_BUTTON (button), tooltip);
+  nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
 
   /*
@@ -1035,7 +1035,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
    */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip_text (NBTK_BUTTON (button), tooltip);
+  nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
 
   /*
@@ -1185,7 +1185,7 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
     }
 
   if (tooltip)
-    nbtk_button_set_tooltip_text (NBTK_BUTTON (icon), tooltip);
+    nbtk_widget_set_tooltip_text (NBTK_WIDGET (icon), tooltip);
 
   clutter_actor_set_position (icon, x, y);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), icon);
