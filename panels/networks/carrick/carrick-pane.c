@@ -29,6 +29,7 @@ struct _CarrickPanePrivate {
   GtkWidget          *service_list;
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
+  gboolean            offline;
 };
 
 enum
@@ -206,18 +207,6 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
   _set_devices_state (g_strdup ("WiMax"),
                       new_state,
                       pane);
-
-  return TRUE;
-}
-
-static gboolean
-_flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
-                              gboolean            new_state,
-                              CarrickPane        *pane)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-
-  cm_manager_set_offline_mode (priv->manager, new_state);
 
   return TRUE;
 }
@@ -413,6 +402,58 @@ _device_updated_cb (CmDevice *device,
 }
 
 static void
+_set_states (CarrickPane *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  GList *devices = cm_manager_get_devices (priv->manager);
+  CmDevice *device = NULL;
+  guint len;
+  guint cnt;
+
+  priv->offline = cm_manager_get_offline_mode (priv->manager);
+
+  if (priv->offline)
+  {
+    gtk_widget_set_sensitive (priv->ethernet_switch,
+                              FALSE);
+    gtk_widget_set_sensitive (priv->wifi_switch,
+                              FALSE);
+    gtk_widget_set_sensitive (priv->threeg_switch,
+                              FALSE);
+    gtk_widget_set_sensitive (priv->wimax_switch,
+                              FALSE);
+  }
+  else
+  {
+    len = g_list_length (devices);
+    for (cnt = 0; cnt < len; cnt++)
+    {
+      device = CM_DEVICE (g_list_nth (devices, cnt)->data);
+      g_signal_connect (G_OBJECT (device),
+                        "device-updated",
+                        G_CALLBACK (_device_updated_cb),
+                        pane);
+    }
+  }
+
+  g_list_free (devices);
+}
+
+static gboolean
+_flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
+                              gboolean            new_state,
+                              CarrickPane        *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+
+  cm_manager_set_offline_mode (priv->manager, new_state);
+  _set_states (pane);
+  priv->offline = new_state;
+
+  return TRUE;
+}
+
+static void
 _remove_list_items (GtkWidget *widget,
                     gpointer   user_data)
 {
@@ -457,28 +498,6 @@ _update_services (CarrickPane *pane)
   }
 
   g_list_free (raw_services);
-}
-
-static void
-_set_states (CarrickPane *pane)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = cm_manager_get_devices (priv->manager);
-  CmDevice *device = NULL;
-  guint len;
-  guint cnt;
-
-  len = g_list_length (devices);
-  for (cnt = 0; cnt < len; cnt++)
-  {
-    device = CM_DEVICE (g_list_nth (devices, cnt)->data);
-    g_signal_connect (G_OBJECT (device),
-                      "device-updated",
-                      G_CALLBACK (_device_updated_cb),
-                      pane);
-  }
-
-  g_list_free (devices);
 }
 
 static void
@@ -724,9 +743,7 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       FALSE,
                       8);
-  priv->flight_mode_label = gtk_label_new ("");
-  gtk_label_set_markup (priv->flight_mode_label,
-                        _("This will disable <i>all</i> connections."));
+  priv->flight_mode_label = gtk_label_new (_("This will disable all connections"));
   gtk_misc_set_alignment (GTK_MISC (priv->flight_mode_label),
                           0.5,
                           0.0);
