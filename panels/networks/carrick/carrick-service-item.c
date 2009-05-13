@@ -109,6 +109,9 @@ _connect_button_cb (GtkButton *connect_button,
                                               GTK_STOCK_OK,
                                               GTK_RESPONSE_ACCEPT,
                                               NULL);
+
+        gtk_dialog_set_default_response (dialog,
+                                         GTK_RESPONSE_ACCEPT);
         gtk_window_set_icon_name (GTK_WINDOW (dialog),
                                   GTK_STOCK_DIALOG_AUTHENTICATION);
         gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
