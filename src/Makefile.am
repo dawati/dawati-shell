@@ -3,6 +3,7 @@ SUBDIRS=tray effects
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
 INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@ \
+	-DPREFIX=\"$(prefix)\" \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
 	@AHOGHILL_CFLAGS@ \
