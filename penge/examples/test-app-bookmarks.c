@@ -32,10 +32,9 @@ main (int     argc,
   {
     bookmark = (PengeAppBookmark *)l->data;
 
-    g_debug ("%s %s %s %s",
+    g_debug ("%s %s %s",
              bookmark->uri,
              bookmark->application_name,
-             bookmark->icon_name,
              bookmark->app_exec);
   }
 

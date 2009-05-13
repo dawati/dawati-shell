@@ -177,18 +177,6 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
       g_clear_error (&error);
     }
 
-    g_free (bookmark->icon_name);
-    if (!g_bookmark_file_get_icon (priv->bookmarks,
-                                  uri,
-                                  &(bookmark->icon_name),
-                                  NULL,
-                                  &error))
-    {
-      g_warning (G_STRLOC ": Error when retrieving icon: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-
     g_free (bookmark->app_exec);
     if (!g_bookmark_file_get_app_info (priv->bookmarks,
                                       uri,
@@ -394,7 +382,6 @@ penge_app_bookmark_manager_add_from_uri (PengeAppBookmarkManager *manager,
   bookmark = penge_app_bookmark_new ();
   bookmark->uri = g_strdup (uri);
   bookmark->application_name = g_strdup (g_app_info_get_name (app_info));
-  bookmark->icon_name = g_icon_to_string (g_app_info_get_icon (app_info));
   bookmark->app_exec = g_strdup (g_app_info_get_executable (app_info));
 
   g_free (path);
@@ -402,7 +389,6 @@ penge_app_bookmark_manager_add_from_uri (PengeAppBookmarkManager *manager,
 
   /* Create the entry in the GBookmarkFile object */
   g_bookmark_file_set_title (priv->bookmarks, uri, bookmark->application_name);
-  g_bookmark_file_set_icon (priv->bookmarks, uri, bookmark->icon_name, NULL);
   if (!g_bookmark_file_set_app_info (priv->bookmarks,
                                      uri,
                                      PENGE_APP_NAME,
@@ -459,7 +445,6 @@ void
 penge_app_bookmark_free (PengeAppBookmark *bookmark)
 {
   g_free (bookmark->application_name);
-  g_free (bookmark->icon_name);
   g_free (bookmark->app_exec);
 }
 

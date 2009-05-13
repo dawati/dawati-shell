@@ -29,7 +29,6 @@ typedef struct
   gint ref_cnt;
   gchar *uri;
   gchar *application_name;
-  gchar *icon_name;
   gchar *app_exec;
 } PengeAppBookmark;
 
