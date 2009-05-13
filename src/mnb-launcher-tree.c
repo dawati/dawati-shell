@@ -621,24 +621,3 @@ mnb_launcher_tree_free (MnbLauncherTree *tree)
   g_free (tree);
 }
 
-gchar *
-mnb_launcher_utils_get_last_used (const gchar *executable)
-{
-  struct stat  exec_stat;
-  gchar       *last_used;
-
-  if (0 == stat (executable, &exec_stat) &&
-      exec_stat.st_atime != exec_stat.st_mtime)
-    {
-      GTimeVal atime = { 0 ,0 };
-      atime.tv_sec = exec_stat.st_atime;
-      last_used = penge_utils_format_time (&atime);
-    }
-  else
-    {
-      last_used = g_strdup (_("Never opened"));
-    }
-
-  return last_used;
-}
-
