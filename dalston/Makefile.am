@@ -16,7 +16,9 @@ libdalston_la_SOURCES = dalston-battery-monitor.c \
 			dalston-volume-pane.c \
 			dalston-volume-pane.h \
 			dalston-volume-applet.c \
-			dalston-volume-applet.h
+			dalston-volume-applet.h \
+			dalston-button-monitor.c \
+			dalston-button-monitor.h
 
 libdalston_la_CFLAGS = -I$(top_srcdir) \
 		       $(DBUS_GLIB_CFLAGS) \
