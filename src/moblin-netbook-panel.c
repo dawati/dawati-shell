@@ -657,10 +657,10 @@ make_panel (MutterPlugin *plugin, gint width)
                        PANEL_PAGE_STATUS);
 
   make_toolbar_button (plugin, panel,
-                       "spaces-button",
-                       _("zones"),
-                       MNBK_CONTROL_SPACES,
-                       PANEL_PAGE_SPACES);
+                       "people-button",
+                       _("people"),
+                       MNBK_CONTROL_PEOPLE,
+                       PANEL_PAGE_PEOPLE);
 
   make_toolbar_button (plugin, panel,
                        "internet-button",
@@ -675,22 +675,22 @@ make_panel (MutterPlugin *plugin, gint width)
                        PANEL_PAGE_MEDIA);
 
   make_toolbar_button (plugin, panel,
+                       "pasteboard-button",
+                       _("pasteboard"),
+                       MNBK_CONTROL_PASTEBOARD,
+                       PANEL_PAGE_PASTERBOARD);
+
+  make_toolbar_button (plugin, panel,
                        "apps-button",
                        _("applications"),
                        MNBK_CONTROL_APPLICATIONS,
                        PANEL_PAGE_APPS);
 
   make_toolbar_button (plugin, panel,
-                       "people-button",
-                       _("people"),
-                       MNBK_CONTROL_PEOPLE,
-                       PANEL_PAGE_PEOPLE);
-
-  make_toolbar_button (plugin, panel,
-                       "pasteboard-button",
-                       _("pasteboard"),
-                       MNBK_CONTROL_PASTEBOARD,
-                       PANEL_PAGE_PASTERBOARD);
+                       "spaces-button",
+                       _("zones"),
+                       MNBK_CONTROL_SPACES,
+                       PANEL_PAGE_SPACES);
 
   priv->panel_time = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_time), "time-label");
