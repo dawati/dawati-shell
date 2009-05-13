@@ -334,10 +334,14 @@ mnb_toolbar_hide (ClutterActor *actor)
 
   if (priv->input_region)
     {
-      moblin_netbook_input_region_remove (priv->plugin,
-                                          priv->input_region);
-
+      moblin_netbook_input_region_remove (priv->plugin, priv->input_region);
       priv->input_region = NULL;
+    }
+
+  if (priv->dropdown_region)
+    {
+      moblin_netbook_input_region_remove (priv->plugin, priv->dropdown_region);
+      priv->dropdown_region = NULL;
     }
 
   priv->in_hide_animation = TRUE;
@@ -1470,8 +1474,15 @@ static void
 tray_actor_hide_begin_cb (ClutterActor *actor, gpointer data)
 {
   struct config_hide_data *hide_data = data;
-  MnbToolbar              *toolbar = hide_data->toolbar;
-  ShellTrayManager        *tmgr = toolbar->priv->tray_manager;
+  MnbToolbarPrivate       *priv = hide_data->toolbar->priv;
+  MutterPlugin            *plugin = priv->plugin;
+  ShellTrayManager        *tmgr = priv->tray_manager;
+
+  if (priv->dropdown_region)
+    {
+      moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
+      priv->dropdown_region = NULL;
+    }
 
   shell_tray_manager_hide_config_window (tmgr,
                                          hide_data->config_xwin);
