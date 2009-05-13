@@ -462,6 +462,9 @@ container_has_children (ClutterContainer *container)
 #define LAUNCHER_HEIGHT            79
 #define LAUNCHER_ICON_SIZE         48
 
+#define LAUNCHER_FALLBACK_ICON_NAME "applications-other"
+#define LAUNCHER_FALLBACK_ICON_FILE "/usr/share/icons/moblin/48x48/categories/applications-other.png"
+
 /*
  * Helper struct that contains all the info needed to switch between
  * browser- and filter-mode.
@@ -662,14 +665,14 @@ launcher_button_get_icon_file (const gchar  *icon_name,
   if (!info)
     {
       info = gtk_icon_theme_lookup_icon (theme,
-                                          "applications-other",
+                                          LAUNCHER_FALLBACK_ICON_NAME,
                                           LAUNCHER_ICON_SIZE,
                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
     }
   if (info)
-    {
       icon_file = g_strdup (gtk_icon_info_get_filename (info));
-    }
+  else
+    icon_file = g_strdup (LAUNCHER_FALLBACK_ICON_FILE);
 
   if (info)
     gtk_icon_info_free (info);
