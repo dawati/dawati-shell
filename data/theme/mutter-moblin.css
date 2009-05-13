@@ -331,7 +331,7 @@ MnbEntry {
 }
 
 *.MnbEntryButton {
-  border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 1 stretch stretch;
+  border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
 }
