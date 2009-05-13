@@ -28,6 +28,7 @@ dalston_power_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			     $(top_builddir)/libgvc/libgvc.la \
 			     $(top_builddir)/libhal-glib/libhal-glib.la \
 			     $(top_builddir)/libhal-panel-glib/libhal-panel-glib.la \
+			     $(top_builddir)/libhal-power-glib/libhal-power-glib.la \
 			     $(DBUS_GLIB_LIBS) \
 			     $(GLIB_LIBS) \
 			     $(GTK_LIBS) \
