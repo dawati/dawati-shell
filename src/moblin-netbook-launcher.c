@@ -558,7 +558,6 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
   const gchar     *desktop_file_path;
   const gchar     *exec;
   GDesktopAppInfo *app_info;
-  gchar           *last_used;
   GError          *error = NULL;
 
   /* Disable button for some time to avoid launching multiple times. */
@@ -576,11 +575,6 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
   g_clear_error (&error);
   g_object_unref (app_info);
   g_object_unref (context);
-
-  exec = mnb_launcher_button_get_executable (launcher);
-  last_used = mnb_launcher_utils_get_last_used (exec);
-  mnb_launcher_button_set_comment (launcher, last_used);
-  g_free (last_used);
 
   clutter_actor_hide (priv->launcher);
   nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
@@ -718,8 +712,9 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
     {
       gchar *last_used;
 
-      /* Launcher button */
-      last_used = mnb_launcher_utils_get_last_used (exec);
+      /* Launcher button
+       * TODO reactivate "last used" once we've got the infrastructure. */
+      last_used = NULL;
       button = mnb_launcher_button_new (icon_name, icon_file, LAUNCHER_ICON_SIZE,
                                         generic_name, category,
                                         description, last_used, exec,
