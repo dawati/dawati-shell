@@ -123,7 +123,7 @@ static void
 carrick_status_icon_update (CarrickStatusIcon *icon)
 {
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
-  CarrickIconState icon_state = CARRICK_ICON_NO_NETWORK;
+  CarrickIconState icon_state = ICON_OFFLINE;
   GdkPixbuf *pixbuf;
 
   icon_state = carrick_icon_factory_get_state_for_service (priv->service);

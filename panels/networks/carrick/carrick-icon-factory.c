@@ -13,32 +13,38 @@ typedef struct _CarrickIconFactoryPrivate CarrickIconFactoryPrivate;
 #define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
 
 static const gchar *icon_names[] = {
-  PKG_ICON_DIR "/" "carrick-no-network-normal.png",
-  PKG_ICON_DIR "/" "carrick-no-network-active.png",
-  PKG_ICON_DIR "/" "carrick-associating-normal.png",
-  PKG_ICON_DIR "/" "carrick-associating-active.png",
-  PKG_ICON_DIR "/" "carrick-wired-normal.png",
-  PKG_ICON_DIR "/" "carrick-wired-active.png",
-  PKG_ICON_DIR "/" "carrick-wireless-1-normal.png",
-  PKG_ICON_DIR "/" "carrick-wireless-1-active.png",
-  PKG_ICON_DIR "/" "carrick-wireless-2-normal.png",
-  PKG_ICON_DIR "/" "carrick-wireless-2-active.png",
-  PKG_ICON_DIR "/" "carrick-wireless-3-normal.png",
-  PKG_ICON_DIR "/" "carrick-wireless-3-active.png"
+  PKG_ICON_DIR "/" "network-active.png",
+  PKG_ICON_DIR "/" "network-active-hover.png",
+  PKG_ICON_DIR "/" "network-connecting.png",
+  PKG_ICON_DIR "/" "network-connecting-hover.png",
+  PKG_ICON_DIR "/" "network-error.png",
+  PKG_ICON_DIR "/" "network-error-hover.png",
+  PKG_ICON_DIR "/" "network-offline.png",
+  PKG_ICON_DIR "/" "network-offline-hover.png",
+  PKG_ICON_DIR "/" "network-wireless-signal-weak.png",
+  PKG_ICON_DIR "/" "network-wireless-signal-weak-hover.png",
+  PKG_ICON_DIR "/" "network-wireless-signal-good.png",
+  PKG_ICON_DIR "/" "network-wireless-signal-good-hover.png",
+  PKG_ICON_DIR "/" "network-wireless-signal-strong.png",
+  PKG_ICON_DIR "/" "network-wireless-signal-strong-hover.png"
 };
 
 struct _CarrickIconFactoryPrivate
 {
-  GdkPixbuf *no_network_img;
-  GdkPixbuf *no_network_act_img;
-  GdkPixbuf *wired_img;
-  GdkPixbuf *wired_act_img;
-  GdkPixbuf *wireless_1_img;
-  GdkPixbuf *wireless_1_act_img;
-  GdkPixbuf *wireless_2_img;
-  GdkPixbuf *wireless_2_act_img;
-  GdkPixbuf *wireless_3_img;
-  GdkPixbuf *wireless_3_act_img;
+  GdkPixbuf *active_img;
+  GdkPixbuf *active_hov_img;
+  GdkPixbuf *connecting_img;
+  GdkPixbuf *connecting_hov_img;
+  GdkPixbuf *error_img;
+  GdkPixbuf *error_hov_img;
+  GdkPixbuf *offline_img;
+  GdkPixbuf *offline_hov_img;
+  GdkPixbuf *wireless_weak_img;
+  GdkPixbuf *wireless_weak_hov_img;
+  GdkPixbuf *wireless_good_img;
+  GdkPixbuf *wireless_good_hov_img;
+  GdkPixbuf *wireless_strong_img;
+  GdkPixbuf *wireless_strong_hov_img;
 };
 
 static void
@@ -62,16 +68,20 @@ carrick_icon_factory_init (CarrickIconFactory *self)
 {
   CarrickIconFactoryPrivate *priv = ICON_FACTORY_PRIVATE (self);
 
-  priv->no_network_img     = NULL;
-  priv->no_network_act_img = NULL;
-  priv->wired_img          = NULL;
-  priv->wired_act_img      = NULL;
-  priv->wireless_1_img     = NULL;
-  priv->wireless_1_act_img = NULL;
-  priv->wireless_2_img     = NULL;
-  priv->wireless_2_act_img = NULL;
-  priv->wireless_3_img     = NULL;
-  priv->wireless_3_act_img = NULL;
+  priv->active_img = NULL;
+  priv->active_hov_img = NULL;
+  priv->connecting_img = NULL;
+  priv->connecting_hov_img = NULL;
+  priv->error_img = NULL;
+  priv->error_hov_img = NULL;
+  priv->offline_img = NULL;
+  priv->offline_hov_img = NULL;
+  priv->wireless_weak_img = NULL;
+  priv->wireless_weak_hov_img = NULL;
+  priv->wireless_good_img = NULL;
+  priv->wireless_good_hov_img = NULL;
+  priv->wireless_strong_img = NULL;
+  priv->wireless_strong_hov_img = NULL;
 }
 
 CarrickIconFactory*
@@ -83,7 +93,7 @@ carrick_icon_factory_new (void)
 CarrickIconState
 carrick_icon_factory_get_state_for_service (CmService *service)
 {
-  CarrickIconState icon_state = CARRICK_ICON_NO_NETWORK;
+  CarrickIconState icon_state = ICON_OFFLINE;
   guint  strength;
   const gchar *type;
 
@@ -102,16 +112,16 @@ carrick_icon_factory_get_state_for_service (CmService *service)
   {
     if (g_strcmp0 ("ethernet", type) == 0)
     {
-      icon_state = CARRICK_ICON_WIRED_NETWORK;
+      icon_state = ICON_ACTIVE;
     }
     else if (g_strcmp0 ("wifi", type) == 0)
     {
       if (strength > 70)
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
+        icon_state = ICON_WIRELESS_NETWORK_STRONG;
       else if (strength > 35)
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_2;
+        icon_state = ICON_WIRELESS_NETWORK_GOOD;
       else
-        icon_state = CARRICK_ICON_WIRELESS_NETWORK_3;
+        icon_state = ICON_WIRELESS_NETWORK_WEAK;
     }
   }
 
@@ -140,96 +150,134 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
 
   switch (state)
   {
-    case CARRICK_ICON_WIRED_NETWORK:
-      if (!priv->wired_img)
+    case ICON_ACTIVE:
+      if (!priv->active_img)
       {
-        priv->wired_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRED_NETWORK],
+        priv->active_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->wired_img;
+      icon = priv->active_img;
       break;
-    case CARRICK_ICON_WIRED_NETWORK_ACTIVE:
-      if (!priv->wired_act_img)
+    case ICON_ACTIVE_HOVER:
+      if (!priv->active_hov_img)
       {
-        priv->wired_act_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRED_NETWORK_ACTIVE],
+        priv->active_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->wired_act_img;
+      icon = priv->active_hov_img;
       break;
-    case CARRICK_ICON_WIRELESS_NETWORK_1:
-      if (!priv->wireless_1_img)
+    case ICON_CONNECTING:
+      if (!priv->connecting_img)
       {
-        priv->wireless_1_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_1],
+        priv->connecting_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->wireless_1_img;
+      icon = priv->connecting_img;
       break;
-    case CARRICK_ICON_WIRELESS_NETWORK_1_ACTIVE:
-      if (!priv->wireless_1_act_img)
+    case ICON_CONNECTING_HOVER:
+      if (!priv->connecting_hov_img)
       {
-        priv->wireless_1_act_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_1_ACTIVE],
+        priv->connecting_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->wireless_1_act_img;
+      icon = priv->connecting_hov_img;
       break;
-    case CARRICK_ICON_WIRELESS_NETWORK_2:
-      if (!priv->wireless_2_img)
+    case ICON_ERROR:
+      if (!priv->error_img)
       {
-        priv->wireless_2_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_2],
+        priv->error_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->wireless_2_img;
+      icon = priv->error_img;
       break;
-    case CARRICK_ICON_WIRELESS_NETWORK_2_ACTIVE:
-      if (!priv->wireless_2_act_img)
+    case ICON_ERROR_HOVER:
+      if (!priv->error_hov_img)
       {
-        priv->wireless_2_act_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_2_ACTIVE],
+        priv->error_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->wireless_2_act_img;
+      icon = priv->error_hov_img;
       break;
-    case CARRICK_ICON_WIRELESS_NETWORK_3:
-      if (!priv->wireless_3_img)
+    case ICON_OFFLINE:
+      if (!priv->offline_img)
       {
-        priv->wireless_3_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_3],
+        priv->offline_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->wireless_3_img;
+      icon = priv->offline_img;
       break;
-    case CARRICK_ICON_WIRELESS_NETWORK_3_ACTIVE:
-      if (!priv->wireless_3_act_img)
+    case ICON_OFFLINE_HOVER:
+      if (!priv->offline_hov_img)
       {
-        priv->wireless_3_act_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_WIRELESS_NETWORK_3_ACTIVE],
+        priv->offline_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->wireless_3_act_img;
+      icon = priv->offline_hov_img;
       break;
-    case CARRICK_ICON_NO_NETWORK:
-      if (!priv->no_network_img)
+    case ICON_WIRELESS_NETWORK_WEAK:
+      if (!priv->wireless_weak_img)
       {
-        priv->no_network_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_NO_NETWORK],
+        priv->wireless_weak_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
                                     NULL);
       }
-      icon = priv->no_network_img;
+      icon = priv->wireless_weak_img;
       break;
-    case CARRICK_ICON_NO_NETWORK_ACTIVE:
+    case ICON_WIRELESS_NETWORK_WEAK_HOVER:
+      if (!priv->wireless_weak_hov_img)
+      {
+        priv->wireless_weak_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    NULL);
+      }
+      icon = priv->wireless_weak_hov_img;
+      break;
+    case ICON_WIRELESS_NETWORK_GOOD:
+      if (!priv->wireless_good_img)
+      {
+        priv->wireless_good_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    NULL);
+      }
+      icon = priv->wireless_good_img;
+      break;
+    case ICON_WIRELESS_NETWORK_GOOD_HOVER:
+      if (!priv->wireless_good_hov_img)
+      {
+        priv->wireless_good_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    NULL);
+      }
+      icon = priv->wireless_good_hov_img;
+      break;
+    case ICON_WIRELESS_NETWORK_STRONG:
+      if (!priv->wireless_strong_img)
+      {
+        priv->wireless_strong_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    NULL);
+      }
+      icon = priv->wireless_strong_img;
+      break;
+    case ICON_WIRELESS_NETWORK_STRONG_HOVER:
+      if (!priv->wireless_strong_hov_img)
+      {
+        priv->wireless_strong_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    NULL);
+      }
+      icon = priv->wireless_strong_hov_img;
+      break;
     default:
-      if (!priv->no_network_act_img)
-      {
-        priv->no_network_act_img =
-          gdk_pixbuf_new_from_file (icon_names[CARRICK_ICON_NO_NETWORK_ACTIVE],
-                                    NULL);
-      }
-      icon = priv->no_network_act_img;
+      icon = NULL;
       break;
   }
 
