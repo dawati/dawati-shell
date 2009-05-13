@@ -54,15 +54,29 @@ ahoghill_queue_tile_get_property (GObject    *object,
     }
 }
 
+static gboolean
+ahoghill_queue_tile_button_release (ClutterActor       *actor,
+                                    ClutterButtonEvent *event)
+{
+    AhoghillQueueTile *tile = (AhoghillQueueTile *) actor;
+    AhoghillQueueTilePrivate *priv = tile->priv;
+
+    g_print ("%s released\n", bkl_item_get_uri (priv->item));
+    return TRUE;
+}
+
 static void
 ahoghill_queue_tile_class_init (AhoghillQueueTileClass *klass)
 {
-    GObjectClass *o_class = (GObjectClass *)klass;
+    GObjectClass *o_class = (GObjectClass *) klass;
+    ClutterActorClass *a_class = (ClutterActorClass *) klass;
 
     o_class->dispose = ahoghill_queue_tile_dispose;
     o_class->finalize = ahoghill_queue_tile_finalize;
     o_class->set_property = ahoghill_queue_tile_set_property;
     o_class->get_property = ahoghill_queue_tile_get_property;
+
+    a_class->button_release_event = ahoghill_queue_tile_button_release;
 
     g_type_class_add_private (klass, sizeof (AhoghillQueueTilePrivate));
 }
@@ -74,6 +88,8 @@ ahoghill_queue_tile_init (AhoghillQueueTile *self)
 
     self->priv = GET_PRIVATE (self);
     priv = self->priv;
+
+    clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 
     priv->row1 = nbtk_label_new ("Light & Day - Reach for the Sun");
     nbtk_widget_set_style_class_name (priv->row1, "AhoghillPrimaryLabel");

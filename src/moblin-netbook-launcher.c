@@ -461,6 +461,9 @@ container_has_children (ClutterContainer *container)
 #define LAUNCHER_HEIGHT            79
 #define LAUNCHER_ICON_SIZE         48
 
+#define LAUNCHER_FALLBACK_ICON_NAME "applications-other"
+#define LAUNCHER_FALLBACK_ICON_FILE "/usr/share/icons/moblin/48x48/categories/applications-other.png"
+
 /*
  * Helper struct that contains all the info needed to switch between
  * browser- and filter-mode.
@@ -661,19 +664,33 @@ launcher_button_get_icon_file (const gchar  *icon_name,
   if (!info)
     {
       info = gtk_icon_theme_lookup_icon (theme,
-                                          "applications-other",
+                                          LAUNCHER_FALLBACK_ICON_NAME,
                                           LAUNCHER_ICON_SIZE,
                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
     }
   if (info)
-    {
       icon_file = g_strdup (gtk_icon_info_get_filename (info));
-    }
+  else
+    icon_file = g_strdup (LAUNCHER_FALLBACK_ICON_FILE);
 
   if (info)
     gtk_icon_info_free (info);
 
   return icon_file;
+}
+
+static void
+launcher_button_reload_icon_cb (ClutterActor  *launcher,
+                                GtkIconTheme  *theme)
+{
+  if (!MNB_IS_LAUNCHER_BUTTON (launcher))
+    return;
+
+  const gchar *icon_name = mnb_launcher_button_get_icon_name (MNB_LAUNCHER_BUTTON (launcher));
+  gchar *icon_file = launcher_button_get_icon_file (icon_name, theme);
+  mnb_launcher_button_set_icon (MNB_LAUNCHER_BUTTON (launcher), icon_file, LAUNCHER_ICON_SIZE);
+  g_free (icon_file);
+
 }
 
 static NbtkWidget *
@@ -1186,18 +1203,13 @@ static void
 launcher_data_theme_changed_cb (GtkIconTheme    *theme,
                                 launcher_data_t *launcher_data)
 {
-  GSList *launchers_iter;
+  clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->fav_grid),
+                             (ClutterCallback) launcher_button_reload_icon_cb,
+                             launcher_data->theme);
 
-  for (launchers_iter = launcher_data->launchers;
-       launchers_iter;
-       launchers_iter = launchers_iter->next)
-    {
-      MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (launchers_iter->data);
-      const gchar *icon_name = mnb_launcher_button_get_icon_name (launcher);
-      gchar *icon_file = launcher_button_get_icon_file (icon_name, launcher_data->theme);
-      mnb_launcher_button_set_icon (launcher, icon_file, LAUNCHER_ICON_SIZE);
-      g_free (icon_file);
-    }
+  g_slist_foreach (launcher_data->launchers,
+                   (GFunc) launcher_button_reload_icon_cb,
+                   launcher_data->theme);
 }
 
 /*
@@ -1625,8 +1637,13 @@ make_launcher (MutterPlugin *plugin,
                                      width - SCROLLBAR_RESERVED_WIDTH);
 
   /* Hook up search. */
+/*
   g_signal_connect_data (entry, "button-clicked",
                          G_CALLBACK (entry_changed_cb), launcher_data,
+                         (GClosureNotify) launcher_data_free_cb, 0);
+*/
+  g_signal_connect_data (entry, "button-clicked",
+                         G_CALLBACK (launcher_data_theme_changed_cb), launcher_data,
                          (GClosureNotify) launcher_data_free_cb, 0);
   /* `launcher_data' lifecycle is managed above. */
   g_signal_connect (entry, "text-changed",

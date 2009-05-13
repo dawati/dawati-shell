@@ -106,10 +106,24 @@ gchar *
 penge_utils_get_thumbnail_path (const gchar *uri)
 {
   gchar *thumbnail_path;
-  gchar *thumbnail_filename;
+  gchar *thumbnail_filename = NULL;
   gchar *csum;
 
   csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, uri, -1);
+
+  thumbnail_path = g_build_filename (g_get_home_dir (),
+                                     ".bkl-thumbnails",
+                                     csum,
+                                     NULL);
+
+  if (g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
+  {
+    g_free (csum);
+    goto success;
+  }
+
+  g_free (thumbnail_path);
+
   thumbnail_filename = g_strconcat (csum, ".png", NULL);
   thumbnail_path = g_build_filename (g_get_home_dir (),
                                      ".thumbnails",

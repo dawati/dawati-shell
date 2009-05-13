@@ -1,4 +1,7 @@
 #include <mojito-client/mojito-client.h>
+#include <gtk/gtk.h>
+#include <glib/gi18n.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "penge-utils.h"
 
@@ -20,10 +23,18 @@ struct _PengePeoplePanePrivate {
   MojitoClient *client;
   MojitoClientView *view;
   GHashTable *uuid_to_actor;
+
+  ClutterActor *no_content_tile;
 };
 
 #define NUMBER_COLS 2
 #define MAX_ITEMS 8
+
+#define TILE_WIDTH 170
+#define TILE_HEIGHT 115
+
+#define COL_SPACING 6
+#define ROW_SPACING 6
 
 static void
 penge_people_pane_dispose (GObject *object)
@@ -92,10 +103,180 @@ penge_people_pane_fabricate_actor (PengePeoplePane *pane,
                                &blue);
   }
 
-  clutter_actor_set_size (actor, 170, 115);
+  clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
   
   return actor;
 }
+
+#define ICON_SIZE 48
+
+static gboolean
+_enter_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+                                      "hover");
+
+  return FALSE;
+}
+
+static gboolean
+_leave_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+                                      NULL);
+
+  return FALSE;
+}
+
+static gboolean
+_no_content_tile_button_press_event_cb (ClutterActor *actor,
+                                        ClutterEvent *event,
+                                        gpointer      userdata)
+{
+  GAppInfo *app_info = (GAppInfo *)userdata;
+  GError *error = NULL;
+  GAppLaunchContext *context;
+
+  context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+
+  if (g_app_info_launch (app_info, NULL, context, &error))
+    penge_utils_signal_activated (actor);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error launching application): %s",
+                 error->message);
+    g_clear_error (&error);
+  }
+
+  g_object_unref (context);
+  return TRUE;
+}
+
+static ClutterActor *
+_make_no_content_tile (void)
+{
+  ClutterActor *tile;
+  NbtkWidget *label;
+  ClutterActor *tex;
+  GtkIconTheme *icon_theme;
+  GtkIconInfo *icon_info;
+  GAppInfo *app_info;
+  GError *error = NULL;
+  GIcon *icon;
+  ClutterActor *tmp_text;
+
+  tile = (ClutterActor *)nbtk_table_new ();
+  clutter_actor_set_size (tile,
+                          TILE_WIDTH * 2 + COL_SPACING,
+                          TILE_HEIGHT);
+  nbtk_widget_set_style_class_name ((NbtkWidget *)tile, "PengeNoContentTile");
+
+
+  label = nbtk_label_new (_("Your friends' feeds and web services will appear here. " \
+                            "Activate your accounts now!"));
+  clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-main-message");
+
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                              PANGO_ELLIPSIZE_NONE);
+
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)label,
+                                        0,
+                                        0,
+                                        "x-expand",
+                                        TRUE,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-expand",
+                                        TRUE,
+                                        "y-fill",
+                                        TRUE,
+                                        "col-span",
+                                        2,
+                                        NULL);
+
+  app_info = (GAppInfo *)g_desktop_app_info_new ("bisho.desktop");
+
+  if (app_info)
+  {
+    icon_theme = gtk_icon_theme_new ();
+
+    icon = g_app_info_get_icon (app_info);
+    icon_info = gtk_icon_theme_lookup_by_gicon (icon_theme,
+                                                icon,
+                                                ICON_SIZE,
+                                                GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+    g_object_unref (icon);
+
+    tex = clutter_texture_new_from_file (gtk_icon_info_get_filename (icon_info),
+                                         &error);
+
+    if (!tex)
+    {
+      g_warning (G_STRLOC ": Error opening icon: %s",
+                 error->message);
+      g_clear_error (&error);
+    } else {
+      clutter_actor_set_size (tex, ICON_SIZE, ICON_SIZE);
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                            tex,
+                                            1,
+                                            0,
+                                            "x-expand",
+                                            FALSE,
+                                            "x-fill",
+                                            FALSE,
+                                            "y-fill",
+                                            FALSE,
+                                            "y-expand",
+                                            TRUE,
+                                            NULL);
+    }
+
+    label = nbtk_label_new (g_app_info_get_name (app_info));
+    clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-other-message");
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                          (ClutterActor *)label,
+                                          1,
+                                          1,
+                                          "x-expand",
+                                          TRUE,
+                                          "x-fill",
+                                          TRUE,
+                                          "y-expand",
+                                          TRUE,
+                                          "y-fill",
+                                          FALSE);
+  }
+
+  g_signal_connect (tile,
+                    "button-press-event",
+                    (GCallback)_no_content_tile_button_press_event_cb,
+                    app_info);
+
+  g_signal_connect (tile,
+                    "enter-event",
+                    (GCallback)_enter_event_cb,
+                    NULL);
+  g_signal_connect (tile,
+                    "leave-event",
+                    (GCallback)_leave_event_cb,
+                    NULL);
+
+  clutter_actor_set_reactive (tile, TRUE);
+
+  return tile;
+}
+
 
 /*
  * This function iterates over the list of items that are apparently in the
@@ -109,12 +290,54 @@ penge_people_pane_update (PengePeoplePane *pane)
 {
   PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
 
-  GList *items, *l;
+  GList *items = NULL, *l;
   MojitoItem *item;
   gint count = 0;
   ClutterActor *actor;
+  GList *existing_actors;
 
-  items = mojito_client_view_get_sorted_items (priv->view);
+  existing_actors = clutter_container_get_children (CLUTTER_CONTAINER (pane));
+
+  /* In case opening the view failed */
+  if (priv->view)
+  {
+    items = mojito_client_view_get_sorted_items (priv->view);
+  }
+
+  if (items)
+  {
+    g_debug ("content");
+    /* Hide the nothing configured tile */
+    if (priv->no_content_tile)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane), priv->no_content_tile);
+      priv->no_content_tile = NULL;
+    }
+  }
+
+  if (items == NULL && g_list_length (existing_actors) == 0)
+  {
+    /* Add the nothing configured tile */
+    if (!priv->no_content_tile)
+    {
+      g_debug ("no content");
+      priv->no_content_tile = _make_no_content_tile ();
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (pane),
+                                            priv->no_content_tile,
+                                            0,
+                                            0,
+                                            "col-span",
+                                            2,
+                                            "y-expand",
+                                            FALSE,
+                                            "x-expand",
+                                            TRUE,
+                                            NULL);
+      clutter_actor_show_all (priv->no_content_tile);
+    }
+
+    return;
+  }
 
   for (l = items; l; l = g_list_delete_link (l, l))
   {
@@ -192,6 +415,13 @@ _client_open_view_cb (MojitoClient     *client,
   PengePeoplePane *pane = PENGE_PEOPLE_PANE (userdata);
   PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
 
+  if (!view)
+  {
+    /* This will cause the not configured message to come up */
+    penge_people_pane_update (pane);
+    return;
+  }
+
   /* Save out the view */
   priv->view = view;
 
@@ -212,6 +442,8 @@ _client_open_view_cb (MojitoClient     *client,
                     "item-removed",
                     (GCallback)_client_view_item_removed_cb,
                     pane);
+  
+  penge_people_pane_update (pane);
 }
 
 static void
@@ -263,12 +495,14 @@ penge_people_pane_init (PengePeoplePane *self)
                                                g_free,
                                                g_object_unref);
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), ROW_SPACING);
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
 
   /* Create the client and request the services list */
   priv->client = mojito_client_new ();
   mojito_client_get_services (priv->client, _client_get_services_cb, self);
+
+  clutter_actor_set_width ((ClutterActor *)self, TILE_WIDTH * 2 + COL_SPACING);
 }
 
 

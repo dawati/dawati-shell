@@ -121,10 +121,17 @@ ahoghill_playlist_init (AhoghillPlaylist *self)
     priv = self->priv;
 
     priv->header = g_object_new (AHOGHILL_TYPE_PLAYLIST_HEADER, NULL);
+    nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->header), "Top");
+    ahoghill_playlist_header_set_can_play
+        ((AhoghillPlaylistHeader *) priv->header, FALSE);
     g_signal_connect (priv->header, "playing",
                       G_CALLBACK (header_playing_cb), self);
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           (ClutterActor *) priv->header, 0, 0,
+                                          "x-expand", TRUE,
+                                          "x-fill", TRUE,
+                                          "y-expand", FALSE,
+                                          "y-fill", FALSE,
                                           "x-align", 0.0,
                                           "y-align", 0.0,
                                           NULL);
@@ -132,7 +139,6 @@ ahoghill_playlist_init (AhoghillPlaylist *self)
     priv->list = g_object_new (AHOGHILL_TYPE_QUEUE_LIST, NULL);
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           (ClutterActor *) priv->list, 1, 0,
-                                          "y-fill", FALSE,
                                           "x-align", 0.0,
                                           "y-align", 0.0,
                                           NULL);
@@ -166,6 +172,9 @@ uri_added_cb (BrQueue          *queue,
 
     item = ahoghill_grid_view_get_item (priv->gridview, uri);
     ahoghill_queue_list_add_item (priv->list, item, index);
+
+    ahoghill_playlist_header_set_can_play
+        ((AhoghillPlaylistHeader *) priv->header, TRUE);
 }
 
 static void
@@ -177,6 +186,7 @@ uri_removed_cb (BrQueue          *queue,
     AhoghillPlaylistPrivate *priv = playlist->priv;
 
     ahoghill_queue_list_remove (priv->list, index);
+    /* FIXME: Set can play */
 }
 
 static void
@@ -212,7 +222,13 @@ list_uris_reply (BrQueue  *queue,
     for (i = 0; uris[i]; i++) {
         BklItem *item = ahoghill_grid_view_get_item (priv->gridview, uris[i]);
 
-        ahoghill_queue_list_add_item (priv->list, item, 0);
+        g_print ("uri: %s - %p\n", uris[i], item);
+        ahoghill_queue_list_add_item (priv->list, item, i);
+    }
+
+    if (uris && uris[0] != NULL) {
+        ahoghill_playlist_header_set_can_play
+            ((AhoghillPlaylistHeader *) priv->header, TRUE);
     }
 }
 
