@@ -554,7 +554,6 @@ mnb_drop_down_get_footer_geometry (MnbDropDown *self,
                                    guint       *height)
 {
   MnbDropDownPrivate *priv = self->priv;
-  gfloat              total_height, footer_height;
 
   g_return_if_fail (x && y && width && height);
 
@@ -563,12 +562,9 @@ mnb_drop_down_get_footer_geometry (MnbDropDown *self,
    * what looks like the unexpanded size of the cell, relative to its column
    * and row position, not to the parent. Work around it.
    */
-  *x            = clutter_actor_get_x (CLUTTER_ACTOR (self));
-  *width        = clutter_actor_get_width  (CLUTTER_ACTOR (self));
-  footer_height = clutter_actor_get_height (priv->footer);
-  total_height  = clutter_actor_get_height (CLUTTER_ACTOR (self));
-
-  *height = footer_height;
-  *y      = total_height -  footer_height;
+  *x      = clutter_actor_get_x (CLUTTER_ACTOR (self));
+  *y      = clutter_actor_get_height (priv->child);
+  *width  = clutter_actor_get_width  (CLUTTER_ACTOR (self));
+  *height = clutter_actor_get_height (priv->footer);
 }
 
