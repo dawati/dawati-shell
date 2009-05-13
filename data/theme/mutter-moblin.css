@@ -1,5 +1,6 @@
 /* generic classes */
 NbtkButton {
+  background-color: #fff0;
   border-image: url("file://generic/button.png") 4 stretch;
   padding: 4;
   font-size: 12px;
@@ -109,6 +110,10 @@ NbtkTable {
 *#switcher-table {
   background-color: #ffff;
   padding: 5;
+}
+
+MnbPanelButton {
+  background-color: #fff0;
 }
 
 MnbPanelButton:checked {
@@ -460,6 +465,7 @@ PengeAppsPane
 
 PengeEventTile, PengeTaskTile, PengeAppTile
 {
+  background-color: #fff0;
   padding: 9 10 11 10;
 }
 
