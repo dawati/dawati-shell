@@ -18,8 +18,11 @@ struct _AhoghillPlaylistHeaderPrivate {
     NbtkWidget *playlist_title;
     NbtkWidget *primary;
     NbtkWidget *secondary;
-    NbtkWidget *seekbar;
+
     NbtkWidget *play_button;
+
+    NbtkAdjustment *audio_progress;
+    NbtkWidget *seekbar;
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_PLAYLIST_HEADER, AhoghillPlaylistHeaderPrivate))
@@ -116,6 +119,7 @@ ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
     priv = self->priv;
 
     clutter_actor_set_size ((ClutterActor *) self, 210, -1);
+
     priv->playlist_title = nbtk_label_new ("");
     clutter_actor_set_name ((ClutterActor *) priv->playlist_title,
                             "ahoghill-playlist-title");
@@ -154,6 +158,17 @@ ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
                                           2, 0,
                                           "col-span", 2,
                                           "y-expand", FALSE,
+                                          "x-align", 0.0,
+                                          NULL);
+
+    priv->audio_progress = nbtk_adjustment_new (0.0, 0.0, 1.0, 0.0, 0.0, 0.0);
+    priv->seekbar = nbtk_scroll_bar_new (priv->audio_progress);
+    nbtk_widget_set_style_class_name (priv->seekbar, "AhoghillProgressBar");
+    clutter_actor_set_size ((ClutterActor *) priv->seekbar, -1, 20);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          (ClutterActor *) priv->seekbar,
+                                          3, 0,
+                                          "col-span", 2,
                                           "x-align", 0.0,
                                           NULL);
 }

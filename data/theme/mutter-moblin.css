@@ -940,6 +940,35 @@ AhoghillQueueList {
   font-size: 17px;
 }
 
+NbtkScrollBar.AhoghillProgressBar {
+  border-image: url('file://media-panel/hrn-progress-bar-through.png") 2;
+  background: #00000000;
+  padding: 0;
+}
+
+NbtkScrollBar.AhoghillProgressBar > *#backward-stepper,
+NbtkScrollBar.AhoghillProgressBar > *#forward-stepper
+{
+  border-image: none;
+  background-image: none;
+}
+
+{
+  border-image: none;
+  background-image: none;
+}
+NbtkScrollBar.AhoghillProgressBar *#handle
+{
+  border-image: none;
+  background-image: url("file://media-panel/hrn-progress-bar-handle.png");
+}
+
+NbtkScrollBar.AhoghillProgressBar *#handle:hover
+{
+  border-image: none;
+  background-image: url("file://media-panel/hrn-progress-bar-handle.png");
+}
+
 /* pasteboard */
 
 *#pasteboard-vbox {
