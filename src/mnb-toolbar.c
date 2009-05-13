@@ -753,7 +753,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
    */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
+  nbtk_button_set_tooltip_text (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
 
   /*
@@ -1035,7 +1035,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
    */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
+  nbtk_button_set_tooltip_text (NBTK_BUTTON (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
 
   /*
