@@ -113,6 +113,17 @@ header_playing_cb (AhoghillPlaylistHeader *header,
 }
 
 static void
+header_position_changed_cb (AhoghillPlaylistHeader *header,
+                            double                  position,
+                            AhoghillPlaylist       *playlist)
+{
+    AhoghillPlaylistPrivate *priv = playlist->priv;
+
+    g_print ("Seeking to %f\n", position);
+    br_queue_set_position (priv->queue, BR_QUEUE_AUDIO_TYPE, position);
+}
+
+static void
 ahoghill_playlist_init (AhoghillPlaylist *self)
 {
     AhoghillPlaylistPrivate *priv;
@@ -126,6 +137,8 @@ ahoghill_playlist_init (AhoghillPlaylist *self)
         ((AhoghillPlaylistHeader *) priv->header, FALSE);
     g_signal_connect (priv->header, "playing",
                       G_CALLBACK (header_playing_cb), self);
+    g_signal_connect (priv->header, "position-changed",
+                      G_CALLBACK (header_position_changed_cb), self);
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           (ClutterActor *) priv->header, 0, 0,
                                           "x-expand", TRUE,
@@ -210,6 +223,23 @@ now_playing_changed_cb (BrQueue          *queue,
 
     ahoghill_playlist_header_set_item (priv->header, item);
     ahoghill_playlist_header_set_can_play (priv->header, item != NULL);
+    ahoghill_playlist_header_set_position (priv->header, 0.0);
+}
+
+static void
+position_changed_cb (BrQueue          *queue,
+                     int               type,
+                     double            position,
+                     AhoghillPlaylist *playlist)
+{
+    AhoghillPlaylistPrivate *priv = playlist->priv;
+
+    if (type == BR_QUEUE_VISUAL_TYPE) {
+        return;
+    }
+
+    g_print ("Position changed to %f\n", position);
+    ahoghill_playlist_header_set_position (priv->header, position);
 }
 
 static void
@@ -230,7 +260,6 @@ list_uris_reply (BrQueue  *queue,
     for (i = 0; uris[i]; i++) {
         BklItem *item = ahoghill_grid_view_get_item (priv->gridview, uris[i]);
 
-        g_print ("uri: %s - %p\n", uris[i], item);
         ahoghill_queue_list_add_item (priv->list, item, i);
     }
 
@@ -273,6 +302,8 @@ ahoghill_playlist_set_queue (AhoghillPlaylist *playlist,
                       G_CALLBACK (uri_removed_cb), playlist);
     g_signal_connect (queue, "now-playing-changed",
                       G_CALLBACK (now_playing_changed_cb), playlist);
+    g_signal_connect (queue, "position-changed",
+                      G_CALLBACK (position_changed_cb), playlist);
 
     br_queue_list_uris (queue, list_uris_reply, playlist);
     br_queue_get_name (queue, get_name_reply, playlist);
