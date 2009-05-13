@@ -74,12 +74,6 @@ const gchar *       mnb_launcher_entry_get_icon               (MnbLauncherEntry 
 const gchar *       mnb_launcher_entry_get_comment            (MnbLauncherEntry *entry);
 const gchar *       mnb_launcher_entry_get_desktop_file_path  (MnbLauncherEntry *entry);
 
-/*
- * Utils.
- */
-
-gchar * mnb_launcher_utils_get_last_used (const gchar *executable);
-
 G_END_DECLS
 
 #endif /* MNB_LAUNCHER_TREE_H */

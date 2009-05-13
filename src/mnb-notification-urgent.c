@@ -34,7 +34,7 @@ G_DEFINE_TYPE (MnbNotificationUrgent,   \
    MNB_TYPE_NOTIFICATION_URGENT,    \
    MnbNotificationUrgentPrivate))
 
-#define URGENT_WIDTH 300
+#define URGENT_WIDTH 400
 #define FADE_DURATION 300
 
 struct _MnbNotificationUrgentPrivate {

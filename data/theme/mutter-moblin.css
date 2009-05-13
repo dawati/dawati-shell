@@ -203,7 +203,18 @@ NbtkTooltip {
 
 /* workspace switcher */
 *.workspace-title-label {
+  font-family: "Liberation Sans Bold";
+  font-size: 18;
   color: white;
+}
+
+*.workspace-no-wins-bin {
+  font-family: "Liberation Sans Bold";
+  font-size: 16;
+  padding-top: 28;
+  padding-bottom: 28;
+  padding-left: 16;
+  padding-right: 16;
 }
 
 *.workspace-title {

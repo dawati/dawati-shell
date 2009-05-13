@@ -92,11 +92,14 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
   const gchar *path;
   GError *error = NULL;
   GtkIconInfo *info;
+  GIcon *icon;
 
-  info = gtk_icon_theme_lookup_icon (priv->icon_theme,
-                                     priv->bookmark->icon_name,
-                                     ICON_SIZE,
-                                     GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+  icon = g_app_info_get_icon (priv->app_info);
+  info = gtk_icon_theme_lookup_by_gicon (priv->icon_theme,
+                                         icon,
+                                         ICON_SIZE,
+                                         GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+  g_object_unref (icon);
 
   if (!info)
   {
@@ -143,16 +146,11 @@ penge_app_tile_constructed (GObject *object)
   if (!priv->bookmark)
     return;
 
-  if (!priv->bookmark->icon_name)
-    return;
-
   priv->icon_theme = gtk_icon_theme_get_default ();
   g_signal_connect (priv->icon_theme,
                     "changed",
                     (GCallback)_icon_theme_changed_cb,
                     object);
-
-  _update_icon_from_icon_theme ((PengeAppTile *)object);
 
   path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
 
@@ -170,6 +168,8 @@ penge_app_tile_constructed (GObject *object)
                error->message);
     g_clear_error (&error);
   }
+
+  _update_icon_from_icon_theme ((PengeAppTile *)object);
 }
 
 static void
@@ -216,7 +216,7 @@ _button_press_event (ClutterActor *actor,
   }
 
   g_object_unref (context);
-  return TRUE;
+  return FALSE;
 }
 
 static void
