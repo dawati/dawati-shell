@@ -119,7 +119,6 @@ header_position_changed_cb (AhoghillPlaylistHeader *header,
 {
     AhoghillPlaylistPrivate *priv = playlist->priv;
 
-    g_print ("Seeking to %f\n", position);
     br_queue_set_position (priv->queue, BR_QUEUE_AUDIO_TYPE, position);
 }
 
@@ -238,7 +237,6 @@ position_changed_cb (BrQueue          *queue,
         return;
     }
 
-    g_print ("Position changed to %f\n", position);
     ahoghill_playlist_header_set_position (priv->header, position);
 }
 
