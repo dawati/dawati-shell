@@ -216,7 +216,7 @@ _button_press_event (ClutterActor *actor,
   }
 
   g_object_unref (context);
-  return TRUE;
+  return FALSE;
 }
 
 static void
