@@ -190,11 +190,17 @@ _security_changed_cb (CmService *service,
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
   gchar *security = g_strdup (cm_service_get_security (service));
+  gint i;
 
   if (g_strcmp0 ("none", security) == 0)
   {
     g_free (security);
     security = g_strdup ("");
+  }
+
+  for (i = 0; security[i] != '\0'; i++)
+  {
+    security[i] = g_ascii_toupper (security[i]);
   }
 
   gtk_label_set_text (GTK_LABEL (priv->security_label),
@@ -257,7 +263,7 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
   if (service)
   {
     const gchar *status = cm_service_get_state (service);
-    const gchar *security = cm_service_get_security (service);
+    gchar *security = g_strdup (cm_service_get_security (service));
     priv->service = g_object_ref (service);
     pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
                                                          service);
@@ -267,6 +273,12 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                         cm_service_get_name (service));
     if (g_strcmp0 ("none", security) != 0)
     {
+      gint i;
+
+      for (i = 0; security[i] != '\0'; i++)
+      {
+        security[i] = g_ascii_toupper (security[i]);
+      }
       gtk_label_set_text (GTK_LABEL (priv->security_label),
                           security);
     }
@@ -294,6 +306,8 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       "state-changed",
                       G_CALLBACK (_status_changed_cb),
                       service_item);
+
+    g_free (security);
   }
 }
 
