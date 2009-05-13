@@ -3,6 +3,7 @@
 #include <dalston/dalston-battery-monitor.h>
 #include <dalston/dalston-brightness-slider.h>
 #include <dalston/dalston-brightness-manager.h>
+#include <dalston/dalston-button-monitor.h>
 #include <gtk/gtk.h>
 
 #include <glib/gi18n.h>
@@ -26,6 +27,8 @@ struct _DalstonPowerAppletPrivate {
   GtkWidget *battery_secondary_label;
 
   gboolean active;
+
+  DalstonButtonMonitor *button_monitor;
 };
 
 typedef enum {
@@ -278,6 +281,9 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   DalstonPowerAppletPrivate *priv = GET_PRIVATE (self);
   GtkWidget *battery_vbox;
   GtkWidget *label;
+
+  /* Button monitor goes here, bleargh... */
+  priv->button_monitor = dalston_button_monitor_new ();
 
   /* The battery monitor that will pull in the battery state */
   priv->battery_monitor = g_object_new (DALSTON_TYPE_BATTERY_MONITOR,
