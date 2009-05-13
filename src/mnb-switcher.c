@@ -552,7 +552,8 @@ dnd_new_dropped_cb (NbtkWidget   *table,
   nbtk_table_add_actor (new_ws, dragged, 1, 0);
 #if 1
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
-			       "keep-aspect-ratio", keep_ratio, NULL);
+			       "keep-aspect-ratio", keep_ratio,
+                               "x-fill", TRUE, NULL);
 #else
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
 			       "y-fill", FALSE, NULL);
@@ -809,7 +810,9 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
   nbtk_table_add_actor (NBTK_TABLE (table), ws_label, 0, col);
   clutter_container_child_set (CLUTTER_CONTAINER (table),
                                CLUTTER_ACTOR (ws_label),
-                               "y-expand", FALSE, NULL);
+                               "y-expand", FALSE,
+                               "x-fill", TRUE,
+                               NULL);
 
   return NBTK_WIDGET (ws_label);
 }
@@ -1118,6 +1121,7 @@ mnb_switcher_show (ClutterActor *self)
   MutterWindow *top_most_mw = NULL;
   gboolean      found_focus = FALSE;
   ClutterActor *toolbar;
+  gboolean      switcher_empty = FALSE;
 
   struct win_location
   {
@@ -1171,6 +1175,89 @@ mnb_switcher_show (ClutterActor *self)
 
   ws_count = meta_screen_get_n_workspaces (screen);
   priv->active_ws = active_ws = meta_screen_get_active_workspace_index (screen);
+  window_list = mutter_plugin_get_windows (priv->plugin);
+
+  /* Handle case where no apps open.. */
+  if (ws_count == 1)
+    {
+      switcher_empty = TRUE;
+
+      for (l = window_list; l; l = g_list_next (l))
+        {
+          MutterWindow          *mw = l->data;
+          MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
+
+          if (mutter_window_get_window_type (mw) == META_COMP_WINDOW_NORMAL)
+            {
+              switcher_empty = FALSE;
+              break;
+            }
+          else if (mutter_window_get_window_type (mw)
+                                         == META_COMP_WINDOW_DIALOG)
+            {
+              MetaWindow *parent = meta_window_find_root_ancestor (meta_win);
+
+              if (parent == meta_win)
+                {
+                  switcher_empty = FALSE;
+                  break;
+                }
+            }
+        }
+
+      if (switcher_empty)
+        {
+          NbtkWidget         *table = priv->table;
+          ClutterActor       *bin;
+          NbtkWidget         *label;
+
+          bin = CLUTTER_ACTOR (nbtk_bin_new ());
+          label = nbtk_label_new (_("No Zones yet"));
+
+          nbtk_widget_set_style_class_name (label, "workspace-title-label");
+
+          nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+          nbtk_bin_set_alignment (NBTK_BIN (bin),
+                                  NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
+
+          clutter_actor_set_name (CLUTTER_ACTOR (bin),
+                                  "workspace-title-active");
+
+          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
+                                            "workspace-title");
+
+          nbtk_table_add_actor (NBTK_TABLE (table), bin, 0, 0);
+          clutter_container_child_set (CLUTTER_CONTAINER (table),
+                                       CLUTTER_ACTOR (bin),
+                                       "y-expand", FALSE,
+                                       "x-fill", TRUE,
+                                       NULL);
+
+          bin = CLUTTER_ACTOR (nbtk_bin_new ());
+          label = nbtk_label_new (_("Applications you’re using will show up here. You will be able to switch and organise them to your hearts content."));
+
+          nbtk_widget_set_style_class_name (label, "workspace-no-wins-label");
+
+          nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+          nbtk_bin_set_alignment (NBTK_BIN (bin),
+                                  NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
+
+          clutter_actor_set_name (CLUTTER_ACTOR (bin),
+                                  "workspace-no-wins-bin");
+
+          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
+                                            "workspace-no-wins-bin");
+
+          nbtk_table_add_actor (NBTK_TABLE (table), bin, 1, 0);
+          clutter_container_child_set (CLUTTER_CONTAINER (table),
+                                       CLUTTER_ACTOR (bin),
+                                       "y-expand", FALSE,
+                                       "x-fill", TRUE,
+                                       NULL);
+
+          goto finish_up;
+        }
+    }
 
   /* loop through all the workspaces, adding a label for each */
   for (i = 0; i < ws_count; i++)
@@ -1187,7 +1274,6 @@ mnb_switcher_show (ClutterActor *self)
 
   win_locs    = g_slice_alloc0 (sizeof (struct win_location) * ws_count);
   spaces      = g_slice_alloc0 (sizeof (NbtkWidget*) * ws_count);
-  window_list = mutter_plugin_get_windows (priv->plugin);
 
   for (l = window_list; l; l = g_list_next (l))
     {
@@ -1338,7 +1424,8 @@ mnb_switcher_show (ClutterActor *self)
 
 #if 1
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
-                                   "keep-aspect-ratio", TRUE, NULL);
+                                   "keep-aspect-ratio", TRUE,
+                                   "x-fill", TRUE, NULL);
 #else
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "y-fill", FALSE, NULL);
@@ -1392,12 +1479,14 @@ mnb_switcher_show (ClutterActor *self)
     NbtkWidget *label;
 
     label = NBTK_WIDGET (nbtk_bin_new ());
+    clutter_actor_set_width (CLUTTER_ACTOR (label), 22);
     nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (label),
                           0, ws_count);
     nbtk_widget_set_style_class_name (label, "workspace-title-new");
     clutter_container_child_set (CLUTTER_CONTAINER (table),
                                  CLUTTER_ACTOR (label),
-                                 "y-expand", FALSE, NULL);
+                                 "y-expand", FALSE,
+                                 "x-expand", FALSE, NULL);
 
     nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
@@ -1425,8 +1514,14 @@ mnb_switcher_show (ClutterActor *self)
     priv->new_workspace = new_ws;
     priv->new_label = label;
 
+    clutter_actor_set_width (CLUTTER_ACTOR (new_ws), 22);
     nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws),
                           1, ws_count);
+
+    clutter_container_child_set (CLUTTER_CONTAINER (table),
+                                 CLUTTER_ACTOR (new_ws),
+                                 "y-expand", FALSE,
+                                 "x-expand", FALSE, NULL);
   }
 
   g_slice_free1 (sizeof (NbtkWidget*) * ws_count, spaces);
@@ -1434,6 +1529,7 @@ mnb_switcher_show (ClutterActor *self)
 
   priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
 
+ finish_up:
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
 

@@ -10,6 +10,7 @@
 #include <nbtk/nbtk.h>
 #include <string.h>
 
+#include "marshal.h"
 #include "mnb-toolbar-button.h"
 #include "moblin-netbook-tray-manager.h"
 #include "tray/na-tray-manager.h"
@@ -51,7 +52,6 @@ typedef struct {
   GtkWidget *config;
   Window     config_xwin;
   ClutterActor *actor;
-  MnbInputRegion mir;
   guint timeout_count;
   guint timeout_id;
 } ShellTrayManagerChild;
@@ -99,9 +99,6 @@ free_tray_icon (gpointer data)
   gtk_widget_destroy (child->window);
   g_signal_handlers_disconnect_matched (child->actor, G_SIGNAL_MATCH_DATA,
                                         0, 0, NULL, NULL, child);
-
-  if (child->mir)
-    moblin_netbook_input_region_remove (plugin, child->mir);
 
   g_object_unref (child->actor);
   g_slice_free (ShellTrayManagerChild, child);
@@ -206,18 +203,20 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_added),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-                  CLUTTER_TYPE_ACTOR);
+		  moblin_netbook_marshal_VOID__OBJECT_UINT,
+		  G_TYPE_NONE, 2,
+                  CLUTTER_TYPE_ACTOR,
+                  G_TYPE_UINT);
   shell_tray_manager_signals[TRAY_ICON_REMOVED] =
     g_signal_new ("tray-icon-removed",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_removed),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-                  CLUTTER_TYPE_ACTOR);
+		  moblin_netbook_marshal_VOID__OBJECT_UINT,
+		  G_TYPE_NONE, 2,
+                  CLUTTER_TYPE_ACTOR,
+                  G_TYPE_UINT);
 
   /* Lifting the CONSTRUCT_ONLY here isn't hard; you just need to
    * iterate through the icons, reset the background pixmap, and
@@ -296,12 +295,6 @@ destroy_config_window (ShellTrayManagerChild *child)
       ShellTrayManager           *manager = child->manager;
       MutterPlugin               *plugin  = manager->priv->plugin;
 
-      if (child->mir)
-        {
-          moblin_netbook_input_region_remove (plugin, child->mir);
-          child->mir = NULL;
-        }
-
       manager->priv->config_windows =
         g_list_remove (manager->priv->config_windows,
                        GINT_TO_POINTER (child->config_xwin));
@@ -372,23 +365,6 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
         }
 
       gtk_window_move (GTK_WINDOW (child->config), x, y);
-
-      /*
-       * Cut out a hole into the stage input mask matching the config
-       * window.
-       */
-      if (child->mir)
-        moblin_netbook_input_region_remove_without_update (plugin, child->mir);
-
-#if 0
-      /*
-       * FIXME -- since the input stack no longer supports inverse regions,
-       * we have do this differently. Basically we have to completely clear the
-       * stack, and then push two regions, one above the panel and one below.
-       */
-      child->mir = moblin_netbook_input_region_push (plugin, x, y,
-                                                     (guint)w, (guint)h, TRUE);
-#endif
     }
 }
 
@@ -584,10 +560,6 @@ actor_clicked (ClutterActor *actor, gpointer data)
           gtk_widget_show_all (child->config);
         }
     }
-  else if (child->config)
-    {
-      destroy_config_window (child);
-    }
 
   return TRUE;
 }
@@ -641,7 +613,8 @@ tray_icon_tagged_timeout_cb (gpointer data)
        */
       g_signal_emit (manager,
                      shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
-                     child->actor);
+                     child->actor,
+                     child->config_xwin);
 
       g_signal_connect (child->actor, "clicked",
                         G_CALLBACK (actor_clicked), child);
@@ -798,7 +771,8 @@ na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *socket,
   if (child->config)
     g_signal_emit (manager,
                    shell_tray_manager_signals[TRAY_ICON_REMOVED], 0,
-                   child->actor);
+                   child->actor,
+                   child->config_xwin);
 
   g_hash_table_remove (manager->priv->icons, socket);
 }
@@ -854,7 +828,7 @@ shell_tray_manager_hide_config_window (ShellTrayManager *manager,
   child = g_hash_table_find (icons, find_child_data, GINT_TO_POINTER (xwindow));
 
   if (child && child->config)
-    gtk_widget_hide (child->config);
+    gtk_window_move (GTK_WINDOW (child->config), 0, -2000);
 }
 
 void
@@ -905,3 +879,16 @@ shell_tray_manager_close_all_other_config_windows (ShellTrayManager *manager,
     }
 }
 
+ClutterActor *
+shell_tray_manager_find_button_for_xid (ShellTrayManager *manager, Window xid)
+{
+  GHashTable            *icons = manager->priv->icons;
+  ShellTrayManagerChild *child;
+
+  child = g_hash_table_find (icons, find_child_data, GINT_TO_POINTER (xid));
+
+  if (child)
+    return child->actor;
+
+  return NULL;
+}

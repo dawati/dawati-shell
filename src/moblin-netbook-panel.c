@@ -55,6 +55,7 @@
 #define TRAY_BUTTON_HEIGHT 55
 #define TRAY_BUTTON_WIDTH 44
 
+/* IF YOU EVER CHANGE THIS VALUE YOU NEED TO UPDATE CARRICK / DALSTON ETC */
 #define PANEL_X_PADDING 4
 
 struct button_data
@@ -460,9 +461,9 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
     return;
 
   if (!strcmp (name, "tray-button-bluetooth"))
-    col = 3;
-  else if (!strcmp (name, "tray-button-wifi"))
     col = 2;
+  else if (!strcmp (name, "tray-button-wifi"))
+    col = 3;
   else if (!strcmp (name, "tray-button-sound"))
     col = 1;
   else if (!strcmp (name, "tray-button-battery"))
@@ -671,10 +672,10 @@ make_panel (MutterPlugin *plugin, gint width)
                        PANEL_PAGE_STATUS);
 
   make_toolbar_button (plugin, panel,
-                       "spaces-button",
-                       _("zones"),
-                       MNBK_CONTROL_SPACES,
-                       PANEL_PAGE_SPACES);
+                       "people-button",
+                       _("people"),
+                       MNBK_CONTROL_PEOPLE,
+                       PANEL_PAGE_PEOPLE);
 
   make_toolbar_button (plugin, panel,
                        "internet-button",
@@ -689,22 +690,22 @@ make_panel (MutterPlugin *plugin, gint width)
                        PANEL_PAGE_MEDIA);
 
   make_toolbar_button (plugin, panel,
+                       "pasteboard-button",
+                       _("pasteboard"),
+                       MNBK_CONTROL_PASTEBOARD,
+                       PANEL_PAGE_PASTERBOARD);
+
+  make_toolbar_button (plugin, panel,
                        "apps-button",
                        _("applications"),
                        MNBK_CONTROL_APPLICATIONS,
                        PANEL_PAGE_APPS);
 
   make_toolbar_button (plugin, panel,
-                       "people-button",
-                       _("people"),
-                       MNBK_CONTROL_PEOPLE,
-                       PANEL_PAGE_PEOPLE);
-
-  make_toolbar_button (plugin, panel,
-                       "pasteboard-button",
-                       _("pasteboard"),
-                       MNBK_CONTROL_PASTEBOARD,
-                       PANEL_PAGE_PASTERBOARD);
+                       "spaces-button",
+                       _("zones"),
+                       MNBK_CONTROL_SPACES,
+                       PANEL_PAGE_SPACES);
 
   priv->panel_time = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_time), "time-label");
@@ -811,7 +812,8 @@ make_panel (MutterPlugin *plugin, gint width)
   priv->media_drop_down = CLUTTER_ACTOR (mnb_drop_down_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (panel),
                                priv->media_drop_down);
-  clutter_actor_set_width (priv->media_drop_down, screen_width);
+  clutter_actor_set_width (priv->media_drop_down,
+                           screen_width - 2 * PANEL_X_PADDING);
 
   ahoghill_grid_view = g_object_new (AHOGHILL_TYPE_GRID_VIEW, NULL);
   clutter_actor_set_height (mzone_grid_view,

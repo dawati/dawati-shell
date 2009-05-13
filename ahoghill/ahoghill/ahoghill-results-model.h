@@ -3,7 +3,8 @@
 
 #include <glib-object.h>
 
-#include <bickley/bkl-item.h>
+#include <bickley/bkl.h>
+#include <bickley/bkl-source-client.h>
 
 G_BEGIN_DECLS
 
@@ -47,6 +48,7 @@ struct _AhoghillResultsModelClass
 GType ahoghill_results_model_get_type (void) G_GNUC_CONST;
 
 void ahoghill_results_model_add_item (AhoghillResultsModel *model,
+                                      BklSourceClient      *owner,
                                       BklItem              *item);
 void ahoghill_results_model_remove_item (AhoghillResultsModel *model,
                                          BklItem              *item);
@@ -56,6 +58,8 @@ int ahoghill_results_model_get_count (AhoghillResultsModel *model);
 void ahoghill_results_model_clear (AhoghillResultsModel *model);
 void ahoghill_results_model_freeze (AhoghillResultsModel *model);
 void ahoghill_results_model_thaw (AhoghillResultsModel *model);
+void ahoghill_results_model_remove_source_items (AhoghillResultsModel *model,
+                                                 BklSourceClient      *owner);
 
 
 G_END_DECLS

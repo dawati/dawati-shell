@@ -34,7 +34,7 @@ G_DEFINE_TYPE (MnbNotificationCluster,   \
    MNB_TYPE_NOTIFICATION_CLUSTER,    \
    MnbNotificationClusterPrivate))
 
-#define CLUSTER_WIDTH 300
+#define CLUSTER_WIDTH 320
 #define FADE_DURATION 300
 
 struct _MnbNotificationClusterPrivate {

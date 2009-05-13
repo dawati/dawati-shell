@@ -44,6 +44,8 @@ struct _AhoghillPlayButtonClass
 };
 
 GType ahoghill_play_button_get_type (void) G_GNUC_CONST;
+void ahoghill_play_button_set_playing (AhoghillPlayButton *button,
+                                       gboolean            playing);
 
 G_END_DECLS
 

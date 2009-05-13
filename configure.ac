@@ -1,7 +1,7 @@
 m4_define([mutter_version], [2.25.55~0.4])
 m4_define([plugin_major_version], [0])
 m4_define([plugin_minor_version], [20])
-m4_define([plugin_micro_version], [2])
+m4_define([plugin_micro_version], [5])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
 
@@ -80,7 +80,7 @@ AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Medi
 
 if test "x$enable_ahoghill" = "xyes"; then
 	AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
-	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 gdk-pixbuf-2.0 bognor-regis-0.2 gtk+-2.0)
+	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 gdk-pixbuf-2.0 bognor-regis-0.3 >= 0.3.1 gtk+-2.0)
 fi
 
 AC_ARG_ENABLE([netpanel],
@@ -106,6 +106,17 @@ fi
 AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 AM_CONDITIONAL(WITH_PEOPLE, test x"$enable_people" = xyes)
+
+AC_ARG_ENABLE([debug],
+	AC_HELP_STRING([--enable-debug],
+		[Enable debugging features, whatever that means]),
+		[enable_debug="$enableval"], [enable_debug=no])
+
+echo "enableval: $enableval"
+
+if test x"$enable_debug" = xyes; then
+   CFLAGS="$CFLAGS -g -O0"
+fi
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
@@ -158,7 +169,7 @@ echo "
 
             Mutter version   :    mutter_version
             Installation path:    ${MUTTER_PLUGIN_DIR}
-
+	    Debug            :    ${enable_debug} (CFLAGS: ${CFLAGS})
 
         Type make to build the plugin.
 "

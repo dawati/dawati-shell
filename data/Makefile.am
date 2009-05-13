@@ -66,6 +66,7 @@ dist_theme_launcher_DATA = \
 	theme/launcher/launcher-search-entry-clear.png \
 	theme/launcher/launcher-search-entry-separator.png \
 	theme/launcher/launcher-button-fav-toggle.png \
+	theme/launcher/launcher-button-fav-toggle-active.png \
 	theme/launcher/launcher-button-fav-toggle-checked.png \
 	theme/launcher/launcher-button-fav-toggle-hover.png
 
@@ -121,7 +122,11 @@ dist_theme_mzone_DATA = \
 	theme/mzone/single-div-line.png \
 	theme/mzone/double-div-line.png \
 	theme/mzone/toys.jpg \
-	theme/mzone/default-avatar-icon.png
+	theme/mzone/default-avatar-icon.png \
+	theme/mzone/no-content-tile-bg.png \
+	theme/mzone/no-content-tile-glow-bg.png
+
+
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
@@ -140,6 +145,8 @@ theme_mediapaneldir = $(pkgdatadir)/theme/media-panel
 dist_theme_mediapanel_DATA = \
 	theme/media-panel/bot_playque_closed.png \
 	theme/media-panel/bot_playque_hover.png \
+	theme/media-panel/hrn-progress-bar-handle.png \
+	theme/media-panel/hrn-progress-bar-through.png \
 	theme/media-panel/media_search_bkgrd.png \
 	theme/media-panel/mid_playque_closed.png \
 	theme/media-panel/mid_playque_hover.png \

@@ -77,13 +77,12 @@ moblin_netbook_la_SOURCES +=	moblin-netbook-people.h		\
 				moblin-netbook-people.c
 endif
 
-
-
-DBUS_GLUE=notification-manager-glue.h mnb-panel-dbus-glue.h
-DBUS_BINDINGS=mnb-panel-dbus-bindings.h
+#DBUS_GLUE=notification-manager-glue.h mnb-panel-dbus-glue.h
+DBUS_GLUE=notification-manager-glue.h
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
 
+#DBUS_BINDINGS=mnb-panel-dbus-bindings.h
 %-bindings.h: %.xml
 	dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
 
@@ -120,5 +119,5 @@ install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.a
 	rm -f $(DESTDIR)$(pkglibdir)/*.la
 
-BUILT_SOURCES = $(MARSHALS)
+BUILT_SOURCES = $(MARSHALS) $(DBUS_GLUE) $(DBUS_BINDINGS)
 CLEANFILES = $(BUILT_SOURCES)

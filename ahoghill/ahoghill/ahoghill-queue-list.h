@@ -49,6 +49,7 @@ void ahoghill_queue_list_add_item (AhoghillQueueList *list,
                                    int                index);
 void ahoghill_queue_list_remove (AhoghillQueueList *list,
                                  int                index);
+int ahoghill_queue_list_get_item_count (AhoghillQueueList *list);
 
 
 G_END_DECLS

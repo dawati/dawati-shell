@@ -27,6 +27,8 @@
 
 #define SLIDE_DURATION 150
 
+static void mnb_button_toggled_cb (NbtkWidget *, GParamSpec *, MnbDropDown *);
+
 G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -102,6 +104,13 @@ static void
 mnb_drop_down_dispose (GObject *object)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (object)->priv;
+
+  if (priv->button)
+    {
+      g_signal_handlers_disconnect_by_func (priv->button,
+                                            mnb_button_toggled_cb, object);
+      priv->button = NULL;
+    }
 
   G_OBJECT_CLASS (mnb_drop_down_parent_class)->dispose (object);
 }
@@ -491,6 +500,12 @@ mnb_drop_down_get_child (MnbDropDown *drop_down)
   return drop_down->priv->child;
 }
 
+static void
+mnb_drop_down_button_weak_unref_cb (MnbDropDown *drop_down, GObject *button)
+{
+  drop_down->priv->button = NULL;
+}
+
 void
 mnb_drop_down_set_button (MnbDropDown *drop_down,
                           NbtkButton *button)
@@ -501,11 +516,14 @@ mnb_drop_down_set_button (MnbDropDown *drop_down,
 
   drop_down->priv->button = button;
 
+  g_object_weak_ref (G_OBJECT (button),
+                     (GWeakNotify) mnb_drop_down_button_weak_unref_cb,
+                     drop_down);
+
   g_signal_connect (button,
                     "notify::checked",
                     G_CALLBACK (mnb_button_toggled_cb),
                     drop_down);
-
 }
 
 /*
@@ -536,7 +554,6 @@ mnb_drop_down_get_footer_geometry (MnbDropDown *self,
                                    gfloat      *height)
 {
   MnbDropDownPrivate *priv = self->priv;
-  gfloat              total_height, footer_height;
 
   g_return_if_fail (x && y && width && height);
 
@@ -545,12 +562,9 @@ mnb_drop_down_get_footer_geometry (MnbDropDown *self,
    * what looks like the unexpanded size of the cell, relative to its column
    * and row position, not to the parent. Work around it.
    */
-  *x            = clutter_actor_get_x (CLUTTER_ACTOR (self));
-  *width        = clutter_actor_get_width  (CLUTTER_ACTOR (self));
-  footer_height = clutter_actor_get_height (priv->footer);
-  total_height  = clutter_actor_get_height (CLUTTER_ACTOR (self));
-
-  *height = footer_height;
-  *y      = total_height -  footer_height;
+  *x      = clutter_actor_get_x (CLUTTER_ACTOR (self));
+  *y      = clutter_actor_get_height (priv->child);
+  *width  = clutter_actor_get_width  (CLUTTER_ACTOR (self));
+  *height = clutter_actor_get_height (priv->footer);
 }
 

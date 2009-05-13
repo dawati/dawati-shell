@@ -132,6 +132,13 @@ struct _MnbToolbarPrivate
                                    */
 
   guint trigger_timeout_id;
+
+#if 1
+  /* TODO remove */
+  gboolean systray_window_showing;
+
+  guint tray_xids [NUM_ZONES];
+#endif
 };
 
 static void
@@ -327,10 +334,14 @@ mnb_toolbar_hide (ClutterActor *actor)
 
   if (priv->input_region)
     {
-      moblin_netbook_input_region_remove (priv->plugin,
-                                          priv->input_region);
-
+      moblin_netbook_input_region_remove (priv->plugin, priv->input_region);
       priv->input_region = NULL;
+    }
+
+  if (priv->dropdown_region)
+    {
+      moblin_netbook_input_region_remove (priv->plugin, priv->dropdown_region);
+      priv->dropdown_region = NULL;
     }
 
   priv->in_hide_animation = TRUE;
@@ -744,7 +755,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
    */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
+  nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
 
   /*
@@ -1064,7 +1075,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
    */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
+  nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
 
   /*
@@ -1164,48 +1175,92 @@ mnb_toolbar_init (MnbToolbar *self)
 static void
 shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
                                   ClutterActor     *icon,
-                                  MutterPlugin     *plugin)
+                                  guint             xid,
+                                  MnbToolbar       *toolbar)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  const gchar                *name;
-  gint                        col = -1;
-  gint                        screen_width, screen_height;
-  gint                        x, y;
+  MnbToolbarPrivate *priv = toolbar->priv;
+  const gchar       *name;
+  const gchar       *tooltip = NULL;
+  gint               col = -1;
+  gint               screen_width, screen_height;
+  gint               x, y;
+  gint               index;
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
   name = clutter_actor_get_name (icon);
 
   if (!name || !*name)
     return;
 
-  if (!strcmp (name, "tray-button-bluetooth"))
-    col = 3;
-  else if (!strcmp (name, "tray-button-wifi"))
-    col = 2;
-  else if (!strcmp (name, "tray-button-sound"))
-    col = 1;
-  else if (!strcmp (name, "tray-button-battery"))
-    col = 0;
-  else if (!strcmp (name, "tray-button-test"))
-    col = 4;
+  index = mnb_toolbar_panel_name_to_index (name);
 
-  if (col < 0)
+  if (index < 0)
     return;
+
+  col = index - APPLETS_START;
 
   y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
 
+  priv->buttons[index] = NBTK_WIDGET (icon);
+
+  switch (index)
+    {
+    case BATTERY_APPLET:
+      tooltip = _("power & brightness");
+      break;
+    case VOLUME_APPLET:
+      tooltip = _("volume");
+      break;
+    case BT_APPLET:
+      tooltip = _("bluetooth");
+      break;
+    case WIFI_APPLET:
+      tooltip = _("networks");
+      break;
+    case TEST_APPLET:
+      tooltip = _("test");
+      break;
+    default:;
+    }
+
+  if (tooltip)
+    nbtk_widget_set_tooltip_text (NBTK_WIDGET (icon), tooltip);
+
   clutter_actor_set_position (icon, x, y);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->toolbar), icon);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), icon);
 }
 
 static void
 shell_tray_manager_icon_removed_cb (ShellTrayManager *mgr,
                                     ClutterActor     *icon,
-                                    MutterPlugin     *plugin)
+                                    guint             xid,
+                                    MnbToolbar       *toolbar)
 {
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint               i;
+
+  /*
+   * Find the stored button and xid and reset.
+   */
+  for (i = APPLETS_START; i < NUM_ZONES; ++i)
+    {
+      if (priv->buttons[i] == (NbtkWidget*)icon)
+        {
+          priv->buttons[i] = NULL;
+
+          if (priv->tray_xids[i] != xid)
+            g_warning ("Mismatch between xids (0x%x vs 0x%x)",
+                       priv->tray_xids[i], xid);
+
+          priv->tray_xids[i] = 0;
+          break;
+        }
+    }
+
   clutter_actor_destroy (icon);
+
 }
 #endif
 
@@ -1282,10 +1337,10 @@ mnb_toolbar_constructed (GObject *self)
                                      NULL);
 
   g_signal_connect (priv->tray_manager, "tray-icon-added",
-                    G_CALLBACK (shell_tray_manager_icon_added_cb), plugin);
+                    G_CALLBACK (shell_tray_manager_icon_added_cb), self);
 
   g_signal_connect (priv->tray_manager, "tray-icon-removed",
-                    G_CALLBACK (shell_tray_manager_icon_removed_cb), plugin);
+                    G_CALLBACK (shell_tray_manager_icon_removed_cb), self);
 
   shell_tray_manager_manage_stage (priv->tray_manager,
                                    CLUTTER_STAGE (
@@ -1425,10 +1480,24 @@ static void
 tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
 {
   struct config_map_data *map_data = data;
-  MutterPlugin           *plugin   = map_data->toolbar->priv->plugin;
+  MnbToolbarPrivate      *priv     = map_data->toolbar->priv;
+  MutterPlugin           *plugin   = priv->plugin;
   MutterWindow           *mcw      = map_data->mcw;
+  gint  x, y;
+  guint w, h;
 
   g_free (map_data);
+
+  priv->systray_window_showing = TRUE;
+
+  mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (actor), &x, &y, &w, &h);
+
+  if (priv->dropdown_region)
+    moblin_netbook_input_region_remove_without_update (plugin,
+                                                       priv->dropdown_region);
+
+  priv->dropdown_region =
+    moblin_netbook_input_region_push (plugin, x, TOOLBAR_HEIGHT + y, w, h);
 
   /* Notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
@@ -1447,8 +1516,21 @@ static void
 tray_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
 {
   struct config_hide_data *hide_data = data;
-  MnbToolbar              *toolbar = hide_data->toolbar;
-  ShellTrayManager        *tmgr = toolbar->priv->tray_manager;
+  MnbToolbarPrivate       *priv = hide_data->toolbar->priv;
+  ShellTrayManager        *tmgr = priv->tray_manager;
+  gint                     i;
+
+  priv->systray_window_showing = FALSE;
+
+  for (i = APPLETS_START; i < 0; ++i)
+    {
+      if (priv->panels[i] == (NbtkWidget*) actor)
+        {
+          priv->panels[i] = NULL;
+          priv->tray_xids[i] = 0;
+          break;
+        }
+    }
 
   shell_tray_manager_close_config_window (tmgr, hide_data->config_xwin);
 }
@@ -1457,8 +1539,15 @@ static void
 tray_actor_hide_begin_cb (ClutterActor *actor, gpointer data)
 {
   struct config_hide_data *hide_data = data;
-  MnbToolbar              *toolbar = hide_data->toolbar;
-  ShellTrayManager        *tmgr = toolbar->priv->tray_manager;
+  MnbToolbarPrivate       *priv = hide_data->toolbar->priv;
+  MutterPlugin            *plugin = priv->plugin;
+  ShellTrayManager        *tmgr = priv->tray_manager;
+
+  if (priv->dropdown_region)
+    {
+      moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
+      priv->dropdown_region = NULL;
+    }
 
   shell_tray_manager_hide_config_window (tmgr,
                                          hide_data->config_xwin);
@@ -1495,12 +1584,14 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
   ClutterActor *actor = CLUTTER_ACTOR (mcw);
   ClutterActor *background;
   ClutterActor *parent;
+  ClutterActor *button;
   ClutterActor *texture = mutter_window_get_texture (mcw);
 
   Window xwin = mutter_window_get_x_window (mcw);
 
   gint  x = clutter_actor_get_x (actor);
   gint  y = clutter_actor_get_y (actor);
+  gint  i;
 
   background = CLUTTER_ACTOR (mnb_drop_down_new (priv->plugin));
 
@@ -1541,15 +1632,14 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
 
   parent = mutter_plugin_get_overlay_group (priv->plugin);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (toolbar), background);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), background);
 
-#if 0
-  /* TODO */
-  /*
-   * Hide all other dropdowns.
-   */
-  show_panel_and_control (plugin, MNBK_CONTROL_UNKNOWN);
-#endif
+  button = shell_tray_manager_find_button_for_xid (priv->tray_manager, xwin);
+
+  if (button)
+    mnb_drop_down_set_button (MNB_DROP_DOWN (background), NBTK_BUTTON (button));
+  else
+    g_warning ("No button found for xid 0x%x", (guint)xwin);
 
   /*
    * Hide all config windows.

@@ -1,4 +1,5 @@
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "penge-app-bookmark-manager.h"
 
@@ -176,18 +177,6 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
       g_clear_error (&error);
     }
 
-    g_free (bookmark->icon_name);
-    if (!g_bookmark_file_get_icon (priv->bookmarks,
-                                  uri,
-                                  &(bookmark->icon_name),
-                                  NULL,
-                                  &error))
-    {
-      g_warning (G_STRLOC ": Error when retrieving icon: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-
     g_free (bookmark->app_exec);
     if (!g_bookmark_file_get_app_info (priv->bookmarks,
                                       uri,
@@ -357,8 +346,8 @@ penge_app_bookmark_manager_add_from_uri (PengeAppBookmarkManager *manager,
                                          GError                 **error_out)
 {
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
-  GKeyFile *kf;
   gchar *path;
+  GAppInfo *app_info;
   GError *error = NULL;
   PengeAppBookmark *bookmark;
 
@@ -381,66 +370,18 @@ penge_app_bookmark_manager_add_from_uri (PengeAppBookmarkManager *manager,
     goto error;
   }
 
-  kf = g_key_file_new ();
-  if (!g_key_file_load_from_file (kf,
-                                  path,
-                                  G_KEY_FILE_NONE,
-                                  &error))
-  {
-    g_warning (G_STRLOC ": Error loading file as key file: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
+  app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
 
   bookmark = penge_app_bookmark_new ();
   bookmark->uri = g_strdup (uri);
-  bookmark->application_name = 
-    g_key_file_get_locale_string (kf,
-                                  G_KEY_FILE_DESKTOP_GROUP,
-                                  G_KEY_FILE_DESKTOP_KEY_NAME,
-                                  NULL,
-                                  &error);
+  bookmark->application_name = g_strdup (g_app_info_get_name (app_info));
+  bookmark->app_exec = g_strdup (g_app_info_get_executable (app_info));
 
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error getting application name: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
-
-  bookmark->icon_name = 
-    g_key_file_get_string (kf,
-                           G_KEY_FILE_DESKTOP_GROUP,
-                           G_KEY_FILE_DESKTOP_KEY_ICON,
-                           &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error getting application icon: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
-
-  bookmark->app_exec = 
-    g_key_file_get_string (kf,
-                           G_KEY_FILE_DESKTOP_GROUP,
-                           G_KEY_FILE_DESKTOP_KEY_EXEC,
-                           &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error getting application execute information: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
+  g_free (path);
+  g_object_unref (app_info);
 
   /* Create the entry in the GBookmarkFile object */
   g_bookmark_file_set_title (priv->bookmarks, uri, bookmark->application_name);
-  g_bookmark_file_set_icon (priv->bookmarks, uri, bookmark->icon_name, NULL);
   if (!g_bookmark_file_set_app_info (priv->bookmarks,
                                      uri,
                                      PENGE_APP_NAME,
@@ -497,7 +438,6 @@ void
 penge_app_bookmark_free (PengeAppBookmark *bookmark)
 {
   g_free (bookmark->application_name);
-  g_free (bookmark->icon_name);
   g_free (bookmark->app_exec);
 }
 

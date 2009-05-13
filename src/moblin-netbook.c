@@ -245,7 +245,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   Display       *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
-  MetaScreen    *screen;
   Window         root_xwin;
   MoblinNetbookNotifyStore *notify_store;
 
@@ -882,7 +881,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                             G_CALLBACK (meta_window_fullcreen_notify_cb),
                             plugin);
 
-          /* Hide toolbar etc in presence of modal dialog */ 
+          /* Hide toolbar etc in presence of modal dialog */
           if (modal == TRUE)
             clutter_actor_hide (priv->toolbar);
         }

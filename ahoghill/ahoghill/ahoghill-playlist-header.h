@@ -46,6 +46,10 @@ struct _AhoghillPlaylistHeaderClass
 GType ahoghill_playlist_header_get_type (void) G_GNUC_CONST;
 void ahoghill_playlist_header_set_item (AhoghillPlaylistHeader *header,
                                         BklItem                *item);
+void ahoghill_playlist_header_set_can_play (AhoghillPlaylistHeader *header,
+                                            gboolean                can_play);
+void ahoghill_playlist_header_set_position (AhoghillPlaylistHeader *header,
+                                            double                  position);
 
 G_END_DECLS
 

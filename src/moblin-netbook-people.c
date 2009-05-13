@@ -108,7 +108,7 @@ make_people_panel (MutterPlugin *plugin,
   AnerleyFeed *feed;
   DBusGConnection *conn;
 
-  drop_down = mnb_drop_down_new ();
+  drop_down = mnb_drop_down_new (plugin);
 
   vbox = nbtk_table_new ();
   clutter_actor_set_size (vbox, width, 400);

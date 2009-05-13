@@ -77,17 +77,35 @@ ahoghill_queue_list_init (AhoghillQueueList *self)
     priv = self->priv;
 
     priv->viewport = nbtk_viewport_new ();
+
+    clutter_actor_set_position ((ClutterActor *) priv->viewport, 5, 5);
     clutter_container_add_actor (CLUTTER_CONTAINER (self),
                                  CLUTTER_ACTOR (priv->viewport));
 
     priv->children = clutter_group_new ();
     clutter_container_add (CLUTTER_CONTAINER (priv->viewport),
                            priv->children, NULL);
-    clutter_actor_set_position (priv->children, 0, 0);
 
     priv->items = g_ptr_array_new ();
 }
 
+/* Why does GLib not have this function */
+static void
+ptr_array_insert (GPtrArray *array,
+                  int        index,
+                  gpointer   data)
+{
+    int i;
+
+    /* This will cause the extra space to be allocated */
+    g_ptr_array_add (array, data);
+
+    for (i = array->len - 2; i > index; i--) {
+        array->pdata[i] = array->pdata[i - 1];
+    }
+
+    array->pdata[index] = data;
+}
 
 void
 ahoghill_queue_list_add_item (AhoghillQueueList *list,
@@ -97,20 +115,39 @@ ahoghill_queue_list_add_item (AhoghillQueueList *list,
     AhoghillQueueListPrivate *priv = list->priv;
     AhoghillQueueTile *tile;
     guint height;
+    int i;
 
     tile = g_object_new (AHOGHILL_TYPE_QUEUE_TILE, NULL);
     if (item) {
         ahoghill_queue_tile_set_item (tile, item);
     }
 
-    g_ptr_array_add (priv->items, tile);
+    /* Make sure the index is within the bounds of the list */
+    index = CLAMP (index, 0, priv->items->len);
+    if (index == priv->items->len) {
+        g_ptr_array_add (priv->items, tile);
+    } else {
+        /* Move the rest of the items */
+        for (i = index; i < priv->items->len; i++) {
+            int x, y;
+
+            clutter_actor_get_position (CLUTTER_ACTOR (priv->items->pdata[i]),
+                                        &x, &y);
+            clutter_actor_get_size (CLUTTER_ACTOR (priv->items->pdata[i]),
+                                    NULL, &height);
+            clutter_actor_set_position (CLUTTER_ACTOR (priv->items->pdata[i]),
+                                        x, y + height);
+        }
+
+        ptr_array_insert (priv->items, index, tile);
+    }
 
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->children),
                                  CLUTTER_ACTOR (tile));
 
     clutter_actor_get_size (CLUTTER_ACTOR (tile), NULL, &height);
     clutter_actor_set_position (CLUTTER_ACTOR (tile), 0,
-                                (priv->items->len - 1) * height);
+                                index * height);
     clutter_actor_show ((ClutterActor *) tile);
 }
 
@@ -140,4 +177,12 @@ ahoghill_queue_list_remove (AhoghillQueueList *list,
     }
 
     g_ptr_array_remove_index (priv->items, index);
+}
+
+int
+ahoghill_queue_list_get_item_count (AhoghillQueueList *list)
+{
+    AhoghillQueueListPrivate *priv = list->priv;
+
+    return priv->items->len;
 }
