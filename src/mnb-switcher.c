@@ -1186,7 +1186,7 @@ mnb_switcher_show (ClutterActor *self)
                                        NULL);
 
           bin = CLUTTER_ACTOR (nbtk_bin_new ());
-          label = nbtk_label_new (_("Applications you’re using will show up here. You will be able to switch and organise them to your hearts content."));
+          label = nbtk_label_new (_("Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."));
 
           nbtk_widget_set_style_class_name (label, "workspace-no-wins-label");
 
