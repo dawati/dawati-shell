@@ -146,9 +146,6 @@ penge_app_tile_constructed (GObject *object)
   if (!priv->bookmark)
     return;
 
-  if (!priv->bookmark->icon_name)
-    return;
-
   priv->icon_theme = gtk_icon_theme_get_default ();
   g_signal_connect (priv->icon_theme,
                     "changed",
