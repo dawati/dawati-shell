@@ -66,6 +66,7 @@ dist_theme_launcher_DATA = \
 	theme/launcher/launcher-search-entry-clear.png \
 	theme/launcher/launcher-search-entry-separator.png \
 	theme/launcher/launcher-button-fav-toggle.png \
+	theme/launcher/launcher-button-fav-toggle-active.png \
 	theme/launcher/launcher-button-fav-toggle-checked.png \
 	theme/launcher/launcher-button-fav-toggle-hover.png
 

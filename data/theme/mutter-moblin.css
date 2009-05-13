@@ -1,5 +1,6 @@
 /* generic classes */
 NbtkButton {
+  background-color: #fff0;
   border-image: url("file://generic/button.png") 4 stretch;
   padding: 4;
   font-size: 12px;
@@ -113,6 +114,10 @@ NbtkTable {
 
 MnbToolbar {
   border-image: url("file://panel/panel-background.png") 0 200 0 200 stretch;
+}
+
+MnbToolbarButton {
+  background-color: #fff0;
 }
 
 MnbToolbarButton:checked {
@@ -335,7 +340,7 @@ MnbEntry {
 }
 
 *.MnbEntryButton {
-  border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 1 stretch stretch;
+  border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
 }
@@ -429,6 +434,10 @@ MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:checked {
   background-image: url("file://launcher/launcher-button-fav-toggle-checked.png");
 }
 
+MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:active {
+  background-image: url("file://launcher/launcher-button-fav-toggle-active.png");
+}
+
 MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:hover {
   background-image: url("file://launcher/launcher-button-fav-toggle-hover.png");
 }
@@ -460,6 +469,7 @@ PengeAppsPane
 
 PengeEventTile, PengeTaskTile, PengeAppTile
 {
+  background-color: #fff0;
   padding: 9 10 11 10;
 }
 
