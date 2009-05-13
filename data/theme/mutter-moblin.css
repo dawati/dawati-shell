@@ -628,6 +628,24 @@ PengeDateTile
   padding: 10 11 12 11;
 }
 
+*.PengeWelcomeTile
+{
+  border-image: url('file://mzone/backdrop.png') 5 5 5 5;
+  padding: 6;
+}
+
+*#penge-welcome-primary-text
+{
+  color: #009bceff;
+  font-size:19px;
+}
+
+*#penge-welcome-secondary-text
+{
+  font-size:14px;
+  color: #2c2c2cff;
+}
+
 PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover, PengeMyspaceTile:hover
 {
   border-image: url('file://mzone/tile-glow.png') 7 8 9 8;

@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <gio/gio.h>
+#include <glib/gi18n.h>
 
 #include "penge-recent-files-pane.h"
 #include "penge-utils.h"
@@ -24,8 +25,9 @@ static void penge_recent_files_pane_update (PengeRecentFilesPane *pane);
 typedef struct _PengeRecentFilesPanePrivate PengeRecentFilesPanePrivate;
 
 struct _PengeRecentFilesPanePrivate {
-    GHashTable *uri_to_actor;
-    GtkRecentManager *manager;
+  GHashTable *uri_to_actor;
+  GtkRecentManager *manager;
+  ClutterActor *welcome_tile;
 };
 
 static void
@@ -92,6 +94,9 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
                     "changed",
                     (GCallback)_recent_manager_changed_cb, 
                     self);
+
+
+  clutter_actor_set_width ((ClutterActor *)self, TILE_WIDTH * 2 + COL_SPACING);
   penge_recent_files_pane_update (self);
 }
 
@@ -107,6 +112,74 @@ _recent_files_sort_func (GtkRecentInfo *a,
   } else {
     return 0;
   }
+}
+
+static ClutterActor *
+_make_welcome_tile ()
+{
+  NbtkWidget *tile;
+  NbtkWidget *label;
+  ClutterActor *tmp_text;
+
+  tile = nbtk_table_new ();
+  clutter_actor_set_size ((ClutterActor *)tile,
+                          TILE_WIDTH * 2 + COL_SPACING,
+                          TILE_HEIGHT);
+  nbtk_widget_set_style_class_name ((NbtkWidget *)tile, "PengeWelcomeTile");
+
+
+
+  label = nbtk_label_new (_("<b>Welcome to Moblin 2.0 for Netbooks</b>"));
+  clutter_actor_set_name ((ClutterActor *)label,
+                          "penge-welcome-primary-text");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text),
+                               TRUE);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                              PANGO_ELLIPSIZE_NONE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)label,
+                                        0,
+                                        0,
+                                        "x-expand",
+                                        TRUE,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-expand",
+                                        TRUE,
+                                        "y-fill",
+                                        TRUE,
+                                        NULL);
+
+  label = nbtk_label_new (_("As Moblin is a bit different to other computers, " \
+                            "we've put together a couple of bits and pieces to " \
+                            "help you find your way around this Beta Release. " \
+                            "We hope you enjoy it, The Moblin Team."));
+  clutter_actor_set_name ((ClutterActor *)label,
+                          "penge-welcome-secondary-text");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                              PANGO_ELLIPSIZE_NONE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)label,
+                                        1,
+                                        0,
+                                        "x-expand",
+                                        TRUE,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-expand",
+                                        TRUE,
+                                        "y-fill",
+                                        TRUE,
+                                        NULL);
+  return (ClutterActor *)tile;
 }
 
 static void
@@ -125,6 +198,38 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
   gchar *filename = NULL;
 
   items = gtk_recent_manager_get_items (priv->manager);
+
+  if (g_list_length (items) > 3)
+  {
+    if (priv->welcome_tile)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                      priv->welcome_tile);
+      priv->welcome_tile = NULL;
+    }
+  } else {
+    if (!priv->welcome_tile)
+    {
+      priv->welcome_tile = _make_welcome_tile ();
+
+      clutter_actor_show_all (priv->welcome_tile);
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (pane),
+                                            priv->welcome_tile,
+                                            0,
+                                            0,
+                                            "col-span",
+                                            2,
+                                            "y-expand",
+                                            FALSE,
+                                            "x-expand",
+                                            TRUE,
+                                            NULL);
+    }
+
+    /* offset the recrnt files */
+    count = 2;
+  }
+
   items = g_list_sort (items, (GCompareFunc)_recent_files_sort_func);
 
   old_actors = g_hash_table_get_values (priv->uri_to_actor);
@@ -194,6 +299,14 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                      FALSE,
                                      "x-expand",
                                      FALSE,
+                                     "y-fill",
+                                     FALSE,
+                                     "x-fill",
+                                     FALSE,
+                                     "x-align",
+                                     0.0,
+                                     "y-align",
+                                     0.0,
                                      NULL);
 
         clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
