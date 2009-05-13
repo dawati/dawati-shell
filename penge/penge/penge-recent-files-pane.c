@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <glib/gi18n.h>
+#include <gconf/gconf-client.h>
 
 #include "penge-recent-files-pane.h"
 #include "penge-utils.h"
@@ -20,6 +21,8 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 #define ROW_SPACING 6
 #define COL_SPACING 6
 
+#define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/m_zone/boot_count"
+
 static void penge_recent_files_pane_update (PengeRecentFilesPane *pane);
 
 typedef struct _PengeRecentFilesPanePrivate PengeRecentFilesPanePrivate;
@@ -28,6 +31,7 @@ struct _PengeRecentFilesPanePrivate {
   GHashTable *uri_to_actor;
   GtkRecentManager *manager;
   ClutterActor *welcome_tile;
+  gint boot_count;
 };
 
 static void
@@ -80,6 +84,39 @@ static void
 penge_recent_files_pane_init (PengeRecentFilesPane *self)
 {
   PengeRecentFilesPanePrivate *priv = GET_PRIVATE (self);
+  GError *error = NULL;
+  GConfClient *client;
+
+  client = gconf_client_get_default ();
+
+  priv->boot_count = gconf_client_get_int (client,
+                                           MOBLIN_BOOT_COUNT_KEY,
+                                           &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error getting boot count: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  /* increment */
+  priv->boot_count++;
+
+  if (priv->boot_count <= 5)
+  {
+    if (!gconf_client_set_int (client,
+                               MOBLIN_BOOT_COUNT_KEY,
+                               priv->boot_count,
+                               &error))
+    {
+      g_warning (G_STRLOC ": Error setting boot count: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+  }
+
+  g_object_unref (client);
 
   priv->uri_to_actor = g_hash_table_new_full (g_str_hash,
                                               g_str_equal,
@@ -199,7 +236,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
 
   items = gtk_recent_manager_get_items (priv->manager);
 
-  if (g_list_length (items) > 3)
+  if (priv->boot_count > 5 || g_list_length (items) > 3)
   {
     if (priv->welcome_tile)
     {
