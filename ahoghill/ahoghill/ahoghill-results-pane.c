@@ -5,6 +5,7 @@
 #include <bickley/bkl-item.h>
 
 #include "nbtk-fixed.h"
+#include "ahoghill-example-table.h"
 #include "ahoghill-media-tile.h"
 #include "ahoghill-results-pane.h"
 #include "ahoghill-results-table.h"
@@ -41,6 +42,8 @@ struct _AhoghillResultsPanePrivate {
     AhoghillResultsModel *model;
 
     AhoghillResultsTable *current_page;
+    AhoghillExampleTable *example_page;
+
     guint current_page_num;
     guint last_page;
 
@@ -412,4 +415,27 @@ ahoghill_results_pane_set_page (AhoghillResultsPane *pane,
 
     priv = pane->priv;
     ahoghill_results_table_set_page (priv->current_page, 0);
+}
+
+void
+ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
+                                          gboolean             show)
+{
+    AhoghillResultsPanePrivate *priv = pane->priv;
+
+    if (show) {
+        clutter_actor_hide (priv->current_page);
+        priv->example_page = g_object_new (AHOGHILL_TYPE_EXAMPLE_TABLE, NULL);
+
+        nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed),
+                              (ClutterActor *) priv->example_page);
+        clutter_actor_show ((ClutterActor *) priv->example_page);
+        clutter_actor_set_position ((ClutterActor *) priv->example_page, 0, 0);
+    } else {
+        clutter_actor_show (priv->current_page);
+        if (priv->example_page) {
+            clutter_actor_destroy (priv->example_page);
+            priv->example_page = NULL;
+        }
+    }
 }

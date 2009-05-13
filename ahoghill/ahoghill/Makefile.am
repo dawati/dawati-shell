@@ -1,6 +1,7 @@
 noinst_LTLIBRARIES = libahoghill.la
 
 libahoghill_headers = ahoghill-grid-view.h	\
+	ahoghill-example-table.h		\
 	ahoghill-media-art.h			\
 	ahoghill-media-tile.h			\
 	ahoghill-play-button.h			\
@@ -15,6 +16,7 @@ libahoghill_headers = ahoghill-grid-view.h	\
 	nbtk-fixed.h
 
 libahoghill_la_SOURCES = $(libahoghill_headers) \
+	ahoghill-example-table.c \
 	ahoghill-grid-view.c \
 	ahoghill-media-art.c \
 	ahoghill-media-tile.c \

@@ -925,6 +925,10 @@ AhoghillQueueList {
   padding-bottom: 5px;
 }
 
+*.AhoghillExampleText {
+  font-size: 17px;
+}
+
 /* pasteboard */
 
 *#pasteboard-vbox {
