@@ -1427,8 +1427,6 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
     moblin_netbook_input_region_remove_without_update (plugin,
                                                        priv->dropdown_region);
 
-  printf ("adding region %d,%d;%dx%d\n", x, y, w, h);
-
   priv->dropdown_region =
     moblin_netbook_input_region_push (plugin, x, TOOLBAR_HEIGHT + y, w, h);
 
