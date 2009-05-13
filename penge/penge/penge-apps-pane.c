@@ -69,7 +69,7 @@ penge_apps_pane_class_init (PengeAppsPaneClass *klass)
 
 static void
 _manager_bookmark_added_cb (PengeAppBookmarkManager *manager,
-                            PengeAppBookmark        *bookmark,
+                            const gchar             *uri,
                             gpointer                 userdata)
 {
   penge_apps_pane_update ((PengeAppsPane *)userdata);
@@ -89,7 +89,6 @@ penge_apps_pane_init (PengeAppsPane *self)
   PengeAppsPanePrivate *priv = GET_PRIVATE (self);
 
   priv->manager = penge_app_bookmark_manager_get_default ();
-  penge_app_bookmark_manager_load (priv->manager);
 
   g_signal_connect (priv->manager,
                     "bookmark-added",
@@ -117,9 +116,9 @@ penge_apps_pane_update (PengeAppsPane *pane)
   GList *bookmarks, *l, *to_remove;
   ClutterActor *actor;
   gint count = 0;
-  PengeAppBookmark *bookmark;
   gchar *path;
   GError *error = NULL;
+  const gchar *uri = NULL;
 
   bookmarks = penge_app_bookmark_manager_get_bookmarks (priv->manager);
 
@@ -127,13 +126,13 @@ penge_apps_pane_update (PengeAppsPane *pane)
 
   for (l = bookmarks; l && count < MAX_COUNT; l = l->next)
   {
-    bookmark = (PengeAppBookmark *)l->data;
+    uri = (gchar *)l->data;
 
     actor = g_hash_table_lookup (priv->uris_to_actors,
-                                 bookmark->uri);
+                                 uri);
 
     /* Check if this URI is on the system */
-    path = g_filename_from_uri (bookmark->uri, NULL, &error);
+    path = g_filename_from_uri (uri, NULL, &error);
 
     if (error)
     {
@@ -171,7 +170,7 @@ penge_apps_pane_update (PengeAppsPane *pane)
     } else {
       actor = g_object_new (PENGE_TYPE_APP_TILE,
                             "bookmark",
-                            bookmark,
+                            uri,
                             NULL);
       nbtk_table_add_actor (NBTK_TABLE (pane),
                             actor,
@@ -185,7 +184,7 @@ penge_apps_pane_update (PengeAppsPane *pane)
                                    FALSE,
                                    NULL);
       g_hash_table_insert (priv->uris_to_actors,
-                           g_strdup (bookmark->uri),
+                           g_strdup (uri),
                            actor);
     }
 
@@ -193,7 +192,7 @@ penge_apps_pane_update (PengeAppsPane *pane)
     /* This craziness is because the allocated string is probably different */
     to_remove = g_list_delete_link (to_remove,
                                     g_list_find_custom (to_remove,
-                                                        bookmark->uri,
+                                                        uri,
                                                         (GCompareFunc)g_strcmp0));
     count++;
   }
