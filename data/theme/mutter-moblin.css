@@ -425,6 +425,10 @@ MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:checked {
   background-image: url("file://launcher/launcher-button-fav-toggle-checked.png");
 }
 
+MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:active {
+  background-image: url("file://launcher/launcher-button-fav-toggle-active.png");
+}
+
 MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:hover {
   background-image: url("file://launcher/launcher-button-fav-toggle-hover.png");
 }

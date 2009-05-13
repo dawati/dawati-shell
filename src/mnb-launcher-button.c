@@ -36,7 +36,7 @@
 #define COL_SPACING 10
 #define FAV_TOGGLE_SIZE 24
 #define FAV_TOGGLE_X_OFFSET 7
-#define FAV_TOGGLE_Y_OFFSET 4
+#define FAV_TOGGLE_Y_OFFSET 5
 
 enum
 {
