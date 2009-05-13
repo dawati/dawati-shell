@@ -152,8 +152,6 @@ penge_app_tile_constructed (GObject *object)
                     (GCallback)_icon_theme_changed_cb,
                     object);
 
-  _update_icon_from_icon_theme ((PengeAppTile *)object);
-
   path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
 
   if (path)
@@ -170,6 +168,8 @@ penge_app_tile_constructed (GObject *object)
                error->message);
     g_clear_error (&error);
   }
+
+  _update_icon_from_icon_theme ((PengeAppTile *)object);
 }
 
 static void
