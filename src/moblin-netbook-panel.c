@@ -447,9 +447,9 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
     return;
 
   if (!strcmp (name, "tray-button-bluetooth"))
-    col = 3;
-  else if (!strcmp (name, "tray-button-wifi"))
     col = 2;
+  else if (!strcmp (name, "tray-button-wifi"))
+    col = 3;
   else if (!strcmp (name, "tray-button-sound"))
     col = 1;
   else if (!strcmp (name, "tray-button-battery"))
