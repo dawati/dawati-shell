@@ -13,6 +13,12 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 #define NUMBER_COLS 2
 #define NUMBER_OF_ITEMS 8
 
+#define TILE_WIDTH 170
+#define TILE_HEIGHT 115
+
+#define ROW_SPACING 6
+#define COL_SPACING 6
+
 static void penge_recent_files_pane_update (PengeRecentFilesPane *pane);
 
 typedef struct _PengeRecentFilesPanePrivate PengeRecentFilesPanePrivate;
@@ -78,8 +84,8 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
                                               g_free,
                                               g_object_unref);
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), ROW_SPACING);
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
 
   priv->manager = gtk_recent_manager_get_default ();
   g_signal_connect (priv->manager, 
@@ -189,7 +195,8 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                      "x-expand",
                                      FALSE,
                                      NULL);
-        clutter_actor_set_size (actor, 170, 115);
+
+        clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
         g_hash_table_insert (priv->uri_to_actor,
                              g_strdup (uri),
                              g_object_ref (actor));
