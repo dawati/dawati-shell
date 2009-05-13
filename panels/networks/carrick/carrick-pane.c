@@ -722,8 +722,9 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       FALSE,
                       8);
-  priv->flight_mode_label = gtk_label_new (_("This will disable all wireless"
-                                             " connections."));
+  priv->flight_mode_label = gtk_label_new ("");
+  gtk_label_set_markup (priv->flight_mode_label,
+                        _("This will disable <i>all</i> connections."));
   gtk_misc_set_alignment (GTK_MISC (priv->flight_mode_label),
                           0.5,
                           0.0);
