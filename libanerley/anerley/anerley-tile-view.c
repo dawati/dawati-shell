@@ -49,7 +49,7 @@ G_DEFINE_TYPE (AnerleyTileView, anerley_tile_view, NBTK_TYPE_ICON_VIEW)
 typedef struct _AnerleyTileViewPrivate AnerleyTileViewPrivate;
 
 struct _AnerleyTileViewPrivate {
-  gpointer nuffink;
+  AnerleyFeedModel *model;
 };
 
 enum
@@ -65,6 +65,9 @@ enum
 };
 
 guint signals[LAST_SIGNAL] = { 0 };
+
+static void anerley_tile_view_set_model (AnerleyTileView  *view,
+                                         AnerleyFeedModel *model);
 
 static void
 anerley_tile_view_get_property (GObject *object, guint property_id,
@@ -82,8 +85,8 @@ anerley_tile_view_set_property (GObject *object, guint property_id,
 {
   switch (property_id) {
     case PROP_MODEL:
-      nbtk_icon_view_set_model (NBTK_ICON_VIEW (object),
-                                g_value_get_object (value));
+      anerley_tile_view_set_model ((AnerleyTileView *)object,
+                                   g_value_get_object (value));
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -154,6 +157,64 @@ anerley_tile_view_new (AnerleyFeedModel *model)
                        "model",
                        model,
                        NULL);
+}
+
+static void
+_bulk_change_start_cb (AnerleyFeedModel *model,
+                       gpointer          userdata)
+{
+  nbtk_icon_view_freeze (NBTK_ICON_VIEW (userdata));
+}
+
+static void
+_bulk_change_end_cb (AnerleyFeedModel *model,
+                     gpointer          userdata)
+{
+  nbtk_icon_view_thaw (NBTK_ICON_VIEW (userdata));
+}
+
+static void
+anerley_tile_view_set_model (AnerleyTileView  *view,
+                             AnerleyFeedModel *model)
+{
+  AnerleyTileViewPrivate *priv = GET_PRIVATE (view);
+  gboolean model_was_set = FALSE;
+
+  if (priv->model)
+  {
+    g_signal_handlers_disconnect_by_func (priv->model,
+                                          _bulk_change_start_cb,
+                                          view);
+    g_signal_handlers_disconnect_by_func (priv->model,
+                                          _bulk_change_end_cb,
+                                          view);
+    g_object_unref (priv->model);
+    priv->model = NULL;
+    model_was_set = TRUE;
+  }
+
+  if (model)
+  {
+    priv->model = g_object_ref (model);
+    nbtk_icon_view_set_model (NBTK_ICON_VIEW (view),
+                              (ClutterModel *)priv->model);
+
+    g_signal_connect (model,
+                      "bulk-change-start",
+                      (GCallback)_bulk_change_start_cb,
+                      view);
+
+    g_signal_connect (model,
+                      "bulk-change-end",
+                      (GCallback)_bulk_change_end_cb,
+                      view);
+  } else {
+    if (model_was_set)
+    {
+      nbtk_icon_view_set_model (NBTK_ICON_VIEW (view),
+                                NULL);
+    }
+  }
 }
 
 
