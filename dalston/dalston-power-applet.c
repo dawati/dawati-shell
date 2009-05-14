@@ -7,6 +7,7 @@
 #include <gtk/gtk.h>
 #include <nbtk/nbtk-gtk.h>
 #include <glib/gi18n.h>
+#include <libnotify/notify.h>
 
 G_DEFINE_TYPE (DalstonPowerApplet, dalston_power_applet, G_TYPE_OBJECT)
 
@@ -159,6 +160,58 @@ dalston_power_applet_format_time_remaining (guint time_remaining)
   }
 }
 
+typedef enum
+{
+  NOTIFICATION_30_MINUTES,
+  NOTIFICATION_15_MINUTES,
+  NOTIFICATION_10_MINUTES,
+  NOTIFICATION_LAST
+} NotificationLevel;
+
+static const struct 
+{
+  const gchar *title;
+  const gchar *message;
+  const gchar *icon;
+} messages[] = {
+  { N_("Running low on battery"), N_("We've noticed that your battery is running a bit low. " \
+                                     "If you can it would be a good idea to plug in and top up."), NULL },
+  { N_("Getting close to empty"), N_("You're running quite low on battery. It'd be a good idea to save all your work " \
+                                     "and plug in as soon as you can"), NULL },
+  { N_("Danger!"), N_("Sorry, your computer is about to run out of battery. We're going to have to turn off now. " \
+                       "Please save your work and hope to see you again soon."), NULL}
+};
+
+static void
+dalston_power_applet_do_notification (DalstonPowerApplet *applet,
+                                      NotificationLevel   level)
+{
+  NotifyNotification *note;
+  GError *error = NULL;
+
+  note = notify_notification_new (_(messages[level].title),
+                                  _(messages[level].message),
+                                  _(messages[level].icon),
+                                  NULL);
+
+  notify_notification_set_timeout (note, 10000);
+
+  if (level == NOTIFICATION_10_MINUTES)
+  {
+    notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
+  }
+
+  if (!notify_notification_show (note,
+                                 &error))
+  {
+    g_warning (G_STRLOC ": Error showing notification: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  g_object_unref (note);
+}
+
 static void
 dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 {
@@ -169,6 +222,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   gboolean ac_connected = FALSE;
   gchar *label_text;
   BatteryIconState icon_state;
+  static gint last_notification_displayed = -1;
 
   time_remaining =
     dalston_battery_monitor_get_time_remaining (priv->battery_monitor);
@@ -241,6 +295,31 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
       gtk_label_set_markup (GTK_LABEL (priv->battery_secondary_label), 
                             _("until battery is charged"));
     }
+  }
+
+  /* Do notifications at various levels */
+  if (time_remaining < 60 * 10)
+  {
+    if (last_notification_displayed != NOTIFICATION_10_MINUTES)
+    {
+      dalston_power_applet_do_notification (applet, NOTIFICATION_10_MINUTES);
+      last_notification_displayed = NOTIFICATION_10_MINUTES;
+    }
+  } else if (time_remaining < 60 * 15) {
+    if (last_notification_displayed != NOTIFICATION_15_MINUTES)
+    {
+      dalston_power_applet_do_notification (applet, NOTIFICATION_15_MINUTES);
+      last_notification_displayed = NOTIFICATION_15_MINUTES;
+    }
+  } else if (time_remaining < 60 * 30) {
+    if (last_notification_displayed != NOTIFICATION_30_MINUTES)
+    {
+      dalston_power_applet_do_notification (applet, NOTIFICATION_30_MINUTES);
+      last_notification_displayed = NOTIFICATION_30_MINUTES;
+    }
+  } else {
+    /* Reset the notification */
+    last_notification_displayed = -1;
   }
 
 #if 0

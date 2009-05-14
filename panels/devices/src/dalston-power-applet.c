@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <libnotify/notify.h>
 
 #include <dalston/dalston-volume-applet.h>
 #include <dalston/dalston-power-applet.h>
@@ -38,6 +39,7 @@ main (int    argc,
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   gtk_init (&argc, &argv);
+  notify_init ("Dalston Power Applet");
 
   /* Force to the moblin theme */
   settings = gtk_settings_get_default ();
