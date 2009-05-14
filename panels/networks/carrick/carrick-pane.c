@@ -340,7 +340,7 @@ _new_connection_cb (GtkButton *button,
   gtk_table_attach_defaults(GTK_TABLE(table), secret_check, 0, 2, 4, 5);
 
   gtk_widget_show_all(dialog);
-  gtk_widget_hide (pane_find_plug (button));
+  gtk_widget_hide (pane_find_plug (GTK_WIDGET (button)));
 
   if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
     network = gtk_entry_get_text(GTK_ENTRY(ssid_entry));
