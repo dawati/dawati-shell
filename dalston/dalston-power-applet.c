@@ -4,6 +4,7 @@
 #include <dalston/dalston-brightness-slider.h>
 #include <dalston/dalston-brightness-manager.h>
 #include <dalston/dalston-button-monitor.h>
+#include <libhal-power-glib/hal-power-proxy.h>
 #include <gtk/gtk.h>
 #include <nbtk/nbtk-gtk.h>
 #include <glib/gi18n.h>
@@ -213,6 +214,19 @@ dalston_power_applet_do_notification (DalstonPowerApplet *applet,
 }
 
 static void
+dalston_power_applet_do_shutdown (DalstonPowerApplet *applet)
+{
+  HalPowerProxy *power_proxy;
+
+  power_proxy = hal_power_proxy_new ();
+  hal_power_proxy_shutdown (power_proxy,
+                            NULL,
+                            NULL,
+                            NULL);
+  g_object_unref (power_proxy);
+}
+
+static void
 dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 {
   DalstonPowerAppletPrivate *priv = GET_PRIVATE (applet);
@@ -298,8 +312,10 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   }
 
   /* Do notifications at various levels */
-  if (time_remaining < 60 * 10)
+  if (time_remaining < 60 * 5)
   {
+    dalston_power_applet_do_shutdown (applet);
+  } else if (time_remaining < 60 * 10) {
     if (last_notification_displayed != NOTIFICATION_10_MINUTES)
     {
       dalston_power_applet_do_notification (applet, NOTIFICATION_10_MINUTES);
