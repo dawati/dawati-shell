@@ -88,6 +88,14 @@ dropdown_show_cb (MnbDropDown  *dropdown,
 }
 
 static void
+first_drop_down_cb (MnbDropDown  *dropdown,
+                    ClutterActor *view)
+{
+  nbtk_icon_view_set_model (NBTK_ICON_VIEW (view), model);
+  g_signal_handlers_disconnect_by_func (dropdown, first_drop_down_cb, view);
+}
+
+static void
 dropdown_hide_cb (MnbDropDown  *dropdown,
                   ClutterActor *filter_entry)
 {
@@ -168,7 +176,7 @@ make_people_panel (MutterPlugin *plugin,
   mc = mission_control_new (conn);
   feed = anerley_aggregate_tp_feed_new (mc);
   model = anerley_feed_model_new (feed);
-  tile_view = anerley_tile_view_new (model);
+  tile_view = anerley_tile_view_new (NULL);
   scroll_view = nbtk_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
                                (ClutterActor *)tile_view);
@@ -180,6 +188,9 @@ make_people_panel (MutterPlugin *plugin,
   g_signal_connect (drop_down, "show-completed",
                     G_CALLBACK (dropdown_show_cb),
                     entry);
+  g_signal_connect (drop_down, "show-completed",
+                    G_CALLBACK (first_drop_down_cb),
+                    tile_view);
   g_signal_connect (drop_down, "hide-completed",
                     G_CALLBACK (dropdown_hide_cb),
                     entry);
