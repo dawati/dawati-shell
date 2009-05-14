@@ -544,6 +544,7 @@ _media_drop_down_shown (MnbDropDown      *drop_down,
 {
   ahoghill_grid_view_focus (view);
 }
+
 #endif
 
 #ifdef WITH_NETPANEL
@@ -816,6 +817,9 @@ make_panel (MutterPlugin *plugin, gint width)
   g_signal_connect (priv->media_drop_down, "show-completed",
                     G_CALLBACK (_media_drop_down_shown),
                     ahoghill_grid_view);
+  g_signal_connect_swapped (ahoghill_grid_view, "dismiss",
+                            G_CALLBACK (hide_panel), plugin);
+
 #endif
 
 #ifdef WITH_NETPANEL

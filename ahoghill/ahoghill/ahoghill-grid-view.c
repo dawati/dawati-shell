@@ -25,6 +25,11 @@ enum {
     PROP_0,
 };
 
+enum {
+    DISMISS,
+    LAST_SIGNAL
+};
+
 typedef struct _Source {
     BklSourceClient *source;
     BklDB *db;
@@ -56,6 +61,7 @@ struct _AhoghillGridViewPrivate {
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_GRID_VIEW, AhoghillGridViewPrivate))
 G_DEFINE_TYPE (AhoghillGridView, ahoghill_grid_view, NBTK_TYPE_TABLE);
+static guint32 signals[LAST_SIGNAL] = {0, };
 
 /* Adjustable length of time between typing a letter and search taking place */
 #define SEARCH_TIMEOUT 50
@@ -109,6 +115,13 @@ ahoghill_grid_view_class_init (AhoghillGridViewClass *klass)
     o_class->get_property = ahoghill_grid_view_get_property;
 
     g_type_class_add_private (klass, sizeof (AhoghillGridViewPrivate));
+
+    signals[DISMISS] = g_signal_new ("dismiss",
+                                     G_TYPE_FROM_CLASS (klass),
+                                     G_SIGNAL_RUN_FIRST |
+                                     G_SIGNAL_NO_RECURSE, 0, NULL, NULL,
+                                     g_cclosure_marshal_VOID__VOID,
+                                     G_TYPE_NONE, 0);
 }
 
 static Source *
@@ -747,6 +760,8 @@ item_clicked_cb (AhoghillResultsPane *pane,
         g_warning ("Error launching Hornsey: %s", error->message);
         g_error_free (error);
     }
+
+    g_signal_emit (grid, signals[DISMISS], 0);
 #endif
 }
 
