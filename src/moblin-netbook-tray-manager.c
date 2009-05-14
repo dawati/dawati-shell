@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Based on Gnome Shell.
+ * Based on Gnome Shell; http://git.gnome.org/cgit/gnome-shell/
  */
 #include <clutter/clutter.h>
 #include <clutter/glx/clutter-glx.h>
