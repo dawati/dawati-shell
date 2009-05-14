@@ -27,6 +27,7 @@ libdalston_la_CFLAGS = -I$(top_srcdir) \
 		       $(PULSE_CFLAGS) \
 		       $(CANBERRA_CFLAGS) \
 		       $(NBTK_GTK_CFLAGS) \
+		       $(LIBNOTIFY_CFLAGS) \
 		       -DPKG_DATA_DIR=\"$(pkgdatadir)\"
 
 libdalston_la_LIBADD = $(top_builddir)/libhal-glib/libhal-glib.la \
@@ -38,5 +39,6 @@ libdalston_la_LIBADD = $(top_builddir)/libhal-glib/libhal-glib.la \
 		       $(GTK_LIBS) \
 		       $(PULSE_LIBS) \
 		       $(CANBERRA_LIBS) \
-		       $(NBTK_GTK_LIBS)
+		       $(NBTK_GTK_LIBS) \
+		       $(LIBNOTIFY_LIBS)
 
