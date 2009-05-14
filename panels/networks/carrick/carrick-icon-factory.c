@@ -147,6 +147,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
 {
   CarrickIconFactoryPrivate *priv = ICON_FACTORY_PRIVATE (factory);
   GdkPixbuf *icon = NULL;
+  GError *error = NULL;
 
   switch (state)
   {
@@ -155,7 +156,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->active_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->active_img;
       break;
@@ -164,7 +165,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->active_hov_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->active_hov_img;
       break;
@@ -173,7 +174,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->connecting_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->connecting_img;
       break;
@@ -182,7 +183,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->connecting_hov_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->connecting_hov_img;
       break;
@@ -191,7 +192,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->error_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->error_img;
       break;
@@ -200,7 +201,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->error_hov_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->error_hov_img;
       break;
@@ -209,7 +210,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->offline_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->offline_img;
       break;
@@ -218,7 +219,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->offline_hov_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->offline_hov_img;
       break;
@@ -227,7 +228,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->wireless_weak_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->wireless_weak_img;
       break;
@@ -236,7 +237,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->wireless_weak_hov_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->wireless_weak_hov_img;
       break;
@@ -245,7 +246,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->wireless_good_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->wireless_good_img;
       break;
@@ -254,7 +255,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->wireless_good_hov_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->wireless_good_hov_img;
       break;
@@ -263,7 +264,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->wireless_strong_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->wireless_strong_img;
       break;
@@ -272,13 +273,26 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       {
         priv->wireless_strong_hov_img =
           gdk_pixbuf_new_from_file (icon_names[state],
-                                    NULL);
+                                    &error);
       }
       icon = priv->wireless_strong_hov_img;
       break;
     default:
-      icon = NULL;
+      if (!priv->error_img)
+      {
+        priv->error_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->error_img;
       break;
+  }
+
+  if (icon == NULL || error)
+  {
+    g_warning (G_STRLOC ":error opening pixbuf: %s",
+               error->message);
+    g_clear_error (&error);
   }
 
   return icon;
