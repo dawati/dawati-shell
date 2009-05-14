@@ -52,9 +52,9 @@ _notify_connection_changed (CarrickApplet *self)
 {
   NotifyNotification *note;
   GError *error = NULL;
-  gchar *title;
-  gchar *message;
-  const gchar *icon; // filename
+  gchar *title = NULL;
+  gchar *message = NULL;
+  const gchar *icon = NULL; // filename
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
 
   if (priv->state &&
@@ -62,34 +62,58 @@ _notify_connection_changed (CarrickApplet *self)
   {
     title = g_strdup_printf (_("Offline"));
     message = g_strdup_printf (_("No active connection."));
+    icon = carrick_icon_factory_get_path_for_state (ICON_OFFLINE);
   }
   else
   {
-    /* FIXME: should probably handle NULL active */
     CmConnection *active = cm_manager_get_active_connection (priv->manager);
-    CmConnectionType type = cm_connection_get_type (active);
     title = g_strdup_printf (_("Online"));
-    message = g_strdup_printf (_("Now connected to %s."),
-                               cm_connection_type_to_string (type));
+    if (active)
+    {
+      CmConnectionType type = cm_connection_get_type (active);
+      guint str = 0;
+      message = g_strdup_printf (_("Now online and connected to %s."),
+                                 cm_connection_type_to_string (type));
+      switch (type)
+      {
+        case CONNECTION_WIFI:
+          str = cm_connection_get_strength (active);
+          if (str > 70)
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_NETWORK_STRONG);
+          else if (str > 35)
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_NETWORK_GOOD);
+          else
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_NETWORK_WEAK);
+          break;
+        default:
+          icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+          break;
+      }
+    }
+    else
+    {
+      title = "Now online.";
+      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+    }
   }
 
-  icon = carrick_icon_factory_get_path_for_service
-    (cm_manager_get_active_service (priv->manager));
+  if (title && message)
+  {
+    note = notify_notification_new (title,
+                                    message,
+                                    icon,
+                                    NULL);
+    notify_notification_set_timeout (note,
+                                     10000);
 
-  note = notify_notification_new (title,
-                                  message,
-                                  icon,
-                                  NULL);
-  notify_notification_set_timeout (note,
-                                   10000);
-
-  notify_notification_show (note,
-                            &error);
-  if (error) {
-    g_debug ("Error sending notification: %s",
-             error->message);
+    notify_notification_show (note,
+                              &error);
+    if (error) {
+      g_debug ("Error sending notification: %s",
+               error->message);
+    }
+    g_object_unref (note);
   }
-  g_object_unref (note);
 }
 
 static void
@@ -99,7 +123,8 @@ manager_connections_changed_cb (CmManager *manager,
   CarrickApplet *applet = CARRICK_APPLET (user_data);
   CarrickAppletPrivate *priv = GET_PRIVATE (applet);
 
-  carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
+  if (priv->icon)
+    carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
 }
 
 static void
