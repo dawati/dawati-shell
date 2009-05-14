@@ -281,6 +281,9 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   DalstonPowerAppletPrivate *priv = GET_PRIVATE (self);
   GtkWidget *battery_vbox;
   GtkWidget *label;
+  GtkWidget *vbox;
+  GtkWidget *frame;
+  GtkWidget *hbox;
 
   /* Button monitor goes here, bleargh... */
   priv->button_monitor = dalston_button_monitor_new ();
@@ -306,13 +309,38 @@ dalston_power_applet_init (DalstonPowerApplet *self)
 #endif
 
   /* Create the pane hbox */
-  priv->main_hbox = gtk_hbox_new (FALSE, 8);
+  priv->main_hbox = gtk_hbox_new (FALSE, 4);
+  gtk_container_set_border_width (GTK_CONTAINER (priv->main_hbox), 4);
+  frame = nbtk_gtk_frame_new ();
+  gtk_box_pack_start (GTK_BOX (priv->main_hbox),
+                      frame,
+                      TRUE,
+                      TRUE,
+                      0);
+  vbox = gtk_vbox_new (FALSE, 8);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
+  gtk_container_add (GTK_BIN (frame), vbox);
+  label = gtk_label_new (_("<span font_size=\"x-large\">Display brightness</span>"));
+  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      label,
+                      FALSE,
+                      FALSE,
+                      0);
+  hbox = gtk_hbox_new (FALSE, 8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      hbox,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 8);
 
   if (dalston_brightness_manager_is_controllable (priv->brightness_manager))
   {
     priv->brightness_slider = 
       dalston_brightness_slider_new (priv->brightness_manager);
-    gtk_box_pack_start (GTK_BOX (priv->main_hbox),
+    gtk_box_pack_start (GTK_BOX (hbox),
                         priv->brightness_slider,
                         TRUE,
                         TRUE,
@@ -320,19 +348,24 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   } else {
     label = gtk_label_new (_("Sorry, we don't support modifying " \
                              "the brightness of your screen"));
-    gtk_box_pack_start (GTK_BOX (priv->main_hbox),
+    gtk_box_pack_start (GTK_BOX (hbox),
                         label,
                         TRUE,
                         FALSE,
                         8);
 
   }
-  battery_vbox = gtk_vbox_new (FALSE, 8);
+  
+  frame = nbtk_gtk_frame_new ();
   gtk_box_pack_start (GTK_BOX (priv->main_hbox),
-                      battery_vbox,
+                      frame,
                       FALSE,
                       FALSE,
-                      8);
+                      0);
+  battery_vbox = gtk_vbox_new (FALSE, 8);
+  gtk_container_set_border_width (GTK_CONTAINER (battery_vbox), 8);
+  gtk_container_add (GTK_BIN (frame), battery_vbox);
+
   priv->battery_image = gtk_image_new();
 #if 0
   gtk_image_set_from_icon_name (priv->battery_image,

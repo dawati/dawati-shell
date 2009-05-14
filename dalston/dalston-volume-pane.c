@@ -145,19 +145,48 @@ dalston_volume_pane_init (DalstonVolumePane *self)
 {
   DalstonVolumePanePrivate *priv = GET_PRIVATE (self);
   GtkWidget *vbox;
+  GtkWidget *label;
+  GtkWidget *frame;
+  GtkWidget *hbox;
 
+  gtk_box_set_spacing (GTK_BOX (self), 4);
+  gtk_container_set_border_width (GTK_CONTAINER (self), 4);
+
+  frame = nbtk_gtk_frame_new ();
+  vbox = gtk_vbox_new (FALSE, 8);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
+  gtk_container_add (GTK_BIN (frame), vbox);
+  label = gtk_label_new (_("<span font_size=\"x-large\">Output volume</span>"));
+  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      label,
+                      FALSE,
+                      FALSE,
+                      0);
+  hbox = gtk_hbox_new (FALSE, 8);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 8);
   priv->volume_slider = dalston_volume_slider_new ();
-  gtk_box_pack_start (GTK_BOX (self),
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      hbox,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (hbox),
                       priv->volume_slider,
                       TRUE,
                       TRUE,
                       8);
-  vbox = gtk_vbox_new (FALSE, 8);
   gtk_box_pack_start (GTK_BOX (self),
-                      vbox,
-                      FALSE,
-                      FALSE,
-                      8);
+                      frame,
+                      TRUE,
+                      TRUE,
+                      0);
+
+  frame = nbtk_gtk_frame_new ();
+  vbox = gtk_vbox_new (FALSE, 8);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 8);
+  gtk_container_add (GTK_BIN (frame), vbox);
   priv->mute_button = gtk_toggle_button_new_with_label (_("Mute"));
   g_signal_connect (priv->mute_button,
                     "toggled",
@@ -178,6 +207,11 @@ dalston_volume_pane_init (DalstonVolumePane *self)
                       TRUE,
                       FALSE,
                       8);
+  gtk_box_pack_start (GTK_BOX (self),
+                      frame,
+                      FALSE,
+                      FALSE,
+                      0);
 }
 
 GtkWidget *
