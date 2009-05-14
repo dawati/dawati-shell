@@ -36,7 +36,6 @@ typedef struct _CarrickStatusIconPrivate CarrickStatusIconPrivate;
 struct _CarrickStatusIconPrivate {
   CmManager          *manager;
   CarrickIconFactory *icon_factory;
-  CarrickIconState    current_state;
   gboolean            active;
 };
 
@@ -158,11 +157,7 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
     connection = cm_manager_get_active_connection (priv->manager);
   }
 
-  if (!connection)
-  {
-    icon_state = ICON_OFFLINE;
-  }
-  else
+  if (connection)
   {
     type = cm_connection_get_type (connection);
     switch (type)
@@ -191,13 +186,16 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
         break;
     }
   }
+  else
+  {
+    icon_state = ICON_OFFLINE;
+  }
 
   if (priv->active)
     icon_state++;
 
-  priv->current_state = icon_state;
   pixbuf = carrick_icon_factory_get_pixbuf_for_state (priv->icon_factory,
-                                                      priv->current_state);
+                                                      icon_state);
 
   gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (icon),
                                    pixbuf);
