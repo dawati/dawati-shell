@@ -108,7 +108,7 @@ get_mojito_service_name (const gchar *service_name)
 }
 
 static void
-on_cancel_clicked (NbtkButton *button,
+on_cancel_clicked (NbtkButton     *button,
                    MnbStatusEntry *entry)
 {
   MnbStatusEntryPrivate *priv = entry->priv;
@@ -138,7 +138,7 @@ on_cancel_clicked (NbtkButton *button,
 }
 
 static void
-on_button_clicked (NbtkButton *button,
+on_button_clicked (NbtkButton     *button,
                    MnbStatusEntry *entry)
 {
   mnb_status_entry_set_is_active (entry,
@@ -201,47 +201,27 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   ClutterUnit min_width, min_height;
   ClutterUnit natural_width, natural_height;
   ClutterUnit button_width, button_height;
-  ClutterUnit service_width;
+  ClutterUnit service_width, service_height;
   ClutterUnit icon_width, icon_height;
   ClutterUnit text_width, text_height;
-  NbtkPadding border = { 0, };
   ClutterActorBox child_box = { 0, };
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class);
   parent_class->allocate (actor, box, origin_changed);
 
-//  nbtk_widget_get_border (NBTK_WIDGET (actor), &border);
-
   available_width  = (int) (box->x2 - box->x1
-                   - priv->padding.left - priv->padding.right
-                   - border.left - border.right);
+                   - priv->padding.left
+                   - priv->padding.right);
   available_height = (int) (box->y2 - box->y1
-                   - priv->padding.top - priv->padding.bottom
-                   - border.top - border.right);
+                   - priv->padding.top
+                   - priv->padding.bottom);
 
   clutter_actor_get_preferred_size (priv->button,
                                     &min_width, &min_height,
                                     &natural_width, &natural_height);
 
-  if (natural_width >= available_width)
-    {
-      if (min_width >= available_width)
-        button_width = available_width;
-      else
-        button_width = min_width;
-    }
-  else
-    button_width = natural_width;
-
-  if (natural_height >= available_height)
-    {
-      if (min_height >= available_width)
-        button_height = available_height;
-      else
-        button_height = min_height;
-    }
-  else
-    button_height = natural_height;
+  button_width  = CLAMP (natural_width, min_width, available_width);
+  button_height = CLAMP (natural_height, min_height, available_height);
 
   /* layout
    *
@@ -264,10 +244,16 @@ mnb_status_entry_allocate (ClutterActor          *actor,
     icon_width = 0;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
-    clutter_actor_get_preferred_width (priv->service_label,
-                                       available_height,
-                                       NULL,
-                                       &service_width);
+    {
+      clutter_actor_get_preferred_width (priv->service_label,
+                                         available_height,
+                                         NULL,
+                                         &service_width);
+      clutter_actor_get_preferred_height (priv->service_label,
+                                          service_width,
+                                          NULL,
+                                          &service_height);
+    }
   else
     service_width = (2 * H_PADDING);
 
@@ -277,14 +263,14 @@ mnb_status_entry_allocate (ClutterActor          *actor,
              - button_width
              - service_width
              - icon_width
-             - (5 * H_PADDING));
+             - (6 * H_PADDING));
 
   clutter_actor_get_preferred_height (priv->status_entry, text_width,
                                       NULL,
                                       &text_height);
 
-  child_box.x1 = (int) (border.left + priv->padding.left);
-  child_box.y1 = (int) (border.top + priv->padding.top);
+  child_box.x1 = (int) priv->padding.left;
+  child_box.y1 = (int) priv->padding.top;
   child_box.x2 = (int) (child_box.x1 + text_width);
   child_box.y2 = (int) (child_box.y1 + text_height);
   clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
@@ -293,15 +279,16 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
     {
       child_box.x1 = (int) (available_width
-                   - (border.right + priv->padding.right)
+                   - priv->padding.right
                    - button_width
                    - H_PADDING
                    - icon_width
                    - H_PADDING
                    - service_width);
-      child_box.y1 = (int) (border.top + priv->padding.top);
+      child_box.y1 = (int) (priv->padding.top
+                   + ((available_height - service_height) / 2));
       child_box.x2 = (int) (child_box.x1 + service_width);
-      child_box.y2 = (int) (child_box.y1 + text_height);
+      child_box.y2 = (int) (child_box.y1 + service_height);
       clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
     }
 
@@ -309,29 +296,30 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
     {
       child_box.x1 = (int) (available_width
-                   - (border.right + priv->padding.right)
+                   - priv->padding.right
                    - button_width
                    - H_PADDING
                    - icon_width);
-      child_box.y1 = (int) (border.top + priv->padding.top);
+      child_box.y1 = (int) (priv->padding.top
+                   + ((available_height - icon_height) / 2));
       child_box.x2 = (int) (child_box.x1 + icon_width);
-      child_box.y2 = (int) (child_box.y1 + text_height);
+      child_box.y2 = (int) (child_box.y1 + icon_height);
       clutter_actor_allocate (priv->cancel_icon, &child_box, origin_changed);
     }
 
   /* separator */
   priv->separator_x = available_width
-                    - (border.right + priv->padding.right)
+                    - priv->padding.right
                     - button_width
                     - (H_PADDING - 1);
 
   /* button */
-  child_box.x1 = (int) (available_width
-               - (border.right + priv->padding.right)
-               - button_width);
-  child_box.y1 = (int) (border.top + priv->padding.top);
+  child_box.x1 = (int) (priv->separator_x + (2 * H_PADDING)
+               + (((available_width - priv->separator_x) - button_width) / 2));
+  child_box.y1 = (int) (priv->padding.top
+               + ((available_height - button_height) / 2));
   child_box.x2 = (int) (child_box.x1 + button_width);
-  child_box.y2 = (int) (child_box.y1 + text_height);
+  child_box.y2 = (int) (child_box.y1 + button_height);
   clutter_actor_allocate (priv->button, &child_box, origin_changed);
 }
 
