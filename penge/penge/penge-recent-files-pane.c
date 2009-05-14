@@ -1,5 +1,7 @@
 #include <gtk/gtk.h>
 #include <gio/gio.h>
+#include <glib/gi18n.h>
+#include <gconf/gconf-client.h>
 
 #include "penge-recent-files-pane.h"
 #include "penge-utils.h"
@@ -13,13 +15,23 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 #define NUMBER_COLS 2
 #define NUMBER_OF_ITEMS 8
 
+#define TILE_WIDTH 170
+#define TILE_HEIGHT 115
+
+#define ROW_SPACING 6
+#define COL_SPACING 6
+
+#define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/m_zone/boot_count"
+
 static void penge_recent_files_pane_update (PengeRecentFilesPane *pane);
 
 typedef struct _PengeRecentFilesPanePrivate PengeRecentFilesPanePrivate;
 
 struct _PengeRecentFilesPanePrivate {
-    GHashTable *uri_to_actor;
-    GtkRecentManager *manager;
+  GHashTable *uri_to_actor;
+  GtkRecentManager *manager;
+  ClutterActor *welcome_tile;
+  gint boot_count;
 };
 
 static void
@@ -72,20 +84,56 @@ static void
 penge_recent_files_pane_init (PengeRecentFilesPane *self)
 {
   PengeRecentFilesPanePrivate *priv = GET_PRIVATE (self);
+  GError *error = NULL;
+  GConfClient *client;
+
+  client = gconf_client_get_default ();
+
+  priv->boot_count = gconf_client_get_int (client,
+                                           MOBLIN_BOOT_COUNT_KEY,
+                                           &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error getting boot count: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  /* increment */
+  priv->boot_count++;
+
+  if (priv->boot_count <= 5)
+  {
+    if (!gconf_client_set_int (client,
+                               MOBLIN_BOOT_COUNT_KEY,
+                               priv->boot_count,
+                               &error))
+    {
+      g_warning (G_STRLOC ": Error setting boot count: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+  }
+
+  g_object_unref (client);
 
   priv->uri_to_actor = g_hash_table_new_full (g_str_hash,
                                               g_str_equal,
                                               g_free,
                                               g_object_unref);
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), ROW_SPACING);
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
 
   priv->manager = gtk_recent_manager_get_default ();
   g_signal_connect (priv->manager, 
                     "changed",
                     (GCallback)_recent_manager_changed_cb, 
                     self);
+
+
+  clutter_actor_set_width ((ClutterActor *)self, TILE_WIDTH * 2 + COL_SPACING);
   penge_recent_files_pane_update (self);
 }
 
@@ -101,6 +149,74 @@ _recent_files_sort_func (GtkRecentInfo *a,
   } else {
     return 0;
   }
+}
+
+static ClutterActor *
+_make_welcome_tile ()
+{
+  NbtkWidget *tile;
+  NbtkWidget *label;
+  ClutterActor *tmp_text;
+
+  tile = nbtk_table_new ();
+  clutter_actor_set_size ((ClutterActor *)tile,
+                          TILE_WIDTH * 2 + COL_SPACING,
+                          TILE_HEIGHT);
+  nbtk_widget_set_style_class_name ((NbtkWidget *)tile, "PengeWelcomeTile");
+
+
+
+  label = nbtk_label_new (_("<b>Welcome to Moblin 2.0 for Netbooks</b>"));
+  clutter_actor_set_name ((ClutterActor *)label,
+                          "penge-welcome-primary-text");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text),
+                               TRUE);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                              PANGO_ELLIPSIZE_NONE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)label,
+                                        0,
+                                        0,
+                                        "x-expand",
+                                        TRUE,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-expand",
+                                        TRUE,
+                                        "y-fill",
+                                        TRUE,
+                                        NULL);
+
+  label = nbtk_label_new (_("As Moblin is a bit different to other computers, " \
+                            "we've put together a couple of bits and pieces to " \
+                            "help you find your way around this Beta Release. " \
+                            "We hope you enjoy it, The Moblin Team."));
+  clutter_actor_set_name ((ClutterActor *)label,
+                          "penge-welcome-secondary-text");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                              PANGO_ELLIPSIZE_NONE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)label,
+                                        1,
+                                        0,
+                                        "x-expand",
+                                        TRUE,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-expand",
+                                        TRUE,
+                                        "y-fill",
+                                        TRUE,
+                                        NULL);
+  return (ClutterActor *)tile;
 }
 
 static void
@@ -119,6 +235,38 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
   gchar *filename = NULL;
 
   items = gtk_recent_manager_get_items (priv->manager);
+
+  if (priv->boot_count > 5 || g_list_length (items) > 3)
+  {
+    if (priv->welcome_tile)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                      priv->welcome_tile);
+      priv->welcome_tile = NULL;
+    }
+  } else {
+    if (!priv->welcome_tile)
+    {
+      priv->welcome_tile = _make_welcome_tile ();
+
+      clutter_actor_show_all (priv->welcome_tile);
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (pane),
+                                            priv->welcome_tile,
+                                            0,
+                                            0,
+                                            "col-span",
+                                            2,
+                                            "y-expand",
+                                            FALSE,
+                                            "x-expand",
+                                            TRUE,
+                                            NULL);
+    }
+
+    /* offset the recrnt files */
+    count = 2;
+  }
+
   items = g_list_sort (items, (GCompareFunc)_recent_files_sort_func);
 
   old_actors = g_hash_table_get_values (priv->uri_to_actor);
@@ -188,8 +336,17 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                      FALSE,
                                      "x-expand",
                                      FALSE,
+                                     "y-fill",
+                                     FALSE,
+                                     "x-fill",
+                                     FALSE,
+                                     "x-align",
+                                     0.0,
+                                     "y-align",
+                                     0.0,
                                      NULL);
-        clutter_actor_set_size (actor, 170, 115);
+
+        clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
         g_hash_table_insert (priv->uri_to_actor,
                              g_strdup (uri),
                              g_object_ref (actor));

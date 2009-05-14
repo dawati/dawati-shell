@@ -215,7 +215,6 @@ _make_no_content_tile (void)
                                                 icon,
                                                 ICON_SIZE,
                                                 GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-    g_object_unref (icon);
 
     tex = clutter_texture_new_from_file (gtk_icon_info_get_filename (icon_info),
                                          &error);

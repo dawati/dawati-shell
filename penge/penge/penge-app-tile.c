@@ -14,10 +14,10 @@ G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
 typedef struct _PengeAppTilePrivate PengeAppTilePrivate;
 
 struct _PengeAppTilePrivate {
-  PengeAppBookmark *bookmark;
   ClutterActor *tex;
   GtkIconTheme *icon_theme;
   GAppInfo *app_info;
+  gchar *bookmark;
 };
 
 enum
@@ -37,7 +37,7 @@ penge_app_tile_get_property (GObject *object, guint property_id,
 
   switch (property_id) {
     case PROP_BOOKMARK:
-      g_value_set_boxed (value, priv->bookmark);
+      g_value_set_string (value, priv->bookmark);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -52,7 +52,7 @@ penge_app_tile_set_property (GObject *object, guint property_id,
 
   switch (property_id) {
     case PROP_BOOKMARK:
-      priv->bookmark = g_value_dup_boxed (value);
+      priv->bookmark = g_value_dup_string (value);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -63,12 +63,6 @@ static void
 penge_app_tile_dispose (GObject *object)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (object);
-
-  if (priv->bookmark)
-  {
-    penge_app_bookmark_unref (priv->bookmark);
-    priv->bookmark = NULL;
-  }
 
   if (priv->app_info)
   {
@@ -82,6 +76,10 @@ penge_app_tile_dispose (GObject *object)
 static void
 penge_app_tile_finalize (GObject *object)
 {
+  PengeAppTilePrivate *priv = GET_PRIVATE (object);
+
+  g_free (priv->bookmark);
+
   G_OBJECT_CLASS (penge_app_tile_parent_class)->finalize (object);
 }
 
@@ -99,7 +97,6 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
                                          icon,
                                          ICON_SIZE,
                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-  g_object_unref (icon);
 
   if (!info)
   {
@@ -152,7 +149,7 @@ penge_app_tile_constructed (GObject *object)
                     (GCallback)_icon_theme_changed_cb,
                     object);
 
-  path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
+  path = g_filename_from_uri (priv->bookmark, NULL, &error);
 
   if (path)
   {
@@ -186,11 +183,11 @@ penge_app_tile_class_init (PengeAppTileClass *klass)
   object_class->finalize = penge_app_tile_finalize;
   object_class->constructed = penge_app_tile_constructed;
 
-  pspec = g_param_spec_boxed ("bookmark",
-                              "bookmark",
-                              "bookmark",
-                              PENGE_TYPE_APP_BOOKMARK,
-                              G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+  pspec = g_param_spec_string ("bookmark",
+                               "bookmark",
+                               "bookmark",
+                               NULL,
+                               G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_BOOKMARK, pspec);
 }
 
