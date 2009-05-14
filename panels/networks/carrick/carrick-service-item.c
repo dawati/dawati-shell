@@ -155,6 +155,11 @@ _connect_button_cb (GtkButton *connect_button,
         }
         gtk_widget_destroy (dialog);
       }
+      else
+      {
+        /* We have the passphrase already, just connect */
+        cm_service_connect (CM_SERVICE (priv->service));
+      }
     }
     else
     {
