@@ -18,7 +18,8 @@ dalston_volume_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			      $(GTK_LIBS) \
 			      $(CANBERRA_LIBS) \
 			      $(NBTK_GTK_LIBS) \
-			      $(LIBNOTIFY_LIBS)
+			      $(LIBNOTIFY_LIBS) \
+			      $(GCONF_LIBS)
 dalston_volume_applet_SOURCES = dalston-volume-applet.c moblin-netbook-system-tray.h
 
 dalston_power_applet_CFLAGS = -I$(top_srcdir) \
