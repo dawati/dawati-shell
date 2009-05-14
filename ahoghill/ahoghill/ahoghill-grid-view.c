@@ -718,6 +718,7 @@ item_clicked_cb (AhoghillResultsPane *pane,
     AhoghillGridViewPrivate *priv = grid->priv;
     GError *error = NULL;
 
+#if 0
     br_queue_play_uri (priv->local_queue, bkl_item_get_uri (item),
                        bkl_item_get_mimetype (item));
     if (error != NULL) {
@@ -726,6 +727,19 @@ item_clicked_cb (AhoghillResultsPane *pane,
                    error->message);
         g_error_free (error);
     }
+#else
+    {
+        char *argv[3] = { "/usr/bin/hornsey", NULL, NULL };
+        GError *error = NULL;
+
+        argv[1] = bkl_item_get_uri (item);
+        g_spawn_async (NULL, argv, NULL, 0, NULL, NULL, NULL, &error);
+        if (error != NULL) {
+            g_warning ("Error launching Hornsey: %s", error->message);
+            g_error_free (error);
+        }
+    }
+#endif
 }
 
 static void
