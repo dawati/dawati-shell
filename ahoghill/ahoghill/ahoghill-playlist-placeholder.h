@@ -27,15 +27,12 @@ G_BEGIN_DECLS
                                AHOGHILL_TYPE_PLAYLIST_PLACEHOLDER,      \
                                AhoghillPlaylistPlaceholderClass))
 
-typedef struct _AhoghillPlaylistPlaceholderPrivate AhoghillPlaylistPlaceholderPrivate;
 typedef struct _AhoghillPlaylistPlaceholder      AhoghillPlaylistPlaceholder;
 typedef struct _AhoghillPlaylistPlaceholderClass AhoghillPlaylistPlaceholderClass;
 
 struct _AhoghillPlaylistPlaceholder
 {
     NbtkWidget parent;
-
-    AhoghillPlaylistPlaceholderPrivate *priv;
 };
 
 struct _AhoghillPlaylistPlaceholderClass
