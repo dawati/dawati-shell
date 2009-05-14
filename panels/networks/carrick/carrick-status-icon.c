@@ -117,6 +117,8 @@ carrick_status_icon_class_init (CarrickStatusIconClass *klass)
 static void
 carrick_status_icon_init (CarrickStatusIcon *self)
 {
+  gtk_status_icon_set_from_stock (GTK_STATUS_ICON (self),
+                                  GTK_STOCK_NETWORK);
 }
 
 void
@@ -174,6 +176,7 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
   priv->current_state = icon_state;
   pixbuf = carrick_icon_factory_get_pixbuf_for_state (priv->icon_factory,
                                                       priv->current_state);
+
   gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (icon),
                                    pixbuf);
 }
