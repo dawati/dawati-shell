@@ -163,9 +163,9 @@ dalston_power_applet_format_time_remaining (guint time_remaining)
 
 typedef enum
 {
-  NOTIFICATION_30_MINUTES,
-  NOTIFICATION_15_MINUTES,
-  NOTIFICATION_10_MINUTES,
+  NOTIFICATION_30_PERCENT,
+  NOTIFICATION_15_PERCENT,
+  NOTIFICATION_10_PERCENT,
   NOTIFICATION_LAST
 } NotificationLevel;
 
@@ -197,7 +197,7 @@ dalston_power_applet_do_notification (DalstonPowerApplet *applet,
 
   notify_notification_set_timeout (note, 10000);
 
-  if (level == NOTIFICATION_10_MINUTES)
+  if (level == NOTIFICATION_10_PERCENT)
   {
     notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
   }
@@ -213,6 +213,7 @@ dalston_power_applet_do_notification (DalstonPowerApplet *applet,
   g_object_unref (note);
 }
 
+#if 0
 static void
 dalston_power_applet_do_shutdown (DalstonPowerApplet *applet)
 {
@@ -226,6 +227,8 @@ dalston_power_applet_do_shutdown (DalstonPowerApplet *applet)
   g_object_unref (power_proxy);
 }
 
+#endif
+
 static void
 dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 {
@@ -237,6 +240,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   gchar *label_text;
   BatteryIconState icon_state;
   static gint last_notification_displayed = -1;
+  gchar *description;
 
   time_remaining =
     dalston_battery_monitor_get_time_remaining (priv->battery_monitor);
@@ -292,52 +296,56 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_100);
   }
 
-  if (time_remaining == 0 && state == DALSTON_BATTERY_MONITOR_STATE_OTHER)
+  if (state == DALSTON_BATTERY_MONITOR_STATE_OTHER)
   {
-    gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label), _("Fully charged"));
-    gtk_label_set_markup (GTK_LABEL (priv->battery_secondary_label), "");
-  } else {
-    label_text = dalston_power_applet_format_time_remaining (time_remaining);
-    gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label), label_text);
-    g_free (label_text);
-
-    if (state == DALSTON_BATTERY_MONITOR_STATE_DISCHARGING)
-    {
-      gtk_label_set_markup (GTK_LABEL (priv->battery_secondary_label), 
-                            _("of battery power remain at current usage"));
-    } else if (state == DALSTON_BATTERY_MONITOR_STATE_CHARGING) {
-      gtk_label_set_markup (GTK_LABEL (priv->battery_secondary_label), 
-                            _("until battery is charged"));
-    }
+    gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
+                          _("Your battery is fully charged and you're ready to go."));
+  } else if (state == DALSTON_BATTERY_MONITOR_STATE_CHARGING) {
+    description = g_strdup_printf (_("Your battery is charging. " \
+                                     "It is about <b>%d</b>%% full."),
+                                   percentage);
+    gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
+                          description);
+    g_free (description);
+  } else if (state == DALSTON_BATTERY_MONITOR_STATE_DISCHARGING) {
+    description = g_strdup_printf (_("Your battery is discharging. " \
+                                     "It is about <b>%d</b>%% full."),
+                                   percentage);
+    gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
+                          description);
+    g_free (description);
   }
 
-  /* Do notifications at various levels */
-  if (time_remaining < 60 * 5)
+  if (state == DALSTON_BATTERY_MONITOR_STATE_DISCHARGING)
   {
-    /* dalston_power_applet_do_shutdown (applet); */
-    g_warning (G_STRLOC ": Would have shut down: %d",
-               time_remaining);
-  } else if (time_remaining < 60 * 10) {
-    if (last_notification_displayed != NOTIFICATION_10_MINUTES)
+    /* Do notifications at various levels */
+    if (percentage < 5)
     {
-      dalston_power_applet_do_notification (applet, NOTIFICATION_10_MINUTES);
-      last_notification_displayed = NOTIFICATION_10_MINUTES;
+      /* dalston_power_applet_do_shutdown (applet); */
+      g_warning (G_STRLOC ": Would have shut down: %d",
+                 time_remaining);
+    } else if (percentage < 10) {
+      if (last_notification_displayed != NOTIFICATION_10_PERCENT)
+      {
+        dalston_power_applet_do_notification (applet, NOTIFICATION_10_PERCENT);
+        last_notification_displayed = NOTIFICATION_10_PERCENT;
+      }
+    } else if (percentage < 15) {
+      if (last_notification_displayed != NOTIFICATION_15_PERCENT)
+      {
+        dalston_power_applet_do_notification (applet, NOTIFICATION_15_PERCENT);
+        last_notification_displayed = NOTIFICATION_15_PERCENT;
+      }
+    } else if (percentage < 20) {
+      if (last_notification_displayed != NOTIFICATION_30_PERCENT)
+      {
+        dalston_power_applet_do_notification (applet, NOTIFICATION_30_PERCENT);
+        last_notification_displayed = NOTIFICATION_30_PERCENT;
+      }
+    } else {
+      /* Reset the notification */
+      last_notification_displayed = -1;
     }
-  } else if (time_remaining < 60 * 15) {
-    if (last_notification_displayed != NOTIFICATION_15_MINUTES)
-    {
-      dalston_power_applet_do_notification (applet, NOTIFICATION_15_MINUTES);
-      last_notification_displayed = NOTIFICATION_15_MINUTES;
-    }
-  } else if (time_remaining < 60 * 30) {
-    if (last_notification_displayed != NOTIFICATION_30_MINUTES)
-    {
-      dalston_power_applet_do_notification (applet, NOTIFICATION_30_MINUTES);
-      last_notification_displayed = NOTIFICATION_30_MINUTES;
-    }
-  } else {
-    /* Reset the notification */
-    last_notification_displayed = -1;
   }
 
 #if 0
