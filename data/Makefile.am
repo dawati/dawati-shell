@@ -185,7 +185,8 @@ theme_peopledir = $(pkgdatadir)/theme/people
 dist_theme_people_DATA = \
 	theme/people/people-search-bg.png \
 	theme/people/tile-bg-hover.png \
-	theme/people/avatar-bg.png
+	theme/people/avatar-bg.png \
+	theme/people/grey-backdrop.png
 
 theme_effectsdir = $(pkgdatadir)/theme/effects
 dist_theme_effects_DATA = \
