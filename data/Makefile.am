@@ -153,6 +153,7 @@ dist_theme_mediapanel_DATA = \
 	theme/media-panel/mid_playque_selected.png \
 	theme/media-panel/play_hover.png \
 	theme/media-panel/playque_background.png \
+	theme/media-panel/playqueue-placeholder.png \
 	theme/media-panel/pq_pause_hover.png \
 	theme/media-panel/pq_pause.png \
 	theme/media-panel/pq_play_hover.png \

@@ -19,6 +19,7 @@
 #include "ahoghill-results-model.h"
 #include "ahoghill-results-pane.h"
 #include "ahoghill-search-pane.h"
+#include "ahoghill-playlist-placeholder.h"
 
 enum {
     PROP_0,
@@ -337,11 +338,13 @@ source_ready_cb (BklSourceClient  *client,
     if (priv->source_count == priv->source_replies) {
         set_recent_items (view);
 
+#if 0
         /* Set the local queue to the playlist */
         /* FIXME: Generate multiple playlists once more than
            local queue works */
         ahoghill_playlist_set_queue ((AhoghillPlaylist *) priv->playqueues_pane,
                                      priv->local_queue);
+#endif
     }
 }
 
@@ -363,7 +366,7 @@ source_manager_removed (BklSourceManagerClient *source_manager,
                         AhoghillGridView       *view)
 {
     AhoghillGridViewPrivate *priv = view->priv;
-    Source *source;
+    Source *source = NULL;
     int i;
 
     g_print ("Removing source: %s\n", path);
@@ -375,6 +378,10 @@ source_manager_removed (BklSourceManagerClient *source_manager,
             g_ptr_array_remove_index (priv->dbs, i);
             break;
         }
+    }
+
+    if (source == NULL) {
+        return;
     }
 
     ahoghill_results_model_remove_source_items (priv->model, source->source);
@@ -444,12 +451,13 @@ init_bickley (gpointer data)
 static void
 init_bognor (AhoghillGridView *grid)
 {
+#if 0
     AhoghillGridViewPrivate *priv = grid->priv;
 
     priv->local_queue = g_object_new (BR_TYPE_QUEUE,
                                       "object-path", BR_LOCAL_QUEUE_PATH,
                                       NULL);
-
+#endif
 }
 
 static gboolean
@@ -715,10 +723,10 @@ item_clicked_cb (AhoghillResultsPane *pane,
                  BklItem             *item,
                  AhoghillGridView    *grid)
 {
+#if 0
     AhoghillGridViewPrivate *priv = grid->priv;
     GError *error = NULL;
 
-#if 0
     br_queue_play_uri (priv->local_queue, bkl_item_get_uri (item),
                        bkl_item_get_mimetype (item));
     if (error != NULL) {
@@ -728,18 +736,16 @@ item_clicked_cb (AhoghillResultsPane *pane,
         g_error_free (error);
     }
 #else
-    {
-        char *argv[3] = { "/usr/bin/hornsey", NULL, NULL };
-        GError *error = NULL;
+    char *argv[3] = { "/usr/bin/hornsey", NULL, NULL };
+    GError *error = NULL;
 
-        argv[1] = bkl_item_get_uri (item);
+    argv[1] = (char *) bkl_item_get_uri (item);
 
-        g_print ("Spawning hornsey for %s\n", argv[1]);
-        g_spawn_async (NULL, argv, NULL, 0, NULL, NULL, NULL, &error);
-        if (error != NULL) {
-            g_warning ("Error launching Hornsey: %s", error->message);
-            g_error_free (error);
-        }
+    g_print ("Spawning hornsey for %s\n", argv[1]);
+    g_spawn_async (NULL, argv, NULL, 0, NULL, NULL, NULL, &error);
+    if (error != NULL) {
+        g_warning ("Error launching Hornsey: %s", error->message);
+        g_error_free (error);
     }
 #endif
 }
@@ -793,9 +799,13 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_signal_connect (priv->results_pane, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
 
+#if 0
     priv->playqueues_pane = (ClutterActor *) ahoghill_playlist_new (self,
                                                                     _("Local"));
-    clutter_actor_set_size (priv->playqueues_pane, 210, 400);
+#else
+    priv->playqueues_pane = (ClutterActor *) g_object_new (AHOGHILL_TYPE_PLAYLIST_PLACEHOLDER, NULL);
+#endif
+    clutter_actor_set_size (priv->playqueues_pane, 238, 400);
     nbtk_table_add_actor_with_properties (table, priv->playqueues_pane,
                                           1, 3,
                                           "x-expand", FALSE,

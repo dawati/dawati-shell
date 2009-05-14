@@ -987,6 +987,10 @@ NbtkScrollBar.AhoghillProgressBar *#handle:hover
   background-image: url("file://media-panel/hrn-progress-bar-handle.png");
 }
 
+AhoghillPlaylistPlaceholder {
+  background-image: url("file://media-panel/playqueue-placeholder.png");
+}
+
 /* pasteboard */
 
 *#pasteboard-vbox {
