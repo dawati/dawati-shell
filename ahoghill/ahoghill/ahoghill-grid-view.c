@@ -733,6 +733,8 @@ item_clicked_cb (AhoghillResultsPane *pane,
         GError *error = NULL;
 
         argv[1] = bkl_item_get_uri (item);
+
+        g_print ("Spawning hornsey for %s\n", argv[1]);
         g_spawn_async (NULL, argv, NULL, 0, NULL, NULL, NULL, &error);
         if (error != NULL) {
             g_warning ("Error launching Hornsey: %s", error->message);
