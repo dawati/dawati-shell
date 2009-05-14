@@ -2,6 +2,8 @@
 
 #include <libgvc/gvc-mixer-control.h>
 #include <gtk/gtk.h>
+#include <nbtk/nbtk-gtk.h>
+
 #include "dalston-volume-pane.h"
 #include "dalston-volume-status-icon.h"
 

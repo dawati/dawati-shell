@@ -5,7 +5,7 @@
 #include <dalston/dalston-brightness-manager.h>
 #include <dalston/dalston-button-monitor.h>
 #include <gtk/gtk.h>
-
+#include <nbtk/nbtk-gtk.h>
 #include <glib/gi18n.h>
 
 G_DEFINE_TYPE (DalstonPowerApplet, dalston_power_applet, G_TYPE_OBJECT)

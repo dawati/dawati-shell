@@ -3,6 +3,7 @@
 #include "dalston-volume-slider.h"
 #include <glib/gi18n.h>
 #include <canberra-gtk.h>
+#include <nbtk/nbtk-gtk.h>
 
 G_DEFINE_TYPE (DalstonVolumePane, dalston_volume_pane, GTK_TYPE_HBOX)
 
