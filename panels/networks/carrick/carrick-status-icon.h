@@ -35,12 +35,14 @@ typedef struct {
 GType carrick_status_icon_get_type (void);
 
 GtkWidget* carrick_status_icon_new (CarrickIconFactory *factory,
-                                    CmService          *service);
+                                    CmManager          *manager);
 
 void carrick_status_icon_set_active (CarrickStatusIcon *icon,
                                      gboolean           active);
-void carrick_status_icon_update_service (CarrickStatusIcon *icon,
-                                         CmService         *service);
+void carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+                                         CmManager         *manager);
+void carrick_status_icon_update (CarrickStatusIcon *icon);
+void carrick_status_icon_set_connecting (CarrickStatusIcon *icon);
 G_END_DECLS
 
 #endif /* _CARRICK_STATUS_ICON */

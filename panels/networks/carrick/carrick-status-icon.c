@@ -12,7 +12,7 @@ G_DEFINE_TYPE (CarrickStatusIcon, carrick_status_icon, GTK_TYPE_STATUS_ICON)
 typedef struct _CarrickStatusIconPrivate CarrickStatusIconPrivate;
 
 struct _CarrickStatusIconPrivate {
-  CmService          *service;
+  CmManager          *manager;
   CarrickIconFactory *icon_factory;
   CarrickIconState    current_state;
   gboolean            active;
@@ -22,7 +22,7 @@ enum
 {
   PROP_0,
   PROP_ICON_FACTORY,
-  PROP_SERVICE
+  PROP_MANAGER
 };
 
 static void
@@ -36,9 +36,9 @@ carrick_status_icon_get_property (GObject *object, guint property_id,
       g_value_set_object (value,
                           priv->icon_factory);
       break;
-    case PROP_SERVICE:
+    case PROP_MANAGER:
       g_value_set_object (value,
-                          priv->service);
+                          priv->manager);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -51,16 +51,16 @@ carrick_status_icon_set_property (GObject *object, guint property_id,
 {
   CarrickStatusIcon *icon = (CarrickStatusIcon *)object;
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
-  CmService *service;
+  CmManager *manager;
 
   switch (property_id) {
     case PROP_ICON_FACTORY:
       priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
       break;
-    case PROP_SERVICE:
-      service = CM_SERVICE (g_value_get_object (value));
-      carrick_status_icon_update_service (icon,
-                                          service);
+    case PROP_MANAGER:
+      manager = CM_MANAGER (g_value_get_object (value));
+      carrick_status_icon_update_manager (icon,
+                                          manager);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -70,7 +70,7 @@ carrick_status_icon_set_property (GObject *object, guint property_id,
 static void
 carrick_status_icon_dispose (GObject *object)
 {
-  carrick_status_icon_update_service (CARRICK_STATUS_ICON (object),
+  carrick_status_icon_update_manager (CARRICK_STATUS_ICON (object),
                                       NULL);
 
   G_OBJECT_CLASS (carrick_status_icon_parent_class)->dispose (object);
@@ -104,13 +104,13 @@ carrick_status_icon_class_init (CarrickStatusIconClass *klass)
                                    PROP_ICON_FACTORY,
                                    pspec);
 
-  pspec = g_param_spec_object ("service",
-                               "Service.",
-                               "The gconnman CmService to represent.",
-                               CM_TYPE_SERVICE,
+  pspec = g_param_spec_object ("manager",
+                               "Manager.",
+                               "The gconnman CmManager to represent.",
+                               CM_TYPE_MANAGER,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class,
-                                   PROP_SERVICE,
+                                   PROP_MANAGER,
                                    pspec);
 }
 
@@ -119,21 +119,61 @@ carrick_status_icon_init (CarrickStatusIcon *self)
 {
 }
 
-static void
+void
 carrick_status_icon_update (CarrickStatusIcon *icon)
 {
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
   CarrickIconState icon_state = ICON_OFFLINE;
   GdkPixbuf *pixbuf;
+  guint strength;
+  CmConnectionType type = CONNECTION_UNKNOWN;
+  CmConnection *connection = NULL;
 
-  icon_state = carrick_icon_factory_get_state_for_service (priv->service);
+  if (priv->manager)
+  {
+    connection = cm_manager_get_active_connection (priv->manager);
+  }
+
+  if (!connection)
+  {
+    icon_state = ICON_OFFLINE;
+  }
+  else
+  {
+    type = cm_connection_get_type (connection);
+    switch (type)
+    {
+      case CONNECTION_ETHERNET:
+        icon_state = ICON_ACTIVE;
+        break;
+      case CONNECTION_WIFI:
+        strength = cm_connection_get_strength (connection);
+        if (strength > 70)
+        {
+          icon_state = ICON_WIRELESS_NETWORK_STRONG;
+        }
+        else if (strength > 35)
+        {
+          icon_state = ICON_WIRELESS_NETWORK_GOOD;
+        }
+        else
+        {
+          icon_state = ICON_WIRELESS_NETWORK_WEAK;
+        }
+        break;
+      case CONNECTION_UNKNOWN:
+      default:
+        icon_state = ICON_ERROR;
+        break;
+    }
+  }
 
   if (priv->active)
     icon_state++;
 
   priv->current_state = icon_state;
   pixbuf = carrick_icon_factory_get_pixbuf_for_state (priv->icon_factory,
-                                                      icon_state);
+                                                      priv->current_state);
   gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (icon),
                                    pixbuf);
 }
@@ -149,20 +189,20 @@ carrick_status_icon_set_active (CarrickStatusIcon *icon,
 }
 
 void
-carrick_status_icon_update_service (CarrickStatusIcon *icon,
-                                    CmService         *service)
+carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+                                    CmManager         *manager)
 {
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
 
-  if (priv->service)
+  if (priv->manager)
   {
-    g_object_unref (priv->service);
-    priv->service = NULL;
+    g_object_unref (priv->manager);
+    priv->manager= NULL;
   }
 
-  if (service)
+  if (manager)
   {
-    priv->service = g_object_ref (service);
+    priv->manager= g_object_ref (manager);
   }
 
   carrick_status_icon_update (icon);
@@ -170,12 +210,12 @@ carrick_status_icon_update_service (CarrickStatusIcon *icon,
 
 GtkWidget*
 carrick_status_icon_new (CarrickIconFactory *factory,
-                         CmService          *service)
+                         CmManager          *manager)
 {
   return g_object_new (CARRICK_TYPE_STATUS_ICON,
                        "icon-factory",
                        factory,
-                       "service",
-                       service,
+                       "manager",
+                       manager,
                        NULL);
 }

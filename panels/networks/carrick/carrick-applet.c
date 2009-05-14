@@ -24,8 +24,6 @@ struct _CarrickAppletPrivate {
   GtkWidget          *icon;
   GtkWidget          *pane;
   gchar              *state;
-  gchar              *active_service_name;
-  gchar              *active_service_type;
   CarrickIconFactory *icon_factory;
 };
 
@@ -47,9 +45,12 @@ _notify_connection_changed (CarrickApplet *self)
   }
   else
   {
-    title = g_strdup_printf (_("Active connection changed"));
+    /* FIXME: should probably handle NULL active */
+    CmConnection *active = cm_manager_get_active_connection (priv->manager);
+    CmConnectionType type = cm_connection_get_type (active);
+    title = g_strdup_printf (_("Online"));
     message = g_strdup_printf (_("Now connected to %s."),
-                               priv->active_service_name);
+                               cm_connection_type_to_string (type));
   }
 
   icon = carrick_icon_factory_get_path_for_service
@@ -72,20 +73,13 @@ _notify_connection_changed (CarrickApplet *self)
 }
 
 static void
-manager_services_changed_cb (CmManager *manager,
-                             gpointer   user_data)
+manager_connections_changed_cb (CmManager *manager,
+                                gpointer   user_data)
 {
   CarrickApplet *applet = CARRICK_APPLET (user_data);
   CarrickAppletPrivate *priv = GET_PRIVATE (applet);
-  CmService *service = NULL;
-  const gchar *service_name = cm_manager_get_active_service_name (manager);
 
-  if (g_strcmp0 (service_name, priv->active_service_name) != 0)
-  {
-    service = cm_manager_get_active_service (manager);
-    carrick_status_icon_update_service (CARRICK_STATUS_ICON (priv->icon),
-                                        service);
-  }
+  carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
 }
 
 static void
@@ -95,30 +89,14 @@ manager_state_changed_cb (CmManager *manager,
   CarrickApplet *applet = CARRICK_APPLET (user_data);
   CarrickAppletPrivate *priv = GET_PRIVATE (applet);
   gchar *new_state = g_strdup (cm_manager_get_state (manager));
-  gchar *new_name;
-  gchar *new_type;
 
   if (g_strcmp0 (priv->state, new_state) != 0)
   {
     g_free (priv->state);
     priv->state = new_state;
-
-    new_name = g_strdup (cm_manager_get_active_service_name (manager));
-    if (g_strcmp0 (priv->active_service_name, new_name) != 0)
-    {
-      g_free (priv->active_service_name);
-      priv->active_service_name = new_name;
-
-      new_type = g_strdup (cm_manager_get_active_service_type (manager));
-      if (g_strcmp0 (priv->active_service_type, new_type) != 0)
-      {
-        g_free (priv->active_service_type);
-        priv->active_service_type = new_type;
-      }
-    }
   }
 
-  /* FIXME: Update the whole UI */
+  carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
   _notify_connection_changed (applet);
 }
 
@@ -141,6 +119,7 @@ carrick_applet_get_icon (CarrickApplet *applet)
 static void
 carrick_applet_dispose (GObject *object)
 {
+  notify_uninit ();
   G_OBJECT_CLASS (carrick_applet_parent_class)->dispose (object);
 }
 
@@ -193,7 +172,6 @@ carrick_applet_init (CarrickApplet *self)
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
   GtkWidget *scroll_view;
-  CmService *active = NULL;
 
   notify_init ("Carrick");
 
@@ -204,7 +182,7 @@ carrick_applet_init (CarrickApplet *self)
                                   GTK_POLICY_AUTOMATIC);
 
   priv->manager = cm_manager_new (&error);
-  if (error) {
+  if (error || !priv->manager) {
     g_debug ("Error initializing connman manager: %s\n",
              error->message);
     /* FIXME: must do better here */
@@ -212,21 +190,9 @@ carrick_applet_init (CarrickApplet *self)
   }
   cm_manager_refresh (priv->manager);
   priv->state = g_strdup (cm_manager_get_state (priv->manager));
-  active = cm_manager_get_active_service (priv->manager);
-  if (active && cm_service_get_connected (active))
-  {
-    priv->active_service_name = g_strdup (cm_service_get_name (active));
-    priv->active_service_type = g_strdup (cm_service_get_type (active));
-  }
-  else
-  {
-    active = NULL;
-    priv->active_service_name = g_strdup ("");
-    priv->active_service_type = g_strdup(_("No active service"));
-  }
   priv->icon_factory = carrick_icon_factory_new ();
   priv->icon = carrick_status_icon_new (priv->icon_factory,
-                                        active);
+                                        priv->manager);
   priv->pane = carrick_pane_new (priv->icon_factory,
                                  priv->manager);
 
@@ -235,8 +201,8 @@ carrick_applet_init (CarrickApplet *self)
                     G_CALLBACK (manager_state_changed_cb),
                     self);
   g_signal_connect (priv->manager,
-                    "services-changed",
-                    G_CALLBACK (manager_services_changed_cb),
+                    "connections-changed",
+                    G_CALLBACK (manager_connections_changed_cb),
                     self);
 }
 
