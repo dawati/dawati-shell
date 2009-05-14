@@ -914,6 +914,14 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
 
             mnb_drop_down_set_child (MNB_DROP_DOWN (panel), grid);
 
+            /*
+             * FIME -- why is this necessary ?
+             */
+            g_signal_connect_swapped (toolbar, "hide",
+                                      G_CALLBACK (clutter_actor_hide), grid);
+            g_signal_connect_swapped (toolbar, "show",
+                                      G_CALLBACK (clutter_actor_show), grid);
+
             g_signal_connect_swapped (panel, "hide-completed",
                                     G_CALLBACK (moblin_netbook_netpanel_clear),
                                     grid);
