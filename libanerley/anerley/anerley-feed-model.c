@@ -23,6 +23,15 @@ enum
   PROP_FILTER_TEXT
 };
 
+enum
+{
+  BULK_CHANGE_START,
+  BULK_CHANGE_END,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 static void anerley_feed_model_update_feed (AnerleyFeedModel *model,
                                             AnerleyFeed      *feed);
 
@@ -115,6 +124,27 @@ anerley_feed_model_class_init (AnerleyFeedModelClass *klass)
                                NULL,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_FILTER_TEXT, pspec);
+
+  signals[BULK_CHANGE_START] =
+    g_signal_new ("bulk-change-start",
+                  ANERLEY_TYPE_FEED_MODEL,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
+  signals[BULK_CHANGE_END] =
+    g_signal_new ("bulk-change-end",
+                  ANERLEY_TYPE_FEED_MODEL,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
 }
 
 static gint
@@ -171,6 +201,8 @@ _feed_items_added_cb (AnerleyFeed *feed,
   GList *l;
   AnerleyItem *item;
 
+  g_signal_emit (model, signals[BULK_CHANGE_START], 0);
+
   for (l = items; l; l = l->next)
   {
     item = (AnerleyItem *)l->data;
@@ -180,6 +212,8 @@ _feed_items_added_cb (AnerleyFeed *feed,
                           item,
                           -1);
   }
+
+  g_signal_emit (model, signals[BULK_CHANGE_END], 0);
 }
 
 static gboolean
@@ -218,6 +252,8 @@ _feed_items_removed_cb (AnerleyFeed *feed,
   GList *l;
   AnerleyItem *item_to_remove, *item;
   ClutterModelIter *iter;
+
+  g_signal_emit (model, signals[BULK_CHANGE_START], 0);
 
   /* If we have a filter set we must remove it before we can iterate */
 
@@ -261,6 +297,8 @@ _feed_items_removed_cb (AnerleyFeed *feed,
                               priv->filter_text,
                               NULL);
   }
+
+  g_signal_emit (model, signals[BULK_CHANGE_END], 0);
 }
 
 static void
