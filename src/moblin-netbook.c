@@ -1615,7 +1615,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
    */
   else if (type == META_COMP_WINDOW_NORMAL ||
            type == META_COMP_WINDOW_SPLASHSCREEN ||
-           type == META_COMP_WINDOW_DIALOG)
+           type == META_COMP_WINDOW_DIALOG ||
+           type == META_COMP_WINDOW_MODAL_DIALOG)
     {
       ClutterAnimation   *animation;
       EffectCompleteData *data  = g_new0 (EffectCompleteData, 1);
@@ -1643,7 +1644,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       /*
        * Anything that we do not animated exits at this point.
        */
-      if (type == META_COMP_WINDOW_DIALOG)
+      if (type == META_COMP_WINDOW_DIALOG ||
+          type == META_COMP_WINDOW_MODAL_DIALOG)
         {
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           return;
