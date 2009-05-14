@@ -61,7 +61,7 @@ _notify_connection_changed (CarrickApplet *self)
                                   icon,
                                   NULL);
   notify_notification_set_timeout (note,
-                                   3000); // FIXME: 3s
+                                   10000);
 
   notify_notification_show (note,
                             &error);
