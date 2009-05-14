@@ -169,11 +169,11 @@ _connect_button_cb (GtkButton *connect_button,
 }
 
 void
-_name_changed_cb (CmService *service,
-                  gpointer user_data)
+_set_label (CmService *service,
+            gpointer   user_data)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
-  gchar *label;
+  gchar *label = NULL;
 
   if (priv->connected)
   {
@@ -188,8 +188,13 @@ _name_changed_cb (CmService *service,
 
   gtk_label_set_text (GTK_LABEL (priv->name_label),
                       label);
-
-  g_free (label);
+}
+void
+_name_changed_cb (CmService *service,
+                  gpointer user_data)
+{
+  _set_label (service,
+              user_data);
 }
 
 void
@@ -222,7 +227,6 @@ _status_changed_cb (CmService *service,
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
   gchar *status = g_strdup (cm_service_get_state (service));
-  gchar *label;
   GdkPixbuf *pixbuf;
 
   if (g_strcmp0 ("ready", status) == 0)
@@ -230,20 +234,17 @@ _status_changed_cb (CmService *service,
     priv->connected = TRUE;
     gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                           "Disconnect");
-    label = g_strdup_printf ("%s - %s",
-                             cm_service_get_name (service),
-                             _("Connected"));
   }
   else
   {
     priv->connected = FALSE;
     gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                           "Connect");
-    label = g_strdup (cm_service_get_name (service));
   }
 
-  gtk_label_set_text (GTK_LABEL (priv->name_label),
-                      label);
+  _set_label (service,
+              user_data);
+
 
   gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                             TRUE);
@@ -277,8 +278,8 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                                                          service);
     gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
                                pixbuf);
-    gtk_label_set_text (GTK_LABEL (priv->name_label),
-                        cm_service_get_name (service));
+    _set_label (service,
+                (gpointer)service_item);
     if (g_strcmp0 ("none", security) != 0)
     {
       gint i;

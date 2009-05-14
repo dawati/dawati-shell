@@ -617,6 +617,9 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_wifi_switch_callback),
                     self);
   switch_label = gtk_label_new (_("WiFi"));
+  gtk_misc_set_alignment (GTK_MISC (switch_label),
+                          0.2,
+                          0.5);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       switch_label,
                       TRUE,
@@ -637,6 +640,9 @@ carrick_pane_init (CarrickPane *self)
   switch_box = gtk_hbox_new (TRUE,
                              6);
   switch_label = gtk_label_new (_("Ethernet"));
+  gtk_misc_set_alignment (GTK_MISC (switch_label),
+                          0.2,
+                          0.5);
   gtk_widget_set_sensitive (GTK_WIDGET (priv->ethernet_switch),
                             FALSE);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
@@ -663,6 +669,9 @@ carrick_pane_init (CarrickPane *self)
   switch_box = gtk_hbox_new (TRUE,
                             6);
   switch_label = gtk_label_new (_("3G"));
+  gtk_misc_set_alignment (GTK_MISC (switch_label),
+                          0.2,
+                          0.5);
   gtk_widget_set_sensitive (GTK_WIDGET (priv->threeg_switch),
                             FALSE);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
@@ -689,6 +698,9 @@ carrick_pane_init (CarrickPane *self)
   switch_box = gtk_hbox_new (TRUE,
                              6);
   switch_label = gtk_label_new (_("WiMax"));
+  gtk_misc_set_alignment (GTK_MISC (switch_label),
+                          0.2,
+                          0.5);
   gtk_widget_set_sensitive (GTK_WIDGET (priv->wimax_switch),
                             FALSE);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
@@ -724,6 +736,9 @@ carrick_pane_init (CarrickPane *self)
   switch_box = gtk_hbox_new (TRUE,
                              6);
   switch_label = gtk_label_new (_("Offline mode"));
+  gtk_misc_set_alignment (GTK_MISC (switch_label),
+                          0.2,
+                          0.5);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->flight_mode_switch),
                     "switch-flipped",
                     G_CALLBACK (_flight_mode_switch_callback),
