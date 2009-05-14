@@ -240,6 +240,23 @@ _secret_check_toggled(GtkToggleButton *toggle,
         gtk_entry_set_visibility(entry, vis);
 }
 
+/*
+ * Find the uppermost parent window plug so that
+ * we can hide it.
+ */
+GtkWidget *
+pane_find_plug (GtkWidget *widget)
+{
+  /* Pippinated */
+  GtkWidget *iter;
+
+  for (iter = widget; iter ; iter = gtk_widget_get_parent (iter))
+  {
+    if (GTK_IS_PLUG (iter))
+      break;
+  }
+  return iter;
+}
 
 void
 _new_connection_cb (GtkButton *button,
@@ -323,6 +340,7 @@ _new_connection_cb (GtkButton *button,
   gtk_table_attach_defaults(GTK_TABLE(table), secret_check, 0, 2, 4, 5);
 
   gtk_widget_show_all(dialog);
+  gtk_widget_hide (pane_find_plug (button));
 
   if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
     network = gtk_entry_get_text(GTK_ENTRY(ssid_entry));

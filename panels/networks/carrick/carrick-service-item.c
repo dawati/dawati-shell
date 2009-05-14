@@ -82,6 +82,24 @@ carrick_service_item_get_property (GObject *object, guint property_id,
     }
 }
 
+/*
+ * Find the uppermost parent window plug so that
+ * we can hide it.
+ */
+GtkWidget *
+service_item_find_plug (GtkWidget *widget)
+{
+  /* Pippinated */
+  GtkWidget *iter;
+
+  for (iter = widget; iter ; iter = gtk_widget_get_parent (iter))
+  {
+    if (GTK_IS_PLUG (iter))
+      break;
+  }
+  return iter;
+}
+
 void
 _connect_button_cb (GtkButton *connect_button,
                     gpointer user_data)
@@ -165,6 +183,7 @@ _connect_button_cb (GtkButton *connect_button,
                             6);
 
         gtk_widget_show_all (dialog);
+        gtk_widget_hide ( service_item_find_plug (GTK_WIDGET (connect_button)));
 
         if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
         {
@@ -272,8 +291,6 @@ _status_changed_cb (CmService *service,
                                                         service);
   gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
                              pixbuf);
-
-  g_free (label);
 }
 
 static void
