@@ -901,6 +901,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             g_signal_connect (panel, "show-completed",
                               G_CALLBACK (_media_drop_down_shown), grid);
           }
+          break;
 #endif
         case INTERNET_ZONE:
 #ifdef WITH_NETPANEL
@@ -925,6 +926,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             g_signal_connect_swapped (grid, "launched",
                                       G_CALLBACK (clutter_actor_hide), toolbar);
           }
+          break;
 #endif
 
         default:
