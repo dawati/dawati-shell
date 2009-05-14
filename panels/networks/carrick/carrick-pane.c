@@ -250,8 +250,8 @@ _new_connection_cb (GtkButton *button,
                                         GTK_STOCK_OK,
                                         GTK_RESPONSE_ACCEPT, NULL);
 
-  gtk_dialog_set_default_response (dialog,
-                                   GTK_RESPONSE_ACCEPT);
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+                                   GTK_RESPONSE_OK);
   gtk_window_set_icon_name(GTK_WINDOW(dialog),
                            GTK_STOCK_DIALOG_AUTHENTICATION);
   gtk_box_set_spacing(GTK_BOX(GTK_DIALOG(dialog)->vbox), 6);
@@ -612,8 +612,8 @@ carrick_pane_init (CarrickPane *self)
   priv->wifi_switch = nbtk_gtk_light_switch_new ();
   gtk_widget_set_sensitive (GTK_WIDGET (priv->wifi_switch),
                             FALSE);
-  g_signal_connect (priv->wifi_switch,
-                    "switch-toggled",
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+                    "switch-flipped",
                     G_CALLBACK (_wifi_switch_callback),
                     self);
   switch_label = gtk_label_new (_("WiFi"));
@@ -639,8 +639,8 @@ carrick_pane_init (CarrickPane *self)
   switch_label = gtk_label_new (_("Ethernet"));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->ethernet_switch),
                             FALSE);
-  g_signal_connect (priv->ethernet_switch,
-                    "switch-toggled",
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+                    "switch-flipped",
                     G_CALLBACK (_ethernet_switch_callback),
                     self);
   gtk_box_pack_start (GTK_BOX (switch_box),
@@ -665,8 +665,8 @@ carrick_pane_init (CarrickPane *self)
   switch_label = gtk_label_new (_("3G"));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->threeg_switch),
                             FALSE);
-  g_signal_connect (priv->threeg_switch,
-                    "switch-toggled",
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+                    "switch-flipped",
                     G_CALLBACK (_threeg_switch_callback),
                     self);
   gtk_box_pack_start (GTK_BOX (switch_box),
@@ -691,8 +691,8 @@ carrick_pane_init (CarrickPane *self)
   switch_label = gtk_label_new (_("WiMax"));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->wimax_switch),
                             FALSE);
-  g_signal_connect (priv->wimax_switch,
-                    "switch-toggled",
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+                    "switch-flipped",
                     G_CALLBACK (_wimax_switch_callback),
                     self);
   gtk_box_pack_start (GTK_BOX (switch_box),
@@ -724,8 +724,8 @@ carrick_pane_init (CarrickPane *self)
   switch_box = gtk_hbox_new (TRUE,
                              6);
   switch_label = gtk_label_new (_("Offline mode"));
-  g_signal_connect (priv->flight_mode_switch,
-                    "switch-toggled",
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->flight_mode_switch),
+                    "switch-flipped",
                     G_CALLBACK (_flight_mode_switch_callback),
                     self);
   gtk_box_pack_start (GTK_BOX (switch_box),

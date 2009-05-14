@@ -110,7 +110,7 @@ _connect_button_cb (GtkButton *connect_button,
                                               GTK_RESPONSE_ACCEPT,
                                               NULL);
 
-        gtk_dialog_set_default_response (dialog,
+        gtk_dialog_set_default_response (GTK_DIALOG (dialog),
                                          GTK_RESPONSE_ACCEPT);
         gtk_window_set_icon_name (GTK_WINDOW (dialog),
                                   GTK_STOCK_DIALOG_AUTHENTICATION);
