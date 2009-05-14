@@ -108,7 +108,7 @@ get_mojito_service_name (const gchar *service_name)
 }
 
 static void
-on_cancel_clicked (NbtkButton *button,
+on_cancel_clicked (NbtkButton     *button,
                    MnbStatusEntry *entry)
 {
   MnbStatusEntryPrivate *priv = entry->priv;
@@ -138,7 +138,7 @@ on_cancel_clicked (NbtkButton *button,
 }
 
 static void
-on_button_clicked (NbtkButton *button,
+on_button_clicked (NbtkButton     *button,
                    MnbStatusEntry *entry)
 {
   mnb_status_entry_set_is_active (entry,
@@ -314,12 +314,12 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                     - (H_PADDING - 1);
 
   /* button */
-  child_box.x1 = (int) (available_width
-               - priv->padding.right
-               - button_width);
-  child_box.y1 = (int) priv->padding.top;
+  child_box.x1 = (int) (priv->separator_x + (2 * H_PADDING)
+               + (((available_width - priv->separator_x) - button_width) / 2));
+  child_box.y1 = (int) (priv->padding.top
+               + ((available_height - button_height) / 2));
   child_box.x2 = (int) (child_box.x1 + button_width);
-  child_box.y2 = (int) (child_box.y1 + text_height);
+  child_box.y2 = (int) (child_box.y1 + button_height);
   clutter_actor_allocate (priv->button, &child_box, origin_changed);
 }
 
