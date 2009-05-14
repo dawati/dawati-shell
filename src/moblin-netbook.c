@@ -291,18 +291,29 @@ moblin_netbook_plugin_constructed (GObject *object)
    * TODO this needs to be hooked into the dbus API exposed by the out of
    * process applets, once we have them.
    */
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "m-zone", "m_zone");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "m-zone", _("m_zone"));
 
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "spaces-zone", "zones");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "spaces-zone", _("zones"));
 
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "status-zone", "status");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "status-zone", _("status"));
 
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "applications-zone",
-                                "applications");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "applications-zone", _("applications"));
 
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "pasteboard-zone",
-                                "pastboard");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "pasteboard-zone", _("pastboard"));
 
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "internet-zone", _("internet"));
+
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "media-zone", _("media"));
+
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "people-zone", _("people"));
 #endif
 
   clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, toolbar, NULL);

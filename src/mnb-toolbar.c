@@ -697,7 +697,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   NbtkWidget        *button;
-  NbtkWidget        *panel;
+  NbtkWidget        *panel = NULL;
   guint              screen_width, screen_height;
   gint               index;
   gchar             *button_style;
@@ -751,7 +751,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   /*
    * Create the button for this zone.
    */
-  button = priv->buttons[index] = mnb_toolbar_button_new ();
+  button = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
@@ -778,9 +778,6 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                             -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
                                             BUTTON_WIDTH,
                                             TOOLBAR_HEIGHT);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                   CLUTTER_ACTOR (button));
     }
   else
     {
@@ -803,9 +800,6 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                          -(TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT),
                                          TRAY_BUTTON_WIDTH,
                                          TOOLBAR_HEIGHT);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                               CLUTTER_ACTOR (button));
     }
 
   g_signal_connect (button, "clicked",
@@ -942,7 +936,18 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
     }
 
   if (!panel)
-    return;
+    {
+      g_debug ("Panel %s is not available", name);
+      clutter_actor_destroy (CLUTTER_ACTOR (button));
+      return;
+    }
+  else
+    {
+      priv->buttons[index] = button;
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                   CLUTTER_ACTOR (button));
+    }
 
   g_signal_connect (panel, "hide-begin",
                     G_CALLBACK(mnb_toolbar_dropdown_hide_begin_cb),
