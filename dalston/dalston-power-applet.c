@@ -314,7 +314,9 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   /* Do notifications at various levels */
   if (time_remaining < 60 * 5)
   {
-    dalston_power_applet_do_shutdown (applet);
+    /* dalston_power_applet_do_shutdown (applet); */
+    g_warning (G_STRLOC ": Would have shut down: %d",
+               time_remaining);
   } else if (time_remaining < 60 * 10) {
     if (last_notification_displayed != NOTIFICATION_10_MINUTES)
     {
