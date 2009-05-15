@@ -124,6 +124,76 @@ ahoghill_grid_view_class_init (AhoghillGridViewClass *klass)
                                      G_TYPE_NONE, 0);
 }
 
+static void
+uri_added_cb (BklSourceClient *client,
+              const char      *uri,
+              Source          *source)
+{
+    BklItem *item;
+    GError *error = NULL;
+
+    item = bkl_db_get_item (source->db, uri, &error);
+    if (error != NULL) {
+        g_warning ("%s: Error getting item: %s", G_STRLOC, error->message);
+        return;
+    }
+
+    g_ptr_array_add (source->items, item);
+    g_hash_table_insert (source->uri_to_item,
+                         (char *) bkl_item_get_uri (item), item);
+
+    /* FIXME: We should recheck if this item should be added to the results */
+}
+
+static void
+uri_deleted_cb (BklSourceClient *client,
+                const char      *uri,
+                Source          *source)
+{
+    BklItem *item;
+    int i;
+
+    item = g_hash_table_lookup (source->uri_to_item, uri);
+    if (item == NULL) {
+        return;
+    }
+
+    for (i = 0; i < source->items->len; i++) {
+        if (item == source->items->pdata[i]) {
+            g_ptr_array_remove_index (source->items, i);
+            break;
+        }
+    }
+
+
+    g_hash_table_remove (source->uri_to_item, uri);
+    g_object_unref (item);
+}
+
+static void
+uri_changed_cb (BklSourceClient *client,
+                const char      *uri,
+                Source          *source)
+{
+    /* FIXME: Bickley needs a way to update BklItems in place */
+}
+
+static void
+index_changed_cb (BklSourceClient *client,
+                  Source          *source)
+{
+    int i;
+
+    for (i = 0; i < source->index->len; i++) {
+        g_free (source->index->pdata[i]);
+    }
+    g_ptr_array_free (source->index, TRUE);
+
+    source->index = bkl_db_get_index_words (source->db);
+
+    /* Should re-run the search now we have a new index */
+}
+
 static Source *
 create_source (BklSourceClient *s)
 {
@@ -132,6 +202,15 @@ create_source (BklSourceClient *s)
     int i;
 
     source = g_new0 (Source, 1);
+
+    g_signal_connect (s, "uri-added",
+                      G_CALLBACK (uri_added_cb), source);
+    g_signal_connect (s, "uri-deleted",
+                      G_CALLBACK (uri_deleted_cb), source);
+    g_signal_connect (s, "uri-changed",
+                      G_CALLBACK (uri_changed_cb), source);
+    g_signal_connect (s, "index-changed",
+                      G_CALLBACK (index_changed_cb), source);
 
     source->source = s;
     source->db = bkl_source_client_get_db (s);
