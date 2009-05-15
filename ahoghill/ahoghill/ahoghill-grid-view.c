@@ -36,6 +36,8 @@ typedef struct _Source {
 
     GPtrArray *items;
     GPtrArray *index;
+    guint32 update_id;
+
     GHashTable *uri_to_item;
 } Source;
 
@@ -66,6 +68,7 @@ static guint32 signals[LAST_SIGNAL] = {0, };
 /* Adjustable length of time between typing a letter and search taking place */
 #define SEARCH_TIMEOUT 50
 
+#define UPDATE_INDEX_TIMEOUT 5 /* seconds */
 static void
 ahoghill_grid_view_finalize (GObject *object)
 {
@@ -178,10 +181,10 @@ uri_changed_cb (BklSourceClient *client,
     /* FIXME: Bickley needs a way to update BklItems in place */
 }
 
-static void
-index_changed_cb (BklSourceClient *client,
-                  Source          *source)
+static gboolean
+update_index_timeout (gpointer userdata)
 {
+    Source *source = (Source *) userdata;
     int i;
 
     for (i = 0; i < source->index->len; i++) {
@@ -190,8 +193,23 @@ index_changed_cb (BklSourceClient *client,
     g_ptr_array_free (source->index, TRUE);
 
     source->index = bkl_db_get_index_words (source->db);
-
     /* Should re-run the search now we have a new index */
+
+    source->update_id = 0;
+    return FALSE;
+}
+
+static void
+index_changed_cb (BklSourceClient *client,
+                  Source          *source)
+{
+    /* FIXME: Bickley should have a way to say what has changed in the
+       index, so we don't need to limit the index updates */
+    if (source->update_id == 0) {
+        source->update_id = g_timeout_add_seconds (UPDATE_INDEX_TIMEOUT,
+                                                   update_index_timeout,
+                                                   source);
+    }
 }
 
 static Source *
