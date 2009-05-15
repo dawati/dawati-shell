@@ -976,9 +976,6 @@ AhoghillQueueList {
   padding-bottom: 5px;
 }
 
-*.AhoghillExampleText {
-  font-size: 17px;
-}
 
 NbtkScrollBar.AhoghillProgressBar {
   border-image: url('file://media-panel/hrn-progress-bar-through.png") 2;
@@ -1008,6 +1005,18 @@ NbtkScrollBar.AhoghillProgressBar *#handle:hover
 AhoghillPlaylistPlaceholder {
   background-image: url("file://media-panel/playqueue-placeholder.png");
 }
+
+*.AhoghillExampleTextBin { 
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
+  padding: 8;
+}
+
+*.AhoghillExampleText {
+  font-family: "Liberation Sans";
+  font-size: 16px;
+  color: #595959ff;
+}
+
 
 /* pasteboard */
 
