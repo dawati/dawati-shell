@@ -39,6 +39,8 @@ struct _AhoghillResultsPanePrivate {
     NbtkWidget *previous_button;
     NbtkWidget *next_button;
 
+    char *title_text;
+
     AhoghillResultsModel *model;
 
     AhoghillResultsTable *current_page;
@@ -72,6 +74,11 @@ ahoghill_results_pane_finalize (GObject *object)
         g_slice_free (struct _paging_data, priv->animation);
     }
 
+    if (priv->title_text) {
+        g_free (priv->title_text);
+        priv->title_text = NULL;
+    }
+
     G_OBJECT_CLASS (ahoghill_results_pane_parent_class)->finalize (object);
 }
 
@@ -101,8 +108,12 @@ ahoghill_results_pane_set_property (GObject      *object,
     switch (prop_id) {
 
     case PROP_TITLE:
-        nbtk_label_set_text (NBTK_LABEL (priv->title),
-                             g_value_get_string (value));
+        if (priv->title_text) {
+            g_free (priv->title_text);
+        }
+
+        priv->title_text = g_value_dup_string (value);
+        nbtk_label_set_text (NBTK_LABEL (priv->title), priv->title_text);
         break;
 
     default:
@@ -431,6 +442,7 @@ ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
     AhoghillResultsPanePrivate *priv = pane->priv;
 
     if (show) {
+        nbtk_label_set_text ((NbtkLabel *) priv->title, "");
         clutter_actor_hide ((ClutterActor *) priv->current_page);
         priv->example_page = ahoghill_example_table_new (priv->model);
         g_signal_connect (priv->example_page, "item-clicked",
@@ -441,6 +453,7 @@ ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
         clutter_actor_show ((ClutterActor *) priv->example_page);
         clutter_actor_set_position ((ClutterActor *) priv->example_page, 0, 0);
     } else {
+        nbtk_label_set_text ((NbtkLabel *) priv->title, priv->title_text);
         clutter_actor_show ((ClutterActor *) priv->current_page);
         if (priv->example_page) {
             clutter_actor_destroy ((ClutterActor *) priv->example_page);
