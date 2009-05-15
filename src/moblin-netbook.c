@@ -734,7 +734,7 @@ moblin_netbook_make_toolbar_hint ()
   table = nbtk_table_new ();
 
   bin = CLUTTER_ACTOR (nbtk_bin_new ());
-  label = nbtk_label_new (_("Move cursor to the top of the screen" 
+  label = nbtk_label_new (_("Move cursor to the top of the screen"
                              " to activate the toolbar"));
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(label)));
@@ -748,10 +748,10 @@ moblin_netbook_make_toolbar_hint ()
   nbtk_bin_set_alignment (NBTK_BIN (bin),
                           NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
 
-  clutter_actor_set_name (CLUTTER_ACTOR (bin), 
+  clutter_actor_set_name (CLUTTER_ACTOR (bin),
                           "toolbar-instruction-box");
 
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (bin), 
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
                                     "toolbar-instruction-box");
 
   nbtk_table_add_actor (NBTK_TABLE (table), bin, 0, 0);
@@ -859,7 +859,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   clutter_actor_set_width (priv->toolbar_hint, 272);
   clutter_actor_set_position (priv->toolbar_hint,
-                              screen_width 
+                              screen_width
                                - clutter_actor_get_width (priv->toolbar_hint)
                                - 20,
                               66);
@@ -1593,10 +1593,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       xscreen = ScreenOfDisplay (xdpy, meta_screen_get_screen_number (screen));
 
       meta_window_get_outer_rect (mutter_window_get_meta_window (mcw), &rect);
-
-      printf ("Got OR %dx%d (screen %dx%d)\n",
-              rect.width, rect.height,
-              WidthOfScreen (xscreen), HeightOfScreen (xscreen));
 
       if (shell_tray_manager_is_config_window (priv->tray_manager, xwin))
         {
