@@ -108,24 +108,16 @@ _connect_button_cb (GtkButton *connect_button,
 
   if (priv->connected)
   {
-    cm_service_disconnect (CM_SERVICE (priv->service));
-    gtk_widget_set_state (GTK_WIDGET (user_data),
-                          GTK_STATE_NORMAL);
-    gtk_widget_set_sensitive (GTK_WIDGET (user_data),
-                              FALSE);
-    gtk_button_set_label (connect_button,
-                          _("Disconnecting"));
+    if (cm_service_disconnect (CM_SERVICE (priv->service)))
+    {
+      priv->connected = FALSE;
+      gtk_button_set_label (GTK_BUTTON (priv->connect_button),
+                            _("Connect"));
+    }
   }
   else
   {
     const gchar *security = g_strdup (cm_service_get_security (CM_SERVICE (priv->service)));
-
-    gtk_widget_set_state (GTK_WIDGET (user_data),
-                          GTK_STATE_SELECTED);
-    gtk_widget_set_sensitive (GTK_WIDGET (user_data),
-                              FALSE);
-    gtk_button_set_label (connect_button,
-                          _("Connecting"));
 
     if (g_strcmp0 ("none", security) != 0)
     {
@@ -190,19 +182,35 @@ _connect_button_cb (GtkButton *connect_button,
           passphrase = gtk_entry_get_text (GTK_ENTRY (entry));
           cm_service_set_passphrase (priv->service,
                                      passphrase);
-          cm_service_connect (CM_SERVICE (priv->service));
+          if (cm_service_connect (CM_SERVICE (priv->service)))
+          {
+            priv->connected = TRUE;
+            gtk_button_set_label (GTK_BUTTON (priv->connect_button),
+                                  _("Disconnect"));
+          }
         }
         gtk_widget_destroy (dialog);
       }
       else
       {
         /* We have the passphrase already, just connect */
-        cm_service_connect (CM_SERVICE (priv->service));
+        if (cm_service_connect (CM_SERVICE (priv->service)))
+        {
+          priv->connected = TRUE;
+          gtk_button_set_label (GTK_BUTTON (priv->connect_button),
+                                _("Disconnect"));
+        }
       }
     }
     else
     {
-        cm_service_connect (CM_SERVICE (priv->service));
+        /* No security, just connect */
+        if (cm_service_connect (CM_SERVICE (priv->service)))
+        {
+          priv->connected = TRUE;
+          gtk_button_set_label (GTK_BUTTON (priv->connect_button),
+                                _("Disconnect"));
+        }
     }
   }
 }
@@ -273,20 +281,22 @@ _status_changed_cb (CmService *service,
     priv->connected = TRUE;
     gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                           "Disconnect");
+    gtk_widget_set_state (GTK_WIDGET (user_data),
+                          GTK_STATE_ACTIVE);
   }
   else
   {
     priv->connected = FALSE;
     gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                           "Connect");
+    gtk_widget_set_state (GTK_WIDGET (user_data),
+                          GTK_STATE_SELECTED);
   }
 
   _set_label (service,
               user_data);
 
 
-  gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
-                            TRUE);
   pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
                                                         service);
   gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
