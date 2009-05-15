@@ -122,7 +122,7 @@ clear_tile (AhoghillMediaTile *tile)
     nbtk_label_set_text (NBTK_LABEL (priv->artist), "");
 
     g_object_set (priv->icon,
-                  "thumbnail", NULL,
+                  "item", NULL,
                   NULL);
 }
 
