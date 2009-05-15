@@ -849,8 +849,9 @@ MoblinNetbookNetpanel NbtkButton:active {
 
 *#media-pane-search-label {
   font-family: "Liberation Sans Bold";
-  font-size: 17px;
-  color: #0e0e0e;
+  font-size: 18px;
+  padding-left: 12;
+  color: #3e3e3eff;
 }
 
 *#media-pane-search-entry *.MnbEntryButton {
