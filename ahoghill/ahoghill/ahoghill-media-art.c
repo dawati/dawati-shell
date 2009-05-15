@@ -1,13 +1,16 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <bickley/bkl-item-image.h>
+
 #include "ahoghill-media-art.h"
 
 enum {
     PROP_0,
-    PROP_URI,
+    PROP_ITEM,
 };
 
 struct _AhoghillMediaArtPrivate {
     ClutterActor *art;
+    double rotation;
     ClutterActor *play_texture; /* This is just a clone of play_texture below */
 };
 
@@ -31,23 +34,29 @@ ahoghill_media_art_dispose (GObject *object)
 
 static void
 ahoghill_media_art_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
+                                 guint         prop_id,
+                                 const GValue *value,
+                                 GParamSpec   *pspec)
 {
     AhoghillMediaArt *self = (AhoghillMediaArt *) object;
     AhoghillMediaArtPrivate *priv = self->priv;
     GError *error = NULL;
-    const char *uri;
+    BklItem *item;
+    GdkPixbuf *thumbnail;
+    gboolean has_alpha;
+    const char *uri = NULL;
     char *path;
 
     switch (prop_id) {
 
-    case PROP_URI:
-        uri = g_value_get_string (value);
+    case PROP_ITEM:
+        item = g_value_get_object (value);
+        if (item) {
+            uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) item);
+        }
+
         if (uri == NULL) {
             guint32 data = 0;
-            GError *error = NULL;
 
             /* FIXME: Is this the best way to clear a texture to translucent? */
             clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (priv->art),
@@ -62,14 +71,53 @@ ahoghill_media_art_set_property (GObject      *object,
 
         path = g_filename_from_uri (uri, NULL, NULL);
 
-        /* FIXME: Need to scale in software so we don't get jaggies */
-        clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->art),
-                                       path, &error);
+        thumbnail = gdk_pixbuf_new_from_file (path, &error);
+        if (error != NULL) {
+            g_warning ("Error loading pixbuf %s: %s", uri, error->message);
+            g_error_free (error);
+            g_free (path);
+            return;
+        }
+
+        if (bkl_item_get_item_type (item) == BKL_ITEM_TYPE_IMAGE) {
+            BklItemImage *im = (BklItemImage *) item;
+            const char *orient;
+
+            orient = bkl_item_image_get_orientation (im);
+            if (orient) {
+                GdkPixbuf *pb = NULL;
+
+                if (g_str_equal (orient, "right - top")) {
+                    pb = gdk_pixbuf_rotate_simple (thumbnail,
+                                                   GDK_PIXBUF_ROTATE_CLOCKWISE);
+                } else if (g_str_equal (orient, "left - top")) {
+                    pb = gdk_pixbuf_rotate_simple (thumbnail,
+                                                   GDK_PIXBUF_ROTATE_COUNTERCLOCKWISE);
+                }
+
+                if (pb) {
+                    g_object_unref (thumbnail);
+                    thumbnail = pb;
+                }
+            }
+        }
+
+        has_alpha = gdk_pixbuf_get_has_alpha (thumbnail);
+        clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (priv->art),
+                                           gdk_pixbuf_get_pixels (thumbnail),
+                                           has_alpha,
+                                           gdk_pixbuf_get_width (thumbnail),
+                                           gdk_pixbuf_get_height (thumbnail),
+                                           gdk_pixbuf_get_rowstride (thumbnail),
+                                           has_alpha ? 4 : 3, 0,
+                                           &error);
         if (error != NULL) {
             g_warning ("Error setting %s: %s", uri, error->message);
             g_error_free (error);
         }
         g_free (path);
+
+        g_object_unref (thumbnail);
         break;
 
     default:
@@ -79,9 +127,9 @@ ahoghill_media_art_set_property (GObject      *object,
 
 static void
 ahoghill_media_art_get_property (GObject    *object,
-                          guint       prop_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
+                                 guint       prop_id,
+                                 GValue     *value,
+                                 GParamSpec *pspec)
 {
     switch (prop_id) {
 
@@ -241,9 +289,9 @@ ahoghill_media_art_class_init (AhoghillMediaArtClass *klass)
     a_class->leave_event = ahoghill_media_art_leave;
 
     g_type_class_add_private (klass, sizeof (AhoghillMediaArtPrivate));
-    g_object_class_install_property (o_class, PROP_URI,
-                                     g_param_spec_string ("thumbnail", "", "",
-                                                          "",
+    g_object_class_install_property (o_class, PROP_ITEM,
+                                     g_param_spec_object ("item", "", "",
+                                                          BKL_TYPE_ITEM,
                                                           G_PARAM_WRITABLE |
                                                           G_PARAM_STATIC_STRINGS));
 }

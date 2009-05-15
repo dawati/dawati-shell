@@ -106,7 +106,7 @@ update_tile (AhoghillMediaTile *self)
     nbtk_label_set_text (NBTK_LABEL (priv->artist), artist ? artist : bkl_item_get_mimetype (priv->item));
 
     g_object_set (priv->icon,
-                  "thumbnail", bkl_item_extended_get_thumbnail ((BklItemExtended *) priv->item),
+                  "item", priv->item,
                   NULL);
 
     g_free (title);
