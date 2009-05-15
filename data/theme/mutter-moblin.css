@@ -204,13 +204,14 @@ NbtkTooltip {
   color: white;
 }
 
-*.workspace-no-wins-bin {
-  font-family: "Liberation Sans Bold";
-  font-size: 16;
-  padding-top: 28;
-  padding-bottom: 28;
-  padding-left: 16;
-  padding-right: 16;
+*#workspace-no-wins-bin {
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
+  padding: 8;
+}
+
+*#workspace-no-wins-label {
+  font-size:16px;
+  color: #595959ff;
 }
 
 *.workspace-title {
