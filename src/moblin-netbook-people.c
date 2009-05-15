@@ -181,14 +181,14 @@ _make_empty_people_tile (gint         width)
 
   clutter_actor_set_width ((ClutterActor *)tile, width);
   clutter_actor_set_name ((ClutterActor *)tile,
-                          "penge-people-pane-no-people-tile");
+                          "people-people-pane-no-people-tile");
   bin = nbtk_bin_new ();
   clutter_actor_set_name ((ClutterActor *)bin,
                           "people-no-people-message-bin");
   label = nbtk_label_new (_("Sorry, we can't find any people. " \
                             "Have you set up an Instant Messenger account?"));
   clutter_actor_set_name ((ClutterActor *)label,
-                          "penge-people-pane-main-label");
+                          "people-people-pane-main-label");
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
