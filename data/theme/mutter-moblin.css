@@ -770,10 +770,15 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-*#netpanel-placeholder
+*#netpanel-placeholder-label
 {
-  font-family: "Liberation Sans";
-  font-size: 17px;
+  font-size:16px;
+  color: #595959ff;
+}
+
+*#netpanel-placeholder-bin
+{
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
