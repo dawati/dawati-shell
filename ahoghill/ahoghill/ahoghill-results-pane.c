@@ -384,6 +384,13 @@ results_changed_cb (AhoghillResultsModel *model,
        on still exists and whether the page buttons should be active */
 
     priv->last_page = ahoghill_results_model_get_count (model) / TILES_PER_PAGE;
+    if (priv->last_page == 0) {
+        clutter_actor_hide (priv->next_button);
+        clutter_actor_hide (priv->previous_button);
+    } else {
+        clutter_actor_show (priv->next_button);
+        clutter_actor_show (priv->previous_button);
+    }
 }
 
 AhoghillResultsPane *
