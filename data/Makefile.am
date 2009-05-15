@@ -55,7 +55,8 @@ dist_theme_generic_DATA = \
 	theme/generic/vscroll-forward-hover.png \
 	theme/generic/vscroll-forward.png \
 	theme/generic/vscroll-handle-hover.png \
-	theme/generic/vscroll-handle.png
+	theme/generic/vscroll-handle.png \
+	theme/generic/placeholder-bg.png
 
 theme_launcherdir = $(pkgdatadir)/theme/launcher
 dist_theme_launcher_DATA = \
