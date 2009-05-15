@@ -245,13 +245,32 @@ notify_get_ntabs (DBusGProxy     *proxy,
     }
   else
     {
-      /* Add a placeholder text label */
-      priv->tabs_table = nbtk_label_new (_("Type an address or load the browser "
-                                         "to see your tabs here."));
+      NbtkWidget *label;
+      priv->tabs_table = nbtk_bin_new ();
       clutter_actor_set_name (CLUTTER_ACTOR (priv->tabs_table),
-                              "netpanel-placeholder");
-      nbtk_table_add_widget_full (NBTK_TABLE (self), priv->tabs_table, 1, 0,
-                                  1, 1, 0, 0.5, 0.5);
+                              "netpanel-placeholder-bin");
+
+      /* Add a placeholder text label */
+      label = nbtk_label_new (_("Type an address or load the browser "
+                                "to see your tabs here."));
+      clutter_actor_set_name (CLUTTER_ACTOR (label),
+                              "netpanel-placeholder-label");
+      nbtk_bin_set_child (NBTK_BIN (priv->tabs_table), (ClutterActor *)label);
+      nbtk_bin_set_alignment (NBTK_BIN (priv->tabs_table), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                            priv->tabs_table,
+                                            1, 0,
+                                            "x-expand",
+                                            TRUE,
+                                            "y-expand",
+                                            FALSE,
+                                            "x-fill",
+                                            TRUE,
+                                            "y-fill",
+                                            FALSE,
+                                            "x-align",
+                                            0.0,
+                                            NULL);
     }
 }
 

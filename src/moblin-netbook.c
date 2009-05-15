@@ -724,6 +724,41 @@ stage_show_cb (ClutterActor *stage, MutterPlugin *plugin)
   enable_stage (plugin, CurrentTime);
 }
 
+static ClutterActor*
+moblin_netbook_make_toolbar_hint ()
+{
+  ClutterText        *txt;
+  ClutterActor       *bin;
+  NbtkWidget         *label, *table;
+
+  table = nbtk_table_new ();
+
+  bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  label = nbtk_label_new (_("Move cursor to the top of the screen" 
+                             " to activate the toolbar"));
+
+  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(label)));
+  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
+
+  nbtk_widget_set_style_class_name (label, "toolbar-instruction-label");
+
+  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+  nbtk_bin_set_alignment (NBTK_BIN (bin),
+                          NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (bin), 
+                          "toolbar-instruction-box");
+
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (bin), 
+                                    "toolbar-instruction-box");
+
+  nbtk_table_add_actor (NBTK_TABLE (table), bin, 0, 0);
+
+  return CLUTTER_ACTOR (table);
+}
+
 static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
@@ -817,6 +852,20 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
 
+  /* Little temp hint to inform user how to get to the toolbar */
+
+  priv->toolbar_hint = moblin_netbook_make_toolbar_hint ();
+  clutter_container_add (CLUTTER_CONTAINER (overlay), priv->toolbar_hint, NULL);
+
+  clutter_actor_set_width (priv->toolbar_hint, 272);
+  clutter_actor_set_position (priv->toolbar_hint,
+                              screen_width 
+                               - clutter_actor_get_width (priv->toolbar_hint)
+                               - 20,
+                              66);
+
+  clutter_actor_hide (priv->toolbar_hint);
+
   lowlight = clutter_rectangle_new_with_color (&low_clr);
   priv->lowlight = lowlight;
   clutter_actor_set_size (lowlight, screen_width, screen_height);
@@ -835,6 +884,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_actor_hide (lowlight);
   clutter_actor_show (priv->mzone_grid);
   priv->panel_wait_for_pointer = TRUE;
+
+  /* show after mzone.. */
+  clutter_actor_show (priv->toolbar_hint);
 
   /*
    * Hook into "show" signal on stage, to set up input regions.
@@ -2003,6 +2055,18 @@ panel_slide_timeout_cb (gpointer data)
 
   if (priv->last_y < PANEL_SLIDE_THRESHOLD)
     {
+      if (priv->toolbar_hint != NULL)
+        {
+          ClutterActor *overlay;
+
+          overlay = clutter_actor_get_parent (priv->toolbar_hint);
+
+          clutter_container_remove_actor (CLUTTER_CONTAINER(overlay),
+                                          priv->toolbar_hint);
+
+          priv->toolbar_hint = NULL;
+        }
+
       show_panel (plugin, FALSE);
     }
   else

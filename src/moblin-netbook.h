@@ -157,6 +157,9 @@ struct _MoblinNetbookPluginPrivate
 
   gboolean               panel_disabled;
 
+  /* Toolbar usage instructions */
+  ClutterActor          *toolbar_hint;
+
   Window                 focus_xwin;
 };
 

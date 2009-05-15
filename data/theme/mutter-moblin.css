@@ -124,6 +124,19 @@ MnbPanelButton:hover, MnbPanelButton:active {
   border-image: url("file://panel/toolbar-button-hover.png") 0 stretch;
 }
 
+/* Toolbar usage hint */
+
+*.toolbar-instruction-box {
+ border-image: url("file://panel/toolbar-hint.png") 47 6 6 60;
+ padding: 10 10 10 60; 
+}
+
+*.toolbar-instruction-label {
+  font-family: "Liberation Sans";
+  font-size: 15px;
+  color: white;
+}
+
 /* apps button */
 *#apps-button {
   background-image: url("file://panel/apps-normal.png");
@@ -204,13 +217,14 @@ NbtkTooltip {
   color: white;
 }
 
-*.workspace-no-wins-bin {
-  font-family: "Liberation Sans Bold";
-  font-size: 16;
-  padding-top: 28;
-  padding-bottom: 28;
-  padding-left: 16;
-  padding-right: 16;
+*#workspace-no-wins-bin {
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
+  padding: 8;
+}
+
+*#workspace-no-wins-label {
+  font-size:16px;
+  color: #595959ff;
 }
 
 *.workspace-title {
@@ -770,10 +784,15 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-*#netpanel-placeholder
+*#netpanel-placeholder-label
 {
-  font-family: "Liberation Sans";
-  font-size: 17px;
+  font-size:16px;
+  color: #595959ff;
+}
+
+*#netpanel-placeholder-bin
+{
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
@@ -1017,6 +1036,17 @@ AhoghillPlaylistPlaceholder {
   color: #027061;
 }
 
+*.pasteboard-empty-bin {
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
+  padding: 8;
+}
+
+*.pasteboard-empty-label {
+  font-family: "Liberation Sans";
+  font-size: 16px;
+  color: #595959ff;
+}
+
 *#pasteboard-items-list {
   border-image: url('file://pasteboard/pasteboard-items-list-bg.png') 10 stretch;
   padding: 10;
@@ -1029,7 +1059,7 @@ AhoghillPlaylistPlaceholder {
 
 *#pasteboard-controls NbtkButton {
   font-family: "Liberation Sans";
-  font-size: 13;
+  font-size: 13px;
   color: #027061;
   padding: 4 8 4 8;
 }

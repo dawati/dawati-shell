@@ -1,5 +1,24 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Emmanuele Bassi <ebassi@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -128,6 +147,22 @@ on_selection_copy_clicked (NbtkButton *button,
   mnb_clipboard_store_save_selection (store);
 }
 
+static void on_item_added (MnbClipboardStore    *store,
+                           MnbClipboardItemType  item_type,
+                           ClutterActor         *bin);
+
+static void
+on_item_added (MnbClipboardStore    *store,
+               MnbClipboardItemType  item_type,
+               ClutterActor         *bin)
+{
+  g_signal_handlers_disconnect_by_func (store,
+                                        G_CALLBACK (on_item_added),
+                                        bin);
+
+  clutter_actor_destroy (bin);
+}
+
 ClutterActor *
 make_pasteboard (MutterPlugin *plugin,
                  gint          width)
@@ -138,6 +173,9 @@ make_pasteboard (MutterPlugin *plugin,
   guint items_list_width = 0, items_list_height = 0;
 
   drop_down = mnb_drop_down_new ();
+
+  /* the object proxying the Clipboard changes and storing them */
+  store = mnb_clipboard_store_new ();
 
   vbox = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (vbox), 12);
@@ -193,8 +231,33 @@ make_pasteboard (MutterPlugin *plugin,
   g_signal_connect (drop_down, "hide-completed",
                     G_CALLBACK (on_dropdown_hide), entry);
 
-  /* the object proxying the Clipboard changes and storing them */
-  store = mnb_clipboard_store_new ();
+  /* bin for the the "pasteboard is empty" notice */
+  bin = NBTK_WIDGET (nbtk_bin_new ());
+  nbtk_widget_set_style_class_name (bin, "pasteboard-empty-bin");
+  nbtk_bin_set_alignment (NBTK_BIN (bin),
+                          NBTK_ALIGN_LEFT,
+                          NBTK_ALIGN_CENTER);
+  nbtk_bin_set_fill (NBTK_BIN (bin), TRUE, FALSE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox), CLUTTER_ACTOR (bin),
+                                        1, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 2,
+                                        NULL);
+
+  label = nbtk_label_new (_("You need to copy some text to use Pasteboard"));
+  nbtk_widget_set_style_class_name (bin, "pasteboard-empty-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (bin),
+                               CLUTTER_ACTOR (label));
+
+  g_signal_connect (store, "item-added",
+                    G_CALLBACK (on_item_added),
+                    bin);
 
   /* the actual view */
   view = CLUTTER_ACTOR (mnb_clipboard_view_new (store));
@@ -212,7 +275,7 @@ make_pasteboard (MutterPlugin *plugin,
   clutter_container_add_actor (CLUTTER_CONTAINER (bin), scroll);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
                                         CLUTTER_ACTOR (bin),
-                                        1, 0,
+                                        2, 0,
                                         "x-expand", TRUE,
                                         "y-expand", TRUE,
                                         "x-fill", TRUE,
@@ -240,7 +303,7 @@ make_pasteboard (MutterPlugin *plugin,
   clutter_actor_set_size (CLUTTER_ACTOR (bin), 300, items_list_height);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
                                         CLUTTER_ACTOR (bin),
-                                        1, 1,
+                                        2, 1,
                                         "x-expand", FALSE,
                                         "y-expand", FALSE,
                                         "x-fill", FALSE,
