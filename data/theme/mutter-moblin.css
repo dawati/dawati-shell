@@ -869,6 +869,7 @@ AhoghillResultsPane {
 *#media-pane-results-label {
   font-family: "Liberation Sans Bold";
   font-size: 14;
+  color: #7e7e7e;
 }
 
 *#media-pane-results-table {
