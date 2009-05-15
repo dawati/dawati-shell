@@ -123,7 +123,7 @@ struct _MoblinNetbookPluginPrivate
   gboolean               panel_wait_for_pointer     : 1;
   gboolean               pointer_on_stage           : 1;
   gboolean               in_alt_grab                : 1;
-  gboolean               blocking_input             : 1;
+  gboolean               holding_focus              : 1;
 
   gint                   fullscreen_apps;
 

@@ -1896,10 +1896,10 @@ disable_stage (MutterPlugin *plugin, guint32 timestamp)
       priv->last_focused = NULL;
     }
 
+  priv->holding_focus = FALSE;
+
   if (focus)
     meta_display_set_input_focus_window (display, focus, FALSE, timestamp);
-
-  priv->blocking_input = FALSE;
 }
 
 void
@@ -1930,18 +1930,26 @@ enable_stage (MutterPlugin *plugin, guint32 timestamp)
     g_object_weak_ref (G_OBJECT (priv->last_focused),
                        last_focus_weak_notify_cb, plugin);
 
+  priv->holding_focus = TRUE;
+
   XSetInputFocus (xdpy,
                   priv->focus_xwin,
                   RevertToPointerRoot,
                   timestamp);
-
-  priv->blocking_input = TRUE;
 }
 
 static gboolean
 xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (priv->holding_focus &&
+      xev->type == FocusOut && xev->xfocus.mode == NotifyNormal &&
+      xev->xfocus.window == priv->focus_xwin)
+    {
+      g_warning ("Lost focus while UI visible (detail %d)",
+                 xev->xfocus.detail);
+    }
 
   if (priv->in_alt_grab)
     {
@@ -2231,14 +2239,14 @@ setup_focus_window (MutterPlugin *plugin)
   type_atom = meta_display_get_atom (display,
                                      META_ATOM__NET_WM_WINDOW_TYPE_DOCK);
 
-  attr.event_mask        = KeyPressMask | KeyReleaseMask;
+  attr.event_mask        = KeyPressMask | KeyReleaseMask | FocusChangeMask;
   attr.override_redirect = True;
 
   xwin = XCreateWindow (xdpy,
                         RootWindow (xdpy,
                                     meta_screen_get_screen_number (screen)),
-                        -100, -100, 1, 1, 0,
-                        CopyFromParent, InputOutput, CopyFromParent,
+                        -500, -500, 1, 1, 0,
+                        CopyFromParent, InputOnly, CopyFromParent,
                         CWEventMask | CWOverrideRedirect, &attr);
 
   XChangeProperty (xdpy, xwin,
