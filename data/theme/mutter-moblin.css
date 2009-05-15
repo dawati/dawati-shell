@@ -1082,8 +1082,9 @@ MnbClipboardItem {
 
 *#people-search-label {
   font-family: "Liberation Sans Bold";
-  font-size: 18;
+  font-size: 18px;
   padding-left: 12;
+  color: #3e3e3eff;
 }
 
 *#people-search-entry *.MnbEntryButton {
