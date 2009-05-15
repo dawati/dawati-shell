@@ -380,7 +380,12 @@ _service_updated_cb (CmService *service,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
 
-  if (cm_service_get_name (service))
+  /* Don't display non-favorite ethernet services or services
+   * which don't have a name
+   */
+  if ((g_strcmp0 ("ethernet", cm_service_get_type (service)) == 0
+       && cm_service_get_favorite (service) == FALSE)
+      || cm_service_get_name (service) == NULL)
   {
     GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
                                                         service);
