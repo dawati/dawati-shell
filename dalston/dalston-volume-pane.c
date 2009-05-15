@@ -216,6 +216,7 @@ dalston_volume_pane_init (DalstonVolumePane *self)
   GtkWidget *align;
   GError    *error = NULL;
   gboolean   alert_sounds_button_active;
+  gchar     *str;
 
   priv->client = gconf_client_get_default ();
 
@@ -226,7 +227,14 @@ dalston_volume_pane_init (DalstonVolumePane *self)
   vbox = gtk_vbox_new (FALSE, 8);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
-  label = gtk_label_new (_("<span font_size=\"x-large\">Output volume</span>"));
+
+  str = g_strconcat ("<span font_desc=\"Liberation Sans Bold 18px\" foreground=\"#3e3e3e\">",
+                     _("Output volume"),
+                     "</span>",
+                     NULL);
+  label = gtk_label_new (str);
+  g_free (str);
+
   gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox),

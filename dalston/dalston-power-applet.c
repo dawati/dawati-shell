@@ -389,6 +389,7 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   GtkWidget *vbox;
   GtkWidget *frame;
   GtkWidget *hbox;
+  gchar *str;
 
   /* Button monitor goes here, bleargh... */
   priv->button_monitor = dalston_button_monitor_new ();
@@ -425,7 +426,14 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   vbox = gtk_vbox_new (FALSE, 8);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
   gtk_container_add (GTK_BIN (frame), vbox);
-  label = gtk_label_new (_("<span font_size=\"x-large\">Display brightness</span>"));
+
+  str = g_strconcat ("<span font_desc=\"Liberation Sans Bold 18px\" foreground=\"#3e3e3e\">",
+                     _("Display brightness"),
+                     "</span>",
+                     NULL);
+  label = gtk_label_new (str);
+  g_free (str);
+
   gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox),
@@ -480,6 +488,8 @@ dalston_power_applet_init (DalstonPowerApplet *self)
                             120);
 #endif
 
+  /* fix the size of the battery vbox */
+  gtk_widget_set_size_request (battery_vbox, 240, -1);
   gtk_box_pack_start (GTK_BOX (battery_vbox),
                       priv->battery_image,
                       TRUE,
