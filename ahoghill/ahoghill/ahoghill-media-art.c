@@ -127,13 +127,67 @@ ahoghill_media_art_allocate (ClutterActor          *actor,
     clutter_actor_allocate (priv->play_texture, &play_box, absolute_origin_changed);
 }
 
+/* Taken from PengeMagicTexture */
+static void
+paint_art (ClutterActor *actor)
+{
+    ClutterActorBox box;
+    CoglHandle *tex;
+    int bw, bh;
+    int aw, ah;
+    float v;
+    float tx1, tx2, ty1, ty2;
+    ClutterColor col = { 0xff, 0xff, 0xff, 0xff };
+
+    clutter_actor_get_allocation_box (actor, &box);
+    tex = clutter_texture_get_cogl_texture ((ClutterTexture *) actor);
+
+    bw = cogl_texture_get_width (tex); /* base texture width */
+    bh = cogl_texture_get_height (tex); /* base texture height */
+
+    aw = CLUTTER_UNITS_TO_INT (box.x2 - box.x1); /* allocation width */
+    ah = CLUTTER_UNITS_TO_INT (box.y2 - box.y1); /* allocation height */
+
+    /* no comment */
+    if ((float)bw/bh < (float)aw/ah) {
+        /* fit width */
+        v = (((float)ah * bw) / ((float)aw * bh)) / 2;
+        tx1 = 0;
+        tx2 = 1;
+        ty1 = (0.5 - v);
+        ty2 = (0.5 + v);
+    } else {
+        /* fit height */
+        v = (((float)aw * bh) / ((float)ah * bw)) / 2;
+        tx1 = (0.5 - v);
+        tx2 = (0.5 + v);
+        ty1 = 0;
+        ty2 = 1;
+    }
+
+    col.alpha = clutter_actor_get_paint_opacity (actor);
+    cogl_set_source_color4ub (col.red, col.green, col.blue, col.alpha);
+    cogl_rectangle (CLUTTER_UNITS_TO_INT (box.x1),
+                    CLUTTER_UNITS_TO_INT (box.y1),
+                    CLUTTER_UNITS_TO_INT (box.x2),
+                    CLUTTER_UNITS_TO_INT (box.y2));
+    cogl_set_source_texture (tex);
+    cogl_rectangle_with_texture_coords (CLUTTER_UNITS_TO_INT (box.x1),
+                                        CLUTTER_UNITS_TO_INT (box.y1),
+                                        CLUTTER_UNITS_TO_INT (box.x2),
+                                        CLUTTER_UNITS_TO_INT (box.y2),
+                                        tx1, ty1,
+                                        tx2, ty2);
+}
+
 static void
 ahoghill_media_art_paint (ClutterActor *actor)
 {
     AhoghillMediaArtPrivate *priv = ((AhoghillMediaArt *) actor)->priv;
 
     CLUTTER_ACTOR_CLASS (ahoghill_media_art_parent_class)->paint (actor);
-    clutter_actor_paint (priv->art);
+
+    paint_art (priv->art);
 
     if (CLUTTER_ACTOR_IS_VISIBLE (priv->play_texture)) {
         clutter_actor_paint (priv->play_texture);
