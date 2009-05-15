@@ -1,4 +1,5 @@
 # List of source files containing translatable strings.
+ahoghill/ahoghill/ahoghill-example-table.c
 ahoghill/ahoghill/ahoghill-grid-view.c
 ahoghill/ahoghill/ahoghill-media-tile.c
 ahoghill/ahoghill/ahoghill-results-pane.c
@@ -7,10 +8,12 @@ ahoghill/ahoghill/ahoghill-queue-tile.c
 ahoghill/ahoghill/ahoghill-playlist-header.c
 penge/penge/penge-calendar-pane.c
 penge/penge/penge-events-pane.c
+penge/penge/penge-people-pane.c
+penge/penge/penge-recent-files-pane.c
+penge/penge/penge-recent-file-tile.c
 penge/penge/penge-tasks-pane.c
 penge/penge/penge-task-tile.c
 penge/penge/penge-utils.c
-penge/penge/penge-recent-file-tile.c
 src/moblin-netbook.c
 src/moblin-netbook-chooser.c
 src/moblin-netbook-launcher.c
