@@ -1330,6 +1330,9 @@ on_config_actor_hide_begin_cb (ClutterActor *actor, gpointer data)
                                          hide_data->config_xwin);
 }
 
+/*
+ * Returns true if workspace has been removed
+ */
 static void
 check_for_empty_workspace (MutterPlugin *plugin,
                            gint workspace, MetaWindow *ignore)
@@ -1360,14 +1363,39 @@ check_for_empty_workspace (MutterPlugin *plugin,
 
   if (workspace_empty)
     {
-      MetaWorkspace *mws;
-      guint32        timestamp;
+      MetaWorkspace  *current_ws;
+      guint32         timestamp;
+      gint            next_index = -1;
 
-      timestamp = clutter_x11_get_current_event_time ();
+      timestamp  = clutter_x11_get_current_event_time ();
+      current_ws = meta_screen_get_workspace_by_index (screen, workspace);
 
-      mws = meta_screen_get_workspace_by_index (screen, workspace);
+      /*
+       * We need to activate the next workspace before we remove this one, so
+       * that the zone switch effect works.
+       */
+      if (workspace > 0)
+        next_index = workspace - 1;
+      else if (meta_screen_get_n_workspaces (screen) > 1)
+        next_index = workspace + 1;
 
-      meta_screen_remove_workspace (screen, mws, timestamp);
+      if (next_index != -1)
+        {
+          MetaWorkspace  *next_ws;
+          next_ws = meta_screen_get_workspace_by_index (screen, next_index);
+
+          if (!next_ws)
+            {
+              g_warning ("%s:%d: No workspace for index %d\n",
+                         __FILE__, __LINE__, next_index);
+            }
+          else
+            {
+              meta_workspace_activate (next_ws, timestamp);
+            }
+        }
+
+      meta_screen_remove_workspace (screen, current_ws, timestamp);
     }
 }
 
@@ -1733,15 +1761,19 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
 
     }
 
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
-
   /*
    * Do not destroy workspace if the closing window is a splash screen.
    * (Sometimes the splash gets destroyed before the application window
    * maps, e.g., Gimp.)
+   *
+   * NB: This must come before we notify Mutter that the effect completed,
+   *     otherwise the destruction of this window will be completed and the
+   *     workspace switch effect will crash.
    */
   if (type != META_COMP_WINDOW_SPLASHSCREEN)
     check_for_empty_workspace (plugin, workspace, meta_win);
+
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
 static void
