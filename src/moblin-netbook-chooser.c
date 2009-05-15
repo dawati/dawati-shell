@@ -856,9 +856,11 @@ show_workspace_chooser (MutterPlugin *plugin,
   gint                        screen_width, screen_height;
   guint                       switcher_width, switcher_height;
   guint                       label_height;
-  ClutterColor                label_clr = { 0xff, 0xff, 0xff, 0xff };
+  ClutterColor                label_clr = { 0x0, 0x0, 0x0, 0xff };
   gint                        ws_count = 0;
   struct kbd_data            *kbd_data;
+
+  /* FIXME: Below should hook into CSS styling.. */
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -886,7 +888,7 @@ show_workspace_chooser (MutterPlugin *plugin,
    */
   clutter_actor_set_size (frame, 0, 0);
 
-  label = clutter_text_new_full ("Sans 9",
+  label = clutter_text_new_full ("Liberation Sans 15px",
                                  _("Choose zone for application:"), &label_clr);
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;
