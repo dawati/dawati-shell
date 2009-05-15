@@ -251,7 +251,7 @@ make_pasteboard (MutterPlugin *plugin,
                                         NULL);
 
   label = nbtk_label_new (_("You need to copy some text to use Pasteboard"));
-  nbtk_widget_set_style_class_name (bin, "pasteboard-empty-label");
+  nbtk_widget_set_style_class_name (label, "pasteboard-empty-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (bin),
                                CLUTTER_ACTOR (label));
 
