@@ -314,6 +314,7 @@ mnb_clipboard_view_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->paint (actor);
 
+#if 0
   if (priv->rows == NULL)
     {
       PangoLayout *layout;
@@ -379,6 +380,7 @@ mnb_clipboard_view_paint (ClutterActor *actor)
 
       return;
     }
+#endif
 
   for (l = priv->rows, i = 0; l != NULL; l = l->next, i++)
     {
