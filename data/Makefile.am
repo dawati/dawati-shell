@@ -24,7 +24,8 @@ dist_theme_panel_DATA = \
 	theme/panel/status-normal.png \
 	theme/panel/background-tile.png \
 	theme/panel/toolbar-button-active.png \
-	theme/panel/toolbar-button-hover.png
+	theme/panel/toolbar-button-hover.png \
+        theme/panel/toolbar-hint.png
 
 theme_chooserdir = $(pkgdatadir)/theme/chooser
 dist_theme_chooser_DATA = \

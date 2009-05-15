@@ -124,6 +124,19 @@ MnbPanelButton:hover, MnbPanelButton:active {
   border-image: url("file://panel/toolbar-button-hover.png") 0 stretch;
 }
 
+/* Toolbar usage hint */
+
+*.toolbar-instruction-box {
+ border-image: url("file://panel/toolbar-hint.png") 47 6 6 60;
+ padding: 10 10 10 60; 
+}
+
+*.toolbar-instruction-label {
+  font-family: "Liberation Sans";
+  font-size: 15px;
+  color: white;
+}
+
 /* apps button */
 *#apps-button {
   background-image: url("file://panel/apps-normal.png");
