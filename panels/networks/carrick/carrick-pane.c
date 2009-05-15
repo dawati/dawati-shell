@@ -379,14 +379,20 @@ _service_updated_cb (CmService *service,
                      gpointer   user_data)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
+  const gchar *type = NULL;
 
   /* Don't display non-favorite ethernet services or services
    * which don't have a name
    */
-  if ((g_strcmp0 ("ethernet", cm_service_get_type (service)) == 0
-       && cm_service_get_favorite (service) == FALSE)
-      || cm_service_get_name (service) == NULL)
+  if (cm_service_get_name (service) != NULL)
   {
+    type = cm_service_get_type (service);
+    if (g_strcmp0 ("ethernet", type) == 0
+        && cm_service_get_favorite (service) == FALSE)
+    {
+      return;
+    }
+
     GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
                                                         service);
     priv->services = g_list_append (priv->services,
@@ -525,10 +531,6 @@ _update_services (CarrickPane *pane)
 
   /* Watch for "service-updated" on each service */
   raw_services = cm_manager_get_services (priv->manager);
-  if (!raw_services) /* FIXME: handle this better */
-  {
-    return;
-  }
   len = g_list_length (raw_services);
   for (cnt = 0; cnt < len; cnt++)
   {
