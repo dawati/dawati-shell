@@ -993,10 +993,6 @@ NbtkScrollBar.AhoghillProgressBar > *#forward-stepper
   background-image: none;
 }
 
-{
-  border-image: none;
-  background-image: none;
-}
 NbtkScrollBar.AhoghillProgressBar *#handle
 {
   border-image: none;
