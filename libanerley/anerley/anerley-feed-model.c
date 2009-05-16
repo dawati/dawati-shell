@@ -176,11 +176,6 @@ anerley_feed_model_init (AnerleyFeedModel *self)
   clutter_model_set_types (CLUTTER_MODEL (self),
                            1,
                            types);
-  clutter_model_set_sort ((ClutterModel *)self,
-                          0,
-                          _model_sort_func,
-                          NULL,
-                          NULL);
 }
 
 ClutterModel *
@@ -203,6 +198,13 @@ _feed_items_added_cb (AnerleyFeed *feed,
 
   g_signal_emit (model, signals[BULK_CHANGE_START], 0);
 
+  clutter_model_set_sort ((ClutterModel *)model,
+                          -1,
+                          NULL,
+                          NULL,
+                          NULL);
+
+
   for (l = items; l; l = l->next)
   {
     item = (AnerleyItem *)l->data;
@@ -212,6 +214,12 @@ _feed_items_added_cb (AnerleyFeed *feed,
                           item,
                           -1);
   }
+
+  clutter_model_set_sort ((ClutterModel *)model,
+                          0,
+                          _model_sort_func,
+                          NULL,
+                          NULL);
 
   g_signal_emit (model, signals[BULK_CHANGE_END], 0);
 }
