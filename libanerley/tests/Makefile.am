@@ -1,8 +1,25 @@
-noinst_PROGRAMS = test-tp-feed
+noinst_PROGRAMS = test-tp-feed test-simple-grid-view test-model test-tile-view test-aggregate-tp-feed test-simple-ui
 
-AM_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) -I$(top_srcdir)
-AM_LDFLAGS = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MC_LIBS) \
-	     $(top_builddir)/anerley/libanerley.la
+AM_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) $(NBTK_CFLAGS) \
+	    -I$(top_srcdir) \
+	    -DPKG_DATA_DIR=\"$(pkgdatadir)\"
+AM_LDFLAGS = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MC_LIBS) $(NBTK_LIBS)
 
 test_tp_feed_SOURCES = test-tp-feed.c
+test_tp_feed_LDADD = ../anerley/libanerley.la
+
+test_simple_grid_view_SOURCES = test-simple-grid-view.c
+test_simple_grid_view_LDADD = ../anerley/libanerley.la
+
+test_model_SOURCES = test-model.c
+test_model_LDADD = ../anerley/libanerley.la
+
+test_tile_view_SOURCES = test-tile-view.c
+test_tile_view_LDADD = ../anerley/libanerley.la
+
+test_aggregate_tp_feed_SOURCES = test-aggregate-tp-feed.c
+test_aggregate_tp_feed_LDADD = ../anerley/libanerley.la
+
+test_simple_ui_SOURCES = test-simple-ui.c
+test_simple_ui_LDADD = ../anerley/libanerley.la
 
