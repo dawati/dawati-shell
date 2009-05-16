@@ -294,6 +294,8 @@ sn_map_timeout_cb (gpointer data)
 
               sn_data->mcw = mcw;
 
+              g_warning ("Attempting to activate %s in place of %s", id, sn_id);
+
               /*
                * Apply the configuration settings to this application.
                */
