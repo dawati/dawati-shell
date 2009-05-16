@@ -94,7 +94,7 @@ anerley_aggregate_tp_feed_constructed (GObject *object)
   const gchar *account_name;
   AnerleyTpFeed *feed;
 
-  accounts = mc_accounts_list ();
+  accounts = mc_accounts_list_by_enabled (TRUE);
 
   for (l = accounts; l; l = l->next)
   {
