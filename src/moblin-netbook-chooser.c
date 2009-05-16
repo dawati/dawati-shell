@@ -96,6 +96,15 @@ move_window_to_workspace (MutterWindow *mcw,
 
       if (mw)
         {
+          MetaWorkspace * active_workspace;
+          MetaWorkspace * workspace = meta_window_get_workspace (mw);
+          gint            active_index = -2;
+
+          active_workspace = meta_screen_get_active_workspace (screen);
+
+          if (active_workspace)
+            active_index = meta_workspace_index (active_workspace);
+
           /*
            * Move the window to the requested workspace; if the window is not
            * sticky, activate the workspace as well.
@@ -103,7 +112,11 @@ move_window_to_workspace (MutterWindow *mcw,
           meta_window_change_workspace_by_index (mw, workspace_index, TRUE,
                                                  timestamp);
 
-          if (workspace_index > -1)
+          if (workspace_index == active_index)
+            {
+              meta_window_activate_with_workspace (mw, timestamp, workspace);
+            }
+          else if (workspace_index > -1)
             {
               MetaWorkspace *workspace;
 
@@ -224,12 +237,7 @@ sn_map_timeout_cb (gpointer data)
 
           if (id && strstr (id, binary))
             {
-              MetaScreen    *screen  = mutter_plugin_get_screen (plugin);
-              MetaWorkspace *active_workspace;
-              MetaWorkspace *workspace;
-              guint32        timestamp;
-
-              timestamp = clutter_x11_get_current_event_time ();
+              guint32 timestamp = clutter_x11_get_current_event_time ();
 
               sn_data->mcw = mcw;
 
@@ -247,19 +255,6 @@ sn_map_timeout_cb (gpointer data)
               removed = TRUE;
               g_hash_table_remove (priv->sn_hash, sn_id);
 
-              /*
-               * If the application is supposed to be on the same workspace
-               * as the currently active one, then simply finalizing it does
-               * not bring it to the forefront; do so now.
-               */
-              active_workspace = meta_screen_get_active_workspace (screen);
-              workspace = meta_window_get_workspace (mw);
-
-              if (!active_workspace || (active_workspace == workspace))
-                {
-                  meta_window_activate_with_workspace (mw, timestamp,
-                                                       workspace);
-                }
               break;
             }
 
