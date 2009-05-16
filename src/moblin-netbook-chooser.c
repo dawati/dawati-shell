@@ -65,6 +65,7 @@ struct SnHashData
   gint                workspace;
   SnMonitorEventType  state;
   guint               timeout_id;
+  gchar              *binary;
   gboolean            without_chooser    : 1;
   gboolean            configured         : 1;
 };
@@ -190,9 +191,9 @@ sn_map_timeout_cb (gpointer data)
 
   if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
     {
-      gboolean    removed = FALSE;
-      SnHashData *sn_data = value;
-      gchar      *s, *p, *e;
+      gboolean     removed = FALSE;
+      SnHashData  *sn_data = value;
+      const gchar *binary;
 
       if (sn_data->state != SN_MONITOR_EVENT_COMPLETED)
         {
@@ -203,75 +204,13 @@ sn_map_timeout_cb (gpointer data)
           return TRUE;
         }
 
-      /*
-       * For applications started up with GdkAppLaunchContext the startup id
-       * has the form:
-       *
-       *  'launcher'-'pid'-'machine'-'app'-'numid'_'timestamp'
-       *
-       * We need to isolate the app-numid part.
-       *
-       * Dash can appear anywhere in app, machine or launcher, which makes this
-       * impossible to solve as a general problem, so we need to reduce this
-       * to sensible special case: let's only care about apps launched from the
-       * local host.
-       *
-       */
-      s = strdup (sn_id);
-      e = strrchr (s, '_');
-
-      if (!e)
-        {
-          g_warning ("%s: %d: Unexpected form of sn_id [%s]\n",
-                     __FILE__, __LINE__, sn_id);
-          g_free (s);
-          goto finish;
-        }
-
-      *e = 0;
-
-      e = strrchr (s, '-');
-
-      if (!e)
-        {
-          g_warning ("%s: %d: Unexpected form of sn_id [%s]\n",
-                     __FILE__, __LINE__, sn_id);
-          g_free (s);
-          goto finish;
-        }
-
-      *e = 0;
+      binary = sn_data->binary;
 
       /*
-       * now lets find the first number preceeded by a dash
+       * Both applications started with GdkAppLaunchContext and those started
+       * with libstartup-notification include the binary name in the sn id. We
+       * try to find the application based on the binary name.
        */
-
-      p = s + 1;
-
-      while (*p && (!isdigit (*p) || (*(p-1) != '-')))
-        ++p;
-
-      if (!p)
-        {
-          g_warning ("%s: %d: Unexpected form of sn_id [%s]\n",
-                     __FILE__, __LINE__, sn_id);
-          g_free (s);
-          goto finish;
-        }
-
-      while (*p && isdigit (*p))
-        p++;
-
-      if (!*p || *p != '-')
-        {
-          g_warning ("%s: %d: Unexpected form of sn_id [%s]\n",
-                     __FILE__, __LINE__, sn_id);
-          g_free (s);
-          goto finish;
-        }
-
-      ++p;
-
       /*
        * Now iterate all windows and look for an sn_id that matches.
        */
@@ -283,7 +222,7 @@ sn_map_timeout_cb (gpointer data)
           MetaWindow   *mw  = mutter_window_get_meta_window (mcw);
           const gchar  *id  = meta_window_get_startup_id (mw);
 
-          if (id && strstr (id, p))
+          if (id && strstr (id, binary))
             {
               MetaScreen    *screen  = mutter_plugin_get_screen (plugin);
               MetaWorkspace *active_workspace;
@@ -326,8 +265,6 @@ sn_map_timeout_cb (gpointer data)
 
           l = l->next;
         }
-
-      g_free (s);
 
       if (!removed)
         g_hash_table_remove (priv->sn_hash, sn_id);
@@ -1179,12 +1116,14 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
         else
           {
             sn_data = g_slice_new0 (SnHashData);
-        sn_data->workspace = -2;
+            sn_data->workspace = -2;
 
             g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
           }
 
         sn_data->state = SN_MONITOR_EVENT_INITIATED;
+        sn_data->binary =
+            g_strdup (sn_startup_sequence_get_binary_name (sequence));
 
         if (n_ws == 1)
           {
@@ -1309,6 +1248,7 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
 static void
 free_sn_hash_data (SnHashData *data)
 {
+  g_free (data->binary);
   g_slice_free (SnHashData, data);
 }
 
