@@ -638,7 +638,7 @@ _mc_account_status_changed_cb (MissionControl           *mc,
       tp_connection_call_when_ready (priv->conn,
                                      _tp_connection_ready_cb,
                                      feed);
-    } else {
+    } else if (status == TP_CONNECTION_STATUS_DISCONNECTED) {
       /*
        * This means our connection has been disconnected. That is :-( so lets
        * remove these things from our internal store and emit the signals on
@@ -663,6 +663,8 @@ _mc_account_status_changed_cb (MissionControl           *mc,
         g_object_unref (priv->conn);
         priv->conn = NULL;
       }
+    } else {
+      /* CONNECTING */
     }
   }
 }
