@@ -562,7 +562,7 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
 
   workspace =
     meta_screen_get_active_workspace_index (mutter_plugin_get_screen (plugin));
-  moblin_netbook_spawn (plugin, exec, 0L, TRUE, workspace);
+  moblin_netbook_launch_application (plugin, exec, TRUE, workspace);
 
   g_free (exec);
   g_free (esc_url);

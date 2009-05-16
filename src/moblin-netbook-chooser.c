@@ -27,6 +27,7 @@
 #endif
 
 #include <glib/gi18n.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-panel.h"
@@ -1381,72 +1382,107 @@ moblin_netbook_sn_finalize (MutterPlugin *plugin)
     }
 }
 
-void
-moblin_netbook_spawn (MutterPlugin *plugin,
-                      const  gchar *path,
-                      guint32       timestamp,
-                      gboolean      without_chooser,
-                      gint          workspace)
+/*
+ * Helper function to launch application from GAppInfo, with all the
+ * required SN housekeeping.
+ */
+static void
+moblin_netbook_launch_app (MutterPlugin *plugin,
+                           GAppInfo     *app,
+                           GList        *files,
+                           gboolean      no_chooser,
+                           gint          workspace)
 {
-  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
-  SnLauncherContext          *context = NULL;
-  const gchar                *sn_id;
-  gchar                     **argv;
-  gint                        argc;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GAppLaunchContext          *ctx;
+  GError                     *error = NULL;
   SnHashData                 *sn_data = g_slice_new0 (SnHashData);
-  GError                     *err = NULL;
-  gint                        i;
+  const gchar                *sn_id;
 
-  if (!path)
-    return;
+  ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
 
-  if (!g_shell_parse_argv (path, &argc, &argv, &err))
-    {
-      g_warning ("Error parsing command line: %s", err->message);
-      g_clear_error (&err);
-    }
+  sn_id = g_app_launch_context_get_startup_notify_id (ctx, app, NULL);
 
-  for (i = 0; i < argc; i++)
-    {
-      /* we don't support any % arguments in the desktop entry spec yet */
-      if (argv[i][0] == '%')
-        argv[i][0] = '\0';
-    }
+  g_debug ("Got sn_id %s", sn_id);
 
-  context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
-
-  sn_launcher_context_set_name (context, path);
-  sn_launcher_context_set_description (context, path);
-  sn_launcher_context_set_binary_name (context, path);
-
-  sn_launcher_context_initiate (context,
-                                "mutter-netbook-shell",
-                                path, /* bin_name */
-				timestamp);
-
-  sn_id = sn_launcher_context_get_startup_id (context);
-
-  sn_data->workspace = workspace;
-  sn_data->without_chooser = without_chooser;
+  sn_data->workspace       = workspace;
+  sn_data->without_chooser = no_chooser;
 
   g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
 
-  if (!g_spawn_async (NULL,
-                      &argv[0],
-                      NULL,
-                      G_SPAWN_SEARCH_PATH,
-                      (GSpawnChildSetupFunc)
-                      sn_launcher_context_setup_child_process,
-                      (gpointer)context,
-                      NULL,
-                      NULL))
+  g_app_info_launch (app, files, ctx, &error);
+
+  if (error)
     {
-      g_warning ("Failed to launch [%s]", path);
+      g_warning ("Failed to lauch %s (%s)",
+                 g_app_info_get_commandline (app), error->message);
+
+      g_error_free (error);
       g_hash_table_remove (priv->sn_hash, sn_id);
-      sn_launcher_context_complete (context);
     }
 
-  sn_launcher_context_unref (context);
-  g_strfreev (argv);
+  g_object_unref (ctx);
+}
+
+/*
+ * Starts application using the given path.
+ */
+void
+moblin_netbook_launch_application (MutterPlugin *plugin,
+                                   const  gchar *path,
+                                   gboolean      no_chooser,
+                                   gint          workspace)
+{
+  GAppInfo *app;
+  GError   *error = NULL;
+
+  g_return_if_fail (plugin && path);
+
+  app = g_app_info_create_from_commandline (path, NULL,
+                                            G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                            &error);
+
+  if (error)
+    {
+      g_warning ("Failed to create GAppInfo from commnad line %s (%s)",
+                 path, error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  moblin_netbook_launch_app (plugin, app, NULL, no_chooser, workspace);
+
+  g_object_unref (app);
+}
+
+/*
+ * Starts application using the given desktop file. The files parameter is
+ * passed to the application as command line arguments.
+ *
+ * NB: this function is currently unused; will be exposed via the new dbus
+ *     API eventually.
+ */
+void
+moblin_netbook_launch_application_from_desktop_file (MutterPlugin *plugin,
+                                                     const  gchar *desktop,
+                                                     GList        *files,
+                                                     gboolean      no_chooser,
+                                                     gint          workspace)
+{
+  GAppInfo *app;
+
+  g_return_if_fail (plugin && desktop);
+
+  app = G_APP_INFO (g_desktop_app_info_new_from_filename (desktop));
+
+  if (!app)
+    {
+      g_warning ("Failed to create GAppInfo for file %s (%s)", desktop);
+      return;
+    }
+
+  moblin_netbook_launch_app (plugin, app, files, no_chooser, workspace);
+
+  g_object_unref (app);
 }
