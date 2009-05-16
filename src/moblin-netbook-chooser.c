@@ -168,6 +168,15 @@ struct map_timeout_data
  * their window; this should be OK, because when this happens we remove the app
  * from the hash here, so when the window finally maps normal processing should
  * ensue.
+ *
+ * NB: This only works with applications that have been started with an sn id
+ *     that matches the assumptions below (based on the id's used for
+ *     applications that we start ourselves), but the sn id is pretty much an
+ *     arbitrary string ...
+ *
+ * TODO: a proper fix for this problem requires fixing libsn, so that when we
+ * get the SN_MONITOR_EVENT_COMPLETED, we can extract the associated xid from
+ * libsn.
  */
 static gboolean
 sn_map_timeout_cb (gpointer data)
@@ -183,7 +192,7 @@ sn_map_timeout_cb (gpointer data)
     {
       gboolean    removed = FALSE;
       SnHashData *sn_data = value;
-      gchar      *s, *e;
+      gchar      *s, *p, *e;
 
       if (sn_data->state != SN_MONITOR_EVENT_COMPLETED)
         {
@@ -195,24 +204,73 @@ sn_map_timeout_cb (gpointer data)
         }
 
       /*
-       * The startup id has the form:
+       * For applications started up with GdkAppLaunchContext the startup id
+       * has the form:
        *
-       *  launcher/app/numid-id-machine_timestamp.
+       *  'launcher'-'pid'-'machine'-'app'-'numid'_'timestamp'
        *
-       * Isolate the app/numid part.
+       * We need to isolate the app-numid part.
+       *
+       * Dash can appear anywhere in app, machine or launcher, which makes this
+       * impossible to solve as a general problem, so we need to reduce this
+       * to sensible special case: let's only care about apps launched from the
+       * local host.
+       *
        */
-      s = strchr (sn_id, '/');
+      s = strdup (sn_id);
+      e = strrchr (s, '_');
 
-      if (!s)
+      if (!e)
         {
-          g_warning ("Unexpected form of sn_id [%s]\n", sn_id);
+          g_warning ("%s: %d: Unexpected form of sn_id [%s]\n",
+                     __FILE__, __LINE__, sn_id);
+          g_free (s);
           goto finish;
         }
 
-      s = g_strdup (s+1);
-
-      e = strchr (s, '-');
       *e = 0;
+
+      e = strrchr (s, '-');
+
+      if (!e)
+        {
+          g_warning ("%s: %d: Unexpected form of sn_id [%s]\n",
+                     __FILE__, __LINE__, sn_id);
+          g_free (s);
+          goto finish;
+        }
+
+      *e = 0;
+
+      /*
+       * now lets find the first number preceeded by a dash
+       */
+
+      p = s + 1;
+
+      while (*p && (!isdigit (*p) || (*(p-1) != '-')))
+        ++p;
+
+      if (!p)
+        {
+          g_warning ("%s: %d: Unexpected form of sn_id [%s]\n",
+                     __FILE__, __LINE__, sn_id);
+          g_free (s);
+          goto finish;
+        }
+
+      while (*p && isdigit (*p))
+        p++;
+
+      if (!*p || *p != '-')
+        {
+          g_warning ("%s: %d: Unexpected form of sn_id [%s]\n",
+                     __FILE__, __LINE__, sn_id);
+          g_free (s);
+          goto finish;
+        }
+
+      ++p;
 
       /*
        * Now iterate all windows and look for an sn_id that matches.
@@ -225,7 +283,7 @@ sn_map_timeout_cb (gpointer data)
           MetaWindow   *mw  = mutter_window_get_meta_window (mcw);
           const gchar  *id  = meta_window_get_startup_id (mw);
 
-          if (id && strstr (id, s))
+          if (id && strstr (id, p))
             {
               MetaScreen    *screen  = mutter_plugin_get_screen (plugin);
               MetaWorkspace *active_workspace;
