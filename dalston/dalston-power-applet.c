@@ -501,6 +501,9 @@ dalston_power_applet_init (DalstonPowerApplet *self)
                       TRUE,
                       FALSE,
                       8);
+  gtk_label_set_line_wrap (priv->battery_primary_label, TRUE);
+  gtk_widget_set_size_request (priv->battery_primary_label, 240, -1);
+
   priv->battery_secondary_label = gtk_label_new ("");
   gtk_box_pack_start (GTK_BOX (battery_vbox),
                       priv->battery_secondary_label,
