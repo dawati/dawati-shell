@@ -340,6 +340,17 @@ anerley_feed_model_set_filter_text (AnerleyFeedModel *model,
   AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
   gchar *old_filter_text = NULL;
 
+  if (filter_text && priv->filter_text)
+  {
+    if (g_str_equal (filter_text, priv->filter_text))
+    {
+      return;
+    }
+  }
+
+  if (priv->filter_text == filter_text)
+    return;
+
   if (priv->filter_text)
   {
     old_filter_text = priv->filter_text;
