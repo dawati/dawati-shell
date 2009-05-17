@@ -435,6 +435,7 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   const gchar                *name;
+  const gchar                *tooltip = NULL;
   gint                        col = -1;
   gint                        screen_width, screen_height;
   gint                        x, y;
@@ -447,18 +448,36 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
     return;
 
   if (!strcmp (name, "tray-button-bluetooth"))
-    col = 0;
+    {
+      col = 0;
+      tooltip = _("bluetooth");
+    }
   else if (!strcmp (name, "tray-button-wifi"))
-    col = 3;
+    {
+      col = 3;
+      tooltip = _("networks");
+    }
   else if (!strcmp (name, "tray-button-sound"))
-    col = 2;
+    {
+      col = 2;
+      tooltip = _("volume");
+    }
   else if (!strcmp (name, "tray-button-battery"))
-    col = 1;
+    {
+      col = 1;
+      tooltip = _("power & brightness");
+    }
   else if (!strcmp (name, "tray-button-test"))
-    col = 4;
+    {
+      col = 4;
+      tooltip = _("test");
+    }
 
   if (col < 0)
     return;
+
+  if (tooltip)
+    nbtk_widget_set_tooltip_text (NBTK_WIDGET (icon), tooltip);
 
   y = PANEL_HEIGHT - TRAY_BUTTON_HEIGHT;
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
