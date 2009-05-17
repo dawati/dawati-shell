@@ -1,0 +1,10 @@
+Carrick is the connection panel for the Moblin Netbook User eXperience.
+
+Carrick offers a shiny interface to Connman, the lightweight connection daemon.
+
+Copyright (C) 2009 Intel Corporation. All rights reserved.
+Released under the GNU GPL v2 - see COPYING file for details.
+
+Interaction design: Nick Richards
+Visual design: Claire Alexander
+Code (& bugs): Joshua Lock
