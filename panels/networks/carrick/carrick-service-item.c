@@ -296,11 +296,19 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
 
     if (g_strcmp0 ("none", security) != 0)
     {
-      gint i;
-
-      for (i = 0; security[i] != '\0'; i++)
+      if (g_strcmp0 ("rsn", security) == 0)
       {
-        security[i] = g_ascii_toupper (security[i]);
+        g_free (security);
+        security = g_strdup ("WPA2");
+      }
+      else
+      {
+        gint i;
+
+        for (i = 0; security[i] != '\0'; i++)
+        {
+          security[i] = g_ascii_toupper (security[i]);
+        }
       }
       gtk_label_set_text (GTK_LABEL (priv->security_label),
                           security);
