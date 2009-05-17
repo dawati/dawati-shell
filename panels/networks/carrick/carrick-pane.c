@@ -49,7 +49,6 @@ struct _CarrickPanePrivate {
   GtkWidget          *service_list;
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
-  gboolean            offline;
 };
 
 enum
@@ -115,6 +114,11 @@ carrick_pane_dispose (GObject *object)
   if (priv->manager)
   {
     _update_manager (pane, NULL);
+  }
+
+  if (priv->services)
+  {
+    g_list_free (priv->services);
   }
 
   G_OBJECT_CLASS (carrick_pane_parent_class)->dispose (object);
@@ -395,8 +399,6 @@ _service_updated_cb (CmService *service,
 
     GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
                                                         service);
-    priv->services = g_list_append (priv->services,
-                                    (gpointer) service_item);
     carrick_list_add_item (CARRICK_LIST (priv->service_list),
                            service_item);
 
@@ -459,9 +461,7 @@ _set_states (CarrickPane *pane)
   guint len;
   guint cnt;
 
-  priv->offline = cm_manager_get_offline_mode (priv->manager);
-
-  if (priv->offline)
+  if (cm_manager_get_offline_mode (priv->manager))
   {
     gtk_widget_set_sensitive (priv->ethernet_switch,
                               FALSE);
@@ -497,7 +497,6 @@ _flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 
   cm_manager_set_offline_mode (priv->manager, new_state);
   _set_states (pane);
-  priv->offline = new_state;
 
   return TRUE;
 }
@@ -506,50 +505,50 @@ static void
 _remove_list_items (GtkWidget *widget,
                     gpointer   user_data)
 {
-  gtk_widget_destroy (widget);
+  if (widget != NULL)
+    gtk_widget_destroy (widget);
 }
 
 static void
 _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *raw_services;
   CmService *service;
   guint cnt, len;
 
-  /* Bin existing services, re-creating cheaper than comparing? */
-  while (priv->services)
-  {
-    g_object_unref (priv->services->data);
-    priv->services = g_list_delete_link (priv->services,
-                                         priv->services);
-  }
   /* Empty our container widget */
   gtk_container_foreach (GTK_CONTAINER (priv->service_list),
                          _remove_list_items,
                          NULL);
 
+  /* Now we can empty our service list */
+  while (priv->services)
+  {
+    g_object_unref (priv->services);
+    priv->services = g_list_delete_link (priv->services,
+                                         priv->services);
+  }
+  g_list_free (priv->services);
+
   /* Watch for "service-updated" on each service */
-  raw_services = cm_manager_get_services (priv->manager);
-  len = g_list_length (raw_services);
+  priv->services = g_list_copy (cm_manager_get_services (priv->manager));
+  len = g_list_length (priv->services);
   for (cnt = 0; cnt < len; cnt++)
   {
-    service = CM_SERVICE (g_list_nth (raw_services, cnt)->data);
+    service = CM_SERVICE (g_list_nth (priv->services, cnt)->data);
 
     g_signal_connect (G_OBJECT (service),
                       "service-updated",
                       G_CALLBACK (_service_updated_cb),
                       pane);
   }
-
-  g_list_free (raw_services);
 }
 
 static void
-_manager_updated_cb (GObject    *object,
-                     GParamSpec *pspec,
+_manager_updated_cb (CmManager  *manager,
                      gpointer    user_data)
 {
+  g_debug ("Manager updated... \\o/");
   _set_states (CARRICK_PANE (user_data));
   _update_services (CARRICK_PANE (user_data));
 }
