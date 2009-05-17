@@ -327,6 +327,20 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
   }
 }
 
+CmService *
+carrick_service_item_get_service (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  return priv->service;
+}
+
+gint
+carrick_service_item_get_order (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  return (gint)cm_service_get_order (priv->service);
+}
+
 static void
 carrick_service_item_set_property (GObject *object, guint property_id,
                                    const GValue *value, GParamSpec *pspec)
