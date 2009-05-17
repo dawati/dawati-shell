@@ -372,7 +372,7 @@ panel_append_toolbar_button (MutterPlugin  *plugin,
 
   button = mnb_panel_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
+  nbtk_widget_set_tooltip_text (button, tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
   clutter_actor_set_size (CLUTTER_ACTOR (button), BUTTON_WIDTH, BUTTON_HEIGHT);
   clutter_actor_set_position (CLUTTER_ACTOR (button),
