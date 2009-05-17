@@ -421,6 +421,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
 
   priv->connected = FALSE;
+  priv->service = NULL;
 
   priv->table = gtk_table_new (2, 3,
                                TRUE);

@@ -25,6 +25,8 @@
 #include <config.h>
 #include <gtk/gtk.h>
 
+#include "carrick-service-item.h"
+
 #define CARRICK_DRAG_TARGET "CARRICK_DRAG_TARGET"
 
 static const GtkTargetEntry carrick_targets[] = {
@@ -44,6 +46,7 @@ struct _CarrickListPrivate
   guint list_count;
   guint dropped_new_order;
   guint counter;
+  gboolean found;
 };
 
 static void
@@ -168,6 +171,55 @@ carrick_list_drag_end (GtkWidget      *widget,
 }
 
 void
+_list_contains_child (GtkWidget *item,
+                      gpointer   service)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (gtk_widget_get_parent (item));
+  CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
+  CmService *serv = CM_SERVICE (service);
+
+  if (cm_service_compare_services (serv,
+                                   carrick_service_item_get_service (service_item)))
+  {
+    priv->found = TRUE;
+  }
+}
+
+gboolean
+carrick_list_contains_service (CarrickList *list,
+                               CmService   *service)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  gboolean ret;
+  gtk_container_foreach (GTK_CONTAINER (list),
+                         _list_contains_child,
+                         (gpointer) service);
+
+  ret = priv->found;
+  priv->found = FALSE;
+
+  return ret;
+}
+
+void
+_list_item_reorder (GtkWidget *item,
+                    gpointer   user_data)
+{
+  gint pos = carrick_service_item_get_order (CARRICK_SERVICE_ITEM (item));
+  gtk_box_reorder_child (GTK_BOX (user_data),
+                         GTK_WIDGET (item),
+                         pos);
+}
+
+void
+carrick_list_sort_list (CarrickList *list)
+{
+  gtk_container_foreach (GTK_CONTAINER (list),
+                         _list_item_reorder,
+                         list);
+}
+
+void
 carrick_list_add_item (CarrickList *list,
                        GtkWidget *widget)
 {
@@ -202,17 +254,13 @@ carrick_list_add_item (CarrickList *list,
                     G_CALLBACK (carrick_list_drag_end),
                     list);
 
-  priv->list_count++;
-
-  g_object_set_data (G_OBJECT (widget),
-                     "order",
-                     GUINT_TO_POINTER (priv->list_count));
-
   gtk_box_pack_start (GTK_BOX (list),
                       widget,
                       TRUE,
                       TRUE,
                       6);
+
+  priv->list_count++;
 }
 
 
@@ -361,6 +409,7 @@ carrick_list_init (CarrickList *self)
   CarrickListPrivate *priv = LIST_PRIVATE (self);
 
   priv->list_count = 0;
+  priv->found = FALSE;
   /*gtk_drag_dest_set (GTK_WIDGET (self),
                      GTK_DEST_DEFAULT_ALL,
                      carrick_targets,

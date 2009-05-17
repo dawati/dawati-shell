@@ -24,6 +24,7 @@
 #define _CARRICK_LIST_H
 
 #include <gtk/gtk.h>
+#include <gconnman/gconnman.h>
 
 G_BEGIN_DECLS
 
@@ -61,6 +62,9 @@ GType carrick_list_get_type (void);
 
 GtkWidget* carrick_list_new (void);
 void carrick_list_add_item (CarrickList *list, GtkWidget *item);
+gboolean carrick_list_contains_service (CarrickList *list,
+                                        CmService   *service);
+void carrick_list_sort_list (CarrickList *list);
 
 G_END_DECLS
 

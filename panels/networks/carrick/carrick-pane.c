@@ -379,11 +379,24 @@ _new_connection_cb (GtkButton *button,
 }
 
 void
-_service_updated_cb (CmService *service,
-                     gpointer   user_data)
+_service_updated_cb (CmService   *service,
+                     CarrickPane *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (user_data);
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
   const gchar *type = NULL;
+  CarrickList *list = CARRICK_LIST (priv->service_list);
+  gboolean have_service = carrick_list_contains_service (list,
+                                                         service);
+
+  /* If the widgetry for the service exists remove the handler
+   * and ensure the list is sorted */
+  if (have_service)
+  {
+    g_signal_handlers_disconnect_by_func (service,
+                                          _service_updated_cb,
+                                          pane);
+    carrick_list_sort_list (list);
+  }
 
   /* Don't display non-favorite ethernet services or services
    * which don't have a name
@@ -394,17 +407,22 @@ _service_updated_cb (CmService *service,
     if (g_strcmp0 ("ethernet", type) == 0
         && cm_service_get_favorite (service) == FALSE)
     {
+      g_signal_handlers_disconnect_by_func (service,
+                                            _service_updated_cb,
+                                            pane);
       return;
     }
 
-    GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
-                                                        service);
-    carrick_list_add_item (CARRICK_LIST (priv->service_list),
-                           service_item);
-
     g_signal_handlers_disconnect_by_func (service,
                                           _service_updated_cb,
-                                          user_data);
+                                          pane);
+
+    GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
+                                                        service);
+    carrick_list_add_item (list,
+                           service_item);
+
+    carrick_list_sort_list (list);
   }
 }
 
@@ -501,12 +519,20 @@ _flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
   return TRUE;
 }
 
-static void
-_remove_list_items (GtkWidget *widget,
-                    gpointer   user_data)
+gboolean
+_service_exists (CarrickPane *pane,
+                 CmService   *service)
 {
-  if (widget != NULL)
-    gtk_widget_destroy (widget);
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  GList *tmp = priv->services;
+  while (tmp)
+  {
+    CmService *ser = tmp->data;
+    if (cm_service_compare_services (ser, service) == 0)
+      return TRUE;
+    tmp = tmp->next;
+  }
+  return FALSE;
 }
 
 static void
@@ -514,33 +540,24 @@ _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   CmService *service;
-  guint cnt, len;
+  GList *tmp = NULL;
 
-  /* Empty our container widget */
-  gtk_container_foreach (GTK_CONTAINER (priv->service_list),
-                         _remove_list_items,
-                         NULL);
-
-  /* Now we can empty our service list */
-  while (priv->services)
+  /* Compare the managers list to our private list such that we only
+   * add signals once
+   */
+  tmp = cm_manager_get_services (priv->manager);
+  while (tmp)
   {
-    g_object_unref (priv->services);
-    priv->services = g_list_delete_link (priv->services,
-                                         priv->services);
-  }
-  g_list_free (priv->services);
-
-  /* Watch for "service-updated" on each service */
-  priv->services = g_list_copy (cm_manager_get_services (priv->manager));
-  len = g_list_length (priv->services);
-  for (cnt = 0; cnt < len; cnt++)
-  {
-    service = CM_SERVICE (g_list_nth (priv->services, cnt)->data);
-
-    g_signal_connect (G_OBJECT (service),
-                      "service-updated",
-                      G_CALLBACK (_service_updated_cb),
-                      pane);
+    service = tmp->data;
+    if (_service_exists (pane, service) != TRUE)
+    {
+      priv->services = g_list_append (priv->services,
+                                      service);
+      g_signal_connect (G_OBJECT (service),
+                        "service-updated",
+                        G_CALLBACK (_service_updated_cb),
+                        pane);
+    }
   }
 }
 
@@ -559,17 +576,18 @@ _update_manager (CarrickPane *pane,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
-  if (manager) {
-    g_debug ("Updating manager");
-    if (priv->manager)
-    {
-      g_signal_handlers_disconnect_by_func (priv->manager,
-                                            _manager_updated_cb,
-                                            pane);
-      g_object_unref (priv->manager);
-      priv->manager = NULL;
-    }
+  g_debug ("Updating manager");
+  if (priv->manager)
+  {
+    g_signal_handlers_disconnect_by_func (priv->manager,
+                                          _manager_updated_cb,
+                                          pane);
+    g_object_unref (priv->manager);
+    priv->manager = NULL;
+  }
 
+  if (manager)
+  {
     priv->manager = g_object_ref (manager);
     _update_services (pane);
     _set_states (pane);
@@ -593,6 +611,7 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *switch_label;
 
   priv->icon_factory = NULL;
+  priv->manager = NULL;
 
   /* Set table up */
   gtk_table_resize (GTK_TABLE (self),
@@ -603,7 +622,7 @@ carrick_pane_init (CarrickPane *self)
 
   /* Network list */
   gtk_frame_set_label (GTK_FRAME (net_list_bin),
-                    _("Networks"));
+                       _("Networks"));
   priv->service_list = carrick_list_new ();
   scrolled_view = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_view),
@@ -613,13 +632,6 @@ carrick_pane_init (CarrickPane *self)
                                          priv->service_list);
   gtk_container_add (GTK_CONTAINER (net_list_bin),
                      scrolled_view);
-  if (priv->manager)
-  {
-    g_signal_connect (priv->manager,
-                      "manager-updated",
-                      G_CALLBACK (_manager_updated_cb),
-                      self);
-  }
   gtk_table_attach_defaults (GTK_TABLE (self),
                              net_list_bin,
                              0, 4,
