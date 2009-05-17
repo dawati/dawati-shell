@@ -228,7 +228,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                         gboolean            new_state,
                         CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("WiMax"),
+  _set_devices_state (g_strdup ("WiMAX"),
                       new_state,
                       pane);
 
@@ -558,6 +558,7 @@ _update_services (CarrickPane *pane)
                         G_CALLBACK (_service_updated_cb),
                         pane);
     }
+    tmp = tmp->next;
   }
 }
 
@@ -753,7 +754,7 @@ carrick_pane_init (CarrickPane *self)
   priv->wimax_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                              6);
-  switch_label = gtk_label_new (_("WiMax"));
+  switch_label = gtk_label_new (_("WiMAX"));
   gtk_misc_set_alignment (GTK_MISC (switch_label),
                           0.2,
                           0.5);
