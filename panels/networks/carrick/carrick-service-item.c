@@ -50,9 +50,6 @@ struct _CarrickServiceItemPrivate
   GtkWidget          *connect_button;
   GtkWidget          *table;
   gboolean            connected;
-  gchar              *name;
-  gchar              *status;
-  gchar              *icon_name;
   CarrickIconFactory *icon_factory;
 };
 
@@ -101,18 +98,56 @@ service_item_find_plug (GtkWidget *widget)
 }
 
 void
-_connect_button_cb (GtkButton *connect_button,
-                    gpointer user_data)
+_set_state (CmService          *service,
+            CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  gchar *label = NULL;
+  gchar *button = NULL;
+  GdkPixbuf *pixbuf = NULL;
 
   if (priv->connected)
   {
-    if (cm_service_disconnect (CM_SERVICE (priv->service)))
+    button = g_strdup (_("Disconnect"));
+    label = g_strdup_printf ("%s - %s",
+                             cm_service_get_name (service),
+                             _("Connected"));
+    gtk_widget_set_state (GTK_WIDGET (item),
+                          GTK_STATE_SELECTED);
+  }
+  else
+  {
+    button = g_strdup (_("Connect"));
+    label = g_strdup (cm_service_get_name (service));
+    gtk_widget_set_state (GTK_WIDGET (item),
+                          GTK_STATE_NORMAL);
+  }
+
+  gtk_label_set_text (GTK_LABEL (priv->name_label),
+                      label);
+  gtk_button_set_label (GTK_BUTTON (priv->connect_button),
+                        button);
+
+  pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
+                                                        service);
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
+                             pixbuf);
+
+  g_free (label);
+  g_free (button);
+}
+
+void
+_connect_button_cb (GtkButton          *connect_button,
+                    CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+
+  if (priv->connected)
+  {
+    if (cm_service_disconnect (priv->service))
     {
       priv->connected = FALSE;
-      gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                            _("Connect"));
     }
   }
   else
@@ -194,7 +229,7 @@ _connect_button_cb (GtkButton *connect_button,
       else
       {
         /* We have the passphrase already, just connect */
-        if (cm_service_connect (CM_SERVICE (priv->service)))
+        if (cm_service_connect (priv->service))
         {
           priv->connected = TRUE;
           gtk_button_set_label (GTK_BUTTON (priv->connect_button),
@@ -204,103 +239,36 @@ _connect_button_cb (GtkButton *connect_button,
     }
     else
     {
-        /* No security, just connect */
-        if (cm_service_connect (CM_SERVICE (priv->service)))
-        {
-          priv->connected = TRUE;
-          gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                                _("Disconnect"));
-        }
+      /* No security, just connect */
+      if (cm_service_connect (priv->service))
+      {
+        priv->connected = TRUE;
+        gtk_button_set_label (GTK_BUTTON (priv->connect_button),
+                              _("Disconnect"));
+      }
     }
   }
+  /* Make sure widget is displaying correct state */
+  _set_state (priv->service,
+              item);
 }
 
 void
-_set_label (CmService *service,
-            gpointer   user_data)
+_name_changed_cb (CmService          *service,
+                  CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
-  gchar *label = NULL;
-
-  if (priv->connected)
-  {
-    label = g_strdup_printf ("%s - %s",
-                             cm_service_get_name (service),
-                             _("Connected"));
-  }
-  else
-  {
-    label = g_strdup (cm_service_get_name (service));
-  }
-
-  gtk_label_set_text (GTK_LABEL (priv->name_label),
-                      label);
-}
-void
-_name_changed_cb (CmService *service,
-                  gpointer user_data)
-{
-  _set_label (service,
-              user_data);
+  _set_state (service,
+              item);
 }
 
 void
-_security_changed_cb (CmService *service,
-                      gpointer user_data)
+_status_changed_cb (CmService          *service,
+                    CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
-  gchar *security = g_strdup (cm_service_get_security (service));
-  gint i;
-
-  if (g_strcmp0 ("none", security) == 0)
-  {
-    g_free (security);
-    security = g_strdup ("");
-  }
-
-  for (i = 0; security[i] != '\0'; i++)
-  {
-    security[i] = g_ascii_toupper (security[i]);
-  }
-
-  gtk_label_set_text (GTK_LABEL (priv->security_label),
-                      security);
-  g_free (security);
-}
-
-void
-_status_changed_cb (CmService *service,
-                    gpointer user_data)
-{
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
-  gchar *status = g_strdup (cm_service_get_state (service));
-  GdkPixbuf *pixbuf;
-
-  if (g_strcmp0 ("ready", status) == 0)
-  {
-    priv->connected = TRUE;
-    gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                          "Disconnect");
-    gtk_widget_set_state (GTK_WIDGET (user_data),
-                          GTK_STATE_ACTIVE);
-  }
-  else
-  {
-    priv->connected = FALSE;
-    gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                          "Connect");
-    gtk_widget_set_state (GTK_WIDGET (user_data),
-                          GTK_STATE_SELECTED);
-  }
-
-  _set_label (service,
-              user_data);
-
-
-  pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
-                                                        service);
-  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
-                             pixbuf);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  priv->connected = cm_service_get_connected (service);
+  _set_state (service,
+              item);
 }
 
 static void
@@ -308,25 +276,24 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                                   CmService          *service)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (service_item);
-  GdkPixbuf *pixbuf;
 
   if (priv->service)
   {
+    g_signal_handlers_disconnect_by_func (service,
+                                         _name_changed_cb,
+                                         service_item);
+    g_signal_handlers_disconnect_by_func (service,
+                                          _status_changed_cb,
+                                          service_item);
     g_object_unref (priv->service);
     priv->service = NULL;
   }
 
   if (service)
   {
-    const gchar *status = cm_service_get_state (service);
     gchar *security = g_strdup (cm_service_get_security (service));
     priv->service = g_object_ref (service);
-    pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
-                                                         service);
-    gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
-                               pixbuf);
-    _set_label (service,
-                (gpointer)service_item);
+
     if (g_strcmp0 ("none", security) != 0)
     {
       gint i;
@@ -338,18 +305,11 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
       gtk_label_set_text (GTK_LABEL (priv->security_label),
                           security);
     }
-    if (g_strcmp0 ("ready", status) == 0)
-    {
-      gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                            "Disconnect");
-      priv->connected = TRUE;
-    }
-    else
-    {
-      gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                            "Connect");
-      priv->connected= FALSE;
-    }
+    priv->connected = cm_service_get_connected (service);
+
+    _set_state (service,
+                service_item);
+
     g_signal_connect (priv->connect_button,
                       "clicked",
                       G_CALLBACK (_connect_button_cb),
@@ -437,6 +397,8 @@ static void
 carrick_service_item_init (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+
+  priv->connected = FALSE;
 
   priv->table = gtk_table_new (2, 3,
                                TRUE);
