@@ -781,7 +781,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   Display       *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
-  Window         root_xwin;
 
   moblin_netbook_setup_kbd_grabs (MUTTER_PLUGIN (plugin));
 
@@ -1585,7 +1584,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     {
       Window        xwin = mutter_window_get_x_window (mcw);
       MetaRectangle rect;
-      gint          screen_width, screen_height;
       MetaScreen    *screen  = mutter_plugin_get_screen (plugin);
       Display       *xdpy    = mutter_plugin_get_xdisplay (plugin);
       Screen        *xscreen;

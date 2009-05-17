@@ -478,9 +478,9 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
                                        NULL);
 
   texture_cache = nbtk_texture_cache_get_default ();
-  texture = nbtk_texture_cache_get_texture (texture_cache,
-                                            remove_icon_path,
-                                            TRUE);
+  texture = CLUTTER_ACTOR (nbtk_texture_cache_get_texture (texture_cache,
+                                                           remove_icon_path,
+                                                           TRUE));
   nbtk_bin_set_child (NBTK_BIN (self->remove_button), texture);
 
   g_free (remove_icon_path);

@@ -27,6 +27,7 @@
 #endif
 
 #include <glib/gi18n.h>
+#include <gdk/gdk.h>
 #include <gio/gdesktopappinfo.h>
 
 #include "moblin-netbook-chooser.h"
@@ -265,7 +266,6 @@ sn_map_timeout_cb (gpointer data)
         g_hash_table_remove (priv->sn_hash, sn_id);
     }
 
- finish:
   g_free (map_data->sn_id);
   g_slice_free (struct map_timeout_data, data);
 
@@ -1473,7 +1473,7 @@ moblin_netbook_launch_application_from_desktop_file (MutterPlugin *plugin,
 
   if (!app)
     {
-      g_warning ("Failed to create GAppInfo for file %s (%s)", desktop);
+      g_warning ("Failed to create GAppInfo for file %s", desktop);
       return;
     }
 
