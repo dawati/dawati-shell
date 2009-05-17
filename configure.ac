@@ -26,6 +26,8 @@ AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER([config.h])
 
+CFLAGS="$CFLAGS -Wall"
+
 GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
