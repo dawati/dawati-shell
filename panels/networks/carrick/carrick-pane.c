@@ -178,6 +178,10 @@ _set_devices_state (gchar       *device_type,
     if (g_strcmp0 (device_type, cm_device_type_to_string (type)) == 0)
     {
       cm_device_set_powered (device, state);
+      if (state)
+      {
+        cm_device_scan (device);
+      }
     }
     devices = devices->next;
   }
