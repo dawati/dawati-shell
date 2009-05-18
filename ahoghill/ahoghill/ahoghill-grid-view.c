@@ -735,13 +735,17 @@ search_index_for_words (Source     *source,
         g_ptr_array_add (words, possible);
 
         iter = g_sequence_get_begin_iter (source->index);
-        do {
+        while (!g_sequence_iter_is_end (iter)) {
             char *word = g_sequence_get (iter);
-            if (strstr (word, search_terms[k])) {
-                g_ptr_array_add (possible, word);
+
+            if (word) {
+                if (strstr (word, search_terms[k])) {
+                    g_ptr_array_add (possible, word);
+                }
             }
+
             iter = g_sequence_iter_next (iter);
-        } while (!g_sequence_iter_is_end (iter));
+        }
     }
 
     g_strfreev (search_terms);
