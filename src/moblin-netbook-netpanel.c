@@ -476,8 +476,6 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 					"y-align", 0.5,
 					NULL);
 
-  printf ("Setting up signal connect with SELF = %p\n", self);
-
 #if USE_RADICAL_BAR
   g_signal_connect (priv->entry, "go",
                     G_CALLBACK (radical_bar_go_cb), self);
