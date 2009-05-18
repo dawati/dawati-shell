@@ -43,7 +43,6 @@ typedef struct _CarrickListPrivate CarrickListPrivate;
 struct _CarrickListPrivate
 {
   GtkWidget *drag_window;
-  guint list_count;
   guint dropped_new_order;
   guint counter;
   gboolean found;
@@ -256,8 +255,6 @@ carrick_list_add_item (CarrickList *list,
                       TRUE,
                       TRUE,
                       6);
-
-  priv->list_count++;
 }
 
 
@@ -405,7 +402,6 @@ carrick_list_init (CarrickList *self)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (self);
 
-  priv->list_count = 0;
   priv->found = FALSE;
   /*gtk_drag_dest_set (GTK_WIDGET (self),
                      GTK_DEST_DEFAULT_ALL,
