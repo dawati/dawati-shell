@@ -120,15 +120,11 @@ _set_state (CmService          *service,
     label = g_strdup_printf ("%s - %s",
                              name,
                              _("Connected"));
-    gtk_widget_set_state (GTK_WIDGET (item),
-                          GTK_STATE_SELECTED);
   }
   else
   {
     button = g_strdup (_("Connect"));
     label = g_strdup (name);
-    gtk_widget_set_state (GTK_WIDGET (item),
-                          GTK_STATE_NORMAL);
   }
 
   gtk_label_set_text (GTK_LABEL (priv->name_label),
