@@ -812,6 +812,8 @@ carrick_pane_init (CarrickPane *self)
                       FALSE,
                       8);
   priv->flight_mode_label = gtk_label_new (_("This will disable all connections"));
+  gtk_label_set_line_wrap (GTK_LABEL (priv->flight_mode_label),
+                           TRUE);
   gtk_misc_set_alignment (GTK_MISC (priv->flight_mode_label),
                           0.5,
                           0.0);

@@ -105,12 +105,21 @@ _set_state (CmService          *service,
   gchar *label = NULL;
   gchar *button = NULL;
   GdkPixbuf *pixbuf = NULL;
+  gchar *name = NULL;
+
+  name = g_strdup (cm_service_get_name (service));
+
+  if (g_strcmp0 ("ethernet", name) == 0)
+  {
+    g_free (name);
+    name = g_strdup (_("Wired"));
+  }
 
   if (priv->connected)
   {
     button = g_strdup (_("Disconnect"));
     label = g_strdup_printf ("%s - %s",
-                             cm_service_get_name (service),
+                             name,
                              _("Connected"));
     gtk_widget_set_state (GTK_WIDGET (item),
                           GTK_STATE_SELECTED);
@@ -118,7 +127,7 @@ _set_state (CmService          *service,
   else
   {
     button = g_strdup (_("Connect"));
-    label = g_strdup (cm_service_get_name (service));
+    label = g_strdup (name);
     gtk_widget_set_state (GTK_WIDGET (item),
                           GTK_STATE_NORMAL);
   }
@@ -133,6 +142,7 @@ _set_state (CmService          *service,
   gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
                              pixbuf);
 
+  g_free (name);
   g_free (label);
   g_free (button);
 }
@@ -171,7 +181,7 @@ _connect_button_cb (GtkButton          *connect_button,
                                               GTK_DIALOG_DESTROY_WITH_PARENT,
                                               GTK_STOCK_CANCEL,
                                               GTK_RESPONSE_REJECT,
-                                              GTK_STOCK_OK,
+                                              GTK_STOCK_CONNECT,
                                               GTK_RESPONSE_ACCEPT,
                                               NULL);
 
@@ -294,7 +304,7 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
     gchar *security = g_strdup (cm_service_get_security (service));
     priv->service = g_object_ref (service);
 
-    if (g_strcmp0 ("none", security) != 0)
+    if (security && security[0] != '\0' && g_strcmp0 ("none", security) != 0)
     {
       if (g_strcmp0 ("rsn", security) == 0)
       {
