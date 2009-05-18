@@ -134,6 +134,9 @@ _set_state (CmService          *service,
 
   gtk_label_set_text (GTK_LABEL (priv->name_label),
                       label);
+  gtk_misc_set_alignment (GTK_MISC (priv->name_label),
+                          0.00,
+                          0.50);
   gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                         button);
 
@@ -145,6 +148,14 @@ _set_state (CmService          *service,
   g_free (name);
   g_free (label);
   g_free (button);
+}
+
+void
+_show_pass_toggled_cb (GtkToggleButton *button,
+                       gpointer         user_data)
+{
+  gtk_entry_set_visibility (GTK_ENTRY (user_data),
+                            gtk_toggle_button_get_active (button));
 }
 
 void
@@ -170,9 +181,11 @@ _connect_button_cb (GtkButton          *connect_button,
       {
         GtkWidget *dialog;
         GtkWidget *label;
+        GtkWidget *title;
         GtkWidget *icon;
         GtkWidget *entry;
-        GtkWidget *hbox;
+        GtkWidget *table;
+        GtkWidget *checkbox;
         const gchar *passphrase = NULL;
 
         dialog = gtk_dialog_new_with_buttons (_("Passphrase required"),
@@ -191,30 +204,65 @@ _connect_button_cb (GtkButton          *connect_button,
                                   GTK_STOCK_DIALOG_AUTHENTICATION);
         gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
                              6);
-        hbox = gtk_hbox_new (FALSE,
-                             6);
-        label = gtk_label_new (_("Network requires authentication. \n"
-                                 "Please enter your passphrase"));
+
+        table = gtk_table_new (3, 3, FALSE);
+        gtk_table_set_col_spacings (GTK_TABLE (table),
+                                    6);
+        gtk_table_set_row_spacings (GTK_TABLE (table),
+                                    6);
+        title = gtk_label_new ("");
+        gtk_label_set_markup (GTK_LABEL (title),
+                              _("<b><big>Network Requires a Password</big></b>"));
+        gtk_misc_set_alignment (GTK_MISC (title),
+                                0.00,
+                                0.50);
+        gtk_table_attach (GTK_TABLE (table),
+                          title,
+                          1, 2,
+                          0, 1,
+                          GTK_EXPAND | GTK_FILL,
+                          GTK_EXPAND | GTK_FILL,
+                          0, 0);
         icon = gtk_image_new_from_icon_name (GTK_STOCK_DIALOG_AUTHENTICATION,
                                              GTK_ICON_SIZE_DIALOG);
-        gtk_box_pack_start (GTK_BOX (hbox),
-                            icon,
-                            FALSE,
-                            FALSE,
-                            6);
-        gtk_box_pack_start (GTK_BOX (hbox),
-                            label,
-                            FALSE,
-                            FALSE,
-                            6);
-        gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                            hbox,
-                            FALSE,
-                            FALSE,
-                            6);
+        gtk_table_attach (GTK_TABLE (table),
+                          icon,
+                          0, 1,
+                          0, 1,
+                          GTK_FILL,
+                          GTK_EXPAND | GTK_FILL,
+                          0, 0);
+        label = gtk_label_new (_("Please enter the password for this network:"));
+        gtk_table_attach (GTK_TABLE (table),
+                          label,
+                          1, 2,
+                          1, 2,
+                          GTK_EXPAND | GTK_FILL,
+                          GTK_EXPAND | GTK_FILL,
+                          0, 0);
         entry = gtk_entry_new ();
+        gtk_table_attach (GTK_TABLE (table),
+                          entry,
+                          1, 2,
+                          2, 3,
+                          GTK_EXPAND | GTK_FILL,
+                          GTK_EXPAND | GTK_FILL,
+                          0, 0);
+        checkbox = gtk_check_button_new_with_label (_("Show password"));
+        g_signal_connect (checkbox,
+                          "toggled",
+                          G_CALLBACK (_show_pass_toggled_cb),
+                          NULL);
+        gtk_table_attach (GTK_TABLE (table),
+                          checkbox,
+                          1, 2,
+                          3, 4,
+                          GTK_FILL,
+                          GTK_FILL,
+                          0, 0);
+
         gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                            entry,
+                            table,
                             FALSE,
                             FALSE,
                             6);

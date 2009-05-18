@@ -284,7 +284,7 @@ _new_connection_cb (GtkButton *button,
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_STOCK_CANCEL,
                                         GTK_RESPONSE_REJECT,
-                                        GTK_STOCK_OK,
+                                        GTK_STOCK_CONNECT,
                                         GTK_RESPONSE_ACCEPT, NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
@@ -400,18 +400,15 @@ _service_updated_cb (CmService   *service,
   if (cm_service_get_name (service) != NULL)
   {
     type = cm_service_get_type (service);
-    if (g_strcmp0 ("ethernet", type) == 0
-        && cm_service_get_favorite (service) == FALSE)
-    {
-      g_signal_handlers_disconnect_by_func (service,
-                                            _service_updated_cb,
-                                            pane);
-      return;
-    }
-
     g_signal_handlers_disconnect_by_func (service,
                                           _service_updated_cb,
                                           pane);
+
+    if (g_strcmp0 ("ethernet", type) == 0
+        && cm_service_get_favorite (service) == FALSE)
+    {
+      return;
+    }
 
     GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
                                                         service);
@@ -692,7 +689,7 @@ carrick_pane_init (CarrickPane *self)
   priv->ethernet_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                              6);
-  switch_label = gtk_label_new (_("Ethernet"));
+  switch_label = gtk_label_new (_("Wired"));
   gtk_misc_set_alignment (GTK_MISC (switch_label),
                           0.2,
                           0.5);
