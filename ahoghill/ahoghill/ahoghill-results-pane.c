@@ -218,7 +218,8 @@ show_previous_page (ClutterActor        *actor,
     }
 
     new_page = (ClutterActor *) ahoghill_results_table_new (priv->model, 2);
-
+    g_signal_connect (new_page, "item-clicked",
+                      G_CALLBACK (item_clicked_cb), pane);
     ahoghill_results_table_set_page ((AhoghillResultsTable *) new_page,
                                      priv->current_page_num - 1);
 
@@ -284,6 +285,8 @@ show_next_page (ClutterActor        *actor,
                             &width, &height);
 
     new_page = (ClutterActor *) ahoghill_results_table_new (priv->model, 2);
+    g_signal_connect (new_page, "item-clicked",
+                      G_CALLBACK (item_clicked_cb), pane);
     ahoghill_results_table_set_page ((AhoghillResultsTable *) new_page,
                                      priv->current_page_num + 1);
     nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed), new_page);
