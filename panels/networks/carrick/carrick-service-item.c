@@ -87,14 +87,13 @@ GtkWidget *
 service_item_find_plug (GtkWidget *widget)
 {
   /* Pippinated */
-  GtkWidget *iter;
-
-  for (iter = widget; iter ; iter = gtk_widget_get_parent (iter))
+  while (widget)
   {
-    if (GTK_IS_PLUG (iter))
-      break;
+    if (GTK_IS_PLUG (widget))
+      return widget;
+    widget = gtk_widget_get_parent (widget);
   }
-  return iter;
+  return NULL;
 }
 
 void
