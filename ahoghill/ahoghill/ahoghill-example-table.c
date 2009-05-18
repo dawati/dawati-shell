@@ -115,7 +115,7 @@ ahoghill_example_table_init (AhoghillExampleTable *self)
     nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
                                       "AhoghillExampleTextBin");
     priv->blurb = nbtk_label_new (_("You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"));
-    nbtk_bin_set_child (NBTK_BIN (bin), priv->blurb);
+    nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *) priv->blurb);
     text = nbtk_label_get_clutter_text ((NbtkLabel *) priv->blurb);
     clutter_text_set_line_wrap ((ClutterText *) text, TRUE);
     nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->blurb),
