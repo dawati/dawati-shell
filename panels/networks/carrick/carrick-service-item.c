@@ -193,10 +193,13 @@ _connect_button_cb (GtkButton          *connect_button,
                                               GTK_RESPONSE_ACCEPT,
                                               NULL);
 
+        gtk_dialog_set_has_separator (GTK_DIALOG (dialog),
+                                      FALSE);
         gtk_dialog_set_default_response (GTK_DIALOG (dialog),
                                          GTK_RESPONSE_ACCEPT);
+        gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
         gtk_window_set_icon_name (GTK_WINDOW (dialog),
-                                  GTK_STOCK_DIALOG_AUTHENTICATION);
+                                  GTK_STOCK_NETWORK);
         gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
                              6);
 
@@ -218,7 +221,7 @@ _connect_button_cb (GtkButton          *connect_button,
                           GTK_EXPAND | GTK_FILL,
                           GTK_EXPAND | GTK_FILL,
                           0, 0);
-        icon = gtk_image_new_from_icon_name (GTK_STOCK_DIALOG_AUTHENTICATION,
+        icon = gtk_image_new_from_icon_name (GTK_STOCK_NETWORK,
                                              GTK_ICON_SIZE_DIALOG);
         gtk_table_attach (GTK_TABLE (table),
                           icon,
@@ -235,6 +238,7 @@ _connect_button_cb (GtkButton          *connect_button,
                           GTK_EXPAND | GTK_FILL,
                           GTK_EXPAND | GTK_FILL,
                           0, 0);
+        gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
         entry = gtk_entry_new ();
         gtk_table_attach (GTK_TABLE (table),
                           entry,
