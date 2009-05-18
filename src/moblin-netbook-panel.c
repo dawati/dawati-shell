@@ -449,22 +449,22 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
 
   if (!strcmp (name, "tray-button-bluetooth"))
     {
-      col = 0;
+      col = 3;
       tooltip = _("bluetooth");
     }
   else if (!strcmp (name, "tray-button-wifi"))
     {
-      col = 3;
+      col = 0;
       tooltip = _("networks");
     }
   else if (!strcmp (name, "tray-button-sound"))
     {
-      col = 2;
+      col = 1;
       tooltip = _("volume");
     }
   else if (!strcmp (name, "tray-button-battery"))
     {
-      col = 1;
+      col = 2;
       tooltip = _("power & brightness");
     }
   else if (!strcmp (name, "tray-button-test"))
