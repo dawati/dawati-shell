@@ -675,9 +675,6 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
   gint                        ws_count = 0;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   gint                        active_ws, n_ws;
-  ClutterActor               *new_ws;
-  struct ws_grid_cb_data     *new_wsg_data =
-    g_slice_new (struct ws_grid_cb_data);
 
   active_ws = meta_screen_get_active_workspace_index (screen);
   n_ws = meta_screen_get_n_workspaces (screen);
@@ -801,21 +798,28 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
       l = l->next;
     }
 
-  new_ws = make_background (_("New zone (0)"), cell_width, cell_height,
-                            FALSE, TRUE);
+  if (n_ws < MAX_WORKSPACES)
+    {
+      ClutterActor               *new_ws;
+      struct ws_grid_cb_data     *new_wsg_data =
+        g_slice_new (struct ws_grid_cb_data);
 
-  new_wsg_data->sn_id     = g_strdup (sn_id);
-  new_wsg_data->workspace = ws_count;
-  new_wsg_data->plugin    = plugin;
+      new_ws = make_background (_("New zone (0)"), cell_width, cell_height,
+                                FALSE, TRUE);
 
-  g_signal_connect_data (new_ws, "button-press-event",
-                         G_CALLBACK (new_workspace_input_cb),
-                         new_wsg_data,
-                         (GClosureNotify)free_ws_grid_cb_data, 0);
+      new_wsg_data->sn_id     = g_strdup (sn_id);
+      new_wsg_data->workspace = ws_count;
+      new_wsg_data->plugin    = plugin;
 
-  clutter_actor_set_reactive (new_ws, TRUE);
+      g_signal_connect_data (new_ws, "button-press-event",
+                             G_CALLBACK (new_workspace_input_cb),
+                             new_wsg_data,
+                             (GClosureNotify)free_ws_grid_cb_data, 0);
 
-  nbtk_table_add_actor (NBTK_TABLE (table), new_ws, 0, ws_count);
+      clutter_actor_set_reactive (new_ws, TRUE);
+
+      nbtk_table_add_actor (NBTK_TABLE (table), new_ws, 0, ws_count);
+    }
 
   if (n_workspaces)
     *n_workspaces = n_ws;
@@ -1207,8 +1211,9 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
             {
               wsc_data = g_slice_new (struct ws_chooser_timeout_data);
               wsc_data->sn_id = g_strdup (seq_id);
-              wsc_data->workspace = ws_count;
               wsc_data->plugin = plugin;
+              wsc_data->workspace =
+                ws_count < MAX_WORKSPACES ? ws_count : ws_count - 1;
 
               /*
                * Start the timeout that automatically moves the application
