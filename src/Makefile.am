@@ -29,8 +29,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
                                 moblin-netbook-system-tray.h    \
-				mwb-radical-bar.c		\
-				mwb-radical-bar.h		\
 				mwb-utils.c			\
 				mwb-utils.h			\
 	                        $(DBUS_GLUE)                    \

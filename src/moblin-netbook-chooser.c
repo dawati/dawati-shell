@@ -27,6 +27,8 @@
 #endif
 
 #include <glib/gi18n.h>
+#include <gdk/gdk.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "moblin-netbook-chooser.h"
 #include "mnb-scale-group.h"
@@ -71,6 +73,7 @@ struct SnHashData
   gint                workspace;
   SnMonitorEventType  state;
   guint               timeout_id;
+  gchar              *binary;
   gboolean            without_chooser    : 1;
   gboolean            configured         : 1;
 };
@@ -101,6 +104,15 @@ move_window_to_workspace (MutterWindow *mcw,
 
       if (mw)
         {
+          MetaWorkspace * active_workspace;
+          MetaWorkspace * workspace = meta_window_get_workspace (mw);
+          gint            active_index = -2;
+
+          active_workspace = meta_screen_get_active_workspace (screen);
+
+          if (active_workspace)
+            active_index = meta_workspace_index (active_workspace);
+
           /*
            * Move the window to the requested workspace; if the window is not
            * sticky, activate the workspace as well.
@@ -108,7 +120,11 @@ move_window_to_workspace (MutterWindow *mcw,
           meta_window_change_workspace_by_index (mw, workspace_index, TRUE,
                                                  timestamp);
 
-          if (workspace_index > -1)
+          if (workspace_index == active_index)
+            {
+              meta_window_activate_with_workspace (mw, timestamp, workspace);
+            }
+          else if (workspace_index > -1)
             {
               MetaWorkspace *workspace;
 
@@ -174,6 +190,15 @@ struct map_timeout_data
  * their window; this should be OK, because when this happens we remove the app
  * from the hash here, so when the window finally maps normal processing should
  * ensue.
+ *
+ * NB: This only works with applications that have been started with an sn id
+ *     that matches the assumptions below (based on the id's used for
+ *     applications that we start ourselves), but the sn id is pretty much an
+ *     arbitrary string ...
+ *
+ * TODO: a proper fix for this problem requires fixing libsn, so that when we
+ * get the SN_MONITOR_EVENT_COMPLETED, we can extract the associated xid from
+ * libsn.
  */
 static gboolean
 sn_map_timeout_cb (gpointer data)
@@ -187,9 +212,9 @@ sn_map_timeout_cb (gpointer data)
 
   if (g_hash_table_lookup_extended (priv->sn_hash, sn_id, &key, &value))
     {
-      gboolean    removed = FALSE;
-      SnHashData *sn_data = value;
-      gchar      *s, *e;
+      gboolean     removed = FALSE;
+      SnHashData  *sn_data = value;
+      const gchar *binary;
 
       if (sn_data->state != SN_MONITOR_EVENT_COMPLETED)
         {
@@ -200,26 +225,13 @@ sn_map_timeout_cb (gpointer data)
           return TRUE;
         }
 
+      binary = sn_data->binary;
+
       /*
-       * The startup id has the form:
-       *
-       *  launcher/app/numid-id-machine_timestamp.
-       *
-       * Isolate the app/numid part.
+       * Both applications started with GdkAppLaunchContext and those started
+       * with libstartup-notification include the binary name in the sn id. We
+       * try to find the application based on the binary name.
        */
-      s = strchr (sn_id, '/');
-
-      if (!s)
-        {
-          g_warning ("Unexpected form of sn_id [%s]\n", sn_id);
-          goto finish;
-        }
-
-      s = g_strdup (s+1);
-
-      e = strchr (s, '-');
-      *e = 0;
-
       /*
        * Now iterate all windows and look for an sn_id that matches.
        */
@@ -231,16 +243,13 @@ sn_map_timeout_cb (gpointer data)
           MetaWindow   *mw  = mutter_window_get_meta_window (mcw);
           const gchar  *id  = meta_window_get_startup_id (mw);
 
-          if (id && strstr (id, s))
+          if (id && strstr (id, binary))
             {
-              MetaScreen    *screen  = mutter_plugin_get_screen (plugin);
-              MetaWorkspace *active_workspace;
-              MetaWorkspace *workspace;
-              guint32        timestamp;
-
-              timestamp = clutter_x11_get_current_event_time ();
+              guint32 timestamp = clutter_x11_get_current_event_time ();
 
               sn_data->mcw = mcw;
+
+              g_warning ("Attempting to activate %s in place of %s", id, sn_id);
 
               /*
                * Apply the configuration settings to this application.
@@ -254,32 +263,16 @@ sn_map_timeout_cb (gpointer data)
               removed = TRUE;
               g_hash_table_remove (priv->sn_hash, sn_id);
 
-              /*
-               * If the application is supposed to be on the same workspace
-               * as the currently active one, then simply finalizing it does
-               * not bring it to the forefront; do so now.
-               */
-              active_workspace = meta_screen_get_active_workspace (screen);
-              workspace = meta_window_get_workspace (mw);
-
-              if (!active_workspace || (active_workspace == workspace))
-                {
-                  meta_window_activate_with_workspace (mw, timestamp,
-                                                       workspace);
-                }
               break;
             }
 
           l = l->next;
         }
 
-      g_free (s);
-
       if (!removed)
         g_hash_table_remove (priv->sn_hash, sn_id);
     }
 
- finish:
   g_free (map_data->sn_id);
   g_slice_free (struct map_timeout_data, data);
 
@@ -863,9 +856,11 @@ show_workspace_chooser (MutterPlugin *plugin,
   gint                        screen_width, screen_height;
   guint                       switcher_width, switcher_height;
   guint                       label_height;
-  ClutterColor                label_clr = { 0xff, 0xff, 0xff, 0xff };
+  ClutterColor                label_clr = { 0x0, 0x0, 0x0, 0xff };
   gint                        ws_count = 0;
   struct kbd_data            *kbd_data;
+
+  /* FIXME: Below should hook into CSS styling.. */
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -893,7 +888,7 @@ show_workspace_chooser (MutterPlugin *plugin,
    */
   clutter_actor_set_size (frame, 0, 0);
 
-  label = clutter_text_new_full ("Sans 9",
+  label = clutter_text_new_full ("Liberation Sans 15px",
                                  _("Choose zone for application:"), &label_clr);
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;
@@ -1125,11 +1120,24 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
         MetaScreen *screen    = mutter_plugin_get_screen (plugin);
         gint        n_ws      = meta_screen_get_n_workspaces (screen);
         gboolean    empty     = FALSE;
-        SnHashData *sn_data   = g_slice_new0 (SnHashData);
         guint32     timestamp = sn_startup_sequence_get_timestamp (sequence);
+        SnHashData *sn_data;
+
+        if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
+          {
+            sn_data = value;
+          }
+        else
+          {
+            sn_data = g_slice_new0 (SnHashData);
+            sn_data->workspace = -2;
+
+            g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
+          }
 
         sn_data->state = SN_MONITOR_EVENT_INITIATED;
-        sn_data->workspace = -2;
+        sn_data->binary =
+            g_strdup (sn_startup_sequence_get_binary_name (sequence));
 
         if (n_ws == 1)
           {
@@ -1159,12 +1167,9 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
             sn_data->workspace = 0;
           }
 
-          g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
-
           if (!sn_data->without_chooser)
             show_workspace_chooser (plugin, seq_id, timestamp);
       }
-
       break;
     case SN_MONITOR_EVENT_CHANGED:
       if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
@@ -1257,6 +1262,7 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
 static void
 free_sn_hash_data (SnHashData *data)
 {
+  g_free (data->binary);
   g_slice_free (SnHashData, data);
 }
 
@@ -1390,72 +1396,107 @@ moblin_netbook_sn_finalize (MutterPlugin *plugin)
     }
 }
 
-void
-moblin_netbook_spawn (MutterPlugin *plugin,
-                      const  gchar *path,
-                      guint32       timestamp,
-                      gboolean      without_chooser,
-                      gint          workspace)
+/*
+ * Helper function to launch application from GAppInfo, with all the
+ * required SN housekeeping.
+ */
+static void
+moblin_netbook_launch_app (MutterPlugin *plugin,
+                           GAppInfo     *app,
+                           GList        *files,
+                           gboolean      no_chooser,
+                           gint          workspace)
 {
-  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
-  SnLauncherContext          *context = NULL;
-  const gchar                *sn_id;
-  gchar                     **argv;
-  gint                        argc;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GAppLaunchContext          *ctx;
+  GError                     *error = NULL;
   SnHashData                 *sn_data = g_slice_new0 (SnHashData);
-  GError                     *err = NULL;
-  gint                        i;
+  const gchar                *sn_id;
 
-  if (!path)
-    return;
+  ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
 
-  if (!g_shell_parse_argv (path, &argc, &argv, &err))
-    {
-      g_warning ("Error parsing command line: %s", err->message);
-      g_clear_error (&err);
-    }
+  sn_id = g_app_launch_context_get_startup_notify_id (ctx, app, NULL);
 
-  for (i = 0; i < argc; i++)
-    {
-      /* we don't support any % arguments in the desktop entry spec yet */
-      if (argv[i][0] == '%')
-        argv[i][0] = '\0';
-    }
+  g_debug ("Got sn_id %s", sn_id);
 
-  context = sn_launcher_context_new (priv->sn_display, DefaultScreen (xdpy));
-
-  sn_launcher_context_set_name (context, path);
-  sn_launcher_context_set_description (context, path);
-  sn_launcher_context_set_binary_name (context, path);
-
-  sn_launcher_context_initiate (context,
-                                "mutter-netbook-shell",
-                                path, /* bin_name */
-				timestamp);
-
-  sn_id = sn_launcher_context_get_startup_id (context);
-
-  sn_data->workspace = workspace;
-  sn_data->without_chooser = without_chooser;
+  sn_data->workspace       = workspace;
+  sn_data->without_chooser = no_chooser;
 
   g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
 
-  if (!g_spawn_async (NULL,
-                      &argv[0],
-                      NULL,
-                      G_SPAWN_SEARCH_PATH,
-                      (GSpawnChildSetupFunc)
-                      sn_launcher_context_setup_child_process,
-                      (gpointer)context,
-                      NULL,
-                      NULL))
+  g_app_info_launch (app, files, ctx, &error);
+
+  if (error)
     {
-      g_warning ("Failed to launch [%s]", path);
+      g_warning ("Failed to lauch %s (%s)",
+                 g_app_info_get_commandline (app), error->message);
+
+      g_error_free (error);
       g_hash_table_remove (priv->sn_hash, sn_id);
-      sn_launcher_context_complete (context);
     }
 
-  sn_launcher_context_unref (context);
-  g_strfreev (argv);
+  g_object_unref (ctx);
+}
+
+/*
+ * Starts application using the given path.
+ */
+void
+moblin_netbook_launch_application (MutterPlugin *plugin,
+                                   const  gchar *path,
+                                   gboolean      no_chooser,
+                                   gint          workspace)
+{
+  GAppInfo *app;
+  GError   *error = NULL;
+
+  g_return_if_fail (plugin && path);
+
+  app = g_app_info_create_from_commandline (path, NULL,
+                                            G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                            &error);
+
+  if (error)
+    {
+      g_warning ("Failed to create GAppInfo from commnad line %s (%s)",
+                 path, error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  moblin_netbook_launch_app (plugin, app, NULL, no_chooser, workspace);
+
+  g_object_unref (app);
+}
+
+/*
+ * Starts application using the given desktop file. The files parameter is
+ * passed to the application as command line arguments.
+ *
+ * NB: this function is currently unused; will be exposed via the new dbus
+ *     API eventually.
+ */
+void
+moblin_netbook_launch_application_from_desktop_file (MutterPlugin *plugin,
+                                                     const  gchar *desktop,
+                                                     GList        *files,
+                                                     gboolean      no_chooser,
+                                                     gint          workspace)
+{
+  GAppInfo *app;
+
+  g_return_if_fail (plugin && desktop);
+
+  app = G_APP_INFO (g_desktop_app_info_new_from_filename (desktop));
+
+  if (!app)
+    {
+      g_warning ("Failed to create GAppInfo for file %s", desktop);
+      return;
+    }
+
+  moblin_netbook_launch_app (plugin, app, files, no_chooser, workspace);
+
+  g_object_unref (app);
 }

@@ -387,7 +387,7 @@ panel_append_toolbar_button (MutterPlugin  *plugin,
 
   button = mnb_panel_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
+  nbtk_widget_set_tooltip_text (button, tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
   clutter_actor_set_size (CLUTTER_ACTOR (button), BUTTON_WIDTH, BUTTON_HEIGHT);
   clutter_actor_set_position (CLUTTER_ACTOR (button),
@@ -450,6 +450,7 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   const gchar                *name;
+  const gchar                *tooltip = NULL;
   gint                        col = -1;
   gint                        screen_width, screen_height;
   gint                        x, y;
@@ -462,18 +463,36 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
     return;
 
   if (!strcmp (name, "tray-button-bluetooth"))
-    col = 2;
+    {
+      col = 0;
+      tooltip = _("bluetooth");
+    }
   else if (!strcmp (name, "tray-button-wifi"))
-    col = 3;
+    {
+      col = 3;
+      tooltip = _("networks");
+    }
   else if (!strcmp (name, "tray-button-sound"))
-    col = 1;
+    {
+      col = 2;
+      tooltip = _("volume");
+    }
   else if (!strcmp (name, "tray-button-battery"))
-    col = 0;
+    {
+      col = 1;
+      tooltip = _("power & brightness");
+    }
   else if (!strcmp (name, "tray-button-test"))
-    col = 4;
+    {
+      col = 4;
+      tooltip = _("test");
+    }
 
   if (col < 0)
     return;
+
+  if (tooltip)
+    nbtk_widget_set_tooltip_text (NBTK_WIDGET (icon), tooltip);
 
   y = PANEL_HEIGHT - TRAY_BUTTON_HEIGHT;
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
@@ -559,6 +578,7 @@ _media_drop_down_shown (MnbDropDown      *drop_down,
 {
   ahoghill_grid_view_focus (view);
 }
+
 #endif
 
 #ifdef WITH_NETPANEL
@@ -576,7 +596,7 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
 
   workspace =
     meta_screen_get_active_workspace_index (mutter_plugin_get_screen (plugin));
-  moblin_netbook_spawn (plugin, exec, 0L, TRUE, workspace);
+  moblin_netbook_launch_application (plugin, exec, TRUE, workspace);
 
   g_free (exec);
   g_free (esc_url);
@@ -831,6 +851,9 @@ make_panel (MutterPlugin *plugin, gint width)
   g_signal_connect (priv->media_drop_down, "show-completed",
                     G_CALLBACK (_media_drop_down_shown),
                     ahoghill_grid_view);
+  g_signal_connect_swapped (ahoghill_grid_view, "dismiss",
+                            G_CALLBACK (hide_panel), plugin);
+
 #endif
 
 #ifdef WITH_NETPANEL

@@ -18,7 +18,7 @@ struct _AhoghillSearchPanePrivate {
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_SEARCH_PANE, AhoghillSearchPanePrivate))
 G_DEFINE_TYPE (AhoghillSearchPane, ahoghill_search_pane, NBTK_TYPE_TABLE);
 
-#define WIDGET_SPACING 5
+#define WIDGET_SPACING 20
 #define PADDING 8
 
 static void

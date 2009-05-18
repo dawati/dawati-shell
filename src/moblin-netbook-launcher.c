@@ -555,7 +555,6 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   GAppLaunchContext          *context;
   const gchar     *desktop_file_path;
-  const gchar     *exec;
   GDesktopAppInfo *app_info;
   GError          *error = NULL;
 

@@ -18,6 +18,7 @@
  */
 
 
+#include <gio/gdesktopappinfo.h>
 #include <mojito-client/mojito-item.h>
 #include "penge-myspace-tile.h"
 #include "penge-utils.h"

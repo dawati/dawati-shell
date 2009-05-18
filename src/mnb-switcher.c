@@ -1235,18 +1235,12 @@ mnb_switcher_show (ClutterActor *self)
 
           bin = CLUTTER_ACTOR (nbtk_bin_new ());
           label = nbtk_label_new (_("Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."));
-
-          nbtk_widget_set_style_class_name (label, "workspace-no-wins-label");
+          clutter_actor_set_name ((ClutterActor *)label, "workspace-no-wins-label");
 
           nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
-          nbtk_bin_set_alignment (NBTK_BIN (bin),
-                                  NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
-
+          nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
           clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-no-wins-bin");
-
-          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
-                                            "workspace-no-wins-bin");
 
           nbtk_table_add_actor (NBTK_TABLE (table), bin, 1, 0);
           clutter_container_child_set (CLUTTER_CONTAINER (table),

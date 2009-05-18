@@ -174,7 +174,7 @@ penge_app_tile_constructed (GObject *object)
   if (path)
   {
     priv->app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
-    nbtk_button_set_tooltip (NBTK_BUTTON (object),
+    nbtk_widget_set_tooltip_text (NBTK_WIDGET (object),
                              g_app_info_get_name (priv->app_info));
     g_free (path);
   }

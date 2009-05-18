@@ -85,7 +85,9 @@ struct _MoblinNetbookPluginPrivate
 
   MetaWindow            *last_focused;
 
-  gint                   fullscreen_apps;
+  gint                   fullscreen_apps [MAX_WORKSPACES + 1];
+
+  gboolean               holding_focus : 1;
 
   /*
    * Startup Notification
@@ -105,6 +107,8 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *notification_cluster;
   ClutterActor          *notification_urgent;
   MnbInputRegion         notification_input_region;
+
+  ClutterActor          *toolbar_hint;
 
   Window                 focus_xwin;
 };
