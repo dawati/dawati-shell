@@ -202,21 +202,18 @@ carrick_list_contains_service (CarrickList *list,
 }
 
 void
-_list_item_reorder (GtkWidget *item,
-                    gpointer   user_data)
-{
-  gint pos = carrick_service_item_get_order (CARRICK_SERVICE_ITEM (item));
-  gtk_box_reorder_child (GTK_BOX (user_data),
-                         GTK_WIDGET (item),
-                         pos);
-}
-
-void
 carrick_list_sort_list (CarrickList *list)
 {
-  gtk_container_foreach (GTK_CONTAINER (list),
-                         _list_item_reorder,
-                         list);
+  GList *items = gtk_container_get_children (list);
+
+  while (items)
+  {
+    gtk_box_reorder_child (GTK_BOX (list),
+                           GTK_WIDGET (items->data),
+                           carrick_service_item_get_order (items->data));
+
+    items = items->next;
+  }
 }
 
 void
