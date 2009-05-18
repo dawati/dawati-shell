@@ -205,7 +205,7 @@ index_changed_cb (BklSourceClient *client,
         iter = g_sequence_search (source->index, (char *) removed[i],
                                   (GCompareDataFunc) compare_words, NULL);
         word = g_sequence_get (iter);
-        if (g_str_equal (word, removed[i])) {
+        if (word && g_str_equal (word, removed[i])) {
             g_sequence_remove (iter);
         }
     }
