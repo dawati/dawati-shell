@@ -603,6 +603,8 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *hbox, *switch_box;
   GtkWidget *vbox;
   GtkWidget *switch_label;
+  GtkWidget *frame_title;
+  gchar *label = NULL;
 
   priv->icon_factory = NULL;
   priv->manager = NULL;
@@ -615,8 +617,16 @@ carrick_pane_init (CarrickPane *self)
                              TRUE);
 
   /* Network list */
-  gtk_frame_set_label (GTK_FRAME (net_list_bin),
-                       _("Networks"));
+  label = g_strdup_printf ("<span font_desc=\"Liberation Sans Bold 18px\""
+                           "foreground=\"#3e3e3e\">%s</span>",
+                           _("Networks"));
+
+  frame_title = gtk_label_new ("");
+  gtk_label_set_markup (GTK_LABEL (frame_title),
+                        label);
+  g_free (label);
+  gtk_frame_set_label_widget (GTK_FRAME (net_list_bin),
+                              frame_title);
   priv->service_list = carrick_list_new ();
   scrolled_view = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_view),
