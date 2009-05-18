@@ -256,13 +256,13 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
     icon_state = BATTERY_ICON_STATE_AC_CONNECTED;
   } else if (percentage < 0) {
     icon_state = BATTERY_ICON_STATE_UNKNOWN;
-  } else if (percentage < 25) {
+  } else if (percentage < 20) {
     icon_state = BATTERY_ICON_STATE_CHARGE_0;
-  } else if (percentage >= 25 && percentage < 50) {
+  } else if (percentage >= 20 && percentage < 35) {
     icon_state = BATTERY_ICON_STATE_CHARGE_25;
-  } else if (percentage >= 50 && percentage < 75){
+  } else if (percentage >= 35 && percentage < 60){
     icon_state = BATTERY_ICON_STATE_CHARGE_50;
-  } else if (percentage >= 75 && percentage < 90){
+  } else if (percentage >= 60 && percentage < 90){
     icon_state = BATTERY_ICON_STATE_CHARGE_75;
   } else {
     icon_state = BATTERY_ICON_STATE_CHARGE_100;
@@ -279,16 +279,16 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   if (percentage < 0) {
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_UNKNOWN);
-  } else if (percentage < 25) {
+  } else if (percentage < 20) {
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_0);
-  } else if (percentage >= 25 && percentage < 50) {
+  } else if (percentage >= 20 && percentage < 35) {
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_25);
-  } else if (percentage >= 50 && percentage < 75){
+  } else if (percentage >= 35 && percentage < 60){
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_50);
-  } else if (percentage >= 75 && percentage < 90){
+  } else if (percentage >= 60 && percentage < 90){
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_75);
   } else {
