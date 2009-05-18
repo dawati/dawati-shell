@@ -1300,6 +1300,7 @@ launcher_data_filter_cb (launcher_data_t *launcher_data)
               clutter_actor_hide (CLUTTER_ACTOR (launcher));
               clutter_actor_reparent (CLUTTER_ACTOR (launcher),
                                       launcher_data->apps_grid);
+              nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launcher), NULL);
             }
         }
 
@@ -1307,9 +1308,15 @@ launcher_data_filter_cb (launcher_data_t *launcher_data)
       for (iter = launcher_data->launchers; iter; iter = iter->next)
         {
           MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
-          mnb_launcher_button_match (button, launcher_data->lcase_needle) ?
-            clutter_actor_show (CLUTTER_ACTOR (button)) :
-            clutter_actor_hide (CLUTTER_ACTOR (button));
+          if (mnb_launcher_button_match (button, launcher_data->lcase_needle))
+            {
+              clutter_actor_show (CLUTTER_ACTOR (button));
+            }
+          else
+            {
+              clutter_actor_hide (CLUTTER_ACTOR (button));
+              nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (button), NULL);
+            }
         }
 
       g_free (launcher_data->lcase_needle);
@@ -1339,6 +1346,7 @@ launcher_data_filter_cb (launcher_data_t *launcher_data)
           ClutterActor      *inner_grid = nbtk_bin_get_child (NBTK_BIN (e));
 
           clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
+          nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launcher), NULL);
         }
 
       /* Show expanders. */
