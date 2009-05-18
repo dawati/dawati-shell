@@ -252,7 +252,7 @@ carrick_list_add_item (CarrickList *list,
 
   gtk_box_pack_start (GTK_BOX (list),
                       widget,
-                      TRUE,
+                      FALSE,
                       TRUE,
                       6);
 }
@@ -409,8 +409,6 @@ carrick_list_init (CarrickList *self)
                      G_N_ELEMENTS (carrick_targets),
                      GDK_ACTION_MOVE);*/
 
-  gtk_box_set_homogeneous (GTK_BOX (self),
-                           TRUE);
   gtk_box_set_spacing (GTK_BOX (self),
                        12);
   gtk_container_set_border_width (GTK_CONTAINER (self),
