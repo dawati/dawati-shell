@@ -1,0 +1,12 @@
+This package uses code copied from various places:
+
+libhal-glib - GNOME Power Manager 
+libgvc - GNOME Volume control
+
+Many thanks to those guys for their source code. These blocks of code are
+licensed under the terms of the GPL. The rest of Dalston is licensed under the
+terms of the LGPL.
+
+When this software is compiled and distributed as a whole the terms of the GPL
+apply. However if you wish to reuse components you may do so using the license
+applied to the concerned files.
