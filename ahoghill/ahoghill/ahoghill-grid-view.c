@@ -35,7 +35,7 @@ typedef struct _Source {
     BklDB *db;
 
     GPtrArray *items;
-    GPtrArray *index;
+    GSequence *index;
     guint32 update_id;
 
     GHashTable *uri_to_item;
@@ -181,35 +181,42 @@ uri_changed_cb (BklSourceClient *client,
     /* FIXME: Bickley needs a way to update BklItems in place */
 }
 
-static gboolean
-update_index_timeout (gpointer userdata)
+static int
+compare_words (gconstpointer a,
+               gconstpointer b,
+               gpointer      userdata)
 {
-    Source *source = (Source *) userdata;
-    int i;
-
-    for (i = 0; i < source->index->len; i++) {
-        g_free (source->index->pdata[i]);
-    }
-    g_ptr_array_free (source->index, TRUE);
-
-    source->index = bkl_db_get_index_words (source->db);
-    /* Should re-run the search now we have a new index */
-
-    source->update_id = 0;
-    return FALSE;
+    return strcmp (a, b);
 }
 
 static void
 index_changed_cb (BklSourceClient *client,
+                  const char     **added,
+                  const char     **removed,
                   Source          *source)
 {
-    /* FIXME: Bickley should have a way to say what has changed in the
-       index, so we don't need to limit the index updates */
-    if (source->update_id == 0) {
-        source->update_id = g_timeout_add_seconds (UPDATE_INDEX_TIMEOUT,
-                                                   update_index_timeout,
-                                                   source);
+    GSequenceIter *iter;
+    int i;
+
+    /* Remove the words from the index first */
+    for (i = 0; removed[i]; i++) {
+        char *word;
+
+        iter = g_sequence_search (source->index, (char *) removed[i],
+                                  (GCompareDataFunc) compare_words, NULL);
+        word = g_sequence_get (iter);
+        if (g_str_equal (word, removed[i])) {
+            g_sequence_remove (iter);
+        }
     }
+
+    /* Add the new words */
+    for (i = 0; added[i]; i++) {
+        g_sequence_insert_sorted (source->index, g_strdup (added[i]),
+                                  (GCompareDataFunc) compare_words, NULL);
+    }
+
+    /* FIXME: Should update the search here */
 }
 
 static Source *
@@ -266,10 +273,7 @@ destroy_source (Source *source)
 {
     int i;
 
-    for (i = 0; i < source->index->len; i++) {
-        g_free (source->index->pdata[i]);
-    }
-    g_ptr_array_free (source->index, TRUE);
+    g_sequence_free (source->index);
 
     g_hash_table_destroy (source->uri_to_item);
 
@@ -709,7 +713,7 @@ search_index_for_words (Source     *source,
     char *search_text;
     char **search_terms;
     GPtrArray *words;
-    int j, k;
+    int k;
 
     search_text = g_ascii_strup (text, -1);
     search_terms = g_strsplit (search_text, " ", -1);
@@ -718,6 +722,7 @@ search_index_for_words (Source     *source,
     words = g_ptr_array_new ();
     for (k = 0; search_terms[k]; k++) {
         GPtrArray *possible;
+        GSequenceIter *iter;
 
         /* If @text ends in a space, then g_strsplit will insert a blank
            string in @search_terms */
@@ -728,11 +733,15 @@ search_index_for_words (Source     *source,
         possible = g_ptr_array_new ();
 
         g_ptr_array_add (words, possible);
-        for (j = 0; j < source->index->len; j++) {
-            if (strstr (source->index->pdata[j], search_terms[k])) {
-                g_ptr_array_add (possible, source->index->pdata[j]);
+
+        iter = g_sequence_get_begin_iter (source->index);
+        do {
+            char *word = g_sequence_get (iter);
+            if (strstr (word, search_terms[k])) {
+                g_ptr_array_add (possible, word);
             }
-        }
+            iter = g_sequence_iter_next (iter);
+        } while (!g_sequence_iter_is_end (iter));
     }
 
     g_strfreev (search_terms);
