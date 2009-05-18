@@ -72,6 +72,10 @@ static void setup_parallax_effect (MutterPlugin *plugin);
 
 static void setup_focus_window (MutterPlugin *plugin);
 
+static gboolean fullscreen_app_present (MutterPlugin *plugin);
+static void fullscreen_app_added (MoblinNetbookPluginPrivate *, gint);
+static void fullscreen_app_removed (MoblinNetbookPluginPrivate *, gint);
+
 static GQuark actor_data_quark = 0;
 
 static void     minimize   (MutterPlugin *plugin,
@@ -615,7 +619,7 @@ metacity_alt_tab_key_handler (MetaDisplay    *display,
    * Because our alt_tab mechanism requires the switcher, we currnetly cannot
    * make use of it when there are fullscreen apps.
    */
-  if (priv->fullscreen_apps)
+  if (fullscreen_app_present (plugin))
     return;
 
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
@@ -1461,7 +1465,27 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
                                   gint        old_workspace,
                                   gpointer    data)
 {
-  MutterPlugin *plugin = MUTTER_PLUGIN (data);
+  MutterPlugin               *plugin = MUTTER_PLUGIN (data);
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (data)->priv;
+  gboolean                    fullscreen;
+
+  g_object_get (mw, "fullscreen", &fullscreen, NULL);
+
+  if (fullscreen)
+    {
+      MetaWorkspace *ws;
+
+      ws = meta_window_get_workspace (mw);
+
+      if (ws)
+        {
+          gint index = meta_workspace_index (ws);
+
+          fullscreen_app_added (priv, index);
+        }
+
+      fullscreen_app_removed (priv, old_workspace);
+    }
 
   /*
    * Flush any pending changes to the visibility of the window.
@@ -1512,29 +1536,89 @@ tablist_meta_window_weak_ref_cb (gpointer data, GObject *mw)
 }
 
 static void
+fullscreen_app_added (MoblinNetbookPluginPrivate *priv, gint workspace)
+{
+  if (workspace >= MAX_WORKSPACES)
+    {
+      g_warning ("There should be no workspace %d", workspace);
+      return;
+    }
+
+  /* for sticky apps translate -1 to the sticky counter index */
+  if (workspace < 0)
+    workspace = MAX_WORKSPACES;
+
+  priv->fullscreen_apps[workspace]++;
+}
+
+static void
+fullscreen_app_removed (MoblinNetbookPluginPrivate *priv, gint workspace)
+{
+  if (workspace >= MAX_WORKSPACES)
+    {
+      g_warning ("There should be no workspace %d", workspace);
+      return;
+    }
+
+  /* for sticky apps translate -1 to the sticky counter index */
+  if (workspace < 0)
+    workspace = MAX_WORKSPACES;
+
+  priv->fullscreen_apps[workspace]--;
+
+  if (priv->fullscreen_apps[workspace] < 0)
+    {
+      g_warning ("%s:%d: Error in fullscreen app accounting !!!",
+                 __FILE__, __LINE__);
+      priv->fullscreen_apps[workspace] = 0;
+    }
+}
+
+static gboolean
+fullscreen_app_present (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  gint                        active;
+
+  active = meta_screen_get_active_workspace_index (screen);
+
+  if (active >= MAX_WORKSPACES)
+    {
+      g_warning ("There should be no workspace %d", active);
+      return FALSE;
+    }
+
+  if (active < 0)
+    active = MAX_WORKSPACES;
+
+  return (gboolean) priv->fullscreen_apps[active];
+}
+
+static void
 meta_window_fullcreen_notify_cb (GObject    *object,
                                  GParamSpec *spec,
                                  gpointer    data)
 {
+  MetaWindow                 *mw   = META_WINDOW (object);
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
+  MetaWorkspace              *ws;
+  gint                        ws_index;
   gboolean                    fullscreen;
+
+  ws = meta_window_get_workspace (mw);
+
+  if (!ws)
+    return;
+
+  ws_index = meta_workspace_index (ws);
 
   g_object_get (object, "fullscreen", &fullscreen, NULL);
 
   if (fullscreen)
-    {
-      priv->fullscreen_apps++;
-    }
+    fullscreen_app_added (priv, ws_index);
   else
-    {
-      priv->fullscreen_apps--;
-
-      if (priv->fullscreen_apps < 0)
-        {
-          g_warning ("Error in fullscreen accounting, fixing up.");
-          priv->fullscreen_apps = 0;
-        }
-    }
+    fullscreen_app_removed (priv, ws_index);
 }
 
 /*
@@ -1708,7 +1792,16 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           g_object_get (mw, "fullscreen", &fullscreen, NULL);
 
           if (fullscreen)
-            priv->fullscreen_apps++;
+            {
+              MetaWorkspace *ws = meta_window_get_workspace (mw);
+
+              if (ws)
+                {
+                  gint index = meta_workspace_index (ws);
+
+                  fullscreen_app_added (priv, index);
+                }
+            }
 
           g_signal_connect (mw, "notify::fullscreen",
                             G_CALLBACK (meta_window_fullcreen_notify_cb),
@@ -1787,12 +1880,13 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (fullscreen)
         {
-          priv->fullscreen_apps--;
+          MetaWorkspace *ws = meta_window_get_workspace (meta_win);
 
-          if (priv->fullscreen_apps < 0)
+          if (ws)
             {
-              g_warning ("Error in fullscreen accounting, fixing up.");
-              priv->fullscreen_apps = 0;
+              gint index = meta_workspace_index (ws);
+
+              fullscreen_app_removed (priv, index);
             }
         }
 
@@ -2141,7 +2235,7 @@ stage_capture_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
            *     application being un-fullscreened and also possibly ending up
            *     lower down in the window stack.
            */
-          if (priv->fullscreen_apps)
+          if (fullscreen_app_present (MUTTER_PLUGIN (plugin)))
             return FALSE;
 
           if (!priv->panel_slide_timeout_id &&

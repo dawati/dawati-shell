@@ -125,7 +125,8 @@ struct _MoblinNetbookPluginPrivate
   gboolean               in_alt_grab                : 1;
   gboolean               holding_focus              : 1;
 
-  gint                   fullscreen_apps;
+  /* Fullscreen app tracking; one counter per workspace + one for sticky apps */
+  gint                   fullscreen_apps [MAX_WORKSPACES + 1];
 
   guint                  workspace_chooser_timeout;
 
