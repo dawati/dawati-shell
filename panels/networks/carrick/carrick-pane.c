@@ -273,7 +273,6 @@ _new_connection_cb (GtkButton *button,
   GtkWidget *secret_entry, *secret_label;
   GtkWidget *secret_check;
   GtkWidget *table;
-  GtkWidget *hbox;
   const gchar *network, *secret;
   gchar *security;
   GtkWidget *image;

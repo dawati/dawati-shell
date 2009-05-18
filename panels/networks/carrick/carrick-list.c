@@ -203,7 +203,7 @@ carrick_list_contains_service (CarrickList *list,
 void
 carrick_list_sort_list (CarrickList *list)
 {
-  GList *items = gtk_container_get_children (list);
+  GList *items = gtk_container_get_children (GTK_CONTAINER (list));
 
   while (items)
   {
@@ -221,8 +221,6 @@ carrick_list_add_item (CarrickList *list,
 {
   g_return_if_fail (CARRICK_IS_LIST (list));
   g_return_if_fail (GTK_IS_WIDGET (widget));
-
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
 
   /*gtk_drag_source_set (widget,
                        GDK_BUTTON1_MASK,
