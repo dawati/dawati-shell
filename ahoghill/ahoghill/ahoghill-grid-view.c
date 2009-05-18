@@ -385,6 +385,10 @@ set_recent_items (AhoghillGridView *view)
 
     if (!added_something) {
         generate_example_results (view);
+    } else {
+        g_object_set (priv->results_pane,
+                      "title", _("Recently played"),
+                      NULL);
     }
 
     ahoghill_results_pane_show_example_media
