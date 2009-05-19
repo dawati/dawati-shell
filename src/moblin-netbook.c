@@ -2035,8 +2035,9 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       xev->type == FocusOut && xev->xfocus.mode == NotifyNormal &&
       xev->xfocus.window == priv->focus_xwin)
     {
-      g_warning ("Lost focus while UI visible (detail %d)",
-                 xev->xfocus.detail);
+      if (!CLUTTER_ACTOR_IS_VISIBLE (priv->switcher))
+        g_warning ("Lost focus while UI visible (detail %d)",
+                   xev->xfocus.detail);
     }
 
   if (priv->in_alt_grab)

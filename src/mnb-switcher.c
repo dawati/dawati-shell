@@ -1576,11 +1576,13 @@ mnb_switcher_class_init (MnbSwitcherClass *klass)
 static void
 on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
 {
-  MnbSwitcherPrivate *priv;
+  MnbSwitcherPrivate         *priv;
+  MoblinNetbookPluginPrivate *ppriv;
 
   g_return_if_fail (MNB_IS_SWITCHER (self));
 
-  priv = MNB_SWITCHER (self)->priv;
+  priv  = MNB_SWITCHER (self)->priv;
+  ppriv = MOBLIN_NETBOOK_PLUGIN (priv->plugin)->priv;
 
   if (priv->tab_list)
     {
@@ -1592,6 +1594,23 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
   priv->table = NULL;
   priv->last_focused = NULL;
   priv->selected = NULL;
+
+  /*
+   * Fix for bug 1690.
+   *
+   * The Switcher is 'special'; in order for the thumbs to look right (namely
+   * the active thumb have the current decorations), the Switcher relinguishes
+   * focus to the active application. The problem with this is that if the
+   * user then goes on to open another Panel without closing the Toolbar in
+   * between, the focus is lost. So, when we hide the switcher, we get focus
+   * back to the UI if the panel is visible.
+   *
+   * NB: We need to rethink this for the multiproc stuff.
+   */
+  if (ppriv->panel_out_in_progress || CLUTTER_ACTOR_IS_VISIBLE (ppriv->panel))
+    {
+      enable_stage (priv->plugin, CurrentTime);
+    }
 }
 
 static void
