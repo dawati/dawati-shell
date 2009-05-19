@@ -1172,10 +1172,10 @@ mnb_switcher_show (ClutterActor *self)
           nbtk_bin_set_alignment (NBTK_BIN (bin),
                                   NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
 
-          clutter_actor_set_name (CLUTTER_ACTOR (bin), 
+          clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-title-active");
 
-          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin), 
+          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
                                             "workspace-title");
 
           nbtk_table_add_actor (NBTK_TABLE (table), bin, 0, 0);
@@ -1191,7 +1191,7 @@ mnb_switcher_show (ClutterActor *self)
 
           nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
           nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
-          clutter_actor_set_name (CLUTTER_ACTOR (bin), 
+          clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-no-wins-bin");
 
           nbtk_table_add_actor (NBTK_TABLE (table), bin, 1, 0);
