@@ -171,13 +171,11 @@ _hal_ac_device_property_modified (HalDevice   *device,
 }
 
 static void
-dalston_battery_monitor_init (DalstonBatteryMonitor *self)
+_setup_battery_device (DalstonBatteryMonitor *self)
 {
   DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
   gchar **names;
   GError *error = NULL;
-
-  priv->manager = hal_manager_new ();
 
   if (!hal_manager_find_capability (priv->manager,
                                     "battery",
@@ -193,13 +191,28 @@ dalston_battery_monitor_init (DalstonBatteryMonitor *self)
   priv->battery_udi = g_strdup (names[0]);
   hal_manager_free_capability (names);
 
-  priv->battery_device = hal_device_new ();
-  hal_device_set_udi (priv->battery_device, priv->battery_udi);
-  hal_device_watch_property_modified (priv->battery_device);
-  g_signal_connect (priv->battery_device,
-                    "property-modified",
-                    (GCallback)_hal_battery_device_property_modified,
-                    self);
+  if (priv->battery_udi)
+  {
+    priv->battery_device = hal_device_new ();
+    hal_device_set_udi (priv->battery_device, priv->battery_udi);
+    hal_device_watch_property_modified (priv->battery_device);
+    g_signal_connect (priv->battery_device,
+                      "property-modified",
+                      (GCallback)_hal_battery_device_property_modified,
+                      self);
+  }
+}
+
+static void
+dalston_battery_monitor_init (DalstonBatteryMonitor *self)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
+  gchar **names;
+  GError *error = NULL;
+
+  priv->manager = hal_manager_new ();
+
+  _setup_battery_device (self);
 
   if (!hal_manager_find_capability (priv->manager,
                                     "ac_adapter",
@@ -231,14 +244,17 @@ dalston_battery_monitor_get_time_remaining (DalstonBatteryMonitor *monitor)
   gint value = -1;
   GError *error = NULL;
 
-  if (!hal_device_get_int (priv->battery_device,
-                           "battery.remaining_time",
-                           &value,
-                           &error))
+  if (priv->battery_device)
   {
-    g_warning (G_STRLOC ": Error getting time remaining: %s",
-               error->message);
-    g_clear_error (&error);
+    if (!hal_device_get_int (priv->battery_device,
+                             "battery.remaining_time",
+                             &value,
+                             &error))
+    {
+      g_warning (G_STRLOC ": Error getting time remaining: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
   }
 
   return value;
@@ -251,14 +267,17 @@ dalston_battery_monitor_get_charge_percentage (DalstonBatteryMonitor *monitor)
   gint value = -1;
   GError *error = NULL;
 
-  if (!hal_device_get_int (priv->battery_device,
-                           "battery.charge_level.percentage",
-                           &value,
-                           &error))
+  if (priv->battery_device)
   {
-    g_warning (G_STRLOC ": Error getting charge percentage: %s",
-               error->message);
-    g_clear_error (&error);
+    if (!hal_device_get_int (priv->battery_device,
+                             "battery.charge_level.percentage",
+                             &value,
+                             &error))
+    {
+      g_warning (G_STRLOC ": Error getting charge percentage: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
   }
 
   return value;
@@ -272,36 +291,38 @@ dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor)
   gboolean value = FALSE;
   GError *error = NULL;
 
-  if (!hal_device_get_bool (priv->battery_device,
-                            "battery.rechargeable.is_charging",
-                            &value,
-                            &error))
+  if (priv->battery_device)
   {
-    g_warning (G_STRLOC ": Error getting charge is_charging: %s",
-               error->message);
-    g_clear_error (&error);
+    if (!hal_device_get_bool (priv->battery_device,
+                              "battery.rechargeable.is_charging",
+                              &value,
+                              &error))
+    {
+      g_warning (G_STRLOC ": Error getting charge is_charging: %s",
+                 error->message);
+      g_clear_error (&error);
 
-    return state;
+      return state;
+    }
+
+    if (value)
+      return DALSTON_BATTERY_MONITOR_STATE_CHARGING;
+
+    if (!hal_device_get_bool (priv->battery_device,
+                              "battery.rechargeable.is_discharging",
+                              &value,
+                              &error))
+    {
+      g_warning (G_STRLOC ": Error getting charge is_discharging: %s",
+                 error->message);
+      g_clear_error (&error);
+
+      return state;
+    }
+
+    if (value)
+      return DALSTON_BATTERY_MONITOR_STATE_DISCHARGING;
   }
-
-  if (value)
-    return DALSTON_BATTERY_MONITOR_STATE_CHARGING;
-
-  if (!hal_device_get_bool (priv->battery_device,
-                            "battery.rechargeable.is_discharging",
-                            &value,
-                            &error))
-  {
-    g_warning (G_STRLOC ": Error getting charge is_discharging: %s",
-               error->message);
-    g_clear_error (&error);
-
-    return state;
-  }
-
-  if (value)
-    return DALSTON_BATTERY_MONITOR_STATE_DISCHARGING;
-
 
   return DALSTON_BATTERY_MONITOR_STATE_OTHER;
 }
@@ -313,14 +334,17 @@ dalston_battery_monitor_get_ac_connected (DalstonBatteryMonitor *monitor)
   gboolean value = FALSE;
   GError *error = NULL;
 
-  if (!hal_device_get_bool (priv->ac_device,
-                            "ac_adapter.present",
-                            &value,
-                            &error))
+  if (priv->ac_device)
   {
-    g_warning (G_STRLOC ": Error getting value ac_adapter.present: %s",
-               error->message);
-    g_clear_error (&error);
+    if (!hal_device_get_bool (priv->ac_device,
+                              "ac_adapter.present",
+                              &value,
+                              &error))
+    {
+      g_warning (G_STRLOC ": Error getting value ac_adapter.present: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
   }
 
   return value;
