@@ -228,13 +228,16 @@ dalston_battery_monitor_init (DalstonBatteryMonitor *self)
   priv->ac_udi = g_strdup (names[0]);
   hal_manager_free_capability (names);
 
-  priv->ac_device = hal_device_new ();
-  hal_device_set_udi (priv->ac_device, priv->ac_udi);
-  hal_device_watch_property_modified (priv->ac_device);
-  g_signal_connect (priv->ac_device,
-                    "property-modified",
-                    (GCallback)_hal_ac_device_property_modified,
-                    self);
+  if (priv->ac_udi)
+  {
+    priv->ac_device = hal_device_new ();
+    hal_device_set_udi (priv->ac_device, priv->ac_udi);
+    hal_device_watch_property_modified (priv->ac_device);
+    g_signal_connect (priv->ac_device,
+                      "property-modified",
+                      (GCallback)_hal_ac_device_property_modified,
+                      self);
+  }
 }
 
 gint
