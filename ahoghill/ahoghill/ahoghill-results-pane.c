@@ -179,6 +179,24 @@ item_clicked_cb (AhoghillResultsTable *table,
 }
 
 static void
+update_buttons (AhoghillResultsPane *pane)
+{
+    AhoghillResultsPanePrivate *priv = pane->priv;
+
+    if (priv->current_page_num == 0) {
+        clutter_actor_hide ((ClutterActor *) priv->previous_button);
+    } else {
+        clutter_actor_show ((ClutterActor *) priv->previous_button);
+    }
+
+    if (priv->current_page_num == priv->last_page) {
+        clutter_actor_hide ((ClutterActor *) priv->next_button);
+    } else {
+        clutter_actor_show ((ClutterActor *) priv->next_button);
+    }
+}
+
+static void
 page_change_complete (ClutterAnimation    *anim,
                       AhoghillResultsPane *pane)
 {
@@ -252,6 +270,8 @@ show_previous_page (ClutterActor        *actor,
 
     priv->current_page_num--;
 
+    update_buttons (pane);
+
     return FALSE;
 }
 
@@ -315,6 +335,8 @@ show_next_page (ClutterActor        *actor,
          NULL);
 
     priv->current_page_num++;
+
+    update_buttons (pane);
 
     return FALSE;
 }
@@ -390,6 +412,8 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
                                           "y-fill", FALSE,
                                           "x-align", 1.0,
                                           NULL);
+
+    update_buttons (self);
 }
 
 static void
@@ -402,15 +426,7 @@ results_changed_cb (AhoghillResultsModel *model,
        on still exists and whether the page buttons should be active */
 
     ahoghill_results_pane_set_page (pane, 0);
-
     priv->last_page = ahoghill_results_model_get_count (model) / TILES_PER_PAGE;
-    if (priv->last_page == 0) {
-        clutter_actor_hide ((ClutterActor *) priv->next_button);
-        clutter_actor_hide ((ClutterActor *) priv->previous_button);
-    } else {
-        clutter_actor_show ((ClutterActor *) priv->next_button);
-        clutter_actor_show ((ClutterActor *) priv->previous_button);
-    }
 }
 
 AhoghillResultsPane *
@@ -443,6 +459,9 @@ ahoghill_results_pane_set_page (AhoghillResultsPane *pane,
     priv = pane->priv;
     priv->current_page_num = 0;
     ahoghill_results_table_set_page (priv->current_page, 0);
+
+    priv->last_page = ahoghill_results_model_get_count (priv->model) / TILES_PER_PAGE;
+    update_buttons (pane);
 }
 
 void
