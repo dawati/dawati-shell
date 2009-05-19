@@ -1640,11 +1640,14 @@ mnb_switcher_class_init (MnbSwitcherClass *klass)
 static void
 on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
 {
-  MnbSwitcherPrivate *priv;
+  MnbSwitcherPrivate         *priv;
+  MoblinNetbookPluginPrivate *ppriv;
+  ClutterActor               *toolbar;
 
   g_return_if_fail (MNB_IS_SWITCHER (self));
 
-  priv = MNB_SWITCHER (self)->priv;
+  priv  = MNB_SWITCHER (self)->priv;
+  ppriv = MOBLIN_NETBOOK_PLUGIN (priv->plugin)->priv;
 
   if (priv->tab_list)
     {
@@ -1652,10 +1655,35 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
       priv->tab_list = NULL;
     }
 
-  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
   priv->table = NULL;
   priv->last_focused = NULL;
   priv->selected = NULL;
+  priv->active_tooltip = NULL;
+  priv->new_workspace = NULL;
+  priv->new_label = NULL;
+
+  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
+
+  /*
+   * Fix for bug 1690.
+   *
+   * The Switcher is 'special'; in order for the thumbs to look right (namely
+   * the active thumb have the current decorations), the Switcher relinguishes
+   * focus to the active application. The problem with this is that if the
+   * user then goes on to open another Panel without closing the Toolbar in
+   * between, the focus is lost. So, when we hide the switcher, we get focus
+   * back to the UI if the panel is visible.
+   *
+   * NB: We need to rethink this for the multiproc stuff.
+   */
+  toolbar = clutter_actor_get_parent (self);
+  while (toolbar && !MNB_IS_TOOLBAR (toolbar))
+    toolbar = clutter_actor_get_parent (toolbar);
+
+  if (toolbar && CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+    {
+      moblin_netbook_focus_stage (priv->plugin, CurrentTime);
+    }
 }
 
 /*
@@ -1719,6 +1747,13 @@ mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher)
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
   meta_keybindings_set_custom_handler ("switch_group_backward",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+
+  /* Disable the Alt+Space menu -- strictly speaking not switcher related, but
+   * for now here.
+   */
+  meta_keybindings_set_custom_handler ("activate_window_menu",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
 }

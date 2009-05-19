@@ -205,7 +205,7 @@ index_changed_cb (BklSourceClient *client,
         iter = g_sequence_search (source->index, (char *) removed[i],
                                   (GCompareDataFunc) compare_words, NULL);
         word = g_sequence_get (iter);
-        if (g_str_equal (word, removed[i])) {
+        if (word && g_str_equal (word, removed[i])) {
             g_sequence_remove (iter);
         }
     }
@@ -385,6 +385,10 @@ set_recent_items (AhoghillGridView *view)
 
     if (!added_something) {
         generate_example_results (view);
+    } else {
+        g_object_set (priv->results_pane,
+                      "title", _("Recently played"),
+                      NULL);
     }
 
     ahoghill_results_pane_show_example_media
