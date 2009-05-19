@@ -1376,6 +1376,11 @@ on_config_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
 {
   struct config_hide_data *hide_data = data;
 
+  if (mnb_drop_down_should_panel_hide (MNB_DROP_DOWN (actor)))
+    {
+      hide_panel (MUTTER_PLUGIN (hide_data->plugin));
+    }
+
   shell_tray_manager_close_config_window (hide_data->plugin->priv->tray_manager,
                                           hide_data->config_xwin);
 }

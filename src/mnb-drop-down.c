@@ -52,6 +52,7 @@ struct _MnbDropDownPrivate {
 
   gboolean in_show_animation : 1;
   gboolean in_hide_animation : 1;
+  gboolean hide_panel        : 1;
 };
 
 static void
@@ -109,6 +110,8 @@ mnb_drop_down_show (ClutterActor *actor)
       g_signal_stop_emission_by_name (actor, "show");
       return;
     }
+
+  priv->hide_panel = FALSE;
 
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->show (actor);
 
@@ -293,6 +296,20 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
 
 }
 
+/*
+ * Hides both switcher and panel, in a sequnce so so as to preserve the
+ * hide animations.
+ */
+static void
+mnb_dropdown_hide_with_panel (MnbDropDown *self)
+{
+  MnbDropDownPrivate *priv = self->priv;
+
+  priv->hide_panel = TRUE;
+
+  clutter_actor_hide (CLUTTER_ACTOR (self));
+}
+
 static void
 mnb_drop_down_init (MnbDropDown *self)
 {
@@ -306,7 +323,7 @@ mnb_drop_down_init (MnbDropDown *self)
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (footer), 1, 0);
   g_signal_connect_swapped (footer, "clicked",
-                            G_CALLBACK (clutter_actor_hide), self);
+                            G_CALLBACK (mnb_dropdown_hide_with_panel), self);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,
@@ -398,4 +415,13 @@ mnb_drop_down_set_button (MnbDropDown *drop_down,
                     G_CALLBACK (mnb_button_toggled_cb),
                     drop_down);
 
+}
+
+/*
+ * FIXME -- remove me for multiproc; quick fix for the panel closure.
+ */
+gboolean
+mnb_drop_down_should_panel_hide (MnbDropDown *self)
+{
+  return self->priv->hide_panel;
 }
