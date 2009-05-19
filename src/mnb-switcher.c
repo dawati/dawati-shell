@@ -1590,10 +1590,14 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
       priv->tab_list = NULL;
     }
 
-  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
   priv->table = NULL;
   priv->last_focused = NULL;
   priv->selected = NULL;
+  priv->active_tooltip = NULL;
+  priv->new_workspace = NULL;
+  priv->new_label = NULL;
+
+  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
 
   /*
    * Fix for bug 1690.
