@@ -527,9 +527,14 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
 
   if (launcher_data->is_filtering)
     {
-      clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->apps_grid),
-                                 (ClutterCallback) nbtk_widget_set_style_pseudo_class,
-                                 NULL);
+      const GSList *launchers_iter;
+      for (launchers_iter = launcher_data->launchers;
+           launchers_iter;
+           launchers_iter = launchers_iter->next)
+        {
+          nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launchers_iter->data),
+                                              NULL);
+        }
     }
   else
     {
