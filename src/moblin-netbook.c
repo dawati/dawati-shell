@@ -1028,6 +1028,10 @@ moblin_netbook_plugin_constructed (GObject *object)
                                        metacity_alt_tab_key_handler,
                                        plugin, NULL);
 
+  /* Disable the Alt+Space menu */
+  meta_keybindings_set_custom_handler ("activate_window_menu",
+                                       metacity_nop_key_handler,
+                                       plugin, NULL);
 }
 
 static void
