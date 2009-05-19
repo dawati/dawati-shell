@@ -254,9 +254,12 @@ dalston_battery_monitor_get_time_remaining (DalstonBatteryMonitor *monitor)
                              &value,
                              &error))
     {
-      g_warning (G_STRLOC ": Error getting time remaining: %s",
-                 error->message);
-      g_clear_error (&error);
+      if (error)
+      {
+        g_warning (G_STRLOC ": Error getting time remaining: %s",
+                   error->message);
+        g_clear_error (&error);
+      }
     }
   }
 
@@ -277,9 +280,12 @@ dalston_battery_monitor_get_charge_percentage (DalstonBatteryMonitor *monitor)
                              &value,
                              &error))
     {
-      g_warning (G_STRLOC ": Error getting charge percentage: %s",
-                 error->message);
-      g_clear_error (&error);
+      if (error)
+      {
+        g_warning (G_STRLOC ": Error getting charge percentage: %s",
+                   error->message);
+        g_clear_error (&error);
+      }
     }
   }
 
@@ -301,9 +307,12 @@ dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor)
                               &value,
                               &error))
     {
-      g_warning (G_STRLOC ": Error getting charge is_charging: %s",
-                 error->message);
-      g_clear_error (&error);
+      if (error)
+      {
+        g_warning (G_STRLOC ": Error getting charge is_charging: %s",
+                   error->message);
+        g_clear_error (&error);
+      }
 
       return state;
     }
@@ -316,9 +325,12 @@ dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor)
                               &value,
                               &error))
     {
-      g_warning (G_STRLOC ": Error getting charge is_discharging: %s",
-                 error->message);
-      g_clear_error (&error);
+      if (error)
+      {
+        g_warning (G_STRLOC ": Error getting charge is_discharging: %s",
+                   error->message);
+        g_clear_error (&error);
+      }
 
       return state;
     }
@@ -344,9 +356,12 @@ dalston_battery_monitor_get_ac_connected (DalstonBatteryMonitor *monitor)
                               &value,
                               &error))
     {
-      g_warning (G_STRLOC ": Error getting value ac_adapter.present: %s",
-                 error->message);
-      g_clear_error (&error);
+      if (error)
+      {
+        g_warning (G_STRLOC ": Error getting value ac_adapter.present: %s",
+                   error->message);
+        g_clear_error (&error);
+      }
     }
   }
 
