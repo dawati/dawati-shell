@@ -41,6 +41,15 @@ enum
   PROP_SERVICE
 };
 
+typedef enum
+{
+  UNKNOWN,
+  IDLE,
+  FAIL,
+  CONFIGURE,
+  READY
+} ServiceItemState;
+
 struct _CarrickServiceItemPrivate
 {
   CmService          *service;
@@ -49,8 +58,9 @@ struct _CarrickServiceItemPrivate
   GtkWidget          *security_label;
   GtkWidget          *connect_button;
   GtkWidget          *table;
-  gboolean            connected;
+  ServiceItemState    state;
   CarrickIconFactory *icon_factory;
+  gboolean            failed;
 };
 
 static void
@@ -114,17 +124,41 @@ _set_state (CmService          *service,
     name = g_strdup (_("Wired"));
   }
 
-  if (priv->connected)
+  if (priv->state == READY)
   {
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
+                              TRUE);
     button = g_strdup (_("Disconnect"));
     label = g_strdup_printf ("%s - %s",
                              name,
                              _("Connected"));
+    priv->failed = FALSE;
   }
-  else
+  else if (priv->state == CONFIGURE)
   {
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
+                              FALSE);
+    button = g_strdup_printf (_("Connecting"));
+    label = g_strdup_printf ("%s - %s",
+                             name,
+                             _("Configuring"));
+  }
+  else if (priv->state == IDLE)
+  {
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
+                              TRUE);
     button = g_strdup (_("Connect"));
     label = g_strdup (name);
+  }
+  else if (priv->state == FAIL)
+  {
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
+                              TRUE);
+    button = g_strdup (_("Connect"));
+    label = g_strdup_printf ("%s - %s",
+                             name,
+                             _("Connection failed"));
+    priv->failed = TRUE;
   }
 
   gtk_label_set_text (GTK_LABEL (priv->name_label),
@@ -153,18 +187,129 @@ _show_pass_toggled_cb (GtkToggleButton *button,
                             gtk_toggle_button_get_active (button));
 }
 
+gchar *
+_request_passphrase (CarrickServiceItem *item)
+{
+  GtkWidget *dialog;
+  GtkWidget *label;
+  GtkWidget *title;
+  GtkWidget *icon;
+  GtkWidget *entry;
+  GtkWidget *table;
+  GtkWidget *checkbox;
+  gchar *passphrase;
+
+  dialog = gtk_dialog_new_with_buttons (_("Passphrase required"),
+                                        NULL,
+                                        GTK_DIALOG_MODAL |
+                                        GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_STOCK_CANCEL,
+                                        GTK_RESPONSE_REJECT,
+                                        GTK_STOCK_CONNECT,
+                                        GTK_RESPONSE_ACCEPT,
+                                        NULL);
+
+  gtk_dialog_set_has_separator (GTK_DIALOG (dialog),
+                                FALSE);
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+                                   GTK_RESPONSE_ACCEPT);
+  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+  gtk_window_set_icon_name (GTK_WINDOW (dialog),
+                            GTK_STOCK_NETWORK);
+  gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+                       6);
+
+  table = gtk_table_new (3, 3, FALSE);
+  gtk_table_set_col_spacings (GTK_TABLE (table),
+                              6);
+  gtk_table_set_row_spacings (GTK_TABLE (table),
+                              6);
+  title = gtk_label_new ("");
+  gtk_label_set_markup (GTK_LABEL (title),
+                        _("<b><big>Network Requires a Password</big></b>"));
+  gtk_misc_set_alignment (GTK_MISC (title),
+                          0.00,
+                          0.50);
+  gtk_table_attach (GTK_TABLE (table),
+                    title,
+                    1, 2,
+                    0, 1,
+                    GTK_EXPAND | GTK_FILL,
+                    GTK_EXPAND | GTK_FILL,
+                    0, 0);
+  icon = gtk_image_new_from_icon_name (GTK_STOCK_NETWORK,
+                                       GTK_ICON_SIZE_DIALOG);
+  gtk_table_attach (GTK_TABLE (table),
+                    icon,
+                    0, 1,
+                    0, 1,
+                    GTK_FILL,
+                    GTK_EXPAND | GTK_FILL,
+                    0, 0);
+  label = gtk_label_new (_("Please enter the password for this network:"));
+  gtk_table_attach (GTK_TABLE (table),
+                    label,
+                    1, 2,
+                    1, 2,
+                    GTK_EXPAND | GTK_FILL,
+                    GTK_EXPAND | GTK_FILL,
+                    0, 0);
+  gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
+  entry = gtk_entry_new ();
+  gtk_table_attach (GTK_TABLE (table),
+                    entry,
+                    1, 2,
+                    2, 3,
+                    GTK_EXPAND | GTK_FILL,
+                    GTK_EXPAND | GTK_FILL,
+                    0, 0);
+  checkbox = gtk_check_button_new_with_label (_("Show password"));
+  g_signal_connect (checkbox,
+                    "toggled",
+                    G_CALLBACK (_show_pass_toggled_cb),
+                    NULL);
+  gtk_table_attach (GTK_TABLE (table),
+                    checkbox,
+                    1, 2,
+                    3, 4,
+                    GTK_FILL,
+                    GTK_FILL,
+                    0, 0);
+
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+                      table,
+                      FALSE,
+                      FALSE,
+                      6);
+
+  gtk_widget_show_all (dialog);
+  gtk_widget_hide (service_item_find_plug (GTK_WIDGET (item)));
+
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  {
+    passphrase = g_strdup (gtk_entry_get_text (GTK_ENTRY (entry)));
+  }
+  else
+  {
+    passphrase = g_strdup ("");
+  }
+  gtk_widget_destroy (dialog);
+
+  g_debug ("Got passphrase: %s",
+           passphrase);
+  return passphrase;
+}
+
 void
 _connect_button_cb (GtkButton          *connect_button,
                     CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  gchar *passphrase = NULL;
 
-  if (priv->connected)
+  if (priv->state == READY)
   {
-    if (cm_service_disconnect (priv->service))
-    {
-      priv->connected = FALSE;
-    }
+    cm_service_disconnect (priv->service);
   }
   else
   {
@@ -172,137 +317,32 @@ _connect_button_cb (GtkButton          *connect_button,
 
     if (g_strcmp0 ("none", security) != 0)
     {
-      if (!cm_service_get_passphrase (priv->service))
+      if (priv->failed || !cm_service_get_passphrase (priv->service))
       {
-        GtkWidget *dialog;
-        GtkWidget *label;
-        GtkWidget *title;
-        GtkWidget *icon;
-        GtkWidget *entry;
-        GtkWidget *table;
-        GtkWidget *checkbox;
-        const gchar *passphrase = NULL;
-
-        dialog = gtk_dialog_new_with_buttons (_("Passphrase required"),
-                                              NULL,
-                                              GTK_DIALOG_MODAL |
-                                              GTK_DIALOG_DESTROY_WITH_PARENT,
-                                              GTK_STOCK_CANCEL,
-                                              GTK_RESPONSE_REJECT,
-                                              GTK_STOCK_CONNECT,
-                                              GTK_RESPONSE_ACCEPT,
-                                              NULL);
-
-        gtk_dialog_set_has_separator (GTK_DIALOG (dialog),
-                                      FALSE);
-        gtk_dialog_set_default_response (GTK_DIALOG (dialog),
-                                         GTK_RESPONSE_ACCEPT);
-        gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-        gtk_window_set_icon_name (GTK_WINDOW (dialog),
-                                  GTK_STOCK_NETWORK);
-        gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                             6);
-
-        table = gtk_table_new (3, 3, FALSE);
-        gtk_table_set_col_spacings (GTK_TABLE (table),
-                                    6);
-        gtk_table_set_row_spacings (GTK_TABLE (table),
-                                    6);
-        title = gtk_label_new ("");
-        gtk_label_set_markup (GTK_LABEL (title),
-                              _("<b><big>Network Requires a Password</big></b>"));
-        gtk_misc_set_alignment (GTK_MISC (title),
-                                0.00,
-                                0.50);
-        gtk_table_attach (GTK_TABLE (table),
-                          title,
-                          1, 2,
-                          0, 1,
-                          GTK_EXPAND | GTK_FILL,
-                          GTK_EXPAND | GTK_FILL,
-                          0, 0);
-        icon = gtk_image_new_from_icon_name (GTK_STOCK_NETWORK,
-                                             GTK_ICON_SIZE_DIALOG);
-        gtk_table_attach (GTK_TABLE (table),
-                          icon,
-                          0, 1,
-                          0, 1,
-                          GTK_FILL,
-                          GTK_EXPAND | GTK_FILL,
-                          0, 0);
-        label = gtk_label_new (_("Please enter the password for this network:"));
-        gtk_table_attach (GTK_TABLE (table),
-                          label,
-                          1, 2,
-                          1, 2,
-                          GTK_EXPAND | GTK_FILL,
-                          GTK_EXPAND | GTK_FILL,
-                          0, 0);
-        gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
-        entry = gtk_entry_new ();
-        gtk_table_attach (GTK_TABLE (table),
-                          entry,
-                          1, 2,
-                          2, 3,
-                          GTK_EXPAND | GTK_FILL,
-                          GTK_EXPAND | GTK_FILL,
-                          0, 0);
-        checkbox = gtk_check_button_new_with_label (_("Show password"));
-        g_signal_connect (checkbox,
-                          "toggled",
-                          G_CALLBACK (_show_pass_toggled_cb),
-                          NULL);
-        gtk_table_attach (GTK_TABLE (table),
-                          checkbox,
-                          1, 2,
-                          3, 4,
-                          GTK_FILL,
-                          GTK_FILL,
-                          0, 0);
-
-        gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                            table,
-                            FALSE,
-                            FALSE,
-                            6);
-
-        gtk_widget_show_all (dialog);
-        gtk_widget_hide ( service_item_find_plug (GTK_WIDGET (connect_button)));
-
-        if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+        passphrase = _request_passphrase (item);
+        if (passphrase && passphrase[0] != '\0')
         {
-          passphrase = gtk_entry_get_text (GTK_ENTRY (entry));
           cm_service_set_passphrase (priv->service,
                                      passphrase);
-          if (cm_service_connect (CM_SERVICE (priv->service)))
-          {
-            priv->connected = TRUE;
-            gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                                  _("Disconnect"));
-          }
+          cm_service_connect (CM_SERVICE (priv->service));
+          g_free (passphrase);
         }
-        gtk_widget_destroy (dialog);
+        else
+        {
+          /* passphrase empty, return */
+          g_free (passphrase);
+        }
       }
       else
       {
         /* We have the passphrase already, just connect */
-        if (cm_service_connect (priv->service))
-        {
-          priv->connected = TRUE;
-          gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                                _("Disconnect"));
-        }
+        cm_service_connect (priv->service);
       }
     }
     else
     {
       /* No security, just connect */
-      if (cm_service_connect (priv->service))
-      {
-        priv->connected = TRUE;
-        gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                              _("Disconnect"));
-      }
+      cm_service_connect (priv->service);
     }
   }
   /* Make sure widget is displaying correct state */
@@ -318,14 +358,50 @@ _name_changed_cb (CmService          *service,
               item);
 }
 
+ServiceItemState
+_get_service_state (CmService *service)
+{
+  const gchar *state = NULL;
+
+  state = cm_service_get_state (service);
+  if (g_strcmp0 (state, "idle") == 0)
+  {
+    return IDLE;
+  }
+  else if (g_strcmp0 (state, "failure") == 0)
+  {
+    return FAIL;
+  }
+  else if (g_strcmp0 (state, "association") == 0
+           || g_strcmp0 (state, "configuration") == 0)
+  {
+    return CONFIGURE;
+  }
+  else if (g_strcmp0 (state, "ready") == 0)
+  {
+    return READY;
+  }
+
+  return UNKNOWN;
+}
+
 void
 _status_changed_cb (CmService          *service,
                     CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
-  priv->connected = cm_service_get_connected (service);
+
+  priv->state = _get_service_state (service);
+
   _set_state (service,
               item);
+}
+
+void
+_remove_cb (CmService          *service,
+            CarrickServiceItem *item)
+{
+  gtk_widget_destroy (GTK_WIDGET (item));
 }
 
 static void
@@ -370,7 +446,7 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
       gtk_label_set_text (GTK_LABEL (priv->security_label),
                           security);
     }
-    priv->connected = cm_service_get_connected (service);
+    priv->state = _get_service_state (service);
 
     _set_state (service,
                 service_item);
@@ -387,6 +463,10 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       "state-changed",
                       G_CALLBACK (_status_changed_cb),
                       service_item);
+    /*g_signal_connect (priv->service,
+                      "removed",
+                      G_CALLBACK (_remove_cb),
+                      service_item);*/
 
     g_free (security);
   }
@@ -477,8 +557,8 @@ carrick_service_item_init (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
 
-  priv->connected = FALSE;
   priv->service = NULL;
+  priv->failed = FALSE;
 
   priv->table = gtk_table_new (2, 3,
                                TRUE);

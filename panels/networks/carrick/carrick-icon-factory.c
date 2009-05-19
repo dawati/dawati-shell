@@ -128,6 +128,11 @@ carrick_icon_factory_get_state_for_service (CmService *service)
     type = NULL;
   }
 
+  if (g_strcmp0 ("failure", cm_service_get_state (service)) == 0)
+  {
+    icon_state = ICON_ERROR;
+  }
+
   if (type)
   {
     if (g_strcmp0 ("ethernet", type) == 0)
