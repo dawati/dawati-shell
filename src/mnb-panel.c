@@ -149,16 +149,6 @@ mnb_panel_request_hide_cb (DBusGProxy *proxy, MnbPanel *panel)
 }
 
 static void
-mnb_panel_launch_application_cb (DBusGProxy  *proxy,
-                                 const gchar *app,
-                                 gint         workspace,
-                                 gboolean     without_chooser,
-                                 MnbPanel    *panel)
-{
-  /* TODO */
-}
-
-static void
 mnb_panel_dispose (GObject *self)
 {
   MnbPanelPrivate *priv  = MNB_PANEL (self)->priv;
@@ -177,10 +167,6 @@ mnb_panel_dispose (GObject *self)
       dbus_g_proxy_disconnect_signal (proxy, "RequestFocus",
                                       G_CALLBACK (mnb_panel_request_focus_cb),
                                       self);
-
-      dbus_g_proxy_disconnect_signal (proxy, "LaunchApplication",
-                                   G_CALLBACK (mnb_panel_launch_application_cb),
-                                   self);
 
       g_object_unref (proxy);
       priv->proxy = NULL;
@@ -516,24 +502,6 @@ mnb_panel_constructed (GObject *self)
   dbus_g_proxy_add_signal (proxy, "RequestFocus", G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestFocus",
                                G_CALLBACK (mnb_panel_request_focus_cb),
-                               self, NULL);
-
-  dbus_g_object_register_marshaller (
-                               moblin_netbook_marshal_VOID__STRING_INT_BOOLEAN,
-                               G_TYPE_NONE,
-                               G_TYPE_STRING,
-                               G_TYPE_INT,
-                               G_TYPE_BOOLEAN,
-                               G_TYPE_INVALID);
-
-  dbus_g_proxy_add_signal (proxy, "LaunchApplication",
-                           G_TYPE_STRING,
-                           G_TYPE_INT,
-                           G_TYPE_BOOLEAN,
-                           G_TYPE_INVALID);
-
-  dbus_g_proxy_connect_signal (proxy, "LaunchApplication",
-                               G_CALLBACK (mnb_panel_launch_application_cb),
                                self, NULL);
 
   priv->name    = name;

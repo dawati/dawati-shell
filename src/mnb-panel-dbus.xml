@@ -23,10 +23,5 @@
     <signal name="RequestShow"/>
     <signal name="RequestHide"/>
     <signal name="RequestFocus"/>
-    <signal name="LaunchApplication">
-      <arg name="application" type="s"/>
-      <arg name="workspace" type="i"/>
-      <arg name="without_chooser" type="b"/>
-    </signal>
   </interface>
 </node>
