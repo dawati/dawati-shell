@@ -379,7 +379,7 @@ moblin_netbook_plugin_constructed (GObject *object)
                                 "applications-zone", _("applications"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "pasteboard-zone", _("pastboard"));
+                                "pasteboard-zone", _("pasteboard"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
                                 "internet-zone", _("internet"));
