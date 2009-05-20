@@ -469,8 +469,7 @@ container_has_children (ClutterContainer *container)
  * Helper struct that contains all the info needed to switch between
  * browser- and filter-mode.
  */
-typedef struct
-{
+struct launcher_data_ {
   MutterPlugin            *self;
   GtkIconTheme            *theme;
   PengeAppBookmarkManager *manager;
@@ -504,7 +503,7 @@ typedef struct
   MnbLauncherTree         *tree;
   GSList                  *directories;
   GSList const            *directory_iter;
-} launcher_data_t;
+};
 
 static void launcher_data_monitor_cb        (MnbLauncherMonitor  *monitor,
                                              launcher_data_t     *launcher_data);
@@ -558,11 +557,15 @@ static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
                               MutterPlugin       *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MoblinNetbookPluginPrivate *priv;
   GAppLaunchContext          *context;
   const gchar     *desktop_file_path;
   GDesktopAppInfo *app_info;
   GError          *error = NULL;
+
+  g_return_if_fail (plugin);
+
+  priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
@@ -1585,19 +1588,17 @@ dropdown_hide_cb (MnbDropDown     *dropdown,
 }
 
 ClutterActor *
-make_launcher (MutterPlugin *plugin,
-               gint          width,
-               gint          height)
+moblin_netbook_launcher_panel_new (MutterPlugin      *plugin,
+                                   gint               width,
+                                   gint               height,
+                                   launcher_data_t  **launcher_data_out)
 {
   ClutterActor    *scroll, *bar;
-  NbtkWidget      *vbox, *hbox, *label, *entry, *drop_down;
+  NbtkWidget      *vbox, *hbox, *label, *entry;
   launcher_data_t *launcher_data;
-
-  drop_down = mnb_drop_down_new ();
 
   vbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");
-  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
 
   /* Filter row. */
   hbox = nbtk_table_new ();
@@ -1663,6 +1664,26 @@ make_launcher (MutterPlugin *plugin,
                     G_CALLBACK (entry_changed_cb), launcher_data);
   g_signal_connect (entry, "keynav-event",
                     G_CALLBACK (entry_keynav_cb), launcher_data);
+
+  if (launcher_data_out)
+    *launcher_data_out = launcher_data;
+
+  return CLUTTER_ACTOR (vbox);
+}
+
+ClutterActor *
+make_launcher (MutterPlugin *plugin,
+               gint          width,
+               gint          height)
+{
+  ClutterActor    *panel;
+  NbtkWidget      *drop_down;
+  launcher_data_t *launcher_data;
+
+  drop_down = mnb_drop_down_new ();
+
+  panel = moblin_netbook_launcher_panel_new (plugin, width, height, &launcher_data);
+  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (panel));
 
   g_signal_connect_after (drop_down, "show",
                           G_CALLBACK (dropdown_show_cb), launcher_data);

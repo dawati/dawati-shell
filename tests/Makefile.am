@@ -18,12 +18,21 @@ LDADD = \
 
 noinst_PROGRAMS = \
 	test-entry \
+	test-launcher \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree \
 	test-tray \
 	test-pasteboard \
 	test-screensized
+
+test_launcher_SOURCES = \
+	$(top_srcdir)/src/mnb-drop-down.c \
+	$(top_srcdir)/src/mnb-entry.c \
+	$(top_srcdir)/src/mnb-launcher-button.c \
+	$(top_srcdir)/src/mnb-launcher-tree.c \
+	$(top_srcdir)/src/moblin-netbook-launcher.c \
+	test-launcher.c
 
 test_launcher_button_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-button.c \
