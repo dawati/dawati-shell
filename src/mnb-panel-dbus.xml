@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <node name="/">
-  <interface name="com.intel.Mnb.Panel">
+  <interface name="org.moblin.Mnb.Panel">
     <method name="InitPanel">
       <arg name="window_width" type="u" direction="in"/>
       <arg name="window_height" type="u" direction="in"/>

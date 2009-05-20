@@ -234,7 +234,7 @@ mnb_panel_dbus_init_panel (MnbPanel  *self,
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_init_panel (priv->proxy, width, height, name, xid,
+  return org_moblin_Mnb_Panel_init_panel (priv->proxy, width, height, name, xid,
                                          tooltip, error);
 }
 
@@ -243,7 +243,7 @@ mnb_panel_dbus_show_begin (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_show_begin (priv->proxy, error);
+  return org_moblin_Mnb_Panel_show_begin (priv->proxy, error);
 }
 
 static gboolean
@@ -251,7 +251,7 @@ mnb_panel_dbus_show_end (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_show_end (priv->proxy, error);
+  return org_moblin_Mnb_Panel_show_end (priv->proxy, error);
 }
 
 static gboolean
@@ -259,7 +259,7 @@ mnb_panel_dbus_hide_begin (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_hide_begin (priv->proxy, error);
+  return org_moblin_Mnb_Panel_hide_begin (priv->proxy, error);
 }
 
 static gboolean
@@ -267,7 +267,7 @@ mnb_panel_dbus_hide_end (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_hide_end (priv->proxy, error);
+  return org_moblin_Mnb_Panel_hide_end (priv->proxy, error);
 }
 
 static void
