@@ -256,6 +256,29 @@ moblin_netbook_make_toolbar_hint ()
 }
 
 static void
+moblin_netbook_toolbar_show_cb (ClutterActor *toolbar, MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (priv->toolbar_hint != NULL)
+    {
+      ClutterActor *overlay;
+
+      overlay = clutter_actor_get_parent (priv->toolbar_hint);
+
+      clutter_container_remove_actor (CLUTTER_CONTAINER(overlay),
+                                      priv->toolbar_hint);
+
+      priv->toolbar_hint = NULL;
+
+      /* one-of */
+      g_signal_handlers_disconnect_by_func (toolbar,
+                                            moblin_netbook_toolbar_show_cb,
+                                            plugin);
+    }
+}
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -331,6 +354,9 @@ moblin_netbook_plugin_constructed (GObject *object)
    */
   toolbar = priv->toolbar =
     CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
+
+  g_signal_connect (toolbar, "show",
+                    G_CALLBACK (moblin_netbook_toolbar_show_cb), plugin);
 
 #if 1
   /* show after mzone.. */

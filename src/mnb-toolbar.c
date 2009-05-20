@@ -233,10 +233,10 @@ mnb_toolbar_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 static void
 mnb_toolbar_show (ClutterActor *actor)
 {
-  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  gint               screen_width, screen_height;
-  gint               i;
-  ClutterAnimation  *animation;
+  MnbToolbarPrivate          *priv = MNB_TOOLBAR (actor)->priv;
+  gint                        screen_width, screen_height;
+  gint                        i;
+  ClutterAnimation           *animation;
 
   if (priv->in_show_animation)
     {
