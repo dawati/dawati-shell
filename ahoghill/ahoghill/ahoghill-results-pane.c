@@ -470,7 +470,7 @@ ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
 
-    if (show) {
+    if (show && priv->example_page == NULL) {
         nbtk_label_set_text ((NbtkLabel *) priv->title, "");
         clutter_actor_hide ((ClutterActor *) priv->current_page);
         priv->example_page = ahoghill_example_table_new (priv->model);
