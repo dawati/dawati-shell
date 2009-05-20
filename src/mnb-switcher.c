@@ -1773,7 +1773,6 @@ NbtkWidget*
 mnb_switcher_new (MutterPlugin *plugin)
 {
   MnbSwitcher *switcher;
-  MetaScreen  *screen;
 
   g_return_val_if_fail (MUTTER_PLUGIN (plugin), NULL);
 

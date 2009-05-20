@@ -71,6 +71,8 @@ void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);
 
 void mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled);
 
+void mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw);
+
 G_END_DECLS
 
 #endif /* _MNB_TOOLBAR */

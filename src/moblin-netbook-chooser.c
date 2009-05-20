@@ -852,7 +852,6 @@ show_workspace_chooser (MutterPlugin *plugin,
   static ClutterActor *bck = NULL;
   ClutterActor *frame = NULL;
 
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   ClutterActor               *overlay;
   ClutterActor               *switcher;
   ClutterActor               *grid;
@@ -957,8 +956,6 @@ show_workspace_chooser (MutterPlugin *plugin,
 void
 hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
   if (!self)
     return;
 
@@ -1004,7 +1001,6 @@ workspace_chooser_timeout_cb (gpointer data)
 {
   struct ws_chooser_timeout_data *wsc_data = data;
   MutterPlugin                   *plugin   = wsc_data->plugin;
-  MoblinNetbookPluginPrivate     *priv = MOBLIN_NETBOOK_PLUGIN(plugin)->priv;
   guint32                         timestamp;
 
   timestamp = clutter_x11_get_current_event_time ();

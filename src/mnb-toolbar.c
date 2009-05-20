@@ -234,8 +234,7 @@ static void
 mnb_toolbar_show (ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  guint              width;
-  guint              screen_width, screen_height;
+  gint               screen_width, screen_height;
   gint               i;
   ClutterAnimation  *animation;
 
@@ -702,7 +701,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   MutterPlugin      *plugin = priv->plugin;
   NbtkWidget        *button;
   NbtkWidget        *panel = NULL;
-  guint              screen_width, screen_height;
+  gint               screen_width, screen_height;
   gint               index;
   gchar             *button_style;
 
@@ -788,7 +787,6 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
       /*
        * Applet button.
        */
-      gint zones   = APPLETS_START;
       gint applets = index - APPLETS_START;
       gint x, y;
 
@@ -837,8 +835,6 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
        * separation.
        */
       {
-        ClutterActor *child = NULL;
-
       switch (index)
         {
           /*
@@ -1002,7 +998,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   NbtkWidget        *button;
-  guint              screen_width, screen_height;
+  gint               screen_width, screen_height;
   gint               index;
   gchar             *button_style;
   const gchar       *name;
@@ -1087,7 +1083,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
       /*
        * Applet button.
        */
-      gint zones   = APPLETS_START;
       gint applets = index - APPLETS_START;
       gint x, y;
 
@@ -1264,7 +1259,7 @@ mnb_toolbar_constructed (GObject *self)
   MutterPlugin      *plugin = priv->plugin;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
-  guint              screen_width, screen_height;
+  gint               screen_width, screen_height;
   ClutterColor       clr = {0x0, 0x0, 0x0, 0xce};
 
   hbox = priv->hbox = clutter_group_new ();
@@ -1420,7 +1415,7 @@ mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
       }
 
   if (index < 0)
-    return;
+    return NULL;
 
   return mnb_toolbar_panel_index_to_name (index);
 }
@@ -1567,7 +1562,6 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
 
   gint  x = clutter_actor_get_x (actor);
   gint  y = clutter_actor_get_y (actor);
-  gint  i;
 
   background = CLUTTER_ACTOR (mnb_drop_down_new (priv->plugin));
 

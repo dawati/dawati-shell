@@ -270,9 +270,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   ClutterActor  *toolbar;
   ClutterActor  *lowlight;
   gint           screen_width, screen_height;
-  XRectangle     rect[1];
-  XserverRegion  region;
-  Display       *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
   MoblinNetbookNotifyStore *notify_store;

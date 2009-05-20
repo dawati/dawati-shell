@@ -552,11 +552,10 @@ static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
                               MutterPlugin       *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  GAppLaunchContext          *context;
-  const gchar     *desktop_file_path;
-  GDesktopAppInfo *app_info;
-  GError          *error = NULL;
+  GAppLaunchContext *context;
+  const gchar       *desktop_file_path;
+  GDesktopAppInfo   *app_info;
+  GError            *error = NULL;
 
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
