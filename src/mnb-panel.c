@@ -634,7 +634,7 @@ mnb_panel_setup_proxy (MnbPanel *panel)
   /*
    * Set up the proxy to the remote object; we mandate that the remote object
    * name must match the provided path exactly, except for the '/' being
-   * replaced with '.'. The object must implement the com.intel.Mnb.Panel
+   * replaced with '.'. The object must implement the org.moblin.Mnb.Panel
    * interface.
    */
   dbus_name = g_strdup (priv->dbus_path + 1);
@@ -644,7 +644,7 @@ mnb_panel_setup_proxy (MnbPanel *panel)
   proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
                                      dbus_name,
                                      priv->dbus_path,
-                                     "com.intel.Mnb.Panel");
+                                     "org.moblin.Mnb.Panel");
 
   g_free (dbus_name);
 
