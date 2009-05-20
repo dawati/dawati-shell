@@ -7,6 +7,9 @@
 #include <nbtk/nbtk.h>
 #include "moblin-netbook.h"
 #include "moblin-netbook-launcher.h"
+#include "mnb-drop-down.h"
+
+/* Fake plugin implementation to satisfy the linker. */
 
 GType moblin_netbook_plugin_get_type (void);
 gboolean hide_panel (MutterPlugin *plugin);
@@ -20,8 +23,27 @@ moblin_netbook_plugin_get_type (void)
 gboolean
 hide_panel (MutterPlugin *plugin)
 {
-  g_message ("'hide_panel()' called");
   return FALSE;
+}
+
+/* Fake dropdown implementation to satisfy the linker. */
+
+GType
+mnb_drop_down_get_type (void)
+{
+  return 0;
+}
+
+NbtkWidget *
+mnb_drop_down_new (MutterPlugin *plugin)
+{
+  return NULL;
+}
+
+void
+mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child)
+{
+  ;
 }
 
 int

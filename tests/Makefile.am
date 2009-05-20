@@ -18,6 +18,7 @@ LDADD = \
 
 noinst_PROGRAMS = \
 	test-entry \
+	test-launcher \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree \
