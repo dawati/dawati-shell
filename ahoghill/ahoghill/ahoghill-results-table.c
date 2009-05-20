@@ -15,7 +15,7 @@ enum {
 #define ROWS_PER_PAGE 2
 
 #define RESULTS_ROW_SPACING 28
-#define RESULTS_COL_SPACING 15
+#define RESULTS_COL_SPACING 8
 
 struct _AhoghillResultsTablePrivate {
     AhoghillMediaTile **tiles;

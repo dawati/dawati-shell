@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Rob Bradford <rob@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include <mojito-client/mojito-client.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
@@ -215,7 +235,6 @@ _make_no_content_tile (void)
                                                 icon,
                                                 ICON_SIZE,
                                                 GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-    g_object_unref (icon);
 
     tex = clutter_texture_new_from_file (gtk_icon_info_get_filename (icon_info),
                                          &error);

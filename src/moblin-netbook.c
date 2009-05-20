@@ -63,6 +63,9 @@ static void setup_parallax_effect (MutterPlugin *plugin);
 
 static void setup_focus_window (MutterPlugin *plugin);
 
+static void fullscreen_app_added (MoblinNetbookPluginPrivate *, gint);
+static void fullscreen_app_removed (MoblinNetbookPluginPrivate *, gint);
+
 static GQuark actor_data_quark = 0;
 
 static void     minimize   (MutterPlugin *plugin,
@@ -152,8 +155,6 @@ moblin_netbook_plugin_dispose (GObject *object)
 static void
 moblin_netbook_plugin_finalize (GObject *object)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (object)->priv;
-
   G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->finalize (object);
 }
 
@@ -224,6 +225,41 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
                                CLUTTER_ACTOR_IS_MAPPED(notify_urgent));
 }
 
+static ClutterActor*
+moblin_netbook_make_toolbar_hint ()
+{
+  ClutterText        *txt;
+  ClutterActor       *bin;
+  NbtkWidget         *label, *table;
+
+  table = nbtk_table_new ();
+
+  bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  label = nbtk_label_new (_("Move cursor to the top of the screen"
+                             " to activate the toolbar"));
+
+  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(label)));
+  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
+
+  nbtk_widget_set_style_class_name (label, "toolbar-instruction-label");
+
+  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+  nbtk_bin_set_alignment (NBTK_BIN (bin),
+                          NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (bin),
+                          "toolbar-instruction-box");
+
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
+                                    "toolbar-instruction-box");
+
+  nbtk_table_add_actor (NBTK_TABLE (table), bin, 0, 0);
+
+  return CLUTTER_ACTOR (table);
+}
+
 static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
@@ -239,12 +275,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   ClutterActor  *toolbar;
   ClutterActor  *lowlight;
   gint           screen_width, screen_height;
-  XRectangle     rect[1];
-  XserverRegion  region;
-  Display       *xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
-  Window         root_xwin;
   MoblinNetbookNotifyStore *notify_store;
 
   /* tweak with env var as then possible to develop in desktop env. */
@@ -277,6 +309,20 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
 
+  /* Little temp hint to inform user how to get to the toolbar */
+
+  priv->toolbar_hint = moblin_netbook_make_toolbar_hint ();
+  clutter_container_add (CLUTTER_CONTAINER (overlay), priv->toolbar_hint, NULL);
+
+  clutter_actor_set_width (priv->toolbar_hint, 272);
+  clutter_actor_set_position (priv->toolbar_hint,
+                              screen_width
+                               - clutter_actor_get_width (priv->toolbar_hint)
+                               - 20,
+                              66);
+
+  clutter_actor_hide (priv->toolbar_hint);
+
   lowlight = clutter_rectangle_new_with_color (&low_clr);
   priv->lowlight = lowlight;
   clutter_actor_set_size (lowlight, screen_width, screen_height);
@@ -292,21 +338,36 @@ moblin_netbook_plugin_constructed (GObject *object)
     CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
 
 #if 1
+  /* show after mzone.. */
+  clutter_actor_show (priv->toolbar_hint);
+
   /*
    * TODO this needs to be hooked into the dbus API exposed by the out of
    * process applets, once we have them.
    */
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "m-zone", "m_zone");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "m-zone", _("m_zone"));
 
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "spaces-zone", "zones");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "spaces-zone", _("zones"));
 
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "status-zone", "status");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "status-zone", _("status"));
 
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "applications-zone",
-                                "applications");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "applications-zone", _("applications"));
 
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar), "pasteboard-zone",
-                                "pastboard");
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "pasteboard-zone", _("pastboard"));
+
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "internet-zone", _("internet"));
+
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "media-zone", _("media"));
+
+  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
+                                "people-zone", _("people"));
 
   {
     MnbPanel *panel = mnb_panel_new (MUTTER_PLUGIN (plugin),
@@ -720,14 +781,39 @@ check_for_empty_workspace (MutterPlugin *plugin,
 
   if (workspace_empty)
     {
-      MetaWorkspace *mws;
-      guint32        timestamp;
+      MetaWorkspace  *current_ws;
+      guint32         timestamp;
+      gint            next_index = -1;
 
-      timestamp = clutter_x11_get_current_event_time ();
+      timestamp  = clutter_x11_get_current_event_time ();
+      current_ws = meta_screen_get_workspace_by_index (screen, workspace);
 
-      mws = meta_screen_get_workspace_by_index (screen, workspace);
+      /*
+       * We need to activate the next workspace before we remove this one, so
+       * that the zone switch effect works.
+       */
+      if (workspace > 0)
+        next_index = workspace - 1;
+      else if (meta_screen_get_n_workspaces (screen) > 1)
+        next_index = workspace + 1;
 
-      meta_screen_remove_workspace (screen, mws, timestamp);
+      if (next_index != -1)
+        {
+          MetaWorkspace  *next_ws;
+          next_ws = meta_screen_get_workspace_by_index (screen, next_index);
+
+          if (!next_ws)
+            {
+              g_warning ("%s:%d: No workspace for index %d\n",
+                         __FILE__, __LINE__, next_index);
+            }
+          else
+            {
+              meta_workspace_activate (next_ws, timestamp);
+            }
+        }
+
+      meta_screen_remove_workspace (screen, current_ws, timestamp);
     }
 }
 
@@ -742,7 +828,27 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
                                   gint        old_workspace,
                                   gpointer    data)
 {
-  MutterPlugin *plugin = MUTTER_PLUGIN (data);
+  MutterPlugin               *plugin = MUTTER_PLUGIN (data);
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (data)->priv;
+  gboolean                    fullscreen;
+
+  g_object_get (mw, "fullscreen", &fullscreen, NULL);
+
+  if (fullscreen)
+    {
+      MetaWorkspace *ws;
+
+      ws = meta_window_get_workspace (mw);
+
+      if (ws)
+        {
+          gint index = meta_workspace_index (ws);
+
+          fullscreen_app_added (priv, index);
+        }
+
+      fullscreen_app_removed (priv, old_workspace);
+    }
 
   /*
    * Flush any pending changes to the visibility of the window.
@@ -765,29 +871,89 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
 }
 
 static void
+fullscreen_app_added (MoblinNetbookPluginPrivate *priv, gint workspace)
+{
+  if (workspace >= MAX_WORKSPACES)
+    {
+      g_warning ("There should be no workspace %d", workspace);
+      return;
+    }
+
+  /* for sticky apps translate -1 to the sticky counter index */
+  if (workspace < 0)
+    workspace = MAX_WORKSPACES;
+
+  priv->fullscreen_apps[workspace]++;
+}
+
+static void
+fullscreen_app_removed (MoblinNetbookPluginPrivate *priv, gint workspace)
+{
+  if (workspace >= MAX_WORKSPACES)
+    {
+      g_warning ("There should be no workspace %d", workspace);
+      return;
+    }
+
+  /* for sticky apps translate -1 to the sticky counter index */
+  if (workspace < 0)
+    workspace = MAX_WORKSPACES;
+
+  priv->fullscreen_apps[workspace]--;
+
+  if (priv->fullscreen_apps[workspace] < 0)
+    {
+      g_warning ("%s:%d: Error in fullscreen app accounting !!!",
+                 __FILE__, __LINE__);
+      priv->fullscreen_apps[workspace] = 0;
+    }
+}
+
+gboolean
+moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  gint                        active;
+
+  active = meta_screen_get_active_workspace_index (screen);
+
+  if (active >= MAX_WORKSPACES)
+    {
+      g_warning ("There should be no workspace %d", active);
+      return FALSE;
+    }
+
+  if (active < 0)
+    active = MAX_WORKSPACES;
+
+  return (gboolean) priv->fullscreen_apps[active];
+}
+
+static void
 meta_window_fullcreen_notify_cb (GObject    *object,
                                  GParamSpec *spec,
                                  gpointer    data)
 {
+  MetaWindow                 *mw   = META_WINDOW (object);
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
+  MetaWorkspace              *ws;
+  gint                        ws_index;
   gboolean                    fullscreen;
+
+  ws = meta_window_get_workspace (mw);
+
+  if (!ws)
+    return;
+
+  ws_index = meta_workspace_index (ws);
 
   g_object_get (object, "fullscreen", &fullscreen, NULL);
 
   if (fullscreen)
-    {
-      priv->fullscreen_apps++;
-    }
+    fullscreen_app_added (priv, ws_index);
   else
-    {
-      priv->fullscreen_apps--;
-
-      if (priv->fullscreen_apps < 0)
-        {
-          g_warning ("Error in fullscreen accounting, fixing up.");
-          priv->fullscreen_apps = 0;
-        }
-    }
+    fullscreen_app_removed (priv, ws_index);
 }
 
 /*
@@ -866,7 +1032,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
    */
   else if (type == META_COMP_WINDOW_NORMAL ||
            type == META_COMP_WINDOW_SPLASHSCREEN ||
-           type == META_COMP_WINDOW_DIALOG)
+           type == META_COMP_WINDOW_DIALOG ||
+           type == META_COMP_WINDOW_MODAL_DIALOG)
     {
       ClutterAnimation   *animation;
       EffectCompleteData *data  = g_new0 (EffectCompleteData, 1);
@@ -884,7 +1051,16 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           g_object_get (mw, "fullscreen", &fullscreen, "modal", &modal, NULL);
 
           if (fullscreen)
-            priv->fullscreen_apps++;
+            {
+              MetaWorkspace *ws = meta_window_get_workspace (mw);
+
+              if (ws)
+                {
+                  gint index = meta_workspace_index (ws);
+
+                  fullscreen_app_added (priv, index);
+                }
+            }
 
           g_signal_connect (mw, "notify::fullscreen",
                             G_CALLBACK (meta_window_fullcreen_notify_cb),
@@ -898,7 +1074,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       /*
        * Anything that we do not animated exits at this point.
        */
-      if (type == META_COMP_WINDOW_DIALOG)
+      if (type == META_COMP_WINDOW_DIALOG ||
+          type == META_COMP_WINDOW_MODAL_DIALOG)
         {
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           return;
@@ -968,12 +1145,13 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (fullscreen)
         {
-          priv->fullscreen_apps--;
+          MetaWorkspace *ws = meta_window_get_workspace (meta_win);
 
-          if (priv->fullscreen_apps < 0)
+          if (ws)
             {
-              g_warning ("Error in fullscreen accounting, fixing up.");
-              priv->fullscreen_apps = 0;
+              gint index = meta_workspace_index (ws);
+
+              fullscreen_app_removed (priv, index);
             }
         }
 
@@ -988,15 +1166,19 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
 
     }
 
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
-
   /*
    * Do not destroy workspace if the closing window is a splash screen.
    * (Sometimes the splash gets destroyed before the application window
    * maps, e.g., Gimp.)
+   *
+   * NB: This must come before we notify Mutter that the effect completed,
+   *     otherwise the destruction of this window will be completed and the
+   *     workspace switch effect will crash.
    */
   if (type != META_COMP_WINDOW_SPLASHSCREEN)
     check_for_empty_workspace (plugin, workspace, meta_win);
+
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
 static void
@@ -1047,6 +1229,8 @@ moblin_netbook_unfocus_stage (MutterPlugin *plugin, guint32 timestamp)
       priv->last_focused = NULL;
     }
 
+  priv->holding_focus = FALSE;
+
   if (focus)
     meta_display_set_input_focus_window (display, focus, FALSE, timestamp);
 }
@@ -1075,6 +1259,8 @@ moblin_netbook_focus_stage (MutterPlugin *plugin, guint32 timestamp)
   if (priv->last_focused)
     g_object_weak_ref (G_OBJECT (priv->last_focused),
                        last_focus_weak_notify_cb, plugin);
+
+  priv->holding_focus = TRUE;
 
   XSetInputFocus (xdpy,
                   priv->focus_xwin,
@@ -1193,14 +1379,14 @@ setup_focus_window (MutterPlugin *plugin)
   type_atom = meta_display_get_atom (display,
                                      META_ATOM__NET_WM_WINDOW_TYPE_DOCK);
 
-  attr.event_mask        = KeyPressMask | KeyReleaseMask;
+  attr.event_mask        = KeyPressMask | KeyReleaseMask | FocusChangeMask;
   attr.override_redirect = True;
 
   xwin = XCreateWindow (xdpy,
                         RootWindow (xdpy,
                                     meta_screen_get_screen_number (screen)),
-                        -100, -100, 1, 1, 0,
-                        CopyFromParent, InputOutput, CopyFromParent,
+                        -500, -500, 1, 1, 0,
+                        CopyFromParent, InputOnly, CopyFromParent,
                         CWEventMask | CWOverrideRedirect, &attr);
 
   XChangeProperty (xdpy, xwin,
@@ -1539,12 +1725,3 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
         }
     }
 }
-
-gboolean
-moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  return (priv->fullscreen_apps > 0);
-}
-

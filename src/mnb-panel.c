@@ -157,17 +157,6 @@ mnb_panel_request_hide_cb (DBusGProxy *proxy, MnbPanel *panel)
 }
 
 static void
-mnb_panel_launch_application_cb (DBusGProxy  *proxy,
-                                 const gchar *app,
-                                 gint         workspace,
-                                 gboolean     without_chooser,
-                                 MnbPanel    *panel)
-{
-  /* TODO */
-  g_warning ("%s is not implemented", __FUNCTION__);
-}
-
-static void
 mnb_panel_dispose (GObject *self)
 {
   MnbPanelPrivate *priv   = MNB_PANEL (self)->priv;
@@ -193,10 +182,6 @@ mnb_panel_dispose (GObject *self)
       dbus_g_proxy_disconnect_signal (proxy, "RequestFocus",
                                       G_CALLBACK (mnb_panel_request_focus_cb),
                                       self);
-
-      dbus_g_proxy_disconnect_signal (proxy, "LaunchApplication",
-                                   G_CALLBACK (mnb_panel_launch_application_cb),
-                                   self);
 
       g_object_unref (proxy);
       priv->proxy = NULL;
@@ -255,7 +240,7 @@ mnb_panel_dbus_init_panel (MnbPanel  *self,
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_init_panel (priv->proxy, width, height, name, xid,
+  return org_moblin_Mnb_Panel_init_panel (priv->proxy, width, height, name, xid,
                                          tooltip, error);
 }
 
@@ -264,7 +249,7 @@ mnb_panel_dbus_show_begin (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  if (! com_intel_Mnb_Panel_show_begin (priv->proxy, error))
+  if (! org_moblin_Mnb_Panel_show_begin (priv->proxy, error))
     {
       g_warning ("ShowBegin failed");
       return FALSE;
@@ -278,7 +263,7 @@ mnb_panel_dbus_show_end (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_show_end (priv->proxy, error);
+  return org_moblin_Mnb_Panel_show_end (priv->proxy, error);
 }
 
 static gboolean
@@ -286,7 +271,7 @@ mnb_panel_dbus_hide_begin (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_hide_begin (priv->proxy, error);
+  return org_moblin_Mnb_Panel_hide_begin (priv->proxy, error);
 }
 
 static gboolean
@@ -294,7 +279,7 @@ mnb_panel_dbus_hide_end (MnbPanel *self, GError **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
-  return com_intel_Mnb_Panel_hide_end (priv->proxy, error);
+  return org_moblin_Mnb_Panel_hide_end (priv->proxy, error);
 }
 
 static void
@@ -692,24 +677,6 @@ mnb_panel_setup_proxy (MnbPanel *panel)
   dbus_g_proxy_add_signal (proxy, "RequestFocus", G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestFocus",
                                G_CALLBACK (mnb_panel_request_focus_cb),
-                               panel, NULL);
-
-  dbus_g_object_register_marshaller (
-                               moblin_netbook_marshal_VOID__STRING_INT_BOOLEAN,
-                               G_TYPE_NONE,
-                               G_TYPE_STRING,
-                               G_TYPE_INT,
-                               G_TYPE_BOOLEAN,
-                               G_TYPE_INVALID);
-
-  dbus_g_proxy_add_signal (proxy, "LaunchApplication",
-                           G_TYPE_STRING,
-                           G_TYPE_INT,
-                           G_TYPE_BOOLEAN,
-                           G_TYPE_INVALID);
-
-  dbus_g_proxy_connect_signal (proxy, "LaunchApplication",
-                               G_CALLBACK (mnb_panel_launch_application_cb),
                                panel, NULL);
 
   dbus_g_proxy_add_signal (proxy, "NameOwnerChanged",

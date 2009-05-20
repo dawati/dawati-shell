@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Rob Bradford <rob@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
@@ -14,10 +34,10 @@ G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
 typedef struct _PengeAppTilePrivate PengeAppTilePrivate;
 
 struct _PengeAppTilePrivate {
-  PengeAppBookmark *bookmark;
   ClutterActor *tex;
   GtkIconTheme *icon_theme;
   GAppInfo *app_info;
+  gchar *bookmark;
 };
 
 enum
@@ -37,7 +57,7 @@ penge_app_tile_get_property (GObject *object, guint property_id,
 
   switch (property_id) {
     case PROP_BOOKMARK:
-      g_value_set_boxed (value, priv->bookmark);
+      g_value_set_string (value, priv->bookmark);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -52,7 +72,7 @@ penge_app_tile_set_property (GObject *object, guint property_id,
 
   switch (property_id) {
     case PROP_BOOKMARK:
-      priv->bookmark = g_value_dup_boxed (value);
+      priv->bookmark = g_value_dup_string (value);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -63,12 +83,6 @@ static void
 penge_app_tile_dispose (GObject *object)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (object);
-
-  if (priv->bookmark)
-  {
-    penge_app_bookmark_unref (priv->bookmark);
-    priv->bookmark = NULL;
-  }
 
   if (priv->app_info)
   {
@@ -82,6 +96,10 @@ penge_app_tile_dispose (GObject *object)
 static void
 penge_app_tile_finalize (GObject *object)
 {
+  PengeAppTilePrivate *priv = GET_PRIVATE (object);
+
+  g_free (priv->bookmark);
+
   G_OBJECT_CLASS (penge_app_tile_parent_class)->finalize (object);
 }
 
@@ -99,7 +117,6 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
                                          icon,
                                          ICON_SIZE,
                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-  g_object_unref (icon);
 
   if (!info)
   {
@@ -152,12 +169,12 @@ penge_app_tile_constructed (GObject *object)
                     (GCallback)_icon_theme_changed_cb,
                     object);
 
-  path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
+  path = g_filename_from_uri (priv->bookmark, NULL, &error);
 
   if (path)
   {
     priv->app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
-    nbtk_button_set_tooltip (NBTK_BUTTON (object),
+    nbtk_widget_set_tooltip_text (NBTK_WIDGET (object),
                              g_app_info_get_name (priv->app_info));
     g_free (path);
   }
@@ -186,11 +203,11 @@ penge_app_tile_class_init (PengeAppTileClass *klass)
   object_class->finalize = penge_app_tile_finalize;
   object_class->constructed = penge_app_tile_constructed;
 
-  pspec = g_param_spec_boxed ("bookmark",
-                              "bookmark",
-                              "bookmark",
-                              PENGE_TYPE_APP_BOOKMARK,
-                              G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+  pspec = g_param_spec_string ("bookmark",
+                               "bookmark",
+                               "bookmark",
+                               NULL,
+                               G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_BOOKMARK, pspec);
 }
 

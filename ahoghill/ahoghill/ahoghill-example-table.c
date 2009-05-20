@@ -102,22 +102,31 @@ ahoghill_example_table_init (AhoghillExampleTable *self)
 {
     AhoghillExampleTablePrivate *priv;
     ClutterActor *text;
+    NbtkWidget *bin;
 
     self->priv = GET_PRIVATE (self);
     priv = self->priv;
 
     clutter_actor_set_size ((ClutterActor *) self, 700, 400);
+    bin = nbtk_bin_new ();
+    nbtk_bin_set_alignment (NBTK_BIN (bin),
+                            NBTK_ALIGN_LEFT,
+                            NBTK_ALIGN_CENTER);
+    nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
+                                      "AhoghillExampleTextBin");
     priv->blurb = nbtk_label_new (_("You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"));
+    nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *) priv->blurb);
     text = nbtk_label_get_clutter_text ((NbtkLabel *) priv->blurb);
     clutter_text_set_line_wrap ((ClutterText *) text, TRUE);
     nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->blurb),
                                       "AhoghillExampleText");
     nbtk_table_add_actor_with_properties ((NbtkTable *) self,
-                                          (ClutterActor *) priv->blurb,
+                                          (ClutterActor *)bin,
                                           0, 0,
                                           "y-expand", FALSE,
-                                          "x-align", 0.5,
-                                          "y-align", 0.0,
+                                          "x-expand", TRUE,
+                                          "x-fill", TRUE,
+                                          "y-fill", TRUE,
                                           NULL);
 
     priv->table = ahoghill_results_table_new (NULL, 1);

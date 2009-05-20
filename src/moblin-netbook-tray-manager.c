@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Based on Gnome Shell.
+ * Based on Gnome Shell; http://git.gnome.org/cgit/gnome-shell/
  */
 #include <clutter/clutter.h>
 #include <clutter/glx/clutter-glx.h>
@@ -87,8 +87,6 @@ static void
 free_tray_icon (gpointer data)
 {
   ShellTrayManagerChild *child   = data;
-  ShellTrayManager      *manager = child->manager;
-  MutterPlugin          *plugin  = manager->priv->plugin;
 
   destroy_config_window (child);
 
@@ -291,9 +289,8 @@ destroy_config_window (ShellTrayManagerChild *child)
 {
   if (child->config)
     {
-      GtkWidget                  *config  = child->config;
-      ShellTrayManager           *manager = child->manager;
-      MutterPlugin               *plugin  = manager->priv->plugin;
+      GtkWidget         *config  = child->config;
+      ShellTrayManager  *manager = child->manager;
 
       manager->priv->config_windows =
         g_list_remove (manager->priv->config_windows,

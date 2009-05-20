@@ -252,8 +252,7 @@ static void
 mnb_drop_down_hide (ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
-  MutterPlugin *plugin = priv->plugin;
-  ClutterAnimation *animation;
+  ClutterAnimation   *animation;
 
   if (priv->in_hide_animation)
     {

@@ -237,7 +237,6 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   if (G_UNLIKELY (!frame))
     {
       ClutterActor *parent;
-      ClutterActor *bkg;
 
       desktop = CLUTTER_ACTOR (nbtk_bin_new ());
       clutter_actor_set_name (desktop, "zone-switch-background");
@@ -481,7 +480,6 @@ fill_strip (MutterPlugin *plugin,
             gint          screen_height)
 {
   GList        *l;
-  gint          cell_width, cell_height;
   GList        *workspaces = NULL;
   gint          ws_count = 0;
   MetaScreen   *screen = mutter_plugin_get_screen (plugin);

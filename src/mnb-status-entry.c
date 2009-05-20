@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Emmanuele Bassi <ebassi@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -23,6 +42,7 @@ struct _MnbStatusEntryPrivate
   ClutterActor *button;
 
   gchar *service_name;
+  gchar *display_name;
   gchar *status_text;
   gchar *old_status_text;
   gchar *status_time;
@@ -54,8 +74,60 @@ static guint entry_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (MnbStatusEntry, mnb_status_entry, NBTK_TYPE_WIDGET);
 
+static gchar *
+get_mojito_service_name (const gchar *service_name)
+{
+  GKeyFile *key_file = g_key_file_new ();
+  GError *error = NULL;
+  gchar *service_file, *path, *display_name;
+
+  service_file = g_strconcat (service_name, ".keys", NULL);
+  path = g_build_filename (PREFIX, "share", "mojito", "services",
+                           service_file,
+                           NULL);
+
+  g_free (service_file);
+
+  g_key_file_load_from_file (key_file, path, 0, &error);
+  if (error)
+    {
+      g_warning ("Unable to load keys file for service '%s' (path: %s): %s",
+                 service_name,
+                 path,
+                 error->message);
+      g_error_free (error);
+      g_free (path);
+      g_key_file_free (key_file);
+
+      return NULL;
+    }
+
+  display_name = g_key_file_get_string (key_file,
+                                        "MojitoService",
+                                        "Name",
+                                        &error);
+  if (error)
+    {
+      g_warning ("Unable to get the Name key from the file for "
+                 "service '%s' (path: %s): %s",
+                 service_name,
+                 path,
+                 error->message);
+      g_error_free (error);
+      g_free (path);
+      g_key_file_free (key_file);
+
+      return NULL;
+    }
+
+  g_free (path);
+  g_key_file_free (key_file);
+
+  return display_name;
+}
+
 static void
-on_cancel_clicked (NbtkButton *button,
+on_cancel_clicked (NbtkButton     *button,
                    MnbStatusEntry *entry)
 {
   MnbStatusEntryPrivate *priv = entry->priv;
@@ -85,7 +157,7 @@ on_cancel_clicked (NbtkButton *button,
 }
 
 static void
-on_button_clicked (NbtkButton *button,
+on_button_clicked (NbtkButton     *button,
                    MnbStatusEntry *entry)
 {
   mnb_status_entry_set_is_active (entry,
@@ -148,47 +220,27 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   ClutterUnit min_width, min_height;
   ClutterUnit natural_width, natural_height;
   ClutterUnit button_width, button_height;
-  ClutterUnit service_width;
+  ClutterUnit service_width, service_height;
   ClutterUnit icon_width, icon_height;
   ClutterUnit text_width, text_height;
-  NbtkPadding border = { 0, };
   ClutterActorBox child_box = { 0, };
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class);
   parent_class->allocate (actor, box, origin_changed);
 
-//  nbtk_widget_get_border (NBTK_WIDGET (actor), &border);
-
   available_width  = (int) (box->x2 - box->x1
-                   - priv->padding.left - priv->padding.right
-                   - border.left - border.right);
+                   - priv->padding.left
+                   - priv->padding.right);
   available_height = (int) (box->y2 - box->y1
-                   - priv->padding.top - priv->padding.bottom
-                   - border.top - border.right);
+                   - priv->padding.top
+                   - priv->padding.bottom);
 
   clutter_actor_get_preferred_size (priv->button,
                                     &min_width, &min_height,
                                     &natural_width, &natural_height);
 
-  if (natural_width >= available_width)
-    {
-      if (min_width >= available_width)
-        button_width = available_width;
-      else
-        button_width = min_width;
-    }
-  else
-    button_width = natural_width;
-
-  if (natural_height >= available_height)
-    {
-      if (min_height >= available_width)
-        button_height = available_height;
-      else
-        button_height = min_height;
-    }
-  else
-    button_height = natural_height;
+  button_width  = CLAMP (natural_width, min_width, available_width);
+  button_height = CLAMP (natural_height, min_height, available_height);
 
   /* layout
    *
@@ -211,10 +263,16 @@ mnb_status_entry_allocate (ClutterActor          *actor,
     icon_width = 0;
 
   if (CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
-    clutter_actor_get_preferred_width (priv->service_label,
-                                       available_height,
-                                       NULL,
-                                       &service_width);
+    {
+      clutter_actor_get_preferred_width (priv->service_label,
+                                         available_height,
+                                         NULL,
+                                         &service_width);
+      clutter_actor_get_preferred_height (priv->service_label,
+                                          service_width,
+                                          NULL,
+                                          &service_height);
+    }
   else
     service_width = (2 * H_PADDING);
 
@@ -224,14 +282,14 @@ mnb_status_entry_allocate (ClutterActor          *actor,
              - button_width
              - service_width
              - icon_width
-             - (5 * H_PADDING));
+             - (6 * H_PADDING));
 
   clutter_actor_get_preferred_height (priv->status_entry, text_width,
                                       NULL,
                                       &text_height);
 
-  child_box.x1 = (int) (border.left + priv->padding.left);
-  child_box.y1 = (int) (border.top + priv->padding.top);
+  child_box.x1 = (int) priv->padding.left;
+  child_box.y1 = (int) priv->padding.top;
   child_box.x2 = (int) (child_box.x1 + text_width);
   child_box.y2 = (int) (child_box.y1 + text_height);
   clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
@@ -240,15 +298,16 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   if (CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
     {
       child_box.x1 = (int) (available_width
-                   - (border.right + priv->padding.right)
+                   - priv->padding.right
                    - button_width
                    - H_PADDING
                    - icon_width
                    - H_PADDING
                    - service_width);
-      child_box.y1 = (int) (border.top + priv->padding.top);
+      child_box.y1 = (int) (priv->padding.top
+                   + ((available_height - service_height) / 2));
       child_box.x2 = (int) (child_box.x1 + service_width);
-      child_box.y2 = (int) (child_box.y1 + text_height);
+      child_box.y2 = (int) (child_box.y1 + service_height);
       clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
     }
 
@@ -256,29 +315,30 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   if (CLUTTER_ACTOR_IS_MAPPED (priv->cancel_icon))
     {
       child_box.x1 = (int) (available_width
-                   - (border.right + priv->padding.right)
+                   - priv->padding.right
                    - button_width
                    - H_PADDING
                    - icon_width);
-      child_box.y1 = (int) (border.top + priv->padding.top);
+      child_box.y1 = (int) (priv->padding.top
+                   + ((available_height - icon_height) / 2));
       child_box.x2 = (int) (child_box.x1 + icon_width);
-      child_box.y2 = (int) (child_box.y1 + text_height);
+      child_box.y2 = (int) (child_box.y1 + icon_height);
       clutter_actor_allocate (priv->cancel_icon, &child_box, origin_changed);
     }
 
   /* separator */
   priv->separator_x = available_width
-                    - (border.right + priv->padding.right)
+                    - priv->padding.right
                     - button_width
                     - (H_PADDING - 1);
 
   /* button */
-  child_box.x1 = (int) (available_width
-               - (border.right + priv->padding.right)
-               - button_width);
-  child_box.y1 = (int) (border.top + priv->padding.top);
+  child_box.x1 = (int) (priv->separator_x + (2 * H_PADDING)
+               + (((available_width - priv->separator_x) - button_width) / 2));
+  child_box.y1 = (int) (priv->padding.top
+               + ((available_height - button_height) / 2));
   child_box.x2 = (int) (child_box.x1 + button_width);
-  child_box.y2 = (int) (child_box.y1 + text_height);
+  child_box.y2 = (int) (child_box.y1 + button_height);
   clutter_actor_allocate (priv->button, &child_box, origin_changed);
 }
 
@@ -433,6 +493,7 @@ mnb_status_entry_finalize (GObject *gobject)
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (gobject)->priv;
 
   g_free (priv->service_name);
+  g_free (priv->display_name);
   g_free (priv->status_text);
   g_free (priv->status_time);
   g_free (priv->old_status_text);
@@ -491,8 +552,23 @@ mnb_status_entry_constructed (GObject *gobject)
 {
   MnbStatusEntry *entry = MNB_STATUS_ENTRY (gobject);
   MnbStatusEntryPrivate *priv = entry->priv;
+  gchar *str;
 
   g_assert (priv->service_name != NULL);
+
+  priv->display_name = get_mojito_service_name (priv->service_name);
+  if (priv->display_name != NULL)
+    {
+      /* Translators: %s is the user visible name of the service */
+      str = g_strdup_printf (_("Enter your %s status here..."),
+                             priv->display_name);
+    }
+  else
+    str = g_strdup (_("Enter your current status here..."));
+
+  nbtk_entry_set_text (NBTK_ENTRY (priv->status_entry), str);
+
+  g_free (str);
 
   if (G_OBJECT_CLASS (mnb_status_entry_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_status_entry_parent_class)->constructed (gobject);
@@ -561,7 +637,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
   priv->is_active = FALSE;
 
   priv->status_entry =
-    CLUTTER_ACTOR (nbtk_entry_new (_("Enter your status here...")));
+    CLUTTER_ACTOR (nbtk_entry_new (_("Enter your current status here...")));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->status_entry),
                                     "MnbStatusEntryText");
   clutter_actor_set_parent (priv->status_entry, CLUTTER_ACTOR (self));
@@ -768,7 +844,7 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
 
   service_line = g_strdup_printf ("%s - %s",
                                   priv->status_time,
-                                  priv->service_name);
+                                  priv->display_name);
 
   text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->service_label));
   clutter_text_set_markup (CLUTTER_TEXT (text), service_line);

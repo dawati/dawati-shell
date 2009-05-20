@@ -39,6 +39,8 @@ struct _AhoghillResultsPanePrivate {
     NbtkWidget *previous_button;
     NbtkWidget *next_button;
 
+    char *title_text;
+
     AhoghillResultsModel *model;
 
     AhoghillResultsTable *current_page;
@@ -72,6 +74,11 @@ ahoghill_results_pane_finalize (GObject *object)
         g_slice_free (struct _paging_data, priv->animation);
     }
 
+    if (priv->title_text) {
+        g_free (priv->title_text);
+        priv->title_text = NULL;
+    }
+
     G_OBJECT_CLASS (ahoghill_results_pane_parent_class)->finalize (object);
 }
 
@@ -101,8 +108,12 @@ ahoghill_results_pane_set_property (GObject      *object,
     switch (prop_id) {
 
     case PROP_TITLE:
-        nbtk_label_set_text (NBTK_LABEL (priv->title),
-                             g_value_get_string (value));
+        if (priv->title_text) {
+            g_free (priv->title_text);
+        }
+
+        priv->title_text = g_value_dup_string (value);
+        nbtk_label_set_text (NBTK_LABEL (priv->title), priv->title_text);
         break;
 
     default:
@@ -160,6 +171,10 @@ item_clicked_cb (AhoghillResultsTable *table,
     item_no = (TILES_PER_PAGE * priv->current_page_num) + tileno;
     item = ahoghill_results_model_get_item (priv->model, item_no);
 
+    if (item == NULL) {
+        return;
+    }
+
     g_signal_emit (pane, signals[ITEM_CLICKED], 0, item);
 }
 
@@ -207,7 +222,8 @@ show_previous_page (ClutterActor        *actor,
     }
 
     new_page = (ClutterActor *) ahoghill_results_table_new (priv->model, 2);
-
+    g_signal_connect (new_page, "item-clicked",
+                      G_CALLBACK (item_clicked_cb), pane);
     ahoghill_results_table_set_page ((AhoghillResultsTable *) new_page,
                                      priv->current_page_num - 1);
 
@@ -273,6 +289,8 @@ show_next_page (ClutterActor        *actor,
                             &width, &height);
 
     new_page = (ClutterActor *) ahoghill_results_table_new (priv->model, 2);
+    g_signal_connect (new_page, "item-clicked",
+                      G_CALLBACK (item_clicked_cb), pane);
     ahoghill_results_table_set_page ((AhoghillResultsTable *) new_page,
                                      priv->current_page_num + 1);
     nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed), new_page);
@@ -383,7 +401,16 @@ results_changed_cb (AhoghillResultsModel *model,
     /* When the results change, we need to check how if the page we're
        on still exists and whether the page buttons should be active */
 
+    ahoghill_results_pane_set_page (pane, 0);
+
     priv->last_page = ahoghill_results_model_get_count (model) / TILES_PER_PAGE;
+    if (priv->last_page == 0) {
+        clutter_actor_hide ((ClutterActor *) priv->next_button);
+        clutter_actor_hide ((ClutterActor *) priv->previous_button);
+    } else {
+        clutter_actor_show ((ClutterActor *) priv->next_button);
+        clutter_actor_show ((ClutterActor *) priv->previous_button);
+    }
 }
 
 AhoghillResultsPane *
@@ -414,6 +441,7 @@ ahoghill_results_pane_set_page (AhoghillResultsPane *pane,
     g_return_if_fail (IS_AHOGHILL_RESULTS_PANE (pane));
 
     priv = pane->priv;
+    priv->current_page_num = 0;
     ahoghill_results_table_set_page (priv->current_page, 0);
 }
 
@@ -424,6 +452,7 @@ ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
     AhoghillResultsPanePrivate *priv = pane->priv;
 
     if (show) {
+        nbtk_label_set_text ((NbtkLabel *) priv->title, "");
         clutter_actor_hide ((ClutterActor *) priv->current_page);
         priv->example_page = ahoghill_example_table_new (priv->model);
         g_signal_connect (priv->example_page, "item-clicked",
@@ -434,6 +463,7 @@ ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
         clutter_actor_show ((ClutterActor *) priv->example_page);
         clutter_actor_set_position ((ClutterActor *) priv->example_page, 0, 0);
     } else {
+        nbtk_label_set_text ((NbtkLabel *) priv->title, priv->title_text);
         clutter_actor_show ((ClutterActor *) priv->current_page);
         if (priv->example_page) {
             clutter_actor_destroy ((ClutterActor *) priv->example_page);

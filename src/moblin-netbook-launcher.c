@@ -526,9 +526,14 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
 
   if (launcher_data->is_filtering)
     {
-      clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->apps_grid),
-                                 (ClutterCallback) nbtk_widget_set_style_pseudo_class,
-                                 NULL);
+      const GSList *launchers_iter;
+      for (launchers_iter = launcher_data->launchers;
+           launchers_iter;
+           launchers_iter = launchers_iter->next)
+        {
+          nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launchers_iter->data),
+                                              NULL);
+        }
     }
   else
     {
@@ -552,12 +557,10 @@ static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
                               MutterPlugin       *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  GAppLaunchContext          *context;
-  const gchar     *desktop_file_path;
-  const gchar     *exec;
-  GDesktopAppInfo *app_info;
-  GError          *error = NULL;
+  GAppLaunchContext *context;
+  const gchar       *desktop_file_path;
+  GDesktopAppInfo   *app_info;
+  GError            *error = NULL;
 
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
@@ -607,9 +610,8 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
       uri = g_strdup_printf ("file://%s",
               mnb_launcher_button_get_desktop_file_path (
                 MNB_LAUNCHER_BUTTON (clone)));
-      penge_app_bookmark_manager_add_from_uri (launcher_data->manager,
-                                               uri,
-                                               &error);
+      penge_app_bookmark_manager_add_uri (launcher_data->manager,
+                                          uri);
     }
   else
     {
@@ -617,9 +619,8 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
       uri = g_strdup_printf ("file://%s",
               mnb_launcher_button_get_desktop_file_path (
                 MNB_LAUNCHER_BUTTON (launcher)));
-      penge_app_bookmark_manager_remove_by_uri (launcher_data->manager,
-                                                uri,
-                                                &error);
+      penge_app_bookmark_manager_remove_uri (launcher_data->manager,
+                                             uri);
 
       /* Hide fav apps after last one removed. */
       if (!container_has_children (CLUTTER_CONTAINER (launcher_data->fav_grid)))
@@ -732,9 +733,17 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
 static gboolean
 expander_expand_complete_idle_cb (launcher_data_t *launcher_data)
 {
+  ClutterActor *launcher;
+
+  /* Do not highlight if the focus has already moved on to fav apps. */
+  launcher = (ClutterActor *) grid_find_widget_by_pseudo_class (NBTK_GRID (launcher_data->fav_grid),
+                                                                "hover");
+  if (launcher)
+    return FALSE;
+
   if (nbtk_expander_get_expanded (launcher_data->expand_expander))
     {
-      ClutterActor *inner_grid, *launcher;
+      ClutterActor *inner_grid;
 
       inner_grid = nbtk_bin_get_child (NBTK_BIN (launcher_data->expand_expander));
       launcher = (ClutterActor *) grid_find_widget_by_pseudo_class (NBTK_GRID (inner_grid),
@@ -1115,14 +1124,14 @@ launcher_data_fill (launcher_data_t *launcher_data)
            fav_apps_iter;
            fav_apps_iter = fav_apps_iter->next)
         {
-          PengeAppBookmark  *bookmark;
+          gchar             *uri;
           gchar             *desktop_file_path;
           MnbLauncherEntry  *entry;
           NbtkWidget        *button = NULL;
           GError            *error = NULL;
 
-          bookmark = (PengeAppBookmark *) fav_apps_iter->data;
-          desktop_file_path = g_filename_from_uri (bookmark->uri, NULL, &error);
+          uri = (gchar *) fav_apps_iter->data;
+          desktop_file_path = g_filename_from_uri (uri, NULL, &error);
           if (error)
             {
               g_warning ("%s", error->message);
@@ -1225,7 +1234,6 @@ launcher_data_new (MutterPlugin *self,
   g_signal_connect (launcher_data->theme, "changed",
                     G_CALLBACK (launcher_data_theme_changed_cb), launcher_data);
   launcher_data->manager = penge_app_bookmark_manager_get_default ();
-  penge_app_bookmark_manager_load (launcher_data->manager);
 
   launcher_data->width = width;
   launcher_data->filter_entry = filter_entry;
@@ -1303,6 +1311,7 @@ launcher_data_filter_cb (launcher_data_t *launcher_data)
               clutter_actor_hide (CLUTTER_ACTOR (launcher));
               clutter_actor_reparent (CLUTTER_ACTOR (launcher),
                                       launcher_data->apps_grid);
+              nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launcher), NULL);
             }
         }
 
@@ -1310,9 +1319,15 @@ launcher_data_filter_cb (launcher_data_t *launcher_data)
       for (iter = launcher_data->launchers; iter; iter = iter->next)
         {
           MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
-          mnb_launcher_button_match (button, launcher_data->lcase_needle) ?
-            clutter_actor_show (CLUTTER_ACTOR (button)) :
-            clutter_actor_hide (CLUTTER_ACTOR (button));
+          if (mnb_launcher_button_match (button, launcher_data->lcase_needle))
+            {
+              clutter_actor_show (CLUTTER_ACTOR (button));
+            }
+          else
+            {
+              clutter_actor_hide (CLUTTER_ACTOR (button));
+              nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (button), NULL);
+            }
         }
 
       g_free (launcher_data->lcase_needle);
@@ -1342,6 +1357,7 @@ launcher_data_filter_cb (launcher_data_t *launcher_data)
           ClutterActor      *inner_grid = nbtk_bin_get_child (NBTK_BIN (e));
 
           clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
+          nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launcher), NULL);
         }
 
       /* Show expanders. */

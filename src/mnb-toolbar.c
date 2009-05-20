@@ -1,5 +1,9 @@
 /* mnb-toolbar.c */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <glib/gi18n.h>
 
 #include "moblin-netbook.h"
@@ -230,8 +234,7 @@ static void
 mnb_toolbar_show (ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  guint              width;
-  guint              screen_width, screen_height;
+  gint               screen_width, screen_height;
   gint               i;
   ClutterAnimation  *animation;
 
@@ -699,8 +702,8 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   NbtkWidget        *button;
-  NbtkWidget        *panel;
-  guint              screen_width, screen_height;
+  NbtkWidget        *panel = NULL;
+  gint               screen_width, screen_height;
   gint               index;
   gchar             *button_style;
 
@@ -753,7 +756,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   /*
    * Create the button for this zone.
    */
-  button = priv->buttons[index] = mnb_toolbar_button_new ();
+  button = mnb_toolbar_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
@@ -780,16 +783,12 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                             -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
                                             BUTTON_WIDTH,
                                             TOOLBAR_HEIGHT);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                   CLUTTER_ACTOR (button));
     }
   else
     {
       /*
        * Applet button.
        */
-      gint zones   = APPLETS_START;
       gint applets = index - APPLETS_START;
       gint x, y;
 
@@ -805,9 +804,6 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                          -(TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT),
                                          TRAY_BUTTON_WIDTH,
                                          TOOLBAR_HEIGHT);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                               CLUTTER_ACTOR (button));
     }
 
   g_signal_connect (button, "clicked",
@@ -841,8 +837,6 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
        * separation.
        */
       {
-        ClutterActor *child = NULL;
-
       switch (index)
         {
           /*
@@ -905,6 +899,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             g_signal_connect (panel, "show-completed",
                               G_CALLBACK (_media_drop_down_shown), grid);
           }
+          break;
 #endif
         case INTERNET_ZONE:
 #ifdef WITH_NETPANEL
@@ -916,6 +911,14 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             grid = CLUTTER_ACTOR (moblin_netbook_netpanel_new ());
 
             mnb_drop_down_set_child (MNB_DROP_DOWN (panel), grid);
+
+            /*
+             * FIME -- why is this necessary ?
+             */
+            g_signal_connect_swapped (toolbar, "hide",
+                                      G_CALLBACK (clutter_actor_hide), grid);
+            g_signal_connect_swapped (toolbar, "show",
+                                      G_CALLBACK (clutter_actor_show), grid);
 
             g_signal_connect_swapped (panel, "hide-completed",
                                     G_CALLBACK (moblin_netbook_netpanel_clear),
@@ -929,6 +932,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             g_signal_connect_swapped (grid, "launched",
                                       G_CALLBACK (clutter_actor_hide), toolbar);
           }
+          break;
 #endif
 
         default:
@@ -944,7 +948,18 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
     }
 
   if (!panel)
-    return;
+    {
+      g_debug ("Panel %s is not available", name);
+      clutter_actor_destroy (CLUTTER_ACTOR (button));
+      return;
+    }
+  else
+    {
+      priv->buttons[index] = button;
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                   CLUTTER_ACTOR (button));
+    }
 
   g_signal_connect (panel, "hide-begin",
                     G_CALLBACK(mnb_toolbar_dropdown_hide_begin_cb),
@@ -1024,7 +1039,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   NbtkWidget        *button;
-  guint              screen_width, screen_height;
+  gint               screen_width, screen_height;
   gint               index;
   gchar             *button_style;
   const gchar       *name;
@@ -1109,7 +1124,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
       /*
        * Applet button.
        */
-      gint zones   = APPLETS_START;
       gint applets = index - APPLETS_START;
       gint x, y;
 
@@ -1288,7 +1302,7 @@ mnb_toolbar_constructed (GObject *self)
   MutterPlugin      *plugin = priv->plugin;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
-  guint              screen_width, screen_height;
+  gint               screen_width, screen_height;
   ClutterColor       clr = {0x0, 0x0, 0x0, 0xce};
 
   hbox = priv->hbox = clutter_group_new ();
@@ -1444,7 +1458,7 @@ mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
       }
 
   if (index < 0)
-    return;
+    return NULL;
 
   return mnb_toolbar_panel_index_to_name (index);
 }
@@ -1591,7 +1605,6 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
 
   gint  x = clutter_actor_get_x (actor);
   gint  y = clutter_actor_get_y (actor);
-  gint  i;
 
   background = CLUTTER_ACTOR (mnb_drop_down_new (priv->plugin));
 

@@ -1234,19 +1234,13 @@ mnb_switcher_show (ClutterActor *self)
                                        NULL);
 
           bin = CLUTTER_ACTOR (nbtk_bin_new ());
-          label = nbtk_label_new (_("Applications you’re using will show up here. You will be able to switch and organise them to your hearts content."));
-
-          nbtk_widget_set_style_class_name (label, "workspace-no-wins-label");
+          label = nbtk_label_new (_("Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."));
+          clutter_actor_set_name ((ClutterActor *)label, "workspace-no-wins-label");
 
           nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
-          nbtk_bin_set_alignment (NBTK_BIN (bin),
-                                  NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
-
+          nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
           clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-no-wins-bin");
-
-          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
-                                            "workspace-no-wins-bin");
 
           nbtk_table_add_actor (NBTK_TABLE (table), bin, 1, 0);
           clutter_container_child_set (CLUTTER_CONTAINER (table),
@@ -1646,11 +1640,14 @@ mnb_switcher_class_init (MnbSwitcherClass *klass)
 static void
 on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
 {
-  MnbSwitcherPrivate *priv;
+  MnbSwitcherPrivate         *priv;
+  MoblinNetbookPluginPrivate *ppriv;
+  ClutterActor               *toolbar;
 
   g_return_if_fail (MNB_IS_SWITCHER (self));
 
-  priv = MNB_SWITCHER (self)->priv;
+  priv  = MNB_SWITCHER (self)->priv;
+  ppriv = MOBLIN_NETBOOK_PLUGIN (priv->plugin)->priv;
 
   if (priv->tab_list)
     {
@@ -1658,10 +1655,35 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
       priv->tab_list = NULL;
     }
 
-  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
   priv->table = NULL;
   priv->last_focused = NULL;
   priv->selected = NULL;
+  priv->active_tooltip = NULL;
+  priv->new_workspace = NULL;
+  priv->new_label = NULL;
+
+  mnb_drop_down_set_child (MNB_DROP_DOWN (self), NULL);
+
+  /*
+   * Fix for bug 1690.
+   *
+   * The Switcher is 'special'; in order for the thumbs to look right (namely
+   * the active thumb have the current decorations), the Switcher relinguishes
+   * focus to the active application. The problem with this is that if the
+   * user then goes on to open another Panel without closing the Toolbar in
+   * between, the focus is lost. So, when we hide the switcher, we get focus
+   * back to the UI if the panel is visible.
+   *
+   * NB: We need to rethink this for the multiproc stuff.
+   */
+  toolbar = clutter_actor_get_parent (self);
+  while (toolbar && !MNB_IS_TOOLBAR (toolbar))
+    toolbar = clutter_actor_get_parent (toolbar);
+
+  if (toolbar && CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+    {
+      moblin_netbook_focus_stage (priv->plugin, CurrentTime);
+    }
 }
 
 /*
@@ -1727,6 +1749,13 @@ mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher)
   meta_keybindings_set_custom_handler ("switch_group_backward",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
+
+  /* Disable the Alt+Space menu -- strictly speaking not switcher related, but
+   * for now here.
+   */
+  meta_keybindings_set_custom_handler ("activate_window_menu",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
 }
 
 static void
@@ -1744,7 +1773,6 @@ NbtkWidget*
 mnb_switcher_new (MutterPlugin *plugin)
 {
   MnbSwitcher *switcher;
-  MetaScreen  *screen;
 
   g_return_val_if_fail (MUTTER_PLUGIN (plugin), NULL);
 

@@ -7,6 +7,7 @@ libahoghill_headers = ahoghill-grid-view.h	\
 	ahoghill-play-button.h			\
 	ahoghill-playlist.h			\
 	ahoghill-playlist-header.h		\
+	ahoghill-playlist-placeholder.h		\
 	ahoghill-queue-list.h			\
 	ahoghill-queue-tile.h			\
 	ahoghill-results-model.h		\
@@ -23,6 +24,7 @@ libahoghill_la_SOURCES = $(libahoghill_headers) \
 	ahoghill-play-button.c \
 	ahoghill-playlist.c \
 	ahoghill-playlist-header.c \
+	ahoghill-playlist-placeholder.c \
 	ahoghill-queue-list.c \
 	ahoghill-queue-tile.c \
 	ahoghill-results-model.c \

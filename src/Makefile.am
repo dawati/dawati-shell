@@ -3,6 +3,7 @@ SUBDIRS=tray effects
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
 INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@ \
+	-DPREFIX=\"$(prefix)\" \
 	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
 	@AHOGHILL_CFLAGS@ \
@@ -28,8 +29,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
                                 moblin-netbook-system-tray.h    \
-				mwb-radical-bar.c		\
-				mwb-radical-bar.h		\
 				mwb-utils.c			\
 				mwb-utils.h			\
 	                        $(DBUS_GLUE)                    \
@@ -63,9 +62,9 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				mnb-status-row.c		\
 				mnb-status-row.h		\
 				mnb-status-entry.c		\
-				mnb-status-entry.h
-#				mnb-panel.c			\
-#				mnb-panel.h
+				mnb-status-entry.h		\
+				mnb-panel.c			\
+				mnb-panel.h
 
 if WITH_NETPANEL
 moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
@@ -77,12 +76,16 @@ moblin_netbook_la_SOURCES +=	moblin-netbook-people.h		\
 				moblin-netbook-people.c
 endif
 
-#DBUS_GLUE=notification-manager-glue.h mnb-panel-dbus-glue.h
-DBUS_GLUE=notification-manager-glue.h
+DBUS_GLUE =	notification-manager-glue.h 	\
+		mnb-panel-dbus-glue.h 		\
+		mnb-toolbar-dbus-glue.h
+
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
 
-#DBUS_BINDINGS=mnb-panel-dbus-bindings.h
+DBUS_BINDINGS =	mnb-panel-dbus-bindings.h	\
+		mnb-toolbar-dbus-bindings.h
+
 %-bindings.h: %.xml
 	dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
 
@@ -119,5 +122,6 @@ install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.a
 	rm -f $(DESTDIR)$(pkglibdir)/*.la
 
-BUILT_SOURCES = $(MARSHALS) $(DBUS_GLUE) $(DBUS_BINDINGS)
+BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS)
+
 CLEANFILES = $(BUILT_SOURCES)

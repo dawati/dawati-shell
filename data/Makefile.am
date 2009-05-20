@@ -24,7 +24,8 @@ dist_theme_panel_DATA = \
 	theme/panel/status-normal.png \
 	theme/panel/background-tile.png \
 	theme/panel/toolbar-button-active.png \
-	theme/panel/toolbar-button-hover.png
+	theme/panel/toolbar-button-hover.png \
+        theme/panel/toolbar-hint.png
 
 theme_chooserdir = $(pkgdatadir)/theme/chooser
 dist_theme_chooser_DATA = \
@@ -55,7 +56,8 @@ dist_theme_generic_DATA = \
 	theme/generic/vscroll-forward-hover.png \
 	theme/generic/vscroll-forward.png \
 	theme/generic/vscroll-handle-hover.png \
-	theme/generic/vscroll-handle.png
+	theme/generic/vscroll-handle.png \
+	theme/generic/placeholder-bg.png
 
 theme_launcherdir = $(pkgdatadir)/theme/launcher
 dist_theme_launcher_DATA = \
@@ -153,6 +155,7 @@ dist_theme_mediapanel_DATA = \
 	theme/media-panel/mid_playque_selected.png \
 	theme/media-panel/play_hover.png \
 	theme/media-panel/playque_background.png \
+	theme/media-panel/playqueue-placeholder.png \
 	theme/media-panel/pq_pause_hover.png \
 	theme/media-panel/pq_pause.png \
 	theme/media-panel/pq_play_hover.png \
@@ -184,7 +187,8 @@ theme_peopledir = $(pkgdatadir)/theme/people
 dist_theme_people_DATA = \
 	theme/people/people-search-bg.png \
 	theme/people/tile-bg-hover.png \
-	theme/people/avatar-bg.png
+	theme/people/avatar-bg.png \
+	theme/people/grey-backdrop.png
 
 theme_effectsdir = $(pkgdatadir)/theme/effects
 dist_theme_effects_DATA = \
