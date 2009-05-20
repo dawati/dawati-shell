@@ -526,9 +526,14 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
 
   if (launcher_data->is_filtering)
     {
-      clutter_container_foreach (CLUTTER_CONTAINER (launcher_data->apps_grid),
-                                 (ClutterCallback) nbtk_widget_set_style_pseudo_class,
-                                 NULL);
+      const GSList *launchers_iter;
+      for (launchers_iter = launcher_data->launchers;
+           launchers_iter;
+           launchers_iter = launchers_iter->next)
+        {
+          nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launchers_iter->data),
+                                              NULL);
+        }
     }
   else
     {
@@ -728,9 +733,17 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
 static gboolean
 expander_expand_complete_idle_cb (launcher_data_t *launcher_data)
 {
+  ClutterActor *launcher;
+
+  /* Do not highlight if the focus has already moved on to fav apps. */
+  launcher = (ClutterActor *) grid_find_widget_by_pseudo_class (NBTK_GRID (launcher_data->fav_grid),
+                                                                "hover");
+  if (launcher)
+    return FALSE;
+
   if (nbtk_expander_get_expanded (launcher_data->expand_expander))
     {
-      ClutterActor *inner_grid, *launcher;
+      ClutterActor *inner_grid;
 
       inner_grid = nbtk_bin_get_child (NBTK_BIN (launcher_data->expand_expander));
       launcher = (ClutterActor *) grid_find_widget_by_pseudo_class (NBTK_GRID (inner_grid),

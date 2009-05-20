@@ -605,6 +605,15 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
 }
 #endif
 
+static void
+toolbar_panel_hide_completed_cb (MnbDropDown *dropdown, MutterPlugin *plugin)
+{
+  if (mnb_drop_down_should_panel_hide (dropdown))
+    {
+      hide_panel (plugin);
+    }
+}
+
 ClutterActor *
 make_panel (MutterPlugin *plugin, gint width)
 {
@@ -761,6 +770,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->status, screen_width);
   clutter_actor_set_position (priv->status, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->status);
+  g_signal_connect (priv->status, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
   /* switcher drop down */
   priv->switcher = (ClutterActor *) mnb_switcher_new (plugin);
@@ -772,6 +784,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_position (priv->switcher, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->switcher);
   clutter_actor_hide (priv->switcher);
+  g_signal_connect (priv->switcher, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
   /* launcher drop down */
   priv->launcher = make_launcher (plugin,
@@ -784,6 +799,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->launcher, screen_width);
   clutter_actor_lower_bottom (priv->launcher);
   clutter_actor_hide (priv->launcher);
+  g_signal_connect (priv->launcher, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
   /* pasteboard drop down */
   priv->pasteboard = make_pasteboard (plugin,
@@ -796,6 +814,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->pasteboard, screen_width);
   clutter_actor_lower_bottom (priv->pasteboard);
   clutter_actor_hide (priv->pasteboard);
+  g_signal_connect (priv->pasteboard, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr,
@@ -826,6 +847,9 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->mzone_grid);
+  g_signal_connect (priv->mzone_grid, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
 #ifdef USE_AHOGHILL
   /* Ahoghill media drop down */
@@ -853,7 +877,9 @@ make_panel (MutterPlugin *plugin, gint width)
                     ahoghill_grid_view);
   g_signal_connect_swapped (ahoghill_grid_view, "dismiss",
                             G_CALLBACK (hide_panel), plugin);
-
+  g_signal_connect (priv->media_drop_down, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 #endif
 
 #ifdef WITH_NETPANEL
@@ -883,6 +909,9 @@ make_panel (MutterPlugin *plugin, gint width)
                     G_CALLBACK (_netgrid_launch_cb), plugin);
   g_signal_connect_swapped (net_grid_view, "launched",
                             G_CALLBACK (hide_panel), plugin);
+  g_signal_connect (priv->net_grid, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 #endif
 
 #ifdef WITH_PEOPLE
@@ -897,6 +926,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->people, screen_width);
   clutter_actor_lower_bottom (priv->people);
   clutter_actor_hide (priv->people);
+  g_signal_connect (priv->people, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 #endif
 
   if (shadow)
