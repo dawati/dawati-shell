@@ -418,7 +418,7 @@ mnb_drop_down_init (MnbDropDown *self)
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (footer), 1, 0);
   g_signal_connect_swapped (footer, "clicked",
-                            G_CALLBACK (clutter_actor_hide), self);
+                            G_CALLBACK (mnb_drop_down_hide_with_toolbar), self);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,
