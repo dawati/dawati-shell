@@ -9,9 +9,7 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-tray-manager.h"
 
-#if 0
 #include "mnb-panel.h"
-#endif
 
 G_BEGIN_DECLS
 
@@ -58,9 +56,7 @@ void mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                    const gchar *name,
                                    const gchar *tooltip);
 
-#if 0
 void mnb_toolbar_append_panel (MnbToolbar *toolbar, MnbDropDown *panel);
-#endif
 
 void mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name);
 void mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name);

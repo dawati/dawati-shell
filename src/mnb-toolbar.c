@@ -976,7 +976,6 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
 }
 
-#if 0
 static void
 mnb_toolbar_panel_request_icon_cb (MnbPanel    *panel,
                                    const gchar *icon,
@@ -1132,7 +1131,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
 }
-#endif
 
 static void
 mnb_toolbar_init (MnbToolbar *self)
