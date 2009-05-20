@@ -27,4 +27,13 @@
 
 ClutterActor *make_launcher (MutterPlugin *plugin, gint width, gint height);
 
+/* For the standalone version. */
+
+typedef struct launcher_data_ launcher_data_t;
+
+ClutterActor * moblin_netbook_launcher_panel_new (MutterPlugin      *plugin,
+                                                  gint               width,
+                                                  gint               height,
+                                                  launcher_data_t  **launcher_data);
+
 #endif
