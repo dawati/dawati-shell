@@ -295,8 +295,6 @@ _request_passphrase (CarrickServiceItem *item)
   }
   gtk_widget_destroy (dialog);
 
-  g_debug ("Got passphrase: %s",
-           passphrase);
   return passphrase;
 }
 
@@ -463,10 +461,6 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       "state-changed",
                       G_CALLBACK (_status_changed_cb),
                       service_item);
-    /*g_signal_connect (priv->service,
-                      "removed",
-                      G_CALLBACK (_remove_cb),
-                      service_item);*/
 
     g_free (security);
   }
