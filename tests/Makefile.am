@@ -23,8 +23,7 @@ noinst_PROGRAMS = \
 	test-launcher-tree \
 	test-tray \
 	test-pasteboard \
-	test-screensized \
-	test-panel
+	test-screensized
 
 test_launcher_button_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-button.c \
@@ -55,9 +54,3 @@ test_pasteboard_SOURCES = \
 
 test_screensized_SOURCES = \
 	test-screensized.c
-
-test_panel_SOURCES = \
-	test-panel.c
-test_panel_LDADD = \
-	$(MUTTER_PLUGIN_LIBS) \
-	$(top_builddir)/libmnb/libmnb.la

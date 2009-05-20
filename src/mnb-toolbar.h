@@ -9,8 +9,6 @@
 #include "moblin-netbook.h"
 #include "moblin-netbook-tray-manager.h"
 
-#include "mnb-panel.h"
-
 G_BEGIN_DECLS
 
 #define MNB_TYPE_TOOLBAR mnb_toolbar_get_type()
@@ -55,8 +53,6 @@ gboolean mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin);
 void mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                    const gchar *name,
                                    const gchar *tooltip);
-
-void mnb_toolbar_append_panel (MnbToolbar *toolbar, MnbDropDown *panel);
 
 void mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name);
 void mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name);

@@ -62,9 +62,7 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				mnb-status-row.c		\
 				mnb-status-row.h		\
 				mnb-status-entry.c		\
-				mnb-status-entry.h		\
-				mnb-panel.c			\
-				mnb-panel.h
+				mnb-status-entry.h
 
 if WITH_NETPANEL
 moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
@@ -76,15 +74,10 @@ moblin_netbook_la_SOURCES +=	moblin-netbook-people.h		\
 				moblin-netbook-people.c
 endif
 
-DBUS_GLUE =	notification-manager-glue.h 	\
-		mnb-panel-dbus-glue.h 		\
-		mnb-toolbar-dbus-glue.h
+DBUS_GLUE =	notification-manager-glue.h
 
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
-
-DBUS_BINDINGS =	mnb-panel-dbus-bindings.h	\
-		mnb-toolbar-dbus-bindings.h
 
 %-bindings.h: %.xml
 	dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
