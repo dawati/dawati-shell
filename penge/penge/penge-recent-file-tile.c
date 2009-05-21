@@ -390,6 +390,8 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   priv->behave = clutter_behaviour_opacity_new (alpha, 0x00, 0xc0);
   clutter_behaviour_apply (priv->behave,
                            (ClutterActor *)priv->details_overlay);
+
+  clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
 
 

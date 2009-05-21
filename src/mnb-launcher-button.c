@@ -386,6 +386,8 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   g_signal_connect (self->priv->fav_toggle, "clicked",
                     G_CALLBACK (fav_button_clicked_cb), self);
+
+  clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }
 
 NbtkWidget *
