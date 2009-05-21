@@ -123,6 +123,7 @@ _device_condition_cb (HalDevice   *device,
   DalstonButtonMonitorPrivate *priv = GET_PRIVATE (monitor);
   gchar *type = NULL;
   GError *error = NULL;
+  gboolean state = FALSE;
 
   if (!g_str_equal (condition, "ButtonPressed"))
   {
@@ -144,6 +145,22 @@ _device_condition_cb (HalDevice   *device,
 
   if (g_str_equal (type, "sleep") || g_str_equal (type, "lid"))
   {
+    g_debug (G_STRLOC ": Got lid button signal");
+    hal_device_get_bool (device,
+                         "button.state.value",
+                         &state,
+                         &error);
+
+    if (error)
+    {
+      g_warning (G_STRLOC ": Error getting lid state: %s",
+                 error->message);
+      g_clear_error (&error);
+    } else {
+      g_debug (G_STRLOC ": Lid button has state: %s",
+               state ? "on" : "off");
+    }
+
     hal_power_proxy_suspend_sync (priv->power_proxy);
   }
 
