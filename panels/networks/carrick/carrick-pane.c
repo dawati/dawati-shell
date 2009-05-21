@@ -560,12 +560,18 @@ _update_services (CarrickPane *pane)
 }
 
 static void
-_manager_updated_cb (CmManager  *manager,
-                     gpointer    user_data)
+_services_changed_cb (CmManager *manager,
+                      gpointer   user_data)
 {
-  g_debug ("Manager updated... \\o/");
-  _set_states (CARRICK_PANE (user_data));
+  g_debug ("Services updated! \\o/");
   _update_services (CARRICK_PANE (user_data));
+}
+
+static void
+_devices_changed_cb (CmManager *manager,
+                     gpointer   user_data)
+{
+  _set_states (CARRICK_PANE (user_data));
 }
 
 static void
@@ -578,7 +584,10 @@ _update_manager (CarrickPane *pane,
   if (priv->manager)
   {
     g_signal_handlers_disconnect_by_func (priv->manager,
-                                          _manager_updated_cb,
+                                          _devices_changed_cb,
+                                          pane);
+    g_signal_handlers_disconnect_by_func (priv->manager,
+                                          _services_changed_cb,
                                           pane);
     g_object_unref (priv->manager);
     priv->manager = NULL;
@@ -590,8 +599,12 @@ _update_manager (CarrickPane *pane,
     _update_services (pane);
     _set_states (pane);
     g_signal_connect (priv->manager,
-                      "manager-updated",
-                      G_CALLBACK (_manager_updated_cb),
+                      "devices-changed",
+                      G_CALLBACK (_devices_changed_cb),
+                      pane);
+    g_signal_connect (priv->manager,
+                      "services-changed",
+                      G_CALLBACK (_services_changed_cb),
                       pane);
   }
 }
