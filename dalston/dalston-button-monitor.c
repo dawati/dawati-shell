@@ -144,10 +144,7 @@ _device_condition_cb (HalDevice   *device,
 
   if (g_str_equal (type, "sleep") || g_str_equal (type, "lid"))
   {
-    hal_power_proxy_suspend (priv->power_proxy,
-                             NULL,
-                             NULL,
-                             NULL);
+    hal_power_proxy_suspend_sync (priv->power_proxy);
   }
 
   g_free (type);
