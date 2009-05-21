@@ -124,6 +124,7 @@ _device_condition_cb (HalDevice   *device,
   gchar *type = NULL;
   GError *error = NULL;
   gboolean state = FALSE;
+  gboolean has_state = FALSE;
 
   if (!g_str_equal (condition, "ButtonPressed"))
   {
@@ -146,22 +147,41 @@ _device_condition_cb (HalDevice   *device,
   if (g_str_equal (type, "sleep") || g_str_equal (type, "lid"))
   {
     g_debug (G_STRLOC ": Got lid button signal");
+
     hal_device_get_bool (device,
-                         "button.state.value",
-                         &state,
+                         "button.has_state",
+                         &has_state,
                          &error);
 
     if (error)
     {
-      g_warning (G_STRLOC ": Error getting lid state: %s",
+      g_warning (G_STRLOC ": Error getting if button has state: %s",
                  error->message);
       g_clear_error (&error);
     } else {
-      g_debug (G_STRLOC ": Lid button has state: %s",
-               state ? "on" : "off");
-    }
+      if (has_state)
+      {
+        hal_device_get_bool (device,
+                             "button.state.value",
+                             &state,
+                             &error);
 
-    hal_power_proxy_suspend_sync (priv->power_proxy);
+        if (error)
+        {
+          g_warning (G_STRLOC ": Error getting button state: %s",
+                     error->message);
+          g_clear_error (&error);
+        } else {
+          g_debug (G_STRLOC ": Lid button has state: %s",
+                   state ? "on" : "off");
+
+          if (state)
+            hal_power_proxy_suspend_sync (priv->power_proxy);
+        }
+      } else {
+        hal_power_proxy_suspend_sync (priv->power_proxy);
+      }
+    }
   }
 
   g_free (type);
