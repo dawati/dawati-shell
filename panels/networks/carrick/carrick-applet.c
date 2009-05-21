@@ -142,7 +142,8 @@ manager_state_changed_cb (CmManager *manager,
   }
 
   carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
-  _notify_connection_changed (applet);
+  /* disable notifications until they have been improved */
+  //_notify_connection_changed (applet);
 }
 
 GtkWidget*
@@ -233,6 +234,7 @@ carrick_applet_init (CarrickApplet *self)
     /* FIXME: must do better here */
     return;
   }
+  /* FIXME: handle return value here */
   cm_manager_refresh (priv->manager);
   priv->state = g_strdup (cm_manager_get_state (priv->manager));
   priv->icon_factory = carrick_icon_factory_new ();
