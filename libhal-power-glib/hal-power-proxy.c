@@ -210,6 +210,25 @@ hal_power_proxy_suspend (HalPowerProxy         *proxy,
   closure->call = call;
 }
 
+void
+hal_power_proxy_suspend_sync (HalPowerProxy *proxy)
+{
+  HalPowerProxyPrivate *priv = GET_PRIVATE (proxy);
+  GError *error = NULL;
+
+  org_freedesktop_Hal_Device_SystemPowerManagement_suspend (priv->proxy,
+                                                            0,
+                                                            NULL,
+                                                            &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error suspending: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+}
+
 static gboolean
 _setup_proxy (HalPowerProxy *proxy,
               const gchar   *device_path)
