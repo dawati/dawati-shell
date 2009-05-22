@@ -516,46 +516,31 @@ _flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
   return TRUE;
 }
 
-gboolean
-_service_exists (CarrickPane *pane,
-                 CmService   *service)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *tmp = priv->services;
-  while (tmp)
-  {
-    CmService *ser = tmp->data;
-    if (cm_service_compare_services (ser, service) == 0)
-      return TRUE;
-    tmp = tmp->next;
-  }
-  return FALSE;
-}
-
 static void
 _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   CmService *service;
-  GList *tmp = NULL;
+  GList *children = gtk_container_get_children (GTK_CONTAINER (priv->service_list));
 
-  /* Compare the managers list to our private list such that we only
-   * add signals once
-   */
-  tmp = cm_manager_get_services (priv->manager);
-  while (tmp)
+  while (children)
   {
-    service = tmp->data;
-    if (_service_exists (pane, service) != TRUE)
-    {
-      priv->services = g_list_append (priv->services,
-                                      service);
-      g_signal_connect (G_OBJECT (service),
-                        "service-updated",
-                        G_CALLBACK (_service_updated_cb),
-                        pane);
-    }
-    tmp = tmp->next;
+    gtk_widget_destroy (children->data);
+    children = children->next;
+  }
+
+  g_list_free (priv->services);
+
+  priv->services = g_list_copy (cm_manager_get_services (priv->manager));
+
+  while (priv->services)
+  {
+    service = priv->services->data;
+    g_signal_connect (G_OBJECT (service),
+                      "service-updated",
+                      G_CALLBACK (_service_updated_cb),
+                      pane);
+    priv->services = priv->services->next;
   }
 }
 
