@@ -366,6 +366,9 @@ penge_people_tile_init (PengePeopleTile *self)
                     self);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (priv->details_overlay), 4);
+
+
+  clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }
 
 
