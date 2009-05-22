@@ -41,9 +41,13 @@ struct _CarrickPanePrivate {
   CmManager          *manager;
   GList              *services;
   GtkWidget          *wifi_switch;
+  GtkWidget          *wifi_label;
   GtkWidget          *ethernet_switch;
+  GtkWidget          *ethernet_label;
   GtkWidget          *threeg_switch;
+  GtkWidget          *threeg_label;
   GtkWidget          *wimax_switch;
+  GtkWidget          *wimax_label;
   GtkWidget          *flight_mode_switch;
   GtkWidget          *flight_mode_label;
   GtkWidget          *service_list;
@@ -441,24 +445,32 @@ _device_updated_cb (CmDevice *device,
                                       state);
         gtk_widget_set_sensitive (priv->ethernet_switch,
                                   TRUE);
+        gtk_widget_show (priv->ethernet_switch);
+        gtk_widget_show (priv->ethernet_label);
         break;
       case DEVICE_WIFI:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
                                    state);
         gtk_widget_set_sensitive (priv->wifi_switch,
                                   TRUE);
+        gtk_widget_show (priv->wifi_switch);
+        gtk_widget_show (priv->wifi_label);
         break;
       case DEVICE_CELLULAR:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
                                    state);
         gtk_widget_set_sensitive (priv->threeg_switch,
                                   TRUE);
+        gtk_widget_show (priv->threeg_switch);
+        gtk_widget_show (priv->threeg_label);
         break;
       case DEVICE_WIMAX:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
                                    state);
         gtk_widget_set_sensitive (priv->wimax_switch,
                                   TRUE);
+        gtk_widget_show (priv->wimax_switch);
+        gtk_widget_show (priv->wimax_label);
         break;
       default:
         g_debug ("Unknown device type\n");
@@ -489,6 +501,15 @@ _set_states (CarrickPane *pane)
   }
   else
   {
+    gtk_widget_hide (priv->wifi_switch);
+    gtk_widget_hide (priv->wifi_label);
+    gtk_widget_hide (priv->ethernet_switch);
+    gtk_widget_hide (priv->ethernet_label);
+    gtk_widget_hide (priv->threeg_switch);
+    gtk_widget_hide (priv->threeg_label);
+    gtk_widget_hide (priv->wimax_switch);
+    gtk_widget_hide (priv->wimax_label);
+
     len = g_list_length (devices);
     for (cnt = 0; cnt < len; cnt++)
     {
@@ -672,18 +693,18 @@ carrick_pane_init (CarrickPane *self)
   switch_box = gtk_hbox_new (TRUE,
                              6);
   priv->wifi_switch = nbtk_gtk_light_switch_new ();
-  gtk_widget_set_sensitive (GTK_WIDGET (priv->wifi_switch),
+  gtk_widget_set_sensitive (priv->wifi_switch,
                             FALSE);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
                     "switch-flipped",
                     G_CALLBACK (_wifi_switch_callback),
                     self);
-  switch_label = gtk_label_new (_("WiFi"));
-  gtk_misc_set_alignment (GTK_MISC (switch_label),
+  priv->wifi_label = gtk_label_new (_("WiFi"));
+  gtk_misc_set_alignment (GTK_MISC (priv->wifi_label),
                           0.2,
                           0.5);
   gtk_box_pack_start (GTK_BOX (switch_box),
-                      switch_label,
+                      priv->wifi_label,
                       TRUE,
                       TRUE,
                       8);
@@ -701,18 +722,18 @@ carrick_pane_init (CarrickPane *self)
   priv->ethernet_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                              6);
-  switch_label = gtk_label_new (_("Wired"));
-  gtk_misc_set_alignment (GTK_MISC (switch_label),
+  priv->ethernet_label = gtk_label_new (_("Wired"));
+  gtk_misc_set_alignment (GTK_MISC (priv->ethernet_label),
                           0.2,
                           0.5);
-  gtk_widget_set_sensitive (GTK_WIDGET (priv->ethernet_switch),
+  gtk_widget_set_sensitive (priv->ethernet_switch,
                             FALSE);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
                     "switch-flipped",
                     G_CALLBACK (_ethernet_switch_callback),
                     self);
   gtk_box_pack_start (GTK_BOX (switch_box),
-                      switch_label,
+                      priv->ethernet_label,
                       TRUE,
                       TRUE,
                       8);
@@ -730,18 +751,18 @@ carrick_pane_init (CarrickPane *self)
   priv->threeg_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                             6);
-  switch_label = gtk_label_new (_("3G"));
-  gtk_misc_set_alignment (GTK_MISC (switch_label),
+  priv->threeg_label = gtk_label_new (_("3G"));
+  gtk_misc_set_alignment (GTK_MISC (priv->threeg_label),
                           0.2,
                           0.5);
-  gtk_widget_set_sensitive (GTK_WIDGET (priv->threeg_switch),
+  gtk_widget_set_sensitive (priv->threeg_switch,
                             FALSE);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
                     "switch-flipped",
                     G_CALLBACK (_threeg_switch_callback),
                     self);
   gtk_box_pack_start (GTK_BOX (switch_box),
-                      switch_label,
+                      priv->threeg_label,
                       TRUE,
                       TRUE,
                       8);
@@ -759,18 +780,18 @@ carrick_pane_init (CarrickPane *self)
   priv->wimax_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                              6);
-  switch_label = gtk_label_new (_("WiMAX"));
-  gtk_misc_set_alignment (GTK_MISC (switch_label),
+  priv->wimax_label = gtk_label_new (_("WiMAX"));
+  gtk_misc_set_alignment (GTK_MISC (priv->wimax_label),
                           0.2,
                           0.5);
-  gtk_widget_set_sensitive (GTK_WIDGET (priv->wimax_switch),
+  gtk_widget_set_sensitive (priv->wimax_switch,
                             FALSE);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
                     "switch-flipped",
                     G_CALLBACK (_wimax_switch_callback),
                     self);
   gtk_box_pack_start (GTK_BOX (switch_box),
-                      switch_label,
+                      priv->wimax_label,
                       TRUE,
                       TRUE,
                       8);
