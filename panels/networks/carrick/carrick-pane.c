@@ -296,7 +296,7 @@ _new_connection_cb (GtkButton *button,
   gtk_dialog_set_has_separator (GTK_DIALOG (dialog),
                                 FALSE);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
-                                   GTK_RESPONSE_OK);
+                                   GTK_RESPONSE_ACCEPT);
   gtk_window_set_icon_name(GTK_WINDOW(dialog),
                            GTK_STOCK_NETWORK);
   gtk_box_set_spacing(GTK_BOX(GTK_DIALOG(dialog)->vbox), 6);
