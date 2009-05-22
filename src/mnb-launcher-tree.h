@@ -25,6 +25,7 @@
 #define MNB_LAUNCHER_TREE_H
 
 #include <glib.h>
+#include "mnb-launcher-entry.h"
 
 G_BEGIN_DECLS
 
@@ -59,20 +60,6 @@ typedef struct {
   gchar   *name;
   GSList  *entries;
 } MnbLauncherDirectory;
-
-/*
- * MnbLauncherEntry represents a "launcher" item in the main menu.
- */
-typedef struct MnbLauncherEntry_ MnbLauncherEntry;
-
-MnbLauncherEntry *  mnb_launcher_entry_create                 (const gchar *desktop_file_path);
-void                mnb_launcher_entry_free                   (MnbLauncherEntry *entry);
-
-const gchar *       mnb_launcher_entry_get_name               (MnbLauncherEntry *entry);
-const gchar *       mnb_launcher_entry_get_exec               (MnbLauncherEntry *entry);
-const gchar *       mnb_launcher_entry_get_icon               (MnbLauncherEntry *entry);
-const gchar *       mnb_launcher_entry_get_comment            (MnbLauncherEntry *entry);
-const gchar *       mnb_launcher_entry_get_desktop_file_path  (MnbLauncherEntry *entry);
 
 G_END_DECLS
 
