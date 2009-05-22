@@ -297,6 +297,8 @@ penge_task_tile_init (PengeTaskTile *self)
                     (GCallback)_button_press_event_cb,
                     self);
 #endif
+
+  clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
 
 static void
