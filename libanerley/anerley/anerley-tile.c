@@ -497,6 +497,8 @@ anerley_tile_init (AnerleyTile *self)
                     "leave-event",
                     (GCallback)_leave_event_cb,
                     NULL);
+
+  clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
 
 NbtkWidget *
