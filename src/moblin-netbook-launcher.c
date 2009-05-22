@@ -328,22 +328,57 @@ launcher_button_get_icon_file (const gchar  *icon_name,
 
   if (icon_name)
     {
+      /* 1 - look up in the icon theme. */
       info = gtk_icon_theme_lookup_icon (theme,
                                           icon_name,
                                           LAUNCHER_ICON_SIZE,
                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+      if (info)
+        icon_file = g_strdup (gtk_icon_info_get_filename (info));
     }
-  if (!info)
+
+  if (icon_name && !icon_file)
     {
+      /* 2 - fallback lookups. */
+      if (g_path_is_absolute (icon_name) &&
+          g_file_test (icon_name, G_FILE_TEST_IS_REGULAR))
+        {
+          /* 2.1 - absolute path. */
+          icon_file = g_strdup (icon_name);
+        }
+      else if (g_str_has_suffix (icon_name, ".png"))
+        {
+          /* 2.2 - filename in a well-known directory. */
+          icon_file = g_build_filename ("/usr/share/icons", icon_name, NULL);
+          if (!g_file_test (icon_file, G_FILE_TEST_IS_REGULAR))
+            {
+              g_free (icon_file);
+              icon_file = g_build_filename ("/usr/share/pixmaps", icon_name, NULL);
+              if (!g_file_test (icon_file, G_FILE_TEST_IS_REGULAR))
+                {
+                  g_free (icon_file);
+                  icon_file = NULL;
+                }
+            }
+        }
+    }
+
+  if (!icon_file)
+    {
+      /* 3 - lookup generic icon in theme. */
       info = gtk_icon_theme_lookup_icon (theme,
                                           LAUNCHER_FALLBACK_ICON_NAME,
                                           LAUNCHER_ICON_SIZE,
                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+      if (info)
+        icon_file = g_strdup (gtk_icon_info_get_filename (info));
     }
-  if (info)
-      icon_file = g_strdup (gtk_icon_info_get_filename (info));
-  else
-    icon_file = g_strdup (LAUNCHER_FALLBACK_ICON_FILE);
+
+  if (!icon_file)
+    {
+      /* 4 - Use hardcoded icon. */
+      icon_file = g_strdup (LAUNCHER_FALLBACK_ICON_FILE);
+    }
 
   if (info)
     gtk_icon_info_free (info);
