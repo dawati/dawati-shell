@@ -357,14 +357,6 @@ _connect_button_cb (GtkButton          *connect_button,
               item);
 }
 
-void
-_name_changed_cb (CmService          *service,
-                  CarrickServiceItem *item)
-{
-  _set_state (service,
-              item);
-}
-
 ServiceItemState
 _get_service_state (CmService *service)
 {
@@ -392,25 +384,6 @@ _get_service_state (CmService *service)
   return UNKNOWN;
 }
 
-void
-_status_changed_cb (CmService          *service,
-                    CarrickServiceItem *item)
-{
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
-
-  priv->state = _get_service_state (service);
-
-  _set_state (service,
-              item);
-}
-
-void
-_remove_cb (CmService          *service,
-            CarrickServiceItem *item)
-{
-  gtk_widget_destroy (GTK_WIDGET (item));
-}
-
 static void
 carrick_service_item_set_service (CarrickServiceItem *service_item,
                                   CmService          *service)
@@ -419,12 +392,6 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
 
   if (priv->service)
   {
-    g_signal_handlers_disconnect_by_func (service,
-                                         _name_changed_cb,
-                                         service_item);
-    g_signal_handlers_disconnect_by_func (service,
-                                          _status_changed_cb,
-                                          service_item);
     g_object_unref (priv->service);
     priv->service = NULL;
   }
@@ -461,14 +428,6 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
     g_signal_connect (priv->connect_button,
                       "clicked",
                       G_CALLBACK (_connect_button_cb),
-                      service_item);
-    g_signal_connect (priv->service,
-                      "name-changed",
-                      G_CALLBACK (_name_changed_cb),
-                      service_item);
-    g_signal_connect (priv->service,
-                      "state-changed",
-                      G_CALLBACK (_status_changed_cb),
                       service_item);
 
     g_free (security);
