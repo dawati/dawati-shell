@@ -245,7 +245,8 @@ _secret_check_toggled(GtkToggleButton *toggle,
 {
         GtkEntry *entry = GTK_ENTRY(user_data);
         gboolean vis = gtk_toggle_button_get_active(toggle);
-        gtk_entry_set_visibility(entry, vis);
+        gtk_entry_set_visibility(entry,
+                                 vis);
 }
 
 /*
@@ -340,12 +341,15 @@ _new_connection_cb (GtkButton *button,
   gtk_misc_set_alignment(GTK_MISC(secret_label), 0.0, 0.5);
   gtk_table_attach_defaults(GTK_TABLE(table), secret_label, 1, 2, 3, 4);
   secret_entry = gtk_entry_new();
-  gtk_entry_set_visibility(GTK_ENTRY(secret_entry), FALSE);
   gtk_table_attach_defaults(GTK_TABLE(table), secret_entry, 2, 3, 3, 4);
 
-  secret_check = gtk_check_button_new_with_label(_("Show passphrase"));
-  g_signal_connect(secret_check, "toggled",
-                   G_CALLBACK(_secret_check_toggled), secret_entry);
+  secret_check = gtk_check_button_new_with_label(_("Show password"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (secret_check),
+                                TRUE);
+  g_signal_connect(secret_check,
+                   "toggled",
+                   G_CALLBACK(_secret_check_toggled),
+                   (gpointer) secret_entry);
   gtk_table_attach_defaults(GTK_TABLE(table), secret_check, 1, 2, 4, 5);
 
   gtk_widget_show_all(dialog);

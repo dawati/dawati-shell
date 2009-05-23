@@ -183,8 +183,10 @@ void
 _show_pass_toggled_cb (GtkToggleButton *button,
                        gpointer         user_data)
 {
-  gtk_entry_set_visibility (GTK_ENTRY (user_data),
-                            gtk_toggle_button_get_active (button));
+  GtkEntry *entry = GTK_ENTRY (user_data);
+  gboolean vis = gtk_toggle_button_get_active (button);
+  gtk_entry_set_visibility (entry,
+                            vis);
 }
 
 gchar *
@@ -265,10 +267,12 @@ _request_passphrase (CarrickServiceItem *item)
                     GTK_EXPAND | GTK_FILL,
                     0, 0);
   checkbox = gtk_check_button_new_with_label (_("Show password"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox),
+                                TRUE);
   g_signal_connect (checkbox,
                     "toggled",
                     G_CALLBACK (_show_pass_toggled_cb),
-                    NULL);
+                    (gpointer) entry);
   gtk_table_attach (GTK_TABLE (table),
                     checkbox,
                     1, 2,
