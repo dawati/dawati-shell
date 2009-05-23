@@ -197,6 +197,7 @@ _request_passphrase (CarrickServiceItem *item)
   GtkWidget *entry;
   GtkWidget *table;
   GtkWidget *checkbox;
+  GtkWidget *tmp;
   gchar *passphrase;
 
   dialog = gtk_dialog_new_with_buttons (_("Passphrase required"),
@@ -283,7 +284,11 @@ _request_passphrase (CarrickServiceItem *item)
                       6);
 
   gtk_widget_show_all (dialog);
-  gtk_widget_hide (service_item_find_plug (GTK_WIDGET (item)));
+  tmp = service_item_find_plug (GTK_WIDGET (item));
+  if (tmp)
+  {
+    gtk_widget_hide (tmp);
+  }
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
   {

@@ -277,6 +277,7 @@ _new_connection_cb (GtkButton *button,
   GtkWidget *secret_entry, *secret_label;
   GtkWidget *secret_check;
   GtkWidget *table;
+  GtkWidget *tmp;
   const gchar *network, *secret;
   gchar *security;
   GtkWidget *image;
@@ -348,7 +349,11 @@ _new_connection_cb (GtkButton *button,
   gtk_table_attach_defaults(GTK_TABLE(table), secret_check, 1, 2, 4, 5);
 
   gtk_widget_show_all(dialog);
-  gtk_widget_hide (pane_find_plug (GTK_WIDGET (button)));
+  tmp = pane_find_plug (GTK_WIDGET (button));
+  if (tmp)
+  {
+    gtk_widget_hide (tmp);
+  }
 
   if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
     network = gtk_entry_get_text(GTK_ENTRY(ssid_entry));
