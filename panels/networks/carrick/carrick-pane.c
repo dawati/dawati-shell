@@ -299,70 +299,112 @@ _new_connection_cb (GtkButton *button,
                                 FALSE);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
                                    GTK_RESPONSE_ACCEPT);
-  gtk_window_set_icon_name(GTK_WINDOW(dialog),
-                           GTK_STOCK_NETWORK);
-  gtk_box_set_spacing(GTK_BOX(GTK_DIALOG(dialog)->vbox), 6);
+  gtk_window_set_icon_name (GTK_WINDOW(dialog),
+                            GTK_STOCK_NETWORK);
+  gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+                       6);
 
-  table = gtk_table_new(5, 2, FALSE);
-  gtk_table_set_row_spacings(GTK_TABLE(table), 6);
-  gtk_table_set_col_spacings(GTK_TABLE(table), 6);
-  gtk_container_set_border_width(GTK_CONTAINER(table), 6);
-  gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), table);
-  image = gtk_image_new_from_icon_name(GTK_STOCK_NETWORK,
-                                       GTK_ICON_SIZE_DIALOG);
-  gtk_table_attach_defaults(GTK_TABLE(table), image, 0, 1, 0, 1);
+  table = gtk_table_new (5,
+                         2,
+                         FALSE);
+  gtk_table_set_row_spacings (GTK_TABLE (table),
+                              6);
+  gtk_table_set_col_spacings (GTK_TABLE (table),
+                              6);
+  gtk_container_set_border_width (GTK_CONTAINER (table),
+                                  6);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
+                     table);
+  image = gtk_image_new_from_icon_name (GTK_STOCK_NETWORK,
+                                        GTK_ICON_SIZE_DIALOG);
+  gtk_table_attach_defaults (GTK_TABLE (table),
+                             image,
+                             0, 1,
+                             0, 1);
 
-  desc = gtk_label_new(_("Enter the name of the network you want\nto "
-                         "connect to and, where necessary, the\n"
-                         "password and security type."));
-  gtk_table_attach_defaults(GTK_TABLE(table), desc, 1, 3, 0, 1);
-  gtk_misc_set_alignment(GTK_MISC(desc), 0.0, 0.5);
+  desc = gtk_label_new (_("Enter the name of the network you want\nto "
+                          "connect to and, where necessary, the\n"
+                          "password and security type."));
+  gtk_table_attach_defaults (GTK_TABLE (table),
+                             desc,
+                             1, 3,
+                             0, 1);
+  gtk_misc_set_alignment (GTK_MISC (desc),
+                          0.0, 0.5);
 
-  ssid_label = gtk_label_new(_("Network name"));
-  gtk_misc_set_alignment(GTK_MISC(ssid_label), 0.0, 0.5);
-  gtk_table_attach_defaults(GTK_TABLE(table), ssid_label, 1, 2, 1, 2);
+  ssid_label = gtk_label_new (_("Network name"));
+  gtk_misc_set_alignment (GTK_MISC (ssid_label),
+                          0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table),
+                             ssid_label,
+                             1, 2, 1, 2);
 
-  ssid_entry = gtk_entry_new();
-  gtk_table_attach_defaults(GTK_TABLE(table), ssid_entry, 2, 3, 1, 2);
+  ssid_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table),
+                             ssid_entry,
+                             2, 3, 1, 2);
 
-  security_label = gtk_label_new(_("Network security"));
-  gtk_misc_set_alignment(GTK_MISC(security_label), 0.0, 0.5);
-  gtk_table_attach_defaults(GTK_TABLE(table), security_label, 1, 2, 2, 3);
+  security_label = gtk_label_new (_("Network security"));
+  gtk_misc_set_alignment (GTK_MISC (security_label),
+                          0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table),
+                             security_label,
+                             1, 2,
+                             2, 3);
 
-  security_combo = gtk_combo_box_new_text();
-  gtk_combo_box_append_text(GTK_COMBO_BOX(security_combo), "None");
-  gtk_combo_box_append_text(GTK_COMBO_BOX(security_combo), "WEP");
-  gtk_combo_box_append_text(GTK_COMBO_BOX(security_combo), "WPA");
-  gtk_combo_box_append_text(GTK_COMBO_BOX(security_combo), "WPA2");
-  gtk_combo_box_set_active(GTK_COMBO_BOX(security_combo), 0);
-  gtk_table_attach_defaults(GTK_TABLE(table), security_combo, 2, 3, 2, 3);
+  security_combo = gtk_combo_box_new_text ();
+  gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
+                             "None");
+  gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
+                             "WEP");
+  gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
+                             "WPA");
+  gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
+                            "WPA2");
+  gtk_combo_box_set_active (GTK_COMBO_BOX (security_combo),
+                            0);
+  gtk_table_attach_defaults (GTK_TABLE(table),
+                             security_combo,
+                             2, 3,
+                             2, 3);
 
-  secret_label = gtk_label_new(_("Password"));
-  gtk_misc_set_alignment(GTK_MISC(secret_label), 0.0, 0.5);
-  gtk_table_attach_defaults(GTK_TABLE(table), secret_label, 1, 2, 3, 4);
-  secret_entry = gtk_entry_new();
-  gtk_table_attach_defaults(GTK_TABLE(table), secret_entry, 2, 3, 3, 4);
+  secret_label = gtk_label_new (_("Password"));
+  gtk_misc_set_alignment (GTK_MISC (secret_label),
+                          0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE(table),
+                             secret_label,
+                             1, 2,
+                             3, 4);
+  secret_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table),
+                             secret_entry,
+                             2, 3,
+                             3, 4);
 
-  secret_check = gtk_check_button_new_with_label(_("Show password"));
+  secret_check = gtk_check_button_new_with_label (_("Show password"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (secret_check),
                                 TRUE);
-  g_signal_connect(secret_check,
-                   "toggled",
-                   G_CALLBACK(_secret_check_toggled),
-                   (gpointer) secret_entry);
-  gtk_table_attach_defaults(GTK_TABLE(table), secret_check, 1, 2, 4, 5);
+  g_signal_connect (secret_check,
+                    "toggled",
+                    G_CALLBACK (_secret_check_toggled),
+                    (gpointer) secret_entry);
+  gtk_table_attach_defaults (GTK_TABLE (table),
+                             secret_check,
+                             1, 2,
+                             4, 5);
 
-  gtk_widget_show_all(dialog);
+  gtk_widget_show_all (dialog);
   tmp = pane_find_plug (GTK_WIDGET (button));
   if (tmp)
   {
     gtk_widget_hide (tmp);
   }
 
-  if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-    network = gtk_entry_get_text(GTK_ENTRY(ssid_entry));
-    security = gtk_combo_box_get_active_text(GTK_COMBO_BOX (security_combo));
-    secret = gtk_entry_get_text(GTK_ENTRY(secret_entry));
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  {
+    network = gtk_entry_get_text (GTK_ENTRY (ssid_entry));
+    security = gtk_combo_box_get_active_text (GTK_COMBO_BOX (security_combo));
+    secret = gtk_entry_get_text (GTK_ENTRY (secret_entry));
 
     if (network == NULL)
       return;
@@ -388,7 +430,7 @@ _new_connection_cb (GtkButton *button,
 
     g_list_free (devices);
   }
-  gtk_widget_destroy(dialog);
+  gtk_widget_destroy (dialog);
 }
 
 void
