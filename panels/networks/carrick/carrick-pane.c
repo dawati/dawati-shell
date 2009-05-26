@@ -497,6 +497,7 @@ _device_updated_cb (CmDevice *device,
         gtk_widget_set_sensitive (priv->ethernet_switch,
                                   TRUE);
         gtk_widget_show (priv->ethernet_switch);
+        //gtk_widget_set_no_show_all ();
         gtk_widget_show (priv->ethernet_label);
         break;
       case DEVICE_WIFI:
@@ -553,13 +554,29 @@ _set_states (CarrickPane *pane)
   else
   {
     gtk_widget_hide (priv->wifi_switch);
+    gtk_widget_set_no_show_all (priv->wifi_switch,
+                                TRUE);
     gtk_widget_hide (priv->wifi_label);
+    gtk_widget_set_no_show_all (priv->wifi_label,
+                                TRUE);
     gtk_widget_hide (priv->ethernet_switch);
+    gtk_widget_set_no_show_all (priv->ethernet_switch,
+                                TRUE);
     gtk_widget_hide (priv->ethernet_label);
+    gtk_widget_set_no_show_all (priv->ethernet_label,
+                                TRUE);
     gtk_widget_hide (priv->threeg_switch);
+    gtk_widget_set_no_show_all (priv->threeg_switch,
+                                TRUE);
     gtk_widget_hide (priv->threeg_label);
+    gtk_widget_set_no_show_all (priv->threeg_label,
+                                TRUE);
     gtk_widget_hide (priv->wimax_switch);
+    gtk_widget_set_no_show_all (priv->wimax_switch,
+                                TRUE);
     gtk_widget_hide (priv->wimax_label);
+    gtk_widget_set_no_show_all (priv->wimax_label,
+                                TRUE);
 
     len = g_list_length (devices);
     for (cnt = 0; cnt < len; cnt++)
