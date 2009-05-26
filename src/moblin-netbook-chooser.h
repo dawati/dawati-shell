@@ -39,13 +39,11 @@ gboolean moblin_netbook_sn_should_map (MutterPlugin *plugin,
 
 void     moblin_netbook_sn_finalize (MutterPlugin *plugin);
 
-void     moblin_netbook_launch_application (MutterPlugin *plugin,
-                                            const  gchar *path,
+void     moblin_netbook_launch_application (const  gchar *path,
                                             gboolean      no_chooser,
                                             gint          workspace);
 
-void     moblin_netbook_launch_application_from_desktop_file (MutterPlugin *plugin,
-                                                              const  gchar *desktop,
+void     moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
                                                               GList        *files,
                                                               gboolean      no_chooser,
                                                               gint          workspace);

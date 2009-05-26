@@ -1402,12 +1402,12 @@ moblin_netbook_sn_finalize (MutterPlugin *plugin)
  * required SN housekeeping.
  */
 static void
-moblin_netbook_launch_app (MutterPlugin *plugin,
-                           GAppInfo     *app,
+moblin_netbook_launch_app (GAppInfo     *app,
                            GList        *files,
                            gboolean      no_chooser,
                            gint          workspace)
 {
+  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   GAppLaunchContext          *ctx;
   GError                     *error = NULL;
@@ -1448,15 +1448,14 @@ moblin_netbook_launch_app (MutterPlugin *plugin,
  * Starts application using the given path.
  */
 void
-moblin_netbook_launch_application (MutterPlugin *plugin,
-                                   const  gchar *path,
+moblin_netbook_launch_application (const  gchar *path,
                                    gboolean      no_chooser,
                                    gint          workspace)
 {
   GAppInfo *app;
   GError   *error = NULL;
 
-  g_return_if_fail (plugin && path);
+  g_return_if_fail (path);
 
   app = g_app_info_create_from_commandline (path, NULL,
                                             G_APP_INFO_CREATE_SUPPORTS_URIS,
@@ -1471,7 +1470,7 @@ moblin_netbook_launch_application (MutterPlugin *plugin,
       return;
     }
 
-  moblin_netbook_launch_app (plugin, app, NULL, no_chooser, workspace);
+  moblin_netbook_launch_app (app, NULL, no_chooser, workspace);
 
   g_object_unref (app);
 }
@@ -1484,15 +1483,14 @@ moblin_netbook_launch_application (MutterPlugin *plugin,
  *     API eventually.
  */
 void
-moblin_netbook_launch_application_from_desktop_file (MutterPlugin *plugin,
-                                                     const  gchar *desktop,
+moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
                                                      GList        *files,
                                                      gboolean      no_chooser,
                                                      gint          workspace)
 {
   GAppInfo *app;
 
-  g_return_if_fail (plugin && desktop);
+  g_return_if_fail (desktop);
 
   app = G_APP_INFO (g_desktop_app_info_new_from_filename (desktop));
 
@@ -1502,7 +1500,7 @@ moblin_netbook_launch_application_from_desktop_file (MutterPlugin *plugin,
       return;
     }
 
-  moblin_netbook_launch_app (plugin, app, files, no_chooser, workspace);
+  moblin_netbook_launch_app (app, files, no_chooser, workspace);
 
   g_object_unref (app);
 }
