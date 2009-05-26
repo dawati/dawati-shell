@@ -1677,7 +1677,8 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
 static void
 mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
 {
-  MutterPlugin      *plugin = toolbar->priv->plugin;
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
   XWindowAttributes  attr;
   long               event_mask;
   Window             xwin;
@@ -1717,6 +1718,9 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
     }
 
   XSelectInput (xdpy, xwin, event_mask);
+
+  if (priv->panels[M_ZONE])
+    clutter_actor_show (CLUTTER_ACTOR (priv->panels[M_ZONE]));
 }
 
 /*
