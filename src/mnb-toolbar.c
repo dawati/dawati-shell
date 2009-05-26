@@ -82,10 +82,10 @@ enum {
     /* Below here are the applets -- with the new dbus API, these are
      * just extra panels, only the buttons are slightly different in size.
      */
-    BATTERY_APPLET = APPLETS_START,
+    WIFI_APPLET = APPLETS_START,
     VOLUME_APPLET,
+    BATTERY_APPLET,
     BT_APPLET,
-    WIFI_APPLET,
     TEST_APPLET,
     /* LAST */
     NUM_ZONES
