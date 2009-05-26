@@ -52,6 +52,7 @@
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
+static MutterPlugin *plugin_singleton = NULL;
 
 /* callback data for when animations complete */
 typedef struct
@@ -296,6 +297,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
   MoblinNetbookNotifyStore *notify_store;
+
+  plugin_singleton = (MutterPlugin*)object;
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
@@ -1721,3 +1724,10 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
         }
     }
 }
+
+MutterPlugin *
+moblin_netbook_get_plugin_singleton (void)
+{
+  return plugin_singleton;
+}
+

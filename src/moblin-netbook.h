@@ -171,4 +171,7 @@ moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin);
 gboolean
 moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin);
 
+MutterPlugin *
+moblin_netbook_get_plugin_singleton (void);
+
 #endif
