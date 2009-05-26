@@ -4,10 +4,12 @@
 
 #include <clutter/clutter.h>
 #include <gtk/gtk.h>
+#include <gio/gdesktopappinfo.h>
 #include <nbtk/nbtk.h>
 #include "mnb-drop-down.h"
 #include "moblin-netbook.h"
 #include "moblin-netbook-launcher.h"
+#include "moblin-netbook-chooser.h"
 
 /* Fake plugin implementation to satisfy the linker. */
 
@@ -43,6 +45,47 @@ void
 mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child)
 {
   ;
+}
+
+void
+moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
+                                                     GList        *files,
+                                                     gboolean      no_chooser,
+                                                     gint          workspace)
+{
+  GAppInfo *app;
+  GAppLaunchContext *ctx;
+  GError *error = NULL;
+
+  g_return_if_fail (desktop);
+
+  app = G_APP_INFO (g_desktop_app_info_new_from_filename (desktop));
+
+  if (!app)
+    {
+      g_warning ("Failed to create GAppInfo for file %s", desktop);
+      return;
+    }
+
+  ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+
+  g_app_info_launch (app, files, ctx, &error);
+
+  if (error)
+    {
+      g_warning ("Failed to lauch %s (%s)",
+#if GLIB_CHECK_VERSION(2,20,0)
+                 g_app_info_get_commandline (app),
+#else
+                 g_app_info_get_name (app),
+#endif
+                 error->message);
+
+      g_error_free (error);
+    }
+
+  g_object_unref (ctx);
+  g_object_unref (app);
 }
 
 int

@@ -232,10 +232,7 @@ static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
                               MnbDropDown        *dropdown)
 {
-  GAppLaunchContext *context;
   const gchar       *desktop_file_path;
-  GDesktopAppInfo   *app_info;
-  GError            *error = NULL;
 
   g_return_if_fail (dropdown);
 
@@ -245,15 +242,12 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
                          (GSourceFunc) launcher_button_set_reactive_cb,
                          launcher);
 
-  context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
   desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
-  app_info = g_desktop_app_info_new_from_filename (desktop_file_path);
-  g_app_info_launch (G_APP_INFO (app_info), NULL, context, &error);
-  if (error)
-    g_warning (G_STRLOC "%s", error->message);
-  g_clear_error (&error);
-  g_object_unref (app_info);
-  g_object_unref (context);
+
+  moblin_netbook_launch_application_from_desktop_file (desktop_file_path,
+                                                       NULL,
+                                                       FALSE,
+                                                       -2);
 
   /*
    * FIXME -- had the launcher been an custom actor, we would be emiting
