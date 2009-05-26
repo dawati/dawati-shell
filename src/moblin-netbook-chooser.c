@@ -1401,7 +1401,7 @@ moblin_netbook_sn_finalize (MutterPlugin *plugin)
  * Helper function to launch application from GAppInfo, with all the
  * required SN housekeeping.
  */
-static void
+static gboolean
 moblin_netbook_launch_app (GAppInfo     *app,
                            GList        *files,
                            gboolean      no_chooser,
@@ -1413,6 +1413,7 @@ moblin_netbook_launch_app (GAppInfo     *app,
   GError                     *error = NULL;
   SnHashData                 *sn_data = g_slice_new0 (SnHashData);
   const gchar                *sn_id;
+  gboolean                    retval = TRUE;
 
   ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
 
@@ -1425,37 +1426,54 @@ moblin_netbook_launch_app (GAppInfo     *app,
 
   g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
 
-  g_app_info_launch (app, files, ctx, &error);
+  retval = g_app_info_launch (app, files, ctx, &error);
 
-  if (error)
+  if (!retval)
     {
-      g_warning ("Failed to lauch %s (%s)",
+      if (error)
+        {
+          g_warning ("Failed to launch %s (%s)",
 #if GLIB_CHECK_VERSION(2,20,0)
-                 g_app_info_get_commandline (app),
+                     g_app_info_get_commandline (app),
 #else
-                 g_app_info_get_name (app),
+                     g_app_info_get_name (app),
 #endif
-                 error->message);
+                     error->message);
 
-      g_error_free (error);
+          g_error_free (error);
+        }
+      else
+        {
+          g_warning ("Failed to launch %s",
+#if GLIB_CHECK_VERSION(2,20,0)
+                     g_app_info_get_commandline (app)
+#else
+                     g_app_info_get_name (app)
+#endif
+                     );
+        }
+
       g_hash_table_remove (priv->sn_hash, sn_id);
     }
 
   g_object_unref (ctx);
+
+  return retval;
 }
 
 /*
  * Starts application using the given path.
  */
-void
+gboolean
 moblin_netbook_launch_application (const  gchar *path,
                                    gboolean      no_chooser,
                                    gint          workspace)
 {
   GAppInfo *app;
   GError   *error = NULL;
+  gboolean  retval;
 
-  g_return_if_fail (path);
+  g_return_val_if_fail (path, FALSE);
 
   app = g_app_info_create_from_commandline (path, NULL,
                                             G_APP_INFO_CREATE_SUPPORTS_URIS,
@@ -1467,12 +1485,14 @@ moblin_netbook_launch_application (const  gchar *path,
                  path, error->message);
 
       g_error_free (error);
-      return;
+      return FALSE;
     }
 
-  moblin_netbook_launch_app (app, NULL, no_chooser, workspace);
+  retval = moblin_netbook_launch_app (app, NULL, no_chooser, workspace);
 
   g_object_unref (app);
+
+  return retval;
 }
 
 /*
@@ -1482,30 +1502,33 @@ moblin_netbook_launch_application (const  gchar *path,
  * NB: this function is currently unused; will be exposed via the new dbus
  *     API eventually.
  */
-void
+gboolean
 moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
                                                      GList        *files,
                                                      gboolean      no_chooser,
                                                      gint          workspace)
 {
   GAppInfo *app;
+  gboolean  retval;
 
-  g_return_if_fail (desktop);
+  g_return_val_if_fail (desktop, FALSE);
 
   app = G_APP_INFO (g_desktop_app_info_new_from_filename (desktop));
 
   if (!app)
     {
       g_warning ("Failed to create GAppInfo for file %s", desktop);
-      return;
+      return FALSE;
     }
 
-  moblin_netbook_launch_app (app, files, no_chooser, workspace);
+  retval = moblin_netbook_launch_app (app, files, no_chooser, workspace);
 
   g_object_unref (app);
+
+  return retval;
 }
 
-void
+gboolean
 moblin_netbook_launch_default_for_uri (const gchar *uri,
                                        gboolean     no_chooser,
                                        gint         workspace)
@@ -1517,20 +1540,21 @@ moblin_netbook_launch_default_for_uri (const gchar *uri,
   GError                     *error = NULL;
   SnHashData                 *sn_data = g_slice_new0 (SnHashData);
   const gchar                *sn_id;
+  gboolean                    retval = TRUE;
 
   app = g_app_info_get_default_for_uri_scheme (uri);
   ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
 
   sn_id = g_app_launch_context_get_startup_notify_id (ctx, app, NULL);
 
-  g_debug ("Got sn_id %s", sn_id);
-
   sn_data->workspace       = workspace;
   sn_data->without_chooser = no_chooser;
 
   g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
 
-  if (!g_app_info_launch_default_for_uri (uri, ctx, &error))
+  retval = g_app_info_launch_default_for_uri (uri, ctx, &error);
+
+  if (!retval)
     {
       if (error)
         {
@@ -1546,4 +1570,6 @@ moblin_netbook_launch_default_for_uri (const gchar *uri,
     }
 
   g_object_unref (ctx);
+
+  return retval;
 }

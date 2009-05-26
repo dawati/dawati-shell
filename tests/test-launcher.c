@@ -47,7 +47,7 @@ mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child)
   ;
 }
 
-void
+gboolean
 moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
                                                      GList        *files,
                                                      gboolean      no_chooser,
@@ -56,20 +56,21 @@ moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
   GAppInfo *app;
   GAppLaunchContext *ctx;
   GError *error = NULL;
+  gboolean retval = TRUE;
 
-  g_return_if_fail (desktop);
+  g_return_val_if_fail (desktop, FALSE);
 
   app = G_APP_INFO (g_desktop_app_info_new_from_filename (desktop));
 
   if (!app)
     {
       g_warning ("Failed to create GAppInfo for file %s", desktop);
-      return;
+      return FALSE;
     }
 
   ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
 
-  g_app_info_launch (app, files, ctx, &error);
+  retval = g_app_info_launch (app, files, ctx, &error);
 
   if (error)
     {
@@ -86,6 +87,8 @@ moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
 
   g_object_unref (ctx);
   g_object_unref (app);
+
+  return retval;
 }
 
 int
