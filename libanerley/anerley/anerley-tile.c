@@ -66,21 +66,27 @@ _item_display_name_changed_cb (AnerleyItem *item,
                        " ",
                        2);
 
-  if (splits && splits[0])
+  if (splits)
   {
-    nbtk_label_set_text ((NbtkLabel *)priv->primary_label,
-                         (gchar *)splits[0]);
-    g_free (splits[0]);
-  }
+    if (splits[0])
+    {
+      nbtk_label_set_text ((NbtkLabel *)priv->primary_label,
+                           (gchar *)splits[0]);
+      g_free (splits[0]);
 
-  if (splits && splits[1])
-  {
-    nbtk_label_set_text ((NbtkLabel *)priv->secondary_label,
-                         (gchar *)splits[1]);
-    g_free (splits[1]);
-  } else {
-    nbtk_label_set_text ((NbtkLabel *)priv->secondary_label,
-                         "");
+      if (splits[1])
+      {
+        nbtk_label_set_text ((NbtkLabel *)priv->secondary_label,
+                             (gchar *)splits[1]);
+        g_free (splits[1]);
+      } else {
+        nbtk_label_set_text ((NbtkLabel *)priv->secondary_label,
+                             "");
+      }
+    } else {
+        nbtk_label_set_text ((NbtkLabel *)priv->primary_label,
+                             "");
+    }
   }
 
   g_free (splits);
