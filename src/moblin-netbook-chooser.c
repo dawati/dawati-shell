@@ -1504,3 +1504,46 @@ moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
 
   g_object_unref (app);
 }
+
+void
+moblin_netbook_launch_default_for_uri (const gchar *uri,
+                                       gboolean     no_chooser,
+                                       gint         workspace)
+{
+  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GAppLaunchContext          *ctx;
+  GAppInfo                   *app;
+  GError                     *error = NULL;
+  SnHashData                 *sn_data = g_slice_new0 (SnHashData);
+  const gchar                *sn_id;
+
+  app = g_app_info_get_default_for_uri_scheme (uri);
+  ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+
+  sn_id = g_app_launch_context_get_startup_notify_id (ctx, app, NULL);
+
+  g_debug ("Got sn_id %s", sn_id);
+
+  sn_data->workspace       = workspace;
+  sn_data->without_chooser = no_chooser;
+
+  g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
+
+  if (!g_app_info_launch_default_for_uri (uri, ctx, &error))
+    {
+      if (error)
+        {
+          g_warning ("Failed to launch default app for %s (%s)",
+                     uri, error->message);
+
+          g_error_free (error);
+        }
+      else
+        g_warning ("Failed to launch default app for %s", uri);
+
+      g_hash_table_remove (priv->sn_hash, sn_id);
+    }
+
+  g_object_unref (ctx);
+}

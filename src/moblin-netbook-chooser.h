@@ -48,4 +48,9 @@ void     moblin_netbook_launch_application_from_desktop_file (const  gchar *desk
                                                               gboolean      no_chooser,
                                                               gint          workspace);
 
+void     moblin_netbook_launch_default_for_uri (const gchar *uri,
+                                                gboolean     no_chooser,
+                                                gint         workspace);
+
 #endif
+
