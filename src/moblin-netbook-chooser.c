@@ -1401,11 +1401,11 @@ moblin_netbook_sn_finalize (MutterPlugin *plugin)
  * Helper function to launch application from GAppInfo, with all the
  * required SN housekeeping.
  */
-static gboolean
-moblin_netbook_launch_app (GAppInfo     *app,
-                           GList        *files,
-                           gboolean      no_chooser,
-                           gint          workspace)
+gboolean
+moblin_netbook_launch_application_from_info (GAppInfo     *app,
+                                             GList        *files,
+                                             gboolean      no_chooser,
+                                             gint          workspace)
 {
   MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -1488,7 +1488,8 @@ moblin_netbook_launch_application (const  gchar *path,
       return FALSE;
     }
 
-  retval = moblin_netbook_launch_app (app, NULL, no_chooser, workspace);
+  retval = moblin_netbook_launch_application_from_info (app, NULL,
+                                                        no_chooser, workspace);
 
   g_object_unref (app);
 
@@ -1521,7 +1522,8 @@ moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
       return FALSE;
     }
 
-  retval = moblin_netbook_launch_app (app, files, no_chooser, workspace);
+  retval = moblin_netbook_launch_application_from_info (app, files,
+                                                        no_chooser, workspace);
 
   g_object_unref (app);
 

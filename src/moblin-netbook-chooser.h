@@ -25,6 +25,7 @@
 #ifndef MOBLIN_NETBOOK_CHOOSER_H
 #define MOBLIN_NETBOOK_CHOOSER_H
 
+#include <gio/gdesktopappinfo.h>
 #include "moblin-netbook.h"
 
 void     show_workspace_chooser (MutterPlugin *plugin,
@@ -38,6 +39,12 @@ gboolean moblin_netbook_sn_should_map (MutterPlugin *plugin,
                                        const gchar  *sn_id);
 
 void     moblin_netbook_sn_finalize (MutterPlugin *plugin);
+
+gboolean
+moblin_netbook_launch_application_from_info (GAppInfo     *app,
+                                             GList        *files,
+                                             gboolean      no_chooser,
+                                             gint          workspace);
 
 gboolean moblin_netbook_launch_application (const  gchar *path,
                                             gboolean      no_chooser,
