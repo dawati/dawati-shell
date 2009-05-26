@@ -39,8 +39,8 @@
 
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
-#include "moblin-netbook-launcher.h"
 #include "mnb-drop-down.h"
+#include "moblin-netbook-launcher.h"
 #include "mnb-entry.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-grid.h"
@@ -144,7 +144,7 @@ container_has_children (ClutterContainer *container)
  * browser- and filter-mode.
  */
 struct launcher_data_ {
-  MutterPlugin            *self;
+  MnbDropDown             *parent;
   GtkIconTheme            *theme;
   PengeAppBookmarkManager *manager;
   MnbLauncherMonitor      *monitor;
@@ -230,14 +230,14 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
 
 static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
-                              MutterPlugin       *plugin)
+                              MnbDropDown        *dropdown)
 {
   GAppLaunchContext *context;
   const gchar       *desktop_file_path;
   GDesktopAppInfo   *app_info;
   GError            *error = NULL;
 
-  g_return_if_fail (plugin);
+  g_return_if_fail (dropdown);
 
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
@@ -255,9 +255,15 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
   g_object_unref (app_info);
   g_object_unref (context);
 
-  // clutter_actor_hide (priv->launcher);
-  // nbtk_button_set_checked (NBTK_BUTTON (priv->panel_buttons[5]), FALSE);
-  // hide_panel (plugin);
+  /*
+   * FIXME -- had the launcher been an custom actor, we would be emiting
+   * "request-hide" signal that the Toolbar would hook into. It's probably not
+   * worth refactoring at this moment, but eventually the launcher will need
+   * to be subclass of MnbPanelClutter and here it will be emiting the
+   * "request-hide" signal over dbus. For now just call the drop down API
+   * directly.
+   */
+  mnb_drop_down_hide_with_toolbar (dropdown);
 }
 
 static void
@@ -277,7 +283,7 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
                         launcher_data);
       g_signal_connect (clone, "activated",
                         G_CALLBACK (launcher_button_activated_cb),
-                        launcher_data->self);
+                        launcher_data->parent);
 
       /* Make sure fav apps show up. */
       if (!launcher_data->is_filtering)
@@ -592,7 +598,7 @@ launcher_data_keynav_in_grid (launcher_data_t   *launcher_data,
           if (keyval == CLUTTER_Return)
             {
               launcher_button_activated_cb (MNB_LAUNCHER_BUTTON (launcher),
-                                            launcher_data->self);
+                                            launcher_data->parent);
             }
           else
             {
@@ -747,7 +753,7 @@ launcher_data_fill_category (launcher_data_t *launcher_data)
                             launcher_data);
           g_signal_connect (button, "activated",
                             G_CALLBACK (launcher_button_activated_cb),
-                            launcher_data->self);
+                            launcher_data->parent);
           g_signal_connect (button, "fav-toggled",
                             G_CALLBACK (launcher_button_fav_toggled_cb),
                             launcher_data);
@@ -872,7 +878,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
                                 launcher_data);
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_button_activated_cb),
-                                launcher_data->self);
+                                launcher_data->parent);
               g_signal_connect (button, "fav-toggled",
                                 G_CALLBACK (launcher_button_fav_toggled_cb),
                                 launcher_data);
@@ -934,7 +940,7 @@ launcher_data_theme_changed_cb (GtkIconTheme    *theme,
  * Ctor.
  */
 static launcher_data_t *
-launcher_data_new (MutterPlugin *self,
+launcher_data_new (MnbDropDown  *dropdown,
                    ClutterActor *filter_entry,
                    ClutterActor *scrollview,
                    gint          width)
@@ -943,7 +949,7 @@ launcher_data_new (MutterPlugin *self,
 
   /* Launcher data instance. */
   launcher_data = g_new0 (launcher_data_t, 1);
-  launcher_data->self = self;
+  launcher_data->parent = dropdown;
   launcher_data->theme = gtk_icon_theme_get_default ();
   g_signal_connect (launcher_data->theme, "changed",
                     G_CALLBACK (launcher_data_theme_changed_cb), launcher_data);
@@ -1307,7 +1313,7 @@ dropdown_hide_cb (MnbDropDown     *dropdown,
 }
 
 ClutterActor *
-moblin_netbook_launcher_panel_new (MutterPlugin      *plugin,
+moblin_netbook_launcher_panel_new (MnbDropDown       *parent,
                                    gint               width,
                                    gint               height,
                                    launcher_data_t  **launcher_data_out)
@@ -1366,7 +1372,7 @@ moblin_netbook_launcher_panel_new (MutterPlugin      *plugin,
                                         "y-fill", TRUE,
                                         NULL);
 
-  launcher_data = launcher_data_new (plugin, CLUTTER_ACTOR (entry), scroll,
+  launcher_data = launcher_data_new (parent, CLUTTER_ACTOR (entry), scroll,
                                      width - SCROLLBAR_RESERVED_WIDTH);
 
   /* Hook up search. */
@@ -1401,7 +1407,8 @@ make_launcher (MutterPlugin *plugin,
 
   drop_down = mnb_drop_down_new (plugin);
 
-  panel = moblin_netbook_launcher_panel_new (plugin, width, height, &launcher_data);
+  panel = moblin_netbook_launcher_panel_new (MNB_DROP_DOWN (drop_down),
+                                             width, height, &launcher_data);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (panel));
 
   g_signal_connect_after (drop_down, "show",

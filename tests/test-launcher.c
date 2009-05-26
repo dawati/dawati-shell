@@ -5,9 +5,9 @@
 #include <clutter/clutter.h>
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
+#include "mnb-drop-down.h"
 #include "moblin-netbook.h"
 #include "moblin-netbook-launcher.h"
-#include "mnb-drop-down.h"
 
 /* Fake plugin implementation to satisfy the linker. */
 
@@ -20,10 +20,9 @@ moblin_netbook_plugin_get_type (void)
   return 0;
 }
 
-gboolean
-hide_panel (MutterPlugin *plugin)
+void
+mnb_drop_down_hide_with_toolbar (MnbDropDown *dropdown)
 {
-  return FALSE;
 }
 
 /* Fake dropdown implementation to satisfy the linker. */
