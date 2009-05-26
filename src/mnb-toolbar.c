@@ -873,6 +873,9 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                               G_CALLBACK (_media_drop_down_hidden), grid);
             g_signal_connect (panel, "show-completed",
                               G_CALLBACK (_media_drop_down_shown), grid);
+            g_signal_connect_swapped (grid, "dismiss",
+                                  G_CALLBACK (mnb_drop_down_hide_with_toolbar),
+                                  panel);
           }
           break;
 #endif
@@ -905,7 +908,8 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             g_signal_connect (grid, "launch",
                               G_CALLBACK (_netgrid_launch_cb), toolbar);
             g_signal_connect_swapped (grid, "launched",
-                                      G_CALLBACK (clutter_actor_hide), toolbar);
+                                 G_CALLBACK (mnb_drop_down_hide_with_toolbar),
+                                 panel);
           }
           break;
 #endif
