@@ -25,7 +25,7 @@
 #include "penge-lastfm-tile.h"
 #include "penge-magic-texture.h"
 
-#include "moblin-netbook-chooser.h"
+#include "src/moblin-netbook-chooser.h"
 
 G_DEFINE_TYPE (PengeLastfmTile, penge_lastfm_tile, PENGE_TYPE_PEOPLE_TILE)
 

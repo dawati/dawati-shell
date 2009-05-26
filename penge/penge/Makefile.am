@@ -46,7 +46,7 @@ libpenge_la_SOURCES = \
 		      penge-tasks-pane.c \
 		      penge-myspace-tile.c
 
-AM_CFLAGS = @MUTTER_PLUGIN_CFLAGS@ -Wall $(PENGE_CFLAGS) -I../../src \
+AM_CFLAGS = @MUTTER_PLUGIN_CFLAGS@ -Wall $(PENGE_CFLAGS) -I$(top_srcdir)\
 	    -DPKG_DATADIR=\"$(pkgdatadir)\"
 AM_LDFLAGS = $(PENGE_LIBS)
 

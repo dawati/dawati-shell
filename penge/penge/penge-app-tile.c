@@ -26,7 +26,7 @@
 #include "penge-app-bookmark-manager.h"
 #include "penge-utils.h"
 
-#include "moblin-netbook-chooser.h"
+#include "src/moblin-netbook-chooser.h"
 
 G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
 
