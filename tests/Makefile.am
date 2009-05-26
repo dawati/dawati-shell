@@ -11,14 +11,21 @@ AM_CFLAGS = \
 	-fPIC \
 	-Werror=missing-prototypes
 
+# FIXME -- because of various fscked dependencies any tests relying on Penge
+# cannot be built (Penge calls into moblin_netbook_launch_*() functions, which
+# dependency will go away when we move to the dbus API.) In the meantime,
+
+# test-launcher: uses Penge bookmark manager; for this to work, Penge will need
+#                to be a shared library.
+#
+# test-pasteboard: it uses some formating function from Penge utils; I just
+#                c&p it into test-launcher.c
+
 LDADD = \
-	$(PENGE_LIBS) \
-	$(MUTTER_PLUGIN_LIBS) \
-	$(top_builddir)/penge/penge/libpenge.la
+	$(MUTTER_PLUGIN_LIBS)
 
 noinst_PROGRAMS = \
 	test-entry \
-	test-launcher \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree \

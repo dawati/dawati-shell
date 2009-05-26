@@ -27,6 +27,8 @@
 
 #include <glib/gi18n.h>
 
+#include "moblin-netbook-chooser.h"
+
 G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -148,17 +150,16 @@ _button_press_event (ClutterActor *actor,
                error->message);
     g_clear_error (&error);
   } else {
-    if (!g_spawn_command_line_async (app_exec, &error))
+    if (!moblin_netbook_launch_application (app_exec, FALSE, -2))
     {
-      g_warning (G_STRLOC ": Error launching: %s",
-                 error->message);
-      g_clear_error (&error);
+      g_warning (G_STRLOC ": Error launching: %s", app_exec);
     } else {
       penge_utils_signal_activated (actor);
     }
   }
 
   g_free (last_application);
+  g_free (app_exec);
 
   return TRUE;
 }
@@ -252,7 +253,7 @@ penge_recent_file_tile_constructed (GObject *object)
                                  NULL);
   }
 
-  g_signal_connect (object, 
+  g_signal_connect (object,
                     "button-press-event",
                     (GCallback)_button_press_event,
                     object);
@@ -352,7 +353,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_filename_label));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_END);
 
   nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
@@ -365,7 +366,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_type_label));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                               PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_END);
 
 
