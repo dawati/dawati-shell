@@ -259,6 +259,8 @@ _request_passphrase (CarrickServiceItem *item)
                     0, 0);
   gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
   entry = gtk_entry_new ();
+  gtk_entry_set_visibility (GTK_ENTRY (entry),
+                            FALSE);
   gtk_table_attach (GTK_TABLE (table),
                     entry,
                     1, 2,
@@ -267,8 +269,6 @@ _request_passphrase (CarrickServiceItem *item)
                     GTK_EXPAND | GTK_FILL,
                     0, 0);
   checkbox = gtk_check_button_new_with_label (_("Show password"));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox),
-                                TRUE);
   g_signal_connect (checkbox,
                     "toggled",
                     G_CALLBACK (_show_pass_toggled_cb),
