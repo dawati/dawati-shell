@@ -1430,7 +1430,12 @@ moblin_netbook_launch_app (MutterPlugin *plugin,
   if (error)
     {
       g_warning ("Failed to lauch %s (%s)",
-                 g_app_info_get_commandline (app), error->message);
+#if GLIB_CHECK_VERSION(2,20,0)
+                 g_app_info_get_commandline (app),
+#else
+                 g_app_info_get_name (app),
+#endif
+                 error->message);
 
       g_error_free (error);
       g_hash_table_remove (priv->sn_hash, sn_id);
