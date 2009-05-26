@@ -36,7 +36,7 @@ noinst_PROGRAMS = \
 test_launcher_SOURCES = \
 	$(top_srcdir)/src/mnb-entry.c \
 	$(top_srcdir)/src/mnb-launcher-button.c \
-	$(top_srcdir)/src/mnb-launcher-entry.c \
+	$(top_srcdir)/src/mnb-launcher-application.c \
 	$(top_srcdir)/src/mnb-launcher-grid.c \
 	$(top_srcdir)/src/mnb-launcher-tree.c \
 	$(top_srcdir)/src/moblin-netbook-launcher.c \
@@ -51,12 +51,12 @@ test_entry_SOURCES = \
 	test-entry.c
 
 test_launcher_monitor_SOURCES = \
-	$(top_srcdir)/src/mnb-launcher-entry.c \
+	$(top_srcdir)/src/mnb-launcher-application.c \
 	$(top_srcdir)/src/mnb-launcher-tree.c \
 	test-launcher-monitor.c
 
 test_launcher_tree_SOURCES = \
-	$(top_srcdir)/src/mnb-launcher-entry.c \
+	$(top_srcdir)/src/mnb-launcher-application.c \
 	$(top_srcdir)/src/mnb-launcher-tree.c \
 	test-launcher-tree.c
 

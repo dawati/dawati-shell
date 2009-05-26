@@ -97,20 +97,20 @@ mnb_launcher_monitor_free (MnbLauncherMonitor *self)
 }
 
 /*
- * MnbLauncherEntry helpers.
+ * MnbLauncherApplication helpers.
  */
 
-static MnbLauncherEntry *
-mnb_launcher_entry_create_from_gmenu_entry (GMenuTreeEntry *entry)
+static MnbLauncherApplication *
+mnb_launcher_application_create_from_gmenu_entry (GMenuTreeEntry *entry)
 {
-  MnbLauncherEntry *self;
+  MnbLauncherApplication *self;
 
   g_return_val_if_fail (entry, NULL);
 
   /* We have a patch to libgnome-menu that adds an accessor for the
    * GenericName desktop entry field. */
 #if GMENU_WITH_GENERIC_NAME
-  self = g_new0 (MnbLauncherEntry, 1);
+  self = g_new0 (MnbLauncherApplication, 1);
   self->desktop_file_path = g_strdup (gmenu_tree_entry_get_desktop_file_path (entry));
   self->name = gmenu_tree_entry_get_generic_name (entry) ?
                 g_strdup (gmenu_tree_entry_get_generic_name (entry)) :
@@ -119,18 +119,18 @@ mnb_launcher_entry_create_from_gmenu_entry (GMenuTreeEntry *entry)
   self->icon = g_strdup (gmenu_tree_entry_get_icon (entry));
   self->comment = g_strdup (gmenu_tree_entry_get_comment (entry));
 #else
-  self = mnb_launcher_entry_create (gmenu_tree_entry_get_desktop_file_path (entry));
+  self = mnb_launcher_application_new_from_desktop_file (gmenu_tree_entry_get_desktop_file_path (entry));
 #endif
 
   return self;
 }
 
 static gint
-mnb_launcher_entry_compare (MnbLauncherEntry *self,
-                            MnbLauncherEntry *b)
+mnb_launcher_application_compare (MnbLauncherApplication *self,
+                            MnbLauncherApplication *b)
 {
-  return g_utf8_collate (mnb_launcher_entry_get_name (self),
-                         mnb_launcher_entry_get_name (b));
+  return g_utf8_collate (mnb_launcher_application_get_name (self),
+                         mnb_launcher_application_get_name (b));
 }
 
 /*
@@ -160,7 +160,7 @@ mnb_launcher_directory_free (MnbLauncherDirectory *self)
   iter = self->entries;
   while (iter)
     {
-      mnb_launcher_entry_free ((MnbLauncherEntry *) iter->data);
+      g_object_unref (MNB_LAUNCHER_APPLICATION (iter->data));
       iter = g_slist_delete_link (iter, iter);
     }
 
@@ -178,7 +178,7 @@ static void
 mnb_launcher_directory_sort_entries (MnbLauncherDirectory *self)
 {
   self->entries = g_slist_sort (self->entries,
-                                (GCompareFunc) mnb_launcher_entry_compare);
+                                (GCompareFunc) mnb_launcher_application_compare);
 }
 
 /*
@@ -208,7 +208,7 @@ get_all_applications_from_alias (GMenuTreeAlias *alias,
     case GMENU_TREE_ITEM_ENTRY:
       directory->entries = g_slist_prepend (
         directory->entries,
-        mnb_launcher_entry_create_from_gmenu_entry (GMENU_TREE_ENTRY (aliased_item)));
+        mnb_launcher_application_create_from_gmenu_entry (GMENU_TREE_ENTRY (aliased_item)));
       break;
 
     case GMENU_TREE_ITEM_DIRECTORY:
@@ -254,7 +254,7 @@ get_all_applications_from_dir (GMenuTreeDirectory *branch,
                 directory->entries =
                     g_slist_prepend (
                       directory->entries,
-                      mnb_launcher_entry_create_from_gmenu_entry (GMENU_TREE_ENTRY (iter->data)));
+                      mnb_launcher_application_create_from_gmenu_entry (GMENU_TREE_ENTRY (iter->data)));
         	    }
         	  break;
 

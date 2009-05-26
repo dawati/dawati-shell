@@ -25,7 +25,7 @@
 #define MNB_LAUNCHER_TREE_H
 
 #include <glib.h>
-#include "mnb-launcher-entry.h"
+#include "mnb-launcher-application.h"
 
 G_BEGIN_DECLS
 

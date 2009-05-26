@@ -401,7 +401,7 @@ launcher_button_reload_icon_cb (ClutterActor  *launcher,
 }
 
 static NbtkWidget *
-launcher_button_create_from_entry (MnbLauncherEntry *entry,
+launcher_button_create_from_entry (MnbLauncherApplication *entry,
                                    const gchar      *category,
                                    GtkIconTheme     *theme)
 {
@@ -414,10 +414,10 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
   icon_name = NULL;
   button = NULL;
 
-  generic_name = mnb_launcher_entry_get_name (entry);
-  exec = mnb_launcher_entry_get_exec (entry);
-  description = mnb_launcher_entry_get_comment (entry);
-  icon_name = mnb_launcher_entry_get_icon (entry);
+  generic_name = mnb_launcher_application_get_name (entry);
+  exec = mnb_launcher_application_get_executable (entry);
+  description = mnb_launcher_application_get_description (entry);
+  icon_name = mnb_launcher_application_get_icon (entry);
   icon_file = launcher_button_get_icon_file (icon_name, theme);
 
   if (generic_name && exec && icon_file)
@@ -430,7 +430,7 @@ launcher_button_create_from_entry (MnbLauncherEntry *entry,
       button = mnb_launcher_button_new (icon_name, icon_file, LAUNCHER_ICON_SIZE,
                                         generic_name, category,
                                         description, last_used, exec,
-                                        mnb_launcher_entry_get_desktop_file_path (entry));
+                                        mnb_launcher_application_get_desktop_file (entry));
       g_free (last_used);
       clutter_actor_set_size (CLUTTER_ACTOR (button),
                               LAUNCHER_WIDTH,
@@ -727,7 +727,7 @@ launcher_data_fill_category (launcher_data_t *launcher_data)
   button = NULL;
   for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
     {
-      button = launcher_button_create_from_entry ((MnbLauncherEntry *) entry_iter->data,
+      button = launcher_button_create_from_entry ((MnbLauncherApplication *) entry_iter->data,
                                                   directory->name,
                                                   launcher_data->theme);
       if (button)
@@ -840,7 +840,7 @@ launcher_data_fill (launcher_data_t *launcher_data)
         {
           gchar             *uri;
           gchar             *desktop_file_path;
-          MnbLauncherEntry  *entry;
+          MnbLauncherApplication  *entry;
           NbtkWidget        *button = NULL;
           GError            *error = NULL;
 
@@ -853,12 +853,12 @@ launcher_data_fill (launcher_data_t *launcher_data)
               continue;
             }
 
-          entry = mnb_launcher_entry_create (desktop_file_path);
+          entry = mnb_launcher_application_new_from_desktop_file (desktop_file_path);
           g_free (desktop_file_path);
           if (entry)
             {
               button = launcher_button_create_from_entry (entry, NULL, launcher_data->theme);
-              mnb_launcher_entry_free (entry);
+              g_object_unref (entry);
             }
 
           if (button)
