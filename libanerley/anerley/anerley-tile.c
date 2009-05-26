@@ -421,6 +421,8 @@ anerley_tile_init (AnerleyTile *self)
                                         NULL);
 
   priv->primary_label = nbtk_label_new ("");
+  nbtk_widget_set_style_class_name (priv->primary_label,
+                                    "AnerleyTilePrimaryLabel");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->primary_label,
                                         0,
@@ -440,10 +442,10 @@ anerley_tile_init (AnerleyTile *self)
                                         "col-span",
                                         2,
                                         NULL);
-  nbtk_widget_set_style_class_name (priv->primary_label,
-                                    "AnerleyTilePrimaryLabel");
 
   priv->secondary_label = nbtk_label_new ("");
+  nbtk_widget_set_style_class_name (priv->secondary_label,
+                                    "AnerleyTileSecondaryLabel");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->secondary_label,
                                         1,
@@ -463,10 +465,10 @@ anerley_tile_init (AnerleyTile *self)
                                         "col-span",
                                         2,
                                         NULL);
-  nbtk_widget_set_style_class_name (priv->secondary_label,
-                                    "AnerleyTileSecondaryLabel");
 
   priv->presence_label = nbtk_label_new ("");
+  nbtk_widget_set_style_class_name (priv->presence_label,
+                                    "AnerleyTilePresenceLabel");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->presence_label,
                                         2,
@@ -484,8 +486,6 @@ anerley_tile_init (AnerleyTile *self)
                                         "y-align",
                                         0.0,
                                         NULL);
-  nbtk_widget_set_style_class_name (priv->presence_label,
-                                    "AnerleyTilePresenceLabel");
   nbtk_table_set_col_spacing ((NbtkTable *)self,
                               4);
   nbtk_table_set_row_spacing ((NbtkTable *)self,
