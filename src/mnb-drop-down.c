@@ -128,6 +128,13 @@ mnb_drop_down_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 
   priv->in_show_animation = FALSE;
   priv->hide_toolbar = FALSE;
+
+  if (priv->button)
+    {
+      if (!nbtk_button_get_checked (priv->button))
+        nbtk_button_set_checked (priv->button, TRUE);
+    }
+
   g_signal_emit (actor, dropdown_signals[SHOW_COMPLETED], 0);
   g_object_unref (actor);
 }
