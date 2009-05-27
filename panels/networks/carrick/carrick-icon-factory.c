@@ -46,7 +46,15 @@ static const gchar *icon_names[] = {
   PKG_ICON_DIR "/" "network-wireless-signal-good.png",
   PKG_ICON_DIR "/" "network-wireless-signal-good-hover.png",
   PKG_ICON_DIR "/" "network-wireless-signal-strong.png",
-  PKG_ICON_DIR "/" "network-wireless-signal-strong-hover.png"
+  PKG_ICON_DIR "/" "network-wireless-signal-strong-hover.png",
+  PKG_ICON_DIR "/" "network-wimax-strong.png",
+  PKG_ICON_DIR "/" "network-wimax-strong-hover.png",
+  PKG_ICON_DIR "/" "network-wimax-weak.png",
+  PKG_ICON_DIR "/" "network-wimax-weak-hover.png",
+  PKG_ICON_DIR "/" "network-3g-strong.png",
+  PKG_ICON_DIR "/" "network-3g-strong-hover.png",
+  PKG_ICON_DIR "/" "network-3g-weak.png",
+  PKG_ICON_DIR "/" "network-3g-weak-hover.png"
 };
 
 struct _CarrickIconFactoryPrivate
@@ -65,6 +73,14 @@ struct _CarrickIconFactoryPrivate
   GdkPixbuf *wireless_good_hov_img;
   GdkPixbuf *wireless_strong_img;
   GdkPixbuf *wireless_strong_hov_img;
+  GdkPixbuf *wimax_strong_img;
+  GdkPixbuf *wimax_strong_hov_img;
+  GdkPixbuf *wimax_weak_img;
+  GdkPixbuf *wimax_weak_hov_img;
+  GdkPixbuf *threeg_strong_img;
+  GdkPixbuf *threeg_strong_hov_img;
+  GdkPixbuf *threeg_weak_img;
+  GdkPixbuf *threeg_weak_hov_img;
 };
 
 static void
@@ -102,6 +118,14 @@ carrick_icon_factory_init (CarrickIconFactory *self)
   priv->wireless_good_hov_img = NULL;
   priv->wireless_strong_img = NULL;
   priv->wireless_strong_hov_img = NULL;
+  priv->wimax_strong_img = NULL;
+  priv->wimax_strong_hov_img = NULL;
+  priv->wimax_weak_img = NULL;
+  priv->wimax_weak_hov_img = NULL;
+  priv->threeg_strong_img = NULL;
+  priv->threeg_strong_hov_img = NULL;
+  priv->threeg_weak_img = NULL;
+  priv->threeg_weak_hov_img = NULL;
 }
 
 CarrickIconFactory*
@@ -147,6 +171,28 @@ carrick_icon_factory_get_state_for_service (CmService *service)
         icon_state = ICON_WIRELESS_NETWORK_GOOD;
       else
         icon_state = ICON_WIRELESS_NETWORK_WEAK;
+    }
+    else if (g_strcmp0 ("wimax", type) == 0)
+    {
+      if (strength > 50)
+      {
+        icon_state = ICON_WIMAX_NETWORK_STRONG;
+      }
+      else
+      {
+        icon_state = ICON_WIMAX_NETWORK_WEAK;
+      }
+    }
+    else if (g_strcmp0 ("cellular", type) == 0)
+    {
+      if (strength > 50)
+      {
+        icon_state = ICON_3G_NETWORK_STRONG;
+      }
+      else
+      {
+        icon_state = ICON_3G_NETWORK_WEAK;
+      }
     }
   }
 
@@ -301,6 +347,78 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
                                     &error);
       }
       icon = priv->wireless_strong_hov_img;
+      break;
+    case ICON_WIMAX_NETWORK_STRONG:
+      if (!priv->wimax_strong_img)
+      {
+        priv->wimax_strong_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->wimax_strong_img;
+      break;
+    case ICON_WIMAX_NETWORK_STRONG_HOVER:
+      if (!priv->wimax_strong_hov_img)
+      {
+        priv->wimax_strong_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->wimax_strong_hov_img;
+      break;
+    case ICON_WIMAX_NETWORK_WEAK:
+      if (!priv->wimax_weak_img)
+      {
+        priv->wimax_weak_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->wimax_weak_img;
+      break;
+    case ICON_WIMAX_NETWORK_WEAK_HOVER:
+      if (!priv->wimax_weak_hov_img)
+      {
+        priv->wimax_weak_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->wimax_weak_hov_img;
+      break;
+    case ICON_3G_NETWORK_STRONG:
+      if (!priv->threeg_strong_img)
+      {
+        priv->threeg_strong_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->threeg_strong_img;
+      break;
+    case ICON_3G_NETWORK_STRONG_HOVER:
+      if (!priv->threeg_strong_hov_img)
+      {
+        priv->threeg_strong_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->threeg_strong_hov_img;
+      break;
+    case ICON_3G_NETWORK_WEAK:
+      if (!priv->threeg_weak_img)
+      {
+        priv->threeg_weak_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->threeg_weak_img;
+      break;
+    case ICON_3G_NETWORK_WEAK_HOVER:
+      if (!priv->threeg_weak_hov_img)
+      {
+        priv->threeg_weak_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->threeg_weak_hov_img;
       break;
     default:
       if (!priv->error_img)
