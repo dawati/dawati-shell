@@ -109,8 +109,6 @@ struct _MoblinNetbookPluginPrivate
   MnbInputRegion         notification_cluster_input_region;
   MnbInputRegion         notification_urgent_input_region;
 
-  ClutterActor          *toolbar_hint;
-
   Window                 focus_xwin;
 };
 

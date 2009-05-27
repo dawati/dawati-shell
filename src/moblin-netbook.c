@@ -225,72 +225,6 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
                                CLUTTER_ACTOR_IS_VISIBLE(notify_urgent));
 }
 
-static ClutterActor*
-moblin_netbook_make_toolbar_hint ()
-{
-  ClutterText        *txt;
-  ClutterActor       *bin;
-  NbtkWidget         *label, *table;
-
-  table = nbtk_table_new ();
-
-  bin = CLUTTER_ACTOR (nbtk_bin_new ());
-  label = nbtk_label_new (_("Move cursor to the top of the screen"
-                             " to activate the toolbar"));
-
-  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(label)));
-  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
-  clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
-
-  nbtk_widget_set_style_class_name (label, "toolbar-instruction-label");
-
-  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
-  nbtk_bin_set_alignment (NBTK_BIN (bin),
-                          NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
-
-  clutter_actor_set_name (CLUTTER_ACTOR (bin),
-                          "toolbar-instruction-box");
-
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
-                                    "toolbar-instruction-box");
-
-  nbtk_table_add_actor (NBTK_TABLE (table), bin, 0, 0);
-
-  return CLUTTER_ACTOR (table);
-}
-
-static void
-moblin_netbook_toolbar_show_cb (ClutterActor *toolbar, MutterPlugin *plugin)
-{
-  static int count = 0;
-
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  /*
-   * Ignore the first show of the toolbar on startup
-   */
-  if (++count <= 1)
-    return;
-
-  if (priv->toolbar_hint != NULL)
-    {
-      ClutterActor *overlay;
-
-      overlay = clutter_actor_get_parent (priv->toolbar_hint);
-
-      clutter_container_remove_actor (CLUTTER_CONTAINER(overlay),
-                                      priv->toolbar_hint);
-
-      priv->toolbar_hint = NULL;
-
-      /* one-of */
-      g_signal_handlers_disconnect_by_func (toolbar,
-                                            moblin_netbook_toolbar_show_cb,
-                                            plugin);
-    }
-}
-
 static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
@@ -342,17 +276,6 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
 
-  /* Little temp hint to inform user how to get to the toolbar */
-
-  priv->toolbar_hint = moblin_netbook_make_toolbar_hint ();
-
-  clutter_actor_set_width (priv->toolbar_hint, 272);
-  clutter_actor_set_position (priv->toolbar_hint,
-                              screen_width
-                               - clutter_actor_get_width (priv->toolbar_hint)
-                               - 20,
-                              66);
-
   lowlight = clutter_rectangle_new_with_color (&low_clr);
   priv->lowlight = lowlight;
   clutter_actor_set_size (lowlight, screen_width, screen_height);
@@ -366,9 +289,6 @@ moblin_netbook_plugin_constructed (GObject *object)
    */
   toolbar = priv->toolbar =
     CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
-
-  g_signal_connect (toolbar, "show",
-                    G_CALLBACK (moblin_netbook_toolbar_show_cb), plugin);
 
 #if 1
   /*
@@ -460,7 +380,6 @@ moblin_netbook_plugin_constructed (GObject *object)
    *  - lowlight is above everything except urgent notifications
    */
   clutter_container_add (CLUTTER_CONTAINER (overlay),
-                         priv->toolbar_hint,
                          toolbar,
                          priv->notification_cluster,
                          lowlight,

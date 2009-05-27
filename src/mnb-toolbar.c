@@ -114,6 +114,8 @@ struct _MnbToolbarPrivate
 
   ClutterActor *hbox; /* This is where all the contents are placed */
 
+  ClutterActor *hint;
+
   NbtkWidget   *time; /* The time and date fields, needed for the updates */
   NbtkWidget   *date;
 
@@ -316,8 +318,27 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 }
 
 static void
+mnb_toolbar_first_show_cb (MnbToolbar *toolbar, gpointer data)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  if (priv->hint)
+    {
+      clutter_actor_destroy (priv->hint);
+      priv->hint = NULL;
+
+      /* one-of */
+      g_signal_handlers_disconnect_by_func (toolbar,
+                                            mnb_toolbar_first_show_cb,
+                                            data);
+    }
+}
+
+static void
 mnb_toolbar_hide (ClutterActor *actor)
 {
+  static gint count = 0;
+
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   gint               height;
   gint               i;
@@ -327,6 +348,16 @@ mnb_toolbar_hide (ClutterActor *actor)
     {
       g_signal_stop_emission_by_name (actor, "hide");
       return;
+    }
+
+  /*
+   * Show toolbar hint the very first time we are hidden.
+   */
+  if ((++count == 1) && priv->hint)
+    {
+      clutter_actor_show (priv->hint);
+      g_signal_connect (actor, "show",
+                        G_CALLBACK (mnb_toolbar_first_show_cb), NULL);
     }
 
   for (i = 0; i < NUM_ZONES; ++i)
@@ -1079,6 +1110,53 @@ mnb_toolbar_kbd_grab_notify_cb (MetaScreen *screen,
 }
 
 static void
+mnb_toolbar_make_hint (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
+  ClutterText       *txt;
+  ClutterActor      *bin;
+  ClutterActor      *overlay;
+  NbtkWidget        *label;
+  gint               screen_width, screen_height;
+
+  bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  label = nbtk_label_new (_("Move cursor to the top of the screen"
+                             " to activate the toolbar"));
+
+  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(label)));
+  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
+
+  nbtk_widget_set_style_class_name (label, "toolbar-instruction-label");
+
+  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+  nbtk_bin_set_alignment (NBTK_BIN (bin),
+                          NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (bin),
+                          "toolbar-instruction-box");
+
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
+                                    "toolbar-instruction-box");
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  clutter_actor_set_width (bin, 272);
+  clutter_actor_set_position (bin,
+                              screen_width - clutter_actor_get_width (bin) - 20,
+                              2);
+
+  overlay = mutter_plugin_get_overlay_group (plugin);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), bin);
+  clutter_actor_hide (bin);
+
+  priv->hint = bin;
+}
+
+static void
 mnb_toolbar_constructed (GObject *self)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (self)->priv;
@@ -1167,6 +1245,13 @@ mnb_toolbar_constructed (GObject *self)
                     "button-press-event",
                     G_CALLBACK (mnb_toolbar_stage_input_cb),
                     self);
+
+  /*
+   * Construct the toolbar hint
+   *
+   * TODO -- only on first 5 boots ...
+   */
+  mnb_toolbar_make_hint (MNB_TOOLBAR (self));
 
   /*
    * Hook into "show" signal on stage, to set up input regions.
