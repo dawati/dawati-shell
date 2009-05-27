@@ -1150,8 +1150,8 @@ mnb_toolbar_make_hint (MnbToolbar *toolbar)
 
   clutter_actor_set_width (bin, 272);
   clutter_actor_set_position (bin,
-                              screen_width - clutter_actor_get_width (bin) - 20,
-                              2);
+                              screen_width - clutter_actor_get_width (bin) - 10,
+                              10);
 
   overlay = mutter_plugin_get_overlay_group (plugin);
 
