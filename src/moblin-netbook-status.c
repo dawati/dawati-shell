@@ -254,6 +254,7 @@ make_status (MutterPlugin *plugin, gint width)
 
   table = CLUTTER_ACTOR (nbtk_table_new ());
   nbtk_widget_set_style_class_name (NBTK_WIDGET (table), "MnbStatusPageTable");
+  nbtk_table_set_row_spacing (NBTK_TABLE (table), 6);
   clutter_actor_set_width (CLUTTER_ACTOR (table), width);
   clutter_actor_set_reactive (table, TRUE);
 
