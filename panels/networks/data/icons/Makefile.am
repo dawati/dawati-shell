@@ -14,7 +14,15 @@ icons_DATA = \
 	      network-wireless-signal-strong-hover.png \
 	      network-wireless-signal-strong.png \
 	      network-wireless-signal-weak-hover.png \
-	      network-wireless-signal-weak.png
+	      network-wireless-signal-weak.png \
+	      network-wimax-strong-hover.png \
+	      network-wimax-strong.png \
+	      network-wimax-weak-hover.png \
+	      network-wimax-weak.png \
+	      network-3g-strong-hover.png \
+	      network-3g-strong.png \
+	      network-3g-weak-hover.png \
+	      network-3g-weak.png
 
 
 EXTRA_DIST = $(icons_DATA)
