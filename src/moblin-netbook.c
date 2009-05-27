@@ -333,7 +333,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   /* Little temp hint to inform user how to get to the toolbar */
 
   priv->toolbar_hint = moblin_netbook_make_toolbar_hint ();
-  clutter_container_add (CLUTTER_CONTAINER (overlay), priv->toolbar_hint, NULL);
 
   clutter_actor_set_width (priv->toolbar_hint, 272);
   clutter_actor_set_position (priv->toolbar_hint,
@@ -341,8 +340,6 @@ moblin_netbook_plugin_constructed (GObject *object)
                                - clutter_actor_get_width (priv->toolbar_hint)
                                - 20,
                               66);
-
-  clutter_actor_hide (priv->toolbar_hint);
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
   priv->lowlight = lowlight;
@@ -362,9 +359,6 @@ moblin_netbook_plugin_constructed (GObject *object)
                     G_CALLBACK (moblin_netbook_toolbar_show_cb), plugin);
 
 #if 1
-  /* show after mzone.. */
-  clutter_actor_show (priv->toolbar_hint);
-
   /*
    * TODO this needs to be hooked into the dbus API exposed by the out of
    * process applets, once we have them.
@@ -394,9 +388,6 @@ moblin_netbook_plugin_constructed (GObject *object)
                                 "people-zone", _("people"));
 #endif
 
-  clutter_container_add (CLUTTER_CONTAINER (overlay), lowlight, toolbar, NULL);
-  clutter_actor_hide (lowlight);
-
   clutter_set_motion_events_enabled (TRUE);
 
   setup_parallax_effect (MUTTER_PLUGIN (plugin));
@@ -413,9 +404,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   mnb_notification_cluster_set_store
                     (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster),
                      notify_store);
-
-  clutter_container_add (CLUTTER_CONTAINER (overlay),
-                         priv->notification_cluster, NULL);
 
   clutter_actor_set_anchor_point_from_gravity (priv->notification_cluster,
                                                CLUTTER_GRAVITY_SOUTH_EAST);
@@ -439,9 +427,6 @@ moblin_netbook_plugin_constructed (GObject *object)
                               screen_width/2,
                               screen_height/2);
 
-  clutter_container_add (CLUTTER_CONTAINER (overlay),
-                         priv->notification_urgent, NULL);
-
   mnb_notification_urgent_set_store
                         (MNB_NOTIFICATION_URGENT(priv->notification_urgent),
                          notify_store);
@@ -451,13 +436,27 @@ moblin_netbook_plugin_constructed (GObject *object)
                     G_CALLBACK (sync_notification_input_region_cb),
                     MUTTER_PLUGIN (plugin));
 
-  clutter_actor_hide (CLUTTER_ACTOR(priv->notification_urgent));
-
   g_signal_connect (priv->notification_urgent,
                     "notify::visible",
                     G_CALLBACK (on_urgent_notifiy_visible_cb),
                     MUTTER_PLUGIN (plugin));
 
+  /*
+   * Order matters:
+   *
+   *  - toolbar hint is below the toolbar (i.e., not visible if panel showing.
+   *  - lowlight is above everything except urgent notifications
+   */
+  clutter_container_add (CLUTTER_CONTAINER (overlay),
+                         priv->toolbar_hint,
+                         toolbar,
+                         priv->notification_cluster,
+                         lowlight,
+                         priv->notification_urgent,
+                         NULL);
+
+  clutter_actor_hide (lowlight);
+  clutter_actor_hide (CLUTTER_ACTOR(priv->notification_urgent));
 
   /* Keys */
 
