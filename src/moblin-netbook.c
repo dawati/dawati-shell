@@ -259,7 +259,15 @@ moblin_netbook_make_toolbar_hint ()
 static void
 moblin_netbook_toolbar_show_cb (ClutterActor *toolbar, MutterPlugin *plugin)
 {
+  static int count = 0;
+
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  /*
+   * Ignore the first show of the toolbar on startup
+   */
+  if (++count <= 1)
+    return;
 
   if (priv->toolbar_hint != NULL)
     {
