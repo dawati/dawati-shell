@@ -97,6 +97,7 @@ struct _MoblinNetbookPluginPrivate
   SnDisplay             *sn_display;
   SnMonitorContext      *sn_context;
   GHashTable            *sn_hash;
+  GHashTable            *sn_binary_hash;
 
   /* Background parallax texture */
   ClutterActor          *parallax_tex;

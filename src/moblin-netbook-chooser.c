@@ -1122,22 +1122,29 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
         gboolean    empty     = FALSE;
         guint32     timestamp = sn_startup_sequence_get_timestamp (sequence);
         SnHashData *sn_data;
+        const char *binary;
 
-        if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
+        binary = sn_startup_sequence_get_binary_name (sequence);
+
+        if (g_hash_table_lookup_extended (priv->sn_binary_hash, binary,
+                                          &key, &value))
           {
+            g_hash_table_steal (priv->sn_binary_hash, binary);
+
+            g_free (key);
+
             sn_data = value;
           }
         else
           {
             sn_data = g_slice_new0 (SnHashData);
             sn_data->workspace = -2;
-
-            g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
           }
 
+        g_hash_table_insert (priv->sn_hash, g_strdup (seq_id), sn_data);
+
         sn_data->state = SN_MONITOR_EVENT_INITIATED;
-        sn_data->binary =
-            g_strdup (sn_startup_sequence_get_binary_name (sequence));
+        sn_data->binary = g_strdup (binary);
 
         if (n_ws == 1)
           {
@@ -1283,6 +1290,9 @@ moblin_netbook_sn_setup (MutterPlugin *plugin)
   priv->sn_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
                                          g_free,
                                          (GDestroyNotify) free_sn_hash_data);
+  priv->sn_binary_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                g_free,
+                                                (GDestroyNotify) free_sn_hash_data);
 }
 
 /*
@@ -1411,20 +1421,9 @@ moblin_netbook_launch_application_from_info (GAppInfo     *app,
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   GAppLaunchContext          *ctx;
   GError                     *error = NULL;
-  SnHashData                 *sn_data = g_slice_new0 (SnHashData);
-  const gchar                *sn_id;
   gboolean                    retval = TRUE;
 
   ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
-
-  sn_id = g_app_launch_context_get_startup_notify_id (ctx, app, NULL);
-
-  g_debug ("Got sn_id %s", sn_id);
-
-  sn_data->workspace       = workspace;
-  sn_data->without_chooser = no_chooser;
-
-  g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
 
   retval = g_app_info_launch (app, files, ctx, &error);
 
@@ -1452,8 +1451,29 @@ moblin_netbook_launch_application_from_info (GAppInfo     *app,
 #endif
                      );
         }
+    }
+  else
+    {
+      const gchar  *binary;
+      SnHashData   *sn_data = g_slice_new0 (SnHashData);
 
-      g_hash_table_remove (priv->sn_hash, sn_id);
+      /*
+       * We have a problem here -- there appears to be no way to obtain the
+       * sn_id from GAppInfo or GAppLaunchContext (the obvious function
+       * g_app_launch_context_get_startup_notify_id() will return a *new* id
+       * and initiate a new startup sequence!). We work around this by double
+       * hashing. Here, we store our data using the application binary as the
+       * key, and once we get the initiated event, we move it into the proper
+       * hash, keyd by the sn_id. This works because if we get to this point
+       * (e.g., the launch call succeeded) there is always an INITIATED event
+       * that follows virtually immediately.
+       */
+      sn_data->workspace       = workspace;
+      sn_data->without_chooser = no_chooser;
+
+      binary = g_app_info_get_executable (app);
+
+      g_hash_table_insert (priv->sn_binary_hash, g_strdup (binary), sn_data);
     }
 
   g_object_unref (ctx);
@@ -1540,19 +1560,10 @@ moblin_netbook_launch_default_for_uri (const gchar *uri,
   GAppLaunchContext          *ctx;
   GAppInfo                   *app;
   GError                     *error = NULL;
-  SnHashData                 *sn_data = g_slice_new0 (SnHashData);
-  const gchar                *sn_id;
   gboolean                    retval = TRUE;
 
   app = g_app_info_get_default_for_uri_scheme (uri);
   ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
-
-  sn_id = g_app_launch_context_get_startup_notify_id (ctx, app, NULL);
-
-  sn_data->workspace       = workspace;
-  sn_data->without_chooser = no_chooser;
-
-  g_hash_table_insert (priv->sn_hash, g_strdup (sn_id), sn_data);
 
   retval = g_app_info_launch_default_for_uri (uri, ctx, &error);
 
@@ -1567,8 +1578,18 @@ moblin_netbook_launch_default_for_uri (const gchar *uri,
         }
       else
         g_warning ("Failed to launch default app for %s", uri);
+    }
+  else
+    {
+      const gchar  *binary;
+      SnHashData   *sn_data = g_slice_new0 (SnHashData);
 
-      g_hash_table_remove (priv->sn_hash, sn_id);
+      sn_data->workspace       = workspace;
+      sn_data->without_chooser = no_chooser;
+
+      binary = g_app_info_get_executable (app);
+
+      g_hash_table_insert (priv->sn_binary_hash, g_strdup (binary), sn_data);
     }
 
   g_object_unref (ctx);
