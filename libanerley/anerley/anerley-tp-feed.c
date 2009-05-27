@@ -195,12 +195,12 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
   for (i = 0; i < n_contacts; i++)
   {
     contact = (TpContact *)contacts[i];
-
+#if 0
     g_debug (G_STRLOC ": Got contact: %s (%s) - %s",
              tp_contact_get_alias (contact),
              tp_contact_get_identifier (contact),
              tp_contact_get_presence_status (contact));
-
+#endif
     item = g_hash_table_lookup (priv->ids_to_items,
                                 tp_contact_get_identifier (contact));
 
