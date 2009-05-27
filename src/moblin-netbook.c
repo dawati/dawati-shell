@@ -187,12 +187,17 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
                                    MoblinNetbookPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv   = plugin->priv;
+  MnbInputRegion             *region;
 
-  if (priv->notification_input_region != NULL)
+  if (notify_actor == priv->notification_urgent)
+    region = &priv->notification_urgent_input_region;
+  else
+    region = &priv->notification_cluster_input_region;
+
+  if (*region != NULL)
     {
-      moblin_netbook_input_region_remove (MUTTER_PLUGIN(plugin),
-                                          priv->notification_input_region);
-      priv->notification_input_region = NULL;
+      moblin_netbook_input_region_remove (MUTTER_PLUGIN(plugin), *region);
+      *region = NULL;
     }
 
   if (CLUTTER_ACTOR_IS_VISIBLE (notify_actor))
@@ -205,9 +210,8 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
 
       if (width != 0 && height != 0)
         {
-          priv->notification_input_region
-            = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin),
-                                                x, y, width, height);
+          *region = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin),
+                                                      x, y, width, height);
         }
     }
 }
