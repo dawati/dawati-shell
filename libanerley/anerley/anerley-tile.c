@@ -28,10 +28,12 @@
 
 G_DEFINE_TYPE (AnerleyTile, anerley_tile, NBTK_TYPE_TABLE)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ANERLEY_TYPE_TILE, AnerleyTilePrivate))
 
-typedef struct _AnerleyTilePrivate AnerleyTilePrivate;
+#define GET_PRIVATE(o) \
+    ((AnerleyTile *)o)->priv
+
 
 struct _AnerleyTilePrivate {
   AnerleyItem *item;
@@ -394,7 +396,8 @@ _leave_event_cb (ClutterActor *actor,
 static void
 anerley_tile_init (AnerleyTile *self)
 {
-  AnerleyTilePrivate *priv = GET_PRIVATE (self);
+  AnerleyTilePrivate *priv = GET_PRIVATE_REAL (self);
+  self->priv = priv;
 
   priv->avatar_bin = nbtk_bin_new ();
   nbtk_widget_set_style_class_name (priv->avatar_bin, "AnerleyTileAvatar");

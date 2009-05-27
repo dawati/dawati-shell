@@ -25,10 +25,11 @@
 
 G_DEFINE_TYPE (AnerleyTpItem, anerley_tp_item, ANERLEY_TYPE_ITEM)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ANERLEY_TYPE_TP_ITEM, AnerleyTpItemPrivate))
 
-typedef struct _AnerleyTpItemPrivate AnerleyTpItemPrivate;
+#define GET_PRIVATE(o) \
+    ((AnerleyTpItem *)o)->priv
 
 struct _AnerleyTpItemPrivate {
   MissionControl *mc;
@@ -225,6 +226,8 @@ anerley_tp_item_class_init (AnerleyTpItemClass *klass)
 static void
 anerley_tp_item_init (AnerleyTpItem *self)
 {
+  AnerleyTpItemPrivate *priv = GET_PRIVATE_REAL (self);
+  self->priv = priv;
 }
 
 AnerleyTpItem *

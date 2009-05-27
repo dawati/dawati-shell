@@ -46,8 +46,11 @@ G_BEGIN_DECLS
 #define ANERLEY_TP_ITEM_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), ANERLEY_TYPE_TP_ITEM, AnerleyTpItemClass))
 
+typedef struct _AnerleyTpItemPrivate AnerleyTpItemPrivate;
+
 typedef struct {
   AnerleyItem parent;
+  AnerleyTpItemPrivate *priv;
 } AnerleyTpItem;
 
 typedef struct {

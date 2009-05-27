@@ -46,8 +46,11 @@ G_BEGIN_DECLS
 #define ANERLEY_TILE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), ANERLEY_TYPE_TILE, AnerleyTileClass))
 
+typedef struct _AnerleyTilePrivate AnerleyTilePrivate;
+
 typedef struct {
   NbtkTable parent;
+  AnerleyTilePrivate *priv;
 } AnerleyTile;
 
 typedef struct {
