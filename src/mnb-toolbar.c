@@ -46,6 +46,8 @@
 #define TOOLBAR_HEIGHT 64
 #endif
 
+#define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + 37)
+
 #define TOOLBAR_X_PADDING 4
 
 G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
@@ -113,7 +115,6 @@ struct _MnbToolbarPrivate
   MutterPlugin *plugin;
 
   ClutterActor *hbox; /* This is where all the contents are placed */
-
   ClutterActor *hint;
 
   NbtkWidget   *time; /* The time and date fields, needed for the updates */
@@ -1168,6 +1169,7 @@ mnb_toolbar_constructed (GObject *self)
   MutterPlugin      *plugin = priv->plugin;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
+  ClutterActor      *background, *bg_texture;
   gint               screen_width, screen_height;
   ClutterColor       clr = {0x0, 0x0, 0x0, 0xce};
 
@@ -1179,7 +1181,23 @@ mnb_toolbar_constructed (GObject *self)
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
+  clutter_actor_set_size (actor, screen_width, TOOLBAR_SHADOW_HEIGHT);
+
+  bg_texture =
+    clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                   "/theme/panel/panel-background.png",
+                                   NULL);
+  if (bg_texture)
+    {
+      background = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
+                                           0,   /* top */
+                                           200, /* right */
+                                           0,   /* bottom */
+                                           200  /* left */);
+      clutter_actor_set_size (background, screen_width - 8, TOOLBAR_HEIGHT);
+      clutter_actor_set_x (background, 4);
+      clutter_container_add_actor (CLUTTER_CONTAINER (hbox), background);
+    }
 
   /* create time and date labels */
   priv->time = nbtk_label_new ("");

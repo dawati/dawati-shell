@@ -113,7 +113,7 @@ NbtkTable {
 }
 
 MnbToolbar {
-  border-image: url("file://panel/panel-background.png") 0 200 0 200 stretch;
+  border-image: url("file://panel/panel-shadow.png") 0 200 0 200 stretch;
 }
 
 MnbToolbarButton {
@@ -132,7 +132,7 @@ MnbToolbarButton:hover, MnbToolbarButton:active {
 
 *.toolbar-instruction-box {
  border-image: url("file://panel/toolbar-hint.png") 47 6 6 60;
- padding: 10 10 10 60; 
+ padding: 10 10 10 60;
 }
 
 *.toolbar-instruction-label {
@@ -1027,7 +1027,7 @@ AhoghillPlaylistPlaceholder {
   background-image: url("file://media-panel/playqueue-placeholder.png");
 }
 
-*.AhoghillExampleTextBin { 
+*.AhoghillExampleTextBin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
