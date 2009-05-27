@@ -63,6 +63,8 @@ main (int    argc,
   ClutterActor *tmp;
 
 
+  g_thread_init (NULL);
+
   clutter_init (&argc, &argv);
 
   path = g_build_filename (PKG_DATA_DIR,
