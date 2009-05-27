@@ -275,6 +275,9 @@ mnb_toolbar_show (ClutterActor *actor)
     moblin_netbook_input_region_push (priv->plugin, 0, 0,
                                       screen_width, TOOLBAR_HEIGHT + 10);
 
+
+  moblin_netbook_stash_window_focus (priv->plugin, CurrentTime);
+
   priv->in_show_animation = TRUE;
 
   /*
@@ -312,6 +315,8 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 
   priv->in_hide_animation = FALSE;
   priv->dont_autohide = FALSE;
+
+  moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
   g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
   g_object_unref (actor);
