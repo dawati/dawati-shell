@@ -35,6 +35,7 @@
 
 #define TOOLBAR_TRIGGER_THRESHOLD       1
 #define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 300
+#define TOOLBAR_LOWLIGHT_FADE_DURATION 300
 
 #if 0
 /*
@@ -235,6 +236,40 @@ mnb_toolbar_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 }
 
 static void
+mnb_toolbar_show_lowlight (MnbToolbar *toolbar)
+{
+  ClutterActor *lowlight = toolbar->priv->lowlight;
+
+  clutter_actor_set_opacity (lowlight, 0);
+  clutter_actor_show (lowlight);
+
+  clutter_actor_animate (CLUTTER_ACTOR(lowlight),
+                         CLUTTER_EASE_IN_SINE,
+                         TOOLBAR_LOWLIGHT_FADE_DURATION,
+                         "opacity", 0x7f,
+                         NULL);
+
+}
+
+static void
+mnb_toolbar_hide_lowlight (MnbToolbar *toolbar)
+{
+  ClutterActor     *lowlight = toolbar->priv->lowlight;
+  ClutterAnimation *anim;
+
+  anim = clutter_actor_animate (CLUTTER_ACTOR(lowlight),
+                                CLUTTER_EASE_IN_SINE,
+                                TOOLBAR_LOWLIGHT_FADE_DURATION,
+                                "opacity", 0,
+                                NULL);
+
+  g_signal_connect_swapped (anim,
+                            "completed",
+                            G_CALLBACK (clutter_actor_hide),
+                            lowlight);
+}
+
+static void
 mnb_toolbar_show (ClutterActor *actor)
 {
   MnbToolbarPrivate          *priv = MNB_TOOLBAR (actor)->priv;
@@ -247,6 +282,8 @@ mnb_toolbar_show (ClutterActor *actor)
       g_signal_stop_emission_by_name (actor, "show");
       return;
     }
+
+  mnb_toolbar_show_lowlight (MNB_TOOLBAR (actor));
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -356,6 +393,8 @@ mnb_toolbar_hide (ClutterActor *actor)
       g_signal_stop_emission_by_name (actor, "hide");
       return;
     }
+
+  mnb_toolbar_hide_lowlight (MNB_TOOLBAR (actor));
 
   /*
    * Show toolbar hint the very first time we are hidden.
@@ -677,7 +716,6 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
   MutterPlugin      *plugin = priv->plugin;
   guint w, h;
 
-  clutter_actor_show (priv->lowlight);
   clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
 
   if (priv->dropdown_region)
@@ -699,8 +737,6 @@ mnb_toolbar_dropdown_hide_begin_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
       moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
       priv->dropdown_region = NULL;
     }
-
-  clutter_actor_hide (priv->lowlight);
 }
 
 /*
@@ -1190,7 +1226,13 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_set_size (actor, screen_width, TOOLBAR_SHADOW_HEIGHT);
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
-  clutter_actor_set_size (lowlight, screen_width, screen_height);
+
+  /*
+   * The lowlight has to be tall enough to cover the screen when the toolbar
+   * is fully withdrawn.
+   */
+  clutter_actor_set_size (lowlight,
+                          screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), lowlight);
   clutter_actor_hide (lowlight);
   priv->lowlight = lowlight;
