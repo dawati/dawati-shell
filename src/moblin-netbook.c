@@ -431,6 +431,10 @@ moblin_netbook_plugin_init (MoblinNetbookPlugin *self)
   priv->info.author      = "Intel Corp.";
   priv->info.license     = "GPL";
   priv->info.description = _("Effects for Moblin Netbooks");
+
+  bindtextdomain (GETTEXT_PACKAGE, PLUGIN_LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 }
 
 static void

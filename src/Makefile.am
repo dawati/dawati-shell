@@ -2,13 +2,14 @@ SUBDIRS=tray effects
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@ \
-	-DPREFIX=\"$(prefix)\" \
-	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
-	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
-	@AHOGHILL_CFLAGS@ \
-	-I$(top_srcdir)/ahoghill \
-	-I$(top_srcdir)/penge \
+INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@	\
+	-DPREFIX=\"$(prefix)\" 						\
+	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" 				\
+	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 				\
+	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" 		\
+	@AHOGHILL_CFLAGS@ 						\
+	-I$(top_srcdir)/ahoghill 					\
+	-I$(top_srcdir)/penge 						\
 	-I$(top_srcdir)/src
 
 AM_CFLAGS   = -fPIC

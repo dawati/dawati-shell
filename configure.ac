@@ -32,6 +32,9 @@ GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
 
+localedir ="$(prefix)/$(DATADIRNAME)/locale"
+AC_SUBST(localedir)
+
 IT_PROG_INTLTOOL([0.34.90])
 AC_PROG_CC
 AC_ISC_POSIX
