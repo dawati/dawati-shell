@@ -26,12 +26,16 @@ LDADD = \
 
 noinst_PROGRAMS = \
 	test-entry \
+  test-launcher \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree \
 	test-tray \
 	test-pasteboard \
 	test-screensized
+
+test_launcher_LDADD = \
+  ../penge/penge/libpenge.la
 
 test_launcher_SOURCES = \
 	$(top_srcdir)/src/mnb-entry.c \

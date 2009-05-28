@@ -106,7 +106,7 @@ main (int argc, char *argv[])
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);
 
-  launcher = moblin_netbook_launcher_panel_new (NULL, 800, 600, NULL);
+  launcher = mnb_launcher_new (800, 600);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
 
   clutter_actor_show (stage);
