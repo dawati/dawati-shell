@@ -1104,6 +1104,10 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
 
   clutter_actor_set_position (icon, x, y);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), icon);
+
+
+  g_signal_connect (icon, "clicked",
+                    G_CALLBACK (mnb_toolbar_toggle_buttons), toolbar);
 }
 
 static void
@@ -1599,16 +1603,6 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
     {
       mnb_drop_down_set_button (MNB_DROP_DOWN (background),
                                 NBTK_BUTTON (button));
-
-      if (!g_signal_handler_find (button,
-                                  G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA,
-                                  0, 0, NULL,
-                                  mnb_toolbar_toggle_buttons, toolbar))
-        {
-          g_signal_connect (button, "clicked",
-                            G_CALLBACK (mnb_toolbar_toggle_buttons),
-                            toolbar);
-        }
     }
   else
     g_warning ("No button found for xid 0x%x", (guint)xwin);
