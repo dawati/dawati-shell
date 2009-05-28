@@ -116,6 +116,7 @@ struct _MnbToolbarPrivate
 
   ClutterActor *hbox; /* This is where all the contents are placed */
   ClutterActor *hint;
+  ClutterActor *lowlight;
 
   NbtkWidget   *time; /* The time and date fields, needed for the updates */
   NbtkWidget   *date;
@@ -676,6 +677,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
   MutterPlugin      *plugin = priv->plugin;
   guint w, h;
 
+  clutter_actor_show (priv->lowlight);
   clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
 
   if (priv->dropdown_region)
@@ -697,6 +699,8 @@ mnb_toolbar_dropdown_hide_begin_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
       moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
       priv->dropdown_region = NULL;
     }
+
+  clutter_actor_hide (priv->lowlight);
 }
 
 /*
@@ -987,7 +991,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
 
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
-  clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
+  clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
 }
 
 static void
@@ -1170,8 +1174,10 @@ mnb_toolbar_constructed (GObject *self)
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
   ClutterActor      *background, *bg_texture;
+  ClutterActor      *lowlight;
   gint               screen_width, screen_height;
   ClutterColor       clr = {0x0, 0x0, 0x0, 0xce};
+  ClutterColor       low_clr = { 0, 0, 0, 0x7f };
 
   hbox = priv->hbox = clutter_group_new ();
 
@@ -1182,6 +1188,12 @@ mnb_toolbar_constructed (GObject *self)
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   clutter_actor_set_size (actor, screen_width, TOOLBAR_SHADOW_HEIGHT);
+
+  lowlight = clutter_rectangle_new_with_color (&low_clr);
+  clutter_actor_set_size (lowlight, screen_width, screen_height);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), lowlight);
+  clutter_actor_hide (lowlight);
+  priv->lowlight = lowlight;
 
   bg_texture =
     clutter_texture_new_from_file (PLUGIN_PKGDATADIR
@@ -1537,6 +1549,7 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
   parent = mutter_plugin_get_overlay_group (priv->plugin);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), background);
+  clutter_actor_raise (background, priv->lowlight);
 
   button = shell_tray_manager_find_button_for_xid (priv->tray_manager, xwin);
 
