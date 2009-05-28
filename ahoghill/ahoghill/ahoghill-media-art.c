@@ -401,6 +401,7 @@ ahoghill_media_art_init (AhoghillMediaArt *self)
 
     nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
+    clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
     clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-album-art");
 
     priv->art = clutter_texture_new ();
