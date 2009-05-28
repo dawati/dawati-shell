@@ -1171,8 +1171,9 @@ mnb_toolbar_make_hint (MnbToolbar *toolbar)
   gint               screen_width, screen_height;
 
   bin = CLUTTER_ACTOR (nbtk_bin_new ());
-  label = nbtk_label_new (_("Move cursor to the top of the screen"
-                             " to activate the toolbar"));
+  label = nbtk_label_new (_("To activate the toolbar, move "
+                            "your cursor to the top of the screen"
+                             ));
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(label)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
@@ -1193,7 +1194,7 @@ mnb_toolbar_make_hint (MnbToolbar *toolbar)
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  clutter_actor_set_width (bin, 272);
+  clutter_actor_set_width (bin, 300);
   clutter_actor_set_position (bin,
                               screen_width - clutter_actor_get_width (bin) - 10,
                               10);
