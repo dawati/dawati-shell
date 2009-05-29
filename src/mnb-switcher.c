@@ -1750,10 +1750,35 @@ mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher)
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
 
-  /* Disable the Alt+Space menu -- strictly speaking not switcher related, but
-   * for now here.
+  /*
+   * Disable various shortcuts that are not compatible with moblin UI paradigm
+   * -- strictly speaking not switcher related, but for now here.
    */
   meta_keybindings_set_custom_handler ("activate_window_menu",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("show_desktop",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("toggle_maximized",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("maximize",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("maximize_vertically",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("maximize_horizontally",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("unmaximize",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("minimize",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("toggle_shadow",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
 }
