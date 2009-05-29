@@ -257,8 +257,6 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
   ClutterActor  *dropdown = NULL;
   const gchar   *desktop_file_path;
 
-  g_warn_if_fail (dropdown);
-
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
   g_timeout_add_seconds (LAUNCH_REACTIVE_TIMEOUT_S,
