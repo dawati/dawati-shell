@@ -374,33 +374,10 @@ dnd_end_cb (NbtkWidget   *table,
 
   priv->dnd_in_progress = FALSE;
 
-  clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0xff);
 
   clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
-}
-
-static void
-dnd_motion_cb (NbtkWidget   *table,
-               ClutterActor *dragged,
-               ClutterActor *icon,
-               gint          x,
-               gint          y,
-               gpointer      data)
-{
-  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
-  gint                screen_width, screen_height;
-  gdouble             dx, f;
-
-  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
-
-  dx = (gdouble)(x - screen_width/2);
-
-  f = 30. * dx / (gdouble)screen_width;
-
-  clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, f,
-                              0, clutter_actor_get_width (icon)/2, 0);
 }
 
 /*
@@ -749,9 +726,6 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
 
   g_signal_connect (new_ws, "dnd-end",
                     G_CALLBACK (dnd_end_cb), switcher);
-
-  g_signal_connect (new_ws, "dnd-motion",
-                    G_CALLBACK (dnd_motion_cb), switcher);
 
   g_signal_connect (new_ws, "dnd-dropped",
                     G_CALLBACK (dnd_dropped_cb), switcher);
