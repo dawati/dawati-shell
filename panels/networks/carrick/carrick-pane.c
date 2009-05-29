@@ -928,6 +928,23 @@ carrick_pane_init (CarrickPane *self)
 
 }
 
+void
+carrick_pane_trigger_scan (CarrickPane *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  GList *devices = cm_manager_get_devices (priv->manager);
+  CmDevice *dev;
+
+  while (devices)
+  {
+    dev = devices->data;
+
+    cm_device_scan (dev);
+
+    devices = devices->next;
+  }
+}
+
 GtkWidget*
 carrick_pane_new (CarrickIconFactory *icon_factory,
                   CmManager          *manager)

@@ -24,6 +24,7 @@
 #include <glib/gi18n.h>
 
 #include <carrick/carrick-applet.h>
+#include <carrick/carrick-pane.h>
 #include <carrick/carrick-status-icon.h>
 #include "moblin-netbook-system-tray.h"
 
@@ -34,9 +35,12 @@
 static void
 _plug_notify_embedded (GObject    *object,
                        GParamSpec *pspec,
-                       gpointer    userdata)
+                       gpointer    user_data)
 {
-  CarrickStatusIcon *icon = CARRICK_STATUS_ICON (userdata);
+  CarrickApplet *applet = CARRICK_APPLET (user_data);
+  CarrickStatusIcon *icon = CARRICK_STATUS_ICON (carrick_applet_get_icon (applet));
+  CarrickPane *pane = CARRICK_PANE (carrick_applet_get_pane (applet));
+
   gboolean embedded;
 
   g_object_get (object,
@@ -45,6 +49,7 @@ _plug_notify_embedded (GObject    *object,
                 NULL);
 
   carrick_status_icon_set_active (icon, embedded);
+  carrick_pane_trigger_scan (pane);
 }
 
 int
