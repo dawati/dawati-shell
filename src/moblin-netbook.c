@@ -702,11 +702,21 @@ static void
 check_for_empty_workspace (MutterPlugin *plugin,
                            gint workspace, MetaWindow *ignore)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
-  gboolean    workspace_empty = TRUE;
-  GList      *l;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  gboolean                    workspace_empty = TRUE;
+  GList                      *l;
 
   l = mutter_get_windows (screen);
+
+  if (!l)
+    {
+      /*
+       * If there are no workspaces, we show the m_zone.
+       */
+      mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar), "m-zone");
+    }
+
   while (l)
     {
       MutterWindow *m = l->data;
