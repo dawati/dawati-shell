@@ -424,6 +424,7 @@ make_spinner (void)
   ClutterActor *spinner = NULL;
 
   guint         s_w, s_h;
+  guint         center_x, center_y;
 
   static ClutterBehaviour *beh = NULL;
 
@@ -443,7 +444,16 @@ make_spinner (void)
 
   clutter_actor_get_size (spinner, &s_w, &s_h);
 
-  clutter_actor_set_anchor_point (spinner, s_w/2, s_h/2);
+  /*
+   * For the spinner not to wobble, the image has to have odd size, so we
+   * add +1 pixel to get the center (if the image is not of odd size, it will
+   * wobble equally whether we add the 1 here or not, so it makes no sense to
+   * test the size here).
+   */
+  center_x = s_w / 2 + 1;
+  center_y = s_h / 2 + 1;
+
+  clutter_actor_set_anchor_point (spinner, center_x, center_y);
 
   if (!beh)
     {
