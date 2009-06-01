@@ -192,6 +192,67 @@ mnb_switcher_app_init (MnbSwitcherApp *self)
   priv->w_h_ratio = 1.0;
 }
 
+#define MNB_TYPE_SWITCHER_ZONE                 (mnb_switcher_zone_get_type ())
+#define MNB_SWITCHER_ZONE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_SWITCHER_ZONE, MnbSwitcherZone))
+#define MNB_IS_SWITCHER_ZONE(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNB_TYPE_SWITCHER_ZONE))
+#define MNB_SWITCHER_ZONE_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), MNB_TYPE_SWITCHER_ZONE, MnbSwitcherZoneClass))
+#define MNB_IS_SWITCHER_ZONE_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), MNB_TYPE_SWITCHER_ZONE))
+#define MNB_SWITCHER_ZONE_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_SWITCHER_ZONE, MnbSwitcherZoneClass))
+
+typedef struct _MnbSwitcherZone               MnbSwitcherZone;
+typedef struct _MnbSwitcherZonePrivate        MnbSwitcherZonePrivate;
+typedef struct _MnbSwitcherZoneClass          MnbSwitcherZoneClass;
+
+struct _MnbSwitcherZone
+{
+  /*< private >*/
+  NbtkTable parent_instance;
+
+  MnbSwitcherZonePrivate *priv;
+};
+
+struct _MnbSwitcherZoneClass
+{
+  /*< private >*/
+  NbtkTableClass parent_class;
+};
+
+struct _MnbSwitcherZonePrivate
+{
+};
+
+GType mnb_switcher_zone_get_type (void);
+
+G_DEFINE_TYPE (MnbSwitcherZone, mnb_switcher_zone, NBTK_TYPE_TABLE)
+
+#define MNB_SWITCHER_ZONE_GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_ZONE,\
+                                MnbSwitcherZonePrivate))
+
+static void
+mnb_switcher_zone_dispose (GObject *object)
+{
+  G_OBJECT_CLASS (mnb_switcher_zone_parent_class)->dispose (object);
+}
+
+static void
+mnb_switcher_zone_class_init (MnbSwitcherZoneClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = mnb_switcher_zone_dispose;
+
+  g_type_class_add_private (klass, sizeof (MnbSwitcherZonePrivate));
+}
+
+static void
+mnb_switcher_zone_init (MnbSwitcherZone *self)
+{
+  MnbSwitcherZonePrivate *priv;
+
+  priv = self->priv = MNB_SWITCHER_ZONE_GET_PRIVATE (self);
+}
+
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
 
 #define MNB_SWITCHER_GET_PRIVATE(o) \
@@ -709,7 +770,8 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   input_data->index = col;
   input_data->switcher = switcher;
 
-  new_ws = nbtk_table_new ();
+  new_ws = g_object_new (MNB_TYPE_SWITCHER_ZONE, NULL);
+
   nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
   nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
   clutter_actor_set_reactive (CLUTTER_ACTOR (new_ws), TRUE);
@@ -1479,7 +1541,7 @@ mnb_switcher_show (ClutterActor *self)
    * Now create the new workspace column.
    */
   {
-    NbtkWidget *new_ws = nbtk_table_new ();
+    NbtkWidget *new_ws = g_object_new (MNB_TYPE_SWITCHER_ZONE, NULL);
     NbtkWidget *label;
 
     label = NBTK_WIDGET (nbtk_bin_new ());
