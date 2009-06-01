@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* mnb-panel-button.c */
+/* mnb-toolbar-button.c */
 /*
  * Copyright (c) 2009 Intel Corp.
  *
@@ -22,25 +22,24 @@
  * 02111-1307, USA.
  */
 
-#include "mnb-panel-button.h"
+#include "mnb-toolbar-button.h"
 
-G_DEFINE_TYPE (MnbPanelButton, mnb_panel_button, NBTK_TYPE_BUTTON)
+G_DEFINE_TYPE (MnbToolbarButton, mnb_toolbar_button, NBTK_TYPE_BUTTON)
 
 
-#define MNB_PANEL_BUTTON_GET_PRIVATE(obj)    \
-        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_PANEL_BUTTON, MnbPanelButtonPrivate))
+#define MNB_TOOLBAR_BUTTON_GET_PRIVATE(obj)    \
+        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_TOOLBAR_BUTTON, MnbToolbarButtonPrivate))
 
-struct _MnbPanelButtonPrivate
+struct _MnbToolbarButtonPrivate
 {
   ClutterGeometry pick;
   ClutterActor  *old_bg;
 };
 
-
 static void
-mnb_panel_button_dispose (GObject *object)
+mnb_toolbar_button_dispose (GObject *object)
 {
-  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (object)->priv;
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (object)->priv;
 
   if (priv->old_bg)
     {
@@ -50,10 +49,9 @@ mnb_panel_button_dispose (GObject *object)
 }
 
 static void
-mnb_panel_button_pick (ClutterActor       *actor,
-                       const ClutterColor *pick_color)
+mnb_toolbar_button_pick (ClutterActor *actor, const ClutterColor *pick_color)
 {
-  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
 
   cogl_set_source_color4ub (pick_color->red,
                             pick_color->green,
@@ -65,50 +63,50 @@ mnb_panel_button_pick (ClutterActor       *actor,
                   priv->pick.width,
                   priv->pick.height);
 
-  CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->pick (actor, pick_color);
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->pick (actor, pick_color);
 }
 
 static void
-mnb_panel_button_map (ClutterActor *actor)
+mnb_toolbar_button_map (ClutterActor *actor)
 {
-  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->map (actor);
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->map (actor);
 
   if (priv->old_bg)
     clutter_actor_map (priv->old_bg);
 }
 
 static void
-mnb_panel_button_unmap (ClutterActor *actor)
+mnb_toolbar_button_unmap (ClutterActor *actor)
 {
-  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->unmap (actor);
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->unmap (actor);
 
   if (priv->old_bg)
     clutter_actor_unmap (priv->old_bg);
 }
 
-static void
-mnb_panel_button_paint_background (NbtkWidget         *actor,
-                                   ClutterActor       *background,
-                                   const ClutterColor *color)
+mnb_toolbar_button_paint_background (NbtkWidget         *actor,
+                                     ClutterActor       *background,
+                                     const ClutterColor *color)
 {
-  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
 
-  NBTK_WIDGET_CLASS (mnb_panel_button_parent_class)->draw_background (actor,
-                                                                      background,
-                                                                      color);
+  NBTK_WIDGET_CLASS (
+         mnb_toolbar_button_parent_class)->draw_background (actor,
+                                                            background,
+                                                            color);
 
   if (priv->old_bg)
     clutter_actor_paint (priv->old_bg);
 }
 
 static void
-mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
+mnb_toolbar_button_transition (NbtkButton *button, ClutterActor *old_bg)
 {
-  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (button)->priv;
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (button)->priv;
   const gchar *pseudo_class;
   gint duration;
   ClutterActor *bg_image;
@@ -217,8 +215,7 @@ mnb_panel_button_transition (NbtkButton *button, ClutterActor *old_bg)
 }
 
 static gboolean
-mnb_panel_button_press (ClutterActor       *actor,
-                        ClutterButtonEvent *event)
+mnb_toolbar_button_press (ClutterActor *actor, ClutterButtonEvent *event)
 {
 #if 0
   /* Disable until a more complete solution is ready */
@@ -227,32 +224,32 @@ mnb_panel_button_press (ClutterActor       *actor,
     return TRUE;
   else
 #endif
-    return CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->button_press_event (actor,
+    return CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->button_press_event (actor,
                                                                        event);
 }
 
 static gboolean
-mnb_panel_button_enter (ClutterActor         *actor,
-                        ClutterCrossingEvent *event)
+mnb_toolbar_button_enter (ClutterActor *actor, ClutterCrossingEvent *event)
 {
   /* don't show a tooltip when the button is "checked" */
   if (nbtk_button_get_checked (NBTK_BUTTON (actor)))
     return TRUE;
   else
-    return CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->enter_event (actor,
+    return CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->enter_event (actor,
                                                                              event);
 }
 
 static void
-mnb_panel_button_allocate (ClutterActor          *actor,
-                           const ClutterActorBox *box,
-                           gboolean               origin_changed)
+mnb_toolbar_button_allocate (ClutterActor          *actor,
+                             const ClutterActorBox *box,
+                             gboolean               origin_changed)
 {
-  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (actor)->priv;
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_panel_button_parent_class)->allocate (actor,
-                                                                 box,
-                                                                 origin_changed);
+  CLUTTER_ACTOR_CLASS (
+             mnb_toolbar_button_parent_class)->allocate (actor,
+                                                         box,
+                                                         origin_changed);
 
   if (priv->old_bg)
     {
@@ -267,51 +264,50 @@ mnb_panel_button_allocate (ClutterActor          *actor,
 }
 
 static void
-mnb_panel_button_class_init (MnbPanelButtonClass *klass)
+mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
-  NbtkButtonClass *button_class = NBTK_BUTTON_CLASS (klass);
+  NbtkWidgetClass *widget_class  = NBTK_WIDGET_CLASS (klass);
+  NbtkButtonClass *button_class  = NBTK_BUTTON_CLASS (klass);
   GObjectClass    *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MnbPanelButtonPrivate));
+  g_type_class_add_private (klass, sizeof (MnbToolbarButtonPrivate));
 
-  gobject_class->dispose = mnb_panel_button_dispose;
+  actor_class->allocate           = mnb_toolbar_button_allocate;
+  actor_class->pick               = mnb_toolbar_button_pick;
+  actor_class->button_press_event = mnb_toolbar_button_press;
+  actor_class->enter_event        = mnb_toolbar_button_enter;
+  actor_class->map                = mnb_toolbar_button_map;
+  actor_class->unmap              = mnb_toolbar_button_unmap;
+  button_class->transition        = mnb_toolbar_button_transition;
 
-  actor_class->allocate = mnb_panel_button_allocate;
-  actor_class->pick = mnb_panel_button_pick;
-  actor_class->button_press_event = mnb_panel_button_press;
-  actor_class->enter_event = mnb_panel_button_enter;
-  actor_class->map = mnb_panel_button_map;
-  actor_class->unmap = mnb_panel_button_unmap;
+  gobject_class->dispose          = mnb_toolbar_button_dispose;
 
-  widget_class->draw_background = mnb_panel_button_paint_background;
-
-  button_class->transition = mnb_panel_button_transition;
+  widget_class->draw_background   = mnb_toolbar_button_paint_background;
 }
 
 static void
-mnb_panel_button_init (MnbPanelButton *self)
+mnb_toolbar_button_init (MnbToolbarButton *self)
 {
-  self->priv = MNB_PANEL_BUTTON_GET_PRIVATE (self);
+  self->priv = MNB_TOOLBAR_BUTTON_GET_PRIVATE (self);
 
   g_object_set (self, "transition-duration", 500, NULL);
 }
 
 NbtkWidget*
-mnb_panel_button_new (void)
+mnb_toolbar_button_new (void)
 {
-  return g_object_new (MNB_TYPE_PANEL_BUTTON, NULL);
+  return g_object_new (MNB_TYPE_TOOLBAR_BUTTON, NULL);
 }
 
 void
-mnb_panel_button_set_reactive_area (MnbPanelButton  *button,
-                                    gint             x,
-                                    gint             y,
-                                    gint             width,
-                                    gint             height)
+mnb_toolbar_button_set_reactive_area (MnbToolbarButton *button,
+                                      gint              x,
+                                      gint              y,
+                                      gint              width,
+                                      gint              height)
 {
-  MnbPanelButtonPrivate *priv = MNB_PANEL_BUTTON (button)->priv;
+  MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (button)->priv;
 
   priv->pick.x = x;
   priv->pick.y = y;

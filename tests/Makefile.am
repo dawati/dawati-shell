@@ -11,19 +11,40 @@ AM_CFLAGS = \
 	-fPIC \
 	-Werror=missing-prototypes
 
+# FIXME -- because of various fscked dependencies any tests relying on Penge
+# cannot be built (Penge calls into moblin_netbook_launch_*() functions, which
+# dependency will go away when we move to the dbus API.) In the meantime,
+
+# test-launcher: uses Penge bookmark manager; for this to work, Penge will need
+#                to be a shared library.
+#
+# test-pasteboard: it uses some formating function from Penge utils; I just
+#                c&p it into test-launcher.c
+
 LDADD = \
-	$(PENGE_LIBS) \
-	$(MUTTER_PLUGIN_LIBS) \
-	$(top_builddir)/penge/penge/libpenge.la
+	$(MUTTER_PLUGIN_LIBS)
 
 noinst_PROGRAMS = \
 	test-entry \
+  test-launcher \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree \
 	test-tray \
 	test-pasteboard \
 	test-screensized
+
+test_launcher_LDADD = \
+  ../penge/penge/libpenge.la
+
+test_launcher_SOURCES = \
+	$(top_srcdir)/src/mnb-entry.c \
+	$(top_srcdir)/src/mnb-launcher-button.c \
+	$(top_srcdir)/src/mnb-launcher-application.c \
+	$(top_srcdir)/src/mnb-launcher-grid.c \
+	$(top_srcdir)/src/mnb-launcher-tree.c \
+	$(top_srcdir)/src/moblin-netbook-launcher.c \
+	test-launcher.c
 
 test_launcher_button_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-button.c \
@@ -34,10 +55,12 @@ test_entry_SOURCES = \
 	test-entry.c
 
 test_launcher_monitor_SOURCES = \
+	$(top_srcdir)/src/mnb-launcher-application.c \
 	$(top_srcdir)/src/mnb-launcher-tree.c \
 	test-launcher-monitor.c
 
 test_launcher_tree_SOURCES = \
+	$(top_srcdir)/src/mnb-launcher-application.c \
 	$(top_srcdir)/src/mnb-launcher-tree.c \
 	test-launcher-tree.c
 

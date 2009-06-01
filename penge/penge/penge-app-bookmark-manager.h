@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Rob Bradford <rob@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #ifndef _PENGE_APP_BOOKMARK_MANAGER
 #define _PENGE_APP_BOOKMARK_MANAGER
 
@@ -24,42 +44,25 @@ G_BEGIN_DECLS
 
 #define PENGE_TYPE_APP_BOOKMARK (penge_app_bookmark_get_type())
 
-typedef struct
-{
-  gint ref_cnt;
-  gchar *uri;
-  gchar *application_name;
-  gchar *icon_name;
-  gchar *app_exec;
-} PengeAppBookmark;
-
 typedef struct {
   GObject parent;
 } PengeAppBookmarkManager;
 
 typedef struct {
   GObjectClass parent_class;
-  void (*bookmark_added)(PengeAppBookmarkManager *manager, PengeAppBookmark *bookmark);
+  void (*bookmark_added)(PengeAppBookmarkManager *manager, const gchar *uri);
   void (*bookmark_removed) (PengeAppBookmarkManager *manager, const gchar *uri);
 } PengeAppBookmarkManagerClass;
 
 GType penge_app_bookmark_manager_get_type (void);
-GType penge_app_bookmark_get_type (void);
-PengeAppBookmark *penge_app_bookmark_new (void);
-void penge_app_bookmark_free (PengeAppBookmark *bookmark);
-void penge_app_bookmark_unref (PengeAppBookmark *bookmark);
-PengeAppBookmark *penge_app_bookmark_ref (PengeAppBookmark *bookmark);
 
-gboolean penge_app_bookmark_manager_add_from_uri (PengeAppBookmarkManager *manager,
-                                                  const gchar             *uri,
-                                                  GError                 **error_out);
-gboolean penge_app_bookmark_manager_remove_by_uri (PengeAppBookmarkManager *manager,
-                                                   const gchar             *uri,
-                                                   GError                 **error_out);
+void penge_app_bookmark_manager_add_uri (PengeAppBookmarkManager *manager,
+                                         const gchar             *uri);
+void penge_app_bookmark_manager_remove_uri (PengeAppBookmarkManager *manager,
+                                            const gchar             *uri);
 
 GList *penge_app_bookmark_manager_get_bookmarks (PengeAppBookmarkManager *manager);
 
-void penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager);
 void penge_app_bookmark_manager_save (PengeAppBookmarkManager *manager);
 PengeAppBookmarkManager *penge_app_bookmark_manager_get_default (void);
 

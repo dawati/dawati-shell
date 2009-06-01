@@ -7,8 +7,13 @@ enum {
     LAST_SIGNAL,
 };
 
+struct _ResultItem {
+    BklSourceClient *owner;
+    BklItem *item;
+};
+
 struct _AhoghillResultsModelPrivate {
-    GPtrArray *items;
+    GPtrArray *items; /* Of type struct _ResultItem */
 
     gboolean dirty;
     gboolean frozen;
@@ -82,8 +87,19 @@ remove_item (gpointer data,
 {
     AhoghillResultsModel *model = (AhoghillResultsModel *) data;
     AhoghillResultsModelPrivate *priv = model->priv;
+    int i;
 
-    g_ptr_array_remove (priv->items, dead_object);
+    for (i = 0; i < priv->items->len; i++) {
+        struct _ResultItem *ri = priv->items->pdata[i];
+
+        if (ri->item == (BklItem *) dead_object) {
+            g_slice_free (struct _ResultItem, ri);
+
+            g_ptr_array_remove_index (priv->items, i);
+            break;
+        }
+    }
+
     if (priv->frozen) {
         priv->dirty = TRUE;
     } else {
@@ -93,11 +109,17 @@ remove_item (gpointer data,
 
 void
 ahoghill_results_model_add_item (AhoghillResultsModel *model,
+                                 BklSourceClient      *owner,
                                  BklItem              *item)
 {
     AhoghillResultsModelPrivate *priv = model->priv;
+    struct _ResultItem *ri;
 
-    g_ptr_array_add (priv->items, item);
+    ri = g_slice_new (struct _ResultItem);
+    ri->owner = owner;
+    ri->item = item;
+
+    g_ptr_array_add (priv->items, ri);
     g_object_weak_ref ((GObject *) item, remove_item, model);
 
     if (priv->frozen) {
@@ -120,6 +142,7 @@ ahoghill_results_model_get_item (AhoghillResultsModel *model,
                                  int                   item_no)
 {
     AhoghillResultsModelPrivate *priv;
+    struct _ResultItem *ri;
 
     priv = model->priv;
 
@@ -128,7 +151,8 @@ ahoghill_results_model_get_item (AhoghillResultsModel *model,
         return NULL;
     }
 
-    return priv->items->pdata[item_no];
+    ri = priv->items->pdata[item_no];
+    return ri->item;
 }
 
 int
@@ -149,8 +173,9 @@ ahoghill_results_model_clear (AhoghillResultsModel *model)
 
     priv = model->priv;
     for (i = 0; i < priv->items->len; i++) {
-        BklItem *item = priv->items->pdata[i];
-        g_object_weak_unref ((GObject *) item, remove_item, model);
+        struct _ResultItem *ri = priv->items->pdata[i];
+        g_object_weak_unref ((GObject *) ri->item, remove_item, model);
+        g_slice_free (struct _ResultItem, ri);
     }
 
     g_ptr_array_free (priv->items, TRUE);
@@ -184,6 +209,32 @@ ahoghill_results_model_thaw (AhoghillResultsModel *model)
         priv->frozen = FALSE;
         priv->dirty = FALSE;
 
+        g_signal_emit (model, signals[CHANGED], 0);
+    }
+}
+
+/* Remove all the items that are owned by @owner */
+void
+ahoghill_results_model_remove_source_items (AhoghillResultsModel *model,
+                                            BklSourceClient      *owner)
+{
+    AhoghillResultsModelPrivate *priv = model->priv;
+    gboolean changed = FALSE;
+    int i;
+
+    for (i = priv->items->len - 1; i >= 0; i--) {
+        struct _ResultItem *ri = priv->items->pdata[i];
+
+        if (ri->owner == owner) {
+            g_slice_free (struct _ResultItem, ri);
+
+            g_object_weak_unref ((GObject *) ri->item, remove_item, model);
+            g_ptr_array_remove_index (priv->items, i);
+            changed = TRUE;
+        }
+    }
+
+    if (changed) {
         g_signal_emit (model, signals[CHANGED], 0);
     }
 }

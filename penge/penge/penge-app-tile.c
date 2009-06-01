@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Rob Bradford <rob@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
@@ -6,7 +26,9 @@
 #include "penge-app-bookmark-manager.h"
 #include "penge-utils.h"
 
-G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_TABLE)
+#include "src/moblin-netbook-chooser.h"
+
+G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_APP_TILE, PengeAppTilePrivate))
@@ -14,9 +36,10 @@ G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_TABLE)
 typedef struct _PengeAppTilePrivate PengeAppTilePrivate;
 
 struct _PengeAppTilePrivate {
-  PengeAppBookmark *bookmark;
   ClutterActor *tex;
   GtkIconTheme *icon_theme;
+  GAppInfo *app_info;
+  gchar *bookmark;
 };
 
 enum
@@ -36,7 +59,7 @@ penge_app_tile_get_property (GObject *object, guint property_id,
 
   switch (property_id) {
     case PROP_BOOKMARK:
-      g_value_set_boxed (value, priv->bookmark);
+      g_value_set_string (value, priv->bookmark);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -51,7 +74,7 @@ penge_app_tile_set_property (GObject *object, guint property_id,
 
   switch (property_id) {
     case PROP_BOOKMARK:
-      priv->bookmark = g_value_dup_boxed (value);
+      priv->bookmark = g_value_dup_string (value);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -63,10 +86,10 @@ penge_app_tile_dispose (GObject *object)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->bookmark)
+  if (priv->app_info)
   {
-    penge_app_bookmark_unref (priv->bookmark);
-    priv->bookmark = NULL;
+    g_object_unref (priv->app_info);
+    priv->app_info = NULL;
   }
 
   G_OBJECT_CLASS (penge_app_tile_parent_class)->dispose (object);
@@ -75,6 +98,10 @@ penge_app_tile_dispose (GObject *object)
 static void
 penge_app_tile_finalize (GObject *object)
 {
+  PengeAppTilePrivate *priv = GET_PRIVATE (object);
+
+  g_free (priv->bookmark);
+
   G_OBJECT_CLASS (penge_app_tile_parent_class)->finalize (object);
 }
 
@@ -85,11 +112,13 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
   const gchar *path;
   GError *error = NULL;
   GtkIconInfo *info;
+  GIcon *icon;
 
-  info = gtk_icon_theme_lookup_icon (priv->icon_theme,
-                                     priv->bookmark->icon_name,
-                                     ICON_SIZE,
-                                     GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+  icon = g_app_info_get_icon (priv->app_info);
+  info = gtk_icon_theme_lookup_by_gicon (priv->icon_theme,
+                                         icon,
+                                         ICON_SIZE,
+                                         GTK_ICON_LOOKUP_GENERIC_FALLBACK);
 
   if (!info)
   {
@@ -128,13 +157,12 @@ static void
 penge_app_tile_constructed (GObject *object)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (object);
+  gchar *path;
+  GError *error = NULL;
 
   g_return_if_fail (priv->bookmark);
 
   if (!priv->bookmark)
-    return;
-
-  if (!priv->bookmark->icon_name)
     return;
 
   priv->icon_theme = gtk_icon_theme_get_default ();
@@ -142,6 +170,23 @@ penge_app_tile_constructed (GObject *object)
                     "changed",
                     (GCallback)_icon_theme_changed_cb,
                     object);
+
+  path = g_filename_from_uri (priv->bookmark, NULL, &error);
+
+  if (path)
+  {
+    priv->app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
+    nbtk_widget_set_tooltip_text (NBTK_WIDGET (object),
+                             g_app_info_get_name (priv->app_info));
+    g_free (path);
+  }
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error getting info from bookmark: %s",
+               error->message);
+    g_clear_error (&error);
+  }
 
   _update_icon_from_icon_theme ((PengeAppTile *)object);
 }
@@ -160,34 +205,12 @@ penge_app_tile_class_init (PengeAppTileClass *klass)
   object_class->finalize = penge_app_tile_finalize;
   object_class->constructed = penge_app_tile_constructed;
 
-  pspec = g_param_spec_boxed ("bookmark",
-                              "bookmark",
-                              "bookmark",
-                              PENGE_TYPE_APP_BOOKMARK,
-                              G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+  pspec = g_param_spec_string ("bookmark",
+                               "bookmark",
+                               "bookmark",
+                               NULL,
+                               G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_BOOKMARK, pspec);
-}
-
-static gboolean
-_enter_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      "hover");
-
-  return FALSE;
-}
-
-static gboolean
-_leave_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      NULL);
-
-  return FALSE;
 }
 
 static gboolean
@@ -196,38 +219,12 @@ _button_press_event (ClutterActor *actor,
                      gpointer      userdata)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
-  GError *error = NULL;
-  gchar *path;
 
-  if (!(priv->bookmark && priv->bookmark->uri))
-    return TRUE;
+  if (moblin_netbook_launch_application_from_info (priv->app_info,
+                                                   NULL, FALSE, -2))
+    penge_utils_signal_activated (actor);
 
-  path = g_filename_from_uri (priv->bookmark->uri, NULL, &error);
-
-  if (path)
-  {
-    GAppLaunchContext *context;
-    GAppInfo *app_info;
-
-    context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
-    app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
-    g_free (path);
-
-    if (g_app_info_launch (app_info, NULL, context, &error))
-      penge_utils_signal_activated (actor);
-
-    g_object_unref (app_info);
-    g_object_unref (context);
-  }
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error launching application): %s",
-                 error->message);
-    g_clear_error (&error);
-  }
-
-  return TRUE;
+  return FALSE;
 }
 
 static void
@@ -236,19 +233,9 @@ penge_app_tile_init (PengeAppTile *self)
   PengeAppTilePrivate *priv = GET_PRIVATE (self);
 
   priv->tex = clutter_texture_new ();
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->tex,
-                        0,
-                        0);
 
-  g_signal_connect (self,
-                    "enter-event",
-                    (GCallback)_enter_event_cb,
-                    self);
-  g_signal_connect (self,
-                    "leave-event",
-                    (GCallback)_leave_event_cb,
-                    self);
+  nbtk_bin_set_child (NBTK_BIN (self),
+                      priv->tex);
   g_signal_connect (self,
                     "button-press-event",
                     (GCallback)_button_press_event,

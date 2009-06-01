@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (C) 2008 - 2009 Intel Corporation.
  *
  * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  *
@@ -16,9 +16,7 @@
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -43,59 +41,116 @@
 #define PADDING         8
 #define BORDER_WIDTH    4
 
-typedef struct _GetCapabilitiesClosure
+typedef struct _ServiceInfo
 {
+  gchar *name;
+
   MojitoClientService *service;
-  gchar *service_name;
+  ClutterActor *row;
   NbtkTable *table;
-  guint row_number;
-} GetCapabilitiesClosure;
+
+  guint can_update : 1;
+  guint has_icon   : 1;
+  guint is_visible : 1;
+} ServiceInfo;
+
+static ClutterActor *empty_bin = NULL;
+static guint n_visible = 0;
 
 static void
-on_mojito_get_capabilities (MojitoClientService *service,
-                            guint32              caps,
-                            const GError        *error,
-                            gpointer             data)
+on_caps_changed (MojitoClientService *service,
+                 guint32              new_caps,
+                 ServiceInfo         *s_info)
 {
-  GetCapabilitiesClosure *closure = data;
+  gboolean was_visible, has_row;
+
+  was_visible = s_info->is_visible;
+  has_row     = s_info->row != NULL;
+
+  s_info->can_update = (new_caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS)    ? TRUE : FALSE;
+  s_info->has_icon   = (new_caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON) ? TRUE : FALSE;
+
+  g_debug ("%s: CapabilitiesChanged['%s']: can-update:%s, has-icon:%s",
+           G_STRLOC,
+           s_info->name,
+           s_info->can_update ? "yes" : "no",
+           s_info->has_icon ? "yes" : "no");
+
+  if (s_info->can_update && s_info->has_icon)
+    {
+      /* the caps we care about haven't changed */
+      if (has_row && was_visible)
+        return;
+
+      if (!has_row)
+        {
+          s_info->row = g_object_new (MNB_TYPE_STATUS_ROW,
+                                      "service-name", s_info->name,
+                                      NULL);
+          nbtk_table_add_actor_with_properties (s_info->table,
+                                                s_info->row,
+                                                -1, 0,
+                                                "row-span", 1,
+                                                "col-span", 1,
+                                                "x-expand", TRUE,
+                                                "y-expand", FALSE,
+                                                "x-fill", TRUE,
+                                                "y-fill", FALSE,
+                                                "x-align", 0.0,
+                                                "y-align", 0.0,
+                                                "allocate-hidden", FALSE,
+                                                NULL);
+        }
+
+      if (!was_visible)
+        {
+          clutter_actor_show (s_info->row);
+          s_info->is_visible = TRUE;
+
+          n_visible += 1;
+        }
+
+      g_debug ("%s: showing row for service '%s'", G_STRLOC, s_info->name);
+    }
+  else
+    {
+      if (!has_row)
+        return;
+
+      if (was_visible)
+        {
+          clutter_actor_hide (s_info->row);
+          s_info->is_visible = FALSE;
+
+          n_visible -= 1;
+        }
+
+      g_debug ("%s: hiding row for service '%s'", G_STRLOC, s_info->name);
+    }
+
+  if (n_visible == 0)
+    clutter_actor_show (empty_bin);
+  else
+    clutter_actor_hide (empty_bin);
+}
+
+static void
+get_caps (MojitoClientService *service,
+          guint32              new_caps,
+          const GError        *error,
+          gpointer             user_data)
+{
+  ServiceInfo *s_info = user_data;
 
   if (error)
     {
-      g_warning ("Unable to get capabilities of service '%s': %s",
-                 closure->service_name,
-                 error->message);
-      goto out;
+      g_critical ("Unable to retrieve capabilities for service '%s': %s",
+                  s_info->name,
+                  error->message);
+      return;
     }
 
-  g_debug ("%s: GetCapabilities %s "
-           "[update-status: %s, get-persona-icon: %s][%d]",
-           G_STRLOC,
-           closure->service_name,
-           caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS    ? "y" : "n",
-           caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON ? "y" : "n",
-           closure->row_number);
-
-  if ((caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS) &&
-      (caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON))
-    {
-      ClutterActor *row = g_object_new (MNB_TYPE_STATUS_ROW,
-                                        "service-name", closure->service_name,
-                                        NULL);
-      g_assert (row != NULL);
-
-      g_debug ("%s: Adding row %d for service %s",
-               G_STRLOC,
-               closure->row_number,
-               closure->service_name);
-
-      nbtk_table_add_actor (closure->table, row, closure->row_number, 0);
-    }
-
-out:
-  g_object_unref (closure->table);
-  g_object_unref (closure->service);
-  g_free (closure->service_name);
-  g_slice_free (GetCapabilitiesClosure, closure);
+  on_caps_changed (service, new_caps, s_info);
 }
 
 static void
@@ -104,40 +159,42 @@ on_mojito_get_services (MojitoClient *client,
                         gpointer      data)
 {
   NbtkTable *table = data;
-  const GList *l;
-  gint i;
+  const GList *s;
 
-  for (l = services, i = 1; l != NULL; l = l->next, i++)
+  for (s = services; s != NULL; s = s->next)
     {
-      const gchar *service_name = l->data;
+      const gchar *service_name = s->data;
       MojitoClientService *service;
-      GetCapabilitiesClosure *closure;
+      ServiceInfo *s_info;
+
+      if (service_name == NULL || *service_name == '\0')
+        break;
 
       /* filter out the dummy service */
       if (strcmp (service_name, "dummy") == 0)
-        {
-          i -= 1;
-          continue;
-        }
+        continue;
 
       service = mojito_client_get_service (client, service_name);
       if (G_UNLIKELY (service == NULL))
-        {
-          i -= 1;
-          continue;
-        }
+        continue;
 
-      g_debug ("%s: GetServices [%s][%i]", G_STRLOC, service_name, i);
+      g_debug ("%s: GetServices ['%s']", G_STRLOC, service_name);
 
-      closure = g_slice_new0 (GetCapabilitiesClosure);
-      closure->service = g_object_ref (service);
-      closure->service_name = g_strdup (service_name);
-      closure->table = g_object_ref (table);
-      closure->row_number = i;
+      s_info = g_slice_new (ServiceInfo);
+      s_info->name = g_strdup (service_name);
+      s_info->service = service;
+      s_info->row = NULL;
+      s_info->table = table;
+      s_info->can_update = FALSE;
+      s_info->has_icon = FALSE;
+      s_info->is_visible = FALSE;
 
-      mojito_client_service_get_capabilities (service,
-                                              on_mojito_get_capabilities,
-                                              closure);
+      g_signal_connect (s_info->service, "capabilities-changed",
+                        G_CALLBACK (on_caps_changed),
+                        s_info);
+      mojito_client_service_get_capabilities (s_info->service,
+                                              get_caps,
+                                              s_info);
     }
 }
 
@@ -179,7 +236,7 @@ on_drop_down_show_completed (MnbDropDown *drop_down,
   children = clutter_container_get_children (container);
   for (l = children; l != NULL; l = l->next)
     {
-      if (MNB_IS_STATUS_ROW (l->data))
+      if (MNB_IS_STATUS_ROW (l->data) && CLUTTER_ACTOR_IS_MAPPED (l->data))
         mnb_status_row_force_update (l->data);
     }
 
@@ -192,6 +249,7 @@ make_status (MutterPlugin *plugin, gint width)
   ClutterActor  *table;
   NbtkWidget    *drop_down;
   NbtkWidget    *header;
+  NbtkWidget    *label;
   MojitoClient  *client;
 
   table = CLUTTER_ACTOR (nbtk_table_new ());
@@ -212,6 +270,30 @@ make_status (MutterPlugin *plugin, gint width)
                                         "y-align", 0.5,
                                         NULL);
 
+  empty_bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (empty_bin), "status-empty-bin");
+  nbtk_bin_set_alignment (NBTK_BIN (empty_bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
+  nbtk_bin_set_fill (NBTK_BIN (empty_bin), TRUE, FALSE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (table), empty_bin,
+                                        1, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+  label = nbtk_label_new (_("To update your web status you need to setup "
+                            "a Web Services account with a provider that "
+                            "supports status messages"));
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-empty-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (empty_bin),
+                               CLUTTER_ACTOR (label));
+
   client = mojito_client_new ();
 
   /* online notification on the header */
@@ -226,7 +308,7 @@ make_status (MutterPlugin *plugin, gint width)
                           client,
                           (GDestroyNotify) g_object_unref);
 
-  drop_down = mnb_drop_down_new ();
+  drop_down = mnb_drop_down_new (plugin);
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), table);
   g_signal_connect (drop_down, "show-completed",
                     G_CALLBACK (on_drop_down_show_completed),

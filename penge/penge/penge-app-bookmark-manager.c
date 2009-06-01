@@ -1,4 +1,25 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Rob Bradford <rob@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "penge-app-bookmark-manager.h"
 
@@ -10,15 +31,13 @@ G_DEFINE_TYPE (PengeAppBookmarkManager, penge_app_bookmark_manager, G_TYPE_OBJEC
 typedef struct _PengeAppBookmarkManagerPrivate PengeAppBookmarkManagerPrivate;
 
 struct _PengeAppBookmarkManagerPrivate {
-    GBookmarkFile *bookmarks;
     gchar *path;
     GFileMonitor *monitor;
-    GHashTable *uris_to_bookmarks;
     guint save_idle_id;
+    GList *uris;
 };
 
-#define APP_BOOKMARK_FILENAME "favourite-apps.xbel"
-#define PENGE_APP_NAME "penge"
+#define APP_BOOKMARK_FILENAME "favourite-apps"
 
 enum
 {
@@ -53,18 +72,7 @@ static void
 penge_app_bookmark_manager_dispose (GObject *object)
 {
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (object);
-
-  if (priv->bookmarks)
-  {
-    if (priv->save_idle_id > 0)
-    {
-      g_source_remove (priv->save_idle_id);
-      penge_app_bookmark_manager_save ((PengeAppBookmarkManager *)object);
-    }
-
-    g_bookmark_file_free (priv->bookmarks);
-    priv->bookmarks = NULL;
-  }
+  GList *l;
 
   if (priv->monitor)
   {
@@ -73,10 +81,21 @@ penge_app_bookmark_manager_dispose (GObject *object)
     priv->monitor = NULL;
   }
 
-  if (priv->uris_to_bookmarks)
+  if (priv->uris)
   {
-    g_hash_table_unref (priv->uris_to_bookmarks);
-    priv->uris_to_bookmarks = NULL;
+
+    if (priv->save_idle_id > 0)
+    {
+      g_source_remove (priv->save_idle_id);
+      penge_app_bookmark_manager_save ((PengeAppBookmarkManager *)object);
+    }
+
+    for (l = priv->uris; l; l = g_list_delete_link (l, l))
+    {
+      g_free ((gchar *)l->data);
+    }
+
+    priv->uris = NULL;
   }
 
   G_OBJECT_CLASS (penge_app_bookmark_manager_parent_class)->dispose (object);
@@ -111,10 +130,10 @@ penge_app_bookmark_manager_class_init (PengeAppBookmarkManagerClass *klass)
                   G_STRUCT_OFFSET (PengeAppBookmarkManagerClass, bookmark_added),
                   NULL,
                   NULL,
-                  g_cclosure_marshal_VOID__BOXED,
+                  g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE,
                   1,
-                  PENGE_TYPE_APP_BOOKMARK);
+                  G_TYPE_STRING);
 
   signals[BOOKMARK_REMOVED_SIGNAL] =
     g_signal_new ("bookmark-removed",
@@ -129,85 +148,38 @@ penge_app_bookmark_manager_class_init (PengeAppBookmarkManagerClass *klass)
                   G_TYPE_STRING);
 }
 
-void
+static void
 penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
 {
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
   GError *error = NULL;
-  gchar **uris, *uri;
+  gchar **uris;
+  gchar *contents;
   gint i = 0;
-  PengeAppBookmark *bookmark;
+  GList *l;
 
-  if (!g_bookmark_file_load_from_file (priv->bookmarks,
-                                       priv->path,
-                                       &error))
+  for (l = priv->uris; l; l = g_list_delete_link (l, l))
   {
-    g_warning (G_STRLOC ": Error loading bookmark file: %s",
-               error->message);
+    g_free ((gchar *)l->data);
+  }
+  priv->uris = NULL;
+
+  if (!g_file_get_contents (priv->path,
+                            &contents,
+                            NULL,
+                            &error))
+  {
+    g_critical (G_STRLOC ": Unable to open bookmarks file: %s",
+                error->message);
     g_clear_error (&error);
+    return;
   }
 
-  uris = g_bookmark_file_get_uris (priv->bookmarks, NULL);
+  uris = g_strsplit (contents, " ", -1);
 
-  for (uri = uris[i]; uri; uri = uris[i])
+  for (i = 0; uris[i] != NULL; i++)
   {
-    bookmark = g_hash_table_lookup (priv->uris_to_bookmarks,
-                                    uri);
-
-    if (bookmark)
-    {
-      i++;
-      continue;
-    }
-
-    bookmark = penge_app_bookmark_new ();
-
-    g_free (bookmark->uri);
-    bookmark->uri = g_strdup (uri);;
-
-    g_free (bookmark->application_name);
-    bookmark->application_name = g_bookmark_file_get_title (priv->bookmarks,
-                                                            uri,
-                                                            &error);
-    if (error)
-    {
-      g_warning (G_STRLOC ": Error when retrieving title: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-
-    g_free (bookmark->icon_name);
-    if (!g_bookmark_file_get_icon (priv->bookmarks,
-                                  uri,
-                                  &(bookmark->icon_name),
-                                  NULL,
-                                  &error))
-    {
-      g_warning (G_STRLOC ": Error when retrieving icon: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-
-    g_free (bookmark->app_exec);
-    if (!g_bookmark_file_get_app_info (priv->bookmarks,
-                                      uri,
-                                      PENGE_APP_NAME,
-                                      &(bookmark->app_exec),
-                                      NULL,
-                                      NULL,
-                                      &error))
-    {
-      g_warning (G_STRLOC ": Error when retrieving exec string: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-
-    g_hash_table_insert (priv->uris_to_bookmarks,
-                         g_strdup (uri),
-                         penge_app_bookmark_ref (bookmark));
-
-    penge_app_bookmark_unref (bookmark);
-    i++;
+    priv->uris = g_list_append (priv->uris, g_strdup (uris[i]));
   }
 
   g_strfreev (uris);
@@ -217,16 +189,36 @@ void
 penge_app_bookmark_manager_save (PengeAppBookmarkManager *manager)
 {
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  gchar *contents;
+  gchar **uris;
+  gint i = 0;
+  GList *l;
   GError *error = NULL;
 
-  if (!g_bookmark_file_to_file (priv->bookmarks,
-                                priv->path,
-                                &error))
+  uris = g_new0 (gchar *, g_list_length (priv->uris) + 1);
+
+  for (l = priv->uris; l; l = l->next)
   {
-    g_warning (G_STRLOC ": Error when writing bookmarks: %s",
-               error->message);
+    uris[i] = (gchar *)l->data;
+    i++;
+  }
+
+  uris[i] = NULL;
+
+  contents = g_strjoinv (" ", uris);
+
+  if (!g_file_set_contents (priv->path, 
+                            contents,
+                            -1,
+                            &error))
+  {
+    g_critical (G_STRLOC ": Unable to save to bookmarks file: %s",
+                error->message);
     g_clear_error (&error);
   }
+
+  g_free (contents);
+  g_free (uris);
 }
 
 static gboolean
@@ -269,11 +261,6 @@ penge_app_bookmark_manager_init (PengeAppBookmarkManager *self)
   GFile *f;
   GError *error = NULL;
 
-  priv->uris_to_bookmarks = g_hash_table_new_full (g_str_hash,
-                                                   g_str_equal,
-                                                   g_free,
-                                                   (GDestroyNotify)penge_app_bookmark_unref);
-  priv->bookmarks = g_bookmark_file_new ();
   priv->path = g_build_filename (g_get_user_data_dir (),
                                  APP_BOOKMARK_FILENAME,
                                  NULL);
@@ -296,6 +283,8 @@ penge_app_bookmark_manager_init (PengeAppBookmarkManager *self)
                       (GCallback)_file_monitor_changed_cb,
                       self);
   }
+  
+  penge_app_bookmark_manager_load (self);
 }
 
 
@@ -319,199 +308,42 @@ penge_app_bookmark_manager_get_bookmarks (PengeAppBookmarkManager *manager)
 {
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
 
-  return g_hash_table_get_values (priv->uris_to_bookmarks);
-}
-
-gboolean
-penge_app_bookmark_manager_remove_by_uri (PengeAppBookmarkManager *manager,
-                                          const gchar             *uri,
-                                          GError                 **error_out)
-{
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
-  GError *error = NULL;
-
-  if (!g_hash_table_remove (priv->uris_to_bookmarks, uri))
-  {
-    g_warning (G_STRLOC ": No such uri known.");
-
-    /* TODO: Set error_out to a GError. */
-    return FALSE;
-  }
-
-  if (!g_bookmark_file_remove_item (priv->bookmarks, uri, &error))
-  {
-    g_warning (G_STRLOC ": Error removing item: %s", error->message);
-    g_propagate_error (error_out, error);
-    return FALSE;
-  }
-
-  penge_app_bookmark_manager_idle_save (manager);
-  g_signal_emit (manager, signals[BOOKMARK_REMOVED_SIGNAL], 0, uri);
-
-  return TRUE;
-}
-
-gboolean
-penge_app_bookmark_manager_add_from_uri (PengeAppBookmarkManager *manager,
-                                         const gchar             *uri,
-                                         GError                 **error_out)
-{
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
-  GKeyFile *kf;
-  gchar *path;
-  GError *error = NULL;
-  PengeAppBookmark *bookmark;
-
-  /* Check if we already have this URI present */
-  bookmark = g_hash_table_lookup (priv->uris_to_bookmarks,
-                                  uri);
-
-  if (bookmark)
-  {
-    return TRUE;
-  }
-
-  path = g_filename_from_uri (uri, NULL, &error);
-
-  if (!path)
-  {
-    g_warning (G_STRLOC ": Error converting uri to path: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
-
-  kf = g_key_file_new ();
-  if (!g_key_file_load_from_file (kf,
-                                  path,
-                                  G_KEY_FILE_NONE,
-                                  &error))
-  {
-    g_warning (G_STRLOC ": Error loading file as key file: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
-
-  bookmark = penge_app_bookmark_new ();
-  bookmark->uri = g_strdup (uri);
-  bookmark->application_name = 
-    g_key_file_get_locale_string (kf,
-                                  G_KEY_FILE_DESKTOP_GROUP,
-                                  G_KEY_FILE_DESKTOP_KEY_NAME,
-                                  NULL,
-                                  &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error getting application name: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
-
-  bookmark->icon_name = 
-    g_key_file_get_string (kf,
-                           G_KEY_FILE_DESKTOP_GROUP,
-                           G_KEY_FILE_DESKTOP_KEY_ICON,
-                           &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error getting application icon: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
-
-  bookmark->app_exec = 
-    g_key_file_get_string (kf,
-                           G_KEY_FILE_DESKTOP_GROUP,
-                           G_KEY_FILE_DESKTOP_KEY_EXEC,
-                           &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error getting application execute information: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    goto error;
-  }
-
-  /* Create the entry in the GBookmarkFile object */
-  g_bookmark_file_set_title (priv->bookmarks, uri, bookmark->application_name);
-  g_bookmark_file_set_icon (priv->bookmarks, uri, bookmark->icon_name, NULL);
-  if (!g_bookmark_file_set_app_info (priv->bookmarks,
-                                     uri,
-                                     PENGE_APP_NAME,
-                                     bookmark->app_exec,
-                                     1,
-                                     time (NULL),
-                                     &error))
-  {
-    g_warning (G_STRLOC ": Error setting application execute information: %s",
-               error->message);
-    g_propagate_error (error_out, error);
-    g_bookmark_file_remove_item (priv->bookmarks, uri, NULL);
-    goto error;
-  }
-
-  g_hash_table_insert (priv->uris_to_bookmarks,
-                       g_strdup (uri),
-                       bookmark);
-
-  penge_app_bookmark_manager_idle_save (manager);
-  g_signal_emit (manager, signals[BOOKMARK_ADDED_SIGNAL], 0, bookmark);
-
-  return TRUE;
-
-error:
-  if (bookmark)
-    penge_app_bookmark_free (bookmark);
-  return FALSE;
-}
-
-PengeAppBookmark *
-penge_app_bookmark_ref (PengeAppBookmark *bookmark)
-{
-  g_atomic_int_inc (&(bookmark->ref_cnt));
-  return bookmark;
+  return g_list_copy (priv->uris);
 }
 
 void
-penge_app_bookmark_unref (PengeAppBookmark *bookmark)
+penge_app_bookmark_manager_remove_uri (PengeAppBookmarkManager *manager,
+                                       const gchar             *uri)
 {
-  if (g_atomic_int_dec_and_test (&(bookmark->ref_cnt)))
-  {
-    penge_app_bookmark_free (bookmark);
-  }
-}
+  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  GList *l;
 
-PengeAppBookmark *
-penge_app_bookmark_new (void)
-{
-  return penge_app_bookmark_ref (g_slice_new0 (PengeAppBookmark));
+  g_return_if_fail (PENGE_IS_APP_BOOKMARK_MANAGER (manager));
+
+  for (l = priv->uris; l; l = l->next)
+  {
+    if (g_str_equal ((gchar *)l->data, uri))
+    {
+      g_free ((gchar *)l->data);
+      priv->uris = g_list_delete_link (priv->uris, l);
+    }
+  }
+
+  penge_app_bookmark_manager_idle_save (manager);
+  g_signal_emit_by_name (manager, "bookmark-removed", uri);
 }
 
 void
-penge_app_bookmark_free (PengeAppBookmark *bookmark)
+penge_app_bookmark_manager_add_uri (PengeAppBookmarkManager *manager,
+                                    const gchar             *uri)
 {
-  g_free (bookmark->application_name);
-  g_free (bookmark->icon_name);
-  g_free (bookmark->app_exec);
+  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+
+  g_return_if_fail (PENGE_IS_APP_BOOKMARK_MANAGER (manager));
+
+  priv->uris = g_list_append (priv->uris, g_strdup (uri));
+
+  penge_app_bookmark_manager_idle_save (manager);
+  g_signal_emit_by_name (manager, "bookmark-added", uri);
 }
 
-GType
-penge_app_bookmark_get_type (void)
-{
-  static GType type = 0;
-
-  if (G_UNLIKELY (type == 0))
-  {
-    type = g_boxed_type_register_static ("PengeAppBookmark",
-                                         (GBoxedCopyFunc)penge_app_bookmark_ref,
-                                         (GBoxedFreeFunc)penge_app_bookmark_unref);
-  }
-
-  return type;
-}

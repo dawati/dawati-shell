@@ -69,8 +69,10 @@ update_tile (AhoghillMediaTile *self)
         title = g_strdup (bkl_item_audio_get_title ((BklItemAudio *) priv->item));
         artists = bkl_item_audio_get_artists ((BklItemAudio *) priv->item);
 
-        /* FIXME: make a string from the array */
-        artist = g_strdup (artists->pdata[0]);
+        if (artists) {
+            /* FIXME: make a string from the array */
+            artist = g_strdup (artists->pdata[0]);
+        }
         break;
 
     case BKL_ITEM_TYPE_IMAGE:
@@ -104,7 +106,7 @@ update_tile (AhoghillMediaTile *self)
     nbtk_label_set_text (NBTK_LABEL (priv->artist), artist ? artist : bkl_item_get_mimetype (priv->item));
 
     g_object_set (priv->icon,
-                  "thumbnail", bkl_item_extended_get_thumbnail ((BklItemExtended *) priv->item),
+                  "item", priv->item,
                   NULL);
 
     g_free (title);
@@ -120,7 +122,7 @@ clear_tile (AhoghillMediaTile *tile)
     nbtk_label_set_text (NBTK_LABEL (priv->artist), "");
 
     g_object_set (priv->icon,
-                  "thumbnail", NULL,
+                  "item", NULL,
                   NULL);
 }
 

@@ -24,7 +24,8 @@ dist_theme_panel_DATA = \
 	theme/panel/status-normal.png \
 	theme/panel/background-tile.png \
 	theme/panel/toolbar-button-active.png \
-	theme/panel/toolbar-button-hover.png
+	theme/panel/toolbar-button-hover.png \
+        theme/panel/toolbar-hint.png
 
 theme_chooserdir = $(pkgdatadir)/theme/chooser
 dist_theme_chooser_DATA = \
@@ -55,7 +56,8 @@ dist_theme_generic_DATA = \
 	theme/generic/vscroll-forward-hover.png \
 	theme/generic/vscroll-forward.png \
 	theme/generic/vscroll-handle-hover.png \
-	theme/generic/vscroll-handle.png
+	theme/generic/vscroll-handle.png \
+	theme/generic/placeholder-bg.png
 
 theme_launcherdir = $(pkgdatadir)/theme/launcher
 dist_theme_launcher_DATA = \
@@ -66,6 +68,7 @@ dist_theme_launcher_DATA = \
 	theme/launcher/launcher-search-entry-clear.png \
 	theme/launcher/launcher-search-entry-separator.png \
 	theme/launcher/launcher-button-fav-toggle.png \
+	theme/launcher/launcher-button-fav-toggle-active.png \
 	theme/launcher/launcher-button-fav-toggle-checked.png \
 	theme/launcher/launcher-button-fav-toggle-hover.png
 
@@ -120,7 +123,12 @@ dist_theme_mzone_DATA = \
 	theme/mzone/v-div-line.png \
 	theme/mzone/single-div-line.png \
 	theme/mzone/double-div-line.png \
-	theme/mzone/toys.jpg
+	theme/mzone/toys.jpg \
+	theme/mzone/default-avatar-icon.png \
+	theme/mzone/no-content-tile-bg.png \
+	theme/mzone/no-content-tile-glow-bg.png
+
+
 
 theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
@@ -139,12 +147,18 @@ theme_mediapaneldir = $(pkgdatadir)/theme/media-panel
 dist_theme_mediapanel_DATA = \
 	theme/media-panel/bot_playque_closed.png \
 	theme/media-panel/bot_playque_hover.png \
+	theme/media-panel/hrn-generic-album.png \
+	theme/media-panel/hrn-generic-images.png \
+	theme/media-panel/hrn-generic-video.png \
+	theme/media-panel/hrn-progress-bar-handle.png \
+	theme/media-panel/hrn-progress-bar-through.png \
 	theme/media-panel/media_search_bkgrd.png \
 	theme/media-panel/mid_playque_closed.png \
 	theme/media-panel/mid_playque_hover.png \
 	theme/media-panel/mid_playque_selected.png \
 	theme/media-panel/play_hover.png \
 	theme/media-panel/playque_background.png \
+	theme/media-panel/playqueue-placeholder.png \
 	theme/media-panel/pq_pause_hover.png \
 	theme/media-panel/pq_pause.png \
 	theme/media-panel/pq_play_hover.png \
@@ -176,7 +190,8 @@ theme_peopledir = $(pkgdatadir)/theme/people
 dist_theme_people_DATA = \
 	theme/people/people-search-bg.png \
 	theme/people/tile-bg-hover.png \
-	theme/people/avatar-bg.png
+	theme/people/avatar-bg.png \
+	theme/people/grey-backdrop.png
 
 theme_effectsdir = $(pkgdatadir)/theme/effects
 dist_theme_effects_DATA = \

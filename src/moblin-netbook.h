@@ -31,7 +31,6 @@
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
 
-#include "moblin-netbook-tray-manager.h"
 #include "moblin-netbook-notify-store.h"
 #include "mnb-notification-cluster.h"
 #include "mnb-notification-urgent.h"
@@ -40,10 +39,7 @@
 
 #define MAX_WORKSPACES 8
 
-/*
- * FIXME -- should not be hardcoded; used in panel and system tray.
- */
-#define PANEL_HEIGHT 64
+#define TOOLBAR_HEIGHT 64
 
 #define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
 #define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
@@ -81,81 +77,38 @@ typedef struct MnbInputRegion * MnbInputRegion;
  */
 struct _MoblinNetbookPluginPrivate
 {
-  /* Valid only when switch_workspace effect is in progress */
-  ClutterTimeline       *tml_switch_workspace0;
-  ClutterTimeline       *tml_switch_workspace1;
-  GList                **actors;
-  ClutterActor          *desktop1;
-  ClutterActor          *desktop2;
-
-  ClutterActor          *d_overlay ; /* arrow indicator */
-  ClutterActor          *panel;
-  ClutterActor          *panel_shadow;
-
-  ClutterActor          *switcher;
-  ClutterActor          *workspace_chooser;
-  ClutterActor          *launcher;
-  ClutterActor          *mzone_grid;
-  ClutterActor          *net_grid;
+  ClutterActor          *toolbar;
   ClutterActor          *lowlight;
-  ClutterActor          *status;
-  ClutterActor          *media_drop_down;
-  ClutterActor          *pasteboard;
-  ClutterActor          *people;
 
-  GList                 *global_tab_list;
-
-  ShellTrayManager      *tray_manager;
-
-  XserverRegion          screen_region;
-  XserverRegion          panel_trigger_region;
-  XserverRegion          panel_trigger_region2;
   XserverRegion          current_input_region;
-  XserverRegion          current_input_base_region;
-
   GList                 *input_region_stack;
 
   MetaWindow            *last_focused;
 
-  gboolean               debug_mode                 : 1;
-  gboolean               panel_out_in_progress      : 1;
-  gboolean               panel_back_in_progress     : 1;
-  gboolean               panel_wait_for_pointer     : 1;
-  gboolean               pointer_on_stage           : 1;
-  gboolean               in_alt_grab                : 1;
-  gboolean               blocking_input             : 1;
+  gint                   fullscreen_apps [MAX_WORKSPACES + 1];
 
-  gint                   fullscreen_apps;
+  gboolean               holding_focus : 1;
 
-  guint                  workspace_chooser_timeout;
-
-  ClutterActor          *panel_buttons[8];
-  NbtkWidget            *panel_time;
-  NbtkWidget            *panel_date;
-
-  /* Startup Notification */
+  /*
+   * Startup Notification
+   *
+   * TODO -- make the chooser into an object and keep all of this in there.
+   */
   SnDisplay             *sn_display;
   SnMonitorContext      *sn_context;
   GHashTable            *sn_hash;
-
-  /* Application notification, ala libnotify */
-  MoblinNetbookNotifyStore *notify_store;
+  GHashTable            *sn_binary_hash;
 
   /* Background parallax texture */
-  gint                   parallax_paint_offset;
   ClutterActor          *parallax_tex;
 
   MutterPluginInfo       info;
 
-  gint                   last_y;
-  guint                  panel_slide_timeout_id;
-
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
   ClutterActor          *notification_urgent;
-  MnbInputRegion         notification_input_region;
-
-  gboolean               panel_disabled;
+  MnbInputRegion         notification_cluster_input_region;
+  MnbInputRegion         notification_urgent_input_region;
 
   Window                 focus_xwin;
 };
@@ -181,8 +134,11 @@ struct ActorPrivate
 };
 
 ActorPrivate * get_actor_private (MutterWindow *actor);
-void           disable_stage     (MutterPlugin *plugin, guint32 timestamp);
-void           enable_stage      (MutterPlugin *plugin, guint32 timestamp);
+void           moblin_netbook_focus_stage (MutterPlugin *plugin,
+                                           guint32       timestamp);
+
+void           moblin_netbook_unfocus_stage (MutterPlugin *plugin,
+                                             guint32 timestamp);
 
 void moblin_netbook_notify_init (MutterPlugin *plugin);
 
@@ -192,8 +148,7 @@ MnbInputRegion moblin_netbook_input_region_push (MutterPlugin *plugin,
                                                  gint          x,
                                                  gint          y,
                                                  guint         width,
-                                                 guint         height,
-                                                 gboolean      inverse);
+                                                 guint         height);
 
 void moblin_netbook_input_region_remove_without_update (MutterPlugin  *plugin,
                                                         MnbInputRegion mir);
@@ -203,5 +158,20 @@ void moblin_netbook_input_region_remove (MutterPlugin   *plugin,
 
 void
 moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on);
+
+void
+moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp);
+
+void
+moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp);
+
+void
+moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin);
+
+gboolean
+moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin);
+
+MutterPlugin *
+moblin_netbook_get_plugin_singleton (void);
 
 #endif

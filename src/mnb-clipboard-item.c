@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Emmanuele Bassi <ebassi@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -487,9 +506,9 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
                                        NULL);
 
   texture_cache = nbtk_texture_cache_get_default ();
-  texture = nbtk_texture_cache_get_texture (texture_cache,
-                                            remove_icon_path,
-                                            FALSE);
+  texture = CLUTTER_ACTOR (nbtk_texture_cache_get_texture (texture_cache,
+                                                           remove_icon_path,
+                                                           TRUE));
   nbtk_bin_set_child (NBTK_BIN (self->remove_button),
                       CLUTTER_ACTOR (texture));
 

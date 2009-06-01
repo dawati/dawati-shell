@@ -55,6 +55,7 @@
 #define TRAY_BUTTON_HEIGHT 55
 #define TRAY_BUTTON_WIDTH 44
 
+/* IF YOU EVER CHANGE THIS VALUE YOU NEED TO UPDATE CARRICK / DALSTON ETC */
 #define PANEL_X_PADDING 4
 
 struct button_data
@@ -89,6 +90,12 @@ on_panel_back_effect_complete (ClutterTimeline *timeline, gpointer data)
 
   if (!priv->workspace_chooser)
     {
+      if (priv->panel_input_region)
+        {
+          moblin_netbook_input_region_remove (plugin,
+                                              priv->panel_input_region);
+          priv->panel_input_region = NULL; /* XXX leaky? */
+        }
       disable_stage (plugin, CurrentTime);
     }
 }
@@ -214,6 +221,15 @@ on_panel_out_effect_complete (ClutterTimeline *timeline, gpointer data)
       clutter_actor_set_y (control_actor, PANEL_HEIGHT);
       clutter_actor_show (control_actor);
     }
+
+  /* basically make the whole stage go to clutter.. */
+  priv->panel_input_region 
+                = moblin_netbook_input_region_push (plugin,
+                                                    0,
+                                                    0,
+                                                    priv->screen_width,
+                                                    priv->screen_height,
+                                                    FALSE);
 
   enable_stage (plugin, CurrentTime);
 
@@ -370,7 +386,7 @@ panel_append_toolbar_button (MutterPlugin  *plugin,
 
   button = mnb_panel_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_button_set_tooltip (NBTK_BUTTON (button), tooltip);
+  nbtk_widget_set_tooltip_text (button, tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), name);
   clutter_actor_set_size (CLUTTER_ACTOR (button), BUTTON_WIDTH, BUTTON_HEIGHT);
   clutter_actor_set_position (CLUTTER_ACTOR (button),
@@ -433,6 +449,7 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   const gchar                *name;
+  const gchar                *tooltip = NULL;
   gint                        col = -1;
   gint                        screen_width, screen_height;
   gint                        x, y;
@@ -445,18 +462,36 @@ shell_tray_manager_icon_added (ShellTrayManager *mgr,
     return;
 
   if (!strcmp (name, "tray-button-bluetooth"))
-    col = 3;
+    {
+      col = 3;
+      tooltip = _("bluetooth");
+    }
   else if (!strcmp (name, "tray-button-wifi"))
-    col = 2;
+    {
+      col = 0;
+      tooltip = _("networks");
+    }
   else if (!strcmp (name, "tray-button-sound"))
-    col = 1;
+    {
+      col = 1;
+      tooltip = _("volume");
+    }
   else if (!strcmp (name, "tray-button-battery"))
-    col = 0;
+    {
+      col = 2;
+      tooltip = _("power & brightness");
+    }
   else if (!strcmp (name, "tray-button-test"))
-    col = 4;
+    {
+      col = 4;
+      tooltip = _("test");
+    }
 
   if (col < 0)
     return;
+
+  if (tooltip)
+    nbtk_widget_set_tooltip_text (NBTK_WIDGET (icon), tooltip);
 
   y = PANEL_HEIGHT - TRAY_BUTTON_HEIGHT;
   x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
@@ -542,6 +577,7 @@ _media_drop_down_shown (MnbDropDown      *drop_down,
 {
   ahoghill_grid_view_focus (view);
 }
+
 #endif
 
 #ifdef WITH_NETPANEL
@@ -559,7 +595,7 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
 
   workspace =
     meta_screen_get_active_workspace_index (mutter_plugin_get_screen (plugin));
-  moblin_netbook_spawn (plugin, exec, 0L, TRUE, workspace);
+  moblin_netbook_launch_application (plugin, exec, TRUE, workspace);
 
   g_free (exec);
   g_free (esc_url);
@@ -567,6 +603,15 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
   hide_panel (plugin);
 }
 #endif
+
+static void
+toolbar_panel_hide_completed_cb (MnbDropDown *dropdown, MutterPlugin *plugin)
+{
+  if (mnb_drop_down_should_panel_hide (dropdown))
+    {
+      hide_panel (plugin);
+    }
+}
 
 ClutterActor *
 make_panel (MutterPlugin *plugin, gint width)
@@ -656,10 +701,10 @@ make_panel (MutterPlugin *plugin, gint width)
                        PANEL_PAGE_STATUS);
 
   make_toolbar_button (plugin, panel,
-                       "spaces-button",
-                       _("zones"),
-                       MNBK_CONTROL_SPACES,
-                       PANEL_PAGE_SPACES);
+                       "people-button",
+                       _("people"),
+                       MNBK_CONTROL_PEOPLE,
+                       PANEL_PAGE_PEOPLE);
 
   make_toolbar_button (plugin, panel,
                        "internet-button",
@@ -674,22 +719,22 @@ make_panel (MutterPlugin *plugin, gint width)
                        PANEL_PAGE_MEDIA);
 
   make_toolbar_button (plugin, panel,
+                       "pasteboard-button",
+                       _("pasteboard"),
+                       MNBK_CONTROL_PASTEBOARD,
+                       PANEL_PAGE_PASTERBOARD);
+
+  make_toolbar_button (plugin, panel,
                        "apps-button",
                        _("applications"),
                        MNBK_CONTROL_APPLICATIONS,
                        PANEL_PAGE_APPS);
 
   make_toolbar_button (plugin, panel,
-                       "people-button",
-                       _("people"),
-                       MNBK_CONTROL_PEOPLE,
-                       PANEL_PAGE_PEOPLE);
-
-  make_toolbar_button (plugin, panel,
-                       "pasteboard-button",
-                       _("pasteboard"),
-                       MNBK_CONTROL_PASTEBOARD,
-                       PANEL_PAGE_PASTERBOARD);
+                       "spaces-button",
+                       _("zones"),
+                       MNBK_CONTROL_SPACES,
+                       PANEL_PAGE_SPACES);
 
   priv->panel_time = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->panel_time), "time-label");
@@ -725,6 +770,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->status, screen_width);
   clutter_actor_set_position (priv->status, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->status);
+  g_signal_connect (priv->status, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
   /* switcher drop down */
   priv->switcher = (ClutterActor *) mnb_switcher_new (plugin);
@@ -736,6 +784,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_position (priv->switcher, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->switcher);
   clutter_actor_hide (priv->switcher);
+  g_signal_connect (priv->switcher, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
   /* launcher drop down */
   priv->launcher = make_launcher (plugin,
@@ -748,6 +799,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->launcher, screen_width);
   clutter_actor_lower_bottom (priv->launcher);
   clutter_actor_hide (priv->launcher);
+  g_signal_connect (priv->launcher, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
   /* pasteboard drop down */
   priv->pasteboard = make_pasteboard (plugin,
@@ -760,6 +814,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->pasteboard, screen_width);
   clutter_actor_lower_bottom (priv->pasteboard);
   clutter_actor_hide (priv->pasteboard);
+  g_signal_connect (priv->pasteboard, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
   priv->tray_manager = g_object_new (SHELL_TYPE_TRAY_MANAGER,
                                      "bg-color", &clr,
@@ -790,13 +847,17 @@ make_panel (MutterPlugin *plugin, gint width)
                             NBTK_BUTTON (priv->panel_buttons[PANEL_PAGE_M_ZONE]));
   clutter_actor_set_position (priv->mzone_grid, 0, PANEL_HEIGHT);
   clutter_actor_lower_bottom (priv->mzone_grid);
+  g_signal_connect (priv->mzone_grid, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 
 #ifdef USE_AHOGHILL
   /* Ahoghill media drop down */
   priv->media_drop_down = CLUTTER_ACTOR (mnb_drop_down_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (panel),
                                priv->media_drop_down);
-  clutter_actor_set_width (priv->media_drop_down, screen_width);
+  clutter_actor_set_width (priv->media_drop_down,
+                           screen_width - 2 * PANEL_X_PADDING);
 
   ahoghill_grid_view = g_object_new (AHOGHILL_TYPE_GRID_VIEW, NULL);
   clutter_actor_set_height (mzone_grid_view,
@@ -814,6 +875,11 @@ make_panel (MutterPlugin *plugin, gint width)
   g_signal_connect (priv->media_drop_down, "show-completed",
                     G_CALLBACK (_media_drop_down_shown),
                     ahoghill_grid_view);
+  g_signal_connect_swapped (ahoghill_grid_view, "dismiss",
+                            G_CALLBACK (hide_panel), plugin);
+  g_signal_connect (priv->media_drop_down, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 #endif
 
 #ifdef WITH_NETPANEL
@@ -843,6 +909,9 @@ make_panel (MutterPlugin *plugin, gint width)
                     G_CALLBACK (_netgrid_launch_cb), plugin);
   g_signal_connect_swapped (net_grid_view, "launched",
                             G_CALLBACK (hide_panel), plugin);
+  g_signal_connect (priv->net_grid, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 #endif
 
 #ifdef WITH_PEOPLE
@@ -857,8 +926,9 @@ make_panel (MutterPlugin *plugin, gint width)
   clutter_actor_set_width (priv->people, screen_width);
   clutter_actor_lower_bottom (priv->people);
   clutter_actor_hide (priv->people);
-  clutter_actor_set_height (priv->people,
-                            screen_height - PANEL_HEIGHT * 1.5);
+  g_signal_connect (priv->people, "hide-completed",
+                    G_CALLBACK (toolbar_panel_hide_completed_cb),
+                    plugin);
 #endif
 
   if (shadow)

@@ -46,7 +46,8 @@ struct _AhoghillResultsTableClass
 
 GType ahoghill_results_table_get_type (void) G_GNUC_CONST;
 
-AhoghillResultsTable *ahoghill_results_table_new (AhoghillResultsModel *model);
+AhoghillResultsTable *ahoghill_results_table_new (AhoghillResultsModel *model,
+                                                  int                   rows);
 void ahoghill_results_table_set_model (AhoghillResultsTable *table,
                                        AhoghillResultsModel *model);
 void ahoghill_results_table_set_page (AhoghillResultsTable *table,

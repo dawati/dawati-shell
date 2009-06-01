@@ -37,10 +37,9 @@ main (int     argc,
             entry_iter;
             entry_iter = entry_iter->next)
         {
-          MnbLauncherEntry  *entry;
+          MnbLauncherApplication  *entry;
           GtkIconInfo       *info;
-          const gchar       *generic_name, *icon_name, *icon_file;
-          gchar             *exec;
+          const gchar       *generic_name, *exec, *icon_name, *icon_file;
           gboolean           is_fallback;
 
           entry = entry_iter->data;
@@ -48,9 +47,9 @@ main (int     argc,
           icon_file = NULL;
           is_fallback = FALSE;
 
-          generic_name = mnb_launcher_entry_get_name (entry);
-          exec = mnb_launcher_entry_get_exec (entry);
-          icon_name = mnb_launcher_entry_get_icon (entry);
+          generic_name = mnb_launcher_application_get_name (entry);
+          exec = mnb_launcher_application_get_executable (entry);
+          icon_name = mnb_launcher_application_get_icon (entry);
           if (icon_name)
             {
               info = gtk_icon_theme_lookup_icon (theme,
@@ -71,7 +70,7 @@ main (int     argc,
 
           if (generic_name && exec && icon_file)
             {
-              printf ("  '%s' icon: %s\n", mnb_launcher_entry_get_name (entry),
+              printf ("  '%s' icon: %s\n", mnb_launcher_application_get_name (entry),
                                          is_fallback ? "fallback" : icon_file);
             }
           else
@@ -86,8 +85,6 @@ main (int     argc,
                         "not found");
             }
 
-          if (exec)
-            g_free (exec);
           if (info)
             gtk_icon_info_free (info);            
         }

@@ -36,7 +36,7 @@
 #define COL_SPACING 10
 #define FAV_TOGGLE_SIZE 24
 #define FAV_TOGGLE_X_OFFSET 7
-#define FAV_TOGGLE_Y_OFFSET 4
+#define FAV_TOGGLE_Y_OFFSET 5
 
 enum
 {
@@ -386,6 +386,8 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   g_signal_connect (self->priv->fav_toggle, "clicked",
                     G_CALLBACK (fav_button_clicked_cb), self);
+
+  clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }
 
 NbtkWidget *

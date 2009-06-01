@@ -7,6 +7,8 @@
 #define __SHELL_TRAY_MANAGER_H__
 
 #include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
+#include <nbtk/nbtk.h>
 
 G_BEGIN_DECLS
 
@@ -59,6 +61,8 @@ void              shell_tray_manager_close_all_config_windows (ShellTrayManager 
 void              shell_tray_manager_close_all_other_config_windows (ShellTrayManager *manager,
                                                                      Window            xwindow);
 
+ClutterActor *    shell_tray_manager_find_button_for_xid (ShellTrayManager *manager,
+                                                          Window            xid);
 
 G_END_DECLS
 

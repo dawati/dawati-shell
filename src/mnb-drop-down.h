@@ -27,6 +27,7 @@
 #include <glib-object.h>
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
+#include "moblin-netbook.h"
 
 G_BEGIN_DECLS
 
@@ -61,6 +62,7 @@ typedef struct {
 typedef struct {
   NbtkTableClass parent_class;
 
+  void (*show_begin)     (MnbDropDown *drop_down);
   void (*show_completed) (MnbDropDown *drop_down);
   void (*hide_begin)     (MnbDropDown *drop_down);
   void (*hide_completed) (MnbDropDown *drop_down);
@@ -68,13 +70,21 @@ typedef struct {
 
 GType mnb_drop_down_get_type (void);
 
-NbtkWidget* mnb_drop_down_new (void);
+NbtkWidget*   mnb_drop_down_new (MutterPlugin *plugin);
 
 void          mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child);
 ClutterActor* mnb_drop_down_get_child (MnbDropDown *drop_down);
 
 
 void          mnb_drop_down_set_button (MnbDropDown *drop_down, NbtkButton *button);
+
+void          mnb_drop_down_hide_with_toolbar (MnbDropDown *drop_down);
+
+void          mnb_drop_down_get_footer_geometry (MnbDropDown *drop_down,
+                                                 gint        *x,
+                                                 gint        *y,
+                                                 guint       *width,
+                                                 guint       *height);
 
 G_END_DECLS
 

@@ -3,6 +3,7 @@
 
 enum {
     PROP_0,
+    PROP_ROWS,
 };
 
 enum {
@@ -12,14 +13,16 @@ enum {
 
 #define TILES_PER_ROW 6
 #define ROWS_PER_PAGE 2
-#define TILES_PER_PAGE (TILES_PER_ROW * ROWS_PER_PAGE)
 
 #define RESULTS_ROW_SPACING 28
-#define RESULTS_COL_SPACING 20
+#define RESULTS_COL_SPACING 8
 
 struct _AhoghillResultsTablePrivate {
-    AhoghillMediaTile *tiles[TILES_PER_PAGE];
+    AhoghillMediaTile **tiles;
     AhoghillResultsModel *model;
+
+    guint rows;
+    guint update_id;
     guint page_number;
 };
 
@@ -31,23 +34,46 @@ static guint32 signals[LAST_SIGNAL] = {0, };
 static void
 ahoghill_results_table_finalize (GObject *object)
 {
-    g_signal_handlers_destroy (object);
+    AhoghillResultsTable *table = (AhoghillResultsTable *) object;
+    AhoghillResultsTablePrivate *priv = table->priv;
+
+    if (priv->tiles) {
+        g_free (priv->tiles);
+        priv->tiles = NULL;
+    }
+
     G_OBJECT_CLASS (ahoghill_results_table_parent_class)->finalize (object);
 }
 
 static void
 ahoghill_results_table_dispose (GObject *object)
 {
+    AhoghillResultsTable *table = (AhoghillResultsTable *) object;
+    AhoghillResultsTablePrivate *priv = table->priv;
+
+    if (priv->model) {
+        g_signal_handler_disconnect (priv->model, priv->update_id);
+        g_object_unref (priv->model);
+        priv->model = NULL;
+    }
+
     G_OBJECT_CLASS (ahoghill_results_table_parent_class)->dispose (object);
 }
 
 static void
 ahoghill_results_table_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
 {
+    AhoghillResultsTable *table = (AhoghillResultsTable *) object;
+    AhoghillResultsTablePrivate *priv = table->priv;
+
     switch (prop_id) {
+
+    case PROP_ROWS:
+        priv->rows = g_value_get_int (value);
+        break;
 
     default:
         break;
@@ -67,35 +93,16 @@ ahoghill_results_table_get_property (GObject    *object,
     }
 }
 
-static void
-ahoghill_results_table_class_init (AhoghillResultsTableClass *klass)
-{
-    GObjectClass *o_class = (GObjectClass *)klass;
-
-    o_class->dispose = ahoghill_results_table_dispose;
-    o_class->finalize = ahoghill_results_table_finalize;
-    o_class->set_property = ahoghill_results_table_set_property;
-    o_class->get_property = ahoghill_results_table_get_property;
-
-    g_type_class_add_private (klass, sizeof (AhoghillResultsTablePrivate));
-
-    signals[ITEM_CLICKED] = g_signal_new ("item-clicked",
-                                          G_TYPE_FROM_CLASS (klass),
-                                          G_SIGNAL_RUN_FIRST |
-                                          G_SIGNAL_NO_RECURSE, 0, NULL, NULL,
-                                          g_cclosure_marshal_VOID__INT,
-                                          G_TYPE_NONE, 1,
-                                          G_TYPE_INT);
-}
 
 static int
 find_tile (AhoghillResultsTable *pane,
            NbtkWidget           *widget)
 {
     AhoghillResultsTablePrivate *priv = pane->priv;
-    int i;
+    int i, tiles_per_page;
 
-    for (i = 0; i < TILES_PER_PAGE; i++) {
+    tiles_per_page = TILES_PER_ROW * priv->rows;
+    for (i = 0; i < tiles_per_page; i++) {
         if (priv->tiles[i] == (AhoghillMediaTile *) widget) {
             return i;
         }
@@ -183,35 +190,40 @@ tile_dnd_end_cb (NbtkWidget           *widget,
     }
 }
 
-static void
-ahoghill_results_table_init (AhoghillResultsTable *self)
+static GObject *
+ahoghill_results_table_constructor (GType                  type,
+                                    guint                  n_params,
+                                    GObjectConstructParam *params)
 {
+    GObject *object;
+    AhoghillResultsTable *table;
     AhoghillResultsTablePrivate *priv;
-    int i;
+    int tiles_per_page, i;
 
-    self->priv = GET_PRIVATE (self);
-    priv = self->priv;
+    object = G_OBJECT_CLASS (ahoghill_results_table_parent_class)->constructor
+        (type, n_params, params);
+    table = (AhoghillResultsTable *) object;
+    priv = table->priv;
 
-    clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-results-table");
-    nbtk_table_set_col_spacing (NBTK_TABLE (self), RESULTS_COL_SPACING);
-    nbtk_table_set_row_spacing (NBTK_TABLE (self), RESULTS_ROW_SPACING);
+    tiles_per_page = TILES_PER_ROW * priv->rows;
 
-    for (i = 0; i < TILES_PER_PAGE; i++) {
+    priv->tiles = g_new (AhoghillMediaTile *, tiles_per_page);
+    for (i = 0; i < tiles_per_page; i++) {
         priv->tiles[i] = g_object_new (AHOGHILL_TYPE_MEDIA_TILE, NULL);
 
         nbtk_widget_set_dnd_threshold (NBTK_WIDGET (priv->tiles[i]), 10);
         g_signal_connect (priv->tiles[i], "button-press-event",
-                          G_CALLBACK (tile_pressed_cb), self);
+                          G_CALLBACK (tile_pressed_cb), table);
         g_signal_connect (priv->tiles[i], "button-release-event",
-                          G_CALLBACK (tile_released_cb), self);
+                          G_CALLBACK (tile_released_cb), table);
         g_signal_connect (priv->tiles[i], "dnd-begin",
-                          G_CALLBACK (tile_dnd_begin_cb), self);
+                          G_CALLBACK (tile_dnd_begin_cb), table);
         g_signal_connect (priv->tiles[i], "dnd-motion",
-                          G_CALLBACK (tile_dnd_motion_cb), self);
+                          G_CALLBACK (tile_dnd_motion_cb), table);
         g_signal_connect (priv->tiles[i], "dnd-end",
-                          G_CALLBACK (tile_dnd_end_cb), self);
+                          G_CALLBACK (tile_dnd_end_cb), table);
 
-        nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+        nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
                                               (ClutterActor *) priv->tiles[i],
                                               (i / TILES_PER_ROW),
                                               i % TILES_PER_ROW,
@@ -219,6 +231,53 @@ ahoghill_results_table_init (AhoghillResultsTable *self)
                                               NULL);
         clutter_actor_hide ((ClutterActor *) priv->tiles[i]);
     }
+
+    return object;
+}
+
+static void
+ahoghill_results_table_class_init (AhoghillResultsTableClass *klass)
+{
+    GObjectClass *o_class = (GObjectClass *)klass;
+
+    o_class->dispose = ahoghill_results_table_dispose;
+    o_class->finalize = ahoghill_results_table_finalize;
+    o_class->constructor = ahoghill_results_table_constructor;
+    o_class->set_property = ahoghill_results_table_set_property;
+    o_class->get_property = ahoghill_results_table_get_property;
+
+    g_type_class_add_private (klass, sizeof (AhoghillResultsTablePrivate));
+
+    g_object_class_install_property (o_class, PROP_ROWS,
+                                     g_param_spec_int ("rows", "", "",
+                                                       1, ROWS_PER_PAGE,
+                                                       ROWS_PER_PAGE,
+                                                       G_PARAM_WRITABLE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
+
+    signals[ITEM_CLICKED] = g_signal_new ("item-clicked",
+                                          G_TYPE_FROM_CLASS (klass),
+                                          G_SIGNAL_RUN_FIRST |
+                                          G_SIGNAL_NO_RECURSE, 0, NULL, NULL,
+                                          g_cclosure_marshal_VOID__INT,
+                                          G_TYPE_NONE, 1,
+                                          G_TYPE_INT);
+}
+
+static void
+ahoghill_results_table_init (AhoghillResultsTable *self)
+{
+    AhoghillResultsTablePrivate *priv;
+
+    self->priv = GET_PRIVATE (self);
+    priv = self->priv;
+
+    priv->rows = ROWS_PER_PAGE;
+
+    clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-results-table");
+    nbtk_table_set_col_spacing (NBTK_TABLE (self), RESULTS_COL_SPACING);
+    nbtk_table_set_row_spacing (NBTK_TABLE (self), RESULTS_ROW_SPACING);
 }
 
 static void
@@ -226,11 +285,13 @@ update_items (AhoghillResultsTable *self)
 {
     AhoghillResultsTablePrivate *priv = self->priv;
     int i, count, start;
-    int results_count;
+    int results_count, tiles_per_page;
 
     results_count = ahoghill_results_model_get_count (priv->model);
-    start = priv->page_number * TILES_PER_PAGE;
-    count = MIN (results_count - start, TILES_PER_PAGE);
+
+    tiles_per_page = TILES_PER_ROW * priv->rows;
+    start = priv->page_number * tiles_per_page;
+    count = MIN (results_count - start, tiles_per_page);
 
     for (i = 0; i < count; i++) {
         BklItem *item = ahoghill_results_model_get_item (priv->model,
@@ -243,7 +304,7 @@ update_items (AhoghillResultsTable *self)
     }
 
     /* Clear the rest of the results */
-    for (i = count; i < TILES_PER_PAGE; i++) {
+    for (i = count; i < tiles_per_page; i++) {
         g_object_set (priv->tiles[i],
                       "item", NULL,
                       NULL);
@@ -268,18 +329,22 @@ set_model (AhoghillResultsTable *table,
 
     if (model) {
         priv->model = g_object_ref (model);
-        g_signal_connect (priv->model, "changed",
-                          G_CALLBACK (results_model_changed), table);
+        priv->update_id = g_signal_connect (priv->model, "changed",
+                                            G_CALLBACK (results_model_changed),
+                                            table);
     }
 }
 
 AhoghillResultsTable *
-ahoghill_results_table_new (AhoghillResultsModel *model)
+ahoghill_results_table_new (AhoghillResultsModel *model,
+                            int                   rows)
 {
     AhoghillResultsTable *table;
     AhoghillResultsTablePrivate *priv;
 
-    table = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE, NULL);
+    table = g_object_new (AHOGHILL_TYPE_RESULTS_TABLE,
+                          "rows", rows,
+                          NULL);
     priv = table->priv;
 
     set_model (table, model);

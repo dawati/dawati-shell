@@ -25,6 +25,58 @@
 #ifndef MOBLIN_NETBOOK_LAUNCHER_H
 #define MOBLIN_NETBOOK_LAUNCHER_H
 
+#include <glib.h>
+#include <glib-object.h>
+#include <clutter/clutter.h>
+
+G_BEGIN_DECLS
+
+#define MNB_TYPE_LAUNCHER mnb_launcher_get_type()
+
+#define MNB_LAUNCHER(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+  MNB_TYPE_LAUNCHER, MnbLauncher))
+
+#define MNB_LAUNCHER_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), \
+  MNB_TYPE_LAUNCHER, MnbLauncherClass))
+
+#define MNB_IS_LAUNCHER(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+  MNB_TYPE_LAUNCHER))
+
+#define MNB_IS_LAUNCHER_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
+  MNB_TYPE_LAUNCHER))
+
+#define MNB_LAUNCHER_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+  MNB_TYPE_LAUNCHER, MnbLauncherClass))
+
+typedef struct MnbLauncher_ MnbLauncher;
+typedef struct MnbLauncherClass_ MnbLauncherClass;
+typedef struct MnbLauncherPrivate_ MnbLauncherPrivate;
+
+struct MnbLauncher_ {
+  NbtkBin              parent;
+  MnbLauncherPrivate  *priv;
+};
+
+struct MnbLauncherClass_ {
+  NbtkBinClass parent;
+};
+
+GType mnb_launcher_get_type (void) G_GNUC_CONST;
+
+
+ClutterActor * mnb_launcher_new (gint width,
+                                 gint height);
+
+
+/* Wrapper for the panel */
+
 ClutterActor *make_launcher (MutterPlugin *plugin, gint width, gint height);
+
+G_END_DECLS
 
 #endif

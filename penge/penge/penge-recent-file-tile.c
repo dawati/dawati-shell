@@ -1,9 +1,33 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Rob Bradford <rob@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 
 #include "penge-recent-file-tile.h"
 #include "penge-magic-texture.h"
 #include "penge-utils.h"
+
+#include <glib/gi18n.h>
+
+#include "src/moblin-netbook-chooser.h"
 
 G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_TABLE)
 
@@ -126,17 +150,16 @@ _button_press_event (ClutterActor *actor,
                error->message);
     g_clear_error (&error);
   } else {
-    if (!g_spawn_command_line_async (app_exec, &error))
+    if (!moblin_netbook_launch_application (app_exec, FALSE, -2))
     {
-      g_warning (G_STRLOC ": Error launching: %s",
-                 error->message);
-      g_clear_error (&error);
+      g_warning (G_STRLOC ": Error launching: %s", app_exec);
     } else {
       penge_utils_signal_activated (actor);
     }
   }
 
   g_free (last_application);
+  g_free (app_exec);
 
   return TRUE;
 }
@@ -148,9 +171,10 @@ penge_recent_file_tile_constructed (GObject *object)
   ClutterActor *tex;
   GError *error = NULL;
   GFile *file;
-  GFileInfo *info;
   const gchar *content_type;
   gchar *type_description;
+  const gchar *uri;
+  GFileInfo *info;
 
   tex = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
                       NULL);
@@ -173,47 +197,63 @@ penge_recent_file_tile_constructed (GObject *object)
                                  2,
                                  NULL);
 
-    file = g_file_new_for_uri (gtk_recent_info_get_uri (priv->info));
-    info = g_file_query_info (file,
-                              G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
-                              ","
-                              G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-                              G_FILE_QUERY_INFO_NONE,
-                              NULL,
-                              &error);
+    uri = gtk_recent_info_get_uri (priv->info);
 
-    if (!info)
+    if (g_str_has_prefix (uri, "file:/"))
     {
-      g_warning (G_STRLOC ": Error getting file info: %s",
-                 error->message);
-      g_clear_error (&error);
-    } else {
-      nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
-                           g_file_info_get_display_name (info));
+      file = g_file_new_for_uri (uri);
+      info = g_file_query_info (file,
+                                G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
+                                ","
+                                G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                                G_FILE_QUERY_INFO_NONE,
+                                NULL,
+                                &error);
 
-      content_type = g_file_info_get_content_type (info);
-      type_description = g_content_type_get_description (content_type);
-      nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
-                           type_description);
-      g_free (type_description);
+      if (!info)
+      {
+        g_warning (G_STRLOC ": Error getting file info: %s",
+                   error->message);
+        g_clear_error (&error);
+      } else {
+        nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
+                             g_file_info_get_display_name (info));
 
-      /* Do this afterwards so that is is on top of the image */
-      nbtk_table_add_actor (NBTK_TABLE (object),
-                            (ClutterActor *)priv->details_overlay,
-                            1,
-                            0);
-      clutter_container_child_set (CLUTTER_CONTAINER (object),
-                                   (ClutterActor *)priv->details_overlay,
-                                   "y-expand",
-                                   FALSE,
-                                   NULL);
+        content_type = g_file_info_get_content_type (info);
+        type_description = g_content_type_get_description (content_type);
+        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                             type_description);
+        g_free (type_description);
+      }
 
       g_object_unref (info);
       g_object_unref (file);
+    } else {
+      nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
+                           gtk_recent_info_get_display_name (priv->info));
+      if (g_str_has_prefix (uri, "http"))
+      {
+        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                             _("Web page"));
+      } else {
+        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                             "");
+      }
     }
+
+    /* Do this afterwards so that is is on top of the image */
+    nbtk_table_add_actor (NBTK_TABLE (object),
+                          (ClutterActor *)priv->details_overlay,
+                          1,
+                          0);
+    clutter_container_child_set (CLUTTER_CONTAINER (object),
+                                 (ClutterActor *)priv->details_overlay,
+                                 "y-expand",
+                                 FALSE,
+                                 NULL);
   }
 
-  g_signal_connect (object, 
+  g_signal_connect (object,
                     "button-press-event",
                     (GCallback)_button_press_event,
                     object);
@@ -313,7 +353,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_filename_label));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_END);
 
   nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
@@ -326,7 +366,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
     nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_type_label));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                               PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_END);
 
 
@@ -351,6 +391,8 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   priv->behave = clutter_behaviour_opacity_new (alpha, 0x00, 0xc0);
   clutter_behaviour_apply (priv->behave,
                            (ClutterActor *)priv->details_overlay);
+
+  clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
 
 

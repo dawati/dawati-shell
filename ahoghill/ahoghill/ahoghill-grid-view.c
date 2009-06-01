@@ -14,12 +14,20 @@
 #include <src/mnb-entry.h>
 
 #include "ahoghill-grid-view.h"
+#include "ahoghill-playlist.h"
+#include "ahoghill-queue-list.h"
 #include "ahoghill-results-model.h"
 #include "ahoghill-results-pane.h"
 #include "ahoghill-search-pane.h"
+#include "ahoghill-playlist-placeholder.h"
 
 enum {
     PROP_0,
+};
+
+enum {
+    DISMISS,
+    LAST_SIGNAL
 };
 
 typedef struct _Source {
@@ -27,7 +35,9 @@ typedef struct _Source {
     BklDB *db;
 
     GPtrArray *items;
-    GPtrArray *index;
+    GSequence *index;
+    guint32 update_id;
+
     GHashTable *uri_to_item;
 } Source;
 
@@ -46,14 +56,19 @@ struct _AhoghillGridViewPrivate {
     BklSourceManagerClient *source_manager;
 
     guint32 search_id;
+
+    guint32 source_count;
+    guint32 source_replies; /* Keep track of how many sources have replied */
 };
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AHOGHILL_TYPE_GRID_VIEW, AhoghillGridViewPrivate))
 G_DEFINE_TYPE (AhoghillGridView, ahoghill_grid_view, NBTK_TYPE_TABLE);
+static guint32 signals[LAST_SIGNAL] = {0, };
 
 /* Adjustable length of time between typing a letter and search taking place */
 #define SEARCH_TIMEOUT 50
 
+#define UPDATE_INDEX_TIMEOUT 5 /* seconds */
 static void
 ahoghill_grid_view_finalize (GObject *object)
 {
@@ -103,6 +118,105 @@ ahoghill_grid_view_class_init (AhoghillGridViewClass *klass)
     o_class->get_property = ahoghill_grid_view_get_property;
 
     g_type_class_add_private (klass, sizeof (AhoghillGridViewPrivate));
+
+    signals[DISMISS] = g_signal_new ("dismiss",
+                                     G_TYPE_FROM_CLASS (klass),
+                                     G_SIGNAL_RUN_FIRST |
+                                     G_SIGNAL_NO_RECURSE, 0, NULL, NULL,
+                                     g_cclosure_marshal_VOID__VOID,
+                                     G_TYPE_NONE, 0);
+}
+
+static void
+uri_added_cb (BklSourceClient *client,
+              const char      *uri,
+              Source          *source)
+{
+    BklItem *item;
+    GError *error = NULL;
+
+    item = bkl_db_get_item (source->db, uri, &error);
+    if (error != NULL) {
+        g_warning ("%s: Error getting item: %s", G_STRLOC, error->message);
+        return;
+    }
+
+    g_ptr_array_add (source->items, item);
+    g_hash_table_insert (source->uri_to_item,
+                         (char *) bkl_item_get_uri (item), item);
+
+    /* FIXME: We should recheck if this item should be added to the results */
+}
+
+static void
+uri_deleted_cb (BklSourceClient *client,
+                const char      *uri,
+                Source          *source)
+{
+    BklItem *item;
+    int i;
+
+    item = g_hash_table_lookup (source->uri_to_item, uri);
+    if (item == NULL) {
+        return;
+    }
+
+    for (i = 0; i < source->items->len; i++) {
+        if (item == source->items->pdata[i]) {
+            g_ptr_array_remove_index (source->items, i);
+            break;
+        }
+    }
+
+
+    g_hash_table_remove (source->uri_to_item, uri);
+    g_object_unref (item);
+}
+
+static void
+uri_changed_cb (BklSourceClient *client,
+                const char      *uri,
+                Source          *source)
+{
+    /* FIXME: Bickley needs a way to update BklItems in place */
+}
+
+static int
+compare_words (gconstpointer a,
+               gconstpointer b,
+               gpointer      userdata)
+{
+    return strcmp (a, b);
+}
+
+static void
+index_changed_cb (BklSourceClient *client,
+                  const char     **added,
+                  const char     **removed,
+                  Source          *source)
+{
+    GSequenceIter *iter;
+    int i;
+
+    /* Remove the words from the index first */
+    for (i = 0; removed[i]; i++) {
+        char *word;
+
+        iter = g_sequence_search (source->index, (char *) removed[i],
+                                  (GCompareDataFunc) compare_words, NULL);
+        word = g_sequence_get (iter);
+        if (word && g_str_equal (word, removed[i])) {
+            g_sequence_remove (iter);
+        }
+    }
+
+    /* Add the new words */
+    for (i = 0; added[i]; i++) {
+        g_sequence_insert_sorted (source->index, g_strdup (added[i]),
+                                  (GCompareDataFunc) compare_words, NULL);
+    }
+
+    /* FIXME: Should update the search here */
 }
 
 static Source *
@@ -113,6 +227,15 @@ create_source (BklSourceClient *s)
     int i;
 
     source = g_new0 (Source, 1);
+
+    g_signal_connect (s, "uri-added",
+                      G_CALLBACK (uri_added_cb), source);
+    g_signal_connect (s, "uri-deleted",
+                      G_CALLBACK (uri_deleted_cb), source);
+    g_signal_connect (s, "uri-changed",
+                      G_CALLBACK (uri_changed_cb), source);
+    g_signal_connect (s, "index-changed",
+                      G_CALLBACK (index_changed_cb), source);
 
     source->source = s;
     source->db = bkl_source_client_get_db (s);
@@ -145,19 +268,40 @@ create_source (BklSourceClient *s)
     return source;
 }
 
+static void
+destroy_source (Source *source)
+{
+    int i;
+
+    g_sequence_free (source->index);
+
+    g_hash_table_destroy (source->uri_to_item);
+
+    for (i = 0; i < source->items->len; i++) {
+        g_object_unref (source->items->pdata[i]);
+    }
+    g_ptr_array_free (source->items, TRUE);
+
+    g_object_unref (source->source);
+
+    g_free (source);
+}
+
 static BklItem *
 find_item (AhoghillGridView *view,
-           const char       *uri)
+           const char       *uri,
+           Source          **source)
 {
     AhoghillGridViewPrivate *priv = view->priv;
     int i;
 
     for (i = 0; i < priv->dbs->len; i++) {
-        Source *source = priv->dbs->pdata[i];
+        Source *s = priv->dbs->pdata[i];
         BklItem *item;
 
-        item = g_hash_table_lookup (source->uri_to_item, uri);
+        item = g_hash_table_lookup (s->uri_to_item, uri);
         if (item) {
+            *source = s;
             return item;
         }
     }
@@ -166,19 +310,49 @@ find_item (AhoghillGridView *view,
 }
 
 static void
+generate_example_results (AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    int i, count = 0;
+
+    for (i = 0; i < priv->dbs->len; i++) {
+        Source *source = priv->dbs->pdata[i];
+        int j;
+
+        for (j = 0; j < source->items->len; j++) {
+            BklItem *item = source->items->pdata[rand () % source->items->len];
+            const char *uri;
+
+            uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) item);
+            if (uri) {
+                ahoghill_results_model_add_item (priv->model, source->source,
+                                                 item);
+                count++;
+                if (count == 6) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
+static void
 set_recent_items (AhoghillGridView *view)
 {
     AhoghillGridViewPrivate *priv;
     GList *recent_items, *r;
+    gboolean added_something = FALSE;
 
     priv = view->priv;
+
+    /* Freeze and clear the old results before adding anything new */
+    ahoghill_results_model_freeze (priv->model);
+    ahoghill_results_model_clear (priv->model);
+
     recent_items = gtk_recent_manager_get_items (priv->recent_manager);
     if (recent_items) {
-        /* Freeze and clear the old results before adding anything new */
-        ahoghill_results_model_freeze (priv->model);
-        ahoghill_results_model_clear (priv->model);
-
         for (r = recent_items; r; r = r->next) {
+            Source *source;
             GtkRecentInfo *info = r->data;
             const char *mimetype;
             const char *uri;
@@ -194,22 +368,34 @@ set_recent_items (AhoghillGridView *view)
 
             uri = gtk_recent_info_get_uri (info);
 
-            item = find_item (view, uri);
+            item = find_item (view, uri, &source);
             if (item == NULL) {
                 gtk_recent_info_unref (info);
                 continue;
             }
 
-            ahoghill_results_model_add_item (priv->model, item);
+            added_something = TRUE;
+            ahoghill_results_model_add_item (priv->model, source->source, item);
 
             gtk_recent_info_unref (info);
         }
 
         g_list_free (recent_items);
-
-        /* And thaw the results */
-        ahoghill_results_model_thaw (priv->model);
     }
+
+    if (!added_something) {
+        generate_example_results (view);
+    } else {
+        g_object_set (priv->results_pane,
+                      "title", _("Recently played"),
+                      NULL);
+    }
+
+    ahoghill_results_pane_show_example_media
+        ((AhoghillResultsPane *) priv->results_pane, !added_something);
+
+    /* And thaw the results */
+    ahoghill_results_model_thaw (priv->model);
 }
 
 static void
@@ -219,6 +405,17 @@ set_result_items (AhoghillGridView *view,
     AhoghillGridViewPrivate *priv = view->priv;
     GList *r;
 
+    /* Set the results pane to the first page */
+    ahoghill_results_pane_set_page
+        ((AhoghillResultsPane *) priv->results_pane, 0);
+
+    ahoghill_results_pane_show_example_media
+        ((AhoghillResultsPane *) priv->results_pane, FALSE);
+
+    g_object_set (priv->results_pane,
+                  "title", _("Search results"),
+                  NULL);
+
     /* Freeze and clear the old results before adding anything new */
     ahoghill_results_model_freeze (priv->model);
     ahoghill_results_model_clear (priv->model);
@@ -226,17 +423,130 @@ set_result_items (AhoghillGridView *view,
     for (r = results; r; r = r->next) {
         char *uri = r->data;
         BklItem *item;
+        Source *source;
 
-        item = find_item (view, uri);
+        item = find_item (view, uri, &source);
         if (item == NULL) {
             g_warning ("Cannot find item for %s", uri);
             continue;
         }
 
-        ahoghill_results_model_add_item (priv->model, item);
+        ahoghill_results_model_add_item (priv->model, source->source, item);
     }
 
     ahoghill_results_model_thaw (priv->model);
+}
+
+static void
+source_ready_cb (BklSourceClient  *client,
+                 AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    Source *source;
+
+    priv->source_replies++;
+
+    source = create_source (client);
+    if (source) {
+        g_ptr_array_add (priv->dbs, source);
+    }
+
+    /* Once we've got all the replies from the sources,
+       set up the queues and the recent items */
+    if (priv->source_count == priv->source_replies) {
+        set_recent_items (view);
+
+#if 0
+        /* Set the local queue to the playlist */
+        /* FIXME: Generate multiple playlists once more than
+           local queue works */
+        ahoghill_playlist_set_queue ((AhoghillPlaylist *) priv->playqueues_pane,
+                                     priv->local_queue);
+#endif
+    }
+}
+
+static void
+source_manager_added (BklSourceManagerClient *source_manager,
+                      const char             *path,
+                      AhoghillGridView       *view)
+{
+    BklSourceClient *client;
+
+    g_print ("Adding new source: %s\n", path);
+    client = bkl_source_client_new (path);
+    g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+}
+
+static void
+source_manager_removed (BklSourceManagerClient *source_manager,
+                        const char             *path,
+                        AhoghillGridView       *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    Source *source = NULL;
+    int i;
+
+    g_print ("Removing source: %s\n", path);
+    for (i = 0; i < priv->dbs->len; i++) {
+        Source *s = priv->dbs->pdata[i];
+
+        if (g_str_equal (path, bkl_source_client_get_path (s->source))) {
+            source = s;
+            g_ptr_array_remove_index (priv->dbs, i);
+            break;
+        }
+    }
+
+    if (source == NULL) {
+        return;
+    }
+
+    ahoghill_results_model_remove_source_items (priv->model, source->source);
+    destroy_source (source);
+}
+
+static void
+get_sources_reply (BklSourceManagerClient *source_manager,
+                   GList                  *sources,
+                   GError                 *error,
+                   gpointer                data)
+{
+    AhoghillGridView *view = (AhoghillGridView *) data;
+    AhoghillGridViewPrivate *priv = view->priv;
+    BklSourceClient *client;
+    GList *s;
+
+    if (error != NULL) {
+        g_warning ("Error getting sources: %s", error->message);
+    }
+
+    /* Local source first even if there was an error getting the rest */
+    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
+    g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+
+    for (s = sources; s; s = s->next) {
+        BklSourceClient *client;
+
+        client = bkl_source_client_new (s->data);
+        g_signal_connect (client, "ready", G_CALLBACK (source_ready_cb), view);
+
+        priv->source_count++;
+    }
+}
+
+static void
+source_manager_ready (BklSourceManagerClient *source_manager,
+                      AhoghillGridView       *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+
+    priv->source_replies = 0;
+    priv->source_count = 1; /* Set to 1 to count the local */
+
+    bkl_source_manager_client_get_sources (source_manager,
+                                           get_sources_reply,
+                                           view);
 }
 
 static void
@@ -244,43 +554,28 @@ init_bickley (gpointer data)
 {
     AhoghillGridView *view = (AhoghillGridView *) data;
     AhoghillGridViewPrivate *priv = view->priv;
-    BklSourceClient *client;
-    Source *source;
-    GList *sources, *s;
-    GError *error = NULL;
 
     priv->source_manager = g_object_new (BKL_TYPE_SOURCE_MANAGER_CLIENT, NULL);
-    sources = bkl_source_manager_client_get_sources (priv->source_manager,
-                                                     &error);
-    if (error != NULL) {
-        g_warning ("Error getting sources\n");
-    }
+    g_signal_connect (priv->source_manager, "ready",
+                      G_CALLBACK (source_manager_ready), view);
+    g_signal_connect (priv->source_manager, "source-added",
+                      G_CALLBACK (source_manager_added), view);
+    g_signal_connect (priv->source_manager, "source-removed",
+                      G_CALLBACK (source_manager_removed), view);
 
-    priv->dbs = g_ptr_array_sized_new (g_list_length (sources) + 1);
-
-    /* Local source first */
-    client = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
-    source = create_source (client);
-    g_ptr_array_add (priv->dbs, source);
-
-    for (s = sources; s; s = s->next) {
-        client = bkl_source_client_new (s->data);
-        source = create_source (client);
-
-        g_ptr_array_add (priv->dbs, source);
-    }
-
-    set_recent_items (view);
+    priv->dbs = g_ptr_array_new ();
 }
 
 static void
 init_bognor (AhoghillGridView *grid)
 {
+#if 0
     AhoghillGridViewPrivate *priv = grid->priv;
 
     priv->local_queue = g_object_new (BR_TYPE_QUEUE,
                                       "object-path", BR_LOCAL_QUEUE_PATH,
                                       NULL);
+#endif
 }
 
 static gboolean
@@ -422,7 +717,7 @@ search_index_for_words (Source     *source,
     char *search_text;
     char **search_terms;
     GPtrArray *words;
-    int j, k;
+    int k;
 
     search_text = g_ascii_strup (text, -1);
     search_terms = g_strsplit (search_text, " ", -1);
@@ -431,6 +726,7 @@ search_index_for_words (Source     *source,
     words = g_ptr_array_new ();
     for (k = 0; search_terms[k]; k++) {
         GPtrArray *possible;
+        GSequenceIter *iter;
 
         /* If @text ends in a space, then g_strsplit will insert a blank
            string in @search_terms */
@@ -441,44 +737,24 @@ search_index_for_words (Source     *source,
         possible = g_ptr_array_new ();
 
         g_ptr_array_add (words, possible);
-        for (j = 0; j < source->index->len; j++) {
-            if (strstr (source->index->pdata[j], search_terms[k])) {
-                g_ptr_array_add (possible, source->index->pdata[j]);
+
+        iter = g_sequence_get_begin_iter (source->index);
+        while (!g_sequence_iter_is_end (iter)) {
+            char *word = g_sequence_get (iter);
+
+            if (word) {
+                if (strstr (word, search_terms[k])) {
+                    g_ptr_array_add (possible, word);
+                }
             }
+
+            iter = g_sequence_iter_next (iter);
         }
     }
 
     g_strfreev (search_terms);
 
     return words;
-}
-
-static void
-item_clicked_cb (AhoghillResultsPane *pane,
-                 BklItem             *item,
-                 AhoghillGridView    *grid)
-{
-    AhoghillGridViewPrivate *priv = grid->priv;
-    GError *error = NULL;
-
-    if (bkl_item_get_item_type (item) != BKL_ITEM_TYPE_AUDIO) {
-        return;
-    }
-
-    br_queue_add_uri (priv->local_queue, bkl_item_get_uri (item), &error);
-    if (error != NULL) {
-        g_warning ("%s: Error adding %s to queue: %s", G_STRLOC,
-                   bkl_item_get_uri (item), error->message);
-        g_error_free (error);
-        return;
-    }
-
-    br_queue_play (priv->local_queue, &error);
-    if (error != NULL) {
-        g_warning ("%s: Error playing local queue: %s", G_STRLOC,
-                   error->message);
-        g_error_free (error);
-    }
 }
 
 static gboolean
@@ -570,12 +846,45 @@ search_text_changed (MnbEntry         *entry,
 }
 
 static void
+item_clicked_cb (AhoghillResultsPane *pane,
+                 BklItem             *item,
+                 AhoghillGridView    *grid)
+{
+#if 0
+    AhoghillGridViewPrivate *priv = grid->priv;
+    GError *error = NULL;
+
+    br_queue_play_uri (priv->local_queue, bkl_item_get_uri (item),
+                       bkl_item_get_mimetype (item));
+    if (error != NULL) {
+        g_warning ("%s: Error playing %s: %s", G_STRLOC,
+                   bkl_item_get_uri (item),
+                   error->message);
+        g_error_free (error);
+    }
+#else
+    char *argv[3] = { "/usr/bin/hornsey", NULL, NULL };
+    GError *error = NULL;
+
+    argv[1] = (char *) bkl_item_get_uri (item);
+
+    g_print ("Spawning hornsey for %s\n", argv[1]);
+    g_spawn_async (NULL, argv, NULL, 0, NULL, NULL, NULL, &error);
+    if (error != NULL) {
+        g_warning ("Error launching Hornsey: %s", error->message);
+        g_error_free (error);
+    }
+
+    g_signal_emit (grid, signals[DISMISS], 0);
+#endif
+}
+
+static void
 ahoghill_grid_view_init (AhoghillGridView *self)
 {
     NbtkTable *table = (NbtkTable *) self;
     AhoghillGridViewPrivate *priv = GET_PRIVATE (self);
     NbtkWidget *entry;
-    ClutterColor blue = { 0x00, 0x00, 0xff, 0xff };
 
     bkl_init ();
 
@@ -606,9 +915,9 @@ ahoghill_grid_view_init (AhoghillGridView *self)
 
     priv->results_pane = (ClutterActor *) ahoghill_results_pane_new (priv->model);
     g_object_set (priv->results_pane,
-                  "title", _("Recent"),
+                  "title", _("Recently played"),
                   NULL);
-    clutter_actor_set_size (priv->results_pane, 800, 400);
+    /* clutter_actor_set_size (priv->results_pane, 750, 400); */
     nbtk_table_add_actor_with_properties (table, priv->results_pane,
                                           1, 0,
                                           "row-span", 1,
@@ -619,10 +928,13 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_signal_connect (priv->results_pane, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
 
-    /* priv->playqueues_pane = g_object_new (AHOGHILL_TYPE_PLAYQUEUES_PANE, */
-    /*                                        NULL); */
-    priv->playqueues_pane = clutter_rectangle_new_with_color (&blue);
-    clutter_actor_set_size (priv->playqueues_pane, 150, 400);
+#if 0
+    priv->playqueues_pane = (ClutterActor *) ahoghill_playlist_new (self,
+                                                                    _("Local"));
+#else
+    priv->playqueues_pane = (ClutterActor *) g_object_new (AHOGHILL_TYPE_PLAYLIST_PLACEHOLDER, NULL);
+#endif
+    clutter_actor_set_size (priv->playqueues_pane, 238, 400);
     nbtk_table_add_actor_with_properties (table, priv->playqueues_pane,
                                           1, 3,
                                           "x-expand", FALSE,
@@ -674,4 +986,16 @@ ahoghill_grid_view_unfocus (AhoghillGridView *view)
 
     if (current_focus == entry)
       clutter_stage_set_key_focus (stage, NULL);
+}
+
+BklItem *
+ahoghill_grid_view_get_item (AhoghillGridView *view,
+                             const char       *uri)
+{
+    Source *source;
+    BklItem *item;
+
+    item = find_item (view, uri, &source);
+
+    return item;
 }

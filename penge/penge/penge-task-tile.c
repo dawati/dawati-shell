@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Rob Bradford <rob@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include "penge-task-tile.h"
 
 #include <libjana/jana.h>
@@ -78,15 +98,16 @@ penge_task_tile_dispose (GObject *object)
 {
   PengeTaskTilePrivate *priv = GET_PRIVATE (object);
 
+  if (priv->commit_timeout)
+  {
+    g_source_remove (priv->commit_timeout);
+    _commit_timeout_cb (object);
+  }
+
   if (priv->task)
   {
     g_object_unref (priv->task);
     priv->task = NULL;
-  }
-
-  if (priv->commit_timeout)
-  {
-    _commit_timeout_cb (object);
   }
 
   G_OBJECT_CLASS (penge_task_tile_parent_class)->dispose (object);
@@ -277,6 +298,8 @@ penge_task_tile_init (PengeTaskTile *self)
                     (GCallback)_button_press_event_cb,
                     self);
 #endif
+
+  clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
 
 static void

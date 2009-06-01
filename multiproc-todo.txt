@@ -1,0 +1,21 @@
+Post multiproc needed work;
+
+* mnb-toolbar;
+  - Contains just date/time and systray. Panels to be added externally in
+    moblin-netbook.c. See below for API.
+  - New public API;
+
+  void
+  mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name)
+
+  /* Are we animating (either panel or itself */
+  gboolean
+  mnb_toolbar_in_transition (MnbToolbar *toolbar)
+
+* Nothing other than netbook-panel.c itself should directly touch its
+  priv structure !! Use accesors.
+
+* there should be no unnamespaced funcs.
+
+* generally self contain related functionality.
+

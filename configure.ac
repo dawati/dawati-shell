@@ -1,7 +1,7 @@
-m4_define([mutter_version], [2.25.55~0.4])
+m4_define([mutter_version], [2.27.0~0.10])
 m4_define([plugin_major_version], [0])
-m4_define([plugin_minor_version], [19])
-m4_define([plugin_micro_version], [0])
+m4_define([plugin_minor_version], [23])
+m4_define([plugin_micro_version], [2])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
 
@@ -26,9 +26,14 @@ AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER([config.h])
 
+CFLAGS="$CFLAGS -Wall"
+
 GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
+
+localedir ="$(prefix)/$(DATADIRNAME)/locale"
+AC_SUBST(localedir)
 
 IT_PROG_INTLTOOL([0.34.90])
 AC_PROG_CC
@@ -36,6 +41,15 @@ AC_ISC_POSIX
 AC_HEADER_STDC
 AM_PROG_LIBTOOL
 AC_CHECK_FUNCS([localtime_r])
+
+# We have a patch to libgnome-menu that adds an accessor for the
+# GenericName desktop entry field.
+SAVE_LIBS=${LIBS}
+AC_CHECK_LIB([gnome-menu], [gmenu_tree_entry_get_generic_name],
+[
+  AC_DEFINE([GMENU_WITH_GENERIC_NAME], [1], [libgnome-menu has the GenericName accessor])
+])
+LIBS=${SAVE_LIBS}
 
 # Make libtool respect the make -s switch (kudos to jacob berman)
 changequote(,)dnl
@@ -47,7 +61,7 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   metacity-plugins >= mutter_version dnl
-                  nbtk-1.0 >= 0.3.0                  dnl
+                  nbtk-1.0 >= 0.8.0                  dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
                   libgnome-menu                      dnl
@@ -64,11 +78,14 @@ PKG_CHECK_MODULES(PENGE,
                   gio-2.0
                   gio-unix-2.0)
 
+PKG_CHECK_MODULES(LIBMNB,
+		  dbus-glib-1)
+
 AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
 
 if test "x$enable_ahoghill" = "xyes"; then
 	AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
-	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.3 gdk-pixbuf-2.0 bognor-regis-0.1 gtk+-2.0)
+	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.1 gdk-pixbuf-2.0 bognor-regis-0.3 >= 0.3.1 gtk+-2.0)
 fi
 
 AC_ARG_ENABLE([netpanel],
@@ -94,6 +111,17 @@ fi
 AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 AM_CONDITIONAL(WITH_PEOPLE, test x"$enable_people" = xyes)
+
+AC_ARG_ENABLE([debug],
+	AC_HELP_STRING([--enable-debug],
+		[Enable debugging features, whatever that means]),
+		[enable_debug="$enableval"], [enable_debug=no])
+
+echo "enableval: $enableval"
+
+if test x"$enable_debug" = xyes; then
+   CFLAGS="$CFLAGS -g -O0"
+fi
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
@@ -144,7 +172,7 @@ echo "
 
             Mutter version   :    mutter_version
             Installation path:    ${MUTTER_PLUGIN_DIR}
-
+	    Debug            :    ${enable_debug} (CFLAGS: ${CFLAGS})
 
         Type make to build the plugin.
 "

@@ -34,7 +34,7 @@ G_DEFINE_TYPE (MnbNotificationCluster,   \
    MNB_TYPE_NOTIFICATION_CLUSTER,    \
    MnbNotificationClusterPrivate))
 
-#define CLUSTER_WIDTH 300
+#define CLUSTER_WIDTH 320
 #define FADE_DURATION 300
 
 struct _MnbNotificationClusterPrivate {
@@ -362,6 +362,9 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
   if (priv->n_notifiers == 1)
     {
+      /* May have been previously hidden */
+      clutter_actor_show (CLUTTER_ACTOR(cluster));
+
       /* show just the single notification */
       priv->active_notifier = w;
       clutter_actor_set_opacity (CLUTTER_ACTOR(w), 0);
@@ -449,6 +452,10 @@ on_control_disappear_anim_completed (ClutterAnimation *anim,
                                       priv->pending_removed);
       priv->pending_removed = NULL;
     }
+
+  /* Hide ourselves if nothing left to show */
+  if (priv->n_notifiers == 0)
+    clutter_actor_hide (CLUTTER_ACTOR(cluster));
 
   /* Update flag for any pending animations */
   priv->anim_lock = FALSE;

@@ -1,4 +1,6 @@
 /* Cunningly borrowed from Penge */
+#include <bickley/bkl.h>
+
 #include <nbtk/nbtk.h>
 #include <ahoghill/ahoghill-grid-view.h>
 
@@ -36,7 +38,7 @@ main (int    argc,
     ClutterActor *grid;
 
     g_thread_init (NULL);
-    bkl_init (&argc, &argv);
+    bkl_init ();
     clutter_init (&argc, &argv);
     gtk_init (&argc, &argv);
 

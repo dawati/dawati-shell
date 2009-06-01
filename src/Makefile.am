@@ -2,11 +2,14 @@ SUBDIRS=tray effects
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@ \
-	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
-	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" \
-	-I$(top_srcdir)/ahoghill \
-	-I$(top_srcdir)/penge \
+INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@	\
+	-DPREFIX=\"$(prefix)\" 						\
+	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" 				\
+	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 				\
+	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" 		\
+	@AHOGHILL_CFLAGS@ 						\
+	-I$(top_srcdir)/ahoghill 					\
+	-I$(top_srcdir)/penge 						\
 	-I$(top_srcdir)/src
 
 AM_CFLAGS   = -fPIC
@@ -16,8 +19,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				moblin-netbook.h		\
 				moblin-netbook-chooser.c	\
 				moblin-netbook-chooser.h	\
-				moblin-netbook-panel.c		\
-				moblin-netbook-panel.h		\
 				moblin-netbook-launcher.c       \
 				moblin-netbook-launcher.h	\
 				moblin-netbook-status.c		\
@@ -29,8 +30,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
                                 moblin-netbook-system-tray.h    \
-				mwb-radical-bar.c		\
-				mwb-radical-bar.h		\
 				mwb-utils.c			\
 				mwb-utils.h			\
 	                        $(DBUS_GLUE)                    \
@@ -53,10 +52,16 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				mnb-notification-cluster.h      \
 				mnb-notification-urgent.c       \
 				mnb-notification-urgent.h       \
-				mnb-panel-button.c              \
-				mnb-panel-button.h              \
+                                mnb-toolbar.c                   \
+                                mnb-toolbar.h                   \
+				mnb-toolbar-button.c            \
+				mnb-toolbar-button.h            \
+				mnb-launcher-application.c \
+				mnb-launcher-application.h \
 				mnb-launcher-button.c           \
 				mnb-launcher-button.h		\
+				mnb-launcher-grid.c \
+				mnb-launcher-grid.h \
 				mnb-launcher-tree.c \
 				mnb-launcher-tree.h \
 				mnb-status-row.c		\
@@ -74,11 +79,13 @@ moblin_netbook_la_SOURCES +=	moblin-netbook-people.h		\
 				moblin-netbook-people.c
 endif
 
+DBUS_GLUE =	notification-manager-glue.h
 
-
-DBUS_GLUE=notification-manager-glue.h
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
+
+%-bindings.h: %.xml
+	dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
 
 MARSHALS = marshal.c marshal.h
 %.c: %.list
@@ -113,5 +120,6 @@ install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.a
 	rm -f $(DESTDIR)$(pkglibdir)/*.la
 
-BUILT_SOURCES = $(DBUS_GLUE) $(MARSHALS)
+BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS)
+
 CLEANFILES = $(BUILT_SOURCES)

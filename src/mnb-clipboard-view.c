@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2008 - 2009 Intel Corporation.
+ *
+ * Author: Emmanuele Bassi <ebassi@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -295,6 +314,7 @@ mnb_clipboard_view_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->paint (actor);
 
+#if 0
   if (priv->rows == NULL)
     {
       PangoLayout *layout;
@@ -360,6 +380,7 @@ mnb_clipboard_view_paint (ClutterActor *actor)
 
       return;
     }
+#endif
 
   for (l = priv->rows, i = 0; l != NULL; l = l->next, i++)
     {
