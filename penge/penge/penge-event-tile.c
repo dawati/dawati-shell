@@ -369,6 +369,9 @@ penge_event_tile_init (PengeEventTile *self)
                     "button-press-event",
                     (GCallback)_button_press_event_cb,
                     self);
+
+  clutter_actor_set_reactive ((ClutterActor *)self,
+                              TRUE);
 }
 
 static void
