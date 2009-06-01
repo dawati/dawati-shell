@@ -1147,10 +1147,6 @@ mnb_switcher_show (ClutterActor *self)
   nbtk_table_set_row_spacing (NBTK_TABLE (table), 4);
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 7);
 
-  clutter_actor_set_height (CLUTTER_ACTOR (table),
-                            screen_height - TOOLBAR_HEIGHT * 1.5);
-
-
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
 
   ws_count = meta_screen_get_n_workspaces (screen);
@@ -1546,6 +1542,11 @@ mnb_switcher_show (ClutterActor *self)
   priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
 
  finish_up:
+
+  if (!switcher_empty)
+    clutter_actor_set_height (CLUTTER_ACTOR (table),
+                              screen_height - TOOLBAR_HEIGHT * 1.5);
+
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
 
