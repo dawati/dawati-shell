@@ -88,6 +88,7 @@ mnb_toolbar_button_unmap (ClutterActor *actor)
     clutter_actor_unmap (priv->old_bg);
 }
 
+static void
 mnb_toolbar_button_paint_background (NbtkWidget         *actor,
                                      ClutterActor       *background,
                                      const ClutterColor *color)

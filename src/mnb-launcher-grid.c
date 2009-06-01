@@ -100,10 +100,10 @@ static void
 _find_widget_by_point_cb (ClutterActor                *actor,
                           find_widget_by_point_data_t *data)
 {
-  ClutterUnit left = clutter_actor_get_xu (actor);
-  ClutterUnit top = clutter_actor_get_yu (actor);
-  ClutterUnit right = left + clutter_actor_get_widthu (actor);
-  ClutterUnit bottom = top + clutter_actor_get_heightu (actor);
+  ClutterUnit left = clutter_actor_get_x (actor);
+  ClutterUnit top = clutter_actor_get_y (actor);
+  ClutterUnit right = left + clutter_actor_get_width (actor);
+  ClutterUnit bottom = top + clutter_actor_get_height (actor);
 
   if (CLUTTER_ACTOR_IS_MAPPED (actor) &&
       left <= data->x &&
@@ -143,12 +143,12 @@ mnb_launcher_grid_keynav_up (MnbLauncherGrid *self)
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) -
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_row_gap (NBTK_GRID (self)) -
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -171,12 +171,12 @@ mnb_launcher_grid_keynav_right (MnbLauncherGrid *self)
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_column_gap (NBTK_GRID (self)) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) * 1.5;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -199,12 +199,12 @@ mnb_launcher_grid_keynav_down (MnbLauncherGrid *self)
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_row_gap (NBTK_GRID (self)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -227,12 +227,12 @@ mnb_launcher_grid_keynav_left (MnbLauncherGrid *self)
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) -
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_column_gap (NBTK_GRID (self)) -
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -258,13 +258,13 @@ mnb_launcher_grid_keynav_wrap_up (MnbLauncherGrid *self)
 
   nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
-  x = clutter_actor_get_widthu (CLUTTER_ACTOR (self)) -
+  x = clutter_actor_get_width (CLUTTER_ACTOR (self)) -
       padding.right -
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) -
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_row_gap (NBTK_GRID (self)) -
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -291,11 +291,11 @@ mnb_launcher_grid_keynav_wrap_down (MnbLauncherGrid *self)
   nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
   x = padding.left +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_row_gap (NBTK_GRID (self)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)

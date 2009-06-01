@@ -866,7 +866,7 @@ show_workspace_chooser (MutterPlugin *plugin,
   ClutterActor               *switcher;
   ClutterActor               *grid;
   ClutterActor               *label;
-  ClutterUnit                 screen_width, screen_height;
+  gint                        screen_width, screen_height;
   ClutterUnit                 switcher_width, switcher_height;
   ClutterUnit                 label_height;
   ClutterColor                label_clr = { 0x0, 0x0, 0x0, 0xff };

@@ -714,7 +714,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
-  guint w, h;
+  ClutterUnit        w, h;
 
   clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
 
@@ -723,7 +723,8 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
                                                        priv->dropdown_region);
 
   priv->dropdown_region =
-    moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT, w, h);
+    moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT,
+                                      (guint)w, (guint)h);
 }
 
 static void
