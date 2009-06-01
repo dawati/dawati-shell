@@ -712,6 +712,7 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   new_ws = nbtk_table_new ();
   nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
   nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (new_ws), TRUE);
 
   nbtk_widget_set_style_class_name (new_ws, "switcher-workspace");
 
@@ -1505,6 +1506,8 @@ mnb_switcher_show (ClutterActor *self)
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
                                       "switcher-workspace-new");
+
+    clutter_actor_set_reactive (CLUTTER_ACTOR (new_ws), TRUE);
 
     if (ws_count < 8)
       nbtk_widget_set_dnd_threshold (new_ws, 5);
