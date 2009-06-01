@@ -1362,12 +1362,6 @@ mnb_switcher_show (ClutterActor *self)
             clone_w = (guint)((gdouble) clone_h * w_h_ratio);
           }
 
-
-        printf ("cell %fx%f; ratios %f,%f; clone %dx%d -> %dx%d\n",
-                cell_width, cell_height,
-                w_ratio, h_ratio,
-                w, h, clone_w, clone_h);
-
         /*
          * Make sure we do not try to set clone bigger than the
          * window size.
