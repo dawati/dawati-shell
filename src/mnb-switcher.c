@@ -33,7 +33,6 @@
 #include <glib/gi18n.h>
 
 #define HOVER_TIMEOUT  800
-#define CLONE_HEIGHT   80  /* Height of the window thumb */
 
 /*
  * MnbSwitcherApp
@@ -530,7 +529,8 @@ dnd_new_dropped_cb (NbtkWidget   *table,
 #if 1
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
 			       "keep-aspect-ratio", keep_ratio,
-                               "x-fill", TRUE, NULL);
+                               "x-fill", TRUE,
+                               "y-fill", TRUE, NULL);
 #else
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
 			       "y-fill", FALSE, NULL);
@@ -1096,6 +1096,7 @@ mnb_switcher_show (ClutterActor *self)
   gboolean      found_focus = FALSE;
   ClutterActor *toolbar;
   gboolean      switcher_empty = FALSE;
+  gdouble       cell_width, cell_height;
 
   struct win_location
   {
@@ -1145,11 +1146,18 @@ mnb_switcher_show (ClutterActor *self)
   nbtk_table_set_row_spacing (NBTK_TABLE (table), 4);
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 7);
 
+  clutter_actor_set_height (CLUTTER_ACTOR (table),
+                            screen_height - TOOLBAR_HEIGHT * 1.5);
+
+
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
 
   ws_count = meta_screen_get_n_workspaces (screen);
   priv->active_ws = active_ws = meta_screen_get_active_workspace_index (screen);
   window_list = mutter_plugin_get_windows (priv->plugin);
+
+  cell_width  = 0.8 * (gdouble)screen_width  / (gdouble)ws_count;
+  cell_height = 0.8 * (gdouble)screen_height / (gdouble)ws_count;
 
   /* Handle case where no apps open.. */
   if (ws_count == 1)
@@ -1250,11 +1258,12 @@ mnb_switcher_show (ClutterActor *self)
       gint                   ws_indx;
       MetaCompWindowType     type;
       guint                  w, h;
-      guint                  clone_w;
       struct origin_data    *origin_data;
       MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
       gchar                 *title;
       MnbSwitcherAppPrivate *app_priv;
+      gdouble                w_h_ratio;
+      guint                  clone_w, clone_h;
 
       ws_indx = mutter_window_get_workspace (mw);
       type = mutter_window_get_window_type (mw);
@@ -1329,13 +1338,48 @@ mnb_switcher_show (ClutterActor *self)
           top_most_mw = mw;
         }
 
-      clutter_actor_get_size (c_tx, &h, &w);
+      clutter_actor_get_size (c_tx, &w, &h);
+
+      w_h_ratio = (ClutterUnit)w/(ClutterUnit)h;
 
       MNB_SWITCHER_APP (clone)->priv->natural_width = (ClutterUnit)w;
-      MNB_SWITCHER_APP (clone)->priv->w_h_ratio = (ClutterUnit)w/(ClutterUnit)h;
+      MNB_SWITCHER_APP (clone)->priv->w_h_ratio = w_h_ratio;
 
-      clone_w = (guint)((gdouble)h/(gdouble)w * (gdouble)CLONE_HEIGHT);
-      clutter_actor_set_size (clone, clone_w, CLONE_HEIGHT);
+      {
+        /*
+         * Fit into the cell at maximum size without w/h ratio distortion.
+         */
+        gdouble w_ratio, h_ratio;
+
+        w_ratio = cell_width  / (gdouble)w;
+        h_ratio = cell_height / (gdouble)h;
+
+        if (w_ratio < h_ratio)
+          {
+            clone_w = (guint)(cell_width  * w_ratio);
+            clone_h = (guint)((gdouble) clone_w / w_h_ratio);
+          }
+        else
+          {
+            clone_h = (guint)(cell_height * h_ratio);
+            clone_w = (guint)((gdouble) clone_h * w_h_ratio);
+          }
+
+
+        printf ("cell %fx%f; ratios %f,%f; clone %dx%d -> %dx%d\n",
+                cell_width, cell_height,
+                w_ratio, h_ratio,
+                w, h, clone_w, clone_h);
+
+        /*
+         * Make sure we do not try to set clone bigger than the
+         * window size.
+         */
+        if ((clone_w > w) || (clone_h > h))
+          clutter_actor_set_size (clone, w, h);
+        else
+          clutter_actor_set_size (clone, clone_w, clone_h);
+      }
 
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
 
@@ -1378,13 +1422,13 @@ mnb_switcher_show (ClutterActor *self)
       /*
        * FIXME -- this depends on the styling, should not be hardcoded.
        */
-      win_locs[ws_indx].height += (CLONE_HEIGHT + 10);
+      win_locs[ws_indx].height += (clone_h + 10);
 
       if (win_locs[ws_indx].height >= screen_height - 100 )
         {
           win_locs[ws_indx].col++;
           win_locs[ws_indx].row = 0;
-          win_locs[ws_indx].height = CLONE_HEIGHT + 10;
+          win_locs[ws_indx].height = clone_h + 10;
         }
 
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
@@ -1393,7 +1437,8 @@ mnb_switcher_show (ClutterActor *self)
 #if 1
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "keep-aspect-ratio", TRUE,
-                                   "x-fill", TRUE, NULL);
+                                   "x-fill", TRUE,
+                                   "y-fill", TRUE, NULL);
 #else
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "y-fill", FALSE, NULL);
