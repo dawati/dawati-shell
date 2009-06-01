@@ -100,6 +100,7 @@ penge_task_tile_dispose (GObject *object)
 
   if (priv->commit_timeout)
   {
+    g_source_remove (priv->commit_timeout);
     _commit_timeout_cb (object);
   }
 
