@@ -21,6 +21,10 @@
  * 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <sys/stat.h>
 
 #include <glib/gi18n.h>
@@ -103,22 +107,27 @@ mnb_launcher_monitor_free (MnbLauncherMonitor *self)
 static MnbLauncherApplication *
 mnb_launcher_application_create_from_gmenu_entry (GMenuTreeEntry *entry)
 {
-  MnbLauncherApplication *self;
+  MnbLauncherApplication  *self;
+  const gchar             *name;
 
   g_return_val_if_fail (entry, NULL);
 
   /* We have a patch to libgnome-menu that adds an accessor for the
    * GenericName desktop entry field. */
 #if GMENU_WITH_GENERIC_NAME
-  self = g_new0 (MnbLauncherApplication, 1);
-  self->desktop_file_path = g_strdup (gmenu_tree_entry_get_desktop_file_path (entry));
-  self->name = gmenu_tree_entry_get_generic_name (entry) ?
-                g_strdup (gmenu_tree_entry_get_generic_name (entry)) :
-                g_strdup (gmenu_tree_entry_get_name (entry));
-  self->exec = g_strdup (gmenu_tree_entry_get_exec (entry));
-  self->icon = g_strdup (gmenu_tree_entry_get_icon (entry));
-  self->comment = g_strdup (gmenu_tree_entry_get_comment (entry));
+
+  name = gmenu_tree_entry_get_generic_name (entry) ?
+            gmenu_tree_entry_get_generic_name (entry) :
+            gmenu_tree_entry_get_name (entry);
+
+  self = mnb_launcher_application_new (name,
+                                       gmenu_tree_entry_get_icon (entry),
+                                       gmenu_tree_entry_get_comment (entry),
+                                       gmenu_tree_entry_get_exec (entry),
+                                       gmenu_tree_entry_get_desktop_file_path (entry));
+
 #else
+  name = NULL; /* prevent compiler moaning. */
   self = mnb_launcher_application_new_from_desktop_file (gmenu_tree_entry_get_desktop_file_path (entry));
 #endif
 
