@@ -58,6 +58,8 @@ typedef struct {
   const gchar * (*get_presence_status) (AnerleyItem *item);
   const gchar * (*get_presence_message) (AnerleyItem *item);
   const gchar * (*get_sortable_name) (AnerleyItem *item);
+  const gchar * (*get_first_name) (AnerleyItem *item);
+  const gchar * (*get_last_name) (AnerleyItem *item);
   void (*activate) (AnerleyItem *item);
 } AnerleyItemClass;
 
@@ -68,6 +70,8 @@ const gchar *anerley_item_get_avatar_path (AnerleyItem *item);
 const gchar *anerley_item_get_presence_status (AnerleyItem *item);
 const gchar *anerley_item_get_presence_message (AnerleyItem *item);
 const gchar *anerley_item_get_sortable_name (AnerleyItem *item);
+const gchar *anerley_item_get_first_name (AnerleyItem *item);
+const gchar *anerley_item_get_last_name (AnerleyItem *item);
 
 void anerley_item_emit_display_name_changed (AnerleyItem *item);
 void anerley_item_emit_avatar_path_changed (AnerleyItem *item);
