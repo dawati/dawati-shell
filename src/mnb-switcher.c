@@ -1307,6 +1307,10 @@ mnb_switcher_show (ClutterActor *self)
       nbtk_widget_set_style_class_name (NBTK_WIDGET (clone),
                                         "switcher-application");
 
+      clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
+      clutter_actor_show (clone);
+      clutter_actor_set_reactive (clone, TRUE);
+
       /*
        * If the window has focus, apply the active style.
        */
@@ -1336,7 +1340,6 @@ mnb_switcher_show (ClutterActor *self)
         }
 
       clutter_actor_get_size (c_tx, &w, &h);
-
       w_h_ratio = (gfloat)w/(gfloat)h;
 
       MNB_SWITCHER_APP (clone)->priv->natural_width = (gfloat)w;
@@ -1371,10 +1374,6 @@ mnb_switcher_show (ClutterActor *self)
         else
           clutter_actor_set_size (clone, clone_w, clone_h);
       }
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
-
-      clutter_actor_set_reactive (clone, TRUE);
 
       origin_data = g_new0 (struct origin_data, 1);
       origin_data->clone = clone;
