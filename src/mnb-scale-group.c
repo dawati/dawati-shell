@@ -44,7 +44,7 @@ mnb_scale_group_get_preferred_width (ClutterActor *self,
                                      gfloat  *min_width_p,
                                      gfloat  *natural_width_p)
 {
-  gfloat scale_x, scale_y;
+  gdouble scale_x, scale_y;
 
   CLUTTER_ACTOR_CLASS (mnb_scale_group_parent_class)->get_preferred_width (
 							      self,
