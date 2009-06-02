@@ -317,6 +317,24 @@ mnb_drop_down_paint (ClutterActor *actor)
   cogl_clip_pop ();
 }
 
+static void
+mnb_drop_down_allocate (ClutterActor           *actor,
+                        const ClutterActorBox  *box,
+                        gboolean                absolute_origin_changed)
+{
+  /* Short circuit the allocate by checking if the panel is visible. This
+   * gives a significant performance improvement since when any panel does a
+   * relayout this will then cause an allocate on the toolbar which then does
+   * an allocate on all the other panels
+   */
+  if (CLUTTER_ACTOR_IS_VISIBLE (actor))
+  {
+    CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->allocate (actor,
+                                                                box,
+                                                                absolute_origin_changed);
+  }
+}
+
 static gboolean
 mnb_button_event_capture (ClutterActor *actor, ClutterButtonEvent *event)
 {
@@ -363,6 +381,7 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
   clutter_class->show = mnb_drop_down_show;
   clutter_class->hide = mnb_drop_down_hide;
   clutter_class->paint = mnb_drop_down_paint;
+  clutter_class->allocate = mnb_drop_down_allocate;
   clutter_class->button_press_event = mnb_button_event_capture;
   clutter_class->button_release_event = mnb_button_event_capture;
 
