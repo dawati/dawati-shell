@@ -601,8 +601,8 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
 
   gdouble  scale_x  = 1.0;
   gdouble  scale_y  = 1.0;
-  gint     anchor_x = 0;
-  gint     anchor_y = 0;
+  gfloat   anchor_x = 0;
+  gfloat   anchor_y = 0;
 
   type = mutter_window_get_window_type (mcw);
 
@@ -626,10 +626,10 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
       scale_x = (gdouble)end_width / (gdouble) width;
       scale_y = (gdouble)end_height / (gdouble) height;
 
-      anchor_x = (gdouble)(x - end_x)*(gdouble)width /
-        ((gdouble)(end_width - width));
-      anchor_y = (gdouble)(y - end_y)*(gdouble)height /
-        ((gdouble)(end_height - height));
+      anchor_x = (gfloat)(x - end_x)* width /
+        ((gfloat)(end_width - width));
+      anchor_y = (gfloat)(y - end_y)* height /
+        ((gfloat)(end_height - height));
 
       clutter_actor_move_anchor_point (actor, anchor_x, anchor_y);
 
