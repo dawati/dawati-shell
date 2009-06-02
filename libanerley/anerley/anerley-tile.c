@@ -118,7 +118,7 @@ _item_avatar_path_changed_cb (AnerleyItem *item,
     g_object_set (priv->avatar,
                   "load-async",
                   TRUE,
-                  FALSE);
+                  NULL);
     if (!clutter_texture_set_from_file ((ClutterTexture *)priv->avatar,
                                         avatar_path,
                                         &error))
