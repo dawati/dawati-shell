@@ -242,7 +242,7 @@ ahoghill_media_art_allocate (ClutterActor          *actor,
     ClutterActorClass *parent_class;
     ClutterActorBox child_box, play_box;
     NbtkPadding padding = { 0, };
-    ClutterUnit w, h, x_off, y_off;
+    gfloat w, h, x_off, y_off;
 
     nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 

@@ -201,7 +201,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
     {
       NbtkPadding padding;
       ClutterActor *parent;
-      ClutterUnit cell_width;
+      gfloat cell_width;
       guint i;
 
       /* Create tabs table */

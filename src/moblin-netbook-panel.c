@@ -667,8 +667,8 @@ make_panel (MutterPlugin *plugin, gint width)
 
   bg_texture =
     clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                   "/theme/panel/panel-background.png",
-                                   &err);
+                                            "/theme/panel/panel-background.png",
+                                              &err);
   if (err)
     {
       g_warning ("%s", err->message);

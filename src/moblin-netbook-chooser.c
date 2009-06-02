@@ -423,8 +423,8 @@ make_spinner (void)
 
   ClutterActor *spinner = NULL;
 
-  ClutterUnit   s_w, s_h;
-  ClutterUnit   center_x, center_y;
+  gfloat   s_w, s_h;
+  gfloat   center_x, center_y;
 
   static ClutterBehaviour *beh = NULL;
 
@@ -867,8 +867,8 @@ show_workspace_chooser (MutterPlugin *plugin,
   ClutterActor               *grid;
   ClutterActor               *label;
   gint                        screen_width, screen_height;
-  ClutterUnit                 switcher_width, switcher_height;
-  ClutterUnit                 label_height;
+  gfloat                      switcher_width, switcher_height;
+  gfloat                      label_height;
   ClutterColor                label_clr = { 0x0, 0x0, 0x0, 0xff };
   gint                        ws_count = 0;
   struct kbd_data            *kbd_data;

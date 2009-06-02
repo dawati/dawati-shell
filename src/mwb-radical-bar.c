@@ -125,7 +125,7 @@ mwb_radical_bar_resize_progress (MwbRadicalBar         *self,
                                  const ClutterActorBox *box,
                                  gboolean               aoc)
 {
-  ClutterUnit width, padding;
+  gfloat width, padding;
   ClutterActorBox child_box;
   
   MwbRadicalBarPrivate *priv = self->priv;
@@ -169,11 +169,11 @@ mwb_radical_bar_allocate (ClutterActor          *actor,
 
 static void
 mwb_radical_bar_get_preferred_width (ClutterActor *actor,
-                                     ClutterUnit   for_height,
-                                     ClutterUnit  *min_width_p,
-                                     ClutterUnit  *natural_width_p)
+                                     gfloat   for_height,
+                                     gfloat  *min_width_p,
+                                     gfloat  *natural_width_p)
 {
-  ClutterUnit min_width, natural_width;
+  gfloat min_width, natural_width;
   
   MwbRadicalBarPrivate *priv = MWB_RADICAL_BAR (actor)->priv;
   
@@ -194,11 +194,11 @@ mwb_radical_bar_get_preferred_width (ClutterActor *actor,
 
 static void
 mwb_radical_bar_get_preferred_height (ClutterActor *actor,
-                                      ClutterUnit   for_width,
-                                      ClutterUnit  *min_height_p,
-                                      ClutterUnit  *natural_height_p)
+                                      gfloat        for_width,
+                                      gfloat       *min_height_p,
+                                      gfloat       *natural_height_p)
 {
-  ClutterUnit min_height, natural_height;
+  gfloat min_height, natural_height;
   
   MwbRadicalBarPrivate *priv = MWB_RADICAL_BAR (actor)->priv;
   

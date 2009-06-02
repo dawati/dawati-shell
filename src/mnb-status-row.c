@@ -50,7 +50,7 @@ struct _MnbStatusRowPrivate
   guint in_hover  : 1;
   guint is_online : 1;
 
-  ClutterUnit icon_separator_x;
+  gfloat icon_separator_x;
 
   MojitoClient *client;
   MojitoClientView *view;
@@ -70,12 +70,12 @@ G_DEFINE_TYPE (MnbStatusRow, mnb_status_row, NBTK_TYPE_WIDGET);
 
 static void
 mnb_status_row_get_preferred_width (ClutterActor *actor,
-                                    ClutterUnit   for_height,
-                                    ClutterUnit  *min_width_p,
-                                    ClutterUnit  *natural_width_p)
+                                    gfloat        for_height,
+                                    gfloat       *min_width_p,
+                                    gfloat       *natural_width_p)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
-  ClutterUnit min_width, natural_width;
+  gfloat min_width, natural_width;
 
   clutter_actor_get_preferred_width (priv->entry, for_height,
                                      &min_width,
@@ -92,9 +92,9 @@ mnb_status_row_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_status_row_get_preferred_height (ClutterActor *actor,
-                                     ClutterUnit   for_width,
-                                     ClutterUnit  *min_height_p,
-                                     ClutterUnit  *natural_height_p)
+                                     gfloat        for_width,
+                                     gfloat       *min_height_p,
+                                     gfloat       *natural_height_p)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
 
@@ -112,10 +112,10 @@ mnb_status_row_allocate (ClutterActor          *actor,
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
   ClutterActorClass *parent_class;
-  ClutterUnit available_width, available_height;
-  ClutterUnit min_width, min_height;
-  ClutterUnit natural_width, natural_height;
-  ClutterUnit text_width, text_height;
+  gfloat available_width, available_height;
+  gfloat min_width, min_height;
+  gfloat natural_width, natural_height;
+  gfloat text_width, text_height;
   NbtkPadding border = { 0, };
   ClutterActorBox child_box = { 0, };
 

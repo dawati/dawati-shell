@@ -714,7 +714,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
-  ClutterUnit        w, h;
+  gfloat             w, h;
 
   clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
 

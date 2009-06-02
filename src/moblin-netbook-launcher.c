@@ -1212,9 +1212,9 @@ entry_keynav_cb (MnbEntry         *entry,
             (keyval == CLUTTER_Up ||
             keyval == CLUTTER_Left))
         {
-          ClutterUnit gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
-          ClutterUnit x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
-          ClutterUnit y = clutter_actor_get_y (CLUTTER_ACTOR (expander));
+          gfloat gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
+          gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
+          gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander));
 
           expander = mnb_launcher_grid_find_widget_by_point (
                       MNB_LAUNCHER_GRID (priv->apps_grid),
@@ -1238,9 +1238,9 @@ entry_keynav_cb (MnbEntry         *entry,
             (keyval == CLUTTER_Down ||
             keyval == CLUTTER_Right))
         {
-          ClutterUnit gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
-          ClutterUnit x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
-          ClutterUnit y = clutter_actor_get_y (CLUTTER_ACTOR (expander)) +
+          gfloat gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
+          gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
+          gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander)) +
                           clutter_actor_get_height (CLUTTER_ACTOR (expander));
 
           expander = mnb_launcher_grid_find_widget_by_point (

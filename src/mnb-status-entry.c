@@ -47,7 +47,7 @@ struct _MnbStatusEntryPrivate
   gchar *old_status_text;
   gchar *status_time;
 
-  ClutterUnit separator_x;
+  gfloat separator_x;
 
   NbtkPadding padding;
 
@@ -167,12 +167,12 @@ on_button_clicked (NbtkButton     *button,
 
 static void
 mnb_status_entry_get_preferred_width (ClutterActor *actor,
-                                      ClutterUnit   for_height,
-                                      ClutterUnit  *min_width_p,
-                                      ClutterUnit  *natural_width_p)
+                                      gfloat        for_height,
+                                      gfloat       *min_width_p,
+                                      gfloat       *natural_width_p)
 {
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
-  ClutterUnit min_width, natural_width;
+  gfloat min_width, natural_width;
 
   clutter_actor_get_preferred_width (priv->status_entry, for_height,
                                      &min_width,
@@ -189,12 +189,12 @@ mnb_status_entry_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_status_entry_get_preferred_height (ClutterActor *actor,
-                                       ClutterUnit   for_width,
-                                       ClutterUnit  *min_height_p,
-                                       ClutterUnit  *natural_height_p)
+                                       gfloat        for_width,
+                                       gfloat       *min_height_p,
+                                       gfloat       *natural_height_p)
 {
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
-  ClutterUnit min_height, natural_height;
+  gfloat min_height, natural_height;
 
   clutter_actor_get_preferred_height (priv->status_entry, for_width,
                                       &min_height,
@@ -216,13 +216,13 @@ mnb_status_entry_allocate (ClutterActor          *actor,
 {
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
   ClutterActorClass *parent_class;
-  ClutterUnit available_width, available_height;
-  ClutterUnit min_width, min_height;
-  ClutterUnit natural_width, natural_height;
-  ClutterUnit button_width, button_height;
-  ClutterUnit service_width, service_height;
-  ClutterUnit icon_width, icon_height;
-  ClutterUnit text_width, text_height;
+  gfloat available_width, available_height;
+  gfloat min_width, min_height;
+  gfloat natural_width, natural_height;
+  gfloat button_width, button_height;
+  gfloat service_width, service_height;
+  gfloat icon_width, icon_height;
+  gfloat text_width, text_height;
   ClutterActorBox child_box = { 0, };
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class);

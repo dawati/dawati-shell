@@ -73,10 +73,10 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
 {
   MnbClipboardItem *self = MNB_CLIPBOARD_ITEM (actor);
   ClutterActorClass *klass;
-  ClutterUnit remove_width, remove_height;
-  ClutterUnit action_width, action_height;
-  ClutterUnit child_width, child_height;
-  ClutterUnit time_width, time_height;
+  gfloat remove_width, remove_height;
+  gfloat action_width, action_height;
+  gfloat child_width, child_height;
+  gfloat time_width, time_height;
   ClutterActorBox action_box = { 0, };
   ClutterActorBox remove_box = { 0, };
   ClutterActorBox time_box = { 0, };
@@ -111,9 +111,9 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
 
   if (self->contents)
     {
-      ClutterUnit natural_width, natural_height;
-      ClutterUnit min_width, min_height;
-      ClutterUnit available_width, available_height;
+      gfloat natural_width, natural_height;
+      gfloat min_width, min_height;
+      gfloat available_width, available_height;
       ClutterRequestMode request;
       ClutterActorBox allocation = { 0, };
 
@@ -207,13 +207,13 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
 
 static void
 mnb_clipboard_item_get_preferred_width (ClutterActor *actor,
-                                        ClutterUnit   for_height,
-                                        ClutterUnit  *min_width_p,
-                                        ClutterUnit  *natural_width_p)
+                                        gfloat        for_height,
+                                        gfloat       *min_width_p,
+                                        gfloat       *natural_width_p)
 {
   MnbClipboardItem *item = MNB_CLIPBOARD_ITEM (actor);
-  ClutterUnit button_min, button_natural;
-  ClutterUnit contents_min, contents_natural;
+  gfloat button_min, button_natural;
+  gfloat contents_min, contents_natural;
   NbtkPadding padding = { 0, };
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
@@ -242,13 +242,13 @@ mnb_clipboard_item_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_clipboard_item_get_preferred_height (ClutterActor *actor,
-                                         ClutterUnit   for_width,
-                                         ClutterUnit  *min_height_p,
-                                         ClutterUnit  *natural_height_p)
+                                         gfloat        for_width,
+                                         gfloat       *min_height_p,
+                                         gfloat       *natural_height_p)
 {
   MnbClipboardItem *item = MNB_CLIPBOARD_ITEM (actor);
-  ClutterUnit button_min, button_natural;
-  ClutterUnit contents_min, contents_natural;
+  gfloat button_min, button_natural;
+  gfloat contents_min, contents_natural;
   NbtkPadding padding = { 0, };
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);

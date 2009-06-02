@@ -181,12 +181,12 @@ on_store_item_added (MnbClipboardStore    *store,
 
 static void
 mnb_clipboard_view_get_preferred_width (ClutterActor *actor,
-                                        ClutterUnit   for_height,
-                                        ClutterUnit  *min_width_p,
-                                        ClutterUnit  *natural_width_p)
+                                        gfloat        for_height,
+                                        gfloat       *min_width_p,
+                                        gfloat       *natural_width_p)
 {
   MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (actor)->priv;
-  ClutterUnit min_width, natural_width;
+  gfloat min_width, natural_width;
   GSList *l;
 
   if (priv->rows == NULL)
@@ -204,7 +204,7 @@ mnb_clipboard_view_get_preferred_width (ClutterActor *actor,
   for (l = priv->rows; l != NULL; l = l->next)
     {
       ClutterActor *row = l->data;
-      ClutterUnit row_min, row_natural;
+      gfloat row_min, row_natural;
 
       row_min = row_natural = 0;
       clutter_actor_get_preferred_width (row, for_height,
@@ -224,12 +224,12 @@ mnb_clipboard_view_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_clipboard_view_get_preferred_height (ClutterActor *actor,
-                                         ClutterUnit   for_width,
-                                         ClutterUnit  *min_height_p,
-                                         ClutterUnit  *natural_height_p)
+                                         gfloat        for_width,
+                                         gfloat       *min_height_p,
+                                         gfloat       *natural_height_p)
 {
   MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (actor)->priv;
-  ClutterUnit min_height, natural_height;
+  gfloat min_height, natural_height;
   NbtkPadding padding = { 0, };
   GSList *l;
 
@@ -240,7 +240,7 @@ mnb_clipboard_view_get_preferred_height (ClutterActor *actor,
   for (l = priv->rows; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit child_min, child_natural;
+      gfloat child_min, child_natural;
 
       clutter_actor_get_preferred_height (child, for_width,
                                           &child_min,
@@ -263,9 +263,9 @@ mnb_clipboard_view_allocate (ClutterActor *actor,
                              gboolean origin_changed)
 {
   MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (actor)->priv;
-  ClutterUnit available_width, available_height;
+  gfloat available_width, available_height;
   NbtkPadding padding = { 0, };
-  ClutterUnit y;
+  gfloat y;
   GSList *l;
 
   CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->allocate (actor, box, origin_changed);
@@ -284,7 +284,7 @@ mnb_clipboard_view_allocate (ClutterActor *actor,
   for (l = priv->rows; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit child_height;
+      gfloat child_height;
       ClutterActorBox child_box = { 0, };
 
       if (!CLUTTER_ACTOR_IS_MAPPED (child))

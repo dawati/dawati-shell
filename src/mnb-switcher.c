@@ -73,8 +73,8 @@ struct _MnbSwitcherAppPrivate
   guint         focus_id;
   guint         raised_id;
 
-  ClutterUnit   w_h_ratio;
-  ClutterUnit   natural_width;
+  gfloat   w_h_ratio;
+  gfloat   natural_width;
 };
 
 GType mnb_switcher_app_get_type (void);
@@ -120,9 +120,9 @@ mnb_switcher_app_dispose (GObject *object)
 
 static void
 mnb_switcher_app_get_preferred_width (ClutterActor *actor,
-                                      ClutterUnit   for_height,
-                                      ClutterUnit  *min_width_p,
-                                      ClutterUnit  *natural_width_p)
+                                      gfloat   for_height,
+                                      gfloat  *min_width_p,
+                                      gfloat  *natural_width_p)
 {
   MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
 
@@ -145,9 +145,9 @@ mnb_switcher_app_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_switcher_app_get_preferred_height (ClutterActor *actor,
-                                       ClutterUnit   for_width,
-                                       ClutterUnit  *min_height_p,
-                                       ClutterUnit  *natural_height_p)
+                                       gfloat   for_width,
+                                       gfloat  *min_height_p,
+                                       gfloat  *natural_height_p)
 {
   MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
 
@@ -1097,7 +1097,7 @@ mnb_switcher_show (ClutterActor *self)
   gboolean      found_focus = FALSE;
   ClutterActor *toolbar;
   gboolean      switcher_empty = FALSE;
-  ClutterUnit   cell_width, cell_height;
+  gfloat   cell_width, cell_height;
 
   struct win_location
   {
@@ -1153,8 +1153,8 @@ mnb_switcher_show (ClutterActor *self)
   priv->active_ws = active_ws = meta_screen_get_active_workspace_index (screen);
   window_list = mutter_plugin_get_windows (priv->plugin);
 
-  cell_width  = 0.8 * (ClutterUnit)screen_width  / (gfloat)ws_count;
-  cell_height = 0.8 * (ClutterUnit)screen_height / (gfloat)ws_count;
+  cell_width  = 0.8 * (gfloat)screen_width  / (gfloat)ws_count;
+  cell_height = 0.8 * (gfloat)screen_height / (gfloat)ws_count;
 
   /* Handle case where no apps open.. */
   if (ws_count == 1)
@@ -1254,13 +1254,13 @@ mnb_switcher_show (ClutterActor *self)
       ClutterActor          *texture, *c_tx, *clone;
       gint                   ws_indx;
       MetaCompWindowType     type;
-      ClutterUnit            w, h;
+      gfloat            w, h;
       struct origin_data    *origin_data;
       MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
       gchar                 *title;
       MnbSwitcherAppPrivate *app_priv;
       gdouble                w_h_ratio;
-      ClutterUnit            clone_w, clone_h;
+      gfloat            clone_w, clone_h;
 
       ws_indx = mutter_window_get_workspace (mw);
       type = mutter_window_get_window_type (mw);
@@ -1337,9 +1337,9 @@ mnb_switcher_show (ClutterActor *self)
 
       clutter_actor_get_size (c_tx, &w, &h);
 
-      w_h_ratio = (ClutterUnit)w/(ClutterUnit)h;
+      w_h_ratio = (gfloat)w/(gfloat)h;
 
-      MNB_SWITCHER_APP (clone)->priv->natural_width = (ClutterUnit)w;
+      MNB_SWITCHER_APP (clone)->priv->natural_width = (gfloat)w;
       MNB_SWITCHER_APP (clone)->priv->w_h_ratio = w_h_ratio;
 
       {
