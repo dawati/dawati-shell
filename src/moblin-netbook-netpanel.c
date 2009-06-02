@@ -539,17 +539,21 @@ moblin_netbook_netpanel_new (void)
 void
 moblin_netbook_netpanel_focus (MoblinNetbookNetpanel *netpanel)
 {
-#if USE_RADICAL_BAR
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+#if USE_RADICAL_BAR
   mwb_radical_bar_focus (MWB_RADICAL_BAR (priv->entry));
+#else
+  clutter_actor_grab_key_focus (CLUTTER_ACTOR (priv->entry));
 #endif
 }
 
 void
 moblin_netbook_netpanel_clear (MoblinNetbookNetpanel *netpanel)
 {
-#if USE_RADICAL_BAR
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+#if USE_RADICAL_BAR
   mwb_radical_bar_set_text (MWB_RADICAL_BAR (priv->entry), "");
+#else
+  mnb_entry_set_text (MNB_ENTRY (priv->entry), "");
 #endif
 }
