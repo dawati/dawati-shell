@@ -361,6 +361,7 @@ MnbEntry {
 }
 
 *.MnbEntryEntry {
+  border-image: none;
   font-size: 15;
 }
 
