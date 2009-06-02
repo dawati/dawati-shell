@@ -59,39 +59,24 @@ _item_display_name_changed_cb (AnerleyItem *item,
                                gpointer     userdata)
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (userdata);
-  gchar **splits;
 
-  if (!anerley_item_get_display_name (item))
-    return;
-
-  splits = g_strsplit (anerley_item_get_display_name (item),
-                       " ",
-                       2);
-
-  if (splits)
+  if (anerley_item_get_first_name (priv->item))
   {
-    if (splits[0])
-    {
-      nbtk_label_set_text ((NbtkLabel *)priv->primary_label,
-                           (gchar *)splits[0]);
-      g_free (splits[0]);
-
-      if (splits[1])
-      {
-        nbtk_label_set_text ((NbtkLabel *)priv->secondary_label,
-                             (gchar *)splits[1]);
-        g_free (splits[1]);
-      } else {
-        nbtk_label_set_text ((NbtkLabel *)priv->secondary_label,
-                             "");
-      }
-    } else {
-        nbtk_label_set_text ((NbtkLabel *)priv->primary_label,
-                             "");
-    }
+    nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
+                         anerley_item_get_first_name (priv->item));
+  } else {
+    nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
+                         "");
   }
 
-  g_free (splits);
+  if (anerley_item_get_last_name (priv->item))
+  {
+    nbtk_label_set_text (NBTK_LABEL (priv->secondary_label),
+                         anerley_item_get_last_name (priv->item));
+  } else {
+    nbtk_label_set_text (NBTK_LABEL (priv->secondary_label),
+                         "");
+  }
 }
 
 static CoglHandle 
