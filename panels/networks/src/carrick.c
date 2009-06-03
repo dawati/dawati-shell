@@ -81,7 +81,7 @@ main (int    argc,
   g_signal_connect (plug,
                     "notify::embedded",
                     G_CALLBACK (_plug_notify_embedded),
-                    icon);
+                    applet);
 
   pane = carrick_applet_get_pane (applet);
   gtk_container_add (GTK_CONTAINER (plug),
