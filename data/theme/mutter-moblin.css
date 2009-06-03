@@ -814,8 +814,16 @@ MoblinNetbookNetpanel
 
 *#netpanel-subtable NbtkLabel
 {
-  font-family: "Liberation Sans Bold";
+  font-family: "Liberation Sans";
   font-size: 13px;
+  color: #6e6e6e;
+  padding: 0 4;
+}
+
+*#netpanel-subtable NbtkLabel#section
+{
+  font-family: "Liberation Sans Bold";
+  font-size: 15px;
   color: #6e6e6e;
   padding: 0 4;
 }

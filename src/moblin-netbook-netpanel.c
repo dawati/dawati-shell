@@ -44,7 +44,6 @@ struct _MoblinNetbookNetpanelPrivate
 
   NbtkWidget     *tabs_table;
   NbtkWidget     *tabs_more;
-  gint            previews;
 };
 
 static void
@@ -117,6 +116,7 @@ create_tabs_table (MoblinNetbookNetpanel *self)
 
   /* Construct tabs previews table widgets */
   label = nbtk_label_new (_("Tabs"));
+  clutter_actor_set_name (CLUTTER_ACTOR (label), "section");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
                                         CLUTTER_ACTOR (label),
                                         0, 0,
@@ -183,6 +183,9 @@ notify_connect_view (DBusGProxy     *proxy,
   if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID))
     {
       NbtkWidget *button;
+      guint tab;
+
+      tab = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (mozembed), "tab"));
 
       button = nbtk_button_new ();
       clutter_container_add_actor (CLUTTER_CONTAINER (button), mozembed);
@@ -190,7 +193,7 @@ notify_connect_view (DBusGProxy     *proxy,
                         G_CALLBACK (mozembed_button_clicked_cb), self);
       nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
                                             CLUTTER_ACTOR (button),
-                                            1, priv->previews,
+                                            1, tab,
                                             "x-expand", FALSE,
                                             "y-expand", FALSE,
                                             "x-fill", FALSE,
@@ -198,13 +201,57 @@ notify_connect_view (DBusGProxy     *proxy,
                                             "x-align", 0.5,
                                             "y-align", 0.5,
                                             NULL);
-      priv->previews ++;
     }
   else
     {
       g_warning ("Error connecting tab: %s", error->message);
       g_error_free (error);
     }
+}
+
+static void
+notify_get_tab (DBusGProxy     *proxy,
+                DBusGProxyCall *call_id,
+                void           *user_data)
+{
+  gchar *url = NULL, *title = NULL;
+  guint tab;
+
+  GError *error = NULL;
+  ClutterActor *label = CLUTTER_ACTOR (user_data);
+  MoblinNetbookNetpanel *self =
+    g_object_get_data (G_OBJECT (label), "netpanel");
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  priv->calls = g_list_remove (priv->calls, call_id);
+  if (!dbus_g_proxy_end_call (proxy, call_id, &error,
+                              G_TYPE_STRING, &url,
+                              G_TYPE_STRING, &title,
+                              G_TYPE_INVALID))
+    {
+      /* TODO: Log the error if it's pertinent? */
+      g_warning ("Error getting tab info: %s", error->message);
+      g_error_free (error);
+      g_free (url);
+      g_free (title);
+      return;
+    }
+
+  tab = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (label), "tab"));
+
+  nbtk_label_set_text (NBTK_LABEL (label), title);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table), label,
+                                        2, tab,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
+
+  g_free (url);
+  g_free (title);
 }
 
 static void
@@ -219,12 +266,11 @@ notify_get_ntabs (DBusGProxy     *proxy,
   MoblinNetbookNetpanelPrivate *priv = self->priv;
 
   priv->calls = g_list_remove (priv->calls, call_id);
-  priv->previews = 0;
   if (!dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_UINT, &n_tabs,
                               G_TYPE_INVALID))
     {
       /* TODO: Log the error if it's pertinent? */
-      /*g_warning ("Error getting tabs: %s", error->message);*/
+      g_warning ("Error getting tabs: %s", error->message);
       g_error_free (error);
       n_tabs = 0;
     }
@@ -259,6 +305,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
         {
           gchar *input, *output;
           ClutterActor *mozembed;
+          NbtkWidget *label;
 
           mozembed = clutter_mozembed_new_view ();
           clutter_actor_set_widthu (mozembed, cell_width);
@@ -278,6 +325,19 @@ notify_get_ntabs (DBusGProxy     *proxy,
                                      G_TYPE_UINT, i,
                                      G_TYPE_STRING, input,
                                      G_TYPE_STRING, output,
+                                     G_TYPE_INVALID));
+
+          label = nbtk_label_new ("");
+          clutter_actor_set_widthu (CLUTTER_ACTOR (label), cell_width);
+          g_object_set_data (G_OBJECT (label), "netpanel", self);
+          g_object_set_data (G_OBJECT (label), "tab", GUINT_TO_POINTER (i));
+
+          priv->calls = g_list_prepend (priv->calls,
+            dbus_g_proxy_begin_call (priv->proxy, "GetTab",
+                                     notify_get_tab,
+                                     g_object_ref_sink (label),
+                                     g_object_unref,
+                                     G_TYPE_UINT, i,
                                      G_TYPE_INVALID));
 
           g_free (input);
