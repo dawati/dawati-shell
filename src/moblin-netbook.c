@@ -296,7 +296,7 @@ moblin_netbook_plugin_constructed (GObject *object)
    * process applets, once we have them.
    */
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "m-zone", _("m_zone"));
+                                "m-zone", _("myzone"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
                                 "spaces-zone", _("zones"));
