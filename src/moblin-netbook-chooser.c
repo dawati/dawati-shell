@@ -1571,8 +1571,12 @@ moblin_netbook_launch_default_for_uri (const gchar *uri,
   GAppInfo                   *app;
   GError                     *error = NULL;
   gboolean                    retval = TRUE;
+  gchar                      *uri_scheme;
 
-  app = g_app_info_get_default_for_uri_scheme (uri);
+  uri_scheme = g_uri_parse_scheme (uri);
+  app = g_app_info_get_default_for_uri_scheme (uri_scheme);
+  g_free (uri_scheme);
+
   ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
 
   retval = g_app_info_launch_default_for_uri (uri, ctx, &error);
