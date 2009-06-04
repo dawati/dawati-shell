@@ -496,8 +496,11 @@ _device_updated_cb (CmDevice *device,
                                       state);
         gtk_widget_set_sensitive (priv->ethernet_switch,
                                   TRUE);
+	gtk_widget_set_no_show_all (priv->ethernet_switch,
+				    FALSE);
         gtk_widget_show (priv->ethernet_switch);
-        //gtk_widget_set_no_show_all ();
+        gtk_widget_set_no_show_all (priv->ethernet_label,
+				    FALSE);
         gtk_widget_show (priv->ethernet_label);
         break;
       case DEVICE_WIFI:
@@ -505,7 +508,11 @@ _device_updated_cb (CmDevice *device,
                                    state);
         gtk_widget_set_sensitive (priv->wifi_switch,
                                   TRUE);
+	gtk_widget_set_no_show_all (priv->wifi_switch,
+				    FALSE);
         gtk_widget_show (priv->wifi_switch);
+	gtk_widget_set_no_show_all (priv->wifi_label,
+				    FALSE);
         gtk_widget_show (priv->wifi_label);
         break;
       case DEVICE_CELLULAR:
@@ -513,7 +520,11 @@ _device_updated_cb (CmDevice *device,
                                    state);
         gtk_widget_set_sensitive (priv->threeg_switch,
                                   TRUE);
+	gtk_widget_set_no_show_all (priv->threeg_switch,
+				    FALSE);
         gtk_widget_show (priv->threeg_switch);
+	gtk_widget_set_no_show_all (priv->threeg_label,
+				    FALSE);
         gtk_widget_show (priv->threeg_label);
         break;
       case DEVICE_WIMAX:
@@ -521,7 +532,11 @@ _device_updated_cb (CmDevice *device,
                                    state);
         gtk_widget_set_sensitive (priv->wimax_switch,
                                   TRUE);
+	gtk_widget_set_no_show_all (priv->wimax_switch,
+				    FALSE);
         gtk_widget_show (priv->wimax_switch);
+	gtk_widget_set_no_show_all (priv->wimax_label,
+				    FALSE);
         gtk_widget_show (priv->wimax_label);
         break;
       default:
