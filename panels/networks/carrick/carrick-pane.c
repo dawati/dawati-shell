@@ -535,7 +535,7 @@ static void
 _set_states (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = cm_manager_get_devices (priv->manager);
+  GList *devices = NULL;
   CmDevice *device = NULL;
   guint len;
   guint cnt;
@@ -553,6 +553,7 @@ _set_states (CarrickPane *pane)
   }
   else
   {
+    devices = cm_manager_get_devices (priv->manager);
     gtk_widget_hide (priv->wifi_switch);
     gtk_widget_set_no_show_all (priv->wifi_switch,
                                 TRUE);
