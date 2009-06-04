@@ -1768,6 +1768,27 @@ mnb_switcher_finalize (GObject *object)
 }
 
 static void
+mnb_switcher_kbd_grab_notify_cb (MetaScreen  *screen,
+                                 GParamSpec  *pspec,
+                                 MnbSwitcher *switcher)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+  gboolean            grabbed;
+
+  if (!priv->in_alt_grab)
+    return;
+
+  g_object_get (screen, "keyboard-grabbed", &grabbed, NULL);
+
+  /*
+   * If the property has changed to FALSE, i.e., Mutter just called
+   * XUngrabKeyboard(), reset the flag
+   */
+  if (!grabbed )
+    priv->in_alt_grab = FALSE;
+}
+
+static void
 mnb_switcher_constructed (GObject *self)
 {
   MnbSwitcher *switcher  = MNB_SWITCHER (self);
@@ -1779,6 +1800,11 @@ mnb_switcher_constructed (GObject *self)
 
   g_signal_connect (mutter_plugin_get_screen (plugin), "notify::n-workspaces",
                     G_CALLBACK (screen_n_workspaces_notify), self);
+
+  g_signal_connect (mutter_plugin_get_screen (plugin),
+                    "notify::keyboard-grabbed",
+                    G_CALLBACK (mnb_switcher_kbd_grab_notify_cb),
+                    self);
 }
 
 static void
@@ -2676,4 +2702,3 @@ mnb_switcher_handle_xevent (MnbSwitcher *switcher, XEvent *xev)
 
   return FALSE;
 }
-
