@@ -184,6 +184,15 @@ _item_presence_changed_cb (AnerleyItem *item,
   presence_status = anerley_item_get_presence_status (item);
   tmp = g_intern_string ((gchar *)presence_status);
 
+  if (presence_status == NULL)
+  {
+    clutter_actor_hide ((ClutterActor *)priv->presence_label);
+    if (priv->presence_icon)
+      clutter_actor_hide ((ClutterActor *)priv->presence_icon);
+
+    return;
+  }
+
   if (presence_message && !g_str_equal (presence_message, ""))
   {
     nbtk_label_set_text ((NbtkLabel *)priv->presence_label,
@@ -205,6 +214,8 @@ _item_presence_changed_cb (AnerleyItem *item,
       nbtk_label_set_text ((NbtkLabel *)priv->presence_label,
                            _("Offline"));
   }
+
+  clutter_actor_show ((ClutterActor *)priv->presence_label);
 
   if (tmp == g_intern_static_string ("available"))
     presence_icon_name = "presence-available.png";
