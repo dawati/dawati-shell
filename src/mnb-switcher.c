@@ -1168,7 +1168,9 @@ mnb_switcher_show (ClutterActor *self)
   {
     gint  row;
     gint  col;
+    gint  max_col;
     guint height;
+    GSList *wins;
   } *win_locs;
 
   /*
@@ -1428,13 +1430,23 @@ mnb_switcher_show (ClutterActor *self)
           }
 
         /*
+         * Now scale the window by the number of colums we are currently
+         * using on this workspace.
+         */
+        clone_w /= (win_locs[ws_indx].max_col + 1);
+        clone_h /= (win_locs[ws_indx].max_col + 1);
+
+        /*
          * Make sure we do not try to set clone bigger than the
          * window size.
          */
         if ((clone_w > w) || (clone_h > h))
-          clutter_actor_set_size (clone, w, h);
-        else
-          clutter_actor_set_size (clone, clone_w, clone_h);
+          {
+            clone_w = w;
+            clone_h = h;
+          }
+
+        clutter_actor_set_size (clone, clone_w, clone_h);
       }
 
       clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
@@ -1479,16 +1491,59 @@ mnb_switcher_show (ClutterActor *self)
        * FIXME -- this depends on the styling, should not be hardcoded.
        */
       win_locs[ws_indx].height += (clone_h + 10);
-
-      if (win_locs[ws_indx].height >= screen_height - 100 )
-        {
-          win_locs[ws_indx].col++;
-          win_locs[ws_indx].row = 0;
-          win_locs[ws_indx].height = clone_h + 10;
-        }
+      win_locs[ws_indx].wins = g_slist_append (win_locs[ws_indx].wins, clone);
 
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
-                            win_locs[ws_indx].row++, win_locs[ws_indx].col);
+                            win_locs[ws_indx].row, win_locs[ws_indx].col);
+
+      win_locs[ws_indx].row++;
+
+      /*
+       * Check whether we still fit on the screen
+       */
+      if (win_locs[ws_indx].height >= screen_height - 100 )
+        {
+          /*
+           * Append new column in this workspace -- we need to resize any of
+           * the windows we already inserted into the table, and then
+           * relocate them.
+           */
+          GSList  *l     = win_locs[ws_indx].wins;
+          guint    cols  = win_locs[ws_indx].max_col + 1;
+          gdouble  ratio = (gdouble)cols / (gdouble)(cols+1);
+          gint     col = 0, row = 0;
+
+          win_locs[ws_indx].max_col++;
+
+          while (l)
+            {
+              ClutterActor *a = l->data;
+              guint w = clutter_actor_get_width (a);
+              guint h = clutter_actor_get_height (a);
+              guint new_w = (guint)((gdouble)w * ratio);
+              guint new_h = (guint)((gdouble)h * ratio);
+
+              clutter_actor_set_size (a, new_w, new_h);
+
+              clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]),
+                                           a, "row", row, "col", col, NULL);
+
+              win_locs[ws_indx].height = (new_h) * row;
+
+              if (col < win_locs[ws_indx].max_col)
+                col++;
+              else
+                {
+                  col = 0;
+                  row++;
+                }
+
+              l = l->next;
+            }
+
+          win_locs[ws_indx].col = col;
+          win_locs[ws_indx].row = row;
+        }
 
 #if 1
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
@@ -1594,6 +1649,12 @@ mnb_switcher_show (ClutterActor *self)
                                  "y-expand", FALSE,
                                  "x-expand", FALSE, NULL);
   }
+
+  for (i = 0; i < ws_count; ++i)
+    {
+      GSList *l = win_locs[i].wins;
+      g_slist_free (l);
+    }
 
   g_slice_free1 (sizeof (NbtkWidget*) * ws_count, spaces);
   g_slice_free1 (sizeof (struct win_location) * ws_count, win_locs);
