@@ -2505,13 +2505,14 @@ alt_tab_timeout_cb (gpointer data)
                         G_CALLBACK (alt_tab_switcher_show_completed_cb),
                         alt_data);
 
-      clutter_actor_show (CLUTTER_ACTOR (alt_data->switcher));
-
       /*
        * Clear any dont_autohide flag on the toolbar that we set previously.
        */
       if (toolbar)
-        mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), FALSE);
+        {
+          mnb_toolbar_activate_panel (MNB_TOOLBAR (toolbar), "spaces-zone");
+          mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), FALSE);
+        }
     }
   else
     {
