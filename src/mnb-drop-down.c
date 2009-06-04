@@ -369,6 +369,13 @@ mnb_drop_down_allocate (ClutterActor          *actor,
   if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
     return;
 
+#if 0
+  /*
+   * This is not currently reliable, e.g., the Switcher is animating empty.
+   * Once we have the binary flags in Clutter 1.0 to differentiate between
+   * allocations that are purely due to change of position and the rest, we
+   * need to disable this.
+   */
   if (priv->in_show_animation || priv->in_hide_animation)
     {
       ClutterActorClass  *actor_class;
@@ -380,6 +387,7 @@ mnb_drop_down_allocate (ClutterActor          *actor,
 
       return;
     }
+#endif
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class);
   parent_class->allocate (actor, box, origin_changed);
