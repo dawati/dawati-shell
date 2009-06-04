@@ -1737,6 +1737,22 @@ mnb_switcher_hide (ClutterActor *self)
       priv->show_completed_id = 0;
     }
 
+  if (priv->in_alt_grab)
+    {
+      MutterPlugin *plugin  = priv->plugin;
+      MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+      MetaDisplay  *display = meta_screen_get_display (screen);
+      guint32       timestamp;
+
+      /*
+       * Make sure our stamp is recent enough.
+       */
+      timestamp = meta_display_get_current_time_roundtrip (display);
+
+      meta_display_end_grab_op (display, timestamp);
+      priv->in_alt_grab = FALSE;
+    }
+
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
 }
 
