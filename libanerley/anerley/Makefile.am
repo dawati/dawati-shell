@@ -10,7 +10,8 @@ libanerley_la_HEADERS = anerley-tp-feed.h \
 			anerley-tile-view.h \
 			anerley-aggregate-feed.h \
 			anerley-aggregate-tp-feed.h \
-			anerley-econtact-item.h
+			anerley-econtact-item.h \
+			anerley-ebook-feed.h
 libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-feed.c \
 			anerley-item.c \
@@ -21,7 +22,8 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-tile-view.c \
 			anerley-aggregate-feed.c \
 			anerley-aggregate-tp-feed.c \
-			anerley-econtact-item.c
+			anerley-econtact-item.c \
+			anerley-ebook-feed.c \
 			$(libanerley_la_HEADERS)
 libanerley_ladir = $(includedir)/anerley/anerley
 
