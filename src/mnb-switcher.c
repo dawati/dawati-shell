@@ -1785,7 +1785,10 @@ mnb_switcher_kbd_grab_notify_cb (MetaScreen  *screen,
    * XUngrabKeyboard(), reset the flag
    */
   if (!grabbed )
-    priv->in_alt_grab = FALSE;
+    {
+      priv->in_alt_grab = FALSE;
+      clutter_actor_hide (CLUTTER_ACTOR (switcher));
+    }
 }
 
 static void
