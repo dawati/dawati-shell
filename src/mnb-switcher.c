@@ -241,16 +241,19 @@ mnb_switcher_zone_class_init (MnbSwitcherZoneClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->dispose = mnb_switcher_zone_dispose;
-
+#if 0
   g_type_class_add_private (klass, sizeof (MnbSwitcherZonePrivate));
+#endif
 }
 
 static void
 mnb_switcher_zone_init (MnbSwitcherZone *self)
 {
+#if 0
   MnbSwitcherZonePrivate *priv;
 
   priv = self->priv = MNB_SWITCHER_ZONE_GET_PRIVATE (self);
+#endif
 }
 
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
