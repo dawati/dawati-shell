@@ -142,6 +142,8 @@ struct _MnbToolbarPrivate
 
   guint trigger_timeout_id;
 
+  gint panels_showing;
+
 #if 1
   /* TODO remove */
   gboolean systray_window_showing;
@@ -763,6 +765,8 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
 
   priv->dropdown_region =
     moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT, w, h);
+
+  priv->panels_showing++;
 }
 
 static void
@@ -775,6 +779,14 @@ mnb_toolbar_dropdown_hide_begin_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
     {
       moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
       priv->dropdown_region = NULL;
+    }
+
+  priv->panels_showing--;
+
+  if (priv->panels_showing < 0)
+    {
+      g_warning ("Error in panel state accounting, fixing.");
+      priv->panels_showing = 0;
     }
 }
 
@@ -1783,7 +1795,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
    * d) we are already animating.
    */
   if (!(((event->type == CLUTTER_ENTER) && (event->crossing.source == stage)) ||
-        (event->type == CLUTTER_LEAVE && !priv->systray_window_showing)) ||
+        (event->type == CLUTTER_LEAVE && !(priv->systray_window_showing ||
+                                           priv->panels_showing))) ||
       priv->disabled ||
       mnb_toolbar_in_transition (toolbar))
     return FALSE;
