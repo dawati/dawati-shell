@@ -800,18 +800,6 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-*#netpanel-placeholder-label
-{
-  font-size:16px;
-  color: #595959ff;
-}
-
-*#netpanel-placeholder-bin
-{
-  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
-  padding: 8;
-}
-
 *#netpanel-subtable NbtkLabel
 {
   font-family: "Liberation Sans";
@@ -823,8 +811,16 @@ MoblinNetbookNetpanel
 *#netpanel-subtable NbtkLabel#section
 {
   font-family: "Liberation Sans Bold";
-  font-size: 15px;
+  font-size: 17px;
   color: #6e6e6e;
+  padding: 2 4 0 4;
+}
+
+*#netpanel-nofavs-label
+{
+  font-family: "Liberation Sans";
+  font-size: 16px;
+  color: #595959ff;
   padding: 0 4;
 }
 
