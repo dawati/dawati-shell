@@ -551,7 +551,7 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
               if (prev_height != new_height && priv->n_notifiers > 1)
                 {
-                  gint new_y;
+                  gfloat new_y;
 
                   new_y = clutter_actor_get_y (CLUTTER_ACTOR(priv->control))
                                  - (prev_height - new_height);

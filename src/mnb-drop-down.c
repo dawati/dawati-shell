@@ -212,8 +212,8 @@ mnb_drop_down_show (ClutterActor *actor)
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "x", (int) x,
-                                     "y", (int) y,
+                                     "x", x,
+                                     "y", y,
                                      NULL);
 
   g_signal_connect (clutter_animation_get_timeline (animation),
@@ -291,7 +291,7 @@ mnb_drop_down_hide (ClutterActor *actor)
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "y", (int) -clutter_actor_get_height (actor),
+                                     "y", -clutter_actor_get_height (actor),
                                      NULL);
 
   g_signal_connect (clutter_animation_get_timeline (animation),

@@ -264,7 +264,7 @@ show_panel_maybe_control (MutterPlugin *plugin,
       animation = clutter_actor_animate (priv->panel,
                                          CLUTTER_EASE_IN_SINE,
                                          /* PANEL_SLIDE_TIMEOUT */ 150,
-                                         "y", 0,
+                                         "y", 0.0,
                                          NULL);
 
       g_signal_connect (clutter_animation_get_timeline (animation),
@@ -299,7 +299,7 @@ hide_panel (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gint                        x;
-  guint                       h;
+  gfloat                      h;
   struct button_data button_data;
   ClutterAnimation *animation;
 

@@ -322,7 +322,7 @@ mnb_toolbar_show (ClutterActor *actor)
   /*
    * Start animation and wait for it to complete.
    */
-  animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
+  animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0.0, NULL);
 
   g_object_ref (actor);
 
@@ -384,7 +384,7 @@ mnb_toolbar_hide (ClutterActor *actor)
   static gint count = 0;
 
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  gint               height;
+  gfloat             height;
   gint               i;
   ClutterAnimation  *animation;
 
