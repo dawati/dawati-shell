@@ -546,7 +546,7 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-  
+
   /* Construct entry table */
   table = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 6);
