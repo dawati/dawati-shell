@@ -142,6 +142,8 @@ struct _MnbToolbarPrivate
 
   guint trigger_timeout_id;
 
+  gint panels_showing;
+
 #if 1
   /* TODO remove */
   gboolean systray_window_showing;
@@ -443,6 +445,44 @@ mnb_toolbar_hide (ClutterActor *actor)
 }
 
 static void
+mnb_toolbar_allocate (ClutterActor          *actor,
+                      const ClutterActorBox *box,
+                      gboolean               origin_changed)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+  ClutterActorClass *parent_class;
+
+  /*
+   * The show and hide animations trigger allocations with origin_changed
+   * set to TRUE; if we call the parent class allocation in this case, it
+   * will force relayout, which we do not want. Instead, we call directly the
+   * ClutterActor implementation of allocate(); this ensures our actor box is
+   * correct, which is all we call about during the animations.
+   *
+   * If the drop down is not visible, we just return; this insures that the
+   * needs_allocation flag in ClutterActor remains set, and the actor will get
+   * reallocated when we show it.
+   */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
+    return;
+
+  if (priv->in_show_animation || priv->in_hide_animation)
+    {
+      ClutterActorClass  *actor_class;
+
+      actor_class = g_type_class_peek (CLUTTER_TYPE_ACTOR);
+
+      if (actor_class)
+        actor_class->allocate (actor, box, origin_changed);
+
+      return;
+    }
+
+  parent_class = CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class);
+  parent_class->allocate (actor, box, origin_changed);
+}
+
+static void
 mnb_toolbar_class_init (MnbToolbarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -458,6 +498,7 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
 
   clutter_class->show = mnb_toolbar_show;
   clutter_class->hide = mnb_toolbar_hide;
+  clutter_class->allocate = mnb_toolbar_allocate;
 
   g_object_class_install_property (object_class,
                                    PROP_MUTTER_PLUGIN,
@@ -723,8 +764,9 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
                                                        priv->dropdown_region);
 
   priv->dropdown_region =
-    moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT,
-                                      (guint)w, (guint)h);
+    moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT, w, h);
+
+  priv->panels_showing++;
 }
 
 static void
@@ -737,6 +779,14 @@ mnb_toolbar_dropdown_hide_begin_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
     {
       moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
       priv->dropdown_region = NULL;
+    }
+
+  priv->panels_showing--;
+
+  if (priv->panels_showing < 0)
+    {
+      g_warning ("Error in panel state accounting, fixing.");
+      priv->panels_showing = 0;
     }
 }
 
@@ -1745,7 +1795,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
    * d) we are already animating.
    */
   if (!(((event->type == CLUTTER_ENTER) && (event->crossing.source == stage)) ||
-        (event->type == CLUTTER_LEAVE && !priv->systray_window_showing)) ||
+        (event->type == CLUTTER_LEAVE && !(priv->systray_window_showing ||
+                                           priv->panels_showing))) ||
       priv->disabled ||
       mnb_toolbar_in_transition (toolbar))
     return FALSE;
