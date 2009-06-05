@@ -447,7 +447,7 @@ mnb_toolbar_hide (ClutterActor *actor)
 static void
 mnb_toolbar_allocate (ClutterActor          *actor,
                       const ClutterActorBox *box,
-                      gboolean               origin_changed)
+                      ClutterAllocationFlags flags)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   ClutterActorClass *parent_class;
@@ -473,13 +473,13 @@ mnb_toolbar_allocate (ClutterActor          *actor,
       actor_class = g_type_class_peek (CLUTTER_TYPE_ACTOR);
 
       if (actor_class)
-        actor_class->allocate (actor, box, origin_changed);
+        actor_class->allocate (actor, box, flags);
 
       return;
     }
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class);
-  parent_class->allocate (actor, box, origin_changed);
+  parent_class->allocate (actor, box, flags);
 }
 
 static void
