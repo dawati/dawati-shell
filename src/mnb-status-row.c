@@ -31,8 +31,8 @@
 
 #define MNB_STATUS_ROW_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_STATUS_ROW, MnbStatusRowPrivate))
 
-#define ICON_SIZE       (CLUTTER_UNITS_FROM_FLOAT (48.0))
-#define H_PADDING       (CLUTTER_UNITS_FROM_FLOAT (9.0))
+#define ICON_SIZE       48.0
+#define H_PADDING       9.0
 
 struct _MnbStatusRowPrivate
 {
