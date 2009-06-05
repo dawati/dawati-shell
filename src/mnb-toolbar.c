@@ -612,7 +612,7 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 /*
  * TODO Remove.
  *
- * Helper functions for the m_zone, internet zone and media zone -- there will
+ * Helper functions for the myzone, internet zone and media zone -- there will
  * need to go and be handled internally in the zones/via new dbus API.
  */
 static void
@@ -691,7 +691,7 @@ mnb_toolbar_panel_name_to_index (const gchar *name)
 {
   gint index;
 
-  if (!strcmp (name, "m-zone"))
+  if (!strcmp (name, "myzone"))
     index = M_ZONE;
   else if (!strcmp (name, "status-zone"))
     index = STATUS_ZONE;
@@ -731,7 +731,7 @@ mnb_toolbar_panel_index_to_name (gint index)
 {
   switch (index)
     {
-    case M_ZONE: return "m-zone";
+    case M_ZONE: return "myzone";
     case STATUS_ZONE: return "status-zone";
     case SPACES_ZONE: return "spaces-zone";
     case INTERNET_ZONE: return "internet-zone";
