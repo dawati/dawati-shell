@@ -129,11 +129,11 @@ penge_grid_view_allocate (ClutterActor          *actor,
   child_box.y1 = 0;
   child_box.x2 = box->x2 - box->x1;
   child_box.y2 = box->y2 - box->y1;
-  clutter_actor_allocate (priv->background, &child_box, absolute_origin_changed);
+  clutter_actor_allocate (priv->background, &child_box, flags);
 
   CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->allocate (actor,
                                                                 box,
-                                                                absolute_origin_changed);
+                                                                flags);
 }
 
 static void
