@@ -326,7 +326,6 @@ notify_get_ntabs (DBusGProxy     *proxy,
     {
       NbtkPadding padding;
       ClutterActor *parent;
-      gfloat cell_width;
       guint i;
 
       for (i = 0; i < MIN (4, n_tabs); i++)
