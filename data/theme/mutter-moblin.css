@@ -736,6 +736,7 @@ MnbStatusEntry:active
 {
   font-size: 16px;
   color: #595959ff;
+  border-image: none;
 }
 
 *.MnbStatusEntrySubText
@@ -1004,7 +1005,7 @@ AhoghillQueueList {
 
 
 NbtkScrollBar.AhoghillProgressBar {
-  border-image: url('file://media-panel/hrn-progress-bar-through.png") 2;
+  border-image: url('file://media-panel/hrn-progress-bar-through.png') 2;
   background: #00000000;
   padding: 0;
 }
