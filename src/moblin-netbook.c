@@ -296,7 +296,7 @@ moblin_netbook_plugin_constructed (GObject *object)
    * process applets, once we have them.
    */
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "m-zone", _("myzone"));
+                                "myzone", _("myzone"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
                                 "spaces-zone", _("zones"));
@@ -712,9 +712,9 @@ check_for_empty_workspace (MutterPlugin *plugin,
   if (!l)
     {
       /*
-       * If there are no workspaces, we show the m_zone.
+       * If there are no workspaces, we show the myzone.
        */
-      mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar), "m-zone");
+      mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar), "myzone");
     }
 
   while (l)

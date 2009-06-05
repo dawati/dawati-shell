@@ -10,8 +10,8 @@ dist_theme_panel_DATA = \
 	theme/panel/internet-normal.png \
 	theme/panel/media-coloured.png \
 	theme/panel/media-normal.png \
-	theme/panel/m_zone-coloured.png \
-	theme/panel/m_zone-normal.png \
+	theme/panel/myzone-coloured.png \
+	theme/panel/myzone-normal.png \
 	theme/panel/panel-background.png \
 	theme/panel/panel-shadow.png \
 	theme/panel/pasteboard-coloured.png \
@@ -99,34 +99,34 @@ dist_theme_dropdown_DATA = \
 	theme/drop-down/panel_up_button.png \
 	theme/drop-down/panel_up_button_hover.png
 
-theme_mzonedir = $(pkgdatadir)/theme/mzone
-dist_theme_mzone_DATA = \
-	theme/mzone/date-background-background.png \
-	theme/mzone/date-background.png \
-	theme/mzone/general-background.png \
-	theme/mzone/general-background-dark.png \
-	theme/mzone/people-background.png \
-	theme/mzone/recent-files-background.png \
-	theme/mzone/time-bg.png \
-	theme/mzone/time-bg-past.png \
-	theme/mzone/event-background-dark.png \
-	theme/mzone/linus.png \
-	theme/mzone/default-album-artwork.png \
-	theme/mzone/check_box.png \
-	theme/mzone/checked_box.png \
-	theme/mzone/tile-bg.png \
-	theme/mzone/tile-glow.png \
-	theme/mzone/quotebackground.png \
-	theme/mzone/tile-partial-glow.png \
-	theme/mzone/backdrop.png \
-	theme/mzone/calendar-icon.png \
-	theme/mzone/v-div-line.png \
-	theme/mzone/single-div-line.png \
-	theme/mzone/double-div-line.png \
-	theme/mzone/toys.jpg \
-	theme/mzone/default-avatar-icon.png \
-	theme/mzone/no-content-tile-bg.png \
-	theme/mzone/no-content-tile-glow-bg.png
+theme_myzonedir = $(pkgdatadir)/theme/myzone
+dist_theme_myzone_DATA = \
+	theme/myzone/date-background-background.png \
+	theme/myzone/date-background.png \
+	theme/myzone/general-background.png \
+	theme/myzone/general-background-dark.png \
+	theme/myzone/people-background.png \
+	theme/myzone/recent-files-background.png \
+	theme/myzone/time-bg.png \
+	theme/myzone/time-bg-past.png \
+	theme/myzone/event-background-dark.png \
+	theme/myzone/linus.png \
+	theme/myzone/default-album-artwork.png \
+	theme/myzone/check_box.png \
+	theme/myzone/checked_box.png \
+	theme/myzone/tile-bg.png \
+	theme/myzone/tile-glow.png \
+	theme/myzone/quotebackground.png \
+	theme/myzone/tile-partial-glow.png \
+	theme/myzone/backdrop.png \
+	theme/myzone/calendar-icon.png \
+	theme/myzone/v-div-line.png \
+	theme/myzone/single-div-line.png \
+	theme/myzone/double-div-line.png \
+	theme/myzone/toys.jpg \
+	theme/myzone/default-avatar-icon.png \
+	theme/myzone/no-content-tile-bg.png \
+	theme/myzone/no-content-tile-glow-bg.png
 
 
 
