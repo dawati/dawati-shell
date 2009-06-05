@@ -260,7 +260,7 @@ mnb_clipboard_view_get_preferred_height (ClutterActor *actor,
 static void
 mnb_clipboard_view_allocate (ClutterActor *actor,
                              const ClutterActorBox *box,
-                             gboolean origin_changed)
+                             ClutterAllocationFlags flags)
 {
   MnbClipboardViewPrivate *priv = MNB_CLIPBOARD_VIEW (actor)->priv;
   gfloat available_width, available_height;
@@ -268,7 +268,7 @@ mnb_clipboard_view_allocate (ClutterActor *actor,
   gfloat y;
   GSList *l;
 
-  CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->allocate (actor, box, origin_changed);
+  CLUTTER_ACTOR_CLASS (mnb_clipboard_view_parent_class)->allocate (actor, box, flags);
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
@@ -299,7 +299,7 @@ mnb_clipboard_view_allocate (ClutterActor *actor,
       child_box.x2 = child_box.x1 + available_width;
       child_box.y2 = child_box.y1 + child_height;
 
-      clutter_actor_allocate (child, &child_box, origin_changed);
+      clutter_actor_allocate (child, &child_box, flags);
 
       y += (child_height + ROW_SPACING);
     }
