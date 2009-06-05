@@ -115,10 +115,6 @@ _item_avatar_path_changed_cb (AnerleyItem *item,
     clutter_texture_set_cogl_texture ((ClutterTexture *)priv->avatar,
                                       _get_default_avatar_texture());
   } else{
-    g_object_set (priv->avatar,
-                  "load-async",
-                  TRUE,
-                  NULL);
     if (!clutter_texture_set_from_file ((ClutterTexture *)priv->avatar,
                                         avatar_path,
                                         &error))
