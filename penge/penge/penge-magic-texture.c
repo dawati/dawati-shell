@@ -29,8 +29,8 @@ penge_magic_texture_paint (ClutterActor *actor)
 {
   ClutterActorBox box;
   CoglHandle *tex;
-  gint bw, bh;
-  gint aw, ah;
+  float bw, bh;
+  float aw, ah;
   float v;
   float tx1, tx2, ty1, ty2;
   ClutterColor col = { 0xff, 0xff, 0xff, 0xff };
@@ -38,11 +38,11 @@ penge_magic_texture_paint (ClutterActor *actor)
   clutter_actor_get_allocation_box (actor, &box);
   tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (actor));
 
-  bw = cogl_texture_get_width (tex); /* base texture width */
-  bh = cogl_texture_get_height (tex); /* base texture height */
+  bw = (float) cogl_texture_get_width (tex); /* base texture width */
+  bh = (float) cogl_texture_get_height (tex); /* base texture height */
 
-  aw = CLUTTER_UNITS_TO_INT (box.x2 - box.x1); /* allocation width */
-  ah = CLUTTER_UNITS_TO_INT (box.y2 - box.y1); /* allocation height */
+  aw = (float) (box.x2 - box.x1); /* allocation width */
+  ah = (float) (box.y2 - box.y1); /* allocation height */
 
   /* no comment */
   if ((float)bw/bh < (float)aw/ah)
