@@ -151,14 +151,14 @@ mnb_notification_urgent_get_preferred_height (ClutterActor *actor,
 static void
 mnb_notification_urgent_allocate (ClutterActor          *actor,
                                   const ClutterActorBox *box,
-                                  gboolean               origin_changed)
+                                  ClutterAllocationFlags flags)
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class);
 
-  klass->allocate (actor, box, origin_changed);
+  klass->allocate (actor, box, flags);
 
   if (priv->notifiers)
     {
@@ -172,7 +172,7 @@ mnb_notification_urgent_allocate (ClutterActor          *actor,
       notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
-                              &notifier_box, origin_changed);
+                              &notifier_box, flags);
     }
 }
 

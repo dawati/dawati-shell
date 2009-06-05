@@ -188,14 +188,14 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
 static void
 mnb_notification_cluster_allocate (ClutterActor          *actor,
                                    const ClutterActorBox *box,
-                                   gboolean               origin_changed)
+                                   ClutterAllocationFlags flags)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class);
 
-  klass->allocate (actor, box, origin_changed);
+  klass->allocate (actor, box, flags);
 
   /* <rant>*sigh* and composite actors used to be so simple...</rant> */
 
@@ -211,7 +211,7 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
       };
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->control),
-                              &control_box, origin_changed);
+                              &control_box, flags);
     }
 
   if (priv->notifiers)
@@ -226,7 +226,7 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
       notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
-                              &notifier_box, origin_changed);
+                              &notifier_box, flags);
     }
 }
 
