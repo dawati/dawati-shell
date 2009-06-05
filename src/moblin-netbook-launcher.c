@@ -938,7 +938,7 @@ mnb_launcher_fill (MnbLauncher     *self)
   clutter_actor_set_name (priv->apps_grid, "launcher-apps-grid");
   clutter_actor_set_width (priv->apps_grid, priv->width);
   nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
-                         CLUTTER_UNITS_FROM_INT (EXPANDER_GRID_ROW_GAP));
+                         EXPANDER_GRID_ROW_GAP);
 
   priv->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                     g_free, NULL);
@@ -1055,7 +1055,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
       priv->is_filtering = FALSE;
 
       nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
-                             CLUTTER_UNITS_FROM_INT (EXPANDER_GRID_ROW_GAP));
+                             EXPANDER_GRID_ROW_GAP);
       nbtk_grid_set_column_gap (NBTK_GRID (priv->apps_grid), 0);
 
       if (container_has_children (CLUTTER_CONTAINER (priv->fav_grid)))
@@ -1390,7 +1390,7 @@ _constructor (GType                  gtype,
   priv->filter_entry = (ClutterActor *) mnb_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->filter_entry),
-                           CLUTTER_UNITS_FROM_DEVICE (FILTER_ENTRY_WIDTH));
+                           FILTER_ENTRY_WIDTH);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
                                         CLUTTER_ACTOR (priv->filter_entry),
                                         0, 1,
