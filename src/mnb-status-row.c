@@ -107,8 +107,8 @@ mnb_status_row_get_preferred_height (ClutterActor *actor,
 
 static void
 mnb_status_row_allocate (ClutterActor          *actor,
-                           const ClutterActorBox *box,
-                           gboolean               origin_changed)
+                         const ClutterActorBox *box,
+                         ClutterAllocationFlags flags)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
   ClutterActorClass *parent_class;
@@ -120,7 +120,7 @@ mnb_status_row_allocate (ClutterActor          *actor,
   ClutterActorBox child_box = { 0, };
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_status_row_parent_class);
-  parent_class->allocate (actor, box, origin_changed);
+  parent_class->allocate (actor, box, flags);
 
 //  nbtk_widget_get_border (NBTK_WIDGET (actor), &border);
 
@@ -152,7 +152,7 @@ mnb_status_row_allocate (ClutterActor          *actor,
   child_box.y1 = border.top  + priv->padding.top;
   child_box.x2 = child_box.x1 + ICON_SIZE;
   child_box.y2 = child_box.y1 + ICON_SIZE;
-  clutter_actor_allocate (priv->icon, &child_box, origin_changed);
+  clutter_actor_allocate (priv->icon, &child_box, flags);
 
   /* separator */
   priv->icon_separator_x = child_box.x2 + H_PADDING;
@@ -172,7 +172,7 @@ mnb_status_row_allocate (ClutterActor          *actor,
                + ((ICON_SIZE - text_height) / 2));
   child_box.x2 = child_box.x1 + text_width;
   child_box.y2 = child_box.y1 + text_height;
-  clutter_actor_allocate (priv->entry, &child_box, origin_changed);
+  clutter_actor_allocate (priv->entry, &child_box, flags);
 }
 
 static void

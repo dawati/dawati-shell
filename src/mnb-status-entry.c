@@ -212,7 +212,7 @@ mnb_status_entry_get_preferred_height (ClutterActor *actor,
 static void
 mnb_status_entry_allocate (ClutterActor          *actor,
                            const ClutterActorBox *box,
-                           gboolean               origin_changed)
+                           ClutterAllocationFlags flags)
 {
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
   ClutterActorClass *parent_class;
@@ -226,7 +226,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   ClutterActorBox child_box = { 0, };
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class);
-  parent_class->allocate (actor, box, origin_changed);
+  parent_class->allocate (actor, box, flags);
 
   available_width  = (int) (box->x2 - box->x1
                    - priv->padding.left
@@ -292,7 +292,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   child_box.y1 = (int) priv->padding.top;
   child_box.x2 = (int) (child_box.x1 + text_width);
   child_box.y2 = (int) (child_box.y1 + text_height);
-  clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
+  clutter_actor_allocate (priv->status_entry, &child_box, flags);
 
   /* service label */
   if (CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
@@ -308,7 +308,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                    + ((available_height - service_height) / 2));
       child_box.x2 = (int) (child_box.x1 + service_width);
       child_box.y2 = (int) (child_box.y1 + service_height);
-      clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
+      clutter_actor_allocate (priv->service_label, &child_box, flags);
     }
 
   /* cancel icon */
@@ -323,7 +323,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                    + ((available_height - icon_height) / 2));
       child_box.x2 = (int) (child_box.x1 + icon_width);
       child_box.y2 = (int) (child_box.y1 + icon_height);
-      clutter_actor_allocate (priv->cancel_icon, &child_box, origin_changed);
+      clutter_actor_allocate (priv->cancel_icon, &child_box, flags);
     }
 
   /* separator */
@@ -339,7 +339,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                + ((available_height - button_height) / 2));
   child_box.x2 = (int) (child_box.x1 + button_width);
   child_box.y2 = (int) (child_box.y1 + button_height);
-  clutter_actor_allocate (priv->button, &child_box, origin_changed);
+  clutter_actor_allocate (priv->button, &child_box, flags);
 }
 
 static void
