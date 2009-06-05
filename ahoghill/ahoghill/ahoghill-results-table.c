@@ -275,7 +275,6 @@ ahoghill_results_table_init (AhoghillResultsTable *self)
 
     priv->rows = ROWS_PER_PAGE;
 
-    clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-results-table");
     nbtk_table_set_col_spacing (NBTK_TABLE (self), RESULTS_COL_SPACING);
     nbtk_table_set_row_spacing (NBTK_TABLE (self), RESULTS_ROW_SPACING);
 }

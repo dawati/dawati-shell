@@ -44,20 +44,20 @@ NbtkExpander:active {
   border-image: url('file://generic/expander-open.png') 36 6 6 6;
 }
 
-*#nbtk-expander-arrow-closed {
+NbtkExpander > *#nbtk-expander-arrow-closed {
     padding: 0;
     background-image: url('file://generic/expander-arrow-up.png');
 }
 
-*#nbtk-expander-arrow-closed:hover {
+NbtkExpander > *#nbtk-expander-arrow-closed:hover {
     background-image: url('file://generic/expander-arrow-up-hover.png');
 }
 
-*#nbtk-expander-arrow-open {
+NbtkExpander > *#nbtk-expander-arrow-open {
     background-image: url('file://generic/expander-arrow-down.png');
 }
 
-*#nbtk-expander-arrow-open:hover {
+NbtkExpander > *#nbtk-expander-arrow-open:hover {
     background-image: url('file://generic/expander-arrow-down-hover.png');
 }
 
@@ -96,18 +96,18 @@ NbtkTable {
   background-color: #f000;
 }
 
-*#time-label {
+MnbToolbar > *#time-label {
   color: #c0c0c0;
   font-size: 19px;
 }
 
-*#date-label {
+MnbToolbar > *#date-label {
   color: #c0c0c0;
   font-size: 11px;
 }
 
 /* spaces switcher table */
-*#switcher-table {
+MnbSwitcher > *#switcher-table {
   background-color: #ffff;
   padding: 5;
 }
@@ -130,78 +130,78 @@ MnbToolbarButton:hover, MnbToolbarButton:active {
 
 /* Toolbar usage hint */
 
-*.toolbar-instruction-box {
+NbtkBin.toolbar-instruction-box {
  border-image: url("file://panel/toolbar-hint.png") 47 6 6 60;
  padding: 10 10 10 60;
 }
 
-*.toolbar-instruction-label {
+NbtkLabel.toolbar-instruction-label {
   font-family: "Liberation Sans";
   font-size: 15px;
   color: white;
 }
 
 /* apps button */
-*#applications-zone-button {
+MnbToolbarButton#applications-zone-button {
   background-image: url("file://panel/apps-normal.png");
 }
-*#applications-zone-button:hover, *#applications-zone-button:active, *#applications-zone-button:checked  {
+MnbToolbarButton#applications-zone-button:hover, MnbToolbarButton#applications-zone-button:active, MnbToolbarButton#applications-zone-button:checked  {
   background-image: url("file://panel/apps-coloured.png");
 }
 
 /* internet button */
-*#internet-zone-button {
+MnbToolbarButton#internet-zone-button {
   background-image: url("file://panel/internet-normal.png");
 }
-*#internet-zone-button:hover, *#internet-zone-button:active, *#internet-zone-button:checked {
+MnbToolbarButton#internet-zone-button:hover, MnbToolbarButton#internet-zone-button:active, MnbToolbarButton#internet-zone-button:checked {
   background-image: url("file://panel/internet-coloured.png");
 }
 
 /* media button */
-*#media-zone-button {
+MnbToolbarButton#media-zone-button {
   background-image: url("file://panel/media-normal.png");
 }
-*#media-zone-button:hover, *#media-zone-button:active, *#media-zone-button:checked {
+MnbToolbarButton#media-zone-button:hover, MnbToolbarButton#media-zone-button:active, MnbToolbarButton#media-zone-button:checked {
   background-image: url("file://panel/media-coloured.png");
 }
 
 /* m-space button */
-*#m-zone-button {
+MnbToolbarButton#m-zone-button {
   background-image: url("file://panel/m_zone-normal.png");
 }
-*#m-zone-button:hover, *#m-zone-button:active, *#m-zone-button:checked {
+MnbToolbarButton#m-zone-button:hover, MnbToolbarButton#m-zone-button:active, MnbToolbarButton#m-zone-button:checked {
   background-image: url("file://panel/m_zone-coloured.png");
 }
 
 /* pasteboard button */
-*#pasteboard-zone-button {
+MnbToolbarButton#pasteboard-zone-button {
   background-image: url("file://panel/pasteboard-normal.png");
 }
-*#pasteboard-zone-button:hover, *#pasteboard-zone-button:active, *#pasteboard-zone-button:checked {
+MnbToolbarButton#pasteboard-zone-button:hover, MnbToolbarButton#pasteboard-zone-button:active, MnbToolbarButton#pasteboard-zone-button:checked {
   background-image: url("file://panel/pasteboard-coloured.png");
 }
 
 /* people button */
-*#people-zone-button {
+MnbToolbarButton#people-zone-button {
   background-image: url("file://panel/people-normal.png");
 }
-*#people-zone-button:hover, *#people-zone-button:active, *#people-zone-button:checked {
+MnbToolbarButton#people-zone-button:hover, MnbToolbarButton#people-zone-button:active, MnbToolbarButton#people-zone-button:checked {
   background-image: url("file://panel/people-coloured.png");
 }
 
 /* spaces button */
-*#spaces-zone-button {
+MnbToolbarButton#spaces-zone-button {
   background-image: url("file://panel/spaces-normal.png");
 }
-*#spaces-zone-button:hover, *#spaces-zone-button:active, *#spaces-zone-button:checked {
+MnbToolbarButton#spaces-zone-button:hover, MnbToolbarButton#spaces-zone-button:active, MnbToolbarButton#spaces-zone-button:checked {
   background-image: url("file://panel/spaces-coloured.png");
 }
 
 /* status button */
-*#status-zone-button {
+MnbToolbarButton#status-zone-button {
   background-image: url("file://panel/status-normal.png");
 }
-*#status-zone-button:hover, *#status-zone-button:active, *#status-zone-button:checked {
+MnbToolbarButton#status-zone-button:hover, MnbToolbarButton#status-zone-button:active, MnbToolbarButton#status-zone-button:checked {
   background-image: url("file://panel/status-coloured.png");
 }
 
@@ -215,136 +215,126 @@ NbtkTooltip {
 }
 
 /* workspace switcher */
-*.workspace-title-label {
+MnbSwitcher *.workspace-title-label {
   font-family: "Liberation Sans Bold";
   font-size: 18;
   color: white;
 }
 
-*#workspace-no-wins-bin {
+MnbSwitcher *#workspace-no-wins-bin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
-*#workspace-no-wins-label {
+MnbSwitcher *#workspace-no-wins-label {
   font-size:16px;
   color: #595959ff;
 }
 
-*.workspace-title {
+MnbSwitcher *.workspace-title {
   border-image: url("file://switcher/workspace-title.png") 4;
   padding: 4;
   color: white;
 }
 
-*#workspace-title-active {
+MnbSwitcher *#workspace-title-active {
   border-image: url("file://switcher/workspace-title-active.png") 4;
   padding: 4;
   color: white;
 }
 
-*.workspace-title-new {
+MnbSwitcher *.workspace-title-new {
   border-image: url("file://switcher/workspace-title-new.png") 4;
   padding: 4;
   color: white;
 }
 
-*#workspace-title-new-active {
+MnbSwitcher *#workspace-title-new-active {
   border-image: url("file://switcher/workspace-title-new-active.png") 4;
   padding: 4;
   color: white;
 }
 
-*#workspace-title-new-over {
+MnbSwitcher *#workspace-title-new-over {
   border-image: url("file://switcher/workspace-title-new-over.png") 4;
   color: white;
 }
 
-*#workspace-title-new-disabled {
+MnbSwitcher *#workspace-title-new-disabled {
   border-image: url("file://switcher/workspace-title-new-disabled.png") 4;
   padding: 4;
   color: white;
 }
 
-*.workspace-title-new-symbol {
+MnbSwitcher *.workspace-title-new-symbol {
 }
 
-*#workspace-title-new-symbol-active {
+MnbSwitcher *#workspace-title-new-symbol-active {
   border-image: url("file://switcher/workspace-title-new-symbol-active.png") 4;
   padding: 4;
   color: white;
 }
 
-*#workspace-title-new-symbol-over {
+MnbSwitcher *#workspace-title-new-symbol-over {
   border-image: url("file://switcher/workspace-title-new-symbol-over.png") 4;
   padding: 4;
   color: white;
 }
 
-*#workspace-title-new-symbol-disabled {
+MnbSwitcher *#workspace-title-new-symbol-disabled {
   border-image: url("file://switcher/workspace-title-new-symbol-disabled.png") 4;
   padding: 4;
   color: white;
 }
 
-*.switcher-workspace {
+MnbSwitcherZone.switcher-workspace {
   border-image: url("file://switcher/workspace-background.png") 4;
   padding: 5;
 }
 
-*#switcher-workspace-active {
+MnbSwitcherZone#switcher-workspace-active {
   border-image: url("file://switcher/workspace-background-active.png") 4;
   padding: 5;
 }
 
-*.switcher-workspace-new {
+MnbSwitcherZone.switcher-workspace-new {
   border-image: url("file://switcher/workspace-background-new.png") 4;
   padding: 5;
 }
 
-*#switcher-workspace-new-active {
+MnbSwitcherZone#switcher-workspace-new-active {
   border-image: url("file://switcher/workspace-background-new-active.png") 4;
   padding: 5;
 }
 
-*#switcher-workspace-new-over {
+MnbSwitcherZone#switcher-workspace-new-over {
   border-image: url("file://switcher/workspace-background-new-over.png") 4;
   padding: 5;
 }
 
-*#switcher-workspace-new-disabled {
+MnbSwitcherZone#switcher-workspace-new-disabled {
   border-image: url("file://switcher/workspace-background-new-disabled.png") 4;
   padding: 5;
 }
 
-*.switcher-application {
+MnbSwitcherApp.switcher-application {
   border-image: url("file://switcher/application-inactive.png") 4;
   padding: 2;
 }
 
-*#switcher-application-active {
+MnbSwitcherApp#switcher-application-active {
   border-image: url("file://switcher/application-active.png") 4;
   padding: 2;
 }
 
 /* drop down */
-*.drop-down-up-button {
-  border-image: url("file://drop-down/up-button.png") 2 stretch;
-}
-*.drop-down-up-button:active {
-  border-image: url("file://drop-down/up-button-active.png") 2 stretch;
-}
-*.drop-down-up-button:hover {
-  border-image: url("file://drop-down/up-button-hover.png") 2 stretch;
-}
-
-*.drop-down-footer {
+MnbDropDown > *.drop-down-footer {
   border-image: url("file://drop-down/panel_up_button.png") 5;
   background-image: url("file://drop-down/panel_arrow.png") 5;
   padding: 15;
 }
 
-*.drop-down-footer:hover {
+MnbDropDown > *.drop-down-footer:hover {
   border-image: url("file://drop-down/panel_up_button_hover.png") 5;
   background-image: url("file://drop-down/panel_arrow_hover.png") 5;
   padding: 15;
@@ -360,66 +350,66 @@ MnbEntry {
   padding: 7 10 7 10;
 }
 
-*.MnbEntryEntry {
+MnbEntry > *.MnbEntryEntry {
   border-image: none;
   font-size: 15;
 }
 
-*.MnbEntryButton {
+MnbEntry *.MnbEntryButton {
   border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
 }
 
-*.MnbEntryClearButton {
+MnbEntry *.MnbEntryClearButton {
   background-image: url('file://launcher/launcher-search-entry-clear.png');
   border-image: none;
 }
 
-*.MnbEntryClearButton:hover {
+MnbEntry *.MnbEntryClearButton:hover {
   background-image: url('file://launcher/launcher-search-entry-clear-hover.png');
 }
 
 /* launcher  */
 
-*#launcher-vbox {
+MnbLauncher > *#launcher-vbox {
   background-color: #ffff;
   padding: 5;
 }
 
-*#launcher-filter-pane {
+MnbLauncher *#launcher-filter-pane {
   border-image: url('file://launcher/launcher-search-bg.png') 4 stretch;
   padding: 4;
 }
 
-*#launcher-filter-label {
+MnbLauncher *#launcher-filter-label {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
 }
 
-*#launcher-group-label {
+MnbLauncher *#launcher-group-label {
   font-family: "Liberation Sans Bold";
   font-size: 14;
   color: #7e7e7e;
   padding: 12 12 6 12;
 }
 
-*#launcher-fav-grid {
+MnbLauncher *#launcher-fav-grid {
   padding-left: 18;
 }
 
-*#launcher-apps-grid {
+MnbLauncher *#launcher-apps-grid {
   padding-left: 0;
   padding-top: 12;
 }
 
-*#launcher-expander-grid {
+MnbLauncher *#launcher-expander-grid {
   padding: 8 5 10 10;
 }
 
-*#launcher-filter-pane *.MnbEntryButton {
+MnbLauncher *#launcher-filter-pane *.MnbEntryButton {
   color: #be1011;
 }
 
@@ -432,40 +422,40 @@ MnbLauncherButton:hover {
   border-image: url("file://launcher/launcher-hover.png") 4 6 6 4 stretch stretch;
 }
 
-*#mnb-launcher-button-title {
+MnbLauncherButton > *#mnb-launcher-button-title {
   color: #3b3b3b;
   font-size: 13;
 }
 
-*#mnb-launcher-button-description {
+MnbLauncherButton > *#mnb-launcher-button-description {
   color: #7e7e7e;
   font-size: 12;
 }
 
-*#mnb-launcher-button-comment {
+MnbLauncherButton > *#mnb-launcher-button-comment {
   color: #a2adb6;
   font-size: 11;
 }
 
-MnbLauncherButton *#mnb-launcher-button-fav-toggle {
+MnbLauncherButton > *#mnb-launcher-button-fav-toggle {
   background-image: none;
   border-image: none;
 }
 
-MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle {
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle {
   background-image: url("file://launcher/launcher-button-fav-toggle.png");
   border-image: none;
 }
 
-MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:checked {
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:checked {
   background-image: url("file://launcher/launcher-button-fav-toggle-checked.png");
 }
 
-MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:active {
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:active {
   background-image: url("file://launcher/launcher-button-fav-toggle-active.png");
 }
 
-MnbLauncherButton:hover *#mnb-launcher-button-fav-toggle:hover {
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:hover {
   background-image: url("file://launcher/launcher-button-fav-toggle-hover.png");
 }
 
@@ -488,7 +478,7 @@ PengeAppsPane
   padding: 4;
 }
 
-*.PengeCalendarPaneTitle
+PengeCalendarPane > *.PengeCalendarPaneTitle
 {
   font-size: 17;
   color: #3e3e3eff;
@@ -519,12 +509,12 @@ PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeL
   padding: 6 7 8 7;
 }
 
-*.PengeTaskToggleButton
+PengeTaskTile > *.PengeTaskToggleButton
 {
   border-image: url('file://mzone/check_box.png') 0;
 }
 
-*.PengeTaskToggleButton:hover, *.PengeTaskToggleButton:checked
+PengeTaskTile > *.PengeTaskToggleButton:hover, PengeTaskTile > *.PengeTaskToggleButton:checked
 {
   border-image: url('file://mzone/checked_box.png') 0;
 }
@@ -534,133 +524,128 @@ PengeDateTile
   border-image: url('file://mzone/date-background.png') 16;
 }
 
-*.PengeDateTileBackground
-{
-  border-image: url('file://mzone/date-background-background.png') 16;
-}
-
-*.PengeEventTimeLabel
+PengeEventTile *.PengeEventTimeLabel
 {
   color: white;
   font-size:12;
   padding: 8;
 }
 
-*.PengeEventTimeLabel:past
+PengeEventTile *.PengeEventTimeLabel:past
 {
   color: white;
   font-size:12;
   padding: 8;
 }
 
-*.PengeEventTimeBin
+PengeEventTile *.PengeEventTimeBin
 {
   border-image: url('file://mzone/time-bg.png') 0;
 }
 
-*.PengeEventTimeBin:past
+PengeEventTile *.PengeEventTimeBin:past
 {
   border-image: url('file://mzone/time-bg-past.png') 0;
 }
 
-*.PengeDayLabel
+PengeDateTile *.PengeDayLabel
 {
   font-size: 18;
 }
 
-*.PengeDateLabel
+PengeDateTile *.PengeDateLabel
 {
   font-size: 78;
   color: #4eb9f1ff;
 }
 
-*.PengePeopleTilePrimaryLabel
+PengePeopleTile *.PengePeopleTilePrimaryLabel
 {
 }
 
-*.PengePeopleTileSecondaryLabel
+PengePeopleTile *.PengePeopleTileSecondaryLabel
 {
   font-size: 11;
   color: #3a3a3aff;
 }
 
-*.PengePeopleTilePrimaryLabel:hover, *.PengePeopleTileSecondaryLabel:hover
+PengePeopleTile *.PengePeopleTilePrimaryLabel:hover, PengePeopleTile *.PengePeopleTileSecondaryLabel:hover
 {
   color: white;
 }
 
-*.PengeTwitterTileText, *.PengeMyspaceTileText
+PengeTwitterTile *.PengeTwitterTileText, PengeMyspaceTile *.PengeMyspaceTileText
 {
   font-size: 12;
 }
 
-*.PengeTwitterTileBackground, *.PengeMyspaceTileBackground
+PengeTwitterTile *.PengeTwitterTileBackground, PengeMyspaceTile *.PengeMyspaceTileBackground
 {
   border-image: url('file://mzone/quotebackground.png') 45 51 46 52;
   padding: 8;
 }
 
-*.PengeNoMoreEventsLabel, *.PengeNoMoreTasksLabel
+PengeEventPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 {
   font-size: 16;
   color: #2c2c2cff;
 }
 
-*.PengeRecentFileTileDetails, *.PengePeopleTileDetails
+PengeRecentFileTile *.PengeRecentFileTileDetails, PengePeopleTile*.PengePeopleTileDetails
 {
   background-color: black;
   padding: 2;
 }
 
-*.PengeRecentFileTileDetailsFilename
+PengeRecentFileTile *.PengeRecentFileTileDetailsFilename
 {
   color: white;
   font-size: 12;
 }
 
-*.PengeRecentFileTileDetailsType
+PengeRecentFileTile *.PengeRecentFileTileDetailsType
 {
   color: white;
   font-size: 11;
 }
 
-*#penge-no-content-main-message
+NbtkTable.PengeNoContentTile *#penge-no-content-main-message
 {
   font-size:15px;
   color: #2c2c2cff;
 }
 
-*#penge-no-content-other-message
+NbtkTable.PengeNoContentTile *#penge-no-content-other-message
 {
   font-size:14px;
   color: #2c2c2cff;
 }
 
-*.PengeNoContentTile
+NbtkTable.PengeNoContentTile
 {
   border-image: url('file://mzone/no-content-tile-bg.png') 7 8 9 8;
   padding: 10 11 12 11;
 }
 
-*.PengeNoContentTile:hover
+NbtkTable.PengeNoContentTile:hover
 {
   border-image: url('file://mzone/no-content-tile-glow-bg.png') 7 8 9 8;
   padding: 10 11 12 11;
 }
 
-*.PengeWelcomeTile
+NbtkTable.PengeWelcomeTile
 {
   border-image: url('file://mzone/backdrop.png') 5 5 5 5;
   padding: 6;
 }
 
-*#penge-welcome-primary-text
+NbtkTable.PengeWelcomeTile *#penge-welcome-primary-text
 {
   color: #009bceff;
   font-size:19px;
 }
 
-*#penge-welcome-secondary-text
+NbtkTable.PengeWelcomeTile *#penge-welcome-secondary-text
 {
   font-size:14px;
   color: #2c2c2cff;
@@ -686,20 +671,20 @@ MnbNotification
   font-size: 12px;
 }
 
-*.notification-control
+MnbNotificationCluster *.notification-control
 {
   border-image: url('file://notifiers/notification-bg.png') 10 21 33 22;
   padding: 15 26 38 27;
 }
 
-*.NotificationSummary
+MnbNotification > *.NotificationSummary
 {
     font-family: "Liberation Sans Bold";
     font-size: 16px;
     color: #009bceff;
 }
 
-*.NotificationSummaryUrgent
+MnbNotification > *.NotificationSummaryUrgent
 {
     font-family: "Liberation Sans Bold";
     font-size: 16px;
@@ -707,7 +692,7 @@ MnbNotification
 }
 
 
-*.NotificationBody
+MnbNotification > *.NotificationBody
 {
     font-family: "Liberation Sans";
     font-size: 13px;
@@ -732,32 +717,32 @@ MnbStatusEntry:active
   border-image: url("file://status/entry-frame-edit.png") 6;
 }
 
-*.MnbStatusEntryText
+MnbStatusEntry > *.MnbStatusEntryText
 {
   font-size: 16px;
   color: #595959ff;
 }
 
-*.MnbStatusEntrySubText
+MnbStatusEntry > *.MnbStatusEntrySubText
 {
   font-size: 12px;
   font-family: "Liberation Sans Reg Italic";
   color: #7dbe0cff;
 }
 
-*.MnbStatusEntryCancel
+MnbStatusEntry > *.MnbStatusEntryCancel
 {
   border-image: none;
   background-image: url("file://status/edit_close.png");
 }
 
-*.MnbStatusEntryCancel:hover
+MnbStatusEntry > *.MnbStatusEntryCancel:hover
 {
   border-image: none;
   background-image: url("file://status/edit_close_hover.png");
 }
 
-*.MnbStatusEntryButton
+MnbStatusEntry > *.MnbStatusEntryButton
 {
   border-image: none;
   color: #7dbe0cff;
@@ -766,14 +751,14 @@ MnbStatusEntry:active
   padding: 0;
 }
 
-*.MnbStatusPageTable
+MnbDropDown > *.MnbStatusPageTable
 {
   border-image: url("file://status/decoration-frame.png") 17 stretch;
   padding: 19;
 }
 
 
-*.MnbStatusPageHeader
+MnbDropDown *.MnbStatusPageHeader
 {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
@@ -781,12 +766,12 @@ MnbStatusEntry:active
   padding: 6;
 }
 
-*.status-empty-bin {
+MnbDropDown *.status-empty-bin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
-*.status-empty-label {
+MnbDropDown *.status-empty-label {
   font-family: "Liberation Sans";
   font-size: 16px;
   color: #595959ff;
@@ -800,7 +785,7 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-*#netpanel-subtable NbtkLabel
+MoblinNetbookNetpanel > *#netpanel-subtable NbtkLabel
 {
   font-family: "Liberation Sans";
   font-size: 13px;
@@ -808,7 +793,7 @@ MoblinNetbookNetpanel
   padding: 0 4;
 }
 
-*#netpanel-subtable NbtkLabel#section
+MoblinNetbookNetpanel > *#netpanel-subtable NbtkLabel#section
 {
   font-family: "Liberation Sans Bold";
   font-size: 17px;
@@ -816,7 +801,7 @@ MoblinNetbookNetpanel
   padding: 2 4 0 4;
 }
 
-*#netpanel-nofavs-label
+MoblinNetbookNetpanel > *#netpanel-nofavs-label
 {
   font-family: "Liberation Sans";
   font-size: 16px;
@@ -844,13 +829,13 @@ MwbRadicalBar NbtkButton
   padding: 0;
 }
 
-*#netpanel-entrytable
+MoblinNetbookNetpanel > *#netpanel-entrytable
 {
   background-color: #F5F2FD;
   padding: 6 24;
 }
 
-*#netpanel-entrytable NbtkLabel
+MoblinNetbookNetpanel > *#netpanel-entrytable NbtkLabel
 {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
@@ -875,26 +860,26 @@ MoblinNetbookNetpanel NbtkButton:active {
 
 /* Media panel */
 
-*#media-pane-vbox {
+AhoghillGridView {
   background-color: #ffff;
   padding: 5;
 }
 
-*#media-pane-search {
+AhoghillSearchPane#media-pane-search {
   border-image: url('file://media-panel/media_search_bkgrd.png') 4 stretch;
   padding-top: 4px;
   padding-bottom: 4px;
   padding-left: 12px;
 }
 
-*#media-pane-search-label {
+AhoghillSearchPane > *#media-pane-search-label {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
 }
 
-*#media-pane-search-entry *.MnbEntryButton {
+AhoghillSearchPane > *#media-pane-search-entry *.MnbEntryButton {
   color: #3e42ac;
 }
 
@@ -905,44 +890,44 @@ AhoghillResultsPane {
   padding-bottom: 14px;
 }
 
-*#media-pane-results-label {
+AhoghillResultsPane > *#media-pane-results-label {
   font-family: "Liberation Sans Bold";
   font-size: 14;
   color: #7e7e7e;
 }
 
-*#media-pane-results-table {
+AhoghillResultsTable {
   padding: 0px;
 }
 
 AhoghillMediaTile {
 }
 
-*#media-pane-album-art {
+AhoghillMediaArt {
   border-image: url("file://media-panel/thumbnail.png") 7 12 12 10 stretch;
 }
 
-*#media-pane-album-art:hover {
+AhoghillMediaArt:hover {
   border-image: url("file://media-panel/thumbnail_hover.png") 7 12 12 10 stretch;
 }
 
-*#media-tile-title-label {
+AhoghillMediaTile >*#media-tile-title-label {
   font-size: 13px;
   color: #3b3b3b;
 }
 
-*#media-tile-artist-label {
+AhoghillMediaTile > *#media-tile-artist-label {
   font-size: 12px;
   color: #7e7e7e;
 }
 
-*.AhoghillPrimaryLabel {
+AhoghillQueueTile > *.AhoghillPrimaryLabel {
   font-family: "Liberation Sans Bold";
   font-size: 13px;
   color:#3b3b3b;
 }
 
-*.AhoghillSecondaryLabel {
+AhoghillQueueTile > *.AhoghillSecondaryLabel {
   font-size: 12px;
   color: #7e7e7e;
 }
@@ -961,19 +946,19 @@ NbtkButton.AhoghillControlButton {
   color: 333;
 }
 
-*#ahoghill-playlist-title {
+AhoghillPlaylistHeader > *#ahoghill-playlist-title {
   font-family: "Liberation Sans Bold";
   font-size: 17px;
   color: #3b3b3b;
 }
 
-*#ahoghill-playlist-header-primary {
+AhoghillPlaylistHeader > *#ahoghill-playlist-header-primary {
   font-family: "Liberation Sans Bold";
   font-size: 15px;
   color: #3b3b3b;
 }
 
-*#ahoghill-playlist-header-secondary {
+AhoghillPlaylistHeader > *#ahoghill-playlist-header-secondary {
   font-size: 12px;
   color: #3b3b3b;
 }
@@ -1004,7 +989,7 @@ AhoghillQueueList {
 
 
 NbtkScrollBar.AhoghillProgressBar {
-  border-image: url('file://media-panel/hrn-progress-bar-through.png") 2;
+  border-image: url('file://media-panel/hrn-progress-bar-through.png') 2;
   background: #00000000;
   padding: 0;
 }
@@ -1032,12 +1017,12 @@ AhoghillPlaylistPlaceholder {
   background-image: url("file://media-panel/playqueue-placeholder.png");
 }
 
-*.AhoghillExampleTextBin {
+AhoghillExampleTable *.AhoghillExampleTextBin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
-*.AhoghillExampleText {
+AhoghillExampleTable *.AhoghillExampleText {
   font-family: "Liberation Sans";
   font-size: 16px;
   color: #595959ff;
@@ -1046,49 +1031,49 @@ AhoghillPlaylistPlaceholder {
 
 /* pasteboard */
 
-*#pasteboard-vbox {
+MnbDropDown > *#pasteboard-vbox {
   background-color: #ffff;
   padding: 5;
 }
 
-*#pasteboard-search {
+MnbDropDown *#pasteboard-search {
   border-image: url('file://pasteboard/pasteboard-search-bg.png') 4 stretch;
   padding: 4;
 }
 
-*#pasteboard-search-label {
+MnbDropDown *#pasteboard-search-label {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
 }
 
-*#pasteboard-search-entry *.MnbEntryButton {
+MnbDropDown *#pasteboard-search-entry *.MnbEntryButton {
   color: #027061;
 }
 
-*.pasteboard-empty-bin {
+MnbDropDown *.pasteboard-empty-bin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
-*.pasteboard-empty-label {
+MnbDropDown *.pasteboard-empty-label {
   font-family: "Liberation Sans";
   font-size: 16px;
   color: #595959ff;
 }
 
-*#pasteboard-items-list {
+MnbDropDown *#pasteboard-items-list {
   border-image: url('file://pasteboard/pasteboard-items-list-bg.png') 10 stretch;
   padding: 10;
 }
 
-*#pasteboard-controls {
+MnbDropDown *#pasteboard-controls {
   border-image: url('file://pasteboard/pasteboard-items-list-bg.png') 10 stretch;
   padding: 12;
 }
 
-*#pasteboard-controls NbtkButton {
+MnbDropDown *#pasteboard-controls NbtkButton {
   font-family: "Liberation Sans";
   font-size: 13px;
   color: #027061;
@@ -1099,19 +1084,12 @@ MnbClipboardItem {
   padding: 4;
 }
 
-*.MnbClipboardItemText {
-  font-family: "Liberation Sans";
-  font-size: 14;
-  color: #1a1a1a;
-  padding: 4;
-}
-
-*.MnbClipboardItemDeleteButton {
+MnbClipboardItem > *.MnbClipboardItemDeleteButton {
   border-image: url('file://pasteboard/pasteboard-delete-bg.png') 4 stretch;
   padding: 4;
 }
 
-*.MnbClipboardItemCopyButton {
+MnbClipboardItem > *.MnbClipboardItemCopyButton {
   font-family: "Liberation Sans";
   font-size: 13;
   color: #027061;
@@ -1119,11 +1097,12 @@ MnbClipboardItem {
 }
 
 /* zone switching effect */
-*#zone-switch-background {
+/* FIME -- should subclass to avoid this broad selection. */
+NbtkBin#zone-switch-background {
   border-image: url("file://effects/zone-switch-background.png") 0 stretch stretch;
 }
 
-*#zone-switch-strip {
+NbtkTable#zone-switch-strip {
   /* uses same assets as the chooser */
   border-image: url("file://chooser/background.png") 11 11 11 11 stretch stretch;
   /* should match the column spacing, currently not themable. */
@@ -1132,48 +1111,48 @@ MnbClipboardItem {
 
 /* people */
 
-*#people-vbox {
+MnbDropDown > *#people-vbox {
   background-color: #ffff;
   padding: 5;
 }
 
-*#people-search {
+MnbDropDown *#people-search {
   border-image: url('file://people/people-search-bg.png') 4 stretch;
   padding: 4;
 }
 
-*#people-search-label {
+MnbDropDown *#people-search-label {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
 }
 
-*#people-search-entry *.MnbEntryButton {
+MnbDropDown *#people-search-entry *.MnbEntryButton {
   color: #fba40b;
 }
 
-*#people-no-people-message-bin {
+MnbDropDown *#people-no-people-message-bin {
   border-image: url('file://people/grey-backdrop.png') 4 stretch;
   padding: 8;
 }
 
-*#people-people-pane-main-label {
+MnbDropDown *#people-people-pane-main-label {
   font-size:16px;
   color: #595959ff;
 }
 
-*#people-no-people-description {
+MnbDropDown *#people-no-people-description {
   font-size:15px;
   color: #2c2c2cff;
 }
 
-*#people-no-people-launcher
+MnbDropDown *#people-no-people-launcher
 {
   padding: 9 10 11 10;
 }
 
-*#people-no-people-launcher:hover
+MnbDropDown *#people-no-people-launcher:hover
 {
   border-image: url("file://people/tile-bg-hover.png") 5 6 7 6;
   padding: 9 10 11 10;
@@ -1181,7 +1160,7 @@ MnbClipboardItem {
 
 /* Anerley */
 
-*.AnerleyTileAvatar
+AnerleyTile *.AnerleyTileAvatar
 {
   border-image: url("file://people/avatar-bg.png") 7 8 9 8;
   padding: 9 10 11 10;
@@ -1197,13 +1176,13 @@ AnerleyTile:hover
   border-image: url("file://people/tile-bg-hover.png") 5 6 7 6;
 }
 
-*.AnerleyTilePrimaryLabel
+AnerleyTile *.AnerleyTilePrimaryLabel
 {
   font-family: "Liberation Sans";
   font-size: 14;
 }
 
-*.AnerleyTileSecondaryLabel
+AnerleyTile *.AnerleyTileSecondaryLabel
 {
   font-family: "Liberation Sans";
   font-size: 13;

@@ -890,7 +890,6 @@ ahoghill_grid_view_init (AhoghillGridView *self)
 
     priv->model = g_object_new (AHOGHILL_TYPE_RESULTS_MODEL, NULL);
 
-    clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-vbox");
     clutter_actor_set_size (CLUTTER_ACTOR (self), 1024, 500);
 
     self->priv = priv;
