@@ -147,8 +147,8 @@ mnb_notification_cluster_get_preferred_width (ClutterActor *actor,
                                               gfloat       *min_width,
                                               gfloat       *natural_width)
 {
-  *min_width = CLUTTER_UNITS_FROM_DEVICE(CLUSTER_WIDTH);
-  *natural_width = CLUTTER_UNITS_FROM_DEVICE(CLUSTER_WIDTH);
+  *min_width = CLUSTER_WIDTH;
+  *natural_width = CLUSTER_WIDTH;
 }
 
 static void
@@ -222,7 +222,7 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           CLUSTER_WIDTH, &m_height, &p_height);
 
-      notifier_box.x2 = CLUTTER_UNITS_FROM_DEVICE (CLUSTER_WIDTH);
+      notifier_box.x2 = CLUSTER_WIDTH;
       notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
