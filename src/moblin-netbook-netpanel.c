@@ -286,7 +286,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
 {
   guint n_tabs;
   NbtkPadding padding;
-  ClutterUnit cell_width;
+  gfloat cell_width;
   NbtkWidget *label;
   ClutterActor *parent;
 
@@ -315,7 +315,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
   if ((parent = clutter_actor_get_parent (CLUTTER_ACTOR (self))))
     {
       nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
-      cell_width = (clutter_actor_get_widthu (CLUTTER_ACTOR (parent)) -
+      cell_width = (clutter_actor_get_width (CLUTTER_ACTOR (parent)) -
                     padding.left - padding.right -
                     (nbtk_table_get_col_spacing (NBTK_TABLE (self)) * 4)) / 5.f;
     }
@@ -335,7 +335,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
           ClutterActor *mozembed;
 
           mozembed = clutter_mozembed_new_view ();
-          clutter_actor_set_widthu (mozembed, cell_width);
+          clutter_actor_set_width (mozembed, cell_width);
           clutter_actor_set_reactive (mozembed, FALSE);
           g_object_set_data (G_OBJECT (mozembed), "netpanel", self);
           g_object_set_data (G_OBJECT (mozembed), "tab", GUINT_TO_POINTER (i));
@@ -355,7 +355,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
                                      G_TYPE_INVALID));
 
           label = nbtk_label_new ("");
-          clutter_actor_set_widthu (CLUTTER_ACTOR (label), cell_width);
+          clutter_actor_set_width (CLUTTER_ACTOR (label), cell_width);
           g_object_set_data (G_OBJECT (label), "netpanel", self);
           g_object_set_data (G_OBJECT (label), "tab", GUINT_TO_POINTER (i));
 
@@ -377,7 +377,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
   else
     {
       NbtkWidget *button;
-      ClutterUnit cell_height;
+      gfloat cell_height;
 
       /* FIXME: this should be a default image or startpage snapshot instead,
                 and this label should become the caption title */
@@ -387,7 +387,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
       cell_height = cell_width * 9.0 / 16.0;
 
       button = nbtk_button_new ();
-      clutter_actor_set_sizeu (CLUTTER_ACTOR (button), cell_width, cell_height);
+      clutter_actor_set_size (CLUTTER_ACTOR (button), cell_width, cell_height);
       clutter_container_add_actor (CLUTTER_CONTAINER (button),
                                    CLUTTER_ACTOR (label));
       g_signal_connect (button, "clicked",
