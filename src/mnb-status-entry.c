@@ -367,9 +367,9 @@ mnb_status_entry_paint (ClutterActor *actor)
       gfloat x_pos, start_y, end_y;
 
       clutter_actor_get_allocation_box (actor, &alloc);
-      x_pos = CLUTTER_UNITS_TO_FLOAT (priv->separator_x);
-      start_y = CLUTTER_UNITS_TO_FLOAT (priv->padding.top);
-      end_y = CLUTTER_UNITS_TO_FLOAT (alloc.y2 - priv->padding.bottom - 8);
+      x_pos = priv->separator_x;
+      start_y = priv->padding.top;
+      end_y = alloc.y2 - priv->padding.bottom - 8;
 
       cogl_set_source_color4ub (204, 204, 204, 255);
       cogl_path_move_to (x_pos, start_y);
