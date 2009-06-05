@@ -169,7 +169,7 @@ mnb_entry_get_preferred_height (ClutterActor *actor,
 static void
 mnb_entry_allocate (ClutterActor          *actor,
                     const ClutterActorBox *box,
-                    gboolean               origin_changed)
+                    ClutterAllocationFlags flags)
 {
   MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
   NbtkPadding padding = { 0, 0, 0, 0 };
@@ -177,7 +177,7 @@ mnb_entry_allocate (ClutterActor          *actor,
   gfloat entry_width, entry_height, button_width, button_height;
 
   CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->
-    allocate (actor, box, origin_changed);
+    allocate (actor, box, flags);
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
@@ -205,8 +205,8 @@ mnb_entry_allocate (ClutterActor          *actor,
   entry_box.y1 = (int) (((box->y2 - box->y1) - entry_height) / 2);
   entry_box.y2 = (int) (entry_box.y1 + entry_height);
 
-  clutter_actor_allocate (priv->entry, &entry_box, origin_changed);
-  clutter_actor_allocate (priv->table, &button_box, origin_changed);
+  clutter_actor_allocate (priv->entry, &entry_box, flags);
+  clutter_actor_allocate (priv->table, &button_box, flags);
 }
 
 static void
