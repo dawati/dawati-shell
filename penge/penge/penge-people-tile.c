@@ -297,7 +297,7 @@ penge_people_tile_init (PengePeopleTile *self)
                                     "PengePeopleTileDetails");
   clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay, 0x0);
 
-  priv->timeline = clutter_timeline_new_for_duration (300);
+  priv->timeline = clutter_timeline_new (300);
 
   alpha = clutter_alpha_new_full (priv->timeline,
                                   CLUTTER_LINEAR);
