@@ -119,7 +119,7 @@ penge_grid_view_unmap (ClutterActor *actor)
 static void
 penge_grid_view_allocate (ClutterActor          *actor,
                           const ClutterActorBox *box,
-                          gboolean               absolute_origin_changed)
+                          ClutterAllocationFlags flags)
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (actor);
   ClutterActorBox child_box;
