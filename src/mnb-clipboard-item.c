@@ -69,7 +69,7 @@ on_action_clicked (NbtkButton *button,
 static void
 mnb_clipboard_item_allocate (ClutterActor *actor,
                              const ClutterActorBox *box,
-                             gboolean origin_changed)
+                             ClutterAllocationFlags flags)
 {
   MnbClipboardItem *self = MNB_CLIPBOARD_ITEM (actor);
   ClutterActorClass *klass;
@@ -83,7 +83,7 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
   NbtkPadding padding = { 0, };
 
   klass = CLUTTER_ACTOR_CLASS (mnb_clipboard_item_parent_class);
-  klass->allocate (actor, box, origin_changed);
+  klass->allocate (actor, box, flags);
 
   nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
@@ -168,7 +168,7 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
       allocation.x2 = allocation.x1 + child_width;
       allocation.y2 = allocation.y1 + child_height;
 
-      clutter_actor_allocate (self->contents, &allocation, origin_changed);
+      clutter_actor_allocate (self->contents, &allocation, flags);
     }
 
   action_box.x1 = padding.left;
@@ -176,7 +176,7 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
   action_box.x2 = action_box.x1 + action_width;
   action_box.y2 = action_box.y1 + action_height;
 
-  clutter_actor_allocate (self->action_button, &action_box, origin_changed);
+  clutter_actor_allocate (self->action_button, &action_box, flags);
 
   time_box.x1 = (box->x2 - box->x1)
               - padding.right
@@ -190,7 +190,7 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
               - (6.0 * 2);
   time_box.y2 = time_box.y1 + time_height;
 
-  clutter_actor_allocate (self->time_label, &time_box, origin_changed);
+  clutter_actor_allocate (self->time_label, &time_box, flags);
 
   remove_box.x1 = (box->x2 - box->x1)
                 - padding.right
@@ -202,7 +202,7 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
   remove_box.y2 = (box->y2 - box->y1)
                 - padding.bottom;
 
-  clutter_actor_allocate (self->remove_button, &remove_box, origin_changed);
+  clutter_actor_allocate (self->remove_button, &remove_box, flags);
 }
 
 static void
