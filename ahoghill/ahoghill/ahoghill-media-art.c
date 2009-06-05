@@ -236,7 +236,7 @@ ahoghill_media_art_get_property (GObject    *object,
 static void
 ahoghill_media_art_allocate (ClutterActor          *actor,
                              const ClutterActorBox *box,
-                             gboolean               absolute_origin_changed)
+                             ClutterAllocationFlags flags)
 {
     AhoghillMediaArtPrivate *priv = ((AhoghillMediaArt *) actor)->priv;
     ClutterActorClass *parent_class;
@@ -247,17 +247,17 @@ ahoghill_media_art_allocate (ClutterActor          *actor,
     nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
     parent_class = CLUTTER_ACTOR_CLASS (ahoghill_media_art_parent_class);
-    parent_class->allocate (actor, box, absolute_origin_changed);
+    parent_class->allocate (actor, box, flags);
 
     child_box.x1 = 10;
     child_box.y1 = 7;
     child_box.x2 = box->x2 - box->x1 - 12;
     child_box.y2 = box->y2 - box->y1 - 12;
 
-    clutter_actor_allocate (priv->art, &child_box, absolute_origin_changed);
+    clutter_actor_allocate (priv->art, &child_box, flags);
 
-    w = clutter_actor_get_widthu (priv->play_texture);
-    h = clutter_actor_get_heightu (priv->play_texture);
+    w = clutter_actor_get_width (priv->play_texture);
+    h = clutter_actor_get_height (priv->play_texture);
 
     x_off = ((child_box.x2 - child_box.x1) - w) / 2;
     y_off = ((child_box.y2 - child_box.y1) - h) / 2;
@@ -267,7 +267,7 @@ ahoghill_media_art_allocate (ClutterActor          *actor,
     play_box.x2 = play_box.x1 + w;
     play_box.y2 = play_box.y1 + h;
 
-    clutter_actor_allocate (priv->play_texture, &play_box, absolute_origin_changed);
+    clutter_actor_allocate (priv->play_texture, &play_box, flags);
 }
 
 /* Taken from PengeMagicTexture */
@@ -288,8 +288,8 @@ paint_art (ClutterActor *actor)
     bw = cogl_texture_get_width (tex); /* base texture width */
     bh = cogl_texture_get_height (tex); /* base texture height */
 
-    aw = CLUTTER_UNITS_TO_INT (box.x2 - box.x1); /* allocation width */
-    ah = CLUTTER_UNITS_TO_INT (box.y2 - box.y1); /* allocation height */
+    aw = (int) (box.x2 - box.x1); /* allocation width */
+    ah = (int) (box.y2 - box.y1); /* allocation height */
 
     /* no comment */
     if ((float)bw/bh < (float)aw/ah) {
@@ -310,15 +310,10 @@ paint_art (ClutterActor *actor)
 
     col.alpha = clutter_actor_get_paint_opacity (actor);
     cogl_set_source_color4ub (col.red, col.green, col.blue, col.alpha);
-    cogl_rectangle (CLUTTER_UNITS_TO_INT (box.x1),
-                    CLUTTER_UNITS_TO_INT (box.y1),
-                    CLUTTER_UNITS_TO_INT (box.x2),
-                    CLUTTER_UNITS_TO_INT (box.y2));
+    cogl_rectangle (box.x1, box.y1, box.x2, box.y2);
     cogl_set_source_texture (tex);
-    cogl_rectangle_with_texture_coords (CLUTTER_UNITS_TO_INT (box.x1),
-                                        CLUTTER_UNITS_TO_INT (box.y1),
-                                        CLUTTER_UNITS_TO_INT (box.x2),
-                                        CLUTTER_UNITS_TO_INT (box.y2),
+    cogl_rectangle_with_texture_coords (box.x1, box.y1,
+                                        box.x2, box.y2,
                                         tx1, ty1,
                                         tx2, ty2);
 }
@@ -334,6 +329,40 @@ ahoghill_media_art_paint (ClutterActor *actor)
 
     if (CLUTTER_ACTOR_IS_MAPPED (priv->play_texture)) {
         clutter_actor_paint (priv->play_texture);
+    }
+}
+
+static void
+ahoghill_media_art_map (ClutterActor *actor)
+{
+    AhoghillMediaArt *art = (AhoghillMediaArt *) actor;
+    AhoghillMediaArtPrivate *priv = art->priv;
+
+    CLUTTER_ACTOR_CLASS (ahoghill_media_art_parent_class)->map (actor);
+
+    if (priv->art) {
+        clutter_actor_map (priv->art);
+    }
+
+    if (priv->play_texture) {
+        clutter_actor_map (priv->play_texture);
+    }
+}
+
+static void
+ahoghill_media_art_unmap (ClutterActor *actor)
+{
+    AhoghillMediaArt *art = (AhoghillMediaArt *) actor;
+    AhoghillMediaArtPrivate *priv = art->priv;
+
+    CLUTTER_ACTOR_CLASS (ahoghill_media_art_parent_class)->unmap (actor);
+
+    if (priv->art) {
+        clutter_actor_unmap (priv->art);
+    }
+
+    if (priv->play_texture) {
+        clutter_actor_unmap (priv->play_texture);
     }
 }
 
@@ -380,6 +409,8 @@ ahoghill_media_art_class_init (AhoghillMediaArtClass *klass)
 
     a_class->paint = ahoghill_media_art_paint;
     a_class->allocate = ahoghill_media_art_allocate;
+    a_class->map = ahoghill_media_art_map;
+    a_class->unmap = ahoghill_media_art_unmap;
     a_class->enter_event = ahoghill_media_art_enter;
     a_class->leave_event = ahoghill_media_art_leave;
 
@@ -417,8 +448,13 @@ ahoghill_media_art_init (AhoghillMediaArt *self)
         if (play_texture == NULL) {
             g_warning ("Error loading play texture: %s", error->message);
             g_error_free (error);
+        } else {
+            /* Cloned actors need to be hidden and parented */
+            clutter_container_add_actor
+                ((ClutterContainer *) clutter_stage_get_default (),
+                 play_texture);
+            clutter_actor_hide (play_texture);
         }
-        clutter_actor_show (play_texture);
     }
 
     if (play_texture) {

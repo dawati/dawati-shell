@@ -97,8 +97,7 @@ ahoghill_search_pane_init (AhoghillSearchPane *self)
     priv->entry = mnb_entry_new (_("Search"));
     clutter_actor_set_name (CLUTTER_ACTOR (priv->entry),
                             "media-pane-search-entry");
-    clutter_actor_set_width (CLUTTER_ACTOR (priv->entry),
-                             CLUTTER_UNITS_FROM_DEVICE (600));
+    clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600.0);
     nbtk_table_add_actor_with_properties (table, (ClutterActor *) priv->entry,
                                           0, 1,
                                           "x-expand", FALSE,

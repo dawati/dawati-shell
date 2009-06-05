@@ -114,7 +114,7 @@ ahoghill_queue_list_add_item (AhoghillQueueList *list,
 {
     AhoghillQueueListPrivate *priv = list->priv;
     AhoghillQueueTile *tile;
-    guint height;
+    float height;
     int i;
 
     tile = g_object_new (AHOGHILL_TYPE_QUEUE_TILE, NULL);
@@ -129,7 +129,7 @@ ahoghill_queue_list_add_item (AhoghillQueueList *list,
     } else {
         /* Move the rest of the items */
         for (i = index; i < priv->items->len; i++) {
-            int x, y;
+            float x, y;
 
             clutter_actor_get_position (CLUTTER_ACTOR (priv->items->pdata[i]),
                                         &x, &y);
@@ -157,7 +157,7 @@ ahoghill_queue_list_remove (AhoghillQueueList *list,
 {
     AhoghillQueueListPrivate *priv = list->priv;
     AhoghillQueueTile *tile;
-    guint height = 0;
+    float height = 0;
     int i;
 
     tile = priv->items->pdata[index];
@@ -169,7 +169,7 @@ ahoghill_queue_list_remove (AhoghillQueueList *list,
 
     for (i = index + 1; i < priv->items->len; i++) {
         ClutterActor *actor = (ClutterActor *) priv->items->pdata[i];
-        int x, y;
+        float x, y;
 
         /* FIXME: Fancy animation? */
         clutter_actor_get_position (actor, &x, &y);
