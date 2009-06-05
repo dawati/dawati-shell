@@ -460,7 +460,7 @@ make_spinner (void)
       ClutterAlpha    *alpha;
       ClutterTimeline *timeline;
 
-      timeline = clutter_timeline_new_for_duration (MNBTK_SPINNER_ITERVAL);
+      timeline = clutter_timeline_new (MNBTK_SPINNER_ITERVAL);
       clutter_timeline_set_loop (timeline, TRUE);
 
       alpha = clutter_alpha_new_full (timeline,
