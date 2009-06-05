@@ -206,7 +206,7 @@ main (int argc, char *argv[])
   NbtkWidget *vbox, *hbox, *label, *entry, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
   ClutterText *text;
-  guint items_list_width = 0, items_list_height = 0;
+  gfloat items_list_width = 0, items_list_height = 0;
 
   gtk_init (&argc, &argv);
   clutter_init (&argc, &argv);

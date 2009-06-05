@@ -236,7 +236,7 @@ on_drop_down_show_completed (MnbDropDown *drop_down,
   children = clutter_container_get_children (container);
   for (l = children; l != NULL; l = l->next)
     {
-      if (MNB_IS_STATUS_ROW (l->data) && CLUTTER_ACTOR_IS_VISIBLE (l->data))
+      if (MNB_IS_STATUS_ROW (l->data) && CLUTTER_ACTOR_IS_MAPPED (l->data))
         mnb_status_row_force_update (l->data);
     }
 

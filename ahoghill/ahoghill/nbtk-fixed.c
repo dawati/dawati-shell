@@ -85,7 +85,7 @@ nbtk_fixed_paint (ClutterActor *actor)
 
     CLUTTER_ACTOR_CLASS (nbtk_fixed_parent_class)->paint (actor);
 
-    if (CLUTTER_ACTOR_IS_VISIBLE (priv->parent_group)) {
+    if (CLUTTER_ACTOR_IS_MAPPED (priv->parent_group)) {
         clutter_actor_paint (priv->parent_group);
     }
 }
@@ -96,7 +96,7 @@ nbtk_fixed_pick (ClutterActor       *actor,
 {
     CLUTTER_ACTOR_CLASS (nbtk_fixed_parent_class)->pick (actor, color);
 
-    if (CLUTTER_ACTOR_IS_VISIBLE (actor)) {
+    if (CLUTTER_ACTOR_IS_MAPPED (actor)) {
         nbtk_fixed_paint (actor);
     }
 }

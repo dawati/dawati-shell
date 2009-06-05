@@ -384,7 +384,7 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
 
   /* Animation for fading it in and out */
   /* TODO: Use ClutterAnimation */
-  priv->timeline = clutter_timeline_new_for_duration (300);
+  priv->timeline = clutter_timeline_new (300);
 
   alpha = clutter_alpha_new_full (priv->timeline,
                                   CLUTTER_LINEAR);

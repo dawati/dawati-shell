@@ -324,7 +324,7 @@ mnb_toolbar_show (ClutterActor *actor)
   /*
    * Start animation and wait for it to complete.
    */
-  animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
+  animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0.0, NULL);
 
   g_object_ref (actor);
 
@@ -386,7 +386,7 @@ mnb_toolbar_hide (ClutterActor *actor)
   static gint count = 0;
 
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  gint               height;
+  gfloat             height;
   gint               i;
   ClutterAnimation  *animation;
 
@@ -596,11 +596,11 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
       {
         if (priv->panels[i])
           {
-            if (checked && !CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+            if (checked && !CLUTTER_ACTOR_IS_MAPPED (priv->panels[i]))
               {
                 clutter_actor_show (CLUTTER_ACTOR (priv->panels[i]));
               }
-            else if (!checked && CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+            else if (!checked && CLUTTER_ACTOR_IS_MAPPED (priv->panels[i]))
               {
                 clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
               }
@@ -612,7 +612,7 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 /*
  * TODO Remove.
  *
- * Helper functions for the m_zone, internet zone and media zone -- there will
+ * Helper functions for the myzone, internet zone and media zone -- there will
  * need to go and be handled internally in the zones/via new dbus API.
  */
 static void
@@ -691,7 +691,7 @@ mnb_toolbar_panel_name_to_index (const gchar *name)
 {
   gint index;
 
-  if (!strcmp (name, "m-zone"))
+  if (!strcmp (name, "myzone"))
     index = M_ZONE;
   else if (!strcmp (name, "status-zone"))
     index = STATUS_ZONE;
@@ -731,7 +731,7 @@ mnb_toolbar_panel_index_to_name (gint index)
 {
   switch (index)
     {
-    case M_ZONE: return "m-zone";
+    case M_ZONE: return "myzone";
     case STATUS_ZONE: return "status-zone";
     case SPACES_ZONE: return "spaces-zone";
     case INTERNET_ZONE: return "internet-zone";
@@ -755,7 +755,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
-  guint w, h;
+  gfloat             w, h;
 
   clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
 
@@ -1411,7 +1411,7 @@ mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
   gint               i;
 
   if (index < 0 || !priv->panels[index] ||
-      CLUTTER_ACTOR_IS_VISIBLE (priv->panels[index]))
+      CLUTTER_ACTOR_IS_MAPPED (priv->panels[index]))
     {
       return;
     }
@@ -1419,7 +1419,7 @@ mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if (i != index)
       {
-        if (priv->panels[i] && CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+        if (priv->panels[i] && CLUTTER_ACTOR_IS_MAPPED (priv->panels[i]))
           clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
       }
     else
@@ -1435,7 +1435,7 @@ mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name)
   gint               index = mnb_toolbar_panel_name_to_index (panel_name);
 
   if (index < 0 || !priv->panels[index] ||
-      !CLUTTER_ACTOR_IS_VISIBLE (priv->panels[index]))
+      !CLUTTER_ACTOR_IS_MAPPED (priv->panels[index]))
     {
       return;
     }
@@ -1452,7 +1452,7 @@ mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
   gint               i;
 
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
-    if (priv->panels[i] && CLUTTER_ACTOR_IS_VISIBLE (priv->panels[i]))
+    if (priv->panels[i] && CLUTTER_ACTOR_IS_MAPPED (priv->panels[i]))
       {
         index = i;
         break;
@@ -1818,7 +1818,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
    */
   show_toolbar  = (event->type == CLUTTER_ENTER);
   show_toolbar |= ((event->type == CLUTTER_LEAVE) && (event->crossing.y == 0));
-  show_toolbar &= !CLUTTER_ACTOR_IS_VISIBLE (toolbar);
+  show_toolbar &= !CLUTTER_ACTOR_IS_MAPPED (toolbar);
 
   if (show_toolbar)
     {
@@ -1857,7 +1857,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
           g_source_remove (priv->trigger_timeout_id);
           priv->trigger_timeout_id = 0;
         }
-      else if (CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+      else if (CLUTTER_ACTOR_IS_MAPPED (toolbar))
         {
           mnb_toolbar_trigger_region_set_height (toolbar, 0);
           clutter_actor_hide (CLUTTER_ACTOR (toolbar));
@@ -1884,7 +1884,7 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
       if (mnb_toolbar_in_transition (toolbar))
         return FALSE;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+      if (CLUTTER_ACTOR_IS_MAPPED (toolbar))
         clutter_actor_hide (CLUTTER_ACTOR (toolbar));
     }
 

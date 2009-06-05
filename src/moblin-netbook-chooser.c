@@ -423,8 +423,8 @@ make_spinner (void)
 
   ClutterActor *spinner = NULL;
 
-  guint         s_w, s_h;
-  guint         center_x, center_y;
+  gfloat   s_w, s_h;
+  gfloat   center_x, center_y;
 
   static ClutterBehaviour *beh = NULL;
 
@@ -460,7 +460,7 @@ make_spinner (void)
       ClutterAlpha    *alpha;
       ClutterTimeline *timeline;
 
-      timeline = clutter_timeline_new_for_duration (MNBTK_SPINNER_ITERVAL);
+      timeline = clutter_timeline_new (MNBTK_SPINNER_ITERVAL);
       clutter_timeline_set_loop (timeline, TRUE);
 
       alpha = clutter_alpha_new_full (timeline,
@@ -490,7 +490,7 @@ make_background (const gchar *text, guint width, guint height,
   ClutterActor *group, *bck, *label_actor;
   ClutterText *label;
   ClutterColor  white = { 0xff, 0xff, 0xff, 0xff };
-  guint         l_w, l_h;
+  gfloat        l_w, l_h;
 
 
   if (space_sel == NULL && space_unsel == NULL
@@ -723,7 +723,7 @@ make_workspace_chooser (const gchar *sn_id, gint *n_workspaces,
       ClutterActor       *texture;
       ClutterActor       *clone;
       ClutterActor       *workspace = NULL;
-      gint                x, y;
+      gfloat              x, y;
 
       type = mutter_window_get_window_type (mw);
       ws_indx = mutter_window_get_workspace (mw);
@@ -867,8 +867,8 @@ show_workspace_chooser (MutterPlugin *plugin,
   ClutterActor               *grid;
   ClutterActor               *label;
   gint                        screen_width, screen_height;
-  guint                       switcher_width, switcher_height;
-  guint                       label_height;
+  gfloat                      switcher_width, switcher_height;
+  gfloat                      label_height;
   ClutterColor                label_clr = { 0x0, 0x0, 0x0, 0xff };
   gint                        ws_count = 0;
   struct kbd_data            *kbd_data;

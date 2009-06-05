@@ -72,8 +72,8 @@ NbtkWidget  * mnb_launcher_grid_keynav_first  (MnbLauncherGrid  *self);
 void          mnb_launcher_grid_keynav_out    (MnbLauncherGrid  *self);
 
 NbtkWidget *  mnb_launcher_grid_find_widget_by_point        (MnbLauncherGrid  *self,
-                                                             ClutterUnit       x,
-                                                             ClutterUnit       y);
+                                                             gfloat            x,
+                                                             gfloat            y);
 
 NbtkWidget  * mnb_launcher_grid_find_widget_by_pseudo_class (MnbLauncherGrid  *self,
                                                              const gchar      *pseudo_class);

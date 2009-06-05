@@ -125,7 +125,7 @@ mwb_radical_bar_resize_progress (MwbRadicalBar         *self,
                                  const ClutterActorBox *box,
                                  gboolean               aoc)
 {
-  ClutterUnit width, padding;
+  gfloat width, padding;
   ClutterActorBox child_box;
   
   MwbRadicalBarPrivate *priv = self->priv;
@@ -169,11 +169,11 @@ mwb_radical_bar_allocate (ClutterActor          *actor,
 
 static void
 mwb_radical_bar_get_preferred_width (ClutterActor *actor,
-                                     ClutterUnit   for_height,
-                                     ClutterUnit  *min_width_p,
-                                     ClutterUnit  *natural_width_p)
+                                     gfloat   for_height,
+                                     gfloat  *min_width_p,
+                                     gfloat  *natural_width_p)
 {
-  ClutterUnit min_width, natural_width;
+  gfloat min_width, natural_width;
   
   MwbRadicalBarPrivate *priv = MWB_RADICAL_BAR (actor)->priv;
   
@@ -194,11 +194,11 @@ mwb_radical_bar_get_preferred_width (ClutterActor *actor,
 
 static void
 mwb_radical_bar_get_preferred_height (ClutterActor *actor,
-                                      ClutterUnit   for_width,
-                                      ClutterUnit  *min_height_p,
-                                      ClutterUnit  *natural_height_p)
+                                      gfloat        for_width,
+                                      gfloat       *min_height_p,
+                                      gfloat       *natural_height_p)
 {
-  ClutterUnit min_height, natural_height;
+  gfloat min_height, natural_height;
   
   MwbRadicalBarPrivate *priv = MWB_RADICAL_BAR (actor)->priv;
   
@@ -225,7 +225,7 @@ mwb_radical_bar_paint (ClutterActor *actor)
   /* Chain up to get the background */
   CLUTTER_ACTOR_CLASS (mwb_radical_bar_parent_class)->paint (actor);
   
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->progress_bar))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->progress_bar))
     clutter_actor_paint (priv->progress_bar);
   
   clutter_actor_paint (CLUTTER_ACTOR (priv->table));
@@ -235,6 +235,28 @@ static void
 mwb_radical_bar_pick (ClutterActor *actor, const ClutterColor *color)
 {
   mwb_radical_bar_paint (actor);
+}
+
+static void
+mwb_radical_bar_map (ClutterActor *actor)
+{
+  MwbRadicalBarPrivate *priv = MWB_RADICAL_BAR (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mwb_radical_bar_parent_class)->map (actor);
+
+  clutter_actor_map (priv->progress_bar);
+  clutter_actor_map (CLUTTER_ACTOR (priv->table));
+}
+
+static void
+mwb_radical_bar_unmap (ClutterActor *actor)
+{
+  MwbRadicalBarPrivate *priv = MWB_RADICAL_BAR (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mwb_radical_bar_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (priv->progress_bar);
+  clutter_actor_unmap (CLUTTER_ACTOR (priv->table));
 }
 
 static void
@@ -255,6 +277,8 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
   actor_class->get_preferred_height = mwb_radical_bar_get_preferred_height;
   actor_class->paint = mwb_radical_bar_paint;
   actor_class->pick = mwb_radical_bar_pick;
+  actor_class->map = mwb_radical_bar_map;
+  actor_class->unmap = mwb_radical_bar_unmap;
 
   g_object_class_install_property (object_class,
                                    PROP_ICON,

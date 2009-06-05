@@ -97,9 +97,29 @@ penge_grid_view_paint (ClutterActor *actor)
 }
 
 static void
+penge_grid_view_map (ClutterActor *actor)
+{
+  PengeGridViewPrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->map (actor);
+
+  clutter_actor_map (priv->background);
+}
+
+static void
+penge_grid_view_unmap (ClutterActor *actor)
+{
+  PengeGridViewPrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (priv->background);
+}
+
+static void
 penge_grid_view_allocate (ClutterActor          *actor,
                           const ClutterActorBox *box,
-                          gboolean               absolute_origin_changed)
+                          ClutterAllocationFlags flags)
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (actor);
   ClutterActorBox child_box;
@@ -109,11 +129,11 @@ penge_grid_view_allocate (ClutterActor          *actor,
   child_box.y1 = 0;
   child_box.x2 = box->x2 - box->x1;
   child_box.y2 = box->y2 - box->y1;
-  clutter_actor_allocate (priv->background, &child_box, absolute_origin_changed);
+  clutter_actor_allocate (priv->background, &child_box, flags);
 
   CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->allocate (actor,
                                                                 box,
-                                                                absolute_origin_changed);
+                                                                flags);
 }
 
 static void
@@ -131,6 +151,8 @@ penge_grid_view_class_init (PengeGridViewClass *klass)
 
   actor_class->paint = penge_grid_view_paint;
   actor_class->allocate = penge_grid_view_allocate;
+  actor_class->map = penge_grid_view_map;
+  actor_class->unmap = penge_grid_view_unmap;
 
   signals[ACTIVATED_SIGNAL] =
     g_signal_new ("activated",

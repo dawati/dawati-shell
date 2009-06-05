@@ -73,8 +73,8 @@ struct _MnbSwitcherAppPrivate
   guint         focus_id;
   guint         raised_id;
 
-  ClutterUnit   w_h_ratio;
-  ClutterUnit   natural_width;
+  gfloat   w_h_ratio;
+  gfloat   natural_width;
 };
 
 GType mnb_switcher_app_get_type (void);
@@ -120,9 +120,9 @@ mnb_switcher_app_dispose (GObject *object)
 
 static void
 mnb_switcher_app_get_preferred_width (ClutterActor *actor,
-                                      ClutterUnit   for_height,
-                                      ClutterUnit  *min_width_p,
-                                      ClutterUnit  *natural_width_p)
+                                      gfloat   for_height,
+                                      gfloat  *min_width_p,
+                                      gfloat  *natural_width_p)
 {
   MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
 
@@ -145,9 +145,9 @@ mnb_switcher_app_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_switcher_app_get_preferred_height (ClutterActor *actor,
-                                       ClutterUnit   for_width,
-                                       ClutterUnit  *min_height_p,
-                                       ClutterUnit  *natural_height_p)
+                                       gfloat   for_width,
+                                       gfloat  *min_height_p,
+                                       gfloat  *natural_height_p)
 {
   MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
 
@@ -409,7 +409,7 @@ dnd_begin_cb (NbtkWidget   *table,
       dragged_priv->hover_timeout_id = 0;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (dragged_priv->tooltip))
+  if (CLUTTER_ACTOR_IS_MAPPED (dragged_priv->tooltip))
     {
       nbtk_tooltip_hide (NBTK_TOOLTIP (dragged_priv->tooltip));
 
@@ -663,7 +663,7 @@ clone_leave_event_cb (ClutterActor *actor,
       child_priv->hover_timeout_id = 0;
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (child_priv->tooltip))
+  if (CLUTTER_ACTOR_IS_MAPPED (child_priv->tooltip))
     {
       nbtk_tooltip_hide (NBTK_TOOLTIP (child_priv->tooltip));
 
@@ -934,7 +934,7 @@ screen_n_workspaces_notify (MetaScreen *screen,
   GList       *k;
   struct ws_remove_data remove_data;
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (switcher)))
+  if (!CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (switcher)))
     return;
 
   n_c_workspaces = meta_screen_get_n_workspaces (screen);
@@ -1162,7 +1162,7 @@ mnb_switcher_show (ClutterActor *self)
   gboolean      found_focus = FALSE;
   ClutterActor *toolbar;
   gboolean      switcher_empty = FALSE;
-  gdouble       cell_width, cell_height;
+  gfloat   cell_width, cell_height;
 
   struct win_location
   {
@@ -1187,7 +1187,7 @@ mnb_switcher_show (ClutterActor *self)
       return;
     }
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+  if (!CLUTTER_ACTOR_IS_MAPPED (toolbar))
     {
       CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
       return;
@@ -1220,8 +1220,8 @@ mnb_switcher_show (ClutterActor *self)
   priv->active_ws = active_ws = meta_screen_get_active_workspace_index (screen);
   window_list = mutter_plugin_get_windows (priv->plugin);
 
-  cell_width  = 0.8 * (gdouble)screen_width  / (gdouble)ws_count;
-  cell_height = 0.8 * (gdouble)screen_height / (gdouble)ws_count;
+  cell_width  = 0.8 * (gfloat)screen_width  / (gfloat)ws_count;
+  cell_height = 0.8 * (gfloat)screen_height / (gfloat)ws_count;
 
   /* Handle case where no apps open.. */
   if (ws_count == 1)
@@ -1321,13 +1321,13 @@ mnb_switcher_show (ClutterActor *self)
       ClutterActor          *texture, *c_tx, *clone;
       gint                   ws_indx;
       MetaCompWindowType     type;
-      guint                  w, h;
+      gfloat            w, h;
       struct origin_data    *origin_data;
       MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
       gchar                 *title;
       MnbSwitcherAppPrivate *app_priv;
       gdouble                w_h_ratio;
-      guint                  clone_w, clone_h;
+      gfloat            clone_w, clone_h;
 
       ws_indx = mutter_window_get_workspace (mw);
       type = mutter_window_get_window_type (mw);
@@ -1374,6 +1374,10 @@ mnb_switcher_show (ClutterActor *self)
       nbtk_widget_set_style_class_name (NBTK_WIDGET (clone),
                                         "switcher-application");
 
+      clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
+      clutter_actor_show (clone);
+      clutter_actor_set_reactive (clone, TRUE);
+
       /*
        * If the window has focus, apply the active style.
        */
@@ -1403,30 +1407,29 @@ mnb_switcher_show (ClutterActor *self)
         }
 
       clutter_actor_get_size (c_tx, &w, &h);
+      w_h_ratio = (gfloat)w/(gfloat)h;
 
-      w_h_ratio = (ClutterUnit)w/(ClutterUnit)h;
-
-      MNB_SWITCHER_APP (clone)->priv->natural_width = (ClutterUnit)w;
+      MNB_SWITCHER_APP (clone)->priv->natural_width = (gfloat)w;
       MNB_SWITCHER_APP (clone)->priv->w_h_ratio = w_h_ratio;
 
       {
         /*
          * Fit into the cell at maximum size without w/h ratio distortion.
          */
-        gdouble w_ratio, h_ratio;
+        gfloat w_ratio, h_ratio;
 
-        w_ratio = cell_width  / (gdouble)w;
-        h_ratio = cell_height / (gdouble)h;
+        w_ratio = cell_width  / w;
+        h_ratio = cell_height / h;
 
         if (w_ratio < h_ratio)
           {
-            clone_w = (guint)(cell_width  * w_ratio);
-            clone_h = (guint)((gdouble) clone_w / w_h_ratio);
+            clone_w = cell_width  * w_ratio;
+            clone_h = clone_w / w_h_ratio;
           }
         else
           {
-            clone_h = (guint)(cell_height * h_ratio);
-            clone_w = (guint)((gdouble) clone_h * w_h_ratio);
+            clone_h = cell_height * h_ratio;
+            clone_w = clone_h * w_h_ratio;
           }
 
         /*
@@ -1448,10 +1451,6 @@ mnb_switcher_show (ClutterActor *self)
 
         clutter_actor_set_size (clone, clone_w, clone_h);
       }
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
-
-      clutter_actor_set_reactive (clone, TRUE);
 
       origin_data = g_new0 (struct origin_data, 1);
       origin_data->clone = clone;
@@ -1868,7 +1867,7 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
   while (toolbar && !MNB_IS_TOOLBAR (toolbar))
     toolbar = clutter_actor_get_parent (toolbar);
 
-  if (toolbar && CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+  if (toolbar && CLUTTER_ACTOR_IS_MAPPED (toolbar))
     {
       moblin_netbook_focus_stage (priv->plugin, CurrentTime);
     }
@@ -2589,7 +2588,7 @@ mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
 {
   MnbSwitcher *switcher = MNB_SWITCHER (data);
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (switcher))
+  if (!CLUTTER_ACTOR_IS_MAPPED (switcher))
     {
       struct alt_tab_show_complete_data *alt_data;
 

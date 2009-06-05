@@ -63,7 +63,7 @@ _find_widget_by_pseudo_class_cb (ClutterActor                      *actor,
 {
   const gchar *pseudo_class;
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
+  if (!CLUTTER_ACTOR_IS_MAPPED (actor))
     return;
 
   if (!NBTK_IS_STYLABLE (actor))
@@ -91,8 +91,8 @@ mnb_launcher_grid_find_widget_by_pseudo_class (MnbLauncherGrid  *grid,
 }
 
 typedef struct {
-  ClutterUnit  x;
-  ClutterUnit  y;
+  gfloat  x;
+  gfloat  y;
   NbtkWidget  *widget;
 } find_widget_by_point_data_t;
 
@@ -100,12 +100,12 @@ static void
 _find_widget_by_point_cb (ClutterActor                *actor,
                           find_widget_by_point_data_t *data)
 {
-  ClutterUnit left = clutter_actor_get_xu (actor);
-  ClutterUnit top = clutter_actor_get_yu (actor);
-  ClutterUnit right = left + clutter_actor_get_widthu (actor);
-  ClutterUnit bottom = top + clutter_actor_get_heightu (actor);
+  gfloat left = clutter_actor_get_x (actor);
+  gfloat top = clutter_actor_get_y (actor);
+  gfloat right = left + clutter_actor_get_width (actor);
+  gfloat bottom = top + clutter_actor_get_height (actor);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (actor) &&
+  if (CLUTTER_ACTOR_IS_MAPPED (actor) &&
       left <= data->x &&
       top <= data->y &&
       right >= data->x &&
@@ -117,8 +117,8 @@ _find_widget_by_point_cb (ClutterActor                *actor,
 
 NbtkWidget *
 mnb_launcher_grid_find_widget_by_point (MnbLauncherGrid *self,
-                                        ClutterUnit      x,
-                                        ClutterUnit      y)
+                                        gfloat           x,
+                                        gfloat           y)
 {
   find_widget_by_point_data_t data;
 
@@ -137,18 +137,18 @@ NbtkWidget *
 mnb_launcher_grid_keynav_up (MnbLauncherGrid *self)
 {
   NbtkWidget  *old, *new;
-  ClutterUnit  x, y;
+  gfloat       x, y;
 
   old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) -
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_row_gap (NBTK_GRID (self)) -
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -165,18 +165,18 @@ static NbtkWidget *
 mnb_launcher_grid_keynav_right (MnbLauncherGrid *self)
 {
   NbtkWidget  *old, *new;
-  ClutterUnit  x, y;
+  gfloat       x, y;
 
   old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_column_gap (NBTK_GRID (self)) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) * 1.5;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -193,18 +193,18 @@ NbtkWidget *
 mnb_launcher_grid_keynav_down (MnbLauncherGrid *self)
 {
   NbtkWidget  *old, *new;
-  ClutterUnit  x, y;
+  gfloat       x, y;
 
   old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_row_gap (NBTK_GRID (self)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -221,18 +221,18 @@ static NbtkWidget *
 mnb_launcher_grid_keynav_left (MnbLauncherGrid *self)
 {
   NbtkWidget  *old, *new;
-  ClutterUnit  x, y;
+  gfloat       x, y;
 
   old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (old == NULL)
     return NULL;
 
-  x = clutter_actor_get_xu (CLUTTER_ACTOR (old)) -
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_column_gap (NBTK_GRID (self)) -
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -250,7 +250,7 @@ mnb_launcher_grid_keynav_wrap_up (MnbLauncherGrid *self)
 {
   NbtkWidget  *old, *new;
   NbtkPadding  padding;
-  ClutterUnit  x, y;
+  gfloat       x, y;
 
   old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (old == NULL)
@@ -258,13 +258,13 @@ mnb_launcher_grid_keynav_wrap_up (MnbLauncherGrid *self)
 
   nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
-  x = clutter_actor_get_widthu (CLUTTER_ACTOR (self)) -
+  x = clutter_actor_get_width (CLUTTER_ACTOR (self)) -
       padding.right -
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) -
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
       nbtk_grid_get_row_gap (NBTK_GRID (self)) -
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -282,7 +282,7 @@ mnb_launcher_grid_keynav_wrap_down (MnbLauncherGrid *self)
 {
   NbtkWidget  *old, *new;
   NbtkPadding  padding;
-  ClutterUnit  x, y;
+  gfloat       x, y;
 
   old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (old == NULL)
@@ -291,11 +291,11 @@ mnb_launcher_grid_keynav_wrap_down (MnbLauncherGrid *self)
   nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
   x = padding.left +
-      clutter_actor_get_widthu (CLUTTER_ACTOR (old)) / 2;
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  y = clutter_actor_get_yu (CLUTTER_ACTOR (old)) +
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
       nbtk_grid_get_row_gap (NBTK_GRID (self)) +
-      clutter_actor_get_heightu (CLUTTER_ACTOR (old)) * 1.5;
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
@@ -313,7 +313,7 @@ mnb_launcher_grid_keynav_first (MnbLauncherGrid *self)
 {
   NbtkWidget  *widget;
   NbtkPadding  padding;
-  ClutterUnit  x, y;
+  gfloat       x, y;
 
   nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 

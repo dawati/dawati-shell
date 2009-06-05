@@ -47,7 +47,7 @@ struct _MnbStatusEntryPrivate
   gchar *old_status_text;
   gchar *status_time;
 
-  ClutterUnit separator_x;
+  gfloat separator_x;
 
   NbtkPadding padding;
 
@@ -167,12 +167,12 @@ on_button_clicked (NbtkButton     *button,
 
 static void
 mnb_status_entry_get_preferred_width (ClutterActor *actor,
-                                      ClutterUnit   for_height,
-                                      ClutterUnit  *min_width_p,
-                                      ClutterUnit  *natural_width_p)
+                                      gfloat        for_height,
+                                      gfloat       *min_width_p,
+                                      gfloat       *natural_width_p)
 {
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
-  ClutterUnit min_width, natural_width;
+  gfloat min_width, natural_width;
 
   clutter_actor_get_preferred_width (priv->status_entry, for_height,
                                      &min_width,
@@ -189,12 +189,12 @@ mnb_status_entry_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_status_entry_get_preferred_height (ClutterActor *actor,
-                                       ClutterUnit   for_width,
-                                       ClutterUnit  *min_height_p,
-                                       ClutterUnit  *natural_height_p)
+                                       gfloat        for_width,
+                                       gfloat       *min_height_p,
+                                       gfloat       *natural_height_p)
 {
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
-  ClutterUnit min_height, natural_height;
+  gfloat min_height, natural_height;
 
   clutter_actor_get_preferred_height (priv->status_entry, for_width,
                                       &min_height,
@@ -212,21 +212,21 @@ mnb_status_entry_get_preferred_height (ClutterActor *actor,
 static void
 mnb_status_entry_allocate (ClutterActor          *actor,
                            const ClutterActorBox *box,
-                           gboolean               origin_changed)
+                           ClutterAllocationFlags flags)
 {
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
   ClutterActorClass *parent_class;
-  ClutterUnit available_width, available_height;
-  ClutterUnit min_width, min_height;
-  ClutterUnit natural_width, natural_height;
-  ClutterUnit button_width, button_height;
-  ClutterUnit service_width, service_height;
-  ClutterUnit icon_width, icon_height;
-  ClutterUnit text_width, text_height;
+  gfloat available_width, available_height;
+  gfloat min_width, min_height;
+  gfloat natural_width, natural_height;
+  gfloat button_width, button_height;
+  gfloat service_width, service_height;
+  gfloat icon_width, icon_height;
+  gfloat text_width, text_height;
   ClutterActorBox child_box = { 0, };
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class);
-  parent_class->allocate (actor, box, origin_changed);
+  parent_class->allocate (actor, box, flags);
 
   available_width  = (int) (box->x2 - box->x1
                    - priv->padding.left
@@ -254,7 +254,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
    */
 
   icon_height = CANCEL_ICON_SIZE;
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->cancel_icon))
     clutter_actor_get_preferred_width (priv->cancel_icon,
                                        icon_height,
                                        NULL,
@@ -262,7 +262,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   else
     icon_width = 0;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
     {
       clutter_actor_get_preferred_width (priv->service_label,
                                          available_height,
@@ -292,10 +292,10 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   child_box.y1 = (int) priv->padding.top;
   child_box.x2 = (int) (child_box.x1 + text_width);
   child_box.y2 = (int) (child_box.y1 + text_height);
-  clutter_actor_allocate (priv->status_entry, &child_box, origin_changed);
+  clutter_actor_allocate (priv->status_entry, &child_box, flags);
 
   /* service label */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
     {
       child_box.x1 = (int) (available_width
                    - priv->padding.right
@@ -308,11 +308,11 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                    + ((available_height - service_height) / 2));
       child_box.x2 = (int) (child_box.x1 + service_width);
       child_box.y2 = (int) (child_box.y1 + service_height);
-      clutter_actor_allocate (priv->service_label, &child_box, origin_changed);
+      clutter_actor_allocate (priv->service_label, &child_box, flags);
     }
 
   /* cancel icon */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->cancel_icon))
     {
       child_box.x1 = (int) (available_width
                    - priv->padding.right
@@ -323,7 +323,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                    + ((available_height - icon_height) / 2));
       child_box.x2 = (int) (child_box.x1 + icon_width);
       child_box.y2 = (int) (child_box.y1 + icon_height);
-      clutter_actor_allocate (priv->cancel_icon, &child_box, origin_changed);
+      clutter_actor_allocate (priv->cancel_icon, &child_box, flags);
     }
 
   /* separator */
@@ -339,7 +339,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
                + ((available_height - button_height) / 2));
   child_box.x2 = (int) (child_box.x1 + button_width);
   child_box.y2 = (int) (child_box.y1 + button_height);
-  clutter_actor_allocate (priv->button, &child_box, origin_changed);
+  clutter_actor_allocate (priv->button, &child_box, flags);
 }
 
 static void
@@ -349,17 +349,17 @@ mnb_status_entry_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->paint (actor);
 
-  if (priv->status_entry && CLUTTER_ACTOR_IS_VISIBLE (priv->status_entry))
+  if (priv->status_entry && CLUTTER_ACTOR_IS_MAPPED (priv->status_entry))
     clutter_actor_paint (priv->status_entry);
 
-  if (priv->service_label && CLUTTER_ACTOR_IS_VISIBLE (priv->service_label))
+  if (priv->service_label && CLUTTER_ACTOR_IS_MAPPED (priv->service_label))
     clutter_actor_paint (priv->service_label);
 
-  if (priv->cancel_icon && CLUTTER_ACTOR_IS_VISIBLE (priv->cancel_icon))
+  if (priv->cancel_icon && CLUTTER_ACTOR_IS_MAPPED (priv->cancel_icon))
     clutter_actor_paint (priv->cancel_icon);
 
   if (priv->button &&
-      CLUTTER_ACTOR_IS_VISIBLE (priv->button) &&
+      CLUTTER_ACTOR_IS_MAPPED (priv->button) &&
       priv->in_hover &&
       priv->separator_x != 0)
     {
@@ -367,9 +367,9 @@ mnb_status_entry_paint (ClutterActor *actor)
       gfloat x_pos, start_y, end_y;
 
       clutter_actor_get_allocation_box (actor, &alloc);
-      x_pos = CLUTTER_UNITS_TO_FLOAT (priv->separator_x);
-      start_y = CLUTTER_UNITS_TO_FLOAT (priv->padding.top);
-      end_y = CLUTTER_UNITS_TO_FLOAT (alloc.y2 - priv->padding.bottom - 8);
+      x_pos = priv->separator_x;
+      start_y = priv->padding.top;
+      end_y = alloc.y2 - priv->padding.bottom - 8;
 
       cogl_set_source_color4ub (204, 204, 204, 255);
       cogl_path_move_to (x_pos, start_y);
@@ -377,7 +377,7 @@ mnb_status_entry_paint (ClutterActor *actor)
       cogl_path_stroke ();
     }
 
-  if (priv->button && CLUTTER_ACTOR_IS_VISIBLE (priv->button))
+  if (priv->button && CLUTTER_ACTOR_IS_MAPPED (priv->button))
     clutter_actor_paint (priv->button);
 }
 
@@ -401,6 +401,46 @@ mnb_status_entry_pick (ClutterActor       *actor,
 
   if (priv->button && clutter_actor_should_pick_paint (priv->button))
     clutter_actor_paint (priv->button);
+}
+
+static void
+mnb_status_entry_map (ClutterActor *actor)
+{
+  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->map (actor);
+
+  if (priv->status_entry)
+    clutter_actor_map (priv->status_entry);
+
+  if (priv->service_label)
+    clutter_actor_map (priv->service_label);
+
+  if (priv->cancel_icon)
+    clutter_actor_map (priv->cancel_icon);
+
+  if (priv->button)
+    clutter_actor_map (priv->button);
+}
+
+static void
+mnb_status_entry_unmap (ClutterActor *actor)
+{
+  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->unmap (actor);
+
+  if (priv->status_entry)
+    clutter_actor_unmap (priv->status_entry);
+
+  if (priv->service_label)
+    clutter_actor_unmap (priv->service_label);
+
+  if (priv->cancel_icon)
+    clutter_actor_unmap (priv->cancel_icon);
+
+  if (priv->button)
+    clutter_actor_unmap (priv->button);
 }
 
 static gboolean
@@ -555,6 +595,8 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
   actor_class->paint = mnb_status_entry_paint;
   actor_class->pick = mnb_status_entry_pick;
   actor_class->button_release_event = mnb_status_entry_button_release;
+  actor_class->map = mnb_status_entry_map;
+  actor_class->unmap = mnb_status_entry_unmap;
 
   widget_class->style_changed = mnb_status_entry_style_changed;
 

@@ -108,28 +108,54 @@ mnb_notification_cluster_paint (ClutterActor *actor)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->control))
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->control))
     clutter_actor_paint (CLUTTER_ACTOR(priv->control));
 
-  if (priv->notifiers && CLUTTER_ACTOR_IS_VISIBLE (priv->notifiers))
+  if (priv->notifiers && CLUTTER_ACTOR_IS_MAPPED (priv->notifiers))
     clutter_actor_paint (CLUTTER_ACTOR(priv->notifiers));
 }
 
 static void
-mnb_notification_cluster_get_preferred_width (ClutterActor *actor,
-                                              ClutterUnit   for_height,
-                                              ClutterUnit  *min_width,
-                                              ClutterUnit  *natural_width)
+mnb_notification_cluster_map (ClutterActor *actor)
 {
-  *min_width = CLUTTER_UNITS_FROM_DEVICE(CLUSTER_WIDTH);
-  *natural_width = CLUTTER_UNITS_FROM_DEVICE(CLUSTER_WIDTH);
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class)->map (actor);
+
+  clutter_actor_map (CLUTTER_ACTOR (priv->control));
+
+  if (priv->notifiers)
+    clutter_actor_map (CLUTTER_ACTOR (priv->notifiers));
+}
+
+static void
+mnb_notification_cluster_unmap (ClutterActor *actor)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (CLUTTER_ACTOR (priv->control));
+
+  if (priv->notifiers)
+    clutter_actor_unmap (CLUTTER_ACTOR (priv->notifiers));
+}
+
+static void
+mnb_notification_cluster_get_preferred_width (ClutterActor *actor,
+                                              gfloat        for_height,
+                                              gfloat       *min_width,
+                                              gfloat       *natural_width)
+{
+  *min_width = CLUSTER_WIDTH;
+  *natural_width = CLUSTER_WIDTH;
 }
 
 static void
 mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
-                                               ClutterUnit   for_width,
-                                               ClutterUnit  *min_height,
-                                               ClutterUnit  *natural_height)
+                                               gfloat        for_width,
+                                               gfloat       *min_height,
+                                               gfloat       *natural_height)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
 
@@ -138,7 +164,7 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
 
   if (priv->notifiers)
     {
-      ClutterUnit m_height, p_height;
+      gfloat m_height, p_height;
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           CLUSTER_WIDTH, &m_height, &p_height);
@@ -147,14 +173,14 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
       *natural_height += p_height;
     }
 
-  if (priv->control && CLUTTER_ACTOR_IS_VISIBLE (priv->control))
+  if (priv->control && CLUTTER_ACTOR_IS_MAPPED (priv->control))
     {
       *min_height
-           = clutter_actor_get_yu (CLUTTER_ACTOR (priv->control))
-             + clutter_actor_get_heightu (CLUTTER_ACTOR (priv->control));
+           = clutter_actor_get_y (CLUTTER_ACTOR (priv->control))
+           + clutter_actor_get_height (CLUTTER_ACTOR (priv->control));
       *natural_height
-           = clutter_actor_get_yu (CLUTTER_ACTOR (priv->control))
-             + clutter_actor_get_heightu (CLUTTER_ACTOR (priv->control));
+           = clutter_actor_get_y (CLUTTER_ACTOR (priv->control))
+           + clutter_actor_get_height (CLUTTER_ACTOR (priv->control));
     }
 }
 
@@ -162,14 +188,14 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
 static void
 mnb_notification_cluster_allocate (ClutterActor          *actor,
                                    const ClutterActorBox *box,
-                                   gboolean               origin_changed)
+                                   ClutterAllocationFlags flags)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class);
 
-  klass->allocate (actor, box, origin_changed);
+  klass->allocate (actor, box, flags);
 
   /* <rant>*sigh* and composite actors used to be so simple...</rant> */
 
@@ -185,22 +211,22 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
       };
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->control),
-                              &control_box, origin_changed);
+                              &control_box, flags);
     }
 
   if (priv->notifiers)
     {
-      ClutterUnit m_height, p_height;
+      gfloat m_height, p_height;
       ClutterActorBox notifier_box = { 0, };
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           CLUSTER_WIDTH, &m_height, &p_height);
 
-      notifier_box.x2 = CLUTTER_UNITS_FROM_DEVICE (CLUSTER_WIDTH);
+      notifier_box.x2 = CLUSTER_WIDTH;
       notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
-                              &notifier_box, origin_changed);
+                              &notifier_box, flags);
     }
 }
 
@@ -235,6 +261,8 @@ mnb_notification_cluster_class_init (MnbNotificationClusterClass *klass)
   clutter_class->get_preferred_width
     = mnb_notification_cluster_get_preferred_width;
   clutter_class->pick = mnb_notification_cluster_pick;
+  clutter_class->map = mnb_notification_cluster_map;
+  clutter_class->unmap = mnb_notification_cluster_unmap;
 
   cluster_signals[SYNC_INPUT_REGION] =
     g_signal_new ("sync-input-region",
@@ -523,7 +551,7 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
               if (prev_height != new_height && priv->n_notifiers > 1)
                 {
-                  gint new_y;
+                  gfloat new_y;
 
                   new_y = clutter_actor_get_y (CLUTTER_ACTOR(priv->control))
                                  - (prev_height - new_height);

@@ -693,12 +693,12 @@ mnb_launcher_set_show_fav_apps (MnbLauncher     *self,
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  if (show && !CLUTTER_ACTOR_IS_VISIBLE (priv->fav_label))
+  if (show && !CLUTTER_ACTOR_IS_MAPPED (priv->fav_label))
     {
       clutter_actor_show (priv->fav_label);
       clutter_actor_show (priv->fav_grid);
     }
-  else if (!show && CLUTTER_ACTOR_IS_VISIBLE (priv->fav_label))
+  else if (!show && CLUTTER_ACTOR_IS_MAPPED (priv->fav_label))
     {
       clutter_actor_hide (priv->fav_label);
       clutter_actor_hide (priv->fav_grid);
@@ -938,7 +938,7 @@ mnb_launcher_fill (MnbLauncher     *self)
   clutter_actor_set_name (priv->apps_grid, "launcher-apps-grid");
   clutter_actor_set_width (priv->apps_grid, priv->width);
   nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
-                         CLUTTER_UNITS_FROM_INT (EXPANDER_GRID_ROW_GAP));
+                         EXPANDER_GRID_ROW_GAP);
 
   priv->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                     g_free, NULL);
@@ -1055,7 +1055,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
       priv->is_filtering = FALSE;
 
       nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
-                             CLUTTER_UNITS_FROM_INT (EXPANDER_GRID_ROW_GAP));
+                             EXPANDER_GRID_ROW_GAP);
       nbtk_grid_set_column_gap (NBTK_GRID (priv->apps_grid), 0);
 
       if (container_has_children (CLUTTER_CONTAINER (priv->fav_grid)))
@@ -1212,9 +1212,9 @@ entry_keynav_cb (MnbEntry         *entry,
             (keyval == CLUTTER_Up ||
             keyval == CLUTTER_Left))
         {
-          ClutterUnit gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
-          ClutterUnit x = clutter_actor_get_xu (CLUTTER_ACTOR (expander));
-          ClutterUnit y = clutter_actor_get_yu (CLUTTER_ACTOR (expander));
+          gfloat gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
+          gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
+          gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander));
 
           expander = mnb_launcher_grid_find_widget_by_point (
                       MNB_LAUNCHER_GRID (priv->apps_grid),
@@ -1238,10 +1238,10 @@ entry_keynav_cb (MnbEntry         *entry,
             (keyval == CLUTTER_Down ||
             keyval == CLUTTER_Right))
         {
-          ClutterUnit gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
-          ClutterUnit x = clutter_actor_get_xu (CLUTTER_ACTOR (expander));
-          ClutterUnit y = clutter_actor_get_yu (CLUTTER_ACTOR (expander)) +
-                          clutter_actor_get_heightu (CLUTTER_ACTOR (expander));
+          gfloat gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
+          gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
+          gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander)) +
+                          clutter_actor_get_height (CLUTTER_ACTOR (expander));
 
           expander = mnb_launcher_grid_find_widget_by_point (
                       MNB_LAUNCHER_GRID (priv->apps_grid),
@@ -1390,7 +1390,7 @@ _constructor (GType                  gtype,
   priv->filter_entry = (ClutterActor *) mnb_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->filter_entry),
-                           CLUTTER_UNITS_FROM_DEVICE (FILTER_ENTRY_WIDTH));
+                           FILTER_ENTRY_WIDTH);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
                                         CLUTTER_ACTOR (priv->filter_entry),
                                         0, 1,

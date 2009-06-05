@@ -31,8 +31,8 @@
 
 #define MNB_STATUS_ROW_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_STATUS_ROW, MnbStatusRowPrivate))
 
-#define ICON_SIZE       (CLUTTER_UNITS_FROM_FLOAT (48.0))
-#define H_PADDING       (CLUTTER_UNITS_FROM_FLOAT (9.0))
+#define ICON_SIZE       48.0
+#define H_PADDING       9.0
 
 struct _MnbStatusRowPrivate
 {
@@ -50,7 +50,7 @@ struct _MnbStatusRowPrivate
   guint in_hover  : 1;
   guint is_online : 1;
 
-  ClutterUnit icon_separator_x;
+  gfloat icon_separator_x;
 
   MojitoClient *client;
   MojitoClientView *view;
@@ -70,12 +70,12 @@ G_DEFINE_TYPE (MnbStatusRow, mnb_status_row, NBTK_TYPE_WIDGET);
 
 static void
 mnb_status_row_get_preferred_width (ClutterActor *actor,
-                                    ClutterUnit   for_height,
-                                    ClutterUnit  *min_width_p,
-                                    ClutterUnit  *natural_width_p)
+                                    gfloat        for_height,
+                                    gfloat       *min_width_p,
+                                    gfloat       *natural_width_p)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
-  ClutterUnit min_width, natural_width;
+  gfloat min_width, natural_width;
 
   clutter_actor_get_preferred_width (priv->entry, for_height,
                                      &min_width,
@@ -92,9 +92,9 @@ mnb_status_row_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_status_row_get_preferred_height (ClutterActor *actor,
-                                     ClutterUnit   for_width,
-                                     ClutterUnit  *min_height_p,
-                                     ClutterUnit  *natural_height_p)
+                                     gfloat        for_width,
+                                     gfloat       *min_height_p,
+                                     gfloat       *natural_height_p)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
 
@@ -107,20 +107,20 @@ mnb_status_row_get_preferred_height (ClutterActor *actor,
 
 static void
 mnb_status_row_allocate (ClutterActor          *actor,
-                           const ClutterActorBox *box,
-                           gboolean               origin_changed)
+                         const ClutterActorBox *box,
+                         ClutterAllocationFlags flags)
 {
   MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
   ClutterActorClass *parent_class;
-  ClutterUnit available_width, available_height;
-  ClutterUnit min_width, min_height;
-  ClutterUnit natural_width, natural_height;
-  ClutterUnit text_width, text_height;
+  gfloat available_width, available_height;
+  gfloat min_width, min_height;
+  gfloat natural_width, natural_height;
+  gfloat text_width, text_height;
   NbtkPadding border = { 0, };
   ClutterActorBox child_box = { 0, };
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_status_row_parent_class);
-  parent_class->allocate (actor, box, origin_changed);
+  parent_class->allocate (actor, box, flags);
 
 //  nbtk_widget_get_border (NBTK_WIDGET (actor), &border);
 
@@ -152,7 +152,7 @@ mnb_status_row_allocate (ClutterActor          *actor,
   child_box.y1 = border.top  + priv->padding.top;
   child_box.x2 = child_box.x1 + ICON_SIZE;
   child_box.y2 = child_box.y1 + ICON_SIZE;
-  clutter_actor_allocate (priv->icon, &child_box, origin_changed);
+  clutter_actor_allocate (priv->icon, &child_box, flags);
 
   /* separator */
   priv->icon_separator_x = child_box.x2 + H_PADDING;
@@ -172,7 +172,7 @@ mnb_status_row_allocate (ClutterActor          *actor,
                + ((ICON_SIZE - text_height) / 2));
   child_box.x2 = child_box.x1 + text_width;
   child_box.y2 = child_box.y1 + text_height;
-  clutter_actor_allocate (priv->entry, &child_box, origin_changed);
+  clutter_actor_allocate (priv->entry, &child_box, flags);
 }
 
 static void
@@ -182,10 +182,10 @@ mnb_status_row_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_status_row_parent_class)->paint (actor);
 
-  if (priv->icon && CLUTTER_ACTOR_IS_VISIBLE (priv->icon))
+  if (priv->icon && CLUTTER_ACTOR_IS_MAPPED (priv->icon))
     clutter_actor_paint (priv->icon);
 
-  if (priv->entry && CLUTTER_ACTOR_IS_VISIBLE (priv->entry))
+  if (priv->entry && CLUTTER_ACTOR_IS_MAPPED (priv->entry))
     clutter_actor_paint (priv->entry);
 }
 
@@ -203,6 +203,34 @@ mnb_status_row_pick (ClutterActor       *actor,
 
   if (priv->entry && clutter_actor_should_pick_paint (priv->entry))
     clutter_actor_paint (priv->entry);
+}
+
+static void
+mnb_status_row_map (ClutterActor *actor)
+{
+  MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_status_row_parent_class)->map (actor);
+
+  if (priv->icon)
+    clutter_actor_map (priv->icon);
+
+  if (priv->entry)
+    clutter_actor_map (priv->entry);
+}
+
+static void
+mnb_status_row_unmap (ClutterActor *actor)
+{
+  MnbStatusRowPrivate *priv = MNB_STATUS_ROW (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_status_row_parent_class)->unmap (actor);
+
+  if (priv->icon)
+    clutter_actor_unmap (priv->icon);
+
+  if (priv->entry)
+    clutter_actor_unmap (priv->entry);
 }
 
 static gboolean
@@ -652,6 +680,8 @@ mnb_status_row_class_init (MnbStatusRowClass *klass)
   actor_class->allocate = mnb_status_row_allocate;
   actor_class->paint = mnb_status_row_paint;
   actor_class->pick = mnb_status_row_pick;
+  actor_class->map = mnb_status_row_map;
+  actor_class->unmap = mnb_status_row_unmap;
   actor_class->enter_event = mnb_status_row_enter;
   actor_class->leave_event = mnb_status_row_leave;
   actor_class->button_release_event = mnb_status_row_button_release;

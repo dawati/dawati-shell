@@ -155,8 +155,8 @@ static void
 mnb_drop_down_show (ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
-  gint x, y;
-  guint height, width;
+  gfloat x, y;
+  gfloat height, width;
   ClutterAnimation *animation;
   ClutterActor *toolbar;
 
@@ -181,7 +181,7 @@ mnb_drop_down_show (ClutterActor *actor)
       return;
     }
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+  if (!CLUTTER_ACTOR_IS_MAPPED (toolbar))
     {
       /*
        * We need to show the toolbar first, and only when it is visible
@@ -350,7 +350,7 @@ mnb_button_toggled_cb (NbtkWidget  *button,
 static void
 mnb_drop_down_allocate (ClutterActor          *actor,
                         const ClutterActorBox *box,
-                        gboolean               origin_changed)
+                        ClutterAllocationFlags flags)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
   ClutterActorClass  *parent_class;
@@ -390,7 +390,7 @@ mnb_drop_down_allocate (ClutterActor          *actor,
 #endif
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class);
-  parent_class->allocate (actor, box, origin_changed);
+  parent_class->allocate (actor, box, flags);
 }
 
 static void
