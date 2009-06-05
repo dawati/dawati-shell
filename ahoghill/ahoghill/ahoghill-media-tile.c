@@ -196,6 +196,7 @@ ahoghill_media_tile_init (AhoghillMediaTile *self)
     self->priv = priv;
 
     clutter_actor_set_size (CLUTTER_ACTOR (self), 120, 151);
+    clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
     priv->icon = g_object_new (AHOGHILL_TYPE_MEDIA_ART, NULL);
     clutter_actor_set_size (CLUTTER_ACTOR (priv->icon),
