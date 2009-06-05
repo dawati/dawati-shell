@@ -425,7 +425,7 @@ _new_connection_cb (GtkButton *button,
 	  guint i;
 	  for (i = 0; security[i] != '\0'; i++)
 	  {
-	    security[i] = g_ascii_toupper (security[i]);
+	    security[i] = g_ascii_tolower (security[i]);
 	  }
 	}
         joined = cm_device_join_network (device,
