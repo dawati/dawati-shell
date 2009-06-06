@@ -817,12 +817,18 @@ MoblinNetbookNetpanel
   padding: 2 4 0 4;
 }
 
-*#netpanel-nofavs-label
+*#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
   font-family: "Liberation Sans";
   font-size: 16px;
   color: #595959ff;
   padding: 0 4;
+}
+
+*#netpanel-placeholder-bin
+{
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
+  padding: 8;
 }
 
 MwbRadicalBar
