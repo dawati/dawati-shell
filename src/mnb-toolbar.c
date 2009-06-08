@@ -1300,7 +1300,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
                                          TOOLBAR_HEIGHT);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                               CLUTTER_ACTOR (button));
+                                   CLUTTER_ACTOR (button));
     }
 
   g_signal_connect (button, "clicked",
