@@ -178,6 +178,7 @@ _mute_button_switch_flipped_cb (NbtkGtkLightSwitch *light_switch,
   gvc_mixer_stream_change_is_muted (priv->sink, state);
   gtk_widget_set_sensitive (priv->volume_slider, !state);
   gtk_widget_set_sensitive (priv->test_sound_button, !state);
+  gtk_widget_set_sensitive (priv->alert_sounds_button, !state);
 }
 
 static void
