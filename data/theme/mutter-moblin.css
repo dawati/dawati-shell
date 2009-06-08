@@ -574,7 +574,7 @@ PengePeopleTile *.PengePeopleTileSecondaryLabel
   color: #3a3a3aff;
 }
 
-PengePeopleTile *.PengePeopleTilePrimaryLabel:hover, PengePeopleTile *.PengePeopleTileSecondaryLabel:hover
+NbtkLabel.PengePeopleTilePrimaryLabel:hover, NbtkLabel.PengePeopleTileSecondaryLabel:hover
 {
   color: white;
 }
@@ -590,13 +590,13 @@ PengeTwitterTile *.PengeTwitterTileBackground, PengeMyspaceTile *.PengeMyspaceTi
   padding: 8;
 }
 
-PengeEventPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
+PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 {
   font-size: 16;
   color: #2c2c2cff;
 }
 
-PengeRecentFileTile *.PengeRecentFileTileDetails, PengePeopleTile*.PengePeopleTileDetails
+PengeRecentFileTile NbtkTable.PengeRecentFileTileDetails, NbtkTable.PengePeopleTileDetails,
 {
   background-color: black;
   padding: 2;
