@@ -105,9 +105,9 @@ main (int argc, char *argv[])
 
   gtk_init (&argc, &argv);
 
-  panel = mnb_panel_gtk_new ("/com/intel/Mnb/TestPanel",
-                             "people-zone",
-                             "people");
+  panel = mnb_panel_gtk_new ("/org/moblin/Mnb/TestPanel",
+                             "tray-button-test",
+                             "test");
 
   g_signal_connect (panel, "show-begin",
                     G_CALLBACK (update_content_cb), NULL);

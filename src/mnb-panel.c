@@ -59,7 +59,7 @@ enum
 
 enum
 {
-  REQUEST_ICON,
+  REQUEST_BUTTON_STYLE,
 
   LAST_SIGNAL
 };
@@ -74,6 +74,8 @@ struct _MnbPanelPrivate
 
   gchar           *name;
   gchar           *tooltip;
+  gchar           *stylesheet;
+  gchar           *button_style_id;
   guint            xid;
   guint            child_xid;
 
@@ -204,6 +206,8 @@ mnb_panel_finalize (GObject *object)
   g_free (priv->dbus_path);
   g_free (priv->name);
   g_free (priv->tooltip);
+  g_free (priv->stylesheet);
+  g_free (priv->button_style_id);
 
   G_OBJECT_CLASS (mnb_panel_parent_class)->finalize (object);
 }
@@ -236,12 +240,15 @@ mnb_panel_dbus_init_panel (MnbPanel  *self,
                            gchar    **name,
                            guint     *xid,
                            gchar    **tooltip,
+                           gchar    **stylesheet,
+                           gchar    **button_style_id,
                            GError   **error)
 {
   MnbPanelPrivate *priv = self->priv;
 
   return org_moblin_Mnb_Panel_init_panel (priv->proxy, width, height, name, xid,
-                                         tooltip, error);
+                                          tooltip, stylesheet, button_style_id,
+                                          error);
 }
 
 static gboolean
@@ -334,11 +341,11 @@ mnb_panel_class_init (MnbPanelClass *klass)
                                                       G_PARAM_CONSTRUCT));
 
 
-  signals[REQUEST_ICON] =
-    g_signal_new ("request-icon",
+  signals[REQUEST_BUTTON_STYLE] =
+    g_signal_new ("request-button-style",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClass, request_icon),
+                  G_STRUCT_OFFSET (MnbPanelClass, request_button_style),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -542,6 +549,8 @@ mnb_panel_init_owner (MnbPanel *panel)
   guint            xid;
   gchar           *name;
   gchar           *tooltip;
+  gchar           *stylesheet;
+  gchar           *button_style_id;
   GError          *error = NULL;
   GtkWidget       *socket;
   GtkWidget       *window;
@@ -551,7 +560,8 @@ mnb_panel_init_owner (MnbPanel *panel)
    * and xid.
    */
   if (!mnb_panel_dbus_init_panel (panel, priv->width, priv->height,
-                                  &name, &xid, &tooltip, &error))
+                                  &name, &xid, &tooltip,
+                                  &stylesheet, &button_style_id, &error))
     {
       g_critical ("Panel initialization for %s failed!",
                   priv->dbus_path);
@@ -566,15 +576,17 @@ mnb_panel_init_owner (MnbPanel *panel)
     }
 
 
-  if (priv->name)
-    g_free (priv->name);
-
+  g_free (priv->name);
   priv->name = name;
 
-  if (priv->tooltip)
-    g_free (priv->tooltip);
-
+  g_free (priv->tooltip);
   priv->tooltip = tooltip;
+
+  g_free (priv->stylesheet);
+  priv->stylesheet = stylesheet;
+
+  g_free (button_style_id);
+  priv->button_style_id = button_style_id;
 
   priv->child_xid = xid;
 
@@ -765,6 +777,22 @@ mnb_panel_get_tooltip (MnbPanel *panel)
   MnbPanelPrivate *priv = panel->priv;
 
   return priv->tooltip;
+}
+
+const gchar *
+mnb_panel_get_stylesheet (MnbPanel *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+
+  return priv->stylesheet;
+}
+
+const gchar *
+mnb_panel_get_button_style (MnbPanel *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+
+  return priv->button_style_id;
 }
 
 static void

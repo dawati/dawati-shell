@@ -8,6 +8,8 @@
       <arg name="panel_name" type="s" direction="out"/>
       <arg name="xid" type="u" direction="out"/>
       <arg name="tooltip" type="s" direction="out"/>
+      <arg name="stylesheet" type="s" direction="out"/>
+      <arg name="button_style" type="s" direction="out"/>
     </method>
 
     <method name="ShowBegin"/>
@@ -16,8 +18,8 @@
     <method name="HideBegin"/>
     <method name="HideEnd"/>
 
-    <signal name="RequestIcon">
-      <arg name="icon_name" type="s"/>
+    <signal name="RequestButtonStyle">
+      <arg name="style_id" type="s"/>
     </signal>
 
     <signal name="RequestShow"/>

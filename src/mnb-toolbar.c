@@ -888,6 +888,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
+  g_free (button_style);
 
   /*
    * The button size and positioning depends on whether this is a regular
@@ -1107,9 +1108,9 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
 }
 
 static void
-mnb_toolbar_panel_request_icon_cb (MnbPanel    *panel,
-                                   const gchar *icon,
-                                   MnbToolbar  *toolbar)
+mnb_toolbar_panel_request_button_style_cb (MnbPanel    *panel,
+                                           const gchar *style_id,
+                                           MnbToolbar  *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   gint index;
@@ -1119,8 +1120,7 @@ mnb_toolbar_panel_request_icon_cb (MnbPanel    *panel,
   if (index < 0)
     return;
 
-  nbtk_button_set_icon_from_file (NBTK_BUTTON (priv->buttons[index]),
-                                  (gchar*)icon);
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->buttons[index]), style_id);
 }
 
 static void
@@ -1173,14 +1173,18 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   NbtkWidget        *button;
   gint               screen_width, screen_height;
   gint               index;
-  gchar             *button_style;
+  gchar             *button_style = NULL;
   const gchar       *name;
   const gchar       *tooltip;
+  const gchar       *stylesheet = NULL;
+  const gchar       *style_id = NULL;
 
   if (MNB_IS_PANEL (panel))
     {
-      name    = mnb_panel_get_name (MNB_PANEL (panel));
-      tooltip = mnb_panel_get_tooltip (MNB_PANEL (panel));
+      name       = mnb_panel_get_name (MNB_PANEL (panel));
+      tooltip    = mnb_panel_get_tooltip (MNB_PANEL (panel));
+      stylesheet = mnb_panel_get_stylesheet (MNB_PANEL (panel));
+      style_id   = mnb_panel_get_button_style (MNB_PANEL (panel));
     }
   else if (MNB_IS_SWITCHER (panel))
     {
@@ -1198,7 +1202,8 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   if (index < 0)
     return;
 
-  button_style = g_strdup_printf ("%s-button", name);
+  if (!style_id)
+    button_style = g_strdup_printf ("%s-button", name);
 
   /*
    * If the respective slot is already occupied, remove the old objects.
@@ -1221,9 +1226,30 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
    * Create the button for this zone.
    */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
+
+  if (stylesheet)
+    {
+      GError    *error = NULL;
+      NbtkStyle *style = nbtk_style_new ();
+
+      if (!nbtk_style_load_from_file (style, stylesheet, &error))
+        {
+          if (error)
+            g_warning ("Unable to load stylesheet %s: %s",
+                       stylesheet, error->message);
+
+          g_error_free (error);
+        }
+
+      nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
+    }
+
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
-  clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
+  clutter_actor_set_name (CLUTTER_ACTOR (button),
+                          style_id ? style_id : button_style);
+
+  g_free (button_style);
 
   /*
    * The button size and positioning depends on whether this is a regular
@@ -1286,8 +1312,9 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   g_signal_connect (panel, "hide-begin",
                     G_CALLBACK (mnb_toolbar_dropdown_hide_begin_cb), toolbar);
 
-  g_signal_connect (panel, "request-icon",
-                    G_CALLBACK (mnb_toolbar_panel_request_icon_cb), toolbar);
+  g_signal_connect (panel, "request-button-style",
+                    G_CALLBACK (mnb_toolbar_panel_request_button_style_cb),
+                    toolbar);
 
   g_signal_connect (panel, "destroy",
                     G_CALLBACK (mnb_toolbar_panel_destroy_cb), toolbar);

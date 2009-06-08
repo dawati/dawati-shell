@@ -59,7 +59,7 @@ typedef struct {
 typedef struct {
   MnbDropDownClass parent_class;
 
-  void (*request_icon)  (MnbPanel *panel, const gchar *icon);
+  void (*request_button_style)  (MnbPanel *panel, const gchar *icon);
 } MnbPanelClass;
 
 GType mnb_panel_get_type (void);
@@ -71,9 +71,11 @@ MnbPanel *mnb_panel_new (MutterPlugin *plugin,
 
 void mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw);
 
-const gchar *mnb_panel_get_name    (MnbPanel *panel);
-const gchar *mnb_panel_get_tooltip (MnbPanel *panel);
-guint        mnb_panel_get_xid     (MnbPanel *panel);
+const gchar *mnb_panel_get_name         (MnbPanel *panel);
+const gchar *mnb_panel_get_tooltip      (MnbPanel *panel);
+const gchar *mnb_panel_get_stylesheet   (MnbPanel *panel);
+const gchar *mnb_panel_get_button_style (MnbPanel *panel);
+guint        mnb_panel_get_xid          (MnbPanel *panel);
 
 G_END_DECLS
 
