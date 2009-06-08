@@ -200,7 +200,6 @@ _make_empty_people_tile (gint         width)
   NbtkWidget *label;
   GtkIconTheme *icon_theme;
   GAppInfo *app_info;
-  GError *error = NULL;
   GIcon *icon;
   ClutterActor *tmp_text;
   NbtkWidget *hbox;
@@ -355,11 +354,9 @@ ClutterActor *
 make_people_panel (MutterPlugin *plugin,
                    gint          width)
 {
-  NbtkWidget *vbox, *hbox, *label, *entry, *bin, *button;
+  NbtkWidget *vbox, *hbox, *label, *entry;
   NbtkWidget *scroll_view;
   NbtkWidget *tile_view;
-  ClutterText *text;
-  guint items_list_width = 0, items_list_height = 0;
   MissionControl *mc;
   AnerleyFeed *feed;
   DBusGConnection *conn;
