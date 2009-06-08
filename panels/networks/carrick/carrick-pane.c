@@ -638,25 +638,26 @@ _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   CmService *service;
-  GList *children = gtk_container_get_children (GTK_CONTAINER (priv->service_list));
 
-  while (children)
-  {
-    gtk_widget_destroy (children->data);
-    children = children->next;
-  }
-
-  g_list_free (priv->services);
-
-  priv->services = g_list_copy (cm_manager_get_services (priv->manager));
+  if (!priv->services)
+    priv->services = g_list_copy (cm_manager_get_services (priv->manager));
+  else
+    priv->services = g_list_first (priv->services);
 
   while (priv->services)
   {
     service = priv->services->data;
-    g_signal_connect (G_OBJECT (service),
-                      "service-updated",
-                      G_CALLBACK (_service_updated_cb),
-                      pane);
+
+    if (!carrick_list_contains_service (CARRICK_LIST (priv->service_list),
+    					service))
+    {
+      // add service to list
+      g_signal_connect (G_OBJECT (service),
+			"service-updated",
+			G_CALLBACK (_service_updated_cb),
+			pane);
+    }
+
     priv->services = priv->services->next;
   }
 }
