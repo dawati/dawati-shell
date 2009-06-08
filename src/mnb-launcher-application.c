@@ -40,7 +40,7 @@ typedef struct {
   gchar     *executable;
   gchar     *icon;
   gchar     *description;
-  gboolean   bookmark;
+  gboolean   bookmarked;
 } MnbLauncherApplicationPrivate;
 
 enum
@@ -53,7 +53,7 @@ enum
   PROP_EXECUTABLE,
   PROP_DESKTOP_FILE,
 
-  PROP_BOOKMARK
+  PROP_BOOKMARKED
 };
 
 /*
@@ -193,38 +193,31 @@ _set_property (GObject      *gobject,
                const GValue *value,
                GParamSpec   *pspec)
 {
-  MnbLauncherApplicationPrivate *priv = GET_PRIVATE (gobject);
-
   switch (prop_id)
     {
       case PROP_NAME:
-        g_free (priv->name);
-        priv->name = g_value_dup_string (value);
-        g_object_notify (gobject, "name");
+        mnb_launcher_application_set_name (MNB_LAUNCHER_APPLICATION (gobject),
+                                           g_value_get_string (value));
         break;
       case PROP_ICON:
-        g_free (priv->icon);
-        priv->icon = g_value_dup_string (value);
-        g_object_notify (gobject, "icon");
+        mnb_launcher_application_set_icon (MNB_LAUNCHER_APPLICATION (gobject),
+                                           g_value_get_string (value));
         break;
       case PROP_DESCRIPTION:
-        g_free (priv->description);
-        priv->description = g_value_dup_string (value);
-        g_object_notify (gobject, "description");
+        mnb_launcher_application_set_description (MNB_LAUNCHER_APPLICATION (gobject),
+                                                  g_value_get_string (value));
         break;
       case PROP_EXECUTABLE:
-        g_free (priv->executable);
-        priv->executable = g_value_dup_string (value);
-        g_object_notify (gobject, "executable");
+        mnb_launcher_application_set_executable (MNB_LAUNCHER_APPLICATION (gobject),
+                                                 g_value_get_string (value));
         break;
       case PROP_DESKTOP_FILE:
-        g_free (priv->desktop_file);
-        priv->desktop_file = g_value_dup_string (value);
-        g_object_notify (gobject, "desktop-file");
+        mnb_launcher_application_set_desktop_file (MNB_LAUNCHER_APPLICATION (gobject),
+                                                   g_value_get_string (value));
         break;
-      case PROP_BOOKMARK:
-        priv->bookmark = g_value_get_boolean (value);
-        g_object_notify (gobject, "bookmark");
+      case PROP_BOOKMARKED:
+        mnb_launcher_application_set_bookmarked (MNB_LAUNCHER_APPLICATION (gobject),
+                                                 g_value_get_boolean (value));
         break;
 
       default:
@@ -263,9 +256,9 @@ _get_property (GObject    *gobject,
         g_value_set_string (value,
                             mnb_launcher_application_get_desktop_file (self));
         break;
-      case PROP_BOOKMARK:
+      case PROP_BOOKMARKED:
         g_value_set_boolean (value,
-                             mnb_launcher_application_get_bookmark (self));
+                             mnb_launcher_application_get_bookmarked (self));
         break;
 
       default:
@@ -359,12 +352,12 @@ mnb_launcher_application_class_init (MnbLauncherApplicationClass *klass)
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_DESKTOP_FILE, pspec);
 
-  pspec = g_param_spec_boolean ("bookmark",
+  pspec = g_param_spec_boolean ("bookmarked",
                                 "Bookmark",
                                 "Whether the application bookmarked",
                                 FALSE,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_BOOKMARK, pspec);
+  g_object_class_install_property (gobject_class, PROP_BOOKMARKED, pspec);
 }
 
 static void
@@ -432,6 +425,49 @@ mnb_launcher_application_new_from_desktop_file (const gchar *desktop_file)
   return self;
 }
 
+MnbLauncherApplication *
+mnb_launcher_application_new_from_cache (const gchar **attribute_names,
+                                         const gchar **attribute_values)
+{
+  const gchar *name = NULL;
+  const gchar *icon = NULL;
+  const gchar *description = NULL;
+  const gchar *executable = NULL;
+  const gchar *desktop_file = NULL;
+  gboolean     bookmarked = FALSE;
+  guint        i = 0;
+
+  while (attribute_names[i])
+    {
+      if (0 == g_strcmp0 ("name", attribute_names[i]))
+        name = attribute_values[i];
+      if (0 == g_strcmp0 ("icon", attribute_names[i]))
+        icon = attribute_values[i];
+      if (0 == g_strcmp0 ("description", attribute_names[i]))
+        description = attribute_values[i];
+      if (0 == g_strcmp0 ("executable", attribute_names[i]))
+        executable = attribute_values[i];
+      if (0 == g_strcmp0 ("desktop-file", attribute_names[i]))
+        desktop_file = attribute_values[i];
+      if (0 == g_strcmp0 ("bookmarked", attribute_names[i]))
+        bookmarked = (0 == g_strcmp0 ("true", attribute_values[i])) ?
+                        TRUE :
+                        FALSE;
+      i++;
+    }
+
+  g_return_val_if_fail (desktop_file, NULL);
+
+  return g_object_new (MNB_TYPE_LAUNCHER_APPLICATION,
+                       "name", name,
+                       "icon", icon,
+                       "description", description,
+                       "executable", executable,
+                       "desktop-file", desktop_file,
+                       "bookmarked", bookmarked,
+                        NULL);
+}
+
 const gchar *
 mnb_launcher_application_get_desktop_file (MnbLauncherApplication *self)
 {
@@ -440,6 +476,19 @@ mnb_launcher_application_get_desktop_file (MnbLauncherApplication *self)
   g_return_val_if_fail (priv, NULL);
 
   return priv->desktop_file;
+}
+
+void
+mnb_launcher_application_set_desktop_file (MnbLauncherApplication *self,
+                                           const gchar            *desktop_file)
+{
+  MnbLauncherApplicationPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (priv);
+
+  g_free (priv->desktop_file);
+  priv->desktop_file = g_strdup (desktop_file);
+  g_object_notify (G_OBJECT (self), "desktop-file");
 }
 
 const gchar *
@@ -452,6 +501,19 @@ mnb_launcher_application_get_name (MnbLauncherApplication *self)
   return priv->name;
 }
 
+void
+mnb_launcher_application_set_name (MnbLauncherApplication *self,
+                                   const gchar            *name)
+{
+  MnbLauncherApplicationPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (priv);
+
+  g_free (priv->name);
+  priv->name = g_strdup (name);
+  g_object_notify (G_OBJECT (self), "name");
+}
+
 const gchar *
 mnb_launcher_application_get_executable (MnbLauncherApplication *self)
 {
@@ -461,6 +523,20 @@ mnb_launcher_application_get_executable (MnbLauncherApplication *self)
 
   return priv->executable;
 }
+
+void
+mnb_launcher_application_set_executable (MnbLauncherApplication *self,
+                                         const gchar            *executable)
+{
+  MnbLauncherApplicationPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (priv);
+
+  g_free (priv->executable);
+  priv->executable = g_strdup (executable);
+  g_object_notify (G_OBJECT (self), "executable");
+}
+
 const gchar *
 mnb_launcher_application_get_icon (MnbLauncherApplication *self)
 {
@@ -469,6 +545,19 @@ mnb_launcher_application_get_icon (MnbLauncherApplication *self)
   g_return_val_if_fail (priv, NULL);
 
   return priv->icon;
+}
+
+void
+mnb_launcher_application_set_icon (MnbLauncherApplication *self,
+                                   const gchar            *icon)
+{
+  MnbLauncherApplicationPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (priv);
+
+  g_free (priv->icon);
+  priv->icon = g_strdup (icon);
+  g_object_notify (G_OBJECT (self), "icon");
 }
 
 const gchar *
@@ -481,12 +570,84 @@ mnb_launcher_application_get_description (MnbLauncherApplication *self)
   return priv->description;
 }
 
+void
+mnb_launcher_application_set_description (MnbLauncherApplication *self,
+                                          const gchar            *description)
+{
+  MnbLauncherApplicationPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (priv);
+
+  g_free (priv->description);
+  priv->description = g_strdup (description);
+  g_object_notify (G_OBJECT (self), "description");
+}
+
 gboolean
-mnb_launcher_application_get_bookmark (MnbLauncherApplication *self)
+mnb_launcher_application_get_bookmarked (MnbLauncherApplication *self)
 {
   MnbLauncherApplicationPrivate *priv = GET_PRIVATE (self);
 
   g_return_val_if_fail (priv, FALSE);
 
-  return priv->bookmark;
+  return priv->bookmarked;
 }
+
+void
+mnb_launcher_application_set_bookmarked (MnbLauncherApplication *self,
+                                         gboolean                bookmarked)
+{
+  MnbLauncherApplicationPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (priv);
+
+  if (priv->bookmarked != bookmarked)
+    {
+      priv->bookmarked = bookmarked;
+      g_object_notify (G_OBJECT (self), "bookmarked");
+    }
+}
+
+void
+mnb_launcher_application_write_xml (MnbLauncherApplication const *self,
+                                    FILE                         *fp)
+{
+  MnbLauncherApplicationPrivate *priv = GET_PRIVATE (self);
+  gchar *text;
+
+  text = g_markup_printf_escaped ("    <application desktop-file=\"%s\" bookmarked=\"%s\">\n",
+                                  priv->desktop_file,
+                                  priv->bookmarked ? "true" : "false");
+  fputs (text, fp);
+  g_free (text);
+  if (priv->name)
+    {
+      text = g_markup_printf_escaped ("      <name>%s</name>\n",
+                                      priv->name);
+      fputs (text, fp);
+      g_free (text);
+    }
+  if (priv->executable)
+    {
+      text = g_markup_printf_escaped ("      <executable>%s</executable>\n",
+                                      priv->executable);
+      fputs (text, fp);
+      g_free (text);
+    }
+  if (priv->icon)
+    {
+      text = g_markup_printf_escaped ("      <icon>%s</icon>\n",
+                                      priv->icon);
+      fputs (text, fp);
+      g_free (text);
+    }
+  if (priv->description)
+    {
+      text = g_markup_printf_escaped ("      <description>%s</description>\n",
+                                      priv->description);
+      fputs (text, fp);
+      g_free (text);
+    }
+  fputs   (    "    </application>\n", fp);
+}
+

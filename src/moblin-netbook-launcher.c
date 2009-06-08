@@ -196,8 +196,8 @@ struct MnbLauncherPrivate_ {
   /* During incremental fill. */
   guint                    fill_id;
   MnbLauncherTree         *tree;
-  GSList                  *directories;
-  GSList const            *directory_iter;
+  GList                   *directories;
+  GList const             *directory_iter;
 };
 
 static void mnb_launcher_monitor_cb        (MnbLauncherMonitor *monitor,
@@ -710,7 +710,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   MnbLauncherDirectory  *directory;
-  GSList                *entry_iter;
+  GList                 *entry_iter;
   ClutterActor          *inner_grid;
   NbtkWidget            *button;
 

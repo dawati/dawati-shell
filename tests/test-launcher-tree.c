@@ -14,8 +14,8 @@ main (int     argc,
 {
   GtkIconTheme    *theme;
   MnbLauncherTree *tree;
-  GSList          *directories;
-  GSList const    *directory_iter;
+  GList           *directories;
+  GList const     *directory_iter;
 
   gtk_init (&argc, &argv);
 
@@ -28,7 +28,7 @@ main (int     argc,
        directory_iter = directory_iter->next)
     {
       MnbLauncherDirectory  *directory;
-      GSList                *entry_iter;
+      GList                 *entry_iter;
 
       directory = (MnbLauncherDirectory *) directory_iter->data;
       printf ("%s\n", directory->name);

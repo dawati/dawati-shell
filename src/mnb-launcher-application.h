@@ -24,6 +24,7 @@
 #ifndef MNB_LAUNCHER_APPLICATION_H
 #define MNB_LAUNCHER_APPLICATION_H
 
+#include <stdio.h>
 #include <glib.h>
 
 G_BEGIN_DECLS
@@ -71,13 +72,30 @@ MnbLauncherApplication *  mnb_launcher_application_new (const gchar *name,
 
 MnbLauncherApplication *  mnb_launcher_application_new_from_desktop_file  (const gchar *desktop_file);
 
-const gchar *       mnb_launcher_application_get_name               (MnbLauncherApplication *self);
-const gchar *       mnb_launcher_application_get_executable         (MnbLauncherApplication *self);
-const gchar *       mnb_launcher_application_get_icon               (MnbLauncherApplication *self);
-const gchar *       mnb_launcher_application_get_description        (MnbLauncherApplication *self);
-const gchar *       mnb_launcher_application_get_desktop_file       (MnbLauncherApplication *self);
+MnbLauncherApplication *  mnb_launcher_application_new_from_cache (const gchar **attribute_names,
+                                                                   const gchar **attribute_values);
 
-gboolean            mnb_launcher_application_get_bookmark           (MnbLauncherApplication *self);
+const gchar *       mnb_launcher_application_get_name               (MnbLauncherApplication *self);
+void                mnb_launcher_application_set_name               (MnbLauncherApplication *self,
+                                                                     const gchar            *name);
+const gchar *       mnb_launcher_application_get_executable         (MnbLauncherApplication *self);
+void                mnb_launcher_application_set_executable         (MnbLauncherApplication *self,
+                                                                     const gchar            *executable);
+const gchar *       mnb_launcher_application_get_icon               (MnbLauncherApplication *self);
+void                mnb_launcher_application_set_icon               (MnbLauncherApplication *self,
+                                                                     const gchar            *icon);
+const gchar *       mnb_launcher_application_get_description        (MnbLauncherApplication *self);
+void                mnb_launcher_application_set_description        (MnbLauncherApplication *self,
+                                                                     const gchar            *description);
+const gchar *       mnb_launcher_application_get_desktop_file       (MnbLauncherApplication *self);
+void                mnb_launcher_application_set_desktop_file       (MnbLauncherApplication *self,
+                                                                     const gchar            *desktop_file);
+gboolean            mnb_launcher_application_get_bookmarked         (MnbLauncherApplication *self);
+void                mnb_launcher_application_set_bookmarked         (MnbLauncherApplication *self,
+                                                                     gboolean                bookmarked);
+
+void                mnb_launcher_application_write_xml              (MnbLauncherApplication const *self,
+                                                                     FILE                         *fp);
 
 G_END_DECLS
 
