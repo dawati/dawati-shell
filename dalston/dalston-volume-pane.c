@@ -399,6 +399,8 @@ dalston_volume_pane_update_mute (DalstonVolumePane *pane)
                             !gvc_mixer_stream_get_is_muted (priv->sink));
   gtk_widget_set_sensitive (priv->test_sound_button,
                             !gvc_mixer_stream_get_is_muted (priv->sink));
+  gtk_widget_set_sensitive (priv->alert_sounds_button,
+                            !gvc_mixer_stream_get_is_muted (priv->sink));
 }
 
 static void
