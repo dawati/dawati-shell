@@ -57,7 +57,6 @@ struct _CarrickServiceItemPrivate
   GtkWidget          *name_label;
   GtkWidget          *security_label;
   GtkWidget          *connect_button;
-  GtkWidget          *table;
   ServiceItemState    state;
   CarrickIconFactory *icon_factory;
   gboolean            failed;
@@ -519,34 +518,35 @@ static void
 carrick_service_item_init (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  GtkWidget *table;
 
   priv->service = NULL;
   priv->failed = FALSE;
 
-  priv->table = gtk_table_new (2, 3,
-                               TRUE);
+  table = gtk_table_new (2, 3,
+			 TRUE);
   gtk_container_add (GTK_CONTAINER (self),
-                     priv->table);
+                     table);
 
   priv->icon = gtk_image_new ();
-  gtk_table_attach_defaults (GTK_TABLE (priv->table),
+  gtk_table_attach_defaults (GTK_TABLE (table),
                              priv->icon,
                              0, 1,
                              0, 2);
   priv->name_label = gtk_label_new ("");
-  gtk_table_attach_defaults (GTK_TABLE (priv->table),
+  gtk_table_attach_defaults (GTK_TABLE (table),
                              priv->name_label,
                              1, 2,
                              0, 1);
 
   priv->connect_button = gtk_button_new ();
-  gtk_table_attach_defaults (GTK_TABLE (priv->table),
+  gtk_table_attach_defaults (GTK_TABLE (table),
                              priv->connect_button,
                              1, 2,
                              1, 2);
 
   priv->security_label = gtk_label_new ("");
-  gtk_table_attach_defaults (GTK_TABLE (priv->table),
+  gtk_table_attach_defaults (GTK_TABLE (table),
                              priv->security_label,
                              2, 3,
                              0, 1);
