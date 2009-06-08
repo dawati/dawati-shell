@@ -1290,7 +1290,8 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
 
       clutter_actor_set_size (CLUTTER_ACTOR (button),
                               TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
-      clutter_actor_set_position (CLUTTER_ACTOR (button), x, y);
+      clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                  (gfloat)x, (gfloat)y);
 
       mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
                                          0,
