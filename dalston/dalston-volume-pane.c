@@ -391,7 +391,7 @@ dalston_volume_pane_update_mute (DalstonVolumePane *pane)
                                    _mute_button_switch_flipped_cb,
                                    pane);
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->mute_button),
-                                gvc_mixer_stream_get_is_muted (priv->sink));
+                                    gvc_mixer_stream_get_is_muted (priv->sink));
   g_signal_handlers_unblock_by_func (priv->mute_button,
                                      _mute_button_switch_flipped_cb,
                                      pane);
