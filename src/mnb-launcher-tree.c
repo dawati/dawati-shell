@@ -241,13 +241,12 @@ mnb_launcher_directory_write_xml (MnbLauncherDirectory const  *self,
   GList const *app_iter;
   gchar       *text;
 
-  /* Write in reverse order, so we can load by prepending to a list. */
   text = g_markup_printf_escaped ("  <category name=\"%s\">\n", self->name);
   fputs (text, fp);
   g_free (text);
-  for (app_iter = g_list_last (self->entries);
+  for (app_iter = self->entries;
        app_iter;
-       app_iter = app_iter->prev)
+       app_iter = app_iter->next)
     {
       mnb_launcher_application_write_xml ((MnbLauncherApplication const *) app_iter->data,
                                           fp);
@@ -401,11 +400,10 @@ mnb_launcher_tree_write_xml (GList const *tree,
 {
   GList const *directory_iter;
 
-  /* Write in reverse order, so we can load by prepending to a list. */
   fputs ("<cache>\n", fp);
-  for (directory_iter = g_list_last ((GList *) tree);
+  for (directory_iter = tree;
        directory_iter;
-       directory_iter = directory_iter->prev)
+       directory_iter = directory_iter->next)
     {
       mnb_launcher_directory_write_xml ((MnbLauncherDirectory const *) directory_iter->data,
                                         fp);
@@ -590,6 +588,14 @@ _cache_parser_end_element (GMarkupParseContext *context,
       case ACCUMULATOR_STATE_CATEGORY:
         if (0 == g_strcmp0 ("category", element_name))
           {
+            MnbLauncherDirectory *cat;
+
+            g_return_if_fail (self->categories);
+            g_return_if_fail (self->categories->data);
+
+            cat = (MnbLauncherDirectory *) self->categories->data;
+            cat->entries = g_list_reverse (cat->entries);
+
             self->state = ACCUMULATOR_STATE_CACHE;
             return;
           }
@@ -729,7 +735,7 @@ mnb_launcher_tree_list_categories_from_cache (MnbLauncherTree *self,
   self->watch_list = accumulator.watch_list;
   accumulator.watch_list = NULL;
 
-  return accumulator.categories;
+  return g_list_reverse (accumulator.categories);
 }
 
 static gboolean
