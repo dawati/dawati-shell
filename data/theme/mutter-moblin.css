@@ -596,7 +596,7 @@ PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
   color: #2c2c2cff;
 }
 
-PengeRecentFileTile NbtkTable.PengeRecentFileTileDetails, NbtkTable.PengePeopleTileDetails,
+PengeRecentFileTile *.PengeRecentFileTileDetails, NbtkTable.PengePeopleTileDetails
 {
   background-color: black;
   padding: 2;
