@@ -463,7 +463,6 @@ _service_updated_cb (CmService   *service,
     g_signal_handlers_disconnect_by_func (service,
                                           _service_updated_cb,
                                           pane);
-    carrick_list_sort_list (list);
   }
 
   /* Don't display non-favorite ethernet services or services
