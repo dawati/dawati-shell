@@ -32,7 +32,7 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_GRID_VIEW, PengeGridViewPrivate))
 
-#define V_DIV_LINE PKG_DATADIR "/theme/mzone/v-div-line.png"
+#define V_DIV_LINE PKG_DATADIR "/theme/myzone/v-div-line.png"
 
 typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 

@@ -216,7 +216,7 @@ show_previous_page (ClutterActor        *actor,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
     ClutterActor *new_page;
-    guint width, height;
+    float width, height;
 
     if (priv->current_page_num == 0) {
         return FALSE;
@@ -256,7 +256,7 @@ show_previous_page (ClutterActor        *actor,
     priv->animation->old_page_anim = clutter_actor_animate
         (CLUTTER_ACTOR (priv->current_page),
          CLUTTER_EASE_OUT_EXPO, PAGE_CHANGE_DURATION,
-         "x", (int) width,
+         "x", width,
          NULL);
     priv->animation->old_anim_id = g_signal_connect
         (priv->animation->old_page_anim, "completed",
@@ -282,7 +282,7 @@ show_next_page (ClutterActor        *actor,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
     ClutterActor *new_page;
-    guint width, height;
+    float width, height;
 
     if (priv->current_page_num == priv->last_page) {
         return FALSE;
@@ -322,7 +322,7 @@ show_next_page (ClutterActor        *actor,
     priv->animation->old_page_anim = clutter_actor_animate
         (CLUTTER_ACTOR (priv->current_page),
          CLUTTER_EASE_OUT_EXPO, PAGE_CHANGE_DURATION,
-         "x", 0 - (int) width,
+         "x", 0 - width,
          NULL);
     priv->animation->old_anim_id = g_signal_connect
         (priv->animation->old_page_anim, "completed",

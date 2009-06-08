@@ -244,8 +244,7 @@ main (int argc, char *argv[])
 
   entry = mnb_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (entry), "pasteboard-search-entry");
-  clutter_actor_set_width (CLUTTER_ACTOR (entry),
-                           CLUTTER_UNITS_FROM_DEVICE (600));
+  clutter_actor_set_width (CLUTTER_ACTOR (entry), 600.0);
   nbtk_table_add_actor_full (NBTK_TABLE (hbox), CLUTTER_ACTOR (entry),
                              0, 1, 1, 1,
                              0,
@@ -280,7 +279,7 @@ main (int argc, char *argv[])
 
   clutter_actor_set_width (view, items_list_width - 50);
 
-  g_debug ("%s: view size: %u, %u, bin size: %u, %u\n",
+  g_debug ("%s: view size: %f, %f, bin size: %f, %f\n",
            G_STRLOC,
            clutter_actor_get_width (view),
            clutter_actor_get_height (view),

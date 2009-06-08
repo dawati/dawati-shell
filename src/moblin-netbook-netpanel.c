@@ -20,6 +20,9 @@
 #include "mnb-entry.h"
 #endif
 
+/* number of tab columns to display */
+#define DISPLAY_TABS 4
+
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
 
 #define NETPANEL_PRIVATE(o) \
@@ -43,8 +46,14 @@ struct _MoblinNetbookNetpanelPrivate
   NbtkWidget     *entry;
 
   NbtkWidget     *tabs_table;
-  NbtkWidget     *tabs_more;
-  NbtkWidget     *no_favs;
+  NbtkWidget     *tabs_prev;
+  NbtkWidget     *tabs_next;
+
+  guint           n_tabs;
+  guint           display_tab;
+
+  NbtkWidget    **tabs;
+  NbtkWidget    **labels;
 };
 
 static void
@@ -84,12 +93,6 @@ moblin_netbook_netpanel_finalize (GObject *object)
 }
 
 static void
-tabs_more_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
-{
-  g_signal_emit (self, signals[LAUNCH], 0, "");
-}
-
-static void
 new_tab_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 {
   /* FIXME: remove hardcoded start path */
@@ -98,9 +101,124 @@ new_tab_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 }
 
 static void
+get_tab_display_range (MoblinNetbookNetpanel *self, guint *start, guint *end)
+{
+  /* returns: range of tabs currently displayed: includes start, excludes end */
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  g_return_if_fail (start != NULL);
+  g_return_if_fail (end != NULL);
+
+  *start = priv->display_tab;
+  *end = *start + DISPLAY_TABS;
+
+  if (*end > priv->n_tabs)
+    {
+      *end = priv->n_tabs;
+      if (*end >= DISPLAY_TABS)
+        *start = *end - DISPLAY_TABS;
+      else
+        *start = 0;
+    }
+}
+
+static void
+redisplay_tabs (MoblinNetbookNetpanel *self, guint old_start, guint old_end,
+                guint new_start, guint new_end)
+{
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  guint i;
+
+  for (i = old_start; i < old_end; i++)
+    {
+      if (priv->tabs[i])
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->tabs_table),
+                                        CLUTTER_ACTOR (priv->tabs[i]));
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->tabs_table),
+                                      CLUTTER_ACTOR (priv->labels[i]));
+    }
+
+  for (i = new_start; i < new_end; i++)
+    {
+      if (priv->tabs[i])
+        nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
+                                              CLUTTER_ACTOR (priv->tabs[i]),
+                                              1, i - new_start,
+                                              "x-expand", FALSE,
+                                              "y-expand", FALSE,
+                                              "x-fill", FALSE,
+                                              "y-fill", FALSE,
+                                              "x-align", 0.5,
+                                              "y-align", 0.5,
+                                              NULL);
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
+                                            CLUTTER_ACTOR (priv->labels[i]),
+                                            2, i - new_start,
+                                            "x-expand", FALSE,
+                                            "y-expand", FALSE,
+                                            "x-fill", FALSE,
+                                            "y-fill", FALSE,
+                                            "x-align", 0.0,
+                                            "y-align", 0.5,
+                                            NULL);
+    }
+}
+
+static void
+tabs_prev_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
+{
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  guint old_start, old_end, new_start, new_end;
+
+  get_tab_display_range (self, &old_start, &old_end);
+  if (priv->display_tab >= DISPLAY_TABS)
+    priv->display_tab -= DISPLAY_TABS;
+  else
+    priv->display_tab = 0;
+  get_tab_display_range (self, &new_start, &new_end);
+
+  if (old_start == new_start)
+    return;
+
+  redisplay_tabs (self, old_start, old_end, new_start, new_end);
+
+  /* FIXME: This would be better but the buttons get stuck on active state */
+  /*
+  if (!priv->display_tab)
+    clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_prev));
+  clutter_actor_show (CLUTTER_ACTOR (priv->tabs_next));
+  */
+}
+
+static void
+tabs_next_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
+{
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  guint old_start, old_end, new_start, new_end;
+
+  get_tab_display_range (self, &old_start, &old_end);
+  priv->display_tab += DISPLAY_TABS;
+  get_tab_display_range (self, &new_start, &new_end);
+
+  if (old_start == new_start)
+    return;
+
+  priv->display_tab = new_start;
+
+  redisplay_tabs (self, old_start, old_end, new_start, new_end);
+
+  /* FIXME: This would be better but the buttons get stuck on active state */
+  /*
+  clutter_actor_show (CLUTTER_ACTOR (priv->tabs_prev));
+  if (priv->display_tab + DISPLAY_TABS >= priv->n_tabs)
+    clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_next));
+  */
+}
+
+static void
 create_tabs_table (MoblinNetbookNetpanel *self)
 {
-  NbtkWidget *label;
+  NbtkWidget *label, *bin;
 
   MoblinNetbookNetpanelPrivate *priv = self->priv;
 
@@ -130,7 +248,7 @@ create_tabs_table (MoblinNetbookNetpanel *self)
                                         CLUTTER_ACTOR (label),
                                         0, 0,
                                         "row-span", 1,
-                                        "col-span", 5,
+                                        "col-span", DISPLAY_TABS + 1,
                                         "x-expand", FALSE,
                                         "y-expand", FALSE,
                                         "x-fill", FALSE,
@@ -139,22 +257,14 @@ create_tabs_table (MoblinNetbookNetpanel *self)
                                         "y-align", 0.5,
                                         NULL);
 
-  priv->tabs_more = nbtk_button_new_with_label (_("More..."));
+  /* Create filler element so table expands for the placeholder text */
+  label = nbtk_label_new ("");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
-                                        CLUTTER_ACTOR (priv->tabs_more),
-                                        1, 4,
-                                        "x-expand", FALSE,
+                                        CLUTTER_ACTOR (label),
+                                        1, DISPLAY_TABS,
+                                        "x-expand", TRUE,
                                         "y-expand", FALSE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.5,
-                                        "y-align", 0.5,
                                         NULL);
-
-  clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_more));
-
-  g_signal_connect (priv->tabs_more, "clicked",
-                    G_CALLBACK (tabs_more_clicked_cb), self);
 
   label = nbtk_label_new (_("Favorite pages"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "section");
@@ -162,10 +272,33 @@ create_tabs_table (MoblinNetbookNetpanel *self)
                                         CLUTTER_ACTOR (label),
                                         4, 0,
                                         "row-span", 1,
-                                        "col-span", 5,
+                                        "col-span", DISPLAY_TABS + 1,
                                         "x-expand", FALSE,
                                         "y-expand", FALSE,
                                         "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
+
+  bin = nbtk_bin_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (bin), "netpanel-placeholder-bin");
+
+  label = nbtk_label_new (_("As you visit web pages, your favorites will "
+                            "appear here and on the New tab page in the "
+                            "browser."));
+  clutter_actor_set_name (CLUTTER_ACTOR (label), "netpanel-placeholder-label");
+  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
+
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
+                                        CLUTTER_ACTOR (bin),
+                                        5, 0,
+                                        "row-span", 1,
+                                        "col-span", DISPLAY_TABS + 1,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
                                         "y-fill", FALSE,
                                         "x-align", 0.0,
                                         "y-align", 0.5,
@@ -207,24 +340,29 @@ notify_connect_view (DBusGProxy     *proxy,
   if (dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID))
     {
       NbtkWidget *button;
-      guint tab;
+      guint tab, start, end;
 
       tab = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (mozembed), "tab"));
 
-      button = nbtk_button_new ();
+      priv->tabs[tab] = button = nbtk_button_new ();
+      g_object_ref_sink (priv->tabs[tab]);
+
       clutter_container_add_actor (CLUTTER_CONTAINER (button), mozembed);
       g_signal_connect (button, "clicked",
                         G_CALLBACK (mozembed_button_clicked_cb), self);
-      nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
-                                            CLUTTER_ACTOR (button),
-                                            1, tab,
-                                            "x-expand", FALSE,
-                                            "y-expand", FALSE,
-                                            "x-fill", FALSE,
-                                            "y-fill", FALSE,
-                                            "x-align", 0.5,
-                                            "y-align", 0.5,
-                                            NULL);
+
+      get_tab_display_range (self, &start, &end);
+      if (tab >= start && tab < end)
+        nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
+                                              CLUTTER_ACTOR (button),
+                                              1, tab - start,
+                                              "x-expand", FALSE,
+                                              "y-expand", FALSE,
+                                              "x-fill", FALSE,
+                                              "y-fill", FALSE,
+                                              "x-align", 0.5,
+                                              "y-align", 0.5,
+                                              NULL);
     }
   else
     {
@@ -239,7 +377,7 @@ notify_get_tab (DBusGProxy     *proxy,
                 void           *user_data)
 {
   gchar *url = NULL, *title = NULL;
-  guint tab;
+  guint tab, start, end;
 
   GError *error = NULL;
   ClutterActor *label = CLUTTER_ACTOR (user_data);
@@ -265,15 +403,18 @@ notify_get_tab (DBusGProxy     *proxy,
 
   nbtk_label_set_text (NBTK_LABEL (label),
                        title && (title[0] != '\0') ? title : _("Untitled"));
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table), label,
-                                        2, tab,
-                                        "x-expand", FALSE,
-                                        "y-expand", FALSE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.5,
-                                        NULL);
+
+  get_tab_display_range (self, &start, &end);
+  if (tab >= start && tab < end)
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table), label,
+                                          2, tab - start,
+                                          "x-expand", FALSE,
+                                          "y-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 0.0,
+                                          "y-align", 0.5,
+                                          NULL);
 
   g_free (url);
   g_free (title);
@@ -284,9 +425,8 @@ notify_get_ntabs (DBusGProxy     *proxy,
                   DBusGProxyCall *call_id,
                   void           *user_data)
 {
-  guint n_tabs;
   NbtkPadding padding;
-  ClutterUnit cell_width;
+  gfloat cell_width;
   NbtkWidget *label;
   ClutterActor *parent;
 
@@ -294,17 +434,19 @@ notify_get_ntabs (DBusGProxy     *proxy,
   MoblinNetbookNetpanel *self = MOBLIN_NETBOOK_NETPANEL (user_data);
   MoblinNetbookNetpanelPrivate *priv = self->priv;
 
+  priv->display_tab = 0;
+
   /* Create tabs table */
   create_tabs_table (self);
 
   priv->calls = g_list_remove (priv->calls, call_id);
-  if (!dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_UINT, &n_tabs,
-                              G_TYPE_INVALID))
+  if (!dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_UINT,
+                              &priv->n_tabs, G_TYPE_INVALID))
     {
       /* TODO: Log the error if it's pertinent? */
       g_warning ("Error getting tabs: %s", error->message);
       g_error_free (error);
-      n_tabs = 0;
+      priv->n_tabs = 0;
     }
 
   /* Calculate width of preview */
@@ -315,27 +457,30 @@ notify_get_ntabs (DBusGProxy     *proxy,
   if ((parent = clutter_actor_get_parent (CLUTTER_ACTOR (self))))
     {
       nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
-      cell_width = (clutter_actor_get_widthu (CLUTTER_ACTOR (parent)) -
+      cell_width = (clutter_actor_get_width (CLUTTER_ACTOR (parent)) -
                     padding.left - padding.right -
-                    (nbtk_table_get_col_spacing (NBTK_TABLE (self)) * 4)) / 5.f;
+                    (nbtk_table_get_col_spacing (NBTK_TABLE (self))
+                     * DISPLAY_TABS)) / (1.0f * (DISPLAY_TABS + 1));
     }
   else
     cell_width = 0;
 
-  if (n_tabs)
+  if (priv->n_tabs)
     {
-      NbtkPadding padding;
-      ClutterActor *parent;
-      gfloat cell_width;
       guint i;
 
-      for (i = 0; i < MIN (4, n_tabs); i++)
+      priv->tabs = (NbtkWidget **)g_malloc0 (sizeof (NbtkWidget *) *
+                                             priv->n_tabs);
+      priv->labels = (NbtkWidget **)g_malloc0 (sizeof (NbtkWidget *) *
+                                               priv->n_tabs);
+
+      for (i = 0; i < priv->n_tabs; i++)
         {
           gchar *input, *output;
           ClutterActor *mozembed;
 
           mozembed = clutter_mozembed_new_view ();
-          clutter_actor_set_widthu (mozembed, cell_width);
+          clutter_actor_set_width (mozembed, cell_width);
           clutter_actor_set_reactive (mozembed, FALSE);
           g_object_set_data (G_OBJECT (mozembed), "netpanel", self);
           g_object_set_data (G_OBJECT (mozembed), "tab", GUINT_TO_POINTER (i));
@@ -354,8 +499,10 @@ notify_get_ntabs (DBusGProxy     *proxy,
                                      G_TYPE_STRING, output,
                                      G_TYPE_INVALID));
 
-          label = nbtk_label_new ("");
-          clutter_actor_set_widthu (CLUTTER_ACTOR (label), cell_width);
+          priv->labels[i] = label = nbtk_label_new ("");
+          g_object_ref (label);
+
+          clutter_actor_set_width (CLUTTER_ACTOR (label), cell_width);
           g_object_set_data (G_OBJECT (label), "netpanel", self);
           g_object_set_data (G_OBJECT (label), "tab", GUINT_TO_POINTER (i));
 
@@ -370,14 +517,11 @@ notify_get_ntabs (DBusGProxy     *proxy,
           g_free (input);
           g_free (output);
         }
-
-      if (n_tabs > 4)
-        clutter_actor_show (CLUTTER_ACTOR (priv->tabs_more));
     }
   else
     {
       NbtkWidget *button;
-      ClutterUnit cell_height;
+      gfloat cell_height;
 
       /* FIXME: this should be a default image or startpage snapshot instead,
                 and this label should become the caption title */
@@ -387,7 +531,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
       cell_height = cell_width * 9.0 / 16.0;
 
       button = nbtk_button_new ();
-      clutter_actor_set_sizeu (CLUTTER_ACTOR (button), cell_width, cell_height);
+      clutter_actor_set_size (CLUTTER_ACTOR (button), cell_width, cell_height);
       clutter_container_add_actor (CLUTTER_CONTAINER (button),
                                    CLUTTER_ACTOR (label));
       g_signal_connect (button, "clicked",
@@ -402,11 +546,44 @@ notify_get_ntabs (DBusGProxy     *proxy,
                                             "x-align", 0.0,
                                             "y-align", 0.5,
                                             NULL);
+
+      priv->n_tabs = 1;
     }
 
-  /* TODO: try to load favorite pages, for now always show the message */
-  if (priv->no_favs)
-    clutter_actor_show (CLUTTER_ACTOR (priv->no_favs));
+  /* FIXME: try to load favorites pages here */
+
+  if (priv->n_tabs > DISPLAY_TABS)
+    {
+      priv->tabs_prev = nbtk_button_new_with_label (_("Previous"));
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
+                                            CLUTTER_ACTOR (priv->tabs_prev),
+                                            6, 0,
+                                            "x-expand", FALSE,
+                                            "y-expand", FALSE,
+                                            "x-fill", FALSE,
+                                            "y-fill", FALSE,
+                                            "x-align", 0.0,
+                                            "y-align", 0.5,
+                                            NULL);
+      /* FIXME: This is better but the buttons get stuck on active state */
+      /* clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_prev)); */
+      g_signal_connect (priv->tabs_prev, "clicked",
+                        G_CALLBACK (tabs_prev_clicked_cb), self);
+
+      priv->tabs_next = nbtk_button_new_with_label (_("Next"));
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
+                                            CLUTTER_ACTOR (priv->tabs_next),
+                                            6, 3,
+                                            "x-expand", FALSE,
+                                            "y-expand", FALSE,
+                                            "x-fill", FALSE,
+                                            "y-fill", FALSE,
+                                            "x-align", 1.0,
+                                            "y-align", 0.5,
+                                            NULL);
+      g_signal_connect (priv->tabs_next, "clicked",
+                        G_CALLBACK (tabs_next_clicked_cb), self);
+    }
 }
 
 static void
@@ -439,6 +616,7 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
 {
   MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  guint i;
 
   /* Clear the entry */
 #if USE_RADICAL_BAR
@@ -455,11 +633,28 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
       clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
                                       CLUTTER_ACTOR (priv->tabs_table));
       priv->tabs_table = NULL;
-      priv->tabs_more = NULL;
+      priv->tabs_prev = NULL;
+      priv->tabs_next = NULL;
     }
 
-  if (priv->no_favs)
-    clutter_actor_hide (CLUTTER_ACTOR (priv->no_favs));
+  if (priv->tabs)
+    {
+      for (i = 0; i < priv->n_tabs; i++)
+        if (priv->tabs[i])
+          g_object_unref (priv->tabs[i]);
+      g_free (priv->tabs);
+      priv->tabs = NULL;
+    }
+
+  if (priv->labels)
+    {
+      for (i = 0; i < priv->n_tabs; i++)
+        g_object_unref (priv->labels[i]);
+      g_free (priv->labels);
+      priv->labels = NULL;
+    }
+
+  priv->n_tabs = 0;
 
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->hide (actor);
 }
@@ -547,7 +742,7 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-  
+
   /* Construct entry table */
   table = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 6);
@@ -558,7 +753,7 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                                         CLUTTER_ACTOR (table),
                                         0, 0,
                                         "row-span", 1,
-                                        "col-span", 2,
+                                        "col-span", 1,
                                         "x-expand", TRUE,
                                         "y-expand", TRUE,
                                         "x-fill", TRUE,
@@ -610,23 +805,6 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   g_signal_connect (priv->entry, "keynav-event",
                     G_CALLBACK (entry_keynav_event_cb), self);
 #endif
-
-  priv->no_favs = nbtk_label_new (_("As you visit web pages, your favorites "
-                                    "will appear here and on the New tab page "
-                                    "in the browser."));
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->no_favs),
-                          "netpanel-nofavs-label");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        CLUTTER_ACTOR (priv->no_favs),
-                                        2, 0,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.5,
-                                        NULL);
-  clutter_actor_hide (CLUTTER_ACTOR (priv->no_favs));
 
   /* Connect to DBus */
   connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);

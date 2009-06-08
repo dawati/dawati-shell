@@ -726,6 +726,7 @@ MnbStatusEntry > *.MnbStatusEntryText
 {
   font-size: 16px;
   color: #595959ff;
+  border-image: none;
 }
 
 MnbStatusEntry > *.MnbStatusEntrySubText
@@ -806,12 +807,18 @@ MoblinNetbookNetpanel > *#netpanel-subtable NbtkLabel#section
   padding: 2 4 0 4;
 }
 
-MoblinNetbookNetpanel > *#netpanel-nofavs-label
+MoblinNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
   font-family: "Liberation Sans";
   font-size: 16px;
   color: #595959ff;
   padding: 0 4;
+}
+
+MoblinNetbookNetpanel *#netpanel-placeholder-bin
+{
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
+  padding: 8;
 }
 
 MwbRadicalBar
