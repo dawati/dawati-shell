@@ -1720,8 +1720,7 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
   MnbToolbarPrivate      *priv     = map_data->toolbar->priv;
   MutterPlugin           *plugin   = priv->plugin;
   MutterWindow           *mcw      = map_data->mcw;
-  gint  x, y;
-  guint w, h;
+  gfloat                  x, y, w, h;
 
   g_free (map_data);
 

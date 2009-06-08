@@ -6,7 +6,7 @@ SUBDIRS+=penge
 if WITH_AHOGHILL
 SUBDIRS+=ahoghill
 endif
-SUBDIRS+=src po data tests
+SUBDIRS+=src po data libmnb tests
 
 EXTRA_DIST =
 
