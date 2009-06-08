@@ -115,8 +115,10 @@ _set_state (CmService          *service,
   gchar *button = NULL;
   GdkPixbuf *pixbuf = NULL;
   gchar *name = NULL;
+  gchar *security = NULL;
 
   name = g_strdup (cm_service_get_name (service));
+  security = g_strdup (cm_service_get_security (service));
 
   if (g_strcmp0 ("ethernet", name) == 0)
   {
@@ -161,6 +163,26 @@ _set_state (CmService          *service,
     priv->failed = TRUE;
   }
 
+  if (security && security[0] != '\0' && g_strcmp0 ("none", security) != 0)
+    {
+      if (g_strcmp0 ("rsn", security) == 0)
+	{
+	  g_free (security);
+	  security = g_strdup ("WPA2");
+	}
+      else
+	{
+	  gint i;
+
+	  for (i = 0; security[i] != '\0'; i++)
+	    {
+	      security[i] = g_ascii_toupper (security[i]);
+	    }
+	}
+      gtk_label_set_text (GTK_LABEL (priv->security_label),
+                          security);
+    }
+
   gtk_label_set_text (GTK_LABEL (priv->name_label),
                       label);
   gtk_misc_set_alignment (GTK_MISC (priv->name_label),
@@ -175,6 +197,7 @@ _set_state (CmService          *service,
                              pixbuf);
 
   g_free (name);
+  g_free (security);
   g_free (label);
   g_free (button);
 }
@@ -398,28 +421,8 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
 
   if (service)
   {
-    gchar *security = g_strdup (cm_service_get_security (service));
     priv->service = g_object_ref (service);
 
-    if (security && security[0] != '\0' && g_strcmp0 ("none", security) != 0)
-    {
-      if (g_strcmp0 ("rsn", security) == 0)
-      {
-        g_free (security);
-        security = g_strdup ("WPA2");
-      }
-      else
-      {
-        gint i;
-
-        for (i = 0; security[i] != '\0'; i++)
-        {
-          security[i] = g_ascii_toupper (security[i]);
-        }
-      }
-      gtk_label_set_text (GTK_LABEL (priv->security_label),
-                          security);
-    }
     priv->state = _get_service_state (service);
 
     _set_state (service,
@@ -429,8 +432,6 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       "clicked",
                       G_CALLBACK (_connect_button_cb),
                       service_item);
-
-    g_free (security);
   }
 }
 
