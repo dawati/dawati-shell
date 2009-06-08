@@ -10,7 +10,7 @@ static void
 launchers_change_cb (MnbLauncherMonitor *monitor,
                      MnbLauncherTree    *tree)
 {
-  GSList *directories;
+  GList *directories;
 
   printf ("%s()\n", __FUNCTION__);
 
@@ -25,7 +25,7 @@ main (int     argc,
 {
   MnbLauncherTree     *tree;
   MnbLauncherMonitor  *monitor;
-  GSList              *directories;
+  GList               *directories;
 
   gtk_init (&argc, &argv);
 
