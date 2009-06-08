@@ -35,6 +35,7 @@
 
 #define TOOLBAR_TRIGGER_THRESHOLD       1
 #define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 300
+#define TOOLBAR_LOWLIGHT_FADE_DURATION 300
 
 #if 0
 /*
@@ -45,6 +46,8 @@
  */
 #define TOOLBAR_HEIGHT 64
 #endif
+
+#define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + 37)
 
 #define TOOLBAR_X_PADDING 4
 
@@ -82,10 +85,10 @@ enum {
     /* Below here are the applets -- with the new dbus API, these are
      * just extra panels, only the buttons are slightly different in size.
      */
-    BATTERY_APPLET = APPLETS_START,
+    WIFI_APPLET = APPLETS_START,
     VOLUME_APPLET,
+    BATTERY_APPLET,
     BT_APPLET,
-    WIFI_APPLET,
     TEST_APPLET,
     /* LAST */
     NUM_ZONES
@@ -113,6 +116,8 @@ struct _MnbToolbarPrivate
   MutterPlugin *plugin;
 
   ClutterActor *hbox; /* This is where all the contents are placed */
+  ClutterActor *hint;
+  ClutterActor *lowlight;
 
   NbtkWidget   *time; /* The time and date fields, needed for the updates */
   NbtkWidget   *date;
@@ -136,6 +141,8 @@ struct _MnbToolbarPrivate
                                    */
 
   guint trigger_timeout_id;
+
+  gint panels_showing;
 
 #if 1
   /* TODO remove */
@@ -231,18 +238,54 @@ mnb_toolbar_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 }
 
 static void
+mnb_toolbar_show_lowlight (MnbToolbar *toolbar)
+{
+  ClutterActor *lowlight = toolbar->priv->lowlight;
+
+  clutter_actor_set_opacity (lowlight, 0);
+  clutter_actor_show (lowlight);
+
+  clutter_actor_animate (CLUTTER_ACTOR(lowlight),
+                         CLUTTER_EASE_IN_SINE,
+                         TOOLBAR_LOWLIGHT_FADE_DURATION,
+                         "opacity", 0x7f,
+                         NULL);
+
+}
+
+static void
+mnb_toolbar_hide_lowlight (MnbToolbar *toolbar)
+{
+  ClutterActor     *lowlight = toolbar->priv->lowlight;
+  ClutterAnimation *anim;
+
+  anim = clutter_actor_animate (CLUTTER_ACTOR(lowlight),
+                                CLUTTER_EASE_IN_SINE,
+                                TOOLBAR_LOWLIGHT_FADE_DURATION,
+                                "opacity", 0,
+                                NULL);
+
+  g_signal_connect_swapped (anim,
+                            "completed",
+                            G_CALLBACK (clutter_actor_hide),
+                            lowlight);
+}
+
+static void
 mnb_toolbar_show (ClutterActor *actor)
 {
-  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  gint               screen_width, screen_height;
-  gint               i;
-  ClutterAnimation  *animation;
+  MnbToolbarPrivate          *priv = MNB_TOOLBAR (actor)->priv;
+  gint                        screen_width, screen_height;
+  gint                        i;
+  ClutterAnimation           *animation;
 
   if (priv->in_show_animation)
     {
       g_signal_stop_emission_by_name (actor, "show");
       return;
     }
+
+  mnb_toolbar_show_lowlight (MNB_TOOLBAR (actor));
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -273,12 +316,15 @@ mnb_toolbar_show (ClutterActor *actor)
     moblin_netbook_input_region_push (priv->plugin, 0, 0,
                                       screen_width, TOOLBAR_HEIGHT + 10);
 
+
+  moblin_netbook_stash_window_focus (priv->plugin, CurrentTime);
+
   priv->in_show_animation = TRUE;
 
   /*
    * Start animation and wait for it to complete.
    */
-  animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0, NULL);
+  animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0.0, NULL);
 
   g_object_ref (actor);
 
@@ -311,15 +357,36 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
   priv->in_hide_animation = FALSE;
   priv->dont_autohide = FALSE;
 
+  moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
+
   g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
   g_object_unref (actor);
 }
 
 static void
+mnb_toolbar_first_show_cb (MnbToolbar *toolbar, gpointer data)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  if (priv->hint)
+    {
+      clutter_actor_destroy (priv->hint);
+      priv->hint = NULL;
+
+      /* one-of */
+      g_signal_handlers_disconnect_by_func (toolbar,
+                                            mnb_toolbar_first_show_cb,
+                                            data);
+    }
+}
+
+static void
 mnb_toolbar_hide (ClutterActor *actor)
 {
+  static gint count = 0;
+
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  gint               height;
+  gfloat             height;
   gint               i;
   ClutterAnimation  *animation;
 
@@ -327,6 +394,18 @@ mnb_toolbar_hide (ClutterActor *actor)
     {
       g_signal_stop_emission_by_name (actor, "hide");
       return;
+    }
+
+  mnb_toolbar_hide_lowlight (MNB_TOOLBAR (actor));
+
+  /*
+   * Show toolbar hint the very first time we are hidden.
+   */
+  if ((++count == 1) && priv->hint)
+    {
+      clutter_actor_show (priv->hint);
+      g_signal_connect (actor, "show",
+                        G_CALLBACK (mnb_toolbar_first_show_cb), NULL);
     }
 
   for (i = 0; i < NUM_ZONES; ++i)
@@ -366,6 +445,44 @@ mnb_toolbar_hide (ClutterActor *actor)
 }
 
 static void
+mnb_toolbar_allocate (ClutterActor          *actor,
+                      const ClutterActorBox *box,
+                      ClutterAllocationFlags flags)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+  ClutterActorClass *parent_class;
+
+  /*
+   * The show and hide animations trigger allocations with origin_changed
+   * set to TRUE; if we call the parent class allocation in this case, it
+   * will force relayout, which we do not want. Instead, we call directly the
+   * ClutterActor implementation of allocate(); this ensures our actor box is
+   * correct, which is all we call about during the animations.
+   *
+   * If the drop down is not visible, we just return; this insures that the
+   * needs_allocation flag in ClutterActor remains set, and the actor will get
+   * reallocated when we show it.
+   */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
+    return;
+
+  if (priv->in_show_animation || priv->in_hide_animation)
+    {
+      ClutterActorClass  *actor_class;
+
+      actor_class = g_type_class_peek (CLUTTER_TYPE_ACTOR);
+
+      if (actor_class)
+        actor_class->allocate (actor, box, flags);
+
+      return;
+    }
+
+  parent_class = CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class);
+  parent_class->allocate (actor, box, flags);
+}
+
+static void
 mnb_toolbar_class_init (MnbToolbarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -381,6 +498,7 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
 
   clutter_class->show = mnb_toolbar_show;
   clutter_class->hide = mnb_toolbar_hide;
+  clutter_class->allocate = mnb_toolbar_allocate;
 
   g_object_class_install_property (object_class,
                                    PROP_MUTTER_PLUGIN,
@@ -494,7 +612,7 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 /*
  * TODO Remove.
  *
- * Helper functions for the m_zone, internet zone and media zone -- there will
+ * Helper functions for the myzone, internet zone and media zone -- there will
  * need to go and be handled internally in the zones/via new dbus API.
  */
 static void
@@ -549,7 +667,7 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
 
   workspace =
     meta_screen_get_active_workspace_index (mutter_plugin_get_screen (plugin));
-  moblin_netbook_spawn (plugin, exec, 0L, TRUE, workspace);
+  moblin_netbook_launch_application (exec, TRUE, workspace);
 
   g_free (exec);
   g_free (esc_url);
@@ -573,7 +691,7 @@ mnb_toolbar_panel_name_to_index (const gchar *name)
 {
   gint index;
 
-  if (!strcmp (name, "m-zone"))
+  if (!strcmp (name, "myzone"))
     index = M_ZONE;
   else if (!strcmp (name, "status-zone"))
     index = STATUS_ZONE;
@@ -613,7 +731,7 @@ mnb_toolbar_panel_index_to_name (gint index)
 {
   switch (index)
     {
-    case M_ZONE: return "m-zone";
+    case M_ZONE: return "myzone";
     case STATUS_ZONE: return "status-zone";
     case SPACES_ZONE: return "spaces-zone";
     case INTERNET_ZONE: return "internet-zone";
@@ -637,7 +755,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
-  gfloat w, h;
+  gfloat             w, h;
 
   clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
 
@@ -672,6 +790,8 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
     moblin_netbook_input_region_push (plugin,
                                       (gint)x, TOOLBAR_HEIGHT + (gint)y,
                                       (guint)w, (guint)h);
+
+  priv->panels_showing++;
 }
 
 static void
@@ -684,6 +804,14 @@ mnb_toolbar_dropdown_hide_begin_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
     {
       moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
       priv->dropdown_region = NULL;
+    }
+
+  priv->panels_showing--;
+
+  if (priv->panels_showing < 0)
+    {
+      g_warning ("Error in panel state accounting, fixing.");
+      priv->panels_showing = 0;
     }
 }
 
@@ -898,6 +1026,9 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                               G_CALLBACK (_media_drop_down_hidden), grid);
             g_signal_connect (panel, "show-completed",
                               G_CALLBACK (_media_drop_down_shown), grid);
+            g_signal_connect_swapped (grid, "dismiss",
+                                  G_CALLBACK (mnb_drop_down_hide_with_toolbar),
+                                  panel);
           }
           break;
 #endif
@@ -930,7 +1061,8 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             g_signal_connect (grid, "launch",
                               G_CALLBACK (_netgrid_launch_cb), toolbar);
             g_signal_connect_swapped (grid, "launched",
-                                      G_CALLBACK (clutter_actor_hide), toolbar);
+                                 G_CALLBACK (mnb_drop_down_hide_with_toolbar),
+                                 panel);
           }
           break;
 #endif
@@ -1168,6 +1300,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
+  clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
 }
 
 static void
@@ -1244,6 +1377,10 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
 
   clutter_actor_set_position (icon, x, y);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), icon);
+
+
+  g_signal_connect (icon, "clicked",
+                    G_CALLBACK (mnb_toolbar_toggle_buttons), toolbar);
 }
 
 static void
@@ -1296,14 +1433,65 @@ mnb_toolbar_kbd_grab_notify_cb (MetaScreen *screen,
 }
 
 static void
+mnb_toolbar_make_hint (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
+  ClutterText       *txt;
+  ClutterActor      *bin;
+  ClutterActor      *overlay;
+  NbtkWidget        *label;
+  gint               screen_width, screen_height;
+
+  bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  label = nbtk_label_new (_("To activate the toolbar, move "
+                            "your cursor to the top of the screen"
+                             ));
+
+  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(label)));
+  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
+
+  nbtk_widget_set_style_class_name (label, "toolbar-instruction-label");
+
+  nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+  nbtk_bin_set_alignment (NBTK_BIN (bin),
+                          NBTK_ALIGN_CENTER, NBTK_ALIGN_LEFT);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (bin),
+                          "toolbar-instruction-box");
+
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
+                                    "toolbar-instruction-box");
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  clutter_actor_set_width (bin, 300);
+  clutter_actor_set_position (bin,
+                              screen_width - clutter_actor_get_width (bin) - 10,
+                              10);
+
+  overlay = mutter_plugin_get_overlay_group (plugin);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), bin);
+  clutter_actor_hide (bin);
+
+  priv->hint = bin;
+}
+
+static void
 mnb_toolbar_constructed (GObject *self)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (self)->priv;
   MutterPlugin      *plugin = priv->plugin;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
+  ClutterActor      *background, *bg_texture;
+  ClutterActor      *lowlight;
   gint               screen_width, screen_height;
   ClutterColor       clr = {0x0, 0x0, 0x0, 0xce};
+  ClutterColor       low_clr = { 0, 0, 0, 0x7f };
 
   hbox = priv->hbox = clutter_group_new ();
 
@@ -1313,7 +1501,35 @@ mnb_toolbar_constructed (GObject *self)
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
+  clutter_actor_set_size (actor, screen_width, TOOLBAR_SHADOW_HEIGHT);
+
+  lowlight = clutter_rectangle_new_with_color (&low_clr);
+
+  /*
+   * The lowlight has to be tall enough to cover the screen when the toolbar
+   * is fully withdrawn.
+   */
+  clutter_actor_set_size (lowlight,
+                          screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), lowlight);
+  clutter_actor_hide (lowlight);
+  priv->lowlight = lowlight;
+
+  bg_texture =
+    clutter_texture_new_from_file (PLUGIN_PKGDATADIR
+                                   "/theme/panel/panel-background.png",
+                                   NULL);
+  if (bg_texture)
+    {
+      background = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
+                                           0,   /* top */
+                                           200, /* right */
+                                           0,   /* bottom */
+                                           200  /* left */);
+      clutter_actor_set_size (background, screen_width - 8, TOOLBAR_HEIGHT);
+      clutter_actor_set_x (background, 4);
+      clutter_container_add_actor (CLUTTER_CONTAINER (hbox), background);
+    }
 
   /* create time and date labels */
   priv->time = nbtk_label_new ("");
@@ -1384,6 +1600,13 @@ mnb_toolbar_constructed (GObject *self)
                     "button-press-event",
                     G_CALLBACK (mnb_toolbar_stage_input_cb),
                     self);
+
+  /*
+   * Construct the toolbar hint
+   *
+   * TODO -- only on first 5 boots ...
+   */
+  mnb_toolbar_make_hint (MNB_TOOLBAR (self));
 
   /*
    * Hook into "show" signal on stage, to set up input regions.
@@ -1646,11 +1869,15 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
   parent = mutter_plugin_get_overlay_group (priv->plugin);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox), background);
+  clutter_actor_raise (background, priv->lowlight);
 
   button = shell_tray_manager_find_button_for_xid (priv->tray_manager, xwin);
 
   if (button)
-    mnb_drop_down_set_button (MNB_DROP_DOWN (background), NBTK_BUTTON (button));
+    {
+      mnb_drop_down_set_button (MNB_DROP_DOWN (background),
+                                NBTK_BUTTON (button));
+    }
   else
     g_warning ("No button found for xid 0x%x", (guint)xwin);
 
@@ -1921,7 +2148,8 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
 static void
 mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
 {
-  MutterPlugin      *plugin = toolbar->priv->plugin;
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterPlugin      *plugin = priv->plugin;
   XWindowAttributes  attr;
   long               event_mask;
   Window             xwin;
@@ -1961,6 +2189,9 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
     }
 
   XSelectInput (xdpy, xwin, event_mask);
+
+  if (priv->panels[M_ZONE])
+    clutter_actor_show (CLUTTER_ACTOR (priv->panels[M_ZONE]));
 }
 
 /*

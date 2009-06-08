@@ -46,7 +46,7 @@ enum
   PROP_SECONDARY_TEXT
 };
 
-#define DEFAULT_AVATAR_PATH PKG_DATADIR "/theme/mzone/default-avatar-icon.png"
+#define DEFAULT_AVATAR_PATH PKG_DATADIR "/theme/myzone/default-avatar-icon.png"
 
 static void
 penge_people_tile_get_property (GObject *object, guint property_id,
@@ -297,7 +297,7 @@ penge_people_tile_init (PengePeopleTile *self)
                                     "PengePeopleTileDetails");
   clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay, 0x0);
 
-  priv->timeline = clutter_timeline_new_for_duration (300);
+  priv->timeline = clutter_timeline_new (300);
 
   alpha = clutter_alpha_new_full (priv->timeline,
                                   CLUTTER_LINEAR);
@@ -366,6 +366,9 @@ penge_people_tile_init (PengePeopleTile *self)
                     self);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (priv->details_overlay), 4);
+
+
+  clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }
 
 

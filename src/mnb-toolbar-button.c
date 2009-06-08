@@ -243,14 +243,14 @@ mnb_toolbar_button_enter (ClutterActor *actor, ClutterCrossingEvent *event)
 static void
 mnb_toolbar_button_allocate (ClutterActor          *actor,
                              const ClutterActorBox *box,
-                             gboolean               origin_changed)
+                             ClutterAllocationFlags flags)
 {
   MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (
              mnb_toolbar_button_parent_class)->allocate (actor,
                                                          box,
-                                                         origin_changed);
+                                                         flags);
 
   if (priv->old_bg)
     {
@@ -260,7 +260,7 @@ mnb_toolbar_button_allocate (ClutterActor          *actor,
 
       clutter_actor_allocate (priv->old_bg,
                               &frame_box,
-                              origin_changed);
+                              flags);
     }
 }
 

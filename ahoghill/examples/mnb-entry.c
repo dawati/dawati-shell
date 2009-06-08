@@ -31,6 +31,7 @@ enum
 {
   BUTTON_CLICKED,
   TEXT_CHANGED,
+  KEYNAV_EVENT,
 
   LAST_SIGNAL
 };
@@ -68,16 +69,46 @@ text_changed_cb (ClutterText  *actor,
   g_signal_emit (entry, _signals[TEXT_CHANGED], 0);
 }
 
+static gboolean
+text_key_press_cb (ClutterActor     *actor,
+                   ClutterKeyEvent  *event,
+                   MnbEntry         *entry)
+{
+  MnbEntryPrivate *priv = entry->priv;
+  ClutterText     *text;
+  gint             pos;
+
+  text = CLUTTER_TEXT (nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry)));
+  pos = clutter_text_get_cursor_position (text);
+
+  switch (event->keyval)
+    {
+      case CLUTTER_Return:
+      case CLUTTER_Left:
+      case CLUTTER_Up:
+      case CLUTTER_Right:
+      case CLUTTER_Down:
+        /* Only emit if caret at end of text. */
+        if (pos == -1)
+          {
+            g_signal_emit (entry, _signals[KEYNAV_EVENT], 0, event->keyval);
+            return TRUE;         
+          }
+    }
+
+  return FALSE;
+}
+
 static void
 mnb_entry_get_preferred_width (ClutterActor *actor,
-                               ClutterUnit   for_height,
-                               ClutterUnit  *min_width_p,
-                               ClutterUnit  *natural_width_p)
+                               gfloat        for_height,
+                               gfloat       *min_width_p,
+                               gfloat       *natural_width_p)
 {
   MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
   NbtkPadding padding = { 0, 0, 0, 0 };
-  ClutterUnit min_width_entry, min_width_button;
-  ClutterUnit natural_width_entry, natural_width_button;
+  gfloat min_width_entry, min_width_button;
+  gfloat natural_width_entry, natural_width_button;
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
@@ -104,14 +135,14 @@ mnb_entry_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_entry_get_preferred_height (ClutterActor *actor,
-                                ClutterUnit   for_width,
-                                ClutterUnit  *min_height_p,
-                                ClutterUnit  *natural_height_p)
+                                gfloat        for_width,
+                                gfloat       *min_height_p,
+                                gfloat       *natural_height_p)
 {
   MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
   NbtkPadding padding = { 0, 0, 0, 0 };
-  ClutterUnit min_height_entry, min_height_button;
-  ClutterUnit natural_height_entry, natural_height_button;
+  gfloat min_height_entry, min_height_button;
+  gfloat natural_height_entry, natural_height_button;
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
@@ -137,15 +168,15 @@ mnb_entry_get_preferred_height (ClutterActor *actor,
 static void
 mnb_entry_allocate (ClutterActor          *actor,
                     const ClutterActorBox *box,
-                    gboolean               origin_changed)
+                    ClutterAllocationFlags flags)
 {
   MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
   NbtkPadding padding = { 0, 0, 0, 0 };
   ClutterActorBox entry_box, button_box;
-  ClutterUnit entry_width, entry_height, button_width, button_height;
+  gfloat entry_width, entry_height, button_width, button_height;
 
   CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->
-    allocate (actor, box, origin_changed);
+    allocate (actor, box, flags);
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
@@ -173,8 +204,8 @@ mnb_entry_allocate (ClutterActor          *actor,
   entry_box.y1 = (int) (((box->y2 - box->y1) - entry_height) / 2);
   entry_box.y2 = (int) (entry_box.y1 + entry_height);
 
-  clutter_actor_allocate (priv->entry, &entry_box, origin_changed);
-  clutter_actor_allocate (priv->table, &button_box, origin_changed);
+  clutter_actor_allocate (priv->entry, &entry_box, flags);
+  clutter_actor_allocate (priv->table, &button_box, flags);
 }
 
 static void
@@ -200,6 +231,53 @@ mnb_entry_pick (ClutterActor       *actor,
   clutter_actor_paint (priv->entry);
 
   clutter_actor_paint (priv->table);
+}
+
+static void
+mnb_entry_map (ClutterActor *actor)
+{
+  MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->map (actor);
+
+  clutter_actor_map (priv->entry);
+
+  clutter_actor_map (priv->table);
+}
+
+static void
+mnb_entry_unmap (ClutterActor *actor)
+{
+  MnbEntryPrivate *priv = MNB_ENTRY (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_entry_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (priv->entry);
+
+  clutter_actor_unmap (priv->table);
+}
+
+static void
+mnb_entry_style_changed (NbtkWidget *widget)
+{
+  MnbEntryPrivate *priv = MNB_ENTRY (widget)->priv;
+  NbtkWidget *entry = NBTK_WIDGET (priv->entry);
+  NbtkWidget *table = NBTK_WIDGET (priv->table);
+  NbtkWidget *clear = NBTK_WIDGET (priv->clear_button);
+  NbtkWidget *search = NBTK_WIDGET (priv->search_button);
+
+  NBTK_WIDGET_CLASS (mnb_entry_parent_class)->style_changed (widget);
+
+  /* XXX - this is needed to propagate the ::style-changed signal to
+   * the internal children on MnbEntry, otherwise the style changes
+   * will not reach them
+   */
+
+  /* FIXME - we really need nbtk_widget_style_changed() */
+  NBTK_WIDGET_GET_CLASS (entry)->style_changed (entry);
+  NBTK_WIDGET_GET_CLASS (table)->style_changed (table);
+  NBTK_WIDGET_GET_CLASS (clear)->style_changed (clear);
+  NBTK_WIDGET_GET_CLASS (search)->style_changed (search);
 }
 
 static void
@@ -277,7 +355,7 @@ mnb_entry_class_init (MnbEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  /* unused: NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass); */
+  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MnbEntryPrivate));
@@ -290,9 +368,13 @@ mnb_entry_class_init (MnbEntryClass *klass)
   actor_class->get_preferred_width = mnb_entry_get_preferred_width;
   actor_class->get_preferred_height = mnb_entry_get_preferred_height;
   actor_class->allocate = mnb_entry_allocate;
-  actor_class->focus_in = mnb_entry_focus_in;
+  actor_class->key_focus_in = mnb_entry_focus_in;
   actor_class->paint = mnb_entry_paint;
   actor_class->pick = mnb_entry_pick;
+  actor_class->map = mnb_entry_map;
+  actor_class->unmap = mnb_entry_unmap;
+
+  widget_class->style_changed = mnb_entry_style_changed;
 
   pspec = g_param_spec_string ("label",
                                "Label",
@@ -325,6 +407,15 @@ mnb_entry_class_init (MnbEntryClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  _signals[KEYNAV_EVENT] =
+    g_signal_new ("keynav-event",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbEntryClass, keynav_event),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__UINT,
+                  G_TYPE_NONE, 1, G_TYPE_UINT);
 }
 
 static void
@@ -375,15 +466,16 @@ mnb_entry_init (MnbEntry *self)
   g_signal_connect (text, "text-changed",
                     G_CALLBACK (text_changed_cb),
                     self);
+  g_signal_connect (text, "key-press-event",
+                    G_CALLBACK (text_key_press_cb),
+                    self);
 
   priv->table = CLUTTER_ACTOR (nbtk_table_new ());
   clutter_actor_set_parent (priv->table, CLUTTER_ACTOR (self));
 
   priv->clear_button = CLUTTER_ACTOR (nbtk_button_new ());
   clutter_actor_hide (priv->clear_button);
-  nbtk_table_add_widget (NBTK_TABLE (priv->table),
-                         NBTK_WIDGET (priv->clear_button),
-                         0, 0);
+  nbtk_table_add_actor (NBTK_TABLE (priv->table), priv->clear_button, 0, 0);
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->clear_button),
                                     "MnbEntryClearButton");
   set_clear_button_size (priv->clear_button);
@@ -392,9 +484,7 @@ mnb_entry_init (MnbEntry *self)
                     self);
 
   priv->search_button = CLUTTER_ACTOR (nbtk_button_new ());
-  nbtk_table_add_widget (NBTK_TABLE (priv->table),
-                         NBTK_WIDGET (priv->search_button),
-                         0, 1);
+  nbtk_table_add_actor (NBTK_TABLE (priv->table), priv->search_button, 0, 1);
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->search_button),
                                     "MnbEntryButton");
   g_signal_connect (priv->search_button, "clicked",
@@ -443,5 +533,13 @@ mnb_entry_set_text (MnbEntry     *self,
 
   if (text)
     nbtk_entry_set_text (NBTK_ENTRY (self->priv->entry), text);
+}
+
+NbtkWidget *
+mnb_entry_get_nbtk_entry (MnbEntry *self)
+{
+  g_return_val_if_fail (MNB_IS_ENTRY (self), NULL);
+
+  return NBTK_WIDGET (self->priv->entry);
 }
 

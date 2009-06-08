@@ -26,6 +26,8 @@
 #include "penge-app-bookmark-manager.h"
 #include "penge-utils.h"
 
+#include "src/moblin-netbook-chooser.h"
+
 G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
@@ -217,22 +219,11 @@ _button_press_event (ClutterActor *actor,
                      gpointer      userdata)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
-  GError *error = NULL;
-  GAppLaunchContext *context;
 
-  context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
-
-  if (g_app_info_launch (priv->app_info, NULL, context, &error))
+  if (moblin_netbook_launch_application_from_info (priv->app_info,
+                                                   NULL, FALSE, -2))
     penge_utils_signal_activated (actor);
 
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error launching application): %s",
-                 error->message);
-    g_clear_error (&error);
-  }
-
-  g_object_unref (context);
   return FALSE;
 }
 

@@ -21,7 +21,6 @@
  * 02111-1307, USA.
  */
 
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -37,137 +36,6 @@
 
 #include "mnb-launcher-tree.h"
 #include "moblin-netbook.h"
-
-/*
- * Desktop file utils.
- */
-
-static gchar *
-desktop_file_get_name (GKeyFile *entry)
-{
-  gchar *ret = NULL;
-  GError *error = NULL;
-
-  g_return_val_if_fail (entry, NULL);
-
-  ret = g_key_file_get_locale_string (entry,
-                                      G_KEY_FILE_DESKTOP_GROUP,
-                                      G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
-                                      NULL,
-                                      &error);
-  if (error)
-    {
-      /* Missing generic name is very common, so just ignore.
-       * g_warning ("%s", error->message); */
-      g_clear_error (&error);
-    }
-
-  if (ret)
-    return ret;
-
-  /* Fall back to "Name" */
-  ret = g_key_file_get_locale_string (entry,
-                                      G_KEY_FILE_DESKTOP_GROUP,
-                                      G_KEY_FILE_DESKTOP_KEY_NAME,
-                                      NULL,
-                                      &error);
-  if (error)
-    {
-      g_warning ("%s", error->message);
-      g_clear_error (&error);
-      return NULL;
-    }
-
-  return ret;
-}
-
-/*
- * Get executable from menu entry and check it's available in the path.
- * Returns: absolute path if found, otherwise NULL.
- */
-static gchar *
-desktop_file_get_exec (GKeyFile *entry)
-{
-  gchar   *exec = NULL;
-  gchar   *binary = NULL;
-  gint     argc;
-  gchar  **argv;
-  GError  *error = NULL;
-
-  g_return_val_if_fail (entry, NULL);
-
-  error = NULL;
-  exec = g_key_file_get_value (entry,
-                               G_KEY_FILE_DESKTOP_GROUP,
-                               G_KEY_FILE_DESKTOP_KEY_EXEC, &error);
-  if (error)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-    }
-
-  if (exec)
-    {
-      error = NULL;
-      if (g_shell_parse_argv (exec, &argc, &argv, &error))
-        {
-          binary = g_find_program_in_path (argv[0]);
-          g_strfreev (argv);
-        }
-      else
-        {
-          g_warning ("%s", error->message);
-          g_error_free (error);
-        }
-      g_free (exec);
-    }
-
-  return binary;
-}
-
-static gchar *
-desktop_file_get_icon (GKeyFile *entry)
-{
-  gchar *ret = NULL;
-  GError *error = NULL;
-
-  g_return_val_if_fail (entry, NULL);
-
-  ret = g_key_file_get_locale_string (entry,
-                                      G_KEY_FILE_DESKTOP_GROUP,
-                                      G_KEY_FILE_DESKTOP_KEY_ICON,
-                                      NULL,
-                                      &error);
-  if (error)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-    }
-
-  return ret;
-}
-
-static gchar *
-desktop_file_get_comment (GKeyFile *entry)
-{
-  gchar *ret = NULL;
-  GError *error = NULL;
-
-  g_return_val_if_fail (entry, NULL);
-
-  ret = g_key_file_get_locale_string (entry,
-                                      G_KEY_FILE_DESKTOP_GROUP,
-                                      G_KEY_FILE_DESKTOP_KEY_COMMENT,
-                                      NULL,
-                                      &error);
-  if (error)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-    }
-
-  return ret;
-}
 
 /*
  * MnbLauncherMonitor.
@@ -233,137 +101,45 @@ mnb_launcher_monitor_free (MnbLauncherMonitor *self)
 }
 
 /*
- * MnbLauncherEntry.
+ * MnbLauncherApplication helpers.
  */
 
-struct MnbLauncherEntry_ {
-  gchar     *desktop_file_path;
-  gchar     *name;
-  gchar     *exec;
-  gchar     *icon;
-  gchar     *comment;
-};
-
-MnbLauncherEntry *
-mnb_launcher_entry_create (const gchar *desktop_file_path)
+static MnbLauncherApplication *
+mnb_launcher_application_create_from_gmenu_entry (GMenuTreeEntry *entry)
 {
-  MnbLauncherEntry  *self;
-  GKeyFile          *desktop_file;
-  GError            *error;
-
-  g_return_val_if_fail (desktop_file_path, NULL);
-  g_return_val_if_fail (*desktop_file_path, NULL);
-
-  desktop_file = g_key_file_new ();
-  error = NULL;
-  g_key_file_load_from_file (desktop_file,
-                             desktop_file_path,
-                             G_KEY_FILE_NONE,
-                             &error);
-  if (error)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-      self = NULL;
-    }
-  else
-    {
-      self = g_new0 (MnbLauncherEntry, 1);
-      self->desktop_file_path = g_strdup (desktop_file_path);
-      self->name = desktop_file_get_name (desktop_file);
-      self->exec = desktop_file_get_exec (desktop_file);
-      self->icon = desktop_file_get_icon (desktop_file);
-      self->comment = desktop_file_get_comment (desktop_file);
-    }
-
-  g_key_file_free (desktop_file);
-
-  return self;
-}
-
-static MnbLauncherEntry *
-mnb_launcher_entry_create_from_gmenu_entry (GMenuTreeEntry *entry)
-{
-  MnbLauncherEntry *self;
+  MnbLauncherApplication  *self;
+  const gchar             *name;
 
   g_return_val_if_fail (entry, NULL);
 
   /* We have a patch to libgnome-menu that adds an accessor for the
    * GenericName desktop entry field. */
 #if GMENU_WITH_GENERIC_NAME
-  self = g_new0 (MnbLauncherEntry, 1);
-  self->desktop_file_path = g_strdup (gmenu_tree_entry_get_desktop_file_path (entry));
-  self->name = gmenu_tree_entry_get_generic_name (entry) ?
-                g_strdup (gmenu_tree_entry_get_generic_name (entry)) :
-                g_strdup (gmenu_tree_entry_get_name (entry));
-  self->exec = g_strdup (gmenu_tree_entry_get_exec (entry));
-  self->icon = g_strdup (gmenu_tree_entry_get_icon (entry));
-  self->comment = g_strdup (gmenu_tree_entry_get_comment (entry));
+
+  name = gmenu_tree_entry_get_generic_name (entry) ?
+            gmenu_tree_entry_get_generic_name (entry) :
+            gmenu_tree_entry_get_name (entry);
+
+  self = mnb_launcher_application_new (name,
+                                       gmenu_tree_entry_get_icon (entry),
+                                       gmenu_tree_entry_get_comment (entry),
+                                       gmenu_tree_entry_get_exec (entry),
+                                       gmenu_tree_entry_get_desktop_file_path (entry));
+
 #else
-  self = mnb_launcher_entry_create (gmenu_tree_entry_get_desktop_file_path (entry));
+  name = NULL; /* prevent compiler moaning. */
+  self = mnb_launcher_application_new_from_desktop_file (gmenu_tree_entry_get_desktop_file_path (entry));
 #endif
 
   return self;
 }
 
-void
-mnb_launcher_entry_free (MnbLauncherEntry *self)
-{
-  g_return_if_fail (self);
-
-  g_free (self->desktop_file_path);
-  g_free (self->name);
-  g_free (self->exec);
-  g_free (self->icon);
-  g_free (self->comment);
-  g_free (self);
-}
-
-const gchar *
-mnb_launcher_entry_get_desktop_file_path (MnbLauncherEntry *entry)
-{
-  g_return_val_if_fail (entry, NULL);
-
-  return entry->desktop_file_path;
-}
-
-const gchar *
-mnb_launcher_entry_get_name (MnbLauncherEntry *entry)
-{
-  g_return_val_if_fail (entry, NULL);
-
-  return entry->name;
-}
-
-const gchar *
-mnb_launcher_entry_get_exec (MnbLauncherEntry *entry)
-{
-  g_return_val_if_fail (entry, NULL);
-
-  return entry->exec;
-}
-const gchar *
-mnb_launcher_entry_get_icon (MnbLauncherEntry *entry)
-{
-  g_return_val_if_fail (entry, NULL);
-
-  return entry->icon;
-}
-
-const gchar *
-mnb_launcher_entry_get_comment (MnbLauncherEntry *entry)
-{
-  g_return_val_if_fail (entry, NULL);
-
-  return entry->comment;
-}
-
 static gint
-mnb_launcher_entry_compare (MnbLauncherEntry *self,
-                            MnbLauncherEntry *b)
+mnb_launcher_application_compare (MnbLauncherApplication *self,
+                            MnbLauncherApplication *b)
 {
-  return g_utf8_collate (mnb_launcher_entry_get_name (self),
-                         mnb_launcher_entry_get_name (b));
+  return g_utf8_collate (mnb_launcher_application_get_name (self),
+                         mnb_launcher_application_get_name (b));
 }
 
 /*
@@ -393,7 +169,7 @@ mnb_launcher_directory_free (MnbLauncherDirectory *self)
   iter = self->entries;
   while (iter)
     {
-      mnb_launcher_entry_free ((MnbLauncherEntry *) iter->data);
+      g_object_unref (MNB_LAUNCHER_APPLICATION (iter->data));
       iter = g_slist_delete_link (iter, iter);
     }
 
@@ -411,7 +187,7 @@ static void
 mnb_launcher_directory_sort_entries (MnbLauncherDirectory *self)
 {
   self->entries = g_slist_sort (self->entries,
-                                (GCompareFunc) mnb_launcher_entry_compare);
+                                (GCompareFunc) mnb_launcher_application_compare);
 }
 
 /*
@@ -441,7 +217,7 @@ get_all_applications_from_alias (GMenuTreeAlias *alias,
     case GMENU_TREE_ITEM_ENTRY:
       directory->entries = g_slist_prepend (
         directory->entries,
-        mnb_launcher_entry_create_from_gmenu_entry (GMENU_TREE_ENTRY (aliased_item)));
+        mnb_launcher_application_create_from_gmenu_entry (GMENU_TREE_ENTRY (aliased_item)));
       break;
 
     case GMENU_TREE_ITEM_DIRECTORY:
@@ -487,7 +263,7 @@ get_all_applications_from_dir (GMenuTreeDirectory *branch,
                 directory->entries =
                     g_slist_prepend (
                       directory->entries,
-                      mnb_launcher_entry_create_from_gmenu_entry (GMENU_TREE_ENTRY (iter->data)));
+                      mnb_launcher_application_create_from_gmenu_entry (GMENU_TREE_ENTRY (iter->data)));
         	    }
         	  break;
 

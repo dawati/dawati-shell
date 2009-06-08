@@ -217,7 +217,7 @@ _make_empty_people_tile (gint         width)
 
   if (app_info)
   {
-    icon_theme = gtk_icon_theme_new ();
+    icon_theme = gtk_icon_theme_get_default ();
 
     icon = g_app_info_get_icon (app_info);
     icon_info = gtk_icon_theme_lookup_by_gicon (icon_theme,

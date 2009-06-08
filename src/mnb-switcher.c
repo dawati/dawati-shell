@@ -33,7 +33,6 @@
 #include <glib/gi18n.h>
 
 #define HOVER_TIMEOUT  800
-#define CLONE_HEIGHT   80  /* Height of the window thumb */
 
 /*
  * MnbSwitcherApp
@@ -74,8 +73,8 @@ struct _MnbSwitcherAppPrivate
   guint         focus_id;
   guint         raised_id;
 
-  ClutterUnit   w_h_ratio;
-  ClutterUnit   natural_width;
+  gfloat   w_h_ratio;
+  gfloat   natural_width;
 };
 
 GType mnb_switcher_app_get_type (void);
@@ -121,9 +120,9 @@ mnb_switcher_app_dispose (GObject *object)
 
 static void
 mnb_switcher_app_get_preferred_width (ClutterActor *actor,
-                                      ClutterUnit   for_height,
-                                      ClutterUnit  *min_width_p,
-                                      ClutterUnit  *natural_width_p)
+                                      gfloat   for_height,
+                                      gfloat  *min_width_p,
+                                      gfloat  *natural_width_p)
 {
   MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
 
@@ -146,9 +145,9 @@ mnb_switcher_app_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_switcher_app_get_preferred_height (ClutterActor *actor,
-                                       ClutterUnit   for_width,
-                                       ClutterUnit  *min_height_p,
-                                       ClutterUnit  *natural_height_p)
+                                       gfloat   for_width,
+                                       gfloat  *min_height_p,
+                                       gfloat  *natural_height_p)
 {
   MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
 
@@ -191,6 +190,70 @@ mnb_switcher_app_init (MnbSwitcherApp *self)
   priv = self->priv = MNB_SWITCHER_APP_GET_PRIVATE (self);
 
   priv->w_h_ratio = 1.0;
+}
+
+#define MNB_TYPE_SWITCHER_ZONE                 (mnb_switcher_zone_get_type ())
+#define MNB_SWITCHER_ZONE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_SWITCHER_ZONE, MnbSwitcherZone))
+#define MNB_IS_SWITCHER_ZONE(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNB_TYPE_SWITCHER_ZONE))
+#define MNB_SWITCHER_ZONE_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), MNB_TYPE_SWITCHER_ZONE, MnbSwitcherZoneClass))
+#define MNB_IS_SWITCHER_ZONE_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), MNB_TYPE_SWITCHER_ZONE))
+#define MNB_SWITCHER_ZONE_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_SWITCHER_ZONE, MnbSwitcherZoneClass))
+
+typedef struct _MnbSwitcherZone               MnbSwitcherZone;
+typedef struct _MnbSwitcherZonePrivate        MnbSwitcherZonePrivate;
+typedef struct _MnbSwitcherZoneClass          MnbSwitcherZoneClass;
+
+struct _MnbSwitcherZone
+{
+  /*< private >*/
+  NbtkTable parent_instance;
+
+  MnbSwitcherZonePrivate *priv;
+};
+
+struct _MnbSwitcherZoneClass
+{
+  /*< private >*/
+  NbtkTableClass parent_class;
+};
+
+struct _MnbSwitcherZonePrivate
+{
+};
+
+GType mnb_switcher_zone_get_type (void);
+
+G_DEFINE_TYPE (MnbSwitcherZone, mnb_switcher_zone, NBTK_TYPE_TABLE)
+
+#define MNB_SWITCHER_ZONE_GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_ZONE,\
+                                MnbSwitcherZonePrivate))
+
+static void
+mnb_switcher_zone_dispose (GObject *object)
+{
+  G_OBJECT_CLASS (mnb_switcher_zone_parent_class)->dispose (object);
+}
+
+static void
+mnb_switcher_zone_class_init (MnbSwitcherZoneClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = mnb_switcher_zone_dispose;
+#if 0
+  g_type_class_add_private (klass, sizeof (MnbSwitcherZonePrivate));
+#endif
+}
+
+static void
+mnb_switcher_zone_init (MnbSwitcherZone *self)
+{
+#if 0
+  MnbSwitcherZonePrivate *priv;
+
+  priv = self->priv = MNB_SWITCHER_ZONE_GET_PRIVATE (self);
+#endif
 }
 
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
@@ -374,33 +437,10 @@ dnd_end_cb (NbtkWidget   *table,
 
   priv->dnd_in_progress = FALSE;
 
-  clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, 0.0, 0, 0, 0);
   clutter_actor_set_opacity (dragged, 0xff);
 
   clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
-}
-
-static void
-dnd_motion_cb (NbtkWidget   *table,
-               ClutterActor *dragged,
-               ClutterActor *icon,
-               gint          x,
-               gint          y,
-               gpointer      data)
-{
-  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
-  gint                screen_width, screen_height;
-  gdouble             dx, f;
-
-  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
-
-  dx = (gdouble)(x - screen_width/2);
-
-  f = 30. * dx / (gdouble)screen_width;
-
-  clutter_actor_set_rotation (icon, CLUTTER_Y_AXIS, f,
-                              0, clutter_actor_get_width (icon)/2, 0);
 }
 
 /*
@@ -553,7 +593,8 @@ dnd_new_dropped_cb (NbtkWidget   *table,
 #if 1
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
 			       "keep-aspect-ratio", keep_ratio,
-                               "x-fill", TRUE, NULL);
+                               "x-fill", TRUE,
+                               "y-fill", TRUE, NULL);
 #else
   clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
 			       "y-fill", FALSE, NULL);
@@ -732,9 +773,11 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   input_data->index = col;
   input_data->switcher = switcher;
 
-  new_ws = nbtk_table_new ();
+  new_ws = g_object_new (MNB_TYPE_SWITCHER_ZONE, NULL);
+
   nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
   nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (new_ws), TRUE);
 
   nbtk_widget_set_style_class_name (new_ws, "switcher-workspace");
 
@@ -749,9 +792,6 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
 
   g_signal_connect (new_ws, "dnd-end",
                     G_CALLBACK (dnd_end_cb), switcher);
-
-  g_signal_connect (new_ws, "dnd-motion",
-                    G_CALLBACK (dnd_motion_cb), switcher);
 
   g_signal_connect (new_ws, "dnd-dropped",
                     G_CALLBACK (dnd_dropped_cb), switcher);
@@ -1122,12 +1162,15 @@ mnb_switcher_show (ClutterActor *self)
   gboolean      found_focus = FALSE;
   ClutterActor *toolbar;
   gboolean      switcher_empty = FALSE;
+  gfloat   cell_width, cell_height;
 
   struct win_location
   {
     gint  row;
     gint  col;
+    gint  max_col;
     guint height;
+    GSList *wins;
   } *win_locs;
 
   /*
@@ -1176,6 +1219,9 @@ mnb_switcher_show (ClutterActor *self)
   ws_count = meta_screen_get_n_workspaces (screen);
   priv->active_ws = active_ws = meta_screen_get_active_workspace_index (screen);
   window_list = mutter_plugin_get_windows (priv->plugin);
+
+  cell_width  = 0.8 * (gfloat)screen_width  / (gfloat)ws_count;
+  cell_height = 0.8 * (gfloat)screen_height / (gfloat)ws_count;
 
   /* Handle case where no apps open.. */
   if (ws_count == 1)
@@ -1275,12 +1321,13 @@ mnb_switcher_show (ClutterActor *self)
       ClutterActor          *texture, *c_tx, *clone;
       gint                   ws_indx;
       MetaCompWindowType     type;
-      gfloat                 w, h;
-      gfloat                 clone_w;
+      gfloat            w, h;
       struct origin_data    *origin_data;
       MetaWindow            *meta_win = mutter_window_get_meta_window (mw);
       gchar                 *title;
       MnbSwitcherAppPrivate *app_priv;
+      gdouble                w_h_ratio;
+      gfloat            clone_w, clone_h;
 
       ws_indx = mutter_window_get_workspace (mw);
       type = mutter_window_get_window_type (mw);
@@ -1327,6 +1374,10 @@ mnb_switcher_show (ClutterActor *self)
       nbtk_widget_set_style_class_name (NBTK_WIDGET (clone),
                                         "switcher-application");
 
+      clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
+      clutter_actor_show (clone);
+      clutter_actor_set_reactive (clone, TRUE);
+
       /*
        * If the window has focus, apply the active style.
        */
@@ -1355,17 +1406,51 @@ mnb_switcher_show (ClutterActor *self)
           top_most_mw = mw;
         }
 
-      clutter_actor_get_size (c_tx, &h, &w);
+      clutter_actor_get_size (c_tx, &w, &h);
+      w_h_ratio = (gfloat)w/(gfloat)h;
 
-      MNB_SWITCHER_APP (clone)->priv->natural_width = (ClutterUnit)w;
-      MNB_SWITCHER_APP (clone)->priv->w_h_ratio = (ClutterUnit)w/(ClutterUnit)h;
+      MNB_SWITCHER_APP (clone)->priv->natural_width = (gfloat)w;
+      MNB_SWITCHER_APP (clone)->priv->w_h_ratio = w_h_ratio;
 
-      clone_w = (guint)((gdouble)h/(gdouble)w * (gdouble)CLONE_HEIGHT);
-      clutter_actor_set_size (clone, clone_w, CLONE_HEIGHT);
+      {
+        /*
+         * Fit into the cell at maximum size without w/h ratio distortion.
+         */
+        gfloat w_ratio, h_ratio;
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (clone), c_tx);
+        w_ratio = cell_width  / w;
+        h_ratio = cell_height / h;
 
-      clutter_actor_set_reactive (clone, TRUE);
+        if (w_ratio < h_ratio)
+          {
+            clone_w = cell_width  * w_ratio;
+            clone_h = clone_w / w_h_ratio;
+          }
+        else
+          {
+            clone_h = cell_height * h_ratio;
+            clone_w = clone_h * w_h_ratio;
+          }
+
+        /*
+         * Now scale the window by the number of colums we are currently
+         * using on this workspace.
+         */
+        clone_w /= (win_locs[ws_indx].max_col + 1);
+        clone_h /= (win_locs[ws_indx].max_col + 1);
+
+        /*
+         * Make sure we do not try to set clone bigger than the
+         * window size.
+         */
+        if ((clone_w > w) || (clone_h > h))
+          {
+            clone_w = w;
+            clone_h = h;
+          }
+
+        clutter_actor_set_size (clone, clone_w, clone_h);
+      }
 
       origin_data = g_new0 (struct origin_data, 1);
       origin_data->clone = clone;
@@ -1404,22 +1489,66 @@ mnb_switcher_show (ClutterActor *self)
       /*
        * FIXME -- this depends on the styling, should not be hardcoded.
        */
-      win_locs[ws_indx].height += (CLONE_HEIGHT + 10);
-
-      if (win_locs[ws_indx].height >= screen_height - 100 )
-        {
-          win_locs[ws_indx].col++;
-          win_locs[ws_indx].row = 0;
-          win_locs[ws_indx].height = CLONE_HEIGHT + 10;
-        }
+      win_locs[ws_indx].height += (clone_h + 10);
+      win_locs[ws_indx].wins = g_slist_append (win_locs[ws_indx].wins, clone);
 
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
-                            win_locs[ws_indx].row++, win_locs[ws_indx].col);
+                            win_locs[ws_indx].row, win_locs[ws_indx].col);
+
+      win_locs[ws_indx].row++;
+
+      /*
+       * Check whether we still fit on the screen
+       */
+      if (win_locs[ws_indx].height >= screen_height - 100 )
+        {
+          /*
+           * Append new column in this workspace -- we need to resize any of
+           * the windows we already inserted into the table, and then
+           * relocate them.
+           */
+          GSList  *l     = win_locs[ws_indx].wins;
+          guint    cols  = win_locs[ws_indx].max_col + 1;
+          gdouble  ratio = (gdouble)cols / (gdouble)(cols+1);
+          gint     col = 0, row = 0;
+
+          win_locs[ws_indx].max_col++;
+
+          while (l)
+            {
+              ClutterActor *a = l->data;
+              guint w = clutter_actor_get_width (a);
+              guint h = clutter_actor_get_height (a);
+              guint new_w = (guint)((gdouble)w * ratio);
+              guint new_h = (guint)((gdouble)h * ratio);
+
+              clutter_actor_set_size (a, new_w, new_h);
+
+              clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]),
+                                           a, "row", row, "col", col, NULL);
+
+              win_locs[ws_indx].height = (new_h) * row;
+
+              if (col < win_locs[ws_indx].max_col)
+                col++;
+              else
+                {
+                  col = 0;
+                  row++;
+                }
+
+              l = l->next;
+            }
+
+          win_locs[ws_indx].col = col;
+          win_locs[ws_indx].row = row;
+        }
 
 #if 1
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "keep-aspect-ratio", TRUE,
-                                   "x-fill", TRUE, NULL);
+                                   "x-fill", TRUE,
+                                   "y-fill", TRUE, NULL);
 #else
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "y-fill", FALSE, NULL);
@@ -1469,7 +1598,7 @@ mnb_switcher_show (ClutterActor *self)
    * Now create the new workspace column.
    */
   {
-    NbtkWidget *new_ws = nbtk_table_new ();
+    NbtkWidget *new_ws = g_object_new (MNB_TYPE_SWITCHER_ZONE, NULL);
     NbtkWidget *label;
 
     label = NBTK_WIDGET (nbtk_bin_new ());
@@ -1486,6 +1615,8 @@ mnb_switcher_show (ClutterActor *self)
     nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
     nbtk_widget_set_style_class_name (NBTK_WIDGET (new_ws),
                                       "switcher-workspace-new");
+
+    clutter_actor_set_reactive (CLUTTER_ACTOR (new_ws), TRUE);
 
     if (ws_count < 8)
       nbtk_widget_set_dnd_threshold (new_ws, 5);
@@ -1518,12 +1649,23 @@ mnb_switcher_show (ClutterActor *self)
                                  "x-expand", FALSE, NULL);
   }
 
+  for (i = 0; i < ws_count; ++i)
+    {
+      GSList *l = win_locs[i].wins;
+      g_slist_free (l);
+    }
+
   g_slice_free1 (sizeof (NbtkWidget*) * ws_count, spaces);
   g_slice_free1 (sizeof (struct win_location) * ws_count, win_locs);
 
   priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
 
  finish_up:
+
+  if (!switcher_empty)
+    clutter_actor_set_height (CLUTTER_ACTOR (table),
+                              screen_height - TOOLBAR_HEIGHT * 1.5);
+
   mnb_drop_down_set_child (MNB_DROP_DOWN (self),
                            CLUTTER_ACTOR (table));
 
@@ -1594,6 +1736,22 @@ mnb_switcher_hide (ClutterActor *self)
       priv->show_completed_id = 0;
     }
 
+  if (priv->in_alt_grab)
+    {
+      MutterPlugin *plugin  = priv->plugin;
+      MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+      MetaDisplay  *display = meta_screen_get_display (screen);
+      guint32       timestamp;
+
+      /*
+       * Make sure our stamp is recent enough.
+       */
+      timestamp = meta_display_get_current_time_roundtrip (display);
+
+      meta_display_end_grab_op (display, timestamp);
+      priv->in_alt_grab = FALSE;
+    }
+
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
 }
 
@@ -1609,6 +1767,30 @@ mnb_switcher_finalize (GObject *object)
 }
 
 static void
+mnb_switcher_kbd_grab_notify_cb (MetaScreen  *screen,
+                                 GParamSpec  *pspec,
+                                 MnbSwitcher *switcher)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+  gboolean            grabbed;
+
+  if (!priv->in_alt_grab)
+    return;
+
+  g_object_get (screen, "keyboard-grabbed", &grabbed, NULL);
+
+  /*
+   * If the property has changed to FALSE, i.e., Mutter just called
+   * XUngrabKeyboard(), reset the flag
+   */
+  if (!grabbed )
+    {
+      priv->in_alt_grab = FALSE;
+      clutter_actor_hide (CLUTTER_ACTOR (switcher));
+    }
+}
+
+static void
 mnb_switcher_constructed (GObject *self)
 {
   MnbSwitcher *switcher  = MNB_SWITCHER (self);
@@ -1620,6 +1802,11 @@ mnb_switcher_constructed (GObject *self)
 
   g_signal_connect (mutter_plugin_get_screen (plugin), "notify::n-workspaces",
                     G_CALLBACK (screen_n_workspaces_notify), self);
+
+  g_signal_connect (mutter_plugin_get_screen (plugin),
+                    "notify::keyboard-grabbed",
+                    G_CALLBACK (mnb_switcher_kbd_grab_notify_cb),
+                    self);
 }
 
 static void
@@ -1680,7 +1867,7 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
   while (toolbar && !MNB_IS_TOOLBAR (toolbar))
     toolbar = clutter_actor_get_parent (toolbar);
 
-  if (toolbar && CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+  if (toolbar && CLUTTER_ACTOR_IS_MAPPED (toolbar))
     {
       moblin_netbook_focus_stage (priv->plugin, CurrentTime);
     }
@@ -1750,10 +1937,35 @@ mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher)
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
 
-  /* Disable the Alt+Space menu -- strictly speaking not switcher related, but
-   * for now here.
+  /*
+   * Disable various shortcuts that are not compatible with moblin UI paradigm
+   * -- strictly speaking not switcher related, but for now here.
    */
   meta_keybindings_set_custom_handler ("activate_window_menu",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("show_desktop",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("toggle_maximized",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("maximize",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("maximize_vertically",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("maximize_horizontally",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("unmaximize",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("minimize",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("toggle_shadow",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
 }
@@ -2337,13 +2549,14 @@ alt_tab_timeout_cb (gpointer data)
                         G_CALLBACK (alt_tab_switcher_show_completed_cb),
                         alt_data);
 
-      clutter_actor_show (CLUTTER_ACTOR (alt_data->switcher));
-
       /*
        * Clear any dont_autohide flag on the toolbar that we set previously.
        */
       if (toolbar)
-        mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), FALSE);
+        {
+          mnb_toolbar_activate_panel (MNB_TOOLBAR (toolbar), "spaces-zone");
+          mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), FALSE);
+        }
     }
   else
     {
@@ -2491,4 +2704,3 @@ mnb_switcher_handle_xevent (MnbSwitcher *switcher, XEvent *xev)
 
   return FALSE;
 }
-

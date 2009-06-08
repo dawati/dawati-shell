@@ -97,6 +97,7 @@ struct _MoblinNetbookPluginPrivate
   SnDisplay             *sn_display;
   SnMonitorContext      *sn_context;
   GHashTable            *sn_hash;
+  GHashTable            *sn_binary_hash;
 
   /* Background parallax texture */
   ClutterActor          *parallax_tex;
@@ -106,9 +107,8 @@ struct _MoblinNetbookPluginPrivate
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
   ClutterActor          *notification_urgent;
-  MnbInputRegion         notification_input_region;
-
-  ClutterActor          *toolbar_hint;
+  MnbInputRegion         notification_cluster_input_region;
+  MnbInputRegion         notification_urgent_input_region;
 
   Window                 focus_xwin;
 };
@@ -170,5 +170,8 @@ moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin);
 
 gboolean
 moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin);
+
+MutterPlugin *
+moblin_netbook_get_plugin_singleton (void);
 
 #endif

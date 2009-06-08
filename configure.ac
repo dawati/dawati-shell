@@ -1,7 +1,7 @@
 m4_define([mutter_version], [2.27.0~0.10])
 m4_define([plugin_major_version], [0])
-m4_define([plugin_minor_version], [21])
-m4_define([plugin_micro_version], [6])
+m4_define([plugin_minor_version], [24])
+m4_define([plugin_micro_version], [0])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
 
@@ -32,6 +32,9 @@ GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
 
+localedir ="$(prefix)/$(DATADIRNAME)/locale"
+AC_SUBST(localedir)
+
 IT_PROG_INTLTOOL([0.34.90])
 AC_PROG_CC
 AC_ISC_POSIX
@@ -58,7 +61,7 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   metacity-plugins >= mutter_version dnl
-                  nbtk-1.0 >= 0.3.0                  dnl
+                  nbtk-1.0 >= 0.8.0                  dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
                   libgnome-menu                      dnl
@@ -82,7 +85,7 @@ AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Medi
 
 if test "x$enable_ahoghill" = "xyes"; then
 	AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
-	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.1 gdk-pixbuf-2.0 bognor-regis-0.3 >= 0.3.1 gtk+-2.0)
+	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.1 gdk-pixbuf-2.0 bognor-regis-0.4 gtk+-2.0)
 fi
 
 AC_ARG_ENABLE([netpanel],
@@ -160,7 +163,6 @@ penge/examples/Makefile
 ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile
-libmnb/Makefile
 ])
 
 echo "

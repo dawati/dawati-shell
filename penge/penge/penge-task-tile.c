@@ -98,15 +98,16 @@ penge_task_tile_dispose (GObject *object)
 {
   PengeTaskTilePrivate *priv = GET_PRIVATE (object);
 
+  if (priv->commit_timeout)
+  {
+    g_source_remove (priv->commit_timeout);
+    _commit_timeout_cb (object);
+  }
+
   if (priv->task)
   {
     g_object_unref (priv->task);
     priv->task = NULL;
-  }
-
-  if (priv->commit_timeout)
-  {
-    _commit_timeout_cb (object);
   }
 
   G_OBJECT_CLASS (penge_task_tile_parent_class)->dispose (object);
@@ -297,6 +298,8 @@ penge_task_tile_init (PengeTaskTile *self)
                     (GCallback)_button_press_event_cb,
                     self);
 #endif
+
+  clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
 
 static void

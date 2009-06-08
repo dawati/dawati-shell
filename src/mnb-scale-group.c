@@ -40,9 +40,9 @@ G_DEFINE_TYPE (MnbScaleGroup, mnb_scale_group, CLUTTER_TYPE_GROUP);
 
 static void
 mnb_scale_group_get_preferred_width (ClutterActor *self,
-					ClutterUnit   for_height,
-					ClutterUnit  *min_width_p,
-					ClutterUnit  *natural_width_p)
+                                     gfloat   for_height,
+                                     gfloat  *min_width_p,
+                                     gfloat  *natural_width_p)
 {
   gdouble scale_x, scale_y;
 
@@ -55,17 +55,17 @@ mnb_scale_group_get_preferred_width (ClutterActor *self,
   clutter_actor_get_scale (self, &scale_x, &scale_y);
 
   if (min_width_p)
-    *min_width_p = (ClutterUnit)((gdouble)*min_width_p * scale_x);
+    *min_width_p = *min_width_p * scale_x;
 
   if (natural_width_p)
-    *natural_width_p = (ClutterUnit)((gdouble)*natural_width_p * scale_x);
+    *natural_width_p = *natural_width_p * scale_x;
 }
 
 static void
 mnb_scale_group_get_preferred_height (ClutterActor *self,
-					 ClutterUnit   for_width,
-					 ClutterUnit  *min_height_p,
-					 ClutterUnit  *natural_height_p)
+                                      gfloat        for_width,
+                                      gfloat       *min_height_p,
+                                      gfloat       *natural_height_p)
 {
   gdouble scale_x, scale_y;
 
@@ -78,10 +78,10 @@ mnb_scale_group_get_preferred_height (ClutterActor *self,
   clutter_actor_get_scale (self, &scale_x, &scale_y);
 
   if (min_height_p)
-    *min_height_p = (ClutterUnit)((gdouble)*min_height_p * scale_y);
+    *min_height_p = *min_height_p * scale_y;
 
   if (natural_height_p)
-    *natural_height_p = (ClutterUnit)((gdouble)*natural_height_p * scale_y);
+    *natural_height_p = *natural_height_p * scale_y;
 }
 
 static void

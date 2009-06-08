@@ -113,7 +113,7 @@ NbtkTable {
 }
 
 MnbToolbar {
-  border-image: url("file://panel/panel-background.png") 0 200 0 200 stretch;
+  border-image: url("file://panel/panel-shadow.png") 0 200 0 200 stretch;
 }
 
 MnbToolbarButton {
@@ -132,7 +132,7 @@ MnbToolbarButton:hover, MnbToolbarButton:active {
 
 *.toolbar-instruction-box {
  border-image: url("file://panel/toolbar-hint.png") 47 6 6 60;
- padding: 10 10 10 60; 
+ padding: 10 10 10 60;
 }
 
 *.toolbar-instruction-label {
@@ -166,11 +166,11 @@ MnbToolbarButton:hover, MnbToolbarButton:active {
 }
 
 /* m-space button */
-*#m-zone-button {
-  background-image: url("file://panel/m_zone-normal.png");
+*#myzone-button {
+  background-image: url("file://panel/myzone-normal.png");
 }
-*#m-zone-button:hover, *#m-zone-button:active, *#m-zone-button:checked {
-  background-image: url("file://panel/m_zone-coloured.png");
+*#myzone-button:hover, *#myzone-button:active, *#myzone-button:checked {
+  background-image: url("file://panel/myzone-coloured.png");
 }
 
 /* pasteboard button */
@@ -361,6 +361,7 @@ MnbEntry {
 }
 
 *.MnbEntryEntry {
+  border-image: none;
   font-size: 15;
 }
 
@@ -477,13 +478,13 @@ PengeGridView
 
 PengeCalendarPane
 {
-  border-image: url('file://mzone/backdrop.png') 5 5 5 5;
+  border-image: url('file://myzone/backdrop.png') 5 5 5 5;
   padding: 8;
 }
 
 PengeAppsPane
 {
-  border-image: url('file://mzone/backdrop.png') 5 5 5 5;
+  border-image: url('file://myzone/backdrop.png') 5 5 5 5;
   padding: 4;
 }
 
@@ -501,41 +502,41 @@ PengeEventTile, PengeTaskTile, PengeAppTile
 
 PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover
 {
-  border-image: url('file://mzone/tile-partial-glow.png') 7 8 9 8;
+  border-image: url('file://myzone/tile-partial-glow.png') 7 8 9 8;
 }
 
 
 PengeRecentFileTile, PengeTwitterTile, PengeFlickrTile, PengeLastfmTile, PengeMyspaceTile
 {
-  border-image: url('file://mzone/tile-bg.png') 7 8 9 8;
+  border-image: url('file://myzone/tile-bg.png') 7 8 9 8;
   padding: 6 7 8 7;
 }
 
 
 PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover, PengeMyspaceTile:hover
 {
-  border-image: url('file://mzone/tile-glow.png') 7 8 9 8;
+  border-image: url('file://myzone/tile-glow.png') 7 8 9 8;
   padding: 6 7 8 7;
 }
 
 *.PengeTaskToggleButton
 {
-  border-image: url('file://mzone/check_box.png') 0;
+  border-image: url('file://myzone/check_box.png') 0;
 }
 
 *.PengeTaskToggleButton:hover, *.PengeTaskToggleButton:checked
 {
-  border-image: url('file://mzone/checked_box.png') 0;
+  border-image: url('file://myzone/checked_box.png') 0;
 }
 
 PengeDateTile
 {
-  border-image: url('file://mzone/date-background.png') 16;
+  border-image: url('file://myzone/date-background.png') 16;
 }
 
 *.PengeDateTileBackground
 {
-  border-image: url('file://mzone/date-background-background.png') 16;
+  border-image: url('file://myzone/date-background-background.png') 16;
 }
 
 *.PengeEventTimeLabel
@@ -554,12 +555,12 @@ PengeDateTile
 
 *.PengeEventTimeBin
 {
-  border-image: url('file://mzone/time-bg.png') 0;
+  border-image: url('file://myzone/time-bg.png') 0;
 }
 
 *.PengeEventTimeBin:past
 {
-  border-image: url('file://mzone/time-bg-past.png') 0;
+  border-image: url('file://myzone/time-bg-past.png') 0;
 }
 
 *.PengeDayLabel
@@ -595,7 +596,7 @@ PengeDateTile
 
 *.PengeTwitterTileBackground, *.PengeMyspaceTileBackground
 {
-  border-image: url('file://mzone/quotebackground.png') 45 51 46 52;
+  border-image: url('file://myzone/quotebackground.png') 45 51 46 52;
   padding: 8;
 }
 
@@ -637,19 +638,19 @@ PengeDateTile
 
 *.PengeNoContentTile
 {
-  border-image: url('file://mzone/no-content-tile-bg.png') 7 8 9 8;
+  border-image: url('file://myzone/no-content-tile-bg.png') 7 8 9 8;
   padding: 10 11 12 11;
 }
 
 *.PengeNoContentTile:hover
 {
-  border-image: url('file://mzone/no-content-tile-glow-bg.png') 7 8 9 8;
+  border-image: url('file://myzone/no-content-tile-glow-bg.png') 7 8 9 8;
   padding: 10 11 12 11;
 }
 
 *.PengeWelcomeTile
 {
-  border-image: url('file://mzone/backdrop.png') 5 5 5 5;
+  border-image: url('file://myzone/backdrop.png') 5 5 5 5;
   padding: 6;
 }
 
@@ -667,7 +668,7 @@ PengeDateTile
 
 PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover, PengeMyspaceTile:hover
 {
-  border-image: url('file://mzone/tile-glow.png') 7 8 9 8;
+  border-image: url('file://myzone/tile-glow.png') 7 8 9 8;
   padding: 6 7 8 7;
 }
 
@@ -780,6 +781,17 @@ MnbStatusEntry:active
   padding: 6;
 }
 
+*.status-empty-bin {
+  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
+  padding: 8;
+}
+
+*.status-empty-label {
+  font-family: "Liberation Sans";
+  font-size: 16px;
+  color: #595959ff;
+}
+
 /* Internet panel */
 
 MoblinNetbookNetpanel
@@ -788,23 +800,27 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-*#netpanel-placeholder-label
-{
-  font-size:16px;
-  color: #595959ff;
-}
-
-*#netpanel-placeholder-bin
-{
-  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
-  padding: 8;
-}
-
 *#netpanel-subtable NbtkLabel
 {
-  font-family: "Liberation Sans Bold";
+  font-family: "Liberation Sans";
   font-size: 13px;
   color: #6e6e6e;
+  padding: 0 4;
+}
+
+*#netpanel-subtable NbtkLabel#section
+{
+  font-family: "Liberation Sans Bold";
+  font-size: 17px;
+  color: #6e6e6e;
+  padding: 2 4 0 4;
+}
+
+*#netpanel-nofavs-label
+{
+  font-family: "Liberation Sans";
+  font-size: 16px;
+  color: #595959ff;
   padding: 0 4;
 }
 
@@ -939,6 +955,12 @@ AhoghillPlaylistHeader.Top {
   border-image: url('file://media-panel/top_playque_selected.png') 5 5 5 0 stretch;
 }
 
+NbtkButton.AhoghillControlButton {
+  padding: 4px;
+  font-size: 12px;
+  color: 333;
+}
+
 *#ahoghill-playlist-title {
   font-family: "Liberation Sans Bold";
   font-size: 17px;
@@ -1010,7 +1032,7 @@ AhoghillPlaylistPlaceholder {
   background-image: url("file://media-panel/playqueue-placeholder.png");
 }
 
-*.AhoghillExampleTextBin { 
+*.AhoghillExampleTextBin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }

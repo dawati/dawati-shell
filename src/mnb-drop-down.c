@@ -128,6 +128,13 @@ mnb_drop_down_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 
   priv->in_show_animation = FALSE;
   priv->hide_toolbar = FALSE;
+
+  if (priv->button)
+    {
+      if (!nbtk_button_get_checked (priv->button))
+        nbtk_button_set_checked (priv->button, TRUE);
+    }
+
   g_signal_emit (actor, dropdown_signals[SHOW_COMPLETED], 0);
   g_object_unref (actor);
 }
@@ -205,8 +212,8 @@ mnb_drop_down_show (ClutterActor *actor)
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "x", (int) x,
-                                     "y", (int) y,
+                                     "x", x,
+                                     "y", y,
                                      NULL);
 
   g_signal_connect (clutter_animation_get_timeline (animation),
@@ -284,7 +291,7 @@ mnb_drop_down_hide (ClutterActor *actor)
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "y", (int) -clutter_actor_get_height (actor),
+                                     "y", -clutter_actor_get_height (actor),
                                      NULL);
 
   g_signal_connect (clutter_animation_get_timeline (animation),
@@ -341,6 +348,52 @@ mnb_button_toggled_cb (NbtkWidget  *button,
 }
 
 static void
+mnb_drop_down_allocate (ClutterActor          *actor,
+                        const ClutterActorBox *box,
+                        ClutterAllocationFlags flags)
+{
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+  ClutterActorClass  *parent_class;
+
+  /*
+   * The show and hide animations trigger allocations with origin_changed
+   * set to TRUE; if we call the parent class allocation in this case, it
+   * will force relayout, which we do not want. Instead, we call directly the
+   * ClutterActor implementation of allocate(); this ensures our actor box is
+   * correct, which is all we call about during the animations.
+   *
+   * If the drop down is not visible, we just return; this insures that the
+   * needs_allocation flag in ClutterActor remains set, and the actor will get
+   * reallocated when we show it.
+   */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
+    return;
+
+#if 0
+  /*
+   * This is not currently reliable, e.g., the Switcher is animating empty.
+   * Once we have the binary flags in Clutter 1.0 to differentiate between
+   * allocations that are purely due to change of position and the rest, we
+   * need to disable this.
+   */
+  if (priv->in_show_animation || priv->in_hide_animation)
+    {
+      ClutterActorClass  *actor_class;
+
+      actor_class = g_type_class_peek (CLUTTER_TYPE_ACTOR);
+
+      if (actor_class)
+        actor_class->allocate (actor, box, origin_changed);
+
+      return;
+    }
+#endif
+
+  parent_class = CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class);
+  parent_class->allocate (actor, box, flags);
+}
+
+static void
 mnb_drop_down_class_init (MnbDropDownClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -356,8 +409,10 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
   clutter_class->show = mnb_drop_down_show;
   clutter_class->hide = mnb_drop_down_hide;
   clutter_class->paint = mnb_drop_down_paint;
+  clutter_class->allocate = mnb_drop_down_allocate;
   clutter_class->button_press_event = mnb_button_event_capture;
   clutter_class->button_release_event = mnb_button_event_capture;
+  clutter_class->allocate = mnb_drop_down_allocate;
 
   dropdown_signals[SHOW_BEGIN] =
     g_signal_new ("show-begin",
@@ -418,7 +473,7 @@ mnb_drop_down_init (MnbDropDown *self)
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (footer), 1, 0);
   g_signal_connect_swapped (footer, "clicked",
-                            G_CALLBACK (clutter_actor_hide), self);
+                            G_CALLBACK (mnb_drop_down_hide_with_toolbar), self);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,

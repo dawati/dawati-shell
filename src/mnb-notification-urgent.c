@@ -116,19 +116,19 @@ mnb_notification_urgent_unmap (ClutterActor *actor)
 
 static void
 mnb_notification_urgent_get_preferred_width (ClutterActor *actor,
-                                             ClutterUnit   for_height,
-                                             ClutterUnit  *min_width,
-                                             ClutterUnit  *natural_width)
+                                             gfloat        for_height,
+                                             gfloat       *min_width,
+                                             gfloat       *natural_width)
 {
-  *min_width = CLUTTER_UNITS_FROM_DEVICE(URGENT_WIDTH);
-  *natural_width = CLUTTER_UNITS_FROM_DEVICE(URGENT_WIDTH);
+  *min_width = URGENT_WIDTH;
+  *natural_width = URGENT_WIDTH;
 }
 
 static void
 mnb_notification_urgent_get_preferred_height (ClutterActor *actor,
-                                               ClutterUnit   for_width,
-                                               ClutterUnit  *min_height,
-                                               ClutterUnit  *natural_height)
+                                              gfloat        for_width,
+                                              gfloat       *min_height,
+                                              gfloat       *natural_height)
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
 
@@ -137,7 +137,7 @@ mnb_notification_urgent_get_preferred_height (ClutterActor *actor,
 
   if (priv->notifiers)
     {
-      ClutterUnit m_height, p_height;
+      gfloat m_height, p_height;
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           URGENT_WIDTH, &m_height, &p_height);
@@ -151,28 +151,28 @@ mnb_notification_urgent_get_preferred_height (ClutterActor *actor,
 static void
 mnb_notification_urgent_allocate (ClutterActor          *actor,
                                   const ClutterActorBox *box,
-                                  gboolean               origin_changed)
+                                  ClutterAllocationFlags flags)
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class);
 
-  klass->allocate (actor, box, origin_changed);
+  klass->allocate (actor, box, flags);
 
   if (priv->notifiers)
     {
-      ClutterUnit m_height, p_height;
+      gfloat m_height, p_height;
       ClutterActorBox notifier_box = { 0, };
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           URGENT_WIDTH, &m_height, &p_height);
 
-      notifier_box.x2 = CLUTTER_UNITS_FROM_DEVICE (URGENT_WIDTH);
+      notifier_box.x2 = URGENT_WIDTH;
       notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
-                              &notifier_box, origin_changed);
+                              &notifier_box, flags);
     }
 }
 

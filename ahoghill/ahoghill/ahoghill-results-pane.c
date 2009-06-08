@@ -179,6 +179,24 @@ item_clicked_cb (AhoghillResultsTable *table,
 }
 
 static void
+update_buttons (AhoghillResultsPane *pane)
+{
+    AhoghillResultsPanePrivate *priv = pane->priv;
+
+    if (priv->current_page_num == 0) {
+        clutter_actor_hide ((ClutterActor *) priv->previous_button);
+    } else {
+        clutter_actor_show ((ClutterActor *) priv->previous_button);
+    }
+
+    if (priv->current_page_num == priv->last_page) {
+        clutter_actor_hide ((ClutterActor *) priv->next_button);
+    } else {
+        clutter_actor_show ((ClutterActor *) priv->next_button);
+    }
+}
+
+static void
 page_change_complete (ClutterAnimation    *anim,
                       AhoghillResultsPane *pane)
 {
@@ -198,7 +216,7 @@ show_previous_page (ClutterActor        *actor,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
     ClutterActor *new_page;
-    guint width, height;
+    float width, height;
 
     if (priv->current_page_num == 0) {
         return FALSE;
@@ -238,7 +256,7 @@ show_previous_page (ClutterActor        *actor,
     priv->animation->old_page_anim = clutter_actor_animate
         (CLUTTER_ACTOR (priv->current_page),
          CLUTTER_EASE_OUT_EXPO, PAGE_CHANGE_DURATION,
-         "x", (int) width,
+         "x", width,
          NULL);
     priv->animation->old_anim_id = g_signal_connect
         (priv->animation->old_page_anim, "completed",
@@ -252,6 +270,8 @@ show_previous_page (ClutterActor        *actor,
 
     priv->current_page_num--;
 
+    update_buttons (pane);
+
     return FALSE;
 }
 
@@ -262,7 +282,7 @@ show_next_page (ClutterActor        *actor,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
     ClutterActor *new_page;
-    guint width, height;
+    float width, height;
 
     if (priv->current_page_num == priv->last_page) {
         return FALSE;
@@ -302,7 +322,7 @@ show_next_page (ClutterActor        *actor,
     priv->animation->old_page_anim = clutter_actor_animate
         (CLUTTER_ACTOR (priv->current_page),
          CLUTTER_EASE_OUT_EXPO, PAGE_CHANGE_DURATION,
-         "x", 0 - (int) width,
+         "x", 0 - width,
          NULL);
     priv->animation->old_anim_id = g_signal_connect
         (priv->animation->old_page_anim, "completed",
@@ -315,6 +335,8 @@ show_next_page (ClutterActor        *actor,
          NULL);
 
     priv->current_page_num++;
+
+    update_buttons (pane);
 
     return FALSE;
 }
@@ -361,8 +383,8 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
     clutter_actor_set_position ((ClutterActor *) priv->current_page, 0, 0);
 
     priv->previous_button = nbtk_button_new_with_label (_("Previous"));
-    clutter_actor_set_name (CLUTTER_ACTOR (priv->previous_button),
-                            "media-pane-previous-page");
+    nbtk_widget_set_style_class_name (priv->previous_button,
+                                      "AhoghillControlButton");
     g_signal_connect (CLUTTER_ACTOR (priv->previous_button),
                       "button-release-event",
                       G_CALLBACK (show_previous_page), self);
@@ -377,8 +399,8 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
                                           NULL);
 
     priv->next_button = nbtk_button_new_with_label (_("Next"));
-    clutter_actor_set_name (CLUTTER_ACTOR (priv->next_button),
-                            "media-pane-next-page");
+    nbtk_widget_set_style_class_name (priv->next_button,
+                                      "AhoghillControlButton");
     g_signal_connect (CLUTTER_ACTOR (priv->next_button), "button-release-event",
                       G_CALLBACK (show_next_page), self);
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
@@ -390,6 +412,8 @@ ahoghill_results_pane_init (AhoghillResultsPane *self)
                                           "y-fill", FALSE,
                                           "x-align", 1.0,
                                           NULL);
+
+    update_buttons (self);
 }
 
 static void
@@ -402,15 +426,7 @@ results_changed_cb (AhoghillResultsModel *model,
        on still exists and whether the page buttons should be active */
 
     ahoghill_results_pane_set_page (pane, 0);
-
     priv->last_page = ahoghill_results_model_get_count (model) / TILES_PER_PAGE;
-    if (priv->last_page == 0) {
-        clutter_actor_hide ((ClutterActor *) priv->next_button);
-        clutter_actor_hide ((ClutterActor *) priv->previous_button);
-    } else {
-        clutter_actor_show ((ClutterActor *) priv->next_button);
-        clutter_actor_show ((ClutterActor *) priv->previous_button);
-    }
 }
 
 AhoghillResultsPane *
@@ -443,6 +459,9 @@ ahoghill_results_pane_set_page (AhoghillResultsPane *pane,
     priv = pane->priv;
     priv->current_page_num = 0;
     ahoghill_results_table_set_page (priv->current_page, 0);
+
+    priv->last_page = ahoghill_results_model_get_count (priv->model) / TILES_PER_PAGE;
+    update_buttons (pane);
 }
 
 void
@@ -451,7 +470,7 @@ ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
 
-    if (show) {
+    if (show && priv->example_page == NULL) {
         nbtk_label_set_text ((NbtkLabel *) priv->title, "");
         clutter_actor_hide ((ClutterActor *) priv->current_page);
         priv->example_page = ahoghill_example_table_new (priv->model);

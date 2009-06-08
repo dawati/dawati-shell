@@ -69,21 +69,21 @@ on_action_clicked (NbtkButton *button,
 static void
 mnb_clipboard_item_allocate (ClutterActor *actor,
                              const ClutterActorBox *box,
-                             gboolean origin_changed)
+                             ClutterAllocationFlags flags)
 {
   MnbClipboardItem *self = MNB_CLIPBOARD_ITEM (actor);
   ClutterActorClass *klass;
-  ClutterUnit remove_width, remove_height;
-  ClutterUnit action_width, action_height;
-  ClutterUnit child_width, child_height;
-  ClutterUnit time_width, time_height;
+  gfloat remove_width, remove_height;
+  gfloat action_width, action_height;
+  gfloat child_width, child_height;
+  gfloat time_width, time_height;
   ClutterActorBox action_box = { 0, };
   ClutterActorBox remove_box = { 0, };
   ClutterActorBox time_box = { 0, };
   NbtkPadding padding = { 0, };
 
   klass = CLUTTER_ACTOR_CLASS (mnb_clipboard_item_parent_class);
-  klass->allocate (actor, box, origin_changed);
+  klass->allocate (actor, box, flags);
 
   nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
@@ -111,9 +111,9 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
 
   if (self->contents)
     {
-      ClutterUnit natural_width, natural_height;
-      ClutterUnit min_width, min_height;
-      ClutterUnit available_width, available_height;
+      gfloat natural_width, natural_height;
+      gfloat min_width, min_height;
+      gfloat available_width, available_height;
       ClutterRequestMode request;
       ClutterActorBox allocation = { 0, };
 
@@ -168,7 +168,7 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
       allocation.x2 = allocation.x1 + child_width;
       allocation.y2 = allocation.y1 + child_height;
 
-      clutter_actor_allocate (self->contents, &allocation, origin_changed);
+      clutter_actor_allocate (self->contents, &allocation, flags);
     }
 
   action_box.x1 = padding.left;
@@ -176,7 +176,7 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
   action_box.x2 = action_box.x1 + action_width;
   action_box.y2 = action_box.y1 + action_height;
 
-  clutter_actor_allocate (self->action_button, &action_box, origin_changed);
+  clutter_actor_allocate (self->action_button, &action_box, flags);
 
   time_box.x1 = (box->x2 - box->x1)
               - padding.right
@@ -190,7 +190,7 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
               - (6.0 * 2);
   time_box.y2 = time_box.y1 + time_height;
 
-  clutter_actor_allocate (self->time_label, &time_box, origin_changed);
+  clutter_actor_allocate (self->time_label, &time_box, flags);
 
   remove_box.x1 = (box->x2 - box->x1)
                 - padding.right
@@ -202,18 +202,18 @@ mnb_clipboard_item_allocate (ClutterActor *actor,
   remove_box.y2 = (box->y2 - box->y1)
                 - padding.bottom;
 
-  clutter_actor_allocate (self->remove_button, &remove_box, origin_changed);
+  clutter_actor_allocate (self->remove_button, &remove_box, flags);
 }
 
 static void
 mnb_clipboard_item_get_preferred_width (ClutterActor *actor,
-                                        ClutterUnit   for_height,
-                                        ClutterUnit  *min_width_p,
-                                        ClutterUnit  *natural_width_p)
+                                        gfloat        for_height,
+                                        gfloat       *min_width_p,
+                                        gfloat       *natural_width_p)
 {
   MnbClipboardItem *item = MNB_CLIPBOARD_ITEM (actor);
-  ClutterUnit button_min, button_natural;
-  ClutterUnit contents_min, contents_natural;
+  gfloat button_min, button_natural;
+  gfloat contents_min, contents_natural;
   NbtkPadding padding = { 0, };
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
@@ -242,13 +242,13 @@ mnb_clipboard_item_get_preferred_width (ClutterActor *actor,
 
 static void
 mnb_clipboard_item_get_preferred_height (ClutterActor *actor,
-                                         ClutterUnit   for_width,
-                                         ClutterUnit  *min_height_p,
-                                         ClutterUnit  *natural_height_p)
+                                         gfloat        for_width,
+                                         gfloat       *min_height_p,
+                                         gfloat       *natural_height_p)
 {
   MnbClipboardItem *item = MNB_CLIPBOARD_ITEM (actor);
-  ClutterUnit button_min, button_natural;
-  ClutterUnit contents_min, contents_natural;
+  gfloat button_min, button_natural;
+  gfloat contents_min, contents_natural;
   NbtkPadding padding = { 0, };
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
@@ -506,10 +506,11 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
                                        NULL);
 
   texture_cache = nbtk_texture_cache_get_default ();
-  texture = CLUTTER_ACTOR (nbtk_texture_cache_get_texture (texture_cache,
-                                                           remove_icon_path,
-                                                           TRUE));
-  nbtk_bin_set_child (NBTK_BIN (self->remove_button), texture);
+  texture = CLUTTER_TEXTURE (nbtk_texture_cache_get_texture (texture_cache,
+                                                             remove_icon_path,
+                                                             TRUE));
+  nbtk_bin_set_child (NBTK_BIN (self->remove_button),
+                      CLUTTER_ACTOR (texture));
 
   g_free (remove_icon_path);
 

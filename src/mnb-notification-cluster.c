@@ -143,19 +143,19 @@ mnb_notification_cluster_unmap (ClutterActor *actor)
 
 static void
 mnb_notification_cluster_get_preferred_width (ClutterActor *actor,
-                                              ClutterUnit   for_height,
-                                              ClutterUnit  *min_width,
-                                              ClutterUnit  *natural_width)
+                                              gfloat        for_height,
+                                              gfloat       *min_width,
+                                              gfloat       *natural_width)
 {
-  *min_width = CLUTTER_UNITS_FROM_DEVICE(CLUSTER_WIDTH);
-  *natural_width = CLUTTER_UNITS_FROM_DEVICE(CLUSTER_WIDTH);
+  *min_width = CLUSTER_WIDTH;
+  *natural_width = CLUSTER_WIDTH;
 }
 
 static void
 mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
-                                               ClutterUnit   for_width,
-                                               ClutterUnit  *min_height,
-                                               ClutterUnit  *natural_height)
+                                               gfloat        for_width,
+                                               gfloat       *min_height,
+                                               gfloat       *natural_height)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
 
@@ -164,7 +164,7 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
 
   if (priv->notifiers)
     {
-      ClutterUnit m_height, p_height;
+      gfloat m_height, p_height;
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           CLUSTER_WIDTH, &m_height, &p_height);
@@ -188,14 +188,14 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
 static void
 mnb_notification_cluster_allocate (ClutterActor          *actor,
                                    const ClutterActorBox *box,
-                                   gboolean               origin_changed)
+                                   ClutterAllocationFlags flags)
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class);
 
-  klass->allocate (actor, box, origin_changed);
+  klass->allocate (actor, box, flags);
 
   /* <rant>*sigh* and composite actors used to be so simple...</rant> */
 
@@ -211,22 +211,22 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
       };
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->control),
-                              &control_box, origin_changed);
+                              &control_box, flags);
     }
 
   if (priv->notifiers)
     {
-      ClutterUnit m_height, p_height;
+      gfloat m_height, p_height;
       ClutterActorBox notifier_box = { 0, };
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           CLUSTER_WIDTH, &m_height, &p_height);
 
-      notifier_box.x2 = CLUTTER_UNITS_FROM_DEVICE (CLUSTER_WIDTH);
+      notifier_box.x2 = CLUSTER_WIDTH;
       notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
-                              &notifier_box, origin_changed);
+                              &notifier_box, flags);
     }
 }
 
@@ -362,6 +362,9 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
   if (priv->n_notifiers == 1)
     {
+      /* May have been previously hidden */
+      clutter_actor_show (CLUTTER_ACTOR(cluster));
+
       /* show just the single notification */
       priv->active_notifier = w;
       clutter_actor_set_opacity (CLUTTER_ACTOR(w), 0);
@@ -449,6 +452,10 @@ on_control_disappear_anim_completed (ClutterAnimation *anim,
                                       priv->pending_removed);
       priv->pending_removed = NULL;
     }
+
+  /* Hide ourselves if nothing left to show */
+  if (priv->n_notifiers == 0)
+    clutter_actor_hide (CLUTTER_ACTOR(cluster));
 
   /* Update flag for any pending animations */
   priv->anim_lock = FALSE;
@@ -544,7 +551,7 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
               if (prev_height != new_height && priv->n_notifiers > 1)
                 {
-                  gint new_y;
+                  gfloat new_y;
 
                   new_y = clutter_actor_get_y (CLUTTER_ACTOR(priv->control))
                                  - (prev_height - new_height);

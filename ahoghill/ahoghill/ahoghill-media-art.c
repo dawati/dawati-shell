@@ -19,6 +19,10 @@ G_DEFINE_TYPE (AhoghillMediaArt, ahoghill_media_art, NBTK_TYPE_WIDGET);
 
 static ClutterActor *play_texture = NULL;
 
+static GdkPixbuf *generic_album = NULL;
+static GdkPixbuf *generic_image = NULL;
+static GdkPixbuf *generic_video = NULL;
+
 static void
 ahoghill_media_art_finalize (GObject *object)
 {
@@ -33,6 +37,115 @@ ahoghill_media_art_dispose (GObject *object)
 }
 
 static void
+clear_texture (AhoghillMediaArt *art)
+{
+    AhoghillMediaArtPrivate *priv = art->priv;
+    GError *error = NULL;
+    guint32 data = 0;
+
+    clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (priv->art),
+                                       (const guchar *) &data, TRUE,
+                                       1, 1, 1, 4, 0, &error);
+    if (error) {
+        g_warning ("Error clearing texture: %s", error->message);
+        g_error_free (error);
+    }
+}
+
+static void
+set_texture_from_pixbuf (ClutterActor *texture,
+                         GdkPixbuf    *thumbnail)
+{
+    GError *error = NULL;
+    gboolean has_alpha;
+
+    has_alpha = gdk_pixbuf_get_has_alpha (thumbnail);
+    clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (texture),
+                                       gdk_pixbuf_get_pixels (thumbnail),
+                                       has_alpha,
+                                       gdk_pixbuf_get_width (thumbnail),
+                                       gdk_pixbuf_get_height (thumbnail),
+                                       gdk_pixbuf_get_rowstride (thumbnail),
+                                       has_alpha ? 4 : 3, 0,
+                                       &error);
+    if (error != NULL) {
+        g_warning ("Error setting %s", error->message);
+        g_error_free (error);
+    }
+}
+
+static void
+use_default_texture (AhoghillMediaArt *art,
+                     BklItem          *item)
+{
+    AhoghillMediaArtPrivate *priv = art->priv;
+    GdkPixbuf *thumbnail;
+    GError *error = NULL;
+
+    switch (bkl_item_get_item_type (item)) {
+    case BKL_ITEM_TYPE_AUDIO:
+        if (G_UNLIKELY (generic_album == NULL)) {
+            generic_album = gdk_pixbuf_new_from_file
+                (PKG_DATADIR "/theme/media-panel/hrn-generic-album.png",
+                 &error);
+
+            if (generic_album == NULL) {
+                g_warning ("Error loading Generic album image: %s",
+                           error->message);
+                g_error_free (error);
+                clear_texture (art);
+                return;
+            }
+        }
+
+        thumbnail = generic_album;
+        break;
+
+    case BKL_ITEM_TYPE_IMAGE:
+        if (G_UNLIKELY (generic_image == NULL)) {
+            generic_image = gdk_pixbuf_new_from_file
+                (PKG_DATADIR "/theme/media-panel/hrn-generic-image.png",
+                 &error);
+
+            if (generic_image == NULL) {
+                g_warning ("Error loading Generic image image: %s",
+                           error->message);
+                g_error_free (error);
+                clear_texture (art);
+                return;
+            }
+        }
+
+        thumbnail = generic_image;
+        break;
+
+    case BKL_ITEM_TYPE_VIDEO:
+        if (G_UNLIKELY (generic_video == NULL)) {
+            generic_video = gdk_pixbuf_new_from_file
+                (PKG_DATADIR "/theme/media-panel/hrn-generic-video.png",
+                 &error);
+
+            if (generic_video == NULL) {
+                g_warning ("Error loading Generic video image: %s",
+                           error->message);
+                g_error_free (error);
+                clear_texture (art);
+                return;
+            }
+        }
+
+        thumbnail = generic_video;
+        break;
+
+    default:
+        clear_texture (art);
+        return;
+    }
+
+    set_texture_from_pixbuf (priv->art, thumbnail);
+}
+
+static void
 ahoghill_media_art_set_property (GObject      *object,
                                  guint         prop_id,
                                  const GValue *value,
@@ -43,7 +156,6 @@ ahoghill_media_art_set_property (GObject      *object,
     GError *error = NULL;
     BklItem *item;
     GdkPixbuf *thumbnail;
-    gboolean has_alpha;
     const char *uri = NULL;
     char *path;
 
@@ -56,15 +168,10 @@ ahoghill_media_art_set_property (GObject      *object,
         }
 
         if (uri == NULL) {
-            guint32 data = 0;
-
-            /* FIXME: Is this the best way to clear a texture to translucent? */
-            clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (priv->art),
-                                               (const guchar *) &data, TRUE,
-                                               1, 1, 1, 4, 0, &error);
-            if (error) {
-                g_warning ("Error clearing texture: %s", error->message);
-                g_error_free (error);
+            if (item) {
+                use_default_texture (self, item);
+            } else {
+                clear_texture (self);
             }
             return;
         }
@@ -102,19 +209,7 @@ ahoghill_media_art_set_property (GObject      *object,
             }
         }
 
-        has_alpha = gdk_pixbuf_get_has_alpha (thumbnail);
-        clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (priv->art),
-                                           gdk_pixbuf_get_pixels (thumbnail),
-                                           has_alpha,
-                                           gdk_pixbuf_get_width (thumbnail),
-                                           gdk_pixbuf_get_height (thumbnail),
-                                           gdk_pixbuf_get_rowstride (thumbnail),
-                                           has_alpha ? 4 : 3, 0,
-                                           &error);
-        if (error != NULL) {
-            g_warning ("Error setting %s: %s", uri, error->message);
-            g_error_free (error);
-        }
+        set_texture_from_pixbuf (priv->art, thumbnail);
         g_free (path);
 
         g_object_unref (thumbnail);
@@ -141,28 +236,28 @@ ahoghill_media_art_get_property (GObject    *object,
 static void
 ahoghill_media_art_allocate (ClutterActor          *actor,
                              const ClutterActorBox *box,
-                             gboolean               absolute_origin_changed)
+                             ClutterAllocationFlags flags)
 {
     AhoghillMediaArtPrivate *priv = ((AhoghillMediaArt *) actor)->priv;
     ClutterActorClass *parent_class;
     ClutterActorBox child_box, play_box;
     NbtkPadding padding = { 0, };
-    ClutterUnit w, h, x_off, y_off;
+    gfloat w, h, x_off, y_off;
 
     nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
     parent_class = CLUTTER_ACTOR_CLASS (ahoghill_media_art_parent_class);
-    parent_class->allocate (actor, box, absolute_origin_changed);
+    parent_class->allocate (actor, box, flags);
 
     child_box.x1 = 10;
     child_box.y1 = 7;
     child_box.x2 = box->x2 - box->x1 - 12;
     child_box.y2 = box->y2 - box->y1 - 12;
 
-    clutter_actor_allocate (priv->art, &child_box, absolute_origin_changed);
+    clutter_actor_allocate (priv->art, &child_box, flags);
 
-    w = clutter_actor_get_widthu (priv->play_texture);
-    h = clutter_actor_get_heightu (priv->play_texture);
+    w = clutter_actor_get_width (priv->play_texture);
+    h = clutter_actor_get_height (priv->play_texture);
 
     x_off = ((child_box.x2 - child_box.x1) - w) / 2;
     y_off = ((child_box.y2 - child_box.y1) - h) / 2;
@@ -172,7 +267,7 @@ ahoghill_media_art_allocate (ClutterActor          *actor,
     play_box.x2 = play_box.x1 + w;
     play_box.y2 = play_box.y1 + h;
 
-    clutter_actor_allocate (priv->play_texture, &play_box, absolute_origin_changed);
+    clutter_actor_allocate (priv->play_texture, &play_box, flags);
 }
 
 /* Taken from PengeMagicTexture */
@@ -193,8 +288,8 @@ paint_art (ClutterActor *actor)
     bw = cogl_texture_get_width (tex); /* base texture width */
     bh = cogl_texture_get_height (tex); /* base texture height */
 
-    aw = CLUTTER_UNITS_TO_INT (box.x2 - box.x1); /* allocation width */
-    ah = CLUTTER_UNITS_TO_INT (box.y2 - box.y1); /* allocation height */
+    aw = (int) (box.x2 - box.x1); /* allocation width */
+    ah = (int) (box.y2 - box.y1); /* allocation height */
 
     /* no comment */
     if ((float)bw/bh < (float)aw/ah) {
@@ -215,15 +310,10 @@ paint_art (ClutterActor *actor)
 
     col.alpha = clutter_actor_get_paint_opacity (actor);
     cogl_set_source_color4ub (col.red, col.green, col.blue, col.alpha);
-    cogl_rectangle (CLUTTER_UNITS_TO_INT (box.x1),
-                    CLUTTER_UNITS_TO_INT (box.y1),
-                    CLUTTER_UNITS_TO_INT (box.x2),
-                    CLUTTER_UNITS_TO_INT (box.y2));
+    cogl_rectangle (box.x1, box.y1, box.x2, box.y2);
     cogl_set_source_texture (tex);
-    cogl_rectangle_with_texture_coords (CLUTTER_UNITS_TO_INT (box.x1),
-                                        CLUTTER_UNITS_TO_INT (box.y1),
-                                        CLUTTER_UNITS_TO_INT (box.x2),
-                                        CLUTTER_UNITS_TO_INT (box.y2),
+    cogl_rectangle_with_texture_coords (box.x1, box.y1,
+                                        box.x2, box.y2,
                                         tx1, ty1,
                                         tx2, ty2);
 }
@@ -239,6 +329,40 @@ ahoghill_media_art_paint (ClutterActor *actor)
 
     if (CLUTTER_ACTOR_IS_MAPPED (priv->play_texture)) {
         clutter_actor_paint (priv->play_texture);
+    }
+}
+
+static void
+ahoghill_media_art_map (ClutterActor *actor)
+{
+    AhoghillMediaArt *art = (AhoghillMediaArt *) actor;
+    AhoghillMediaArtPrivate *priv = art->priv;
+
+    CLUTTER_ACTOR_CLASS (ahoghill_media_art_parent_class)->map (actor);
+
+    if (priv->art) {
+        clutter_actor_map (priv->art);
+    }
+
+    if (priv->play_texture) {
+        clutter_actor_map (priv->play_texture);
+    }
+}
+
+static void
+ahoghill_media_art_unmap (ClutterActor *actor)
+{
+    AhoghillMediaArt *art = (AhoghillMediaArt *) actor;
+    AhoghillMediaArtPrivate *priv = art->priv;
+
+    CLUTTER_ACTOR_CLASS (ahoghill_media_art_parent_class)->unmap (actor);
+
+    if (priv->art) {
+        clutter_actor_unmap (priv->art);
+    }
+
+    if (priv->play_texture) {
+        clutter_actor_unmap (priv->play_texture);
     }
 }
 
@@ -285,6 +409,8 @@ ahoghill_media_art_class_init (AhoghillMediaArtClass *klass)
 
     a_class->paint = ahoghill_media_art_paint;
     a_class->allocate = ahoghill_media_art_allocate;
+    a_class->map = ahoghill_media_art_map;
+    a_class->unmap = ahoghill_media_art_unmap;
     a_class->enter_event = ahoghill_media_art_enter;
     a_class->leave_event = ahoghill_media_art_leave;
 
@@ -306,6 +432,7 @@ ahoghill_media_art_init (AhoghillMediaArt *self)
 
     nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
+    clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
     clutter_actor_set_name (CLUTTER_ACTOR (self), "media-pane-album-art");
 
     priv->art = clutter_texture_new ();
@@ -321,8 +448,13 @@ ahoghill_media_art_init (AhoghillMediaArt *self)
         if (play_texture == NULL) {
             g_warning ("Error loading play texture: %s", error->message);
             g_error_free (error);
+        } else {
+            /* Cloned actors need to be hidden and parented */
+            clutter_container_add_actor
+                ((ClutterContainer *) clutter_stage_get_default (),
+                 play_texture);
+            clutter_actor_hide (play_texture);
         }
-        clutter_actor_show (play_texture);
     }
 
     if (play_texture) {

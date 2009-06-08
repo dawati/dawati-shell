@@ -213,14 +213,14 @@ mnb_launcher_button_leave_event (ClutterActor         *actor,
 static void
 mnb_launcher_button_allocate (ClutterActor          *actor,
                               const ClutterActorBox *box,
-                              gboolean               origin_changed)
+                              ClutterAllocationFlags flags)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
   NbtkPadding        padding;
   ClutterActorBox    child_box;
 
   CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)
-    ->allocate (actor, box, origin_changed);
+    ->allocate (actor, box, flags);
 
   nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
 
@@ -230,26 +230,26 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
   child_box.y1 = (int) ((box->y2 - box->y1 - self->priv->icon_size) / 2);
   child_box.x2 = child_box.x1 + self->priv->icon_size;
   child_box.y2 = child_box.y1 + self->priv->icon_size;
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &child_box, origin_changed);
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &child_box, flags);
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->title), &child_box);
   child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &child_box, origin_changed);
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &child_box, flags);
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->description), &child_box);
   child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->description), &child_box, origin_changed);
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->description), &child_box, flags);
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->comment), &child_box);
   child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->comment), &child_box, origin_changed);
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->comment), &child_box, flags);
 
   /* Pin location hardcoded, designers want this to fit perfectly. */
   child_box.x1 = box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET;
   child_box.x2 = child_box.x1 + FAV_TOGGLE_SIZE;
   child_box.y1 = FAV_TOGGLE_Y_OFFSET;
   child_box.y2 = child_box.y1 + FAV_TOGGLE_SIZE;
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->fav_toggle), &child_box, origin_changed);
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->fav_toggle), &child_box, flags);
 }
 
 static void
@@ -386,6 +386,8 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   g_signal_connect (self->priv->fav_toggle, "clicked",
                     G_CALLBACK (fav_button_clicked_cb), self);
+
+  clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }
 
 NbtkWidget *

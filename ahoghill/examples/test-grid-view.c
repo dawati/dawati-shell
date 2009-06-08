@@ -52,7 +52,7 @@ main (int    argc,
     clutter_actor_set_size (grid, 1024, 500);
     clutter_container_add_actor (CLUTTER_CONTAINER (stage), grid);
     clutter_actor_set_position (grid, 0, 50);
-    clutter_actor_show_all (stage);
+    clutter_actor_show (stage);
 
     clutter_main ();
 

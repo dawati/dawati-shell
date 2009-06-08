@@ -25,12 +25,14 @@
 #include "penge-lastfm-tile.h"
 #include "penge-magic-texture.h"
 
+#include "src/moblin-netbook-chooser.h"
+
 G_DEFINE_TYPE (PengeLastfmTile, penge_lastfm_tile, PENGE_TYPE_PEOPLE_TILE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_LASTFM_TILE, PengeLastfmTilePrivate))
 
-#define DEFAULT_ALBUM_ARTWORK PKG_DATADIR "/theme/mzone/default-album-artwork.png"
+#define DEFAULT_ALBUM_ARTWORK PKG_DATADIR "/theme/myzone/default-album-artwork.png"
 
 typedef struct _PengeLastfmTilePrivate PengeLastfmTilePrivate;
 
@@ -88,19 +90,13 @@ _button_press_event (ClutterActor *actor,
 {
   PengeLastfmTilePrivate *priv = GET_PRIVATE (userdata);
   const gchar *url;
-  GError *error = NULL;
 
   url = g_hash_table_lookup (priv->item->props,
                              "url");
 
-  if (!g_app_info_launch_default_for_uri (url,
-                                     NULL,
-                                     &error))
+  if (!moblin_netbook_launch_default_for_uri (url, FALSE, -2))
   {
-    g_warning (G_STRLOC ": Error launching uri (%s): %s",
-               url,
-               error->message);
-    g_clear_error (&error);
+    g_warning (G_STRLOC ": Error launching uri (%s)", url);
   } else {
     penge_utils_signal_activated (actor);
   }
@@ -148,7 +144,7 @@ penge_lastfm_tile_constructed (GObject *object)
   }
 
   if (clutter_texture_set_from_file (CLUTTER_TEXTURE (body),
-                                     thumbnail_path, 
+                                     thumbnail_path,
                                      &error))
   {
     g_object_set (object,
@@ -162,7 +158,7 @@ penge_lastfm_tile_constructed (GObject *object)
     g_clear_error (&error);
   }
 
-  g_signal_connect (object, 
+  g_signal_connect (object,
                     "button-press-event",
                     (GCallback)_button_press_event,
                     object);

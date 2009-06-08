@@ -53,7 +53,7 @@ nbtk_fixed_get_property (GObject    *object,
 static void
 nbtk_fixed_allocate (ClutterActor          *actor,
                      const ClutterActorBox *box,
-                     gboolean               absolute_origin_changed)
+                     ClutterAllocationFlags flags)
 {
     NbtkFixed *fixed = (NbtkFixed *) actor;
     NbtkFixedPrivate *priv = fixed->priv;
@@ -64,17 +64,16 @@ nbtk_fixed_allocate (ClutterActor          *actor,
     nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
     parent_class = CLUTTER_ACTOR_CLASS (nbtk_fixed_parent_class);
-    parent_class->allocate (actor, box, absolute_origin_changed);
+    parent_class->allocate (actor, box, flags);
 
     child_box.x1 = padding.left;
     child_box.y1 = padding.top;
     child_box.x2 = box->x2 - box->x1 - padding.right;
     child_box.y2 = box->y2 - box->y1 - padding.bottom;
 
-    clutter_actor_allocate (priv->parent_group, &child_box,
-                            absolute_origin_changed);
-    clutter_actor_set_clipu (priv->parent_group, 0, 0,
-                             child_box.x2, child_box.y2);
+    clutter_actor_allocate (priv->parent_group, &child_box, flags);
+    clutter_actor_set_clip (priv->parent_group, 0.0, 0.0,
+                            child_box.x2, child_box.y2);
 }
 
 static void
@@ -85,7 +84,7 @@ nbtk_fixed_paint (ClutterActor *actor)
 
     CLUTTER_ACTOR_CLASS (nbtk_fixed_parent_class)->paint (actor);
 
-    if (CLUTTER_ACTOR_IS_VISIBLE (priv->parent_group)) {
+    if (CLUTTER_ACTOR_IS_MAPPED (priv->parent_group)) {
         clutter_actor_paint (priv->parent_group);
     }
 }
@@ -96,9 +95,31 @@ nbtk_fixed_pick (ClutterActor       *actor,
 {
     CLUTTER_ACTOR_CLASS (nbtk_fixed_parent_class)->pick (actor, color);
 
-    if (CLUTTER_ACTOR_IS_VISIBLE (actor)) {
+    if (CLUTTER_ACTOR_IS_MAPPED (actor)) {
         nbtk_fixed_paint (actor);
     }
+}
+
+static void
+nbtk_fixed_map (ClutterActor *actor)
+{
+    NbtkFixed *fixed = (NbtkFixed *) actor;
+    NbtkFixedPrivate *priv = fixed->priv;
+
+    CLUTTER_ACTOR_CLASS (nbtk_fixed_parent_class)->map (actor);
+
+    clutter_actor_map (priv->parent_group);
+}
+
+static void
+nbtk_fixed_unmap (ClutterActor *actor)
+{
+    NbtkFixed *fixed = (NbtkFixed *) actor;
+    NbtkFixedPrivate *priv = fixed->priv;
+
+    CLUTTER_ACTOR_CLASS (nbtk_fixed_parent_class)->unmap (actor);
+
+    clutter_actor_unmap (priv->parent_group);
 }
 
 static void
@@ -115,6 +136,8 @@ nbtk_fixed_class_init (NbtkFixedClass *klass)
     a_class->allocate = nbtk_fixed_allocate;
     a_class->paint = nbtk_fixed_paint;
     a_class->pick = nbtk_fixed_pick;
+    a_class->map = nbtk_fixed_map;
+    a_class->unmap = nbtk_fixed_unmap;
 
     g_type_class_add_private (klass, sizeof (NbtkFixedPrivate));
 }

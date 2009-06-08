@@ -217,8 +217,8 @@ penge_events_pane_update (PengeEventsPane *pane)
     }
   }
 
-  /* TODO: Copy priv->time and reuse that. */
-  on_the_hour = jana_ecal_utils_time_now_local ();
+  on_the_hour = jana_time_duplicate (priv->time);
+
   jana_time_set_minutes (on_the_hour, 0);
   jana_time_set_seconds (on_the_hour, 0);
 

@@ -57,18 +57,20 @@ ahoghill_play_button_get_property (GObject    *object,
 #endif
 }
 
-static void
+static gboolean
 ahoghill_play_button_enter (ClutterActor         *actor,
                             ClutterCrossingEvent *event)
 {
     nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor), "hover");
+    return FALSE;
 }
 
-static void
+static gboolean
 ahoghill_play_button_leave (ClutterActor         *actor,
                             ClutterCrossingEvent *event)
 {
     nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor), NULL);
+    return FALSE;
 }
 
 static void

@@ -146,6 +146,8 @@ penge_date_tile_init (PengeDateTile *self)
                                "x-expand",
                                TRUE,
                                NULL);
+
+  clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
 
 static void

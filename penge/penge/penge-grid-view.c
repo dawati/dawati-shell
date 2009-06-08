@@ -32,7 +32,7 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_GRID_VIEW, PengeGridViewPrivate))
 
-#define V_DIV_LINE PKG_DATADIR "/theme/mzone/v-div-line.png"
+#define V_DIV_LINE PKG_DATADIR "/theme/myzone/v-div-line.png"
 
 typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 
@@ -119,7 +119,7 @@ penge_grid_view_unmap (ClutterActor *actor)
 static void
 penge_grid_view_allocate (ClutterActor          *actor,
                           const ClutterActorBox *box,
-                          gboolean               absolute_origin_changed)
+                          ClutterAllocationFlags flags)
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (actor);
   ClutterActorBox child_box;
@@ -129,11 +129,11 @@ penge_grid_view_allocate (ClutterActor          *actor,
   child_box.y1 = 0;
   child_box.x2 = box->x2 - box->x1;
   child_box.y2 = box->y2 - box->y1;
-  clutter_actor_allocate (priv->background, &child_box, absolute_origin_changed);
+  clutter_actor_allocate (priv->background, &child_box, flags);
 
   CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->allocate (actor,
                                                                 box,
-                                                                absolute_origin_changed);
+                                                                flags);
 }
 
 static void
