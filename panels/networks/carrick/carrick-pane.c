@@ -666,7 +666,6 @@ static void
 _services_changed_cb (CmManager *manager,
                       gpointer   user_data)
 {
-  g_debug ("Services updated! \\o/");
   _update_services (CARRICK_PANE (user_data));
 }
 
@@ -683,7 +682,6 @@ _update_manager (CarrickPane *pane,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
-  g_debug ("Updating manager");
   if (priv->manager)
   {
     g_signal_handlers_disconnect_by_func (priv->manager,
