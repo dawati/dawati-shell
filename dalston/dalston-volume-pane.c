@@ -214,6 +214,8 @@ _set_alert_sounds_button_active (DalstonVolumePane *self,
   g_signal_handlers_unblock_by_func (priv->alert_sounds_button,
                                      _alert_sounds_button_switch_flipped_cb,
                                      self);
+  gtk_widget_set_sensitive (priv->test_sound_button,
+                            active);
 }
 
 static void
