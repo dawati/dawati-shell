@@ -56,6 +56,8 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
                                 mnb-toolbar.h                   \
 				mnb-toolbar-button.c            \
 				mnb-toolbar-button.h            \
+				mnb-panel.c			\
+				mnb-panel.h			\
 				mnb-launcher-application.c \
 				mnb-launcher-application.h \
 				mnb-launcher-button.c           \
