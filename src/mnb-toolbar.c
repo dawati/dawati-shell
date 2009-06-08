@@ -1103,7 +1103,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
 
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
-  clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
+  clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
 }
 
 static void
