@@ -609,6 +609,8 @@ mnb_panel_init_owner (MnbPanel *panel)
   gtk_widget_realize (window);
 
   priv->xid = GDK_WINDOW_XWINDOW (window->window);
+
+  return TRUE;
 }
 
 static void
@@ -618,7 +620,7 @@ mnb_panel_proxy_owner_changed_cb (DBusGProxy *proxy,
                                   const char *new,
                                   gpointer    data)
 {
-  g_debug ("Proxy %s owner changed (old %, new %s).",
+  g_debug ("Proxy %s owner changed (old %s, new %s).",
            name, old, new);
 
   mnb_panel_init_owner (MNB_PANEL (data));
@@ -650,7 +652,7 @@ mnb_panel_setup_proxy (MnbPanel *panel)
 
   if (!proxy)
     {
-      g_warning ("Unable to create proxy for % (reason unknown)",
+      g_warning ("Unable to create proxy for %s (reason unknown)",
                  priv->dbus_path);
 
       return FALSE;
@@ -780,7 +782,6 @@ mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw)
 {
   MnbPanelPrivate *priv    = panel->priv;
   ClutterActor    *texture;
-  Window           xwin;
 
   if (!mcw)
     {
