@@ -1240,8 +1240,8 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
 
           g_error_free (error);
         }
-
-      nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
+      else
+        nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
     }
 
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
