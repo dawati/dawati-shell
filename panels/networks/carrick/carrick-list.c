@@ -251,7 +251,7 @@ carrick_list_add_item (CarrickList *list,
   gtk_box_pack_start (GTK_BOX (list),
                       widget,
                       FALSE,
-                      TRUE,
+                      FALSE,
                       6);
 }
 
