@@ -66,7 +66,8 @@ main (int argc, char *argv[])
   panel = mnb_panel_clutter_new ("/org/moblin/Mnb/TestPanel",
                                  "tray-button-test",
                                  "test",
-                                 NULL, NULL);
+                                 CSS_DIR"/test-panel.css",
+                                 "state1");
 
   g_signal_connect (panel, "show-begin",
                     G_CALLBACK (update_content_cb), NULL);
