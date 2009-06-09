@@ -25,6 +25,7 @@
 #include <config.h>
 #include <glib/gi18n.h>
 #include <gconnman/gconnman.h>
+#include <nbtk/nbtk-gtk.h>
 #include "carrick-icon-factory.h"
 
 G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
@@ -115,6 +116,7 @@ _set_state (CmService          *service,
   GdkPixbuf *pixbuf = NULL;
   gchar *name = NULL;
   gchar *security = NULL;
+  gchar *security_label = NULL;
 
   name = g_strdup (cm_service_get_name (service));
   security = g_strdup (cm_service_get_security (service));
@@ -163,30 +165,29 @@ _set_state (CmService          *service,
   }
 
   if (security && security[0] != '\0' && g_strcmp0 ("none", security) != 0)
-    {
+  {
       if (g_strcmp0 ("rsn", security) == 0)
-	{
+      {
 	  g_free (security);
 	  security = g_strdup ("WPA2");
-	}
+      }
       else
-	{
+      {
 	  gint i;
 
 	  for (i = 0; security[i] != '\0'; i++)
-	    {
+          {
 	      security[i] = g_ascii_toupper (security[i]);
-	    }
-	}
+          }
+      }
+      security_label = g_strdup_printf (_("%s encrypted"),
+                                        security);
       gtk_label_set_text (GTK_LABEL (priv->security_label),
-                          security);
+                          security_label);
     }
 
   gtk_label_set_text (GTK_LABEL (priv->name_label),
                       label);
-  gtk_misc_set_alignment (GTK_MISC (priv->name_label),
-                          0.00,
-                          0.50);
   gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                         button);
 
@@ -197,6 +198,7 @@ _set_state (CmService          *service,
 
   g_free (name);
   g_free (security);
+  g_free (security_label);
   g_free (label);
   g_free (button);
 }
@@ -518,38 +520,67 @@ static void
 carrick_service_item_init (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
-  GtkWidget *table;
+  GtkWidget *box, *hbox, *vbox;
+  GtkWidget *expando;
 
   priv->service = NULL;
   priv->failed = FALSE;
 
-  table = gtk_table_new (2, 3,
-			 TRUE);
+  box = gtk_hbox_new (FALSE,
+                      6);
+  expando = nbtk_gtk_expander_new ();
   gtk_container_add (GTK_CONTAINER (self),
-                     table);
+                     expando);
+  nbtk_gtk_expander_set_label_widget (NBTK_GTK_EXPANDER (expando),
+                                      box);
+  nbtk_gtk_expander_set_has_indicator (NBTK_GTK_EXPANDER (expando),
+				       FALSE);
 
   priv->icon = gtk_image_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table),
-                             priv->icon,
-                             0, 1,
-                             0, 2);
-  priv->name_label = gtk_label_new ("");
-  gtk_table_attach_defaults (GTK_TABLE (table),
-                             priv->name_label,
-                             1, 2,
-                             0, 1);
+  gtk_box_pack_start (GTK_BOX (box),
+                      priv->icon,
+                      FALSE,
+                      FALSE,
+                      6);
 
-  priv->connect_button = gtk_button_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table),
-                             priv->connect_button,
-                             1, 2,
-                             1, 2);
+  vbox = gtk_vbox_new (FALSE,
+                       6);
+  gtk_box_pack_start (GTK_BOX (box),
+                      vbox,
+                      TRUE,
+                      TRUE,
+                      6);
+
+  priv->name_label = gtk_label_new ("");
+  gtk_misc_set_alignment (GTK_MISC (priv->name_label),
+                          0.05, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      priv->name_label,
+                      TRUE,
+                      TRUE,
+                      6);
+
+  hbox = gtk_hbox_new (FALSE,
+                       6);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      hbox,
+                      TRUE,
+                      TRUE,
+                      6);
 
   priv->security_label = gtk_label_new ("");
-  gtk_table_attach_defaults (GTK_TABLE (table),
-                             priv->security_label,
-                             2, 3,
-                             0, 1);
+  gtk_box_pack_start (GTK_BOX (hbox),
+                      priv->security_label,
+                      FALSE,
+                      FALSE,
+                      6);
+
+  priv->connect_button = gtk_button_new ();
+  gtk_box_pack_start (GTK_BOX (hbox),
+                      priv->connect_button,
+                      FALSE,
+                      FALSE,
+                      6);
 
   gtk_widget_show_all (GTK_WIDGET (self));
 }
