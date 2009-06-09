@@ -585,7 +585,7 @@ mnb_panel_init_owner (MnbPanel *panel)
   g_free (priv->stylesheet);
   priv->stylesheet = stylesheet;
 
-  g_free (button_style_id);
+  g_free (priv->button_style_id);
   priv->button_style_id = button_style_id;
 
   priv->child_xid = xid;
