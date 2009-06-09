@@ -143,7 +143,7 @@ carrick_list_drag_failed (GtkWidget      *widget,
                         widget,
                         TRUE,
                         TRUE,
-                        6);
+                        0);
     order = GPOINTER_TO_UINT (g_object_get_data ((GObject *)widget,
                                                  "order"));
     gtk_box_reorder_child (GTK_BOX (user_data),
@@ -252,7 +252,7 @@ carrick_list_add_item (CarrickList *list,
                       widget,
                       FALSE,
                       FALSE,
-                      6);
+                      0);
 }
 
 
@@ -354,7 +354,7 @@ carrick_list_drag_data_received (GtkWidget        *widget,
                         source,
                         TRUE,
                         TRUE,
-                        6);
+                        0);
     gtk_box_reorder_child (GTK_BOX (widget),
                            source,
                            priv->dropped_new_order);
@@ -406,11 +406,6 @@ carrick_list_init (CarrickList *self)
                      carrick_targets,
                      G_N_ELEMENTS (carrick_targets),
                      GDK_ACTION_MOVE);*/
-
-  gtk_box_set_spacing (GTK_BOX (self),
-                       12);
-  gtk_container_set_border_width (GTK_CONTAINER (self),
-                                  12);
 }
 
 GtkWidget*
