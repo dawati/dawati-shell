@@ -12,6 +12,7 @@
 #include <anerley/anerley-tile-view.h>
 #include <anerley/anerley-tile.h>
 #include <anerley/anerley-aggregate-tp-feed.h>
+#include <anerley/anerley-ebook-feed.h>
 #include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-econtact-item.h>
 
@@ -116,13 +117,13 @@ _update_buttons (MnbPeoplePanel *people_panel)
   {
     msg = g_strdup_printf (_("Email %s"),
                            anerley_item_get_display_name (item));
-    nbtk_button_set_label (priv->primary_button,
+    nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
                            msg);
     g_free (msg);
   } else if (ANERLEY_IS_TP_ITEM (item)) {
     msg = g_strdup_printf (_("IM %s"),
                            anerley_item_get_display_name (item));
-    nbtk_button_set_label (priv->primary_button,
+    nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
                            msg);
     g_free (msg);
   } else {
@@ -508,7 +509,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   feed = anerley_aggregate_feed_new ();
 
   tp_feed = anerley_aggregate_tp_feed_new (mc);
-  anerley_aggregate_feed_add_feed (feed,
+  anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (feed),
                                    tp_feed);
 
   book = e_book_new_default_addressbook (&error);
@@ -520,7 +521,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
     g_clear_error (&error);
   } else {
     ebook_feed = anerley_ebook_feed_new (book);
-    anerley_aggregate_feed_add_feed (feed,
+    anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (feed),
                                      ebook_feed);
   }
 
