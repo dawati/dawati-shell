@@ -72,10 +72,10 @@ typedef struct
    * Private signals
    * Signals for DBus -- these are the interface signals.
    */
-  void (*request_show)       (MnbPanelClient *panel);
-  void (*request_hide)       (MnbPanelClient *panel);
-  void (*request_focus)      (MnbPanelClient *panel);
-  void (*request_icon)       (MnbPanelClient *panel, const gchar *icon);
+  void (*request_show)         (MnbPanelClient *panel);
+  void (*request_hide)         (MnbPanelClient *panel);
+  void (*request_focus)        (MnbPanelClient *panel);
+  void (*request_button_style) (MnbPanelClient *panel, const gchar *icon);
 
   void (*launch_application) (MnbPanelClient *panel,
                               const gchar    *app,
@@ -86,21 +86,23 @@ typedef struct
 
 GType mnb_panel_client_get_type (void);
 
-MnbPanelClient *mnb_panel_client_new     (const gchar *dbus_path,
-                                          guint        xid,
-                                          const gchar *name,
-                                          const gchar *tooltip);
+MnbPanelClient *mnb_panel_client_new       (const gchar *dbus_path,
+                                            guint        xid,
+                                            const gchar *name,
+                                            const gchar *tooltip,
+                                            const gchar *stylesheet,
+                                            const gchar *button_style);
 
-void mnb_panel_client_request_show       (MnbPanelClient *panel);
-void mnb_panel_client_request_hide       (MnbPanelClient *panel);
-void mnb_panel_client_request_focus      (MnbPanelClient *panel);
-void mnb_panel_client_request_icon       (MnbPanelClient *panel,
-                                          const gchar *icon);
+void mnb_panel_client_request_show         (MnbPanelClient *panel);
+void mnb_panel_client_request_hide         (MnbPanelClient *panel);
+void mnb_panel_client_request_focus        (MnbPanelClient *panel);
+void mnb_panel_client_request_button_style (MnbPanelClient *panel,
+                                            const gchar    *style);
 
-void mnb_panel_client_launch_application (MnbPanelClient *panel,
-                                          const gchar    *app,
-                                          gint            workspace,
-                                          gboolean        without_chooser);
+void mnb_panel_client_launch_application   (MnbPanelClient *panel,
+                                            const gchar    *app,
+                                            gint            workspace,
+                                            gboolean        without_chooser);
 
 G_END_DECLS
 

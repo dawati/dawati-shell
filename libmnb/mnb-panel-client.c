@@ -46,6 +46,8 @@ enum
   PROP_HEIGHT,
   PROP_NAME,
   PROP_TOOLTIP,
+  PROP_STYLESHEET,
+  PROP_BUTTON_STYLE,
   PROP_XID,
 };
 
@@ -60,7 +62,7 @@ enum
   REQUEST_SHOW,
   REQUEST_HIDE,
   REQUEST_FOCUS,
-  REQUEST_ICON,
+  REQUEST_BUTTON_STYLE,
   LAUNCH_APPLICATION,
 
   LAST_SIGNAL
@@ -76,6 +78,8 @@ struct _MnbPanelClientPrivate
 
   gchar           *name;
   gchar           *tooltip;
+  gchar           *stylesheet;
+  gchar           *button_style;
   guint            xid;
 
   guint            width;
@@ -102,6 +106,12 @@ mnb_panel_client_get_property (GObject    *object,
       break;
     case PROP_TOOLTIP:
       g_value_set_string (value, priv->tooltip);
+      break;
+    case PROP_STYLESHEET:
+      g_value_set_string (value, priv->stylesheet);
+      break;
+    case PROP_BUTTON_STYLE:
+      g_value_set_string (value, priv->button_style);
       break;
     case PROP_WIDTH:
       g_value_set_uint (value, priv->width);
@@ -139,6 +149,14 @@ mnb_panel_client_set_property (GObject      *object,
       g_free (priv->tooltip);
       priv->tooltip = g_value_dup_string (value);
       break;
+    case PROP_STYLESHEET:
+      g_free (priv->stylesheet);
+      priv->stylesheet = g_value_dup_string (value);
+      break;
+    case PROP_BUTTON_STYLE:
+      g_free (priv->button_style);
+      priv->button_style = g_value_dup_string (value);
+      break;
     case PROP_WIDTH:
       priv->width = g_value_get_uint (value);
       break;
@@ -175,6 +193,8 @@ mnb_panel_client_finalize (GObject *object)
   g_free (priv->dbus_path);
   g_free (priv->name);
   g_free (priv->tooltip);
+  g_free (priv->stylesheet);
+  g_free (priv->button_style);
 
   G_OBJECT_CLASS (mnb_panel_client_parent_class)->finalize (object);
 }
@@ -189,6 +209,8 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
                            gchar          **name,
                            guint           *xid,
                            gchar          **tooltip,
+                           gchar          **stylesheet,
+                           gchar          **button_style,
                            GError         **error)
 {
   MnbPanelClientPrivate *priv = self->priv;
@@ -198,9 +220,11 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
   if (!priv->xid)
     return FALSE;
 
-  *xid     = priv->xid;
-  *name    = g_strdup (priv->name);
-  *tooltip = g_strdup (priv->tooltip);
+  *xid          = priv->xid;
+  *name         = g_strdup (priv->name);
+  *tooltip      = g_strdup (priv->tooltip);
+  *stylesheet   = g_strdup (priv->stylesheet);
+  *button_style = g_strdup (priv->button_style);
 
   g_signal_emit (self, signals[SET_SIZE], 0, width, height);
 
@@ -280,6 +304,24 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                                    g_param_spec_string ("tooltip",
                                                         "Tooltip",
                                                         "Tooltip",
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+                                   PROP_STYLESHEET,
+                                   g_param_spec_string ("stylesheet",
+                                                        "Stylesheet",
+                                                        "Stylesheet",
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY));
+
+  g_object_class_install_property (object_class,
+                                   PROP_BUTTON_STYLE,
+                                   g_param_spec_string ("button-style",
+                                                        "Button style",
+                                                        "Button style",
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
@@ -387,11 +429,11 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  signals[REQUEST_ICON] =
-    g_signal_new ("request-icon",
+  signals[REQUEST_BUTTON_STYLE] =
+    g_signal_new ("request-button-style",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, request_icon),
+                  G_STRUCT_OFFSET (MnbPanelClientClass, request_button_style),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -512,13 +554,17 @@ MnbPanelClient *
 mnb_panel_client_new (const gchar *dbus_path,
                       guint        xid,
                       const gchar *name,
-                      const gchar *tooltip)
+                      const gchar *tooltip,
+                      const gchar *stylesheet,
+                      const gchar *button_style)
 {
   MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_CLIENT,
-                                        "dbus-path", dbus_path,
-                                        "xid",       xid,
-                                        "name",      name,
-                                        "tooltip",   tooltip,
+                                        "dbus-path",    dbus_path,
+                                        "xid",          xid,
+                                        "name",         name,
+                                        "tooltip",      tooltip,
+                                        "stylesheet",   stylesheet,
+                                        "button-style", button_style,
                                         NULL);
 
   if (panel && !panel->priv->constructed)
@@ -550,9 +596,10 @@ mnb_panel_client_request_focus (MnbPanelClient *panel)
 }
 
 void
-mnb_panel_client_request_icon (MnbPanelClient *panel, const gchar *icon)
+mnb_panel_client_request_button_style (MnbPanelClient *panel,
+                                       const gchar    *style)
 {
-  g_signal_emit (panel, signals[REQUEST_ICON], 0, icon);
+  g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style);
 }
 
 void

@@ -172,12 +172,16 @@ mnb_panel_gtk_constructed (GObject *self)
 MnbPanelClient *
 mnb_panel_gtk_new (const gchar *dbus_path,
                    const gchar *name,
-                   const gchar *tooltip)
+                   const gchar *tooltip,
+                   const gchar *stylesheet,
+                   const gchar *button_style)
 {
   MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_GTK,
-                                        "dbus-path", dbus_path,
-                                        "name",      name,
-                                        "tooltip",   tooltip,
+                                        "dbus-path",    dbus_path,
+                                        "name",         name,
+                                        "tooltip",      tooltip,
+                                        "stylesheet",   stylesheet,
+                                        "button-style", button_style,
                                         NULL);
 
   return panel;

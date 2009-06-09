@@ -63,9 +63,10 @@ main (int argc, char *argv[])
 
   clutter_init (&argc, &argv);
 
-  panel = mnb_panel_clutter_new ("/com/intel/Mnb/TestPanel",
-                                 "people-zone",
-                                 "people");
+  panel = mnb_panel_clutter_new ("/org/moblin/Mnb/TestPanel",
+                                 "tray-button-test",
+                                 "test",
+                                 NULL, NULL);
 
   g_signal_connect (panel, "show-begin",
                     G_CALLBACK (update_content_cb), NULL);

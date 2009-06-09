@@ -67,7 +67,9 @@ GType mnb_panel_clutter_get_type (void);
 
 MnbPanelClient *mnb_panel_clutter_new   (const gchar *dbus_path,
                                          const gchar *name,
-                                         const gchar *tooltip);
+                                         const gchar *tooltip,
+                                         const gchar *stylesheet,
+                                         const gchar *button_style);
 
 ClutterActor *mnb_panel_clutter_get_stage (MnbPanelClutter *panel);
 
