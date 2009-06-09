@@ -15,6 +15,8 @@
 #include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-econtact-item.h>
 
+#include <libebook/e-book.h>
+
 G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -431,9 +433,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   NbtkWidget *scroll_view;
   NbtkWidget *tile_view;
   MissionControl *mc;
-  AnerleyFeed *feed;
+  AnerleyFeed *feed, *tp_feed, *ebook_feed;
   DBusGConnection *conn;
   ClutterActor *no_people_tile = NULL;
+  EBook *book;
+  GError *error = NULL;
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 12);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
@@ -488,7 +492,26 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
   mc = mission_control_new (conn);
-  feed = anerley_aggregate_tp_feed_new (mc);
+
+  feed = anerley_aggregate_feed_new ();
+
+  tp_feed = anerley_aggregate_tp_feed_new (mc);
+  anerley_aggregate_feed_add_feed (feed,
+                                   tp_feed);
+
+  book = e_book_new_default_addressbook (&error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error getting default addressbook: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    ebook_feed = anerley_ebook_feed_new (book);
+    anerley_aggregate_feed_add_feed (feed,
+                                     ebook_feed);
+  }
+
   priv->model = (AnerleyFeedModel *)anerley_feed_model_new (feed);
   tile_view = anerley_tile_view_new (priv->model);
   scroll_view = nbtk_scroll_view_new ();
