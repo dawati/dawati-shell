@@ -277,7 +277,6 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
   NbtkWidget *tile;
   NbtkWidget *bin;
   NbtkWidget *label;
-  GtkIconTheme *icon_theme;
   ClutterActor *tmp_text;
   NbtkWidget *hbox;
 
@@ -386,7 +385,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
     priv->icon_theme = gtk_icon_theme_get_default ();
 
     /* Listen for the theme change */
-    g_signal_connect (icon_theme,
+    g_signal_connect (priv->icon_theme,
                       "changed",
                       (GCallback)_icon_theme_changed_cb,
                       people_panel);
