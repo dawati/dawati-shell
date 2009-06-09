@@ -51,6 +51,7 @@
 static guint filter_timeout_id = 0;
 static AnerleyFeedModel *model = NULL;
 static NbtkWidget *drop_down = NULL;
+static ClutterActor *tex = NULL;
 
 static gboolean
 _filter_timeout_cb (gpointer userdata)
@@ -161,17 +162,44 @@ _no_people_tile_button_press_event_cb (ClutterActor *actor,
   return TRUE;
 }
 
+static void
+_update_fallback_icon (GtkIconTheme *icon_theme,
+                       GIcon        *icon)
+{
+  GError *error = NULL;
+  GtkIconInfo *icon_info;
+  icon_info = gtk_icon_theme_lookup_by_gicon (icon_theme,
+                                              icon,
+                                              ICON_SIZE,
+                                              GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (tex),
+                                 gtk_icon_info_get_filename (icon_info),
+                                 &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error opening icon: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
+_icon_theme_changed_cb (GtkIconTheme *icon_theme,
+                        gpointer      userdata)
+{
+  _update_fallback_icon (icon_theme, (GIcon *)userdata);
+}
+
 static ClutterActor *
 _make_empty_people_tile (gint         width)
 {
   NbtkWidget *tile;
   NbtkWidget *bin;
   NbtkWidget *label;
-  ClutterActor *tex;
   GtkIconTheme *icon_theme;
-  GtkIconInfo *icon_info;
   GAppInfo *app_info;
-  GError *error = NULL;
   GIcon *icon;
   ClutterActor *tmp_text;
   NbtkWidget *hbox;
@@ -217,17 +245,6 @@ _make_empty_people_tile (gint         width)
 
   if (app_info)
   {
-    icon_theme = gtk_icon_theme_get_default ();
-
-    icon = g_app_info_get_icon (app_info);
-    icon_info = gtk_icon_theme_lookup_by_gicon (icon_theme,
-                                                icon,
-                                                ICON_SIZE,
-                                                GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-
-    tex = clutter_texture_new_from_file (gtk_icon_info_get_filename (icon_info),
-                                         &error);
-
     hbox = nbtk_table_new ();
     clutter_actor_set_name ((ClutterActor *)hbox,
                             "people-no-people-launcher");
@@ -249,31 +266,25 @@ _make_empty_people_tile (gint         width)
                                           NULL);
 
 
-    if (!tex)
-    {
-      g_warning (G_STRLOC ": Error opening icon: %s",
-                 error->message);
-      g_clear_error (&error);
-    } else {
-      clutter_actor_set_size (tex, ICON_SIZE, ICON_SIZE);
-      nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
-                                            tex,
-                                            1,
-                                            0,
-                                            "x-expand",
-                                            FALSE,
-                                            "x-fill",
-                                            FALSE,
-                                            "y-fill",
-                                            FALSE,
-                                            "y-expand",
-                                            FALSE,
-                                            "x-align",
-                                            0.0,
-                                            "y-align",
-                                            0.5,
-                                            NULL);
-    }
+    tex = clutter_texture_new ();
+    clutter_actor_set_size (tex, ICON_SIZE, ICON_SIZE);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                          tex,
+                                          1,
+                                          0,
+                                          "x-expand",
+                                          FALSE,
+                                          "x-fill",
+                                          FALSE,
+                                          "y-fill",
+                                          FALSE,
+                                          "y-expand",
+                                          FALSE,
+                                          "x-align",
+                                          0.0,
+                                          "y-align",
+                                          0.5,
+                                          NULL);
 
     label = nbtk_label_new (g_app_info_get_description (app_info));
     clutter_actor_set_name ((ClutterActor *)label, "people-no-people-description");
@@ -294,6 +305,17 @@ _make_empty_people_tile (gint         width)
                                           "y-align",
                                           0.5,
                                           NULL);
+
+    icon_theme = gtk_icon_theme_get_default ();
+    icon = g_app_info_get_icon (app_info);
+
+    /* Listen for the theme change */
+    g_signal_connect (icon_theme,
+                      "changed",
+                      (GCallback)_icon_theme_changed_cb,
+                      icon);
+
+    _update_fallback_icon (icon_theme, icon);
 
     g_signal_connect (hbox,
                       "button-press-event",
@@ -332,11 +354,9 @@ ClutterActor *
 make_people_panel (MutterPlugin *plugin,
                    gint          width)
 {
-  NbtkWidget *vbox, *hbox, *label, *entry, *bin, *button;
+  NbtkWidget *vbox, *hbox, *label, *entry;
   NbtkWidget *scroll_view;
   NbtkWidget *tile_view;
-  ClutterText *text;
-  guint items_list_width = 0, items_list_height = 0;
   MissionControl *mc;
   AnerleyFeed *feed;
   DBusGConnection *conn;
