@@ -1527,7 +1527,7 @@ mnb_switcher_show (ClutterActor *self)
               clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]),
                                            a, "row", row, "col", col, NULL);
 
-              win_locs[ws_indx].height = (new_h) * row;
+              win_locs[ws_indx].height = new_h * (row + 1);
 
               if (col < win_locs[ws_indx].max_col)
                 col++;
