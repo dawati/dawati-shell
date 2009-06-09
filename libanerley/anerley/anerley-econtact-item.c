@@ -205,6 +205,34 @@ anerley_econtact_item_get_last_name (AnerleyItem *item)
                               E_CONTACT_FAMILY_NAME);
 }
 
+void
+anerley_econtact_item_activate (AnerleyItem *item)
+{
+  AnerleyEContactItemPrivate *priv = GET_PRIVATE (item);
+  const gchar *email;
+  gchar *url;
+  GError *error = NULL;
+
+  email = e_contact_get_const (priv->contact,
+                               E_CONTACT_EMAIL_1);
+
+  if (email)
+  {
+    url = g_strdup_printf ("mailto:%s",
+                           email);
+    if (!g_app_info_launch_default_for_uri (url,
+                                            NULL,
+                                            &error))
+    {
+      g_warning (G_STRLOC ": Error activating item: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+    g_free (url);
+  }
+}
+
 static void
 anerley_econtact_item_class_init (AnerleyEContactItemClass *klass)
 {
@@ -226,6 +254,7 @@ anerley_econtact_item_class_init (AnerleyEContactItemClass *klass)
   item_class->get_presence_message = anerley_econtact_item_get_presence_message;
   item_class->get_first_name = anerley_econtact_item_get_first_name;
   item_class->get_last_name = anerley_econtact_item_get_last_name;
+  item_class->activate = anerley_econtact_item_activate;
 
   pspec = g_param_spec_object ("contact",
                                "The contact",
