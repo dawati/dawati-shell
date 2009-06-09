@@ -149,24 +149,24 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
   CarrickIconState icon_state = ICON_OFFLINE;
   GdkPixbuf *pixbuf;
   guint strength;
-  CmConnectionType type = CONNECTION_UNKNOWN;
-  CmConnection *connection = NULL;
+  const gchar *type = NULL;
+  CmService *service = NULL;
 
   if (priv->manager)
   {
-    connection = cm_manager_get_active_connection (priv->manager);
+    service  = cm_manager_get_active_service (priv->manager);
   }
 
-  if (connection)
+  if (service)
   {
-    type = cm_connection_get_type (connection);
-    switch (type)
+    type = cm_service_get_type (service);
+    if (g_strcmp0 (type, "ethernet") == 0)
     {
-      case CONNECTION_ETHERNET:
         icon_state = ICON_ACTIVE;
-        break;
-      case CONNECTION_WIFI:
-        strength = cm_connection_get_strength (connection);
+    }
+    else if (g_strcmp0 (type, "wifi") == 0)
+    {
+        strength = cm_service_get_strength (service);
         if (strength > 70)
         {
           icon_state = ICON_WIRELESS_STRONG;
@@ -179,11 +179,26 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
         {
           icon_state = ICON_WIRELESS_WEAK;
         }
-        break;
-      case CONNECTION_UNKNOWN:
-      default:
+    }
+    else if (g_strcmp0 (type, "wimax") == 0)
+    {
+      strength = cm_service_get_strength (service);
+      if (strength > 50)
+	icon_state = ICON_WIMAX_STRONG;
+      else
+	icon_state = ICON_WIMAX_WEAK;
+    }
+    else if (g_strcmp0 (type, "cellular") == 0)
+    {
+      strength = cm_service_get_strength (service);
+      if (strength > 50)
+	icon_state = ICON_3G_STRONG;
+      else
+	icon_state = ICON_3G_WEAK;
+    }
+    else
+    {
         icon_state = ICON_ERROR;
-        break;
     }
   }
   else
