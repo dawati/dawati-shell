@@ -426,6 +426,18 @@ _model_bulk_changed_end_cb (AnerleyFeedModel *model,
 }
 
 static void
+_primary_button_clicked_cb (NbtkButton *button,
+                            gpointer    userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+  if (priv->selected_item)
+  {
+    anerley_item_activate (priv->selected_item);
+  }
+}
+
+static void
 mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
@@ -583,6 +595,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                            150);
 
   _update_buttons (self);
+
+  g_signal_connect (priv->primary_button,
+                    "clicked",
+                    (GCallback)_primary_button_clicked_cb,
+                    self);
 }
 
 NbtkWidget *
