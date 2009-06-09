@@ -182,12 +182,14 @@ tabs_prev_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 
   redisplay_tabs (self, old_start, old_end, new_start, new_end);
 
-  /* FIXME: This would be better but the buttons get stuck on active state */
-  /*
   if (!priv->display_tab)
-    clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_prev));
+    {
+      /* workaround to make sure button isn't frozen in active state */
+      nbtk_widget_set_style_pseudo_class (priv->tabs_prev, NULL);
+
+      clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_prev));
+    }
   clutter_actor_show (CLUTTER_ACTOR (priv->tabs_next));
-  */
 }
 
 static void
@@ -207,12 +209,14 @@ tabs_next_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 
   redisplay_tabs (self, old_start, old_end, new_start, new_end);
 
-  /* FIXME: This would be better but the buttons get stuck on active state */
-  /*
   clutter_actor_show (CLUTTER_ACTOR (priv->tabs_prev));
   if (priv->display_tab + DISPLAY_TABS >= priv->n_tabs)
-    clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_next));
-  */
+    {
+      /* workaround to make sure button isn't frozen in active state */
+      nbtk_widget_set_style_pseudo_class (priv->tabs_next, NULL);
+
+      clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_next));
+    }
 }
 
 static void
@@ -565,8 +569,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
                                             "x-align", 0.0,
                                             "y-align", 0.5,
                                             NULL);
-      /* FIXME: This is better but the buttons get stuck on active state */
-      /* clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_prev)); */
+      clutter_actor_hide (CLUTTER_ACTOR (priv->tabs_prev));
       g_signal_connect (priv->tabs_prev, "clicked",
                         G_CALLBACK (tabs_prev_clicked_cb), self);
 

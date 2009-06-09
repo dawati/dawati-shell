@@ -386,7 +386,7 @@ chooser_keyboard_input_cb (ClutterActor *self,
   struct kbd_data            *kbd_data = data;
   MutterPlugin               *plugin = kbd_data->plugin;
   const char                 *sn_id = kbd_data->sn_id;
-  guint                       symbol = clutter_key_event_symbol (&event->key);
+  guint                       symbol = clutter_event_get_key_symbol (event);
   gint                        indx;
   guint32                     timestamp;
 

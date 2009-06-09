@@ -155,8 +155,8 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
         a = clutter_actor_animate (strip, CLUTTER_LINEAR,
                                    MNBZE_MOTION_DURATION,
                                    "x",
-                                   -MNBZE_PAD
-                                   -((screen_width + MNBZE_PAD)*current_to),
+                                   (gfloat)(-MNBZE_PAD
+                                   -((screen_width + MNBZE_PAD)*current_to)),
                                    NULL);
 
         /*
@@ -254,8 +254,8 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
        * set up the frame so that any zooming is done around its center.
        */
       g_object_set (frame,
-                    "scale-center-x", screen_width / 2,
-                    "scale-center-y", screen_height / 2,
+                    "scale-center-x", (gfloat)screen_width / 2,
+                    "scale-center-y", (gfloat)screen_height / 2,
                     NULL);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (frame), strip);
@@ -371,8 +371,8 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
           clutter_actor_animate (strip, CLUTTER_LINEAR,
                                  MNBZE_MOTION_DURATION,
                                  "x",
-                                 -MNBZE_PAD
-                                 -((screen_width + MNBZE_PAD)*current_to),
+                                 (gfloat)(-MNBZE_PAD
+                                          -((screen_width + MNBZE_PAD)*current_to)),
                                  NULL);
           break;
         }

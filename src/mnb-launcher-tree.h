@@ -46,19 +46,19 @@ void mnb_launcher_monitor_free (MnbLauncherMonitor *monitor);
 typedef struct MnbLauncherTree_ MnbLauncherTree;
 
 MnbLauncherTree *     mnb_launcher_tree_create          (void);
-GSList *              mnb_launcher_tree_list_entries    (MnbLauncherTree            *tree);
+GList *               mnb_launcher_tree_list_entries    (MnbLauncherTree            *tree);
 MnbLauncherMonitor *  mnb_launcher_tree_create_monitor  (MnbLauncherTree            *tree,
                                                          MnbLauncherMonitorFunction  monitor_function,
                                                          gpointer                    user_data);
-void                  mnb_launcher_tree_free_entries    (GSList                     *entries);
+void                  mnb_launcher_tree_free_entries    (GList                      *entries);
 void                  mnb_launcher_tree_free            (MnbLauncherTree            *tree);
 
 /*
  * MnbLauncherDirectory represents a "folder" item in the main menu.
  */
 typedef struct {
-  gchar   *name;
-  GSList  *entries;
+  gchar *name;
+  GList *entries;
 } MnbLauncherDirectory;
 
 G_END_DECLS
