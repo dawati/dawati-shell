@@ -12,6 +12,8 @@
 #include <anerley/anerley-tile-view.h>
 #include <anerley/anerley-tile.h>
 #include <anerley/anerley-aggregate-tp-feed.h>
+#include <anerley/anerley-tp-item.h>
+#include <anerley/anerley-econtact-item.h>
 
 G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
 
@@ -30,6 +32,8 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *entry;
   GAppInfo *app_info;
   GtkIconTheme *icon_theme;
+  AnerleyItem *selected_item;
+  NbtkWidget *primary_button;
 };
 
 static void
@@ -91,14 +95,69 @@ _entry_text_changed_cb (MnbEntry *entry,
 }
 
 static void
+_update_buttons (MnbPeoplePanel *people_panel)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
+  gchar *msg;
+  AnerleyItem *item;
+
+  if (priv->selected_item)
+  {
+    clutter_actor_show ((ClutterActor *)priv->primary_button);
+  } else {
+    clutter_actor_hide ((ClutterActor *)priv->primary_button);
+    return;
+  }
+
+  item = priv->selected_item;
+  if (ANERLEY_IS_ECONTACT_ITEM (item))
+  {
+    msg = g_strdup_printf (_("Email %s"),
+                           anerley_item_get_display_name (item));
+    nbtk_button_set_label (priv->primary_button,
+                           msg);
+    g_free (msg);
+  } else if (ANERLEY_IS_TP_ITEM (item)) {
+    msg = g_strdup_printf (_("IM %s"),
+                           anerley_item_get_display_name (item));
+    nbtk_button_set_label (priv->primary_button,
+                           msg);
+    g_free (msg);
+  } else {
+    g_debug (G_STRLOC ": Unknown item type?");
+  }
+}
+
+static void
 _view_item_activated_cb (AnerleyTileView *view,
                          AnerleyItem     *item,
                          gpointer         userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
+/*
   anerley_item_activate (item);
   clutter_actor_hide ((ClutterActor *)priv->drop_down);
+*/
+
+  if (priv->selected_item)
+  {
+    /* double click */
+    if (item == priv->selected_item)
+    {
+      anerley_item_activate (item);
+      clutter_actor_hide ((ClutterActor *)priv->drop_down);
+      priv->selected_item = NULL;
+    } else {
+      priv->selected_item = NULL;
+      if (item)
+        priv->selected_item = item;
+    }
+  } else {
+    priv->selected_item = item;
+  }
+
+  _update_buttons ((MnbPeoplePanel *)userdata);
 }
 
 static void
@@ -453,7 +512,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-fill",
                                         TRUE,
                                         NULL);
-
   no_people_tile = 
     _make_empty_people_tile (self,
                              clutter_actor_get_width ((ClutterActor *)scroll_view));
@@ -478,6 +536,30 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     (GCallback)_model_bulk_changed_end_cb,
                     no_people_tile);
   clutter_actor_show_all ((ClutterActor *)self);
+
+  priv->primary_button = nbtk_button_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-primary-action");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        (ClutterActor *)priv->primary_button,
+                                        1,
+                                        1,
+                                        "x-fill",
+                                        FALSE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-expand",
+                                        FALSE,
+                                        "y-expand",
+                                        FALSE,
+                                        "x-align",
+                                        0.0,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
+  clutter_actor_set_width ((ClutterActor *)priv->primary_button,
+                           150);
+
+  _update_buttons (self);
 }
 
 NbtkWidget *
