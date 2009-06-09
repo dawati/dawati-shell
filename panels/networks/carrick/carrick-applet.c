@@ -79,11 +79,11 @@ _notify_connection_changed (CarrickApplet *self)
         case CONNECTION_WIFI:
           str = cm_connection_get_strength (active);
           if (str > 70)
-            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_NETWORK_STRONG);
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
           else if (str > 35)
-            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_NETWORK_GOOD);
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
           else
-            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_NETWORK_WEAK);
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
           break;
         default:
           icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);

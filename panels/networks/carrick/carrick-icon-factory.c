@@ -166,32 +166,32 @@ carrick_icon_factory_get_state_for_service (CmService *service)
     else if (g_strcmp0 ("wifi", type) == 0)
     {
       if (strength > 70)
-        icon_state = ICON_WIRELESS_NETWORK_STRONG;
+        icon_state = ICON_WIRELESS_STRONG;
       else if (strength > 35)
-        icon_state = ICON_WIRELESS_NETWORK_GOOD;
+        icon_state = ICON_WIRELESS_GOOD;
       else
-        icon_state = ICON_WIRELESS_NETWORK_WEAK;
+        icon_state = ICON_WIRELESS_WEAK;
     }
     else if (g_strcmp0 ("wimax", type) == 0)
     {
       if (strength > 50)
       {
-        icon_state = ICON_WIMAX_NETWORK_STRONG;
+        icon_state = ICON_WIMAX_STRONG;
       }
       else
       {
-        icon_state = ICON_WIMAX_NETWORK_WEAK;
+        icon_state = ICON_WIMAX_WEAK;
       }
     }
     else if (g_strcmp0 ("cellular", type) == 0)
     {
       if (strength > 50)
       {
-        icon_state = ICON_3G_NETWORK_STRONG;
+        icon_state = ICON_3G_STRONG;
       }
       else
       {
-        icon_state = ICON_3G_NETWORK_WEAK;
+        icon_state = ICON_3G_WEAK;
       }
     }
   }
@@ -294,7 +294,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->offline_hov_img;
       break;
-    case ICON_WIRELESS_NETWORK_WEAK:
+    case ICON_WIRELESS_WEAK:
       if (!priv->wireless_weak_img)
       {
         priv->wireless_weak_img =
@@ -303,7 +303,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wireless_weak_img;
       break;
-    case ICON_WIRELESS_NETWORK_WEAK_HOVER:
+    case ICON_WIRELESS_WEAK_HOVER:
       if (!priv->wireless_weak_hov_img)
       {
         priv->wireless_weak_hov_img =
@@ -312,7 +312,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wireless_weak_hov_img;
       break;
-    case ICON_WIRELESS_NETWORK_GOOD:
+    case ICON_WIRELESS_GOOD:
       if (!priv->wireless_good_img)
       {
         priv->wireless_good_img =
@@ -321,7 +321,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wireless_good_img;
       break;
-    case ICON_WIRELESS_NETWORK_GOOD_HOVER:
+    case ICON_WIRELESS_GOOD_HOVER:
       if (!priv->wireless_good_hov_img)
       {
         priv->wireless_good_hov_img =
@@ -330,7 +330,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wireless_good_hov_img;
       break;
-    case ICON_WIRELESS_NETWORK_STRONG:
+    case ICON_WIRELESS_STRONG:
       if (!priv->wireless_strong_img)
       {
         priv->wireless_strong_img =
@@ -339,7 +339,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wireless_strong_img;
       break;
-    case ICON_WIRELESS_NETWORK_STRONG_HOVER:
+    case ICON_WIRELESS_STRONG_HOVER:
       if (!priv->wireless_strong_hov_img)
       {
         priv->wireless_strong_hov_img =
@@ -348,7 +348,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wireless_strong_hov_img;
       break;
-    case ICON_WIMAX_NETWORK_STRONG:
+    case ICON_WIMAX_STRONG:
       if (!priv->wimax_strong_img)
       {
         priv->wimax_strong_img =
@@ -357,7 +357,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wimax_strong_img;
       break;
-    case ICON_WIMAX_NETWORK_STRONG_HOVER:
+    case ICON_WIMAX_STRONG_HOVER:
       if (!priv->wimax_strong_hov_img)
       {
         priv->wimax_strong_hov_img =
@@ -366,7 +366,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wimax_strong_hov_img;
       break;
-    case ICON_WIMAX_NETWORK_WEAK:
+    case ICON_WIMAX_WEAK:
       if (!priv->wimax_weak_img)
       {
         priv->wimax_weak_img =
@@ -375,7 +375,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wimax_weak_img;
       break;
-    case ICON_WIMAX_NETWORK_WEAK_HOVER:
+    case ICON_WIMAX_WEAK_HOVER:
       if (!priv->wimax_weak_hov_img)
       {
         priv->wimax_weak_hov_img =
@@ -384,7 +384,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->wimax_weak_hov_img;
       break;
-    case ICON_3G_NETWORK_STRONG:
+    case ICON_3G_STRONG:
       if (!priv->threeg_strong_img)
       {
         priv->threeg_strong_img =
@@ -393,7 +393,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->threeg_strong_img;
       break;
-    case ICON_3G_NETWORK_STRONG_HOVER:
+    case ICON_3G_STRONG_HOVER:
       if (!priv->threeg_strong_hov_img)
       {
         priv->threeg_strong_hov_img =
@@ -402,7 +402,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->threeg_strong_hov_img;
       break;
-    case ICON_3G_NETWORK_WEAK:
+    case ICON_3G_WEAK:
       if (!priv->threeg_weak_img)
       {
         priv->threeg_weak_img =
@@ -411,7 +411,7 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       }
       icon = priv->threeg_weak_img;
       break;
-    case ICON_3G_NETWORK_WEAK_HOVER:
+    case ICON_3G_WEAK_HOVER:
       if (!priv->threeg_weak_hov_img)
       {
         priv->threeg_weak_hov_img =

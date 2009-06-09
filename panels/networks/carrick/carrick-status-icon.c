@@ -169,15 +169,15 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
         strength = cm_connection_get_strength (connection);
         if (strength > 70)
         {
-          icon_state = ICON_WIRELESS_NETWORK_STRONG;
+          icon_state = ICON_WIRELESS_STRONG;
         }
         else if (strength > 35)
         {
-          icon_state = ICON_WIRELESS_NETWORK_GOOD;
+          icon_state = ICON_WIRELESS_GOOD;
         }
         else
         {
-          icon_state = ICON_WIRELESS_NETWORK_WEAK;
+          icon_state = ICON_WIRELESS_WEAK;
         }
         break;
       case CONNECTION_UNKNOWN:
