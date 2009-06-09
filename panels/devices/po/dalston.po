@@ -1,0 +1,180 @@
+#  dalston
+# Copyright (C) 2009 Intel
+# This file is distributed under the same license as the PACKAGE package.
+# Zhu Yanhai <yanhai.zhu@intel.com>, 2009.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../dalston/dalston-power-applet.c:159
+#, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b>小时"
+msgstr[1] "<b>%d</b>小时"
+
+#: ../dalston/dalston-power-applet.c:166 ../dalston/dalston-power-applet.c:179
+#, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b>分钟"
+msgstr[1] "<b>%d</b>分钟"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "Running low on battery"
+msgstr "电量不足"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr "我们注意到您的电池电量不足,若有可能请切换至外接电源."
+
+#: ../dalston/dalston-power-applet.c:202
+msgid "Getting close to empty"
+msgstr "电池即将耗尽"
+
+#: ../dalston/dalston-power-applet.c:202
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr "电量严重不足.请尽快保存您的工作并切换至外接电源"
+
+#: ../dalston/dalston-power-applet.c:204
+msgid "Danger!"
+msgstr "危险!"
+
+#: ../dalston/dalston-power-applet.c:204
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr "抱歉,您的电池电量已不足.现在即将关机.请保存您的工作,再见."
+
+#: ../dalston/dalston-power-applet.c:324
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "您的电池已充满"
+
+#: ../dalston/dalston-power-applet.c:326
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "正在充电中.已充至约<b>%d</b>%%."
+
+#: ../dalston/dalston-power-applet.c:333
+#, c-format
+msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+msgstr "充电结束.充至约<b>%d</b>%%."
+
+#: ../dalston/dalston-power-applet.c:453
+msgid "Display brightness"
+msgstr "屏幕亮度"
+
+#: ../dalston/dalston-power-applet.c:484
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "抱歉,目前暂不支持修改此种屏幕的亮度."
+
+#: ../dalston/dalston-brightness-slider.c:221
+msgid "Brighter than the sun"
+msgstr "比日光稍亮些"
+
+#: ../dalston/dalston-brightness-slider.c:223
+msgid "Very bright"
+msgstr "非常亮"
+
+#: ../dalston/dalston-brightness-slider.c:225
+msgid "Bright"
+msgstr "一般亮"
+
+#: ../dalston/dalston-brightness-slider.c:227
+msgid "Morning has broken"
+msgstr "黄昏时分"
+
+#: ../dalston/dalston-brightness-slider.c:229
+msgid "Midday"
+msgstr "正午"
+
+#: ../dalston/dalston-brightness-slider.c:231
+msgid "Pretty dusky"
+msgstr "微暗"
+
+#: ../dalston/dalston-brightness-slider.c:233
+msgid "Twilight"
+msgstr "微光"
+
+#: ../dalston/dalston-brightness-slider.c:235
+msgid "Very dark"
+msgstr "非常暗"
+
+#: ../dalston/dalston-brightness-slider.c:237
+msgid "Total eclipse"
+msgstr "日全食"
+
+#: ../dalston/dalston-volume-pane.c:254
+msgid "Output volume"
+msgstr "音量"
+
+#: ../dalston/dalston-volume-pane.c:298
+msgid "Mute"
+msgstr "静音"
+
+#: ../dalston/dalston-volume-pane.c:316
+msgid "Alert sounds"
+msgstr "警告声"
+
+#: ../dalston/dalston-volume-pane.c:328
+msgid "Play test sound"
+msgstr "播放测试音"
+
+#: ../dalston/dalston-volume-slider.c:188
+msgid "Turned up to 11"
+msgstr "调至11"
+
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Very loud"
+msgstr "非常响亮"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Loud"
+msgstr "响亮"
+
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Fairly loud"
+msgstr "一般响亮"
+
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Middle of the road"
+msgstr "中等"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Fairly quiet"
+msgstr "比较安静"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Quiet"
+msgstr "安静"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Very quiet"
+msgstr "非常安静"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Silent"
+msgstr "无声"
+
+#: ../libgvc/gvc-mixer-control.c:988
+msgid "System Sounds"
+msgstr "系统声音"
+
+#: ../libgvc/gvc-mixer-control.c:1512
+msgid "GNOME Volume Control"
+msgstr "GNOME音量控制"
