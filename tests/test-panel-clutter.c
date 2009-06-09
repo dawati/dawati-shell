@@ -43,8 +43,13 @@ make_window_content (MnbPanelClutter *panel)
 {
   ClutterActor *stage = mnb_panel_clutter_get_stage (panel);
   ClutterActor *label;
+  ClutterColor  white = {0xff, 0xff, 0xff, 0xff};
+  ClutterColor  black = {0, 0, 0, 0xff};
+
+  clutter_stage_set_color (CLUTTER_STAGE (stage), &white);
 
   label = clutter_text_new_with_text ("Sans 16pt", "This is a clutter panel");
+  clutter_text_set_color  (CLUTTER_TEXT (label), &black);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 }
 
