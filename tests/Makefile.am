@@ -2,12 +2,16 @@
 %.service: %.service.in ../config.log
 	sed -e "s|\@dir\@|$(abs_builddir)|" $< > $@
 
+%.css: %.css.in ../config.log
+	sed -e "s|\@pkgdatadir\@|$(pkgdatadir)|" $< > $@
+
 AM_CPPFLAGS = \
   $(MUTTER_PLUGIN_CFLAGS) \
   -I$(top_srcdir)/penge \
   -I$(top_srcdir)/src \
   -I$(top_builddir)/src \
-  -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\"
+  -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
+  -DCSS_DIR=\"$(abs_builddir)\"
 
 AM_CFLAGS = \
 	$(PENGE_CFLAGS) \
@@ -83,23 +87,27 @@ test_pasteboard_SOURCES = \
 test_screensized_SOURCES = \
 	test-screensized.c
 
-test_panel_gtk_SOURCES = \
+test_panel_gtk_SOURCES = 	\
+	test-panel.css		\
 	test-panel-gtk.c
 
 test_panel_gtk_LDADD = \
 	$(MUTTER_PLUGIN_LIBS) \
 	$(top_builddir)/libmnb/libmnbgtk.la
 
-test_panel_clutter_SOURCES = \
+test_panel_clutter_SOURCES = 	\
+	test-panel.css		\
 	test-panel-clutter.c
 
 test_panel_clutter_LDADD = \
 	$(MUTTER_PLUGIN_LIBS) \
 	$(top_builddir)/libmnb/libmnbclutter.la
 
-CLEANFILES = test-panel-gtk.service test-panel-clutter.service
+CLEANFILES = test-panel-gtk.service test-panel-clutter.service \
+	     test-panel.css
 
 # dont want this installed, just generated
-BUILT_SOURCES = test-panel-gtk.service test-panel-clutter.service
+BUILT_SOURCES = test-panel-gtk.service test-panel-clutter.service \
+		test-panel.css
 
 EXTRA_DIST = $(service_in_files)
