@@ -76,7 +76,9 @@ endif
 
 if WITH_PEOPLE
 moblin_netbook_la_SOURCES +=	moblin-netbook-people.h		\
-				moblin-netbook-people.c
+				moblin-netbook-people.c		\
+				mnb-people-panel.c		\
+				mnb-people-panel.h
 endif
 
 DBUS_GLUE =	notification-manager-glue.h
