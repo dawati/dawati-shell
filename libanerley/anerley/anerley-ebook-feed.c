@@ -145,7 +145,7 @@ anerley_ebook_feed_init (AnerleyEBookFeed *self)
                                                g_object_unref);
 }
 
-AnerleyEBookFeed *
+AnerleyFeed *
 anerley_ebook_feed_new (EBook *book)
 {
   return g_object_new (ANERLEY_TYPE_EBOOK_FEED,

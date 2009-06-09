@@ -25,6 +25,7 @@
 
 #include <glib-object.h>
 #include <libebook/e-book.h>
+#include <anerley/anerley-feed.h>
 
 G_BEGIN_DECLS
 
@@ -55,7 +56,7 @@ typedef struct {
 
 GType anerley_ebook_feed_get_type (void);
 
-AnerleyEBookFeed *anerley_ebook_feed_new (EBook *book);
+AnerleyFeed *anerley_ebook_feed_new (EBook *book);
 
 G_END_DECLS
 
