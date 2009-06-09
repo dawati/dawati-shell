@@ -469,7 +469,11 @@ mnb_drop_down_init (MnbDropDown *self)
   priv = self->priv = GET_PRIVATE (self);
 
   /* footer with "up" button */
-  footer = nbtk_button_new ();
+  /* Using the empty label is a workaround for a styling bug, without
+   * which the padding of our style is not applied; the real cause is
+   * being investigated.
+   */
+  footer = nbtk_button_new_with_label ("");
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (footer), 1, 0);
   g_signal_connect_swapped (footer, "clicked",
