@@ -1654,9 +1654,14 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
     {
       MnbPanel *panel;
       gchar    *path;
+      gint      screen_width, screen_height;
+
+      mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
       path   = g_strconcat ("/org/moblin/Mnb/", name, NULL);
-      panel  = mnb_panel_new (priv->plugin, path, 1024, 400);
+      panel  = mnb_panel_new (priv->plugin, path,
+                              screen_width - TOOLBAR_X_PADDING * 2,
+                              screen_height - 2 * TOOLBAR_HEIGHT);
 
       if (panel)
         {
