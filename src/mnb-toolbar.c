@@ -1647,7 +1647,9 @@ mnb_toolbar_constructed (GObject *self)
   if (G_OBJECT_CLASS (mnb_toolbar_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_toolbar_parent_class)->constructed (self);
 
-  priv->dbus_conn = mnb_toolbar_connect_to_dbus (MNB_TOOLBAR (self));
+  conn = mnb_toolbar_connect_to_dbus (MNB_TOOLBAR (self));
+
+  priv->dbus_conn = conn;
 
   dbus_g_connection_register_g_object (conn, "/org/moblin/Mnb/Toolbar", self);
 
