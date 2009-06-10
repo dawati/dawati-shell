@@ -719,8 +719,15 @@ entry_button_clicked_cb (MnbEntry              *entry,
 {
   const gchar *url = mnb_entry_get_text (entry);
 
-  if (url && (url[0] != '\0'))
-      g_signal_emit (self, signals[LAUNCH], 0, url);
+  if (url)
+    {
+      while (*url == ' ')
+        url++;
+      if (*url == '\0')
+        mnb_entry_set_text (entry, "");
+      else
+        g_signal_emit (self, signals[LAUNCH], 0, url);
+    }
 }
 
 static void
