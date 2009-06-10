@@ -317,7 +317,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
                                         NULL);
   nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
 
-  priv->app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
+  priv->app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
 
   if (priv->app_info)
   {
