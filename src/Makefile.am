@@ -81,10 +81,12 @@ moblin_netbook_la_SOURCES +=	moblin-netbook-people.h		\
 				moblin-netbook-people.c
 endif
 
-DBUS_GLUE =	notification-manager-glue.h \
-		mnb-panel-dbus-glue.h
+DBUS_GLUE =	notification-manager-glue.h	\
+		mnb-panel-dbus-glue.h		\
+		mnb-toolbar-dbus-glue.h
 
-DBUS_BINDINGS =	mnb-panel-dbus-bindings.h
+DBUS_BINDINGS =	mnb-panel-dbus-bindings.h	\
+		mnb-toolbar-dbus-bindings.h
 
 %-glue.h: %.xml
 	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^

@@ -6,12 +6,22 @@
 
 #include <glib/gi18n.h>
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+#include <dbus/dbus-glib-lowlevel.h>
+#include <dbus/dbus.h>
+
 #include "moblin-netbook.h"
 
 #include "mnb-toolbar.h"
 #include "mnb-toolbar-button.h"
 #include "mnb-drop-down.h"
 #include "mnb-switcher.h"
+
+/* for the launching API;
+ * TODO -- refactor & namespace that
+ */
+#include "moblin-netbook-chooser.h"
 
 /* TODO -- remove these after multiprocing */
 #include "penge/penge-grid-view.h"
@@ -150,6 +160,8 @@ struct _MnbToolbarPrivate
 
   guint tray_xids [NUM_ZONES];
 #endif
+
+  DBusGConnection *dbus_conn;
 };
 
 static void
@@ -191,6 +203,12 @@ static void
 mnb_toolbar_dispose (GObject *object)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (object)->priv;
+
+  if (priv->dbus_conn)
+    {
+      g_object_unref (priv->dbus_conn);
+      priv->dbus_conn = NULL;
+    }
 
   if (priv->dropdown_region)
     {
@@ -482,6 +500,52 @@ mnb_toolbar_allocate (ClutterActor          *actor,
   parent_class->allocate (actor, box, flags);
 }
 
+static gboolean
+mnb_toolbar_dbus_launch_application (MnbToolbar  *self,
+                                     gchar       *path,
+                                     gint         workspace,
+                                     gboolean     no_chooser,
+                                     GError     **error)
+{
+  return moblin_netbook_launch_application (path, workspace, no_chooser);
+}
+
+static gboolean
+mnb_toolbar_dbus_launch_application_by_desktop_file (MnbToolbar  *self,
+                                                     gchar       *desktop_file,
+                                                     gchar       *arguments,
+                                                     gint         workspace,
+                                                     gboolean     no_chooser,
+                                                     GError     **error)
+{
+  GList    *files = NULL;
+  gboolean  retval;
+
+  if (arguments && *arguments)
+    files = g_list_prepend (files, arguments);
+
+  retval =  moblin_netbook_launch_application_from_desktop_file (desktop_file,
+                                                                 files,
+                                                                 workspace,
+                                                                 no_chooser);
+
+  g_list_free (files);
+
+  return retval;
+}
+
+static gboolean
+mnb_toolbar_dbus_launch_default_application_for_uri (MnbToolbar  *self,
+                                                     gchar       *uri,
+                                                     gint         workspace,
+                                                     gboolean     no_chooser,
+                                                     GError     **error)
+{
+  return moblin_netbook_launch_default_for_uri (uri, workspace, no_chooser);
+}
+
+#include "../src/mnb-toolbar-dbus-glue.h"
+
 static void
 mnb_toolbar_class_init (MnbToolbarClass *klass)
 {
@@ -499,6 +563,9 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
   clutter_class->show = mnb_toolbar_show;
   clutter_class->hide = mnb_toolbar_hide;
   clutter_class->allocate = mnb_toolbar_allocate;
+
+  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
+                                   &dbus_glib_mnb_toolbar_dbus_object_info);
 
   g_object_class_install_property (object_class,
                                    PROP_MUTTER_PLUGIN,
@@ -1508,6 +1575,58 @@ mnb_toolbar_make_hint (MnbToolbar *toolbar)
   priv->hint = bin;
 }
 
+static DBusGConnection *
+mnb_toolbar_connect_to_dbus (MnbToolbar *self)
+{
+  DBusGConnection   *conn;
+  DBusGProxy        *proxy;
+  GError            *error = NULL;
+  guint              status;
+
+  conn = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+  if (!conn)
+    {
+      g_warning ("Cannot connect to DBus: %s", error->message);
+      g_error_free (error);
+      return NULL;
+    }
+
+  proxy = dbus_g_proxy_new_for_name (conn,
+                                     DBUS_SERVICE_DBUS,
+                                     DBUS_PATH_DBUS,
+                                     DBUS_INTERFACE_DBUS);
+
+  if (!proxy)
+    {
+      g_object_unref (conn);
+      return NULL;
+    }
+
+  if (!org_freedesktop_DBus_request_name (proxy,
+                                          "org.moblin.Mnb.Toolbar",
+                                          DBUS_NAME_FLAG_DO_NOT_QUEUE,
+                                          &status, &error))
+    {
+      if (error)
+        {
+          g_warning ("%s: %s", __FUNCTION__, error->message);
+          g_error_free (error);
+        }
+      else
+        {
+          g_warning ("%s: Unknown error", __FUNCTION__);
+        }
+
+      g_object_unref (conn);
+      conn = NULL;
+    }
+
+  g_object_unref (proxy);
+
+  return conn;
+}
+
 static void
 mnb_toolbar_constructed (GObject *self)
 {
@@ -1520,6 +1639,17 @@ mnb_toolbar_constructed (GObject *self)
   gint               screen_width, screen_height;
   ClutterColor       clr = {0x0, 0x0, 0x0, 0xce};
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
+  DBusGConnection   *conn;
+
+  /*
+   * Make sure our parent gets chance to do what it needs to.
+   */
+  if (G_OBJECT_CLASS (mnb_toolbar_parent_class)->constructed)
+    G_OBJECT_CLASS (mnb_toolbar_parent_class)->constructed (self);
+
+  priv->dbus_conn = mnb_toolbar_connect_to_dbus (MNB_TOOLBAR (self));
+
+  dbus_g_connection_register_g_object (conn, "/org/moblin/Mnb/Toolbar", self);
 
   hbox = priv->hbox = clutter_group_new ();
 

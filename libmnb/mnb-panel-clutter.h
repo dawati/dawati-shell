@@ -69,7 +69,8 @@ MnbPanelClient *mnb_panel_clutter_new   (const gchar *dbus_path,
                                          const gchar *name,
                                          const gchar *tooltip,
                                          const gchar *stylesheet,
-                                         const gchar *button_style);
+                                         const gchar *button_style,
+                                         gboolean     with_toolbar_service);
 
 ClutterActor *mnb_panel_clutter_get_stage (MnbPanelClutter *panel);
 

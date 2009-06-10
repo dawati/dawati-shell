@@ -25,6 +25,8 @@
 #include "mnb-panel-client.h"
 #include "../src/marshal.h"
 
+#include <string.h>
+
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
@@ -49,6 +51,8 @@ enum
   PROP_STYLESHEET,
   PROP_BUTTON_STYLE,
   PROP_XID,
+
+  PROP_TOOLBAR_SERVICE
 };
 
 enum
@@ -63,7 +67,6 @@ enum
   REQUEST_HIDE,
   REQUEST_FOCUS,
   REQUEST_BUTTON_STYLE,
-  LAUNCH_APPLICATION,
 
   LAST_SIGNAL
 };
@@ -73,7 +76,8 @@ static guint signals[LAST_SIGNAL] = { 0 };
 struct _MnbPanelClientPrivate
 {
   DBusGConnection *dbus_conn;
-  DBusGProxy      *proxy;
+  DBusGProxy      *toolbar_proxy;
+  DBusGProxy      *dbus_proxy;
   gchar           *dbus_path;
 
   gchar           *name;
@@ -85,7 +89,8 @@ struct _MnbPanelClientPrivate
   guint            width;
   guint            height;
 
-  gboolean         constructed : 1; /* poor man's constructor return value. */
+  gboolean         constructed     : 1; /*poor man's constructor return value*/
+  gboolean         toolbar_service : 1;
 };
 
 static void
@@ -121,6 +126,9 @@ mnb_panel_client_get_property (GObject    *object,
       break;
     case PROP_XID:
       g_value_set_uint (value, priv->xid);
+      break;
+    case PROP_TOOLBAR_SERVICE:
+      g_value_set_boolean (value, priv->toolbar_service);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -166,6 +174,9 @@ mnb_panel_client_set_property (GObject      *object,
     case PROP_XID:
       priv->xid = g_value_get_uint (value);
       break;
+    case PROP_TOOLBAR_SERVICE:
+      priv->toolbar_service = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -175,6 +186,18 @@ static void
 mnb_panel_client_dispose (GObject *self)
 {
   MnbPanelClientPrivate *priv  = MNB_PANEL_CLIENT (self)->priv;
+
+  if (priv->toolbar_proxy)
+    {
+      g_object_unref (priv->toolbar_proxy);
+      priv->toolbar_proxy = NULL;
+    }
+
+  if (priv->dbus_proxy)
+    {
+      g_object_unref (priv->dbus_proxy);
+      priv->dbus_proxy = NULL;
+    }
 
   if (priv->dbus_conn)
     {
@@ -355,6 +378,16 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
 
+  g_object_class_install_property (object_class,
+                                   PROP_TOOLBAR_SERVICE,
+                                   g_param_spec_boolean ("toolbar-service",
+                                     "Whether toobar service should be enabled",
+                                     "Whether toobar service "
+                                     "should be enabled",
+                                     FALSE,
+                                     G_PARAM_READWRITE |
+                                     G_PARAM_CONSTRUCT_ONLY));
+
   signals[SET_SIZE] =
     g_signal_new ("set-size",
                   G_TYPE_FROM_CLASS (object_class),
@@ -438,18 +471,6 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
-
-  signals[LAUNCH_APPLICATION] =
-    g_signal_new ("launch-application",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, launch_application),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 3,
-                  G_TYPE_STRING,
-                  G_TYPE_INT,
-                  G_TYPE_BOOLEAN);
 }
 
 static void
@@ -520,6 +541,79 @@ mnb_panel_client_connect_to_dbus (MnbPanelClient *self)
 }
 
 static void
+mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb (gpointer data,
+                                                    GObject *object)
+{
+  MnbPanelClient        *panel = MNB_PANEL_CLIENT (data);
+  MnbPanelClientPrivate *priv  = panel->priv;
+
+  priv->toolbar_proxy = NULL;
+
+  /* What now ? */
+  g_warning ("Toolbar object died on us\n");
+}
+
+static gboolean
+mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
+{
+  MnbPanelClientPrivate *priv = panel->priv;
+  DBusGProxy            *proxy;
+
+  g_debug ("Setting up toolbar proxy");
+
+  /*
+   * Set up the proxy to the remote toolbar object
+   */
+  proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
+                                     "org.moblin.Mnb.Toolbar",
+                                     "/org/moblin/Mnb/Toolbar",
+                                     "org.moblin.Mnb.Panel");
+
+  if (!proxy)
+    {
+      g_warning ("Unable to create proxy for /org/moblin/MnbToolbar.");
+      return FALSE;
+    }
+
+  priv->toolbar_proxy = proxy;
+
+  g_object_weak_ref (G_OBJECT (proxy),
+                     mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb, panel);
+
+  g_debug ("Toolbar proxy setup succeeded");
+
+  return TRUE;
+}
+
+/*
+ * Used to connect to org.moblin.Toolbar when it is started
+ */
+static void
+mnb_panel_client_noc_cb (DBusGProxy     *proxy,
+                         MnbPanelClient *panel,
+                         const gchar    *name,
+                         const gchar    *old_owner,
+                         const gchar    *new_owner)
+{
+  MnbPanelClientPrivate *priv;
+
+  if (!name || strcmp (name, "org.moblin.Mnb.Toolbar"))
+    return;
+
+  priv = MNB_PANEL_CLIENT (panel)->priv;
+
+  if (mnb_panel_client_setup_toolbar_proxy (panel))
+    {
+      dbus_g_proxy_disconnect_signal (proxy, "NameOwnerChanged",
+                                      G_CALLBACK (mnb_panel_client_noc_cb),
+                                      panel);
+
+      g_object_unref (proxy);
+      priv->dbus_proxy = NULL;
+    }
+}
+
+static void
 mnb_panel_client_constructed (GObject *self)
 {
   MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (self)->priv;
@@ -542,6 +636,32 @@ mnb_panel_client_constructed (GObject *self)
   priv->dbus_conn = conn;
 
   dbus_g_connection_register_g_object (conn, priv->dbus_path, self);
+
+  if (priv->toolbar_service)
+    {
+      if (!mnb_panel_client_setup_toolbar_proxy (MNB_PANEL_CLIENT (self)))
+        {
+          DBusGProxy *proxy;
+
+          proxy = dbus_g_proxy_new_for_name (conn,
+                                             DBUS_SERVICE_DBUS,
+                                             DBUS_PATH_DBUS,
+                                             DBUS_INTERFACE_DBUS);
+
+          if (!proxy)
+            {
+              g_critical ("Unable to connect to DBus service !!!");
+              return;
+            }
+
+          dbus_g_proxy_connect_signal (proxy, "NameOwnerChanged",
+                                       G_CALLBACK (mnb_panel_client_noc_cb),
+                                       self, NULL);
+
+          priv->dbus_proxy = proxy;
+        }
+    }
+
 
   /*
    * Set the constructed flag, so we can check everything went according to
@@ -602,13 +722,145 @@ mnb_panel_client_request_button_style (MnbPanelClient *panel,
   g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style);
 }
 
-void
+#include "../src/mnb-toolbar-dbus-bindings.h"
+
+gboolean
 mnb_panel_client_launch_application (MnbPanelClient *panel,
-                                     const gchar    *app,
+                                     const gchar    *path,
                                      gint            workspace,
-                                     gboolean        without_chooser)
+                                     gboolean        no_chooser)
 {
-  g_signal_emit (panel, signals[LAUNCH_APPLICATION], 0,
-                 app, workspace, without_chooser);
+  MnbPanelClientPrivate *priv = panel->priv;
+  GError                *error = NULL;
+
+  if (!priv->toolbar_proxy)
+    {
+      if (!priv->toolbar_service)
+        g_warning ("Launching API is not available because toolbar services "
+                   "were not enabled at panel construction !!!");
+      else
+        g_warning ("Launching API is not available.");
+
+      return FALSE;
+    }
+
+  if (!org_moblin_Mnb_Toolbar_launch_application (priv->toolbar_proxy,
+                                                  path,
+                                                  workspace,
+                                                  no_chooser,
+                                                  &error))
+    {
+      if (error)
+        {
+          g_warning ("Could not launch application %s: %s",
+                     path, error->message);
+          g_error_free (error);
+        }
+      else
+        g_warning ("Could not launch application %s", path);
+
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
+gboolean
+mnb_panel_client_launch_application_from_desktop_file (MnbPanelClient *panel,
+                                                       const gchar    *desktop,
+                                                       GList          *files,
+                                                       gint            wspace,
+                                                       gboolean      no_chooser)
+{
+  MnbPanelClientPrivate *priv = panel->priv;
+  GError                *error = NULL;
+  GList                 *l;
+  gchar                 *arguments = NULL;
+
+  if (!priv->toolbar_proxy)
+    {
+      if (!priv->toolbar_service)
+        g_warning ("Launching API is not available because toolbar services "
+                   "were not enabled at panel construction !!!");
+      else
+        g_warning ("Launching API is not available.");
+
+      return FALSE;
+    }
+
+  while (l)
+    {
+      if (l->data)
+        {
+          gchar *a = g_strconcat (arguments, " ", l->data, NULL);
+          g_free (arguments);
+          arguments = a;
+        }
+      l = l->next;
+    }
+
+  if (!org_moblin_Mnb_Toolbar_launch_application_by_desktop_file (
+                                                        priv->toolbar_proxy,
+                                                        desktop,
+                                                        arguments,
+                                                        wspace,
+                                                        no_chooser,
+                                                        &error))
+    {
+      if (error)
+        {
+          g_warning ("Could not launch application from desktop file %s: %s",
+                     desktop, error->message);
+          g_error_free (error);
+        }
+      else
+        g_warning ("Could not launch application from desktop file %s",
+                   desktop);
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+mnb_panel_client_launch_default_application_for_uri (MnbPanelClient *panel,
+                                                     const gchar    *uri,
+                                                     gint            workspace,
+                                                     gboolean        no_chooser)
+{
+  MnbPanelClientPrivate *priv = panel->priv;
+  GError                *error = NULL;
+
+  if (!priv->toolbar_proxy)
+    {
+      if (!priv->toolbar_service)
+        g_warning ("Launching API is not available because toolbar services "
+                   "were not enabled at panel construction !!!");
+      else
+        g_warning ("Launching API is not available.");
+
+      return FALSE;
+    }
+
+  if (!org_moblin_Mnb_Toolbar_launch_default_application_for_uri (
+                                                  priv->toolbar_proxy,
+                                                  uri,
+                                                  workspace,
+                                                  no_chooser,
+                                                  &error))
+    {
+      if (error)
+        {
+          g_warning ("Could not launch default application for uri %s: %s",
+                     uri, error->message);
+          g_error_free (error);
+        }
+      else
+        g_warning ("Could not launch default application for %s", uri);
+
+      return FALSE;
+    }
+
+  return TRUE;
+}

@@ -99,10 +99,24 @@ void mnb_panel_client_request_focus        (MnbPanelClient *panel);
 void mnb_panel_client_request_button_style (MnbPanelClient *panel,
                                             const gchar    *style);
 
-void mnb_panel_client_launch_application   (MnbPanelClient *panel,
-                                            const gchar    *app,
-                                            gint            workspace,
-                                            gboolean        without_chooser);
+gboolean mnb_panel_client_launch_application   (MnbPanelClient *panel,
+                                                const gchar    *app,
+                                                gint            workspace,
+                                                gboolean        no_chooser);
+
+gboolean
+mnb_panel_client_launch_application_from_desktop_file (MnbPanelClient *panel,
+                                                       const gchar    *desktop,
+                                                       GList          *files,
+                                                       gint            wspace,
+                                                       gboolean        no_chooser);
+
+gboolean
+mnb_panel_client_launch_default_application_for_uri (MnbPanelClient *panel,
+                                                     const gchar    *uri,
+                                                     gint            workspace,
+                                                     gboolean        no_chooser);
+
 
 G_END_DECLS
 

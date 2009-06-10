@@ -18,8 +18,8 @@ MnbToolbarButton#state1:hover, MnbToolbarButton#state1:active, MnbToolbarButton#
 }
 
 MnbToolbarButton#state2 {
-  background-image: url("file://@pkgdatadir@/theme/panel/apps-normal.png");
+  background-image: url("file://@pkgdatadir@/theme/panel/internet-normal.png");
 }
 MnbToolbarButton#state2:hover, MnbToolbarButton#state2:active, MnbToolbarButton#state2:checked  {
-  background-image: url("file://@pkgdatadir@/theme/panel/apps-coloured.png");
+  background-image: url("file://@pkgdatadir@/theme/panel/internet-coloured.png");
 }

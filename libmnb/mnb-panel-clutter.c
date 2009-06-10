@@ -238,14 +238,16 @@ mnb_panel_clutter_new (const gchar *dbus_path,
                        const gchar *name,
                        const gchar *tooltip,
                        const gchar *stylesheet,
-                       const gchar *button_style)
+                       const gchar *button_style,
+                       gboolean     with_toolbar_service)
 {
   MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_CLUTTER,
-                                        "dbus-path",    dbus_path,
-                                        "name",         name,
-                                        "tooltip",      tooltip,
-                                        "stylesheet",   stylesheet,
-                                        "button-style", button_style,
+                                        "dbus-path",       dbus_path,
+                                        "name",            name,
+                                        "tooltip",         tooltip,
+                                        "stylesheet",      stylesheet,
+                                        "button-style",    button_style,
+                                        "toolbar-service", with_toolbar_service,
                                         NULL);
 
   return panel;

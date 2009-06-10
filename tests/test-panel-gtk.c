@@ -31,16 +31,6 @@
 
 #include "../libmnb/mnb-panel-gtk.h"
 
-static void
-set_size_cb (MnbPanelClient *panel, guint width, guint height, gpointer data)
-{
-  GtkWidget *window = GTK_WIDGET (data);
-
-  g_debug ("Setting panel window size to %dx%d", width, height);
-
-  gtk_window_resize (GTK_WINDOW (window), width, height);
-}
-
 /*
  * This is a callback to demonstrate how the application can close the config
  * window; however, you probably should not do that in your applicaiton, as
@@ -95,12 +85,29 @@ update_content_cb (MnbPanelGtk *panel, gpointer data)
   make_window_content (panel);
 }
 
+/*
+ * Change the style of the panel button every time we are called.
+ */
+static gboolean
+change_button_style_cb (gpointer data)
+{
+  static int count = 0;
+
+  MnbPanelClient *panel = MNB_PANEL_CLIENT (data);
+
+  count++;
+
+  if (count % 2)
+    mnb_panel_client_request_button_style (panel, "state2");
+  else
+    mnb_panel_client_request_button_style (panel, "state1");
+
+  return TRUE;
+}
 
 int
 main (int argc, char *argv[])
 {
-  GtkWidget      *window;
-  GtkWidget      *label;
   MnbPanelClient *panel;
 
   gtk_init (&argc, &argv);
@@ -109,10 +116,13 @@ main (int argc, char *argv[])
                              "tray-button-test",
                              "test",
                              CSS_DIR"/test-panel.css",
-                             "state1");
+                             "state1",
+                             TRUE);
 
   g_signal_connect (panel, "show-begin",
                     G_CALLBACK (update_content_cb), NULL);
+
+  g_timeout_add (2000, change_button_style_cb, panel);
 
   gtk_main ();
 

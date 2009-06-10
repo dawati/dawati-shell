@@ -29,16 +29,6 @@
 #include "../libmnb/mnb-panel-clutter.h"
 
 static void
-set_size_cb (MnbPanelClutter *panel, guint width, guint height, gpointer data)
-{
-  ClutterActor *stage = mnb_panel_clutter_get_stage (panel);
-
-  g_debug ("Setting panel window size to %dx%d", width, height);
-
-  clutter_actor_set_size (stage, width, height);
-}
-
-static void
 make_window_content (MnbPanelClutter *panel)
 {
   ClutterActor *stage = mnb_panel_clutter_get_stage (panel);
@@ -72,7 +62,8 @@ main (int argc, char *argv[])
                                  "tray-button-test",
                                  "test",
                                  CSS_DIR"/test-panel.css",
-                                 "state1");
+                                 "state1",
+                                 FALSE);
 
   g_signal_connect (panel, "show-begin",
                     G_CALLBACK (update_content_cb), NULL);
