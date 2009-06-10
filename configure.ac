@@ -164,6 +164,8 @@ ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile
 libmnb/Makefile
+libmnb/mnb-gtk.pc
+libmnb/mnb-clutter.pc
 ])
 
 echo "

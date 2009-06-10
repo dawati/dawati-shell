@@ -93,7 +93,7 @@ test_panel_gtk_SOURCES = 	\
 
 test_panel_gtk_LDADD = \
 	$(MUTTER_PLUGIN_LIBS) \
-	$(top_builddir)/libmnb/libmnbgtk.la
+	$(top_builddir)/libmnb/libmnb-gtk.la
 
 test_panel_clutter_SOURCES = 	\
 	test-panel.css		\
@@ -101,7 +101,7 @@ test_panel_clutter_SOURCES = 	\
 
 test_panel_clutter_LDADD = \
 	$(MUTTER_PLUGIN_LIBS) \
-	$(top_builddir)/libmnb/libmnbclutter.la
+	$(top_builddir)/libmnb/libmnb-clutter.la
 
 CLEANFILES = test-panel-gtk.service test-panel-clutter.service \
 	     test-panel.css
