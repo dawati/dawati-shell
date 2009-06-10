@@ -75,13 +75,7 @@ typedef struct
   void (*request_show)         (MnbPanelClient *panel);
   void (*request_hide)         (MnbPanelClient *panel);
   void (*request_focus)        (MnbPanelClient *panel);
-  void (*request_button_style) (MnbPanelClient *panel, const gchar *icon);
-
-  void (*launch_application) (MnbPanelClient *panel,
-                              const gchar    *app,
-                              gint            workspace,
-                              gboolean        without_chooser);
-
+  void (*request_button_style) (MnbPanelClient *panel, const gchar *style);
 } MnbPanelClientClass;
 
 GType mnb_panel_client_get_type (void);
