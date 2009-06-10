@@ -159,6 +159,14 @@ mnb_panel_request_hide_cb (DBusGProxy *proxy, MnbPanel *panel)
 }
 
 static void
+mnb_panel_request_button_style_cb (DBusGProxy  *proxy,
+                                   const gchar *style_id,
+                                   MnbPanel    *panel)
+{
+  g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style_id);
+}
+
+static void
 mnb_panel_dispose (GObject *self)
 {
   MnbPanelPrivate *priv   = MNB_PANEL (self)->priv;
@@ -185,6 +193,9 @@ mnb_panel_dispose (GObject *self)
                                       G_CALLBACK (mnb_panel_request_focus_cb),
                                       self);
 
+      dbus_g_proxy_disconnect_signal (proxy, "RequestButtonStyle",
+                                 G_CALLBACK (mnb_panel_request_button_style_cb),
+                                      self);
       g_object_unref (proxy);
       priv->proxy = NULL;
     }
@@ -703,7 +714,10 @@ mnb_panel_setup_proxy (MnbPanel *panel)
                                G_CALLBACK (mnb_panel_proxy_owner_changed_cb),
                                panel, NULL);
 
-
+  dbus_g_proxy_add_signal (proxy, "RequestButtonStyle", G_TYPE_STRING, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy, "RequestButtonStyle",
+                               G_CALLBACK (mnb_panel_request_button_style_cb),
+                               panel, NULL);
 
   return mnb_panel_init_owner (panel);
 }
