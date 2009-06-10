@@ -567,7 +567,7 @@ mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
   proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
                                      "org.moblin.Mnb.Toolbar",
                                      "/org/moblin/Mnb/Toolbar",
-                                     "org.moblin.Mnb.Panel");
+                                     "org.moblin.Mnb.Toolbar");
 
   if (!proxy)
     {
