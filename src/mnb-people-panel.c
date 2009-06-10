@@ -1,0 +1,630 @@
+#include <gtk/gtk.h>
+#include <gio/gdesktopappinfo.h>
+#include <glib/gi18n.h>
+
+#include "mnb-people-panel.h"
+
+#include "mnb-entry.h"
+#include "mnb-drop-down.h"
+
+#include <anerley/anerley-tp-feed.h>
+#include <anerley/anerley-item.h>
+#include <anerley/anerley-tile-view.h>
+#include <anerley/anerley-tile.h>
+#include <anerley/anerley-aggregate-tp-feed.h>
+#include <anerley/anerley-ebook-feed.h>
+#include <anerley/anerley-tp-item.h>
+#include <anerley/anerley-econtact-item.h>
+
+#include <libebook/e-book.h>
+
+G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
+
+#define GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PEOPLE_PANEL, MnbPeoplePanelPrivate))
+
+#define TIMEOUT 250
+
+typedef struct _MnbPeoplePanelPrivate MnbPeoplePanelPrivate;
+
+struct _MnbPeoplePanelPrivate {
+  guint filter_timeout_id;
+  AnerleyFeedModel *model;
+  NbtkWidget *drop_down;
+  ClutterActor *tex;
+  NbtkWidget *entry;
+  GAppInfo *app_info;
+  GtkIconTheme *icon_theme;
+  AnerleyItem *selected_item;
+  NbtkWidget *primary_button;
+};
+
+static void
+mnb_people_panel_dispose (GObject *object)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->drop_down)
+  {
+    g_object_unref (priv->drop_down);
+    priv->drop_down = NULL;
+  }
+
+  G_OBJECT_CLASS (mnb_people_panel_parent_class)->dispose (object);
+}
+
+static void
+mnb_people_panel_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (mnb_people_panel_parent_class)->finalize (object);
+}
+
+static void
+mnb_people_panel_class_init (MnbPeoplePanelClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  g_type_class_add_private (klass, sizeof (MnbPeoplePanelPrivate));
+
+  object_class->dispose = mnb_people_panel_dispose;
+  object_class->finalize = mnb_people_panel_finalize;
+}
+
+
+static gboolean
+_filter_timeout_cb (gpointer userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+  anerley_feed_model_set_filter_text (priv->model,
+                                      mnb_entry_get_text (MNB_ENTRY (priv->entry)));
+  return FALSE;
+}
+
+static void
+_entry_text_changed_cb (MnbEntry *entry,
+                        gpointer  userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+  if (priv->filter_timeout_id > 0)
+    g_source_remove (priv->filter_timeout_id);
+
+  priv->filter_timeout_id = g_timeout_add_full (G_PRIORITY_LOW,
+                                                TIMEOUT,
+                                                _filter_timeout_cb,
+                                                userdata,
+                                                NULL);
+}
+
+static void
+_update_buttons (MnbPeoplePanel *people_panel)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
+  gchar *msg;
+  AnerleyItem *item;
+
+  if (priv->selected_item)
+  {
+    clutter_actor_show ((ClutterActor *)priv->primary_button);
+  } else {
+    clutter_actor_hide ((ClutterActor *)priv->primary_button);
+    return;
+  }
+
+  item = priv->selected_item;
+  if (ANERLEY_IS_ECONTACT_ITEM (item))
+  {
+    msg = g_strdup_printf (_("Email %s"),
+                           anerley_item_get_display_name (item));
+    nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
+                           msg);
+    g_free (msg);
+  } else if (ANERLEY_IS_TP_ITEM (item)) {
+    msg = g_strdup_printf (_("IM %s"),
+                           anerley_item_get_display_name (item));
+    nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
+                           msg);
+    g_free (msg);
+  } else {
+    g_debug (G_STRLOC ": Unknown item type?");
+  }
+}
+
+static void
+_view_item_activated_cb (AnerleyTileView *view,
+                         AnerleyItem     *item,
+                         gpointer         userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+/*
+  anerley_item_activate (item);
+  clutter_actor_hide ((ClutterActor *)priv->drop_down);
+*/
+
+  if (priv->selected_item)
+  {
+    /* double click */
+    if (item == priv->selected_item)
+    {
+      anerley_item_activate (item);
+      clutter_actor_hide ((ClutterActor *)priv->drop_down);
+      priv->selected_item = NULL;
+    } else {
+      priv->selected_item = NULL;
+      if (item)
+        priv->selected_item = item;
+    }
+  } else {
+    priv->selected_item = item;
+  }
+
+  _update_buttons ((MnbPeoplePanel *)userdata);
+}
+
+static void
+dropdown_show_cb (MnbDropDown  *dropdown,
+                  gpointer      userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+  /* give focus to the actor */
+  clutter_actor_grab_key_focus ((ClutterActor *)priv->entry);
+}
+
+
+static void
+dropdown_hide_cb (MnbDropDown  *dropdown,
+                  gpointer      userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+  /* Reset search. */
+  mnb_entry_set_text (MNB_ENTRY (priv->entry), "");
+}
+
+#define ICON_SIZE 48
+
+static gboolean
+_enter_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+                                      "hover");
+
+  return FALSE;
+}
+
+static gboolean
+_leave_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      userdata)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+                                      NULL);
+
+  return FALSE;
+}
+
+static gboolean
+_no_people_tile_button_press_event_cb (ClutterActor *actor,
+                                       ClutterEvent *event,
+                                       gpointer      userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  GError *error = NULL;
+  GAppLaunchContext *context;
+
+  context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+
+  if (g_app_info_launch (priv->app_info, NULL, context, &error))
+  {
+    clutter_actor_hide ((ClutterActor *)priv->drop_down);
+  }
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error launching application): %s",
+                 error->message);
+    g_clear_error (&error);
+  }
+
+  g_object_unref (context);
+  return TRUE;
+}
+
+static void
+_update_fallback_icon (MnbPeoplePanel *people_panel)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
+  GError *error = NULL;
+  GtkIconInfo *icon_info;
+  GIcon *icon;
+
+  icon = g_app_info_get_icon (priv->app_info);
+  icon_info = gtk_icon_theme_lookup_by_gicon (priv->icon_theme,
+                                              icon,
+                                              ICON_SIZE,
+                                              GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
+                                 gtk_icon_info_get_filename (icon_info),
+                                 &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error opening icon: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
+_icon_theme_changed_cb (GtkIconTheme *icon_theme,
+                        gpointer      userdata)
+{
+  _update_fallback_icon ((MnbPeoplePanel *)userdata);
+}
+
+static ClutterActor *
+_make_empty_people_tile (MnbPeoplePanel *people_panel,
+                         gint            width)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
+
+  NbtkWidget *tile;
+  NbtkWidget *bin;
+  NbtkWidget *label;
+  ClutterActor *tmp_text;
+  NbtkWidget *hbox;
+
+  tile = nbtk_table_new ();
+  nbtk_table_set_row_spacing (NBTK_TABLE (tile), 8);
+
+  clutter_actor_set_width ((ClutterActor *)tile, width);
+  clutter_actor_set_name ((ClutterActor *)tile,
+                          "people-people-pane-no-people-tile");
+  bin = nbtk_bin_new ();
+  clutter_actor_set_name ((ClutterActor *)bin,
+                          "people-no-people-message-bin");
+  label = nbtk_label_new (_("Sorry, we can't find any people. " \
+                            "Have you set up an Instant Messenger account?"));
+  clutter_actor_set_name ((ClutterActor *)label,
+                          "people-people-pane-main-label");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                              PANGO_ELLIPSIZE_NONE);
+  nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *)label);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)bin,
+                                        0,
+                                        0,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        FALSE,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-align",
+                                        0.0,
+                                        NULL);
+  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
+
+  priv->app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
+
+  if (priv->app_info)
+  {
+    hbox = nbtk_table_new ();
+    clutter_actor_set_name ((ClutterActor *)hbox,
+                            "people-no-people-launcher");
+    nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 8);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                          (ClutterActor *)hbox,
+                                          1,
+                                          0,
+                                          "x-expand",
+                                          FALSE,
+                                          "y-expand",
+                                          FALSE,
+                                          "x-fill",
+                                          FALSE,
+                                          "y-fill",
+                                          FALSE,
+                                          "x-align",
+                                          0.0,
+                                          NULL);
+
+
+    priv->tex = clutter_texture_new ();
+    clutter_actor_set_size (priv->tex, ICON_SIZE, ICON_SIZE);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                          priv->tex,
+                                          1,
+                                          0,
+                                          "x-expand",
+                                          FALSE,
+                                          "x-fill",
+                                          FALSE,
+                                          "y-fill",
+                                          FALSE,
+                                          "y-expand",
+                                          FALSE,
+                                          "x-align",
+                                          0.0,
+                                          "y-align",
+                                          0.5,
+                                          NULL);
+
+    label = nbtk_label_new (g_app_info_get_description (priv->app_info));
+    clutter_actor_set_name ((ClutterActor *)label, "people-no-people-description");
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                          (ClutterActor *)label,
+                                          1,
+                                          1,
+                                          "x-expand",
+                                          TRUE,
+                                          "x-fill",
+                                          FALSE,
+                                          "y-expand",
+                                          FALSE,
+                                          "y-fill",
+                                          FALSE,
+                                          "x-align",
+                                          0.0,
+                                          "y-align",
+                                          0.5,
+                                          NULL);
+
+    priv->icon_theme = gtk_icon_theme_get_default ();
+
+    /* Listen for the theme change */
+    g_signal_connect (priv->icon_theme,
+                      "changed",
+                      (GCallback)_icon_theme_changed_cb,
+                      people_panel);
+
+    _update_fallback_icon (people_panel);
+
+    g_signal_connect (hbox,
+                      "button-press-event",
+                      (GCallback)_no_people_tile_button_press_event_cb,
+                      people_panel);
+
+    g_signal_connect (hbox,
+                      "enter-event",
+                      (GCallback)_enter_event_cb,
+                      NULL);
+    g_signal_connect (hbox,
+                      "leave-event",
+                      (GCallback)_leave_event_cb,
+                      NULL);
+    clutter_actor_set_reactive ((ClutterActor *)hbox, TRUE);
+  }
+
+  return (ClutterActor *)tile;
+}
+
+static void
+_model_bulk_changed_end_cb (AnerleyFeedModel *model,
+                            gpointer          userdata)
+{
+  ClutterActor *no_people_tile = (ClutterActor *)userdata;
+
+  if (clutter_model_get_first_iter ((ClutterModel *)model))
+  {
+    clutter_actor_hide (no_people_tile);
+  } else {
+    clutter_actor_show (no_people_tile);
+  }
+}
+
+static void
+_primary_button_clicked_cb (NbtkButton *button,
+                            gpointer    userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+  if (priv->selected_item)
+  {
+    anerley_item_activate (priv->selected_item);
+  }
+}
+
+static void
+mnb_people_panel_init (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  NbtkWidget *hbox, *label;
+  NbtkWidget *scroll_view;
+  NbtkWidget *tile_view;
+  MissionControl *mc;
+  AnerleyFeed *feed, *tp_feed, *ebook_feed;
+  DBusGConnection *conn;
+  ClutterActor *no_people_tile = NULL;
+  EBook *book;
+  GError *error = NULL;
+
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), 12);
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
+  clutter_actor_set_name (CLUTTER_ACTOR (self), "people-vbox");
+
+  hbox = nbtk_table_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (hbox), "people-search");
+  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        CLUTTER_ACTOR (hbox),
+                                        0, 0,
+                                        "row-span", 1,
+                                        "col-span", 2,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        NULL);
+
+  label = nbtk_label_new (_("People"));
+  clutter_actor_set_name (CLUTTER_ACTOR (label), "people-search-label");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                        CLUTTER_ACTOR (label),
+                                        0, 0,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
+
+  priv->entry = mnb_entry_new (_("Search"));
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-search-entry");
+  clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                        CLUTTER_ACTOR (priv->entry),
+                                        0, 1,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
+  g_signal_connect (priv->entry,
+                    "text-changed",
+                    (GCallback)_entry_text_changed_cb,
+                    self);
+
+  conn = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
+  mc = mission_control_new (conn);
+
+  feed = anerley_aggregate_feed_new ();
+
+  tp_feed = anerley_aggregate_tp_feed_new (mc);
+  anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (feed),
+                                   tp_feed);
+
+  book = e_book_new_default_addressbook (&error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error getting default addressbook: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    ebook_feed = anerley_ebook_feed_new (book);
+    anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (feed),
+                                     ebook_feed);
+  }
+
+  priv->model = (AnerleyFeedModel *)anerley_feed_model_new (feed);
+  tile_view = anerley_tile_view_new (priv->model);
+  scroll_view = nbtk_scroll_view_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
+                               (ClutterActor *)tile_view);
+  g_signal_connect (tile_view,
+                    "item-activated",
+                    (GCallback)_view_item_activated_cb,
+                    self);
+
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        (ClutterActor *)scroll_view,
+                                        1,
+                                        0,
+                                        "x-fill",
+                                        TRUE,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        TRUE,
+                                        "y-fill",
+                                        TRUE,
+                                        NULL);
+  no_people_tile = 
+    _make_empty_people_tile (self,
+                             clutter_actor_get_width ((ClutterActor *)scroll_view));
+
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        (ClutterActor *)no_people_tile,
+                                        1,
+                                        0,
+                                        "x-fill",
+                                        TRUE,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        FALSE,
+                                        "y-fill",
+                                        FALSE,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
+  g_signal_connect (priv->model,
+                    "bulk-change-end",
+                    (GCallback)_model_bulk_changed_end_cb,
+                    no_people_tile);
+  clutter_actor_show_all ((ClutterActor *)self);
+
+  priv->primary_button = nbtk_button_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-primary-action");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        (ClutterActor *)priv->primary_button,
+                                        1,
+                                        1,
+                                        "x-fill",
+                                        FALSE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-expand",
+                                        FALSE,
+                                        "y-expand",
+                                        FALSE,
+                                        "x-align",
+                                        0.0,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
+  clutter_actor_set_width ((ClutterActor *)priv->primary_button,
+                           150);
+
+  _update_buttons (self);
+
+  g_signal_connect (priv->primary_button,
+                    "clicked",
+                    (GCallback)_primary_button_clicked_cb,
+                    self);
+}
+
+NbtkWidget *
+mnb_people_panel_new (void)
+{
+  return g_object_new (MNB_TYPE_PEOPLE_PANEL, NULL);
+}
+
+void
+mnb_people_panel_set_dropdown (MnbPeoplePanel *people_panel,
+                               MnbDropDown    *drop_down)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
+
+  priv->drop_down = g_object_ref (drop_down);
+
+  g_signal_connect (priv->drop_down,
+                    "show-completed",
+                    (GCallback)dropdown_show_cb,
+                    people_panel);
+
+  g_signal_connect (priv->drop_down,
+                    "hide-completed",
+                    (GCallback)dropdown_hide_cb,
+                    people_panel);
+}
+
+

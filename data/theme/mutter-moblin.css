@@ -791,7 +791,7 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-MoblinNetbookNetpanel > *#netpanel-subtable NbtkLabel
+MoblinNetbookNetpanel *#netpanel-subtable NbtkLabel
 {
   font-family: "Liberation Sans";
   font-size: 13px;
@@ -799,10 +799,10 @@ MoblinNetbookNetpanel > *#netpanel-subtable NbtkLabel
   padding: 0 4;
 }
 
-MoblinNetbookNetpanel > *#netpanel-subtable NbtkLabel#section
+MoblinNetbookNetpanel *#netpanel-subtable NbtkLabel#section
 {
   font-family: "Liberation Sans Bold";
-  font-size: 17px;
+  font-size: 15px;
   color: #6e6e6e;
   padding: 2 4 0 4;
 }
@@ -841,13 +841,13 @@ MwbRadicalBar NbtkButton
   padding: 0;
 }
 
-MoblinNetbookNetpanel > *#netpanel-entrytable
+MoblinNetbookNetpanel *#netpanel-entrytable
 {
   background-color: #F5F2FD;
   padding: 6 24;
 }
 
-MoblinNetbookNetpanel > *#netpanel-entrytable NbtkLabel
+MoblinNetbookNetpanel *#netpanel-entrytable > NbtkLabel
 {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
