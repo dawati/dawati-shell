@@ -1140,7 +1140,8 @@ NbtkTable#zone-switch-strip {
   color: #3e3e3eff;
 }
 
-*#people-search-entry *.MnbEntryButton {
+/* why does people-search-entry no longer work ?*/
+*#people-search *.MnbEntryButton {
   color: #fba40b;
 }
 
