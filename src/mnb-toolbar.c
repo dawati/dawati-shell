@@ -162,6 +162,7 @@ struct _MnbToolbarPrivate
 #endif
 
   DBusGConnection *dbus_conn;
+  DBusGProxy      *dbus_proxy;
 };
 
 static void
@@ -1232,7 +1233,7 @@ mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
 /*
  * Appends a panel
  */
-void
+static void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
@@ -1578,6 +1579,7 @@ mnb_toolbar_make_hint (MnbToolbar *toolbar)
 static DBusGConnection *
 mnb_toolbar_connect_to_dbus (MnbToolbar *self)
 {
+  MnbToolbarPrivate *priv = self->priv;
   DBusGConnection   *conn;
   DBusGProxy        *proxy;
   GError            *error = NULL;
@@ -1622,9 +1624,132 @@ mnb_toolbar_connect_to_dbus (MnbToolbar *self)
       conn = NULL;
     }
 
-  g_object_unref (proxy);
+  priv->dbus_proxy = proxy;
+
+  dbus_g_proxy_add_signal (proxy, "NameOwnerChanged",
+                           G_TYPE_STRING,
+                           G_TYPE_STRING,
+                           G_TYPE_STRING,
+                           G_TYPE_INVALID);
 
   return conn;
+}
+
+static void
+mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  if (!strcmp (name, "MyzonePanel") ||
+      !strcmp (name, "StatusPanel") ||
+      !strcmp (name, "PasteboardPanel") ||
+      !strcmp (name, "MediaPanel") ||
+      !strcmp (name, "InternetPanel") ||
+      !strcmp (name, "ApplicationsPanel") ||
+      !strcmp (name, "BatteryPanel") ||
+      !strcmp (name, "WifiPanel") ||
+      !strcmp (name, "BluetoothPanel") ||
+      !strcmp (name, "VolumePanel") ||
+      !strcmp (name, "TestPanel"))
+    {
+      MnbPanel *panel;
+      gchar    *path;
+
+      path   = g_strconcat ("/org/moblin/Mnb/", name, NULL);
+      panel  = mnb_panel_new (priv->plugin, path, 1024, 400);
+
+      if (panel)
+        {
+          g_debug ("Appending panel for %s", name);
+          mnb_toolbar_append_panel (toolbar, MNB_DROP_DOWN (panel));
+        }
+    }
+}
+
+static void
+mnb_toolbar_noc_cb (DBusGProxy  *proxy,
+                    const gchar *name,
+                    const gchar *old_owner,
+                    const gchar *new_owner,
+                    MnbToolbar  *toolbar)
+{
+  MnbToolbarPrivate *priv;
+
+  /*
+   * Unfortunately, we get this for all name owner changes on the bus, so
+   * return early.
+   */
+  if (!name || strncmp (name, "org.moblin.Mnb.", 15))
+    return;
+
+  priv = MNB_TOOLBAR (toolbar)->priv;
+
+  if (!new_owner || !*new_owner)
+    {
+      /*
+       * This is the case where a panel gone away; we can ignore it here,
+       * as this gets handled nicely elsewhere.
+       */
+      return;
+    }
+
+  mnb_toolbar_handle_dbus_name (toolbar, name + 15);
+}
+
+/*
+ * Create panels for any of our services that are already up.
+ */
+static void
+mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate  *priv = toolbar->priv;
+  gchar             **names;
+  GError             *error = NULL;
+
+  /*
+   * Insert panels for any services already running.
+   *
+   * FIXME -- should probably do this asynchronously.
+   */
+  if (org_freedesktop_DBus_list_names (priv->dbus_proxy,
+                                       &names, &error))
+    {
+      gchar **p = names;
+      while (*p)
+        {
+          if (!strncmp (*p, "org.moblin.Mnb.", 15))
+            {
+              gboolean  has_owner = FALSE;
+              gchar    *name = *p + 15;
+
+              /*
+               * Skip the Toolbar object
+               */
+              if (!strcmp (name, "Toolbar"))
+                {
+                  p++;
+                  continue;
+                }
+
+              if (org_freedesktop_DBus_name_has_owner (priv->dbus_proxy,
+                                                       *p, &has_owner, NULL) &&
+                  has_owner)
+                {
+                  g_debug ("Found dbus name %s \n", *p);
+
+                  mnb_toolbar_handle_dbus_name (toolbar, name);
+                }
+            }
+
+          p++;
+        }
+    }
+
+  dbus_free_string_array (names);
+
+  dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
+                               G_CALLBACK (mnb_toolbar_noc_cb),
+                               toolbar, NULL);
 }
 
 static void
@@ -1776,6 +1901,8 @@ mnb_toolbar_constructed (GObject *self)
   g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
                     "show", G_CALLBACK (mnb_toolbar_stage_show_cb),
                     self);
+
+  mnb_toolbar_dbus_setup_panels (MNB_TOOLBAR (self));
 }
 
 NbtkWidget*
