@@ -90,7 +90,7 @@ _entry_text_changed_cb (MnbEntry *entry,
   if (priv->filter_timeout_id > 0)
     g_source_remove (priv->filter_timeout_id);
 
-  priv->filter_timeout_id = g_timeout_add_full (G_PRIORITY_LOW,
+  priv->filter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT,
                                                 TIMEOUT,
                                                 _filter_timeout_cb,
                                                 userdata,

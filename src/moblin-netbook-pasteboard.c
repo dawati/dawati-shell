@@ -115,7 +115,7 @@ on_search_activated (MnbEntry *entry,
       search_timeout_id = 0;
     }
 
-  search_timeout_id = g_timeout_add_full (G_PRIORITY_LOW, 250,
+  search_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT, 250,
                                           search_timeout,
                                           closure, search_cleanup);
 }
