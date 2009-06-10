@@ -90,7 +90,7 @@ _entry_text_changed_cb (MnbEntry *entry,
   if (priv->filter_timeout_id > 0)
     g_source_remove (priv->filter_timeout_id);
 
-  priv->filter_timeout_id = g_timeout_add_full (G_PRIORITY_LOW,
+  priv->filter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT,
                                                 TIMEOUT,
                                                 _filter_timeout_cb,
                                                 userdata,
@@ -317,7 +317,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
                                         NULL);
   nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
 
-  priv->app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
+  priv->app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
 
   if (priv->app_info)
   {

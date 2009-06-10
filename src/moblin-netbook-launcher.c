@@ -813,8 +813,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
         /* Open first expander by default. */
-        if (priv->directory_iter != priv->directories)
-          nbtk_expander_set_expanded (NBTK_EXPANDER (expander), FALSE);
+        if (priv->directory_iter == priv->directories)
+          nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
 
         g_signal_connect (expander, "notify::expanded",
                           G_CALLBACK (expander_expanded_notify_cb),
