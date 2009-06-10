@@ -6,16 +6,16 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 13:17+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2009-06-10 08:41+0000\n"
+"PO-Revision-Date: 2009-06-10 17:30+0800\n"
+"Last-Translator: Zhu Yanhai <yanhai.zhu@intel.com>\n"
+"Language-Team: zh_CN <yanhai.zhu@intel.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../dalston/dalston-power-applet.c:159
 #, c-format
@@ -85,7 +85,7 @@ msgstr "抱歉,目前暂不支持修改此种屏幕的亮度."
 
 #: ../dalston/dalston-brightness-slider.c:221
 msgid "Brighter than the sun"
-msgstr "比日光稍亮些"
+msgstr "极亮"
 
 #: ../dalston/dalston-brightness-slider.c:223
 msgid "Very bright"
@@ -117,21 +117,21 @@ msgstr "非常暗"
 
 #: ../dalston/dalston-brightness-slider.c:237
 msgid "Total eclipse"
-msgstr "日全食"
+msgstr "完全黑暗"
 
-#: ../dalston/dalston-volume-pane.c:254
+#: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
 msgstr "音量"
 
-#: ../dalston/dalston-volume-pane.c:298
+#: ../dalston/dalston-volume-pane.c:302
 msgid "Mute"
 msgstr "静音"
 
-#: ../dalston/dalston-volume-pane.c:316
+#: ../dalston/dalston-volume-pane.c:320
 msgid "Alert sounds"
 msgstr "警告声"
 
-#: ../dalston/dalston-volume-pane.c:328
+#: ../dalston/dalston-volume-pane.c:332
 msgid "Play test sound"
 msgstr "播放测试音"
 
