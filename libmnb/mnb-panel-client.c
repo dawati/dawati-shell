@@ -37,7 +37,8 @@ G_DEFINE_TYPE (MnbPanelClient, mnb_panel_client, G_TYPE_OBJECT)
 #define MNB_PANEL_CLIENT_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PANEL_CLIENT, MnbPanelClientPrivate))
 
-static void mnb_panel_client_constructed (GObject *self);
+static void     mnb_panel_client_constructed (GObject *self);
+static gboolean mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel);
 
 enum
 {
@@ -540,6 +541,63 @@ mnb_panel_client_connect_to_dbus (MnbPanelClient *self)
   return conn;
 }
 
+/*
+ * Callback for the DBus.NameOwnerChanged signal, used to setup our proxy
+ * when the Toolbar service becomes available.
+ */
+static void
+mnb_panel_client_noc_cb (DBusGProxy     *proxy,
+                         const gchar    *name,
+                         const gchar    *old_owner,
+                         const gchar    *new_owner,
+                         MnbPanelClient *panel)
+{
+  MnbPanelClientPrivate *priv;
+
+  /*
+   * Unfortunately, we get this for all name owner changes on the bus, so
+   * return early.
+   */
+  if (!name || strcmp (name, "org.moblin.Mnb.Toolbar"))
+    return;
+
+  priv = MNB_PANEL_CLIENT (panel)->priv;
+
+  if (!new_owner || !*new_owner)
+    {
+      /*
+       * Toolbar died on us ...
+       *
+       * NB: we should only be connected when there is no owner, so this
+       * should not happen to us
+       */
+      g_debug ("Toolbar gone away, cleaning up");
+      priv->toolbar_proxy = NULL;
+      return;
+    }
+
+  /*
+   * First of all, get rid of the old proxy, if we have one.
+   */
+  if (priv->toolbar_proxy)
+    {
+      g_debug ("Already have toolbar proxy, cleaning up");
+      g_object_unref (priv->toolbar_proxy);
+      priv->toolbar_proxy = NULL;
+    }
+
+  if (mnb_panel_client_setup_toolbar_proxy (panel))
+    {
+      /*
+       * If we succeeded, we disconnect the signal handler (and reconnect it
+       * again in the weak ref handler for the toolbar proxy.
+       */
+      dbus_g_proxy_disconnect_signal (priv->dbus_proxy, "NameOwnerChanged",
+                                      G_CALLBACK (mnb_panel_client_noc_cb),
+                                      panel);
+    }
+}
+
 static void
 mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb (gpointer data,
                                                     GObject *object)
@@ -549,7 +607,10 @@ mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb (gpointer data,
 
   priv->toolbar_proxy = NULL;
 
-  /* What now ? */
+  dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
+                               G_CALLBACK (mnb_panel_client_noc_cb),
+                               panel, NULL);
+
   g_warning ("Toolbar object died on us\n");
 }
 
@@ -609,51 +670,6 @@ mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
   return TRUE;
 }
 
-/*
- * Callback for the DBus.NameOwnerChanged signal, used to setup our proxy
- * when the Toolbar service becomes available.
- */
-static void
-mnb_panel_client_noc_cb (DBusGProxy     *proxy,
-                         const gchar    *name,
-                         const gchar    *old_owner,
-                         const gchar    *new_owner,
-                         MnbPanelClient *panel)
-{
-  MnbPanelClientPrivate *priv;
-
-  /*
-   * Unfortunately, we get this for all name owner changes on the bus, so
-   * return early.
-   */
-  if (!name || strcmp (name, "org.moblin.Mnb.Toolbar"))
-    return;
-
-  priv = MNB_PANEL_CLIENT (panel)->priv;
-
-  if (!new_owner || !*new_owner)
-    {
-      /*
-       * Toolbar died on us ...
-       */
-      g_debug ("Toolbar gone away, cleaning up");
-      priv->toolbar_proxy = NULL;
-      return;
-    }
-
-  /*
-   * First of all, get rid of the old proxy, if we have one.
-   */
-  if (priv->toolbar_proxy)
-    {
-      g_debug ("Already have toolbar proxy, cleaning up");
-      g_object_unref (priv->toolbar_proxy);
-      priv->toolbar_proxy = NULL;
-    }
-
-  mnb_panel_client_setup_toolbar_proxy (panel);
-}
-
 static void
 mnb_panel_client_constructed (GObject *self)
 {
@@ -678,33 +694,42 @@ mnb_panel_client_constructed (GObject *self)
 
   dbus_g_connection_register_g_object (conn, priv->dbus_path, self);
 
+
   if (priv->toolbar_service)
     {
+      DBusGProxy *proxy;
+      /*
+       * Proxy for the DBus object (need to track availability of the Toolbar
+       * service.
+       */
+      proxy = dbus_g_proxy_new_for_name (conn,
+                                         DBUS_SERVICE_DBUS,
+                                         DBUS_PATH_DBUS,
+                                         DBUS_INTERFACE_DBUS);
+
+      if (!proxy)
+        {
+          g_critical ("Unable to connect to DBus service !!!");
+          return;
+        }
+
+      priv->dbus_proxy = proxy;
+
+      dbus_g_proxy_add_signal (proxy, "NameOwnerChanged",
+                               G_TYPE_STRING,
+                               G_TYPE_STRING,
+                               G_TYPE_STRING,
+                               G_TYPE_INVALID);
+
       if (!mnb_panel_client_setup_toolbar_proxy (MNB_PANEL_CLIENT (self)))
         {
-          DBusGProxy *proxy;
-
-          proxy = dbus_g_proxy_new_for_name (conn,
-                                             DBUS_SERVICE_DBUS,
-                                             DBUS_PATH_DBUS,
-                                             DBUS_INTERFACE_DBUS);
-
-          if (!proxy)
-            {
-              g_critical ("Unable to connect to DBus service !!!");
-              return;
-            }
-
-          dbus_g_proxy_add_signal (proxy, "NameOwnerChanged",
-                                   G_TYPE_STRING,
-                                   G_TYPE_STRING,
-                                   G_TYPE_STRING,
-                                   G_TYPE_INVALID);
+          /*
+           * Toolbar service not yet available; connect to the NameOwnerChanged
+           * signal and wait.
+           */
           dbus_g_proxy_connect_signal (proxy, "NameOwnerChanged",
                                        G_CALLBACK (mnb_panel_client_noc_cb),
                                        self, NULL);
-
-          priv->dbus_proxy = proxy;
         }
     }
 
