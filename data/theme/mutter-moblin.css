@@ -328,13 +328,13 @@ MnbSwitcherApp#switcher-application-active {
 }
 
 /* drop down */
-MnbDropDown > *.drop-down-footer {
+*.drop-down-footer {
   border-image: url("file://drop-down/panel_up_button.png") 5;
   background-image: url("file://drop-down/panel_arrow.png") 5;
   padding: 15;
 }
 
-MnbDropDown > *.drop-down-footer:hover {
+*.drop-down-footer:hover {
   border-image: url("file://drop-down/panel_up_button_hover.png") 5;
   background-image: url("file://drop-down/panel_arrow_hover.png") 5;
   padding: 15;
@@ -409,7 +409,7 @@ MnbLauncher *#launcher-expander-grid {
   padding: 8 5 10 10;
 }
 
-MnbLauncher *#launcher-filter-pane *.MnbEntryButton {
+*#launcher-filter-pane *.MnbEntryButton {
   color: #be1011;
 }
 
@@ -757,14 +757,14 @@ MnbStatusEntry > *.MnbStatusEntryButton
   padding: 0;
 }
 
-MnbDropDown > *.MnbStatusPageTable
+*.MnbStatusPageTable
 {
   border-image: url("file://status/decoration-frame.png") 17 stretch;
   padding: 19;
 }
 
 
-MnbDropDown *.MnbStatusPageHeader
+*.MnbStatusPageHeader
 {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
@@ -772,12 +772,12 @@ MnbDropDown *.MnbStatusPageHeader
   padding: 6;
 }
 
-MnbDropDown *.status-empty-bin {
+*.status-empty-bin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
-MnbDropDown *.status-empty-label {
+*.status-empty-label {
   font-family: "Liberation Sans";
   font-size: 16px;
   color: #595959ff;
@@ -791,7 +791,7 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-MoblinNetbookNetpanel *#netpanel-subtable NbtkLabel
+*#netpanel-subtable NbtkLabel
 {
   font-family: "Liberation Sans";
   font-size: 13px;
@@ -799,7 +799,7 @@ MoblinNetbookNetpanel *#netpanel-subtable NbtkLabel
   padding: 0 4;
 }
 
-MoblinNetbookNetpanel *#netpanel-subtable NbtkLabel#section
+*#netpanel-subtable NbtkLabel#section
 {
   font-family: "Liberation Sans Bold";
   font-size: 15px;
@@ -807,7 +807,7 @@ MoblinNetbookNetpanel *#netpanel-subtable NbtkLabel#section
   padding: 2 4 0 4;
 }
 
-MoblinNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
+*#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
   font-family: "Liberation Sans";
   font-size: 16px;
@@ -891,7 +891,7 @@ AhoghillSearchPane > *#media-pane-search-label {
   color: #3e3e3eff;
 }
 
-AhoghillSearchPane > *#media-pane-search-entry *.MnbEntryButton {
+*#media-pane-search-entry *.MnbEntryButton {
   color: #3e42ac;
 }
 
@@ -1043,49 +1043,49 @@ AhoghillExampleTable *.AhoghillExampleText {
 
 /* pasteboard */
 
-MnbDropDown > *#pasteboard-vbox {
+*#pasteboard-vbox {
   background-color: #ffff;
   padding: 5;
 }
 
-MnbDropDown *#pasteboard-search {
+*#pasteboard-search {
   border-image: url('file://pasteboard/pasteboard-search-bg.png') 4 stretch;
   padding: 4;
 }
 
-MnbDropDown *#pasteboard-search-label {
+*#pasteboard-search-label {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
 }
 
-MnbDropDown *#pasteboard-search-entry *.MnbEntryButton {
+*#pasteboard-search-entry *.MnbEntryButton {
   color: #027061;
 }
 
-MnbDropDown *.pasteboard-empty-bin {
+*.pasteboard-empty-bin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
-MnbDropDown *.pasteboard-empty-label {
+*.pasteboard-empty-label {
   font-family: "Liberation Sans";
   font-size: 16px;
   color: #595959ff;
 }
 
-MnbDropDown *#pasteboard-items-list {
+*#pasteboard-items-list {
   border-image: url('file://pasteboard/pasteboard-items-list-bg.png') 10 stretch;
   padding: 10;
 }
 
-MnbDropDown *#pasteboard-controls {
+*#pasteboard-controls {
   border-image: url('file://pasteboard/pasteboard-items-list-bg.png') 10 stretch;
   padding: 12;
 }
 
-MnbDropDown *#pasteboard-controls NbtkButton {
+*#pasteboard-controls NbtkButton {
   font-family: "Liberation Sans";
   font-size: 13px;
   color: #027061;
@@ -1123,48 +1123,48 @@ NbtkTable#zone-switch-strip {
 
 /* people */
 
-MnbDropDown > *#people-vbox {
+*#people-vbox {
   background-color: #ffff;
   padding: 5;
 }
 
-MnbDropDown *#people-search {
+*#people-search {
   border-image: url('file://people/people-search-bg.png') 4 stretch;
   padding: 4;
 }
 
-MnbDropDown *#people-search-label {
+*#people-search-label {
   font-family: "Liberation Sans Bold";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
 }
 
-MnbDropDown *#people-search-entry *.MnbEntryButton {
+*#people-search-entry *.MnbEntryButton {
   color: #fba40b;
 }
 
-MnbDropDown *#people-no-people-message-bin {
+*#people-no-people-message-bin {
   border-image: url('file://people/grey-backdrop.png') 4 stretch;
   padding: 8;
 }
 
-MnbDropDown *#people-people-pane-main-label {
+*#people-people-pane-main-label {
   font-size:16px;
   color: #595959ff;
 }
 
-MnbDropDown *#people-no-people-description {
+*#people-no-people-description {
   font-size:15px;
   color: #2c2c2cff;
 }
 
-MnbDropDown *#people-no-people-launcher
+*#people-no-people-launcher
 {
   padding: 9 10 11 10;
 }
 
-MnbDropDown *#people-no-people-launcher:hover
+*#people-no-people-launcher:hover
 {
   border-image: url("file://people/tile-bg-hover.png") 5 6 7 6;
   padding: 9 10 11 10;
