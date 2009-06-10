@@ -553,64 +553,105 @@ mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb (gpointer data,
   g_warning ("Toolbar object died on us\n");
 }
 
+/*
+ * Sets up connection to the toolbar service, if available.
+ */
 static gboolean
 mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
 {
   MnbPanelClientPrivate *priv = panel->priv;
   DBusGProxy            *proxy;
+  GError                *error = NULL;
 
   g_debug ("Setting up toolbar proxy");
 
   /*
    * Set up the proxy to the remote toolbar object
+   *
+   * We creating the proxy for name owner allows us to determine if the service
+   * is present or not (_new_for_name() always returns a valid proxy object,
+   * which might not be of any use, since the Toolbar service cannot be
+   * automatically started).
    */
-  proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
-                                     "org.moblin.Mnb.Toolbar",
-                                     "/org/moblin/Mnb/Toolbar",
-                                     "org.moblin.Mnb.Toolbar");
+  proxy = dbus_g_proxy_new_for_name_owner (priv->dbus_conn,
+                                           "org.moblin.Mnb.Toolbar",
+                                           "/org/moblin/Mnb/Toolbar",
+                                           "org.moblin.Mnb.Toolbar",
+                                           &error);
 
   if (!proxy)
     {
-      g_warning ("Unable to create proxy for /org/moblin/MnbToolbar.");
+      /*
+       * This is not an error as far as we are concerned, but just one of
+       * life's realities (e.g., if the panel process is started before the
+       * the Toolbar service is available). We simply sit and wait for the
+       * service to appear (so intentionally just g_debug and not g_warning).
+       */
+      if (error)
+        {
+          g_debug ("Unable to create proxy for /org/moblin/MnbToolbar: %s",
+                     error->message);
+          g_error_free (error);
+        }
+      else
+        g_debug ("Unable to create proxy for /org/moblin/MnbToolbar.");
+
       return FALSE;
     }
+  else
+    g_debug ("Got a proxy for org.moblin.MnbToolbar -- ready to roll :-)");
 
   priv->toolbar_proxy = proxy;
 
   g_object_weak_ref (G_OBJECT (proxy),
                      mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb, panel);
 
-  g_debug ("Toolbar proxy setup succeeded");
-
   return TRUE;
 }
 
 /*
- * Used to connect to org.moblin.Toolbar when it is started
+ * Callback for the DBus.NameOwnerChanged signal, used to setup our proxy
+ * when the Toolbar service becomes available.
  */
 static void
 mnb_panel_client_noc_cb (DBusGProxy     *proxy,
-                         MnbPanelClient *panel,
                          const gchar    *name,
                          const gchar    *old_owner,
-                         const gchar    *new_owner)
+                         const gchar    *new_owner,
+                         MnbPanelClient *panel)
 {
   MnbPanelClientPrivate *priv;
 
+  /*
+   * Unfortunately, we get this for all name owner changes on the bus, so
+   * return early.
+   */
   if (!name || strcmp (name, "org.moblin.Mnb.Toolbar"))
     return;
 
   priv = MNB_PANEL_CLIENT (panel)->priv;
 
-  if (mnb_panel_client_setup_toolbar_proxy (panel))
+  if (!new_owner || !*new_owner)
     {
-      dbus_g_proxy_disconnect_signal (proxy, "NameOwnerChanged",
-                                      G_CALLBACK (mnb_panel_client_noc_cb),
-                                      panel);
-
-      g_object_unref (proxy);
-      priv->dbus_proxy = NULL;
+      /*
+       * Toolbar died on us ...
+       */
+      g_debug ("Toolbar gone away, cleaning up");
+      priv->toolbar_proxy = NULL;
+      return;
     }
+
+  /*
+   * First of all, get rid of the old proxy, if we have one.
+   */
+  if (priv->toolbar_proxy)
+    {
+      g_debug ("Already have toolbar proxy, cleaning up");
+      g_object_unref (priv->toolbar_proxy);
+      priv->toolbar_proxy = NULL;
+    }
+
+  mnb_panel_client_setup_toolbar_proxy (panel);
 }
 
 static void
@@ -654,6 +695,11 @@ mnb_panel_client_constructed (GObject *self)
               return;
             }
 
+          dbus_g_proxy_add_signal (proxy, "NameOwnerChanged",
+                                   G_TYPE_STRING,
+                                   G_TYPE_STRING,
+                                   G_TYPE_STRING,
+                                   G_TYPE_INVALID);
           dbus_g_proxy_connect_signal (proxy, "NameOwnerChanged",
                                        G_CALLBACK (mnb_panel_client_noc_cb),
                                        self, NULL);
