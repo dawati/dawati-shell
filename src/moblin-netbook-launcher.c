@@ -1406,7 +1406,10 @@ _constructor (GType                  gtype,
   priv->scrollview = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   nbtk_scroll_view_set_row_size (NBTK_SCROLL_VIEW (priv->scrollview), SCROLLVIEW_ROW_SIZE);
   bar = nbtk_scroll_view_get_vscroll_bar (NBTK_SCROLL_VIEW (priv->scrollview));
+#if 0
+  /* XXX - the mode was removed from NBTK
   nbtk_scroll_bar_set_mode (NBTK_SCROLL_BAR (bar), NBTK_SCROLL_BAR_MODE_IDLE);
+#endif
   clutter_actor_set_size (priv->scrollview,
                           priv->width - 10, /* account for padding */
                           priv->height - clutter_actor_get_height (CLUTTER_ACTOR (hbox)));
