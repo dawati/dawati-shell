@@ -855,14 +855,26 @@ MoblinNetbookNetpanel *#netpanel-entrytable > NbtkLabel
   padding: 0 12 0 0;
 }
 
+MoblinNetbookNetpanel *.MnbEntryButton
+{
+  color: #4e3972;
+}
+
+MoblinNetbookNetpanel *.MnbEntryButton:hover
+{
+  color: #c5a3fc;
+}
+
 MoblinNetbookNetpanel NbtkButton {
   border-image: url("file://netpanel/thumbnail.png") 7 8 9;
   padding: 7 8 9;
+  color: #4e3972;
 }
 
 MoblinNetbookNetpanel NbtkButton:hover {
   border-image: url("file://netpanel/thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
+  color: #c5a3fc;
 }
 
 MoblinNetbookNetpanel NbtkButton:active {
