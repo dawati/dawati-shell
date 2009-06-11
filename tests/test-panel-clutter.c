@@ -27,6 +27,7 @@
  */
 
 #include "../libmnb/mnb-panel-clutter.h"
+#include "../libmnb/mnb-panel-common.h"
 
 static void
 make_window_content (MnbPanelClutter *panel)
@@ -58,8 +59,7 @@ main (int argc, char *argv[])
 
   clutter_init (&argc, &argv);
 
-  panel = mnb_panel_clutter_new ("/org/moblin/Mnb/TestPanel",
-                                 "tray-button-test",
+  panel = mnb_panel_clutter_new ("test",
                                  "test",
                                  CSS_DIR"/test-panel.css",
                                  "state1",

@@ -2,6 +2,7 @@
 pkglib_LTLIBRARIES = libmnb-gtk.la libmnb-clutter.la
 
 libmnb_common = mnb-panel-client.c	\
+		mnb-panel-common.h	\
 		../src/marshal.c
 
 libmnbclutter_headers = mnb-panel-client.h ../src/mnb-entry.h

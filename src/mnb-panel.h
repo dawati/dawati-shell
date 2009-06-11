@@ -28,6 +28,7 @@
 #include <glib-object.h>
 
 #include "mnb-drop-down.h"
+#include "../libmnb/mnb-panel-common.h"
 
 G_BEGIN_DECLS
 
@@ -65,7 +66,7 @@ typedef struct {
 GType mnb_panel_get_type (void);
 
 MnbPanel *mnb_panel_new (MutterPlugin *plugin,
-                         const gchar  *dbus_path,
+                         const gchar  *dbus_name,
                          guint         width,
                          guint         height);
 

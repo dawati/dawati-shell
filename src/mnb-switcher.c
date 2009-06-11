@@ -2554,7 +2554,7 @@ alt_tab_timeout_cb (gpointer data)
        */
       if (toolbar)
         {
-          mnb_toolbar_activate_panel (MNB_TOOLBAR (toolbar), "spaces-zone");
+          mnb_toolbar_activate_panel (MNB_TOOLBAR (toolbar), "zones");
           mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), FALSE);
         }
     }

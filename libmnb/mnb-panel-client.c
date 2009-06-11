@@ -23,6 +23,8 @@
  */
 
 #include "mnb-panel-client.h"
+#include "mnb-panel-common.h"
+
 #include "../src/marshal.h"
 
 #include <string.h>
@@ -44,7 +46,6 @@ enum
 {
   PROP_0,
 
-  PROP_DBUS_PATH,
   PROP_WIDTH,
   PROP_HEIGHT,
   PROP_NAME,
@@ -79,7 +80,6 @@ struct _MnbPanelClientPrivate
   DBusGConnection *dbus_conn;
   DBusGProxy      *toolbar_proxy;
   DBusGProxy      *dbus_proxy;
-  gchar           *dbus_path;
 
   gchar           *name;
   gchar           *tooltip;
@@ -104,9 +104,6 @@ mnb_panel_client_get_property (GObject    *object,
 
   switch (property_id)
     {
-    case PROP_DBUS_PATH:
-      g_value_set_string (value, priv->dbus_path);
-      break;
     case PROP_NAME:
       g_value_set_string (value, priv->name);
       break;
@@ -146,10 +143,6 @@ mnb_panel_client_set_property (GObject      *object,
 
   switch (property_id)
     {
-    case PROP_DBUS_PATH:
-      g_free (priv->dbus_path);
-      priv->dbus_path = g_value_dup_string (value);
-      break;
     case PROP_NAME:
       g_free (priv->name);
       priv->name = g_value_dup_string (value);
@@ -214,7 +207,6 @@ mnb_panel_client_finalize (GObject *object)
 {
   MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (object)->priv;
 
-  g_free (priv->dbus_path);
   g_free (priv->name);
   g_free (priv->tooltip);
   g_free (priv->stylesheet);
@@ -306,22 +298,13 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                                    &dbus_glib_mnb_panel_dbus_object_info);
 
   g_object_class_install_property (object_class,
-                                   PROP_DBUS_PATH,
-                                   g_param_spec_string ("dbus-path",
-                                                        "Dbus path",
-                                                        "Dbus path",
-                                                        NULL,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
-
-  g_object_class_install_property (object_class,
                                    PROP_NAME,
                                    g_param_spec_string ("name",
                                                         "Name",
                                                         "Name",
                                                         NULL,
                                                         G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+                                                        G_PARAM_CONSTRUCT_ONLY));
 
   g_object_class_install_property (object_class,
                                    PROP_TOOLTIP,
@@ -512,9 +495,7 @@ mnb_panel_client_connect_to_dbus (MnbPanelClient *self)
       return NULL;
     }
 
-  dbus_name = g_strdup (priv->dbus_path + 1);
-
-  g_strdelimit (dbus_name, "/", '.');
+  dbus_name = g_strconcat (MNB_PANEL_DBUS_NAME_PREFIX, priv->name, NULL);
 
   if (!org_freedesktop_DBus_request_name (proxy,
                                           dbus_name,
@@ -558,7 +539,7 @@ mnb_panel_client_noc_cb (DBusGProxy     *proxy,
    * Unfortunately, we get this for all name owner changes on the bus, so
    * return early.
    */
-  if (!name || strcmp (name, "org.moblin.Mnb.Toolbar"))
+  if (!name || strcmp (name, MNB_TOOLBAR_DBUS_NAME))
     return;
 
   priv = MNB_PANEL_CLIENT (panel)->priv;
@@ -635,9 +616,9 @@ mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
    * automatically started).
    */
   proxy = dbus_g_proxy_new_for_name_owner (priv->dbus_conn,
-                                           "org.moblin.Mnb.Toolbar",
-                                           "/org/moblin/Mnb/Toolbar",
-                                           "org.moblin.Mnb.Toolbar",
+                                           MNB_TOOLBAR_DBUS_NAME,
+                                           MNB_TOOLBAR_DBUS_PATH,
+                                           MNB_TOOLBAR_DBUS_INTERFACE,
                                            &error);
 
   if (!proxy)
@@ -650,17 +631,17 @@ mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
        */
       if (error)
         {
-          g_debug ("Unable to create proxy for /org/moblin/MnbToolbar: %s",
+          g_debug ("Unable to create proxy for " MNB_TOOLBAR_DBUS_PATH ": %s",
                      error->message);
           g_error_free (error);
         }
       else
-        g_debug ("Unable to create proxy for /org/moblin/MnbToolbar.");
+        g_debug ("Unable to create proxy for " MNB_TOOLBAR_DBUS_PATH ".");
 
       return FALSE;
     }
   else
-    g_debug ("Got a proxy for org.moblin.MnbToolbar -- ready to roll :-)");
+    g_debug ("Got a proxy for " MNB_TOOLBAR_DBUS_NAME " -- ready to roll :-)");
 
   priv->toolbar_proxy = proxy;
 
@@ -675,15 +656,13 @@ mnb_panel_client_constructed (GObject *self)
 {
   MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (self)->priv;
   DBusGConnection       *conn;
+  gchar                 *dbus_path;
 
   /*
    * Make sure our parent gets chance to do what it needs to.
    */
   if (G_OBJECT_CLASS (mnb_panel_client_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_panel_client_parent_class)->constructed (self);
-
-  if (!priv->dbus_path)
-    return;
 
   conn = mnb_panel_client_connect_to_dbus (MNB_PANEL_CLIENT (self));
 
@@ -692,8 +671,9 @@ mnb_panel_client_constructed (GObject *self)
 
   priv->dbus_conn = conn;
 
-  dbus_g_connection_register_g_object (conn, priv->dbus_path, self);
-
+  dbus_path = g_strconcat (MNB_PANEL_DBUS_PATH_PREFIX, priv->name, NULL);
+  dbus_g_connection_register_g_object (conn, dbus_path, self);
+  g_free (dbus_path);
 
   if (priv->toolbar_service)
     {
@@ -742,15 +722,13 @@ mnb_panel_client_constructed (GObject *self)
 }
 
 MnbPanelClient *
-mnb_panel_client_new (const gchar *dbus_path,
-                      guint        xid,
+mnb_panel_client_new (guint        xid,
                       const gchar *name,
                       const gchar *tooltip,
                       const gchar *stylesheet,
                       const gchar *button_style)
 {
   MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_CLIENT,
-                                        "dbus-path",    dbus_path,
                                         "xid",          xid,
                                         "name",         name,
                                         "tooltip",      tooltip,

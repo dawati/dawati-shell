@@ -30,6 +30,7 @@
 #include <gdk/gdkx.h>
 
 #include "../libmnb/mnb-panel-gtk.h"
+#include "../libmnb/mnb-panel-common.h"
 
 /*
  * This is a callback to demonstrate how the application can close the config
@@ -112,8 +113,7 @@ main (int argc, char *argv[])
 
   gtk_init (&argc, &argv);
 
-  panel = mnb_panel_gtk_new ("/org/moblin/Mnb/TestPanel",
-                             "tray-button-test",
+  panel = mnb_panel_gtk_new ("test",
                              "test",
                              CSS_DIR"/test-panel.css",
                              "state1",

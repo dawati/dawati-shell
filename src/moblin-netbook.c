@@ -302,28 +302,28 @@ moblin_netbook_plugin_constructed (GObject *object)
    * process applets, once we have them.
    */
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "myzone", _("myzone"));
+                                MNB_PANEL_MYZONE, _("myzone"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "spaces-zone", _("zones"));
+                                MNB_PANEL_ZONES, _("zones"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "status-zone", _("status"));
+                                MNB_PANEL_STATUS, _("status"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "applications-zone", _("applications"));
+                                MNB_PANEL_APPLICATIONS, _("applications"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "pasteboard-zone", _("pasteboard"));
+                                MNB_PANEL_PASTEBOARD, _("pasteboard"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "internet-zone", _("internet"));
+                                MNB_PANEL_INTERNET, _("internet"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "media-zone", _("media"));
+                                MNB_PANEL_MEDIA, _("media"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                "people-zone", _("people"));
+                                MNB_PANEL_PEOPLE, _("people"));
 
 #endif
 
@@ -721,7 +721,8 @@ check_for_empty_workspace (MutterPlugin *plugin,
       /*
        * If there are no workspaces, we show the myzone.
        */
-      mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar), "myzone");
+      mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar),
+                                  MNB_PANEL_MYZONE);
     }
 
   while (l)

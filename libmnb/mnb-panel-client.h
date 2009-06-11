@@ -80,8 +80,7 @@ typedef struct
 
 GType mnb_panel_client_get_type (void);
 
-MnbPanelClient *mnb_panel_client_new       (const gchar *dbus_path,
-                                            guint        xid,
+MnbPanelClient *mnb_panel_client_new       (guint        xid,
                                             const gchar *name,
                                             const gchar *tooltip,
                                             const gchar *stylesheet,

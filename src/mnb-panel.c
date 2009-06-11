@@ -52,7 +52,7 @@ enum
 {
   PROP_0,
 
-  PROP_DBUS_PATH,
+  PROP_DBUS_NAME,
   PROP_WIDTH,
   PROP_HEIGHT,
 };
@@ -70,7 +70,7 @@ struct _MnbPanelPrivate
 {
   DBusGConnection *dbus_conn;
   DBusGProxy      *proxy;
-  gchar           *dbus_path;
+  gchar           *dbus_name;
 
   gchar           *name;
   gchar           *tooltip;
@@ -99,8 +99,8 @@ mnb_panel_get_property (GObject    *object,
 
   switch (property_id)
     {
-    case PROP_DBUS_PATH:
-      g_value_set_string (value, priv->dbus_path);
+    case PROP_DBUS_NAME:
+      g_value_set_string (value, priv->dbus_name);
       break;
     case PROP_WIDTH:
       g_value_set_uint (value, priv->width);
@@ -121,9 +121,9 @@ mnb_panel_set_property (GObject *object, guint property_id,
 
   switch (property_id)
     {
-    case PROP_DBUS_PATH:
-      g_free (priv->dbus_path);
-      priv->dbus_path = g_value_dup_string (value);
+    case PROP_DBUS_NAME:
+      g_free (priv->dbus_name);
+      priv->dbus_name = g_value_dup_string (value);
       break;
     case PROP_WIDTH:
       priv->width = g_value_get_uint (value);
@@ -214,8 +214,7 @@ mnb_panel_finalize (GObject *object)
 {
   MnbPanelPrivate *priv = MNB_PANEL (object)->priv;
 
-  g_free (priv->dbus_path);
-  g_free (priv->name);
+  g_free (priv->dbus_name);
   g_free (priv->tooltip);
   g_free (priv->stylesheet);
   g_free (priv->button_style_id);
@@ -323,10 +322,10 @@ mnb_panel_class_init (MnbPanelClass *klass)
   dropdown_class->hide_completed = mnb_panel_hide_completed;
 
   g_object_class_install_property (object_class,
-                                   PROP_DBUS_PATH,
-                                   g_param_spec_string ("dbus-path",
-                                                        "Dbus path",
-                                                        "Dbus path",
+                                   PROP_DBUS_NAME,
+                                   g_param_spec_string ("dbus-name",
+                                                        "Dbus name",
+                                                        "Dbus name",
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
@@ -508,13 +507,10 @@ mnb_panel_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
 {
   MnbPanel        *panel = MNB_PANEL (data);
   MnbPanelPrivate *priv  = panel->priv;
-  gchar           *name;
 
   g_debug ("Panel died; trying to restart");
 
   priv->proxy = NULL;
-
-  name = g_strdup (mnb_panel_get_name (panel));
 
   /*
    * The panel probably crashed; try to restart it, if we fail, just
@@ -522,7 +518,7 @@ mnb_panel_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
    */
   if (!mnb_panel_setup_proxy (panel))
     {
-      g_warning ("Unable to restart Panel process '%s'.", name);
+      g_warning ("Unable to restart Panel process '%s'.", priv->dbus_name);
       clutter_actor_destroy (CLUTTER_ACTOR (data));
     }
 }
@@ -575,7 +571,7 @@ mnb_panel_init_owner (MnbPanel *panel)
                                   &stylesheet, &button_style_id, &error))
     {
       g_critical ("Panel initialization for %s failed!",
-                  priv->dbus_path);
+                  priv->dbus_name);
 
       if (error)
         {
@@ -585,7 +581,6 @@ mnb_panel_init_owner (MnbPanel *panel)
 
       return FALSE;
     }
-
 
   g_free (priv->name);
   priv->name = name;
@@ -654,29 +649,33 @@ mnb_panel_setup_proxy (MnbPanel *panel)
 {
   MnbPanelPrivate *priv = panel->priv;
   DBusGProxy      *proxy;
-  gchar           *dbus_name;
+  gchar           *dbus_path;
+  gchar           *p;
 
-  /*
-   * Set up the proxy to the remote object; we mandate that the remote object
-   * name must match the provided path exactly, except for the '/' being
-   * replaced with '.'. The object must implement the org.moblin.Mnb.Panel
-   * interface.
-   */
-  dbus_name = g_strdup (priv->dbus_path + 1);
+  g_debug ("Creating proxy for %s", priv->dbus_name);
 
-  g_strdelimit (dbus_name, "/", '.');
+  dbus_path = g_strconcat ("/", priv->dbus_name, NULL);
+
+  p = dbus_path;
+  while (*p)
+    {
+      if (*p == '.')
+        *p = '/';
+
+      ++p;
+    }
 
   proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
-                                     dbus_name,
-                                     priv->dbus_path,
-                                     "org.moblin.Mnb.Panel");
+                                     priv->dbus_name,
+                                     dbus_path,
+                                     MNB_PANEL_DBUS_INTERFACE);
 
-  g_free (dbus_name);
+  g_free (dbus_path);
 
   if (!proxy)
     {
       g_warning ("Unable to create proxy for %s (reason unknown)",
-                 priv->dbus_path);
+                 priv->dbus_name);
 
       return FALSE;
     }
@@ -734,7 +733,7 @@ mnb_panel_constructed (GObject *self)
   if (G_OBJECT_CLASS (mnb_panel_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_panel_parent_class)->constructed (self);
 
-  if (!priv->dbus_path)
+  if (!priv->dbus_name)
     return;
 
   conn = mnb_panel_connect_to_dbus ();
@@ -756,13 +755,13 @@ mnb_panel_constructed (GObject *self)
 
 MnbPanel *
 mnb_panel_new (MutterPlugin *plugin,
-               const gchar  *dbus_path,
+               const gchar  *dbus_name,
                guint         width,
                guint         height)
 {
   MnbPanel *panel = g_object_new (MNB_TYPE_PANEL,
                                   "mutter-plugin", plugin,
-                                  "dbus-path",     dbus_path,
+                                  "dbus-name",     dbus_name,
                                   "width",         width,
                                   "height",        height,
                                   NULL);

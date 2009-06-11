@@ -81,7 +81,7 @@ static void mnb_toolbar_stage_show_cb (ClutterActor *stage,
 static void mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar);
 
 enum {
-    M_ZONE = 0,
+    MYZONE = 0,
     STATUS_ZONE,
     PEOPLE_ZONE,
     INTERNET_ZONE,
@@ -688,8 +688,8 @@ _mzone_activated_cb (PengeGridView *view, gpointer data)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (data)->priv;
 
-  if (priv->panels[M_ZONE])
-    clutter_actor_hide (CLUTTER_ACTOR (priv->panels[M_ZONE]));
+  if (priv->panels[MYZONE])
+    clutter_actor_hide (CLUTTER_ACTOR (priv->panels[MYZONE]));
 
   clutter_actor_hide (CLUTTER_ACTOR (data));
 }
@@ -759,31 +759,31 @@ mnb_toolbar_panel_name_to_index (const gchar *name)
 {
   gint index;
 
-  if (!strcmp (name, "myzone"))
-    index = M_ZONE;
-  else if (!strcmp (name, "status-zone"))
+  if (!strcmp (name, MNB_PANEL_MYZONE))
+    index = MYZONE;
+  else if (!strcmp (name, MNB_PANEL_STATUS))
     index = STATUS_ZONE;
-  else if (!strcmp (name, "spaces-zone"))
+  else if (!strcmp (name, MNB_PANEL_ZONES))
     index = SPACES_ZONE;
-  else if (!strcmp (name, "internet-zone"))
+  else if (!strcmp (name, MNB_PANEL_INTERNET))
     index = INTERNET_ZONE;
-  else if (!strcmp (name, "media-zone"))
+  else if (!strcmp (name, MNB_PANEL_MEDIA))
     index = MEDIA_ZONE;
-  else if (!strcmp (name, "applications-zone"))
+  else if (!strcmp (name, MNB_PANEL_APPLICATIONS))
     index = APPS_ZONE;
-  else if (!strcmp (name, "people-zone"))
+  else if (!strcmp (name, MNB_PANEL_PEOPLE))
     index = PEOPLE_ZONE;
-  else if (!strcmp (name, "pasteboard-zone"))
+  else if (!strcmp (name, MNB_PANEL_PASTEBOARD))
     index = PASTEBOARD_ZONE;
-  else if (!strcmp (name, "tray-button-wifi"))
+  else if (!strcmp (name, MNB_PANEL_NETWORK))
     index = WIFI_APPLET;
-  else if (!strcmp (name, "tray-button-bluetooth"))
+  else if (!strcmp (name, MNB_PANEL_BLUETOOTH))
     index = BT_APPLET;
-  else if (!strcmp (name, "tray-button-sound"))
+  else if (!strcmp (name, MNB_PANEL_VOLUME))
     index = VOLUME_APPLET;
-  else if (!strcmp (name, "tray-button-battery"))
+  else if (!strcmp (name, MNB_PANEL_POWER))
     index = BATTERY_APPLET;
-  else if (!strcmp (name, "tray-button-test"))
+  else if (!strcmp (name, MNB_PANEL_TEST))
     index = TEST_APPLET;
   else
     {
@@ -799,19 +799,19 @@ mnb_toolbar_panel_index_to_name (gint index)
 {
   switch (index)
     {
-    case M_ZONE: return "myzone";
-    case STATUS_ZONE: return "status-zone";
-    case SPACES_ZONE: return "spaces-zone";
-    case INTERNET_ZONE: return "internet-zone";
-    case MEDIA_ZONE: return "media-zone";
-    case APPS_ZONE: return "applications-zone";
-    case PEOPLE_ZONE: return "people-zone";
-    case PASTEBOARD_ZONE: return "pasteboard-zone";
-    case WIFI_APPLET: return "tray-button-wifi";
-    case BT_APPLET: return "tray-button-bluetooth";
-    case VOLUME_APPLET: return "tray-button-volume";
-    case BATTERY_APPLET: return "tray-button-battery";
-    case TEST_APPLET: return "tray-button-test";
+    case MYZONE: return MNB_PANEL_MYZONE;
+    case STATUS_ZONE: return MNB_PANEL_STATUS;
+    case SPACES_ZONE: return MNB_PANEL_ZONES;
+    case INTERNET_ZONE: return MNB_PANEL_INTERNET;
+    case MEDIA_ZONE: return MNB_PANEL_MEDIA;
+    case APPS_ZONE: return MNB_PANEL_APPLICATIONS;
+    case PEOPLE_ZONE: return MNB_PANEL_PEOPLE;
+    case PASTEBOARD_ZONE: return MNB_PANEL_PASTEBOARD;
+    case WIFI_APPLET: return MNB_PANEL_NETWORK;
+    case BT_APPLET: return MNB_PANEL_BLUETOOTH;
+    case VOLUME_APPLET: return MNB_PANEL_VOLUME;
+    case BATTERY_APPLET: return MNB_PANEL_POWER;
+    case TEST_APPLET: return MNB_PANEL_TEST;
 
     default: return NULL;
     }
@@ -1060,7 +1060,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             make_people_panel (plugin, screen_width - TOOLBAR_X_PADDING * 2));
           break;
 #endif
-        case M_ZONE:
+        case MYZONE:
           {
             ClutterActor *grid;
 
@@ -1256,7 +1256,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
     }
   else if (MNB_IS_SWITCHER (panel))
     {
-      name    = "spaces-zone";
+      name    = "zones";
       tooltip = _("zones");
     }
   else
@@ -1639,27 +1639,27 @@ static void
 mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
+  const gchar       *short_name = name + strlen (MNB_PANEL_DBUS_NAME_PREFIX);
 
-  if (!strcmp (name, "MyzonePanel") ||
-      !strcmp (name, "StatusPanel") ||
-      !strcmp (name, "PasteboardPanel") ||
-      !strcmp (name, "MediaPanel") ||
-      !strcmp (name, "InternetPanel") ||
-      !strcmp (name, "ApplicationsPanel") ||
-      !strcmp (name, "BatteryPanel") ||
-      !strcmp (name, "WifiPanel") ||
-      !strcmp (name, "BluetoothPanel") ||
-      !strcmp (name, "VolumePanel") ||
-      !strcmp (name, "TestPanel"))
+  if (!strcmp (short_name, MNB_PANEL_MYZONE) ||
+      !strcmp (short_name, MNB_PANEL_STATUS) ||
+      !strcmp (short_name, MNB_PANEL_ZONES) ||
+      !strcmp (short_name, MNB_PANEL_MEDIA) ||
+      !strcmp (short_name, MNB_PANEL_INTERNET) ||
+      !strcmp (short_name, MNB_PANEL_APPLICATIONS) ||
+      !strcmp (short_name, MNB_PANEL_POWER) ||
+      !strcmp (short_name, MNB_PANEL_NETWORK) ||
+      !strcmp (short_name, MNB_PANEL_BLUETOOTH) ||
+      !strcmp (short_name, MNB_PANEL_VOLUME) ||
+      !strcmp (short_name, MNB_PANEL_TEST))
     {
       MnbPanel *panel;
-      gchar    *path;
       gint      screen_width, screen_height;
 
-      mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
+      mutter_plugin_query_screen_size (priv->plugin,
+                                       &screen_width, &screen_height);
 
-      path   = g_strconcat ("/org/moblin/Mnb/", name, NULL);
-      panel  = mnb_panel_new (priv->plugin, path,
+      panel  = mnb_panel_new (priv->plugin, name,
                               screen_width - TOOLBAR_X_PADDING * 2,
                               screen_height - 2 * TOOLBAR_HEIGHT);
 
@@ -1684,7 +1684,8 @@ mnb_toolbar_noc_cb (DBusGProxy  *proxy,
    * Unfortunately, we get this for all name owner changes on the bus, so
    * return early.
    */
-  if (!name || strncmp (name, "org.moblin.Mnb.", 15))
+  if (!name || strncmp (name, MNB_PANEL_DBUS_NAME_PREFIX,
+                        strlen (MNB_PANEL_DBUS_NAME_PREFIX)))
     return;
 
   priv = MNB_TOOLBAR (toolbar)->priv;
@@ -1698,7 +1699,7 @@ mnb_toolbar_noc_cb (DBusGProxy  *proxy,
       return;
     }
 
-  mnb_toolbar_handle_dbus_name (toolbar, name + 15);
+  mnb_toolbar_handle_dbus_name (toolbar, name);
 }
 
 /*
@@ -1722,27 +1723,18 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
       gchar **p = names;
       while (*p)
         {
-          if (!strncmp (*p, "org.moblin.Mnb.", 15))
+          if (!strncmp (*p, MNB_PANEL_DBUS_NAME_PREFIX,
+                        strlen (MNB_PANEL_DBUS_NAME_PREFIX)))
             {
               gboolean  has_owner = FALSE;
-              gchar    *name = *p + 15;
-
-              /*
-               * Skip the Toolbar object
-               */
-              if (!strcmp (name, "Toolbar"))
-                {
-                  p++;
-                  continue;
-                }
 
               if (org_freedesktop_DBus_name_has_owner (priv->dbus_proxy,
                                                        *p, &has_owner, NULL) &&
                   has_owner)
                 {
-                  g_debug ("Found dbus name %s \n", *p);
+                  g_debug ("Found dbus name %s", *p);
 
-                  mnb_toolbar_handle_dbus_name (toolbar, name);
+                  mnb_toolbar_handle_dbus_name (toolbar, *p);
                 }
             }
 
@@ -1781,7 +1773,7 @@ mnb_toolbar_constructed (GObject *self)
 
   priv->dbus_conn = conn;
 
-  dbus_g_connection_register_g_object (conn, "/org/moblin/Mnb/Toolbar", self);
+  dbus_g_connection_register_g_object (conn, MNB_TOOLBAR_DBUS_PATH, self);
 
   hbox = priv->hbox = clutter_group_new ();
 
@@ -2481,8 +2473,8 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
 
   XSelectInput (xdpy, xwin, event_mask);
 
-  if (priv->panels[M_ZONE])
-    clutter_actor_show (CLUTTER_ACTOR (priv->panels[M_ZONE]));
+  if (priv->panels[MYZONE])
+    clutter_actor_show (CLUTTER_ACTOR (priv->panels[MYZONE]));
 }
 
 /*
