@@ -24,6 +24,8 @@
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
 
+#include "src/moblin-netbook-chooser.h"
+
 G_DEFINE_TYPE (PengeEventTile, penge_event_tile, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -226,40 +228,27 @@ _button_press_event_cb (ClutterActor *actor,
                         gpointer      userdata)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
-  gchar *argv[4];
-  GError *error = NULL;
   ECal *ecal;
   gchar *uid;
+  gchar *command_line;
 
   g_object_get (priv->store, "ecal", &ecal, NULL);
   uid = jana_component_get_uid ((JanaComponent *)priv->event);
 
-  argv[0] = "dates";
-  argv[1] = "--edit-event";
-  argv[2] = g_strdup_printf ("%s %s",
-                             e_cal_get_uri (ecal),
-                             uid);
-  argv[3] = NULL;
-
+  command_line = g_strdup_printf ("dates --edit-event \"%s %s\"",
+                                  e_cal_get_uri (ecal),
+                                  uid);
+  g_debug ("%s", command_line);
   g_free (uid);
 
-  if (!g_spawn_async (NULL,
-                      &argv[0],
-                      NULL,
-                      G_SPAWN_SEARCH_PATH,
-                      NULL,
-                      NULL,
-                      NULL,
-                      &error))
+  if (!moblin_netbook_launch_application (command_line,
+                                          FALSE,
+                                          -2))
   {
-    g_warning (G_STRLOC ": Error starting dates: %s",
-               error->message);
-    g_clear_error (&error);
+    g_warning (G_STRLOC ": Error starting dates");
   } else{
     penge_utils_signal_activated ((ClutterActor *)userdata);
   }
-
-  g_free (argv[2]);
 
   return FALSE;
 }
