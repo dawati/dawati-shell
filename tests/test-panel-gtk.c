@@ -112,6 +112,16 @@ main (int argc, char *argv[])
                              "state1",
                              TRUE);
 
+  /*
+   * Strictly speaking, it is not necessary to construct the window contents
+   * at this point, the panel can instead hook to MnbPanelClient::set-size
+   * signal. However, once the set-size signal has been emitted, the panel
+   * window must remain in a state suitable to it being shown.
+   *
+   * The panel can also hook into the MnbPanelClient::show-begin signal, to be
+   * when it is being shown, but this signal is assynchronous, so that the
+   * panel might finish showing *before* the Panel handles this signal.
+   */
   make_window_content (MNB_PANEL_GTK (panel));
 
   g_timeout_add (2000, change_button_style_cb, panel);
