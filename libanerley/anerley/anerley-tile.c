@@ -273,9 +273,12 @@ anerley_tile_update_item (AnerleyTile *tile,
                       (GCallback)_item_presence_changed_cb,
                       tile);
 
-    anerley_item_emit_display_name_changed (item);
-    anerley_item_emit_avatar_path_changed (item);
-    anerley_item_emit_presence_changed (item);
+    if (CLUTTER_ACTOR_IS_MAPPED (tile))
+    {
+      anerley_item_emit_display_name_changed (item);
+      anerley_item_emit_avatar_path_changed (item);
+      anerley_item_emit_presence_changed (item);
+    }
   }
 }
 
@@ -329,9 +332,22 @@ anerley_tile_finalize (GObject *object)
 }
 
 static void
+anerley_tile_map (ClutterActor *actor)
+{
+  AnerleyTilePrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (anerley_tile_parent_class)->map (actor);
+
+  anerley_item_emit_display_name_changed (priv->item);
+  anerley_item_emit_avatar_path_changed (priv->item);
+  anerley_item_emit_presence_changed (priv->item);
+}
+
+static void
 anerley_tile_class_init (AnerleyTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (AnerleyTilePrivate));
@@ -340,6 +356,8 @@ anerley_tile_class_init (AnerleyTileClass *klass)
   object_class->set_property = anerley_tile_set_property;
   object_class->dispose = anerley_tile_dispose;
   object_class->finalize = anerley_tile_finalize;
+
+  actor_class->map = anerley_tile_map;
 
   pspec = g_param_spec_object ("item",
                                "Item",
