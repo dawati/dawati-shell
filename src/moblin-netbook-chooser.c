@@ -511,7 +511,6 @@ make_background (const gchar *text, guint width, guint height,
                           (PLUGIN_PKGDATADIR
                            "/theme/chooser/thumb-unselected.png", NULL);
 
-      clutter_actor_set_parent (space_sel, clutter_stage_get_default ());
       clutter_container_add_actor (CLUTTER_CONTAINER (clutter_stage_get_default ()), space_sel);
       clutter_actor_hide (space_sel);
 
