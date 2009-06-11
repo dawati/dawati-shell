@@ -2323,14 +2323,38 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
    * a) toolbar is disabled (e.g., in lowlight),
    * b) the event is something other than enter/leave
    * c) we got an enter event on something other than stage,
-   * d) we are already animating.
+   * d) we got a leave event bug are showing panels
+   * e) we are already animating.
+   *
+   * Split into multiple statments for readability.
    */
-  if (!(((event->type == CLUTTER_ENTER) && (event->crossing.source == stage)) ||
-        ((event->type == CLUTTER_LEAVE) &&
-         !mnb_toolbar_panels_showing (toolbar)) ||
-        priv->disabled ||
-        mnb_toolbar_in_transition (toolbar)))
-    return FALSE;
+
+  if (priv->disabled)
+    {
+      /* g_debug (G_STRLOC " leaving early"); */
+      return FALSE;
+    }
+
+  if (!(event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE))
+      return FALSE;
+
+  if ((event->type == CLUTTER_ENTER) && (event->crossing.source != stage))
+    {
+      /* g_debug (G_STRLOC " leaving early"); */
+      return FALSE;
+    }
+
+  if ((event->type == CLUTTER_LEAVE) && mnb_toolbar_panels_showing (toolbar))
+    {
+      /* g_debug (G_STRLOC " leaving early"); */
+      return FALSE;
+    }
+
+  if (mnb_toolbar_in_transition (toolbar))
+    {
+      /* g_debug (G_STRLOC " leaving early"); */
+      return FALSE;
+    }
 
   /*
    * This is when we want to show the toolbar:
