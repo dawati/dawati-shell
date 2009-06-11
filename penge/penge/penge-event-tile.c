@@ -186,6 +186,10 @@ _enter_event_cb (ClutterActor *actor,
                                       "hover");
 
   t = jana_event_get_start (priv->event);
+
+  /* Translate this time into local time */
+  jana_time_set_offset (t, jana_time_get_offset (priv->time));
+
   time_str = jana_utils_strftime (t, "%H:%M");
 
   nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
@@ -210,6 +214,10 @@ _leave_event_cb (ClutterActor *actor,
   if (priv->time)
   {
     t = jana_event_get_start (priv->event);
+
+    /* Translate this time into local time */
+    jana_time_set_offset (t, jana_time_get_offset (priv->time));
+
     if (jana_time_get_day (priv->time) != jana_time_get_day (t))
     {
       time_str = jana_utils_strftime (t, "%a");
@@ -378,6 +386,10 @@ penge_event_tile_update (PengeEventTile *tile)
   if (priv->time)
   {
     t = jana_event_get_start (priv->event);
+
+    /* Translate this time into local time */
+    jana_time_set_offset (t, jana_time_get_offset (priv->time));
+
     if (jana_time_get_day (priv->time) == jana_time_get_day (t))
     {
       time_str = jana_utils_strftime (t, "%H:%M");
