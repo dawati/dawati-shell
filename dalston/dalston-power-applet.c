@@ -235,7 +235,6 @@ dalston_power_applet_do_notification (DalstonPowerApplet *applet,
   g_object_unref (note);
 }
 
-#if 0
 static void
 dalston_power_applet_do_shutdown (DalstonPowerApplet *applet)
 {
@@ -248,8 +247,6 @@ dalston_power_applet_do_shutdown (DalstonPowerApplet *applet)
                             NULL);
   g_object_unref (power_proxy);
 }
-
-#endif
 
 static void
 dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
