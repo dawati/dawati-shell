@@ -863,7 +863,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
 }
 
 static void
-mnb_toolbar_dropdown_hide_begin_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
+mnb_toolbar_dropdown_hide_completed_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
@@ -1162,8 +1162,8 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                    CLUTTER_ACTOR (button));
     }
 
-  g_signal_connect (panel, "hide-begin",
-                    G_CALLBACK(mnb_toolbar_dropdown_hide_begin_cb),
+  g_signal_connect (panel, "hide-completed",
+                    G_CALLBACK(mnb_toolbar_dropdown_hide_completed_cb),
                     toolbar);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
@@ -1379,7 +1379,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
                     toolbar);
 
   g_signal_connect (panel, "hide-begin",
-                    G_CALLBACK (mnb_toolbar_dropdown_hide_begin_cb), toolbar);
+                    G_CALLBACK (mnb_toolbar_dropdown_hide_completed_cb), toolbar);
 
   g_signal_connect (panel, "request-button-style",
                     G_CALLBACK (mnb_toolbar_panel_request_button_style_cb),
