@@ -44,14 +44,6 @@ make_window_content (MnbPanelClutter *panel)
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 }
 
-static void
-update_content_cb (MnbPanelClutter *panel, gpointer data)
-{
-  g_debug ("Making content\n");
-  make_window_content (panel);
-}
-
-
 int
 main (int argc, char *argv[])
 {
@@ -65,8 +57,7 @@ main (int argc, char *argv[])
                                  "state1",
                                  FALSE);
 
-  g_signal_connect (panel, "show-begin",
-                    G_CALLBACK (update_content_cb), NULL);
+  make_window_content (MNB_PANEL_CLUTTER (panel));
 
   clutter_main ();
 

@@ -79,13 +79,6 @@ make_window_content (MnbPanelGtk *panel)
   gtk_widget_show (window);
 }
 
-static void
-update_content_cb (MnbPanelGtk *panel, gpointer data)
-{
-  g_debug ("Making content\n");
-  make_window_content (panel);
-}
-
 /*
  * Change the style of the panel button every time we are called.
  */
@@ -119,8 +112,7 @@ main (int argc, char *argv[])
                              "state1",
                              TRUE);
 
-  g_signal_connect (panel, "show-begin",
-                    G_CALLBACK (update_content_cb), NULL);
+  make_window_content (MNB_PANEL_GTK (panel));
 
   g_timeout_add (2000, change_button_style_cb, panel);
 
