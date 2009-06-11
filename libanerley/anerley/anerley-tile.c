@@ -344,6 +344,24 @@ anerley_tile_map (ClutterActor *actor)
 }
 
 static void
+anerley_tile_allocate (ClutterActor           *actor,
+                       const ClutterActorBox  *box,
+                       ClutterAllocationFlags  flags)
+{
+  ClutterActorClass  *actor_class;
+
+
+  if (CLUTTER_ACTOR_IS_MAPPED (actor))
+  {
+    actor_class = CLUTTER_ACTOR_CLASS (anerley_tile_parent_class);
+  } else {
+    actor_class = g_type_class_peek (CLUTTER_TYPE_ACTOR);
+  }
+
+  actor_class->allocate (actor, box, flags);
+}
+
+static void
 anerley_tile_class_init (AnerleyTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -358,6 +376,7 @@ anerley_tile_class_init (AnerleyTileClass *klass)
   object_class->finalize = anerley_tile_finalize;
 
   actor_class->map = anerley_tile_map;
+  actor_class->allocate = anerley_tile_allocate;
 
   pspec = g_param_spec_object ("item",
                                "Item",
