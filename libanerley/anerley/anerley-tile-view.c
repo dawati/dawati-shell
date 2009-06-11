@@ -178,6 +178,8 @@ anerley_tile_view_new (AnerleyFeedModel *model)
   return g_object_new (ANERLEY_TYPE_TILE_VIEW,
                        "model",
                        model,
+                       "allocate-hidden",
+                       TRUE,
                        NULL);
 }
 
