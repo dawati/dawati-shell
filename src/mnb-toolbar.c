@@ -1941,6 +1941,10 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
   MnbToolbarPrivate  *priv = toolbar->priv;
   gchar             **names;
   GError             *error = NULL;
+  gboolean            found_panels[NUM_ZONES];
+  gint                i;
+
+  memset (&found_panels, 0, sizeof(found_panels));
 
   /*
    * Insert panels for any services already running.
@@ -1962,6 +1966,16 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
                                                        *p, &has_owner, NULL) &&
                   has_owner)
                 {
+                  const gchar *short_name;
+                  gint         index;
+
+                  short_name = *p + strlen (MNB_PANEL_DBUS_NAME_PREFIX);
+
+                  index = mnb_toolbar_panel_name_to_index (short_name);
+
+                  if (index >= 0)
+                    found_panels[index] = TRUE;
+
                   g_debug ("Found dbus name %s", *p);
 
                   mnb_toolbar_handle_dbus_name (toolbar, *p);
@@ -1973,6 +1987,36 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
     }
 
   dbus_free_string_array (names);
+
+  for (i = 0; i < NUM_ZONES; ++i)
+    {
+      switch (i)
+        {
+          /* Add here any apps that have been converted to multiproc */
+        case APPS_ZONE:
+          if (!found_panels[i])
+            {
+              DBusConnection *conn;
+              const gchar    *name;
+              gchar          *dbus_name;
+
+              name =  mnb_toolbar_panel_index_to_name (i);
+
+              g_debug ("Panel service [%s] is not running, attempting to start.",
+                       name);
+
+              conn = dbus_g_connection_get_connection (priv->dbus_conn);
+
+              dbus_name = g_strconcat (MNB_PANEL_DBUS_NAME_PREFIX, name, NULL);
+
+              dbus_bus_start_service_by_name (conn, dbus_name, 0, NULL, NULL);
+
+              g_free (dbus_name);
+            }
+          break;
+        default:;
+        }
+    }
 
   dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
                                G_CALLBACK (mnb_toolbar_noc_cb),
