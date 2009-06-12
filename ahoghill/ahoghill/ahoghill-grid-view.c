@@ -456,13 +456,11 @@ source_ready_cb (BklSourceClient  *client,
     if (priv->source_count == priv->source_replies) {
         set_recent_items (view);
 
-#if 0
         /* Set the local queue to the playlist */
         /* FIXME: Generate multiple playlists once more than
            local queue works */
         ahoghill_playlist_set_queue ((AhoghillPlaylist *) priv->playqueues_pane,
                                      priv->local_queue);
-#endif
     }
 }
 
@@ -569,13 +567,11 @@ init_bickley (gpointer data)
 static void
 init_bognor (AhoghillGridView *grid)
 {
-#if 0
     AhoghillGridViewPrivate *priv = grid->priv;
 
     priv->local_queue = g_object_new (BR_TYPE_QUEUE,
                                       "object-path", BR_LOCAL_QUEUE_PATH,
                                       NULL);
-#endif
 }
 
 static gboolean
@@ -850,7 +846,7 @@ item_clicked_cb (AhoghillResultsPane *pane,
                  BklItem             *item,
                  AhoghillGridView    *grid)
 {
-#if 0
+#if 1
     AhoghillGridViewPrivate *priv = grid->priv;
     GError *error = NULL;
 
@@ -927,12 +923,8 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     g_signal_connect (priv->results_pane, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
 
-#if 0
     priv->playqueues_pane = (ClutterActor *) ahoghill_playlist_new (self,
                                                                     _("Local"));
-#else
-    priv->playqueues_pane = (ClutterActor *) g_object_new (AHOGHILL_TYPE_PLAYLIST_PLACEHOLDER, NULL);
-#endif
     clutter_actor_set_size (priv->playqueues_pane, 238, 400);
     nbtk_table_add_actor_with_properties (table, priv->playqueues_pane,
                                           1, 3,
