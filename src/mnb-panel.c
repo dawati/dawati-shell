@@ -158,7 +158,7 @@ mnb_panel_request_show_cb (DBusGProxy *proxy, MnbPanel *panel)
 static void
 mnb_panel_request_hide_cb (DBusGProxy *proxy, MnbPanel *panel)
 {
-  clutter_actor_hide (CLUTTER_ACTOR (panel));
+  mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (panel));
 }
 
 static void
