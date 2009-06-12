@@ -64,7 +64,8 @@ GType carrick_service_item_get_type (void);
 GtkWidget* carrick_service_item_new (CarrickIconFactory *icon_factory,
                                      CmService          *service);
 CmService *carrick_service_item_get_service (CarrickServiceItem *item);
-gint carrick_service_item_get_order (CarrickServiceItem *item);
+void carrick_service_item_set_service (CarrickServiceItem *item,
+                                       CmService *service);
 
 G_END_DECLS
 

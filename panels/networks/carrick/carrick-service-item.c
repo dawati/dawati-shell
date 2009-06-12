@@ -408,7 +408,7 @@ _get_service_state (CmService *service)
   return UNKNOWN;
 }
 
-static void
+void
 carrick_service_item_set_service (CarrickServiceItem *service_item,
                                   CmService          *service)
 {
@@ -441,13 +441,6 @@ carrick_service_item_get_service (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
   return priv->service;
-}
-
-gint
-carrick_service_item_get_order (CarrickServiceItem *item)
-{
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
-  return (gint)cm_service_get_order (priv->service);
 }
 
 static void

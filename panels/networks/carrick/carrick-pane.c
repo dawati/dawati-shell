@@ -453,8 +453,8 @@ _service_updated_cb (CmService   *service,
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   const gchar *type = NULL;
   CarrickList *list = CARRICK_LIST (priv->service_list);
-  gboolean have_service = carrick_list_contains_service (list,
-                                                         service);
+  GtkWidget *have_service = carrick_list_find_service_item (list,
+                                                           service);
 
   /* If the widgetry for the service exists remove the handler
    * and ensure the list is sorted */
@@ -485,8 +485,6 @@ _service_updated_cb (CmService   *service,
                                                         service);
     carrick_list_add_item (list,
                            service_item);
-
-    carrick_list_sort_list (list);
   }
 }
 
@@ -638,27 +636,66 @@ _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   CmService *service;
+  GList *it;
+  GList *remove_list = NULL;
+  GList *fetched_services = cm_manager_get_services (priv->manager);
 
-  if (!priv->services)
-    priv->services = g_list_copy (cm_manager_get_services (priv->manager));
-  else
-    priv->services = g_list_first (priv->services);
-
-  while (priv->services)
+  // iterate existing list and queue stale services for removal
+  for (it = g_list_first (priv->services); it != NULL; it = it->next)
   {
-    service = priv->services->data;
+    GList *new_it;
+    gboolean found = FALSE;
 
-    if (!carrick_list_contains_service (CARRICK_LIST (priv->service_list),
-    					service))
+    for (new_it = fetched_services; new_it != NULL; new_it = new_it->next)
     {
-      // add service to list
-      g_signal_connect (G_OBJECT (service),
-			"service-updated",
-			G_CALLBACK (_service_updated_cb),
-			pane);
+      if (cm_service_is_same (it->data, new_it->data))
+      {
+        found = TRUE;
+        new_it = NULL;
+      }
     }
+    if (!found)
+    {
+      remove_list = g_list_append (remove_list,
+                                   it->data);
+    }
+  }
 
-    priv->services = priv->services->next;
+  // remove stale services
+  for (it = g_list_first (remove_list); it != NULL; it = it->next)
+  {
+    GtkWidget *rep = carrick_list_find_service_item
+      (CARRICK_LIST (priv->service_list),
+       it->data);
+    gtk_widget_destroy (rep);
+  }
+
+  while (remove_list)
+  {
+    g_object_unref (remove_list->data);
+    remove_list = g_list_delete_link (remove_list, remove_list);
+  }
+  g_list_free (remove_list);
+
+  // iterate new list, update existing services and queue new services
+  for (it = g_list_first (fetched_services); it != NULL; it = it->next)
+  {
+    service = CM_SERVICE (it->data);
+    GtkWidget *rep = carrick_list_find_service_item
+      (CARRICK_LIST (priv->service_list),
+       service);
+    if (rep)
+    {
+      carrick_service_item_set_service (CARRICK_SERVICE_ITEM (rep),
+                                        service);
+    }
+    else
+    {
+      g_signal_connect (service,
+                        "service-updated",
+                        G_CALLBACK (_service_updated_cb),
+                        pane);
+    }
   }
 }
 

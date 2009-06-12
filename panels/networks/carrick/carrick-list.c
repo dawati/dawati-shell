@@ -45,7 +45,7 @@ struct _CarrickListPrivate
   GtkWidget *drag_window;
   guint dropped_new_order;
   guint counter;
-  gboolean found;
+  GtkWidget *found;
 };
 
 static void
@@ -197,7 +197,7 @@ carrick_list_find_service_item (CarrickList *list,
   ret = priv->found;
   priv->found = NULL;
 
-  return (GtkWidget *)ret;
+  return ret;
 }
 
 /*void
