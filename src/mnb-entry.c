@@ -267,18 +267,14 @@ mnb_entry_style_changed (NbtkWidget *widget)
   NbtkWidget *clear = NBTK_WIDGET (priv->clear_button);
   NbtkWidget *search = NBTK_WIDGET (priv->search_button);
 
-  NBTK_WIDGET_CLASS (mnb_entry_parent_class)->style_changed (widget);
-
-  /* XXX - this is needed to propagate the ::style-changed signal to
+  /* this is needed to propagate the ::style-changed signal to
    * the internal children on MnbEntry, otherwise the style changes
    * will not reach them
    */
-
-  /* FIXME - we really need nbtk_widget_style_changed() */
-  NBTK_WIDGET_GET_CLASS (entry)->style_changed (entry);
-  NBTK_WIDGET_GET_CLASS (table)->style_changed (table);
-  NBTK_WIDGET_GET_CLASS (clear)->style_changed (clear);
-  NBTK_WIDGET_GET_CLASS (search)->style_changed (search);
+  g_signal_emit_by_name (entry, "style-changed", 0);
+  g_signal_emit_by_name (table, "style-changed", 0);
+  g_signal_emit_by_name (clear, "style-changed", 0);
+  g_signal_emit_by_name (search, "style-changed", 0);
 }
 
 static void
@@ -375,8 +371,6 @@ mnb_entry_class_init (MnbEntryClass *klass)
   actor_class->map = mnb_entry_map;
   actor_class->unmap = mnb_entry_unmap;
 
-  widget_class->style_changed = mnb_entry_style_changed;
-
   pspec = g_param_spec_string ("label",
                                "Label",
                                "The label inside the button.",
@@ -457,6 +451,8 @@ mnb_entry_init (MnbEntry *self)
   ClutterActor    *text;
 
   self->priv = priv = MNB_ENTRY_GET_PRIVATE (self);
+
+  g_signal_connect (self, "style-changed", mnb_entry_style_changed, NULL);
 
   priv->entry = CLUTTER_ACTOR (nbtk_entry_new (""));
   clutter_actor_set_parent (priv->entry, CLUTTER_ACTOR (self));

@@ -482,9 +482,6 @@ mnb_status_entry_style_changed (NbtkWidget *widget)
   g_signal_emit_by_name (priv->status_entry, "style-changed");
   g_signal_emit_by_name (priv->service_label, "style-changed");
   g_signal_emit_by_name (priv->button, "style-changed");
-
-  /* chain up */
-  NBTK_WIDGET_CLASS (mnb_status_entry_parent_class)->style_changed (widget);
 }
 
 static void
@@ -579,7 +576,6 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MnbStatusEntryPrivate));
@@ -597,8 +593,6 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
   actor_class->button_release_event = mnb_status_entry_button_release;
   actor_class->map = mnb_status_entry_map;
   actor_class->unmap = mnb_status_entry_unmap;
-
-  widget_class->style_changed = mnb_status_entry_style_changed;
 
   pspec = g_param_spec_string ("service-name",
                                "Service Name",
@@ -633,6 +627,9 @@ mnb_status_entry_init (MnbStatusEntry *self)
   ClutterActor *text;
 
   self->priv = priv = MNB_STATUS_ENTRY_GET_PRIVATE (self);
+
+  g_signal_connect (self, "style-changed",
+                    G_CALLBACK (mnb_status_entry_style_changed), NULL);
 
   priv->is_active = FALSE;
 
