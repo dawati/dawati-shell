@@ -122,8 +122,8 @@ container_has_children (ClutterContainer *container)
 
 #define FILTER_ENTRY_WIDTH        600
 
+#define SCROLLVIEW_RESERVED_WIDTH 10
 #define SCROLLBAR_RESERVED_WIDTH  37
-#define SCROLLVIEW_RESERVED_WIDTH  3
 #define SCROLLVIEW_ROW_SIZE       50
 #define EXPANDER_GRID_ROW_GAP      8
 
@@ -132,6 +132,9 @@ container_has_children (ClutterContainer *container)
 #define LAUNCHER_WIDTH            210
 #define LAUNCHER_HEIGHT            79
 #define LAUNCHER_ICON_SIZE         48
+
+#define SCROLLVIEW_OUTER_WIDTH(self_) (self_->priv->width - SCROLLVIEW_RESERVED_WIDTH)
+#define SCROLLVIEW_INNER_WIDTH(self_) (self_->priv->width - SCROLLBAR_RESERVED_WIDTH)
 
 #define LAUNCHER_FALLBACK_ICON_NAME "applications-other"
 #define LAUNCHER_FALLBACK_ICON_FILE "/usr/share/icons/moblin/48x48/categories/applications-other.png"
@@ -795,8 +798,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         expander = CLUTTER_ACTOR (nbtk_expander_new ());
         nbtk_expander_set_label (NBTK_EXPANDER (expander),
                                   directory->name);
-        clutter_actor_set_width (expander,
-                                  priv->width - SCROLLVIEW_RESERVED_WIDTH);
+        clutter_actor_set_width (expander, SCROLLVIEW_INNER_WIDTH (self));
         clutter_container_add (CLUTTER_CONTAINER (priv->apps_grid),
                                 expander, NULL);
         g_hash_table_insert (priv->expanders,
@@ -856,7 +858,7 @@ mnb_launcher_fill (MnbLauncher     *self)
                          priv->fav_grid, NULL);
   nbtk_grid_set_row_gap (NBTK_GRID (priv->fav_grid), LAUNCHER_GRID_ROW_GAP);
   nbtk_grid_set_column_gap (NBTK_GRID (priv->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
-  clutter_actor_set_width (priv->fav_grid, priv->width);
+  clutter_actor_set_width (priv->fav_grid, SCROLLVIEW_INNER_WIDTH (self));
   clutter_actor_set_name (priv->fav_grid, "launcher-fav-grid");
   g_object_ref (priv->fav_grid);
 
@@ -927,7 +929,7 @@ mnb_launcher_fill (MnbLauncher     *self)
   clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
                          priv->apps_grid, NULL);
   clutter_actor_set_name (priv->apps_grid, "launcher-apps-grid");
-  clutter_actor_set_width (priv->apps_grid, priv->width);
+  clutter_actor_set_width (priv->apps_grid, SCROLLVIEW_INNER_WIDTH (self));
   nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
                          EXPANDER_GRID_ROW_GAP);
 
@@ -1402,7 +1404,7 @@ _constructor (GType                  gtype,
   nbtk_scroll_bar_set_mode (NBTK_SCROLL_BAR (bar), NBTK_SCROLL_BAR_MODE_IDLE);
 #endif
   clutter_actor_set_size (priv->scrollview,
-                          priv->width - 10, /* account for padding */
+                          SCROLLVIEW_OUTER_WIDTH (self), /* account for padding */
                           priv->height - clutter_actor_get_height (CLUTTER_ACTOR (hbox)));
   nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox), priv->scrollview, 1, 0,
                                         "x-expand", TRUE,
@@ -1410,9 +1412,6 @@ _constructor (GType                  gtype,
                                         "y-expand", TRUE,
                                         "y-fill", TRUE,
                                         NULL);
-
-  /* TODO: dirty hack. */
-  priv->width -= SCROLLBAR_RESERVED_WIDTH;
 
   priv->theme = gtk_icon_theme_get_default ();
   g_signal_connect (priv->theme, "changed",
