@@ -177,30 +177,30 @@ _list_contains_child (GtkWidget *item,
   CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
   CmService *serv = CM_SERVICE (service);
 
-  if (cm_service_compare_services (serv,
-                                   carrick_service_item_get_service (service_item)))
+  if (cm_service_is_same (serv,
+                          carrick_service_item_get_service (service_item)))
   {
-    priv->found = TRUE;
+    priv->found = service_item;
   }
 }
 
-gboolean
-carrick_list_contains_service (CarrickList *list,
-                               CmService   *service)
+GtkWidget *
+carrick_list_find_service_item (CarrickList *list,
+                                CmService   *service)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (list);
-  gboolean ret;
+  GtkWidget *ret;
   gtk_container_foreach (GTK_CONTAINER (list),
                          _list_contains_child,
                          (gpointer) service);
 
   ret = priv->found;
-  priv->found = FALSE;
+  priv->found = NULL;
 
-  return ret;
+  return (GtkWidget *)ret;
 }
 
-void
+/*void
 carrick_list_sort_list (CarrickList *list)
 {
   GList *items = gtk_container_get_children (GTK_CONTAINER (list));
@@ -213,7 +213,7 @@ carrick_list_sort_list (CarrickList *list)
 
     items = items->next;
   }
-}
+  }*/
 
 void
 carrick_list_add_item (CarrickList *list,
