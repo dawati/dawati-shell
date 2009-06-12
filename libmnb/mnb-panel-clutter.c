@@ -112,7 +112,9 @@ static void
 mnb_panel_clutter_set_size (MnbPanelClient *self, guint width, guint height)
 {
   MnbPanelClutterPrivate *priv = MNB_PANEL_CLUTTER (self)->priv;
+  Display                *xdpy = clutter_x11_get_default_display ();
 
+  XResizeWindow (xdpy, priv->xwindow, width, height);
   clutter_actor_set_size (priv->stage, width, height);
 }
 
