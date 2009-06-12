@@ -60,12 +60,12 @@ text_changed_cb (ClutterText  *actor,
                  MnbEntry     *entry)
 {
   gchar const *text;
-  
+
   text = clutter_text_get_text (actor);
   if (text && strlen (text) > 0)
     clutter_actor_show (entry->priv->clear_button);
   else
-    clutter_actor_hide (entry->priv->clear_button);  
+    clutter_actor_hide (entry->priv->clear_button);
 
   g_signal_emit (entry, _signals[TEXT_CHANGED], 0);
 }
@@ -93,7 +93,7 @@ text_key_press_cb (ClutterActor     *actor,
         if (pos == -1)
           {
             g_signal_emit (entry, _signals[KEYNAV_EVENT], 0, event->keyval);
-            return TRUE;         
+            return TRUE;
           }
     }
 
@@ -352,7 +352,6 @@ mnb_entry_class_init (MnbEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MnbEntryPrivate));
@@ -452,7 +451,8 @@ mnb_entry_init (MnbEntry *self)
 
   self->priv = priv = MNB_ENTRY_GET_PRIVATE (self);
 
-  g_signal_connect (self, "style-changed", mnb_entry_style_changed, NULL);
+  g_signal_connect (self, "style-changed",
+                    G_CALLBACK (mnb_entry_style_changed), NULL);
 
   priv->entry = CLUTTER_ACTOR (nbtk_entry_new (""));
   clutter_actor_set_parent (priv->entry, CLUTTER_ACTOR (self));
