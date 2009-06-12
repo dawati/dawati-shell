@@ -7,5 +7,5 @@ Name: libmnb-gtk
 Description: Dev parameters for gtk-based moblin panels
 Requires: gtk+-2.0
 Version: @VERSION@
-Libs: @GTK_LIBS@ -L${libdir} -lmnb-gtk
-Cflags: @GTK_CFLAGS@ -I${includedir}/mutter-moblin
+Libs: -L${libdir} -lmnb-gtk
+Cflags: -I${includedir}/mutter-moblin
