@@ -64,6 +64,10 @@ struct MnbLauncher_ {
 
 struct MnbLauncherClass_ {
   NbtkBinClass parent;
+
+  /* Signals. */
+  void (* launcher_activated) (MnbLauncher  *self,
+                               const gchar  *desktop_file);
 };
 
 GType mnb_launcher_get_type (void) G_GNUC_CONST;

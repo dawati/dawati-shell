@@ -36,16 +36,12 @@
 #include <nbtk/nbtk.h>
 
 #include <penge/penge-app-bookmark-manager.h>
-#include <libmnb/mnb-panel-clutter.h>
-#include <libmnb/mnb-panel-common.h>
 
 #include "moblin-netbook-launcher.h"
 #include "mnb-entry.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-grid.h"
 #include "mnb-launcher-tree.h"
-
-static MnbPanelClient *panel = NULL;
 
 static void
 scrollable_ensure_box_visible (NbtkScrollable         *scrollable,
@@ -150,6 +146,15 @@ container_has_children (ClutterContainer *container)
   #define GET_PRIVATE(obj) \
           REAL_GET_PRIVATE(obj)
 #endif /* G_DISABLE_CHECKS */
+
+enum
+{
+  LAUNCHER_ACTIVATED,
+
+  LAST_SIGNAL
+};
+
+static guint _signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (MnbLauncher, mnb_launcher, NBTK_TYPE_BIN);
 
@@ -265,24 +270,7 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
 
   desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
 
-  mnb_panel_client_launch_application_from_desktop_file (panel,
-                                                         desktop_file_path,
-                                                         NULL,
-                                                         FALSE,
-                                                         -2);
-#if 0
-  /*
-   * FIXME -- had the launcher been an custom actor, we would be emiting
-   * "request-hide" signal that the Toolbar would hook into. It's probably not
-   * worth refactoring at this moment, but eventually the launcher will need
-   * to be subclass of MnbPanelClutter and here it will be emiting the
-   * "request-hide" signal over dbus. For now just call the drop down API
-   * directly.
-   */
-  dropdown = clutter_actor_get_parent (CLUTTER_ACTOR (self));
-  if (MNB_IS_DROP_DOWN (dropdown))
-    mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (dropdown));
-#endif
+  g_signal_emit (self, _signals[LAUNCHER_ACTIVATED], 0, desktop_file_path);
 }
 
 static void
@@ -1500,6 +1488,15 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
                       0, G_MAXINT,
                       600,
                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
+  _signals[LAUNCHER_ACTIVATED] =
+    g_signal_new ("launcher-activated",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbLauncherClass, launcher_activated),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1, G_TYPE_STRING);
 }
 
 static void
@@ -1514,39 +1511,6 @@ mnb_launcher_new (gint width,
                        "launcher-width", width,
                        "launcher-height", height,
                        NULL);
-}
-
-int
-main (int     argc,
-      char  **argv)
-{
-  ClutterActor    *stage;
-  ClutterActor    *launcher;
-
-  clutter_init (&argc, &argv);
-  gtk_init (&argc, &argv);
-
-  nbtk_style_load_from_file (nbtk_style_get_default (),
-                             MUTTER_MOBLIN_CSS, NULL);
-
-  panel = mnb_panel_clutter_new (MNB_PANEL_APPLICATIONS,
-                                 _("applications"),
-                                 MUTTER_MOBLIN_CSS,
-                                 "applications-button",
-                                 TRUE);
-
-  stage = mnb_panel_clutter_get_stage (MNB_PANEL_CLUTTER (panel));
-
-  launcher = mnb_launcher_new (
-                clutter_actor_get_width (stage),
-                clutter_actor_get_height (stage));
-  /* TODO Robsta splitout */
-  mnb_launcher_force_fill (MNB_LAUNCHER (launcher));
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
-
-  clutter_main ();
-
-  return EXIT_SUCCESS;
 }
 
 /*

@@ -17,5 +17,6 @@ moblin_panel_applications_SOURCES = \
   mnb-launcher-tree.c \
   mnb-launcher-tree.h \
   moblin-netbook-launcher.c \
-  moblin-netbook-launcher.h
+  moblin-netbook-launcher.h \
+  moblin-panel-applications.c
 
