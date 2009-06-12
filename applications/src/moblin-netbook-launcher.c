@@ -165,14 +165,6 @@ static guint _signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (MnbLauncher, mnb_launcher, NBTK_TYPE_BIN);
 
-enum
-{
-  PROP_0,
-
-  PROP_LAUNCHER_WIDTH,
-  PROP_LAUNCHER_HEIGHT
-};
-
 /*
  * Helper struct that contains all the info needed to switch between
  * browser- and filter-mode.
@@ -1345,14 +1337,14 @@ _constructor (GType                  gtype,
 
   MnbLauncherPrivate *priv = self->priv = REAL_GET_PRIVATE (self);
   ClutterActor    *bar;
-  NbtkWidget      *vbox, *hbox, *label;
+  NbtkWidget      *vbox, *label;
 
   vbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");
   nbtk_bin_set_child (NBTK_BIN (self), CLUTTER_ACTOR (vbox));
 
   /* Filter row. */
-  priv->filter_hbox = nbtk_table_new ();
+  priv->filter_hbox = (ClutterActor *) nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_hbox), "launcher-filter-pane");
   nbtk_table_set_col_spacing (NBTK_TABLE (priv->filter_hbox), 20);
   nbtk_table_add_actor (NBTK_TABLE (vbox), CLUTTER_ACTOR (priv->filter_hbox), 0, 0);
@@ -1448,37 +1440,6 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
 
   object_class->constructor = _constructor;
   object_class->dispose = _dispose;
-
-  /**
-   * ClutterActor:width:
-   *
-   * Width of the actor (in pixels). If written, forces the minimum and
-   * natural size request of the actor to the given width. If read, returns
-   * the allocated width if available, otherwise the width request.
-   */
-  g_object_class_install_property (object_class,
-    PROP_LAUNCHER_WIDTH,
-    g_param_spec_int ("launcher-width",
-                      "Width",
-                      "Width of the actor",
-                      0, G_MAXINT,
-                      800,
-                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
-  /**
-   * ClutterActor:height:
-   *
-   * Height of the actor (in pixels).  If written, forces the minimum and
-   * natural size request of the actor to the given height. If read, returns
-   * the allocated height if available, otherwise the height request.
-   */
-  g_object_class_install_property (object_class,
-    PROP_LAUNCHER_HEIGHT,
-    g_param_spec_int ("launcher-height",
-                      "Height",
-                      "Height of the actor",
-                      0, G_MAXINT,
-                      600,
-                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   _signals[LAUNCHER_ACTIVATED] =
     g_signal_new ("launcher-activated",
