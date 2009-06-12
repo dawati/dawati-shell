@@ -375,7 +375,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
   signals[SET_SIZE] =
     g_signal_new ("set-size",
                   G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (MnbPanelClientClass, set_size),
                   NULL, NULL,
                   moblin_netbook_marshal_VOID__UINT_UINT,
