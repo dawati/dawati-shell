@@ -53,6 +53,7 @@ typedef struct {
 typedef struct {
   NbtkIconViewClass parent_class;
   void (*item_activated)(AnerleyTileView *view, AnerleyItem *item);
+  void (*selection_changed)(AnerleyTileView *view);
 } AnerleyTileViewClass;
 
 GType anerley_tile_view_get_type (void);

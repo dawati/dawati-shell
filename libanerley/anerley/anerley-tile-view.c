@@ -77,6 +77,8 @@ typedef struct _AnerleyTileViewPrivate AnerleyTileViewPrivate;
 
 struct _AnerleyTileViewPrivate {
   AnerleyFeedModel *model;
+  ClutterActor *new_selected_actor;
+  ClutterActor *selected_actor;
 };
 
 enum
@@ -88,6 +90,7 @@ enum
 enum
 {
   ITEM_ACTIVATED,
+  SELECTION_CHANGED,
   LAST_SIGNAL
 };
 
@@ -123,6 +126,14 @@ anerley_tile_view_set_property (GObject *object, guint property_id,
 static void
 anerley_tile_view_dispose (GObject *object)
 {
+  AnerleyTileViewPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->selected_actor)
+  {
+    g_object_unref (priv->selected_actor);
+    priv->selected_actor = NULL;
+  }
+
   G_OBJECT_CLASS (anerley_tile_view_parent_class)->dispose (object);
 }
 
@@ -130,6 +141,20 @@ static void
 anerley_tile_view_finalize (GObject *object)
 {
   G_OBJECT_CLASS (anerley_tile_view_parent_class)->finalize (object);
+}
+
+static void
+anerley_tile_view_selection_changed (AnerleyTileView *tile_view)
+{
+  AnerleyTileViewPrivate *priv = GET_PRIVATE (tile_view);
+
+  /* Move the reference */
+  if (priv->selected_actor)
+    g_object_unref (priv->selected_actor);
+
+  /* Move the reference, or move the NULL */
+  priv->selected_actor = priv->new_selected_actor;
+  priv->new_selected_actor = NULL;
 }
 
 static void
@@ -144,6 +169,8 @@ anerley_tile_view_class_init (AnerleyTileViewClass *klass)
   object_class->set_property = anerley_tile_view_set_property;
   object_class->dispose = anerley_tile_view_dispose;
   object_class->finalize = anerley_tile_view_finalize;
+
+  klass->selection_changed = anerley_tile_view_selection_changed;
 
   pspec = g_param_spec_object ("model",
                                "The anerley feed model",
@@ -166,6 +193,91 @@ anerley_tile_view_class_init (AnerleyTileViewClass *klass)
                   1,
                   ANERLEY_TYPE_ITEM);
 
+  signals[SELECTION_CHANGED] =
+    g_signal_new ("selection-changed",
+                  ANERLEY_TYPE_TILE_VIEW,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (AnerleyTileViewClass, selection_changed),
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0,
+                  G_TYPE_NONE);
+
+}
+
+static void
+_selection_changed_before_cb (AnerleyTileView *tile_view,
+                              gpointer         userdata)
+{
+  AnerleyTileViewPrivate *priv = GET_PRIVATE (userdata);
+  ClutterActor *actor;
+
+  actor = priv->selected_actor;
+
+  if (actor)
+    nbtk_widget_set_style_class_name ((NbtkWidget *)actor, NULL);
+}
+
+static void
+_selection_changed_after_cb (AnerleyTileView *tile_view,
+                             gpointer        userdata)
+{
+  AnerleyTileViewPrivate *priv = GET_PRIVATE (userdata);
+  ClutterActor *actor;
+
+  actor = priv->selected_actor;
+
+  if (actor)
+    nbtk_widget_set_style_class_name ((NbtkWidget *)actor, "AnerleyTileSelected");
+}
+
+static void
+anerley_tile_view_set_selected_actor (AnerleyTileView *tile_view,
+                                      ClutterActor    *actor)
+{
+  AnerleyTileViewPrivate *priv = GET_PRIVATE (tile_view);
+
+  if (actor == priv->selected_actor)
+    return;
+
+  if (actor)
+    priv->new_selected_actor = g_object_ref (actor);
+  else
+    priv->new_selected_actor = NULL;
+
+  g_signal_emit (tile_view, signals[SELECTION_CHANGED], 0);
+}
+
+static void
+_tile_button_release_event_cb (ClutterActor *actor,
+                               ClutterEvent *event,
+                               gpointer      userdata)
+{
+  AnerleyTileView *tile_view = (AnerleyTileView *)userdata;
+  AnerleyTileViewPrivate *priv = GET_PRIVATE (tile_view);
+
+  /* Button release event is on the same actor, unselecting it */
+  if (priv->selected_actor == actor)
+  {
+    anerley_tile_view_set_selected_actor (tile_view, NULL);
+  } else {
+    anerley_tile_view_set_selected_actor (tile_view, actor);
+  }
+}
+
+static void
+_container_actor_added_cb (ClutterContainer *container,
+                           ClutterActor     *actor,
+                           gpointer          userdata)
+{
+  AnerleyTileView *tile_view = (AnerleyTileView *)userdata;
+
+  g_signal_connect (actor,
+                    "button-release-event",
+                    (GCallback)_tile_button_release_event_cb,
+                    tile_view);
 }
 
 static void
@@ -175,6 +287,20 @@ anerley_tile_view_init (AnerleyTileView *self)
                                     g_object_new (ANERLEY_TILE_TYPE_RENDERER,
                                                   NULL));
   nbtk_icon_view_add_attribute (NBTK_ICON_VIEW (self), "item", 0);
+
+  g_signal_connect (self,
+                    "selection-changed",
+                    (GCallback)_selection_changed_before_cb,
+                    self);
+  g_signal_connect_after (self,
+                          "selection-changed",
+                          (GCallback)_selection_changed_after_cb,
+                          self);
+
+  g_signal_connect (self,
+                    "actor-added",
+                    (GCallback)_container_actor_added_cb,
+                    self);
 }
 
 NbtkWidget *
@@ -192,6 +318,9 @@ static void
 _bulk_change_start_cb (AnerleyFeedModel *model,
                        gpointer          userdata)
 {
+  /* Clear selected item, the old one is almost certainly wrong */
+  anerley_tile_view_set_selected_actor ((AnerleyTileView *)userdata,
+                                        NULL);
   nbtk_icon_view_freeze (NBTK_ICON_VIEW (userdata));
 }
 
@@ -200,6 +329,15 @@ _bulk_change_end_cb (AnerleyFeedModel *model,
                      gpointer          userdata)
 {
   nbtk_icon_view_thaw (NBTK_ICON_VIEW (userdata));
+}
+
+static void
+_model_filter_changed_cb (ClutterModel *model,
+                          gpointer      userdata)
+{
+  /* Clear selected item, the old one is almost certainly wrong */
+  anerley_tile_view_set_selected_actor ((AnerleyTileView *)userdata,
+                                        NULL);
 }
 
 static void
@@ -236,6 +374,11 @@ anerley_tile_view_set_model (AnerleyTileView  *view,
     g_signal_connect (model,
                       "bulk-change-end",
                       (GCallback)_bulk_change_end_cb,
+                      view);
+
+    g_signal_connect (model,
+                      "filter-changed",
+                      (GCallback)_model_filter_changed_cb,
                       view);
   } else {
     if (model_was_set)
