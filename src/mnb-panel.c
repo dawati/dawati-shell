@@ -46,7 +46,8 @@ static void     mnb_panel_show_completed (MnbDropDown *self);
 static void     mnb_panel_hide_begin     (MnbDropDown *self);
 static void     mnb_panel_hide_completed (MnbDropDown *self);
 static gboolean mnb_panel_setup_proxy    (MnbPanel *panel);
-static gboolean mnb_panel_init_owner     (MnbPanel *panel);
+static void     mnb_panel_init_owner     (MnbPanel *panel);
+static void     mnb_panel_dbus_proxy_weak_notify_cb (gpointer, GObject *);
 
 enum
 {
@@ -59,8 +60,9 @@ enum
 
 enum
 {
+  READY,
   REQUEST_BUTTON_STYLE,
-
+  REMOTE_PROCESS_DIED,
   LAST_SIGNAL
 };
 
@@ -86,7 +88,8 @@ struct _MnbPanelPrivate
 
   MutterWindow    *mcw;
 
-  gboolean         constructed : 1; /* poor man's constructor return value. */
+  gboolean         dead  : 1; /* Set when the remote  */
+  gboolean         ready : 1;
 };
 
 static void
@@ -181,6 +184,9 @@ mnb_panel_dispose (GObject *self)
 
   if (proxy)
     {
+      g_object_weak_unref (G_OBJECT (proxy),
+                           mnb_panel_dbus_proxy_weak_notify_cb, self);
+
       dbus_g_proxy_disconnect_signal (proxy, "RequestShow",
                                       G_CALLBACK (mnb_panel_request_show_cb),
                                       self);
@@ -237,28 +243,12 @@ mnb_panel_show (ClutterActor *actor)
        * of the actual chaining up to our parent show().
        */
       if (priv->window)
-        gtk_widget_show_all (priv->window);
+        {
+          gtk_widget_show_all (priv->window);
+        }
     }
   else
     CLUTTER_ACTOR_CLASS (mnb_panel_parent_class)->show (actor);
-}
-
-static gboolean
-mnb_panel_dbus_init_panel (MnbPanel  *self,
-                           guint      width,
-                           guint      height,
-                           gchar    **name,
-                           guint     *xid,
-                           gchar    **tooltip,
-                           gchar    **stylesheet,
-                           gchar    **button_style_id,
-                           GError   **error)
-{
-  MnbPanelPrivate *priv = self->priv;
-
-  return org_moblin_Mnb_Panel_init_panel (priv->proxy, width, height, name, xid,
-                                          tooltip, stylesheet, button_style_id,
-                                          error);
 }
 
 static void
@@ -322,6 +312,24 @@ mnb_panel_class_init (MnbPanelClass *klass)
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
+
+  signals[READY] =
+    g_signal_new ("ready",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClass, ready),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[REMOTE_PROCESS_DIED] =
+    g_signal_new ("remote-process-died",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClass, remote_process_died),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -444,79 +452,45 @@ mnb_panel_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
   MnbPanel        *panel = MNB_PANEL (data);
   MnbPanelPrivate *priv  = panel->priv;
 
-  g_debug ("Panel died; trying to restart");
-
   priv->proxy = NULL;
 
-  /*
-   * The panel probably crashed; try to restart it, if we fail, just
-   * destroy this panel.
-   */
-  if (!mnb_panel_setup_proxy (panel))
-    {
-      g_warning ("Unable to restart Panel process '%s'.", priv->dbus_name);
-      clutter_actor_destroy (CLUTTER_ACTOR (data));
-    }
+  g_object_ref (panel);
+  priv->ready = FALSE;
+  priv->dead = TRUE;
+  g_signal_emit (panel, signals[REMOTE_PROCESS_DIED], 0);
+  g_object_unref (panel);
 }
 
 static gboolean
 mnb_panel_plug_removed_cb (GtkSocket *socket, gpointer data)
 {
-  MnbPanel *panel = MNB_PANEL (data);
+  MnbPanel        *panel = MNB_PANEL (data);
+  MnbPanelPrivate *priv = panel->priv;
 
-  /*
-   * If the initialization succeeded, we just return TRUE, to stop the signal
-   * processing (we have already destroyed the socket manually).
-   */
-  if (mnb_panel_init_owner (panel))
-    return TRUE;
+  priv->child_xid = None;
 
-  panel->priv->child_xid = None;
+  g_object_ref (panel);
+  priv->ready = FALSE;
+  priv->dead = TRUE;
+  g_signal_emit (panel, signals[REMOTE_PROCESS_DIED], 0);
+  g_object_unref (panel);
 
-  /*
-   * If initialization failed, we return FALSE; the signal closure will cleanup
-   * the socket for us.
-   */
   return FALSE;
 }
 
-/*
- * Does the hard work in establishing a connection to the name owner, retrieving
- * the require information, and constructing the socket into which we embed the
- * panel window.
- */
-static gboolean
-mnb_panel_init_owner (MnbPanel *panel)
+static void
+mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
+                               gchar      *name,
+                               guint       xid,
+                               gchar      *tooltip,
+                               gchar      *stylesheet,
+                               gchar      *button_style_id,
+                               GError     *error,
+                               gpointer    panel)
 {
-  MnbPanelPrivate *priv = panel->priv;
-  guint            xid;
-  gchar           *name;
-  gchar           *tooltip;
-  gchar           *stylesheet;
-  gchar           *button_style_id;
-  GError          *error = NULL;
+  MnbPanelPrivate *priv = MNB_PANEL (panel)->priv;
   GtkWidget       *socket;
   GtkWidget       *window;
-
-  /*
-   * Now call the remote init_panel() method to obtain the panel name, tooltip
-   * and xid.
-   */
-  if (!mnb_panel_dbus_init_panel (panel, priv->width, priv->height,
-                                  &name, &xid, &tooltip,
-                                  &stylesheet, &button_style_id, &error))
-    {
-      g_critical ("Panel initialization for %s failed!",
-                  priv->dbus_name);
-
-      if (error)
-        {
-          g_critical ("%s", error->message);
-          g_error_free (error);
-        }
-
-      return FALSE;
-    }
 
   g_free (priv->name);
   priv->name = name;
@@ -539,7 +513,9 @@ mnb_panel_init_owner (MnbPanel *panel)
    * it, but this is simple and robust.)
    */
   if (priv->window)
-    gtk_widget_destroy (priv->window);
+    {
+      gtk_widget_destroy (priv->window);
+    }
 
   socket = gtk_socket_new ();
   priv->window = window = gtk_window_new (GTK_WINDOW_POPUP);
@@ -564,7 +540,29 @@ mnb_panel_init_owner (MnbPanel *panel)
 
   priv->xid = GDK_WINDOW_XWINDOW (window->window);
 
-  return TRUE;
+  priv->ready = TRUE;
+  priv->dead = FALSE;
+  g_signal_emit (panel, signals[READY], 0);
+}
+
+/*
+ * Does the hard work in establishing a connection to the name owner, retrieving
+ * the require information, and constructing the socket into which we embed the
+ * panel window.
+ */
+static void
+mnb_panel_init_owner (MnbPanel *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+
+  /*
+   * Now call the remote init_panel() method to obtain the panel name, tooltip
+   * and xid.
+   */
+  org_moblin_Mnb_Panel_init_panel_async (priv->proxy,
+                                         priv->width, priv->height,
+                                         mnb_panel_init_panel_reply_cb,
+                                         panel);
 }
 
 static void
@@ -588,7 +586,8 @@ mnb_panel_setup_proxy (MnbPanel *panel)
   gchar           *dbus_path;
   gchar           *p;
 
-  g_debug ("Creating proxy for %s", priv->dbus_name);
+  g_debug ("Creating proxy for %s, %p",
+           priv->dbus_name, panel);
 
   dbus_path = g_strconcat ("/", priv->dbus_name, NULL);
 
@@ -654,7 +653,9 @@ mnb_panel_setup_proxy (MnbPanel *panel)
                                G_CALLBACK (mnb_panel_request_button_style_cb),
                                panel, NULL);
 
-  return mnb_panel_init_owner (panel);
+  mnb_panel_init_owner (panel);
+
+  return TRUE;
 }
 
 static void
@@ -681,12 +682,6 @@ mnb_panel_constructed (GObject *self)
 
   if (!mnb_panel_setup_proxy (MNB_PANEL (self)))
     return;
-
-  /*
-   * Set the constructed flag, so we can check everything went according to
-   * plan.
-   */
-  priv->constructed = TRUE;
 }
 
 MnbPanel *
@@ -701,13 +696,6 @@ mnb_panel_new (MutterPlugin *plugin,
                                   "width",         width,
                                   "height",        height,
                                   NULL);
-
-  if (panel && !panel->priv->constructed)
-    {
-      g_warning ("Panel initialization failed.");
-      g_object_unref (panel);
-      return NULL;
-    }
 
   return panel;
 }
@@ -805,5 +793,11 @@ guint
 mnb_panel_get_xid (MnbPanel *panel)
 {
   return panel->priv->xid;
+}
+
+gboolean
+mnb_panel_is_ready (MnbPanel *panel)
+{
+  return panel->priv->ready;
 }
 

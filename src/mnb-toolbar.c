@@ -77,8 +77,8 @@ static gboolean mnb_toolbar_stage_input_cb (ClutterActor *stage,
                                             gpointer      data);
 static void mnb_toolbar_stage_show_cb (ClutterActor *stage,
                                        MnbToolbar *toolbar);
-
 static void mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar);
+static void mnb_toolbar_handle_dbus_name (MnbToolbar *, const gchar *);
 
 enum {
     MYZONE = 0,
@@ -163,6 +163,8 @@ struct _MnbToolbarPrivate
 
   DBusGConnection *dbus_conn;
   DBusGProxy      *dbus_proxy;
+
+  GSList          *pending_panels;
 };
 
 static void
@@ -235,6 +237,20 @@ mnb_toolbar_dispose (GObject *object)
 static void
 mnb_toolbar_finalize (GObject *object)
 {
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (object)->priv;
+  GSList            *l;
+
+  l = priv->pending_panels;
+  while (l)
+    {
+      gchar *n = l->data;
+      g_free (n);
+
+      l = l->next;
+    }
+  g_slist_free (priv->pending_panels);
+  priv->pending_panels = NULL;
+
   G_OBJECT_CLASS (mnb_toolbar_parent_class)->finalize (object);
 }
 
@@ -746,6 +762,19 @@ _netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
 
 #endif /* REMOVE ME block */
 
+static gint
+mnb_toolbar_panel_instance_to_index (MnbToolbar *toolbar, MnbPanel *panel)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint i;
+
+  for (i = 0; i < NUM_ZONES; ++i)
+    if ((void*)priv->panels[i] == (void*)panel)
+      return i;
+
+  return -1;
+}
+
 /*
  * Translates panel name to the corresponding enum value.
  *
@@ -1183,7 +1212,7 @@ mnb_toolbar_panel_request_button_style_cb (MnbPanel    *panel,
   MnbToolbarPrivate *priv = toolbar->priv;
   gint index;
 
-  index = mnb_toolbar_panel_name_to_index (mnb_panel_get_name (panel));
+  index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
 
   if (index < 0)
     return;
@@ -1191,12 +1220,150 @@ mnb_toolbar_panel_request_button_style_cb (MnbPanel    *panel,
   clutter_actor_set_name (CLUTTER_ACTOR (priv->buttons[index]), style_id);
 }
 
+/*
+ * Removes the button/panel pair from the toolbar, avoiding any recursion
+ * due to "destroy" signal handler.
+ *
+ * The panel_destroyed parameter should be set to TRUE if the panel is known
+ * to be in the destroy sequence.
+ */
+static void
+mnb_toolbar_dispose_of_panel (MnbToolbar *toolbar,
+                              gint        index,
+                              gboolean    panel_destroyed)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  NbtkWidget        *button;
+  NbtkWidget        *panel;
+
+  if (index < 0)
+    return;
+
+  button = priv->buttons[index];
+  panel  = priv->panels[index];
+
+  /*
+   * We first disconnect any signal handlers from *both* the button and the
+   * panel, and only then remove the actors. This avoids any recursion on
+   * any "destroy" signals we might have, etc.
+   */
+  if (button)
+    g_signal_handlers_disconnect_matched (button,
+                                          G_SIGNAL_MATCH_DATA,
+                                          0, 0, NULL, NULL,
+                                          toolbar);
+
+  if (panel)
+    g_signal_handlers_disconnect_matched (panel,
+                                          G_SIGNAL_MATCH_DATA,
+                                          0, 0, NULL, NULL,
+                                          toolbar);
+
+  if (button)
+    {
+      priv->buttons[index] = NULL;
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
+                                      CLUTTER_ACTOR (button));
+    }
+
+  if (panel)
+    {
+      priv->panels[index] = NULL;
+
+      if (!panel_destroyed)
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
+                                        CLUTTER_ACTOR (panel));
+    }
+}
+
+static void
+mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
+{
+  gint         index;
+  const gchar *name;
+
+  index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
+
+  if (index > 0)
+    mnb_toolbar_dispose_of_panel (toolbar, index, FALSE);
+
+  /*
+   * Try to restart the service
+   */
+  name = mnb_panel_get_name (panel);
+
+  if (name)
+    {
+      gchar *dbus_name = g_strconcat (MNB_PANEL_DBUS_NAME_PREFIX, name, NULL);
+
+      mnb_toolbar_handle_dbus_name (toolbar, dbus_name);
+    }
+}
+
+static void
+mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
+{
+  if (MNB_IS_PANEL (panel))
+    {
+      MnbToolbarPrivate *priv = toolbar->priv;
+      NbtkWidget        *button;
+      const gchar       *name;
+      const gchar       *tooltip;
+      const gchar       *style_id;
+      const gchar       *stylesheet;
+      gint               index;
+
+      name = mnb_panel_get_name (panel);
+
+      index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
+
+      if (index < 0)
+        return;
+
+      button = priv->buttons[index];
+
+      tooltip    = mnb_panel_get_tooltip (panel);
+      stylesheet = mnb_panel_get_stylesheet (panel);
+      style_id   = mnb_panel_get_button_style (panel);
+
+      if (button)
+        {
+          gchar *button_style = NULL;
+
+          if (stylesheet)
+            {
+              GError    *error = NULL;
+              NbtkStyle *style = nbtk_style_new ();
+
+              if (!nbtk_style_load_from_file (style, stylesheet, &error))
+                {
+                  if (error)
+                    g_warning ("Unable to load stylesheet %s: %s",
+                               stylesheet, error->message);
+
+                  g_error_free (error);
+                }
+              else
+                nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
+            }
+
+          if (!style_id)
+            button_style = g_strdup_printf ("%s-button", name);
+
+          nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
+          clutter_actor_set_name (CLUTTER_ACTOR (button),
+                                  style_id ? style_id : button_style);
+
+          g_free (button_style);
+        }
+
+    }
+}
+
 static void
 mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
-  gint               index;
-  const gchar       *name;
+  gint index;
 
   if (MNB_IS_SWITCHER (panel))
     {
@@ -1204,30 +1371,18 @@ mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
       return;
     }
 
-  if (MNB_IS_PANEL (panel))
-    {
-      name = mnb_panel_get_name (MNB_PANEL (panel));
-    }
-  else
+  if (!MNB_IS_PANEL (panel))
     {
       g_warning ("Unhandled panel type: %s", G_OBJECT_TYPE_NAME (panel));
       return;
     }
 
-  index = mnb_toolbar_panel_name_to_index (name);
+  index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
 
   if (index < 0)
     return;
 
-  if (priv->buttons[index])
-    {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
-                                      CLUTTER_ACTOR (priv->buttons[index]));
-
-      priv->buttons[index] = NULL;
-    }
-
-  priv->panels[index] = NULL;
+  mnb_toolbar_dispose_of_panel (toolbar, index, TRUE);
 }
 
 /*
@@ -1246,6 +1401,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   const gchar       *tooltip;
   const gchar       *stylesheet = NULL;
   const gchar       *style_id = NULL;
+  GSList            *l;
 
   if (MNB_IS_PANEL (panel))
     {
@@ -1265,10 +1421,38 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
       return;
     }
 
+  /*
+   * Remove this panel from the pending list.
+   */
+  l = priv->pending_panels;
+  while (l)
+    {
+      gchar *n = l->data;
+
+      if (!strcmp (n, name))
+        {
+          g_free (n);
+          priv->pending_panels = g_slist_delete_link (priv->pending_panels, l);
+          break;
+        }
+
+      l = l->next;
+    }
+
   index = mnb_toolbar_panel_name_to_index (name);
 
   if (index < 0)
     return;
+
+  if ((void*)panel == (void*)priv->panels[index])
+    return;
+
+  /*
+   * Disconnect this function from the "ready" signal. Instead, we connect a
+   * handler later on that updates things if this signal is issued again.
+   */
+  g_signal_handlers_disconnect_by_func (panel,
+                                        mnb_toolbar_append_panel, toolbar);
 
   if (!style_id)
     button_style = g_strdup_printf ("%s-button", name);
@@ -1276,17 +1460,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   /*
    * If the respective slot is already occupied, remove the old objects.
    */
-  if (priv->buttons[index])
-    {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
-                                      CLUTTER_ACTOR (priv->buttons[index]));
-    }
-
-  if (priv->panels[index])
-    {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
-                                      CLUTTER_ACTOR (priv->panels[index]));
-    }
+  mnb_toolbar_dispose_of_panel (toolbar, index, FALSE);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1387,6 +1561,12 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
 
   g_signal_connect (panel, "destroy",
                     G_CALLBACK (mnb_toolbar_panel_destroy_cb), toolbar);
+
+  g_signal_connect (panel, "ready",
+                    G_CALLBACK (mnb_toolbar_panel_ready_cb), toolbar);
+
+  g_signal_connect (panel, "remote-process-died",
+                    G_CALLBACK (mnb_toolbar_panel_died_cb), toolbar);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
@@ -1665,8 +1845,18 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
       if (panel)
         {
-          g_debug ("Appending panel for %s", name);
-          mnb_toolbar_append_panel (toolbar, MNB_DROP_DOWN (panel));
+          if (mnb_panel_is_ready (panel))
+            {
+              mnb_toolbar_append_panel (toolbar, (MnbDropDown*)panel);
+            }
+          else
+            {
+              priv->pending_panels =
+                g_slist_prepend (priv->pending_panels, g_strdup (name));
+              g_signal_connect_swapped (panel, "ready",
+                                        G_CALLBACK (mnb_toolbar_append_panel),
+                                        toolbar);
+            }
         }
     }
 }
@@ -1679,6 +1869,7 @@ mnb_toolbar_noc_cb (DBusGProxy  *proxy,
                     MnbToolbar  *toolbar)
 {
   MnbToolbarPrivate *priv;
+  GSList            *l;
 
   /*
    * Unfortunately, we get this for all name owner changes on the bus, so
@@ -1697,6 +1888,20 @@ mnb_toolbar_noc_cb (DBusGProxy  *proxy,
        * as this gets handled nicely elsewhere.
        */
       return;
+    }
+
+  l = priv->pending_panels;
+  while (l)
+    {
+      const gchar *my_name = l->data;
+
+      if (!strcmp (my_name, name))
+        {
+          /* We are already handling this one */
+          return;
+        }
+
+      l = l->next;
     }
 
   mnb_toolbar_handle_dbus_name (toolbar, name);
@@ -2042,7 +2247,7 @@ tray_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
 
   priv->systray_window_showing = FALSE;
 
-  for (i = APPLETS_START; i < 0; ++i)
+  for (i = APPLETS_START; i < NUM_ZONES; ++i)
     {
       if (priv->panels[i] == (NbtkWidget*) actor)
         {

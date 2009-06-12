@@ -60,6 +60,8 @@ typedef struct {
 typedef struct {
   MnbDropDownClass parent_class;
 
+  void (*ready)                 (MnbPanel *panel);
+  void (*remote_process_died)   (MnbPanel *panel);
   void (*request_button_style)  (MnbPanel *panel, const gchar *icon);
 } MnbPanelClass;
 
@@ -77,6 +79,7 @@ const gchar *mnb_panel_get_tooltip      (MnbPanel *panel);
 const gchar *mnb_panel_get_stylesheet   (MnbPanel *panel);
 const gchar *mnb_panel_get_button_style (MnbPanel *panel);
 guint        mnb_panel_get_xid          (MnbPanel *panel);
+gboolean     mnb_panel_is_ready         (MnbPanel *panel);
 
 G_END_DECLS
 
