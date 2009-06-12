@@ -394,13 +394,16 @@ _button_press_event_cb (ClutterActor *actor,
   AnerleyTilePrivate *priv = GET_PRIVATE (actor);
   ClutterActor *parent;
 
-  parent = clutter_actor_get_parent (actor);
-
-  if (ANERLEY_IS_TILE_VIEW (parent))
+  if (((ClutterButtonEvent *)event)->click_count > 1)
   {
-    g_signal_emit_by_name (parent,
-                           "item-activated",
-                           priv->item);
+    parent = clutter_actor_get_parent (actor);
+
+    if (ANERLEY_IS_TILE_VIEW (parent))
+    {
+      g_signal_emit_by_name (parent,
+                             "item-activated",
+                             priv->item);
+    }
   }
 
   return TRUE;
