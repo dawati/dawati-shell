@@ -31,9 +31,6 @@
 #include "moblin-netbook-launcher.h"
 #include "config.h"
 
-#define DEFAULT_WIDTH   790
-#define DEFAULT_HEIGHT  400
-
 static void
 stage_width_notify_cb (ClutterActor  *stage,
                        GParamSpec    *pspec,
@@ -82,7 +79,7 @@ setup_embedded (void)
                                  "applications-button",
                                  TRUE);
 
-  launcher = mnb_launcher_new (DEFAULT_WIDTH, DEFAULT_HEIGHT);
+  launcher = mnb_launcher_new ();
   g_signal_connect (launcher, "launcher-activated",
                     G_CALLBACK (launcher_activated_cb), panel);
 
@@ -102,11 +99,16 @@ setup_standalone (void)
   ClutterActor  *launcher;
 
   stage = clutter_stage_get_default ();
-  clutter_actor_set_size (stage, 1024, 768);
 
-  launcher = mnb_launcher_new (1024, 768);
+  launcher = mnb_launcher_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
 
+  g_signal_connect (stage, "notify::width",
+                    G_CALLBACK (stage_width_notify_cb), launcher);
+  g_signal_connect (stage, "notify::height",
+                    G_CALLBACK (stage_height_notify_cb), launcher);
+
+  clutter_actor_set_size (stage, 1024, 768);
   clutter_actor_show (stage);
 }
 

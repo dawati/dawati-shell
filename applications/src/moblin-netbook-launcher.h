@@ -73,8 +73,7 @@ struct MnbLauncherClass_ {
 GType mnb_launcher_get_type (void) G_GNUC_CONST;
 
 
-ClutterActor * mnb_launcher_new (gint width,
-                                 gint height);
+ClutterActor * mnb_launcher_new (void);
 
 G_END_DECLS
 
