@@ -44,6 +44,8 @@
 #include "mnb-launcher-grid.h"
 #include "mnb-launcher-tree.h"
 
+static MnbPanelClient *panel = NULL;
+
 static void
 scrollable_ensure_box_visible (NbtkScrollable         *scrollable,
                                const ClutterActorBox  *box)
@@ -262,11 +264,12 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
 
   desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
 
-# if 0 /* TODO Robsta splitout */
-  moblin_netbook_launch_application_from_desktop_file (desktop_file_path,
-                                                       NULL,
-                                                       FALSE,
-                                                       -2);
+  mnb_panel_client_launch_application_from_desktop_file (panel,
+                                                         desktop_file_path,
+                                                         NULL,
+                                                         FALSE,
+                                                         -2);
+#if 0
   /*
    * FIXME -- had the launcher been an custom actor, we would be emiting
    * "request-hide" signal that the Toolbar would hook into. It's probably not
@@ -1516,7 +1519,6 @@ int
 main (int     argc,
       char  **argv)
 {
-  MnbPanelClient  *panel;
   ClutterActor    *stage;
   ClutterActor    *launcher;
 
@@ -1526,8 +1528,8 @@ main (int     argc,
   panel = mnb_panel_clutter_new ("test",
                                  "test",
                                  MUTTER_MOBLIN_CSS,
-                                 "state1",
-                                 FALSE);
+                                 "applications-button",
+                                 TRUE);
 
   stage = mnb_panel_clutter_get_stage (MNB_PANEL_CLUTTER (panel));
 
