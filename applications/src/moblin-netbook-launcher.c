@@ -1525,6 +1525,9 @@ main (int     argc,
   clutter_init (&argc, &argv);
   gtk_init (&argc, &argv);
 
+  nbtk_style_load_from_file (nbtk_style_get_default (),
+                             MUTTER_MOBLIN_CSS, NULL);
+
   panel = mnb_panel_clutter_new ("test",
                                  "test",
                                  MUTTER_MOBLIN_CSS,
