@@ -6,7 +6,6 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 
-#include <penge/penge-utils.h>
 #include "mnb-entry.h"
 
 #define MNB_ENTRY_GET_PRIVATE(obj) \
