@@ -58,19 +58,7 @@ launcher_activated_cb (MnbLauncher    *launcher,
                                                          NULL,
                                                          FALSE,
                                                          -2);
-#if 0
-  /*
-   * FIXME -- had the launcher been an custom actor, we would be emiting
-   * "request-hide" signal that the Toolbar would hook into. It's probably not
-   * worth refactoring at this moment, but eventually the launcher will need
-   * to be subclass of MnbPanelClutter and here it will be emiting the
-   * "request-hide" signal over dbus. For now just call the drop down API
-   * directly.
-   */
-  dropdown = clutter_actor_get_parent (CLUTTER_ACTOR (self));
-  if (MNB_IS_DROP_DOWN (dropdown))
-    mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (dropdown));
-#endif
+  mnb_panel_client_request_hide (panel);
 }
 
 int
