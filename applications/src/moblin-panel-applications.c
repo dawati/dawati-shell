@@ -29,8 +29,8 @@
 #include <gtk/gtk.h>
 #include "moblin-netbook-launcher.h"
 
-#define DEFAULT_WIDTH   800
-#define DEFAULT_HEIGHT  480
+#define DEFAULT_WIDTH   790
+#define DEFAULT_HEIGHT  400
 
 static void
 stage_width_notify_cb (ClutterActor  *stage,
