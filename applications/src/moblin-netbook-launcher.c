@@ -120,18 +120,25 @@ container_has_children (ClutterContainer *container)
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S 2
 
+#define LAUNCHER_MIN_WIDTH   790
+#define LAUNCHER_MIN_HEIGHT  400
+
 #define FILTER_ENTRY_WIDTH        600
 
+#define SCROLLVIEW_RESERVED_WIDTH 10
 #define SCROLLBAR_RESERVED_WIDTH  37
-#define SCROLLVIEW_RESERVED_WIDTH  3
 #define SCROLLVIEW_ROW_SIZE       50
 #define EXPANDER_GRID_ROW_GAP      8
 
 #define LAUNCHER_GRID_COLUMN_GAP   32
 #define LAUNCHER_GRID_ROW_GAP      12
-#define LAUNCHER_WIDTH            210
-#define LAUNCHER_HEIGHT            79
-#define LAUNCHER_ICON_SIZE         48
+#define LAUNCHER_BUTTON_WIDTH     210
+#define LAUNCHER_BUTTON_HEIGHT     79
+#define LAUNCHER_BUTTON_ICON_SIZE  48
+
+#define SCROLLVIEW_OUTER_WIDTH(self_) (clutter_actor_get_width (CLUTTER_ACTOR (self_)) - SCROLLVIEW_RESERVED_WIDTH)
+#define SCROLLVIEW_OUTER_HEIGHT(self_) (clutter_actor_get_height (CLUTTER_ACTOR (self_)) - clutter_actor_get_height (self_->priv->filter_hbox) - 7)
+#define SCROLLVIEW_INNER_WIDTH(self_) (clutter_actor_get_width (CLUTTER_ACTOR (self_)) - SCROLLBAR_RESERVED_WIDTH)
 
 #define LAUNCHER_FALLBACK_ICON_NAME "applications-other"
 #define LAUNCHER_FALLBACK_ICON_FILE "/usr/share/icons/moblin/48x48/categories/applications-other.png"
@@ -158,14 +165,6 @@ static guint _signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (MnbLauncher, mnb_launcher, NBTK_TYPE_BIN);
 
-enum
-{
-  PROP_0,
-
-  PROP_LAUNCHER_WIDTH,
-  PROP_LAUNCHER_HEIGHT
-};
-
 /*
  * Helper struct that contains all the info needed to switch between
  * browser- and filter-mode.
@@ -178,8 +177,7 @@ struct MnbLauncherPrivate_ {
   GSList                  *launchers;
 
   /* Static widgets, managed by clutter. */
-  gint                     width;
-  gint                     height;
+  ClutterActor            *filter_hbox;
   ClutterActor            *filter_entry;
   ClutterActor            *scrollview;
 
@@ -345,7 +343,7 @@ launcher_button_get_icon_file (const gchar  *icon_name,
       /* 1 - look up in the icon theme. */
       info = gtk_icon_theme_lookup_icon (theme,
                                           icon_name,
-                                          LAUNCHER_ICON_SIZE,
+                                          LAUNCHER_BUTTON_ICON_SIZE,
                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
       if (info)
         icon_file = g_strdup (gtk_icon_info_get_filename (info));
@@ -382,7 +380,7 @@ launcher_button_get_icon_file (const gchar  *icon_name,
       /* 3 - lookup generic icon in theme. */
       info = gtk_icon_theme_lookup_icon (theme,
                                           LAUNCHER_FALLBACK_ICON_NAME,
-                                          LAUNCHER_ICON_SIZE,
+                                          LAUNCHER_BUTTON_ICON_SIZE,
                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
       if (info)
         icon_file = g_strdup (gtk_icon_info_get_filename (info));
@@ -409,7 +407,7 @@ launcher_button_reload_icon_cb (ClutterActor  *launcher,
 
   const gchar *icon_name = mnb_launcher_button_get_icon_name (MNB_LAUNCHER_BUTTON (launcher));
   gchar *icon_file = launcher_button_get_icon_file (icon_name, theme);
-  mnb_launcher_button_set_icon (MNB_LAUNCHER_BUTTON (launcher), icon_file, LAUNCHER_ICON_SIZE);
+  mnb_launcher_button_set_icon (MNB_LAUNCHER_BUTTON (launcher), icon_file, LAUNCHER_BUTTON_ICON_SIZE);
   g_free (icon_file);
 
 }
@@ -441,14 +439,14 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
       /* Launcher button
        * TODO reactivate "last used" once we've got the infrastructure. */
       last_used = NULL;
-      button = mnb_launcher_button_new (icon_name, icon_file, LAUNCHER_ICON_SIZE,
+      button = mnb_launcher_button_new (icon_name, icon_file, LAUNCHER_BUTTON_ICON_SIZE,
                                         generic_name, category,
                                         description, last_used, exec,
                                         mnb_launcher_application_get_desktop_file (entry));
       g_free (last_used);
       clutter_actor_set_size (CLUTTER_ACTOR (button),
-                              LAUNCHER_WIDTH,
-                              LAUNCHER_HEIGHT);
+                              LAUNCHER_BUTTON_WIDTH,
+                              LAUNCHER_BUTTON_HEIGHT);
     }
 
   g_free (icon_file);
@@ -795,8 +793,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         expander = CLUTTER_ACTOR (nbtk_expander_new ());
         nbtk_expander_set_label (NBTK_EXPANDER (expander),
                                   directory->name);
-        clutter_actor_set_width (expander,
-                                  priv->width - SCROLLVIEW_RESERVED_WIDTH);
+        clutter_actor_set_width (expander, SCROLLVIEW_INNER_WIDTH (self));
         clutter_container_add (CLUTTER_CONTAINER (priv->apps_grid),
                                 expander, NULL);
         g_hash_table_insert (priv->expanders,
@@ -856,7 +853,7 @@ mnb_launcher_fill (MnbLauncher     *self)
                          priv->fav_grid, NULL);
   nbtk_grid_set_row_gap (NBTK_GRID (priv->fav_grid), LAUNCHER_GRID_ROW_GAP);
   nbtk_grid_set_column_gap (NBTK_GRID (priv->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
-  clutter_actor_set_width (priv->fav_grid, priv->width);
+  clutter_actor_set_width (priv->fav_grid, SCROLLVIEW_INNER_WIDTH (self));
   clutter_actor_set_name (priv->fav_grid, "launcher-fav-grid");
   g_object_ref (priv->fav_grid);
 
@@ -927,7 +924,7 @@ mnb_launcher_fill (MnbLauncher     *self)
   clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
                          priv->apps_grid, NULL);
   clutter_actor_set_name (priv->apps_grid, "launcher-apps-grid");
-  clutter_actor_set_width (priv->apps_grid, priv->width);
+  clutter_actor_set_width (priv->apps_grid, SCROLLVIEW_INNER_WIDTH (self));
   nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
                          EXPANDER_GRID_ROW_GAP);
 
@@ -1271,52 +1268,6 @@ entry_keynav_cb (MnbEntry         *entry,
 }
 
 static void
-_set_property (GObject      *gobject,
-               guint         prop_id,
-               const GValue *value,
-               GParamSpec   *pspec)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (gobject);
-
-  switch (prop_id)
-    {
-      case PROP_LAUNCHER_WIDTH:
-        priv->width = g_value_get_int (value);
-        break;
-      case PROP_LAUNCHER_HEIGHT:
-        priv->height = g_value_get_int (value);
-        break;
-
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-        break;
-    }
-}
-
-static void
-_get_property (GObject    *gobject,
-               guint       prop_id,
-               GValue     *value,
-               GParamSpec *pspec)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (gobject);
-
-  switch (prop_id)
-    {
-      case PROP_LAUNCHER_WIDTH:
-        g_value_set_int (value, priv->width);
-        break;
-      case PROP_LAUNCHER_HEIGHT:
-        g_value_set_int (value, priv->height);
-        break;
-
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-        break;
-    }
-}
-
-static void
 _dispose (GObject *object)
 {
   MnbLauncher *self = MNB_LAUNCHER (object);
@@ -1345,6 +1296,37 @@ _dispose (GObject *object)
   G_OBJECT_CLASS (mnb_launcher_parent_class)->dispose (object);
 }
 
+static void
+_width_notify_cb (MnbLauncher   *self,
+                  GParamSpec    *pspec,
+                  gpointer       user_data)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  GHashTableIter      iter;
+  ClutterActor       *expander;
+
+  clutter_actor_set_width (priv->scrollview, SCROLLVIEW_OUTER_WIDTH (self));
+
+  clutter_actor_set_width (priv->fav_grid, SCROLLVIEW_INNER_WIDTH (self));
+  clutter_actor_set_width (priv->apps_grid, SCROLLVIEW_INNER_WIDTH (self));
+
+  g_hash_table_iter_init (&iter, priv->expanders);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &expander))
+    {
+      clutter_actor_set_width (expander, SCROLLVIEW_INNER_WIDTH (self));
+    }
+}
+
+static void
+_height_notify_cb (MnbLauncher   *self,
+                   GParamSpec    *pspec,
+                   gpointer       user_data)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+
+  clutter_actor_set_height (priv->scrollview, SCROLLVIEW_OUTER_HEIGHT (self));
+}
+
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1355,21 +1337,21 @@ _constructor (GType                  gtype,
 
   MnbLauncherPrivate *priv = self->priv = REAL_GET_PRIVATE (self);
   ClutterActor    *bar;
-  NbtkWidget      *vbox, *hbox, *label;
+  NbtkWidget      *vbox, *label;
 
   vbox = nbtk_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");
   nbtk_bin_set_child (NBTK_BIN (self), CLUTTER_ACTOR (vbox));
 
   /* Filter row. */
-  hbox = nbtk_table_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (hbox), "launcher-filter-pane");
-  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
-  nbtk_table_add_actor (NBTK_TABLE (vbox), CLUTTER_ACTOR (hbox), 0, 0);
+  priv->filter_hbox = (ClutterActor *) nbtk_table_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_hbox), "launcher-filter-pane");
+  nbtk_table_set_col_spacing (NBTK_TABLE (priv->filter_hbox), 20);
+  nbtk_table_add_actor (NBTK_TABLE (vbox), CLUTTER_ACTOR (priv->filter_hbox), 0, 0);
 
   label = nbtk_label_new (_("Applications"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "launcher-filter-label");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->filter_hbox),
                                         CLUTTER_ACTOR (label),
                                         0, 0,
                                         "y-align", 0.5,
@@ -1382,7 +1364,7 @@ _constructor (GType                  gtype,
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->filter_entry),
                            FILTER_ENTRY_WIDTH);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->filter_hbox),
                                         CLUTTER_ACTOR (priv->filter_entry),
                                         0, 1,
                                         "y-align", 0.5,
@@ -1402,17 +1384,14 @@ _constructor (GType                  gtype,
   nbtk_scroll_bar_set_mode (NBTK_SCROLL_BAR (bar), NBTK_SCROLL_BAR_MODE_IDLE);
 #endif
   clutter_actor_set_size (priv->scrollview,
-                          priv->width - 10, /* account for padding */
-                          priv->height - clutter_actor_get_height (CLUTTER_ACTOR (hbox)));
+                          SCROLLVIEW_OUTER_WIDTH (self), /* account for padding */
+                          SCROLLVIEW_OUTER_HEIGHT (self));
   nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox), priv->scrollview, 1, 0,
                                         "x-expand", TRUE,
                                         "x-fill", TRUE,
                                         "y-expand", TRUE,
                                         "y-fill", TRUE,
                                         NULL);
-
-  /* TODO: dirty hack. */
-  priv->width -= SCROLLBAR_RESERVED_WIDTH;
 
   priv->theme = gtk_icon_theme_get_default ();
   g_signal_connect (priv->theme, "changed",
@@ -1428,6 +1407,12 @@ _constructor (GType                  gtype,
                          priv->scrolled_vbox, NULL);
 
   mnb_launcher_fill (self);
+
+  /* Track own size. */
+  g_signal_connect (self, "notify::width",
+                    G_CALLBACK (_width_notify_cb), NULL);
+  g_signal_connect (self, "notify::height",
+                    G_CALLBACK (_height_notify_cb), NULL);
 
   /* Hook up search. */
 /*
@@ -1454,40 +1439,7 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
   g_type_class_add_private (klass, sizeof (MnbLauncherPrivate));
 
   object_class->constructor = _constructor;
-  object_class->set_property = _set_property;
-  object_class->get_property = _get_property;
   object_class->dispose = _dispose;
-
-  /**
-   * ClutterActor:width:
-   *
-   * Width of the actor (in pixels). If written, forces the minimum and
-   * natural size request of the actor to the given width. If read, returns
-   * the allocated width if available, otherwise the width request.
-   */
-  g_object_class_install_property (object_class,
-    PROP_LAUNCHER_WIDTH,
-    g_param_spec_int ("launcher-width",
-                      "Width",
-                      "Width of the actor",
-                      0, G_MAXINT,
-                      800,
-                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
-  /**
-   * ClutterActor:height:
-   *
-   * Height of the actor (in pixels).  If written, forces the minimum and
-   * natural size request of the actor to the given height. If read, returns
-   * the allocated height if available, otherwise the height request.
-   */
-  g_object_class_install_property (object_class,
-    PROP_LAUNCHER_HEIGHT,
-    g_param_spec_int ("launcher-height",
-                      "Height",
-                      "Height of the actor",
-                      0, G_MAXINT,
-                      600,
-                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   _signals[LAUNCHER_ACTIVATED] =
     g_signal_new ("launcher-activated",
@@ -1504,12 +1456,11 @@ mnb_launcher_init (MnbLauncher *self)
 {}
 
 ClutterActor *
-mnb_launcher_new (gint width,
-                  gint height)
+mnb_launcher_new (void)
 {
   return g_object_new (MNB_TYPE_LAUNCHER,
-                       "launcher-width", width,
-                       "launcher-height", height,
+                       "min-width", (gfloat) LAUNCHER_MIN_WIDTH,
+                       "min-height", (gfloat) LAUNCHER_MIN_HEIGHT,
                        NULL);
 }
 

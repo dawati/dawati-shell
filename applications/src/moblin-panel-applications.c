@@ -22,22 +22,23 @@
  */
 
 #include <stdlib.h>
+#include <glib/gi18n.h>
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
 #include <libmnb/mnb-panel-clutter.h>
 #include <libmnb/mnb-panel-common.h>
 #include <gtk/gtk.h>
 #include "moblin-netbook-launcher.h"
-
-#define DEFAULT_WIDTH   790
-#define DEFAULT_HEIGHT  400
+#include "config.h"
 
 static void
 stage_width_notify_cb (ClutterActor  *stage,
                        GParamSpec    *pspec,
                        MnbLauncher   *launcher)
 {
+  guint width = clutter_actor_get_width (stage);
 
+  clutter_actor_set_width (CLUTTER_ACTOR (launcher), width);
 }
 
 static void
@@ -45,7 +46,9 @@ stage_height_notify_cb (ClutterActor  *stage,
                         GParamSpec    *pspec,
                         MnbLauncher   *launcher)
 {
+  guint height = clutter_actor_get_height (stage);
 
+  clutter_actor_set_height (CLUTTER_ACTOR (launcher), height);
 }
 
 static void
@@ -61,19 +64,12 @@ launcher_activated_cb (MnbLauncher    *launcher,
   mnb_panel_client_request_hide (panel);
 }
 
-int
-main (int     argc,
-      char  **argv)
+static void
+setup_embedded (void)
 {
   MnbPanelClient  *panel;
   ClutterActor    *stage;
   ClutterActor    *launcher;
-
-  clutter_init (&argc, &argv);
-  gtk_init (&argc, &argv);
-
-  nbtk_style_load_from_file (nbtk_style_get_default (),
-                             MUTTER_MOBLIN_CSS, NULL);
 
   /* TODO: split up the CSS, or do we need one at all here,
    * just for the panel button? */
@@ -83,7 +79,7 @@ main (int     argc,
                                  "applications-button",
                                  TRUE);
 
-  launcher = mnb_launcher_new (DEFAULT_WIDTH, DEFAULT_HEIGHT);
+  launcher = mnb_launcher_new ();
   g_signal_connect (launcher, "launcher-activated",
                     G_CALLBACK (launcher_activated_cb), panel);
 
@@ -94,6 +90,64 @@ main (int     argc,
                     G_CALLBACK (stage_height_notify_cb), launcher);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
+}
+
+static void
+setup_standalone (void)
+{
+  ClutterActor  *stage;
+  ClutterActor  *launcher;
+
+  stage = clutter_stage_get_default ();
+
+  launcher = mnb_launcher_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
+
+  g_signal_connect (stage, "notify::width",
+                    G_CALLBACK (stage_width_notify_cb), launcher);
+  g_signal_connect (stage, "notify::height",
+                    G_CALLBACK (stage_height_notify_cb), launcher);
+
+  clutter_actor_set_size (stage, 1024, 768);
+  clutter_actor_show (stage);
+}
+
+static gboolean _standalone = FALSE;
+
+static GOptionEntry _options[] = {
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone, "Do not embed into the mutter-moblin panel", NULL}
+};
+
+int
+main (int     argc,
+      char  **argv)
+{
+  GOptionContext  *context;
+  GError          *error = NULL;
+
+  context = g_option_context_new ("- Mutter-moblin application launcher panel");
+  g_option_context_add_main_entries (context, _options, GETTEXT_PACKAGE);
+  g_option_context_add_group (context, clutter_get_option_group ());
+  g_option_context_add_group (context, gtk_get_option_group (TRUE));
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+    {
+      g_critical ("%s %s", G_STRLOC, error->message);
+      g_critical ("Starting in standalone mode.");
+      g_clear_error (&error);
+      _standalone = TRUE;
+    }
+  g_option_context_free (context);
+
+  clutter_init (&argc, &argv);
+  gtk_init (&argc, &argv);
+
+  nbtk_style_load_from_file (nbtk_style_get_default (),
+                             MUTTER_MOBLIN_CSS, NULL);
+
+  if (_standalone)
+    setup_standalone ();
+  else
+    setup_embedded ();
 
   clutter_main ();
 
