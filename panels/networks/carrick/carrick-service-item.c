@@ -346,7 +346,7 @@ _connect_button_cb (GtkButton          *connect_button,
   {
     const gchar *security = g_strdup (cm_service_get_security (CM_SERVICE (priv->service)));
 
-    if (g_strcmp0 ("none", security) != 0)
+    if (security && g_strcmp0 ("none", security) != 0)
     {
       if (priv->failed || !cm_service_get_passphrase (priv->service))
       {
