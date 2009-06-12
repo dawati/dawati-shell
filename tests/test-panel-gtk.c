@@ -106,11 +106,16 @@ main (int argc, char *argv[])
 
   gtk_init (&argc, &argv);
 
-  panel = mnb_panel_gtk_new ("test",
-                             "test",
-                             CSS_DIR"/test-panel.css",
-                             "state1",
-                             TRUE);
+  /*
+   * NB: the toolbar service indicates whether this panel requires access
+   *     to the API provided by org.moblin.Mnb.Toolbar -- if you need to do
+   *     any application launching, etc., then pass TRUE.
+   */
+  panel = mnb_panel_gtk_new (MNB_PANEL_TEST,           /* the panel slot */
+                             "test",                   /* tooltip */
+                             CSS_DIR"/test-panel.css", /*stylesheet */
+                             "state1",                 /* button style */
+                             TRUE);                    /* no toolbar service*/
 
   /*
    * Strictly speaking, it is not necessary to construct the window contents
