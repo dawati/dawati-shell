@@ -59,6 +59,7 @@ typedef struct {
 GType anerley_tile_view_get_type (void);
 
 NbtkWidget *anerley_tile_view_new (AnerleyFeedModel *model);
+AnerleyItem *anerley_tile_view_get_selected_item (AnerleyTileView *view);
 
 G_END_DECLS
 

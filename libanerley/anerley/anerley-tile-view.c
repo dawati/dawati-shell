@@ -390,3 +390,23 @@ anerley_tile_view_set_model (AnerleyTileView  *view,
 }
 
 
+AnerleyItem *
+anerley_tile_view_get_selected_item (AnerleyTileView *view)
+{
+  AnerleyTileViewPrivate *priv = GET_PRIVATE (view);
+  AnerleyItem *item;
+
+  if (priv->selected_actor)
+  {
+    g_object_get (priv->selected_actor,
+                  "item",
+                  &item,
+                  NULL);
+
+    return item;
+  } else {
+    return NULL;
+  }
+}
+
+
