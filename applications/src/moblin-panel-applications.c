@@ -77,8 +77,8 @@ main (int     argc,
 
   /* TODO: split up the CSS, or do we need one at all here,
    * just for the panel button? */
-  panel = mnb_panel_clutter_new ("test",
-                                 "test",
+  panel = mnb_panel_clutter_new (MNB_PANEL_APPLICATIONS,
+                                  _("applications"),
                                  MUTTER_MOBLIN_CSS,
                                  "applications-button",
                                  TRUE);
