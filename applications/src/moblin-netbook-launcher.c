@@ -936,20 +936,6 @@ mnb_launcher_fill (MnbLauncher     *self)
 }
 
 static void
-mnb_launcher_force_fill (MnbLauncher     *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  /* Force fill if idle-fill in progress. */
-  if (priv->fill_id)
-    {
-      g_source_remove (priv->fill_id);
-      while (mnb_launcher_fill_category (self))
-        ;
-    }
-}
-
-static void
 mnb_launcher_theme_changed_cb (GtkIconTheme    *theme,
                                 MnbLauncher     *self)
 {
@@ -1297,6 +1283,14 @@ _dispose (GObject *object)
 }
 
 static void
+_key_focus_in (ClutterActor *actor)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (actor);
+
+  clutter_actor_grab_key_focus (priv->filter_entry);
+}
+
+static void
 _width_notify_cb (MnbLauncher   *self,
                   GParamSpec    *pspec,
                   gpointer       user_data)
@@ -1434,12 +1428,14 @@ static void
 mnb_launcher_class_init (MnbLauncherClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-/*  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass); */
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbLauncherPrivate));
 
   object_class->constructor = _constructor;
   object_class->dispose = _dispose;
+
+  actor_class->key_focus_in = _key_focus_in;
 
   _signals[LAUNCHER_ACTIVATED] =
     g_signal_new ("launcher-activated",
@@ -1464,60 +1460,25 @@ mnb_launcher_new (void)
                        NULL);
 }
 
-/*
- * Panel-related code.
- */
-
-#if 0 /* TODO Robsta splitout */
-static void
-dropdown_show_cb (ClutterActor  *actor,
-                  MnbLauncher   *self)
-{
-  mnb_launcher_force_fill (self);
-}
-
-static void
-dropdown_show_completed_cb (MnbDropDown *dropdown,
-                            MnbLauncher *self)
+void
+mnb_launcher_ensure_filled (MnbLauncher *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  clutter_actor_grab_key_focus (priv->filter_entry);
+  /* Force fill if idle-fill in progress. */
+  if (priv->fill_id)
+    {
+      g_source_remove (priv->fill_id);
+      while (mnb_launcher_fill_category (self))
+        ;
+    }
 }
 
-static void
-dropdown_hide_cb (MnbDropDown *dropdown,
-                  MnbLauncher *self)
+void
+mnb_launcher_clear_filter (MnbLauncher *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  ClutterActor *stage;
 
-  /* Reset focus. */
-  stage = clutter_actor_get_stage (CLUTTER_ACTOR (dropdown));
-  clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
-
-  /* Reset search. */
   mnb_entry_set_text (MNB_ENTRY (priv->filter_entry), "");
 }
 
-ClutterActor *
-make_launcher (MutterPlugin *plugin,
-               gint          width,
-               gint          height)
-{
-  ClutterActor *launcher, *drop_down;
-
-  drop_down = (ClutterActor *) mnb_drop_down_new (plugin);
-  launcher = mnb_launcher_new (width, height);
-  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), launcher);
-
-  g_signal_connect_after (drop_down, "show",
-                          G_CALLBACK (dropdown_show_cb), launcher);
-  g_signal_connect_after (drop_down, "show-completed",
-                          G_CALLBACK (dropdown_show_completed_cb), launcher);
-  g_signal_connect (drop_down, "hide-completed",
-                    G_CALLBACK (dropdown_hide_cb), launcher);
-
-  return CLUTTER_ACTOR (drop_down);
-}
-#endif

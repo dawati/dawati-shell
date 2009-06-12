@@ -65,6 +65,27 @@ launcher_activated_cb (MnbLauncher    *launcher,
 }
 
 static void
+panel_show_begin_cb (MnbPanelClient *panel,
+                     MnbLauncher    *launcher)
+{
+  mnb_launcher_ensure_filled (launcher);
+}
+
+static void
+panel_show_end_cb (MnbPanelClient *panel,
+                   MnbLauncher    *launcher)
+{
+  clutter_actor_grab_key_focus (CLUTTER_ACTOR (launcher));
+}
+
+static void
+panel_hide_end_cb (MnbPanelClient *panel,
+                   MnbLauncher    *launcher)
+{
+
+}
+
+static void
 setup_embedded (void)
 {
   MnbPanelClient  *panel;
@@ -82,6 +103,13 @@ setup_embedded (void)
   launcher = mnb_launcher_new ();
   g_signal_connect (launcher, "launcher-activated",
                     G_CALLBACK (launcher_activated_cb), panel);
+
+  g_signal_connect (panel, "show-begin",
+                    G_CALLBACK (panel_show_begin_cb), launcher);
+  g_signal_connect (panel, "show-end",
+                    G_CALLBACK (panel_show_end_cb), launcher);
+  g_signal_connect (panel, "hide-end",
+                    G_CALLBACK (panel_hide_end_cb), launcher);
 
   stage = mnb_panel_clutter_get_stage (MNB_PANEL_CLUTTER (panel));
   g_signal_connect (stage, "notify::width",
