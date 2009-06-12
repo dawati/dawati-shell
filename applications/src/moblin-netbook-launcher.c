@@ -37,6 +37,7 @@
 
 #include <penge/penge-app-bookmark-manager.h>
 #include <libmnb/mnb-panel-clutter.h>
+#include <libmnb/mnb-panel-common.h>
 
 #include "moblin-netbook-launcher.h"
 #include "mnb-entry.h"
@@ -1528,8 +1529,8 @@ main (int     argc,
   nbtk_style_load_from_file (nbtk_style_get_default (),
                              MUTTER_MOBLIN_CSS, NULL);
 
-  panel = mnb_panel_clutter_new ("test",
-                                 "test",
+  panel = mnb_panel_clutter_new (MNB_PANEL_APPLICATIONS,
+                                 _("applications"),
                                  MUTTER_MOBLIN_CSS,
                                  "applications-button",
                                  TRUE);
