@@ -19,8 +19,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				moblin-netbook.h		\
 				moblin-netbook-chooser.c	\
 				moblin-netbook-chooser.h	\
-				moblin-netbook-launcher.c       \
-				moblin-netbook-launcher.h	\
 				moblin-netbook-status.c		\
 				moblin-netbook-status.h		\
 				moblin-netbook-pasteboard.c	\
@@ -58,14 +56,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				mnb-toolbar-button.h            \
 				mnb-panel.c			\
 				mnb-panel.h			\
-				mnb-launcher-application.c \
-				mnb-launcher-application.h \
-				mnb-launcher-button.c           \
-				mnb-launcher-button.h		\
-				mnb-launcher-grid.c \
-				mnb-launcher-grid.h \
-				mnb-launcher-tree.c \
-				mnb-launcher-tree.h \
 				mnb-status-row.c		\
 				mnb-status-row.h		\
 				mnb-status-entry.c		\

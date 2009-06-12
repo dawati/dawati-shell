@@ -48,7 +48,6 @@
 
 /* TODO -- remove these after multiprocing */
 #include "penge/penge-grid-view.h"
-#include "moblin-netbook-launcher.h"
 #include "moblin-netbook-status.h"
 #include "moblin-netbook-netpanel.h"
 #include "moblin-netbook-pasteboard.h"
@@ -1096,10 +1095,13 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             make_status (plugin, screen_width - TOOLBAR_X_PADDING * 2));
           break;
         case APPS_ZONE:
+          g_warning ("Skipping built-in apps panel");
+#if 0
           panel = priv->panels[index] = NBTK_WIDGET (
             make_launcher (plugin,
                            screen_width - TOOLBAR_X_PADDING * 2,
                            screen_height - 2 * TOOLBAR_HEIGHT));
+#endif
           break;
         case PASTEBOARD_ZONE:
           panel = priv->panels[index] = NBTK_WIDGET (

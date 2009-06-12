@@ -64,7 +64,6 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   nbtk-1.0 >= 0.8.0                  dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
-                  libgnome-menu                      dnl
                   dbus-glib-1                        dnl
                   mojito-client                      dnl
                   gio-unix-2.0)
@@ -87,6 +86,18 @@ if test "x$enable_ahoghill" = "xyes"; then
 	AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
 	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.1 gdk-pixbuf-2.0 bognor-regis-0.4 gtk+-2.0)
 fi
+
+# Apps panel is enabled unconditionally
+PKG_CHECK_MODULES(APPLICATIONS,
+                  gio-unix-2.0
+                  gtk+-2.0
+                  libgnome-menu
+                  nbtk-1.0)
+
+APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "'-I$(top_srcdir)/penge -I$(top_srcdir)/src'
+AC_SUBST([APPLICATIONS_CFLAGS])
+APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "'-L$(top_srcdir)/libmnb/.libs -lmnb-clutter'
+AC_SUBST([APPLICATIONS_LIBS])
 
 AC_ARG_ENABLE([netpanel],
 	AC_HELP_STRING([--enable-netpanel],
@@ -147,6 +158,9 @@ SHAVE_INIT([build/autotools], [enable])
 
 AC_OUTPUT([
 Makefile
+applications/Makefile
+applications/src/Makefile
+applications/tests/Makefile
 build/Makefile
 build/autotools/Makefile
 build/autotools/shave

@@ -37,7 +37,6 @@
 #include <penge/penge-utils.h>
 
 #include "mnb-launcher-tree.h"
-#include "moblin-netbook.h"
 
 #define MNB_LAUNCHER_TREE_CACHE_FILE "moblin-launcher-cache"
 

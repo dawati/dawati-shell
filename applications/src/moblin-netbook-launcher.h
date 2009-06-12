@@ -72,11 +72,6 @@ GType mnb_launcher_get_type (void) G_GNUC_CONST;
 ClutterActor * mnb_launcher_new (gint width,
                                  gint height);
 
-
-/* Wrapper for the panel */
-
-ClutterActor *make_launcher (MutterPlugin *plugin, gint width, gint height);
-
 G_END_DECLS
 
 #endif

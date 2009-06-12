@@ -36,10 +36,8 @@
 #include <nbtk/nbtk.h>
 
 #include <penge/penge-app-bookmark-manager.h>
+#include <libmnb/mnb-panel-clutter.h>
 
-#include "moblin-netbook.h"
-#include "moblin-netbook-chooser.h"
-#include "mnb-drop-down.h"
 #include "moblin-netbook-launcher.h"
 #include "mnb-entry.h"
 #include "mnb-launcher-button.h"
@@ -254,8 +252,7 @@ static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
                               MnbLauncher        *self)
 {
-  ClutterActor  *dropdown = NULL;
-  const gchar   *desktop_file_path;
+  const gchar *desktop_file_path;
 
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
@@ -265,11 +262,11 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
 
   desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
 
+# if 0 /* TODO Robsta splitout */
   moblin_netbook_launch_application_from_desktop_file (desktop_file_path,
                                                        NULL,
                                                        FALSE,
                                                        -2);
-
   /*
    * FIXME -- had the launcher been an custom actor, we would be emiting
    * "request-hide" signal that the Toolbar would hook into. It's probably not
@@ -281,6 +278,7 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
   dropdown = clutter_actor_get_parent (CLUTTER_ACTOR (self));
   if (MNB_IS_DROP_DOWN (dropdown))
     mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (dropdown));
+#endif
 }
 
 static void
@@ -491,8 +489,9 @@ expander_expand_complete_idle_cb (MnbLauncher *self)
       if (!launcher)
         launcher = (ClutterActor *) mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
 
-      scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
-                                       launcher);
+      if (launcher)
+        scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+                                         launcher);
 
       priv->expand_timeout_id = 0;
       priv->expand_expander = NULL;
@@ -1513,10 +1512,44 @@ mnb_launcher_new (gint width,
                        NULL);
 }
 
+int
+main (int     argc,
+      char  **argv)
+{
+  MnbPanelClient  *panel;
+  ClutterActor    *stage;
+  ClutterActor    *launcher;
+
+  clutter_init (&argc, &argv);
+  gtk_init (&argc, &argv);
+
+  panel = mnb_panel_clutter_new ("test",
+                                 "test",
+                                 MUTTER_MOBLIN_CSS,
+                                 "state1",
+                                 FALSE);
+
+  stage = mnb_panel_clutter_get_stage (MNB_PANEL_CLUTTER (panel));
+
+/*
+  launcher = mnb_launcher_new (
+                clutter_actor_get_width (stage),
+                clutter_actor_get_height (stage));
+  mnb_launcher_force_fill (MNB_LAUNCHER (launcher));
+*/
+  launcher = nbtk_button_new_with_label ("Foo");
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
+
+  clutter_main ();
+
+  return EXIT_SUCCESS;
+}
+
 /*
  * Panel-related code.
  */
 
+#if 0 /* TODO Robsta splitout */
 static void
 dropdown_show_cb (ClutterActor  *actor,
                   MnbLauncher   *self)
@@ -1568,4 +1601,4 @@ make_launcher (MutterPlugin *plugin,
 
   return CLUTTER_ACTOR (drop_down);
 }
-
+#endif
