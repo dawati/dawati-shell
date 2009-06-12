@@ -1309,7 +1309,7 @@ mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
   index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
 
-  if (index > 0)
+  if (index >= 0)
     mnb_toolbar_dispose_of_panel (toolbar, index, FALSE);
 
   /*
