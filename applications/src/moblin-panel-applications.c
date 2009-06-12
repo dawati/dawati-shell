@@ -38,7 +38,9 @@ stage_width_notify_cb (ClutterActor  *stage,
                        GParamSpec    *pspec,
                        MnbLauncher   *launcher)
 {
+  guint width = clutter_actor_get_width (stage);
 
+  clutter_actor_set_width (CLUTTER_ACTOR (launcher), width);
 }
 
 static void
@@ -46,7 +48,9 @@ stage_height_notify_cb (ClutterActor  *stage,
                         GParamSpec    *pspec,
                         MnbLauncher   *launcher)
 {
+  guint height = clutter_actor_get_height (stage);
 
+  clutter_actor_set_height (CLUTTER_ACTOR (launcher), height);
 }
 
 static void
