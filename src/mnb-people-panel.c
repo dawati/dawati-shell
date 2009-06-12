@@ -55,8 +55,8 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *entry;
   GAppInfo *app_info;
   GtkIconTheme *icon_theme;
-  AnerleyItem *selected_item;
   NbtkWidget *primary_button;
+  NbtkWidget *tile_view;
 };
 
 static void
@@ -124,7 +124,10 @@ _update_buttons (MnbPeoplePanel *people_panel)
   gchar *msg;
   AnerleyItem *item;
 
-  if (priv->selected_item)
+  item =
+    anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
+
+  if (item)
   {
     clutter_actor_show ((ClutterActor *)priv->primary_button);
   } else {
@@ -132,7 +135,6 @@ _update_buttons (MnbPeoplePanel *people_panel)
     return;
   }
 
-  item = priv->selected_item;
   if (ANERLEY_IS_ECONTACT_ITEM (item))
   {
     msg = g_strdup_printf (_("Email %s"),
@@ -149,38 +151,6 @@ _update_buttons (MnbPeoplePanel *people_panel)
   } else {
     g_debug (G_STRLOC ": Unknown item type?");
   }
-}
-
-static void
-_view_item_activated_cb (AnerleyTileView *view,
-                         AnerleyItem     *item,
-                         gpointer         userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-
-/*
-  anerley_item_activate (item);
-  clutter_actor_hide ((ClutterActor *)priv->drop_down);
-*/
-
-  if (priv->selected_item)
-  {
-    /* double click */
-    if (item == priv->selected_item)
-    {
-      anerley_item_activate (item);
-      clutter_actor_hide ((ClutterActor *)priv->drop_down);
-      priv->selected_item = NULL;
-    } else {
-      priv->selected_item = NULL;
-      if (item)
-        priv->selected_item = item;
-    }
-  } else {
-    priv->selected_item = item;
-  }
-
-  _update_buttons ((MnbPeoplePanel *)userdata);
 }
 
 static void
@@ -450,11 +420,22 @@ _primary_button_clicked_cb (NbtkButton *button,
                             gpointer    userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  AnerleyItem *item;
 
-  if (priv->selected_item)
+  item =
+    anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
+
+  if (item)
   {
-    anerley_item_activate (priv->selected_item);
+    anerley_item_activate (item);
   }
+}
+
+static void
+_tile_view_selection_changed_cb (AnerleyTileView *view,
+                                 gpointer         userdata)
+{
+  _update_buttons ((MnbPeoplePanel *)userdata);
 }
 
 static void
@@ -463,7 +444,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
   NbtkWidget *hbox, *label;
   NbtkWidget *scroll_view;
-  NbtkWidget *tile_view;
   MissionControl *mc;
   AnerleyFeed *feed, *tp_feed, *ebook_feed;
   DBusGConnection *conn;
@@ -545,14 +525,10 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   }
 
   priv->model = (AnerleyFeedModel *)anerley_feed_model_new (feed);
-  tile_view = anerley_tile_view_new (priv->model);
+  priv->tile_view = anerley_tile_view_new (priv->model);
   scroll_view = nbtk_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
-                               (ClutterActor *)tile_view);
-  g_signal_connect (tile_view,
-                    "item-activated",
-                    (GCallback)_view_item_activated_cb,
-                    self);
+                               (ClutterActor *)priv->tile_view);
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)scroll_view,
@@ -620,6 +596,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     "clicked",
                     (GCallback)_primary_button_clicked_cb,
                     self);
+
+  g_signal_connect_after (priv->tile_view,
+                          "selection-changed",
+                          (GCallback)_tile_view_selection_changed_cb,
+                          self);
 }
 
 NbtkWidget *
