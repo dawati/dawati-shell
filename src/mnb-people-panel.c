@@ -428,6 +428,7 @@ _primary_button_clicked_cb (NbtkButton *button,
   if (item)
   {
     anerley_item_activate (item);
+    clutter_actor_hide ((ClutterActor *)priv->drop_down);
   }
 }
 
@@ -436,6 +437,17 @@ _tile_view_selection_changed_cb (AnerleyTileView *view,
                                  gpointer         userdata)
 {
   _update_buttons ((MnbPeoplePanel *)userdata);
+}
+
+static void
+_tile_view_item_activated_cb (AnerleyTileView *view,
+                              AnerleyItem     *item,
+                              gpointer         userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+  anerley_item_activate (item);
+  clutter_actor_hide ((ClutterActor *)priv->drop_down);
 }
 
 static void
@@ -601,6 +613,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                           "selection-changed",
                           (GCallback)_tile_view_selection_changed_cb,
                           self);
+
+  g_signal_connect (priv->tile_view,
+                    "item-activated",
+                    (GCallback)_tile_view_item_activated_cb,
+                    self);
 }
 
 NbtkWidget *
