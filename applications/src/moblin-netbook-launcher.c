@@ -1533,13 +1533,11 @@ main (int     argc,
 
   stage = mnb_panel_clutter_get_stage (MNB_PANEL_CLUTTER (panel));
 
-/*
   launcher = mnb_launcher_new (
                 clutter_actor_get_width (stage),
                 clutter_actor_get_height (stage));
+  /* TODO Robsta splitout */
   mnb_launcher_force_fill (MNB_LAUNCHER (launcher));
-*/
-  launcher = nbtk_button_new_with_label ("Foo");
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
 
   clutter_main ();
