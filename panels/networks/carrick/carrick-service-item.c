@@ -58,6 +58,7 @@ struct _CarrickServiceItemPrivate
   GtkWidget          *name_label;
   GtkWidget          *security_label;
   GtkWidget          *connect_button;
+  GtkWidget          *expando;
   ServiceItemState    state;
   CarrickIconFactory *icon_factory;
   gboolean            failed;
@@ -514,20 +515,19 @@ carrick_service_item_init (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
   GtkWidget *box, *hbox, *vbox;
-  GtkWidget *expando;
 
   priv->service = NULL;
   priv->failed = FALSE;
 
   box = gtk_hbox_new (FALSE,
                       6);
-  expando = nbtk_gtk_expander_new ();
+  priv->expando = nbtk_gtk_expander_new ();
   gtk_container_add (GTK_CONTAINER (self),
-                     expando);
-  nbtk_gtk_expander_set_label_widget (NBTK_GTK_EXPANDER (expando),
+                     priv->expando);
+  nbtk_gtk_expander_set_label_widget (NBTK_GTK_EXPANDER (priv->expando),
                                       box);
-  nbtk_gtk_expander_set_has_indicator (NBTK_GTK_EXPANDER (expando),
-				       FALSE);
+  nbtk_gtk_expander_set_has_indicator (NBTK_GTK_EXPANDER (priv->expando),
+                                       FALSE);
 
   priv->icon = gtk_image_new ();
   gtk_box_pack_start (GTK_BOX (box),
