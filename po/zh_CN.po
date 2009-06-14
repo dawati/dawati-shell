@@ -1,0 +1,379 @@
+# mutter moblin netbook plugin
+# Copyright (C) 2009 Intel
+# This file is distributed under the same license as the PACKAGE package.
+# Zhu Yanhai <yanhai.zhu@intel.com>, 2009.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin-netbook-plugin\n"
+"Report-Msgid-Bugs-To: bugzilla.moblin.org\n"
+"POT-Creation-Date: 2009-05-30 13:20+0100\n"
+"PO-Revision-Date: 2009-06-08 11:18+0800\n"
+"Last-Translator: Zhu Yanhai <yanhai.zhu@intel.com>\n"
+"Language-Team: zh_CN <yanhai.zhu@intel.com\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../ahoghill/ahoghill/ahoghill-example-table.c:117
+msgid ""
+"You need to play some music, look at some pictures or watch some video to "
+"see your history here. In the meantime, you could take a look at some sample "
+"media:"
+msgstr "在您打开过一些声音,图片,或者视频文件后,就可以在此处看见您的浏览历史.同时,您可以看一下"
+"我们的示例媒体文件:"
+
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:390
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:918
+msgid "Recently played"
+msgstr "最近播放"
+
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:416
+msgid "Search results"
+msgstr "搜索结果"
+
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:933
+msgid "Local"
+msgstr "本地"
+
+#: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
+#, c-format
+msgid "Season %u, Episode %u"
+msgstr "第%u季, 第%u集"
+
+#: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
+msgid "Previous"
+msgstr "上一个"
+
+#: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
+msgid "Next"
+msgstr "下一个"
+
+#: ../ahoghill/ahoghill/ahoghill-search-pane.c:87
+msgid "Media"
+msgstr "媒体"
+
+#: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
+#: ../src/moblin-netbook-launcher.c:1339
+#: ../src/moblin-netbook-pasteboard.c:215 ../src/moblin-netbook-people.c:383
+#: ../tests/test-pasteboard.c:149
+msgid "Search"
+msgstr "搜索"
+
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
+#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:255
+#, c-format
+msgid "Season %d Episode %d"
+msgstr "第%d季 第%d集"
+
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
+#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:257
+#, c-format
+msgid "Season %d"
+msgstr "第%d季"
+
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
+#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:259
+#, c-format
+msgid "Episode %d"
+msgstr "第%d集"
+
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
+#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:261
+#, c-format
+msgid "Year %d"
+msgstr "%d年"
+
+#: ../penge/penge/penge-calendar-pane.c:180
+msgid "<b>Appointments</b>"
+msgstr "<b>日程安排</b>"
+
+#: ../penge/penge/penge-events-pane.c:198
+msgid "No calendar entries this week"
+msgstr ""
+
+#: ../penge/penge/penge-people-pane.c:200
+msgid ""
+"Your friends' feeds and web services will appear here. Activate your "
+"accounts now!"
+msgstr ""
+
+#: ../penge/penge/penge-recent-files-pane.c:189
+msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+msgstr ""
+
+#: ../penge/penge/penge-recent-files-pane.c:214
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around this Beta Release. We "
+"hope you enjoy it, The Moblin Team."
+msgstr ""
+
+#: ../penge/penge/penge-recent-file-tile.c:236
+msgid "Web page"
+msgstr ""
+
+#: ../penge/penge/penge-tasks-pane.c:287
+msgid "Nothing to do today"
+msgstr ""
+
+#: ../penge/penge/penge-task-tile.c:329
+#, c-format
+msgid "Due %x"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:62
+msgid "Less than a minute ago"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:66
+msgid "A few minutes ago"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:70
+msgid "A couple of hours ago"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:77
+msgid "Earlier today"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:80
+msgid "Yesterday"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:88
+#, c-format
+msgid "On %A"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:94
+msgid "Unknown"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:101
+msgid "Last week"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:104
+msgid "A couple of weeks ago"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:110
+msgid "This month"
+msgstr ""
+
+#. Now Jan., last used in Dec.
+#: ../penge/penge/penge-utils.c:114
+msgid "Last month"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:117
+msgid "This year"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:120
+msgid "Last year"
+msgstr ""
+
+#: ../penge/penge/penge-utils.c:122
+msgid "Ages ago"
+msgstr ""
+
+#: ../src/moblin-netbook.c:233
+msgid "Move cursor to the top of the screen to activate the toolbar"
+msgstr ""
+
+#: ../src/moblin-netbook.c:370
+msgid "m_zone"
+msgstr ""
+
+#: ../src/moblin-netbook.c:373
+msgid "zones"
+msgstr ""
+
+#: ../src/moblin-netbook.c:376
+msgid "status"
+msgstr ""
+
+#: ../src/moblin-netbook.c:379
+msgid "applications"
+msgstr ""
+
+#: ../src/moblin-netbook.c:382
+msgid "pasteboard"
+msgstr ""
+
+#: ../src/moblin-netbook.c:385
+msgid "internet"
+msgstr ""
+
+#: ../src/moblin-netbook.c:388
+msgid "media"
+msgstr ""
+
+#: ../src/moblin-netbook.c:391
+msgid "people"
+msgstr ""
+
+#: ../src/moblin-netbook.c:496
+msgid "Moblin Netbook Effects"
+msgstr ""
+
+#: ../src/moblin-netbook.c:500
+msgid "Effects for Moblin Netbooks"
+msgstr ""
+
+#: ../src/moblin-netbook-chooser.c:765
+#, c-format
+msgid "Zone %d"
+msgstr ""
+
+#: ../src/moblin-netbook-chooser.c:814
+msgid "New zone (0)"
+msgstr ""
+
+#: ../src/moblin-netbook-chooser.c:895
+msgid "Choose zone for application:"
+msgstr ""
+
+#.
+#. * Fav apps.
+#.
+#. Label
+#: ../src/moblin-netbook-launcher.c:814
+msgid "Favourite Applications"
+msgstr ""
+
+#: ../src/moblin-netbook-launcher.c:1328
+msgid "Applications"
+msgstr ""
+
+#. Construct tabs previews table widgets
+#: ../src/moblin-netbook-netpanel.c:114
+msgid "Tabs"
+msgstr ""
+
+#: ../src/moblin-netbook-netpanel.c:117
+msgid "More..."
+msgstr ""
+
+#. Add a placeholder text label
+#: ../src/moblin-netbook-netpanel.c:266
+msgid "Type an address or load the browser to see your tabs here."
+msgstr ""
+
+#. Construct entry table widgets
+#: ../src/moblin-netbook-netpanel.c:447
+msgid "Internet"
+msgstr ""
+
+#: ../src/moblin-netbook-netpanel.c:464
+msgid "Go"
+msgstr ""
+
+#: ../src/moblin-netbook-pasteboard.c:137
+#: ../src/moblin-netbook-pasteboard.c:357 ../tests/test-pasteboard.c:92
+#: ../tests/test-pasteboard.c:232
+msgid "the current selection to pasteboard"
+msgstr ""
+
+#: ../src/moblin-netbook-pasteboard.c:202 ../tests/test-pasteboard.c:142
+msgid "Pasteboard"
+msgstr ""
+
+#: ../src/moblin-netbook-pasteboard.c:252
+msgid "You need to copy some text to use Pasteboard"
+msgstr ""
+
+#: ../src/moblin-netbook-pasteboard.c:314 ../tests/test-pasteboard.c:206
+msgid "Clear pasteboard"
+msgstr ""
+
+#: ../src/moblin-netbook-pasteboard.c:342 ../src/mnb-clipboard-item.c:489
+#: ../tests/test-pasteboard.c:223
+msgid "Copy"
+msgstr ""
+
+#: ../src/moblin-netbook-status.c:206 ../src/moblin-netbook-status.c:260
+msgid "Your current status"
+msgstr ""
+
+#: ../src/moblin-netbook-status.c:208
+msgid "Your current status - you are offline"
+msgstr ""
+
+#: ../src/moblin-netbook-status.c:290
+msgid ""
+"To update your web status you need to setup a Web Services account with a "
+"provider that supports status messages"
+msgstr ""
+
+#: ../src/moblin-netbook-people.c:188
+msgid ""
+"Sorry, we can't find any people. Have you set up an Instant Messenger "
+"account?"
+msgstr ""
+
+#: ../src/moblin-netbook-people.c:370
+msgid "People"
+msgstr ""
+
+#: ../src/tray/na-tray-child.c:121
+#, c-format
+msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
+msgstr ""
+
+#: ../src/mnb-status-entry.c:138 ../src/mnb-status-entry.c:644
+#: ../src/mnb-status-entry.c:726
+msgid "Edit"
+msgstr ""
+
+#. Translators: %s is the user visible name of the service
+#: ../src/mnb-status-entry.c:523
+#, c-format
+msgid "Enter your %s status here..."
+msgstr ""
+
+#: ../src/mnb-status-entry.c:527 ../src/mnb-status-entry.c:598
+msgid "Enter your current status here..."
+msgstr ""
+
+#: ../src/mnb-status-entry.c:705
+msgid "Post"
+msgstr ""
+
+#: ../src/mnb-switcher.c:1215
+msgid "No Zones yet"
+msgstr ""
+
+#: ../src/mnb-switcher.c:1237
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organise them to your heart's content."
+msgstr ""
+
+#: ../src/mnb-switcher.c:1461
+msgid "No applications on this zone"
+msgstr ""
+
+#: ../src/mnb-toolbar.c:1004
+msgid "power & brightness"
+msgstr ""
+
+#: ../src/mnb-toolbar.c:1007
+msgid "volume"
+msgstr ""
+
+#: ../src/mnb-toolbar.c:1010
+msgid "bluetooth"
+msgstr ""
+
+#: ../src/mnb-toolbar.c:1013
+msgid "networks"
+msgstr ""
+
+#: ../src/mnb-toolbar.c:1016
+msgid "test"
+msgstr ""
