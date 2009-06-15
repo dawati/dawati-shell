@@ -233,6 +233,7 @@ penge_app_tile_init (PengeAppTile *self)
   PengeAppTilePrivate *priv = GET_PRIVATE (self);
 
   priv->tex = clutter_texture_new ();
+  clutter_actor_set_size (priv->tex, ICON_SIZE, ICON_SIZE);
 
   nbtk_bin_set_child (NBTK_BIN (self),
                       priv->tex);
