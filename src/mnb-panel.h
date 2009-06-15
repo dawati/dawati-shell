@@ -27,8 +27,8 @@
 
 #include <glib-object.h>
 
+#include <mnb/mnb-panel-common.h>
 #include "mnb-drop-down.h"
-#include "../libmnb/mnb-panel-common.h"
 
 G_BEGIN_DECLS
 

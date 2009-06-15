@@ -25,8 +25,8 @@
 #include <glib/gi18n.h>
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
-#include <libmnb/mnb-panel-clutter.h>
-#include <libmnb/mnb-panel-common.h>
+#include <mnb/mnb-panel-clutter.h>
+#include <mnb/mnb-panel-common.h>
 #include <gtk/gtk.h>
 #include "moblin-netbook-launcher.h"
 #include "config.h"

@@ -32,11 +32,12 @@ GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
 
-localedir ="$(prefix)/$(DATADIRNAME)/locale"
+localedir="$(prefix)/$(DATADIRNAME)/locale"
 AC_SUBST(localedir)
 
 IT_PROG_INTLTOOL([0.34.90])
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_ISC_POSIX
 AC_HEADER_STDC
 AM_PROG_LIBTOOL
@@ -77,9 +78,26 @@ PKG_CHECK_MODULES(PENGE,
                   gio-2.0
                   gio-unix-2.0)
 
-PKG_CHECK_MODULES(LIBMNB,
-		  dbus-glib-1)
+# Libmnb
+PKG_CHECK_MODULES(LIBMNB_CLUTTER,
+                  dbus-glib-1
+                  nbtk-1.0)
 
+LIBMNB_CLUTTER_CFLAGS="${LIBMNB_CLUTTER_CFLAGS} "'-I$(top_srcdir)/penge -I$(top_srcdir)/src'
+AC_SUBST([LIBMNB_CLUTTER_CFLAGS])
+LIBMNB_CLUTTER_LIBS="${LIBMNB_CLUTTER_LIBS} ${PENGE_LIBS} "'$(top_builddir)/penge/penge/libpenge.la'
+AC_SUBST([LIBMNB_CLUTTER_LIBS])
+
+PKG_CHECK_MODULES(LIBMNB_GTK,
+                  dbus-glib-1
+                  gtk+-2.0)
+
+LIBMNB_GTK_CFLAGS="${LIBMNB_GTK_CFLAGS} "'-I$(top_srcdir)/src'
+AC_SUBST([LIBMNB_GTK_CFLAGS])
+AC_SUBST([LIBMNB_GTK_LIBS])
+
+
+# Ahoghill
 AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
 
 if test "x$enable_ahoghill" = "xyes"; then
@@ -87,18 +105,21 @@ if test "x$enable_ahoghill" = "xyes"; then
 	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.1 gdk-pixbuf-2.0 bognor-regis-0.4 >= 0.4.3 gtk+-2.0)
 fi
 
-# Apps panel is enabled unconditionally
+AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
+
+# Applications panel
 PKG_CHECK_MODULES(APPLICATIONS,
                   gio-unix-2.0
                   gtk+-2.0
                   libgnome-menu
                   nbtk-1.0)
 
-APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "'-I$(top_srcdir)/penge -I$(top_srcdir)/src'
+APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "'-I$(top_srcdir)/libmnb -I$(top_srcdir)/penge -I$(top_srcdir)/src'
 AC_SUBST([APPLICATIONS_CFLAGS])
-APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "'-L$(top_srcdir)/libmnb/.libs -lmnb-clutter'
+APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "'-L$(top_builddir)/libmnb/mnb/.libs -lmnb-clutter'
 AC_SUBST([APPLICATIONS_LIBS])
 
+# Netpanel
 AC_ARG_ENABLE([netpanel],
 	AC_HELP_STRING([--enable-netpanel],
 		[Enable building of the internet panel]),
@@ -109,6 +130,9 @@ if test x"$enable_netpanel" = xyes; then
 	PKG_CHECK_MODULES(NETPANEL, cluttermozembed)
 fi
 
+AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
+
+# People panel
 AC_ARG_ENABLE([people],
 	AC_HELP_STRING([--enable-people],
 		[Enable building of the people panel]),
@@ -119,16 +143,12 @@ if test x"$enable_people" = xyes; then
 	PKG_CHECK_MODULES(PEOPLE, anerley)
 fi
 
-AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
-AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 AM_CONDITIONAL(WITH_PEOPLE, test x"$enable_people" = xyes)
 
 AC_ARG_ENABLE([debug],
 	AC_HELP_STRING([--enable-debug],
 		[Enable debugging features, whatever that means]),
 		[enable_debug="$enableval"], [enable_debug=no])
-
-echo "enableval: $enableval"
 
 if test x"$enable_debug" = xyes; then
    CFLAGS="$CFLAGS -g -O0"
@@ -137,9 +157,6 @@ fi
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
-
-PKG_CHECK_MODULES(GTK, gtk+-2.0)
-PKG_CHECK_MODULES(NBTK, nbtk-1.0)
 
 MUTTER_PLUGIN_DIR=$($PKG_CONFIG metacity-plugins --variable=mutterplugindir)
 AC_SUBST(MUTTER_PLUGIN_DIR)
@@ -180,6 +197,8 @@ ahoghill/examples/Makefile
 libmnb/Makefile
 libmnb/mnb-gtk.pc
 libmnb/mnb-clutter.pc
+libmnb/mnb/Makefile
+libmnb/tests/Makefile
 ])
 
 echo "

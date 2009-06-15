@@ -29,8 +29,8 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
-#include "../libmnb/mnb-panel-gtk.h"
-#include "../libmnb/mnb-panel-common.h"
+#include <mnb/mnb-panel-gtk.h>
+#include <mnb/mnb-panel-common.h>
 
 /*
  * This is a callback to demonstrate how the application can close the config

@@ -22,17 +22,16 @@
  * 02111-1307, USA.
  */
 
-#include "mnb-panel-client.h"
-#include "mnb-panel-common.h"
-
-#include "../src/marshal.h"
-
 #include <string.h>
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
+
+#include "mnb-panel-client.h"
+#include "mnb-panel-common.h"
+#include "marshal.h"
 
 G_DEFINE_TYPE (MnbPanelClient, mnb_panel_client, G_TYPE_OBJECT)
 
@@ -280,7 +279,7 @@ mnb_panel_dbus_hide_end (MnbPanelClient *self, GError **error)
   return TRUE;
 }
 
-#include "../src/mnb-panel-dbus-glue.h"
+#include "../../src/mnb-panel-dbus-glue.h"
 
 static void
 mnb_panel_client_class_init (MnbPanelClientClass *klass)
@@ -770,7 +769,7 @@ mnb_panel_client_request_tooltip (MnbPanelClient *panel,
   g_signal_emit (panel, signals[REQUEST_TOOLTIP], 0, tooltip);
 }
 
-#include "../src/mnb-toolbar-dbus-bindings.h"
+#include "../../src/mnb-toolbar-dbus-bindings.h"
 
 gboolean
 mnb_panel_client_launch_application (MnbPanelClient *panel,

@@ -26,8 +26,8 @@
  *
  */
 
-#include "../libmnb/mnb-panel-clutter.h"
-#include "../libmnb/mnb-panel-common.h"
+#include <mnb/mnb-panel-clutter.h>
+#include <mnb/mnb-panel-common.h>
 
 static void
 make_window_content (MnbPanelClutter *panel)

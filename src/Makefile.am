@@ -10,6 +10,7 @@ INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@	\
 	@AHOGHILL_CFLAGS@ 						\
 	-I$(top_srcdir)/ahoghill 					\
 	-I$(top_srcdir)/penge 						\
+	-I$(top_srcdir)/libmnb 						\
 	-I$(top_srcdir)/src
 
 AM_CFLAGS   = -fPIC
@@ -30,7 +31,8 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
                                 moblin-netbook-system-tray.h    \
 				mwb-utils.c			\
 				mwb-utils.h			\
-	                        $(DBUS_GLUE)                    \
+				$(DBUS_BINDINGS) \
+				$(DBUS_GLUE) \
 				$(MARSHALS)                     \
 				mnb-clipboard-item.c		\
 				mnb-clipboard-item.h		\

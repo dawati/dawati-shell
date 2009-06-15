@@ -6,6 +6,8 @@ ahoghill/ahoghill/ahoghill-results-pane.c
 ahoghill/ahoghill/ahoghill-search-pane.c
 ahoghill/ahoghill/ahoghill-queue-tile.c
 ahoghill/ahoghill/ahoghill-playlist-header.c
+applications/src/moblin-netbook-launcher.c
+applications/src/moblin-panel-applications.c
 penge/penge/penge-calendar-pane.c
 penge/penge/penge-events-pane.c
 penge/penge/penge-people-pane.c
@@ -16,7 +18,6 @@ penge/penge/penge-task-tile.c
 penge/penge/penge-utils.c
 src/moblin-netbook.c
 src/moblin-netbook-chooser.c
-src/moblin-netbook-launcher.c
 src/moblin-netbook-netpanel.c
 src/moblin-netbook-pasteboard.c
 src/moblin-netbook-status.c
@@ -24,7 +25,6 @@ src/moblin-netbook-people.c
 src/tray/na-tray-child.c
 src/mnb-clipboard-item.c
 src/mnb-entry.c
-src/mnb-launcher-tree.c
 src/mnb-people-panel.c
 src/mnb-status-entry.c
 src/mnb-switcher.c
