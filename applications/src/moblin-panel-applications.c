@@ -24,10 +24,12 @@
 #include <stdlib.h>
 #include <glib/gi18n.h>
 #include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
+#include <gdk/gdkx.h>
+#include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
 #include <mnb/mnb-panel-clutter.h>
 #include <mnb/mnb-panel-common.h>
-#include <gtk/gtk.h>
 #include "moblin-netbook-launcher.h"
 #include "config.h"
 
@@ -166,8 +168,9 @@ main (int     argc,
     }
   g_option_context_free (context);
 
-  clutter_init (&argc, &argv);
   gtk_init (&argc, &argv);
+  clutter_x11_set_display (GDK_DISPLAY ());
+  clutter_init (&argc, &argv);
 
   nbtk_texture_cache_load_cache(nbtk_texture_cache_get_default(),
     DATADIR "/icons/moblin/48x48/nbtk.cache");

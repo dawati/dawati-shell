@@ -109,6 +109,8 @@ AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 
 # Applications panel
 PKG_CHECK_MODULES(APPLICATIONS,
+                  clutter-x11-0.9
+                  gdk-x11-2.0
                   gio-unix-2.0
                   gtk+-2.0
                   libgnome-menu
