@@ -998,12 +998,15 @@ carrick_pane_trigger_scan (CarrickPane *pane)
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   GList *devices = cm_manager_get_devices (priv->manager);
   CmDevice *dev;
+  CmDeviceType type;
 
   while (devices)
   {
     dev = devices->data;
+    type = cm_device_get_type (dev);
 
-    cm_device_scan (dev);
+    if (type != DEVICE_ETHERNET && type != DEVICE_UNKNOWN)
+      cm_device_scan (dev);
 
     devices = devices->next;
   }
