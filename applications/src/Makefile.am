@@ -1,9 +1,11 @@
 
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+
 AM_CFLAGS = \
   $(APPLICATIONS_CFLAGS) \
   -DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\"
 
-bin_PROGRAMS = moblin-panel-applications
+libexec_PROGRAMS = moblin-panel-applications
 
 moblin_panel_applications_LDADD = $(APPLICATIONS_LIBS)
 
@@ -19,4 +21,15 @@ moblin_panel_applications_SOURCES = \
   moblin-netbook-launcher.c \
   moblin-netbook-launcher.h \
   moblin-panel-applications.c
+
+servicedir = $(datadir)/dbus-1/services
+service_in_files = org.moblin.Mnb.Panels.applications.service.in
+service_DATA = org.moblin.Mnb.Panels.applications.service
+
+EXTRA_DIST = $(service_in_files)
+
+DISTCLEANFILES = org.moblin.Mnb.Panels.applications.service
+
+org.moblin.Mnb.Panels.applications.service: org.moblin.Mnb.Panels.applications.service.in $(top_builddir)/config.log
+	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
