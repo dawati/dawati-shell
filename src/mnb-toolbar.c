@@ -1304,24 +1304,32 @@ mnb_toolbar_dispose_of_panel (MnbToolbar *toolbar,
 static void
 mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
-  gint         index;
-  const gchar *name;
+  gint   index;
+  gchar *name = NULL;
 
   index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
 
   if (index >= 0)
-    mnb_toolbar_dispose_of_panel (toolbar, index, FALSE);
+    {
+      /*
+       * Get the panel name before we dispose of it.
+       */
+      name = g_strdup (mnb_panel_get_name (panel));
+      mnb_toolbar_dispose_of_panel (toolbar, index, FALSE);
+    }
 
   /*
    * Try to restart the service
    */
-  name = mnb_panel_get_name (panel);
 
   if (name)
     {
       gchar *dbus_name = g_strconcat (MNB_PANEL_DBUS_NAME_PREFIX, name, NULL);
 
       mnb_toolbar_handle_dbus_name (toolbar, dbus_name);
+
+      g_free (dbus_name);
+      g_free (name);
     }
 }
 
