@@ -141,7 +141,8 @@ manager_state_changed_cb (CmManager *manager,
     priv->state = new_state;
   }
 
-  carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
+  if (priv->icon)
+    carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
   /* disable notifications until they have been improved */
   //_notify_connection_changed (applet);
 }
