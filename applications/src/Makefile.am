@@ -2,8 +2,9 @@
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
-  $(APPLICATIONS_CFLAGS) \
-  -DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\"
+	$(APPLICATIONS_CFLAGS) \
+	-DDATADIR=\"$(datadir)\" \
+	-DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\"
 
 libexec_PROGRAMS = moblin-panel-applications
 

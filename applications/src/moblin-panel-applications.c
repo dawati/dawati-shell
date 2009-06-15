@@ -169,6 +169,13 @@ main (int     argc,
   clutter_init (&argc, &argv);
   gtk_init (&argc, &argv);
 
+  nbtk_texture_cache_load_cache(nbtk_texture_cache_get_default(),
+    DATADIR "/icons/moblin/48x48/nbtk.cache");
+  nbtk_texture_cache_load_cache(nbtk_texture_cache_get_default(),
+    DATADIR "/icons/hicolor/48x48/nbtk.cache");
+  nbtk_texture_cache_load_cache(nbtk_texture_cache_get_default(),
+    DATADIR "/mutter-moblin/nbtk.cache");
+
   nbtk_style_load_from_file (nbtk_style_get_default (),
                              MUTTER_MOBLIN_CSS, NULL);
 

@@ -551,6 +551,7 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
                               gint                icon_size)
 {
   GError *error;
+  NbtkTextureCache *texture_cache;
 
   if (self->priv->icon_file)
     {
@@ -568,8 +569,10 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
   self->priv->icon_size = icon_size;
 
   error = NULL;
-  self->priv->icon = clutter_texture_new_from_file (self->priv->icon_file,
-                                                    &error);
+  texture_cache = nbtk_texture_cache_get_default ();
+  self->priv->icon = nbtk_texture_cache_get_actor (texture_cache,
+                                                   self->priv->icon_file);
+
   if (error) {
     g_warning (G_STRLOC "%s", error->message);
     g_error_free (error);
@@ -581,7 +584,6 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
       clutter_actor_set_size (self->priv->icon,
                               self->priv->icon_size,
                               self->priv->icon_size);
-      g_object_set (G_OBJECT (self->priv->icon), "sync-size", TRUE, NULL);
     }
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           CLUTTER_ACTOR (self->priv->icon),
