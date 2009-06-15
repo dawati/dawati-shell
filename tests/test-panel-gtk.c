@@ -55,11 +55,11 @@ button_clicked_cb (GtkButton *button, gpointer data)
 static void
 make_window_content (MnbPanelGtk *panel)
 {
-  GtkWidget *window, *table, *button, *old_child;
+  GtkWidget *window, *table, *button, *old_child, *entry;
 
   window = mnb_panel_gtk_get_window (panel);
 
-  table = gtk_table_new (3, 3, TRUE);
+  table = gtk_table_new (5, 3, TRUE);
 
   button = gtk_button_new_from_stock (GTK_STOCK_QUIT);
 
@@ -67,6 +67,12 @@ make_window_content (MnbPanelGtk *panel)
                     G_CALLBACK (button_clicked_cb), panel);
 
   gtk_table_attach_defaults (GTK_TABLE (table), button, 1, 2, 1, 2);
+
+  entry = gtk_entry_new ();
+  gtk_entry_set_text (GTK_ENTRY (entry), "test");
+  gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, 3, 4);
+
+  gtk_window_set_focus (GTK_WINDOW (window), entry);
 
   old_child = gtk_bin_get_child (GTK_BIN (window));
 
