@@ -37,6 +37,7 @@
 #include <anerley/anerley-econtact-item.h>
 
 #include <libebook/e-book.h>
+#include "src/moblin-netbook-chooser.h"
 
 G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
 
@@ -56,6 +57,7 @@ struct _MnbPeoplePanelPrivate {
   GAppInfo *app_info;
   GtkIconTheme *icon_theme;
   NbtkWidget *primary_button;
+  NbtkWidget *secondary_button;
   NbtkWidget *tile_view;
 };
 
@@ -132,6 +134,7 @@ _update_buttons (MnbPeoplePanel *people_panel)
     clutter_actor_show ((ClutterActor *)priv->primary_button);
   } else {
     clutter_actor_hide ((ClutterActor *)priv->primary_button);
+    clutter_actor_hide ((ClutterActor *)priv->secondary_button);
     return;
   }
 
@@ -142,12 +145,19 @@ _update_buttons (MnbPeoplePanel *people_panel)
     nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
                            msg);
     g_free (msg);
+    msg = g_strdup_printf (_("Edit %s"),
+                           anerley_item_get_display_name (item));
+    nbtk_button_set_label (NBTK_BUTTON (priv->secondary_button),
+                           msg);
+    g_free (msg);
+    clutter_actor_show ((ClutterActor *)priv->secondary_button);
   } else if (ANERLEY_IS_TP_ITEM (item)) {
     msg = g_strdup_printf (_("IM %s"),
                            anerley_item_get_display_name (item));
     nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
                            msg);
     g_free (msg);
+    clutter_actor_hide ((ClutterActor *)priv->secondary_button);
   } else {
     g_debug (G_STRLOC ": Unknown item type?");
   }
@@ -433,6 +443,35 @@ _primary_button_clicked_cb (NbtkButton *button,
 }
 
 static void
+_secondary_button_clicked_cb (NbtkButton *button,
+                              gpointer    userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  AnerleyItem *item;
+  gchar *command_line;
+  const gchar *uid;
+
+  item =
+    anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
+
+  if (item)
+  {
+    uid = anerley_econtact_item_get_uid ((AnerleyEContactItem *)item);
+    command_line = g_strdup_printf ("contacts --uid %s",
+                                    uid);
+    if (!moblin_netbook_launch_application (command_line, FALSE, -2))
+    {
+      g_warning (G_STRLOC ": Error launching contacts for uid: %s",
+                 uid);
+      g_free (command_line);
+    } else {
+      g_free (command_line);
+      clutter_actor_hide ((ClutterActor *)priv->drop_down);
+    }
+  }
+}
+
+static void
 _tile_view_selection_changed_cb (AnerleyTileView *view,
                                  gpointer         userdata)
 {
@@ -551,9 +590,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "x-expand",
                                         TRUE,
                                         "y-expand",
-                                        TRUE,
+                                        FALSE,
                                         "y-fill",
                                         TRUE,
+                                        "row-span",
+                                        2,
                                         NULL);
   no_people_tile = 
     _make_empty_people_tile (self,
@@ -573,6 +614,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         FALSE,
                                         "y-align",
                                         0.0,
+                                        "row-span",
+                                        2,
                                         NULL);
   g_signal_connect (priv->model,
                     "bulk-change-end",
@@ -602,11 +645,38 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_width ((ClutterActor *)priv->primary_button,
                            150);
 
+  priv->secondary_button = nbtk_button_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-secondary-action");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        (ClutterActor *)priv->secondary_button,
+                                        2,
+                                        1,
+                                        "x-fill",
+                                        FALSE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-expand",
+                                        FALSE,
+                                        "y-expand",
+                                        TRUE,
+                                        "x-align",
+                                        0.0,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
+  clutter_actor_set_width ((ClutterActor *)priv->secondary_button,
+                           150);
+
   _update_buttons (self);
 
   g_signal_connect (priv->primary_button,
                     "clicked",
                     (GCallback)_primary_button_clicked_cb,
+                    self);
+
+  g_signal_connect (priv->secondary_button,
+                    "clicked",
+                    (GCallback)_secondary_button_clicked_cb,
                     self);
 
   g_signal_connect_after (priv->tile_view,
