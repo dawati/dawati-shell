@@ -1,0 +1,99 @@
+
+libmoblin-panel-clutter and libmoblin-panel-gtk are utility libraries for
+implementing panels for the Moblin Toolbar. They provide the following objects:
+
+MplEntry
+========
+An entry widget for use by the Panels.
+
+MplPanelClient
+==============
+An abstract object providing most of the panel API, with two subclasses,
+MplPanelClutter and MplPanelGtk implementing the gory details for Clutter and
+Gtk-based panels respectively.
+
+
+Public Functions
+----------------
+
+mnb_panel_clutter/gtk_new  (const gchar *name,
+                     	    const gchar *tooltip,
+                            const gchar *stylesheet,
+                            const gchar *button_style,
+                            gboolean     with_toolbar_service)
+
+Panel object constructors:
+
+  * name -- identifier of the Panel slot on the Toolbar, predefined in
+            mpl_panel_common.h;
+
+  * tooltip -- the toolip text for the associated Toolbar button;
+
+  * stylesheet -- css stylesheet for Toolbar button styling;
+
+  * button_style -- id of the style that is to be applied to the Toobar button;
+
+  * with_toolbar_service -- whether the Toolbar dbus services should be enabled.
+                            Panels requiring the application launching API
+                            should pass TRUE.
+
+
+mpl_panel_client_request_show ()
+mpl_panel_client_request_hide ()
+
+API through which the application can request that the Panel be shown or
+hidden (NB: the hide request results in both the Panel and the Toolbar getting
+hidden.)
+
+mpl_panel_client_request_button_style ()
+mpl_panel_client_reqeust_tooltip ()
+
+API for dynamically changing the style of the associated Toolbar button and its
+tooltip after the object has been created.
+
+mpl_panel_client_set_height ()
+
+API for panels that do not wish to use the default fullscreen height.
+
+mpl_panel_client_launch_application ();
+mpl_panel_client_launch_application_from_desktop_file ();
+mpl_panel_client_launch_default_application_for_uri ();
+
+Application-launching API; Panels that need to use this API need to construct
+the MplPanelClient object with the with_toolbar_services parameter set to TRUE.
+
+
+Signals
+-------
+
+"set-size" (guint width, guint height)
+
+The set-size signal is emitted at the end of the handshake between the Panel
+and the Toolbar. The width and height parameters indicate the size the Panel
+will occupy. Generally, Panels that require to know their final size in order
+to do layout should construct their contents in response to this signal.
+
+
+"show-begin" (void)
+"show-end"
+"hide-begin"
+"hide-end"
+
+These signals are emitted at the start/end of the panel show/hide animation.
+NB: these are non-blocking signals, and respective animations will commence
+before the Panel returns.
+
+
+Dbus Service Files
+------------------
+
+Each Panel needs to install a dbus service file that allows it to be
+autostarted. The service name provided by the panel is
+MPL_PANEL_DBUS_NAME_PREFIX MPL_PANEL_<name> (see mpl-panel-common.h for the
+definition of the constants).
+
+Examples
+--------
+
+tests/test-panel-clutter.c and tests/test-panel-gtk.c demonstrate how to create
+a Panel either using Gtk or Clutter and their associated service files.
