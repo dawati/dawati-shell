@@ -374,6 +374,11 @@ mnb_panel_show_completed (MnbDropDown *self)
 
   gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
 
+  XSetInputFocus (GDK_DISPLAY(),
+                  priv->child_xid,
+                  RevertToPointerRoot,
+                  CurrentTime);
+
   org_moblin_Mnb_Panel_show_end_async (priv->proxy,
                                        mnb_panel_dbus_dumb_reply_cb, NULL);
 }
