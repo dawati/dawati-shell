@@ -136,7 +136,16 @@ on_selection_changed (MnbClipboardStore *store,
   if (current_selection == NULL || *current_selection == '\0')
     nbtk_label_set_text (label, _("the current selection to pasteboard"));
   else
-    nbtk_label_set_text (label, current_selection);
+    {
+      gchar *text;
+
+      text = g_strconcat (_("your selection"),
+                          " \"", current_selection, "\"",
+                          NULL);
+      nbtk_label_set_text (label, text);
+
+      g_free (text);
+    }
 }
 
 static void
