@@ -28,6 +28,14 @@ AM_CFLAGS = \
 LDADD = \
 	$(MUTTER_PLUGIN_LIBS)
 
+noinst_PROGRAMS = \
+       test-entry \
+       test-tray \
+       test-pasteboard \
+       test-screensized \
+       test-panel-gtk \
+       test-panel-clutter
+
 test_tray_SOURCES = \
 	test-tray.c
 
