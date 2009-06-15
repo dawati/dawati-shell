@@ -41,6 +41,10 @@ make_window_content (MnbPanelClutter *panel)
 
   label = clutter_text_new_with_text ("Sans 16pt", "This is a clutter panel");
   clutter_text_set_color  (CLUTTER_TEXT (label), &black);
+  clutter_text_set_editable (CLUTTER_TEXT (label), TRUE);
+
+  clutter_stage_set_key_focus (CLUTTER_STAGE (stage), label);
+
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 }
 
