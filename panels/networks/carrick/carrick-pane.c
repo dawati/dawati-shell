@@ -524,6 +524,8 @@ _device_updated_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->wifi_label,
 				    FALSE);
         gtk_widget_show (priv->wifi_label);
+        gtk_widget_set_sensitive (priv->new_conn_button,
+                                  TRUE);
         break;
       case DEVICE_CELLULAR:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
@@ -799,6 +801,8 @@ carrick_pane_init (CarrickPane *self)
   /* New connection button */
   hbox = gtk_hbox_new (FALSE, 0);
   priv->new_conn_button = gtk_button_new_with_label (_("Add new connection"));
+  gtk_widget_set_sensitive (priv->new_conn_button,
+                            FALSE);
   g_signal_connect (GTK_BUTTON (priv->new_conn_button),
                     "clicked",
                     G_CALLBACK (_new_connection_cb),
