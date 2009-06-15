@@ -119,6 +119,19 @@ mnb_panel_clutter_set_size (MnbPanelClient *self, guint width, guint height)
 }
 
 static void
+mnb_panel_clutter_set_height (MnbPanelClient *panel, guint height)
+{
+  MnbPanelClutterPrivate *priv = MNB_PANEL_CLUTTER (panel)->priv;
+  Display                *xdpy = clutter_x11_get_default_display ();
+  gfloat                  width;
+
+  width = clutter_actor_get_width (priv->stage);
+
+  XResizeWindow (xdpy, priv->xwindow, (guint) width, height);
+  clutter_actor_set_height (priv->stage, height);
+}
+
+static void
 mnb_panel_clutter_class_init (MnbPanelClutterClass *klass)
 {
   GObjectClass        *object_class = G_OBJECT_CLASS (klass);
@@ -132,7 +145,8 @@ mnb_panel_clutter_class_init (MnbPanelClutterClass *klass)
   object_class->finalize         = mnb_panel_clutter_finalize;
   object_class->constructed      = mnb_panel_clutter_constructed;
 
-  client_class->set_size = mnb_panel_clutter_set_size;
+  client_class->set_size   = mnb_panel_clutter_set_size;
+  client_class->set_height = mnb_panel_clutter_set_height;
 }
 
 static void

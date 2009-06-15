@@ -46,8 +46,6 @@ enum
 {
   PROP_0,
 
-  PROP_WIDTH,
-  PROP_HEIGHT,
   PROP_NAME,
   PROP_TOOLTIP,
   PROP_STYLESHEET,
@@ -87,8 +85,8 @@ struct _MnbPanelClientPrivate
   gchar           *button_style;
   guint            xid;
 
-  guint            width;
-  guint            height;
+  guint            max_height;
+  guint            requested_height;
 
   gboolean         constructed     : 1; /*poor man's constructor return value*/
   gboolean         toolbar_service : 1;
@@ -115,12 +113,6 @@ mnb_panel_client_get_property (GObject    *object,
       break;
     case PROP_BUTTON_STYLE:
       g_value_set_string (value, priv->button_style);
-      break;
-    case PROP_WIDTH:
-      g_value_set_uint (value, priv->width);
-      break;
-    case PROP_HEIGHT:
-      g_value_set_uint (value, priv->height);
       break;
     case PROP_XID:
       g_value_set_uint (value, priv->xid);
@@ -158,12 +150,6 @@ mnb_panel_client_set_property (GObject      *object,
     case PROP_BUTTON_STYLE:
       g_free (priv->button_style);
       priv->button_style = g_value_dup_string (value);
-      break;
-    case PROP_WIDTH:
-      priv->width = g_value_get_uint (value);
-      break;
-    case PROP_HEIGHT:
-      priv->height = g_value_get_uint (value);
       break;
     case PROP_XID:
       priv->xid = g_value_get_uint (value);
@@ -230,6 +216,7 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
                            GError         **error)
 {
   MnbPanelClientPrivate *priv = self->priv;
+  guint real_height;
 
   g_debug ("%s called", __FUNCTION__);
 
@@ -242,7 +229,20 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
   *stylesheet   = g_strdup (priv->stylesheet);
   *button_style = g_strdup (priv->button_style);
 
-  g_signal_emit (self, signals[SET_SIZE], 0, width, height);
+  priv->max_height = height;
+
+  if (priv->requested_height > 0 && priv->requested_height < height)
+    real_height = priv->requested_height;
+  else
+    {
+      g_warning ("Panel requested height %d which is grater than maximum "
+                 "allowable height %d",
+                 priv->requested_height, height);
+
+      real_height = height;
+    }
+
+  g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
 
   return TRUE;
 }
@@ -332,25 +332,6 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-                                   PROP_WIDTH,
-                                   g_param_spec_uint ("width",
-                                                      "Width",
-                                                      "Width",
-                                                      0, G_MAXUINT,
-                                                      1024,
-                                                      G_PARAM_READWRITE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_HEIGHT,
-                                   g_param_spec_uint ("height",
-                                                      "Height",
-                                                      "Height",
-                                                      0, G_MAXUINT,
-                                                      1024,
-                                                      G_PARAM_READWRITE));
-
 
   g_object_class_install_property (object_class,
                                    PROP_XID,
@@ -913,3 +894,33 @@ mnb_panel_client_launch_default_application_for_uri (MnbPanelClient *panel,
 
   return TRUE;
 }
+
+void
+mnb_panel_client_set_height (MnbPanelClient *panel, guint height)
+{
+  MnbPanelClientPrivate *priv = panel->priv;
+
+  priv->requested_height = height;
+
+  /*
+   * If we are called prior to the dbus hand shake, we are done here, otherwise
+   * call the vfunction to do the actual work.
+   *
+   * (max_height is set during the dbus handshake)
+   */
+  if (priv->max_height > 0)
+    {
+      if (height <= priv->max_height)
+        {
+          if (MNB_PANEL_CLIENT_CLASS (mnb_panel_client_parent_class)->
+              set_height)
+            MNB_PANEL_CLIENT_CLASS (mnb_panel_client_parent_class)->
+              set_height (panel, height);
+        }
+      else
+        g_warning ("Panel requested height %d which is grater than maximum "
+                   "allowable height %d",
+                   height, priv->max_height);
+    }
+}
+
