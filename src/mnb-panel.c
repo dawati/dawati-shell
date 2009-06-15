@@ -221,9 +221,11 @@ mnb_panel_finalize (GObject *object)
   MnbPanelPrivate *priv = MNB_PANEL (object)->priv;
 
   g_free (priv->dbus_name);
-  g_free (priv->tooltip);
-  g_free (priv->stylesheet);
-  g_free (priv->button_style_id);
+
+  dbus_free (priv->name);
+  dbus_free (priv->tooltip);
+  dbus_free (priv->stylesheet);
+  dbus_free (priv->button_style_id);
 
   G_OBJECT_CLASS (mnb_panel_parent_class)->finalize (object);
 }
@@ -492,16 +494,16 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
   GtkWidget       *socket;
   GtkWidget       *window;
 
-  g_free (priv->name);
+  dbus_free (priv->name);
   priv->name = name;
 
-  g_free (priv->tooltip);
+  dbus_free (priv->tooltip);
   priv->tooltip = tooltip;
 
-  g_free (priv->stylesheet);
+  dbus_free (priv->stylesheet);
   priv->stylesheet = stylesheet;
 
-  g_free (priv->button_style_id);
+  dbus_free (priv->button_style_id);
   priv->button_style_id = button_style_id;
 
   priv->child_xid = xid;
