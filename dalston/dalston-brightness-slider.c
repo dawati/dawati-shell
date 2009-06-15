@@ -150,6 +150,9 @@ _manager_num_levels_changed_cb (DalstonBrightnessManager *manager,
 
   priv->num_levels = num_levels;
   gtk_range_set_range (GTK_RANGE (slider), 0, num_levels - 1);
+  gtk_range_set_increments (GTK_RANGE (slider),
+                            1,
+                            1);
   dalston_brightness_slider_update (slider);
 }
 
