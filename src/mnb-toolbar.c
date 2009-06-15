@@ -33,6 +33,7 @@
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
+#include <moblin-panel/mpl-panel-common.h>
 
 #include "moblin-netbook.h"
 
@@ -85,7 +86,7 @@
 
 G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
 
-#define MNB_TOOLBAR_GET_PRIVATE(o) \
+#define MPL_TOOLBAR_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR, MnbToolbarPrivate))
 
 static void mnb_toolbar_constructed (GObject *self);
@@ -810,31 +811,31 @@ mnb_toolbar_panel_name_to_index (const gchar *name)
 {
   gint index;
 
-  if (!strcmp (name, MNB_PANEL_MYZONE))
+  if (!strcmp (name, MPL_PANEL_MYZONE))
     index = MYZONE;
-  else if (!strcmp (name, MNB_PANEL_STATUS))
+  else if (!strcmp (name, MPL_PANEL_STATUS))
     index = STATUS_ZONE;
-  else if (!strcmp (name, MNB_PANEL_ZONES))
+  else if (!strcmp (name, MPL_PANEL_ZONES))
     index = SPACES_ZONE;
-  else if (!strcmp (name, MNB_PANEL_INTERNET))
+  else if (!strcmp (name, MPL_PANEL_INTERNET))
     index = INTERNET_ZONE;
-  else if (!strcmp (name, MNB_PANEL_MEDIA))
+  else if (!strcmp (name, MPL_PANEL_MEDIA))
     index = MEDIA_ZONE;
-  else if (!strcmp (name, MNB_PANEL_APPLICATIONS))
+  else if (!strcmp (name, MPL_PANEL_APPLICATIONS))
     index = APPS_ZONE;
-  else if (!strcmp (name, MNB_PANEL_PEOPLE))
+  else if (!strcmp (name, MPL_PANEL_PEOPLE))
     index = PEOPLE_ZONE;
-  else if (!strcmp (name, MNB_PANEL_PASTEBOARD))
+  else if (!strcmp (name, MPL_PANEL_PASTEBOARD))
     index = PASTEBOARD_ZONE;
-  else if (!strcmp (name, MNB_PANEL_NETWORK))
+  else if (!strcmp (name, MPL_PANEL_NETWORK))
     index = WIFI_APPLET;
-  else if (!strcmp (name, MNB_PANEL_BLUETOOTH))
+  else if (!strcmp (name, MPL_PANEL_BLUETOOTH))
     index = BT_APPLET;
-  else if (!strcmp (name, MNB_PANEL_VOLUME))
+  else if (!strcmp (name, MPL_PANEL_VOLUME))
     index = VOLUME_APPLET;
-  else if (!strcmp (name, MNB_PANEL_POWER))
+  else if (!strcmp (name, MPL_PANEL_POWER))
     index = BATTERY_APPLET;
-  else if (!strcmp (name, MNB_PANEL_TEST))
+  else if (!strcmp (name, MPL_PANEL_TEST))
     index = TEST_APPLET;
   else
     {
@@ -850,19 +851,19 @@ mnb_toolbar_panel_index_to_name (gint index)
 {
   switch (index)
     {
-    case MYZONE: return MNB_PANEL_MYZONE;
-    case STATUS_ZONE: return MNB_PANEL_STATUS;
-    case SPACES_ZONE: return MNB_PANEL_ZONES;
-    case INTERNET_ZONE: return MNB_PANEL_INTERNET;
-    case MEDIA_ZONE: return MNB_PANEL_MEDIA;
-    case APPS_ZONE: return MNB_PANEL_APPLICATIONS;
-    case PEOPLE_ZONE: return MNB_PANEL_PEOPLE;
-    case PASTEBOARD_ZONE: return MNB_PANEL_PASTEBOARD;
-    case WIFI_APPLET: return MNB_PANEL_NETWORK;
-    case BT_APPLET: return MNB_PANEL_BLUETOOTH;
-    case VOLUME_APPLET: return MNB_PANEL_VOLUME;
-    case BATTERY_APPLET: return MNB_PANEL_POWER;
-    case TEST_APPLET: return MNB_PANEL_TEST;
+    case MYZONE: return MPL_PANEL_MYZONE;
+    case STATUS_ZONE: return MPL_PANEL_STATUS;
+    case SPACES_ZONE: return MPL_PANEL_ZONES;
+    case INTERNET_ZONE: return MPL_PANEL_INTERNET;
+    case MEDIA_ZONE: return MPL_PANEL_MEDIA;
+    case APPS_ZONE: return MPL_PANEL_APPLICATIONS;
+    case PEOPLE_ZONE: return MPL_PANEL_PEOPLE;
+    case PASTEBOARD_ZONE: return MPL_PANEL_PASTEBOARD;
+    case WIFI_APPLET: return MPL_PANEL_NETWORK;
+    case BT_APPLET: return MPL_PANEL_BLUETOOTH;
+    case VOLUME_APPLET: return MPL_PANEL_VOLUME;
+    case BATTERY_APPLET: return MPL_PANEL_POWER;
+    case TEST_APPLET: return MPL_PANEL_TEST;
 
     default: return NULL;
     }
@@ -1341,7 +1342,7 @@ mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
   if (name)
     {
-      gchar *dbus_name = g_strconcat (MNB_PANEL_DBUS_NAME_PREFIX, name, NULL);
+      gchar *dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
 
       mnb_toolbar_handle_dbus_name (toolbar, dbus_name);
 
@@ -1638,7 +1639,7 @@ mnb_toolbar_init (MnbToolbar *self)
 {
   MnbToolbarPrivate *priv;
 
-  priv = self->priv = MNB_TOOLBAR_GET_PRIVATE (self);
+  priv = self->priv = MPL_TOOLBAR_GET_PRIVATE (self);
 }
 
 #if 1
@@ -1873,19 +1874,19 @@ static void
 mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
-  const gchar       *short_name = name + strlen (MNB_PANEL_DBUS_NAME_PREFIX);
+  const gchar       *short_name = name + strlen (MPL_PANEL_DBUS_NAME_PREFIX);
 
-  if (!strcmp (short_name, MNB_PANEL_MYZONE) ||
-      !strcmp (short_name, MNB_PANEL_STATUS) ||
-      !strcmp (short_name, MNB_PANEL_ZONES) ||
-      !strcmp (short_name, MNB_PANEL_MEDIA) ||
-      !strcmp (short_name, MNB_PANEL_INTERNET) ||
-      !strcmp (short_name, MNB_PANEL_APPLICATIONS) ||
-      !strcmp (short_name, MNB_PANEL_POWER) ||
-      !strcmp (short_name, MNB_PANEL_NETWORK) ||
-      !strcmp (short_name, MNB_PANEL_BLUETOOTH) ||
-      !strcmp (short_name, MNB_PANEL_VOLUME) ||
-      !strcmp (short_name, MNB_PANEL_TEST))
+  if (!strcmp (short_name, MPL_PANEL_MYZONE) ||
+      !strcmp (short_name, MPL_PANEL_STATUS) ||
+      !strcmp (short_name, MPL_PANEL_ZONES) ||
+      !strcmp (short_name, MPL_PANEL_MEDIA) ||
+      !strcmp (short_name, MPL_PANEL_INTERNET) ||
+      !strcmp (short_name, MPL_PANEL_APPLICATIONS) ||
+      !strcmp (short_name, MPL_PANEL_POWER) ||
+      !strcmp (short_name, MPL_PANEL_NETWORK) ||
+      !strcmp (short_name, MPL_PANEL_BLUETOOTH) ||
+      !strcmp (short_name, MPL_PANEL_VOLUME) ||
+      !strcmp (short_name, MPL_PANEL_TEST))
     {
       MnbPanel *panel;
       gint      screen_width, screen_height;
@@ -1929,8 +1930,8 @@ mnb_toolbar_noc_cb (DBusGProxy  *proxy,
    * Unfortunately, we get this for all name owner changes on the bus, so
    * return early.
    */
-  if (!name || strncmp (name, MNB_PANEL_DBUS_NAME_PREFIX,
-                        strlen (MNB_PANEL_DBUS_NAME_PREFIX)))
+  if (!name || strncmp (name, MPL_PANEL_DBUS_NAME_PREFIX,
+                        strlen (MPL_PANEL_DBUS_NAME_PREFIX)))
     return;
 
   priv = MNB_TOOLBAR (toolbar)->priv;
@@ -1986,8 +1987,8 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
       gchar **p = names;
       while (*p)
         {
-          if (!strncmp (*p, MNB_PANEL_DBUS_NAME_PREFIX,
-                        strlen (MNB_PANEL_DBUS_NAME_PREFIX)))
+          if (!strncmp (*p, MPL_PANEL_DBUS_NAME_PREFIX,
+                        strlen (MPL_PANEL_DBUS_NAME_PREFIX)))
             {
               gboolean  has_owner = FALSE;
 
@@ -1998,7 +1999,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
                   const gchar *short_name;
                   gint         index;
 
-                  short_name = *p + strlen (MNB_PANEL_DBUS_NAME_PREFIX);
+                  short_name = *p + strlen (MPL_PANEL_DBUS_NAME_PREFIX);
 
                   index = mnb_toolbar_panel_name_to_index (short_name);
 
@@ -2036,7 +2037,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
 
               conn = dbus_g_connection_get_connection (priv->dbus_conn);
 
-              dbus_name = g_strconcat (MNB_PANEL_DBUS_NAME_PREFIX, name, NULL);
+              dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
 
               dbus_bus_start_service_by_name (conn, dbus_name, 0, NULL, NULL);
 
@@ -2076,7 +2077,7 @@ mnb_toolbar_constructed (GObject *self)
 
   priv->dbus_conn = conn;
 
-  dbus_g_connection_register_g_object (conn, MNB_TOOLBAR_DBUS_PATH, self);
+  dbus_g_connection_register_g_object (conn, MPL_TOOLBAR_DBUS_PATH, self);
 
   hbox = priv->hbox = clutter_group_new ();
 

@@ -60,6 +60,25 @@ changequote([,])dnl
 
 AM_GLIB_GNU_GETTEXT
 
+# Libmoblin-panel
+PKG_CHECK_MODULES(LIBMPL_CLUTTER,
+                  dbus-glib-1
+                  nbtk-1.0)
+
+LIBMPL_CLUTTER_CFLAGS="${LIBMPL_CLUTTER_CFLAGS} "'-I$(top_srcdir)/penge -I$(top_srcdir)/src'
+AC_SUBST([LIBMPL_CLUTTER_CFLAGS])
+LIBMPL_CLUTTER_LIBS="${LIBMPL_CLUTTER_LIBS} ${PENGE_LIBS} "'$(top_builddir)/penge/penge/libpenge.la'
+AC_SUBST([LIBMPL_CLUTTER_LIBS])
+
+PKG_CHECK_MODULES(LIBMPL_GTK,
+                  dbus-glib-1
+                  gtk+-2.0)
+
+LIBMPL_GTK_CFLAGS="${LIBMPL_GTK_CFLAGS} "'-I$(top_srcdir)/src'
+AC_SUBST([LIBMPL_GTK_CFLAGS])
+AC_SUBST([LIBMPL_GTK_LIBS])
+
+# Mutter-moblin
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   metacity-plugins >= mutter_version dnl
                   nbtk-1.0 >= 0.8.0                  dnl
@@ -69,6 +88,10 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mojito-client                      dnl
                   gio-unix-2.0)
 
+MUTTER_PLUGIN_CFLAGS="${MUTTER_PLUGIN_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
+AC_SUBST([MUTTER_PLUGIN_CFLAGS])
+
+# Penge
 PKG_CHECK_MODULES(PENGE,
                   libjana-ecal
                   mojito-client
@@ -77,25 +100,6 @@ PKG_CHECK_MODULES(PENGE,
                   gconf-2.0
                   gio-2.0
                   gio-unix-2.0)
-
-# Libmnb
-PKG_CHECK_MODULES(LIBMNB_CLUTTER,
-                  dbus-glib-1
-                  nbtk-1.0)
-
-LIBMNB_CLUTTER_CFLAGS="${LIBMNB_CLUTTER_CFLAGS} "'-I$(top_srcdir)/penge -I$(top_srcdir)/src'
-AC_SUBST([LIBMNB_CLUTTER_CFLAGS])
-LIBMNB_CLUTTER_LIBS="${LIBMNB_CLUTTER_LIBS} ${PENGE_LIBS} "'$(top_builddir)/penge/penge/libpenge.la'
-AC_SUBST([LIBMNB_CLUTTER_LIBS])
-
-PKG_CHECK_MODULES(LIBMNB_GTK,
-                  dbus-glib-1
-                  gtk+-2.0)
-
-LIBMNB_GTK_CFLAGS="${LIBMNB_GTK_CFLAGS} "'-I$(top_srcdir)/src'
-AC_SUBST([LIBMNB_GTK_CFLAGS])
-AC_SUBST([LIBMNB_GTK_LIBS])
-
 
 # Ahoghill
 AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
@@ -116,9 +120,9 @@ PKG_CHECK_MODULES(APPLICATIONS,
                   libgnome-menu
                   nbtk-1.0)
 
-APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "'-I$(top_srcdir)/libmnb -I$(top_srcdir)/penge -I$(top_srcdir)/src'
+APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel -I$(top_srcdir)/penge -I$(top_srcdir)/src'
 AC_SUBST([APPLICATIONS_CFLAGS])
-APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "'-L$(top_builddir)/libmnb/mnb/.libs -lmnb-clutter'
+APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "'-L$(top_builddir)/libmoblin-panel/moblin-panel/.libs -lmoblin-panel-clutter'
 AC_SUBST([APPLICATIONS_LIBS])
 
 # Netpanel
@@ -196,11 +200,11 @@ penge/examples/Makefile
 ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile
-libmnb/Makefile
-libmnb/mnb-gtk.pc
-libmnb/mnb-clutter.pc
-libmnb/mnb/Makefile
-libmnb/tests/Makefile
+libmoblin-panel/Makefile
+libmoblin-panel/moblin-panel-gtk.pc
+libmoblin-panel/moblin-panel-clutter.pc
+libmoblin-panel/moblin-panel/Makefile
+libmoblin-panel/tests/Makefile
 ])
 
 echo "

@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* mnb-panel-clutter.c */
+/* mpl-panel-clutter.c */
 /*
  * Copyright (c) 2009 Intel Corp.
  *
@@ -25,7 +25,7 @@
 #include <clutter/x11/clutter-x11.h>
 #include <string.h>
 
-#include "mnb-panel-clutter.h"
+#include "mpl-panel-clutter.h"
 
 #define MAX_SUPPORTED_XEMBED_VERSION   1
 
@@ -47,22 +47,22 @@
 #define XEMBED_UNREGISTER_ACCELERATOR   13
 #define XEMBED_ACTIVATE_ACCELERATOR     14
 
-static void xembed_init (MnbPanelClutter *panel);
+static void xembed_init (MplPanelClutter *panel);
 static void xembed_set_win_info (Display *xdpy, Window xwin, int flags);
 
-G_DEFINE_TYPE (MnbPanelClutter, mnb_panel_clutter, MNB_TYPE_PANEL_CLIENT)
+G_DEFINE_TYPE (MplPanelClutter, mpl_panel_clutter, MPL_TYPE_PANEL_CLIENT)
 
-#define MNB_PANEL_CLUTTER_GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PANEL_CLUTTER, MnbPanelClutterPrivate))
+#define MPL_PANEL_CLUTTER_GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPL_TYPE_PANEL_CLUTTER, MplPanelClutterPrivate))
 
-static void mnb_panel_clutter_constructed (GObject *self);
+static void mpl_panel_clutter_constructed (GObject *self);
 
 enum
 {
   PROP_0,
 };
 
-struct _MnbPanelClutterPrivate
+struct _MplPanelClutterPrivate
 {
   ClutterActor *stage;
   Window        xwindow;
@@ -71,7 +71,7 @@ struct _MnbPanelClutterPrivate
 };
 
 static void
-mnb_panel_clutter_get_property (GObject    *object,
+mpl_panel_clutter_get_property (GObject    *object,
                                 guint       property_id,
                                 GValue     *value,
                                 GParamSpec *pspec)
@@ -84,7 +84,7 @@ mnb_panel_clutter_get_property (GObject    *object,
 }
 
 static void
-mnb_panel_clutter_set_property (GObject      *object,
+mpl_panel_clutter_set_property (GObject      *object,
                                guint         property_id,
                                const GValue *value,
                                GParamSpec   *pspec)
@@ -97,21 +97,21 @@ mnb_panel_clutter_set_property (GObject      *object,
 }
 
 static void
-mnb_panel_clutter_dispose (GObject *self)
+mpl_panel_clutter_dispose (GObject *self)
 {
-  G_OBJECT_CLASS (mnb_panel_clutter_parent_class)->dispose (self);
+  G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->dispose (self);
 }
 
 static void
-mnb_panel_clutter_finalize (GObject *object)
+mpl_panel_clutter_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (mnb_panel_clutter_parent_class)->finalize (object);
+  G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->finalize (object);
 }
 
 static void
-mnb_panel_clutter_set_size (MnbPanelClient *self, guint width, guint height)
+mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
 {
-  MnbPanelClutterPrivate *priv = MNB_PANEL_CLUTTER (self)->priv;
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
 
   XResizeWindow (xdpy, priv->xwindow, width, height);
@@ -119,9 +119,9 @@ mnb_panel_clutter_set_size (MnbPanelClient *self, guint width, guint height)
 }
 
 static void
-mnb_panel_clutter_set_height (MnbPanelClient *panel, guint height)
+mpl_panel_clutter_set_height (MplPanelClient *panel, guint height)
 {
-  MnbPanelClutterPrivate *priv = MNB_PANEL_CLUTTER (panel)->priv;
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (panel)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
   gfloat                  width;
 
@@ -132,35 +132,35 @@ mnb_panel_clutter_set_height (MnbPanelClient *panel, guint height)
 }
 
 static void
-mnb_panel_clutter_class_init (MnbPanelClutterClass *klass)
+mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
 {
   GObjectClass        *object_class = G_OBJECT_CLASS (klass);
-  MnbPanelClientClass *client_class = MNB_PANEL_CLIENT_CLASS (klass);
+  MplPanelClientClass *client_class = MPL_PANEL_CLIENT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MnbPanelClutterPrivate));
+  g_type_class_add_private (klass, sizeof (MplPanelClutterPrivate));
 
-  object_class->get_property     = mnb_panel_clutter_get_property;
-  object_class->set_property     = mnb_panel_clutter_set_property;
-  object_class->dispose          = mnb_panel_clutter_dispose;
-  object_class->finalize         = mnb_panel_clutter_finalize;
-  object_class->constructed      = mnb_panel_clutter_constructed;
+  object_class->get_property     = mpl_panel_clutter_get_property;
+  object_class->set_property     = mpl_panel_clutter_set_property;
+  object_class->dispose          = mpl_panel_clutter_dispose;
+  object_class->finalize         = mpl_panel_clutter_finalize;
+  object_class->constructed      = mpl_panel_clutter_constructed;
 
-  client_class->set_size   = mnb_panel_clutter_set_size;
-  client_class->set_height = mnb_panel_clutter_set_height;
+  client_class->set_size   = mpl_panel_clutter_set_size;
+  client_class->set_height = mpl_panel_clutter_set_height;
 }
 
 static void
-mnb_panel_clutter_init (MnbPanelClutter *self)
+mpl_panel_clutter_init (MplPanelClutter *self)
 {
-  MnbPanelClutterPrivate *priv;
+  MplPanelClutterPrivate *priv;
 
-  priv = self->priv = MNB_PANEL_CLUTTER_GET_PRIVATE (self);
+  priv = self->priv = MPL_PANEL_CLUTTER_GET_PRIVATE (self);
 }
 
 ClutterX11FilterReturn
-mnb_panel_clutter_xevent_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
+mpl_panel_clutter_xevent_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
 {
-  MnbPanelClutterPrivate *priv = MNB_PANEL_CLUTTER (data)->priv;
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (data)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
 
   switch (xev->type)
@@ -205,17 +205,17 @@ mnb_panel_clutter_xevent_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
 }
 
 static void
-mnb_panel_clutter_constructed (GObject *self)
+mpl_panel_clutter_constructed (GObject *self)
 {
-  MnbPanelClutterPrivate *priv = MNB_PANEL_CLUTTER (self)->priv;
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   ClutterActor           *stage = NULL;
   Window                  xwin = None;
   XSetWindowAttributes    attr;
   Display                *xdpy;
   gint                    screen;
 
-  if (G_OBJECT_CLASS (mnb_panel_clutter_parent_class)->constructed)
-    G_OBJECT_CLASS (mnb_panel_clutter_parent_class)->constructed (self);
+  if (G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed)
+    G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed (self);
 
   /*
    * TODO
@@ -235,7 +235,7 @@ mnb_panel_clutter_constructed (GObject *self)
                                         CopyFromParent,
                                         CWOverrideRedirect, &attr);
 
-  xembed_init (MNB_PANEL_CLUTTER (self));
+  xembed_init (MPL_PANEL_CLUTTER (self));
 
   stage = clutter_stage_get_default ();
 
@@ -243,20 +243,20 @@ mnb_panel_clutter_constructed (GObject *self)
 
   priv->stage = stage;
 
-  clutter_x11_add_filter (mnb_panel_clutter_xevent_filter, self);
+  clutter_x11_add_filter (mpl_panel_clutter_xevent_filter, self);
 
   g_object_set (self, "xid",
                 clutter_x11_get_stage_window (CLUTTER_STAGE (stage)), NULL);
 }
 
-MnbPanelClient *
-mnb_panel_clutter_new (const gchar *name,
+MplPanelClient *
+mpl_panel_clutter_new (const gchar *name,
                        const gchar *tooltip,
                        const gchar *stylesheet,
                        const gchar *button_style,
                        gboolean     with_toolbar_service)
 {
-  MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_CLUTTER,
+  MplPanelClient *panel = g_object_new (MPL_TYPE_PANEL_CLUTTER,
                                         "name",            name,
                                         "tooltip",         tooltip,
                                         "stylesheet",      stylesheet,
@@ -268,7 +268,7 @@ mnb_panel_clutter_new (const gchar *name,
 }
 
 ClutterActor *
-mnb_panel_clutter_get_stage (MnbPanelClutter *panel)
+mpl_panel_clutter_get_stage (MplPanelClutter *panel)
 {
   return panel->priv->stage;
 }
@@ -297,9 +297,9 @@ xembed_set_win_info (Display *xdpy, Window xwin, int flags)
 }
 
 static void
-xembed_init (MnbPanelClutter *panel)
+xembed_init (MplPanelClutter *panel)
 {
-  MnbPanelClutterPrivate *priv = panel->priv;
+  MplPanelClutterPrivate *priv = panel->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
 
   priv->Atom_XEMBED = XInternAtom(xdpy, "_XEMBED", False);
@@ -312,14 +312,14 @@ xembed_init (MnbPanelClutter *panel)
  * TODO -- currently not needed, probalby remove.
  */
 static Bool
-xembed_send_message (MnbPanelClutter *panel,
+xembed_send_message (MplPanelClutter *panel,
                      Window          *w,
                      long             message,
                      long             detail,
                      long             data1,
                      long             data2)
 {
-  MnbPanelClutterPrivate *priv = MNB_PANEL_CLUTTER (data)->priv;
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (data)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
   XEvent                  ev;
 

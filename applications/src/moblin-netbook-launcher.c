@@ -36,9 +36,9 @@
 #include <nbtk/nbtk.h>
 
 #include <penge/penge-app-bookmark-manager.h>
+#include <moblin-panel/mpl-entry.h>
 
 #include "moblin-netbook-launcher.h"
-#include "mnb-entry.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-grid.h"
 #include "mnb-launcher-tree.h"
@@ -1060,7 +1060,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 }
 
 static void
-entry_changed_cb (MnbEntry         *entry,
+entry_changed_cb (MplEntry         *entry,
                   MnbLauncher      *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
@@ -1068,7 +1068,7 @@ entry_changed_cb (MnbEntry         *entry,
 
   mnb_launcher_cancel_search (self);
 
-  needle = g_strdup (mnb_entry_get_text (entry));
+  needle = g_strdup (mpl_entry_get_text (entry));
   needle = g_strstrip (needle);
 
   if (needle && *needle)
@@ -1081,7 +1081,7 @@ entry_changed_cb (MnbEntry         *entry,
 }
 
 static void
-entry_keynav_cb (MnbEntry         *entry,
+entry_keynav_cb (MplEntry         *entry,
                  guint             keyval,
                  MnbLauncher      *self)
 {
@@ -1354,7 +1354,7 @@ _constructor (GType                  gtype,
                                         "y-fill", FALSE,
                                         NULL);
 
-  priv->filter_entry = (ClutterActor *) mnb_entry_new (_("Search"));
+  priv->filter_entry = (ClutterActor *) mpl_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->filter_entry),
                            FILTER_ENTRY_WIDTH);
@@ -1479,6 +1479,6 @@ mnb_launcher_clear_filter (MnbLauncher *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  mnb_entry_set_text (MNB_ENTRY (priv->filter_entry), "");
+  mpl_entry_set_text (MPL_ENTRY (priv->filter_entry), "");
 }
 

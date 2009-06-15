@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* mnb-panel-gtk.c */
+/* mpl-panel-gtk.c */
 /*
  * Copyright (c) 2009 Intel Corp.
  *
@@ -24,27 +24,27 @@
 
 #include <gdk/gdkx.h>
 
-#include "mnb-panel-gtk.h"
+#include "mpl-panel-gtk.h"
 
-G_DEFINE_TYPE (MnbPanelGtk, mnb_panel_gtk, MNB_TYPE_PANEL_CLIENT)
+G_DEFINE_TYPE (MplPanelGtk, mpl_panel_gtk, MPL_TYPE_PANEL_CLIENT)
 
-#define MNB_PANEL_GTK_GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PANEL_GTK, MnbPanelGtkPrivate))
+#define MPL_PANEL_GTK_GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPL_TYPE_PANEL_GTK, MplPanelGtkPrivate))
 
-static void mnb_panel_gtk_constructed (GObject *self);
+static void mpl_panel_gtk_constructed (GObject *self);
 
 enum
 {
   PROP_0,
 };
 
-struct _MnbPanelGtkPrivate
+struct _MplPanelGtkPrivate
 {
   GtkWidget *window;
 };
 
 static void
-mnb_panel_gtk_get_property (GObject    *object,
+mpl_panel_gtk_get_property (GObject    *object,
                                guint       property_id,
                                GValue     *value,
                                GParamSpec *pspec)
@@ -57,7 +57,7 @@ mnb_panel_gtk_get_property (GObject    *object,
 }
 
 static void
-mnb_panel_gtk_set_property (GObject      *object,
+mpl_panel_gtk_set_property (GObject      *object,
                                guint         property_id,
                                const GValue *value,
                                GParamSpec   *pspec)
@@ -70,21 +70,21 @@ mnb_panel_gtk_set_property (GObject      *object,
 }
 
 static void
-mnb_panel_gtk_dispose (GObject *self)
+mpl_panel_gtk_dispose (GObject *self)
 {
-  G_OBJECT_CLASS (mnb_panel_gtk_parent_class)->dispose (self);
+  G_OBJECT_CLASS (mpl_panel_gtk_parent_class)->dispose (self);
 }
 
 static void
-mnb_panel_gtk_finalize (GObject *object)
+mpl_panel_gtk_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (mnb_panel_gtk_parent_class)->finalize (object);
+  G_OBJECT_CLASS (mpl_panel_gtk_parent_class)->finalize (object);
 }
 
 static void
-mnb_panel_gtk_set_size (MnbPanelClient *self, guint width, guint height)
+mpl_panel_gtk_set_size (MplPanelClient *self, guint width, guint height)
 {
-  MnbPanelGtkPrivate *priv   = MNB_PANEL_GTK (self)->priv;
+  MplPanelGtkPrivate *priv   = MPL_PANEL_GTK (self)->priv;
   GtkWidget          *window = priv->window;
 
   g_debug ("Setting panel window size to %dx%d", width, height);
@@ -93,32 +93,32 @@ mnb_panel_gtk_set_size (MnbPanelClient *self, guint width, guint height)
 }
 
 static void
-mnb_panel_gtk_class_init (MnbPanelGtkClass *klass)
+mpl_panel_gtk_class_init (MplPanelGtkClass *klass)
 {
   GObjectClass        *object_class = G_OBJECT_CLASS (klass);
-  MnbPanelClientClass *client_class = MNB_PANEL_CLIENT_CLASS (klass);
+  MplPanelClientClass *client_class = MPL_PANEL_CLIENT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MnbPanelGtkPrivate));
+  g_type_class_add_private (klass, sizeof (MplPanelGtkPrivate));
 
-  object_class->get_property     = mnb_panel_gtk_get_property;
-  object_class->set_property     = mnb_panel_gtk_set_property;
-  object_class->dispose          = mnb_panel_gtk_dispose;
-  object_class->finalize         = mnb_panel_gtk_finalize;
-  object_class->constructed      = mnb_panel_gtk_constructed;
+  object_class->get_property     = mpl_panel_gtk_get_property;
+  object_class->set_property     = mpl_panel_gtk_set_property;
+  object_class->dispose          = mpl_panel_gtk_dispose;
+  object_class->finalize         = mpl_panel_gtk_finalize;
+  object_class->constructed      = mpl_panel_gtk_constructed;
 
-  client_class->set_size = mnb_panel_gtk_set_size;
+  client_class->set_size = mpl_panel_gtk_set_size;
 }
 
 static void
-mnb_panel_gtk_init (MnbPanelGtk *self)
+mpl_panel_gtk_init (MplPanelGtk *self)
 {
-  MnbPanelGtkPrivate *priv;
+  MplPanelGtkPrivate *priv;
 
-  priv = self->priv = MNB_PANEL_GTK_GET_PRIVATE (self);
+  priv = self->priv = MPL_PANEL_GTK_GET_PRIVATE (self);
 }
 
 static gboolean
-mnb_panel_gtk_window_delete_event_cb (GtkWidget *window,
+mpl_panel_gtk_window_delete_event_cb (GtkWidget *window,
                                       GdkEvent  *event,
                                       gpointer   data)
 {
@@ -135,7 +135,7 @@ mnb_panel_gtk_window_delete_event_cb (GtkWidget *window,
 }
 
 static void
-mnb_panel_gtk_embedded_cb (GtkWidget *widget, GParamSpec *pspec, gpointer data)
+mpl_panel_gtk_embedded_cb (GtkWidget *widget, GParamSpec *pspec, gpointer data)
 {
   gboolean embedded;
 
@@ -148,35 +148,35 @@ mnb_panel_gtk_embedded_cb (GtkWidget *widget, GParamSpec *pspec, gpointer data)
 }
 
 static void
-mnb_panel_gtk_constructed (GObject *self)
+mpl_panel_gtk_constructed (GObject *self)
 {
-  MnbPanelGtkPrivate *priv = MNB_PANEL_GTK (self)->priv;
+  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (self)->priv;
   GtkWidget *window;
 
-  if (G_OBJECT_CLASS (mnb_panel_gtk_parent_class)->constructed)
-    G_OBJECT_CLASS (mnb_panel_gtk_parent_class)->constructed (self);
+  if (G_OBJECT_CLASS (mpl_panel_gtk_parent_class)->constructed)
+    G_OBJECT_CLASS (mpl_panel_gtk_parent_class)->constructed (self);
 
   priv->window = window = gtk_plug_new (0);
 
   gtk_widget_realize (window);
 
   g_signal_connect (window, "delete-event",
-                    G_CALLBACK (mnb_panel_gtk_window_delete_event_cb), self);
+                    G_CALLBACK (mpl_panel_gtk_window_delete_event_cb), self);
 
   g_signal_connect (window, "notify::embedded",
-                    G_CALLBACK (mnb_panel_gtk_embedded_cb), self);
+                    G_CALLBACK (mpl_panel_gtk_embedded_cb), self);
 
   g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
 }
 
-MnbPanelClient *
-mnb_panel_gtk_new (const gchar *name,
+MplPanelClient *
+mpl_panel_gtk_new (const gchar *name,
                    const gchar *tooltip,
                    const gchar *stylesheet,
                    const gchar *button_style,
                    gboolean     with_toolbar_service)
 {
-  MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_GTK,
+  MplPanelClient *panel = g_object_new (MPL_TYPE_PANEL_GTK,
                                         "name",            name,
                                         "tooltip",         tooltip,
                                         "stylesheet",      stylesheet,
@@ -188,7 +188,7 @@ mnb_panel_gtk_new (const gchar *name,
 }
 
 GtkWidget *
-mnb_panel_gtk_get_window (MnbPanelGtk *panel)
+mpl_panel_gtk_get_window (MplPanelGtk *panel)
 {
   return panel->priv->window;
 }

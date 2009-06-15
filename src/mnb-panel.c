@@ -34,6 +34,7 @@
 #include <dbus/dbus.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
+#include <moblin-panel/mpl-panel-common.h>
 
 G_DEFINE_TYPE (MnbPanel, mnb_panel, MNB_TYPE_DROP_DOWN)
 
@@ -654,7 +655,7 @@ mnb_panel_setup_proxy (MnbPanel *panel)
   proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
                                      priv->dbus_name,
                                      dbus_path,
-                                     MNB_PANEL_DBUS_INTERFACE);
+                                     MPL_PANEL_DBUS_INTERFACE);
 
   g_free (dbus_path);
 

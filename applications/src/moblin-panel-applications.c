@@ -28,8 +28,8 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
-#include <mnb/mnb-panel-clutter.h>
-#include <mnb/mnb-panel-common.h>
+#include <moblin-panel/mpl-panel-clutter.h>
+#include <moblin-panel/mpl-panel-common.h>
 #include "moblin-netbook-launcher.h"
 #include "config.h"
 
@@ -56,32 +56,32 @@ stage_height_notify_cb (ClutterActor  *stage,
 static void
 launcher_activated_cb (MnbLauncher    *launcher,
                        const gchar    *desktop_file,
-                       MnbPanelClient *panel)
+                       MplPanelClient *panel)
 {
-  mnb_panel_client_launch_application_from_desktop_file (panel,
+  mpl_panel_client_launch_application_from_desktop_file (panel,
                                                          desktop_file,
                                                          NULL,
                                                          FALSE,
                                                          -2);
-  mnb_panel_client_request_hide (panel);
+  mpl_panel_client_request_hide (panel);
 }
 
 static void
-panel_show_begin_cb (MnbPanelClient *panel,
+panel_show_begin_cb (MplPanelClient *panel,
                      MnbLauncher    *launcher)
 {
   mnb_launcher_ensure_filled (launcher);
 }
 
 static void
-panel_show_end_cb (MnbPanelClient *panel,
+panel_show_end_cb (MplPanelClient *panel,
                    MnbLauncher    *launcher)
 {
   clutter_actor_grab_key_focus (CLUTTER_ACTOR (launcher));
 }
 
 static void
-panel_hide_end_cb (MnbPanelClient *panel,
+panel_hide_end_cb (MplPanelClient *panel,
                    MnbLauncher    *launcher)
 {
 
@@ -90,13 +90,13 @@ panel_hide_end_cb (MnbPanelClient *panel,
 static void
 setup_embedded (void)
 {
-  MnbPanelClient  *panel;
+  MplPanelClient  *panel;
   ClutterActor    *stage;
   ClutterActor    *launcher;
 
   /* TODO: split up the CSS, or do we need one at all here,
    * just for the panel button? */
-  panel = mnb_panel_clutter_new (MNB_PANEL_APPLICATIONS,
+  panel = mpl_panel_clutter_new (MPL_PANEL_APPLICATIONS,
                                   _("applications"),
                                  MUTTER_MOBLIN_CSS,
                                  "applications-button",
@@ -113,7 +113,7 @@ setup_embedded (void)
   g_signal_connect (panel, "hide-end",
                     G_CALLBACK (panel_hide_end_cb), launcher);
 
-  stage = mnb_panel_clutter_get_stage (MNB_PANEL_CLUTTER (panel));
+  stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
   g_signal_connect (stage, "notify::width",
                     G_CALLBACK (stage_width_notify_cb), launcher);
   g_signal_connect (stage, "notify::height",

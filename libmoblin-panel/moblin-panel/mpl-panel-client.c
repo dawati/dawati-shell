@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* mnb-panel-client.c */
+/* mpl-panel-client.c */
 /*
  * Copyright (c) 2009 Intel Corp.
  *
@@ -29,17 +29,17 @@
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
 
-#include "mnb-panel-client.h"
-#include "mnb-panel-common.h"
+#include "mpl-panel-client.h"
+#include "mpl-panel-common.h"
 #include "marshal.h"
 
-G_DEFINE_TYPE (MnbPanelClient, mnb_panel_client, G_TYPE_OBJECT)
+G_DEFINE_TYPE (MplPanelClient, mpl_panel_client, G_TYPE_OBJECT)
 
-#define MNB_PANEL_CLIENT_GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PANEL_CLIENT, MnbPanelClientPrivate))
+#define MPL_PANEL_CLIENT_GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPL_TYPE_PANEL_CLIENT, MplPanelClientPrivate))
 
-static void     mnb_panel_client_constructed (GObject *self);
-static gboolean mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel);
+static void     mpl_panel_client_constructed (GObject *self);
+static gboolean mpl_panel_client_setup_toolbar_proxy (MplPanelClient *panel);
 
 enum
 {
@@ -73,7 +73,7 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-struct _MnbPanelClientPrivate
+struct _MplPanelClientPrivate
 {
   DBusGConnection *dbus_conn;
   DBusGProxy      *toolbar_proxy;
@@ -93,12 +93,12 @@ struct _MnbPanelClientPrivate
 };
 
 static void
-mnb_panel_client_get_property (GObject    *object,
+mpl_panel_client_get_property (GObject    *object,
                                guint       property_id,
                                GValue     *value,
                                GParamSpec *pspec)
 {
-  MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (object)->priv;
+  MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (object)->priv;
 
   switch (property_id)
     {
@@ -126,12 +126,12 @@ mnb_panel_client_get_property (GObject    *object,
 }
 
 static void
-mnb_panel_client_set_property (GObject      *object,
+mpl_panel_client_set_property (GObject      *object,
                                guint         property_id,
                                const GValue *value,
                                GParamSpec   *pspec)
 {
-  MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (object)->priv;
+  MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (object)->priv;
 
   switch (property_id)
     {
@@ -163,9 +163,9 @@ mnb_panel_client_set_property (GObject      *object,
 }
 
 static void
-mnb_panel_client_dispose (GObject *self)
+mpl_panel_client_dispose (GObject *self)
 {
-  MnbPanelClientPrivate *priv  = MNB_PANEL_CLIENT (self)->priv;
+  MplPanelClientPrivate *priv  = MPL_PANEL_CLIENT (self)->priv;
 
   if (priv->toolbar_proxy)
     {
@@ -185,27 +185,27 @@ mnb_panel_client_dispose (GObject *self)
       priv->dbus_conn = NULL;
     }
 
-  G_OBJECT_CLASS (mnb_panel_client_parent_class)->dispose (self);
+  G_OBJECT_CLASS (mpl_panel_client_parent_class)->dispose (self);
 }
 
 static void
-mnb_panel_client_finalize (GObject *object)
+mpl_panel_client_finalize (GObject *object)
 {
-  MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (object)->priv;
+  MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (object)->priv;
 
   g_free (priv->name);
   g_free (priv->tooltip);
   g_free (priv->stylesheet);
   g_free (priv->button_style);
 
-  G_OBJECT_CLASS (mnb_panel_client_parent_class)->finalize (object);
+  G_OBJECT_CLASS (mpl_panel_client_parent_class)->finalize (object);
 }
 
 /*
  * The functions required by the interface.
  */
 static gboolean
-mnb_panel_dbus_init_panel (MnbPanelClient  *self,
+mnb_panel_dbus_init_panel (MplPanelClient  *self,
                            guint            width,
                            guint            height,
                            gchar          **name,
@@ -215,7 +215,7 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
                            gchar          **button_style,
                            GError         **error)
 {
-  MnbPanelClientPrivate *priv = self->priv;
+  MplPanelClientPrivate *priv = self->priv;
   guint real_height;
 
   g_debug ("%s called", __FUNCTION__);
@@ -248,7 +248,7 @@ mnb_panel_dbus_init_panel (MnbPanelClient  *self,
 }
 
 static gboolean
-mnb_panel_dbus_show_begin (MnbPanelClient *self, GError **error)
+mnb_panel_dbus_show_begin (MplPanelClient *self, GError **error)
 {
   g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[SHOW_BEGIN], 0);
@@ -256,7 +256,7 @@ mnb_panel_dbus_show_begin (MnbPanelClient *self, GError **error)
 }
 
 static gboolean
-mnb_panel_dbus_show_end (MnbPanelClient *self, GError **error)
+mnb_panel_dbus_show_end (MplPanelClient *self, GError **error)
 {
   g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[SHOW_END], 0);
@@ -264,7 +264,7 @@ mnb_panel_dbus_show_end (MnbPanelClient *self, GError **error)
 }
 
 static gboolean
-mnb_panel_dbus_hide_begin (MnbPanelClient *self, GError **error)
+mnb_panel_dbus_hide_begin (MplPanelClient *self, GError **error)
 {
   g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[HIDE_BEGIN], 0);
@@ -272,7 +272,7 @@ mnb_panel_dbus_hide_begin (MnbPanelClient *self, GError **error)
 }
 
 static gboolean
-mnb_panel_dbus_hide_end (MnbPanelClient *self, GError **error)
+mnb_panel_dbus_hide_end (MplPanelClient *self, GError **error)
 {
   g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[HIDE_END], 0);
@@ -282,17 +282,17 @@ mnb_panel_dbus_hide_end (MnbPanelClient *self, GError **error)
 #include "../../src/mnb-panel-dbus-glue.h"
 
 static void
-mnb_panel_client_class_init (MnbPanelClientClass *klass)
+mpl_panel_client_class_init (MplPanelClientClass *klass)
 {
   GObjectClass     *object_class   = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MnbPanelClientPrivate));
+  g_type_class_add_private (klass, sizeof (MplPanelClientPrivate));
 
-  object_class->get_property     = mnb_panel_client_get_property;
-  object_class->set_property     = mnb_panel_client_set_property;
-  object_class->dispose          = mnb_panel_client_dispose;
-  object_class->finalize         = mnb_panel_client_finalize;
-  object_class->constructed      = mnb_panel_client_constructed;
+  object_class->get_property     = mpl_panel_client_get_property;
+  object_class->set_property     = mpl_panel_client_set_property;
+  object_class->dispose          = mpl_panel_client_dispose;
+  object_class->finalize         = mpl_panel_client_finalize;
+  object_class->constructed      = mpl_panel_client_constructed;
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
                                    &dbus_glib_mnb_panel_dbus_object_info);
@@ -357,7 +357,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("set-size",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, set_size),
+                  G_STRUCT_OFFSET (MplPanelClientClass, set_size),
                   NULL, NULL,
                   moblin_netbook_marshal_VOID__UINT_UINT,
                   G_TYPE_NONE, 2,
@@ -368,7 +368,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("show-begin",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, show_begin),
+                  G_STRUCT_OFFSET (MplPanelClientClass, show_begin),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -377,7 +377,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("show-end",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, show_end),
+                  G_STRUCT_OFFSET (MplPanelClientClass, show_end),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -386,7 +386,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("hide-begin",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, hide_begin),
+                  G_STRUCT_OFFSET (MplPanelClientClass, hide_begin),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -395,7 +395,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("hide-end",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, hide_end),
+                  G_STRUCT_OFFSET (MplPanelClientClass, hide_end),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -404,7 +404,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("request-show",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, request_show),
+                  G_STRUCT_OFFSET (MplPanelClientClass, request_show),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -413,7 +413,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("request-hide",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, request_hide),
+                  G_STRUCT_OFFSET (MplPanelClientClass, request_hide),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -422,7 +422,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("request-focus",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, request_focus),
+                  G_STRUCT_OFFSET (MplPanelClientClass, request_focus),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -431,7 +431,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("request-button-style",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, request_button_style),
+                  G_STRUCT_OFFSET (MplPanelClientClass, request_button_style),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -441,7 +441,7 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
     g_signal_new ("request-tooltip",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelClientClass, request_tooltip),
+                  G_STRUCT_OFFSET (MplPanelClientClass, request_tooltip),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -449,17 +449,17 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
 }
 
 static void
-mnb_panel_client_init (MnbPanelClient *self)
+mpl_panel_client_init (MplPanelClient *self)
 {
-  MnbPanelClientPrivate *priv;
+  MplPanelClientPrivate *priv;
 
-  priv = self->priv = MNB_PANEL_CLIENT_GET_PRIVATE (self);
+  priv = self->priv = MPL_PANEL_CLIENT_GET_PRIVATE (self);
 }
 
 static DBusGConnection *
-mnb_panel_client_connect_to_dbus (MnbPanelClient *self)
+mpl_panel_client_connect_to_dbus (MplPanelClient *self)
 {
-  MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (self)->priv;
+  MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (self)->priv;
   DBusGConnection       *conn;
   DBusGProxy            *proxy;
   GError                *error = NULL;
@@ -486,7 +486,7 @@ mnb_panel_client_connect_to_dbus (MnbPanelClient *self)
       return NULL;
     }
 
-  dbus_name = g_strconcat (MNB_PANEL_DBUS_NAME_PREFIX, priv->name, NULL);
+  dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, priv->name, NULL);
 
   if (!org_freedesktop_DBus_request_name (proxy,
                                           dbus_name,
@@ -518,22 +518,22 @@ mnb_panel_client_connect_to_dbus (MnbPanelClient *self)
  * when the Toolbar service becomes available.
  */
 static void
-mnb_panel_client_noc_cb (DBusGProxy     *proxy,
+mpl_panel_client_noc_cb (DBusGProxy     *proxy,
                          const gchar    *name,
                          const gchar    *old_owner,
                          const gchar    *new_owner,
-                         MnbPanelClient *panel)
+                         MplPanelClient *panel)
 {
-  MnbPanelClientPrivate *priv;
+  MplPanelClientPrivate *priv;
 
   /*
    * Unfortunately, we get this for all name owner changes on the bus, so
    * return early.
    */
-  if (!name || strcmp (name, MNB_TOOLBAR_DBUS_NAME))
+  if (!name || strcmp (name, MPL_TOOLBAR_DBUS_NAME))
     return;
 
-  priv = MNB_PANEL_CLIENT (panel)->priv;
+  priv = MPL_PANEL_CLIENT (panel)->priv;
 
   if (!new_owner || !*new_owner)
     {
@@ -558,29 +558,29 @@ mnb_panel_client_noc_cb (DBusGProxy     *proxy,
       priv->toolbar_proxy = NULL;
     }
 
-  if (mnb_panel_client_setup_toolbar_proxy (panel))
+  if (mpl_panel_client_setup_toolbar_proxy (panel))
     {
       /*
        * If we succeeded, we disconnect the signal handler (and reconnect it
        * again in the weak ref handler for the toolbar proxy.
        */
       dbus_g_proxy_disconnect_signal (priv->dbus_proxy, "NameOwnerChanged",
-                                      G_CALLBACK (mnb_panel_client_noc_cb),
+                                      G_CALLBACK (mpl_panel_client_noc_cb),
                                       panel);
     }
 }
 
 static void
-mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb (gpointer data,
+mpl_panel_client_dbus_toolbar_proxy_weak_notify_cb (gpointer data,
                                                     GObject *object)
 {
-  MnbPanelClient        *panel = MNB_PANEL_CLIENT (data);
-  MnbPanelClientPrivate *priv  = panel->priv;
+  MplPanelClient        *panel = MPL_PANEL_CLIENT (data);
+  MplPanelClientPrivate *priv  = panel->priv;
 
   priv->toolbar_proxy = NULL;
 
   dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
-                               G_CALLBACK (mnb_panel_client_noc_cb),
+                               G_CALLBACK (mpl_panel_client_noc_cb),
                                panel, NULL);
 
   g_warning ("Toolbar object died on us\n");
@@ -590,9 +590,9 @@ mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb (gpointer data,
  * Sets up connection to the toolbar service, if available.
  */
 static gboolean
-mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
+mpl_panel_client_setup_toolbar_proxy (MplPanelClient *panel)
 {
-  MnbPanelClientPrivate *priv = panel->priv;
+  MplPanelClientPrivate *priv = panel->priv;
   DBusGProxy            *proxy;
   GError                *error = NULL;
 
@@ -607,9 +607,9 @@ mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
    * automatically started).
    */
   proxy = dbus_g_proxy_new_for_name_owner (priv->dbus_conn,
-                                           MNB_TOOLBAR_DBUS_NAME,
-                                           MNB_TOOLBAR_DBUS_PATH,
-                                           MNB_TOOLBAR_DBUS_INTERFACE,
+                                           MPL_TOOLBAR_DBUS_NAME,
+                                           MPL_TOOLBAR_DBUS_PATH,
+                                           MPL_TOOLBAR_DBUS_INTERFACE,
                                            &error);
 
   if (!proxy)
@@ -622,47 +622,47 @@ mnb_panel_client_setup_toolbar_proxy (MnbPanelClient *panel)
        */
       if (error)
         {
-          g_debug ("Unable to create proxy for " MNB_TOOLBAR_DBUS_PATH ": %s",
+          g_debug ("Unable to create proxy for " MPL_TOOLBAR_DBUS_PATH ": %s",
                      error->message);
           g_error_free (error);
         }
       else
-        g_debug ("Unable to create proxy for " MNB_TOOLBAR_DBUS_PATH ".");
+        g_debug ("Unable to create proxy for " MPL_TOOLBAR_DBUS_PATH ".");
 
       return FALSE;
     }
   else
-    g_debug ("Got a proxy for " MNB_TOOLBAR_DBUS_NAME " -- ready to roll :-)");
+    g_debug ("Got a proxy for " MPL_TOOLBAR_DBUS_NAME " -- ready to roll :-)");
 
   priv->toolbar_proxy = proxy;
 
   g_object_weak_ref (G_OBJECT (proxy),
-                     mnb_panel_client_dbus_toolbar_proxy_weak_notify_cb, panel);
+                     mpl_panel_client_dbus_toolbar_proxy_weak_notify_cb, panel);
 
   return TRUE;
 }
 
 static void
-mnb_panel_client_constructed (GObject *self)
+mpl_panel_client_constructed (GObject *self)
 {
-  MnbPanelClientPrivate *priv = MNB_PANEL_CLIENT (self)->priv;
+  MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (self)->priv;
   DBusGConnection       *conn;
   gchar                 *dbus_path;
 
   /*
    * Make sure our parent gets chance to do what it needs to.
    */
-  if (G_OBJECT_CLASS (mnb_panel_client_parent_class)->constructed)
-    G_OBJECT_CLASS (mnb_panel_client_parent_class)->constructed (self);
+  if (G_OBJECT_CLASS (mpl_panel_client_parent_class)->constructed)
+    G_OBJECT_CLASS (mpl_panel_client_parent_class)->constructed (self);
 
-  conn = mnb_panel_client_connect_to_dbus (MNB_PANEL_CLIENT (self));
+  conn = mpl_panel_client_connect_to_dbus (MPL_PANEL_CLIENT (self));
 
   if (!conn)
     return;
 
   priv->dbus_conn = conn;
 
-  dbus_path = g_strconcat (MNB_PANEL_DBUS_PATH_PREFIX, priv->name, NULL);
+  dbus_path = g_strconcat (MPL_PANEL_DBUS_PATH_PREFIX, priv->name, NULL);
   dbus_g_connection_register_g_object (conn, dbus_path, self);
   g_free (dbus_path);
 
@@ -692,14 +692,14 @@ mnb_panel_client_constructed (GObject *self)
                                G_TYPE_STRING,
                                G_TYPE_INVALID);
 
-      if (!mnb_panel_client_setup_toolbar_proxy (MNB_PANEL_CLIENT (self)))
+      if (!mpl_panel_client_setup_toolbar_proxy (MPL_PANEL_CLIENT (self)))
         {
           /*
            * Toolbar service not yet available; connect to the NameOwnerChanged
            * signal and wait.
            */
           dbus_g_proxy_connect_signal (proxy, "NameOwnerChanged",
-                                       G_CALLBACK (mnb_panel_client_noc_cb),
+                                       G_CALLBACK (mpl_panel_client_noc_cb),
                                        self, NULL);
         }
     }
@@ -712,14 +712,14 @@ mnb_panel_client_constructed (GObject *self)
   priv->constructed = TRUE;
 }
 
-MnbPanelClient *
-mnb_panel_client_new (guint        xid,
+MplPanelClient *
+mpl_panel_client_new (guint        xid,
                       const gchar *name,
                       const gchar *tooltip,
                       const gchar *stylesheet,
                       const gchar *button_style)
 {
-  MnbPanelClient *panel = g_object_new (MNB_TYPE_PANEL_CLIENT,
+  MplPanelClient *panel = g_object_new (MPL_TYPE_PANEL_CLIENT,
                                         "xid",          xid,
                                         "name",         name,
                                         "tooltip",      tooltip,
@@ -738,32 +738,32 @@ mnb_panel_client_new (guint        xid,
 }
 
 void
-mnb_panel_client_request_show (MnbPanelClient *panel)
+mpl_panel_client_request_show (MplPanelClient *panel)
 {
   g_signal_emit (panel, signals[REQUEST_SHOW], 0);
 }
 
 void
-mnb_panel_client_request_hide (MnbPanelClient *panel)
+mpl_panel_client_request_hide (MplPanelClient *panel)
 {
   g_signal_emit (panel, signals[REQUEST_HIDE], 0);
 }
 
 void
-mnb_panel_client_request_focus (MnbPanelClient *panel)
+mpl_panel_client_request_focus (MplPanelClient *panel)
 {
   g_signal_emit (panel, signals[REQUEST_FOCUS], 0);
 }
 
 void
-mnb_panel_client_request_button_style (MnbPanelClient *panel,
+mpl_panel_client_request_button_style (MplPanelClient *panel,
                                        const gchar    *style)
 {
   g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style);
 }
 
 void
-mnb_panel_client_request_tooltip (MnbPanelClient *panel,
+mpl_panel_client_request_tooltip (MplPanelClient *panel,
                                   const gchar    *tooltip)
 {
   g_signal_emit (panel, signals[REQUEST_TOOLTIP], 0, tooltip);
@@ -772,12 +772,12 @@ mnb_panel_client_request_tooltip (MnbPanelClient *panel,
 #include "../../src/mnb-toolbar-dbus-bindings.h"
 
 gboolean
-mnb_panel_client_launch_application (MnbPanelClient *panel,
+mpl_panel_client_launch_application (MplPanelClient *panel,
                                      const gchar    *path,
                                      gint            workspace,
                                      gboolean        no_chooser)
 {
-  MnbPanelClientPrivate *priv = panel->priv;
+  MplPanelClientPrivate *priv = panel->priv;
   GError                *error = NULL;
 
   if (!priv->toolbar_proxy)
@@ -813,13 +813,13 @@ mnb_panel_client_launch_application (MnbPanelClient *panel,
 }
 
 gboolean
-mnb_panel_client_launch_application_from_desktop_file (MnbPanelClient *panel,
+mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
                                                        const gchar    *desktop,
                                                        GList          *files,
                                                        gint            wspace,
                                                        gboolean      no_chooser)
 {
-  MnbPanelClientPrivate *priv = panel->priv;
+  MplPanelClientPrivate *priv = panel->priv;
   GError                *error = NULL;
   GList                 *l;
   gchar                 *arguments = NULL;
@@ -871,12 +871,12 @@ mnb_panel_client_launch_application_from_desktop_file (MnbPanelClient *panel,
 }
 
 gboolean
-mnb_panel_client_launch_default_application_for_uri (MnbPanelClient *panel,
+mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
                                                      const gchar    *uri,
                                                      gint            workspace,
                                                      gboolean        no_chooser)
 {
-  MnbPanelClientPrivate *priv = panel->priv;
+  MplPanelClientPrivate *priv = panel->priv;
   GError                *error = NULL;
 
   if (!priv->toolbar_proxy)
@@ -913,9 +913,9 @@ mnb_panel_client_launch_default_application_for_uri (MnbPanelClient *panel,
 }
 
 void
-mnb_panel_client_set_height (MnbPanelClient *panel, guint height)
+mpl_panel_client_set_height (MplPanelClient *panel, guint height)
 {
-  MnbPanelClientPrivate *priv = panel->priv;
+  MplPanelClientPrivate *priv = panel->priv;
 
   priv->requested_height = height;
 
@@ -929,9 +929,9 @@ mnb_panel_client_set_height (MnbPanelClient *panel, guint height)
     {
       if (height <= priv->max_height)
         {
-          if (MNB_PANEL_CLIENT_CLASS (mnb_panel_client_parent_class)->
+          if (MPL_PANEL_CLIENT_CLASS (mpl_panel_client_parent_class)->
               set_height)
-            MNB_PANEL_CLIENT_CLASS (mnb_panel_client_parent_class)->
+            MPL_PANEL_CLIENT_CLASS (mpl_panel_client_parent_class)->
               set_height (panel, height);
         }
       else

@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* mnb-panel-client.h */
+/* mpl-panel-client.h */
 /*
  * Copyright (c) 2009 Intel Corp.
  *
@@ -22,38 +22,38 @@
  * 02111-1307, USA.
  */
 
-#ifndef _MNB_PANEL_CLIENT
-#define _MNB_PANEL_CLIENT
+#ifndef _MPL_PANEL_CLIENT
+#define _MPL_PANEL_CLIENT
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define MNB_TYPE_PANEL_CLIENT mnb_panel_client_get_type()
+#define MPL_TYPE_PANEL_CLIENT mpl_panel_client_get_type()
 
-#define MNB_PANEL_CLIENT(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_PANEL_CLIENT, MnbPanelClient))
+#define MPL_PANEL_CLIENT(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MPL_TYPE_PANEL_CLIENT, MplPanelClient))
 
-#define MNB_PANEL_CLIENT_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), MNB_TYPE_PANEL_CLIENT, MnbPanelClientClass))
+#define MPL_PANEL_CLIENT_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MPL_TYPE_PANEL_CLIENT, MplPanelClientClass))
 
-#define MNB_IS_PANEL_CLIENT(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNB_TYPE_PANEL_CLIENT))
+#define MPL_IS_PANEL_CLIENT(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MPL_TYPE_PANEL_CLIENT))
 
-#define MNB_IS_PANEL_CLIENT_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), MNB_TYPE_PANEL_CLIENT))
+#define MPL_IS_PANEL_CLIENT_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), MPL_TYPE_PANEL_CLIENT))
 
-#define MNB_PANEL_CLIENT_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_PANEL_CLIENT, MnbPanelClientClass))
+#define MPL_PANEL_CLIENT_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), MPL_TYPE_PANEL_CLIENT, MplPanelClientClass))
 
-typedef struct _MnbPanelClientPrivate MnbPanelClientPrivate;
+typedef struct _MplPanelClientPrivate MplPanelClientPrivate;
 
 typedef struct
 {
   GObject parent;
 
-  MnbPanelClientPrivate *priv;
-} MnbPanelClient;
+  MplPanelClientPrivate *priv;
+} MplPanelClient;
 
 typedef struct
 {
@@ -62,60 +62,60 @@ typedef struct
   /*
    * Public signals -- connect to these from your panel.
    */
-  void (*set_size)           (MnbPanelClient *panel, guint width, guint height);
-  void (*show_begin)         (MnbPanelClient *panel);
-  void (*show_end)           (MnbPanelClient *panel);
-  void (*hide_begin)         (MnbPanelClient *panel);
-  void (*hide_end)           (MnbPanelClient *panel);
+  void (*set_size)           (MplPanelClient *panel, guint width, guint height);
+  void (*show_begin)         (MplPanelClient *panel);
+  void (*show_end)           (MplPanelClient *panel);
+  void (*hide_begin)         (MplPanelClient *panel);
+  void (*hide_end)           (MplPanelClient *panel);
 
   /*
    * Private signals
    * Signals for DBus -- these are the interface signals.
    */
-  void (*request_show)         (MnbPanelClient *panel);
-  void (*request_hide)         (MnbPanelClient *panel);
-  void (*request_focus)        (MnbPanelClient *panel);
-  void (*request_button_style) (MnbPanelClient *panel, const gchar *style);
-  void (*request_tooltip)      (MnbPanelClient *panel, const gchar *tooltip);
+  void (*request_show)         (MplPanelClient *panel);
+  void (*request_hide)         (MplPanelClient *panel);
+  void (*request_focus)        (MplPanelClient *panel);
+  void (*request_button_style) (MplPanelClient *panel, const gchar *style);
+  void (*request_tooltip)      (MplPanelClient *panel, const gchar *tooltip);
 
   /*
    * Subclass implementation of the set_height API.
    */
-  void (*set_height)           (MnbPanelClient *panel, guint height);
-} MnbPanelClientClass;
+  void (*set_height)           (MplPanelClient *panel, guint height);
+} MplPanelClientClass;
 
-GType mnb_panel_client_get_type (void);
+GType mpl_panel_client_get_type (void);
 
-MnbPanelClient *mnb_panel_client_new       (guint        xid,
+MplPanelClient *mpl_panel_client_new       (guint        xid,
                                             const gchar *name,
                                             const gchar *tooltip,
                                             const gchar *stylesheet,
                                             const gchar *button_style);
 
-void mnb_panel_client_set_height           (MnbPanelClient *panel,
+void mpl_panel_client_set_height           (MplPanelClient *panel,
                                             guint           height);
-void mnb_panel_client_request_show         (MnbPanelClient *panel);
-void mnb_panel_client_request_hide         (MnbPanelClient *panel);
-void mnb_panel_client_request_focus        (MnbPanelClient *panel);
-void mnb_panel_client_request_button_style (MnbPanelClient *panel,
+void mpl_panel_client_request_show         (MplPanelClient *panel);
+void mpl_panel_client_request_hide         (MplPanelClient *panel);
+void mpl_panel_client_request_focus        (MplPanelClient *panel);
+void mpl_panel_client_request_button_style (MplPanelClient *panel,
                                             const gchar    *style);
-void mnb_panel_client_request_tooltip      (MnbPanelClient *panel,
+void mpl_panel_client_request_tooltip      (MplPanelClient *panel,
                                             const gchar    *tooltip);
 
-gboolean mnb_panel_client_launch_application   (MnbPanelClient *panel,
+gboolean mpl_panel_client_launch_application   (MplPanelClient *panel,
                                                 const gchar    *app,
                                                 gint            workspace,
                                                 gboolean        no_chooser);
 
 gboolean
-mnb_panel_client_launch_application_from_desktop_file (MnbPanelClient *panel,
+mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
                                                        const gchar    *desktop,
                                                        GList          *files,
                                                        gint            wspace,
                                                        gboolean        no_chooser);
 
 gboolean
-mnb_panel_client_launch_default_application_for_uri (MnbPanelClient *panel,
+mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
                                                      const gchar    *uri,
                                                      gint            workspace,
                                                      gboolean        no_chooser);
@@ -123,5 +123,5 @@ mnb_panel_client_launch_default_application_for_uri (MnbPanelClient *panel,
 
 G_END_DECLS
 
-#endif /* _MNB_PANEL_CLIENT */
+#endif /* _MPL_PANEL_CLIENT */
 

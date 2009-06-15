@@ -26,13 +26,13 @@
  *
  */
 
-#include <mnb/mnb-panel-clutter.h>
-#include <mnb/mnb-panel-common.h>
+#include <moblin-panel/mpl-panel-clutter.h>
+#include <moblin-panel/mpl-panel-common.h>
 
 static void
-make_window_content (MnbPanelClutter *panel)
+make_window_content (MplPanelClutter *panel)
 {
-  ClutterActor *stage = mnb_panel_clutter_get_stage (panel);
+  ClutterActor *stage = mpl_panel_clutter_get_stage (panel);
   ClutterActor *label;
   ClutterColor  white = {0xff, 0xff, 0xff, 0xff};
   ClutterColor  black = {0, 0, 0, 0xff};
@@ -51,16 +51,16 @@ make_window_content (MnbPanelClutter *panel)
 int
 main (int argc, char *argv[])
 {
-  MnbPanelClient *panel;
+  MplPanelClient *panel;
 
   clutter_init (&argc, &argv);
 
   /*
    * NB: the toolbar service indicates whether this panel requires access
-   *     to the API provided by org.moblin.Mnb.Toolbar -- if you need to do
+   *     to the API provided by org.moblin.Mpl.Toolbar -- if you need to do
    *     any application launching, etc., then pass TRUE.
    */
-  panel = mnb_panel_clutter_new (MNB_PANEL_TEST,           /* the panel slot */
+  panel = mpl_panel_clutter_new (MPL_PANEL_TEST,           /* the panel slot */
                                  "test",                   /* tooltip */
                                  CSS_DIR"/test-panel.css", /*stylesheet */
                                  "state1",                 /* button style */
@@ -68,15 +68,15 @@ main (int argc, char *argv[])
 
   /*
    * Strictly speaking, it is not necessary to construct the window contents
-   * at this point, the panel can instead hook to MnbPanelClient::set-size
+   * at this point, the panel can instead hook to MplPanelClient::set-size
    * signal. However, once the set-size signal has been emitted, the panel
    * window must remain in a state suitable to it being shown.
    *
-   * The panel can also hook into the MnbPanelClient::show-begin signal, to be
+   * The panel can also hook into the MplPanelClient::show-begin signal, to be
    * when it is being shown, but this signal is assynchronous, so that the
    * panel might finish showing *before* the Panel handles this signal.
    */
-  make_window_content (MNB_PANEL_CLUTTER (panel));
+  make_window_content (MPL_PANEL_CLUTTER (panel));
 
   clutter_main ();
 

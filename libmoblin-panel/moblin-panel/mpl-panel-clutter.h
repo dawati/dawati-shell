@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* mnb-panel-clutter.h */
+/* mpl-panel-clutter.h */
 /*
  * Copyright (c) 2009 Intel Corp.
  *
@@ -22,58 +22,58 @@
  * 02111-1307, USA.
  */
 
-#ifndef _MNB_PANEL_CLUTTER
-#define _MNB_PANEL_CLUTTER
+#ifndef _MPL_PANEL_CLUTTER
+#define _MPL_PANEL_CLUTTER
 
 #include <clutter/clutter.h>
 
-#include "mnb-panel-client.h"
+#include "mpl-panel-client.h"
 
 G_BEGIN_DECLS
 
-#define MNB_TYPE_PANEL_CLUTTER mnb_panel_clutter_get_type()
+#define MPL_TYPE_PANEL_CLUTTER mpl_panel_clutter_get_type()
 
-#define MNB_PANEL_CLUTTER(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_PANEL_CLUTTER, MnbPanelClutter))
+#define MPL_PANEL_CLUTTER(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MPL_TYPE_PANEL_CLUTTER, MplPanelClutter))
 
-#define MNB_PANEL_CLUTTER_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), MNB_TYPE_PANEL_CLUTTER, MnbPanelClutterClass))
+#define MPL_PANEL_CLUTTER_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MPL_TYPE_PANEL_CLUTTER, MplPanelClutterClass))
 
-#define MNB_IS_PANEL_CLUTTER(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNB_TYPE_PANEL_CLUTTER))
+#define MPL_IS_PANEL_CLUTTER(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MPL_TYPE_PANEL_CLUTTER))
 
-#define MNB_IS_PANEL_CLUTTER_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), MNB_TYPE_PANEL_CLUTTER))
+#define MPL_IS_PANEL_CLUTTER_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), MPL_TYPE_PANEL_CLUTTER))
 
-#define MNB_PANEL_CLUTTER_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_PANEL_CLUTTER, MnbPanelClutterClass))
+#define MPL_PANEL_CLUTTER_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), MPL_TYPE_PANEL_CLUTTER, MplPanelClutterClass))
 
-typedef struct _MnbPanelClutterPrivate MnbPanelClutterPrivate;
-
-typedef struct
-{
-  MnbPanelClient parent;
-
-  MnbPanelClutterPrivate *priv;
-} MnbPanelClutter;
+typedef struct _MplPanelClutterPrivate MplPanelClutterPrivate;
 
 typedef struct
 {
-  MnbPanelClientClass parent_class;
+  MplPanelClient parent;
 
-} MnbPanelClutterClass;
+  MplPanelClutterPrivate *priv;
+} MplPanelClutter;
 
-GType mnb_panel_clutter_get_type (void);
+typedef struct
+{
+  MplPanelClientClass parent_class;
 
-MnbPanelClient *mnb_panel_clutter_new   (const gchar *name,
+} MplPanelClutterClass;
+
+GType mpl_panel_clutter_get_type (void);
+
+MplPanelClient *mpl_panel_clutter_new   (const gchar *name,
                                          const gchar *tooltip,
                                          const gchar *stylesheet,
                                          const gchar *button_style,
                                          gboolean     with_toolbar_service);
 
-ClutterActor *mnb_panel_clutter_get_stage (MnbPanelClutter *panel);
+ClutterActor *mpl_panel_clutter_get_stage (MplPanelClutter *panel);
 
 G_END_DECLS
 
-#endif /* _MNB_PANEL_CLUTTER */
+#endif /* _MPL_PANEL_CLUTTER */
 

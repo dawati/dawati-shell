@@ -2,7 +2,7 @@
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CPPFLAGS = \
-	-I$(top_srcdir)/libmnb \
+	-I$(top_srcdir)/libmoblin-panel \
   -DCSS_DIR=\"$(abs_builddir)\"
 
 noinst_PROGRAMS = \
@@ -10,23 +10,23 @@ noinst_PROGRAMS = \
 	test-panel-clutter \
 	test-panel-gtk
 
-test_entry_CFLAGS = $(LIBMNB_CLUTTER_CFLAGS)
+test_entry_CFLAGS = $(LIBMPL_CLUTTER_CFLAGS)
 
-test_entry_LDADD = $(LIBMNB_CLUTTER_LIBS)
+test_entry_LDADD = $(LIBMPL_CLUTTER_LIBS)
 
 test_entry_SOURCES = \
-	$(top_srcdir)/src/mnb-entry.c \
+	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-entry.c \
 	test-entry.c
 
 test_panel_clutter_DEPENDENCIES = \
 	test-panel-clutter.service \
 	test-panel.css
 
-test_panel_clutter_CFLAGS = $(LIBMNB_CLUTTER_CFLAGS)
+test_panel_clutter_CFLAGS = $(LIBMPL_CLUTTER_CFLAGS)
 
 test_panel_clutter_LDADD = \
-	$(LIBMNB_CLUTTER_LIBS) \
-	../mnb/libmnb-clutter.la
+	$(LIBMPL_CLUTTER_LIBS) \
+	../moblin-panel/libmoblin-panel-clutter.la
 
 test_panel_clutter_SOURCES = \
 	test-panel-clutter.c
@@ -35,11 +35,11 @@ test_panel_gtk_DEPENDENCIES = \
 	test-panel-gtk.service \
 	test-panel.css
 
-test_panel_gtk_CFLAGS = $(LIBMNB_GTK_CFLAGS)
+test_panel_gtk_CFLAGS = $(LIBMPL_GTK_CFLAGS)
 
 test_panel_gtk_LDADD = \
-	$(LIBMNB_GTK_LIBS) \
-	../mnb/libmnb-gtk.la
+	$(LIBMPL_GTK_LIBS) \
+	../moblin-panel/libmoblin-panel-gtk.la
 
 test_panel_gtk_SOURCES = \
 	test-panel-gtk.c

@@ -4,13 +4,13 @@
 
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
-#include "mnb-entry.h"
+#include <moblin-panel/mpl-entry.h>
 
 static void
-button_clicked_cb (MnbEntry *entry,
+button_clicked_cb (MplEntry *entry,
                    gpointer  user_data)
 {
-  printf ("%s() %s\n", __FUNCTION__, mnb_entry_get_text (entry));
+  printf ("%s() %s\n", __FUNCTION__, mpl_entry_get_text (entry));
 }
 
 static void
@@ -52,7 +52,7 @@ main (int argc, char *argv[])
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 400, 200);
 
-  entry = mnb_entry_new ("Foo");
+  entry = mpl_entry_new ("Foo");
 
   clutter_actor_set_width (CLUTTER_ACTOR (entry), 200);
   clutter_actor_set_position (CLUTTER_ACTOR (entry), 50, 50);

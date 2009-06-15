@@ -29,8 +29,8 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
-#include <mnb/mnb-panel-gtk.h>
-#include <mnb/mnb-panel-common.h>
+#include <moblin-panel/mpl-panel-gtk.h>
+#include <moblin-panel/mpl-panel-common.h>
 
 /*
  * This is a callback to demonstrate how the application can close the config
@@ -40,9 +40,9 @@
 static void
 button_clicked_cb (GtkButton *button, gpointer data)
 {
-  MnbPanelClient *panel = MNB_PANEL_CLIENT (data);
+  MplPanelClient *panel = MPL_PANEL_CLIENT (data);
 
-  mnb_panel_client_request_hide (panel);
+  mpl_panel_client_request_hide (panel);
 }
 
 /*
@@ -53,11 +53,11 @@ button_clicked_cb (GtkButton *button, gpointer data)
  * it immediately after creating the panel object.
  */
 static void
-make_window_content (MnbPanelGtk *panel)
+make_window_content (MplPanelGtk *panel)
 {
   GtkWidget *window, *table, *button, *old_child, *entry;
 
-  window = mnb_panel_gtk_get_window (panel);
+  window = mpl_panel_gtk_get_window (panel);
 
   table = gtk_table_new (5, 3, TRUE);
 
@@ -93,14 +93,14 @@ change_button_style_cb (gpointer data)
 {
   static int count = 0;
 
-  MnbPanelClient *panel = MNB_PANEL_CLIENT (data);
+  MplPanelClient *panel = MPL_PANEL_CLIENT (data);
 
   count++;
 
   if (count % 2)
-    mnb_panel_client_request_button_style (panel, "state2");
+    mpl_panel_client_request_button_style (panel, "state2");
   else
-    mnb_panel_client_request_button_style (panel, "state1");
+    mpl_panel_client_request_button_style (panel, "state1");
 
   return TRUE;
 }
@@ -108,16 +108,16 @@ change_button_style_cb (gpointer data)
 int
 main (int argc, char *argv[])
 {
-  MnbPanelClient *panel;
+  MplPanelClient *panel;
 
   gtk_init (&argc, &argv);
 
   /*
    * NB: the toolbar service indicates whether this panel requires access
-   *     to the API provided by org.moblin.Mnb.Toolbar -- if you need to do
+   *     to the API provided by org.moblin.Mpl.Toolbar -- if you need to do
    *     any application launching, etc., then pass TRUE.
    */
-  panel = mnb_panel_gtk_new (MNB_PANEL_TEST,           /* the panel slot */
+  panel = mpl_panel_gtk_new (MPL_PANEL_TEST,           /* the panel slot */
                              "test",                   /* tooltip */
                              CSS_DIR"/test-panel.css", /*stylesheet */
                              "state1",                 /* button style */
@@ -125,15 +125,15 @@ main (int argc, char *argv[])
 
   /*
    * Strictly speaking, it is not necessary to construct the window contents
-   * at this point, the panel can instead hook to MnbPanelClient::set-size
+   * at this point, the panel can instead hook to MplPanelClient::set-size
    * signal. However, once the set-size signal has been emitted, the panel
    * window must remain in a state suitable to it being shown.
    *
-   * The panel can also hook into the MnbPanelClient::show-begin signal, to be
+   * The panel can also hook into the MplPanelClient::show-begin signal, to be
    * when it is being shown, but this signal is assynchronous, so that the
    * panel might finish showing *before* the Panel handles this signal.
    */
-  make_window_content (MNB_PANEL_GTK (panel));
+  make_window_content (MPL_PANEL_GTK (panel));
 
   g_timeout_add (2000, change_button_style_cb, panel);
 

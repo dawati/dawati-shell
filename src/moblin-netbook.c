@@ -35,6 +35,7 @@
 
 #include <glib/gi18n.h>
 
+#include <moblin-panel/mpl-panel-common.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gmodule.h>
@@ -302,28 +303,28 @@ moblin_netbook_plugin_constructed (GObject *object)
    * process applets, once we have them.
    */
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MNB_PANEL_MYZONE, _("myzone"));
+                                MPL_PANEL_MYZONE, _("myzone"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MNB_PANEL_ZONES, _("zones"));
+                                MPL_PANEL_ZONES, _("zones"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MNB_PANEL_STATUS, _("status"));
+                                MPL_PANEL_STATUS, _("status"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MNB_PANEL_APPLICATIONS, _("applications"));
+                                MPL_PANEL_APPLICATIONS, _("applications"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MNB_PANEL_PASTEBOARD, _("pasteboard"));
+                                MPL_PANEL_PASTEBOARD, _("pasteboard"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MNB_PANEL_INTERNET, _("internet"));
+                                MPL_PANEL_INTERNET, _("internet"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MNB_PANEL_MEDIA, _("media"));
+                                MPL_PANEL_MEDIA, _("media"));
 
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MNB_PANEL_PEOPLE, _("people"));
+                                MPL_PANEL_PEOPLE, _("people"));
 
 #endif
 
@@ -722,7 +723,7 @@ check_for_empty_workspace (MutterPlugin *plugin,
        * If there are no workspaces, we show the myzone.
        */
       mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar),
-                                  MNB_PANEL_MYZONE);
+                                  MPL_PANEL_MYZONE);
     }
 
   while (l)
