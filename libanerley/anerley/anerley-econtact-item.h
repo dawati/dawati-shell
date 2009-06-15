@@ -55,7 +55,8 @@ typedef struct {
 
 GType anerley_econtact_item_get_type (void);
 
-AnerleyEContactItem* anerley_econtact_item_new (EContact *contact);
+AnerleyEContactItem *anerley_econtact_item_new (EContact *contact);
+const gchar *anerley_econtact_item_get_uid (AnerleyEContactItem *item);
 
 G_END_DECLS
 

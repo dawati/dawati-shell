@@ -279,4 +279,11 @@ anerley_econtact_item_new (EContact *contact)
                        NULL);
 }
 
+const gchar *
+anerley_econtact_item_get_uid (AnerleyEContactItem *item)
+{
+  AnerleyEContactItemPrivate *priv = GET_PRIVATE (item);
 
+  return (const gchar *)e_contact_get_const (priv->contact,
+                                             E_CONTACT_UID);
+}
