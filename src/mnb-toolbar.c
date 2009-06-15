@@ -1245,6 +1245,23 @@ mnb_toolbar_panel_request_button_style_cb (MnbPanel    *panel,
   clutter_actor_set_name (CLUTTER_ACTOR (priv->buttons[index]), style_id);
 }
 
+static void
+mnb_toolbar_panel_request_tooltip_cb (MnbPanel    *panel,
+                                      const gchar *tooltip,
+                                      MnbToolbar  *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint index;
+
+  index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
+
+  if (index < 0)
+    return;
+
+  if (priv->buttons[index])
+    nbtk_widget_set_tooltip_text (priv->buttons[index], tooltip);
+}
+
 /*
  * Removes the button/panel pair from the toolbar, avoiding any recursion
  * due to "destroy" signal handler.
@@ -1590,6 +1607,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
 
   g_signal_connect (panel, "request-button-style",
                     G_CALLBACK (mnb_toolbar_panel_request_button_style_cb),
+                    toolbar);
+
+  g_signal_connect (panel, "request-tooltip",
+                    G_CALLBACK (mnb_toolbar_panel_request_tooltip_cb),
                     toolbar);
 
   g_signal_connect (panel, "destroy",

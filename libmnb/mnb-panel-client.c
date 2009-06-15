@@ -67,6 +67,7 @@ enum
   REQUEST_HIDE,
   REQUEST_FOCUS,
   REQUEST_BUTTON_STYLE,
+  REQUEST_TOOLTIP,
 
   LAST_SIGNAL
 };
@@ -436,6 +437,16 @@ mnb_panel_client_class_init (MnbPanelClientClass *klass)
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
+
+  signals[REQUEST_TOOLTIP] =
+    g_signal_new ("request-tooltip",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClientClass, request_tooltip),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
 }
 
 static void
@@ -750,6 +761,13 @@ mnb_panel_client_request_button_style (MnbPanelClient *panel,
                                        const gchar    *style)
 {
   g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style);
+}
+
+void
+mnb_panel_client_request_tooltip (MnbPanelClient *panel,
+                                  const gchar    *tooltip)
+{
+  g_signal_emit (panel, signals[REQUEST_TOOLTIP], 0, tooltip);
 }
 
 #include "../src/mnb-toolbar-dbus-bindings.h"

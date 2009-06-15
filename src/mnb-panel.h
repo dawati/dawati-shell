@@ -62,7 +62,8 @@ typedef struct {
 
   void (*ready)                 (MnbPanel *panel);
   void (*remote_process_died)   (MnbPanel *panel);
-  void (*request_button_style)  (MnbPanel *panel, const gchar *icon);
+  void (*request_button_style)  (MnbPanel *panel, const gchar *style);
+  void (*request_tooltip)       (MnbPanel *panel, const gchar *tooltip);
 } MnbPanelClass;
 
 GType mnb_panel_get_type (void);

@@ -62,6 +62,7 @@ enum
 {
   READY,
   REQUEST_BUTTON_STYLE,
+  REQUEST_TOOLTIP,
   REMOTE_PROCESS_DIED,
   LAST_SIGNAL
 };
@@ -166,7 +167,25 @@ mnb_panel_request_button_style_cb (DBusGProxy  *proxy,
                                    const gchar *style_id,
                                    MnbPanel    *panel)
 {
+  MnbPanelPrivate *priv = panel->priv;
+
+  g_free (priv->button_style_id);
+  priv->button_style_id = g_strdup (style_id);
+
   g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style_id);
+}
+
+static void
+mnb_panel_request_tooltip_cb (DBusGProxy  *proxy,
+                              const gchar *tooltip,
+                              MnbPanel    *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+
+  g_free (priv->tooltip);
+  priv->tooltip = g_strdup (tooltip);
+
+  g_signal_emit (panel, signals[REQUEST_TOOLTIP], 0, tooltip);
 }
 
 static void
@@ -202,6 +221,10 @@ mnb_panel_dispose (GObject *self)
       dbus_g_proxy_disconnect_signal (proxy, "RequestButtonStyle",
                                  G_CALLBACK (mnb_panel_request_button_style_cb),
                                       self);
+
+      dbus_g_proxy_disconnect_signal (proxy, "RequestTooltip",
+                                      G_CALLBACK (mnb_panel_request_tooltip_cb),
+                                      self);
       g_object_unref (proxy);
       priv->proxy = NULL;
     }
@@ -222,10 +245,10 @@ mnb_panel_finalize (GObject *object)
 
   g_free (priv->dbus_name);
 
-  dbus_free (priv->name);
-  dbus_free (priv->tooltip);
-  dbus_free (priv->stylesheet);
-  dbus_free (priv->button_style_id);
+  g_free (priv->name);
+  g_free (priv->tooltip);
+  g_free (priv->stylesheet);
+  g_free (priv->button_style_id);
 
   G_OBJECT_CLASS (mnb_panel_parent_class)->finalize (object);
 }
@@ -310,6 +333,16 @@ mnb_panel_class_init (MnbPanelClass *klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbPanelClass, request_button_style),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
+
+  signals[REQUEST_TOOLTIP] =
+    g_signal_new ("request-tooltip",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClass, request_tooltip),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -499,17 +532,22 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
   GtkWidget       *socket;
   GtkWidget       *window;
 
-  dbus_free (priv->name);
-  priv->name = name;
+  /*
+   * We duplicate the return values, because we need to be able to replace them
+   * and using the originals we would need to use dbus_malloc() later on
+   * to set them afresh.
+   */
+  g_free (priv->name);
+  priv->name = g_strdup (name);
 
-  dbus_free (priv->tooltip);
-  priv->tooltip = tooltip;
+  g_free (priv->tooltip);
+  priv->tooltip = g_strdup (tooltip);
 
-  dbus_free (priv->stylesheet);
-  priv->stylesheet = stylesheet;
+  g_free (priv->stylesheet);
+  priv->stylesheet = g_strdup (stylesheet);
 
-  dbus_free (priv->button_style_id);
-  priv->button_style_id = button_style_id;
+  g_free (priv->button_style_id);
+  priv->button_style_id = g_strdup (button_style_id);
 
   priv->child_xid = xid;
 
@@ -549,6 +587,12 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
 
   priv->ready = TRUE;
   priv->dead = FALSE;
+
+  dbus_free (name);
+  dbus_free (tooltip);
+  dbus_free (stylesheet);
+  dbus_free (button_style_id);
+
   g_signal_emit (panel, signals[READY], 0);
 }
 
@@ -658,6 +702,11 @@ mnb_panel_setup_proxy (MnbPanel *panel)
   dbus_g_proxy_add_signal (proxy, "RequestButtonStyle", G_TYPE_STRING, G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestButtonStyle",
                                G_CALLBACK (mnb_panel_request_button_style_cb),
+                               panel, NULL);
+
+  dbus_g_proxy_add_signal (proxy, "RequestTooltip", G_TYPE_STRING, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy, "RequestTooltip",
+                               G_CALLBACK (mnb_panel_request_tooltip_cb),
                                panel, NULL);
 
   mnb_panel_init_owner (panel);

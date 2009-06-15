@@ -76,6 +76,7 @@ typedef struct
   void (*request_hide)         (MnbPanelClient *panel);
   void (*request_focus)        (MnbPanelClient *panel);
   void (*request_button_style) (MnbPanelClient *panel, const gchar *style);
+  void (*request_tooltip)      (MnbPanelClient *panel, const gchar *tooltip);
 
   /*
    * Subclass implementation of the set_height API.
@@ -98,6 +99,8 @@ void mnb_panel_client_request_hide         (MnbPanelClient *panel);
 void mnb_panel_client_request_focus        (MnbPanelClient *panel);
 void mnb_panel_client_request_button_style (MnbPanelClient *panel,
                                             const gchar    *style);
+void mnb_panel_client_request_tooltip      (MnbPanelClient *panel,
+                                            const gchar    *tooltip);
 
 gboolean mnb_panel_client_launch_application   (MnbPanelClient *panel,
                                                 const gchar    *app,

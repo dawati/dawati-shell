@@ -22,6 +22,10 @@
       <arg name="style_id" type="s"/>
     </signal>
 
+    <signal name="RequestTooltip">
+      <arg name="tooltip" type="s"/>
+    </signal>
+
     <signal name="RequestShow"/>
     <signal name="RequestHide"/>
     <signal name="RequestFocus"/>
