@@ -1401,7 +1401,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
           nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
           clutter_actor_set_name (CLUTTER_ACTOR (button),
-                                  style_id ? style_id : button_style);
+                                  button_style ? button_style : style_id);
 
           g_free (button_style);
         }
@@ -1536,7 +1536,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
   nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button),
-                          style_id ? style_id : button_style);
+                          button_style ? button_style : style_id);
 
   g_free (button_style);
 
