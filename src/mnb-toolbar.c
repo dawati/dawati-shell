@@ -1396,7 +1396,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
                 }
             }
 
-          if (!style_id)
+          if (!style_id || !*style_id)
             button_style = g_strdup_printf ("%s-button", name);
 
           nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
@@ -1503,7 +1503,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   g_signal_handlers_disconnect_by_func (panel,
                                         mnb_toolbar_append_panel, toolbar);
 
-  if (!style_id)
+  if (!style_id || !*style_id)
     button_style = g_strdup_printf ("%s-button", name);
 
   /*
