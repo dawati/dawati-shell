@@ -501,6 +501,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   ClutterActor *no_people_tile = NULL;
   EBook *book;
   GError *error = NULL;
+  ClutterActor *tmp_text;
+
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 12);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
@@ -623,8 +625,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     no_people_tile);
   clutter_actor_show_all ((ClutterActor *)self);
 
-  priv->primary_button = nbtk_button_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-primary-action");
+  priv->primary_button = nbtk_button_new_with_label ("");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->primary_button), "people-primary-action");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->primary_button,
                                         1,
@@ -645,8 +647,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_width ((ClutterActor *)priv->primary_button,
                            150);
 
-  priv->secondary_button = nbtk_button_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-secondary-action");
+  priv->secondary_button = nbtk_button_new_with_label ("");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->secondary_button), "people-secondary-action");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->secondary_button,
                                         2,
@@ -666,6 +668,14 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         NULL);
   clutter_actor_set_width ((ClutterActor *)priv->secondary_button,
                            150);
+
+  tmp_text =
+    nbtk_bin_get_child (NBTK_BIN (priv->primary_button));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+
+  tmp_text =
+    nbtk_bin_get_child (NBTK_BIN (priv->secondary_button));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
 
   _update_buttons (self);
 
