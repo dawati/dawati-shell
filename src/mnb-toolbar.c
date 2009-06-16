@@ -1384,7 +1384,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
           if (stylesheet)
             {
               GError    *error = NULL;
-              NbtkStyle *style = nbtk_style_new ();
+              NbtkStyle *style = nbtk_style_get_default ();
 
               if (!nbtk_style_load_from_file (style, stylesheet, &error))
                 {
@@ -1394,8 +1394,6 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
                   g_error_free (error);
                 }
-              else
-                nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
             }
 
           if (!style_id)
@@ -1523,7 +1521,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   if (stylesheet)
     {
       GError    *error = NULL;
-      NbtkStyle *style = nbtk_style_new ();
+      NbtkStyle *style = nbtk_style_get_default ();
 
       if (!nbtk_style_load_from_file (style, stylesheet, &error))
         {
@@ -1533,8 +1531,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
 
           g_error_free (error);
         }
-      else
-        nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
     }
 
   nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
