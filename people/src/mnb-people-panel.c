@@ -22,10 +22,6 @@
 #include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 
-#include "mnb-people-panel.h"
-
-#include "mnb-entry.h"
-#include "mnb-drop-down.h"
 
 #include <anerley/anerley-tp-feed.h>
 #include <anerley/anerley-item.h>
@@ -37,7 +33,12 @@
 #include <anerley/anerley-econtact-item.h>
 
 #include <libebook/e-book.h>
-#include "src/moblin-netbook-chooser.h"
+
+#include <moblin-panel/mpl-panel-clutter.h>
+#include <moblin-panel/mpl-panel-common.h>
+#include <moblin-panel/mpl-entry.h>
+
+#include "mnb-people-panel.h"
 
 G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
 
@@ -51,7 +52,6 @@ typedef struct _MnbPeoplePanelPrivate MnbPeoplePanelPrivate;
 struct _MnbPeoplePanelPrivate {
   guint filter_timeout_id;
   AnerleyFeedModel *model;
-  NbtkWidget *drop_down;
   ClutterActor *tex;
   NbtkWidget *entry;
   GAppInfo *app_info;
@@ -59,6 +59,7 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *primary_button;
   NbtkWidget *secondary_button;
   NbtkWidget *tile_view;
+  MplPanelClient *panel_client;
 };
 
 static void
@@ -66,10 +67,10 @@ mnb_people_panel_dispose (GObject *object)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (object);
 
-  if (priv->drop_down)
+  if (priv->panel_client)
   {
-    g_object_unref (priv->drop_down);
-    priv->drop_down = NULL;
+    g_object_unref (priv->panel_client);
+    priv->panel_client = NULL;
   }
 
   G_OBJECT_CLASS (mnb_people_panel_parent_class)->dispose (object);
@@ -99,12 +100,12 @@ _filter_timeout_cb (gpointer userdata)
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
   anerley_feed_model_set_filter_text (priv->model,
-                                      mnb_entry_get_text (MNB_ENTRY (priv->entry)));
+                                      mpl_entry_get_text (MPL_ENTRY (priv->entry)));
   return FALSE;
 }
 
 static void
-_entry_text_changed_cb (MnbEntry *entry,
+_entry_text_changed_cb (MplEntry *entry,
                         gpointer  userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
@@ -163,6 +164,7 @@ _update_buttons (MnbPeoplePanel *people_panel)
   }
 }
 
+#if 0
 static void
 dropdown_show_cb (MnbDropDown  *dropdown,
                   gpointer      userdata)
@@ -181,8 +183,9 @@ dropdown_hide_cb (MnbDropDown  *dropdown,
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
   /* Reset search. */
-  mnb_entry_set_text (MNB_ENTRY (priv->entry), "");
+  mpl_entry_set_text (MNB_ENTRY (priv->entry), "");
 }
+#endif
 
 #define ICON_SIZE 48
 
@@ -221,7 +224,8 @@ _no_people_tile_button_press_event_cb (ClutterActor *actor,
 
   if (g_app_info_launch (priv->app_info, NULL, context, &error))
   {
-    clutter_actor_hide ((ClutterActor *)priv->drop_down);
+    if (priv->panel_client)
+      mpl_panel_client_request_hide (priv->panel_client);
   }
 
   if (error)
@@ -438,7 +442,6 @@ _primary_button_clicked_cb (NbtkButton *button,
   if (item)
   {
     anerley_item_activate (item);
-    clutter_actor_hide ((ClutterActor *)priv->drop_down);
   }
 }
 
@@ -457,16 +460,25 @@ _secondary_button_clicked_cb (NbtkButton *button,
   if (item)
   {
     uid = anerley_econtact_item_get_uid ((AnerleyEContactItem *)item);
-    command_line = g_strdup_printf ("contacts --uid %s",
-                                    uid);
-    if (!moblin_netbook_launch_application (command_line, FALSE, -2))
+
+    if (priv->panel_client)
     {
-      g_warning (G_STRLOC ": Error launching contacts for uid: %s",
-                 uid);
-      g_free (command_line);
-    } else {
-      g_free (command_line);
-      clutter_actor_hide ((ClutterActor *)priv->drop_down);
+      command_line = g_strdup_printf ("contacts --uid %s",
+                                    uid);
+      if (!mpl_panel_client_launch_application (priv->panel_client,
+                                                command_line,
+                                                FALSE,
+                                                -2))
+      {
+        g_warning (G_STRLOC ": Error launching contacts for uid: %s",
+                   uid);
+        g_free (command_line);
+      } else {
+        g_free (command_line);
+
+        if (priv->panel_client)
+          mpl_panel_client_request_hide (priv->panel_client);
+      }
     }
   }
 }
@@ -486,7 +498,9 @@ _tile_view_item_activated_cb (AnerleyTileView *view,
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
   anerley_item_activate (item);
-  clutter_actor_hide ((ClutterActor *)priv->drop_down);
+
+  if (priv->panel_client)
+    mpl_panel_client_request_hide (priv->panel_client);
 }
 
 static void
@@ -537,7 +551,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-align", 0.5,
                                         NULL);
 
-  priv->entry = mnb_entry_new (_("Search"));
+  priv->entry = mpl_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
@@ -707,13 +721,14 @@ mnb_people_panel_new (void)
 }
 
 void
-mnb_people_panel_set_dropdown (MnbPeoplePanel *people_panel,
-                               MnbDropDown    *drop_down)
+mnb_people_panel_set_panel_client (MnbPeoplePanel *people_panel,
+                                   MplPanelClient *panel_client)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
 
-  priv->drop_down = g_object_ref (drop_down);
+  priv->panel_client = g_object_ref (panel_client);
 
+#if 0
   g_signal_connect (priv->drop_down,
                     "show-completed",
                     (GCallback)dropdown_show_cb,
@@ -723,6 +738,7 @@ mnb_people_panel_set_dropdown (MnbPeoplePanel *people_panel,
                     "hide-completed",
                     (GCallback)dropdown_hide_cb,
                     people_panel);
+#endif
 }
 
 

@@ -1109,12 +1109,8 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
             make_pasteboard (plugin,
                              screen_width - TOOLBAR_X_PADDING * 2));
           break;
-#if WITH_PEOPLE
         case PEOPLE_ZONE:
-          panel = priv->panels[index] = NBTK_WIDGET (
-            make_people_panel (plugin, screen_width - TOOLBAR_X_PADDING * 2));
           break;
-#endif
         case MYZONE:
           {
             ClutterActor *grid;
@@ -2023,6 +2019,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
         {
           /* Add here any apps that have been converted to multiproc */
         case APPS_ZONE:
+        case PEOPLE_ZONE:
           if (!found_panels[i])
             {
               DBusConnection *conn;

@@ -146,7 +146,7 @@ AC_ARG_ENABLE([people],
 
 if test x"$enable_people" = xyes; then
 	AC_DEFINE(WITH_PEOPLE, 1, [Defined when building the people])
-	PKG_CHECK_MODULES(PEOPLE, anerley)
+	PKG_CHECK_MODULES(PEOPLE, anerley gtk+-2.0 clutter-x11-0.9 gio-2.0 gio-unix-2.0)
 fi
 
 AM_CONDITIONAL(WITH_PEOPLE, test x"$enable_people" = xyes)
@@ -198,6 +198,8 @@ tests/Makefile
 penge/Makefile
 penge/penge/Makefile
 penge/examples/Makefile
+people/Makefile
+people/src/Makefile
 ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile

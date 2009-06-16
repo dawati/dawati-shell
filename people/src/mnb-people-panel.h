@@ -23,7 +23,8 @@
 
 #include <glib-object.h>
 #include <nbtk/nbtk.h>
-#include "mnb-drop-down.h"
+#include <moblin-panel/mpl-panel-clutter.h>
+#include <moblin-panel/mpl-panel-common.h>
 
 G_BEGIN_DECLS
 
@@ -55,8 +56,8 @@ typedef struct {
 GType mnb_people_panel_get_type (void);
 
 NbtkWidget *mnb_people_panel_new (void);
-void mnb_people_panel_set_dropdown (MnbPeoplePanel *people_panel,
-                                    MnbDropDown    *drop_down);
+void mnb_people_panel_set_panel_client (MnbPeoplePanel *people_panel,
+                                        MplPanelClient *panel_client);
 G_END_DECLS
 
 #endif /* _MNB_PEOPLE_PANEL */

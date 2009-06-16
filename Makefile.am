@@ -7,6 +7,9 @@ if WITH_AHOGHILL
 SUBDIRS+=ahoghill
 endif
 SUBDIRS+=src po data libmoblin-panel tests applications
+if WITH_PEOPLE
+SUBDIRS+=people
+endif
 
 EXTRA_DIST =
 

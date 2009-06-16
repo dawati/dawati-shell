@@ -68,13 +68,6 @@ moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
 				moblin-netbook-netpanel.h
 endif
 
-if WITH_PEOPLE
-moblin_netbook_la_SOURCES +=	moblin-netbook-people.h		\
-				moblin-netbook-people.c		\
-				mnb-people-panel.c		\
-				mnb-people-panel.h
-endif
-
 DBUS_GLUE =	notification-manager-glue.h	\
 		mnb-panel-dbus-glue.h		\
 		mnb-toolbar-dbus-glue.h
