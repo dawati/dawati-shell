@@ -1220,3 +1220,11 @@ AnerleyTile *.AnerleyTileSecondaryLabel
   color: #3e3e3eff;
 }
 
+*#people-primary-action, *#people-secondary-action
+{
+  font-size: 18px;
+  padding-top: 8;
+  padding-bottom: 8;
+}
+
+
