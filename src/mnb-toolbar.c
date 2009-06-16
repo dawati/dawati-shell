@@ -1381,7 +1381,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
         {
           gchar *button_style = NULL;
 
-          if (stylesheet)
+          if (stylesheet && *stylesheet)
             {
               GError    *error = NULL;
               NbtkStyle *style = nbtk_style_get_default ();
@@ -1518,7 +1518,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
    */
   button = priv->buttons[index] = mnb_toolbar_button_new ();
 
-  if (stylesheet)
+  if (stylesheet && *stylesheet)
     {
       GError    *error = NULL;
       NbtkStyle *style = nbtk_style_get_default ();
