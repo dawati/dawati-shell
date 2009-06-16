@@ -1840,7 +1840,7 @@ mnb_toolbar_connect_to_dbus (MnbToolbar *self)
     }
 
   if (!org_freedesktop_DBus_request_name (proxy,
-                                          "org.moblin.Mnb.Toolbar",
+                                          MPL_TOOLBAR_DBUS_NAME,
                                           DBUS_NAME_FLAG_DO_NOT_QUEUE,
                                           &status, &error))
     {
