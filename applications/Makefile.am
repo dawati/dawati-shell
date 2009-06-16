@@ -1,2 +1,3 @@
 
-SUBDIRS = src tests
+SUBDIRS = src tests theme
+

@@ -4,8 +4,6 @@ dist_theme_DATA = \
 
 theme_paneldir = $(pkgdatadir)/theme/panel
 dist_theme_panel_DATA = \
-	theme/panel/apps-coloured.png \
-	theme/panel/apps-normal.png \
 	theme/panel/internet-coloured.png \
 	theme/panel/internet-normal.png \
 	theme/panel/media-coloured.png \
@@ -58,19 +56,6 @@ dist_theme_generic_DATA = \
 	theme/generic/vscroll-handle-hover.png \
 	theme/generic/vscroll-handle.png \
 	theme/generic/placeholder-bg.png
-
-theme_launcherdir = $(pkgdatadir)/theme/launcher
-dist_theme_launcher_DATA = \
-	theme/launcher/launcher-hover.png \
-	theme/launcher/launcher-search-bg.png \
-	theme/launcher/launcher-search-entry-bg.png \
-	theme/launcher/launcher-search-entry-clear-hover.png \
-	theme/launcher/launcher-search-entry-clear.png \
-	theme/launcher/launcher-search-entry-separator.png \
-	theme/launcher/launcher-button-fav-toggle.png \
-	theme/launcher/launcher-button-fav-toggle-active.png \
-	theme/launcher/launcher-button-fav-toggle-checked.png \
-	theme/launcher/launcher-button-fav-toggle-hover.png
 
 theme_switcherdir = $(pkgdatadir)/theme/switcher
 dist_theme_switcher_DATA = \

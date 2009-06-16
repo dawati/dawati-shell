@@ -184,6 +184,7 @@ Makefile
 applications/Makefile
 applications/src/Makefile
 applications/tests/Makefile
+applications/theme/Makefile
 build/Makefile
 build/autotools/Makefile
 build/autotools/shave

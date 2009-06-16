@@ -98,7 +98,7 @@ setup_embedded (void)
    * just for the panel button? */
   panel = mpl_panel_clutter_new (MPL_PANEL_APPLICATIONS,
                                   _("applications"),
-                                 MUTTER_MOBLIN_CSS,
+                                 PKGDATADIR "/theme/toolbar-button.css",
                                  "applications-button",
                                  TRUE);
 
@@ -180,7 +180,7 @@ main (int     argc,
     DATADIR "/mutter-moblin/nbtk.cache");
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
-                             MUTTER_MOBLIN_CSS, NULL);
+                             PKGDATADIR "/theme/panel.css", NULL);
 
   if (_standalone)
     setup_standalone ();
