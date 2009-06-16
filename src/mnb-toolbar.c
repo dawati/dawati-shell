@@ -1877,7 +1877,7 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
   if (!strcmp (short_name, MPL_PANEL_MYZONE) ||
       !strcmp (short_name, MPL_PANEL_STATUS) ||
-      !strcmp (short_name, MPL_PANEL_ZONES) ||
+      !strcmp (short_name, MPL_PANEL_PEOPLE) ||
       !strcmp (short_name, MPL_PANEL_MEDIA) ||
       !strcmp (short_name, MPL_PANEL_INTERNET) ||
       !strcmp (short_name, MPL_PANEL_APPLICATIONS) ||
