@@ -17,7 +17,7 @@ MplPanelClutter and MplPanelGtk are provided each in a library of their own).
 Public Functions
 ----------------
 
-mnb_panel_clutter/gtk_new  (const gchar *name,
+mpl_panel_clutter/gtk_new  (const gchar *name,
                      	    const gchar *tooltip,
                             const gchar *stylesheet,
                             const gchar *button_style,
@@ -115,3 +115,11 @@ Examples
 
 tests/test-panel-clutter.c and tests/test-panel-gtk.c demonstrate how to create
 a Panel either using Gtk or Clutter and their associated service files.
+
+
+
+Tips
+----
+
+If you modify your Panel while testing, make sure to kill any running instances,
+otherwise you might be trying to debug a stale process.
