@@ -791,11 +791,11 @@ mpl_panel_client_launch_application (MplPanelClient *panel,
       return FALSE;
     }
 
-  if (!org_moblin_Mnb_Toolbar_launch_application (priv->toolbar_proxy,
-                                                  path,
-                                                  workspace,
-                                                  no_chooser,
-                                                  &error))
+  if (!org_moblin_UX_Shell_Toolbar_launch_application (priv->toolbar_proxy,
+                                                       path,
+                                                       workspace,
+                                                       no_chooser,
+                                                       &error))
     {
       if (error)
         {
@@ -846,7 +846,7 @@ mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
       l = l->next;
     }
 
-  if (!org_moblin_Mnb_Toolbar_launch_application_by_desktop_file (
+  if (!org_moblin_UX_Shell_Toolbar_launch_application_by_desktop_file (
                                                         priv->toolbar_proxy,
                                                         desktop,
                                                         arguments,
@@ -890,7 +890,7 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
       return FALSE;
     }
 
-  if (!org_moblin_Mnb_Toolbar_launch_default_application_for_uri (
+  if (!org_moblin_UX_Shell_Toolbar_launch_default_application_for_uri (
                                                   priv->toolbar_proxy,
                                                   uri,
                                                   workspace,

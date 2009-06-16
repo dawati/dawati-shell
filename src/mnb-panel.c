@@ -394,8 +394,8 @@ mnb_panel_show_begin (MnbDropDown *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
 
-  org_moblin_Mnb_Panel_show_begin_async (priv->proxy,
-                                         mnb_panel_dbus_dumb_reply_cb, NULL);
+  org_moblin_UX_Shell_Panel_show_begin_async (priv->proxy,
+                                              mnb_panel_dbus_dumb_reply_cb, NULL);
 }
 
 static void
@@ -413,8 +413,8 @@ mnb_panel_show_completed (MnbDropDown *self)
                   RevertToPointerRoot,
                   CurrentTime);
 
-  org_moblin_Mnb_Panel_show_end_async (priv->proxy,
-                                       mnb_panel_dbus_dumb_reply_cb, NULL);
+  org_moblin_UX_Shell_Panel_show_end_async (priv->proxy,
+                                            mnb_panel_dbus_dumb_reply_cb, NULL);
 }
 
 static void
@@ -422,8 +422,8 @@ mnb_panel_hide_begin (MnbDropDown *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
 
-  org_moblin_Mnb_Panel_hide_begin_async (priv->proxy,
-                                         mnb_panel_dbus_dumb_reply_cb, NULL);
+  org_moblin_UX_Shell_Panel_hide_begin_async (priv->proxy,
+                                              mnb_panel_dbus_dumb_reply_cb, NULL);
 }
 
 static void
@@ -432,8 +432,8 @@ mnb_panel_hide_completed (MnbDropDown *self)
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
   GtkWidget       *window = priv->window;
 
-  org_moblin_Mnb_Panel_hide_end_async (priv->proxy,
-                                       mnb_panel_dbus_dumb_reply_cb, NULL);
+  org_moblin_UX_Shell_Panel_hide_end_async (priv->proxy,
+                                            mnb_panel_dbus_dumb_reply_cb, NULL);
   /*
    * We do not hide the window here, only move it off screen; this significantly
    * improves the Toolbar button response time.
@@ -611,10 +611,10 @@ mnb_panel_init_owner (MnbPanel *panel)
    * Now call the remote init_panel() method to obtain the panel name, tooltip
    * and xid.
    */
-  org_moblin_Mnb_Panel_init_panel_async (priv->proxy,
-                                         priv->width, priv->height,
-                                         mnb_panel_init_panel_reply_cb,
-                                         panel);
+  org_moblin_UX_Shell_Panel_init_panel_async (priv->proxy,
+                                              priv->width, priv->height,
+                                              mnb_panel_init_panel_reply_cb,
+                                              panel);
 }
 
 static void
