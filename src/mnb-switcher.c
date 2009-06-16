@@ -182,6 +182,7 @@ mnb_switcher_zone_class_init (MnbSwitcherZoneClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->dispose = mnb_switcher_zone_dispose;
+}
 
 static void
 mnb_switcher_zone_init (MnbSwitcherZone *self)
