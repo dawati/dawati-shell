@@ -1,4 +1,18 @@
 
+NbtkScrollView {
+  xthickness: 26;
+  ythickness: 26;
+}
+
+NbtkScrollBar {
+  background-color: #e7ebee;
+  padding: 3;
+}
+
+/*
+ * Filter entry
+ */
+
 MplEntry {
   border-image: url('file://launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
   padding: 7 10 7 10;
@@ -24,7 +38,7 @@ MplEntry *.MplEntryClearButton:hover {
   background-image: url('file://launcher-search-entry-clear-hover.png');
 }
 
-/* launcher  */
+/* Launcher  */
 
 MnbLauncher > *#launcher-vbox {
   background-color: #ffff;
@@ -66,6 +80,10 @@ MnbLauncher *#launcher-expander-grid {
 *#launcher-filter-pane *.MplEntryButton {
   color: #be1011;
 }
+
+/*
+ * Launcher button.
+ */
 
 MnbLauncherButton {
   padding: 10;

@@ -40,13 +40,6 @@ dist_theme_generic_DATA = \
 	theme/generic/button.png	\
 	theme/generic/button_active.png	\
 	theme/generic/button_hover.png	\
-	theme/generic/expander-arrow-down-hover.png \
-	theme/generic/expander-arrow-down.png \
-	theme/generic/expander-arrow-up-hover.png \
-	theme/generic/expander-arrow-up.png \
-	theme/generic/expander-closed.png \
-	theme/generic/expander-hover.png \
-	theme/generic/expander-open.png \
 	theme/generic/tooltip-arrow.png \
 	theme/generic/tooltip-background.png \
 	theme/generic/vscroll-backward-hover.png \
