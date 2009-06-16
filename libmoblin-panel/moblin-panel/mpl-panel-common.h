@@ -2,13 +2,13 @@
 #ifndef _MPL_PANEL_COMMON
 #define _MPL_PANEL_COMMON
 
-#define MPL_PANEL_DBUS_NAME_PREFIX "org.moblin.Mpl.Panels."
-#define MPL_PANEL_DBUS_PATH_PREFIX "/org/moblin/Mpl/Panels/"
-#define MPL_PANEL_DBUS_INTERFACE   "org.moblin.Mpl.Panel"
+#define MPL_PANEL_DBUS_NAME_PREFIX "org.moblin.UX.Shell.Panels."
+#define MPL_PANEL_DBUS_PATH_PREFIX "/org/moblin/UX/Shell/Panels/"
+#define MPL_PANEL_DBUS_INTERFACE   "org.moblin.UX.Shell.Panel"
 
-#define MPL_TOOLBAR_DBUS_PATH      "/org/moblin/Mpl/Toolbar"
-#define MPL_TOOLBAR_DBUS_NAME      "org.moblin.Mpl.Toolbar"
-#define MPL_TOOLBAR_DBUS_INTERFACE "org.moblin.Mpl.Toolbar"
+#define MPL_TOOLBAR_DBUS_PATH      "/org/moblin/UX/Shell/Toolbar"
+#define MPL_TOOLBAR_DBUS_NAME      "org.moblin.UX.Shell.Toolbar"
+#define MPL_TOOLBAR_DBUS_INTERFACE "org.moblin.UX.Shell.Toolbar"
 
 #define MPL_PANEL_MYZONE       "myzone"
 #define MPL_PANEL_STATUS       "status"
