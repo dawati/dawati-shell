@@ -86,7 +86,7 @@
 
 G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
 
-#define MPL_TOOLBAR_GET_PRIVATE(o) \
+#define MNB_TOOLBAR_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR, MnbToolbarPrivate))
 
 static void mnb_toolbar_constructed (GObject *self);
@@ -1639,7 +1639,7 @@ mnb_toolbar_init (MnbToolbar *self)
 {
   MnbToolbarPrivate *priv;
 
-  priv = self->priv = MPL_TOOLBAR_GET_PRIVATE (self);
+  priv = self->priv = MNB_TOOLBAR_GET_PRIVATE (self);
 }
 
 #if 1
