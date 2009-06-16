@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <node name="/">
-  <interface name="org.moblin.Mnb.Toolbar">
+  <interface name="org.moblin.UX.Shell.Toolbar">
     <method name="LaunchApplication">
       <arg name="path" type="s"/>
       <arg name="workspace" type="i"/>
