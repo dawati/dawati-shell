@@ -10,7 +10,8 @@ MplPanelClient
 ==============
 An abstract object providing most of the panel API, with two subclasses,
 MplPanelClutter and MplPanelGtk implementing the gory details for Clutter and
-Gtk-based panels respectively.
+Gtk-based panels respectively (in order to speed up the panel loading, the
+MplPanelClutter and MplPanelGtk are provided each in a library of their own).
 
 
 Public Functions
@@ -25,7 +26,7 @@ mnb_panel_clutter/gtk_new  (const gchar *name,
 Panel object constructors:
 
   * name -- identifier of the Panel slot on the Toolbar, predefined in
-            mpl_panel_common.h;
+            mpl-panel-common.h;
 
   * tooltip -- the toolip text for the associated Toolbar button;
 
@@ -38,6 +39,7 @@ Panel object constructors:
                             should pass TRUE.
 
 
+
 mpl_panel_client_request_show ()
 mpl_panel_client_request_hide ()
 
@@ -45,15 +47,21 @@ API through which the application can request that the Panel be shown or
 hidden (NB: the hide request results in both the Panel and the Toolbar getting
 hidden.)
 
+
+
 mpl_panel_client_request_button_style ()
 mpl_panel_client_reqeust_tooltip ()
 
 API for dynamically changing the style of the associated Toolbar button and its
 tooltip after the object has been created.
 
+
+
 mpl_panel_client_set_height ()
 
 API for panels that do not wish to use the default fullscreen height.
+
+
 
 mpl_panel_client_launch_application ();
 mpl_panel_client_launch_application_from_desktop_file ();
@@ -62,6 +70,12 @@ mpl_panel_client_launch_default_application_for_uri ();
 Application-launching API; Panels that need to use this API need to construct
 the MplPanelClient object with the with_toolbar_services parameter set to TRUE.
 
+
+
+mpl_panel_client_clutter_track_actor_height()
+
+Allows Clutter-based panels to dynamically resize when the size of their
+top-level actor changes.
 
 Signals
 -------
@@ -74,6 +88,7 @@ will occupy. Generally, Panels that require to know their final size in order
 to do layout should construct their contents in response to this signal.
 
 
+
 "show-begin" (void)
 "show-end"
 "hide-begin"
@@ -84,6 +99,7 @@ NB: these are non-blocking signals, and respective animations will commence
 before the Panel returns.
 
 
+
 Dbus Service Files
 ------------------
 
@@ -91,6 +107,8 @@ Each Panel needs to install a dbus service file that allows it to be
 autostarted. The service name provided by the panel is
 MPL_PANEL_DBUS_NAME_PREFIX MPL_PANEL_<name> (see mpl-panel-common.h for the
 definition of the constants).
+
+
 
 Examples
 --------
