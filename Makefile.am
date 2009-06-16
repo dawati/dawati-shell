@@ -1,18 +1,28 @@
-
 ACLOCAL_AMFLAGS = -I build/autotools
 
-SUBDIRS=build
-SUBDIRS+=libmoblin-panel penge
+SUBDIRS = build
+
+# always built
+SUBDIRS += libmoblin-panel penge myzone applications pasteboard
+
 if WITH_AHOGHILL
-SUBDIRS+=ahoghill
+SUBDIRS += ahoghill
 endif
-SUBDIRS+=src po data tests applications myzone pasteboard
+
 if WITH_PEOPLE
-SUBDIRS+=people
+SUBDIRS += people
 endif
+
 if WITH_NETPANEL
-SUBDIRS+=netpanel
+SUBDIRS +=netpanel
 endif
+
+if WITH_STATUS
+SUBDIRS += status
+endif
+
+# extra
+SUBDIRS += src po data tests
 
 EXTRA_DIST =
 

@@ -16,6 +16,12 @@ m4_define([lt_current], [m4_eval(100 * plugin_minor_version + plugin_micro_versi
 m4_define([lt_revision], [plugin_interface_age])
 m4_define([lt_age], [m4_eval(plugin_binary_age - plugin_interface_age)])
 
+# defaults
+m4_define([default_enable_netpanel], [no])
+m4_define([default_enable_status],   [yes])
+m4_define([default_enable_people],   [yes])
+m4_define([default_enable_ahoghill], [no])
+
 AC_PREREQ([2.59])
 
 AC_INIT([mutter-moblin], [plugin_version], [http://moblin.org])
@@ -30,7 +36,9 @@ CFLAGS="$CFLAGS -Wall"
 
 GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
+                   ["$GETTEXT_PACKAGE"],
+                   [Name of default gettext domain])
 
 localedir="$(prefix)/$(DATADIRNAME)/locale"
 AC_SUBST(localedir)
@@ -47,16 +55,12 @@ AC_CHECK_FUNCS([localtime_r])
 # GenericName desktop entry field.
 SAVE_LIBS=${LIBS}
 AC_CHECK_LIB([gnome-menu], [gmenu_tree_entry_get_generic_name],
-[
-  AC_DEFINE([GMENU_WITH_GENERIC_NAME], [1], [libgnome-menu has the GenericName accessor])
-])
+             [
+               AC_DEFINE([GMENU_WITH_GENERIC_NAME],
+                         [1],
+                         [libgnome-menu has the GenericName accessor])
+             ])
 LIBS=${SAVE_LIBS}
-
-# Make libtool respect the make -s switch (kudos to jacob berman)
-changequote(,)dnl
-LIBTOOL="${LIBTOOL} \$(shell echo \"\$(MFLAGS)\" | awk '/^[^ ]*s/ { print \"--silent\" }')"
-changequote([,])dnl
-
 
 AM_GLIB_GNU_GETTEXT
 
@@ -100,13 +104,24 @@ PKG_CHECK_MODULES(PENGE,
                   gio-2.0
                   gio-unix-2.0)
 
-# Ahoghill
-AC_ARG_ENABLE(ahoghill, AC_HELP_STRING([--enable-ahoghill],[Enable Ahoghill Media Panel]), enable_ahoghill="$enableval", enable_ahoghill=no)
+PKG_CHECK_MODULES(LIBMNB,
+		  dbus-glib-1)
 
-if test "x$enable_ahoghill" = "xyes"; then
-	AC_DEFINE(USE_AHOGHILL,1,[Define if we are using Ahoghill])
-	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.1 gdk-pixbuf-2.0 bognor-regis-0.4 >= 0.4.3 gtk+-2.0)
-fi
+AC_ARG_ENABLE([ahoghill],
+              [AC_HELP_STRING([--enable-ahoghill],
+                              [Enable Ahoghill Media Panel])],
+              [],
+              [enable_ahoghill=no])
+
+AS_IF([test "x$enable_ahoghill" = "xyes"],
+      [
+	AC_DEFINE(USE_AHOGHILL, [1], [Define if we are using Ahoghill])
+
+	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.1
+                                    gdk-pixbuf-2.0 bognor-regis-0.4 >= 0.4.3
+                                    gtk+-2.0)
+      ]
+)
 
 AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 
@@ -130,14 +145,18 @@ AC_SUBST([APPLICATIONS_LIBS])
 
 # Netpanel
 AC_ARG_ENABLE([netpanel],
-	AC_HELP_STRING([--enable-netpanel],
-		[Enable building of the internet panel]),
-		[build_netpanel=yes])
+              [AC_HELP_STRING([--enable-netpanel],
+                              [Enable building of the internet panel])],
+              [],
+              [enable_netpanel=default_enable_netpanel])
 
-if test x"$enable_netpanel" = xyes; then
-	AC_DEFINE(WITH_NETPANEL, 1, [Defined when building the netpanel])
+AS_IF([test "x$enable_netpanel" = "xyes"],
+      [
+        AC_DEFINE(WITH_NETPANEL, [1], [Defined when building the net panel])
+
 	PKG_CHECK_MODULES(NETPANEL, gtk+-2.0 nbtk-1.0 cluttermozembed mhs-1.0)
-fi
+      ]
+)
 
 AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 
@@ -159,25 +178,47 @@ AC_SUBST([PASTEBOARD_LIBS])
 
 # People panel
 AC_ARG_ENABLE([people],
-	AC_HELP_STRING([--enable-people],
-		[Enable building of the people panel]),
-		[enable_people=yes])
+              [AC_HELP_STRING([--enable-people],
+                              [Enable building of the people panel])],
+              [],
+              [enable_people=default_enable_people])
 
-if test x"$enable_people" = xyes; then
-	AC_DEFINE(WITH_PEOPLE, 1, [Defined when building the people])
+AS_IF([test "x$enable_people" = "xyes"],
+      [
+        AC_DEFINE(WITH_PEOPLE, [1], [Defined when building the people panel])
+
 	PKG_CHECK_MODULES(PEOPLE, anerley gtk+-2.0 clutter-x11-0.9 gio-2.0 gio-unix-2.0)
-fi
+      ]
+)
 
-AM_CONDITIONAL(WITH_PEOPLE, test x"$enable_people" = xyes)
+AM_CONDITIONAL([WITH_PEOPLE],   [test "x$enable_people" = "xyes"])
+
+AC_ARG_ENABLE([status],
+              [AC_HELP_STRING([--enable-status],
+                              [Enable Status Panel])],
+              [],
+              [enable_status=default_enable_status])
+
+AS_IF([test "x$enable_status" = "xyes"],
+      [
+        AC_DEFINE(WITH_STATUS, [1], [Defined when building the status panel])
+
+        PKG_CHECK_MODULES(STATUS, dbus-glib-1 clutter-x11-0.9 mojito-client nbtk-1.0)
+
+        AC_SUBST(STATUS_CFLAGS)
+        AC_SUBST(STATUS_LIBS)
+      ]
+)
+
+AM_CONDITIONAL([WITH_STATUS],   [test "x$enable_status" = "xyes"])
 
 AC_ARG_ENABLE([debug],
-	AC_HELP_STRING([--enable-debug],
-		[Enable debugging features, whatever that means]),
-		[enable_debug="$enableval"], [enable_debug=no])
+              [AC_HELP_STRING([--enable-debug],
+                              [Enable debugging features, whatever that means])],
+              [],
+              [enable_debug=no])
 
-if test x"$enable_debug" = xyes; then
-   CFLAGS="$CFLAGS -g -O0"
-fi
+AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g -O0"])
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
@@ -212,6 +253,9 @@ data/Makefile
 src/Makefile
 src/tray/Makefile
 src/effects/Makefile
+status/Makefile
+status/src/Makefile
+status/tests/Makefile
 po/Makefile.in
 tests/Makefile
 pasteboard/Makefile
@@ -246,6 +290,13 @@ echo "
             Mutter version   :    mutter_version
             Installation path:    ${MUTTER_PLUGIN_DIR}
 	    Debug            :    ${enable_debug} (CFLAGS: ${CFLAGS})
+
+        Panels:
+
+            Status           :    ${enable_status}
+            Media            :    ${enable_ahoghill}
+            Internet         :    ${enable_netpanel}
+            People           :    ${enable_people}
 
         Type make to build the plugin.
 "
