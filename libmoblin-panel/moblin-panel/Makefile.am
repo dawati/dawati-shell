@@ -17,7 +17,6 @@ libmoblin_panel_clutter_la_SOURCES = \
 	mpl-entry.c \
 	mpl-panel-client.c \
 	mpl-panel-clutter.c \
-	penge-stubs.c	\
 	$(top_srcdir)/src/marshal.c
 
 libmoblin_panel_gtk_la_CFLAGS = $(LIBMPL_GTK_CFLAGS)

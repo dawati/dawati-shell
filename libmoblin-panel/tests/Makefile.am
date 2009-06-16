@@ -29,6 +29,7 @@ test_panel_clutter_LDADD = \
 	../moblin-panel/libmoblin-panel-clutter.la
 
 test_panel_clutter_SOURCES = \
+	penge-stubs.c \
 	test-panel-clutter.c
 
 test_panel_gtk_DEPENDENCIES = \
