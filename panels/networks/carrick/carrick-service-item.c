@@ -58,6 +58,7 @@ struct _CarrickServiceItemPrivate
   GtkWidget          *name_label;
   GtkWidget          *security_label;
   GtkWidget          *connect_button;
+  GtkWidget          *delete_button;
   GtkWidget          *expando;
   ServiceItemState    state;
   CarrickIconFactory *icon_factory;
@@ -132,6 +133,11 @@ _set_state (CmService          *service,
   {
     gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                               TRUE);
+    gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
+                                FALSE);
+    gtk_widget_show (GTK_WIDGET (priv->delete_button));
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
+                              TRUE);
     button = g_strdup (_("Disconnect"));
     label = g_strdup_printf ("%s - %s",
                              name,
@@ -151,6 +157,11 @@ _set_state (CmService          *service,
   {
     gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                               TRUE);
+    gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
+                                TRUE);
+    gtk_widget_hide (GTK_WIDGET (priv->delete_button));
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
+                              FALSE);
     button = g_strdup (_("Connect"));
     label = g_strdup (name);
   }
@@ -158,6 +169,11 @@ _set_state (CmService          *service,
   {
     gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                               TRUE);
+    gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
+                                TRUE);
+    gtk_widget_hide (GTK_WIDGET (priv->delete_button));
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
+                              FALSE);
     button = g_strdup (_("Connect"));
     label = g_strdup_printf ("%s - %s",
                              name,
@@ -328,8 +344,60 @@ _request_passphrase (CarrickServiceItem *item)
     passphrase = g_strdup ("");
   }
   gtk_widget_destroy (dialog);
-
   return passphrase;
+}
+
+void
+_delete_button_cb (GtkButton *delete_button,
+                   gpointer   user_data)
+{
+  GtkWidget *dialog;
+  GtkWidget *label;
+  gchar *label_text = NULL;
+  const gchar *ssid = NULL;
+  const gchar *type = NULL;
+  CmService *service = CM_SERVICE (user_data);
+
+  ssid = cm_service_get_name (service);
+  type = cm_service_get_type (service);
+
+  dialog = gtk_dialog_new_with_buttons (_("Really remove?"),
+                                        NULL,
+                                        GTK_DIALOG_MODAL |
+                                        GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_STOCK_CANCEL,
+                                        GTK_RESPONSE_REJECT,
+                                        GTK_STOCK_OK,
+                                        GTK_RESPONSE_ACCEPT,
+                                        NULL);
+
+  gtk_dialog_set_has_separator (GTK_DIALOG (dialog),
+                                FALSE);
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+                                   GTK_RESPONSE_ACCEPT);
+  gtk_window_set_icon_name (GTK_WINDOW(dialog),
+                            GTK_STOCK_DELETE);
+
+  label_text = g_strdup_printf (_("Do you want to remove the %s %s network? "
+                                  "This\nwill forget the password and you will"
+                                  " no longer be\nautomatically connected to "
+                                  "%s."),
+                                ssid,
+                                type,
+                                ssid);
+  label = gtk_label_new (label_text);
+
+  gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+                       12);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+                      label,
+                      TRUE,
+                      TRUE,
+                      6);
+  gtk_widget_show_all (dialog);
+
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+    cm_service_remove (service);
 }
 
 void
@@ -345,7 +413,7 @@ _connect_button_cb (GtkButton          *connect_button,
   }
   else
   {
-    const gchar *security = g_strdup (cm_service_get_security (CM_SERVICE (priv->service)));
+    const gchar *security = g_strdup (cm_service_get_security (priv->service));
 
     if (security && g_strcmp0 ("none", security) != 0)
     {
@@ -434,6 +502,11 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       "clicked",
                       G_CALLBACK (_connect_button_cb),
                       service_item);
+
+    g_signal_connect (priv->delete_button,
+                      "clicked",
+                      G_CALLBACK (_delete_button_cb),
+                      service);
   }
 }
 
@@ -469,6 +542,14 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 static void
 carrick_service_item_dispose (GObject *object)
 {
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
+
+  if (priv->service)
+  {
+    g_object_unref (priv->service);
+    priv->service = NULL;
+  }
+
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
 
@@ -515,6 +596,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
   GtkWidget *box, *hbox, *vbox;
+  GtkWidget *image;
 
   priv->service = NULL;
   priv->failed = FALSE;
@@ -544,13 +626,32 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE,
                       6);
 
+  hbox = gtk_hbox_new (FALSE,
+                       6);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      hbox,
+                      TRUE,
+                      TRUE,
+                      6);
+
   priv->name_label = gtk_label_new ("");
   gtk_misc_set_alignment (GTK_MISC (priv->name_label),
                           0.05, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (hbox),
                       priv->name_label,
                       TRUE,
                       TRUE,
+                      6);
+
+  image = gtk_image_new_from_stock ("gtk-delete",
+                                    GTK_ICON_SIZE_MENU);
+  priv->delete_button = gtk_button_new ();
+  gtk_button_set_image (GTK_BUTTON (priv->delete_button),
+                        image);
+  gtk_box_pack_start (GTK_BOX (hbox),
+                      priv->delete_button,
+                      FALSE,
+                      FALSE,
                       6);
 
   hbox = gtk_hbox_new (FALSE,
@@ -574,6 +675,17 @@ carrick_service_item_init (CarrickServiceItem *self)
                       FALSE,
                       FALSE,
                       6);
+
+  /*priv->default_button = gtk_button_new ();
+  gtk_button_set_label (GTK_BUTTON (priv->default_button),
+                        _("Make default connection"));
+  gtk_widget_set_sensitive (GTK_WIDGET (priv->default_button),
+                            FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox),
+                      priv->default_button,
+                      FALSE,
+                      FALSE,
+                      6);*/
 
   gtk_widget_show_all (GTK_WIDGET (self));
 }
