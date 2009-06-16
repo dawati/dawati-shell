@@ -24,13 +24,13 @@ moblin_panel_applications_SOURCES = \
   moblin-panel-applications.c
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.Mnb.Panels.applications.service.in
-service_DATA = org.moblin.Mnb.Panels.applications.service
+service_in_files = org.moblin.UX.Shell.Panels.applications.service.in
+service_DATA = org.moblin.UX.Shell.Panels.applications.service
 
 EXTRA_DIST = $(service_in_files)
 
-DISTCLEANFILES = org.moblin.Mnb.Panels.applications.service
+DISTCLEANFILES = org.moblin.UX.Shell.Panels.applications.service
 
-org.moblin.Mnb.Panels.applications.service: org.moblin.Mnb.Panels.applications.service.in $(top_builddir)/config.log
+org.moblin.UX.Shell.Panels.applications.service: org.moblin.UX.Shell.Panels.applications.service.in $(top_builddir)/config.log
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
