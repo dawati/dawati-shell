@@ -1,16 +1,4 @@
 
-MnbToolbarButton {
-  background-color: #fff0;
-}
-
-MnbToolbarButton:checked {
-  border-image: url("file://toolbar-button-active.png") 0 stretch;
-}
-
-MnbToolbarButton:hover, MnbToolbarButton:active {
-  border-image: url("file://toolbar-button-hover.png") 0 stretch;
-}
-
 MnbToolbarButton#applications-button {
   background-image: url("file://apps-normal.png");
 }
