@@ -821,7 +821,7 @@ mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
 {
   MplPanelClientPrivate *priv = panel->priv;
   GError                *error = NULL;
-  GList                 *l;
+  GList                 *l = files;
   gchar                 *arguments = NULL;
 
   if (!priv->toolbar_proxy)
