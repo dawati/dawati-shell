@@ -504,7 +504,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   ClutterActor *tmp_text;
 
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 12);
+  nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
   clutter_actor_set_name (CLUTTER_ACTOR (self), "people-vbox");
 
