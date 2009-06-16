@@ -73,6 +73,9 @@ MplPanelClient *mpl_panel_clutter_new   (const gchar *name,
 
 ClutterActor *mpl_panel_clutter_get_stage (MplPanelClutter *panel);
 
+void          mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
+                                                    ClutterActor    *actor);
+
 G_END_DECLS
 
 #endif /* _MPL_PANEL_CLUTTER */

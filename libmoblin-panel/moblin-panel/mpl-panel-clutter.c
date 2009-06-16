@@ -68,6 +68,9 @@ struct _MplPanelClutterPrivate
   Window        xwindow;
   Window        embedder;
   Atom          Atom_XEMBED;
+
+  ClutterActor *tracked_actor;
+  guint         height_notify_cb;
 };
 
 static void
@@ -272,6 +275,53 @@ mpl_panel_clutter_get_stage (MplPanelClutter *panel)
 {
   return panel->priv->stage;
 }
+
+static void
+mpl_panel_clutter_actor_height_notify_cb (GObject    *gobject,
+                                          GParamSpec *pspec,
+                                          gpointer    data)
+{
+  ClutterActor   *actor = CLUTTER_ACTOR (gobject);
+  MplPanelClient *panel = MPL_PANEL_CLIENT (data);
+  guint           height;
+
+  height = (guint) clutter_actor_get_height (actor);
+  mpl_panel_client_set_height (panel, height);
+}
+
+/*
+ * Sets up the panel for dynamically matching its height to that of the
+ * supplied actor (e.g., the top-level panel widget).
+ *
+ * Passing NULL for actor on a subsequent call we terminated the height
+ * tracking.
+ */
+void
+mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
+                                      ClutterActor    *actor)
+{
+  MplPanelClutterPrivate *priv = panel->priv;
+
+  if (priv->tracked_actor && priv->height_notify_cb)
+    {
+      g_signal_handler_disconnect (priv->tracked_actor,
+                                   priv->height_notify_cb);
+
+      priv->height_notify_cb = 0;
+      priv->tracked_actor = NULL;
+    }
+
+  if (actor)
+    {
+      priv->tracked_actor = actor;
+
+      priv->height_notify_cb =
+        g_signal_connect (actor, "notify::height",
+                          G_CALLBACK (mpl_panel_clutter_actor_height_notify_cb),
+                          panel);
+    }
+}
+
 
 /*
  * The XEmbed stuff based on Matchbox keyboard.
