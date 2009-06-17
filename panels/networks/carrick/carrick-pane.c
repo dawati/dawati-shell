@@ -506,6 +506,10 @@ _device_updated_cb (CmDevice *device,
         gtk_widget_set_no_show_all (priv->ethernet_label,
 				    FALSE);
         gtk_widget_show (priv->ethernet_label);
+        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+                          "switch-flipped",
+                          G_CALLBACK (_ethernet_switch_callback),
+                          user_data);
         break;
       case DEVICE_WIFI:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
@@ -520,6 +524,10 @@ _device_updated_cb (CmDevice *device,
         gtk_widget_show (priv->wifi_label);
         gtk_widget_set_sensitive (priv->new_conn_button,
                                   TRUE);
+        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+                          "switch-flipped",
+                          G_CALLBACK (_wifi_switch_callback),
+                          user_data);
         break;
       case DEVICE_CELLULAR:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
@@ -532,6 +540,10 @@ _device_updated_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->threeg_label,
 				    FALSE);
         gtk_widget_show (priv->threeg_label);
+        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+                          "switch-flipped",
+                          G_CALLBACK (_threeg_switch_callback),
+                          user_data);
         break;
       case DEVICE_WIMAX:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
@@ -544,6 +556,10 @@ _device_updated_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->wimax_label,
 				    FALSE);
         gtk_widget_show (priv->wimax_label);
+        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+                          "switch-flipped",
+                          G_CALLBACK (_wimax_switch_callback),
+                          user_data);
         break;
       default:
         g_debug ("Unknown device type\n");
@@ -809,10 +825,7 @@ carrick_pane_init (CarrickPane *self)
   priv->wifi_switch = nbtk_gtk_light_switch_new ();
   gtk_widget_set_sensitive (priv->wifi_switch,
                             FALSE);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_wifi_switch_callback),
-                    self);
+
   priv->wifi_label = gtk_label_new (_("WiFi"));
   gtk_misc_set_alignment (GTK_MISC (priv->wifi_label),
                           0.2,
@@ -842,10 +855,7 @@ carrick_pane_init (CarrickPane *self)
                           0.5);
   gtk_widget_set_sensitive (priv->ethernet_switch,
                             FALSE);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_ethernet_switch_callback),
-                    self);
+
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->ethernet_label,
                       TRUE,
@@ -871,10 +881,6 @@ carrick_pane_init (CarrickPane *self)
                           0.5);
   gtk_widget_set_sensitive (priv->threeg_switch,
                             FALSE);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_threeg_switch_callback),
-                    self);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->threeg_label,
                       TRUE,
@@ -900,10 +906,6 @@ carrick_pane_init (CarrickPane *self)
                           0.5);
   gtk_widget_set_sensitive (priv->wimax_switch,
                             FALSE);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_wimax_switch_callback),
-                    self);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->wimax_label,
                       TRUE,
