@@ -6,7 +6,7 @@ SUBDIRS+=penge
 if WITH_AHOGHILL
 SUBDIRS+=ahoghill
 endif
-SUBDIRS+=src po data libmoblin-panel tests applications
+SUBDIRS+=src po data libmoblin-panel tests applications myzone
 if WITH_PEOPLE
 SUBDIRS+=people
 endif
