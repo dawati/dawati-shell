@@ -14,12 +14,10 @@ _client_set_size_cb (MplPanelClient *client,
                      guint           height,
                      gpointer        userdata)
 {
-  ClutterActor *actor = (ClutterActor *)userdata;
-
   g_debug (G_STRLOC ": %d %d", width, height);
-
-  clutter_actor_set_width (actor, width);
-  mpl_panel_clutter_track_actor_height ((MplPanelClutter*)client, actor);
+  clutter_actor_set_size ((ClutterActor *)userdata,
+                          width,
+                          height);
 }
 
 int
