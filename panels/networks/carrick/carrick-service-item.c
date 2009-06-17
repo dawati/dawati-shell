@@ -643,8 +643,8 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE,
                       6);
 
-  image = gtk_image_new_from_stock ("gtk-delete",
-                                    GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("edit-clear",
+                                        GTK_ICON_SIZE_MENU);
   priv->delete_button = gtk_button_new ();
   gtk_button_set_image (GTK_BUTTON (priv->delete_button),
                         image);
