@@ -177,7 +177,7 @@ penge_app_tile_constructed (GObject *object)
   {
     priv->app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
     nbtk_widget_set_tooltip_text (NBTK_WIDGET (object),
-                             g_app_info_get_name (priv->app_info));
+                                  g_app_info_get_name (priv->app_info));
     g_free (path);
   }
 
@@ -219,10 +219,29 @@ _button_press_event (ClutterActor *actor,
                      gpointer      userdata)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
+  GError *error = NULL;
+  gchar *path = NULL;
 
-  if (moblin_netbook_launch_application_from_info (priv->app_info,
-                                                   NULL, FALSE, -2))
+  path = g_filename_from_uri (priv->bookmark, NULL, &error);
+
+  if (!path)
+  {
+    if (error)
+    {
+      g_warning (G_STRLOC ": Error getting path from uri: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+    return FALSE;
+  }
+
+  if (penge_utils_launch_for_desktop_file (actor, path))
     penge_utils_signal_activated (actor);
+  else
+    g_warning (G_STRLOC ": Unable to launch for desktop file: %s", path);
+
+  g_free (path);
 
   return FALSE;
 }
