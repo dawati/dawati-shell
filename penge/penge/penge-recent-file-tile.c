@@ -150,7 +150,7 @@ _button_press_event (ClutterActor *actor,
                error->message);
     g_clear_error (&error);
   } else {
-    if (!moblin_netbook_launch_application (app_exec, FALSE, -2))
+    if (!penge_utils_launch_by_command_line (actor, app_exec))
     {
       g_warning (G_STRLOC ": Error launching: %s", app_exec);
     } else {

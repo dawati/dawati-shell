@@ -249,9 +249,8 @@ _button_press_event_cb (ClutterActor *actor,
   g_debug ("%s", command_line);
   g_free (uid);
 
-  if (!moblin_netbook_launch_application (command_line,
-                                          FALSE,
-                                          -2))
+  if (!penge_utils_launch_by_command_line (actor,
+                                           command_line))
   {
     g_warning (G_STRLOC ": Error starting dates");
   } else{
