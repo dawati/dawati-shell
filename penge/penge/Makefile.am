@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libpenge.la
+lib_LTLIBRARIES = libpenge.la
 
 libpenge_headers = penge-people-pane.h \
 		   penge-people-tile.h \
