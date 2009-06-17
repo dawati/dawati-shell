@@ -1885,13 +1885,27 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
     {
       MnbPanel *panel;
       gint      screen_width, screen_height;
+      guint     panel_height;
+      gint      index;
 
       mutter_plugin_query_screen_size (priv->plugin,
                                        &screen_width, &screen_height);
 
+
+      index = mnb_toolbar_panel_name_to_index (short_name);
+
+      switch (index)
+        {
+        case PEOPLE_ZONE:
+          panel_height = 400; /* Maybe screen_height * 1.5 ??? */
+          break;
+        default:
+          panel_height = screen_height - 1.5 * TOOLBAR_HEIGHT;
+        }
+
       panel  = mnb_panel_new (priv->plugin, name,
                               screen_width - TOOLBAR_X_PADDING * 2,
-                              screen_height - 1.5 * TOOLBAR_HEIGHT);
+                              panel_height);
 
       if (panel)
         {
