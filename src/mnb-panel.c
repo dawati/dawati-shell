@@ -583,9 +583,6 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
   gtk_widget_realize (socket);
   gtk_socket_add_id (GTK_SOCKET (socket), xid);
 
-  if (!GTK_SOCKET (socket)->is_mapped)
-    g_warning ("Socket is not mapped !!!");
-
   g_signal_connect (socket, "size-allocate",
                     G_CALLBACK (mnb_panel_socket_size_allocate_cb), panel);
 
