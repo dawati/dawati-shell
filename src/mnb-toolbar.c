@@ -1936,7 +1936,7 @@ static void
 mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate  *priv = toolbar->priv;
-  gchar             **names;
+  gchar             **names = NULL;
   GError             *error = NULL;
   gboolean            found_panels[NUM_ZONES];
   gint                i;
