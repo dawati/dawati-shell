@@ -116,8 +116,15 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
+  XSizeHints              hints;
 
+  hints.min_width = width;
+  hints.min_height = height;
+  hints.flags = PMinSize;
+
+  XSetWMNormalHints (xdpy, priv->xwindow, &hints);
   XResizeWindow (xdpy, priv->xwindow, width, height);
+
   clutter_actor_set_size (priv->stage, width, height);
 }
 
