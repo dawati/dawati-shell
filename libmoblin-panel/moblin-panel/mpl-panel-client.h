@@ -81,7 +81,7 @@ typedef struct
   /*
    * Subclass implementation of the set_height API.
    */
-  void (*set_height)           (MplPanelClient *panel, guint height);
+  void (*set_height_request)   (MplPanelClient *panel, guint height);
 } MplPanelClientClass;
 
 GType mpl_panel_client_get_type (void);
@@ -92,15 +92,17 @@ MplPanelClient *mpl_panel_client_new       (guint        xid,
                                             const gchar *stylesheet,
                                             const gchar *button_style);
 
-void mpl_panel_client_set_height           (MplPanelClient *panel,
-                                            guint           height);
-void mpl_panel_client_request_show         (MplPanelClient *panel);
-void mpl_panel_client_request_hide         (MplPanelClient *panel);
-void mpl_panel_client_request_focus        (MplPanelClient *panel);
-void mpl_panel_client_request_button_style (MplPanelClient *panel,
-                                            const gchar    *style);
-void mpl_panel_client_request_tooltip      (MplPanelClient *panel,
-                                            const gchar    *tooltip);
+void  mpl_panel_client_set_height_request   (MplPanelClient *panel,
+                                             guint           height);
+guint mpl_panel_client_get_height_request   (MplPanelClient *panel);
+
+void  mpl_panel_client_request_show         (MplPanelClient *panel);
+void  mpl_panel_client_request_hide         (MplPanelClient *panel);
+void  mpl_panel_client_request_focus        (MplPanelClient *panel);
+void  mpl_panel_client_request_button_style (MplPanelClient *panel,
+                                             const gchar    *style);
+void  mpl_panel_client_request_tooltip      (MplPanelClient *panel,
+                                             const gchar    *tooltip);
 
 gboolean mpl_panel_client_launch_application   (MplPanelClient *panel,
                                                 const gchar    *app,

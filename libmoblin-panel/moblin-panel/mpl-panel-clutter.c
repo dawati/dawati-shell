@@ -122,7 +122,7 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
 }
 
 static void
-mpl_panel_clutter_set_height (MplPanelClient *panel, guint height)
+mpl_panel_clutter_set_height_request (MplPanelClient *panel, guint height)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (panel)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
@@ -149,7 +149,7 @@ mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
   object_class->constructed      = mpl_panel_clutter_constructed;
 
   client_class->set_size   = mpl_panel_clutter_set_size;
-  client_class->set_height = mpl_panel_clutter_set_height;
+  client_class->set_height_request = mpl_panel_clutter_set_height_request;
 }
 
 static void
@@ -286,7 +286,7 @@ mpl_panel_clutter_actor_height_notify_cb (GObject    *gobject,
   guint           height;
 
   height = (guint) clutter_actor_get_height (actor);
-  mpl_panel_client_set_height (panel, height);
+  mpl_panel_client_set_height_request (panel, height);
 }
 
 /*
@@ -319,7 +319,7 @@ mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
        * Match the current height of the actor
        */
       height = (guint) clutter_actor_get_height (actor);
-      mpl_panel_client_set_height (panel, height);
+      mpl_panel_client_set_height_request (panel, height);
 
       /*
        * Now watch for changes in height.

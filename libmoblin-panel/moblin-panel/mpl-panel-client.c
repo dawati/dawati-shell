@@ -913,9 +913,13 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
 }
 
 void
-mpl_panel_client_set_height (MplPanelClient *panel, guint height)
+mpl_panel_client_set_height_request (MplPanelClient *panel, guint height)
 {
-  MplPanelClientPrivate *priv = panel->priv;
+  MplPanelClientPrivate *priv;
+
+  g_return_if_fail (MPL_IS_PANEL_CLIENT (panel));
+
+  priv = panel->priv;
 
   priv->requested_height = height;
 
@@ -930,14 +934,22 @@ mpl_panel_client_set_height (MplPanelClient *panel, guint height)
       if (height <= priv->max_height)
         {
           if (MPL_PANEL_CLIENT_CLASS (mpl_panel_client_parent_class)->
-              set_height)
+              set_height_request)
             MPL_PANEL_CLIENT_CLASS (mpl_panel_client_parent_class)->
-              set_height (panel, height);
+              set_height_request (panel, height);
         }
       else
         g_warning ("Panel requested height %d which is grater than maximum "
                    "allowable height %d",
                    height, priv->max_height);
     }
+}
+
+guint
+mpl_panel_client_get_height_request (MplPanelClient *panel)
+{
+  g_return_val_if_fail (MPL_IS_PANEL_CLIENT (panel), 0);
+
+  return panel->priv->requested_height;
 }
 
