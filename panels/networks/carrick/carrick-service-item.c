@@ -648,7 +648,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->delete_button = gtk_button_new ();
   gtk_button_set_image (GTK_BUTTON (priv->delete_button),
                         image);
-  gtk_box_pack_start (GTK_BOX (hbox),
+  gtk_box_pack_end (GTK_BOX (box),
                       priv->delete_button,
                       FALSE,
                       FALSE,
