@@ -160,6 +160,8 @@ struct _MnbToolbarPrivate
 
   ShellTrayManager *tray_manager;
 
+  gboolean shown             : 1;
+  gboolean shown_myzone      : 1;
   gboolean disabled          : 1;
   gboolean in_show_animation : 1; /* Animation tracking */
   gboolean in_hide_animation : 1;
@@ -1599,6 +1601,15 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   clutter_actor_set_position (CLUTTER_ACTOR (panel), TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
   clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
+
+  if (index == MYZONE)
+    {
+      if (priv->shown)
+        {
+          clutter_actor_show (CLUTTER_ACTOR (panel));
+          priv->shown_myzone = TRUE;
+        }
+    }
 }
 
 static void
@@ -2770,8 +2781,13 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
 
   XSelectInput (xdpy, xwin, event_mask);
 
-  if (priv->panels[MYZONE])
-    clutter_actor_show (CLUTTER_ACTOR (priv->panels[MYZONE]));
+  priv->shown = TRUE;
+
+  if (!priv->shown_myzone && priv->panels[MYZONE])
+    {
+      priv->shown_myzone = TRUE;
+      clutter_actor_show (CLUTTER_ACTOR (priv->panels[MYZONE]));
+    }
 }
 
 /*
