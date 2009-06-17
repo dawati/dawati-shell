@@ -141,7 +141,7 @@ mnb_launcher_application_create_from_gmenu_entry (GMenuTreeEntry *entry)
 
   /* We have a patch to libgnome-menu that adds an accessor for the
    * GenericName desktop entry field. */
-#if GMENU_WITH_GENERIC_NAME
+#ifdef GMENU_WITH_GENERIC_NAME
 
   name = gmenu_tree_entry_get_generic_name (entry) ?
             gmenu_tree_entry_get_generic_name (entry) :
