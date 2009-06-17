@@ -41,7 +41,6 @@ struct _MnbStatusEntryPrivate
   ClutterActor *button;
 
   gchar *service_name;
-  gchar *display_name;
   gchar *status_text;
   gchar *old_status_text;
   gchar *status_time;
@@ -165,58 +164,6 @@ penge_utils_format_time (GTimeVal *time_)
     return g_strdup (_("Last year"));
 
   return g_strdup (_("Ages ago"));
-}
-
-static gchar *
-get_mojito_service_name (const gchar *service_name)
-{
-  GKeyFile *key_file = g_key_file_new ();
-  GError *error = NULL;
-  gchar *service_file, *path, *display_name;
-
-  service_file = g_strconcat (service_name, ".keys", NULL);
-  path = g_build_filename (PREFIX, "share", "mojito", "services",
-                           service_file,
-                           NULL);
-
-  g_free (service_file);
-
-  g_key_file_load_from_file (key_file, path, 0, &error);
-  if (error)
-    {
-      g_warning ("Unable to load keys file for service '%s' (path: %s): %s",
-                 service_name,
-                 path,
-                 error->message);
-      g_error_free (error);
-      g_free (path);
-      g_key_file_free (key_file);
-
-      return NULL;
-    }
-
-  display_name = g_key_file_get_string (key_file,
-                                        "MojitoService",
-                                        "Name",
-                                        &error);
-  if (error)
-    {
-      g_warning ("Unable to get the Name key from the file for "
-                 "service '%s' (path: %s): %s",
-                 service_name,
-                 path,
-                 error->message);
-      g_error_free (error);
-      g_free (path);
-      g_key_file_free (key_file);
-
-      return NULL;
-    }
-
-  g_free (path);
-  g_key_file_free (key_file);
-
-  return display_name;
 }
 
 static void
@@ -583,7 +530,6 @@ mnb_status_entry_finalize (GObject *gobject)
   MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (gobject)->priv;
 
   g_free (priv->service_name);
-  g_free (priv->display_name);
   g_free (priv->status_text);
   g_free (priv->status_time);
   g_free (priv->old_status_text);
@@ -644,14 +590,11 @@ mnb_status_entry_constructed (GObject *gobject)
   MnbStatusEntryPrivate *priv = entry->priv;
   gchar *str;
 
-  g_assert (priv->service_name != NULL);
-
-  priv->display_name = get_mojito_service_name (priv->service_name);
-  if (priv->display_name != NULL)
+  if (priv->service_name != NULL)
     {
       /* Translators: %s is the user visible name of the service */
       str = g_strdup_printf (_("Enter your %s status here..."),
-                             priv->display_name);
+                             priv->service_name);
     }
   else
     str = g_strdup (_("Enter your current status here..."));
@@ -934,7 +877,7 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
 
   service_line = g_strdup_printf ("%s - %s",
                                   priv->status_time,
-                                  priv->display_name);
+                                  priv->service_name);
 
   text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->service_label));
   clutter_text_set_markup (CLUTTER_TEXT (text), service_line);

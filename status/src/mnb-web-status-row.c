@@ -40,6 +40,7 @@ struct _MnbWebStatusRowPrivate
   ClutterActor *entry;
 
   gchar *service_name;
+  gchar *display_name;
 
   gchar *no_icon_file;
 
@@ -67,6 +68,58 @@ enum
 };
 
 G_DEFINE_TYPE (MnbWebStatusRow, mnb_web_status_row, NBTK_TYPE_WIDGET);
+
+static gchar *
+get_mojito_service_name (const gchar *service_name)
+{
+  GKeyFile *key_file = g_key_file_new ();
+  GError *error = NULL;
+  gchar *service_file, *path, *display_name;
+
+  service_file = g_strconcat (service_name, ".keys", NULL);
+  path = g_build_filename (PREFIX, "share", "mojito", "services",
+                           service_file,
+                           NULL);
+
+  g_free (service_file);
+
+  g_key_file_load_from_file (key_file, path, 0, &error);
+  if (error)
+    {
+      g_warning ("Unable to load keys file for service '%s' (path: %s): %s",
+                 service_name,
+                 path,
+                 error->message);
+      g_error_free (error);
+      g_free (path);
+      g_key_file_free (key_file);
+
+      return NULL;
+    }
+
+  display_name = g_key_file_get_string (key_file,
+                                        "MojitoService",
+                                        "Name",
+                                        &error);
+  if (error)
+    {
+      g_warning ("Unable to get the Name key from the file for "
+                 "service '%s' (path: %s): %s",
+                 service_name,
+                 path,
+                 error->message);
+      g_error_free (error);
+      g_free (path);
+      g_key_file_free (key_file);
+
+      return NULL;
+    }
+
+  g_free (path);
+  g_key_file_free (key_file);
+
+  return display_name;
+}
 
 static void
 mnb_web_status_row_get_preferred_width (ClutterActor *actor,
@@ -638,7 +691,9 @@ mnb_web_status_row_constructed (GObject *gobject)
   g_assert (priv->service_name != NULL);
   g_assert (priv->client != NULL);
 
-  priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->service_name));
+  priv->display_name = get_mojito_service_name (priv->service_name);
+
+  priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->display_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
   clutter_actor_set_reactive (CLUTTER_ACTOR (priv->entry), FALSE);

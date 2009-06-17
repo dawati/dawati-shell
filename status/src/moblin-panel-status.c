@@ -27,12 +27,18 @@
 
 #include <glib/gi18n.h>
 
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
+
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
 
 #include <mojito-client/mojito-client.h>
 
+#include <libmissioncontrol/mission-control.h>
+
 #include "mnb-web-status-row.h"
+#include "mnb-im-status-row.h"
 
 #define ICON_SIZE       48
 #define PADDING         8
@@ -50,6 +56,17 @@ typedef struct _ServiceInfo
   guint has_icon   : 1;
   guint is_visible : 1;
 } ServiceInfo;
+
+typedef struct _AccountInfo
+{
+  gchar *name;
+
+  McAccount *account;
+  ClutterActor *row;
+  NbtkTable *table;
+
+  guint is_visible : 1;
+} AccountInfo;
 
 static ClutterActor *empty_bin = NULL;
 static guint n_visible = 0;
@@ -223,13 +240,80 @@ on_mojito_is_online (MojitoClient *client,
   update_header (label, is_online);
 }
 
+static gboolean
+add_account (gpointer user_data)
+{
+  AccountInfo *a_info = user_data;
+
+  a_info->row = g_object_new (MNB_TYPE_IM_STATUS_ROW,
+                              "account-name", a_info->name,
+                              NULL);
+
+  nbtk_table_add_actor_with_properties (a_info->table,
+                                        a_info->row,
+                                        -1, 0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+  g_free (a_info->name);
+  g_object_unref (a_info->account);
+  g_slice_free (AccountInfo, a_info);
+
+  return FALSE;
+}
+
+static void
+on_mc_get_online (MissionControl *mc,
+                  GError         *error,
+                  gpointer        data)
+{
+  NbtkTable *table = data;
+  GSList *accounts, *a;
+  GError *internal_error;
+
+  if (error)
+    {
+      g_warning ("Unable to go online: %s", error->message);
+      g_error_free (error);
+
+      return;
+    }
+
+  internal_error = NULL;
+  accounts = mission_control_get_online_connections (mc, &internal_error);
+  for (a = accounts; a != NULL; a = a->next)
+    {
+      McAccount *account = a->data;
+      AccountInfo *a_info;
+
+      a_info = g_slice_new (AccountInfo);
+      a_info->name = g_strdup (mc_account_get_unique_name (account));
+      a_info->account = g_object_ref (account);
+      a_info->row = NULL;
+      a_info->table = table;
+      a_info->is_visible = FALSE;
+
+      clutter_threads_add_idle (add_account, a_info);
+    }
+
+  g_slist_free (accounts);
+}
+
 ClutterActor *
 make_status (void)
 {
-  ClutterActor  *table;
-  NbtkWidget    *header;
-  NbtkWidget    *label;
-  MojitoClient  *client;
+  ClutterActor *table;
+  NbtkWidget *header, *label;
+  MojitoClient *client;
+  MissionControl *mc;
 
   table = CLUTTER_ACTOR (nbtk_table_new ());
   nbtk_widget_set_style_class_name (NBTK_WIDGET (table), "MnbStatusPageTable");
@@ -273,6 +357,7 @@ make_status (void)
   clutter_container_add_actor (CLUTTER_CONTAINER (empty_bin),
                                CLUTTER_ACTOR (label));
 
+  /* mojito: web services */
   client = mojito_client_new ();
 
   /* online notification on the header */
@@ -285,6 +370,18 @@ make_status (void)
   mojito_client_get_services (client, on_mojito_get_services, table);
   g_object_set_data_full (G_OBJECT (table), "mojito-client",
                           client,
+                          (GDestroyNotify) g_object_unref);
+
+  /* mission control: instant messaging */
+  mc = mission_control_new (dbus_g_bus_get (DBUS_BUS_SESSION, NULL));
+
+  /* connect everything */
+  mission_control_connect_all_with_default_presence (mc,
+                                                     on_mc_get_online,
+                                                     table);
+
+  g_object_set_data_full (G_OBJECT (table), "mission-control",
+                          mc,
                           (GDestroyNotify) g_object_unref);
 
   return table;

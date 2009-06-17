@@ -203,7 +203,7 @@ AS_IF([test "x$enable_status" = "xyes"],
       [
         AC_DEFINE(WITH_STATUS, [1], [Defined when building the status panel])
 
-        PKG_CHECK_MODULES(STATUS, dbus-glib-1 clutter-x11-0.9 mojito-client nbtk-1.0)
+        PKG_CHECK_MODULES(STATUS, dbus-glib-1 clutter-x11-0.9 libmissioncontrol mojito-client nbtk-1.0)
 
         AC_SUBST(STATUS_CFLAGS)
         AC_SUBST(STATUS_LIBS)

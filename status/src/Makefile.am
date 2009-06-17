@@ -2,7 +2,6 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 INCLUDES = \
 	-I$(top_srcdir)/status \
-	-DG_DISABLE_SINGLE_INCLUDES \
 	-DG_LOG_DOMAIN=\"Mutter-Moblin-Status\" \
 	-DPREFIX=\"$(prefix)\" \
 	-DDATADIR=\"$(datadir)\" \
@@ -41,6 +40,8 @@ moblin_panel_status_SOURCES  = 	\
 	mnb-status-entry.c	\
 	mnb-web-status-row.h	\
 	mnb-web-status-row.c	\
+	mnb-im-status-row.h	\
+	mnb-im-status-row.c	\
 	moblin-panel-status.c
 
 servicedir = $(datadir)/dbus-1/services
@@ -49,7 +50,7 @@ service_DATA = org.moblin.Mnb.Panels.status.service
 
 EXTRA_DIST = $(service_in_files) mnb-status-marshal.list
 
-CLEANFILES = stamp-mnb-status-marshal.list
+CLEANFILES = stamp-mnb-status-marshal.h
 
 DISTCLEANFILES = org.moblin.Mnb.Panels.status.service $(BUILT_SOURCES)
 
