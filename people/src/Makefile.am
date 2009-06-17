@@ -4,7 +4,6 @@ AM_CFLAGS = \
 	    $(PEOPLE_CFLAGS) \
 	    -DDATADIR=\"$(datadir)\" \
 	    -DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\" \
-	    $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la \
 	    -I$(top_srcdir) \
 	    -I$(top_srcdir)/libmoblin-panel
 
@@ -12,7 +11,8 @@ AM_CFLAGS = \
 
 libexec_PROGRAMS = moblin-panel-people
 
-moblin_panel_people_LDADD = $(PEOPLE_LIBS)
+moblin_panel_people_LDADD = $(PEOPLE_LIBS) \
+			    $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la
 
 moblin_panel_people_SOURCES = \
   mnb-people-panel.c \
