@@ -32,3 +32,5 @@ gboolean penge_utils_launch_for_uri (ClutterActor *actor,
                                      const gchar  *uri);
 gboolean penge_utils_launch_for_desktop_file (ClutterActor *actor,
                                               const gchar  *path);
+gboolean penge_utils_launch_by_command_line (ClutterActor *actor,
+                                             const gchar  *command_line);

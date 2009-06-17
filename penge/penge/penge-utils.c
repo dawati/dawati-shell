@@ -280,3 +280,20 @@ penge_utils_launch_for_desktop_file (ClutterActor *actor,
                                                                 FALSE);
 }
 
+gboolean
+penge_utils_launch_by_command_line (ClutterActor *actor,
+                                    const gchar  *command_line)
+{
+  MplPanelClient *client;
+
+  client = penge_utils_get_panel_client (actor);
+
+  if (!client)
+    return FALSE;
+
+  return mpl_panel_client_launch_application (client,
+                                              command_line,
+                                              -2,
+                                              FALSE);
+}
+
