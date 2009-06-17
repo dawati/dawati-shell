@@ -25,8 +25,6 @@
 #include "penge-twitter-tile.h"
 #include "penge-utils.h"
 
-#include "src/moblin-netbook-chooser.h"
-
 G_DEFINE_TYPE (PengeTwitterTile, penge_twitter_tile, PENGE_TYPE_PEOPLE_TILE)
 
 #define GET_PRIVATE(o) \

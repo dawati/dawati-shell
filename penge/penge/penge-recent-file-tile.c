@@ -27,8 +27,6 @@
 
 #include <glib/gi18n.h>
 
-#include "src/moblin-netbook-chooser.h"
-
 G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \

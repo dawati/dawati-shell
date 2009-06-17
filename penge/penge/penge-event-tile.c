@@ -24,8 +24,6 @@
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
 
-#include "src/moblin-netbook-chooser.h"
-
 G_DEFINE_TYPE (PengeEventTile, penge_event_tile, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
