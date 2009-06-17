@@ -19,6 +19,13 @@ _client_set_size_cb (MplPanelClient *client,
                           height);
 }
 
+static void
+_grid_view_activated_cb (PengeGridView *grid_view,
+                         gpointer       userdata)
+{
+  mpl_panel_client_request_hide ((MplPanelClient *)userdata);
+}
+
 int
 main (int    argc,
       char **argv)
@@ -50,6 +57,11 @@ main (int    argc,
                     "set-size",
                     (GCallback)_client_set_size_cb,
                     grid_view);
+
+  g_signal_connect (grid_view,
+                    "activated",
+                    (GCallback)_grid_view_activated_cb,
+                    client);
 
   clutter_main ();
 
