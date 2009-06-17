@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <moblin-panel/mpl-panel-client.h>
 
 #include "penge-grid-view.h"
 
@@ -43,6 +44,7 @@ struct _PengeGridViewPrivate {
   ClutterActor *people_pane;
 
   ClutterActor *background;
+  MplPanelClient *panel_client;
 };
 
 enum
@@ -53,11 +55,22 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
+enum
+{
+  PROP_0,
+  PROP_PANEL_CLIENT
+};
+
 static void
 penge_grid_view_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  PengeGridViewPrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_PANEL_CLIENT:
+      g_value_set_object (value, priv->panel_client);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -67,7 +80,12 @@ static void
 penge_grid_view_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
+  PengeGridViewPrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_PANEL_CLIENT:
+      priv->panel_client = g_value_dup_object (value);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -76,6 +94,14 @@ penge_grid_view_set_property (GObject *object, guint property_id,
 static void
 penge_grid_view_dispose (GObject *object)
 {
+  PengeGridViewPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->panel_client)
+  {
+    g_object_unref (priv->panel_client);
+    priv->panel_client = NULL;
+  }
+
   G_OBJECT_CLASS (penge_grid_view_parent_class)->dispose (object);
 }
 
@@ -141,6 +167,7 @@ penge_grid_view_class_init (PengeGridViewClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (PengeGridViewPrivate));
 
@@ -164,6 +191,13 @@ penge_grid_view_class_init (PengeGridViewClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE,
                   0);
+
+  pspec = g_param_spec_object ("panel-client",
+                               "Panel client",
+                               "The panel client",
+                               MPL_TYPE_PANEL_CLIENT,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_PANEL_CLIENT, pspec);
 }
 
 static void
