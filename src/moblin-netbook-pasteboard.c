@@ -30,8 +30,6 @@
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
 
-#include <penge/penge-app-bookmark-manager.h>
-
 #include "moblin-netbook.h"
 #include "moblin-netbook-chooser.h"
 #include "moblin-netbook-pasteboard.h"
