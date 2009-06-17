@@ -65,9 +65,8 @@ PKG_CHECK_MODULES(LIBMPL_CLUTTER,
                   dbus-glib-1
                   nbtk-1.0)
 
-LIBMPL_CLUTTER_CFLAGS="${LIBMPL_CLUTTER_CFLAGS} "'-I$(top_srcdir)/penge -I$(top_srcdir)/src'
+LIBMPL_CLUTTER_CFLAGS="${LIBMPL_CLUTTER_CFLAGS} "'-I$(top_srcdir)/src'
 AC_SUBST([LIBMPL_CLUTTER_CFLAGS])
-LIBMPL_CLUTTER_LIBS="${LIBMPL_CLUTTER_LIBS} ${PENGE_LIBS} "'$(top_builddir)/penge/penge/libpenge.la'
 AC_SUBST([LIBMPL_CLUTTER_LIBS])
 
 PKG_CHECK_MODULES(LIBMPL_GTK,
@@ -120,9 +119,13 @@ PKG_CHECK_MODULES(APPLICATIONS,
                   libgnome-menu
                   nbtk-1.0)
 
-APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel -I$(top_srcdir)/penge -I$(top_srcdir)/src'
+APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "\
+'-I$(top_srcdir)/libmoblin-panel '\
+'-I$(top_srcdir)/penge -I$(top_srcdir)/src '
 AC_SUBST([APPLICATIONS_CFLAGS])
-APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "'-L$(top_builddir)/libmoblin-panel/moblin-panel/.libs -lmoblin-panel-clutter'
+APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "\
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '\
+'$(top_builddir)/penge/penge/libpenge.la'
 AC_SUBST([APPLICATIONS_LIBS])
 
 # Netpanel
