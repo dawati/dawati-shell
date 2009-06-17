@@ -233,9 +233,9 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
 
   if (priv->requested_height > 0 && priv->requested_height < height)
     real_height = priv->requested_height;
-  else
+  else if (priv->requested_height)
     {
-      g_warning ("Panel requested height %d which is grater than maximum "
+      g_warning ("Panel requested height %d which is greater than maximum "
                  "allowable height %d",
                  priv->requested_height, height);
 
