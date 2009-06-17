@@ -1,0 +1,171 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../dalston/dalston-power-applet.c:159
+#, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../dalston/dalston-power-applet.c:166
+#: ../dalston/dalston-power-applet.c:179
+#, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "Running low on battery"
+msgstr "電池不足"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "我們發現你的電池量不足。如果可以的話，你最好插入電源來充電。"
+
+#: ../dalston/dalston-power-applet.c:202
+msgid "Getting close to empty"
+msgstr "接近清空"
+
+#: ../dalston/dalston-power-applet.c:202
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "你的電池量不足。你最好儲存你所有的工作，並儘快插入電源。"
+
+#: ../dalston/dalston-power-applet.c:204
+msgid "Danger!"
+msgstr "危險！"
+
+#: ../dalston/dalston-power-applet.c:204
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "對不起，你電腦的電池量不足。我們現在必須關閉電腦。請儲存你所有的工作，並希望再次看到你。"
+
+#: ../dalston/dalston-power-applet.c:324
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "你的電池已完全充電並可再次出擊。"
+
+#: ../dalston/dalston-power-applet.c:326
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "你的電池正在充電。已充電 <b>%d</b>%%。"
+
+#: ../dalston/dalston-power-applet.c:333
+#, c-format
+msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+msgstr "你的電池沒有在充電。已充電 <b>%d</b>%%。"
+
+#: ../dalston/dalston-power-applet.c:453
+msgid "Display brightness"
+msgstr "顯示亮度"
+
+#: ../dalston/dalston-power-applet.c:484
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "對不起，我們不支援修正你電腦屏幕的亮度"
+
+#: ../dalston/dalston-brightness-slider.c:221
+msgid "Brighter than the sun"
+msgstr "比太陽還亮"
+
+#: ../dalston/dalston-brightness-slider.c:223
+msgid "Very bright"
+msgstr "非常亮"
+
+#: ../dalston/dalston-brightness-slider.c:225
+msgid "Bright"
+msgstr "很亮"
+
+#: ../dalston/dalston-brightness-slider.c:227
+msgid "Morning has broken"
+msgstr "亮"
+
+#: ../dalston/dalston-brightness-slider.c:229
+msgid "Midday"
+msgstr "亮度剛好"
+
+#: ../dalston/dalston-brightness-slider.c:231
+msgid "Pretty dusky"
+msgstr "有點亮"
+
+#: ../dalston/dalston-brightness-slider.c:233
+msgid "Twilight"
+msgstr "微亮"
+
+#: ../dalston/dalston-brightness-slider.c:235
+msgid "Very dark"
+msgstr "非常暗"
+
+#: ../dalston/dalston-brightness-slider.c:237
+msgid "Total eclipse"
+msgstr "暗"
+
+#: ../dalston/dalston-volume-pane.c:254
+msgid "Output volume"
+msgstr "輸出音量"
+
+#: ../dalston/dalston-volume-pane.c:298
+msgid "Mute"
+msgstr "靜音"
+
+#: ../dalston/dalston-volume-pane.c:316
+msgid "Alert sounds"
+msgstr "警告聲音"
+
+#: ../dalston/dalston-volume-pane.c:328
+msgid "Play test sound"
+msgstr "播放測試聲音"
+
+#: ../dalston/dalston-volume-slider.c:188
+msgid "Turned up to 11"
+msgstr "音量調到最高點"
+
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Very loud"
+msgstr "非常大聲"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Loud"
+msgstr "大聲"
+
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Fairly loud"
+msgstr "夠大聲"
+
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Middle of the road"
+msgstr "剛好"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Fairly quiet"
+msgstr "有些安靜"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Quiet"
+msgstr "安靜"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Very quiet"
+msgstr "非常安靜"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Silent"
+msgstr "無聲"
+
+#: ../libgvc/gvc-mixer-control.c:988
+msgid "System Sounds"
+msgstr "系統聲音"
+
+#: ../libgvc/gvc-mixer-control.c:1512
+msgid "GNOME Volume Control"
+msgstr "GNOME 音量控制"
+
