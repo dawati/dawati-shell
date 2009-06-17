@@ -381,12 +381,12 @@ penge_people_tile_activate (PengePeopleTile *tile,
   url = g_hash_table_lookup (item->props,
                              "url");
 
-  if (!penge_utils_launch_for_uri (tile, url))
+  if (!penge_utils_launch_for_uri ((ClutterActor *)tile, url))
   {
     g_warning (G_STRLOC ": Error launching uri: %s",
                url);
   } else {
-    penge_utils_signal_activated (tile);
+    penge_utils_signal_activated ((ClutterActor *)tile);
   }
 }
 
