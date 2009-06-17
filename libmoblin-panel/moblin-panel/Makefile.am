@@ -17,7 +17,9 @@ libmoblin_panel_clutter_la_SOURCES = \
 	mpl-entry.c \
 	mpl-panel-client.c \
 	mpl-panel-clutter.c \
-	$(top_srcdir)/src/marshal.c
+	$(DBUS_GLUE) \
+	$(DBUS_BINDINGS) \
+	$(MARSHALS)
 
 libmoblin_panel_gtk_la_CFLAGS = $(LIBMPL_GTK_CFLAGS)
 
@@ -26,5 +28,30 @@ libmoblin_panel_gtk_la_LDFLAGS = $(LIBMPL_GTK_LIBS)
 libmoblin_panel_gtk_la_SOURCES = \
 	mpl-panel-client.c \
 	mpl-panel-gtk.c \
-	$(top_srcdir)/src/marshal.c
+	$(DBUS_GLUE) \
+	$(DBUS_BINDINGS) \
+	$(MARSHALS)
+
+DBUS_GLUE = mnb-panel-dbus-glue.h		\
+	    mnb-toolbar-dbus-glue.h
+
+DBUS_BINDINGS =	mnb-panel-dbus-bindings.h	\
+		mnb-toolbar-dbus-bindings.h
+
+%-glue.h: $(top_srcdir)/src/%.xml
+	dbus-binding-tool --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
+
+%-bindings.h: $(top_srcdir)/src/%.xml
+	dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
+
+MARSHALS = marshal.c marshal.h
+%.c: $(top_srcdir)/src/%.list
+	echo '#include "marshal.h"' > $@ && \
+	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --body >> $@
+%.h: $(top_srcdir)/src/%.list
+	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --header > $@
+
+BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS)
+
+CLEANFILES = $(BUILT_SOURCES)
 

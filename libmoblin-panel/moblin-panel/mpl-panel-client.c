@@ -282,7 +282,7 @@ mnb_panel_dbus_hide_end (MplPanelClient *self, GError **error)
   return TRUE;
 }
 
-#include "../../src/mnb-panel-dbus-glue.h"
+#include "mnb-panel-dbus-glue.h"
 
 static void
 mpl_panel_client_class_init (MplPanelClientClass *klass)
@@ -772,7 +772,7 @@ mpl_panel_client_request_tooltip (MplPanelClient *panel,
   g_signal_emit (panel, signals[REQUEST_TOOLTIP], 0, tooltip);
 }
 
-#include "../../src/mnb-toolbar-dbus-bindings.h"
+#include "mnb-toolbar-dbus-bindings.h"
 
 gboolean
 mpl_panel_client_launch_application (MplPanelClient *panel,
