@@ -799,6 +799,14 @@ mnb_panel_mutter_window_destroy_cb (ClutterActor *actor, gpointer data)
   clutter_actor_hide (CLUTTER_ACTOR (data));
 }
 
+static void
+mnb_panel_pixmap_size_notify_cb (GObject    *gobject,
+                                 GParamSpec *pspec,
+                                 gpointer    data)
+{
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (data));
+}
+
 void
 mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw)
 {
@@ -813,10 +821,18 @@ mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw)
                                            mnb_panel_mutter_window_destroy_cb,
                                            panel);
 
+          texture = mutter_window_get_texture (priv->mcw);
+
+          if (texture)
+            g_signal_handlers_disconnect_by_func (texture,
+                                           mnb_panel_pixmap_size_notify_cb,
+                                           panel);
+
           priv->mcw = NULL;
         }
 
       mnb_drop_down_set_child (MNB_DROP_DOWN (panel), NULL);
+
       return;
     }
 
@@ -833,6 +849,14 @@ mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw)
   g_object_ref (texture);
   clutter_actor_unparent (texture);
   mnb_drop_down_set_child (MNB_DROP_DOWN (panel), texture);
+
+  g_signal_connect (texture, "notify::pixmap-width",
+                    G_CALLBACK (mnb_panel_pixmap_size_notify_cb),
+                    panel);
+  g_signal_connect (texture, "notify::pixmap-height",
+                    G_CALLBACK (mnb_panel_pixmap_size_notify_cb),
+                    panel);
+
   g_object_unref (texture);
 
   g_signal_connect (mcw, "destroy",
