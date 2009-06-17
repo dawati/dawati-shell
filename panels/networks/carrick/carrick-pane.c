@@ -987,11 +987,13 @@ carrick_pane_trigger_scan (CarrickPane *pane)
   while (devices)
   {
     dev = devices->data;
-    type = cm_device_get_type (dev);
+    if (dev && CM_IS_DEVICE (dev))
+    {
+      type = cm_device_get_type (dev);
 
-    if (type != DEVICE_ETHERNET && type != DEVICE_UNKNOWN)
-      cm_device_scan (dev);
-
+      if (type != DEVICE_ETHERNET && type != DEVICE_UNKNOWN)
+        cm_device_scan (dev);
+    }
     devices = devices->next;
   }
 }
