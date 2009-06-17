@@ -716,23 +716,6 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 }
 
 #if 1
-/*
- * TODO Remove.
- *
- * Helper functions for the myzone, internet zone and media zone -- there will
- * need to go and be handled internally in the zones/via new dbus API.
- */
-static void
-_mzone_activated_cb (PengeGridView *view, gpointer data)
-{
-  MnbToolbarPrivate *priv = MNB_TOOLBAR (data)->priv;
-
-  if (priv->panels[MYZONE])
-    clutter_actor_hide (CLUTTER_ACTOR (priv->panels[MYZONE]));
-
-  clutter_actor_hide (CLUTTER_ACTOR (data));
-}
-
 #ifdef USE_AHOGHILL
 /*
  * TODO -- this should be moved inside Ahoghill and the signal handlers
@@ -1112,21 +1095,6 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
         case PEOPLE_ZONE:
           break;
         case MYZONE:
-          {
-            ClutterActor *grid;
-
-            panel = priv->panels[index] = mnb_drop_down_new (plugin);
-
-            grid = g_object_new (PENGE_TYPE_GRID_VIEW, NULL);
-
-            g_signal_connect (grid, "activated",
-                              G_CALLBACK (_mzone_activated_cb), toolbar);
-
-            clutter_actor_set_height (grid,
-                                      screen_height - TOOLBAR_HEIGHT * 1.5);
-
-            mnb_drop_down_set_child (MNB_DROP_DOWN (panel), grid);
-          }
           break;
         case MEDIA_ZONE:
 #ifdef USE_AHOGHILL
@@ -2034,6 +2002,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
           /* Add here any apps that have been converted to multiproc */
         case APPS_ZONE:
         case PEOPLE_ZONE:
+        case MYZONE:
           if (!found_panels[i])
             {
               DBusConnection *conn;
