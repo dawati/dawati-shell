@@ -166,7 +166,7 @@ _set_devices_state (gchar       *device_type,
                     CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = cm_manager_get_devices (priv->manager);
+  const GList *devices = cm_manager_get_devices (priv->manager);
 
   while (devices)
   {
@@ -276,7 +276,7 @@ _new_connection_cb (GtkButton *button,
   const gchar *network, *secret;
   gchar *security;
   GtkWidget *image;
-  GList *devices;
+  const GList *devices;
   CmDevice *device;
   gboolean joined = FALSE;
 
@@ -403,8 +403,8 @@ _new_connection_cb (GtkButton *button,
     if (network == NULL)
       return;
 
-    devices = g_list_copy (cm_manager_get_devices (priv->manager));
-    device = CM_DEVICE (g_list_first (devices)->data);
+    devices = cm_manager_get_devices (priv->manager);
+    device = CM_DEVICE (devices->data);
     while (device)
     {
       if (cm_device_get_type (device) == DEVICE_WIFI)
@@ -430,12 +430,10 @@ _new_connection_cb (GtkButton *button,
       }
       else
       {
-        device = CM_DEVICE (g_list_next (devices)->data);
+        device = CM_DEVICE (devices->next);
         // FIXME: Handle failure!
       }
     }
-
-    g_list_free (devices);
   }
   gtk_widget_destroy (dialog);
 }
@@ -572,10 +570,9 @@ static void
 _set_states (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = NULL;
+  const GList *devices = NULL;
+  const GList *it = NULL;
   CmDevice *device = NULL;
-  guint len;
-  guint cnt;
 
   if (cm_manager_get_offline_mode (priv->manager))
   {
@@ -616,18 +613,15 @@ _set_states (CarrickPane *pane)
     gtk_widget_set_no_show_all (priv->wimax_label,
                                 TRUE);
 
-    len = g_list_length (devices);
-    for (cnt = 0; cnt < len; cnt++)
+    for (it = devices; it != NULL; it = it->next)
     {
-      device = CM_DEVICE (g_list_nth (devices, cnt)->data);
+      device = CM_DEVICE (it->data);
       g_signal_connect (G_OBJECT (device),
                         "device-updated",
                         G_CALLBACK (_device_updated_cb),
                         pane);
     }
   }
-
-  g_list_free (devices);
 }
 
 static gboolean
@@ -648,8 +642,8 @@ _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   CmService *service = NULL;
-  GList *it, *iter;
-  GList *fetched_services = NULL;
+  const GList *it, *iter;
+  const GList *fetched_services = NULL;
   GList *children = NULL;
   gboolean found = FALSE;
 
@@ -980,7 +974,7 @@ void
 carrick_pane_trigger_scan (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = cm_manager_get_devices (priv->manager);
+  const GList *devices = cm_manager_get_devices (priv->manager);
   CmDevice *dev;
   CmDeviceType type;
 
