@@ -313,6 +313,17 @@ mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
 
   if (actor)
     {
+      guint height;
+
+      /*
+       * Match the current height of the actor
+       */
+      height = (guint) clutter_actor_get_height (actor);
+      mpl_panel_client_set_height (panel, height);
+
+      /*
+       * Now watch for changes in height.
+       */
       priv->tracked_actor = actor;
 
       priv->height_notify_cb =
