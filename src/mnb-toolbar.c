@@ -52,7 +52,6 @@
 #include "moblin-netbook-status.h"
 #include "moblin-netbook-netpanel.h"
 #include "moblin-netbook-pasteboard.h"
-#include "moblin-netbook-people.h"
 
 #ifdef USE_AHOGHILL
 #include "ahoghill/ahoghill-grid-view.h"
