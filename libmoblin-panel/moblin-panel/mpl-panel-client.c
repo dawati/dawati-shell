@@ -216,7 +216,7 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
                            GError         **error)
 {
   MplPanelClientPrivate *priv = self->priv;
-  guint real_height;
+  guint real_height = height;
 
   g_debug ("%s called", __FUNCTION__);
 
@@ -238,8 +238,6 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
       g_warning ("Panel requested height %d which is greater than maximum "
                  "allowable height %d",
                  priv->requested_height, height);
-
-      real_height = height;
     }
 
   g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
