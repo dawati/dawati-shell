@@ -2,11 +2,11 @@
 ACLOCAL_AMFLAGS = -I build/autotools
 
 SUBDIRS=build
-SUBDIRS+=penge
+SUBDIRS+=libmoblin-panel penge
 if WITH_AHOGHILL
 SUBDIRS+=ahoghill
 endif
-SUBDIRS+=src po data libmoblin-panel tests applications myzone
+SUBDIRS+=src po data tests applications myzone
 if WITH_PEOPLE
 SUBDIRS+=people
 endif
