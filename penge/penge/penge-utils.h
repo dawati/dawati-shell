@@ -30,3 +30,5 @@ void penge_utils_signal_activated (ClutterActor *actor);
 MplPanelClient *penge_utils_get_panel_client (ClutterActor *actor);
 gboolean penge_utils_launch_for_uri (ClutterActor *actor,
                                      const gchar  *uri);
+gboolean penge_utils_launch_for_desktop_file (ClutterActor *actor,
+                                              const gchar  *path);
