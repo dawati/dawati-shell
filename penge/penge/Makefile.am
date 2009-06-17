@@ -47,7 +47,9 @@ libpenge_la_SOURCES = \
 		      penge-myspace-tile.c
 
 AM_CFLAGS = @MUTTER_PLUGIN_CFLAGS@ -Wall $(PENGE_CFLAGS) -I$(top_srcdir)\
-	    -DPKG_DATADIR=\"$(pkgdatadir)\"
-AM_LDFLAGS = $(PENGE_LIBS)
+	    -DPKG_DATADIR=\"$(pkgdatadir)\" \
+	    -I$(top_srcdir)/libmoblin-panel
 
-libpenge_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
+libpenge_la_LIBADD = $(MUTTER_PLUGIN_LIBS) \
+		     $(PENGE_LIBS)\
+		     $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la
