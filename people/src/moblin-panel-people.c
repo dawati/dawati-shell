@@ -39,6 +39,8 @@ main (int    argc,
                                   "people-button",
                                   TRUE);
 
+  mpl_panel_client_set_height_request (client, 400);
+
   stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
   people_panel = mnb_people_panel_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
