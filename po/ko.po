@@ -1,0 +1,377 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-30 13:20+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Korean\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../ahoghill/ahoghill/ahoghill-example-table.c:117
+msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+msgstr "음악을 듣고 싶거나 사진을 봐야한다거나 또는 어떤 비디오를 봐야할때 당신의 기록을 보세요. 그동안 당신은 샘플 미디어를 볼 수 있습니다.  "
+
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:390
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:918
+msgid "Recently played"
+msgstr "최근에 재생된"
+
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:416
+msgid "Search results"
+msgstr "검색 결과"
+
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:933
+msgid "Local"
+msgstr "로컬"
+
+#: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
+#, c-format
+msgid "Season %u, Episode %u"
+msgstr "시즌 %u, 에피소드 %u"
+
+#: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
+msgid "Previous"
+msgstr "이전"
+
+#: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
+msgid "Next"
+msgstr "다음"
+
+#: ../ahoghill/ahoghill/ahoghill-search-pane.c:87
+msgid "Media"
+msgstr "미디어"
+
+#: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
+#: ../src/moblin-netbook-launcher.c:1339
+#: ../src/moblin-netbook-pasteboard.c:215
+#: ../src/moblin-netbook-people.c:383
+#: ../tests/test-pasteboard.c:149
+msgid "Search"
+msgstr "검색"
+
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
+#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:255
+#, c-format
+msgid "Season %d Episode %d"
+msgstr "시즌 %d, 에피소드 %d"
+
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
+#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:257
+#, c-format
+msgid "Season %d"
+msgstr "시즌 %d"
+
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
+#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:259
+#, c-format
+msgid "Episode %d"
+msgstr "에피소드 %d"
+
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
+#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:261
+#, c-format
+msgid "Year %d"
+msgstr "년 %d"
+
+#: ../penge/penge/penge-calendar-pane.c:180
+msgid "<b>Appointments</b>"
+msgstr "<b>약속</b>"
+
+#: ../penge/penge/penge-events-pane.c:198
+msgid "No calendar entries this week"
+msgstr "이 주에는 캘린더 엔트리가 없습니다."
+
+#: ../penge/penge/penge-people-pane.c:200
+msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgstr "당신의 친구들의 대화와 웹 서비스가 여기에 나타날 것입니다. 지금 계정을 여십시오!"
+
+#: ../penge/penge/penge-recent-files-pane.c:189
+msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+msgstr "<b>Moblin 2.0 넷북에 오신것을 환영합니다.</b>"
+
+#: ../penge/penge/penge-recent-files-pane.c:214
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
+msgstr "Moblin은 다른 컴퓨터와 차이가 있으며, 당신이 이 데이타 베이스에 잘 적응할 수 있도록 여러가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Moblin 팀."
+
+#: ../penge/penge/penge-recent-file-tile.c:236
+msgid "Web page"
+msgstr "웹 페이지"
+
+#: ../penge/penge/penge-tasks-pane.c:287
+msgid "Nothing to do today"
+msgstr "오늘은 아무 할 일 없음"
+
+#: ../penge/penge/penge-task-tile.c:329
+#, c-format
+msgid "Due %x"
+msgstr "%x까지"
+
+#: ../penge/penge/penge-utils.c:62
+msgid "Less than a minute ago"
+msgstr "일분도 채 되기전에"
+
+#: ../penge/penge/penge-utils.c:66
+msgid "A few minutes ago"
+msgstr "몇분 전에"
+
+#: ../penge/penge/penge-utils.c:70
+msgid "A couple of hours ago"
+msgstr "한두시간 전에"
+
+#: ../penge/penge/penge-utils.c:77
+msgid "Earlier today"
+msgstr "조금전 오늘"
+
+#: ../penge/penge/penge-utils.c:80
+msgid "Yesterday"
+msgstr "어제"
+
+#: ../penge/penge/penge-utils.c:88
+#, c-format
+msgid "On %A"
+msgstr " %A에"
+
+#: ../penge/penge/penge-utils.c:94
+msgid "Unknown"
+msgstr "알수 없음"
+
+#: ../penge/penge/penge-utils.c:101
+msgid "Last week"
+msgstr "저번 주"
+
+#: ../penge/penge/penge-utils.c:104
+msgid "A couple of weeks ago"
+msgstr "한두 주 전"
+
+#: ../penge/penge/penge-utils.c:110
+msgid "This month"
+msgstr "이번 달"
+
+#. Now Jan., last used in Dec.
+#: ../penge/penge/penge-utils.c:114
+msgid "Last month"
+msgstr "저번 달"
+
+#: ../penge/penge/penge-utils.c:117
+msgid "This year"
+msgstr "올 해"
+
+#: ../penge/penge/penge-utils.c:120
+msgid "Last year"
+msgstr "저번 해"
+
+#: ../penge/penge/penge-utils.c:122
+msgid "Ages ago"
+msgstr "오래전"
+
+#: ../src/moblin-netbook.c:233
+msgid "Move cursor to the top of the screen to activate the toolbar"
+msgstr "툴 바를 작동하려면 커서를 스크린 위쪽으로 올리십시오."
+
+#: ../src/moblin-netbook.c:370
+msgid "m_zone"
+msgstr "내 영역"
+
+#: ../src/moblin-netbook.c:373
+msgid "zones"
+msgstr "영역"
+
+#: ../src/moblin-netbook.c:376
+msgid "status"
+msgstr "상태"
+
+#: ../src/moblin-netbook.c:379
+msgid "applications"
+msgstr "응용 프로그램"
+
+#: ../src/moblin-netbook.c:382
+msgid "pasteboard"
+msgstr "임시 보드"
+
+#: ../src/moblin-netbook.c:385
+msgid "internet"
+msgstr "인터넷"
+
+#: ../src/moblin-netbook.c:388
+msgid "media"
+msgstr "미디어"
+
+#: ../src/moblin-netbook.c:391
+msgid "people"
+msgstr "사람들"
+
+#: ../src/moblin-netbook.c:496
+msgid "Moblin Netbook Effects"
+msgstr "Moblin 넷북 영향"
+
+#: ../src/moblin-netbook.c:500
+msgid "Effects for Moblin Netbooks"
+msgstr "Moblin 넷북의 영향"
+
+#: ../src/moblin-netbook-chooser.c:765
+#, c-format
+msgid "Zone %d"
+msgstr "영역 %d"
+
+#: ../src/moblin-netbook-chooser.c:814
+msgid "New zone (0)"
+msgstr "새로운 영역 (0)"
+
+#: ../src/moblin-netbook-chooser.c:895
+msgid "Choose zone for application:"
+msgstr "응용 프로그램을 위한 영역을 선택하십시오:"
+
+#.
+#. * Fav apps.
+#.
+#. Label
+#: ../src/moblin-netbook-launcher.c:814
+msgid "Favourite Applications"
+msgstr "즐겨 찾기 응용프로그램"
+
+#: ../src/moblin-netbook-launcher.c:1328
+#, fuzzy
+msgid "Applications"
+msgstr "프로그램"
+
+#. Construct tabs previews table widgets
+#: ../src/moblin-netbook-netpanel.c:114
+#, fuzzy
+msgid "Tabs"
+msgstr "탭"
+
+#: ../src/moblin-netbook-netpanel.c:117
+msgid "More..."
+msgstr "기타..."
+
+#. Add a placeholder text label
+#: ../src/moblin-netbook-netpanel.c:266
+msgid "Type an address or load the browser to see your tabs here."
+msgstr "탭을 보려면 주소 또는 브라우저를 입력하세요."
+
+#. Construct entry table widgets
+#: ../src/moblin-netbook-netpanel.c:447
+#, fuzzy
+msgid "Internet"
+msgstr "인터넷"
+
+#: ../src/moblin-netbook-netpanel.c:464
+#, fuzzy
+msgid "Go"
+msgstr "이동"
+
+#: ../src/moblin-netbook-pasteboard.c:137
+#: ../src/moblin-netbook-pasteboard.c:357
+#: ../tests/test-pasteboard.c:92
+#: ../tests/test-pasteboard.c:232
+msgid "the current selection to pasteboard"
+msgstr "임시 보드에 현재 선택"
+
+#: ../src/moblin-netbook-pasteboard.c:202
+#: ../tests/test-pasteboard.c:142
+msgid "Pasteboard"
+msgstr "임시 보드"
+
+#: ../src/moblin-netbook-pasteboard.c:252
+msgid "You need to copy some text to use Pasteboard"
+msgstr "임시 보드 사용을 위해 텍스트를 복사해야 합니다."
+
+#: ../src/moblin-netbook-pasteboard.c:314
+#: ../tests/test-pasteboard.c:206
+msgid "Clear pasteboard"
+msgstr "임시 보드 지우기"
+
+#: ../src/moblin-netbook-pasteboard.c:342
+#: ../src/mnb-clipboard-item.c:489
+#: ../tests/test-pasteboard.c:223
+#, fuzzy
+msgid "Copy"
+msgstr "복사"
+
+#: ../src/moblin-netbook-status.c:206
+#: ../src/moblin-netbook-status.c:260
+msgid "Your current status"
+msgstr "현재 상태"
+
+#: ../src/moblin-netbook-status.c:208
+msgid "Your current status - you are offline"
+msgstr "현재 상태 - 오프라인"
+
+#: ../src/moblin-netbook-status.c:290
+msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+msgstr "당신의 웹 상태를 업데이트 하려면 상태 메세지 지원하는 웹 서비스 계정을 설정해야 합니다. "
+
+#: ../src/moblin-netbook-people.c:188
+msgid "Sorry, we can't find any people. Have you set up an Instant Messenger account?"
+msgstr "죄송합니다, 아무도 찾을 수가 없습니다. 인스턴 매니저 계정을 설정 하셨습니까?"
+
+#: ../src/moblin-netbook-people.c:370
+msgid "People"
+msgstr "사람들"
+
+#: ../src/tray/na-tray-child.c:121
+#, c-format
+msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
+msgstr "트레이 아이콘이 사이즈 (%i x %i) 를 다시 (%i x %i)로 사이즈를 정하기를 요구했습니다. "
+
+#: ../src/mnb-status-entry.c:138
+#: ../src/mnb-status-entry.c:644
+#: ../src/mnb-status-entry.c:726
+#, fuzzy
+msgid "Edit"
+msgstr "편집"
+
+#. Translators: %s is the user visible name of the service
+#: ../src/mnb-status-entry.c:523
+#, c-format
+msgid "Enter your %s status here..."
+msgstr "%s 상태을 입력하세요"
+
+#: ../src/mnb-status-entry.c:527
+#: ../src/mnb-status-entry.c:598
+msgid "Enter your current status here..."
+msgstr "여기에 지금 상태를 입력하십시오..."
+
+#: ../src/mnb-status-entry.c:705
+msgid "Post"
+msgstr "게시"
+
+#: ../src/mnb-switcher.c:1215
+msgid "No Zones yet"
+msgstr "아직 영역 표시가 없습니다."
+
+#: ../src/mnb-switcher.c:1237
+msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
+msgstr "당신이 사용하는 응용 프로그램이 여기에 나타날 것입니다. 당신이 원하는데로 바꾸수도 있고 정리도 가능합니다. "
+
+#: ../src/mnb-switcher.c:1461
+msgid "No applications on this zone"
+msgstr "이 영역에는 응용 프로그램이 없습니다."
+
+#: ../src/mnb-toolbar.c:1004
+msgid "power & brightness"
+msgstr "전력 & 밝기"
+
+#: ../src/mnb-toolbar.c:1007
+#, fuzzy
+msgid "volume"
+msgstr "볼륨"
+
+#: ../src/mnb-toolbar.c:1010
+msgid "bluetooth"
+msgstr "블루투스"
+
+#: ../src/mnb-toolbar.c:1013
+msgid "networks"
+msgstr "네트워크"
+
+#: ../src/mnb-toolbar.c:1016
+#, fuzzy
+msgid "test"
+msgstr "테스트 "
+
