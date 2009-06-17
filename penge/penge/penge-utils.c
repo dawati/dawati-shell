@@ -24,6 +24,7 @@
 #include <glib/gi18n.h>
 
 #include <nbtk/nbtk.h>
+#include <moblin-panel/mpl-panel-client.h>
 
 #include "penge-grid-view.h"
 
@@ -221,3 +222,24 @@ penge_utils_signal_activated (ClutterActor *actor)
   }
 }
 
+MplPanelClient *
+penge_utils_get_panel_client (ClutterActor *actor)
+{
+  MplPanelClient *panel_client = NULL;
+
+  while (actor)
+  {
+    if (PENGE_IS_GRID_VIEW (actor))
+    {
+      g_object_get (actor,
+                    "panel-client",
+                    &panel_client,
+                    NULL);
+      return panel_client;
+    }
+
+    actor = clutter_actor_get_parent (actor);
+  }
+
+  return NULL;
+}
