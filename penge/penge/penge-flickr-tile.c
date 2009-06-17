@@ -99,23 +99,9 @@ _button_press_event (ClutterActor *actor,
                      gpointer      userdata)
 {
   PengeFlickrTilePrivate *priv = GET_PRIVATE (userdata);
-  const gchar *url;
-  GError *error = NULL;
 
-  url = g_hash_table_lookup (priv->item->props,
-                             "url");
-
-  if (!g_app_info_launch_default_for_uri (url,
-                                     NULL,
-                                     &error))
-  {
-    g_warning (G_STRLOC ": Error launching uri (%s): %s",
-               url,
-               error->message);
-    g_clear_error (&error);
-  } else {
-    penge_utils_signal_activated (actor);
-  }
+  penge_people_tile_activate ((PengePeopleTile *)actor,
+                              priv->item);
 
   return TRUE;
 }

@@ -89,17 +89,9 @@ _button_press_event (ClutterActor *actor,
                      gpointer      userdata)
 {
   PengeLastfmTilePrivate *priv = GET_PRIVATE (userdata);
-  const gchar *url;
 
-  url = g_hash_table_lookup (priv->item->props,
-                             "url");
-
-  if (!moblin_netbook_launch_default_for_uri (url, FALSE, -2))
-  {
-    g_warning (G_STRLOC ": Error launching uri (%s)", url);
-  } else {
-    penge_utils_signal_activated (actor);
-  }
+  penge_people_tile_activate ((PengePeopleTile *)actor,
+                              priv->item);
 
   return TRUE;
 }

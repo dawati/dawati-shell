@@ -23,6 +23,7 @@
 
 #include <glib-object.h>
 #include <nbtk/nbtk.h>
+#include <mojito-client/mojito-item.h>
 
 G_BEGIN_DECLS
 
@@ -52,7 +53,8 @@ typedef struct {
 } PengePeopleTileClass;
 
 GType penge_people_tile_get_type (void);
-
+void penge_people_tile_activate (PengePeopleTile *tile,
+                                 MojitoItem      *item);
 G_END_DECLS
 
 #endif /* _PENGE_PEOPLE_TILE */

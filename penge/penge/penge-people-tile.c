@@ -19,6 +19,7 @@
 
 
 #include "penge-people-tile.h"
+#include "penge-utils.h"
 
 G_DEFINE_TYPE (PengePeopleTile, penge_people_tile, NBTK_TYPE_TABLE)
 
@@ -371,4 +372,21 @@ penge_people_tile_init (PengePeopleTile *self)
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }
 
+void
+penge_people_tile_activate (PengePeopleTile *tile,
+                            MojitoItem      *item)
+{
+  const gchar *url;
+
+  url = g_hash_table_lookup (item->props,
+                             "url");
+
+  if (!penge_utils_launch_for_uri (tile, url))
+  {
+    g_warning (G_STRLOC ": Error launching uri: %s",
+               url);
+  } else {
+    penge_utils_signal_activated (tile);
+  }
+}
 
