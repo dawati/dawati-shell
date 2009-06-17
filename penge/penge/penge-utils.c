@@ -243,3 +243,21 @@ penge_utils_get_panel_client (ClutterActor *actor)
 
   return NULL;
 }
+
+
+gboolean
+penge_utils_launch_for_uri (ClutterActor  *actor,
+                            const gchar   *uri)
+{
+  MplPanelClient *client;
+
+  client = penge_utils_get_panel_client (actor);
+
+  if (!client)
+    return FALSE;
+
+  return mpl_panel_client_launch_default_application_for_uri (client,
+                                                              uri,
+                                                              -2,
+                                                              FALSE);
+}
