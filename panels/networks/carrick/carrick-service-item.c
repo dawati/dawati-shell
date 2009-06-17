@@ -636,7 +636,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->name_label = gtk_label_new ("");
   gtk_misc_set_alignment (GTK_MISC (priv->name_label),
-                          0.05, 0.5);
+                          0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (hbox),
                       priv->name_label,
                       TRUE,
@@ -663,6 +663,8 @@ carrick_service_item_init (CarrickServiceItem *self)
                       6);
 
   priv->security_label = gtk_label_new ("");
+  gtk_misc_set_alignment (GTK_MISC (priv->security_label),
+                          0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (hbox),
                       priv->security_label,
                       FALSE,
