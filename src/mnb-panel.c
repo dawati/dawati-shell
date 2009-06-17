@@ -526,15 +526,14 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
                                gchar      *tooltip,
                                gchar      *stylesheet,
                                gchar      *button_style_id,
+                               guint       window_width,
+                               guint       window_height,
                                GError     *error,
                                gpointer    panel)
 {
   MnbPanelPrivate *priv = MNB_PANEL (panel)->priv;
   GtkWidget       *socket;
   GtkWidget       *window;
-  Window           root;
-  gint             w_x, w_y;
-  guint            w_width, w_height, b_width, depth;
 
   /*
    * We duplicate the return values, because we need to be able to replace them
@@ -569,13 +568,7 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
   socket = gtk_socket_new ();
   priv->window = window = gtk_window_new (GTK_WINDOW_POPUP);
 
-  if (XGetGeometry (GDK_DISPLAY (), xid, &root, &w_x, &w_y, &w_width, &w_height,
-                    &b_width, &depth) == Success)
-    {
-      gtk_window_resize (GTK_WINDOW (window), w_width, w_height);
-    }
-  else
-    gtk_window_resize (GTK_WINDOW (window), priv->width, priv->height);
+  gtk_window_resize (GTK_WINDOW (window), window_width, window_height);
 
   gtk_window_move (GTK_WINDOW (window), 0, 64);
 

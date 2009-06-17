@@ -213,6 +213,8 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
                            gchar          **tooltip,
                            gchar          **stylesheet,
                            gchar          **button_style,
+                           guint           *alloc_width,
+                           guint           *alloc_height,
                            GError         **error)
 {
   MplPanelClientPrivate *priv = self->priv;
@@ -239,6 +241,9 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
                  "allowable height %d",
                  priv->requested_height, height);
     }
+
+  *alloc_width  = width;
+  *alloc_height = real_height;
 
   g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
 
