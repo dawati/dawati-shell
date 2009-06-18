@@ -1,0 +1,181 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Margie Foster <margie.foster@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Finnish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../dalston/dalston-power-applet.c:159
+#, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b> tunti"
+msgstr[1] "<b>%d</b> tuntia"
+
+#: ../dalston/dalston-power-applet.c:166
+#: ../dalston/dalston-power-applet.c:179
+#, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b> minuutti"
+msgstr[1] "<b>%d</b> minuuttia"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "Running low on battery"
+msgstr "Akun virta vähissä"
+
+# Your battery seems to be low. If possible, now would be a good time to plug in.
+#: ../dalston/dalston-power-applet.c:200
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Akkusi virta näyttää olevan vähissä. Jos mahdollista, nyt olisi hyvä aika kytkeä virtajohto."
+
+# soon empty
+#: ../dalston/dalston-power-applet.c:202
+msgid "Getting close to empty"
+msgstr "Kohta tyhjä"
+
+# Battery is quite low. Now would be a good time to save all work and plug in as soon as possible.
+#: ../dalston/dalston-power-applet.c:202
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Akkusi virta on melko vähissä. Nyt olisi hyvä aika tallentaa kaikki työt ja kytkeä virtajohto niin pian kuin mahdollista."
+
+#: ../dalston/dalston-power-applet.c:204
+msgid "Danger!"
+msgstr "Vaara!"
+
+# Battery is unfortunately running empty and the computer has to be turned off. Save all work and hopefully we'll see you again soon!
+#: ../dalston/dalston-power-applet.c:204
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Akun virta on valitettavasti lopussa ja tietokone pitää sammuttaa. Tallenna työt ja toivottavasti näemme pian uudelleen!"
+
+# battery full!
+#: ../dalston/dalston-power-applet.c:324
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Akku täynnä!"
+
+#: ../dalston/dalston-power-applet.c:326
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "Akku latautuu. Se on noin <b>%d</b>%% täynnä."
+
+#: ../dalston/dalston-power-applet.c:333
+#, c-format
+msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+msgstr "Akku purkautuu. Se on noin <b>%d</b>%% täynnä."
+
+#: ../dalston/dalston-power-applet.c:453
+msgid "Display brightness"
+msgstr "Näytön kirkkaus"
+
+#: ../dalston/dalston-power-applet.c:484
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "Emme valitettavasti tue näyttösi kirkkauden säätämistä"
+
+# blinding
+#: ../dalston/dalston-brightness-slider.c:221
+msgid "Brighter than the sun"
+msgstr "Sokaiseva"
+
+#: ../dalston/dalston-brightness-slider.c:223
+msgid "Very bright"
+msgstr "Tosi kirkas"
+
+#: ../dalston/dalston-brightness-slider.c:225
+msgid "Bright"
+msgstr "Kirkas"
+
+#: ../dalston/dalston-brightness-slider.c:227
+msgid "Morning has broken"
+msgstr "Valoisa"
+
+#: ../dalston/dalston-brightness-slider.c:229
+msgid "Midday"
+msgstr "Keskipäivä"
+
+#: ../dalston/dalston-brightness-slider.c:231
+msgid "Pretty dusky"
+msgstr "Hämärä"
+
+#: ../dalston/dalston-brightness-slider.c:233
+msgid "Twilight"
+msgstr "Melko pimeä"
+
+#: ../dalston/dalston-brightness-slider.c:235
+msgid "Very dark"
+msgstr "Tosi pimeä"
+
+#: ../dalston/dalston-brightness-slider.c:237
+msgid "Total eclipse"
+msgstr "Sysimusta"
+
+#: ../dalston/dalston-volume-pane.c:254
+msgid "Output volume"
+msgstr "Toiston voimakkuus"
+
+# or Äänetön if this means mute as in silent
+#: ../dalston/dalston-volume-pane.c:298
+msgid "Mute"
+msgstr "Vaimenna"
+
+#: ../dalston/dalston-volume-pane.c:316
+msgid "Alert sounds"
+msgstr "Hälytysäänet"
+
+#: ../dalston/dalston-volume-pane.c:328
+msgid "Play test sound"
+msgstr "Toista testiääni"
+
+# ears hurting
+#: ../dalston/dalston-volume-slider.c:188
+msgid "Turned up to 11"
+msgstr "Korviin sattuu"
+
+# big noise
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Very loud"
+msgstr "Iso meteli"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Loud"
+msgstr "Meteli"
+
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Fairly loud"
+msgstr "Melko äänekäs"
+
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Middle of the road"
+msgstr "Keskitaso"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Fairly quiet"
+msgstr "Melko hiljainen"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Quiet"
+msgstr "Hiljainen"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Very quiet"
+msgstr "Tosi hiljainen"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Silent"
+msgstr "Äänetön"
+
+#: ../libgvc/gvc-mixer-control.c:988
+msgid "System Sounds"
+msgstr "Järjestelmän äänet"
+
+#: ../libgvc/gvc-mixer-control.c:1512
+msgid "GNOME Volume Control"
+msgstr "GNOMEn äänenvoimakkuus"
+
