@@ -65,6 +65,7 @@ enum
   REQUEST_BUTTON_STYLE,
   REQUEST_TOOLTIP,
   REMOTE_PROCESS_DIED,
+  SET_SIZE,
   LAST_SIGNAL
 };
 
@@ -205,6 +206,8 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
    * Resize our top-level window to match.
    */
   gtk_window_resize (GTK_WINDOW (priv->window), width, height);
+
+  g_signal_emit (panel, signals[SET_SIZE], 0, width, height);
 }
 
 static void
@@ -383,6 +386,15 @@ mnb_panel_class_init (MnbPanelClass *klass)
                   G_STRUCT_OFFSET (MnbPanelClass, remote_process_died),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  signals[SET_SIZE] =
+    g_signal_new ("set-size",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbPanelClass, set_size),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__UINT_UINT,
                   G_TYPE_NONE, 0);
 }
 
