@@ -164,10 +164,9 @@ _update_buttons (MnbPeoplePanel *people_panel)
   }
 }
 
-#if 0
 static void
-dropdown_show_cb (MnbDropDown  *dropdown,
-                  gpointer      userdata)
+dropdown_show_cb (MplPanelClient *client,
+                  gpointer        userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
@@ -177,15 +176,14 @@ dropdown_show_cb (MnbDropDown  *dropdown,
 
 
 static void
-dropdown_hide_cb (MnbDropDown  *dropdown,
-                  gpointer      userdata)
+dropdown_hide_cb (MplPanelClient *client,
+                  gpointer        userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
   /* Reset search. */
-  mpl_entry_set_text (MNB_ENTRY (priv->entry), "");
+  mpl_entry_set_text (MPL_ENTRY (priv->entry), "");
 }
-#endif
 
 #define ICON_SIZE 48
 
@@ -612,7 +610,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "row-span",
                                         2,
                                         NULL);
-  no_people_tile = 
+  no_people_tile =
     _make_empty_people_tile (self,
                              clutter_actor_get_width ((ClutterActor *)scroll_view));
 
@@ -728,17 +726,15 @@ mnb_people_panel_set_panel_client (MnbPeoplePanel *people_panel,
 
   priv->panel_client = g_object_ref (panel_client);
 
-#if 0
-  g_signal_connect (priv->drop_down,
-                    "show-completed",
+  g_signal_connect (panel_client,
+                    "show-end",
                     (GCallback)dropdown_show_cb,
                     people_panel);
 
-  g_signal_connect (priv->drop_down,
-                    "hide-completed",
+  g_signal_connect (panel_client,
+                    "hide-end",
                     (GCallback)dropdown_hide_cb,
                     people_panel);
-#endif
 }
 
 
