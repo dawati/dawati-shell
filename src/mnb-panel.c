@@ -191,6 +191,23 @@ mnb_panel_request_tooltip_cb (DBusGProxy  *proxy,
 }
 
 static void
+mnb_panel_set_size_cb (DBusGProxy *proxy,
+                       guint       width,
+                       guint       height,
+                       MnbPanel   *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+
+  g_debug (G_STRLOC " Got size change on Panel %s",
+           mnb_panel_get_name (panel));
+
+  /*
+   * Resize our top-level window to match.
+   */
+  gtk_window_resize (GTK_WINDOW (priv->window), width, height);
+}
+
+static void
 mnb_panel_dispose (GObject *self)
 {
   MnbPanelPrivate *priv   = MNB_PANEL (self)->priv;
@@ -725,14 +742,22 @@ mnb_panel_setup_proxy (MnbPanel *panel)
                                G_CALLBACK (mnb_panel_proxy_owner_changed_cb),
                                panel, NULL);
 
-  dbus_g_proxy_add_signal (proxy, "RequestButtonStyle", G_TYPE_STRING, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (proxy, "RequestButtonStyle",
+                           G_TYPE_STRING, G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestButtonStyle",
                                G_CALLBACK (mnb_panel_request_button_style_cb),
                                panel, NULL);
 
-  dbus_g_proxy_add_signal (proxy, "RequestTooltip", G_TYPE_STRING, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (proxy, "RequestTooltip",
+                           G_TYPE_STRING, G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestTooltip",
                                G_CALLBACK (mnb_panel_request_tooltip_cb),
+                               panel, NULL);
+
+  dbus_g_proxy_add_signal (proxy, "SetSize",
+                           G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy, "SetSize",
+                               G_CALLBACK (mnb_panel_set_size_cb),
                                panel, NULL);
 
   mnb_panel_init_owner (panel);
