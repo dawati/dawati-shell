@@ -85,6 +85,7 @@ struct _MplPanelClientPrivate
   gchar           *button_style;
   guint            xid;
 
+  guint            width;
   guint            max_height;
   guint            requested_height;
 
@@ -232,6 +233,7 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
   *button_style = g_strdup (priv->button_style);
 
   priv->max_height = height;
+  priv->width      = width;
 
   if (priv->requested_height > 0 && priv->requested_height < height)
     real_height = priv->requested_height;
@@ -244,6 +246,37 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
 
   *alloc_width  = width;
   *alloc_height = real_height;
+
+  g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
+
+  return TRUE;
+}
+
+/*
+ * The functions required by the interface.
+ */
+static gboolean
+mnb_panel_dbus_set_size (MplPanelClient  *self,
+                         guint            width,
+                         guint            height,
+                         GError         **error)
+{
+  MplPanelClientPrivate *priv = self->priv;
+  guint real_height = height;
+
+  g_debug ("%s called: width %d, height %d", __FUNCTION__, width, height);
+
+  priv->max_height = height;
+  priv->width      = width;
+
+  if (priv->requested_height > 0 && priv->requested_height < height)
+    real_height = priv->requested_height;
+  else if (priv->requested_height)
+    {
+      g_warning ("Panel requested height %d is greater than maximum "
+                 "allowable height %d",
+                 priv->requested_height, height);
+    }
 
   g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
 
@@ -936,10 +969,7 @@ mpl_panel_client_set_height_request (MplPanelClient *panel, guint height)
     {
       if (height <= priv->max_height)
         {
-          if (MPL_PANEL_CLIENT_CLASS (mpl_panel_client_parent_class)->
-              set_height_request)
-            MPL_PANEL_CLIENT_CLASS (mpl_panel_client_parent_class)->
-              set_height_request (panel, height);
+          g_signal_emit (panel, signals[SET_SIZE], 0, priv->width, height);
         }
       else
         g_warning ("Panel requested height %d which is grater than maximum "

@@ -920,3 +920,12 @@ mnb_panel_is_ready (MnbPanel *panel)
   return panel->priv->ready;
 }
 
+void
+mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
+{
+  MnbPanelPrivate *priv = panel->priv;
+
+  org_moblin_UX_Shell_Panel_set_size_async (priv->proxy, width, height,
+                                            mnb_panel_dbus_dumb_reply_cb, NULL);
+}
+

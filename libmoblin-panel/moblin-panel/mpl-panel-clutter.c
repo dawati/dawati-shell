@@ -129,19 +129,6 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
 }
 
 static void
-mpl_panel_clutter_set_height_request (MplPanelClient *panel, guint height)
-{
-  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (panel)->priv;
-  Display                *xdpy = clutter_x11_get_default_display ();
-  gfloat                  width;
-
-  width = clutter_actor_get_width (priv->stage);
-
-  XResizeWindow (xdpy, priv->xwindow, (guint) width, height);
-  clutter_actor_set_height (priv->stage, height);
-}
-
-static void
 mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
 {
   GObjectClass        *object_class = G_OBJECT_CLASS (klass);
@@ -155,8 +142,7 @@ mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
   object_class->finalize         = mpl_panel_clutter_finalize;
   object_class->constructed      = mpl_panel_clutter_constructed;
 
-  client_class->set_size   = mpl_panel_clutter_set_size;
-  client_class->set_height_request = mpl_panel_clutter_set_height_request;
+  client_class->set_size         = mpl_panel_clutter_set_size;
 }
 
 static void

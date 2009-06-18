@@ -14,6 +14,11 @@
       <arg name="window_height" type="u" direction="out"/>
     </method>
 
+    <method name="SetSize">
+      <arg name="max_window_width" type="u" direction="in"/>
+      <arg name="max_window_height" type="u" direction="in"/>
+    </method>
+
     <method name="ShowBegin"/>
     <method name="ShowEnd"/>
 

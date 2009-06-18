@@ -78,10 +78,6 @@ typedef struct
   void (*request_button_style) (MplPanelClient *panel, const gchar *style);
   void (*request_tooltip)      (MplPanelClient *panel, const gchar *tooltip);
 
-  /*
-   * Subclass implementation of the set_height API.
-   */
-  void (*set_height_request)   (MplPanelClient *panel, guint height);
 } MplPanelClientClass;
 
 GType mpl_panel_client_get_type (void);
