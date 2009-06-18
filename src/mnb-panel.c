@@ -460,12 +460,19 @@ static void
 mnb_panel_hide_begin (MnbDropDown *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
+  GtkWidget       *window = priv->window;
 
   if (!priv->proxy)
     {
       g_warning (G_STRLOC " No DBus proxy!");
       return;
     }
+
+  /*
+   * We do not hide the window here, only move it off screen; this significantly
+   * improves the Toolbar button response time.
+   */
+  gtk_window_move (GTK_WINDOW (window), 0, -(priv->height + 100));
 
   org_moblin_UX_Shell_Panel_hide_begin_async (priv->proxy,
                                               mnb_panel_dbus_dumb_reply_cb, NULL);
@@ -475,7 +482,6 @@ static void
 mnb_panel_hide_completed (MnbDropDown *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
-  GtkWidget       *window = priv->window;
 
   if (!priv->proxy)
     {
@@ -485,11 +491,6 @@ mnb_panel_hide_completed (MnbDropDown *self)
 
   org_moblin_UX_Shell_Panel_hide_end_async (priv->proxy,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);
-  /*
-   * We do not hide the window here, only move it off screen; this significantly
-   * improves the Toolbar button response time.
-   */
-  gtk_window_move (GTK_WINDOW (window), 0, -(priv->height + 100));
 }
 
 static DBusGConnection *
