@@ -90,8 +90,9 @@ struct _MnbPanelPrivate
 
   MutterWindow    *mcw;
 
-  gboolean         dead  : 1; /* Set when the remote  */
-  gboolean         ready : 1;
+  gboolean         constructed : 1;
+  gboolean         dead        : 1; /* Set when the remote  */
+  gboolean         ready       : 1;
 };
 
 static void
@@ -422,6 +423,12 @@ mnb_panel_hide_begin (MnbDropDown *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
 
+  if (!priv->proxy)
+    {
+      g_warning (G_STRLOC " No DBus proxy!");
+      return;
+    }
+
   org_moblin_UX_Shell_Panel_hide_begin_async (priv->proxy,
                                               mnb_panel_dbus_dumb_reply_cb, NULL);
 }
@@ -431,6 +438,12 @@ mnb_panel_hide_completed (MnbDropDown *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
   GtkWidget       *window = priv->window;
+
+  if (!priv->proxy)
+    {
+      g_warning (G_STRLOC " No DBus proxy!");
+      return;
+    }
 
   org_moblin_UX_Shell_Panel_hide_end_async (priv->proxy,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);
@@ -607,6 +620,12 @@ mnb_panel_init_owner (MnbPanel *panel)
 {
   MnbPanelPrivate *priv = panel->priv;
 
+  if (!priv->proxy)
+    {
+      g_warning (G_STRLOC " No DBus proxy!");
+      return;
+    }
+
   /*
    * Now call the remote init_panel() method to obtain the panel name, tooltip
    * and xid.
@@ -637,6 +656,12 @@ mnb_panel_setup_proxy (MnbPanel *panel)
   DBusGProxy      *proxy;
   gchar           *dbus_path;
   gchar           *p;
+
+  if (!priv->dbus_conn)
+    {
+      g_warning (G_STRLOC " No dbus connection, cannot connect to panel!");
+      return FALSE;
+    }
 
   g_debug ("Creating proxy for %s, %p",
            priv->dbus_name, panel);
@@ -733,12 +758,17 @@ mnb_panel_constructed (GObject *self)
   conn = mnb_panel_connect_to_dbus ();
 
   if (!conn)
-    return;
+    {
+      g_warning (G_STRLOC " Unable to connect to DBus!");
+      return;
+    }
 
   priv->dbus_conn = conn;
 
   if (!mnb_panel_setup_proxy (MNB_PANEL (self)))
     return;
+
+  priv->constructed = TRUE;
 }
 
 MnbPanel *
@@ -753,6 +783,14 @@ mnb_panel_new (MutterPlugin *plugin,
                                   "width",         width,
                                   "height",        height,
                                   NULL);
+
+  if (!panel->priv->constructed)
+    {
+      g_warning (G_STRLOC " Construction of Panel for %s failed.", dbus_name);
+
+      clutter_actor_destroy (CLUTTER_ACTOR (panel));
+      return NULL;
+    }
 
   return panel;
 }
