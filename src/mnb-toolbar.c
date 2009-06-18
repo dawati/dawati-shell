@@ -1285,6 +1285,37 @@ mnb_toolbar_dispose_of_panel (MnbToolbar *toolbar,
 }
 
 static void
+mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
+                               guint       width,
+                               guint       height,
+                               MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv;
+  MutterPlugin      *plugin = priv->plugin;
+  gfloat             x, y,w, h;
+
+  /*
+   * If this panel is visible, we need to update the input region to match
+   * the new geometry.
+   */
+  if (!CLUTTER_ACTOR_IS_MAPPED (panel))
+    return;
+
+  priv = toolbar->priv;
+
+  mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (panel), &x, &y, &w, &h);
+
+  if (priv->dropdown_region)
+    moblin_netbook_input_region_remove_without_update (plugin,
+                                                       priv->dropdown_region);
+
+  priv->dropdown_region =
+    moblin_netbook_input_region_push (plugin,
+                                      (gint)x, TOOLBAR_HEIGHT + (gint)y,
+                                      (guint)w, (guint)h);
+}
+
+static void
 mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
   gint   index;
@@ -1590,6 +1621,9 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
 
   g_signal_connect (panel, "remote-process-died",
                     G_CALLBACK (mnb_toolbar_panel_died_cb), toolbar);
+
+  g_signal_connect (panel, "set-size",
+                    G_CALLBACK (mnb_toolbar_panel_set_size_cb), toolbar);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
