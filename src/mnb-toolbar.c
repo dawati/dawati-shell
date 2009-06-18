@@ -2638,7 +2638,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
       return FALSE;
     }
 
-  if ((event->type == CLUTTER_LEAVE) && mnb_toolbar_panels_showing (toolbar))
+  if ((event->type == CLUTTER_LEAVE) &&
+      (priv->systray_window_showing || mnb_toolbar_panels_showing (toolbar))
     {
       /* g_debug (G_STRLOC " leaving early"); */
       return FALSE;
