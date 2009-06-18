@@ -1291,7 +1291,7 @@ mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
                                MnbToolbar *toolbar)
 {
   MnbToolbarPrivate *priv;
-  MutterPlugin      *plugin = priv->plugin;
+  MutterPlugin      *plugin;
   gfloat             x, y,w, h;
 
   /*
@@ -1302,6 +1302,7 @@ mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
     return;
 
   priv = toolbar->priv;
+  plugin = priv->plugin;
 
   mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (panel), &x, &y, &w, &h);
 
