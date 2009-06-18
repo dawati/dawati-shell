@@ -94,11 +94,11 @@ setup_embedded (void)
   ClutterActor    *stage;
   ClutterActor    *launcher;
 
-  /* TODO: split up the CSS, or do we need one at all here,
-   * just for the panel button? */
+  /* All button styling goes in mutter-moblin.css for now,
+   * don't pass our own stylesheet. */
   panel = mpl_panel_clutter_new (MPL_PANEL_APPLICATIONS,
                                   _("applications"),
-                                 PKGDATADIR "/theme/toolbar-button.css",
+                                 /*PKGDATADIR "/theme/toolbar-button.css" */ NULL,
                                  "applications-button",
                                  TRUE);
 

@@ -104,6 +104,15 @@ NbtkLabel.toolbar-instruction-label {
   color: white;
 }
 
+/* applications button */
+MnbToolbarButton#applications-button {
+  background-image: url("file://panel/apps-normal.png");
+}
+
+MnbToolbarButton#applications-button:hover, MnbToolbarButton#applications-button:active, MnbToolbarButton#applications-button:checked  {
+  background-image: url("file://panel/apps-coloured.png");
+}
+
 /* internet button */
 MnbToolbarButton#internet-button {
   background-image: url("file://panel/internet-normal.png");

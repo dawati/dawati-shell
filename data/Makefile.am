@@ -4,6 +4,8 @@ dist_theme_DATA = \
 
 theme_paneldir = $(pkgdatadir)/theme/panel
 dist_theme_panel_DATA = \
+	theme/panel/apps-coloured.png \
+	theme/panel/apps-normal.png \
 	theme/panel/internet-coloured.png \
 	theme/panel/internet-normal.png \
 	theme/panel/media-coloured.png \
