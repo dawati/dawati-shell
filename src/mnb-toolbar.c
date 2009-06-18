@@ -1951,6 +1951,12 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
   gboolean            found_panels[NUM_ZONES];
   gint                i;
 
+  if (!priv->dbus_conn || !priv->dbus_proxy)
+    {
+      g_warning ("DBus connection not available, cannot start panels !!!");
+      return;
+    }
+
   memset (&found_panels, 0, sizeof(found_panels));
 
   /*
@@ -2052,11 +2058,15 @@ mnb_toolbar_constructed (GObject *self)
   if (G_OBJECT_CLASS (mnb_toolbar_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_toolbar_parent_class)->constructed (self);
 
-  conn = mnb_toolbar_connect_to_dbus (MNB_TOOLBAR (self));
-
-  priv->dbus_conn = conn;
-
-  dbus_g_connection_register_g_object (conn, MPL_TOOLBAR_DBUS_PATH, self);
+  if ((conn = mnb_toolbar_connect_to_dbus (MNB_TOOLBAR (self))))
+    {
+      priv->dbus_conn = conn;
+      dbus_g_connection_register_g_object (conn, MPL_TOOLBAR_DBUS_PATH, self);
+    }
+  else
+    {
+      g_warning (G_STRLOC " DBus connection not available !!!");
+    }
 
   hbox = priv->hbox = clutter_group_new ();
 
@@ -2182,7 +2192,8 @@ mnb_toolbar_constructed (GObject *self)
                     "show", G_CALLBACK (mnb_toolbar_stage_show_cb),
                     self);
 
-  mnb_toolbar_dbus_setup_panels (MNB_TOOLBAR (self));
+  if (conn)
+    mnb_toolbar_dbus_setup_panels (MNB_TOOLBAR (self));
 }
 
 NbtkWidget*
