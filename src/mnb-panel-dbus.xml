@@ -33,6 +33,11 @@
       <arg name="tooltip" type="s"/>
     </signal>
 
+    <signal name="SetSize">
+      <arg name="max_window_width" type="u"/>
+      <arg name="max_window_height" type="u"/>
+    </signal>
+
     <signal name="RequestShow"/>
     <signal name="RequestHide"/>
     <signal name="RequestFocus"/>

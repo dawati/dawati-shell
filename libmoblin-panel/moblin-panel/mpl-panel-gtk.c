@@ -87,6 +87,9 @@ mpl_panel_gtk_set_size (MplPanelClient *self, guint width, guint height)
   MplPanelGtkPrivate *priv   = MPL_PANEL_GTK (self)->priv;
   GtkWidget          *window = priv->window;
 
+  if (!window)
+    return;
+
   g_debug ("Setting panel window size to %dx%d", width, height);
 
   gtk_widget_set_size_request (window, width, height);

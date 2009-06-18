@@ -199,6 +199,9 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
 {
   MnbPanelPrivate *priv = panel->priv;
 
+  if (!priv->window)
+    return;
+
   g_debug (G_STRLOC " Got size change on Panel %s",
            mnb_panel_get_name (panel));
 
@@ -395,7 +398,13 @@ mnb_panel_class_init (MnbPanelClass *klass)
                   G_STRUCT_OFFSET (MnbPanelClass, set_size),
                   NULL, NULL,
                   moblin_netbook_marshal_VOID__UINT_UINT,
-                  G_TYPE_NONE, 0);
+                  G_TYPE_NONE, 2,
+                  G_TYPE_UINT,
+                  G_TYPE_UINT);
+
+  dbus_g_object_register_marshaller (moblin_netbook_marshal_VOID__UINT_UINT,
+                                     G_TYPE_NONE,
+                                     G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INVALID);
 }
 
 static void
