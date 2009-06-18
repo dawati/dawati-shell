@@ -82,24 +82,9 @@ mpl_panel_gtk_finalize (GObject *object)
 }
 
 static void
-mpl_panel_gtk_set_size (MplPanelClient *self, guint width, guint height)
-{
-  MplPanelGtkPrivate *priv   = MPL_PANEL_GTK (self)->priv;
-  GtkWidget          *window = priv->window;
-
-  if (!window)
-    return;
-
-  g_debug ("Setting panel window size to %dx%d", width, height);
-
-  gtk_widget_set_size_request (window, width, height);
-}
-
-static void
 mpl_panel_gtk_class_init (MplPanelGtkClass *klass)
 {
-  GObjectClass        *object_class = G_OBJECT_CLASS (klass);
-  MplPanelClientClass *client_class = MPL_PANEL_CLIENT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MplPanelGtkPrivate));
 
@@ -108,8 +93,6 @@ mpl_panel_gtk_class_init (MplPanelGtkClass *klass)
   object_class->dispose          = mpl_panel_gtk_dispose;
   object_class->finalize         = mpl_panel_gtk_finalize;
   object_class->constructed      = mpl_panel_gtk_constructed;
-
-  client_class->set_size = mpl_panel_gtk_set_size;
 }
 
 static void
