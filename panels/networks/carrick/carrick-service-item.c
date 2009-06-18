@@ -109,6 +109,41 @@ service_item_find_plug (GtkWidget *widget)
 }
 
 void
+_service_item_set_security (CarrickServiceItem *item,
+                            gchar *security)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  gchar *security_label = NULL;
+
+  if (security && security[0] != '\0' && g_strcmp0 ("none", security) != 0)
+  {
+    if (g_strcmp0 ("rsn", security) == 0)
+    {
+      g_free (security);
+      security = g_strdup ("WPA2");
+    }
+    else
+    {
+      gint i;
+
+      for (i = 0; security[i] != '\0'; i++)
+      {
+        security[i] = g_ascii_toupper (security[i]);
+      }
+    }
+    security_label = g_strdup_printf (_("%s encrypted"),
+                                      security);
+  }
+  else
+  {
+    security_label = g_strdup ("");
+  }
+
+  gtk_label_set_text (GTK_LABEL (priv->security_label),
+                      security_label);
+}
+
+void
 _set_state (CmService          *service,
             CarrickServiceItem *item)
 {
@@ -118,10 +153,11 @@ _set_state (CmService          *service,
   GdkPixbuf *pixbuf = NULL;
   gchar *name = NULL;
   gchar *security = NULL;
-  gchar *security_label = NULL;
 
   name = g_strdup (cm_service_get_name (service));
   security = g_strdup (cm_service_get_security (service));
+
+  _service_item_set_security (item, security);
 
   if (g_strcmp0 ("ethernet", name) == 0)
   {
@@ -180,28 +216,10 @@ _set_state (CmService          *service,
                              _("Connection failed"));
     priv->failed = TRUE;
   }
-
-  if (security && security[0] != '\0' && g_strcmp0 ("none", security) != 0)
+  else
   {
-      if (g_strcmp0 ("rsn", security) == 0)
-      {
-	  g_free (security);
-	  security = g_strdup ("WPA2");
-      }
-      else
-      {
-	  gint i;
-
-	  for (i = 0; security[i] != '\0'; i++)
-          {
-	      security[i] = g_ascii_toupper (security[i]);
-          }
-      }
-      security_label = g_strdup_printf (_("%s encrypted"),
-                                        security);
-      gtk_label_set_text (GTK_LABEL (priv->security_label),
-                          security_label);
-    }
+    label = g_strdup (name);
+  }
 
   gtk_label_set_text (GTK_LABEL (priv->name_label),
                       label);
@@ -215,7 +233,6 @@ _set_state (CmService          *service,
 
   g_free (name);
   g_free (security);
-  g_free (security_label);
   g_free (label);
   g_free (button);
 }
@@ -345,6 +362,42 @@ _request_passphrase (CarrickServiceItem *item)
   }
   gtk_widget_destroy (dialog);
   return passphrase;
+}
+
+void
+_service_name_changed_cb (CmService *service,
+                          gchar *name,
+                          gpointer user_data)
+{
+  _set_state (service,
+              CARRICK_SERVICE_ITEM (user_data));
+}
+
+void
+_service_state_changed_cb (CmService *service,
+                           gchar     *state,
+                           gpointer   user_data)
+{
+  _set_state (service,
+              CARRICK_SERVICE_ITEM (user_data));
+}
+
+void
+_service_security_changed_cb (CmService *service,
+                              gchar     *security,
+                              gpointer   user_data)
+{
+  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
+  _service_item_set_security (item, security);
+}
+
+void
+_service_strength_changed_cb (CmService *service,
+                              guint      strength,
+                              gpointer   user_data)
+{
+  _set_state (service,
+              CARRICK_SERVICE_ITEM (user_data));
 }
 
 void
@@ -485,6 +538,18 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
 
   if (priv->service)
   {
+    g_signal_handlers_disconnect_by_func (priv->service,
+                                         _service_name_changed_cb,
+                                         service_item);
+    g_signal_handlers_disconnect_by_func (priv->service,
+                                          _service_state_changed_cb,
+                                          service_item);
+    g_signal_handlers_disconnect_by_func (priv->service,
+                                          _service_security_changed_cb,
+                                          service_item);
+    g_signal_handlers_disconnect_by_func (priv->service,
+                                          _service_strength_changed_cb,
+                                          service_item);
     g_object_unref (priv->service);
     priv->service = NULL;
   }
@@ -495,9 +560,6 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
 
     priv->state = _get_service_state (service);
 
-    _set_state (service,
-                service_item);
-
     g_signal_connect (priv->connect_button,
                       "clicked",
                       G_CALLBACK (_connect_button_cb),
@@ -507,6 +569,29 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       "clicked",
                       G_CALLBACK (_delete_button_cb),
                       service);
+
+    g_signal_connect (service,
+                      "name-changed",
+                      G_CALLBACK (_service_name_changed_cb),
+                      service_item);
+
+    g_signal_connect (service,
+                      "state-changed",
+                      G_CALLBACK (_service_state_changed_cb),
+                      service_item);
+
+    g_signal_connect (service,
+                      "security-changed",
+                      G_CALLBACK (_service_security_changed_cb),
+                      service_item);
+
+    g_signal_connect (service,
+                      "strength-changed",
+                      G_CALLBACK (_service_strength_changed_cb),
+                      service_item);
+
+    _set_state (service,
+                service_item);
   }
 }
 

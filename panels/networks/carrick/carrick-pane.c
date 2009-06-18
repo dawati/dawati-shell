@@ -646,6 +646,7 @@ _update_services (CarrickPane *pane)
   const GList *fetched_services = NULL;
   GList *children = NULL;
   gboolean found = FALSE;
+  GtkWidget *service_item;
 
   fetched_services = cm_manager_get_services (priv->manager);
   children = gtk_container_get_children (GTK_CONTAINER (priv->service_list));
@@ -677,14 +678,21 @@ _update_services (CarrickPane *pane)
   for (it = fetched_services; it != NULL; it = it->next)
   {
     service = CM_SERVICE (it->data);
+    service_item = carrick_list_find_service_item
+      (CARRICK_LIST (priv->service_list),
+       service);
 
-    if (carrick_list_find_service_item (CARRICK_LIST (priv->service_list),
-                                        service) == NULL)
+    if (service_item == NULL)
     {
       g_signal_connect (service,
                         "service-updated",
                         G_CALLBACK (_service_updated_cb),
                         pane);
+    }
+    else
+    {
+      carrick_service_item_set_service (CARRICK_SERVICE_ITEM (service_item),
+                                        service);
     }
   }
 }
