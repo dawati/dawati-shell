@@ -428,6 +428,7 @@ _delete_button_cb (GtkButton *delete_button,
                                 FALSE);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
                                    GTK_RESPONSE_ACCEPT);
+  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
   gtk_window_set_icon_name (GTK_WINDOW(dialog),
                             GTK_STOCK_DELETE);
 
@@ -451,6 +452,8 @@ _delete_button_cb (GtkButton *delete_button,
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     cm_service_remove (service);
+
+  gtk_widget_destroy (dialog);
 }
 
 void
@@ -460,7 +463,7 @@ _connect_button_cb (GtkButton          *connect_button,
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
   gchar *passphrase = NULL;
 
-  if (priv->state == READY)
+  if (cm_service_get_connected (priv->service))
   {
     cm_service_disconnect (priv->service);
   }
