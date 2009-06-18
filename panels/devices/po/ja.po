@@ -1,0 +1,178 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: GLS <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Japanese\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../dalston/dalston-power-applet.c:159
+#, fuzzy, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b>時間"
+msgstr[1] "<b>%d</b>時間"
+
+#: ../dalston/dalston-power-applet.c:166
+#: ../dalston/dalston-power-applet.c:179
+#, fuzzy, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b>分"
+msgstr[1] "<b>%d</b>分"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "Running low on battery"
+msgstr "バッテリー残量が少なくなっています"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "バッテリー残量が少なくなっています。電源に接続して、バッテリーを充電してください。"
+
+# "empty" is translated as "zero"
+#: ../dalston/dalston-power-applet.c:202
+msgid "Getting close to empty"
+msgstr "ゼロになろうとしています"
+
+#: ../dalston/dalston-power-applet.c:202
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "バッテリー残量が非常に少なくなっています。全てのファイルを保存し、できるだけ早めに電源に接続してください。"
+
+#: ../dalston/dalston-power-applet.c:204
+msgid "Danger!"
+msgstr "危険！"
+
+# JPN does not have reference to "we" "you" and "your"
+# "hope to see you again soon." is also omitted.
+# 'your work" is translated as "all the files"
+#: ../dalston/dalston-power-applet.c:204
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "バッテリー残量がまもなくゼロになるので、コンピューターがオフになります。すべてのファイルを保存してください。"
+
+# "you are ready to go" is omitted.
+#: ../dalston/dalston-power-applet.c:324
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "バッテリーが十分に充電されました。"
+
+#: ../dalston/dalston-power-applet.c:326
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "バッテリーの充電中です。バッテリー残量：<b>%d</b>%%"
+
+#: ../dalston/dalston-power-applet.c:333
+#, c-format
+msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+msgstr "バッテリーは充電されていません。バッテリー残量：<b>%d</b>%%"
+
+#: ../dalston/dalston-power-applet.c:453
+msgid "Display brightness"
+msgstr "ディスプレイ明度"
+
+#: ../dalston/dalston-power-applet.c:484
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "スクリーン明度の調節はサポートされていません"
+
+#: ../dalston/dalston-brightness-slider.c:221
+msgid "Brighter than the sun"
+msgstr "太陽のような明るさ"
+
+#: ../dalston/dalston-brightness-slider.c:223
+msgid "Very bright"
+msgstr "とても明るい"
+
+#: ../dalston/dalston-brightness-slider.c:225
+msgid "Bright"
+msgstr "明るい"
+
+#: ../dalston/dalston-brightness-slider.c:227
+msgid "Morning has broken"
+msgstr "朝日のような明るさ"
+
+#: ../dalston/dalston-brightness-slider.c:229
+msgid "Midday"
+msgstr "日中くらいの明るさ"
+
+#: ../dalston/dalston-brightness-slider.c:231
+msgid "Pretty dusky"
+msgstr "薄暗い"
+
+#: ../dalston/dalston-brightness-slider.c:233
+msgid "Twilight"
+msgstr "薄明るい"
+
+#: ../dalston/dalston-brightness-slider.c:235
+msgid "Very dark"
+msgstr "とても暗い"
+
+#: ../dalston/dalston-brightness-slider.c:237
+msgid "Total eclipse"
+msgstr "非常に暗い"
+
+#: ../dalston/dalston-volume-pane.c:254
+msgid "Output volume"
+msgstr "出力音量"
+
+#: ../dalston/dalston-volume-pane.c:298
+#, fuzzy
+msgid "Mute"
+msgstr "ミュート"
+
+#: ../dalston/dalston-volume-pane.c:316
+msgid "Alert sounds"
+msgstr "アラート効果音"
+
+#: ../dalston/dalston-volume-pane.c:328
+msgid "Play test sound"
+msgstr "音量のテスト"
+
+#: ../dalston/dalston-volume-slider.c:188
+msgid "Turned up to 11"
+msgstr "11 まで上げる"
+
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Very loud"
+msgstr "非常にうるさい"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Loud"
+msgstr "うるさい"
+
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Fairly loud"
+msgstr "極めてうるさい"
+
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Middle of the road"
+msgstr "普通"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Fairly quiet"
+msgstr "極めて静か"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Quiet"
+msgstr "静か"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Very quiet"
+msgstr "非常に静か"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Silent"
+msgstr "サイレント"
+
+#: ../libgvc/gvc-mixer-control.c:988
+msgid "System Sounds"
+msgstr "システム効果音"
+
+#: ../libgvc/gvc-mixer-control.c:1512
+#, fuzzy
+msgid "GNOME Volume Control"
+msgstr "GNOME の音量コントロール"
+
