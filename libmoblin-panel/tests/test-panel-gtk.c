@@ -92,15 +92,19 @@ static gboolean
 change_button_style_cb (gpointer data)
 {
   static int count = 0;
+  static int height = 800;
 
   MplPanelClient *panel = MPL_PANEL_CLIENT (data);
 
   count++;
+  height -= 10;
 
   if (count % 2)
     mpl_panel_client_request_button_style (panel, "state2");
   else
     mpl_panel_client_request_button_style (panel, "state1");
+
+  mpl_panel_client_set_height_request (panel, height);
 
   return TRUE;
 }
@@ -135,7 +139,7 @@ main (int argc, char *argv[])
    */
   make_window_content (MPL_PANEL_GTK (panel));
 
-  g_timeout_add (2000, change_button_style_cb, panel);
+  g_timeout_add (5000, change_button_style_cb, panel);
 
   gtk_main ();
 
