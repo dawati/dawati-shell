@@ -108,6 +108,33 @@ service_item_find_plug (GtkWidget *widget)
   return NULL;
 }
 
+ServiceItemState
+_get_service_state (CmService *service)
+{
+  const gchar *state = NULL;
+
+  state = cm_service_get_state (service);
+  if (g_strcmp0 (state, "idle") == 0)
+  {
+    return IDLE;
+  }
+  else if (g_strcmp0 (state, "failure") == 0)
+  {
+    return FAIL;
+  }
+  else if (g_strcmp0 (state, "association") == 0
+           || g_strcmp0 (state, "configuration") == 0)
+  {
+    return CONFIGURE;
+  }
+  else if (g_strcmp0 (state, "ready") == 0)
+  {
+    return READY;
+  }
+
+  return UNKNOWN;
+}
+
 void
 _service_item_set_security (CarrickServiceItem *item,
                             gchar *security)
@@ -157,7 +184,8 @@ _set_state (CmService          *service,
   name = g_strdup (cm_service_get_name (service));
   security = g_strdup (cm_service_get_security (service));
 
-  _service_item_set_security (item, security);
+  if (security && security[0] != '\0')
+    _service_item_set_security (item, security);
 
   if (g_strcmp0 ("ethernet", name) == 0)
   {
@@ -221,15 +249,19 @@ _set_state (CmService          *service,
     label = g_strdup (name);
   }
 
-  gtk_label_set_text (GTK_LABEL (priv->name_label),
-                      label);
-  gtk_button_set_label (GTK_BUTTON (priv->connect_button),
-                        button);
+  if (label && label[0] != '\0')
+  {
+    gtk_label_set_text (GTK_LABEL (priv->name_label),
+                        label);
+    pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
+                                                          service);
+    gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
+                               pixbuf);
+  }
 
-  pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
-                                                        service);
-  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
-                             pixbuf);
+  if (button && button[0] != '\0')
+    gtk_button_set_label (GTK_BUTTON (priv->connect_button),
+                          button);
 
   g_free (name);
   g_free (security);
@@ -364,10 +396,22 @@ _request_passphrase (CarrickServiceItem *item)
   return passphrase;
 }
 
+/*void
+_item_service_updated_cb (CmService *service,
+                          gpointer user_data)
+{
+  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+
+  priv->state = _get_service_state (service);
+  _set_state (service,
+              item);
+              }*/
+
 void
 _service_name_changed_cb (CmService *service,
-                          gchar *name,
-                          gpointer user_data)
+                          gchar     *name,
+                          gpointer   user_data)
 {
   _set_state (service,
               CARRICK_SERVICE_ITEM (user_data));
@@ -378,8 +422,13 @@ _service_state_changed_cb (CmService *service,
                            gchar     *state,
                            gpointer   user_data)
 {
+  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+
+  priv->state = _get_service_state (service);
+
   _set_state (service,
-              CARRICK_SERVICE_ITEM (user_data));
+              item);
 }
 
 void
@@ -506,33 +555,6 @@ _connect_button_cb (GtkButton          *connect_button,
               item);
 }
 
-ServiceItemState
-_get_service_state (CmService *service)
-{
-  const gchar *state = NULL;
-
-  state = cm_service_get_state (service);
-  if (g_strcmp0 (state, "idle") == 0)
-  {
-    return IDLE;
-  }
-  else if (g_strcmp0 (state, "failure") == 0)
-  {
-    return FAIL;
-  }
-  else if (g_strcmp0 (state, "association") == 0
-           || g_strcmp0 (state, "configuration") == 0)
-  {
-    return CONFIGURE;
-  }
-  else if (g_strcmp0 (state, "ready") == 0)
-  {
-    return READY;
-  }
-
-  return UNKNOWN;
-}
-
 void
 carrick_service_item_set_service (CarrickServiceItem *service_item,
                                   CmService          *service)
@@ -541,6 +563,9 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
 
   if (priv->service)
   {
+    /*g_signal_handlers_disconnect_by_func (priv->service,
+                                          _item_service_updated_cb,
+                                          service_item);*/
     g_signal_handlers_disconnect_by_func (priv->service,
                                          _service_name_changed_cb,
                                          service_item);
@@ -572,6 +597,11 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       "clicked",
                       G_CALLBACK (_delete_button_cb),
                       service);
+
+    /*g_signal_connect (service,
+                      "service-updated",
+                      G_CALLBACK (_item_service_updated_cb),
+                      service_item);*/
 
     g_signal_connect (service,
                       "name-changed",

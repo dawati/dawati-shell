@@ -646,7 +646,7 @@ _update_services (CarrickPane *pane)
   const GList *fetched_services = NULL;
   GList *children = NULL;
   gboolean found = FALSE;
-  GtkWidget *service_item;
+  GtkWidget *service_item = NULL;
 
   fetched_services = cm_manager_get_services (priv->manager);
   children = gtk_container_get_children (GTK_CONTAINER (priv->service_list));
