@@ -587,6 +587,13 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
   GtkWidget       *socket;
   GtkWidget       *window;
 
+  if (error)
+    {
+      g_warning ("Could not initialize Panel %s: %s",
+                 mnb_panel_get_name (panel), error->message);
+      return;
+    }
+
   /*
    * We duplicate the return values, because we need to be able to replace them
    * and using the originals we would need to use dbus_malloc() later on
