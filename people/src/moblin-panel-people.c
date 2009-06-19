@@ -43,6 +43,8 @@ main (int    argc,
 
   stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
   people_panel = mnb_people_panel_new ();
+  mnb_people_panel_set_panel_client (MNB_PEOPLE_PANEL (people_panel), client);
+
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                (ClutterActor *)people_panel);
   g_signal_connect (client,
