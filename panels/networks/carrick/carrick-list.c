@@ -180,7 +180,7 @@ _list_contains_child (GtkWidget *item,
   if (cm_service_is_same (serv,
                           carrick_service_item_get_service (service_item)))
   {
-    priv->found = service_item;
+    priv->found = GTK_WIDGET (service_item);
   }
 }
 
