@@ -1,0 +1,154 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-29 11:03+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../carrick/carrick-applet.c:63
+#, fuzzy, c-format
+msgid "Offline"
+msgstr "Frånkopplad"
+
+#: ../carrick/carrick-applet.c:64
+#, c-format
+msgid "No active connection."
+msgstr "Ingen nätverksanslutning finns tillgänglig."
+
+#: ../carrick/carrick-applet.c:70
+#, c-format
+msgid "Online"
+msgstr "Online"
+
+#: ../carrick/carrick-applet.c:75
+#, c-format
+msgid "Now online and connected to %s."
+msgstr "Online och ansluten till %s."
+
+#: ../carrick/carrick-pane.c:289
+msgid "New connection settings"
+msgstr "Nya anslutningsinställningar "
+
+#: ../carrick/carrick-pane.c:325
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+"Ange namnent på nätverket du vill\n"
+" ansluta till och när det krävs\n"
+" ange lösenord och säkerhetstyp."
+
+#: ../carrick/carrick-pane.c:335
+msgid "Network name"
+msgstr "Nätverksnamn"
+
+#: ../carrick/carrick-pane.c:347
+msgid "Network security"
+msgstr "Nätverkssäkerhet"
+
+#: ../carrick/carrick-pane.c:371
+#, fuzzy
+msgid "Password"
+msgstr "Lösenord"
+
+#: ../carrick/carrick-pane.c:386
+#: ../carrick/carrick-service-item.c:272
+msgid "Show password"
+msgstr "Visa lösenord"
+
+#: ../carrick/carrick-pane.c:713
+msgid "Networks"
+msgstr "Nätverk"
+
+#: ../carrick/carrick-pane.c:737
+msgid "Add new connection"
+msgstr "Lägg till en ny anslutning"
+
+#: ../carrick/carrick-pane.c:770
+msgid "WiFi"
+msgstr "WiFi"
+
+#: ../carrick/carrick-pane.c:793
+#: ../carrick/carrick-service-item.c:125
+msgid "Wired"
+msgstr "Ansluten till ett uttag"
+
+#: ../carrick/carrick-pane.c:822
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-pane.c:851
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-pane.c:889
+msgid "Offline mode"
+msgstr "Frånkopplingsläge"
+
+#: ../carrick/carrick-pane.c:913
+msgid "This will disable all your connections"
+msgstr "Detta avslutar alla dina anslutningar"
+
+#: ../carrick/carrick-service-item.c:132
+msgid "Disconnect"
+msgstr "Koppla från"
+
+#: ../carrick/carrick-service-item.c:135
+#, fuzzy
+msgid "Connected"
+msgstr "Ansluten"
+
+#: ../carrick/carrick-service-item.c:142
+#, fuzzy, c-format
+msgid "Connecting"
+msgstr "Ansluter..."
+
+#: ../carrick/carrick-service-item.c:145
+msgid "Configuring"
+msgstr "Konfigurering"
+
+#: ../carrick/carrick-service-item.c:151
+#: ../carrick/carrick-service-item.c:158
+msgid "Connect"
+msgstr "Anslut"
+
+#: ../carrick/carrick-service-item.c:161
+msgid "Connection failed"
+msgstr "Anslutningen misslyckades"
+
+#: ../carrick/carrick-service-item.c:206
+msgid "Passphrase required"
+msgstr "Lösenord krävs"
+
+#: ../carrick/carrick-service-item.c:233
+msgid "<b><big>Network Requires a Password</big></b>"
+msgstr "<b><big>Nätverket kräver ett lösenord</big></b>"
+
+#: ../carrick/carrick-service-item.c:253
+msgid "Please enter the password for this network:"
+msgstr "Ange lösenordet för detta nätverk:"
+
+#: ../carrick/carrick-service-item.c:525
+#, fuzzy
+msgid "Close"
+msgstr "Stäng"
+
+#. expando = nbtk_gtk_expander_new ();
+#: ../carrick/carrick-service-item.c:530
+#: ../carrick/carrick-service-item.c:587
+#, fuzzy
+msgid "Advanced"
+msgstr "Avancerat"
+
+#: ../carrick/carrick-service-item.c:595
+msgid "Just some test content"
+msgstr "Bara provinnehåll"
+
