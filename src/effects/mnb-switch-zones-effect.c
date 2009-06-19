@@ -43,7 +43,6 @@ static ClutterActor     *frame        = NULL;
 static ClutterActor     *strip        = NULL;
 static ClutterActor     *desktop      = NULL;
 static ClutterAnimation *zoom_anim    = NULL;
-static ClutterAnimation *move_anim    = NULL;
 static MutterWindow     *actor_for_cb = NULL;
 static MnbzeStage        estage       = MNBZE_ZOOM_OUT;
 static gint              current_to   = 0;
@@ -69,48 +68,12 @@ struct effect_data
   gint          screen_width;
   gint          screen_height;
   guint         strip_cb_id;
+  guint         zoom_in_cb_id;
+  guint         zoom_out_cb_id;
 };
 
 static void
-on_strip_animation_completed (ClutterAnimation *anim, gpointer data)
-{
-  struct effect_data         *edata  = data;
-
-  switch (estage)
-    {
-    case MNBZE_ZOOM_IN:
-    case MNBZE_ZOOM_OUT:
-    default:
-      g_warning ("Strip animation completion should not happen at this point.");
-      break;
-
-    case MNBZE_MOTION:
-      {
-        /*
-         * The first part of the effect completed; start the second part.
-         */
-        estage = MNBZE_ZOOM_IN;
-
-        /*
-         * Since we are reusing this animation, we have to explicitely
-         * disconnect this handler.
-         */
-        g_signal_handler_disconnect (anim, edata->strip_cb_id);
-        edata->strip_cb_id = 0;
-
-        g_slice_free (struct effect_data, data);
-
-        clutter_actor_animate (frame, CLUTTER_LINEAR,
-                               MNBZE_ZOOM_IN_DURATION,
-                               "scale-x", 1.0,
-                               "scale-y", 1.0,
-                               NULL);
-      }
-    }
-}
-
-static void
-on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
+on_zoom_in_animation_completed (ClutterAnimation *anim, gpointer data)
 {
   struct effect_data         *edata  = data;
   MutterPlugin               *plugin = edata->plugin;
@@ -127,6 +90,9 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
 
         zoom_anim = NULL;
 
+        g_signal_handler_disconnect (anim, edata->zoom_in_cb_id);
+        edata->zoom_in_cb_id = 0;
+
         clutter_actor_hide (desktop);
         clutter_container_foreach (CLUTTER_CONTAINER (strip),
                                    release_clones, NULL);
@@ -137,20 +103,76 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
         g_slice_free (struct effect_data, data);
       }
       break;
+    default:;
+      g_warning ("zoom-in completion callback called during stage %d\n",
+                 estage);
+    }
+}
+
+/*
+ * Starts the final zoom-in animation when the middle stage completes.
+ */
+static void
+on_strip_animation_completed (ClutterAnimation *anim, gpointer data)
+{
+  struct effect_data *edata = data;
+
+  switch (estage)
+    {
+    case MNBZE_ZOOM_IN:
+    case MNBZE_ZOOM_OUT:
+    default:
+      g_warning ("Strip animation completion should not happen at this point.");
+      break;
+
+    case MNBZE_MOTION:
+      {
+        ClutterAnimation *a;
+
+        /*
+         * The first part of the effect completed; start the second part.
+         */
+        estage = MNBZE_ZOOM_IN;
+
+        /*
+         * Make sure this handler is disconnected.
+         */
+        g_signal_handler_disconnect (anim, edata->strip_cb_id);
+        edata->strip_cb_id = 0;
+
+        a = clutter_actor_animate (frame, CLUTTER_LINEAR,
+                                   MNBZE_ZOOM_IN_DURATION,
+                                   "scale-x", 1.0,
+                                   "scale-y", 1.0,
+                                   NULL);
+
+        edata->zoom_in_cb_id =
+          g_signal_connect_after (a, "completed",
+                                  G_CALLBACK (on_zoom_in_animation_completed),
+                                  edata);
+      }
+    }
+}
+
+static void
+on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
+{
+  struct effect_data *edata = data;
+
+  switch (estage)
+    {
     case MNBZE_ZOOM_OUT:
       {
         /*
          * The first part of the effect completed; start the second part.
          */
-        struct effect_data *strip_data = g_slice_new0 (struct effect_data);
-        gint screen_width              = edata->screen_width;
         ClutterAnimation *a;
-
-        strip_data->plugin = plugin;
-        strip_data->screen_width = edata->screen_width;
-        strip_data->screen_height = edata->screen_height;
+        gint              screen_width = edata->screen_width;
 
         estage = MNBZE_MOTION;
+
+        g_signal_handler_disconnect (anim, edata->zoom_out_cb_id);
+        edata->zoom_out_cb_id = 0;
 
         a = clutter_actor_animate (strip, CLUTTER_LINEAR,
                                    MNBZE_MOTION_DURATION,
@@ -159,22 +181,16 @@ on_frame_animation_completed (ClutterAnimation *anim, gpointer data)
                                    -((screen_width + MNBZE_PAD)*current_to)),
                                    NULL);
 
-        /*
-         * We want to reuse this animation, so add reference.
-         */
-        g_object_ref (a);
-
-        strip_data->strip_cb_id =
-          g_signal_connect (a, "completed",
-                            G_CALLBACK (on_strip_animation_completed),
-                            strip_data);
-
-        if (move_anim != a)
-          move_anim = a;
+        edata->strip_cb_id =
+          g_signal_connect_after (a, "completed",
+                                  G_CALLBACK (on_strip_animation_completed),
+                                  edata);
       }
       break;
 
-    default:;
+    default:
+      g_warning ("zoom-out completion callback called during stage %d\n",
+                 estage);
     }
 }
 
@@ -298,12 +314,6 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   actor_for_cb = (*actors)->data;
 
   /*
-   * The reference management of the animation in clutter is somewhat peculiar.
-   * Each time the animation completes, a single reference is released from the
-   * animation object. For our purposes, we want to run the same animation
-   * twice, restarting it from the "completed" signal; for that we have to add
-   * an extra reference to the animation object.
-   *
    * If this function is called while the effect is in progress, we need to
    * restart.
    */
@@ -324,11 +334,12 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
        * New animation object, take extra reference and connect to signals
        * for completion.
        */
-      zoom_anim = g_object_ref (a);
+      zoom_anim = a;
 
-      g_signal_connect (a, "completed",
-                        G_CALLBACK (on_frame_animation_completed),
-                        data);
+      data->zoom_out_cb_id =
+        g_signal_connect_after (a, "completed",
+                                G_CALLBACK (on_zoom_out_animation_completed),
+                                data);
     }
   else
     {
@@ -345,10 +356,8 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
         case MNBZE_ZOOM_IN:
           /*
-           * We need new reference for the zoom_anim, reset state and restart
-           * all
+           * reset state and restart all
            */
-          g_object_ref (a);
           estage = MNBZE_ZOOM_OUT;
 
           clutter_actor_animate (frame, CLUTTER_LINEAR,
@@ -364,10 +373,8 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
           break;
         case MNBZE_MOTION:
           /*
-           * Change the running motion interaction. We also need extra reference
-           * on the zoom animation to make sure it keeps alive.
+           * Change the running motion interaction.
            */
-          g_object_ref (a);
           clutter_actor_animate (strip, CLUTTER_LINEAR,
                                  MNBZE_MOTION_DURATION,
                                  "x",
