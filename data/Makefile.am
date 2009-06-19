@@ -42,6 +42,10 @@ dist_theme_generic_DATA = \
 	theme/generic/button.png	\
 	theme/generic/button_active.png	\
 	theme/generic/button_hover.png	\
+	theme/generic/search-entry-bg.png \
+	theme/generic/search-entry-clear-hover.png \
+	theme/generic/search-entry-clear.png \
+	theme/generic/search-entry-separator.png \
 	theme/generic/tooltip-arrow.png \
 	theme/generic/tooltip-background.png \
 	theme/generic/vscroll-backward-hover.png \
