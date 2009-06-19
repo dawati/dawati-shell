@@ -870,6 +870,8 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
   priv->dropdown_region =
     moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT,
                                       (guint)w, (guint)h);
+
+  moblin_netbook_stash_window_focus (plugin, CurrentTime);
 }
 
 static void
