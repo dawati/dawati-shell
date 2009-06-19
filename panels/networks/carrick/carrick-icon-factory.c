@@ -54,7 +54,11 @@ static const gchar *icon_names[] = {
   PKG_ICON_DIR "/" "network-3g-strong.png",
   PKG_ICON_DIR "/" "network-3g-strong-hover.png",
   PKG_ICON_DIR "/" "network-3g-weak.png",
-  PKG_ICON_DIR "/" "network-3g-weak-hover.png"
+  PKG_ICON_DIR "/" "network-3g-weak-hover.png",
+  PKG_ICON_DIR "/" "network-bluetooth-strong.png",
+  PKG_ICON_DIR "/" "network-bluetooth-strong-hover.png",
+  PKG_ICON_DIR "/" "network-bluetooth-weak.png",
+  PKG_ICON_DIR "/" "network-bluetooth-weak-hover.png"
 };
 
 struct _CarrickIconFactoryPrivate
@@ -81,6 +85,10 @@ struct _CarrickIconFactoryPrivate
   GdkPixbuf *threeg_strong_hov_img;
   GdkPixbuf *threeg_weak_img;
   GdkPixbuf *threeg_weak_hov_img;
+  GdkPixbuf *bluetooth_strong_img;
+  GdkPixbuf *bluetooth_strong_hov_img;
+  GdkPixbuf *bluetooth_weak_img;
+  GdkPixbuf *bluetooth_weak_hov_img;
 };
 
 static void
@@ -126,6 +134,10 @@ carrick_icon_factory_init (CarrickIconFactory *self)
   priv->threeg_strong_hov_img = NULL;
   priv->threeg_weak_img = NULL;
   priv->threeg_weak_hov_img = NULL;
+  priv->bluetooth_strong_img = NULL;
+  priv->bluetooth_strong_hov_img = NULL;
+  priv->bluetooth_weak_img = NULL;
+  priv->bluetooth_weak_hov_img = NULL;
 }
 
 CarrickIconFactory*
@@ -419,6 +431,42 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
                                     &error);
       }
       icon = priv->threeg_weak_hov_img;
+      break;
+    case ICON_BLUETOOTH_STRONG:
+      if (!priv->bluetooth_strong_img)
+      {
+        priv->bluetooth_strong_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->bluetooth_strong_img;
+      break;
+    case ICON_BLUETOOTH_STRONG_HOVER:
+      if (!priv->bluetooth_strong_hov_img)
+      {
+        priv->bluetooth_strong_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->bluetooth_strong_hov_img;
+      break;
+    case ICON_BLUETOOTH_WEAK:
+      if (!priv->bluetooth_weak_img)
+      {
+        priv->bluetooth_weak_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->bluetooth_weak_img;
+      break;
+    case ICON_BLUETOOTH_WEAK_HOVER:
+      if (!priv->bluetooth_weak_hov_img)
+      {
+        priv->bluetooth_weak_hov_img =
+          gdk_pixbuf_new_from_file (icon_names[state],
+                                    &error);
+      }
+      icon = priv->bluetooth_weak_hov_img;
       break;
     default:
       if (!priv->error_img)
