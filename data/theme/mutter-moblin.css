@@ -310,7 +310,7 @@ MnbDropDown, MnbSwitcher {
 }
 
 MnbEntry {
-  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('file://generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
   padding: 7 10 7 10;
 }
 
@@ -320,18 +320,18 @@ MnbEntry > *.MnbEntryEntry {
 }
 
 MnbEntry *.MnbEntryButton {
-  border-image: url('file://launcher/launcher-search-entry-separator.png') 0 0 0 3 stretch stretch;
+  border-image: url('file://generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
 }
 
 MnbEntry *.MnbEntryClearButton {
-  background-image: url('file://launcher/launcher-search-entry-clear.png');
+  background-image: url('file://generic/search-entry-clear.png');
   border-image: none;
 }
 
 MnbEntry *.MnbEntryClearButton:hover {
-  background-image: url('file://launcher/launcher-search-entry-clear-hover.png');
+  background-image: url('file://generic/search-entry-clear-hover.png');
 }
 
 /* Penge */
@@ -699,7 +699,7 @@ MoblinNetbookNetpanel *#netpanel-placeholder-bin
 MwbRadicalBar
 {
   background-color: #ffffff;
-  border-image: url('file://launcher/launcher-search-entry-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('file://generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
   padding: 4;
 }
 
