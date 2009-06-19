@@ -74,7 +74,9 @@ ahoghill_play_button_leave (ClutterActor         *actor,
 }
 
 static void
-ahoghill_play_button_released (NbtkButton *button)
+ahoghill_play_button_checked (NbtkButton *button,
+                              GParamSpec *pspec,
+                              gpointer    data)
 {
     gboolean toggled = nbtk_button_get_checked (button);
 
@@ -91,7 +93,6 @@ ahoghill_play_button_class_init (AhoghillPlayButtonClass *klass)
 {
     GObjectClass *o_class = (GObjectClass *) klass;
     ClutterActorClass *a_class = (ClutterActorClass *) klass;
-    NbtkButtonClass *b_class = (NbtkButtonClass *) klass;
 
     o_class->dispose = ahoghill_play_button_dispose;
     o_class->finalize = ahoghill_play_button_finalize;
@@ -100,8 +101,6 @@ ahoghill_play_button_class_init (AhoghillPlayButtonClass *klass)
 
     a_class->enter_event = ahoghill_play_button_enter;
     a_class->leave_event = ahoghill_play_button_leave;
-
-    b_class->released = ahoghill_play_button_released;
 
     g_type_class_add_private (klass, sizeof (AhoghillPlayButtonPrivate));
 }
@@ -115,6 +114,8 @@ ahoghill_play_button_init (AhoghillPlayButton *self)
     priv = self->priv;
 
     nbtk_button_set_toggle_mode (NBTK_BUTTON (self), TRUE);
+    g_signal_connect (self, "notify::checked",
+                      G_CALLBACK (ahoghill_play_button_checked), NULL);
 }
 
 void

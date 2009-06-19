@@ -241,6 +241,16 @@ position_changed_cb (BrQueue          *queue,
 }
 
 static void
+playing_changed_cb (BrQueue          *queue,
+                    gboolean          playing,
+                    AhoghillPlaylist *playlist)
+{
+    AhoghillPlaylistPrivate *priv = playlist->priv;
+
+    ahoghill_playlist_header_set_playing (priv->header, playing);
+}
+
+static void
 list_uris_reply (BrQueue  *queue,
                  char    **uris,
                  GError   *error,
@@ -302,6 +312,8 @@ ahoghill_playlist_set_queue (AhoghillPlaylist *playlist,
                       G_CALLBACK (now_playing_changed_cb), playlist);
     g_signal_connect (queue, "position-changed",
                       G_CALLBACK (position_changed_cb), playlist);
+    g_signal_connect (queue, "playing-changed",
+                      G_CALLBACK (playing_changed_cb), playlist);
 
     br_queue_list_uris (queue, list_uris_reply, playlist);
     br_queue_get_name (queue, get_name_reply, playlist);
