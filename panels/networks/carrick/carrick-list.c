@@ -200,7 +200,7 @@ carrick_list_find_service_item (CarrickList *list,
   return ret;
 }
 
-/*void
+void
 carrick_list_sort_list (CarrickList *list)
 {
   GList *items = gtk_container_get_children (GTK_CONTAINER (list));
@@ -213,7 +213,7 @@ carrick_list_sort_list (CarrickList *list)
 
     items = items->next;
   }
-  }*/
+}
 
 void
 carrick_list_add_item (CarrickList *list,
