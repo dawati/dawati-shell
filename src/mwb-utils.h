@@ -8,7 +8,7 @@
 
 G_BEGIN_DECLS
 
-#define MWB_PIXBOUND(u) CLUTTER_UNITS_FROM_DEVICE(CLUTTER_UNITS_TO_DEVICE(u))
+#define MWB_PIXBOUND(u) ((gfloat)((gint)(u)))
 
 gboolean
 mwb_utils_focus_on_click_cb (ClutterActor       *actor,

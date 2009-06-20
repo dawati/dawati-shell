@@ -1,13 +1,32 @@
+/* moblin-netbook-netpanel.c */
+/*
+ * Copyright (c) 2009 Intel Corp.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
 
 #include <dbus/dbus-glib.h>
 #include <clutter-mozembed.h>
 #include <mhs/mhs.h>
 #include <penge/penge-utils.h>
+#include <glib/gi18n.h>
 
 #include "moblin-netbook-netpanel.h"
 #include "moblin-netbook.h"
-
-#include <glib/gi18n.h>
+#include "mwb-utils.h"
 
 /*
   It wasn't clear to me, whether we might go back to using the radical bar
@@ -22,10 +41,14 @@
 #include "mnb-entry.h"
 #endif
 
-/* number of tab columns to display */
+/* Number of tab columns to display */
 #define DISPLAY_TABS 4
 
-G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_TABLE)
+/* FIXME: Replace with stylable spacing */
+#define COL_SPACING 6
+#define ROW_SPACING 6
+
+G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_WIDGET)
 
 #define NETPANEL_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MOBLIN_TYPE_NETBOOK_NETPANEL, MoblinNetbookNetpanelPrivate))
@@ -47,6 +70,7 @@ struct _MoblinNetbookNetpanelPrivate
 
   MhsHistory     *history;
 
+  NbtkWidget     *entry_table;
   NbtkWidget     *entry;
 
   NbtkWidget     *tabs_table;
@@ -67,11 +91,6 @@ struct _MoblinNetbookNetpanelPrivate
 
   gchar         **fav_urls;
   gchar         **fav_titles;
-
-  gfloat          cell_width;
-  gfloat          cell_height;
-
-  gboolean        got_size : 1;
 };
 
 static void display_favs (MoblinNetbookNetpanel *self);
@@ -133,6 +152,12 @@ moblin_netbook_netpanel_dispose (GObject *object)
       priv->favs_next = NULL;
     }
 
+  if (priv->entry_table)
+    {
+      clutter_actor_unparent (CLUTTER_ACTOR (priv->entry_table));
+      priv->entry_table = NULL;
+    }
+
   G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->dispose (object);
 }
 
@@ -140,6 +165,241 @@ static void
 moblin_netbook_netpanel_finalize (GObject *object)
 {
   G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->finalize (object);
+}
+
+static void
+moblin_netbook_netpanel_allocate (ClutterActor           *actor,
+                                  const ClutterActorBox  *box,
+                                  ClutterAllocationFlags  flags)
+{
+  ClutterActorBox child_box;
+  NbtkPadding padding;
+  gfloat width, height;
+  gfloat min_heights[3], natural_heights[3], final_heights[3];
+  guint i;
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->
+    allocate (actor, box, flags);
+
+  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  padding.left   = MWB_PIXBOUND (padding.left);
+  padding.top    = MWB_PIXBOUND (padding.top);
+  padding.right  = MWB_PIXBOUND (padding.right);
+  padding.bottom = MWB_PIXBOUND (padding.bottom);
+
+  width = box->x2 - box->x1 - padding.left - padding.right;
+
+  min_heights[1] = natural_heights[1] = 0.0;
+  min_heights[2] = natural_heights[2] = 0.0;
+
+  /* find out desired child heights */
+  clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->entry_table), width,
+                                      min_heights + 0, natural_heights + 0);
+
+  if (priv->tabs_table)
+    clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->tabs_table), width,
+                                        min_heights + 1, natural_heights + 1);
+
+  if (priv->favs_table)
+    clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->favs_table), width,
+                                        min_heights + 2, natural_heights + 2);
+
+  height = box->y2 - box->y1 - padding.top - padding.bottom;
+  if (natural_heights[1])
+    height -= ROW_SPACING;
+  if (natural_heights[2])
+    height -= ROW_SPACING;
+
+  if (height >= natural_heights[0] + natural_heights[1] + natural_heights[2])
+    {
+      /* Just allocate the natural heights */
+      for (i = 0; i < 3; i++)
+        final_heights[i] = natural_heights[i];
+    }
+  else
+    {
+      /* Allocate the minimum heights */
+      for (i = 0; i < 3; i++)
+        {
+          final_heights[i] = min_heights[i];
+          height -= min_heights[i];
+        }
+
+      if (height > 0.0)
+        {
+          for (i = 0; i < 3; i++)
+            {
+              /* Allocate extra space up to natural height */
+              gfloat diff = natural_heights[i] - min_heights[i];
+              if (height < diff)
+                diff = height;
+              final_heights[i] += diff;
+              height -= diff;
+            }
+        }
+    }
+
+  child_box.x1 = padding.left;
+  child_box.x2 = child_box.x1 + width;
+
+  child_box.y1 = padding.top;
+  child_box.y2 = child_box.y1 + final_heights[0];
+  clutter_actor_allocate (CLUTTER_ACTOR (priv->entry_table),
+                          &child_box, flags);
+
+  child_box.y1 = child_box.y2 + ROW_SPACING;
+  if (priv->tabs_table)
+    {
+      child_box.y2 = child_box.y1 + final_heights[1];
+      clutter_actor_allocate (CLUTTER_ACTOR (priv->tabs_table),
+                              &child_box, flags);
+      child_box.y1 = child_box.y2 + ROW_SPACING;
+    }
+
+  if (priv->favs_table)
+    {
+      child_box.y2 = child_box.y1 + final_heights[2];
+      clutter_actor_allocate (CLUTTER_ACTOR (priv->favs_table),
+                              &child_box, flags);
+    }
+}
+
+static void
+expand_to_child_width (ClutterActor *actor,
+                       gfloat        for_height,
+                       gfloat       *min_width_p,
+                       gfloat       *natural_width_p)
+{
+  gfloat min_width, natural_width;
+
+  if (!actor)
+    return;
+
+  clutter_actor_get_preferred_width (actor, for_height, &min_width,
+                                      &natural_width);
+  if (min_width_p && *min_width_p < min_width)
+    *min_width_p = min_width;
+  if (natural_width_p && *natural_width_p < natural_width)
+    *natural_width_p = natural_width;
+}
+
+static void
+moblin_netbook_netpanel_get_preferred_width (ClutterActor *self,
+                                             gfloat        for_height,
+                                             gfloat        *min_width_p,
+                                             gfloat        *natural_width_p)
+{
+  gfloat min_width = 0.0, natural_width = 0.0;
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->
+    get_preferred_width (self, for_height, min_width_p, natural_width_p);
+
+  expand_to_child_width (CLUTTER_ACTOR (priv->entry_table), for_height,
+                         &min_width, &natural_width);
+  if (priv->tabs_table)
+    expand_to_child_width (CLUTTER_ACTOR (priv->tabs_table), for_height,
+                           &min_width, &natural_width);
+  if (priv->favs_table)
+    expand_to_child_width (CLUTTER_ACTOR (priv->favs_table), for_height,
+                           &min_width, &natural_width);
+
+  if (min_width_p)
+    *min_width_p += min_width;
+  if (natural_width_p)
+    *natural_width_p += natural_width;
+}
+
+static void
+add_child_height (ClutterActor *actor,
+                  gfloat        for_width,
+                  gfloat       *min_height_p,
+                  gfloat       *natural_height_p,
+                  gfloat        spacing)
+{
+  gfloat min_height, natural_height;
+
+  if (!actor)
+    return;
+
+  clutter_actor_get_preferred_height (actor, for_width, &min_height,
+                                      &natural_height);
+  if (min_height_p)
+    *min_height_p += min_height + spacing;
+  if (natural_height_p)
+    *natural_height_p += natural_height + spacing;
+}
+
+static void
+moblin_netbook_netpanel_get_preferred_height (ClutterActor *self,
+                                              gfloat        for_width,
+                                              gfloat       *min_height_p,
+                                              gfloat       *natural_height_p)
+{
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->
+    get_preferred_height (self, for_width, min_height_p, natural_height_p);
+
+  add_child_height (CLUTTER_ACTOR (priv->entry_table), for_width,
+                    min_height_p, natural_height_p, 0.0);
+  add_child_height (CLUTTER_ACTOR (priv->tabs_table), for_width,
+                    min_height_p, natural_height_p, ROW_SPACING);
+  add_child_height (CLUTTER_ACTOR (priv->favs_table), for_width,
+                    min_height_p, natural_height_p, ROW_SPACING);
+}
+
+static void
+moblin_netbook_netpanel_paint (ClutterActor *actor)
+{
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (actor)->priv;
+
+  /* Chain up to get the background */
+  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->paint (actor);
+
+  if (priv->tabs_table)
+    clutter_actor_paint (CLUTTER_ACTOR (priv->tabs_table));
+
+  if (priv->favs_table)
+    clutter_actor_paint (CLUTTER_ACTOR (priv->favs_table));
+
+  /* Paint the entry last so automagic dropdown will be on top */
+  clutter_actor_paint (CLUTTER_ACTOR (priv->entry_table));
+}
+
+static void
+moblin_netbook_netpanel_pick (ClutterActor *actor, const ClutterColor *color)
+{
+  moblin_netbook_netpanel_paint (actor);
+}
+
+static void
+moblin_netbook_netpanel_map (ClutterActor *actor)
+{
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->map (actor);
+
+  clutter_actor_map (CLUTTER_ACTOR (priv->entry_table));
+  if (priv->tabs_table)
+    clutter_actor_map (CLUTTER_ACTOR (priv->tabs_table));
+  if (priv->favs_table)
+    clutter_actor_map (CLUTTER_ACTOR (priv->favs_table));
+}
+
+static void
+moblin_netbook_netpanel_unmap (ClutterActor *actor)
+{
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (CLUTTER_ACTOR (priv->entry_table));
+  if (priv->tabs_table)
+    clutter_actor_unmap (CLUTTER_ACTOR (priv->tabs_table));
+  if (priv->favs_table)
+    clutter_actor_unmap (CLUTTER_ACTOR (priv->favs_table));
 }
 
 static void
@@ -321,27 +581,17 @@ create_tabs_table (MoblinNetbookNetpanel *self)
   NbtkWidget *label;
 
   if (priv->tabs_table)
-    clutter_container_remove_actor (CLUTTER_CONTAINER (self),
-                                    CLUTTER_ACTOR (priv->tabs_table));
+    clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_table));
 
   /* Construct tabs preview table */
   priv->tabs_table = nbtk_table_new ();
-
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        CLUTTER_ACTOR (priv->tabs_table),
-                                        1, 0,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", TRUE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.5,
-                                        "y-align", 0.5,
-                                        NULL);
-
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->tabs_table), 6);
-  nbtk_table_set_row_spacing (NBTK_TABLE (priv->tabs_table), 6);
+  clutter_actor_set_parent (CLUTTER_ACTOR (priv->tabs_table),
+                            CLUTTER_ACTOR (self));
+  nbtk_table_set_col_spacing (NBTK_TABLE (priv->tabs_table), COL_SPACING);
+  nbtk_table_set_row_spacing (NBTK_TABLE (priv->tabs_table), ROW_SPACING);
   clutter_actor_set_name (CLUTTER_ACTOR (priv->tabs_table),
                           "netpanel-subtable");
+  clutter_actor_show (CLUTTER_ACTOR (priv->tabs_table));
 
   /* Construct tabs previews table widgets */
   label = nbtk_label_new (_("Tabs"));
@@ -367,28 +617,17 @@ create_favs_table (MoblinNetbookNetpanel *self)
   NbtkWidget *label;
 
   if (priv->favs_table)
-    clutter_container_remove_actor (CLUTTER_CONTAINER (self),
-                                    CLUTTER_ACTOR (priv->favs_table));
-  
+    clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_table));
 
   /* Construct favorites table */
   priv->favs_table = nbtk_table_new ();
-
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        CLUTTER_ACTOR (priv->favs_table),
-                                        2, 0,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", TRUE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.5,
-                                        "y-align", 0.5,
-                                        NULL);
-
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->favs_table), 6);
-  nbtk_table_set_row_spacing (NBTK_TABLE (priv->favs_table), 6);
+  clutter_actor_set_parent (CLUTTER_ACTOR (priv->favs_table),
+                            CLUTTER_ACTOR (self));
+  nbtk_table_set_col_spacing (NBTK_TABLE (priv->favs_table), COL_SPACING);
+  nbtk_table_set_row_spacing (NBTK_TABLE (priv->favs_table), ROW_SPACING);
   clutter_actor_set_name (CLUTTER_ACTOR (priv->favs_table),
                           "netpanel-subtable");
+  clutter_actor_show (CLUTTER_ACTOR (priv->favs_table));
 
   label = nbtk_label_new (_("Favorite pages"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "section");
@@ -436,11 +675,31 @@ create_favs_placeholder (MoblinNetbookNetpanel *self)
                                         NULL);
 }
 
+static guint
+get_cell_width (MoblinNetbookNetpanel *self)
+{
+  ClutterActor *parent;
+  guint width = 0;
+
+  if ((parent = clutter_actor_get_parent (CLUTTER_ACTOR (self))))
+    {
+      NbtkPadding padding;
+
+      width = clutter_actor_get_width (CLUTTER_ACTOR (parent));
+      nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+      width -= MWB_PIXBOUND (padding.left + padding.right);
+      width -= (DISPLAY_TABS - 1) * COL_SPACING;
+    }
+
+  return width / (DISPLAY_TABS + 1);
+}
+
 static void
 display_favs (MoblinNetbookNetpanel *self)
 {
   MoblinNetbookNetpanelPrivate *priv = self->priv;
   guint start, end, i;
+  guint cell_width = get_cell_width (self);
 
   create_favs_table (self);
   if (!priv->n_favs)
@@ -461,7 +720,7 @@ display_favs (MoblinNetbookNetpanel *self)
 
       button = nbtk_button_new ();
       label = nbtk_label_new (priv->fav_titles[i]);
-      clutter_actor_set_width (CLUTTER_ACTOR (label), priv->cell_width);
+      clutter_actor_set_width (CLUTTER_ACTOR (label), cell_width);
 
       tex = clutter_texture_new ();
 
@@ -478,8 +737,7 @@ display_favs (MoblinNetbookNetpanel *self)
             }
         }
 
-      clutter_actor_set_size (CLUTTER_ACTOR (tex),
-                              priv->cell_width, priv->cell_height);
+      clutter_actor_set_width (CLUTTER_ACTOR (tex), cell_width);
       clutter_container_add_actor (CLUTTER_CONTAINER (button), tex);
 
       g_object_set_data (G_OBJECT (button), "fav", GUINT_TO_POINTER (i));
@@ -537,33 +795,6 @@ display_favs (MoblinNetbookNetpanel *self)
 }
 
 static void
-calculate_cell_size (MoblinNetbookNetpanel *self)
-{
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
-  ClutterActor *parent;
-
-  /* Calculate size of preview */
-  /* We use the parent actor because we know we're contained in an
-   * MnbDropDown with a constant width. This is horribly hacky though,
-   * we should really just have an allocate function and not use table...
-   */
-  if ((parent = clutter_actor_get_parent (CLUTTER_ACTOR (self))))
-    {
-      NbtkPadding padding;
-      nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
-      priv->cell_width = (clutter_actor_get_width (CLUTTER_ACTOR (parent)) -
-                          padding.left - padding.right -
-                          (nbtk_table_get_col_spacing (NBTK_TABLE (self))
-                           * DISPLAY_TABS)) / (1.0f * (DISPLAY_TABS + 1));
-
-      /* FIXME: aspect ratio should be detected somehow */
-      priv->cell_height = priv->cell_width * 19.0 / 36.0;
-
-      priv->got_size = TRUE;
-    }
-}
-
-static void
 favs_received_cb (MhsHistory            *history,
                   gchar                **urls,
                   gchar                **titles,
@@ -571,9 +802,7 @@ favs_received_cb (MhsHistory            *history,
 {
   MoblinNetbookNetpanelPrivate *priv = self->priv;
   gchar **url_p, **title_p;
-
-  if (!priv->got_size)
-    calculate_cell_size (self);
+  guint width = get_cell_width (self);
 
   if (!priv->tabs_table)
     create_tabs_table (self);
@@ -594,14 +823,14 @@ favs_received_cb (MhsHistory            *history,
     {
       priv->favs_prev = nbtk_button_new_with_label (_("Previous"));
       clutter_actor_set_width (CLUTTER_ACTOR (priv->favs_prev),
-                               priv->cell_width / 2);
+                               width / 2);
       g_object_ref_sink (priv->favs_prev);
       g_signal_connect (priv->favs_prev, "clicked",
                         G_CALLBACK (favs_prev_clicked_cb), self);
 
       priv->favs_next = nbtk_button_new_with_label (_("Next"));
       clutter_actor_set_width (CLUTTER_ACTOR (priv->favs_next),
-                               priv->cell_width / 2);
+                               width / 2);
       g_object_ref_sink (priv->favs_next);
       g_signal_connect (priv->favs_next, "clicked",
                         G_CALLBACK (favs_next_clicked_cb), self);
@@ -734,9 +963,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
   MoblinNetbookNetpanelPrivate *priv = self->priv;
   NbtkWidget *label;
   GError *error = NULL;
-
-  if (!priv->got_size)
-    calculate_cell_size (self);
+  guint cell_width = get_cell_width (self);
 
   /* Create tabs table */
   create_tabs_table (self);
@@ -772,7 +999,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
           ClutterActor *mozembed;
 
           mozembed = clutter_mozembed_new_view ();
-          clutter_actor_set_width (mozembed, priv->cell_width);
+          clutter_actor_set_width (mozembed, cell_width);
           clutter_actor_set_reactive (mozembed, FALSE);
           g_object_set_data (G_OBJECT (mozembed), "netpanel", self);
           g_object_set_data (G_OBJECT (mozembed), "tab", GUINT_TO_POINTER (i));
@@ -794,7 +1021,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
           priv->tab_titles[i] = label = nbtk_label_new ("");
           g_object_ref (label);
 
-          clutter_actor_set_width (CLUTTER_ACTOR (label), priv->cell_width);
+          clutter_actor_set_width (CLUTTER_ACTOR (label), cell_width);
           g_object_set_data (G_OBJECT (label), "netpanel", self);
           g_object_set_data (G_OBJECT (label), "tab", GUINT_TO_POINTER (i));
 
@@ -820,9 +1047,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
 
       button = nbtk_button_new ();
       /* FIXME: hard-coded padding size */
-      clutter_actor_set_size (CLUTTER_ACTOR (button),
-                              priv->cell_width + 16,
-                              priv->cell_height + 16);
+      clutter_actor_set_width (CLUTTER_ACTOR (button), cell_width + 16);
       clutter_container_add_actor (CLUTTER_CONTAINER (button),
                                    CLUTTER_ACTOR (label));
       g_signal_connect (button, "clicked",
@@ -845,7 +1070,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
     {
       priv->tabs_prev = nbtk_button_new_with_label (_("Previous"));
       clutter_actor_set_width (CLUTTER_ACTOR (priv->tabs_prev),
-                               priv->cell_width / 2);
+                               cell_width / 2);
       nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
                                             CLUTTER_ACTOR (priv->tabs_prev),
                                             3, 0,
@@ -862,7 +1087,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
 
       priv->tabs_next = nbtk_button_new_with_label (_("Next"));
       clutter_actor_set_width (CLUTTER_ACTOR (priv->tabs_next),
-                               priv->cell_width / 2);
+                               cell_width / 2);
       nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->tabs_table),
                                             CLUTTER_ACTOR (priv->tabs_next),
                                             3, 3,
@@ -982,8 +1207,7 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   cancel_dbus_calls (netpanel);
   if (priv->tabs_table)
     {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
-                                      CLUTTER_ACTOR (priv->tabs_table));
+      clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_table));
       priv->tabs_table = NULL;
       priv->tabs_prev = NULL;
       priv->tabs_next = NULL;
@@ -991,8 +1215,7 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
 
   if (priv->favs_table)
     {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (netpanel),
-                                      CLUTTER_ACTOR (priv->favs_table));
+      clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_table));
       priv->favs_table = NULL;
     }
 
@@ -1010,6 +1233,15 @@ moblin_netbook_netpanel_class_init (MoblinNetbookNetpanelClass *klass)
   object_class->dispose = moblin_netbook_netpanel_dispose;
   object_class->finalize = moblin_netbook_netpanel_finalize;
 
+  actor_class->allocate = moblin_netbook_netpanel_allocate;
+  actor_class->get_preferred_width =
+    moblin_netbook_netpanel_get_preferred_width;
+  actor_class->get_preferred_height =
+    moblin_netbook_netpanel_get_preferred_height;
+  actor_class->paint = moblin_netbook_netpanel_paint;
+  actor_class->pick = moblin_netbook_netpanel_pick;
+  actor_class->map = moblin_netbook_netpanel_map;
+  actor_class->unmap = moblin_netbook_netpanel_unmap;
   actor_class->show = moblin_netbook_netpanel_show;
   actor_class->hide = moblin_netbook_netpanel_hide;
 
@@ -1087,27 +1319,14 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   GError *error = NULL;
   MoblinNetbookNetpanelPrivate *priv = self->priv = NETPANEL_PRIVATE (self);
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-
   /* Construct entry table */
-  table = nbtk_table_new ();
-  nbtk_table_set_col_spacing (NBTK_TABLE (table), 6);
-  nbtk_table_set_row_spacing (NBTK_TABLE (table), 6);
-  clutter_actor_set_name (CLUTTER_ACTOR (table), "netpanel-entrytable");
+  priv->entry_table = table = nbtk_table_new ();
+  nbtk_table_set_col_spacing (NBTK_TABLE (table), COL_SPACING);
+  nbtk_table_set_row_spacing (NBTK_TABLE (table), ROW_SPACING);
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        CLUTTER_ACTOR (table),
-                                        0, 0,
-                                        "row-span", 1,
-                                        "col-span", 1,
-                                        "x-expand", TRUE,
-                                        "y-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        "y-fill", TRUE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.0,
-                                        NULL);
+  clutter_actor_set_parent (CLUTTER_ACTOR (table),
+                            CLUTTER_ACTOR (self));
+  clutter_actor_set_name (CLUTTER_ACTOR (table), "netpanel-entrytable");
 
   /* Construct entry table widgets */
 
