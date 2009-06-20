@@ -628,6 +628,13 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
   }
 }
 
+gint
+carrick_service_item_get_order (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  return cm_service_get_order (priv->service);
+}
+
 CmService *
 carrick_service_item_get_service (CarrickServiceItem *item)
 {
