@@ -477,6 +477,7 @@ _service_updated_cb (CmService   *service,
                                                         service);
     carrick_list_add_item (list,
                            service_item);
+    carrick_list_sort_list (CARRICK_LIST (priv->service_list));
   }
 }
 
@@ -674,6 +675,8 @@ _update_services (CarrickPane *pane)
     }
     found = FALSE;
   }
+
+  carrick_list_sort_list (CARRICK_LIST (priv->service_list));
 
   for (it = fetched_services; it != NULL; it = it->next)
   {
