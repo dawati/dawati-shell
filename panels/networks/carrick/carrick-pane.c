@@ -689,11 +689,6 @@ _update_services (CarrickPane *pane)
                         G_CALLBACK (_service_updated_cb),
                         pane);
     }
-    else
-    {
-      carrick_service_item_set_service (CARRICK_SERVICE_ITEM (service_item),
-                                        service);
-    }
   }
 }
 
