@@ -156,6 +156,7 @@ dist_theme_mediapanel_DATA = \
 
 theme_netpaneldir = $(pkgdatadir)/theme/netpanel
 dist_theme_netpanel_DATA = \
+	theme/netpanel/ac-list.png		\
 	theme/netpanel/thumbnail.png		\
 	theme/netpanel/thumbnail_hover.png
 

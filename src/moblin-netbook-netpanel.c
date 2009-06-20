@@ -28,18 +28,8 @@
 #include "moblin-netbook.h"
 #include "mwb-utils.h"
 
-/*
-  It wasn't clear to me, whether we might go back to using the radical bar
-  later, with its additional features like the dropdown search list, so I put
-  in #ifs while changing to use MnbEntry. -- Geoff
- */
-#define USE_RADICAL_BAR 0
-
-#if USE_RADICAL_BAR
-#include "mwb-radical-bar.h"
-#else
+#include "mnb-netpanel-bar.h"
 #include "mnb-entry.h"
-#endif
 
 /* Number of tab columns to display */
 #define DISPLAY_TABS 4
@@ -1157,12 +1147,7 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   guint i;
 
   /* Clear the entry */
-#if USE_RADICAL_BAR
-  mwb_radical_bar_set_text (MWB_RADICAL_BAR (priv->entry), "");
-  mwb_radical_bar_set_loading (MWB_RADICAL_BAR (priv->entry), FALSE);
-#else
-  mnb_entry_set_text  (MNB_ENTRY (priv->entry), "");
-#endif
+  mnb_entry_set_text (MNB_ENTRY (priv->entry), "");
 
   if (priv->tabs)
     {
@@ -1264,51 +1249,30 @@ moblin_netbook_netpanel_class_init (MoblinNetbookNetpanelClass *klass)
                   G_TYPE_NONE, 0);
 }
 
-#if USE_RADICAL_BAR
-
 static void
-radical_bar_go_cb (MwbRadicalBar         *radical_bar,
-                   const gchar           *url,
-                   MoblinNetbookNetpanel *self)
+netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
+                    const gchar           *url,
+                    MoblinNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
-
-  if (url && (url[0] != '\0'))
-    {
-      g_signal_emit (self, signals[LAUNCH], 0, url);
-      mwb_radical_bar_set_loading (radical_bar, TRUE);
-    }
-}
-
-#else
-
-static void
-entry_button_clicked_cb (MnbEntry              *entry,
-                         MoblinNetbookNetpanel *self)
-{
-  const gchar *url = mnb_entry_get_text (entry);
-
   if (url)
     {
       while (*url == ' ')
         url++;
       if (*url == '\0')
-        mnb_entry_set_text (entry, "");
+        mnb_entry_set_text (MNB_ENTRY (netpanel_bar), "");
       else
         g_signal_emit (self, signals[LAUNCH], 0, url);
     }
 }
 
 static void
-entry_keynav_event_cb (MnbEntry              *entry,
-                       guint                  nav,
-                       MoblinNetbookNetpanel *self)
+netpanel_bar_button_clicked_cb (MnbNetpanelBar        *netpanel_bar,
+                                MoblinNetbookNetpanel *self)
 {
-  if (nav == CLUTTER_Return)
-    entry_button_clicked_cb (entry, self);
+  netpanel_bar_go_cb (netpanel_bar,
+                      mnb_entry_get_text (MNB_ENTRY (netpanel_bar)),
+                      self);
 }
-
-#endif
 
 static void
 moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
@@ -1343,12 +1307,8 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                                         "y-align", 0.5,
                                         NULL);
 
-#if USE_RADICAL_BAR
-  priv->entry = mwb_radical_bar_new ();
-  clutter_actor_set_height (CLUTTER_ACTOR (priv->entry), 36);
-#else
-  priv->entry = mnb_entry_new (_("Go"));
-#endif
+  priv->entry = mnb_netpanel_bar_new (_("Go"));
+
   clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "netpanel-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
@@ -1362,15 +1322,10 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                                         "y-align", 0.5,
                                         NULL);
 
-#if USE_RADICAL_BAR
   g_signal_connect (priv->entry, "go",
-                    G_CALLBACK (radical_bar_go_cb), self);
-#else
+                    G_CALLBACK (netpanel_bar_go_cb), self);
   g_signal_connect (priv->entry, "button-clicked",
-                    G_CALLBACK (entry_button_clicked_cb), self);
-  g_signal_connect (priv->entry, "keynav-event",
-                    G_CALLBACK (entry_keynav_event_cb), self);
-#endif
+                    G_CALLBACK (netpanel_bar_button_clicked_cb), self);
 
   /* Connect to DBus */
   connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
@@ -1402,20 +1357,12 @@ void
 moblin_netbook_netpanel_focus (MoblinNetbookNetpanel *netpanel)
 {
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
-#if USE_RADICAL_BAR
-  mwb_radical_bar_focus (MWB_RADICAL_BAR (priv->entry));
-#else
-  clutter_actor_grab_key_focus (CLUTTER_ACTOR (priv->entry));
-#endif
+  mnb_netpanel_bar_focus (MNB_NETPANEL_BAR (priv->entry));
 }
 
 void
 moblin_netbook_netpanel_clear (MoblinNetbookNetpanel *netpanel)
 {
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
-#if USE_RADICAL_BAR
-  mwb_radical_bar_set_text (MWB_RADICAL_BAR (priv->entry), "");
-#else
   mnb_entry_set_text (MNB_ENTRY (priv->entry), "");
-#endif
 }

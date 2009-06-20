@@ -29,8 +29,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
                                 moblin-netbook-system-tray.h    \
-				mwb-utils.c			\
-				mwb-utils.h			\
 				$(DBUS_BINDINGS) \
 				$(DBUS_GLUE) \
 				$(MARSHALS)                     \
@@ -65,7 +63,15 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 
 if WITH_NETPANEL
 moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
-				moblin-netbook-netpanel.h
+				moblin-netbook-netpanel.h       \
+				mnb-netpanel-bar.c		\
+				mnb-netpanel-bar.h		\
+				mwb-ac-list.c			\
+				mwb-ac-list.h			\
+				mwb-separator.c			\
+				mwb-separator.h			\
+				mwb-utils.c			\
+				mwb-utils.h
 endif
 
 DBUS_GLUE =	notification-manager-glue.h	\
