@@ -156,13 +156,6 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
   gchar **uris;
   gchar *contents;
   gint i = 0;
-  GList *l;
-
-  for (l = priv->uris; l; l = g_list_delete_link (l, l))
-  {
-    g_free ((gchar *)l->data);
-  }
-  priv->uris = NULL;
 
   if (!g_file_get_contents (priv->path,
                             &contents,
@@ -251,7 +244,23 @@ _file_monitor_changed_cb (GFileMonitor      *monitor,
                           GFileMonitorEvent event,
                           gpointer          userdata)
 {
-  /* not doing anything here yet */
+  PengeAppBookmarkManager *self = (PengeAppBookmarkManager *)userdata;
+  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (self);
+  GList *l;
+
+  for (l = priv->uris; l; l = g_list_delete_link (l, l))
+  {
+    g_signal_emit_by_name (self, "bookmark-removed", l->data);
+    g_free ((gchar *)l->data);
+  }
+  priv->uris = NULL;
+
+  penge_app_bookmark_manager_load (self);
+
+  for (l = priv->uris; l; l = l->next)
+  {
+    g_signal_emit_by_name (self, "bookmark-added", l->data);
+  }
 }
 
 static void
