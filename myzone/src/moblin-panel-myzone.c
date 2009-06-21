@@ -8,6 +8,8 @@
 #include <moblin-panel/mpl-panel-common.h>
 #include <penge/penge-grid-view.h>
 
+#include <config.h>
+
 static void
 _client_set_size_cb (MplPanelClient *client,
                      guint           width,
@@ -33,7 +35,21 @@ main (int    argc,
   MplPanelClient *client;
   ClutterActor *stage;
   NbtkWidget *grid_view;
+  GOptionContext *context;
+  GError *error = NULL;
 
+  context = g_option_context_new ("- Mutter-moblin application myzone panel");
+  g_option_context_add_group (context, clutter_get_option_group ());
+  g_option_context_add_group (context, gtk_get_option_group (TRUE));
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+  {
+    g_critical (G_STRLOC ": Error parsing option: %s", error->message);
+    g_clear_error (&error);
+  }
+  g_option_context_free (context);
+
+  gtk_init (&argc, &argv);
+  clutter_x11_set_display (GDK_DISPLAY ());
   clutter_init (&argc, &argv);
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
