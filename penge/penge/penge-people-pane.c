@@ -158,22 +158,13 @@ _no_content_tile_button_press_event_cb (ClutterActor *actor,
                                         gpointer      userdata)
 {
   GAppInfo *app_info = (GAppInfo *)userdata;
-  GError *error = NULL;
-  GAppLaunchContext *context;
 
-  context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
-
-  if (g_app_info_launch (app_info, NULL, context, &error))
+  if (penge_utils_launch_by_command_line (actor,
+                                          g_app_info_get_executable (app_info)))
     penge_utils_signal_activated (actor);
+  else
+    g_warning (G_STRLOC ": Unable to launch web services settings");
 
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error launching application): %s",
-                 error->message);
-    g_clear_error (&error);
-  }
-
-  g_object_unref (context);
   return TRUE;
 }
 
