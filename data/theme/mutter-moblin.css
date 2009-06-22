@@ -912,7 +912,7 @@ AhoghillQueueList {
 
 
 NbtkScrollBar.AhoghillProgressBar {
-  border-image: url('file://media-panel/hrn-progress-bar-through.png') 2;
+  border-image: url('file://media-panel/hrn-progress-bar-through.png') 0 20 0 20 stretch;
   background: #00000000;
   padding: 0;
 }
