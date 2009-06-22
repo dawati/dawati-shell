@@ -241,6 +241,7 @@ mpl_panel_clutter_constructed (GObject *self)
 
   XSelectInput (xdpy, xwin,
                 StructureNotifyMask |
+                ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
                 FocusChangeMask |
                 ExposureMask |
                 KeyPressMask | KeyReleaseMask |
