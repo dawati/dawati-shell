@@ -239,6 +239,14 @@ mpl_panel_clutter_constructed (GObject *self)
 
   priv->stage = stage;
 
+  XSelectInput (xdpy, xwin,
+                StructureNotifyMask |
+                FocusChangeMask |
+                ExposureMask |
+                KeyPressMask | KeyReleaseMask |
+                EnterWindowMask | LeaveWindowMask |
+                PropertyChangeMask);
+
   clutter_x11_add_filter (mpl_panel_clutter_xevent_filter, self);
 
   g_object_set (self, "xid",
