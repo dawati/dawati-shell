@@ -71,7 +71,7 @@ if (CLUTTER_INIT_SUCCESS != clutter_init (argc, argv))  \
       Window  xid = GPOINTER_TO_INT (data);             \
                                                         \
       if (xev->xany.window != xid)                      \
-        return CLUTTER_X11_FILTER_CONTINUE;             \
+        return GDK_FILTER_CONTINUE;                     \
                                                         \
       switch (clutter_x11_handle_event (xev))           \
         {                                               \
