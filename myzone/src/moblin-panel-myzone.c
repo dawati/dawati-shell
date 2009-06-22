@@ -59,9 +59,7 @@ main (int    argc,
   }
   g_option_context_free (context);
 
-  gtk_init (&argc, &argv);
-  clutter_x11_set_display (GDK_DISPLAY ());
-  clutter_init (&argc, &argv);
+  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
                              MUTTER_MOBLIN_CSS, NULL);
@@ -73,6 +71,8 @@ main (int    argc,
                                     MUTTER_MOBLIN_CSS,
                                     "myzone-button",
                                     TRUE);
+
+    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
 
@@ -92,7 +92,14 @@ main (int    argc,
                       (GCallback)_grid_view_activated_cb,
                       client);
   } else {
+    Window xwin;
+
     stage = clutter_stage_get_default ();
+
+    xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
+
     grid_view = g_object_new (PENGE_TYPE_GRID_VIEW,
                               NULL);
     clutter_container_add_actor (CLUTTER_CONTAINER (stage),
