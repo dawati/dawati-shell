@@ -986,3 +986,11 @@ mpl_panel_client_get_height_request (MplPanelClient *panel)
   return panel->priv->requested_height;
 }
 
+Window
+mpl_panel_client_get_xid (MplPanelClient *panel)
+{
+  g_return_val_if_fail (MPL_IS_PANEL_CLIENT (panel), None);
+
+  return panel->priv->xid;
+}
+

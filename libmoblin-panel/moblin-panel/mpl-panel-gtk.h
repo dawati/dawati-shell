@@ -31,6 +31,9 @@
 
 G_BEGIN_DECLS
 
+#define MPL_PANEL_GTK_INIT(argc, argv) \
+  gtk_init (argc, argv);               \
+
 #define MPL_TYPE_PANEL_GTK mpl_panel_gtk_get_type()
 
 #define MPL_PANEL_GTK(obj) \

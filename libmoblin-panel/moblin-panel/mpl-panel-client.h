@@ -26,6 +26,7 @@
 #define _MPL_PANEL_CLIENT
 
 #include <glib-object.h>
+#include <X11/X.h>
 
 G_BEGIN_DECLS
 
@@ -118,6 +119,8 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
                                                      gint            workspace,
                                                      gboolean        no_chooser);
 
+Window
+mpl_panel_client_get_xid (MplPanelClient *panel);
 
 G_END_DECLS
 

@@ -31,6 +31,66 @@
 
 G_BEGIN_DECLS
 
+#define MPL_PANEL_CLUTTER_INIT(argc, argv)              \
+if (CLUTTER_INIT_SUCCESS != clutter_init (argc, argv))  \
+  {                                                     \
+    g_error ("Unable to initialize Clutter.\n");        \
+  }                                                     \
+
+#define MPL_PANEL_CLUTTER_INIT_WITH_GTK(argc, argv)             \
+  gtk_init (argc, argv);                                        \
+  clutter_x11_set_display (gdk_display);                        \
+  clutter_x11_disable_event_retrieval ();                       \
+                                                                \
+  if (CLUTTER_INIT_SUCCESS != clutter_init (argc, argv))        \
+    {                                                           \
+      g_error ("Unable to initialize Clutter.\n");              \
+    }                                                           \
+
+#define MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK(panel)          \
+  {                                                             \
+    Window xid;                                                 \
+                                                                \
+    xid = mpl_panel_client_get_xid (panel);                     \
+                                                                \
+    if (xid == None)                                            \
+      g_error ("Panel not properly initialized");               \
+                                                                \
+    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID(xid);       \
+                                                                \
+  }                                                             \
+
+#define MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID(xid)  \
+  {                                                     \
+    GdkFilterReturn                                     \
+      gdk_to_clutter_event_pump__ (GdkXEvent *xevent,   \
+                                   GdkEvent  *event,    \
+                                   gpointer   data)     \
+    {                                                   \
+      XEvent *xev = (XEvent*)xevent;                    \
+      Window  xid = GPOINTER_TO_INT (data);             \
+                                                        \
+      if (xev->xany.window != xid)                      \
+        return CLUTTER_X11_FILTER_CONTINUE;             \
+                                                        \
+      switch (clutter_x11_handle_event (xev))           \
+        {                                               \
+        default:                                        \
+        case CLUTTER_X11_FILTER_CONTINUE:               \
+          return GDK_FILTER_CONTINUE;                   \
+        case CLUTTER_X11_FILTER_TRANSLATE:              \
+          return GDK_FILTER_TRANSLATE;                  \
+        case CLUTTER_X11_FILTER_REMOVE:                 \
+          return GDK_FILTER_REMOVE;                     \
+        }                                               \
+    };                                                  \
+                                                        \
+    gdk_window_add_filter (NULL,                        \
+                           gdk_to_clutter_event_pump__, \
+                           GINT_TO_POINTER (xid));      \
+  }                                                     \
+
+
 #define MPL_TYPE_PANEL_CLUTTER mpl_panel_clutter_get_type()
 
 #define MPL_PANEL_CLUTTER(obj) \
