@@ -117,8 +117,8 @@ _notify_connection_changed (CarrickApplet *self)
 }
 
 static void
-manager_connections_changed_cb (CmManager *manager,
-                                gpointer   user_data)
+manager_services_changed_cb (CmManager *manager,
+			     gpointer   user_data)
 {
   CarrickApplet *applet = CARRICK_APPLET (user_data);
   CarrickAppletPrivate *priv = GET_PRIVATE (applet);
@@ -249,8 +249,8 @@ carrick_applet_init (CarrickApplet *self)
                     G_CALLBACK (manager_state_changed_cb),
                     self);
   g_signal_connect (priv->manager,
-                    "connections-changed",
-                    G_CALLBACK (manager_connections_changed_cb),
+                    "services-changed",
+                    G_CALLBACK (manager_services_changed_cb),
                     self);
 }
 

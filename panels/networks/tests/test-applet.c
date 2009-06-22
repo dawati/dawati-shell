@@ -19,7 +19,7 @@
  * Written by - Joshua Lock <josh@linux.intel.com>
  *
  */
-
+#include <config.h>
 #include <gtk/gtk.h>
 
 #include <carrick/carrick-applet.h>
@@ -30,6 +30,10 @@ main (int    argc,
 {
   GtkWidget     *window;
   CarrickApplet *applet;
+
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "FUT-8");
+  textdomain (GETTEXT_PACKAGE);
 
   gtk_init (&argc, &argv);
 

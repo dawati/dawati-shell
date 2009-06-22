@@ -166,7 +166,7 @@ _set_devices_state (gchar       *device_type,
                     CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = cm_manager_get_devices (priv->manager);
+  const GList *devices = cm_manager_get_devices (priv->manager);
 
   while (devices)
   {
@@ -276,7 +276,7 @@ _new_connection_cb (GtkButton *button,
   const gchar *network, *secret;
   gchar *security;
   GtkWidget *image;
-  GList *devices;
+  const GList *devices;
   CmDevice *device;
   gboolean joined = FALSE;
 
@@ -403,8 +403,8 @@ _new_connection_cb (GtkButton *button,
     if (network == NULL)
       return;
 
-    devices = g_list_copy (cm_manager_get_devices (priv->manager));
-    device = CM_DEVICE (g_list_first (devices)->data);
+    devices = cm_manager_get_devices (priv->manager);
+    device = CM_DEVICE (devices->data);
     while (device)
     {
       if (cm_device_get_type (device) == DEVICE_WIFI)
@@ -430,12 +430,10 @@ _new_connection_cb (GtkButton *button,
       }
       else
       {
-        device = CM_DEVICE (g_list_next (devices)->data);
+        device = CM_DEVICE (devices->next);
         // FIXME: Handle failure!
       }
     }
-
-    g_list_free (devices);
   }
   gtk_widget_destroy (dialog);
 }
@@ -479,6 +477,7 @@ _service_updated_cb (CmService   *service,
                                                         service);
     carrick_list_add_item (list,
                            service_item);
+    carrick_list_sort_list (CARRICK_LIST (priv->service_list));
   }
 }
 
@@ -506,6 +505,10 @@ _device_updated_cb (CmDevice *device,
         gtk_widget_set_no_show_all (priv->ethernet_label,
 				    FALSE);
         gtk_widget_show (priv->ethernet_label);
+        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+                          "switch-flipped",
+                          G_CALLBACK (_ethernet_switch_callback),
+                          user_data);
         break;
       case DEVICE_WIFI:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
@@ -520,6 +523,10 @@ _device_updated_cb (CmDevice *device,
         gtk_widget_show (priv->wifi_label);
         gtk_widget_set_sensitive (priv->new_conn_button,
                                   TRUE);
+        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+                          "switch-flipped",
+                          G_CALLBACK (_wifi_switch_callback),
+                          user_data);
         break;
       case DEVICE_CELLULAR:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
@@ -532,6 +539,10 @@ _device_updated_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->threeg_label,
 				    FALSE);
         gtk_widget_show (priv->threeg_label);
+        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+                          "switch-flipped",
+                          G_CALLBACK (_threeg_switch_callback),
+                          user_data);
         break;
       case DEVICE_WIMAX:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
@@ -544,6 +555,10 @@ _device_updated_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->wimax_label,
 				    FALSE);
         gtk_widget_show (priv->wimax_label);
+        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+                          "switch-flipped",
+                          G_CALLBACK (_wimax_switch_callback),
+                          user_data);
         break;
       default:
         g_debug ("Unknown device type\n");
@@ -556,10 +571,9 @@ static void
 _set_states (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = NULL;
+  const GList *devices = NULL;
+  const GList *it = NULL;
   CmDevice *device = NULL;
-  guint len;
-  guint cnt;
 
   if (cm_manager_get_offline_mode (priv->manager))
   {
@@ -600,18 +614,15 @@ _set_states (CarrickPane *pane)
     gtk_widget_set_no_show_all (priv->wimax_label,
                                 TRUE);
 
-    len = g_list_length (devices);
-    for (cnt = 0; cnt < len; cnt++)
+    for (it = devices; it != NULL; it = it->next)
     {
-      device = CM_DEVICE (g_list_nth (devices, cnt)->data);
+      device = CM_DEVICE (it->data);
       g_signal_connect (G_OBJECT (device),
                         "device-updated",
                         G_CALLBACK (_device_updated_cb),
                         pane);
     }
   }
-
-  g_list_free (devices);
 }
 
 static gboolean
@@ -632,10 +643,11 @@ _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   CmService *service = NULL;
-  GList *it, *iter;
-  GList *fetched_services = NULL;
+  const GList *it, *iter;
+  const GList *fetched_services = NULL;
   GList *children = NULL;
   gboolean found = FALSE;
+  GtkWidget *service_item = NULL;
 
   fetched_services = cm_manager_get_services (priv->manager);
   children = gtk_container_get_children (GTK_CONTAINER (priv->service_list));
@@ -664,12 +676,16 @@ _update_services (CarrickPane *pane)
     found = FALSE;
   }
 
+  carrick_list_sort_list (CARRICK_LIST (priv->service_list));
+
   for (it = fetched_services; it != NULL; it = it->next)
   {
     service = CM_SERVICE (it->data);
+    service_item = carrick_list_find_service_item
+      (CARRICK_LIST (priv->service_list),
+       service);
 
-    if (carrick_list_find_service_item (CARRICK_LIST (priv->service_list),
-                                        service) == NULL)
+    if (service_item == NULL)
     {
       g_signal_connect (service,
                         "service-updated",
@@ -809,10 +825,7 @@ carrick_pane_init (CarrickPane *self)
   priv->wifi_switch = nbtk_gtk_light_switch_new ();
   gtk_widget_set_sensitive (priv->wifi_switch,
                             FALSE);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_wifi_switch_callback),
-                    self);
+
   priv->wifi_label = gtk_label_new (_("WiFi"));
   gtk_misc_set_alignment (GTK_MISC (priv->wifi_label),
                           0.2,
@@ -842,10 +855,7 @@ carrick_pane_init (CarrickPane *self)
                           0.5);
   gtk_widget_set_sensitive (priv->ethernet_switch,
                             FALSE);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_ethernet_switch_callback),
-                    self);
+
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->ethernet_label,
                       TRUE,
@@ -871,10 +881,6 @@ carrick_pane_init (CarrickPane *self)
                           0.5);
   gtk_widget_set_sensitive (priv->threeg_switch,
                             FALSE);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_threeg_switch_callback),
-                    self);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->threeg_label,
                       TRUE,
@@ -900,10 +906,6 @@ carrick_pane_init (CarrickPane *self)
                           0.5);
   gtk_widget_set_sensitive (priv->wimax_switch,
                             FALSE);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_wimax_switch_callback),
-                    self);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->wimax_label,
                       TRUE,
@@ -978,18 +980,20 @@ void
 carrick_pane_trigger_scan (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  GList *devices = cm_manager_get_devices (priv->manager);
+  const GList *devices = cm_manager_get_devices (priv->manager);
   CmDevice *dev;
   CmDeviceType type;
 
   while (devices)
   {
     dev = devices->data;
-    type = cm_device_get_type (dev);
+    if (dev && CM_IS_DEVICE (dev))
+    {
+      type = cm_device_get_type (dev);
 
-    if (type != DEVICE_ETHERNET && type != DEVICE_UNKNOWN)
-      cm_device_scan (dev);
-
+      if (type != DEVICE_ETHERNET && type != DEVICE_UNKNOWN)
+        cm_device_scan (dev);
+    }
     devices = devices->next;
   }
 }

@@ -3,7 +3,8 @@ noinst_PROGRAMS = test-dnd test-applet test-icon-factory
 #
 AM_CFLAGS = $(CARRICK_CFLAGS) -I$(top_srcdir)/carrick \
             $(GTK_CFLAGS) \
-            $(GCONNMAN_CFLAGS) -Wall
+            $(GCONNMAN_CFLAGS) -Wall \
+	    -DLOCALEDIR=\""$(localedir)"\"
 
 test_dnd_SOURCES = test-dnd.c
 test_dnd_LDADD = $(top_builddir)/carrick/libcarrick.la \
