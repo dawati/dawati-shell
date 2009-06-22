@@ -1,0 +1,175 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Korean\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../dalston/dalston-power-applet.c:159
+#, fuzzy, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b> 시 "
+msgstr[1] "<b>%d</b> 시"
+
+#: ../dalston/dalston-power-applet.c:166
+#: ../dalston/dalston-power-applet.c:179
+#, fuzzy, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b> 시"
+msgstr[1] "<b>%d</b> 시"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "Running low on battery"
+msgstr "배터리 사용량이 얼마 남지않았습니다."
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "배터리 사용량이 얼마남지 않았습니다. 여건이 되면 충전하시는 것이 좋습니다."
+
+#: ../dalston/dalston-power-applet.c:202
+msgid "Getting close to empty"
+msgstr "배터리 사용량이 거의 다 소모되고 있습니다. "
+
+#: ../dalston/dalston-power-applet.c:202
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "배터리 사용량이 얼마남지 않았습니다. 모든 작업을 저장한뒤 가능한 빨리 충전하시는 것이 좋습니다."
+
+#: ../dalston/dalston-power-applet.c:204
+msgid "Danger!"
+msgstr "위험!"
+
+# "hope to see you again soon" is translated into KOR as " start working again soon"
+#: ../dalston/dalston-power-applet.c:204
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "죄송합니다. 컴퓨터의 배터리 사용량이 거의 다 소비되었습니다. 이제 전원이 꺼질것 입니다. 작업을 저장하시고 다시 작업을 시작하시길 바랍니다.   "
+
+#: ../dalston/dalston-power-applet.c:324
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "배터리가 완전히 충전되었으며 시작할 모든 준비가 되어있습니다.  "
+
+#: ../dalston/dalston-power-applet.c:326
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "배터리가 충전되고 있습니다. 현재 <b>%d</b>%% 만큼 충전 되었습니다. "
+
+#: ../dalston/dalston-power-applet.c:333
+#, c-format
+msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+msgstr "배터리가 충전되지 않고 있습니다. 현재 <b>%d</b>%% 만큼 충전 되었습니다. "
+
+#: ../dalston/dalston-power-applet.c:453
+msgid "Display brightness"
+msgstr "밝기 표시"
+
+#: ../dalston/dalston-power-applet.c:484
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "죄송합니다, 수정된 화면 밝기 기능은 지원하지 않습니다. "
+
+#: ../dalston/dalston-brightness-slider.c:221
+msgid "Brighter than the sun"
+msgstr "매우 강렬한 밝음"
+
+#: ../dalston/dalston-brightness-slider.c:223
+msgid "Very bright"
+msgstr "매우 밝음"
+
+#: ../dalston/dalston-brightness-slider.c:225
+msgid "Bright"
+msgstr "밝음"
+
+#: ../dalston/dalston-brightness-slider.c:227
+msgid "Morning has broken"
+msgstr "흐릿하게 밝음"
+
+# translated into KOR as "usual bright"
+#: ../dalston/dalston-brightness-slider.c:229
+msgid "Midday"
+msgstr "평소 밝기"
+
+#: ../dalston/dalston-brightness-slider.c:231
+msgid "Pretty dusky"
+msgstr "흐릿한 어둠"
+
+#: ../dalston/dalston-brightness-slider.c:233
+msgid "Twilight"
+msgstr "희미하게 밝음"
+
+#: ../dalston/dalston-brightness-slider.c:235
+msgid "Very dark"
+msgstr "매우 어두움"
+
+#: ../dalston/dalston-brightness-slider.c:237
+msgid "Total eclipse"
+msgstr "완벽한 어둠"
+
+#: ../dalston/dalston-volume-pane.c:254
+msgid "Output volume"
+msgstr "출력 볼륨"
+
+#: ../dalston/dalston-volume-pane.c:298
+msgid "Mute"
+msgstr "음소거"
+
+#: ../dalston/dalston-volume-pane.c:316
+msgid "Alert sounds"
+msgstr "경고 소리"
+
+#: ../dalston/dalston-volume-pane.c:328
+msgid "Play test sound"
+msgstr "<b>테스트 사운드 재생</b>"
+
+#: ../dalston/dalston-volume-slider.c:188
+msgid "Turned up to 11"
+msgstr "최대 11까지 올림"
+
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Very loud"
+msgstr "매우 큰 소리"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Loud"
+msgstr "큰 소리"
+
+# Similar to loud
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Fairly loud"
+msgstr "큰 소리 비슷한"
+
+# Similar to nomal
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Middle of the road"
+msgstr "보통 소리"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Fairly quiet"
+msgstr "거의 조용함"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Quiet"
+msgstr "조용함"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Very quiet"
+msgstr "매우 조용함"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Silent"
+msgstr "무음"
+
+#: ../libgvc/gvc-mixer-control.c:988
+msgid "System Sounds"
+msgstr "시스템 사운드"
+
+#: ../libgvc/gvc-mixer-control.c:1512
+msgid "GNOME Volume Control"
+msgstr "GNOME 볼륨 조정"
+
