@@ -95,8 +95,17 @@ main (int    argc,
     Window xwin;
 
     stage = clutter_stage_get_default ();
-
+    clutter_actor_realize (stage);
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+    XSelectInput (GDK_DISPLAY (), xwin,
+                  StructureNotifyMask |
+                  ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
+                  FocusChangeMask |
+                  ExposureMask |
+                  KeyPressMask | KeyReleaseMask |
+                  EnterWindowMask | LeaveWindowMask |
+                  PropertyChangeMask);
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
 
