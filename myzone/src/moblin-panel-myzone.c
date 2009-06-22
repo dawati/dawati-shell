@@ -19,6 +19,10 @@ _client_set_size_cb (MplPanelClient *client,
   clutter_actor_set_size ((ClutterActor *)userdata,
                           width,
                           height);
+
+  g_debug (G_STRLOC ": Dimensions for grid view: %d x %d",
+           width,
+           height);
 }
 
 static void
@@ -27,6 +31,12 @@ _grid_view_activated_cb (PengeGridView *grid_view,
 {
   mpl_panel_client_request_hide ((MplPanelClient *)userdata);
 }
+
+static gboolean standalone = FALSE;
+
+static GOptionEntry entries[] = {
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL}
+};
 
 int
 main (int    argc,
@@ -38,7 +48,8 @@ main (int    argc,
   GOptionContext *context;
   GError *error = NULL;
 
-  context = g_option_context_new ("- Mutter-moblin application myzone panel");
+  context = g_option_context_new ("- mutter-moblin myzone panel");
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group ());
   g_option_context_add_group (context, gtk_get_option_group (TRUE));
   if (!g_option_context_parse (context, &argc, &argv, &error))
@@ -55,29 +66,40 @@ main (int    argc,
   nbtk_style_load_from_file (nbtk_style_get_default (),
                              MUTTER_MOBLIN_CSS, NULL);
 
-  client = mpl_panel_clutter_new (MPL_PANEL_MYZONE,
-                                  _("myzone"),
-                                  MUTTER_MOBLIN_CSS,
-                                  "myzone-button",
-                                  TRUE);
+  if (!standalone)
+  {
+    client = mpl_panel_clutter_new (MPL_PANEL_MYZONE,
+                                    _("myzone"),
+                                    MUTTER_MOBLIN_CSS,
+                                    "myzone-button",
+                                    TRUE);
 
-  stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
+    stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
 
-  grid_view = g_object_new (PENGE_TYPE_GRID_VIEW,
-                            "panel-client",
-                            client,
-                            NULL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               (ClutterActor *)grid_view);
-  g_signal_connect (client,
-                    "set-size",
-                    (GCallback)_client_set_size_cb,
-                    grid_view);
+    grid_view = g_object_new (PENGE_TYPE_GRID_VIEW,
+                              "panel-client",
+                              client,
+                              NULL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                 (ClutterActor *)grid_view);
+    g_signal_connect (client,
+                      "set-size",
+                      (GCallback)_client_set_size_cb,
+                      grid_view);
 
-  g_signal_connect (grid_view,
-                    "activated",
-                    (GCallback)_grid_view_activated_cb,
-                    client);
+    g_signal_connect (grid_view,
+                      "activated",
+                      (GCallback)_grid_view_activated_cb,
+                      client);
+  } else {
+    stage = clutter_stage_get_default ();
+    grid_view = g_object_new (PENGE_TYPE_GRID_VIEW,
+                              NULL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                 (ClutterActor *)grid_view);
+    clutter_actor_set_size (stage, 1024, 500);
+    clutter_actor_show_all (stage);
+  }
 
   clutter_main ();
 
