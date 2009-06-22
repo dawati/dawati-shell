@@ -159,6 +159,7 @@ struct _MnbToolbarPrivate
 
   ShellTrayManager *tray_manager;
 
+  gboolean no_autoloading    : 1;
   gboolean shown             : 1;
   gboolean shown_myzone      : 1;
   gboolean disabled          : 1;
@@ -1339,7 +1340,7 @@ mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
    * Try to restart the service
    */
 
-  if (name)
+  if (!toolbar->priv->no_autoloading && name)
     {
       gchar *dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
 
@@ -1654,6 +1655,9 @@ mnb_toolbar_init (MnbToolbar *self)
   MnbToolbarPrivate *priv;
 
   priv = self->priv = MNB_TOOLBAR_GET_PRIVATE (self);
+
+  if (g_getenv("MUTTER_DISABLE_PANEL_RESTART"))
+    priv->no_autoloading = TRUE;
 }
 
 #if 1
