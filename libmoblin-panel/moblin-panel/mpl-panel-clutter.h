@@ -85,6 +85,15 @@ if (CLUTTER_INIT_SUCCESS != clutter_init (argc, argv))  \
         }                                               \
     };                                                  \
                                                         \
+    XSelectInput (GDK_DISPLAY (), xid,                  \
+                  StructureNotifyMask |                 \
+                  ButtonPressMask | ButtonReleaseMask | PointerMotionMask | \
+                  FocusChangeMask |                     \
+                  ExposureMask |                        \
+                  KeyPressMask | KeyReleaseMask |       \
+                  EnterWindowMask | LeaveWindowMask |   \
+                  PropertyChangeMask);                  \
+                                                        \
     gdk_window_add_filter (NULL,                        \
                            gdk_to_clutter_event_pump__, \
                            GINT_TO_POINTER (xid));      \
