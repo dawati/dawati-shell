@@ -255,7 +255,6 @@ src/tray/Makefile
 src/effects/Makefile
 status/Makefile
 status/src/Makefile
-status/tests/Makefile
 po/Makefile.in
 tests/Makefile
 pasteboard/Makefile
