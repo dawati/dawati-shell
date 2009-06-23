@@ -94,9 +94,6 @@ mnb_netpanel_bar_allocate (ClutterActor           *actor,
   ClutterActorBox child_box;
   gfloat ac_preferred_height;
 
-  printf ("GOT TO THE ALLOCATE! (box %f,%f to %f,%f)\n",
-          box->x1, box->y1, box->x2, box->y2);
-
   MnbNetpanelBar *self = MNB_NETPANEL_BAR (actor);
   MnbNetpanelBarPrivate *priv = self->priv;
 
@@ -183,7 +180,6 @@ static void
 mnb_netpanel_bar_set_show_auto_complete (MnbNetpanelBar *self,
                                          gboolean        show)
 {
-  printf ("<<npbar>> SHOW AUTO COMPLETE\n");
   MnbNetpanelBarPrivate *priv = self->priv;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->ac_list) != show)
@@ -249,7 +245,6 @@ static gboolean
 mnb_netpanel_bar_captured_event (ClutterActor *actor,
                                  ClutterEvent *event)
 {
-  printf ("<<npbar>> CAPTURED EVENT\n");
   ClutterKeyEvent *key_event;
   MnbNetpanelBar *self = MNB_NETPANEL_BAR (actor);
   MnbNetpanelBarPrivate *priv = self->priv;
@@ -262,37 +257,26 @@ mnb_netpanel_bar_captured_event (ClutterActor *actor,
     switch (key_event->keyval)
       {
       case CLUTTER_Escape:
-        printf ("CAPTURED: escape\n");
         mnb_netpanel_bar_set_show_auto_complete (self, FALSE);
         return TRUE;
 
       case CLUTTER_Return:
-        printf ("CAPTURED: return\n");
         if ((key_event->modifier_state & MWB_UTILS_MODIFIERS_MASK) ==
             CLUTTER_CONTROL_MASK)
-          {printf("COM HANDLER\n");
           mnb_netpanel_bar_complete_url (self, "com");
-          }
         else if ((key_event->modifier_state & MWB_UTILS_MODIFIERS_MASK) ==
                  (CLUTTER_CONTROL_MASK | CLUTTER_SHIFT_MASK))
-          {printf("ORG HANDLER\n");
           mnb_netpanel_bar_complete_url (self, "org");
-          }
         else if ((key_event->modifier_state & MWB_UTILS_MODIFIERS_MASK) ==
                  CLUTTER_SHIFT_MASK)
-          {printf("NET HANDLER\n");
           mnb_netpanel_bar_complete_url (self, "net");
-          }
         else if (!key_event->modifier_state)
-          {printf("NO MOD HANDLER\n");
           mnb_netpanel_bar_activate_cb (NULL, self);
-          }
         return TRUE;
 
       case CLUTTER_Down:
       case CLUTTER_Up:
         {
-          printf ("CAPTURED: down/up\n");
           gint selection =
             mwb_ac_list_get_selection (MWB_AC_LIST (priv->ac_list));
 
@@ -351,8 +335,6 @@ mnb_netpanel_bar_class_init (MnbNetpanelBarClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  printf ("NETPANEL_BAR CLASS INIT!\n");
-
   g_type_class_add_private (klass, sizeof (MnbNetpanelBarPrivate));
 
   object_class->dispose = mnb_netpanel_bar_dispose;
@@ -399,13 +381,11 @@ static void
 mnb_netpanel_bar_text_changed_cb (GObject        *obj,
                                   MnbNetpanelBar *self)
 {
-  printf ("<<npbar>> TEXT CHANGED\n");
   MnbNetpanelBarPrivate *priv = self->priv;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (priv->ac_list)))
     {
       const gchar *text = mnb_entry_get_text (MNB_ENTRY (self));
-      printf ("TEXT CHANGED - SET AC: '%s'\n", text);
       mwb_ac_list_set_search_text (MWB_AC_LIST (priv->ac_list), text);
     }
 }
@@ -414,7 +394,6 @@ static void
 mnb_netpanel_bar_activate_cb (GObject        *obj,
                               MnbNetpanelBar *self)
 {
-  printf ("<<npbar>> BAR ACTIVATE\n");
   MnbNetpanelBarPrivate *priv = self->priv;
   gint selection;
 
@@ -439,7 +418,6 @@ mnb_netpanel_bar_key_press_event_cb (GObject         *obj,
                                      ClutterKeyEvent *event,
                                      MnbNetpanelBar  *self)
 {
-  printf ("<<npbar>> KEY_PRESS_EVENT\n");
   mnb_netpanel_bar_set_show_auto_complete (self, TRUE);
   return FALSE;
 }
@@ -448,7 +426,6 @@ static void
 mnb_netpanel_bar_key_focus_out_cb (GObject        *obj,
                                    MnbNetpanelBar *self)
 {
-  printf ("<<npbar>> KEY FOCUS OUT\n");
   mnb_netpanel_bar_set_show_auto_complete (self, FALSE);
 }
 
@@ -456,7 +433,6 @@ static void
 mnb_netpanel_bar_ac_list_activate_cb (MwbAcList      *ac_list,
                                       MnbNetpanelBar *self)
 {
-  printf ("<<npbar>> AC LIST ACTIVATE\n");
   MnbNetpanelBarPrivate *priv = self->priv;
   gint selection;
 
@@ -479,8 +455,6 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
   MnbNetpanelBarPrivate *priv = self->priv = NETPANEL_BAR_PRIVATE (self);
   NbtkWidget *entry;
   ClutterActor *actor;
-
-  printf ("NETPANEL_BAR INIT!\n");
 
   entry = mnb_entry_get_nbtk_entry (MNB_ENTRY (self));
   actor = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
