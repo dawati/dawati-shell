@@ -52,6 +52,7 @@ struct _CarrickPanePrivate {
   GtkWidget          *service_list;
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
+  time_t              last_scan;
 };
 
 enum
@@ -430,8 +431,7 @@ _new_connection_cb (GtkButton *button,
       }
       else
       {
-        device = CM_DEVICE (devices->next);
-        // FIXME: Handle failure!
+        device = devices->next;
       }
     }
   }
@@ -983,18 +983,25 @@ carrick_pane_trigger_scan (CarrickPane *pane)
   const GList *devices = cm_manager_get_devices (priv->manager);
   CmDevice *dev;
   CmDeviceType type;
+  time_t now = time (NULL);
 
-  while (devices)
+  /* Only trigger a scan if we haven't triggered one in the last minute.
+   * This number likely needs tweaking.
+   */
+  if (difftime (now, priv->last_scan) < 60)
   {
-    dev = devices->data;
-    if (dev && CM_IS_DEVICE (dev))
+    while (devices)
     {
-      type = cm_device_get_type (dev);
+      dev = devices->data;
+      if (dev && CM_IS_DEVICE (dev))
+      {
+        type = cm_device_get_type (dev);
 
-      if (type != DEVICE_ETHERNET && type != DEVICE_UNKNOWN)
-        cm_device_scan (dev);
+        if (type != DEVICE_ETHERNET && type != DEVICE_UNKNOWN)
+          cm_device_scan (dev);
+      }
+      devices = devices->next;
     }
-    devices = devices->next;
   }
 }
 
