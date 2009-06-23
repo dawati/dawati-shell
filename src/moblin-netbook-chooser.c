@@ -1200,7 +1200,30 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
           }
 
           if (!sn_data->without_chooser)
-            show_workspace_chooser (plugin, seq_id, timestamp);
+            {
+              MetaScreen *screen = mutter_plugin_get_screen (plugin);
+              gint        ws_count = meta_screen_get_n_workspaces (screen);
+              struct ws_chooser_timeout_data * wsc_data;
+
+              show_workspace_chooser (plugin, seq_id, timestamp);
+
+              wsc_data = g_slice_new (struct ws_chooser_timeout_data);
+              wsc_data->sn_id = g_strdup (seq_id);
+              wsc_data->plugin = plugin;
+              wsc_data->workspace =
+                ws_count < MAX_WORKSPACES ? ws_count : ws_count - 1;
+
+              /*
+               * Start the timeout that automatically moves the application
+               * to a new workspace if the user does not choose one manually.
+               */
+              workspace_chooser_timeout =
+                g_timeout_add_full (G_PRIORITY_DEFAULT,
+                                WORKSPACE_CHOOSER_TIMEOUT,
+                                workspace_chooser_timeout_cb,
+                                wsc_data,
+                                (GDestroyNotify)free_ws_chooser_timeout_data);
+            }
       }
       break;
     case SN_MONITOR_EVENT_CHANGED:
@@ -1214,10 +1237,7 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
     case SN_MONITOR_EVENT_COMPLETED:
       if (g_hash_table_lookup_extended (priv->sn_hash, seq_id, &key, &value))
         {
-          MetaScreen *screen = mutter_plugin_get_screen (plugin);
-          gint        ws_count = meta_screen_get_n_workspaces (screen);
           SnHashData *sn_data = value;
-          struct ws_chooser_timeout_data * wsc_data;
           struct ws_chooser_map_data     * wsc_map_data;
 
           sn_data->state = SN_MONITOR_EVENT_COMPLETED;
@@ -1253,25 +1273,6 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
                * Configure the application
                */
               configure_app (seq_id, sn_data->workspace, plugin);
-            }
-          else
-            {
-              wsc_data = g_slice_new (struct ws_chooser_timeout_data);
-              wsc_data->sn_id = g_strdup (seq_id);
-              wsc_data->plugin = plugin;
-              wsc_data->workspace =
-                ws_count < MAX_WORKSPACES ? ws_count : ws_count - 1;
-
-              /*
-               * Start the timeout that automatically moves the application
-               * to a new workspace if the user does not choose one manually.
-               */
-              workspace_chooser_timeout =
-                g_timeout_add_full (G_PRIORITY_DEFAULT,
-                                WORKSPACE_CHOOSER_TIMEOUT,
-                                workspace_chooser_timeout_cb,
-                                wsc_data,
-                                (GDestroyNotify)free_ws_chooser_timeout_data);
             }
         }
       break;
