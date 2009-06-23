@@ -265,7 +265,8 @@ _make_no_content_tile (void)
                                           "y-expand",
                                           TRUE,
                                           "y-fill",
-                                          FALSE);
+                                          FALSE,
+                                          NULL);
   }
 
   g_signal_connect (tile,
