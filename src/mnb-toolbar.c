@@ -177,8 +177,6 @@ struct _MnbToolbarPrivate
 
   guint trigger_timeout_id;
 
-  gint panels_showing;
-
 #if 1
   /* TODO remove */
   gboolean systray_window_showing;
@@ -897,8 +895,6 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
     moblin_netbook_input_region_push (plugin,
                                       (gint)x, TOOLBAR_HEIGHT + (gint)y,
                                       (guint)w, (guint)h);
-
-  priv->panels_showing++;
 }
 
 static void
@@ -911,14 +907,6 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbDropDown *dropdown, MnbToolbar  *tool
     {
       moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
       priv->dropdown_region = NULL;
-    }
-
-  priv->panels_showing--;
-
-  if (priv->panels_showing < 0)
-    {
-      g_warning ("Error in panel state accounting, fixing.");
-      priv->panels_showing = 0;
     }
 }
 
