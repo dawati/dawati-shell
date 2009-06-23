@@ -253,10 +253,7 @@ mwb_ac_list_dispose (GObject *object)
     {
       if (priv->prefs_branch != -1)
         {
-          guint ns_result;
-
-          mhs_prefs_release_branch (priv->prefs, priv->prefs_branch,
-                                    &ns_result, NULL);
+          mhs_prefs_release_branch (priv->prefs, priv->prefs_branch, NULL);
           priv->prefs_branch = -1;
         }
 
@@ -584,12 +581,10 @@ mwb_ac_list_update_search_engine (MwbAcList *ac_list)
   if (priv->prefs && priv->prefs_branch != -1)
     {
       GError *error = NULL;
-      guint ns_result;
 
       if (mhs_prefs_branch_get_char (priv->prefs, priv->prefs_branch,
                                      "search_engine.selected",
                                      &priv->search_engine_name,
-                                     &ns_result,
                                      &error))
         {
           gchar *url_pref_name = g_strconcat ("search_engine.data.",
@@ -600,7 +595,6 @@ mwb_ac_list_update_search_engine (MwbAcList *ac_list)
           if (mhs_prefs_branch_get_char (priv->prefs, priv->prefs_branch,
                                          url_pref_name,
                                          &priv->search_engine_url,
-                                         &ns_result,
                                          &error))
             {
               /* Get a filename-safe version of the search engine name */
@@ -675,13 +669,11 @@ mwb_ac_list_prefs_branch_changed_cb (MhsPrefs *prefs,
             GError *error = NULL;
             gboolean *val = (gboolean *) ((guchar *) priv +
                                           mwb_ac_list_boolean_prefs[i].offset);
-            guint ns_result;
 
             if (!mhs_prefs_branch_get_bool (priv->prefs,
                                             priv->prefs_branch,
                                             mwb_ac_list_boolean_prefs[i].name,
                                             val,
-                                            &ns_result,
                                             &error))
               {
                 g_warning ("%s", error->message);
@@ -967,7 +959,6 @@ mwb_ac_list_init (MwbAcList *self)
 {
   MwbAcListPrivate *priv = self->priv = MWB_AC_LIST_PRIVATE (self);
   GError *error = NULL;
-  guint ns_result;
 
   priv->entries = g_array_new (FALSE, TRUE, sizeof (MwbAcListEntry));
 
@@ -996,8 +987,7 @@ mwb_ac_list_init (MwbAcList *self)
 
   /* Initialise the preference observers */
   priv->prefs = mhs_prefs_new ();
-  if (mhs_prefs_get_branch (priv->prefs, "mwb.", &priv->prefs_branch,
-                            &ns_result, &error))
+  if (mhs_prefs_get_branch (priv->prefs, "mwb.", &priv->prefs_branch, &error))
     {
       int i;
 
@@ -1012,12 +1002,10 @@ mwb_ac_list_init (MwbAcList *self)
                                           priv->prefs_branch,
                                           name,
                                           val,
-                                          &ns_result,
                                           &error)
               || !mhs_prefs_branch_add_observer (priv->prefs,
                                                  priv->prefs_branch,
                                                  name,
-                                                 &ns_result,
                                                  &error))
             {
               g_warning ("%s", error->message);
@@ -1029,7 +1017,6 @@ mwb_ac_list_init (MwbAcList *self)
       if (!mhs_prefs_branch_add_observer (priv->prefs,
                                           priv->prefs_branch,
                                           "search_engine.",
-                                          &ns_result,
                                           &error))
         {
           g_warning ("%s", error->message);
