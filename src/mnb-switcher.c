@@ -822,16 +822,22 @@ table_foreach_remove_ws (ClutterActor *child, gpointer data)
        */
       if (!row)
         {
-          gchar *s;
+          NbtkLabel *label;
 
           clutter_container_child_set (CLUTTER_CONTAINER (table), child,
                                        "col", col - 1,
                                        "y-expand", FALSE, NULL);
 
-          s = g_strdup_printf ("%d", col);
+          label = (NbtkLabel*)nbtk_bin_get_child (NBTK_BIN (child));
 
-          nbtk_label_set_text (NBTK_LABEL (child), s);
-          g_free (s);
+          if (label && NBTK_IS_LABEL (label))
+            {
+              gchar *s = g_strdup_printf ("%d", col);
+
+              nbtk_label_set_text (label, s);
+
+              g_free (s);
+            }
         }
       else
         clutter_container_child_set (CLUTTER_CONTAINER (table), child,
