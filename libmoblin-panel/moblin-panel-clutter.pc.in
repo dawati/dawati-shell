@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: libmnb-clutter
-Description: Dev parameters for gtk-based moblin panels
+Name: libmoblin-panel-clutter
+Description: Dev parameters for Clutter-based moblin panels
 Requires: dbus-glib-1 nbtk-1.0
 Version: @VERSION@
-Libs: -L${libdir} -lmnb-clutter
-Cflags: -I${includedir}/libmnb
+Libs: -L${libdir} -lmoblin-panel-clutter
+Cflags: -I${includedir}/libmoblin-panel
