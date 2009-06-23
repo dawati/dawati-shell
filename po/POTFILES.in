@@ -19,6 +19,7 @@ penge/penge/penge-task-tile.c
 penge/penge/penge-utils.c
 people/src/moblin-panel-people.c
 people/src/mnb-people-panel.c
+src/mwb-ac-list.c
 src/moblin-netbook.c
 src/moblin-netbook-chooser.c
 src/moblin-netbook-netpanel.c
@@ -30,4 +31,3 @@ src/mnb-entry.c
 src/mnb-status-entry.c
 src/mnb-switcher.c
 src/mnb-toolbar.c
-tests/test-pasteboard.c
