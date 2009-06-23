@@ -431,7 +431,7 @@ _new_connection_cb (GtkButton *button,
       }
       else
       {
-        device = devices->next;
+        device = CM_DEVICE (devices->next);
       }
     }
   }
@@ -759,6 +759,7 @@ carrick_pane_init (CarrickPane *self)
 
   priv->icon_factory = NULL;
   priv->manager = NULL;
+  priv->last_scan = time (NULL);
 
   /* Set table up */
   gtk_table_resize (GTK_TABLE (self),
@@ -990,6 +991,9 @@ carrick_pane_trigger_scan (CarrickPane *pane)
    */
   if (difftime (now, priv->last_scan) < 60)
   {
+    g_free (&priv->last_scan);
+    priv->last_scan = time (NULL);
+
     while (devices)
     {
       dev = devices->data;
@@ -1003,6 +1007,8 @@ carrick_pane_trigger_scan (CarrickPane *pane)
       devices = devices->next;
     }
   }
+
+  g_free (&now);
 }
 
 GtkWidget*
