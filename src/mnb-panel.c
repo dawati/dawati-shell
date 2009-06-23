@@ -91,9 +91,10 @@ struct _MnbPanelPrivate
 
   MutterWindow    *mcw;
 
-  gboolean         constructed : 1;
-  gboolean         dead        : 1; /* Set when the remote  */
-  gboolean         ready       : 1;
+  gboolean         constructed      : 1;
+  gboolean         dead             : 1; /* Set when the remote  */
+  gboolean         ready            : 1;
+  gboolean         hide_in_progress : 1;
 };
 
 static void
@@ -462,6 +463,8 @@ mnb_panel_hide_begin (MnbDropDown *self)
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
   GtkWidget       *window = priv->window;
 
+  priv->hide_in_progress = TRUE;
+
   if (!priv->proxy)
     {
       g_warning (G_STRLOC " No DBus proxy!");
@@ -482,6 +485,8 @@ static void
 mnb_panel_hide_completed (MnbDropDown *self)
 {
   MnbPanelPrivate *priv = MNB_PANEL (self)->priv;
+
+  priv->hide_in_progress = FALSE;
 
   if (!priv->proxy)
     {
@@ -525,17 +530,25 @@ mnb_panel_socket_size_allocate_cb (GtkWidget     *widget,
   else
     {
       MnbPanelPrivate *priv = MNB_PANEL (data)->priv;
-      gfloat x = 0, y = 0;
 
-      g_debug ("socket allocated %d,%d;%dx%d",
-               allocation->x,
-               allocation->y,
-               allocation->width,
-               allocation->height);
+      /*
+       * If the window is mapped, and we are not currently in the hide
+       * animation, ensure the window position.
+       */
+      if (!priv->hide_in_progress && CLUTTER_ACTOR_IS_MAPPED (data))
+        {
+          gfloat x = 0, y = 0;
 
-      clutter_actor_get_position (CLUTTER_ACTOR (data), &x, &y);
+          g_debug ("socket allocated %d,%d;%dx%d",
+                   allocation->x,
+                   allocation->y,
+                   allocation->width,
+                   allocation->height);
 
-      gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
+          clutter_actor_get_position (CLUTTER_ACTOR (data), &x, &y);
+
+          gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
+        }
     }
 }
 
