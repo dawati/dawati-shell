@@ -25,15 +25,15 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 
-#include "mnb-status-entry.h"
+#include "mnb-web-status-entry.h"
 #include "mnb-status-marshal.h"
 
 #define H_PADDING               (6.0)
 #define CANCEL_ICON_SIZE        (22)
 
-#define MNB_STATUS_ENTRY_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_STATUS_ENTRY, MnbStatusEntryPrivate))
+#define MNB_WEB_STATUS_ENTRY_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_WEB_STATUS_ENTRY, MnbWebStatusEntryPrivate))
 
-struct _MnbStatusEntryPrivate
+struct _MnbWebStatusEntryPrivate
 {
   ClutterActor *status_entry;
   ClutterActor *service_label;
@@ -70,7 +70,7 @@ enum
 
 static guint entry_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbStatusEntry, mnb_status_entry, NBTK_TYPE_WIDGET);
+G_DEFINE_TYPE (MnbWebStatusEntry, mnb_web_status_entry, NBTK_TYPE_WIDGET);
 
 static gchar *
 penge_utils_format_time (GTimeVal *time_)
@@ -168,9 +168,9 @@ penge_utils_format_time (GTimeVal *time_)
 
 static void
 on_cancel_clicked (NbtkButton     *button,
-                   MnbStatusEntry *entry)
+                   MnbWebStatusEntry *entry)
 {
-  MnbStatusEntryPrivate *priv = entry->priv;
+  MnbWebStatusEntryPrivate *priv = entry->priv;
   ClutterActor *text;
 
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
@@ -198,20 +198,20 @@ on_cancel_clicked (NbtkButton     *button,
 
 static void
 on_button_clicked (NbtkButton     *button,
-                   MnbStatusEntry *entry)
+                   MnbWebStatusEntry *entry)
 {
-  mnb_status_entry_set_is_active (entry,
+  mnb_web_status_entry_set_is_active (entry,
                                   entry->priv->is_active == TRUE ? FALSE
                                                                  : TRUE);
 }
 
 static void
-mnb_status_entry_get_preferred_width (ClutterActor *actor,
+mnb_web_status_entry_get_preferred_width (ClutterActor *actor,
                                       gfloat        for_height,
                                       gfloat       *min_width_p,
                                       gfloat       *natural_width_p)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (actor)->priv;
   gfloat min_width, natural_width;
 
   clutter_actor_get_preferred_width (priv->status_entry, for_height,
@@ -228,12 +228,12 @@ mnb_status_entry_get_preferred_width (ClutterActor *actor,
 }
 
 static void
-mnb_status_entry_get_preferred_height (ClutterActor *actor,
+mnb_web_status_entry_get_preferred_height (ClutterActor *actor,
                                        gfloat        for_width,
                                        gfloat       *min_height_p,
                                        gfloat       *natural_height_p)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (actor)->priv;
   gfloat min_height, natural_height;
 
   clutter_actor_get_preferred_height (priv->status_entry, for_width,
@@ -250,11 +250,11 @@ mnb_status_entry_get_preferred_height (ClutterActor *actor,
 }
 
 static void
-mnb_status_entry_allocate (ClutterActor          *actor,
+mnb_web_status_entry_allocate (ClutterActor          *actor,
                            const ClutterActorBox *box,
                            ClutterAllocationFlags flags)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (actor)->priv;
   ClutterActorClass *parent_class;
   gfloat available_width, available_height;
   gfloat min_width, min_height;
@@ -265,7 +265,7 @@ mnb_status_entry_allocate (ClutterActor          *actor,
   gfloat text_width, text_height;
   ClutterActorBox child_box = { 0, };
 
-  parent_class = CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class);
+  parent_class = CLUTTER_ACTOR_CLASS (mnb_web_status_entry_parent_class);
   parent_class->allocate (actor, box, flags);
 
   available_width  = (int) (box->x2 - box->x1
@@ -383,11 +383,11 @@ mnb_status_entry_allocate (ClutterActor          *actor,
 }
 
 static void
-mnb_status_entry_paint (ClutterActor *actor)
+mnb_web_status_entry_paint (ClutterActor *actor)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (mnb_web_status_entry_parent_class)->paint (actor);
 
   if (priv->status_entry && CLUTTER_ACTOR_IS_MAPPED (priv->status_entry))
     clutter_actor_paint (priv->status_entry);
@@ -422,12 +422,12 @@ mnb_status_entry_paint (ClutterActor *actor)
 }
 
 static void
-mnb_status_entry_pick (ClutterActor       *actor,
+mnb_web_status_entry_pick (ClutterActor       *actor,
                        const ClutterColor *pick_color)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->pick (actor,
+  CLUTTER_ACTOR_CLASS (mnb_web_status_entry_parent_class)->pick (actor,
                                                              pick_color);
 
   if (priv->status_entry && clutter_actor_should_pick_paint (priv->status_entry))
@@ -444,11 +444,11 @@ mnb_status_entry_pick (ClutterActor       *actor,
 }
 
 static void
-mnb_status_entry_map (ClutterActor *actor)
+mnb_web_status_entry_map (ClutterActor *actor)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->map (actor);
+  CLUTTER_ACTOR_CLASS (mnb_web_status_entry_parent_class)->map (actor);
 
   if (priv->status_entry)
     clutter_actor_map (priv->status_entry);
@@ -464,11 +464,11 @@ mnb_status_entry_map (ClutterActor *actor)
 }
 
 static void
-mnb_status_entry_unmap (ClutterActor *actor)
+mnb_web_status_entry_unmap (ClutterActor *actor)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_status_entry_parent_class)->unmap (actor);
+  CLUTTER_ACTOR_CLASS (mnb_web_status_entry_parent_class)->unmap (actor);
 
   if (priv->status_entry)
     clutter_actor_unmap (priv->status_entry);
@@ -484,16 +484,16 @@ mnb_status_entry_unmap (ClutterActor *actor)
 }
 
 static gboolean
-mnb_status_entry_button_release (ClutterActor *actor,
+mnb_web_status_entry_button_release (ClutterActor *actor,
                                  ClutterButtonEvent *event)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (actor)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (actor)->priv;
 
   if (event->button == 1)
     {
       if (!priv->is_active)
         {
-          mnb_status_entry_set_is_active (MNB_STATUS_ENTRY (actor), TRUE);
+          mnb_web_status_entry_set_is_active (MNB_WEB_STATUS_ENTRY (actor), TRUE);
 
           return TRUE;
         }
@@ -503,9 +503,9 @@ mnb_status_entry_button_release (ClutterActor *actor,
 }
 
 static void
-mnb_status_entry_style_changed (NbtkWidget *widget)
+mnb_web_status_entry_style_changed (NbtkWidget *widget)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (widget)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (widget)->priv;
   NbtkPadding *padding = NULL;
 
   nbtk_stylable_get (NBTK_STYLABLE (widget),
@@ -525,9 +525,9 @@ mnb_status_entry_style_changed (NbtkWidget *widget)
 }
 
 static void
-mnb_status_entry_finalize (GObject *gobject)
+mnb_web_status_entry_finalize (GObject *gobject)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (gobject)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (gobject)->priv;
 
   g_free (priv->service_name);
   g_free (priv->status_text);
@@ -539,16 +539,16 @@ mnb_status_entry_finalize (GObject *gobject)
   clutter_actor_destroy (priv->status_entry);
   clutter_actor_destroy (priv->button);
 
-  G_OBJECT_CLASS (mnb_status_entry_parent_class)->finalize (gobject);
+  G_OBJECT_CLASS (mnb_web_status_entry_parent_class)->finalize (gobject);
 }
 
 static void
-mnb_status_entry_set_property (GObject      *gobject,
+mnb_web_status_entry_set_property (GObject      *gobject,
                                guint         prop_id,
                                const GValue *value,
                                GParamSpec   *pspec)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (gobject)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (gobject)->priv;
 
   switch (prop_id)
     {
@@ -564,12 +564,12 @@ mnb_status_entry_set_property (GObject      *gobject,
 }
 
 static void
-mnb_status_entry_get_property (GObject    *gobject,
+mnb_web_status_entry_get_property (GObject    *gobject,
                                guint       prop_id,
                                GValue     *value,
                                GParamSpec *pspec)
 {
-  MnbStatusEntryPrivate *priv = MNB_STATUS_ENTRY (gobject)->priv;
+  MnbWebStatusEntryPrivate *priv = MNB_WEB_STATUS_ENTRY (gobject)->priv;
 
   switch (prop_id)
     {
@@ -584,10 +584,10 @@ mnb_status_entry_get_property (GObject    *gobject,
 }
 
 static void
-mnb_status_entry_constructed (GObject *gobject)
+mnb_web_status_entry_constructed (GObject *gobject)
 {
-  MnbStatusEntry *entry = MNB_STATUS_ENTRY (gobject);
-  MnbStatusEntryPrivate *priv = entry->priv;
+  MnbWebStatusEntry *entry = MNB_WEB_STATUS_ENTRY (gobject);
+  MnbWebStatusEntryPrivate *priv = entry->priv;
   gchar *str;
 
   if (priv->service_name != NULL)
@@ -603,32 +603,32 @@ mnb_status_entry_constructed (GObject *gobject)
 
   g_free (str);
 
-  if (G_OBJECT_CLASS (mnb_status_entry_parent_class)->constructed)
-    G_OBJECT_CLASS (mnb_status_entry_parent_class)->constructed (gobject);
+  if (G_OBJECT_CLASS (mnb_web_status_entry_parent_class)->constructed)
+    G_OBJECT_CLASS (mnb_web_status_entry_parent_class)->constructed (gobject);
 }
 
 static void
-mnb_status_entry_class_init (MnbStatusEntryClass *klass)
+mnb_web_status_entry_class_init (MnbWebStatusEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (MnbStatusEntryPrivate));
+  g_type_class_add_private (klass, sizeof (MnbWebStatusEntryPrivate));
 
-  gobject_class->constructed = mnb_status_entry_constructed;
-  gobject_class->set_property = mnb_status_entry_set_property;
-  gobject_class->get_property = mnb_status_entry_get_property;
-  gobject_class->finalize = mnb_status_entry_finalize;
+  gobject_class->constructed = mnb_web_status_entry_constructed;
+  gobject_class->set_property = mnb_web_status_entry_set_property;
+  gobject_class->get_property = mnb_web_status_entry_get_property;
+  gobject_class->finalize = mnb_web_status_entry_finalize;
 
-  actor_class->get_preferred_width = mnb_status_entry_get_preferred_width;
-  actor_class->get_preferred_height = mnb_status_entry_get_preferred_height;
-  actor_class->allocate = mnb_status_entry_allocate;
-  actor_class->paint = mnb_status_entry_paint;
-  actor_class->pick = mnb_status_entry_pick;
-  actor_class->button_release_event = mnb_status_entry_button_release;
-  actor_class->map = mnb_status_entry_map;
-  actor_class->unmap = mnb_status_entry_unmap;
+  actor_class->get_preferred_width = mnb_web_status_entry_get_preferred_width;
+  actor_class->get_preferred_height = mnb_web_status_entry_get_preferred_height;
+  actor_class->allocate = mnb_web_status_entry_allocate;
+  actor_class->paint = mnb_web_status_entry_paint;
+  actor_class->pick = mnb_web_status_entry_pick;
+  actor_class->button_release_event = mnb_web_status_entry_button_release;
+  actor_class->map = mnb_web_status_entry_map;
+  actor_class->unmap = mnb_web_status_entry_unmap;
 
   pspec = g_param_spec_string ("service-name",
                                "Service Name",
@@ -641,7 +641,7 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
     g_signal_new ("status-changed",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbStatusEntryClass, status_changed),
+                  G_STRUCT_OFFSET (MnbWebStatusEntryClass, status_changed),
                   NULL, NULL,
                   mnb_status_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -650,29 +650,29 @@ mnb_status_entry_class_init (MnbStatusEntryClass *klass)
     g_signal_new ("update-cancelled",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbStatusEntryClass, update_cancelled),
+                  G_STRUCT_OFFSET (MnbWebStatusEntryClass, update_cancelled),
                   NULL, NULL,
                   mnb_status_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 }
 
 static void
-mnb_status_entry_init (MnbStatusEntry *self)
+mnb_web_status_entry_init (MnbWebStatusEntry *self)
 {
-  MnbStatusEntryPrivate *priv;
+  MnbWebStatusEntryPrivate *priv;
   ClutterActor *text;
 
-  self->priv = priv = MNB_STATUS_ENTRY_GET_PRIVATE (self);
+  self->priv = priv = MNB_WEB_STATUS_ENTRY_GET_PRIVATE (self);
 
   g_signal_connect (self, "style-changed",
-                    G_CALLBACK (mnb_status_entry_style_changed), NULL);
+                    G_CALLBACK (mnb_web_status_entry_style_changed), NULL);
 
   priv->is_active = FALSE;
 
   priv->status_entry =
     CLUTTER_ACTOR (nbtk_entry_new (_("Enter your current status here...")));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->status_entry),
-                                    "MnbStatusEntryText");
+                                    "MnbWebStatusEntryText");
   clutter_actor_set_parent (priv->status_entry, CLUTTER_ACTOR (self));
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
@@ -684,7 +684,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
   priv->service_label =
     CLUTTER_ACTOR (nbtk_label_new (""));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->service_label),
-                                    "MnbStatusEntrySubText");
+                                    "MnbWebStatusEntrySubText");
   clutter_actor_set_parent (priv->service_label, CLUTTER_ACTOR (self));
   text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->service_label));
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
@@ -704,7 +704,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
 
     priv->cancel_icon = CLUTTER_ACTOR (nbtk_button_new ());
     nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->cancel_icon),
-                                      "MnbStatusEntryCancel");
+                                      "MnbWebStatusEntryCancel");
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->cancel_icon),
                                  cancel_icon);
 
@@ -718,7 +718,7 @@ mnb_status_entry_init (MnbStatusEntry *self)
 
   priv->button = CLUTTER_ACTOR (nbtk_button_new_with_label (_("Edit")));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
-                                    "MnbStatusEntryButton");
+                                    "MnbWebStatusEntryButton");
   clutter_actor_hide (priv->button);
   clutter_actor_set_reactive (priv->button, TRUE);
   clutter_actor_set_parent (priv->button, CLUTTER_ACTOR (self));
@@ -728,20 +728,20 @@ mnb_status_entry_init (MnbStatusEntry *self)
 }
 
 NbtkWidget *
-mnb_status_entry_new (const gchar *service_name)
+mnb_web_status_entry_new (const gchar *service_name)
 {
   g_return_val_if_fail (service_name != NULL, NULL);
 
-  return g_object_new (MNB_TYPE_STATUS_ENTRY,
+  return g_object_new (MNB_TYPE_WEB_STATUS_ENTRY,
                        "service-name", service_name,
                        NULL);
 }
 
 void
-mnb_status_entry_show_button (MnbStatusEntry *entry,
+mnb_web_status_entry_show_button (MnbWebStatusEntry *entry,
                               gboolean        show)
 {
-  g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
+  g_return_if_fail (MNB_IS_WEB_STATUS_ENTRY (entry));
 
   if (show)
     clutter_actor_show (entry->priv->button);
@@ -750,21 +750,21 @@ mnb_status_entry_show_button (MnbStatusEntry *entry,
 }
 
 gboolean
-mnb_status_entry_get_is_active (MnbStatusEntry *entry)
+mnb_web_status_entry_get_is_active (MnbWebStatusEntry *entry)
 {
-  g_return_val_if_fail (MNB_IS_STATUS_ENTRY (entry), FALSE);
+  g_return_val_if_fail (MNB_IS_WEB_STATUS_ENTRY (entry), FALSE);
 
   return entry->priv->is_active;
 }
 
 void
-mnb_status_entry_set_is_active (MnbStatusEntry *entry,
+mnb_web_status_entry_set_is_active (MnbWebStatusEntry *entry,
                                 gboolean        is_active)
 {
-  MnbStatusEntryPrivate *priv;
+  MnbWebStatusEntryPrivate *priv;
   ClutterActor *text;
 
-  g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
+  g_return_if_fail (MNB_IS_WEB_STATUS_ENTRY (entry));
 
   priv = entry->priv;
 
@@ -821,18 +821,18 @@ mnb_status_entry_set_is_active (MnbStatusEntry *entry,
 }
 
 gboolean
-mnb_status_entry_get_in_hover (MnbStatusEntry *entry)
+mnb_web_status_entry_get_in_hover (MnbWebStatusEntry *entry)
 {
-  g_return_val_if_fail (MNB_IS_STATUS_ENTRY (entry), FALSE);
+  g_return_val_if_fail (MNB_IS_WEB_STATUS_ENTRY (entry), FALSE);
 
   return entry->priv->in_hover;
 }
 
 void
-mnb_status_entry_set_in_hover (MnbStatusEntry *entry,
+mnb_web_status_entry_set_in_hover (MnbWebStatusEntry *entry,
                                gboolean        in_hover)
 {
-  g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
+  g_return_if_fail (MNB_IS_WEB_STATUS_ENTRY (entry));
 
   if (entry->priv->in_hover != in_hover)
     {
@@ -851,15 +851,15 @@ mnb_status_entry_set_in_hover (MnbStatusEntry *entry,
 }
 
 void
-mnb_status_entry_set_status_text (MnbStatusEntry *entry,
+mnb_web_status_entry_set_status_text (MnbWebStatusEntry *entry,
                                   const gchar    *status_text,
                                   GTimeVal       *status_time)
 {
-  MnbStatusEntryPrivate *priv;
+  MnbWebStatusEntryPrivate *priv;
   ClutterActor *text;
   gchar *service_line;
 
-  g_return_if_fail (MNB_IS_STATUS_ENTRY (entry));
+  g_return_if_fail (MNB_IS_WEB_STATUS_ENTRY (entry));
   g_return_if_fail (status_text != NULL);
 
   priv = entry->priv;
@@ -887,9 +887,9 @@ mnb_status_entry_set_status_text (MnbStatusEntry *entry,
 }
 
 G_CONST_RETURN gchar *
-mnb_status_entry_get_status_text (MnbStatusEntry *entry)
+mnb_web_status_entry_get_status_text (MnbWebStatusEntry *entry)
 {
-  g_return_val_if_fail (MNB_IS_STATUS_ENTRY (entry), NULL);
+  g_return_val_if_fail (MNB_IS_WEB_STATUS_ENTRY (entry), NULL);
 
   return entry->priv->status_text;
 }

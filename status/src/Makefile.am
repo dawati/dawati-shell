@@ -36,12 +36,12 @@ moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS)
 moblin_panel_status_LDADD    = $(STATUS_LIBS)
 moblin_panel_status_SOURCES  = 	\
 	$(BUILT_SOURCES)	\
-	mnb-status-entry.h	\
-	mnb-status-entry.c	\
-	mnb-web-status-row.h	\
-	mnb-web-status-row.c	\
 	mnb-im-status-row.h	\
 	mnb-im-status-row.c	\
+	mnb-web-status-entry.h	\
+	mnb-web-status-entry.c	\
+	mnb-web-status-row.h	\
+	mnb-web-status-row.c	\
 	moblin-panel-status.c
 
 servicedir = $(datadir)/dbus-1/services

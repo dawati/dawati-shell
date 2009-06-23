@@ -27,7 +27,7 @@
 #include <libmissioncontrol/mission-control.h>
 
 #include "mnb-im-status-row.h"
-#include "mnb-status-entry.h"
+#include "mnb-web-status-entry.h"
 
 #define MNB_IM_STATUS_ROW_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_IM_STATUS_ROW, MnbIMStatusRowPrivate))
 
@@ -140,7 +140,7 @@ mnb_im_status_row_allocate (ClutterActor          *actor,
    * | +---+ | +-----------------------------------+--------+ |
    * +--------------------------------------------------------+
    *
-   *         +-------------- MnbStatusEntry ----------------+
+   *         +-------------- MnbWebStatusEntry ----------------+
    *   icon  |  text                               | button |
    */
 
@@ -234,9 +234,9 @@ mnb_im_status_row_button_release (ClutterActor *actor,
     {
       MnbIMStatusRowPrivate *priv = MNB_IM_STATUS_ROW (actor)->priv;
 
-      if (!mnb_status_entry_get_is_active (MNB_STATUS_ENTRY (priv->entry)))
+      if (!mnb_web_status_entry_get_is_active (MNB_WEB_STATUS_ENTRY (priv->entry)))
         {
-          mnb_status_entry_set_is_active (MNB_STATUS_ENTRY (priv->entry), TRUE);
+          mnb_web_status_entry_set_is_active (MNB_WEB_STATUS_ENTRY (priv->entry), TRUE);
           return TRUE;
         }
     }
@@ -250,12 +250,12 @@ mnb_im_status_row_enter (ClutterActor *actor,
 {
   MnbIMStatusRowPrivate *priv = MNB_IM_STATUS_ROW (actor)->priv;
 
-  if (!mnb_status_entry_get_is_active (MNB_STATUS_ENTRY (priv->entry)))
+  if (!mnb_web_status_entry_get_is_active (MNB_WEB_STATUS_ENTRY (priv->entry)))
     {
-      mnb_status_entry_set_in_hover (MNB_STATUS_ENTRY (priv->entry), TRUE);
+      mnb_web_status_entry_set_in_hover (MNB_WEB_STATUS_ENTRY (priv->entry), TRUE);
 
       if (priv->is_online)
-        mnb_status_entry_show_button (MNB_STATUS_ENTRY (priv->entry), TRUE);
+        mnb_web_status_entry_show_button (MNB_WEB_STATUS_ENTRY (priv->entry), TRUE);
     }
 
   priv->in_hover = TRUE;
@@ -269,12 +269,12 @@ mnb_im_status_row_leave (ClutterActor *actor,
 {
   MnbIMStatusRowPrivate *priv = MNB_IM_STATUS_ROW (actor)->priv;
 
-  if (!mnb_status_entry_get_is_active (MNB_STATUS_ENTRY (priv->entry)))
+  if (!mnb_web_status_entry_get_is_active (MNB_WEB_STATUS_ENTRY (priv->entry)))
     {
-      mnb_status_entry_set_in_hover (MNB_STATUS_ENTRY (priv->entry), FALSE);
+      mnb_web_status_entry_set_in_hover (MNB_WEB_STATUS_ENTRY (priv->entry), FALSE);
 
       if (priv->is_online)
-        mnb_status_entry_show_button (MNB_STATUS_ENTRY (priv->entry), FALSE);
+        mnb_web_status_entry_show_button (MNB_WEB_STATUS_ENTRY (priv->entry), FALSE);
     }
 
   priv->in_hover = FALSE;
@@ -316,7 +316,7 @@ on_mojito_update_status (MojitoClientService *service,
     {
       g_warning ("Unable to update the status: %s", error->message);
 
-      mnb_status_entry_set_status_text (MNB_STATUS_ENTRY (priv->entry),
+      mnb_web_status_entry_set_status_text (MNB_WEB_STATUS_ENTRY (priv->entry),
                                         priv->last_status_text,
                                         NULL);
     }
@@ -324,7 +324,7 @@ on_mojito_update_status (MojitoClientService *service,
 #endif
 
 static void
-on_status_entry_changed (MnbStatusEntry *entry,
+on_status_entry_changed (MnbWebStatusEntry *entry,
                          const gchar    *new_status_text,
                          MnbIMStatusRow   *row)
 {
@@ -336,7 +336,7 @@ on_status_entry_changed (MnbStatusEntry *entry,
   /* save the last status */
   g_free (priv->last_status_text);
   priv->last_status_text =
-    g_strdup (mnb_status_entry_get_status_text (MNB_STATUS_ENTRY (priv->entry)));
+    g_strdup (mnb_web_status_entry_get_status_text (MNB_WEB_STATUS_ENTRY (priv->entry)));
 
 #if 0
   mojito_client_service_update_status (priv->service,
@@ -420,7 +420,7 @@ mnb_im_status_row_constructed (GObject *gobject)
   priv->account = mc_account_lookup (priv->account_name);
   priv->display_name = g_strdup (mc_account_get_display_name (priv->account));
 
-  priv->entry = CLUTTER_ACTOR (mnb_status_entry_new (priv->display_name));
+  priv->entry = CLUTTER_ACTOR (mnb_web_status_entry_new (priv->display_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
   clutter_actor_set_reactive (CLUTTER_ACTOR (priv->entry), FALSE);
