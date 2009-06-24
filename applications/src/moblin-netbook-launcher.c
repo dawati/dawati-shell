@@ -136,9 +136,15 @@ container_has_children (ClutterContainer *container)
 #define LAUNCHER_BUTTON_HEIGHT     79
 #define LAUNCHER_BUTTON_ICON_SIZE  48
 
-#define SCROLLVIEW_OUTER_WIDTH(self_) (clutter_actor_get_width (CLUTTER_ACTOR (self_)) - SCROLLVIEW_RESERVED_WIDTH)
-#define SCROLLVIEW_OUTER_HEIGHT(self_) (clutter_actor_get_height (CLUTTER_ACTOR (self_)) - clutter_actor_get_height (self_->priv->filter_hbox) - 7)
-#define SCROLLVIEW_INNER_WIDTH(self_) (clutter_actor_get_width (CLUTTER_ACTOR (self_)) - SCROLLBAR_RESERVED_WIDTH)
+#define SCROLLVIEW_OUTER_WIDTH(self_)                                          \
+          (clutter_actor_get_width (CLUTTER_ACTOR (self_)) -                   \
+           SCROLLVIEW_RESERVED_WIDTH)
+#define SCROLLVIEW_OUTER_HEIGHT(self_)                                         \
+          (clutter_actor_get_height (CLUTTER_ACTOR (self_)) -                  \
+           clutter_actor_get_height (self_->priv->filter_hbox) - 35)
+#define SCROLLVIEW_INNER_WIDTH(self_)                                          \
+          (clutter_actor_get_width (CLUTTER_ACTOR (self_)) -                   \
+           SCROLLBAR_RESERVED_WIDTH)
 
 #define LAUNCHER_FALLBACK_ICON_NAME "applications-other"
 #define LAUNCHER_FALLBACK_ICON_FILE "/usr/share/icons/moblin/48x48/categories/applications-other.png"
