@@ -99,6 +99,9 @@ guint signals[LAST_SIGNAL] = { 0 };
 static void anerley_tile_view_set_model (AnerleyTileView  *view,
                                          AnerleyFeedModel *model);
 
+#define ROW_SPACING 7
+#define COL_SPACING 1
+
 static void
 anerley_tile_view_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -301,6 +304,9 @@ anerley_tile_view_init (AnerleyTileView *self)
                     "actor-added",
                     (GCallback)_container_actor_added_cb,
                     self);
+
+  nbtk_grid_set_row_gap (NBTK_GRID (self), ROW_SPACING);
+  nbtk_grid_set_column_gap (NBTK_GRID (self), COL_SPACING);
 }
 
 NbtkWidget *
