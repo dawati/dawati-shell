@@ -1157,4 +1157,8 @@ AnerleyTile *.AnerleyTileSecondaryLabel
   padding-bottom: 8;
 }
 
-
+*#people-scroll-bin
+{
+  border-image: url('file://people/scroll-view-bin-bg.png') 10 stretch;
+  padding: 10;
+}
