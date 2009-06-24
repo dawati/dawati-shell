@@ -84,7 +84,7 @@ static void
 panel_hide_end_cb (MplPanelClient *panel,
                    MnbLauncher    *launcher)
 {
-
+  mnb_launcher_clear_filter (launcher);
 }
 
 static void
