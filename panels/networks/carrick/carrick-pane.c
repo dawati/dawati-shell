@@ -991,7 +991,6 @@ carrick_pane_trigger_scan (CarrickPane *pane)
    */
   if (difftime (now, priv->last_scan) < 60)
   {
-    g_free (&priv->last_scan);
     priv->last_scan = time (NULL);
 
     while (devices)
@@ -1007,8 +1006,6 @@ carrick_pane_trigger_scan (CarrickPane *pane)
       devices = devices->next;
     }
   }
-
-  g_free (&now);
 }
 
 GtkWidget*
