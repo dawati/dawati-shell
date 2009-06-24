@@ -8,7 +8,8 @@ dalston_volume_applet_CFLAGS = -I$(top_srcdir) \
 			       $(CANBERRA_CFLAGS) \
 			       $(NBTK_GTK_CFLAGS) \
 			       $(LIBNOTIFY_CFLAGS) \
-			     -DLOCALEDIR=\""$(localedir)"\"
+			       $(MPL_GTK_CFLAGS) \
+			      -DLOCALEDIR=\""$(localedir)"\"
 dalston_volume_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			      $(top_builddir)/libgvc/libgvc.la \
 			      $(top_builddir)/libhal-glib/libhal-glib.la \
@@ -19,7 +20,8 @@ dalston_volume_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			      $(CANBERRA_LIBS) \
 			      $(NBTK_GTK_LIBS) \
 			      $(LIBNOTIFY_LIBS) \
-			      $(GCONF_LIBS)
+			      $(GCONF_LIBS) \
+			      $(MPL_GTK_LIBS)
 dalston_volume_applet_SOURCES = dalston-volume-applet.c moblin-netbook-system-tray.h
 
 dalston_power_applet_CFLAGS = -I$(top_srcdir) \
@@ -30,6 +32,7 @@ dalston_power_applet_CFLAGS = -I$(top_srcdir) \
 			      $(CANBERRA_CFLAGS) \
 			      $(NBTK_GTK_CFLAGS) \
 			      $(LIBNOTIFY_CFLAGS) \
+			      $(MPL_GTK_CFLAGS) \
 			     -DLOCALEDIR=\""$(localedir)"\"
 dalston_power_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			     $(top_builddir)/libgvc/libgvc.la \
@@ -41,5 +44,6 @@ dalston_power_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			     $(GTK_LIBS) \
 			     $(CANBERRA_LIBS) \
 			     $(NBTK_GTK_LIBS) \
-			     $(LIBNOTIFY_LIBS)
+			     $(LIBNOTIFY_LIBS) \
+			     $(MPL_GTK_LIBS)
 dalston_power_applet_SOURCES = dalston-power-applet.c moblin-netbook-system-tray.h
