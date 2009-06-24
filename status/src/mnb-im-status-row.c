@@ -22,6 +22,7 @@
 #endif
 
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <stdlib.h>
 
 #include <libmissioncontrol/mission-control.h>
@@ -54,6 +55,9 @@ struct _MnbIMStatusRowPrivate
   gfloat icon_separator_x;
 
   McAccount *account;
+
+  TpConnectionPresenceType presence;
+  gchar *status;
 };
 
 enum
@@ -423,14 +427,13 @@ mnb_im_status_row_constructed (GObject *gobject)
   priv->entry = CLUTTER_ACTOR (mnb_web_status_entry_new (priv->display_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
-  clutter_actor_set_reactive (CLUTTER_ACTOR (priv->entry), FALSE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (priv->entry), TRUE);
   clutter_actor_set_opacity (CLUTTER_ACTOR (priv->entry), 128);
   g_signal_connect (priv->entry, "status-changed",
                     G_CALLBACK (on_status_entry_changed),
                     row);
 
-  /* we check if we're online first */
-  priv->is_online = TRUE;
+  priv->is_online = FALSE;
 
   if (G_OBJECT_CLASS (mnb_im_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_im_status_row_parent_class)->constructed (gobject);
@@ -523,6 +526,82 @@ mnb_im_status_row_new (const gchar *account_name)
 }
 
 void
-mnb_im_status_row_force_update (MnbIMStatusRow *row)
+mnb_im_status_row_set_online (MnbIMStatusRow *row,
+                              gboolean        is_online)
 {
+  MnbIMStatusRowPrivate *priv;
+
+  g_return_if_fail (MNB_IS_IM_STATUS_ROW (row));
+
+  priv = row->priv;
+
+  if (priv->is_online != is_online)
+    {
+      priv->is_online = is_online;
+
+      clutter_actor_set_opacity (priv->icon, priv->is_online ? 0xff : 0x88);
+      clutter_actor_set_opacity (priv->entry, priv->is_online ? 0xff : 0x88);
+      clutter_actor_set_reactive (CLUTTER_ACTOR (row),
+                                  priv->is_online);
+    }
+}
+
+void
+mnb_im_status_row_set_status (MnbIMStatusRow           *row,
+                              TpConnectionPresenceType  presence,
+                              const gchar              *status)
+{
+  MnbIMStatusRowPrivate *priv;
+
+  g_return_if_fail (MNB_IS_IM_STATUS_ROW (row));
+
+  priv = row->priv;
+
+  priv->presence = presence;
+
+  if (status == NULL || *status == '\0')
+    {
+      switch (priv->presence)
+        {
+        case TP_CONNECTION_PRESENCE_TYPE_OFFLINE:
+        case TP_CONNECTION_PRESENCE_TYPE_UNSET:
+          status = _("Offline");
+          break;
+
+        case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
+          status = _("Available");
+          break;
+
+        case TP_CONNECTION_PRESENCE_TYPE_AWAY:
+          status = _("Away");
+          break;
+
+        case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
+          status = _("Away");
+          break;
+
+        case TP_CONNECTION_PRESENCE_TYPE_HIDDEN:
+          status = _("Hidden");
+          break;
+
+        case TP_CONNECTION_PRESENCE_TYPE_BUSY:
+          status = _("Do Not Disturb");
+          break;
+
+        default:
+          status = NULL;
+          break;
+        }
+    }
+
+  g_free (priv->status);
+  priv->status = g_strdup (status);
+
+  if (priv->entry == NULL)
+    return;
+
+  if (priv->status != NULL)
+    mnb_web_status_entry_set_status_text (MNB_WEB_STATUS_ENTRY (priv->entry),
+                                          priv->status,
+                                          NULL);
 }

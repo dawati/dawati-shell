@@ -21,6 +21,7 @@
 #define __MNB_IM_STATUS_ROW_H__
 
 #include <nbtk/nbtk.h>
+#include <telepathy-glib/util.h>
 
 G_BEGIN_DECLS
 
@@ -49,9 +50,13 @@ struct _MnbIMStatusRowClass
 
 GType mnb_im_status_row_get_type (void);
 
-NbtkWidget *mnb_im_status_row_new (const gchar *account_name);
+NbtkWidget *mnb_im_status_row_new        (const gchar              *account_name);
 
-void mnb_im_status_row_force_update (MnbIMStatusRow *row);
+void        mnb_im_status_row_set_online (MnbIMStatusRow           *row,
+                                          gboolean                  is_online);
+void        mnb_im_status_row_set_status (MnbIMStatusRow           *row,
+                                          TpConnectionPresenceType  presence,
+                                          const gchar              *status);
 
 G_END_DECLS
 

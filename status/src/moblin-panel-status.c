@@ -35,6 +35,8 @@
 
 #include <mojito-client/mojito-client.h>
 
+#include <telepathy-glib/dbus.h>
+#include <telepathy-glib/util.h>
 #include <libmissioncontrol/mission-control.h>
 
 #include <moblin-panel/mpl-panel-clutter.h>
@@ -47,9 +49,32 @@
 #define PADDING         8
 #define BORDER_WIDTH    4
 
+typedef struct _MoblinStatusPanel
+{
+  ClutterActor *table;
+  ClutterActor *empty_bin;
+  ClutterActor *header_label;
+
+  MojitoClient *mojito_client;
+  MissionControl *mc;
+
+  GSList *services;
+  GSList *accounts;
+
+  gint n_web_visible;
+  gint n_im_visible;
+
+  guint is_online : 1;
+
+  TpConnectionPresenceType im_presence;
+  gchar *im_status;
+} MoblinStatusPanel;
+
 typedef struct _ServiceInfo
 {
   gchar *name;
+
+  MoblinStatusPanel *panel;
 
   MojitoClientService *service;
   ClutterActor *row;
@@ -64,6 +89,8 @@ typedef struct _AccountInfo
 {
   gchar *name;
 
+  MoblinStatusPanel *panel;
+
   McAccount *account;
   ClutterActor *row;
   NbtkTable *table;
@@ -71,8 +98,171 @@ typedef struct _AccountInfo
   guint is_visible : 1;
 } AccountInfo;
 
-static ClutterActor *empty_bin = NULL;
-static guint n_visible = 0;
+static McAccount *
+account_find_by_name (MoblinStatusPanel *panel,
+                      const gchar       *name)
+{
+  GSList *l;
+
+  for (l = panel->accounts; l != NULL; l = l->next)
+    {
+      AccountInfo *a_info = l->data;
+
+      if (strcmp (a_info->name, name) == 0)
+        return a_info->account;
+    }
+
+  return NULL;
+}
+
+static void
+add_account (MoblinStatusPanel *panel,
+             AccountInfo       *a_info)
+{
+  a_info->row = g_object_new (MNB_TYPE_IM_STATUS_ROW,
+                              "account-name", a_info->name,
+                              NULL);
+
+  nbtk_table_add_actor_with_properties (a_info->table,
+                                        a_info->row,
+                                        -1, 0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+  mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
+                                panel->is_online);
+  mnb_im_status_row_set_status (MNB_IM_STATUS_ROW (a_info->row),
+                                panel->im_presence,
+                                panel->im_status);
+}
+
+static void
+on_mc_presence_changed (MissionControl           *mc,
+                        TpConnectionPresenceType  state,
+                        gchar                    *status,
+                        MoblinStatusPanel        *panel)
+{
+  GSList *accounts, *l, *cur_accounts;
+  GError *internal_error = NULL;
+  const gchar *state_str = NULL;
+
+  switch (state)
+    {
+    case TP_CONNECTION_PRESENCE_TYPE_OFFLINE:
+      state_str = "offline";
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_UNSET:
+      state_str = "unset";
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
+      state_str = "available";
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_AWAY:
+      state_str = "away";
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
+      state_str = "extended away";
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_HIDDEN:
+      state_str = "hidden";
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_BUSY:
+      state_str = "busy";
+      break;
+
+    default:
+      state_str = "unknown";
+      break;
+    }
+
+  g_debug ("%s: PresenceChanged [%s, '%s']",
+           G_STRLOC,
+           state_str,
+           status);
+
+  cur_accounts = NULL;
+  accounts = mission_control_get_online_connections (mc, &internal_error);
+  for (l = accounts; l != NULL; l = l->next)
+    {
+      McAccount *account = l->data;
+      AccountInfo *a_info;
+      const gchar *name;
+
+      name = mc_account_get_unique_name (account);
+      if (account_find_by_name (panel, name) != NULL)
+        continue;
+
+      a_info = g_slice_new (AccountInfo);
+      a_info->name = g_strdup (name);
+      a_info->panel = panel;
+      a_info->account = g_object_ref (account);
+      a_info->row = NULL;
+      a_info->table = NBTK_TABLE (panel->table);
+      a_info->is_visible = FALSE;
+
+      add_account (panel, a_info);
+
+      cur_accounts = g_slist_prepend (cur_accounts, a_info);
+    }
+
+  panel->im_presence = state;
+
+  g_free (panel->im_status);
+  panel->im_status = status != NULL ? g_strdup (status) : "";
+
+  if (panel->accounts == NULL)
+    panel->accounts = g_slist_reverse (cur_accounts);
+  else
+    panel->accounts->next = g_slist_reverse (cur_accounts);
+
+  g_debug ("%s: available accounts: %d",
+           G_STRLOC,
+           g_slist_length (panel->accounts));
+
+  panel->n_im_visible = g_slist_length (panel->accounts);
+
+  for (l = panel->accounts; l != NULL; l = l->next)
+    {
+      AccountInfo *a_info = l->data;
+
+      if (panel->is_online)
+        {
+          g_assert (a_info->row != NULL);
+
+          clutter_actor_show (a_info->row);
+          a_info->is_visible = TRUE;
+        }
+      else
+        {
+          g_assert (a_info->row != NULL);
+
+          clutter_actor_hide (a_info->row);
+          a_info->is_visible = FALSE;
+        }
+
+      mnb_im_status_row_set_status (MNB_IM_STATUS_ROW (a_info->row),
+                                    panel->im_presence,
+                                    panel->im_status);
+      mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
+                                    panel->is_online);
+    }
+
+  g_debug ("%s: IM visible rows: %d", G_STRLOC, panel->n_im_visible);
+}
 
 static void
 on_caps_changed (MojitoClientService *service,
@@ -124,10 +314,8 @@ on_caps_changed (MojitoClientService *service,
           clutter_actor_show (s_info->row);
           s_info->is_visible = TRUE;
 
-          n_visible += 1;
+          s_info->panel->n_web_visible += 1;
         }
-
-      g_debug ("%s: showing row for service '%s'", G_STRLOC, s_info->name);
     }
   else
     {
@@ -139,16 +327,16 @@ on_caps_changed (MojitoClientService *service,
           clutter_actor_hide (s_info->row);
           s_info->is_visible = FALSE;
 
-          n_visible -= 1;
+          s_info->panel->n_web_visible -= 1;
         }
-
-      g_debug ("%s: hiding row for service '%s'", G_STRLOC, s_info->name);
     }
 
-  if (n_visible == 0)
-    clutter_actor_show (empty_bin);
+  g_debug ("%s: Web visible rows: %u", G_STRLOC, s_info->panel->n_web_visible);
+
+  if (s_info->panel->n_web_visible <= 0)
+    clutter_actor_show (s_info->panel->empty_bin);
   else
-    clutter_actor_hide (empty_bin);
+    clutter_actor_hide (s_info->panel->empty_bin);
 }
 
 static void
@@ -175,9 +363,11 @@ on_mojito_get_services (MojitoClient *client,
                         const GList  *services,
                         gpointer      data)
 {
-  NbtkTable *table = data;
+  MoblinStatusPanel *panel = data;
+  GSList *new_services, *l;
   const GList *s;
 
+  new_services = NULL;
   for (s = services; s != NULL; s = s->next)
     {
       const gchar *service_name = s->data;
@@ -198,10 +388,11 @@ on_mojito_get_services (MojitoClient *client,
       g_debug ("%s: GetServices ['%s']", G_STRLOC, service_name);
 
       s_info = g_slice_new (ServiceInfo);
+      s_info->panel = panel;
       s_info->name = g_strdup (service_name);
       s_info->service = service;
       s_info->row = NULL;
-      s_info->table = table;
+      s_info->table = NBTK_TABLE (panel->table);
       s_info->can_update = FALSE;
       s_info->has_icon = FALSE;
       s_info->is_visible = FALSE;
@@ -212,7 +403,15 @@ on_mojito_get_services (MojitoClient *client,
       mojito_client_service_get_capabilities (s_info->service,
                                               get_caps,
                                               s_info);
+
+      new_services = g_slist_prepend (new_services, s_info);
     }
+
+  for (l = panel->services; l != NULL; l = l->next)
+    g_slice_free (ServiceInfo, l->data);
+
+  g_slist_free (panel->services);
+  panel->services = g_slist_reverse (new_services);
 }
 
 static void
@@ -226,11 +425,138 @@ update_header (NbtkLabel *header,
 }
 
 static void
-on_mojito_online_changed (MojitoClient *client,
-                          gboolean      is_online,
-                          NbtkLabel    *label)
+update_mc (MoblinStatusPanel *panel,
+           gboolean           is_online)
 {
-  update_header (label, is_online);
+  McPresence cur_state, mc_state = MC_PRESENCE_UNSET;
+  const gchar *mc_status = NULL;
+  const gchar *state_str = NULL;
+  GError *error = NULL;
+
+  switch (panel->im_presence)
+    {
+    case TP_CONNECTION_PRESENCE_TYPE_OFFLINE:
+      cur_state = MC_PRESENCE_OFFLINE;
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
+      cur_state = MC_PRESENCE_AVAILABLE;
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_AWAY:
+      cur_state = MC_PRESENCE_AWAY;
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
+      cur_state = MC_PRESENCE_EXTENDED_AWAY;
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_HIDDEN:
+      cur_state = MC_PRESENCE_HIDDEN;
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_BUSY:
+      cur_state = MC_PRESENCE_DO_NOT_DISTURB;
+      break;
+
+    default:
+      cur_state = MC_PRESENCE_UNSET;
+      break;
+    }
+
+  mc_state = mission_control_get_presence_actual (panel->mc, &error);
+  if (error)
+    {
+      g_warning ("Unable to get the actual presence: %s", error->message);
+      g_clear_error (&error);
+
+      mc_state = MC_PRESENCE_OFFLINE;
+    }
+
+  mc_status = mission_control_get_presence_message_actual (panel->mc, &error);
+  if (error)
+    {
+      g_warning ("Unable to get the actual status: %s", error->message);
+      g_clear_error (&error);
+
+      mc_status = _("Offline");
+    }
+
+  switch (mc_state)
+    {
+    case MC_PRESENCE_AVAILABLE:
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AVAILABLE;
+      state_str = _("Available");
+      break;
+
+    case MC_PRESENCE_AWAY:
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AWAY;
+      state_str = _("Away");
+      break;
+
+    case MC_PRESENCE_EXTENDED_AWAY:
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY;
+      state_str = _("Away");
+      break;
+
+    case MC_PRESENCE_HIDDEN:
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_HIDDEN;
+      state_str = _("Busy");
+      break;
+
+    case MC_PRESENCE_DO_NOT_DISTURB:
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_BUSY;
+      state_str = _("Busy");
+      break;
+
+    default:
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_OFFLINE;
+      state_str = _("Offline");
+      break;
+    }
+
+  g_free (panel->im_status);
+  panel->im_status = mc_status == NULL ? g_strdup (mc_status)
+                                       : g_strdup (state_str);
+
+  /* if we are not online, don't bother */
+  if (!is_online)
+    return;
+
+  if (cur_state == MC_PRESENCE_UNSET || cur_state == mc_state)
+    {
+      g_debug ("%s: same presence [%d, '%s']",
+               G_STRLOC,
+               panel->im_presence,
+               panel->im_status);
+      on_mc_presence_changed (panel->mc,
+                              panel->im_presence,
+                              panel->im_status,
+                              panel);
+    }
+  else
+    {
+      g_debug ("%s: setting new presence [%d, '%s']",
+               G_STRLOC,
+               panel->im_presence,
+               panel->im_status);
+      mission_control_set_presence (panel->mc, mc_state, panel->im_status,
+                                    NULL,
+                                    NULL);
+    }
+}
+
+static void
+on_mojito_online_changed (MojitoClient      *client,
+                          gboolean           is_online,
+                          MoblinStatusPanel *panel)
+{
+  g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
+
+  panel->is_online = is_online;
+
+  update_header (NBTK_LABEL (panel->header_label), is_online);
+  update_mc (panel, is_online);
 }
 
 static void
@@ -238,76 +564,14 @@ on_mojito_is_online (MojitoClient *client,
                      gboolean      is_online,
                      gpointer      data)
 {
-  NbtkLabel *label = data;
+  MoblinStatusPanel *panel = data;
 
-  update_header (label, is_online);
-}
+  g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
 
-static gboolean
-add_account (gpointer user_data)
-{
-  AccountInfo *a_info = user_data;
+  panel->is_online = is_online;
 
-  a_info->row = g_object_new (MNB_TYPE_IM_STATUS_ROW,
-                              "account-name", a_info->name,
-                              NULL);
-
-  nbtk_table_add_actor_with_properties (a_info->table,
-                                        a_info->row,
-                                        -1, 0,
-                                        "row-span", 1,
-                                        "col-span", 1,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", TRUE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.0,
-                                        "allocate-hidden", FALSE,
-                                        NULL);
-
-  g_free (a_info->name);
-  g_object_unref (a_info->account);
-  g_slice_free (AccountInfo, a_info);
-
-  return FALSE;
-}
-
-static void
-on_mc_get_online (MissionControl *mc,
-                  GError         *error,
-                  gpointer        data)
-{
-  NbtkTable *table = data;
-  GSList *accounts, *a;
-  GError *internal_error;
-
-  if (error)
-    {
-      g_warning ("Unable to go online: %s", error->message);
-      g_error_free (error);
-
-      return;
-    }
-
-  internal_error = NULL;
-  accounts = mission_control_get_online_connections (mc, &internal_error);
-  for (a = accounts; a != NULL; a = a->next)
-    {
-      McAccount *account = a->data;
-      AccountInfo *a_info;
-
-      a_info = g_slice_new (AccountInfo);
-      a_info->name = g_strdup (mc_account_get_unique_name (account));
-      a_info->account = g_object_ref (account);
-      a_info->row = NULL;
-      a_info->table = table;
-      a_info->is_visible = FALSE;
-
-      clutter_threads_add_idle (add_account, a_info);
-    }
-
-  g_slist_free (accounts);
+  update_header (NBTK_LABEL (panel->header_label), is_online);
+  update_mc (panel, is_online);
 }
 
 #if 0
@@ -453,17 +717,16 @@ make_empty_status_tile (gint width)
 #endif
 
 static ClutterActor *
-make_status (void)
+make_status (MoblinStatusPanel *panel)
 {
   ClutterActor *table;
   NbtkWidget *header, *label;
-  MojitoClient *client;
-  MissionControl *mc;
 
   table = CLUTTER_ACTOR (nbtk_table_new ());
   nbtk_widget_set_style_class_name (NBTK_WIDGET (table), "MnbStatusPageTable");
   nbtk_table_set_row_spacing (NBTK_TABLE (table), 6);
   clutter_actor_set_reactive (table, TRUE);
+  panel->table = table;
 
   header = nbtk_label_new (_("Your current status"));
   nbtk_widget_set_style_class_name (header, "MnbStatusPageHeader");
@@ -477,12 +740,16 @@ make_status (void)
                                         "x-align", 0.0,
                                         "y-align", 0.5,
                                         NULL);
+  panel->header_label = CLUTTER_ACTOR (header);
 
-  empty_bin = CLUTTER_ACTOR (nbtk_bin_new ());
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (empty_bin), "status-empty-bin");
-  nbtk_bin_set_alignment (NBTK_BIN (empty_bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
-  nbtk_bin_set_fill (NBTK_BIN (empty_bin), TRUE, FALSE);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (table), empty_bin,
+  panel->empty_bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (panel->empty_bin),
+                                    "status-empty-bin");
+  nbtk_bin_set_alignment (NBTK_BIN (panel->empty_bin),
+                          NBTK_ALIGN_LEFT,
+                          NBTK_ALIGN_CENTER);
+  nbtk_bin_set_fill (NBTK_BIN (panel->empty_bin), TRUE, FALSE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (table), panel->empty_bin,
                                         1, 0,
                                         "x-expand", TRUE,
                                         "y-expand", FALSE,
@@ -499,34 +766,44 @@ make_status (void)
                             "a Web Services account with a provider that "
                             "supports status messages"));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-empty-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (empty_bin),
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel->empty_bin),
                                CLUTTER_ACTOR (label));
 
-  /* mojito: web services */
-  client = mojito_client_new ();
+  /* mission control: instant messaging
+   *
+   * we need MC first because the online/offline notification is
+   * managed through Mojito; XXX yes, this is dumb - Moblin needs
+   * a "shell" library that notifies when we're online or offline
+   */
+  panel->mc = mission_control_new (tp_get_bus ());
+  panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_UNSET;
+  panel->im_status = NULL;
 
-  /* online notification on the header */
-  mojito_client_is_online (client, on_mojito_is_online, header);
-  g_signal_connect (client, "online-changed",
-                    G_CALLBACK (on_mojito_online_changed),
-                    header);
-
-  /* start retrieving the services */
-  mojito_client_get_services (client, on_mojito_get_services, table);
-  g_object_set_data_full (G_OBJECT (table), "mojito-client",
-                          client,
-                          (GDestroyNotify) g_object_unref);
-
-  /* mission control: instant messaging */
-  mc = mission_control_new (dbus_g_bus_get (DBUS_BUS_SESSION, NULL));
-
-  /* connect everything */
-  mission_control_connect_all_with_default_presence (mc,
-                                                     on_mc_get_online,
-                                                     table);
+  /* update the status when the presence changes */
+  dbus_g_proxy_connect_signal (DBUS_G_PROXY (panel->mc),
+                               "PresenceChanged",
+                               G_CALLBACK (on_mc_presence_changed),
+                               panel, NULL);
 
   g_object_set_data_full (G_OBJECT (table), "mission-control",
-                          mc,
+                          panel->mc,
+                          (GDestroyNotify) g_object_unref);
+
+  /* mojito: web services */
+  panel->mojito_client = mojito_client_new ();
+
+  /* online notification on the header */
+  mojito_client_is_online (panel->mojito_client, on_mojito_is_online, panel);
+  g_signal_connect (panel->mojito_client, "online-changed",
+                    G_CALLBACK (on_mojito_online_changed),
+                    panel);
+
+  /* start retrieving the services */
+  mojito_client_get_services (panel->mojito_client,
+                              on_mojito_get_services,
+                              panel);
+  g_object_set_data_full (G_OBJECT (table), "mojito-client",
+                          panel->mojito_client,
                           (GDestroyNotify) g_object_unref);
 
   return table;
@@ -542,11 +819,11 @@ resize_status (ClutterActor           *stage,
 }
 
 static void
-setup_standalone (void)
+setup_standalone (MoblinStatusPanel *status_panel)
 {
   ClutterActor *stage, *status;
 
-  status = make_status ();
+  status = make_status (status_panel);
 
   stage = clutter_stage_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
@@ -563,7 +840,7 @@ setup_standalone (void)
 }
 
 static void
-setup_panel (void)
+setup_panel (MoblinStatusPanel *status_panel)
 {
   MplPanelClient *panel;
   ClutterActor *stage, *status;
@@ -574,7 +851,7 @@ setup_panel (void)
                                  "status-button",
                                  TRUE);
 
-  status = make_status ();
+  status = make_status (status_panel);
 
 #if 0
   g_signal_connect (panel,
@@ -612,6 +889,7 @@ static GOptionEntry status_options[] = {
 int
 main (int argc, char *argv[])
 {
+  MoblinStatusPanel *panel;
   GError *error;
 
   error = NULL;
@@ -637,12 +915,16 @@ main (int argc, char *argv[])
       g_clear_error (&error);
     }
 
+  panel = g_new0 (MoblinStatusPanel, 1);
+
   if (status_standalone)
-    setup_standalone ();
+    setup_standalone (panel);
   else
-    setup_panel ();
+    setup_panel (panel);
 
   clutter_main ();
+
+  g_free (panel);
 
   return EXIT_SUCCESS;
 }
