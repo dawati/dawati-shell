@@ -521,8 +521,9 @@ _device_updated_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->wifi_label,
 				    FALSE);
         gtk_widget_show (priv->wifi_label);
+        /* Only enable "Add new connection" button when wifi powered on */
         gtk_widget_set_sensitive (priv->new_conn_button,
-                                  TRUE);
+                                  state);
         g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
                           "switch-flipped",
                           G_CALLBACK (_wifi_switch_callback),
