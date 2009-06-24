@@ -858,7 +858,7 @@ AhoghillQueueTile > *.AhoghillSecondaryLabel {
 AhoghillPlaylistHeader {
   padding-left: 15;
   padding-right: 15;
-  padding-top: 2; 
+  padding-top: 2;
 }
 
 AhoghillPlaylistHeader.Top {
