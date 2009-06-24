@@ -2,7 +2,6 @@
 #define __AHOGHILL_PLAYLIST_HEADER_H__
 
 #include <nbtk/nbtk.h>
-#include <bickley/bkl.h>
 
 G_BEGIN_DECLS
 
@@ -44,12 +43,10 @@ struct _AhoghillPlaylistHeaderClass
 };
 
 GType ahoghill_playlist_header_get_type (void) G_GNUC_CONST;
-void ahoghill_playlist_header_set_item (AhoghillPlaylistHeader *header,
-                                        BklItem                *item);
 void ahoghill_playlist_header_set_can_play (AhoghillPlaylistHeader *header,
                                             gboolean                can_play);
-void ahoghill_playlist_header_set_position (AhoghillPlaylistHeader *header,
-                                            double                  position);
+void ahoghill_playlist_header_set_playing (AhoghillPlaylistHeader *header,
+                                           gboolean                playing);
 
 G_END_DECLS
 

@@ -14,6 +14,7 @@ struct _AhoghillPlaylistPrivate {
     AhoghillGridView *gridview;
     AhoghillPlaylistHeader *header;
     AhoghillQueueList *list;
+    AhoghillPlaylistNp *now_playing;
 
     BrQueue *queue;
 };
@@ -113,9 +114,9 @@ header_playing_cb (AhoghillPlaylistHeader *header,
 }
 
 static void
-header_position_changed_cb (AhoghillPlaylistHeader *header,
-                            double                  position,
-                            AhoghillPlaylist       *playlist)
+header_position_changed_cb (AhoghillPlaylistNp *now_playing,
+                            double              position,
+                            AhoghillPlaylist   *playlist)
 {
     AhoghillPlaylistPrivate *priv = playlist->priv;
 
@@ -136,8 +137,7 @@ ahoghill_playlist_init (AhoghillPlaylist *self)
         ((AhoghillPlaylistHeader *) priv->header, FALSE);
     g_signal_connect (priv->header, "playing",
                       G_CALLBACK (header_playing_cb), self);
-    g_signal_connect (priv->header, "position-changed",
-                      G_CALLBACK (header_position_changed_cb), self);
+
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           (ClutterActor *) priv->header, 0, 0,
                                           "x-expand", TRUE,
@@ -154,6 +154,10 @@ ahoghill_playlist_init (AhoghillPlaylist *self)
                                           "x-align", 0.0,
                                           "y-align", 0.0,
                                           NULL);
+    priv->now_playing = ahoghill_queue_list_get_np (priv->list);
+    g_signal_connect (priv->now_playing, "position-changed",
+                      G_CALLBACK (header_position_changed_cb), self);
+
 }
 
 AhoghillPlaylist *
@@ -220,9 +224,12 @@ now_playing_changed_cb (BrQueue          *queue,
         item = ahoghill_grid_view_get_item (priv->gridview, uri);
     }
 
-    ahoghill_playlist_header_set_item (priv->header, item);
     ahoghill_playlist_header_set_can_play (priv->header, item != NULL);
-    ahoghill_playlist_header_set_position (priv->header, 0.0);
+
+    ahoghill_queue_list_now_playing_set_showing (priv->list, item != NULL);
+
+    ahoghill_playlist_np_set_item (priv->now_playing, item);
+    ahoghill_playlist_np_set_position (priv->now_playing, 0.0);
 }
 
 static void
@@ -237,7 +244,7 @@ position_changed_cb (BrQueue          *queue,
         return;
     }
 
-    ahoghill_playlist_header_set_position (priv->header, position);
+    ahoghill_playlist_np_set_position (priv->now_playing, position);
 }
 
 static void

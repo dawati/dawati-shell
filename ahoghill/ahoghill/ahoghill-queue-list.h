@@ -4,6 +4,8 @@
 #include <nbtk/nbtk.h>
 #include <bickley/bkl.h>
 
+#include "ahoghill-playlist-np.h"
+
 G_BEGIN_DECLS
 
 #define AHOGHILL_TYPE_QUEUE_LIST                                        \
@@ -33,14 +35,14 @@ typedef struct _AhoghillQueueListClass AhoghillQueueListClass;
 
 struct _AhoghillQueueList
 {
-    NbtkScrollView parent;
+    NbtkWidget parent;
 
     AhoghillQueueListPrivate *priv;
 };
 
 struct _AhoghillQueueListClass
 {
-    NbtkScrollViewClass parent_class;
+    NbtkWidgetClass parent_class;
 };
 
 GType ahoghill_queue_list_get_type (void) G_GNUC_CONST;
@@ -50,7 +52,9 @@ void ahoghill_queue_list_add_item (AhoghillQueueList *list,
 void ahoghill_queue_list_remove (AhoghillQueueList *list,
                                  int                index);
 int ahoghill_queue_list_get_item_count (AhoghillQueueList *list);
-
+AhoghillPlaylistNp *ahoghill_queue_list_get_np (AhoghillQueueList *list);
+void ahoghill_queue_list_now_playing_set_showing (AhoghillQueueList *list,
+                                                  gboolean           showing);
 
 G_END_DECLS
 
