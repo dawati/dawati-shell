@@ -404,36 +404,38 @@ _new_connection_cb (GtkButton *button,
     if (network == NULL)
       return;
 
-    devices = cm_manager_get_devices (priv->manager);
-    device = CM_DEVICE (devices->data);
-    while (device)
+    for (devices = cm_manager_get_devices (priv->manager);
+         devices != NULL && !joined;
+         devices = devices->next)
     {
-      if (cm_device_get_type (device) == DEVICE_WIFI)
+      device = devices->data;
+
+      if (CM_IS_DEVICE (device))
       {
-	if (g_strcmp0 (security, "WPA2") == 0)
-	{
-	  g_free (security);
-	  security = g_strdup ("rsn");
-	}
-	else
-	{
-	  guint i;
-	  for (i = 0; security[i] != '\0'; i++)
-	  {
-	    security[i] = g_ascii_tolower (security[i]);
-	  }
-	}
-        joined = cm_device_join_network (device,
-                                         network,
-                                         security,
-                                         secret);
-        device = NULL;
-      }
-      else
-      {
-        device = CM_DEVICE (devices->next);
+        CmDeviceType type = cm_device_get_type (device);
+        if (type == DEVICE_WIFI)
+        {
+          if (g_strcmp0 (security, "WPA2") == 0)
+          {
+            g_free (security);
+            security = g_strdup ("rsn");
+          }
+          else
+          {
+            guint i;
+            for (i = 0; security[i] != '\0'; i++)
+            {
+              security[i] = g_ascii_tolower (security[i]);
+            }
+          }
+          joined = cm_device_join_network (device,
+                                           network,
+                                           security,
+                                           secret);
+        }
       }
     }
+    /* Need some error handling here */
   }
   gtk_widget_destroy (dialog);
 }
