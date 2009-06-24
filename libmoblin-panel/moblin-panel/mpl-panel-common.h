@@ -18,10 +18,10 @@
 #define MPL_PANEL_APPLICATIONS "applications"
 #define MPL_PANEL_PEOPLE       "people"
 #define MPL_PANEL_PASTEBOARD   "pasteboard"
-#define MPL_PANEL_NETWORK      "tray-button-wifi"
-#define MPL_PANEL_BLUETOOTH    "tray-button-bluetooth"
-#define MPL_PANEL_VOLUME       "tray-button-sound"
-#define MPL_PANEL_POWER        "tray-button-battery"
+#define MPL_PANEL_NETWORK      "network"
+#define MPL_PANEL_BLUETOOTH    "bluetooth"
+#define MPL_PANEL_VOLUME       "volume"
+#define MPL_PANEL_POWER        "power"
 #define MPL_PANEL_TEST         "test"
 
 #endif

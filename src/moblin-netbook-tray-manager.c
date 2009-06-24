@@ -414,27 +414,27 @@ check_child (ShellTrayManagerChild *child)
           if (!strcmp (my_type, "bluetooth"))
             {
               child_type = CHILD_BLUETOOTH;
-              clutter_actor_set_name (child->actor, "tray-button-bluetooth");
+              clutter_actor_set_name (child->actor, "bluetooth");
             }
           else if (!strcmp (my_type, "wifi"))
             {
               child_type = CHILD_WIFI;
-              clutter_actor_set_name (child->actor, "tray-button-wifi");
+              clutter_actor_set_name (child->actor, "network");
             }
           else if (!strcmp (my_type, "sound"))
             {
               child_type = CHILD_SOUND;
-              clutter_actor_set_name (child->actor, "tray-button-sound");
+              clutter_actor_set_name (child->actor, "volume");
             }
           else if (!strcmp (my_type, "battery"))
             {
               child_type = CHILD_BATTERY;
-              clutter_actor_set_name (child->actor, "tray-button-battery");
+              clutter_actor_set_name (child->actor, "power");
             }
           else if (!strcmp (my_type, "test"))
             {
               child_type = CHILD_TEST;
-              clutter_actor_set_name (child->actor, "tray-button-test");
+              clutter_actor_set_name (child->actor, "test");
             }
 
           XFree (my_type);
