@@ -2,6 +2,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 INCLUDES = \
 	-I$(top_srcdir)/status \
+	-I$(top_srcdir)/libmoblin-panel \
 	-DG_LOG_DOMAIN=\"Mutter-Moblin-Status\" \
 	-DPREFIX=\"$(prefix)\" \
 	-DDATADIR=\"$(datadir)\" \
@@ -33,7 +34,8 @@ libexec_PROGRAMS = moblin-panel-status
 BUILT_SOURCES = mnb-status-marshal.h mnb-status-marshal.c
 
 moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS)
-moblin_panel_status_LDADD    = $(STATUS_LIBS)
+moblin_panel_status_LDADD    = $(STATUS_LIBS) $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la
+moblin_panel_status_DEPENDENCIES = $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la
 moblin_panel_status_SOURCES  = 	\
 	$(BUILT_SOURCES)	\
 	mnb-im-status-row.h	\

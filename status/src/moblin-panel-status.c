@@ -37,6 +37,9 @@
 
 #include <libmissioncontrol/mission-control.h>
 
+#include <moblin-panel/mpl-panel-clutter.h>
+#include <moblin-panel/mpl-panel-common.h>
+
 #include "mnb-web-status-row.h"
 #include "mnb-im-status-row.h"
 
@@ -307,7 +310,149 @@ on_mc_get_online (MissionControl *mc,
   g_slist_free (accounts);
 }
 
-ClutterActor *
+#if 0
+static ClutterActor *
+make_empty_status_tile (gint width)
+{
+  NbtkWidget *tile;
+  NbtkWidget *bin;
+  NbtkWidget *label;
+  ClutterActor *tmp_text;
+  NbtkWidget *hbox;
+
+  tile = nbtk_table_new ();
+  nbtk_table_set_row_spacing (NBTK_TABLE (tile), 8);
+
+  clutter_actor_set_width ((ClutterActor *)tile, width);
+  clutter_actor_set_name ((ClutterActor *)tile,
+                          "people-people-pane-no-people-tile");
+  bin = nbtk_bin_new ();
+  clutter_actor_set_name ((ClutterActor *)bin,
+                          "people-no-people-message-bin");
+  label = nbtk_label_new (_("Sorry, we can't find any people. " \
+                            "Have you set up a Messenger account?"));
+  clutter_actor_set_name ((ClutterActor *)label,
+                          "people-people-pane-main-label");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                              PANGO_ELLIPSIZE_NONE);
+  nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *)label);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)bin,
+                                        0,
+                                        0,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        FALSE,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-align",
+                                        0.0,
+                                        NULL);
+  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
+
+  priv->app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
+
+  if (priv->app_info)
+  {
+    hbox = nbtk_table_new ();
+    clutter_actor_set_name ((ClutterActor *)hbox,
+                            "people-no-people-launcher");
+    nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 8);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                          (ClutterActor *)hbox,
+                                          1,
+                                          0,
+                                          "x-expand",
+                                          FALSE,
+                                          "y-expand",
+                                          FALSE,
+                                          "x-fill",
+                                          FALSE,
+                                          "y-fill",
+                                          FALSE,
+                                          "x-align",
+                                          0.0,
+                                          NULL);
+
+
+    priv->tex = clutter_texture_new ();
+    clutter_actor_set_size (priv->tex, ICON_SIZE, ICON_SIZE);
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                          priv->tex,
+                                          1,
+                                          0,
+                                          "x-expand",
+                                          FALSE,
+                                          "x-fill",
+                                          FALSE,
+                                          "y-fill",
+                                          FALSE,
+                                          "y-expand",
+                                          FALSE,
+                                          "x-align",
+                                          0.0,
+                                          "y-align",
+                                          0.5,
+                                          NULL);
+
+    label = nbtk_label_new (g_app_info_get_description (priv->app_info));
+    clutter_actor_set_name ((ClutterActor *)label, "people-no-people-description");
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+                                          (ClutterActor *)label,
+                                          1,
+                                          1,
+                                          "x-expand",
+                                          TRUE,
+                                          "x-fill",
+                                          FALSE,
+                                          "y-expand",
+                                          FALSE,
+                                          "y-fill",
+                                          FALSE,
+                                          "x-align",
+                                          0.0,
+                                          "y-align",
+                                          0.5,
+                                          NULL);
+
+    priv->icon_theme = gtk_icon_theme_get_default ();
+
+    /* Listen for the theme change */
+    g_signal_connect (priv->icon_theme,
+                      "changed",
+                      (GCallback)_icon_theme_changed_cb,
+                      people_panel);
+
+    _update_fallback_icon (people_panel);
+
+    g_signal_connect (hbox,
+                      "button-press-event",
+                      (GCallback)_no_people_tile_button_press_event_cb,
+                      people_panel);
+
+    g_signal_connect (hbox,
+                      "enter-event",
+                      (GCallback)_enter_event_cb,
+                      NULL);
+    g_signal_connect (hbox,
+                      "leave-event",
+                      (GCallback)_leave_event_cb,
+                      NULL);
+    clutter_actor_set_reactive ((ClutterActor *)hbox, TRUE);
+  }
+
+  return tile;
+}
+#endif
+
+static ClutterActor *
 make_status (void)
 {
   ClutterActor *table;
@@ -417,20 +562,21 @@ setup_standalone (void)
   clutter_actor_show (stage);
 }
 
-#if 0
 static void
-setup_embedded (void)
+setup_panel (void)
 {
-  MnbPanelClient *panel;
+  MplPanelClient *panel;
   ClutterActor *stage, *status;
 
-  panel = mnb_panel_clutter_new (MNB_PANEL_STATUS,
+  panel = mpl_panel_clutter_new (MPL_PANEL_STATUS,
                                  _("status"),
-                                 MUTTER_MOBLIN_CSS,
+                                 NULL,
                                  "status-button",
                                  TRUE);
 
   status = make_status ();
+
+#if 0
   g_signal_connect (panel,
                     "show-begin", G_CALLBACK (on_status_show_begin),
                     status);
@@ -440,15 +586,15 @@ setup_embedded (void)
   g_signal_connect (panel,
                     "hide-end", G_CALLBACK (on_status_hide_end),
                     status);
+#endif
 
-  stage = mnb_panel_clutter_get_stage (MNB_PANEL_CLUTTER (panel));
+  stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
   g_signal_connect (stage,
                     "allocation-changed", G_CALLBACK (resize_status),
                     status);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
 }
-#endif
 
 static gboolean status_standalone = FALSE;
 
@@ -494,7 +640,7 @@ main (int argc, char *argv[])
   if (status_standalone)
     setup_standalone ();
   else
-    return EXIT_FAILURE;
+    setup_panel ();
 
   clutter_main ();
 
