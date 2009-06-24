@@ -100,8 +100,17 @@ update_tile (AhoghillMediaTile *self)
     }
 
     if (title == NULL) {
-        title = g_path_get_basename (bkl_item_get_uri (priv->item));
+        char *filename = g_filename_from_uri (bkl_item_get_uri (priv->item),
+                                              NULL, NULL);
+
+        if (filename) {
+            title = g_path_get_basename (filename);
+            g_free (filename);
+        } else {
+            title = g_path_get_basename (bkl_item_get_uri (priv->item));
+        }
     }
+
     nbtk_label_set_text (NBTK_LABEL (priv->title), title);
     nbtk_label_set_text (NBTK_LABEL (priv->artist), artist ? artist : bkl_item_get_mimetype (priv->item));
 

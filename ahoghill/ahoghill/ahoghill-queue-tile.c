@@ -163,7 +163,14 @@ ahoghill_queue_tile_set_item (AhoghillQueueTile *tile,
     }
 
     if (primary == NULL) {
-        primary = g_path_get_basename (bkl_item_get_uri (item));
+        char *filename = g_filename_from_uri (bkl_item_get_uri (item),
+                                              NULL, NULL);
+        if (filename) {
+            primary = g_path_get_basename (filename);
+            g_free (filename);
+        } else {
+            primary = g_path_get_basename (bkl_item_get_uri (item));
+        }
     }
 
     nbtk_label_set_text (NBTK_LABEL (priv->row1), primary);
