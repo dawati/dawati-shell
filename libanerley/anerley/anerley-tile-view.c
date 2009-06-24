@@ -44,7 +44,7 @@ anerley_tile_renderer_get_actor (NbtkCellRenderer *renderer)
 
   tile = g_object_new (ANERLEY_TYPE_TILE,
                        NULL);
-  clutter_actor_set_size ((ClutterActor *)tile, 200, 90);
+  clutter_actor_set_size ((ClutterActor *)tile, 194, 75);
 
   /* Hide the actor by default. This means that we can do work when it is
    * mapped / more importantly avoid doing work when it's not
