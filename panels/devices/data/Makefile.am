@@ -1,4 +1,4 @@
-SUBDIRS = icons
+SUBDIRS = icons theme
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = dalston-volume-applet.desktop dalston-power-applet.desktop
