@@ -399,10 +399,19 @@ dalston_volume_pane_update_mute (DalstonVolumePane *pane)
                                      pane);
   gtk_widget_set_sensitive (priv->volume_slider,
                             !gvc_mixer_stream_get_is_muted (priv->sink));
-  gtk_widget_set_sensitive (priv->test_sound_button,
-                            !gvc_mixer_stream_get_is_muted (priv->sink));
   gtk_widget_set_sensitive (priv->alert_sounds_button,
                             !gvc_mixer_stream_get_is_muted (priv->sink));
+
+  /* We must check if the alert sounds is enabled and sensitive to enable the
+   * test sounds button
+   */
+  if (nbtk_gtk_light_switch_get_active (priv->alert_sounds_button) &&
+      GTK_WIDGET_SENSITIVE (priv->alert_sounds_button))
+  {
+    gtk_widget_set_sensitive (priv->test_sound_button, TRUE);
+  } else {
+    gtk_widget_set_sensitive (priv->test_sound_button, FALSE);
+  }
 }
 
 static void
