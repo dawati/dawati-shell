@@ -292,7 +292,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
   clutter_actor_set_name ((ClutterActor *)bin,
                           "people-no-people-message-bin");
   label = nbtk_label_new (_("Sorry, we can't find any people. " \
-                            "Have you set up an Instant Messenger account?"));
+                            "Have you set up a Messenger account?"));
   clutter_actor_set_name ((ClutterActor *)label,
                           "people-people-pane-main-label");
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
