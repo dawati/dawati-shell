@@ -80,7 +80,7 @@ AC_SUBST([LIBMPL_GTK_LIBS])
 
 # Mutter-moblin
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
-                  metacity-plugins >= mutter_version dnl
+                  mutter-plugins >= mutter_version dnl
                   nbtk-1.0 >= 0.8.0                  dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
@@ -235,7 +235,7 @@ AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g -O0"])
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
 
-MUTTER_PLUGIN_DIR=$($PKG_CONFIG metacity-plugins --variable=mutterplugindir)
+MUTTER_PLUGIN_DIR=$($PKG_CONFIG mutter-plugins --variable=plugindir)
 AC_SUBST(MUTTER_PLUGIN_DIR)
 
 PLUGIN_LT_CURRENT=lt_current
