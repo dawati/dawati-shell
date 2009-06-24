@@ -753,7 +753,7 @@ mnb_launcher_tree_test_cache (MnbLauncherTree *self,
     {
       g_warning ("%s Could not stat '%s'",
                   G_STRLOC,
-                  (const gchar *) iter->data);
+                  cache_path);
       return FALSE;
     }
 
@@ -763,7 +763,9 @@ mnb_launcher_tree_test_cache (MnbLauncherTree *self,
         {
           if (watch_stat.st_mtime > cache_stat.st_mtime)
             {
-              g_debug ("%s Cache miss, '%s' more recent", G_STRLOC, (const gchar *) iter->data);
+              g_debug ("%s Cache miss, '%s' more recent",
+                       G_STRLOC,
+                       (const gchar *) iter->data);
               return FALSE;
             }
         }
