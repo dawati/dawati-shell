@@ -334,6 +334,32 @@ MnbEntry *.MnbEntryClearButton:hover {
   background-image: url('file://generic/search-entry-clear-hover.png');
 }
 
+
+MplEntry {
+  border-image: url('file://generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
+  padding: 7 10 7 10;
+}
+
+MplEntry > *.MplEntryEntry {
+  border-image: none;
+  font-size: 15;
+}
+
+MplEntry *.MplEntryButton {
+  border-image: url('file://generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
+  font-size: 13;
+  padding: 0 2 0 10;
+}
+
+MplEntry *.MplEntryClearButton {
+  background-image: url('file://generic/search-entry-clear.png');
+  border-image: none;
+}
+
+MplEntry *.MplEntryClearButton:hover {
+  background-image: url('file://generic/search-entry-clear-hover.png');
+}
+
 /* Penge */
 
 PengeGridView
@@ -1057,7 +1083,7 @@ NbtkTable#zone-switch-strip {
 }
 
 /* why does people-search-entry no longer work ?*/
-*#people-search *.MnbEntryButton {
+*#people-search *.MplEntryButton {
   color: #fba40b;
 }
 
