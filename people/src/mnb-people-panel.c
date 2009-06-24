@@ -515,7 +515,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   EBook *book;
   GError *error = NULL;
   ClutterActor *tmp_text;
-
+  NbtkWidget *scroll_bin;
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
@@ -596,8 +596,18 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
                                (ClutterActor *)priv->tile_view);
 
+  /* Use a table here rather than a bin since this give significantly better
+   * scrolling peformance
+   */
+  scroll_bin = nbtk_table_new ();
+  nbtk_table_add_actor (NBTK_TABLE (scroll_bin),
+                        (ClutterActor *)scroll_view,
+                        0,
+                        0);
+  clutter_actor_set_name ((ClutterActor *)scroll_bin, "people-scroll-bin");
+
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)scroll_view,
+                                        (ClutterActor *)scroll_bin,
                                         1,
                                         0,
                                         "x-fill",
