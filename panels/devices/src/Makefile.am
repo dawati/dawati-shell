@@ -9,7 +9,8 @@ dalston_volume_applet_CFLAGS = -I$(top_srcdir) \
 			       $(NBTK_GTK_CFLAGS) \
 			       $(LIBNOTIFY_CFLAGS) \
 			       $(MPL_GTK_CFLAGS) \
-			      -DLOCALEDIR=\""$(localedir)"\"
+			      -DLOCALEDIR=\""$(localedir)"\" \
+			      -DPKG_DATADIR=\""$(pkgdatadir)"\"
 dalston_volume_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			      $(top_builddir)/libgvc/libgvc.la \
 			      $(top_builddir)/libhal-glib/libhal-glib.la \
@@ -33,7 +34,8 @@ dalston_power_applet_CFLAGS = -I$(top_srcdir) \
 			      $(NBTK_GTK_CFLAGS) \
 			      $(LIBNOTIFY_CFLAGS) \
 			      $(MPL_GTK_CFLAGS) \
-			     -DLOCALEDIR=\""$(localedir)"\"
+			     -DLOCALEDIR=\""$(localedir)"\" \
+			     -DPKG_DATADIR=\""$(pkgdatadir)"\"
 dalston_power_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			     $(top_builddir)/libgvc/libgvc.la \
 			     $(top_builddir)/libhal-glib/libhal-glib.la \
