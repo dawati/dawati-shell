@@ -1,0 +1,174 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../dalston/dalston-power-applet.c:159
+#, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b> Stunde"
+msgstr[1] "<b>%d</b> Stunden"
+
+#: ../dalston/dalston-power-applet.c:166
+#: ../dalston/dalston-power-applet.c:179
+#, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b> Minute"
+msgstr[1] "<b>%d</b> Minuten"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "Running low on battery"
+msgstr "Die Batterie wird schwach"
+
+#: ../dalston/dalston-power-applet.c:200
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Wir haben festgestellt, dass deine Batterie ein bisschen schwach wird. Wenn möglich, wäre Einstöpseln und Aufladen jetzt eine gute Idee."
+
+#: ../dalston/dalston-power-applet.c:202
+msgid "Getting close to empty"
+msgstr "Batterie ist fast leer"
+
+#: ../dalston/dalston-power-applet.c:202
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Deine Batterie ist ziemlich schwach. Es wäre wirklich eine gute Idee, alles zu speichern und dann unverzüglich aufzuladen."
+
+#: ../dalston/dalston-power-applet.c:204
+msgid "Danger!"
+msgstr "Gefahr!"
+
+#: ../dalston/dalston-power-applet.c:204
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Leider hat dein Computer keinen Saft mehr. Wir müssen jetzt abschalten. Bitte speichere alles Wichtige und wir hoffen dich bald wiederzusehen."
+
+#: ../dalston/dalston-power-applet.c:324
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Deine Batterie ist voll geladen und du kannst loslegen."
+
+#: ../dalston/dalston-power-applet.c:326
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "Deine Batterie wird geladen. Sie ist etwa <b>%d</b>%% voll."
+
+#: ../dalston/dalston-power-applet.c:333
+#, c-format
+msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+msgstr "Deine Batterie wird entladen. Sie ist etwa <b>%d</b>%% voll."
+
+#: ../dalston/dalston-power-applet.c:453
+msgid "Display brightness"
+msgstr "Bildschirmhelligkeit"
+
+#: ../dalston/dalston-power-applet.c:484
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "Leider wird das Verändern deiner Bildschirmhelligkeit nicht unterstützt"
+
+#: ../dalston/dalston-brightness-slider.c:221
+msgid "Brighter than the sun"
+msgstr "Heller als die Sonne"
+
+#: ../dalston/dalston-brightness-slider.c:223
+msgid "Very bright"
+msgstr "Sehr hell"
+
+#: ../dalston/dalston-brightness-slider.c:225
+msgid "Bright"
+msgstr "Hell"
+
+#: ../dalston/dalston-brightness-slider.c:227
+msgid "Morning has broken"
+msgstr "Sonnenaufgang"
+
+#: ../dalston/dalston-brightness-slider.c:229
+msgid "Midday"
+msgstr "Mittag"
+
+#: ../dalston/dalston-brightness-slider.c:231
+msgid "Pretty dusky"
+msgstr "Ziemlich düster"
+
+#: ../dalston/dalston-brightness-slider.c:233
+msgid "Twilight"
+msgstr "Abenddämmerung"
+
+#: ../dalston/dalston-brightness-slider.c:235
+msgid "Very dark"
+msgstr "Sehr dunkel"
+
+#: ../dalston/dalston-brightness-slider.c:237
+msgid "Total eclipse"
+msgstr "Totale Finsternis"
+
+#: ../dalston/dalston-volume-pane.c:254
+msgid "Output volume"
+msgstr "Wiedergabelautstärke"
+
+#: ../dalston/dalston-volume-pane.c:298
+msgid "Mute"
+msgstr "Stumm"
+
+#: ../dalston/dalston-volume-pane.c:316
+msgid "Alert sounds"
+msgstr "Warntöne"
+
+#: ../dalston/dalston-volume-pane.c:328
+msgid "Play test sound"
+msgstr "Testton spielen"
+
+# "ear-numbing"
+#: ../dalston/dalston-volume-slider.c:188
+msgid "Turned up to 11"
+msgstr "Ohrenbetäubend"
+
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Very loud"
+msgstr "Sehr laut"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Loud"
+msgstr "Laut"
+
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Fairly loud"
+msgstr "Etwas laut"
+
+# "the golden mean"
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Middle of the road"
+msgstr "Die goldene Mitte"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Fairly quiet"
+msgstr "Etwas leise"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Quiet"
+msgstr "Leise"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Very quiet"
+msgstr "Sehr leise"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Silent"
+msgstr "Still"
+
+#: ../libgvc/gvc-mixer-control.c:988
+msgid "System Sounds"
+msgstr "Systemklänge"
+
+#: ../libgvc/gvc-mixer-control.c:1512
+msgid "GNOME Volume Control"
+msgstr "GNOME-Lautstärkeregler"
+
