@@ -257,7 +257,7 @@ workspace_input_cb (ClutterActor *clone, ClutterEvent *event, gpointer data)
       return FALSE;
     }
 
-  clutter_actor_hide (CLUTTER_ACTOR (switcher));
+  mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
 
   if (priv->in_alt_grab)
     {
@@ -305,7 +305,7 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   active_workspace = meta_screen_get_active_workspace (screen);
   timestamp        = clutter_x11_get_current_event_time ();
 
-  clutter_actor_hide (CLUTTER_ACTOR (switcher));
+  mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
   clutter_ungrab_pointer ();
 
   if (!active_workspace || (active_workspace == workspace))
