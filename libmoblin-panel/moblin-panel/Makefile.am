@@ -1,5 +1,5 @@
 
-pkglib_LTLIBRARIES = libmoblin-panel-gtk.la libmoblin-panel-clutter.la
+lib_LTLIBRARIES = libmoblin-panel-gtk.la libmoblin-panel-clutter.la
 
 libmoblin_panel_includedir = $(includedir)/libmoblin-panel/moblin-panel
 libmoblin_panel_include_HEADERS = \
