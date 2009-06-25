@@ -1094,3 +1094,9 @@ AnerleyTile *.AnerleyTileSecondaryLabel
   border-image: url('file://people/scroll-view-bin-bg.png') 10 stretch;
   padding: 10;
 }
+
+*#people-selection-pane
+{
+  border-image: url('file://people/selection-border.png') 7 stretch;
+  padding: 4;
+}

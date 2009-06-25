@@ -166,7 +166,8 @@ dist_theme_people_DATA = \
 	theme/people/tile-bg-hover.png \
 	theme/people/avatar-bg.png \
 	theme/people/grey-backdrop.png \
-	theme/people/scroll-view-bin-bg.png
+	theme/people/scroll-view-bin-bg.png \
+	theme/people/selection-border.png
 
 theme_effectsdir = $(pkgdatadir)/theme/effects
 dist_theme_effects_DATA = \
