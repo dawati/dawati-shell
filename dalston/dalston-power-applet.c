@@ -327,7 +327,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
                           description);
     g_free (description);
   } else if (state == DALSTON_BATTERY_MONITOR_STATE_DISCHARGING) {
-    description = g_strdup_printf (_("Your battery is discharging. " \
+    description = g_strdup_printf (_("Your battery is being used. " \
                                      "It is about <b>%d</b>%% full."),
                                    percentage);
     gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
