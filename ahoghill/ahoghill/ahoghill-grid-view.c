@@ -867,6 +867,8 @@ item_clicked_cb (AhoghillResultsPane *pane,
                    error->message);
         g_error_free (error);
     }
+
+    g_signal_emit (grid, signals[DISMISS], 0);
 #else
     char *argv[3] = { "/usr/bin/hornsey", NULL, NULL };
     GError *error = NULL;
@@ -879,8 +881,6 @@ item_clicked_cb (AhoghillResultsPane *pane,
         g_warning ("Error launching Hornsey: %s", error->message);
         g_error_free (error);
     }
-
-    g_signal_emit (grid, signals[DISMISS], 0);
 #endif
 }
 
