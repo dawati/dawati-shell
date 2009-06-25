@@ -1514,19 +1514,28 @@ moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  MetaWindow                 *mutter_last_focused;
 
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
 
-  if (priv->last_focused)
-    g_object_weak_unref (G_OBJECT (priv->last_focused),
+  /*
+   * Only change the stored last_focused window if Mutter gives us something
+   * meaningful to work with, otherwise, we stick wit what we have.
+   */
+  mutter_last_focused = meta_display_get_focus_window (display);
+
+  if (mutter_last_focused && (mutter_last_focused != priv->last_focused))
+    {
+      if (priv->last_focused)
+        g_object_weak_unref (G_OBJECT (priv->last_focused),
+                             last_focus_weak_notify_cb, plugin);
+
+      priv->last_focused = mutter_last_focused;
+
+      g_object_weak_ref (G_OBJECT (mutter_last_focused),
                          last_focus_weak_notify_cb, plugin);
-
-  priv->last_focused = meta_display_get_focus_window (display);
-
-  if (priv->last_focused)
-    g_object_weak_ref (G_OBJECT (priv->last_focused),
-                       last_focus_weak_notify_cb, plugin);
+    }
 
   XSetInputFocus (xdpy,
                   priv->focus_xwin,
