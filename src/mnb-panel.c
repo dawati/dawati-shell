@@ -150,8 +150,21 @@ mnb_panel_set_property (GObject *object, guint property_id,
 static void
 mnb_panel_request_focus_cb (DBusGProxy *proxy, MnbPanel *panel)
 {
-  /* TODO */
-  g_warning ("%s is not implemented", __FUNCTION__);
+  MnbPanelPrivate *priv;
+
+  if (!CLUTTER_ACTOR_IS_MAPPED (panel))
+    {
+      g_warning ("Panel %s requested focus while not visible !!!",
+                 mnb_panel_get_name (panel));
+      return;
+    }
+
+  priv = panel->priv;
+
+  XSetInputFocus (GDK_DISPLAY(),
+                  priv->child_xid,
+                  RevertToPointerRoot,
+                  CurrentTime);
 }
 
 static void
