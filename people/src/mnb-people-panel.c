@@ -64,6 +64,7 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *control_box;
   NbtkWidget *scroll_bin;
   NbtkWidget *no_people_tile;
+  NbtkWidget *selected_tile;
 };
 
 static void
@@ -136,8 +137,15 @@ _update_selected_item (MnbPeoplePanel *people_panel)
 
   if (item)
   {
+    clutter_actor_show ((ClutterActor *)priv->selected_tile);
     clutter_actor_show ((ClutterActor *)priv->primary_button);
+
+    g_object_set (priv->selected_tile,
+                  "item",
+                  item,
+                  NULL);
   } else {
+    clutter_actor_hide ((ClutterActor *)priv->selected_tile);
     clutter_actor_hide ((ClutterActor *)priv->primary_button);
     clutter_actor_hide ((ClutterActor *)priv->secondary_button);
     return;
@@ -706,11 +714,32 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         0.0,
                                         NULL);
 
+  priv->selected_tile = anerley_tile_new (NULL);
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->selected_tile),
+                          "people-selected-item");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->control_box),
+                                        (ClutterActor *)priv->selected_tile,
+                                        0,
+                                        0,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        FALSE,
+                                        "x-align",
+                                        0.0,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
+
   priv->primary_button = nbtk_button_new_with_label ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->primary_button), "people-primary-action");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->control_box),
                                         (ClutterActor *)priv->primary_button,
-                                        0,
+                                        1,
                                         0,
                                         "x-fill",
                                         TRUE,
@@ -730,7 +759,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_name (CLUTTER_ACTOR (priv->secondary_button), "people-secondary-action");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->control_box),
                                         (ClutterActor *)priv->secondary_button,
-                                        1,
+                                        2,
                                         0,
                                         "x-fill",
                                         TRUE,

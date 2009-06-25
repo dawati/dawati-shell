@@ -1107,3 +1107,9 @@ AnerleyTile *.AnerleyTileSecondaryLabel
   font-size: 16;
   color: #7e7e7eff;
 }
+
+*#people-selection-pane AnerleyTile:hover
+{
+  border-image: none;
+}
+
