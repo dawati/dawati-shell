@@ -739,9 +739,18 @@ search_index_for_words (Source     *source,
             char *word = g_sequence_get (iter);
 
             if (word) {
-                if (strstr (word, search_terms[k])) {
+                char *new_word = g_filename_from_uri (word, NULL, NULL);
+                /* The word may be en encoded uri, so we need to unencode it
+                   before searching */
+                if (new_word == NULL) {
+                    new_word = g_strdup (word);
+                }
+
+                if (strstr (new_word, search_terms[k])) {
                     g_ptr_array_add (possible, word);
                 }
+
+                g_free (new_word);
             }
 
             iter = g_sequence_iter_next (iter);

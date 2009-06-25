@@ -60,6 +60,7 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *secondary_button;
   NbtkWidget *tile_view;
   MplPanelClient *panel_client;
+  NbtkWidget *side_pane;
 };
 
 static void
@@ -514,7 +515,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   EBook *book;
   GError *error = NULL;
   ClutterActor *tmp_text;
-
+  NbtkWidget *scroll_bin;
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
@@ -595,8 +596,18 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
                                (ClutterActor *)priv->tile_view);
 
+  /* Use a table here rather than a bin since this give significantly better
+   * scrolling peformance
+   */
+  scroll_bin = nbtk_table_new ();
+  nbtk_table_add_actor (NBTK_TABLE (scroll_bin),
+                        (ClutterActor *)scroll_view,
+                        0,
+                        0);
+  clutter_actor_set_name ((ClutterActor *)scroll_bin, "people-scroll-bin");
+
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)scroll_view,
+                                        (ClutterActor *)scroll_bin,
                                         1,
                                         0,
                                         "x-fill",
@@ -608,7 +619,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-fill",
                                         TRUE,
                                         "row-span",
-                                        2,
+                                        1,
                                         NULL);
   no_people_tile =
     _make_empty_people_tile (self,
@@ -629,7 +640,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-align",
                                         0.0,
                                         "row-span",
-                                        2,
+                                        1,
                                         NULL);
   g_signal_connect (priv->model,
                     "bulk-change-end",
@@ -637,33 +648,12 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     no_people_tile);
   clutter_actor_show_all ((ClutterActor *)self);
 
-  priv->primary_button = nbtk_button_new_with_label ("");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->primary_button), "people-primary-action");
+  priv->side_pane = nbtk_table_new ();
+  clutter_actor_set_width ((ClutterActor *)priv->side_pane, 184);
+  clutter_actor_set_name ((ClutterActor *)priv->side_pane, "people-sidepane");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->primary_button,
+                                        (ClutterActor *)priv->side_pane,
                                         1,
-                                        1,
-                                        "x-fill",
-                                        FALSE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        FALSE,
-                                        "y-expand",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
-  clutter_actor_set_width ((ClutterActor *)priv->primary_button,
-                           150);
-
-  priv->secondary_button = nbtk_button_new_with_label ("");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->secondary_button), "people-secondary-action");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->secondary_button,
-                                        2,
                                         1,
                                         "x-fill",
                                         FALSE,
@@ -678,8 +668,46 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-align",
                                         0.0,
                                         NULL);
-  clutter_actor_set_width ((ClutterActor *)priv->secondary_button,
-                           150);
+
+  priv->primary_button = nbtk_button_new_with_label ("");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->primary_button), "people-primary-action");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->side_pane),
+                                        (ClutterActor *)priv->primary_button,
+                                        0,
+                                        0,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        FALSE,
+                                        "x-align",
+                                        0.0,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
+
+  priv->secondary_button = nbtk_button_new_with_label ("");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->secondary_button), "people-secondary-action");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->side_pane),
+                                        (ClutterActor *)priv->secondary_button,
+                                        1,
+                                        0,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        TRUE,
+                                        "x-align",
+                                        0.0,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
 
   tmp_text =
     nbtk_bin_get_child (NBTK_BIN (priv->primary_button));
