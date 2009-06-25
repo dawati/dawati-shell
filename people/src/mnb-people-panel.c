@@ -125,7 +125,7 @@ _entry_text_changed_cb (MplEntry *entry,
 }
 
 static void
-_update_buttons (MnbPeoplePanel *people_panel)
+_update_selected_item (MnbPeoplePanel *people_panel)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
   gchar *msg;
@@ -145,23 +145,14 @@ _update_buttons (MnbPeoplePanel *people_panel)
 
   if (ANERLEY_IS_ECONTACT_ITEM (item))
   {
-    msg = g_strdup_printf (_("Email %s"),
-                           anerley_item_get_display_name (item));
     nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
-                           msg);
-    g_free (msg);
-    msg = g_strdup_printf (_("Edit %s"),
-                           anerley_item_get_display_name (item));
+                           _("Send an email"));
     nbtk_button_set_label (NBTK_BUTTON (priv->secondary_button),
-                           msg);
-    g_free (msg);
+                           _("Edit details"));
     clutter_actor_show ((ClutterActor *)priv->secondary_button);
   } else if (ANERLEY_IS_TP_ITEM (item)) {
-    msg = g_strdup_printf (_("IM %s"),
-                           anerley_item_get_display_name (item));
     nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
-                           msg);
-    g_free (msg);
+                           _("Send a message"));
     clutter_actor_hide ((ClutterActor *)priv->secondary_button);
   } else {
     g_debug (G_STRLOC ": Unknown item type?");
@@ -491,7 +482,7 @@ static void
 _tile_view_selection_changed_cb (AnerleyTileView *view,
                                  gpointer         userdata)
 {
-  _update_buttons ((MnbPeoplePanel *)userdata);
+  _update_selected_item ((MnbPeoplePanel *)userdata);
 }
 
 static void
@@ -763,7 +754,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
     nbtk_bin_get_child (NBTK_BIN (priv->secondary_button));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
 
-  _update_buttons (self);
+  _update_selected_item (self);
 
   g_signal_connect (priv->primary_button,
                     "clicked",
