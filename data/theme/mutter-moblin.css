@@ -1098,5 +1098,12 @@ AnerleyTile *.AnerleyTileSecondaryLabel
 *#people-selection-pane
 {
   border-image: url('file://people/selection-border.png') 7 stretch;
-  padding: 4;
+  padding: 8;
+}
+
+*#people-selection-label
+{
+  font-family: "Liberation Sans";
+  font-size: 16;
+  color: #7e7e7eff;
 }
