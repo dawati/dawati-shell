@@ -61,6 +61,8 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *tile_view;
   MplPanelClient *panel_client;
   NbtkWidget *side_pane;
+  NbtkWidget *scroll_bin;
+  NbtkWidget *no_people_tile;
 };
 
 static void
@@ -271,7 +273,7 @@ _icon_theme_changed_cb (GtkIconTheme *icon_theme,
   _update_fallback_icon ((MnbPeoplePanel *)userdata);
 }
 
-static ClutterActor *
+static NbtkWidget *
 _make_empty_people_tile (MnbPeoplePanel *people_panel,
                          gint            width)
 {
@@ -411,20 +413,22 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
     clutter_actor_set_reactive ((ClutterActor *)hbox, TRUE);
   }
 
-  return (ClutterActor *)tile;
+  return tile;
 }
 
 static void
 _model_bulk_changed_end_cb (AnerleyFeedModel *model,
                             gpointer          userdata)
 {
-  ClutterActor *no_people_tile = (ClutterActor *)userdata;
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
   if (clutter_model_get_first_iter ((ClutterModel *)model))
   {
-    clutter_actor_hide (no_people_tile);
+    clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
+    clutter_actor_show ((ClutterActor *)priv->scroll_bin);
   } else {
-    clutter_actor_show (no_people_tile);
+    clutter_actor_hide ((ClutterActor *)priv->scroll_bin);
+    clutter_actor_show ((ClutterActor *)priv->no_people_tile);
   }
 }
 
@@ -511,11 +515,9 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   MissionControl *mc;
   AnerleyFeed *feed, *tp_feed, *ebook_feed;
   DBusGConnection *conn;
-  ClutterActor *no_people_tile = NULL;
   EBook *book;
   GError *error = NULL;
   ClutterActor *tmp_text;
-  NbtkWidget *scroll_bin;
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
@@ -599,15 +601,15 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   /* Use a table here rather than a bin since this give significantly better
    * scrolling peformance
    */
-  scroll_bin = nbtk_table_new ();
-  nbtk_table_add_actor (NBTK_TABLE (scroll_bin),
+  priv->scroll_bin = nbtk_table_new ();
+  nbtk_table_add_actor (NBTK_TABLE (priv->scroll_bin),
                         (ClutterActor *)scroll_view,
                         0,
                         0);
-  clutter_actor_set_name ((ClutterActor *)scroll_bin, "people-scroll-bin");
+  clutter_actor_set_name ((ClutterActor *)priv->scroll_bin, "people-scroll-bin");
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)scroll_bin,
+                                        (ClutterActor *)priv->scroll_bin,
                                         1,
                                         0,
                                         "x-fill",
@@ -621,12 +623,12 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "row-span",
                                         1,
                                         NULL);
-  no_people_tile =
+  priv->no_people_tile =
     _make_empty_people_tile (self,
                              clutter_actor_get_width ((ClutterActor *)scroll_view));
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)no_people_tile,
+                                        (ClutterActor *)priv->no_people_tile,
                                         1,
                                         0,
                                         "x-fill",
@@ -641,13 +643,15 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         0.0,
                                         "row-span",
                                         1,
+                                        "col-span",
+                                        2,
                                         NULL);
+
+  clutter_actor_hide (priv->scroll_bin);
   g_signal_connect (priv->model,
                     "bulk-change-end",
                     (GCallback)_model_bulk_changed_end_cb,
-                    no_people_tile);
-  clutter_actor_show_all ((ClutterActor *)self);
-
+                    self);
   priv->side_pane = nbtk_table_new ();
   clutter_actor_set_width ((ClutterActor *)priv->side_pane, 184);
   clutter_actor_set_name ((ClutterActor *)priv->side_pane, "people-sidepane");
