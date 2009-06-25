@@ -680,6 +680,12 @@ mnb_launcher_reset (MnbLauncher     *self)
 
   g_slist_free (priv->launchers);
   priv->launchers = NULL;
+
+  if (priv->monitor)
+    {
+      mnb_launcher_monitor_free (priv->monitor);
+      priv->monitor = NULL;
+    }
 }
 
 static void
@@ -1287,12 +1293,6 @@ _dispose (GObject *object)
     {
       g_object_unref (priv->manager);
       priv->manager = NULL;
-    }
-
-  if (priv->monitor)
-    {
-      mnb_launcher_monitor_free (priv->monitor);
-      priv->monitor = NULL;
     }
 
   mnb_launcher_reset (self);

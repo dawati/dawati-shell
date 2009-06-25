@@ -393,6 +393,45 @@ mnb_launcher_tree_create (void)
   return self;
 }
 
+void
+mnb_launcher_tree_free_entries (GList *entries)
+{
+  GList *iter;
+
+  iter = entries;
+  while (iter)
+    {
+      mnb_launcher_directory_free ((MnbLauncherDirectory *) iter->data);
+      iter = g_list_delete_link (iter, iter);
+    }
+}
+
+static void
+mnb_launcher_tree_free_watch_list (GSList *watch_list)
+{
+  GSList *iter;
+
+  iter = watch_list;
+  while (iter)
+    {
+      g_free (iter->data);
+      iter = g_slist_delete_link (iter, iter);
+    }
+}
+
+void
+mnb_launcher_tree_free (MnbLauncherTree *self)
+{
+  g_return_if_fail (self);
+
+  gmenu_tree_unref (self->applications);
+  gmenu_tree_unref (self->settings);
+
+  mnb_launcher_tree_free_watch_list (self->watch_list);
+
+  g_free (self);
+}
+
 static void
 mnb_launcher_tree_write_xml (GList const *tree,
                              FILE        *fp)
@@ -705,7 +744,12 @@ mnb_launcher_tree_list_categories_from_cache (MnbLauncherTree *self,
                                               const gchar     *cache_buffer,
                                               gsize            buffer_size)
 {
-  Accumulator accumulator = { 0, };
+  /* Accumulator appends to existing watches. */
+  Accumulator accumulator = {
+    .categories = NULL,
+    .watch_list = self->watch_list,
+    .state = ACCUMULATOR_STATE_INVALID
+  };
   GMarkupParser parser = {
     .start_element = _cache_parser_start_element,
     .end_element   = _cache_parser_end_element,
@@ -719,7 +763,6 @@ mnb_launcher_tree_list_categories_from_cache (MnbLauncherTree *self,
                                                              NULL);
   GError *error = NULL;
 
-  accumulator.state = ACCUMULATOR_STATE_INVALID;
   g_markup_parse_context_parse (context, cache_buffer, buffer_size, &error);
   if (error)
     {
@@ -793,6 +836,17 @@ mnb_launcher_tree_list_entries (MnbLauncherTree *self)
   GList *tree = NULL;
   gchar *user_apps_dir = NULL;
 
+  /* Avoid duplicate watches. */
+  mnb_launcher_tree_free_watch_list (self->watch_list);
+  self->watch_list = NULL;
+
+  /* Always watch "~/.local/share/applications" */
+  user_apps_dir = g_build_filename (g_get_user_data_dir (),
+                                    "applications", NULL);
+  self->watch_list = mnb_launcher_tree_watch_list_add_watch_dir (self->watch_list,
+                                                                 user_apps_dir);
+  g_free (user_apps_dir);
+
   if (!g_file_test (cache_dir, G_FILE_TEST_IS_DIR))
     {
       g_mkdir (cache_dir, 0755);
@@ -835,13 +889,6 @@ mnb_launcher_tree_list_entries (MnbLauncherTree *self)
 
   g_free (cache_file);
   g_free (cache_path);
-
-  /* Always watch "~/.local/share/applications" */
-  user_apps_dir = g_build_filename (g_get_user_data_dir (),
-                                    "applications", NULL);
-  self->watch_list = mnb_launcher_tree_watch_list_add_watch_dir (self->watch_list,
-                                                                 user_apps_dir);
-  g_free (user_apps_dir);
 
   return tree;
 }
@@ -896,38 +943,5 @@ mnb_launcher_tree_create_monitor  (MnbLauncherTree            *tree,
 
   return self;
 
-}
-
-void
-mnb_launcher_tree_free_entries (GList *entries)
-{
-  GList *iter;
-
-  iter = entries;
-  while (iter)
-    {
-      mnb_launcher_directory_free ((MnbLauncherDirectory *) iter->data);
-      iter = g_list_delete_link (iter, iter);
-    }
-}
-
-void
-mnb_launcher_tree_free (MnbLauncherTree *self)
-{
-  GSList *iter;
-
-  g_return_if_fail (self);
-
-  gmenu_tree_unref (self->applications);
-  gmenu_tree_unref (self->settings);
-
-  iter = self->watch_list;
-  while (iter)
-    {
-      g_free (iter->data);
-      iter = g_slist_delete_link (iter, iter);
-    }
-
-  g_free (self);
 }
 
