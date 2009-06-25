@@ -165,6 +165,7 @@ struct _MnbToolbarPrivate
   gboolean disabled          : 1;
   gboolean in_show_animation : 1; /* Animation tracking */
   gboolean in_hide_animation : 1;
+  gboolean waiting_for_panel : 1; /* Set between button click and panel show */
   gboolean dont_autohide     : 1; /* Whether the panel should hide when the
                                    * pointer goes south
                                    */
@@ -693,6 +694,12 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 
   checked = nbtk_button_get_checked (button);
 
+  /*
+   * Set the waiting_for_panel flag if the button is in a checked state. This
+   * forces LEAVE events to be ignored until the panel is shown (see bug 3531).
+   */
+  priv->waiting_for_panel = checked;
+
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if ((priv->buttons[i] != (NbtkWidget*)button))
       {
@@ -871,6 +878,8 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
                                       (guint)w, (guint)h);
 
   moblin_netbook_stash_window_focus (plugin, CurrentTime);
+
+  priv->waiting_for_panel = FALSE;
 }
 
 static void
@@ -895,6 +904,8 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
     moblin_netbook_input_region_push (plugin,
                                       (gint)x, TOOLBAR_HEIGHT + (gint)y,
                                       (guint)w, (guint)h);
+
+  priv->waiting_for_panel = FALSE;
 }
 
 static void
@@ -2646,7 +2657,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
    * a) toolbar is disabled (e.g., in lowlight),
    * b) the event is something other than enter/leave
    * c) we got an enter event on something other than stage,
-   * d) we got a leave event bug are showing panels
+   * d) we got a leave event bug are showing panels, or waiting for panel to
+   *    show
    * e) we are already animating.
    *
    * Split into multiple statments for readability.
@@ -2668,7 +2680,9 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
     }
 
   if ((event->type == CLUTTER_LEAVE) &&
-      (priv->systray_window_showing || mnb_toolbar_panels_showing (toolbar)))
+      (priv->systray_window_showing ||
+       priv->waiting_for_panel ||
+       mnb_toolbar_panels_showing (toolbar)))
     {
       /* g_debug (G_STRLOC " leaving early"); */
       return FALSE;
