@@ -465,21 +465,24 @@ _service_updated_cb (CmService   *service,
   if (cm_service_get_name (service) != NULL)
   {
     type = cm_service_get_type (service);
-    g_signal_handlers_disconnect_by_func (service,
-                                          _service_updated_cb,
-                                          pane);
 
     if (g_strcmp0 ("ethernet", type) == 0
-        && cm_service_get_favorite (service) == FALSE)
+        && cm_service_get_connected (service) == FALSE)
     {
       return;
     }
+    else
+    {
+      g_signal_handlers_disconnect_by_func (service,
+                                            _service_updated_cb,
+                                            pane);
 
-    GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
-                                                        service);
-    carrick_list_add_item (list,
-                           service_item);
-    carrick_list_sort_list (CARRICK_LIST (priv->service_list));
+      GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
+                                                          service);
+      carrick_list_add_item (list,
+                             service_item);
+      carrick_list_sort_list (CARRICK_LIST (priv->service_list));
+    }
   }
 }
 
