@@ -410,11 +410,9 @@ mnb_launcher_tree_write_xml (GList const *tree,
   fputs ("</cache>\n", fp);
 }
 
-/* TODO do away with 'take_dir_ownership', this is a potential mem leak. */
 static GSList *
-mnb_launcher_tree_watch_list_add_watch_dir (GSList    *watch_list,
-                                            gchar     *dir,
-                                            gboolean   take_dir_ownership)
+mnb_launcher_tree_watch_list_add_watch_dir (GSList      *watch_list,
+                                            const gchar *dir)
 {
   GSList const *iter;
 
@@ -428,10 +426,7 @@ mnb_launcher_tree_watch_list_add_watch_dir (GSList    *watch_list,
         }
     }
 
-  if (take_dir_ownership)
-    return g_slist_prepend (watch_list, dir);
-  else
-    return g_slist_prepend (watch_list, g_strdup (dir));
+  return g_slist_prepend (watch_list, g_strdup (dir));
 }
 
 static GList *
@@ -517,11 +512,13 @@ _cache_parser_start_element (GMarkupParseContext *context,
                 const gchar *desktop_file = mnb_launcher_application_get_desktop_file (app);
                 if (desktop_file == NULL)
                   g_warning ("%s Missing desktop file", G_STRLOC);
-                else
+                else {
+                  gchar *dir = g_path_get_dirname (desktop_file);
                   self->watch_list = mnb_launcher_tree_watch_list_add_watch_dir (
                                       self->watch_list,
-                                      g_path_get_dirname (desktop_file),
-                                      TRUE);
+                                      dir);
+                  g_free (dir);
+                }
                 cat->entries = g_list_prepend (cat->entries, app);
                 self->state = ACCUMULATOR_STATE_APPLICATION;
 
@@ -843,8 +840,7 @@ mnb_launcher_tree_list_entries (MnbLauncherTree *self)
   user_apps_dir = g_build_filename (g_get_user_data_dir (),
                                     "applications", NULL);
   self->watch_list = mnb_launcher_tree_watch_list_add_watch_dir (self->watch_list,
-                                                                 user_apps_dir,
-                                                                 FALSE);
+                                                                 user_apps_dir);
   g_free (user_apps_dir);
 
   return tree;
