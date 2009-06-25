@@ -22,8 +22,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				moblin-netbook-chooser.h	\
 				moblin-netbook-status.c		\
 				moblin-netbook-status.h		\
-				moblin-netbook-pasteboard.c	\
-				moblin-netbook-pasteboard.h	\
 				moblin-netbook-tray-manager.c	\
 				moblin-netbook-tray-manager.h	\
 				moblin-netbook-notify-store.c   \
@@ -32,12 +30,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				$(DBUS_BINDINGS) \
 				$(DBUS_GLUE) \
 				$(MARSHALS)                     \
-				mnb-clipboard-item.c		\
-				mnb-clipboard-item.h		\
-				mnb-clipboard-store.c		\
-				mnb-clipboard-store.h		\
-				mnb-clipboard-view.c		\
-				mnb-clipboard-view.h		\
 				mnb-drop-down.h                 \
 				mnb-drop-down.c                 \
 				mnb-entry.c                     \

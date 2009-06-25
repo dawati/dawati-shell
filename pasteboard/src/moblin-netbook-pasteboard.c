@@ -27,16 +27,17 @@
 
 #include <glib/gi18n.h>
 
+#include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
+#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
+#include <moblin-panel/mpl-panel-clutter.h>
+#include <moblin-panel/mpl-panel-common.h>
+#include <moblin-panel/mpl-entry.h>
 
-#include "moblin-netbook.h"
-#include "moblin-netbook-chooser.h"
-#include "moblin-netbook-pasteboard.h"
 #include "mnb-clipboard-store.h"
 #include "mnb-clipboard-view.h"
-#include "mnb-drop-down.h"
-#include "mnb-entry.h"
 
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48
@@ -51,19 +52,19 @@ static guint search_timeout_id = 0;
 static MnbClipboardStore *store = NULL;
 
 static void
-on_dropdown_show (MnbDropDown  *dropdown,
-                  ClutterActor *filter_entry)
+on_dropdown_show (MplPanelClient  *client,
+                  ClutterActor    *filter_entry)
 {
   /* give focus to the actor */
   clutter_actor_grab_key_focus (filter_entry);
 }
 
 static void
-on_dropdown_hide (MnbDropDown  *dropdown,
-                  ClutterActor *filter_entry)
+on_dropdown_hide (MplPanelClient  *client,
+                  ClutterActor    *filter_entry)
 {
   /* Reset search. */
-  mnb_entry_set_text (MNB_ENTRY (filter_entry), "");
+  mpl_entry_set_text (MPL_ENTRY (filter_entry), "");
 }
 
 struct _SearchClosure
@@ -97,7 +98,7 @@ search_cleanup (gpointer data)
 }
 
 static void
-on_search_activated (MnbEntry *entry,
+on_search_activated (MplEntry *entry,
                      gpointer  data)
 {
   MnbClipboardView *view = data;
@@ -105,7 +106,7 @@ on_search_activated (MnbEntry *entry,
 
   closure = g_slice_new (SearchClosure);
   closure->view = g_object_ref (view);
-  closure->filter = g_strdup (mnb_entry_get_text (entry));
+  closure->filter = g_strdup (mpl_entry_get_text (entry));
 
   if (search_timeout_id != 0)
     {
@@ -169,16 +170,13 @@ on_item_added (MnbClipboardStore    *store,
   clutter_actor_destroy (bin);
 }
 
-ClutterActor *
-make_pasteboard (MutterPlugin *plugin,
-                 gint          width)
+static ClutterActor *
+make_pasteboard (gint width, ClutterActor **entry_out)
 {
-  NbtkWidget *vbox, *hbox, *label, *entry, *drop_down, *bin, *button;
+  NbtkWidget *vbox, *hbox, *label, *entry, *bin, *button;
   ClutterActor *view, *viewport, *scroll;
   ClutterText *text;
   gfloat items_list_width = 0, items_list_height = 0;
-
-  drop_down = mnb_drop_down_new (plugin);
 
   /* the object proxying the Clipboard changes and storing them */
   store = mnb_clipboard_store_new ();
@@ -186,7 +184,6 @@ make_pasteboard (MutterPlugin *plugin,
   vbox = nbtk_table_new ();
   nbtk_table_set_col_spacing (NBTK_TABLE (vbox), 12);
   nbtk_table_set_row_spacing (NBTK_TABLE (vbox), 6);
-  mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), CLUTTER_ACTOR (vbox));
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "pasteboard-vbox");
 
   /* Filter row. */
@@ -219,7 +216,7 @@ make_pasteboard (MutterPlugin *plugin,
                                         "y-align", 0.5,
                                         NULL);
 
-  entry = mnb_entry_new (_("Search"));
+  entry = mpl_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (entry), "pasteboard-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (entry), 600);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
@@ -232,10 +229,8 @@ make_pasteboard (MutterPlugin *plugin,
                                         "x-align", 0.0,
                                         "y-align", 0.5,
                                         NULL);
-  g_signal_connect (drop_down, "show-completed",
-                    G_CALLBACK (on_dropdown_show), entry);
-  g_signal_connect (drop_down, "hide-completed",
-                    G_CALLBACK (on_dropdown_hide), entry);
+  if (entry_out)
+    *entry_out = CLUTTER_ACTOR (entry);
 
   /* bin for the the "pasteboard is empty" notice */
   bin = NBTK_WIDGET (nbtk_bin_new ());
@@ -382,5 +377,99 @@ make_pasteboard (MutterPlugin *plugin,
                     G_CALLBACK (on_selection_changed),
                     label);
 
-  return CLUTTER_ACTOR (drop_down);
+  return CLUTTER_ACTOR (vbox);
 }
+
+static void
+_client_set_size_cb (MplPanelClient *client,
+                     guint           width,
+                     guint           height,
+                     gpointer        userdata)
+{
+  clutter_actor_set_size ((ClutterActor *)userdata,
+                          width,
+                          height);
+
+  g_debug (G_STRLOC ": Dimensions for grid view: %d x %d",
+           width,
+           height);
+}
+
+static gboolean standalone = FALSE;
+
+static GOptionEntry entries[] = {
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL}
+};
+
+int
+main (int    argc,
+      char **argv)
+{
+  MplPanelClient *client;
+  ClutterActor *stage, *pasteboard;
+  GOptionContext *context;
+  GError *error = NULL;
+
+  context = g_option_context_new ("- mutter-moblin pasteboard panel");
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  g_option_context_add_group (context, clutter_get_option_group_without_init ());
+  g_option_context_add_group (context, gtk_get_option_group (FALSE));
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+  {
+    g_critical (G_STRLOC ": Error parsing option: %s", error->message);
+    g_clear_error (&error);
+  }
+  g_option_context_free (context);
+
+  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
+
+  nbtk_style_load_from_file (nbtk_style_get_default (),
+                             MUTTER_MOBLIN_CSS, NULL);
+
+  if (!standalone)
+  {
+    ClutterActor *entry = NULL;
+    client = mpl_panel_clutter_new (MPL_PANEL_PASTEBOARD,
+                                    _("pasteboard"),
+                                    NULL,
+                                    "pasteboard-button",
+                                    TRUE);
+
+    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
+
+    mpl_panel_client_set_height_request (client, 400);
+
+    stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
+
+    pasteboard = make_pasteboard (800, &entry);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage), pasteboard);
+    g_signal_connect (client,
+                      "set-size",
+                      (GCallback)_client_set_size_cb,
+                      pasteboard);
+    g_signal_connect (client, "show-begin",
+                      G_CALLBACK (on_dropdown_show), entry);
+    g_signal_connect (client, "hide-end",
+                      G_CALLBACK (on_dropdown_hide), entry);
+
+  } else {
+    Window xwin;
+
+    stage = clutter_stage_get_default ();
+    clutter_actor_realize (stage);
+    xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
+
+    pasteboard = make_pasteboard (800, NULL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage), pasteboard);
+    clutter_actor_set_size ((ClutterActor *)pasteboard, 1016, 504);
+    clutter_actor_set_size (stage, 1016, 504);
+    clutter_actor_show_all (stage);
+  }
+
+  clutter_main ();
+
+  return 0;
+}
+

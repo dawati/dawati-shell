@@ -141,6 +141,22 @@ fi
 
 AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 
+# Pasteboard panel
+PKG_CHECK_MODULES(PASTEBOARD,
+                  clutter-x11-0.9
+                  clutter-0.9
+                  gtk+-2.0
+                  nbtk-1.0)
+
+PASTEBOARD_CFLAGS="${PASTEBOARD_CFLAGS} ${PENGE_CFLAGS} "\
+'-I$(top_srcdir)/libmoblin-panel '\
+'-I$(top_srcdir)/penge -I$(top_srcdir)/src '
+AC_SUBST([PASTEBOARD_CFLAGS])
+PASTEBOARD_LIBS="${PASTEBOARD_LIBS} ${PENGE_LIBS} "\
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '\
+'$(top_builddir)/penge/penge/libpenge.la'
+AC_SUBST([PASTEBOARD_LIBS])
+
 # People panel
 AC_ARG_ENABLE([people],
 	AC_HELP_STRING([--enable-people],
@@ -198,6 +214,9 @@ src/tray/Makefile
 src/effects/Makefile
 po/Makefile.in
 tests/Makefile
+pasteboard/Makefile
+pasteboard/src/Makefile
+pasteboard/theme/Makefile
 penge/Makefile
 penge/penge/Makefile
 penge/examples/Makefile

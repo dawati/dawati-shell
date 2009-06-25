@@ -500,8 +500,8 @@ mnb_clipboard_item_init (MnbClipboardItem *self)
                     G_CALLBACK (on_remove_clicked),
                     self);
 
-  remove_icon_path = g_build_filename (PLUGIN_PKGDATADIR,
-                                       "theme", "pasteboard",
+  remove_icon_path = g_build_filename (PKGDATADIR,
+                                       "theme",
                                        "pasteboard-item-delete-hover.png",
                                        NULL);
 

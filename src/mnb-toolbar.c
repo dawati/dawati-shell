@@ -51,7 +51,6 @@
 #include "penge/penge-grid-view.h"
 #include "moblin-netbook-status.h"
 #include "moblin-netbook-netpanel.h"
-#include "moblin-netbook-pasteboard.h"
 
 #ifdef USE_AHOGHILL
 #include "ahoghill/ahoghill-grid-view.h"
@@ -1091,9 +1090,12 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
 #endif
           break;
         case PASTEBOARD_ZONE:
+          g_warning ("Skipping built-in pasteboard panel");
+#if 0
           panel = priv->panels[index] = NBTK_WIDGET (
             make_pasteboard (plugin,
                              screen_width - TOOLBAR_X_PADDING * 2));
+#endif
           break;
         case PEOPLE_ZONE:
           break;
@@ -1895,6 +1897,7 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
   if (!strcmp (short_name, MPL_PANEL_MYZONE) ||
       !strcmp (short_name, MPL_PANEL_STATUS) ||
+      !strcmp (short_name, MPL_PANEL_PASTEBOARD) ||
       !strcmp (short_name, MPL_PANEL_PEOPLE) ||
       !strcmp (short_name, MPL_PANEL_MEDIA) ||
       !strcmp (short_name, MPL_PANEL_INTERNET) ||
@@ -2047,6 +2050,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
         {
           /* Add here any apps that have been converted to multiproc */
         case APPS_ZONE:
+        case PASTEBOARD_ZONE:
         case PEOPLE_ZONE:
         case MYZONE:
           if (!found_panels[i])
