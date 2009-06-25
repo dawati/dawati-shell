@@ -410,6 +410,7 @@ mnb_launcher_tree_write_xml (GList const *tree,
   fputs ("</cache>\n", fp);
 }
 
+/* TODO do away with 'take_dir_ownership', this is a potential mem leak. */
 static GSList *
 mnb_launcher_tree_watch_list_add_watch_dir (GSList    *watch_list,
                                             gchar     *dir,
@@ -793,6 +794,7 @@ mnb_launcher_tree_list_entries (MnbLauncherTree *self)
   gchar *cache_buffer = NULL;
   gsize  buffer_size;
   GList *tree = NULL;
+  gchar *user_apps_dir = NULL;
 
   if (!g_file_test (cache_dir, G_FILE_TEST_IS_DIR))
     {
@@ -836,6 +838,14 @@ mnb_launcher_tree_list_entries (MnbLauncherTree *self)
 
   g_free (cache_file);
   g_free (cache_path);
+
+  /* Always watch "~/.local/share/applications" */
+  user_apps_dir = g_build_filename (g_get_user_data_dir (),
+                                    "applications", NULL);
+  self->watch_list = mnb_launcher_tree_watch_list_add_watch_dir (self->watch_list,
+                                                                 user_apps_dir,
+                                                                 FALSE);
+  g_free (user_apps_dir);
 
   return tree;
 }
