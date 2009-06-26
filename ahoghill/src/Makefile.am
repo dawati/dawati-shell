@@ -5,6 +5,7 @@ AM_CFLAGS = \
 	$(AHOGHILL_CFLAGS) \
 	-DDATADIR=\"$(datadir)\" \
 	-DPKGDATADIR=\"$(datadir)/mutter-moblin\"	\
+	-DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\" \
 	-I$(top_srcdir)/libmoblin-panel \
 	-I$(top_srcdir)/ahoghill
 
