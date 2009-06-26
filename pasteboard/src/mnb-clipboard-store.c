@@ -22,7 +22,7 @@
 #endif
 
 #include "mnb-clipboard-store.h"
-#include "marshal.h"
+#include "mnb-pasteboard-marshal.h"
 
 #include <gtk/gtk.h>
 #include <string.h>
@@ -343,7 +343,7 @@ mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbClipboardStoreClass, item_added),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__ENUM,
+                  mnb_pasteboard_marshal_VOID__ENUM,
                   G_TYPE_NONE, 1,
                   MNB_TYPE_CLIPBOARD_ITEM_TYPE);
 
@@ -353,7 +353,7 @@ mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbClipboardStoreClass, item_removed),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__INT64,
+                  mnb_pasteboard_marshal_VOID__INT64,
                   G_TYPE_NONE, 1,
                   G_TYPE_INT64);
 
@@ -363,7 +363,7 @@ mnb_clipboard_store_class_init (MnbClipboardStoreClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbClipboardStoreClass, selection_changed),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__STRING,
+                  mnb_pasteboard_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
 }
