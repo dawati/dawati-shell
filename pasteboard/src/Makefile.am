@@ -3,9 +3,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(PASTEBOARD_CFLAGS) \
-	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel-pasteboard\" \
-	-DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\"
+	-DPKGDATADIR=\"$(datadir)/moblin-panel-pasteboard\"
 
 # FIXME use this once split out
 #	-DPKGDATADIR=\"$(pkgdatadir)\"

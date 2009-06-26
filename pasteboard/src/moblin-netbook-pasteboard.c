@@ -424,7 +424,7 @@ main (int    argc,
   MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
-                             MUTTER_MOBLIN_CSS, NULL);
+                             PKGDATADIR "/theme/panel.css", NULL);
 
   if (!standalone)
   {

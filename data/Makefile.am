@@ -160,17 +160,6 @@ dist_theme_netpanel_DATA = \
 	theme/netpanel/thumbnail.png		\
 	theme/netpanel/thumbnail_hover.png
 
-theme_pasteboarddir = $(pkgdatadir)/theme/pasteboard
-dist_theme_pasteboard_DATA = \
-	theme/pasteboard/pasteboard-delete-bg.png \
-	theme/pasteboard/pasteboard-delete-hover.png \
-	theme/pasteboard/pasteboard-delete.png \
-	theme/pasteboard/pasteboard-item-delete-hover.png \
-	theme/pasteboard/pasteboard-item-delete.png \
-	theme/pasteboard/pasteboard-item-hover.png \
-	theme/pasteboard/pasteboard-items-list-bg.png \
-	theme/pasteboard/pasteboard-search-bg.png
-
 theme_peopledir = $(pkgdatadir)/theme/people
 dist_theme_people_DATA = \
 	theme/people/people-search-bg.png \
