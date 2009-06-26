@@ -136,7 +136,7 @@ AC_ARG_ENABLE([netpanel],
 
 if test x"$enable_netpanel" = xyes; then
 	AC_DEFINE(WITH_NETPANEL, 1, [Defined when building the netpanel])
-	PKG_CHECK_MODULES(NETPANEL, cluttermozembed mhs-1.0)
+	PKG_CHECK_MODULES(NETPANEL, gtk+-2.0 nbtk-1.0 cluttermozembed mhs-1.0)
 fi
 
 AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
@@ -222,6 +222,8 @@ penge/penge/Makefile
 penge/examples/Makefile
 people/Makefile
 people/src/Makefile
+netpanel/Makefile
+netpanel/src/Makefile
 ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile

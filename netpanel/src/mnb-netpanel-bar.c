@@ -32,7 +32,7 @@
 #include "mwb-utils.h"
 #include "mwb-ac-list.h"
 
-G_DEFINE_TYPE (MnbNetpanelBar, mnb_netpanel_bar, MNB_TYPE_ENTRY)
+G_DEFINE_TYPE (MnbNetpanelBar, mnb_netpanel_bar, MPL_TYPE_ENTRY)
 
 #define NETPANEL_BAR_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_NETPANEL_BAR, \
@@ -197,7 +197,7 @@ mnb_netpanel_bar_set_show_auto_complete (MnbNetpanelBar *self,
 
       if (show)
         {
-          const gchar *text = mnb_entry_get_text (MNB_ENTRY (self));
+          const gchar *text = mpl_entry_get_text (MPL_ENTRY (self));
           clutter_actor_show (CLUTTER_ACTOR (priv->ac_list));
           mwb_ac_list_set_search_text (MWB_AC_LIST (priv->ac_list), text);
           mwb_ac_list_set_selection (MWB_AC_LIST (priv->ac_list), -1);
@@ -229,14 +229,14 @@ mnb_netpanel_bar_complete_url (MnbNetpanelBar *self,
   if (!suffix || (strlen (suffix) != 3))
     return;
 
-  text = mnb_entry_get_text (MNB_ENTRY (self));
+  text = mpl_entry_get_text (MPL_ENTRY (self));
 
   if (!strncmp (text, "www.", 4) || strchr (text, ':'))
     return;
 
   if (strlen (text) <= MAX_LABEL) {
     sprintf (buf, "www.%s.%s", text, suffix);
-    mnb_entry_set_text (MNB_ENTRY (self), buf);
+    mpl_entry_set_text (MPL_ENTRY (self), buf);
     mnb_netpanel_bar_activate_cb (NULL, self);
   }
 }
@@ -358,20 +358,13 @@ mnb_netpanel_bar_class_init (MnbNetpanelBarClass *klass)
 }
 
 static void
-mnb_netpanel_bar_button_clicked_cb (GObject        *obj,
-                                    MnbNetpanelBar *self)
-{
-  g_signal_emit (self, signals[GO], 0, mnb_entry_get_text (MNB_ENTRY (self)));
-}
-
-static void
 mnb_netpanel_bar_select_all (MnbNetpanelBar *self)
 {
   NbtkWidget *entry;
   ClutterActor *actor;
   gint length;
 
-  entry = mnb_entry_get_nbtk_entry (MNB_ENTRY (self));
+  entry = mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
   actor = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
   length = strlen (clutter_text_get_text (CLUTTER_TEXT (actor)));
   clutter_text_set_selection (CLUTTER_TEXT (actor), 0, length);
@@ -385,7 +378,7 @@ mnb_netpanel_bar_text_changed_cb (GObject        *obj,
 
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (priv->ac_list)))
     {
-      const gchar *text = mnb_entry_get_text (MNB_ENTRY (self));
+      const gchar *text = mpl_entry_get_text (MPL_ENTRY (self));
       mwb_ac_list_set_search_text (MWB_AC_LIST (priv->ac_list), text);
     }
 }
@@ -408,7 +401,7 @@ mnb_netpanel_bar_activate_cb (GObject        *obj,
       g_free (url);
     }
   else
-    g_signal_emit (self, signals[GO], 0, mnb_entry_get_text (MNB_ENTRY (self)));
+    g_signal_emit (self, signals[GO], 0, mpl_entry_get_text (MPL_ENTRY (self)));
 
   mnb_netpanel_bar_set_show_auto_complete (self, FALSE);
 }
@@ -456,7 +449,7 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
   NbtkWidget *entry;
   ClutterActor *actor;
 
-  entry = mnb_entry_get_nbtk_entry (MNB_ENTRY (self));
+  entry = mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
   actor = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
 
   g_signal_connect (actor, "text-changed",
@@ -467,8 +460,6 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
                     G_CALLBACK (mnb_netpanel_bar_key_press_event_cb), self);
   g_signal_connect (entry, "key-focus-out",
                     G_CALLBACK (mnb_netpanel_bar_key_focus_out_cb), self);
-  g_signal_connect (entry, "button-clicked",
-                    G_CALLBACK (mnb_netpanel_bar_button_clicked_cb), self);
 
   clutter_actor_set_reactive (actor, TRUE);
   g_signal_connect (actor, "button-press-event",
@@ -499,7 +490,7 @@ mnb_netpanel_bar_focus (MnbNetpanelBar *self)
   NbtkWidget *entry;
   ClutterActor *actor;
 
-  entry = mnb_entry_get_nbtk_entry (MNB_ENTRY (self));
+  entry = mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
   actor = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
   mwb_utils_focus_on_click_cb (actor, NULL, GINT_TO_POINTER (TRUE));
   mnb_netpanel_bar_select_all (self);

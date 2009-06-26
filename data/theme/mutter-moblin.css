@@ -728,23 +728,23 @@ MnbNetpanelBar {
   padding: 7 10 7 10;
 }
 
-MnbNetpanelBar > *.MnbEntryEntry {
+MnbNetpanelBar > *.MplEntryEntry {
   border-image: none;
   font-size: 15;
 }
 
-MnbNetpanelBar *.MnbEntryButton {
+MnbNetpanelBar *.MplEntryButton {
   border-image: url('file://generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
 }
 
-MnbNetpanelBar *.MnbEntryClearButton {
+MnbNetpanelBar *.MplEntryClearButton {
   background-image: url('file://generic/search-entry-clear.png');
   border-image: none;
 }
 
-MnbNetpanelBar *.MnbEntryClearButton:hover {
+MnbNetpanelBar *.MplEntryClearButton:hover {
   background-image: url('file://generic/search-entry-clear-hover.png');
 }
 

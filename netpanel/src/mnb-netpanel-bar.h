@@ -25,8 +25,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-
-#include "mnb-entry.h"
+#include <moblin-panel/mpl-entry.h>
 
 G_BEGIN_DECLS
 
@@ -55,13 +54,13 @@ G_BEGIN_DECLS
 typedef struct _MnbNetpanelBarPrivate MnbNetpanelBarPrivate;
 
 typedef struct {
-  MnbEntry parent;
+  MplEntry parent;
   
   MnbNetpanelBarPrivate *priv;
 } MnbNetpanelBar;
 
 typedef struct {
-  MnbEntryClass parent_class;
+  MplEntryClass parent_class;
 
   void (* go)                 (MnbNetpanelBar *netpanel_bar, const gchar *url);
 } MnbNetpanelBarClass;

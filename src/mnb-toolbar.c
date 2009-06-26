@@ -50,7 +50,6 @@
 /* TODO -- remove these after multiprocing */
 #include "penge/penge-grid-view.h"
 #include "moblin-netbook-status.h"
-#include "moblin-netbook-netpanel.h"
 
 #ifdef USE_AHOGHILL
 #include "ahoghill/ahoghill-grid-view.h"
@@ -743,35 +742,6 @@ _media_drop_down_shown (MnbDropDown      *drop_down,
 }
 #endif
 
-#ifdef WITH_NETPANEL
-/*
- * TODO -- we might need dbus API for launching things to retain control over
- * the application workspace; investigate further.
- */
-static void
-_netgrid_launch_cb (MoblinNetbookNetpanel *netpanel,
-                    const gchar           *url,
-                    MnbToolbar            *toolbar)
-{
-  MutterPlugin *plugin = toolbar->priv->plugin;
-  gchar *exec, *esc_url;
-  gint workspace;
-
-  /* FIXME: Should not be hard-coded? */
-  esc_url = g_strescape (url, NULL);
-  exec = g_strdup_printf ("%s \"%s\"", "moblin-web-browser", esc_url);
-
-  workspace =
-    meta_screen_get_active_workspace_index (mutter_plugin_get_screen (plugin));
-  moblin_netbook_launch_application (exec, TRUE, workspace);
-
-  g_free (exec);
-  g_free (esc_url);
-
-  clutter_actor_hide (CLUTTER_ACTOR (toolbar));
-}
-#endif
-
 #endif /* REMOVE ME block */
 
 static gint
@@ -1126,39 +1096,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
           break;
 #endif
         case INTERNET_ZONE:
-#ifdef WITH_NETPANEL
-          {
-            ClutterActor *grid;
-
-            panel = priv->panels[index] = mnb_drop_down_new (plugin);
-
-            grid = CLUTTER_ACTOR (moblin_netbook_netpanel_new ());
-
-            mnb_drop_down_set_child (MNB_DROP_DOWN (panel), grid);
-
-            /*
-             * FIME -- why is this necessary ?
-             */
-            g_signal_connect_swapped (toolbar, "hide",
-                                      G_CALLBACK (clutter_actor_hide), grid);
-            g_signal_connect_swapped (toolbar, "show",
-                                      G_CALLBACK (clutter_actor_show), grid);
-
-            g_signal_connect_swapped (panel, "hide-completed",
-                                    G_CALLBACK (moblin_netbook_netpanel_clear),
-                                    grid);
-            g_signal_connect_swapped (panel, "show-completed",
-                                    G_CALLBACK (moblin_netbook_netpanel_focus),
-                                    grid);
-
-            g_signal_connect (grid, "launch",
-                              G_CALLBACK (_netgrid_launch_cb), toolbar);
-            g_signal_connect_swapped (grid, "launched",
-                                 G_CALLBACK (mnb_drop_down_hide_with_toolbar),
-                                 panel);
-          }
           break;
-#endif
 
         default:
           g_warning ("Zone %s is currently not implemented", name);
@@ -2052,6 +1990,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
         case APPS_ZONE:
         case PASTEBOARD_ZONE:
         case PEOPLE_ZONE:
+        case INTERNET_ZONE:
         case MYZONE:
           if (!found_panels[i])
             {

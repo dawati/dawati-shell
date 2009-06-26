@@ -10,6 +10,9 @@ SUBDIRS+=src po data tests applications myzone pasteboard
 if WITH_PEOPLE
 SUBDIRS+=people
 endif
+if WITH_NETPANEL
+SUBDIRS+=netpanel
+endif
 
 EXTRA_DIST =
 

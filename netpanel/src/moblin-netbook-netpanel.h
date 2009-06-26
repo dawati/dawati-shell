@@ -22,7 +22,6 @@
 #define _MOBLIN_NETBOOK_NETPANEL_H
 
 #include <glib-object.h>
-#include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
 
 G_BEGIN_DECLS
@@ -52,17 +51,13 @@ G_BEGIN_DECLS
 typedef struct _MoblinNetbookNetpanelPrivate MoblinNetbookNetpanelPrivate;
 
 typedef struct {
-  NbtkTable parent;
+  NbtkWidget parent;
   
   MoblinNetbookNetpanelPrivate *priv;
 } MoblinNetbookNetpanel;
 
 typedef struct {
-  NbtkTableClass parent_class;
-
-  /* Signals */
-  void (* launch)   (MoblinNetbookNetpanel *netpanel, const gchar *url);
-  void (* launched) (MoblinNetbookNetpanel *netpanel);
+  NbtkWidgetClass parent_class;
 } MoblinNetbookNetpanelClass;
 
 GType moblin_netbook_netpanel_get_type (void);
@@ -72,7 +67,9 @@ NbtkWidget* moblin_netbook_netpanel_new (void);
 void moblin_netbook_netpanel_focus (MoblinNetbookNetpanel *netpanel);
 void moblin_netbook_netpanel_clear (MoblinNetbookNetpanel *netpanel);
 
+void moblin_netbook_netpanel_set_panel_client (MoblinNetbookNetpanel *netpanel,
+                                               MplPanelClient *panel_client);
+
 G_END_DECLS
 
 #endif /* _MOBLIN_NETBOOK_NETPANEL_H */
-

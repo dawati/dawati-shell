@@ -24,12 +24,11 @@
 #include <penge/penge-utils.h>
 #include <glib/gi18n.h>
 
-#include "moblin-netbook-netpanel.h"
-#include "moblin-netbook.h"
-#include "mwb-utils.h"
+#include <moblin-panel/mpl-entry.h>
 
+#include "moblin-netbook-netpanel.h"
 #include "mnb-netpanel-bar.h"
-#include "mnb-entry.h"
+#include "mwb-utils.h"
 
 /* Number of tab columns to display */
 #define DISPLAY_TABS 4
@@ -42,16 +41,6 @@ G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_WIDGET)
 
 #define NETPANEL_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MOBLIN_TYPE_NETBOOK_NETPANEL, MoblinNetbookNetpanelPrivate))
-
-enum
-{
-  LAUNCH,
-  LAUNCHED,
-
-  LAST_SIGNAL
-};
-
-static guint signals[LAST_SIGNAL] = { 0, };
 
 struct _MoblinNetbookNetpanelPrivate
 {
@@ -81,6 +70,8 @@ struct _MoblinNetbookNetpanelPrivate
 
   gchar         **fav_urls;
   gchar         **fav_titles;
+
+  MplPanelClient *panel_client;
 };
 
 static void display_favs (MoblinNetbookNetpanel *self);
@@ -104,6 +95,12 @@ moblin_netbook_netpanel_dispose (GObject *object)
 {
   MoblinNetbookNetpanel *self = MOBLIN_NETBOOK_NETPANEL (object);
   MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  if (priv->panel_client)
+    {
+      g_object_unref (priv->panel_client);
+      priv->panel_client = NULL;
+    }
 
   if (priv->proxy)
     {
@@ -392,12 +389,37 @@ moblin_netbook_netpanel_unmap (ClutterActor *actor)
     clutter_actor_unmap (CLUTTER_ACTOR (priv->favs_table));
 }
 
+/*
+ * TODO -- we might need dbus API for launching things to retain control over
+ * the application workspace; investigate further.
+ */
+static void
+moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
+                                    const gchar           *url)
+{
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
+  gchar *exec, *esc_url;
+
+  /* FIXME: Should not be hard-coded? */
+  esc_url = g_strescape (url, NULL);
+  exec = g_strdup_printf ("%s \"%s\"", "moblin-web-browser", esc_url);
+
+  if (!mpl_panel_client_launch_application (priv->panel_client, exec,
+                                            TRUE, -2))
+    g_warning (G_STRLOC ": Error launching browser for url '%s'", esc_url);
+  else if (priv->panel_client)
+    mpl_panel_client_request_hide (priv->panel_client);
+
+  g_free (exec);
+  g_free (esc_url);
+}
+
 static void
 new_tab_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 {
   /* FIXME: remove hardcoded start path */
-  g_signal_emit (self, signals[LAUNCH], 0,
-                 "chrome://startpage/content/index.html");
+  moblin_netbook_netpanel_launch_url (self,
+                                      "chrome://startpage/content/index.html");
 }
 
 static void
@@ -406,7 +428,7 @@ fav_button_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
   MoblinNetbookNetpanelPrivate *priv = self->priv;
   guint fav = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (button), "fav"));
 
-  g_signal_emit (self, signals[LAUNCH], 0, priv->fav_urls[fav]);
+  moblin_netbook_netpanel_launch_url (self, priv->fav_urls[fav]);
 }
 
 static void
@@ -668,20 +690,8 @@ create_favs_placeholder (MoblinNetbookNetpanel *self)
 static guint
 get_cell_width (MoblinNetbookNetpanel *self)
 {
-  ClutterActor *parent;
-  guint width = 0;
-
-  if ((parent = clutter_actor_get_parent (CLUTTER_ACTOR (self))))
-    {
-      NbtkPadding padding;
-
-      width = clutter_actor_get_width (CLUTTER_ACTOR (parent));
-      nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
-      width -= MWB_PIXBOUND (padding.left + padding.right);
-      width -= (DISPLAY_TABS - 1) * COL_SPACING;
-    }
-
-  return width / (DISPLAY_TABS + 1);
+  /* FIXME: stop hard-coding this */
+  return 200;
 }
 
 static void
@@ -846,7 +856,8 @@ mozembed_button_clicked_cb (NbtkBin *button, MoblinNetbookNetpanel *self)
                               G_TYPE_INVALID);
   dbus_g_proxy_call_no_reply (priv->proxy, "Raise", G_TYPE_INVALID);
 
-  g_signal_emit (self, signals[LAUNCHED], 0);
+  if (priv->panel_client)
+    mpl_panel_client_request_hide (priv->panel_client);
 }
 
 static void
@@ -1134,6 +1145,7 @@ moblin_netbook_netpanel_show (ClutterActor *actor)
 {
   MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
 
+  moblin_netbook_netpanel_focus (netpanel);
   request_live_previews (netpanel);
 
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->show (actor);
@@ -1146,8 +1158,7 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
   guint i;
 
-  /* Clear the entry */
-  mnb_entry_set_text (MNB_ENTRY (priv->entry), "");
+  moblin_netbook_netpanel_clear (netpanel);
 
   if (priv->tabs)
     {
@@ -1229,24 +1240,6 @@ moblin_netbook_netpanel_class_init (MoblinNetbookNetpanelClass *klass)
   actor_class->unmap = moblin_netbook_netpanel_unmap;
   actor_class->show = moblin_netbook_netpanel_show;
   actor_class->hide = moblin_netbook_netpanel_hide;
-
-  signals[LAUNCH] =
-    g_signal_new ("launch",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MoblinNetbookNetpanelClass, launch),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1, G_TYPE_STRING);
-
-  signals[LAUNCHED] =
-    g_signal_new ("launched",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MoblinNetbookNetpanelClass, launched),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -1259,9 +1252,9 @@ netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
       while (*url == ' ')
         url++;
       if (*url == '\0')
-        mnb_entry_set_text (MNB_ENTRY (netpanel_bar), "");
+        mpl_entry_set_text (MPL_ENTRY (netpanel_bar), "");
       else
-        g_signal_emit (self, signals[LAUNCH], 0, url);
+        moblin_netbook_netpanel_launch_url (self, url);
     }
 }
 
@@ -1270,7 +1263,7 @@ netpanel_bar_button_clicked_cb (MnbNetpanelBar        *netpanel_bar,
                                 MoblinNetbookNetpanel *self)
 {
   netpanel_bar_go_cb (netpanel_bar,
-                      mnb_entry_get_text (MNB_ENTRY (netpanel_bar)),
+                      mpl_entry_get_text (MPL_ENTRY (netpanel_bar)),
                       self);
 }
 
@@ -1364,5 +1357,20 @@ void
 moblin_netbook_netpanel_clear (MoblinNetbookNetpanel *netpanel)
 {
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
-  mnb_entry_set_text (MNB_ENTRY (priv->entry), "");
+  mpl_entry_set_text (MPL_ENTRY (priv->entry), "");
+}
+
+void
+moblin_netbook_netpanel_set_panel_client (MoblinNetbookNetpanel *netpanel,
+                                          MplPanelClient *panel_client)
+{
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
+
+  priv->panel_client = g_object_ref (panel_client);
+
+  g_signal_connect_swapped (panel_client, "show-begin",
+                            (GCallback)moblin_netbook_netpanel_show, netpanel);
+
+  g_signal_connect_swapped (panel_client, "hide-end",
+                            (GCallback)moblin_netbook_netpanel_hide, netpanel);
 }

@@ -53,19 +53,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				mnb-status-entry.c		\
 				mnb-status-entry.h
 
-if WITH_NETPANEL
-moblin_netbook_la_SOURCES += 	moblin-netbook-netpanel.c	\
-				moblin-netbook-netpanel.h       \
-				mnb-netpanel-bar.c		\
-				mnb-netpanel-bar.h		\
-				mwb-ac-list.c			\
-				mwb-ac-list.h			\
-				mwb-separator.c			\
-				mwb-separator.h			\
-				mwb-utils.c			\
-				mwb-utils.h
-endif
-
 DBUS_GLUE =	notification-manager-glue.h	\
 		mnb-panel-dbus-glue.h		\
 		mnb-toolbar-dbus-glue.h
