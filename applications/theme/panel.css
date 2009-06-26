@@ -25,6 +25,7 @@ MplEntry > *.MplEntryEntry {
 
 MplEntry *.MplEntryButton {
   border-image: url('file://launcher-search-entry-separator.png') 0 0 0 3 stretch stretch;
+  color: #be1011;
   font-size: 13;
   padding: 0 2 0 10;
 }
@@ -75,10 +76,6 @@ MnbLauncher *#launcher-apps-grid {
 
 MnbLauncher *#launcher-expander-grid {
   padding: 8 5 10 10;
-}
-
-*#launcher-filter-pane *.MplEntryButton {
-  color: #be1011;
 }
 
 /*
