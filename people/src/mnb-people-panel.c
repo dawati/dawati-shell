@@ -657,8 +657,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         NULL);
 
   priv->selection_pane = nbtk_table_new ();
-  clutter_actor_set_width ((ClutterActor *)priv->selection_pane, 184);
-  clutter_actor_set_height ((ClutterActor *)priv->selection_pane, 174);
+  clutter_actor_set_height ((ClutterActor *)priv->selection_pane, 200);
   clutter_actor_set_name ((ClutterActor *)priv->selection_pane, "people-selection-pane");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->selection_pane,
@@ -699,6 +698,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         NULL);
 
   priv->control_box = nbtk_table_new ();
+  clutter_actor_set_width ((ClutterActor *)priv->control_box, 200);
   clutter_actor_set_name ((ClutterActor *)priv->control_box, "people-control-box");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->selection_pane),
                                         (ClutterActor *)priv->control_box,
@@ -719,6 +719,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         NULL);
 
   priv->nobody_selected_box = nbtk_bin_new ();
+  clutter_actor_set_width ((ClutterActor *)priv->nobody_selected_box, 200);
   clutter_actor_set_name ((ClutterActor *)priv->nobody_selected_box,
                           "people-nobody-selected");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->selection_pane),
@@ -752,6 +753,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
 
   priv->selected_tile = anerley_tile_new (NULL);
+  clutter_actor_set_height ((ClutterActor *)priv->selected_tile, 90);
   clutter_actor_set_name (CLUTTER_ACTOR (priv->selected_tile),
                           "people-selected-item");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->control_box),
