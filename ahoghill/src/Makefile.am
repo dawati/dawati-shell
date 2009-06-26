@@ -4,7 +4,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 AM_CFLAGS = \
 	$(AHOGHILL_CFLAGS) \
 	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel-media\"	\
+	-DPKGDATADIR=\"$(datadir)/mutter-moblin\"	\
 	-I$(top_srcdir)/libmoblin-panel \
 	-I$(top_srcdir)/ahoghill
 
