@@ -198,6 +198,12 @@ index_changed_cb (BklSourceClient *client,
     GSequenceIter *iter;
     int i;
 
+    if (source->index == NULL) {
+        /* If we've not loaded the index yet, then we don't care
+           about any changes made */
+        return;
+    }
+
     /* Remove the words from the index first */
     for (i = 0; removed[i]; i++) {
         char *word;
@@ -263,8 +269,6 @@ create_source (BklSourceClient *s)
                              (char *) bkl_item_get_uri (item), item);
     }
 
-    /* Index is a sorted array of strings */
-    source->index = bkl_db_get_index_words (source->db);
     return source;
 }
 
@@ -273,7 +277,9 @@ destroy_source (Source *source)
 {
     int i;
 
-    g_sequence_free (source->index);
+    if (source->index) {
+        g_sequence_free (source->index);
+    }
 
     g_hash_table_destroy (source->uri_to_item);
 
@@ -733,6 +739,16 @@ search_index_for_words (Source     *source,
         possible = g_ptr_array_new ();
 
         g_ptr_array_add (words, possible);
+
+        if (G_UNLIKELY (source->index == NULL)) {
+            GTimer *timer = g_timer_new ();
+            /* Index is a sorted array of strings */
+            source->index = bkl_db_get_index_words (source->db);
+
+            g_print ("Time taken to load index: %.3f\n",
+                     g_timer_elapsed (timer, NULL));
+            g_timer_destroy (timer);
+        }
 
         iter = g_sequence_get_begin_iter (source->index);
         while (!g_sequence_iter_is_end (iter)) {
