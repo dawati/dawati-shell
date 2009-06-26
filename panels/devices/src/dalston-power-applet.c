@@ -26,28 +26,14 @@
 
 #include <dalston/dalston-volume-applet.h>
 #include <dalston/dalston-power-applet.h>
-#include "moblin-netbook-system-tray.h"
 
+#include <moblin-panel/mpl-panel-common.h>
+#include <moblin-panel/mpl-panel-gtk.h>
 #include <config.h>
 
 #define PADDING 4
 
-static void
-_plug_notify_embedded (GObject    *object,
-                       GParamSpec *pspec,
-                       gpointer    userdata)
-{
-  DalstonPowerApplet *applet = (DalstonPowerApplet *)userdata;
-  gboolean embedded;
-
-  g_object_get (object,
-                "embedded",
-                &embedded,
-                NULL);
-
-  dalston_power_applet_set_active (applet, embedded);
-}
-
+#define PKG_THEMEDIR PKG_DATADIR"/theme"
 int
 main (int    argc,
       char **argv)
@@ -55,9 +41,10 @@ main (int    argc,
   DalstonPowerApplet *power_applet;
   GtkStatusIcon *status_icon;
   GtkWidget *pane;
+  GtkWidget *window;
   GdkScreen *screen;
   GtkSettings *settings;
-  GtkWidget *plug;
+  MplPanelClient *panel_client;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -66,7 +53,7 @@ main (int    argc,
   gtk_init (&argc, &argv);
   notify_init ("Dalston Power Applet");
 
-  /* Force to the moblin theme */
+  /* Force to the moblin theme (for testing) */
   settings = gtk_settings_get_default ();
   gtk_settings_set_string_property (settings,
                                     "gtk-theme-name",
@@ -75,21 +62,18 @@ main (int    argc,
 
   /* Power applet */
   power_applet = dalston_power_applet_new ();
-  status_icon = dalston_power_applet_get_status_icon (power_applet);
-  plug = gtk_plug_new (0);
-  g_signal_connect (plug,
-                    "notify::embedded",
-                    (GCallback)_plug_notify_embedded,
-                    power_applet);
 
+  panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
+                                    _("power & brightness"),
+                                    PKG_THEMEDIR "/power-applet.css",
+                                    "unknown",
+                                    TRUE);
+  mpl_panel_client_set_height_request (panel_client, 200);
+
+  window = mpl_panel_gtk_get_window (panel_client);
   pane = dalston_power_applet_get_pane (power_applet);
-  gtk_container_add (GTK_CONTAINER (plug),
-                     pane);
-  mnbk_system_tray_init (status_icon, GTK_PLUG (plug), "battery");
-  screen = gtk_widget_get_screen (plug);
-  gtk_widget_set_size_request (pane,
-                               gdk_screen_get_width (screen) - 2 * PADDING,
-                               -1);
+  gtk_container_add (GTK_CONTAINER (window), pane);
+  gtk_widget_show (window);
 
   gtk_main ();
 }
