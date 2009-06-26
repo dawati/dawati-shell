@@ -317,8 +317,14 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 
   if (state == DALSTON_BATTERY_MONITOR_STATE_OTHER)
   {
-    gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
-                          _("Your battery is fully charged and you're ready to go."));
+    if (percentage == 0)
+    {
+      gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
+                            _("Sorry, it looks like your battery is broken."));
+    } else {
+      gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
+                            _("Your battery is fully charged and you're ready to go."));
+    }
   } else if (state == DALSTON_BATTERY_MONITOR_STATE_CHARGING) {
     description = g_strdup_printf (_("Your battery is charging. " \
                                      "It is about <b>%d</b>%% full."),
