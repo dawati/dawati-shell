@@ -431,8 +431,10 @@ _model_bulk_changed_end_cb (AnerleyFeedModel *model,
   {
     clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
     clutter_actor_show ((ClutterActor *)priv->scroll_bin);
+    clutter_actor_show ((ClutterActor *)priv->selection_pane);
   } else {
     clutter_actor_hide ((ClutterActor *)priv->scroll_bin);
+    clutter_actor_hide ((ClutterActor *)priv->selection_pane);
     clutter_actor_show ((ClutterActor *)priv->no_people_tile);
   }
 }
@@ -651,11 +653,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         2,
                                         NULL);
 
-  clutter_actor_hide ((ClutterActor *)priv->scroll_bin);
-  g_signal_connect (priv->model,
-                    "bulk-change-end",
-                    (GCallback)_model_bulk_changed_end_cb,
-                    self);
   priv->selection_pane = nbtk_table_new ();
   clutter_actor_set_width ((ClutterActor *)priv->selection_pane, 184);
   clutter_actor_set_height ((ClutterActor *)priv->selection_pane, 174);
@@ -832,6 +829,15 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   g_signal_connect (priv->tile_view,
                     "item-activated",
                     (GCallback)_tile_view_item_activated_cb,
+                    self);
+
+  /* Put into the no people state */
+  clutter_actor_hide ((ClutterActor *)priv->selection_pane);
+  clutter_actor_hide ((ClutterActor *)priv->scroll_bin);
+
+  g_signal_connect (priv->model,
+                    "bulk-change-end",
+                    (GCallback)_model_bulk_changed_end_cb,
                     self);
 }
 
