@@ -769,7 +769,7 @@ mnb_im_status_row_set_status (MnbIMStatusRow           *row,
                               const gchar              *status)
 {
   MnbIMStatusRowPrivate *priv;
-  const gchar *status_file;
+  const gchar *status_file = NULL;
   gchar *file;
   gint i;
 
@@ -790,6 +790,8 @@ mnb_im_status_row_set_status (MnbIMStatusRow           *row,
           break;
         }
     }
+
+  g_assert (status_file != NULL);
 
   g_free (priv->status);
   priv->status = g_strdup (status);
