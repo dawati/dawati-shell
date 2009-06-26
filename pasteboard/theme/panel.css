@@ -13,6 +13,7 @@ MplEntry > *.MplEntryEntry {
 
 MplEntry *.MplEntryButton {
   border-image: url('file://search-entry-separator.png') 0 0 0 3 stretch stretch;
+  color: #027061;
   font-size: 13;
   padding: 0 2 0 10;
 }
@@ -43,10 +44,6 @@ MplEntry *.MplEntryClearButton:hover {
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
-}
-
-*#pasteboard-search-entry *.MnbEntryButton {
-  color: #027061;
 }
 
 *.pasteboard-empty-bin {
