@@ -116,6 +116,17 @@ account_find_by_name (MoblinStatusPanel *panel,
 }
 
 static void
+on_row_status_changed (MnbIMStatusRow *row,
+                       gint            presence,
+                       const gchar    *status,
+                       AccountInfo    *a_info)
+{
+  MissionControl *mc = a_info->panel->mc;
+
+  mission_control_set_presence (mc, presence, status, NULL, NULL);
+}
+
+static void
 add_account (MoblinStatusPanel *panel,
              AccountInfo       *a_info)
 {
@@ -139,6 +150,10 @@ add_account (MoblinStatusPanel *panel,
 
   mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
                                 panel->is_online);
+
+  g_signal_connect (a_info->row, "status-changed",
+                    G_CALLBACK (on_row_status_changed),
+                    a_info);
 }
 
 static void
@@ -147,8 +162,8 @@ on_mc_presence_changed (MissionControl           *mc,
                         gchar                    *status,
                         MoblinStatusPanel        *panel)
 {
-  GSList *accounts, *l, *cur_accounts;
-  GError *internal_error = NULL;
+  GList *accounts, *l;
+  GSList *cur_accounts, *a;
   const gchar *state_str = NULL;
 
   panel->im_presence = state;
@@ -199,7 +214,7 @@ on_mc_presence_changed (MissionControl           *mc,
            panel->im_status);
 
   cur_accounts = NULL;
-  accounts = mission_control_get_online_connections (mc, &internal_error);
+  accounts = mc_accounts_list_by_enabled (TRUE);
   for (l = accounts; l != NULL; l = l->next)
     {
       McAccount *account = l->data;
@@ -223,6 +238,8 @@ on_mc_presence_changed (MissionControl           *mc,
       cur_accounts = g_slist_prepend (cur_accounts, a_info);
     }
 
+  mc_accounts_list_free (accounts);
+
   if (panel->accounts == NULL)
     panel->accounts = g_slist_reverse (cur_accounts);
   else
@@ -230,9 +247,9 @@ on_mc_presence_changed (MissionControl           *mc,
 
   panel->n_im_visible = g_slist_length (panel->accounts);
 
-  for (l = panel->accounts; l != NULL; l = l->next)
+  for (a = panel->accounts; a != NULL; a = a->next)
     {
-      AccountInfo *a_info = l->data;
+      AccountInfo *a_info = a->data;
 
       if (panel->is_online)
         {
@@ -461,7 +478,7 @@ update_mc (MoblinStatusPanel *panel,
       g_warning ("Unable to get the actual presence: %s", error->message);
       g_clear_error (&error);
 
-      mc_state = MC_PRESENCE_OFFLINE;
+      mc_state = MC_PRESENCE_UNSET;
     }
 
   mc_status = mission_control_get_presence_message_actual (panel->mc, &error);
@@ -473,36 +490,29 @@ update_mc (MoblinStatusPanel *panel,
       mc_status = NULL;
     }
 
-  switch (mc_state)
+  switch (cur_state)
     {
     case MC_PRESENCE_AVAILABLE:
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AVAILABLE;
       state_str = _("Available");
       break;
 
     case MC_PRESENCE_AWAY:
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AWAY;
       state_str = _("Away");
       break;
 
     case MC_PRESENCE_EXTENDED_AWAY:
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY;
       state_str = _("Away");
       break;
 
     case MC_PRESENCE_HIDDEN:
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_HIDDEN;
       state_str = _("Busy");
       break;
 
     case MC_PRESENCE_DO_NOT_DISTURB:
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_BUSY;
       state_str = _("Busy");
       break;
 
     default:
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_OFFLINE;
-      state_str = _("Offline");
       break;
     }
 
@@ -510,12 +520,23 @@ update_mc (MoblinStatusPanel *panel,
   if (!is_online)
     return;
 
+  g_debug ("%s: cur_state [%d], mc_state [%d]",
+           G_STRLOC,
+           cur_state,
+           mc_state);
+
   if (cur_state == MC_PRESENCE_UNSET || cur_state == mc_state)
     {
       on_mc_presence_changed (panel->mc,
                               panel->im_presence,
                               (gchar *) state_str,
                               panel);
+    }
+  else if (cur_state != mc_state && cur_state == MC_PRESENCE_AVAILABLE)
+    {
+      mission_control_set_presence (panel->mc, cur_state, state_str,
+                                    NULL,
+                                    NULL);
     }
   else
     {

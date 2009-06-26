@@ -158,6 +158,24 @@ on_timeline_frame (ClutterTimeline *timeline,
 }
 
 static void
+on_presence_row_clicked (ClutterActor   *actor,
+                         ClutterEvent   *event,
+                         MnbIMStatusRow *row)
+{
+  gint id;
+
+  id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (actor), "presence-id"));
+
+  g_assert (id >= 0 && id < n_presence_states);
+
+  g_signal_emit (row, row_signals[STATUS_CHANGED], 0,
+                 presence_states[id].presence,
+                 presence_states[id].status_msg);
+
+  g_signal_emit_by_name (row->priv->expand_button, "clicked");
+}
+
+static void
 mnb_im_status_row_get_preferred_width (ClutterActor *actor,
                                        gfloat        for_height,
                                        gfloat       *min_width_p,
@@ -522,8 +540,10 @@ mnb_im_status_row_class_init (MnbIMStatusRowClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
-                  mnb_status_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  mnb_status_marshal_VOID__INT_STRING,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_INT,
+                  G_TYPE_STRING);
 }
 
 static void
@@ -628,11 +648,17 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                                NULL);
 
       presence_grid = nbtk_grid_new ();
+      g_object_set_data (G_OBJECT (presence_grid), "presence-id", GINT_TO_POINTER (i));
       nbtk_grid_set_column_gap (NBTK_GRID (presence_grid), 6.0);
       nbtk_grid_set_halign (NBTK_GRID (presence_grid), 0.0);
       nbtk_grid_set_valign (NBTK_GRID (presence_grid), 0.5);
       nbtk_widget_set_style_class_name (NBTK_WIDGET (presence_grid),
                                         "MnbImPresence");
+
+      clutter_actor_set_reactive (CLUTTER_ACTOR (presence_grid), TRUE);
+      g_signal_connect (presence_grid, "button-press-event",
+                        G_CALLBACK (on_presence_row_clicked),
+                        self);
 
       presence_icon = clutter_texture_new ();
       clutter_texture_set_load_async (CLUTTER_TEXTURE (presence_icon), TRUE);
