@@ -943,14 +943,12 @@ make_status (MoblinStatusPanel *panel)
 }
 
 static void
-resize_status (ClutterActor           *stage,
-               const ClutterActorBox  *allocation,
-               ClutterAllocationFlags  flags,
-               ClutterActor           *table)
+on_client_set_size (MplPanelClient *client,
+                    guint           width,
+                    guint           height,
+                    ClutterActor   *table)
 {
-  clutter_actor_set_width (table, allocation->x2 - allocation->x1);
-
-  g_signal_handlers_disconnect_by_func (stage, resize_status, table);
+  clutter_actor_set_size (table, width, height);
 }
 
 static void
@@ -959,13 +957,11 @@ setup_standalone (MoblinStatusPanel *status_panel)
   ClutterActor *stage, *status;
 
   status = make_status (status_panel);
+  clutter_actor_set_size (status, 1024, 600);
 
   stage = clutter_stage_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
 
-  g_signal_connect (stage,
-                    "allocation-changed", G_CALLBACK (resize_status),
-                    status);
   g_signal_connect (stage,
                     "destroy", G_CALLBACK (clutter_main_quit),
                     NULL);
@@ -1002,11 +998,11 @@ setup_panel (MoblinStatusPanel *status_panel)
 #endif
 
   stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
-  g_signal_connect (stage,
-                    "allocation-changed", G_CALLBACK (resize_status),
-                    status);
-
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
+
+  g_signal_connect (panel,
+                    "set-size", G_CALLBACK (on_client_set_size),
+                    status);
 }
 
 static gboolean status_standalone = FALSE;
