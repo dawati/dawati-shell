@@ -136,7 +136,7 @@ PKG_CHECK_MODULES(APPLICATIONS,
 
 APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "\
 '-I$(top_srcdir)/libmoblin-panel '\
-'-I$(top_srcdir)/penge -I$(top_srcdir)/src '
+'-I$(top_srcdir)/penge '
 AC_SUBST([APPLICATIONS_CFLAGS])
 APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "\
 '$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '\
