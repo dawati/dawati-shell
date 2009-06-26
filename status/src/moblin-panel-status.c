@@ -38,6 +38,7 @@
 #include <telepathy-glib/dbus.h>
 #include <telepathy-glib/util.h>
 #include <libmissioncontrol/mission-control.h>
+#include <libmissioncontrol/mc-account-monitor.h>
 
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
@@ -56,7 +57,9 @@ typedef struct _MoblinStatusPanel
   ClutterActor *header_label;
 
   MojitoClient *mojito_client;
+
   MissionControl *mc;
+  McAccountMonitor *account_monitor;
 
   GSList *services;
   GSList *accounts;
@@ -96,9 +99,38 @@ typedef struct _AccountInfo
   NbtkTable *table;
 
   guint is_visible : 1;
+  guint is_enabled : 1;
 } AccountInfo;
 
-static McAccount *
+static void
+account_info_destroy (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    {
+      AccountInfo *a_info = data;
+
+      g_free (a_info->name);
+      g_object_unref (a_info->account);
+
+      g_slice_free (AccountInfo, a_info);
+    }
+}
+
+static void
+service_info_destroy (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    {
+      ServiceInfo *s_info = data;
+
+      g_free (s_info->name);
+      g_object_unref (s_info->service);
+
+      g_slice_free (ServiceInfo, s_info);
+    }
+}
+
+static AccountInfo *
 account_find_by_name (MoblinStatusPanel *panel,
                       const gchar       *name)
 {
@@ -109,7 +141,7 @@ account_find_by_name (MoblinStatusPanel *panel,
       AccountInfo *a_info = l->data;
 
       if (strcmp (a_info->name, name) == 0)
-        return a_info->account;
+        return a_info;
     }
 
   return NULL;
@@ -162,9 +194,8 @@ on_mc_presence_changed (MissionControl           *mc,
                         gchar                    *status,
                         MoblinStatusPanel        *panel)
 {
-  GList *accounts, *l;
-  GSList *cur_accounts, *a;
   const gchar *state_str = NULL;
+  GSList *a;
 
   panel->im_presence = state;
 
@@ -213,45 +244,11 @@ on_mc_presence_changed (MissionControl           *mc,
            panel->im_presence,
            panel->im_status);
 
-  cur_accounts = NULL;
-  accounts = mc_accounts_list_by_enabled (TRUE);
-  for (l = accounts; l != NULL; l = l->next)
-    {
-      McAccount *account = l->data;
-      AccountInfo *a_info;
-      const gchar *name;
-
-      name = mc_account_get_unique_name (account);
-      if (account_find_by_name (panel, name) != NULL)
-        continue;
-
-      a_info = g_slice_new (AccountInfo);
-      a_info->name = g_strdup (name);
-      a_info->panel = panel;
-      a_info->account = account;
-      a_info->row = NULL;
-      a_info->table = NBTK_TABLE (panel->table);
-      a_info->is_visible = FALSE;
-
-      add_account (panel, a_info);
-
-      cur_accounts = g_slist_prepend (cur_accounts, a_info);
-    }
-
-  mc_accounts_list_free (accounts);
-
-  if (panel->accounts == NULL)
-    panel->accounts = g_slist_reverse (cur_accounts);
-  else
-    panel->accounts->next = g_slist_reverse (cur_accounts);
-
-  panel->n_im_visible = g_slist_length (panel->accounts);
-
   for (a = panel->accounts; a != NULL; a = a->next)
     {
       AccountInfo *a_info = a->data;
 
-      if (panel->is_online)
+      if (panel->is_online && a_info->is_enabled)
         {
           g_assert (a_info->row != NULL);
 
@@ -547,10 +544,60 @@ update_mc (MoblinStatusPanel *panel,
 }
 
 static void
+on_mc_account_enabled (McAccountMonitor  *monitor,
+                       gchar             *name,
+                       MoblinStatusPanel *panel)
+{
+  AccountInfo *a_info;
+
+  a_info = account_find_by_name (panel, name);
+
+  if (a_info == NULL)
+    {
+      a_info = g_slice_new (AccountInfo);
+      a_info->name = g_strdup (name);
+      a_info->panel = panel;
+      a_info->account = mc_account_lookup (name);
+      a_info->row = NULL;
+      a_info->table = NBTK_TABLE (panel->table);
+      a_info->is_visible = FALSE;
+      a_info->is_enabled = TRUE;
+
+      add_account (panel, a_info);
+
+      panel->accounts = g_slist_prepend (panel->accounts, a_info);
+    }
+  else
+    a_info->is_enabled = TRUE;
+
+  update_mc (panel, panel->is_online);
+}
+
+static void
+on_mc_account_disabled (McAccountMonitor  *monitor,
+                        gchar             *name,
+                        MoblinStatusPanel *panel)
+{
+  AccountInfo *a_info;
+
+  a_info = account_find_by_name (panel, name);
+
+  if (a_info == NULL)
+    return;
+
+  a_info->is_enabled = FALSE;
+
+  update_mc (panel, panel->is_online);
+}
+
+static void
 on_mojito_online_changed (MojitoClient      *client,
                           gboolean           is_online,
                           MoblinStatusPanel *panel)
 {
+  GList *accounts, *l;
+  GSList *cur_accounts;
+
   g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
 
   panel->is_online = is_online;
@@ -562,6 +609,41 @@ on_mojito_online_changed (MojitoClient      *client,
       panel->im_status = NULL;
     }
 
+  cur_accounts = NULL;
+  accounts = mc_accounts_list_by_enabled (TRUE);
+  for (l = accounts; l != NULL; l = l->next)
+    {
+      McAccount *account = l->data;
+      AccountInfo *a_info;
+      const gchar *name;
+
+      name = mc_account_get_unique_name (account);
+      if (account_find_by_name (panel, name) != NULL)
+        continue;
+
+      a_info = g_slice_new (AccountInfo);
+      a_info->name = g_strdup (name);
+      a_info->panel = panel;
+      a_info->account = account;
+      a_info->row = NULL;
+      a_info->table = NBTK_TABLE (panel->table);
+      a_info->is_visible = FALSE;
+      a_info->is_enabled = TRUE;
+
+      add_account (panel, a_info);
+
+      cur_accounts = g_slist_prepend (cur_accounts, a_info);
+    }
+
+  mc_accounts_list_free (accounts);
+
+  if (panel->accounts == NULL)
+    panel->accounts = g_slist_reverse (cur_accounts);
+  else
+    panel->accounts->next = g_slist_reverse (cur_accounts);
+
+  panel->n_im_visible = g_slist_length (panel->accounts);
+
   update_header (NBTK_LABEL (panel->header_label), is_online);
   update_mc (panel, is_online);
 }
@@ -572,6 +654,8 @@ on_mojito_is_online (MojitoClient *client,
                      gpointer      data)
 {
   MoblinStatusPanel *panel = data;
+  GList *accounts, *l;
+  GSList *cur_accounts;
 
   g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
 
@@ -582,6 +666,41 @@ on_mojito_is_online (MojitoClient *client,
       panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AVAILABLE;
       panel->im_status = NULL;
     }
+
+  cur_accounts = NULL;
+  accounts = mc_accounts_list_by_enabled (TRUE);
+  for (l = accounts; l != NULL; l = l->next)
+    {
+      McAccount *account = l->data;
+      AccountInfo *a_info;
+      const gchar *name;
+
+      name = mc_account_get_unique_name (account);
+      if (account_find_by_name (panel, name) != NULL)
+        continue;
+
+      a_info = g_slice_new (AccountInfo);
+      a_info->name = g_strdup (name);
+      a_info->panel = panel;
+      a_info->account = account;
+      a_info->row = NULL;
+      a_info->table = NBTK_TABLE (panel->table);
+      a_info->is_visible = FALSE;
+      a_info->is_enabled = TRUE;
+
+      add_account (panel, a_info);
+
+      cur_accounts = g_slist_prepend (cur_accounts, a_info);
+    }
+
+  mc_accounts_list_free (accounts);
+
+  if (panel->accounts == NULL)
+    panel->accounts = g_slist_reverse (cur_accounts);
+  else
+    panel->accounts->next = g_slist_reverse (cur_accounts);
+
+  panel->n_im_visible = g_slist_length (panel->accounts);
 
   update_header (NBTK_LABEL (panel->header_label), is_online);
   update_mc (panel, is_online);
@@ -792,15 +911,19 @@ make_status (MoblinStatusPanel *panel)
   panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_UNSET;
   panel->im_status = NULL;
 
+  panel->account_monitor = mc_account_monitor_new ();
+  g_signal_connect (panel->account_monitor,
+                    "account-enabled", G_CALLBACK (on_mc_account_enabled),
+                    panel);
+  g_signal_connect (panel->account_monitor,
+                    "account-disabled", G_CALLBACK (on_mc_account_disabled),
+                    panel);
+
   /* update the status when the presence changes */
   dbus_g_proxy_connect_signal (DBUS_G_PROXY (panel->mc),
                                "PresenceChanged",
                                G_CALLBACK (on_mc_presence_changed),
                                panel, NULL);
-
-  g_object_set_data_full (G_OBJECT (table), "mission-control",
-                          panel->mc,
-                          (GDestroyNotify) g_object_unref);
 
   /* mojito: web services */
   panel->mojito_client = mojito_client_new ();
@@ -815,10 +938,6 @@ make_status (MoblinStatusPanel *panel)
   mojito_client_get_services (panel->mojito_client,
                               on_mojito_get_services,
                               panel);
-
-  g_object_set_data_full (G_OBJECT (table), "mojito-client",
-                          panel->mojito_client,
-                          (GDestroyNotify) g_object_unref);
 
   return table;
 }
@@ -941,6 +1060,17 @@ main (int argc, char *argv[])
 
   clutter_main ();
 
+  /* clean up */
+  g_slist_foreach (panel->accounts, (GFunc) account_info_destroy, NULL);
+  g_slist_free (panel->accounts);
+
+  g_slist_foreach (panel->services, (GFunc) service_info_destroy, NULL);
+  g_slist_free (panel->services);
+
+  g_object_unref (panel->account_monitor);
+  g_object_unref (panel->mc);
+  g_object_unref (panel->mojito_client);
+  g_free (panel->im_status);
   g_free (panel);
 
   return EXIT_SUCCESS;
