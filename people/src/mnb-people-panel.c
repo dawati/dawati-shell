@@ -517,7 +517,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   DBusGConnection *conn;
   EBook *book;
   GError *error = NULL;
-  ClutterActor *tmp_text;
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
@@ -774,14 +773,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-align",
                                         0.0,
                                         NULL);
-
-  tmp_text =
-    nbtk_bin_get_child (NBTK_BIN (priv->primary_button));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
-
-  tmp_text =
-    nbtk_bin_get_child (NBTK_BIN (priv->secondary_button));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
 
   _update_selected_item (self);
 
