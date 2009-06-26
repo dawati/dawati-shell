@@ -139,9 +139,6 @@ add_account (MoblinStatusPanel *panel,
 
   mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
                                 panel->is_online);
-  mnb_im_status_row_set_status (MNB_IM_STATUS_ROW (a_info->row),
-                                panel->im_presence,
-                                panel->im_status);
 }
 
 static void
@@ -154,7 +151,9 @@ on_mc_presence_changed (MissionControl           *mc,
   GError *internal_error = NULL;
   const gchar *state_str = NULL;
 
-  switch (state)
+  panel->im_presence = state;
+
+  switch (panel->im_presence)
     {
     case TP_CONNECTION_PRESENCE_TYPE_OFFLINE:
       state_str = "offline";
@@ -189,10 +188,15 @@ on_mc_presence_changed (MissionControl           *mc,
       break;
     }
 
-  g_debug ("%s: PresenceChanged [%s, '%s']",
+  g_free (panel->im_status);
+  panel->im_status = ((status != NULL && *status != '\0') ? g_strdup (status)
+                                                          : NULL);
+
+  g_debug ("%s: PresenceChanged ['%s'[%d], '%s']",
            G_STRLOC,
            state_str,
-           status);
+           panel->im_presence,
+           panel->im_status);
 
   cur_accounts = NULL;
   accounts = mission_control_get_online_connections (mc, &internal_error);
@@ -209,7 +213,7 @@ on_mc_presence_changed (MissionControl           *mc,
       a_info = g_slice_new (AccountInfo);
       a_info->name = g_strdup (name);
       a_info->panel = panel;
-      a_info->account = g_object_ref (account);
+      a_info->account = account;
       a_info->row = NULL;
       a_info->table = NBTK_TABLE (panel->table);
       a_info->is_visible = FALSE;
@@ -219,19 +223,10 @@ on_mc_presence_changed (MissionControl           *mc,
       cur_accounts = g_slist_prepend (cur_accounts, a_info);
     }
 
-  panel->im_presence = state;
-
-  g_free (panel->im_status);
-  panel->im_status = status != NULL ? g_strdup (status) : "";
-
   if (panel->accounts == NULL)
     panel->accounts = g_slist_reverse (cur_accounts);
   else
     panel->accounts->next = g_slist_reverse (cur_accounts);
-
-  g_debug ("%s: available accounts: %d",
-           G_STRLOC,
-           g_slist_length (panel->accounts));
 
   panel->n_im_visible = g_slist_length (panel->accounts);
 
@@ -254,14 +249,14 @@ on_mc_presence_changed (MissionControl           *mc,
           a_info->is_visible = FALSE;
         }
 
+      mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
+                                    panel->is_online);
+
+      g_debug ("setting status: '%s'", panel->im_status);
       mnb_im_status_row_set_status (MNB_IM_STATUS_ROW (a_info->row),
                                     panel->im_presence,
                                     panel->im_status);
-      mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
-                                    panel->is_online);
     }
-
-  g_debug ("%s: IM visible rows: %d", G_STRLOC, panel->n_im_visible);
 }
 
 static void
@@ -331,8 +326,6 @@ on_caps_changed (MojitoClientService *service,
         }
     }
 
-  g_debug ("%s: Web visible rows: %u", G_STRLOC, s_info->panel->n_web_visible);
-
   if (s_info->panel->n_web_visible <= 0)
     clutter_actor_show (s_info->panel->empty_bin);
   else
@@ -384,8 +377,6 @@ on_mojito_get_services (MojitoClient *client,
       service = mojito_client_get_service (client, service_name);
       if (G_UNLIKELY (service == NULL))
         continue;
-
-      g_debug ("%s: GetServices ['%s']", G_STRLOC, service_name);
 
       s_info = g_slice_new (ServiceInfo);
       s_info->panel = panel;
@@ -479,7 +470,7 @@ update_mc (MoblinStatusPanel *panel,
       g_warning ("Unable to get the actual status: %s", error->message);
       g_clear_error (&error);
 
-      mc_status = _("Offline");
+      mc_status = NULL;
     }
 
   switch (mc_state)
@@ -515,32 +506,20 @@ update_mc (MoblinStatusPanel *panel,
       break;
     }
 
-  g_free (panel->im_status);
-  panel->im_status = mc_status == NULL ? g_strdup (mc_status)
-                                       : g_strdup (state_str);
-
   /* if we are not online, don't bother */
   if (!is_online)
     return;
 
   if (cur_state == MC_PRESENCE_UNSET || cur_state == mc_state)
     {
-      g_debug ("%s: same presence [%d, '%s']",
-               G_STRLOC,
-               panel->im_presence,
-               panel->im_status);
       on_mc_presence_changed (panel->mc,
                               panel->im_presence,
-                              panel->im_status,
+                              (gchar *) state_str,
                               panel);
     }
   else
     {
-      g_debug ("%s: setting new presence [%d, '%s']",
-               G_STRLOC,
-               panel->im_presence,
-               panel->im_status);
-      mission_control_set_presence (panel->mc, mc_state, panel->im_status,
+      mission_control_set_presence (panel->mc, mc_state, mc_status,
                                     NULL,
                                     NULL);
     }
