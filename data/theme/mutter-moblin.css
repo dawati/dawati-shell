@@ -1084,9 +1084,6 @@ AnerleyTile *.AnerleyTileSecondaryLabel
 
 *#people-primary-action, *#people-secondary-action
 {
-  font-size: 18px;
-  padding-top: 8;
-  padding-bottom: 8;
 }
 
 *#people-scroll-bin
