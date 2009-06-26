@@ -51,10 +51,6 @@
 #include "penge/penge-grid-view.h"
 #include "moblin-netbook-status.h"
 
-#ifdef USE_AHOGHILL
-#include "ahoghill/ahoghill-grid-view.h"
-#endif
-
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
@@ -720,30 +716,6 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
       }
 }
 
-#if 1
-#ifdef USE_AHOGHILL
-/*
- * TODO -- this should be moved inside Ahoghill and the signal handlers
- * connected on "parent-set".
- */
-static void
-_media_drop_down_hidden (MnbDropDown      *drop_down,
-                         AhoghillGridView *view)
-{
-  ahoghill_grid_view_clear (view);
-  ahoghill_grid_view_unfocus (view);
-}
-
-static void
-_media_drop_down_shown (MnbDropDown      *drop_down,
-                        AhoghillGridView *view)
-{
-  ahoghill_grid_view_focus (view);
-}
-#endif
-
-#endif /* REMOVE ME block */
-
 static gint
 mnb_toolbar_panel_instance_to_index (MnbToolbar *toolbar, MnbPanel *panel)
 {
@@ -1072,7 +1044,8 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
         case MYZONE:
           break;
         case MEDIA_ZONE:
-#ifdef USE_AHOGHILL
+          g_warning ("Skipping built-in media panel");
+#if 0
           {
             ClutterActor *grid;
 
@@ -1992,6 +1965,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
         case PEOPLE_ZONE:
         case INTERNET_ZONE:
         case MYZONE:
+        case MEDIA_ZONE:
           if (!found_panels[i])
             {
               DBusConnection *conn;
