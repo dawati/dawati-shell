@@ -534,6 +534,13 @@ on_mojito_online_changed (MojitoClient      *client,
 
   panel->is_online = is_online;
 
+  if (panel->is_online &&
+      panel->im_presence == TP_CONNECTION_PRESENCE_TYPE_UNSET)
+    {
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AVAILABLE;
+      panel->im_status = NULL;
+    }
+
   update_header (NBTK_LABEL (panel->header_label), is_online);
   update_mc (panel, is_online);
 }
@@ -548,6 +555,12 @@ on_mojito_is_online (MojitoClient *client,
   g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
 
   panel->is_online = is_online;
+
+  if (panel->is_online)
+    {
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AVAILABLE;
+      panel->im_status = NULL;
+    }
 
   update_header (NBTK_LABEL (panel->header_label), is_online);
   update_mc (panel, is_online);
@@ -781,6 +794,7 @@ make_status (MoblinStatusPanel *panel)
   mojito_client_get_services (panel->mojito_client,
                               on_mojito_get_services,
                               panel);
+
   g_object_set_data_full (G_OBJECT (table), "mojito-client",
                           panel->mojito_client,
                           (GDestroyNotify) g_object_unref);
@@ -795,6 +809,8 @@ resize_status (ClutterActor           *stage,
                ClutterActor           *table)
 {
   clutter_actor_set_width (table, allocation->x2 - allocation->x1);
+
+  g_signal_handlers_disconnect_by_func (stage, resize_status, table);
 }
 
 static void
@@ -831,6 +847,7 @@ setup_panel (MoblinStatusPanel *status_panel)
                                  TRUE);
 
   status = make_status (status_panel);
+  mpl_panel_clutter_track_actor_height (MPL_PANEL_CLUTTER (panel), status);
 
 #if 0
   g_signal_connect (panel,
