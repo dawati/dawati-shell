@@ -169,7 +169,7 @@ PKG_CHECK_MODULES(PASTEBOARD,
 
 PASTEBOARD_CFLAGS="${PASTEBOARD_CFLAGS} ${PENGE_CFLAGS} "\
 '-I$(top_srcdir)/libmoblin-panel '\
-'-I$(top_srcdir)/penge -I$(top_srcdir)/src '
+'-I$(top_srcdir)/penge '
 AC_SUBST([PASTEBOARD_CFLAGS])
 PASTEBOARD_LIBS="${PASTEBOARD_LIBS} ${PENGE_LIBS} "\
 '$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '\

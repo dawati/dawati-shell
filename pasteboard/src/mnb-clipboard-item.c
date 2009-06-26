@@ -28,8 +28,7 @@
 #include <penge/penge-utils.h>
 
 #include "mnb-clipboard-item.h"
-
-#include "marshal.h"
+#include "mnb-pasteboard-marshal.h"
 
 enum
 {
@@ -461,7 +460,7 @@ mnb_clipboard_item_class_init (MnbClipboardItemClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbClipboardItemClass, remove_clicked),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__VOID,
+                  mnb_pasteboard_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
   item_signals[ACTION_CLICKED] =
@@ -470,7 +469,7 @@ mnb_clipboard_item_class_init (MnbClipboardItemClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbClipboardItemClass, action_clicked),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__VOID,
+                  mnb_pasteboard_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 }
 
