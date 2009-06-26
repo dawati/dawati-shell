@@ -1121,3 +1121,10 @@ AnerleyTile *.AnerleyTileSecondaryLabel
   border-image: url('file://people/selection-empty.png') 5 stretch;
   padding: 6;
 }
+
+*#people-nobody-selected-label
+{
+  font-family: "Liberation Sans";
+  font-size: 16;
+  color: #7e7e7eff;
+}
