@@ -11,7 +11,7 @@
 
 #include <bognor/br-queue.h>
 
-#include <src/mnb-entry.h>
+#include <moblin-panel/mpl-entry.h>
 
 #include "ahoghill-grid-view.h"
 #include "ahoghill-playlist.h"
@@ -771,7 +771,7 @@ do_search_cb (gpointer data)
     const char *text;
 
     entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
-    text = mnb_entry_get_text ((MnbEntry *) entry);
+    text = mpl_entry_get_text ((MplEntry *) entry);
 
     if (text == NULL || *text == 0) {
         g_print ("Setting recent items\n");
@@ -836,7 +836,7 @@ do_search_cb (gpointer data)
 }
 
 static void
-search_text_changed (MnbEntry         *entry,
+search_text_changed (MplEntry         *entry,
                      AhoghillGridView *view)
 {
     AhoghillGridViewPrivate *priv;
@@ -955,7 +955,7 @@ ahoghill_grid_view_clear (AhoghillGridView *view)
     NbtkWidget *entry;
 
     entry = ahoghill_search_pane_get_entry (AHOGHILL_SEARCH_PANE (priv->search_pane));
-    mnb_entry_set_text (MNB_ENTRY (entry), "");
+    mpl_entry_set_text (MPL_ENTRY (entry), "");
 }
 
 void

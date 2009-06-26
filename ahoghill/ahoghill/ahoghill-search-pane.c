@@ -3,7 +3,7 @@
 #include <glib/gi18n.h>
 
 #include <nbtk/nbtk.h>
-#include <src/mnb-entry.h>
+#include <moblin-panel/mpl-entry.h>
 
 #include "ahoghill-search-pane.h"
 
@@ -94,7 +94,7 @@ ahoghill_search_pane_init (AhoghillSearchPane *self)
                                           "x-align", 0.0,
                                           NULL);
 
-    priv->entry = mnb_entry_new (_("Search"));
+    priv->entry = mpl_entry_new (_("Search"));
     clutter_actor_set_name (CLUTTER_ACTOR (priv->entry),
                             "media-pane-search-entry");
     clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600.0);
