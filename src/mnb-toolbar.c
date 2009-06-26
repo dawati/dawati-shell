@@ -1019,8 +1019,10 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
            * TODO: The Status, Apps and Pasteboard provide MnbDropDown
            */
         case STATUS_ZONE:
+#if 0
           panel = priv->panels[index] = NBTK_WIDGET (
             make_status (plugin, screen_width - TOOLBAR_X_PADDING * 2));
+#endif
           break;
         case APPS_ZONE:
           g_warning ("Skipping built-in apps panel");
@@ -1966,6 +1968,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
         case INTERNET_ZONE:
         case MYZONE:
         case MEDIA_ZONE:
+        case STATUS_ZONE:
           if (!found_panels[i])
             {
               DBusConnection *conn;
