@@ -984,6 +984,7 @@ setup_panel (MoblinStatusPanel *status_panel)
 
   status = make_status (status_panel);
   mpl_panel_clutter_track_actor_height (MPL_PANEL_CLUTTER (panel), status);
+  clutter_actor_set_height (status, 400);
 
 #if 0
   g_signal_connect (panel,
