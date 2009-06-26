@@ -452,6 +452,9 @@ _primary_button_clicked_cb (NbtkButton *button,
   if (item)
   {
     anerley_item_activate (item);
+
+    if (priv->panel_client)
+      mpl_panel_client_request_hide (priv->panel_client);
   }
 }
 
