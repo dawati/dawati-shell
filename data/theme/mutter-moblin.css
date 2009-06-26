@@ -607,49 +607,49 @@ MnbNotification > *.NotificationBody
 
 /* status */
 
-MnbStatusEntry
+MnbWebStatusEntry
 {
   background-color: #ffffffff;
   padding: 6 15 6 15;
 }
 
-MnbStatusEntry:hover
+MnbWebStatusEntry:hover
 {
   border-image: url("file://status/entry-frame-hover.png") 6;
 }
 
-MnbStatusEntry:active
+MnbWebStatusEntry:active
 {
   border-image: url("file://status/entry-frame-edit.png") 6;
 }
 
-MnbStatusEntry > *.MnbStatusEntryText
+MnbWebStatusEntry > *.MnbWebStatusEntryText
 {
   font-size: 16px;
   color: #595959ff;
   border-image: none;
 }
 
-MnbStatusEntry > *.MnbStatusEntrySubText
+MnbWebStatusEntry > *.MnbWebStatusEntrySubText
 {
   font-size: 12px;
   font-family: "Liberation Sans Reg Italic";
   color: #7dbe0cff;
 }
 
-MnbStatusEntry > *.MnbStatusEntryCancel
+MnbWebStatusEntry > *.MnbWebStatusEntryCancel
 {
   border-image: none;
   background-image: url("file://status/edit_close.png");
 }
 
-MnbStatusEntry > *.MnbStatusEntryCancel:hover
+MnbWebStatusEntry > *.MnbWebStatusEntryCancel:hover
 {
   border-image: none;
   background-image: url("file://status/edit_close_hover.png");
 }
 
-MnbStatusEntry > *.MnbStatusEntryButton
+MnbWebStatusEntry > *.MnbWebStatusEntryButton
 {
   border-image: none;
   color: #7dbe0cff;
@@ -658,12 +658,53 @@ MnbStatusEntry > *.MnbStatusEntryButton
   padding: 0;
 }
 
+MnbIMStatusEntry
+{
+  background-color: #ffffffff;
+  padding: 6 15 6 15;
+}
+
+MnbIMStatusEntry:hover
+{
+  border-image: url("file://status/entry-frame-hover.png") 6;
+}
+
+NbtkLabel.MnbImStatusLabel
+{
+  font-size: 16px;
+  color: #595959ff;
+  border-image: none;
+}
+
+NbtkLabel.MnbImAccountLabel
+{
+  font-size: 12px;
+  font-family: "Liberation Sans Reg Italic";
+  color: #7dbe0cff;
+}
+
+MnbIMStatusRow > *.MnbImExpandButton
+{
+  border-image: none;
+  color: #7dbe0cff;
+  font-family: "Liberation Sans Bold";
+  font-size: 13px;
+  padding: 0;
+}
+
+NbtkGrid.MnbImStatusSelector
+{
+  font-size: 16px;
+  color: #595959ff;
+  padding: 2 2 2 64;
+  background-color: #ccccccff;
+}
+
 *.MnbStatusPageTable
 {
   border-image: url("file://status/decoration-frame.png") 17 stretch;
   padding: 19;
 }
-
 
 *.MnbStatusPageHeader
 {

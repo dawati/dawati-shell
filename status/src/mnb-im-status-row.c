@@ -116,11 +116,17 @@ on_expand_clicked (NbtkButton     *button,
   priv->is_expanded = !priv->is_expanded;
 
   if (priv->is_expanded)
-    clutter_timeline_set_direction (priv->timeline, CLUTTER_TIMELINE_FORWARD);
+    {
+      clutter_timeline_set_direction (priv->timeline, CLUTTER_TIMELINE_FORWARD);
+
+      nbtk_button_set_label (NBTK_BUTTON (priv->expand_button), _("- Close"));
+    }
   else
     {
       clutter_actor_hide (priv->status_grid);
       clutter_timeline_set_direction (priv->timeline, CLUTTER_TIMELINE_BACKWARD);
+
+      nbtk_button_set_label (NBTK_BUTTON (priv->expand_button), _("+ Change"));
     }
 
   if (!clutter_timeline_is_playing (priv->timeline))
@@ -257,6 +263,12 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
                    - padding.top
                    - padding.bottom;
 
+  child_box.x1 = (int) padding.top;
+  child_box.y1 = (int) padding.left;
+  child_box.x2 = (int) (child_box.x1 + ICON_SIZE);
+  child_box.y2 = (int) (child_box.y1 + ICON_SIZE);
+  clutter_actor_allocate (priv->user_icon, &child_box, flags);
+
   /* the "Change" button must sit on the right side so we
    * get its preferred size first, which will be used to
    * compute the new available width for the header
@@ -271,7 +283,7 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
   child_height = CLAMP (natural_height, min_height, available_height);
 
   /* reduce the available width by the size of the button + spacing */
-  available_width -= (child_width - (6.0 * 2));
+  available_width -= (ICON_SIZE - (6.0 * 2) - child_width - (6.0 * 2));
 
   button_width = child_width;
   button_height = child_height;
@@ -291,8 +303,8 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
                                       &natural_height);
   child_height = CLAMP (natural_height, min_height, available_height);
 
-  child_box.x1 = (int) padding.top;
-  child_box.y1 = (int) padding.left;
+  child_box.x1 = (int) padding.left + ICON_SIZE + (6.0 * 2);
+  child_box.y1 = (int) (padding.top + ((ICON_SIZE - child_height) / 2));
   child_box.x2 = (int) child_box.x1 + child_width;
   child_box.y2 = (int) child_box.y1 + child_height;
   clutter_actor_allocate (priv->header, &child_box, flags);
@@ -300,8 +312,12 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
   /* we want the header button to stay at the same place even when
    * expanding the row
    */
-  child_box.x1 = (int) (available_width - padding.right - button_width - 6.0);
-  child_box.y1 = (int) (padding.top + ((child_height - button_height) / 2));
+  child_box.x1 = (int) (available_width
+               - padding.right
+               - (ICON_SIZE + (6.0 * 2))
+               - button_width
+               - 6.0);
+  child_box.y1 = (int) (padding.top + ((ICON_SIZE - button_height) / 2));
   child_box.x2 = (int) (child_box.x1 + button_width);
   child_box.y2 = (int) (child_box.y1 + button_height);
   clutter_actor_allocate (priv->expand_button, &child_box, flags);
@@ -311,8 +327,6 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
    */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->status_grid))
     {
-      gfloat header_height = child_height;
-
       clutter_actor_get_preferred_width (priv->status_grid, available_height,
                                          &min_width,
                                          &natural_width);
@@ -324,8 +338,8 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
       child_height = CLAMP (natural_height, min_height, available_height);
 
       child_box.x1 = padding.left;
-      child_box.y1 = padding.top + header_height + priv->spacing;
-      child_box.x2 = child_box.x1 + child_width;
+      child_box.y1 = padding.top + ICON_SIZE + priv->spacing;
+      child_box.x2 = child_box.x1 + available_width - (ICON_SIZE + (6.0 * 2));
       child_box.y2 = child_box.y1 + child_height;
       clutter_actor_allocate (priv->status_grid, &child_box, flags);
     }
@@ -338,10 +352,11 @@ mnb_im_status_row_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->paint (actor);
 
+  clutter_actor_paint (priv->user_icon);
   clutter_actor_paint (priv->header);
   clutter_actor_paint (priv->expand_button);
 
-  if (priv->is_expanded)
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->status_grid))
     clutter_actor_paint (priv->status_grid);
 }
 
@@ -353,11 +368,8 @@ mnb_im_status_row_pick (ClutterActor       *actor,
 
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->pick (actor, pick_color);
 
-  clutter_actor_paint (priv->header);
   clutter_actor_paint (priv->expand_button);
-
-  if (priv->is_expanded)
-    clutter_actor_paint (priv->status_grid);
+  clutter_actor_paint (priv->status_grid);
 }
 
 static void
@@ -367,6 +379,7 @@ mnb_im_status_row_map (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->map (actor);
 
+  clutter_actor_map (priv->user_icon);
   clutter_actor_map (priv->header);
   clutter_actor_map (priv->expand_button);
   clutter_actor_map (priv->status_grid);
@@ -379,6 +392,7 @@ mnb_im_status_row_unmap (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->unmap (actor);
 
+  clutter_actor_unmap (priv->user_icon);
   clutter_actor_unmap (priv->header);
   clutter_actor_unmap (priv->expand_button);
   clutter_actor_unmap (priv->status_grid);
@@ -418,6 +432,7 @@ mnb_im_status_row_style_changed (NbtkWidget *widget)
 #endif
 
   g_signal_emit_by_name (priv->header, "style-changed");
+  g_signal_emit_by_name (priv->expand_button, "style-changed");
   g_signal_emit_by_name (priv->status_grid, "style-changed");
 }
 
@@ -437,6 +452,7 @@ mnb_im_status_row_finalize (GObject *gobject)
   g_free (priv->display_name);
   g_free (priv->no_icon_file);
 
+  clutter_actor_destroy (priv->user_icon);
   clutter_actor_destroy (priv->header);
   clutter_actor_destroy (priv->expand_button);
   clutter_actor_destroy (priv->status_grid);
@@ -490,6 +506,7 @@ mnb_im_status_row_constructed (GObject *gobject)
 {
   MnbIMStatusRow *row = MNB_IM_STATUS_ROW (gobject);
   MnbIMStatusRowPrivate *priv = row->priv;
+  gchar *name;
 
   g_assert (priv->account_name != NULL);
 
@@ -497,7 +514,29 @@ mnb_im_status_row_constructed (GObject *gobject)
   priv->display_name = g_strdup (mc_account_get_display_name (priv->account));
   priv->is_online = FALSE;
 
-  nbtk_label_set_text (NBTK_LABEL (priv->account_label), priv->display_name);
+  name = g_strconcat (" - ", priv->display_name, NULL);
+  nbtk_label_set_text (NBTK_LABEL (priv->account_label), name);
+  g_free (name);
+
+  if (mc_account_get_avatar (priv->account, &name, NULL, NULL))
+    {
+      GError *error = NULL;
+
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
+                                     name,
+                                     &error);
+      if (error)
+        {
+          g_warning ("Unable to load avatar image: %s", error->message);
+          g_error_free (error);
+
+          clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
+                                         priv->no_icon_file,
+                                         NULL);
+        }
+
+      g_free (name);
+    }
 
   if (G_OBJECT_CLASS (mnb_im_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_im_status_row_parent_class)->constructed (gobject);
@@ -590,6 +629,8 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon), file, NULL);
   priv->no_icon_file = file;
 
+  clutter_actor_set_parent (priv->user_icon, CLUTTER_ACTOR (self));
+
   file = g_build_filename (DATADIR,
                            "mutter-moblin", "theme", "status",
                            "im-offline.png",
@@ -607,13 +648,12 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                                     "MnbImAccountLabel");
 
   clutter_container_add (CLUTTER_CONTAINER (priv->header),
-                         priv->user_icon,
                          priv->presence_icon,
                          priv->status_label,
                          priv->account_label,
                          NULL);
 
-  priv->expand_button = CLUTTER_ACTOR (nbtk_button_new_with_label (_("Change")));
+  priv->expand_button = CLUTTER_ACTOR (nbtk_button_new_with_label (_("+ Change")));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->expand_button),
                                     "MnbImExpandButton");
   clutter_actor_set_parent (priv->expand_button, CLUTTER_ACTOR (self));
@@ -631,6 +671,7 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                                     "MnbImStatusSelector");
 
   clutter_actor_set_parent (priv->status_grid, CLUTTER_ACTOR (self));
+  clutter_actor_set_reactive (priv->status_grid, TRUE);
   clutter_actor_hide (priv->status_grid);
 
   for (i = 0; i < n_presence_states; i++)
@@ -653,7 +694,7 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
       nbtk_grid_set_halign (NBTK_GRID (presence_grid), 0.0);
       nbtk_grid_set_valign (NBTK_GRID (presence_grid), 0.5);
       nbtk_widget_set_style_class_name (NBTK_WIDGET (presence_grid),
-                                        "MnbImPresence");
+                                        "MnbImPresenceRow");
 
       clutter_actor_set_reactive (CLUTTER_ACTOR (presence_grid), TRUE);
       g_signal_connect (presence_grid, "button-press-event",
@@ -665,6 +706,12 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
       clutter_texture_set_from_file (CLUTTER_TEXTURE (presence_icon), file, NULL);
 
       presence_label = nbtk_label_new (gettext (presence_states[i].status_msg));
+
+      /* FIXME - ugh, this sucks, but NbtkGrid does not allow expanding
+       * a child to cover the whole allocation and NBTK does not have
+       * a non-reflowing box that I can use
+       */
+      //clutter_actor_set_width (CLUTTER_ACTOR (presence_label), 900);
 
       clutter_container_add (CLUTTER_CONTAINER (presence_grid),
                              presence_icon,
