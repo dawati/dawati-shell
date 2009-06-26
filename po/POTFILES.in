@@ -33,3 +33,7 @@ src/mnb-entry.c
 src/mnb-status-entry.c
 src/mnb-switcher.c
 src/mnb-toolbar.c
+status/mnb-im-status-row.c
+status/mnb-web-status-entry.c
+status/mnb-web-status-row.c
+status/moblin-status-panel.c
