@@ -125,7 +125,11 @@ dist_theme_status_DATA = \
 	theme/status/edit_close.png \
 	theme/status/entry-frame-hover.png \
 	theme/status/entry-frame-edit.png \
-	theme/status/no_image_icon.png
+	theme/status/no_image_icon.png \
+	theme/status/im-available.png \
+	theme/status/im-away.png \
+	theme/status/im-busy.png \
+	theme/status/im-offline.png
 
 theme_mediapaneldir = $(pkgdatadir)/theme/media-panel
 dist_theme_mediapanel_DATA = \
