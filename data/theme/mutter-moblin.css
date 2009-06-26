@@ -607,10 +607,15 @@ MnbNotification > *.NotificationBody
 
 /* status */
 
+MnbWebStatusRow
+{
+  padding: 0 0 0 6;
+}
+
 MnbWebStatusEntry
 {
   background-color: #ffffffff;
-  padding: 6 15 6 15;
+  padding: 6 15 6 18;
 }
 
 MnbWebStatusEntry:hover
@@ -658,15 +663,10 @@ MnbWebStatusEntry > *.MnbWebStatusEntryButton
   padding: 0;
 }
 
-MnbIMStatusEntry
+MnbIMStatusRow
 {
   background-color: #ffffffff;
-  padding: 6 15 6 15;
-}
-
-MnbIMStatusEntry:hover
-{
-  border-image: url("file://status/entry-frame-hover.png") 6;
+  padding: 6 15 6 7;
 }
 
 NbtkLabel.MnbImStatusLabel

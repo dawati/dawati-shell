@@ -263,8 +263,8 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
                    - padding.top
                    - padding.bottom;
 
-  child_box.x1 = (int) padding.top;
-  child_box.y1 = (int) padding.left;
+  child_box.x1 = (int) padding.left;
+  child_box.y1 = (int) padding.top;
   child_box.x2 = (int) (child_box.x1 + ICON_SIZE);
   child_box.y2 = (int) (child_box.y1 + ICON_SIZE);
   clutter_actor_allocate (priv->user_icon, &child_box, flags);
@@ -664,7 +664,7 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   priv->status_grid = CLUTTER_ACTOR (nbtk_grid_new ());
   grid = NBTK_GRID (priv->status_grid);
   nbtk_grid_set_column_major (grid, TRUE);
-  nbtk_grid_set_row_gap (grid, 2);
+  nbtk_grid_set_row_gap (grid, 4);
   nbtk_grid_set_halign (grid, 0.0);
   nbtk_grid_set_valign (grid, 0.0);
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->status_grid),
