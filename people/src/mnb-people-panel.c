@@ -65,6 +65,7 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *scroll_bin;
   NbtkWidget *no_people_tile;
   NbtkWidget *selected_tile;
+  NbtkWidget *nobody_selected_box;
 };
 
 static void
@@ -144,10 +145,14 @@ _update_selected_item (MnbPeoplePanel *people_panel)
                   "item",
                   item,
                   NULL);
+    clutter_actor_show ((ClutterActor *)priv->control_box);
+    clutter_actor_hide ((ClutterActor *)priv->nobody_selected_box);
   } else {
     clutter_actor_hide ((ClutterActor *)priv->selected_tile);
     clutter_actor_hide ((ClutterActor *)priv->primary_button);
     clutter_actor_hide ((ClutterActor *)priv->secondary_button);
+    clutter_actor_hide ((ClutterActor *)priv->control_box);
+    clutter_actor_show ((ClutterActor *)priv->nobody_selected_box);
     return;
   }
 
@@ -712,6 +717,39 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-align",
                                         0.0,
                                         NULL);
+
+  priv->nobody_selected_box = nbtk_bin_new ();
+  clutter_actor_set_name ((ClutterActor *)priv->nobody_selected_box,
+                          "people-nobody-selected");
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->selection_pane),
+                                        (ClutterActor *)priv->nobody_selected_box,
+                                        1,
+                                        0,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-fill",
+                                        TRUE,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        TRUE,
+                                        "x-align",
+                                        0.0,
+                                        "y-align",
+                                        0.0,
+                                        NULL);
+  label = nbtk_label_new (_("Nobody selected"));
+  clutter_actor_set_name ((ClutterActor *)label,
+                          "people-nobody-selected-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->nobody_selected_box),
+                               (ClutterActor *)label);
+  nbtk_bin_set_alignment (NBTK_BIN (priv->nobody_selected_box),
+                          NBTK_ALIGN_CENTER,
+                          NBTK_ALIGN_TOP);
+  nbtk_bin_set_fill (NBTK_BIN (priv->nobody_selected_box),
+                     FALSE,
+                     FALSE);
+
 
   priv->selected_tile = anerley_tile_new (NULL);
   clutter_actor_set_name (CLUTTER_ACTOR (priv->selected_tile),
