@@ -248,6 +248,23 @@ dalston_power_applet_do_shutdown (DalstonPowerApplet *applet)
   g_object_unref (power_proxy);
 }
 
+static gboolean
+_shutdown_timeout_cb (gpointer userdata)
+{
+  DalstonPowerApplet *applet = DALSTON_POWER_APPLET (userdata);
+  DalstonPowerAppletPrivate *priv = GET_PRIVATE (applet);
+  DalstonBatteryMonitorState state;
+
+  state = dalston_battery_monitor_get_state (priv->battery_monitor);
+
+  if (state == DALSTON_BATTERY_MONITOR_STATE_DISCHARGING)
+  {
+    dalston_power_applet_do_shutdown (applet);
+  }
+
+  return FALSE;
+}
+
 static void
 dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 {
@@ -344,14 +361,15 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   if (state == DALSTON_BATTERY_MONITOR_STATE_DISCHARGING)
   {
     /* Do notifications at various levels */
-    if (percentage > 0 && percentage < 5)
-    {
-      dalston_power_applet_do_shutdown (applet);
-    } else if (percentage < 10) {
+    if (percentage > 0 && percentage < 10) {
       if (last_notification_displayed != NOTIFICATION_10_PERCENT)
       {
         dalston_power_applet_do_notification (applet, NOTIFICATION_10_PERCENT);
         last_notification_displayed = NOTIFICATION_10_PERCENT;
+
+        g_timeout_add_seconds (60,
+                               _shutdown_timeout_cb,
+                               applet);
       }
     } else if (percentage < 15) {
       if (last_notification_displayed != NOTIFICATION_15_PERCENT)
