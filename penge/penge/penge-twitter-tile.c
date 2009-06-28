@@ -153,7 +153,7 @@ penge_twitter_tile_constructed (GObject *object)
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                    PANGO_WRAP_WORD_CHAR);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
-                              PANGO_ELLIPSIZE_NONE);
+                              PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
 
