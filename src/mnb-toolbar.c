@@ -807,6 +807,9 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   gfloat             w, h;
+  gint               screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
 
@@ -816,7 +819,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
 
   priv->dropdown_region =
     moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT,
-                                      (guint)w, (guint)h);
+                                      (guint)w, screen_height-TOOLBAR_HEIGHT);
 
   moblin_netbook_stash_window_focus (plugin, CurrentTime);
 
@@ -834,6 +837,9 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   gfloat             x, y,w, h;
+  gint               screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
   mnb_drop_down_get_footer_geometry (dropdown, &x, &y, &w, &h);
 
@@ -844,7 +850,8 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
   priv->dropdown_region =
     moblin_netbook_input_region_push (plugin,
                                       (gint)x, TOOLBAR_HEIGHT + (gint)y,
-                                      (guint)w, (guint)h);
+                                      (guint)w,
+                                      screen_height - (TOOLBAR_HEIGHT+(gint)y));
 
   priv->waiting_for_panel = FALSE;
 }
@@ -1210,6 +1217,7 @@ mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
   MnbToolbarPrivate *priv;
   MutterPlugin      *plugin;
   gfloat             x, y,w, h;
+  gint               screen_width, screen_height;
 
   /*
    * If this panel is visible, we need to update the input region to match
@@ -1223,6 +1231,8 @@ mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
 
   mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (panel), &x, &y, &w, &h);
 
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
   if (priv->dropdown_region)
     moblin_netbook_input_region_remove_without_update (plugin,
                                                        priv->dropdown_region);
@@ -1230,7 +1240,8 @@ mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
   priv->dropdown_region =
     moblin_netbook_input_region_push (plugin,
                                       (gint)x, TOOLBAR_HEIGHT + (gint)y,
-                                      (guint)w, (guint)h);
+                                      (guint)w,
+                                      screen_height - (TOOLBAR_HEIGHT+(gint)y));
 }
 
 static void
@@ -2259,6 +2270,9 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
   MutterPlugin           *plugin   = priv->plugin;
   MutterWindow           *mcw      = map_data->mcw;
   gfloat                  x, y, w, h;
+  gint                    screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
   g_free (map_data);
 
@@ -2271,7 +2285,8 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
                                                        priv->dropdown_region);
 
   priv->dropdown_region =
-    moblin_netbook_input_region_push (plugin, x, TOOLBAR_HEIGHT + y, w, h);
+    moblin_netbook_input_region_push (plugin, x, TOOLBAR_HEIGHT + y, w,
+                                      screen_height - (TOOLBAR_HEIGHT+(gint)y));
 
   /* Notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
