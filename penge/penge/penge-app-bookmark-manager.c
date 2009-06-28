@@ -247,11 +247,14 @@ _file_monitor_changed_cb (GFileMonitor      *monitor,
   PengeAppBookmarkManager *self = (PengeAppBookmarkManager *)userdata;
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (self);
   GList *l;
+  gchar *uri;
 
-  for (l = priv->uris; l; l = g_list_delete_link (l, l))
+  for (l = priv->uris; l; l=l->next)
   {
-    g_signal_emit_by_name (self, "bookmark-removed", l->data);
-    g_free ((gchar *)l->data);
+    uri = (gchar *)l->data;
+    priv->uris = g_list_delete_link (priv->uris, l);
+    g_signal_emit_by_name (self, "bookmark-removed", uri);
+    g_free (uri);
   }
   priv->uris = NULL;
 
