@@ -43,21 +43,21 @@ void     moblin_netbook_sn_finalize (MutterPlugin *plugin);
 gboolean
 moblin_netbook_launch_application_from_info (GAppInfo     *app,
                                              GList        *files,
-                                             gboolean      no_chooser,
-                                             gint          workspace);
+                                             gint          workspace,
+                                             gboolean      no_chooser);
 
 gboolean moblin_netbook_launch_application (const  gchar *path,
-                                            gboolean      no_chooser,
-                                            gint          workspace);
+                                            gint          workspace,
+                                            gboolean      no_chooser);
 
 gboolean moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
                                                               GList        *files,
-                                                              gboolean      no_chooser,
-                                                              gint          workspace);
+                                                              gint          workspace,
+                                                              gboolean      no_chooser);
 
 gboolean moblin_netbook_launch_default_for_uri (const gchar *uri,
-                                                gboolean     no_chooser,
-                                                gint         workspace);
+                                                gint         workspace,
+                                                gboolean     no_chooser);
 
 #endif
 

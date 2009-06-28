@@ -405,7 +405,7 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
   exec = g_strdup_printf ("%s \"%s\"", "moblin-web-browser", esc_url);
 
   if (!mpl_panel_client_launch_application (priv->panel_client, exec,
-                                            TRUE, -2))
+                                            -2, TRUE))
     g_warning (G_STRLOC ": Error launching browser for url '%s'", esc_url);
   else if (priv->panel_client)
     mpl_panel_client_request_hide (priv->panel_client);

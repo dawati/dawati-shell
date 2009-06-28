@@ -50,8 +50,8 @@ mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child)
 gboolean
 moblin_netbook_launch_application_from_desktop_file (const  gchar *desktop,
                                                      GList        *files,
-                                                     gboolean      no_chooser,
-                                                     gint          workspace)
+                                                     gint          workspace,
+                                                     gboolean      no_chooser)
 {
   GAppInfo *app;
   GAppLaunchContext *ctx;
