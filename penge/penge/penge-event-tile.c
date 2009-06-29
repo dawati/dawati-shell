@@ -24,6 +24,8 @@
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
 
+#include <string.h>
+
 G_DEFINE_TYPE (PengeEventTile, penge_event_tile, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -376,6 +378,7 @@ penge_event_tile_update (PengeEventTile *tile)
   gchar *summary_str;
   gchar *details_str;
   JanaTime *t;
+  gchar *p;
 
   if (!priv->event)
     return;
@@ -415,6 +418,13 @@ penge_event_tile_update (PengeEventTile *tile)
   summary_str = jana_event_get_summary (priv->event);
   if (summary_str)
   {
+    /* this hack is courtesy of Chris Lord, we look for a new line character
+     * and if we find it replace it with \0. We need this because otherwise
+     * new lines in our labels look funn
+     */
+    p = strchr (summary_str, '\n');
+    if (p)
+      *p = '\0';
     nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
     g_free (summary_str);
   } else {
@@ -443,6 +453,9 @@ penge_event_tile_update (PengeEventTile *tile)
                                  2,
                                  NULL);
   } else {
+    p = strchr (details_str, '\n');
+    if (p)
+      *p = '\0';
     nbtk_label_set_text (NBTK_LABEL (priv->details_label), details_str);
     g_free (details_str);
 
