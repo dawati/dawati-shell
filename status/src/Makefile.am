@@ -47,14 +47,14 @@ moblin_panel_status_SOURCES  = 	\
 	moblin-panel-status.c
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.status.in
-service_DATA = org.moblin.UX.Shell.Panels.status
+service_in_files = org.moblin.UX.Shell.Panels.status.service.in
+service_DATA = org.moblin.UX.Shell.Panels.status.service
 
 EXTRA_DIST = $(service_in_files) mnb-status-marshal.list
 
 CLEANFILES = stamp-mnb-status-marshal.h
 
-DISTCLEANFILES = org.moblin.UX.Shell.Panels.status $(BUILT_SOURCES)
+DISTCLEANFILES = $(service_DATA) $(BUILT_SOURCES)
 
-org.moblin.UX.Shell.Panels.status: org.moblin.UX.Shell.Panels.status.in Makefile
+org.moblin.UX.Shell.Panels.status.service: $(service_in_files) Makefile
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
