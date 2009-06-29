@@ -117,7 +117,7 @@ AS_IF([test "x$enable_ahoghill" = "xyes"],
       [
 	AC_DEFINE(USE_AHOGHILL, [1], [Define if we are using Ahoghill])
 
-	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.1
+	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.2
                                     gdk-pixbuf-2.0 bognor-regis-0.4 >= 0.4.3
                                     gtk+-2.0)
       ]

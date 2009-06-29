@@ -34,7 +34,6 @@ typedef struct _Source {
     BklSourceClient *source;
     BklDB *db;
 
-    GPtrArray *items;
     GSequence *index;
     guint32 update_id;
 
@@ -132,19 +131,7 @@ uri_added_cb (BklSourceClient *client,
               const char      *uri,
               Source          *source)
 {
-    BklItem *item;
-    GError *error = NULL;
-
-    item = bkl_db_get_item (source->db, uri, &error);
-    if (error != NULL) {
-        g_warning ("%s: Error getting item: %s", G_STRLOC, error->message);
-        return;
-    }
-
-    g_ptr_array_add (source->items, item);
-    g_hash_table_insert (source->uri_to_item,
-                         (char *) bkl_item_get_uri (item), item);
-
+    /* We don't care about items being added */
     /* FIXME: We should recheck if this item should be added to the results */
 }
 
@@ -154,20 +141,11 @@ uri_deleted_cb (BklSourceClient *client,
                 Source          *source)
 {
     BklItem *item;
-    int i;
 
     item = g_hash_table_lookup (source->uri_to_item, uri);
     if (item == NULL) {
         return;
     }
-
-    for (i = 0; i < source->items->len; i++) {
-        if (item == source->items->pdata[i]) {
-            g_ptr_array_remove_index (source->items, i);
-            break;
-        }
-    }
-
 
     g_hash_table_remove (source->uri_to_item, uri);
     g_object_unref (item);
@@ -229,8 +207,6 @@ static Source *
 create_source (BklSourceClient *s)
 {
     Source *source;
-    GError *error = NULL;
-    int i;
 
     source = g_new0 (Source, 1);
 
@@ -254,20 +230,7 @@ create_source (BklSourceClient *s)
         return NULL;
     }
 
-    source->items = bkl_db_get_items (source->db, FALSE, &error);
-    if (source->items == NULL) {
-        g_warning ("Error getting items: %s", error->message);
-        bkl_db_free (source->db);
-        g_free (source);
-        return NULL;
-    }
-
     source->uri_to_item = g_hash_table_new (g_str_hash, g_str_equal);
-    for (i = 0; i < source->items->len; i++) {
-        BklItem *item = source->items->pdata[i];
-        g_hash_table_insert (source->uri_to_item,
-                             (char *) bkl_item_get_uri (item), item);
-    }
 
     return source;
 }
@@ -275,18 +238,11 @@ create_source (BklSourceClient *s)
 static void
 destroy_source (Source *source)
 {
-    int i;
-
     if (source->index) {
         g_sequence_free (source->index);
     }
 
     g_hash_table_destroy (source->uri_to_item);
-
-    for (i = 0; i < source->items->len; i++) {
-        g_object_unref (source->items->pdata[i]);
-    }
-    g_ptr_array_free (source->items, TRUE);
 
     g_object_unref (source->source);
 
@@ -304,10 +260,22 @@ find_item (AhoghillGridView *view,
     for (i = 0; i < priv->dbs->len; i++) {
         Source *s = priv->dbs->pdata[i];
         BklItem *item;
+        GError *error = NULL;
 
         item = g_hash_table_lookup (s->uri_to_item, uri);
         if (item) {
             *source = s;
+            return item;
+        }
+
+        /* Check the db */
+        item = bkl_db_get_item (s->db, uri, &error);
+        if (item) {
+            *source = s;
+
+            /* Put it into the item cache */
+            g_hash_table_insert (s->uri_to_item,
+                                 (char *) bkl_item_get_uri (item), item);
             return item;
         }
     }
@@ -315,29 +283,53 @@ find_item (AhoghillGridView *view,
     return NULL;
 }
 
+struct _ForeachData {
+    Source *source;
+    AhoghillResultsModel *model;
+};
+
+static gboolean
+build_example_results (BklDB      *db,
+                       const char *key,
+                       BklItem    *item,
+                       gpointer    userdata)
+{
+    struct _ForeachData *data = (struct _ForeachData *) userdata;
+    BklItem *cached_item;
+    gboolean got_all = FALSE;
+
+    cached_item = g_hash_table_lookup (data->source->uri_to_item, key);
+    if (cached_item == NULL) {
+        g_hash_table_insert (data->source->uri_to_item,
+                             (char *)bkl_item_get_uri (item),
+                             g_object_ref (item));
+        cached_item = item;
+    }
+
+    ahoghill_results_model_add_item (data->model, data->source->source,
+                                     cached_item);
+
+    got_all = (ahoghill_results_model_get_count (data->model) == 6);
+
+    return !got_all;
+}
+
 static void
 generate_example_results (AhoghillGridView *view)
 {
     AhoghillGridViewPrivate *priv = view->priv;
-    int i, count = 0;
+    struct _ForeachData data;
+    int i;
 
     for (i = 0; i < priv->dbs->len; i++) {
         Source *source = priv->dbs->pdata[i];
-        int j;
 
-        for (j = 0; j < source->items->len; j++) {
-            BklItem *item = source->items->pdata[rand () % source->items->len];
-            const char *uri;
+        data.source = source;
+        data.model = priv->model;
 
-            uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) item);
-            if (uri) {
-                ahoghill_results_model_add_item (priv->model, source->source,
-                                                 item);
-                count++;
-                if (count == 6) {
-                    return;
-                }
-            }
+        bkl_db_foreach (source->db, build_example_results, &data);
+        if (ahoghill_results_model_get_count (priv->model) == 6) {
+            return;
         }
     }
 }
