@@ -36,9 +36,30 @@ enum
   LAST_SIGNAL
 };
 
+static void clutter_container_iface_init (ClutterContainerIface *iface);
+
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MplEntry, mpl_entry, NBTK_TYPE_BIN);
+G_DEFINE_TYPE_WITH_CODE (MplEntry, mpl_entry, NBTK_TYPE_BIN,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                clutter_container_iface_init));
+
+static void
+mpl_entry_foreach (ClutterContainer *container,
+                   ClutterCallback   callback,
+                   gpointer          user_data)
+{
+  MplEntryPrivate *priv = MPL_ENTRY (container)->priv;
+
+  callback (priv->entry, user_data);
+  callback (priv->table, user_data);
+}
+
+static void
+clutter_container_iface_init (ClutterContainerIface *iface)
+{
+  iface->foreach = mpl_entry_foreach;
+}
 
 static void
 search_button_clicked_cb (NbtkButton  *button,
@@ -234,46 +255,16 @@ mpl_entry_pick (ClutterActor       *actor,
 }
 
 static void
-mpl_entry_map (ClutterActor *actor)
-{
-  MplEntryPrivate *priv = MPL_ENTRY (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mpl_entry_parent_class)->map (actor);
-
-  clutter_actor_map (priv->entry);
-
-  clutter_actor_map (priv->table);
-}
-
-static void
-mpl_entry_unmap (ClutterActor *actor)
-{
-  MplEntryPrivate *priv = MPL_ENTRY (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mpl_entry_parent_class)->unmap (actor);
-
-  clutter_actor_unmap (priv->entry);
-
-  clutter_actor_unmap (priv->table);
-}
-
-static void
 mpl_entry_style_changed (NbtkWidget *widget)
 {
   MplEntryPrivate *priv = MPL_ENTRY (widget)->priv;
-  NbtkWidget *entry = NBTK_WIDGET (priv->entry);
-  NbtkWidget *table = NBTK_WIDGET (priv->table);
-  NbtkWidget *clear = NBTK_WIDGET (priv->clear_button);
-  NbtkWidget *search = NBTK_WIDGET (priv->search_button);
 
   /* this is needed to propagate the ::style-changed signal to
    * the internal children on MplEntry, otherwise the style changes
    * will not reach them
    */
-  g_signal_emit_by_name (entry, "style-changed", 0);
-  g_signal_emit_by_name (table, "style-changed", 0);
-  g_signal_emit_by_name (clear, "style-changed", 0);
-  g_signal_emit_by_name (search, "style-changed", 0);
+  g_signal_emit_by_name (priv->entry, "style-changed", 0);
+  g_signal_emit_by_name (priv->table, "style-changed", 0);
 }
 
 static void
@@ -366,8 +357,6 @@ mpl_entry_class_init (MplEntryClass *klass)
   actor_class->key_focus_in = mpl_entry_focus_in;
   actor_class->paint = mpl_entry_paint;
   actor_class->pick = mpl_entry_pick;
-  actor_class->map = mpl_entry_map;
-  actor_class->unmap = mpl_entry_unmap;
 
   pspec = g_param_spec_string ("label",
                                "Label",
