@@ -714,12 +714,12 @@ NbtkGrid.MnbImStatusSelector
   padding: 6;
 }
 
-*.status-empty-bin {
+NbtkGrid > *.status-empty-bin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
-*.status-empty-label {
+NbtkGrid > *.status-empty-label {
   font-family: "Liberation Sans";
   font-size: 16px;
   color: #595959ff;
