@@ -53,7 +53,8 @@
 typedef struct _MoblinStatusPanel
 {
   ClutterActor *table;
-  ClutterActor *empty_bin;
+  ClutterActor *empty_web_bin;
+  ClutterActor *empty_im_bin;
   ClutterActor *header_label;
 
   MojitoClient *mojito_client;
@@ -64,10 +65,10 @@ typedef struct _MoblinStatusPanel
   GSList *services;
   GSList *accounts;
 
-  gint n_web_visible;
-  gint n_im_visible;
-
   guint is_online : 1;
+
+  guint n_web_available;
+  guint n_im_available;
 
   TpConnectionPresenceType im_presence;
   gchar *im_status;
@@ -180,9 +181,6 @@ add_account (MoblinStatusPanel *panel,
                                         "allocate-hidden", FALSE,
                                         NULL);
 
-  mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
-                                panel->is_online);
-
   g_signal_connect (a_info->row, "status-changed",
                     G_CALLBACK (on_row_status_changed),
                     a_info);
@@ -263,9 +261,6 @@ on_mc_presence_changed (MissionControl           *mc,
           a_info->is_visible = FALSE;
         }
 
-      mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
-                                    panel->is_online);
-
       g_debug ("setting status: '%s'", panel->im_status);
       mnb_im_status_row_set_status (MNB_IM_STATUS_ROW (a_info->row),
                                     panel->im_presence,
@@ -278,6 +273,7 @@ on_caps_changed (MojitoClientService *service,
                  guint32              new_caps,
                  ServiceInfo         *s_info)
 {
+  MoblinStatusPanel *panel = s_info->panel;
   gboolean was_visible, has_row;
 
   was_visible = s_info->is_visible;
@@ -323,7 +319,7 @@ on_caps_changed (MojitoClientService *service,
           clutter_actor_show (s_info->row);
           s_info->is_visible = TRUE;
 
-          s_info->panel->n_web_visible += 1;
+          panel->n_web_available += 1;
         }
     }
   else
@@ -336,14 +332,14 @@ on_caps_changed (MojitoClientService *service,
           clutter_actor_hide (s_info->row);
           s_info->is_visible = FALSE;
 
-          s_info->panel->n_web_visible -= 1;
+          panel->n_web_available -= 1;
         }
     }
 
-  if (s_info->panel->n_web_visible <= 0)
-    clutter_actor_show (s_info->panel->empty_bin);
+  if (panel->n_web_available == 0)
+    clutter_actor_show (panel->empty_web_bin);
   else
-    clutter_actor_hide (s_info->panel->empty_bin);
+    clutter_actor_hide (panel->empty_web_bin);
 }
 
 static void
@@ -551,7 +547,6 @@ on_mc_account_enabled (McAccountMonitor  *monitor,
   AccountInfo *a_info;
 
   a_info = account_find_by_name (panel, name);
-
   if (a_info == NULL)
     {
       a_info = g_slice_new (AccountInfo);
@@ -570,6 +565,10 @@ on_mc_account_enabled (McAccountMonitor  *monitor,
   else
     a_info->is_enabled = TRUE;
 
+  panel->n_im_available += 1;
+
+  clutter_actor_hide (panel->empty_im_bin);
+
   update_mc (panel, panel->is_online);
 }
 
@@ -581,11 +580,15 @@ on_mc_account_disabled (McAccountMonitor  *monitor,
   AccountInfo *a_info;
 
   a_info = account_find_by_name (panel, name);
-
   if (a_info == NULL)
     return;
 
   a_info->is_enabled = FALSE;
+
+  panel->n_im_available -= 1;
+
+  if (panel->n_im_available == 0)
+    clutter_actor_show (panel->empty_im_bin);
 
   update_mc (panel, panel->is_online);
 }
@@ -596,7 +599,7 @@ on_mojito_online_changed (MojitoClient      *client,
                           MoblinStatusPanel *panel)
 {
   GList *accounts, *l;
-  GSList *cur_accounts;
+  GSList *cur_accounts, *a;
 
   g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
 
@@ -642,7 +645,19 @@ on_mojito_online_changed (MojitoClient      *client,
   else
     panel->accounts->next = g_slist_reverse (cur_accounts);
 
-  panel->n_im_visible = g_slist_length (panel->accounts);
+  panel->n_im_available = g_slist_length (panel->accounts);
+  if (panel->n_im_available == 0)
+    clutter_actor_show (panel->empty_im_bin);
+  else
+    clutter_actor_hide (panel->empty_im_bin);
+
+  for (a = panel->accounts; a != NULL; a = a->next)
+    {
+      AccountInfo *a_info = a->data;
+
+      mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
+                                    panel->is_online);
+    }
 
   update_header (NBTK_LABEL (panel->header_label), is_online);
   update_mc (panel, is_online);
@@ -655,7 +670,7 @@ on_mojito_is_online (MojitoClient *client,
 {
   MoblinStatusPanel *panel = data;
   GList *accounts, *l;
-  GSList *cur_accounts;
+  GSList *cur_accounts, *a;
 
   g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
 
@@ -700,7 +715,19 @@ on_mojito_is_online (MojitoClient *client,
   else
     panel->accounts->next = g_slist_reverse (cur_accounts);
 
-  panel->n_im_visible = g_slist_length (panel->accounts);
+  panel->n_im_available = g_slist_length (panel->accounts);
+  if (panel->n_im_available == 0)
+    clutter_actor_show (panel->empty_im_bin);
+  else
+    clutter_actor_hide (panel->empty_im_bin);
+
+  for (a = panel->accounts; a != NULL; a = a->next)
+    {
+      AccountInfo *a_info = a->data;
+
+      mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
+                                    panel->is_online);
+    }
 
   update_header (NBTK_LABEL (panel->header_label), is_online);
   update_mc (panel, is_online);
@@ -874,14 +901,14 @@ make_status (MoblinStatusPanel *panel)
                                         NULL);
   panel->header_label = CLUTTER_ACTOR (header);
 
-  panel->empty_bin = CLUTTER_ACTOR (nbtk_bin_new ());
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (panel->empty_bin),
+  panel->empty_web_bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (panel->empty_web_bin),
                                     "status-empty-bin");
-  nbtk_bin_set_alignment (NBTK_BIN (panel->empty_bin),
+  nbtk_bin_set_alignment (NBTK_BIN (panel->empty_web_bin),
                           NBTK_ALIGN_LEFT,
                           NBTK_ALIGN_CENTER);
-  nbtk_bin_set_fill (NBTK_BIN (panel->empty_bin), TRUE, FALSE);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (table), panel->empty_bin,
+  nbtk_bin_set_fill (NBTK_BIN (panel->empty_web_bin), TRUE, FALSE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (table), panel->empty_web_bin,
                                         1, 0,
                                         "x-expand", TRUE,
                                         "y-expand", FALSE,
@@ -898,7 +925,33 @@ make_status (MoblinStatusPanel *panel)
                             "a Web Services account with a provider that "
                             "supports status messages"));
   nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-empty-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (panel->empty_bin),
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel->empty_web_bin),
+                               CLUTTER_ACTOR (label));
+
+  panel->empty_im_bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (panel->empty_im_bin),
+                                    "status-empty-bin");
+  nbtk_bin_set_alignment (NBTK_BIN (panel->empty_im_bin),
+                          NBTK_ALIGN_LEFT,
+                          NBTK_ALIGN_CENTER);
+  nbtk_bin_set_fill (NBTK_BIN (panel->empty_im_bin), TRUE, FALSE);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (table), panel->empty_im_bin,
+                                        2, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+  label = nbtk_label_new (_("To update your IM status you need to setup "
+                            "an Instant Messaging account"));
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-empty-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel->empty_im_bin),
                                CLUTTER_ACTOR (label));
 
   /* mission control: instant messaging

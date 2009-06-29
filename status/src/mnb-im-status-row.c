@@ -745,10 +745,20 @@ mnb_im_status_row_set_online (MnbIMStatusRow *row,
 
   priv = row->priv;
 
-  if (priv->is_online != is_online)
-    {
-      priv->is_online = is_online;
-    }
+  priv->is_online = is_online ? TRUE : FALSE;
+
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->user_icon),
+                             priv->is_online ? 255 :128);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->presence_icon),
+                             priv->is_online ? 255 :128);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->status_label),
+                             priv->is_online ? 255 :128);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->account_label),
+                             priv->is_online ? 255 :128);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->expand_button),
+                             priv->is_online ? 255 :128);
+  clutter_actor_set_reactive (priv->expand_button,
+                              priv->is_online ? TRUE : FALSE);
 }
 
 G_CONST_RETURN gchar *
