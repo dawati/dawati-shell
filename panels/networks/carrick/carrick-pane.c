@@ -404,36 +404,38 @@ _new_connection_cb (GtkButton *button,
     if (network == NULL)
       return;
 
-    devices = cm_manager_get_devices (priv->manager);
-    device = CM_DEVICE (devices->data);
-    while (device)
+    for (devices = cm_manager_get_devices (priv->manager);
+         devices != NULL && !joined;
+         devices = devices->next)
     {
-      if (cm_device_get_type (device) == DEVICE_WIFI)
+      device = devices->data;
+
+      if (CM_IS_DEVICE (device))
       {
-	if (g_strcmp0 (security, "WPA2") == 0)
-	{
-	  g_free (security);
-	  security = g_strdup ("rsn");
-	}
-	else
-	{
-	  guint i;
-	  for (i = 0; security[i] != '\0'; i++)
-	  {
-	    security[i] = g_ascii_tolower (security[i]);
-	  }
-	}
-        joined = cm_device_join_network (device,
-                                         network,
-                                         security,
-                                         secret);
-        device = NULL;
-      }
-      else
-      {
-        device = CM_DEVICE (devices->next);
+        CmDeviceType type = cm_device_get_type (device);
+        if (type == DEVICE_WIFI)
+        {
+          if (g_strcmp0 (security, "WPA2") == 0)
+          {
+            g_free (security);
+            security = g_strdup ("rsn");
+          }
+          else
+          {
+            guint i;
+            for (i = 0; security[i] != '\0'; i++)
+            {
+              security[i] = g_ascii_tolower (security[i]);
+            }
+          }
+          joined = cm_device_join_network (device,
+                                           network,
+                                           security,
+                                           secret);
+        }
       }
     }
+    /* Need some error handling here */
   }
   gtk_widget_destroy (dialog);
 }
@@ -463,21 +465,24 @@ _service_updated_cb (CmService   *service,
   if (cm_service_get_name (service) != NULL)
   {
     type = cm_service_get_type (service);
-    g_signal_handlers_disconnect_by_func (service,
-                                          _service_updated_cb,
-                                          pane);
 
     if (g_strcmp0 ("ethernet", type) == 0
-        && cm_service_get_favorite (service) == FALSE)
+        && cm_service_get_connected (service) == FALSE)
     {
       return;
     }
+    else
+    {
+      g_signal_handlers_disconnect_by_func (service,
+                                            _service_updated_cb,
+                                            pane);
 
-    GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
-                                                        service);
-    carrick_list_add_item (list,
-                           service_item);
-    carrick_list_sort_list (CARRICK_LIST (priv->service_list));
+      GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
+                                                          service);
+      carrick_list_add_item (list,
+                             service_item);
+      carrick_list_sort_list (CARRICK_LIST (priv->service_list));
+    }
   }
 }
 
@@ -521,8 +526,9 @@ _device_updated_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->wifi_label,
 				    FALSE);
         gtk_widget_show (priv->wifi_label);
+        /* Only enable "Add new connection" button when wifi powered on */
         gtk_widget_set_sensitive (priv->new_conn_button,
-                                  TRUE);
+                                  state);
         g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
                           "switch-flipped",
                           G_CALLBACK (_wifi_switch_callback),
@@ -991,7 +997,6 @@ carrick_pane_trigger_scan (CarrickPane *pane)
    */
   if (difftime (now, priv->last_scan) < 60)
   {
-    g_free (&priv->last_scan);
     priv->last_scan = time (NULL);
 
     while (devices)
@@ -1007,8 +1012,6 @@ carrick_pane_trigger_scan (CarrickPane *pane)
       devices = devices->next;
     }
   }
-
-  g_free (&now);
 }
 
 GtkWidget*
