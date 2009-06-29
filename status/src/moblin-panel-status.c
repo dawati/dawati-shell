@@ -903,7 +903,7 @@ make_status (MoblinStatusPanel *panel)
 
   panel->empty_web_bin = CLUTTER_ACTOR (nbtk_bin_new ());
   nbtk_widget_set_style_class_name (NBTK_WIDGET (panel->empty_web_bin),
-                                    "status-empty-bin");
+                                    "status-web-empty-bin");
   nbtk_bin_set_alignment (NBTK_BIN (panel->empty_web_bin),
                           NBTK_ALIGN_LEFT,
                           NBTK_ALIGN_CENTER);
@@ -924,13 +924,13 @@ make_status (MoblinStatusPanel *panel)
   label = nbtk_label_new (_("To update your web status you need to setup "
                             "a Web Services account with a provider that "
                             "supports status messages"));
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-empty-label");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-web-empty-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (panel->empty_web_bin),
                                CLUTTER_ACTOR (label));
 
   panel->empty_im_bin = CLUTTER_ACTOR (nbtk_bin_new ());
   nbtk_widget_set_style_class_name (NBTK_WIDGET (panel->empty_im_bin),
-                                    "status-empty-bin");
+                                    "status-im-empty-bin");
   nbtk_bin_set_alignment (NBTK_BIN (panel->empty_im_bin),
                           NBTK_ALIGN_LEFT,
                           NBTK_ALIGN_CENTER);
@@ -950,7 +950,7 @@ make_status (MoblinStatusPanel *panel)
 
   label = nbtk_label_new (_("To update your IM status you need to setup "
                             "an Instant Messaging account"));
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-empty-label");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-im-empty-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (panel->empty_im_bin),
                                CLUTTER_ACTOR (label));
 
