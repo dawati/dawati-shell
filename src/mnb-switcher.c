@@ -108,19 +108,46 @@ mnb_switcher_app_dispose (GObject *object)
       priv->raised_id = 0;
     }
 
-  /*
-   * Do not destroy the tooltip, this is happens automatically.
-   */
+  if (priv->tooltip)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (clutter_actor_get_parent (priv->tooltip)),
+                                      priv->tooltip);
+    }
 
   G_OBJECT_CLASS (mnb_switcher_app_parent_class)->dispose (object);
+}
+
+static void
+mnb_switcher_app_allocate (ClutterActor          *actor,
+                           const ClutterActorBox *box,
+                           ClutterAllocationFlags flags)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
+  ClutterGeometry area;
+  gfloat x, y, w, h;
+
+  CLUTTER_ACTOR_CLASS (mnb_switcher_app_parent_class)->allocate (actor, box, flags);
+
+  /* set the tooltip area */
+  clutter_actor_get_transformed_position (actor, &x, &y);
+  clutter_actor_get_size (actor, &w, &h);
+
+  area.x = x;
+  area.y = y;
+  area.width = w;
+  area.height = h;
+  nbtk_tooltip_set_tip_area ((NbtkTooltip*) priv->tooltip, &area);
 }
 
 static void
 mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   object_class->dispose = mnb_switcher_app_dispose;
+
+  actor_class->allocate = mnb_switcher_app_allocate;
 
   g_type_class_add_private (klass, sizeof (MnbSwitcherAppPrivate));
 }
@@ -1055,15 +1082,10 @@ on_show_completed_cb (ClutterActor *self, gpointer data)
 
   if (app_priv->tooltip)
     {
-      ClutterActorBox box;
+      if (priv->active_tooltip)
+        nbtk_tooltip_hide (priv->active_tooltip);
 
       priv->active_tooltip = NBTK_TOOLTIP (app_priv->tooltip);
-
-      /*
-       * Make sure there is no pending allocation (without this the initial
-       * tooltip is place incorrectly).
-       */
-      clutter_actor_get_allocation_box (self, &box);
 
       nbtk_tooltip_show (priv->active_tooltip);
     }
@@ -1343,9 +1365,9 @@ mnb_switcher_show (ClutterActor *self)
       app_priv->switcher = MNB_SWITCHER (self);
       app_priv->mw       = mw;
       app_priv->tooltip  = g_object_new (NBTK_TYPE_TOOLTIP,
-                                         "widget", clone,
                                          "label", title,
                                          NULL);
+      clutter_actor_set_parent (app_priv->tooltip, clone);
       g_free (title);
 
       g_signal_connect (clone, "enter-event",
@@ -1895,7 +1917,6 @@ void
 mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
-  ClutterActorBox     box;
 
   if (!priv->table)
     return;
@@ -1905,13 +1926,6 @@ mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win)
 
   if (priv->active_tooltip)
     {
-      /*
-       * The above changes styling of the contents and hence leaves the actor in
-       * unallocated state -- this brute forces allocation, which is necessary
-       * before we can show the tooltip.
-       */
-      clutter_actor_get_allocation_box (CLUTTER_ACTOR (priv->table), &box);
-
       nbtk_tooltip_show (priv->active_tooltip);
     }
 }
