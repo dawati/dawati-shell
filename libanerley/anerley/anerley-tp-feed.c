@@ -48,6 +48,7 @@ struct _AnerleyTpFeedPrivate {
 
   GHashTable *ids_to_items;
   GHashTable *handles_to_ids;
+  GHashTable *handles_to_contacts;
 };
 
 enum
@@ -102,6 +103,12 @@ anerley_tp_feed_dispose (GObject *object)
    * Do here rather than finalize since this will then cause the TpContact
    * inside the item to be unreffed.
    */
+  if (priv->handles_to_contacts)
+  {
+    g_hash_table_unref (priv->handles_to_contacts);
+    priv->handles_to_contacts = NULL;
+  }
+
   if (priv->ids_to_items)
   {
     g_hash_table_unref (priv->ids_to_items);
@@ -160,6 +167,141 @@ _tp_connection_request_avatars_cb (TpConnection *conn,
   }
 }
 
+static AnerleyTpItem *
+_make_item_from_contact (AnerleyTpFeed *feed,
+                         TpContact     *contact)
+{
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+  gchar *uid;
+  AnerleyTpItem *item;
+
+  uid = g_strdup_printf ("%s/%s",
+                         mc_account_get_normalized_name (priv->account),
+                         tp_contact_get_identifier (contact));
+  item = anerley_tp_item_new (priv->mc,
+                              priv->account,
+                              contact);
+
+
+  /* Move the ownership of the reference to the hash table */
+  g_hash_table_insert (priv->ids_to_items,
+                       g_strdup (tp_contact_get_identifier (contact)),
+                       item);
+
+  /*
+   * We need to save the handle -> id mapping so that when we deal with a
+   * removal, well, so that we can :-)
+   */
+  g_hash_table_insert (priv->handles_to_ids,
+                       GUINT_TO_POINTER (tp_contact_get_handle (contact)),
+                       g_strdup (tp_contact_get_identifier (contact)));
+
+  return item;
+}
+
+/* return TRUE if avatar found and set, otherwise return FALSE */
+static gboolean
+_set_avatar_if_present (AnerleyTpFeed *feed,
+                        AnerleyTpItem *item,
+                        TpContact     *contact)
+{
+  const gchar *token;
+  gchar *avatar_path = NULL;
+  gboolean res = FALSE;
+  TpHandle handle;
+
+  /* Only try and find an avatar file if we have an avatar token */
+  token = tp_contact_get_avatar_token (contact);
+
+  if (token && !g_str_equal (token, ""))
+  {
+    /* Check if contact's avatar is already downloaded */
+    avatar_path = g_build_filename (g_get_user_cache_dir (),
+                                    "anerley",
+                                    "avatars",
+                                    token,
+                                    NULL);
+    if (g_file_test (avatar_path, G_FILE_TEST_EXISTS))
+    {
+      /* Already downloaded, woot! */
+      anerley_tp_item_set_avatar_path (item, avatar_path);
+      res = TRUE;
+    } else {
+      handle = tp_contact_get_handle (contact);
+      res = FALSE;
+    }
+
+    g_free (avatar_path);
+  }
+
+  return res;
+}
+
+static void
+_tp_contact_presence_type_changed (GObject    *object,
+                                   GParamSpec *pspec,
+                                   gpointer    userdata)
+{
+  AnerleyTpFeed *feed = ANERLEY_TP_FEED (userdata);
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (userdata);
+  TpContact *contact = (TpContact *)object;
+  TpConnectionPresenceType presence_type;
+  AnerleyTpItem *item;
+  GList *items = NULL;
+  GArray *missing_avatar_handles;
+  TpHandle handle;
+
+  missing_avatar_handles = g_array_new (TRUE, TRUE, sizeof (TpHandle));
+
+  presence_type = tp_contact_get_presence_type (contact);
+
+  if (presence_type == TP_CONNECTION_PRESENCE_TYPE_OFFLINE)
+  {
+    item = g_hash_table_lookup (priv->ids_to_items,
+                                tp_contact_get_identifier (contact));
+
+    if (item)
+    {
+      items = g_list_append (items, item);
+      g_signal_emit_by_name (feed, "items-removed", items);
+      g_hash_table_remove (priv->ids_to_items,
+                           tp_contact_get_identifier (contact));
+      g_list_free (items);
+    }
+  } else {
+    item = g_hash_table_lookup (priv->ids_to_items,
+                                tp_contact_get_identifier (contact));
+
+    if (!item)
+    {
+      item = _make_item_from_contact (feed, contact);
+
+      if (!_set_avatar_if_present (feed, item, contact))
+      {
+         handle = tp_contact_get_handle (contact);
+         g_array_append_val (missing_avatar_handles,
+                             handle);
+      }
+
+      items = g_list_append (items, item);
+      g_signal_emit_by_name (feed, "items-added", items);
+      g_list_free (items);
+    }
+  }
+
+  if (missing_avatar_handles->len > 0)
+  {
+    tp_cli_connection_interface_avatars_call_request_avatars (priv->conn,
+                                                              -1,
+                                                              missing_avatar_handles,
+                                                              _tp_connection_request_avatars_cb,
+                                                              NULL,
+                                                              NULL,
+                                                              (GObject *)feed);
+    g_array_free (missing_avatar_handles, TRUE);
+  }
+}
+
 static void
 _tp_connection_get_contacts_cb (TpConnection      *connection,
                                 guint              n_contacts,
@@ -175,12 +317,9 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
   gint i = 0;
   TpContact *contact;
   AnerleyTpItem *item;
-  gchar *uid;
   GList *changed_items = NULL;
   GList *added_items = NULL;
-  gchar *avatar_path = NULL;
   GArray *missing_avatar_handles;
-  const gchar *token;
   TpHandle handle;
 
   if (error)
@@ -201,6 +340,23 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
              tp_contact_get_identifier (contact),
              tp_contact_get_presence_status (contact));
 #endif
+
+    g_hash_table_insert (priv->handles_to_contacts,
+                         GUINT_TO_POINTER (tp_contact_get_handle (contact)),
+                         g_object_ref (contact));
+
+    g_signal_connect (contact,
+                      "notify::presence-type",
+                      (GCallback)_tp_contact_presence_type_changed,
+                      feed);
+
+
+    if (tp_contact_get_presence_type (contact) == TP_CONNECTION_PRESENCE_TYPE_OFFLINE)
+    {
+      /* Skip offline contacts */
+      continue;
+    }
+
     item = g_hash_table_lookup (priv->ids_to_items,
                                 tp_contact_get_identifier (contact));
 
@@ -212,51 +368,15 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
                     NULL);
       changed_items = g_list_append (changed_items, item);
     } else {
-      uid = g_strdup_printf ("%s/%s",
-                             mc_account_get_normalized_name (priv->account),
-                             tp_contact_get_identifier (contact));
-      item = anerley_tp_item_new (priv->mc,
-                                  priv->account,
-                                  contact);
-
+      item = _make_item_from_contact (feed, contact);
       added_items = g_list_append (added_items, item);
-
-      /* Move the ownership of the reference to the hash table */
-      g_hash_table_insert (priv->ids_to_items,
-                           g_strdup (tp_contact_get_identifier (contact)),
-                           item);
-
-      /* 
-       * We need to save the handle -> id mapping so that when we deal with a
-       * removal, well, so that we can :-)
-       */
-      g_hash_table_insert (priv->handles_to_ids,
-                           GUINT_TO_POINTER (tp_contact_get_handle (contact)),
-                           g_strdup (tp_contact_get_identifier (contact)));
     }
 
-    /* Only try and find an avatar file if we have an avatar token */
-    token = tp_contact_get_avatar_token (contact);
-
-    if (token && !g_str_equal (token, ""))
+    if (!_set_avatar_if_present (feed, item, contact))
     {
-      /* Check if contact's avatar is already downloaded */
-      avatar_path = g_build_filename (g_get_user_cache_dir (),
-                                      "anerley",
-                                      "avatars",
-                                      token,
-                                      NULL);
-      if (g_file_test (avatar_path, G_FILE_TEST_EXISTS))
-      {
-        /* Already download, woot! */
-        anerley_tp_item_set_avatar_path (item, avatar_path);
-      } else {
-        handle = tp_contact_get_handle (contact);
-        g_array_append_val (missing_avatar_handles,
-                            handle);
-      }
-
-      g_free (avatar_path);
+       handle = tp_contact_get_handle (contact);
+       g_array_append_val (missing_avatar_handles,
+                          handle);
     }
   }
 
@@ -279,14 +399,17 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
   g_list_free (added_items);
   g_list_free (changed_items);
 
-  tp_cli_connection_interface_avatars_call_request_avatars (priv->conn,
-                                                            -1,
-                                                            missing_avatar_handles,
-                                                            _tp_connection_request_avatars_cb,
-                                                            NULL,
-                                                            NULL,
-                                                            (GObject *)feed);
-  g_array_free (missing_avatar_handles, TRUE);
+  if (missing_avatar_handles->len > 0)
+  {
+    tp_cli_connection_interface_avatars_call_request_avatars (priv->conn,
+                                                              -1,
+                                                              missing_avatar_handles,
+                                                              _tp_connection_request_avatars_cb,
+                                                              NULL,
+                                                              NULL,
+                                                              (GObject *)feed);
+    g_array_free (missing_avatar_handles, TRUE);
+  }
 }
 
 
@@ -355,6 +478,9 @@ _tp_channel_members_changed_on_subscribe_cb (TpChannel    *proxy,
       g_hash_table_remove (priv->handles_to_ids,
                            GUINT_TO_POINTER (handle));
     }
+
+    g_hash_table_remove (priv->handles_to_contacts,
+                         GUINT_TO_POINTER (handle));
   }
 
   if (removed_items)
@@ -671,6 +797,7 @@ _mc_account_status_changed_cb (MissionControl           *mc,
 
       g_signal_emit_by_name (feed, "items-removed", items);
       g_list_free (items);
+      g_hash_table_remove_all (priv->handles_to_contacts);
       g_hash_table_remove_all (priv->ids_to_items);
       g_hash_table_remove_all (priv->handles_to_ids);
 
@@ -810,6 +937,11 @@ anerley_tp_feed_init (AnerleyTpFeed *self)
                                                 g_direct_equal,
                                                 NULL,
                                                 g_free);
+
+  priv->handles_to_contacts = g_hash_table_new_full (g_direct_hash,
+                                                     g_direct_equal,
+                                                     NULL,
+                                                     (GDestroyNotify)g_object_unref);
 
   /*  Create cache directory if it doesn't exist */
   avatar_cache_dir = g_build_filename (g_get_user_cache_dir (),
