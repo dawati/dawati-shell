@@ -2,8 +2,6 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(PEOPLE_CFLAGS) \
-	-I$(top_srcdir) \
-	-I$(top_srcdir)/libmoblin-panel \
 	-DPKGDATADIR=\"$(datadir)/moblin-panel-people\"
 
 # FIXME use this once split out
@@ -11,8 +9,7 @@ AM_CFLAGS = \
 
 libexec_PROGRAMS = moblin-panel-people
 
-moblin_panel_people_LDADD = $(PEOPLE_LIBS) \
-			    $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la
+moblin_panel_people_LDADD = $(PEOPLE_LIBS)
 
 moblin_panel_people_SOURCES = \
   mnb-people-panel.c \

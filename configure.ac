@@ -119,7 +119,7 @@ AS_IF([test "x$enable_ahoghill" = "xyes"],
                                     gtk+-2.0)
 
 AHOGHILL_CFLAGS="${AHOGHILL_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
-AC_SUBST([APPLICATIONS_PANEL_CFLAGS])
+AC_SUBST([AHOGHILL_CFLAGS])
 AHOGHILL_LIBS="${AHOGHILL_LIBS} "\
 '$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la'
 AC_SUBST([AHOGHILL_LIBS])
@@ -192,6 +192,13 @@ AS_IF([test "x$enable_people" = "xyes"],
         AC_DEFINE(WITH_PEOPLE, [1], [Defined when building the people panel])
 
 	PKG_CHECK_MODULES(PEOPLE, anerley gtk+-2.0 clutter-x11-0.9 gio-2.0 gio-unix-2.0)
+
+PEOPLE_CFLAGS="${PEOPLE_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
+AC_SUBST([PEOPLE_CFLAGS])
+PEOPLE_LIBS="${PEOPLE_LIBS} "\
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la'
+AC_SUBST([PEOPLE_LIBS])
+
       ]
 )
 
