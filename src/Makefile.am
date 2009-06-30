@@ -4,8 +4,8 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 
 AM_CPPFLAGS = \
 	@MUTTER_PLUGIN_CFLAGS@ \
-	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
-	-DPLUGIN_LOCALEDIR=\"$(localedir)\"
+	-DPLUGIN_LOCALEDIR=\"$(localedir)\" \
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\"
 
 moblin_netbook_la_SOURCES  = \
 				mnb-scale-group.c	        \

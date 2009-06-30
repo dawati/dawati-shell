@@ -258,7 +258,7 @@ moblin_netbook_plugin_constructed (GObject *object)
     meta_prefs_set_num_workspaces (1);
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
-                             PLUGIN_PKGDATADIR "/theme/mutter-moblin.css",
+                             THEMEDIR "/mutter-moblin.css",
                              &err);
   if (err)
     {
@@ -1473,14 +1473,14 @@ setup_parallax_effect (MutterPlugin *plugin)
 
   /* FIXME: pull image from theme, css ? */
   priv->parallax_tex = clutter_texture_new_from_file
-                        (PLUGIN_PKGDATADIR "/theme/panel/background-tile.png",
+                        (THEMEDIR "/panel/background-tile.png",
                          NULL);
 
   if (priv->parallax_tex == NULL)
     {
       g_warning ("Failed to load '"
-                 PLUGIN_PKGDATADIR
-                 "/theme/panel/background-tile.png', No tiled desktop image");
+                 THEMEDIR
+                 "/panel/background-tile.png', No tiled desktop image");
     }
   else
     {

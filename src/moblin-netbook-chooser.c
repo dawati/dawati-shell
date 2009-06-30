@@ -430,9 +430,9 @@ make_spinner (void)
 
   if (tmp == NULL)
     {
-      tmp = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                               "/theme/generic/spinner.png",
-                                               NULL);
+      tmp = clutter_texture_new_from_file (THEMEDIR
+                                           "/generic/spinner.png",
+                                           NULL);
 
       if (!tmp)
         return NULL;
@@ -499,17 +499,17 @@ make_background (const gchar *text, guint width, guint height,
       && thumb_sel == NULL && thumb_unsel == NULL)
     {
       space_sel = clutter_texture_new_from_file
-                          (PLUGIN_PKGDATADIR
-                           "/theme/chooser/space-selected.png", NULL);
+                          (THEMEDIR
+                           "/chooser/space-selected.png", NULL);
       space_unsel = clutter_texture_new_from_file
-                          (PLUGIN_PKGDATADIR
-                           "/theme/chooser/space-unselected.png", NULL);
+                          (THEMEDIR
+                           "/chooser/space-unselected.png", NULL);
       thumb_sel = clutter_texture_new_from_file
-                          (PLUGIN_PKGDATADIR
-                           "/theme/chooser/thumb-selected.png",NULL);
+                          (THEMEDIR
+                           "/chooser/thumb-selected.png",NULL);
       thumb_unsel = clutter_texture_new_from_file
-                          (PLUGIN_PKGDATADIR
-                           "/theme/chooser/thumb-unselected.png", NULL);
+                          (THEMEDIR
+                           "/chooser/thumb-unselected.png", NULL);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (clutter_stage_get_default ()), space_sel);
       clutter_actor_hide (space_sel);
@@ -896,8 +896,8 @@ show_workspace_chooser (MutterPlugin *plugin,
 
   if (bck == NULL)
     {
-      bck = clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                           "/theme/chooser/background.png",
+      bck = clutter_texture_new_from_file (THEMEDIR
+                                           "/chooser/background.png",
                                            NULL);
       g_object_ref (bck);       /* extra ref to keep it around.. */
     }

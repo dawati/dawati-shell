@@ -1,8 +1,9 @@
-themedir = $(pkgdatadir)/theme
+
+themedir = $(MUTTER_MOBLIN_THEME_DIR)
 dist_theme_DATA = \
 	theme/mutter-moblin.css
 
-theme_paneldir = $(pkgdatadir)/theme/panel
+theme_paneldir = $(MUTTER_MOBLIN_THEME_DIR)/panel
 dist_theme_panel_DATA = \
 	theme/panel/apps-coloured.png \
 	theme/panel/apps-normal.png \
@@ -25,9 +26,9 @@ dist_theme_panel_DATA = \
 	theme/panel/background-tile.png \
 	theme/panel/toolbar-button-active.png \
 	theme/panel/toolbar-button-hover.png \
-        theme/panel/toolbar-hint.png
+	theme/panel/toolbar-hint.png
 
-theme_chooserdir = $(pkgdatadir)/theme/chooser
+theme_chooserdir = $(MUTTER_MOBLIN_THEME_DIR)/chooser
 dist_theme_chooser_DATA = \
 	theme/chooser/background.png		\
 	theme/chooser/thumb-selected.png	\
@@ -35,7 +36,7 @@ dist_theme_chooser_DATA = \
 	theme/chooser/space-selected.png	\
 	theme/chooser/space-unselected.png
 
-theme_genericdir = $(pkgdatadir)/theme/generic
+theme_genericdir = $(MUTTER_MOBLIN_THEME_DIR)/generic
 dist_theme_generic_DATA = \
 	theme/generic/checkbox.png	\
 	theme/generic/spinner.png	\
@@ -56,7 +57,7 @@ dist_theme_generic_DATA = \
 	theme/generic/vscroll-handle.png \
 	theme/generic/placeholder-bg.png
 
-theme_switcherdir = $(pkgdatadir)/theme/switcher
+theme_switcherdir = $(MUTTER_MOBLIN_THEME_DIR)/switcher
 dist_theme_switcher_DATA = \
 	theme/switcher/application-active.png \
 	theme/switcher/application-inactive.png \
@@ -76,14 +77,14 @@ dist_theme_switcher_DATA = \
 	theme/switcher/workspace-title-new-symbol-disabled.png \
 	theme/switcher/workspace-title.png
 
-theme_dropdowndir = $(pkgdatadir)/theme/drop-down
+theme_dropdowndir = $(MUTTER_MOBLIN_THEME_DIR)/drop-down
 dist_theme_dropdown_DATA = \
 	theme/drop-down/panel_arrow.png \
 	theme/drop-down/panel_arrow_hover.png \
 	theme/drop-down/panel_up_button.png \
 	theme/drop-down/panel_up_button_hover.png
 
-theme_myzonedir = $(pkgdatadir)/theme/myzone
+theme_myzonedir = $(MUTTER_MOBLIN_THEME_DIR)/myzone
 dist_theme_myzone_DATA = \
 	theme/myzone/date-background-background.png \
 	theme/myzone/date-background.png \
@@ -112,19 +113,17 @@ dist_theme_myzone_DATA = \
 	theme/myzone/no-content-tile-bg.png \
 	theme/myzone/no-content-tile-glow-bg.png
 
-
-
-theme_notifiersdir = $(pkgdatadir)/theme/notifiers
+theme_notifiersdir = $(MUTTER_MOBLIN_THEME_DIR)/notifiers
 dist_theme_notifiers_DATA = \
 	theme/notifiers/notification-bg.png
 
-theme_netpaneldir = $(pkgdatadir)/theme/netpanel
+theme_netpaneldir = $(MUTTER_MOBLIN_THEME_DIR)/netpanel
 dist_theme_netpanel_DATA = \
 	theme/netpanel/ac-list.png		\
 	theme/netpanel/thumbnail.png		\
 	theme/netpanel/thumbnail_hover.png
 
-theme_effectsdir = $(pkgdatadir)/theme/effects
+theme_effectsdir = $(MUTTER_MOBLIN_THEME_DIR)/effects
 dist_theme_effects_DATA = \
 	theme/effects/zone-switch-background.png
 

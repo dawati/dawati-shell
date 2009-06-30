@@ -2058,8 +2058,8 @@ mnb_toolbar_constructed (GObject *self)
   priv->lowlight = lowlight;
 
   bg_texture =
-    clutter_texture_new_from_file (PLUGIN_PKGDATADIR
-                                   "/theme/panel/panel-background.png",
+    clutter_texture_new_from_file (THEMEDIR
+                                   "/panel/panel-background.png",
                                    NULL);
   if (bg_texture)
     {

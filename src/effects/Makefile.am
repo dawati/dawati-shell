@@ -1,7 +1,9 @@
 
 noinst_LTLIBRARIES = libeffects.la
 
-AM_CFLAGS = @MUTTER_PLUGIN_CFLAGS@ -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\"
+AM_CFLAGS = \
+	@MUTTER_PLUGIN_CFLAGS@ \
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\"
 
 libeffects_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
 libeffects_la_SOURCES =					\
