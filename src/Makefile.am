@@ -2,19 +2,13 @@ SUBDIRS=tray effects
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-INCLUDES = @MUTTER_PLUGIN_CFLAGS@ @NETPANEL_CFLAGS@ @PEOPLE_CFLAGS@	\
-	-DPREFIX=\"$(prefix)\" 						\
-	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" 				\
-	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 				\
-	-DMWB_PKGDATADIR=\"$(datadir)/moblin-web-browser\" 		\
-	@AHOGHILL_CFLAGS@ 						\
-	-I$(top_srcdir)/ahoghill 					\
-	-I$(top_srcdir)/penge 						\
-	-I$(top_srcdir)/libmnb 						\
-	-I$(top_srcdir)/src
+AM_CPPFLAGS = \
+	@MUTTER_PLUGIN_CFLAGS@ \
+	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
+	-DPLUGIN_LOCALEDIR=\"$(localedir)\"
 
-AM_CFLAGS   = -fPIC
-moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
+moblin_netbook_la_SOURCES  = \
+				mnb-scale-group.c	        \
 				mnb-scale-group.h               \
 				moblin-netbook.c		\
 				moblin-netbook.h		\
@@ -67,20 +61,8 @@ MARSHALS = marshal.c marshal.h
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
-				@NETPANEL_LIBS@		\
-				@PEOPLE_LIBS@		\
 				tray/libtray.la 	\
-				effects/libeffects.la	\
-				$(top_builddir)/penge/penge/libpenge.la \
-				$(PENGE_LIBS)
-
-if WITH_AHOGHILL
-moblin_netbook_la_LIBADD += 				\
-				$(AHOGHILL_LIBS)	\
-				$(top_builddir)/ahoghill/ahoghill/libahoghill.la
-endif
-
-
+				effects/libeffects.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 
