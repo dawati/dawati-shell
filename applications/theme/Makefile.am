@@ -2,7 +2,7 @@
 # FIXME use this once split out
 # themedir = $(pkgdatadir)/theme
 themedir = $(datadir)/moblin-panel-applications/theme
-theme_DATA = \
+dist_theme_DATA = \
 	toolbar-button.css \
 	apps-coloured.png \
 	apps-normal.png \
@@ -14,6 +14,4 @@ theme_DATA = \
 	launcher-button-fav-toggle.png \
 	launcher-hover.png \
 	launcher-search-bg.png
-
-EXTRA_DIST = $(theme_DATA)
 
