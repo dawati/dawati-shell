@@ -40,9 +40,6 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    ["$GETTEXT_PACKAGE"],
                    [Name of default gettext domain])
 
-localedir="$(prefix)/$(DATADIRNAME)/locale"
-AC_SUBST(localedir)
-
 IT_PROG_INTLTOOL([0.34.90])
 AC_PROG_CC
 AM_PROG_CC_C_O
