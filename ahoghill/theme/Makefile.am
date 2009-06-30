@@ -30,3 +30,14 @@ dist_theme_DATA = \
 	top_playque_hover.png \
 	top_playque_selected.png
 
+# Manage mutter-moblin's texture cache.
+
+texture_cache = $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache
+CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)
+
+install-data-hook:
+	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
+
+uninstall-hook:
+	rm -f $(texture_cache)
+

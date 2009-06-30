@@ -61,6 +61,10 @@ LIBS=${SAVE_LIBS}
 
 AM_GLIB_GNU_GETTEXT
 
+AC_CHECK_PROG([NBTK_CREATE_IMAGE_CACHE],
+              [nbtk-create-image-cache],
+              [$(which nbtk-create-image-cache)])
+
 # Libmoblin-panel
 PKG_CHECK_MODULES(LIBMPL_CLUTTER,
                   dbus-glib-1
