@@ -755,10 +755,8 @@ mnb_web_status_row_init (MnbWebStatusRow *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), FALSE);
 
-  priv->no_icon_file = g_build_filename (DATADIR,
-                                         "mutter-moblin",
+  priv->no_icon_file = g_build_filename (PKGDATADIR,
                                          "theme",
-                                         "status",
                                          "no_image_icon.png",
                                          NULL);
 

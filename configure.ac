@@ -252,6 +252,7 @@ src/tray/Makefile
 src/effects/Makefile
 status/Makefile
 status/src/Makefile
+status/theme/Makefile
 po/Makefile.in
 tests/Makefile
 pasteboard/Makefile

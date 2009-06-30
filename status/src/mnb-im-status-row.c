@@ -620,8 +620,8 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   nbtk_grid_set_valign (grid, 0.5);
   clutter_actor_set_parent (priv->header, CLUTTER_ACTOR (self));
 
-  file = g_build_filename (DATADIR,
-                           "mutter-moblin", "theme", "status",
+  file = g_build_filename (PKGDATADIR,
+                           "theme",
                            "no_image_icon.png",
                            NULL);
   priv->user_icon = clutter_texture_new ();
@@ -631,8 +631,8 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
 
   clutter_actor_set_parent (priv->user_icon, CLUTTER_ACTOR (self));
 
-  file = g_build_filename (DATADIR,
-                           "mutter-moblin", "theme", "status",
+  file = g_build_filename (PKGDATADIR,
+                           "theme",
                            "im-offline.png",
                            NULL);
   priv->presence_icon = clutter_texture_new ();
@@ -683,8 +683,8 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
       if (!presence_states[i].is_selectable)
         continue;
 
-      file = g_build_filename (DATADIR,
-                               "mutter-moblin", "theme", "status",
+      file = g_build_filename (PKGDATADIR,
+                               "theme",
                                presence_states[i].filename,
                                NULL);
 
@@ -806,8 +806,8 @@ mnb_im_status_row_set_status (MnbIMStatusRow           *row,
   g_free (priv->status);
   priv->status = g_strdup (status);
 
-  file = g_build_filename (DATADIR,
-                           "mutter-moblin", "theme", "status",
+  file = g_build_filename (PKGDATADIR,
+                           "theme",
                            status_file,
                            NULL);
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->presence_icon), file, NULL);

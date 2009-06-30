@@ -118,19 +118,6 @@ theme_notifiersdir = $(pkgdatadir)/theme/notifiers
 dist_theme_notifiers_DATA = \
 	theme/notifiers/notification-bg.png
 
-theme_statusdir = $(pkgdatadir)/theme/status
-dist_theme_status_DATA = \
-	theme/status/decoration-frame.png \
-	theme/status/edit_close_hover.png \
-	theme/status/edit_close.png \
-	theme/status/entry-frame-hover.png \
-	theme/status/entry-frame-edit.png \
-	theme/status/no_image_icon.png \
-	theme/status/im-available.png \
-	theme/status/im-away.png \
-	theme/status/im-busy.png \
-	theme/status/im-offline.png
-
 theme_netpaneldir = $(pkgdatadir)/theme/netpanel
 dist_theme_netpanel_DATA = \
 	theme/netpanel/ac-list.png		\

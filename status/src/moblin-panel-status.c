@@ -1093,8 +1093,9 @@ main (int argc, char *argv[])
     }
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
-                             MUTTER_MOBLIN_CSS,
+                             PKGDATADIR "/theme/panel.css",
                              &error);
+
   if (error)
     {
       g_critical ("Unbale to load theme: %s", error->message);

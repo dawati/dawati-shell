@@ -5,9 +5,10 @@ INCLUDES = \
 	-I$(top_srcdir)/libmoblin-panel \
 	-DG_LOG_DOMAIN=\"Mutter-Moblin-Status\" \
 	-DPREFIX=\"$(prefix)\" \
-	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(datadir)/mutter-moblin/status\" \
-	-DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\"
+	-DPKGDATADIR=\"$(datadir)/moblin-panel-status\"
+
+# FIXME use this once split out
+#	-DPKGDATADIR=\"$(pkgdatadir)\"
 
 mnb-status-marshal.h: stamp-mnb-status-marshal.h
 	@true
