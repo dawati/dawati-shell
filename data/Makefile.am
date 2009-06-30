@@ -131,33 +131,6 @@ dist_theme_status_DATA = \
 	theme/status/im-busy.png \
 	theme/status/im-offline.png
 
-theme_mediapaneldir = $(pkgdatadir)/theme/media-panel
-dist_theme_mediapanel_DATA = \
-	theme/media-panel/bot_playque_closed.png \
-	theme/media-panel/bot_playque_hover.png \
-	theme/media-panel/hrn-generic-album.png \
-	theme/media-panel/hrn-generic-images.png \
-	theme/media-panel/hrn-generic-video.png \
-	theme/media-panel/hrn-progress-bar-handle.png \
-	theme/media-panel/hrn-progress-bar-through.png \
-	theme/media-panel/media_search_bkgrd.png \
-	theme/media-panel/mid_playque_closed.png \
-	theme/media-panel/mid_playque_hover.png \
-	theme/media-panel/mid_playque_selected.png \
-	theme/media-panel/play_hover.png \
-	theme/media-panel/playque_background.png \
-	theme/media-panel/playqueue-placeholder.png \
-	theme/media-panel/pq_pause_hover.png \
-	theme/media-panel/pq_pause.png \
-	theme/media-panel/pq_play_hover.png \
-	theme/media-panel/pq_play.png \
-	theme/media-panel/search_field_crop.png \
-	theme/media-panel/thumbnail_hover.png \
-	theme/media-panel/thumbnail.png \
-	theme/media-panel/top_playque_closed.png \
-	theme/media-panel/top_playque_hover.png \
-	theme/media-panel/top_playque_selected.png
-
 theme_netpaneldir = $(pkgdatadir)/theme/netpanel
 dist_theme_netpanel_DATA = \
 	theme/netpanel/ac-list.png		\

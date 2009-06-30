@@ -3,11 +3,10 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(AHOGHILL_CFLAGS) \
+	-I$(top_srcdir)/ahoghill \
 	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(datadir)/mutter-moblin\"	\
-	-DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\" \
-	-I$(top_srcdir)/libmoblin-panel \
-	-I$(top_srcdir)/ahoghill
+	-DPKGDATADIR=\"$(datadir)/moblin-panel-media\" \
+	-I$(top_srcdir)/libmoblin-panel
 
 # FIXME use this once split out
 #	-DPKGDATADIR=\"$(pkgdatadir)\"

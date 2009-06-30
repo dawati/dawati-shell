@@ -1,1 +1,1 @@
-SUBDIRS = ahoghill src examples
+SUBDIRS = ahoghill src theme examples

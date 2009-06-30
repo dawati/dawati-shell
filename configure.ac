@@ -269,6 +269,7 @@ ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile
 ahoghill/src/Makefile
+ahoghill/theme/Makefile
 libmoblin-panel/Makefile
 libmoblin-panel/moblin-panel-gtk.pc
 libmoblin-panel/moblin-panel-clutter.pc

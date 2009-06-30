@@ -86,7 +86,7 @@ use_default_texture (AhoghillMediaArt *art,
     case BKL_ITEM_TYPE_AUDIO:
         if (G_UNLIKELY (generic_album == NULL)) {
             generic_album = gdk_pixbuf_new_from_file
-                (PKG_DATADIR "/theme/media-panel/hrn-generic-album.png",
+                (PKGDATADIR "/theme/hrn-generic-album.png",
                  &error);
 
             if (generic_album == NULL) {
@@ -104,7 +104,7 @@ use_default_texture (AhoghillMediaArt *art,
     case BKL_ITEM_TYPE_IMAGE:
         if (G_UNLIKELY (generic_image == NULL)) {
             generic_image = gdk_pixbuf_new_from_file
-                (PKG_DATADIR "/theme/media-panel/hrn-generic-image.png",
+                (PKGDATADIR "/theme/hrn-generic-image.png",
                  &error);
 
             if (generic_image == NULL) {
@@ -122,7 +122,7 @@ use_default_texture (AhoghillMediaArt *art,
     case BKL_ITEM_TYPE_VIDEO:
         if (G_UNLIKELY (generic_video == NULL)) {
             generic_video = gdk_pixbuf_new_from_file
-                (PKG_DATADIR "/theme/media-panel/hrn-generic-video.png",
+                (PKGDATADIR "/theme/hrn-generic-video.png",
                  &error);
 
             if (generic_video == NULL) {
@@ -442,7 +442,7 @@ ahoghill_media_art_init (AhoghillMediaArt *self)
     if (G_UNLIKELY (play_texture == NULL)) {
         GError *error = NULL;
 
-        play_texture = clutter_texture_new_from_file (PKG_DATADIR "/theme/media-panel/play_hover.png",
+        play_texture = clutter_texture_new_from_file (PKGDATADIR "/theme/play_hover.png",
                                                       &error);
         if (play_texture == NULL) {
             g_warning ("Error loading play texture: %s", error->message);
