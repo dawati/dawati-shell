@@ -975,8 +975,15 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         {
           g_debug ("@@@ setting mutter window for panel %s @@@",
                    mnb_panel_get_name (panel));
-          mnb_panel_show_mutter_window (panel, mcw);
+
+          /*
+           * Order matters; mnb_panel_show_mutter_window() hides the mcw,
+           * and since the compositor call clutter_actor_show() when a map
+           * effect completes, we have to first let the compositor to do its
+           * thing, and only then impose our will on it.
+           */
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+          mnb_panel_show_mutter_window (panel, mcw);
         }
 #if 1
       /*
