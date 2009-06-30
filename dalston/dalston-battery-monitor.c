@@ -36,6 +36,7 @@ struct _DalstonBatteryMonitorPrivate {
   HalManager *manager;
   HalDevice  *battery_device;
   HalDevice  *ac_device;
+  gboolean    is_hal_running;
 
   gchar *battery_udi;
   gchar *ac_udi;
@@ -204,15 +205,25 @@ _setup_battery_device (DalstonBatteryMonitor *self)
 }
 
 static void
-dalston_battery_monitor_init (DalstonBatteryMonitor *self)
+_cleanup_battery_device (DalstonBatteryMonitor *self)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
+
+  if (priv->battery_device)
+  {
+    g_object_unref (priv->battery_device);
+    priv->battery_device = NULL;
+  }
+  g_free (priv->battery_udi);
+}
+
+
+static void
+_setup_ac_device (DalstonBatteryMonitor *self)
 {
   DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
   gchar **names;
   GError *error = NULL;
-
-  priv->manager = hal_manager_new ();
-
-  _setup_battery_device (self);
 
   if (!hal_manager_find_capability (priv->manager,
                                     "ac_adapter",
@@ -237,6 +248,80 @@ dalston_battery_monitor_init (DalstonBatteryMonitor *self)
                       "property-modified",
                       (GCallback)_hal_ac_device_property_modified,
                       self);
+  }
+
+}
+
+static void
+_cleanup_ac_device (DalstonBatteryMonitor *self)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
+
+  if (priv->ac_device)
+  {
+    g_object_unref (priv->ac_device);
+    priv->ac_device = NULL;
+  }
+  g_free (priv->ac_udi);
+}
+
+static void
+_hal_daemon_start (HalManager            *manager,
+                   DalstonBatteryMonitor *self)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
+
+  /* spurious signal ? */
+  if (priv->is_hal_running)
+    return;
+
+  _setup_battery_device (self);
+  _setup_ac_device (self);
+
+  priv->is_hal_running = TRUE;
+
+  g_signal_emit (self, signals[STATUS_CHANGED], 0);
+}
+
+static void
+_hal_daemon_stop (HalManager            *manager,
+                  DalstonBatteryMonitor *self)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
+
+  /* spurious signal ? */
+  if (!priv->is_hal_running)
+    return;
+
+  _cleanup_battery_device (self);
+  _cleanup_ac_device (self);
+
+  priv->is_hal_running = FALSE;
+
+  g_signal_emit (self, signals[STATUS_CHANGED], 0);
+}
+
+static void
+dalston_battery_monitor_init (DalstonBatteryMonitor *self)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
+
+  priv->manager = hal_manager_new ();
+  g_signal_connect (priv->manager,
+                    "daemon-start",
+                    G_CALLBACK (_hal_daemon_start),
+                    self);
+  g_signal_connect (priv->manager,
+                    "daemon-stop",
+                    G_CALLBACK (_hal_daemon_stop),
+                    self);
+
+  priv->is_hal_running = FALSE;
+  if (hal_manager_is_running (priv->manager))
+  {
+    priv->is_hal_running = TRUE;
+    _setup_battery_device (self);
+    _setup_ac_device (self);
   }
 }
 

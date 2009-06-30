@@ -64,8 +64,6 @@ G_DEFINE_TYPE (EggDbusProxy, egg_dbus_proxy, G_TYPE_OBJECT)
 static gboolean
 egg_dbus_proxy_connect (EggDbusProxy *proxy)
 {
-	GError *error = NULL;
-
 	g_return_val_if_fail (EGG_IS_DBUS_PROXY (proxy), FALSE);
 
 	/* are already connected? */
@@ -74,17 +72,10 @@ egg_dbus_proxy_connect (EggDbusProxy *proxy)
 		return FALSE;
 	}
 
-	proxy->priv->proxy = dbus_g_proxy_new_for_name_owner (proxy->priv->connection,
+	proxy->priv->proxy = dbus_g_proxy_new_for_name (proxy->priv->connection,
 							      proxy->priv->service,
 							      proxy->priv->path,
-							      proxy->priv->interface,
-							      &error);
-	/* check for any possible error */
-	if (error) {
-		egg_warning ("DBUS error: %s", error->message);
-		g_error_free (error);
-		proxy->priv->proxy = NULL;
-	}
+							      proxy->priv->interface);
 
 	/* shouldn't be, but make sure proxy valid */
 	if (proxy->priv->proxy == NULL) {
@@ -93,7 +84,8 @@ egg_dbus_proxy_connect (EggDbusProxy *proxy)
 		return FALSE;
 	}
 
-	g_signal_emit (proxy, signals [PROXY_STATUS], 0, TRUE);
+  if (egg_dbus_proxy_is_connected (proxy))
+		g_signal_emit (proxy, signals [PROXY_STATUS], 0, TRUE);
 
 	return TRUE;
 }
@@ -138,9 +130,9 @@ dbus_monitor_connection_cb (EggDbusMonitor *monitor, gboolean status, EggDbusPro
 	if (proxy->priv->assigned == FALSE)
 		return;
 	if (status)
-		egg_dbus_proxy_connect (proxy);
+		g_signal_emit (proxy, signals [PROXY_STATUS], 0, TRUE);
 	else
-		egg_dbus_proxy_disconnect (proxy);
+		g_signal_emit (proxy, signals [PROXY_STATUS], 0, FALSE);
 }
 
 /**

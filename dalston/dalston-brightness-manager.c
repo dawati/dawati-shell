@@ -35,10 +35,11 @@ G_DEFINE_TYPE (DalstonBrightnessManager, dalston_brightness_manager, G_TYPE_OBJE
 typedef struct _DalstonBrightnessManagerPrivate DalstonBrightnessManagerPrivate;
 
 struct _DalstonBrightnessManagerPrivate {
-  HalManager *manager;
-  HalDevice *panel_device;
-  gchar *panel_udi;
+  HalManager    *manager;
+  HalDevice     *panel_device;
+  gchar         *panel_udi;
   HalPanelProxy *panel_proxy;
+  gboolean       is_hal_running;
 
   guint num_levels_discover_idle;
   guint monitoring_timeout;
@@ -80,15 +81,9 @@ dalston_brightness_manager_set_property (GObject *object, guint property_id,
 }
 
 static void
-dalston_brightness_manager_dispose (GObject *object)
+_dispose_panel_device (GObject *object)
 {
   DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (object);
-
-  if (priv->manager)
-  {
-    g_object_unref (priv->manager);
-    priv->manager = NULL;
-  }
 
   if (priv->panel_device)
   {
@@ -113,6 +108,20 @@ dalston_brightness_manager_dispose (GObject *object)
     g_object_unref (priv->panel_proxy);
     priv->panel_proxy = NULL;
   }
+}
+
+static void
+dalston_brightness_manager_dispose (GObject *object)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->manager)
+  {
+    g_object_unref (priv->manager);
+    priv->manager = NULL;
+  }
+
+  _dispose_panel_device (object);
 
   G_OBJECT_CLASS (dalston_brightness_manager_parent_class)->dispose (object);
 }
@@ -229,15 +238,11 @@ _panel_proxy_get_brightness_cb (HalPanelProxy *proxy,
 }
 
 static void
-dalston_brightness_manager_init (DalstonBrightnessManager *self)
+_setup_panel_device (DalstonBrightnessManager *self)
 {
   DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (self);
   gchar **names;
   GError *error = NULL;
-
-  priv->previous_brightness = -1;
-
-  priv->manager = hal_manager_new ();
 
   if (!hal_manager_find_capability (priv->manager,
                                     "laptop_panel",
@@ -278,6 +283,71 @@ dalston_brightness_manager_init (DalstonBrightnessManager *self)
                                         NULL);
 
   priv->controllable = TRUE;
+}
+
+static void
+_cleanup_panel_device (DalstonBrightnessManager *self)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (self);
+
+  _dispose_panel_device (G_OBJECT (self));
+  g_free (priv->panel_udi);
+}
+
+static void
+_hal_daemon_start (HalManager               *manager,
+                   DalstonBrightnessManager *self)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (self);
+
+  /* spurious signal ? */
+  if (priv->is_hal_running)
+    return;
+
+  _setup_panel_device (self);
+
+  priv->is_hal_running = TRUE;
+}
+
+static void
+_hal_daemon_stop (HalManager               *manager,
+                  DalstonBrightnessManager *self)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (self);
+
+  /* spurious signal ? */
+  if (!priv->is_hal_running)
+    return;
+
+  _cleanup_panel_device (self);
+
+  priv->is_hal_running = FALSE;
+}
+
+static void
+dalston_brightness_manager_init (DalstonBrightnessManager *self)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (self);
+
+  priv->previous_brightness = -1;
+
+  priv->manager = hal_manager_new ();
+  g_signal_connect (priv->manager,
+                    "daemon-start",
+                    G_CALLBACK (_hal_daemon_start),
+                    self);
+  g_signal_connect (priv->manager,
+                    "daemon-stop",
+                    G_CALLBACK(_hal_daemon_stop),
+                    self);
+
+  priv->is_hal_running = FALSE;
+  if (hal_manager_is_running (priv->manager))
+  {
+    priv->is_hal_running = TRUE;
+    _setup_panel_device (self);
+  }
+
 }
 
 DalstonBrightnessManager *

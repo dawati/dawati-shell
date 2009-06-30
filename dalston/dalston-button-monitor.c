@@ -35,8 +35,9 @@ typedef struct _DalstonButtonMonitorPrivate DalstonButtonMonitorPrivate;
 
 struct _DalstonButtonMonitorPrivate {
   HalPowerProxy *power_proxy;
-  HalManager *manager;
-  GList *devices;
+  HalManager    *manager;
+  GList         *devices;
+  gboolean       is_hal_running;
 };
 
 static void
@@ -60,11 +61,29 @@ dalston_button_monitor_set_property (GObject *object, guint property_id,
 }
 
 static void
+_cleanup_button_devices (DalstonButtonMonitor *self)
+{
+  DalstonButtonMonitorPrivate *priv = GET_PRIVATE (self);
+  GList *l = NULL;
+  HalDevice *device = NULL;
+
+  for (l = priv->devices; l; l = g_list_delete_link (l, l))
+  {
+    device = (HalDevice *)l->data;
+
+    if (device)
+    {
+      g_object_unref (device);
+    }
+  }
+
+  priv->devices = l;
+}
+
+static void
 dalston_button_monitor_dispose (GObject *object)
 {
   DalstonButtonMonitorPrivate *priv = GET_PRIVATE (object);
-  GList *l = NULL;
-  HalDevice *device = NULL;
 
   if (priv->power_proxy)
   {
@@ -78,17 +97,8 @@ dalston_button_monitor_dispose (GObject *object)
     priv->manager = NULL;
   }
 
-  for (l = priv->devices; l; l = g_list_delete_link (l, l))
-  {
-    device = (HalDevice *)l->data;
-
-    if (device)
-    {
-      g_object_unref (device);
-    }
-  }
-
-  priv->devices = l;
+  /* yes, we are sure it's a DalstonButtonMonitor */
+  _cleanup_button_devices ((DalstonButtonMonitor *)object);
 
   G_OBJECT_CLASS (dalston_button_monitor_parent_class)->dispose (object);
 }
@@ -188,7 +198,7 @@ _device_condition_cb (HalDevice   *device,
 }
 
 static void
-dalston_button_monitor_init (DalstonButtonMonitor *self)
+_setup_button_devices (DalstonButtonMonitor *self)
 {
   DalstonButtonMonitorPrivate *priv = GET_PRIVATE (self);
   gchar **names;
@@ -197,16 +207,6 @@ dalston_button_monitor_init (DalstonButtonMonitor *self)
   gint i;
   HalDevice *device;
   gchar *type;
-
-  priv->power_proxy = hal_power_proxy_new ();
-
-  if (!priv->power_proxy)
-  {
-    g_warning (G_STRLOC ": No power proxy; not listening for buttons.");
-    return;
-  }
-
-  priv->manager = hal_manager_new ();
 
   if (!hal_manager_find_capability (priv->manager,
                                     "button",
@@ -260,6 +260,67 @@ dalston_button_monitor_init (DalstonButtonMonitor *self)
   }
 
   hal_manager_free_capability (names);
+}
+
+static void
+_hal_daemon_start (HalManager           *manager,
+                   DalstonButtonMonitor *self)
+{
+  DalstonButtonMonitorPrivate *priv = GET_PRIVATE (self);
+
+  /* spurious signal ? */
+  if (priv->is_hal_running)
+    return;
+
+  _setup_button_devices (self);
+
+  priv->is_hal_running = TRUE;
+}
+
+static void
+_hal_daemon_stop (HalManager           *manager,
+                  DalstonButtonMonitor *self)
+{
+  DalstonButtonMonitorPrivate *priv = GET_PRIVATE (self);
+
+  /* spurious signal ? */
+  if (!priv->is_hal_running)
+    return;
+
+  _cleanup_button_devices (self);
+
+  priv->is_hal_running = FALSE;
+}
+
+static void
+dalston_button_monitor_init (DalstonButtonMonitor *self)
+{
+  DalstonButtonMonitorPrivate *priv = GET_PRIVATE (self);
+
+  priv->power_proxy = hal_power_proxy_new ();
+
+  if (!priv->power_proxy)
+  {
+    g_warning (G_STRLOC ": No power proxy; not listening for buttons.");
+    return;
+  }
+
+  priv->manager = hal_manager_new ();
+  g_signal_connect (priv->manager,
+                    "daemon-start",
+                    G_CALLBACK (_hal_daemon_start),
+                    self);
+  g_signal_connect (priv->manager,
+                    "daemon-stop",
+                    G_CALLBACK (_hal_daemon_stop),
+                    self);
+
+  priv->is_hal_running = FALSE;
+  if (hal_manager_is_running (priv->manager))
+  {
+    priv->is_hal_running = TRUE;
+    _setup_button_devices (self);
+  }
 }
 
 DalstonButtonMonitor *

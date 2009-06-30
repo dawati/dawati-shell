@@ -127,11 +127,10 @@ egg_dbus_monitor_assign (EggDbusMonitor *monitor, DBusGConnection *connection, c
 
 	monitor->priv->service = g_strdup (service);
 	monitor->priv->connection = connection;
-	monitor->priv->proxy = dbus_g_proxy_new_for_name_owner (monitor->priv->connection,
+	monitor->priv->proxy = dbus_g_proxy_new_for_name (monitor->priv->connection,
 								DBUS_SERVICE_DBUS,
 								DBUS_PATH_DBUS,
-						 		DBUS_INTERFACE_DBUS,
-								&error);
+								DBUS_INTERFACE_DBUS);
 	if (error != NULL) {
 		egg_warning ("Cannot connect to DBUS: %s", error->message);
 		g_error_free (error);

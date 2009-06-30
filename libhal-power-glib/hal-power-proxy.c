@@ -246,20 +246,10 @@ _setup_proxy (HalPowerProxy *proxy,
     return FALSE;
   }
 
-  priv->proxy = dbus_g_proxy_new_for_name_owner (priv->connection,
-                                                 HAL_DBUS_NAME,
-                                                 device_path,
-                                                 HAL_DBUS_PANEL_INTERFACE,
-                                                 &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Unable to create proxy for object: %s: %s",
-               device_path,
-               error->message);
-    g_clear_error (&error);
-    return FALSE;
-  }
+  priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
+                                           HAL_DBUS_NAME,
+                                           device_path,
+                                           HAL_DBUS_PANEL_INTERFACE);
 
   return TRUE;
 }

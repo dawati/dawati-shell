@@ -482,10 +482,8 @@ proxy_status_cb (DBusGProxy    *proxy,
 	g_return_if_fail (HAL_IS_MANAGER (manager));
 	if (status) {
 		g_signal_emit (manager, signals [DAEMON_START], 0);
-		hal_manager_proxy_connect_more (manager);
 	} else {
 		g_signal_emit (manager, signals [DAEMON_STOP], 0);
-		hal_manager_proxy_disconnect_more (manager);
 	}
 }
 
