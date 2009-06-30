@@ -1,0 +1,27 @@
+
+MplEntry {
+  border-image: url('file://mpl-entry-bg.png') 5 5 6 5 stretch stretch;
+  padding: 7 10 7 10;
+}
+
+MplEntry > *.MplEntryEntry {
+  border-image: none;
+  font-size: 15;
+}
+
+MplEntry *.MplEntryButton {
+  border-image: url('file://mpl-entry-separator.png') 0 0 0 3 stretch stretch;
+  color: #be1011;
+  font-size: 13;
+  padding: 0 2 0 10;
+}
+
+MplEntry *.MplEntryClearButton {
+  background-image: url('file://mpl-entry-clear.png');
+  border-image: none;
+}
+
+MplEntry *.MplEntryClearButton:hover {
+  background-image: url('file://mpl-entry-clear-hover.png');
+}
+

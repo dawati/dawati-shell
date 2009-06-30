@@ -6,6 +6,7 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 
+#include "mpl-clutter-theme.h"
 #include "mpl-entry.h"
 
 #define MPL_ENTRY_GET_PRIVATE(obj) \
@@ -398,6 +399,8 @@ mpl_entry_class_init (MplEntryClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__UINT,
                   G_TYPE_NONE, 1, G_TYPE_UINT);
+
+  mpl_clutter_theme_ensure_loaded ();
 }
 
 static void

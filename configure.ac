@@ -276,6 +276,7 @@ libmoblin-panel/Makefile
 libmoblin-panel/moblin-panel-gtk.pc
 libmoblin-panel/moblin-panel-clutter.pc
 libmoblin-panel/moblin-panel/Makefile
+libmoblin-panel/theme/Makefile
 libmoblin-panel/tests/Makefile
 myzone/Makefile
 myzone/src/Makefile

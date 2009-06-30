@@ -10,11 +10,14 @@ noinst_PROGRAMS = \
 	test-panel-clutter \
 	test-panel-gtk
 
-test_entry_CFLAGS = $(LIBMPL_CLUTTER_CFLAGS)
+test_entry_CFLAGS = \
+	$(LIBMPL_CLUTTER_CFLAGS) \
+	-DPKGDATADIR=\"$(datadir)/moblin-panel\"
 
 test_entry_LDADD = $(LIBMPL_CLUTTER_LIBS)
 
 test_entry_SOURCES = \
+	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-clutter-theme.c \
 	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-entry.c \
 	test-entry.c
 

@@ -13,11 +13,7 @@ theme_DATA = \
 	launcher-button-fav-toggle-hover.png \
 	launcher-button-fav-toggle.png \
 	launcher-hover.png \
-	launcher-search-bg.png \
-	launcher-search-entry-bg.png \
-	launcher-search-entry-clear-hover.png \
-	launcher-search-entry-clear.png \
-	launcher-search-entry-separator.png
+	launcher-search-bg.png
 
 EXTRA_DIST = $(theme_DATA)
 

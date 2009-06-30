@@ -1,5 +1,5 @@
 
-SUBDIRS = moblin-panel tests
+SUBDIRS = moblin-panel theme tests
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = \

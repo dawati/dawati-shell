@@ -9,11 +9,18 @@ libmoblin_panel_include_HEADERS = \
 	mpl-panel-common.h \
 	mpl-panel-gtk.h
 
-libmoblin_panel_clutter_la_CFLAGS = $(LIBMPL_CLUTTER_CFLAGS)
+libmoblin_panel_clutter_la_CFLAGS = \
+	$(LIBMPL_CLUTTER_CFLAGS) \
+	-DPKGDATADIR=\"$(datadir)/moblin-panel\"
+
+# FIXME use this once split out
+# -DPKGDATADIR=\"$(pkgdatadir)/theme\"
 
 libmoblin_panel_clutter_la_LDFLAGS = $(LIBMPL_CLUTTER_LIBS)
 
 libmoblin_panel_clutter_la_SOURCES = \
+	mpl-clutter-theme.c \
+	mpl-clutter-theme.h \
 	mpl-entry.c \
 	mpl-panel-client.c \
 	mpl-panel-clutter.c \
