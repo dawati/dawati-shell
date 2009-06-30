@@ -1,7 +1,7 @@
 
 # FIXME use this once split out
-# themedir = $(pkgdatadir)/theme
-themedir = $(datadir)/moblin-panel-applications/theme
+# themedir = $(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)
+themedir = $(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-applications
 dist_theme_DATA = \
 	toolbar-button.css \
 	apps-coloured.png \

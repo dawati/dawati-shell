@@ -11,10 +11,10 @@ libmoblin_panel_include_HEADERS = \
 
 libmoblin_panel_clutter_la_CFLAGS = \
 	$(LIBMPL_CLUTTER_CFLAGS) \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel\"
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
 
 # FIXME use this once split out
-# -DPKGDATADIR=\"$(pkgdatadir)/theme\"
+# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
 libmoblin_panel_clutter_la_LDFLAGS = $(LIBMPL_CLUTTER_LIBS)
 

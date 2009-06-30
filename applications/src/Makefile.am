@@ -4,10 +4,10 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 AM_CFLAGS = \
 	$(APPLICATIONS_CFLAGS) \
 	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel-applications\"
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-applications\"
 
 # FIXME use this once split out
-#	-DPKGDATADIR=\"$(pkgdatadir)\"
+# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
 libexec_PROGRAMS = moblin-panel-applications
 

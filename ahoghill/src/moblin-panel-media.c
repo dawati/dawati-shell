@@ -100,7 +100,7 @@ main (int    argc,
                                    DATADIR "/mutter-moblin/nbtk.cache");
 
     nbtk_style_load_from_file (nbtk_style_get_default (),
-                               PKGDATADIR "/theme/panel.css", NULL);
+                               THEMEDIR "/panel.css", NULL);
 
     if (_standalone) {
         Window xwin;

@@ -125,7 +125,7 @@ main (int     argc,
     DATADIR "/mutter-moblin/nbtk.cache");
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
-                             PKGDATADIR "/theme/panel.css", NULL);
+                             THEMEDIR "/panel.css", NULL);
 
   if (_standalone)
     {
@@ -156,7 +156,7 @@ main (int     argc,
        * don't pass our own stylesheet. */
       panel = mpl_panel_clutter_new (MPL_PANEL_APPLICATIONS,
                                       _("applications"),
-                                     /*PKGDATADIR "/theme/toolbar-button.css" */ NULL,
+                                     /*THEMEDIR "/toolbar-button.css" */ NULL,
                                      "applications-button",
                                      TRUE);
 

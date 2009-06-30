@@ -12,7 +12,10 @@ noinst_PROGRAMS = \
 
 test_entry_CFLAGS = \
 	$(LIBMPL_CLUTTER_CFLAGS) \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel\"
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
+
+# FIXME use this once split out
+# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
 test_entry_LDADD = $(LIBMPL_CLUTTER_LIBS)
 

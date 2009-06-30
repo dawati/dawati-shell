@@ -1093,7 +1093,7 @@ main (int argc, char *argv[])
     }
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
-                             PKGDATADIR "/theme/panel.css",
+                             THEMEDIR "/panel.css",
                              &error);
 
   if (error)

@@ -1,7 +1,7 @@
 
 # FIXME use this once split out
-# themedir = $(pkgdatadir)/theme
-themedir = $(datadir)/moblin-panel-media/theme
+# themedir = $(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)
+themedir = $(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-media
 dist_theme_DATA = \
 	panel.css \
 	bot_playque_closed.png \

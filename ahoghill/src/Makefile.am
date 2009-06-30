@@ -5,10 +5,10 @@ AM_CFLAGS = \
 	$(AHOGHILL_CFLAGS) \
 	-I$(top_srcdir)/ahoghill \
 	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel-media\"
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-media\"
 
 # FIXME use this once split out
-#	-DPKGDATADIR=\"$(pkgdatadir)\"
+# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
 libexec_PROGRAMS = moblin-panel-media
 

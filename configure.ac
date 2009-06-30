@@ -78,6 +78,12 @@ LIBMPL_GTK_CFLAGS="${LIBMPL_GTK_CFLAGS} "'-I$(top_srcdir)/src'
 AC_SUBST([LIBMPL_GTK_CFLAGS])
 AC_SUBST([LIBMPL_GTK_LIBS])
 
+# FIXME: fetch this from the pc file after the repo split.
+AC_MSG_CHECKING([for theme dir])
+MUTTER_MOBLIN_THEME_DIR="${prefix}/share/mutter-moblin/theme"
+AC_MSG_RESULT([$MUTTER_MOBLIN_THEME_DIR])
+AC_SUBST([MUTTER_MOBLIN_THEME_DIR])
+
 # Mutter-moblin
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl

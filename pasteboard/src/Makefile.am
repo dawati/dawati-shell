@@ -3,10 +3,10 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(PASTEBOARD_CFLAGS) \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel-pasteboard\"
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-pasteboard\"
 
 # FIXME use this once split out
-#	-DPKGDATADIR=\"$(pkgdatadir)\"
+# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
 libexec_PROGRAMS = moblin-panel-pasteboard
 

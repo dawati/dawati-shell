@@ -9,9 +9,9 @@ mpl_clutter_theme_ensure_loaded (void)
 
   if (!_theme_loaded)
     {
-      g_debug ("Loading '%s'", PKGDATADIR "/theme/theme.css");
+      g_debug ("Loading '%s'", THEMEDIR "/theme.css");
       nbtk_style_load_from_file (nbtk_style_get_default (),
-                                 PKGDATADIR "/theme/theme.css", NULL);
+                                 THEMEDIR "/theme.css", NULL);
       _theme_loaded = TRUE;    
     }
 }

@@ -5,10 +5,10 @@ INCLUDES = \
 	-I$(top_srcdir)/libmoblin-panel \
 	-DG_LOG_DOMAIN=\"Mutter-Moblin-Status\" \
 	-DPREFIX=\"$(prefix)\" \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel-status\"
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-status\"
 
 # FIXME use this once split out
-#	-DPKGDATADIR=\"$(pkgdatadir)\"
+# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
 mnb-status-marshal.h: stamp-mnb-status-marshal.h
 	@true

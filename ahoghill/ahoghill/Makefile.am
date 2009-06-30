@@ -35,10 +35,10 @@ libahoghill_la_SOURCES = $(libahoghill_headers) \
 	ahoghill-search-pane.c \
 	nbtk-fixed.c
 AM_CFLAGS = -Wall -fPIC @AHOGHILL_CFLAGS@ \
-	    -DPKGDATADIR=\"$(datadir)/moblin-panel-media\" \
+	    -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-media\" \
 	    -I$(top_srcdir)/ahoghill
 AM_LDFLAGS = @AHOGHILL_LIBS@
 
 # FIXME use this once split out
-#	-DPKGDATADIR=\"$(pkgdatadir)\"
+# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
