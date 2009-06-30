@@ -5,8 +5,7 @@ AM_CFLAGS = \
 	$(AHOGHILL_CFLAGS) \
 	-I$(top_srcdir)/ahoghill \
 	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(datadir)/moblin-panel-media\" \
-	-I$(top_srcdir)/libmoblin-panel
+	-DPKGDATADIR=\"$(datadir)/moblin-panel-media\"
 
 # FIXME use this once split out
 #	-DPKGDATADIR=\"$(pkgdatadir)\"
@@ -14,7 +13,6 @@ AM_CFLAGS = \
 libexec_PROGRAMS = moblin-panel-media
 
 moblin_panel_media_LDADD = $(AHOGHILL_LIBS)	\
-	$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la \
 	$(top_builddir)/ahoghill/ahoghill/libahoghill.la
 
 moblin_panel_media_SOURCES = \

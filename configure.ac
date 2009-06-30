@@ -117,6 +117,13 @@ AS_IF([test "x$enable_ahoghill" = "xyes"],
 	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.2
                                     gdk-pixbuf-2.0 bognor-regis-0.4 >= 0.4.3
                                     gtk+-2.0)
+
+AHOGHILL_CFLAGS="${AHOGHILL_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
+AC_SUBST([APPLICATIONS_PANEL_CFLAGS])
+AHOGHILL_LIBS="${AHOGHILL_LIBS} "\
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la'
+AC_SUBST([AHOGHILL_LIBS])
+
       ]
 )
 

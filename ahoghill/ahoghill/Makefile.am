@@ -36,7 +36,6 @@ libahoghill_la_SOURCES = $(libahoghill_headers) \
 	nbtk-fixed.c
 AM_CFLAGS = -Wall -fPIC @AHOGHILL_CFLAGS@ \
 	    -DPKGDATADIR=\"$(datadir)/moblin-panel-media\" \
-	    -I$(top_srcdir)/libmoblin-panel \
 	    -I$(top_srcdir)/ahoghill
 AM_LDFLAGS = @AHOGHILL_LIBS@
 
