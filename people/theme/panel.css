@@ -1,0 +1,130 @@
+*#people-vbox {
+  background-color: #ffff;
+  padding: 5;
+}
+
+*#people-search {
+  border-image: url('file://people-search-bg.png') 4 stretch;
+  padding: 4;
+}
+
+*#people-search-label {
+  font-family: "Liberation Sans Bold";
+  font-size: 18px;
+  padding-left: 12;
+  color: #3e3e3eff;
+}
+
+/* why does people-search-entry no longer work ?*/
+*#people-search *.MplEntryButton {
+  color: #fba40b;
+}
+
+*#people-no-people-message-bin {
+  border-image: url('file://grey-backdrop.png') 4 stretch;
+  padding: 8;
+}
+
+*#people-people-pane-main-label {
+  font-size:16px;
+  color: #595959ff;
+}
+
+*#people-no-people-description {
+  font-size:15px;
+  color: #2c2c2cff;
+}
+
+*#people-no-people-launcher
+{
+  padding: 9 10 11 10;
+}
+
+*#people-no-people-launcher:hover
+{
+  border-image: url("file://tile-bg-hover.png") 5 6 7 6;
+  padding: 9 10 11 10;
+}
+
+/* Anerley */
+
+AnerleyTile *.AnerleyTileAvatar
+{
+  border-image: url("file://avatar-bg.png") 7 8 9 8;
+  padding: 9 10 11 10;
+}
+
+AnerleyTile
+{
+  padding: 7 8 9 8;
+}
+
+AnerleyTile:hover
+{
+  border-image: url("file://tile-bg-hover.png") 5 6 7 6;
+}
+
+AnerleyTile.AnerleyTileSelected
+{
+  border-image: url('file://selected-highlight.png') 5 6 7 6;
+}
+
+AnerleyTile *.AnerleyTilePrimaryLabel
+{
+  font-family: "Liberation Sans";
+  font-size: 14;
+}
+
+AnerleyTile *.AnerleyTileSecondaryLabel
+{
+  font-family: "Liberation Sans";
+  font-size: 13;
+  color: #3e3e3eff;
+}
+
+*#people-primary-action, *#people-secondary-action
+{
+}
+
+*#people-scroll-bin
+{
+  border-image: url('file://scroll-view-bin-bg.png') 10 stretch;
+  padding: 8;
+}
+
+*#people-selection-pane
+{
+  border-image: url('file://selection-border.png') 7 stretch;
+  padding: 8;
+}
+
+*#people-selection-label
+{
+  font-family: "Liberation Sans";
+  font-size: 16;
+  color: #7e7e7eff;
+}
+
+*#people-selection-pane AnerleyTile:hover
+{
+  border-image: none;
+}
+
+*#people-control-box
+{
+  border-image: url('file://selection-full.png') 5 stretch;
+  padding: 6;
+}
+
+*#people-nobody-selected
+{
+  border-image: url('file://selection-empty.png') 5 stretch;
+  padding: 6;
+}
+
+*#people-nobody-selected-label
+{
+  font-family: "Liberation Sans";
+  font-size: 16;
+  color: #7e7e7eff;
+}

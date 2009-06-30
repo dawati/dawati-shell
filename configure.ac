@@ -265,6 +265,7 @@ penge/penge/Makefile
 penge/examples/Makefile
 people/Makefile
 people/src/Makefile
+people/theme/Makefile
 netpanel/Makefile
 netpanel/src/Makefile
 ahoghill/Makefile

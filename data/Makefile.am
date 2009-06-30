@@ -164,19 +164,6 @@ dist_theme_netpanel_DATA = \
 	theme/netpanel/thumbnail.png		\
 	theme/netpanel/thumbnail_hover.png
 
-theme_peopledir = $(pkgdatadir)/theme/people
-dist_theme_people_DATA = \
-	theme/people/people-search-bg.png \
-	theme/people/tile-bg-hover.png \
-	theme/people/avatar-bg.png \
-	theme/people/grey-backdrop.png \
-	theme/people/scroll-view-bin-bg.png \
-	theme/people/selection-border.png \
-	theme/people/selected-highlight.png \
-	theme/people/selection-empty.png \
-	theme/people/selection-full.png
-
-
 theme_effectsdir = $(pkgdatadir)/theme/effects
 dist_theme_effects_DATA = \
 	theme/effects/zone-switch-background.png

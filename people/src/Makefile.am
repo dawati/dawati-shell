@@ -1,13 +1,13 @@
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
-	    $(PEOPLE_CFLAGS) \
-	    -DDATADIR=\"$(datadir)\" \
-	    -DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\" \
-	    -I$(top_srcdir) \
-	    -I$(top_srcdir)/libmoblin-panel
+	$(PEOPLE_CFLAGS) \
+	-I$(top_srcdir) \
+	-I$(top_srcdir)/libmoblin-panel \
+	-DPKGDATADIR=\"$(datadir)/moblin-panel-people\"
 
-
+# FIXME use this once split out
+#	-DPKGDATADIR=\"$(pkgdatadir)\"
 
 libexec_PROGRAMS = moblin-panel-people
 
