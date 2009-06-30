@@ -20,13 +20,11 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				moblin-netbook.h		\
 				moblin-netbook-chooser.c	\
 				moblin-netbook-chooser.h	\
-				moblin-netbook-status.c		\
-				moblin-netbook-status.h		\
 				moblin-netbook-tray-manager.c	\
 				moblin-netbook-tray-manager.h	\
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
-                                moblin-netbook-system-tray.h    \
+				moblin-netbook-system-tray.h    \
 				$(DBUS_BINDINGS) \
 				$(DBUS_GLUE) \
 				$(MARSHALS)                     \
@@ -40,16 +38,12 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				mnb-notification-cluster.h      \
 				mnb-notification-urgent.c       \
 				mnb-notification-urgent.h       \
-                                mnb-toolbar.c                   \
-                                mnb-toolbar.h                   \
+				mnb-toolbar.c                   \
+				mnb-toolbar.h                   \
 				mnb-toolbar-button.c            \
 				mnb-toolbar-button.h            \
-				mnb-panel.c			\
-				mnb-panel.h			\
-				mnb-status-row.c		\
-				mnb-status-row.h		\
-				mnb-status-entry.c		\
-				mnb-status-entry.h
+				mnb-panel.c                     \
+				mnb-panel.h
 
 DBUS_GLUE =	notification-manager-glue.h	\
 		mnb-panel-dbus-glue.h		\

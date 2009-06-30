@@ -28,9 +28,7 @@ people/src/moblin-panel-people.c
 people/src/mnb-people-panel.c
 src/moblin-netbook.c
 src/moblin-netbook-chooser.c
-src/moblin-netbook-status.c
 src/tray/na-tray-child.c
-src/mnb-status-entry.c
 src/mnb-switcher.c
 src/mnb-toolbar.c
 status/src/mnb-im-status-row.c

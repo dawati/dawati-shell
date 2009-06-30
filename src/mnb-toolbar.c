@@ -49,7 +49,6 @@
 
 /* TODO -- remove these after multiprocing */
 #include "penge/penge-grid-view.h"
-#include "moblin-netbook-status.h"
 
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
