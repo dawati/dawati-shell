@@ -32,8 +32,6 @@ moblin_netbook_la_SOURCES  = 	mnb-scale-group.c	        \
 				$(MARSHALS)                     \
 				mnb-drop-down.h                 \
 				mnb-drop-down.c                 \
-				mnb-entry.c                     \
-				mnb-entry.h                     \
 				mnb-switcher.c                  \
 				mnb-switcher.h                  \
 				mnb-notification.c              \
