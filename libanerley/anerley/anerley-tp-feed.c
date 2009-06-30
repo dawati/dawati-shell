@@ -825,29 +825,31 @@ anerley_tp_feed_setup_tp_connection (AnerleyTpFeed *feed)
   guint res;
   GError *error = NULL;
 
-  /* 
-   * Check the connection status. Now, in theory we should have only been
-   * created for an online connection however let's check anyway and warn out
-   * if this has happened
-   */
+  /* So. Deep breath. It may be that MC is not actually running. So what we
+   * can do here is setup a signal on the proxy. Note that this proxy might
+   * not be pointing to a valid remote object yet. However once it is then we
+   * will get this signal and we can actually connect and stuff */
+  dbus_g_proxy_connect_signal (DBUS_G_PROXY (priv->mc),
+                               "AccountStatusChanged",
+                               G_CALLBACK (_mc_account_status_changed_cb),
+                               feed,
+                               NULL);
 
+  /* This may fail if MC is not running. If it does, boohoo. But the above
+   * signal handler hook up will come alive when we do go online
+   */
   res = mission_control_get_connection_status (priv->mc,
                                                priv->account,
                                                &error);
 
   if (error)
   {
-    g_warning (G_STRLOC ": Error requesting connection status: %s",
+    g_warning (G_STRLOC ": Error requesting connection status: %s. "
+               "This may just be because MC is not running",
                error->message);
     g_clear_error (&error);
     return;
   }
-
-  dbus_g_proxy_connect_signal (DBUS_G_PROXY (priv->mc),
-                               "AccountStatusChanged",
-                               G_CALLBACK (_mc_account_status_changed_cb),
-                               feed,
-                               NULL);
 
   g_debug (G_STRLOC ": Connection is in state: %s",
            res==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
