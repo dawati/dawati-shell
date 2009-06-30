@@ -6,7 +6,7 @@ AM_LDFLAGS = $(AHOGHILL_LIBS) \
 	$(top_builddir)/ahoghill/ahoghill/libahoghill.la \
 	$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la
 
-test_grid_view_SOURCES = test-grid-view.c $(top_srcdir)/src/mnb-entry.h
+test_grid_view_SOURCES = test-grid-view.c
 test_grid_view_DEPENDENCIES = ../ahoghill/libahoghill.la
 
 test_fixed_SOURCES = test-fixed.c

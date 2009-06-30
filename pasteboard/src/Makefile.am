@@ -31,6 +31,7 @@ BUILT_SOURCES = \
 	mnb-pasteboard-marshal.h
 
 CLEANFILES = \
+	$(BUILT_SOURCES) \
 	stamp-mnb-pasteboard-marshal.h
 
 DISTCLEANFILES = \

@@ -7,6 +7,7 @@ ahoghill/ahoghill/ahoghill-search-pane.c
 ahoghill/ahoghill/ahoghill-queue-tile.c
 ahoghill/ahoghill/ahoghill-playlist-header.c
 ahoghill/ahoghill/ahoghill-playlist-np.c
+ahoghill/src/moblin-panel-media.c
 applications/src/moblin-netbook-launcher.c
 applications/src/moblin-panel-applications.c
 myzone/src/moblin-panel-myzone.c
@@ -29,11 +30,10 @@ src/moblin-netbook.c
 src/moblin-netbook-chooser.c
 src/moblin-netbook-status.c
 src/tray/na-tray-child.c
-src/mnb-entry.c
 src/mnb-status-entry.c
 src/mnb-switcher.c
 src/mnb-toolbar.c
-status/mnb-im-status-row.c
-status/mnb-web-status-entry.c
-status/mnb-web-status-row.c
-status/moblin-status-panel.c
+status/src/mnb-im-status-row.c
+status/src/mnb-web-status-entry.c
+status/src/mnb-web-status-row.c
+status/src/moblin-panel-status.c
