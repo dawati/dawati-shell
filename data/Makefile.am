@@ -127,3 +127,15 @@ dist_theme_netpanel_DATA = \
 theme_effectsdir = $(pkgdatadir)/theme/effects
 dist_theme_effects_DATA = \
 	theme/effects/zone-switch-background.png
+
+# Manage mutter-moblin's texture cache.
+
+texture_cache = $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache
+CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)
+
+install-data-hook:
+	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
+
+uninstall-hook:
+	rm -f $(texture_cache)
+
