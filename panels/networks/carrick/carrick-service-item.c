@@ -499,6 +499,16 @@ _entry_changed_cb (GtkEntry *pw_entry, CarrickServiceItem *item)
 }
 
 void
+_passphrase_entry_clear_released_cb (GtkEntry             *entry,
+                                     GtkEntryIconPosition  icon_pos,
+                                     GdkEvent             *event,
+                                     gpointer              user_data)
+{
+  gtk_entry_set_text (entry, "");
+  gtk_widget_grab_focus (GTK_WIDGET (entry));
+}
+
+void
 carrick_service_item_set_service (CarrickServiceItem *service_item,
                                   CmService          *service)
 {
@@ -787,7 +797,14 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE, TRUE, 6);
 
   priv->passphrase_entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (priv->passphrase_box), 
+  gtk_entry_set_icon_from_stock (GTK_ENTRY (priv->passphrase_entry),
+                                 GTK_ENTRY_ICON_SECONDARY,
+                                 GTK_STOCK_CLEAR);
+  g_signal_connect (priv->passphrase_entry,
+                    "icon-release",
+                    G_CALLBACK (_passphrase_entry_clear_released_cb),
+                    NULL);
+  gtk_box_pack_start (GTK_BOX (priv->passphrase_box),
                       priv->passphrase_entry, 
                       FALSE, FALSE, 6);
 
