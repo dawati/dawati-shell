@@ -117,12 +117,6 @@ theme_notifiersdir = $(MUTTER_MOBLIN_THEME_DIR)/notifiers
 dist_theme_notifiers_DATA = \
 	theme/notifiers/notification-bg.png
 
-theme_netpaneldir = $(MUTTER_MOBLIN_THEME_DIR)/netpanel
-dist_theme_netpanel_DATA = \
-	theme/netpanel/ac-list.png		\
-	theme/netpanel/thumbnail.png		\
-	theme/netpanel/thumbnail_hover.png
-
 theme_effectsdir = $(MUTTER_MOBLIN_THEME_DIR)/effects
 dist_theme_effects_DATA = \
 	theme/effects/zone-switch-background.png

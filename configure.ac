@@ -290,6 +290,7 @@ people/src/Makefile
 people/theme/Makefile
 netpanel/Makefile
 netpanel/src/Makefile
+netpanel/theme/Makefile
 ahoghill/Makefile
 ahoghill/ahoghill/Makefile
 ahoghill/examples/Makefile
