@@ -102,4 +102,5 @@ install-data-hook:
 
 uninstall-hook:
 	rm -f $(texture_cache)
+	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
 
