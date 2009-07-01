@@ -2,8 +2,6 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(NETPANEL_CFLAGS) \
-	-I$(top_srcdir)/libmoblin-panel \
-	-I$(top_srcdir)/penge \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-internet\"
 
 # FIXME use this once split out
@@ -11,10 +9,8 @@ AM_CFLAGS = \
 
 libexec_PROGRAMS = moblin-panel-internet
 
-moblin_panel_internet_LDADD = $(NETPANEL_LIBS) \
-			      $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la \
-			      $(top_builddir)/penge/penge/libpenge.la
-
+moblin_panel_internet_LDADD = \
+	$(NETPANEL_LIBS)
 
 moblin_panel_internet_SOURCES = \
   moblin-panel-internet.c   \

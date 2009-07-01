@@ -169,6 +169,15 @@ AS_IF([test "x$enable_netpanel" = "xyes"],
         AC_DEFINE(WITH_NETPANEL, [1], [Defined when building the net panel])
 
 	PKG_CHECK_MODULES(NETPANEL, gtk+-2.0 nbtk-1.0 cluttermozembed mhs-1.0)
+
+NETPANEL_CFLAGS="${NETPANEL_CFLAGS} ${PENGE_CFLAGS} "\
+'-I$(top_srcdir)/libmoblin-panel '\
+'-I$(top_srcdir)/penge '
+AC_SUBST([NETPANEL_CFLAGS])
+NETPANEL_LIBS="${NETPANEL_LIBS} ${PENGE_LIBS} "\
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '\
+'$(top_builddir)/penge/penge/libpenge.la'
+AC_SUBST([NETPANEL_LIBS])
       ]
 )
 
