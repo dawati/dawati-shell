@@ -1,60 +1,55 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Moblin UX\n"
+"Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-26 08:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
-"Language-Team: \n"
+"Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Spanish\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-# <it took me a while to understand this string>
-# Here you will see the history of the music you have listened to or the fotos or videos you have seen. To start with, take a look at some sample media files:
 #: ../ahoghill/ahoghill/ahoghill-example-table.c:117
 msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-msgstr "Aquí verás el historial de la música que has escuchado o las fotos y los vídeos que hayas visto. Para empezar, echa un vistazo a algunos archivos de ejemplo:"
+msgstr "Historia przeglądania będzie widoczna tutaj kiedy posłuchasz muzyki, rzucisz okiem na zdjęcia lub obejrzysz film. Dostępne przykładowe materiały na dobry początek:"
 
-# Listened or viewed recently
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:390
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:913
 msgid "Recently played"
-msgstr "Oídos o vistos recientemente"
+msgstr "Ostatnio odtwarzane"
 
-# Results of the search
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:416
 msgid "Search results"
-msgstr "Resultados de la búsqueda"
+msgstr "Wyniki wyszukiwania"
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:927
 msgid "Local"
-msgstr "Local"
+msgstr "Lokalne"
 
 #: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
 #, c-format
 msgid "Season %u, Episode %u"
-msgstr "Temporada %u, episodio %u"
+msgstr "Część %u, Odcinek %u"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
 #: ../src/moblin-netbook-netpanel.c:595
 #: ../src/moblin-netbook-netpanel.c:846
 msgid "Previous"
-msgstr "Anterior"
+msgstr "Poprzedni"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
 #: ../src/moblin-netbook-netpanel.c:602
 #: ../src/moblin-netbook-netpanel.c:863
 msgid "Next"
-msgstr "Siguiente"
+msgstr "Następny"
 
-# <this is a tab where the following applications appear: camera, sound recorder, media player, document viewer>
-# Music, video and documents
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:87
 msgid "Media"
-msgstr "Música, vídeo y documentos"
+msgstr "Muzyka, filmy, dokumenty"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
 #: ../applications/src/moblin-netbook-launcher.c:1357
@@ -62,32 +57,39 @@ msgstr "Música, vídeo y documentos"
 #: ../src/moblin-netbook-pasteboard.c:222
 #: ../tests/test-pasteboard.c:245
 msgid "Search"
-msgstr "Búsqueda"
+msgstr "Szukaj"
 
-# <you cannot change the order of these 2 items>
+# Season is translated as one of:
+# Sezon,
+# Seria,
+# Część
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
 #: ../ahoghill/ahoghill/ahoghill-playlist-header.c:255
 #, c-format
 msgid "Season %d Episode %d"
-msgstr "Temporada %d, episodio %d"
+msgstr "Seria %d Odcinek %d"
 
+# Season is translated as one of:
+# Sezon,
+# Seria,
+# Część
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
 #: ../ahoghill/ahoghill/ahoghill-playlist-header.c:257
 #, c-format
 msgid "Season %d"
-msgstr "Temporada %d"
+msgstr "Seria %d"
 
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
 #: ../ahoghill/ahoghill/ahoghill-playlist-header.c:259
 #, c-format
 msgid "Episode %d"
-msgstr "Episodio %d"
+msgstr "Odcinek %d"
 
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
 #: ../ahoghill/ahoghill/ahoghill-playlist-header.c:261
 #, c-format
 msgid "Year %d"
-msgstr "Año %d"
+msgstr "Rok %d"
 
 #.
 #. * Fav apps.
@@ -95,244 +97,227 @@ msgstr "Año %d"
 #. Label
 #: ../applications/src/moblin-netbook-launcher.c:844
 msgid "Favourite Applications"
-msgstr "Aplicaciones preferidas"
+msgstr "Ulubione aplikacje"
 
 #: ../applications/src/moblin-netbook-launcher.c:1346
 msgid "Applications"
-msgstr "Aplicaciones"
+msgstr "Aplikacje"
 
-# <mousetip of the top of the screen>
 #: ../applications/src/moblin-panel-applications.c:100
 #: ../src/moblin-netbook.c:315
 msgid "applications"
-msgstr "aplicaciones"
+msgstr "aplikacje"
 
-# <mousetip of the top of the screen>
 #: ../myzone/src/moblin-panel-myzone.c:43
 #: ../src/moblin-netbook.c:306
-#, fuzzy
 msgid "myzone"
-msgstr "mizona"
+msgstr "myzone"
 
+# Depend on context... could also be:
+# <b>Spotkania</b>
+# <b>Grafik</b>
+# <b>Terminarz</b>
+# <b>Plany</b>
 #: ../penge/penge/penge-calendar-pane.c:180
 msgid "<b>Appointments</b>"
-msgstr "<b>Citas</b>"
+msgstr "<b>Zaplanowane</b>"
 
 #: ../penge/penge/penge-events-pane.c:198
 msgid "No calendar entries this week"
-msgstr "No hay ninguna entrada en el calendario esta semana"
+msgstr "Brak wpisów w kalendarzu na ten tydzień"
 
-# the news from your friends and the web services appear here. Activate your accounts!
 #: ../penge/penge/penge-people-pane.c:200
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-msgstr "Las noticias de tus amigos y los servicios web aparecerán aquí. ¡Activa tus cuentas!"
+msgstr "Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj Twoje konta!"
 
+# I'm really unhappy with this one but can't think of anything better
 #: ../penge/penge/penge-recent-files-pane.c:189
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>Bienvenido a Moblin 2.0 para miniportátiles</b>"
+msgstr "<b>Witamy na Moblinie 2.0 na netbooki</b>"
 
-# Because Moblin is a bit different, we have put a few things together to help you navigate this Beta version. We hope you'll enjoy it.
-# The Moblin Team
 #: ../penge/penge/penge-recent-files-pane.c:214
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
-msgstr "Como Moblin es un poco diferente, hemos juntado algunas cosillas para ayudarte a navegar por esta versión Beta. Esperamos que te guste.El equipo de Moblin."
+msgstr "Moblin różni się od innych komputerów w wielu aspektach, pozbieraliśmy więc co nieco na temat tej wersji Beta, aby pomóc Ci się w niej znaleźć. Powodzenia, Team Moblin"
 
 #: ../penge/penge/penge-recent-file-tile.c:235
 msgid "Web page"
-msgstr "Página web"
+msgstr "Strona"
 
-# Today, you don't have any pending tasks
 #: ../penge/penge/penge-tasks-pane.c:287
 msgid "Nothing to do today"
-msgstr "No tienes tareas pendientes hoy"
+msgstr "Brak zadań na dziś"
 
-# (this task) is for %x
 #: ../penge/penge/penge-task-tile.c:330
 #, c-format
 msgid "Due %x"
-msgstr "Es para %x"
+msgstr "Na %x"
 
 #: ../penge/penge/penge-utils.c:63
 #: ../tests/test-pasteboard.c:64
 msgid "Less than a minute ago"
-msgstr "Hace menos de un minuto"
+msgstr "Mniej niż minutę temu"
 
 #: ../penge/penge/penge-utils.c:67
 #: ../tests/test-pasteboard.c:68
 msgid "A few minutes ago"
-msgstr "Hace unos minutos"
+msgstr "Parę minut temu"
 
 #: ../penge/penge/penge-utils.c:71
 #: ../tests/test-pasteboard.c:72
 msgid "A couple of hours ago"
-msgstr "Hace un par de horas"
+msgstr "Kilka godzin temu"
 
+# No good way to say "earlier today"
 #: ../penge/penge/penge-utils.c:78
 #: ../tests/test-pasteboard.c:79
 msgid "Earlier today"
-msgstr "Hoy, a una hora anterior"
+msgstr "Kilkanaście godzin temu"
 
 #: ../penge/penge/penge-utils.c:81
 #: ../tests/test-pasteboard.c:82
 msgid "Yesterday"
-msgstr "Ayer"
+msgstr "Wczoraj"
 
-# <on + date, like "On July 4">
 #: ../penge/penge/penge-utils.c:89
 #: ../tests/test-pasteboard.c:90
 #, c-format
 msgid "On %A"
-msgstr "El %A"
+msgstr "Dnia %A"
 
 #: ../penge/penge/penge-utils.c:95
 #: ../tests/test-pasteboard.c:96
 msgid "Unknown"
-msgstr "Desconocido"
+msgstr "Nie sprecyzowano"
 
 #: ../penge/penge/penge-utils.c:102
 #: ../tests/test-pasteboard.c:103
 msgid "Last week"
-msgstr "La semana pasada"
+msgstr "Zeszły tydzień"
 
 #: ../penge/penge/penge-utils.c:105
 #: ../tests/test-pasteboard.c:106
 msgid "A couple of weeks ago"
-msgstr "Hace un par de semanas"
+msgstr "Parę tygodni temu"
 
 #: ../penge/penge/penge-utils.c:111
 #: ../tests/test-pasteboard.c:112
 msgid "This month"
-msgstr "Este mes"
+msgstr "W tym miesiącu"
 
 #. Now Jan., last used in Dec.
 #: ../penge/penge/penge-utils.c:115
 #: ../tests/test-pasteboard.c:116
 msgid "Last month"
-msgstr "El mes pasado"
+msgstr "W zeszłym miesiącu"
 
 #: ../penge/penge/penge-utils.c:118
 #: ../tests/test-pasteboard.c:119
 msgid "This year"
-msgstr "Este año"
+msgstr "W tym roku"
 
 #: ../penge/penge/penge-utils.c:121
 #: ../tests/test-pasteboard.c:122
 msgid "Last year"
-msgstr "El año pasado"
+msgstr "W zeszłym roku"
 
-# Long time ago
 #: ../penge/penge/penge-utils.c:123
 #: ../tests/test-pasteboard.c:124
 msgid "Ages ago"
-msgstr "Hace mucho tiempo"
+msgstr "Wieki temu"
 
-# <mousetip of the top of the screen>
 #: ../people/src/moblin-panel-people.c:37
 #: ../src/moblin-netbook.c:327
 msgid "people"
-msgstr "gente"
+msgstr "osoby"
 
 #: ../people/src/mnb-people-panel.c:144
 #, c-format
 msgid "Email %s"
-msgstr "Enviar %s"
+msgstr "Wyślij %s"
 
 #: ../people/src/mnb-people-panel.c:149
 #, c-format
 msgid "Edit %s"
-msgstr "Editar %s"
+msgstr "Edytuj %s"
 
 #: ../people/src/mnb-people-panel.c:156
 #, c-format
 msgid "IM %s"
-msgstr "Enviar %s por mensajero"
+msgstr "Prześlij %s komunikatorem"
 
-# We didn't find anybody. Do you already have an account in any Instant Messenger (service)?
 #: ../people/src/mnb-people-panel.c:294
 msgid "Sorry, we can't find any people. Have you set up an Instant Messenger account?"
-msgstr "No econtramos a nadie. ¿Tienes ya una cuenta en algún mensajero instantáneo?"
+msgstr "Niestety nie znaleziono znajomych. Czy Komunikator jest skonfigurowany?"
 
 #: ../people/src/mnb-people-panel.c:539
 msgid "People"
-msgstr "Gente"
+msgstr "Osoby"
 
-# <mousetip of the top of the screen>
 #: ../src/moblin-netbook.c:309
 #: ../src/mnb-toolbar.c:1469
 msgid "zones"
-msgstr "zonas"
+msgstr "strefy"
 
-# <mousetip of the top of the screen>
+# either "stan" or "status"
 #: ../src/moblin-netbook.c:312
 msgid "status"
-msgstr "estado"
+msgstr "stan"
 
-# <not sure about this. sent question to developers>
-# draft
 #: ../src/moblin-netbook.c:318
 msgid "pasteboard"
-msgstr "borrador"
+msgstr "schowek"
 
-# <mousetip of the top of the screen>
 #: ../src/moblin-netbook.c:321
 msgid "internet"
 msgstr "internet"
 
-# <mousetip of the top of the screen>
-# music, video and documents
 #: ../src/moblin-netbook.c:324
 msgid "media"
-msgstr "música, vídeo y documentos"
+msgstr "media"
 
-# Moblin effects in the netbook
 #: ../src/moblin-netbook.c:437
 msgid "Moblin Netbook Effects"
-msgstr "Efectos de Moblin en el miniportátil"
+msgstr "Efekty Moblina na netbooku"
 
-# Effects for netbooks with Mobin
 #: ../src/moblin-netbook.c:441
 msgid "Effects for Moblin Netbooks"
-msgstr "Efectos para miniportátiles con Moblin"
+msgstr "Efekty dla Netbooków z Moblinem"
 
 #: ../src/moblin-netbook-chooser.c:790
 #, c-format
 msgid "Zone %d"
-msgstr "Zona %d"
+msgstr "Strefa %d"
 
 #: ../src/moblin-netbook-chooser.c:839
 msgid "New zone (0)"
-msgstr "Nueva zona (0)"
+msgstr "Nowa strefa (0)"
 
-# <after the colon, you see the list of the zones available>
-# Chose a zone for the application:
 #: ../src/moblin-netbook-chooser.c:920
 msgid "Choose zone for application:"
-msgstr "Elegir una zona para la aplicación:"
+msgstr "Wybierz strefę dla aplikacji:"
 
 #. Construct tabs previews table widgets
-# <Fichas? If "fichas" is better then it needs to replace pestañas in other
-# strings too>
 #: ../src/moblin-netbook-netpanel.c:347
 msgid "Tabs"
-msgstr "Pestañas"
+msgstr "Zakładki"
 
 #: ../src/moblin-netbook-netpanel.c:393
 msgid "Favorite pages"
-msgstr "Webs preferidas"
+msgstr "Ulubione strony"
 
 #: ../src/moblin-netbook-netpanel.c:418
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-msgstr "Tus favoritos se mostrarán aquí y en la página de Nueva pestaña conforme vayas visitando páginas"
+msgstr "Twoje ulubione strony będą pojawiać się tutaj oraz w nowych zakładkach w miarę jak przeglądasz sieć."
 
 #: ../src/moblin-netbook-netpanel.c:710
 msgid "Untitled"
-msgstr "Sin nombre"
+msgstr "Bez tytułu"
 
 #. FIXME: this should be a default image or startpage snapshot instead,
 #. and this label should become the caption title
 #: ../src/moblin-netbook-netpanel.c:819
 msgid "New tab"
-msgstr "Nueva pestaña"
+msgstr "Nowa zakładka"
 
 #. Construct entry table widgets
 #: ../src/moblin-netbook-netpanel.c:1114
@@ -341,124 +326,113 @@ msgstr "Internet"
 
 #: ../src/moblin-netbook-netpanel.c:1131
 msgid "Go"
-msgstr "Ir"
+msgstr "Przejdź"
 
 #: ../src/moblin-netbook-pasteboard.c:135
 #: ../src/moblin-netbook-pasteboard.c:364
 #: ../tests/test-pasteboard.c:188
 #: ../tests/test-pasteboard.c:327
 msgid "the current selection to pasteboard"
-msgstr "lo seleccionado al borrador"
+msgstr "zaznaczenie do schowka"
 
 #: ../src/moblin-netbook-pasteboard.c:140
 msgid "your selection"
-msgstr "tu selección"
+msgstr "Twoje zaznaczenie"
 
 #: ../src/moblin-netbook-pasteboard.c:209
 #: ../tests/test-pasteboard.c:238
 msgid "Pasteboard"
-msgstr "Borrador"
+msgstr "Schowek"
 
-# you have to copy some text to be able to paste it in the pasteboard
 #: ../src/moblin-netbook-pasteboard.c:259
 msgid "You need to copy some text to use Pasteboard"
-msgstr "Debe de copiar algún texto para poder pegarlo en el borrador"
+msgstr "Skopiuj tekst zanim skorzystasz ze Schowka"
 
-# clean the pasteboard
 #: ../src/moblin-netbook-pasteboard.c:321
 #: ../tests/test-pasteboard.c:301
 msgid "Clear pasteboard"
-msgstr "Limpiar el borrador"
+msgstr "Wyczyść schowek"
 
 #: ../src/moblin-netbook-pasteboard.c:349
 #: ../src/mnb-clipboard-item.c:518
 #: ../tests/test-pasteboard.c:318
 msgid "Copy"
-msgstr "Copiar"
+msgstr "Skopiuj"
 
-# Your status
 #: ../src/moblin-netbook-status.c:206
 #: ../src/moblin-netbook-status.c:261
 msgid "Your current status"
-msgstr "Su estado"
+msgstr "Twój aktualny stan"
 
-# Your status: offline
 #: ../src/moblin-netbook-status.c:208
 msgid "Your current status - you are offline"
-msgstr "Su estado: fuera de línea"
+msgstr "Twój aktualny stan - rozłączony"
 
-# To update your status you need to have an account in a web service that allows status messages
 #: ../src/moblin-netbook-status.c:291
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "Para actualizar tu estado debes tener una cuenta en un servicio web que sea compatible con los mensajes de estado"
+msgstr "Żeby aktualizować swój stan należy ustawić konto Web-serwisu u dostawcy, który ma opcję powiadamiania o stanach"
 
-# The tray icon asks for a size of (%i x %i), so we will change it to (%i x %i)
 #: ../src/tray/na-tray-child.c:121
 #, c-format
 msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-msgstr "El icono de la bandeja pide un tamaño de (%i x %i), así que lo cambiaremos a (%i x %i)"
+msgstr "ikonka panelu wymaga rozmiaru (%i x %i) i będzie przeskalowana do (%i x %i)"
 
 #: ../src/mnb-status-entry.c:138
 #: ../src/mnb-status-entry.c:683
 #: ../src/mnb-status-entry.c:765
 msgid "Edit"
-msgstr "Editar"
+msgstr "Edycja"
 
-# What's your status in: %s?
 #. Translators: %s is the user visible name of the service
 #: ../src/mnb-status-entry.c:560
 #, c-format
 msgid "Enter your %s status here..."
-msgstr "¿Cuál es tu estado en: %s?"
+msgstr "Wprowadź tu swój status na %s..."
 
-# what's your status?
 #: ../src/mnb-status-entry.c:564
 #: ../src/mnb-status-entry.c:637
 msgid "Enter your current status here..."
-msgstr "¿Cuál es tu estado?"
+msgstr "Wprowadź tu swój aktualny status..."
 
-# Send
 #: ../src/mnb-status-entry.c:744
 msgid "Post"
-msgstr "Enviar"
+msgstr "Wyślij"
 
 #: ../src/mnb-switcher.c:1176
 msgid "No Zones yet"
-msgstr "Todavía no hay ninguna zona"
+msgstr "Na razie brak Stref"
 
 #: ../src/mnb-switcher.c:1198
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
-msgstr "Las aplicaciones"
+msgstr "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał możliwość przełączać i organizować je tak jak Ci się podoba."
 
+# "na tej strefie" is also a possiblity
 #: ../src/mnb-switcher.c:1402
 msgid "No applications on this zone"
-msgstr "No hay ninguna aplicación en esta zona"
+msgstr "Brak aplikacji w tej strefie"
 
-# <mousetip of the top of the screen>
-# electricity(energy) and brightness
 #: ../src/mnb-toolbar.c:1703
 msgid "power & brightness"
-msgstr "energía y brillo"
+msgstr "zasilanie i jasność"
 
-# <mousetip of the top of the screen>
 #: ../src/mnb-toolbar.c:1706
 msgid "volume"
-msgstr "volumen"
+msgstr "głośność"
 
-# <mousetip of the top of the screen>
 #: ../src/mnb-toolbar.c:1709
 msgid "bluetooth"
 msgstr "bluetooth"
 
-# <mousetip of the top of the screen>
 #: ../src/mnb-toolbar.c:1712
 msgid "networks"
-msgstr "redes"
+msgstr "sieci"
 
+# alternatively "próba"
 #: ../src/mnb-toolbar.c:1715
 msgid "test"
-msgstr "prueba"
+msgstr "test"
 
 #: ../src/mnb-toolbar.c:1792
 msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "Para activar la barra de herramientas mueve el cursor hacia arriba de la pantalla"
+msgstr "Aby skorzystać z paska narzędzi, dojedź kursorem do górnej krawędzi"
+
