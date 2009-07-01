@@ -517,7 +517,12 @@ void
 carrick_service_item_set_service (CarrickServiceItem *service_item,
                                   CmService          *service)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (service_item);
+  CarrickServiceItemPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (service_item));
+  g_return_if_fail (service == NULL || CM_IS_SERVICE (service));
+
+  priv = SERVICE_ITEM_PRIVATE (service_item);
 
   if (priv->service)
   {
@@ -589,14 +594,23 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
 gint
 carrick_service_item_get_order (CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv;
+
+  g_return_val_if_fail (CARRICK_IS_SERVICE_ITEM (item), -1);
+
+  priv = SERVICE_ITEM_PRIVATE (item);
+
   return cm_service_get_order (priv->service);
 }
 
 CmService *
 carrick_service_item_get_service (CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv;
+
+  g_return_val_if_fail (CARRICK_IS_SERVICE_ITEM (item), NULL);
+
+  priv = SERVICE_ITEM_PRIVATE (item);
   return priv->service;
 }
 
