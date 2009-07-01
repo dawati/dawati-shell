@@ -84,7 +84,7 @@ AC_SUBST([LIBMPL_GTK_LIBS])
 
 # FIXME: fetch this from the pc file after the repo split.
 AC_MSG_CHECKING([for theme dir])
-MUTTER_MOBLIN_THEME_DIR="${prefix}/share/mutter-moblin/theme"
+MUTTER_MOBLIN_THEME_DIR='$(datadir)/mutter-moblin/theme'
 AC_MSG_RESULT([$MUTTER_MOBLIN_THEME_DIR])
 AC_SUBST([MUTTER_MOBLIN_THEME_DIR])
 
@@ -297,7 +297,7 @@ ahoghill/src/Makefile
 ahoghill/theme/Makefile
 libmoblin-panel/Makefile
 libmoblin-panel/moblin-panel-gtk.pc
-libmoblin-panel/moblin-panel-clutter.pc
+libmoblin-panel/moblin-panel-clutter.pc.in
 libmoblin-panel/moblin-panel/Makefile
 libmoblin-panel/theme/Makefile
 libmoblin-panel/tests/Makefile
