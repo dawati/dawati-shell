@@ -21,6 +21,7 @@ m4_define([default_enable_netpanel], [no])
 m4_define([default_enable_status],   [yes])
 m4_define([default_enable_people],   [yes])
 m4_define([default_enable_ahoghill], [no])
+m4_define([default_enable_cache],    [no])
 
 AC_PREREQ([2.59])
 
@@ -60,10 +61,6 @@ AC_CHECK_LIB([gnome-menu], [gmenu_tree_entry_get_generic_name],
 LIBS=${SAVE_LIBS}
 
 AM_GLIB_GNU_GETTEXT
-
-AC_CHECK_PROG([NBTK_CREATE_IMAGE_CACHE],
-              [nbtk-create-image-cache],
-              [$(which nbtk-create-image-cache)])
 
 # Libmoblin-panel
 PKG_CHECK_MODULES(LIBMPL_CLUTTER,
@@ -238,6 +235,21 @@ AS_IF([test "x$enable_status" = "xyes"],
 )
 
 AM_CONDITIONAL([WITH_STATUS],   [test "x$enable_status" = "xyes"])
+
+AC_ARG_ENABLE([cache],
+              [AC_HELP_STRING([--enable-cache],
+                              [Enable Nbtk image cache generation])],
+              [],
+              [enable_cache=no])
+
+AS_IF([test "x$enable_cache" = "xyes"],
+      [
+      AC_CHECK_PROG([NBTK_CREATE_IMAGE_CACHE],
+	        [nbtk-create-image-cache],
+		[$(which nbtk-create-image-cache)])
+])
+
+AM_CONDITIONAL([ENABLE_CACHE],   [test "x$enable_cache" = "xyes"])
 
 AC_ARG_ENABLE([debug],
               [AC_HELP_STRING([--enable-debug],
