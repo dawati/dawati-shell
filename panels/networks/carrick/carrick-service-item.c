@@ -719,6 +719,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
   GtkWidget *box, *hbox, *vbox;
   GtkWidget *image;
+  GtkWidget *connect_with_pw_button;
 
   priv->service = NULL;
   priv->failed = FALSE;
@@ -812,10 +813,12 @@ carrick_service_item_init (CarrickServiceItem *self)
                       6);*/
 
   priv->passphrase_box = gtk_hbox_new (FALSE, 6);
+  gtk_widget_set_no_show_all (priv->passphrase_box, TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), priv->passphrase_box, 
                       TRUE, TRUE, 6);
 
   priv->passphrase_entry = gtk_entry_new ();
+  gtk_widget_show (priv->passphrase_entry);
   gtk_entry_set_icon_from_stock (GTK_ENTRY (priv->passphrase_entry),
                                  GTK_ENTRY_ICON_SECONDARY,
                                  GTK_STOCK_CLEAR);
@@ -827,7 +830,8 @@ carrick_service_item_init (CarrickServiceItem *self)
                       priv->passphrase_entry, 
                       FALSE, FALSE, 6);
 
-  GtkWidget *connect_with_pw_button = gtk_button_new_with_label (_("Connect"));
+  connect_with_pw_button = gtk_button_new_with_label (_("Connect"));
+  gtk_widget_show (connect_with_pw_button);
   g_signal_connect (connect_with_pw_button,
                     "clicked",
                     G_CALLBACK (_connect_with_pw_clicked_cb),
@@ -838,6 +842,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->show_password_check = 
     gtk_check_button_new_with_label (_("Show password"));
+  gtk_widget_show (priv->show_password_check);
   g_signal_connect (priv->show_password_check, 
                     "toggled",
                     G_CALLBACK (_show_pass_toggled_cb),
@@ -853,7 +858,6 @@ carrick_service_item_init (CarrickServiceItem *self)
   
 
   gtk_widget_show_all (GTK_WIDGET (self));
-  gtk_widget_hide (priv->passphrase_box);
 }
 
 GtkWidget*
