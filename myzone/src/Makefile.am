@@ -2,11 +2,12 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	    $(PENGE_CFLAGS) \
-	    -DDATADIR=\"$(datadir)\" \
-	    -DMUTTER_MOBLIN_CSS=\"$(datadir)/mutter-moblin/theme/mutter-moblin.css\" \
-	    -I$(top_srcdir) \
 	    -I$(top_srcdir)/libmoblin-panel \
-	    -I$(top_srcdir)/penge
+	    -I$(top_srcdir)/penge \
+	    -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-myzone\"
+
+# FIXME use this once split out
+# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
 libexec_PROGRAMS = moblin-panel-myzone
 

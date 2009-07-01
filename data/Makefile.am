@@ -84,35 +84,6 @@ dist_theme_dropdown_DATA = \
 	theme/drop-down/panel_up_button.png \
 	theme/drop-down/panel_up_button_hover.png
 
-theme_myzonedir = $(MUTTER_MOBLIN_THEME_DIR)/myzone
-dist_theme_myzone_DATA = \
-	theme/myzone/date-background-background.png \
-	theme/myzone/date-background.png \
-	theme/myzone/general-background.png \
-	theme/myzone/general-background-dark.png \
-	theme/myzone/people-background.png \
-	theme/myzone/recent-files-background.png \
-	theme/myzone/time-bg.png \
-	theme/myzone/time-bg-past.png \
-	theme/myzone/event-background-dark.png \
-	theme/myzone/linus.png \
-	theme/myzone/default-album-artwork.png \
-	theme/myzone/check_box.png \
-	theme/myzone/checked_box.png \
-	theme/myzone/tile-bg.png \
-	theme/myzone/tile-glow.png \
-	theme/myzone/quotebackground.png \
-	theme/myzone/tile-partial-glow.png \
-	theme/myzone/backdrop.png \
-	theme/myzone/calendar-icon.png \
-	theme/myzone/v-div-line.png \
-	theme/myzone/single-div-line.png \
-	theme/myzone/double-div-line.png \
-	theme/myzone/toys.jpg \
-	theme/myzone/default-avatar-icon.png \
-	theme/myzone/no-content-tile-bg.png \
-	theme/myzone/no-content-tile-glow-bg.png
-
 theme_notifiersdir = $(MUTTER_MOBLIN_THEME_DIR)/notifiers
 dist_theme_notifiers_DATA = \
 	theme/notifiers/notification-bg.png

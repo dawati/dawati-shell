@@ -313,6 +313,7 @@ libmoblin-panel/theme/Makefile
 libmoblin-panel/tests/Makefile
 myzone/Makefile
 myzone/src/Makefile
+myzone/theme/Makefile
 ])
 
 echo "
