@@ -310,9 +310,11 @@ msgid "Choose zone for application:"
 msgstr "Elegir una zona para la aplicación:"
 
 #. Construct tabs previews table widgets
+# <Fichas? If "fichas" is better then it needs to replace pestañas in other
+# strings too>
 #: ../src/moblin-netbook-netpanel.c:347
 msgid "Tabs"
-msgstr "Fichas"
+msgstr "Pestañas"
 
 #: ../src/moblin-netbook-netpanel.c:393
 msgid "Favorite pages"
@@ -459,12 +461,4 @@ msgstr "prueba"
 
 #: ../src/mnb-toolbar.c:1792
 msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "Para activar la barra, mueve la flecha hasta arriba de la pantalla"
-
-#~ msgid "Move cursor to the top of the screen to activate the toolbar"
-#~ msgstr ""
-#~ "Mueve el cursor hacia arriba de la pantalla para activar la barra de "
-#~ "herramientas"
-#~ msgid "More..."
-#~ msgstr "Más..."
-
+msgstr "Para activar la barra de herramientas mueve el cursor hacia arriba de la pantalla"
