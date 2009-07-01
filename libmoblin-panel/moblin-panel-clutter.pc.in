@@ -2,8 +2,9 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-
-moblin_panel_clutter_theme_dir=@moblin_panel_clutter_theme_dir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+moblin_panel_clutter_theme_dir=@MUTTER_MOBLIN_THEME_DIR@
 
 Name: libmoblin-panel-clutter
 Description: Dev parameters for Clutter-based moblin panels
