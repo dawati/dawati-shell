@@ -169,6 +169,25 @@ carrick_list_drag_end (GtkWidget      *widget,
   gtk_widget_destroy (priv->drag_window);
 }
 
+static void
+_list_collapse_inactive_items (GtkWidget *item,
+                               GtkWidget *active_item)
+{
+  if (item != active_item && CARRICK_IS_SERVICE_ITEM (item))
+  {
+    carrick_service_item_set_active (CARRICK_SERVICE_ITEM (item), FALSE);
+  }
+}
+
+static void
+_list_active_changed (GtkWidget *item,
+                      GtkWidget *list)
+{
+  gtk_container_foreach (GTK_CONTAINER (list),
+                         (GtkCallback)_list_collapse_inactive_items,
+                         item);
+}
+
 void
 _list_contains_child (GtkWidget *item,
                       gpointer   service)
@@ -246,6 +265,11 @@ carrick_list_add_item (CarrickList *list,
   g_signal_connect (widget,
                     "drag-end",
                     G_CALLBACK (carrick_list_drag_end),
+                    list);
+
+  g_signal_connect (widget,
+                    "activate",
+                    G_CALLBACK (_list_active_changed),
                     list);
 
   gtk_box_pack_start (GTK_BOX (list),

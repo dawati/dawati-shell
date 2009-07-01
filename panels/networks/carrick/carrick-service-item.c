@@ -56,14 +56,28 @@ struct _CarrickServiceItemPrivate
   CmService          *service;
   GtkWidget          *icon;
   GtkWidget          *name_label;
+  GtkWidget          *connect_box;
   GtkWidget          *security_label;
   GtkWidget          *connect_button;
+  GtkWidget          *passphrase_box;
+  GtkWidget          *passphrase_entry;
+  GtkWidget          *show_password_check;
   GtkWidget          *delete_button;
   GtkWidget          *expando;
   ServiceItemState    state;
   CarrickIconFactory *icon_factory;
   gboolean            failed;
+  gboolean            passphrase_hint_visible;
 };
+
+enum
+{
+  SIGNAL_ITEM_ACTIVATE,
+  SIGNAL_LAST
+};
+
+static gint service_item_signals[SIGNAL_LAST];
+
 
 static void
 carrick_service_item_get_property (GObject *object, guint property_id,
@@ -223,7 +237,7 @@ _set_state (CmService          *service,
                               TRUE);
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
                                 TRUE);
-    gtk_widget_hide (GTK_WIDGET (priv->delete_button));
+    gtk_widget_show (GTK_WIDGET (priv->delete_button));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                               FALSE);
     button = g_strdup (_("Connect"));
@@ -270,130 +284,32 @@ _set_state (CmService          *service,
 }
 
 void
-_show_pass_toggled_cb (GtkToggleButton *button,
-                       gpointer         user_data)
+_show_pass_toggled_cb (GtkToggleButton    *button,
+                       CarrickServiceItem *item)
 {
-  GtkEntry *entry = GTK_ENTRY (user_data);
-  gboolean vis = gtk_toggle_button_get_active (button);
-  gtk_entry_set_visibility (entry,
-                            vis);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+
+  if (!priv->passphrase_hint_visible) {
+    gboolean vis = gtk_toggle_button_get_active (button);
+    gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry),
+                              vis);
+  }
 }
 
-gchar *
+void
 _request_passphrase (CarrickServiceItem *item)
 {
-  GtkWidget *dialog;
-  GtkWidget *label;
-  GtkWidget *title;
-  GtkWidget *icon;
-  GtkWidget *entry;
-  GtkWidget *table;
-  GtkWidget *checkbox;
-  GtkWidget *tmp;
-  gchar *passphrase;
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
 
-  dialog = gtk_dialog_new_with_buttons (_("Passphrase required"),
-                                        NULL,
-                                        GTK_DIALOG_MODAL |
-                                        GTK_DIALOG_DESTROY_WITH_PARENT,
-                                        GTK_STOCK_CANCEL,
-                                        GTK_RESPONSE_REJECT,
-                                        GTK_STOCK_CONNECT,
-                                        GTK_RESPONSE_ACCEPT,
-                                        NULL);
-
-  gtk_dialog_set_has_separator (GTK_DIALOG (dialog),
-                                FALSE);
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
-                                   GTK_RESPONSE_ACCEPT);
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  gtk_window_set_icon_name (GTK_WINDOW (dialog),
-                            GTK_STOCK_NETWORK);
-  gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                       6);
-
-  table = gtk_table_new (3, 3, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table),
-                              6);
-  gtk_table_set_row_spacings (GTK_TABLE (table),
-                              6);
-  title = gtk_label_new ("");
-  gtk_label_set_markup (GTK_LABEL (title),
-                        _("<b><big>Network Requires a Password</big></b>"));
-  gtk_misc_set_alignment (GTK_MISC (title),
-                          0.00,
-                          0.50);
-  gtk_table_attach (GTK_TABLE (table),
-                    title,
-                    1, 2,
-                    0, 1,
-                    GTK_EXPAND | GTK_FILL,
-                    GTK_EXPAND | GTK_FILL,
-                    0, 0);
-  icon = gtk_image_new_from_icon_name (GTK_STOCK_NETWORK,
-                                       GTK_ICON_SIZE_DIALOG);
-  gtk_table_attach (GTK_TABLE (table),
-                    icon,
-                    0, 1,
-                    0, 1,
-                    GTK_FILL,
-                    GTK_EXPAND | GTK_FILL,
-                    0, 0);
-  label = gtk_label_new (_("Please enter the password for this network:"));
-  gtk_table_attach (GTK_TABLE (table),
-                    label,
-                    1, 2,
-                    1, 2,
-                    GTK_EXPAND | GTK_FILL,
-                    GTK_EXPAND | GTK_FILL,
-                    0, 0);
-  gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
-  entry = gtk_entry_new ();
-  gtk_entry_set_visibility (GTK_ENTRY (entry),
-                            FALSE);
-  gtk_table_attach (GTK_TABLE (table),
-                    entry,
-                    1, 2,
-                    2, 3,
-                    GTK_EXPAND | GTK_FILL,
-                    GTK_EXPAND | GTK_FILL,
-                    0, 0);
-  checkbox = gtk_check_button_new_with_label (_("Show password"));
-  g_signal_connect (checkbox,
-                    "toggled",
-                    G_CALLBACK (_show_pass_toggled_cb),
-                    (gpointer) entry);
-  gtk_table_attach (GTK_TABLE (table),
-                    checkbox,
-                    1, 2,
-                    3, 4,
-                    GTK_FILL,
-                    GTK_FILL,
-                    0, 0);
-
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                      table,
-                      FALSE,
-                      FALSE,
-                      6);
-
-  gtk_widget_show_all (dialog);
-  tmp = service_item_find_plug (GTK_WIDGET (item));
-  if (tmp)
-  {
-    gtk_widget_hide (tmp);
-  }
-
-  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
-  {
-    passphrase = g_strdup (gtk_entry_get_text (GTK_ENTRY (entry)));
-  }
-  else
-  {
-    passphrase = g_strdup ("");
-  }
-  gtk_widget_destroy (dialog);
-  return passphrase;
+  gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry), 
+                      _("Type password here"));
+  gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry), TRUE);
+  priv->passphrase_hint_visible = TRUE;
+  gtk_editable_select_region (GTK_EDITABLE (priv->passphrase_entry),
+                              0, -1);
+  gtk_widget_grab_focus (priv->passphrase_entry);
+  gtk_widget_hide (priv->connect_box);
+  gtk_widget_show (priv->passphrase_box);
 }
 
 /*void
@@ -510,49 +426,76 @@ _connect_button_cb (GtkButton          *connect_button,
                     CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
-  gchar *passphrase = NULL;
+
+  g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
   if (cm_service_get_connected (priv->service))
   {
     cm_service_disconnect (priv->service);
+    _set_state (priv->service, item);
   }
   else
   {
-    const gchar *security = g_strdup (cm_service_get_security (priv->service));
+    gchar *security = g_strdup (cm_service_get_security (priv->service));
 
     if (security && g_strcmp0 ("none", security) != 0)
     {
       if (priv->failed || !cm_service_get_passphrase (priv->service))
       {
-        passphrase = _request_passphrase (item);
-        if (passphrase && passphrase[0] != '\0')
-        {
-          cm_service_set_passphrase (priv->service,
-                                     passphrase);
-          cm_service_connect (CM_SERVICE (priv->service));
-          g_free (passphrase);
-        }
-        else
-        {
-          /* passphrase empty, return */
-          g_free (passphrase);
-        }
+        _request_passphrase (item);
       }
       else
       {
         /* We have the passphrase already, just connect */
         cm_service_connect (priv->service);
+        _set_state (priv->service, item);
       }
     }
     else
     {
       /* No security, just connect */
       cm_service_connect (priv->service);
+      _set_state (priv->service, item);
     }
+
+    g_free (security);
   }
-  /* Make sure widget is displaying correct state */
-  _set_state (priv->service,
-              item);
+  
+}
+
+void
+_connect_with_pw_clicked_cb (GtkButton *btn, CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  const char *passphrase;
+
+  if (priv->passphrase_hint_visible) {
+    passphrase = "";
+  } else {
+    passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
+  }
+
+  cm_service_set_passphrase (priv->service,
+                             passphrase);
+  cm_service_connect (CM_SERVICE (priv->service));
+
+  gtk_widget_hide (priv->passphrase_box);
+  gtk_widget_show (priv->connect_box);
+  
+}
+
+void
+_entry_changed_cb (GtkEntry *pw_entry, CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+
+  if (priv->passphrase_hint_visible) {
+    gboolean visible = gtk_toggle_button_get_active (
+      GTK_TOGGLE_BUTTON (priv->show_password_check));
+
+    gtk_entry_set_visibility (pw_entry, visible);
+    priv->passphrase_hint_visible = FALSE;
+  }
 }
 
 void
@@ -642,6 +585,20 @@ carrick_service_item_get_service (CarrickServiceItem *item)
   return priv->service;
 }
 
+void carrick_service_item_set_active (CarrickServiceItem *item,
+                                      gboolean active)
+{
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (item));
+
+  if (!active)
+  {
+    CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+
+    gtk_widget_hide (priv->passphrase_box);
+    gtk_widget_show (priv->connect_box);
+  }
+}
+
 static void
 carrick_service_item_set_property (GObject *object, guint property_id,
                                    const GValue *value, GParamSpec *pspec)
@@ -714,6 +671,17 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_ICON_FACTORY,
                                    pspec);
+
+  /* activated == some ui activity in the label part of the item */
+  service_item_signals[SIGNAL_ITEM_ACTIVATE] = g_signal_new (
+    "activate",
+    G_TYPE_FROM_CLASS (object_class),
+    G_SIGNAL_RUN_LAST,
+    0,
+    NULL, NULL,
+    g_cclosure_marshal_VOID__VOID,
+    G_TYPE_NONE, 0);
+
 }
 
 static void
@@ -779,10 +747,10 @@ carrick_service_item_init (CarrickServiceItem *self)
                       FALSE,
                       6);
 
-  hbox = gtk_hbox_new (FALSE,
+  priv->connect_box = gtk_hbox_new (FALSE,
                        6);
   gtk_box_pack_start (GTK_BOX (vbox),
-                      hbox,
+                      priv->connect_box,
                       TRUE,
                       TRUE,
                       6);
@@ -790,14 +758,14 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->security_label = gtk_label_new ("");
   gtk_misc_set_alignment (GTK_MISC (priv->security_label),
                           0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (hbox),
+  gtk_box_pack_start (GTK_BOX (priv->connect_box),
                       priv->security_label,
                       FALSE,
                       FALSE,
                       6);
 
   priv->connect_button = gtk_button_new ();
-  gtk_box_pack_start (GTK_BOX (hbox),
+  gtk_box_pack_start (GTK_BOX (priv->connect_box),
                       priv->connect_button,
                       FALSE,
                       FALSE,
@@ -808,13 +776,48 @@ carrick_service_item_init (CarrickServiceItem *self)
                         _("Make default connection"));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->default_button),
                             FALSE);
-  gtk_box_pack_start (GTK_BOX (hbox),
+  gtk_box_pack_start (GTK_BOX (priv->connect_box),
                       priv->default_button,
                       FALSE,
                       FALSE,
                       6);*/
 
+  priv->passphrase_box = gtk_hbox_new (FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (vbox), priv->passphrase_box, 
+                      TRUE, TRUE, 6);
+
+  priv->passphrase_entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (priv->passphrase_box), 
+                      priv->passphrase_entry, 
+                      FALSE, FALSE, 6);
+
+  GtkWidget *connect_with_pw_button = gtk_button_new_with_label (_("Connect"));
+  g_signal_connect (connect_with_pw_button,
+                    "clicked",
+                    G_CALLBACK (_connect_with_pw_clicked_cb),
+                    self);
+  gtk_box_pack_start (GTK_BOX (priv->passphrase_box), 
+                      connect_with_pw_button,
+                      FALSE, FALSE, 6);
+
+  priv->show_password_check = 
+    gtk_check_button_new_with_label (_("Show password"));
+  g_signal_connect (priv->show_password_check, 
+                    "toggled",
+                    G_CALLBACK (_show_pass_toggled_cb),
+                    self);
+  gtk_box_pack_start (GTK_BOX (priv->passphrase_box), 
+                      priv->show_password_check,
+                      FALSE, FALSE, 6);
+
+  g_signal_connect (priv->passphrase_entry, 
+                    "changed",
+                    G_CALLBACK (_entry_changed_cb), 
+                    self);
+  
+
   gtk_widget_show_all (GTK_WIDGET (self));
+  gtk_widget_hide (priv->passphrase_box);
 }
 
 GtkWidget*
