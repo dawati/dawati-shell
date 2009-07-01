@@ -157,7 +157,6 @@ _button_press_event (ClutterActor *actor,
   }
 
   g_free (last_application);
-  g_free (app_exec);
 
   return TRUE;
 }
