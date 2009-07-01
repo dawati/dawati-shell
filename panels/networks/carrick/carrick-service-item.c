@@ -237,7 +237,7 @@ _set_state (CmService          *service,
                               TRUE);
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
                                 TRUE);
-    gtk_widget_show (GTK_WIDGET (priv->delete_button));
+    gtk_widget_hide (GTK_WIDGET (priv->delete_button));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                               FALSE);
     button = g_strdup (_("Connect"));
@@ -289,7 +289,8 @@ _show_pass_toggled_cb (GtkToggleButton    *button,
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
 
-  if (!priv->passphrase_hint_visible) {
+  if (!priv->passphrase_hint_visible)
+  {
     gboolean vis = gtk_toggle_button_get_active (button);
     gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry),
                               vis);
@@ -469,7 +470,8 @@ _connect_with_pw_clicked_cb (GtkButton *btn, CarrickServiceItem *item)
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
   const char *passphrase;
 
-  if (priv->passphrase_hint_visible) {
+  if (priv->passphrase_hint_visible)
+  {
     passphrase = "";
   } else {
     passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
@@ -478,6 +480,8 @@ _connect_with_pw_clicked_cb (GtkButton *btn, CarrickServiceItem *item)
   cm_service_set_passphrase (priv->service,
                              passphrase);
   cm_service_connect (CM_SERVICE (priv->service));
+
+  _set_state (priv->service, item);
 
   gtk_widget_hide (priv->passphrase_box);
   gtk_widget_show (priv->connect_box);
@@ -489,7 +493,8 @@ _entry_changed_cb (GtkEntry *pw_entry, CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
 
-  if (priv->passphrase_hint_visible) {
+  if (priv->passphrase_hint_visible)
+  {
     gboolean visible = gtk_toggle_button_get_active (
       GTK_TOGGLE_BUTTON (priv->show_password_check));
 
