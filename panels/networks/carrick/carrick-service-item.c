@@ -302,6 +302,8 @@ _request_passphrase (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
 
+  /* TRANSLATORS: text should be 20 characters or less to be entirely
+   * visible in the passphrase entry */
   gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry), 
                       _("Type password here"));
   gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry), TRUE);
@@ -818,6 +820,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE, TRUE, 6);
 
   priv->passphrase_entry = gtk_entry_new ();
+  gtk_entry_set_width_chars (GTK_ENTRY (priv->passphrase_entry), 20);
   gtk_widget_show (priv->passphrase_entry);
   gtk_entry_set_icon_from_stock (GTK_ENTRY (priv->passphrase_entry),
                                  GTK_ENTRY_ICON_SECONDARY,
