@@ -2653,14 +2653,21 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
             return FALSE;
 
       /*
-       * Increase sensitivity -- increasing size of the trigger zone while the
-       * timeout reduces the effect of a shaking hand.
+       * Only do this once; if the timeout is already installed, we wait
+       * (see bug 3949)
        */
-      mnb_toolbar_trigger_region_set_height (toolbar, 5);
+      if (!priv->trigger_timeout_id)
+        {
+          /*
+           * Increase sensitivity -- increasing size of the trigger zone while
+           * the timeout reduces the effect of a shaking hand.
+           */
+          mnb_toolbar_trigger_region_set_height (toolbar, 5);
 
-      priv->trigger_timeout_id =
-        g_timeout_add (TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT,
-                       mnb_toolbar_trigger_timeout_cb, toolbar);
+          priv->trigger_timeout_id =
+            g_timeout_add (TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT,
+                           mnb_toolbar_trigger_timeout_cb, toolbar);
+        }
     }
   else if (event->type == CLUTTER_LEAVE)
     {
