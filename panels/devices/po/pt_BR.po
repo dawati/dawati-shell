@@ -2,33 +2,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"POT-Creation-Date: 2009-06-30 04:10+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Margie Foster <margie.foster@intel.com>\n"
+"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=n!=1\n"
 
 #: ../dalston/dalston-power-applet.c:159
 #, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
-msgstr[0] "<b>%d</b> hora"
-msgstr[1] "<b>%d</b> horas"
+msgstr[0] "<b>%d</b>時間"
+msgstr[1] "<b>%d</b>horas"
 
 #: ../dalston/dalston-power-applet.c:166
 #: ../dalston/dalston-power-applet.c:179
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
-msgstr[0] "<b>%d</b> minuto"
-msgstr[1] "<b>%d</b> minutos"
+msgstr[0] "<b>%d</b>分"
+msgstr[1] "<b>%d</b>分"
 
-# Battery is low
 #: ../dalston/dalston-power-applet.c:200
 msgid "Running low on battery"
 msgstr "Bateria esta baixa"
@@ -37,7 +36,6 @@ msgstr "Bateria esta baixa"
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Notamos que sua bateria esta ficando fraquinha. Se possível, seria uma boa reconectar e recarregar."
 
-# it is almost empty
 #: ../dalston/dalston-power-applet.c:202
 msgid "Getting close to empty"
 msgstr "Está quase descarregada"
@@ -54,77 +52,81 @@ msgstr "Perigo!"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sinto muito, seu computador está quase com bateria vazia. Vamos ter que desligar agora. Favor salvar seu trabalho e até logo."
 
-#: ../dalston/dalston-power-applet.c:324
+#: ../dalston/dalston-power-applet.c:340
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Sinto muito, parece que sua bateria está quebrada."
+
+#: ../dalston/dalston-power-applet.c:343
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Sua bateria está com plena carga e você pode mandar brasa."
 
-#: ../dalston/dalston-power-applet.c:326
+#: ../dalston/dalston-power-applet.c:346
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "Sua bateria está carregando. Está mais ou menos <b>%d</b> cheia."
 
-#: ../dalston/dalston-power-applet.c:333
+#: ../dalston/dalston-power-applet.c:353
 #, c-format
-msgid "Your battery is discharging. It is about <b>%d</b>%% full."
-msgstr "Sua bateria está descarregando. Está mais ou menos <b>%d</b> cheia."
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "Sua bateria está sendo usada. Está mais ou menos <b>%d</b>%% cheia."
 
-#: ../dalston/dalston-power-applet.c:453
+#: ../dalston/dalston-power-applet.c:472
 msgid "Display brightness"
 msgstr "Claridade da tela"
 
-#: ../dalston/dalston-power-applet.c:484
+#: ../dalston/dalston-power-applet.c:503
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Sinto muito, não suportamos a modificação de claridade de sua tela"
 
-#: ../dalston/dalston-brightness-slider.c:221
+#: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
 msgstr "Clarissimo"
 
-#: ../dalston/dalston-brightness-slider.c:223
+#: ../dalston/dalston-brightness-slider.c:226
 msgid "Very bright"
 msgstr "Muito claro"
 
-#: ../dalston/dalston-brightness-slider.c:225
+#: ../dalston/dalston-brightness-slider.c:228
 msgid "Bright"
 msgstr "Claro"
 
-#: ../dalston/dalston-brightness-slider.c:227
+#: ../dalston/dalston-brightness-slider.c:230
 msgid "Morning has broken"
 msgstr "Madrugando"
 
-#: ../dalston/dalston-brightness-slider.c:229
+#: ../dalston/dalston-brightness-slider.c:232
 msgid "Midday"
 msgstr "Bem no meio"
 
-#: ../dalston/dalston-brightness-slider.c:231
+#: ../dalston/dalston-brightness-slider.c:234
 msgid "Pretty dusky"
 msgstr "Bastante escuro"
 
-#: ../dalston/dalston-brightness-slider.c:233
+#: ../dalston/dalston-brightness-slider.c:236
 msgid "Twilight"
 msgstr "Escurecendo"
 
-#: ../dalston/dalston-brightness-slider.c:235
+#: ../dalston/dalston-brightness-slider.c:238
 msgid "Very dark"
 msgstr "Muito escuro"
 
-#: ../dalston/dalston-brightness-slider.c:237
+#: ../dalston/dalston-brightness-slider.c:240
 msgid "Total eclipse"
 msgstr "Quase invisível"
 
-#: ../dalston/dalston-volume-pane.c:254
+#: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
 msgstr "Volume de saída"
 
-#: ../dalston/dalston-volume-pane.c:298
+#: ../dalston/dalston-volume-pane.c:302
 msgid "Mute"
 msgstr "Mudo"
 
-#: ../dalston/dalston-volume-pane.c:316
+#: ../dalston/dalston-volume-pane.c:320
 msgid "Alert sounds"
 msgstr "Sons de alerta"
 
-#: ../dalston/dalston-volume-pane.c:328
+#: ../dalston/dalston-volume-pane.c:332
 msgid "Play test sound"
 msgstr "Tocar som de teste"
 
