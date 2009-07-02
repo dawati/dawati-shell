@@ -466,8 +466,8 @@ _connect_button_cb (GtkButton          *connect_button,
   
 }
 
-void
-_connect_with_pw_clicked_cb (GtkButton *btn, CarrickServiceItem *item)
+static void
+_connect_with_password (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
   const char *passphrase;
@@ -487,10 +487,21 @@ _connect_with_pw_clicked_cb (GtkButton *btn, CarrickServiceItem *item)
 
   gtk_widget_hide (priv->passphrase_box);
   gtk_widget_show (priv->connect_box);
-  
 }
 
-void
+static void
+_connect_with_pw_clicked_cb (GtkButton *btn, CarrickServiceItem *item)
+{
+  _connect_with_password (item);
+}
+
+static void
+_passphrase_entry_activated_cb (GtkEntry *entry, CarrickServiceItem *item)
+{
+  _connect_with_password (item);
+}
+
+static void
 _entry_changed_cb (GtkEntry *pw_entry, CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
@@ -822,6 +833,10 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->passphrase_entry = gtk_entry_new ();
   gtk_entry_set_width_chars (GTK_ENTRY (priv->passphrase_entry), 20);
   gtk_widget_show (priv->passphrase_entry);
+  g_signal_connect (priv->passphrase_entry,
+                    "activate",
+                    G_CALLBACK (_passphrase_entry_activated_cb),
+                    self);
   gtk_entry_set_icon_from_stock (GTK_ENTRY (priv->passphrase_entry),
                                  GTK_ENTRY_ICON_SECONDARY,
                                  GTK_STOCK_CLEAR);
