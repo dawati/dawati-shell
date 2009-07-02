@@ -197,12 +197,21 @@ on_cancel_clicked (NbtkButton     *button,
 }
 
 static void
-on_button_clicked (NbtkButton     *button,
+on_button_clicked (NbtkButton        *button,
                    MnbWebStatusEntry *entry)
 {
   mnb_web_status_entry_set_is_active (entry,
-                                  entry->priv->is_active == TRUE ? FALSE
-                                                                 : TRUE);
+                                      entry->priv->is_active == TRUE ? FALSE
+                                                                     : TRUE);
+}
+
+static void
+on_status_entry_activated (ClutterText       *status_text,
+                           MnbWebStatusEntry *entry)
+{
+  mnb_web_status_entry_set_is_active (entry,
+                                      entry->priv->is_active == TRUE ? FALSE
+                                                                     : TRUE);
 }
 
 static void
@@ -675,11 +684,15 @@ mnb_web_status_entry_init (MnbWebStatusEntry *self)
                                     "MnbWebStatusEntryText");
   clutter_actor_set_parent (priv->status_entry, CLUTTER_ACTOR (self));
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
+  clutter_text_set_activatable (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_editable (CLUTTER_TEXT (text), FALSE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_use_markup (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_ellipsize (CLUTTER_TEXT (text), PANGO_ELLIPSIZE_END);
   clutter_actor_set_reactive (CLUTTER_ACTOR (text), FALSE);
+  g_signal_connect (text,
+                    "activate", G_CALLBACK (on_status_entry_activated),
+                    self);
 
   priv->service_label =
     CLUTTER_ACTOR (nbtk_label_new (""));
