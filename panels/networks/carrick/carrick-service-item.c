@@ -48,7 +48,8 @@ typedef enum
   IDLE,
   FAIL,
   CONFIGURE,
-  READY
+  READY,
+  DISCONNECT,
 } ServiceItemState;
 
 struct _CarrickServiceItemPrivate
@@ -144,6 +145,10 @@ _get_service_state (CmService *service)
   else if (g_strcmp0 (state, "ready") == 0)
   {
     return READY;
+  }
+  else if (g_strcmp0 (state, "disconnect") == 0)
+  {
+    return DISCONNECT;
   }
 
   return UNKNOWN;
@@ -257,6 +262,15 @@ _set_state (CmService          *service,
                              name,
                              _("Connection failed"));
     priv->failed = TRUE;
+  }
+  else if (priv->state == DISCONNECT)
+  {
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
+                              FALSE);
+    button = g_strdup_printf (_("Disconnecting"));
+    label = g_strdup_printf ("%s - %s",
+                             name,
+                             _("Disconnecting"));
   }
   else
   {
