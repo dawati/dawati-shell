@@ -438,7 +438,7 @@ _new_connection_cb (GtkButton *button,
     /* Need some error handling here */
     if (!joined)
     {
-      g_debug ("No WiFi device found to add network... \n(%i devices)", cnt);
+      g_debug ("No WiFi device found to add network...)");
     }
   }
   gtk_widget_destroy (dialog);
