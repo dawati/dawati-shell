@@ -2673,7 +2673,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
            * Increase sensitivity -- increasing size of the trigger zone while
            * the timeout reduces the effect of a shaking hand.
            */
-          mnb_toolbar_trigger_region_set_height (toolbar, 5);
+          mnb_toolbar_trigger_region_set_height (toolbar, 2);
 
           priv->trigger_timeout_id =
             g_timeout_add (TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT,
