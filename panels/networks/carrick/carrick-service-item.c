@@ -106,24 +106,7 @@ carrick_service_item_get_property (GObject *object, guint property_id,
     }
 }
 
-/*
- * Find the uppermost parent window plug so that
- * we can hide it.
- */
-GtkWidget *
-service_item_find_plug (GtkWidget *widget)
-{
-  /* Pippinated */
-  while (widget)
-  {
-    if (GTK_IS_PLUG (widget))
-      return widget;
-    widget = gtk_widget_get_parent (widget);
-  }
-  return NULL;
-}
-
-ServiceItemState
+static ServiceItemState
 _get_service_state (CmService *service)
 {
   const gchar *state = NULL;
@@ -154,7 +137,7 @@ _get_service_state (CmService *service)
   return UNKNOWN;
 }
 
-void
+static void
 _service_item_set_security (CarrickServiceItem *item,
                             gchar *security)
 {
@@ -189,7 +172,7 @@ _service_item_set_security (CarrickServiceItem *item,
                       security_label);
 }
 
-void
+static void
 _set_state (CmService          *service,
             CarrickServiceItem *item)
 {
@@ -297,7 +280,7 @@ _set_state (CmService          *service,
   g_free (button);
 }
 
-void
+static void
 _show_pass_toggled_cb (GtkToggleButton    *button,
                        CarrickServiceItem *item)
 {
@@ -311,7 +294,7 @@ _show_pass_toggled_cb (GtkToggleButton    *button,
   }
 }
 
-void
+static void
 _request_passphrase (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
@@ -329,7 +312,7 @@ _request_passphrase (CarrickServiceItem *item)
   gtk_widget_show (priv->passphrase_box);
 }
 
-/*void
+/*static void
 _item_service_updated_cb (CmService *service,
                           gpointer user_data)
 {
@@ -341,7 +324,7 @@ _item_service_updated_cb (CmService *service,
               item);
               }*/
 
-void
+static void
 _service_name_changed_cb (CmService *service,
                           gchar     *name,
                           gpointer   user_data)
@@ -350,7 +333,7 @@ _service_name_changed_cb (CmService *service,
               CARRICK_SERVICE_ITEM (user_data));
 }
 
-void
+static void
 _service_state_changed_cb (CmService *service,
                            gchar     *state,
                            gpointer   user_data)
@@ -364,7 +347,7 @@ _service_state_changed_cb (CmService *service,
               item);
 }
 
-void
+static void
 _service_security_changed_cb (CmService *service,
                               gchar     *security,
                               gpointer   user_data)
@@ -373,7 +356,7 @@ _service_security_changed_cb (CmService *service,
   _service_item_set_security (item, security);
 }
 
-void
+static void
 _service_strength_changed_cb (CmService *service,
                               guint      strength,
                               gpointer   user_data)
@@ -382,7 +365,7 @@ _service_strength_changed_cb (CmService *service,
               CARRICK_SERVICE_ITEM (user_data));
 }
 
-void
+static void
 _delete_button_cb (GtkButton *delete_button,
                    gpointer   user_data)
 {
@@ -438,7 +421,7 @@ _delete_button_cb (GtkButton *delete_button,
   gtk_widget_destroy (dialog);
 }
 
-void
+static void
 _connect_button_cb (GtkButton          *connect_button,
                     CarrickServiceItem *item)
 {
@@ -477,7 +460,6 @@ _connect_button_cb (GtkButton          *connect_button,
 
     g_free (security);
   }
-  
 }
 
 static void
@@ -530,7 +512,7 @@ _entry_changed_cb (GtkEntry *pw_entry, CarrickServiceItem *item)
   }
 }
 
-void
+static void
 _passphrase_entry_clear_released_cb (GtkEntry             *entry,
                                      GtkEntryIconPosition  icon_pos,
                                      GdkEvent             *event,
@@ -687,7 +669,6 @@ carrick_service_item_dispose (GObject *object)
     g_object_unref (priv->service);
     priv->service = NULL;
   }
-
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
 
