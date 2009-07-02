@@ -662,13 +662,8 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 static void
 carrick_service_item_dispose (GObject *object)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
+  carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object), NULL);
 
-  if (priv->service)
-  {
-    g_object_unref (priv->service);
-    priv->service = NULL;
-  }
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
 
