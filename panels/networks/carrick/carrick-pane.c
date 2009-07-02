@@ -162,7 +162,7 @@ carrick_pane_class_init (CarrickPaneClass *klass)
 }
 
 static void
-_set_devices_state (gchar       *device_type,
+_set_devices_state (const gchar *device_type,
                     gboolean     state,
                     CarrickPane *pane)
 {
@@ -191,7 +191,7 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                        gboolean            new_state,
                        CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("Wireless"),
+  _set_devices_state ("Wireless",
                       new_state,
                       pane);
 
@@ -203,7 +203,7 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                            gboolean            new_state,
                            CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("Ethernet"),
+  _set_devices_state ("Ethernet",
                       new_state,
                       pane);
 
@@ -215,7 +215,7 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                          gboolean            new_state,
                          CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("Cellular"),
+  _set_devices_state ("Cellular",
                       new_state,
                       pane);
 
@@ -227,7 +227,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                         gboolean            new_state,
                         CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("WiMAX"),
+  _set_devices_state ("WiMAX",
                       new_state,
                       pane);
 
@@ -436,6 +436,10 @@ _new_connection_cb (GtkButton *button,
       }
     }
     /* Need some error handling here */
+    if (!joined)
+    {
+      g_debug ("No WiFi device found to add network... \n(%i devices)", cnt);
+    }
   }
   gtk_widget_destroy (dialog);
 }
@@ -469,6 +473,7 @@ _service_updated_cb (CmService   *service,
     if (g_strcmp0 ("ethernet", type) == 0
         && cm_service_get_connected (service) == FALSE)
     {
+      /* FIXME: Should be able to use favorite property here? */
       return;
     }
     else
@@ -566,8 +571,12 @@ _device_updated_cb (CmDevice *device,
                           G_CALLBACK (_wimax_switch_callback),
                           user_data);
         break;
+      case DEVICE_BLUETOOTH:
+        g_debug ("Bluetooth device unhandled");
+        break;
       default:
-        g_debug ("Unknown device type\n");
+        g_debug ("Unknown device type %s",
+                 cm_device_type_to_string (type));
         break;
     }
   }
@@ -983,8 +992,18 @@ carrick_pane_init (CarrickPane *self)
 
 }
 
+static void
+_set_item_inactive (GtkWidget *widget, gpointer userdata)
+{
+  if (CARRICK_IS_SERVICE_ITEM (widget))
+  {
+    carrick_service_item_set_active (CARRICK_SERVICE_ITEM (widget),
+                                     FALSE);
+  }
+}
+
 void
-carrick_pane_trigger_scan (CarrickPane *pane)
+carrick_pane_update (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   const GList *devices = cm_manager_get_devices (priv->manager);
@@ -1012,6 +1031,10 @@ carrick_pane_trigger_scan (CarrickPane *pane)
       devices = devices->next;
     }
   }
+
+  gtk_container_foreach (GTK_CONTAINER (priv->service_list),
+                         (GtkCallback)_set_item_inactive,
+                         NULL);
 }
 
 GtkWidget*
