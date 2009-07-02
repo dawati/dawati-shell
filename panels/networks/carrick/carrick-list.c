@@ -223,15 +223,16 @@ void
 carrick_list_sort_list (CarrickList *list)
 {
   GList *items = gtk_container_get_children (GTK_CONTAINER (list));
+  GList *l;
 
-  while (items)
+  for (l = items; l; l = l->next)
   {
     gtk_box_reorder_child (GTK_BOX (list),
-                           GTK_WIDGET (items->data),
-                           carrick_service_item_get_order (items->data));
-
-    items = items->next;
+                           GTK_WIDGET (l->data),
+                           carrick_service_item_get_order (l->data));
   }
+
+  g_list_free (items);
 }
 
 void

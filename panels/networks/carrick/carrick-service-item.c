@@ -170,6 +170,7 @@ _service_item_set_security (CarrickServiceItem *item,
 
   gtk_label_set_text (GTK_LABEL (priv->security_label),
                       security_label);
+  g_free (security_label);
 }
 
 static void
@@ -301,7 +302,7 @@ _request_passphrase (CarrickServiceItem *item)
 
   /* TRANSLATORS: text should be 20 characters or less to be entirely
    * visible in the passphrase entry */
-  gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry), 
+  gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry),
                       _("Type password here"));
   gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry), TRUE);
   priv->passphrase_hint_visible = TRUE;
@@ -817,7 +818,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->passphrase_box = gtk_hbox_new (FALSE, 6);
   gtk_widget_set_no_show_all (priv->passphrase_box, TRUE);
-  gtk_box_pack_start (GTK_BOX (vbox), priv->passphrase_box, 
+  gtk_box_pack_start (GTK_BOX (vbox), priv->passphrase_box,
                       TRUE, TRUE, 6);
 
   priv->passphrase_entry = gtk_entry_new ();
@@ -835,7 +836,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (_passphrase_entry_clear_released_cb),
                     NULL);
   gtk_box_pack_start (GTK_BOX (priv->passphrase_box),
-                      priv->passphrase_entry, 
+                      priv->passphrase_entry,
                       FALSE, FALSE, 6);
 
   connect_with_pw_button = gtk_button_new_with_label (_("Connect"));
@@ -844,26 +845,26 @@ carrick_service_item_init (CarrickServiceItem *self)
                     "clicked",
                     G_CALLBACK (_connect_with_pw_clicked_cb),
                     self);
-  gtk_box_pack_start (GTK_BOX (priv->passphrase_box), 
+  gtk_box_pack_start (GTK_BOX (priv->passphrase_box),
                       connect_with_pw_button,
                       FALSE, FALSE, 6);
 
-  priv->show_password_check = 
+  priv->show_password_check =
     gtk_check_button_new_with_label (_("Show password"));
   gtk_widget_show (priv->show_password_check);
-  g_signal_connect (priv->show_password_check, 
+  g_signal_connect (priv->show_password_check,
                     "toggled",
                     G_CALLBACK (_show_pass_toggled_cb),
                     self);
-  gtk_box_pack_start (GTK_BOX (priv->passphrase_box), 
+  gtk_box_pack_start (GTK_BOX (priv->passphrase_box),
                       priv->show_password_check,
                       FALSE, FALSE, 6);
 
-  g_signal_connect (priv->passphrase_entry, 
+  g_signal_connect (priv->passphrase_entry,
                     "changed",
-                    G_CALLBACK (_entry_changed_cb), 
+                    G_CALLBACK (_entry_changed_cb),
                     self);
-  
+
 
   gtk_widget_show_all (GTK_WIDGET (self));
 }

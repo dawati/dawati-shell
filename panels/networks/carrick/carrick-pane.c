@@ -162,7 +162,7 @@ carrick_pane_class_init (CarrickPaneClass *klass)
 }
 
 static void
-_set_devices_state (gchar       *device_type,
+_set_devices_state (const gchar *device_type,
                     gboolean     state,
                     CarrickPane *pane)
 {
@@ -191,7 +191,7 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                        gboolean            new_state,
                        CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("Wireless"),
+  _set_devices_state ("Wireless",
                       new_state,
                       pane);
 
@@ -203,7 +203,7 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                            gboolean            new_state,
                            CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("Ethernet"),
+  _set_devices_state ("Ethernet",
                       new_state,
                       pane);
 
@@ -215,7 +215,7 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                          gboolean            new_state,
                          CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("Cellular"),
+  _set_devices_state ("Cellular",
                       new_state,
                       pane);
 
@@ -227,7 +227,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                         gboolean            new_state,
                         CarrickPane        *pane)
 {
-  _set_devices_state (g_strdup ("WiMAX"),
+  _set_devices_state ("WiMAX",
                       new_state,
                       pane);
 
