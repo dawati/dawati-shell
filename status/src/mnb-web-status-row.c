@@ -235,11 +235,8 @@ mnb_web_status_row_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_web_status_row_parent_class)->paint (actor);
 
-  if (priv->icon && CLUTTER_ACTOR_IS_MAPPED (priv->icon))
-    clutter_actor_paint (priv->icon);
-
-  if (priv->entry && CLUTTER_ACTOR_IS_MAPPED (priv->entry))
-    clutter_actor_paint (priv->entry);
+  clutter_actor_paint (priv->icon);
+  clutter_actor_paint (priv->entry);
 }
 
 static void
@@ -248,13 +245,10 @@ mnb_web_status_row_pick (ClutterActor       *actor,
 {
   MnbWebStatusRowPrivate *priv = MNB_WEB_STATUS_ROW (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_web_status_row_parent_class)->pick (actor,
-                                                           pick_color);
+  CLUTTER_ACTOR_CLASS (mnb_web_status_row_parent_class)->pick (actor, pick_color);
 
-  if (priv->icon && clutter_actor_should_pick_paint (priv->icon))
-    clutter_actor_paint (priv->icon);
-
-  if (priv->entry && clutter_actor_should_pick_paint (priv->entry))
+  /* we only want to propagate the pick if the entry is active */
+  if (mnb_web_status_entry_get_is_active (MNB_WEB_STATUS_ENTRY (priv->entry)))
     clutter_actor_paint (priv->entry);
 }
 
@@ -287,8 +281,8 @@ mnb_web_status_row_unmap (ClutterActor *actor)
 }
 
 static gboolean
-mnb_web_status_row_button_release (ClutterActor *actor,
-                               ClutterButtonEvent *event)
+mnb_web_status_row_button_release (ClutterActor       *actor,
+                                   ClutterButtonEvent *event)
 {
   if (event->button == 1)
     {
@@ -297,7 +291,7 @@ mnb_web_status_row_button_release (ClutterActor *actor,
       if (!mnb_web_status_entry_get_is_active (MNB_WEB_STATUS_ENTRY (priv->entry)))
         {
           mnb_web_status_entry_set_is_active (MNB_WEB_STATUS_ENTRY (priv->entry), TRUE);
-          return TRUE;
+          return FALSE;
         }
     }
 
@@ -494,7 +488,6 @@ on_mojito_view_open (MojitoClient     *client,
        * we need to enable the StatusEntry
        */
       clutter_actor_set_reactive (CLUTTER_ACTOR (row), priv->is_online);
-      clutter_actor_set_reactive (priv->entry, priv->is_online);
       clutter_actor_set_opacity (priv->entry, priv->is_online ? 255 : 128);
       clutter_actor_set_opacity (priv->icon, priv->is_online ? 255 : 128);
 
@@ -552,7 +545,6 @@ on_mojito_online_changed (MojitoClient *client,
   priv->is_online = is_online;
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (row), priv->is_online);
-  clutter_actor_set_reactive (priv->entry, priv->is_online);
 
   if (priv->is_online)
     {
@@ -692,7 +684,6 @@ mnb_web_status_row_constructed (GObject *gobject)
   priv->entry = CLUTTER_ACTOR (mnb_web_status_entry_new (priv->display_name));
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->entry),
                             CLUTTER_ACTOR (row));
-  clutter_actor_set_reactive (CLUTTER_ACTOR (priv->entry), FALSE);
   clutter_actor_set_opacity (CLUTTER_ACTOR (priv->entry), 128);
   g_signal_connect (priv->entry, "status-changed",
                     G_CALLBACK (on_status_entry_changed),

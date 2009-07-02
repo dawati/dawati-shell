@@ -709,10 +709,9 @@ mnb_web_status_entry_init (MnbWebStatusEntry *self)
                                  cancel_icon);
 
     clutter_actor_hide (priv->cancel_icon);
-    clutter_actor_set_reactive (priv->cancel_icon, TRUE);
     clutter_actor_set_parent (priv->cancel_icon, CLUTTER_ACTOR (self));
-    g_signal_connect (priv->cancel_icon, "clicked",
-                      G_CALLBACK (on_cancel_clicked),
+    g_signal_connect (priv->cancel_icon,
+                      "clicked", G_CALLBACK (on_cancel_clicked),
                       self);
   }
 
@@ -720,10 +719,9 @@ mnb_web_status_entry_init (MnbWebStatusEntry *self)
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->button),
                                     "MnbWebStatusEntryButton");
   clutter_actor_hide (priv->button);
-  clutter_actor_set_reactive (priv->button, TRUE);
   clutter_actor_set_parent (priv->button, CLUTTER_ACTOR (self));
-  g_signal_connect (priv->button, "clicked",
-                    G_CALLBACK (on_button_clicked),
+  g_signal_connect (priv->button,
+                    "clicked", G_CALLBACK (on_button_clicked),
                     self);
 }
 
