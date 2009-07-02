@@ -436,6 +436,10 @@ _new_connection_cb (GtkButton *button,
       }
     }
     /* Need some error handling here */
+    if (!joined)
+    {
+      g_debug ("No WiFi device found to add network... \n(%i devices)", cnt);
+    }
   }
   gtk_widget_destroy (dialog);
 }
@@ -469,6 +473,7 @@ _service_updated_cb (CmService   *service,
     if (g_strcmp0 ("ethernet", type) == 0
         && cm_service_get_connected (service) == FALSE)
     {
+      /* FIXME: Should be able to use favorite property here? */
       return;
     }
     else
@@ -566,8 +571,12 @@ _device_updated_cb (CmDevice *device,
                           G_CALLBACK (_wimax_switch_callback),
                           user_data);
         break;
+      case DEVICE_BLUETOOTH:
+        g_debug ("Bluetooth device unhandled");
+        break;
       default:
-        g_debug ("Unknown device type\n");
+        g_debug ("Unknown device type %s",
+                 cm_device_type_to_string (type));
         break;
     }
   }
