@@ -694,12 +694,12 @@ mnb_launcher_set_show_fav_apps (MnbLauncher     *self,
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  if (show && !CLUTTER_ACTOR_IS_MAPPED (priv->fav_label))
+  if (show)
     {
       clutter_actor_show (priv->fav_label);
       clutter_actor_show (priv->fav_grid);
     }
-  else if (!show && CLUTTER_ACTOR_IS_MAPPED (priv->fav_label))
+  else
     {
       clutter_actor_hide (priv->fav_label);
       clutter_actor_hide (priv->fav_grid);
