@@ -47,6 +47,9 @@
  */
 #include "moblin-netbook-chooser.h"
 
+/* For systray windows stuff */
+#include <gdk/gdkx.h>
+
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
@@ -2267,6 +2270,7 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
   MutterWindow           *mcw      = map_data->mcw;
   gfloat                  x, y, w, h;
   gint                    screen_width, screen_height;
+  Window                  xid;
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -2283,6 +2287,13 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
   priv->dropdown_region =
     moblin_netbook_input_region_push (plugin, x, TOOLBAR_HEIGHT + y, w,
                                       screen_height - (TOOLBAR_HEIGHT+(gint)y));
+
+  xid = mutter_window_get_x_window (mcw);
+
+  XSetInputFocus (GDK_DISPLAY(),
+                  xid,
+                  RevertToPointerRoot,
+                  CurrentTime);
 
   /* Notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
