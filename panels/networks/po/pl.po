@@ -1,40 +1,41 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-30 04:11+0000\n"
+"POT-Creation-Date: 2009-06-26 08:48+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
-"Language-Team: \n"
+"Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
+"Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Portuguese\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../carrick/carrick-applet.c:63
 #, c-format
 msgid "Offline"
-msgstr "Offline"
+msgstr "Niepołączony"
 
 #: ../carrick/carrick-applet.c:64
 #, c-format
 msgid "No active connection."
-msgstr "Nenhuma conexão ativa."
+msgstr "Brak aktywnego połączenia."
 
 #: ../carrick/carrick-applet.c:70
 #, c-format
 msgid "Online"
-msgstr "Online"
+msgstr "Połączony"
 
 #: ../carrick/carrick-applet.c:75
 #, c-format
 msgid "Now online and connected to %s."
-msgstr "Online e conectado a %s."
+msgstr "Ustanowiono połączenie z %s."
 
 #: ../carrick/carrick-pane.c:284
 msgid "New connection settings"
-msgstr "Novas configurações de conexão"
+msgstr "Konfiguracja nowego połączenia"
 
 #: ../carrick/carrick-pane.c:320
 msgid ""
@@ -42,34 +43,34 @@ msgid ""
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"Digite o nome da rede desejada\n"
-"e se necessário, a senha e\n"
-"tipo de segurança."
+"Wpisz nazwę sieci z którą chcesz się\n"
+"połączyć i jej hasło oraz typ zabezpieczenia\n"
+"jeśli jest wymagane."
 
 #: ../carrick/carrick-pane.c:330
 msgid "Network name"
-msgstr "Nome da rede"
+msgstr "Nazwa sieci"
 
 #: ../carrick/carrick-pane.c:342
 msgid "Network security"
-msgstr "Segurança de rede"
+msgstr "Zabezpieczenie sieci"
 
 #: ../carrick/carrick-pane.c:366
 msgid "Password"
-msgstr "Senha"
+msgstr "Hasło"
 
 #: ../carrick/carrick-pane.c:381
 #: ../carrick/carrick-service-item.c:361
 msgid "Show password"
-msgstr "Mostrar senha"
+msgstr "Pokaż hasło"
 
 #: ../carrick/carrick-pane.c:774
 msgid "Networks"
-msgstr "Redes"
+msgstr "Sieci"
 
 #: ../carrick/carrick-pane.c:798
 msgid "Add new connection"
-msgstr "Adicionar conexão"
+msgstr "Dodaj połączenie"
 
 #: ../carrick/carrick-pane.c:830
 msgid "WiFi"
@@ -78,7 +79,7 @@ msgstr "WiFi"
 #: ../carrick/carrick-pane.c:853
 #: ../carrick/carrick-service-item.c:193
 msgid "Wired"
-msgstr "Cabeado"
+msgstr "Przewodowa"
 
 #: ../carrick/carrick-pane.c:879
 msgid "3G"
@@ -90,58 +91,58 @@ msgstr "WiMAX"
 
 #: ../carrick/carrick-pane.c:938
 msgid "Offline mode"
-msgstr "Modo offline"
+msgstr "Tryb offline"
 
 #: ../carrick/carrick-pane.c:962
 msgid "This will disable all your connections"
-msgstr "Isso irá desativar suas conexões"
+msgstr "Wszystkie połączenia zostaną wyłączone"
 
 #: ../carrick/carrick-service-item.c:161
 #, c-format
 msgid "%s encrypted"
-msgstr "%s encriptado"
+msgstr "%s zaszyfrowana"
 
 #: ../carrick/carrick-service-item.c:205
 msgid "Disconnect"
-msgstr "Desconectado"
+msgstr "Rozłącz"
 
 #: ../carrick/carrick-service-item.c:208
 msgid "Connected"
-msgstr "Conectado"
+msgstr "Połączono"
 
 #: ../carrick/carrick-service-item.c:215
 #, c-format
 msgid "Connecting"
-msgstr "Conectando"
+msgstr "Łączenie"
 
 #: ../carrick/carrick-service-item.c:218
 msgid "Configuring"
-msgstr "Configurando"
+msgstr "Konfigurowanie"
 
 #: ../carrick/carrick-service-item.c:229
 #: ../carrick/carrick-service-item.c:241
 msgid "Connect"
-msgstr "Conectar"
+msgstr "Połącz"
 
 #: ../carrick/carrick-service-item.c:244
 msgid "Connection failed"
-msgstr "Conexão falhou"
+msgstr "Połączenie nie powiodło się"
 
 #: ../carrick/carrick-service-item.c:295
 msgid "Passphrase required"
-msgstr "Frase de senha requerida"
+msgstr "Potrzebne hasło"
 
 #: ../carrick/carrick-service-item.c:322
 msgid "<b><big>Network Requires a Password</big></b>"
-msgstr "<b><big>Rede requer uma senha</big></b>"
+msgstr "<b><big>Sieć wymaga hasła</big></b>"
 
 #: ../carrick/carrick-service-item.c:342
 msgid "Please enter the password for this network:"
-msgstr "Favor digitar a senha para essa rede:"
+msgstr "Wpisz hasło dla tej sieci:"
 
 #: ../carrick/carrick-service-item.c:466
 msgid "Really remove?"
-msgstr "Quer remover mesmo?"
+msgstr "Na pewno usunąć?"
 
 #: ../carrick/carrick-service-item.c:484
 #, c-format
@@ -150,7 +151,7 @@ msgid ""
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-"Você quer remover a rede %s %s? Isso\n"
-"esquecerá a senha e você não estará mais\n"
-"conectado automaticamente a %s."
+"Czy usunąć sieć %s %s? To spowoduje zapomnienie\n"
+"hasła i połączenie z %s nie będzie już automatycznie\n"
+"nawiązywane."
 
