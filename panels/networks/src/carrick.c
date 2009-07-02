@@ -49,7 +49,10 @@ _plug_notify_embedded (GObject    *object,
                 NULL);
 
   carrick_status_icon_set_active (icon, embedded);
-  carrick_pane_trigger_scan (pane);
+  if (embedded)
+  {
+    carrick_pane_update (pane);
+  }
 }
 
 int

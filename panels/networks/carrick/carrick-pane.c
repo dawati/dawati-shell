@@ -983,8 +983,18 @@ carrick_pane_init (CarrickPane *self)
 
 }
 
+static void
+_set_item_inactive (GtkWidget *widget, gpointer userdata)
+{
+  if (CARRICK_IS_SERVICE_ITEM (widget))
+  {
+    carrick_service_item_set_active (CARRICK_SERVICE_ITEM (widget),
+                                     FALSE);
+  }
+}
+
 void
-carrick_pane_trigger_scan (CarrickPane *pane)
+carrick_pane_update (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   const GList *devices = cm_manager_get_devices (priv->manager);
@@ -1012,6 +1022,10 @@ carrick_pane_trigger_scan (CarrickPane *pane)
       devices = devices->next;
     }
   }
+
+  gtk_container_foreach (GTK_CONTAINER (priv->service_list),
+                         (GtkCallback)_set_item_inactive,
+                         NULL);
 }
 
 GtkWidget*

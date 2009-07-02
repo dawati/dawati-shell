@@ -59,7 +59,7 @@ GType carrick_pane_get_type (void);
 GtkWidget* carrick_pane_new (CarrickIconFactory *icon_factory,
                              CmManager          *manager);
 
-void carrick_pane_trigger_scan (CarrickPane *pane);
+void carrick_pane_update (CarrickPane *pane);
 
 G_END_DECLS
 
