@@ -849,6 +849,7 @@ mnb_launcher_fill (MnbLauncher     *self)
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
   GList *fav_apps;
+  gboolean have_fav_apps;
 
   if (priv->scrolled_vbox == NULL)
     {
@@ -881,6 +882,7 @@ mnb_launcher_fill (MnbLauncher     *self)
   clutter_actor_set_name (priv->fav_grid, "launcher-fav-grid");
   g_object_ref (priv->fav_grid);
 
+  have_fav_apps = FALSE;
   fav_apps = penge_app_bookmark_manager_get_bookmarks (priv->manager);
   if (fav_apps)
     {
@@ -917,6 +919,7 @@ mnb_launcher_fill (MnbLauncher     *self)
 
           if (button)
             {
+              have_fav_apps = TRUE;
               mnb_launcher_button_set_favorite (MNB_LAUNCHER_BUTTON (button),
                                                 TRUE);
               clutter_container_add (CLUTTER_CONTAINER (priv->fav_grid),
@@ -934,10 +937,9 @@ mnb_launcher_fill (MnbLauncher     *self)
         }
       g_list_free (fav_apps);
     }
-  else
-    {
-      mnb_launcher_set_show_fav_apps (self, FALSE);
-    }
+
+  if (!have_fav_apps)
+    mnb_launcher_set_show_fav_apps (self, FALSE);
 
   /*
    * Apps browser.
