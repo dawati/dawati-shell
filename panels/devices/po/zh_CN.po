@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Zhu Yanhai <yanhai.zhu@intel.com>, 2009.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-10 08:41+0000\n"
-"PO-Revision-Date: 2009-06-10 17:30+0800\n"
+"POT-Creation-Date: 2009-07-01 09:16+0000\n"
+"PO-Revision-Date: 2009-07-03 17:30+0800\n"
 "Last-Translator: Zhu Yanhai <yanhai.zhu@intel.com>\n"
 "Language-Team: zh_CN <yanhai.zhu@intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -61,61 +60,65 @@ msgid ""
 "turn off now. Please save your work and hope to see you again soon."
 msgstr "抱歉,您的电池电量已不足.现在即将关机.请保存您的工作,再见."
 
-#: ../dalston/dalston-power-applet.c:324
+#: ../dalston/dalston-power-applet.c:340
+msgid "Sorry, it looks like your battery is broken."
+msgstr "抱歉,您的电池有故障."
+
+#: ../dalston/dalston-power-applet.c:343
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "您的电池已充满"
 
-#: ../dalston/dalston-power-applet.c:326
+#: ../dalston/dalston-power-applet.c:346
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "正在充电中.已充至约<b>%d</b>%%."
 
-#: ../dalston/dalston-power-applet.c:333
+#: ../dalston/dalston-power-applet.c:353
 #, c-format
-msgid "Your battery is discharging. It is about <b>%d</b>%% full."
-msgstr "充电结束.充至约<b>%d</b>%%."
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "电池放电中.剩余约<b>%d</b>%%."
 
-#: ../dalston/dalston-power-applet.c:453
+#: ../dalston/dalston-power-applet.c:472
 msgid "Display brightness"
 msgstr "屏幕亮度"
 
-#: ../dalston/dalston-power-applet.c:484
+#: ../dalston/dalston-power-applet.c:503
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "抱歉,目前暂不支持修改此种屏幕的亮度."
 
-#: ../dalston/dalston-brightness-slider.c:221
+#: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
 msgstr "极亮"
 
-#: ../dalston/dalston-brightness-slider.c:223
+#: ../dalston/dalston-brightness-slider.c:226
 msgid "Very bright"
 msgstr "非常亮"
 
-#: ../dalston/dalston-brightness-slider.c:225
+#: ../dalston/dalston-brightness-slider.c:228
 msgid "Bright"
 msgstr "一般亮"
 
-#: ../dalston/dalston-brightness-slider.c:227
+#: ../dalston/dalston-brightness-slider.c:230
 msgid "Morning has broken"
 msgstr "黄昏时分"
 
-#: ../dalston/dalston-brightness-slider.c:229
+#: ../dalston/dalston-brightness-slider.c:232
 msgid "Midday"
 msgstr "正午"
 
-#: ../dalston/dalston-brightness-slider.c:231
+#: ../dalston/dalston-brightness-slider.c:234
 msgid "Pretty dusky"
 msgstr "微暗"
 
-#: ../dalston/dalston-brightness-slider.c:233
+#: ../dalston/dalston-brightness-slider.c:236
 msgid "Twilight"
 msgstr "微光"
 
-#: ../dalston/dalston-brightness-slider.c:235
+#: ../dalston/dalston-brightness-slider.c:238
 msgid "Very dark"
 msgstr "非常暗"
 
-#: ../dalston/dalston-brightness-slider.c:237
+#: ../dalston/dalston-brightness-slider.c:240
 msgid "Total eclipse"
 msgstr "完全黑暗"
 
@@ -178,3 +181,6 @@ msgstr "系统声音"
 #: ../libgvc/gvc-mixer-control.c:1512
 msgid "GNOME Volume Control"
 msgstr "GNOME音量控制"
+
+#~ msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+#~ msgstr "充电结束.充至约<b>%d</b>%%."
