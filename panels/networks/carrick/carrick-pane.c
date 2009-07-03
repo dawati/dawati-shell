@@ -782,6 +782,9 @@ carrick_pane_init (CarrickPane *self)
                     6);
   gtk_table_set_homogeneous (GTK_TABLE (self),
                              TRUE);
+  gtk_container_set_border_width (GTK_CONTAINER (self), 4);
+  gtk_table_set_row_spacings (GTK_TABLE (self), 4);
+  gtk_table_set_col_spacings (GTK_TABLE (self), 4);
 
   /* Network list */
   label = g_strdup_printf ("<span font_desc=\"Liberation Sans Bold 18px\""
@@ -809,7 +812,22 @@ carrick_pane_init (CarrickPane *self)
                              0, 7);
 
   /* New connection button */
+  vbox = gtk_vbox_new (FALSE, 0);
+  gtk_table_attach (GTK_TABLE (self),
+                    vbox,
+                    0, 6,
+                    7, 8,
+                    GTK_FILL,
+                    GTK_EXPAND,
+                    0, 0);
+
   hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      hbox,
+                      FALSE,
+                      TRUE,
+                      0);
+
   priv->new_conn_button = gtk_button_new_with_label (_("Add new connection"));
   gtk_widget_set_sensitive (priv->new_conn_button,
                             FALSE);
@@ -819,16 +837,10 @@ carrick_pane_init (CarrickPane *self)
                     self);
   gtk_box_pack_start (GTK_BOX (hbox),
                       priv->new_conn_button,
-                      TRUE,
                       FALSE,
-                      0);
-  gtk_table_attach (GTK_TABLE (self),
-                    hbox,
-                    0, 1,
-                    7, 8,
-                    GTK_EXPAND,
-                    GTK_EXPAND,
-                    0, 0);
+                      TRUE,
+                      12);
+
 
   /* Switches */
   vbox = gtk_vbox_new (TRUE,
