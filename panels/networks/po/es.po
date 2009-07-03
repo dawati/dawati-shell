@@ -1,185 +1,157 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Moblin UX\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 11:03+0100\n"
+"POT-Creation-Date: 2009-06-30 04:11+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: Gonzalo Velasquez <gonzalox.e.velasquez@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-# out of line
 #: ../carrick/carrick-applet.c:63
 #, c-format
 msgid "Offline"
 msgstr "Fuera de línea"
 
-# There's no active connection.
 #: ../carrick/carrick-applet.c:64
 #, c-format
 msgid "No active connection."
-msgstr "No hay ninguna conexión activa."
+msgstr "No hay conexión activa."
 
-# On line
 #: ../carrick/carrick-applet.c:70
 #, c-format
 msgid "Online"
 msgstr "En línea"
 
-# <informal verb tense>
-# You are on line and connected to %s.
 #: ../carrick/carrick-applet.c:75
 #, c-format
 msgid "Now online and connected to %s."
-msgstr "Estás en línea y conectado a %s."
+msgstr "Está ahora en línea y conectado a %s."
 
-# <you are setting a new connection>
-# Configuration of a new connection
-#: ../carrick/carrick-pane.c:289
+#: ../carrick/carrick-pane.c:284
 msgid "New connection settings"
-msgstr "Configuración de una nueva conexión"
+msgstr "Nueva configuración de conexión"
 
-# <informal verb tense>
-# Write the name of the network to which
-# you want to connect and, if applicable,
-# the password and the type of security.
-#: ../carrick/carrick-pane.c:325
+#: ../carrick/carrick-pane.c:320
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"Escribe el nombre de la red a la que \n"
-"quieres conectarte y, en su caso, \n"
-"la contraseña y el tipo de seguridad."
+"Ingrese el nombre de la red a la que desea\n"
+"conectarse y, si es necesario, la contraseña\n"
+"y el tipo de seguridad."
 
-# Name of the network
-#: ../carrick/carrick-pane.c:335
+#: ../carrick/carrick-pane.c:330
 msgid "Network name"
-msgstr "Nombre de la red"
+msgstr "Nombre de red"
 
-# security of the network
-#: ../carrick/carrick-pane.c:347
+#: ../carrick/carrick-pane.c:342
 msgid "Network security"
-msgstr "Seguridad de la red"
+msgstr "Seguridad de red"
 
-# password
-#: ../carrick/carrick-pane.c:371
+#: ../carrick/carrick-pane.c:366
 msgid "Password"
 msgstr "Contraseña"
 
-# Show the password
-#: ../carrick/carrick-pane.c:386
-#: ../carrick/carrick-service-item.c:272
+#: ../carrick/carrick-pane.c:381
+#: ../carrick/carrick-service-item.c:361
 msgid "Show password"
-msgstr "Mostrar la contraseña"
+msgstr "Mostrar contraseña"
 
-# Redes
-#: ../carrick/carrick-pane.c:713
+#: ../carrick/carrick-pane.c:774
 msgid "Networks"
-msgstr "Networks"
+msgstr "Redes"
 
-# New connection
-#: ../carrick/carrick-pane.c:737
+#: ../carrick/carrick-pane.c:798
 msgid "Add new connection"
-msgstr "Nueva conexión"
+msgstr "Agregue una nueva conexión"
 
-# WiFi
-#: ../carrick/carrick-pane.c:770
+#: ../carrick/carrick-pane.c:830
 msgid "WiFi"
-msgstr "WiFi"
+msgstr "Wi-Fi"
 
-# wired
-#: ../carrick/carrick-pane.c:793
-#: ../carrick/carrick-service-item.c:125
+#: ../carrick/carrick-pane.c:853
+#: ../carrick/carrick-service-item.c:193
 msgid "Wired"
-msgstr "Alámbrica"
+msgstr "Cableado"
 
-# 3G
-#: ../carrick/carrick-pane.c:822
+#: ../carrick/carrick-pane.c:879
 msgid "3G"
 msgstr "3G"
 
-# WiMAX
-#: ../carrick/carrick-pane.c:851
+#: ../carrick/carrick-pane.c:904
 msgid "WiMAX"
 msgstr "WiMAX"
 
-# out of line
-#: ../carrick/carrick-pane.c:889
+#: ../carrick/carrick-pane.c:938
 msgid "Offline mode"
-msgstr "Fuera de línea"
+msgstr "Modo fuera de línea"
 
-# this will deactivate all connections
-#: ../carrick/carrick-pane.c:913
+#: ../carrick/carrick-pane.c:962
 msgid "This will disable all your connections"
-msgstr "Esto desactivará todas las conexiones"
+msgstr "Esto deshabilitará todas sus conexiones"
 
-# Disconnect
-#: ../carrick/carrick-service-item.c:132
+#: ../carrick/carrick-service-item.c:161
+#, c-format
+msgid "%s encrypted"
+msgstr "%s cifrado"
+
+#: ../carrick/carrick-service-item.c:205
 msgid "Disconnect"
-msgstr "Desconectar"
+msgstr "Desconectarse"
 
-# Connected
-#: ../carrick/carrick-service-item.c:135
+#: ../carrick/carrick-service-item.c:208
 msgid "Connected"
 msgstr "Conectado"
 
-# Connecting
-#: ../carrick/carrick-service-item.c:142
+#: ../carrick/carrick-service-item.c:215
 #, c-format
 msgid "Connecting"
-msgstr "Conectándose"
+msgstr "Conectandose"
 
-# Configuring
-#: ../carrick/carrick-service-item.c:145
+#: ../carrick/carrick-service-item.c:218
 msgid "Configuring"
-msgstr "Configurándose"
+msgstr "Configurando"
 
-# Connect
-#: ../carrick/carrick-service-item.c:151
-#: ../carrick/carrick-service-item.c:158
+#: ../carrick/carrick-service-item.c:229
+#: ../carrick/carrick-service-item.c:241
 msgid "Connect"
-msgstr "Conectar"
+msgstr "Conectarse"
 
-# Error in(during) the connection
-#: ../carrick/carrick-service-item.c:161
+#: ../carrick/carrick-service-item.c:244
 msgid "Connection failed"
-msgstr "Error en la conexión"
+msgstr "La conexión falló"
 
-# a password is required
-#: ../carrick/carrick-service-item.c:206
+#: ../carrick/carrick-service-item.c:295
 msgid "Passphrase required"
-msgstr "Se requiere una contraseña"
+msgstr "Frase clave requerida"
 
-# This network requires a password
-#: ../carrick/carrick-service-item.c:233
+#: ../carrick/carrick-service-item.c:322
 msgid "<b><big>Network Requires a Password</big></b>"
-msgstr "<b><big>Esta red requiere una contraseña</big></b>"
+msgstr "<b><big>La red requiere de una contraseña</big></b>"
 
-# Write the password for this network
-#: ../carrick/carrick-service-item.c:253
+#: ../carrick/carrick-service-item.c:342
 msgid "Please enter the password for this network:"
-msgstr "Escriba la contraseña de esta red:"
+msgstr "Por favor ingrese la contraseña para esta red:"
 
-# close
-#: ../carrick/carrick-service-item.c:525
-msgid "Close"
-msgstr "Cerrar"
+#: ../carrick/carrick-service-item.c:466
+msgid "Really remove?"
+msgstr "¿Remover realmente?"
 
-# advanced options
-#. expando = nbtk_gtk_expander_new ();
-#: ../carrick/carrick-service-item.c:530
-#: ../carrick/carrick-service-item.c:587
-msgid "Advanced"
-msgstr "Opciones avanzadas"
-
-# Content for testing
-#: ../carrick/carrick-service-item.c:595
-msgid "Just some test content"
-msgstr "Contenido de prueba"
+#: ../carrick/carrick-service-item.c:484
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr ""
+"¿Desea remover la red %s %s? Esta acción\n"
+"olvidará la contraseña y usted no volverá a estar\n"
+"conectado automáticamente a %s."
 
