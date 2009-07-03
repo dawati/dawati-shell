@@ -35,6 +35,7 @@ libahoghill_la_SOURCES = $(libahoghill_headers) \
 	ahoghill-search-pane.c \
 	nbtk-fixed.c
 AM_CFLAGS = -Wall -fPIC @AHOGHILL_CFLAGS@ \
+	    -DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
 	    -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-media\" \
 	    -I$(top_srcdir)/ahoghill
 AM_LDFLAGS = @AHOGHILL_LIBS@

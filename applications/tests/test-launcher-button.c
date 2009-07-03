@@ -30,7 +30,7 @@ main (int argc, char *argv[])
   clutter_init (&argc, &argv);
 
   nbtk_style_load_from_file (nbtk_style_get_default (),
-                             "../data/theme/mutter-moblin.css", NULL);
+                             "../theme/panel.css", NULL);
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 400, 200);

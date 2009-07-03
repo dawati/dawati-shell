@@ -257,6 +257,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
     meta_prefs_set_num_workspaces (1);
 
+  nbtk_texture_cache_load_cache (nbtk_texture_cache_get_default (),
+                                 THEMEDIR "/nbtk.cache");
   nbtk_style_load_from_file (nbtk_style_get_default (),
                              THEMEDIR "/mutter-moblin.css",
                              &err);

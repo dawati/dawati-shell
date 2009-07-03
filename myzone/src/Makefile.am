@@ -4,6 +4,7 @@ AM_CFLAGS = \
 	    $(PENGE_CFLAGS) \
 	    -I$(top_srcdir)/libmoblin-panel \
 	    -I$(top_srcdir)/penge \
+	    -DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
 	    -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-myzone\"
 
 # FIXME use this once split out

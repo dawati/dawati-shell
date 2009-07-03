@@ -5,6 +5,7 @@ INCLUDES = \
 	-I$(top_srcdir)/libmoblin-panel \
 	-DG_LOG_DOMAIN=\"Mutter-Moblin-Status\" \
 	-DPREFIX=\"$(prefix)\" \
+	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-status\"
 
 # FIXME use this once split out

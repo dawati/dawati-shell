@@ -11,6 +11,7 @@ libmoblin_panel_include_HEADERS = \
 
 libmoblin_panel_clutter_la_CFLAGS = \
 	$(LIBMPL_CLUTTER_CFLAGS) \
+	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
 
 # FIXME use this once split out

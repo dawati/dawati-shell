@@ -1092,6 +1092,8 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
+  nbtk_texture_cache_load_cache (nbtk_texture_cache_get_default (),
+                                 NBTK_CACHE);
   nbtk_style_load_from_file (nbtk_style_get_default (),
                              THEMEDIR "/panel.css",
                              &error);

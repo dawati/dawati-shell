@@ -1301,9 +1301,6 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
       stylesheet = mnb_panel_get_stylesheet (panel);
       style_id   = mnb_panel_get_button_style (panel);
 
-if (0 == g_strcmp0 ("applications-button", style_id))
-  printf ("apps button\n");
-
       if (button)
         {
           gchar *button_style = NULL;

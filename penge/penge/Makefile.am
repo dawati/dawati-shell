@@ -48,6 +48,7 @@ libpenge_la_SOURCES = \
 
 AM_CFLAGS = @MUTTER_PLUGIN_CFLAGS@ -Wall $(PENGE_CFLAGS) \
 	    -I$(top_srcdir)/libmoblin-panel \
+	    -DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
 	    -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-myzone\"
 
 libpenge_la_LIBADD = $(MUTTER_PLUGIN_LIBS) \
