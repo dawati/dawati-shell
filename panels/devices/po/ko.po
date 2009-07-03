@@ -2,30 +2,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"POT-Creation-Date: 2009-06-30 04:10+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../dalston/dalston-power-applet.c:159
-#, fuzzy, c-format
+#, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
-msgstr[0] "<b>%d</b> 시 "
+msgstr[0] "<b>%d</b> 시"
 msgstr[1] "<b>%d</b> 시"
 
 #: ../dalston/dalston-power-applet.c:166
 #: ../dalston/dalston-power-applet.c:179
-#, fuzzy, c-format
+#, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
-msgstr[0] "<b>%d</b> 시"
-msgstr[1] "<b>%d</b> 시"
+msgstr[0] "<b>%d</b> 분"
+msgstr[1] "<b>%d</b> 분"
 
 #: ../dalston/dalston-power-applet.c:200
 msgid "Running low on battery"
@@ -37,7 +38,7 @@ msgstr "배터리 사용량이 얼마남지 않았습니다. 여건이 되면 �
 
 #: ../dalston/dalston-power-applet.c:202
 msgid "Getting close to empty"
-msgstr "배터리 사용량이 거의 다 소모되고 있습니다. "
+msgstr "거의 다 소비되었습니다."
 
 #: ../dalston/dalston-power-applet.c:202
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
@@ -47,85 +48,87 @@ msgstr "배터리 사용량이 얼마남지 않았습니다. 모든 작업을 �
 msgid "Danger!"
 msgstr "위험!"
 
-# "hope to see you again soon" is translated into KOR as " start working again soon"
 #: ../dalston/dalston-power-applet.c:204
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "죄송합니다. 컴퓨터의 배터리 사용량이 거의 다 소비되었습니다. 이제 전원이 꺼질것 입니다. 작업을 저장하시고 다시 작업을 시작하시길 바랍니다.   "
 
-#: ../dalston/dalston-power-applet.c:324
-msgid "Your battery is fully charged and you're ready to go."
-msgstr "배터리가 완전히 충전되었으며 시작할 모든 준비가 되어있습니다.  "
+#: ../dalston/dalston-power-applet.c:340
+msgid "Sorry, it looks like your battery is broken."
+msgstr "죄송합니다. 배터리가 고장난것 같습니다."
 
-#: ../dalston/dalston-power-applet.c:326
+#: ../dalston/dalston-power-applet.c:343
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "배터리가 완전히 충전되었으며 시작할 모든 준비가 되었습니다.  "
+
+#: ../dalston/dalston-power-applet.c:346
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "배터리가 충전되고 있습니다. 현재 <b>%d</b>%% 만큼 충전 되었습니다. "
 
-#: ../dalston/dalston-power-applet.c:333
+#: ../dalston/dalston-power-applet.c:353
 #, c-format
-msgid "Your battery is discharging. It is about <b>%d</b>%% full."
-msgstr "배터리가 충전되지 않고 있습니다. 현재 <b>%d</b>%% 만큼 충전 되었습니다. "
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "배터리가 사용되고있습니다. <b>%d</b>%% 정도 차있습니다. "
 
-#: ../dalston/dalston-power-applet.c:453
+#: ../dalston/dalston-power-applet.c:472
 msgid "Display brightness"
 msgstr "밝기 표시"
 
-#: ../dalston/dalston-power-applet.c:484
+#: ../dalston/dalston-power-applet.c:503
 msgid "Sorry, we don't support modifying the brightness of your screen"
-msgstr "죄송합니다, 수정된 화면 밝기 기능은 지원하지 않습니다. "
+msgstr "죄송합니다. 화면의 수정된 밝기 기능은 지원하지 않습니다. "
 
-#: ../dalston/dalston-brightness-slider.c:221
+#: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
-msgstr "매우 강렬한 밝음"
+msgstr "매우 강렬하게 밝음"
 
-#: ../dalston/dalston-brightness-slider.c:223
+#: ../dalston/dalston-brightness-slider.c:226
 msgid "Very bright"
 msgstr "매우 밝음"
 
-#: ../dalston/dalston-brightness-slider.c:225
+#: ../dalston/dalston-brightness-slider.c:228
 msgid "Bright"
 msgstr "밝음"
 
-#: ../dalston/dalston-brightness-slider.c:227
+#: ../dalston/dalston-brightness-slider.c:230
 msgid "Morning has broken"
 msgstr "흐릿하게 밝음"
 
-# translated into KOR as "usual bright"
-#: ../dalston/dalston-brightness-slider.c:229
+#: ../dalston/dalston-brightness-slider.c:232
 msgid "Midday"
-msgstr "평소 밝기"
+msgstr "보통으로 밝음"
 
-#: ../dalston/dalston-brightness-slider.c:231
+#: ../dalston/dalston-brightness-slider.c:234
 msgid "Pretty dusky"
-msgstr "흐릿한 어둠"
+msgstr "흐릿하게 어두움"
 
-#: ../dalston/dalston-brightness-slider.c:233
+#: ../dalston/dalston-brightness-slider.c:236
 msgid "Twilight"
-msgstr "희미하게 밝음"
+msgstr "희미하게 어두움"
 
-#: ../dalston/dalston-brightness-slider.c:235
+#: ../dalston/dalston-brightness-slider.c:238
 msgid "Very dark"
 msgstr "매우 어두움"
 
-#: ../dalston/dalston-brightness-slider.c:237
+#: ../dalston/dalston-brightness-slider.c:240
 msgid "Total eclipse"
 msgstr "완벽한 어둠"
 
-#: ../dalston/dalston-volume-pane.c:254
+#: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
 msgstr "출력 볼륨"
 
-#: ../dalston/dalston-volume-pane.c:298
+#: ../dalston/dalston-volume-pane.c:302
 msgid "Mute"
 msgstr "음소거"
 
-#: ../dalston/dalston-volume-pane.c:316
+#: ../dalston/dalston-volume-pane.c:320
 msgid "Alert sounds"
-msgstr "경고 소리"
+msgstr "경고 소리음"
 
-#: ../dalston/dalston-volume-pane.c:328
+#: ../dalston/dalston-volume-pane.c:332
 msgid "Play test sound"
-msgstr "<b>테스트 사운드 재생</b>"
+msgstr "테스트 사운드 재생"
 
 #: ../dalston/dalston-volume-slider.c:188
 msgid "Turned up to 11"
@@ -139,19 +142,17 @@ msgstr "매우 큰 소리"
 msgid "Loud"
 msgstr "큰 소리"
 
-# Similar to loud
 #: ../dalston/dalston-volume-slider.c:194
 msgid "Fairly loud"
-msgstr "큰 소리 비슷한"
+msgstr "상당히 큰 소리"
 
-# Similar to nomal
 #: ../dalston/dalston-volume-slider.c:196
 msgid "Middle of the road"
 msgstr "보통 소리"
 
 #: ../dalston/dalston-volume-slider.c:198
 msgid "Fairly quiet"
-msgstr "거의 조용함"
+msgstr "비교적 조용함"
 
 #: ../dalston/dalston-volume-slider.c:200
 msgid "Quiet"
