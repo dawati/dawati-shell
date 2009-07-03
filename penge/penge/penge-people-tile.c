@@ -47,7 +47,7 @@ enum
   PROP_SECONDARY_TEXT
 };
 
-#define DEFAULT_AVATAR_PATH PKG_DATADIR "/theme/myzone/default-avatar-icon.png"
+#define DEFAULT_AVATAR_PATH THEMEDIR "/default-avatar-icon.png"
 
 static void
 penge_people_tile_get_property (GObject *object, guint property_id,

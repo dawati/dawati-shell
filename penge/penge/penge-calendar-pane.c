@@ -33,9 +33,9 @@ G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPanePrivate))
 
-#define CALENDAR_ICON PKG_DATADIR "/theme/myzone/calendar-icon.png"
-#define SINGLE_DIV_LINE PKG_DATADIR "/theme/myzone/single-div-line.png"
-#define DOUBLE_DIV_LINE PKG_DATADIR "/theme/myzone/double-div-line.png"
+#define CALENDAR_ICON THEMEDIR "/calendar-icon.png"
+#define SINGLE_DIV_LINE THEMEDIR "/single-div-line.png"
+#define DOUBLE_DIV_LINE THEMEDIR "/double-div-line.png"
 
 typedef struct _PengeCalendarPanePrivate PengeCalendarPanePrivate;
 

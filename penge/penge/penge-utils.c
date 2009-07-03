@@ -187,8 +187,7 @@ penge_utils_load_stylesheet ()
   GError *error = NULL;
   gchar *path;
 
-  path = g_build_filename (PKG_DATADIR,
-                           "theme",
+  path = g_build_filename (THEMEDIR,
                            "mutter-moblin.css",
                            NULL);
 

@@ -30,7 +30,7 @@ G_DEFINE_TYPE (PengeLastfmTile, penge_lastfm_tile, PENGE_TYPE_PEOPLE_TILE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_LASTFM_TILE, PengeLastfmTilePrivate))
 
-#define DEFAULT_ALBUM_ARTWORK PKG_DATADIR "/theme/myzone/default-album-artwork.png"
+#define DEFAULT_ALBUM_ARTWORK THEMEDIR "/default-album-artwork.png"
 
 typedef struct _PengeLastfmTilePrivate PengeLastfmTilePrivate;
 
