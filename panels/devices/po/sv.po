@@ -2,31 +2,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 13:17+0100\n"
+"POT-Creation-Date: 2009-06-30 04:10+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1; \n"
 
 #: ../dalston/dalston-power-applet.c:159
-#, fuzzy, c-format
+#, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
-msgstr[0] "<b>%d</b> timme"
-msgstr[1] "<b>%d</b> timmar"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../dalston/dalston-power-applet.c:166
 #: ../dalston/dalston-power-applet.c:179
-#, fuzzy, c-format
+#, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
-msgstr[0] "<b>%d</b> minut"
-msgstr[1] "<b>%d</b> minuter"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../dalston/dalston-power-applet.c:200
 msgid "Running low on battery"
@@ -52,77 +52,81 @@ msgstr "Varning!"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Ursäkta, ditt batteri har nästan slut på energi. Vi måste avsluta nu. Spara det du jobbar på, hoppas vi ses igen snart."
 
-#: ../dalston/dalston-power-applet.c:324
+#: ../dalston/dalston-power-applet.c:340
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Ursäkta, ditt batteri fungerar inte."
+
+#: ../dalston/dalston-power-applet.c:343
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Ditt batteri är helt laddat och du är redo att börja."
 
-#: ../dalston/dalston-power-applet.c:326
+#: ../dalston/dalston-power-applet.c:346
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "Ditt batteri laddar. Det är omkring <b>%d</b>%% laddat."
 
-#: ../dalston/dalston-power-applet.c:333
+#: ../dalston/dalston-power-applet.c:353
 #, c-format
-msgid "Your battery is discharging. It is about <b>%d</b>%% full."
-msgstr "Ditt batteri används. Det har omkring <b>%d</b>%% laddning."
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "Ditt batteri används nu. Det är cirka <b>%d</b>%% laddat."
 
-#: ../dalston/dalston-power-applet.c:453
+#: ../dalston/dalston-power-applet.c:472
 msgid "Display brightness"
 msgstr "Visa skärmljusstyrka"
 
-#: ../dalston/dalston-power-applet.c:484
+#: ../dalston/dalston-power-applet.c:503
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Ursäkta, men vi stöder inte förändrad skärmljusstyrka"
 
-#: ../dalston/dalston-brightness-slider.c:221
+#: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
 msgstr "Bländande"
 
-#: ../dalston/dalston-brightness-slider.c:223
+#: ../dalston/dalston-brightness-slider.c:226
 msgid "Very bright"
 msgstr "Väldigt ljust"
 
-#: ../dalston/dalston-brightness-slider.c:225
+#: ../dalston/dalston-brightness-slider.c:228
 msgid "Bright"
 msgstr "Ljust"
 
-#: ../dalston/dalston-brightness-slider.c:227
+#: ../dalston/dalston-brightness-slider.c:230
 msgid "Morning has broken"
 msgstr "Gryning"
 
-#: ../dalston/dalston-brightness-slider.c:229
+#: ../dalston/dalston-brightness-slider.c:232
 msgid "Midday"
 msgstr "Dagsljus"
 
-#: ../dalston/dalston-brightness-slider.c:231
+#: ../dalston/dalston-brightness-slider.c:234
 msgid "Pretty dusky"
-msgstr "Skymning"
+msgstr "Nära skymning"
 
-#: ../dalston/dalston-brightness-slider.c:233
+#: ../dalston/dalston-brightness-slider.c:236
 msgid "Twilight"
 msgstr "Skymning"
 
-#: ../dalston/dalston-brightness-slider.c:235
+#: ../dalston/dalston-brightness-slider.c:238
 msgid "Very dark"
 msgstr "Väldigt mörk"
 
-#: ../dalston/dalston-brightness-slider.c:237
+#: ../dalston/dalston-brightness-slider.c:240
 msgid "Total eclipse"
 msgstr "Nattsvart"
 
-#: ../dalston/dalston-volume-pane.c:254
+#: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
 msgstr "Utgångsvolym"
 
-#: ../dalston/dalston-volume-pane.c:298
+#: ../dalston/dalston-volume-pane.c:302
 msgid "Mute"
 msgstr "Helt tyst"
 
-#: ../dalston/dalston-volume-pane.c:316
+#: ../dalston/dalston-volume-pane.c:320
 msgid "Alert sounds"
 msgstr "Varningsljud"
 
-#: ../dalston/dalston-volume-pane.c:328
+#: ../dalston/dalston-volume-pane.c:332
 msgid "Play test sound"
 msgstr "Spela upp testljud"
 
@@ -163,12 +167,10 @@ msgid "Silent"
 msgstr "Ljudlös"
 
 #: ../libgvc/gvc-mixer-control.c:988
-#, fuzzy
 msgid "System Sounds"
-msgstr "Systemljud"
+msgstr "Varningsljud"
 
 #: ../libgvc/gvc-mixer-control.c:1512
-#, fuzzy
 msgid "GNOME Volume Control"
-msgstr "GNOME-volymkontroll"
+msgstr "GNOME volymkontroll:"
 
