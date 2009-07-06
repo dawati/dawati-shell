@@ -30,7 +30,7 @@ AC_CONFIG_MACRO_DIR([build/autotools])
 
 AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([dist-bzip2])
 AM_CONFIG_HEADER([config.h])
 
 CFLAGS="$CFLAGS -Wall"
