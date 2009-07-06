@@ -573,6 +573,7 @@ _service_updated_cb (CmService   *service,
   {
     item = carrick_service_item_new (priv->icon_factory, priv->notes, service);
     carrick_list_add_item (list, item);
+    gtk_widget_show (item);
     carrick_list_sort_list (CARRICK_LIST (priv->service_list));
   }
 }
@@ -694,8 +695,7 @@ _add_fallback (CarrickPane *pane)
     fallback = g_strdup (_("Sorry, we can't find any networks"));
   }
 
-  carrick_list_clear_fallback (CARRICK_LIST (priv->service_list));
-  carrick_list_add_fallback (CARRICK_LIST (priv->service_list), fallback);
+  carrick_list_set_fallback (CARRICK_LIST (priv->service_list), fallback);
   g_free (fallback);
 }
 
@@ -711,14 +711,16 @@ _update_services (CarrickPane *pane)
   GtkWidget *service_item = NULL;
 
   fetched_services = cm_manager_get_services (priv->manager);
-  carrick_list_clear_fallback (CARRICK_LIST (priv->service_list));
-  children = gtk_container_get_children (GTK_CONTAINER (priv->service_list));
+
+  children = carrick_list_get_children (CARRICK_LIST (priv->service_list));
 
   /*
    * Walk the list and the children of the container and:
    * 1. Find stale services, delete widgetry
    * 2. Find new services, add new widgetry
    */
+  
+
   for (it = children; it != NULL; it = it->next)
   {
     service = carrick_service_item_get_service
@@ -1039,8 +1041,6 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *switch_bin;
   GtkWidget *flight_bin;
   GtkWidget *net_list_bin;
-  GtkWidget *scrolled_view;
-  GtkWidget *viewport;
   GtkWidget *hbox, *switch_box;
   GtkWidget *vbox;
   GtkWidget *switch_label;
@@ -1092,26 +1092,12 @@ carrick_pane_init (CarrickPane *self)
   g_free (label);
   gtk_frame_set_label_widget (GTK_FRAME (net_list_bin),
                               frame_title);
+
   priv->service_list = carrick_list_new ();
-  gtk_widget_show (priv->service_list);
-  scrolled_view = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolled_view);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_view),
-                                  GTK_POLICY_NEVER,
-                                  GTK_POLICY_AUTOMATIC);
-  viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment
-                               (GTK_SCROLLED_WINDOW (scrolled_view)),
-                               gtk_scrolled_window_get_vadjustment
-                               (GTK_SCROLLED_WINDOW (scrolled_view)));
-  gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport),
-                                GTK_SHADOW_NONE);
-  gtk_widget_show (viewport);
-  gtk_container_add (GTK_CONTAINER (viewport),
-                     priv->service_list);
-  gtk_container_add (GTK_CONTAINER (scrolled_view),
-                     viewport);
   gtk_container_add (GTK_CONTAINER (net_list_bin),
-                     scrolled_view);
+                     priv->service_list);
+  gtk_widget_show (priv->service_list);
+
   gtk_table_attach_defaults (GTK_TABLE (self),
                              net_list_bin,
                              0, 4,
@@ -1381,16 +1367,6 @@ carrick_pane_init (CarrickPane *self)
 
 }
 
-static void
-_set_item_inactive (GtkWidget *widget, gpointer userdata)
-{
-  if (CARRICK_IS_SERVICE_ITEM (widget))
-  {
-    carrick_service_item_set_active (CARRICK_SERVICE_ITEM (widget),
-                                     FALSE);
-  }
-}
-
 void
 carrick_pane_update (CarrickPane *pane)
 {
@@ -1407,9 +1383,7 @@ carrick_pane_update (CarrickPane *pane)
     cm_manager_request_scan (priv->manager);
   }
 
-  gtk_container_foreach (GTK_CONTAINER (priv->service_list),
-                         (GtkCallback)_set_item_inactive,
-                         NULL);
+  carrick_list_set_all_inactive (CARRICK_LIST (priv->service_list));
 }
 
 GtkWidget*

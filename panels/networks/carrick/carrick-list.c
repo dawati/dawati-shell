@@ -33,7 +33,7 @@ static const GtkTargetEntry carrick_targets[] = {
   { CARRICK_DRAG_TARGET, GTK_TARGET_SAME_APP, 0 },
 };
 
-G_DEFINE_TYPE (CarrickList, carrick_list, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (CarrickList, carrick_list, GTK_TYPE_SCROLLED_WINDOW)
 
 #define LIST_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_LIST, CarrickListPrivate))
@@ -42,11 +42,16 @@ typedef struct _CarrickListPrivate CarrickListPrivate;
 
 struct _CarrickListPrivate
 {
+  GtkWidget *box;
+  GtkAdjustment *adjustment;
   GtkWidget *drag_window;
-  guint      drag_position;
-  guint      drop_position;
-  GtkWidget *found;
   GtkWidget *fallback;
+
+  guint drag_position;
+  guint drop_position;
+
+  int scroll_speed;
+  guint scroll_timeout_id;
 };
 
 static void
@@ -92,7 +97,7 @@ carrick_list_drag_begin (GtkWidget      *widget,
   gint x, y;
 
   /* save old place in list for drag-failures */
-  gtk_container_child_get (GTK_CONTAINER (list),
+  gtk_container_child_get (GTK_CONTAINER (priv->box),
                            widget,
                            "position", &priv->drag_position,
                            NULL);
@@ -123,13 +128,13 @@ carrick_list_drag_drop (GtkWidget      *widget,
   CarrickListPrivate *priv = LIST_PRIVATE (list);
 
   /* find drop position in list */
-  if (widget == GTK_WIDGET (list))
+  if (widget == GTK_WIDGET (priv->box))
   {
     /* dropped on "empty" space on list */
     priv->drop_position = -1;
   } else {
     /* dropped on a list item */
-    gtk_container_child_get (GTK_CONTAINER (list),
+    gtk_container_child_get (GTK_CONTAINER (priv->box),
                              widget,
                              "position", &priv->drop_position,
                              NULL);
@@ -148,7 +153,7 @@ carrick_list_drag_end (GtkWidget      *widget,
   GList *children;
   gboolean pos_changed;
 
-  children = gtk_container_get_children (GTK_CONTAINER (list));
+  children = gtk_container_get_children (GTK_CONTAINER (priv->box));
 
   /* destroy the popup window */
   g_object_ref (widget);
@@ -157,9 +162,9 @@ carrick_list_drag_end (GtkWidget      *widget,
   priv->drag_window = NULL;
 
   /* insert the widget into the list */
-  gtk_box_pack_start (GTK_BOX (list), widget,
+  gtk_box_pack_start (GTK_BOX (priv->box), widget,
                       FALSE, FALSE,  0);
-  gtk_box_reorder_child (GTK_BOX (list),
+  gtk_box_reorder_child (GTK_BOX (priv->box),
                          widget,
                          priv->drop_position);
   g_object_unref (widget);
@@ -234,23 +239,29 @@ static void
 _list_active_changed (GtkWidget *item,
                       GtkWidget *list)
 {
-  gtk_container_foreach (GTK_CONTAINER (list),
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+
+  gtk_container_foreach (GTK_CONTAINER (priv->box),
                          (GtkCallback)_list_collapse_inactive_items,
                          item);
 }
 
+typedef struct find_data
+{
+  CmService *service;
+  GtkWidget *widget;
+} find_data;
+
 void
 _list_contains_child (GtkWidget *item,
-                      gpointer   service)
+                      find_data *data)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (gtk_widget_get_parent (item));
   CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
-  CmService *serv = CM_SERVICE (service);
 
-  if (cm_service_is_same (serv,
+  if (cm_service_is_same (data->service,
                           carrick_service_item_get_service (service_item)))
   {
-    priv->found = GTK_WIDGET (service_item);
+    data->widget = item;
   }
 }
 
@@ -259,26 +270,63 @@ carrick_list_find_service_item (CarrickList *list,
                                 CmService   *service)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (list);
+  find_data *data;
   GtkWidget *ret;
-  gtk_container_foreach (GTK_CONTAINER (list),
-                         _list_contains_child,
-                         (gpointer) service);
 
-  ret = priv->found;
-  priv->found = NULL;
+  data = g_slice_new0 (find_data);
+  data->service = service;
+  data->widget = NULL;
+
+  gtk_container_foreach (GTK_CONTAINER (priv->box),
+                         (GtkCallback)_list_contains_child,
+                         data);
+  ret = data->widget;
+
+  g_slice_free (find_data, data);
 
   return ret;
+}
+
+static void
+_set_item_inactive (GtkWidget *widget)
+{
+  if (CARRICK_IS_SERVICE_ITEM (widget))
+  {
+    carrick_service_item_set_active (CARRICK_SERVICE_ITEM (widget),
+                                     FALSE);
+  }
+}
+
+
+void
+carrick_list_set_all_inactive (CarrickList *list)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+
+  gtk_container_foreach (GTK_CONTAINER (priv->box),
+                         (GtkCallback)_set_item_inactive,
+                         NULL);
+
+}
+
+GList*
+carrick_list_get_children (CarrickList *list)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+
+  return gtk_container_get_children (GTK_CONTAINER (priv->box));
 }
 
 void
 carrick_list_sort_list (CarrickList *list)
 {
-  GList *items = gtk_container_get_children (GTK_CONTAINER (list));
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  GList *items = gtk_container_get_children (GTK_CONTAINER (priv->box));
   GList *l;
 
   for (l = items; l; l = l->next)
   {
-    gtk_box_reorder_child (GTK_BOX (list),
+    gtk_box_reorder_child (GTK_BOX (priv->box),
                            GTK_WIDGET (l->data),
                            carrick_service_item_get_order (l->data));
   }
@@ -286,10 +334,107 @@ carrick_list_sort_list (CarrickList *list)
   g_list_free (items);
 }
 
+
+#define FAST_SCROLL_BUFFER 15
+#define SCROLL_BUFFER 60
+
+static gboolean
+carrick_list_scroll (CarrickList *list)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  gdouble val, page_size;
+  gboolean at_end;
+
+  val = gtk_adjustment_get_value (priv->adjustment);
+  page_size = gtk_adjustment_get_page_size (priv->adjustment);
+
+  if (priv->scroll_speed < 0)
+  {
+    at_end = val <= gtk_adjustment_get_lower (priv->adjustment);
+  }
+  else
+  {
+    at_end = val + page_size >= gtk_adjustment_get_upper (priv->adjustment);
+  }
+
+
+  if (!priv->drag_window ||
+      priv->scroll_speed == 0 ||
+      at_end)
+  {
+    priv->scroll_timeout_id = 0;
+    return FALSE;
+  }
+
+  gtk_adjustment_set_value (priv->adjustment,
+                            val + priv->scroll_speed);
+  return TRUE;
+}
+
+static void
+carrick_list_drag_motion (GtkWidget      *widget,
+                          GdkDragContext *context,
+                          gint            x,
+                          gint            y,
+                          guint           time,
+                          CarrickList    *list)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  int list_x, list_y;
+  int new_speed;
+
+  gtk_widget_translate_coordinates (widget, GTK_WIDGET (list),
+                                    x, y,
+                                    &list_x, &list_y);
+  if (gtk_adjustment_get_value (priv->adjustment) >
+      gtk_adjustment_get_lower (priv->adjustment) &&
+      list_y < FAST_SCROLL_BUFFER)
+  {
+    new_speed = -12;
+  }
+  else if (gtk_adjustment_get_value (priv->adjustment) >
+           gtk_adjustment_get_lower (priv->adjustment) &&
+           list_y < SCROLL_BUFFER)
+  {
+    new_speed = -5;
+  }
+  else if (gtk_adjustment_get_value (priv->adjustment) <
+           gtk_adjustment_get_upper (priv->adjustment) &&
+           GTK_WIDGET (list)->allocation.height - list_y < FAST_SCROLL_BUFFER)
+  {
+    new_speed = 12;
+  }
+  else if (gtk_adjustment_get_value (priv->adjustment) <
+           gtk_adjustment_get_upper (priv->adjustment) &&
+           GTK_WIDGET (list)->allocation.height - list_y < SCROLL_BUFFER)
+  {
+    new_speed = 5;
+  }
+  else
+  {
+    new_speed = 0;
+  }
+
+  if (new_speed != priv->scroll_speed)
+  {
+    priv->scroll_speed = new_speed;
+    if (priv->scroll_speed != 0)
+    {
+      if (priv->scroll_timeout_id > 0)
+      {
+        g_source_remove (priv->scroll_timeout_id);
+      }
+      priv->scroll_timeout_id = g_timeout_add
+        (40, (GSourceFunc)carrick_list_scroll, list);
+    }
+  }
+}
+
 void
 carrick_list_add_item (CarrickList *list,
                        GtkWidget *widget)
 {
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
   g_return_if_fail (CARRICK_IS_LIST (list));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
@@ -302,6 +447,10 @@ carrick_list_add_item (CarrickList *list,
   g_signal_connect (widget,
                     "drag-begin",
                     G_CALLBACK (carrick_list_drag_begin),
+                    list);
+  g_signal_connect (widget,
+                    "drag-motion",
+                    G_CALLBACK (carrick_list_drag_motion),
                     list);
   g_signal_connect (widget,
                     "drag-end",
@@ -325,44 +474,84 @@ carrick_list_add_item (CarrickList *list,
                     G_CALLBACK (_list_active_changed),
                     list);
 
-  gtk_box_pack_start (GTK_BOX (list),
+  gtk_box_pack_start (GTK_BOX (priv->box),
                       widget,
                       FALSE,
                       FALSE,
                       2);
+
+  gtk_widget_hide (priv->fallback);
+  gtk_widget_show (priv->box);
 }
 
 void
-carrick_list_clear_fallback (CarrickList *list)
+carrick_list_set_fallback (CarrickList *list,
+                           const gchar *fallback)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (list);
 
-  if (priv->fallback)
-  {
-    gtk_container_remove (GTK_CONTAINER (list), priv->fallback);
-    priv->fallback = NULL;
-  }
+  gtk_label_set_text (GTK_LABEL (priv->fallback), fallback);
 }
 
-void
-carrick_list_add_fallback (CarrickList *list,
-                           gchar       *fallback)
+static GObject *
+carrick_list_constructor (GType                  gtype,
+                          guint                  n_properties,
+                          GObjectConstructParam *properties)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  GObject *obj;
+  GObjectClass *parent_class;
+  CarrickListPrivate *priv;
+  GtkWidget *viewport, *box;
 
-  priv->fallback = gtk_label_new (fallback);
+  parent_class = G_OBJECT_CLASS (carrick_list_parent_class);
+  obj = parent_class->constructor (gtype, n_properties, properties);
+
+  priv = LIST_PRIVATE (obj);
+
+  priv->adjustment = gtk_scrolled_window_get_vadjustment
+    (GTK_SCROLLED_WINDOW (obj));
+  viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment
+                               (GTK_SCROLLED_WINDOW (obj)),
+                               gtk_scrolled_window_get_vadjustment
+                               (GTK_SCROLLED_WINDOW (obj)));
+  gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport),
+                                GTK_SHADOW_NONE);
+  gtk_widget_show (viewport);
+  gtk_container_add (GTK_CONTAINER (obj), viewport);
+
+
+  box = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (box);
+  gtk_container_add (GTK_CONTAINER (viewport),
+                     box);
+
+  priv->fallback = gtk_label_new ("");
   gtk_label_set_line_wrap (GTK_LABEL (priv->fallback),
                            TRUE);
   gtk_widget_set_size_request (priv->fallback,
                                550,
                                -1);
   gtk_widget_show (priv->fallback);
+  gtk_container_add (GTK_CONTAINER (box),
+                     priv->fallback);
 
-  gtk_box_pack_start (GTK_BOX (list),
-                      priv->fallback,
-                      FALSE,
-                      FALSE,
-                      0);
+  priv->box = gtk_vbox_new (FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (box),
+                     priv->box);
+
+  /* add a drag target for dropping below any real
+     items in the list*/
+  gtk_drag_dest_set (GTK_WIDGET (priv->box),
+                     GTK_DEST_DEFAULT_ALL,
+                     carrick_targets,
+                     G_N_ELEMENTS (carrick_targets),
+                     GDK_ACTION_MOVE);
+  g_signal_connect (priv->box,
+                    "drag-drop",
+                    G_CALLBACK (carrick_list_drag_drop),
+                    obj);
+
+  return obj;
 }
 
 static void
@@ -372,6 +561,7 @@ carrick_list_class_init (CarrickListClass *klass)
 
   g_type_class_add_private (klass, sizeof (CarrickListPrivate));
 
+  object_class->constructor = carrick_list_constructor;
   object_class->get_property = carrick_list_get_property;
   object_class->set_property = carrick_list_set_property;
   object_class->dispose = carrick_list_dispose;
@@ -384,21 +574,9 @@ carrick_list_init (CarrickList *self)
   CarrickListPrivate *priv = LIST_PRIVATE (self);
   priv->fallback = NULL;
 
-  /* add a drag target for dropping below any real
-     items in the list*/
-  gtk_drag_dest_set (GTK_WIDGET (self),
-                     GTK_DEST_DEFAULT_ALL,
-                     carrick_targets,
-                     G_N_ELEMENTS (carrick_targets),
-                     GDK_ACTION_MOVE);
-  g_signal_connect (self,
-                    "drag-drop",
-                    G_CALLBACK (carrick_list_drag_drop),
-                    self);
-
-
-  priv->found = NULL;
-  priv->fallback = NULL;
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
+                                  GTK_POLICY_NEVER,
+                                  GTK_POLICY_AUTOMATIC);
 }
 
 GtkWidget*

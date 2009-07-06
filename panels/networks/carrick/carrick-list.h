@@ -51,11 +51,11 @@ G_BEGIN_DECLS
   CARRICK_TYPE_LIST, CarrickListClass))
 
 typedef struct {
-  GtkVBox parent;
+  GtkScrolledWindow parent;
 } CarrickList;
 
 typedef struct {
-  GtkVBoxClass parent_class;
+  GtkScrolledWindowClass parent_class;
 } CarrickListClass;
 
 GType carrick_list_get_type (void);
@@ -65,8 +65,12 @@ void carrick_list_add_item (CarrickList *list, GtkWidget *item);
 GtkWidget *carrick_list_find_service_item (CarrickList *list,
                                            CmService   *service);
 void carrick_list_sort_list (CarrickList *list);
-void carrick_list_add_fallback (CarrickList *list, gchar *fallback);
-void carrick_list_clear_fallback (CarrickList *list);
+
+void carrick_list_set_fallback (CarrickList *list, const gchar *fallback);
+
+void carrick_list_set_all_inactive (CarrickList *list);
+
+GList* carrick_list_get_children (CarrickList *list);
 
 G_END_DECLS
 

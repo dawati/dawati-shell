@@ -1005,8 +1005,6 @@ carrick_service_item_init (CarrickServiceItem *self)
                     "changed",
                     G_CALLBACK (_entry_changed_cb),
                     self);
-
-  gtk_widget_show (GTK_WIDGET (self));
 }
 
 GtkWidget*
