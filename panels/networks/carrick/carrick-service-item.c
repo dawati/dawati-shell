@@ -69,6 +69,9 @@ struct _CarrickServiceItemPrivate
   CarrickIconFactory *icon_factory;
   gboolean            failed;
   gboolean            passphrase_hint_visible;
+  gboolean            hover;
+
+  GdkCursor          *hand;
 };
 
 enum
@@ -196,8 +199,22 @@ _set_state (CmService          *service,
     name = g_strdup (_("Wired"));
   }
 
+  if (priv->hover)
+  {
+    gtk_widget_set_state (GTK_WIDGET (item), GTK_STATE_PRELIGHT);
+  }
+  else if (priv->state == READY) 
+  {
+    gtk_widget_set_state (GTK_WIDGET (item), GTK_STATE_ACTIVE);
+  }
+  else
+  {
+    gtk_widget_set_state (GTK_WIDGET (item), GTK_STATE_NORMAL);
+  }
+
   if (priv->state == READY)
   {
+
     gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                               TRUE);
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
@@ -663,7 +680,15 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 static void
 carrick_service_item_dispose (GObject *object)
 {
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
+
   carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object), NULL);
+
+  if (priv->hand)
+  {
+    gdk_cursor_unref (priv->hand);
+    priv->hand = NULL;
+  }
 
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
@@ -674,10 +699,59 @@ carrick_service_item_finalize (GObject *object)
   G_OBJECT_CLASS (carrick_service_item_parent_class)->finalize (object);
 }
 
+static gboolean
+carrick_service_item_enter_notify_event (GtkWidget        *widget,
+                                         GdkEventCrossing *event)
+{
+  CarrickServiceItemPrivate *priv;
+
+  priv = SERVICE_ITEM_PRIVATE (widget);
+
+  priv->hover = TRUE;
+
+  gtk_widget_set_state (widget, GTK_STATE_PRELIGHT);
+  gdk_window_set_cursor (widget->window, priv->hand);
+
+  return TRUE;
+}
+
+static gboolean
+carrick_service_item_leave_notify_event (GtkWidget        *widget,
+                                         GdkEventCrossing *event)
+{
+  /* if pointer moves to a child widget, we want to keep the
+   * ServiceItem prelighted, but show the normal cursor */
+  if (event->detail == GDK_NOTIFY_INFERIOR)
+  {
+    gdk_window_set_cursor (widget->window, NULL);
+  }
+  else
+  {
+    CarrickServiceItemPrivate *priv;
+
+    priv = SERVICE_ITEM_PRIVATE (widget);
+
+    priv->hover = FALSE;
+
+    if (priv->state == READY)
+    {
+      gtk_widget_set_state (widget, GTK_STATE_ACTIVE);
+    }
+    else
+    {
+      gtk_widget_set_state (widget, GTK_STATE_NORMAL);
+    }
+  }
+
+  return TRUE;
+}
+
 static void
 carrick_service_item_class_init (CarrickServiceItemClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (CarrickServiceItemPrivate));
@@ -686,6 +760,9 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   object_class->set_property = carrick_service_item_set_property;
   object_class->dispose = carrick_service_item_dispose;
   object_class->finalize = carrick_service_item_finalize;
+
+  widget_class->enter_notify_event = carrick_service_item_enter_notify_event;
+  widget_class->leave_notify_event = carrick_service_item_leave_notify_event;
 
   pspec = g_param_spec_object ("service",
                                "service",
@@ -724,9 +801,12 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget *box, *hbox, *vbox;
   GtkWidget *image;
   GtkWidget *connect_with_pw_button;
+  GdkColor color;
 
   priv->service = NULL;
   priv->failed = FALSE;
+
+  priv->hand = gdk_cursor_new (GDK_HAND1);
 
   box = gtk_hbox_new (FALSE,
                       6);
@@ -737,6 +817,15 @@ carrick_service_item_init (CarrickServiceItem *self)
                                       box);
   nbtk_gtk_expander_set_has_indicator (NBTK_GTK_EXPANDER (priv->expando),
                                        FALSE);
+
+  gdk_color_parse ("#e8e8e8", &color);
+  gtk_widget_modify_bg (priv->expando,
+                        GTK_STATE_PRELIGHT,
+                        &color);
+  gdk_color_parse ("#cbcbcb", &color);
+  gtk_widget_modify_bg (priv->expando,
+                        GTK_STATE_ACTIVE,
+                        &color);
 
   priv->icon = gtk_image_new ();
   gtk_box_pack_start (GTK_BOX (box),
@@ -864,7 +953,6 @@ carrick_service_item_init (CarrickServiceItem *self)
                     "changed",
                     G_CALLBACK (_entry_changed_cb),
                     self);
-
 
   gtk_widget_show_all (GTK_WIDGET (self));
 }
