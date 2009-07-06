@@ -144,6 +144,10 @@ carrick_list_drag_end (GtkWidget      *widget,
                        CarrickList    *list)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (list);
+  GList *children;
+  gboolean pos_changed;
+
+  children = gtk_container_get_children (GTK_CONTAINER (list));
 
   /* destroy the popup window */
   g_object_ref (widget);
@@ -161,15 +165,58 @@ carrick_list_drag_end (GtkWidget      *widget,
 
   gtk_widget_set_state (widget, GTK_STATE_NORMAL);
 
-  if (priv->drop_position != priv->drag_position) 
+  if (priv->drop_position == -1)
   {
-    /* TODO: notify connman of the user input...
-       First, cm_service_move_before/after() is not enabled on the
-       connman side, I believe. 
-       Second, both source and target need to be favorites for
-       cm_service_move_after() to work. Should they be made favorites 
-       because of this (at least in some cases)? */
+    pos_changed = priv->drag_position != g_list_length (children);
   }
+  else
+  {
+    pos_changed = priv->drop_position != priv->drag_position;
+  }
+
+  if (pos_changed && CARRICK_IS_SERVICE_ITEM (widget))
+  {
+    GtkWidget *other_widget;
+    CmService *service, * other_service;
+
+    service = carrick_service_item_get_service
+      (CARRICK_SERVICE_ITEM (widget));
+
+    /* TODO: should ensure favorite status for one or both services ? */
+    /* TODO: should do both move_before() and move_after() if possible ? */
+    if (priv->drop_position == 0)
+    {
+      other_widget = g_list_nth_data (children, 1);
+      if (CARRICK_IS_SERVICE_ITEM (other_widget))
+      {
+        other_service = carrick_service_item_get_service
+          (CARRICK_SERVICE_ITEM (other_widget));
+        cm_service_move_before (service, other_service);
+      }
+    }
+    else
+    {
+      if (priv->drop_position == -1)
+      {
+        /* dropped below last child */
+        other_widget = g_list_last (children)->data;
+      }
+      else
+      {
+        other_widget = g_list_nth_data (children,
+                                        priv->drop_position - 1);
+      }
+
+      if (CARRICK_IS_SERVICE_ITEM (other_widget))
+      {
+        other_service = carrick_service_item_get_service
+          (CARRICK_SERVICE_ITEM (other_widget));
+        cm_service_move_after (service, other_service);
+      }
+    }
+  }
+
+  g_list_free (children);
 }
 
 static void
