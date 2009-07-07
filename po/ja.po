@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 13:20+0100\n"
+"POT-Creation-Date: 2009-06-30 04:11+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12,92 +12,184 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-# "you could tak a look at some sample media" is tranlsated as "please enjoy sample media"
 #: ../ahoghill/ahoghill/ahoghill-example-table.c:117
 msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
 msgstr "閲覧履歴は、写真の表示後や、音楽・ビデオの再生後に表示されます。表示されるまで、サンプルメディアをお楽しみください。"
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:390
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:918
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:922
 msgid "Recently played"
 msgstr "最近再生したファイル"
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:416
-#, fuzzy
 msgid "Search results"
-msgstr "検索結果"
+msgstr "Yahoo! で次を検索する：%s"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:933
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:936
 msgid "Local"
 msgstr "ローカル"
 
-# name of episode can be in Japanese, and if it is Japanese, having colon makes it easy to read.
 #: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
 #, c-format
 msgid "Season %u, Episode %u"
 msgstr "シーズン %u、エピソード %u"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
-#, fuzzy
+#: ../netpanel/src/moblin-netbook-netpanel.c:824
+#: ../netpanel/src/moblin-netbook-netpanel.c:1072
 msgid "Previous"
-msgstr "前へ"
+msgstr "戻る"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
+#: ../netpanel/src/moblin-netbook-netpanel.c:831
+#: ../netpanel/src/moblin-netbook-netpanel.c:1089
 msgid "Next"
 msgstr "次へ"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:87
-#, fuzzy
 msgid "Media"
 msgstr "メディア"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
-#: ../src/moblin-netbook-launcher.c:1339
-#: ../src/moblin-netbook-pasteboard.c:215
-#: ../src/moblin-netbook-people.c:383
-#: ../tests/test-pasteboard.c:149
-#, fuzzy
+#: ../applications/src/moblin-netbook-launcher.c:1375
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:219
+#: ../people/src/mnb-people-panel.c:564
 msgid "Search"
 msgstr "検索"
 
-# name of episode can be in Japanese, and if it is Japanese, having colon makes it easy to read.
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
-#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:255
+#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:164
 #, c-format
 msgid "Season %d Episode %d"
 msgstr "シーズン %d、エピソード %d"
 
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
-#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:257
+#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:166
 #, c-format
 msgid "Season %d"
 msgstr "シーズン %d"
 
-# name of episode can be in Japanese, and if it is Japanese, having colon makes it easy to read.
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
-#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:259
+#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:168
 #, c-format
 msgid "Episode %d"
 msgstr "エピソード %d"
 
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
-#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:261
+#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:170
 #, c-format
 msgid "Year %d"
 msgstr "%d年"
 
-# translated as "schedule"
+#.
+#. * Fav apps.
+#.
+#. Label
+#: ../applications/src/moblin-netbook-launcher.c:868
+msgid "Favourite Applications"
+msgstr "お気に入りのアプリケーション"
+
+#: ../applications/src/moblin-netbook-launcher.c:1364
+msgid "Applications"
+msgstr "アプリケーション"
+
+#: ../applications/src/moblin-panel-applications.c:158
+#: ../src/moblin-netbook.c:315
+msgid "applications"
+msgstr "アプリケーション"
+
+#: ../myzone/src/moblin-panel-myzone.c:70
+#: ../src/moblin-netbook.c:306
+msgid "myzone"
+msgstr "マイゾーン"
+
+#. Construct tabs previews table widgets
+#: ../netpanel/src/moblin-netbook-netpanel.c:609
+msgid "Tabs"
+msgstr "タブ"
+
+#: ../netpanel/src/moblin-netbook-netpanel.c:644
+msgid "Favorite pages"
+msgstr "お気に入りのページ"
+
+#: ../netpanel/src/moblin-netbook-netpanel.c:669
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Web ページを表示すると、お気に入りのページがこことブラウザーの新規タブペインに表示されます。"
+
+#: ../netpanel/src/moblin-netbook-netpanel.c:940
+msgid "Untitled"
+msgstr "無題"
+
+#. FIXME: this should be a default image or startpage snapshot instead,
+#. and this label should become the caption title
+#: ../netpanel/src/moblin-netbook-netpanel.c:1047
+msgid "New tab"
+msgstr "新規タブ"
+
+#. Construct entry table widgets
+#: ../netpanel/src/moblin-netbook-netpanel.c:1290
+msgid "Internet"
+msgstr "インターネット"
+
+#: ../netpanel/src/moblin-netbook-netpanel.c:1303
+msgid "Go"
+msgstr "GO"
+
+#: ../netpanel/src/moblin-panel-internet.c:78
+#: ../src/moblin-netbook.c:321
+msgid "internet"
+msgstr "インターネット"
+
+#: ../netpanel/src/mwb-ac-list.c:1363
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Yahoo! で次を検索する：%s"
+
+#: ../netpanel/src/mwb-ac-list.c:1378
+#, c-format
+msgid "Go to %s.com"
+msgstr "%s.com にアクセス"
+
+#: ../pasteboard/src/mnb-clipboard-item.c:518
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:344
+msgid "Copy"
+msgstr "コピー"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:136
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:359
+msgid "the current selection to pasteboard"
+msgstr "現在選択されているエントリーをペーストボードに追加"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:141
+msgid "your selection"
+msgstr "選択"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:206
+msgid "Pasteboard"
+msgstr "ペーストボード"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:254
+msgid "You need to copy some text to use Pasteboard"
+msgstr "テキストをコピーして、ペーストボードを使用します"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:316
+msgid "Clear pasteboard"
+msgstr "ペーストボードをクリアー"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:433
+#: ../src/moblin-netbook.c:318
+msgid "pasteboard"
+msgstr "ペーストボード"
+
 #: ../penge/penge/penge-calendar-pane.c:180
 msgid "<b>Appointments</b>"
 msgstr "<b>スケジュール</b>"
 
-# "entries" is translated as "events"
 #: ../penge/penge/penge-events-pane.c:198
 msgid "No calendar entries this week"
 msgstr "今週は、カレンダーイベントはありません"
 
-# translated as "upon activation your accounts, your friends' feeds..."
-#: ../penge/penge/penge-people-pane.c:200
+#: ../penge/penge/penge-people-pane.c:191
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "アカウントをアクティブにすると、ここにお友達のフィードと Web サービスが表示されます。"
 
@@ -109,228 +201,156 @@ msgstr "<b>ネットブック Moblin 2.0 にようこそ</b>"
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
 msgstr "Moblin は、従来のコンピューターとは少し異なるため、このベータバージョンにヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Moblin チーム一同"
 
-#: ../penge/penge/penge-recent-file-tile.c:236
+#: ../penge/penge/penge-recent-file-tile.c:235
 msgid "Web page"
 msgstr "Web ページ"
 
 #: ../penge/penge/penge-tasks-pane.c:287
 msgid "Nothing to do today"
-msgstr "今日はイベントは何もありません"
+msgstr "今日のイベントは何もありません"
 
-#: ../penge/penge/penge-task-tile.c:329
+#: ../penge/penge/penge-task-tile.c:330
 #, c-format
 msgid "Due %x"
 msgstr "期限：%x"
 
-#: ../penge/penge/penge-utils.c:62
+#: ../penge/penge/penge-utils.c:63
 msgid "Less than a minute ago"
 msgstr "1分以内"
 
-#: ../penge/penge/penge-utils.c:66
+#: ../penge/penge/penge-utils.c:67
 msgid "A few minutes ago"
 msgstr "数分前"
 
-#: ../penge/penge/penge-utils.c:70
+#: ../penge/penge/penge-utils.c:71
 msgid "A couple of hours ago"
 msgstr "数時間前"
 
-# translated as 'today'
-#: ../penge/penge/penge-utils.c:77
+#: ../penge/penge/penge-utils.c:78
 msgid "Earlier today"
 msgstr "今日"
 
-#: ../penge/penge/penge-utils.c:80
+#: ../penge/penge/penge-utils.c:81
 msgid "Yesterday"
 msgstr "昨日"
 
-# Without knowing context, it is impossible to translated "on" so it is omitted.
-#: ../penge/penge/penge-utils.c:88
+#: ../penge/penge/penge-utils.c:89
 #, c-format
 msgid "On %A"
 msgstr "%A"
 
-#: ../penge/penge/penge-utils.c:94
+#: ../penge/penge/penge-utils.c:95
 msgid "Unknown"
 msgstr "不明"
 
-#: ../penge/penge/penge-utils.c:101
+#: ../penge/penge/penge-utils.c:102
 msgid "Last week"
 msgstr "先週"
 
-#: ../penge/penge/penge-utils.c:104
+#: ../penge/penge/penge-utils.c:105
 msgid "A couple of weeks ago"
 msgstr "数週間前"
 
-#: ../penge/penge/penge-utils.c:110
+#: ../penge/penge/penge-utils.c:111
 msgid "This month"
 msgstr "今月"
 
 #. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:114
+#: ../penge/penge/penge-utils.c:115
 msgid "Last month"
 msgstr "先月"
 
-#: ../penge/penge/penge-utils.c:117
+#: ../penge/penge/penge-utils.c:118
 msgid "This year"
 msgstr "今年"
 
-#: ../penge/penge/penge-utils.c:120
+#: ../penge/penge/penge-utils.c:121
 msgid "Last year"
 msgstr "去年"
 
-#: ../penge/penge/penge-utils.c:122
+#: ../penge/penge/penge-utils.c:123
 msgid "Ages ago"
 msgstr "ずいぶんと前"
 
-#: ../src/moblin-netbook.c:233
-msgid "Move cursor to the top of the screen to activate the toolbar"
-msgstr "ツールバーをアクティブにするには、スクリーントップにカーセルを動かします"
-
-#: ../src/moblin-netbook.c:370
-msgid "m_zone"
-msgstr "マイゾーン"
-
-#: ../src/moblin-netbook.c:373
-msgid "zones"
-msgstr "ゾーン"
-
-#: ../src/moblin-netbook.c:376
-msgid "status"
-msgstr "ステータス"
-
-#: ../src/moblin-netbook.c:379
-#, fuzzy
-msgid "applications"
-msgstr "アプリケーション"
-
-#: ../src/moblin-netbook.c:382
-msgid "pasteboard"
-msgstr "ペーストボード"
-
-#: ../src/moblin-netbook.c:385
-#, fuzzy
-msgid "internet"
-msgstr "インターネット"
-
-#: ../src/moblin-netbook.c:388
-msgid "media"
-msgstr "メディア"
-
-#: ../src/moblin-netbook.c:391
+#: ../people/src/moblin-panel-people.c:61
+#: ../src/moblin-netbook.c:327
 msgid "people"
 msgstr "ピープル"
 
-#: ../src/moblin-netbook.c:496
+#: ../people/src/mnb-people-panel.c:162
+msgid "Send an email"
+msgstr "メールの送信"
+
+#: ../people/src/mnb-people-panel.c:164
+msgid "Edit details"
+msgstr "詳細の編集"
+
+#: ../people/src/mnb-people-panel.c:168
+msgid "Send a message"
+msgstr "メッセージの送信"
+
+#: ../people/src/mnb-people-panel.c:302
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "誰も見つかりません。メッセンジャーのアカウントを設定していますか？"
+
+#: ../people/src/mnb-people-panel.c:551
+msgid "People"
+msgstr "ピープル"
+
+#: ../people/src/mnb-people-panel.c:681
+msgid "Selection"
+msgstr "選択"
+
+#: ../people/src/mnb-people-panel.c:741
+msgid "Nobody selected"
+msgstr "誰も選択されていません"
+
+#: ../src/moblin-netbook.c:309
+#: ../src/mnb-toolbar.c:1382
+msgid "zones"
+msgstr "ゾーン"
+
+#: ../src/moblin-netbook.c:312
+msgid "status"
+msgstr "ステータス"
+
+#: ../src/moblin-netbook.c:324
+msgid "media"
+msgstr "メディア"
+
+#: ../src/moblin-netbook.c:437
 msgid "Moblin Netbook Effects"
 msgstr "Moblin ネットブックのエフェクター"
 
-#: ../src/moblin-netbook.c:500
+#: ../src/moblin-netbook.c:441
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin ネットブックのエフェクター"
 
-#: ../src/moblin-netbook-chooser.c:765
+#: ../src/moblin-netbook-chooser.c:790
 #, c-format
 msgid "Zone %d"
 msgstr "ゾーン %d"
 
-#: ../src/moblin-netbook-chooser.c:814
+#: ../src/moblin-netbook-chooser.c:839
 msgid "New zone (0)"
 msgstr "新規ゾーン (0)"
 
-#: ../src/moblin-netbook-chooser.c:895
+#: ../src/moblin-netbook-chooser.c:920
 msgid "Choose zone for application:"
 msgstr "アプリケーションを表示するゾーンを選択してください。"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/moblin-netbook-launcher.c:814
-msgid "Favourite Applications"
-msgstr "お気に入りのアプリケーション"
-
-#: ../src/moblin-netbook-launcher.c:1328
-#, fuzzy
-msgid "Applications"
-msgstr "アプリケーション"
-
-#. Construct tabs previews table widgets
-#: ../src/moblin-netbook-netpanel.c:114
-#, fuzzy
-msgid "Tabs"
-msgstr "タブ"
-
-# Kept in ENU as it is frequently used in ENU. Used capital letters to show this is a intention.
-#: ../src/moblin-netbook-netpanel.c:117
-msgid "More..."
-msgstr "MORE..."
-
-#. Add a placeholder text label
-#: ../src/moblin-netbook-netpanel.c:266
-msgid "Type an address or load the browser to see your tabs here."
-msgstr "アドレスを入力するか、またはブラウザーをロードすると、ここにタブが表示されます。"
-
-#. Construct entry table widgets
-#: ../src/moblin-netbook-netpanel.c:447
-#, fuzzy
-msgid "Internet"
-msgstr "インターネット"
-
-# Kept in ENU as it is frequently used in ENU. Used capital letters to show this is a intention.
-#: ../src/moblin-netbook-netpanel.c:464
-msgid "Go"
-msgstr "GO"
-
-# translation of "entry" is added so it reads as 'selected entry' to fit in Japanese.
-#: ../src/moblin-netbook-pasteboard.c:137
-#: ../src/moblin-netbook-pasteboard.c:357
-#: ../tests/test-pasteboard.c:92
-#: ../tests/test-pasteboard.c:232
-msgid "the current selection to pasteboard"
-msgstr "現在選択されているエントリーをペーストボードに追加"
-
-#: ../src/moblin-netbook-pasteboard.c:202
-#: ../tests/test-pasteboard.c:142
-msgid "Pasteboard"
-msgstr "ペーストボード"
-
-#: ../src/moblin-netbook-pasteboard.c:252
-msgid "You need to copy some text to use Pasteboard"
-msgstr "テキストをコピーして、ペーストボードを使用します"
-
-#: ../src/moblin-netbook-pasteboard.c:314
-#: ../tests/test-pasteboard.c:206
-msgid "Clear pasteboard"
-msgstr "ペーストボードをクリアー"
-
-#: ../src/moblin-netbook-pasteboard.c:342
-#: ../src/mnb-clipboard-item.c:489
-#: ../tests/test-pasteboard.c:223
-msgid "Copy"
-msgstr "コピー"
-
 #: ../src/moblin-netbook-status.c:206
-#: ../src/moblin-netbook-status.c:260
+#: ../src/moblin-netbook-status.c:261
 msgid "Your current status"
 msgstr "現在のステータス"
 
-# used colon instead of hyphen as Japanese character has similar character.
 #: ../src/moblin-netbook-status.c:208
 msgid "Your current status - you are offline"
-msgstr "現在のステータス：オフラインです"
+msgstr "現在のステータス：オフライン"
 
-#: ../src/moblin-netbook-status.c:290
+#: ../src/moblin-netbook-status.c:291
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
 msgstr "Web ステータスを更新するには、ステータスメッセージ機能をサポートするプロバイダーの Web サービスにご加入して、アカウントを設定する必要があります。"
-
-# "Sorry, " is omitted
-#: ../src/moblin-netbook-people.c:188
-msgid "Sorry, we can't find any people. Have you set up an Instant Messenger account?"
-msgstr "検索結果がありません。インスタント・メッセンジャーのアカウントが正しく設定されていることをお確かめください。"
-
-#: ../src/moblin-netbook-people.c:370
-msgid "People"
-msgstr "ピープル"
 
 #: ../src/tray/na-tray-child.c:121
 #, c-format
@@ -338,58 +358,59 @@ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 msgstr "トレイアイコンのサイズは (%i x %i) である必要があります。サイズが (%i x %i) に変更されます"
 
 #: ../src/mnb-status-entry.c:138
-#: ../src/mnb-status-entry.c:644
-#: ../src/mnb-status-entry.c:726
+#: ../src/mnb-status-entry.c:683
+#: ../src/mnb-status-entry.c:765
 msgid "Edit"
 msgstr "編集"
 
 #. Translators: %s is the user visible name of the service
-#: ../src/mnb-status-entry.c:523
+#: ../src/mnb-status-entry.c:560
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "ここに「%s」のステータスを入力してください..."
 
-#: ../src/mnb-status-entry.c:527
-#: ../src/mnb-status-entry.c:598
+#: ../src/mnb-status-entry.c:564
+#: ../src/mnb-status-entry.c:637
 msgid "Enter your current status here..."
 msgstr "ここに現在のステータスを入力してください..."
 
-#: ../src/mnb-status-entry.c:705
+#: ../src/mnb-status-entry.c:744
 msgid "Post"
 msgstr "投稿する"
 
-# "no zones"
-#: ../src/mnb-switcher.c:1215
+#: ../src/mnb-switcher.c:1182
 msgid "No Zones yet"
 msgstr "ゾーンはありません"
 
-# translation of "your heart's" is omitted.
-#: ../src/mnb-switcher.c:1237
+#: ../src/mnb-switcher.c:1204
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 msgstr "ここには使用中のアプリケーションが表示されます。ゾーンを切り替えることによって、コンテンツの整理をしてください。"
 
-#: ../src/mnb-switcher.c:1461
+#: ../src/mnb-switcher.c:1408
 msgid "No applications on this zone"
 msgstr "このゾーンにはアプリケーションがありません"
 
-# "battery management & brightness adjustment"
-#: ../src/mnb-toolbar.c:1004
+#: ../src/mnb-toolbar.c:1619
 msgid "power & brightness"
-msgstr "バッテリー管理＆明度調整"
+msgstr "バッテリー＆明度調整"
 
-#: ../src/mnb-toolbar.c:1007
+#: ../src/mnb-toolbar.c:1622
 msgid "volume"
 msgstr "音量"
 
-#: ../src/mnb-toolbar.c:1010
+#: ../src/mnb-toolbar.c:1625
 msgid "bluetooth"
 msgstr "bluetooth"
 
-#: ../src/mnb-toolbar.c:1013
+#: ../src/mnb-toolbar.c:1628
 msgid "networks"
 msgstr "ネットワーク"
 
-#: ../src/mnb-toolbar.c:1016
+#: ../src/mnb-toolbar.c:1631
 msgid "test"
 msgstr "テスト"
+
+#: ../src/mnb-toolbar.c:1708
+msgid "To activate the toolbar, move your cursor to the top of the screen"
+msgstr "ツールバーをアクティブにするには、カーセルを画面の上部分に動かしてください"
 
