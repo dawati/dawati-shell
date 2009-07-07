@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 13:20+0100\n"
+"POT-Creation-Date: 2009-06-30 04:11+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: GLSDEU_Andreas <andreasx.machoy@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +18,7 @@ msgid "You need to play some music, look at some pictures or watch some video to
 msgstr "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige Beispielsdateien ansehen:"
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:390
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:918
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:922
 msgid "Recently played"
 msgstr "Vor kurzem abgespielt"
 
@@ -26,9 +26,9 @@ msgstr "Vor kurzem abgespielt"
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:933
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:936
 msgid "Local"
-msgstr "lokal"
+msgstr "Lokal"
 
 #: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
 #, c-format
@@ -36,49 +36,152 @@ msgid "Season %u, Episode %u"
 msgstr "Staffel %u, Folge %u"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
+#: ../netpanel/src/moblin-netbook-netpanel.c:824
+#: ../netpanel/src/moblin-netbook-netpanel.c:1072
 msgid "Previous"
 msgstr "Zurück"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
+#: ../netpanel/src/moblin-netbook-netpanel.c:831
+#: ../netpanel/src/moblin-netbook-netpanel.c:1089
 msgid "Next"
 msgstr "Weiter"
 
-# {"Multimedia" better conveys the fact that it includes all sorts of media}
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:87
 msgid "Media"
 msgstr "Multimedia"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
-#: ../src/moblin-netbook-launcher.c:1339
-#: ../src/moblin-netbook-pasteboard.c:215
-#: ../src/moblin-netbook-people.c:383
-#: ../tests/test-pasteboard.c:149
+#: ../applications/src/moblin-netbook-launcher.c:1375
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:219
+#: ../people/src/mnb-people-panel.c:564
 msgid "Search"
 msgstr "Suchen"
 
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
-#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:255
+#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:164
 #, c-format
 msgid "Season %d Episode %d"
 msgstr "Staffel %d Folge %d"
 
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
-#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:257
+#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:166
 #, c-format
 msgid "Season %d"
 msgstr "Staffel %d"
 
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
-#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:259
+#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:168
 #, c-format
 msgid "Episode %d"
 msgstr "Folge %d"
 
 #: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
-#: ../ahoghill/ahoghill/ahoghill-playlist-header.c:261
+#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:170
 #, c-format
 msgid "Year %d"
 msgstr "Jahr %d"
+
+#.
+#. * Fav apps.
+#.
+#. Label
+#: ../applications/src/moblin-netbook-launcher.c:868
+msgid "Favourite Applications"
+msgstr "Lieblingsanwendungen"
+
+#: ../applications/src/moblin-netbook-launcher.c:1364
+msgid "Applications"
+msgstr "Anwendungen"
+
+#: ../applications/src/moblin-panel-applications.c:158
+#: ../src/moblin-netbook.c:315
+msgid "applications"
+msgstr "Anwendungen"
+
+#: ../myzone/src/moblin-panel-myzone.c:70
+#: ../src/moblin-netbook.c:306
+msgid "myzone"
+msgstr "MeineZone"
+
+#. Construct tabs previews table widgets
+#: ../netpanel/src/moblin-netbook-netpanel.c:609
+msgid "Tabs"
+msgstr "Registerkarten"
+
+#: ../netpanel/src/moblin-netbook-netpanel.c:644
+msgid "Favorite pages"
+msgstr "Lieblingsseiten"
+
+# not sure what "New tab page" is supposed to be
+#: ../netpanel/src/moblin-netbook-netpanel.c:669
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Während du Webseiten besuchst erscheinen deine Favoriten hier und auf der Neuen Registerkartenseite im Browser."
+
+#: ../netpanel/src/moblin-netbook-netpanel.c:940
+msgid "Untitled"
+msgstr "Unbenannt"
+
+#. FIXME: this should be a default image or startpage snapshot instead,
+#. and this label should become the caption title
+#: ../netpanel/src/moblin-netbook-netpanel.c:1047
+msgid "New tab"
+msgstr "Neuer Service"
+
+#. Construct entry table widgets
+#: ../netpanel/src/moblin-netbook-netpanel.c:1290
+msgid "Internet"
+msgstr "Internet"
+
+#: ../netpanel/src/moblin-netbook-netpanel.c:1303
+msgid "Go"
+msgstr "Los"
+
+#: ../netpanel/src/moblin-panel-internet.c:78
+#: ../src/moblin-netbook.c:321
+msgid "internet"
+msgstr "Internet"
+
+#: ../netpanel/src/mwb-ac-list.c:1363
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Nach %s auf Yahoo! suchen"
+
+#: ../netpanel/src/mwb-ac-list.c:1378
+#, c-format
+msgid "Go to %s.com"
+msgstr "Gehe zu %s.com"
+
+#: ../pasteboard/src/mnb-clipboard-item.c:518
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:344
+msgid "Copy"
+msgstr "Kopieren"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:136
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:359
+msgid "the current selection to pasteboard"
+msgstr "den ausgewählten Text in die Zwischenablage"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:141
+msgid "your selection"
+msgstr "deine Auswahl"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:206
+msgid "Pasteboard"
+msgstr "Zwischenablage"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:254
+msgid "You need to copy some text to use Pasteboard"
+msgstr "Um die Zwischenablage zu benutzen, musst du erst Text kopieren"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:316
+msgid "Clear pasteboard"
+msgstr "Zwischenablage leeren"
+
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:433
+#: ../src/moblin-netbook.c:318
+msgid "pasteboard"
+msgstr "Zwischenablage"
 
 #: ../penge/penge/penge-calendar-pane.c:180
 msgid "<b>Appointments</b>"
@@ -88,7 +191,7 @@ msgstr "<b>Termine</b>"
 msgid "No calendar entries this week"
 msgstr "Keine Kalendereinträge für diese Woche"
 
-#: ../penge/penge/penge-people-pane.c:200
+#: ../penge/penge/penge-people-pane.c:191
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "Die Newsfeeds deiner Freunde und Web-Services erscheinen hier. Aktiviere jetzt deine Konten!"
 
@@ -96,12 +199,11 @@ msgstr "Die Newsfeeds deiner Freunde und Web-Services erscheinen hier. Aktiviere
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Willkommen bei Moblin 2.0 für Netbooks</b>"
 
-# Since Moblin is a bit different, we have put together a few things that should help you find your way around this Beta version. We hope you like it. The Moblin Team.
 #: ../penge/penge/penge-recent-files-pane.c:214
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
 msgstr "Da Moblin ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich mit dieser Beta-Version zurechtzufinden. Wir hoffen, es gefällt dir. Das Moblin Team."
 
-#: ../penge/penge/penge-recent-file-tile.c:236
+#: ../penge/penge/penge-recent-file-tile.c:235
 msgid "Web page"
 msgstr "Webseite"
 
@@ -109,196 +211,138 @@ msgstr "Webseite"
 msgid "Nothing to do today"
 msgstr "Heute gibt es nichts zu tun"
 
-#: ../penge/penge/penge-task-tile.c:329
+#: ../penge/penge/penge-task-tile.c:330
 #, c-format
 msgid "Due %x"
 msgstr "Fällig %x"
 
-#: ../penge/penge/penge-utils.c:62
+#: ../penge/penge/penge-utils.c:63
 msgid "Less than a minute ago"
 msgstr "Vor weniger als einer Minute"
 
-#: ../penge/penge/penge-utils.c:66
+#: ../penge/penge/penge-utils.c:67
 msgid "A few minutes ago"
 msgstr "Vor einigen Minuten"
 
-#: ../penge/penge/penge-utils.c:70
+#: ../penge/penge/penge-utils.c:71
 msgid "A couple of hours ago"
 msgstr "Vor ein paar Stunden"
 
-#: ../penge/penge/penge-utils.c:77
+#: ../penge/penge/penge-utils.c:78
 msgid "Earlier today"
 msgstr "Heute schon früher"
 
-#: ../penge/penge/penge-utils.c:80
+#: ../penge/penge/penge-utils.c:81
 msgid "Yesterday"
 msgstr "Gestern"
 
-#: ../penge/penge/penge-utils.c:88
+#: ../penge/penge/penge-utils.c:89
 #, c-format
 msgid "On %A"
 msgstr "Am %A"
 
-#: ../penge/penge/penge-utils.c:94
+#: ../penge/penge/penge-utils.c:95
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../penge/penge/penge-utils.c:101
+#: ../penge/penge/penge-utils.c:102
 msgid "Last week"
 msgstr "Letzte Woche"
 
-#: ../penge/penge/penge-utils.c:104
+#: ../penge/penge/penge-utils.c:105
 msgid "A couple of weeks ago"
 msgstr "Vor einigen Wochen"
 
-#: ../penge/penge/penge-utils.c:110
+#: ../penge/penge/penge-utils.c:111
 msgid "This month"
 msgstr "Diesen Monat"
 
 #. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:114
+#: ../penge/penge/penge-utils.c:115
 msgid "Last month"
 msgstr "Letzten Monat"
 
-#: ../penge/penge/penge-utils.c:117
+#: ../penge/penge/penge-utils.c:118
 msgid "This year"
 msgstr "Dieses Jahr"
 
-#: ../penge/penge/penge-utils.c:120
+#: ../penge/penge/penge-utils.c:121
 msgid "Last year"
 msgstr "Letztes Jahr"
 
-# "Before eternity"
-#: ../penge/penge/penge-utils.c:122
+#: ../penge/penge/penge-utils.c:123
 msgid "Ages ago"
 msgstr "Vor einer Ewigkeit"
 
-#: ../src/moblin-netbook.c:233
-msgid "Move cursor to the top of the screen to activate the toolbar"
-msgstr "Bewege den Cursor zum oberen Bildrand um die Symbolleiste zu aktivieren"
-
-#: ../src/moblin-netbook.c:370
-msgid "m_zone"
-msgstr "MeineZone"
-
-#: ../src/moblin-netbook.c:373
-msgid "zones"
-msgstr "Zonen"
-
-#: ../src/moblin-netbook.c:376
-msgid "status"
-msgstr "Status"
-
-#: ../src/moblin-netbook.c:379
-msgid "applications"
-msgstr "Anwendungen"
-
-# (That's the word used for "Clipboard" in Windows. - I really can't think of a better one at this time)
-#: ../src/moblin-netbook.c:382
-msgid "pasteboard"
-msgstr "Zwischenablage"
-
-#: ../src/moblin-netbook.c:385
-msgid "internet"
-msgstr "Internet"
-
-#: ../src/moblin-netbook.c:388
-msgid "media"
-msgstr "Multimedia"
-
-#: ../src/moblin-netbook.c:391
+#: ../people/src/moblin-panel-people.c:61
+#: ../src/moblin-netbook.c:327
 msgid "people"
 msgstr "Leute"
 
-# "Moblin effects on the netbook"
-#: ../src/moblin-netbook.c:496
+#: ../people/src/mnb-people-panel.c:162
+msgid "Send an email"
+msgstr "Eine E-Mail abschicken"
+
+#: ../people/src/mnb-people-panel.c:164
+msgid "Edit details"
+msgstr "Details bearbeiten"
+
+#: ../people/src/mnb-people-panel.c:168
+msgid "Send a message"
+msgstr "Eine Nachricht abschicken"
+
+#: ../people/src/mnb-people-panel.c:302
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Wir können leider keine Leute finden. Hast du ein Messenger-Konto eingerichtet?"
+
+#: ../people/src/mnb-people-panel.c:551
+msgid "People"
+msgstr "Leute"
+
+#: ../people/src/mnb-people-panel.c:681
+msgid "Selection"
+msgstr "Auswahl"
+
+#: ../people/src/mnb-people-panel.c:741
+msgid "Nobody selected"
+msgstr "Niemand ausgewählt"
+
+#: ../src/moblin-netbook.c:309
+#: ../src/mnb-toolbar.c:1382
+msgid "zones"
+msgstr "Zonen"
+
+#: ../src/moblin-netbook.c:312
+msgid "status"
+msgstr "Status"
+
+#: ../src/moblin-netbook.c:324
+msgid "media"
+msgstr "Multimedia"
+
+#: ../src/moblin-netbook.c:437
 msgid "Moblin Netbook Effects"
 msgstr "Moblin-Effekte auf dem Netbook"
 
-# "effects for netbooks with Moblin"
-#: ../src/moblin-netbook.c:500
+#: ../src/moblin-netbook.c:441
 msgid "Effects for Moblin Netbooks"
 msgstr "Effekte für Netbooks mit Moblin"
 
-#: ../src/moblin-netbook-chooser.c:765
+#: ../src/moblin-netbook-chooser.c:790
 #, c-format
 msgid "Zone %d"
 msgstr "Zone %d"
 
-#: ../src/moblin-netbook-chooser.c:814
+#: ../src/moblin-netbook-chooser.c:839
 msgid "New zone (0)"
 msgstr "Neue Zone (0)"
 
-#: ../src/moblin-netbook-chooser.c:895
+#: ../src/moblin-netbook-chooser.c:920
 msgid "Choose zone for application:"
 msgstr "Wähle die Zone für diese Anwendung aus:"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/moblin-netbook-launcher.c:814
-msgid "Favourite Applications"
-msgstr "Lieblingsanwendungen"
-
-#: ../src/moblin-netbook-launcher.c:1328
-msgid "Applications"
-msgstr "Anwendungen"
-
-#. Construct tabs previews table widgets
-#: ../src/moblin-netbook-netpanel.c:114
-msgid "Tabs"
-msgstr "Registerkarten"
-
-#: ../src/moblin-netbook-netpanel.c:117
-msgid "More..."
-msgstr "Mehr..."
-
-#. Add a placeholder text label
-#: ../src/moblin-netbook-netpanel.c:266
-msgid "Type an address or load the browser to see your tabs here."
-msgstr "Gib eine Adresse ein oder starte den Browser, um hier deine Registerkarten zu sehen."
-
-#. Construct entry table widgets
-#: ../src/moblin-netbook-netpanel.c:447
-msgid "Internet"
-msgstr "Internet"
-
-#: ../src/moblin-netbook-netpanel.c:464
-msgid "Go"
-msgstr "Los"
-
-#: ../src/moblin-netbook-pasteboard.c:137
-#: ../src/moblin-netbook-pasteboard.c:357
-#: ../tests/test-pasteboard.c:92
-#: ../tests/test-pasteboard.c:232
-msgid "the current selection to pasteboard"
-msgstr "den ausgewählten Text in die Zwischenablage"
-
-# (That's the word for "Clipboard" in Windows... not surem if that should be used)
-#: ../src/moblin-netbook-pasteboard.c:202
-#: ../tests/test-pasteboard.c:142
-msgid "Pasteboard"
-msgstr "Zwischenablage"
-
-#: ../src/moblin-netbook-pasteboard.c:252
-msgid "You need to copy some text to use Pasteboard"
-msgstr "Um die Zwischenablage zu benutzen, musst du erst Text kopieren"
-
-#: ../src/moblin-netbook-pasteboard.c:314
-#: ../tests/test-pasteboard.c:206
-msgid "Clear pasteboard"
-msgstr "Zwischenablage leeren"
-
-# NOTE: If this is the text for the button labeled "copy" which precedes the text from line 277, then the button should read "Kopiere" instead in order to fit into that sentence.
-#: ../src/moblin-netbook-pasteboard.c:342
-#: ../src/mnb-clipboard-item.c:489
-#: ../tests/test-pasteboard.c:223
-msgid "Copy"
-msgstr "Kopieren"
-
 #: ../src/moblin-netbook-status.c:206
-#: ../src/moblin-netbook-status.c:260
+#: ../src/moblin-netbook-status.c:261
 msgid "Your current status"
 msgstr "Dein gegenwärtiger Status"
 
@@ -306,17 +350,9 @@ msgstr "Dein gegenwärtiger Status"
 msgid "Your current status - you are offline"
 msgstr "Dein gegenwärtiger Status: offline"
 
-#: ../src/moblin-netbook-status.c:290
+#: ../src/moblin-netbook-status.c:291
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
 msgstr "Um deinen Web-Status zu aktualisieren, musst du ein Webservice-Konto mit einem Anbieter haben, der Statusmeldungen unterstützt"
-
-#: ../src/moblin-netbook-people.c:188
-msgid "Sorry, we can't find any people. Have you set up an Instant Messenger account?"
-msgstr "Leider können wir keine Leute finden. Hast du schon ein Instant Messenger Konto eingerichtet?"
-
-#: ../src/moblin-netbook-people.c:370
-msgid "People"
-msgstr "Leute"
 
 #: ../src/tray/na-tray-child.c:121
 #, c-format
@@ -324,57 +360,59 @@ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 msgstr "Taskleistensymbol verlangt eine Größe von (%i x %i), es wird auf (%i x %i) angepasst"
 
 #: ../src/mnb-status-entry.c:138
-#: ../src/mnb-status-entry.c:644
-#: ../src/mnb-status-entry.c:726
+#: ../src/mnb-status-entry.c:683
+#: ../src/mnb-status-entry.c:765
 msgid "Edit"
 msgstr "Bearbeiten"
 
 #. Translators: %s is the user visible name of the service
-#: ../src/mnb-status-entry.c:523
+#: ../src/mnb-status-entry.c:560
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "Wähle hier deinen Status für %s aus..."
 
-#: ../src/mnb-status-entry.c:527
-#: ../src/mnb-status-entry.c:598
+#: ../src/mnb-status-entry.c:564
+#: ../src/mnb-status-entry.c:637
 msgid "Enter your current status here..."
 msgstr "Wähle hier deinen gegenwärtigen Status aus..."
 
-#: ../src/mnb-status-entry.c:705
+#: ../src/mnb-status-entry.c:744
 msgid "Post"
 msgstr "Abschicken"
 
-#: ../src/mnb-switcher.c:1215
+#: ../src/mnb-switcher.c:1182
 msgid "No Zones yet"
 msgstr "Noch keine Zonen"
 
-#: ../src/mnb-switcher.c:1237
+#: ../src/mnb-switcher.c:1204
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 msgstr "Die von dir benutzten Anwendungen erscheinen hier. Du hast die Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
 
-#: ../src/mnb-switcher.c:1461
+#: ../src/mnb-switcher.c:1408
 msgid "No applications on this zone"
 msgstr "In dieser Zone gibt es keine Anwendungen"
 
-#: ../src/mnb-toolbar.c:1004
+#: ../src/mnb-toolbar.c:1619
 msgid "power & brightness"
 msgstr "Energie und Helligkeit"
 
-#: ../src/mnb-toolbar.c:1007
+#: ../src/mnb-toolbar.c:1622
 msgid "volume"
 msgstr "Lautstärke"
 
-#: ../src/mnb-toolbar.c:1010
+#: ../src/mnb-toolbar.c:1625
 msgid "bluetooth"
 msgstr "Bluetooth"
 
-#: ../src/mnb-toolbar.c:1013
+#: ../src/mnb-toolbar.c:1628
 msgid "networks"
 msgstr "Netzwerke"
 
-# (as a noun?...
-# If it's a verb, then "testen" would be correct)
-#: ../src/mnb-toolbar.c:1016
+#: ../src/mnb-toolbar.c:1631
 msgid "test"
 msgstr "Test"
+
+#: ../src/mnb-toolbar.c:1708
+msgid "To activate the toolbar, move your cursor to the top of the screen"
+msgstr "Bewege deinen Cursor zum oberen Bildschirmrand, um die Symbolleiste zu aktivieren."
 
