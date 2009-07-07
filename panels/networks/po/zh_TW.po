@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 11:03+0100\n"
+"POT-Creation-Date: 2009-06-30 04:11+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,135 +15,142 @@ msgstr ""
 #: ../carrick/carrick-applet.c:63
 #, c-format
 msgid "Offline"
-msgstr "下線"
+msgstr "離線"
 
 #: ../carrick/carrick-applet.c:64
 #, c-format
 msgid "No active connection."
-msgstr "沒有有效的連接。"
+msgstr "沒有有效的連接"
 
 #: ../carrick/carrick-applet.c:70
 #, c-format
 msgid "Online"
-msgstr "上線"
+msgstr "在線"
 
 #: ../carrick/carrick-applet.c:75
 #, c-format
 msgid "Now online and connected to %s."
-msgstr "現在在線上並連接到 %s。"
+msgstr "現在在線以及連接到 %s 。"
 
-#: ../carrick/carrick-pane.c:289
+#: ../carrick/carrick-pane.c:284
 msgid "New connection settings"
-msgstr "新的連接設定"
+msgstr "新連接設置"
 
-#: ../carrick/carrick-pane.c:325
+#: ../carrick/carrick-pane.c:320
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"輸入你要連接的網路名稱，如有必要\n"
-"的話，也輸入密碼和保全性種類。"
+"輸入您想要連接的網絡名稱\n"
+"，並在必要時的\n"
+" 輸入密碼和安全類型。"
 
-#: ../carrick/carrick-pane.c:335
+#: ../carrick/carrick-pane.c:330
 msgid "Network name"
-msgstr "網路名稱"
+msgstr "網絡名稱"
 
-#: ../carrick/carrick-pane.c:347
+#: ../carrick/carrick-pane.c:342
 msgid "Network security"
-msgstr "網路保全性"
+msgstr "網絡安全"
 
-#: ../carrick/carrick-pane.c:371
+#: ../carrick/carrick-pane.c:366
 msgid "Password"
 msgstr "密碼"
 
-#: ../carrick/carrick-pane.c:386
-#: ../carrick/carrick-service-item.c:272
+#: ../carrick/carrick-pane.c:381
+#: ../carrick/carrick-service-item.c:361
 msgid "Show password"
 msgstr "顯示密碼"
 
-#: ../carrick/carrick-pane.c:713
+#: ../carrick/carrick-pane.c:774
 msgid "Networks"
-msgstr "網路"
+msgstr "網絡"
 
-#: ../carrick/carrick-pane.c:737
+#: ../carrick/carrick-pane.c:798
 msgid "Add new connection"
-msgstr "新增連線"
+msgstr "添加新的連接"
 
-#: ../carrick/carrick-pane.c:770
+#: ../carrick/carrick-pane.c:830
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:793
-#: ../carrick/carrick-service-item.c:125
+#: ../carrick/carrick-pane.c:853
+#: ../carrick/carrick-service-item.c:193
 msgid "Wired"
-msgstr "有線連結"
+msgstr "有線"
 
-#: ../carrick/carrick-pane.c:822
+#: ../carrick/carrick-pane.c:879
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:851
+#: ../carrick/carrick-pane.c:904
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:889
+#: ../carrick/carrick-pane.c:938
 msgid "Offline mode"
-msgstr "下線模式"
+msgstr "離線狀態"
 
-#: ../carrick/carrick-pane.c:913
+#: ../carrick/carrick-pane.c:962
 msgid "This will disable all your connections"
-msgstr "這會禁用所有的連線"
-
-#: ../carrick/carrick-service-item.c:132
-msgid "Disconnect"
-msgstr "斷線"
-
-#: ../carrick/carrick-service-item.c:135
-msgid "Connected"
-msgstr "已連線"
-
-#: ../carrick/carrick-service-item.c:142
-#, c-format
-msgid "Connecting"
-msgstr "正在連線中"
-
-#: ../carrick/carrick-service-item.c:145
-msgid "Configuring"
-msgstr "設定中"
-
-#: ../carrick/carrick-service-item.c:151
-#: ../carrick/carrick-service-item.c:158
-msgid "Connect"
-msgstr "連線"
+msgstr "這將禁用所有的連接"
 
 #: ../carrick/carrick-service-item.c:161
+#, c-format
+msgid "%s encrypted"
+msgstr "%s 加密"
+
+#: ../carrick/carrick-service-item.c:205
+msgid "Disconnect"
+msgstr "斷開"
+
+#: ../carrick/carrick-service-item.c:208
+msgid "Connected"
+msgstr "連接"
+
+#: ../carrick/carrick-service-item.c:215
+#, c-format
+msgid "Connecting"
+msgstr "正在連接"
+
+#: ../carrick/carrick-service-item.c:218
+msgid "Configuring"
+msgstr "正在配置"
+
+#: ../carrick/carrick-service-item.c:229
+#: ../carrick/carrick-service-item.c:241
+msgid "Connect"
+msgstr "連結"
+
+#: ../carrick/carrick-service-item.c:244
 msgid "Connection failed"
-msgstr "連線失敗"
+msgstr "連接失敗"
 
-#: ../carrick/carrick-service-item.c:206
+#: ../carrick/carrick-service-item.c:295
 msgid "Passphrase required"
-msgstr "要求密碼"
+msgstr "密語必要"
 
-#: ../carrick/carrick-service-item.c:233
+#: ../carrick/carrick-service-item.c:322
 msgid "<b><big>Network Requires a Password</big></b>"
-msgstr "<b><big>網路需要密碼</big></b>"
+msgstr "<b><big>網絡需要輸入密碼</big></b>"
 
-#: ../carrick/carrick-service-item.c:253
+#: ../carrick/carrick-service-item.c:342
 msgid "Please enter the password for this network:"
-msgstr "請輸入此網路的密碼："
+msgstr "請輸入這個網絡的密碼："
 
-#: ../carrick/carrick-service-item.c:525
-msgid "Close"
-msgstr "關閉"
+#: ../carrick/carrick-service-item.c:466
+msgid "Really remove?"
+msgstr "確實要刪除？"
 
-#. expando = nbtk_gtk_expander_new ();
-#: ../carrick/carrick-service-item.c:530
-#: ../carrick/carrick-service-item.c:587
-msgid "Advanced"
-msgstr "進諧"
-
-#: ../carrick/carrick-service-item.c:595
-msgid "Just some test content"
-msgstr "僅有一些測試內容"
+#: ../carrick/carrick-service-item.c:484
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr ""
+"你想刪除 %s %s 的網絡？\n"
+"這會忘記密碼，您將不再是\n"
+" 自動連接到%s"
 
