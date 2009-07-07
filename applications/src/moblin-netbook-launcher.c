@@ -1069,8 +1069,8 @@ mnb_launcher_filter_cb (MnbLauncher *self)
           ClutterActor      *e          = g_hash_table_lookup (priv->expanders, category);
           ClutterActor      *inner_grid = nbtk_bin_get_child (NBTK_BIN (e));
 
-          clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
           nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launcher), NULL);
+          clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
         }
 
       /* Show expanders. */
