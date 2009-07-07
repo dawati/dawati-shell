@@ -410,6 +410,10 @@ main (int    argc,
   GOptionContext *context;
   GError *error = NULL;
 
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+
   context = g_option_context_new ("- mutter-moblin pasteboard panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());

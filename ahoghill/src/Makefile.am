@@ -5,6 +5,7 @@ AM_CFLAGS = \
 	$(AHOGHILL_CFLAGS) \
 	-I$(top_srcdir)/ahoghill \
 	-DDATADIR=\"$(datadir)\" \
+	-DLOCALEDIR=\"$(localedir)\" \
 	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-media\"
 
