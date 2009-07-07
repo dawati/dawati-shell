@@ -67,9 +67,10 @@ msgstr "Kennwort anzeigen"
 msgid "Networks"
 msgstr "Netzwerke"
 
+# shortened due to truncation in UI
 #: ../carrick/carrick-pane.c:831
 msgid "Add new connection"
-msgstr "Neue Verbindung hinzufügen"
+msgstr "Neue Verbindung"
 
 #: ../carrick/carrick-pane.c:857
 msgid "WiFi"
@@ -91,9 +92,10 @@ msgstr "WiMAX"
 msgid "Offline mode"
 msgstr "Offline-Modus"
 
+# changed due to UI truncation
 #: ../carrick/carrick-pane.c:989
 msgid "This will disable all your connections"
-msgstr "Alle Verbindungen werden damit deaktiviert"
+msgstr "Dies deaktiviert alle Verbindungen"
 
 #: ../carrick/carrick-service-item.c:163
 #, c-format
