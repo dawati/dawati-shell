@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Zhu Yanhai <yanhai.zhu@intel.com>, 2009.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: carrick\n"
-"Report-Msgid-Bugs-To: bugzilla.moblin.org\n"
-"POT-Creation-Date: 2009-06-28 07:01+0000\n"
-"PO-Revision-Date: 2009-06-29 15:01+0800\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-06 09:17+0000\n"
+"PO-Revision-Date: 2009-07-07 10:01+0800\n"
 "Last-Translator: Zhu Yanhai <yanhai.zhu@intel.com>\n"
 "Language-Team: zh_CN <yanhai.zhu@intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -59,96 +58,104 @@ msgstr "网络安全"
 msgid "Password"
 msgstr "密码"
 
-#: ../carrick/carrick-pane.c:381 ../carrick/carrick-service-item.c:361
+#: ../carrick/carrick-pane.c:381 ../carrick/carrick-service-item.c:853
 msgid "Show password"
 msgstr "显示密码"
 
-#: ../carrick/carrick-pane.c:774
+#: ../carrick/carrick-pane.c:792
 msgid "Networks"
 msgstr "网络"
 
-#: ../carrick/carrick-pane.c:798
+#: ../carrick/carrick-pane.c:831
 msgid "Add new connection"
 msgstr "添加新连接"
 
-#: ../carrick/carrick-pane.c:830
+#: ../carrick/carrick-pane.c:857
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:853 ../carrick/carrick-service-item.c:193
+#: ../carrick/carrick-pane.c:880 ../carrick/carrick-service-item.c:196
 msgid "Wired"
 msgstr "有线"
 
-#: ../carrick/carrick-pane.c:879
+#: ../carrick/carrick-pane.c:906
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:904
+#: ../carrick/carrick-pane.c:931
 msgid "WiMAX"
 msgstr "WiMax"
 
-#: ../carrick/carrick-pane.c:938
+#: ../carrick/carrick-pane.c:965
 msgid "Offline mode"
 msgstr "离线模式"
 
-#: ../carrick/carrick-pane.c:962
+#: ../carrick/carrick-pane.c:989
 msgid "This will disable all your connections"
 msgstr "关闭您的所有连接"
 
-#: ../carrick/carrick-service-item.c:161
+#: ../carrick/carrick-service-item.c:163
 #, c-format
 msgid "%s encrypted"
 msgstr "%s 已加密"
 
-#: ../carrick/carrick-service-item.c:205
+#: ../carrick/carrick-service-item.c:208
 msgid "Disconnect"
 msgstr "断开连接"
 
-#: ../carrick/carrick-service-item.c:208
+#: ../carrick/carrick-service-item.c:211
 msgid "Connected"
 msgstr "已连接"
 
-#: ../carrick/carrick-service-item.c:215
+#: ../carrick/carrick-service-item.c:218
 #, c-format
 msgid "Connecting"
 msgstr "正在连接"
 
-#: ../carrick/carrick-service-item.c:218
+#: ../carrick/carrick-service-item.c:221
 msgid "Configuring"
 msgstr "配置"
 
-#: ../carrick/carrick-service-item.c:229 ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-service-item.c:232 ../carrick/carrick-service-item.c:244
+#: ../carrick/carrick-service-item.c:842
 msgid "Connect"
 msgstr "连接"
 
-#: ../carrick/carrick-service-item.c:244
+#: ../carrick/carrick-service-item.c:247
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: ../carrick/carrick-service-item.c:295
-msgid "Passphrase required"
-msgstr "需要密码提示(此处翻译不确定!)"
+#: ../carrick/carrick-service-item.c:254 ../carrick/carrick-service-item.c:257
+#, c-format
+msgid "Disconnecting"
+msgstr "断开连接"
 
-#: ../carrick/carrick-service-item.c:322
-msgid "<b><big>Network Requires a Password</big></b>"
-msgstr "<b><big>该网络需要密码</big></b>"
+#: ../carrick/carrick-service-item.c:306
+msgid "Type password here"
+msgstr "请在此处输入密码"
 
-#: ../carrick/carrick-service-item.c:342
-msgid "Please enter the password for this network:"
-msgstr "请为此网络输入密码:"
-
-#: ../carrick/carrick-service-item.c:466
+#: ../carrick/carrick-service-item.c:383
 msgid "Really remove?"
 msgstr "真的要删除吗?"
 
-#: ../carrick/carrick-service-item.c:484
+#: ../carrick/carrick-service-item.c:401
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
-msgstr "您想删除网络连接%s %s吗?这样系统会同时删除为该连接保存\n"
+msgstr ""
+"您想删除网络连接%s %s吗?这样系统会同时删除为该连接保存\n"
 "的密码,并且您将不再会被自动连接至%s."
+
+#~ msgid "Passphrase required"
+#~ msgstr "需要密码提示(此处翻译不确定!)"
+
+#~ msgid "<b><big>Network Requires a Password</big></b>"
+#~ msgstr "<b><big>该网络需要密码</big></b>"
+
+#~ msgid "Please enter the password for this network:"
+#~ msgstr "请为此网络输入密码:"
 
 #~ msgid "Close"
 #~ msgstr "关闭"
