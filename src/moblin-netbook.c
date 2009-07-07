@@ -733,8 +733,25 @@ check_for_empty_workspace (MutterPlugin *plugin,
       MutterWindow *m = l->data;
       MetaWindow   *mw = mutter_window_get_meta_window (m);
 
-      if (mw != ignore)
+      /*
+       * We need to check this window is not the window we are too ignore, and
+       * also not transient (e.g., dialog) of the window we are to ignore
+       * (because when a window is moved to a different workspace, the WM
+       * automatically moves its transients too).
+       *
+       * We skip over windows that are on all workspaces (they are irrelevant
+       * for our purposes, and also because their workspace is the active
+       * workspace, we can have a bit of a race here if workspace is being
+       * removed when the screen active workspace is not yet updated at this
+       * point and we we try to translate it to an index, it blows up on us).
+       */
+      if (mw != ignore &&
+          !meta_window_is_on_all_workspaces (mw) &&
+          !meta_window_is_ancestor_of_transient (ignore, mw))
         {
+          g_debug ("querying workspace for [%s]",
+                   mutter_window_get_description (m));
+
           gint w = mutter_window_get_workspace (m);
 
           if (w == workspace)
