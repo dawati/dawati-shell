@@ -99,8 +99,8 @@ struct _MoblinNetbookPluginPrivate
   GHashTable            *sn_hash;
   GHashTable            *sn_binary_hash;
 
-  /* Background parallax texture */
-  ClutterActor          *parallax_tex;
+  /* Background desktop texture */
+  ClutterActor          *desktop_tex;
 
   MutterPluginInfo       info;
 

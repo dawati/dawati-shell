@@ -109,6 +109,16 @@ PKG_CHECK_MODULES(PENGE,
 PKG_CHECK_MODULES(LIBMNB,
 		  dbus-glib-1)
 
+AC_ARG_ENABLE([scaled-background],
+	AC_HELP_STRING([--enable-scaled-background],
+		[Scale the mutter-moblin background image]),
+		[scale_background="$enableval"], [scale_background=no])
+
+if test x"$scale_background" = xyes; then
+	AC_DEFINE(USE_SCALED_BACKGROUND, 1, [Use scaled background])
+fi
+
+
 AC_ARG_ENABLE([ahoghill],
               [AC_HELP_STRING([--enable-ahoghill],
                               [Enable Ahoghill Media Panel])],
@@ -335,7 +345,7 @@ echo "
             Mutter version   :    mutter_version
             Installation path:    ${MUTTER_PLUGIN_DIR}
 	    Debug            :    ${enable_debug} (CFLAGS: ${CFLAGS})
-
+	    Scaled background:    ${scale_background}
         Panels:
 
             Status           :    ${enable_status}

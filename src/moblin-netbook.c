@@ -63,7 +63,7 @@ typedef struct
   MutterPlugin *plugin;
 } EffectCompleteData;
 
-static void setup_parallax_effect (MutterPlugin *plugin);
+static void setup_desktop_background (MutterPlugin *plugin);
 
 static void setup_focus_window (MutterPlugin *plugin);
 
@@ -333,7 +333,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   clutter_set_motion_events_enabled (TRUE);
 
-  setup_parallax_effect (MUTTER_PLUGIN (plugin));
+  setup_desktop_background (MUTTER_PLUGIN (plugin));
 
   setup_focus_window (MUTTER_PLUGIN (plugin));
 
@@ -447,55 +447,6 @@ moblin_netbook_plugin_init (MoblinNetbookPlugin *self)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 }
-
-static void
-on_desktop_pre_paint (ClutterActor *actor, gpointer data)
-{
-  MoblinNetbookPlugin *plugin = data;
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  ClutterColor       col = { 0xff, 0xff, 0xff, 0xff };
-  CoglHandle         cogl_texture;
-  float              t_w, t_h;
-  gfloat             tex_width, tex_height;
-  gfloat             w, h;
-
-  clutter_actor_get_size (priv->parallax_tex, &w, &h);
-
-  cogl_translate (-(gint)w/4, 0 , 0);
-
-  cogl_texture
-       = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(priv->parallax_tex));
-
-  if (cogl_texture == COGL_INVALID_HANDLE)
-    return;
-
-  col.alpha = clutter_actor_get_paint_opacity (actor);
-  cogl_set_source_color4ub (col.red,
-                            col.green,
-                            col.blue,
-                            col.alpha);
-
-  tex_width = cogl_texture_get_width (cogl_texture);
-  tex_height = cogl_texture_get_height (cogl_texture);
-
-  t_w = (float) w / tex_width;
-  t_h = (float) h / tex_height;
-
-  /* Parent paint translated us into position */
-  cogl_set_source_texture (cogl_texture);
-  cogl_rectangle_with_texture_coords (0, 0,
-                                      w, h,
-                                      0, 0,
-                                      t_w, t_h);
-
-  g_signal_stop_emission_by_name (actor, "paint");
-}
-
-struct parallax_data
-{
-  gint direction;
-  MoblinNetbookPlugin *plugin;
-};
 
 /*
  * Minimize effect completion callback; this function restores actor state, and
@@ -982,27 +933,17 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
   type = mutter_window_get_window_type (mcw);
 
-  if (type == META_COMP_WINDOW_DESKTOP && priv->parallax_tex != NULL )
+  if (type == META_COMP_WINDOW_DESKTOP && priv->desktop_tex != NULL )
     {
-      gint screen_width, screen_height;
-
       /*
-       * FIXME -- the way it currently works means we still have a fullscreen
-       * GLX texture in place which serves no purpose. We should make this work
-       * without needing the desktop window. The parallax texture could simply
-       * be placed directly on stage, underneath the Mutter windows group.
+       * We rely here on MutterWindow being a simple container (which it is,
+       * just a ClutterGroup subclass); we simply insert our desktop texture at
+       * the very to of its children stack (we will be painting the actual glx
+       * texture that the MutterWindow contains unnecessarily, but then the fake
+       * desktop window we use is only 1x1 px.
        */
-      mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-      clutter_actor_set_size (priv->parallax_tex,
-                              screen_width * 8,
-                              screen_height);
-
-      clutter_actor_set_parent (priv->parallax_tex, actor);
-
-      g_signal_connect (actor,
-                        "paint", G_CALLBACK (on_desktop_pre_paint),
-                        plugin);
+      clutter_container_add_actor (CLUTTER_CONTAINER (actor), priv->desktop_tex);
+      clutter_actor_show (priv->desktop_tex);
 
       mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
       return;
@@ -1422,7 +1363,7 @@ setup_focus_window (MutterPlugin *plugin)
 }
 
 static void
-setup_parallax_effect (MutterPlugin *plugin)
+setup_desktop_background (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
@@ -1524,11 +1465,10 @@ setup_parallax_effect (MutterPlugin *plugin)
     }
 
   /* FIXME: pull image from theme, css ? */
-  priv->parallax_tex = clutter_texture_new_from_file
-                        (THEMEDIR "/panel/background-tile.png",
-                         NULL);
+  priv->desktop_tex = clutter_texture_new_from_file
+                        (THEMEDIR "/panel/background-tile.png", NULL);
 
-  if (priv->parallax_tex == NULL)
+  if (priv->desktop_tex == NULL)
     {
       g_warning ("Failed to load '"
                  THEMEDIR
@@ -1539,12 +1479,16 @@ setup_parallax_effect (MutterPlugin *plugin)
       ClutterActor *bg_clone;
       ClutterActor *stage = mutter_get_stage_for_screen (screen);
 
-      g_object_set (priv->parallax_tex,
+      clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
+
+#if !USE_SCALED_BACKGROUND
+      g_object_set (priv->desktop_tex,
                     "repeat-x", TRUE,
                     "repeat-y", TRUE,
                     NULL);
+#endif
 
-      bg_clone = clutter_clone_new (priv->parallax_tex);
+      bg_clone = clutter_clone_new (priv->desktop_tex);
       clutter_actor_set_size (bg_clone, screen_width, screen_height);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), bg_clone);
       clutter_actor_lower_bottom (bg_clone);

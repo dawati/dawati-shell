@@ -423,7 +423,7 @@ make_nth_workspace (MutterPlugin  *plugin,
 
       group = clutter_group_new ();
 
-      bkg = clutter_clone_new (priv->parallax_tex);
+      bkg = clutter_clone_new (priv->desktop_tex);
       clutter_actor_set_size (bkg, screen_width, screen_height);
       clutter_container_add_actor (CLUTTER_CONTAINER (group), bkg);
 
