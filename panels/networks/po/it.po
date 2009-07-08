@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-01 09:17+0000\n"
-"PO-Revision-Date: 2009-07-02 22:16+0200\n"
+"POT-Creation-Date: 2009-07-08 09:18+0000\n"
+"PO-Revision-Date: 2009-07-08 21:37+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -36,11 +36,11 @@ msgstr "In rete"
 msgid "Now online and connected to %s."
 msgstr "Si è ora in rete e collegati a %s."
 
-#: ../carrick/carrick-pane.c:284
+#: ../carrick/carrick-pane.c:283
 msgid "New connection settings"
 msgstr "Impostazioni nuova connessione"
 
-#: ../carrick/carrick-pane.c:320
+#: ../carrick/carrick-pane.c:319
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -50,107 +50,105 @@ msgstr ""
 "collegarsi e, se necessario, la\n"
 "password e il tipo di sicurezza."
 
-#: ../carrick/carrick-pane.c:330
+#: ../carrick/carrick-pane.c:329
 msgid "Network name"
 msgstr "Nome della rete"
 
-#: ../carrick/carrick-pane.c:342
+#: ../carrick/carrick-pane.c:341
 msgid "Network security"
 msgstr "Sicurezza della rete"
 
-#: ../carrick/carrick-pane.c:366
+#: ../carrick/carrick-pane.c:365
 msgid "Password"
 msgstr "Password"
 
-#: ../carrick/carrick-pane.c:381 ../carrick/carrick-service-item.c:361
+#: ../carrick/carrick-pane.c:380 ../carrick/carrick-service-item.c:855
 msgid "Show password"
 msgstr "Mostrare password"
 
-#: ../carrick/carrick-pane.c:780
+#: ../carrick/carrick-pane.c:791
 msgid "Networks"
 msgstr "Reti"
 
 # (ndt) pulsante
-#: ../carrick/carrick-pane.c:804
+#: ../carrick/carrick-pane.c:830
 msgid "Add new connection"
 msgstr "Aggiungi nuova connessione"
 
-#: ../carrick/carrick-pane.c:836
+#: ../carrick/carrick-pane.c:856
 msgid "WiFi"
 msgstr "Senza fili"
 
-#: ../carrick/carrick-pane.c:859 ../carrick/carrick-service-item.c:193
+#: ../carrick/carrick-pane.c:879 ../carrick/carrick-service-item.c:196
 msgid "Wired"
 msgstr "Cablata"
 
-#: ../carrick/carrick-pane.c:885
+#: ../carrick/carrick-pane.c:905
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:910
+#: ../carrick/carrick-pane.c:930
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:944
+#: ../carrick/carrick-pane.c:964
 msgid "Offline mode"
 msgstr "Modalità fuori rete"
 
-#: ../carrick/carrick-pane.c:968
+#: ../carrick/carrick-pane.c:988
 msgid "This will disable all your connections"
 msgstr "Disabilita tutte le connessioni"
 
-#: ../carrick/carrick-service-item.c:161
+#: ../carrick/carrick-service-item.c:163
 #, c-format
 msgid "%s encrypted"
 msgstr "%s cifrato"
 
 # (ndt) pulsante
-#: ../carrick/carrick-service-item.c:205
+#: ../carrick/carrick-service-item.c:208
 msgid "Disconnect"
 msgstr "Disconnetti"
 
 # (ndt) viene fuori qualche cosa di simile: 
 # Cablata - Collegata 
 # Metto al femminile essendo rete
-#: ../carrick/carrick-service-item.c:208
+#: ../carrick/carrick-service-item.c:211
 msgid "Connected"
 msgstr "Collegata"
 
-#: ../carrick/carrick-service-item.c:215
+#: ../carrick/carrick-service-item.c:218
 #, c-format
 msgid "Connecting"
 msgstr "Connessione in corso"
 
-#: ../carrick/carrick-service-item.c:218
+#: ../carrick/carrick-service-item.c:221
 msgid "Configuring"
 msgstr "Configurazione in corso"
 
-#: ../carrick/carrick-service-item.c:229 ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-service-item.c:232 ../carrick/carrick-service-item.c:244
+#: ../carrick/carrick-service-item.c:844
 msgid "Connect"
 msgstr "Connetti"
 
 # (ndt) un po' libera, ma preferisco lasciarla così
-#: ../carrick/carrick-service-item.c:244
+#: ../carrick/carrick-service-item.c:247
 msgid "Connection failed"
 msgstr "Connessione non stabilita"
 
-#: ../carrick/carrick-service-item.c:295
-msgid "Passphrase required"
-msgstr "Richiesta passphrase"
+#: ../carrick/carrick-service-item.c:254 ../carrick/carrick-service-item.c:257
+#, c-format
+msgid "Disconnecting"
+msgstr "Disconnessione in corso"
 
-#: ../carrick/carrick-service-item.c:322
-msgid "<b><big>Network Requires a Password</big></b>"
-msgstr "<b><big>La rete richiede una password</big></b>"
+#: ../carrick/carrick-service-item.c:306
+msgid "Type password here"
+msgstr "Digitare la password"
 
-#: ../carrick/carrick-service-item.c:342
-msgid "Please enter the password for this network:"
-msgstr "Inserire la password per questa rete:"
-
-#: ../carrick/carrick-service-item.c:466
+#: ../carrick/carrick-service-item.c:383
 msgid "Really remove?"
 msgstr "Rimuovere veramente?"
 
-#: ../carrick/carrick-service-item.c:484
+#: ../carrick/carrick-service-item.c:401
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -160,3 +158,12 @@ msgstr ""
 "Rimuovere veramente la rete %s %s? In questo modo\n"
 "la password verrà cancellata e non sarà più possibile\n"
 "connettersi automaticamente a %s."
+
+#~ msgid "Passphrase required"
+#~ msgstr "Richiesta passphrase"
+
+#~ msgid "<b><big>Network Requires a Password</big></b>"
+#~ msgstr "<b><big>La rete richiede una password</big></b>"
+
+#~ msgid "Please enter the password for this network:"
+#~ msgstr "Inserire la password per questa rete:"
