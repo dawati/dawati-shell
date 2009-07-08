@@ -35,6 +35,7 @@ struct _PengeAppBookmarkManagerPrivate {
     GFileMonitor *monitor;
     guint save_idle_id;
     GList *uris;
+    GHashTable *monitors_hash;
 };
 
 #define APP_BOOKMARK_FILENAME "favourite-apps"
@@ -47,6 +48,25 @@ enum
 };
 
 guint signals[LAST_SIGNAL] = { 0 };
+
+static void
+_bookmark_desktop_file_changed_cb (GFileMonitor      *monitor,
+                                   GFile             *file,
+                                   GFile             *other_file,
+                                   GFileMonitorEvent event,
+                                   gpointer          userdata)
+{
+  PengeAppBookmarkManager *self = (PengeAppBookmarkManager *)userdata;
+  gchar *uri;
+
+  /* Only care for removed apps that are bookmarked. */
+  if (event != G_FILE_MONITOR_EVENT_DELETED)
+    return;
+
+  uri = g_file_get_uri (file);
+  penge_app_bookmark_manager_remove_uri (self, uri);
+  g_free (uri);
+}
 
 static void
 penge_app_bookmark_manager_get_property (GObject *object, guint property_id,
@@ -79,6 +99,12 @@ penge_app_bookmark_manager_dispose (GObject *object)
     g_file_monitor_cancel (priv->monitor);
     g_object_unref (priv->monitor);
     priv->monitor = NULL;
+  }
+
+  if (priv->monitors_hash)
+  {
+    g_hash_table_destroy (priv->monitors_hash);
+    priv->monitors_hash = NULL;
   }
 
   if (priv->uris)
@@ -149,6 +175,35 @@ penge_app_bookmark_manager_class_init (PengeAppBookmarkManagerClass *klass)
 }
 
 static void
+_setup_file_monitor (PengeAppBookmarkManager *manager,
+                     gchar                   *uri)
+{
+  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  GFile *file;
+  GFileMonitor *monitor;
+  GError *error = NULL;
+
+  file = g_file_new_for_uri (uri);
+  monitor = g_file_monitor_file (file,
+                                 G_FILE_MONITOR_NONE,
+                                 NULL,
+                                 &error);
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error opening file monitor: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    g_signal_connect (monitor,
+                      "changed",
+                      (GCallback) _bookmark_desktop_file_changed_cb,
+                      manager);
+    g_hash_table_insert (priv->monitors_hash, uri, monitor);
+  }
+
+  g_object_unref (file);
+}
+static void
 penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
 {
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
@@ -156,6 +211,7 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
   gchar **uris;
   gchar *contents;
   gint i = 0;
+  gchar *uri = NULL;
 
   if (!g_file_get_contents (priv->path,
                             &contents,
@@ -172,7 +228,11 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
 
   for (i = 0; uris[i] != NULL; i++)
   {
-    priv->uris = g_list_append (priv->uris, g_strdup (uris[i]));
+    /* The list takes ownership. */
+    uri = g_strdup (uris[i]);
+    priv->uris = g_list_append (priv->uris, uri);
+
+    _setup_file_monitor (manager, uri);
   }
 
   g_strfreev (uris);
@@ -295,7 +355,14 @@ penge_app_bookmark_manager_init (PengeAppBookmarkManager *self)
                       (GCallback)_file_monitor_changed_cb,
                       self);
   }
-  
+
+  /* Monitors for the desktop files.
+   * Keys are owned by "priv->uris". */
+  priv->monitors_hash = g_hash_table_new_full (g_direct_hash,
+                                               g_str_equal,
+                                               NULL,
+                                               g_object_unref);
+
   penge_app_bookmark_manager_load (self);
 }
 
@@ -341,19 +408,27 @@ penge_app_bookmark_manager_remove_uri (PengeAppBookmarkManager *manager,
     }
   }
 
+  /* Remove monitor. */
+  g_hash_table_remove (priv->monitors_hash, uri);
+
   penge_app_bookmark_manager_idle_save (manager);
   g_signal_emit_by_name (manager, "bookmark-removed", uri);
 }
 
 void
 penge_app_bookmark_manager_add_uri (PengeAppBookmarkManager *manager,
-                                    const gchar             *uri)
+                                    const gchar             *uri_in)
 {
   PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  gchar *uri = NULL;
 
   g_return_if_fail (PENGE_IS_APP_BOOKMARK_MANAGER (manager));
 
-  priv->uris = g_list_append (priv->uris, g_strdup (uri));
+  /* The list takes ownership. */
+  uri = g_strdup (uri_in);
+  priv->uris = g_list_append (priv->uris, uri);
+
+  _setup_file_monitor (manager, uri);
 
   penge_app_bookmark_manager_idle_save (manager);
   g_signal_emit_by_name (manager, "bookmark-added", uri);
