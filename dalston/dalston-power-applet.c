@@ -93,12 +93,12 @@ static const gchar *icon_names[] = {
 };
 
 
-#define BATTERY_IMAGE_STATE_UNKNOWN        "dalston-power-empty.svg"
-#define BATTERY_IMAGE_STATE_CHARGE_0       "dalston-power-empty.svg"
-#define BATTERY_IMAGE_STATE_CHARGE_25      "dalston-power-25.svg"
-#define BATTERY_IMAGE_STATE_CHARGE_50      "dalston-power-50.svg"
-#define BATTERY_IMAGE_STATE_CHARGE_75      "dalston-power-75.svg"
-#define BATTERY_IMAGE_STATE_CHARGE_100     "dalston-power-full.svg"
+#define BATTERY_IMAGE_STATE_UNKNOWN        "dalston-power-empty.png"
+#define BATTERY_IMAGE_STATE_CHARGE_0       "dalston-power-empty.png"
+#define BATTERY_IMAGE_STATE_CHARGE_25      "dalston-power-25.png"
+#define BATTERY_IMAGE_STATE_CHARGE_50      "dalston-power-50.png"
+#define BATTERY_IMAGE_STATE_CHARGE_75      "dalston-power-75.png"
+#define BATTERY_IMAGE_STATE_CHARGE_100     "dalston-power-full.png"
 
 
 static void
