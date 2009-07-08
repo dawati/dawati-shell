@@ -112,11 +112,11 @@ msgstr "接続中"
 #: ../carrick/carrick-service-item.c:218
 #, c-format
 msgid "Connecting"
-msgstr "接続中..."
+msgstr "接続中"
 
 #: ../carrick/carrick-service-item.c:221
 msgid "Configuring"
-msgstr "設定"
+msgstr "設定中"
 
 #: ../carrick/carrick-service-item.c:232
 #: ../carrick/carrick-service-item.c:244
