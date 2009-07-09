@@ -1814,12 +1814,34 @@ mnb_switcher_show (ClutterActor *self)
     {
       if (!spaces[i])
         {
-          NbtkWidget *label;
+          NbtkWidget        *label;
+          MnbSwitcherZone   *zone = g_object_new (MNB_TYPE_SWITCHER_ZONE, NULL);
+          struct input_data *input_data = g_new (struct input_data, 1);
+          MnbSwitcher       *switcher = MNB_SWITCHER (self);
+
+          input_data = g_new (struct input_data, 1);
+          input_data->index = i;
+          input_data->switcher = switcher;
+
+          zone->priv->switcher = switcher;
+
+          clutter_actor_set_reactive (CLUTTER_ACTOR (zone), TRUE);
+
+          nbtk_widget_set_style_class_name (NBTK_WIDGET (zone),
+                                            "switcher-workspace");
+          if (i == active_ws)
+            clutter_actor_set_name (CLUTTER_ACTOR (zone),
+                                    "switcher-workspace-active");
 
           label = nbtk_label_new (_("No applications on this zone"));
-
-          nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (label),
+          nbtk_table_add_actor (NBTK_TABLE (zone), CLUTTER_ACTOR (label), 0, 0);
+          nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (zone),
                                 1, i);
+
+          /* switch workspace when the workspace is selected */
+          g_signal_connect_data (zone, "button-release-event",
+                                 G_CALLBACK (workspace_input_cb), input_data,
+                                 (GClosureNotify)g_free, 0);
         }
     }
 
