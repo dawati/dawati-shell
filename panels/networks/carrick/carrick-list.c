@@ -43,8 +43,8 @@ typedef struct _CarrickListPrivate CarrickListPrivate;
 struct _CarrickListPrivate
 {
   GtkWidget *drag_window;
-  guint dropped_new_order;
-  guint counter;
+  guint drag_position;
+  guint drop_position;
   GtkWidget *found;
 };
 
@@ -83,90 +83,140 @@ carrick_list_finalize (GObject *object)
 }
 
 static void
-carrick_list_drag_begin (GtkWidget         *widget,
-                         GdkDragContext    *context,
-                         gpointer           user_data)
+carrick_list_drag_begin (GtkWidget      *widget,
+                         GdkDragContext *context,
+                         CarrickList    *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (user_data);
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  gint x, y;
 
-  g_object_ref (widget);
-  gtk_container_remove (GTK_CONTAINER (user_data),
-                        widget);
+  /* save old place in list for drag-failures */
+  gtk_container_child_get (GTK_CONTAINER (list),
+                           widget,
+                           "position", &priv->drag_position,
+                           NULL);
+  priv->drop_position = priv->drag_position;
+
+  /* remove widget from list and setup dnd popup window */
   priv->drag_window = gtk_window_new (GTK_WINDOW_POPUP);
-  gtk_container_add (GTK_CONTAINER (priv->drag_window),
-                     widget);
-  gtk_widget_set_state (widget,
-                        GTK_STATE_SELECTED);
-
-  g_object_unref (widget);
+  gtk_widget_set_size_request (priv->drag_window,
+                               widget->allocation.width,
+                               widget->allocation.height);
+  gtk_widget_get_pointer (widget, &x, &y);
+  gtk_widget_reparent (widget, priv->drag_window);
   gtk_drag_set_icon_widget (context,
                             priv->drag_window,
-                            5,
-                            5);
-}
+                            x, y);
 
-static void
-carrick_list_drag_data_get (GtkWidget        *widget,
-                            GdkDragContext   *context,
-                            GtkSelectionData *data,
-                            guint             info,
-                            guint             time)
-{
-  if (data->target == gdk_atom_intern_static_string (CARRICK_DRAG_TARGET))
-  {
-    gtk_selection_data_set (data,
-                            data->target,
-                            8,
-                            (gpointer)&widget,
-                            sizeof (gpointer));
-  }
+  gtk_widget_set_state (widget, GTK_STATE_SELECTED);
 }
 
 static gboolean
-carrick_list_drag_failed (GtkWidget      *widget,
-                          GdkDragContext *context,
-                          GtkDragResult   result,
-                          gpointer        user_data)
+carrick_list_drag_drop (GtkWidget      *widget,
+                        GdkDragContext *context,
+                        gint            x,
+                        gint            y,
+                        guint           time,
+                        CarrickList    *list)
 {
-  guint order;
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
 
-  if (result != GTK_DRAG_RESULT_SUCCESS)
+  /* find drop position in list */
+  if (widget == GTK_WIDGET (list))
   {
-    CarrickListPrivate *priv = LIST_PRIVATE (user_data);
-
-    g_object_ref (widget);
-    gtk_container_remove (GTK_CONTAINER (priv->drag_window),
-                          widget);
-    gtk_widget_set_state (widget,
-                          GTK_STATE_NORMAL);
-    gtk_box_pack_start (GTK_BOX (user_data),
-                        widget,
-                        TRUE,
-                        TRUE,
-                        0);
-    order = GPOINTER_TO_UINT (g_object_get_data ((GObject *)widget,
-                                                 "order"));
-    gtk_box_reorder_child (GTK_BOX (user_data),
-                           widget,
-                           GPOINTER_TO_UINT (order));
-
-    g_object_unref (widget);
-
-    return TRUE;
+    /* dropped on "empty" space on list */
+    priv->drop_position = -1;
+  } else {
+    /* dropped on a list item */
+    gtk_container_child_get (GTK_CONTAINER (list),
+                             widget,
+                             "position", &priv->drop_position,
+                             NULL);
   }
 
-  return FALSE;
+  gtk_drag_finish (context, TRUE, TRUE, time);
+  return TRUE;
 }
 
 static void
 carrick_list_drag_end (GtkWidget      *widget,
                        GdkDragContext *context,
-                       gpointer        user_data)
+                       CarrickList    *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (user_data);
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  GList *children;
+  gboolean pos_changed;
 
-  GTK_BIN (priv->drag_window)->child = NULL;
+  children = gtk_container_get_children (GTK_CONTAINER (list));
+
+  /* destroy the popup window */
+  g_object_ref (widget);
+  gtk_container_remove (GTK_CONTAINER (priv->drag_window), widget);
   gtk_widget_destroy (priv->drag_window);
+  priv->drag_window = NULL;
+
+  /* insert the widget into the list */
+  gtk_box_pack_start (GTK_BOX (list), widget,
+                      FALSE, FALSE,  0);
+  gtk_box_reorder_child (GTK_BOX (list),
+                         widget,
+                         priv->drop_position);
+  g_object_unref (widget);
+
+  gtk_widget_set_state (widget, GTK_STATE_NORMAL);
+
+  if (priv->drop_position == -1)
+  {
+    pos_changed = priv->drag_position != g_list_length (children);
+  }
+  else
+  {
+    pos_changed = priv->drop_position != priv->drag_position;
+  }
+
+  if (pos_changed && CARRICK_IS_SERVICE_ITEM (widget))
+  {
+    GtkWidget *other_widget;
+    CmService *service, * other_service;
+
+    service = carrick_service_item_get_service
+      (CARRICK_SERVICE_ITEM (widget));
+
+    /* TODO: should ensure favorite status for one or both services ? */
+    /* TODO: should do both move_before() and move_after() if possible ? */
+    if (priv->drop_position == 0)
+    {
+      other_widget = g_list_nth_data (children, 1);
+      if (CARRICK_IS_SERVICE_ITEM (other_widget))
+      {
+        other_service = carrick_service_item_get_service
+          (CARRICK_SERVICE_ITEM (other_widget));
+        cm_service_move_before (service, other_service);
+      }
+    }
+    else
+    {
+      if (priv->drop_position == -1)
+      {
+        /* dropped below last child */
+        other_widget = g_list_last (children)->data;
+      }
+      else
+      {
+        other_widget = g_list_nth_data (children,
+                                        priv->drop_position - 1);
+      }
+
+      if (CARRICK_IS_SERVICE_ITEM (other_widget))
+      {
+        other_service = carrick_service_item_get_service
+          (CARRICK_SERVICE_ITEM (other_widget));
+        cm_service_move_after (service, other_service);
+      }
+    }
+  }
+
+  g_list_free (children);
 }
 
 static void
@@ -242,32 +292,33 @@ carrick_list_add_item (CarrickList *list,
   g_return_if_fail (CARRICK_IS_LIST (list));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  /*gtk_drag_source_set (widget,
+  /* define a drag source */
+  gtk_drag_source_set (widget,
                        GDK_BUTTON1_MASK,
                        carrick_targets,
                        G_N_ELEMENTS (carrick_targets),
-                       GDK_ACTION_MOVE);*/
-
+                       GDK_ACTION_MOVE);
   g_signal_connect (widget,
                     "drag-begin",
                     G_CALLBACK (carrick_list_drag_begin),
                     list);
-
-  g_signal_connect (widget,
-                    "drag-data-get",
-                    G_CALLBACK (carrick_list_drag_data_get),
-                    list);
-
-  g_signal_connect (widget,
-                    "drag-failed",
-                    G_CALLBACK (carrick_list_drag_failed),
-                    list);
-
   g_signal_connect (widget,
                     "drag-end",
                     G_CALLBACK (carrick_list_drag_end),
                     list);
 
+  /* define a drag destination */
+  gtk_drag_dest_set (widget,
+                     GTK_DEST_DEFAULT_ALL,
+                     carrick_targets,
+                     G_N_ELEMENTS (carrick_targets),
+                     GDK_ACTION_MOVE);
+  g_signal_connect (widget,
+                    "drag-drop",
+                    G_CALLBACK (carrick_list_drag_drop),
+                    list);
+
+  /* listen to activate so we can deactivate other items in list */
   g_signal_connect (widget,
                     "activate",
                     G_CALLBACK (_list_active_changed),
@@ -281,134 +332,10 @@ carrick_list_add_item (CarrickList *list,
 }
 
 
-static gboolean
-carrick_list_drag_drop (GtkWidget       *widget,
-                        GdkDragContext  *context,
-                        gint             x,
-                        gint             y,
-                        guint            time)
-{
-  GdkAtom target, carrick_target_type;
-
-  target = gtk_drag_dest_find_target (widget,
-                                      context,
-                                      NULL);
-  carrick_target_type = gdk_atom_intern_static_string (CARRICK_DRAG_TARGET);
-
-  if (target == carrick_target_type)
-  {
-    gtk_drag_get_data (widget,
-                       context,
-                       target,
-                       time);
-    return TRUE;
-  }
-
-  return FALSE;
-}
-
-/*
- * FIXME: This is all very nasty, someone please tell me a better way to
- * do it....
- */
-
-void
-_is_drop_target (GtkWidget *child,
-                 gpointer   data)
-{
-  CarrickListPrivate *priv = LIST_PRIVATE (gtk_widget_get_parent (child));
-  gint y = GPOINTER_TO_UINT (data);
-  gpointer pos;
-
-  if (child->allocation.y <= y &&
-      child->allocation.y + child->allocation.height > y)
-  {
-    pos = g_object_get_data(G_OBJECT (child),
-                            "order");
-    priv->dropped_new_order = GPOINTER_TO_UINT (pos);
-  }
-}
-
-void
-_verify_orders (GtkWidget *child,
-                gpointer data)
-{
-  CarrickListPrivate *priv = LIST_PRIVATE (gtk_widget_get_parent (child));
-  gpointer pos = g_object_get_data (G_OBJECT (child),
-                                    "order");
-  guint order = GPOINTER_TO_UINT (pos);
-
-  if (order!= priv->counter)
-  {
-    order = priv->counter;
-    g_object_set_data (G_OBJECT (child),
-                       "order",
-                       GUINT_TO_POINTER (order));
-  }
-
-  priv->counter++;
-}
-
-static void
-carrick_list_drag_data_received (GtkWidget        *widget,
-                                 GdkDragContext   *context,
-                                 gint              x,
-                                 gint              y,
-                                 GtkSelectionData *data,
-                                 guint             info,
-                                 guint             time)
-{
-  CarrickListPrivate *priv = LIST_PRIVATE (widget);
-  GtkWidget *source;
-
-  source = gtk_drag_get_source_widget (context);
-
-  if (source &&
-      data->target == gdk_atom_intern_static_string (CARRICK_DRAG_TARGET))
-  {
-    gtk_container_foreach (GTK_CONTAINER (widget),
-                           _is_drop_target,
-                           GUINT_TO_POINTER (y));
-
-    g_object_ref (source);
-    gtk_container_remove (GTK_CONTAINER (priv->drag_window),
-                          source);
-    gtk_widget_set_state (GTK_WIDGET (source),
-                          GTK_STATE_NORMAL);
-    gtk_box_pack_start (GTK_BOX (widget),
-                        source,
-                        TRUE,
-                        TRUE,
-                        0);
-    gtk_box_reorder_child (GTK_BOX (widget),
-                           source,
-                           priv->dropped_new_order);
-    g_object_unref (source);
-
-    priv->counter = 0;
-    gtk_container_foreach (GTK_CONTAINER (widget),
-                           _verify_orders,
-                           NULL);
-
-    gtk_drag_finish (context,
-                     TRUE,
-                     FALSE,
-                     time);
-  }
-  else
-  {
-    gtk_drag_finish (context,
-                     FALSE,
-                     FALSE,
-                     time);
-  }
-}
-
 static void
 carrick_list_class_init (CarrickListClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (CarrickListPrivate));
 
@@ -416,8 +343,6 @@ carrick_list_class_init (CarrickListClass *klass)
   object_class->set_property = carrick_list_set_property;
   object_class->dispose = carrick_list_dispose;
   object_class->finalize = carrick_list_finalize;
-  widget_class->drag_drop = carrick_list_drag_drop;
-  widget_class->drag_data_received = carrick_list_drag_data_received;
 }
 
 static void
@@ -425,12 +350,20 @@ carrick_list_init (CarrickList *self)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (self);
 
-  priv->found = FALSE;
-  /*gtk_drag_dest_set (GTK_WIDGET (self),
+  /* add a drag target for dropping below any real
+     items in the list*/
+  gtk_drag_dest_set (GTK_WIDGET (self),
                      GTK_DEST_DEFAULT_ALL,
                      carrick_targets,
                      G_N_ELEMENTS (carrick_targets),
-                     GDK_ACTION_MOVE);*/
+                     GDK_ACTION_MOVE);
+  g_signal_connect (self,
+                    "drag-drop",
+                    G_CALLBACK (carrick_list_drag_drop),
+                    self);
+
+
+  priv->found = NULL;
 }
 
 GtkWidget*
