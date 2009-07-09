@@ -14,3 +14,4 @@ GenericName=Connection manager
 NoDisplay=true
 X-GNOME-Autostart-enable=true
 Name[en_GB]=Carrick connection panel.desktop
+OnlyShowIn=MOBLIN;
