@@ -293,11 +293,11 @@ carrick_list_add_item (CarrickList *list,
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
   /* define a drag source */
-  gtk_drag_source_set (widget,
+  /*gtk_drag_source_set (widget,
                        GDK_BUTTON1_MASK,
                        carrick_targets,
                        G_N_ELEMENTS (carrick_targets),
-                       GDK_ACTION_MOVE);
+                       GDK_ACTION_MOVE);*/
   g_signal_connect (widget,
                     "drag-begin",
                     G_CALLBACK (carrick_list_drag_begin),
@@ -308,11 +308,11 @@ carrick_list_add_item (CarrickList *list,
                     list);
 
   /* define a drag destination */
-  gtk_drag_dest_set (widget,
+  /*gtk_drag_dest_set (widget,
                      GTK_DEST_DEFAULT_ALL,
                      carrick_targets,
                      G_N_ELEMENTS (carrick_targets),
-                     GDK_ACTION_MOVE);
+                     GDK_ACTION_MOVE);*/
   g_signal_connect (widget,
                     "drag-drop",
                     G_CALLBACK (carrick_list_drag_drop),

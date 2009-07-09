@@ -73,7 +73,7 @@ struct _CarrickServiceItemPrivate
   gboolean            hover;
   GdkColor            prelight_color;
   GdkColor            active_color;
-  GdkCursor          *hand_cursor;
+  /*GdkCursor          *hand_cursor;*/
 };
 
 enum
@@ -692,11 +692,11 @@ carrick_service_item_dispose (GObject *object)
 
   carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object), NULL);
 
-  if (priv->hand_cursor)
+  /*if (priv->hand_cursor)
   {
     gdk_cursor_unref (priv->hand_cursor);
     priv->hand_cursor = NULL;
-  }
+    }*/
 
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
@@ -720,7 +720,7 @@ carrick_service_item_enter_notify_event (GtkWidget        *widget,
   gtk_widget_modify_bg (priv->expando,
                         GTK_STATE_NORMAL,
                         &priv->prelight_color);
-  gdk_window_set_cursor (widget->window, priv->hand_cursor);
+  /*gdk_window_set_cursor (widget->window, priv->hand_cursor);*/
 
   return TRUE;
 }
@@ -819,7 +819,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->service = NULL;
   priv->failed = FALSE;
 
-  priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
+  /*priv->hand_cursor = gdk_cursor_new (GDK_HAND1);*/
 
   box = gtk_hbox_new (FALSE,
                       6);
