@@ -35,6 +35,34 @@ f */
 
 #define HOVER_TIMEOUT  800
 
+static ClutterActor *table_find_child (ClutterContainer *, gint, gint);
+static gint          tablist_sort_func (gconstpointer a, gconstpointer b);
+static gint mnb_switcher_get_active_workspace (MnbSwitcher *switcher);
+static NbtkTable *mnb_switcher_append_workspace (MnbSwitcher *switcher);
+
+struct _MnbSwitcherPrivate {
+  MutterPlugin *plugin;
+  NbtkWidget   *table;
+  NbtkWidget   *new_workspace;
+  NbtkWidget   *new_label;
+  NbtkTooltip  *active_tooltip;
+  GList        *last_workspaces;
+  GList        *global_tab_list;
+
+  ClutterActor *last_focused;
+  MutterWindow *selected;
+  GList        *tab_list;
+
+  guint         show_completed_id;
+  guint         hide_panel_cb_id;
+
+  gboolean      dnd_in_progress : 1;
+  gboolean      constructing    : 1;
+  gboolean      in_alt_grab     : 1;
+
+  gint          active_ws;
+};
+
 /*
  * MnbSwitcherApp
  *
@@ -73,11 +101,43 @@ struct _MnbSwitcherAppPrivate
   ClutterActor *tooltip;
   guint         focus_id;
   guint         raised_id;
+
+  /* Draggable properties */
+  guint               threshold;
+  NbtkDragAxis        axis;
+  NbtkDragContainment containment;
+  ClutterActorBox     area;
+
+  gboolean            enabled               : 1;
+  gboolean            ignore_button_release : 1; /* Set to ingore release
+                                                  * immediately following drop
+                                                  */
+
+  gint                orig_col;
+  gint                orig_row;
+  ClutterActor       *orig_parent;
+  ClutterActor       *clone;
+};
+
+enum
+{
+  APP_PROP_0 = 0,
+
+  APP_PROP_DRAG_THRESHOLD,
+  APP_PROP_AXIS,
+  APP_PROP_CONTAINMENT_TYPE,
+  APP_PROP_CONTAINMENT_AREA,
+  APP_PROP_ENABLED
 };
 
 GType mnb_switcher_app_get_type (void);
+static void nbtk_draggable_iface_init (NbtkDraggableIface *iface);
 
-G_DEFINE_TYPE (MnbSwitcherApp, mnb_switcher_app, NBTK_TYPE_BIN)
+G_DEFINE_TYPE_WITH_CODE (MnbSwitcherApp,
+                         mnb_switcher_app,
+                         NBTK_TYPE_BIN,
+                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_DRAGGABLE,
+                                                nbtk_draggable_iface_init));
 
 #define MNB_SWITCHER_APP_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_APP,\
@@ -141,16 +201,343 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
 }
 
 static void
+mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
+                             gfloat               event_x,
+                             gfloat               event_y,
+                             gint                 event_button,
+                             ClutterModifierType  modifiers)
+{
+  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (draggable)->priv;
+  ClutterActor          *self     = CLUTTER_ACTOR (draggable);
+  MnbSwitcherPrivate    *priv     = app_priv->switcher->priv;
+  ClutterActor          *stage    = clutter_stage_get_default ();
+  ClutterActor          *parent;
+  ClutterActor          *clone;
+  gfloat                 x, y, width, height;
+  gint                   col, row;
+
+  priv->dnd_in_progress = TRUE;
+
+  if (app_priv->hover_timeout_id)
+    {
+      g_source_remove (app_priv->hover_timeout_id);
+      app_priv->hover_timeout_id = 0;
+    }
+
+  if (CLUTTER_ACTOR_IS_MAPPED (app_priv->tooltip))
+    {
+      nbtk_tooltip_hide (NBTK_TOOLTIP (app_priv->tooltip));
+
+      if (priv->active_tooltip == (NbtkTooltip*)app_priv->tooltip)
+        priv->active_tooltip = NULL;
+    }
+
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace),
+                          "switcher-workspace-new-active");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label),
+                          "workspace-title-new-active");
+
+  /*
+   * Store the original parent and row/column, so we can put the actor
+   * back if the d&d is cancelled.
+   */
+  parent = clutter_actor_get_parent (self);
+
+  clutter_container_child_get (CLUTTER_CONTAINER (parent), self,
+                               "col", &col,
+                               "row", &row, NULL);
+
+  app_priv->orig_parent = parent;
+  app_priv->orig_col = col;
+  app_priv->orig_row = row;
+
+  /*
+   * Reparent to stage, preserving size and position
+   */
+  clutter_actor_get_size (self, &width, &height);
+
+  if (!clutter_actor_transform_stage_point (self, event_x, event_y, &x, &y))
+    {
+      x = event_x;
+      y = event_y;
+    }
+  else
+    {
+      x = event_x - x;
+      y = event_y - y;
+    }
+
+  /*
+   * Create a clone of ourself and put it in our present place in the Zone.
+   */
+  clone = clutter_clone_new (self);
+  app_priv->clone = clone;
+  clutter_actor_set_opacity (clone, 0x7f);
+  clutter_actor_set_size (clone, width, height);
+  nbtk_table_add_actor (NBTK_TABLE (parent), clone, row, col);
+  clutter_container_child_set (CLUTTER_CONTAINER (parent), clone,
+                               "y-fill", FALSE,
+                               "x-fill", FALSE,  NULL);
+
+  /*
+   * Release self from the Zone by reparenting to stage, so we can move about
+   */
+  clutter_actor_reparent (self, stage);
+  clutter_actor_set_position (self, x, y);
+  clutter_actor_set_size (self, width, height);
+}
+
+static void
+mnb_switcher_app_drag_motion (NbtkDraggable *draggable,
+                              gfloat         delta_x,
+                              gfloat         delta_y)
+{
+  clutter_actor_move_by (CLUTTER_ACTOR (draggable), delta_x, delta_y);
+}
+
+static void
+mnb_switcher_app_drag_end (NbtkDraggable *draggable,
+                           gfloat         event_x,
+                           gfloat         event_y)
+{
+  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (draggable)->priv;
+  ClutterActor          *self     = CLUTTER_ACTOR (draggable);
+  MnbSwitcherPrivate    *priv     = app_priv->switcher->priv;
+  ClutterActor          *parent;
+  ClutterActor          *clone;
+
+  if (!priv->dnd_in_progress)
+    {
+      /*
+       * The drag-end signal is emited on button release even when there was no
+       * drag !
+       */
+      return;
+    }
+
+  clone = app_priv->clone;
+  app_priv->clone = NULL;
+
+  priv->dnd_in_progress = FALSE;
+
+  /*
+   * See if there was a drop (if not, we are still parented to stage)
+   */
+  parent = clutter_actor_get_parent (self);
+
+  if (parent == clutter_stage_get_default ())
+    {
+      ClutterActor     *label;
+      ClutterContainer *orig_parent = CLUTTER_CONTAINER (app_priv->orig_parent);
+      gint active_ws;
+      gint col = app_priv->orig_col;
+
+      /*
+       * This is the case where the drop was cancelled; put ourselves back
+       * where we were.
+       */
+      g_object_ref (self);
+
+      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
+      nbtk_table_add_actor (NBTK_TABLE (orig_parent), self,
+                            app_priv->orig_row, col);
+
+      clutter_container_child_set (orig_parent, self,
+                                   "y-fill", FALSE,
+                                   "x-fill", FALSE,  NULL);
+
+      label = table_find_child (CLUTTER_CONTAINER (priv->table), 0, col);
+
+      active_ws = mnb_switcher_get_active_workspace (app_priv->switcher);
+
+      if (active_ws == col)
+        {
+          clutter_actor_set_name (CLUTTER_ACTOR (orig_parent),
+                                  "switcher-workspace-active");
+
+          if (label)
+            clutter_actor_set_name (label, "workspace-title-active");
+        }
+      else
+        {
+          clutter_actor_set_name (CLUTTER_ACTOR (orig_parent), "");
+
+          if (label)
+            clutter_actor_set_name (label, "");
+        }
+
+      g_object_unref (self);
+
+    }
+
+  /*
+   * Now get rid of the clone that we put in our place
+   */
+  parent = clutter_actor_get_parent (clone);
+  clutter_container_remove_actor (CLUTTER_CONTAINER (parent), clone);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
+}
+
+static void
+nbtk_draggable_iface_init (NbtkDraggableIface *iface)
+{
+  iface->drag_begin  = mnb_switcher_app_drag_begin;
+  iface->drag_motion = mnb_switcher_app_drag_motion;
+  iface->drag_end    = mnb_switcher_app_drag_end;
+}
+
+static void
+mnb_switcher_app_set_property (GObject      *gobject,
+                               guint         prop_id,
+                               const GValue *value,
+                               GParamSpec   *pspec)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case APP_PROP_DRAG_THRESHOLD:
+      priv->threshold = g_value_get_uint (value);
+      break;
+
+    case APP_PROP_AXIS:
+      priv->axis = g_value_get_enum (value);
+      break;
+
+    case APP_PROP_CONTAINMENT_TYPE:
+      priv->containment = g_value_get_enum (value);
+      break;
+
+    case APP_PROP_CONTAINMENT_AREA:
+      {
+        ClutterActorBox *box = g_value_get_boxed (value);
+
+        if (box)
+          priv->area = *box;
+        else
+          memset (&priv->area, 0, sizeof (ClutterActorBox));
+      }
+      break;
+
+    case APP_PROP_ENABLED:
+      priv->enabled = g_value_get_boolean (value);
+      if (priv->enabled)
+        nbtk_draggable_enable (NBTK_DRAGGABLE (gobject));
+      else
+        nbtk_draggable_disable (NBTK_DRAGGABLE (gobject));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+mnb_switcher_app_get_property (GObject    *gobject,
+                               guint       prop_id,
+                               GValue     *value,
+                               GParamSpec *pspec)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case APP_PROP_DRAG_THRESHOLD:
+      g_value_set_uint (value, priv->threshold);
+      break;
+
+    case APP_PROP_AXIS:
+      g_value_set_enum (value, priv->axis);
+      break;
+
+    case APP_PROP_CONTAINMENT_TYPE:
+      g_value_set_enum (value, priv->containment);
+      break;
+
+    case APP_PROP_CONTAINMENT_AREA:
+      g_value_set_boxed (value, &priv->area);
+      break;
+
+    case APP_PROP_ENABLED:
+      g_value_set_boolean (value, priv->enabled);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+/*
+ * Closures for ClutterActor::button-press/release-event
+ *
+ * Even when the the press-motion-release sequence is interpreted as a drag,
+ * we still get the press and release events because of the way the
+ * NbtkDraggable implementation is done. So, we have a custom closures that
+ * prevent the events from propagating.
+ */
+static gboolean
+mnb_switcher_app_button_press_event (ClutterActor         *actor,
+                                     ClutterButtonEvent   *event)
+{
+  /*
+   * We never ever want press events propagated; the way d&d works, they are
+   * pretty meaningless, and any custom handling needs to be done on the
+   * button releases anyway.
+   */
+  return TRUE;
+}
+
+static gboolean
+mnb_switcher_app_button_release_event (ClutterActor         *actor,
+                                       ClutterButtonEvent   *event)
+{
+  MnbSwitcherAppPrivate *priv   = MNB_SWITCHER_APP (actor)->priv;
+  gboolean               retval = priv->ignore_button_release;
+
+  /*
+   * If the ingore_button_release flag is set, we stop it from propagating
+   * to parents.
+   */
+  priv->ignore_button_release = FALSE;
+
+  return retval;
+}
+
+static void
 mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  object_class->dispose = mnb_switcher_app_dispose;
+  object_class->dispose             = mnb_switcher_app_dispose;
+  object_class->get_property        = mnb_switcher_app_get_property;
+  object_class->set_property        = mnb_switcher_app_set_property;
 
-  actor_class->allocate = mnb_switcher_app_allocate;
+  actor_class->allocate             = mnb_switcher_app_allocate;
+  actor_class->button_release_event = mnb_switcher_app_button_release_event;
+  actor_class->button_press_event   = mnb_switcher_app_button_press_event;
 
   g_type_class_add_private (klass, sizeof (MnbSwitcherAppPrivate));
+
+  g_object_class_override_property (object_class,
+                                    APP_PROP_DRAG_THRESHOLD,
+                                    "drag-threshold");
+  g_object_class_override_property (object_class,
+                                    APP_PROP_AXIS,
+                                    "axis");
+  g_object_class_override_property (object_class,
+                                    APP_PROP_CONTAINMENT_TYPE,
+                                    "containment-type");
+  g_object_class_override_property (object_class,
+                                    APP_PROP_CONTAINMENT_AREA,
+                                    "containment-area");
+  g_object_class_override_property (object_class,
+                                    APP_PROP_ENABLED,
+                                    "enabled");
 }
 
 static void
@@ -159,6 +546,11 @@ mnb_switcher_app_init (MnbSwitcherApp *self)
   MnbSwitcherAppPrivate *priv;
 
   priv = self->priv = MNB_SWITCHER_APP_GET_PRIVATE (self);
+
+  priv->threshold = 5;
+  priv->axis = 0;
+  priv->containment = NBTK_DISABLE_CONTAINMENT;
+  priv->enabled = TRUE;
 }
 
 #define MNB_TYPE_SWITCHER_ZONE                 (mnb_switcher_zone_get_type ())
@@ -188,11 +580,25 @@ struct _MnbSwitcherZoneClass
 
 struct _MnbSwitcherZonePrivate
 {
+  MnbSwitcher *switcher;
+
+  gboolean     enabled  : 1;
+  gboolean     new_zone : 1;
+};
+
+enum
+{
+  ZONE_PROP_0 = 0,
+  ZONE_PROP_ENABLED
 };
 
 GType mnb_switcher_zone_get_type (void);
 
-G_DEFINE_TYPE (MnbSwitcherZone, mnb_switcher_zone, NBTK_TYPE_TABLE)
+static void nbtk_droppable_iface_init (NbtkDroppableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MnbSwitcherZone, mnb_switcher_zone, NBTK_TYPE_TABLE,
+                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_DROPPABLE,
+                                                nbtk_droppable_iface_init));
 
 #define MNB_SWITCHER_ZONE_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_ZONE,\
@@ -205,16 +611,263 @@ mnb_switcher_zone_dispose (GObject *object)
 }
 
 static void
+mnb_switcher_zone_get_preferred_width (ClutterActor *actor,
+                                       gfloat for_height,
+                                       gfloat *min_width,
+                                       gfloat *pref_width)
+{
+  /* This is is a nasty hack to ignore the size of the children.
+   * It allows the parent to allocate each of the zones equally, because they
+   * all report the same width */
+
+  if (min_width)
+    *min_width = 0;
+
+  if (pref_width)
+    *pref_width = 0;
+}
+
+static void
+mnb_switcher_zone_over_in (NbtkDroppable *droppable,
+                           NbtkDraggable *draggable)
+{
+  ClutterActor *self = CLUTTER_ACTOR (droppable);
+  ClutterActor *parent;
+  ClutterActor *label;
+  gint          col;
+
+  parent = clutter_actor_get_parent (self);
+
+  clutter_container_child_get (CLUTTER_CONTAINER (parent), self,
+                               "col", &col, NULL);
+
+  label = table_find_child (CLUTTER_CONTAINER (parent), 0, col);
+
+  clutter_actor_set_name (CLUTTER_ACTOR (self), "switcher-workspace-new-over");
+
+  if (label)
+    clutter_actor_set_name (label, "workspace-title-new-over");
+}
+
+static void
+mnb_switcher_zone_over_out (NbtkDroppable *droppable,
+                          NbtkDraggable *draggable)
+{
+  MnbSwitcherZonePrivate *priv = MNB_SWITCHER_ZONE (droppable)->priv;
+  ClutterActor *self = CLUTTER_ACTOR (droppable);
+  ClutterActor *parent;
+  ClutterActor *label;
+  gint          col;
+  gint          active_ws;
+
+  parent = clutter_actor_get_parent (self);
+
+  clutter_container_child_get (CLUTTER_CONTAINER (parent),
+                               self, "col", &col, NULL);
+
+  label = table_find_child (CLUTTER_CONTAINER (parent), 0, col);
+
+  active_ws = mnb_switcher_get_active_workspace (priv->switcher);
+
+  if (active_ws == col)
+    {
+      clutter_actor_set_name (CLUTTER_ACTOR (self),
+                              "switcher-workspace-active");
+
+      if (label)
+        clutter_actor_set_name (label, "workspace-title-active");
+    }
+  else
+    {
+      clutter_actor_set_name (CLUTTER_ACTOR (self), "");
+
+      if (label)
+        clutter_actor_set_name (label, "");
+    }
+}
+
+static void
+mnb_switcher_zone_drop (NbtkDroppable       *droppable,
+                        NbtkDraggable       *draggable,
+                        gfloat               event_x,
+                        gfloat               event_y,
+                        gint                 button,
+                        ClutterModifierType  modifiers)
+{
+  MnbSwitcher           *switcher =
+    MNB_SWITCHER_ZONE (droppable)->priv->switcher;
+  MnbSwitcherPrivate    *priv = switcher->priv;
+  MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (draggable)->priv;
+  ClutterChildMeta      *meta;
+  ClutterActor          *zone_parent;
+  ClutterActor          *app_parent;
+  ClutterActor          *zone_actor = CLUTTER_ACTOR (droppable);
+  ClutterActor          *app_actor = CLUTTER_ACTOR (draggable);
+  MnbSwitcherZone       *zone = MNB_SWITCHER_ZONE (droppable);
+  MetaWindow            *meta_win;
+  gint                   col;
+  guint32                timestamp;
+
+  if (!(meta_win = mutter_window_get_meta_window (app_priv->mw)))
+    {
+      g_warning ("No MutterWindow associated with this item.");
+      return;
+    }
+
+  /*
+   * We will get a ButtonPress event just after this, which we must ignore.
+   */
+  app_priv->ignore_button_release = TRUE;
+
+  zone_parent = clutter_actor_get_parent (zone_actor);
+  app_parent = clutter_actor_get_parent (app_actor);
+
+  g_assert (NBTK_IS_TABLE (zone_parent));
+
+  meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (zone_parent),
+					   zone_actor);
+
+  g_object_get (meta, "col", &col, NULL);
+
+  if (!zone->priv->new_zone)
+    {
+      ClutterActor *label;
+      gint          row = nbtk_table_get_row_count (NBTK_TABLE (droppable));
+      gint          active_ws;
+
+      g_object_ref (draggable);
+
+      clutter_container_remove_actor (CLUTTER_CONTAINER (app_parent),
+                                      app_actor);
+      nbtk_table_add_actor (NBTK_TABLE (droppable), app_actor, row, 0);
+
+      clutter_container_child_set (CLUTTER_CONTAINER (droppable), app_actor,
+                                   "y-fill", FALSE, "x-fill", FALSE,  NULL);
+
+      label = table_find_child (CLUTTER_CONTAINER (zone_parent), 0, col);
+
+      active_ws = mnb_switcher_get_active_workspace (switcher);
+
+      if (active_ws == col)
+        {
+          clutter_actor_set_name (CLUTTER_ACTOR (zone_actor),
+                                  "switcher-workspace-active");
+
+          if (label)
+            clutter_actor_set_name (label, "workspace-title-active");
+        }
+      else
+        {
+          clutter_actor_set_name (CLUTTER_ACTOR (zone_actor), "");
+
+          if (label)
+            clutter_actor_set_name (label, "");
+        }
+      g_object_unref (draggable);
+    }
+  else
+    {
+      NbtkTable *new_ws;
+
+      new_ws = mnb_switcher_append_workspace (switcher);
+
+      g_object_ref (draggable);
+
+      clutter_container_remove_actor (CLUTTER_CONTAINER (app_parent),
+                                      app_actor);
+      nbtk_table_add_actor (new_ws, app_actor, 1, 0);
+      clutter_container_child_set (CLUTTER_CONTAINER (new_ws), app_actor,
+                                   "y-fill", FALSE, "x-fill", FALSE,  NULL);
+
+      clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
+      clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
+
+      g_object_unref (draggable);
+    }
+
+  timestamp = clutter_x11_get_current_event_time ();
+  meta_window_change_workspace_by_index (meta_win, col, TRUE, timestamp);
+
+  if (priv->tab_list)
+    {
+      priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
+    }
+}
+
+static void
+nbtk_droppable_iface_init (NbtkDroppableIface *iface)
+{
+  iface->over_in  = mnb_switcher_zone_over_in;
+  iface->over_out = mnb_switcher_zone_over_out;
+  iface->drop     = mnb_switcher_zone_drop;
+}
+
+static void
+mnb_switcher_zone_set_property (GObject      *gobject,
+                                guint         prop_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
+{
+  MnbSwitcherZonePrivate *priv = MNB_SWITCHER_ZONE (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case ZONE_PROP_ENABLED:
+      priv->enabled = g_value_get_boolean (value);
+      if (priv->enabled)
+        nbtk_droppable_enable (NBTK_DROPPABLE (gobject));
+      else
+        nbtk_droppable_disable (NBTK_DROPPABLE (gobject));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+mnb_switcher_zone_get_property (GObject    *gobject,
+                                guint       prop_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
+{
+  MnbSwitcherZonePrivate *priv = MNB_SWITCHER_ZONE (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case ZONE_PROP_ENABLED:
+      g_value_set_boolean (value, priv->enabled);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 mnb_switcher_zone_class_init (MnbSwitcherZoneClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass     *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  object_class->dispose = mnb_switcher_zone_dispose;
+  object_class->dispose            = mnb_switcher_zone_dispose;
+  object_class->get_property       = mnb_switcher_zone_get_property;
+  object_class->set_property       = mnb_switcher_zone_set_property;
+  actor_class->get_preferred_width = mnb_switcher_zone_get_preferred_width;
+
+  g_type_class_add_private (klass, sizeof (MnbSwitcherZonePrivate));
+
+  g_object_class_override_property (object_class,
+                                    ZONE_PROP_ENABLED,
+                                    "enabled");
 }
 
 static void
 mnb_switcher_zone_init (MnbSwitcherZone *self)
 {
+  self->priv = MNB_SWITCHER_ZONE_GET_PRIVATE (self);
 }
 
 G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
@@ -229,28 +882,12 @@ static void mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
                                               MetaKeyBinding *binding,
                                               gpointer        data);
 
-struct _MnbSwitcherPrivate {
-  MutterPlugin *plugin;
-  NbtkWidget   *table;
-  NbtkWidget   *new_workspace;
-  NbtkWidget   *new_label;
-  NbtkTooltip  *active_tooltip;
-  GList        *last_workspaces;
-  GList        *global_tab_list;
+static gint
+mnb_switcher_get_active_workspace (MnbSwitcher *switcher)
+{
+  return switcher->priv->active_ws;
+}
 
-  ClutterActor *last_focused;
-  MutterWindow *selected;
-  GList        *tab_list;
-
-  guint         show_completed_id;
-  guint         hide_panel_cb_id;
-
-  gboolean      dnd_in_progress : 1;
-  gboolean      constructing    : 1;
-  gboolean      in_alt_grab     : 1;
-
-  gint          active_ws;
-};
 
 struct input_data
 {
@@ -327,6 +964,9 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   if (priv->dnd_in_progress)
     return FALSE;
 
+  if (app_priv->ignore_button_release)
+    return FALSE;
+
   window           = mutter_window_get_meta_window (mw);
   screen           = meta_window_get_screen (window);
   workspace        = meta_window_get_workspace (window);
@@ -346,62 +986,6 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
     }
 
   return FALSE;
-}
-
-/*
- * DND machinery.
- */
-static void
-dnd_begin_cb (NbtkWidget   *table,
-	      ClutterActor *dragged,
-	      ClutterActor *icon,
-	      gint          x,
-	      gint          y,
-	      gpointer      data)
-{
-  MnbSwitcherPrivate    *priv         = MNB_SWITCHER (data)->priv;
-  MnbSwitcherAppPrivate *dragged_priv = MNB_SWITCHER_APP (dragged)->priv;
-
-  priv->dnd_in_progress = TRUE;
-
-  if (dragged_priv->hover_timeout_id)
-    {
-      g_source_remove (dragged_priv->hover_timeout_id);
-      dragged_priv->hover_timeout_id = 0;
-    }
-
-  if (CLUTTER_ACTOR_IS_MAPPED (dragged_priv->tooltip))
-    {
-      nbtk_tooltip_hide (NBTK_TOOLTIP (dragged_priv->tooltip));
-
-      if (priv->active_tooltip == (NbtkTooltip*)dragged_priv->tooltip)
-        priv->active_tooltip = NULL;
-    }
-
-  clutter_actor_set_opacity (dragged, 0x4f);
-
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace),
-                          "switcher-workspace-new-active");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label),
-                          "workspace-title-new-active");
-}
-
-static void
-dnd_end_cb (NbtkWidget   *table,
-	    ClutterActor *dragged,
-	    ClutterActor *icon,
-	    gint          x,
-	    gint          y,
-	    gpointer      data)
-{
-  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
-
-  priv->dnd_in_progress = FALSE;
-
-  clutter_actor_set_opacity (dragged, 0xff);
-
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
 }
 
 /*
@@ -458,104 +1042,6 @@ tablist_sort_func (gconstpointer a, gconstpointer b)
     return 1;
 
   return 0;
-}
-
-static void
-dnd_dropped_cb (NbtkWidget   *table,
-		ClutterActor *dragged,
-		ClutterActor *icon,
-		gint          x,
-		gint          y,
-		gpointer      data)
-{
-  MnbSwitcher           *switcher = MNB_SWITCHER (data);
-  MnbSwitcherPrivate    *priv = switcher->priv;
-  MnbSwitcherAppPrivate *dragged_priv = MNB_SWITCHER_APP (dragged)->priv;
-  ClutterChildMeta      *meta;
-  ClutterActor          *parent;
-  ClutterActor          *table_actor = CLUTTER_ACTOR (table);
-  MetaWindow            *meta_win;
-  gint                   col;
-  guint32                timestamp;
-
-  if (!(meta_win = mutter_window_get_meta_window (dragged_priv->mw)))
-    {
-      g_warning ("No MutterWindow associated with this item.");
-      return;
-    }
-
-  parent = clutter_actor_get_parent (table_actor);
-
-  g_assert (NBTK_IS_TABLE (parent));
-
-  meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (parent),
-					   table_actor);
-
-  g_object_get (meta, "col", &col, NULL);
-
-  if (priv->tab_list)
-    {
-      priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
-    }
-
-  timestamp = clutter_x11_get_current_event_time ();
-  meta_window_change_workspace_by_index (meta_win, col, TRUE, timestamp);
-}
-
-static NbtkTable *
-mnb_switcher_append_workspace (MnbSwitcher *switcher);
-
-static void
-dnd_new_dropped_cb (NbtkWidget   *table,
-                    ClutterActor *dragged,
-                    ClutterActor *icon,
-                    gint          x,
-                    gint          y,
-                    gpointer      data)
-{
-  MnbSwitcher           *switcher = MNB_SWITCHER (data);
-  MnbSwitcherPrivate    *priv = switcher->priv;
-  MnbSwitcherAppPrivate *dragged_priv = MNB_SWITCHER_APP (dragged)->priv;
-  ClutterChildMeta      *meta, *d_meta;
-  ClutterActor          *parent;
-  ClutterActor          *table_actor = CLUTTER_ACTOR (table);
-  MetaWindow            *meta_win;
-  gint                   col;
-  NbtkTable             *new_ws;
-  guint32                timestamp;
-
-  if (!(meta_win = mutter_window_get_meta_window (dragged_priv->mw)))
-    {
-      g_warning ("No MutterWindow associated with this item.");
-      return;
-    }
-
-  parent = clutter_actor_get_parent (table_actor);
-
-  g_assert (NBTK_IS_TABLE (parent));
-
-  meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (parent),
-					   table_actor);
-  d_meta = clutter_container_get_child_meta (CLUTTER_CONTAINER (table),
-                                             dragged);
-
-  g_object_get (meta, "col", &col, NULL);
-  new_ws = mnb_switcher_append_workspace (switcher);
-
-  g_object_ref (dragged);
-  clutter_container_remove_actor (CLUTTER_CONTAINER (table), dragged);
-  nbtk_table_add_actor (new_ws, dragged, 1, 0);
-  clutter_container_child_set (CLUTTER_CONTAINER (new_ws), dragged,
-                               "y-fill", FALSE, "x-fill", FALSE,  NULL);
-  g_object_unref (dragged);
-
-  if (priv->tab_list)
-    {
-      priv->tab_list = g_list_sort (priv->tab_list, tablist_sort_func);
-    }
-
-  timestamp = clutter_x11_get_current_event_time ();
-  meta_window_change_workspace_by_index (meta_win, col, TRUE, timestamp);
 }
 
 /*
@@ -651,64 +1137,6 @@ table_find_child (ClutterContainer *table, gint row, gint col)
   return child;
 }
 
-static void
-dnd_enter_cb (NbtkWidget   *table,
-              ClutterActor *dragged,
-              ClutterActor *icon,
-              gint          x,
-              gint          y,
-              gpointer      data)
-{
-  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
-  ClutterActor *label;
-  gint          col;
-
-  clutter_container_child_get (CLUTTER_CONTAINER (priv->table),
-                               CLUTTER_ACTOR (table),
-                               "col", &col, NULL);
-
-  label = table_find_child (CLUTTER_CONTAINER (priv->table), 0, col);
-
-  clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-workspace-new-over");
-
-  if (label)
-    clutter_actor_set_name (label, "workspace-title-new-over");
-}
-
-static void
-dnd_leave_cb (NbtkWidget   *table,
-              ClutterActor *dragged,
-              ClutterActor *icon,
-              gint          x,
-              gint          y,
-              gpointer      data)
-{
-  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
-  ClutterActor *label;
-  gint          col;
-
-  clutter_container_child_get (CLUTTER_CONTAINER (priv->table),
-                               CLUTTER_ACTOR (table), "col", &col, NULL);
-
-  label = table_find_child (CLUTTER_CONTAINER (priv->table), 0, col);
-
-  if (priv->active_ws == col)
-    {
-      clutter_actor_set_name (CLUTTER_ACTOR (table),
-                              "switcher-workspace-active");
-
-      if (label)
-        clutter_actor_set_name (label, "workspace-title-active");
-    }
-  else
-    {
-      clutter_actor_set_name (CLUTTER_ACTOR (table), "");
-
-      if (label)
-        clutter_actor_set_name (label, "");
-    }
-}
-
 static NbtkWidget *
 make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
 {
@@ -723,6 +1151,8 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
 
   new_ws = g_object_new (MNB_TYPE_SWITCHER_ZONE, NULL);
 
+  MNB_SWITCHER_ZONE (new_ws)->priv->switcher = switcher;
+
   nbtk_table_set_row_spacing (NBTK_TABLE (new_ws), 6);
   nbtk_table_set_col_spacing (NBTK_TABLE (new_ws), 6);
   clutter_actor_set_reactive (CLUTTER_ACTOR (new_ws), TRUE);
@@ -733,27 +1163,10 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
     clutter_actor_set_name (CLUTTER_ACTOR (new_ws),
                             "switcher-workspace-active");
 
-  nbtk_widget_set_dnd_threshold (new_ws, 5);
-
-  g_signal_connect (new_ws, "dnd-begin",
-                    G_CALLBACK (dnd_begin_cb), switcher);
-
-  g_signal_connect (new_ws, "dnd-end",
-                    G_CALLBACK (dnd_end_cb), switcher);
-
-  g_signal_connect (new_ws, "dnd-dropped",
-                    G_CALLBACK (dnd_dropped_cb), switcher);
-
-  g_signal_connect (new_ws, "dnd-enter",
-                    G_CALLBACK (dnd_enter_cb), switcher);
-
-  g_signal_connect (new_ws, "dnd-leave",
-                    G_CALLBACK (dnd_leave_cb), switcher);
-
   nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws), 1, col);
 
   /* switch workspace when the workspace is selected */
-  g_signal_connect_data (new_ws, "button-press-event",
+  g_signal_connect_data (new_ws, "button-release-event",
                          G_CALLBACK (workspace_input_cb), input_data,
                          (GClosureNotify)g_free, 0);
 
@@ -791,7 +1204,7 @@ make_workspace_label (MnbSwitcher *switcher, gboolean active, gint col)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (ws_label), TRUE);
 
-  g_signal_connect_data (ws_label, "button-press-event",
+  g_signal_connect_data (ws_label, "button-release-event",
                          G_CALLBACK (workspace_input_cb), input_data,
                          (GClosureNotify) g_free, 0);
 
@@ -897,9 +1310,9 @@ screen_n_workspaces_notify (MetaScreen *screen,
   n_o_workspaces = g_list_length (o_workspaces);
 
   if (n_c_workspaces < 8)
-      nbtk_widget_set_dnd_threshold (switcher->priv->new_workspace, 5);
+    nbtk_droppable_enable (NBTK_DROPPABLE (switcher->priv->new_workspace));
   else
-      nbtk_widget_set_dnd_threshold (switcher->priv->new_workspace, 0);
+    nbtk_droppable_disable (NBTK_DROPPABLE (switcher->priv->new_workspace));
 
   if (n_o_workspaces < n_c_workspaces)
     {
@@ -970,36 +1383,6 @@ screen_n_workspaces_notify (MetaScreen *screen,
 
   g_list_free (switcher->priv->last_workspaces);
   switcher->priv->last_workspaces = g_list_copy (c_workspaces);
-}
-
-static void
-dnd_new_enter_cb (NbtkWidget   *table,
-                  ClutterActor *dragged,
-                  ClutterActor *icon,
-                  gint          x,
-                  gint          y,
-                  gpointer      data)
-{
-  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
-
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace),
-                          "switcher-workspace-new-over");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label),
-                          "workspace-title-new-over");
-}
-
-static void
-dnd_new_leave_cb (NbtkWidget   *table,
-                  ClutterActor *dragged,
-                  ClutterActor *icon,
-                  gint          x,
-                  gint          y,
-                  gpointer      data)
-{
-  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
-
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_workspace), "");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->new_label), "");
 }
 
 static void
@@ -1162,6 +1545,9 @@ mnb_switcher_show (ClutterActor *self)
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 7);
 
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
+
+  mnb_drop_down_set_child (MNB_DROP_DOWN (self),
+                           CLUTTER_ACTOR (table));
 
   ws_count = meta_screen_get_n_workspaces (screen);
   priv->active_ws = active_ws = meta_screen_get_active_workspace_index (screen);
@@ -1391,6 +1777,8 @@ mnb_switcher_show (ClutterActor *self)
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
                             win_locs[ws_indx].row, win_locs[ws_indx].col);
 
+      nbtk_draggable_enable (NBTK_DRAGGABLE (clone));
+
       win_locs[ws_indx].row++;
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
                                    "y-fill", FALSE, "x-fill", FALSE, NULL);
@@ -1441,6 +1829,10 @@ mnb_switcher_show (ClutterActor *self)
   {
     NbtkWidget *new_ws = g_object_new (MNB_TYPE_SWITCHER_ZONE, NULL);
     NbtkWidget *label;
+    MnbSwitcherZone *zone = MNB_SWITCHER_ZONE (new_ws);
+
+    zone->priv->switcher = MNB_SWITCHER (self);
+    zone->priv->new_zone = TRUE;
 
     label = NBTK_WIDGET (nbtk_bin_new ());
     clutter_actor_set_width (CLUTTER_ACTOR (label), 22);
@@ -1459,30 +1851,15 @@ mnb_switcher_show (ClutterActor *self)
 
     clutter_actor_set_reactive (CLUTTER_ACTOR (new_ws), TRUE);
 
-    if (ws_count < 8)
-      nbtk_widget_set_dnd_threshold (new_ws, 5);
-
-    g_signal_connect (new_ws, "dnd-begin",
-                      G_CALLBACK (dnd_begin_cb), self);
-
-    g_signal_connect (new_ws, "dnd-end",
-                      G_CALLBACK (dnd_end_cb), self);
-
-    g_signal_connect (new_ws, "dnd-dropped",
-                      G_CALLBACK (dnd_new_dropped_cb), self);
-
-    g_signal_connect (new_ws, "dnd-enter",
-                      G_CALLBACK (dnd_new_enter_cb), self);
-
-    g_signal_connect (new_ws, "dnd-leave",
-                      G_CALLBACK (dnd_new_leave_cb), self);
-
     priv->new_workspace = new_ws;
     priv->new_label = label;
 
     clutter_actor_set_width (CLUTTER_ACTOR (new_ws), 22);
     nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws),
                           1, ws_count);
+
+    if (ws_count < 8)
+      nbtk_droppable_enable (NBTK_DROPPABLE (new_ws));
 
     clutter_container_child_set (CLUTTER_CONTAINER (table),
                                  CLUTTER_ACTOR (new_ws),
@@ -1506,9 +1883,6 @@ mnb_switcher_show (ClutterActor *self)
   if (!switcher_empty)
     clutter_actor_set_height (CLUTTER_ACTOR (table),
                               screen_height - TOOLBAR_HEIGHT * 1.5);
-
-  mnb_drop_down_set_child (MNB_DROP_DOWN (self),
-                           CLUTTER_ACTOR (table));
 
   priv->constructing = FALSE;
 
