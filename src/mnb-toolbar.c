@@ -2087,13 +2087,13 @@ mnb_toolbar_constructed (GObject *self)
 
   mnb_toolbar_update_time_date (priv);
 
-  clutter_actor_set_position (CLUTTER_ACTOR (priv->time),
-       (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->time)) /
-                              2, 8);
+  clutter_actor_set_anchor_point_from_gravity (CLUTTER_ACTOR(priv->time),
+                                               CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_position (CLUTTER_ACTOR (priv->time), 192 / 2, 16);
 
-  clutter_actor_set_position (CLUTTER_ACTOR (priv->date),
-       (192 / 2) - clutter_actor_get_width (CLUTTER_ACTOR (priv->date)) /
-                              2, 40);
+  clutter_actor_set_anchor_point_from_gravity (CLUTTER_ACTOR(priv->date),
+                                               CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_position (CLUTTER_ACTOR (priv->date), 192 / 2, 48);
 
   nbtk_bin_set_alignment (NBTK_BIN (self), NBTK_ALIGN_LEFT, NBTK_ALIGN_TOP);
   nbtk_bin_set_child (NBTK_BIN (self), hbox);
