@@ -662,7 +662,7 @@ _update_services (CarrickPane *pane)
   {
     service = carrick_service_item_get_service (
       CARRICK_SERVICE_ITEM (it->data));
-    for (iter = fetched_services; iter != NULL; iter = iter->next)
+    for (iter = fetched_services; iter != NULL && !found; iter = iter->next)
     {
       if (cm_service_is_same (service, CM_SERVICE (iter->data)))
       {
