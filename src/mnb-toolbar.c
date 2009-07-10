@@ -1912,7 +1912,6 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
   gchar             **names = NULL;
   GError             *error = NULL;
   gboolean            found_panels[NUM_ZONES];
-  gint                i;
 
   if (!priv->dbus_conn || !priv->dbus_proxy)
     {
@@ -1964,6 +1963,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
 
   dbus_free_string_array (names);
 
+#if 0
   for (i = 0; i < NUM_ZONES; ++i)
     {
       switch (i)
@@ -1999,6 +1999,7 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
         default:;
         }
     }
+#endif
 
   dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
                                G_CALLBACK (mnb_toolbar_noc_cb),
