@@ -65,6 +65,24 @@ enum
 static void _update_manager (CarrickPane *pane,
                              CmManager   *manager);
 
+static gboolean
+_should_display (CmService *service)
+{
+  const gchar *name = cm_service_get_name (service);
+  const gchar *type = cm_service_get_type (service);
+  const gchar *state = cm_service_get_state (service);
+
+  if (!name ||
+      (g_strcmp0 ("ethernet", type) == 0 &&
+       g_strcmp0 ("ready", state) && 
+       g_strcmp0 ("configuration", state)))
+  {
+    return FALSE;
+  }
+
+  return TRUE;
+}  
+
 static void
 carrick_pane_get_property (GObject    *object,
                            guint       property_id,
@@ -448,7 +466,6 @@ _service_updated_cb (CmService   *service,
                      CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  const gchar *type = NULL;
   CarrickList *list = CARRICK_LIST (priv->service_list);
   GtkWidget *have_service = carrick_list_find_service_item (list,
                                                            service);
@@ -465,28 +482,17 @@ _service_updated_cb (CmService   *service,
   /* Don't display non-favorite ethernet services or services
    * which don't have a name
    */
-  if (cm_service_get_name (service) != NULL)
+  if (_should_display (service))
   {
-    type = cm_service_get_type (service);
+    GtkWidget *item;
 
-    if (g_strcmp0 ("ethernet", type) == 0
-        && cm_service_get_connected (service) == FALSE)
-    {
-      /* FIXME: Should be able to use favorite property here? */
-      return;
-    }
-    else
-    {
-      g_signal_handlers_disconnect_by_func (service,
-                                            _service_updated_cb,
-                                            pane);
-
-      GtkWidget *service_item = carrick_service_item_new (priv->icon_factory,
-                                                          service);
-      carrick_list_add_item (list,
-                             service_item);
-      carrick_list_sort_list (CARRICK_LIST (priv->service_list));
-    }
+    g_signal_handlers_disconnect_by_func (service,
+					  _service_updated_cb,
+					  pane);
+    
+    item = carrick_service_item_new (priv->icon_factory, service);
+    carrick_list_add_item (list, item);
+    carrick_list_sort_list (CARRICK_LIST (priv->service_list));
   }
 }
 
@@ -670,7 +676,7 @@ _update_services (CarrickPane *pane)
       }
     }
 
-    if (!found)
+    if (!found || !_should_display (service))
     {
       gtk_widget_destroy (GTK_WIDGET (it->data));
     }
