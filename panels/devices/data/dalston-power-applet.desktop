@@ -11,4 +11,5 @@ Name=Dalston power applet
 Comment=A power indicator / control
 GenericName=A power indicator / control
 NoDisplay=true
+OnlyShowIn=MOBLIN;
 X-GNOME-Autostart-enabled=true

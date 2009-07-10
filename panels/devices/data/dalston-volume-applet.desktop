@@ -11,4 +11,5 @@ Name=Dalston volume applet
 Comment=A volume control applet
 GenericName=A volume control applet
 NoDisplay=true
+OnlyShowIn=MOBLIN;
 X-GNOME-Autostart-enabled=true
