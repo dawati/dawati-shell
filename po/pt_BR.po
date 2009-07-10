@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-30 04:11+0000\n"
+"POT-Creation-Date: 2009-07-08 09:18+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
 "Language-Team: \n"
@@ -11,21 +11,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
 #: ../ahoghill/ahoghill/ahoghill-example-table.c:117
 msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
 msgstr "Você precisa tocar música, ver algumas imagens ou assistir um vídeo para ver seu histórico aqui. No momento, você pode dar uma olhada em amostras de mídia:"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:390
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:922
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:388
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:930
 msgid "Recently played"
 msgstr "Recentemente tocado"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:416
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:414
 msgid "Search results"
 msgstr "Resultados da pesquisa"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:936
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:944
 msgid "Local"
 msgstr "Local"
 
@@ -51,9 +52,9 @@ msgid "Media"
 msgstr "Mídia"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
-#: ../applications/src/moblin-netbook-launcher.c:1375
+#: ../applications/src/moblin-netbook-launcher.c:1377
 #: ../pasteboard/src/moblin-netbook-pasteboard.c:219
-#: ../people/src/mnb-people-panel.c:564
+#: ../people/src/mnb-people-panel.c:563
 msgid "Search"
 msgstr "Pesquisar"
 
@@ -81,15 +82,20 @@ msgstr "Episódio: %d"
 msgid "Year %d"
 msgstr "Ano: %d"
 
+#: ../ahoghill/src/moblin-panel-media.c:130
+#: ../src/moblin-netbook.c:324
+msgid "media"
+msgstr "mídia"
+
 #.
 #. * Fav apps.
 #.
 #. Label
-#: ../applications/src/moblin-netbook-launcher.c:868
+#: ../applications/src/moblin-netbook-launcher.c:869
 msgid "Favourite Applications"
 msgstr "Aplicativos favoritos"
 
-#: ../applications/src/moblin-netbook-launcher.c:1364
+#: ../applications/src/moblin-netbook-launcher.c:1366
 msgid "Applications"
 msgstr "Aplicativos"
 
@@ -135,7 +141,7 @@ msgstr "Internet"
 msgid "Go"
 msgstr "Ir"
 
-#: ../netpanel/src/moblin-panel-internet.c:78
+#: ../netpanel/src/moblin-panel-internet.c:79
 #: ../src/moblin-netbook.c:321
 msgid "internet"
 msgstr "internet"
@@ -143,14 +149,14 @@ msgstr "internet"
 #: ../netpanel/src/mwb-ac-list.c:1363
 #, c-format
 msgid "Search for %%s on %s"
-msgstr "Pesquisar: %s no Yahoo!"
+msgstr "Pesquisar por %%s em %s"
 
 #: ../netpanel/src/mwb-ac-list.c:1378
 #, c-format
 msgid "Go to %s.com"
 msgstr "Vá para: %s.com"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:518
+#: ../pasteboard/src/mnb-clipboard-item.c:516
 #: ../pasteboard/src/moblin-netbook-pasteboard.c:344
 msgid "Copy"
 msgstr "Copiar"
@@ -162,7 +168,7 @@ msgstr "a atual seleção para a área de transferência"
 
 #: ../pasteboard/src/moblin-netbook-pasteboard.c:141
 msgid "your selection"
-msgstr "Seleção de idioma"
+msgstr "sua seleção"
 
 #: ../pasteboard/src/moblin-netbook-pasteboard.c:206
 msgid "Pasteboard"
@@ -201,7 +207,7 @@ msgstr "<b>Bem-vindo ao Moblin 2.0 para Netbooks</b>"
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
 msgstr "Como o Moblin é um pouco diferente para outros computadores, nós fornecemos algumas dicas e itens para ajudá-lo a navegar esta versão Beta. Esperamos que você se divirta, a Equipe Moblin."
 
-#: ../penge/penge/penge-recent-file-tile.c:235
+#: ../penge/penge/penge-recent-file-tile.c:234
 msgid "Web page"
 msgstr "Página da web"
 
@@ -215,60 +221,74 @@ msgid "Due %x"
 msgstr "Prazo %x"
 
 #: ../penge/penge/penge-utils.c:63
+#: ../status/src/mnb-web-status-entry.c:106
 msgid "Less than a minute ago"
 msgstr "Há menos de um minuto atrás"
 
 #: ../penge/penge/penge-utils.c:67
+#: ../status/src/mnb-web-status-entry.c:110
 msgid "A few minutes ago"
 msgstr "Alguns minutos atrás"
 
 #: ../penge/penge/penge-utils.c:71
+#: ../status/src/mnb-web-status-entry.c:114
 msgid "A couple of hours ago"
 msgstr "Algumas horas atrás"
 
 #: ../penge/penge/penge-utils.c:78
+#: ../status/src/mnb-web-status-entry.c:121
 msgid "Earlier today"
 msgstr "Hoje cedo"
 
 #: ../penge/penge/penge-utils.c:81
+#: ../status/src/mnb-web-status-entry.c:124
 msgid "Yesterday"
 msgstr "Ontem"
 
 #: ../penge/penge/penge-utils.c:89
+#: ../status/src/mnb-web-status-entry.c:132
 #, c-format
 msgid "On %A"
 msgstr "Em: %A"
 
 #: ../penge/penge/penge-utils.c:95
+#: ../status/src/mnb-web-status-entry.c:138
 msgid "Unknown"
 msgstr "Desconhecido"
 
 #: ../penge/penge/penge-utils.c:102
+#: ../status/src/mnb-web-status-entry.c:145
 msgid "Last week"
 msgstr "Semana passada"
 
 #: ../penge/penge/penge-utils.c:105
+#: ../status/src/mnb-web-status-entry.c:148
 msgid "A couple of weeks ago"
 msgstr "Algumas semanas atrás"
 
 #: ../penge/penge/penge-utils.c:111
+#: ../status/src/mnb-web-status-entry.c:154
 msgid "This month"
 msgstr "Este mês"
 
 #. Now Jan., last used in Dec.
 #: ../penge/penge/penge-utils.c:115
+#: ../status/src/mnb-web-status-entry.c:158
 msgid "Last month"
 msgstr "Mês passado"
 
 #: ../penge/penge/penge-utils.c:118
+#: ../status/src/mnb-web-status-entry.c:161
 msgid "This year"
 msgstr "Este ano"
 
 #: ../penge/penge/penge-utils.c:121
+#: ../status/src/mnb-web-status-entry.c:164
 msgid "Last year"
 msgstr "Ano passado"
 
 #: ../penge/penge/penge-utils.c:123
+#: ../status/src/mnb-web-status-entry.c:166
 msgid "Ages ago"
 msgstr "Há muito tempo"
 
@@ -279,44 +299,42 @@ msgstr "gente"
 
 #: ../people/src/mnb-people-panel.c:162
 msgid "Send an email"
-msgstr "Enviar para o bugzilla (%s)"
+msgstr "Enviar um email"
 
 #: ../people/src/mnb-people-panel.c:164
 msgid "Edit details"
-msgstr "Editar partição"
+msgstr "Editar detalhes"
 
 #: ../people/src/mnb-people-panel.c:168
 msgid "Send a message"
-msgstr "Enviar para o bugzilla (%s)"
+msgstr "Enviar uma mensagem"
 
 #: ../people/src/mnb-people-panel.c:302
+#: ../status/src/moblin-panel-status.c:755
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
 
-#: ../people/src/mnb-people-panel.c:551
+#: ../people/src/mnb-people-panel.c:550
 msgid "People"
 msgstr "Gente"
 
-#: ../people/src/mnb-people-panel.c:681
+#: ../people/src/mnb-people-panel.c:679
 msgid "Selection"
-msgstr "Seleção de idioma"
+msgstr "Seleção  "
 
 #: ../people/src/mnb-people-panel.c:741
 msgid "Nobody selected"
-msgstr "Pacotes opcionais selecionados: %d de %d"
+msgstr "Ninguém selecionado"
 
 #: ../src/moblin-netbook.c:309
-#: ../src/mnb-toolbar.c:1382
+#: ../src/mnb-toolbar.c:1394
 msgid "zones"
 msgstr "zonas"
 
 #: ../src/moblin-netbook.c:312
+#: ../status/src/moblin-panel-status.c:1033
 msgid "status"
 msgstr "status"
-
-#: ../src/moblin-netbook.c:324
-msgid "media"
-msgstr "mídia"
 
 #: ../src/moblin-netbook.c:437
 msgid "Moblin Netbook Effects"
@@ -339,78 +357,120 @@ msgstr "Nova zona (0)"
 msgid "Choose zone for application:"
 msgstr "Escolha uma zona para o aplicativo:"
 
-#: ../src/moblin-netbook-status.c:206
-#: ../src/moblin-netbook-status.c:261
-msgid "Your current status"
-msgstr "Seu status atual"
-
-#: ../src/moblin-netbook-status.c:208
-msgid "Your current status - you are offline"
-msgstr "Seu status atual - você está offline"
-
-#: ../src/moblin-netbook-status.c:291
-msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "Para atualizar seu status na web você precisa configurar uma conta de Serviços na web com um provedor que suporta mensagens de status"
-
 #: ../src/tray/na-tray-child.c:121
 #, c-format
 msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 msgstr "ícone da bandeja requer o tamanho (%i x %i), redimensionado para (%i x %i)"
 
-#: ../src/mnb-status-entry.c:138
-#: ../src/mnb-status-entry.c:683
-#: ../src/mnb-status-entry.c:765
+#: ../src/mnb-switcher.c:1205
+msgid "No Zones yet"
+msgstr "Não há zona ainda"
+
+#: ../src/mnb-switcher.c:1227
+msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
+msgstr "Os aplicativos que você está usando aparecerá aqui. Você poderá trocar de um para o outro quando quiser."
+
+#: ../src/mnb-switcher.c:1431
+msgid "No applications on this zone"
+msgstr "Nenhum aplicativo nessa zona"
+
+#: ../src/mnb-toolbar.c:1631
+msgid "power & brightness"
+msgstr "energia e claridade"
+
+#: ../src/mnb-toolbar.c:1634
+msgid "volume"
+msgstr "volume"
+
+#: ../src/mnb-toolbar.c:1637
+msgid "bluetooth"
+msgstr "bluetooth"
+
+#: ../src/mnb-toolbar.c:1640
+msgid "networks"
+msgstr "redes"
+
+#: ../src/mnb-toolbar.c:1643
+msgid "test"
+msgstr "teste"
+
+#: ../src/mnb-toolbar.c:1720
+msgid "To activate the toolbar, move your cursor to the top of the screen"
+msgstr "Para ativar a barra de ferramentas, mova seu cursor para o topo da tela"
+
+#: ../status/src/mnb-im-status-row.c:97
+#: ../status/src/mnb-im-status-row.c:98
+#: ../status/src/mnb-im-status-row.c:641
+msgid "Offline"
+msgstr "Offline"
+
+#: ../status/src/mnb-im-status-row.c:99
+#: ../status/src/moblin-panel-status.c:489
+msgid "Available"
+msgstr "Disponível"
+
+#: ../status/src/mnb-im-status-row.c:100
+#: ../status/src/mnb-im-status-row.c:101
+#: ../status/src/moblin-panel-status.c:493
+#: ../status/src/moblin-panel-status.c:497
+msgid "Away"
+msgstr "Ausente"
+
+#: ../status/src/mnb-im-status-row.c:102
+#: ../status/src/mnb-im-status-row.c:103
+#: ../status/src/moblin-panel-status.c:501
+#: ../status/src/moblin-panel-status.c:505
+msgid "Busy"
+msgstr "Ocupado"
+
+#: ../status/src/mnb-im-status-row.c:122
+msgid "- Close"
+msgstr "- Fechar"
+
+#: ../status/src/mnb-im-status-row.c:129
+#: ../status/src/mnb-im-status-row.c:654
+msgid "+ Change"
+msgstr "+ Modificar"
+
+#: ../status/src/mnb-im-status-row.c:644
+msgid "Unknown account"
+msgstr "Conta desconhecida"
+
+#: ../status/src/mnb-web-status-entry.c:178
+#: ../status/src/mnb-web-status-entry.c:731
+#: ../status/src/mnb-web-status-entry.c:812
 msgid "Edit"
 msgstr "Editar"
 
 #. Translators: %s is the user visible name of the service
-#: ../src/mnb-status-entry.c:560
+#: ../status/src/mnb-web-status-entry.c:605
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "Digite o seu status %s aqui..."
 
-#: ../src/mnb-status-entry.c:564
-#: ../src/mnb-status-entry.c:637
+#: ../status/src/mnb-web-status-entry.c:609
+#: ../status/src/mnb-web-status-entry.c:682
 msgid "Enter your current status here..."
 msgstr "Digite o seu status aqui..."
 
-#: ../src/mnb-status-entry.c:744
+#: ../status/src/mnb-web-status-entry.c:791
 msgid "Post"
 msgstr "Post"
 
-#: ../src/mnb-switcher.c:1182
-msgid "No Zones yet"
-msgstr "Não há zona ainda."
+#: ../status/src/moblin-panel-status.c:423
+#: ../status/src/moblin-panel-status.c:890
+msgid "Your current status"
+msgstr "Seu status atual"
 
-#: ../src/mnb-switcher.c:1204
-msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
-msgstr "Os aplicativos que você está usando aparecerá aqui. Você poderá trocar de um para o outro quando quiser."
+#: ../status/src/moblin-panel-status.c:425
+msgid "Your current status - you are offline"
+msgstr "Seu status atual - você está offline"
 
-#: ../src/mnb-switcher.c:1408
-msgid "No applications on this zone"
-msgstr "Nenhum aplicativo nessa zona"
+#: ../status/src/moblin-panel-status.c:924
+msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+msgstr "Para atualizar seu status na web você precisa configurar uma conta de Serviços na web com um provedor que suporta mensagens de status"
 
-#: ../src/mnb-toolbar.c:1619
-msgid "power & brightness"
-msgstr "energia e claridade"
-
-#: ../src/mnb-toolbar.c:1622
-msgid "volume"
-msgstr "volume"
-
-#: ../src/mnb-toolbar.c:1625
-msgid "bluetooth"
-msgstr "bluetooth"
-
-#: ../src/mnb-toolbar.c:1628
-msgid "networks"
-msgstr "redes"
-
-#: ../src/mnb-toolbar.c:1631
-msgid "test"
-msgstr "teste"
-
-#: ../src/mnb-toolbar.c:1708
-msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "Para ativar a barra de ferramentas, mova seu cursor para o topo da tela"
+#: ../status/src/moblin-panel-status.c:951
+msgid "To update your IM status you need to setup an Instant Messaging account"
+msgstr "Para atualizar seu status IM você precisa configurar uma conta Instant Messaging"
 
