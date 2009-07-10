@@ -1458,6 +1458,9 @@ on_show_completed_cb (ClutterActor *self, gpointer data)
   MnbSwitcherPrivate    *priv     = MNB_SWITCHER (self)->priv;
   MnbSwitcherAppPrivate *app_priv = MNB_SWITCHER_APP (data)->priv;
 
+  if (priv->in_alt_grab)
+    return;
+
   if (priv->active_tooltip)
     {
       nbtk_tooltip_hide (priv->active_tooltip);
