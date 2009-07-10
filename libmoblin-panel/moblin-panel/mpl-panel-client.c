@@ -23,6 +23,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -508,7 +509,7 @@ mpl_panel_client_connect_to_dbus (MplPanelClient *self)
     {
       g_warning ("Cannot connect to DBus: %s", error->message);
       g_error_free (error);
-      return NULL;
+      exit (-1);
     }
 
   proxy = dbus_g_proxy_new_for_name (conn,
@@ -518,8 +519,8 @@ mpl_panel_client_connect_to_dbus (MplPanelClient *self)
 
   if (!proxy)
     {
-      g_object_unref (conn);
-      return NULL;
+      g_warning ("Unable to create proxy for %s", DBUS_PATH_DBUS);
+      exit (-1);
     }
 
   dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, priv->name, NULL);
@@ -527,20 +528,20 @@ mpl_panel_client_connect_to_dbus (MplPanelClient *self)
   if (!org_freedesktop_DBus_request_name (proxy,
                                           dbus_name,
                                           DBUS_NAME_FLAG_DO_NOT_QUEUE,
-                                          &status, &error))
+                                          &status, &error) ||
+      (status != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER))
     {
       if (error)
         {
           g_warning ("%s: %s", __FUNCTION__, error->message);
           g_error_free (error);
         }
-      else
-        {
-          g_warning ("%s: Unknown error", __FUNCTION__);
-        }
 
-      g_object_unref (conn);
-      conn = NULL;
+      /*
+       * If we cannot acquire dbus name, than we have no reason to live.
+       */
+      g_warning ("Unable to acquire dbus name, exiting.");
+      exit (-1);
     }
 
   g_free (dbus_name);
