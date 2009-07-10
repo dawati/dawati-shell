@@ -191,12 +191,13 @@ _set_devices_state (CmDeviceType type,
   {
     CmDevice *device = CM_DEVICE (devices->data);
 
-    if (cm_device_get_type (device) == type)
+    if (cm_device_get_type (device) == type &&
+	cm_device_get_powered (device) != state)
     {
       cm_device_set_powered (device, state);
       if (state)
       {
-        cm_device_scan (device);
+	cm_device_scan (device);
       }
     }
     devices = devices->next;
@@ -520,10 +521,6 @@ _device_powered_changed_cb (CmDevice *device,
         gtk_widget_set_no_show_all (priv->ethernet_label,
 				    FALSE);
         gtk_widget_show (priv->ethernet_label);
-        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
-                          "switch-flipped",
-                          G_CALLBACK (_ethernet_switch_callback),
-                          user_data);
         break;
       case DEVICE_WIFI:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
@@ -539,10 +536,6 @@ _device_powered_changed_cb (CmDevice *device,
         /* Only enable "Add new connection" button when wifi powered on */
         gtk_widget_set_sensitive (priv->new_conn_button,
                                   state);
-        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
-                          "switch-flipped",
-                          G_CALLBACK (_wifi_switch_callback),
-                          user_data);
         break;
       case DEVICE_CELLULAR:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
@@ -555,10 +548,6 @@ _device_powered_changed_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->threeg_label,
 				    FALSE);
         gtk_widget_show (priv->threeg_label);
-        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
-                          "switch-flipped",
-                          G_CALLBACK (_threeg_switch_callback),
-                          user_data);
         break;
       case DEVICE_WIMAX:
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
@@ -571,10 +560,6 @@ _device_powered_changed_cb (CmDevice *device,
 	gtk_widget_set_no_show_all (priv->wimax_label,
 				    FALSE);
         gtk_widget_show (priv->wimax_label);
-        g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
-                          "switch-flipped",
-                          G_CALLBACK (_wimax_switch_callback),
-                          user_data);
         break;
       case DEVICE_BLUETOOTH:
         g_debug ("Bluetooth device unhandled");
@@ -719,8 +704,9 @@ _devices_changed_cb (CmManager *manager,
   for (it = cm_manager_get_devices (manager); it != NULL; it = it->next)
   {
     CmDevice *device = CM_DEVICE (it->data);
+    _device_powered_changed_cb (device, user_data);
     g_signal_connect (G_OBJECT (device),
-		      "device-updated",
+		      "powered-changed",
 		      G_CALLBACK (_device_powered_changed_cb),
 		      user_data);
   }
@@ -875,6 +861,10 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_wifi_switch_callback),
+		    self);
 
   priv->ethernet_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
@@ -901,6 +891,10 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_ethernet_switch_callback),
+		    self);
 
   priv->threeg_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
@@ -926,6 +920,10 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_threeg_switch_callback),
+		    self);
 
   priv->wimax_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
@@ -951,6 +949,10 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_wimax_switch_callback),
+		    self);
 
   gtk_table_attach_defaults (GTK_TABLE (self),
                              switch_bin,
