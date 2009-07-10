@@ -491,8 +491,8 @@ _service_updated_cb (CmService   *service,
 }
 
 void
-_device_updated_cb (CmDevice *device,
-                    gpointer  user_data)
+_device_powered_changed_cb (CmDevice *device,
+			    gpointer  user_data)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
   CmDeviceType type = cm_device_get_type (device);
@@ -585,9 +585,6 @@ static void
 _set_states (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  const GList *devices = NULL;
-  const GList *it = NULL;
-  CmDevice *device = NULL;
 
   if (cm_manager_get_offline_mode (priv->manager))
   {
@@ -602,7 +599,6 @@ _set_states (CarrickPane *pane)
   }
   else
   {
-    devices = cm_manager_get_devices (priv->manager);
     gtk_widget_hide (priv->wifi_switch);
     gtk_widget_set_no_show_all (priv->wifi_switch,
                                 TRUE);
@@ -627,15 +623,6 @@ _set_states (CarrickPane *pane)
     gtk_widget_hide (priv->wimax_label);
     gtk_widget_set_no_show_all (priv->wimax_label,
                                 TRUE);
-
-    for (it = devices; it != NULL; it = it->next)
-    {
-      device = CM_DEVICE (it->data);
-      g_signal_connect (G_OBJECT (device),
-                        "device-updated",
-                        G_CALLBACK (_device_updated_cb),
-                        pane);
-    }
   }
 }
 
@@ -720,7 +707,17 @@ static void
 _devices_changed_cb (CmManager *manager,
                      gpointer   user_data)
 {
+  const GList *it;
+
   _set_states (CARRICK_PANE (user_data));
+  for (it = cm_manager_get_devices (manager); it != NULL; it = it->next)
+  {
+    CmDevice *device = CM_DEVICE (it->data);
+    g_signal_connect (G_OBJECT (device),
+		      "device-updated",
+		      G_CALLBACK (_device_powered_changed_cb),
+		      user_data);
+  }
 }
 
 static void
