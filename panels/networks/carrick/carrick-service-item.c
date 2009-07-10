@@ -225,15 +225,19 @@ _set_state (CmService          *service,
 
     gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                               TRUE);
-    gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
-                                FALSE);
-    gtk_widget_show (GTK_WIDGET (priv->delete_button));
-    gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
-                              TRUE);
+    if (g_strcmp0 ("ethernet", cm_service_get_type (priv->service)))
+    {
+      /* Only expose delete button for non-ethernet devices */
+      gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
+				  FALSE);
+      gtk_widget_show (GTK_WIDGET (priv->delete_button));
+      gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
+				TRUE);
+    }
     button = g_strdup (_("Disconnect"));
     label = g_strdup_printf ("%s - %s",
-                             name,
-                             _("Connected"));
+			     name,
+			     _("Connected"));
     priv->failed = FALSE;
   }
   else if (priv->state == CONFIGURE)
@@ -878,6 +882,11 @@ carrick_service_item_init (CarrickServiceItem *self)
                       FALSE,
                       FALSE,
                       6);
+  gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
+			      TRUE);
+  gtk_widget_hide (GTK_WIDGET (priv->delete_button));
+  gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
+			    FALSE);
 
   priv->connect_box = gtk_hbox_new (FALSE,
                        6);
