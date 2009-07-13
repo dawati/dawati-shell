@@ -24,6 +24,7 @@
 #include "mnb-notification-urgent.h"
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"
+#include "math.h"
 
 G_DEFINE_TYPE (MnbNotificationUrgent,   \
                mnb_notification_urgent, \
@@ -169,7 +170,7 @@ mnb_notification_urgent_allocate (ClutterActor          *actor,
                                           URGENT_WIDTH, &m_height, &p_height);
 
       notifier_box.x2 = URGENT_WIDTH;
-      notifier_box.y2 = p_height;
+      notifier_box.y2 = floor(p_height);
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
                               &notifier_box, flags);
