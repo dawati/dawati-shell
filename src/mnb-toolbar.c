@@ -658,13 +658,13 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
   t = time (NULL);
   tmp = localtime (&t);
   if (tmp)
-    strftime (time_str, 64, "%l:%M %P", tmp);
+    strftime (time_str, 64, "%X", tmp);
   else
     snprintf (time_str, 64, "Time");
   nbtk_label_set_text (NBTK_LABEL (priv->time), time_str);
 
   if (tmp)
-    strftime (time_str, 64, "%B %e, %Y", tmp);
+    strftime (time_str, 64, "%x", tmp);
   else
     snprintf (time_str, 64, "Date");
   nbtk_label_set_text (NBTK_LABEL (priv->date), time_str);
