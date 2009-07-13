@@ -71,17 +71,33 @@ _should_display (CmService *service)
   const gchar *name = cm_service_get_name (service);
   const gchar *type = cm_service_get_type (service);
   const gchar *state = cm_service_get_state (service);
+  gint c;
 
   if (!name ||
       (g_strcmp0 ("ethernet", type) == 0 &&
-       g_strcmp0 ("ready", state) && 
+       g_strcmp0 ("ready", state) &&
        g_strcmp0 ("configuration", state)))
   {
     return FALSE;
   }
 
+  /* This is a temporary workaround. ConnMan currently reports a hidden
+   * SSID's name as a series of blanks spaces as reported by the AP.
+   * This will at some stage be fixed in the daemon, but for now we need
+   * to ignore any service with a name consisting entirely of spaces.
+   */
+  if (name[0] == ' ')
+  {
+    for (c = 1; c <= g_utf8_strlen (name, -1); c++)
+    {
+      if (name[c] != ' ' && name[c] != '\0')
+        return TRUE;
+    }
+    return FALSE;
+  }
+
   return TRUE;
-}  
+}
 
 static void
 carrick_pane_get_property (GObject    *object,
