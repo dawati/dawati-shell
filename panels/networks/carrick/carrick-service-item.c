@@ -207,7 +207,7 @@ _set_state (CmService          *service,
                           GTK_STATE_NORMAL,
                           &priv->prelight_color);
   }
-  else if (priv->state == READY) 
+  else if (priv->state == READY)
   {
     gtk_widget_modify_bg (priv->expando,
                           GTK_STATE_NORMAL,
@@ -228,8 +228,6 @@ _set_state (CmService          *service,
     if (g_strcmp0 ("ethernet", cm_service_get_type (priv->service)))
     {
       /* Only expose delete button for non-ethernet devices */
-      gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
-				  FALSE);
       gtk_widget_show (GTK_WIDGET (priv->delete_button));
       gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
 				TRUE);
@@ -253,8 +251,6 @@ _set_state (CmService          *service,
   {
     gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                               TRUE);
-    gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
-                                TRUE);
     gtk_widget_hide (GTK_WIDGET (priv->delete_button));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                               FALSE);
@@ -265,8 +261,6 @@ _set_state (CmService          *service,
   {
     gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
                               TRUE);
-    gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
-                                TRUE);
     gtk_widget_hide (GTK_WIDGET (priv->delete_button));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                               FALSE);
@@ -391,8 +385,8 @@ _service_strength_changed_cb (CmService *service,
                               guint      strength,
                               gpointer   user_data)
 {
-  _set_state (service,
-              CARRICK_SERVICE_ITEM (user_data));
+  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
+  _set_state (service, item);
 }
 
 static void
@@ -692,7 +686,7 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 static void
 carrick_service_item_dispose (GObject *object)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
+  /*CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);*/
 
   carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object), NULL);
 
@@ -827,6 +821,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   box = gtk_hbox_new (FALSE,
                       6);
+  gtk_widget_show (box);
   priv->expando = nbtk_gtk_expander_new ();
   gtk_container_add (GTK_CONTAINER (self),
                      priv->expando);
@@ -834,11 +829,13 @@ carrick_service_item_init (CarrickServiceItem *self)
                                       box);
   nbtk_gtk_expander_set_has_indicator (NBTK_GTK_EXPANDER (priv->expando),
                                        FALSE);
+  gtk_widget_show (priv->expando);
 
   gdk_color_parse ("#e8e8e8", &priv->prelight_color);
   gdk_color_parse ("#cbcbcb", &priv->active_color);
 
   priv->icon = gtk_image_new ();
+  gtk_widget_show (priv->icon);
   gtk_box_pack_start (GTK_BOX (box),
                       priv->icon,
                       FALSE,
@@ -847,6 +844,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   vbox = gtk_vbox_new (FALSE,
                        6);
+  gtk_widget_show (vbox);
   gtk_box_pack_start (GTK_BOX (box),
                       vbox,
                       TRUE,
@@ -855,6 +853,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   hbox = gtk_hbox_new (FALSE,
                        6);
+  gtk_widget_show (hbox);
   gtk_box_pack_start (GTK_BOX (vbox),
                       hbox,
                       TRUE,
@@ -864,6 +863,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->name_label = gtk_label_new ("");
   gtk_misc_set_alignment (GTK_MISC (priv->name_label),
                           0.0, 0.5);
+  gtk_widget_show (priv->name_label);
   gtk_box_pack_start (GTK_BOX (hbox),
                       priv->name_label,
                       TRUE,
@@ -872,6 +872,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   image = gtk_image_new_from_icon_name ("edit-clear",
                                         GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image);
   priv->delete_button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (priv->delete_button),
                          GTK_RELIEF_NONE);
@@ -882,14 +883,12 @@ carrick_service_item_init (CarrickServiceItem *self)
                       FALSE,
                       FALSE,
                       6);
-  gtk_widget_set_no_show_all (GTK_WIDGET (priv->delete_button),
-			      TRUE);
-  gtk_widget_hide (GTK_WIDGET (priv->delete_button));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
 			    FALSE);
 
   priv->connect_box = gtk_hbox_new (FALSE,
                        6);
+  gtk_widget_show (priv->connect_box);
   gtk_box_pack_start (GTK_BOX (vbox),
                       priv->connect_box,
                       TRUE,
@@ -899,6 +898,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->security_label = gtk_label_new ("");
   gtk_misc_set_alignment (GTK_MISC (priv->security_label),
                           0.0, 0.5);
+  gtk_widget_show (priv->security_label);
   gtk_box_pack_start (GTK_BOX (priv->connect_box),
                       priv->security_label,
                       FALSE,
@@ -906,6 +906,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                       6);
 
   priv->connect_button = gtk_button_new ();
+  gtk_widget_show (priv->connect_button);
   gtk_box_pack_start (GTK_BOX (priv->connect_box),
                       priv->connect_button,
                       FALSE,
@@ -913,6 +914,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                       6);
 
   /*priv->default_button = gtk_button_new ();
+  gtk_widget_show (priv->default_button);
   gtk_button_set_label (GTK_BUTTON (priv->default_button),
                         _("Make default connection"));
   gtk_widget_set_sensitive (GTK_WIDGET (priv->default_button),
@@ -924,7 +926,6 @@ carrick_service_item_init (CarrickServiceItem *self)
                       6);*/
 
   priv->passphrase_box = gtk_hbox_new (FALSE, 6);
-  gtk_widget_set_no_show_all (priv->passphrase_box, TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), priv->passphrase_box,
                       TRUE, TRUE, 6);
 
@@ -972,7 +973,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (_entry_changed_cb),
                     self);
 
-  gtk_widget_show_all (GTK_WIDGET (self));
+  gtk_widget_show (GTK_WIDGET (self));
 }
 
 GtkWidget*
