@@ -33,6 +33,7 @@
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
+#include <gconf/gconf-client.h>
 #include <moblin-panel/mpl-panel-common.h>
 
 #include "moblin-netbook.h"
@@ -61,6 +62,8 @@
 #define TOOLBAR_TRIGGER_THRESHOLD       1
 #define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 500
 #define TOOLBAR_LOWLIGHT_FADE_DURATION 300
+
+#define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
 #if 0
 /*
@@ -1712,6 +1715,27 @@ mnb_toolbar_make_hint (MnbToolbar *toolbar)
   ClutterActor      *overlay;
   NbtkWidget        *label;
   gint               screen_width, screen_height;
+  GConfClient       *client;
+  gint               boot_count;
+  GError            *error = NULL;
+
+  client = gconf_client_get_default ();
+
+  boot_count = gconf_client_get_int (client,
+                                     MOBLIN_BOOT_COUNT_KEY,
+                                     &error);
+
+  if (error)
+    {
+      g_warning (G_STRLOC ": Error getting boot count: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+  g_object_unref (client);
+
+  if (boot_count >= 5)
+    return;
 
   bin = CLUTTER_ACTOR (nbtk_bin_new ());
   label = nbtk_label_new (_("To activate the toolbar, move "

@@ -41,7 +41,7 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 #define ROW_SPACING 6
 #define COL_SPACING 6
 
-#define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/m_zone/boot_count"
+#define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
 static void penge_recent_files_pane_update (PengeRecentFilesPane *pane);
 
@@ -147,9 +147,9 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
   nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
 
   priv->manager = gtk_recent_manager_get_default ();
-  g_signal_connect (priv->manager, 
+  g_signal_connect (priv->manager,
                     "changed",
-                    (GCallback)_recent_manager_changed_cb, 
+                    (GCallback)_recent_manager_changed_cb,
                     self);
 
 
@@ -311,14 +311,14 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                    NULL);
       old_actors = g_list_remove (old_actors, actor);
     } else {
-      /* 
+      /*
        * We need to check for a thumbnail image, and if we have one create the
        * PengeRecentFileTile actor else skip over it
        */
       thumbnail_path = penge_utils_get_thumbnail_path (uri);
 
 
-      /* 
+      /*
        * *Try* and convert URI to a filename. If it's local and it doesn't
        * exist then just skip this one. If it's non local then show it.
        */

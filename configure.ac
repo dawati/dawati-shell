@@ -90,6 +90,7 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   gtk+-2.0                           dnl
                   dbus-glib-1                        dnl
                   mojito-client                      dnl
+		  gconf-2.0
                   gio-unix-2.0)
 
 MUTTER_PLUGIN_CFLAGS="${MUTTER_PLUGIN_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
