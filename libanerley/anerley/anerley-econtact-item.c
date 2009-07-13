@@ -32,6 +32,7 @@ struct _AnerleyEContactItemPrivate {
   EContact *contact;
   gchar *sortable_name;
   gchar *display_name;
+  gchar *avatar_path;
 };
 
 enum
@@ -54,6 +55,82 @@ anerley_econtact_item_get_property (GObject *object, guint property_id,
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
 }
+
+static void
+_update_contact_avatar_details (AnerleyEContactItem *item)
+{
+  AnerleyEContactItemPrivate *priv = GET_PRIVATE (item);
+  EContactPhoto *photo;
+  gchar *avatar_path;
+  gchar *hostname;
+  const gchar *uid;
+  GError *error = NULL;
+
+  g_free (priv->avatar_path);
+  priv->avatar_path = NULL;
+
+  photo = e_contact_get (priv->contact,
+                         E_CONTACT_PHOTO);
+  if (photo)
+  {
+    if (photo->type == E_CONTACT_PHOTO_TYPE_INLINED)
+    {
+      /*
+       * Use a filename based on the UID. Check if it exists, if so then we
+       * don't need to create the file.
+       */
+      uid = e_contact_get_const (priv->contact, E_CONTACT_UID);
+      avatar_path = g_build_filename (g_get_user_cache_dir (),
+                                      "anerley",
+                                      "avatars",
+                                      uid,
+                                      NULL);
+
+      if (!g_file_test (avatar_path, G_FILE_TEST_EXISTS))
+      {
+        if (!g_file_set_contents (avatar_path,
+                                  (gchar *)photo->data.inlined.data,
+                                  photo->data.inlined.length,
+                                  &error))
+        {
+          g_warning (G_STRLOC ": Unable to set file contents: %s",
+                     error->message);
+          g_clear_error (&error);
+        } else {
+          /* Move string ownership */
+          priv->avatar_path = avatar_path;
+          avatar_path = NULL;
+        }
+      } else {
+        /* Move string ownership */
+        priv->avatar_path = avatar_path;
+        avatar_path = NULL;
+      }
+
+      g_free (avatar_path);
+    } else {
+      /* Don't bother with error handling */
+      avatar_path = g_filename_from_uri (photo->data.uri,
+                                         &hostname,
+                                         NULL);
+
+      /* Only care if local and it exists */
+      if (!hostname &&
+          g_file_test (avatar_path, G_FILE_TEST_EXISTS))
+      {
+        /* Move string ownership */
+        priv->avatar_path = avatar_path;
+        avatar_path = NULL;
+      }
+
+      g_free (hostname);
+      g_free (avatar_path);
+    }
+  }
+
+  e_contact_photo_free (photo);
+}
+
 
 static void
 anerley_econtact_item_set_contact (AnerleyEContactItem *item,
@@ -82,6 +159,8 @@ anerley_econtact_item_set_contact (AnerleyEContactItem *item,
   }
 
   priv->contact = g_object_ref (contact);
+
+  _update_contact_avatar_details (item);
 
   if (contact_changed)
   {
@@ -125,6 +204,7 @@ anerley_econtact_item_finalize (GObject *object)
   AnerleyEContactItemPrivate *priv = GET_PRIVATE (object);
 
   g_free (priv->sortable_name);
+  g_free (priv->avatar_path);
 
   G_OBJECT_CLASS (anerley_econtact_item_parent_class)->finalize (object);
 }
@@ -170,7 +250,8 @@ anerley_econtact_item_get_sortable_name (AnerleyItem *item)
 const gchar *
 anerley_econtact_item_get_avatar_path (AnerleyItem *item)
 {
-  return NULL;
+  AnerleyEContactItemPrivate *priv = GET_PRIVATE (item);
+  return priv->avatar_path;
 }
 
 const gchar *
