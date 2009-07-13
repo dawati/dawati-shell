@@ -1046,9 +1046,9 @@ carrick_pane_update (CarrickPane *pane)
   /* Only trigger a scan if we haven't triggered one in the last minute.
    * This number likely needs tweaking.
    */
-  if (difftime (now, priv->last_scan) < 60)
+  if (difftime (now, priv->last_scan) > 60)
   {
-    priv->last_scan = time (NULL);
+    priv->last_scan = now;
 
     while (devices)
     {
