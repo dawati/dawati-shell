@@ -218,15 +218,8 @@ carrick_applet_init (CarrickApplet *self)
 {
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
-  GtkWidget *scroll_view;
 
   notify_init ("Carrick");
-
-  scroll_view = gtk_scrolled_window_new (NULL,
-                                         NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_view),
-                                  GTK_POLICY_AUTOMATIC,
-                                  GTK_POLICY_AUTOMATIC);
 
   priv->manager = cm_manager_new (&error);
   if (error || !priv->manager) {
@@ -243,6 +236,7 @@ carrick_applet_init (CarrickApplet *self)
                                         priv->manager);
   priv->pane = carrick_pane_new (priv->icon_factory,
                                  priv->manager);
+  gtk_widget_show (priv->pane);
 
   g_signal_connect (priv->manager,
                     "state-changed",
