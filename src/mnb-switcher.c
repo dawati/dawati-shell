@@ -2724,7 +2724,7 @@ handle_alt_tab (MnbSwitcher    *switcher,
       return;
     }
 
-  try_alt_tab_grab (switcher, binding->mask, timestamp, backward, FALSE);
+  try_alt_tab_grab (switcher, binding->mask, timestamp, backward, TRUE);
 }
 
 struct alt_tab_show_complete_data
