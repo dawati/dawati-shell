@@ -32,17 +32,12 @@ static guint signals[N_SIGNALS];
 
 static DBusConnection *_dbus_conn = NULL;
 
-#define DEFAULT_TIMEOUT 3000
+#define DEFAULT_TIMEOUT 7000
 
 typedef struct {
   guint next_id;
   GList *notifications;
 } MoblinNetbookNotifyStorePrivate;
-
-typedef struct {
-  MoblinNetbookNotifyStore *notify;
-  guint id;
-} TimeoutData;
 
 static guint
 get_next_id (MoblinNetbookNotifyStore *notify)
@@ -77,16 +72,7 @@ free_notification (Notification *n)
   g_free (n->body);
   g_free (n->icon_name);
   g_hash_table_destroy (n->actions);
-  g_source_remove (n->timeout_id);
   g_slice_free (Notification, n);
-}
-
-static gboolean
-notification_timeout (TimeoutData *data)
-{
-  moblin_netbook_notify_store_close (data->notify, data->id, ClosedExpired);
-  g_slice_free (TimeoutData, data);
-  return FALSE;
 }
 
 /*
@@ -152,16 +138,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
   if (timeout == -1)
     timeout = DEFAULT_TIMEOUT;
 
-  if (timeout) {
-    /* This struct is a bit annoying, maybe add a store pointer to the
-       Notification struct? */
-    TimeoutData *data;
-    data = g_slice_new (TimeoutData);
-    data->notify = notify;
-    data->id = notification->id;
-    notification->timeout_id = g_timeout_add
-      (timeout, (GSourceFunc)notification_timeout, data);
-  }
+  notification->timeout_ms = timeout;
 
   notification->sender = dbus_g_method_get_sender (context);
 

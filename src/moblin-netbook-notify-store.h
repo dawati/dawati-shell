@@ -33,7 +33,7 @@ typedef struct {
   char *body;
   char *icon_name;
   gchar *sender;
-  guint timeout_id;
+  gint  timeout_ms;
   GHashTable *actions;
   gboolean    is_urgent; 
 

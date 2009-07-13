@@ -57,8 +57,10 @@ struct _MnbNotificationPrivate {
 
   guint         id;
 
+
   GHashTable   *hints;
   gint          timeout;
+  guint         timeout_id;
 
   gboolean      hide_anim_lock;
 
@@ -93,8 +95,15 @@ mnb_notification_set_property (GObject *object, guint property_id,
 static void
 mnb_notification_dispose (GObject *object)
 {
-#if 0
   MnbNotificationPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->timeout_id)
+    {
+      printf("removing timeout...\n");
+      g_source_remove (priv->timeout_id);
+    }
+
+#if 0  /* Hmmm.... */
 
   /* FIXME : free up others.. */
   if (priv->icon)
@@ -122,10 +131,36 @@ mnb_notification_finalize (GObject *object)
   G_OBJECT_CLASS (mnb_notification_parent_class)->finalize (object);
 }
 
+static gboolean
+notification_timeout (MnbNotification *notification)
+{
+  g_signal_emit (notification, signals[CLOSED], 0);
+  return FALSE;
+}
+
+static void
+mnb_notification_show (ClutterActor *actor)
+{
+  MnbNotificationPrivate *priv;
+
+  priv = GET_PRIVATE (actor);
+
+  if (priv->timeout > 0) 
+    {
+      printf("adding timeout....\n");
+      priv->timeout_id = g_timeout_add (priv->timeout, 
+                                        (GSourceFunc)notification_timeout, 
+                                        MNB_NOTIFICATION(actor));
+    }
+
+  CLUTTER_ACTOR_CLASS (mnb_notification_parent_class)->show (actor);
+}
+
 static void
 mnb_notification_class_init (MnbNotificationClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class    = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbNotificationPrivate));
 
@@ -133,6 +168,8 @@ mnb_notification_class_init (MnbNotificationClass *klass)
   object_class->set_property = mnb_notification_set_property;
   object_class->dispose = mnb_notification_dispose;
   object_class->finalize = mnb_notification_finalize;
+
+  actor_class->show = mnb_notification_show;
 
   signals[CLOSED]
     = g_signal_new ("closed",
@@ -226,7 +263,7 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->dismiss_button),
-                        2, 1);
+                        2, 0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->dismiss_button),
@@ -268,6 +305,7 @@ mnb_notification_update (MnbNotification *notification,
   priv = GET_PRIVATE (notification);
 
   priv->id = details->id;
+  priv->timeout = details->timeout_ms;
 
   if (details->summary)
     nbtk_label_set_text (NBTK_LABEL(priv->summary), details->summary);
@@ -328,7 +366,7 @@ mnb_notification_update (MnbNotification *notification,
                                          NULL);
 
                   nbtk_table_add_actor (NBTK_TABLE (notification),
-                                        layout, 2, 0);
+                                        layout, 2, 1);
                 }
 
               data = g_slice_new (ActionData);
