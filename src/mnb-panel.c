@@ -161,6 +161,9 @@ mnb_panel_request_focus_cb (DBusGProxy *proxy, MnbPanel *panel)
 
   priv = panel->priv;
 
+  XRaiseWindow (GDK_DISPLAY(),
+                priv->child_xid);
+
   XSetInputFocus (GDK_DISPLAY(),
                   priv->child_xid,
                   RevertToPointerRoot,
@@ -460,6 +463,9 @@ mnb_panel_show_completed (MnbDropDown *self)
   clutter_actor_get_position (CLUTTER_ACTOR (self), &x, &y);
 
   gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
+
+  XRaiseWindow (GDK_DISPLAY(),
+                priv->child_xid);
 
   XSetInputFocus (GDK_DISPLAY(),
                   priv->child_xid,

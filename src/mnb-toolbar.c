@@ -2312,6 +2312,8 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
 
   xid = mutter_window_get_x_window (mcw);
 
+  XRaiseWindow (GDK_DISPLAY(),
+                xid);
   XSetInputFocus (GDK_DISPLAY(),
                   xid,
                   RevertToPointerRoot,
