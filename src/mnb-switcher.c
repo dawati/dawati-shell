@@ -179,6 +179,12 @@ mnb_switcher_app_dispose (GObject *object)
 }
 
 static void
+mnb_switcher_app_disable_draggable (gpointer clone, gpointer data)
+{
+  nbtk_draggable_disable (NBTK_DRAGGABLE (clone));
+}
+
+static void
 mnb_switcher_app_allocate (ClutterActor          *actor,
                            const ClutterActorBox *box,
                            ClutterAllocationFlags flags)
@@ -2081,6 +2087,7 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
 
   if (priv->tab_list)
     {
+      g_list_foreach (priv->tab_list, (GFunc) mnb_switcher_app_disable_draggable, NULL);
       g_list_free (priv->tab_list);
       priv->tab_list = NULL;
     }
