@@ -52,7 +52,7 @@ main (int    argc,
   gtk_widget_set_size_request (GTK_WIDGET (window),
                                1024,
                                450);
-  gtk_widget_show_all (window);
+  gtk_widget_show (window);
 
   gtk_main ();
 }

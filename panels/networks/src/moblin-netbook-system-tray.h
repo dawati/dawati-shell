@@ -141,7 +141,7 @@ _mnbk_config_show_on_delete (GtkWidget *config, GdkEvent *event, gpointer data)
   /*
    * Ensure the config window will be visible the next time we need it.
    */
-  gtk_widget_show_all (config);
+  gtk_widget_show (config);
 
   /*
    * Returning TRUE here stops the widget from getting destroyed.
@@ -203,7 +203,7 @@ mnbk_system_tray_init (GtkStatusIcon *icon, GtkPlug *config,
   _mnbk_tray_setup_data.config = config;
   _mnbk_tray_setup_data.type = g_strdup (type);
 
-  gtk_widget_show_all (GTK_WIDGET (config));
+  gtk_widget_show (GTK_WIDGET (config));
   gtk_status_icon_set_visible (icon, TRUE);
 
   _mnbk_tray_setup_data.init_cb_id =
