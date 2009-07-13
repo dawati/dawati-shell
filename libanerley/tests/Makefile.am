@@ -1,4 +1,4 @@
-noinst_PROGRAMS = test-tp-feed test-simple-grid-view test-model test-tile-view test-aggregate-tp-feed test-simple-ui
+noinst_PROGRAMS = test-tp-feed test-simple-grid-view test-tile-view test-aggregate-tp-feed test-simple-ui
 
 AM_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) $(NBTK_CFLAGS) \
 	    -I$(top_srcdir) \
@@ -10,9 +10,6 @@ test_tp_feed_LDADD = ../anerley/libanerley.la
 
 test_simple_grid_view_SOURCES = test-simple-grid-view.c
 test_simple_grid_view_LDADD = ../anerley/libanerley.la
-
-test_model_SOURCES = test-model.c
-test_model_LDADD = ../anerley/libanerley.la
 
 test_tile_view_SOURCES = test-tile-view.c
 test_tile_view_LDADD = ../anerley/libanerley.la
