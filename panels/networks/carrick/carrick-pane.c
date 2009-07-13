@@ -47,8 +47,6 @@ struct _CarrickPanePrivate {
   GtkWidget          *threeg_label;
   GtkWidget          *wimax_switch;
   GtkWidget          *wimax_label;
-  GtkWidget          *flight_mode_switch;
-  GtkWidget          *flight_mode_label;
   GtkWidget          *service_list;
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
@@ -282,7 +280,7 @@ _secret_check_toggled(GtkToggleButton *toggle,
  * Find the uppermost parent window plug so that
  * we can hide it.
  */
-GtkWidget *
+static GtkWidget *
 pane_find_plug (GtkWidget *widget)
 {
   /* Pippinated */
@@ -295,7 +293,7 @@ pane_find_plug (GtkWidget *widget)
   return NULL;
 }
 
-void
+static void
 _new_connection_cb (GtkButton *button,
                     gpointer   user_data)
 {
@@ -478,7 +476,7 @@ _new_connection_cb (GtkButton *button,
   gtk_widget_destroy (dialog);
 }
 
-void
+static void
 _service_updated_cb (CmService   *service,
                      CarrickPane *pane)
 {
@@ -506,7 +504,7 @@ _service_updated_cb (CmService   *service,
     g_signal_handlers_disconnect_by_func (service,
 					  _service_updated_cb,
 					  pane);
-    
+
     item = carrick_service_item_new (priv->icon_factory, service);
     carrick_list_add_item (list, item);
     carrick_list_sort_list (CARRICK_LIST (priv->service_list));
@@ -774,6 +772,8 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *vbox;
   GtkWidget *switch_label;
   GtkWidget *frame_title;
+  GtkWidget *flight_mode_switch;
+  GtkWidget *flight_mode_label;
   gchar *label = NULL;
 
   priv->icon_factory = NULL;
@@ -979,14 +979,14 @@ carrick_pane_init (CarrickPane *self)
                        0);
   gtk_container_add (GTK_CONTAINER (flight_bin),
                      vbox);
-  priv->flight_mode_switch = nbtk_gtk_light_switch_new ();
+  flight_mode_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                              6);
   switch_label = gtk_label_new (_("Offline mode"));
   gtk_misc_set_alignment (GTK_MISC (switch_label),
                           0.2,
                           0.5);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->flight_mode_switch),
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (flight_mode_switch),
                     "switch-flipped",
                     G_CALLBACK (_flight_mode_switch_callback),
                     self);
@@ -996,7 +996,7 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       8);
   gtk_box_pack_start (GTK_BOX (switch_box),
-                      priv->flight_mode_switch,
+                      flight_mode_switch,
                       TRUE,
                       TRUE,
                       8);
@@ -1005,15 +1005,15 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       FALSE,
                       8);
-  priv->flight_mode_label = gtk_label_new
+  flight_mode_label = gtk_label_new
     (_("This will disable all your connections"));
-  gtk_label_set_line_wrap (GTK_LABEL (priv->flight_mode_label),
+  gtk_label_set_line_wrap (GTK_LABEL (flight_mode_label),
                            TRUE);
-  gtk_misc_set_alignment (GTK_MISC (priv->flight_mode_label),
+  gtk_misc_set_alignment (GTK_MISC (flight_mode_label),
                           0.5,
                           0.0);
   gtk_box_pack_start (GTK_BOX (vbox),
-                      priv->flight_mode_label,
+                      flight_mode_label,
                       TRUE,
                       TRUE,
                       0);
