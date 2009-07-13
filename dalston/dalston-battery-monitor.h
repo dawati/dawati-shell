@@ -54,10 +54,11 @@ typedef struct {
 
 typedef enum
 {
-  DALSTON_BATTERY_MONITOR_STATE_UNKNOWN,
+  DALSTON_BATTERY_MONITOR_STATE_MISSING,
   DALSTON_BATTERY_MONITOR_STATE_CHARGING,
   DALSTON_BATTERY_MONITOR_STATE_DISCHARGING,
-  DALSTON_BATTERY_MONITOR_STATE_OTHER
+  DALSTON_BATTERY_MONITOR_STATE_OTHER           /* not charging or discharging
+                                                 * i.e. full */
 } DalstonBatteryMonitorState;
 
 GType dalston_battery_monitor_get_type (void);

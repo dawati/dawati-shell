@@ -93,7 +93,7 @@ static const gchar *icon_names[] = {
 };
 
 
-#define BATTERY_IMAGE_STATE_UNKNOWN        "dalston-power-empty.png"
+#define BATTERY_IMAGE_STATE_MISSING        "dalston-power-battery-missing.png"
 #define BATTERY_IMAGE_STATE_CHARGE_0       "dalston-power-empty.png"
 #define BATTERY_IMAGE_STATE_CHARGE_25      "dalston-power-25.png"
 #define BATTERY_IMAGE_STATE_CHARGE_50      "dalston-power-50.png"
@@ -314,7 +314,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 
   if (percentage < 0) {
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
-                             PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_UNKNOWN);
+                             PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_MISSING);
   } else if (percentage < 20) {
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
                              PKG_ICON_DIR "/" BATTERY_IMAGE_STATE_CHARGE_0);
@@ -356,6 +356,10 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
     gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
                           description);
     g_free (description);
+  } else if (state == DALSTON_BATTERY_MONITOR_STATE_MISSING) {
+      gtk_label_set_markup (GTK_LABEL (priv->battery_primary_label),
+                            _("Sorry, you don't appear to have a battery "
+                              "installed."));
   }
 
   if (state == DALSTON_BATTERY_MONITOR_STATE_DISCHARGING)
