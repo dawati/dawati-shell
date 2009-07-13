@@ -439,7 +439,7 @@ anerley_tile_init (AnerleyTile *self)
   nbtk_widget_set_style_class_name (priv->avatar_bin, "AnerleyTileAvatar");
 
   priv->avatar = clutter_texture_new ();
-  clutter_actor_set_size (priv->avatar_bin, 64, 64);
+  clutter_actor_set_size ((ClutterActor *)priv->avatar_bin, 64, 64);
   /* TODO: Prefill with unknown icon */
   nbtk_bin_set_child (NBTK_BIN (priv->avatar_bin), priv->avatar);
 
@@ -544,6 +544,8 @@ anerley_tile_init (AnerleyTile *self)
                     NULL);
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
+
+  clutter_actor_set_size ((ClutterActor *)self, 180, 90);
 }
 
 NbtkWidget *

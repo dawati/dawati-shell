@@ -47,11 +47,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), ANERLEY_TYPE_TILE_VIEW, AnerleyTileViewClass))
 
 typedef struct {
-  NbtkIconView parent;
+  NbtkItemView parent;
 } AnerleyTileView;
 
 typedef struct {
-  NbtkIconViewClass parent_class;
+  NbtkItemViewClass parent_class;
   void (*item_activated)(AnerleyTileView *view, AnerleyItem *item);
   void (*selection_changed)(AnerleyTileView *view);
 } AnerleyTileViewClass;

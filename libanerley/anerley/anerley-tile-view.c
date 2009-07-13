@@ -23,52 +23,7 @@
 #include "anerley-tile-view.h"
 #include <anerley/anerley-tile.h>
 
-typedef struct {
-  NbtkCellRenderer parent;
-} AnerleyTileRenderer;
-
-typedef struct {
-  NbtkCellRendererClass parent_class;
-} AnerleyTileRendererClass;
-
-GType anerley_tile_renderer_get_type (void);
-
-#define ANERLEY_TILE_TYPE_RENDERER anerley_tile_renderer_get_type()
-
-G_DEFINE_TYPE (AnerleyTileRenderer, anerley_tile_renderer, NBTK_TYPE_CELL_RENDERER)
-
-ClutterActor *
-anerley_tile_renderer_get_actor (NbtkCellRenderer *renderer)
-{
-  ClutterActor *tile;
-
-  tile = g_object_new (ANERLEY_TYPE_TILE,
-                       NULL);
-  clutter_actor_set_size ((ClutterActor *)tile, 180, 90);
-
-  /* Hide the actor by default. This means that we can do work when it is
-   * mapped / more importantly avoid doing work when it's not
-   */
-  clutter_actor_hide (tile);
-
-  return tile;
-}
-
-static void
-anerley_tile_renderer_class_init (AnerleyTileRendererClass *klass)
-{
-  NbtkCellRendererClass *renderer = NBTK_CELL_RENDERER_CLASS (klass);
-
-  renderer->get_actor = anerley_tile_renderer_get_actor;
-}
-
-static void
-anerley_tile_renderer_init (AnerleyTileRenderer *renderer)
-{
-}
-
-
-G_DEFINE_TYPE (AnerleyTileView, anerley_tile_view, NBTK_TYPE_ICON_VIEW)
+G_DEFINE_TYPE (AnerleyTileView, anerley_tile_view, NBTK_TYPE_ITEM_VIEW)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ANERLEY_TYPE_TILE_VIEW, AnerleyTileViewPrivate))
@@ -286,10 +241,9 @@ _container_actor_added_cb (ClutterContainer *container,
 static void
 anerley_tile_view_init (AnerleyTileView *self)
 {
-  nbtk_icon_view_set_cell_renderer (NBTK_ICON_VIEW (self),
-                                    g_object_new (ANERLEY_TILE_TYPE_RENDERER,
-                                                  NULL));
-  nbtk_icon_view_add_attribute (NBTK_ICON_VIEW (self), "item", 0);
+  nbtk_item_view_set_item_type (NBTK_ITEM_VIEW (self),
+                                ANERLEY_TYPE_TILE);
+  nbtk_item_view_add_attribute (NBTK_ITEM_VIEW (self), "item", 0);
 
   g_signal_connect (self,
                     "selection-changed",
@@ -327,14 +281,14 @@ _bulk_change_start_cb (AnerleyFeedModel *model,
   /* Clear selected item, the old one is almost certainly wrong */
   anerley_tile_view_set_selected_actor ((AnerleyTileView *)userdata,
                                         NULL);
-  nbtk_icon_view_freeze (NBTK_ICON_VIEW (userdata));
+  nbtk_item_view_freeze (NBTK_ITEM_VIEW (userdata));
 }
 
 static void
 _bulk_change_end_cb (AnerleyFeedModel *model,
                      gpointer          userdata)
 {
-  nbtk_icon_view_thaw (NBTK_ICON_VIEW (userdata));
+  nbtk_item_view_thaw (NBTK_ITEM_VIEW (userdata));
 }
 
 static void
@@ -369,7 +323,7 @@ anerley_tile_view_set_model (AnerleyTileView  *view,
   if (model)
   {
     priv->model = g_object_ref (model);
-    nbtk_icon_view_set_model (NBTK_ICON_VIEW (view),
+    nbtk_item_view_set_model (NBTK_ITEM_VIEW (view),
                               (ClutterModel *)priv->model);
 
     g_signal_connect (model,
@@ -389,7 +343,7 @@ anerley_tile_view_set_model (AnerleyTileView  *view,
   } else {
     if (model_was_set)
     {
-      nbtk_icon_view_set_model (NBTK_ICON_VIEW (view),
+      nbtk_item_view_set_model (NBTK_ITEM_VIEW (view),
                                 NULL);
     }
   }
