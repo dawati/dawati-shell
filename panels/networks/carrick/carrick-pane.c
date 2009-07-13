@@ -525,109 +525,42 @@ _device_powered_changed_cb (CmDevice *device,
     switch (type)
     {
       case DEVICE_ETHERNET:
-        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
-                                      state);
-        gtk_widget_set_sensitive (priv->ethernet_switch,
-                                  TRUE);
-	gtk_widget_set_no_show_all (priv->ethernet_switch,
-				    FALSE);
+        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                          (priv->ethernet_switch),
+                                          state);
         gtk_widget_show (priv->ethernet_switch);
-        gtk_widget_set_no_show_all (priv->ethernet_label,
-				    FALSE);
         gtk_widget_show (priv->ethernet_label);
         break;
       case DEVICE_WIFI:
-        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
-                                   state);
-        gtk_widget_set_sensitive (priv->wifi_switch,
-                                  TRUE);
-	gtk_widget_set_no_show_all (priv->wifi_switch,
-				    FALSE);
+        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                          (priv->wifi_switch),
+                                          state);
         gtk_widget_show (priv->wifi_switch);
-	gtk_widget_set_no_show_all (priv->wifi_label,
-				    FALSE);
         gtk_widget_show (priv->wifi_label);
         /* Only enable "Add new connection" button when wifi powered on */
         gtk_widget_set_sensitive (priv->new_conn_button,
                                   state);
         break;
       case DEVICE_CELLULAR:
-        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
-                                   state);
-        gtk_widget_set_sensitive (priv->threeg_switch,
-                                  TRUE);
-	gtk_widget_set_no_show_all (priv->threeg_switch,
-				    FALSE);
+        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                          (priv->threeg_switch),
+                                          state);
         gtk_widget_show (priv->threeg_switch);
-	gtk_widget_set_no_show_all (priv->threeg_label,
-				    FALSE);
         gtk_widget_show (priv->threeg_label);
         break;
       case DEVICE_WIMAX:
-        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
-                                   state);
-        gtk_widget_set_sensitive (priv->wimax_switch,
-                                  TRUE);
-	gtk_widget_set_no_show_all (priv->wimax_switch,
-				    FALSE);
+        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                          (priv->wimax_switch),
+                                          state);
         gtk_widget_show (priv->wimax_switch);
-	gtk_widget_set_no_show_all (priv->wimax_label,
-				    FALSE);
         gtk_widget_show (priv->wimax_label);
         break;
       case DEVICE_BLUETOOTH:
-        g_debug ("Bluetooth device unhandled");
-        break;
       default:
         g_debug ("Unknown device type %s",
                  cm_device_type_to_string (type));
         break;
     }
-  }
-}
-
-static void
-_set_states (CarrickPane *pane)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-
-  if (cm_manager_get_offline_mode (priv->manager))
-  {
-    gtk_widget_set_sensitive (priv->ethernet_switch,
-                              FALSE);
-    gtk_widget_set_sensitive (priv->wifi_switch,
-                              FALSE);
-    gtk_widget_set_sensitive (priv->threeg_switch,
-                              FALSE);
-    gtk_widget_set_sensitive (priv->wimax_switch,
-                              FALSE);
-  }
-  else
-  {
-    gtk_widget_hide (priv->wifi_switch);
-    gtk_widget_set_no_show_all (priv->wifi_switch,
-                                TRUE);
-    gtk_widget_hide (priv->wifi_label);
-    gtk_widget_set_no_show_all (priv->wifi_label,
-                                TRUE);
-    gtk_widget_hide (priv->ethernet_switch);
-    gtk_widget_set_no_show_all (priv->ethernet_switch,
-                                TRUE);
-    gtk_widget_hide (priv->ethernet_label);
-    gtk_widget_set_no_show_all (priv->ethernet_label,
-                                TRUE);
-    gtk_widget_hide (priv->threeg_switch);
-    gtk_widget_set_no_show_all (priv->threeg_switch,
-                                TRUE);
-    gtk_widget_hide (priv->threeg_label);
-    gtk_widget_set_no_show_all (priv->threeg_label,
-                                TRUE);
-    gtk_widget_hide (priv->wimax_switch);
-    gtk_widget_set_no_show_all (priv->wimax_switch,
-                                TRUE);
-    gtk_widget_hide (priv->wimax_label);
-    gtk_widget_set_no_show_all (priv->wimax_label,
-                                TRUE);
   }
 }
 
@@ -639,7 +572,6 @@ _flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
   cm_manager_set_offline_mode (priv->manager, new_state);
-  _set_states (pane);
 
   return TRUE;
 }
@@ -714,7 +646,6 @@ _devices_changed_cb (CmManager *manager,
 {
   const GList *it;
 
-  _set_states (CARRICK_PANE (user_data));
   for (it = cm_manager_get_devices (manager); it != NULL; it = it->next)
   {
     CmDevice *device = CM_DEVICE (it->data);
@@ -723,6 +654,27 @@ _devices_changed_cb (CmManager *manager,
 		      "powered-changed",
 		      G_CALLBACK (_device_powered_changed_cb),
 		      user_data);
+  }
+}
+
+static void
+_set_switch_states (CarrickPane *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  const GList *devs;
+  CmDevice *device = NULL;
+
+  g_return_if_fail (priv->manager != NULL);
+
+  /* Determine states of devices */
+  for (devs = cm_manager_get_devices (priv->manager);
+       devs != NULL;
+       devs = devs->next)
+  {
+    device = devs->data;
+
+    _device_powered_changed_cb (device,
+                                pane);
   }
 }
 
@@ -748,7 +700,7 @@ _update_manager (CarrickPane *pane,
   {
     priv->manager = g_object_ref (manager);
     _update_services (pane);
-    _set_states (pane);
+    _set_switch_states (pane);
     g_signal_connect (priv->manager,
                       "devices-changed",
                       G_CALLBACK (_devices_changed_cb),
@@ -764,9 +716,9 @@ static void
 carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (self);
-  GtkWidget *switch_bin = nbtk_gtk_frame_new ();
-  GtkWidget *flight_bin = nbtk_gtk_frame_new ();
-  GtkWidget *net_list_bin = nbtk_gtk_frame_new ();
+  GtkWidget *switch_bin;
+  GtkWidget *flight_bin;
+  GtkWidget *net_list_bin;
   GtkWidget *scrolled_view;
   GtkWidget *hbox, *switch_box;
   GtkWidget *vbox;
@@ -779,6 +731,13 @@ carrick_pane_init (CarrickPane *self)
   priv->icon_factory = NULL;
   priv->manager = NULL;
   priv->last_scan = time (NULL);
+
+  switch_bin = nbtk_gtk_frame_new ();
+  gtk_widget_show (switch_bin);
+  flight_bin = nbtk_gtk_frame_new ();
+  gtk_widget_show (flight_bin);
+  net_list_bin = nbtk_gtk_frame_new ();
+  gtk_widget_show (net_list_bin);
 
   /* Set table up */
   gtk_table_resize (GTK_TABLE (self),
@@ -796,13 +755,16 @@ carrick_pane_init (CarrickPane *self)
                            _("Networks"));
 
   frame_title = gtk_label_new ("");
+  gtk_widget_show (frame_title);
   gtk_label_set_markup (GTK_LABEL (frame_title),
                         label);
   g_free (label);
   gtk_frame_set_label_widget (GTK_FRAME (net_list_bin),
                               frame_title);
   priv->service_list = carrick_list_new ();
+  gtk_widget_show (priv->service_list);
   scrolled_view = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolled_view);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_view),
                                   GTK_POLICY_NEVER,
                                   GTK_POLICY_AUTOMATIC);
@@ -817,6 +779,7 @@ carrick_pane_init (CarrickPane *self)
 
   /* New connection button */
   vbox = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox);
   gtk_table_attach (GTK_TABLE (self),
                     vbox,
                     0, 6,
@@ -826,6 +789,7 @@ carrick_pane_init (CarrickPane *self)
                     0, 0);
 
   hbox = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox);
   gtk_box_pack_start (GTK_BOX (vbox),
                       hbox,
                       FALSE,
@@ -835,6 +799,7 @@ carrick_pane_init (CarrickPane *self)
   priv->new_conn_button = gtk_button_new_with_label (_("Add new connection"));
   gtk_widget_set_sensitive (priv->new_conn_button,
                             FALSE);
+  gtk_widget_show (priv->new_conn_button);
   g_signal_connect (GTK_BUTTON (priv->new_conn_button),
                     "clicked",
                     G_CALLBACK (_new_connection_cb),
@@ -849,19 +814,20 @@ carrick_pane_init (CarrickPane *self)
   /* Switches */
   vbox = gtk_vbox_new (TRUE,
                        6);
+  gtk_widget_show (vbox);
   gtk_container_add (GTK_CONTAINER (switch_bin),
                      vbox);
 
   switch_box = gtk_hbox_new (TRUE,
                              6);
-  priv->wifi_switch = nbtk_gtk_light_switch_new ();
-  gtk_widget_set_sensitive (priv->wifi_switch,
-                            FALSE);
+  gtk_widget_show (switch_box);
 
+  priv->wifi_switch = nbtk_gtk_light_switch_new ();
   priv->wifi_label = gtk_label_new (_("WiFi"));
   gtk_misc_set_alignment (GTK_MISC (priv->wifi_label),
                           0.2,
                           0.5);
+
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->wifi_label,
                       TRUE,
@@ -882,15 +848,14 @@ carrick_pane_init (CarrickPane *self)
 		    G_CALLBACK (_wifi_switch_callback),
 		    self);
 
-  priv->ethernet_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                              6);
+  gtk_widget_show (switch_box);
+  priv->ethernet_switch = nbtk_gtk_light_switch_new ();
   priv->ethernet_label = gtk_label_new (_("Wired"));
   gtk_misc_set_alignment (GTK_MISC (priv->ethernet_label),
                           0.2,
                           0.5);
-  gtk_widget_set_sensitive (priv->ethernet_switch,
-                            FALSE);
 
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->ethernet_label,
@@ -912,15 +877,15 @@ carrick_pane_init (CarrickPane *self)
 		    G_CALLBACK (_ethernet_switch_callback),
 		    self);
 
-  priv->threeg_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                             6);
+  gtk_widget_show (switch_box);
+  priv->threeg_switch = nbtk_gtk_light_switch_new ();
   priv->threeg_label = gtk_label_new (_("3G"));
   gtk_misc_set_alignment (GTK_MISC (priv->threeg_label),
                           0.2,
                           0.5);
-  gtk_widget_set_sensitive (priv->threeg_switch,
-                            FALSE);
+
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->threeg_label,
                       TRUE,
@@ -941,15 +906,15 @@ carrick_pane_init (CarrickPane *self)
 		    G_CALLBACK (_threeg_switch_callback),
 		    self);
 
-  priv->wimax_switch = nbtk_gtk_light_switch_new ();
   switch_box = gtk_hbox_new (TRUE,
                              6);
+  gtk_widget_show (switch_box);
+  priv->wimax_switch = nbtk_gtk_light_switch_new ();
   priv->wimax_label = gtk_label_new (_("WiMAX"));
   gtk_misc_set_alignment (GTK_MISC (priv->wimax_label),
                           0.2,
                           0.5);
-  gtk_widget_set_sensitive (priv->wimax_switch,
-                            FALSE);
+
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->wimax_label,
                       TRUE,
@@ -977,12 +942,16 @@ carrick_pane_init (CarrickPane *self)
 
   vbox = gtk_vbox_new (TRUE,
                        0);
+  gtk_widget_show (vbox);
   gtk_container_add (GTK_CONTAINER (flight_bin),
                      vbox);
   flight_mode_switch = nbtk_gtk_light_switch_new ();
+  gtk_widget_show (flight_mode_switch);
   switch_box = gtk_hbox_new (TRUE,
                              6);
+  gtk_widget_show (switch_box);
   switch_label = gtk_label_new (_("Offline mode"));
+  gtk_widget_show (switch_label);
   gtk_misc_set_alignment (GTK_MISC (switch_label),
                           0.2,
                           0.5);
@@ -1012,6 +981,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_misc_set_alignment (GTK_MISC (flight_mode_label),
                           0.5,
                           0.0);
+  gtk_widget_show (flight_mode_label);
   gtk_box_pack_start (GTK_BOX (vbox),
                       flight_mode_label,
                       TRUE,
