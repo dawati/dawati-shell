@@ -339,6 +339,7 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
       g_object_ref (self);
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
+      clutter_actor_set_size (self, -1.0, -1.0);
       nbtk_table_add_actor (NBTK_TABLE (orig_parent), self,
                             app_priv->orig_row, col);
 
@@ -739,6 +740,7 @@ mnb_switcher_zone_drop (NbtkDroppable       *droppable,
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (app_parent),
                                       app_actor);
+      clutter_actor_set_size (app_actor, -1.0, -1.0);
       nbtk_table_add_actor (NBTK_TABLE (droppable), app_actor, row, 0);
 
       clutter_container_child_set (CLUTTER_CONTAINER (droppable), app_actor,
@@ -775,6 +777,7 @@ mnb_switcher_zone_drop (NbtkDroppable       *droppable,
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (app_parent),
                                       app_actor);
+      clutter_actor_set_size (app_actor, -1.0, -1.0);
       nbtk_table_add_actor (new_ws, app_actor, 1, 0);
       clutter_container_child_set (CLUTTER_CONTAINER (new_ws), app_actor,
                                    "y-fill", FALSE, "x-fill", FALSE,  NULL);
