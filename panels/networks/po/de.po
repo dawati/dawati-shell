@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-06 09:17+0000\n"
+"POT-Creation-Date: 2009-07-08 09:18+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSDEU_Andreas <andreasx.machoy@intel.com>\n"
 "Language-Team: \n"
@@ -33,11 +33,11 @@ msgstr "Online"
 msgid "Now online and connected to %s."
 msgstr "Du bist online und als %s angemeldet."
 
-#: ../carrick/carrick-pane.c:284
+#: ../carrick/carrick-pane.c:283
 msgid "New connection settings"
 msgstr "Einstellungen der neuen Verbindung"
 
-#: ../carrick/carrick-pane.c:320
+#: ../carrick/carrick-pane.c:319
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -47,53 +47,55 @@ msgstr ""
 "sowie, falls nötig, das Kennwort und\n"
 "den Sicherheitstyp, an."
 
-#: ../carrick/carrick-pane.c:330
+#: ../carrick/carrick-pane.c:329
 msgid "Network name"
 msgstr "Netzwerkname"
 
-#: ../carrick/carrick-pane.c:342
+#: ../carrick/carrick-pane.c:341
 msgid "Network security"
 msgstr "Netzwerksicherheit"
 
-#: ../carrick/carrick-pane.c:366
+#: ../carrick/carrick-pane.c:365
 msgid "Password"
 msgstr "Kennwort"
 
-#: ../carrick/carrick-pane.c:381 ../carrick/carrick-service-item.c:853
+#: ../carrick/carrick-pane.c:380
+#: ../carrick/carrick-service-item.c:855
 msgid "Show password"
 msgstr "Kennwort anzeigen"
 
-#: ../carrick/carrick-pane.c:792
+#: ../carrick/carrick-pane.c:791
 msgid "Networks"
 msgstr "Netzwerke"
 
 # shortened due to truncation in UI
-#: ../carrick/carrick-pane.c:831
+#: ../carrick/carrick-pane.c:830
 msgid "Add new connection"
 msgstr "Neue Verbindung"
 
-#: ../carrick/carrick-pane.c:857
+#: ../carrick/carrick-pane.c:856
 msgid "WiFi"
-msgstr "WiFi"
+msgstr "Funknetz"
 
-#: ../carrick/carrick-pane.c:880 ../carrick/carrick-service-item.c:196
+#: ../carrick/carrick-pane.c:879
+#: ../carrick/carrick-service-item.c:196
 msgid "Wired"
-msgstr "Verkabelt"
+msgstr "Kabelgebunden"
 
-#: ../carrick/carrick-pane.c:906
+#: ../carrick/carrick-pane.c:905
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:931
+#: ../carrick/carrick-pane.c:930
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:965
+#: ../carrick/carrick-pane.c:964
 msgid "Offline mode"
 msgstr "Offline-Modus"
 
 # changed due to UI truncation
-#: ../carrick/carrick-pane.c:989
+#: ../carrick/carrick-pane.c:988
 msgid "This will disable all your connections"
 msgstr "Dies deaktiviert alle Verbindungen"
 
@@ -119,8 +121,9 @@ msgstr "Verbindung wird hergestellt"
 msgid "Configuring"
 msgstr "Konfigurationen werden eingestellt"
 
-#: ../carrick/carrick-service-item.c:232 ../carrick/carrick-service-item.c:244
-#: ../carrick/carrick-service-item.c:842
+#: ../carrick/carrick-service-item.c:232
+#: ../carrick/carrick-service-item.c:244
+#: ../carrick/carrick-service-item.c:844
 msgid "Connect"
 msgstr "Verbinden"
 
@@ -128,14 +131,15 @@ msgstr "Verbinden"
 msgid "Connection failed"
 msgstr "Verbindung fehlgeschlagen"
 
-#: ../carrick/carrick-service-item.c:254 ../carrick/carrick-service-item.c:257
-#, fuzzy, c-format
+#: ../carrick/carrick-service-item.c:254
+#: ../carrick/carrick-service-item.c:257
+#, c-format
 msgid "Disconnecting"
-msgstr "Verbindung trennen"
+msgstr "Verbindung wird getrennt"
 
 #: ../carrick/carrick-service-item.c:306
 msgid "Type password here"
-msgstr ""
+msgstr "Kennwort hier eingeben"
 
 #: ../carrick/carrick-service-item.c:383
 msgid "Really remove?"
@@ -154,9 +158,8 @@ msgstr ""
 
 #~ msgid "Passphrase required"
 #~ msgstr "Kennwort erforderlich"
-
 #~ msgid "<b><big>Network Requires a Password</big></b>"
 #~ msgstr "<b><big>Netzwerk verlangt ein Kennwort</big></b>"
-
 #~ msgid "Please enter the password for this network:"
 #~ msgstr "Bitte das Kennwort für das Netzwerk eingeben:"
+
