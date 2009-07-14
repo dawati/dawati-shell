@@ -656,7 +656,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         NULL);
 
   priv->selection_pane = nbtk_table_new ();
-  clutter_actor_set_height ((ClutterActor *)priv->selection_pane, 200);
+  clutter_actor_set_height ((ClutterActor *)priv->selection_pane, 220);
   clutter_actor_set_name ((ClutterActor *)priv->selection_pane, "people-selection-pane");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->selection_pane,
@@ -697,6 +697,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         NULL);
 
   priv->control_box = nbtk_table_new ();
+  nbtk_table_set_row_spacing (NBTK_TABLE (priv->control_box), 6);
   clutter_actor_set_width ((ClutterActor *)priv->control_box, 200);
   clutter_actor_set_name ((ClutterActor *)priv->control_box, "people-control-box");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->selection_pane),
