@@ -210,19 +210,21 @@ ahoghill_results_table_constructor (GType                  type,
     priv->tiles = g_new (AhoghillMediaTile *, tiles_per_page);
     for (i = 0; i < tiles_per_page; i++) {
         priv->tiles[i] = g_object_new (AHOGHILL_TYPE_MEDIA_TILE, NULL);
-
+#if 0
         nbtk_widget_set_dnd_threshold (NBTK_WIDGET (priv->tiles[i]), 10);
+#endif
         g_signal_connect (priv->tiles[i], "button-press-event",
                           G_CALLBACK (tile_pressed_cb), table);
         g_signal_connect (priv->tiles[i], "button-release-event",
                           G_CALLBACK (tile_released_cb), table);
+#if 0
         g_signal_connect (priv->tiles[i], "dnd-begin",
                           G_CALLBACK (tile_dnd_begin_cb), table);
         g_signal_connect (priv->tiles[i], "dnd-motion",
                           G_CALLBACK (tile_dnd_motion_cb), table);
         g_signal_connect (priv->tiles[i], "dnd-end",
                           G_CALLBACK (tile_dnd_end_cb), table);
-
+#endif
         nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
                                               (ClutterActor *) priv->tiles[i],
                                               (i / TILES_PER_ROW),
