@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-30 04:11+0000\n"
+"POT-Creation-Date: 2009-07-08 09:18+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Glscht_Wen <wen.hsinx.moh@intel.com>\n"
+"Last-Translator: Alice <hui.chihx.lee@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,16 +17,16 @@ msgstr ""
 msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
 msgstr "你要播放音樂、瀏覽照片或觀看影片來顯示你的歷史紀錄。現在，你可以瀏覽一些媒體樣本："
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:390
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:922
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:388
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:930
 msgid "Recently played"
 msgstr "最近播放"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:416
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:414
 msgid "Search results"
 msgstr "搜尋結果"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:936
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:944
 msgid "Local"
 msgstr "本機"
 
@@ -52,9 +52,9 @@ msgid "Media"
 msgstr "媒體"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
-#: ../applications/src/moblin-netbook-launcher.c:1375
+#: ../applications/src/moblin-netbook-launcher.c:1377
 #: ../pasteboard/src/moblin-netbook-pasteboard.c:219
-#: ../people/src/mnb-people-panel.c:564
+#: ../people/src/mnb-people-panel.c:563
 msgid "Search"
 msgstr "搜尋"
 
@@ -82,15 +82,20 @@ msgstr "%d 集"
 msgid "Year %d"
 msgstr "%d 年"
 
+#: ../ahoghill/src/moblin-panel-media.c:130
+#: ../src/moblin-netbook.c:324
+msgid "media"
+msgstr "媒體"
+
 #.
 #. * Fav apps.
 #.
 #. Label
-#: ../applications/src/moblin-netbook-launcher.c:868
+#: ../applications/src/moblin-netbook-launcher.c:869
 msgid "Favourite Applications"
 msgstr "最愛應用程式"
 
-#: ../applications/src/moblin-netbook-launcher.c:1364
+#: ../applications/src/moblin-netbook-launcher.c:1366
 msgid "Applications"
 msgstr "應用程式"
 
@@ -125,7 +130,7 @@ msgstr "無標題"
 #. and this label should become the caption title
 #: ../netpanel/src/moblin-netbook-netpanel.c:1047
 msgid "New tab"
-msgstr "新的服務"
+msgstr "新的標籤"
 
 #. Construct entry table widgets
 #: ../netpanel/src/moblin-netbook-netpanel.c:1290
@@ -136,7 +141,7 @@ msgstr "網際網路"
 msgid "Go"
 msgstr "去"
 
-#: ../netpanel/src/moblin-panel-internet.c:78
+#: ../netpanel/src/moblin-panel-internet.c:79
 #: ../src/moblin-netbook.c:321
 msgid "internet"
 msgstr "網際網路"
@@ -144,14 +149,14 @@ msgstr "網際網路"
 #: ../netpanel/src/mwb-ac-list.c:1363
 #, c-format
 msgid "Search for %%s on %s"
-msgstr "在Yahoo!奇摩上搜尋 %s"
+msgstr "在%s上搜尋 %%s"
 
 #: ../netpanel/src/mwb-ac-list.c:1378
 #, c-format
 msgid "Go to %s.com"
 msgstr "去 %s.com 網站"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:518
+#: ../pasteboard/src/mnb-clipboard-item.c:516
 #: ../pasteboard/src/moblin-netbook-pasteboard.c:344
 msgid "Copy"
 msgstr "複製"
@@ -202,7 +207,7 @@ msgstr "<b>歡迎來到 Moblin 2.0 隨身型易網機</b>"
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
 msgstr "由於 Moblin 和其它電腦有些不同，在這次的試用版本中，我們將一些東西拼湊在一起以幫助你更快熟悉 Moblin。希望你喜歡我們的產品。Moblin 小組。"
 
-#: ../penge/penge/penge-recent-file-tile.c:235
+#: ../penge/penge/penge-recent-file-tile.c:234
 msgid "Web page"
 msgstr "網頁"
 
@@ -216,60 +221,74 @@ msgid "Due %x"
 msgstr "%x到期"
 
 #: ../penge/penge/penge-utils.c:63
+#: ../status/src/mnb-web-status-entry.c:106
 msgid "Less than a minute ago"
 msgstr "少於一分鐘時"
 
 #: ../penge/penge/penge-utils.c:67
+#: ../status/src/mnb-web-status-entry.c:110
 msgid "A few minutes ago"
 msgstr "幾分鐘前"
 
 #: ../penge/penge/penge-utils.c:71
+#: ../status/src/mnb-web-status-entry.c:114
 msgid "A couple of hours ago"
 msgstr "兩小時前"
 
 #: ../penge/penge/penge-utils.c:78
+#: ../status/src/mnb-web-status-entry.c:121
 msgid "Earlier today"
 msgstr "更早時候"
 
 #: ../penge/penge/penge-utils.c:81
+#: ../status/src/mnb-web-status-entry.c:124
 msgid "Yesterday"
 msgstr "昨天"
 
 #: ../penge/penge/penge-utils.c:89
+#: ../status/src/mnb-web-status-entry.c:132
 #, c-format
 msgid "On %A"
 msgstr "在%A"
 
 #: ../penge/penge/penge-utils.c:95
+#: ../status/src/mnb-web-status-entry.c:138
 msgid "Unknown"
 msgstr "未知"
 
 #: ../penge/penge/penge-utils.c:102
+#: ../status/src/mnb-web-status-entry.c:145
 msgid "Last week"
 msgstr "上禮拜"
 
 #: ../penge/penge/penge-utils.c:105
+#: ../status/src/mnb-web-status-entry.c:148
 msgid "A couple of weeks ago"
 msgstr "兩週以前"
 
 #: ../penge/penge/penge-utils.c:111
+#: ../status/src/mnb-web-status-entry.c:154
 msgid "This month"
 msgstr "這個月"
 
 #. Now Jan., last used in Dec.
 #: ../penge/penge/penge-utils.c:115
+#: ../status/src/mnb-web-status-entry.c:158
 msgid "Last month"
 msgstr "上個月"
 
 #: ../penge/penge/penge-utils.c:118
+#: ../status/src/mnb-web-status-entry.c:161
 msgid "This year"
 msgstr "今年"
 
 #: ../penge/penge/penge-utils.c:121
+#: ../status/src/mnb-web-status-entry.c:164
 msgid "Last year"
 msgstr "去年"
 
 #: ../penge/penge/penge-utils.c:123
+#: ../status/src/mnb-web-status-entry.c:166
 msgid "Ages ago"
 msgstr "好幾年前"
 
@@ -280,7 +299,7 @@ msgstr "大家"
 
 #: ../people/src/mnb-people-panel.c:162
 msgid "Send an email"
-msgstr "傳送至 bugzilla（%s）"
+msgstr "發送電子郵件"
 
 #: ../people/src/mnb-people-panel.c:164
 msgid "Edit details"
@@ -288,36 +307,34 @@ msgstr "編輯分割區"
 
 #: ../people/src/mnb-people-panel.c:168
 msgid "Send a message"
-msgstr "傳送至 bugzilla（%s）"
+msgstr "發送訊息"
 
 #: ../people/src/mnb-people-panel.c:302
+#: ../status/src/moblin-panel-status.c:755
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "很抱歉，我們無法找到任何人。你成立了一個 Messenger 的帳戶？"
 
-#: ../people/src/mnb-people-panel.c:551
+#: ../people/src/mnb-people-panel.c:550
 msgid "People"
 msgstr "大家"
 
-#: ../people/src/mnb-people-panel.c:681
+#: ../people/src/mnb-people-panel.c:679
 msgid "Selection"
 msgstr "選擇語言"
 
 #: ../people/src/mnb-people-panel.c:741
 msgid "Nobody selected"
-msgstr "選擇了可選套件：%d 之 %d"
+msgstr "沒有選取任何人"
 
 #: ../src/moblin-netbook.c:309
-#: ../src/mnb-toolbar.c:1382
+#: ../src/mnb-toolbar.c:1394
 msgid "zones"
 msgstr "區域"
 
 #: ../src/moblin-netbook.c:312
+#: ../status/src/moblin-panel-status.c:1033
 msgid "status"
 msgstr "狀態"
-
-#: ../src/moblin-netbook.c:324
-msgid "media"
-msgstr "媒體"
 
 #: ../src/moblin-netbook.c:437
 msgid "Moblin Netbook Effects"
@@ -340,78 +357,120 @@ msgstr "新區域(0)"
 msgid "Choose zone for application:"
 msgstr "為應用程式選取區域："
 
-#: ../src/moblin-netbook-status.c:206
-#: ../src/moblin-netbook-status.c:261
-msgid "Your current status"
-msgstr "你目前狀態"
-
-#: ../src/moblin-netbook-status.c:208
-msgid "Your current status - you are offline"
-msgstr "你目前狀態 - 你未上線"
-
-#: ../src/moblin-netbook-status.c:291
-msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "要更新你的網路狀態，你必須設定一個網路服務帳戶，提供此帳戶的一方須能支援狀態訊息"
-
 #: ../src/tray/na-tray-child.c:121
 #, c-format
 msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 msgstr "工作匣圖示須要的大小為 (%i x %i)，重新調整到 (%i x %i)"
 
-#: ../src/mnb-status-entry.c:138
-#: ../src/mnb-status-entry.c:683
-#: ../src/mnb-status-entry.c:765
+#: ../src/mnb-switcher.c:1205
+msgid "No Zones yet"
+msgstr "尚無區域"
+
+#: ../src/mnb-switcher.c:1227
+msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
+msgstr "你在使用的應用程式會顯示在這裡。你將可以切換和組合這些應用程式到你的核心。"
+
+#: ../src/mnb-switcher.c:1431
+msgid "No applications on this zone"
+msgstr "這個區域沒有任何應用程式"
+
+#: ../src/mnb-toolbar.c:1631
+msgid "power & brightness"
+msgstr "電源和亮度"
+
+#: ../src/mnb-toolbar.c:1634
+msgid "volume"
+msgstr "音量"
+
+#: ../src/mnb-toolbar.c:1637
+msgid "bluetooth"
+msgstr "藍牙"
+
+#: ../src/mnb-toolbar.c:1640
+msgid "networks"
+msgstr "網路"
+
+#: ../src/mnb-toolbar.c:1643
+msgid "test"
+msgstr "測試"
+
+#: ../src/mnb-toolbar.c:1720
+msgid "To activate the toolbar, move your cursor to the top of the screen"
+msgstr "要激活工具欄，移動您的滑鼠到畫面上方"
+
+#: ../status/src/mnb-im-status-row.c:97
+#: ../status/src/mnb-im-status-row.c:98
+#: ../status/src/mnb-im-status-row.c:641
+msgid "Offline"
+msgstr "下線"
+
+#: ../status/src/mnb-im-status-row.c:99
+#: ../status/src/moblin-panel-status.c:489
+msgid "Available"
+msgstr "可用"
+
+#: ../status/src/mnb-im-status-row.c:100
+#: ../status/src/mnb-im-status-row.c:101
+#: ../status/src/moblin-panel-status.c:493
+#: ../status/src/moblin-panel-status.c:497
+msgid "Away"
+msgstr "離開"
+
+#: ../status/src/mnb-im-status-row.c:102
+#: ../status/src/mnb-im-status-row.c:103
+#: ../status/src/moblin-panel-status.c:501
+#: ../status/src/moblin-panel-status.c:505
+msgid "Busy"
+msgstr "忙"
+
+#: ../status/src/mnb-im-status-row.c:122
+msgid "- Close"
+msgstr "-關閉"
+
+#: ../status/src/mnb-im-status-row.c:129
+#: ../status/src/mnb-im-status-row.c:654
+msgid "+ Change"
+msgstr "+更換"
+
+#: ../status/src/mnb-im-status-row.c:644
+msgid "Unknown account"
+msgstr "未知使用者"
+
+#: ../status/src/mnb-web-status-entry.c:178
+#: ../status/src/mnb-web-status-entry.c:731
+#: ../status/src/mnb-web-status-entry.c:812
 msgid "Edit"
 msgstr "修改"
 
 #. Translators: %s is the user visible name of the service
-#: ../src/mnb-status-entry.c:560
+#: ../status/src/mnb-web-status-entry.c:605
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "在這裡輸入你%s狀態......"
 
-#: ../src/mnb-status-entry.c:564
-#: ../src/mnb-status-entry.c:637
+#: ../status/src/mnb-web-status-entry.c:609
+#: ../status/src/mnb-web-status-entry.c:682
 msgid "Enter your current status here..."
 msgstr "在這裡輸入你目前狀態......"
 
-#: ../src/mnb-status-entry.c:744
+#: ../status/src/mnb-web-status-entry.c:791
 msgid "Post"
 msgstr "發表"
 
-#: ../src/mnb-switcher.c:1182
-msgid "No Zones yet"
-msgstr "尚無區域"
+#: ../status/src/moblin-panel-status.c:423
+#: ../status/src/moblin-panel-status.c:890
+msgid "Your current status"
+msgstr "你目前狀態"
 
-#: ../src/mnb-switcher.c:1204
-msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
-msgstr "你在使用的應用程式會顯示在這裡。你將可以切換和組合這些應用程式到你的核心。"
+#: ../status/src/moblin-panel-status.c:425
+msgid "Your current status - you are offline"
+msgstr "你目前狀態 - 你未上線"
 
-#: ../src/mnb-switcher.c:1408
-msgid "No applications on this zone"
-msgstr "這個區域沒有任何應用程式"
+#: ../status/src/moblin-panel-status.c:924
+msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+msgstr "要更新你的網路狀態，你必須設定一個網路服務帳戶，提供此帳戶的一方須能支援狀態訊息"
 
-#: ../src/mnb-toolbar.c:1619
-msgid "power & brightness"
-msgstr "電源和亮度"
-
-#: ../src/mnb-toolbar.c:1622
-msgid "volume"
-msgstr "音量"
-
-#: ../src/mnb-toolbar.c:1625
-msgid "bluetooth"
-msgstr "藍牙"
-
-#: ../src/mnb-toolbar.c:1628
-msgid "networks"
-msgstr "網路"
-
-#: ../src/mnb-toolbar.c:1631
-msgid "test"
-msgstr "測試"
-
-#: ../src/mnb-toolbar.c:1708
-msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "要激活工具欄，移動您的滑鼠到畫面上方"
+#: ../status/src/moblin-panel-status.c:951
+msgid "To update your IM status you need to setup an Instant Messaging account"
+msgstr "要更新你的 IM 狀態，你必須要設定一個 IM 帳戶"
 
