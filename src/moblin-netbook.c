@@ -806,14 +806,17 @@ check_for_empty_workspace (MutterPlugin *plugin,
       MetaWindow         *mw;
 
       /*
-       * Ignore desktop and docks.
+       * Ignore desktop, docs, and panel windows
+       *
+       * (Panel windows are currently of type META_COMP_WINDOW_OVERRIDE_OTHER)
        */
-      if (!(type == META_COMP_WINDOW_DESKTOP ||
-            type == META_COMP_WINDOW_DOCK    ||
+      if (!(type == META_COMP_WINDOW_DESKTOP        ||
+            type == META_COMP_WINDOW_DOCK           ||
+            type == META_COMP_WINDOW_OVERRIDE_OTHER ||
             ((mw = mutter_window_get_meta_window (m)) == ignore)))
         {
-          g_debug ("Found singificant window %s",
-                   mutter_window_get_description (m));
+          g_debug ("Found singificant window %s of type %d",
+                   mutter_window_get_description (m), type);
 
           no_apps = FALSE;
           break;
