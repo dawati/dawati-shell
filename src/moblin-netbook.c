@@ -34,6 +34,7 @@
 #include "effects/mnb-switch-zones-effect.h"
 
 #include <glib/gi18n.h>
+#include <gdk/gdkx.h>
 
 #include <moblin-panel/mpl-panel-common.h>
 #include <clutter/clutter.h>
@@ -1450,13 +1451,14 @@ setup_parallax_effect (MutterPlugin *plugin)
    */
   root_win = RootWindow (xdpy, meta_screen_get_screen_number (screen));
 
-  status = XQueryTree (xdpy, root_win, &root_win, &parent_win, &children,
-                       &n_children);
-
   desktop_atom = meta_display_get_atom (display,
                                         META_ATOM__NET_WM_WINDOW_TYPE_DESKTOP);
 
-  if (status)
+  gdk_error_trap_push ();
+  status = XQueryTree (xdpy, root_win, &root_win, &parent_win, &children,
+                       &n_children);
+
+  if (!gdk_error_trap_pop () && status)
     {
       guint i;
       Atom  type_atom;
@@ -1469,13 +1471,17 @@ setup_parallax_effect (MutterPlugin *plugin)
           unsigned long  n_items, ret_bytes;
           Atom           ret_type;
           int            ret_format;
+          int            result;
           Atom          *type;
 
-          XGetWindowProperty (xdpy, *l, type_atom, 0, 8192, False,
-                              XA_ATOM, &ret_type, &ret_format,
-                              &n_items, &ret_bytes, (unsigned char**)&type);
+          gdk_error_trap_push ();
 
-          if (type)
+          result = XGetWindowProperty (xdpy, *l, type_atom, 0, 8192, False,
+                                       XA_ATOM, &ret_type, &ret_format,
+                                       &n_items, &ret_bytes,
+                                       (unsigned char**)&type);
+
+          if (!gdk_error_trap_pop () && result == Success && type)
             {
               if (*type == desktop_atom)
                 have_desktop = TRUE;
