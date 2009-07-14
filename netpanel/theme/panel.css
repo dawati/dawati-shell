@@ -1,4 +1,8 @@
 
+MoblinNetbookNetpanel NbtkButton {
+  padding: 7 4;
+}
+
 /* Overrode MnbEntry so we need to redeclare its styles apparently */
 MnbNetpanelBar {
   border-image: url('file://mpl-entry-bg.png') 5 5 6 5 stretch stretch;
@@ -14,6 +18,11 @@ MnbNetpanelBar *.MplEntryButton {
   border-image: url('file://mpl-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
+  color: #4e3972;
+}
+
+MnbNetpanelBar *.MplEntryButton {
+  color: #c5a3fc;
 }
 
 MnbNetpanelBar *.MplEntryClearButton {
@@ -79,19 +88,19 @@ MwbAcList > NbtkBin { /* highlight color */
   background-color: #ded5ed;
 }
 
-MoblinNetbookNetpanel NbtkButton {
+MoblinNetbookNetpanel NbtkButton.weblink {
   border-image: url("file://thumbnail.png") 7 8 9;
   padding: 7 8 9;
   color: #4e3972;
 }
 
-MoblinNetbookNetpanel NbtkButton:hover {
+MoblinNetbookNetpanel NbtkButton.weblink:hover {
   border-image: url("file://thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
   color: #c5a3fc;
 }
 
-MoblinNetbookNetpanel NbtkButton:active {
+MoblinNetbookNetpanel NbtkButton.weblink:active {
   border-image: url("file://thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
 }
@@ -109,14 +118,3 @@ MoblinNetbookNetpanel *#netpanel-entrytable > NbtkLabel
   color: #3e3e3eff;
   padding: 0 12 0 0;
 }
-
-MoblinNetbookNetpanel *#netpanel-entrytable NbtkButton
-{
-  color: #4e3972;
-}
-
-MoblinNetbookNetpanel *#netpanel-entrytable NbtkButton:hover
-{
-  color: #c5a3fc;
-}
-

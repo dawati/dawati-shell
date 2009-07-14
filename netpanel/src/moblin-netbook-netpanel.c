@@ -714,6 +714,8 @@ display_favs (MoblinNetbookNetpanel *self)
       path = penge_utils_get_thumbnail_path (priv->fav_urls[i]);
 
       button = nbtk_button_new ();
+      nbtk_widget_set_style_class_name (NBTK_WIDGET (button), "weblink");
+
       label = nbtk_label_new (priv->fav_titles[i]);
       clutter_actor_set_width (CLUTTER_ACTOR (label), CELL_WIDTH);
 
@@ -874,6 +876,8 @@ notify_connect_view (DBusGProxy     *proxy,
       tab = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (mozembed), "tab"));
 
       priv->tabs[tab] = button = nbtk_button_new ();
+      nbtk_widget_set_style_class_name (NBTK_WIDGET (button), "weblink");
+
       g_object_ref_sink (priv->tabs[tab]);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (button), mozembed);
@@ -1047,6 +1051,8 @@ notify_get_ntabs (DBusGProxy     *proxy,
         }
 
       button = nbtk_button_new ();
+      nbtk_widget_set_style_class_name (NBTK_WIDGET (button), "weblink");
+
       clutter_container_add_actor (CLUTTER_CONTAINER (button),
                                    CLUTTER_ACTOR (tex));
       g_signal_connect (button, "clicked",
