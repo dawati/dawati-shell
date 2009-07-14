@@ -13,6 +13,8 @@ libcarrick_la_SOURCES = carrick-applet.c \
                         carrick-status-icon.h \
                         carrick-list.c \
                         carrick-list.h \
+			carrick-notification-manager.c \
+			carrick-notification-manager.h \
                         $(NULL)
 
 libcarrick_la_CFLAGS =  -Wall \
