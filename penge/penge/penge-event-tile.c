@@ -268,7 +268,7 @@ penge_event_tile_init (PengeEventTile *self)
 
   priv->time_bin = nbtk_bin_new ();
   clutter_actor_set_width ((ClutterActor *)priv->time_bin,
-                           50);
+                           60);
   nbtk_widget_set_style_class_name (priv->time_bin,
                                     "PengeEventTimeBin");
 
