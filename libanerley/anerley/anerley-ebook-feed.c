@@ -138,11 +138,21 @@ static void
 anerley_ebook_feed_init (AnerleyEBookFeed *self)
 {
   AnerleyEBookFeedPrivate *priv = GET_PRIVATE (self);
+  gchar *avatar_cache_dir;
 
   priv->uids_to_items = g_hash_table_new_full (g_str_hash,
                                                g_str_equal,
                                                g_free,
                                                g_object_unref);
+
+
+  /*  Create cache directory if it doesn't exist */
+  avatar_cache_dir = g_build_filename (g_get_user_cache_dir (),
+                                       "anerley",
+                                       "avatars",
+                                       NULL);
+  g_mkdir_with_parents (avatar_cache_dir, 0755);
+  g_free (avatar_cache_dir);
 }
 
 AnerleyFeed *
