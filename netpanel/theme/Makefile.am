@@ -9,6 +9,7 @@ dist_theme_DATA = \
 	mpl-entry-clear-hover.png \
 	mpl-entry-clear.png \
 	mpl-entry-separator.png \
+	newtab-thumbnail.png \
 	placeholder-bg.png \
 	thumbnail_hover.png \
 	thumbnail.png
