@@ -338,9 +338,12 @@ anerley_tile_map (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (anerley_tile_parent_class)->map (actor);
 
-  anerley_item_emit_display_name_changed (priv->item);
-  anerley_item_emit_avatar_path_changed (priv->item);
-  anerley_item_emit_presence_changed (priv->item);
+  if (priv->item)
+  {
+    anerley_item_emit_display_name_changed (priv->item);
+    anerley_item_emit_avatar_path_changed (priv->item);
+    anerley_item_emit_presence_changed (priv->item);
+  }
 }
 
 static void
