@@ -548,7 +548,11 @@ anerley_tile_init (AnerleyTile *self)
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 
+  /* Need to set a fixed size */
   clutter_actor_set_size ((ClutterActor *)self, 180, 90);
+
+  /* Need to hide it to take advantage of optimisations in grid */
+  clutter_actor_hide ((ClutterActor *)self);
 }
 
 NbtkWidget *
