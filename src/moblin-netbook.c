@@ -715,18 +715,10 @@ check_for_empty_workspace (MutterPlugin *plugin,
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   gboolean                    workspace_empty = TRUE;
+  gboolean                    no_apps = TRUE;
   GList                      *l;
 
   l = mutter_get_windows (screen);
-
-  if (!l)
-    {
-      /*
-       * If there are no workspaces, we show the myzone.
-       */
-      mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar),
-                                  MPL_PANEL_MYZONE);
-    }
 
   while (l)
     {
@@ -800,6 +792,38 @@ check_for_empty_workspace (MutterPlugin *plugin,
 
       meta_screen_remove_workspace (screen, current_ws, timestamp);
     }
+
+  /*
+   * Now check for running applications; we do this by checking if any
+   * application-type windows are present.
+   */
+  l = mutter_get_windows (screen);
+
+  while (l)
+    {
+      MutterWindow       *m    = l->data;
+      MetaCompWindowType  type = mutter_window_get_window_type (m);
+      MetaWindow         *mw;
+
+      /*
+       * Ignore desktop and docks.
+       */
+      if (!(type == META_COMP_WINDOW_DESKTOP ||
+            type == META_COMP_WINDOW_DOCK    ||
+            ((mw = mutter_window_get_meta_window (m)) == ignore)))
+        {
+          g_debug ("Found singificant window %s",
+                   mutter_window_get_description (m));
+
+          no_apps = FALSE;
+          break;
+        }
+
+      l = l->next;
+    }
+
+  if (no_apps)
+    mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar), MPL_PANEL_MYZONE);
 }
 
 /*
