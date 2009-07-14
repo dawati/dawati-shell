@@ -457,8 +457,8 @@ _tp_channel_members_changed_on_subscribe_cb (TpChannel    *proxy,
   GList *l;
   TpContact *contact;
 
-  g_debug (G_STRLOC ": Members changed.");
-  anerley_tp_feed_fetch_contacts (feed, added);
+  if (added->len > 0)
+    anerley_tp_feed_fetch_contacts (feed, added);
 
   for (i = 0; i < removed->len; i++)
   {
@@ -518,7 +518,8 @@ _tp_channel_get_all_members_for_subscribe_cb (TpChannel    *proxy,
     return;
   }
 
-  anerley_tp_feed_fetch_contacts (feed, members);
+  if (members->len > 0)
+    anerley_tp_feed_fetch_contacts (feed, members);
 }
 
 static void
