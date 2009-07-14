@@ -5,6 +5,7 @@ themedir = $(MUTTER_MOBLIN_THEME_DIR)/moblin-panel-internet
 dist_theme_DATA = \
 	panel.css \
 	ac-list.png \
+	fallback-page.png \
 	mpl-entry-bg.png \
 	mpl-entry-clear-hover.png \
 	mpl-entry-clear.png \

@@ -721,7 +721,6 @@ display_favs (MoblinNetbookNetpanel *self)
 
       tex = clutter_texture_new ();
 
-      /* TODO: Maybe show a default thumbnail instead of nothing */
       if (path)
         {
           clutter_texture_set_from_file (CLUTTER_TEXTURE (tex), path, &error);
@@ -729,6 +728,19 @@ display_favs (MoblinNetbookNetpanel *self)
           if (error)
             {
               g_warning ("[netpanel] unable to open thumbnail: %s\n",
+                         error->message);
+              g_error_free (error);
+            }
+        }
+
+      if (!path || error)
+        {
+          error = NULL;
+          clutter_texture_set_from_file (CLUTTER_TEXTURE (tex),
+                                         THEMEDIR "/fallback-page.png", &error);
+          if (error)
+            {
+              g_warning ("[netpanel] unable to open fallback thumbnail: %s\n",
                          error->message);
               g_error_free (error);
             }
