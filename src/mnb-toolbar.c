@@ -2352,6 +2352,12 @@ tray_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
         }
     }
 
+  /*
+   * Clear the associated button; this avoids a race condition when the user
+   * clicks the button again imediately after the hide.
+   */
+  mnb_drop_down_set_button (MNB_DROP_DOWN (actor), NULL);
+
   shell_tray_manager_close_config_window (tmgr, hide_data->config_xwin);
 }
 
