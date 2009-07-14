@@ -839,6 +839,17 @@ shell_tray_manager_close_config_window (ShellTrayManager *manager,
 
   if (child)
     destroy_config_window (child);
+  else
+    {
+      /*
+       * Make sure that the xid is not longer in the window list we maintain
+       * (there is a race condition where the window might be replaced before
+       * the old window got destroyed).
+       */
+      manager->priv->config_windows =
+        g_list_remove (manager->priv->config_windows,
+                       GINT_TO_POINTER (xwindow));
+    }
 }
 
 void
