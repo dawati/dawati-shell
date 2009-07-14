@@ -66,6 +66,11 @@ struct _MnbDropDownPrivate {
   gboolean in_show_animation : 1;
   gboolean in_hide_animation : 1;
   gboolean hide_toolbar      : 1;
+
+  gulong show_completed_id;
+  gulong hide_completed_id;
+  ClutterAnimation *show_anim;
+  ClutterAnimation *hide_anim;
 };
 
 static void
@@ -122,12 +127,14 @@ mnb_drop_down_finalize (GObject *object)
 }
 
 static void
-mnb_drop_down_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
+mnb_drop_down_show_completed_cb (ClutterAnimation *anim, ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
 
   priv->in_show_animation = FALSE;
   priv->hide_toolbar = FALSE;
+  priv->show_anim = NULL;
+  priv->show_completed_id = 0;
 
   if (priv->button)
     {
@@ -164,6 +171,15 @@ mnb_drop_down_show (ClutterActor *actor)
     {
       g_signal_stop_emission_by_name (actor, "show");
       return;
+    }
+
+  if (priv->hide_completed_id)
+    {
+      g_debug ("disconnecting hide_completed_cb");
+      g_signal_handler_disconnect (priv->hide_anim, priv->hide_completed_id);
+      priv->hide_anim = NULL;
+      priv->hide_completed_id = 0;
+      priv->in_hide_animation = FALSE;
     }
 
   g_signal_emit (actor, dropdown_signals[SHOW_BEGIN], 0);
@@ -216,16 +232,21 @@ mnb_drop_down_show (ClutterActor *actor)
                                      "y", y,
                                      NULL);
 
-  g_signal_connect (clutter_animation_get_timeline (animation),
-                    "completed",
-                    G_CALLBACK (mnb_drop_down_show_completed_cb),
-                    actor);
+  priv->show_completed_id =
+    g_signal_connect (animation,
+                      "completed",
+                      G_CALLBACK (mnb_drop_down_show_completed_cb),
+                      actor);
+  priv->show_anim = animation;
 }
 
 static void
-mnb_drop_down_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
+mnb_drop_down_hide_completed_cb (ClutterAnimation *anim, ClutterActor *actor)
 {
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+
+  priv->hide_anim = NULL;
+  priv->hide_completed_id = 0;
 
   /* the hide animation has finished, so now really hide the actor */
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->hide (actor);
@@ -267,6 +288,22 @@ mnb_drop_down_hide (ClutterActor *actor)
       return;
     }
 
+  if (priv->show_completed_id)
+    {
+      g_debug ("disconnecting show_completed_cb");
+      g_signal_handler_disconnect (priv->show_anim, priv->show_completed_id);
+      priv->show_anim = NULL;
+      priv->show_completed_id = 0;
+      priv->in_show_animation = FALSE;
+      priv->hide_toolbar = FALSE;
+
+      if (priv->button)
+        {
+          if (nbtk_button_get_checked (priv->button))
+            nbtk_button_set_checked (priv->button, FALSE);
+        }
+    }
+
   g_signal_emit (actor, dropdown_signals[HIDE_BEGIN], 0);
 
   /* de-activate the button */
@@ -294,10 +331,12 @@ mnb_drop_down_hide (ClutterActor *actor)
                                      "y", -clutter_actor_get_height (actor),
                                      NULL);
 
-  g_signal_connect (clutter_animation_get_timeline (animation),
-                    "completed",
-                    G_CALLBACK (mnb_drop_down_hide_completed_cb),
-                    actor);
+  priv->hide_completed_id =
+    g_signal_connect (animation,
+                      "completed",
+                      G_CALLBACK (mnb_drop_down_hide_completed_cb),
+                      actor);
+  priv->hide_anim = animation;
 }
 
 static void
