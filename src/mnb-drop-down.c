@@ -603,20 +603,36 @@ void
 mnb_drop_down_set_button (MnbDropDown *drop_down,
                           NbtkButton *button)
 {
+  NbtkButton *old_button;
 
   g_return_if_fail (MNB_IS_DROP_DOWN (drop_down));
-  g_return_if_fail (NBTK_IS_BUTTON (button));
+  g_return_if_fail (!button || NBTK_IS_BUTTON (button));
 
+  old_button = drop_down->priv->button;
   drop_down->priv->button = button;
 
-  g_object_weak_ref (G_OBJECT (button),
-                     (GWeakNotify) mnb_drop_down_button_weak_unref_cb,
-                     drop_down);
+  if (old_button)
+    {
+      g_object_weak_unref (G_OBJECT (old_button),
+                           (GWeakNotify) mnb_drop_down_button_weak_unref_cb,
+                           drop_down);
 
-  g_signal_connect (button,
-                    "notify::checked",
-                    G_CALLBACK (mnb_button_toggled_cb),
-                    drop_down);
+      g_signal_handlers_disconnect_by_func (old_button,
+                                            G_CALLBACK (mnb_button_toggled_cb),
+                                            drop_down);
+    }
+
+  if (button)
+    {
+      g_object_weak_ref (G_OBJECT (button),
+                         (GWeakNotify) mnb_drop_down_button_weak_unref_cb,
+                         drop_down);
+
+      g_signal_connect (button,
+                        "notify::checked",
+                        G_CALLBACK (mnb_button_toggled_cb),
+                        drop_down);
+    }
 }
 
 /*
