@@ -15,7 +15,7 @@ netpanel/src/moblin-netbook-netpanel.c
 netpanel/src/moblin-panel-internet.c
 netpanel/src/mwb-ac-list.c
 pasteboard/src/mnb-clipboard-item.c
-pasteboard/src/moblin-netbook-pasteboard.c
+pasteboard/src/moblin-panel-pasteboard.c
 penge/penge/penge-calendar-pane.c
 penge/penge/penge-events-pane.c
 penge/penge/penge-people-pane.c
