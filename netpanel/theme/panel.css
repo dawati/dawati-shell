@@ -40,7 +40,7 @@ MoblinNetbookNetpanel
   padding: 6;
 }
 
-*#netpanel-subtable NbtkLabel
+MoblinNetbookNetpanel NbtkLabel
 {
   font-family: "Liberation Sans";
   font-size: 13px;
@@ -48,7 +48,7 @@ MoblinNetbookNetpanel
   padding: 0 4;
 }
 
-*#netpanel-subtable NbtkLabel#section
+MoblinNetbookNetpanel NbtkLabel#section
 {
   font-family: "Liberation Sans Bold";
   font-size: 15px;
@@ -56,7 +56,7 @@ MoblinNetbookNetpanel
   padding: 2 4 0 4;
 }
 
-*#netpanel-placeholder-bin *#netpanel-placeholder-label
+MoblinNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
   font-family: "Liberation Sans";
   font-size: 16px;

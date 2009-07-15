@@ -20,6 +20,8 @@ moblin_panel_internet_SOURCES = \
   moblin-netbook-netpanel.h \
   mnb-netpanel-bar.c        \
   mnb-netpanel-bar.h        \
+  mnb-netpanel-scrollview.c \
+  mnb-netpanel-scrollview.h \
   mwb-ac-list.c             \
   mwb-ac-list.h             \
   mwb-separator.c           \
