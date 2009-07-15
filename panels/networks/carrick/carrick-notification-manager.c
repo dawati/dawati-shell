@@ -39,7 +39,7 @@ _services_changed_cb (CmManager *manager,
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
   const GList *new_services = cm_manager_get_services (manager);
-  CmService *new_active = new_services->data;
+  CmService *new_active;
   NotifyNotification *note;
   gchar *title = NULL;
   gchar *message = NULL;
@@ -49,7 +49,13 @@ _services_changed_cb (CmManager *manager,
   const gchar *state = NULL;
   guint str = 0;
 
-  g_return_if_fail (new_active != NULL);
+  if (!new_services)
+    return;
+
+  new_active = new_services->data;
+
+  if (!new_active)
+    return;
 
   type = cm_service_get_type (new_active);
   name = cm_service_get_name (new_active);
