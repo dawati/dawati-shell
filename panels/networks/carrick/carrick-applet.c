@@ -26,11 +26,11 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <gconnman/gconnman.h>
-#include <libnotify/notify.h>
 #include "carrick-pane.h"
 #include "carrick-status-icon.h"
 #include "carrick-list.h"
 #include "carrick-icon-factory.h"
+#include "carrick-notification-manager.h"
 
 G_DEFINE_TYPE (CarrickApplet, carrick_applet, G_TYPE_OBJECT)
 
@@ -45,76 +45,8 @@ struct _CarrickAppletPrivate {
   GtkWidget          *pane;
   gchar              *state;
   CarrickIconFactory *icon_factory;
+  CarrickNotificationManager *notifications;
 };
-
-void
-_notify_connection_changed (CarrickApplet *self)
-{
-  NotifyNotification *note;
-  GError *error = NULL;
-  gchar *title = NULL;
-  gchar *message = NULL;
-  const gchar *icon = NULL; // filename
-  CarrickAppletPrivate *priv = GET_PRIVATE (self);
-
-  if (priv->state &&
-      g_strcmp0 ("offline", priv->state) == 0)
-  {
-    title = g_strdup_printf (_("Offline"));
-    message = g_strdup_printf (_("No active connection."));
-    icon = carrick_icon_factory_get_path_for_state (ICON_OFFLINE);
-  }
-  else
-  {
-    CmConnection *active = cm_manager_get_active_connection (priv->manager);
-    title = g_strdup_printf (_("Online"));
-    if (active)
-    {
-      CmConnectionType type = cm_connection_get_type (active);
-      guint str = 0;
-      message = g_strdup_printf (_("Now online and connected to %s."),
-                                 cm_connection_type_to_string (type));
-      switch (type)
-      {
-        case CONNECTION_WIFI:
-          str = cm_connection_get_strength (active);
-          if (str > 70)
-            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
-          else if (str > 35)
-            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
-          else
-            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
-          break;
-        default:
-          icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
-          break;
-      }
-    }
-    else
-    {
-      title = "Now online.";
-      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
-    }
-  }
-
-  if (title && message)
-  {
-    note = notify_notification_new (title,
-                                    message,
-                                    icon,
-                                    NULL);
-    notify_notification_set_timeout (note,
-                                     10000);
-
-    notify_notification_show (note,
-                              &error);
-    if (error) {
-      g_debug ("Error sending notification: %s",
-               error->message);
-    }
-    g_object_unref (note);
-  }
-}
 
 static void
 manager_services_changed_cb (CmManager *manager,
@@ -143,8 +75,6 @@ manager_state_changed_cb (CmManager *manager,
 
   if (priv->icon)
     carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
-  /* disable notifications until they have been improved */
-  //_notify_connection_changed (applet);
 }
 
 GtkWidget*
@@ -166,7 +96,6 @@ carrick_applet_get_icon (CarrickApplet *applet)
 static void
 carrick_applet_dispose (GObject *object)
 {
-  notify_uninit ();
   G_OBJECT_CLASS (carrick_applet_parent_class)->dispose (object);
 }
 
@@ -219,8 +148,6 @@ carrick_applet_init (CarrickApplet *self)
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
 
-  notify_init ("Carrick");
-
   priv->manager = cm_manager_new (&error);
   if (error || !priv->manager) {
     g_debug ("Error initializing connman manager: %s\n",
@@ -237,6 +164,7 @@ carrick_applet_init (CarrickApplet *self)
   priv->pane = carrick_pane_new (priv->icon_factory,
                                  priv->manager);
   gtk_widget_show (priv->pane);
+  priv->notifications = carrick_notification_manager_new (priv->manager);
 
   g_signal_connect (priv->manager,
                     "state-changed",
