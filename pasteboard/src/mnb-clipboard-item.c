@@ -542,3 +542,19 @@ mnb_clipboard_item_get_serial (MnbClipboardItem *item)
 
   return item->serial;
 }
+
+void
+mnb_clipboard_item_show_action (MnbClipboardItem *item)
+{
+  g_return_if_fail (MNB_IS_CLIPBOARD_ITEM (item));
+
+  clutter_actor_show (item->action_button);
+}
+
+void
+mnb_clipboard_item_hide_action (MnbClipboardItem *item)
+{
+  g_return_if_fail (MNB_IS_CLIPBOARD_ITEM (item));
+
+  clutter_actor_hide (item->action_button);
+}

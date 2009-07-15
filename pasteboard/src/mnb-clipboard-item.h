@@ -61,6 +61,9 @@ GType mnb_clipboard_item_get_type (void) G_GNUC_CONST;
 G_CONST_RETURN gchar *mnb_clipboard_item_get_contents (MnbClipboardItem *item);
 gint64                mnb_clipboard_item_get_serial   (MnbClipboardItem *item);
 
+void                  mnb_clipboard_item_show_action  (MnbClipboardItem *item);
+void                  mnb_clipboard_item_hide_action  (MnbClipboardItem *item);
+
 G_END_DECLS
 
 #endif /* __MNB_CLIPBOARD_ITEM_H__ */
