@@ -36,7 +36,7 @@ typedef struct _MnbClipboardItemClass           MnbClipboardItemClass;
 
 struct _MnbClipboardItem
 {
-  NbtkWidget parent_instance;
+  NbtkTable parent_instance;
 
   ClutterActor *contents;
 
@@ -50,7 +50,7 @@ struct _MnbClipboardItem
 
 struct _MnbClipboardItemClass
 {
-  NbtkWidgetClass parent_class;
+  NbtkTableClass parent_class;
 
   void (* remove_clicked) (MnbClipboardItem *item);
   void (* action_clicked) (MnbClipboardItem *item);
