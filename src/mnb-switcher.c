@@ -742,6 +742,18 @@ mnb_switcher_zone_drop (NbtkDroppable       *droppable,
    */
   app_priv->ignore_button_release = TRUE;
 
+  /*
+   * First, check whether we are not being dropped back on the same zone
+   */
+  if (app_priv->orig_parent == zone_actor)
+    {
+      /*
+       * Do nothing here; this is equivalent to the d&d being cancelled and is
+       * handled in the drag_end () function.
+       */
+      return;
+    }
+
   zone_parent = clutter_actor_get_parent (zone_actor);
   app_parent = clutter_actor_get_parent (app_actor);
 
