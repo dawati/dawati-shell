@@ -1590,7 +1590,18 @@ moblin_netbook_launch_default_for_uri (const gchar *uri,
   gchar                      *uri_scheme;
 
   uri_scheme = g_uri_parse_scheme (uri);
-  app = g_app_info_get_default_for_uri_scheme (uri_scheme);
+
+  /* For local files we want the local file handler not the scheme handler */
+  if (g_str_equal (uri_scheme, "file"))
+    {
+      GFile *file;
+      file = g_file_new_for_uri (uri);
+      app = g_file_query_default_handler (file, NULL, NULL);
+      g_object_unref (file);
+    } else {
+      app = g_app_info_get_default_for_uri_scheme (uri_scheme);
+    }
+
   g_free (uri_scheme);
 
   ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
