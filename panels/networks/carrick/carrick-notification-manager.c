@@ -61,13 +61,17 @@ _services_changed_cb (CmManager *manager,
   name = cm_service_get_name (new_active);
   state = cm_service_get_state (new_active);
 
-  /* Don't show on startup */
   /* FIXME: only show for non-user action */
+  /* FIXME: on disconnect if new_active is connected tell user about it */
 
-  /* determine whether to show a notification */
-  if (g_strcmp0 (priv->last_state, state) != 0 ||
-      (g_strcmp0 (priv->last_type, type) != 0 &&
-       g_strcmp0 (priv->last_name, name) != 0))
+  if (priv->last_state &&
+      /* service changed */
+      (g_strcmp0 (priv->last_type, type) != 0 ||
+       g_strcmp0 (priv->last_name, name) != 0)
+      || /* Or service same but state changed */
+      (g_strcmp0 (priv->last_name, name) == 0 &&
+       g_strcmp0 (priv->last_state, state) != 0)
+     )
   {
     if (g_strcmp0 (state, "ready") == 0)
     {
