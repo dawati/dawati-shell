@@ -175,9 +175,8 @@ make_pasteboard (gint           width,
                  ClutterActor **entry_out)
 {
   NbtkWidget *vbox, *hbox, *label, *entry, *bin, *button;
-  ClutterActor *view, *viewport, *scroll;
+  ClutterActor *view, *scroll;
   ClutterText *text;
-  gfloat items_list_width = 0, items_list_height = 0;
 
   /* the object proxying the Clipboard changes and storing them */
   store = mnb_clipboard_store_new ();
@@ -267,7 +266,6 @@ make_pasteboard (gint           width,
   /* the scroll view is bigger to avoid the horizontal scroll bar */
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll), view);
-  clutter_actor_set_size (scroll, 650, 300);
 
   bin = NBTK_WIDGET (nbtk_bin_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-items-list");
@@ -283,11 +281,6 @@ make_pasteboard (gint           width,
                                         "y-align", 0.0,
                                         NULL);
 
-  clutter_actor_get_size (CLUTTER_ACTOR (bin),
-                          &items_list_width,
-                          &items_list_height);
-  clutter_actor_set_width (view, items_list_width - 50);
-
   /* hook up the search entry to the view */
   g_signal_connect (entry, "button-clicked",
                     G_CALLBACK (on_search_activated), view);
@@ -298,8 +291,8 @@ make_pasteboard (gint           width,
   /* side controls */
   bin = nbtk_table_new ();
   nbtk_table_set_row_spacing (NBTK_TABLE (bin), 12);
+  clutter_actor_set_width (CLUTTER_ACTOR (bin), 300);
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-controls");
-  clutter_actor_set_size (CLUTTER_ACTOR (bin), 300, items_list_height);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
                                         CLUTTER_ACTOR (bin),
                                         2, 1,
