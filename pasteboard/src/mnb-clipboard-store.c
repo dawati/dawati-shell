@@ -535,6 +535,15 @@ mnb_clipboard_store_save_selection (MnbClipboardStore *store)
   g_signal_emit (store, store_signals[SELECTION_CHANGED], 0, NULL);
 }
 
+void
+mnb_clipboard_store_clear (MnbClipboardStore *store)
+{
+  while (clutter_model_get_n_rows (CLUTTER_MODEL (store)))
+    clutter_model_remove (CLUTTER_MODEL (store), 0);
+
+  gtk_clipboard_set_text (store->priv->clipboard, "", -1);
+}
+
 GType
 mnb_clipboard_item_type_get_type (void)
 {

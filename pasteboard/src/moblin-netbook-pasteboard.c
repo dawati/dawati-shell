@@ -124,8 +124,7 @@ static void
 on_clear_clicked (NbtkButton *button,
                   gpointer    dummy G_GNUC_UNUSED)
 {
-  while (clutter_model_get_n_rows (CLUTTER_MODEL (store)))
-    clutter_model_remove (CLUTTER_MODEL (store), 0);
+  mnb_clipboard_store_clear (MNB_CLIPBOARD_STORE (store));
 }
 
 static void
