@@ -124,7 +124,11 @@ _services_changed_cb (CmManager *manager,
       title = g_strdup (_("Connection lost"));
       icon = carrick_icon_factory_get_path_for_state (ICON_OFFLINE);
 
-      if (priv->last_name)
+      if (g_strcmp0 (priv->last_type, "ethernet") == 0)
+      {
+        message = g_strdup_printf (_("Your wired connection has been lost"));
+      }
+      else if (priv->last_name)
       {
         message = g_strdup_printf (_("Your %s connection to %s has been lost"),
                                    priv->last_type,
