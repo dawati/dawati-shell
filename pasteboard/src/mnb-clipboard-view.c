@@ -358,6 +358,7 @@ mnb_clipboard_view_init (MnbClipboardView *view)
 
   nbtk_box_layout_set_vertical (NBTK_BOX_LAYOUT (view), TRUE);
   nbtk_box_layout_set_pack_start (NBTK_BOX_LAYOUT (view), TRUE);
+  nbtk_box_layout_set_spacing (NBTK_BOX_LAYOUT (view), 2);
 }
 
 NbtkWidget *
