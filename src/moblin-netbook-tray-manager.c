@@ -744,8 +744,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   clutter_container_add_actor (CLUTTER_CONTAINER (button), icon);
 
-  clutter_actor_set_reactive (icon, TRUE);
-
   child->actor = g_object_ref (button);
 
   g_hash_table_insert (manager->priv->icons, socket, child);
