@@ -273,37 +273,43 @@ _services_changed_cb (CmManager *manager,
   connected = cm_service_get_connected (new_top);
   str = cm_service_get_strength (new_top);
 
+  /* FIXME: only show for non-user action */
+
   /*
    * Determine what note to send, we can:
    * _tell_changed (self, name, type, str)
    * _tell_offline (self, name, type)
    * _tell_online (name, type, str)
    */
-
-
-  /* FIXME: only show for non-user action */
-
-  /* FIXME: don't send notes for new_top if it's not connected and last_state
-     is offline */
-
-  /* FIXME: on disconnect if new_top is connected tell user about it */
-
-  if (priv->last_state &&
-      /* don't notify when offline and new_top is also offline
-      (g_strcmp0 (priv->last_state, "idle") != 0 &&
-      connected) || */
-      /* service changed */
-      (g_strcmp0 (priv->last_type, type) != 0 ||
-       g_strcmp0 (priv->last_name, name) != 0)
-      || /* Or service same but state changed */
-      (g_strcmp0 (priv->last_name, name) == 0 &&
-       g_strcmp0 (priv->last_state, state) != 0)
-     )
+  if (priv->last_state)
   {
-    if (g_strcmp0 (state, "idle") == 0)
-      _tell_offline (self, name, type);
-    else if (g_strcmp0 (state, "ready") == 0)
-      _tell_online (name, type, str);
+    if (g_strcmp0 (priv->last_type, type) != 0 ||
+        g_strcmp0 (priv->last_name, name) != 0)
+    {
+      /* top service has changed */
+      if (connected && g_strcmp0 (priv->last_state, "idle") == 0)
+      {
+        _tell_online (name, type, str);
+      }
+      else if (connected && g_strcmp0 (priv->last_state, "ready") == 0)
+      {
+        _tell_changed (self, name, type, str);
+      }
+      else if (g_strcmp0 (state, "idle") == 0
+               && g_strcmp0 (priv->last_state, "ready") == 0)
+      {
+        _tell_offline (self, name, type);
+      }
+    }
+    else if (g_strcmp0 (priv->last_name, name) == 0 &&
+             g_strcmp0 (priv->last_state, state) != 0)
+    {
+      /* service same but state changed */
+      if (g_strcmp0 (state, "ready") == 0)
+        _tell_online (name, type, str);
+      else if (g_strcmp0 (state, "idle") == 0)
+        _tell_offline (self, name, type);
+    }
   }
 
   /*
