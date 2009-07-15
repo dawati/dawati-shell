@@ -85,6 +85,8 @@ typedef struct _ServiceInfo
   ClutterActor *row;
   NbtkTable *table;
 
+  guint caps_id;
+
   guint can_update : 1;
   guint has_icon   : 1;
   guint is_visible : 1;
@@ -125,6 +127,7 @@ service_info_destroy (gpointer data)
     {
       ServiceInfo *s_info = data;
 
+      g_signal_handler_disconnect (s_info->service, s_info->caps_id);
       g_free (s_info->name);
       g_object_unref (s_info->service);
 
@@ -270,18 +273,39 @@ on_mc_presence_changed (MissionControl           *mc,
 }
 
 static void
-on_caps_changed (MojitoClientService *service,
-                 guint32              new_caps,
-                 ServiceInfo         *s_info)
+on_caps_changed (MojitoClientService  *service,
+                 const gchar         **new_caps,
+                 ServiceInfo          *s_info)
 {
   MoblinStatusPanel *panel = s_info->panel;
   gboolean was_visible, has_row;
+  gboolean can_update, has_icon;
 
   was_visible = s_info->is_visible;
   has_row     = s_info->row != NULL;
+  can_update  = FALSE;
+  has_icon    = FALSE;
 
-  s_info->can_update = (new_caps & MOJITO_CLIENT_SERVICE_CAN_UPDATE_STATUS)    ? TRUE : FALSE;
-  s_info->has_icon   = (new_caps & MOJITO_CLIENT_SERVICE_CAN_GET_PERSONA_ICON) ? TRUE : FALSE;
+  while (*new_caps)
+    {
+      if (g_strcmp0 (*new_caps, CAN_UPDATE_STATUS) == 0)
+        {
+          can_update = TRUE;
+          goto next_cap;
+        }
+
+      if (g_strcmp0 (*new_caps, CAN_REQUEST_AVATAR) == 0)
+        {
+          has_icon = TRUE;
+          goto next_cap;
+        }
+
+    next_cap:
+      new_caps++;
+    }
+
+  s_info->can_update = can_update;
+  s_info->has_icon = has_icon;
 
   g_debug ("%s: CapabilitiesChanged['%s']: can-update:%s, has-icon:%s",
            G_STRLOC,
@@ -344,22 +368,84 @@ on_caps_changed (MojitoClientService *service,
 }
 
 static void
-get_caps (MojitoClientService *service,
-          guint32              new_caps,
-          const GError        *error,
-          gpointer             user_data)
+get_dynamic_caps (MojitoClientService  *service,
+                  const gchar         **caps,
+                  const GError         *error,
+                  gpointer              user_data)
 {
   ServiceInfo *s_info = user_data;
 
   if (error)
     {
-      g_critical ("Unable to retrieve capabilities for service '%s': %s",
+      g_critical ("Unable to retrieve dynamic caps for service '%s': %s",
                   s_info->name,
                   error->message);
       return;
     }
 
-  on_caps_changed (service, new_caps, s_info);
+  on_caps_changed (service, caps, s_info);
+}
+
+static void
+get_static_caps (MojitoClientService  *service,
+                 const gchar         **caps,
+                 const GError         *error,
+                 gpointer              user_data)
+{
+  ServiceInfo *s_info = user_data;
+  gboolean can_update_status, can_request_avatar;
+
+  if (error)
+    {
+      g_critical ("Unable to retrieve static caps for service '%s': %s",
+                  s_info->name,
+                  error->message);
+      return;
+    }
+
+  can_update_status = can_request_avatar = FALSE;
+  while (*caps)
+    {
+      if (g_strcmp0 (*caps, CAN_UPDATE_STATUS) == 0)
+        can_update_status = TRUE;
+
+      if (g_strcmp0 (*caps, CAN_REQUEST_AVATAR) == 0)
+        can_request_avatar = TRUE;
+
+      caps++;
+    }
+
+  if (!can_update_status || !can_request_avatar)
+    return;
+
+  s_info->row = g_object_new (MNB_TYPE_WEB_STATUS_ROW,
+                              "service-name", s_info->name,
+                              NULL);
+
+  nbtk_table_add_actor_with_properties (s_info->table,
+                                        s_info->row,
+                                        -1, 0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+  clutter_actor_hide (s_info->row);
+  s_info->is_visible = FALSE;
+
+  s_info->caps_id =
+    g_signal_connect (s_info->service, "capabilities-changed",
+                      G_CALLBACK (on_caps_changed),
+                      s_info);
+
+  mojito_client_service_get_dynamic_capabilities (s_info->service,
+                                                  get_dynamic_caps,
+                                                  s_info);
 }
 
 static void
@@ -368,7 +454,7 @@ on_mojito_get_services (MojitoClient *client,
                         gpointer      data)
 {
   MoblinStatusPanel *panel = data;
-  GSList *new_services, *l;
+  GSList *new_services;
   const GList *s;
 
   new_services = NULL;
@@ -399,20 +485,16 @@ on_mojito_get_services (MojitoClient *client,
       s_info->has_icon = FALSE;
       s_info->is_visible = FALSE;
 
-      g_signal_connect (s_info->service, "capabilities-changed",
-                        G_CALLBACK (on_caps_changed),
-                        s_info);
-      mojito_client_service_get_capabilities (s_info->service,
-                                              get_caps,
-                                              s_info);
+      mojito_client_service_get_static_capabilities (s_info->service,
+                                                     get_static_caps,
+                                                     s_info);
 
       new_services = g_slist_prepend (new_services, s_info);
     }
 
-  for (l = panel->services; l != NULL; l = l->next)
-    g_slice_free (ServiceInfo, l->data);
-
+  g_slist_foreach (panel->services, (GFunc) service_info_destroy, NULL);
   g_slist_free (panel->services);
+
   panel->services = g_slist_reverse (new_services);
 }
 
@@ -1013,12 +1095,8 @@ setup_standalone (MoblinStatusPanel *status_panel)
   status = make_status (status_panel);
   clutter_actor_set_size (status, 1024, 600);
 
-  stage = clutter_stage_new ();
+  stage = clutter_stage_get_default ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
-
-  g_signal_connect (stage,
-                    "destroy", G_CALLBACK (clutter_main_quit),
-                    NULL);
 
   clutter_actor_set_size (stage, 1024, 600);
   clutter_actor_show (stage);
