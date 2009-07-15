@@ -58,7 +58,7 @@ _services_changed_cb (CmManager *manager,
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
   const GList *new_services = cm_manager_get_services (manager);
-  CmService *new_active;
+  CmService *new_top;
   NotifyNotification *note;
   gchar *title = NULL;
   gchar *message = NULL;
@@ -71,17 +71,17 @@ _services_changed_cb (CmManager *manager,
   if (!new_services)
     return;
 
-  new_active = new_services->data;
+  new_top = new_services->data;
 
-  if (!new_active)
+  if (!new_top)
     return;
 
-  type = cm_service_get_type (new_active);
-  name = cm_service_get_name (new_active);
-  state = cm_service_get_state (new_active);
+  type = cm_service_get_type (new_top);
+  name = cm_service_get_name (new_top);
+  state = cm_service_get_state (new_top);
 
   /* FIXME: only show for non-user action */
-  /* FIXME: on disconnect if new_active is connected tell user about it */
+  /* FIXME: on disconnect if new_top is connected tell user about it */
 
   if (priv->last_state &&
       /* service changed */
@@ -109,7 +109,7 @@ _services_changed_cb (CmManager *manager,
       {
         if (!icon)
         {
-          str = cm_service_get_strength (new_active);
+          str = cm_service_get_strength (new_top);
           if (g_strcmp0 (type, "wifi") == 0)
           {
             if (str > 70)
