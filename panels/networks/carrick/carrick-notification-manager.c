@@ -34,6 +34,25 @@ carrick_notification_manager_queue_service (CarrickNotificationManager *self,
 }
 
 static void
+_service_state_stash_cb (CmService *service,
+                         CarrickNotificationManager *self)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+
+  g_signal_handlers_disconnect_by_func (service,
+                                        _service_state_stash_cb,
+                                        self);
+
+  /* If the fist service is connected and no state saved then save it */
+  if (cm_service_get_connected (service) && !priv->last_state)
+  {
+    priv->last_state = g_strdup (cm_service_get_state (service));
+    priv->last_name = g_strdup (cm_service_get_name (service));
+    priv->last_type = g_strdup (cm_service_get_type (service));
+  }
+}
+
+static void
 _services_changed_cb (CmManager *manager,
                       CarrickNotificationManager *self)
 {
@@ -187,6 +206,7 @@ _set_manager (CarrickNotificationManager *self,
               CmManager *manager)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
+  const GList *services;
 
   if (priv->manager)
   {
@@ -204,6 +224,15 @@ _set_manager (CarrickNotificationManager *self,
                       "services-changed",
                       G_CALLBACK (_services_changed_cb),
                       self);
+
+    services = cm_manager_get_services (priv->manager);
+    if (services)
+    {
+      g_signal_connect (CM_SERVICE (services->data),
+                        "service-updated",
+                        G_CALLBACK (_service_state_stash_cb),
+                        self);
+    }
   }
 }
 
