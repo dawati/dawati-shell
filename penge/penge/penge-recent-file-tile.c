@@ -132,31 +132,15 @@ _button_press_event (ClutterActor *actor,
                      gpointer      userdata)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (userdata);
-  gchar *app_exec = NULL;
-  gchar *last_application;
-  GError *error = NULL;
 
-  last_application = gtk_recent_info_last_application (priv->info);
-
-  if (!gtk_recent_info_get_application_info (priv->info,
-                                             last_application,
-                                             &app_exec,
-                                             NULL,
-                                             NULL))
+  if (!penge_utils_launch_for_uri (actor,
+                                   gtk_recent_info_get_uri (priv->info)))
   {
-    g_warning (G_STRLOC ": Error getting application command line: %s",
-               error->message);
-    g_clear_error (&error);
+    g_warning (G_STRLOC ": Error launching: %s",
+               gtk_recent_info_get_uri (priv->info));
   } else {
-    if (!penge_utils_launch_by_command_line (actor, app_exec))
-    {
-      g_warning (G_STRLOC ": Error launching: %s", app_exec);
-    } else {
-      penge_utils_signal_activated (actor);
-    }
+    penge_utils_signal_activated (actor);
   }
-
-  g_free (last_application);
 
   return TRUE;
 }
