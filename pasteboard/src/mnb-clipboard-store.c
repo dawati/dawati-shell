@@ -302,12 +302,14 @@ mnb_clipboard_store_row_added (ClutterModel     *model,
                           COLUMN_ITEM_MTIME, &mtime,
                           -1);
 
+#if 0
   {
     g_debug ("%s: Added new row (mtime: %lld, serial: %lld)",
              G_STRLOC,
              mtime,
              serial);
   }
+#endif
 
   g_signal_emit (store, store_signals[ITEM_ADDED], 0, type);
 }
