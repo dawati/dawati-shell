@@ -38,14 +38,14 @@ typedef struct _MnbClipboardViewClass           MnbClipboardViewClass;
 
 struct _MnbClipboardView
 {
-  NbtkWidget parent_instance;
+  NbtkBoxLayout parent_instance;
 
   MnbClipboardViewPrivate *priv;
 };
 
 struct _MnbClipboardViewClass
 {
-  NbtkWidgetClass parent_class;
+  NbtkBoxLayoutClass parent_class;
 };
 
 GType mnb_clipboard_view_get_type (void) G_GNUC_CONST;

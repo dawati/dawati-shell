@@ -263,12 +263,9 @@ make_pasteboard (gint width, ClutterActor **entry_out)
   /* the actual view */
   view = CLUTTER_ACTOR (mnb_clipboard_view_new (store));
 
-  viewport = CLUTTER_ACTOR (nbtk_viewport_new ());
-  clutter_container_add_actor (CLUTTER_CONTAINER (viewport), view);
-
   /* the scroll view is bigger to avoid the horizontal scroll bar */
   scroll = CLUTTER_ACTOR (nbtk_scroll_view_new ());
-  clutter_container_add_actor (CLUTTER_CONTAINER (scroll), viewport);
+  clutter_container_add_actor (CLUTTER_CONTAINER (scroll), view);
   clutter_actor_set_size (scroll, 650, 300);
 
   bin = NBTK_WIDGET (nbtk_bin_new ());
