@@ -34,6 +34,200 @@ carrick_notification_manager_queue_service (CarrickNotificationManager *self,
 }
 
 static void
+_send_note (gchar *title,
+            gchar *message,
+            const gchar *icon)
+{
+  NotifyNotification *note;
+
+  note = notify_notification_new (title,
+                                  message,
+                                  icon,
+                                  NULL);
+
+  notify_notification_set_timeout (note,
+                                   10000);
+  notify_notification_show (note,
+                            NULL);
+
+  g_object_unref (note);
+}
+
+static void
+_tell_online (const gchar *name,
+              const gchar *type,
+              guint str)
+{
+  gchar *title = g_strdup (_("Connection found"));
+  gchar *message = NULL;
+  const gchar *icon = NULL;
+
+  if (g_strcmp0 (type, "ethernet") == 0)
+  {
+    icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+
+    message = g_strdup_printf (_("You are now connected to a wired network"));
+  }
+  else
+  {
+    if (g_strcmp0 (type, "wifi") == 0)
+    {
+      if (str > 70)
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
+      else if (str > 35)
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
+      else
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
+    }
+    else if (g_strcmp0 (type, "wimax") == 0)
+    {
+      if (str > 50)
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
+      else
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
+    }
+    else if (g_strcmp0 (type, "cellular") == 0)
+    {
+      if (str > 50)
+        icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
+      else
+        icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
+    }
+
+    if (name && name[0] != '\0')
+    {
+      message = g_strdup_printf (_("You are now connected to %s network %s"),
+                                 type,
+                                 name);
+    }
+    else
+    {
+      message = g_strdup_printf (_("You are now connected to %s network"),
+                                 type);
+    }
+  }
+
+  _send_note (title, message, icon);
+
+  g_free (title);
+  g_free (message);
+}
+
+static void
+_tell_offline (CarrickNotificationManager *self,
+               const gchar *name,
+               const gchar *type)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+  gchar *title = g_strdup (_("Connection lost"));
+  gchar *message = NULL;
+  const gchar *icon;
+
+  icon = carrick_icon_factory_get_path_for_state (ICON_OFFLINE);
+
+  if (g_strcmp0 (priv->last_type, "ethernet") == 0)
+  {
+    message = g_strdup_printf (_("Your wired connection has been lost"));
+  }
+  else if (priv->last_name)
+  {
+    message = g_strdup_printf (_("Your %s connection to %s has been lost"),
+                               priv->last_type,
+                               priv->last_name);
+  }
+  else if (priv->last_type)
+  {
+    message = g_strdup_printf (_("Your %s connection has been lost"),
+                               priv->last_type);
+  }
+
+  _send_note (title, message, icon);
+
+  g_free (title);
+  g_free (message);
+}
+
+static void
+_tell_changed (CarrickNotificationManager *self,
+               const gchar *name,
+               const gchar *type,
+               guint str)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+  gchar *title = g_strdup (_("Connection changed"));
+  gchar *old = NULL;
+  gchar *new = NULL;
+  gchar *message = NULL;
+  const gchar *icon;
+
+  if (g_strcmp0 (priv->last_type, "ethernet") == 0)
+  {
+    old = g_strdup (_("Your wired connection was lost so we have "));
+  }
+  else if (priv->last_name)
+  {
+    old = g_strdup_printf (_("Your %s connection to %s was lost so we have "),
+                           name,
+                           type);
+  }
+  else
+  {
+    old = g_strdup_printf (_("Your %s connection was lost so we have "),
+                           type);
+  }
+
+  if (g_strcmp0 (type, "ethernet") == 0)
+  {
+    new = g_strdup (_("connected you to the wired network"));
+    icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+  }
+  else if (name)
+  {
+    new = g_strdup_printf (_("connected you to %s network %s"),
+                           name,
+                           type);
+  }
+  else
+  {
+    new = g_strdup_printf (_("have connected you to a %s network"),
+                           type);
+  }
+
+  if (g_strcmp0 (type, "wifi") == 0)
+  {
+    if (str > 70)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
+    else if (str > 35)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
+  }
+  else if (g_strcmp0 (type, "wimax") == 0)
+  {
+    if (str > 50)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
+  }
+  else if (g_strcmp0 (type, "cellular") == 0)
+  {
+    if (str > 50)
+      icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
+  }
+
+  message = g_strdup_printf ("%s %s", old, new);
+
+  _send_note (title, message, icon);
+
+  g_free (old);
+  g_free (new);
+  g_free (title);
+  g_free (message);
+}
+
+static void
 _service_state_stash_cb (CmService *service,
                          CarrickNotificationManager *self)
 {
@@ -59,13 +253,10 @@ _services_changed_cb (CmManager *manager,
   CarrickNotificationManagerPrivate *priv = self->priv;
   const GList *new_services = cm_manager_get_services (manager);
   CmService *new_top;
-  NotifyNotification *note;
-  gchar *title = NULL;
-  gchar *message = NULL;
-  const gchar *icon = NULL;
   const gchar *type = NULL;
   const gchar *name = NULL;
   const gchar *state = NULL;
+  gboolean connected = FALSE;
   guint str = 0;
 
   if (!new_services)
@@ -79,11 +270,28 @@ _services_changed_cb (CmManager *manager,
   type = cm_service_get_type (new_top);
   name = cm_service_get_name (new_top);
   state = cm_service_get_state (new_top);
+  connected = cm_service_get_connected (new_top);
+  str = cm_service_get_strength (new_top);
+
+  /*
+   * Determine what note to send, we can:
+   * _tell_changed (self, name, type, str)
+   * _tell_offline (self, name, type)
+   * _tell_online (name, type, str)
+   */
+
 
   /* FIXME: only show for non-user action */
+
+  /* FIXME: don't send notes for new_top if it's not connected and last_state
+     is offline */
+
   /* FIXME: on disconnect if new_top is connected tell user about it */
 
   if (priv->last_state &&
+      /* don't notify when offline and new_top is also offline
+      (g_strcmp0 (priv->last_state, "idle") != 0 &&
+      connected) || */
       /* service changed */
       (g_strcmp0 (priv->last_type, type) != 0 ||
        g_strcmp0 (priv->last_name, name) != 0)
@@ -92,113 +300,25 @@ _services_changed_cb (CmManager *manager,
        g_strcmp0 (priv->last_state, state) != 0)
      )
   {
-    if (g_strcmp0 (state, "ready") == 0)
-    {
-      title = g_strdup (_("Connection found"));
-
-      if (g_strcmp0 (type, "ethernet") == 0)
-      {
-        if (!icon)
-        {
-          icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
-        }
-
-        message = g_strdup_printf (_("You are now connected to a wired network"));
-      }
-      else
-      {
-        if (!icon)
-        {
-          str = cm_service_get_strength (new_top);
-          if (g_strcmp0 (type, "wifi") == 0)
-          {
-            if (str > 70)
-              icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
-            else if (str > 35)
-              icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
-            else
-              icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
-          }
-          else if (g_strcmp0 (type, "wimax") == 0)
-          {
-            if (str > 50)
-              icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
-            else
-              icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
-          }
-          else if (g_strcmp0 (type, "cellular") == 0)
-          {
-            if (str > 50)
-              icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
-            else
-              icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
-          }
-        }
-
-        if (name && name[0] != '\0')
-        {
-          message = g_strdup_printf (_("You are now connected to %s network %s"),
-                                     type,
-                                     name);
-        }
-        else
-        {
-          message = g_strdup_printf (_("You are now connected to %s network"),
-                                     type);
-        }
-      }
-    }
-    else if (g_strcmp0 (state, "idle") == 0)
-    {
-      title = g_strdup (_("Connection lost"));
-      icon = carrick_icon_factory_get_path_for_state (ICON_OFFLINE);
-
-      if (g_strcmp0 (priv->last_type, "ethernet") == 0)
-      {
-        message = g_strdup_printf (_("Your wired connection has been lost"));
-      }
-      else if (priv->last_name)
-      {
-        message = g_strdup_printf (_("Your %s connection to %s has been lost"),
-                                   priv->last_type,
-                                   priv->last_name);
-      }
-      else if (priv->last_type)
-      {
-        message = g_strdup_printf (_("Your %s connection has been lost"),
-                                   priv->last_type);
-      }
-      else
-        return;
-    }
-    else
-    {
-      return;
-    }
-
-    /* Now that it's all set up, show the notification */
-    note = notify_notification_new (title,
-                                    message,
-                                    icon,
-                                    NULL);
-    notify_notification_set_timeout (note,
-                                     10000);
-    notify_notification_show (note,
-                              NULL);
-    g_object_unref (note);
-
-    g_free (title);
-    g_free (message);
+    if (g_strcmp0 (state, "idle") == 0)
+      _tell_offline (self, name, type);
+    else if (g_strcmp0 (state, "ready") == 0)
+      _tell_online (name, type, str);
   }
 
-  /* Need to remember this service as last_active */
-
+  /*
+   * Stash state in last_*
+   */
   g_free (priv->last_state);
   priv->last_state = g_strdup (state);
-  g_free (priv->last_type);
-  priv->last_type = g_strdup (type);
-  g_free (priv->last_name);
-  priv->last_name = g_strdup (name);
+
+  if (connected)
+  {
+    g_free (priv->last_type);
+    priv->last_type = g_strdup (type);
+    g_free (priv->last_name);
+    priv->last_name = g_strdup (name);
+  }
 }
 
 static void
