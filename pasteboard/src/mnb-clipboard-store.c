@@ -511,25 +511,12 @@ void
 mnb_clipboard_store_save_selection (MnbClipboardStore *store)
 {
   MnbClipboardStorePrivate *priv;
-  GTimeVal now;
-  gint64 serial, mtime;
 
   g_return_if_fail (MNB_IS_CLIPBOARD_STORE (store));
 
   priv = store->priv;
 
-  g_get_current_time (&now);
-  mtime = now.tv_sec;
-
-  serial = priv->last_serial;
-  priv->last_serial += 1;
-
-  clutter_model_prepend (CLUTTER_MODEL (store),
-                         COLUMN_ITEM_TYPE, MNB_CLIPBOARD_ITEM_TEXT,
-                         COLUMN_ITEM_SERIAL, serial,
-                         COLUMN_ITEM_TEXT, priv->selection,
-                         COLUMN_ITEM_MTIME, mtime,
-                         -1);
+  gtk_clipboard_set_text (priv->clipboard, priv->selection, -1);
 
   g_free (priv->selection);
   priv->selection = NULL;
