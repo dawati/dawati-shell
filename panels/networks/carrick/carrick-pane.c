@@ -63,40 +63,6 @@ enum
 static void _update_manager (CarrickPane *pane,
                              CmManager   *manager);
 
-static gboolean
-_should_display (CmService *service)
-{
-  const gchar *name = cm_service_get_name (service);
-  const gchar *type = cm_service_get_type (service);
-  const gchar *state = cm_service_get_state (service);
-  gint c;
-
-  if (!name ||
-      (g_strcmp0 ("ethernet", type) == 0 &&
-       g_strcmp0 ("ready", state) &&
-       g_strcmp0 ("configuration", state)))
-  {
-    return FALSE;
-  }
-
-  /* This is a temporary workaround. ConnMan currently reports a hidden
-   * SSID's name as a series of blanks spaces as reported by the AP.
-   * This will at some stage be fixed in the daemon, but for now we need
-   * to ignore any service with a name consisting entirely of spaces.
-   */
-  if (name[0] == ' ')
-  {
-    for (c = 1; c <= g_utf8_strlen (name, -1); c++)
-    {
-      if (name[c] != ' ' && name[c] != '\0')
-        return TRUE;
-    }
-    return FALSE;
-  }
-
-  return TRUE;
-}
-
 static void
 carrick_pane_get_property (GObject    *object,
                            guint       property_id,
@@ -494,21 +460,15 @@ _service_updated_cb (CmService   *service,
                                           pane);
   }
 
-  /* Don't display non-favorite ethernet services or services
-   * which don't have a name
-   */
-  if (_should_display (service))
-  {
-    GtkWidget *item;
+  GtkWidget *item;
 
-    g_signal_handlers_disconnect_by_func (service,
-					  _service_updated_cb,
-					  pane);
+  g_signal_handlers_disconnect_by_func (service,
+                                        _service_updated_cb,
+                                        pane);
 
-    item = carrick_service_item_new (priv->icon_factory, service);
-    carrick_list_add_item (list, item);
-    carrick_list_sort_list (CARRICK_LIST (priv->service_list));
-  }
+  item = carrick_service_item_new (priv->icon_factory, service);
+  carrick_list_add_item (list, item);
+  carrick_list_sort_list (CARRICK_LIST (priv->service_list));
 }
 
 void
@@ -607,7 +567,7 @@ _update_services (CarrickPane *pane)
       }
     }
 
-    if (!found || !_should_display (service))
+    if (!found)
     {
       gtk_widget_destroy (GTK_WIDGET (it->data));
     }
@@ -646,6 +606,10 @@ _devices_changed_cb (CmManager *manager,
 {
   const GList *it;
 
+
+  /* FIXME: We may end up with multiple signals connected to the same
+   * device
+   */
   for (it = cm_manager_get_devices (manager); it != NULL; it = it->next)
   {
     CmDevice *device = CM_DEVICE (it->data);
@@ -699,8 +663,7 @@ _update_manager (CarrickPane *pane,
   if (manager)
   {
     priv->manager = g_object_ref (manager);
-    _update_services (pane);
-    _set_switch_states (pane);
+
     g_signal_connect (priv->manager,
                       "devices-changed",
                       G_CALLBACK (_devices_changed_cb),
@@ -709,6 +672,9 @@ _update_manager (CarrickPane *pane,
                       "services-changed",
                       G_CALLBACK (_services_changed_cb),
                       pane);
+
+    _update_services (pane);
+    _set_switch_states (pane);
   }
 }
 
