@@ -47,7 +47,6 @@ _services_changed_cb (CmManager *manager,
   const gchar *type = NULL;
   const gchar *name = NULL;
   const gchar *state = NULL;
-  gchar *pretty_state = NULL;
   guint str = 0;
 
   g_return_if_fail (new_active != NULL);
@@ -55,6 +54,9 @@ _services_changed_cb (CmManager *manager,
   type = cm_service_get_type (new_active);
   name = cm_service_get_name (new_active);
   state = cm_service_get_state (new_active);
+
+  /* Don't show on startup */
+  /* FIXME: only show for non-user action */
 
   /* determine whether to show a notification */
   if (g_strcmp0 (priv->last_state, state) != 0 ||
@@ -64,42 +66,82 @@ _services_changed_cb (CmManager *manager,
     if (g_strcmp0 (state, "ready") == 0)
     {
       title = g_strdup (_("Connection found"));
-      pretty_state = g_strdup (_("connected"));
+
+      if (g_strcmp0 (type, "ethernet") == 0)
+      {
+        if (!icon)
+        {
+          icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+        }
+
+        message = g_strdup_printf (_("You are now connected to a wired network"));
+      }
+      else
+      {
+        if (!icon)
+        {
+          str = cm_service_get_strength (new_active);
+          if (g_strcmp0 (type, "wifi") == 0)
+          {
+            if (str > 70)
+              icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
+            else if (str > 35)
+              icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
+            else
+              icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
+          }
+          else if (g_strcmp0 (type, "wimax") == 0)
+          {
+            if (str > 50)
+              icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
+            else
+              icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
+          }
+          else if (g_strcmp0 (type, "cellular") == 0)
+          {
+            if (str > 50)
+              icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
+            else
+              icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
+          }
+        }
+
+        if (name && name[0] != '\0')
+        {
+          message = g_strdup_printf (_("You are now connected to %s network %s"),
+                                     type,
+                                     name);
+        }
+        else
+        {
+          message = g_strdup_printf (_("You are now connected to %s network"),
+                                     type);
+        }
+      }
     }
     else if (g_strcmp0 (state, "idle") == 0)
     {
       title = g_strdup (_("Connection lost"));
       icon = carrick_icon_factory_get_path_for_state (ICON_OFFLINE);
-      pretty_state = g_strdup (_("disconnected"));
+
+      if (priv->last_name)
+      {
+        message = g_strdup_printf (_("Your %s connection to %s has been lost"),
+                                   priv->last_type,
+                                   priv->last_name);
+      }
+      else if (priv->last_type)
+      {
+        message = g_strdup_printf (_("Your %s connection has been lost"),
+                                   priv->last_type);
+      }
+      else
+        return;
     }
     else
     {
       return;
     }
-
-    if (g_strcmp0 (type, "ethernet") == 0)
-    {
-      if (!icon)
-      {
-        icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
-      }
-
-      message = g_strdup_printf (_("Your wired connection has been %s"),
-                                 pretty_state);
-    }
-    else
-    {
-      if (!icon)
-      {
-        str = cm_service_get_strength (new_active);
-      }
-
-      message = g_strdup_printf (_("Your %s connection to %s has been %s"),
-                                 type,
-                                 name,
-                                 pretty_state);
-    }
-
 
     /* Now that it's all set up, show the notification */
     note = notify_notification_new (title,
@@ -113,7 +155,6 @@ _services_changed_cb (CmManager *manager,
     g_object_unref (note);
 
     g_free (title);
-    g_free (pretty_state);
     g_free (message);
   }
 
