@@ -66,11 +66,6 @@ on_action_clicked (MnbClipboardItem *item,
   GtkClipboard *clipboard;
   const gchar *text;
   gint64 serial;
-  GSList *l;
-
-  l = view->priv->rows;
-  if (item == l->data)
-    return;
 
   text = mnb_clipboard_item_get_contents (item);
   if (text == NULL || *text == '\0')
@@ -103,6 +98,7 @@ on_store_item_removed (MnbClipboardStore *store,
   MnbClipboardViewPrivate *priv = view->priv;
   MnbClipboardItem *row = NULL;
   gboolean item_found = FALSE;
+  gboolean reset_action = FALSE;
   GSList *l;
 
   for (l = priv->rows; l != NULL; l = l->next)
@@ -119,8 +115,21 @@ on_store_item_removed (MnbClipboardStore *store,
   if (!item_found)
     return;
 
+  /* if we removed the first item we need to show the action
+   * button for every row since the current clipboard contents
+   * will not be the first item anymore
+   */
+  if (priv->rows->data == row)
+    reset_action = TRUE;
+
   priv->rows = g_slist_remove (priv->rows, row);
   clutter_container_remove_actor (CLUTTER_CONTAINER (view), CLUTTER_ACTOR (row));
+
+  if (reset_action)
+    {
+      for (l = priv->rows; l != NULL; l = l->next)
+        mnb_clipboard_item_show_action (l->data);
+    }
 }
 
 static void
@@ -128,7 +137,9 @@ on_store_item_added (MnbClipboardStore    *store,
                      MnbClipboardItemType  item_type,
                      MnbClipboardView     *view)
 {
+  MnbClipboardViewPrivate *priv = view->priv;
   ClutterActor *row = NULL;
+  GSList *l;
 
   switch (item_type)
     {
@@ -171,8 +182,16 @@ on_store_item_added (MnbClipboardStore    *store,
   if (row == NULL)
     return;
 
-  view->priv->rows = g_slist_prepend (view->priv->rows, row);
+  priv->rows = g_slist_prepend (priv->rows, row);
   clutter_container_add_actor (CLUTTER_CONTAINER (view), CLUTTER_ACTOR (row));
+
+  for (l = priv->rows; l != NULL; l = l->next)
+    {
+      if (l == priv->rows)
+        mnb_clipboard_item_hide_action (l->data);
+      else
+        mnb_clipboard_item_show_action (l->data);
+    }
 }
 
 /* we override the BoxLayout::paint completely because we need to:
