@@ -58,7 +58,7 @@ _tell_online (const gchar *name,
               const gchar *type,
               guint str)
 {
-  gchar *title = g_strdup (_("Connection found"));
+  gchar *title = g_strdup (_("Network connected"));
   gchar *message = NULL;
   const gchar *icon = NULL;
 
@@ -66,7 +66,7 @@ _tell_online (const gchar *name,
   {
     icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
 
-    message = g_strdup_printf (_("You are now connected to a wired network"));
+    message = g_strdup_printf (_("You're now connected to a wired network"));
   }
   else
   {
@@ -96,13 +96,13 @@ _tell_online (const gchar *name,
 
     if (name && name[0] != '\0')
     {
-      message = g_strdup_printf (_("You are now connected to %s network %s"),
+      message = g_strdup_printf (_("You're now connected to %s, a %s network"),
                                  type,
                                  name);
     }
     else
     {
-      message = g_strdup_printf (_("You are now connected to %s network"),
+      message = g_strdup_printf (_("You're now connected to a %s network"),
                                  type);
     }
   }
@@ -119,7 +119,7 @@ _tell_offline (CarrickNotificationManager *self,
                const gchar *type)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
-  gchar *title = g_strdup (_("Connection lost"));
+  gchar *title = g_strdup (_("Network lost"));
   gchar *message = NULL;
   const gchar *icon;
 
@@ -127,17 +127,17 @@ _tell_offline (CarrickNotificationManager *self,
 
   if (g_strcmp0 (priv->last_type, "ethernet") == 0)
   {
-    message = g_strdup_printf (_("Your wired connection has been lost"));
+    message = g_strdup_printf (_("Sorry, we've lost your wired connection"));
   }
   else if (priv->last_name)
   {
-    message = g_strdup_printf (_("Your %s connection to %s has been lost"),
+    message = g_strdup_printf (_("Sorry we've lost your %s connection to %s"),
                                priv->last_type,
                                priv->last_name);
   }
   else if (priv->last_type)
   {
-    message = g_strdup_printf (_("Your %s connection has been lost"),
+    message = g_strdup_printf (_("Sorry, we've lost your %s connection"),
                                priv->last_type);
   }
 
@@ -154,7 +154,7 @@ _tell_changed (CarrickNotificationManager *self,
                guint str)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
-  gchar *title = g_strdup (_("Connection changed"));
+  gchar *title = g_strdup (_("Network changed"));
   gchar *old = NULL;
   gchar *new = NULL;
   gchar *message = NULL;
@@ -162,34 +162,33 @@ _tell_changed (CarrickNotificationManager *self,
 
   if (g_strcmp0 (priv->last_type, "ethernet") == 0)
   {
-    old = g_strdup (_("Your wired connection was lost so we have "));
+    old = g_strdup (_("Sorry, your wired connection was lost. So we've "));
   }
   else if (priv->last_name)
   {
-    old = g_strdup_printf (_("Your %s connection to %s was lost so we have "),
-                           name,
-                           type);
+    old = g_strdup_printf (_("Sorry, your connection to %s was lost. So we've "),
+                           name);
   }
   else
   {
-    old = g_strdup_printf (_("Your %s connection was lost so we have "),
+    old = g_strdup_printf (_("Sorry, your %s connection was lost. So we've "),
                            type);
   }
 
   if (g_strcmp0 (type, "ethernet") == 0)
   {
-    new = g_strdup (_("connected you to the wired network"));
+    new = g_strdup (_("connected you to a wired network"));
     icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
   }
   else if (name)
   {
-    new = g_strdup_printf (_("connected you to %s network %s"),
+    new = g_strdup_printf (_("connected you to %s, a %s network"),
                            name,
                            type);
   }
   else
   {
-    new = g_strdup_printf (_("have connected you to a %s network"),
+    new = g_strdup_printf (_("connected you to a %s network"),
                            type);
   }
 
