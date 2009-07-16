@@ -275,8 +275,6 @@ _new_connection_cb (GtkButton *button,
   const gchar *network, *secret;
   gchar *security;
   GtkWidget *image;
-  const GList *devices;
-  CmDevice *device;
   gboolean joined = FALSE;
 
   dialog = gtk_dialog_new_with_buttons (_("New connection settings"),
@@ -402,37 +400,11 @@ _new_connection_cb (GtkButton *button,
     if (network == NULL)
       return;
 
-    for (devices = cm_manager_get_devices (priv->manager);
-         devices != NULL && !joined;
-         devices = devices->next)
-    {
-      device = devices->data;
+    joined = cm_manager_connect_wifi (priv->manager,
+                                      network,
+                                      security,
+                                      secret);
 
-      if (CM_IS_DEVICE (device))
-      {
-        CmDeviceType type = cm_device_get_type (device);
-        if (type == DEVICE_WIFI)
-        {
-          if (g_strcmp0 (security, "WPA2") == 0)
-          {
-            g_free (security);
-            security = g_strdup ("rsn");
-          }
-          else
-          {
-            guint i;
-            for (i = 0; security[i] != '\0'; i++)
-            {
-              security[i] = g_ascii_tolower (security[i]);
-            }
-          }
-          joined = cm_device_join_network (device,
-                                           network,
-                                           security,
-                                           secret);
-        }
-      }
-    }
     /* Need some error handling here */
     if (!joined)
     {
