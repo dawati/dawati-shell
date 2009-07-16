@@ -305,9 +305,7 @@ penge_people_pane_update (PengePeoplePane *pane)
   MojitoItem *item;
   gint count = 0;
   ClutterActor *actor;
-  GList *existing_actors;
-
-  existing_actors = clutter_container_get_children (CLUTTER_CONTAINER (pane));
+  GList *existing_actors = NULL;
 
   /* In case opening the view failed */
   if (priv->view)
@@ -325,28 +323,35 @@ penge_people_pane_update (PengePeoplePane *pane)
     }
   }
 
-  if (items == NULL && g_list_length (existing_actors) == 0)
+  if (items == NULL)
   {
-    /* Add the nothing configured tile */
-    if (!priv->no_content_tile)
+    existing_actors = clutter_container_get_children (CLUTTER_CONTAINER (pane));
+
+    if (g_list_length (existing_actors) == 0)
     {
-      priv->no_content_tile = _make_no_content_tile ();
-      nbtk_table_add_actor_with_properties (NBTK_TABLE (pane),
-                                            priv->no_content_tile,
-                                            0,
-                                            0,
-                                            "col-span",
-                                            2,
-                                            "y-expand",
-                                            FALSE,
-                                            "x-expand",
-                                            TRUE,
-                                            NULL);
-      clutter_actor_show_all (priv->no_content_tile);
+      /* Add the nothing configured tile */
+      if (!priv->no_content_tile)
+      {
+        priv->no_content_tile = _make_no_content_tile ();
+        nbtk_table_add_actor_with_properties (NBTK_TABLE (pane),
+                                              priv->no_content_tile,
+                                              0,
+                                              0,
+                                              "col-span",
+                                              2,
+                                              "y-expand",
+                                              FALSE,
+                                              "x-expand",
+                                              TRUE,
+                                              NULL);
+        clutter_actor_show_all (priv->no_content_tile);
+      }
     }
 
+    g_list_free (existing_actors);
     return;
   }
+
 
   for (l = items; l; l = g_list_delete_link (l, l))
   {
