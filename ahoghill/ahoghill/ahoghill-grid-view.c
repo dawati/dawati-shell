@@ -922,6 +922,25 @@ item_clicked_cb (AhoghillResultsPane *pane,
 }
 
 static void
+recent_manager_changed (GtkRecentManager *manager,
+                        AhoghillGridView *view)
+{
+    AhoghillGridViewPrivate *priv = view->priv;
+    MplEntry *entry;
+    const char *text;
+
+    /* Check if we have a search set */
+    entry = ahoghill_search_pane_get_entry
+        (AHOGHILL_SEARCH_PANE (priv->search_pane));
+    text = mpl_entry_get_text ((MplEntry *) entry);
+
+    if (text == NULL || *text == 0) {
+        g_print ("Setting recent items\n");
+        set_recent_items (view);
+    }
+}
+
+static void
 ahoghill_grid_view_init (AhoghillGridView *self)
 {
     NbtkTable *table = (NbtkTable *) self;
@@ -937,6 +956,8 @@ ahoghill_grid_view_init (AhoghillGridView *self)
     self->priv = priv;
 
     priv->recent_manager = gtk_recent_manager_get_default ();
+    g_signal_connect (priv->recent_manager, "changed",
+                      G_CALLBACK (recent_manager_changed), self);
 
     priv->search_pane = g_object_new (AHOGHILL_TYPE_SEARCH_PANE, NULL);
     clutter_actor_set_size (priv->search_pane, 1024, 50);
