@@ -29,8 +29,27 @@ enum
 
 void
 carrick_notification_manager_queue_service (CarrickNotificationManager *self,
-                                            CmService *service)
+                                            CmService *service,
+                                            gboolean enabling)
 {
+  CarrickNotificationManagerPrivate *priv = self->priv;
+  const gchar *name = cm_service_get_name (service);
+  const gchar *type = cm_service_get_type (service);
+
+  g_free (priv->last_state);
+  if (enabling)
+    priv->last_state = g_strdup ("ready");
+  else
+    priv->last_state = g_strdup ("idle");
+
+  g_free (priv->last_type);
+  priv->last_type = g_strdup (type);
+
+  if (name)
+  {
+    g_free (priv->last_name);
+    priv->last_name = g_strdup (name);
+  }
 }
 
 static void
