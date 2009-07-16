@@ -472,8 +472,8 @@ _service_updated_cb (CmService   *service,
 }
 
 void
-_device_powered_changed_cb (CmDevice *device,
-			    gpointer  user_data)
+_device_updated_cb (CmDevice *device,
+		    gpointer  user_data)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
   CmDeviceType type = cm_device_get_type (device);
@@ -602,7 +602,7 @@ _services_changed_cb (CmManager *manager,
 
 static void
 _devices_changed_cb (CmManager *manager,
-                     gpointer   user_data)
+		     gpointer   user_data)
 {
   const GList *it;
 
@@ -613,32 +613,10 @@ _devices_changed_cb (CmManager *manager,
   for (it = cm_manager_get_devices (manager); it != NULL; it = it->next)
   {
     CmDevice *device = CM_DEVICE (it->data);
-    _device_powered_changed_cb (device, user_data);
     g_signal_connect (G_OBJECT (device),
-		      "powered-changed",
-		      G_CALLBACK (_device_powered_changed_cb),
+		      "device-updated",
+		      G_CALLBACK (_device_updated_cb),
 		      user_data);
-  }
-}
-
-static void
-_set_switch_states (CarrickPane *pane)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  const GList *devs;
-  CmDevice *device = NULL;
-
-  g_return_if_fail (priv->manager != NULL);
-
-  /* Determine states of devices */
-  for (devs = cm_manager_get_devices (priv->manager);
-       devs != NULL;
-       devs = devs->next)
-  {
-    device = devs->data;
-
-    _device_powered_changed_cb (device,
-                                pane);
   }
 }
 
@@ -674,7 +652,6 @@ _update_manager (CarrickPane *pane,
                       pane);
 
     _update_services (pane);
-    _set_switch_states (pane);
   }
 }
 
