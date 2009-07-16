@@ -996,6 +996,19 @@ workspace_switcher_clone_input_cb (ClutterActor *clone,
   mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
   clutter_ungrab_pointer ();
 
+  if (priv->in_alt_grab)
+    {
+      MetaDisplay *display = meta_screen_get_display (screen);
+
+      /*
+       * Make sure our stamp is recent enough.
+       */
+      timestamp = meta_display_get_current_time_roundtrip (display);
+
+      meta_display_end_grab_op (display, timestamp);
+      priv->in_alt_grab = FALSE;
+    }
+
   if (!active_workspace || (active_workspace == workspace))
     {
       meta_window_activate_with_workspace (window, timestamp, workspace);
