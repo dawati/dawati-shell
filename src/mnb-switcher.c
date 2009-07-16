@@ -1192,11 +1192,11 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
 
   nbtk_widget_set_style_class_name (new_ws, "switcher-workspace");
 
+  nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws), 1, col);
+
   if (active)
     mnb_switcher_zone_set_state (MNB_SWITCHER_ZONE (new_ws),
                                  MNB_SWITCHER_ZONE_ACTIVE);
-
-  nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws), 1, col);
 
   /* switch workspace when the workspace is selected */
   g_signal_connect_data (new_ws, "button-release-event",
