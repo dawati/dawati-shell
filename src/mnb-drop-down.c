@@ -288,6 +288,8 @@ mnb_drop_down_hide (ClutterActor *actor)
       return;
     }
 
+  priv->in_hide_animation = TRUE;
+
   if (priv->show_completed_id)
     {
       g_debug ("disconnecting show_completed_cb");
@@ -321,8 +323,6 @@ mnb_drop_down_hide (ClutterActor *actor)
       CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->hide (actor);
       return;
     }
-
-  priv->in_hide_animation = TRUE;
 
   g_object_ref (actor);
 
