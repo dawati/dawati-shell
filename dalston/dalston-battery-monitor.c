@@ -302,6 +302,41 @@ _hal_daemon_stop (HalManager            *manager,
 }
 
 static void
+_hal_device_added_cb (HalManager  *manager,
+                      const gchar *udi,
+                      gpointer     userdata)
+{
+	DalstonBatteryMonitor *monitor = DALSTON_BATTERY_MONITOR (userdata);
+  gboolean is_battery;
+  HalDevice *device;
+
+  device = hal_device_new ();
+  hal_device_set_udi (device, udi);
+  hal_device_query_capability (device, "battery", &is_battery, NULL);
+  if (is_battery == TRUE)
+  {
+    _setup_battery_device (monitor);
+    g_signal_emit (monitor, signals[STATUS_CHANGED], 0);
+  }
+  g_object_unref (device);
+}
+
+static void
+_hal_device_removed_cb (HalManager  *manager,
+                        const gchar *udi,
+                        gpointer     userdata)
+{
+	DalstonBatteryMonitor *monitor = DALSTON_BATTERY_MONITOR (userdata);
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (monitor);
+
+  if (g_strcmp0 (priv->battery_udi, udi) == 0)
+  {
+    _cleanup_battery_device (monitor);
+    g_signal_emit (monitor, signals[STATUS_CHANGED], 0);
+  }
+}
+
+static void
 dalston_battery_monitor_init (DalstonBatteryMonitor *self)
 {
   DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (self);
@@ -314,6 +349,14 @@ dalston_battery_monitor_init (DalstonBatteryMonitor *self)
   g_signal_connect (priv->manager,
                     "daemon-stop",
                     G_CALLBACK (_hal_daemon_stop),
+                    self);
+  g_signal_connect (priv->manager,
+                    "device-added",
+                    G_CALLBACK (_hal_device_added_cb),
+                    self);
+  g_signal_connect (priv->manager,
+                    "device-removed",
+                    G_CALLBACK (_hal_device_removed_cb),
                     self);
 
   priv->is_hal_running = FALSE;
@@ -381,48 +424,50 @@ DalstonBatteryMonitorState
 dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor)
 {
   DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (monitor);
-  DalstonBatteryMonitorState state = DALSTON_BATTERY_MONITOR_STATE_UNKNOWN;
+  DalstonBatteryMonitorState state = DALSTON_BATTERY_MONITOR_STATE_MISSING;
   gboolean value = FALSE;
   GError *error = NULL;
 
-  if (priv->battery_device)
+  /* for some valid reason (HAL not running or HAL running but the battery is
+   * actually missing) battery_device is null */
+  if (priv->battery_device == NULL)
+    return DALSTON_BATTERY_MONITOR_STATE_MISSING;
+
+  if (!hal_device_get_bool (priv->battery_device,
+                            "battery.rechargeable.is_charging",
+                            &value,
+                            &error))
   {
-    if (!hal_device_get_bool (priv->battery_device,
-                              "battery.rechargeable.is_charging",
-                              &value,
-                              &error))
+    if (error)
     {
-      if (error)
-      {
-        g_warning (G_STRLOC ": Error getting charge is_charging: %s",
-                   error->message);
-        g_clear_error (&error);
-      }
-
-      return state;
+      g_warning (G_STRLOC ": Error getting charge is_charging: %s",
+                 error->message);
+      g_clear_error (&error);
     }
 
-    if (value)
-      return DALSTON_BATTERY_MONITOR_STATE_CHARGING;
-
-    if (!hal_device_get_bool (priv->battery_device,
-                              "battery.rechargeable.is_discharging",
-                              &value,
-                              &error))
-    {
-      if (error)
-      {
-        g_warning (G_STRLOC ": Error getting charge is_discharging: %s",
-                   error->message);
-        g_clear_error (&error);
-      }
-
-      return state;
-    }
-
-    if (value)
-      return DALSTON_BATTERY_MONITOR_STATE_DISCHARGING;
+    return state;
   }
+
+  if (value)
+    return DALSTON_BATTERY_MONITOR_STATE_CHARGING;
+
+  if (!hal_device_get_bool (priv->battery_device,
+                            "battery.rechargeable.is_discharging",
+                            &value,
+                            &error))
+  {
+    if (error)
+    {
+      g_warning (G_STRLOC ": Error getting charge is_discharging: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+    return state;
+  }
+
+  if (value)
+    return DALSTON_BATTERY_MONITOR_STATE_DISCHARGING;
 
   return DALSTON_BATTERY_MONITOR_STATE_OTHER;
 }
