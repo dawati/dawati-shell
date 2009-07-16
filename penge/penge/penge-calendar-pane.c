@@ -43,7 +43,7 @@ struct _PengeCalendarPanePrivate {
     ClutterActor *events_pane;
     ClutterActor *tasks_pane;
 
-    guint hourly_timeout_id;
+    guint refresh_timeout_id;
 };
 
 static void
@@ -71,10 +71,10 @@ penge_calendar_pane_dispose (GObject *object)
 {
   PengeCalendarPanePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->hourly_timeout_id)
+  if (priv->refresh_timeout_id)
   {
-    g_source_remove (priv->hourly_timeout_id);
-    priv->hourly_timeout_id = 0;
+    g_source_remove (priv->refresh_timeout_id);
+    priv->refresh_timeout_id = 0;
   }
 
   G_OBJECT_CLASS (penge_calendar_pane_parent_class)->dispose (object);
@@ -115,7 +115,7 @@ penge_calendar_pane_update (PengeCalendarPane *pane)
 }
 
 static gboolean
-_hourly_timeout_cb (gpointer userdata)
+_refresh_timeout_cb (gpointer userdata)
 {
   penge_calendar_pane_update ((PengeCalendarPane *)userdata);
 
@@ -123,15 +123,16 @@ _hourly_timeout_cb (gpointer userdata)
 }
 
 static gboolean
-_first_hourly_timeout_cb (gpointer userdata)
+_first_refresh_timeout_cb (gpointer userdata)
 {
   PengeCalendarPanePrivate *priv = GET_PRIVATE (userdata);
 
   penge_calendar_pane_update ((PengeCalendarPane *)userdata);
 
-  priv->hourly_timeout_id = g_timeout_add_seconds (3600,
-                                                   _hourly_timeout_cb,
-                                                   userdata);
+  /* refresxh every ten minutes to handle timezone changes */
+  priv->refresh_timeout_id = g_timeout_add_seconds (10 * 60,
+                                                    _refresh_timeout_cb,
+                                                    userdata);
   return FALSE;
 }
 
@@ -140,7 +141,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
 {
   PengeCalendarPanePrivate *priv = GET_PRIVATE (self);
   JanaTime *now;
-  JanaTime *next_timeout;
+  JanaTime *on_the_next_hour;
   glong next_timeout_seconds;
   ClutterActor *tex;
   NbtkWidget *label;
@@ -283,20 +284,24 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                NULL);
                                */
 
-  /* When we should next wake up. On the next hour. */
-  next_timeout = jana_ecal_utils_time_now_local ();
-  jana_time_set_minutes (next_timeout, 0);
-  jana_time_set_seconds (next_timeout, 0);
-  jana_utils_time_adjust (next_timeout, 
+  /* We need to calculate how long we must wait before for our first update.
+   * We do this by subtracting the current time from the next hour and then
+   * finding the remainder. This remainder is the number of seconds until the
+   * next 10 minute past the hour points.
+   */
+  on_the_next_hour = jana_ecal_utils_time_now_local ();
+  jana_time_set_minutes (on_the_next_hour, 0);
+  jana_time_set_seconds (on_the_next_hour, 0);
+
+  jana_utils_time_adjust (on_the_next_hour,
                           0,
                           0,
                           0,
                           1,
                           0,
                           0);
-
   jana_utils_time_diff (now,
-                        next_timeout,
+                        on_the_next_hour,
                         NULL,
                         NULL,
                         NULL,
@@ -304,11 +309,12 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                         NULL,
                         &next_timeout_seconds);
 
-  priv->hourly_timeout_id = g_timeout_add_seconds (next_timeout_seconds,
-                                                   _first_hourly_timeout_cb,
-                                                   self);
+  priv->refresh_timeout_id =
+    g_timeout_add_seconds (next_timeout_seconds % (60 * 10),
+                           _first_refresh_timeout_cb,
+                           self);
 
   g_object_unref (now);
-  g_object_unref (next_timeout);
+  g_object_unref (on_the_next_hour);
 }
 
