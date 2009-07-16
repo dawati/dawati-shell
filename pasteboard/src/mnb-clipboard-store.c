@@ -302,12 +302,14 @@ mnb_clipboard_store_row_added (ClutterModel     *model,
                           COLUMN_ITEM_MTIME, &mtime,
                           -1);
 
+#if 0
   {
     g_debug ("%s: Added new row (mtime: %lld, serial: %lld)",
              G_STRLOC,
              mtime,
              serial);
   }
+#endif
 
   g_signal_emit (store, store_signals[ITEM_ADDED], 0, type);
 }
@@ -509,30 +511,26 @@ void
 mnb_clipboard_store_save_selection (MnbClipboardStore *store)
 {
   MnbClipboardStorePrivate *priv;
-  GTimeVal now;
-  gint64 serial, mtime;
 
   g_return_if_fail (MNB_IS_CLIPBOARD_STORE (store));
 
   priv = store->priv;
 
-  g_get_current_time (&now);
-  mtime = now.tv_sec;
-
-  serial = priv->last_serial;
-  priv->last_serial += 1;
-
-  clutter_model_prepend (CLUTTER_MODEL (store),
-                         COLUMN_ITEM_TYPE, MNB_CLIPBOARD_ITEM_TEXT,
-                         COLUMN_ITEM_SERIAL, serial,
-                         COLUMN_ITEM_TEXT, priv->selection,
-                         COLUMN_ITEM_MTIME, mtime,
-                         -1);
+  gtk_clipboard_set_text (priv->clipboard, priv->selection, -1);
 
   g_free (priv->selection);
   priv->selection = NULL;
 
   g_signal_emit (store, store_signals[SELECTION_CHANGED], 0, NULL);
+}
+
+void
+mnb_clipboard_store_clear (MnbClipboardStore *store)
+{
+  while (clutter_model_get_n_rows (CLUTTER_MODEL (store)))
+    clutter_model_remove (CLUTTER_MODEL (store), 0);
+
+  gtk_clipboard_set_text (store->priv->clipboard, "", -1);
 }
 
 GType

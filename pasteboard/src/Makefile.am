@@ -14,15 +14,15 @@ libexec_PROGRAMS = moblin-panel-pasteboard
 
 moblin_panel_pasteboard_LDADD = $(PASTEBOARD_LIBS)
 
-moblin_panel_pasteboard_SOURCES = \
-	$(BUILT_SOURCES) \
-	mnb-clipboard-item.c \
-	mnb-clipboard-item.h \
-	mnb-clipboard-store.c \
-	mnb-clipboard-store.h \
-	mnb-clipboard-view.c \
-	mnb-clipboard-view.h \
-	moblin-netbook-pasteboard.c
+moblin_panel_pasteboard_SOURCES = 	\
+	$(BUILT_SOURCES) 		\
+	mnb-clipboard-item.c 		\
+	mnb-clipboard-item.h 		\
+	mnb-clipboard-store.c 		\
+	mnb-clipboard-store.h 		\
+	mnb-clipboard-view.c 		\
+	mnb-clipboard-view.h 		\
+	moblin-panel-pasteboard.c
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.pasteboard.service.in

@@ -81,6 +81,8 @@ void mnb_clipboard_store_remove (MnbClipboardStore *store,
 
 void mnb_clipboard_store_save_selection (MnbClipboardStore *store);
 
+void mnb_clipboard_store_clear (MnbClipboardStore *store);
+
 G_END_DECLS
 
 #endif /* __MNB_CLIPBOARD_STORE_H__ */
