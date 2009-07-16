@@ -50,6 +50,8 @@ GType carrick_notification_manager_get_type (void);
 
 CarrickNotificationManager *carrick_notification_manager_new (CmManager *manager);
 
+void carrick_notification_manager_queue_service (CarrickNotificationManager *self, CmService *service, gboolean enabling);
+
 G_END_DECLS
 
 #endif /* _CARRICK_NOTIFICATION_MANAGER_H */
