@@ -190,7 +190,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   GList *old_actors;
   JanaTime *on_the_hour;
   GList *window_start = NULL, *window_end = NULL;
-  JanaTime *t;
+  JanaTime *t = NULL;
   NbtkWidget *label;
 
   g_return_if_fail (priv->time);
@@ -254,11 +254,15 @@ penge_events_pane_update (PengeEventsPane *pane)
       }
     } else if (jana_utils_time_compare (t, on_the_hour, FALSE) == 0) {
       window_start = l;
+      g_object_unref (t);
       break;
     } else {
       window_start = l;
+      g_object_unref (t);
       break;
     }
+
+    g_object_unref (t);
   }
 
   /* We have at least one thing */
@@ -270,7 +274,6 @@ penge_events_pane_update (PengeEventsPane *pane)
   for (l = window_start; l && count < MAX_COUNT; l = l->next)
   {
     event = (JanaEvent *)l->data;
-    t = jana_event_get_start (event);
 
     if (l->next)
     {
