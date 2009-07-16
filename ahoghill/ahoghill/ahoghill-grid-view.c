@@ -334,6 +334,23 @@ generate_example_results (AhoghillGridView *view)
     }
 }
 
+static int
+sort_recent_list (gconstpointer a,
+                  gconstpointer b)
+{
+    GtkRecentInfo *info_a, *info_b;
+    time_t time_a, time_b;
+
+    info_a = (GtkRecentInfo *) a;
+    info_b = (GtkRecentInfo *) b;
+
+    time_a = gtk_recent_info_get_modified (info_a);
+    time_b = gtk_recent_info_get_modified (info_b);
+
+    /* we want to sort in reverse order */
+    return time_b - time_a;
+}
+
 static void
 set_recent_items (AhoghillGridView *view)
 {
@@ -349,12 +366,12 @@ set_recent_items (AhoghillGridView *view)
 
     recent_items = gtk_recent_manager_get_items (priv->recent_manager);
     if (recent_items) {
+        GList *results = NULL;
+
+        /* We collect the relevant item mimetypes from the recent items */
         for (r = recent_items; r; r = r->next) {
-            Source *source;
             GtkRecentInfo *info = r->data;
             const char *mimetype;
-            const char *uri;
-            BklItem *item;
 
             mimetype = gtk_recent_info_get_mime_type (info);
             if (g_str_has_prefix (mimetype, "audio/") == FALSE &&
@@ -363,6 +380,17 @@ set_recent_items (AhoghillGridView *view)
                 gtk_recent_info_unref (info);
                 continue;
             }
+
+            results = g_list_prepend (results, info);
+        }
+
+        results = g_list_sort (results, (GCompareFunc) sort_recent_list);
+        /* Now they're sorted we add them to the model */
+        for (r = results; r; r = r->next) {
+            Source *source;
+            GtkRecentInfo *info = (GtkRecentInfo *) r->data;
+            const char *uri;
+            BklItem *item;
 
             uri = gtk_recent_info_get_uri (info);
 
@@ -377,6 +405,7 @@ set_recent_items (AhoghillGridView *view)
 
             gtk_recent_info_unref (info);
         }
+        g_list_free (results);
 
         g_list_free (recent_items);
     }
