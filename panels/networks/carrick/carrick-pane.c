@@ -400,6 +400,20 @@ _new_connection_cb (GtkButton *button,
     if (network == NULL)
       return;
 
+    if (g_strcmp0 (security, "WPA2") == 0)
+    {
+      g_free (security);
+      security = g_strdup ("rsn");
+    }
+    else
+    {
+      guint i;
+      for (i = 0; security[i] != '\0'; i++)
+      {
+        security[i] = g_ascii_tolower (security[i]);
+      }
+    }
+
     joined = cm_manager_connect_wifi (priv->manager,
                                       network,
                                       security,
