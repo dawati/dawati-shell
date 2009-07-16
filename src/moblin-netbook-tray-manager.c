@@ -748,7 +748,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
 
   g_hash_table_insert (manager->priv->icons, socket, child);
 
-  child->timeout_id = g_timeout_add (100, tray_icon_tagged_timeout_cb, child);
+  child->timeout_id = g_timeout_add (1000, tray_icon_tagged_timeout_cb, child);
 }
 
 static void
