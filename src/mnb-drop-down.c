@@ -182,8 +182,6 @@ mnb_drop_down_show (ClutterActor *actor)
       priv->in_hide_animation = FALSE;
     }
 
-  g_signal_emit (actor, dropdown_signals[SHOW_BEGIN], 0);
-
   /*
    * Check the panel is visible, if not show it.
    */
@@ -210,6 +208,8 @@ mnb_drop_down_show (ClutterActor *actor)
       clutter_actor_show (toolbar);
       return;
     }
+
+  g_signal_emit (actor, dropdown_signals[SHOW_BEGIN], 0);
 
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->show (actor);
 
