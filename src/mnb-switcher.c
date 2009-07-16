@@ -2417,6 +2417,9 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
   MetaScreen                 *screen;
   MutterPlugin               *plugin;
 
+  if (close)
+    mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
+
   if (!priv->selected)
     return;
 
@@ -2425,9 +2428,6 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
   screen           = meta_window_get_screen (window);
   workspace        = meta_window_get_workspace (window);
   active_workspace = meta_screen_get_active_workspace (screen);
-
-  if (close)
-    mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
 
   if (!active_workspace || (active_workspace == workspace))
     {
