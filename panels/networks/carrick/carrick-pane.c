@@ -951,9 +951,6 @@ void
 carrick_pane_update (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  const GList *devices = cm_manager_get_devices (priv->manager);
-  CmDevice *dev;
-  CmDeviceType type;
   time_t now = time (NULL);
 
   /* Only trigger a scan if we haven't triggered one in the last minute.
@@ -963,18 +960,7 @@ carrick_pane_update (CarrickPane *pane)
   {
     priv->last_scan = now;
 
-    while (devices)
-    {
-      dev = devices->data;
-      if (dev && CM_IS_DEVICE (dev))
-      {
-        type = cm_device_get_type (dev);
-
-        if (type != DEVICE_ETHERNET && type != DEVICE_UNKNOWN)
-          cm_device_scan (dev);
-      }
-      devices = devices->next;
-    }
+    cm_manager_request_scan (priv->manager);
   }
 
   gtk_container_foreach (GTK_CONTAINER (priv->service_list),
