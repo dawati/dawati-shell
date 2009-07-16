@@ -161,10 +161,20 @@ _event_compare_func (gconstpointer a,
 {
   JanaEvent *event_a = (JanaEvent *)a;
   JanaEvent *event_b = (JanaEvent *)b;
+  JanaTime *start_a, *start_b;
+  gint retval;
 
-  return jana_utils_time_compare (jana_event_get_start (event_a),
-                                  jana_event_get_start (event_b),
-                                  FALSE);
+  start_a = jana_event_get_start (event_a);
+  start_b = jana_event_get_start (event_b);
+
+  retval = jana_utils_time_compare (start_a,
+                                    start_b,
+                                    FALSE);
+
+  g_object_unref (start_a);
+  g_object_unref (start_b);
+
+  return retval;
 }
 
 static void
