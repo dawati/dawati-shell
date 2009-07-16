@@ -193,7 +193,7 @@ PKG_CHECK_MODULES(PASTEBOARD,
                   clutter-x11-0.9
                   clutter-0.9
                   gtk+-2.0
-                  nbtk-1.0)
+                  nbtk-1.0 >= 0.15.1)
 
 PASTEBOARD_CFLAGS="${PASTEBOARD_CFLAGS} ${PENGE_CFLAGS} "\
 '-I$(top_srcdir)/libmoblin-panel '\
