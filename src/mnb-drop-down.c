@@ -233,10 +233,10 @@ mnb_drop_down_show (ClutterActor *actor)
                                      NULL);
 
   priv->show_completed_id =
-    g_signal_connect (animation,
-                      "completed",
-                      G_CALLBACK (mnb_drop_down_show_completed_cb),
-                      actor);
+    g_signal_connect_after (animation,
+                            "completed",
+                            G_CALLBACK (mnb_drop_down_show_completed_cb),
+                            actor);
   priv->show_anim = animation;
 }
 
@@ -332,10 +332,11 @@ mnb_drop_down_hide (ClutterActor *actor)
                                      NULL);
 
   priv->hide_completed_id =
-    g_signal_connect (animation,
-                      "completed",
-                      G_CALLBACK (mnb_drop_down_hide_completed_cb),
-                      actor);
+    g_signal_connect_after (animation,
+                            "completed",
+                            G_CALLBACK (mnb_drop_down_hide_completed_cb),
+                            actor);
+
   priv->hide_anim = animation;
 }
 
