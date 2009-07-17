@@ -1,25 +1,4 @@
 /* generic classes */
-NbtkButton {
-  background-color: #fff0;
-  border-image: url("file://generic/button.png") 4 stretch;
-  padding: 4;
-  font-size: 12px;
-  color: #333;
-}
-
-NbtkButton:hover {
-  border-image: url("file://generic/button_hover.png") 4 stretch;
-  padding: 4;
-  font-size: 12px;
-  color: #fff;
-}
-
-NbtkButton:active {
-  border-image: url("file://generic/button_active.png") 4 stretch;
-  padding: 4;
-  font-size: 12px;
-  color: #333;
-}
 
 NbtkEntry:indeterminate {
   color: gray;
