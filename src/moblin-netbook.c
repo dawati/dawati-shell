@@ -55,6 +55,7 @@
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
 static MutterPlugin *plugin_singleton = NULL;
+static GQuark binary_name_quark = 0;
 
 /* callback data for when animations complete */
 typedef struct
@@ -446,6 +447,8 @@ moblin_netbook_plugin_init (MoblinNetbookPlugin *self)
   bindtextdomain (GETTEXT_PACKAGE, PLUGIN_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
+
+  binary_name_quark = g_quark_from_static_string ("MNB-binary-name");
 }
 
 /*
@@ -921,6 +924,46 @@ meta_window_fullcreen_notify_cb (GObject    *object,
 }
 
 /*
+ * Returns the executable name for given pid.
+ */
+static gchar *
+pid_to_binary_name (gint pid)
+{
+  gchar * cmd_f;
+  FILE  * fcmd;
+
+  if (pid <= 0)
+    return NULL;
+
+  cmd_f = g_strdup_printf ("/proc/%d/cmdline", pid);
+  fcmd  = fopen (cmd_f, "r");
+
+  g_free (cmd_f);
+
+  if (fcmd)
+    {
+      gchar buf[256];
+      if (fgets (buf, sizeof (buf), fcmd))
+        {
+          /*
+           * 0-terminate at first whitespace.
+           */
+          gchar *n = &buf[0];
+          while ((n < &buf[0] + sizeof(buf) - 1) && *n && !g_ascii_isspace (*n))
+            ++n;
+
+          *n = 0;
+
+          return g_path_get_basename (buf);
+        }
+
+      fclose (fcmd);
+    }
+
+  return NULL;
+}
+
+/*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
  */
@@ -1005,11 +1048,23 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         {
           gboolean    fullscreen, modal;
           const char *sn_id = meta_window_get_startup_id (mw);
+          gint        pid;
+          gchar      *binary;
 
           if (!moblin_netbook_sn_should_map (plugin, mcw, sn_id))
             return;
 
           g_object_get (mw, "fullscreen", &fullscreen, "modal", &modal, NULL);
+
+          if (((pid = meta_window_get_net_wm_pid (mw)) >= 0) &&
+              ((binary = pid_to_binary_name (pid))))
+            {
+              guint hash = g_str_hash (binary);
+
+              g_object_set_qdata (G_OBJECT (mcw), binary_name_quark,
+                                  GINT_TO_POINTER (hash));
+              g_free (binary);
+            }
 
           if (fullscreen)
             {
@@ -1710,3 +1765,42 @@ moblin_netbook_get_plugin_singleton (void)
   return plugin_singleton;
 }
 
+/*
+ * Check whether application is running
+ *
+ * If the application is running, and app_window is not NULL, pointer to the
+ * application window is returned.
+ */
+gboolean
+moblin_netbook_is_application_running (MutterPlugin  *plugin,
+                                       const gchar   *binary,
+                                       MutterWindow **app_window)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  GList      *l;
+  guint       hash;
+
+  hash = g_str_hash (binary);
+
+  l = mutter_get_windows (screen);
+
+  while (l)
+    {
+      MutterWindow *m = l->data;
+      guint         h;
+
+      if ((h = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (m),
+                                                    binary_name_quark))) &&
+          h == hash)
+        {
+          if (app_window)
+            *app_window = m;
+
+          return TRUE;
+        }
+
+      l = l->next;
+    }
+
+  return FALSE;
+}

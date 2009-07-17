@@ -76,6 +76,7 @@ struct SnHashData
   gchar              *binary;
   gboolean            without_chooser    : 1;
   gboolean            configured         : 1;
+  gboolean            single_instance    : 1;
 };
 
 struct ws_grid_cb_data
@@ -1051,6 +1052,91 @@ struct ws_chooser_map_data
 };
 
 /*
+ * Helper function to activate a running application, handling workspace
+ * correctly.
+ *
+ */
+static void
+activate_single_instance_application (MutterWindow *mcw)
+{
+  MetaWindow    *mw = mutter_window_get_meta_window (mcw);
+  MetaScreen    *screen = meta_window_get_screen (mw);
+  MetaWorkspace *active;
+  gint           active_index = -2;
+  MetaWorkspace *workspace = meta_window_get_workspace (mw);
+  gint           workspace_index = -1;
+  guint32        timestamp = clutter_x11_get_current_event_time ();
+
+  g_return_if_fail (workspace);
+
+  active = meta_screen_get_active_workspace (screen);
+
+  if (active)
+    active_index = meta_workspace_index (active);
+
+  workspace_index = meta_workspace_index (workspace);
+
+  if (workspace_index == active_index)
+    {
+      meta_window_activate_with_workspace (mw, timestamp, workspace);
+    }
+  else if (workspace_index > -1)
+    {
+      meta_workspace_activate_with_focus (workspace, mw, timestamp);
+    }
+}
+
+/*
+ * This is a quick an dirty hack until we have a proper solution that scales
+ *
+ * Returns TRUE if the given application is known to be single-instance.
+ */
+static gboolean
+is_single_instance (const gchar *base)
+{
+  g_return_val_if_fail (base, FALSE);
+
+  if (!strcmp (base, "moblin-web-browser"))
+    return TRUE;
+  if (!strcmp (base, "hornsey"))
+    return TRUE;
+  if (!strcmp (base, "anjal"))
+    return TRUE;
+  if (!strcmp (base, "bisho"))
+    return TRUE;
+  if (!strcmp (base, "sync-ui"))
+    return TRUE;
+
+  return FALSE;
+}
+
+/*
+ * Check whether the application we are running might be a single instance one,
+ * and if so, whether it is already running. If it is running, we override the
+ * without_chooser parameter to be always true, and mark the original
+ * application for activation.
+ */
+static void
+handle_single_instance_application (MutterPlugin  *plugin,
+                                    const gchar   *binary,
+                                    SnHashData    *sn_data)
+{
+  gchar        *base = g_path_get_basename (binary);
+  MutterWindow *mw = NULL;
+
+  if (is_single_instance (base) &&
+      moblin_netbook_is_application_running (plugin, base, &mw))
+    {
+      g_return_if_fail (mw);
+      sn_data->without_chooser = TRUE;
+      sn_data->single_instance = TRUE;
+      sn_data->mcw = mw;
+    }
+
+  g_free (base);
+}
+
+/*
  * The start up notification handling.
  *
  * In essence it works like this:
@@ -1199,31 +1285,36 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
             sn_data->workspace = 0;
           }
 
-          if (!sn_data->without_chooser)
-            {
-              MetaScreen *screen = mutter_plugin_get_screen (plugin);
-              gint        ws_count = meta_screen_get_n_workspaces (screen);
-              struct ws_chooser_timeout_data * wsc_data;
+        /*
+         * Special handling is needed if the application is a single instance one
+         */
+        handle_single_instance_application (plugin, binary, sn_data);
 
-              show_workspace_chooser (plugin, seq_id, timestamp);
+        if (!sn_data->without_chooser)
+          {
+            MetaScreen *screen = mutter_plugin_get_screen (plugin);
+            gint        ws_count = meta_screen_get_n_workspaces (screen);
+            struct ws_chooser_timeout_data * wsc_data;
 
-              wsc_data = g_slice_new (struct ws_chooser_timeout_data);
-              wsc_data->sn_id = g_strdup (seq_id);
-              wsc_data->plugin = plugin;
-              wsc_data->workspace =
-                ws_count < MAX_WORKSPACES ? ws_count : ws_count - 1;
+            show_workspace_chooser (plugin, seq_id, timestamp);
 
-              /*
-               * Start the timeout that automatically moves the application
-               * to a new workspace if the user does not choose one manually.
-               */
-              workspace_chooser_timeout =
-                g_timeout_add_full (G_PRIORITY_DEFAULT,
-                                WORKSPACE_CHOOSER_TIMEOUT,
-                                workspace_chooser_timeout_cb,
-                                wsc_data,
-                                (GDestroyNotify)free_ws_chooser_timeout_data);
-            }
+            wsc_data = g_slice_new (struct ws_chooser_timeout_data);
+            wsc_data->sn_id = g_strdup (seq_id);
+            wsc_data->plugin = plugin;
+            wsc_data->workspace =
+              ws_count < MAX_WORKSPACES ? ws_count : ws_count - 1;
+
+            /*
+             * Start the timeout that automatically moves the application
+             * to a new workspace if the user does not choose one manually.
+             */
+            workspace_chooser_timeout =
+              g_timeout_add_full (G_PRIORITY_DEFAULT,
+                                  WORKSPACE_CHOOSER_TIMEOUT,
+                                  workspace_chooser_timeout_cb,
+                                  wsc_data,
+                                  (GDestroyNotify)free_ws_chooser_timeout_data);
+          }
       }
       break;
     case SN_MONITOR_EVENT_CHANGED:
@@ -1241,6 +1332,14 @@ on_sn_monitor_event (SnMonitorEvent *event, gpointer data)
           struct ws_chooser_map_data     * wsc_map_data;
 
           sn_data->state = SN_MONITOR_EVENT_COMPLETED;
+
+          if (sn_data->single_instance)
+            {
+              g_return_if_fail (sn_data->mcw);
+              activate_single_instance_application (sn_data->mcw);
+              g_hash_table_remove (priv->sn_hash, seq_id);
+              return;
+            }
 
           wsc_map_data = g_slice_new (struct ws_chooser_map_data);
           wsc_map_data->plugin = plugin;
@@ -1352,6 +1451,19 @@ moblin_netbook_sn_should_map (MutterPlugin *plugin, MutterWindow *mcw,
     {
       SnHashData   *sn_data = value;
       ActorPrivate *apriv = get_actor_private (mcw);
+
+      if (sn_data->single_instance)
+        {
+          /*
+           * Should not happen; just make it map.
+           */
+          g_warning ("A supposedly single instance application just created "
+                     "a new window on us");
+
+          g_hash_table_remove (priv->sn_hash, sn_id);
+
+          return TRUE;
+        }
 
       apriv->sn_in_progress = TRUE;
       sn_data->mcw = mcw;

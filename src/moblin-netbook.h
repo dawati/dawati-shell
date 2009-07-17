@@ -174,4 +174,9 @@ moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin);
 MutterPlugin *
 moblin_netbook_get_plugin_singleton (void);
 
+gboolean
+moblin_netbook_is_application_running (MutterPlugin  *plugin,
+                                       const gchar   *binary,
+                                       MutterWindow **app_window);
+
 #endif
