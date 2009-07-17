@@ -69,6 +69,10 @@ void carrick_service_item_set_service (CarrickServiceItem *item,
 void carrick_service_item_set_active (CarrickServiceItem *item,
                                       gboolean active);
 
+void carrick_service_item_set_draggable (CarrickServiceItem *item,
+                                         gboolean draggable);
+gboolean carrick_service_item_get_draggable (CarrickServiceItem *item);
+
 GtkWidget* carrick_service_item_new (CarrickIconFactory *icon_factory,
                                      CarrickNotificationManager *notifications,
                                      CmService          *service);

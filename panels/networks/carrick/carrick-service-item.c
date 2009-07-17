@@ -39,6 +39,7 @@ typedef struct _CarrickServiceItemPrivate CarrickServiceItemPrivate;
 enum
 {
   PROP_0,
+  PROP_DRAGGABLE,
   PROP_ICON_FACTORY,
   PROP_SERVICE,
   PROP_NOTIFICATIONS
@@ -75,9 +76,11 @@ struct _CarrickServiceItemPrivate
   gboolean            hover;
   GdkColor            prelight_color;
   GdkColor            active_color;
-  /*GdkCursor          *hand_cursor;*/
 
   CarrickNotificationManager *note;
+
+  gboolean            draggable;
+  GdkCursor          *hand_cursor;
 };
 
 enum
@@ -102,6 +105,9 @@ carrick_service_item_get_property (GObject *object, guint property_id,
 
   switch (property_id)
     {
+      case PROP_DRAGGABLE:
+        g_value_set_boolean (value, priv->draggable);
+        break;
       case PROP_ICON_FACTORY:
         g_value_set_object (value,
                             priv->icon_factory);
@@ -660,6 +666,29 @@ carrick_service_item_get_service (CarrickServiceItem *item)
   return priv->service;
 }
 
+gboolean
+carrick_service_item_get_draggable (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv;
+
+  g_return_val_if_fail (CARRICK_IS_SERVICE_ITEM (item), FALSE);
+
+  priv = SERVICE_ITEM_PRIVATE (item);
+  return priv->draggable;
+}
+
+void
+carrick_service_item_set_draggable (CarrickServiceItem *item,
+                                    gboolean            draggable)
+{
+  CarrickServiceItemPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (item));
+
+  priv = SERVICE_ITEM_PRIVATE (item);
+  priv->draggable = draggable;
+}
+
 void carrick_service_item_set_active (CarrickServiceItem *item,
                                       gboolean active)
 {
@@ -684,6 +713,9 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 
   switch (property_id)
     {
+      case PROP_DRAGGABLE:
+        priv->draggable = g_value_get_boolean (value);
+        break;
       case PROP_ICON_FACTORY:
         priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
         break;
@@ -702,15 +734,15 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 static void
 carrick_service_item_dispose (GObject *object)
 {
-  /*CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);*/
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
 
   carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object), NULL);
 
-  /*if (priv->hand_cursor)
+  if (priv->hand_cursor)
   {
     gdk_cursor_unref (priv->hand_cursor);
     priv->hand_cursor = NULL;
-    }*/
+  }
 
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
@@ -734,7 +766,8 @@ carrick_service_item_enter_notify_event (GtkWidget        *widget,
   gtk_widget_modify_bg (priv->expando,
                         GTK_STATE_NORMAL,
                         &priv->prelight_color);
-  /*gdk_window_set_cursor (widget->window, priv->hand_cursor);*/
+  if (priv->draggable)
+    gdk_window_set_cursor (widget->window, priv->hand_cursor);
 
   return TRUE;
 }
@@ -792,6 +825,15 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   widget_class->enter_notify_event = carrick_service_item_enter_notify_event;
   widget_class->leave_notify_event = carrick_service_item_leave_notify_event;
 
+  pspec = g_param_spec_boolean ("draggable",
+                               "draggable",
+                               "Should the service item show a draggable cursor on hover",
+                               FALSE,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_DRAGGABLE,
+                                   pspec);
+
   pspec = g_param_spec_object ("service",
                                "service",
                                "CmService object",
@@ -843,7 +885,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->service = NULL;
   priv->failed = FALSE;
 
-  /*priv->hand_cursor = gdk_cursor_new (GDK_HAND1);*/
+  priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
 
   box = gtk_hbox_new (FALSE,
                       6);
