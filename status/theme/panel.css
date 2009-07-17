@@ -84,11 +84,16 @@ MnbIMStatusRow > *.MnbImExpandButton
   padding: 0;
 }
 
-NbtkGrid.MnbImStatusSelector
+NbtkBoxLayout.MnbImStatusSelector
+{
+  padding: 4 2 4 60;
+}
+
+NbtkGrid.MnbImPresenceRow
 {
   font-size: 16px;
   color: #595959ff;
-  padding: 2 2 2 64;
+  padding: 2 2 2 2;
   background-color: #efefef;
 }
 

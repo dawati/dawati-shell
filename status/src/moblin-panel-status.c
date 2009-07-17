@@ -54,6 +54,7 @@
 typedef struct _MoblinStatusPanel
 {
   ClutterActor *table;
+  ClutterActor *box;
   ClutterActor *empty_web_bin;
   ClutterActor *empty_im_bin;
   ClutterActor *header_label;
@@ -83,7 +84,7 @@ typedef struct _ServiceInfo
 
   MojitoClientService *service;
   ClutterActor *row;
-  NbtkTable *table;
+  ClutterActor *box;
 
   guint caps_id;
 
@@ -100,7 +101,7 @@ typedef struct _AccountInfo
 
   McAccount *account;
   ClutterActor *row;
-  NbtkTable *table;
+  ClutterActor *box;
 
   guint is_visible : 1;
   guint is_enabled : 1;
@@ -170,20 +171,7 @@ add_account (MoblinStatusPanel *panel,
   a_info->row = g_object_new (MNB_TYPE_IM_STATUS_ROW,
                               "account-name", a_info->name,
                               NULL);
-
-  nbtk_table_add_actor_with_properties (a_info->table,
-                                        a_info->row,
-                                        -1, 0,
-                                        "row-span", 1,
-                                        "col-span", 1,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", TRUE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.0,
-                                        "allocate-hidden", FALSE,
-                                        NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (a_info->box), a_info->row);
 
   g_signal_connect (a_info->row, "status-changed",
                     G_CALLBACK (on_row_status_changed),
@@ -324,19 +312,7 @@ on_caps_changed (MojitoClientService  *service,
           s_info->row = g_object_new (MNB_TYPE_WEB_STATUS_ROW,
                                       "service-name", s_info->name,
                                       NULL);
-          nbtk_table_add_actor_with_properties (s_info->table,
-                                                s_info->row,
-                                                -1, 0,
-                                                "row-span", 1,
-                                                "col-span", 1,
-                                                "x-expand", TRUE,
-                                                "y-expand", FALSE,
-                                                "x-fill", TRUE,
-                                                "y-fill", FALSE,
-                                                "x-align", 0.0,
-                                                "y-align", 0.0,
-                                                "allocate-hidden", FALSE,
-                                                NULL);
+          clutter_container_add_actor (CLUTTER_CONTAINER (s_info->box), s_info->row);
         }
 
       if (!was_visible)
@@ -421,20 +397,8 @@ get_static_caps (MojitoClientService  *service,
   s_info->row = g_object_new (MNB_TYPE_WEB_STATUS_ROW,
                               "service-name", s_info->name,
                               NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (s_info->box), s_info->row);
 
-  nbtk_table_add_actor_with_properties (s_info->table,
-                                        s_info->row,
-                                        -1, 0,
-                                        "row-span", 1,
-                                        "col-span", 1,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", TRUE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.0,
-                                        "allocate-hidden", FALSE,
-                                        NULL);
   clutter_actor_hide (s_info->row);
   s_info->is_visible = FALSE;
 
@@ -480,7 +444,7 @@ on_mojito_get_services (MojitoClient *client,
       s_info->name = g_strdup (service_name);
       s_info->service = service;
       s_info->row = NULL;
-      s_info->table = NBTK_TABLE (panel->table);
+      s_info->box = panel->box;
       s_info->can_update = FALSE;
       s_info->has_icon = FALSE;
       s_info->is_visible = FALSE;
@@ -637,7 +601,7 @@ on_mc_account_enabled (McAccountMonitor  *monitor,
       a_info->panel = panel;
       a_info->account = mc_account_lookup (name);
       a_info->row = NULL;
-      a_info->table = NBTK_TABLE (panel->table);
+      a_info->box = panel->box;
       a_info->is_visible = FALSE;
       a_info->is_enabled = TRUE;
 
@@ -712,7 +676,7 @@ on_mojito_online_changed (MojitoClient      *client,
       a_info->panel = panel;
       a_info->account = account;
       a_info->row = NULL;
-      a_info->table = NBTK_TABLE (panel->table);
+      a_info->box = panel->box;
       a_info->is_visible = FALSE;
       a_info->is_enabled = TRUE;
 
@@ -782,7 +746,7 @@ on_mojito_is_online (MojitoClient *client,
       a_info->panel = panel;
       a_info->account = account;
       a_info->row = NULL;
-      a_info->table = NBTK_TABLE (panel->table);
+      a_info->box = panel->box;
       a_info->is_visible = FALSE;
       a_info->is_enabled = TRUE;
 
@@ -962,7 +926,7 @@ static ClutterActor *
 make_status (MoblinStatusPanel *panel)
 {
   ClutterActor *table;
-  NbtkWidget *header, *label;
+  NbtkWidget *header, *label, *scroll;
 
   table = CLUTTER_ACTOR (nbtk_table_new ());
   nbtk_widget_set_style_class_name (NBTK_WIDGET (table), "MnbStatusPageTable");
@@ -1036,6 +1000,25 @@ make_status (MoblinStatusPanel *panel)
   nbtk_widget_set_style_class_name (NBTK_WIDGET (label), "status-im-empty-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (panel->empty_im_bin),
                                CLUTTER_ACTOR (label));
+
+  scroll = nbtk_scroll_view_new ();
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
+                                        CLUTTER_ACTOR (scroll),
+                                        3, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+  panel->box = CLUTTER_ACTOR (nbtk_box_layout_new ());
+  nbtk_box_layout_set_vertical (NBTK_BOX_LAYOUT (panel->box), TRUE);
+  clutter_container_add_actor (CLUTTER_CONTAINER (scroll), panel->box);
 
   /* mission control: instant messaging
    *

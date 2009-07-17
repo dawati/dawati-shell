@@ -659,15 +659,11 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                     "clicked", G_CALLBACK (on_expand_clicked),
                     self);
 
-  priv->status_grid = CLUTTER_ACTOR (nbtk_grid_new ());
-  grid = NBTK_GRID (priv->status_grid);
-  nbtk_grid_set_column_major (grid, TRUE);
-  nbtk_grid_set_row_gap (grid, 4);
-  nbtk_grid_set_halign (grid, 0.0);
-  nbtk_grid_set_valign (grid, 0.0);
+  priv->status_grid = CLUTTER_ACTOR (nbtk_box_layout_new ());
+  nbtk_box_layout_set_vertical (NBTK_BOX_LAYOUT (priv->status_grid), TRUE);
+  nbtk_box_layout_set_spacing (NBTK_BOX_LAYOUT (priv->status_grid), 4);
   nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->status_grid),
                                     "MnbImStatusSelector");
-
   clutter_actor_set_parent (priv->status_grid, CLUTTER_ACTOR (self));
   clutter_actor_set_reactive (priv->status_grid, TRUE);
   clutter_actor_hide (priv->status_grid);
@@ -715,7 +711,7 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                              CLUTTER_ACTOR (presence_label),
                              NULL);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (grid),
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->status_grid),
                                    CLUTTER_ACTOR (presence_grid));
 
       g_free (file);
