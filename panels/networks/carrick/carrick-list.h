@@ -65,6 +65,8 @@ void carrick_list_add_item (CarrickList *list, GtkWidget *item);
 GtkWidget *carrick_list_find_service_item (CarrickList *list,
                                            CmService   *service);
 void carrick_list_sort_list (CarrickList *list);
+void carrick_list_add_fallback (CarrickList *list, gchar *fallback);
+void carrick_list_clear_fallback (CarrickList *list);
 
 G_END_DECLS
 

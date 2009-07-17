@@ -43,9 +43,10 @@ typedef struct _CarrickListPrivate CarrickListPrivate;
 struct _CarrickListPrivate
 {
   GtkWidget *drag_window;
-  guint drag_position;
-  guint drop_position;
+  guint      drag_position;
+  guint      drop_position;
   GtkWidget *found;
+  GtkWidget *fallback;
 };
 
 static void
@@ -73,6 +74,10 @@ carrick_list_set_property (GObject *object, guint property_id,
 static void
 carrick_list_dispose (GObject *object)
 {
+  CarrickListPrivate *priv = LIST_PRIVATE (object);
+  if (priv->fallback)
+    gtk_widget_destroy (priv->fallback);
+
   G_OBJECT_CLASS (carrick_list_parent_class)->dispose (object);
 }
 
@@ -331,6 +336,35 @@ carrick_list_add_item (CarrickList *list,
                       0);
 }
 
+void
+carrick_list_clear_fallback (CarrickList *list)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+
+  if (priv->fallback)
+  {
+    gtk_container_remove (GTK_CONTAINER (list), priv->fallback);
+    priv->fallback = NULL;
+  }
+}
+
+void
+carrick_list_add_fallback (CarrickList *list,
+                           gchar       *fallback)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+
+  priv->fallback = gtk_label_new (fallback);
+  gtk_label_set_line_wrap (GTK_LABEL (priv->fallback),
+                           TRUE);
+  gtk_widget_show (priv->fallback);
+
+  gtk_box_pack_start (GTK_BOX (list),
+                      priv->fallback,
+                      FALSE,
+                      FALSE,
+                      0);
+}
 
 static void
 carrick_list_class_init (CarrickListClass *klass)
@@ -349,6 +383,7 @@ static void
 carrick_list_init (CarrickList *self)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (self);
+  priv->fallback = NULL;
 
   /* add a drag target for dropping below any real
      items in the list*/
@@ -364,6 +399,7 @@ carrick_list_init (CarrickList *self)
 
 
   priv->found = NULL;
+  priv->fallback = NULL;
 }
 
 GtkWidget*
