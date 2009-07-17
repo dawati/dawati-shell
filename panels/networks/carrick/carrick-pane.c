@@ -120,17 +120,40 @@ carrick_pane_get_property (GObject    *object,
 }
 
 static void
+carrick_pane_set_icon_factory (CarrickPane *pane,
+                               CarrickIconFactory *icon_factory)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+
+  priv->icon_factory = icon_factory;
+  carrick_list_set_icon_factory (CARRICK_LIST (priv->service_list),
+                                 icon_factory);
+}
+
+static void
+carrick_pane_set_notifications (CarrickPane *pane,
+                                CarrickNotificationManager *notes)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+
+  priv->notes = notes;
+  carrick_list_set_notification_manager (CARRICK_LIST (priv->service_list),
+                                         notes);
+}
+
+static void
 carrick_pane_set_property (GObject      *object,
                            guint         property_id,
                            const GValue *value,
                            GParamSpec   *pspec)
 {
   CarrickPane *pane = CARRICK_PANE (object);
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
   switch (property_id) {
   case PROP_ICON_FACTORY:
-    priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
+    carrick_pane_set_icon_factory (
+      pane,
+      CARRICK_ICON_FACTORY (g_value_get_object (value)));
     break;
 
   case PROP_MANAGER:
@@ -138,7 +161,9 @@ carrick_pane_set_property (GObject      *object,
                      CM_MANAGER (g_value_get_object (value)));
     break;
   case PROP_NOTIFICATIONS:
-    priv->notes = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
+    carrick_pane_set_notifications (
+      pane,
+      CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value)));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -555,7 +580,6 @@ _service_updated_cb (CmService   *service,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   CarrickList *list = CARRICK_LIST (priv->service_list);
-  GtkWidget *item;
 
   /*
    * We only want this to be called for the first
@@ -571,10 +595,9 @@ _service_updated_cb (CmService   *service,
    */
   if (carrick_list_find_service_item (list, service) == NULL)
   {
-    item = carrick_service_item_new (priv->icon_factory, priv->notes, service);
-    carrick_list_add_item (list, item);
-    gtk_widget_show (item);
+    carrick_list_add_item (list, service);
     carrick_list_sort_list (CARRICK_LIST (priv->service_list));
+
   }
 }
 
@@ -1093,7 +1116,8 @@ carrick_pane_init (CarrickPane *self)
   gtk_frame_set_label_widget (GTK_FRAME (net_list_bin),
                               frame_title);
 
-  priv->service_list = carrick_list_new ();
+  priv->service_list = carrick_list_new (priv->icon_factory,
+                                         priv->notes);
   gtk_container_add (GTK_CONTAINER (net_list_bin),
                      priv->service_list);
   gtk_widget_show (priv->service_list);

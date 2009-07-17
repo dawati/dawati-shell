@@ -52,28 +52,54 @@ struct _CarrickListPrivate
 
   int scroll_speed;
   guint scroll_timeout_id;
+
+  CarrickIconFactory *icon_factory;
+  CarrickNotificationManager *notes;
+};
+
+enum
+{
+  PROP_0,
+  PROP_ICON_FACTORY,
+  PROP_NOTIFICATIONS,
 };
 
 static void
 carrick_list_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  CarrickListPrivate *priv = LIST_PRIVATE (object);
+
   switch (property_id)
-    {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
+  {
+  case PROP_ICON_FACTORY:
+    g_value_set_object (value, priv->icon_factory);
+    break;
+  case PROP_NOTIFICATIONS:
+    g_value_set_object (value, priv->notes);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
 }
 
 static void
 carrick_list_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
+  CarrickListPrivate *priv = LIST_PRIVATE (object);
+
   switch (property_id)
-    {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
+  {
+  case PROP_ICON_FACTORY:
+    priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
+    break;
+  case PROP_NOTIFICATIONS:
+    priv->notes = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
 }
 
 static void
@@ -309,6 +335,57 @@ carrick_list_set_all_inactive (CarrickList *list)
 
 }
 
+void
+carrick_list_set_icon_factory (CarrickList *list, 
+                               CarrickIconFactory *icon_factory)
+{
+  CarrickListPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_LIST (list));
+
+  priv = LIST_PRIVATE (list);
+
+  priv->icon_factory = icon_factory;
+}
+
+CarrickIconFactory*
+carrick_list_get_icon_factory (CarrickList *list)
+{
+  CarrickListPrivate *priv;
+
+  g_return_val_if_fail (CARRICK_IS_LIST (list), NULL);
+
+  priv = LIST_PRIVATE (list);
+
+  return priv->icon_factory;
+}
+
+void
+carrick_list_set_notification_manager (CarrickList *list, 
+                                       CarrickNotificationManager *notification_manager)
+{
+  CarrickListPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_LIST (list));
+
+  priv = LIST_PRIVATE (list);
+
+  priv->notes = notification_manager;
+}
+
+CarrickNotificationManager*
+carrick_list_get_notification_manager (CarrickList *list)
+{
+  CarrickListPrivate *priv;
+
+  g_return_val_if_fail (CARRICK_IS_LIST (list), NULL);
+
+  priv = LIST_PRIVATE (list);
+
+  return priv->notes;
+}
+
+
 GList*
 carrick_list_get_children (CarrickList *list)
 {
@@ -432,11 +509,19 @@ carrick_list_drag_motion (GtkWidget      *widget,
 
 void
 carrick_list_add_item (CarrickList *list,
-                       GtkWidget *widget)
+                       CmService *service)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  CarrickListPrivate *priv;
+  GtkWidget *widget;
+
   g_return_if_fail (CARRICK_IS_LIST (list));
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (CM_IS_SERVICE (service));
+
+  priv = LIST_PRIVATE (list);
+  widget = carrick_service_item_new (priv->icon_factory,
+                                     priv->notes,
+                                     service);
+  gtk_widget_show (widget);
 
   /* define a drag source */
   /*
@@ -561,6 +646,7 @@ static void
 carrick_list_class_init (CarrickListClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (CarrickListPrivate));
 
@@ -569,6 +655,24 @@ carrick_list_class_init (CarrickListClass *klass)
   object_class->set_property = carrick_list_set_property;
   object_class->dispose = carrick_list_dispose;
   object_class->finalize = carrick_list_finalize;
+
+  pspec = g_param_spec_object ("icon-factory",
+                               "icon-factory",
+                               "CarrickIconFactory object",
+                               CARRICK_TYPE_ICON_FACTORY,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_ICON_FACTORY,
+                                   pspec);
+
+  pspec = g_param_spec_object ("notification-manager",
+                               "CarrickNotificationManager",
+                               "Notification manager to use",
+                               CARRICK_TYPE_NOTIFICATION_MANAGER,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_NOTIFICATIONS,
+                                   pspec);
 }
 
 static void
@@ -583,7 +687,11 @@ carrick_list_init (CarrickList *self)
 }
 
 GtkWidget*
-carrick_list_new (void)
+carrick_list_new (CarrickIconFactory *icon_factory,
+                  CarrickNotificationManager *notifications)
 {
-  return g_object_new (CARRICK_TYPE_LIST, NULL);
+  return g_object_new (CARRICK_TYPE_LIST,
+                       "icon-factory", icon_factory,
+                       "notification-manager", notifications,
+                       NULL);
 }

@@ -26,6 +26,9 @@
 #include <gtk/gtk.h>
 #include <gconnman/gconnman.h>
 
+#include "carrick-icon-factory.h"
+#include "carrick-notification-manager.h"
+
 G_BEGIN_DECLS
 
 #define CARRICK_TYPE_LIST carrick_list_get_type()
@@ -60,8 +63,10 @@ typedef struct {
 
 GType carrick_list_get_type (void);
 
-GtkWidget* carrick_list_new (void);
-void carrick_list_add_item (CarrickList *list, GtkWidget *item);
+GtkWidget* carrick_list_new (CarrickIconFactory *icon_factory,
+                             CarrickNotificationManager *notifications);
+
+void carrick_list_add_item (CarrickList *list, CmService *service);
 GtkWidget *carrick_list_find_service_item (CarrickList *list,
                                            CmService   *service);
 void carrick_list_sort_list (CarrickList *list);
@@ -69,6 +74,14 @@ void carrick_list_sort_list (CarrickList *list);
 void carrick_list_set_fallback (CarrickList *list, const gchar *fallback);
 
 void carrick_list_set_all_inactive (CarrickList *list);
+
+void carrick_list_set_icon_factory (CarrickList *list, 
+                                    CarrickIconFactory *icon_factory);
+CarrickIconFactory *carrick_list_get_icon_factory (CarrickList *list);
+
+void carrick_list_set_notification_manager (CarrickList *list, 
+                                     CarrickNotificationManager *notification_manager);
+CarrickNotificationManager *carrick_list_get_notification_manager (CarrickList *list);
 
 GList* carrick_list_get_children (CarrickList *list);
 
