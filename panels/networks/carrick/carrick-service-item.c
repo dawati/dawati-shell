@@ -165,12 +165,21 @@ _service_item_set_security (CarrickServiceItem *item,
         security[i] = g_ascii_toupper (security[i]);
       }
     }
+  /* TRANSLATORS: this is a wireless security method, at least WEP,
+     WPA and WPA2 are possible token values. Example: "WEP encrypted". */
     security_label = g_strdup_printf (_("%s encrypted"),
                                       security);
   }
   else
   {
     security_label = g_strdup ("");
+  }
+
+  /* just in case security_sample has not been translated in _init ... */
+  if (strlen (security_label) >
+      gtk_label_get_width_chars (GTK_LABEL (priv->security_label)))
+  {
+    gtk_label_set_width_chars (GTK_LABEL (priv->security_label), -1);
   }
 
   gtk_label_set_text (GTK_LABEL (priv->security_label),
@@ -813,6 +822,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget *box, *hbox, *vbox;
   GtkWidget *image;
   GtkWidget *connect_with_pw_button;
+  char *security_sample;
 
   priv->service = NULL;
   priv->failed = FALSE;
@@ -898,6 +908,13 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->security_label = gtk_label_new ("");
   gtk_misc_set_alignment (GTK_MISC (priv->security_label),
                           0.0, 0.5);
+  /* Note: security_sample should contain the longest possible security method */ 
+  /* TRANSLATORS: This is an example of a wireless security method
+     (see another translator comment), used to estimate the string length.
+     It should look like the ones below network name in the UI */
+  security_sample = _("WPA2 encrypted");
+  gtk_label_set_width_chars (GTK_LABEL (priv->security_label),
+                             strlen (security_sample));
   gtk_widget_show (priv->security_label);
   gtk_box_pack_start (GTK_BOX (priv->connect_box),
                       priv->security_label,
