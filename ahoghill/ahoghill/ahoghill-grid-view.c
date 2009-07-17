@@ -949,6 +949,7 @@ ahoghill_grid_view_init (AhoghillGridView *self)
 
     bkl_init ();
 
+    nbtk_table_set_col_spacing (table, 10);
     priv->model = g_object_new (AHOGHILL_TYPE_RESULTS_MODEL, NULL);
 
     clutter_actor_set_size (CLUTTER_ACTOR (self), 1024, 500);
@@ -991,13 +992,13 @@ ahoghill_grid_view_init (AhoghillGridView *self)
                       G_CALLBACK (item_clicked_cb), self);
 
     priv->playqueues_pane = (ClutterActor *) ahoghill_playlist_new (self,
-                                                                    _("Local"));
-    clutter_actor_set_size (priv->playqueues_pane, 238, 400);
+                                                                    _("Playqueue"));
+    clutter_actor_set_size (priv->playqueues_pane, 210, 400);
     nbtk_table_add_actor_with_properties (table, priv->playqueues_pane,
                                           1, 3,
                                           "x-expand", FALSE,
-                                          "x-fill", FALSE,
                                           "y-expand", FALSE,
+                                          "y-fill", FALSE,
                                           "x-align", 0.0,
                                           "y-align", 0.0,
                                           NULL);

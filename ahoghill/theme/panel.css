@@ -78,7 +78,7 @@ AhoghillPlaylistHeader {
 }
 
 AhoghillPlaylistHeader.Top {
-  border-image: url('file://top_playque_selected.png') 5 5 5 0 ;
+  border-image: url('file://top_playque_selected.png') 5 5 5 0 stretch;
 }
 
 NbtkButton.AhoghillControlButton {
@@ -172,3 +172,7 @@ AhoghillExampleTable *.AhoghillExampleText {
   color: #595959ff;
 }
 
+AhoghillPlaylist {
+  padding-top: 20px;
+  padding-right: 14px;
+}

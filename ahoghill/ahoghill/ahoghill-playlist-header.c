@@ -32,7 +32,7 @@ struct _AhoghillPlaylistHeaderPrivate {
 G_DEFINE_TYPE (AhoghillPlaylistHeader, ahoghill_playlist_header, NBTK_TYPE_TABLE);
 static guint32 signals[LAST_SIGNAL] = {0,};
 
-#define HEADER_WIDTH 238
+#define HEADER_WIDTH 210
 #define HEADER_HEIGHT 50
 #define BUTTON_WIDTH 37
 #define BUTTON_HEIGHT 37
@@ -129,7 +129,7 @@ ahoghill_playlist_header_init (AhoghillPlaylistHeader *self)
     clutter_actor_set_size ((ClutterActor *) self, HEADER_WIDTH, HEADER_HEIGHT);
 
     priv->playlist_title = nbtk_label_new ("");
-    clutter_actor_set_size ((ClutterActor *) priv->playlist_title, 185, 20);
+    clutter_actor_set_size ((ClutterActor *) priv->playlist_title, 160, 20);
     clutter_actor_set_name ((ClutterActor *) priv->playlist_title,
                             "ahoghill-playlist-title");
     nbtk_table_add_actor (NBTK_TABLE (self),
