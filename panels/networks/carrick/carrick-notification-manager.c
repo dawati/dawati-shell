@@ -116,8 +116,8 @@ _tell_online (const gchar *name,
     if (name && name[0] != '\0')
     {
       message = g_strdup_printf (_("You're now connected to %s, a %s network"),
-                                 type,
-                                 name);
+                                 name,
+                                 type);
     }
     else
     {
