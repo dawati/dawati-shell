@@ -522,6 +522,7 @@ mnb_im_status_row_constructed (GObject *gobject)
     {
       GError *error = NULL;
 
+      clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), TRUE);
       clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
                                      name,
                                      &error);
@@ -624,7 +625,6 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                            "no_image_icon.png",
                            NULL);
   priv->user_icon = clutter_texture_new ();
-  clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), TRUE);
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon), file, NULL);
   priv->no_icon_file = file;
 
@@ -634,7 +634,6 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                            "im-offline.png",
                            NULL);
   priv->presence_icon = clutter_texture_new ();
-  clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->presence_icon), TRUE);
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->presence_icon), file, NULL);
   g_free (file);
 
@@ -695,7 +694,6 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                         self);
 
       presence_icon = clutter_texture_new ();
-      clutter_texture_set_load_async (CLUTTER_TEXTURE (presence_icon), TRUE);
       clutter_texture_set_from_file (CLUTTER_TEXTURE (presence_icon), file, NULL);
 
       presence_label = nbtk_label_new (gettext (presence_states[i].status_msg));
