@@ -231,9 +231,6 @@ _set_state (CmService          *service,
 
   if (priv->state == READY)
   {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
-                              TRUE);
     if (g_strcmp0 ("ethernet", cm_service_get_type (priv->service)))
     {
       /* Only expose delete button for non-ethernet devices */
@@ -249,17 +246,13 @@ _set_state (CmService          *service,
   }
   else if (priv->state == CONFIGURE)
   {
-    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
-                              FALSE);
-    button = g_strdup_printf (_("Connecting"));
+    button = g_strdup_printf (_("Abort"));
     label = g_strdup_printf ("%s - %s",
                              name,
                              _("Configuring"));
   }
   else if (priv->state == IDLE)
   {
-    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
-                              TRUE);
     gtk_widget_hide (GTK_WIDGET (priv->delete_button));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                               FALSE);
@@ -268,8 +261,6 @@ _set_state (CmService          *service,
   }
   else if (priv->state == FAIL)
   {
-    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
-                              TRUE);
     gtk_widget_hide (GTK_WIDGET (priv->delete_button));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                               FALSE);
@@ -281,8 +272,6 @@ _set_state (CmService          *service,
   }
   else if (priv->state == DISCONNECT)
   {
-    gtk_widget_set_sensitive (GTK_WIDGET (priv->connect_button),
-                              FALSE);
     button = g_strdup_printf (_("Disconnecting"));
     label = g_strdup_printf ("%s - %s",
                              name,
@@ -450,7 +439,8 @@ _connect_button_cb (GtkButton          *connect_button,
 
   g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
-  if (cm_service_get_connected (priv->service))
+  if (priv->state == READY ||
+      priv->state == CONFIGURE)
   {
     cm_service_disconnect (priv->service);
     _set_state (priv->service, item);
