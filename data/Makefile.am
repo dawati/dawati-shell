@@ -40,9 +40,6 @@ theme_genericdir = $(MUTTER_MOBLIN_THEME_DIR)/generic
 dist_theme_generic_DATA = \
 	theme/generic/checkbox.png	\
 	theme/generic/spinner.png	\
-	theme/generic/button.png	\
-	theme/generic/button_active.png	\
-	theme/generic/button_hover.png	\
 	theme/generic/search-entry-bg.png \
 	theme/generic/search-entry-clear-hover.png \
 	theme/generic/search-entry-clear.png \
