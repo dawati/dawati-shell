@@ -970,7 +970,7 @@ make_status (MoblinStatusPanel *panel)
   clutter_actor_set_reactive (table, TRUE);
   panel->table = table;
 
-  header = nbtk_label_new (_("Your current status"));
+  header = nbtk_label_new (_("Your current status - you are offline"));
   nbtk_widget_set_style_class_name (header, "MnbStatusPageHeader");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
                                         CLUTTER_ACTOR (header),
