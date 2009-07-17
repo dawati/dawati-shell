@@ -30,8 +30,6 @@
 #include "carrick-service-item.h"
 #include "carrick-icon-factory.h"
 
-//#define ENABLE_BLUETOOTH 1
-
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -49,11 +47,6 @@ struct _CarrickPanePrivate {
   GtkWidget          *threeg_label;
   GtkWidget          *wimax_switch;
   GtkWidget          *wimax_label;
-  GtkWidget          *switch_vbox;
-#if ENABLE_BLUETOOTH
-  GtkWidget          *bluetooth_switch;
-  GtkWidget          *bluetooth_label;
-#endif
   GtkWidget          *service_list;
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
@@ -238,20 +231,6 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
 
   return TRUE;
 }
-
-#if ENABLE_BLUETOOTH
-static gboolean
-_bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
-			    gboolean            new_state,
-			    CarrickPane        *pane)
-{
-  _set_devices_state (DEVICE_BLUETOOTH,
-                      new_state,
-                      pane);
-
-  return TRUE;
-}
-#endif /* ENABLE_BLUETOOTH */
 
 static void
 _secret_check_toggled(GtkToggleButton *toggle,
@@ -485,7 +464,6 @@ _device_updated_cb (CmDevice *device,
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
   CmDeviceType type = cm_device_get_type (device);
   gboolean state;
-  GtkWidget *switch_box;
 
   if (type != DEVICE_UNKNOWN)
   {
@@ -493,204 +471,33 @@ _device_updated_cb (CmDevice *device,
     switch (type)
     {
       case DEVICE_ETHERNET:
-	if (priv->ethernet_switch == NULL)
-	{
-	  switch_box = gtk_hbox_new (TRUE, 6);
-	  gtk_widget_show (switch_box);
-	  priv->ethernet_switch = nbtk_gtk_light_switch_new ();
-	  priv->ethernet_label = gtk_label_new (_("Wired"));
-	  gtk_misc_set_alignment (GTK_MISC (priv->ethernet_label),
-				  0.2,
-				  0.5);
-	  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-					    (priv->ethernet_switch),
-					    FALSE);
-	  gtk_widget_set_sensitive (priv->ethernet_switch, TRUE);
-	  
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->ethernet_label,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->ethernet_switch,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (priv->switch_vbox),
-			      switch_box,
-			      TRUE,
-			      FALSE,
-			      8);
-	  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
-			    "switch-flipped",
-			    G_CALLBACK (_ethernet_switch_callback),
-			    user_data);
-	  
-	}
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
                                           (priv->ethernet_switch),
                                           state);
-	gtk_widget_show (priv->ethernet_switch);
-	gtk_widget_show (priv->ethernet_label);
+        gtk_widget_set_sensitive (priv->ethernet_switch, TRUE);
         break;
       case DEVICE_WIFI:
-	if (priv->wifi_switch == NULL)
-	{
-	  switch_box = gtk_hbox_new (TRUE, 6);
-	  gtk_widget_show (switch_box);
-	  priv->wifi_switch = nbtk_gtk_light_switch_new ();
-	  priv->wifi_label = gtk_label_new (_("WiFi"));
-	  gtk_misc_set_alignment (GTK_MISC (priv->wifi_label),
-				  0.2,
-				  0.5);
-	  gtk_widget_set_sensitive (priv->wifi_switch, TRUE);
-  
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->wifi_label,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->wifi_switch,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (priv->switch_vbox),
-			      switch_box,
-			      TRUE,
-			      FALSE,
-			      8);
-	  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
-			    "switch-flipped",
-			    G_CALLBACK (_wifi_switch_callback),
-			    user_data);
-	}
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
                                           (priv->wifi_switch),
                                           state);
-	gtk_widget_show (priv->wifi_switch);
-	gtk_widget_show (priv->wifi_label);
+        gtk_widget_set_sensitive (priv->wifi_switch, TRUE);
         /* Only enable "Add new connection" button when wifi powered on */
-	gtk_widget_set_sensitive (priv->new_conn_button,
-				  state);
+        gtk_widget_set_sensitive (priv->new_conn_button,
+                                  state);
         break;
       case DEVICE_CELLULAR:
-	if (priv->threeg_switch == NULL)
-	{
-	  switch_box = gtk_hbox_new (TRUE, 6);
-	  gtk_widget_show (switch_box);
-	  priv->threeg_switch = nbtk_gtk_light_switch_new ();
-	  priv->threeg_label = gtk_label_new (_("3G"));
-	  gtk_misc_set_alignment (GTK_MISC (priv->threeg_label),
-				  0.2,
-				  0.5);
-	  gtk_widget_set_sensitive (priv->threeg_switch, TRUE);
-
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->threeg_label,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->threeg_switch,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (priv->switch_vbox),
-			      switch_box,
-			      TRUE,
-			      FALSE,
-			      8);
-	  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
-			    "switch-flipped",
-			    G_CALLBACK (_threeg_switch_callback),
-			    user_data);
-	}
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
                                           (priv->threeg_switch),
                                           state);
-	gtk_widget_show (priv->threeg_switch);
-	gtk_widget_show (priv->threeg_label);
+        gtk_widget_set_sensitive (priv->threeg_switch, TRUE);
         break;
       case DEVICE_WIMAX:
-	if (priv->wimax_switch == NULL)
-	{
-	  switch_box = gtk_hbox_new (TRUE, 6);
-	  gtk_widget_show (switch_box);
-	  priv->wimax_switch = nbtk_gtk_light_switch_new ();
-	  priv->wimax_label = gtk_label_new (_("WiMAX"));
-	  gtk_misc_set_alignment (GTK_MISC (priv->wimax_label),
-				  0.2,
-				  0.5);
-	  gtk_widget_set_sensitive (priv->wimax_switch, TRUE);
-
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->wimax_label,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->wimax_switch,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (priv->switch_vbox),
-			      switch_box,
-			      TRUE,
-			      FALSE,
-			      8);
-	  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
-			    "switch-flipped",
-			    G_CALLBACK (_wimax_switch_callback),
-			    user_data);
-	}
         nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
                                           (priv->wimax_switch),
                                           state);
-	gtk_widget_show (priv->wimax_switch);
-	gtk_widget_show (priv->wimax_label);
+        gtk_widget_set_sensitive (priv->wimax_switch, TRUE);
         break;
-#if ENABLE_BLUETOOTH
       case DEVICE_BLUETOOTH:
-	if (priv->bluetooth_switch == NULL)
-	{
-	  switch_box = gtk_hbox_new (TRUE, 6);
-	  gtk_widget_show (switch_box);
-	  priv->bluetooth_switch = nbtk_gtk_light_switch_new ();
-	  priv->bluetooth_label = gtk_label_new (_("Bluetooth"));
-	  gtk_misc_set_alignment (GTK_MISC (priv->bluetooth_label),
-				  0.2,
-				  0.5);
-	  gtk_widget_set_sensitive (priv->bluetooth_switch, TRUE);
-
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->bluetooth_label,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (switch_box),
-			      priv->bluetooth_switch,
-			      TRUE,
-			      TRUE,
-			      8);
-	  gtk_box_pack_start (GTK_BOX (priv->switch_vbox),
-			      switch_box,
-			      TRUE,
-			      FALSE,
-			      8);
-	  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
-			    "switch-flipped",
-			    G_CALLBACK (_bluetooth_switch_callback),
-			    user_data);
-	}
-        nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-                                          (priv->bluetooth_switch),
-                                          state);
-	gtk_widget_show (priv->bluetooth_switch);
-	gtk_widget_show (priv->bluetooth_label);
-        break;
-#endif /* ENABLE_BLUETOOTH */
       default:
         g_debug ("Unknown device type %s",
                  cm_device_type_to_string (type));
@@ -838,12 +645,12 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *flight_bin;
   GtkWidget *net_list_bin;
   GtkWidget *scrolled_view;
-  GtkWidget *switch_box;
+  GtkWidget *hbox, *switch_box;
+  GtkWidget *vbox;
   GtkWidget *switch_label;
   GtkWidget *frame_title;
   GtkWidget *flight_mode_switch;
   GtkWidget *flight_mode_label;
-  GtkWidget *vbox, *hbox;
   gchar *label = NULL;
 
   priv->icon_factory = NULL;
@@ -930,10 +737,139 @@ carrick_pane_init (CarrickPane *self)
 
 
   /* Switches */
-  priv->switch_vbox = gtk_vbox_new (TRUE, 6);
-  gtk_widget_show (priv->switch_vbox);
+  vbox = gtk_vbox_new (TRUE,
+                       6);
+  gtk_widget_show (vbox);
   gtk_container_add (GTK_CONTAINER (switch_bin),
-                     priv->switch_vbox);
+                     vbox);
+
+  switch_box = gtk_hbox_new (TRUE,
+                             6);
+  gtk_widget_show (switch_box);
+
+  priv->wifi_switch = nbtk_gtk_light_switch_new ();
+  priv->wifi_label = gtk_label_new (_("WiFi"));
+  gtk_misc_set_alignment (GTK_MISC (priv->wifi_label),
+                          0.2,
+                          0.5);
+  gtk_widget_show (priv->wifi_switch);
+  gtk_widget_show (priv->wifi_label);
+  gtk_widget_set_sensitive (priv->wifi_switch, FALSE);
+
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->wifi_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->wifi_switch,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
+                      FALSE,
+                      FALSE,
+                      8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_wifi_switch_callback),
+		    self);
+
+  switch_box = gtk_hbox_new (TRUE,
+                             6);
+  gtk_widget_show (switch_box);
+  priv->ethernet_switch = nbtk_gtk_light_switch_new ();
+  priv->ethernet_label = gtk_label_new (_("Wired"));
+  gtk_misc_set_alignment (GTK_MISC (priv->ethernet_label),
+                          0.2,
+                          0.5);
+  gtk_widget_show (priv->ethernet_switch);
+  gtk_widget_show (priv->ethernet_label);
+  gtk_widget_set_sensitive (priv->ethernet_switch, FALSE);
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->ethernet_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->ethernet_switch,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
+                      FALSE,
+                      FALSE,
+                      8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_ethernet_switch_callback),
+		    self);
+
+  switch_box = gtk_hbox_new (TRUE,
+                            6);
+  gtk_widget_show (switch_box);
+  priv->threeg_switch = nbtk_gtk_light_switch_new ();
+  priv->threeg_label = gtk_label_new (_("3G"));
+  gtk_misc_set_alignment (GTK_MISC (priv->threeg_label),
+                          0.2,
+                          0.5);
+  gtk_widget_show (priv->threeg_switch);
+  gtk_widget_show (priv->threeg_label);
+  gtk_widget_set_sensitive (priv->threeg_switch, FALSE);
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->threeg_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->threeg_switch,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
+                      FALSE,
+                      FALSE,
+                      8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_threeg_switch_callback),
+		    self);
+
+  switch_box = gtk_hbox_new (TRUE,
+                             6);
+  gtk_widget_show (switch_box);
+  priv->wimax_switch = nbtk_gtk_light_switch_new ();
+  priv->wimax_label = gtk_label_new (_("WiMAX"));
+  gtk_misc_set_alignment (GTK_MISC (priv->wimax_label),
+                          0.2,
+                          0.5);
+  gtk_widget_show (priv->wimax_switch);
+  gtk_widget_show (priv->wimax_label);
+  gtk_widget_set_sensitive (priv->wimax_switch, FALSE);
+
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->wimax_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->wimax_switch,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
+                      FALSE,
+                      FALSE,
+                      8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_wimax_switch_callback),
+		    self);
+
   gtk_table_attach_defaults (GTK_TABLE (self),
                              switch_bin,
                              4, 6,
