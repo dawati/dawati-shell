@@ -473,14 +473,17 @@ moblin_netbook_netpanel_unmap (ClutterActor *actor)
  */
 static void
 moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
-                                    const gchar           *url)
+                                    const gchar           *url,
+                                    gboolean               user_initiated)
 {
   MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
   gchar *exec, *esc_url;
 
   /* FIXME: Should not be hard-coded? */
   esc_url = g_strescape (url, NULL);
-  exec = g_strdup_printf ("%s \"%s\"", "moblin-web-browser", esc_url);
+  exec = g_strdup_printf ("%s %s \"%s\"", "moblin-web-browser",
+                          user_initiated ? "-I" : "",
+                          esc_url);
 
   if (priv->panel_client)
     {
@@ -500,7 +503,8 @@ new_tab_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 {
   /* FIXME: remove hardcoded start path */
   moblin_netbook_netpanel_launch_url (self,
-                                      "chrome://startpage/content/index.html");
+                                      "chrome://startpage/content/index.html",
+                                      FALSE);
 }
 
 static void
@@ -509,7 +513,7 @@ fav_button_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
   MoblinNetbookNetpanelPrivate *priv = self->priv;
   guint fav = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (button), "fav"));
 
-  moblin_netbook_netpanel_launch_url (self, priv->fav_urls[fav]);
+  moblin_netbook_netpanel_launch_url (self, priv->fav_urls[fav], TRUE);
 }
 
 static void
@@ -1018,7 +1022,7 @@ netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
       if (*url == '\0')
         mpl_entry_set_text (MPL_ENTRY (netpanel_bar), "");
       else
-        moblin_netbook_netpanel_launch_url (self, url);
+        moblin_netbook_netpanel_launch_url (self, url, TRUE);
     }
 }
 
