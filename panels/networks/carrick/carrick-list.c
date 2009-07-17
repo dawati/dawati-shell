@@ -64,6 +64,12 @@ enum
   PROP_NOTIFICATIONS,
 };
 
+static void carrick_list_sort_list (CarrickList *list);
+static GtkWidget *carrick_list_find_service_item (CarrickList *list,
+                                                  CmService   *service);
+static void carrick_list_add (CarrickList *list, CmService *service);
+
+
 static void
 carrick_list_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -81,6 +87,83 @@ carrick_list_get_property (GObject *object, guint property_id,
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
+}
+
+static void
+_service_updated_cb (CmService   *service,
+                     CarrickList *list)
+{
+  carrick_list_sort_list (list);
+}
+
+void
+carrick_list_update (CarrickList *list, const GList *services)
+{
+  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  CmService *service = NULL;
+  const GList *it, *iter;
+  GList *children = NULL;
+  gboolean found;
+  GtkWidget *service_item = NULL;
+
+  /* don't update if we're not constructed yet */
+  if (!priv->box)
+    return;
+
+  children = gtk_container_get_children (GTK_CONTAINER (priv->box));
+
+  /* 1. Find stale services, remove widgets */
+  for (it = children; it != NULL; it = it->next)
+  {
+    found = FALSE;
+    service = carrick_service_item_get_service (
+      CARRICK_SERVICE_ITEM (it->data));
+
+    for (iter = services; iter != NULL && !found; iter = iter->next)
+    {
+      if (cm_service_is_same (service, CM_SERVICE (iter->data)))
+      {
+        found = TRUE;
+      }
+    }
+
+    if (!found)
+    {
+      g_signal_handlers_disconnect_by_func (service,
+                                            _service_updated_cb,
+                                            list);
+      gtk_container_remove (GTK_CONTAINER (priv->box), GTK_WIDGET (it->data));
+    }
+  }
+  g_list_free (children);
+
+  /* 2. Find new services, add new widgets */
+  for (it = services; it != NULL; it = it->next)
+  {
+    service = CM_SERVICE (it->data);
+    service_item = carrick_list_find_service_item (list, service);
+
+    if (service_item == NULL)
+    {
+      g_signal_connect (service,
+                        "service-updated",
+                        G_CALLBACK (_service_updated_cb),
+                        list);
+      carrick_list_add (list, service);
+    }
+  }
+
+  carrick_list_sort_list (list);
+
+  children = gtk_container_get_children (GTK_CONTAINER (priv->box));
+  if (!children) {
+    gtk_widget_show (priv->fallback);
+    gtk_widget_hide (priv->box);
+  } else {
+    gtk_widget_hide (priv->fallback);
+    gtk_widget_show (priv->box);
+  }
+  g_list_free (children);
 }
 
 static void
@@ -206,7 +289,7 @@ carrick_list_drag_end (GtkWidget      *widget,
     pos_changed = priv->drop_position != priv->drag_position;
   }
 
-  if (pos_changed && CARRICK_IS_SERVICE_ITEM (widget))
+  if (pos_changed)
   {
     GtkWidget *other_widget;
     CmService *service, * other_service;
@@ -219,12 +302,9 @@ carrick_list_drag_end (GtkWidget      *widget,
     if (priv->drop_position == 0)
     {
       other_widget = g_list_nth_data (children, 1);
-      if (CARRICK_IS_SERVICE_ITEM (other_widget))
-      {
-        other_service = carrick_service_item_get_service
-          (CARRICK_SERVICE_ITEM (other_widget));
-        cm_service_move_before (service, other_service);
-      }
+      other_service = carrick_service_item_get_service
+        (CARRICK_SERVICE_ITEM (other_widget));
+      cm_service_move_before (service, other_service);
     }
     else
     {
@@ -239,12 +319,9 @@ carrick_list_drag_end (GtkWidget      *widget,
                                         priv->drop_position - 1);
       }
 
-      if (CARRICK_IS_SERVICE_ITEM (other_widget))
-      {
-        other_service = carrick_service_item_get_service
-          (CARRICK_SERVICE_ITEM (other_widget));
-        cm_service_move_after (service, other_service);
-      }
+      other_service = carrick_service_item_get_service
+        (CARRICK_SERVICE_ITEM (other_widget));
+      cm_service_move_after (service, other_service);
     }
   }
 
@@ -255,7 +332,7 @@ static void
 _list_collapse_inactive_items (GtkWidget *item,
                                GtkWidget *active_item)
 {
-  if (item != active_item && CARRICK_IS_SERVICE_ITEM (item))
+  if (item != active_item)
   {
     carrick_service_item_set_active (CARRICK_SERVICE_ITEM (item), FALSE);
   }
@@ -278,7 +355,7 @@ typedef struct find_data
   GtkWidget *widget;
 } find_data;
 
-void
+static void
 _list_contains_child (GtkWidget *item,
                       find_data *data)
 {
@@ -291,7 +368,7 @@ _list_contains_child (GtkWidget *item,
   }
 }
 
-GtkWidget *
+static GtkWidget *
 carrick_list_find_service_item (CarrickList *list,
                                 CmService   *service)
 {
@@ -316,11 +393,7 @@ carrick_list_find_service_item (CarrickList *list,
 static void
 _set_item_inactive (GtkWidget *widget)
 {
-  if (CARRICK_IS_SERVICE_ITEM (widget))
-  {
-    carrick_service_item_set_active (CARRICK_SERVICE_ITEM (widget),
-                                     FALSE);
-  }
+  carrick_service_item_set_active (CARRICK_SERVICE_ITEM (widget), FALSE);
 }
 
 
@@ -394,7 +467,7 @@ carrick_list_get_children (CarrickList *list)
   return gtk_container_get_children (GTK_CONTAINER (priv->box));
 }
 
-void
+static void
 carrick_list_sort_list (CarrickList *list)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (list);
@@ -507,9 +580,9 @@ carrick_list_drag_motion (GtkWidget      *widget,
   }
 }
 
-void
-carrick_list_add_item (CarrickList *list,
-                       CmService *service)
+static void
+carrick_list_add (CarrickList *list,
+                  CmService *service)
 {
   CarrickListPrivate *priv;
   GtkWidget *widget;
@@ -619,9 +692,10 @@ carrick_list_constructor (GType                  gtype,
   gtk_widget_set_size_request (priv->fallback,
                                550,
                                -1);
+  gtk_misc_set_padding (GTK_MISC (priv->fallback), 0, 12);
   gtk_widget_show (priv->fallback);
-  gtk_container_add (GTK_CONTAINER (box),
-                     priv->fallback);
+  gtk_box_pack_start (GTK_BOX (box), priv->fallback,
+                      FALSE, FALSE,  0);
 
   priv->box = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (box),
@@ -657,7 +731,7 @@ carrick_list_class_init (CarrickListClass *klass)
   object_class->finalize = carrick_list_finalize;
 
   pspec = g_param_spec_object ("icon-factory",
-                               "icon-factory",
+                               "Icon factory",
                                "CarrickIconFactory object",
                                CARRICK_TYPE_ICON_FACTORY,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);

@@ -77,8 +77,8 @@ enum
   PROP_NOTIFICATIONS
 };
 
-static void _update_manager (CarrickPane *pane,
-                             CmManager   *manager);
+static void carrick_pane_set_manager (CarrickPane *pane,
+                                      CmManager   *manager);
 
 static gboolean
 _focus_callback (GtkWidget *widget, 
@@ -157,8 +157,8 @@ carrick_pane_set_property (GObject      *object,
     break;
 
   case PROP_MANAGER:
-    _update_manager (pane,
-                     CM_MANAGER (g_value_get_object (value)));
+    carrick_pane_set_manager (pane,
+                              CM_MANAGER (g_value_get_object (value)));
     break;
   case PROP_NOTIFICATIONS:
     carrick_pane_set_notifications (
@@ -178,7 +178,7 @@ carrick_pane_dispose (GObject *object)
 
   if (priv->manager)
   {
-    _update_manager (pane, NULL);
+    carrick_pane_set_manager (pane, NULL);
   }
 
   G_OBJECT_CLASS (carrick_pane_parent_class)->dispose (object);
@@ -574,33 +574,6 @@ _new_connection_cb (GtkButton *button,
   gtk_widget_destroy (dialog);
 }
 
-static void
-_service_updated_cb (CmService   *service,
-                     CarrickPane *pane)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  CarrickList *list = CARRICK_LIST (priv->service_list);
-
-  /*
-   * We only want this to be called for the first
-   * 'service-update' signal
-   */
-  g_signal_handlers_disconnect_by_func (service,
-					_service_updated_cb,
-					pane);
-
-  /*
-   * If we do have a race then do not create multipe service 
-   * items for the same service
-   */
-  if (carrick_list_find_service_item (list, service) == NULL)
-  {
-    carrick_list_add_item (list, service);
-    carrick_list_sort_list (CARRICK_LIST (priv->service_list));
-
-  }
-}
-
 static gboolean
 _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 			       gboolean            new_state,
@@ -720,85 +693,6 @@ _add_fallback (CarrickPane *pane)
 
   carrick_list_set_fallback (CARRICK_LIST (priv->service_list), fallback);
   g_free (fallback);
-}
-
-static void
-_update_services (CarrickPane *pane)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  CmService *service = NULL;
-  const GList *it, *iter;
-  const GList *fetched_services = NULL;
-  GList *children = NULL;
-  gboolean found = FALSE;
-  GtkWidget *service_item = NULL;
-
-  fetched_services = cm_manager_get_services (priv->manager);
-
-  children = carrick_list_get_children (CARRICK_LIST (priv->service_list));
-
-  /*
-   * Walk the list and the children of the container and:
-   * 1. Find stale services, delete widgetry
-   * 2. Find new services, add new widgetry
-   */
-  
-
-  for (it = children; it != NULL; it = it->next)
-  {
-    service = carrick_service_item_get_service
-      (CARRICK_SERVICE_ITEM (it->data));
-
-    if (!service)
-      continue;
-
-    for (iter = fetched_services; iter != NULL && !found; iter = iter->next)
-    {
-      if (!iter->data)
-	continue;
-
-      if (cm_service_is_same (service, CM_SERVICE (iter->data)))
-      {
-        found = TRUE;
-      }
-    }
-
-    if (!found)
-    {
-      gtk_widget_destroy (GTK_WIDGET (it->data));
-    }
-    found = FALSE;
-  }
-
-  carrick_list_sort_list (CARRICK_LIST (priv->service_list));
-
-  for (it = fetched_services; it != NULL; it = it->next)
-  {
-    service = CM_SERVICE (it->data);
-    service_item = carrick_list_find_service_item
-      (CARRICK_LIST (priv->service_list),
-       service);
-
-    if (service_item == NULL)
-    {
-      g_signal_connect (service,
-                        "service-updated",
-                        G_CALLBACK (_service_updated_cb),
-                        pane);
-    }
-  }
-
-  if (!fetched_services)
-  {
-    _add_fallback (pane);
-  }
-}
-
-static void
-_services_changed_cb (CmManager *manager,
-                      gpointer   user_data)
-{
-  _update_services (CARRICK_PANE (user_data));
 }
 
 static void
@@ -984,6 +878,29 @@ _offline_mode_changed_cb (CmManager *manager,
 }
 
 static void
+carrick_pane_update_list (CarrickPane *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  const GList *services = NULL;
+  
+  if (priv->manager)
+  {
+    services = cm_manager_get_services (priv->manager);
+  }
+  carrick_list_update (CARRICK_LIST (priv->service_list), 
+                       services);
+}
+
+static void
+_services_changed_cb (CmManager *manager,
+                      gpointer   user_data)
+{
+  CarrickPane *pane = CARRICK_PANE (user_data);
+
+  carrick_pane_update_list (pane);
+}
+
+static void
 _manager_state_changed_cb (CmManager *manager,
                            gpointer   user_data)
 {
@@ -995,7 +912,7 @@ _manager_state_changed_cb (CmManager *manager,
   {
     /* Daemon has gone ... */
     priv->have_daemon = FALSE;
-    _update_services (pane);
+    carrick_pane_update_list (pane);
   }
   else if (g_strcmp0 (state, "offline") == 0)
   {
@@ -1005,13 +922,16 @@ _manager_state_changed_cb (CmManager *manager,
 }
 
 static void
-_update_manager (CarrickPane *pane,
-                 CmManager   *manager)
+carrick_pane_set_manager (CarrickPane *pane,
+                          CmManager   *manager)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
   if (priv->manager)
   {
+    g_signal_handlers_disconnect_by_func (priv->manager,
+                                          _services_changed_cb,
+                                          pane);
     g_signal_handlers_disconnect_by_func (priv->manager,
                                           _available_technologies_changed_cb,
                                           pane);
@@ -1019,10 +939,10 @@ _update_manager (CarrickPane *pane,
                                           _enabled_technologies_changed_cb,
                                           pane);
     g_signal_handlers_disconnect_by_func (priv->manager,
-                                          _services_changed_cb,
+                                          _manager_state_changed_cb,
                                           pane);
     g_signal_handlers_disconnect_by_func (priv->manager,
-                                          _manager_state_changed_cb,
+                                          _offline_mode_changed_cb,
                                           pane);
 
     g_object_unref (priv->manager);
@@ -1053,8 +973,9 @@ _update_manager (CarrickPane *pane,
                       G_CALLBACK (_offline_mode_changed_cb),
                       pane);
 
-    _update_services (pane);
   }
+
+  carrick_pane_update_list (pane);
 }
 
 static void

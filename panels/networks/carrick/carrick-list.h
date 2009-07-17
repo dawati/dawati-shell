@@ -63,13 +63,7 @@ typedef struct {
 
 GType carrick_list_get_type (void);
 
-GtkWidget* carrick_list_new (CarrickIconFactory *icon_factory,
-                             CarrickNotificationManager *notifications);
-
-void carrick_list_add_item (CarrickList *list, CmService *service);
-GtkWidget *carrick_list_find_service_item (CarrickList *list,
-                                           CmService   *service);
-void carrick_list_sort_list (CarrickList *list);
+GtkWidget* carrick_list_new ();
 
 void carrick_list_set_fallback (CarrickList *list, const gchar *fallback);
 
@@ -83,7 +77,7 @@ void carrick_list_set_notification_manager (CarrickList *list,
                                      CarrickNotificationManager *notification_manager);
 CarrickNotificationManager *carrick_list_get_notification_manager (CarrickList *list);
 
-GList* carrick_list_get_children (CarrickList *list);
+void carrick_list_update (CarrickList *list, const GList *services);
 
 G_END_DECLS
 
