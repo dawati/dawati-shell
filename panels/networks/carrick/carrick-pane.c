@@ -51,6 +51,13 @@ struct _CarrickPanePrivate {
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
   time_t              last_scan;
+  gboolean            have_daemon;
+  gboolean            have_powered;
+  gboolean            wifi;
+  gboolean            ethernet;
+  gboolean            wimax;
+  gboolean            bluetooth;
+  gboolean            cellular;
 };
 
 enum
@@ -174,6 +181,38 @@ _set_devices_state (CmDeviceType type,
     if (cm_device_get_type (device) == type &&
 	cm_device_get_powered (device) != state)
     {
+      switch (type)
+      {
+      case DEVICE_WIFI:
+        priv->wifi = state;
+        break;
+      case DEVICE_ETHERNET:
+        priv->ethernet = state;
+        break;
+      case DEVICE_WIMAX:
+        priv->wimax = state;
+        break;
+      case DEVICE_BLUETOOTH:
+        priv->bluetooth = state;
+        break;
+      case DEVICE_CELLULAR:
+        priv->cellular = state;
+        break;
+      default:
+        break;
+      }
+
+      if (priv->wifi || priv->ethernet || priv->wimax ||
+          priv->bluetooth || priv->cellular)
+      {
+        priv->have_powered = TRUE;
+      }
+      else if (!priv->wifi && !priv->ethernet && !priv->wimax &&
+               !priv->bluetooth && !priv->cellular)
+      {
+        priv->have_powered = FALSE;
+      }
+
       cm_device_set_powered (device, state);
       if (state)
       {
@@ -519,6 +558,80 @@ _flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 }
 
 static void
+_add_fallback (CarrickPane *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+
+  gchar *fallback = NULL;
+    GString *txt = g_string_new (_("Sorry, we can't find any networks."));
+
+    /* Need to add some fall-back content */
+    if (!priv->have_daemon)
+    {
+      g_string_append (txt, _("The ConnMan daemon doesn't seem to be running."
+                              "You may want to try re-starting your device"));
+      fallback = g_string_free (txt, FALSE);
+    }
+    else if (cm_manager_get_offline_mode (priv->manager))
+    {
+      g_string_append (txt, _("You could try disabling Offline mode"));
+      fallback = g_string_free (txt, FALSE);
+    }
+    else if (priv->have_powered)
+    {
+      guint len = 0;
+      g_string_append (txt, _("You could try turning on "));
+
+      if (priv->wifi)
+      {
+        g_string_append (txt, _("WiFi"));
+        len++;
+      }
+      if (priv->ethernet)
+      {
+        if (len > 1)
+          g_string_append (txt, _(", "));
+
+        g_string_append (txt, _("Ethernet"));
+        len++;
+      }
+      if (priv->wimax)
+      {
+        if (len > 1)
+          g_string_append (txt, _(", "));
+
+        g_string_append (txt, _("WiMAX"));
+        len++;
+      }
+      if (priv->bluetooth)
+      {
+        if (len > 1)
+          g_string_append (txt, _(", "));
+
+        g_string_append (txt, _("Bluetooth"));
+        len++;
+      }
+      if (priv->cellular)
+      {
+        if (len > 1)
+          g_string_append (txt, _(" and "));
+
+        g_string_append (txt, _("3G"));
+      }
+
+      fallback = g_string_free (txt, FALSE);
+    }
+    else
+    {
+      fallback = g_strdup (_("Sorry, we can't find any networks"));
+      g_string_free (txt, TRUE);
+    }
+
+    carrick_list_add_fallback (CARRICK_LIST (priv->service_list), fallback);
+    g_free (fallback);
+}
+
+static void
 _update_services (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
@@ -530,6 +643,7 @@ _update_services (CarrickPane *pane)
   GtkWidget *service_item = NULL;
 
   fetched_services = cm_manager_get_services (priv->manager);
+  carrick_list_clear_fallback (CARRICK_LIST (priv->service_list));
   children = gtk_container_get_children (GTK_CONTAINER (priv->service_list));
 
   /*
@@ -539,8 +653,9 @@ _update_services (CarrickPane *pane)
    */
   for (it = children; it != NULL; it = it->next)
   {
-    service = carrick_service_item_get_service (
-      CARRICK_SERVICE_ITEM (it->data));
+    service = carrick_service_item_get_service
+      (CARRICK_SERVICE_ITEM (it->data));
+
     for (iter = fetched_services; iter != NULL && !found; iter = iter->next)
     {
       if (cm_service_is_same (service, CM_SERVICE (iter->data)))
@@ -573,6 +688,11 @@ _update_services (CarrickPane *pane)
                         pane);
     }
   }
+
+  if (!fetched_services)
+  {
+    _add_fallback (pane);
+  }
 }
 
 static void
@@ -603,6 +723,27 @@ _devices_changed_cb (CmManager *manager,
 }
 
 static void
+_manager_state_changed_cb (CmManager *manager,
+                           gpointer   user_data)
+{
+  CarrickPane *pane = CARRICK_PANE (user_data);
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  const gchar *state = cm_manager_get_state (manager);
+
+  if (g_strcmp0 (state, "unavailable") == 0)
+  {
+    /* Daemon has gone ... */
+    priv->have_daemon = FALSE;
+    _update_services (pane);
+  }
+  else if (g_strcmp0 (state, "offline") == 0)
+  {
+    priv->have_daemon = TRUE;
+    _add_fallback (pane);
+  }
+}
+
+static void
 _update_manager (CarrickPane *pane,
                  CmManager   *manager)
 {
@@ -616,6 +757,11 @@ _update_manager (CarrickPane *pane,
     g_signal_handlers_disconnect_by_func (priv->manager,
                                           _services_changed_cb,
                                           pane);
+
+    g_signal_handlers_disconnect_by_func (priv->manager,
+                                          _manager_state_changed_cb,
+                                          pane);
+
     g_object_unref (priv->manager);
     priv->manager = NULL;
   }
@@ -631,6 +777,10 @@ _update_manager (CarrickPane *pane,
     g_signal_connect (priv->manager,
                       "services-changed",
                       G_CALLBACK (_services_changed_cb),
+                      pane);
+    g_signal_connect (priv->manager,
+                      "state-changed",
+                      G_CALLBACK (_manager_state_changed_cb),
                       pane);
 
     _update_services (pane);
@@ -656,6 +806,13 @@ carrick_pane_init (CarrickPane *self)
   priv->icon_factory = NULL;
   priv->manager = NULL;
   priv->last_scan = time (NULL);
+  priv->have_daemon = FALSE;
+  priv->have_powered = FALSE;
+  priv->wifi = FALSE;
+  priv->ethernet = FALSE;
+  priv->wimax = FALSE;
+  priv->cellular = FALSE;
+  priv->bluetooth = FALSE;
 
   switch_bin = nbtk_gtk_frame_new ();
   gtk_widget_show (switch_bin);
