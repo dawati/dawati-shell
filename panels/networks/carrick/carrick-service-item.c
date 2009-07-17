@@ -345,18 +345,6 @@ _request_passphrase (CarrickServiceItem *item)
   gtk_widget_show (priv->passphrase_box);
 }
 
-/*static void
-_item_service_updated_cb (CmService *service,
-                          gpointer user_data)
-{
-  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
-
-  priv->state = _get_service_state (service);
-  _set_state (service,
-              item);
-              }*/
-
 static void
 _service_name_changed_cb (CmService *service,
                           gchar     *name,
@@ -568,9 +556,6 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
 
   if (priv->service)
   {
-    /*g_signal_handlers_disconnect_by_func (priv->service,
-                                          _item_service_updated_cb,
-                                          service_item);*/
     g_signal_handlers_disconnect_by_func (priv->service,
                                          _service_name_changed_cb,
                                          service_item);
@@ -602,11 +587,6 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
                       "clicked",
                       G_CALLBACK (_delete_button_cb),
                       service);
-
-    /*g_signal_connect (service,
-                      "service-updated",
-                      G_CALLBACK (_item_service_updated_cb),
-                      service_item);*/
 
     g_signal_connect (service,
                       "name-changed",
@@ -905,10 +885,18 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE,
                       6);
 
+  priv->connect_button = gtk_button_new ();
+  gtk_widget_show (priv->connect_button);
+  gtk_box_pack_start (GTK_BOX (priv->connect_box),
+                      priv->connect_button,
+                      FALSE,
+                      FALSE,
+                      6);
+
   priv->security_label = gtk_label_new ("");
   gtk_misc_set_alignment (GTK_MISC (priv->security_label),
                           0.0, 0.5);
-  /* Note: security_sample should contain the longest possible security method */ 
+  /* Note: security_sample should contain the longest possible security method */
   /* TRANSLATORS: This is an example of a wireless security method
      (see another translator comment), used to estimate the string length.
      It should look like the ones below network name in the UI */
@@ -918,14 +906,6 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_widget_show (priv->security_label);
   gtk_box_pack_start (GTK_BOX (priv->connect_box),
                       priv->security_label,
-                      FALSE,
-                      FALSE,
-                      6);
-
-  priv->connect_button = gtk_button_new ();
-  gtk_widget_show (priv->connect_button);
-  gtk_box_pack_start (GTK_BOX (priv->connect_box),
-                      priv->connect_button,
                       FALSE,
                       FALSE,
                       6);
