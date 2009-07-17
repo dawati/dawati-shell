@@ -57,9 +57,10 @@
  * FIXME -- we should refactor this into a self-contained MnbChooser actor,
  *          and implement it as a singleton.
  */
-static MnbInputRegion  input_region = NULL;
-static ClutterActor   *self = NULL;
-static guint           workspace_chooser_timeout = 0;
+static MnbInputRegion   input_region = NULL;
+static ClutterActor    *self = NULL;
+static guint            workspace_chooser_timeout = 0;
+static ClutterTimeline *spinner_timeline = NULL;
 
 /******************************************************************
  * Workspace chooser
@@ -461,21 +462,19 @@ make_spinner (void)
   if (!beh)
     {
       ClutterAlpha    *alpha;
-      ClutterTimeline *timeline;
 
-      timeline = clutter_timeline_new (MNBTK_SPINNER_ITERVAL);
-      clutter_timeline_set_loop (timeline, TRUE);
+      spinner_timeline = clutter_timeline_new (MNBTK_SPINNER_ITERVAL);
+      clutter_timeline_set_loop (spinner_timeline, TRUE);
 
-      alpha = clutter_alpha_new_full (timeline,
+      alpha = clutter_alpha_new_full (spinner_timeline,
                                       CLUTTER_LINEAR);
 
       beh = clutter_behaviour_rotate_new (alpha, CLUTTER_Z_AXIS,
                                           CLUTTER_ROTATE_CW,
                                           0.0, 360.0);
-
-      clutter_timeline_start (timeline);
     }
 
+  clutter_timeline_start (spinner_timeline);
   clutter_behaviour_apply (beh, spinner);
 
   return spinner;
@@ -990,6 +989,9 @@ hide_workspace_chooser (MutterPlugin *plugin, guint32 timestamp)
       g_source_remove (workspace_chooser_timeout);
       workspace_chooser_timeout = 0;
     }
+
+  if (spinner_timeline)
+    clutter_timeline_stop (spinner_timeline);
 
   moblin_netbook_set_lowlight (plugin, FALSE);
   moblin_netbook_unstash_window_focus (plugin, timestamp);
