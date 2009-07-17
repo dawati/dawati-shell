@@ -164,6 +164,18 @@ MnbSwitcher *.workspace-title-label {
   color: white;
 }
 
+MnbSwitcher *#workspace-title-label-active {
+  font-family: "Liberation Sans Bold";
+  font-size: 18;
+  color: white;
+}
+
+MnbSwitcher *#workspace-title-label-over {
+  font-family: "Liberation Sans Bold";
+  font-size: 18;
+  color: #e87208ff;
+}
+
 MnbSwitcher *#workspace-no-wins-bin {
   border-image: url('file://generic/placeholder-bg.png') 4 stretch;
   padding: 8;

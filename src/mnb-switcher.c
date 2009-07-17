@@ -377,15 +377,17 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
       clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
       clutter_actor_set_size (self, -1.0, -1.0);
       nbtk_table_add_actor (NBTK_TABLE (orig_parent), self,
-                            app_priv->orig_row, col);
+                            app_priv->orig_row, app_priv->orig_col);
 
       clutter_container_child_set (orig_parent, self,
                                    "y-fill", FALSE,
                                    "x-fill", FALSE,  NULL);
 
-      label = table_find_child (CLUTTER_CONTAINER (priv->table), 0, col);
-
       active_ws = mnb_switcher_get_active_workspace (app_priv->switcher);
+
+      clutter_container_child_get (CLUTTER_CONTAINER (priv->table),
+                                   CLUTTER_ACTOR (orig_parent),
+                                   "col", &col, NULL);
 
       mnb_switcher_zone_set_state (MNB_SWITCHER_ZONE (orig_parent),
                                    active_ws == col ?
@@ -647,6 +649,7 @@ mnb_switcher_zone_set_state (MnbSwitcherZone      *zone,
   gint          col;
   const gchar  *zone_name;
   const gchar  *label_name;
+  const gchar  *text_name;
 
   switch (state)
     {
@@ -654,14 +657,17 @@ mnb_switcher_zone_set_state (MnbSwitcherZone      *zone,
     case MNB_SWITCHER_ZONE_NORMAL:
       zone_name = "";
       label_name = "";
+      text_name = "";
       break;
     case MNB_SWITCHER_ZONE_ACTIVE:
       zone_name = "switcher-workspace-active";
       label_name = "workspace-title-active";
+      text_name = "workspace-title-label-active";
       break;
     case MNB_SWITCHER_ZONE_HOVER:
       zone_name = "switcher-workspace-new-over";
       label_name = "workspace-title-new-over";
+      text_name = "workspace-title-label-over";
       break;
     }
 
@@ -675,7 +681,14 @@ mnb_switcher_zone_set_state (MnbSwitcherZone      *zone,
   clutter_actor_set_name (self, zone_name);
 
   if (label)
-    clutter_actor_set_name (label, label_name);
+    {
+      ClutterActor *child = nbtk_bin_get_child (NBTK_BIN (label));
+
+      clutter_actor_set_name (label, label_name);
+
+      if (child)
+        clutter_actor_set_name (child, text_name);
+    }
 }
 
 static void
