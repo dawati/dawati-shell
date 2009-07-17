@@ -661,13 +661,21 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
   t = time (NULL);
   tmp = localtime (&t);
   if (tmp)
-    strftime (time_str, 64, "%X", tmp);
+    /* translators: translate this to a suitable time format for your locale
+     * showing only hours and minutes. For available format specifiers see
+     * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+     */
+    strftime (time_str, 64, _("%l:%M %P"), tmp);
   else
     snprintf (time_str, 64, "Time");
   nbtk_label_set_text (NBTK_LABEL (priv->time), time_str);
 
   if (tmp)
-    strftime (time_str, 64, "%x", tmp);
+    /* translators: translate this to a suitable date format for your locale.
+     * For availabe format specifiers see
+     * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+     */
+    strftime (time_str, 64, _("%B %e, %Y"), tmp);
   else
     snprintf (time_str, 64, "Date");
   nbtk_label_set_text (NBTK_LABEL (priv->date), time_str);
