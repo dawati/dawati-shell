@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-30 04:10+0000\n"
+"POT-Creation-Date: 2009-07-15 09:18+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
+"Last-Translator: glsfra_Sophie <sophiex.marchese@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +34,7 @@ msgstr "Batterie presque à bout"
 
 #: ../dalston/dalston-power-applet.c:200
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Votre batterie est presque à bout. Il serait bon de vous connecter au secteur pour la recharger."
+msgstr "Votre batterie est presque à bout. Il serait bon de vous brancher sur secteur pour la recharger."
 
 #: ../dalston/dalston-power-applet.c:202
 msgid "Getting close to empty"
@@ -42,7 +42,7 @@ msgstr "Pratiquement vide"
 
 #: ../dalston/dalston-power-applet.c:202
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "Votre batterie est pratiquement vide. Il serait bon de sauvegarder votre travail maintenant et de vous connecter au secteur dès que possible"
+msgstr "Votre batterie est pratiquement vide. Il serait bon de sauvegarder votre travail maintenant et de vous brancher sur secteur dès que possible"
 
 #: ../dalston/dalston-power-applet.c:204
 msgid "Danger!"
@@ -70,11 +70,15 @@ msgstr "Votre batterie est en cours de chargement. Elle est chargée à <b>%d</b
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "Votre batterie est en cours d'utilisation. Elle est chargée à <b>%d</b>%%."
 
-#: ../dalston/dalston-power-applet.c:472
+#: ../dalston/dalston-power-applet.c:361
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Désolé, vous ne semblez pas avoir de batterie installée."
+
+#: ../dalston/dalston-power-applet.c:476
 msgid "Display brightness"
 msgstr "Luminosité de l'écran"
 
-#: ../dalston/dalston-power-applet.c:503
+#: ../dalston/dalston-power-applet.c:507
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Désolé, nous sommes incapables de modifier la luminosité de votre écran"
 
@@ -96,7 +100,7 @@ msgstr "Lever du jour"
 
 #: ../dalston/dalston-brightness-slider.c:232
 msgid "Midday"
-msgstr "Juste ce qu'il faut"
+msgstr "Midi"
 
 #: ../dalston/dalston-brightness-slider.c:234
 msgid "Pretty dusky"
@@ -132,7 +136,7 @@ msgstr "Effectuer un test sonore"
 
 #: ../dalston/dalston-volume-slider.c:188
 msgid "Turned up to 11"
-msgstr "À fond"
+msgstr "Tourné à fond sur 11"
 
 #: ../dalston/dalston-volume-slider.c:190
 msgid "Very loud"
@@ -175,5 +179,7 @@ msgid "GNOME Volume Control"
 msgstr "Contrôle de volume GNOME"
 
 #~ msgid "Your battery is discharging. It is about <b>%d</b>%% full."
-#~ msgstr "Votre batterie est en train de se décharger. Elle est chargée à <b>%d</b>%%."
+#~ msgstr ""
+#~ "Votre batterie est en train de se décharger. Elle est chargée à <b>%d</b>%"
+#~ "%."
 
