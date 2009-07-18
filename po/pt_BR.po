@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-08 09:18+0000\n"
+"POT-Creation-Date: 2009-07-15 09:19+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
 "Language-Team: \n"
@@ -53,7 +53,7 @@ msgstr "Mídia"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
 #: ../applications/src/moblin-netbook-launcher.c:1377
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:219
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:220
 #: ../people/src/mnb-people-panel.c:563
 msgid "Search"
 msgstr "Pesquisar"
@@ -82,8 +82,8 @@ msgstr "Episódio: %d"
 msgid "Year %d"
 msgstr "Ano: %d"
 
-#: ../ahoghill/src/moblin-panel-media.c:130
-#: ../src/moblin-netbook.c:324
+#: ../ahoghill/src/moblin-panel-media.c:138
+#: ../src/moblin-netbook.c:326
 msgid "media"
 msgstr "mídia"
 
@@ -99,13 +99,13 @@ msgstr "Aplicativos favoritos"
 msgid "Applications"
 msgstr "Aplicativos"
 
-#: ../applications/src/moblin-panel-applications.c:158
-#: ../src/moblin-netbook.c:315
+#: ../applications/src/moblin-panel-applications.c:166
+#: ../src/moblin-netbook.c:317
 msgid "applications"
 msgstr "aplicativos"
 
-#: ../myzone/src/moblin-panel-myzone.c:70
-#: ../src/moblin-netbook.c:306
+#: ../myzone/src/moblin-panel-myzone.c:78
+#: ../src/moblin-netbook.c:308
 msgid "myzone"
 msgstr "minhazona"
 
@@ -141,8 +141,8 @@ msgstr "Internet"
 msgid "Go"
 msgstr "Ir"
 
-#: ../netpanel/src/moblin-panel-internet.c:79
-#: ../src/moblin-netbook.c:321
+#: ../netpanel/src/moblin-panel-internet.c:87
+#: ../src/moblin-netbook.c:323
 msgid "internet"
 msgstr "internet"
 
@@ -157,33 +157,33 @@ msgid "Go to %s.com"
 msgstr "Vá para: %s.com"
 
 #: ../pasteboard/src/mnb-clipboard-item.c:516
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:344
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:345
 msgid "Copy"
 msgstr "Copiar"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:136
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:359
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:137
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:360
 msgid "the current selection to pasteboard"
 msgstr "a atual seleção para a área de transferência"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:141
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:142
 msgid "your selection"
 msgstr "sua seleção"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:206
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:207
 msgid "Pasteboard"
 msgstr "Área de transferência"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:254
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:255
 msgid "You need to copy some text to use Pasteboard"
 msgstr "Você precisa copiar texto para usar a Área de transferência"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:316
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:317
 msgid "Clear pasteboard"
 msgstr "Limpar área de transferência"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:433
-#: ../src/moblin-netbook.c:318
+#: ../pasteboard/src/moblin-netbook-pasteboard.c:441
+#: ../src/moblin-netbook.c:320
 msgid "pasteboard"
 msgstr "área de transferência"
 
@@ -292,8 +292,8 @@ msgstr "Ano passado"
 msgid "Ages ago"
 msgstr "Há muito tempo"
 
-#: ../people/src/moblin-panel-people.c:61
-#: ../src/moblin-netbook.c:327
+#: ../people/src/moblin-panel-people.c:69
+#: ../src/moblin-netbook.c:329
 msgid "people"
 msgstr "gente"
 
@@ -310,7 +310,7 @@ msgid "Send a message"
 msgstr "Enviar uma mensagem"
 
 #: ../people/src/mnb-people-panel.c:302
-#: ../status/src/moblin-panel-status.c:755
+#: ../status/src/moblin-panel-status.c:756
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
 
@@ -326,21 +326,21 @@ msgstr "Seleção  "
 msgid "Nobody selected"
 msgstr "Ninguém selecionado"
 
-#: ../src/moblin-netbook.c:309
+#: ../src/moblin-netbook.c:311
 #: ../src/mnb-toolbar.c:1394
 msgid "zones"
 msgstr "zonas"
 
-#: ../src/moblin-netbook.c:312
-#: ../status/src/moblin-panel-status.c:1033
+#: ../src/moblin-netbook.c:314
+#: ../status/src/moblin-panel-status.c:1034
 msgid "status"
 msgstr "status"
 
-#: ../src/moblin-netbook.c:437
+#: ../src/moblin-netbook.c:439
 msgid "Moblin Netbook Effects"
 msgstr "Efeitos de netbook Moblin"
 
-#: ../src/moblin-netbook.c:441
+#: ../src/moblin-netbook.c:443
 msgid "Effects for Moblin Netbooks"
 msgstr "Efeitos para Netbooks Moblin"
 
@@ -362,15 +362,15 @@ msgstr "Escolha uma zona para o aplicativo:"
 msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 msgstr "ícone da bandeja requer o tamanho (%i x %i), redimensionado para (%i x %i)"
 
-#: ../src/mnb-switcher.c:1205
+#: ../src/mnb-switcher.c:1640
 msgid "No Zones yet"
 msgstr "Não há zona ainda"
 
-#: ../src/mnb-switcher.c:1227
+#: ../src/mnb-switcher.c:1662
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 msgstr "Os aplicativos que você está usando aparecerá aqui. Você poderá trocar de um para o outro quando quiser."
 
-#: ../src/mnb-switcher.c:1431
+#: ../src/mnb-switcher.c:1885
 msgid "No applications on this zone"
 msgstr "Nenhum aplicativo nessa zona"
 
@@ -394,7 +394,7 @@ msgstr "redes"
 msgid "test"
 msgstr "teste"
 
-#: ../src/mnb-toolbar.c:1720
+#: ../src/mnb-toolbar.c:1741
 msgid "To activate the toolbar, move your cursor to the top of the screen"
 msgstr "Para ativar a barra de ferramentas, mova seu cursor para o topo da tela"
 
@@ -405,21 +405,21 @@ msgid "Offline"
 msgstr "Offline"
 
 #: ../status/src/mnb-im-status-row.c:99
-#: ../status/src/moblin-panel-status.c:489
+#: ../status/src/moblin-panel-status.c:490
 msgid "Available"
 msgstr "Disponível"
 
 #: ../status/src/mnb-im-status-row.c:100
 #: ../status/src/mnb-im-status-row.c:101
-#: ../status/src/moblin-panel-status.c:493
-#: ../status/src/moblin-panel-status.c:497
+#: ../status/src/moblin-panel-status.c:494
+#: ../status/src/moblin-panel-status.c:498
 msgid "Away"
 msgstr "Ausente"
 
 #: ../status/src/mnb-im-status-row.c:102
 #: ../status/src/mnb-im-status-row.c:103
-#: ../status/src/moblin-panel-status.c:501
-#: ../status/src/moblin-panel-status.c:505
+#: ../status/src/moblin-panel-status.c:502
+#: ../status/src/moblin-panel-status.c:506
 msgid "Busy"
 msgstr "Ocupado"
 
@@ -457,20 +457,20 @@ msgstr "Digite o seu status aqui..."
 msgid "Post"
 msgstr "Post"
 
-#: ../status/src/moblin-panel-status.c:423
-#: ../status/src/moblin-panel-status.c:890
+#: ../status/src/moblin-panel-status.c:424
+#: ../status/src/moblin-panel-status.c:891
 msgid "Your current status"
 msgstr "Seu status atual"
 
-#: ../status/src/moblin-panel-status.c:425
+#: ../status/src/moblin-panel-status.c:426
 msgid "Your current status - you are offline"
 msgstr "Seu status atual - você está offline"
 
-#: ../status/src/moblin-panel-status.c:924
+#: ../status/src/moblin-panel-status.c:925
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "Para atualizar seu status na web você precisa configurar uma conta de Serviços na web com um provedor que suporta mensagens de status"
+msgstr "Para atualizar seu status na web, configure uma conta de Serviços na web com provedor que suporta mensagens de status"
 
-#: ../status/src/moblin-panel-status.c:951
+#: ../status/src/moblin-panel-status.c:952
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "Para atualizar seu status IM você precisa configurar uma conta Instant Messaging"
 
