@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-30 04:10+0000\n"
+"POT-Creation-Date: 2009-07-15 09:18+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
 "Language-Team: \n"
@@ -70,11 +70,15 @@ msgstr "Ditt batteri laddar. Det är omkring <b>%d</b>%% laddat."
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "Ditt batteri används nu. Det är cirka <b>%d</b>%% laddat."
 
-#: ../dalston/dalston-power-applet.c:472
+#: ../dalston/dalston-power-applet.c:361
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Ursäkta, men du verkar inte ha installerat ett batteri."
+
+#: ../dalston/dalston-power-applet.c:476
 msgid "Display brightness"
 msgstr "Visa skärmljusstyrka"
 
-#: ../dalston/dalston-power-applet.c:503
+#: ../dalston/dalston-power-applet.c:507
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Ursäkta, men vi stöder inte förändrad skärmljusstyrka"
 
