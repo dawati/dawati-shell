@@ -15,8 +15,8 @@ dist_theme_DATA = \
 	im-offline.png \
 	no_image_icon.png \
 	placeholder-bg.png \
-	plus-button-checked-hover.png \
-	plus-button-checked.png \
+	minus-button-hover.png \
+	minus-button.png \
 	plus-button-hover.png \
 	plus-button.png
 
