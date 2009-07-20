@@ -838,5 +838,6 @@ mnb_im_status_row_set_status (MnbIMStatusRow           *row,
   g_free (file);
 
   if (priv->status != NULL)
-    nbtk_label_set_text (NBTK_LABEL (priv->status_label), priv->status);
+    nbtk_label_set_text (NBTK_LABEL (priv->status_label),
+                         gettext (priv->status));
 }
