@@ -424,13 +424,13 @@ msgid "Busy"
 msgstr "Ocupado"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "- Fechar"
+msgid "Close"
+msgstr "Fechar"
 
 #: ../status/src/mnb-im-status-row.c:129
 #: ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+ Modificar"
+msgid "Change"
+msgstr "Modificar"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"

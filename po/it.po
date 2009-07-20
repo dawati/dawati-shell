@@ -443,12 +443,12 @@ msgid "Busy"
 msgstr "Occupato"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "- Chiudi"
+msgid "Close"
+msgstr "Chiudi"
 
 #: ../status/src/mnb-im-status-row.c:129 ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+ Modifica"
+msgid "Change"
+msgstr "Modifica"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"

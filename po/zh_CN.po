@@ -431,12 +431,12 @@ msgid "Busy"
 msgstr "忙碌"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "- 关闭"
+msgid "Close"
+msgstr "关闭"
 
 #: ../status/src/mnb-im-status-row.c:129 ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+ 修改"
+msgid "Change"
+msgstr "修改"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"

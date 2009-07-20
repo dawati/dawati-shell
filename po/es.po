@@ -462,13 +462,13 @@ msgid "Busy"
 msgstr "Ocupado"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "- Cerrar"
+msgid "Close"
+msgstr "Cerrar"
 
 #: ../status/src/mnb-im-status-row.c:129
 #: ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+ Cambiar"
+msgid "Change"
+msgstr "Cambiar"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"

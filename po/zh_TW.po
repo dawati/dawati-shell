@@ -424,13 +424,13 @@ msgid "Busy"
 msgstr "忙"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "-關閉"
+msgid "Close"
+msgstr "關閉"
 
 #: ../status/src/mnb-im-status-row.c:129
 #: ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+更換"
+msgid "Change"
+msgstr "更換"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"

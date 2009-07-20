@@ -424,13 +424,13 @@ msgid "Busy"
 msgstr "Upptagen"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "- Stäng"
+msgid "Close"
+msgstr "Stäng"
 
 #: ../status/src/mnb-im-status-row.c:129
 #: ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+ Ändra"
+msgid "Change"
+msgstr "Ändra"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"

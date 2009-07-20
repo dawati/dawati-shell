@@ -423,13 +423,13 @@ msgid "Busy"
 msgstr "取り込み中"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "- 閉じる"
+msgid "Close"
+msgstr "閉じる"
 
 #: ../status/src/mnb-im-status-row.c:129
 #: ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+ 変更する"
+msgid "Change"
+msgstr "変更する"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"

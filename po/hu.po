@@ -416,11 +416,11 @@ msgid "Busy"
 msgstr ""
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
+msgid "Close"
 msgstr ""
 
 #: ../status/src/mnb-im-status-row.c:129 ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
+msgid "Change"
 msgstr ""
 
 #: ../status/src/mnb-im-status-row.c:644
