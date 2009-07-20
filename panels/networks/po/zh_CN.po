@@ -1,144 +1,165 @@
 # carrick
 # Copyright (C) 2009 Intel
 # This file is distributed under the same license as the PACKAGE package.
-# Zhu Yanhai <yanhai.zhu@intel.com>, 2009.
+# Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: carrick\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-06 09:17+0000\n"
-"PO-Revision-Date: 2009-07-07 10:01+0800\n"
-"Last-Translator: Zhu Yanhai <yanhai.zhu@intel.com>\n"
-"Language-Team: zh_CN <yanhai.zhu@intel.com>\n"
+"Report-Msgid-Bugs-To: bugzilla.moblin.org\n"
+"POT-Creation-Date: 2009-07-18 09:20+0000\n"
+"PO-Revision-Date: 2009-07-20 10:26+0800\n"
+"Last-Translator: Zhu Yanhai <yanhai.zhu@linux.intel.com>\n"
+"Language-Team: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../carrick/carrick-applet.c:63
-#, c-format
-msgid "Offline"
-msgstr "离线"
-
-#: ../carrick/carrick-applet.c:64
-#, c-format
-msgid "No active connection."
-msgstr "没有活动连接."
-
-#: ../carrick/carrick-applet.c:70
-#, c-format
-msgid "Online"
-msgstr "在线"
-
-#: ../carrick/carrick-applet.c:75
-#, c-format
-msgid "Now online and connected to %s."
-msgstr "在线并且已经连接至%s."
-
-#: ../carrick/carrick-pane.c:284
+#: ../carrick/carrick-pane.c:319
 msgid "New connection settings"
 msgstr "新连接设置"
 
-#: ../carrick/carrick-pane.c:320
+#: ../carrick/carrick-pane.c:355
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr "输入你想连接的网络的名字,若有必要请输入密码和加密类型."
 
-#: ../carrick/carrick-pane.c:330
+#: ../carrick/carrick-pane.c:365
 msgid "Network name"
 msgstr "网络名字"
 
-#: ../carrick/carrick-pane.c:342
+#: ../carrick/carrick-pane.c:377
 msgid "Network security"
 msgstr "网络安全"
 
-#: ../carrick/carrick-pane.c:366
+#: ../carrick/carrick-pane.c:401
 msgid "Password"
 msgstr "密码"
 
-#: ../carrick/carrick-pane.c:381 ../carrick/carrick-service-item.c:853
+#: ../carrick/carrick-pane.c:416 ../carrick/carrick-service-item.c:948
 msgid "Show password"
 msgstr "显示密码"
 
-#: ../carrick/carrick-pane.c:792
-msgid "Networks"
-msgstr "网络"
+#: ../carrick/carrick-pane.c:566
+msgid "Sorry, we can't find any networks."
+msgstr "抱歉，一个网络连接也没找到。"
 
-#: ../carrick/carrick-pane.c:831
-msgid "Add new connection"
-msgstr "添加新连接"
+#: ../carrick/carrick-pane.c:571
+msgid ""
+"The ConnMan daemon doesn't seem to be running.You may want to try re-"
+"starting your device"
+msgstr "ConnMan守护进程似乎没有运行。您可能需要重启您的设备。"
 
-#: ../carrick/carrick-pane.c:857
+#: ../carrick/carrick-pane.c:577
+msgid "You could try disabling Offline mode"
+msgstr "您可能需要试试关闭离线模式"
+
+#: ../carrick/carrick-pane.c:583
+msgid "You could try turning on "
+msgstr "您可能需要试试打开设备"
+
+#: ../carrick/carrick-pane.c:587 ../carrick/carrick-pane.c:908
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:880 ../carrick/carrick-service-item.c:196
-msgid "Wired"
-msgstr "有线"
+#: ../carrick/carrick-pane.c:593 ../carrick/carrick-pane.c:601
+#: ../carrick/carrick-pane.c:609
+msgid ", "
+msgstr ", "
 
-#: ../carrick/carrick-pane.c:906
-msgid "3G"
-msgstr "3G"
+#: ../carrick/carrick-pane.c:595
+msgid "Ethernet"
+msgstr "有线网络"
 
-#: ../carrick/carrick-pane.c:931
+#: ../carrick/carrick-pane.c:603 ../carrick/carrick-pane.c:1002
 msgid "WiMAX"
 msgstr "WiMax"
 
-#: ../carrick/carrick-pane.c:965
+#: ../carrick/carrick-pane.c:611
+msgid "Bluetooth"
+msgstr "蓝牙"
+
+#: ../carrick/carrick-pane.c:617
+msgid " and "
+msgstr " 和 "
+
+#: ../carrick/carrick-pane.c:619 ../carrick/carrick-pane.c:971
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-pane.c:626
+msgid "Sorry, we can't find any networks"
+msgstr "抱歉，一个网络连接也没找着。"
+
+#: ../carrick/carrick-pane.c:837
+msgid "Networks"
+msgstr "网络"
+
+#: ../carrick/carrick-pane.c:881
+msgid "Add new connection"
+msgstr "添加新连接"
+
+#: ../carrick/carrick-pane.c:940 ../carrick/carrick-service-item.c:210
+msgid "Wired"
+msgstr "有线"
+
+#: ../carrick/carrick-pane.c:1045
 msgid "Offline mode"
 msgstr "离线模式"
 
-#: ../carrick/carrick-pane.c:989
+#: ../carrick/carrick-pane.c:1070
 msgid "This will disable all your connections"
 msgstr "关闭您的所有连接"
 
-#: ../carrick/carrick-service-item.c:163
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#: ../carrick/carrick-service-item.c:170
 #, c-format
 msgid "%s encrypted"
 msgstr "%s 已加密"
 
-#: ../carrick/carrick-service-item.c:208
+#: ../carrick/carrick-service-item.c:241
 msgid "Disconnect"
 msgstr "断开连接"
 
-#: ../carrick/carrick-service-item.c:211
+#: ../carrick/carrick-service-item.c:244
 msgid "Connected"
 msgstr "已连接"
 
-#: ../carrick/carrick-service-item.c:218
+#: ../carrick/carrick-service-item.c:249
 #, c-format
-msgid "Connecting"
-msgstr "正在连接"
+msgid "Abort"
+msgstr "放弃"
 
-#: ../carrick/carrick-service-item.c:221
+#: ../carrick/carrick-service-item.c:252
 msgid "Configuring"
 msgstr "配置"
 
-#: ../carrick/carrick-service-item.c:232 ../carrick/carrick-service-item.c:244
-#: ../carrick/carrick-service-item.c:842
+#: ../carrick/carrick-service-item.c:259 ../carrick/carrick-service-item.c:267
+#: ../carrick/carrick-service-item.c:937
 msgid "Connect"
 msgstr "连接"
 
-#: ../carrick/carrick-service-item.c:247
+#: ../carrick/carrick-service-item.c:270
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: ../carrick/carrick-service-item.c:254 ../carrick/carrick-service-item.c:257
+#: ../carrick/carrick-service-item.c:275 ../carrick/carrick-service-item.c:278
 #, c-format
 msgid "Disconnecting"
 msgstr "断开连接"
 
-#: ../carrick/carrick-service-item.c:306
+#: ../carrick/carrick-service-item.c:327
 msgid "Type password here"
 msgstr "请在此处输入密码"
 
-#: ../carrick/carrick-service-item.c:383
+#: ../carrick/carrick-service-item.c:392
 msgid "Really remove?"
 msgstr "真的要删除吗?"
 
-#: ../carrick/carrick-service-item.c:401
+#: ../carrick/carrick-service-item.c:410
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -147,6 +168,99 @@ msgid ""
 msgstr ""
 "您想删除网络连接%s %s吗?这样系统会同时删除为该连接保存\n"
 "的密码,并且您将不再会被自动连接至%s."
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:893
+msgid "WPA2 encrypted"
+msgstr "WPA2 已加密"
+
+#: ../carrick/carrick-notification-manager.c:80
+msgid "Network connected"
+msgstr "网络已连接"
+
+#: ../carrick/carrick-notification-manager.c:88
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "您现在已经连至一个有线网络"
+
+#: ../carrick/carrick-notification-manager.c:118
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "您现在已经连接至%s，一个%s网络"
+
+#: ../carrick/carrick-notification-manager.c:124
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "您现在已经连接至一个%s网络"
+
+#: ../carrick/carrick-notification-manager.c:141
+msgid "Network lost"
+msgstr "找不到网络"
+
+#: ../carrick/carrick-notification-manager.c:149
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "抱歉，您的有线连接出问题了。"
+
+#: ../carrick/carrick-notification-manager.c:153
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "抱歉，您的%s连接出问题了，它原来连接至%s"
+
+#: ../carrick/carrick-notification-manager.c:159
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "抱歉，您的%s连接出问题了。"
+
+#: ../carrick/carrick-notification-manager.c:176
+msgid "Network changed"
+msgstr "网络已改变"
+
+#: ../carrick/carrick-notification-manager.c:184
+msgid "Sorry, your wired connection was lost. So we've "
+msgstr "抱歉，您的有线连接出问题了。"
+
+#: ../carrick/carrick-notification-manager.c:188
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've "
+msgstr "抱歉，您连接至%s的连接出问题了。"
+
+#: ../carrick/carrick-notification-manager.c:193
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've "
+msgstr "抱歉，您的%s连接出问题了。"
+
+#: ../carrick/carrick-notification-manager.c:199
+msgid "connected you to a wired network"
+msgstr "已将您连接至一个有线网络"
+
+#: ../carrick/carrick-notification-manager.c:204
+#, c-format
+msgid "connected you to %s, a %s network"
+msgstr "已将您连接至%s，它是一个%s网络"
+
+#: ../carrick/carrick-notification-manager.c:210
+#, c-format
+msgid "connected you to a %s network"
+msgstr "已将您连接至一个%s网络"
+
+#~ msgid "Offline"
+#~ msgstr "离线"
+
+#~ msgid "No active connection."
+#~ msgstr "没有活动连接."
+
+#~ msgid "Online"
+#~ msgstr "在线"
+
+#~ msgid "Now online and connected to %s."
+#~ msgstr "在线并且已经连接至%s."
+
+#~ msgid "Connecting"
+#~ msgstr "正在连接"
 
 #~ msgid "Passphrase required"
 #~ msgstr "需要密码提示(此处翻译不确定!)"
