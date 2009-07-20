@@ -2216,6 +2216,13 @@ mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
       return;
     }
 
+  /*
+   * Set the waiting_for_panel flag; this prevents the Toolbar from hiding due
+   * to a CLUTTER_LEAVE event that gets generated as the pointer moves from the
+   * stage/toolbar into the panel as it maps.
+   */
+  priv->waiting_for_panel = TRUE;
+
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if (i != index)
       {
