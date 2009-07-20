@@ -169,7 +169,6 @@ mnb_web_status_row_allocate (ClutterActor          *actor,
   gfloat min_width, min_height;
   gfloat natural_width, natural_height;
   gfloat text_width, text_height;
-  NbtkPadding border = { 0, };
   ClutterActorBox child_box = { 0, };
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_web_status_row_parent_class);
@@ -178,11 +177,9 @@ mnb_web_status_row_allocate (ClutterActor          *actor,
 //  nbtk_widget_get_border (NBTK_WIDGET (actor), &border);
 
   available_width  = box->x2 - box->x1
-                   - priv->padding.left - priv->padding.right
-                   - border.left - border.right;
+                   - priv->padding.left - priv->padding.right;
   available_height = box->y2 - box->y1
-                   - priv->padding.top - priv->padding.bottom
-                   - border.top - border.right;
+                   - priv->padding.top - priv->padding.bottom;
 
   clutter_actor_get_preferred_size (priv->entry,
                                     &min_width, &min_height,
@@ -201,8 +198,8 @@ mnb_web_status_row_allocate (ClutterActor          *actor,
    */
 
   /* icon */
-  child_box.x1 = border.left + priv->padding.left;
-  child_box.y1 = border.top  + priv->padding.top;
+  child_box.x1 = priv->padding.left;
+  child_box.y1 = priv->padding.top;
   child_box.x2 = child_box.x1 + ICON_SIZE;
   child_box.y2 = child_box.y1 + ICON_SIZE;
   clutter_actor_allocate (priv->icon, &child_box, flags);
@@ -218,10 +215,10 @@ mnb_web_status_row_allocate (ClutterActor          *actor,
                                       NULL,
                                       &text_height);
 
-  child_box.x1 = border.left + priv->padding.left
+  child_box.x1 = priv->padding.left
                + ICON_SIZE
                + H_PADDING;
-  child_box.y1 = (int) (border.top + priv->padding.top
+  child_box.y1 = (int) (priv->padding.top
                + ((ICON_SIZE - text_height) / 2));
   child_box.x2 = child_box.x1 + text_width;
   child_box.y2 = child_box.y1 + text_height;

@@ -314,7 +314,6 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
    */
   child_box.x1 = (int) (available_width
                - padding.right
-               - (ICON_SIZE + (6.0 * 2))
                - button_width
                - 6.0);
   child_box.y1 = (int) (padding.top + ((ICON_SIZE - button_height) / 2));
