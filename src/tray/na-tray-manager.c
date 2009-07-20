@@ -279,6 +279,8 @@ na_tray_manager_handle_dock_request (NaTrayManager       *manager,
   if (child == NULL) /* already gone or other error */
     return;
 
+  na_tray_child_get_title (NA_TRAY_CHILD(child));
+
   g_signal_emit (manager, manager_signals[TRAY_ICON_ADDED], 0,
 		 child);
 

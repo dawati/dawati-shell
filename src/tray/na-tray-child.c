@@ -98,7 +98,6 @@ na_tray_child_style_set (GtkWidget *widget,
    */
 }
 
-#if 0
 /* This is adapted from code that was commented out in na-tray-manager.c; the code
  * in na-tray-manager.c wouldn't have worked reliably, this will. So maybe it can
  * be reenabled. On other hand, things seem to be working fine without it.
@@ -114,17 +113,14 @@ na_tray_child_size_request (GtkWidget      *widget,
   /*
    * Make sure the icons have a meaningful size ..
    */
-  if ((request->width < 16) || (request->height < 16))
+  if ((request->width != 26) || (request->height != 26))
     {
-      gint nw = MAX (24, request->width);
-      gint nh = MAX (24, request->height);
-      g_warning (_("tray icon has requested a size of (%i x %i), resizing to (%i x %i)"),
-		 req.width, req.height, nw, nh);
+      gint nw = 26;
+      gint nh = 26;
       request->width = nw;
       request->height = nh;
     }
 }
-#endif
 
 static void
 na_tray_child_size_allocate (GtkWidget      *widget,
@@ -214,6 +210,7 @@ na_tray_child_class_init (NaTrayChildClass *klass)
   widget_class->realize = na_tray_child_realize;
   widget_class->size_allocate = na_tray_child_size_allocate;
   widget_class->expose_event = na_tray_child_expose_event;
+  widget_class->size_request = na_tray_child_size_request;
 }
 
 GtkWidget *

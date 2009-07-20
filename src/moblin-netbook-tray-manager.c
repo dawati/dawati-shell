@@ -83,6 +83,11 @@ static void na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *child, g
 
 static void destroy_config_window (ShellTrayManagerChild *child);
 
+static gboolean
+na_tray_expose_child (GtkWidget             *window,
+                      GdkEventExpose        *event,
+                      ShellTrayManagerChild *child);
+
 static void
 free_tray_icon (gpointer data)
 {
@@ -362,6 +367,8 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
         }
 
       gtk_window_move (GTK_WINDOW (child->config), x, y);
+
+      na_tray_expose_child (GTK_WINDOW (child->config), NULL, child);
     }
 }
 
@@ -591,7 +598,7 @@ tray_icon_tagged_timeout_cb (gpointer data)
           return TRUE;
         }
 
-        g_warning ("No config window attached, expelling tray application\n.");
+        g_warning ("++++ No config window attached, expelling tray application\n.");
 
         /*
          * We leave the child in the hashtable; this keep the status icon
@@ -639,8 +646,11 @@ na_tray_expose_child (GtkWidget             *window,
   /*
    * Set up clip region.
    */
-  gdk_cairo_region (cr, event->region);
-  cairo_clip (cr);
+  if (event)
+    {
+      gdk_cairo_region (cr, event->region);
+      cairo_clip (cr);
+    }
 
   /*
    * Clear contents.
