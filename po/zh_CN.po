@@ -7,10 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-10 14:50+0800\n"
-"PO-Revision-Date: 2009-07-10 14:51+0800\n"
-"Last-Translator: Li Jian <jian.li@turbolinux.com.cn>\n"
+"Report-Msgid-Bugs-To: bugzilla.moblin.org\n"
+"POT-Creation-Date: 2009-07-18 09:20+0000\n"
+"PO-Revision-Date: 2009-07-20 10:46+0800\n"
+"Last-Translator: Zhu Yanhai <yanhai.zhu@linux.intel.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,21 +22,20 @@ msgid ""
 "see your history here. In the meantime, you could take a look at some sample "
 "media:"
 msgstr ""
-"这里会显示您播放过的音乐，视频和浏览过的图片。"
-"现在，您可以浏览一些媒体样本："
+"这里会显示您播放过的音乐，视频和浏览过的图片。现在，您可以浏览一些媒体样本："
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:388
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:930
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:417
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:981
 msgid "Recently played"
 msgstr "最近播放"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:414
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:443
 msgid "Search results"
 msgstr "搜索结果"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:944
-msgid "Local"
-msgstr "本机"
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:995
+msgid "Playqueue"
+msgstr "播放队列"
 
 #: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
 #, c-format
@@ -44,14 +43,10 @@ msgid "Season %u, Episode %u"
 msgstr "%u 季 %u 集"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
-#: ../netpanel/src/moblin-netbook-netpanel.c:824
-#: ../netpanel/src/moblin-netbook-netpanel.c:1072
 msgid "Previous"
 msgstr "上一个"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
-#: ../netpanel/src/moblin-netbook-netpanel.c:831
-#: ../netpanel/src/moblin-netbook-netpanel.c:1089
 msgid "Next"
 msgstr "下一个"
 
@@ -61,7 +56,7 @@ msgstr "多媒体"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
 #: ../applications/src/moblin-netbook-launcher.c:1377
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:220
+#: ../pasteboard/src/moblin-panel-pasteboard.c:219
 #: ../people/src/mnb-people-panel.c:563
 msgid "Search"
 msgstr "搜索"
@@ -90,7 +85,7 @@ msgstr "%d 集"
 msgid "Year %d"
 msgstr "%d 年"
 
-#: ../ahoghill/src/moblin-panel-media.c:138 ../src/moblin-netbook.c:326
+#: ../ahoghill/src/moblin-panel-media.c:138 ../src/moblin-netbook.c:328
 msgid "media"
 msgstr "多媒体"
 
@@ -107,51 +102,49 @@ msgid "Applications"
 msgstr "应用程序"
 
 #: ../applications/src/moblin-panel-applications.c:166
-#: ../src/moblin-netbook.c:317
+#: ../src/moblin-netbook.c:319
 msgid "applications"
 msgstr "应用程序"
 
-#: ../myzone/src/moblin-panel-myzone.c:78 ../src/moblin-netbook.c:308
+#: ../myzone/src/moblin-panel-myzone.c:78 ../src/moblin-netbook.c:310
 msgid "myzone"
 msgstr "首页"
 
-#. Construct tabs previews table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:609
-msgid "Tabs"
-msgstr "标签"
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:644
-msgid "Favorite pages"
-msgstr "常用页面"
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:669
+#: ../netpanel/src/moblin-netbook-netpanel.c:564
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
 msgstr ""
-"当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器"
-"新标签中显示"
+"当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显示"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:940
+#: ../netpanel/src/moblin-netbook-netpanel.c:751
 msgid "Untitled"
 msgstr "无标题"
 
-#. FIXME: this should be a default image or startpage snapshot instead,
-#. and this label should become the caption title
-#: ../netpanel/src/moblin-netbook-netpanel.c:1047
+#: ../netpanel/src/moblin-netbook-netpanel.c:864
 msgid "New tab"
 msgstr "新标签"
 
 #. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1290
+#: ../netpanel/src/moblin-netbook-netpanel.c:1053
 msgid "Internet"
 msgstr "互联网"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:1303
+#: ../netpanel/src/moblin-netbook-netpanel.c:1066
 msgid "Go"
 msgstr "出发"
 
-#: ../netpanel/src/moblin-panel-internet.c:87 ../src/moblin-netbook.c:323
+#. Construct title for tab preview section
+#: ../netpanel/src/moblin-netbook-netpanel.c:1087
+msgid "Tabs"
+msgstr "标签"
+
+#. Construct title for favorite pages section
+#: ../netpanel/src/moblin-netbook-netpanel.c:1092
+msgid "Favorite pages"
+msgstr "常用页面"
+
+#: ../netpanel/src/moblin-panel-internet.c:87 ../src/moblin-netbook.c:325
 msgid "internet"
 msgstr "互联网"
 
@@ -165,42 +158,41 @@ msgstr "搜索 %%s（在 %s 上）"
 msgid "Go to %s.com"
 msgstr "去 %s.com"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:516
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:345
+#: ../pasteboard/src/mnb-clipboard-item.c:246
+#: ../pasteboard/src/moblin-panel-pasteboard.c:335
 msgid "Copy"
 msgstr "拷贝"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:137
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:360
+#: ../pasteboard/src/moblin-panel-pasteboard.c:136
+#: ../pasteboard/src/moblin-panel-pasteboard.c:350
 msgid "the current selection to pasteboard"
 msgstr "粘贴板中当前选取的内容"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:142
+#: ../pasteboard/src/moblin-panel-pasteboard.c:141
 msgid "your selection"
 msgstr "您的选择"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:207
+#: ../pasteboard/src/moblin-panel-pasteboard.c:206
 msgid "Pasteboard"
 msgstr "粘贴板"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:255
+#: ../pasteboard/src/moblin-panel-pasteboard.c:254
 msgid "You need to copy some text to use Pasteboard"
 msgstr "您要先复制一些文字才能使用粘贴板"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:317
+#: ../pasteboard/src/moblin-panel-pasteboard.c:307
 msgid "Clear pasteboard"
 msgstr "清空粘贴板"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:441
-#: ../src/moblin-netbook.c:320
+#: ../pasteboard/src/moblin-panel-pasteboard.c:439 ../src/moblin-netbook.c:322
 msgid "pasteboard"
 msgstr "粘贴板"
 
-#: ../penge/penge/penge-calendar-pane.c:180
+#: ../penge/penge/penge-calendar-pane.c:181
 msgid "<b>Appointments</b>"
 msgstr "<b>我的日程安排</b>"
 
-#: ../penge/penge/penge-events-pane.c:198
+#: ../penge/penge/penge-events-pane.c:208
 msgid "No calendar entries this week"
 msgstr "本周无日程安排"
 
@@ -208,9 +200,7 @@ msgstr "本周无日程安排"
 msgid ""
 "Your friends' feeds and web services will appear here. Activate your "
 "accounts now!"
-msgstr ""
-"您朋友的最新情况会在这里显示。"
-"现在就开始配置您的账户吧！"
+msgstr "您朋友的最新情况会在这里显示。现在就开始配置您的账户吧！"
 
 #: ../penge/penge/penge-recent-files-pane.c:189
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
@@ -221,9 +211,11 @@ msgid ""
 "As Moblin is a bit different to other computers, we've put together a couple "
 "of bits and pieces to help you find your way around this Beta Release. We "
 "hope you enjoy it, The Moblin Team."
-msgstr "Moblin 和其他系统有很大区别，在这个试用版中我们整合了一组工具和特性帮助您尽快熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
+msgstr ""
+"Moblin 和其他系统有很大区别，在这个试用版中我们整合了一组工具和特性帮助您尽快"
+"熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
 
-#: ../penge/penge/penge-recent-file-tile.c:234
+#: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
 msgstr "网页"
 
@@ -294,7 +286,7 @@ msgstr "去年"
 msgid "Ages ago"
 msgstr "几年前"
 
-#: ../people/src/moblin-panel-people.c:69 ../src/moblin-netbook.c:329
+#: ../people/src/moblin-panel-people.c:69 ../src/moblin-netbook.c:331
 msgid "people"
 msgstr "联系人"
 
@@ -311,7 +303,7 @@ msgid "Send a message"
 msgstr "发送一条消息"
 
 #: ../people/src/mnb-people-panel.c:302
-#: ../status/src/moblin-panel-status.c:756
+#: ../status/src/moblin-panel-status.c:838
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "抱歉，我不能找到任何联系人。请确认您已经建立好一个聊天账户？"
 
@@ -323,23 +315,23 @@ msgstr "联系人"
 msgid "Selection"
 msgstr "选择"
 
-#: ../people/src/mnb-people-panel.c:741
+#: ../people/src/mnb-people-panel.c:742
 msgid "Nobody selected"
 msgstr "没有选择任何人"
 
-#: ../src/moblin-netbook.c:311 ../src/mnb-toolbar.c:1391
+#: ../src/moblin-netbook.c:313 ../src/mnb-toolbar.c:1402
 msgid "zones"
 msgstr "打开的程序"
 
-#: ../src/moblin-netbook.c:314 ../status/src/moblin-panel-status.c:1034
+#: ../src/moblin-netbook.c:316 ../status/src/moblin-panel-status.c:1112
 msgid "status"
 msgstr "状态"
 
-#: ../src/moblin-netbook.c:439
+#: ../src/moblin-netbook.c:441
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook 特效"
 
-#: ../src/moblin-netbook.c:443
+#: ../src/moblin-netbook.c:445
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin Netbook 特效"
 
@@ -361,43 +353,58 @@ msgstr "为程序选择一个区域"
 msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 msgstr "工作区大小需要 (%i x %i)，重新调整到 (%i x %i)"
 
-#: ../src/mnb-switcher.c:1591
+#: ../src/mnb-switcher.c:1678
 msgid "No Zones yet"
 msgstr "尚无区域"
 
-#: ../src/mnb-switcher.c:1613
+#: ../src/mnb-switcher.c:1700
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organise them to your heart's content."
 msgstr ""
-"当前正在运行的程序会在这里显示。您可以切换, "
-"还可以按照您自己的方式去组织它们"
+"当前正在运行的程序会在这里显示。您可以切换, 还可以按照您自己的方式去组织它们"
 
-#: ../src/mnb-switcher.c:1836
+#: ../src/mnb-switcher.c:1923
 msgid "No applications on this zone"
 msgstr "本区没有应用程序"
 
-#: ../src/mnb-toolbar.c:1628
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:668
+msgid "%l:%M %P"
+msgstr "%P %l:%M"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:678
+msgid "%B %e, %Y"
+msgstr "%Y %B %e"
+
+#: ../src/mnb-toolbar.c:1639
 msgid "power & brightness"
 msgstr "电源和屏幕亮度"
 
-#: ../src/mnb-toolbar.c:1631
+#: ../src/mnb-toolbar.c:1642
 msgid "volume"
 msgstr "音量"
 
-#: ../src/mnb-toolbar.c:1634
+#: ../src/mnb-toolbar.c:1645
 msgid "bluetooth"
 msgstr "蓝牙"
 
-#: ../src/mnb-toolbar.c:1637
+#: ../src/mnb-toolbar.c:1648
 msgid "networks"
 msgstr "网络"
 
-#: ../src/mnb-toolbar.c:1640
+#: ../src/mnb-toolbar.c:1651
 msgid "test"
 msgstr "测试"
 
-#: ../src/mnb-toolbar.c:1717
+#: ../src/mnb-toolbar.c:1749
 msgid "To activate the toolbar, move your cursor to the top of the screen"
 msgstr "移动鼠标到屏幕顶部可以弹出工具栏"
 
@@ -407,19 +414,19 @@ msgid "Offline"
 msgstr "离线"
 
 #: ../status/src/mnb-im-status-row.c:99
-#: ../status/src/moblin-panel-status.c:490
+#: ../status/src/moblin-panel-status.c:572
 msgid "Available"
 msgstr "可用"
 
 #: ../status/src/mnb-im-status-row.c:100 ../status/src/mnb-im-status-row.c:101
-#: ../status/src/moblin-panel-status.c:494
-#: ../status/src/moblin-panel-status.c:498
+#: ../status/src/moblin-panel-status.c:576
+#: ../status/src/moblin-panel-status.c:580
 msgid "Away"
 msgstr "离开"
 
 #: ../status/src/mnb-im-status-row.c:102 ../status/src/mnb-im-status-row.c:103
-#: ../status/src/moblin-panel-status.c:502
-#: ../status/src/moblin-panel-status.c:506
+#: ../status/src/moblin-panel-status.c:584
+#: ../status/src/moblin-panel-status.c:588
 msgid "Busy"
 msgstr "忙碌"
 
@@ -456,21 +463,26 @@ msgstr "在这里输入您的当前状态 ..."
 msgid "Post"
 msgstr "发送"
 
-#: ../status/src/moblin-panel-status.c:424
-#: ../status/src/moblin-panel-status.c:891
+#: ../status/src/moblin-panel-status.c:506
+#: ../status/src/moblin-panel-status.c:973
 msgid "Your current status"
 msgstr "您当前状态"
 
-#: ../status/src/moblin-panel-status.c:426
+#: ../status/src/moblin-panel-status.c:508
 msgid "Your current status - you are offline"
 msgstr "当前状态 - 离线"
 
-#: ../status/src/moblin-panel-status.c:925
+#: ../status/src/moblin-panel-status.c:1007
 msgid ""
 "To update your web status you need to setup a Web Services account with a "
 "provider that supports status messages"
-msgstr "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状态信息。"
+msgstr ""
+"要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状态"
+"信息。"
 
-#: ../status/src/moblin-panel-status.c:952
+#: ../status/src/moblin-panel-status.c:1034
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "要更新您的即时通讯状态，需要先建立一个即时通讯账户"
+
+#~ msgid "Local"
+#~ msgstr "本机"
