@@ -2066,6 +2066,7 @@ mnb_switcher_hide (ClutterActor *self)
       MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
       MetaDisplay  *display = meta_screen_get_display (screen);
       guint32       timestamp;
+      ClutterActor *toolbar;
 
       /*
        * Make sure our stamp is recent enough.
@@ -2074,6 +2075,16 @@ mnb_switcher_hide (ClutterActor *self)
 
       meta_display_end_grab_op (display, timestamp);
       priv->in_alt_grab = FALSE;
+
+      /*
+       * Clear the dont_autohide flag we previously set on the toolbar.
+       */
+      toolbar = clutter_actor_get_parent (self);
+      while (toolbar && !MNB_IS_TOOLBAR (toolbar))
+        toolbar = clutter_actor_get_parent (toolbar);
+
+      if (toolbar)
+        mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), FALSE);
     }
 
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
@@ -2867,12 +2878,14 @@ alt_tab_timeout_cb (gpointer data)
                         alt_data);
 
       /*
-       * Clear any dont_autohide flag on the toolbar that we set previously.
+       * Set the dont_autohide flag -- autohiding needs to be disabled whenever
+       * the toolbar and panels are getting manipulated via keyboar; we clear
+       * this flag in our hide cb.
        */
       if (toolbar)
         {
+          mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), TRUE);
           mnb_toolbar_activate_panel (MNB_TOOLBAR (toolbar), "zones");
-          mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), FALSE);
         }
     }
   else
