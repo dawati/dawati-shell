@@ -44,7 +44,10 @@ struct _MnbIMStatusRowPrivate
   ClutterActor *presence_icon;
   ClutterActor *status_label;
   ClutterActor *account_label;
-  ClutterActor *expand_button;
+
+  ClutterActor *expand_icon;
+  ClutterActor *expand_label;
+  ClutterActor *expand_box;
 
   gchar *account_name;
   gchar *display_name;
@@ -56,9 +59,6 @@ struct _MnbIMStatusRowPrivate
   guint in_hover    : 1;
   guint is_online   : 1;
   guint is_expanded : 1;
-
-  gfloat icon_separator_x;
-  gfloat expand_button_y;
 
   McAccount *account;
 
@@ -107,11 +107,15 @@ static const int n_presence_states = G_N_ELEMENTS (presence_states);
 
 static guint row_signals[LAST_SIGNAL] = { 0, };
 
-static void
-on_expand_clicked (NbtkButton     *button,
+static gboolean
+on_expand_clicked (ClutterActor   *box,
+                   ClutterEvent   *event,
                    MnbIMStatusRow *row)
 {
   MnbIMStatusRowPrivate *priv = row->priv;
+
+  if (clutter_event_get_button (event) != 1)
+    return FALSE;
 
   priv->is_expanded = !priv->is_expanded;
 
@@ -119,20 +123,26 @@ on_expand_clicked (NbtkButton     *button,
     {
       clutter_timeline_set_direction (priv->timeline, CLUTTER_TIMELINE_FORWARD);
 
-      nbtk_button_set_label (NBTK_BUTTON (priv->expand_button), _("- Close"));
+      nbtk_label_set_text (NBTK_LABEL (priv->expand_label), _("Close"));
+      nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->expand_icon),
+                                        "MnbImExpandIconClose");
     }
   else
     {
       clutter_actor_hide (priv->status_grid);
       clutter_timeline_set_direction (priv->timeline, CLUTTER_TIMELINE_BACKWARD);
 
-      nbtk_button_set_label (NBTK_BUTTON (priv->expand_button), _("+ Change"));
+      nbtk_label_set_text (NBTK_LABEL (priv->expand_label), _("Change"));
+      nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->expand_icon),
+                                        "MnbImExpandIconOpen");
     }
 
   if (!clutter_timeline_is_playing (priv->timeline))
     clutter_timeline_rewind (priv->timeline);
 
   clutter_timeline_start (priv->timeline);
+
+  return TRUE;
 }
 
 static void
@@ -163,12 +173,15 @@ on_timeline_frame (ClutterTimeline *timeline,
   clutter_actor_queue_relayout (CLUTTER_ACTOR (row));
 }
 
-static void
+static gboolean
 on_presence_row_clicked (ClutterActor   *actor,
                          ClutterEvent   *event,
                          MnbIMStatusRow *row)
 {
   gint id;
+
+  if (clutter_event_get_button (event) != 1)
+    return FALSE;
 
   id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (actor), "presence-id"));
 
@@ -178,7 +191,7 @@ on_presence_row_clicked (ClutterActor   *actor,
                  presence_states[id].presence,
                  presence_states[id].status_msg);
 
-  g_signal_emit_by_name (row->priv->expand_button, "clicked");
+  return on_expand_clicked (row->priv->expand_box, event, row);
 }
 
 static void
@@ -273,17 +286,20 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
    * get its preferred size first, which will be used to
    * compute the new available width for the header
    */
-  clutter_actor_get_preferred_width (priv->expand_button, available_height,
+  clutter_actor_get_preferred_width (priv->expand_box, available_height,
                                      &min_width,
                                      &natural_width);
   child_width = CLAMP (natural_width, min_width, available_width);
-  clutter_actor_get_preferred_height (priv->expand_button, child_width,
+  clutter_actor_get_preferred_height (priv->expand_box, child_width,
                                       &min_height,
                                       &natural_height);
   child_height = CLAMP (natural_height, min_height, available_height);
 
   /* reduce the available width by the size of the button + spacing */
-  available_width -= (ICON_SIZE - (6.0 * 2) - child_width - (6.0 * 2));
+  available_width -= (ICON_SIZE
+                      - (priv->spacing * 2)
+                      - child_width
+                      - (priv->spacing * 2));
 
   button_width = child_width;
   button_height = child_height;
@@ -303,7 +319,7 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
                                       &natural_height);
   child_height = CLAMP (natural_height, min_height, available_height);
 
-  child_box.x1 = (int) padding.left + ICON_SIZE + (6.0 * 2);
+  child_box.x1 = (int) padding.left + ICON_SIZE + (priv->spacing * 2);
   child_box.y1 = (int) (padding.top + ((ICON_SIZE - child_height) / 2));
   child_box.x2 = (int) child_box.x1 + child_width;
   child_box.y2 = (int) child_box.y1 + child_height;
@@ -312,14 +328,14 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
   /* we want the header button to stay at the same place even when
    * expanding the row
    */
-  child_box.x1 = (int) (available_width
+  child_box.x1 = (int) ((box->x2 - box->x1)
                - padding.right
                - button_width
-               - 6.0);
+               - (priv->spacing * 2));
   child_box.y1 = (int) (padding.top + ((ICON_SIZE - button_height) / 2));
   child_box.x2 = (int) (child_box.x1 + button_width);
   child_box.y2 = (int) (child_box.y1 + button_height);
-  clutter_actor_allocate (priv->expand_button, &child_box, flags);
+  clutter_actor_allocate (priv->expand_box, &child_box, flags);
 
   /* we allocate the status grid only if it's visible - meaning that the
    * status row has been expanded
@@ -338,7 +354,7 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
 
       child_box.x1 = padding.left;
       child_box.y1 = padding.top + ICON_SIZE + priv->spacing;
-      child_box.x2 = child_box.x1 + available_width - (ICON_SIZE + (6.0 * 2));
+      child_box.x2 = child_box.x1 + available_width - (ICON_SIZE + (priv->spacing * 2));
       child_box.y2 = child_box.y1 + child_height;
       clutter_actor_allocate (priv->status_grid, &child_box, flags);
     }
@@ -353,7 +369,7 @@ mnb_im_status_row_paint (ClutterActor *actor)
 
   clutter_actor_paint (priv->user_icon);
   clutter_actor_paint (priv->header);
-  clutter_actor_paint (priv->expand_button);
+  clutter_actor_paint (priv->expand_box);
 
   if (CLUTTER_ACTOR_IS_MAPPED (priv->status_grid))
     clutter_actor_paint (priv->status_grid);
@@ -367,7 +383,7 @@ mnb_im_status_row_pick (ClutterActor       *actor,
 
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->pick (actor, pick_color);
 
-  clutter_actor_paint (priv->expand_button);
+  clutter_actor_paint (priv->expand_box);
   clutter_actor_paint (priv->status_grid);
 }
 
@@ -380,7 +396,7 @@ mnb_im_status_row_map (ClutterActor *actor)
 
   clutter_actor_map (priv->user_icon);
   clutter_actor_map (priv->header);
-  clutter_actor_map (priv->expand_button);
+  clutter_actor_map (priv->expand_box);
   clutter_actor_map (priv->status_grid);
 }
 
@@ -393,7 +409,7 @@ mnb_im_status_row_unmap (ClutterActor *actor)
 
   clutter_actor_unmap (priv->user_icon);
   clutter_actor_unmap (priv->header);
-  clutter_actor_unmap (priv->expand_button);
+  clutter_actor_unmap (priv->expand_box);
   clutter_actor_unmap (priv->status_grid);
 }
 
@@ -405,6 +421,8 @@ mnb_im_status_row_enter (ClutterActor *actor,
 
   priv->in_hover = TRUE;
 
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->expand_icon), "hover");
+
   return TRUE;
 }
 
@@ -415,6 +433,8 @@ mnb_im_status_row_leave (ClutterActor *actor,
   MnbIMStatusRowPrivate *priv = MNB_IM_STATUS_ROW (actor)->priv;
 
   priv->in_hover = FALSE;
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->expand_icon), NULL);
 
   return TRUE;
 }
@@ -431,7 +451,7 @@ mnb_im_status_row_style_changed (NbtkWidget *widget)
 #endif
 
   g_signal_emit_by_name (priv->header, "style-changed");
-  g_signal_emit_by_name (priv->expand_button, "style-changed");
+  g_signal_emit_by_name (priv->expand_box, "style-changed");
   g_signal_emit_by_name (priv->status_grid, "style-changed");
 }
 
@@ -453,7 +473,7 @@ mnb_im_status_row_finalize (GObject *gobject)
 
   clutter_actor_destroy (priv->user_icon);
   clutter_actor_destroy (priv->header);
-  clutter_actor_destroy (priv->expand_button);
+  clutter_actor_destroy (priv->expand_box);
   clutter_actor_destroy (priv->status_grid);
 
   G_OBJECT_CLASS (mnb_im_status_row_parent_class)->finalize (gobject);
@@ -615,7 +635,7 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   priv->header = CLUTTER_ACTOR (nbtk_grid_new ());
   grid = NBTK_GRID (priv->header);
   nbtk_grid_set_column_major (grid, FALSE);
-  nbtk_grid_set_column_gap (grid, 6);
+  nbtk_grid_set_column_gap (grid, priv->spacing);
   nbtk_grid_set_halign (grid, 0.0);
   nbtk_grid_set_valign (grid, 0.5);
   clutter_actor_set_parent (priv->header, CLUTTER_ACTOR (self));
@@ -649,12 +669,27 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
                          priv->account_label,
                          NULL);
 
-  priv->expand_button = CLUTTER_ACTOR (nbtk_button_new_with_label (_("+ Change")));
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->expand_button),
+  /* expand control */
+  priv->expand_icon = CLUTTER_ACTOR (nbtk_icon_new ());
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->expand_icon),
+                                    "MnbImExpandIconOpen");
+
+  priv->expand_label = CLUTTER_ACTOR (nbtk_label_new (_("Change")));
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->expand_label),
+                                    "MnbImExpandLabel");
+
+  priv->expand_box = CLUTTER_ACTOR (nbtk_grid_new ());
+  nbtk_grid_set_column_gap (NBTK_GRID (priv->expand_box), priv->spacing);
+  nbtk_grid_set_valign (NBTK_GRID (priv->expand_box), 0.5);
+  clutter_container_add (CLUTTER_CONTAINER (priv->expand_box),
+                         priv->expand_icon,
+                         priv->expand_label,
+                         NULL);
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->expand_box),
                                     "MnbImExpandButton");
-  clutter_actor_set_parent (priv->expand_button, CLUTTER_ACTOR (self));
-  g_signal_connect (priv->expand_button,
-                    "clicked", G_CALLBACK (on_expand_clicked),
+  clutter_actor_set_parent (priv->expand_box, CLUTTER_ACTOR (self));
+  g_signal_connect (priv->expand_box,
+                    "button-press-event", G_CALLBACK (on_expand_clicked),
                     self);
 
   priv->status_grid = CLUTTER_ACTOR (nbtk_box_layout_new ());
@@ -681,7 +716,7 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
 
       presence_grid = nbtk_grid_new ();
       g_object_set_data (G_OBJECT (presence_grid), "presence-id", GINT_TO_POINTER (i));
-      nbtk_grid_set_column_gap (NBTK_GRID (presence_grid), 6.0);
+      nbtk_grid_set_column_gap (NBTK_GRID (presence_grid), priv->spacing);
       nbtk_grid_set_halign (NBTK_GRID (presence_grid), 0.0);
       nbtk_grid_set_valign (NBTK_GRID (presence_grid), 0.5);
       nbtk_widget_set_style_class_name (NBTK_WIDGET (presence_grid),
@@ -745,9 +780,9 @@ mnb_im_status_row_set_online (MnbIMStatusRow *row,
                              priv->is_online ? 255 :128);
   clutter_actor_set_opacity (CLUTTER_ACTOR (priv->account_label),
                              priv->is_online ? 255 :128);
-  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->expand_button),
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->expand_box),
                              priv->is_online ? 255 :128);
-  clutter_actor_set_reactive (priv->expand_button,
+  clutter_actor_set_reactive (priv->expand_box,
                               priv->is_online ? TRUE : FALSE);
 }
 

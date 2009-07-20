@@ -75,13 +75,33 @@ NbtkLabel.MnbImAccountLabel
   color: #7dbe0cff;
 }
 
-MnbIMStatusRow > *.MnbImExpandButton
+NbtkLabel.MnbImExpandLabel
 {
   border-image: none;
   color: #7dbe0cff;
   font-family: "Liberation Sans Bold";
   font-size: 13px;
   padding: 0;
+}
+
+NbtkIcon.MnbImExpandIconOpen
+{
+  background-image: url("file://plus-button.png");
+}
+
+NbtkIcon.MnbImExpandIconOpen:hover
+{
+  background-image: url("file://plus-button-hover.png");
+}
+
+NbtkIcon.MnbImExpandIconClose
+{
+  background-image: url("file://minus-button.png");
+}
+
+NbtkIcon.MnbImExpandIconClose:hover
+{
+  background-image: url("file://minus-button-hover.png");
 }
 
 NbtkBoxLayout.MnbImStatusSelector
