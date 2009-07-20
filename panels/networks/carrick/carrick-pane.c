@@ -72,6 +72,21 @@ enum
 static void _update_manager (CarrickPane *pane,
                              CmManager   *manager);
 
+static gboolean
+_focus_callback (GtkWidget *widget, 
+		 GtkDirectionType arg1,
+		 gpointer user_data)
+{
+  /* 
+   * Work around for bug #4319:
+   * Stop propogating focus events to
+   * contained widgets so that we do 
+   * not put items in the carrick-list
+   * in a 'SELECTED' state
+   */
+  return TRUE;
+}
+
 static void
 carrick_pane_get_property (GObject    *object,
                            guint       property_id,
@@ -1093,6 +1108,11 @@ carrick_pane_init (CarrickPane *self)
                              flight_bin,
                              4, 6,
                              5, 7);
+
+  g_signal_connect (GTK_WIDGET (self),
+		    "focus",
+		    G_CALLBACK (_focus_callback),
+		    NULL);
 
 }
 
