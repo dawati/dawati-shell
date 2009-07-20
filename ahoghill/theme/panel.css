@@ -12,7 +12,7 @@ AhoghillSearchPane#media-pane-search {
 }
 
 AhoghillSearchPane > *#media-pane-search-label {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
@@ -30,7 +30,7 @@ AhoghillResultsPane {
 }
 
 AhoghillResultsPane > *#media-pane-results-label {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 14;
   color: #7e7e7e;
 }
@@ -61,7 +61,7 @@ AhoghillMediaTile > *#media-tile-artist-label {
 }
 
 AhoghillQueueTile > *.AhoghillPrimaryLabel {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 13px;
   color:#3b3b3b;
 }
@@ -87,14 +87,14 @@ NbtkButton.AhoghillControlButton {
 }
 
 AhoghillPlaylistHeader > *#ahoghill-playlist-title {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 17px;
   color: #3b3b3b;
   padding-top: 13;
 }
 
 AhoghillPlaylistNp > *.AhoghillPrimaryLabel {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 15px;
   color: #3b3b3b;
 }
@@ -167,7 +167,7 @@ AhoghillExampleTable *.AhoghillExampleTextBin {
 }
 
 AhoghillExampleTable *.AhoghillExampleText {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 16px;
   color: #595959ff;
 }

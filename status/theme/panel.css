@@ -30,7 +30,7 @@ MnbWebStatusEntry > *.MnbWebStatusEntryText
 MnbWebStatusEntry > *.MnbWebStatusEntrySubText
 {
   font-size: 12px;
-  font-family: "Liberation Sans Reg Italic";
+  font-family: "Droid Sans Reg Italic";
   color: #7dbe0cff;
 }
 
@@ -50,7 +50,7 @@ MnbWebStatusEntry > *.MnbWebStatusEntryButton
 {
   border-image: none;
   color: #7dbe0cff;
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 13px;
   padding: 0;
 }
@@ -71,7 +71,7 @@ NbtkLabel.MnbImStatusLabel
 NbtkLabel.MnbImAccountLabel
 {
   font-size: 12px;
-  font-family: "Liberation Sans Reg Italic";
+  font-family: "Droid Sans Reg Italic";
   color: #7dbe0cff;
 }
 
@@ -79,7 +79,7 @@ NbtkLabel.MnbImExpandLabel
 {
   border-image: none;
   color: #7dbe0cff;
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 13px;
   padding: 0;
 }
@@ -125,7 +125,7 @@ NbtkGrid.MnbImPresenceRow
 
 *.MnbStatusPageHeader
 {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 18px;
   color: #3e3e3eff;
   padding: 6;
@@ -137,7 +137,7 @@ NbtkGrid.MnbImPresenceRow
 }
 
 *.status-web-empty-label {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 16px;
   color: #595959ff;
 }
@@ -148,7 +148,7 @@ NbtkGrid.MnbImPresenceRow
 }
 
 *.status-im-empty-label {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 16px;
   color: #595959ff;
 }

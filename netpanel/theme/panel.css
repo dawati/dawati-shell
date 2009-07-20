@@ -42,7 +42,7 @@ MoblinNetbookNetpanel
 
 MoblinNetbookNetpanel NbtkLabel
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 13px;
   color: #6e6e6e;
   padding: 0 4;
@@ -50,7 +50,7 @@ MoblinNetbookNetpanel NbtkLabel
 
 MoblinNetbookNetpanel NbtkLabel#section
 {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 15px;
   color: #6e6e6e;
   padding: 2 4 0 4;
@@ -58,7 +58,7 @@ MoblinNetbookNetpanel NbtkLabel#section
 
 MoblinNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 16px;
   color: #595959ff;
   padding: 0 4;
@@ -113,7 +113,7 @@ MoblinNetbookNetpanel *#netpanel-entrytable
 
 MoblinNetbookNetpanel *#netpanel-entrytable > NbtkLabel
 {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 18px;
   color: #3e3e3eff;
   padding: 0 12 0 0;

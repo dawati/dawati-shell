@@ -9,7 +9,7 @@
 }
 
 *#people-search-label {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
@@ -71,13 +71,13 @@ AnerleyTile.AnerleyTileSelected
 
 AnerleyTile *.AnerleyTilePrimaryLabel
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 14;
 }
 
 AnerleyTile *.AnerleyTileSecondaryLabel
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 13;
   color: #3e3e3eff;
 }
@@ -100,7 +100,7 @@ AnerleyTile *.AnerleyTileSecondaryLabel
 
 *#people-selection-label
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 16;
   color: #7e7e7eff;
 }
@@ -124,7 +124,7 @@ AnerleyTile *.AnerleyTileSecondaryLabel
 
 *#people-nobody-selected-label
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 16;
   color: #7e7e7eff;
 }
