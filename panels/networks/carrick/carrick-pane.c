@@ -52,6 +52,14 @@ struct _CarrickPanePrivate {
   CarrickIconFactory *icon_factory;
   time_t              last_scan;
   gboolean            have_daemon;
+  gboolean            have_wifi;
+  gboolean            have_ethernet;
+  gboolean            have_threeg;
+  gboolean            have_wimax;
+  gboolean            wifi_enabled;
+  gboolean            ethernet_enabled;
+  gboolean            threeg_enabled;
+  gboolean            wimax_enabled;
 };
 
 enum
@@ -476,8 +484,6 @@ static void
 _add_fallback (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  const GList *connected = 
-    cm_manager_get_connected_technologies (priv->manager);
 
   gchar *fallback = NULL;
   GString *txt = g_string_new (_("Sorry, we can't find any networks."));
@@ -494,54 +500,44 @@ _add_fallback (CarrickPane *pane)
     g_string_append (txt, _("You could try disabling Offline mode"));
     fallback = g_string_free (txt, FALSE);
   }
-  else if (connected != NULL)
+  else if ((priv->have_wifi && !priv->wifi_enabled) ||
+	   (priv->have_ethernet && !priv->ethernet_enabled) ||
+	   (priv->have_threeg && !priv->threeg_enabled) ||
+	   (priv->have_wimax && !priv->wimax_enabled))
   {
-    const GList *l = NULL;
-
-    for (l = connected; l != NULL; l = l->next)
-    {
-      guint len = 0;
-      g_string_append (txt, _("You could try turning on "));
+    guint len = 0;
+    g_string_append (txt, _("You could try turning on "));
     
-      if (g_strcmp0 (l->data, "wifi") == 0)
-      {
-        g_string_append (txt, _("WiFi"));
-        len++;
-      }
-      else if (g_strcmp0 (l->data, "ethernet") == 0)
-      {
-        if (len > 1)
-          g_string_append (txt, _(", "));
-
-        g_string_append (txt, _("Ethernet"));
-        len++;
-      }
-      else if (g_strcmp0 (l->data, "wimax") == 0)
-      {
-        if (len > 1)
-          g_string_append (txt, _(", "));
-
-        g_string_append (txt, _("WiMAX"));
-        len++;
-      }
-      else if (g_strcmp0 (l->data, "bluetooth") == 0)
-      {
-        if (len > 1)
-          g_string_append (txt, _(", "));
-	
-        g_string_append (txt, _("Bluetooth"));
-        len++;
-      }
-      else if (g_strcmp0 (l->data, "threeg") == 0)
-      {
-        if (len > 1)
-          g_string_append (txt, _(" and "));
-	
-        g_string_append (txt, _("3G"));
-      }
-
-      fallback = g_string_free (txt, FALSE);
+    if (priv->have_wifi && !priv->wifi_enabled)
+    {
+      g_string_append (txt, _("WiFi"));
+      len++;
     }
+    else if (priv->have_wimax && !priv->wimax_enabled)
+    {
+      if (len > 1)
+	g_string_append (txt, _(", "));
+
+      g_string_append (txt, _("WiMAX"));
+      len++;
+    }
+    else if (priv->have_threeg && !priv->threeg_enabled)
+    {
+      if (len > 1)
+	g_string_append (txt, _(" and "));
+      
+      g_string_append (txt, _("3G"));
+    }
+    else if (priv->have_ethernet && !priv->ethernet_enabled)
+    {
+      if (len > 1)
+	g_string_append (txt, _(", "));
+      
+      g_string_append (txt, _("Ethernet"));
+      len++;
+    }
+
+    fallback = g_string_free (txt, FALSE);
   }
   else
   {
@@ -549,6 +545,7 @@ _add_fallback (CarrickPane *pane)
     g_string_free (txt, TRUE);
   }
 
+  carrick_list_clear_fallback (CARRICK_LIST (priv->service_list));
   carrick_list_add_fallback (CARRICK_LIST (priv->service_list), fallback);
   g_free (fallback);
 }
@@ -578,8 +575,14 @@ _update_services (CarrickPane *pane)
     service = carrick_service_item_get_service
       (CARRICK_SERVICE_ITEM (it->data));
 
+    if (!service)
+      continue;
+
     for (iter = fetched_services; iter != NULL && !found; iter = iter->next)
     {
+      if (!iter->data)
+	continue;
+
       if (cm_service_is_same (service, CM_SERVICE (iter->data)))
       {
         found = TRUE;
@@ -637,24 +640,28 @@ _available_technologies_changed_cb (CmManager *manager,
 
     if (g_strcmp0 (t, "ethernet") == 0)
     {
+      priv->have_ethernet = TRUE;
       gtk_widget_set_sensitive (priv->ethernet_switch,
 				TRUE);
     } 
     else if (g_strcmp0 (t, "wifi") == 0)
     {
+      priv->have_wifi = TRUE;
       gtk_widget_set_sensitive (priv->wifi_switch,
 				TRUE);
     }
     else if (g_strcmp0 (t, "threeg") == 0)
     {
+      priv->have_threeg = TRUE;
       gtk_widget_set_sensitive (priv->threeg_switch,
 				TRUE);
     }
     else if (g_strcmp0 (t, "wimax") == 0)
     {
+      priv->have_wimax = TRUE;
       gtk_widget_set_sensitive (priv->wimax_switch,
 				TRUE);
-    }
+    } 
     
     l = l->next;
   }
@@ -665,10 +672,11 @@ _enabled_technologies_changed_cb (CmManager *manager,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
   const GList *l = cm_manager_get_enabled_technologies (manager);
-  gboolean ethernet_enabled = FALSE;
-  gboolean wifi_enabled = FALSE;
-  gboolean threeg_enabled = FALSE;
-  gboolean wimax_enabled = FALSE;
+
+  priv->wifi_enabled = FALSE;
+  priv->ethernet_enabled = FALSE;
+  priv->threeg_enabled = FALSE;
+  priv->wimax_enabled = FALSE;
 
   while (l != NULL)
   {
@@ -676,19 +684,19 @@ _enabled_technologies_changed_cb (CmManager *manager,
 
     if (g_strcmp0 (t, "ethernet") == 0)
     {
-      ethernet_enabled = TRUE;
+      priv->ethernet_enabled = TRUE;
     } 
     else if (g_strcmp0 (t, "wifi") == 0)
     {
-      wifi_enabled = TRUE;
+      priv->wifi_enabled = TRUE;
     }
     else if (g_strcmp0 (t, "threeg") == 0)
     {
-      threeg_enabled = TRUE;
+      priv->threeg_enabled = TRUE;
     }
     else if (g_strcmp0 (t, "wimax") == 0)
     {
-      wimax_enabled = TRUE;
+      priv->wimax_enabled = TRUE;
     }
     
     l = l->next;
@@ -696,20 +704,25 @@ _enabled_technologies_changed_cb (CmManager *manager,
 
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
 				    (priv->ethernet_switch),
-				    ethernet_enabled);
+				    priv->ethernet_enabled);
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
 				    (priv->wifi_switch),
-				    wifi_enabled);
+				    priv->wifi_enabled);
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
 				    (priv->threeg_switch),
-				    threeg_enabled);
+				    priv->threeg_enabled);
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
 				    (priv->wimax_switch),
-				    wimax_enabled);
+				    priv->wimax_enabled);
 
   /* only enable if wifi is enabled */ 
   gtk_widget_set_sensitive (priv->new_conn_button,
-			    wifi_enabled);
+			    priv->wifi_enabled);
+
+  if (!cm_manager_get_services (priv->manager))
+  {
+    _add_fallback (CARRICK_PANE (user_data));
+  }
 }
 
 static void
@@ -802,6 +815,14 @@ carrick_pane_init (CarrickPane *self)
   priv->manager = NULL;
   priv->last_scan = time (NULL);
   priv->have_daemon = FALSE;
+  priv->have_wifi = FALSE;
+  priv->have_ethernet = FALSE;
+  priv->have_threeg = FALSE;
+  priv->have_wimax = FALSE;
+  priv->wifi_enabled = FALSE;
+  priv->ethernet_enabled = FALSE;
+  priv->threeg_enabled = FALSE;
+  priv->wimax_enabled = FALSE;
 
   switch_bin = nbtk_gtk_frame_new ();
   gtk_widget_show (switch_bin);
