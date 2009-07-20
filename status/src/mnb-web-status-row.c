@@ -438,6 +438,15 @@ on_mojito_get_persona_icon (MojitoClientService *service,
 }
 
 static void
+on_mojito_user_changed (MojitoClientService *service,
+                        MnbWebStatusRow     *row)
+{
+  mojito_client_service_get_persona_icon (service,
+                                          on_mojito_get_persona_icon,
+                                          row);
+}
+
+static void
 on_mojito_view_item_added (MojitoClientView *view,
                            MojitoItem       *item,
                            MnbWebStatusRow     *row)
@@ -478,6 +487,9 @@ on_mojito_view_open (MojitoClient     *client,
           mojito_client_service_get_persona_icon (priv->service,
                                                   on_mojito_get_persona_icon,
                                                   row);
+          g_signal_connect (priv->service,
+                            "user-changed", G_CALLBACK (on_mojito_user_changed),
+                            row);
         }
 
 
