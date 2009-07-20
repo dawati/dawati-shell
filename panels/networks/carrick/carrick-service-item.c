@@ -811,8 +811,8 @@ carrick_service_item_init (CarrickServiceItem *self)
                                        FALSE);
   gtk_widget_show (priv->expando);
 
-  gdk_color_parse ("#efefef", &priv->prelight_color);
-  gdk_color_parse ("#8f9393", &priv->active_color);
+  gdk_color_parse ("#e8e8e8", &priv->prelight_color);
+  gdk_color_parse ("#cbcbcb", &priv->active_color);
 
   priv->icon = gtk_image_new ();
   gtk_widget_show (priv->icon);
