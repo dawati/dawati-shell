@@ -246,7 +246,7 @@ _set_state (CmService          *service,
   }
   else if (priv->state == CONFIGURE)
   {
-    button = g_strdup_printf (_("Abort"));
+    button = g_strdup_printf (_("Cancel"));
     label = g_strdup_printf ("%s - %s",
                              name,
                              _("Configuring"));
