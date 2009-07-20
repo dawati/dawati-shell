@@ -460,27 +460,26 @@ _service_updated_cb (CmService   *service,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
   CarrickList *list = CARRICK_LIST (priv->service_list);
-  GtkWidget *have_service = carrick_list_find_service_item (list,
-                                                           service);
-
-  /* If the widgetry for the service exists remove the handler
-   * and ensure the list is sorted */
-  if (have_service)
-  {
-    g_signal_handlers_disconnect_by_func (service,
-                                          _service_updated_cb,
-                                          pane);
-  }
-
   GtkWidget *item;
 
+  /*
+   * We only want this to be called for the first
+   * 'service-update' signal
+   */
   g_signal_handlers_disconnect_by_func (service,
-                                        _service_updated_cb,
-                                        pane);
+					_service_updated_cb,
+					pane);
 
-  item = carrick_service_item_new (priv->icon_factory, service);
-  carrick_list_add_item (list, item);
-  carrick_list_sort_list (CARRICK_LIST (priv->service_list));
+  /*
+   * If we do have a race then do not create multipe service 
+   * items for the same service
+   */
+  if (carrick_list_find_service_item (list, service) == NULL)
+  {
+    item = carrick_service_item_new (priv->icon_factory, service);
+    carrick_list_add_item (list, item);
+    carrick_list_sort_list (CARRICK_LIST (priv->service_list));
+  }
 }
 
 static gboolean
