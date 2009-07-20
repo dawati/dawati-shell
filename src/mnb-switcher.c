@@ -39,8 +39,6 @@ static ClutterActor *table_find_child (ClutterContainer *, gint, gint);
 static gint          tablist_sort_func (gconstpointer a, gconstpointer b);
 static gint mnb_switcher_get_active_workspace (MnbSwitcher *switcher);
 static NbtkTable *mnb_switcher_append_workspace (MnbSwitcher *switcher);
-static void mnb_switcher_enable_new_workspace (MnbSwitcher *);
-static void mnb_switcher_disable_new_workspace (MnbSwitcher *);
 
 struct _MnbSwitcherPrivate {
   MutterPlugin *plugin;
@@ -160,6 +158,10 @@ enum
 };
 
 GType mnb_switcher_app_get_type (void);
+
+static void mnb_switcher_enable_new_workspace (MnbSwitcher *, MnbSwitcherZone*);
+static void mnb_switcher_disable_new_workspace (MnbSwitcher*,MnbSwitcherZone *);
+
 static void nbtk_draggable_iface_init (NbtkDraggableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MnbSwitcherApp,
@@ -268,8 +270,6 @@ mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
         priv->active_tooltip = NULL;
     }
 
-  mnb_switcher_enable_new_workspace (switcher);
-
   /*
    * Store the original parent and row/column, so we can put the actor
    * back if the d&d is cancelled.
@@ -283,6 +283,8 @@ mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
   app_priv->orig_parent = parent;
   app_priv->orig_col = col;
   app_priv->orig_row = row;
+
+  mnb_switcher_enable_new_workspace (switcher, MNB_SWITCHER_ZONE (parent));
 
   /*
    * Reparent to stage, preserving size and position
@@ -349,7 +351,8 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
       return;
     }
 
-  mnb_switcher_disable_new_workspace (switcher);
+  mnb_switcher_disable_new_workspace (switcher,
+                                  MNB_SWITCHER_ZONE (app_priv->orig_parent));
 
   clone = app_priv->clone;
   app_priv->clone = NULL;
@@ -363,7 +366,6 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
 
   if (parent == clutter_stage_get_default ())
     {
-      ClutterActor     *label;
       ClutterContainer *orig_parent = CLUTTER_CONTAINER (app_priv->orig_parent);
       gint active_ws;
       gint col = app_priv->orig_col;
@@ -695,8 +697,12 @@ static void
 mnb_switcher_zone_over_in (NbtkDroppable *droppable,
                            NbtkDraggable *draggable)
 {
-  mnb_switcher_zone_set_state (MNB_SWITCHER_ZONE (droppable),
-                               MNB_SWITCHER_ZONE_HOVER);
+  MnbSwitcherZone *zone  = MNB_SWITCHER_ZONE (droppable);
+
+  if (!zone->priv->enabled)
+    return;
+
+  mnb_switcher_zone_set_state (zone, MNB_SWITCHER_ZONE_HOVER);
 }
 
 static void
@@ -708,6 +714,9 @@ mnb_switcher_zone_over_out (NbtkDroppable *droppable,
   ClutterActor           *parent;
   gint                    col;
   gint                    active_ws;
+
+  if (!priv->enabled)
+    return;
 
   parent = clutter_actor_get_parent (self);
 
@@ -756,7 +765,17 @@ mnb_switcher_zone_drop (NbtkDroppable       *droppable,
   app_priv->ignore_button_release = TRUE;
 
   /*
-   * First, check whether we are not being dropped back on the same zone
+   * Check we are not disabled (we should really not be getting drop events on
+   * disabled droppables, but we do).
+   */
+  if (!zone->priv->enabled)
+    {
+      g_warning ("Bug: received a drop on a disabled droppable -- ignoring");
+      return;
+    }
+
+  /*
+   * Check whether we are not being dropped back on the same zone
    */
   if (app_priv->orig_parent == zone_actor)
     {
@@ -1206,6 +1225,7 @@ make_workspace_content (MnbSwitcher *switcher, gboolean active, gint col)
   nbtk_widget_set_style_class_name (new_ws, "switcher-workspace");
 
   nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws), 1, col);
+  g_object_set (new_ws, "enabled", TRUE, NULL);
 
   if (active)
     mnb_switcher_zone_set_state (MNB_SWITCHER_ZONE (new_ws),
@@ -1356,9 +1376,9 @@ screen_n_workspaces_notify (MetaScreen *screen,
   n_o_workspaces = g_list_length (o_workspaces);
 
   if (n_c_workspaces < 8)
-    nbtk_droppable_enable (NBTK_DROPPABLE (switcher->priv->new_workspace));
+    g_object_set (switcher->priv->new_workspace, "enabled", TRUE, NULL);
   else
-    nbtk_droppable_disable (NBTK_DROPPABLE (switcher->priv->new_workspace));
+    g_object_set (switcher->priv->new_workspace, "enabled", FALSE, NULL);
 
   if (n_o_workspaces < n_c_workspaces)
     {
@@ -1525,7 +1545,7 @@ on_show_completed_cb (ClutterActor *self, gpointer data)
 }
 
 static void
-mnb_switcher_enable_new_workspace (MnbSwitcher *switcher)
+mnb_switcher_enable_new_workspace (MnbSwitcher *switcher, MnbSwitcherZone *zone)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
   gint                ws_count;
@@ -1538,7 +1558,14 @@ mnb_switcher_enable_new_workspace (MnbSwitcher *switcher)
   if (ws_count >= 8)
     return;
 
-  nbtk_droppable_enable (NBTK_DROPPABLE (new_ws));
+  /*
+   * If the application is the only child in its zone, the new zone remains
+   * disabled.
+   */
+  if (nbtk_table_get_row_count (NBTK_TABLE (zone)) <= 1)
+    return;
+
+  g_object_set (new_ws, "enabled", TRUE, NULL);
 
   clutter_actor_set_name (CLUTTER_ACTOR (new_ws),
                           "switcher-workspace-new-active");
@@ -1549,13 +1576,15 @@ mnb_switcher_enable_new_workspace (MnbSwitcher *switcher)
   clutter_actor_set_width (CLUTTER_ACTOR (new_ws), 44);
 }
 
-static void mnb_switcher_disable_new_workspace (MnbSwitcher *switcher)
+static void
+mnb_switcher_disable_new_workspace (MnbSwitcher     *switcher,
+                                    MnbSwitcherZone *zone)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
   NbtkWidget         *new_ws = priv->new_workspace;
   NbtkWidget         *new_label = priv->new_label;
 
-  nbtk_droppable_disable (NBTK_DROPPABLE (new_ws));
+  g_object_set (new_ws, "enabled", FALSE, NULL);
   clutter_actor_set_name (CLUTTER_ACTOR (new_ws), "");
   clutter_actor_set_name (CLUTTER_ACTOR (new_label), "");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->new_label), 22);
@@ -1864,7 +1893,7 @@ mnb_switcher_show (ClutterActor *self)
       nbtk_table_add_actor (NBTK_TABLE (spaces[ws_indx]), clone,
                             win_locs[ws_indx].row, win_locs[ws_indx].col);
 
-      nbtk_draggable_enable (NBTK_DRAGGABLE (clone));
+      g_object_set (clone, "enabled", TRUE, NULL);
 
       win_locs[ws_indx].row++;
       clutter_container_child_set (CLUTTER_CONTAINER (spaces[ws_indx]), clone,
@@ -1967,8 +1996,11 @@ mnb_switcher_show (ClutterActor *self)
     nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws),
                           1, ws_count);
 
-    if (ws_count < 8)
-      nbtk_droppable_enable (NBTK_DROPPABLE (new_ws));
+    /*
+     * Disable the new droppable; it will get enabled if appropriate when
+     * the d&d begins.
+     */
+    g_object_set (new_ws, "enabled", FALSE, NULL);
 
     clutter_container_child_set (CLUTTER_CONTAINER (table),
                                  CLUTTER_ACTOR (new_ws),
