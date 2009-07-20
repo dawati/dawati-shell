@@ -424,13 +424,13 @@ msgid "Busy"
 msgstr "다른 용무 중"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "-닫기"
+msgid "Close"
+msgstr "닫기"
 
 #: ../status/src/mnb-im-status-row.c:129
 #: ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+변경"
+msgid "Change"
+msgstr "변경"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"
