@@ -78,7 +78,7 @@ NbtkBin.toolbar-instruction-box {
 }
 
 NbtkLabel.toolbar-instruction-label {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 15px;
   color: white;
 }
@@ -108,7 +108,7 @@ MnbToolbarButton#media-button:hover, MnbToolbarButton#media-button:active, MnbTo
   background-image: url("file://panel/media-coloured.png");
 }
 
-/* m-space button */
+/* myzone button */
 MnbToolbarButton#myzone-button {
   background-image: url("file://panel/myzone-normal.png");
 }
@@ -165,13 +165,13 @@ MnbSwitcher *.workspace-title-label {
 }
 
 MnbSwitcher *#workspace-title-label-active {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 18;
   color: white;
 }
 
 MnbSwitcher *#workspace-title-label-over {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 18;
   color: #e87208ff;
 }
@@ -353,7 +353,7 @@ MplEntry *.MplEntryClearButton:hover {
 
 NbtkLabel
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 12px;
 }
 
@@ -373,14 +373,14 @@ MnbNotificationCluster *.notification-control
 
 MnbNotification > *.NotificationSummary
 {
-    font-family: "Liberation Sans Bold";
+    font-family: "Droid Sans Bold";
     font-size: 16px;
     color: #009bceff;
 }
 
 MnbNotification > *.NotificationSummaryUrgent
 {
-    font-family: "Liberation Sans Bold";
+    font-family: "Droid Sans Bold";
     font-size: 16px;
     color: #e73035ff;
 }
@@ -388,7 +388,7 @@ MnbNotification > *.NotificationSummaryUrgent
 
 MnbNotification > *.NotificationBody
 {
-    font-family: "Liberation Sans";
+    font-family: "Droid Sans";
     font-size: 13px;
     color: #333;
 }
