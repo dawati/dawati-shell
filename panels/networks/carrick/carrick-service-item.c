@@ -336,7 +336,6 @@ _request_passphrase (CarrickServiceItem *item)
 
 static void
 _service_name_changed_cb (CmService *service,
-                          gchar     *name,
                           gpointer   user_data)
 {
   _set_state (service,
@@ -345,7 +344,6 @@ _service_name_changed_cb (CmService *service,
 
 static void
 _service_state_changed_cb (CmService *service,
-                           gchar     *state,
                            gpointer   user_data)
 {
   CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
@@ -359,16 +357,15 @@ _service_state_changed_cb (CmService *service,
 
 static void
 _service_security_changed_cb (CmService *service,
-                              gchar     *security,
                               gpointer   user_data)
 {
   CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
+  gchar *security = g_strdup (cm_service_get_security (service));
   _service_item_set_security (item, security);
 }
 
 static void
 _service_strength_changed_cb (CmService *service,
-                              guint      strength,
                               gpointer   user_data)
 {
   CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
