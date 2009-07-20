@@ -54,6 +54,7 @@ struct _MnbNotificationPrivate {
   NbtkWidget   *summary;
   ClutterActor *icon;
   NbtkWidget   *dismiss_button;
+  NbtkWidget   *button_box;
 
   guint         id;
 
@@ -262,16 +263,17 @@ mnb_notification_init (MnbNotification *self)
                                NULL);
 
   nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
-  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->dismiss_button),
+
+  /* create the box for the buttons */
+  priv->button_box = nbtk_grid_new ();
+  nbtk_grid_set_end_align (NBTK_GRID (priv->button_box), TRUE);
+  nbtk_grid_set_column_gap (NBTK_GRID (priv->button_box), 7);
+  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->button_box),
                         2, 0);
 
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               CLUTTER_ACTOR (priv->dismiss_button),
-                               "y-expand", FALSE,
-                               "x-expand", FALSE,
-                               "x-fill", FALSE,
-                               "x-align",  1.0,
-                               NULL);
+  /* add the dismiss button to the button box */
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                               CLUTTER_ACTOR (priv->dismiss_button));
 
   g_signal_connect (priv->dismiss_button, "clicked",
                     G_CALLBACK (on_dismiss_click), self);
@@ -355,20 +357,6 @@ mnb_notification_update (MnbNotification *notification,
               ActionData *data;
               NbtkWidget *button;
 
-              if (layout == NULL)
-                {
-                  layout = g_object_new (NBTK_TYPE_GRID,
-                                         /*
-                                           "x", 5,
-                                           "y", 5,
-                                           "width", 0,
-                                         */
-                                         NULL);
-
-                  nbtk_table_add_actor (NBTK_TABLE (notification),
-                                        layout, 2, 1);
-                }
-
               data = g_slice_new (ActionData);
               data->notification = notification;
               data->action = g_strdup (key);
@@ -377,8 +365,8 @@ mnb_notification_update (MnbNotification *notification,
 
               nbtk_button_set_label (NBTK_BUTTON (button), value);
 
-              clutter_container_add_actor (CLUTTER_CONTAINER (layout),
-                                           CLUTTER_ACTOR(button));
+              clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                           CLUTTER_ACTOR (button));
 
               g_signal_connect (button, "clicked",
                                 G_CALLBACK (on_action_click), data);
