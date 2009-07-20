@@ -486,12 +486,12 @@ _add_fallback (CarrickPane *pane)
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
   gchar *fallback = NULL;
-  GString *txt = g_string_new (_("Sorry, we can't find any networks."));
+  GString *txt = g_string_new (_("Sorry, we can't find any networks. "));
 
   /* Need to add some fall-back content */
   if (!priv->have_daemon)
   {
-    g_string_append (txt, _("The ConnMan daemon doesn't seem to be running."
+    g_string_append (txt, _("The ConnMan daemon doesn't seem to be running. "
 			    "You may want to try re-starting your device"));
     fallback = g_string_free (txt, FALSE);
   }
@@ -507,7 +507,7 @@ _add_fallback (CarrickPane *pane)
   {
     guint len = 0;
     g_string_append (txt, _("You could try turning on "));
-    
+
     if (priv->have_wifi && !priv->wifi_enabled)
     {
       g_string_append (txt, _("WiFi"));
@@ -525,14 +525,14 @@ _add_fallback (CarrickPane *pane)
     {
       if (len > 1)
 	g_string_append (txt, _(" and "));
-      
+
       g_string_append (txt, _("3G"));
     }
     else if (priv->have_ethernet && !priv->ethernet_enabled)
     {
       if (len > 1)
 	g_string_append (txt, _(", "));
-      
+
       g_string_append (txt, _("Ethernet"));
       len++;
     }
