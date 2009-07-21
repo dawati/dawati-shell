@@ -840,6 +840,7 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *flight_bin;
   GtkWidget *net_list_bin;
   GtkWidget *scrolled_view;
+  GtkWidget *viewport;
   GtkWidget *hbox, *switch_box;
   GtkWidget *vbox;
   GtkWidget *switch_label;
@@ -896,8 +897,17 @@ carrick_pane_init (CarrickPane *self)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_view),
                                   GTK_POLICY_NEVER,
                                   GTK_POLICY_AUTOMATIC);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_view),
-                                         priv->service_list);
+  viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment
+                               (GTK_SCROLLED_WINDOW (scrolled_view)),
+                               gtk_scrolled_window_get_vadjustment
+                               (GTK_SCROLLED_WINDOW (scrolled_view)));
+  gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport),
+                                GTK_SHADOW_NONE);
+  gtk_widget_show (viewport);
+  gtk_container_add (GTK_CONTAINER (viewport),
+                     priv->service_list);
+  gtk_container_add (GTK_CONTAINER (scrolled_view),
+                     viewport);
   gtk_container_add (GTK_CONTAINER (net_list_bin),
                      scrolled_view);
   gtk_table_attach_defaults (GTK_TABLE (self),
