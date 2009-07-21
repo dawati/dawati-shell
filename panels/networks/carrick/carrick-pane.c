@@ -231,11 +231,11 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
 
   if (new_state)
   {
-    cm_manager_enable_technology (priv->manager, "threeg");
+    cm_manager_enable_technology (priv->manager, "cellular");
   }
   else
   {
-    cm_manager_disable_technology (priv->manager, "threeg");
+    cm_manager_disable_technology (priv->manager, "cellular");
   }
 
   return TRUE;
