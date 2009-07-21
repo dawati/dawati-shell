@@ -1,8 +1,17 @@
+# pl locale
+# Copyright (C) 2009 Intel Corporation
+# This file is distributed under the same license as the dalston package.
+# Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
+#
+# I'm aware of the GNOME-PL translation guidelines (aviary.pl) and I
+# advise they be ignored for the sake of usability.  This is not GNOME
+# and programs should be easy to understand here.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-26 08:48+0000\n"
+"POT-Creation-Date: 2009-07-18 09:19+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
 "Language-Team: Moblin\n"
@@ -54,25 +63,33 @@ msgstr "Niebezpieczeństwo!"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Niestety komputerowi kończy się już bateria i trzeba go wyłączyć. Zapisz wyniki pracy. Do zobaczenia niedługo."
 
-#: ../dalston/dalston-power-applet.c:321
+#: ../dalston/dalston-power-applet.c:340
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Niestety wygląda na to, że bateria jest zepsuta."
+
+#: ../dalston/dalston-power-applet.c:343
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Bateria jest naładowana i gotowa do akcji."
 
-#: ../dalston/dalston-power-applet.c:323
+#: ../dalston/dalston-power-applet.c:346
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "Bateria się ładuje. Stan: około <b>%d</b>%%."
 
-#: ../dalston/dalston-power-applet.c:330
+#: ../dalston/dalston-power-applet.c:353
 #, c-format
-msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "Zasilanie z baterii. Zostało około <b>%d</b>%%."
 
-#: ../dalston/dalston-power-applet.c:448
+#: ../dalston/dalston-power-applet.c:361
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Niestety nie wykryto zainstalowanej baterii."
+
+#: ../dalston/dalston-power-applet.c:476
 msgid "Display brightness"
 msgstr "Jasność ekranu"
 
-#: ../dalston/dalston-power-applet.c:479
+#: ../dalston/dalston-power-applet.c:507
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Niestety nie obsługujemy tego typu ekranu."
 
@@ -171,4 +188,7 @@ msgstr "Dzwięki systemowe"
 #: ../libgvc/gvc-mixer-control.c:1512
 msgid "GNOME Volume Control"
 msgstr "Kontrola Głośności GNOME"
+
+#~ msgid "Your battery is discharging. It is about <b>%d</b>%% full."
+#~ msgstr "Zasilanie z baterii. Zostało około <b>%d</b>%%."
 
