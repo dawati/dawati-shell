@@ -47,6 +47,7 @@ struct _CarrickPanePrivate {
   GtkWidget          *threeg_label;
   GtkWidget          *wimax_switch;
   GtkWidget          *wimax_label;
+  GtkWidget          *offline_mode_switch;
   GtkWidget          *service_list;
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
@@ -483,9 +484,9 @@ _service_updated_cb (CmService   *service,
 }
 
 static gboolean
-_flight_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
-                              gboolean            new_state,
-                              CarrickPane        *pane)
+_offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
+			       gboolean            new_state,
+			       CarrickPane        *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
@@ -680,6 +681,7 @@ _available_technologies_changed_cb (CmManager *manager,
     l = l->next;
   }
 }
+
 static void
 _enabled_technologies_changed_cb (CmManager *manager,
 				  gpointer   user_data)
@@ -736,6 +738,23 @@ _enabled_technologies_changed_cb (CmManager *manager,
   if (!cm_manager_get_services (priv->manager))
   {
     _add_fallback (CARRICK_PANE (user_data));
+  }
+}
+
+static void
+_offline_mode_changed_cb (CmManager *manager,
+			  gpointer   user_data)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (user_data);
+  gboolean m1 = cm_manager_get_offline_mode (priv->manager);
+  gboolean m2 = nbtk_gtk_light_switch_get_active (NBTK_GTK_LIGHT_SWITCH 
+						  (priv->offline_mode_switch));
+
+  if (m1 != m2)
+  {
+    nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+				      (priv->offline_mode_switch),
+				      m2);
   }
 }
 
@@ -804,6 +823,10 @@ _update_manager (CarrickPane *pane,
                       "enabled-technologies-changed",
                       G_CALLBACK (_enabled_technologies_changed_cb),
                       pane);
+    g_signal_connect (priv->manager,
+                      "offline-mode-changed",
+                      G_CALLBACK (_offline_mode_changed_cb),
+                      pane);
 
     _update_services (pane);
   }
@@ -821,8 +844,7 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *vbox;
   GtkWidget *switch_label;
   GtkWidget *frame_title;
-  GtkWidget *flight_mode_switch;
-  GtkWidget *flight_mode_label;
+  GtkWidget *offline_mode_label;
   gchar *label = NULL;
 
   priv->icon_factory = NULL;
@@ -1061,8 +1083,8 @@ carrick_pane_init (CarrickPane *self)
   gtk_widget_show (vbox);
   gtk_container_add (GTK_CONTAINER (flight_bin),
                      vbox);
-  flight_mode_switch = nbtk_gtk_light_switch_new ();
-  gtk_widget_show (flight_mode_switch);
+  priv->offline_mode_switch = nbtk_gtk_light_switch_new ();
+  gtk_widget_show (priv->offline_mode_switch);
   switch_box = gtk_hbox_new (TRUE,
                              6);
   gtk_widget_show (switch_box);
@@ -1071,9 +1093,9 @@ carrick_pane_init (CarrickPane *self)
   gtk_misc_set_alignment (GTK_MISC (switch_label),
                           0.2,
                           0.5);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (flight_mode_switch),
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
                     "switch-flipped",
-                    G_CALLBACK (_flight_mode_switch_callback),
+                    G_CALLBACK (_offline_mode_switch_callback),
                     self);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       switch_label,
@@ -1081,7 +1103,7 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       8);
   gtk_box_pack_start (GTK_BOX (switch_box),
-                      flight_mode_switch,
+                      priv->offline_mode_switch,
                       TRUE,
                       TRUE,
                       8);
@@ -1090,16 +1112,16 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       FALSE,
                       8);
-  flight_mode_label = gtk_label_new
+  offline_mode_label = gtk_label_new
     (_("This will disable all your connections"));
-  gtk_label_set_line_wrap (GTK_LABEL (flight_mode_label),
+  gtk_label_set_line_wrap (GTK_LABEL (offline_mode_label),
                            TRUE);
-  gtk_misc_set_alignment (GTK_MISC (flight_mode_label),
+  gtk_misc_set_alignment (GTK_MISC (offline_mode_label),
                           0.5,
                           0.0);
-  gtk_widget_show (flight_mode_label);
+  gtk_widget_show (offline_mode_label);
   gtk_box_pack_start (GTK_BOX (vbox),
-                      flight_mode_label,
+                      offline_mode_label,
                       TRUE,
                       TRUE,
                       0);
