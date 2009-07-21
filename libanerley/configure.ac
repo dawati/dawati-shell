@@ -4,6 +4,14 @@ AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_CONFIG_HEADER(config.h)
 
 AC_CANONICAL_HOST
+IT_PROG_INTLTOOL([0.35.0])
+
+GETTEXT_PACKAGE=anerley
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
+                   ["$GETTEXT_PACKAGE"],
+                   [Gettext domain name])
+AM_GLIB_GNU_GETTEXT
 
 AC_PROG_CC
 AC_PROG_CC_STDC
@@ -27,4 +35,5 @@ AC_OUTPUT([
         tests/Makefile
         data/Makefile
         anerley.pc
+        po/Makefile.in
 ])
