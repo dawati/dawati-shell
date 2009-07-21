@@ -5,6 +5,7 @@
 
 enum {
     PROP_0,
+    PROP_ITEM,
 };
 
 struct _AhoghillQueueTilePrivate {
@@ -30,11 +31,17 @@ ahoghill_queue_tile_dispose (GObject *object)
 
 static void
 ahoghill_queue_tile_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
+    AhoghillQueueTile *tile = (AhoghillQueueTile *) object;
+
     switch (prop_id) {
+
+    case PROP_ITEM:
+        ahoghill_queue_tile_set_item (tile, g_value_get_object (value));
+        break;
 
     default:
         break;
@@ -43,11 +50,14 @@ ahoghill_queue_tile_set_property (GObject      *object,
 
 static void
 ahoghill_queue_tile_get_property (GObject    *object,
-                          guint       prop_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
     switch (prop_id) {
+
+    case PROP_ITEM:
+        break;
 
     default:
         break;
@@ -79,6 +89,12 @@ ahoghill_queue_tile_class_init (AhoghillQueueTileClass *klass)
     a_class->button_release_event = ahoghill_queue_tile_button_release;
 
     g_type_class_add_private (klass, sizeof (AhoghillQueueTilePrivate));
+
+    g_object_class_install_property (o_class, PROP_ITEM,
+                                     g_param_spec_object ("item", "", "",
+                                                          BKL_TYPE_ITEM,
+                                                          G_PARAM_STATIC_STRINGS |
+                                                          G_PARAM_WRITABLE));
 }
 
 static void
