@@ -49,6 +49,10 @@ enum
 #define MWB_AC_LIST_MAX_ENTRIES 15
 #define MWB_AC_LIST_ICON_SIZE 16
 
+#define MWB_AC_LIST_SUGGESTED_TLD_PREF "suggested_tld."
+#define MWB_AC_LIST_TLD_FROM_PREF(pref) \
+  ((pref) + sizeof (MWB_AC_LIST_SUGGESTED_TLD_PREF) - 2)
+
 struct _MwbAcListPrivate
 {
   MhsHistory    *history;
@@ -91,6 +95,12 @@ struct _MwbAcListPrivate
   CoglHandle     search_engine_icon;
   gchar         *search_engine_name;
   gchar         *search_engine_url;
+
+  /* List of suggested TLD completions */
+  GHashTable    *tld_suggestions;
+  /* Pointer to a key in the hash table which has the highest score so
+     we can quickly complete the common case */
+  const gchar   *best_tld_suggestion;
 };
 
 typedef struct _MwbAcListEntry MwbAcListEntry;
@@ -281,6 +291,8 @@ mwb_ac_list_finalize (GObject *object)
   g_string_free (priv->search_text, TRUE);
 
   g_hash_table_unref (priv->favicon_cache);
+
+  g_hash_table_unref (priv->tld_suggestions);
 
   if (priv->search_engine_name)
     g_free (priv->search_engine_name);
@@ -643,6 +655,120 @@ mwb_ac_list_update_search_engine (MwbAcList *ac_list)
     }
 }
 
+struct BestTldData
+{
+  const gchar *best_tld;
+  gint best_score;
+  gint best_overlap_length;
+  const gchar *search_string;
+};
+
+static void
+mwb_ac_list_check_best_tld_suggestion (gpointer key,
+                                       gpointer value,
+                                       gpointer user_data)
+{
+  struct BestTldData *data = (struct BestTldData *) user_data;
+
+  if (GPOINTER_TO_INT (value) >= data->best_score)
+    {
+      data->best_score = GPOINTER_TO_INT (value);
+      data->best_tld = key;
+    }
+}
+
+static void
+mwb_ac_list_update_best_tld_suggestion (MwbAcList *self)
+{
+  MwbAcListPrivate *priv = self->priv;
+  struct BestTldData data;
+
+  data.best_score = G_MININT;
+  data.best_tld = NULL;
+
+  g_hash_table_foreach (priv->tld_suggestions,
+                        mwb_ac_list_check_best_tld_suggestion,
+                        &data);
+
+  priv->best_tld_suggestion = data.best_tld;
+}
+
+static void
+mwb_ac_list_update_suggested_tld (MwbAcList *ac_list, const gchar *pref)
+{
+  MwbAcListPrivate *priv = ac_list->priv;
+  GError *error = NULL;
+  gint score;
+
+  if (!mhs_prefs_branch_get_int (priv->prefs, priv->prefs_branch, pref,
+                                 &score, &error))
+    {
+      /* If there was an error then the TLD has probably been
+         removed */
+      g_clear_error (&error);
+      g_hash_table_remove (priv->tld_suggestions,
+                           MWB_AC_LIST_TLD_FROM_PREF (pref));
+    }
+  else
+    g_hash_table_replace (priv->tld_suggestions,
+                          g_strdup (MWB_AC_LIST_TLD_FROM_PREF (pref)),
+                          GINT_TO_POINTER (score));
+
+  mwb_ac_list_update_best_tld_suggestion (ac_list);
+}
+
+static void
+mwb_ac_list_update_tld_suggestions (MwbAcList *self)
+{
+  MwbAcListPrivate *priv = self->priv;
+  gchar **children;
+  guint n_children;
+  GError *error = NULL;
+
+  g_hash_table_remove_all (priv->tld_suggestions);
+
+  if (priv->prefs && priv->prefs_branch != -1)
+    {
+      if (!mhs_prefs_branch_get_child_list (priv->prefs, priv->prefs_branch,
+                                            MWB_AC_LIST_SUGGESTED_TLD_PREF,
+                                            &n_children,
+                                            &children,
+                                            &error))
+        {
+          g_warning ("%s", error->message);
+          g_clear_error (&error);
+        }
+      else
+        {
+          gchar **p;
+
+          for (p = children; *p; p++)
+            {
+              gint score;
+
+              if (!mhs_prefs_branch_get_int (priv->prefs, priv->prefs_branch,
+                                             *p, &score, &error))
+                {
+                  g_warning ("%s", error->message);
+                  g_clear_error (&error);
+                }
+              else
+                {
+                  const gchar *name = MWB_AC_LIST_TLD_FROM_PREF (*p);
+
+                  g_hash_table_insert (priv->tld_suggestions,
+                                       g_strdup (name),
+                                       GINT_TO_POINTER (score));
+                }
+            }
+
+          g_strfreev (children);
+        }
+    }
+
+  mwb_ac_list_update_best_tld_suggestion (self);
+}
+
 static void
 mwb_ac_list_prefs_branch_changed_cb (MhsPrefs *prefs,
                                      gint id,
@@ -660,6 +786,12 @@ mwb_ac_list_prefs_branch_changed_cb (MhsPrefs *prefs,
       if (g_str_has_prefix (domain, "search_engine."))
         {
           mwb_ac_list_update_search_engine (ac_list);
+          return;
+        }
+
+      if (g_str_has_prefix (domain, MWB_AC_LIST_SUGGESTED_TLD_PREF))
+        {
+          mwb_ac_list_update_suggested_tld (ac_list, domain);
           return;
         }
 
@@ -985,6 +1117,11 @@ mwb_ac_list_init (MwbAcList *self)
 
   g_object_set (G_OBJECT (self), "clip-to-allocation", TRUE, NULL);
 
+  priv->tld_suggestions = g_hash_table_new_full (g_str_hash,
+                                                 g_str_equal,
+                                                 g_free,
+                                                 NULL);
+
   /* Initialise the preference observers */
   priv->prefs = mhs_prefs_new ();
   if (mhs_prefs_get_branch (priv->prefs, "mwb.", &priv->prefs_branch, &error))
@@ -1023,7 +1160,18 @@ mwb_ac_list_init (MwbAcList *self)
           g_clear_error (&error);
         }
 
+      /* Add the tld suggestion observer */
+      if (!mhs_prefs_branch_add_observer (priv->prefs,
+                                          priv->prefs_branch,
+                                          MWB_AC_LIST_SUGGESTED_TLD_PREF,
+                                          &error))
+        {
+          g_warning ("%s", error->message);
+          g_clear_error (&error);
+        }
+
       mwb_ac_list_update_search_engine (self);
+      mwb_ac_list_update_tld_suggestions (self);
     }
   else
     {
@@ -1330,6 +1478,110 @@ mwb_ac_list_add_default_entry (MwbAcList *self,
 }
 
 static void
+mwb_ac_list_check_best_tld_suggestion_overlap (gpointer key,
+                                               gpointer value,
+                                               gpointer user_data)
+{
+  struct BestTldData *data = (struct BestTldData *) user_data;
+  int overlap = -1;
+  const gchar *search_str_end = (data->search_string +
+                                 strlen (data->search_string));
+  const gchar *tail;
+  int keylen = strlen (key);
+
+  /* Scan from the end of the string to find the most overlap with the
+     start of the key */
+  for (tail = search_str_end;
+       search_str_end - tail <= keylen &&
+         tail >= (const gchar *) data->search_string;
+       tail--)
+    if (g_str_has_prefix (key, tail))
+      overlap = search_str_end - tail;
+
+  /* Use this key if more of it overlaps or it has a better score */
+  if (data->best_overlap_length < overlap ||
+      (data->best_overlap_length == overlap &&
+       data->best_score < GPOINTER_TO_INT (value)))
+    {
+      data->best_score = GPOINTER_TO_INT (value);
+      data->best_tld = key;
+      data->best_overlap_length = overlap;
+    }
+}
+
+static void
+mwb_ac_list_complete_domain (MwbAcList *self,
+                             const gchar *search_text,
+                             gchar **completion,
+                             gchar **completion_url)
+{
+  MwbAcListPrivate *priv = self->priv;
+  const gchar *p;
+  gboolean has_dot = FALSE;
+  struct BestTldData data;
+
+  /* If we don't have any completions then just return the search
+     text */
+  if (priv->best_tld_suggestion == NULL)
+    {
+      *completion = g_strdup (search_text);
+      *completion_url = g_strdup (search_text);
+      return;
+    }
+
+  /* Check if the search text contains any characters that don't look
+     like part of a domain */
+  for (p = search_text; *p; p = g_utf8_next_char (p))
+    {
+      gunichar ch = g_utf8_get_char (p);
+
+      if (ch == '.')
+        has_dot = TRUE;
+
+      if (ch == '/' || ch == ':' || ch == '?' ||
+          (!g_unichar_isalnum (g_utf8_get_char_validated (p, -1)) &&
+           *p != '-' && *p != '.'))
+        {
+          *completion = g_strdup (search_text);
+          *completion_url = g_strdup (search_text);
+          return;
+        }
+    }
+
+  /* If the search string doesn't contain a dot then just append the
+     highest scoring tld */
+  if (!has_dot)
+    {
+      *completion = g_strconcat (search_text,
+                                 priv->best_tld_suggestion, NULL);
+      *completion_url = g_strconcat ("http://", *completion, "/", NULL);
+      return;
+    }
+
+  /* Otherwise look for the string with the longest overlap */
+  data.best_tld = NULL;
+  data.best_score = -1;
+  data.best_overlap_length = -1;
+  data.search_string = search_text;
+  g_hash_table_foreach (priv->tld_suggestions,
+                        mwb_ac_list_check_best_tld_suggestion_overlap,
+                        &data);
+  if (data.best_tld)
+    {
+      *completion = g_strconcat (search_text,
+                                 data.best_tld + data.best_overlap_length,
+                                 NULL);
+      *completion_url = g_strconcat ("http://", *completion, "/", NULL);
+    }
+  else
+    {
+      /* Otherwise we don't have a sensible suggestion */
+      *completion = g_strdup (search_text);
+      *completion_url = g_strdup (search_text);
+    }
+}
+
+static void
 mwb_ac_list_add_default_entries (MwbAcList *self)
 {
   MwbAcListPrivate *priv = self->priv;
@@ -1374,14 +1626,83 @@ mwb_ac_list_add_default_entries (MwbAcList *self)
       g_free (label);
     }
   if (priv->complete_domains)
-    mwb_ac_list_add_default_entry (self,
-                                   _("Go to %s.com"),
+    {
+      gchar *completion, *completion_url;
+
+      mwb_ac_list_complete_domain (self,
                                    priv->search_text->str,
-                                   g_strconcat ("http://",
-                                                priv->search_text->str,
-                                                ".com/",
-                                                NULL),
-                                   COGL_INVALID_HANDLE);
+                                   &completion,
+                                   &completion_url);
+
+      mwb_ac_list_add_default_entry (self,
+                                     _("Go to %s"),
+                                     completion,
+                                     completion_url,
+                                     COGL_INVALID_HANDLE);
+
+      g_free (completion);
+    }
+}
+
+void
+mwb_ac_list_increment_tld_score_for_url (MwbAcList *self,
+                                         const gchar *url)
+{
+  MwbAcListPrivate *priv;
+  const gchar *domain_start, *domain_end;
+
+  g_return_if_fail (MWB_IS_AC_LIST (self));
+
+  priv = self->priv;
+
+  if (priv->prefs == NULL || priv->prefs_branch == -1)
+    return;
+
+  /* Try to extract the domain name from the URL */
+  for (domain_start = url; *domain_start; domain_start++)
+    if ((*domain_start < 'a' || *domain_start > 'z') &&
+        (*domain_start < 'A' || *domain_start > 'Z'))
+      break;
+  if (domain_start > url && g_str_has_prefix (domain_start, "://"))
+    domain_start += 3;
+  else
+    domain_start = url;
+  for (domain_end = domain_start;
+       *domain_end && strchr ("/?:@#&", *domain_end) == NULL;
+       domain_end++);
+  if (domain_end > domain_start)
+    {
+      gchar *domain = g_strndup (domain_start, domain_end - domain_start);
+      gchar *p;
+      gpointer value;
+
+      /* Increment the score for each part of the domain */
+      for (p = domain + (domain_end - domain_start);
+           p >= domain;
+           p--)
+        if (*p == '.' &&
+            g_hash_table_lookup_extended (priv->tld_suggestions,
+                                          p,
+                                          NULL,
+                                          &value))
+          {
+            gchar *pref = g_strconcat (MWB_AC_LIST_SUGGESTED_TLD_PREF,
+                                       p + 1, NULL);
+            GError *error = NULL;
+            if (!mhs_prefs_branch_set_int (priv->prefs,
+                                           priv->prefs_branch,
+                                           pref,
+                                           GPOINTER_TO_INT (value) + 1,
+                                           &error))
+              {
+                g_warning ("%s", error->message);
+                g_error_free (error);
+              }
+            g_free (pref);
+          }
+
+      g_free (domain);
+    }
 }
 
 static gboolean

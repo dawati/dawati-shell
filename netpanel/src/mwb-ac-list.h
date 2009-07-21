@@ -80,6 +80,9 @@ guint mwb_ac_list_get_n_entries (MwbAcList *self);
 
 gchar *mwb_ac_list_get_entry_url (MwbAcList *self, guint entry);
 
+void mwb_ac_list_increment_tld_score_for_url (MwbAcList *self,
+                                              const gchar *url);
+
 G_END_DECLS
 
 #endif /* _MWB_AC_LIST_H */
