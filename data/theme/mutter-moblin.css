@@ -295,7 +295,7 @@ MnbSwitcherApp#switcher-application-active {
   padding: 15;
 }
 
-MnbDropDown, MnbSwitcher {
+MnbPanel, MnbDropDown, MnbSwitcher {
   border-image: url("file://drop-down/panel_shadow.png") 4 8 37 8;
   padding: 4 4 37 4;
 }
