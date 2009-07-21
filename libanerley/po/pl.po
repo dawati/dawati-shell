@@ -1,0 +1,21 @@
+# Derived Empathy
+# Copyright (C) 2003-2008 Free Software Foundation, Inc.
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Aviary.pl
+# Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
+# pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
+# gnomepl@aviary.pl
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Review całości pliku: 14.07.2008 Wadim Dziedzic
+
+msgid "Available"
+msgstr "Dostępny"
+
+msgid "Busy"
+msgstr "Zajęty"
+
+msgid "Away"
+msgstr "Nieobecny"
+
+msgid "Offline"
+msgstr "Rozłączony

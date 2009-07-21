@@ -1,0 +1,28 @@
+# Derived from Empathy
+# Brazilian Portuguese translation of Empathy.
+# Copyright (C) 2004 Free Software Foundation, Inc.
+# This file is distributed under the same license as the empathy package.
+# Luiz Guaraldo <software.livre@terra.com.br>, 2004.
+# André Filipe de Assunção e Brito <decko@ufpr.br>, 2007.
+# Og Maciel <ogmaciel@gnome.org>, 2007-2008.
+# Djavan Fagundes <dnoway@gmail.com>, 2008.
+# Fábio Nogueira <deb-user-ba@ubuntu.com>, 2008.
+# Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2008.
+# Taylon Silmer <taylonsilva@gmail.com>, 2009.
+# Michel Recondo <michel@recondo.com.br>, 2009.
+# Jonh Wendell <jwendell@gnome.org>, 2009.
+# Vladimir Melo <vmelo@gnome.org>, 2009.
+#
+
+msgid "Available"
+msgstr "在席中"
+
+msgid "Busy"
+msgstr "取り込み中"
+
+msgid "Away"
+msgstr "離席中"
+
+msgid "Offline"
+msgstr "オフライン"
+

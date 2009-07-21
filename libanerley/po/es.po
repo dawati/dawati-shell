@@ -1,0 +1,19 @@
+# Derived from Empathy
+# translation of empathy.HEAD.po to Español
+# Copyright (C) 2003 Free Software Foundation
+# This file is distributed under the same license as the Gossip package.
+#
+# Jorge González <jorgegonz@svn.gnome.org>, 2007, 200, 2009.
+
+msgid "Available"
+msgstr "Disponible"
+
+msgid "Busy"
+msgstr "Ocupado"
+
+msgid "Away"
+msgstr "Ausente"
+
+msgid "Offline"
+msgstr "Desconectado"
+

@@ -1,0 +1,19 @@
+# Derived from Empathy:
+# This file is distributed under the same license as the empathy package.
+# Copyright (C) 2006-2009 Free Software Foundation Inc.
+# Copyright (C) 2006 Samuli Seppänen and Henna Nykänen.
+#
+# Ilkka Tuohela <hile@iki.fi>, 2006-2009.
+# Samuli Seppänen & Henna Nykänen <sjsepp@utu.fi>, 2006.
+#
+msgid "Available"
+msgstr "Tavoitettavissa"
+
+msgid "Busy"
+msgstr "Varattu"
+
+msgid "Away"
+msgstr "Poissa"
+
+msgid "Offline"
+msgstr "Poissa linjoilta"

@@ -1,0 +1,18 @@
+# Derived from Empathy:
+# traditional Chinese translation of empathy.
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+# Abel Cheung <abel@oaka.org>, 2003, 2004.
+# Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>, 2005.
+#
+msgid "Available"
+msgstr "有空"
+
+msgid "Busy"
+msgstr "忙碌"
+
+msgid "Away"
+msgstr "離開"
+
+msgid "Offline"
+msgstr "離線"
+

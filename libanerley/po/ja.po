@@ -1,0 +1,18 @@
+# Derived from empathy:
+# empathy ja.po.
+# Copyright (C) 2007-2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the empathy package.
+# Takeshi AIHANA <takeshi.aihana@gmail.com>, 2007-2009.
+#
+msgid "Available"
+msgstr "在席中"
+
+msgid "Busy"
+msgstr "取り込み中"
+
+msgid "Away"
+msgstr "離席中"
+
+msgid "Offline"
+msgstr "オフライン"
+

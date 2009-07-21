@@ -1,0 +1,34 @@
+# Derived from:
+# French translation of empathy.
+# Copyright (C) 2003-2009 The Free Software Foundation, Inc.
+# This file is distributed under the same license as the empathy package.
+#
+# Frédéric Brin <duckx@mezimail.com>, 2003.
+# Lionel Henry <yoplait@tuxfamily.org>, 2003.
+# Laurent Richard <laurent.richard@lilit.be>, 2004.
+# Christophe Merlet <redfox@redfoxcenter.org>, 2004.
+# Audrey Simons <asimons@redhat.com>, 2004.
+# Quentin Delance <quentin.delance@laposte.net>, 2006.
+# Claude Paroz <claude@2xlibre.net>, 2007-2009.
+# Jonathan Ernst <jonathan@ernstfamily.ch>, 2007.
+# Damien Durand <splinux@fedoraproject.org>, 2007.
+# Robert-André Mauchin <zebob.m@pengzone.org>, 2007-2008.
+# Frederic Peters <fpeters@0d.be>, 2007-2008.
+# Laurent Bigonville <bigon@bigon.be>, 2007.
+# Stéphane Raimbault <stephane.raimbault@gmail.com>, 2007.
+# Christophe Benz <christophe.benz@gmail.com>, 2007.
+# Yannick Tailliez <ytdispatch-libre@yahoo.com>, 2008.
+# Laurent Coudeur <laurentc@iol.ie>, 2009.
+#
+
+msgid "Available"
+msgstr "Disponible"
+
+msgid "Busy"
+msgstr "Occupé"
+
+msgid "Away"
+msgstr "Absent"
+
+msgid "Offline"
+msgstr "Déconnecté"

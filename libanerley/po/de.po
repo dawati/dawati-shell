@@ -1,0 +1,22 @@
+# Derived from:
+# German translation of Empathy.
+# Copyright (C) 2003-2005, 2007 Free Software Foundation, Inc.
+#
+# Hendrik Richter <naggeldak@gnome-de.org>, 2003.
+# Frank Arnold <frank@scirocco-5v-turbo.de>, 2005.
+# Andre Klapper <ak-47@gmx.net>, 2007, 2008.
+# Jochen Skulj <jochen@jochenskulj.de>, 2008, 2009.
+# Mario Blättermann <mariobl@gnome.org>, 2008, 2009.
+#
+msgid "Available"
+msgstr "Verfügbar"
+
+msgid "Busy"
+msgstr "Beschäftigt"
+
+msgid "Away"
+msgstr "Abwesend"
+
+msgid "Offline"
+msgstr "Abgemeldet"
+

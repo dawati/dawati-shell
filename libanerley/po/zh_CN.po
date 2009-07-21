@@ -1,0 +1,22 @@
+# Derived from Empathy:
+# Simplified Chinese translation of Empathy.
+# Convert to Simp. Chinese translation of Empathy.
+# Copyright (C) 2003-2009 Free Software Foundation, Inc.
+# Abel Cheung <maddog@linux.org.hk>, 2003.
+# Mai Haohui <maihaohui@hotmail.com>, 2003.
+# Rongjun Mu <elanmu@sina.com>, 2003.
+# YangZhang <zyangmath@gmail.com>, 2008.
+# Funda Wang <fundawang@gmail.com>, 2009.
+
+msgid "Available"
+msgstr "在线"
+
+msgid "Busy"
+msgstr "忙碌"
+
+msgid "Away"
+msgstr "离开"
+
+msgid "Offline"
+msgstr "离线"
+

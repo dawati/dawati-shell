@@ -1,0 +1,23 @@
+# Derived from Empathy:
+# empathy Korean translation
+# This file is distributed under the same license as the empathy package.
+#
+# Changwoo Ryu <cwryu@debian.org>, 2008, 2009.
+#
+# 새로 번역하시는 분은 아래 translator-credits에 추가하세요.
+#
+# 참고:
+# - 이 프로그램의 이름인 "Empathy"는 외국어 표기법에 따라 "엠퍼시"라고 표기
+#
+msgid "Available"
+msgstr "대화 가능"
+
+msgid "Busy"
+msgstr "다른 용무 중"
+
+msgid "Away"
+msgstr "자리 비움"
+
+msgid "Offline"
+msgstr "오프라인"
+
