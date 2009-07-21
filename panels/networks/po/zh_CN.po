@@ -43,12 +43,10 @@ msgid "Show password"
 msgstr "显示密码"
 
 #: ../carrick/carrick-pane.c:489
-#, fuzzy
 msgid "Sorry, we can't find any networks. "
 msgstr "抱歉，一个网络连接也没找到。"
 
 #: ../carrick/carrick-pane.c:494
-#, fuzzy
 msgid ""
 "The ConnMan daemon doesn't seem to be running. You may want to try re-"
 "starting your device"
