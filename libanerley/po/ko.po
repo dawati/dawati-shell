@@ -9,6 +9,19 @@
 # 참고:
 # - 이 프로그램의 이름인 "Empathy"는 외국어 표기법에 따라 "엠퍼시"라고 표기
 #
+msgid ""
+msgstr ""
+"Project-Id-Version: empathy\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-18 06:05+0900\n"
+"PO-Revision-Date: 2009-02-18 06:13+0900\n"
+"Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
+"Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
 msgid "Available"
 msgstr "대화 가능"
 
