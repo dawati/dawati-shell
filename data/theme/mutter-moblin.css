@@ -51,7 +51,7 @@ MnbToolbar > *#date-label {
 /* spaces switcher table */
 MnbSwitcher > *#switcher-table {
   background-color: #ffff;
-  padding: 5;
+  padding: 1 5 5 5;
 }
 
 MnbToolbar {
@@ -296,8 +296,8 @@ MnbSwitcherApp#switcher-application-active {
 }
 
 MnbDropDown, MnbSwitcher {
-  border-image: url("file://panel/panel-shadow.png") 0 4 37 4;
-  padding: 0 4 37 4;
+  border-image: url("file://drop-down/panel_shadow.png") 4 8 37 8;
+  padding: 4 4 37 4;
 }
 
 MnbEntry {

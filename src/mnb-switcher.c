@@ -2023,7 +2023,7 @@ mnb_switcher_show (ClutterActor *self)
 
   if (!switcher_empty)
     clutter_actor_set_height (CLUTTER_ACTOR (table),
-                              screen_height - TOOLBAR_HEIGHT * 1.5);
+                              screen_height - TOOLBAR_HEIGHT * 1.5 - 4);
 
   priv->constructing = FALSE;
 

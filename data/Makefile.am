@@ -79,7 +79,8 @@ dist_theme_dropdown_DATA = \
 	theme/drop-down/panel_arrow.png \
 	theme/drop-down/panel_arrow_hover.png \
 	theme/drop-down/panel_up_button.png \
-	theme/drop-down/panel_up_button_hover.png
+	theme/drop-down/panel_up_button_hover.png \
+	theme/drop-down/panel_shadow.png
 
 theme_notifiersdir = $(MUTTER_MOBLIN_THEME_DIR)/notifiers
 dist_theme_notifiers_DATA = \

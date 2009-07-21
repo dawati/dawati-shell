@@ -1868,7 +1868,7 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
       panel  = mnb_panel_new (priv->plugin, name,
                               screen_width - TOOLBAR_X_PADDING * 2,
-                              screen_height - 1.5 * TOOLBAR_HEIGHT);
+                              screen_height - 1.5 * TOOLBAR_HEIGHT - 4);
 
       if (panel)
         {
