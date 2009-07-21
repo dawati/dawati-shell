@@ -333,7 +333,7 @@ carrick_list_add_item (CarrickList *list,
                       widget,
                       FALSE,
                       FALSE,
-                      0);
+                      2);
 }
 
 void
