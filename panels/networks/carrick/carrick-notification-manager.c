@@ -294,7 +294,6 @@ _services_changed_cb (CmManager *manager,
   const gchar *type = NULL;
   const gchar *name = NULL;
   const gchar *state = NULL;
-  gboolean connected = FALSE;
   guint str = 0;
 
   if (!new_services)
@@ -308,7 +307,6 @@ _services_changed_cb (CmManager *manager,
   type = cm_service_get_type (new_top);
   name = cm_service_get_name (new_top);
   state = cm_service_get_state (new_top);
-  connected = cm_service_get_connected (new_top);
   str = cm_service_get_strength (new_top);
 
   /* FIXME: only show for non-user action */
@@ -319,36 +317,35 @@ _services_changed_cb (CmManager *manager,
    * _tell_offline (self, name, type)
    * _tell_online (name, type, str)
    */
-  if (priv->last_state)
+  if (g_strcmp0 (priv->last_type, type) != 0 ||
+      g_strcmp0 (priv->last_name, name) != 0)
   {
-    if (g_strcmp0 (priv->last_type, type) != 0 ||
-        g_strcmp0 (priv->last_name, name) != 0)
+    /* top service has changed */
+    if (g_strcmp0 (state, "ready") == 0 &&
+        g_strcmp0 (priv->last_state, "idle") == 0)
     {
-      /* top service has changed */
-      if (connected && g_strcmp0 (priv->last_state, "idle") == 0)
-      {
-        _tell_online (name, type, str);
-      }
-      else if (connected && g_strcmp0 (priv->last_state, "ready") == 0)
-      {
-        _tell_changed (self, name, type, str);
-      }
-      else if (g_strcmp0 (state, "idle") == 0
-               && g_strcmp0 (priv->last_state, "ready") == 0)
-      {
-        _tell_offline (self, name, type);
-      }
+      _tell_online (name, type, str);
     }
     else if (g_strcmp0 (state, "ready") == 0 &&
              g_strcmp0 (priv->last_state, "ready") == 0
              && g_strcmp0 (name, last_name) != 0)
     {
-      /* service same but state changed */
-      if (g_strcmp0 (state, "ready") == 0)
-        _tell_online (name, type, str);
-      else if (g_strcmp0 (state, "idle") == 0)
-        _tell_offline (self, name, type);
+      _tell_changed (self, name, type, str);
     }
+    else if (g_strcmp0 (state, "idle") == 0
+             && g_strcmp0 (priv->last_state, "ready") == 0)
+    {
+      _tell_offline (self, name, type);
+    }
+  }
+  else if (g_strcmp0 (priv->last_name, name) == 0 &&
+           g_strcmp0 (priv->last_state, state) != 0)
+  {
+    /* service same but state changed */
+    if (g_strcmp0 (state, "ready") == 0)
+      _tell_online (name, type, str);
+    else if (g_strcmp0 (state, "idle") == 0)
+      _tell_offline (self, name, type);
   }
 
   /*
@@ -357,7 +354,7 @@ _services_changed_cb (CmManager *manager,
   g_free (priv->last_state);
   priv->last_state = g_strdup (state);
 
-  if (connected)
+  if (g_strcmp0 (state, "ready") == 0)
   {
     g_free (priv->last_type);
     priv->last_type = g_strdup (type);
