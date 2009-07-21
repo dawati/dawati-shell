@@ -330,6 +330,15 @@ mnb_netpanel_bar_unmap (ClutterActor *actor)
 }
 
 static void
+mnb_netpanel_bar_go (MnbNetpanelBar *self, const gchar *url)
+{
+  MnbNetpanelBarPrivate *priv = self->priv;
+
+  if (priv->ac_list)
+    mwb_ac_list_increment_tld_score_for_url (MWB_AC_LIST (priv->ac_list), url);
+}
+
+static void
 mnb_netpanel_bar_class_init (MnbNetpanelBarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -346,6 +355,8 @@ mnb_netpanel_bar_class_init (MnbNetpanelBarClass *klass)
   actor_class->captured_event = mnb_netpanel_bar_captured_event;
   actor_class->map = mnb_netpanel_bar_map;
   actor_class->unmap = mnb_netpanel_bar_unmap;
+
+  klass->go = mnb_netpanel_bar_go;
 
   signals[GO] =
     g_signal_new ("go",
