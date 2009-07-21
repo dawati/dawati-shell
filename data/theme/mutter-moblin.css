@@ -357,7 +357,11 @@ NbtkLabel
   font-size: 12px;
 }
 
-
+/* date and time */
+NbtkLabel.date-label {
+  font-family: "Droid Sans";
+  font-size: 15px;
+}
 
 MnbNotification
 {
