@@ -328,7 +328,7 @@ _services_changed_cb (CmManager *manager,
     }
     else if (g_strcmp0 (state, "ready") == 0 &&
              g_strcmp0 (priv->last_state, "ready") == 0
-             && g_strcmp0 (name, last_name) != 0)
+             && g_strcmp0 (name, priv->last_name) != 0)
     {
       _tell_changed (self, name, type, str);
     }
