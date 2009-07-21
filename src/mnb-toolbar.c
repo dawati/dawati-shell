@@ -1629,7 +1629,7 @@ shell_tray_manager_icon_added_cb (ShellTrayManager *mgr,
   col = index - APPLETS_START;
 
   y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-  x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
+  x = screen_width - (col + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING) - TRAY_PADDING;
 
   priv->buttons[index] = NBTK_WIDGET (icon);
 
