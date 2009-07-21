@@ -204,7 +204,7 @@ msgstr "%s （%s ネットワーク）に接続されています"
 #: ../carrick/carrick-notification-manager.c:124
 #, c-format
 msgid "You're now connected to a %s network"
-msgstr ""
+msgstr "%s ネットワークに接続されています"
 
 #: ../carrick/carrick-notification-manager.c:141
 msgid "Network lost"
@@ -213,12 +213,12 @@ msgstr "ネットワークが失われました"
 #: ../carrick/carrick-notification-manager.c:149
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr ""
+msgstr "有線接続が失われました"
 
 #: ../carrick/carrick-notification-manager.c:153
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr ""
+msgstr "%s 接続「%s」が失われました。"
 
 # "sorry" is omitted
 #: ../carrick/carrick-notification-manager.c:159
