@@ -1567,7 +1567,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   priv->panels[index] = NBTK_WIDGET (panel);
 
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
-  clutter_actor_set_position (CLUTTER_ACTOR (panel), TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
+  clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
   clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
 
