@@ -705,6 +705,11 @@ _available_technologies_changed_cb (CmManager *manager,
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
   const GList *l = cm_manager_get_available_technologies (manager);
 
+  priv->have_wifi = FALSE;
+  priv->have_ethernet = FALSE;
+  priv->have_threeg = FALSE;
+  priv->have_wimax = FALSE;
+
   while (l != NULL)
   {
     const gchar *t = l->data;
@@ -712,30 +717,31 @@ _available_technologies_changed_cb (CmManager *manager,
     if (g_strcmp0 (t, "ethernet") == 0)
     {
       priv->have_ethernet = TRUE;
-      gtk_widget_set_sensitive (priv->ethernet_switch,
-				TRUE);
-    } 
+    }
     else if (g_strcmp0 (t, "wifi") == 0)
     {
       priv->have_wifi = TRUE;
-      gtk_widget_set_sensitive (priv->wifi_switch,
-				TRUE);
     }
     else if (g_strcmp0 (t, "threeg") == 0)
     {
       priv->have_threeg = TRUE;
-      gtk_widget_set_sensitive (priv->threeg_switch,
-                                TRUE);
     }
     else if (g_strcmp0 (t, "wimax") == 0)
     {
       priv->have_wimax = TRUE;
-      gtk_widget_set_sensitive (priv->wimax_switch,
-				TRUE);
-    } 
-    
+    }
+
     l = l->next;
   }
+
+  gtk_widget_set_sensitive (priv->wifi_switch,
+			    priv->have_wifi);
+  gtk_widget_set_sensitive (priv->ethernet_switch,
+			    priv->have_ethernet);
+  gtk_widget_set_sensitive (priv->threeg_switch,
+			    priv->have_threeg);
+  gtk_widget_set_sensitive (priv->wimax_switch,
+			    priv->have_wimax);
 }
 
 static void
