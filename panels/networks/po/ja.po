@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-06 09:17+0000\n"
+"POT-Creation-Date: 2009-07-20 09:20+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
@@ -11,32 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../carrick/carrick-applet.c:63
-#, c-format
-msgid "Offline"
-msgstr "オフライン"
-
-#: ../carrick/carrick-applet.c:64
-#, c-format
-msgid "No active connection."
-msgstr "アクティブなコネクションはありません。"
-
-#: ../carrick/carrick-applet.c:70
-#, c-format
-msgid "Online"
-msgstr "オンライン"
-
-#: ../carrick/carrick-applet.c:75
-#, c-format
-msgid "Now online and connected to %s."
-msgstr "現在、オンラインで次に接続中：%s"
-
-#: ../carrick/carrick-pane.c:284
+#: ../carrick/carrick-pane.c:319
 msgid "New connection settings"
 msgstr "新規コネクション設定"
 
-#: ../carrick/carrick-pane.c:320
+#: ../carrick/carrick-pane.c:355
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -46,103 +27,148 @@ msgstr ""
 "パスワードとセキュリティー タイプが\n"
 "必要な場合もあります。"
 
-#: ../carrick/carrick-pane.c:330
+#: ../carrick/carrick-pane.c:365
 msgid "Network name"
 msgstr "ネットワーク名"
 
-#: ../carrick/carrick-pane.c:342
+#: ../carrick/carrick-pane.c:377
 msgid "Network security"
 msgstr "ネットワーク セキュリティー"
 
-#: ../carrick/carrick-pane.c:366
+#: ../carrick/carrick-pane.c:401
 msgid "Password"
 msgstr "パスワード"
 
-#: ../carrick/carrick-pane.c:381
-#: ../carrick/carrick-service-item.c:853
+#: ../carrick/carrick-pane.c:416
+#: ../carrick/carrick-service-item.c:948
 msgid "Show password"
 msgstr "パスワードの表示"
 
-#: ../carrick/carrick-pane.c:792
-msgid "Networks"
-msgstr "ネットワーク"
+# "sorry" is omitted
+#: ../carrick/carrick-pane.c:566
+msgid "Sorry, we can't find any networks."
+msgstr "ネットワークが見つかりません。"
 
-#: ../carrick/carrick-pane.c:831
-msgid "Add new connection"
-msgstr "新規接続の追加"
+#: ../carrick/carrick-pane.c:571
+msgid "The ConnMan daemon doesn't seem to be running.You may want to try re-starting your device"
+msgstr "どうやら ConnMan daemon が走っていないようです。デバイスを再起動させてください。"
 
-#: ../carrick/carrick-pane.c:857
+#: ../carrick/carrick-pane.c:577
+msgid "You could try disabling Offline mode"
+msgstr "オフラインモードを無効にしてみてください。"
+
+#: ../carrick/carrick-pane.c:583
+msgid "You could try turning on "
+msgstr "次をオンにしてみてください"
+
+#: ../carrick/carrick-pane.c:587
+#: ../carrick/carrick-pane.c:908
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:880
-#: ../carrick/carrick-service-item.c:196
-msgid "Wired"
-msgstr "有線接続"
+#: ../carrick/carrick-pane.c:593
+#: ../carrick/carrick-pane.c:601
+#: ../carrick/carrick-pane.c:609
+msgid ", "
+msgstr "："
 
-#: ../carrick/carrick-pane.c:906
-msgid "3G"
-msgstr "3G"
+#: ../carrick/carrick-pane.c:595
+msgid "Ethernet"
+msgstr "Ethernet"
 
-#: ../carrick/carrick-pane.c:931
+#: ../carrick/carrick-pane.c:603
+#: ../carrick/carrick-pane.c:1002
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:965
+#: ../carrick/carrick-pane.c:611
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../carrick/carrick-pane.c:617
+msgid " and "
+msgstr "＆"
+
+#: ../carrick/carrick-pane.c:619
+#: ../carrick/carrick-pane.c:971
+msgid "3G"
+msgstr "3G"
+
+# "sorry" is omitted
+#: ../carrick/carrick-pane.c:626
+msgid "Sorry, we can't find any networks"
+msgstr "ネットワークが見つかりません。"
+
+#: ../carrick/carrick-pane.c:837
+msgid "Networks"
+msgstr "ネットワーク"
+
+#: ../carrick/carrick-pane.c:881
+msgid "Add new connection"
+msgstr "新規接続の追加"
+
+#: ../carrick/carrick-pane.c:940
+#: ../carrick/carrick-service-item.c:210
+msgid "Wired"
+msgstr "有線接続"
+
+#: ../carrick/carrick-pane.c:1045
 msgid "Offline mode"
 msgstr "オフラインモード"
 
-#: ../carrick/carrick-pane.c:989
+#: ../carrick/carrick-pane.c:1070
 msgid "This will disable all your connections"
 msgstr "コネクションがすべて無効になります"
 
-#: ../carrick/carrick-service-item.c:163
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#: ../carrick/carrick-service-item.c:170
 #, c-format
 msgid "%s encrypted"
 msgstr "暗号化されています：%s"
 
-#: ../carrick/carrick-service-item.c:208
+#: ../carrick/carrick-service-item.c:241
 msgid "Disconnect"
 msgstr "切断する"
 
-#: ../carrick/carrick-service-item.c:211
+#: ../carrick/carrick-service-item.c:244
 msgid "Connected"
 msgstr "接続中"
 
-#: ../carrick/carrick-service-item.c:218
+#: ../carrick/carrick-service-item.c:249
 #, c-format
-msgid "Connecting"
-msgstr "接続中"
+msgid "Abort"
+msgstr "アボート"
 
-#: ../carrick/carrick-service-item.c:221
+#: ../carrick/carrick-service-item.c:252
 msgid "Configuring"
 msgstr "設定中"
 
-#: ../carrick/carrick-service-item.c:232
-#: ../carrick/carrick-service-item.c:244
-#: ../carrick/carrick-service-item.c:842
+#: ../carrick/carrick-service-item.c:259
+#: ../carrick/carrick-service-item.c:267
+#: ../carrick/carrick-service-item.c:937
 msgid "Connect"
 msgstr "接続する"
 
-#: ../carrick/carrick-service-item.c:247
+#: ../carrick/carrick-service-item.c:270
 msgid "Connection failed"
 msgstr "接続に失敗しました"
 
-#: ../carrick/carrick-service-item.c:254
-#: ../carrick/carrick-service-item.c:257
+#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:278
 #, c-format
 msgid "Disconnecting"
 msgstr "切断中"
 
-#: ../carrick/carrick-service-item.c:306
+#: ../carrick/carrick-service-item.c:327
 msgid "Type password here"
-msgstr "ここにパスワードを入力します"
+msgstr "パスワードを入力します"
 
-#: ../carrick/carrick-service-item.c:383
+#: ../carrick/carrick-service-item.c:392
 msgid "Really remove?"
 msgstr "削除しますか？"
 
-#: ../carrick/carrick-service-item.c:401
+#: ../carrick/carrick-service-item.c:410
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -153,6 +179,98 @@ msgstr ""
 "切断すると、パスワードが忘れられ、\n"
 "%s に自動接続されなくなれます。"
 
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:893
+msgid "WPA2 encrypted"
+msgstr "WPA2 暗号化"
+
+#: ../carrick/carrick-notification-manager.c:80
+msgid "Network connected"
+msgstr "ネットワークに接続されています"
+
+#: ../carrick/carrick-notification-manager.c:88
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "有線ネットワークに接続されています。"
+
+#: ../carrick/carrick-notification-manager.c:118
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "%s （%s ネットワーク）に接続されています"
+
+#: ../carrick/carrick-notification-manager.c:124
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:141
+msgid "Network lost"
+msgstr "ネットワークが失われました"
+
+#: ../carrick/carrick-notification-manager.c:149
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:153
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr ""
+
+# "sorry" is omitted
+#: ../carrick/carrick-notification-manager.c:159
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "%s 接続が失われました"
+
+#: ../carrick/carrick-notification-manager.c:176
+msgid "Network changed"
+msgstr "ネットワークが変更されました"
+
+# "Sorry" is  omitted.
+#: ../carrick/carrick-notification-manager.c:184
+msgid "Sorry, your wired connection was lost. So we've "
+msgstr "有線接続が失われたので、"
+
+# "Sorry" is  omitted.
+#: ../carrick/carrick-notification-manager.c:188
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've "
+msgstr "「%s」への接続が失われたので、"
+
+# "Sorry" is  omitted.
+#: ../carrick/carrick-notification-manager.c:193
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've "
+msgstr "%s 接続が失われたので、"
+
+#: ../carrick/carrick-notification-manager.c:199
+msgid "connected you to a wired network"
+msgstr "有線ネットワークに接続されました。"
+
+#: ../carrick/carrick-notification-manager.c:204
+#, c-format
+msgid "connected you to %s, a %s network"
+msgstr "%s（%s ネットワーク）に接続されました。"
+
+#: ../carrick/carrick-notification-manager.c:210
+#, c-format
+msgid "connected you to a %s network"
+msgstr "%s ネットワークに接続されました。"
+
+#~ msgid "Offline"
+#~ msgstr "オフライン"
+#~ msgid "No active connection."
+#~ msgstr "アクティブなコネクションはありません。"
+#~ msgid "Online"
+#~ msgstr "オンライン"
+#~ msgid "Now online and connected to %s."
+#~ msgstr "現在、オンラインで次に接続中：%s"
+#~ msgid "Connecting"
+#~ msgstr "接続中"
 #~ msgid "Passphrase required"
 #~ msgstr "パスワードが必要です"
 #~ msgid "<b><big>Network Requires a Password</big></b>"
