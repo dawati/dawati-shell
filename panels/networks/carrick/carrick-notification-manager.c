@@ -339,8 +339,9 @@ _services_changed_cb (CmManager *manager,
         _tell_offline (self, name, type);
       }
     }
-    else if (g_strcmp0 (priv->last_name, name) == 0 &&
-             g_strcmp0 (priv->last_state, state) != 0)
+    else if (g_strcmp0 (state, "ready") == 0 &&
+             g_strcmp0 (priv->last_state, "ready") == 0
+             && g_strcmp0 (name, last_name) != 0)
     {
       /* service same but state changed */
       if (g_strcmp0 (state, "ready") == 0)
