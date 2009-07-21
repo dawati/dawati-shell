@@ -916,7 +916,7 @@ show_workspace_chooser (MutterPlugin *plugin,
    */
   clutter_actor_set_size (frame, 0, 0);
 
-  label = clutter_text_new_full ("Liberation Sans 15px",
+  label = clutter_text_new_full ("Droid Sans 15px",
                                  _("Choose zone for application:"), &label_clr);
   clutter_actor_realize (label);
   label_height = clutter_actor_get_height (label) + 3;

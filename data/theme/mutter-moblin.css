@@ -159,7 +159,7 @@ NbtkTooltip {
 
 /* workspace switcher */
 MnbSwitcher *.workspace-title-label {
-  font-family: "Liberation Sans Bold";
+  font-family: "Droid Sans Bold";
   font-size: 18;
   color: white;
 }
