@@ -470,15 +470,17 @@ ahoghill_results_pane_show_example_media (AhoghillResultsPane *pane,
 {
     AhoghillResultsPanePrivate *priv = pane->priv;
 
-    if (show && priv->example_page == NULL) {
-        nbtk_label_set_text ((NbtkLabel *) priv->title, "");
-        clutter_actor_hide ((ClutterActor *) priv->current_page);
-        priv->example_page = ahoghill_example_table_new (priv->model);
-        g_signal_connect (priv->example_page, "item-clicked",
-                          G_CALLBACK (item_clicked_cb), pane);
+    if (show){
+        if (priv->example_page == NULL) {
+            nbtk_label_set_text ((NbtkLabel *) priv->title, "");
+            clutter_actor_hide ((ClutterActor *) priv->current_page);
+            priv->example_page = ahoghill_example_table_new (priv->model);
+            g_signal_connect (priv->example_page, "item-clicked",
+                              G_CALLBACK (item_clicked_cb), pane);
 
-        nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed),
-                              (ClutterActor *) priv->example_page);
+            nbtk_fixed_add_actor (NBTK_FIXED (priv->fixed),
+                                  (ClutterActor *) priv->example_page);
+        }
         clutter_actor_show ((ClutterActor *) priv->example_page);
         clutter_actor_set_position ((ClutterActor *) priv->example_page, 0, 0);
     } else {
