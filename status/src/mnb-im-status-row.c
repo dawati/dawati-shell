@@ -34,7 +34,7 @@
 
 #define MNB_IM_STATUS_ROW_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_IM_STATUS_ROW, MnbIMStatusRowPrivate))
 
-#define ICON_SIZE       48.0
+#define ICON_SIZE       64.0
 #define H_PADDING       9.0
 
 struct _MnbIMStatusRowPrivate
@@ -42,6 +42,7 @@ struct _MnbIMStatusRowPrivate
   ClutterActor *header;
   ClutterActor *status_grid;
 
+  ClutterActor *avatar_bin;
   ClutterActor *user_icon;
   ClutterActor *presence_icon;
   ClutterActor *status_label;
@@ -283,7 +284,7 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
   child_box.y1 = (int) padding.top;
   child_box.x2 = (int) (child_box.x1 + ICON_SIZE);
   child_box.y2 = (int) (child_box.y1 + ICON_SIZE);
-  clutter_actor_allocate (priv->user_icon, &child_box, flags);
+  clutter_actor_allocate (priv->avatar_bin, &child_box, flags);
 
   /* the "Change" button must sit on the right side so we
    * get its preferred size first, which will be used to
@@ -370,7 +371,7 @@ mnb_im_status_row_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->paint (actor);
 
-  clutter_actor_paint (priv->user_icon);
+  clutter_actor_paint (priv->avatar_bin);
   clutter_actor_paint (priv->header);
   clutter_actor_paint (priv->expand_box);
 
@@ -397,7 +398,7 @@ mnb_im_status_row_map (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->map (actor);
 
-  clutter_actor_map (priv->user_icon);
+  clutter_actor_map (priv->avatar_bin);
   clutter_actor_map (priv->header);
   clutter_actor_map (priv->expand_box);
   clutter_actor_map (priv->status_grid);
@@ -410,7 +411,7 @@ mnb_im_status_row_unmap (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->unmap (actor);
 
-  clutter_actor_unmap (priv->user_icon);
+  clutter_actor_unmap (priv->avatar_bin);
   clutter_actor_unmap (priv->header);
   clutter_actor_unmap (priv->expand_box);
   clutter_actor_unmap (priv->status_grid);
@@ -474,7 +475,7 @@ mnb_im_status_row_finalize (GObject *gobject)
   g_free (priv->display_name);
   g_free (priv->no_icon_file);
 
-  clutter_actor_destroy (priv->user_icon);
+  clutter_actor_destroy (priv->avatar_bin);
   clutter_actor_destroy (priv->header);
   clutter_actor_destroy (priv->expand_box);
   clutter_actor_destroy (priv->status_grid);
@@ -573,6 +574,7 @@ mnb_im_status_row_constructed (GObject *gobject)
           g_warning ("Unable to load avatar image: %s", error->message);
           g_error_free (error);
 
+          clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), FALSE);
           clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
                                          priv->no_icon_file,
                                          NULL);
@@ -670,14 +672,18 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   nbtk_grid_set_valign (grid, 0.5);
   clutter_actor_set_parent (priv->header, CLUTTER_ACTOR (self));
 
+  priv->avatar_bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->avatar_bin),
+                                    "MnbStatusAvatar");
+  clutter_actor_set_parent (priv->avatar_bin, CLUTTER_ACTOR (self));
+
   file = g_build_filename (THEMEDIR,
                            "no_image_icon.png",
                            NULL);
   priv->user_icon = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon), file, NULL);
   priv->no_icon_file = file;
-
-  clutter_actor_set_parent (priv->user_icon, CLUTTER_ACTOR (self));
+  nbtk_bin_set_child (NBTK_BIN (priv->avatar_bin), priv->user_icon);
 
   file = g_build_filename (THEMEDIR,
                            "im-offline.png",

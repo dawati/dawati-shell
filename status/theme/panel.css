@@ -4,6 +4,12 @@ MnbWebStatusRow
   padding: 0 0 0 6;
 }
 
+MnbWebStatusRow > *.MnbStatusAvatar
+{
+  border-image: url("file://avatar-bg.png") 5 6 7 6;
+  padding: 7 8 9 8;
+}
+
 MnbWebStatusEntry
 {
   background-color: #ffffffff;
@@ -59,6 +65,12 @@ MnbIMStatusRow
 {
   background-color: #ffffffff;
   padding: 6 15 6 7;
+}
+
+MnbIMStatusRow > *.MnbStatusAvatar
+{
+  border-image: url("file://avatar-bg.png") 5 6 7 6;
+  padding: 7 8 9 8;
 }
 
 NbtkLabel.MnbImStatusLabel

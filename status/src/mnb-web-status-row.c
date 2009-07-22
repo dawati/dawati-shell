@@ -33,11 +33,12 @@
 
 #define MNB_WEB_STATUS_ROW_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_WEB_STATUS_ROW, MnbWebStatusRowPrivate))
 
-#define ICON_SIZE       48.0
+#define ICON_SIZE       64.0
 #define H_PADDING       9.0
 
 struct _MnbWebStatusRowPrivate
 {
+  ClutterActor *avatar_bin;
   ClutterActor *icon;
   ClutterActor *entry;
 
@@ -204,7 +205,7 @@ mnb_web_status_row_allocate (ClutterActor          *actor,
   child_box.y1 = priv->padding.top;
   child_box.x2 = child_box.x1 + ICON_SIZE;
   child_box.y2 = child_box.y1 + ICON_SIZE;
-  clutter_actor_allocate (priv->icon, &child_box, flags);
+  clutter_actor_allocate (priv->avatar_bin, &child_box, flags);
 
   /* separator */
   priv->icon_separator_x = child_box.x2 + H_PADDING;
@@ -234,7 +235,7 @@ mnb_web_status_row_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_web_status_row_parent_class)->paint (actor);
 
-  clutter_actor_paint (priv->icon);
+  clutter_actor_paint (priv->avatar_bin);
   clutter_actor_paint (priv->entry);
 }
 
@@ -258,11 +259,8 @@ mnb_web_status_row_map (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_web_status_row_parent_class)->map (actor);
 
-  if (priv->icon)
-    clutter_actor_map (priv->icon);
-
-  if (priv->entry)
-    clutter_actor_map (priv->entry);
+  clutter_actor_map (priv->avatar_bin);
+  clutter_actor_map (priv->entry);
 }
 
 static void
@@ -272,11 +270,8 @@ mnb_web_status_row_unmap (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_web_status_row_parent_class)->unmap (actor);
 
-  if (priv->icon)
-    clutter_actor_unmap (priv->icon);
-
-  if (priv->entry)
-    clutter_actor_unmap (priv->entry);
+  clutter_actor_unmap (priv->avatar_bin);
+  clutter_actor_unmap (priv->entry);
 }
 
 static gboolean
@@ -421,6 +416,7 @@ on_mojito_get_persona_icon (MojitoClientService *service,
     return;
 
   internal_error = NULL;
+  clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->icon), TRUE);
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
                                  persona_icon,
                                  &internal_error);
@@ -431,6 +427,7 @@ on_mojito_get_persona_icon (MojitoClientService *service,
                  persona_icon,
                  internal_error->message);
 
+      clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->icon), FALSE);
       clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
                                      priv->no_icon_file,
                                      NULL);
@@ -634,7 +631,7 @@ mnb_web_status_row_finalize (GObject *gobject)
 
   g_free (priv->last_status_text);
 
-  clutter_actor_destroy (priv->icon);
+  clutter_actor_destroy (priv->avatar_bin);
   clutter_actor_destroy (priv->entry);
 
   G_OBJECT_CLASS (mnb_web_status_row_parent_class)->finalize (gobject);
@@ -757,6 +754,11 @@ mnb_web_status_row_init (MnbWebStatusRow *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), FALSE);
 
+  priv->avatar_bin = CLUTTER_ACTOR (nbtk_bin_new ());
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->avatar_bin),
+                                    "MnbStatusAvatar");
+  clutter_actor_set_parent (priv->avatar_bin, CLUTTER_ACTOR (self));
+
   priv->no_icon_file = g_build_filename (THEMEDIR,
                                          "no_image_icon.png",
                                          NULL);
@@ -782,8 +784,7 @@ mnb_web_status_row_init (MnbWebStatusRow *self)
     }
 
   clutter_actor_set_opacity (priv->icon, 128);
-  clutter_actor_set_size (priv->icon, ICON_SIZE, ICON_SIZE);
-  clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (self));
+  nbtk_bin_set_child (NBTK_BIN (priv->avatar_bin), priv->icon);
 
   priv->client = mojito_client_new ();
   g_signal_connect (priv->client, "online-changed",
