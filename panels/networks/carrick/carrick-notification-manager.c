@@ -83,9 +83,15 @@ carrick_notification_manager_queue_event (CarrickNotificationManager *self,
                                           const gchar *name)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
+
   g_free (priv->queued_type);
+  priv->queued_type = NULL;
+
   g_free (priv->queued_state);
+  priv->queued_state = NULL;
+
   g_free (priv->queued_name);
+  priv->queued_name = NULL;
 
   if (type)
     priv->queued_type = g_strdup (type);
@@ -359,6 +365,7 @@ _services_changed_cb (CmManager *manager,
       g_free (priv->last_type);
       priv->last_type = g_strdup (priv->queued_type);
       g_free (priv->last_name);
+      priv->last_name = NULL;
       if (priv->queued_name && g_strcmp0 (priv->queued_name, "all") != 0)
         priv->last_name = g_strdup (priv->queued_name);
 
