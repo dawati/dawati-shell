@@ -39,6 +39,10 @@ struct _CarrickNotificationManagerPrivate
   gchar *last_type;
   gchar *last_name;
   gchar *last_state;
+
+  gchar *queued_type;
+  gchar *queued_name;
+  gchar *queued_state;
 };
 
 enum
@@ -56,20 +60,41 @@ carrick_notification_manager_queue_service (CarrickNotificationManager *self,
   const gchar *name = cm_service_get_name (service);
   const gchar *type = cm_service_get_type (service);
 
-  g_free (priv->last_state);
+  g_free (priv->queued_state);
   if (enabling)
-    priv->last_state = g_strdup ("ready");
+    priv->queued_state = g_strdup ("ready");
   else
-    priv->last_state = g_strdup ("idle");
+    priv->queued_state = g_strdup ("idle");
 
-  g_free (priv->last_type);
-  priv->last_type = g_strdup (type);
+  g_free (priv->queued_type);
+  priv->queued_type = g_strdup (type);
 
   if (name)
   {
-    g_free (priv->last_name);
-    priv->last_name = g_strdup (name);
+    g_free (priv->queued_name);
+    priv->queued_name = g_strdup (name);
   }
+}
+
+void
+carrick_notification_manager_queue_event (CarrickNotificationManager *self,
+                                          const gchar *type,
+                                          const gchar *state,
+                                          const gchar *name)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+  g_free (priv->queued_type);
+  g_free (priv->queued_state);
+  g_free (priv->queued_name);
+
+  if (type)
+    priv->queued_type = g_strdup (type);
+
+  if (state)
+    priv->queued_state = g_strdup (state);
+
+  if (name)
+    priv->queued_name = g_strdup (name);
 }
 
 static void
@@ -295,6 +320,7 @@ _services_changed_cb (CmManager *manager,
   const gchar *name = NULL;
   const gchar *state = NULL;
   guint str = 0;
+  gboolean queue_handled = FALSE;
 
   if (!new_services)
     return;
@@ -309,7 +335,7 @@ _services_changed_cb (CmManager *manager,
   state = cm_service_get_state (new_top);
   str = cm_service_get_strength (new_top);
 
-  /* FIXME: only show for non-user action */
+  /* FIXME: handle offline mode */
 
   /*
    * Determine what note to send, we can:
@@ -317,8 +343,28 @@ _services_changed_cb (CmManager *manager,
    * _tell_offline (self, name, type)
    * _tell_online (name, type, str)
    */
-  if (g_strcmp0 (priv->last_type, type) != 0 ||
-      g_strcmp0 (priv->last_name, name) != 0)
+
+  /* Need to handle last events and queued events separately to better maintain
+   * the systems state */
+  if (priv->queued_state)
+  {
+    /* We have a queued event, test to see if that's what happened */
+    if (g_strcmp0 (priv->queued_type, type) == 0 &&
+        g_strcmp0 (priv->queued_state, state) == 0)
+    {
+      g_free (priv->queued_state);
+      priv->queued_state = NULL;
+      g_free (priv->queued_type);
+      priv->queued_type = NULL;
+      g_free (priv->queued_name);
+      priv->queued_name = NULL;
+      queue_handled = TRUE;
+    }
+  }
+
+  if (!queue_handled &&
+      (g_strcmp0 (priv->last_type, type) != 0 ||
+       (priv->last_name != NULL && g_strcmp0 (priv->last_name, name) != 0)))
   {
     /* top service has changed */
     if (g_strcmp0 (state, "ready") == 0 &&
@@ -338,7 +384,8 @@ _services_changed_cb (CmManager *manager,
       _tell_offline (self, name, type);
     }
   }
-  else if (g_strcmp0 (priv->last_name, name) == 0 &&
+  else if (!queue_handled &&
+           g_strcmp0 (priv->last_name, name) == 0 &&
            g_strcmp0 (priv->last_state, state) != 0)
   {
     /* service same but state changed */
@@ -443,6 +490,13 @@ carrick_notification_manager_dispose (GObject *object)
 
   notify_uninit ();
 
+  g_free (priv->last_type);
+  g_free (priv->last_name);
+  g_free (priv->last_state);
+  g_free (priv->queued_type);
+  g_free (priv->queued_name);
+  g_free (priv->queued_state);
+
   if (priv->manager)
   {
     _set_manager (self,
@@ -490,6 +544,9 @@ carrick_notification_manager_init (CarrickNotificationManager *self)
   self->priv->last_type = NULL;
   self->priv->last_name = NULL;
   self->priv->last_state = NULL;
+  self->priv->queued_type = NULL;
+  self->priv->queued_name = NULL;
+  self->priv->queued_state = NULL;
 
   notify_init ("Carrick");
 }
