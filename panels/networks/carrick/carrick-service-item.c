@@ -474,12 +474,14 @@ static void
 _connect_with_password (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
-  const char *passphrase;
+  const gchar *passphrase;
 
   if (priv->passphrase_hint_visible)
   {
     passphrase = "";
-  } else {
+  }
+  else
+  {
     passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
   }
 
