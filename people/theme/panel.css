@@ -50,8 +50,8 @@
 
 AnerleyTile *.AnerleyTileAvatar
 {
-  border-image: url("file://avatar-bg.png") 7 8 9 8;
-  padding: 9 10 11 10;
+  border-image: url("file://avatar-bg.png") 5 6 7 6;
+  padding: 7 8 9 8;
 }
 
 AnerleyTile
