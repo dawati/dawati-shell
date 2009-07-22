@@ -704,6 +704,12 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
    */
   priv->waiting_for_panel = checked;
 
+  /*
+   * Clear the autohiding flag -- if the user is clicking on the panel buttons
+   * then we are back to normal mode.
+   */
+  priv->dont_autohide = FALSE;
+
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if ((priv->buttons[i] != (NbtkWidget*)button))
       {
