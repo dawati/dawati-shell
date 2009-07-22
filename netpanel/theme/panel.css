@@ -37,7 +37,7 @@ MnbNetpanelBar *.MplEntryClearButton:hover {
 MoblinNetbookNetpanel
 {
   background-color: #ffffff;
-  padding: 6;
+  padding: 1 5 5 5;
 }
 
 MoblinNetbookNetpanel NbtkLabel
