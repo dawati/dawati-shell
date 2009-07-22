@@ -26,6 +26,8 @@
 
 #include <mojito-client/mojito-client.h>
 
+#include <penge/penge-magic-texture.h>
+
 #include "mnb-web-status-row.h"
 #include "mnb-web-status-entry.h"
 
@@ -760,7 +762,10 @@ mnb_web_status_row_init (MnbWebStatusRow *self)
                                          NULL);
 
   error = NULL;
-  priv->icon = clutter_texture_new_from_file (priv->no_icon_file, &error);
+  priv->icon = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                 priv->no_icon_file,
+                                 &error);
   if (G_UNLIKELY (priv->icon == NULL))
     {
       const ClutterColor color = { 204, 204, 0, 255 };

@@ -25,6 +25,8 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 
+#include <penge/penge-magic-texture.h>
+
 #include <libmissioncontrol/mission-control.h>
 
 #include "mnb-im-status-row.h"
@@ -671,7 +673,7 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   file = g_build_filename (THEMEDIR,
                            "no_image_icon.png",
                            NULL);
-  priv->user_icon = clutter_texture_new ();
+  priv->user_icon = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon), file, NULL);
   priv->no_icon_file = file;
 
