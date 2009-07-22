@@ -165,8 +165,8 @@ on_row_status_changed (MnbIMStatusRow *row,
 }
 
 static void
-add_account (MoblinStatusPanel *panel,
-             AccountInfo       *a_info)
+add_account_row (MoblinStatusPanel *panel,
+                 AccountInfo       *a_info)
 {
   a_info->row = g_object_new (MNB_TYPE_IM_STATUS_ROW,
                               "account-name", a_info->name,
@@ -605,7 +605,7 @@ on_mc_account_enabled (McAccountMonitor  *monitor,
       a_info->is_visible = FALSE;
       a_info->is_enabled = TRUE;
 
-      add_account (panel, a_info);
+      add_account_row (panel, a_info);
 
       panel->accounts = g_slist_prepend (panel->accounts, a_info);
     }
@@ -694,13 +694,13 @@ on_mojito_online_changed (MojitoClient      *client,
       a_info = g_slice_new (AccountInfo);
       a_info->name = g_strdup (name);
       a_info->panel = panel;
-      a_info->account = account;
+      a_info->account = g_object_ref (account);
       a_info->row = NULL;
       a_info->box = panel->box;
       a_info->is_visible = FALSE;
       a_info->is_enabled = TRUE;
 
-      add_account (panel, a_info);
+      add_account_row (panel, a_info);
 
       cur_accounts = g_slist_prepend (cur_accounts, a_info);
     }
@@ -764,13 +764,13 @@ on_mojito_is_online (MojitoClient *client,
       a_info = g_slice_new (AccountInfo);
       a_info->name = g_strdup (name);
       a_info->panel = panel;
-      a_info->account = account;
+      a_info->account = g_object_ref (account);
       a_info->row = NULL;
       a_info->box = panel->box;
       a_info->is_visible = FALSE;
       a_info->is_enabled = TRUE;
 
-      add_account (panel, a_info);
+      add_account_row (panel, a_info);
 
       cur_accounts = g_slist_prepend (cur_accounts, a_info);
     }
@@ -798,6 +798,11 @@ on_mojito_is_online (MojitoClient *client,
 
   update_header (NBTK_LABEL (panel->header_label), is_online);
   update_mc (panel, is_online);
+
+  /* get notification when the online state changes */
+  g_signal_connect (panel->mojito_client, "online-changed",
+                    G_CALLBACK (on_mojito_online_changed),
+                    panel);
 }
 
 #if 0
@@ -1072,9 +1077,6 @@ make_status (MoblinStatusPanel *panel)
 
   /* online notification on the header */
   mojito_client_is_online (panel->mojito_client, on_mojito_is_online, panel);
-  g_signal_connect (panel->mojito_client, "online-changed",
-                    G_CALLBACK (on_mojito_online_changed),
-                    panel);
 
   /* start retrieving the services */
   mojito_client_get_services (panel->mojito_client,
