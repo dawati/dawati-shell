@@ -445,7 +445,7 @@ msgstr "prueba"
 
 #: ../src/mnb-toolbar.c:1749
 msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "Para activar la barra de herramientas, lleva el cursor arriba"
+msgstr "Mueve el cursor hacia arriba para ver la barra de herramientas"
 
 #: ../status/src/mnb-im-status-row.c:97
 #: ../status/src/mnb-im-status-row.c:98
