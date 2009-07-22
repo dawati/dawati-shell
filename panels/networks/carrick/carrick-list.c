@@ -74,10 +74,6 @@ carrick_list_set_property (GObject *object, guint property_id,
 static void
 carrick_list_dispose (GObject *object)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (object);
-  if (priv->fallback)
-    gtk_widget_destroy (priv->fallback);
-
   G_OBJECT_CLASS (carrick_list_parent_class)->dispose (object);
 }
 
@@ -357,6 +353,9 @@ carrick_list_add_fallback (CarrickList *list,
   priv->fallback = gtk_label_new (fallback);
   gtk_label_set_line_wrap (GTK_LABEL (priv->fallback),
                            TRUE);
+  gtk_widget_set_size_request (priv->fallback,
+                               550,
+                               -1);
   gtk_widget_show (priv->fallback);
 
   gtk_box_pack_start (GTK_BOX (list),
