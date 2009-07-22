@@ -119,8 +119,11 @@ NbtkGrid.MnbImPresenceRow
 
 *.MnbStatusPageTable
 {
-  border-image: url("file://decoration-frame.png") 17 stretch;
-  padding: 19;
+  border-image: url("file://decoration-frame.png") 13 17 17 17 stretch;
+  padding-top: 17px;
+  padding-left: 19px;
+  padding-right: 19px;
+  padding-bottom: 19px;
 }
 
 *.MnbStatusPageHeader
