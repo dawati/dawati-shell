@@ -641,6 +641,23 @@ on_mc_account_disabled (McAccountMonitor  *monitor,
 }
 
 static void
+on_mc_account_changed (McAccountMonitor  *monitor,
+                       gchar             *name,
+                       MoblinStatusPanel *panel)
+{
+  AccountInfo *a_info;
+
+  a_info = account_find_by_name (panel, name);
+  if (a_info == NULL)
+    return;
+
+  if (a_info->row)
+    g_object_set (G_OBJECT (a_info->row),
+                  "display-name", mc_account_get_display_name (a_info->account),
+                  NULL);
+}
+
+static void
 on_mojito_online_changed (MojitoClient      *client,
                           gboolean           is_online,
                           MoblinStatusPanel *panel)
@@ -1033,6 +1050,9 @@ make_status (MoblinStatusPanel *panel)
   panel->account_monitor = mc_account_monitor_new ();
   g_signal_connect (panel->account_monitor,
                     "account-enabled", G_CALLBACK (on_mc_account_enabled),
+                    panel);
+  g_signal_connect (panel->account_monitor,
+                    "account-changed", G_CALLBACK (on_mc_account_changed),
                     panel);
   g_signal_connect (panel->account_monitor,
                     "account-disabled", G_CALLBACK (on_mc_account_disabled),

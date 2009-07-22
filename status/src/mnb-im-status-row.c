@@ -75,7 +75,8 @@ enum
 {
   PROP_0,
 
-  PROP_ACCOUNT_NAME
+  PROP_ACCOUNT_NAME,
+  PROP_DISPLAY_NAME
 };
 
 enum
@@ -494,6 +495,19 @@ mnb_im_status_row_set_property (GObject      *gobject,
       priv->account_name = g_value_dup_string (value);
       break;
 
+    case PROP_DISPLAY_NAME:
+      g_free (priv->display_name);
+      priv->display_name = g_value_dup_string (value);
+      if (priv->account_label != NULL)
+        {
+          gchar *display_name;
+
+          display_name = g_strconcat (" - ", priv->display_name, NULL);
+          nbtk_label_set_text (NBTK_LABEL (priv->account_label), display_name);
+          g_free (display_name);
+        }
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -514,6 +528,10 @@ mnb_im_status_row_get_property (GObject    *gobject,
       g_value_set_string (value, priv->account_name);
       break;
 
+    case PROP_DISPLAY_NAME:
+      g_value_set_string (value, priv->display_name);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -530,7 +548,10 @@ mnb_im_status_row_constructed (GObject *gobject)
   g_assert (priv->account_name != NULL);
 
   priv->account = mc_account_lookup (priv->account_name);
-  priv->display_name = g_strdup (mc_account_get_display_name (priv->account));
+
+  if (priv->display_name == NULL)
+    priv->display_name = g_strdup (mc_account_get_display_name (priv->account));
+
   priv->is_online = FALSE;
 
   name = g_strconcat (" - ", priv->display_name, NULL);
@@ -592,6 +613,13 @@ mnb_im_status_row_class_init (MnbIMStatusRowClass *klass)
                                NULL,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (gobject_class, PROP_ACCOUNT_NAME, pspec);
+
+  pspec = g_param_spec_string ("display-name",
+                               "Display Name",
+                               "The display name of the MissionControl account",
+                               NULL,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_DISPLAY_NAME, pspec);
 
   row_signals[STATUS_CHANGED] =
     g_signal_new (g_intern_static_string ("status-changed"),
