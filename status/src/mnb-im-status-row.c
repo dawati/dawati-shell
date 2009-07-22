@@ -58,6 +58,7 @@ struct _MnbIMStatusRowPrivate
   gchar *no_icon_file;
 
   gfloat spacing;
+  gfloat expand_box_x;
 
   guint in_hover    : 1;
   guint is_online   : 1;
@@ -139,6 +140,8 @@ on_expand_clicked (ClutterActor   *box,
       nbtk_label_set_text (NBTK_LABEL (priv->expand_label), _("Change"));
       nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->expand_icon),
                                         "MnbImExpandIconOpen");
+
+      priv->expand_box_x = -1;
     }
 
   if (!clutter_timeline_is_playing (priv->timeline))
@@ -329,13 +332,18 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
   child_box.y2 = (int) child_box.y1 + child_height;
   clutter_actor_allocate (priv->header, &child_box, flags);
 
+  if (priv->expand_box_x < 0)
+    {
+      priv->expand_box_x = (int) ((box->x2 - box->x1)
+                         - padding.right
+                         - button_width
+                         - (priv->spacing * 2));
+    }
+
   /* we want the header button to stay at the same place even when
    * expanding the row
    */
-  child_box.x1 = (int) ((box->x2 - box->x1)
-               - padding.right
-               - button_width
-               - (priv->spacing * 2));
+  child_box.x1 = priv->expand_box_x;
   child_box.y1 = (int) (padding.top + ((ICON_SIZE - button_height) / 2));
   child_box.x2 = (int) (child_box.x1 + button_width);
   child_box.y2 = (int) (child_box.y1 + button_height);
@@ -646,6 +654,8 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   gint i;
 
   self->priv = priv = MNB_IM_STATUS_ROW_GET_PRIVATE (self);
+
+  priv->expand_box_x = -1;
 
   priv->timeline = clutter_timeline_new (250);
   clutter_timeline_set_direction (priv->timeline, CLUTTER_TIMELINE_BACKWARD);
