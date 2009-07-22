@@ -669,10 +669,13 @@ on_mojito_online_changed (MojitoClient      *client,
 
   panel->is_online = is_online;
 
+  /* if we are online but MC reports an unset presence then we
+   * should assume we are offline
+   */
   if (panel->is_online &&
       panel->im_presence == TP_CONNECTION_PRESENCE_TYPE_UNSET)
     {
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AVAILABLE;
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_OFFLINE;
       panel->im_status = NULL;
     }
 
