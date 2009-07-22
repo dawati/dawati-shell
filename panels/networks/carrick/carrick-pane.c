@@ -214,7 +214,7 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "wifi",
                                               "ready",
-                                              NULL);
+                                              "all");
     cm_manager_enable_technology (priv->manager, "wifi");
   }
   else
@@ -222,7 +222,7 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "wifi",
                                               "idle",
-                                              NULL);
+                                              "all");
     cm_manager_disable_technology (priv->manager, "wifi");
   }
 
@@ -241,7 +241,7 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "ethernet",
                                               "ready",
-                                              NULL);
+                                              "all");
     cm_manager_enable_technology (priv->manager, "ethernet");
   }
   else
@@ -249,7 +249,7 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "ethernet",
                                               "idle",
-                                              NULL);
+                                              "all");
     cm_manager_disable_technology (priv->manager, "ethernet");
   }
 
@@ -268,7 +268,7 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "cellular",
                                               "ready",
-                                              NULL);
+                                              "all");
 
     cm_manager_enable_technology (priv->manager, "cellular");
   }
@@ -277,7 +277,7 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "cellular",
                                               "idle",
-                                              NULL);
+                                              "all");
     cm_manager_disable_technology (priv->manager, "cellular");
   }
 
@@ -296,7 +296,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "wimax",
                                               "ready",
-                                              NULL);
+                                              "all");
     cm_manager_enable_technology (priv->manager, "wimax");
   }
   else
@@ -304,7 +304,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "wimax",
                                               "idle",
-                                              NULL);
+                                              "all");
     cm_manager_disable_technology (priv->manager, "wimax");
   }
 
@@ -545,7 +545,11 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
-  /* FIXME: Inform notification manager */
+  /* FIXME: This is a band aid, needs a better fix */
+  carrick_notification_manager_queue_event (priv->notes,
+                                            "wifi",
+                                            "idle",
+                                            "all");
   cm_manager_set_offline_mode (priv->manager, new_state);
 
   return TRUE;
