@@ -138,7 +138,7 @@ msgstr "Połączono"
 #: ../carrick/carrick-service-item.c:250
 #, c-format
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #: ../carrick/carrick-service-item.c:253
 msgid "Configuring"
