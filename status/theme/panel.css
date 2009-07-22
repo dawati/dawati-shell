@@ -143,7 +143,7 @@ NbtkGrid.MnbImPresenceRow
   font-family: "Droid Sans Bold";
   font-size: 18px;
   color: #3e3e3eff;
-  padding: 6;
+  padding: 6 6 0 12;
 }
 
 *.status-web-empty-bin {
