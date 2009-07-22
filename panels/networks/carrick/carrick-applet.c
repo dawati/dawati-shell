@@ -161,10 +161,11 @@ carrick_applet_init (CarrickApplet *self)
   priv->icon_factory = carrick_icon_factory_new ();
   priv->icon = carrick_status_icon_new (priv->icon_factory,
                                         priv->manager);
+  priv->notifications = carrick_notification_manager_new (priv->manager);
   priv->pane = carrick_pane_new (priv->icon_factory,
+                                 priv->notifications,
                                  priv->manager);
   gtk_widget_show (priv->pane);
-  priv->notifications = carrick_notification_manager_new (priv->manager);
 
   g_signal_connect (priv->manager,
                     "state-changed",

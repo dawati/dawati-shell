@@ -29,6 +29,7 @@
 #include "carrick-list.h"
 #include "carrick-service-item.h"
 #include "carrick-icon-factory.h"
+#include "carrick-notification-manager.h"
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
 
@@ -61,13 +62,15 @@ struct _CarrickPanePrivate {
   gboolean            ethernet_enabled;
   gboolean            threeg_enabled;
   gboolean            wimax_enabled;
+  CarrickNotificationManager *notes;
 };
 
 enum
 {
   PROP_0,
   PROP_ICON_FACTORY,
-  PROP_MANAGER
+  PROP_MANAGER,
+  PROP_NOTIFICATIONS
 };
 
 static void _update_manager (CarrickPane *pane,
@@ -104,6 +107,9 @@ carrick_pane_get_property (GObject    *object,
   case PROP_MANAGER:
     g_value_set_object (value, priv->manager);
     break;
+  case PROP_NOTIFICATIONS:
+    g_value_set_object (value, priv->notes);
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -126,6 +132,9 @@ carrick_pane_set_property (GObject      *object,
   case PROP_MANAGER:
     _update_manager (pane,
                      CM_MANAGER (g_value_get_object (value)));
+    break;
+  case PROP_NOTIFICATIONS:
+    priv->notes = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -174,6 +183,15 @@ carrick_pane_class_init (CarrickPaneClass *klass)
                                    PROP_ICON_FACTORY,
                                    pspec);
 
+  pspec = g_param_spec_object ("notification-manager",
+                               "CarrickNotificationManager",
+                               "Notification manager to use",
+                               CARRICK_TYPE_NOTIFICATION_MANAGER,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_NOTIFICATIONS,
+                                   pspec);
+
   pspec = g_param_spec_object ("manager",
                                "Manager.",
                                "The gconnman manager to use.",
@@ -193,10 +211,18 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
 
   if (new_state)
   {
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "wifi",
+                                              "ready",
+                                              NULL);
     cm_manager_enable_technology (priv->manager, "wifi");
   }
   else
   {
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "wifi",
+                                              "idle",
+                                              NULL);
     cm_manager_disable_technology (priv->manager, "wifi");
   }
 
@@ -212,10 +238,18 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
 
   if (new_state)
   {
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "ethernet",
+                                              "ready",
+                                              NULL);
     cm_manager_enable_technology (priv->manager, "ethernet");
   }
   else
   {
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "ethernet",
+                                              "idle",
+                                              NULL);
     cm_manager_disable_technology (priv->manager, "ethernet");
   }
 
@@ -231,11 +265,20 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
 
   if (new_state)
   {
-    cm_manager_enable_technology (priv->manager, "threeg");
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "cellular",
+                                              "ready",
+                                              NULL);
+
+    cm_manager_enable_technology (priv->manager, "cellular");
   }
   else
   {
-    cm_manager_disable_technology (priv->manager, "threeg");
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "cellular",
+                                              "idle",
+                                              NULL);
+    cm_manager_disable_technology (priv->manager, "cellular");
   }
 
   return TRUE;
@@ -250,10 +293,18 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
 
   if (new_state)
   {
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "wimax",
+                                              "ready",
+                                              NULL);
     cm_manager_enable_technology (priv->manager, "wimax");
   }
   else
   {
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "wimax",
+                                              "idle",
+                                              NULL);
     cm_manager_disable_technology (priv->manager, "wimax");
   }
 
@@ -441,6 +492,10 @@ _new_connection_cb (GtkButton *button,
       }
     }
 
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "wifi",
+                                              "ready",
+                                              network);
     joined = cm_manager_connect_wifi (priv->manager,
                                       network,
                                       security,
@@ -477,7 +532,7 @@ _service_updated_cb (CmService   *service,
    */
   if (carrick_list_find_service_item (list, service) == NULL)
   {
-    item = carrick_service_item_new (priv->icon_factory, service);
+    item = carrick_service_item_new (priv->icon_factory, priv->notes, service);
     carrick_list_add_item (list, item);
     carrick_list_sort_list (CARRICK_LIST (priv->service_list));
   }
@@ -490,6 +545,7 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
+  /* FIXME: Inform notification manager */
   cm_manager_set_offline_mode (priv->manager, new_state);
 
   return TRUE;
@@ -669,7 +725,7 @@ _available_technologies_changed_cb (CmManager *manager,
     {
       priv->have_threeg = TRUE;
       gtk_widget_set_sensitive (priv->threeg_switch,
-				TRUE);
+                                TRUE);
     }
     else if (g_strcmp0 (t, "wimax") == 0)
     {
@@ -1179,12 +1235,15 @@ carrick_pane_update (CarrickPane *pane)
 }
 
 GtkWidget*
-carrick_pane_new (CarrickIconFactory *icon_factory,
-                  CmManager          *manager)
+carrick_pane_new (CarrickIconFactory         *icon_factory,
+                  CarrickNotificationManager *notifications,
+                  CmManager                  *manager)
 {
   return g_object_new (CARRICK_TYPE_PANE,
                        "icon-factory",
                        icon_factory,
+                       "notification-manager",
+                       notifications,
                        "manager",
                        manager,
                        NULL);

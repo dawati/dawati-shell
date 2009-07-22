@@ -72,6 +72,27 @@ carrick_notification_manager_queue_service (CarrickNotificationManager *self,
   }
 }
 
+void
+carrick_notification_manager_queue_event (CarrickNotificationManager *self,
+                                          const gchar *type,
+                                          const gchar *state,
+                                          const gchar *name)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+  g_free (priv->last_type);
+  g_free (priv->last_state);
+  g_free (priv->last_name);
+
+  if (type)
+    priv->last_type = g_strdup (type);
+
+  if (state)
+    priv->last_state = g_strdup (state);
+
+  if (name)
+    priv->last_name = g_strdup (name);
+}
+
 static void
 _send_note (gchar *title,
             gchar *message,
@@ -309,7 +330,8 @@ _services_changed_cb (CmManager *manager,
   state = cm_service_get_state (new_top);
   str = cm_service_get_strength (new_top);
 
-  /* FIXME: only show for non-user action */
+  /* FIXME: handle offline mode */
+  /* FIXME: cope with name == NULL */
 
   /*
    * Determine what note to send, we can:
