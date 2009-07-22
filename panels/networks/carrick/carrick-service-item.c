@@ -27,6 +27,7 @@
 #include <gconnman/gconnman.h>
 #include <nbtk/nbtk-gtk.h>
 #include "carrick-icon-factory.h"
+#include "carrick-notification-manager.h"
 
 G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 
@@ -39,7 +40,8 @@ enum
 {
   PROP_0,
   PROP_ICON_FACTORY,
-  PROP_SERVICE
+  PROP_SERVICE,
+  PROP_NOTIFICATIONS
 };
 
 typedef enum
@@ -74,6 +76,8 @@ struct _CarrickServiceItemPrivate
   GdkColor            prelight_color;
   GdkColor            active_color;
   /*GdkCursor          *hand_cursor;*/
+
+  CarrickNotificationManager *note;
 };
 
 enum
@@ -106,6 +110,9 @@ carrick_service_item_get_property (GObject *object, guint property_id,
         g_value_set_object (value,
                             priv->service);
         break;
+    case PROP_NOTIFICATIONS:
+      g_value_set_object (value,
+                          priv->note);
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -376,12 +383,13 @@ static void
 _delete_button_cb (GtkButton *delete_button,
                    gpointer   user_data)
 {
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
   GtkWidget *dialog;
   GtkWidget *label;
   gchar *label_text = NULL;
   const gchar *ssid = NULL;
   const gchar *type = NULL;
-  CmService *service = CM_SERVICE (user_data);
+  CmService *service = priv->service;
 
   ssid = cm_service_get_name (service);
   type = cm_service_get_type (service);
@@ -423,7 +431,13 @@ _delete_button_cb (GtkButton *delete_button,
   gtk_widget_show_all (dialog);
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  {
+    carrick_notification_manager_queue_event (priv->note,
+                                              type,
+                                              "idle",
+                                              ssid);
     cm_service_remove (service);
+  }
 
   gtk_widget_destroy (dialog);
 }
@@ -433,18 +447,33 @@ _connect_button_cb (GtkButton          *connect_button,
                     CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  const gchar *name = cm_service_get_name (priv->service);
+  const gchar *type = cm_service_get_type (priv->service);
 
   g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
-  if (priv->state == READY ||
-      priv->state == CONFIGURE)
+  if (priv->state == READY)
   {
+    carrick_notification_manager_queue_event (priv->note,
+                                              type,
+                                              "idle",
+                                              name);
     cm_service_disconnect (priv->service);
-    _set_state (priv->service, item);
+  }
+  else if (priv->state == CONFIGURE)
+  {
+    /* Cancel an in progress connection, no need to update
+     * notification manager */
+    cm_service_disconnect (priv->service);
   }
   else
   {
     gchar *security = g_strdup (cm_service_get_security (priv->service));
+
+    carrick_notification_manager_queue_event (priv->note,
+                                              type,
+                                              "ready",
+                                              name);
 
     if (security && g_strcmp0 ("none", security) != 0)
     {
@@ -456,18 +485,18 @@ _connect_button_cb (GtkButton          *connect_button,
       {
         /* We have the passphrase already, just connect */
         cm_service_connect (priv->service);
-        _set_state (priv->service, item);
       }
     }
     else
     {
       /* No security, just connect */
       cm_service_connect (priv->service);
-      _set_state (priv->service, item);
     }
 
     g_free (security);
   }
+
+  _set_state (priv->service, item);
 }
 
 static void
@@ -475,6 +504,8 @@ _connect_with_password (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
   const gchar *passphrase;
+  const gchar *type = cm_service_get_type (priv->service);
+  const gchar *name = cm_service_get_name (priv->service);
 
   if (priv->passphrase_hint_visible)
   {
@@ -485,6 +516,10 @@ _connect_with_password (CarrickServiceItem *item)
     passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
   }
 
+  carrick_notification_manager_queue_event (priv->note,
+                                              type,
+                                              "ready",
+                                              name);
   cm_service_set_passphrase (priv->service,
                              passphrase);
   cm_service_connect (CM_SERVICE (priv->service));
@@ -575,7 +610,7 @@ carrick_service_item_set_service (CarrickServiceItem *service_item,
     g_signal_connect (priv->delete_button,
                       "clicked",
                       G_CALLBACK (_delete_button_cb),
-                      service);
+                      service_item);
 
     g_signal_connect (service,
                       "name-changed",
@@ -655,6 +690,9 @@ carrick_service_item_set_property (GObject *object, guint property_id,
       case PROP_SERVICE:
         carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object),
                                           CM_SERVICE (g_value_get_object (value)));
+        break;
+      case PROP_NOTIFICATIONS:
+        priv->note = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -761,6 +799,15 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class,
                                    PROP_SERVICE,
+                                   pspec);
+
+  pspec = g_param_spec_object ("notification-manager",
+                               "CarrickNotificationManager",
+                               "Notification manager to use",
+                               CARRICK_TYPE_NOTIFICATION_MANAGER,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_NOTIFICATIONS,
                                    pspec);
 
   pspec = g_param_spec_object ("icon-factory",
@@ -964,11 +1011,14 @@ carrick_service_item_init (CarrickServiceItem *self)
 
 GtkWidget*
 carrick_service_item_new (CarrickIconFactory *icon_factory,
+                          CarrickNotificationManager *notifications,
                           CmService          *service)
 {
   return g_object_new (CARRICK_TYPE_SERVICE_ITEM,
                        "icon-factory",
                        icon_factory,
+                       "notification-manager",
+                       notifications,
                        "service",
                        service,
                        NULL);
