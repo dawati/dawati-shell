@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-08 09:18+0000\n"
+"POT-Creation-Date: 2009-07-20 09:20+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
 "Language-Team: \n"
@@ -17,18 +17,18 @@ msgstr ""
 msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
 msgstr "Du behöver spela musik, titta på bilder eller video för att se din historia här. Under tiden kan du titta på litet test media:"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:388
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:930
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:417
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:981
 msgid "Recently played"
 msgstr "Tidigare spelade"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:414
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:443
 msgid "Search results"
 msgstr "Sökresultat"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:944
-msgid "Local"
-msgstr "Lokal "
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:995
+msgid "Playqueue"
+msgstr "Spelkö"
 
 #: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
 #, c-format
@@ -36,14 +36,10 @@ msgid "Season %u, Episode %u"
 msgstr "Säsong %u Avsnitt %u"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
-#: ../netpanel/src/moblin-netbook-netpanel.c:824
-#: ../netpanel/src/moblin-netbook-netpanel.c:1072
 msgid "Previous"
 msgstr "Tidigare"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
-#: ../netpanel/src/moblin-netbook-netpanel.c:831
-#: ../netpanel/src/moblin-netbook-netpanel.c:1089
 msgid "Next"
 msgstr "Nästa"
 
@@ -53,7 +49,7 @@ msgstr "Media"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
 #: ../applications/src/moblin-netbook-launcher.c:1377
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:219
+#: ../pasteboard/src/moblin-panel-pasteboard.c:219
 #: ../people/src/mnb-people-panel.c:563
 msgid "Search"
 msgstr "Sök"
@@ -82,8 +78,8 @@ msgstr "Avsnitt %d"
 msgid "Year %d"
 msgstr "År %d"
 
-#: ../ahoghill/src/moblin-panel-media.c:130
-#: ../src/moblin-netbook.c:324
+#: ../ahoghill/src/moblin-panel-media.c:138
+#: ../src/moblin-netbook.c:328
 msgid "media"
 msgstr "media"
 
@@ -99,50 +95,49 @@ msgstr "Favoritprogram"
 msgid "Applications"
 msgstr "Program"
 
-#: ../applications/src/moblin-panel-applications.c:158
-#: ../src/moblin-netbook.c:315
+#: ../applications/src/moblin-panel-applications.c:166
+#: ../src/moblin-netbook.c:319
 msgid "applications"
 msgstr "program"
 
-#: ../myzone/src/moblin-panel-myzone.c:70
-#: ../src/moblin-netbook.c:306
+#: ../myzone/src/moblin-panel-myzone.c:78
+#: ../src/moblin-netbook.c:310
 msgid "myzone"
 msgstr "myzone"
 
-#. Construct tabs previews table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:609
-msgid "Tabs"
-msgstr "Flikar"
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:644
-msgid "Favorite pages"
-msgstr "Favoritsidor"
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:669
+#: ../netpanel/src/moblin-netbook-netpanel.c:564
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "När du besöker webbsidor kommer dina favoriter visas här och på den nya fliken i webbläsaren."
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:940
+#: ../netpanel/src/moblin-netbook-netpanel.c:751
 msgid "Untitled"
 msgstr "Namnlös"
 
-#. FIXME: this should be a default image or startpage snapshot instead,
-#. and this label should become the caption title
-#: ../netpanel/src/moblin-netbook-netpanel.c:1047
+#: ../netpanel/src/moblin-netbook-netpanel.c:864
 msgid "New tab"
 msgstr "Ny zon"
 
 #. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1290
+#: ../netpanel/src/moblin-netbook-netpanel.c:1053
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:1303
+#: ../netpanel/src/moblin-netbook-netpanel.c:1066
 msgid "Go"
 msgstr "Gå till"
 
-#: ../netpanel/src/moblin-panel-internet.c:79
-#: ../src/moblin-netbook.c:321
+#. Construct title for tab preview section
+#: ../netpanel/src/moblin-netbook-netpanel.c:1087
+msgid "Tabs"
+msgstr "Flikar"
+
+#. Construct title for favorite pages section
+#: ../netpanel/src/moblin-netbook-netpanel.c:1092
+msgid "Favorite pages"
+msgstr "Favoritsidor"
+
+#: ../netpanel/src/moblin-panel-internet.c:87
+#: ../src/moblin-netbook.c:325
 msgid "internet"
 msgstr "internet"
 
@@ -156,42 +151,42 @@ msgstr "Sök efter %%s på %s"
 msgid "Go to %s.com"
 msgstr "Gå till %s.com"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:516
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:344
+#: ../pasteboard/src/mnb-clipboard-item.c:246
+#: ../pasteboard/src/moblin-panel-pasteboard.c:335
 msgid "Copy"
 msgstr "Kopiera"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:136
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:359
+#: ../pasteboard/src/moblin-panel-pasteboard.c:136
+#: ../pasteboard/src/moblin-panel-pasteboard.c:350
 msgid "the current selection to pasteboard"
 msgstr "Infoga aktuellt dokument till klipp-klistrafönstret"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:141
+#: ../pasteboard/src/moblin-panel-pasteboard.c:141
 msgid "your selection"
 msgstr "Dina val"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:206
+#: ../pasteboard/src/moblin-panel-pasteboard.c:206
 msgid "Pasteboard"
 msgstr "Klipp-klistrafönstret"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:254
+#: ../pasteboard/src/moblin-panel-pasteboard.c:254
 msgid "You need to copy some text to use Pasteboard"
 msgstr "Du behöver kopiera texten för att använda klipp-klistrafönstret"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:316
+#: ../pasteboard/src/moblin-panel-pasteboard.c:307
 msgid "Clear pasteboard"
 msgstr "Rensa klipp-klistrafönstret"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:433
-#: ../src/moblin-netbook.c:318
+#: ../pasteboard/src/moblin-panel-pasteboard.c:439
+#: ../src/moblin-netbook.c:322
 msgid "pasteboard"
 msgstr "klipp-klistrafönstret"
 
-#: ../penge/penge/penge-calendar-pane.c:180
+#: ../penge/penge/penge-calendar-pane.c:181
 msgid "<b>Appointments</b>"
 msgstr "<b>Möten</b>"
 
-#: ../penge/penge/penge-events-pane.c:198
+#: ../penge/penge/penge-events-pane.c:208
 msgid "No calendar entries this week"
 msgstr "Inget i kalendern denna vecka"
 
@@ -207,7 +202,7 @@ msgstr "<b>Välkommen till Moblin 2.0 för netbooks</b>"
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
 msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt i denna betaversion. Hoppas du gillar det! Team Moblin. "
 
-#: ../penge/penge/penge-recent-file-tile.c:234
+#: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
 msgstr "Webbplats"
 
@@ -292,8 +287,8 @@ msgstr "Föregående år"
 msgid "Ages ago"
 msgstr "För länge sedan"
 
-#: ../people/src/moblin-panel-people.c:61
-#: ../src/moblin-netbook.c:327
+#: ../people/src/moblin-panel-people.c:69
+#: ../src/moblin-netbook.c:331
 msgid "people"
 msgstr "personer "
 
@@ -310,7 +305,7 @@ msgid "Send a message"
 msgstr "Skicka ett meddelande"
 
 #: ../people/src/mnb-people-panel.c:302
-#: ../status/src/moblin-panel-status.c:755
+#: ../status/src/moblin-panel-status.c:838
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
 
@@ -322,25 +317,25 @@ msgstr "Personer "
 msgid "Selection"
 msgstr "Val"
 
-#: ../people/src/mnb-people-panel.c:741
+#: ../people/src/mnb-people-panel.c:742
 msgid "Nobody selected"
 msgstr "Ingen vald"
 
-#: ../src/moblin-netbook.c:309
-#: ../src/mnb-toolbar.c:1394
+#: ../src/moblin-netbook.c:313
+#: ../src/mnb-toolbar.c:1402
 msgid "zones"
 msgstr "zoner"
 
-#: ../src/moblin-netbook.c:312
-#: ../status/src/moblin-panel-status.c:1033
+#: ../src/moblin-netbook.c:316
+#: ../status/src/moblin-panel-status.c:1112
 msgid "status"
 msgstr "status"
 
-#: ../src/moblin-netbook.c:437
+#: ../src/moblin-netbook.c:441
 msgid "Moblin Netbook Effects"
 msgstr "Moblin netbookeffekter"
 
-#: ../src/moblin-netbook.c:441
+#: ../src/moblin-netbook.c:445
 msgid "Effects for Moblin Netbooks"
 msgstr "Effekter för Moblin netbooks"
 
@@ -362,41 +357,57 @@ msgstr "Välj zon för detta program:"
 msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 msgstr "Fältikonen har efterfrågat en storlek motsvarande (%i x %i), ändrar till (%i x %i)"
 
-#: ../src/mnb-switcher.c:1205
+#: ../src/mnb-switcher.c:1678
 msgid "No Zones yet"
 msgstr "Inga zoner ännu"
 
-#: ../src/mnb-switcher.c:1227
+#: ../src/mnb-switcher.c:1700
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 msgstr "Program du använder kommer visas här. Du kan byta och organisera dem bäst du vill."
 
-#: ../src/mnb-switcher.c:1431
+#: ../src/mnb-switcher.c:1923
 msgid "No applications on this zone"
 msgstr "Inga program i denna zon"
 
-#: ../src/mnb-toolbar.c:1631
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:668
+msgid "%l:%M %P"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:678
+msgid "%B %e, %Y"
+msgstr "%e %B, %Y"
+
+#: ../src/mnb-toolbar.c:1639
 msgid "power & brightness"
 msgstr "Ljushet och skärpa"
 
-#: ../src/mnb-toolbar.c:1634
+#: ../src/mnb-toolbar.c:1642
 msgid "volume"
 msgstr "volym"
 
-#: ../src/mnb-toolbar.c:1637
+#: ../src/mnb-toolbar.c:1645
 msgid "bluetooth"
 msgstr "bluetooth"
 
-#: ../src/mnb-toolbar.c:1640
+#: ../src/mnb-toolbar.c:1648
 msgid "networks"
 msgstr "nätverk"
 
-#: ../src/mnb-toolbar.c:1643
+#: ../src/mnb-toolbar.c:1651
 msgid "test"
 msgstr "testa"
 
-#: ../src/mnb-toolbar.c:1720
+#: ../src/mnb-toolbar.c:1749
 msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "För att aktivera listen, flytta din markör till översta delen av skärmen"
+msgstr "Aktivera listen, flytta din markör till översta delen av skärmen"
 
 #: ../status/src/mnb-im-status-row.c:97
 #: ../status/src/mnb-im-status-row.c:98
@@ -405,32 +416,32 @@ msgid "Offline"
 msgstr "Frånkopplad"
 
 #: ../status/src/mnb-im-status-row.c:99
-#: ../status/src/moblin-panel-status.c:489
+#: ../status/src/moblin-panel-status.c:572
 msgid "Available"
 msgstr "Tillgänglig"
 
 #: ../status/src/mnb-im-status-row.c:100
 #: ../status/src/mnb-im-status-row.c:101
-#: ../status/src/moblin-panel-status.c:493
-#: ../status/src/moblin-panel-status.c:497
+#: ../status/src/moblin-panel-status.c:576
+#: ../status/src/moblin-panel-status.c:580
 msgid "Away"
 msgstr "Borta"
 
 #: ../status/src/mnb-im-status-row.c:102
 #: ../status/src/mnb-im-status-row.c:103
-#: ../status/src/moblin-panel-status.c:501
-#: ../status/src/moblin-panel-status.c:505
+#: ../status/src/moblin-panel-status.c:584
+#: ../status/src/moblin-panel-status.c:588
 msgid "Busy"
 msgstr "Upptagen"
 
 #: ../status/src/mnb-im-status-row.c:122
-msgid "Close"
-msgstr "Stäng"
+msgid "- Close"
+msgstr "- Stäng"
 
 #: ../status/src/mnb-im-status-row.c:129
 #: ../status/src/mnb-im-status-row.c:654
-msgid "Change"
-msgstr "Ändra"
+msgid "+ Change"
+msgstr "+ Ändra"
 
 #: ../status/src/mnb-im-status-row.c:644
 msgid "Unknown account"
@@ -457,20 +468,23 @@ msgstr "Ange din nuvarande status här..."
 msgid "Post"
 msgstr "Efteruppgradering"
 
-#: ../status/src/moblin-panel-status.c:423
-#: ../status/src/moblin-panel-status.c:890
+#: ../status/src/moblin-panel-status.c:506
+#: ../status/src/moblin-panel-status.c:973
 msgid "Your current status"
 msgstr "Din nuvarande status"
 
-#: ../status/src/moblin-panel-status.c:425
+#: ../status/src/moblin-panel-status.c:508
 msgid "Your current status - you are offline"
 msgstr "Din nuvarande status - du är frånkopplad"
 
-#: ../status/src/moblin-panel-status.c:924
+#: ../status/src/moblin-panel-status.c:1007
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
 msgstr "För att uppdatera din webbstatus behöver du installera ett webbtjänstkonto med ett företag som stödjer statusmeddelanden"
 
-#: ../status/src/moblin-panel-status.c:951
+#: ../status/src/moblin-panel-status.c:1034
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "För att uppdatera din IM status behöver du installera ett IM konto"
+
+#~ msgid "Local"
+#~ msgstr "Lokal "
 
