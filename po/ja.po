@@ -28,7 +28,7 @@ msgstr "Yahoo! で次を検索する：%s"
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:995
 msgid "Playqueue"
-msgstr ""
+msgstr "Playqueue"
 
 #: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
 #, c-format
@@ -375,7 +375,7 @@ msgstr "このゾーンにはアプリケーションがありません"
 #.
 #: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
-msgstr ""
+msgstr "%P%l:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
@@ -383,7 +383,7 @@ msgstr ""
 #.
 #: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
-msgstr ""
+msgstr "%Y年%B月%e日"
 
 #: ../src/mnb-toolbar.c:1639
 msgid "power & brightness"
