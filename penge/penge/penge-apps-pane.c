@@ -124,8 +124,6 @@ penge_apps_pane_init (PengeAppsPane *self)
                                                 g_free,
                                                 NULL);
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
-
   penge_apps_pane_update (self);
 }
 
