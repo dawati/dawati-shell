@@ -83,9 +83,15 @@ carrick_notification_manager_queue_event (CarrickNotificationManager *self,
                                           const gchar *name)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
+
   g_free (priv->queued_type);
+  priv->queued_type = NULL;
+
   g_free (priv->queued_state);
+  priv->queued_state = NULL;
+
   g_free (priv->queued_name);
+  priv->queued_name = NULL;
 
   if (type)
     priv->queued_type = g_strdup (type);
@@ -327,6 +333,7 @@ _services_changed_cb (CmManager *manager,
 
   new_top = new_services->data;
 
+  /* FIXME: handle offline mode */
   if (!new_top)
     return;
 
@@ -334,8 +341,6 @@ _services_changed_cb (CmManager *manager,
   name = cm_service_get_name (new_top);
   state = cm_service_get_state (new_top);
   str = cm_service_get_strength (new_top);
-
-  /* FIXME: handle offline mode */
 
   /*
    * Determine what note to send, we can:
@@ -350,52 +355,67 @@ _services_changed_cb (CmManager *manager,
   {
     /* We have a queued event, test to see if that's what happened */
     if (g_strcmp0 (priv->queued_type, type) == 0 &&
-        g_strcmp0 (priv->queued_state, state) == 0)
+        g_strcmp0 (priv->queued_state, state) == 0 &&
+        (g_strcmp0 (priv->queued_name, name) ||
+         g_strcmp0 (priv->queued_name, "all")))
     {
+      /* Remember the event info */
+      g_free (priv->last_state);
+      priv->last_state = g_strdup (priv->queued_state);
+      g_free (priv->last_type);
+      priv->last_type = g_strdup (priv->queued_type);
+      g_free (priv->last_name);
+      priv->last_name = NULL;
+      if (priv->queued_name && g_strcmp0 (priv->queued_name, "all") != 0)
+        priv->last_name = g_strdup (priv->queued_name);
+
+      /* We've handled this queued event, clear the stored data */
       g_free (priv->queued_state);
       priv->queued_state = NULL;
       g_free (priv->queued_type);
       priv->queued_type = NULL;
       g_free (priv->queued_name);
       priv->queued_name = NULL;
+
       queue_handled = TRUE;
     }
   }
 
-  if (!queue_handled &&
-      (g_strcmp0 (priv->last_type, type) != 0 ||
-       (priv->last_name != NULL && g_strcmp0 (priv->last_name, name) != 0)))
+  if (!queue_handled)
   {
-    /* top service has changed */
-    if (g_strcmp0 (state, "ready") == 0 &&
-        g_strcmp0 (priv->last_state, "idle") == 0)
+    if (g_strcmp0 (priv->last_type, type) != 0 ||
+        (priv->last_name != NULL && g_strcmp0 (priv->last_name, name) != 0))
     {
-      _tell_online (name, type, str);
+      /* top service has changed */
+      if (g_strcmp0 (state, "ready") == 0 &&
+          g_strcmp0 (priv->last_state, "idle") == 0)
+      {
+        _tell_online (name, type, str);
+      }
+      else if (g_strcmp0 (state, "ready") == 0 &&
+               g_strcmp0 (priv->last_state, "ready") == 0
+               && g_strcmp0 (name, priv->last_name) != 0)
+      {
+        _tell_changed (self, name, type, str);
+      }
+      else if (g_strcmp0 (state, "idle") == 0
+               && g_strcmp0 (priv->last_state, "ready") == 0)
+      {
+        _tell_offline (self, name, type);
+      }
     }
-    else if (g_strcmp0 (state, "ready") == 0 &&
-             g_strcmp0 (priv->last_state, "ready") == 0
-             && g_strcmp0 (name, priv->last_name) != 0)
+    else if (g_strcmp0 (priv->last_name, name) == 0 &&
+             g_strcmp0 (priv->last_state, state) != 0)
     {
-      _tell_changed (self, name, type, str);
+      /* service same but state changed */
+      if (g_strcmp0 (state, "ready") == 0)
+        _tell_online (name, type, str);
+      else if (g_strcmp0 (state, "idle") == 0)
+        _tell_offline (self, name, type);
     }
-    else if (g_strcmp0 (state, "idle") == 0
-             && g_strcmp0 (priv->last_state, "ready") == 0)
-    {
-      _tell_offline (self, name, type);
-    }
-  }
-  else if (!queue_handled &&
-           g_strcmp0 (priv->last_name, name) == 0 &&
-           g_strcmp0 (priv->last_state, state) != 0)
-  {
-    /* service same but state changed */
-    if (g_strcmp0 (state, "ready") == 0)
-      _tell_online (name, type, str);
-    else if (g_strcmp0 (state, "idle") == 0)
-      _tell_offline (self, name, type);
   }
 
-  /*
+   /*
    * Stash state in last_*
    */
   g_free (priv->last_state);

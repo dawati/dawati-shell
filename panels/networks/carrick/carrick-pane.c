@@ -214,7 +214,7 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "wifi",
                                               "ready",
-                                              NULL);
+                                              "all");
     cm_manager_enable_technology (priv->manager, "wifi");
   }
   else
@@ -222,7 +222,7 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "wifi",
                                               "idle",
-                                              NULL);
+                                              "all");
     cm_manager_disable_technology (priv->manager, "wifi");
   }
 
@@ -241,7 +241,7 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "ethernet",
                                               "ready",
-                                              NULL);
+                                              "all");
     cm_manager_enable_technology (priv->manager, "ethernet");
   }
   else
@@ -249,7 +249,7 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "ethernet",
                                               "idle",
-                                              NULL);
+                                              "all");
     cm_manager_disable_technology (priv->manager, "ethernet");
   }
 
@@ -268,7 +268,7 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "cellular",
                                               "ready",
-                                              NULL);
+                                              "all");
 
     cm_manager_enable_technology (priv->manager, "cellular");
   }
@@ -277,7 +277,7 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "cellular",
                                               "idle",
-                                              NULL);
+                                              "all");
     cm_manager_disable_technology (priv->manager, "cellular");
   }
 
@@ -296,7 +296,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "wimax",
                                               "ready",
-                                              NULL);
+                                              "all");
     cm_manager_enable_technology (priv->manager, "wimax");
   }
   else
@@ -304,7 +304,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
     carrick_notification_manager_queue_event (priv->notes,
                                               "wimax",
                                               "idle",
-                                              NULL);
+                                              "all");
     cm_manager_disable_technology (priv->manager, "wimax");
   }
 
@@ -545,7 +545,11 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
 
-  /* FIXME: Inform notification manager */
+  /* FIXME: This is a band aid, needs a better fix */
+  carrick_notification_manager_queue_event (priv->notes,
+                                            "wifi",
+                                            "idle",
+                                            "all");
   cm_manager_set_offline_mode (priv->manager, new_state);
 
   return TRUE;
@@ -780,6 +784,20 @@ _enabled_technologies_changed_cb (CmManager *manager,
     l = l->next;
   }
 
+  /* disarm signal handlers */
+  g_signal_handlers_disconnect_by_func (priv->ethernet_switch,
+					_ethernet_switch_callback,
+					user_data);
+  g_signal_handlers_disconnect_by_func (priv->wifi_switch,
+					_wifi_switch_callback,
+					user_data);
+  g_signal_handlers_disconnect_by_func (priv->threeg_switch,
+					_threeg_switch_callback,
+					user_data);
+  g_signal_handlers_disconnect_by_func (priv->wimax_switch,
+					_wimax_switch_callback,
+					user_data);
+  
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
 				    (priv->ethernet_switch),
 				    priv->ethernet_enabled);
@@ -792,6 +810,24 @@ _enabled_technologies_changed_cb (CmManager *manager,
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
 				    (priv->wimax_switch),
 				    priv->wimax_enabled);
+
+  /* arm signal handlers */
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_ethernet_switch_callback),
+		    user_data);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_wifi_switch_callback),
+		    user_data);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_threeg_switch_callback),
+		    user_data);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_wimax_switch_callback),
+		    user_data);
 
   /* only enable if wifi is enabled */ 
   gtk_widget_set_sensitive (priv->new_conn_button,
@@ -808,16 +844,22 @@ _offline_mode_changed_cb (CmManager *manager,
 			  gpointer   user_data)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (user_data);
-  gboolean m1 = cm_manager_get_offline_mode (priv->manager);
-  gboolean m2 = nbtk_gtk_light_switch_get_active (NBTK_GTK_LIGHT_SWITCH 
-						  (priv->offline_mode_switch));
+  gboolean mode = cm_manager_get_offline_mode (priv->manager);
 
-  if (m1 != m2)
-  {
-    nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-				      (priv->offline_mode_switch),
-				      m2);
-  }
+  /* disarm signal handler */
+  g_signal_handlers_disconnect_by_func (priv->offline_mode_switch,
+					_offline_mode_switch_callback,
+					user_data);
+
+  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+				    (priv->offline_mode_switch),
+				    mode);
+
+  /* arm signal handler */
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
+                    "switch-flipped",
+                    G_CALLBACK (_offline_mode_switch_callback),
+                    user_data);
 }
 
 static void
