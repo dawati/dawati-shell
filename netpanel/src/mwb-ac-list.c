@@ -1086,7 +1086,18 @@ mwb_ac_list_realize (ClutterActor *actor)
               g_clear_error (&error);
             }
 
+          /* Add the tld suggestion observer */
+          if (!mhs_prefs_branch_add_observer (priv->prefs,
+                                              priv->prefs_branch,
+                                              MWB_AC_LIST_SUGGESTED_TLD_PREF,
+                                              &error))
+            {
+              g_warning ("%s", error->message);
+              g_clear_error (&error);
+            }
+
           mwb_ac_list_update_search_engine (self);
+          mwb_ac_list_update_tld_suggestions (self);
         }
       else
         {
