@@ -1,3 +1,14 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 # Derived from:
 # French translation of empathy.
 # Copyright (C) 2003-2009 The Free Software Foundation, Inc.
@@ -20,15 +31,20 @@
 # Yannick Tailliez <ytdispatch-libre@yahoo.com>, 2008.
 # Laurent Coudeur <laurentc@iol.ie>, 2009.
 #
-
+#: ../anerley/anerley-tile.c:199
 msgid "Available"
 msgstr "Disponible"
 
+#: ../anerley/anerley-tile.c:202
 msgid "Busy"
-msgstr "OccupÃ©"
+msgstr "Occupé"
 
+#: ../anerley/anerley-tile.c:205
+#: ../anerley/anerley-tile.c:208
 msgid "Away"
 msgstr "Absent"
 
+#: ../anerley/anerley-tile.c:211
 msgid "Offline"
-msgstr "DÃ©connectÃ©"
+msgstr "Déconnecté"
+
