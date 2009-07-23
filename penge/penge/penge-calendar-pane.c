@@ -163,6 +163,8 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                           tex,
                           0,
                           0);
+    /* Need to fix the size to avoid being squashed */
+    clutter_actor_set_size (tex, 30, 31);
 
     /* Use expand TRUE and fill FALSE to center valign with label */
     clutter_container_child_set (CLUTTER_CONTAINER (self),
