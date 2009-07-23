@@ -172,6 +172,10 @@ AhoghillExampleTable *.AhoghillExampleText {
   color: #595959ff;
 }
 
+AhoghillExampleTable *.AhoghillExampleResults {
+  padding-top: 10px;
+}
+
 AhoghillPlaylist {
   padding-top: 20px;
   padding-right: 14px;

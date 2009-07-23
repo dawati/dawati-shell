@@ -130,6 +130,8 @@ ahoghill_example_table_init (AhoghillExampleTable *self)
                                           NULL);
 
     priv->table = ahoghill_results_table_new (NULL, 1);
+    nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->table),
+                                      "AhoghillExampleResults");
     g_signal_connect (priv->table, "item-clicked",
                       G_CALLBACK (item_clicked_cb), self);
 
