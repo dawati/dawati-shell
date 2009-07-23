@@ -1099,12 +1099,12 @@ setup_standalone (MoblinStatusPanel *status_panel)
   ClutterActor *stage, *status;
 
   status = make_status (status_panel);
-  clutter_actor_set_size (status, 1024, 600);
+  clutter_actor_set_size (status, 1000, 400);
 
   stage = clutter_stage_get_default ();
+  clutter_actor_set_size (stage, 1000, 400);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
 
-  clutter_actor_set_size (stage, 1024, 600);
   clutter_actor_show (stage);
 }
 
