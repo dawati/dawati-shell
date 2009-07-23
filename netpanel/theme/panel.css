@@ -118,3 +118,35 @@ MoblinNetbookNetpanel *#netpanel-entrytable > NbtkLabel
   color: #3e3e3eff;
   padding: 0 12 0 0;
 }
+
+/* Scrollbar */
+NbtkScrollBar {
+  background-color: #e7ebee;
+  padding: 3;
+}
+
+NbtkScrollButton#backward-stepper {
+  border-image: url("file://vscroll-backward.png") 2 4 2 2 stretch stretch;
+}
+
+NbtkScrollButton#backward-stepper:active,
+NbtkScrollButton#backward-stepper:hover {
+  border-image: url("file://vscroll-backward-hover.png") 2 4 2 2 stretch stretch;
+}
+
+NbtkScrollButton#forward-stepper {
+  border-image: url("file://vscroll-forward.png") 2 4 2 2 stretch stretch;
+}
+
+NbtkScrollButton#forward-stepper:active,
+NbtkScrollButton#forward-stepper:hover {
+  border-image: url("file://vscroll-forward-hover.png") 2 4 2 2 stretch stretch;
+}
+
+NbtkScrollBar NbtkButton#handle {
+  border-image: url("file://vscroll-handle.png") 2 4 2 2 stretch stretch;
+}
+
+NbtkScrollBar NbtkButton#handle:hover {
+  border-image: url("file://vscroll-handle-hover.png") 2 4 2 2 stretch stretch;
+}

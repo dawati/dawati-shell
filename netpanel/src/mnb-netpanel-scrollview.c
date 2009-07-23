@@ -25,7 +25,7 @@
 #define MAX_DISPLAY 4
 #define ROW_SPACING 6
 #define COL_SPACING 6
-#define SCROLLBAR_HEIGHT 22
+#define SCROLLBAR_HEIGHT 24
 
 G_DEFINE_TYPE (MnbNetpanelScrollview, mnb_netpanel_scrollview, NBTK_TYPE_WIDGET)
 
