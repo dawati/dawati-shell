@@ -152,6 +152,30 @@ on_expand_clicked (ClutterActor   *box,
   return TRUE;
 }
 
+static gboolean
+on_expand_enter (ClutterActor   *box,
+                 ClutterEvent   *event,
+                 MnbIMStatusRow *row)
+{
+  MnbIMStatusRowPrivate *priv = row->priv;
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->expand_icon), "hover");
+
+  return TRUE;
+}
+
+static gboolean
+on_expand_leave (ClutterActor   *box,
+                 ClutterEvent   *event,
+                 MnbIMStatusRow *row)
+{
+  MnbIMStatusRowPrivate *priv = row->priv;
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->expand_icon), NULL);
+
+  return TRUE;
+}
+
 static void
 on_timeline_completed (ClutterTimeline *timeline,
                        MnbIMStatusRow  *row)
@@ -199,6 +223,36 @@ on_presence_row_clicked (ClutterActor   *actor,
                  presence_states[id].status_msg);
 
   return on_expand_clicked (row->priv->expand_box, event, row);
+}
+
+static gboolean
+on_presence_row_enter (ClutterActor   *actor,
+                       ClutterEvent   *event,
+                       MnbIMStatusRow *row)
+{
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor), "hover");
+
+  return FALSE;
+}
+
+static gboolean
+on_presence_row_leave (ClutterActor   *actor,
+                       ClutterEvent   *event,
+                       MnbIMStatusRow *row)
+{
+  ClutterActor *related;
+
+  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor), NULL);
+
+  /* stop the propagation if we are not leaving the status row or
+   * the presence chooser list; this keeps the hover state on the
+   * status row
+   */
+  related = clutter_event_get_related (event);
+  if (related == CLUTTER_ACTOR (row) || related == row->priv->status_grid)
+    return TRUE;
+
+  return FALSE;
 }
 
 static void
@@ -425,32 +479,6 @@ mnb_im_status_row_unmap (ClutterActor *actor)
   clutter_actor_unmap (priv->status_grid);
 }
 
-static gboolean
-mnb_im_status_row_enter (ClutterActor *actor,
-                      ClutterCrossingEvent *event)
-{
-  MnbIMStatusRowPrivate *priv = MNB_IM_STATUS_ROW (actor)->priv;
-
-  priv->in_hover = TRUE;
-
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->expand_icon), "hover");
-
-  return TRUE;
-}
-
-static gboolean
-mnb_im_status_row_leave (ClutterActor *actor,
-                        ClutterCrossingEvent *event)
-{
-  MnbIMStatusRowPrivate *priv = MNB_IM_STATUS_ROW (actor)->priv;
-
-  priv->in_hover = FALSE;
-
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->expand_icon), NULL);
-
-  return TRUE;
-}
-
 static void
 mnb_im_status_row_style_changed (NbtkWidget *widget)
 {
@@ -616,8 +644,6 @@ mnb_im_status_row_class_init (MnbIMStatusRowClass *klass)
   actor_class->pick = mnb_im_status_row_pick;
   actor_class->map = mnb_im_status_row_map;
   actor_class->unmap = mnb_im_status_row_unmap;
-  actor_class->enter_event = mnb_im_status_row_enter;
-  actor_class->leave_event = mnb_im_status_row_leave;
 
   pspec = g_param_spec_string ("account-name",
                                "Account Name",
@@ -737,6 +763,12 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   g_signal_connect (priv->expand_box,
                     "button-press-event", G_CALLBACK (on_expand_clicked),
                     self);
+  g_signal_connect (priv->expand_box,
+                    "enter-event", G_CALLBACK (on_expand_enter),
+                    self);
+  g_signal_connect (priv->expand_box,
+                    "leave-event", G_CALLBACK (on_expand_leave),
+                    self);
 
   priv->status_grid = CLUTTER_ACTOR (nbtk_box_layout_new ());
   nbtk_box_layout_set_vertical (NBTK_BOX_LAYOUT (priv->status_grid), TRUE);
@@ -771,6 +803,12 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
       clutter_actor_set_reactive (CLUTTER_ACTOR (presence_grid), TRUE);
       g_signal_connect (presence_grid, "button-press-event",
                         G_CALLBACK (on_presence_row_clicked),
+                        self);
+      g_signal_connect (presence_grid, "enter-event",
+                        G_CALLBACK (on_presence_row_enter),
+                        self);
+      g_signal_connect (presence_grid, "leave-event",
+                        G_CALLBACK (on_presence_row_leave),
                         self);
 
       presence_icon = clutter_texture_new ();
