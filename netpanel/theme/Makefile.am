@@ -13,13 +13,7 @@ dist_theme_DATA = \
 	newtab-thumbnail.png \
 	placeholder-bg.png \
 	thumbnail_hover.png \
-	thumbnail.png \
-	vscroll-backward-hover.png \
-	vscroll-backward.png \
-	vscroll-forward-hover.png \
-	vscroll-forward.png \
-	vscroll-handle-hover.png \
-	vscroll-handle.png
+	thumbnail.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
