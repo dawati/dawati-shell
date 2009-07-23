@@ -625,6 +625,121 @@ _add_fallback (CarrickPane *pane)
   g_free (fallback);
 }
 
+/*
+ * Version of _add_fallback that does not use string
+ * concatenation.
+ *
+ * This function is being compiled in without getting
+ * called so that the traslation tools will allow the
+ * translation team to translate the strings.  
+ * 
+ * We can not simply fix _add_fallback because we
+ * are past string freeze.
+ */
+static void
+_add_fallback_without_concat (CarrickPane *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  gchar *fallback = NULL;
+
+  /* Need to add some fall-back content */
+  if (!priv->have_daemon)
+  {
+    /* 
+     * Hint to display when we detect that the connection manager 
+     * is dead.  Ideally the system auto-restarts connman so the
+     * user will not see this, but this is what to show if all
+     * available recovery measures fail.
+     */
+    fallback = g_strdup (_("Sorry, we can't find any networks. "
+			   "The Connection Manager doesn't seem to be running. "
+			   "You may want to try re-starting your device."
+			   ));
+  }
+  else if (cm_manager_get_offline_mode (priv->manager))
+  {
+    /* 
+     * Hint display if we detect that the system is in
+     * offline mode and there are no available networks
+     */
+    fallback = g_strdup (_("Sorry, we can't find any networks. "
+			   "You could try disabling Offline mode. "
+			   ));
+  }
+  else if ((priv->have_wifi && !priv->wifi_enabled) ||
+	   (priv->have_ethernet && !priv->ethernet_enabled) ||
+	   (priv->have_threeg && !priv->threeg_enabled) ||
+	   (priv->have_wimax && !priv->wimax_enabled))
+  {
+    if (priv->have_wifi && !priv->wifi_enabled)
+    {
+      /* 
+       * Hint to display if we detect that wifi has been turned off 
+       * and there are no available networks
+       */
+      fallback = g_strdup (_("Sorry, we can't find any networks. "
+			     "You could try turning on WiFi."
+			     ));
+    }
+    else if (priv->have_wimax && !priv->wimax_enabled)
+    {
+      /* 
+       * Hint to display if we detect that wifi is on but
+       * WiMAX has been turned off and there are no available
+       * networks
+       */
+      fallback = g_strdup (_("Sorry, we can't find any networks. "
+			     "You could try turning on WiMAX."
+			     ));
+    }
+    else if (priv->have_threeg && !priv->threeg_enabled)
+    {
+      /* 
+       * Hint to display if we detect that wifi and wimax is on but
+       * 3G has been turned off and there are no available
+       * networks
+       */
+      fallback = g_strdup (_("Sorry, we can't find any networks. "
+			     "You could try turning on 3G."
+			     ));
+    }
+    else if (0 /* priv->have_bluetooth && !priv->bluetooth_enabled */)
+   {
+      /* 
+       * Hint to display if we detect that wifi, wimax, and 3G are on but
+       * bluetooth has been turned off and there are no available networks
+       */
+      fallback = g_strdup (_("Sorry, we can't find any networks. "
+			     "You could try turning on Bluetooth."
+			     ));
+    }
+    else if (priv->have_ethernet && !priv->ethernet_enabled)
+    {
+      /* 
+       * Hint to display if we detect that all technologies
+       * other then ethernet have been turned on, and there
+       * are no available networks
+       */
+      fallback = g_strdup (_("Sorry, we can't find any networks. "
+			     "You could try turning on Wired."
+			     ));
+    }
+  }
+  else
+  {
+    /*
+     * Generic message to display if all available networking 
+     * technologies are turned on, but for whatever reason we
+     * can not find any networks
+     */
+    fallback = g_strdup (_("Sorry, we can't find any networks"));
+  }
+
+  carrick_list_clear_fallback (CARRICK_LIST (priv->service_list));
+  carrick_list_add_fallback (CARRICK_LIST (priv->service_list), fallback);
+  g_free (fallback);
+}
+
 static void
 _update_services (CarrickPane *pane)
 {
@@ -691,7 +806,14 @@ _update_services (CarrickPane *pane)
 
   if (!fetched_services)
   {
-    _add_fallback (pane);
+    if (0)
+    {
+      _add_fallback_without_concat (pane);
+    }
+    else
+    {
+      _add_fallback (pane);
+    }
   }
 }
 
@@ -835,7 +957,14 @@ _enabled_technologies_changed_cb (CmManager *manager,
 
   if (!cm_manager_get_services (priv->manager))
   {
-    _add_fallback (CARRICK_PANE (user_data));
+    if (0)
+    {
+      _add_fallback_without_concat (CARRICK_PANE (user_data));
+    }
+    else
+    {
+      _add_fallback (CARRICK_PANE (user_data));
+    }
   }
 }
 
@@ -879,7 +1008,15 @@ _manager_state_changed_cb (CmManager *manager,
   else if (g_strcmp0 (state, "offline") == 0)
   {
     priv->have_daemon = TRUE;
-    _add_fallback (pane);
+
+    if (0)
+    {
+      _add_fallback_without_concat (pane);
+    }
+    else
+    {
+      _add_fallback (pane);
+    }
   }
 }
 
