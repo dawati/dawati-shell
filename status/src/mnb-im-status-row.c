@@ -925,3 +925,43 @@ mnb_im_status_row_set_status (MnbIMStatusRow           *row,
     nbtk_label_set_text (NBTK_LABEL (priv->status_label),
                          gettext (priv->status));
 }
+
+void
+mnb_im_status_row_update (MnbIMStatusRow *row)
+{
+  MnbIMStatusRowPrivate *priv;
+  gchar *str, *name;
+
+  g_return_if_fail (MNB_IM_STATUS_ROW (row));
+
+  priv = row->priv;
+
+  g_free (priv->display_name);
+  priv->display_name = g_strdup (mc_account_get_display_name (priv->account));
+
+  str = g_strconcat (" - ", priv->display_name, NULL);
+  nbtk_label_set_text (NBTK_LABEL (priv->account_label), str);
+  g_free (str);
+
+  if (mc_account_get_avatar (priv->account, &name, NULL, NULL))
+    {
+      GError *error = NULL;
+
+      clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), TRUE);
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
+                                     name,
+                                     &error);
+      if (error)
+        {
+          g_warning ("Unable to load avatar image: %s", error->message);
+          g_error_free (error);
+
+          clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), FALSE);
+          clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
+                                         priv->no_icon_file,
+                                         NULL);
+        }
+
+      g_free (name);
+    }
+}

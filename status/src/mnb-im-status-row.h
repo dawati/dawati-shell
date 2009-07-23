@@ -57,6 +57,7 @@ void        mnb_im_status_row_set_online (MnbIMStatusRow           *row,
 void        mnb_im_status_row_set_status (MnbIMStatusRow           *row,
                                           TpConnectionPresenceType  presence,
                                           const gchar              *status);
+void        mnb_im_status_row_update     (MnbIMStatusRow           *row);
 
 G_END_DECLS
 

@@ -652,9 +652,7 @@ on_mc_account_changed (McAccountMonitor  *monitor,
     return;
 
   if (a_info->row)
-    g_object_set (G_OBJECT (a_info->row),
-                  "display-name", mc_account_get_display_name (a_info->account),
-                  NULL);
+    mnb_im_status_row_update (MNB_IM_STATUS_ROW (a_info->row));
 }
 
 static void
