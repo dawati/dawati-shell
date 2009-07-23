@@ -270,8 +270,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                               2,
                               NULL);
 
- nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-
+ nbtk_table_set_row_spacing (NBTK_TABLE (self), 2);
 
 /*
   padding_rectangle = clutter_rectangle_new ();
