@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: empathy 2.25.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-17 21:30+0800\n"
+"POT-Creation-Date: 2009-07-21 20:47+0000\n"
 "PO-Revision-Date: 2009-02-17 21:30+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@lists.linux.org.tw>\n"
@@ -16,15 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: ../anerley/anerley-tile.c:199
 msgid "Available"
 msgstr "有空"
 
+#: ../anerley/anerley-tile.c:202
 msgid "Busy"
 msgstr "忙碌"
 
+#: ../anerley/anerley-tile.c:205 ../anerley/anerley-tile.c:208
 msgid "Away"
 msgstr "離開"
 
+#: ../anerley/anerley-tile.c:211
 msgid "Offline"
 msgstr "離線"
-
