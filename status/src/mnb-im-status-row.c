@@ -59,6 +59,7 @@ struct _MnbIMStatusRowPrivate
 
   gfloat spacing;
   gfloat expand_box_x;
+  gfloat old_width;
 
   guint in_hover    : 1;
   guint is_online   : 1;
@@ -336,6 +337,11 @@ mnb_im_status_row_allocate (ClutterActor           *actor,
   available_height = (box->y2 - box->y1)
                    - padding.top
                    - padding.bottom;
+
+  if (available_width != priv->old_width)
+    priv->expand_box_x = -1;
+
+  priv->old_width = available_width;
 
   child_box.x1 = (int) padding.left;
   child_box.y1 = (int) padding.top;
@@ -682,6 +688,7 @@ mnb_im_status_row_init (MnbIMStatusRow *self)
   self->priv = priv = MNB_IM_STATUS_ROW_GET_PRIVATE (self);
 
   priv->expand_box_x = -1;
+  priv->old_width = -1;
 
   priv->timeline = clutter_timeline_new (250);
   clutter_timeline_set_direction (priv->timeline, CLUTTER_TIMELINE_BACKWARD);
