@@ -1038,6 +1038,74 @@ mwb_ac_list_unmap (ClutterActor *actor)
 }
 
 static void
+mwb_ac_list_realize (ClutterActor *actor)
+{
+  MwbAcList *self = MWB_AC_LIST (actor);
+  MwbAcListPrivate *priv = self->priv;
+  GError *error = NULL;
+
+  /* Initialise the preference observers */
+  if (priv->prefs == NULL)
+    {
+      priv->prefs = mhs_prefs_new ();
+      if (mhs_prefs_get_branch (priv->prefs, "mwb.",
+                                &priv->prefs_branch, &error))
+        {
+          int i;
+
+          /* Add the boolean observers */
+          for (i = 0; i < G_N_ELEMENTS (mwb_ac_list_boolean_prefs); i++)
+            {
+              const gchar *name = mwb_ac_list_boolean_prefs[i].name;
+              gboolean *val
+                = (gboolean *) ((guchar *) priv +
+                                mwb_ac_list_boolean_prefs[i].offset);
+
+              if (!mhs_prefs_branch_get_bool (priv->prefs,
+                                              priv->prefs_branch,
+                                              name,
+                                              val,
+                                              &error)
+                  || !mhs_prefs_branch_add_observer (priv->prefs,
+                                                     priv->prefs_branch,
+                                                     name,
+                                                     &error))
+                {
+                  g_warning ("%s", error->message);
+                  g_clear_error (&error);
+                }
+            }
+
+          /* Add the search engine observer */
+          if (!mhs_prefs_branch_add_observer (priv->prefs,
+                                              priv->prefs_branch,
+                                              "search_engine.",
+                                              &error))
+            {
+              g_warning ("%s", error->message);
+              g_clear_error (&error);
+            }
+
+          mwb_ac_list_update_search_engine (self);
+        }
+      else
+        {
+          g_warning ("%s", error->message);
+          g_clear_error (&error);
+          priv->prefs_branch = -1;
+        }
+
+      priv->prefs_branch_changed_handler =
+        g_signal_connect (priv->prefs, "branch-changed",
+                          G_CALLBACK (mwb_ac_list_prefs_branch_changed_cb),
+                          self);
+    }
+
+  if (CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->realize)
+    CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->realize (actor);
+}
+
+static void
 mwb_ac_list_class_init (MwbAcListClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -1057,6 +1125,7 @@ mwb_ac_list_class_init (MwbAcListClass *klass)
   actor_class->allocate = mwb_ac_list_allocate;
   actor_class->map = mwb_ac_list_map;
   actor_class->unmap = mwb_ac_list_unmap;
+  actor_class->realize = mwb_ac_list_realize;
 
   pspec = g_param_spec_string ("search-text", "Search Text",
                                "The text to auto complete on",
@@ -1090,7 +1159,6 @@ static void
 mwb_ac_list_init (MwbAcList *self)
 {
   MwbAcListPrivate *priv = self->priv = MWB_AC_LIST_PRIVATE (self);
-  GError *error = NULL;
 
   priv->entries = g_array_new (FALSE, TRUE, sizeof (MwbAcListEntry));
 
@@ -1121,69 +1189,6 @@ mwb_ac_list_init (MwbAcList *self)
                                                  g_str_equal,
                                                  g_free,
                                                  NULL);
-
-  /* Initialise the preference observers */
-  priv->prefs = mhs_prefs_new ();
-  if (mhs_prefs_get_branch (priv->prefs, "mwb.", &priv->prefs_branch, &error))
-    {
-      int i;
-
-      /* Add the boolean observers */
-      for (i = 0; i < G_N_ELEMENTS (mwb_ac_list_boolean_prefs); i++)
-        {
-          const gchar *name = mwb_ac_list_boolean_prefs[i].name;
-          gboolean *val = (gboolean *) ((guchar *) priv +
-                                        mwb_ac_list_boolean_prefs[i].offset);
-
-          if (!mhs_prefs_branch_get_bool (priv->prefs,
-                                          priv->prefs_branch,
-                                          name,
-                                          val,
-                                          &error)
-              || !mhs_prefs_branch_add_observer (priv->prefs,
-                                                 priv->prefs_branch,
-                                                 name,
-                                                 &error))
-            {
-              g_warning ("%s", error->message);
-              g_clear_error (&error);
-            }
-        }
-
-      /* Add the search engine observer */
-      if (!mhs_prefs_branch_add_observer (priv->prefs,
-                                          priv->prefs_branch,
-                                          "search_engine.",
-                                          &error))
-        {
-          g_warning ("%s", error->message);
-          g_clear_error (&error);
-        }
-
-      /* Add the tld suggestion observer */
-      if (!mhs_prefs_branch_add_observer (priv->prefs,
-                                          priv->prefs_branch,
-                                          MWB_AC_LIST_SUGGESTED_TLD_PREF,
-                                          &error))
-        {
-          g_warning ("%s", error->message);
-          g_clear_error (&error);
-        }
-
-      mwb_ac_list_update_search_engine (self);
-      mwb_ac_list_update_tld_suggestions (self);
-    }
-  else
-    {
-      g_warning ("%s", error->message);
-      g_clear_error (&error);
-      priv->prefs_branch = -1;
-    }
-
-  priv->prefs_branch_changed_handler =
-    g_signal_connect (priv->prefs, "branch-changed",
-                      G_CALLBACK (mwb_ac_list_prefs_branch_changed_cb),
-                      self);
 
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mwb_ac_list_style_changed_cb), NULL);

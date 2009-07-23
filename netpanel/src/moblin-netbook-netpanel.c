@@ -1111,8 +1111,6 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                                                "/org/moblin/MoblinWebBrowser",
                                                "org.moblin.MoblinWebBrowser");
     }
-
-  create_history (self);
 }
 
 NbtkWidget*

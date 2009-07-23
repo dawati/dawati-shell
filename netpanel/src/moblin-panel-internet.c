@@ -95,7 +95,6 @@ main (int    argc,
     netpanel = MOBLIN_NETBOOK_NETPANEL (moblin_netbook_netpanel_new ());
     clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                  CLUTTER_ACTOR (netpanel));
-    clutter_actor_show (CLUTTER_ACTOR (netpanel));
     moblin_netbook_netpanel_set_panel_client (netpanel, client);
     g_signal_connect (client,
                       "set-size",
