@@ -503,7 +503,7 @@ new_tab_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 {
   /* FIXME: remove hardcoded start path */
   moblin_netbook_netpanel_launch_url (self,
-                                      "chrome://startpage/content/index.html",
+                                      "chrome://mwbpages/content/startpage.xhtml",
                                       FALSE);
 }
 
