@@ -179,9 +179,8 @@ _make_welcome_tile ()
   ClutterActor *tmp_text;
 
   tile = nbtk_table_new ();
-  clutter_actor_set_size ((ClutterActor *)tile,
-                          TILE_WIDTH * 2 + COL_SPACING,
-                          TILE_HEIGHT);
+  clutter_actor_set_width ((ClutterActor *)tile,
+                           TILE_WIDTH * 2 + COL_SPACING);
   nbtk_widget_set_style_class_name ((NbtkWidget *)tile, "PengeWelcomeTile");
 
 
@@ -274,13 +273,24 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                             priv->welcome_tile,
                                             0,
                                             0,
-                                            "col-span",
-                                            2,
                                             "y-expand",
                                             FALSE,
                                             "x-expand",
                                             TRUE,
                                             NULL);
+
+      if (items == NULL)
+      {
+        /* If no items in the list then don't set the col-span. Work around a
+         * bug in NbtkTable #4686
+         */
+      } else {
+        clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                     priv->welcome_tile,
+                                     "col-span",
+                                     2,
+                                     NULL);
+      }
     }
 
     /* offset the recrnt files */
