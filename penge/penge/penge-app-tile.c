@@ -155,8 +155,10 @@ static void
 penge_app_tile_constructed (GObject *object)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (object);
+  GKeyFile *kf;
   gchar *path;
   GError *error = NULL;
+  gchar *name = NULL;
 
   g_return_if_fail (priv->bookmark);
 
@@ -174,8 +176,35 @@ penge_app_tile_constructed (GObject *object)
   if (path)
   {
     priv->app_info = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
-    nbtk_widget_set_tooltip_text (NBTK_WIDGET (object),
-                                  g_app_info_get_name (priv->app_info));
+    kf = g_key_file_new ();
+    if (!g_key_file_load_from_file (kf,
+                                    path,
+                                    G_KEY_FILE_NONE,
+                                    &error))
+    {
+      g_warning (G_STRLOC ": Error getting a key file for path: %s",
+                 error->message);
+      g_clear_error (&error);
+    } else {
+      name = g_key_file_get_string (kf,
+                                    G_KEY_FILE_DESKTOP_GROUP,
+                                    G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
+                                    NULL);
+
+      if (!name)
+      {
+        name = g_key_file_get_string (kf,
+                                      G_KEY_FILE_DESKTOP_GROUP,
+                                      G_KEY_FILE_DESKTOP_KEY_NAME,
+                                      NULL);
+      }
+
+      nbtk_widget_set_tooltip_text (NBTK_WIDGET (object),
+                                    name);
+      g_free (name);
+    }
+    g_key_file_free (kf);
+
     g_free (path);
   }
 
