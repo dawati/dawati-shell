@@ -45,7 +45,7 @@ struct _PengeTasksPanePrivate {
 
 static void penge_tasks_pane_update (PengeTasksPane *pane);
 
-#define MAX_COUNT 3
+#define MAX_COUNT 2
 
 static void
 penge_tasks_pane_get_property (GObject *object, guint property_id,
