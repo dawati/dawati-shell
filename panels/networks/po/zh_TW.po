@@ -2,41 +2,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-08 09:18+0000\n"
+"POT-Creation-Date: 2009-07-22 02:35+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../carrick/carrick-applet.c:63
-#, c-format
-msgid "Offline"
-msgstr "離線"
-
-#: ../carrick/carrick-applet.c:64
-#, c-format
-msgid "No active connection."
-msgstr "沒有有效的連接"
-
-#: ../carrick/carrick-applet.c:70
-#, c-format
-msgid "Online"
-msgstr "在線"
-
-#: ../carrick/carrick-applet.c:75
-#, c-format
-msgid "Now online and connected to %s."
-msgstr "現在在線以及連接到 %s 。"
-
-#: ../carrick/carrick-pane.c:283
+#: ../carrick/carrick-pane.c:307
 msgid "New connection settings"
 msgstr "新連接設置"
 
-#: ../carrick/carrick-pane.c:319
+#: ../carrick/carrick-pane.c:343
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -46,103 +27,141 @@ msgstr ""
 "，並在必要時的\n"
 " 輸入密碼和安全類型。"
 
-#: ../carrick/carrick-pane.c:329
+#: ../carrick/carrick-pane.c:353
 msgid "Network name"
 msgstr "網絡名稱"
 
-#: ../carrick/carrick-pane.c:341
+#: ../carrick/carrick-pane.c:365
 msgid "Network security"
 msgstr "網絡安全"
 
-#: ../carrick/carrick-pane.c:365
+#: ../carrick/carrick-pane.c:389
 msgid "Password"
 msgstr "密碼"
 
-#: ../carrick/carrick-pane.c:380
-#: ../carrick/carrick-service-item.c:855
+#: ../carrick/carrick-pane.c:404
+#: ../carrick/carrick-service-item.c:945
 msgid "Show password"
 msgstr "顯示密碼"
 
-#: ../carrick/carrick-pane.c:791
-msgid "Networks"
-msgstr "網絡"
+#: ../carrick/carrick-pane.c:504
+msgid "Sorry, we can't find any networks. "
+msgstr "很抱歉，我們無法找到任何網絡。 "
 
-#: ../carrick/carrick-pane.c:830
-msgid "Add new connection"
-msgstr "添加新的連接"
+#: ../carrick/carrick-pane.c:509
+msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
+msgstr "ConnMan daemon 似乎並沒有運行。您可以嘗試重新啟動您的設備"
 
-#: ../carrick/carrick-pane.c:856
+#: ../carrick/carrick-pane.c:515
+msgid "You could try disabling Offline mode"
+msgstr "您可以嘗試禁止使用離線模式"
+
+#: ../carrick/carrick-pane.c:524
+msgid "You could try turning on "
+msgstr "您可以嘗試開機"
+
+#: ../carrick/carrick-pane.c:528
+#: ../carrick/carrick-pane.c:964
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:879
-#: ../carrick/carrick-service-item.c:196
-msgid "Wired"
-msgstr "有線"
+#: ../carrick/carrick-pane.c:534
+#: ../carrick/carrick-pane.c:549
+msgid ", "
+msgstr "，"
 
-#: ../carrick/carrick-pane.c:905
-msgid "3G"
-msgstr "3G"
-
-#: ../carrick/carrick-pane.c:930
+#: ../carrick/carrick-pane.c:536
+#: ../carrick/carrick-pane.c:1058
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:964
+#: ../carrick/carrick-pane.c:542
+msgid " and "
+msgstr "和"
+
+#: ../carrick/carrick-pane.c:544
+#: ../carrick/carrick-pane.c:1027
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-pane.c:551
+msgid "Ethernet"
+msgstr "乙太網"
+
+#: ../carrick/carrick-pane.c:559
+msgid "Sorry, we can't find any networks"
+msgstr "很抱歉，我們無法找到任何網絡。 "
+
+#: ../carrick/carrick-pane.c:884
+msgid "Networks"
+msgstr "網絡"
+
+#: ../carrick/carrick-pane.c:937
+msgid "Add new connection"
+msgstr "添加新的連接"
+
+#: ../carrick/carrick-pane.c:996
+#: ../carrick/carrick-service-item.c:211
+msgid "Wired"
+msgstr "有線"
+
+#: ../carrick/carrick-pane.c:1101
 msgid "Offline mode"
 msgstr "離線狀態"
 
-#: ../carrick/carrick-pane.c:988
+#: ../carrick/carrick-pane.c:1126
 msgid "This will disable all your connections"
 msgstr "這將禁用所有的連接"
 
-#: ../carrick/carrick-service-item.c:163
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#: ../carrick/carrick-service-item.c:170
 #, c-format
 msgid "%s encrypted"
 msgstr "%s 加密"
 
-#: ../carrick/carrick-service-item.c:208
+#: ../carrick/carrick-service-item.c:242
 msgid "Disconnect"
 msgstr "斷開"
 
-#: ../carrick/carrick-service-item.c:211
+#: ../carrick/carrick-service-item.c:245
 msgid "Connected"
 msgstr "已連接"
 
-#: ../carrick/carrick-service-item.c:218
+#: ../carrick/carrick-service-item.c:250
 #, c-format
-msgid "Connecting"
-msgstr "正在連接"
+msgid "Cancel"
+msgstr "取消"
 
-#: ../carrick/carrick-service-item.c:221
+#: ../carrick/carrick-service-item.c:253
 msgid "Configuring"
 msgstr "正在配置"
 
-#: ../carrick/carrick-service-item.c:232
-#: ../carrick/carrick-service-item.c:244
-#: ../carrick/carrick-service-item.c:844
+#: ../carrick/carrick-service-item.c:260
+#: ../carrick/carrick-service-item.c:268
+#: ../carrick/carrick-service-item.c:934
 msgid "Connect"
 msgstr "連結"
 
-#: ../carrick/carrick-service-item.c:247
+#: ../carrick/carrick-service-item.c:271
 msgid "Connection failed"
 msgstr "連接失敗"
 
-#: ../carrick/carrick-service-item.c:254
-#: ../carrick/carrick-service-item.c:257
+#: ../carrick/carrick-service-item.c:276
+#: ../carrick/carrick-service-item.c:279
 #, c-format
 msgid "Disconnecting"
 msgstr "斷開"
 
-#: ../carrick/carrick-service-item.c:306
+#: ../carrick/carrick-service-item.c:327
 msgid "Type password here"
 msgstr "在此輸入密碼"
 
-#: ../carrick/carrick-service-item.c:383
+#: ../carrick/carrick-service-item.c:389
 msgid "Really remove?"
 msgstr "確實要刪除？"
 
-#: ../carrick/carrick-service-item.c:401
+#: ../carrick/carrick-service-item.c:407
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -153,6 +172,94 @@ msgstr ""
 "這會忘記密碼，且您將不再會\n"
 " 自動連接到%s"
 
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:890
+msgid "WPA2 encrypted"
+msgstr "WPA2 加密"
+
+#: ../carrick/carrick-notification-manager.c:100
+msgid "Network connected"
+msgstr "網路連接"
+
+#: ../carrick/carrick-notification-manager.c:108
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "現在，您已連接到有線網絡"
+
+#: ../carrick/carrick-notification-manager.c:138
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "您現在已連接到 %s，%s網絡"
+
+#: ../carrick/carrick-notification-manager.c:144
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "您現在已連接到%s網絡"
+
+#: ../carrick/carrick-notification-manager.c:161
+msgid "Network lost"
+msgstr "網路中斷"
+
+#: ../carrick/carrick-notification-manager.c:169
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "很抱歉，我們失去您的有線連接"
+
+#: ../carrick/carrick-notification-manager.c:173
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "很抱歉，我們失去您的 %s 連接到 %s 的連接"
+
+#: ../carrick/carrick-notification-manager.c:179
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "很抱歉，我們已經失去您的 %s 的連接"
+
+#: ../carrick/carrick-notification-manager.c:196
+msgid "Network changed"
+msgstr "網路已變更"
+
+#: ../carrick/carrick-notification-manager.c:204
+msgid "Sorry, your wired connection was lost. So we've "
+msgstr "很抱歉，您的有線連接中斷。因此我們"
+
+#: ../carrick/carrick-notification-manager.c:208
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've "
+msgstr "很抱歉，您的連接到 %s 的連接中斷。因此我們"
+
+#: ../carrick/carrick-notification-manager.c:213
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've "
+msgstr "很抱歉，您的 %s 有線連接中斷。因此我們"
+
+#: ../carrick/carrick-notification-manager.c:219
+msgid "connected you to a wired network"
+msgstr "連接您到有線網絡"
+
+#: ../carrick/carrick-notification-manager.c:224
+#, c-format
+msgid "connected you to %s, a %s network"
+msgstr "連接您到 %s，%s 網絡"
+
+#: ../carrick/carrick-notification-manager.c:230
+#, c-format
+msgid "connected you to a %s network"
+msgstr "連接您到 %s 網絡"
+
+#~ msgid "Offline"
+#~ msgstr "離線"
+#~ msgid "No active connection."
+#~ msgstr "沒有有效的連接"
+#~ msgid "Online"
+#~ msgstr "在線"
+#~ msgid "Now online and connected to %s."
+#~ msgstr "現在在線以及連接到 %s 。"
+#~ msgid "Connecting"
+#~ msgstr "正在連接"
 #~ msgid "Passphrase required"
 #~ msgstr "密語必要"
 #~ msgid "<b><big>Network Requires a Password</big></b>"
