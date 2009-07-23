@@ -278,23 +278,23 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                             "x-expand",
                                             TRUE,
                                             NULL);
-
-      if (items == NULL)
-      {
-        /* If no items in the list then don't set the col-span. Work around a
-         * bug in NbtkTable #4686
-         */
-      } else {
-        clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                     priv->welcome_tile,
-                                     "col-span",
-                                     2,
-                                     NULL);
-      }
     }
 
     /* offset the recrnt files */
     count = 2;
+  }
+
+  if (items == NULL)
+  {
+    /* If no items in the list then don't set the col-span. Work around a
+     * bug in NbtkTable #4686
+     */
+  } else {
+    clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                 priv->welcome_tile,
+                                 "col-span",
+                                 2,
+                                 NULL);
   }
 
   items = g_list_sort (items, (GCompareFunc)_recent_files_sort_func);
