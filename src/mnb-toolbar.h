@@ -95,6 +95,10 @@ MnbPanel * mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid);
 
 void mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw);
 
+NbtkWidget * mnb_toolbar_get_active_panel (MnbToolbar *toolbar);
+
+void mnb_toolbar_set_panel_input_only (MnbToolbar *toolbar, gboolean whether);
+
 G_END_DECLS
 
 #endif /* _MNB_TOOLBAR */

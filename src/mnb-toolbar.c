@@ -165,7 +165,9 @@ struct _MnbToolbarPrivate
   gboolean dont_autohide     : 1; /* Whether the panel should hide when the
                                    * pointer goes south
                                    */
-
+  gboolean panel_input_only  : 1; /* Set when the region below panels should not
+                                   * be included in the panel input region.
+                                   */
   MnbInputRegion dropdown_region;
   MnbInputRegion trigger_region;  /* The show panel trigger region */
   MnbInputRegion input_region;    /* The panel input region on the region
@@ -411,6 +413,7 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
 
   priv->in_hide_animation = FALSE;
   priv->dont_autohide = FALSE;
+  priv->panel_input_only = FALSE;
 
   moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
@@ -883,6 +886,10 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbDropDown *dropdown, MnbToolbar  *tool
       moblin_netbook_input_region_remove (plugin, priv->dropdown_region);
       priv->dropdown_region = NULL;
     }
+
+  moblin_netbook_stash_window_focus (plugin, CurrentTime);
+
+  priv->panel_input_only = FALSE;
 }
 
 /*
@@ -1225,10 +1232,8 @@ mnb_toolbar_dispose_of_panel (MnbToolbar *toolbar,
 }
 
 static void
-mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
-                               guint       width,
-                               guint       height,
-                               MnbToolbar *toolbar)
+mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
+                                          MnbDropDown *dropdown)
 {
   MnbToolbarPrivate *priv;
   MutterPlugin      *plugin;
@@ -1239,13 +1244,13 @@ mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
    * If this panel is visible, we need to update the input region to match
    * the new geometry.
    */
-  if (!CLUTTER_ACTOR_IS_MAPPED (panel))
+  if (!CLUTTER_ACTOR_IS_MAPPED (dropdown))
     return;
 
   priv = toolbar->priv;
   plugin = priv->plugin;
 
-  mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (panel), &x, &y, &w, &h);
+  mnb_drop_down_get_footer_geometry (dropdown, &x, &y, &w, &h);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1253,11 +1258,26 @@ mnb_toolbar_panel_set_size_cb (MnbPanel   *panel,
     moblin_netbook_input_region_remove_without_update (plugin,
                                                        priv->dropdown_region);
 
-  priv->dropdown_region =
-    moblin_netbook_input_region_push (plugin,
-                                      (gint)x, TOOLBAR_HEIGHT + (gint)y,
-                                      (guint)w,
-                                      screen_height - (TOOLBAR_HEIGHT+(gint)y));
+  if (priv->panel_input_only)
+    priv->dropdown_region =
+      moblin_netbook_input_region_push (plugin,
+                                        (gint)x, TOOLBAR_HEIGHT + (gint)y,
+                                        (guint)w, (guint)h);
+  else
+    priv->dropdown_region =
+      moblin_netbook_input_region_push (plugin,
+                                        (gint)x, TOOLBAR_HEIGHT + (gint)y,
+                                        (guint)w,
+                                        screen_height -
+                                        (TOOLBAR_HEIGHT+(gint)y));
+}
+
+static void
+mnb_toolbar_panel_allocation_cb (MnbDropDown  *dropdown,
+                                 GParamSpec   *pspec,
+                                 MnbToolbar   *toolbar)
+{
+  mnb_toolbar_update_dropdown_input_region (toolbar, dropdown);
 }
 
 static void
@@ -1564,8 +1584,8 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   g_signal_connect (panel, "remote-process-died",
                     G_CALLBACK (mnb_toolbar_panel_died_cb), toolbar);
 
-  g_signal_connect (panel, "set-size",
-                    G_CALLBACK (mnb_toolbar_panel_set_size_cb), toolbar);
+  g_signal_connect (panel, "notify::allocation",
+                    G_CALLBACK (mnb_toolbar_panel_allocation_cb), toolbar);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
@@ -2362,6 +2382,7 @@ tray_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
   gint                     i;
 
   priv->systray_window_showing = FALSE;
+  priv->panel_input_only = FALSE;
 
   for (i = APPLETS_START; i < NUM_ZONES; ++i)
     {
@@ -2880,5 +2901,58 @@ mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid)
     }
 
   return NULL;
+}
+
+/*
+ * Returns the active panel, or NULL, if no panel is active.
+ */
+NbtkWidget *
+mnb_toolbar_get_active_panel (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint i;
+
+  if (!CLUTTER_ACTOR_IS_MAPPED (toolbar))
+    return NULL;
+
+  for (i = 0; i < NUM_ZONES; ++i)
+    {
+      NbtkWidget *panel = priv->panels[i];
+
+      if (panel && CLUTTER_ACTOR_IS_MAPPED (panel))
+        return panel;
+    }
+
+  return NULL;
+}
+
+/*
+ * Sets the panel_input_only flag.
+ *
+ * The flag, when set, indicates that when calculating the input region for the
+ * panel, the area below the panel footer should not be included.
+ *
+ * NB: the flag gets automatically cleared every time a panel, or the toolbar,
+ *     hides.
+ *
+ * (Normally, we include everything below the footer to the end of the screen;
+ * this allows for the panel to hide if the user clicks below the panel, but
+ * prevents interaction with things like IM windows.)
+ */
+void
+mnb_toolbar_set_panel_input_only (MnbToolbar *toolbar, gboolean whether)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  NbtkWidget        *panel;
+
+  if (priv->panel_input_only == whether)
+    return;
+
+  priv->panel_input_only = whether;
+
+  panel = mnb_toolbar_get_active_panel (toolbar);
+
+  if (panel)
+    mnb_toolbar_update_dropdown_input_region (toolbar, MNB_DROP_DOWN (panel));
 }
 

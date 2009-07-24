@@ -938,6 +938,167 @@ pid_to_binary_name (gint pid)
 }
 
 /*
+ * Temporary cludge to facilitate some rudimentary IM functionality
+ *
+ * The basic problem is that the IM is implemented using X windows for the
+ * preview, toolbar, and various other UI elements; this is fine for regular
+ * applications, but does not work for UX Shell UI (the UI is always above
+ * the windows, so, the IM windows are covered and non-interactive.
+ *
+ * To work around this, when a window of WM_CLASS Scim-bridge-gtk maps, we
+ * create a clone and places to the top of the stage. The preview window is
+ * interactive by the virtue of overlapping the panels in it's entirety (and
+ * naturally sitting above the panel windows in the X stacking order). For the
+ * toolbar we force the visible panel to shring to free the bottom 45 pixels,
+ * and reduce the Panel input region to end at the bottom of the footer. IM
+ * toolbar menus work only to the extent they overlap with the inner panel area,
+ * the bits that overalap with the panel footer are not reactive, because the
+ * footer occludes the window.
+ *
+ * NB: This is not a solution; it's a cludge hacked together at the last moment.
+ *     Proper solution, starting with interaction design is needed -- it is
+ *     most likely that any future implementaion will need to integrate the IM
+ *     UI elements directly into the compositor stage using Clutter, rather than
+ *     using X windows.
+ */
+
+/*
+ * When the real window moves, move the clone.
+ */
+static void
+scim_preview_allocation_cb (ClutterActor *source,
+                            GParamSpec   *pspec,
+                            ClutterActor *clone)
+{
+  gfloat x, y, w, h;
+
+  clutter_actor_get_position (source, &x, &y);
+  clutter_actor_get_size (source, &w, &h);
+
+  clutter_actor_set_position (clone, x, y);
+  clutter_actor_set_size (clone, w, h);
+}
+/*
+ * When the original window is destroyed, destroy the clone.
+ */
+static void
+scim_preview_destroy_cb (ClutterActor *source, ClutterActor *clone)
+{
+  ClutterActor *parent = clutter_actor_get_parent (clone);
+
+  if (parent)
+    clutter_container_remove_actor (CLUTTER_CONTAINER (parent), clone);
+  else
+    clutter_actor_destroy (clone);
+}
+
+/*
+ * The following functions are trying to catch out possible corner cases where
+ * our clone is left unpainted. Unfortunately, this still happens.
+ */
+
+/*
+ * When the inner texture alloation changes, make sure to queue redraw of the
+ * clone. (Should be unnecessary.)
+ */
+static void
+scim_preview_texture_allocation_cb (ClutterActor *source,
+                                    GParamSpec   *pspec,
+                                    ClutterActor *clone)
+{
+  clutter_actor_queue_redraw (clone);
+}
+
+/*
+ * Make sure that any queued redraws on the inner texture get propagated to
+ * our clone. (Should be unnecessary.)
+ */
+static void
+scim_preview_queue_redraw_cb (ClutterActor *source,
+                              ClutterActor *origin,
+                              ClutterActor *clone)
+{
+  clutter_actor_queue_redraw (clone);
+}
+
+/*
+ * Helper function to resize active panel in presence of SCIM windows.
+ *
+ * The panel parameter can be NULL, in which case the active panel will be
+ * looked up first.
+ */
+static void
+scim_resize_active_panel (MutterPlugin *plugin, MnbPanel *panel)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
+  gfloat                      w, h;
+  gint                        screen_width, screen_height;
+
+  if (!panel &&
+      !(panel = (MnbPanel*)mnb_toolbar_get_active_panel (toolbar)))
+    return;
+
+  mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
+                                   &screen_width, &screen_height);
+
+  clutter_actor_get_size (CLUTTER_ACTOR (panel), &w, &h);
+
+  /*
+   * Indicate to the toolbar that the region below panel footer
+   * should not be included in the panel input region.
+   */
+  mnb_toolbar_set_panel_input_only (toolbar, TRUE);
+
+  /*
+   * If the panel stretches all the way to the bottom of the screen
+   * shrink it, so that the IM toolbar window becomes visible.
+   */
+  if ((guint)h >= screen_height + 34 - TOOLBAR_HEIGHT)
+    {
+      if (MNB_IS_PANEL (panel))
+        mnb_panel_set_size (panel,
+                            (guint) w, screen_height + 37 - 45 -
+                            TOOLBAR_HEIGHT);
+      else
+        clutter_actor_set_size (CLUTTER_ACTOR (panel),
+                                w,
+                                (gfloat)(screen_height + 37 - 45 -
+                                         TOOLBAR_HEIGHT));
+    }
+}
+
+/*
+ * Because of the way the live windows are implemented, hiding of MutterWindows
+ * is accomplished by moving them into a special hidden group; so we have to
+ * watch the parent-set signal, and if the parent matches the window group, we
+ * make the actor visible, otherwise we hide it.
+ *
+ * (Should be unnecessary; the IM windows are not getting hidden from within
+ * the compositor but from the IM control process, and as such undergo real
+ * unmap.)
+ */
+static void
+scim_preview_parent_set_cb (ClutterActor *source,
+                            ClutterActor *old_parent,
+                            ClutterActor *clone)
+{
+  MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+  MetaScreen   *screen = mutter_plugin_get_screen (plugin);
+  ClutterActor *wgroup = mutter_get_window_group_for_screen (screen);
+  ClutterActor *parent = clutter_actor_get_parent (source);
+
+  if (parent != wgroup)
+    clutter_actor_hide (clone);
+  else
+    {
+      scim_resize_active_panel (plugin, NULL);
+      clutter_actor_show (clone);
+      clutter_actor_raise_top (clone);
+    }
+}
+
+/*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
  */
@@ -972,11 +1133,81 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
    */
   if (mutter_window_is_override_redirect (mcw))
     {
-      Window      xwin    = mutter_window_get_x_window (mcw);
-      MnbToolbar *toolbar = MNB_TOOLBAR (priv->toolbar);
-      MnbPanel   *panel   = mnb_toolbar_find_panel_for_xid (toolbar, xwin);
+      Window       xwin     = mutter_window_get_x_window (mcw);
+      MnbToolbar  *toolbar  = MNB_TOOLBAR (priv->toolbar);
+      MetaWindow  *mw       = mutter_window_get_meta_window (mcw);
+      const gchar *wm_class = meta_window_get_wm_class (mw);
+      MnbPanel    *panel;
 
-      if (panel)
+      /*
+       * Handle the case of a IM preview window for a panel.
+       *
+       * We want to narrow this down before calling XGetProperty().
+       */
+      if (wm_class && !strcmp (wm_class, "Scim-panel-gtk"))
+        {
+          if ((panel = (MnbPanel*)mnb_toolbar_get_active_panel (toolbar)))
+            {
+              ClutterActor *clone   = clutter_clone_new (CLUTTER_ACTOR(mcw));
+              MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+              ClutterActor *stage   = mutter_get_stage_for_screen (screen);
+              gfloat        x, y;
+
+              /*
+               * Let the compositor to finish up mapping of this window.
+               */
+              mutter_plugin_effect_completed (plugin, mcw,
+                                              MUTTER_PLUGIN_MAP);
+
+              /*
+               * Now resize the active panel if appropriate.
+               */
+              scim_resize_active_panel (plugin, panel);
+
+              /*
+               * Make a clone and place it on the top of stage.
+               */
+              clutter_actor_get_position (CLUTTER_ACTOR (mcw), &x, &y);
+              clutter_actor_set_position (clone, x, y);
+
+              clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                           clone);
+              clutter_actor_raise_top (clone);
+
+              g_signal_connect (mutter_window_get_texture (mcw),
+                                "notify::allocation",
+                                G_CALLBACK (scim_preview_texture_allocation_cb),
+                                clone);
+
+              g_signal_connect (mcw, "notify::allocation",
+                                G_CALLBACK (scim_preview_allocation_cb),
+                                clone);
+
+              g_signal_connect (mcw, "destroy",
+                                G_CALLBACK (scim_preview_destroy_cb),
+                                clone);
+
+              g_signal_connect (mutter_window_get_texture (mcw),
+                                "queue-redraw",
+                                G_CALLBACK (scim_preview_queue_redraw_cb),
+                                clone);
+
+              g_signal_connect (mcw, "parent-set",
+                                G_CALLBACK (scim_preview_parent_set_cb),
+                                clone);
+              return;
+            }
+
+          /*
+           * We know by now that this window requires just a normal OR
+           * treatment, so exit here to avoid testing it against panels and
+           * system tray windows.
+           */
+          mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+          return;
+        }
+
+      if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
         {
           g_debug ("@@@ setting mutter window for panel %s @@@",
                    mnb_panel_get_name (panel));
@@ -1609,8 +1840,15 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
       priv->last_focused = NULL;
     }
 
+  /*
+   * If we have something to focus, than do so; otherwise we focus the Mutter
+   * no focus window, so that the focus departs from whatever UI element
+   * (such as a panel) was holding it.
+   */
   if (focus)
     meta_display_set_input_focus_window (display, focus, FALSE, timestamp);
+  else
+    meta_display_focus_the_no_focus_window (display, screen, timestamp);
 }
 
 struct MnbInputRegion

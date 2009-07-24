@@ -1012,8 +1012,24 @@ void
 mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
 {
   MnbPanelPrivate *priv = panel->priv;
+  gfloat x, y, w, h;
 
-  org_moblin_UX_Shell_Panel_set_size_async (priv->proxy, width, height,
+  /*
+   * Exit if no change
+   */
+  clutter_actor_get_size (CLUTTER_ACTOR (panel), &w, &h);
+
+  if (((guint)w == width) && ((guint)h == height))
+    return;
+
+  mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (panel), &x, &y, &w, &h);
+
+  /*
+   * FIXME -- the border and shaddow should not be hardcoded here.
+   */
+  org_moblin_UX_Shell_Panel_set_size_async (priv->proxy,
+                                            width - 2 * 4,
+                                            height - (guint) h - 4 - 37,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);
 }
 
