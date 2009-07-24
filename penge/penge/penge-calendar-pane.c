@@ -33,7 +33,7 @@ G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPanePrivate))
 
-#define CALENDAR_ICON THEMEDIR "/calendar-icon.png"
+#define CALENDAR_ICON THEMEDIR "/calendar-icon-%d.png"
 #define SINGLE_DIV_LINE THEMEDIR "/single-div-line.png"
 #define DOUBLE_DIV_LINE THEMEDIR "/double-div-line.png"
 
@@ -44,6 +44,9 @@ struct _PengeCalendarPanePrivate {
     ClutterActor *tasks_pane;
 
     guint refresh_timeout_id;
+    guint8 day_of_month;
+
+    ClutterActor *calendar_tex;
 };
 
 static void
@@ -100,17 +103,44 @@ penge_calendar_pane_class_init (PengeCalendarPaneClass *klass)
 }
 
 static void
+penge_calendar_pane_update_calendar_icon (PengeCalendarPane *pane,
+                                          JanaTime          *time)
+{
+  PengeCalendarPanePrivate *priv = GET_PRIVATE (pane);
+  GError *error = NULL;
+  gchar *path = NULL;
+
+  if (jana_time_get_day (time) != priv->day_of_month)
+  {
+    priv->day_of_month = jana_time_get_day (time);
+    path = g_strdup_printf (CALENDAR_ICON, priv->day_of_month);
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->calendar_tex),
+                                   path,
+                                   &error);
+
+    g_free (path);
+
+    if (error)
+    {
+      g_warning (G_STRLOC ": Error setting path on calendar texture: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+  }
+}
+
+static void
 penge_calendar_pane_update (PengeCalendarPane *pane)
 {
   PengeCalendarPanePrivate *priv = GET_PRIVATE (pane);
   JanaTime *now;
 
   now = jana_ecal_utils_time_now_local ();
-
   g_object_set (priv->events_pane,
                 "time",
                 now,
                 NULL);
+  penge_calendar_pane_update_calendar_icon (pane, now);
   g_object_unref (now);
 }
 
@@ -151,34 +181,28 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   now = jana_ecal_utils_time_now_local ();
 
   /* Title bit at the top */
-  tex = clutter_texture_new_from_file (CALENDAR_ICON, &error);
+  priv->calendar_tex = clutter_texture_new ();
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        priv->calendar_tex,
+                        0,
+                        0);
+  /* Need to fix the size to avoid being squashed */
+  clutter_actor_set_size (priv->calendar_tex, 30, 31);
 
-  if (!tex)
-  {
-    g_warning (G_STRLOC ": Error loading calendar icon: %s",
-               error->message);
-    g_clear_error (&error);
-  } else {
-    nbtk_table_add_actor (NBTK_TABLE (self),
-                          tex,
-                          0,
-                          0);
-    /* Need to fix the size to avoid being squashed */
-    clutter_actor_set_size (tex, 30, 31);
+  /* Use expand TRUE and fill FALSE to center valign with label */
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               priv->calendar_tex,
+                               "x-expand",
+                               FALSE,
+                               "x-fill",
+                               FALSE,
+                               "y-expand",
+                               TRUE,
+                               "y-fill",
+                               FALSE,
+                               NULL);
 
-    /* Use expand TRUE and fill FALSE to center valign with label */
-    clutter_container_child_set (CLUTTER_CONTAINER (self),
-                                 tex,
-                                 "x-expand",
-                                 FALSE,
-                                 "x-fill",
-                                 FALSE,
-                                 "y-expand",
-                                 TRUE,
-                                 "y-fill",
-                                 FALSE,
-                                 NULL);
-  }
+  penge_calendar_pane_update_calendar_icon (self, now);
 
   label = nbtk_label_new (_("<b>Appointments</b>"));
   tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
