@@ -122,6 +122,10 @@ mnb_clipboard_item_set_property (GObject      *gobject,
 static void
 mnb_clipboard_item_finalize (GObject *gobject)
 {
+  MnbClipboardItem *item = MNB_CLIPBOARD_ITEM (gobject);
+
+  g_free (item->filter_contents);
+
   G_OBJECT_CLASS (mnb_clipboard_item_parent_class)->finalize (gobject);
 }
 
@@ -267,6 +271,22 @@ mnb_clipboard_item_get_contents (MnbClipboardItem *item)
   g_return_val_if_fail (MNB_IS_CLIPBOARD_ITEM (item), NULL);
 
   return nbtk_label_get_text (NBTK_LABEL (item->contents));
+}
+
+G_CONST_RETURN gchar *
+mnb_clipboard_item_get_filter_contents (MnbClipboardItem *item)
+{
+  g_return_val_if_fail (MNB_IS_CLIPBOARD_ITEM (item), NULL);
+
+  if (item->filter_contents == NULL)
+    {
+      const gchar *contents;
+
+      contents = nbtk_label_get_text (NBTK_LABEL (item->contents));
+      item->filter_contents = g_utf8_strdown (contents, -1);
+    }
+
+  return item->filter_contents;
 }
 
 gint64

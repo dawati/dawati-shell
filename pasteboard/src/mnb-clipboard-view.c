@@ -423,15 +423,13 @@ mnb_clipboard_view_filter (MnbClipboardView *view,
       for (l = priv->rows; l != NULL; l = l->next)
         {
           MnbClipboardItem *row = l->data;
-          gchar *contents;
+          const gchar *contents;
 
-          contents = g_utf8_strdown (mnb_clipboard_item_get_contents (row), -1);
+          contents = mnb_clipboard_item_get_filter_contents (row);
           if (strstr (contents, needle) == NULL)
             clutter_actor_hide (CLUTTER_ACTOR (row));
           else
             clutter_actor_show (CLUTTER_ACTOR (row));
-
-          g_free (contents);
         }
 
       g_free (needle);

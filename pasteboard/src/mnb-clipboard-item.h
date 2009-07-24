@@ -45,6 +45,8 @@ struct _MnbClipboardItem
   ClutterActor *remove_button;
   ClutterActor *action_button;
 
+  gchar *filter_contents;
+
   gint64 serial;
 };
 
@@ -59,6 +61,7 @@ struct _MnbClipboardItemClass
 GType mnb_clipboard_item_get_type (void) G_GNUC_CONST;
 
 G_CONST_RETURN gchar *mnb_clipboard_item_get_contents (MnbClipboardItem *item);
+G_CONST_RETURN gchar *mnb_clipboard_item_get_filter_contents (MnbClipboardItem *item);
 gint64                mnb_clipboard_item_get_serial   (MnbClipboardItem *item);
 
 void                  mnb_clipboard_item_show_action  (MnbClipboardItem *item);

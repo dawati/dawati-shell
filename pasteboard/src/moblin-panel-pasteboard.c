@@ -80,6 +80,7 @@ search_timeout (gpointer data)
 {
   SearchClosure *closure = data;
 
+  g_debug ("%s: filter = '%s'", G_STRLOC, closure->filter);
   mnb_clipboard_view_filter (closure->view, closure->filter);
 
   return FALSE;
@@ -104,10 +105,7 @@ on_search_activated (MplEntry *entry,
 {
   MnbClipboardView *view = data;
   SearchClosure *closure;
-
-  closure = g_slice_new (SearchClosure);
-  closure->view = g_object_ref (view);
-  closure->filter = g_strdup (mpl_entry_get_text (entry));
+  const gchar *text;
 
   if (search_timeout_id != 0)
     {
@@ -115,7 +113,13 @@ on_search_activated (MplEntry *entry,
       search_timeout_id = 0;
     }
 
-  search_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT, 250,
+  text = mpl_entry_get_text (entry);
+
+  closure = g_slice_new (SearchClosure);
+  closure->view = g_object_ref (view);
+  closure->filter = (text == NULL || *text == '\0') ? NULL : g_strdup (text);
+
+  search_timeout_id = g_timeout_add_full (CLUTTER_PRIORITY_REDRAW - 5, 250,
                                           search_timeout,
                                           closure, search_cleanup);
 }
