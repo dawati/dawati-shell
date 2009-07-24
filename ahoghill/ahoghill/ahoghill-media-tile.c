@@ -83,13 +83,24 @@ update_tile (AhoghillMediaTile *self)
         break;
 
     case BKL_ITEM_TYPE_VIDEO:
-        title = g_strdup (bkl_item_video_get_series_name ((BklItemVideo *) priv->item));
+        if (bkl_item_video_get_series_name ((BklItemVideo *) priv->item)) {
+            title = g_strdup (bkl_item_video_get_series_name ((BklItemVideo *) priv->item));
+        } else {
+            title = g_strdup (bkl_item_video_get_title ((BklItemVideo *) priv->item));
+        }
+
         year = bkl_item_video_get_year ((BklItemVideo *) priv->item);
         if (year < 1900) {
             season = bkl_item_video_get_season ((BklItemVideo *) priv->item);
             episode = bkl_item_video_get_episode ((BklItemVideo *) priv->item);
 
-            artist = g_strdup_printf (_("Season %u, Episode %u"), season, episode);
+            /* FIXME: When out of string freeze again, add support for
+               "Season %u" and "Episode %u" */
+            if (season > 0 && episode > 0) {
+                artist = g_strdup_printf (_("Season %u, Episode %u"), season, episode);
+            } else {
+                artist = g_strdup ("");
+            }
         } else {
             artist = g_strdup_printf ("(%u)", year);
         }
