@@ -29,6 +29,7 @@
 #include <nbtk/nbtk.h>
 #include "moblin-netbook.h"
 
+#define MNB_DROP_DOWN_TOP_PADDING 4
 G_BEGIN_DECLS
 
 /* useful macro, probably ought to be defined somewhere more generic */

@@ -566,7 +566,8 @@ mnb_panel_socket_size_allocate_cb (GtkWidget     *widget,
 
           clutter_actor_get_position (CLUTTER_ACTOR (data), &x, &y);
 
-          gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
+          gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y +
+                           MNB_DROP_DOWN_TOP_PADDING);
         }
     }
 }
@@ -661,7 +662,8 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
 
   gtk_window_resize (GTK_WINDOW (window), window_width, window_height);
 
-  gtk_window_move (GTK_WINDOW (window), 0, 64);
+  gtk_window_move (GTK_WINDOW (window),
+                   0, TOOLBAR_HEIGHT + MNB_DROP_DOWN_TOP_PADDING);
 
   gtk_container_add (GTK_CONTAINER (window), socket);
   gtk_widget_realize (socket);
