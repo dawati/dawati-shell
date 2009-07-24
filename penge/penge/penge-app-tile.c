@@ -48,6 +48,9 @@ enum
 
 #define ICON_SIZE 48
 
+void _icon_theme_changed_cb (GtkIconTheme *icon_theme,
+                             gpointer      userdata);
+
 static void
 penge_app_tile_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -86,6 +89,9 @@ penge_app_tile_dispose (GObject *object)
 
   if (priv->app_info)
   {
+    g_signal_handlers_disconnect_by_func (priv->icon_theme,
+                                          _icon_theme_changed_cb,
+                                          object);
     g_object_unref (priv->app_info);
     priv->app_info = NULL;
   }
