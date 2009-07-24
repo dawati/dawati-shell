@@ -230,11 +230,7 @@ _tell_changed (CarrickNotificationManager *self,
   gchar *message = NULL;
   const gchar *icon;
 
-  if (g_strcmp0 (priv->last_type, "ethernet") == 0)
-  {
-    old = g_strdup (_("Sorry, your wired connection was lost. So we've "));
-  }
-  else if (priv->last_name)
+  if (priv->last_name)
   {
     old = g_strdup_printf (_("Sorry, your connection to %s was lost. So we've "),
                            name);
@@ -396,7 +392,18 @@ _services_changed_cb (CmManager *manager,
                g_strcmp0 (priv->last_state, "ready") == 0
                && g_strcmp0 (name, priv->last_name) != 0)
       {
-        _tell_changed (self, name, type, str);
+        if (g_strcmp0 (priv->last_type, "wired") == 0)
+        {
+          /* Special case ethernet connections.
+           * When cable unplugged just tell the user what the
+           * new connection is.
+           */
+          _tell_online (name, type, str);
+        }
+        else
+        {
+          _tell_changed (self, name, type, str);
+        }
       }
       else if (g_strcmp0 (state, "idle") == 0
                && g_strcmp0 (priv->last_state, "ready") == 0)
