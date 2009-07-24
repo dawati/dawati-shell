@@ -19,8 +19,9 @@
  *
  */
 
-#include "anerley-econtact-item.h"
+#include <glib/gi18n.h>
 
+#include "anerley-econtact-item.h"
 G_DEFINE_TYPE (AnerleyEContactItem, anerley_econtact_item, ANERLEY_TYPE_ITEM)
 
 #define GET_PRIVATE(o) \
@@ -217,11 +218,9 @@ anerley_econtact_item_get_display_name (AnerleyItem *item)
 
   if (!priv->display_name)
   {
-    full_name = g_strconcat (e_contact_get_const (priv->contact,
-                                                  E_CONTACT_GIVEN_NAME),
+    full_name = g_strconcat (anerley_item_get_first_name (item),
                              " ",
-                             e_contact_get_const (priv->contact,
-                                                  E_CONTACT_FAMILY_NAME),
+                             anerley_item_get_last_name (item),
                              NULL);
     if (full_name)
       priv->display_name = full_name;
@@ -274,6 +273,22 @@ anerley_econtact_item_get_first_name (AnerleyItem *item)
 
   first_name = e_contact_get_const (priv->contact,
                                     E_CONTACT_GIVEN_NAME);
+
+  if (!first_name)
+    first_name = e_contact_get_const (priv->contact,
+                                      E_CONTACT_NICKNAME);
+
+  if (!first_name)
+    first_name = e_contact_get_const (priv->contact,
+                                      E_CONTACT_ORG);
+
+  if (!first_name)
+    first_name = e_contact_get_const (priv->contact,
+                                      E_CONTACT_EMAIL_1);
+
+  if (!first_name)
+    first_name = _("Unnamed");
+
   return first_name;
 }
 
