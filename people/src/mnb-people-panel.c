@@ -163,6 +163,11 @@ _update_selected_item (MnbPeoplePanel *people_panel)
     nbtk_button_set_label (NBTK_BUTTON (priv->secondary_button),
                            _("Edit details"));
     clutter_actor_show ((ClutterActor *)priv->secondary_button);
+
+    if (!anerley_econtact_item_get_email (ANERLEY_ECONTACT_ITEM (item)))
+    {
+      clutter_actor_hide ((ClutterActor *)priv->primary_button);
+    }
   } else if (ANERLEY_IS_TP_ITEM (item)) {
     nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
                            _("Send a message"));
@@ -792,6 +797,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         0.0,
                                         "y-align",
                                         0.0,
+                                        "allocate-hidden",
+                                        FALSE,
                                         NULL);
 
   priv->secondary_button = nbtk_button_new_with_label ("");
