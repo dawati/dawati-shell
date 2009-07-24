@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-20 09:20+0000\n"
+"POT-Creation-Date: 2009-07-22 09:20+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -60,25 +60,25 @@ msgid "Search"
 msgstr "Búsqueda"
 
 # <you cannot change the order of these 2 items>
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:164
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:164
 #, c-format
 msgid "Season %d Episode %d"
 msgstr "Temporada %d, episodio %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:166
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:166
 #, c-format
 msgid "Season %d"
 msgstr "Temporada %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:168
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:168
 #, c-format
 msgid "Episode %d"
 msgstr "Episodio %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:170
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:170
 #, c-format
 msgid "Year %d"
@@ -113,38 +113,38 @@ msgstr "aplicaciones"
 #: ../myzone/src/moblin-panel-myzone.c:78
 #: ../src/moblin-netbook.c:310
 msgid "myzone"
-msgstr "mizona"
+msgstr "MiZona"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:564
+#: ../netpanel/src/moblin-netbook-netpanel.c:568
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Tus favoritos se mostrarán aquí y en la página de nuevas pestaña conforme vayas visitando páginas"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:751
+#: ../netpanel/src/moblin-netbook-netpanel.c:755
 msgid "Untitled"
 msgstr "Sin nombre"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:864
+#: ../netpanel/src/moblin-netbook-netpanel.c:868
 msgid "New tab"
 msgstr "Nueva pestaña"
 
 #. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1053
+#: ../netpanel/src/moblin-netbook-netpanel.c:1057
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:1066
+#: ../netpanel/src/moblin-netbook-netpanel.c:1070
 msgid "Go"
 msgstr "Ir"
 
 # <Fichas? If "fichas" is better then it needs to replace pestañas in other
 # strings too>
 #. Construct title for tab preview section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1087
+#: ../netpanel/src/moblin-netbook-netpanel.c:1091
 msgid "Tabs"
 msgstr "Pestañas"
 
 #. Construct title for favorite pages section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1092
+#: ../netpanel/src/moblin-netbook-netpanel.c:1096
 msgid "Favorite pages"
 msgstr "Webs preferidas"
 
@@ -331,7 +331,7 @@ msgstr "Enviar un mensaje"
 
 # We didn't find anybody. Do you already have an account in any Instant Messenger (service)?
 #: ../people/src/mnb-people-panel.c:302
-#: ../status/src/moblin-panel-status.c:838
+#: ../status/src/moblin-panel-status.c:802
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Lo sentimos, no econtramos a nadie. ¿Haz configurado ya una cuenta de algún mensajero instantáneo?"
 
@@ -355,7 +355,7 @@ msgstr "zonas"
 
 # <mousetip of the top of the screen>
 #: ../src/moblin-netbook.c:316
-#: ../status/src/moblin-panel-status.c:1112
+#: ../status/src/moblin-panel-status.c:1095
 msgid "status"
 msgstr "estado"
 
@@ -384,21 +384,15 @@ msgstr "Nueva zona (0)"
 msgid "Choose zone for application:"
 msgstr "Elegir una zona para la aplicación:"
 
-# The tray icon asks for a size of (%i x %i), so we will change it to (%i x %i)
-#: ../src/tray/na-tray-child.c:121
-#, c-format
-msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-msgstr "El icono de la bandeja pide un tamaño de (%i x %i), así que lo cambiaremos a (%i x %i)"
-
-#: ../src/mnb-switcher.c:1678
+#: ../src/mnb-switcher.c:1707
 msgid "No Zones yet"
 msgstr "Todavía no hay ninguna zona"
 
-#: ../src/mnb-switcher.c:1700
+#: ../src/mnb-switcher.c:1729
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 msgstr "Las aplicaciones"
 
-#: ../src/mnb-switcher.c:1923
+#: ../src/mnb-switcher.c:1952
 msgid "No applications on this zone"
 msgstr "No hay ninguna aplicación en esta zona"
 
@@ -449,39 +443,39 @@ msgstr "Mueve el cursor hacia arriba para ver la barra de herramientas"
 
 #: ../status/src/mnb-im-status-row.c:97
 #: ../status/src/mnb-im-status-row.c:98
-#: ../status/src/mnb-im-status-row.c:641
+#: ../status/src/mnb-im-status-row.c:659
 msgid "Offline"
 msgstr "Fuera de línea"
 
 #: ../status/src/mnb-im-status-row.c:99
-#: ../status/src/moblin-panel-status.c:572
+#: ../status/src/moblin-panel-status.c:536
 msgid "Available"
 msgstr "Disponible"
 
 #: ../status/src/mnb-im-status-row.c:100
 #: ../status/src/mnb-im-status-row.c:101
-#: ../status/src/moblin-panel-status.c:576
-#: ../status/src/moblin-panel-status.c:580
+#: ../status/src/moblin-panel-status.c:540
+#: ../status/src/moblin-panel-status.c:544
 msgid "Away"
 msgstr "Inactivo"
 
 #: ../status/src/mnb-im-status-row.c:102
 #: ../status/src/mnb-im-status-row.c:103
-#: ../status/src/moblin-panel-status.c:584
-#: ../status/src/moblin-panel-status.c:588
+#: ../status/src/moblin-panel-status.c:548
+#: ../status/src/moblin-panel-status.c:552
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "- Cerrar"
+#: ../status/src/mnb-im-status-row.c:126
+msgid "Close"
+msgstr "Cerrar"
 
-#: ../status/src/mnb-im-status-row.c:129
-#: ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+ Cambiar"
+#: ../status/src/mnb-im-status-row.c:135
+#: ../status/src/mnb-im-status-row.c:677
+msgid "Change"
+msgstr "Cambiar"
 
-#: ../status/src/mnb-im-status-row.c:644
+#: ../status/src/mnb-im-status-row.c:662
 msgid "Unknown account"
 msgstr "Cuenta desconocida"
 
@@ -510,30 +504,23 @@ msgid "Post"
 msgstr "Enviar"
 
 # Your status
-#: ../status/src/moblin-panel-status.c:506
-#: ../status/src/moblin-panel-status.c:973
+#: ../status/src/moblin-panel-status.c:470
 msgid "Your current status"
 msgstr "Su estado"
 
 # Your status: offline
-#: ../status/src/moblin-panel-status.c:508
+#: ../status/src/moblin-panel-status.c:472
+#: ../status/src/moblin-panel-status.c:937
 msgid "Your current status - you are offline"
 msgstr "Tu estado: fuera de línea"
 
 # To update your status you need to have an account in a web service that allows status messages
-#: ../status/src/moblin-panel-status.c:1007
+#: ../status/src/moblin-panel-status.c:971
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
 msgstr "Para actualizar tu estado debes tener una cuenta en un servicio web que sea compatible con los mensajes de estado"
 
 # We didn't find anybody. Do you already have an account in any Instant Messenger (service)?
-#: ../status/src/moblin-panel-status.c:1034
+#: ../status/src/moblin-panel-status.c:998
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "Para actualizar tu estado en IM necesitas configurar una cuenta de mensajería instantánea "
-
-#~ msgid "Local"
-#~ msgstr "Local"
-#~ msgid "Email %s"
-#~ msgstr "Enviar %s"
-#~ msgid "IM %s"
-#~ msgstr "Enviar %s por mensajero"
 
