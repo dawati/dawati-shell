@@ -423,7 +423,7 @@ _new_connection_cb (GtkButton *button,
 
   security_combo = gtk_combo_box_new_text ();
   gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
-                             "None");
+                             _("None"));
   gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
                              "WEP");
   gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
