@@ -24,7 +24,9 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-aggregate-tp-feed.c \
 			anerley-econtact-item.c \
 			anerley-ebook-feed.c \
-			$(libanerley_la_HEADERS)
+			$(libanerley_la_HEADERS) \
+			penge-magic-texture.c \
+			penge-magic-texture.h
 libanerley_ladir = $(includedir)/anerley/anerley
 
 libanerley_la_CFLAGS = -I$(top_srcdir) \

@@ -20,6 +20,8 @@
  */
 
 
+#include "penge-magic-texture.h"
+
 #include "anerley-tile.h"
 #include "anerley-item.h"
 #include "anerley-tile-view.h"
@@ -441,7 +443,8 @@ anerley_tile_init (AnerleyTile *self)
   priv->avatar_bin = nbtk_bin_new ();
   nbtk_widget_set_style_class_name (priv->avatar_bin, "AnerleyTileAvatar");
 
-  priv->avatar = clutter_texture_new ();
+  priv->avatar = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
+                               NULL);
   clutter_actor_set_size ((ClutterActor *)priv->avatar_bin, 64, 64);
   /* TODO: Prefill with unknown icon */
   nbtk_bin_set_child (NBTK_BIN (priv->avatar_bin), priv->avatar);
