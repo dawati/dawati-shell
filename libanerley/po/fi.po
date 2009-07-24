@@ -17,3 +17,7 @@ msgstr "Poissa"
 
 msgid "Offline"
 msgstr "Poissa linjoilta"
+
+msgid "Unnamed"
+msgstr "Nimetön"
+

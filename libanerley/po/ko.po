@@ -34,3 +34,6 @@ msgstr "자리 비움"
 msgid "Offline"
 msgstr "오프라인"
 
+msgid "Unnamed"
+msgstr "무명"
+

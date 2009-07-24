@@ -20,3 +20,6 @@ msgstr "Abwesend"
 msgid "Offline"
 msgstr "Abgemeldet"
 
+msgid "Unnamed"
+msgstr "Unbenannt"
+

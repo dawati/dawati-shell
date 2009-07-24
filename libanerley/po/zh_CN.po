@@ -32,3 +32,6 @@ msgstr "离开"
 msgid "Offline"
 msgstr "离线"
 
+msgid "Unnamed"
+msgstr "无名"
+

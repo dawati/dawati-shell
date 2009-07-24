@@ -37,3 +37,8 @@ msgstr "Nieobecny"
 #: ../anerley/anerley-tile.c:211
 msgid "Offline"
 msgstr "Rozłączony"
+
+msgid "Unnamed"
+msgstr "Bez nazwy"
+
+

@@ -34,3 +34,8 @@ msgstr "離席中"
 #: ../libempathy/empathy-utils.c:262
 msgid "Offline"
 msgstr "オフライン"
+
+msgid "Unnamed"
+msgstr "無名"
+
+

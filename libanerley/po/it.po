@@ -31,3 +31,7 @@ msgstr "Assente"
 #: ../anerley/anerley-tile.c:211
 msgid "Offline"
 msgstr "Fuori rete"
+
+msgid "Unnamed"
+msgstr "Senza nome"
+

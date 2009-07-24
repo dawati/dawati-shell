@@ -16,3 +16,7 @@ msgstr "Frånvarande"
 
 msgid "Offline"
 msgstr "Frånkopplad"
+
+msgid "Unnamed"
+msgstr "Namnlös"
+

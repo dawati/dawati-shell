@@ -48,3 +48,6 @@ msgstr "Absent"
 msgid "Offline"
 msgstr "Déconnecté"
 
+msgid "Unnamed"
+msgstr "Sans nom"
+

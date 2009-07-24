@@ -31,3 +31,8 @@ msgstr "離開"
 #: ../anerley/anerley-tile.c:211
 msgid "Offline"
 msgstr "離線"
+
+msgid "Unnamed"
+msgstr "無名"
+
+
