@@ -75,7 +75,7 @@ main (int    argc,
   if (!standalone)
   {
     client = mpl_panel_clutter_new (MPL_PANEL_MYZONE,
-                                    _("myzone"),
+                                    "myzone",
                                     NULL,
                                     "myzone-button",
                                     TRUE);
