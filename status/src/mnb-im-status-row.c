@@ -223,7 +223,9 @@ on_presence_row_clicked (ClutterActor   *actor,
                  presence_states[id].presence,
                  presence_states[id].status_msg);
 
-  return on_expand_clicked (row->priv->expand_box, event, row);
+  (void) on_expand_clicked (row->priv->expand_box, event, row);
+
+  return TRUE;
 }
 
 static gboolean
@@ -443,7 +445,7 @@ mnb_im_status_row_paint (ClutterActor *actor)
   clutter_actor_paint (priv->header);
   clutter_actor_paint (priv->expand_box);
 
-  if (CLUTTER_ACTOR_IS_MAPPED (priv->status_grid))
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->status_grid))
     clutter_actor_paint (priv->status_grid);
 }
 
@@ -456,7 +458,9 @@ mnb_im_status_row_pick (ClutterActor       *actor,
   CLUTTER_ACTOR_CLASS (mnb_im_status_row_parent_class)->pick (actor, pick_color);
 
   clutter_actor_paint (priv->expand_box);
-  clutter_actor_paint (priv->status_grid);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->status_grid))
+    clutter_actor_paint (priv->status_grid);
 }
 
 static void
