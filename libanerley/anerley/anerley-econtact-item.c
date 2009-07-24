@@ -385,7 +385,7 @@ anerley_econtact_item_get_uid (AnerleyEContactItem *item)
 }
 
 const gchar *
-anerley_econtact_get_email (AnerleyEContactItem *item)
+anerley_econtact_item_get_email (AnerleyEContactItem *item)
 {
   AnerleyEContactItemPrivate *priv = GET_PRIVATE (item);
   return e_contact_get_const (priv->contact,

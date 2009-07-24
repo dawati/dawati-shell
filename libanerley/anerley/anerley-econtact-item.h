@@ -57,7 +57,7 @@ GType anerley_econtact_item_get_type (void);
 
 AnerleyEContactItem *anerley_econtact_item_new (EContact *contact);
 const gchar *anerley_econtact_item_get_uid (AnerleyEContactItem *item);
-const gchar *anerley_econtact_get_email (AnerleyEContactItem *item);
+const gchar *anerley_econtact_item_get_email (AnerleyEContactItem *item);
 
 G_END_DECLS
 
