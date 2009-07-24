@@ -292,6 +292,111 @@ _tell_changed (CarrickNotificationManager *self,
   g_free (message);
 }
 
+/*
+ * Version of _tell_changed that does not use string
+ * concatenation.
+ *
+ * This function is being compiled in without getting
+ * called so that the translation tools will allow the
+ * translation team to translate the strings.
+ *
+ * We can not simply fix _tell_changed because we
+ * are past string freeze.
+ */
+static void
+_tell_changed_without_concat (CarrickNotificationManager *self,
+                              const gchar *name,
+                              const gchar *type,
+                              guint str)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+  gchar *title = g_strdup (_("Network changed"));
+  gchar *message = NULL;
+  const gchar *icon;
+
+  if (priv->last_name)
+  {
+    if (g_strcmp0 (type, "ethernet") == 0)
+    {
+      message = g_strdup_printf (_("Sorry, your connection to %s was lost. "
+                                   "So we've connected you to a wired network"),
+                                 name);
+      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+    }
+    else if (name)
+    {
+      message = g_strdup_printf (_("Sorry, your connection to %s was lost. So "
+                                   "we've connected you to %s, a %s network"),
+                                 priv->last_name,
+                                 name,
+                                 type);
+    }
+    else
+    {
+      message = g_strdup_printf (_("Sorry, your connection to %s was lost. "
+                                   "So we've connected you to a %s network"),
+                                 priv->last_name,
+                                 type);
+    }
+  }
+  else
+  {
+    if (g_strcmp0 (type, "ethernet") == 0)
+    {
+      message = g_strdup_printf (_("Sorry, your %s connection was lost. "
+                                   "So we've connected you to a wired network"),
+                                 priv->last_type);
+      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+    }
+    else if (name)
+    {
+      message = g_strdup_printf (_("Sorry, your %s connection was lost. "
+                                   "So we've connected you to %s, a %s "
+                                   "network"),
+                                 priv->last_type,
+                                 name,
+                                 type);
+    }
+    else
+    {
+      message = g_strdup_printf (_("Sorry, your %s connection was lost. So "
+                                   "we've connected you to a %s network"),
+                                 priv->last_type,
+                                 type);
+    }
+  }
+
+  /* Determine icon to show in notification */
+  if (g_strcmp0 (type, "wifi") == 0)
+  {
+    if (str > 70)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
+    else if (str > 35)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
+  }
+  else if (g_strcmp0 (type, "wimax") == 0)
+  {
+    if (str > 50)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
+  }
+  else if (g_strcmp0 (type, "cellular") == 0)
+  {
+    if (str > 50)
+      icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
+  }
+
+  _send_note (title, message, icon);
+
+  g_free (title);
+  g_free (message);
+}
+
 static void
 _service_state_stash_cb (CmService *service,
                          CarrickNotificationManager *self)
@@ -402,7 +507,14 @@ _services_changed_cb (CmManager *manager,
         }
         else
         {
-          _tell_changed (self, name, type, str);
+          if (0)
+          {
+            _tell_changed_without_concat (self, name, type, str);
+          }
+          else
+          {
+            _tell_changed (self, name, type, str);
+          }
         }
       }
       else if (g_strcmp0 (state, "idle") == 0
