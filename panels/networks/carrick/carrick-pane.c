@@ -590,87 +590,6 @@ static void
 _add_fallback (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = GET_PRIVATE (pane);
-
-  gchar *fallback = NULL;
-  GString *txt = g_string_new (_("Sorry, we can't find any networks. "));
-
-  /* Need to add some fall-back content */
-  if (!priv->have_daemon)
-  {
-    g_string_append (txt, _("The ConnMan daemon doesn't seem to be running. "
-			    "You may want to try re-starting your device"));
-    fallback = g_string_free (txt, FALSE);
-  }
-  else if (cm_manager_get_offline_mode (priv->manager))
-  {
-    g_string_append (txt, _("You could try disabling Offline mode"));
-    fallback = g_string_free (txt, FALSE);
-  }
-  else if ((priv->have_wifi && !priv->wifi_enabled) ||
-	   (priv->have_ethernet && !priv->ethernet_enabled) ||
-	   (priv->have_threeg && !priv->threeg_enabled) ||
-	   (priv->have_wimax && !priv->wimax_enabled))
-  {
-    guint len = 0;
-    g_string_append (txt, _("You could try turning on "));
-
-    if (priv->have_wifi && !priv->wifi_enabled)
-    {
-      g_string_append (txt, _("WiFi"));
-      len++;
-    }
-    else if (priv->have_wimax && !priv->wimax_enabled)
-    {
-      if (len > 1)
-	g_string_append (txt, _(", "));
-
-      g_string_append (txt, _("WiMAX"));
-      len++;
-    }
-    else if (priv->have_threeg && !priv->threeg_enabled)
-    {
-      if (len > 1)
-	g_string_append (txt, _(" and "));
-
-      g_string_append (txt, _("3G"));
-    }
-    else if (priv->have_ethernet && !priv->ethernet_enabled)
-    {
-      if (len > 1)
-	g_string_append (txt, _(", "));
-
-      g_string_append (txt, _("Ethernet"));
-      len++;
-    }
-
-    fallback = g_string_free (txt, FALSE);
-  }
-  else
-  {
-    fallback = g_strdup (_("Sorry, we can't find any networks"));
-    g_string_free (txt, TRUE);
-  }
-
-  carrick_list_clear_fallback (CARRICK_LIST (priv->service_list));
-  carrick_list_add_fallback (CARRICK_LIST (priv->service_list), fallback);
-  g_free (fallback);
-}
-
-/*
- * Version of _add_fallback that does not use string
- * concatenation.
- *
- * This function is being compiled in without getting
- * called so that the traslation tools will allow the
- * translation team to translate the strings.  
- * 
- * We can not simply fix _add_fallback because we
- * are past string freeze.
- */
-static void
-_add_fallback_without_concat (CarrickPane *pane)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
   gchar *fallback = NULL;
 
   /* Need to add some fall-back content */
@@ -838,14 +757,7 @@ _update_services (CarrickPane *pane)
 
   if (!fetched_services)
   {
-    if (0)
-    {
-      _add_fallback_without_concat (pane);
-    }
-    else
-    {
-      _add_fallback (pane);
-    }
+    _add_fallback (pane);
   }
 }
 
@@ -1011,14 +923,7 @@ _enabled_technologies_changed_cb (CmManager *manager,
 
   if (!cm_manager_get_services (priv->manager))
   {
-    if (0)
-    {
-      _add_fallback_without_concat (CARRICK_PANE (user_data));
-    }
-    else
-    {
-      _add_fallback (CARRICK_PANE (user_data));
-    }
+    _add_fallback (CARRICK_PANE (user_data));
   }
 }
 
@@ -1062,15 +967,7 @@ _manager_state_changed_cb (CmManager *manager,
   else if (g_strcmp0 (state, "offline") == 0)
   {
     priv->have_daemon = TRUE;
-
-    if (0)
-    {
-      _add_fallback_without_concat (pane);
-    }
-    else
-    {
-      _add_fallback (pane);
-    }
+    _add_fallback (pane);
   }
 }
 
