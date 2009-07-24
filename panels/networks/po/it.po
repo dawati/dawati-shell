@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-21 16:28+0000\n"
-"PO-Revision-Date: 2009-07-21 18:36+0200\n"
+"POT-Creation-Date: 2009-07-22 09:20+0000\n"
+"PO-Revision-Date: 2009-07-23 18:53+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "È possibile provare ad abilitare "
 
 #: ../carrick/carrick-pane.c:528 ../carrick/carrick-pane.c:964
 msgid "WiFi"
-msgstr "Senza fili"
+msgstr "WiFi"
 
 #: ../carrick/carrick-pane.c:534 ../carrick/carrick-pane.c:549
 msgid ", "
