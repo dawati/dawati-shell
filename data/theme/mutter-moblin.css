@@ -74,7 +74,7 @@ MnbToolbarButton:hover, MnbToolbarButton:active {
 
 NbtkBin.toolbar-instruction-box {
  border-image: url("file://panel/toolbar-hint.png") 47 6 6 60;
- padding: 10 10 10 60;
+ padding: 10 10 30 60;
 }
 
 NbtkLabel.toolbar-instruction-label {
