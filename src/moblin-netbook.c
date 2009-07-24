@@ -302,34 +302,8 @@ moblin_netbook_plugin_constructed (GObject *object)
     CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
 
 #if 1
-  /*
-   * TODO this needs to be hooked into the dbus API exposed by the out of
-   * process applets, once we have them.
-   */
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MPL_PANEL_MYZONE, _("myzone"));
-
   mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
                                 MPL_PANEL_ZONES, _("zones"));
-
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MPL_PANEL_STATUS, _("status"));
-
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MPL_PANEL_APPLICATIONS, _("applications"));
-
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MPL_PANEL_PASTEBOARD, _("pasteboard"));
-
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MPL_PANEL_INTERNET, _("internet"));
-
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MPL_PANEL_MEDIA, _("media"));
-
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MPL_PANEL_PEOPLE, _("people"));
-
 #endif
 
   clutter_set_motion_events_enabled (TRUE);
