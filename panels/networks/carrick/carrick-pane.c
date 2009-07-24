@@ -48,6 +48,8 @@ struct _CarrickPanePrivate {
   GtkWidget          *threeg_label;
   GtkWidget          *wimax_switch;
   GtkWidget          *wimax_label;
+  GtkWidget          *bluetooth_switch;
+  GtkWidget          *bluetooth_label;
   GtkWidget          *offline_mode_switch;
   GtkWidget          *service_list;
   GtkWidget          *new_conn_button;
@@ -58,10 +60,12 @@ struct _CarrickPanePrivate {
   gboolean            have_ethernet;
   gboolean            have_threeg;
   gboolean            have_wimax;
+  gboolean            have_bluetooth;
   gboolean            wifi_enabled;
   gboolean            ethernet_enabled;
   gboolean            threeg_enabled;
   gboolean            wimax_enabled;
+  gboolean            bluetooth_enabled;
   CarrickNotificationManager *notes;
 };
 
@@ -306,6 +310,33 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                                               "idle",
                                               "all");
     cm_manager_disable_technology (priv->manager, "wimax");
+  }
+
+  return TRUE;
+}
+
+static gboolean
+_bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
+			    gboolean            new_state,
+			    CarrickPane        *pane)
+{
+  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+
+  if (new_state)
+  {
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "bluetooth",
+                                              "ready",
+                                              "all");
+    cm_manager_enable_technology (priv->manager, "bluetooth");
+  }
+  else
+  {
+    carrick_notification_manager_queue_event (priv->notes,
+                                              "bluetooth",
+                                              "idle",
+                                              "all");
+    cm_manager_disable_technology (priv->manager, "bluetooth");
   }
 
   return TRUE;
@@ -669,7 +700,8 @@ _add_fallback_without_concat (CarrickPane *pane)
   else if ((priv->have_wifi && !priv->wifi_enabled) ||
 	   (priv->have_ethernet && !priv->ethernet_enabled) ||
 	   (priv->have_threeg && !priv->threeg_enabled) ||
-	   (priv->have_wimax && !priv->wimax_enabled))
+	   (priv->have_wimax && !priv->wimax_enabled) ||
+	   (priv->have_bluetooth && !priv->bluetooth_enabled))
   {
     if (priv->have_wifi && !priv->wifi_enabled)
     {
@@ -703,7 +735,7 @@ _add_fallback_without_concat (CarrickPane *pane)
 			     "You could try turning on 3G."
 			     ));
     }
-    else if (0 /* priv->have_bluetooth && !priv->bluetooth_enabled */)
+    else if (priv->have_bluetooth && !priv->bluetooth_enabled)
    {
       /* 
        * Hint to display if we detect that wifi, wimax, and 3G are on but
@@ -835,6 +867,7 @@ _available_technologies_changed_cb (CmManager *manager,
   priv->have_ethernet = FALSE;
   priv->have_threeg = FALSE;
   priv->have_wimax = FALSE;
+  priv->have_bluetooth = FALSE;
 
   while (l != NULL)
   {
@@ -856,6 +889,10 @@ _available_technologies_changed_cb (CmManager *manager,
     {
       priv->have_wimax = TRUE;
     }
+    else if (g_strcmp0 (t, "bluetooth") == 0)
+    {
+      priv->have_bluetooth = TRUE;
+    }
 
     l = l->next;
   }
@@ -868,6 +905,8 @@ _available_technologies_changed_cb (CmManager *manager,
 			    priv->have_threeg);
   gtk_widget_set_sensitive (priv->wimax_switch,
 			    priv->have_wimax);
+  gtk_widget_set_sensitive (priv->bluetooth_switch,
+			    priv->have_bluetooth);
 }
 
 static void
@@ -881,6 +920,7 @@ _enabled_technologies_changed_cb (CmManager *manager,
   priv->ethernet_enabled = FALSE;
   priv->threeg_enabled = FALSE;
   priv->wimax_enabled = FALSE;
+  priv->bluetooth_enabled = FALSE;
 
   while (l != NULL)
   {
@@ -902,6 +942,10 @@ _enabled_technologies_changed_cb (CmManager *manager,
     {
       priv->wimax_enabled = TRUE;
     }
+    else if (g_strcmp0 (t, "bluetooth") == 0)
+    {
+      priv->bluetooth_enabled = TRUE;
+    }
     
     l = l->next;
   }
@@ -919,6 +963,9 @@ _enabled_technologies_changed_cb (CmManager *manager,
   g_signal_handlers_disconnect_by_func (priv->wimax_switch,
 					_wimax_switch_callback,
 					user_data);
+  g_signal_handlers_disconnect_by_func (priv->bluetooth_switch,
+					_bluetooth_switch_callback,
+					user_data);
   
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
 				    (priv->ethernet_switch),
@@ -932,6 +979,9 @@ _enabled_technologies_changed_cb (CmManager *manager,
   nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
 				    (priv->wimax_switch),
 				    priv->wimax_enabled);
+  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+				    (priv->bluetooth_switch),
+				    priv->bluetooth_enabled);
 
   /* arm signal handlers */
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
@@ -949,6 +999,10 @@ _enabled_technologies_changed_cb (CmManager *manager,
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
 		    "switch-flipped",
 		    G_CALLBACK (_wimax_switch_callback),
+		    user_data);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_bluetooth_switch_callback),
 		    user_data);
 
   /* only enable if wifi is enabled */ 
@@ -1097,10 +1151,12 @@ carrick_pane_init (CarrickPane *self)
   priv->have_ethernet = FALSE;
   priv->have_threeg = FALSE;
   priv->have_wimax = FALSE;
+  priv->have_bluetooth = FALSE;
   priv->wifi_enabled = FALSE;
   priv->ethernet_enabled = FALSE;
   priv->threeg_enabled = FALSE;
   priv->wimax_enabled = FALSE;
+  priv->bluetooth_enabled = FALSE;
 
   switch_bin = nbtk_gtk_frame_new ();
   gtk_widget_show (switch_bin);
@@ -1322,6 +1378,38 @@ carrick_pane_init (CarrickPane *self)
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
 		    "switch-flipped",
 		    G_CALLBACK (_wimax_switch_callback),
+		    self);
+
+  switch_box = gtk_hbox_new (TRUE,
+                             6);
+  gtk_widget_show (switch_box);
+  priv->bluetooth_switch = nbtk_gtk_light_switch_new ();
+  priv->bluetooth_label = gtk_label_new (_("Bluetooth"));
+  gtk_misc_set_alignment (GTK_MISC (priv->bluetooth_label),
+                          0.2,
+                          0.5);
+  gtk_widget_show (priv->bluetooth_switch);
+  gtk_widget_show (priv->bluetooth_label);
+  gtk_widget_set_sensitive (priv->bluetooth_switch, FALSE);
+
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->bluetooth_label,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (switch_box),
+                      priv->bluetooth_switch,
+                      TRUE,
+                      TRUE,
+                      8);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      switch_box,
+                      FALSE,
+                      FALSE,
+                      8);
+  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
+		    "switch-flipped",
+		    G_CALLBACK (_bluetooth_switch_callback),
 		    self);
 
   gtk_table_attach_defaults (GTK_TABLE (self),
