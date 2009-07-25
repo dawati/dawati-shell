@@ -23,6 +23,9 @@
 #include <mhs/mhs.h>
 #include <penge/penge-utils.h>
 #include <glib/gi18n.h>
+#include <sys/file.h>
+#include <glib/gstdio.h>
+#include <unistd.h>
 
 #include <moblin-panel/mpl-entry.h>
 
@@ -70,6 +73,8 @@ struct _MoblinNetbookNetpanelPrivate
 
   gchar         **fav_urls;
   gchar         **fav_titles;
+
+  GList          *session_urls;
 
   MplPanelClient *panel_client;
 };
@@ -153,6 +158,13 @@ moblin_netbook_netpanel_dispose (GObject *object)
     {
       clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
       priv->favs_view = NULL;
+    }
+
+  while (priv->session_urls)
+    {
+      g_free (priv->session_urls->data);
+      priv->session_urls = g_list_delete_link (priv->session_urls,
+                                               priv->session_urls);
     }
 
   G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->dispose (object);
@@ -517,6 +529,14 @@ fav_button_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 }
 
 static void
+session_tab_button_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
+{
+  gchar *url = (gchar *)g_object_get_data (G_OBJECT (button), "url");
+
+  moblin_netbook_netpanel_launch_url (self, url, TRUE);
+}
+
+static void
 create_tabs_view (MoblinNetbookNetpanel *self)
 {
   MoblinNetbookNetpanelPrivate *priv = self->priv;
@@ -575,6 +595,63 @@ create_favs_placeholder (MoblinNetbookNetpanel *self)
   clutter_actor_set_parent (CLUTTER_ACTOR (bin), CLUTTER_ACTOR (self));
 }
 
+static NbtkWidget *
+add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
+                             const gchar *url, const gchar *title)
+{
+  ClutterActor *tex;
+  GError *error = NULL;
+  NbtkWidget *button, *label;
+  gchar *path;
+
+  path = penge_utils_get_thumbnail_path (url);
+
+  button = nbtk_button_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (button), "weblink");
+  nbtk_widget_set_style_class_name (NBTK_WIDGET (button), "weblink");
+
+  if (!title)
+    title = url;
+
+  label = nbtk_label_new (title);
+  clutter_actor_set_width (CLUTTER_ACTOR (label), CELL_WIDTH);
+
+  tex = clutter_texture_new ();
+
+  if (path)
+    {
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (tex), path, &error);
+      g_free (path);
+      if (error)
+        {
+          g_warning ("[netpanel] unable to open thumbnail: %s\n",
+                     error->message);
+          g_error_free (error);
+        }
+    }
+
+  if (!path || error)
+    {
+      error = NULL;
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (tex),
+                                     THEMEDIR "/fallback-page.png", &error);
+      if (error)
+        {
+          g_warning ("[netpanel] unable to open fallback thumbnail: %s\n",
+                     error->message);
+          g_error_free (error);
+        }
+    }
+
+  clutter_actor_set_size (CLUTTER_ACTOR (tex), CELL_WIDTH, CELL_HEIGHT);
+  clutter_container_add_actor (CLUTTER_CONTAINER (button), tex);
+
+  mnb_netpanel_scrollview_add_item (scrollview, 0, CLUTTER_ACTOR (button),
+                                    CLUTTER_ACTOR (label));
+
+  return button;
+}
+
 static void
 favs_received_cb (MhsHistory            *history,
                   gchar                **urls,
@@ -610,58 +687,16 @@ favs_received_cb (MhsHistory            *history,
 
   for (i = 0; i < priv->n_favs; i++)
     {
-      ClutterActor *tex;
-      GError *error = NULL;
-      NbtkWidget *button, *label;
-      gchar *path;
+      NbtkWidget *button;
+      MnbNetpanelScrollview *scrollview;
 
-      path = penge_utils_get_thumbnail_path (priv->fav_urls[i]);
-
-      button = nbtk_button_new ();
-      clutter_actor_set_name (CLUTTER_ACTOR (button), "weblink");
-      nbtk_widget_set_style_class_name (NBTK_WIDGET (button), "weblink");
-
-      label = nbtk_label_new (priv->fav_titles[i]);
-      clutter_actor_set_width (CLUTTER_ACTOR (label), CELL_WIDTH);
-
-      tex = clutter_texture_new ();
-
-      if (path)
-        {
-          clutter_texture_set_from_file (CLUTTER_TEXTURE (tex), path, &error);
-          g_free (path);
-          if (error)
-            {
-              g_warning ("[netpanel] unable to open thumbnail: %s\n",
-                         error->message);
-              g_error_free (error);
-            }
-        }
-
-      if (!path || error)
-        {
-          error = NULL;
-          clutter_texture_set_from_file (CLUTTER_TEXTURE (tex),
-                                         THEMEDIR "/fallback-page.png", &error);
-          if (error)
-            {
-              g_warning ("[netpanel] unable to open fallback thumbnail: %s\n",
-                         error->message);
-              g_error_free (error);
-            }
-        }
-
-      clutter_actor_set_size (CLUTTER_ACTOR (tex), CELL_WIDTH, CELL_HEIGHT);
-      clutter_container_add_actor (CLUTTER_CONTAINER (button), tex);
+      scrollview = MNB_NETPANEL_SCROLLVIEW (priv->favs_view);
+      button = add_thumbnail_to_scrollview (scrollview, priv->fav_urls[i],
+                                            priv->fav_titles[i]);
 
       g_object_set_data (G_OBJECT (button), "fav", GUINT_TO_POINTER (i));
       g_signal_connect (button, "clicked",
                         G_CALLBACK (fav_button_clicked_cb), self);
-
-      mnb_netpanel_scrollview_add_item (MNB_NETPANEL_SCROLLVIEW (priv->favs_view),
-                                        0,
-                                        CLUTTER_ACTOR (button),
-                                        CLUTTER_ACTOR (label));
     }
 }
 
@@ -763,6 +798,75 @@ notify_get_tab (DBusGProxy     *proxy,
   g_free (title);
 }
 
+static gboolean
+load_session (MoblinNetbookNetpanel *self, MnbNetpanelScrollview *scrollview)
+{
+  char *session_file;
+  int fd;
+  gboolean opened_something = FALSE;
+  GKeyFile *keys;
+  char **groups;
+  int i;
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  session_file = g_build_filename (g_get_home_dir (), ".moblin-web-browser",
+                                   "session", NULL);
+
+  if (!g_file_test (session_file, G_FILE_TEST_EXISTS))
+    {
+      g_free (session_file);
+      return FALSE;
+    }
+
+  fd = g_open (session_file, O_RDONLY);
+  if (fd == -1)
+    {
+      g_warning ("Failed to open session file %s", session_file);
+      g_free (session_file);
+      return FALSE;
+    }
+
+  keys = g_key_file_new ();
+
+  if (!g_key_file_load_from_file (keys, session_file, 0, NULL))
+    {
+      g_warning ("Failed to load keys from session file %s", session_file);
+      g_free (session_file);
+      g_key_file_free (keys);
+      return FALSE;
+    }
+
+  groups = g_key_file_get_groups (keys, NULL);
+  for (i = 0; groups[i]; i++)
+    {
+      gchar *url = g_key_file_get_string (keys, groups[i], "url", NULL);
+      gchar *title = g_key_file_get_string (keys, groups[i], "title", NULL);
+
+      if (url)
+        {
+          NbtkWidget *button = add_thumbnail_to_scrollview (scrollview,
+                                                            url, title);
+
+          g_object_set_data (G_OBJECT (button), "url", url);
+          g_signal_connect (button, "clicked",
+                            G_CALLBACK (session_tab_button_clicked_cb), self);
+
+          priv->session_urls = g_list_prepend (priv->session_urls, url);
+          opened_something = TRUE;
+        }
+
+      g_free (title);
+    }
+  g_strfreev (groups);
+
+  g_key_file_free (keys);
+  g_free (session_file);
+
+  close (fd);
+
+  return opened_something;
+}
+
 static void
 notify_get_ntabs (DBusGProxy     *proxy,
                   DBusGProxyCall *call_id,
@@ -842,7 +946,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
           g_free (output);
         }
     }
-  else
+  else if (!load_session (self, MNB_NETPANEL_SCROLLVIEW (priv->tabs_view)))
     {
       NbtkWidget *button;
       ClutterActor *tex;
@@ -981,6 +1085,13 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
     {
       clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
       priv->favs_view = NULL;
+    }
+
+  while (priv->session_urls)
+    {
+      g_free (priv->session_urls->data);
+      priv->session_urls = g_list_delete_link (priv->session_urls,
+                                               priv->session_urls);
     }
 
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->hide (actor);
