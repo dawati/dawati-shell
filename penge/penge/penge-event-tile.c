@@ -26,7 +26,7 @@
 
 #include <string.h>
 
-G_DEFINE_TYPE (PengeEventTile, penge_event_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeEventTile, penge_event_tile, NBTK_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVENT_TILE, PengeEventTilePrivate))
@@ -42,6 +42,8 @@ struct _PengeEventTilePrivate {
   NbtkWidget *summary_label;
   NbtkWidget *details_label;
   NbtkWidget *time_bin;
+
+  NbtkWidget *inner_table;
 };
 
 enum
@@ -182,9 +184,6 @@ _enter_event_cb (ClutterActor *actor,
   JanaTime *t;
   gchar *time_str;
 
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      "hover");
-
   t = jana_event_get_start (priv->event);
 
   /* Translate this time into local time */
@@ -208,9 +207,6 @@ _leave_event_cb (ClutterActor *actor,
   JanaTime *t;
   gchar *time_str;
 
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      NULL);
-
   if (priv->time)
   {
     t = jana_event_get_start (priv->event);
@@ -231,9 +227,8 @@ _leave_event_cb (ClutterActor *actor,
 }
 
 static gboolean
-_button_press_event_cb (ClutterActor *actor,
-                        ClutterEvent *event,
-                        gpointer      userdata)
+_button_clicked_cb (NbtkButton *button,
+                    gpointer    userdata)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
   ECal *ecal;
@@ -249,7 +244,7 @@ _button_press_event_cb (ClutterActor *actor,
   g_debug ("%s", command_line);
   g_free (uid);
 
-  if (!penge_utils_launch_by_command_line (actor,
+  if (!penge_utils_launch_by_command_line ((ClutterActor *)button,
                                            command_line))
   {
     g_warning (G_STRLOC ": Error starting dates");
@@ -265,6 +260,10 @@ penge_event_tile_init (PengeEventTile *self)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
+
+  priv->inner_table = nbtk_table_new ();
+  nbtk_bin_set_child (NBTK_BIN (self), (ClutterActor *)priv->inner_table);
+  nbtk_bin_set_fill (NBTK_BIN (self), TRUE, TRUE);
 
   priv->time_bin = nbtk_bin_new ();
   clutter_actor_set_width ((ClutterActor *)priv->time_bin,
@@ -298,11 +297,11 @@ penge_event_tile_init (PengeEventTile *self)
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   /* Populate the table */
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
                         (ClutterActor *)priv->time_bin,
                         0,
                         0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->time_bin,
                                "x-expand",
                                FALSE,
@@ -314,17 +313,17 @@ penge_event_tile_init (PengeEventTile *self)
                                FALSE,
                                NULL);
 
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
                         (ClutterActor *)priv->summary_label,
                         0,
                         1);
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
                         (ClutterActor *)priv->details_label,
                         1,
                         1);
 
   /* Make the time label span two rows */
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->time_bin,
                                "row-span",
                                2,
@@ -334,14 +333,14 @@ penge_event_tile_init (PengeEventTile *self)
    * Make the summary and detail labels consume the remaining horizontal
    * space
    */
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->summary_label,
                                "x-expand",
                                TRUE,
                                "y-fill",
                                FALSE,
                                NULL);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->details_label,
                                "x-expand",
                                TRUE,
@@ -350,8 +349,8 @@ penge_event_tile_init (PengeEventTile *self)
                                NULL);
 
   /* Setup spacing and padding */
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
+  nbtk_table_set_row_spacing (NBTK_TABLE (priv->inner_table), 4);
+  nbtk_table_set_col_spacing (NBTK_TABLE (priv->inner_table), 8);
 
   g_signal_connect (self,
                     "enter-event",
@@ -362,8 +361,8 @@ penge_event_tile_init (PengeEventTile *self)
                     (GCallback)_leave_event_cb,
                     self);
   g_signal_connect (self,
-                    "button-press-event",
-                    (GCallback)_button_press_event_cb,
+                    "clicked",
+                    (GCallback)_button_clicked_cb,
                     self);
 
   clutter_actor_set_reactive ((ClutterActor *)self,
@@ -447,7 +446,7 @@ penge_event_tile_update (PengeEventTile *tile)
      * cover both rows in the tile
      */
     clutter_actor_hide (CLUTTER_ACTOR (priv->details_label));
-    clutter_container_child_set (CLUTTER_CONTAINER (tile),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                  (ClutterActor *)priv->summary_label,
                                  "row-span",
                                  2,
@@ -460,7 +459,7 @@ penge_event_tile_update (PengeEventTile *tile)
     g_free (details_str);
 
     clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
-    clutter_container_child_set (CLUTTER_CONTAINER (tile),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                  (ClutterActor *)priv->summary_label,
                                  "row-span",
                                  1,

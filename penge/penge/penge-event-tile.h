@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_EVENT_TILE, PengeEventTileClass))
 
 typedef struct {
-  NbtkTable parent;
+  NbtkButton parent;
 } PengeEventTile;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  NbtkButtonClass parent_class;
 } PengeEventTileClass;
 
 GType penge_event_tile_get_type (void);
