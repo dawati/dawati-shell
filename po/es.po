@@ -255,7 +255,7 @@ msgstr "Hace un par de horas"
 #: ../penge/penge/penge-utils.c:78
 #: ../status/src/mnb-web-status-entry.c:121
 msgid "Earlier today"
-msgstr "Hoy, a una hora anterior"
+msgstr "Hoy, pero antes"
 
 #: ../penge/penge/penge-utils.c:81
 #: ../status/src/mnb-web-status-entry.c:124
@@ -333,7 +333,7 @@ msgstr "Enviar un mensaje"
 #: ../people/src/mnb-people-panel.c:302
 #: ../status/src/moblin-panel-status.c:802
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Lo sentimos, no econtramos a nadie. ¿Haz configurado ya una cuenta de algún mensajero instantáneo?"
+msgstr "Lo sentimos, no econtramos a nadie. ¿Tienes ya una cuenta en Messenger?"
 
 #: ../people/src/mnb-people-panel.c:550
 msgid "People"
@@ -402,7 +402,7 @@ msgstr "No hay ninguna aplicación en esta zona"
 #.
 #: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
-msgstr "%l:%M %P"
+msgstr "%H.%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
@@ -410,7 +410,7 @@ msgstr "%l:%M %P"
 #.
 #: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
-msgstr "%B %e, %Y"
+msgstr "%e de %B de %Y"
 
 # <mousetip of the top of the screen>
 # electricity(energy) and brightness
