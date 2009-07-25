@@ -1,22 +1,33 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tom�s Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 # Derived from Empathy
 # translation of empathy.HEAD.po to Español
 # Copyright (C) 2003 Free Software Foundation
 # This file is distributed under the same license as the Gossip package.
-#
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 200, 2009.
-
+#: ../anerley/anerley-tile.c:199
 msgid "Available"
 msgstr "Disponible"
 
+#: ../anerley/anerley-tile.c:202
 msgid "Busy"
 msgstr "Ocupado"
 
+#: ../anerley/anerley-tile.c:205
+#: ../anerley/anerley-tile.c:208
 msgid "Away"
 msgstr "Ausente"
 
+#: ../anerley/anerley-tile.c:211
 msgid "Offline"
 msgstr "Desconectado"
-
-msgid "Unnamed"
-msgstr "Sin nombre"
 
