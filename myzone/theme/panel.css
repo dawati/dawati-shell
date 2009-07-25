@@ -27,7 +27,8 @@ PengeEventTile, PengeTaskTile, PengeAppTile
   padding: 9 10 11 10;
 }
 
-PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover
+PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover,
+PengeEventTile:active, PengeTaskTile:active, PengeAppTile:active
 {
   border-image: url('file://tile-partial-glow.png') 7 8 9 8;
 }
@@ -46,12 +47,12 @@ PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeL
   padding: 6 7 8 7;
 }
 
-PengeTaskTile > *.PengeTaskToggleButton
+NbtkButton.PengeTaskToggleButton
 {
   border-image: url('file://check_box.png') 0;
 }
 
-PengeTaskTile > *.PengeTaskToggleButton:hover, PengeTaskTile > *.PengeTaskToggleButton:checked
+NbtkButton.PengeTaskToggleButton:hover, NbtkButton.PengeTaskToggleButton:checked
 {
   border-image: url('file://checked_box.png') 0;
 }
