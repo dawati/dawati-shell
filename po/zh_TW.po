@@ -15,7 +15,7 @@ msgstr ""
 
 #: ../ahoghill/ahoghill/ahoghill-example-table.c:117
 msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-msgstr "你要播放音樂、瀏覽照片或觀看影片來顯示你的歷史紀錄。現在，你可以瀏覽一些媒體樣本："
+msgstr "?要播放音樂、瀏覽照片或觀看影片來顯示?的歷史紀錄。現在，?可以瀏覽一些媒體樣本："
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:417
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:981
@@ -103,11 +103,11 @@ msgstr "應用程式"
 #: ../myzone/src/moblin-panel-myzone.c:78
 #: ../src/moblin-netbook.c:310
 msgid "myzone"
-msgstr "myzone"
+msgstr "我的地區"
 
 #: ../netpanel/src/moblin-netbook-netpanel.c:568
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-msgstr "正如您所訪問的網頁，您的收藏夾會在這裡出現，並在瀏覽器中的新標籤頁。"
+msgstr "正如?所訪問的網頁，?的收藏夾會在這裡出現，?在瀏覽器中的新標籤頁。"
 
 #: ../netpanel/src/moblin-netbook-netpanel.c:755
 msgid "Untitled"
@@ -171,11 +171,11 @@ msgstr "剪貼板"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:254
 msgid "You need to copy some text to use Pasteboard"
-msgstr "你必須複製一些文字來使用剪貼板"
+msgstr "?必須複製一些文字來使用剪貼板"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:307
 msgid "Clear pasteboard"
-msgstr "清除剪貼板"
+msgstr "?除剪貼板"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:439
 #: ../src/moblin-netbook.c:322
@@ -192,7 +192,7 @@ msgstr "這禮拜行事曆上沒有任何項目"
 
 #: ../penge/penge/penge-people-pane.c:191
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-msgstr "你朋友的文章和網路服務會出現在這裡。啟動你的帳戶吧！"
+msgstr "?朋友的文章和網路服務會出現在這裡。?動?的帳戶?！"
 
 #: ../penge/penge/penge-recent-files-pane.c:189
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
@@ -200,7 +200,7 @@ msgstr "<b>歡迎來到 Moblin 2.0 隨身型易網機</b>"
 
 #: ../penge/penge/penge-recent-files-pane.c:214
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
-msgstr "由於 Moblin 和其它電腦有些不同，在這次的試用版本中，我們將一些東西拼湊在一起以幫助你更快熟悉 Moblin。希望你喜歡我們的產品。Moblin 小組。"
+msgstr "由於 Moblin 和其?電腦有些不同，在這次的試用版本中，我們將一些東西?湊在一起以?助?更快熟悉 Moblin。希望?喜歡我們的?品。Moblin 小組。"
 
 #: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -307,7 +307,7 @@ msgstr "發送訊息"
 #: ../people/src/mnb-people-panel.c:302
 #: ../status/src/moblin-panel-status.c:802
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "很抱歉，我們無法找到任何人。你成立了一個 Messenger 的帳戶？"
+msgstr "?抱?，我們無法?到任何人。?成立了一個 Messenger 的帳戶？"
 
 #: ../people/src/mnb-people-panel.c:550
 msgid "People"
@@ -350,15 +350,15 @@ msgstr "新區域(0)"
 
 #: ../src/moblin-netbook-chooser.c:920
 msgid "Choose zone for application:"
-msgstr "為應用程式選取區域："
+msgstr "?應用程式選取區域："
 
 #: ../src/mnb-switcher.c:1707
 msgid "No Zones yet"
-msgstr "尚無區域"
+msgstr "?無區域"
 
 #: ../src/mnb-switcher.c:1729
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
-msgstr "你在使用的應用程式會顯示在這裡。你將可以切換和組合這些應用程式到你的核心。"
+msgstr "?在使用的應用程式會顯示在這裡。?將可以切換和組合這些應用程式到?的核心。"
 
 #: ../src/mnb-switcher.c:1952
 msgid "No applications on this zone"
@@ -402,7 +402,7 @@ msgstr "測試"
 
 #: ../src/mnb-toolbar.c:1749
 msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "要激活工具欄，移動您的滑鼠到畫面上方"
+msgstr "要激活工具欄，移動?的滑鼠到?面上方"
 
 #: ../status/src/mnb-im-status-row.c:97
 #: ../status/src/mnb-im-status-row.c:98
@@ -452,12 +452,12 @@ msgstr "修改"
 #: ../status/src/mnb-web-status-entry.c:605
 #, c-format
 msgid "Enter your %s status here..."
-msgstr "在這裡輸入你%s狀態......"
+msgstr "在這裡輸入?%s狀態......"
 
 #: ../status/src/mnb-web-status-entry.c:609
 #: ../status/src/mnb-web-status-entry.c:682
 msgid "Enter your current status here..."
-msgstr "在這裡輸入你目前狀態......"
+msgstr "在這裡輸入?目前狀態......"
 
 #: ../status/src/mnb-web-status-entry.c:791
 msgid "Post"
@@ -465,23 +465,23 @@ msgstr "發表"
 
 #: ../status/src/moblin-panel-status.c:470
 msgid "Your current status"
-msgstr "你目前狀態"
+msgstr "?目前狀態"
 
 #: ../status/src/moblin-panel-status.c:472
 #: ../status/src/moblin-panel-status.c:937
 msgid "Your current status - you are offline"
-msgstr "你目前狀態 - 你未上線"
+msgstr "?目前狀態 - ?未上線"
 
 #: ../status/src/moblin-panel-status.c:971
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "要更新你的網路狀態，你必須設定一個網路服務帳戶，提供此帳戶的一方須能支援狀態訊息"
+msgstr "要更新?的網路狀態，?必須設定一個網路服務帳戶，提供此帳戶的一方須能支援狀態訊息"
 
 #: ../status/src/moblin-panel-status.c:998
 msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr "要更新你的 IM 狀態，你必須要設定一個 IM 帳戶"
+msgstr "要更新?的 IM 狀態，?必須要設定一個 IM 帳戶"
 
 #~ msgid "Local"
 #~ msgstr "本機"
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-#~ msgstr "工作匣圖示須要的大小為 (%i x %i)，重新調整到 (%i x %i)"
+#~ msgstr "工作匣圖示須要的大小? (%i x %i)，重新調整到 (%i x %i)"
 
