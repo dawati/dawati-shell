@@ -246,10 +246,9 @@ penge_app_tile_class_init (PengeAppTileClass *klass)
   g_object_class_install_property (object_class, PROP_BOOKMARK, pspec);
 }
 
-static gboolean
-_button_press_event (ClutterActor *actor,
-                     ClutterEvent *event,
-                     gpointer      userdata)
+static void
+_button_clicked_cb (NbtkButton *button,
+                    gpointer    userdata)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
   GError *error = NULL;
@@ -266,17 +265,15 @@ _button_press_event (ClutterActor *actor,
       g_clear_error (&error);
     }
 
-    return FALSE;
+    return;
   }
 
-  if (penge_utils_launch_for_desktop_file (actor, path))
-    penge_utils_signal_activated (actor);
+  if (penge_utils_launch_for_desktop_file ((ClutterActor *)button, path))
+    penge_utils_signal_activated ((ClutterActor *)button);
   else
     g_warning (G_STRLOC ": Unable to launch for desktop file: %s", path);
 
   g_free (path);
-
-  return FALSE;
 }
 
 static void
@@ -290,8 +287,8 @@ penge_app_tile_init (PengeAppTile *self)
   nbtk_bin_set_child (NBTK_BIN (self),
                       priv->tex);
   g_signal_connect (self,
-                    "button-press-event",
-                    (GCallback)_button_press_event,
+                    "clicked",
+                    (GCallback)_button_clicked_cb,
                     self);
 }
 
