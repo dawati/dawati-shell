@@ -24,7 +24,7 @@
 #include <libjana-ecal/jana-ecal.h>
 #include <glib/gi18n.h>
 
-G_DEFINE_TYPE (PengeTaskTile, penge_task_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeTaskTile, penge_task_tile, NBTK_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_TASK_TILE, PengeTaskTilePrivate))
@@ -40,6 +40,8 @@ struct _PengeTaskTilePrivate {
     NbtkWidget *check_button;
 
     guint commit_timeout;
+
+    NbtkWidget *inner_table;
 };
 
 enum
@@ -147,29 +149,6 @@ penge_task_tile_class_init (PengeTaskTileClass *klass)
   g_object_class_install_property (object_class, PROP_STORE, pspec);
 }
 
-
-static gboolean
-_enter_event_cb (ClutterActor *actor,
-                 ClutterEvent *task,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      "hover");
-
-  return FALSE;
-}
-
-static gboolean
-_leave_event_cb (ClutterActor *actor,
-                 ClutterEvent *task,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      NULL);
-
-  return FALSE;
-}
-
 static gboolean
 _commit_timeout_cb (gpointer userdata)
 {
@@ -210,6 +189,10 @@ penge_task_tile_init (PengeTaskTile *self)
   PengeTaskTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
 
+  priv->inner_table = nbtk_table_new ();
+  nbtk_bin_set_child (NBTK_BIN (self), (ClutterActor *)priv->inner_table);
+  nbtk_bin_set_fill (NBTK_BIN (self), TRUE, TRUE);
+
   priv->check_button = nbtk_button_new ();
   nbtk_button_set_toggle_mode (NBTK_BUTTON (priv->check_button), TRUE);
   nbtk_widget_set_style_class_name (priv->check_button,
@@ -231,21 +214,20 @@ penge_task_tile_init (PengeTaskTile *self)
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   /* Populate the table */
-
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
                         (ClutterActor *)priv->check_button,
                         0,
                         0);
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
                         (ClutterActor *)priv->summary_label,
                         0,
                         1);
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
                         (ClutterActor *)priv->details_label,
                         1,
                         1);
 
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->check_button,
                                "x-expand",
                                FALSE,
@@ -259,14 +241,14 @@ penge_task_tile_init (PengeTaskTile *self)
                                2,
                                NULL);
 
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->summary_label,
                                "x-expand",
                                TRUE,
                                "y-fill",
                                FALSE,
                                NULL);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->details_label,
                                "x-expand",
                                TRUE,
@@ -275,17 +257,8 @@ penge_task_tile_init (PengeTaskTile *self)
                                NULL);
 
   /* Setup spacing and padding */
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 8);
-
-  g_signal_connect (self,
-                    "enter-event",
-                    (GCallback)_enter_event_cb,
-                    self);
-  g_signal_connect (self,
-                    "leave-event",
-                    (GCallback)_leave_event_cb,
-                    self);
+  nbtk_table_set_row_spacing (NBTK_TABLE (priv->inner_table), 4);
+  nbtk_table_set_col_spacing (NBTK_TABLE (priv->inner_table), 8);
 
   g_signal_connect (priv->check_button,
                    "clicked",
@@ -332,7 +305,7 @@ penge_task_tile_update (PengeTaskTile *tile)
     g_free (details_str);
 
     clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
-    clutter_container_child_set (CLUTTER_CONTAINER (tile),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                  (ClutterActor *)priv->summary_label,
                                  "row-span",
                                  1,
@@ -343,7 +316,7 @@ penge_task_tile_update (PengeTaskTile *tile)
      * cover both rows in the tile
      */
     clutter_actor_hide (CLUTTER_ACTOR (priv->details_label));
-    clutter_container_child_set (CLUTTER_CONTAINER (tile),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                  (ClutterActor *)priv->summary_label,
                                  "row-span",
                                  2,
