@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-08 09:18+0000\n"
+"POT-Creation-Date: 2009-07-22 09:20+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
+"Last-Translator: GLSKOR_Sook <hyang-sookx.sohn@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"Plural-Forms: nplurals=2; plural=n!=1; \n"
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -17,18 +17,18 @@ msgstr ""
 msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
 msgstr "음악을 듣고 싶거나 사진을 봐야한다거나 또는 어떤 비디오를 봐야할때 귀하의 기록을 보십시오. 그동안 귀하는 샘플 미디어를 볼 수 있습니다.  "
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:388
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:930
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:417
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:981
 msgid "Recently played"
 msgstr "최근에 재생된"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:414
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:443
 msgid "Search results"
 msgstr "검색 결과"
 
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:944
-msgid "Local"
-msgstr "로컬"
+#: ../ahoghill/ahoghill/ahoghill-grid-view.c:995
+msgid "Playqueue"
+msgstr "재생열"
 
 #: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
 #, c-format
@@ -36,14 +36,10 @@ msgid "Season %u, Episode %u"
 msgstr "시즌 %u, 에피소드 %u"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
-#: ../netpanel/src/moblin-netbook-netpanel.c:824
-#: ../netpanel/src/moblin-netbook-netpanel.c:1072
 msgid "Previous"
 msgstr "이전"
 
 #: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
-#: ../netpanel/src/moblin-netbook-netpanel.c:831
-#: ../netpanel/src/moblin-netbook-netpanel.c:1089
 msgid "Next"
 msgstr "다음"
 
@@ -53,37 +49,37 @@ msgstr "미디어"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
 #: ../applications/src/moblin-netbook-launcher.c:1377
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:219
+#: ../pasteboard/src/moblin-panel-pasteboard.c:219
 #: ../people/src/mnb-people-panel.c:563
 msgid "Search"
 msgstr "검색"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:164
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:164
 #, c-format
 msgid "Season %d Episode %d"
 msgstr "시즌 %d, 에피소드 %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:166
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:166
 #, c-format
 msgid "Season %d"
 msgstr "시즌 %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:168
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:168
 #, c-format
 msgid "Episode %d"
 msgstr "에피소드 %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:170
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:170
 #, c-format
 msgid "Year %d"
 msgstr "년 %d"
 
-#: ../ahoghill/src/moblin-panel-media.c:130
-#: ../src/moblin-netbook.c:324
+#: ../ahoghill/src/moblin-panel-media.c:138
+#: ../src/moblin-netbook.c:328
 msgid "media"
 msgstr "미디어"
 
@@ -99,50 +95,49 @@ msgstr "즐겨 찾는 응용프로그램"
 msgid "Applications"
 msgstr "응용 프로그램"
 
-#: ../applications/src/moblin-panel-applications.c:158
-#: ../src/moblin-netbook.c:315
+#: ../applications/src/moblin-panel-applications.c:166
+#: ../src/moblin-netbook.c:319
 msgid "applications"
 msgstr "응용 프로그램"
 
-#: ../myzone/src/moblin-panel-myzone.c:70
-#: ../src/moblin-netbook.c:306
+#: ../myzone/src/moblin-panel-myzone.c:78
+#: ../src/moblin-netbook.c:310
 msgid "myzone"
 msgstr "마이 존"
 
-#. Construct tabs previews table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:609
-msgid "Tabs"
-msgstr "탭"
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:644
-msgid "Favorite pages"
-msgstr "즐겨 찾는 페이지"
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:669
+#: ../netpanel/src/moblin-netbook-netpanel.c:568
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "웹 사이트를 방문하시면 귀하의 즐겨 찾기가 여기에 나타나고 새 탭 페이지에있는 브라우저에 표시됩니다."
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:940
+#: ../netpanel/src/moblin-netbook-netpanel.c:755
 msgid "Untitled"
 msgstr "제목 없음"
 
-#. FIXME: this should be a default image or startpage snapshot instead,
-#. and this label should become the caption title
-#: ../netpanel/src/moblin-netbook-netpanel.c:1047
+#: ../netpanel/src/moblin-netbook-netpanel.c:868
 msgid "New tab"
 msgstr "새로운 서비스"
 
 #. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1290
+#: ../netpanel/src/moblin-netbook-netpanel.c:1057
 msgid "Internet"
 msgstr "인터넷"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:1303
+#: ../netpanel/src/moblin-netbook-netpanel.c:1070
 msgid "Go"
 msgstr "가기 "
 
-#: ../netpanel/src/moblin-panel-internet.c:79
-#: ../src/moblin-netbook.c:321
+#. Construct title for tab preview section
+#: ../netpanel/src/moblin-netbook-netpanel.c:1091
+msgid "Tabs"
+msgstr "탭"
+
+#. Construct title for favorite pages section
+#: ../netpanel/src/moblin-netbook-netpanel.c:1096
+msgid "Favorite pages"
+msgstr "즐겨 찾는 페이지"
+
+#: ../netpanel/src/moblin-panel-internet.c:87
+#: ../src/moblin-netbook.c:325
 msgid "internet"
 msgstr "인터넷"
 
@@ -156,42 +151,42 @@ msgstr "%s에서 %%s 검색"
 msgid "Go to %s.com"
 msgstr "%s.com 가기"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:516
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:344
+#: ../pasteboard/src/mnb-clipboard-item.c:246
+#: ../pasteboard/src/moblin-panel-pasteboard.c:335
 msgid "Copy"
 msgstr "복사"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:136
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:359
+#: ../pasteboard/src/moblin-panel-pasteboard.c:136
+#: ../pasteboard/src/moblin-panel-pasteboard.c:350
 msgid "the current selection to pasteboard"
 msgstr "임시 보드에 현재 선택"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:141
+#: ../pasteboard/src/moblin-panel-pasteboard.c:141
 msgid "your selection"
 msgstr "언어 선택"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:206
+#: ../pasteboard/src/moblin-panel-pasteboard.c:206
 msgid "Pasteboard"
 msgstr "임시 보드"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:254
+#: ../pasteboard/src/moblin-panel-pasteboard.c:254
 msgid "You need to copy some text to use Pasteboard"
 msgstr "임시 보드 사용을 위해 텍스트를 복사해야 합니다."
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:316
+#: ../pasteboard/src/moblin-panel-pasteboard.c:307
 msgid "Clear pasteboard"
 msgstr "임시 보드 지우기"
 
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:433
-#: ../src/moblin-netbook.c:318
+#: ../pasteboard/src/moblin-panel-pasteboard.c:439
+#: ../src/moblin-netbook.c:322
 msgid "pasteboard"
 msgstr "임시 보드"
 
-#: ../penge/penge/penge-calendar-pane.c:180
+#: ../penge/penge/penge-calendar-pane.c:181
 msgid "<b>Appointments</b>"
 msgstr "<b>약속</b>"
 
-#: ../penge/penge/penge-events-pane.c:198
+#: ../penge/penge/penge-events-pane.c:208
 msgid "No calendar entries this week"
 msgstr "이 주에는 캘린더 엔트리가 없습니다."
 
@@ -207,7 +202,7 @@ msgstr "<b>Moblin 2.0 넷북에 오신것을 환영합니다.</b>"
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
 msgstr "Moblin은 다른 컴퓨터와 차이가 있으며, 당신이 이 데이타 베이스에 잘 적응할 수 있도록 여러가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Moblin 팀."
 
-#: ../penge/penge/penge-recent-file-tile.c:234
+#: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
 msgstr "웹 페이지"
 
@@ -292,8 +287,8 @@ msgstr "지난 해"
 msgid "Ages ago"
 msgstr "오래전"
 
-#: ../people/src/moblin-panel-people.c:61
-#: ../src/moblin-netbook.c:327
+#: ../people/src/moblin-panel-people.c:69
+#: ../src/moblin-netbook.c:331
 msgid "people"
 msgstr "사람들"
 
@@ -310,7 +305,7 @@ msgid "Send a message"
 msgstr "메세지 보내기"
 
 #: ../people/src/mnb-people-panel.c:302
-#: ../status/src/moblin-panel-status.c:755
+#: ../status/src/moblin-panel-status.c:802
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "죄송합니다. 아무도 찾을수 없습니다. 메신저 계정을 설정 하셨습니까?"
 
@@ -322,25 +317,25 @@ msgstr "사람들"
 msgid "Selection"
 msgstr "섹션"
 
-#: ../people/src/mnb-people-panel.c:741
+#: ../people/src/mnb-people-panel.c:742
 msgid "Nobody selected"
 msgstr "아무도 선택되지 않았음"
 
-#: ../src/moblin-netbook.c:309
-#: ../src/mnb-toolbar.c:1394
+#: ../src/moblin-netbook.c:313
+#: ../src/mnb-toolbar.c:1402
 msgid "zones"
 msgstr "영역"
 
-#: ../src/moblin-netbook.c:312
-#: ../status/src/moblin-panel-status.c:1033
+#: ../src/moblin-netbook.c:316
+#: ../status/src/moblin-panel-status.c:1095
 msgid "status"
 msgstr "상태"
 
-#: ../src/moblin-netbook.c:437
+#: ../src/moblin-netbook.c:441
 msgid "Moblin Netbook Effects"
 msgstr "Moblin 넷북 영향"
 
-#: ../src/moblin-netbook.c:441
+#: ../src/moblin-netbook.c:445
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin 넷북의 영향"
 
@@ -357,82 +352,93 @@ msgstr "새로운 영역 (0)"
 msgid "Choose zone for application:"
 msgstr "응용 프로그램을 위한 영역을 선택하십시오:"
 
-#: ../src/tray/na-tray-child.c:121
-#, c-format
-msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-msgstr "트레이 아이콘이 사이즈 (%i x %i) 를 다시 (%i x %i)로 사이즈를 정하기를 요구했습니다. "
-
-#: ../src/mnb-switcher.c:1205
+#: ../src/mnb-switcher.c:1707
 msgid "No Zones yet"
 msgstr "아직 영역 표시가 없습니다."
 
-#: ../src/mnb-switcher.c:1227
+#: ../src/mnb-switcher.c:1729
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 msgstr "당신이 사용하는 응용 프로그램이 여기에 나타날 것입니다. 당신이 원하는데로 바꿀수도 있고 정리도 가능합니다. "
 
-#: ../src/mnb-switcher.c:1431
+#: ../src/mnb-switcher.c:1952
 msgid "No applications on this zone"
 msgstr "이 영역에는 응용 프로그램이 없습니다."
 
-#: ../src/mnb-toolbar.c:1631
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:668
+msgid "%l:%M %P"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:678
+msgid "%B %e, %Y"
+msgstr "%B %e, %Y"
+
+#: ../src/mnb-toolbar.c:1639
 msgid "power & brightness"
 msgstr "전력 & 밝기"
 
-#: ../src/mnb-toolbar.c:1634
+#: ../src/mnb-toolbar.c:1642
 msgid "volume"
 msgstr "출력 볼륨"
 
-#: ../src/mnb-toolbar.c:1637
+#: ../src/mnb-toolbar.c:1645
 msgid "bluetooth"
 msgstr "블루투스"
 
-#: ../src/mnb-toolbar.c:1640
+#: ../src/mnb-toolbar.c:1648
 msgid "networks"
 msgstr "네트워크"
 
-#: ../src/mnb-toolbar.c:1643
+#: ../src/mnb-toolbar.c:1651
 msgid "test"
 msgstr "테스트"
 
-#: ../src/mnb-toolbar.c:1720
+#: ../src/mnb-toolbar.c:1749
 msgid "To activate the toolbar, move your cursor to the top of the screen"
 msgstr "툴바를 활성화 하려면 컬서를 스크린 위쪽으로 움직이십시오. "
 
 #: ../status/src/mnb-im-status-row.c:97
 #: ../status/src/mnb-im-status-row.c:98
-#: ../status/src/mnb-im-status-row.c:641
+#: ../status/src/mnb-im-status-row.c:659
 msgid "Offline"
 msgstr "오프라인 "
 
 #: ../status/src/mnb-im-status-row.c:99
-#: ../status/src/moblin-panel-status.c:489
+#: ../status/src/moblin-panel-status.c:536
 msgid "Available"
 msgstr "사용 가능"
 
 #: ../status/src/mnb-im-status-row.c:100
 #: ../status/src/mnb-im-status-row.c:101
-#: ../status/src/moblin-panel-status.c:493
-#: ../status/src/moblin-panel-status.c:497
+#: ../status/src/moblin-panel-status.c:540
+#: ../status/src/moblin-panel-status.c:544
 msgid "Away"
 msgstr "자리 비움"
 
 #: ../status/src/mnb-im-status-row.c:102
 #: ../status/src/mnb-im-status-row.c:103
-#: ../status/src/moblin-panel-status.c:501
-#: ../status/src/moblin-panel-status.c:505
+#: ../status/src/moblin-panel-status.c:548
+#: ../status/src/moblin-panel-status.c:552
 msgid "Busy"
 msgstr "다른 용무 중"
 
-#: ../status/src/mnb-im-status-row.c:122
+#: ../status/src/mnb-im-status-row.c:126
 msgid "Close"
 msgstr "닫기"
 
-#: ../status/src/mnb-im-status-row.c:129
-#: ../status/src/mnb-im-status-row.c:654
+#: ../status/src/mnb-im-status-row.c:135
+#: ../status/src/mnb-im-status-row.c:677
 msgid "Change"
 msgstr "변경"
 
-#: ../status/src/mnb-im-status-row.c:644
+#: ../status/src/mnb-im-status-row.c:662
 msgid "Unknown account"
 msgstr "알 수 없는 계정 "
 
@@ -457,20 +463,26 @@ msgstr "여기에 지금 상태를 입력하십시오..."
 msgid "Post"
 msgstr "게시"
 
-#: ../status/src/moblin-panel-status.c:423
-#: ../status/src/moblin-panel-status.c:890
+#: ../status/src/moblin-panel-status.c:470
 msgid "Your current status"
 msgstr "현재 상태"
 
-#: ../status/src/moblin-panel-status.c:425
+#: ../status/src/moblin-panel-status.c:472
+#: ../status/src/moblin-panel-status.c:937
 msgid "Your current status - you are offline"
 msgstr "현재 상태 - 오프라인"
 
-#: ../status/src/moblin-panel-status.c:924
+#: ../status/src/moblin-panel-status.c:971
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
 msgstr "귀하의 웹 상태를 업데이트 하려면 상태 메세지 지원하는 웹 서비스 계정을 설정해야 합니다. "
 
-#: ../status/src/moblin-panel-status.c:951
+#: ../status/src/moblin-panel-status.c:998
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "귀하의 IM 상태를 업데이트 하려면 인스턴트 메시징 계정을 설치 하셔야합니다.  "
+
+msgid "Local"
+msgstr "로컬"
+
+msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
+msgstr "트레이 아이콘이 사이즈 (%i x %i) 를 다시 (%i x %i)로 사이즈를 정하기를 요구했습니다. "
 
