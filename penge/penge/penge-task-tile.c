@@ -19,6 +19,7 @@
 
 
 #include "penge-task-tile.h"
+#include "penge-utils.h"
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
@@ -161,8 +162,8 @@ _commit_timeout_cb (gpointer userdata)
 }
 
 static void
-_button_clicked_cb (NbtkButton *button,
-             gpointer    userdata)
+_check_button_clicked_cb (NbtkButton *button,
+                          gpointer    userdata)
 {
   PengeTaskTilePrivate *priv = GET_PRIVATE (userdata);
 
@@ -181,6 +182,29 @@ _button_clicked_cb (NbtkButton *button,
   priv->commit_timeout = g_timeout_add_seconds (1,
                                                 _commit_timeout_cb,
                                                 userdata);
+}
+
+static void
+_button_clicked_cb (NbtkButton *button,
+                    gpointer    userdata)
+{
+  PengeTaskTilePrivate *priv = GET_PRIVATE (userdata);
+  gchar *uid;
+  gchar *command_line;
+
+  uid = jana_component_get_uid ((JanaComponent *)priv->task);
+
+  command_line = g_strdup_printf ("tasks --edit=\"%s\"",
+                                  uid);
+  g_free (uid);
+
+  if (!penge_utils_launch_by_command_line ((ClutterActor *)button,
+                                           command_line))
+  {
+    g_warning (G_STRLOC ": Error starting tasks");
+  } else{
+    penge_utils_signal_activated ((ClutterActor *)userdata);
+  }
 }
 
 static void
@@ -262,15 +286,13 @@ penge_task_tile_init (PengeTaskTile *self)
 
   g_signal_connect (priv->check_button,
                    "clicked",
-                   (GCallback)_button_clicked_cb,
+                   (GCallback)_check_button_clicked_cb,
                    self);
 
-#if 0
   g_signal_connect (self,
-                    "button-press-event",
-                    (GCallback)_button_press_event_cb,
+                    "clicked",
+                    (GCallback)_button_clicked_cb,
                     self);
-#endif
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
