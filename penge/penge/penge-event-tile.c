@@ -226,7 +226,7 @@ _leave_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
-static gboolean
+static void
 _button_clicked_cb (NbtkButton *button,
                     gpointer    userdata)
 {
@@ -241,7 +241,6 @@ _button_clicked_cb (NbtkButton *button,
   command_line = g_strdup_printf ("dates --edit-event \"%s %s\"",
                                   e_cal_get_uri (ecal),
                                   uid);
-  g_debug ("%s", command_line);
   g_free (uid);
 
   if (!penge_utils_launch_by_command_line ((ClutterActor *)button,
@@ -251,8 +250,6 @@ _button_clicked_cb (NbtkButton *button,
   } else{
     penge_utils_signal_activated ((ClutterActor *)userdata);
   }
-
-  return FALSE;
 }
 
 static void
