@@ -161,10 +161,23 @@ static gint
 _recent_files_sort_func (GtkRecentInfo *a,
                          GtkRecentInfo *b)
 {
-  if (gtk_recent_info_get_visited (a) > gtk_recent_info_get_visited (b))
+  time_t time_a;
+  time_t time_b;
+
+  if (gtk_recent_info_get_modified (a) > gtk_recent_info_get_visited (a))
+    time_a = gtk_recent_info_get_modified (a);
+  else
+    time_a = gtk_recent_info_get_visited (a);
+
+  if (gtk_recent_info_get_modified (b) > gtk_recent_info_get_visited (b))
+    time_b = gtk_recent_info_get_modified (b);
+  else
+    time_b = gtk_recent_info_get_visited (b);
+
+  if (time_a > time_b)
   {
     return -1;
-  } else if (gtk_recent_info_get_visited (a) < gtk_recent_info_get_visited (b)) {
+  } else if (time_a < time_b) {
     return 1;
   } else {
     return 0;
