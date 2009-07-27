@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-22 20:07+0000\n"
+"POT-Creation-Date: 2009-07-27 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -35,6 +35,10 @@ msgstr "Nombre de la red"
 msgid "Network security"
 msgstr "Seguridad de la red"
 
+#: ../carrick/carrick-pane.c:426
+msgid "None"
+msgstr "Ninguna"
+
 #: ../carrick/carrick-pane.c:440
 msgid "Password"
 msgstr "Contraseña"
@@ -44,72 +48,139 @@ msgstr "Contraseña"
 msgid "Show password"
 msgstr "Mostrar la contraseña"
 
-#: ../carrick/carrick-pane.c:560
+#: ../carrick/carrick-pane.c:564
 msgid "Sorry, we can't find any networks. "
 msgstr "No se encuentra ninguna red."
 
-#: ../carrick/carrick-pane.c:565
+#: ../carrick/carrick-pane.c:569
 msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
 msgstr "No se está ejecutando el proceso en segundo plano ConnMan. Reinicia el dispositivo."
 
-#: ../carrick/carrick-pane.c:571
+#: ../carrick/carrick-pane.c:575
 msgid "You could try disabling Offline mode"
 msgstr "Inténtalo desactivando el modo fuera de línea"
 
-#: ../carrick/carrick-pane.c:580
+#: ../carrick/carrick-pane.c:584
 msgid "You could try turning on "
 msgstr "Inténtalo encendiendo "
 
-#: ../carrick/carrick-pane.c:584
-#: ../carrick/carrick-pane.c:1026
+#: ../carrick/carrick-pane.c:588
+#: ../carrick/carrick-pane.c:1205
 msgid "WiFi"
 msgstr "Wi-Fi"
 
-#: ../carrick/carrick-pane.c:590
-#: ../carrick/carrick-pane.c:605
+#: ../carrick/carrick-pane.c:594
+#: ../carrick/carrick-pane.c:609
 msgid ", "
 msgstr ", "
 
-#: ../carrick/carrick-pane.c:592
-#: ../carrick/carrick-pane.c:1120
+#: ../carrick/carrick-pane.c:596
+#: ../carrick/carrick-pane.c:1299
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:598
+#: ../carrick/carrick-pane.c:602
 msgid " and "
 msgstr " y "
 
-#: ../carrick/carrick-pane.c:600
-#: ../carrick/carrick-pane.c:1089
+#: ../carrick/carrick-pane.c:604
+#: ../carrick/carrick-pane.c:1268
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:607
+#: ../carrick/carrick-pane.c:611
 msgid "Ethernet"
 msgstr "Ethernet"
 
-#: ../carrick/carrick-pane.c:615
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-pane.c:619
+#: ../carrick/carrick-pane.c:735
 msgid "Sorry, we can't find any networks"
 msgstr "No se encuentra ninguna red."
 
-#: ../carrick/carrick-pane.c:946
+#.
+#. * Hint to display when we detect that the connection manager
+#. * is dead.  Ideally the system auto-restarts connman so the
+#. * user will not see this, but this is what to show if all
+#. * available recovery measures fail.
+#.
+#: ../carrick/carrick-pane.c:654
+msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
+msgstr "No se encuentra ninguna red. Parece que el asistente para las conexiones no está ejecutándose. Se recomienda reinicar el dispositivo."
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:665
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "No se encuentra ninguna red. Puede que haya que desactivar el modo fuera de línea."
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:680
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr "No se encuentra ninguna red. Puede que haya que activar el modo WiFI."
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:691
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr "No se encuentra ninguna red. Puede que haya que activar el modo WiMAX."
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:702
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr "No se encuentra ninguna red. Puede que haya que activar el modo 3G."
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:712
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr "No se encuentra ninguna red. Puede que haya que activar el modo Bluetooth."
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-pane.c:723
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr "No se encuentra ninguna red. Puede que haya que activar la red alámbrica."
+
+#: ../carrick/carrick-pane.c:1125
 msgid "Networks"
 msgstr "Redes"
 
-#: ../carrick/carrick-pane.c:999
+#: ../carrick/carrick-pane.c:1178
 msgid "Add new connection"
 msgstr "Agregar una nueva conexión"
 
-#: ../carrick/carrick-pane.c:1058
+#: ../carrick/carrick-pane.c:1237
 #: ../carrick/carrick-service-item.c:218
 msgid "Wired"
 msgstr "Alámbrica"
 
-#: ../carrick/carrick-pane.c:1163
+#: ../carrick/carrick-pane.c:1342
 msgid "Offline mode"
 msgstr "Modo fuera de línea"
 
-#: ../carrick/carrick-pane.c:1188
+#: ../carrick/carrick-pane.c:1367
 msgid "This will disable all your connections"
 msgstr "Esto deshabilitará todas las conexiones"
 
@@ -180,76 +251,105 @@ msgstr ""
 msgid "WPA2 encrypted"
 msgstr "Cifrado WPA2"
 
-#: ../carrick/carrick-notification-manager.c:125
+#: ../carrick/carrick-notification-manager.c:131
 msgid "Network connected"
 msgstr "Red conectada"
 
-#: ../carrick/carrick-notification-manager.c:133
+#: ../carrick/carrick-notification-manager.c:139
 #, c-format
 msgid "You're now connected to a wired network"
 msgstr "Estás conectado a una red alámbrica"
 
-#: ../carrick/carrick-notification-manager.c:163
+#: ../carrick/carrick-notification-manager.c:169
 #, c-format
 msgid "You're now connected to %s, a %s network"
 msgstr "Estás conectado a %s, una red %s"
 
-#: ../carrick/carrick-notification-manager.c:169
+#: ../carrick/carrick-notification-manager.c:175
 #, c-format
 msgid "You're now connected to a %s network"
 msgstr "Estás conectado a una red %s"
 
-#: ../carrick/carrick-notification-manager.c:186
+#: ../carrick/carrick-notification-manager.c:192
 msgid "Network lost"
 msgstr "Se ha perdido la red"
 
-#: ../carrick/carrick-notification-manager.c:194
+#: ../carrick/carrick-notification-manager.c:200
 #, c-format
 msgid "Sorry, we've lost your wired connection"
 msgstr "Hemos perdido la conexión alámbrica"
 
-#: ../carrick/carrick-notification-manager.c:198
+#: ../carrick/carrick-notification-manager.c:204
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
 msgstr "Hemos perdido la conexión %s a %s"
 
-#: ../carrick/carrick-notification-manager.c:204
+#: ../carrick/carrick-notification-manager.c:210
 #, c-format
 msgid "Sorry, we've lost your %s connection"
 msgstr "Hemos perdido la conexión %s"
 
-#: ../carrick/carrick-notification-manager.c:221
+#: ../carrick/carrick-notification-manager.c:227
+#: ../carrick/carrick-notification-manager.c:313
 msgid "Network changed"
 msgstr "Ha cambiado la red"
 
-#: ../carrick/carrick-notification-manager.c:229
-msgid "Sorry, your wired connection was lost. So we've "
-msgstr "Hemos perdido la conexión alámbrica, así que te hemos"
-
-#: ../carrick/carrick-notification-manager.c:233
+#: ../carrick/carrick-notification-manager.c:235
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've "
 msgstr "Hemos perdido la conexión a %s, así que te hemos"
 
-#: ../carrick/carrick-notification-manager.c:238
+#: ../carrick/carrick-notification-manager.c:240
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've "
 msgstr "Hemos perdido la conexión %s, así que te hemos"
 
-#: ../carrick/carrick-notification-manager.c:244
+#: ../carrick/carrick-notification-manager.c:246
 msgid "connected you to a wired network"
 msgstr "conectado a una red alámbrica"
 
-#: ../carrick/carrick-notification-manager.c:249
+#: ../carrick/carrick-notification-manager.c:251
 #, c-format
 msgid "connected you to %s, a %s network"
 msgstr "conectado a %s, una red %s"
 
-#: ../carrick/carrick-notification-manager.c:255
+#: ../carrick/carrick-notification-manager.c:257
 #, c-format
 msgid "connected you to a %s network"
 msgstr "conectado a una red %s"
 
+#: ../carrick/carrick-notification-manager.c:321
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a una red alámbrica."
+
+#: ../carrick/carrick-notification-manager.c:328
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a %s, una red %s."
+
+#: ../carrick/carrick-notification-manager.c:336
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a una red %s."
+
+#: ../carrick/carrick-notification-manager.c:346
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Hemos perdido la conexión %s, así que te hemos a una red alámbrica."
+
+#: ../carrick/carrick-notification-manager.c:353
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "Hemos perdido la conexión %s, así que te hemos conectado a %s, una red %s."
+
+#: ../carrick/carrick-notification-manager.c:362
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Hemos perdido la conexión %s, así que te hemos conectado a una red %s."
+
+#~ msgid "Sorry, your wired connection was lost. So we've "
+#~ msgstr "Hemos perdido la conexión alámbrica, así que te hemos"
 #~ msgid "Bluetooth"
 #~ msgstr "Bluetooth"
 #~ msgid "Abort"
