@@ -23,6 +23,7 @@
 
 #include <gtk/gtk.h>
 #include <string.h>
+#include <glib/gi18n.h>
 
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"
@@ -262,7 +263,7 @@ mnb_notification_init (MnbNotification *self)
                                "x-expand", FALSE,
                                NULL);
 
-  nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), "Dismiss");
+  nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), _("Dismiss"));
 
   /* create the box for the buttons */
   priv->button_box = nbtk_grid_new ();

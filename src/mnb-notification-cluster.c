@@ -21,6 +21,8 @@
  * 02111-1307, USA.
  */
 
+#include <glib/gi18n.h>
+
 #include "mnb-notification-cluster.h"
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"
@@ -652,7 +654,7 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
                                     "notification-control");
 
   widget = nbtk_button_new ();
-  nbtk_button_set_label (NBTK_BUTTON (widget), "Dismiss All");
+  nbtk_button_set_label (NBTK_BUTTON (widget), _("Dismiss All"));
   nbtk_table_add_actor (NBTK_TABLE (priv->control), CLUTTER_ACTOR (widget),
                         0, 1);
 
