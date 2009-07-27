@@ -126,6 +126,10 @@ mnb_toolbar_button_transition (NbtkButton *button, ClutterActor *old_bg)
     return;
 
   icon = nbtk_widget_get_background_image (NBTK_WIDGET (button));
+
+  if (!icon)
+    icon = nbtk_bin_get_child (NBTK_BIN (button));
+
   if (icon)
     g_object_set (G_OBJECT (icon),
                   "scale-gravity", CLUTTER_GRAVITY_CENTER,
