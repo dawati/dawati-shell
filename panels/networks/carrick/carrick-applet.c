@@ -148,7 +148,7 @@ carrick_applet_init (CarrickApplet *self)
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
 
-  priv->manager = cm_manager_new (&error);
+  priv->manager = cm_manager_new (&error, FALSE);
   if (error || !priv->manager) {
     g_debug ("Error initializing connman manager: %s\n",
              error->message);
