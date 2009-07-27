@@ -230,15 +230,26 @@ _tell_changed (CarrickNotificationManager *self,
   gchar *message = NULL;
   const gchar *icon;
 
+  if (priv->last_name == NULL && priv->last_type == NULL)
+  {
+    /*
+     * If we have never been notified of a previous network 
+     * name or network type then we it would be better to just
+     * not send a notification.
+     */
+    g_free (title);
+    return;
+  }
+
   if (priv->last_name)
   {
     old = g_strdup_printf (_("Sorry, your connection to %s was lost. So we've "),
-                           name);
+                           priv->last_name);
   }
   else
   {
     old = g_strdup_printf (_("Sorry, your %s connection was lost. So we've "),
-                           type);
+                           priv->last_type);
   }
 
   if (g_strcmp0 (type, "ethernet") == 0)
