@@ -46,6 +46,11 @@ enum
   PROP_MANAGER
 };
 
+/* Forward declaration of private method */
+static void
+carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+                                    CmManager         *manager);
+
 static void
 carrick_status_icon_get_property (GObject *object, guint property_id,
                                   GValue *value, GParamSpec *pspec)
@@ -142,7 +147,7 @@ carrick_status_icon_init (CarrickStatusIcon *self)
                                   GTK_STOCK_NETWORK);
 }
 
-void
+static void
 carrick_status_icon_update (CarrickStatusIcon *icon)
 {
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
@@ -226,7 +231,14 @@ carrick_status_icon_set_active (CarrickStatusIcon *icon,
   carrick_status_icon_update (icon);
 }
 
-void
+static void
+_manager_change_cb (CmManager         *manager,
+                   CarrickStatusIcon *icon)
+{
+  carrick_status_icon_update (icon);
+}
+
+static void
 carrick_status_icon_update_manager (CarrickStatusIcon *icon,
                                     CmManager         *manager)
 {
@@ -234,6 +246,10 @@ carrick_status_icon_update_manager (CarrickStatusIcon *icon,
 
   if (priv->manager)
   {
+    g_signal_handlers_disconnect_by_func (priv->manager,
+                                          _manager_change_cb,
+                                          icon);
+
     g_object_unref (priv->manager);
     priv->manager= NULL;
   }
@@ -241,6 +257,15 @@ carrick_status_icon_update_manager (CarrickStatusIcon *icon,
   if (manager)
   {
     priv->manager= g_object_ref (manager);
+
+    g_signal_connect (priv->manager,
+                      "services-changed",
+                      G_CALLBACK (_manager_change_cb),
+                      icon);
+    g_signal_connect (priv->manager,
+                      "state-changed",
+                      G_CALLBACK (_manager_change_cb),
+                      icon);
   }
 
   carrick_status_icon_update (icon);
