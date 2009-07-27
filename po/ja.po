@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-20 09:20+0000\n"
+"POT-Creation-Date: 2009-07-27 15:29+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
@@ -30,7 +30,7 @@ msgstr "Yahoo! で次を検索する：%s"
 msgid "Playqueue"
 msgstr "Playqueue"
 
-#: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
+#: ../ahoghill/ahoghill/ahoghill-media-tile.c:100
 #, c-format
 msgid "Season %u, Episode %u"
 msgstr "シーズン %u、エピソード %u"
@@ -49,37 +49,36 @@ msgstr "メディア"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
 #: ../applications/src/moblin-netbook-launcher.c:1377
-#: ../pasteboard/src/moblin-panel-pasteboard.c:219
-#: ../people/src/mnb-people-panel.c:563
+#: ../pasteboard/src/moblin-panel-pasteboard.c:223
+#: ../people/src/mnb-people-panel.c:568
 msgid "Search"
 msgstr "検索"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:164
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:164
 #, c-format
 msgid "Season %d Episode %d"
 msgstr "シーズン %d、エピソード %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:166
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:166
 #, c-format
 msgid "Season %d"
 msgstr "シーズン %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:168
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:168
 #, c-format
 msgid "Episode %d"
 msgstr "エピソード %d"
 
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
+#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:170
 #: ../ahoghill/ahoghill/ahoghill-playlist-np.c:170
 #, c-format
 msgid "Year %d"
 msgstr "%d年"
 
 #: ../ahoghill/src/moblin-panel-media.c:138
-#: ../src/moblin-netbook.c:328
 msgid "media"
 msgstr "メディア"
 
@@ -96,93 +95,85 @@ msgid "Applications"
 msgstr "アプリケーション"
 
 #: ../applications/src/moblin-panel-applications.c:166
-#: ../src/moblin-netbook.c:319
 msgid "applications"
 msgstr "アプリケーション"
 
-#: ../myzone/src/moblin-panel-myzone.c:78
-#: ../src/moblin-netbook.c:310
-msgid "myzone"
-msgstr "マイゾーン"
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:564
+#: ../netpanel/src/moblin-netbook-netpanel.c:588
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Web ページを表示すると、お気に入りのページが、こことブラウザーの新規タブペインに表示されます。"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:751
+#: ../netpanel/src/moblin-netbook-netpanel.c:790
 msgid "Untitled"
 msgstr "無題"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:864
+#: ../netpanel/src/moblin-netbook-netpanel.c:972
 msgid "New tab"
 msgstr "新規タブ"
 
 #. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1053
+#: ../netpanel/src/moblin-netbook-netpanel.c:1168
 msgid "Internet"
 msgstr "インターネット"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:1066
+#: ../netpanel/src/moblin-netbook-netpanel.c:1181
 msgid "Go"
 msgstr "GO"
 
 #. Construct title for tab preview section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1087
+#: ../netpanel/src/moblin-netbook-netpanel.c:1202
 msgid "Tabs"
 msgstr "タブ"
 
 #. Construct title for favorite pages section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1092
+#: ../netpanel/src/moblin-netbook-netpanel.c:1207
 msgid "Favorite pages"
 msgstr "お気に入りのページ"
 
 #: ../netpanel/src/moblin-panel-internet.c:87
-#: ../src/moblin-netbook.c:325
 msgid "internet"
 msgstr "インターネット"
 
-#: ../netpanel/src/mwb-ac-list.c:1363
+#: ../netpanel/src/mwb-ac-list.c:1631
 #, c-format
 msgid "Search for %%s on %s"
 msgstr "Yahoo! で次を検索する：%s"
 
-#: ../netpanel/src/mwb-ac-list.c:1378
+#: ../netpanel/src/mwb-ac-list.c:1654
 #, c-format
-msgid "Go to %s.com"
-msgstr "%s.com にアクセス"
+msgid "Go to %s"
+msgstr "%s にアクセス"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:246
-#: ../pasteboard/src/moblin-panel-pasteboard.c:335
+#: ../pasteboard/src/mnb-clipboard-item.c:250
+#: ../pasteboard/src/moblin-panel-pasteboard.c:339
 msgid "Copy"
 msgstr "コピー"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:136
-#: ../pasteboard/src/moblin-panel-pasteboard.c:350
+#: ../pasteboard/src/moblin-panel-pasteboard.c:140
+#: ../pasteboard/src/moblin-panel-pasteboard.c:354
 msgid "the current selection to pasteboard"
 msgstr "現在選択されているエントリーをペーストボードに追加"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:141
+#: ../pasteboard/src/moblin-panel-pasteboard.c:145
 msgid "your selection"
 msgstr "選択"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:206
+#: ../pasteboard/src/moblin-panel-pasteboard.c:210
 msgid "Pasteboard"
 msgstr "ペーストボード"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:254
+#: ../pasteboard/src/moblin-panel-pasteboard.c:258
 msgid "You need to copy some text to use Pasteboard"
 msgstr "テキストをコピーして、ペーストボードを使用します"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:307
+#: ../pasteboard/src/moblin-panel-pasteboard.c:311
 msgid "Clear pasteboard"
 msgstr "ペーストボードをクリアー"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:439
-#: ../src/moblin-netbook.c:322
+#: ../pasteboard/src/moblin-panel-pasteboard.c:443
 msgid "pasteboard"
 msgstr "ペーストボード"
 
-#: ../penge/penge/penge-calendar-pane.c:181
+#: ../penge/penge/penge-calendar-pane.c:207
 msgid "<b>Appointments</b>"
 msgstr "<b>スケジュール</b>"
 
@@ -194,11 +185,11 @@ msgstr "今週は、カレンダーイベントはありません"
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "アカウントをアクティブにすると、ここにお友達のフィードと Web サービスが表示されます。"
 
-#: ../penge/penge/penge-recent-files-pane.c:189
+#: ../penge/penge/penge-recent-files-pane.c:201
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>ネットブック Moblin 2.0 にようこそ</b>"
 
-#: ../penge/penge/penge-recent-files-pane.c:214
+#: ../penge/penge/penge-recent-files-pane.c:226
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
 msgstr "Moblin は、従来のコンピューターとは少し異なるため、このベータバージョンにヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Moblin チーム一同"
 
@@ -210,7 +201,7 @@ msgstr "Web ページ"
 msgid "Nothing to do today"
 msgstr "今日のイベントは何もありません"
 
-#: ../penge/penge/penge-task-tile.c:330
+#: ../penge/penge/penge-task-tile.c:325
 #, c-format
 msgid "Due %x"
 msgstr "期限：%x"
@@ -288,7 +279,6 @@ msgid "Ages ago"
 msgstr "ずいぶんと前"
 
 #: ../people/src/moblin-panel-people.c:69
-#: ../src/moblin-netbook.c:331
 msgid "people"
 msgstr "ピープル"
 
@@ -300,42 +290,37 @@ msgstr "メールの送信"
 msgid "Edit details"
 msgstr "詳細の編集"
 
-#: ../people/src/mnb-people-panel.c:168
+#: ../people/src/mnb-people-panel.c:173
 msgid "Send a message"
 msgstr "メッセージの送信"
 
-#: ../people/src/mnb-people-panel.c:302
-#: ../status/src/moblin-panel-status.c:838
+#: ../people/src/mnb-people-panel.c:307
+#: ../status/src/moblin-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "誰も見つかりません。メッセンジャーのアカウントが設定されていますか？"
 
-#: ../people/src/mnb-people-panel.c:550
+#: ../people/src/mnb-people-panel.c:555
 msgid "People"
 msgstr "ピープル"
 
-#: ../people/src/mnb-people-panel.c:679
+#: ../people/src/mnb-people-panel.c:684
 msgid "Selection"
 msgstr "選択"
 
-#: ../people/src/mnb-people-panel.c:742
+#: ../people/src/mnb-people-panel.c:747
 msgid "Nobody selected"
 msgstr "誰も選択されていません"
 
-#: ../src/moblin-netbook.c:313
-#: ../src/mnb-toolbar.c:1402
+#: ../src/moblin-netbook.c:306
+#: ../src/mnb-toolbar.c:1428
 msgid "zones"
 msgstr "ゾーン"
 
-#: ../src/moblin-netbook.c:316
-#: ../status/src/moblin-panel-status.c:1112
-msgid "status"
-msgstr "ステータス"
-
-#: ../src/moblin-netbook.c:441
+#: ../src/moblin-netbook.c:415
 msgid "Moblin Netbook Effects"
 msgstr "Moblin ネットブックのエフェクター"
 
-#: ../src/moblin-netbook.c:445
+#: ../src/moblin-netbook.c:419
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin ネットブックのエフェクター"
 
@@ -352,20 +337,23 @@ msgstr "新規ゾーン (0)"
 msgid "Choose zone for application:"
 msgstr "アプリケーションを表示するゾーンを選択してください。"
 
-#: ../src/tray/na-tray-child.c:121
-#, c-format
-msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-msgstr "トレイアイコンのサイズは (%i x %i) である必要があります。サイズが (%i x %i) に変更されます"
+#: ../src/mnb-notification.c:266
+msgid "Dismiss"
+msgstr "アラームを消す"
 
-#: ../src/mnb-switcher.c:1678
+#: ../src/mnb-notification-cluster.c:657
+msgid "Dismiss All"
+msgstr "すべてのアラームを消す"
+
+#: ../src/mnb-switcher.c:1707
 msgid "No Zones yet"
 msgstr "ゾーンはありません"
 
-#: ../src/mnb-switcher.c:1700
+#: ../src/mnb-switcher.c:1729
 msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 msgstr "ここには使用中のアプリケーションが表示されます。ゾーンを切り替えることによって、コンテンツの整理をしてください。"
 
-#: ../src/mnb-switcher.c:1923
+#: ../src/mnb-switcher.c:1952
 msgid "No applications on this zone"
 msgstr "このゾーンにはアプリケーションがありません"
 
@@ -373,7 +361,7 @@ msgstr "このゾーンにはアプリケーションがありません"
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:668
+#: ../src/mnb-toolbar.c:671
 msgid "%l:%M %P"
 msgstr "%P%l:%M"
 
@@ -381,69 +369,69 @@ msgstr "%P%l:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:678
+#: ../src/mnb-toolbar.c:681
 msgid "%B %e, %Y"
 msgstr "%Y年%B月%e日"
 
-#: ../src/mnb-toolbar.c:1639
+#: ../src/mnb-toolbar.c:1665
 msgid "power & brightness"
 msgstr "バッテリー＆明度調整"
 
-#: ../src/mnb-toolbar.c:1642
+#: ../src/mnb-toolbar.c:1668
 msgid "volume"
 msgstr "音量"
 
-#: ../src/mnb-toolbar.c:1645
+#: ../src/mnb-toolbar.c:1671
 msgid "bluetooth"
 msgstr "bluetooth"
 
-#: ../src/mnb-toolbar.c:1648
+#: ../src/mnb-toolbar.c:1674
 msgid "networks"
 msgstr "ネットワーク"
 
-#: ../src/mnb-toolbar.c:1651
+#: ../src/mnb-toolbar.c:1677
 msgid "test"
 msgstr "テスト"
 
-#: ../src/mnb-toolbar.c:1749
+#: ../src/mnb-toolbar.c:1775
 msgid "To activate the toolbar, move your cursor to the top of the screen"
 msgstr "カーセルを画面の上に動かしてツールバーをアクティブにします"
 
-#: ../status/src/mnb-im-status-row.c:97
-#: ../status/src/mnb-im-status-row.c:98
-#: ../status/src/mnb-im-status-row.c:641
+#: ../status/src/mnb-im-status-row.c:103
+#: ../status/src/mnb-im-status-row.c:104
+#: ../status/src/mnb-im-status-row.c:742
 msgid "Offline"
 msgstr "オフライン"
 
-#: ../status/src/mnb-im-status-row.c:99
-#: ../status/src/moblin-panel-status.c:572
+#: ../status/src/mnb-im-status-row.c:105
+#: ../status/src/moblin-panel-status.c:536
 msgid "Available"
 msgstr "使用できます"
 
-#: ../status/src/mnb-im-status-row.c:100
-#: ../status/src/mnb-im-status-row.c:101
-#: ../status/src/moblin-panel-status.c:576
-#: ../status/src/moblin-panel-status.c:580
+#: ../status/src/mnb-im-status-row.c:106
+#: ../status/src/mnb-im-status-row.c:107
+#: ../status/src/moblin-panel-status.c:540
+#: ../status/src/moblin-panel-status.c:544
 msgid "Away"
 msgstr "退席中"
 
-#: ../status/src/mnb-im-status-row.c:102
-#: ../status/src/mnb-im-status-row.c:103
-#: ../status/src/moblin-panel-status.c:584
-#: ../status/src/moblin-panel-status.c:588
+#: ../status/src/mnb-im-status-row.c:108
+#: ../status/src/mnb-im-status-row.c:109
+#: ../status/src/moblin-panel-status.c:548
+#: ../status/src/moblin-panel-status.c:552
 msgid "Busy"
 msgstr "取り込み中"
 
-#: ../status/src/mnb-im-status-row.c:122
-msgid "- Close"
-msgstr "- 閉じる"
+#: ../status/src/mnb-im-status-row.c:132
+msgid "Close"
+msgstr "閉じる"
 
-#: ../status/src/mnb-im-status-row.c:129
-#: ../status/src/mnb-im-status-row.c:654
-msgid "+ Change"
-msgstr "+ 変更する"
+#: ../status/src/mnb-im-status-row.c:141
+#: ../status/src/mnb-im-status-row.c:760
+msgid "Change"
+msgstr "変更"
 
-#: ../status/src/mnb-im-status-row.c:644
+#: ../status/src/mnb-im-status-row.c:745
 msgid "Unknown account"
 msgstr "不明なアカウント"
 
@@ -468,23 +456,33 @@ msgstr "ここに現在のステータスを入力してください..."
 msgid "Post"
 msgstr "投稿する"
 
-#: ../status/src/moblin-panel-status.c:506
-#: ../status/src/moblin-panel-status.c:973
+#: ../status/src/moblin-panel-status.c:470
 msgid "Your current status"
 msgstr "現在のステータス"
 
-#: ../status/src/moblin-panel-status.c:508
+#: ../status/src/moblin-panel-status.c:472
+#: ../status/src/moblin-panel-status.c:960
 msgid "Your current status - you are offline"
 msgstr "現在のステータス：オフライン"
 
-#: ../status/src/moblin-panel-status.c:1007
+#: ../status/src/moblin-panel-status.c:994
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
 msgstr "Web ステータスを更新するには、ステータス・メッセージをサポートする Web サービスアカウントを設定する必要があります。"
 
-#: ../status/src/moblin-panel-status.c:1034
+#: ../status/src/moblin-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "IM のステータスを更新するには、インスタント・メッセンジャーのアカウントを設定する必要があります。"
 
+#: ../status/src/moblin-panel-status.c:1118
+msgid "status"
+msgstr "ステータス"
+
+#~ msgid "myzone"
+#~ msgstr "マイゾーン"
+#~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
+#~ msgstr ""
+#~ "トレイアイコンのサイズは (%i x %i) である必要があります。サイズが (%i x %"
+#~ "i) に変更されます"
 #~ msgid "Local"
 #~ msgstr "ローカル"
 
