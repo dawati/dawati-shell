@@ -992,6 +992,12 @@ scim_preview_destroy_cb (ClutterActor *source, ClutterActor *clone)
     clutter_actor_destroy (clone);
 }
 
+static void
+scim_preview_raised_cb (MetaWindow *mw, ClutterActor *clone)
+{
+  clutter_actor_raise_top (clone);
+}
+
 /*
  * The following functions are trying to catch out possible corner cases where
  * our clone is left unpainted. Unfortunately, this still happens.
@@ -1177,6 +1183,11 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
               g_signal_connect (mutter_window_get_texture (mcw),
                                 "notify::allocation",
                                 G_CALLBACK (scim_preview_texture_allocation_cb),
+                                clone);
+
+              g_signal_connect (mw,
+                                "raised",
+                                G_CALLBACK (scim_preview_raised_cb),
                                 clone);
 
               g_signal_connect (mcw, "notify::allocation",
