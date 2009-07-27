@@ -1,22 +1,39 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Swedish\n"
+
 # Derived from Empathy
 # Swedish messages for Empathy.
 # Copyright (C) 2002-2009 Free Software Foundation, Inc.
 # Richard Hult <richard@imendio.com>, 2002, 2003.
 # Christian Rose <menthos@menthos.com>, 2003, 2004.
 # Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009.
-#
+#: ../anerley/anerley-tile.c:201
 msgid "Available"
 msgstr "Tillgänglig"
 
+#: ../anerley/anerley-tile.c:204
 msgid "Busy"
 msgstr "Upptagen"
 
+#: ../anerley/anerley-tile.c:207
+#: ../anerley/anerley-tile.c:210
 msgid "Away"
 msgstr "Frånvarande"
 
+#: ../anerley/anerley-tile.c:213
 msgid "Offline"
 msgstr "Frånkopplad"
 
+#: ../anerley/anerley-econtact-item.c:290
 msgid "Unnamed"
 msgstr "Namnlös"
 
