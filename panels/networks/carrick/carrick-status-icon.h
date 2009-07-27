@@ -61,9 +61,6 @@ GtkWidget* carrick_status_icon_new (CarrickIconFactory *factory,
 
 void carrick_status_icon_set_active (CarrickStatusIcon *icon,
                                      gboolean           active);
-void carrick_status_icon_update_manager (CarrickStatusIcon *icon,
-                                         CmManager         *manager);
-void carrick_status_icon_update (CarrickStatusIcon *icon);
 void carrick_status_icon_set_connecting (CarrickStatusIcon *icon);
 G_END_DECLS
 
