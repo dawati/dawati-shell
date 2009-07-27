@@ -273,6 +273,7 @@ make_pasteboard (gint           width,
 
   bin = NBTK_WIDGET (nbtk_bin_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "pasteboard-items-list");
+  g_object_set (bin, "y-fill", TRUE, "x-fill", TRUE, NULL);
   clutter_container_add_actor (CLUTTER_CONTAINER (bin), scroll);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox),
                                         CLUTTER_ACTOR (bin),
