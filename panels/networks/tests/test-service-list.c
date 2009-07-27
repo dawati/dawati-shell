@@ -55,7 +55,7 @@ main (int argc,
                                     "Moblin-Netbook",
                                     NULL);
 
-  manager = cm_manager_new (&error);
+  manager = cm_manager_new (&error, FALSE);
   if (error)
   {
     g_debug ("Oh dear, management error: %s",

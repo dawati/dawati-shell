@@ -44,7 +44,7 @@ main (int    argc,
                     NULL);
 
   icon_factory = carrick_icon_factory_new ();
-  manager = cm_manager_new (&error);
+  manager = cm_manager_new (&error, FALSE);
   if (error)
   {
     g_debug ("Error initialising connman manager: %s\n",
