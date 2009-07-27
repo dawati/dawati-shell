@@ -1894,7 +1894,8 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
       panel  = mnb_panel_new (priv->plugin, name,
                               screen_width - TOOLBAR_X_PADDING * 2,
-                              screen_height - 1.5 * TOOLBAR_HEIGHT - 4);
+                              screen_height - 1.5 * TOOLBAR_HEIGHT -
+                              MNB_DROP_DOWN_TOP_PADDING);
 
       if (panel)
         {
@@ -2491,7 +2492,7 @@ mnb_toolbar_append_tray_window (MnbToolbar *toolbar, MutterWindow *mcw)
                          hide_data,
                          (GClosureNotify)g_free, 0);
 
-  clutter_actor_set_position (background, x, y);
+  clutter_actor_set_position (background, x, y - MNB_DROP_DOWN_TOP_PADDING);
 
   g_object_set (actor, "no-shadow", TRUE, NULL);
 
