@@ -393,7 +393,7 @@ msgstr "No hay ninguna aplicación en esta zona"
 #.
 #: ../src/mnb-toolbar.c:671
 msgid "%l:%M %P"
-msgstr "%H.%M"
+msgstr "%H.%M h"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
