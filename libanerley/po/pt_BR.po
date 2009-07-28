@@ -1,32 +1,47 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Portuguese\n"
+
 # Derived from Empathy
 # Brazilian Portuguese translation of Empathy.
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the empathy package.
 # Luiz Guaraldo <software.livre@terra.com.br>, 2004.
-# André Filipe de Assunção e Brito <decko@ufpr.br>, 2007.
+# AndrÃ© Filipe de AssunÃ§Ã£o e Brito <decko@ufpr.br>, 2007.
 # Og Maciel <ogmaciel@gnome.org>, 2007-2008.
 # Djavan Fagundes <dnoway@gmail.com>, 2008.
-# Fábio Nogueira <deb-user-ba@ubuntu.com>, 2008.
+# FÃ¡bio Nogueira <deb-user-ba@ubuntu.com>, 2008.
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2008.
 # Taylon Silmer <taylonsilva@gmail.com>, 2009.
 # Michel Recondo <michel@recondo.com.br>, 2009.
 # Jonh Wendell <jwendell@gnome.org>, 2009.
 # Vladimir Melo <vmelo@gnome.org>, 2009.
-#
-
+#: ../anerley/anerley-tile.c:201
 msgid "Available"
 msgstr "Disponível"
 
+#: ../anerley/anerley-tile.c:204
 msgid "Busy"
 msgstr "Ocupado"
 
+#: ../anerley/anerley-tile.c:207
+#: ../anerley/anerley-tile.c:210
 msgid "Away"
 msgstr "Ausente"
 
+#: ../anerley/anerley-tile.c:213
 msgid "Offline"
 msgstr "Desconectado"
 
+#: ../anerley/anerley-econtact-item.c:290
 msgid "Unnamed"
 msgstr "Sem nome"
-
 

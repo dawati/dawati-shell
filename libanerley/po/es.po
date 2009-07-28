@@ -1,33 +1,40 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-27 09:22+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tom�s Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
 
 # Derived from Empathy
-# translation of empathy.HEAD.po to Español
+# translation of empathy.HEAD.po to EspaÃ±ol
 # Copyright (C) 2003 Free Software Foundation
 # This file is distributed under the same license as the Gossip package.
-# Jorge González <jorgegonz@svn.gnome.org>, 2007, 200, 2009.
-#: ../anerley/anerley-tile.c:199
+# Jorge GonzÃ¡lez <jorgegonz@svn.gnome.org>, 2007, 200, 2009.
+#: ../anerley/anerley-tile.c:201
 msgid "Available"
 msgstr "Disponible"
 
-#: ../anerley/anerley-tile.c:202
+#: ../anerley/anerley-tile.c:204
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../anerley/anerley-tile.c:205
-#: ../anerley/anerley-tile.c:208
+#: ../anerley/anerley-tile.c:207
+#: ../anerley/anerley-tile.c:210
 msgid "Away"
 msgstr "Ausente"
 
-#: ../anerley/anerley-tile.c:211
+#: ../anerley/anerley-tile.c:213
 msgid "Offline"
 msgstr "Desconectado"
+
+#: ../anerley/anerley-econtact-item.c:290
+msgid "Unnamed"
+msgstr "Sin nombre"
 

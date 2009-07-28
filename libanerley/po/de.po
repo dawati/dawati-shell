@@ -1,25 +1,41 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+
 # Derived from:
 # German translation of Empathy.
 # Copyright (C) 2003-2005, 2007 Free Software Foundation, Inc.
-#
 # Hendrik Richter <naggeldak@gnome-de.org>, 2003.
 # Frank Arnold <frank@scirocco-5v-turbo.de>, 2005.
 # Andre Klapper <ak-47@gmx.net>, 2007, 2008.
 # Jochen Skulj <jochen@jochenskulj.de>, 2008, 2009.
-# Mario Blättermann <mariobl@gnome.org>, 2008, 2009.
-#
+# Mario BlÃ¤ttermann <mariobl@gnome.org>, 2008, 2009.
+#: ../anerley/anerley-tile.c:201
 msgid "Available"
 msgstr "Verfügbar"
 
+#: ../anerley/anerley-tile.c:204
 msgid "Busy"
 msgstr "Beschäftigt"
 
+#: ../anerley/anerley-tile.c:207
+#: ../anerley/anerley-tile.c:210
 msgid "Away"
 msgstr "Abwesend"
 
+#: ../anerley/anerley-tile.c:213
 msgid "Offline"
 msgstr "Abgemeldet"
 
+#: ../anerley/anerley-econtact-item.c:290
 msgid "Unnamed"
 msgstr "Unbenannt"
 
