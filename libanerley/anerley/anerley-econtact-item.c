@@ -218,10 +218,16 @@ anerley_econtact_item_get_display_name (AnerleyItem *item)
 
   if (!priv->display_name)
   {
-    full_name = g_strconcat (anerley_item_get_first_name (item),
-                             " ",
-                             anerley_item_get_last_name (item),
-                             NULL);
+    if (anerley_item_get_first_name (item))
+    {
+      full_name = g_strconcat (anerley_item_get_first_name (item),
+                               " ",
+                               anerley_item_get_last_name (item),
+                               NULL);
+    } else {
+      full_name = g_strdup (anerley_item_get_last_name (item));
+    }
+
     if (full_name)
       priv->display_name = full_name;
     else
@@ -269,36 +275,47 @@ const gchar *
 anerley_econtact_item_get_first_name (AnerleyItem *item)
 {
   AnerleyEContactItemPrivate *priv = GET_PRIVATE (item);
-  const gchar *first_name;
 
-  first_name = e_contact_get_const (priv->contact,
-                                    E_CONTACT_GIVEN_NAME);
-
-  if (!first_name)
-    first_name = e_contact_get_const (priv->contact,
-                                      E_CONTACT_NICKNAME);
-
-  if (!first_name)
-    first_name = e_contact_get_const (priv->contact,
-                                      E_CONTACT_ORG);
-
-  if (!first_name)
-    first_name = e_contact_get_const (priv->contact,
-                                      E_CONTACT_EMAIL_1);
-
-  if (!first_name)
-    first_name = _("Unnamed");
-
-  return first_name;
+  return e_contact_get_const (priv->contact,
+                              E_CONTACT_GIVEN_NAME);
 }
 
 const gchar *
 anerley_econtact_item_get_last_name (AnerleyItem *item)
 {
   AnerleyEContactItemPrivate *priv = GET_PRIVATE (item);
+  const gchar *last_name = NULL;
 
-  return e_contact_get_const (priv->contact,
-                              E_CONTACT_FAMILY_NAME);
+  last_name = e_contact_get_const (priv->contact,
+                                   E_CONTACT_FAMILY_NAME);
+  if (!last_name)
+    last_name = e_contact_get_const (priv->contact,
+                                     E_CONTACT_NICKNAME);
+
+  if (!last_name)
+    last_name = e_contact_get_const (priv->contact,
+                                     E_CONTACT_FULL_NAME);
+
+  if (!last_name)
+    last_name = e_contact_get_const (priv->contact,
+                                     E_CONTACT_ORG);
+
+  if (!last_name)
+    last_name = e_contact_get_const (priv->contact,
+                                     E_CONTACT_EMAIL_1);
+
+  /* If first name is non-NULL let's return NULL */
+  if (!last_name)
+  {
+    if (!anerley_econtact_item_get_first_name (item))
+    {
+      last_name = _("Unnamed");
+    } else {
+      last_name = NULL;
+    }
+  }
+
+  return last_name;
 }
 
 void
