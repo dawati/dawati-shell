@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-22 02:35+0000\n"
+"POT-Creation-Date: 2009-07-27 09:21+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Omar Antila <oantila@ptiglobal.com>\n"
+"Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,11 +13,11 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../carrick/carrick-pane.c:307
+#: ../carrick/carrick-pane.c:358
 msgid "New connection settings"
 msgstr "Uuden yhteyden asetukset"
 
-#: ../carrick/carrick-pane.c:343
+#: ../carrick/carrick-pane.c:394
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -27,141 +27,212 @@ msgstr ""
 "muodostaa yhteyden ja tarvittaessa\n"
 "salasana ja suojaustyyppi."
 
-#: ../carrick/carrick-pane.c:353
+#: ../carrick/carrick-pane.c:404
 msgid "Network name"
 msgstr "Verkkonimi"
 
-#: ../carrick/carrick-pane.c:365
+#: ../carrick/carrick-pane.c:416
 msgid "Network security"
 msgstr "Verkon suojaus"
 
-#: ../carrick/carrick-pane.c:389
+#: ../carrick/carrick-pane.c:426
+msgid "None"
+msgstr "Ei yhtään"
+
+#: ../carrick/carrick-pane.c:440
 msgid "Password"
 msgstr "Salasana"
 
-#: ../carrick/carrick-pane.c:404
-#: ../carrick/carrick-service-item.c:945
+#: ../carrick/carrick-pane.c:455
+#: ../carrick/carrick-service-item.c:994
 msgid "Show password"
 msgstr "Näytä salasana"
 
-#: ../carrick/carrick-pane.c:504
+#: ../carrick/carrick-pane.c:564
 msgid "Sorry, we can't find any networks. "
 msgstr "Emme valitettavasti löydä yhtään verkkoa."
 
-#: ../carrick/carrick-pane.c:509
+#: ../carrick/carrick-pane.c:569
 msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
 msgstr "ConnMan daemon ei näytä olevan käynnissä. Yritä laitteen käynnistämistä uudelleen."
 
-#: ../carrick/carrick-pane.c:515
+#: ../carrick/carrick-pane.c:575
 msgid "You could try disabling Offline mode"
 msgstr "Voit yrittää Poissa linjoilta -tilan käytöstä poistamista"
 
-#: ../carrick/carrick-pane.c:524
+#: ../carrick/carrick-pane.c:584
 msgid "You could try turning on "
 msgstr "Voit yrittää ottaa käyttöön  "
 
-#: ../carrick/carrick-pane.c:528
-#: ../carrick/carrick-pane.c:964
+#: ../carrick/carrick-pane.c:588
+#: ../carrick/carrick-pane.c:1205
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:534
-#: ../carrick/carrick-pane.c:549
+#: ../carrick/carrick-pane.c:594
+#: ../carrick/carrick-pane.c:609
 msgid ", "
 msgstr ", "
 
-#: ../carrick/carrick-pane.c:536
-#: ../carrick/carrick-pane.c:1058
+#: ../carrick/carrick-pane.c:596
+#: ../carrick/carrick-pane.c:1299
 msgid "WiMAX"
 msgstr "WiMax"
 
-#: ../carrick/carrick-pane.c:542
+#: ../carrick/carrick-pane.c:602
 msgid " and "
 msgstr " ja "
 
-#: ../carrick/carrick-pane.c:544
-#: ../carrick/carrick-pane.c:1027
+#: ../carrick/carrick-pane.c:604
+#: ../carrick/carrick-pane.c:1268
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:551
+#: ../carrick/carrick-pane.c:611
 msgid "Ethernet"
 msgstr "Ethernet"
 
-#: ../carrick/carrick-pane.c:559
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-pane.c:619
+#: ../carrick/carrick-pane.c:735
 msgid "Sorry, we can't find any networks"
 msgstr "Emme valitettavasti löydä yhtään verkkoa."
 
-#: ../carrick/carrick-pane.c:884
+#.
+#. * Hint to display when we detect that the connection manager
+#. * is dead.  Ideally the system auto-restarts connman so the
+#. * user will not see this, but this is what to show if all
+#. * available recovery measures fail.
+#.
+#: ../carrick/carrick-pane.c:654
+msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
+msgstr "Yhtään verkkoa ei löydy. ConnMan daemon ei näytä olevan käynnissä. Yritä laitteen käynnistämistä uudelleen."
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:665
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Yhtään verkkoa ei löydy. Voit yrittää Poissa linjoilta -tilan käytöstä poistamista"
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:680
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr "Yhtään verkkoa ei löydy. Yritä ottaa käyttöön WiFi."
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:691
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr "Yhtään verkkoa ei löydy. Yritä ottaa käyttöön WiMAX."
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:702
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr "Yhtään verkkoa ei löydy. Yritä ottaa käyttöön 3G."
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:712
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr "Yhtään verkkoa ei löydy. Yritä ottaa käyttöön Bluetooth."
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-pane.c:723
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr "Emme valitettavasti löydä yhtään verkkoa. Yritä langallisen verkon käyttöön ottamista."
+
+#: ../carrick/carrick-pane.c:1125
 msgid "Networks"
 msgstr "Verkot"
 
-#: ../carrick/carrick-pane.c:937
+#: ../carrick/carrick-pane.c:1178
 msgid "Add new connection"
 msgstr "Lisää uusi yhteys"
 
-#: ../carrick/carrick-pane.c:996
-#: ../carrick/carrick-service-item.c:211
+#: ../carrick/carrick-pane.c:1237
+#: ../carrick/carrick-service-item.c:218
 msgid "Wired"
 msgstr "Langallinen"
 
-#: ../carrick/carrick-pane.c:1101
+#: ../carrick/carrick-pane.c:1342
 msgid "Offline mode"
 msgstr "Poissa linjoilta -tila"
 
-#: ../carrick/carrick-pane.c:1126
+#: ../carrick/carrick-pane.c:1367
 msgid "This will disable all your connections"
 msgstr "Tämä katkaisee kaikki yhteydet"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#: ../carrick/carrick-service-item.c:170
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
 msgstr "Salattu: %s"
 
-#: ../carrick/carrick-service-item.c:242
+#: ../carrick/carrick-service-item.c:249
 msgid "Disconnect"
 msgstr "Katkaise yhteys"
 
-#: ../carrick/carrick-service-item.c:245
+#: ../carrick/carrick-service-item.c:252
 msgid "Connected"
 msgstr "Yhdistetty"
 
-#: ../carrick/carrick-service-item.c:250
+#: ../carrick/carrick-service-item.c:257
 #, c-format
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: ../carrick/carrick-service-item.c:253
+#: ../carrick/carrick-service-item.c:260
 msgid "Configuring"
 msgstr "Määritetään"
 
-#: ../carrick/carrick-service-item.c:260
-#: ../carrick/carrick-service-item.c:268
-#: ../carrick/carrick-service-item.c:934
+#: ../carrick/carrick-service-item.c:267
+#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:983
 msgid "Connect"
 msgstr "Yhdistä"
 
-#: ../carrick/carrick-service-item.c:271
+#: ../carrick/carrick-service-item.c:278
 msgid "Connection failed"
 msgstr "Yhteys epäonnistui"
 
-#: ../carrick/carrick-service-item.c:276
-#: ../carrick/carrick-service-item.c:279
+#: ../carrick/carrick-service-item.c:283
+#: ../carrick/carrick-service-item.c:286
 #, c-format
 msgid "Disconnecting"
 msgstr "Katkaistaan yhteys"
 
-#: ../carrick/carrick-service-item.c:327
+#: ../carrick/carrick-service-item.c:334
 msgid "Type password here"
 msgstr "Syötä salasana tänne"
 
-#: ../carrick/carrick-service-item.c:389
+#: ../carrick/carrick-service-item.c:397
 msgid "Really remove?"
 msgstr "Haluatko poistaa varmasti?"
 
-#: ../carrick/carrick-service-item.c:407
+#: ../carrick/carrick-service-item.c:415
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -176,80 +247,109 @@ msgstr ""
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:890
+#: ../carrick/carrick-service-item.c:939
 msgid "WPA2 encrypted"
 msgstr "WPA2-salattu"
 
-#: ../carrick/carrick-notification-manager.c:100
+#: ../carrick/carrick-notification-manager.c:131
 msgid "Network connected"
 msgstr "Verkko yhdistetty"
 
-#: ../carrick/carrick-notification-manager.c:108
+#: ../carrick/carrick-notification-manager.c:139
 #, c-format
 msgid "You're now connected to a wired network"
 msgstr "Olet nyt yhdistettynä langalliseen verkkoon"
 
-#: ../carrick/carrick-notification-manager.c:138
+#: ../carrick/carrick-notification-manager.c:169
 #, c-format
 msgid "You're now connected to %s, a %s network"
 msgstr "Olet nyt yhdistettynä kohteesseen %s, joka on %s-verkko"
 
-#: ../carrick/carrick-notification-manager.c:144
+#: ../carrick/carrick-notification-manager.c:175
 #, c-format
 msgid "You're now connected to a %s network"
 msgstr "Olet nyt yhdistettynä %s-verkkoon"
 
-#: ../carrick/carrick-notification-manager.c:161
+#: ../carrick/carrick-notification-manager.c:192
 msgid "Network lost"
 msgstr "Verkko menetetty"
 
-#: ../carrick/carrick-notification-manager.c:169
+#: ../carrick/carrick-notification-manager.c:200
 #, c-format
 msgid "Sorry, we've lost your wired connection"
 msgstr "Langallinen verkkoyhteys menetetty"
 
-#: ../carrick/carrick-notification-manager.c:173
+#: ../carrick/carrick-notification-manager.c:204
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
 msgstr "%s-yhteys kohteeseen %s menetetty"
 
-#: ../carrick/carrick-notification-manager.c:179
+#: ../carrick/carrick-notification-manager.c:210
 #, c-format
 msgid "Sorry, we've lost your %s connection"
 msgstr "%s-yhteys menetetty"
 
-#: ../carrick/carrick-notification-manager.c:196
+#: ../carrick/carrick-notification-manager.c:227
+#: ../carrick/carrick-notification-manager.c:313
 msgid "Network changed"
 msgstr "Verkko muuttunut"
 
-#: ../carrick/carrick-notification-manager.c:204
-msgid "Sorry, your wired connection was lost. So we've "
-msgstr "Langallinen yhteys menetetty, joten"
-
-#: ../carrick/carrick-notification-manager.c:208
+#: ../carrick/carrick-notification-manager.c:235
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've "
 msgstr "Yhteys kohteeseen %s menetetty, joten"
 
-#: ../carrick/carrick-notification-manager.c:213
+#: ../carrick/carrick-notification-manager.c:240
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've "
 msgstr "%s-yhteys menetetty, joten"
 
-#: ../carrick/carrick-notification-manager.c:219
+#: ../carrick/carrick-notification-manager.c:246
 msgid "connected you to a wired network"
 msgstr "muodostimme yhteyden langalliseen verkkoon"
 
-#: ../carrick/carrick-notification-manager.c:224
+#: ../carrick/carrick-notification-manager.c:251
 #, c-format
 msgid "connected you to %s, a %s network"
 msgstr "muodostimme yhteyden kohteeseen %s, joka on %s-verkko"
 
-#: ../carrick/carrick-notification-manager.c:230
+#: ../carrick/carrick-notification-manager.c:257
 #, c-format
 msgid "connected you to a %s network"
 msgstr "muodostimme yhteyden %s-verkkoon"
 
+#: ../carrick/carrick-notification-manager.c:321
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Yhteys kohteeseen %s menetetty, joten yhdistimme sinut langalliseen verkkoon."
+
+#: ../carrick/carrick-notification-manager.c:328
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "Yhteys kohteeseen %s menetetty, joten yhdistimme sinut kohteeseen %s, joka on %s-verkko."
+
+#: ../carrick/carrick-notification-manager.c:336
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Yhteys kohteeseen %s menetetty, joten yhdistimme sinut %s-verkkoon."
+
+#: ../carrick/carrick-notification-manager.c:346
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "%s-yhteys menetetty, joten yhdistimme sinut langalliseen verkkoon."
+
+#: ../carrick/carrick-notification-manager.c:353
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "%s-yhteys menetetty, joten yhdistimme sinut kohteeseen %s, joka on %s-verkko."
+
+#: ../carrick/carrick-notification-manager.c:362
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "%s-yhteys menetetty, joten yhdistimme sinut %s-verkkoon."
+
+#~ msgid "Sorry, your wired connection was lost. So we've "
+#~ msgstr "Langallinen yhteys menetetty, joten"
 #~ msgid "Offline"
 #~ msgstr "Poissa linjoilta"
 #~ msgid "No active connection."
