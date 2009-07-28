@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-22 09:20+0000\n"
+"POT-Creation-Date: 2009-07-27 15:29+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Omar Antila <oantila@ptiglobal.com>\n"
+"Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +30,7 @@ msgstr "Etsintätulokset"
 msgid "Playqueue"
 msgstr "Soittojono"
 
-#: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
+#: ../ahoghill/ahoghill/ahoghill-media-tile.c:100
 #, c-format
 msgid "Season %u, Episode %u"
 msgstr "Kausi %u, episodi %u"
@@ -49,8 +49,8 @@ msgstr "Media"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
 #: ../applications/src/moblin-netbook-launcher.c:1377
-#: ../pasteboard/src/moblin-panel-pasteboard.c:219
-#: ../people/src/mnb-people-panel.c:563
+#: ../pasteboard/src/moblin-panel-pasteboard.c:223
+#: ../people/src/mnb-people-panel.c:568
 msgid "Search"
 msgstr "Etsi"
 
@@ -79,7 +79,6 @@ msgid "Year %d"
 msgstr "Vuosi %d"
 
 #: ../ahoghill/src/moblin-panel-media.c:138
-#: ../src/moblin-netbook.c:328
 msgid "media"
 msgstr "media"
 
@@ -96,93 +95,85 @@ msgid "Applications"
 msgstr "Sovellukset"
 
 #: ../applications/src/moblin-panel-applications.c:166
-#: ../src/moblin-netbook.c:319
 msgid "applications"
 msgstr "sovellukset"
 
-#: ../myzone/src/moblin-panel-myzone.c:78
-#: ../src/moblin-netbook.c:310
-msgid "myzone"
-msgstr "Oma vyöhyke"
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:568
+#: ../netpanel/src/moblin-netbook-netpanel.c:588
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi välilehti -sivulla."
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:755
+#: ../netpanel/src/moblin-netbook-netpanel.c:790
 msgid "Untitled"
 msgstr "Nimetön"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:868
+#: ../netpanel/src/moblin-netbook-netpanel.c:972
 msgid "New tab"
 msgstr "Uusi välilehti"
 
 #. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1057
+#: ../netpanel/src/moblin-netbook-netpanel.c:1168
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:1070
+#: ../netpanel/src/moblin-netbook-netpanel.c:1181
 msgid "Go"
 msgstr "Siirry"
 
 #. Construct title for tab preview section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1091
+#: ../netpanel/src/moblin-netbook-netpanel.c:1202
 msgid "Tabs"
 msgstr "Välilehdet"
 
 #. Construct title for favorite pages section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1096
+#: ../netpanel/src/moblin-netbook-netpanel.c:1207
 msgid "Favorite pages"
 msgstr "Suosikkisivut"
 
 #: ../netpanel/src/moblin-panel-internet.c:87
-#: ../src/moblin-netbook.c:325
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/src/mwb-ac-list.c:1363
+#: ../netpanel/src/mwb-ac-list.c:1631
 #, c-format
 msgid "Search for %%s on %s"
 msgstr "Etsi '%%s' käyttäen seuraavaa: %s"
 
-#: ../netpanel/src/mwb-ac-list.c:1378
+#: ../netpanel/src/mwb-ac-list.c:1654
 #, c-format
-msgid "Go to %s.com"
-msgstr "Siirry sivustoon %s.com"
+msgid "Go to %s"
+msgstr "Siirry seuraavaan: %s"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:246
-#: ../pasteboard/src/moblin-panel-pasteboard.c:335
+#: ../pasteboard/src/mnb-clipboard-item.c:250
+#: ../pasteboard/src/moblin-panel-pasteboard.c:339
 msgid "Copy"
 msgstr "Kopioi"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:136
-#: ../pasteboard/src/moblin-panel-pasteboard.c:350
+#: ../pasteboard/src/moblin-panel-pasteboard.c:140
+#: ../pasteboard/src/moblin-panel-pasteboard.c:354
 msgid "the current selection to pasteboard"
 msgstr "nykyinen valinta liitepöytään"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:141
+#: ../pasteboard/src/moblin-panel-pasteboard.c:145
 msgid "your selection"
 msgstr "valintasi"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:206
+#: ../pasteboard/src/moblin-panel-pasteboard.c:210
 msgid "Pasteboard"
 msgstr "Liitepöytä"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:254
+#: ../pasteboard/src/moblin-panel-pasteboard.c:258
 msgid "You need to copy some text to use Pasteboard"
 msgstr "Kopioi jotain tekstiä, jotta voisit käyttää liitepöytää"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:307
+#: ../pasteboard/src/moblin-panel-pasteboard.c:311
 msgid "Clear pasteboard"
 msgstr "Tyhjennä liitepöytä"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:439
-#: ../src/moblin-netbook.c:322
+#: ../pasteboard/src/moblin-panel-pasteboard.c:443
 msgid "pasteboard"
 msgstr "liitepöytä"
 
-#: ../penge/penge/penge-calendar-pane.c:181
+#: ../penge/penge/penge-calendar-pane.c:207
 msgid "<b>Appointments</b>"
 msgstr "<b>Tapaamiset</b>"
 
@@ -195,12 +186,12 @@ msgstr "Tällä viikolla ei ole tapahtumia"
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "Kaveriesi päivitykset ja verkkopalvelut näkyvät täällä. Aktivoi tilisi nyt!"
 
-#: ../penge/penge/penge-recent-files-pane.c:189
+#: ../penge/penge/penge-recent-files-pane.c:201
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Moblin 2.0 ultrakannettaville toivottaa sinut tervetulleeksi!</b>"
 
 # Took "we hope you enjoy it" off in order to fix a truncation in the UI
-#: ../penge/penge/penge-recent-files-pane.c:214
+#: ../penge/penge/penge-recent-files-pane.c:226
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
 msgstr "Koska Moblin on vähän erilainen kuin muut käyttöjärjestelmät, olemme keränneet muutamia vinkkejä tämän Beta-julkaisun käytön helpottamiseksi. -Moblin tiimi"
 
@@ -212,7 +203,7 @@ msgstr "Verkkosivu"
 msgid "Nothing to do today"
 msgstr "Tänään ei ole mitään tekemistä!"
 
-#: ../penge/penge/penge-task-tile.c:330
+#: ../penge/penge/penge-task-tile.c:325
 #, c-format
 msgid "Due %x"
 msgstr "Määräaika: %x"
@@ -290,7 +281,6 @@ msgid "Ages ago"
 msgstr "Aataminaikoina"
 
 #: ../people/src/moblin-panel-people.c:69
-#: ../src/moblin-netbook.c:331
 msgid "people"
 msgstr "ihmiset"
 
@@ -302,42 +292,37 @@ msgstr "Lähetä sähköpostiviesti"
 msgid "Edit details"
 msgstr "Muokkaa tietoja"
 
-#: ../people/src/mnb-people-panel.c:168
+#: ../people/src/mnb-people-panel.c:173
 msgid "Send a message"
 msgstr "Lähetä viesti"
 
-#: ../people/src/mnb-people-panel.c:302
-#: ../status/src/moblin-panel-status.c:802
+#: ../people/src/mnb-people-panel.c:307
+#: ../status/src/moblin-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
 
-#: ../people/src/mnb-people-panel.c:550
+#: ../people/src/mnb-people-panel.c:555
 msgid "People"
 msgstr "Ihmiset"
 
-#: ../people/src/mnb-people-panel.c:679
+#: ../people/src/mnb-people-panel.c:684
 msgid "Selection"
 msgstr "Valinta"
 
-#: ../people/src/mnb-people-panel.c:742
+#: ../people/src/mnb-people-panel.c:747
 msgid "Nobody selected"
 msgstr "Ei ketään valittuna"
 
-#: ../src/moblin-netbook.c:313
-#: ../src/mnb-toolbar.c:1402
+#: ../src/moblin-netbook.c:306
+#: ../src/mnb-toolbar.c:1428
 msgid "zones"
 msgstr "vyöhykkeet"
 
-#: ../src/moblin-netbook.c:316
-#: ../status/src/moblin-panel-status.c:1095
-msgid "status"
-msgstr "tila"
-
-#: ../src/moblin-netbook.c:441
+#: ../src/moblin-netbook.c:415
 msgid "Moblin Netbook Effects"
 msgstr "Moblin ultrakannettavan tehosteet"
 
-#: ../src/moblin-netbook.c:445
+#: ../src/moblin-netbook.c:419
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin ultrakannettavien tehosteet"
 
@@ -355,6 +340,14 @@ msgstr "Uusi vyöhyke"
 msgid "Choose zone for application:"
 msgstr "Valitse ohjelman vyöhyke:"
 
+#: ../src/mnb-notification.c:266
+msgid "Dismiss"
+msgstr "Sivuuta"
+
+#: ../src/mnb-notification-cluster.c:657
+msgid "Dismiss All"
+msgstr "Sivuuta kaikki"
+
 #: ../src/mnb-switcher.c:1707
 msgid "No Zones yet"
 msgstr "Vyöhykkeitä ei vielä ole"
@@ -371,7 +364,7 @@ msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:668
+#: ../src/mnb-toolbar.c:671
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -379,69 +372,69 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:678
+#: ../src/mnb-toolbar.c:681
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
 
-#: ../src/mnb-toolbar.c:1639
+#: ../src/mnb-toolbar.c:1665
 msgid "power & brightness"
 msgstr "virta & kirkkaus"
 
-#: ../src/mnb-toolbar.c:1642
+#: ../src/mnb-toolbar.c:1668
 msgid "volume"
 msgstr "äänenvoimakkuus"
 
-#: ../src/mnb-toolbar.c:1645
+#: ../src/mnb-toolbar.c:1671
 msgid "bluetooth"
 msgstr "bluetooth"
 
-#: ../src/mnb-toolbar.c:1648
+#: ../src/mnb-toolbar.c:1674
 msgid "networks"
 msgstr "verkot"
 
-#: ../src/mnb-toolbar.c:1651
+#: ../src/mnb-toolbar.c:1677
 msgid "test"
 msgstr "testi"
 
-#: ../src/mnb-toolbar.c:1749
+#: ../src/mnb-toolbar.c:1775
 msgid "To activate the toolbar, move your cursor to the top of the screen"
 msgstr "Siirrä osoitin ruudun yläreunaan työkalurivin aktivoimiseksi."
 
-#: ../status/src/mnb-im-status-row.c:97
-#: ../status/src/mnb-im-status-row.c:98
-#: ../status/src/mnb-im-status-row.c:659
+#: ../status/src/mnb-im-status-row.c:103
+#: ../status/src/mnb-im-status-row.c:104
+#: ../status/src/mnb-im-status-row.c:742
 msgid "Offline"
 msgstr "Poissa linjoilta"
 
-#: ../status/src/mnb-im-status-row.c:99
+#: ../status/src/mnb-im-status-row.c:105
 #: ../status/src/moblin-panel-status.c:536
 msgid "Available"
 msgstr "Tavoitettavissa"
 
-#: ../status/src/mnb-im-status-row.c:100
-#: ../status/src/mnb-im-status-row.c:101
+#: ../status/src/mnb-im-status-row.c:106
+#: ../status/src/mnb-im-status-row.c:107
 #: ../status/src/moblin-panel-status.c:540
 #: ../status/src/moblin-panel-status.c:544
 msgid "Away"
 msgstr "Poissa"
 
-#: ../status/src/mnb-im-status-row.c:102
-#: ../status/src/mnb-im-status-row.c:103
+#: ../status/src/mnb-im-status-row.c:108
+#: ../status/src/mnb-im-status-row.c:109
 #: ../status/src/moblin-panel-status.c:548
 #: ../status/src/moblin-panel-status.c:552
 msgid "Busy"
 msgstr "Ei tavoitettavissa"
 
-#: ../status/src/mnb-im-status-row.c:126
+#: ../status/src/mnb-im-status-row.c:132
 msgid "Close"
 msgstr "Sulje"
 
-#: ../status/src/mnb-im-status-row.c:135
-#: ../status/src/mnb-im-status-row.c:677
+#: ../status/src/mnb-im-status-row.c:141
+#: ../status/src/mnb-im-status-row.c:760
 msgid "Change"
 msgstr "Muuta"
 
-#: ../status/src/mnb-im-status-row.c:662
+#: ../status/src/mnb-im-status-row.c:745
 msgid "Unknown account"
 msgstr "Tuntematon tili"
 
@@ -471,18 +464,24 @@ msgid "Your current status"
 msgstr "Tämänhetkinen tilasi"
 
 #: ../status/src/moblin-panel-status.c:472
-#: ../status/src/moblin-panel-status.c:937
+#: ../status/src/moblin-panel-status.c:960
 msgid "Your current status - you are offline"
 msgstr "Tämänhetkinen tilasi: olet poissa linjoilta"
 
-#: ../status/src/moblin-panel-status.c:971
+#: ../status/src/moblin-panel-status.c:994
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
 msgstr "Jotta voisit päivittää tilasi verkossa, sinun pitää määrittää verkkopalvelutili palveluntarjoajan kanssa, joka tukee tilaviestejä."
 
-#: ../status/src/moblin-panel-status.c:998
+#: ../status/src/moblin-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "Pikaviestintili pitää määrittää, jotta voit päivittää pikaviestintilaasi."
 
+#: ../status/src/moblin-panel-status.c:1118
+msgid "status"
+msgstr "tila"
+
+#~ msgid "myzone"
+#~ msgstr "Oma vyöhyke"
 #~ msgid "Local"
 #~ msgstr "Paikallinen"
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
