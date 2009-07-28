@@ -109,7 +109,7 @@ msgstr "aplicaciones"
 
 #: ../netpanel/src/moblin-netbook-netpanel.c:588
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-msgstr "Tus favoritos se mostrarán aquí y en la página de nuevas pestaña conforme vayas visitando páginas"
+msgstr "Tus favoritos se mostrarán aquí y en la página de nuevas pestañas conforme vayas visitando páginas"
 
 #: ../netpanel/src/moblin-netbook-netpanel.c:790
 msgid "Untitled"
@@ -138,7 +138,7 @@ msgstr "Pestañas"
 #. Construct title for favorite pages section
 #: ../netpanel/src/moblin-netbook-netpanel.c:1207
 msgid "Favorite pages"
-msgstr "Webs preferidas"
+msgstr "Páginas preferidas"
 
 # <mousetip of the top of the screen>
 #: ../netpanel/src/moblin-panel-internet.c:87
@@ -497,7 +497,7 @@ msgstr "Enviar"
 # Your status
 #: ../status/src/moblin-panel-status.c:470
 msgid "Your current status"
-msgstr "Su estado"
+msgstr "Tu estado en este momento"
 
 # Your status: offline
 #: ../status/src/moblin-panel-status.c:472
