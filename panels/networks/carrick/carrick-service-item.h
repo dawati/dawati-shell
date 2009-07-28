@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 #include <gconnman/gconnman.h>
 #include "carrick-icon-factory.h"
+#include "carrick-notification-manager.h"
 
 G_BEGIN_DECLS
 
@@ -69,6 +70,7 @@ void carrick_service_item_set_active (CarrickServiceItem *item,
                                       gboolean active);
 
 GtkWidget* carrick_service_item_new (CarrickIconFactory *icon_factory,
+                                     CarrickNotificationManager *notifications,
                                      CmService          *service);
 
 G_END_DECLS

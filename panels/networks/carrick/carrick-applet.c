@@ -43,39 +43,9 @@ struct _CarrickAppletPrivate {
   CmManager          *manager;
   GtkWidget          *icon;
   GtkWidget          *pane;
-  gchar              *state;
   CarrickIconFactory *icon_factory;
   CarrickNotificationManager *notifications;
 };
-
-static void
-manager_services_changed_cb (CmManager *manager,
-			     gpointer   user_data)
-{
-  CarrickApplet *applet = CARRICK_APPLET (user_data);
-  CarrickAppletPrivate *priv = GET_PRIVATE (applet);
-
-  if (priv->icon)
-    carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
-}
-
-static void
-manager_state_changed_cb (CmManager *manager,
-                          gpointer   user_data)
-{
-  CarrickApplet *applet = CARRICK_APPLET (user_data);
-  CarrickAppletPrivate *priv = GET_PRIVATE (applet);
-  gchar *new_state = g_strdup (cm_manager_get_state (manager));
-
-  if (g_strcmp0 (priv->state, new_state) != 0)
-  {
-    g_free (priv->state);
-    priv->state = new_state;
-  }
-
-  if (priv->icon)
-    carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
-}
 
 GtkWidget*
 carrick_applet_get_pane (CarrickApplet *applet)
@@ -148,7 +118,7 @@ carrick_applet_init (CarrickApplet *self)
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
 
-  priv->manager = cm_manager_new (&error);
+  priv->manager = cm_manager_new (&error, FALSE);
   if (error || !priv->manager) {
     g_debug ("Error initializing connman manager: %s\n",
              error->message);
@@ -157,23 +127,14 @@ carrick_applet_init (CarrickApplet *self)
   }
   /* FIXME: handle return value here */
   cm_manager_refresh (priv->manager);
-  priv->state = g_strdup (cm_manager_get_state (priv->manager));
   priv->icon_factory = carrick_icon_factory_new ();
   priv->icon = carrick_status_icon_new (priv->icon_factory,
                                         priv->manager);
+  priv->notifications = carrick_notification_manager_new (priv->manager);
   priv->pane = carrick_pane_new (priv->icon_factory,
+                                 priv->notifications,
                                  priv->manager);
   gtk_widget_show (priv->pane);
-  priv->notifications = carrick_notification_manager_new (priv->manager);
-
-  g_signal_connect (priv->manager,
-                    "state-changed",
-                    G_CALLBACK (manager_state_changed_cb),
-                    self);
-  g_signal_connect (priv->manager,
-                    "services-changed",
-                    G_CALLBACK (manager_services_changed_cb),
-                    self);
 }
 
 CarrickApplet*

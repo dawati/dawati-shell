@@ -46,6 +46,13 @@ enum
   PROP_MANAGER
 };
 
+/* Forward declaration of private method */
+static void
+carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+                                    CmManager         *manager);
+static void
+carrick_status_icon_update (CarrickStatusIcon *icon);
+
 static void
 carrick_status_icon_get_property (GObject *object, guint property_id,
                                   GValue *value, GParamSpec *pspec)
@@ -142,7 +149,17 @@ carrick_status_icon_init (CarrickStatusIcon *self)
                                   GTK_STOCK_NETWORK);
 }
 
-void
+static void
+_service_updated_cb (CmService         *service,
+                     CarrickStatusIcon *icon)
+{
+  g_signal_handlers_disconnect_by_func (service,
+                                        _service_updated_cb,
+                                        icon);
+  carrick_status_icon_update (icon);
+}
+
+static void
 carrick_status_icon_update (CarrickStatusIcon *icon)
 {
   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
@@ -151,10 +168,13 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
   guint strength;
   const gchar *type = NULL;
   CmService *service = NULL;
+  const GList *services = NULL;
 
   if (priv->manager)
   {
-    service  = cm_manager_get_active_service (priv->manager);
+    services = cm_manager_get_services (priv->manager);
+    if (services)
+      service  = services->data;
   }
 
   if (service)
@@ -199,6 +219,10 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
     else
     {
         icon_state = ICON_ERROR;
+        g_signal_connect (service,
+                          "service-updated",
+                          G_CALLBACK (_service_updated_cb),
+                          icon);
     }
   }
   else
@@ -226,7 +250,14 @@ carrick_status_icon_set_active (CarrickStatusIcon *icon,
   carrick_status_icon_update (icon);
 }
 
-void
+static void
+_manager_change_cb (CmManager         *manager,
+                   CarrickStatusIcon *icon)
+{
+  carrick_status_icon_update (icon);
+}
+
+static void
 carrick_status_icon_update_manager (CarrickStatusIcon *icon,
                                     CmManager         *manager)
 {
@@ -234,6 +265,10 @@ carrick_status_icon_update_manager (CarrickStatusIcon *icon,
 
   if (priv->manager)
   {
+    g_signal_handlers_disconnect_by_func (priv->manager,
+                                          _manager_change_cb,
+                                          icon);
+
     g_object_unref (priv->manager);
     priv->manager= NULL;
   }
@@ -241,6 +276,11 @@ carrick_status_icon_update_manager (CarrickStatusIcon *icon,
   if (manager)
   {
     priv->manager= g_object_ref (manager);
+
+    g_signal_connect (priv->manager,
+                      "services-changed",
+                      G_CALLBACK (_manager_change_cb),
+                      icon);
   }
 
   carrick_status_icon_update (icon);

@@ -1,4 +1,24 @@
-/* carrick-notification-manager.c */
+/*
+ * Carrick - a connection panel for the Moblin Netbook
+ * Copyright (C) 2009 Intel Corporation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License version
+ * 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ *
+ * Written by - Joshua Lock <josh@linux.intel.com>
+ *
+ */
 
 #include "carrick-notification-manager.h"
 
@@ -19,6 +39,10 @@ struct _CarrickNotificationManagerPrivate
   gchar *last_type;
   gchar *last_name;
   gchar *last_state;
+
+  gchar *queued_type;
+  gchar *queued_name;
+  gchar *queued_state;
 };
 
 enum
@@ -36,20 +60,47 @@ carrick_notification_manager_queue_service (CarrickNotificationManager *self,
   const gchar *name = cm_service_get_name (service);
   const gchar *type = cm_service_get_type (service);
 
-  g_free (priv->last_state);
+  g_free (priv->queued_state);
   if (enabling)
-    priv->last_state = g_strdup ("ready");
+    priv->queued_state = g_strdup ("ready");
   else
-    priv->last_state = g_strdup ("idle");
+    priv->queued_state = g_strdup ("idle");
 
-  g_free (priv->last_type);
-  priv->last_type = g_strdup (type);
+  g_free (priv->queued_type);
+  priv->queued_type = g_strdup (type);
 
   if (name)
   {
-    g_free (priv->last_name);
-    priv->last_name = g_strdup (name);
+    g_free (priv->queued_name);
+    priv->queued_name = g_strdup (name);
   }
+}
+
+void
+carrick_notification_manager_queue_event (CarrickNotificationManager *self,
+                                          const gchar *type,
+                                          const gchar *state,
+                                          const gchar *name)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+
+  g_free (priv->queued_type);
+  priv->queued_type = NULL;
+
+  g_free (priv->queued_state);
+  priv->queued_state = NULL;
+
+  g_free (priv->queued_name);
+  priv->queued_name = NULL;
+
+  if (type)
+    priv->queued_type = g_strdup (type);
+
+  if (state)
+    priv->queued_state = g_strdup (state);
+
+  if (name)
+    priv->queued_name = g_strdup (name);
 }
 
 static void
@@ -179,19 +230,26 @@ _tell_changed (CarrickNotificationManager *self,
   gchar *message = NULL;
   const gchar *icon;
 
-  if (g_strcmp0 (priv->last_type, "ethernet") == 0)
+  if (priv->last_name == NULL && priv->last_type == NULL)
   {
-    old = g_strdup (_("Sorry, your wired connection was lost. So we've "));
+    /*
+     * If we have never been notified of a previous network 
+     * name or network type then we it would be better to just
+     * not send a notification.
+     */
+    g_free (title);
+    return;
   }
-  else if (priv->last_name)
+
+  if (priv->last_name)
   {
     old = g_strdup_printf (_("Sorry, your connection to %s was lost. So we've "),
-                           name);
+                           priv->last_name);
   }
   else
   {
     old = g_strdup_printf (_("Sorry, your %s connection was lost. So we've "),
-                           type);
+                           priv->last_type);
   }
 
   if (g_strcmp0 (type, "ethernet") == 0)
@@ -245,6 +303,111 @@ _tell_changed (CarrickNotificationManager *self,
   g_free (message);
 }
 
+/*
+ * Version of _tell_changed that does not use string
+ * concatenation.
+ *
+ * This function is being compiled in without getting
+ * called so that the translation tools will allow the
+ * translation team to translate the strings.
+ *
+ * We can not simply fix _tell_changed because we
+ * are past string freeze.
+ */
+static void
+_tell_changed_without_concat (CarrickNotificationManager *self,
+                              const gchar *name,
+                              const gchar *type,
+                              guint str)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+  gchar *title = g_strdup (_("Network changed"));
+  gchar *message = NULL;
+  const gchar *icon;
+
+  if (priv->last_name)
+  {
+    if (g_strcmp0 (type, "ethernet") == 0)
+    {
+      message = g_strdup_printf (_("Sorry, your connection to %s was lost. "
+                                   "So we've connected you to a wired network"),
+                                 name);
+      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+    }
+    else if (name)
+    {
+      message = g_strdup_printf (_("Sorry, your connection to %s was lost. So "
+                                   "we've connected you to %s, a %s network"),
+                                 priv->last_name,
+                                 name,
+                                 type);
+    }
+    else
+    {
+      message = g_strdup_printf (_("Sorry, your connection to %s was lost. "
+                                   "So we've connected you to a %s network"),
+                                 priv->last_name,
+                                 type);
+    }
+  }
+  else
+  {
+    if (g_strcmp0 (type, "ethernet") == 0)
+    {
+      message = g_strdup_printf (_("Sorry, your %s connection was lost. "
+                                   "So we've connected you to a wired network"),
+                                 priv->last_type);
+      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+    }
+    else if (name)
+    {
+      message = g_strdup_printf (_("Sorry, your %s connection was lost. "
+                                   "So we've connected you to %s, a %s "
+                                   "network"),
+                                 priv->last_type,
+                                 name,
+                                 type);
+    }
+    else
+    {
+      message = g_strdup_printf (_("Sorry, your %s connection was lost. So "
+                                   "we've connected you to a %s network"),
+                                 priv->last_type,
+                                 type);
+    }
+  }
+
+  /* Determine icon to show in notification */
+  if (g_strcmp0 (type, "wifi") == 0)
+  {
+    if (str > 70)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
+    else if (str > 35)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
+  }
+  else if (g_strcmp0 (type, "wimax") == 0)
+  {
+    if (str > 50)
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
+  }
+  else if (g_strcmp0 (type, "cellular") == 0)
+  {
+    if (str > 50)
+      icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
+    else
+      icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
+  }
+
+  _send_note (title, message, icon);
+
+  g_free (title);
+  g_free (message);
+}
+
 static void
 _service_state_stash_cb (CmService *service,
                          CarrickNotificationManager *self)
@@ -274,24 +437,22 @@ _services_changed_cb (CmManager *manager,
   const gchar *type = NULL;
   const gchar *name = NULL;
   const gchar *state = NULL;
-  gboolean connected = FALSE;
   guint str = 0;
+  gboolean queue_handled = FALSE;
 
   if (!new_services)
     return;
 
   new_top = new_services->data;
 
+  /* FIXME: handle offline mode */
   if (!new_top)
     return;
 
   type = cm_service_get_type (new_top);
   name = cm_service_get_name (new_top);
   state = cm_service_get_state (new_top);
-  connected = cm_service_get_connected (new_top);
   str = cm_service_get_strength (new_top);
-
-  /* FIXME: only show for non-user action */
 
   /*
    * Determine what note to send, we can:
@@ -299,19 +460,73 @@ _services_changed_cb (CmManager *manager,
    * _tell_offline (self, name, type)
    * _tell_online (name, type, str)
    */
-  if (priv->last_state)
+
+  /* Need to handle last events and queued events separately to better maintain
+   * the systems state */
+  if (priv->queued_state)
+  {
+    /* We have a queued event, test to see if that's what happened */
+    if (g_strcmp0 (priv->queued_type, type) == 0 &&
+        g_strcmp0 (priv->queued_state, state) == 0 &&
+        (g_strcmp0 (priv->queued_name, name) ||
+         g_strcmp0 (priv->queued_name, "all")))
+    {
+      /* Remember the event info */
+      g_free (priv->last_state);
+      priv->last_state = g_strdup (priv->queued_state);
+      g_free (priv->last_type);
+      priv->last_type = g_strdup (priv->queued_type);
+      g_free (priv->last_name);
+      priv->last_name = NULL;
+      if (priv->queued_name && g_strcmp0 (priv->queued_name, "all") != 0)
+        priv->last_name = g_strdup (priv->queued_name);
+
+      /* We've handled this queued event, clear the stored data */
+      g_free (priv->queued_state);
+      priv->queued_state = NULL;
+      g_free (priv->queued_type);
+      priv->queued_type = NULL;
+      g_free (priv->queued_name);
+      priv->queued_name = NULL;
+
+      queue_handled = TRUE;
+    }
+  }
+
+  if (!queue_handled)
   {
     if (g_strcmp0 (priv->last_type, type) != 0 ||
-        g_strcmp0 (priv->last_name, name) != 0)
+        (priv->last_name != NULL && g_strcmp0 (priv->last_name, name) != 0))
     {
       /* top service has changed */
-      if (connected && g_strcmp0 (priv->last_state, "idle") == 0)
+      if (g_strcmp0 (state, "ready") == 0 &&
+          g_strcmp0 (priv->last_state, "idle") == 0)
       {
         _tell_online (name, type, str);
       }
-      else if (connected && g_strcmp0 (priv->last_state, "ready") == 0)
+      else if (g_strcmp0 (state, "ready") == 0 &&
+               g_strcmp0 (priv->last_state, "ready") == 0
+               && g_strcmp0 (name, priv->last_name) != 0)
       {
-        _tell_changed (self, name, type, str);
+        if (g_strcmp0 (priv->last_type, "wired") == 0)
+        {
+          /* Special case ethernet connections.
+           * When cable unplugged just tell the user what the
+           * new connection is.
+           */
+          _tell_online (name, type, str);
+        }
+        else
+        {
+          if (0)
+          {
+            _tell_changed_without_concat (self, name, type, str);
+          }
+          else
+          {
+            _tell_changed (self, name, type, str);
+          }
+        }
       }
       else if (g_strcmp0 (state, "idle") == 0
                && g_strcmp0 (priv->last_state, "ready") == 0)
@@ -330,13 +545,13 @@ _services_changed_cb (CmManager *manager,
     }
   }
 
-  /*
+   /*
    * Stash state in last_*
    */
   g_free (priv->last_state);
   priv->last_state = g_strdup (state);
 
-  if (connected)
+  if (g_strcmp0 (state, "ready") == 0)
   {
     g_free (priv->last_type);
     priv->last_type = g_strdup (type);
@@ -425,6 +640,13 @@ carrick_notification_manager_dispose (GObject *object)
 
   notify_uninit ();
 
+  g_free (priv->last_type);
+  g_free (priv->last_name);
+  g_free (priv->last_state);
+  g_free (priv->queued_type);
+  g_free (priv->queued_name);
+  g_free (priv->queued_state);
+
   if (priv->manager)
   {
     _set_manager (self,
@@ -472,6 +694,9 @@ carrick_notification_manager_init (CarrickNotificationManager *self)
   self->priv->last_type = NULL;
   self->priv->last_name = NULL;
   self->priv->last_state = NULL;
+  self->priv->queued_type = NULL;
+  self->priv->queued_name = NULL;
+  self->priv->queued_state = NULL;
 
   notify_init ("Carrick");
 }
