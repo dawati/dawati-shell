@@ -219,14 +219,12 @@ _tell_offline (CarrickNotificationManager *self,
 
 static void
 _tell_changed (CarrickNotificationManager *self,
-               const gchar *name,
-               const gchar *type,
-               guint str)
+	       const gchar *name,
+	       const gchar *type,
+	       guint str)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
   gchar *title = g_strdup (_("Network changed"));
-  gchar *old = NULL;
-  gchar *new = NULL;
   gchar *message = NULL;
   const gchar *icon;
 
@@ -243,95 +241,11 @@ _tell_changed (CarrickNotificationManager *self,
 
   if (priv->last_name)
   {
-    old = g_strdup_printf (_("Sorry, your connection to %s was lost. So we've "),
-                           priv->last_name);
-  }
-  else
-  {
-    old = g_strdup_printf (_("Sorry, your %s connection was lost. So we've "),
-                           priv->last_type);
-  }
-
-  if (g_strcmp0 (type, "ethernet") == 0)
-  {
-    new = g_strdup (_("connected you to a wired network"));
-    icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
-  }
-  else if (name)
-  {
-    new = g_strdup_printf (_("connected you to %s, a %s network"),
-                           name,
-                           type);
-  }
-  else
-  {
-    new = g_strdup_printf (_("connected you to a %s network"),
-                           type);
-  }
-
-  if (g_strcmp0 (type, "wifi") == 0)
-  {
-    if (str > 70)
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
-    else if (str > 35)
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
-    else
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
-  }
-  else if (g_strcmp0 (type, "wimax") == 0)
-  {
-    if (str > 50)
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
-    else
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
-  }
-  else if (g_strcmp0 (type, "cellular") == 0)
-  {
-    if (str > 50)
-      icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
-    else
-      icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
-  }
-
-  message = g_strdup_printf ("%s %s", old, new);
-
-  _send_note (title, message, icon);
-
-  g_free (old);
-  g_free (new);
-  g_free (title);
-  g_free (message);
-}
-
-/*
- * Version of _tell_changed that does not use string
- * concatenation.
- *
- * This function is being compiled in without getting
- * called so that the translation tools will allow the
- * translation team to translate the strings.
- *
- * We can not simply fix _tell_changed because we
- * are past string freeze.
- */
-static void
-_tell_changed_without_concat (CarrickNotificationManager *self,
-                              const gchar *name,
-                              const gchar *type,
-                              guint str)
-{
-  CarrickNotificationManagerPrivate *priv = self->priv;
-  gchar *title = g_strdup (_("Network changed"));
-  gchar *message = NULL;
-  const gchar *icon;
-
-  if (priv->last_name)
-  {
     if (g_strcmp0 (type, "ethernet") == 0)
     {
       message = g_strdup_printf (_("Sorry, your connection to %s was lost. "
                                    "So we've connected you to a wired network"),
-                                 name);
+                                 priv->last_name);
       icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
     }
     else if (name)
@@ -518,14 +432,7 @@ _services_changed_cb (CmManager *manager,
         }
         else
         {
-          if (0)
-          {
-            _tell_changed_without_concat (self, name, type, str);
-          }
-          else
-          {
-            _tell_changed (self, name, type, str);
-          }
+	  _tell_changed (self, name, type, str);
         }
       }
       else if (g_strcmp0 (state, "idle") == 0
