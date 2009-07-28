@@ -192,17 +192,19 @@ penge_app_tile_constructed (GObject *object)
                  error->message);
       g_clear_error (&error);
     } else {
-      name = g_key_file_get_string (kf,
-                                    G_KEY_FILE_DESKTOP_GROUP,
-                                    G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
-                                    NULL);
+      name = g_key_file_get_locale_string (kf,
+                                           G_KEY_FILE_DESKTOP_GROUP,
+                                           G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
+                                           NULL,
+                                           NULL);
 
       if (!name)
       {
-        name = g_key_file_get_string (kf,
-                                      G_KEY_FILE_DESKTOP_GROUP,
-                                      G_KEY_FILE_DESKTOP_KEY_NAME,
-                                      NULL);
+        name = g_key_file_get_locale_string (kf,
+                                             G_KEY_FILE_DESKTOP_GROUP,
+                                             G_KEY_FILE_DESKTOP_KEY_NAME,
+                                             NULL,
+                                             NULL);
       }
 
       nbtk_widget_set_tooltip_text (NBTK_WIDGET (object),
