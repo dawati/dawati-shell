@@ -2,268 +2,368 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-22 02:35+0000\n"
+"POT-Creation-Date: 2009-07-27 09:21+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Chinese\n"
+"X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../carrick/carrick-pane.c:307
+#: ../carrick/carrick-pane.c:358
 msgid "New connection settings"
-msgstr "新連接設置"
+msgstr "Nya anslutningsinställningar "
 
-#: ../carrick/carrick-pane.c:343
+#: ../carrick/carrick-pane.c:394
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"輸入您想要連接的網絡名稱\n"
-"，並在必要時的\n"
-" 輸入密碼和安全類型。"
-
-#: ../carrick/carrick-pane.c:353
-msgid "Network name"
-msgstr "網絡名稱"
-
-#: ../carrick/carrick-pane.c:365
-msgid "Network security"
-msgstr "網絡安全"
-
-#: ../carrick/carrick-pane.c:389
-msgid "Password"
-msgstr "密碼"
+"Ange namnent på nätverket du vill\n"
+" ansluta till och när det krävs\n"
+" ange lösenord och säkerhetstyp."
 
 #: ../carrick/carrick-pane.c:404
-#: ../carrick/carrick-service-item.c:945
+msgid "Network name"
+msgstr "Nätverksnamn"
+
+#: ../carrick/carrick-pane.c:416
+msgid "Network security"
+msgstr "Nätverkssäkerhet"
+
+#: ../carrick/carrick-pane.c:426
+msgid "None"
+msgstr "Ingen"
+
+#: ../carrick/carrick-pane.c:440
+msgid "Password"
+msgstr "Lösenord"
+
+#: ../carrick/carrick-pane.c:455
+#: ../carrick/carrick-service-item.c:994
 msgid "Show password"
-msgstr "顯示密碼"
+msgstr "Visa lösenord"
 
-#: ../carrick/carrick-pane.c:504
+#: ../carrick/carrick-pane.c:564
 msgid "Sorry, we can't find any networks. "
-msgstr "很抱歉，我們無法找到任何網絡。 "
+msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk"
 
-#: ../carrick/carrick-pane.c:509
+#: ../carrick/carrick-pane.c:569
 msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
-msgstr "ConnMan daemon 似乎並沒有運行。您可以嘗試重新啟動您的設備"
+msgstr "Bakgrundstjänsten ConnMan verkar inte fungera. Du kan försöka starta om din enhet"
 
-#: ../carrick/carrick-pane.c:515
+#: ../carrick/carrick-pane.c:575
 msgid "You could try disabling Offline mode"
-msgstr "您可以嘗試禁止使用離線模式"
+msgstr "Du kan försöka inaktivera frånkopplingsläget"
 
-#: ../carrick/carrick-pane.c:524
+#: ../carrick/carrick-pane.c:584
 msgid "You could try turning on "
-msgstr "您可以嘗試開機"
+msgstr "Du kan försöka att slå på"
 
-#: ../carrick/carrick-pane.c:528
-#: ../carrick/carrick-pane.c:964
+#: ../carrick/carrick-pane.c:588
+#: ../carrick/carrick-pane.c:1205
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:534
-#: ../carrick/carrick-pane.c:549
+#: ../carrick/carrick-pane.c:594
+#: ../carrick/carrick-pane.c:609
 msgid ", "
-msgstr "，"
+msgstr ", "
 
-#: ../carrick/carrick-pane.c:536
-#: ../carrick/carrick-pane.c:1058
+#: ../carrick/carrick-pane.c:596
+#: ../carrick/carrick-pane.c:1299
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:542
+#: ../carrick/carrick-pane.c:602
 msgid " and "
-msgstr "和"
+msgstr "och"
 
-#: ../carrick/carrick-pane.c:544
-#: ../carrick/carrick-pane.c:1027
+#: ../carrick/carrick-pane.c:604
+#: ../carrick/carrick-pane.c:1268
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:551
+#: ../carrick/carrick-pane.c:611
 msgid "Ethernet"
-msgstr "乙太網"
+msgstr "Ethernet"
 
-#: ../carrick/carrick-pane.c:559
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-pane.c:619
+#: ../carrick/carrick-pane.c:735
 msgid "Sorry, we can't find any networks"
-msgstr "很抱歉，我們無法找到任何網絡。 "
+msgstr "Ursäkta vi kan inte hitta några tillgängliga nätverk"
 
-#: ../carrick/carrick-pane.c:884
+#.
+#. * Hint to display when we detect that the connection manager
+#. * is dead.  Ideally the system auto-restarts connman so the
+#. * user will not see this, but this is what to show if all
+#. * available recovery measures fail.
+#.
+#: ../carrick/carrick-pane.c:654
+msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
+msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Bakgrundstjänsten ConnMan verkar inte fungera. Du kan försöka starta om din enhet"
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:665
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Du kan försöka inaktivera frånkopplingsläget."
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:680
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Du kan försöka använda WiFi."
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:691
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Du kan försöka använda WiMAX."
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:702
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Du kan försöka använda 3G."
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:712
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Du kan försöka använda Blurtooth."
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-pane.c:723
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Du kan försöka göra en fast anslutning. "
+
+#: ../carrick/carrick-pane.c:1125
 msgid "Networks"
-msgstr "網絡"
+msgstr "Nätverk"
 
-#: ../carrick/carrick-pane.c:937
+#: ../carrick/carrick-pane.c:1178
 msgid "Add new connection"
-msgstr "添加新的連接"
+msgstr "Lägg till ny anslutning"
 
-#: ../carrick/carrick-pane.c:996
-#: ../carrick/carrick-service-item.c:211
+#: ../carrick/carrick-pane.c:1237
+#: ../carrick/carrick-service-item.c:218
 msgid "Wired"
-msgstr "有線"
+msgstr "Använder ett uttag"
 
-#: ../carrick/carrick-pane.c:1101
+#: ../carrick/carrick-pane.c:1342
 msgid "Offline mode"
-msgstr "離線狀態"
+msgstr "Frånkopplingsläge"
 
-#: ../carrick/carrick-pane.c:1126
+#: ../carrick/carrick-pane.c:1367
 msgid "This will disable all your connections"
-msgstr "這將禁用所有的連接"
+msgstr "Detta avslutar alla dina anslutningar"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#: ../carrick/carrick-service-item.c:170
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
-msgstr "%s 加密"
+msgstr "%s krypterad"
 
-#: ../carrick/carrick-service-item.c:242
+#: ../carrick/carrick-service-item.c:249
 msgid "Disconnect"
-msgstr "斷開"
+msgstr "Koppla från"
 
-#: ../carrick/carrick-service-item.c:245
+#: ../carrick/carrick-service-item.c:252
 msgid "Connected"
-msgstr "已連接"
+msgstr "Ansluten!"
 
-#: ../carrick/carrick-service-item.c:250
+#: ../carrick/carrick-service-item.c:257
 #, c-format
 msgid "Cancel"
-msgstr "取消"
-
-#: ../carrick/carrick-service-item.c:253
-msgid "Configuring"
-msgstr "正在配置"
+msgstr "Avbryt"
 
 #: ../carrick/carrick-service-item.c:260
-#: ../carrick/carrick-service-item.c:268
-#: ../carrick/carrick-service-item.c:934
+msgid "Configuring"
+msgstr "Konfigurering"
+
+#: ../carrick/carrick-service-item.c:267
+#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:983
 msgid "Connect"
-msgstr "連結"
+msgstr "Anslut"
 
-#: ../carrick/carrick-service-item.c:271
+#: ../carrick/carrick-service-item.c:278
 msgid "Connection failed"
-msgstr "連接失敗"
+msgstr "Anslutningen misslyckades"
 
-#: ../carrick/carrick-service-item.c:276
-#: ../carrick/carrick-service-item.c:279
+#: ../carrick/carrick-service-item.c:283
+#: ../carrick/carrick-service-item.c:286
 #, c-format
 msgid "Disconnecting"
-msgstr "斷開"
+msgstr "Kopplar från"
 
-#: ../carrick/carrick-service-item.c:327
+#: ../carrick/carrick-service-item.c:334
 msgid "Type password here"
-msgstr "在此輸入密碼"
+msgstr "Ange lösenord "
 
-#: ../carrick/carrick-service-item.c:389
+#: ../carrick/carrick-service-item.c:397
 msgid "Really remove?"
-msgstr "確實要刪除？"
+msgstr "Radera - är du säker?"
 
-#: ../carrick/carrick-service-item.c:407
+#: ../carrick/carrick-service-item.c:415
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-"你想刪除 %s %s 的網絡？\n"
-"這會忘記密碼，且您將不再會\n"
-" 自動連接到%s"
+"Vill du radera %s %s nätverk? Detta gör att\n"
+"lösenordet glöms bort och du kommer inte\n"
+"längre automatiskt anslutas till %s."
 
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:890
+#: ../carrick/carrick-service-item.c:939
 msgid "WPA2 encrypted"
-msgstr "WPA2 加密"
+msgstr "WPA2 krypterat"
 
-#: ../carrick/carrick-notification-manager.c:100
+#: ../carrick/carrick-notification-manager.c:131
 msgid "Network connected"
-msgstr "網路連接"
+msgstr "Nätverk anslutet"
 
-#: ../carrick/carrick-notification-manager.c:108
+#: ../carrick/carrick-notification-manager.c:139
 #, c-format
 msgid "You're now connected to a wired network"
-msgstr "現在，您已連接到有線網絡"
-
-#: ../carrick/carrick-notification-manager.c:138
-#, c-format
-msgid "You're now connected to %s, a %s network"
-msgstr "您現在已連接到 %s，%s網絡"
-
-#: ../carrick/carrick-notification-manager.c:144
-#, c-format
-msgid "You're now connected to a %s network"
-msgstr "您現在已連接到%s網絡"
-
-#: ../carrick/carrick-notification-manager.c:161
-msgid "Network lost"
-msgstr "網路中斷"
+msgstr "Du är nu ansluten till ett fast nätverk"
 
 #: ../carrick/carrick-notification-manager.c:169
 #, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "Du är nu ansluten till %s ett %s nätverk"
+
+#: ../carrick/carrick-notification-manager.c:175
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "Du är nu ansluten till ett %s nätverk"
+
+#: ../carrick/carrick-notification-manager.c:192
+msgid "Network lost"
+msgstr "Nätverk borttappat"
+
+#: ../carrick/carrick-notification-manager.c:200
+#, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "很抱歉，我們失去您的有線連接"
-
-#: ../carrick/carrick-notification-manager.c:173
-#, c-format
-msgid "Sorry we've lost your %s connection to %s"
-msgstr "很抱歉，我們失去您 %s 連接到 %s 的連接"
-
-#: ../carrick/carrick-notification-manager.c:179
-#, c-format
-msgid "Sorry, we've lost your %s connection"
-msgstr "很抱歉，我們已經失去您的 %s 的連接"
-
-#: ../carrick/carrick-notification-manager.c:196
-msgid "Network changed"
-msgstr "網路已變更"
+msgstr "Ursäkta, vi tappade din fasta anslutning "
 
 #: ../carrick/carrick-notification-manager.c:204
-msgid "Sorry, your wired connection was lost. So we've "
-msgstr "很抱歉，您的有線連接中斷。因此我們"
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "Ursäkta, vi tappade din %s anslutning till %s"
 
-#: ../carrick/carrick-notification-manager.c:208
+#: ../carrick/carrick-notification-manager.c:210
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "Ursäkta, vi tappade din %s anslutning "
+
+#: ../carrick/carrick-notification-manager.c:227
+#: ../carrick/carrick-notification-manager.c:313
+msgid "Network changed"
+msgstr "Nätverk ändrat"
+
+#: ../carrick/carrick-notification-manager.c:235
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've "
-msgstr "很抱歉，您的連接到 %s 的連接中斷。因此我們"
+msgstr "Ursäkta, din anslutning till %s avbröts. Så vi har"
 
-#: ../carrick/carrick-notification-manager.c:213
+#: ../carrick/carrick-notification-manager.c:240
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've "
-msgstr "很抱歉，您的 %s 有線連接中斷。因此我們"
+msgstr "Ursäkta, din %s anslutning avbröts. Så vi har"
 
-#: ../carrick/carrick-notification-manager.c:219
+#: ../carrick/carrick-notification-manager.c:246
 msgid "connected you to a wired network"
-msgstr "連接您到有線網絡"
+msgstr "Anslöt dig till ett fast nätverk"
 
-#: ../carrick/carrick-notification-manager.c:224
+#: ../carrick/carrick-notification-manager.c:251
 #, c-format
 msgid "connected you to %s, a %s network"
-msgstr "連接您到 %s，%s 網絡"
+msgstr "Anslöt dig till %s, ett %s nätverk"
 
-#: ../carrick/carrick-notification-manager.c:230
+#: ../carrick/carrick-notification-manager.c:257
 #, c-format
 msgid "connected you to a %s network"
-msgstr "連接您到 %s 網絡"
+msgstr "Anslöt dig till %s nätverk"
 
+#: ../carrick/carrick-notification-manager.c:321
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Ursäkta, din anslutning till %s avbröts. Så vi har anslutit dig till ett fast nätverk"
+
+#: ../carrick/carrick-notification-manager.c:328
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "Ursäkta, din anslutning till %s avbröts. Så vi har anslutit dig till ett %s, ett %s nätverk"
+
+#: ../carrick/carrick-notification-manager.c:336
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Ursäkta, din anslutning till %s avbröts. Så vi har anslutit dig till ett %s nätverk"
+
+#: ../carrick/carrick-notification-manager.c:346
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Ursäkta, din %s anslutning avbröts. Så vi har anslutit dig till ett fast nätverk"
+
+#: ../carrick/carrick-notification-manager.c:353
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "Ursäkta, din %s anslutning avbröts. Så vi har anslutit dig till ett %s , ett %s nätverk"
+
+#: ../carrick/carrick-notification-manager.c:362
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Ursäkta, din %s anslutning avbröts. Så vi har anslutit dig till ett %s nätverk"
+
+#~ msgid "Sorry, your wired connection was lost. So we've "
+#~ msgstr "Ursäkta, din fasta anslutning avbröts. Så vi har"
 #~ msgid "Offline"
-#~ msgstr "離線"
+#~ msgstr "Frånkopplingsläge"
 #~ msgid "No active connection."
-#~ msgstr "沒有有效的連接"
+#~ msgstr "Ingen nätverksanslutning finns tillgänglig."
 #~ msgid "Online"
-#~ msgstr "在線"
+#~ msgstr "Online"
 #~ msgid "Now online and connected to %s."
-#~ msgstr "現在在線以及連接到 %s 。"
+#~ msgstr "Online och ansluten till %s."
 #~ msgid "Connecting"
-#~ msgstr "正在連接"
+#~ msgstr "Ansluter"
 #~ msgid "Passphrase required"
-#~ msgstr "密語必要"
+#~ msgstr "Lösenord krävs"
 #~ msgid "<b><big>Network Requires a Password</big></b>"
-#~ msgstr "<b><big>網絡需要輸入密碼</big></b>"
+#~ msgstr "<b><big>Nätverket kräver ett lösenord</big></b>"
 #~ msgid "Please enter the password for this network:"
-#~ msgstr "請輸入這個網絡的密碼："
+#~ msgstr "Ange lösenordet för detta nätverk:"
 
