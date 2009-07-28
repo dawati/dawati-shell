@@ -62,20 +62,27 @@ _item_display_name_changed_cb (AnerleyItem *item,
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (userdata);
 
-  if (anerley_item_get_first_name (priv->item))
+  /* If first and last present then set as first and secondary, otherwise if
+   * just first then put that in primary or if just last then put that in
+   * primary. Last will always be set to something.
+   */
+  if (anerley_item_get_first_name (priv->item) &&
+      anerley_item_get_last_name (priv->item))
   {
     nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
                          anerley_item_get_first_name (priv->item));
-  } else {
-    nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
-                         "");
-  }
-
-  if (anerley_item_get_last_name (priv->item))
-  {
     nbtk_label_set_text (NBTK_LABEL (priv->secondary_label),
                          anerley_item_get_last_name (priv->item));
   } else {
+    if (anerley_item_get_first_name (priv->item))
+    {
+      nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
+                           anerley_item_get_first_name (priv->item));
+    } else {
+      nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
+                           anerley_item_get_last_name (priv->item));
+    }
+
     nbtk_label_set_text (NBTK_LABEL (priv->secondary_label),
                          "");
   }
