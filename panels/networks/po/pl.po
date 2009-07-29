@@ -7,23 +7,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-22 09:20+0000\n"
+"POT-Creation-Date: 2009-07-27 09:31+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
+"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../carrick/carrick-pane.c:307
+#: ../carrick/carrick-pane.c:358
 msgid "New connection settings"
 msgstr "Konfiguracja nowego połączenia"
 
-#: ../carrick/carrick-pane.c:343
+#: ../carrick/carrick-pane.c:394
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -33,140 +32,221 @@ msgstr ""
 "połączyć i jej hasło oraz typ zabezpieczenia\n"
 "jeśli jest wymagane."
 
-#: ../carrick/carrick-pane.c:353
+#: ../carrick/carrick-pane.c:404
 msgid "Network name"
 msgstr "Nazwa sieci"
 
-#: ../carrick/carrick-pane.c:365
+#: ../carrick/carrick-pane.c:416
 msgid "Network security"
 msgstr "Zabezpieczenie sieci"
 
-#: ../carrick/carrick-pane.c:389
+#: ../carrick/carrick-pane.c:426
+msgid "None"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:440
 msgid "Password"
 msgstr "Hasło"
 
-#: ../carrick/carrick-pane.c:404 ../carrick/carrick-service-item.c:945
+#: ../carrick/carrick-pane.c:455
+#: ../carrick/carrick-service-item.c:994
 msgid "Show password"
 msgstr "Pokaż hasło"
 
-#: ../carrick/carrick-pane.c:504
+#: ../carrick/carrick-pane.c:564
 msgid "Sorry, we can't find any networks. "
 msgstr "Niestety nie odnaleźliśmy żadnych sieci. "
 
-#: ../carrick/carrick-pane.c:509
-msgid ""
-"The ConnMan daemon doesn't seem to be running. You may want to try re-"
-"starting your device"
-msgstr ""
-"Prawdopodobnie serwer ConnMan nie jest uruchomiony. Możesz spróbować "
-"zrestartować urządzenie."
+#: ../carrick/carrick-pane.c:569
+msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
+msgstr "Prawdopodobnie serwer ConnMan nie jest uruchomiony. Możesz spróbować zrestartować urządzenie."
 
-#. "Możesz spróbować przejść do trybu pracy z połączeniem"
-#: ../carrick/carrick-pane.c:515
+#: ../carrick/carrick-pane.c:575
 msgid "You could try disabling Offline mode"
-msgstr "Możesz spróbować wyjść z trybu pracy Offline"
+msgstr "Możesz spróbować wyłączyć tryb offline"
 
-#: ../carrick/carrick-pane.c:524
+#: ../carrick/carrick-pane.c:584
 msgid "You could try turning on "
 msgstr "Możesz spróbować włączyć "
 
-#: ../carrick/carrick-pane.c:528 ../carrick/carrick-pane.c:964
+#: ../carrick/carrick-pane.c:588
+#: ../carrick/carrick-pane.c:1205
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:534 ../carrick/carrick-pane.c:549
+#: ../carrick/carrick-pane.c:594
+#: ../carrick/carrick-pane.c:609
 msgid ", "
 msgstr ", "
 
-#: ../carrick/carrick-pane.c:536 ../carrick/carrick-pane.c:1058
+#: ../carrick/carrick-pane.c:596
+#: ../carrick/carrick-pane.c:1299
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:542
+#: ../carrick/carrick-pane.c:602
 msgid " and "
 msgstr " i "
 
-#: ../carrick/carrick-pane.c:544 ../carrick/carrick-pane.c:1027
+#: ../carrick/carrick-pane.c:604
+#: ../carrick/carrick-pane.c:1268
 msgid "3G"
 msgstr "3G"
 
 # Possibly leave as "Ethernet"? "Kablowe"?
-#: ../carrick/carrick-pane.c:551
+#: ../carrick/carrick-pane.c:611
 msgid "Ethernet"
-msgstr "Sieć Lokalną"
+msgstr "sieć lokalną"
 
-#: ../carrick/carrick-pane.c:559
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-pane.c:619
+#: ../carrick/carrick-pane.c:735
 msgid "Sorry, we can't find any networks"
 msgstr "Niestety nie odnaleźliśmy żadnej sieci"
 
-#: ../carrick/carrick-pane.c:884
+#.
+#. * Hint to display when we detect that the connection manager
+#. * is dead.  Ideally the system auto-restarts connman so the
+#. * user will not see this, but this is what to show if all
+#. * available recovery measures fail.
+#.
+#: ../carrick/carrick-pane.c:654
+#, fuzzy
+msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
+msgstr "Prawdopodobnie serwer ConnMan nie jest uruchomiony. Możesz spróbować zrestartować urządzenie."
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:665
+#, fuzzy
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Możesz spróbować wyjść z trybu pracy Offline"
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:680
+#, fuzzy
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr "Niestety nie odnaleźliśmy żadnych sieci. "
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:691
+#, fuzzy
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr "Niestety nie odnaleźliśmy żadnych sieci. "
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:702
+#, fuzzy
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr "Niestety nie odnaleźliśmy żadnych sieci. "
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:712
+#, fuzzy
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr "Niestety nie odnaleźliśmy żadnych sieci. "
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-pane.c:723
+#, fuzzy
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr "Niestety nie odnaleźliśmy żadnych sieci. "
+
+#: ../carrick/carrick-pane.c:1125
 msgid "Networks"
 msgstr "Sieci"
 
-#: ../carrick/carrick-pane.c:937
+#: ../carrick/carrick-pane.c:1178
 msgid "Add new connection"
 msgstr "Dodaj połączenie"
 
-#: ../carrick/carrick-pane.c:996 ../carrick/carrick-service-item.c:211
+#: ../carrick/carrick-pane.c:1237
+#: ../carrick/carrick-service-item.c:218
 msgid "Wired"
 msgstr "Przewodowa"
 
 # "Tryb bez połączenia"?
-#: ../carrick/carrick-pane.c:1101
+#: ../carrick/carrick-pane.c:1342
 msgid "Offline mode"
 msgstr "Tryb offline"
 
-#: ../carrick/carrick-pane.c:1126
+#: ../carrick/carrick-pane.c:1367
 msgid "This will disable all your connections"
 msgstr "Wszystkie połączenia zostaną wyłączone"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#: ../carrick/carrick-service-item.c:170
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
-msgstr "Szyfrowanie %s"
+msgstr "%s zaszyfrowana"
 
-#: ../carrick/carrick-service-item.c:242
+#: ../carrick/carrick-service-item.c:249
 msgid "Disconnect"
 msgstr "Rozłącz"
 
-#: ../carrick/carrick-service-item.c:245
+#: ../carrick/carrick-service-item.c:252
 msgid "Connected"
 msgstr "Połączono"
 
-#: ../carrick/carrick-service-item.c:250
+#: ../carrick/carrick-service-item.c:257
 #, c-format
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ../carrick/carrick-service-item.c:253
+#: ../carrick/carrick-service-item.c:260
 msgid "Configuring"
 msgstr "Konfigurowanie"
 
-#: ../carrick/carrick-service-item.c:260 ../carrick/carrick-service-item.c:268
-#: ../carrick/carrick-service-item.c:934
+#: ../carrick/carrick-service-item.c:267
+#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:983
 msgid "Connect"
 msgstr "Połącz"
 
-#: ../carrick/carrick-service-item.c:271
+#: ../carrick/carrick-service-item.c:278
 msgid "Connection failed"
 msgstr "Połączenie nie powiodło się"
 
-#: ../carrick/carrick-service-item.c:276 ../carrick/carrick-service-item.c:279
+#: ../carrick/carrick-service-item.c:283
+#: ../carrick/carrick-service-item.c:286
 #, c-format
 msgid "Disconnecting"
 msgstr "Rozłączanie"
 
-#: ../carrick/carrick-service-item.c:327
+#: ../carrick/carrick-service-item.c:334
 msgid "Type password here"
 msgstr "Wpisz hasło"
 
-#: ../carrick/carrick-service-item.c:389
+#: ../carrick/carrick-service-item.c:397
 msgid "Really remove?"
 msgstr "Na pewno usunąć?"
 
-#: ../carrick/carrick-service-item.c:407
+#: ../carrick/carrick-service-item.c:415
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -181,106 +261,127 @@ msgstr ""
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:890
+#: ../carrick/carrick-service-item.c:939
 msgid "WPA2 encrypted"
 msgstr "Szyfrowana WPA2"
 
-#: ../carrick/carrick-notification-manager.c:100
+#: ../carrick/carrick-notification-manager.c:131
 msgid "Network connected"
 msgstr "Sieć przyłączona"
 
-#: ../carrick/carrick-notification-manager.c:108
+#: ../carrick/carrick-notification-manager.c:139
 #, c-format
 msgid "You're now connected to a wired network"
 msgstr "Nawiązano połączenie z siecią przewodową"
 
-#: ../carrick/carrick-notification-manager.c:138
+#: ../carrick/carrick-notification-manager.c:169
 #, c-format
 msgid "You're now connected to %s, a %s network"
 msgstr "Nawiązano połączenie z %s, siecią %s."
 
-#: ../carrick/carrick-notification-manager.c:144
+#: ../carrick/carrick-notification-manager.c:175
 #, c-format
 msgid "You're now connected to a %s network"
 msgstr "Nawiązano połączenie z siecią %s"
 
-#: ../carrick/carrick-notification-manager.c:161
+#: ../carrick/carrick-notification-manager.c:192
 msgid "Network lost"
 msgstr "Utracono sieć"
 
-#: ../carrick/carrick-notification-manager.c:169
+#: ../carrick/carrick-notification-manager.c:200
 #, c-format
 msgid "Sorry, we've lost your wired connection"
 msgstr "Niestety utraciliśmy polączenie z siecią przewodową"
 
-#: ../carrick/carrick-notification-manager.c:173
+#: ../carrick/carrick-notification-manager.c:204
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
 msgstr "Niestety utraciliśmy połączenie %s z %s"
 
-#: ../carrick/carrick-notification-manager.c:179
+#: ../carrick/carrick-notification-manager.c:210
 #, c-format
 msgid "Sorry, we've lost your %s connection"
 msgstr "Niestety utraciliśmy połączenie %s"
 
-#: ../carrick/carrick-notification-manager.c:196
+#: ../carrick/carrick-notification-manager.c:227
+#: ../carrick/carrick-notification-manager.c:313
 msgid "Network changed"
 msgstr "Sieć zmieniona"
 
-#: ../carrick/carrick-notification-manager.c:204
-msgid "Sorry, your wired connection was lost. So we've "
-msgstr "Niestety Twoje połączenie zostało przerwane "
-
-#: ../carrick/carrick-notification-manager.c:208
+#: ../carrick/carrick-notification-manager.c:235
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've "
 msgstr "Niestety Twoje połączenie z %s zostało przerwane "
 
-#: ../carrick/carrick-notification-manager.c:213
+#: ../carrick/carrick-notification-manager.c:240
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've "
-msgstr "Niestety twoje połączenie %s zostało przerwane "
+msgstr "Niestety Twoje połączenie %s zostało przerwane "
 
-#: ../carrick/carrick-notification-manager.c:219
+#: ../carrick/carrick-notification-manager.c:246
 msgid "connected you to a wired network"
 msgstr "i połączyliśmy się przez sieć przewodową"
 
-#: ../carrick/carrick-notification-manager.c:224
+#: ../carrick/carrick-notification-manager.c:251
 #, c-format
 msgid "connected you to %s, a %s network"
 msgstr "i połączyliśmy się z %s - siecią %s"
 
-#: ../carrick/carrick-notification-manager.c:230
+#: ../carrick/carrick-notification-manager.c:257
 #, c-format
 msgid "connected you to a %s network"
 msgstr "i połączyliśmy się z siecią %s"
 
+#: ../carrick/carrick-notification-manager.c:321
+#, fuzzy, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Niestety Twoje połączenie z %s zostało przerwane "
+
+#: ../carrick/carrick-notification-manager.c:328
+#, fuzzy, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "Niestety Twoje połączenie z %s zostało przerwane "
+
+#: ../carrick/carrick-notification-manager.c:336
+#, fuzzy, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Niestety Twoje połączenie z %s zostało przerwane "
+
+#: ../carrick/carrick-notification-manager.c:346
+#, fuzzy, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Niestety twoje połączenie %s zostało przerwane "
+
+#: ../carrick/carrick-notification-manager.c:353
+#, fuzzy, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "Niestety twoje połączenie %s zostało przerwane "
+
+#: ../carrick/carrick-notification-manager.c:362
+#, fuzzy, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Niestety twoje połączenie %s zostało przerwane "
+
+#~ msgid "Sorry, your wired connection was lost. So we've "
+#~ msgstr "Niestety Twoje połączenie zostało przerwane "
 #~ msgid "Bluetooth"
 #~ msgstr "Bluetooth"
-
 #~ msgid "Abort"
 #~ msgstr "Anuluj"
-
 #~ msgid "Offline"
 #~ msgstr "Niepołączony"
-
 #~ msgid "No active connection."
 #~ msgstr "Brak aktywnego połączenia."
-
 #~ msgid "Online"
 #~ msgstr "Połączony"
-
 #~ msgid "Now online and connected to %s."
 #~ msgstr "Ustanowiono połączenie z %s."
-
 #~ msgid "Connecting"
 #~ msgstr "Łączenie"
-
 #~ msgid "Passphrase required"
-#~ msgstr "Potrzebne hasło"
-
+#~ msgstr "Wymagane hasło"
 #~ msgid "<b><big>Network Requires a Password</big></b>"
 #~ msgstr "<b><big>Sieć wymaga hasła</big></b>"
-
 #~ msgid "Please enter the password for this network:"
 #~ msgstr "Wpisz hasło dla tej sieci:"
+
