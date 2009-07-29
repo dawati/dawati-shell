@@ -23,7 +23,6 @@
 #include <gio/gdesktopappinfo.h>
 
 #include "penge-app-tile.h"
-#include "penge-app-bookmark-manager.h"
 #include "penge-utils.h"
 
 G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
