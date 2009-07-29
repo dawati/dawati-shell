@@ -25,6 +25,8 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 
+#include <moblin-panel/mpl-utils.h>
+
 #include "mnb-web-status-entry.h"
 #include "mnb-status-marshal.h"
 
@@ -71,100 +73,6 @@ enum
 static guint entry_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (MnbWebStatusEntry, mnb_web_status_entry, NBTK_TYPE_WIDGET);
-
-static gchar *
-penge_utils_format_time (GTimeVal *time_)
-{
-  GTimeVal now;
-  struct tm tm_mtime;
-  gchar *retval = NULL;
-  GDate d1, d2;
-  gint secs_diff, mins_diff, hours_diff, days_diff, months_diff, years_diff;
-
-  g_return_val_if_fail (time_->tv_usec >= 0 && time_->tv_usec < G_USEC_PER_SEC, NULL);
-
-  g_get_current_time (&now);
-
-#ifdef HAVE_LOCALTIME_R
-  localtime_r ((time_t *) &(time_->tv_sec), &tm_mtime);
-#else
-  {
-    struct tm *ptm = localtime ((time_t *) &(time_->tv_sec));
-
-    if (!ptm)
-      {
-        g_warning ("ptm != NULL failed");
-        return NULL;
-      }
-    else
-      memcpy ((void *) &tm_mtime, (void *) ptm, sizeof (struct tm));
-  }
-#endif /* HAVE_LOCALTIME_R */
-
-  secs_diff = now.tv_sec - time_->tv_sec;
-  if (secs_diff < 60)
-    return g_strdup (_("Less than a minute ago"));
-
-  mins_diff = secs_diff / 60;
-  if (mins_diff < 60)
-    return g_strdup (_("A few minutes ago"));
-
-  hours_diff = mins_diff / 60;
-  if (hours_diff < 3)
-    return g_strdup (_("A couple of hours ago"));
-
-  g_date_set_time_t (&d1, now.tv_sec);
-  g_date_set_time_t (&d2, time_->tv_sec);
-  days_diff = g_date_get_julian (&d1) - g_date_get_julian (&d2);
-
-  if (days_diff == 0)
-    return g_strdup (_("Earlier today"));
-
-  if (days_diff == 1)
-    return g_strdup (_("Yesterday"));
-
-  if (days_diff < 7)
-    {
-      const gchar *format = NULL;
-      gchar *locale_format = NULL;
-      gchar buf[256];
-
-      format = _("On %A"); /* day of the week */
-      locale_format = g_locale_from_utf8 (format, -1, NULL, NULL, NULL);
-
-      if (strftime (buf, sizeof (buf), locale_format, &tm_mtime) != 0)
-        retval = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL);
-      else
-        retval = g_strdup (_("Unknown"));
-
-      g_free (locale_format);
-      return retval;
-    }
-
-  if (days_diff < 14)
-    return g_strdup (_("Last week"));
-
-  if (days_diff < 21)
-    return g_strdup (_("A couple of weeks ago"));
-
-  months_diff = g_date_get_month (&d1) - g_date_get_month (&d2);
-  years_diff = g_date_get_year (&d1) - g_date_get_year (&d2);
-
-  if (years_diff == 0 && months_diff == 0)
-    return g_strdup (_("This month"));
-
-  if ((years_diff == 0 && months_diff == 1) ||
-      (years_diff == 1 && months_diff == -11)) /* Now Jan., last used in Dec. */
-    return g_strdup (_("Last month"));
-
-  if (years_diff == 0)
-    return g_strdup (_("This year"));
-
-  if (years_diff == 1)
-    return g_strdup (_("Last year"));
-
-  return g_strdup (_("Ages ago"));
-}
 
 static void
 on_cancel_clicked (NbtkButton     *button,
@@ -881,7 +789,7 @@ mnb_web_status_entry_set_status_text (MnbWebStatusEntry *entry,
   priv->status_text = g_strdup (status_text);
 
   if (status_time)
-    priv->status_time = penge_utils_format_time (status_time);
+    priv->status_time = mpl_utils_format_time (status_time);
 
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
   clutter_text_set_markup (CLUTTER_TEXT (text), priv->status_text);
