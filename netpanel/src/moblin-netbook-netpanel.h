@@ -23,6 +23,7 @@
 
 #include <glib-object.h>
 #include <nbtk/nbtk.h>
+#include <moblin-panel/mpl-panel-clutter.h>
 
 G_BEGIN_DECLS
 
