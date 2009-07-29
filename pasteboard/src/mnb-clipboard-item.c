@@ -25,8 +25,6 @@
 #include <string.h>
 #include <glib/gi18n.h>
 
-#include <penge/penge-utils.h>
-
 #include "mnb-clipboard-item.h"
 #include "mnb-pasteboard-marshal.h"
 
