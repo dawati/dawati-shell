@@ -34,8 +34,6 @@
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 #include <gmenu-tree.h>
 
-#include <penge/penge-utils.h>
-
 #include "mnb-launcher-tree.h"
 
 #define MNB_LAUNCHER_TREE_CACHE_FILE "moblin-launcher-cache"
