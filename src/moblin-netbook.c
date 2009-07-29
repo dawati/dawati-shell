@@ -1126,8 +1126,14 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
        * texture that the MutterWindow contains unnecessarily, but then the fake
        * desktop window we use is only 1x1 px.
        */
-      clutter_container_add_actor (CLUTTER_CONTAINER (actor), priv->desktop_tex);
-      clutter_actor_show (priv->desktop_tex);
+      ClutterActor *bg_clone;
+      gfloat width, height;
+
+      clutter_actor_get_size (priv->desktop_tex, &width, &height);
+      bg_clone = clutter_clone_new (priv->desktop_tex);
+      clutter_actor_set_size (bg_clone, width, height);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (actor), bg_clone);
 
       mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
       return;
@@ -1747,7 +1753,6 @@ setup_desktop_background (MutterPlugin *plugin)
     }
   else
     {
-      ClutterActor *bg_clone;
       ClutterActor *stage = mutter_get_stage_for_screen (screen);
 
       clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
@@ -1758,11 +1763,9 @@ setup_desktop_background (MutterPlugin *plugin)
                     "repeat-y", TRUE,
                     NULL);
 #endif
-
-      bg_clone = clutter_clone_new (priv->desktop_tex);
-      clutter_actor_set_size (bg_clone, screen_width, screen_height);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), bg_clone);
-      clutter_actor_lower_bottom (bg_clone);
+      clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), priv->desktop_tex);
+      clutter_actor_lower_bottom (priv->desktop_tex);
     }
 
 }
