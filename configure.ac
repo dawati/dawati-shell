@@ -147,7 +147,7 @@ AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 
 # Applications panel
 PKG_CHECK_MODULES(APPLICATIONS,
-                  clutter-x11-0.9
+                  clutter-x11-1.0
                   gdk-x11-2.0
                   gio-unix-2.0
                   gtk+-2.0
@@ -187,8 +187,8 @@ AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
 
 # Pasteboard panel
 PKG_CHECK_MODULES(PASTEBOARD,
-                  clutter-x11-0.9
-                  clutter-0.9
+                  clutter-x11-1.0
+                  clutter-1.0
                   gtk+-2.0
                   nbtk-1.0 >= 0.15.1)
 
@@ -210,7 +210,7 @@ AS_IF([test "x$enable_people" = "xyes"],
       [
         AC_DEFINE(WITH_PEOPLE, [1], [Defined when building the people panel])
 
-	PKG_CHECK_MODULES(PEOPLE, anerley gtk+-2.0 clutter-x11-0.9 gio-2.0 gio-unix-2.0)
+	PKG_CHECK_MODULES(PEOPLE, anerley gtk+-2.0 clutter-x11-1.0 gio-2.0 gio-unix-2.0)
 
 PEOPLE_CFLAGS="${PEOPLE_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
 AC_SUBST([PEOPLE_CFLAGS])
@@ -233,7 +233,7 @@ AS_IF([test "x$enable_status" = "xyes"],
       [
         AC_DEFINE(WITH_STATUS, [1], [Defined when building the status panel])
 
-        PKG_CHECK_MODULES(STATUS, dbus-glib-1 clutter-x11-0.9 libmissioncontrol mojito-client nbtk-1.0)
+        PKG_CHECK_MODULES(STATUS, dbus-glib-1 clutter-x11-1.0 libmissioncontrol mojito-client nbtk-1.0)
 
         AC_SUBST(STATUS_CFLAGS)
         AC_SUBST(STATUS_LIBS)
