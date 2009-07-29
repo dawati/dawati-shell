@@ -192,13 +192,11 @@ PKG_CHECK_MODULES(PASTEBOARD,
                   gtk+-2.0
                   nbtk-1.0 >= 0.15.1)
 
-PASTEBOARD_CFLAGS="${PASTEBOARD_CFLAGS} ${PENGE_CFLAGS} "\
-'-I$(top_srcdir)/libmoblin-panel '\
-'-I$(top_srcdir)/penge '
+PASTEBOARD_CFLAGS="${PASTEBOARD_CFLAGS} "\
+'-I$(top_srcdir)/libmoblin-panel '
 AC_SUBST([PASTEBOARD_CFLAGS])
-PASTEBOARD_LIBS="${PASTEBOARD_LIBS} ${PENGE_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '\
-'$(top_builddir)/penge/penge/libpenge.la'
+PASTEBOARD_LIBS="${PASTEBOARD_LIBS} "\
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '
 AC_SUBST([PASTEBOARD_LIBS])
 
 # People panel
