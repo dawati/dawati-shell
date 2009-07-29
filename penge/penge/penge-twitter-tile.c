@@ -21,6 +21,7 @@
 #include <mojito-client/mojito-item.h>
 #include <nbtk/nbtk.h>
 #include <gio/gio.h>
+#include <moblin-panel/mpl-utils.h>
 
 #include "penge-twitter-tile.h"
 #include "penge-utils.h"
@@ -129,7 +130,7 @@ penge_twitter_tile_constructed (GObject *object)
   authoricon_path = g_hash_table_lookup (priv->item->props,
                                          "authoricon");
 
-  date = penge_utils_format_time (&(priv->item->date));
+  date = mpl_utils_format_time (&(priv->item->date));
 
   g_object_set (tile,
                 "primary-text",

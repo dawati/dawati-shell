@@ -20,6 +20,8 @@
 
 #include <gio/gdesktopappinfo.h>
 #include <mojito-client/mojito-item.h>
+#include <moblin-panel/mpl-utils.h>
+
 #include "penge-myspace-tile.h"
 #include "penge-utils.h"
 
@@ -117,7 +119,7 @@ penge_myspace_tile_constructed (GObject *object)
   authoricon_path = g_hash_table_lookup (priv->item->props,
                                          "authoricon");
 
-  date = penge_utils_format_time (&(priv->item->date));
+  date = mpl_utils_format_time (&(priv->item->date));
 
   g_object_set (object,
                 "primary-text",

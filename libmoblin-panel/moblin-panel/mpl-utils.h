@@ -17,18 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <glib.h>
-#include <clutter/clutter.h>
-#include <moblin-panel/mpl-panel-client.h>
 
-void penge_utils_load_stylesheet (void);
-void penge_utils_signal_activated (ClutterActor *actor);
-
-MplPanelClient *penge_utils_get_panel_client (ClutterActor *actor);
-gboolean penge_utils_launch_for_uri (ClutterActor *actor,
-                                     const gchar  *uri);
-gboolean penge_utils_launch_for_desktop_file (ClutterActor *actor,
-                                              const gchar  *path);
-gboolean penge_utils_launch_by_command_line (ClutterActor *actor,
-                                             const gchar  *command_line);
+gchar *mpl_utils_format_time (GTimeVal *time_);
+gchar *mpl_utils_get_thumbnail_path (const gchar *uri);

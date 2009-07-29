@@ -22,6 +22,7 @@
 #include <gio/gio.h>
 #include <glib/gi18n.h>
 #include <gconf/gconf-client.h>
+#include <moblin-panel/mpl-utils.h>
 
 #include "penge-recent-files-pane.h"
 #include "penge-utils.h"
@@ -346,7 +347,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
        * We need to check for a thumbnail image, and if we have one create the
        * PengeRecentFileTile actor else skip over it
        */
-      thumbnail_path = penge_utils_get_thumbnail_path (uri);
+      thumbnail_path = mpl_utils_get_thumbnail_path (uri);
 
 
       /*

@@ -28,6 +28,7 @@
 #include <unistd.h>
 
 #include <moblin-panel/mpl-entry.h>
+#include <moblin-panel/mpl-utils.h>
 
 #include "moblin-netbook-netpanel.h"
 #include "mnb-netpanel-bar.h"
@@ -604,7 +605,7 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
   NbtkWidget *button, *label;
   gchar *path;
 
-  path = penge_utils_get_thumbnail_path (url);
+  path = mpl_utils_get_thumbnail_path (url);
 
   button = nbtk_button_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (button), "weblink");
