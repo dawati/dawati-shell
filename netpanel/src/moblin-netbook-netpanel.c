@@ -21,7 +21,6 @@
 #include <dbus/dbus-glib.h>
 #include <clutter-mozembed.h>
 #include <mhs/mhs.h>
-#include <penge/penge-utils.h>
 #include <glib/gi18n.h>
 #include <sys/file.h>
 #include <glib/gstdio.h>
