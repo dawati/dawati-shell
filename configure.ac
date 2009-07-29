@@ -65,7 +65,8 @@ AM_GLIB_GNU_GETTEXT
 # Libmoblin-panel
 PKG_CHECK_MODULES(LIBMPL_CLUTTER,
                   dbus-glib-1
-                  nbtk-1.0)
+                  nbtk-1.0
+                  gio-unix-2.0)
 
 LIBMPL_CLUTTER_CFLAGS="${LIBMPL_CLUTTER_CFLAGS} "'-I$(top_srcdir)/src'
 AC_SUBST([LIBMPL_CLUTTER_CFLAGS])
