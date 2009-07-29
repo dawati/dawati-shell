@@ -7,7 +7,8 @@ libmoblin_panel_include_HEADERS = \
 	mpl-panel-client.h \
 	mpl-panel-clutter.h \
 	mpl-panel-common.h \
-	mpl-panel-gtk.h
+	mpl-panel-gtk.h \
+	mpl-app-bookmark-manager.h
 
 libmoblin_panel_clutter_la_CFLAGS = \
 	$(LIBMPL_CLUTTER_CFLAGS) \
@@ -25,6 +26,7 @@ libmoblin_panel_clutter_la_SOURCES = \
 	mpl-entry.c \
 	mpl-panel-client.c \
 	mpl-panel-clutter.c \
+	mpl-app-bookmark-manager.c \
 	$(DBUS_GLUE) \
 	$(DBUS_BINDINGS) \
 	$(MARSHALS)

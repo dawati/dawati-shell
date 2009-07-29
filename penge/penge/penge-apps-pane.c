@@ -22,7 +22,7 @@
 
 #include "penge-apps-pane.h"
 #include "penge-app-tile.h"
-#include "penge-app-bookmark-manager.h"
+#include <moblin-panel/mpl-app-bookmark-manager.h>
 
 G_DEFINE_TYPE (PengeAppsPane, penge_apps_pane, NBTK_TYPE_TABLE)
 
@@ -32,7 +32,7 @@ G_DEFINE_TYPE (PengeAppsPane, penge_apps_pane, NBTK_TYPE_TABLE)
 typedef struct _PengeAppsPanePrivate PengeAppsPanePrivate;
 
 struct _PengeAppsPanePrivate {
-  PengeAppBookmarkManager *manager;
+  MplAppBookmarkManager *manager;
 
   GHashTable *uris_to_actors;
 };
@@ -88,17 +88,17 @@ penge_apps_pane_class_init (PengeAppsPaneClass *klass)
 }
 
 static void
-_manager_bookmark_added_cb (PengeAppBookmarkManager *manager,
-                            const gchar             *uri,
-                            gpointer                 userdata)
+_manager_bookmark_added_cb (MplAppBookmarkManager *manager,
+                            const gchar           *uri,
+                            gpointer               userdata)
 {
   penge_apps_pane_update ((PengeAppsPane *)userdata);
 }
 
 static void
-_manager_bookmark_removed_cb (PengeAppBookmarkManager *manager,
-                              const gchar             *uri,
-                              gpointer                 userdata)
+_manager_bookmark_removed_cb (MplAppBookmarkManager *manager,
+                              const gchar           *uri,
+                              gpointer               userdata)
 {
   penge_apps_pane_update ((PengeAppsPane *)userdata);
 }
@@ -108,7 +108,7 @@ penge_apps_pane_init (PengeAppsPane *self)
 {
   PengeAppsPanePrivate *priv = GET_PRIVATE (self);
 
-  priv->manager = penge_app_bookmark_manager_get_default ();
+  priv->manager = mpl_app_bookmark_manager_get_default ();
 
   g_signal_connect (priv->manager,
                     "bookmark-added",
@@ -138,7 +138,7 @@ penge_apps_pane_update (PengeAppsPane *pane)
   GError *error = NULL;
   const gchar *uri = NULL;
 
-  bookmarks = penge_app_bookmark_manager_get_bookmarks (priv->manager);
+  bookmarks = mpl_app_bookmark_manager_get_bookmarks (priv->manager);
 
   to_remove = g_hash_table_get_keys (priv->uris_to_actors);
 

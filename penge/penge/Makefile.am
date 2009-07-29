@@ -15,7 +15,6 @@ libpenge_headers = penge-people-pane.h \
 		   penge-utils.h \
 		   penge-magic-texture.h \
 		   penge-view-background.h \
-		   penge-app-bookmark-manager.h \
 		   penge-apps-pane.h \
 		   penge-app-tile.h \
 		   penge-task-tile.h \
@@ -39,7 +38,6 @@ libpenge_la_SOURCES = \
 		      penge-utils.c \
 		      penge-magic-texture.c \
 		      penge-view-background.c \
-		      penge-app-bookmark-manager.c \
 		      penge-apps-pane.c \
 		      penge-app-tile.c \
 		      penge-task-tile.c \

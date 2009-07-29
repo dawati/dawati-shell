@@ -35,7 +35,7 @@
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
 
-#include <penge/penge-app-bookmark-manager.h>
+#include <moblin-panel/mpl-app-bookmark-manager.h>
 #include <moblin-panel/mpl-entry.h>
 
 #include "moblin-netbook-launcher.h"
@@ -177,7 +177,7 @@ G_DEFINE_TYPE (MnbLauncher, mnb_launcher, NBTK_TYPE_BIN);
  */
 struct MnbLauncherPrivate_ {
   GtkIconTheme            *theme;
-  PengeAppBookmarkManager *manager;
+  MplAppBookmarkManager *manager;
   MnbLauncherMonitor      *monitor;
   GHashTable              *expanders;
   GSList                  *launchers;
@@ -305,8 +305,8 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
       uri = g_strdup_printf ("file://%s",
               mnb_launcher_button_get_desktop_file_path (
                 MNB_LAUNCHER_BUTTON (clone)));
-      penge_app_bookmark_manager_add_uri (priv->manager,
-                                          uri);
+      mpl_app_bookmark_manager_add_uri (priv->manager,
+                                        uri);
     }
   else
     {
@@ -314,8 +314,8 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
       uri = g_strdup_printf ("file://%s",
               mnb_launcher_button_get_desktop_file_path (
                 MNB_LAUNCHER_BUTTON (launcher)));
-      penge_app_bookmark_manager_remove_uri (priv->manager,
-                                             uri);
+      mpl_app_bookmark_manager_remove_uri (priv->manager,
+                                           uri);
 
       /* Hide fav apps after last one removed. */
       if (!container_has_children (CLUTTER_CONTAINER (priv->fav_grid)))
@@ -331,7 +331,7 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
     }
 
   g_free (uri);
-  penge_app_bookmark_manager_save (priv->manager);
+  mpl_app_bookmark_manager_save (priv->manager);
 }
 
 static gchar *
@@ -883,7 +883,7 @@ mnb_launcher_fill (MnbLauncher     *self)
   g_object_ref (priv->fav_grid);
 
   have_fav_apps = FALSE;
-  fav_apps = penge_app_bookmark_manager_get_bookmarks (priv->manager);
+  fav_apps = mpl_app_bookmark_manager_get_bookmarks (priv->manager);
   if (fav_apps)
     {
       GList *fav_apps_iter;
@@ -1410,7 +1410,7 @@ _constructor (GType                  gtype,
   priv->theme = gtk_icon_theme_get_default ();
   g_signal_connect (priv->theme, "changed",
                     G_CALLBACK (mnb_launcher_theme_changed_cb), self);
-  priv->manager = penge_app_bookmark_manager_get_default ();
+  priv->manager = mpl_app_bookmark_manager_get_default ();
 
 
   priv->scrolled_vbox = CLUTTER_ACTOR (mnb_launcher_grid_new ());

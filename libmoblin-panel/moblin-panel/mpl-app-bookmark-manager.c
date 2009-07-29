@@ -21,21 +21,21 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
-#include "penge-app-bookmark-manager.h"
+#include "mpl-app-bookmark-manager.h"
 
-G_DEFINE_TYPE (PengeAppBookmarkManager, penge_app_bookmark_manager, G_TYPE_OBJECT)
+G_DEFINE_TYPE (MplAppBookmarkManager, mpl_app_bookmark_manager, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_APP_BOOKMARK_MANAGER, PengeAppBookmarkManagerPrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPL_TYPE_APP_BOOKMARK_MANAGER, MplAppBookmarkManagerPrivate))
 
-typedef struct _PengeAppBookmarkManagerPrivate PengeAppBookmarkManagerPrivate;
+typedef struct _MplAppBookmarkManagerPrivate MplAppBookmarkManagerPrivate;
 
-struct _PengeAppBookmarkManagerPrivate {
-    gchar *path;
-    GFileMonitor *monitor;
-    guint save_idle_id;
-    GList *uris;
-    GHashTable *monitors_hash;
+struct _MplAppBookmarkManagerPrivate {
+  gchar *path;
+  GFileMonitor *monitor;
+  guint save_idle_id;
+  GList *uris;
+  GHashTable *monitors_hash;
 };
 
 #define APP_BOOKMARK_FILENAME "favourite-apps"
@@ -56,7 +56,7 @@ _bookmark_desktop_file_changed_cb (GFileMonitor      *monitor,
                                    GFileMonitorEvent event,
                                    gpointer          userdata)
 {
-  PengeAppBookmarkManager *self = (PengeAppBookmarkManager *)userdata;
+  MplAppBookmarkManager *self = (MplAppBookmarkManager *)userdata;
   gchar *uri;
 
   /* Only care for removed apps that are bookmarked. */
@@ -64,34 +64,14 @@ _bookmark_desktop_file_changed_cb (GFileMonitor      *monitor,
     return;
 
   uri = g_file_get_uri (file);
-  penge_app_bookmark_manager_remove_uri (self, uri);
+  mpl_app_bookmark_manager_remove_uri (self, uri);
   g_free (uri);
 }
 
 static void
-penge_app_bookmark_manager_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
+mpl_app_bookmark_manager_dispose (GObject *object)
 {
-  switch (property_id) {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
-
-static void
-penge_app_bookmark_manager_set_property (GObject *object, guint property_id,
-                              const GValue *value, GParamSpec *pspec)
-{
-  switch (property_id) {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
-
-static void
-penge_app_bookmark_manager_dispose (GObject *object)
-{
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (object);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (object);
   GList *l;
 
   if (priv->monitor)
@@ -109,11 +89,10 @@ penge_app_bookmark_manager_dispose (GObject *object)
 
   if (priv->uris)
   {
-
     if (priv->save_idle_id > 0)
     {
       g_source_remove (priv->save_idle_id);
-      penge_app_bookmark_manager_save ((PengeAppBookmarkManager *)object);
+      mpl_app_bookmark_manager_save ((MplAppBookmarkManager *)object);
     }
 
     for (l = priv->uris; l; l = g_list_delete_link (l, l))
@@ -124,36 +103,34 @@ penge_app_bookmark_manager_dispose (GObject *object)
     priv->uris = NULL;
   }
 
-  G_OBJECT_CLASS (penge_app_bookmark_manager_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mpl_app_bookmark_manager_parent_class)->dispose (object);
 }
 
 static void
-penge_app_bookmark_manager_finalize (GObject *object)
+mpl_app_bookmark_manager_finalize (GObject *object)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (object);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (object);
 
   g_free (priv->path);
 
-  G_OBJECT_CLASS (penge_app_bookmark_manager_parent_class)->finalize (object);
+  G_OBJECT_CLASS (mpl_app_bookmark_manager_parent_class)->finalize (object);
 }
 
 static void
-penge_app_bookmark_manager_class_init (PengeAppBookmarkManagerClass *klass)
+mpl_app_bookmark_manager_class_init (MplAppBookmarkManagerClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (PengeAppBookmarkManagerPrivate));
+  g_type_class_add_private (klass, sizeof (MplAppBookmarkManagerPrivate));
 
-  object_class->get_property = penge_app_bookmark_manager_get_property;
-  object_class->set_property = penge_app_bookmark_manager_set_property;
-  object_class->dispose = penge_app_bookmark_manager_dispose;
-  object_class->finalize = penge_app_bookmark_manager_finalize;
+  object_class->dispose = mpl_app_bookmark_manager_dispose;
+  object_class->finalize = mpl_app_bookmark_manager_finalize;
 
   signals[BOOKMARK_ADDED_SIGNAL] = 
     g_signal_new ("bookmark-added",
-                  PENGE_TYPE_APP_BOOKMARK_MANAGER,
+                  MPL_TYPE_APP_BOOKMARK_MANAGER,
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (PengeAppBookmarkManagerClass, bookmark_added),
+                  G_STRUCT_OFFSET (MplAppBookmarkManagerClass, bookmark_added),
                   NULL,
                   NULL,
                   g_cclosure_marshal_VOID__STRING,
@@ -163,9 +140,9 @@ penge_app_bookmark_manager_class_init (PengeAppBookmarkManagerClass *klass)
 
   signals[BOOKMARK_REMOVED_SIGNAL] =
     g_signal_new ("bookmark-removed",
-                  PENGE_TYPE_APP_BOOKMARK_MANAGER,
+                  MPL_TYPE_APP_BOOKMARK_MANAGER,
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (PengeAppBookmarkManagerClass, bookmark_removed),
+                  G_STRUCT_OFFSET (MplAppBookmarkManagerClass, bookmark_removed),
                   NULL,
                   NULL,
                   g_cclosure_marshal_VOID__STRING,
@@ -175,10 +152,10 @@ penge_app_bookmark_manager_class_init (PengeAppBookmarkManagerClass *klass)
 }
 
 static void
-_setup_file_monitor (PengeAppBookmarkManager *manager,
+_setup_file_monitor (MplAppBookmarkManager *manager,
                      gchar                   *uri)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
   GFile *file;
   GFileMonitor *monitor;
   GError *error = NULL;
@@ -204,9 +181,9 @@ _setup_file_monitor (PengeAppBookmarkManager *manager,
   g_object_unref (file);
 }
 static void
-penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
+mpl_app_bookmark_manager_load (MplAppBookmarkManager *manager)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
   GError *error = NULL;
   gchar **uris;
   gchar *contents;
@@ -239,9 +216,9 @@ penge_app_bookmark_manager_load (PengeAppBookmarkManager *manager)
 }
 
 void
-penge_app_bookmark_manager_save (PengeAppBookmarkManager *manager)
+mpl_app_bookmark_manager_save (MplAppBookmarkManager *manager)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
   gchar *contents;
   gchar **uris;
   gint i = 0;
@@ -277,19 +254,19 @@ penge_app_bookmark_manager_save (PengeAppBookmarkManager *manager)
 static gboolean
 _save_idle_cb (gpointer userdata)
 {
-  PengeAppBookmarkManager *manager = (PengeAppBookmarkManager *)userdata;
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  MplAppBookmarkManager *manager = (MplAppBookmarkManager *)userdata;
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
 
-  penge_app_bookmark_manager_save (manager);
+  mpl_app_bookmark_manager_save (manager);
   priv->save_idle_id = 0;
 
   return FALSE;
 }
 
 static void
-penge_app_bookmark_manager_idle_save (PengeAppBookmarkManager *manager)
+mpl_app_bookmark_manager_idle_save (MplAppBookmarkManager *manager)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
 
   if (priv->save_idle_id == 0)
   {
@@ -304,8 +281,8 @@ _file_monitor_changed_cb (GFileMonitor      *monitor,
                           GFileMonitorEvent event,
                           gpointer          userdata)
 {
-  PengeAppBookmarkManager *self = (PengeAppBookmarkManager *)userdata;
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (self);
+  MplAppBookmarkManager *self = (MplAppBookmarkManager *)userdata;
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (self);
   GList *l;
   gchar *uri;
 
@@ -318,7 +295,7 @@ _file_monitor_changed_cb (GFileMonitor      *monitor,
   }
   priv->uris = NULL;
 
-  penge_app_bookmark_manager_load (self);
+  mpl_app_bookmark_manager_load (self);
 
   for (l = priv->uris; l; l = l->next)
   {
@@ -327,9 +304,9 @@ _file_monitor_changed_cb (GFileMonitor      *monitor,
 }
 
 static void
-penge_app_bookmark_manager_init (PengeAppBookmarkManager *self)
+mpl_app_bookmark_manager_init (MplAppBookmarkManager *self)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (self);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (self);
   GFile *f;
   GError *error = NULL;
 
@@ -363,18 +340,18 @@ penge_app_bookmark_manager_init (PengeAppBookmarkManager *self)
                                                NULL,
                                                g_object_unref);
 
-  penge_app_bookmark_manager_load (self);
+  mpl_app_bookmark_manager_load (self);
 }
 
 
-PengeAppBookmarkManager *
-penge_app_bookmark_manager_get_default (void)
+MplAppBookmarkManager *
+mpl_app_bookmark_manager_get_default (void)
 {
-  static PengeAppBookmarkManager *manager = NULL;
+  static MplAppBookmarkManager *manager = NULL;
 
   if (!manager)
   {
-    manager = g_object_new (PENGE_TYPE_APP_BOOKMARK_MANAGER,
+    manager = g_object_new (MPL_TYPE_APP_BOOKMARK_MANAGER,
                             NULL);
     g_object_add_weak_pointer ((GObject *)manager, (gpointer)&manager);
   }
@@ -383,21 +360,21 @@ penge_app_bookmark_manager_get_default (void)
 }
 
 GList *
-penge_app_bookmark_manager_get_bookmarks (PengeAppBookmarkManager *manager)
+mpl_app_bookmark_manager_get_bookmarks (MplAppBookmarkManager *manager)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
 
   return g_list_copy (priv->uris);
 }
 
 void
-penge_app_bookmark_manager_remove_uri (PengeAppBookmarkManager *manager,
-                                       const gchar             *uri)
+mpl_app_bookmark_manager_remove_uri (MplAppBookmarkManager *manager,
+                                     const gchar           *uri)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
   GList *l;
 
-  g_return_if_fail (PENGE_IS_APP_BOOKMARK_MANAGER (manager));
+  g_return_if_fail (MPL_IS_APP_BOOKMARK_MANAGER (manager));
 
   for (l = priv->uris; l; l = l->next)
   {
@@ -411,18 +388,18 @@ penge_app_bookmark_manager_remove_uri (PengeAppBookmarkManager *manager,
   /* Remove monitor. */
   g_hash_table_remove (priv->monitors_hash, uri);
 
-  penge_app_bookmark_manager_idle_save (manager);
+  mpl_app_bookmark_manager_idle_save (manager);
   g_signal_emit_by_name (manager, "bookmark-removed", uri);
 }
 
 void
-penge_app_bookmark_manager_add_uri (PengeAppBookmarkManager *manager,
-                                    const gchar             *uri_in)
+mpl_app_bookmark_manager_add_uri (MplAppBookmarkManager *manager,
+                                  const gchar           *uri_in)
 {
-  PengeAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
   gchar *uri = NULL;
 
-  g_return_if_fail (PENGE_IS_APP_BOOKMARK_MANAGER (manager));
+  g_return_if_fail (MPL_IS_APP_BOOKMARK_MANAGER (manager));
 
   /* The list takes ownership. */
   uri = g_strdup (uri_in);
@@ -430,7 +407,7 @@ penge_app_bookmark_manager_add_uri (PengeAppBookmarkManager *manager,
 
   _setup_file_monitor (manager, uri);
 
-  penge_app_bookmark_manager_idle_save (manager);
+  mpl_app_bookmark_manager_idle_save (manager);
   g_signal_emit_by_name (manager, "bookmark-added", uri);
 }
 
