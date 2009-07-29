@@ -154,13 +154,11 @@ PKG_CHECK_MODULES(APPLICATIONS,
                   libgnome-menu
                   nbtk-1.0)
 
-APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} ${PENGE_CFLAGS} "\
-'-I$(top_srcdir)/libmoblin-panel '\
-'-I$(top_srcdir)/penge '
+APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} "\
+'-I$(top_srcdir)/libmoblin-panel '
 AC_SUBST([APPLICATIONS_CFLAGS])
-APPLICATIONS_LIBS="${APPLICATIONS_LIBS} ${PENGE_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '\
-'$(top_builddir)/penge/penge/libpenge.la'
+APPLICATIONS_LIBS="${APPLICATIONS_LIBS} "\
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '
 AC_SUBST([APPLICATIONS_LIBS])
 
 # Netpanel
