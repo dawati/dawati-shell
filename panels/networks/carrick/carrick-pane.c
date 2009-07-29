@@ -478,7 +478,15 @@ _new_connection_cb (GtkButton *button,
     if (network == NULL)
       return;
 
-    if (g_strcmp0 (security, "WPA2") == 0)
+    if (gtk_combo_box_get_active (GTK_COMBO_BOX (security_combo)) == 0)
+    {
+      /* The 0th item is the None entry. Because we have marked that string
+       * for translation we should convert it to a form that ConnMan recognises
+       * if it has been selected */
+      g_free (security);
+      security = g_strdup ("none");
+    }
+    else if(g_strcmp0 (security, "WPA2") == 0)
     {
       g_free (security);
       security = g_strdup ("rsn");
