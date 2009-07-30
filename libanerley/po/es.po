@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 09:22+0000\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -17,24 +17,22 @@ msgstr ""
 # Copyright (C) 2003 Free Software Foundation
 # This file is distributed under the same license as the Gossip package.
 # Jorge GonzÃ¡lez <jorgegonz@svn.gnome.org>, 2007, 200, 2009.
-#: ../anerley/anerley-tile.c:201
+#: ../anerley/anerley-tile.c:208
 msgid "Available"
 msgstr "Disponible"
 
-#: ../anerley/anerley-tile.c:204
+#: ../anerley/anerley-tile.c:211
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../anerley/anerley-tile.c:207
-#: ../anerley/anerley-tile.c:210
+#: ../anerley/anerley-tile.c:214 ../anerley/anerley-tile.c:217
 msgid "Away"
 msgstr "Ausente"
 
-#: ../anerley/anerley-tile.c:213
+#: ../anerley/anerley-tile.c:220
 msgid "Offline"
 msgstr "Desconectado"
 
-#: ../anerley/anerley-econtact-item.c:290
+#: ../anerley/anerley-econtact-item.c:312
 msgid "Unnamed"
 msgstr "Sin nombre"
-
