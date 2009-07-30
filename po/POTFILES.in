@@ -10,6 +10,7 @@ ahoghill/ahoghill/ahoghill-playlist-np.c
 ahoghill/src/moblin-panel-media.c
 applications/src/moblin-netbook-launcher.c
 applications/src/moblin-panel-applications.c
+libmoblin-panel/moblin-panel/mpl-utils.c
 myzone/src/moblin-panel-myzone.c
 netpanel/src/moblin-netbook-netpanel.c
 netpanel/src/moblin-panel-internet.c
