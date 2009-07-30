@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
+"POT-Creation-Date: 2009-07-29 09:20+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
@@ -20,8 +20,7 @@ msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b>小時"
 msgstr[1] "<b>%d</b>小時"
 
-#: ../dalston/dalston-power-applet.c:166
-#: ../dalston/dalston-power-applet.c:179
+#: ../dalston/dalston-power-applet.c:166 ../dalston/dalston-power-applet.c:179
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
@@ -33,7 +32,9 @@ msgid "Running low on battery"
 msgstr "電池不足"
 
 #: ../dalston/dalston-power-applet.c:200
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
 msgstr "我們發現你的電池量不足。如果可以的話，你最好插入電源來充電。"
 
 #: ../dalston/dalston-power-applet.c:202
@@ -41,7 +42,9 @@ msgid "Getting close to empty"
 msgstr "接近清空"
 
 #: ../dalston/dalston-power-applet.c:202
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
 msgstr "你的電池量不足。建議你最好儲存你所有的工作，並儘快插入電源。"
 
 #: ../dalston/dalston-power-applet.c:204
@@ -49,8 +52,12 @@ msgid "Danger!"
 msgstr "危險！"
 
 #: ../dalston/dalston-power-applet.c:204
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "很抱歉，你電腦的電池量不足。我們現在必須關閉電腦。請儲存你所有的工作，並希望再次看到你。"
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"很抱歉，你電腦的電池量不足。我們現在必須關閉電腦。請儲存你所有的工作，並希望"
+"再次看到你。"
 
 #: ../dalston/dalston-power-applet.c:340
 msgid "Sorry, it looks like your battery is broken."
@@ -177,4 +184,3 @@ msgstr "系統音響"
 #: ../libgvc/gvc-mixer-control.c:1512
 msgid "GNOME Volume Control"
 msgstr "GNOME 音量控制"
-
