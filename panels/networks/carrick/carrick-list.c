@@ -272,7 +272,7 @@ carrick_list_drag_end (GtkWidget      *widget,
 
   /* insert the widget into the list */
   gtk_box_pack_start (GTK_BOX (priv->box), widget,
-                      FALSE, FALSE,  0);
+                      FALSE, FALSE,  2);
   gtk_box_reorder_child (GTK_BOX (priv->box),
                          widget,
                          priv->drop_position);
@@ -695,7 +695,7 @@ carrick_list_constructor (GType                  gtype,
   gtk_misc_set_padding (GTK_MISC (priv->fallback), 0, 12);
   gtk_widget_show (priv->fallback);
   gtk_box_pack_start (GTK_BOX (box), priv->fallback,
-                      FALSE, FALSE,  0);
+                      FALSE, FALSE,  2);
 
   priv->box = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (box),
