@@ -206,6 +206,17 @@ carrick_icon_factory_get_state_for_service (CmService *service)
         icon_state = ICON_3G_WEAK;
       }
     }
+    else if (g_strcmp0 ("bluetooth", type) == 0)
+    {
+      if (strength > 50)
+      {
+        icon_state = ICON_BLUETOOTH_STRONG;
+      }
+      else
+      {
+        icon_state = ICON_BLUETOOTH_WEAK;
+      }
+    }
   }
 
   return icon_state;
