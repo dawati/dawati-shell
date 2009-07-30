@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Glscht_Wen <wen.hsinx.moh@intel.com>\n"
 "Language-Team: \n"
@@ -43,8 +43,7 @@ msgstr "無"
 msgid "Password"
 msgstr "密碼"
 
-#: ../carrick/carrick-pane.c:455
-#: ../carrick/carrick-service-item.c:994
+#: ../carrick/carrick-pane.c:455 ../carrick/carrick-service-item.c:994
 msgid "Show password"
 msgstr "顯示密碼"
 
@@ -53,7 +52,9 @@ msgid "Sorry, we can't find any networks. "
 msgstr "很抱歉，我們無法找到任何網絡。 "
 
 #: ../carrick/carrick-pane.c:569
-msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
+msgid ""
+"The ConnMan daemon doesn't seem to be running. You may want to try re-"
+"starting your device"
 msgstr "ConnMan daemon 似乎並沒有運行。您可以嘗試重新啟動您的設備"
 
 #: ../carrick/carrick-pane.c:575
@@ -64,18 +65,15 @@ msgstr "您可以嘗試禁止使用離線模式"
 msgid "You could try turning on "
 msgstr "您可以嘗試開機"
 
-#: ../carrick/carrick-pane.c:588
-#: ../carrick/carrick-pane.c:1205
+#: ../carrick/carrick-pane.c:588 ../carrick/carrick-pane.c:1205
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:594
-#: ../carrick/carrick-pane.c:609
+#: ../carrick/carrick-pane.c:594 ../carrick/carrick-pane.c:609
 msgid ", "
 msgstr "，"
 
-#: ../carrick/carrick-pane.c:596
-#: ../carrick/carrick-pane.c:1299
+#: ../carrick/carrick-pane.c:596 ../carrick/carrick-pane.c:1299
 msgid "WiMAX"
 msgstr "WiMAX"
 
@@ -83,8 +81,7 @@ msgstr "WiMAX"
 msgid " and "
 msgstr "和"
 
-#: ../carrick/carrick-pane.c:604
-#: ../carrick/carrick-pane.c:1268
+#: ../carrick/carrick-pane.c:604 ../carrick/carrick-pane.c:1268
 msgid "3G"
 msgstr "3G"
 
@@ -97,8 +94,7 @@ msgstr "乙太網"
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
 #.
-#: ../carrick/carrick-pane.c:619
-#: ../carrick/carrick-pane.c:735
+#: ../carrick/carrick-pane.c:619 ../carrick/carrick-pane.c:735
 msgid "Sorry, we can't find any networks"
 msgstr "很抱歉，我們無法找到任何網絡。 "
 
@@ -109,15 +105,20 @@ msgstr "很抱歉，我們無法找到任何網絡。 "
 #. * available recovery measures fail.
 #.
 #: ../carrick/carrick-pane.c:654
-msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
-msgstr "很抱歉，我們無法找到任何網絡。連接管理員似乎並沒有運行。您可以嘗試重新啟動您的設備。"
+msgid ""
+"Sorry, we can't find any networks. The Connection Manager doesn't seem to be "
+"running. You may want to try re-starting your device."
+msgstr ""
+"很抱歉，我們無法找到任何網絡。連接管理員似乎並沒有運行。您可以嘗試重新啟動您"
+"的設備。"
 
 #.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
 #: ../carrick/carrick-pane.c:665
-msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "很抱歉，我們無法找到任何網絡。您可以嘗試禁止使用離線模式。"
 
 #.
@@ -171,8 +172,7 @@ msgstr "網絡"
 msgid "Add new connection"
 msgstr "添加新的連接"
 
-#: ../carrick/carrick-pane.c:1237
-#: ../carrick/carrick-service-item.c:218
+#: ../carrick/carrick-pane.c:1237 ../carrick/carrick-service-item.c:218
 msgid "Wired"
 msgstr "有線"
 
@@ -208,8 +208,7 @@ msgstr "取消"
 msgid "Configuring"
 msgstr "正在配置"
 
-#: ../carrick/carrick-service-item.c:267
-#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:267 ../carrick/carrick-service-item.c:275
 #: ../carrick/carrick-service-item.c:983
 msgid "Connect"
 msgstr "連結"
@@ -218,8 +217,7 @@ msgstr "連結"
 msgid "Connection failed"
 msgstr "連接失敗"
 
-#: ../carrick/carrick-service-item.c:283
-#: ../carrick/carrick-service-item.c:286
+#: ../carrick/carrick-service-item.c:283 ../carrick/carrick-service-item.c:286
 #, c-format
 msgid "Disconnecting"
 msgstr "斷開"
@@ -290,80 +288,96 @@ msgid "Sorry, we've lost your %s connection"
 msgstr "很抱歉，我們已經失去您的 %s 的連接"
 
 #: ../carrick/carrick-notification-manager.c:227
-#: ../carrick/carrick-notification-manager.c:313
+#: ../carrick/carrick-notification-manager.c:324
 msgid "Network changed"
 msgstr "網路已變更"
 
-#: ../carrick/carrick-notification-manager.c:235
+#: ../carrick/carrick-notification-manager.c:246
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've "
 msgstr "很抱歉，您的連接到 %s 的連接中斷。因此我們"
 
-#: ../carrick/carrick-notification-manager.c:240
+#: ../carrick/carrick-notification-manager.c:251
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've "
 msgstr "很抱歉，您的 %s 有線連接中斷。因此我們"
 
-#: ../carrick/carrick-notification-manager.c:246
+#: ../carrick/carrick-notification-manager.c:257
 msgid "connected you to a wired network"
 msgstr "連接您到有線網絡"
 
-#: ../carrick/carrick-notification-manager.c:251
+#: ../carrick/carrick-notification-manager.c:262
 #, c-format
 msgid "connected you to %s, a %s network"
 msgstr "連接您到 %s，%s 網絡"
 
-#: ../carrick/carrick-notification-manager.c:257
+#: ../carrick/carrick-notification-manager.c:268
 #, c-format
 msgid "connected you to a %s network"
 msgstr "連接您到 %s 網絡"
 
-#: ../carrick/carrick-notification-manager.c:321
+#: ../carrick/carrick-notification-manager.c:332
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
 msgstr "很抱歉，您的連接到 %s 的連接中斷。因此我們連接您到有線網絡。"
 
-#: ../carrick/carrick-notification-manager.c:328
+#: ../carrick/carrick-notification-manager.c:339
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
 msgstr "很抱歉，您的連接到 %s 的連接中斷。因此我們連接您到 %s，%s 網絡"
 
-#: ../carrick/carrick-notification-manager.c:336
+#: ../carrick/carrick-notification-manager.c:347
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr "很抱歉，您的連接到 %s 的連接中斷。因此我們連接您到 %s 網絡 "
 
-#: ../carrick/carrick-notification-manager.c:346
+#: ../carrick/carrick-notification-manager.c:357
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired network"
 msgstr "很抱歉，您的 %s 連接中斷。因此我們連接您到有線網絡。"
 
-#: ../carrick/carrick-notification-manager.c:353
+#: ../carrick/carrick-notification-manager.c:364
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
 msgstr "很抱歉，您的 %s 連接中斷。因此我們連接您到 %s 網絡，%s 網絡"
 
-#: ../carrick/carrick-notification-manager.c:362
+#: ../carrick/carrick-notification-manager.c:373
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "很抱歉，您的 %s 連接中斷。因此我們連接您到 %s 網絡"
 
 #~ msgid "Sorry, your wired connection was lost. So we've "
 #~ msgstr "很抱歉，您的有線連接中斷。因此我們"
+
 #~ msgid "Offline"
 #~ msgstr "離線"
+
 #~ msgid "No active connection."
 #~ msgstr "沒有有效的連接"
+
 #~ msgid "Online"
 #~ msgstr "在線"
+
 #~ msgid "Now online and connected to %s."
 #~ msgstr "現在在線以及連接到 %s 。"
+
 #~ msgid "Connecting"
 #~ msgstr "正在連接"
+
 #~ msgid "Passphrase required"
 #~ msgstr "密語必要"
+
 #~ msgid "<b><big>Network Requires a Password</big></b>"
 #~ msgstr "<b><big>網絡需要輸入密碼</big></b>"
+
 #~ msgid "Please enter the password for this network:"
 #~ msgstr "請輸入這個網絡的密碼："
-
