@@ -225,7 +225,7 @@ _make_welcome_tile ()
 
   label = nbtk_label_new (_("As Moblin is a bit different to other computers, " \
                             "we've put together a couple of bits and pieces to " \
-                            "help you find your way around this Beta Release. " \
+                            "help you find your way around. " \
                             "We hope you enjoy it, The Moblin Team."));
   clutter_actor_set_name ((ClutterActor *)label,
                           "penge-welcome-secondary-text");
