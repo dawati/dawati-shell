@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Glscht_Wen <wen.hsinx.moh@intel.com>\n"
 "Language-Team: \n"
@@ -144,12 +144,12 @@ msgid "Go to %s"
 msgstr "去 %s"
 
 #: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "複製"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "目前選項至剪貼板"
 
@@ -165,11 +165,11 @@ msgstr "剪貼板"
 msgid "You need to copy some text to use Pasteboard"
 msgstr "您必須複製一些文字來使用剪貼板"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "除剪貼板"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "剪貼板"
 
@@ -467,11 +467,11 @@ msgstr "您目前狀態 - 您未上線"
 
 #: ../status/src/moblin-panel-status.c:994
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "要更新?的網路狀態，您必須設定一個網路服務帳戶，提供此帳戶的一方須能支援狀態訊息"
+msgstr "要更新您的網路狀態，您必須設定一個網路服務帳戶，提供此帳戶的一方須能支援狀態訊息"
 
 #: ../status/src/moblin-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr "要更新?的 IM 狀態，您必須要設定一個 IM 帳戶"
+msgstr "要更新您的 IM 狀態，您必須要設定一個 IM 帳戶"
 
 #: ../status/src/moblin-panel-status.c:1118
 msgid "status"
