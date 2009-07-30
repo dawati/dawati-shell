@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: Gonzalo Velasquez <gonzalox.e.velasquez@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -156,12 +156,12 @@ msgid "Go to %s"
 msgstr "Ir a %s"
 
 #: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "Copiar"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "lo seleccionado al borrador"
 
@@ -179,13 +179,13 @@ msgid "You need to copy some text to use Pasteboard"
 msgstr "Debes copiar algún texto para poder pegarlo en el borrador"
 
 # clean the pasteboard
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "Limpiar el borrador"
 
 # <not sure about this. sent question to developers>
 # draft
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "borrador"
 
@@ -195,7 +195,7 @@ msgstr "<b>Citas</b>"
 
 #: ../penge/penge/penge-events-pane.c:208
 msgid "No calendar entries this week"
-msgstr "No hay ninguna entrada en el calendario esta semana"
+msgstr "No tienes citas esta semana"
 
 # the news from your friends and the web services appear here. Activate your accounts!
 #: ../penge/penge/penge-people-pane.c:191
