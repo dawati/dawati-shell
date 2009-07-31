@@ -170,13 +170,6 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
   CmService *service = NULL;
   const GList *services = NULL;
 
-  /* Disconnect this handler in case there's still a lingering
-   * connection. This might have been caused by the service the handler
-   * was connected to disappearing */
-  g_signal_handlers_disconnect_by_func (service,
-                                        _service_updated_cb,
-                                        icon);
-
   if (priv->manager)
   {
     services = cm_manager_get_services (priv->manager);
