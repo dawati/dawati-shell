@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
 "Language-Team: \n"
@@ -80,7 +80,7 @@ msgstr "År %d"
 
 #: ../ahoghill/src/moblin-panel-media.c:138
 msgid "media"
-msgstr "media"
+msgstr "Media"
 
 #.
 #. * Fav apps.
@@ -96,7 +96,7 @@ msgstr "Program"
 
 #: ../applications/src/moblin-panel-applications.c:166
 msgid "applications"
-msgstr "program"
+msgstr "Program"
 
 #: ../netpanel/src/moblin-netbook-netpanel.c:588
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
@@ -131,7 +131,7 @@ msgstr "Favoritsidor"
 
 #: ../netpanel/src/moblin-panel-internet.c:87
 msgid "internet"
-msgstr "internet"
+msgstr "Internet"
 
 #: ../netpanel/src/mwb-ac-list.c:1631
 #, c-format
@@ -144,12 +144,12 @@ msgid "Go to %s"
 msgstr "Gå till %s"
 
 #: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "Kopiera"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "Infoga aktuellt dokument till klipp-klistrafönstret"
 
@@ -165,13 +165,13 @@ msgstr "Klipp-klistrafönstret"
 msgid "You need to copy some text to use Pasteboard"
 msgstr "Du behöver kopiera texten för att använda klipp-klistrafönstret"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "Rensa klipp-klistrafönstret"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
-msgstr "klipp-klistrafönstret"
+msgstr "Klipp-klistrafönstret"
 
 #: ../penge/penge/penge-calendar-pane.c:207
 msgid "<b>Appointments</b>"
@@ -280,7 +280,7 @@ msgstr "För länge sedan"
 
 #: ../people/src/moblin-panel-people.c:69
 msgid "people"
-msgstr "personer "
+msgstr "Personer "
 
 #: ../people/src/mnb-people-panel.c:162
 msgid "Send an email"
@@ -314,7 +314,7 @@ msgstr "Ingen vald"
 #: ../src/moblin-netbook.c:306
 #: ../src/mnb-toolbar.c:1428
 msgid "zones"
-msgstr "zoner"
+msgstr "Zoner"
 
 #: ../src/moblin-netbook.c:415
 msgid "Moblin Netbook Effects"
@@ -375,7 +375,7 @@ msgstr "%e %B, %Y"
 
 #: ../src/mnb-toolbar.c:1665
 msgid "power & brightness"
-msgstr "Ljushet och skärpa"
+msgstr "Ljusstyrka och batteri"
 
 #: ../src/mnb-toolbar.c:1668
 msgid "volume"
@@ -395,7 +395,7 @@ msgstr "testa"
 
 #: ../src/mnb-toolbar.c:1775
 msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "Aktivera listen, flytta din markör till översta delen av skärmen"
+msgstr "För att aktivera listen, flytta din markör till översta delen av skärmen"
 
 #: ../status/src/mnb-im-status-row.c:103
 #: ../status/src/mnb-im-status-row.c:104
@@ -475,10 +475,10 @@ msgstr "För att uppdatera din IM status behöver du installera ett IM konto"
 
 #: ../status/src/moblin-panel-status.c:1118
 msgid "status"
-msgstr "status"
+msgstr "Status"
 
 #~ msgid "myzone"
-#~ msgstr "myzone"
+#~ msgstr "MyZone"
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 #~ msgstr ""
 #~ "Fältikonen har efterfrågat en storlek motsvarande (%i x %i), ändrar till "
