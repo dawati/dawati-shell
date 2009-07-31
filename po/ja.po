@@ -340,11 +340,11 @@ msgstr "アプリケーションを表示するゾーンを選択してくださ
 
 #: ../src/mnb-notification.c:266
 msgid "Dismiss"
-msgstr "アラームを消す"
+msgstr "閉じる"
 
 #: ../src/mnb-notification-cluster.c:657
 msgid "Dismiss All"
-msgstr "すべてのアラームを消す"
+msgstr "すべて閉じる"
 
 #: ../src/mnb-switcher.c:1707
 msgid "No Zones yet"
