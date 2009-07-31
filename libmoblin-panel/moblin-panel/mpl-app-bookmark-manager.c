@@ -18,6 +18,7 @@
  */
 
 
+#include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
@@ -39,6 +40,7 @@ struct _MplAppBookmarkManagerPrivate {
 };
 
 #define APP_BOOKMARK_FILENAME "favourite-apps"
+#define APP_BOOKMARK_REMOVAL_TIMOUT_S 10
 
 enum
 {
@@ -49,6 +51,136 @@ enum
 
 guint signals[LAST_SIGNAL] = { 0 };
 
+typedef struct {
+  MplAppBookmarkManager *self;
+  gchar                 *filename;
+} BookmarkRemovalData;
+
+static GList *
+_list_pending_removals (MplAppBookmarkManager *self,
+                        gboolean               delete_removals)
+{
+  GDir *dir;
+  const gchar *entry;
+  gchar *filename = NULL;
+  gchar *uri = NULL;
+  const gchar *prefix = APP_BOOKMARK_FILENAME ".";
+  GList *list = NULL;
+  GError *error = NULL;
+
+  dir = g_dir_open (g_get_user_data_dir (), 0, &error);
+  if (error)
+  {
+    g_warning (G_STRLOC ": %s", error->message);
+    g_clear_error (&error);
+    return NULL;
+  }
+
+  while (NULL != (entry = g_dir_read_name (dir)))
+  {
+    if (!g_str_has_prefix (entry, prefix))
+      continue;
+
+    filename = g_build_filename (g_get_user_data_dir (),
+                                 entry,
+                                 NULL);
+    g_file_get_contents (filename, &uri, NULL, &error);
+    if (error)
+    {
+      g_warning (G_STRLOC ": %s", error->message);
+      g_clear_error (&error);
+    }
+
+    if (delete_removals)
+    {
+      if (0 != g_unlink (filename))
+        g_warning (G_STRLOC ": could not delete file '%s'", filename);
+    }
+
+    g_free (filename);
+
+    if (uri)
+      list = g_list_prepend (list, uri);
+  }
+  g_dir_close (dir);
+
+  return list;
+}
+
+static gboolean
+_bookmark_removal_cb (BookmarkRemovalData *data)
+{
+  gchar *uri = NULL;
+  GError *error = NULL;
+
+  g_file_get_contents (data->filename, &uri, NULL, &error);
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error reading file '%s': %s",
+                data->filename,
+                error->message);
+    g_clear_error (&error);
+  } else {
+    /* Actually remove the bookmark if the desktop file does not exist. */
+    char *desktop_file = g_filename_from_uri (uri, NULL, &error);
+    if (error)
+    {
+      g_warning (G_STRLOC ": Error converting URI to filename '%s': %s",
+                 uri,
+                 error->message);
+      g_clear_error (&error);
+    } else {
+      if (!g_file_test (desktop_file, G_FILE_TEST_EXISTS))
+        mpl_app_bookmark_manager_remove_uri (data->self, uri);
+    }
+    g_free (desktop_file);
+  }
+
+  if (0 != g_unlink (data->filename))
+    g_warning (G_STRLOC ": could not delete file '%s'", data->filename);
+
+  g_free (uri);
+  g_free (data->filename);
+  g_free (data);
+
+  return FALSE;
+}
+
+static void
+_queue_bookmark_removal (MplAppBookmarkManager  *self,
+                         const gchar            *uri)
+{
+  gchar *filename = NULL;
+  guint i = 0;
+  GError *error = NULL;
+
+  do {
+    g_free (filename);
+    filename = g_strdup_printf ("%s%c%s.%d",
+                                g_get_user_data_dir (),
+                                G_DIR_SEPARATOR,
+                                APP_BOOKMARK_FILENAME,
+                                i++);
+  } while (g_file_test (filename, G_FILE_TEST_EXISTS));
+
+  g_file_set_contents (filename, uri, -1, &error);
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error writing file '%s': %s",
+                filename,
+                error->message);
+    g_clear_error (&error);
+    g_free (filename);
+  } else {
+    BookmarkRemovalData *data = g_new0 (BookmarkRemovalData, 1);
+    data->self = self;
+    data->filename = filename;
+    g_timeout_add_seconds (APP_BOOKMARK_REMOVAL_TIMOUT_S,
+                           (GSourceFunc) _bookmark_removal_cb,
+                           data);
+  }
+}
+
 static void
 _bookmark_desktop_file_changed_cb (GFileMonitor      *monitor,
                                    GFile             *file,
@@ -57,6 +189,7 @@ _bookmark_desktop_file_changed_cb (GFileMonitor      *monitor,
                                    gpointer          userdata)
 {
   MplAppBookmarkManager *self = (MplAppBookmarkManager *)userdata;
+  GList *pending_removals;
   gchar *uri;
 
   /* Only care for removed apps that are bookmarked. */
@@ -64,7 +197,16 @@ _bookmark_desktop_file_changed_cb (GFileMonitor      *monitor,
     return;
 
   uri = g_file_get_uri (file);
-  mpl_app_bookmark_manager_remove_uri (self, uri);
+
+  /* Filter out multiple notifications. */
+  pending_removals = _list_pending_removals (self, FALSE);
+  if (!g_list_find_custom (pending_removals, uri, (GCompareFunc) g_strcmp0))
+  {
+    _queue_bookmark_removal (self, uri);
+  }
+
+  g_list_foreach (pending_removals, (GFunc) g_free, NULL);
+  g_list_free (pending_removals);
   g_free (uri);
 }
 
@@ -184,6 +326,7 @@ static void
 mpl_app_bookmark_manager_load (MplAppBookmarkManager *manager)
 {
   MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (manager);
+  GList *removed_bookmarks;
   GError *error = NULL;
   gchar **uris;
   gchar *contents;
@@ -203,13 +346,26 @@ mpl_app_bookmark_manager_load (MplAppBookmarkManager *manager)
 
   uris = g_strsplit (contents, " ", -1);
 
+  /* Any leftover bookmarks queued for removal? */
+  removed_bookmarks = _list_pending_removals (manager, TRUE);
+
   for (i = 0; uris[i] != NULL; i++)
   {
     /* The list takes ownership. */
     uri = g_strdup (uris[i]);
-    priv->uris = g_list_append (priv->uris, uri);
 
-    _setup_file_monitor (manager, uri);
+    if (removed_bookmarks == NULL ||
+        !g_list_find_custom (removed_bookmarks, uri, (GCompareFunc) g_strcmp0))
+    {
+      priv->uris = g_list_append (priv->uris, uri);
+      _setup_file_monitor (manager, uri);
+    }
+  }
+
+  if (removed_bookmarks)
+  {
+    g_list_foreach (removed_bookmarks, (GFunc) g_free, NULL);
+    g_list_free (removed_bookmarks);
   }
 
   g_strfreev (uris);
