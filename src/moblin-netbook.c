@@ -1275,7 +1275,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (mw)
         {
-          gboolean    fullscreen, modal;
+          gboolean    fullscreen, modal = FALSE;
           const char *sn_id = meta_window_get_startup_id (mw);
           gint        pid;
           gchar      *binary;
@@ -1283,7 +1283,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           if (!moblin_netbook_sn_should_map (plugin, mcw, sn_id))
             return;
 
-          g_object_get (mw, "fullscreen", &fullscreen, "modal", &modal, NULL);
+          if (type == META_COMP_WINDOW_MODAL_DIALOG)
+            modal = TRUE;
+
+          g_object_get (mw, "fullscreen", &fullscreen, NULL);
 
           if (((pid = meta_window_get_net_wm_pid (mw)) >= 0) &&
               ((binary = pid_to_binary_name (pid))))
