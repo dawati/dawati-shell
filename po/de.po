@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSDEU_Andreas <andreasx.machoy@intel.com>\n"
 "Language-Team: \n"
@@ -146,12 +146,12 @@ msgstr "Gehe zu %s"
 
 # assuming this is the text in the button...
 #: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "Kopiere"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "den ausgewählten Text in die Zwischenablage"
 
@@ -167,11 +167,11 @@ msgstr "Zwischenablage"
 msgid "You need to copy some text to use Pasteboard"
 msgstr "Um die Zwischenablage zu benutzen, musst du erst Text kopieren"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "Zwischenablage leeren"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "Zwischenablage"
 
@@ -340,15 +340,15 @@ msgstr "Neue Zone (0)"
 msgid "Choose zone for application:"
 msgstr "Wähle die Zone für diese Anwendung aus:"
 
-# depending on the context, maybe one could also use "Schließen" (= Close), or "Ablehnen" (= Reject)
+# Since I've come across this in the UI only in connection with a button in notification pop-ups, I think "Ignorieren" (= Ignore) would be the best translation in this context. (User has to click the button to make the notification go away without taking any action.)
 #: ../src/mnb-notification.c:266
 msgid "Dismiss"
-msgstr "Verwerfen"
+msgstr "Ignorieren"
 
-# depending on the context, maybe one could also use "Alle schließen" (= Close all), or "Alle ablehnen" (= Reject all)
+# see note at "Dismiss"...
 #: ../src/mnb-notification-cluster.c:657
 msgid "Dismiss All"
-msgstr "Alle verwerfen"
+msgstr "Alle ignorieren"
 
 #: ../src/mnb-switcher.c:1707
 msgid "No Zones yet"
