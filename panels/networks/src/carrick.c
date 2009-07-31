@@ -65,12 +65,28 @@ main (int    argc,
   GdkScreen     *screen;
   GtkWidget     *plug;
   GtkSettings   *settings;
+  gboolean       standalone = FALSE;
+  GError        *error = NULL;
+  GOptionEntry   entries[] = {
+    { "standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
+      _("Run in standalone mode"), NULL },
+    { NULL }
+  };
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  gtk_init (&argc, &argv);
+  g_set_application_name (_("Carrick connectivity applet"));
+  gtk_init_with_args (&argc, &argv, _("- Moblin connectivity applet"),
+                      entries, GETTEXT_PACKAGE, &error);
+
+  if (error)
+  {
+    g_printerr ("%s\n", error->message);
+    g_error_free (error);
+    return 1;
+  }
 
   /* Force to correct theme */
   settings = gtk_settings_get_default ();
@@ -80,23 +96,41 @@ main (int    argc,
                                     NULL);
 
   applet = carrick_applet_new ();
-  icon = carrick_applet_get_icon (applet);
-  plug = gtk_plug_new (0);
-  g_signal_connect (plug,
-                    "notify::embedded",
-                    G_CALLBACK (_plug_notify_embedded),
-                    applet);
-
   pane = carrick_applet_get_pane (applet);
-  gtk_container_add (GTK_CONTAINER (plug),
-                     pane);
-  mnbk_system_tray_init (GTK_STATUS_ICON (icon),
-                         GTK_PLUG (plug),
-                         "wifi");
-  screen = gtk_widget_get_screen (plug);
-  gtk_widget_set_size_request (pane,
-                               gdk_screen_get_width (screen) - 2 * PADDING,
-                               450);
+  if (!standalone)
+  {
+    icon = carrick_applet_get_icon (applet);
+    plug = gtk_plug_new (0);
+    g_signal_connect (plug,
+                      "notify::embedded",
+                      G_CALLBACK (_plug_notify_embedded),
+                      applet);
+
+    gtk_container_add (GTK_CONTAINER (plug),
+                       pane);
+    mnbk_system_tray_init (GTK_STATUS_ICON (icon),
+                           GTK_PLUG (plug),
+                           "wifi");
+    screen = gtk_widget_get_screen (plug);
+    gtk_widget_set_size_request (pane,
+                                 gdk_screen_get_width (screen) - 2 * PADDING,
+                                 450);
+  }
+  else
+  {
+    plug = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    g_signal_connect (plug,
+                      "delete-event",
+                      (GCallback) gtk_main_quit,
+                      NULL);
+    gtk_container_add (GTK_CONTAINER (plug),
+                       pane);
+    screen = gtk_widget_get_screen (plug);
+    gtk_widget_set_size_request (GTK_WIDGET (plug),
+                                 gdk_screen_get_width (screen) - 8,
+                                 450);
+    gtk_widget_show (plug);
+  }
 
   gtk_main ();
 }
