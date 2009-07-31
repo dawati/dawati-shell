@@ -3,146 +3,349 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-08 09:18+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
+"PO-Revision-Date: 2009-07-31 23:33+0100\n"
+"Last-Translator: Kökéndy Ákos <kokendy.akos@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../carrick/carrick-applet.c:63
-#, c-format
-msgid "Offline"
-msgstr ""
-
-#: ../carrick/carrick-applet.c:64
-#, c-format
-msgid "No active connection."
-msgstr ""
-
-#: ../carrick/carrick-applet.c:70
-#, c-format
-msgid "Online"
-msgstr ""
-
-#: ../carrick/carrick-applet.c:75
-#, c-format
-msgid "Now online and connected to %s."
-msgstr ""
-
-#: ../carrick/carrick-pane.c:283
+#: ../carrick/carrick-pane.c:358
 msgid "New connection settings"
-msgstr ""
+msgstr "Új hálózat beállítása"
 
-#: ../carrick/carrick-pane.c:319
+#: ../carrick/carrick-pane.c:394
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
+"Írja be a hálózat nevét, melyhez\n"
+"kapcsolódni kíván és ha szükséges\a jelszót és a biztonsági típust."
 
-#: ../carrick/carrick-pane.c:329
+#: ../carrick/carrick-pane.c:404
 msgid "Network name"
-msgstr ""
+msgstr "Hálózat neve"
 
-#: ../carrick/carrick-pane.c:341
+#: ../carrick/carrick-pane.c:416
 msgid "Network security"
-msgstr ""
+msgstr "Hálózati biztonság"
 
-#: ../carrick/carrick-pane.c:365
+#: ../carrick/carrick-pane.c:426
+msgid "None"
+msgstr "Nincs"
+
+#: ../carrick/carrick-pane.c:440
 msgid "Password"
-msgstr ""
+msgstr "Jelszó"
 
-#: ../carrick/carrick-pane.c:380 ../carrick/carrick-service-item.c:855
+#: ../carrick/carrick-pane.c:455
+#: ../carrick/carrick-service-item.c:994
 msgid "Show password"
-msgstr ""
+msgstr "Jelszó mutatása"
 
-#: ../carrick/carrick-pane.c:791
-msgid "Networks"
-msgstr ""
+#: ../carrick/carrick-pane.c:564
+msgid "Sorry, we can't find any networks. "
+msgstr "Elnézést, de nem találunk hálózatot."
 
-#: ../carrick/carrick-pane.c:830
-msgid "Add new connection"
-msgstr ""
+#: ../carrick/carrick-pane.c:569
+msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
+msgstr "A ConnMan látszólag nem fut. Megpróbálhatod újraindítani készülékedet"
 
-#: ../carrick/carrick-pane.c:856
+#: ../carrick/carrick-pane.c:575
+msgid "You could try disabling Offline mode"
+msgstr "Megpróbálhatod a Kapcsolat nélküli mód kikapcsolását"
+
+#: ../carrick/carrick-pane.c:584
+msgid "You could try turning on "
+msgstr "Megpróbálhatod bekapcsolni"
+
+#: ../carrick/carrick-pane.c:588
+#: ../carrick/carrick-pane.c:1205
 msgid "WiFi"
-msgstr ""
+msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:879 ../carrick/carrick-service-item.c:196
-msgid "Wired"
-msgstr ""
+#: ../carrick/carrick-pane.c:594
+#: ../carrick/carrick-pane.c:609
+msgid ", "
+msgstr ","
 
-#: ../carrick/carrick-pane.c:905
-msgid "3G"
-msgstr ""
-
-#: ../carrick/carrick-pane.c:930
+#: ../carrick/carrick-pane.c:596
+#: ../carrick/carrick-pane.c:1299
 msgid "WiMAX"
-msgstr ""
+msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:964
+#: ../carrick/carrick-pane.c:602
+msgid " and "
+msgstr "és"
+
+#: ../carrick/carrick-pane.c:604
+#: ../carrick/carrick-pane.c:1268
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-pane.c:611
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-pane.c:619
+#: ../carrick/carrick-pane.c:735
+msgid "Sorry, we can't find any networks"
+msgstr "Elnézést, de nem találunk hálózatot."
+
+#.
+#. * Hint to display when we detect that the connection manager
+#. * is dead.  Ideally the system auto-restarts connman so the
+#. * user will not see this, but this is what to show if all
+#. * available recovery measures fail.
+#.
+#: ../carrick/carrick-pane.c:654
+msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
+msgstr "Elnézést, de nem találunk hálózatot. A hálózatkezelő látszólag nem fut. Megpróbálhatod újraindítani készülékedet."
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:665
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Elnézést, de nem találunk hálózatot. Megpróbálhatod a Kapcsolat nélküli mód kikapcsolását."
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:680
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr "Elnézést, de nem találunk hálózatot. Megpróbálhatod bekapcsolni a WiFi-t."
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:691
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr "Elnézést, de nem találunk hálózatot. Megpróbálhatod bekapcsolni a WiMAX-ot."
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:702
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr "Elnézést, de nem találunk hálózatot. Megpróbálhatod bekapcsolni a 3G-t."
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:712
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr "Elnézést, de nem találunk hálózatot. Megpróbálhatod bekapcsolni a Bluetooth-t."
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-pane.c:723
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr "Elnézést, de nem találunk hálózatot. Megpróbálhatod bekapcsolni a vezetékes kapcsolatot."
+
+#: ../carrick/carrick-pane.c:1125
+msgid "Networks"
+msgstr "Hálózatok"
+
+#: ../carrick/carrick-pane.c:1178
+msgid "Add new connection"
+msgstr "Új kapcsolat hozzáadása"
+
+#: ../carrick/carrick-pane.c:1237
+#: ../carrick/carrick-service-item.c:218
+msgid "Wired"
+msgstr "Vezetékes"
+
+#: ../carrick/carrick-pane.c:1342
 msgid "Offline mode"
-msgstr ""
+msgstr "Kapcsolat nélküli mód"
 
-#: ../carrick/carrick-pane.c:988
+#: ../carrick/carrick-pane.c:1367
 msgid "This will disable all your connections"
-msgstr ""
+msgstr "Ez minden hálózatodat leállítja"
 
-#: ../carrick/carrick-service-item.c:163
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
-msgstr ""
+msgstr "%s titkosított"
 
-#: ../carrick/carrick-service-item.c:208
+#: ../carrick/carrick-service-item.c:249
 msgid "Disconnect"
-msgstr ""
+msgstr "Bontás"
 
-#: ../carrick/carrick-service-item.c:211
+#: ../carrick/carrick-service-item.c:252
 msgid "Connected"
-msgstr ""
+msgstr "Kapcsolatban"
 
-#: ../carrick/carrick-service-item.c:218
+#: ../carrick/carrick-service-item.c:257
 #, c-format
-msgid "Connecting"
-msgstr ""
+msgid "Cancel"
+msgstr "Mégsem"
 
-#: ../carrick/carrick-service-item.c:221
+#: ../carrick/carrick-service-item.c:260
 msgid "Configuring"
-msgstr ""
+msgstr "Beállítás"
 
-#: ../carrick/carrick-service-item.c:232 ../carrick/carrick-service-item.c:244
-#: ../carrick/carrick-service-item.c:844
+#: ../carrick/carrick-service-item.c:267
+#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:983
 msgid "Connect"
-msgstr ""
+msgstr "Kapcsolódás"
 
-#: ../carrick/carrick-service-item.c:247
+#: ../carrick/carrick-service-item.c:278
 msgid "Connection failed"
-msgstr ""
+msgstr "Sikertelen kapcsolódás"
 
-#: ../carrick/carrick-service-item.c:254 ../carrick/carrick-service-item.c:257
+#: ../carrick/carrick-service-item.c:283
+#: ../carrick/carrick-service-item.c:286
 #, c-format
 msgid "Disconnecting"
-msgstr ""
+msgstr "Bontás"
 
-#: ../carrick/carrick-service-item.c:306
+#: ../carrick/carrick-service-item.c:334
 msgid "Type password here"
-msgstr ""
+msgstr "Írd ide a jelszavadat"
 
-#: ../carrick/carrick-service-item.c:383
+#: ../carrick/carrick-service-item.c:397
 msgid "Really remove?"
-msgstr ""
+msgstr "Valóban töröljük?"
 
-#: ../carrick/carrick-service-item.c:401
+#: ../carrick/carrick-service-item.c:415
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
+"Törölni akarod a %s %s hálózatot? Ez a jelszó\n"
+"elfelejtését jelenti és többé nem tudsz automatikusan\n"
+"kapcsolódni ehhez: %s."
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:939
+msgid "WPA2 encrypted"
+msgstr "WPA2 titkosítás"
+
+#: ../carrick/carrick-notification-manager.c:131
+msgid "Network connected"
+msgstr "Kapcsolódva a hálózathoz"
+
+#: ../carrick/carrick-notification-manager.c:139
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:169
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:175
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:192
+msgid "Network lost"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:200
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:204
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:210
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:227
+#: ../carrick/carrick-notification-manager.c:324
+msgid "Network changed"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:246
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've "
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:251
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've "
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:257
+msgid "connected you to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:262
+#, c-format
+msgid "connected you to %s, a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:268
+#, c-format
+msgid "connected you to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:332
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:339
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:347
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:357
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:364
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:373
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr ""
+
