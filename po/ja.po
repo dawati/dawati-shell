@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
+"POT-Creation-Date: 2009-07-30 17:11+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
@@ -98,6 +98,64 @@ msgstr "アプリケーション"
 msgid "applications"
 msgstr "アプリケーション"
 
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+msgid "Less than a minute ago"
+msgstr "1分以内"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+msgid "A few minutes ago"
+msgstr "数分前"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+msgid "A couple of hours ago"
+msgstr "数時間前"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+msgid "Earlier today"
+msgstr "今日"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+msgid "Yesterday"
+msgstr "昨日"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#, c-format
+msgid "On %A"
+msgstr "%A"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+msgid "Unknown"
+msgstr "不明"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+msgid "Last week"
+msgstr "先週"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+msgid "A couple of weeks ago"
+msgstr "数週間前"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+msgid "This month"
+msgstr "今月"
+
+#. Now Jan., last used in Dec.
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+msgid "Last month"
+msgstr "先月"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+msgid "This year"
+msgstr "今年"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+msgid "Last year"
+msgstr "去年"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+msgid "Ages ago"
+msgstr "ずいぶんと前"
+
 #: ../netpanel/src/moblin-netbook-netpanel.c:588
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Web ページを表示すると、お気に入りのページが、こことブラウザーの新規タブペインに表示されます。"
@@ -143,13 +201,13 @@ msgstr "%%s を %s で検索する"
 msgid "Go to %s"
 msgstr "%s にアクセス"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/mnb-clipboard-item.c:248
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "コピー"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "現在選択されているエントリーをペーストボードに追加"
 
@@ -165,11 +223,11 @@ msgstr "ペーストボード"
 msgid "You need to copy some text to use Pasteboard"
 msgstr "テキストをコピーして、ペーストボードを使用します"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "ペーストボードをクリアー"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "ペーストボード"
 
@@ -186,12 +244,12 @@ msgid "Your friends' feeds and web services will appear here. Activate your acco
 msgstr "アカウントを設定すると、ここにお友達のフィードと Web サービスが表示されます。"
 
 # "netbook" is omitted for limited space
-#: ../penge/penge/penge-recent-files-pane.c:201
+#: ../penge/penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Moblin 2.0 にようこそ</b>"
 
-#: ../penge/penge/penge-recent-files-pane.c:226
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
+#: ../penge/penge/penge-recent-files-pane.c:227
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 msgstr "Moblin は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Moblin チーム一同"
 
 #: ../penge/penge/penge-recent-file-tile.c:218
@@ -206,78 +264,6 @@ msgstr "今日の予定は何もありません"
 #, c-format
 msgid "Due %x"
 msgstr "期限：%x"
-
-#: ../penge/penge/penge-utils.c:63
-#: ../status/src/mnb-web-status-entry.c:106
-msgid "Less than a minute ago"
-msgstr "1分以内"
-
-#: ../penge/penge/penge-utils.c:67
-#: ../status/src/mnb-web-status-entry.c:110
-msgid "A few minutes ago"
-msgstr "数分前"
-
-#: ../penge/penge/penge-utils.c:71
-#: ../status/src/mnb-web-status-entry.c:114
-msgid "A couple of hours ago"
-msgstr "数時間前"
-
-#: ../penge/penge/penge-utils.c:78
-#: ../status/src/mnb-web-status-entry.c:121
-msgid "Earlier today"
-msgstr "今日"
-
-#: ../penge/penge/penge-utils.c:81
-#: ../status/src/mnb-web-status-entry.c:124
-msgid "Yesterday"
-msgstr "昨日"
-
-#: ../penge/penge/penge-utils.c:89
-#: ../status/src/mnb-web-status-entry.c:132
-#, c-format
-msgid "On %A"
-msgstr "%A"
-
-#: ../penge/penge/penge-utils.c:95
-#: ../status/src/mnb-web-status-entry.c:138
-msgid "Unknown"
-msgstr "不明"
-
-#: ../penge/penge/penge-utils.c:102
-#: ../status/src/mnb-web-status-entry.c:145
-msgid "Last week"
-msgstr "先週"
-
-#: ../penge/penge/penge-utils.c:105
-#: ../status/src/mnb-web-status-entry.c:148
-msgid "A couple of weeks ago"
-msgstr "数週間前"
-
-#: ../penge/penge/penge-utils.c:111
-#: ../status/src/mnb-web-status-entry.c:154
-msgid "This month"
-msgstr "今月"
-
-#. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:115
-#: ../status/src/mnb-web-status-entry.c:158
-msgid "Last month"
-msgstr "先月"
-
-#: ../penge/penge/penge-utils.c:118
-#: ../status/src/mnb-web-status-entry.c:161
-msgid "This year"
-msgstr "今年"
-
-#: ../penge/penge/penge-utils.c:121
-#: ../status/src/mnb-web-status-entry.c:164
-msgid "Last year"
-msgstr "去年"
-
-#: ../penge/penge/penge-utils.c:123
-#: ../status/src/mnb-web-status-entry.c:166
-msgid "Ages ago"
-msgstr "ずいぶんと前"
 
 #: ../people/src/moblin-panel-people.c:69
 msgid "people"
@@ -436,24 +422,24 @@ msgstr "変更"
 msgid "Unknown account"
 msgstr "不明なアカウント"
 
-#: ../status/src/mnb-web-status-entry.c:178
-#: ../status/src/mnb-web-status-entry.c:731
-#: ../status/src/mnb-web-status-entry.c:812
+#: ../status/src/mnb-web-status-entry.c:86
+#: ../status/src/mnb-web-status-entry.c:639
+#: ../status/src/mnb-web-status-entry.c:720
 msgid "Edit"
 msgstr "編集"
 
 #. Translators: %s is the user visible name of the service
-#: ../status/src/mnb-web-status-entry.c:605
+#: ../status/src/mnb-web-status-entry.c:513
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "ここに「%s」のステータスを入力してください..."
 
-#: ../status/src/mnb-web-status-entry.c:609
-#: ../status/src/mnb-web-status-entry.c:682
+#: ../status/src/mnb-web-status-entry.c:517
+#: ../status/src/mnb-web-status-entry.c:590
 msgid "Enter your current status here..."
 msgstr "ここに現在のステータスを入力してください..."
 
-#: ../status/src/mnb-web-status-entry.c:791
+#: ../status/src/mnb-web-status-entry.c:699
 msgid "Post"
 msgstr "投稿する"
 
