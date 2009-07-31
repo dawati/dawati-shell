@@ -647,6 +647,13 @@ check_for_empty_workspace (MutterPlugin *plugin,
   gboolean                    no_apps = TRUE;
   GList                      *l;
 
+  /*
+   * Mutter now treats all OR windows as sticky, and the -1 will trigger
+   * false workspace switch.
+   */
+  if (workspace < 0)
+    return;
+
   l = mutter_get_windows (screen);
 
   while (l)
