@@ -1394,7 +1394,7 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
       MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
       gboolean                    fullscreen;
 
-      if (wm_class &&
+      if (wm_class && wm_name &&
           !strcmp (wm_class, "Skype") && strstr (wm_name, "Skype™"))
         {
           gint pid = meta_window_get_net_wm_pid (meta_win);
