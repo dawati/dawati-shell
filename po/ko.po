@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -144,12 +144,12 @@ msgid "Go to %s"
 msgstr "%s로(으로) 이동"
 
 #: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "복사"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "임시 보드에 현재 선택"
 
@@ -165,11 +165,11 @@ msgstr "임시 보드"
 msgid "You need to copy some text to use Pasteboard"
 msgstr "임시 보드 사용을 위해 텍스트를 복사해야 합니다."
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "임시 보드 지우기"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "임시 보드"
 
@@ -199,7 +199,7 @@ msgstr "웹 페이지"
 
 #: ../penge/penge/penge-tasks-pane.c:287
 msgid "Nothing to do today"
-msgstr "오늘은 아무 할 일 없음"
+msgstr "오늘 일정 없음"
 
 #: ../penge/penge/penge-task-tile.c:325
 #, c-format
