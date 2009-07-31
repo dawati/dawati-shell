@@ -41,6 +41,7 @@
 #include <clutter/x11/clutter-x11.h>
 #include <gmodule.h>
 #include <string.h>
+#include <signal.h>
 
 #include <compositor-mutter.h>
 #include <display.h>
@@ -1379,15 +1380,40 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
   MetaCompWindowType          type;
   gint                        workspace;
   MetaWindow                 *meta_win;
+  const gchar                *wm_class;
+  const gchar                *wm_name;
 
   type      = mutter_window_get_window_type (mcw);
   workspace = mutter_window_get_workspace (mcw);
   meta_win  = mutter_window_get_meta_window (mcw);
+  wm_class  = meta_window_get_wm_class (meta_win);
+  wm_name   = meta_window_get_title (meta_win);
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
       MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
       gboolean                    fullscreen;
+
+      if (wm_class &&
+          !strcmp (wm_class, "Skype") && strstr (wm_name, "Skype™"))
+        {
+          gint pid = meta_window_get_net_wm_pid (meta_win);
+
+          if (pid)
+            {
+              /*
+               * Let the WM finish its dealing with this window first, then
+               * just kill the application without mercy ... (this is a
+               * punishment for unmapping its window when getting minimized into
+               * tray).
+               */
+              check_for_empty_workspace (plugin, workspace, meta_win);
+              mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+
+              kill (pid, SIGKILL);
+              return;
+            }
+        }
 
       g_object_get (meta_win, "fullscreen", &fullscreen, NULL);
 
