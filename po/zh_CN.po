@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
-"PO-Revision-Date: 2009-07-25 23:46+0800\n"
-"Last-Translator: Li Jian <jian.li@turbolinux.com.cn>\n"
+"POT-Creation-Date: 2009-07-30 17:11+0000\n"
+"PO-Revision-Date: 2009-07-31 23:46+0800\n"
+"Last-Translator: Zhu Yanhai <yanhai.zhu@linux.intel.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -106,6 +106,64 @@ msgstr "应用程序"
 msgid "applications"
 msgstr "应用程序"
 
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+msgid "Less than a minute ago"
+msgstr "一分钟内"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+msgid "A few minutes ago"
+msgstr "几分钟前"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+msgid "A couple of hours ago"
+msgstr "两小时前"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+msgid "Earlier today"
+msgstr "更早时候"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+msgid "Yesterday"
+msgstr "昨天"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#, c-format
+msgid "On %A"
+msgstr "在 %A"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+msgid "Unknown"
+msgstr "未知"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+msgid "Last week"
+msgstr "上周"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+msgid "A couple of weeks ago"
+msgstr "两周前"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+msgid "This month"
+msgstr "本月"
+
+#. Now Jan., last used in Dec.
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+msgid "Last month"
+msgstr "上月"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+msgid "This year"
+msgstr "今年"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+msgid "Last year"
+msgstr "去年"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+msgid "Ages ago"
+msgstr "几年前"
+
 #: ../netpanel/src/moblin-netbook-netpanel.c:588
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
@@ -154,13 +212,13 @@ msgstr "搜索 %%s（在 %s 上）"
 msgid "Go to %s"
 msgstr "去 %s.com"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/mnb-clipboard-item.c:248
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "拷贝"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "粘贴板中当前选取的内容"
 
@@ -176,11 +234,11 @@ msgstr "粘贴板"
 msgid "You need to copy some text to use Pasteboard"
 msgstr "您要先复制一些文字才能使用粘贴板"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "清空粘贴板"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "粘贴板"
 
@@ -198,17 +256,17 @@ msgid ""
 "accounts now!"
 msgstr "您朋友的最新情况会在这里显示。现在就开始配置您的账户吧！"
 
-#: ../penge/penge/penge-recent-files-pane.c:201
+#: ../penge/penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>欢迎使用 Moblin 2.0 系统</b>"
 
-#: ../penge/penge/penge-recent-files-pane.c:226
+#: ../penge/penge/penge-recent-files-pane.c:227
 msgid ""
 "As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around this Beta Release. We "
-"hope you enjoy it, The Moblin Team."
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
 msgstr ""
-"Moblin 和其他系统有很大区别，在这个试用版中我们整合了一组工具和特性帮助您尽快"
+"Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快"
 "熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
 
 #: ../penge/penge/penge-recent-file-tile.c:218
@@ -223,64 +281,6 @@ msgstr "今天没有安排"
 #, c-format
 msgid "Due %x"
 msgstr "%x 到期"
-
-#: ../penge/penge/penge-utils.c:63 ../status/src/mnb-web-status-entry.c:106
-msgid "Less than a minute ago"
-msgstr "一分钟内"
-
-#: ../penge/penge/penge-utils.c:67 ../status/src/mnb-web-status-entry.c:110
-msgid "A few minutes ago"
-msgstr "几分钟前"
-
-#: ../penge/penge/penge-utils.c:71 ../status/src/mnb-web-status-entry.c:114
-msgid "A couple of hours ago"
-msgstr "两小时前"
-
-#: ../penge/penge/penge-utils.c:78 ../status/src/mnb-web-status-entry.c:121
-msgid "Earlier today"
-msgstr "更早时候"
-
-#: ../penge/penge/penge-utils.c:81 ../status/src/mnb-web-status-entry.c:124
-msgid "Yesterday"
-msgstr "昨天"
-
-#: ../penge/penge/penge-utils.c:89 ../status/src/mnb-web-status-entry.c:132
-#, c-format
-msgid "On %A"
-msgstr "在 %A"
-
-#: ../penge/penge/penge-utils.c:95 ../status/src/mnb-web-status-entry.c:138
-msgid "Unknown"
-msgstr "未知"
-
-#: ../penge/penge/penge-utils.c:102 ../status/src/mnb-web-status-entry.c:145
-msgid "Last week"
-msgstr "上周"
-
-#: ../penge/penge/penge-utils.c:105 ../status/src/mnb-web-status-entry.c:148
-msgid "A couple of weeks ago"
-msgstr "两周前"
-
-#: ../penge/penge/penge-utils.c:111 ../status/src/mnb-web-status-entry.c:154
-msgid "This month"
-msgstr "本月"
-
-#. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:115 ../status/src/mnb-web-status-entry.c:158
-msgid "Last month"
-msgstr "上月"
-
-#: ../penge/penge/penge-utils.c:118 ../status/src/mnb-web-status-entry.c:161
-msgid "This year"
-msgstr "今年"
-
-#: ../penge/penge/penge-utils.c:121 ../status/src/mnb-web-status-entry.c:164
-msgid "Last year"
-msgstr "去年"
-
-#: ../penge/penge/penge-utils.c:123 ../status/src/mnb-web-status-entry.c:166
-msgid "Ages ago"
-msgstr "几年前"
 
 #: ../people/src/moblin-panel-people.c:69
 msgid "people"
@@ -437,24 +437,24 @@ msgstr "修改"
 msgid "Unknown account"
 msgstr "未知账户"
 
-#: ../status/src/mnb-web-status-entry.c:178
-#: ../status/src/mnb-web-status-entry.c:731
-#: ../status/src/mnb-web-status-entry.c:812
+#: ../status/src/mnb-web-status-entry.c:86
+#: ../status/src/mnb-web-status-entry.c:639
+#: ../status/src/mnb-web-status-entry.c:720
 msgid "Edit"
 msgstr "编辑"
 
 #. Translators: %s is the user visible name of the service
-#: ../status/src/mnb-web-status-entry.c:605
+#: ../status/src/mnb-web-status-entry.c:513
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "在这里输入您的 %s 状态 ..."
 
-#: ../status/src/mnb-web-status-entry.c:609
-#: ../status/src/mnb-web-status-entry.c:682
+#: ../status/src/mnb-web-status-entry.c:517
+#: ../status/src/mnb-web-status-entry.c:590
 msgid "Enter your current status here..."
 msgstr "在这里输入您的当前状态 ..."
 
-#: ../status/src/mnb-web-status-entry.c:791
+#: ../status/src/mnb-web-status-entry.c:699
 msgid "Post"
 msgstr "发送"
 
