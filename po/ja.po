@@ -24,11 +24,11 @@ msgstr "最近再生したファイル"
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:443
 msgid "Search results"
-msgstr "Yahoo! で次を検索する：%s"
+msgstr "検索結果"
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:995
 msgid "Playqueue"
-msgstr "Playqueue"
+msgstr "プレイキュー"
 
 #: ../ahoghill/ahoghill/ahoghill-media-tile.c:100
 #, c-format
@@ -136,7 +136,7 @@ msgstr "インターネット"
 #: ../netpanel/src/mwb-ac-list.c:1631
 #, c-format
 msgid "Search for %%s on %s"
-msgstr "Yahoo! で次を検索する：%s"
+msgstr "%%s を %s で検索する"
 
 #: ../netpanel/src/mwb-ac-list.c:1654
 #, c-format
@@ -179,19 +179,20 @@ msgstr "<b>スケジュール</b>"
 
 #: ../penge/penge/penge-events-pane.c:208
 msgid "No calendar entries this week"
-msgstr "今週は、カレンダーイベントはありません"
+msgstr "今週は何も予定が入っていません"
 
 #: ../penge/penge/penge-people-pane.c:191
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-msgstr "アカウントをアクティブにすると、ここにお友達のフィードと Web サービスが表示されます。"
+msgstr "アカウントを設定すると、ここにお友達のフィードと Web サービスが表示されます。"
 
+# "netbook" is omitted for limited space
 #: ../penge/penge/penge-recent-files-pane.c:201
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>ネットブック Moblin 2.0 にようこそ</b>"
+msgstr "<b>Moblin 2.0 にようこそ</b>"
 
 #: ../penge/penge/penge-recent-files-pane.c:226
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
-msgstr "Moblin は、従来のコンピューターとは少し異なるため、このベータバージョンにヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Moblin チーム一同"
+msgstr "Moblin は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Moblin チーム一同"
 
 #: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -199,7 +200,7 @@ msgstr "Web ページ"
 
 #: ../penge/penge/penge-tasks-pane.c:287
 msgid "Nothing to do today"
-msgstr "今日のイベントは何もありません"
+msgstr "今日の予定は何もありません"
 
 #: ../penge/penge/penge-task-tile.c:325
 #, c-format
@@ -371,7 +372,7 @@ msgstr "%P%l:%M"
 #.
 #: ../src/mnb-toolbar.c:681
 msgid "%B %e, %Y"
-msgstr "%Y年%B月%e日"
+msgstr "%Y年%B%e日"
 
 #: ../src/mnb-toolbar.c:1665
 msgid "power & brightness"
@@ -395,7 +396,7 @@ msgstr "テスト"
 
 #: ../src/mnb-toolbar.c:1775
 msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "カーセルを画面の上に動かしてツールバーをアクティブにします"
+msgstr "カーセルをスクリーンの上に持っていくと、ツールバーがアクティブになります"
 
 #: ../status/src/mnb-im-status-row.c:103
 #: ../status/src/mnb-im-status-row.c:104
