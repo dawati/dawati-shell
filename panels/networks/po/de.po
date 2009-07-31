@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSDEU_Andreas <andreasx.machoy@intel.com>\n"
 "Language-Team: \n"
@@ -52,7 +52,7 @@ msgstr "Kennwort anzeigen"
 
 #: ../carrick/carrick-pane.c:564
 msgid "Sorry, we can't find any networks. "
-msgstr "Leider können wir keine Netzwerke finden."
+msgstr "Leider können wir keine Netzwerke finden. "
 
 #: ../carrick/carrick-pane.c:569
 msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
@@ -60,12 +60,11 @@ msgstr "Der ConnMan Daemon scheint nicht zu laufen. Du solltest eventuell versuc
 
 #: ../carrick/carrick-pane.c:575
 msgid "You could try disabling Offline mode"
-msgstr "Du könntest versuchen, den Offline Modus zu deaktivieren."
+msgstr "Du könntest versuchen, den Offline-Modus zu deaktivieren."
 
-# "Try turning on the following:"
 #: ../carrick/carrick-pane.c:584
 msgid "You could try turning on "
-msgstr "Versuche folgendes einzuschalten:"
+msgstr "Versuche folgendes einzuschalten: "
 
 #: ../carrick/carrick-pane.c:588
 #: ../carrick/carrick-pane.c:1205
@@ -175,11 +174,11 @@ msgstr "Netzwerke"
 msgid "Add new connection"
 msgstr "Neue Verbindung"
 
-# if too long, use "verdrahtet"
+# Why are we distinguishing between "Ethernet" (further up in this list) and "wired"?
 #: ../carrick/carrick-pane.c:1237
 #: ../carrick/carrick-service-item.c:218
 msgid "Wired"
-msgstr "drahtgebunden"
+msgstr "Kabel"
 
 #: ../carrick/carrick-pane.c:1342
 msgid "Offline mode"
@@ -245,7 +244,7 @@ msgid ""
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-"Willst du das %s %s Netzwerk entfernen? Das\n"
+"Willst du das %s %s-Netzwerk entfernen? Das\n"
 "Kennwort geht damit verloren und es findet keine\n"
 "automatische Verbindung zu %s mehr statt."
 
@@ -296,60 +295,60 @@ msgid "Sorry, we've lost your %s connection"
 msgstr "Leider ging deine %s-Verbindung verloren"
 
 #: ../carrick/carrick-notification-manager.c:227
-#: ../carrick/carrick-notification-manager.c:313
+#: ../carrick/carrick-notification-manager.c:324
 msgid "Network changed"
 msgstr "Netzwerk gewechselt"
 
-#: ../carrick/carrick-notification-manager.c:235
+#: ../carrick/carrick-notification-manager.c:246
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've "
 msgstr "Leider ging deine Verbindung zu %s verloren. Daher haben wir"
 
-#: ../carrick/carrick-notification-manager.c:240
+#: ../carrick/carrick-notification-manager.c:251
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've "
 msgstr "Leider ging deine %s-Verbindung verloren. Daher haben wir"
 
-#: ../carrick/carrick-notification-manager.c:246
+#: ../carrick/carrick-notification-manager.c:257
 msgid "connected you to a wired network"
 msgstr "dich mit einem drahtgebundenen Netzwerk verbunden"
 
-#: ../carrick/carrick-notification-manager.c:251
+#: ../carrick/carrick-notification-manager.c:262
 #, c-format
 msgid "connected you to %s, a %s network"
 msgstr "dich mit %s, einem %s-Netzwerk verbunden"
 
-#: ../carrick/carrick-notification-manager.c:257
+#: ../carrick/carrick-notification-manager.c:268
 #, c-format
 msgid "connected you to a %s network"
 msgstr "dich mit einem %s-Netzwerk verbunden"
 
-#: ../carrick/carrick-notification-manager.c:321
+#: ../carrick/carrick-notification-manager.c:332
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
 msgstr "Leider ging deine Verbindung zu %s verloren. Daher haben wir dich mit einem drahtgebundenen Netzwerk verbunden"
 
-#: ../carrick/carrick-notification-manager.c:328
+#: ../carrick/carrick-notification-manager.c:339
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
 msgstr "Leider ging deine Verbindung zu %s verloren. Daher haben wir dich mit %s, einem %s-Netzwerk verbunden"
 
-#: ../carrick/carrick-notification-manager.c:336
+#: ../carrick/carrick-notification-manager.c:347
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr "Leider ging deine Verbindung zu %s verloren. Daher haben wir dich mit einem %s-Netzwerk verbunden"
 
-#: ../carrick/carrick-notification-manager.c:346
+#: ../carrick/carrick-notification-manager.c:357
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
 msgstr "Leider ging deine %s Verbindung verloren. Daher haben wir dich mit einem drahtgebundenen Netzwerk verbunden"
 
-#: ../carrick/carrick-notification-manager.c:353
+#: ../carrick/carrick-notification-manager.c:364
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
 msgstr "Leider ging deine %s-Verbindung verloren. Daher haben wir dich mit %s, einem %s-Netzwerk verbunden"
 
-#: ../carrick/carrick-notification-manager.c:362
+#: ../carrick/carrick-notification-manager.c:373
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "Leider ging deine %s-Verbindung verloren. Daher haben wir dich mit einem %s-Netzwerk verbunden"
