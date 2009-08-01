@@ -1658,102 +1658,10 @@ setup_desktop_background (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
-  MetaDisplay                *display = meta_screen_get_display (screen);
-  Display                    *xdpy = mutter_plugin_get_xdisplay (plugin);
-  gboolean                    have_desktop = FALSE;
   gint                        screen_width, screen_height;
-  Window                     *children, *l;
-  guint                       n_children;
-  Window                      root_win;
-  Window                      parent_win;
-  Status                      status;
-  Atom                        desktop_atom;
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
                                    &screen_width, &screen_height);
-
-  /*
-   * The do_init() method is called before the Manager starts managing
-   * pre-existing windows, so we cannot query the windows via the normal
-   * Mutter API, but have to use X lib to traverse the root window list.
-   *
-   * (We could probably add manage_all_windows() virtual to the plugin API
-   * to split the initialization into two stages, but it is probably not worth
-   * the hassle.)
-   */
-  root_win = RootWindow (xdpy, meta_screen_get_screen_number (screen));
-
-  desktop_atom = meta_display_get_atom (display,
-                                        META_ATOM__NET_WM_WINDOW_TYPE_DESKTOP);
-
-  gdk_error_trap_push ();
-  status = XQueryTree (xdpy, root_win, &root_win, &parent_win, &children,
-                       &n_children);
-
-  if (!gdk_error_trap_pop () && status)
-    {
-      guint i;
-      Atom  type_atom;
-
-      type_atom = meta_display_get_atom (display,
-                                         META_ATOM__NET_WM_WINDOW_TYPE);
-
-      for (l = children, i = 0; i < n_children; ++l, ++i)
-        {
-          unsigned long  n_items, ret_bytes;
-          Atom           ret_type;
-          int            ret_format;
-          int            result;
-          Atom          *type;
-
-          gdk_error_trap_push ();
-
-          result = XGetWindowProperty (xdpy, *l, type_atom, 0, 8192, False,
-                                       XA_ATOM, &ret_type, &ret_format,
-                                       &n_items, &ret_bytes,
-                                       (unsigned char**)&type);
-
-          if (!gdk_error_trap_pop () && result == Success && type)
-            {
-              if (*type == desktop_atom)
-                have_desktop = TRUE;
-
-              XFree (type);
-            }
-
-          if (have_desktop)
-            break;
-        }
-
-      XFree (children);
-    }
-
-  if (!have_desktop)
-    {
-      /*
-       * Create a dummy desktop window.
-       */
-      Window               dwin;
-      XSetWindowAttributes attr;
-
-      attr.event_mask = ExposureMask;
-
-      dwin = XCreateWindow (xdpy,
-                            RootWindow (xdpy,
-                                        meta_screen_get_screen_number (screen)),
-                            0, 0, 1, 1, 0,
-                            CopyFromParent, InputOnly, CopyFromParent,
-                            CWEventMask, &attr);
-
-      XChangeProperty (xdpy, dwin,
-                       meta_display_get_atom (display,
-                                              META_ATOM__NET_WM_WINDOW_TYPE),
-                       XA_ATOM, 32, PropModeReplace,
-                       (unsigned char *) &desktop_atom,
-                       1);
-
-      XMapWindow (xdpy, dwin);
-    }
 
   /* FIXME: pull image from theme, css ? */
   priv->desktop_tex = clutter_texture_new_from_file
@@ -1778,10 +1686,10 @@ setup_desktop_background (MutterPlugin *plugin)
                     NULL);
 #endif
       clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), priv->desktop_tex);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                   priv->desktop_tex);
       clutter_actor_lower_bottom (priv->desktop_tex);
     }
-
 }
 
 /*
