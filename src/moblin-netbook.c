@@ -1125,28 +1125,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
   type = mutter_window_get_window_type (mcw);
 
-  if (type == META_COMP_WINDOW_DESKTOP && priv->desktop_tex != NULL )
-    {
-      /*
-       * We rely here on MutterWindow being a simple container (which it is,
-       * just a ClutterGroup subclass); we simply insert our desktop texture at
-       * the very to of its children stack (we will be painting the actual glx
-       * texture that the MutterWindow contains unnecessarily, but then the fake
-       * desktop window we use is only 1x1 px.
-       */
-      ClutterActor *bg_clone;
-      gfloat width, height;
-
-      clutter_actor_get_size (priv->desktop_tex, &width, &height);
-      bg_clone = clutter_clone_new (priv->desktop_tex);
-      clutter_actor_set_size (bg_clone, width, height);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (actor), bg_clone);
-
-      mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-      return;
-    }
-
   /*
    * The OR test must come first, since GTK_WINDOW_POPUP type windows are
    * both override redirect, but also have a _NET_WM_WINDOW_TYPE set to NORMAL
