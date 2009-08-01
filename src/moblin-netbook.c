@@ -1267,7 +1267,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           g_object_get (mw, "fullscreen", &fullscreen, NULL);
 
-          if (((pid = meta_window_get_net_wm_pid (mw)) >= 0) &&
+          if (((pid = meta_window_get_pid (mw)) >= 0) &&
               ((binary = pid_to_binary_name (pid))))
             {
               guint hash = g_str_hash (binary);
@@ -1375,7 +1375,7 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
       if (wm_class && wm_name &&
           !strcmp (wm_class, "Skype") && strstr (wm_name, "Skype™"))
         {
-          gint pid = meta_window_get_net_wm_pid (meta_win);
+          gint pid = meta_window_get_pid (meta_win);
 
           if (pid)
             {
