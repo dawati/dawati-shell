@@ -252,7 +252,9 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
   if (G_UNLIKELY (!frame))
     {
-      ClutterActor *parent;
+      MetaScreen   *screen = mutter_plugin_get_screen (plugin);
+      ClutterActor *stage  = mutter_get_stage_for_screen (screen);
+      ClutterActor *window_group;
 
       desktop = CLUTTER_ACTOR (nbtk_bin_new ());
       clutter_actor_set_name (desktop, "zone-switch-background");
@@ -278,9 +280,10 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
       clutter_container_add_actor (CLUTTER_CONTAINER (desktop), frame);
 
-      parent = mutter_plugin_get_window_group (plugin);
-      clutter_container_add_actor (CLUTTER_CONTAINER (parent), desktop);
+      window_group = mutter_plugin_get_window_group (plugin);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), desktop);
       clutter_actor_hide (desktop);
+      clutter_actor_raise (desktop, window_group);
     }
 
   /*
