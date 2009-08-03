@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-29 09:21+0000\n"
-"PO-Revision-Date: 2009-07-30 15:05-0800\n"
-"Last-Translator: Marcello Napolitano <marcellox.napolitano@intel.com>\n"
+"POT-Creation-Date: 2009-08-01 09:20+0000\n"
+"PO-Revision-Date: 2009-08-03 09:45+0100\n"
+"Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -103,6 +103,65 @@ msgstr "Applicazioni"
 msgid "applications"
 msgstr "applicazioni"
 
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+msgid "Less than a minute ago"
+msgstr "Meno di un minuto fa"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+msgid "A few minutes ago"
+msgstr "Alcuni minuti fa"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+msgid "A couple of hours ago"
+msgstr "Un paio d'ore fa"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+msgid "Earlier today"
+msgstr "Oggi"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+msgid "Yesterday"
+msgstr "Ieri"
+
+# (ndt) giorno della settimana
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#, c-format
+msgid "On %A"
+msgstr "%A"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+msgid "Last week"
+msgstr "La scorsa settimana"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+msgid "A couple of weeks ago"
+msgstr "Un paio di settimane fa"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+msgid "This month"
+msgstr "Questo mese"
+
+#. Now Jan., last used in Dec.
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+msgid "Last month"
+msgstr "Lo scorso mese"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+msgid "This year"
+msgstr "Quest'anno"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+msgid "Last year"
+msgstr "Lo scorso anno"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+msgid "Ages ago"
+msgstr "Anni fa"
+
 # (ndt) spero che quel New tab sia quello che c'è
 # un paio di stringhe dopo...
 #: ../netpanel/src/moblin-netbook-netpanel.c:588
@@ -151,7 +210,7 @@ msgid "Go to %s"
 msgstr "Vai a %s"
 
 # (ndt) pulsante
-#: ../pasteboard/src/mnb-clipboard-item.c:250
+#: ../pasteboard/src/mnb-clipboard-item.c:248
 #: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "Copia"
@@ -199,14 +258,14 @@ msgstr "Questa settimana nessun appuntamento"
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "Una volta attivati gli account personali, qui verranno mostrate le notizie degli amici e i servizi web."
 
-#: ../penge/penge/penge-recent-files-pane.c:201
+#: ../penge/penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Benvenuti in Moblin 2.0 per netbook</b>"
 
 # Edited translation.
-#: ../penge/penge/penge-recent-files-pane.c:226
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
-msgstr "Moblin è un po' diverso rispetto agli altri computer. Abiamo raccolto alcune informazioni per aiutare a comprendere al meglio questa versione Beta. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
+#: ../penge/penge/penge-recent-files-pane.c:227
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Poiché Moblin è un po' diverso rispetto agli altri computer, abiamo raccolto alcune informazioni per aiutare a comprendere al meglio come usarlo. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
 
 #: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -221,79 +280,6 @@ msgstr "Oggi nessuna attività"
 #, c-format
 msgid "Due %x"
 msgstr "In scadenza il %x"
-
-#: ../penge/penge/penge-utils.c:63
-#: ../status/src/mnb-web-status-entry.c:106
-msgid "Less than a minute ago"
-msgstr "Meno di un minuto fa"
-
-#: ../penge/penge/penge-utils.c:67
-#: ../status/src/mnb-web-status-entry.c:110
-msgid "A few minutes ago"
-msgstr "Alcuni minuti fa"
-
-#: ../penge/penge/penge-utils.c:71
-#: ../status/src/mnb-web-status-entry.c:114
-msgid "A couple of hours ago"
-msgstr "Un paio d'ore fa"
-
-#: ../penge/penge/penge-utils.c:78
-#: ../status/src/mnb-web-status-entry.c:121
-msgid "Earlier today"
-msgstr "Oggi"
-
-#: ../penge/penge/penge-utils.c:81
-#: ../status/src/mnb-web-status-entry.c:124
-msgid "Yesterday"
-msgstr "Ieri"
-
-# (ndt) giorno della settimana
-#: ../penge/penge/penge-utils.c:89
-#: ../status/src/mnb-web-status-entry.c:132
-#, c-format
-msgid "On %A"
-msgstr "%A"
-
-#: ../penge/penge/penge-utils.c:95
-#: ../status/src/mnb-web-status-entry.c:138
-msgid "Unknown"
-msgstr "Sconosciuto"
-
-#: ../penge/penge/penge-utils.c:102
-#: ../status/src/mnb-web-status-entry.c:145
-msgid "Last week"
-msgstr "La scorsa settimana"
-
-#: ../penge/penge/penge-utils.c:105
-#: ../status/src/mnb-web-status-entry.c:148
-msgid "A couple of weeks ago"
-msgstr "Un paio di settimane fa"
-
-#: ../penge/penge/penge-utils.c:111
-#: ../status/src/mnb-web-status-entry.c:154
-msgid "This month"
-msgstr "Questo mese"
-
-#. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:115
-#: ../status/src/mnb-web-status-entry.c:158
-msgid "Last month"
-msgstr "Lo scorso mese"
-
-#: ../penge/penge/penge-utils.c:118
-#: ../status/src/mnb-web-status-entry.c:161
-msgid "This year"
-msgstr "Quest'anno"
-
-#: ../penge/penge/penge-utils.c:121
-#: ../status/src/mnb-web-status-entry.c:164
-msgid "Last year"
-msgstr "Lo scorso anno"
-
-#: ../penge/penge/penge-utils.c:123
-#: ../status/src/mnb-web-status-entry.c:166
-msgid "Ages ago"
-msgstr "Anni fa"
 
 #: ../people/src/moblin-panel-people.c:69
 msgid "people"
@@ -452,24 +438,24 @@ msgstr "Modifica"
 msgid "Unknown account"
 msgstr "Account sconosciuto"
 
-#: ../status/src/mnb-web-status-entry.c:178
-#: ../status/src/mnb-web-status-entry.c:731
-#: ../status/src/mnb-web-status-entry.c:812
+#: ../status/src/mnb-web-status-entry.c:86
+#: ../status/src/mnb-web-status-entry.c:639
+#: ../status/src/mnb-web-status-entry.c:720
 msgid "Edit"
 msgstr "Modifica"
 
 #. Translators: %s is the user visible name of the service
-#: ../status/src/mnb-web-status-entry.c:605
+#: ../status/src/mnb-web-status-entry.c:513
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "Scrivere qui il proprio stato per %s..."
 
-#: ../status/src/mnb-web-status-entry.c:609
-#: ../status/src/mnb-web-status-entry.c:682
+#: ../status/src/mnb-web-status-entry.c:517
+#: ../status/src/mnb-web-status-entry.c:590
 msgid "Enter your current status here..."
 msgstr "Scrivere qui il proprio stato..."
 
-#: ../status/src/mnb-web-status-entry.c:791
+#: ../status/src/mnb-web-status-entry.c:699
 msgid "Post"
 msgstr "Pubblica"
 
