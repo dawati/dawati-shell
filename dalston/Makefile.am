@@ -29,6 +29,7 @@ libdalston_la_CFLAGS = -I$(top_srcdir) \
 		       $(NBTK_GTK_CFLAGS) \
 		       $(LIBNOTIFY_CFLAGS) \
 		       $(GCONF_CFLAGS) \
+		       $(MPL_GTK_CFLAGS) \
 		       -DPKG_DATA_DIR=\"$(pkgdatadir)\"
 
 libdalston_la_LIBADD = $(top_builddir)/libhal-glib/libhal-glib.la \
@@ -42,5 +43,7 @@ libdalston_la_LIBADD = $(top_builddir)/libhal-glib/libhal-glib.la \
 		       $(CANBERRA_LIBS) \
 		       $(NBTK_GTK_LIBS) \
 		       $(LIBNOTIFY_LIBS) \
-		       $(GCONF_LIBS)
+		       $(GCONF_LIBS) \
+		       $(MPL_GTK_LIBS)
+
 
