@@ -83,6 +83,8 @@ gchar *mwb_ac_list_get_entry_url (MwbAcList *self, guint entry);
 void mwb_ac_list_increment_tld_score_for_url (MwbAcList *self,
                                               const gchar *url);
 
+GList *mwb_ac_list_get_tld_suggestions (MwbAcList *self);
+
 G_END_DECLS
 
 #endif /* _MWB_AC_LIST_H */

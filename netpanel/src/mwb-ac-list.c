@@ -1845,3 +1845,11 @@ mwb_ac_list_get_entry_url (MwbAcList *self, guint entry)
 
   return g_strdup (g_array_index (priv->entries, MwbAcListEntry, entry).url);
 }
+
+GList *
+mwb_ac_list_get_tld_suggestions (MwbAcList *self)
+{
+  MwbAcListPrivate *priv = self->priv;
+
+  return g_hash_table_get_keys (priv->tld_suggestions);
+}

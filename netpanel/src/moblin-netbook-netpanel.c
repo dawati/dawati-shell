@@ -489,13 +489,28 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
                                     gboolean               user_initiated)
 {
   MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
-  gchar *exec, *esc_url;
+  gchar *exec, *esc_url, *ptr, *remaining;
+  gchar *prefix = g_strdup ("");
 
   /* FIXME: Should not be hard-coded? */
   esc_url = g_strescape (url, NULL);
-  exec = g_strdup_printf ("%s %s \"%s\"", "moblin-web-browser",
+
+  /* Change any % to %% to work around g_app_info_launch */
+  remaining = esc_url;
+  while ((ptr = strchr (remaining, '%')))
+    {
+      gchar *tmp = prefix;
+      *ptr = '\0';
+      prefix = g_strdup_printf ("%s%s%%%%", tmp, remaining);
+      g_free (tmp);
+      *ptr = '%';
+      remaining = ptr + 1;
+    }
+
+  exec = g_strdup_printf ("%s %s \"%s%s\"", "moblin-web-browser",
                           user_initiated ? "-I" : "",
-                          esc_url);
+                          prefix, remaining);
+  g_free (prefix);
 
   if (priv->panel_client)
     {
@@ -1126,15 +1141,20 @@ netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
                     const gchar           *url,
                     MoblinNetbookNetpanel *self)
 {
-  if (url)
+  if (!url)
+    return;
+
+  while (*url == ' ')
+    url++;
+
+  if (*url == '\0')
     {
-      while (*url == ' ')
-        url++;
-      if (*url == '\0')
-        mpl_entry_set_text (MPL_ENTRY (netpanel_bar), "");
-      else
-        moblin_netbook_netpanel_launch_url (self, url, TRUE);
+      mpl_entry_set_text (MPL_ENTRY (netpanel_bar), "");
+      return;
     }
+
+  if (!mnb_netpanel_bar_check_for_search (netpanel_bar, url))
+    moblin_netbook_netpanel_launch_url (self, url, TRUE);
 }
 
 static void

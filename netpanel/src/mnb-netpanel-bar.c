@@ -506,3 +506,47 @@ mnb_netpanel_bar_focus (MnbNetpanelBar *self)
   mwb_utils_focus_on_click_cb (actor, NULL, GINT_TO_POINTER (TRUE));
   mnb_netpanel_bar_select_all (self);
 }
+
+gboolean
+mnb_netpanel_bar_check_for_search (MnbNetpanelBar *self, const gchar *url)
+{
+  /* If we have search enabled in the radical bar and this looks like
+   * it isn't a valid URL, search for it.
+   * FIXME: We should do this *after* finding it's not valid really, but
+   * this should be fine 99.9% of the time. Revisit when someone reports
+   * an error.
+   * Current logic is to search for URLs entered with
+   * no slash, a space and no top-level-domain.
+   */
+  if (!strstr (url, "/") && strchr (url, ' '))
+    {
+      gboolean has_tld = FALSE;
+      GList *t, *tlds;
+      MwbAcList *ac_list = MWB_AC_LIST (self->priv->ac_list);
+
+      /* For netpanel, search is always enabled, don't need to check */
+
+      tlds = mwb_ac_list_get_tld_suggestions (ac_list);
+      for (t = tlds; t; t = t->next)
+        {
+          const gchar *tld_string = (const gchar *)t->data;
+          if (strstr (url, tld_string))
+            {
+              has_tld = TRUE;
+              break;
+            }
+        }
+      g_list_free (tlds);
+
+      if (!has_tld)
+        {
+          /* Perform a search */
+          mwb_ac_list_set_search_text (ac_list, url);
+          mwb_ac_list_set_selection (ac_list, 0);
+          g_signal_emit_by_name (ac_list, "activate");
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
