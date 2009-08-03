@@ -40,7 +40,8 @@ G_DEFINE_TYPE (DalstonPowerApplet, dalston_power_applet, G_TYPE_OBJECT)
 typedef struct _DalstonPowerAppletPrivate DalstonPowerAppletPrivate;
 
 struct _DalstonPowerAppletPrivate {
-  GtkStatusIcon *status_icon;
+  MplPanelClient *panel_client;
+
   DalstonBatteryMonitor *battery_monitor;
   DalstonBrightnessManager *brightness_manager;
 
@@ -101,11 +102,22 @@ static const gchar *icon_names[] = {
 #define BATTERY_IMAGE_STATE_CHARGE_100     "dalston-power-full.png"
 
 
+enum
+{
+  PROP_0,
+  PROP_PANEL_CLIENT
+};
+
 static void
 dalston_power_applet_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  DalstonPowerAppletPrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_PANEL_CLIENT:
+      g_value_set_object (value, priv->panel_client);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -115,7 +127,12 @@ static void
 dalston_power_applet_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
+  DalstonPowerAppletPrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_PANEL_CLIENT:
+      priv->panel_client = g_value_dup_object (value);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -124,6 +141,14 @@ dalston_power_applet_set_property (GObject *object, guint property_id,
 static void
 dalston_power_applet_dispose (GObject *object)
 {
+  DalstonPowerAppletPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->panel_client)
+  {
+    g_object_unref (priv->panel_client);
+    priv->panel_client = NULL;
+  }
+
   G_OBJECT_CLASS (dalston_power_applet_parent_class)->dispose (object);
 }
 
@@ -137,6 +162,7 @@ static void
 dalston_power_applet_class_init (DalstonPowerAppletClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (DalstonPowerAppletPrivate));
 
@@ -144,6 +170,13 @@ dalston_power_applet_class_init (DalstonPowerAppletClass *klass)
   object_class->set_property = dalston_power_applet_set_property;
   object_class->dispose = dalston_power_applet_dispose;
   object_class->finalize = dalston_power_applet_finalize;
+
+  pspec = g_param_spec_object ("panel-client",
+                               "Panel client",
+                               "The panel client",
+                               MPL_TYPE_PANEL_CLIENT,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_PANEL_CLIENT, pspec);
 }
 
 static gchar *
@@ -274,7 +307,6 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   DalstonBatteryMonitorState state;
   gboolean ac_connected = FALSE;
   gchar *label_text;
-  BatteryIconState icon_state;
   static gint last_notification_displayed = -1;
   gchar *description;
 
@@ -289,28 +321,20 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 
   if (ac_connected)
   {
-    icon_state = BATTERY_ICON_STATE_AC_CONNECTED;
+    mpl_panel_client_request_button_style (priv->panel_client, "state-plugged");
   } else if (percentage < 0) {
-    icon_state = BATTERY_ICON_STATE_UNKNOWN;
+    mpl_panel_client_request_button_style (priv->panel_client, "state-missing");
   } else if (percentage < 20) {
-    icon_state = BATTERY_ICON_STATE_CHARGE_0;
+    mpl_panel_client_request_button_style (priv->panel_client, "state-empty");
   } else if (percentage >= 20 && percentage < 35) {
-    icon_state = BATTERY_ICON_STATE_CHARGE_25;
-  } else if (percentage >= 35 && percentage < 60){
-    icon_state = BATTERY_ICON_STATE_CHARGE_50;
+    mpl_panel_client_request_button_style (priv->panel_client, "state-25");
+  } else if (percentage >= 35 && percentage < 60) {
+    mpl_panel_client_request_button_style (priv->panel_client, "state-50");
   } else if (percentage >= 60 && percentage < 90){
-    icon_state = BATTERY_ICON_STATE_CHARGE_75;
+    mpl_panel_client_request_button_style (priv->panel_client, "state-75");
   } else {
-    icon_state = BATTERY_ICON_STATE_CHARGE_100;
+    mpl_panel_client_request_button_style (priv->panel_client, "state-full");
   }
-
-  if (priv->active)
-  {
-    icon_state++;
-  }
-
-  gtk_status_icon_set_from_file (priv->status_icon,
-                                 icon_names[icon_state]);
 
   if (percentage < 0) {
     gtk_image_set_from_file (GTK_IMAGE(priv->battery_image),
@@ -451,14 +475,6 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   priv->brightness_manager = g_object_new (DALSTON_TYPE_BRIGHTNESS_MANAGER,
                                            NULL);
 
-  /* The status icon that will go into the toolbar */
-  priv->status_icon = gtk_status_icon_new ();
-
-#if 0
-  gtk_status_icon_set_from_icon_name (priv->status_icon,
-                                      BATTERY_ICON_STATE_UNKNOWN);
-#endif
-
   /* Create the pane hbox */
   priv->main_hbox = gtk_hbox_new (FALSE, 4);
   gtk_container_set_border_width (GTK_CONTAINER (priv->main_hbox), 4);
@@ -562,17 +578,12 @@ dalston_power_applet_init (DalstonPowerApplet *self)
 }
 
 DalstonPowerApplet *
-dalston_power_applet_new (void)
+dalston_power_applet_new (MplPanelClient *panel_client)
 {
-  return g_object_new (DALSTON_TYPE_POWER_APPLET, NULL);
-}
-
-GtkStatusIcon *
-dalston_power_applet_get_status_icon (DalstonPowerApplet *applet)
-{
-  DalstonPowerAppletPrivate *priv = GET_PRIVATE (applet);
-
-  return priv->status_icon;
+  return g_object_new (DALSTON_TYPE_POWER_APPLET,
+                       "panel-client",
+                       panel_client,
+                       NULL);
 }
 
 GtkWidget *

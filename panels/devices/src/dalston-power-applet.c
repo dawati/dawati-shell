@@ -39,10 +39,8 @@ main (int    argc,
       char **argv)
 {
   DalstonPowerApplet *power_applet;
-  GtkStatusIcon *status_icon;
   GtkWidget *pane;
   GtkWidget *window;
-  GdkScreen *screen;
   GtkSettings *settings;
   MplPanelClient *panel_client;
 
@@ -60,9 +58,6 @@ main (int    argc,
                                     "Moblin-Netbook",
                                     NULL);
 
-  /* Power applet */
-  power_applet = dalston_power_applet_new ();
-
   panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
                                     _("power & brightness"),
                                     PKG_THEMEDIR "/power-applet.css",
@@ -70,7 +65,10 @@ main (int    argc,
                                     TRUE);
   mpl_panel_client_set_height_request (panel_client, 200);
 
-  window = mpl_panel_gtk_get_window (panel_client);
+  /* Power applet */
+  power_applet = dalston_power_applet_new (panel_client);
+
+  window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
   pane = dalston_power_applet_get_pane (power_applet);
   gtk_container_add (GTK_CONTAINER (window), pane);
   gtk_widget_show (window);
