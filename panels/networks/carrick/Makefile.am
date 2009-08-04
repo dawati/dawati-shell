@@ -1,3 +1,8 @@
+# connman-marshal defines the marshalling code used for the signals sourced
+# by ConnMan
+MARSHALFILES = connman-marshal.c connman-marshal.h
+BUILT_SOURCES = $(MARSHALFILES)
+
 noinst_LTLIBRARIES = \
                         libcarrick.la
 
@@ -15,6 +20,8 @@ libcarrick_la_SOURCES = carrick-applet.c \
                         carrick-list.h \
 			carrick-notification-manager.c \
 			carrick-notification-manager.h \
+			carrick-network-model.c \
+			carrick-network-model.h \
                         $(NULL)
 
 libcarrick_la_CFLAGS =  -Wall \
@@ -28,5 +35,14 @@ libcarrick_la_LIBADD = $(GCONNMAN_LIBS) \
                        $(GTK_LIBS) \
                        $(NBTK_LIBS) \
                        $(LIBNOTIFY_LIBS)
+
+connman-marshal.c: connman-marshal.list Makefile
+	glib-genmarshal --prefix=connman_marshal --body $< > $@
+
+connman-marshal.h: connman-marshal.list Makefile
+	glib-genmarshal --prefix=connman_marshal --header $< > $@
+
+DISTCLEANFILES = $(MARSHALFILES)
+EXTRA_DIST = connman-marshal.list
 
 -include $(top_srcdir)/git.mk
