@@ -125,10 +125,7 @@ main (int    argc,
                       NULL);
     gtk_container_add (GTK_CONTAINER (plug),
                        pane);
-    screen = gtk_widget_get_screen (plug);
-    gtk_widget_set_size_request (GTK_WIDGET (plug),
-                                 gdk_screen_get_width (screen) - 8,
-                                 450);
+
     gtk_widget_show (plug);
   }
 
