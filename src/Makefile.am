@@ -13,8 +13,6 @@ moblin_netbook_la_SOURCES  = \
 				mnb-scale-group.h               \
 				moblin-netbook.c		\
 				moblin-netbook.h		\
-				moblin-netbook-chooser.c	\
-				moblin-netbook-chooser.h	\
 				moblin-netbook-tray-manager.c	\
 				moblin-netbook-tray-manager.h	\
 				moblin-netbook-notify-store.c   \

@@ -89,16 +89,6 @@ struct _MoblinNetbookPluginPrivate
 
   gboolean               holding_focus : 1;
 
-  /*
-   * Startup Notification
-   *
-   * TODO -- make the chooser into an object and keep all of this in there.
-   */
-  SnDisplay             *sn_display;
-  SnMonitorContext      *sn_context;
-  GHashTable            *sn_hash;
-  GHashTable            *sn_binary_hash;
-
   /* Background desktop texture */
   ClutterActor          *desktop_tex;
 
@@ -173,10 +163,5 @@ moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin);
 
 MutterPlugin *
 moblin_netbook_get_plugin_singleton (void);
-
-gboolean
-moblin_netbook_is_application_running (MutterPlugin  *plugin,
-                                       const gchar   *binary,
-                                       MutterWindow **app_window);
 
 #endif

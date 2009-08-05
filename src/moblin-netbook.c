@@ -27,7 +27,6 @@
 #endif
 
 #include "moblin-netbook.h"
-#include "moblin-netbook-chooser.h"
 #include "mnb-drop-down.h"
 #include "mnb-switcher.h"
 #include "mnb-toolbar.h"
@@ -56,7 +55,6 @@
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
 static MutterPlugin *plugin_singleton = NULL;
-static GQuark binary_name_quark = 0;
 
 /* callback data for when animations complete */
 typedef struct
@@ -313,8 +311,6 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   setup_focus_window (MUTTER_PLUGIN (plugin));
 
-  moblin_netbook_sn_setup (MUTTER_PLUGIN (plugin));
-
   /* Notifications */
   notify_store = moblin_netbook_notify_store_new ();
 
@@ -422,8 +418,6 @@ moblin_netbook_plugin_init (MoblinNetbookPlugin *self)
   bindtextdomain (GETTEXT_PACKAGE, PLUGIN_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
-
-  binary_name_quark = g_quark_from_static_string ("MNB-binary-name");
 }
 
 /*
@@ -615,6 +609,86 @@ unmaximize (MutterPlugin *plugin, MutterWindow *mcw,
 
   /* Do this conditionally, if the effect requires completion callback. */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_UNMAXIMIZE);
+}
+
+static void
+moblin_netbook_move_window_to_workspace (MutterWindow *mcw,
+                                         gint          workspace_index,
+                                         guint32       timestamp)
+{
+  MetaWindow  *mw      = mutter_window_get_meta_window (mcw);
+  MetaScreen  *screen  = meta_window_get_screen (mw);
+
+  g_return_if_fail (mw && workspace_index > -2);
+
+  if (mw)
+    {
+      MetaWorkspace * active_workspace;
+      MetaWorkspace * workspace = meta_window_get_workspace (mw);
+      gint            active_index = -2;
+
+      active_workspace = meta_screen_get_active_workspace (screen);
+
+      if (active_workspace)
+        active_index = meta_workspace_index (active_workspace);
+
+      /*
+       * Move the window to the requested workspace; if the window is not
+       * sticky, activate the workspace as well.
+       */
+      meta_window_change_workspace_by_index (mw, workspace_index, TRUE,
+                                             timestamp);
+
+      if (workspace_index == active_index)
+        {
+          meta_window_activate_with_workspace (mw, timestamp, workspace);
+        }
+      else if (workspace_index > -1)
+        {
+          MetaWorkspace *workspace;
+
+          workspace =
+            meta_screen_get_workspace_by_index (screen,
+                                                workspace_index);
+
+          if (workspace)
+            meta_workspace_activate_with_focus (workspace, mw, timestamp);
+        }
+    }
+}
+
+static void
+moblin_netbook_move_window_to_new_workspace (MutterPlugin *plugin,
+                                             MutterWindow *mcw,
+                                             guint32       timestamp)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  gint index;
+  gint n_workspaces;
+  gboolean append = TRUE;
+
+  n_workspaces = meta_screen_get_n_workspaces (screen);
+
+  if (n_workspaces >= MAX_WORKSPACES)
+    {
+      index = MAX_WORKSPACES - 1;
+      append = FALSE;
+    }
+  else
+    {
+      index = n_workspaces;
+    }
+
+  if (append)
+    {
+      if (!meta_screen_append_new_workspace (screen, FALSE, timestamp))
+        {
+          g_warning ("Unable to append new workspace\n");
+          return;
+        }
+    }
+
+  moblin_netbook_move_window_to_workspace (mcw, index, timestamp);
 }
 
 static void
@@ -905,45 +979,6 @@ meta_window_fullcreen_notify_cb (GObject    *object,
     fullscreen_app_removed (priv, ws_index);
 }
 
-/*
- * Returns the executable name for given pid.
- */
-static gchar *
-pid_to_binary_name (gint pid)
-{
-  gchar * cmd_f;
-  FILE  * fcmd;
-
-  if (pid <= 0)
-    return NULL;
-
-  cmd_f = g_strdup_printf ("/proc/%d/cmdline", pid);
-  fcmd  = fopen (cmd_f, "r");
-
-  g_free (cmd_f);
-
-  if (fcmd)
-    {
-      gchar buf[256];
-      if (fgets (buf, sizeof (buf), fcmd))
-        {
-          /*
-           * 0-terminate at first whitespace.
-           */
-          gchar *n = &buf[0];
-          while ((n < &buf[0] + sizeof(buf) - 1) && *n && !g_ascii_isspace (*n))
-            ++n;
-
-          *n = 0;
-
-          return g_path_get_basename (buf);
-        }
-
-      fclose (fcmd);
-    }
-
-  return NULL;
-}
 
 /*
  * Temporary cludge to facilitate some rudimentary IM functionality
@@ -1254,28 +1289,12 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (mw)
         {
-          gboolean    fullscreen, modal = FALSE;
-          const char *sn_id = meta_window_get_startup_id (mw);
-          gint        pid;
-          gchar      *binary;
-
-          if (!moblin_netbook_sn_should_map (plugin, mcw, sn_id))
-            return;
+          gboolean fullscreen, modal = FALSE;
 
           if (type == META_COMP_WINDOW_MODAL_DIALOG)
             modal = TRUE;
 
           g_object_get (mw, "fullscreen", &fullscreen, NULL);
-
-          if (((pid = meta_window_get_pid (mw)) >= 0) &&
-              ((binary = pid_to_binary_name (pid))))
-            {
-              guint hash = g_str_hash (binary);
-
-              g_object_set_qdata (G_OBJECT (mcw), binary_name_quark,
-                                  GINT_TO_POINTER (hash));
-              g_free (binary);
-            }
 
           if (fullscreen)
             {
@@ -1296,6 +1315,19 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           /* Hide toolbar etc in presence of modal dialog */
           if (modal == TRUE)
             clutter_actor_hide (priv->toolbar);
+        }
+
+      if (type == META_COMP_WINDOW_NORMAL)
+        {
+          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+          MetaDisplay *display = meta_screen_get_display (screen);
+          guint32      timestamp;
+
+          timestamp = meta_display_get_current_time_roundtrip (display);
+
+          moblin_netbook_move_window_to_new_workspace (plugin,
+                                                       mcw,
+                                                       timestamp);
         }
 
       /*
@@ -1555,8 +1587,6 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
       return TRUE;
     }
-
-  sn_display_process_event (priv->sn_display, xev);
 
   if (xev->type == KeyPress || xev->type == KeyRelease)
     {
@@ -1913,42 +1943,3 @@ moblin_netbook_get_plugin_singleton (void)
   return plugin_singleton;
 }
 
-/*
- * Check whether application is running
- *
- * If the application is running, and app_window is not NULL, pointer to the
- * application window is returned.
- */
-gboolean
-moblin_netbook_is_application_running (MutterPlugin  *plugin,
-                                       const gchar   *binary,
-                                       MutterWindow **app_window)
-{
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
-  GList      *l;
-  guint       hash;
-
-  hash = g_str_hash (binary);
-
-  l = mutter_get_windows (screen);
-
-  while (l)
-    {
-      MutterWindow *m = l->data;
-      guint         h;
-
-      if ((h = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (m),
-                                                    binary_name_quark))) &&
-          h == hash)
-        {
-          if (app_window)
-            *app_window = m;
-
-          return TRUE;
-        }
-
-      l = l->next;
-    }
-
-  return FALSE;
-}

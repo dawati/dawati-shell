@@ -43,11 +43,6 @@
 #include "mnb-drop-down.h"
 #include "mnb-switcher.h"
 
-/* for the launching API;
- * TODO -- refactor & namespace that
- */
-#include "moblin-netbook-chooser.h"
-
 /* For systray windows stuff */
 #include <gdk/gdkx.h>
 
