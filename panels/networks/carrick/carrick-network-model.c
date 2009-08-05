@@ -226,7 +226,6 @@ network_model_have_service_in_store (GtkListStore *store,
   return found;
 }
 
-  gchar *icon = NULL;
 static gboolean
 network_model_have_service_by_path (GtkListStore *store,
 				    GtkTreeIter  *iter,
