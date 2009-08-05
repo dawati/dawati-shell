@@ -84,11 +84,11 @@ main (int argc, char **argv)
   GtkWidget *scrolled;
   GError *error = NULL;
 
-  gtk_init (&argc, &argv);
   if (!g_thread_supported ())
   {
     g_thread_init (NULL);
   }
+  gtk_init (&argc, &argv);
   dbus_g_thread_init ();
 
   dbus_g_object_register_marshaller (connman_marshal_VOID__STRING_BOXED,
