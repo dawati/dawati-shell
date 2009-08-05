@@ -43,6 +43,8 @@
 #define CELL_WIDTH  223
 #define CELL_HEIGHT 111
 
+#define START_PAGE "chrome://mwbpages/content/startpage.xhtml"
+
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_WIDGET)
 
 #define NETPANEL_PRIVATE(o) \
@@ -529,9 +531,7 @@ static void
 new_tab_clicked_cb (NbtkWidget *button, MoblinNetbookNetpanel *self)
 {
   /* FIXME: remove hardcoded start path */
-  moblin_netbook_netpanel_launch_url (self,
-                                      "chrome://mwbpages/content/startpage.xhtml",
-                                      FALSE);
+  moblin_netbook_netpanel_launch_url (self, START_PAGE, FALSE);
 }
 
 static void
@@ -618,6 +618,9 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
   GError *error = NULL;
   NbtkWidget *button, *label;
   gchar *path;
+
+  if (!title && !strcmp (url, START_PAGE))
+    title = _("New tab");
 
   path = mpl_utils_get_thumbnail_path (url);
 
@@ -859,8 +862,15 @@ load_session (MoblinNetbookNetpanel *self, MnbNetpanelScrollview *scrollview)
 
       if (url)
         {
-          NbtkWidget *button = add_thumbnail_to_scrollview (scrollview,
-                                                            url, title);
+          NbtkWidget *button;
+
+          if (!strcmp (url, "NULL") || (url[0] == '\0'))
+            {
+              g_free (url);
+              url = g_strdup (START_PAGE);
+            }
+
+          button = add_thumbnail_to_scrollview (scrollview, url, title);
 
           g_object_set_data (G_OBJECT (button), "url", url);
           g_signal_connect (button, "clicked",
