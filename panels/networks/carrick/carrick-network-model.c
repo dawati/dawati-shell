@@ -492,6 +492,13 @@ network_model_update_property (const gchar *property,
                                      (network_model_service_changed_cb),
                                      self,
                                      NULL);
+
+        call = dbus_g_proxy_begin_call (service,
+                                        "GetProperties",
+					network_model_service_get_properties_cb,
+					self,
+					NULL,
+					G_TYPE_INVALID);
       }
       /* else update it */
       else
@@ -501,12 +508,6 @@ network_model_update_property (const gchar *property,
                             -1);
       }
 
-      call = dbus_g_proxy_begin_call (service,
-                                      "GetProperties",
-                                      network_model_service_get_properties_cb,
-                                      self,
-                                      NULL,
-                                      G_TYPE_INVALID);
 
       index++;
     }
