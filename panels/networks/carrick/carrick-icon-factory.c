@@ -145,94 +145,10 @@ carrick_icon_factory_new (void)
 {
   return g_object_new (CARRICK_TYPE_ICON_FACTORY, NULL);
 }
-
-CarrickIconState
-carrick_icon_factory_get_state_for_service (CmService *service)
-{
-  CarrickIconState icon_state = ICON_OFFLINE;
-  guint  strength;
-  const gchar *type;
-
-  if (service)
-  {
-    strength = cm_service_get_strength (service);
-    type = cm_service_get_type (service);
-  }
-  else
-  {
-    strength = 0;
-    type = NULL;
-  }
-
-  if (g_strcmp0 ("failure", cm_service_get_state (service)) == 0)
-  {
-    icon_state = ICON_ERROR;
-  }
-
-  if (type)
-  {
-    if (g_strcmp0 ("ethernet", type) == 0)
-    {
-      icon_state = ICON_ACTIVE;
-    }
-    else if (g_strcmp0 ("wifi", type) == 0)
-    {
-      if (strength > 70)
-        icon_state = ICON_WIRELESS_STRONG;
-      else if (strength > 35)
-        icon_state = ICON_WIRELESS_GOOD;
-      else
-        icon_state = ICON_WIRELESS_WEAK;
-    }
-    else if (g_strcmp0 ("wimax", type) == 0)
-    {
-      if (strength > 50)
-      {
-        icon_state = ICON_WIMAX_STRONG;
-      }
-      else
-      {
-        icon_state = ICON_WIMAX_WEAK;
-      }
-    }
-    else if (g_strcmp0 ("cellular", type) == 0)
-    {
-      if (strength > 50)
-      {
-        icon_state = ICON_3G_STRONG;
-      }
-      else
-      {
-        icon_state = ICON_3G_WEAK;
-      }
-    }
-    else if (g_strcmp0 ("bluetooth", type) == 0)
-    {
-      if (strength > 50)
-      {
-        icon_state = ICON_BLUETOOTH_STRONG;
-      }
-      else
-      {
-        icon_state = ICON_BLUETOOTH_WEAK;
-      }
-    }
-  }
-
-  return icon_state;
-}
-
 const gchar *
 carrick_icon_factory_get_path_for_state (CarrickIconState state)
 {
   return icon_names[state];
-}
-
-const gchar *
-carrick_icon_factory_get_path_for_service (CmService *service)
-{
-  CarrickIconState state = carrick_icon_factory_get_state_for_service (service);
-  return carrick_icon_factory_get_path_for_state (state);
 }
 
 GdkPixbuf *
@@ -498,16 +414,4 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
   }
 
   return icon;
-}
-
-GdkPixbuf *
-carrick_icon_factory_get_pixbuf_for_service (CarrickIconFactory *factory,
-                                             CmService          *service)
-{
-  CarrickIconState icon_state;
-
-  icon_state = carrick_icon_factory_get_state_for_service (service) + 1;
-
-  return carrick_icon_factory_get_pixbuf_for_state (factory,
-                                                    icon_state);
 }
