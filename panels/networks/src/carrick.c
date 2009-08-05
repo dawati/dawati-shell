@@ -25,7 +25,6 @@
 
 #include <carrick/carrick-applet.h>
 #include <carrick/carrick-pane.h>
-#include <carrick/carrick-status-icon.h>
 #include "moblin-netbook-system-tray.h"
 
 #include <config.h>
@@ -38,7 +37,6 @@ _plug_notify_embedded (GObject    *object,
                        gpointer    user_data)
 {
   CarrickApplet *applet = CARRICK_APPLET (user_data);
-  CarrickStatusIcon *icon = CARRICK_STATUS_ICON (carrick_applet_get_icon (applet));
   CarrickPane *pane = CARRICK_PANE (carrick_applet_get_pane (applet));
 
   gboolean embedded;
@@ -48,7 +46,6 @@ _plug_notify_embedded (GObject    *object,
                 &embedded,
                 NULL);
 
-  carrick_status_icon_set_active (icon, embedded);
   if (embedded)
   {
     carrick_pane_update (pane);
@@ -60,7 +57,6 @@ main (int    argc,
       char **argv)
 {
   CarrickApplet *applet;
-  GtkWidget     *icon;
   GtkWidget     *pane;
   GdkScreen     *screen;
   GtkWidget     *plug;
@@ -99,7 +95,6 @@ main (int    argc,
   pane = carrick_applet_get_pane (applet);
   if (!standalone)
   {
-    icon = carrick_applet_get_icon (applet);
     plug = gtk_plug_new (0);
     g_signal_connect (plug,
                       "notify::embedded",
@@ -108,7 +103,7 @@ main (int    argc,
 
     gtk_container_add (GTK_CONTAINER (plug),
                        pane);
-    mnbk_system_tray_init (GTK_STATUS_ICON (icon),
+    mnbk_system_tray_init (NULL,
                            GTK_PLUG (plug),
                            "wifi");
     screen = gtk_widget_get_screen (plug);

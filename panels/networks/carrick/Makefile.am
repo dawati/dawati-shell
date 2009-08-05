@@ -14,8 +14,6 @@ libcarrick_la_SOURCES = carrick-applet.c \
                         carrick-icon-factory.h \
                         carrick-service-item.c \
                         carrick-service-item.h \
-                        carrick-status-icon.c \
-                        carrick-status-icon.h \
                         carrick-list.c \
                         carrick-list.h \
 			carrick-notification-manager.c \
