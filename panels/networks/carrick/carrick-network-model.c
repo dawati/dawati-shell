@@ -105,18 +105,6 @@ carrick_network_model_set_property (GObject      *object,
 }
 
 static void
-carrick_network_model_dispose (GObject *object)
-{
-  G_OBJECT_CLASS (carrick_network_model_parent_class)->dispose (object);
-}
-
-static void
-carrick_network_model_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (carrick_network_model_parent_class)->finalize (object);
-}
-
-static void
 carrick_network_model_class_init (CarrickNetworkModelClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -125,8 +113,6 @@ carrick_network_model_class_init (CarrickNetworkModelClass *klass)
 
   object_class->get_property = carrick_network_model_get_property;
   object_class->set_property = carrick_network_model_set_property;
-  object_class->dispose = carrick_network_model_dispose;
-  object_class->finalize = carrick_network_model_finalize;
 
   g_object_class_install_property (object_class,
                                    PROP_MANAGER,
