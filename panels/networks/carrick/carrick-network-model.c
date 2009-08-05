@@ -468,10 +468,6 @@ network_model_update_property (const gchar *property,
                                            CONNMAN_SERVICE, path,
                                            CONNMAN_SERVICE_INTERFACE);
 
-      /* If no service proxy skip to next service */
-      if (!service)
-        continue;
-
       /* if we don't have the service in the model, add it*/
       if (network_model_have_service_by_proxy (store, &iter, service) == FALSE)
       {
