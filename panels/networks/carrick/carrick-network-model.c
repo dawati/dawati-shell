@@ -34,7 +34,7 @@ struct _CarrickNetworkModelPrivate
 {
   DBusGConnection *connection;
   DBusGProxy *manager;
-  GSList *services;
+  GList *services;
 };
 
 enum
@@ -177,11 +177,11 @@ static void
 network_model_iterate_services (const GValue *value,
                                 gpointer      user_data)
 {
-  GSList **services = user_data;
+  GList **services = user_data;
   gchar *path = g_value_dup_boxed (value);
 
   if (path != NULL)
-    *services = g_slist_append (*services, path);
+    *services = g_list_append (*services, path);
 }
 
 static gboolean
@@ -405,10 +405,10 @@ network_model_update_property (const gchar *property,
   CarrickNetworkModel *self = user_data;
   CarrickNetworkModelPrivate *priv = self->priv;
   GtkListStore *store = GTK_LIST_STORE (self);
-  GSList *new_services = NULL;
-  GSList *old_services = NULL;
-  GSList *list_iter = NULL;
-  GSList *tmp = NULL;
+  GList *new_services = NULL;
+  GList *old_services = NULL;
+  GList *list_iter = NULL;
+  GList *tmp = NULL;
   GtkTreeIter iter;
   DBusGProxyCall *call = NULL;
   gchar *path = NULL;
@@ -434,12 +434,12 @@ network_model_update_property (const gchar *property,
       /* Remove from old list, if present.
        * We only want stale services in old list
        */
-      tmp = g_slist_find_custom (old_services,
-                                 path,
-                                 (GCompareFunc) g_strcmp0);
+      tmp = g_list_find_custom (old_services,
+                                path,
+                                (GCompareFunc) g_strcmp0);
       if (tmp)
       {
-        old_services = g_slist_delete_link (old_services, tmp);
+        old_services = g_list_delete_link (old_services, tmp);
       }
 
       /* if we don't have the service in the model, add it*/
@@ -500,7 +500,7 @@ network_model_update_property (const gchar *property,
 
       g_free (path);
     }
-    g_slist_free (old_services);
+    g_list_free (old_services);
   }
 }
 
