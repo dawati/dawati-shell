@@ -1,0 +1,318 @@
+# Dutch translation of carrick-ng.
+# Copyright (C) 2009 THE carrick-ng'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the carrick-ng package.
+# Auke Kok <auke-jan.h.kok@intel.com>, 2009.
+# , fuzzy
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: carrick-ng moblin2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-04 02:39+0000\n"
+"PO-Revision-Date: 2009-08-04 13:38-0700\n"
+"Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
+"Language-Team: Dutch\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: ../carrick/carrick-pane.c:414
+msgid "New connection settings"
+msgstr "Nieuwe verbinding instellingen"
+
+#: ../carrick/carrick-pane.c:450
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+"Geef de naam op van het netwerk dat je\n"
+"mee wil verbinden en, waar nodig, het\n"
+"wachtwoord en beveiligings type."
+
+#: ../carrick/carrick-pane.c:460
+msgid "Network name"
+msgstr "Netwerk naam"
+
+#: ../carrick/carrick-pane.c:472
+msgid "Network security"
+msgstr "Netwerk beveiliging"
+
+#: ../carrick/carrick-pane.c:482
+msgid "None"
+msgstr "Geen"
+
+#: ../carrick/carrick-pane.c:496
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: ../carrick/carrick-pane.c:511 ../carrick/carrick-service-item.c:1036
+msgid "Show password"
+msgstr "Geef wachtwoord weer"
+
+#.
+#. * Hint to display when we detect that the connection manager
+#. * is dead.  Ideally the system auto-restarts connman so the
+#. * user will not see this, but this is what to show if all
+#. * available recovery measures fail.
+#.
+#: ../carrick/carrick-pane.c:609
+msgid ""
+"Sorry, we can't find any networks. The Connection Manager doesn't seem to be "
+"running. You may want to try re-starting your device."
+msgstr ""
+"Sorry, geen netwerken gevonden. De verbindings beheer lijkt niet actief te zijn. "
+"Je kunt proberen het apparaat opnieuw op te starten."
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:620
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr ""
+"Sorry, geen netwerken gevonden. Je kunt proberen om Offline mode uit te schakelen."
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:636
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om WiFi aan te zetten."
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:647
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om WiMAX aan te zetten."
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:658
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om 3G aan te zetten"
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:668
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om Bluetooth aan te zetten."
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-pane.c:679
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr "Sorry, geen netwerken gevonden. Je kunt proberen on Wired aan te zetten."
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-pane.c:691
+msgid "Sorry, we can't find any networks"
+msgstr "Sorry, geen netwerken gevonden."
+
+#: ../carrick/carrick-pane.c:1030
+msgid "Networks"
+msgstr "netwerken"
+
+#: ../carrick/carrick-pane.c:1070
+msgid "Add new connection"
+msgstr "Nieuwe verbinding toevoegen"
+
+#: ../carrick/carrick-pane.c:1097
+msgid "WiFi"
+msgstr "Wifi"
+
+#: ../carrick/carrick-pane.c:1129 ../carrick/carrick-service-item.c:224
+msgid "Wired"
+msgstr "Wired"
+
+#: ../carrick/carrick-pane.c:1160
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-pane.c:1191
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-pane.c:1223
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../carrick/carrick-pane.c:1266
+msgid "Offline mode"
+msgstr "Offline mode"
+
+#: ../carrick/carrick-pane.c:1291
+msgid "This will disable all your connections"
+msgstr "Dit maakt alle verbindingen inactief"
+
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#: ../carrick/carrick-service-item.c:183
+#, c-format
+msgid "%s encrypted"
+msgstr "%s versleuteld"
+
+#: ../carrick/carrick-service-item.c:255
+msgid "Disconnect"
+msgstr "Verbreek verbinding"
+
+#: ../carrick/carrick-service-item.c:258
+msgid "Connected"
+msgstr "Verbonden"
+
+#: ../carrick/carrick-service-item.c:263
+#, c-format
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: ../carrick/carrick-service-item.c:266
+msgid "Configuring"
+msgstr "Configureren"
+
+#: ../carrick/carrick-service-item.c:273 ../carrick/carrick-service-item.c:281
+#: ../carrick/carrick-service-item.c:1025
+msgid "Connect"
+msgstr "Maak verbinding"
+
+#: ../carrick/carrick-service-item.c:284
+msgid "Connection failed"
+msgstr "Verbindingsfout"
+
+#: ../carrick/carrick-service-item.c:289 ../carrick/carrick-service-item.c:292
+#, c-format
+msgid "Disconnecting"
+msgstr "Verbinding wordt verbroken"
+
+#: ../carrick/carrick-service-item.c:340
+msgid "Type password here"
+msgstr "Geef wachtwoord hier"
+
+#: ../carrick/carrick-service-item.c:403
+msgid "Really remove?"
+msgstr "Echt verwijderen?"
+
+#: ../carrick/carrick-service-item.c:421
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr "Wil je de verbinding met %s %s netwerk verbreken? Dit\n"
+"verwijdert ook het opgeslagen wachtwoord. Je zult niet\n"
+"langer met %s automatisch verbonden worden."
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:981
+msgid "WPA2 encrypted"
+msgstr "WPA2 versleuteld"
+
+#: ../carrick/carrick-notification-manager.c:131
+msgid "Network connected"
+msgstr "Netwerk verbonden"
+
+#: ../carrick/carrick-notification-manager.c:139
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "Je bent verbonden met een Wired netwerk"
+
+#: ../carrick/carrick-notification-manager.c:169
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "Je bent verbonden met %s, een %s netwerk"
+
+#: ../carrick/carrick-notification-manager.c:175
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "Je bent verbonden met een %s netwerk"
+
+#: ../carrick/carrick-notification-manager.c:192
+msgid "Network lost"
+msgstr "Netwerk verloren"
+
+#: ../carrick/carrick-notification-manager.c:200
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "Sorry, de Wired verbinding was verbroken"
+
+#: ../carrick/carrick-notification-manager.c:204
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "Sorry, de %s verbinding met %s was verbroken"
+
+#: ../carrick/carrick-notification-manager.c:210
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "Sorry, de %s verbinding was verbroken"
+
+#: ../carrick/carrick-notification-manager.c:227
+msgid "Network changed"
+msgstr "Netwerk gewijzigd"
+
+#: ../carrick/carrick-notification-manager.c:246
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr ""
+"Sorry, de verbinding met %s was verbroken. We hebben je verbonden met "
+"een Wired netwerk"
+
+#: ../carrick/carrick-notification-manager.c:253
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"Sorry, de verbinding met %s was verbroken. We hebben je verbonden met %s, een %s "
+"netwerk"
+
+#: ../carrick/carrick-notification-manager.c:261
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr ""
+"Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een %s netwerk"
+
+#: ../carrick/carrick-notification-manager.c:271
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr ""
+"Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een wired netwerk"
+
+#: ../carrick/carrick-notification-manager.c:278
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"Sorry, je %s verbinding was verbroken. We hebben je verbonden met %s, een %s netwerk"
+
+#: ../carrick/carrick-notification-manager.c:287
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr ""
+"Sorry, je %s verbinding was verbroken. We hebben je verbonden met een %s netwerk"
+
