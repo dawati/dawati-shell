@@ -184,13 +184,6 @@ network_model_iterate_services (const GValue *value,
     *services = g_slist_append (*services, path);
 }
 
-static gint
-network_model_compare_path (gconstpointer a,
-                            gconstpointer b)
-{
-  return g_strcmp0 (a, b);
-}
-
 static gboolean
 network_model_have_service_in_store (GtkListStore *store,
                                      GtkTreeIter  *iter,
@@ -443,7 +436,7 @@ network_model_update_property (const gchar *property,
        */
       tmp = g_slist_find_custom (old_services,
                                  path,
-                                 network_model_compare_path);
+                                 (GCompareFunc) g_strcmp0);
       if (tmp)
       {
         old_services = g_slist_delete_link (old_services, tmp);
