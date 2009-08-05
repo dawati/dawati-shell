@@ -461,7 +461,6 @@ network_model_update_property (const gchar *property,
                                  network_model_compare_path);
       if (tmp)
       {
-        g_free (tmp->data);
         old_services = g_slist_delete_link (old_services, tmp);
       }
 
