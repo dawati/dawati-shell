@@ -450,13 +450,13 @@ network_model_update_property (const gchar *property,
         old_services = g_slist_delete_link (old_services, tmp);
       }
 
-      service = dbus_g_proxy_new_for_name (priv->connection,
-                                           CONNMAN_SERVICE, path,
-                                           CONNMAN_SERVICE_INTERFACE);
-
       /* if we don't have the service in the model, add it*/
-      if (network_model_have_service_by_proxy (store, &iter, service) == FALSE)
+      if (network_model_have_service_by_path (store, &iter, path) == FALSE)
       {
+	service = dbus_g_proxy_new_for_name (priv->connection,
+			                     CONNMAN_SERVICE, path,
+					     CONNMAN_SERVICE_INTERFACE);
+
         gtk_list_store_insert_with_values (store, &iter, -1,
                                            CARRICK_COLUMN_PROXY, service,
                                            CARRICK_COLUMN_INDEX, index,
@@ -481,6 +481,7 @@ network_model_update_property (const gchar *property,
 					self,
 					NULL,
 					G_TYPE_INVALID);
+	g_object_unref (service);
       }
       /* else update it */
       else
