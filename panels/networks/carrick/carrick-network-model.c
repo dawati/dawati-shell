@@ -40,7 +40,6 @@ struct _CarrickNetworkModelPrivate
 enum
 {
   PROP_0,
-  PROP_CONNECTION,
   PROP_MANAGER,
 };
 
@@ -72,10 +71,6 @@ carrick_network_model_get_property (GObject    *object,
     g_value_set_object (value,
 			priv->manager);
     break;
-  case PROP_CONNECTION:
-    g_value_set_object (value,
-			priv->connection);
-    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -95,9 +90,6 @@ carrick_network_model_set_property (GObject      *object,
   case PROP_MANAGER:
     network_model_set_manager (self,
 			       DBUS_G_PROXY (g_value_get_object (value)));
-    break;
-  case PROP_CONNECTION:
-    priv->connection = (DBusGConnection *) g_value_get_object (value);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -266,11 +258,11 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   GtkTreeIter iter;
 
   dbus_g_proxy_end_call (service,
-		         call,
+			 call,
 			 &error,
 			 dbus_g_type_get_map ("GHashTable",
-				 G_TYPE_STRING,
-				 G_TYPE_VALUE),
+					      G_TYPE_STRING,
+					      G_TYPE_VALUE),
 			 &properties,
 			 G_TYPE_INVALID);
 
@@ -446,7 +438,7 @@ network_model_update_property (const gchar *property,
       if (network_model_have_service_by_path (store, &iter, path) == FALSE)
       {
 	service = dbus_g_proxy_new_for_name (priv->connection,
-			                     CONNMAN_SERVICE, path,
+					     CONNMAN_SERVICE, path,
 					     CONNMAN_SERVICE_INTERFACE);
 
         gtk_list_store_insert_with_values (store, &iter, -1,
