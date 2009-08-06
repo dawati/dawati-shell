@@ -51,4 +51,4 @@ AM_CFLAGS = @MUTTER_PLUGIN_CFLAGS@ -Wall $(PENGE_CFLAGS) \
 
 libpenge_la_LIBADD = $(MUTTER_PLUGIN_LIBS) \
 		     $(PENGE_LIBS)\
-		     $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la
+		     $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la

@@ -63,24 +63,15 @@ LIBS=${SAVE_LIBS}
 AM_GLIB_GNU_GETTEXT
 
 # Libmoblin-panel
-PKG_CHECK_MODULES(LIBMPL_CLUTTER,
+PKG_CHECK_MODULES(LIBMPL,
                   dbus-glib-1
                   nbtk-1.0
-                  gdk-2.0
-                  gio-unix-2.0)
-
-LIBMPL_CLUTTER_CFLAGS="${LIBMPL_CLUTTER_CFLAGS} "'-I$(top_srcdir)/src'
-AC_SUBST([LIBMPL_CLUTTER_CFLAGS])
-AC_SUBST([LIBMPL_CLUTTER_LIBS])
-
-PKG_CHECK_MODULES(LIBMPL_GTK,
-                  dbus-glib-1
                   gtk+-2.0
                   gio-unix-2.0)
 
-LIBMPL_GTK_CFLAGS="${LIBMPL_GTK_CFLAGS} "'-I$(top_srcdir)/src'
-AC_SUBST([LIBMPL_GTK_CFLAGS])
-AC_SUBST([LIBMPL_GTK_LIBS])
+LIBMPL_CFLAGS="${LIBMPL_CFLAGS} "'-I$(top_srcdir)/src'
+AC_SUBST([LIBMPL_CFLAGS])
+AC_SUBST([LIBMPL_LIBS])
 
 MUTTER_MOBLIN_THEME_DIR="${datadir}/${PACKAGE}/theme"
 AC_SUBST([MUTTER_MOBLIN_THEME_DIR])
@@ -109,9 +100,6 @@ PKG_CHECK_MODULES(PENGE,
                   gio-2.0
                   gio-unix-2.0)
 
-PKG_CHECK_MODULES(LIBMNB,
-		  dbus-glib-1)
-
 AC_ARG_ENABLE([scaled-background],
 	AC_HELP_STRING([--enable-scaled-background],
 		[Scale the mutter-moblin background image]),
@@ -139,7 +127,7 @@ AS_IF([test "x$enable_ahoghill" = "xyes"],
 AHOGHILL_CFLAGS="${AHOGHILL_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
 AC_SUBST([AHOGHILL_CFLAGS])
 AHOGHILL_LIBS="${AHOGHILL_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la'
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la'
 AC_SUBST([AHOGHILL_LIBS])
 
       ]
@@ -160,7 +148,7 @@ APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} "\
 '-I$(top_srcdir)/libmoblin-panel '
 AC_SUBST([APPLICATIONS_CFLAGS])
 APPLICATIONS_LIBS="${APPLICATIONS_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la '
 AC_SUBST([APPLICATIONS_LIBS])
 
 # Netpanel
@@ -180,7 +168,7 @@ NETPANEL_CFLAGS="${NETPANEL_CFLAGS} "\
 '-I$(top_srcdir)/libmoblin-panel '
 AC_SUBST([NETPANEL_CFLAGS])
 NETPANEL_LIBS="${NETPANEL_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la '
 AC_SUBST([NETPANEL_LIBS])
       ]
 )
@@ -198,7 +186,7 @@ PASTEBOARD_CFLAGS="${PASTEBOARD_CFLAGS} "\
 '-I$(top_srcdir)/libmoblin-panel '
 AC_SUBST([PASTEBOARD_CFLAGS])
 PASTEBOARD_LIBS="${PASTEBOARD_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la '
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la '
 AC_SUBST([PASTEBOARD_LIBS])
 
 # People panel
@@ -217,7 +205,7 @@ AS_IF([test "x$enable_people" = "xyes"],
 PEOPLE_CFLAGS="${PEOPLE_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
 AC_SUBST([PEOPLE_CFLAGS])
 PEOPLE_LIBS="${PEOPLE_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la'
+'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la'
 AC_SUBST([PEOPLE_LIBS])
 
       ]
@@ -323,8 +311,7 @@ ahoghill/examples/Makefile
 ahoghill/src/Makefile
 ahoghill/theme/Makefile
 libmoblin-panel/Makefile
-libmoblin-panel/moblin-panel-gtk.pc
-libmoblin-panel/moblin-panel-clutter.pc
+libmoblin-panel/moblin-panel.pc
 libmoblin-panel/moblin-panel/Makefile
 libmoblin-panel/theme/Makefile
 libmoblin-panel/tests/Makefile

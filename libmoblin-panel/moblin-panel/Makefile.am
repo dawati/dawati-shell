@@ -1,5 +1,5 @@
 
-lib_LTLIBRARIES = libmoblin-panel-gtk.la libmoblin-panel-clutter.la
+lib_LTLIBRARIES = libmoblin-panel.la
 
 libmoblin_panel_includedir = $(includedir)/libmoblin-panel/moblin-panel
 libmoblin_panel_include_HEADERS = \
@@ -11,35 +11,22 @@ libmoblin_panel_include_HEADERS = \
 	mpl-app-bookmark-manager.h \
 	mpl-utils.h
 
-libmoblin_panel_clutter_la_CFLAGS = \
-	$(LIBMPL_CLUTTER_CFLAGS) \
+libmoblin_panel_la_CFLAGS = \
+	$(LIBMPL_CFLAGS) \
 	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
 
-# FIXME use this once split out
-# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
+libmoblin_panel_la_LDFLAGS = $(LIBMPL_LIBS)
 
-libmoblin_panel_clutter_la_LDFLAGS = $(LIBMPL_CLUTTER_LIBS)
-
-libmoblin_panel_clutter_la_SOURCES = \
+libmoblin_panel_la_SOURCES = \
 	mpl-clutter-theme.c \
 	mpl-clutter-theme.h \
 	mpl-entry.c \
 	mpl-panel-client.c \
 	mpl-panel-clutter.c \
+	mpl-panel-gtk.c \
 	mpl-app-bookmark-manager.c \
 	mpl-utils.c \
-	$(DBUS_GLUE) \
-	$(DBUS_BINDINGS) \
-	$(MARSHALS)
-
-libmoblin_panel_gtk_la_CFLAGS = $(LIBMPL_GTK_CFLAGS)
-
-libmoblin_panel_gtk_la_LDFLAGS = $(LIBMPL_GTK_LIBS)
-
-libmoblin_panel_gtk_la_SOURCES = \
-	mpl-panel-client.c \
-	mpl-panel-gtk.c \
 	$(DBUS_GLUE) \
 	$(DBUS_BINDINGS) \
 	$(MARSHALS)

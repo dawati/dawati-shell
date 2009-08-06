@@ -11,14 +11,14 @@ noinst_PROGRAMS = \
 	test-panel-gtk
 
 test_entry_CFLAGS = \
-	$(LIBMPL_CLUTTER_CFLAGS) \
+	$(LIBMPL_CFLAGS) \
 	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
 
 # FIXME use this once split out
 # -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
 
-test_entry_LDADD = $(LIBMPL_CLUTTER_LIBS)
+test_entry_LDADD = $(LIBMPL_LIBS)
 
 test_entry_SOURCES = \
 	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-clutter-theme.c \
@@ -29,11 +29,11 @@ test_panel_clutter_DEPENDENCIES = \
 	test-panel-clutter.service \
 	test-panel.css
 
-test_panel_clutter_CFLAGS = $(LIBMPL_CLUTTER_CFLAGS)
+test_panel_clutter_CFLAGS = $(LIBMPL_CFLAGS)
 
 test_panel_clutter_LDADD = \
-	$(LIBMPL_CLUTTER_LIBS) \
-	../moblin-panel/libmoblin-panel-clutter.la
+	$(LIBMPL_LIBS) \
+	../moblin-panel/libmoblin-panel.la
 
 test_panel_clutter_SOURCES = \
 	test-panel-clutter.c
@@ -42,11 +42,11 @@ test_panel_gtk_DEPENDENCIES = \
 	test-panel-gtk.service \
 	test-panel.css
 
-test_panel_gtk_CFLAGS = $(LIBMPL_GTK_CFLAGS)
+test_panel_gtk_CFLAGS = $(LIBMPL_CFLAGS)
 
 test_panel_gtk_LDADD = \
-	$(LIBMPL_GTK_LIBS) \
-	../moblin-panel/libmoblin-panel-gtk.la
+	$(LIBMPL_LIBS) \
+	../moblin-panel/libmoblin-panel.la
 
 test_panel_gtk_SOURCES = \
 	test-panel-gtk.c

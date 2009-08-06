@@ -39,10 +39,10 @@ BUILT_SOURCES = mnb-status-marshal.h mnb-status-marshal.c
 
 moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS)
 moblin_panel_status_LDADD    = $(STATUS_LIBS) \
-	$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la \
+	$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la \
 	$(top_builddir)/penge/penge/libpenge.la
 moblin_panel_status_DEPENDENCIES = \
-	$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la \
+	$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la \
 	$(top_builddir)/penge/penge/libpenge.la
 moblin_panel_status_SOURCES  = 	\
 	$(BUILT_SOURCES)	\

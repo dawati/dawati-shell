@@ -14,7 +14,7 @@ AM_CFLAGS = \
 libexec_PROGRAMS = moblin-panel-myzone
 
 moblin_panel_myzone_LDADD = $(PENGE_LIBS) \
-			    $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel-clutter.la \
+			    $(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la \
 			    $(top_builddir)/penge/penge/libpenge.la
 
 moblin_panel_myzone_SOURCES = \
