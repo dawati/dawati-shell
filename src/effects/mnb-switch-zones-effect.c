@@ -287,11 +287,6 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
     }
 
   /*
-   * Make sure that the the whole effect is above all the windows.
-   */
-  clutter_actor_raise_top (desktop);
-
-  /*
    * Construct the strip.
    */
   fill_strip (plugin, NBTK_TABLE (strip), screen_width, screen_height);
