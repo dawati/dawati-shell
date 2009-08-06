@@ -24,7 +24,6 @@
 #define _CARRICK_APPLET
 
 #include <gtk/gtk.h>
-#include <gconnman/gconnman.h>
 
 G_BEGIN_DECLS
 
