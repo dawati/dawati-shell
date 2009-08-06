@@ -1354,6 +1354,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         }
 
       if (type == META_COMP_WINDOW_NORMAL &&
+          !meta_window_is_modal (mw)      &&
           !meta_window_get_transient_for (mw))
         {
           MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
