@@ -24,7 +24,6 @@
 #define _CARRICK_PANE
 
 #include <gtk/gtk.h>
-#include <gconnman/gconnman.h>
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
 
@@ -58,8 +57,7 @@ typedef struct {
 GType carrick_pane_get_type (void);
 
 GtkWidget* carrick_pane_new (CarrickIconFactory         *icon_factory,
-                             CarrickNotificationManager *notifications,
-                             CmManager                  *manager);
+                             CarrickNotificationManager *notifications);
 
 void carrick_pane_update (CarrickPane *pane);
 
