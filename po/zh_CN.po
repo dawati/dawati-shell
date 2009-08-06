@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-30 17:11+0000\n"
-"PO-Revision-Date: 2009-07-31 23:46+0800\n"
+"POT-Creation-Date: 2009-08-05 09:20+0000\n"
+"PO-Revision-Date: 2009-08-06 23:46+0800\n"
 "Last-Translator: Zhu Yanhai <yanhai.zhu@linux.intel.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
@@ -266,8 +266,8 @@ msgid ""
 "of bits and pieces to help you find your way around. We hope you enjoy it, "
 "The Moblin Team."
 msgstr ""
-"Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快"
-"熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
+"Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 "
+"Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
 
 #: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -301,7 +301,7 @@ msgstr "发送一条消息"
 #: ../people/src/mnb-people-panel.c:307
 #: ../status/src/moblin-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "抱歉，我不能找到任何联系人。请确认您已经建立好一个聊天账户？"
+msgstr "抱歉，我不能找到任何好友。请确认您已经建立好一个聊天账户？"
 
 #: ../people/src/mnb-people-panel.c:555
 msgid "People"
