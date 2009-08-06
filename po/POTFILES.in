@@ -28,7 +28,6 @@ penge/penge/penge-utils.c
 people/src/moblin-panel-people.c
 people/src/mnb-people-panel.c
 src/moblin-netbook.c
-src/moblin-netbook-chooser.c
 src/tray/na-tray-child.c
 src/mnb-notification.c
 src/mnb-notification-cluster.c
