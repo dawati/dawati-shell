@@ -2,23 +2,5 @@
 
 <node name="/">
   <interface name="org.moblin.UX.Shell.Toolbar">
-    <method name="LaunchApplication">
-      <arg name="path" type="s"/>
-      <arg name="workspace" type="i"/>
-      <arg name="without_chooser" type="b"/>
-    </method>
-
-    <method name="LaunchApplicationByDesktopFile">
-      <arg name="desktop_file" type="s"/>
-      <arg name="arguments" type="s"/>
-      <arg name="workspace" type="i"/>
-      <arg name="without_chooser" type="b"/>
-    </method>
-
-    <method name="LaunchDefaultApplicationForUri">
-      <arg name="uri" type="s"/>
-      <arg name="workspace" type="i"/>
-      <arg name="without_chooser" type="b"/>
-    </method>
   </interface>
 </node>

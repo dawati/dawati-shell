@@ -540,50 +540,6 @@ mnb_toolbar_allocate (ClutterActor          *actor,
   parent_class->allocate (actor, box, flags);
 }
 
-static gboolean
-mnb_toolbar_dbus_launch_application (MnbToolbar  *self,
-                                     gchar       *path,
-                                     gint         workspace,
-                                     gboolean     no_chooser,
-                                     GError     **error)
-{
-  return moblin_netbook_launch_application (path, workspace, no_chooser);
-}
-
-static gboolean
-mnb_toolbar_dbus_launch_application_by_desktop_file (MnbToolbar  *self,
-                                                     gchar       *desktop_file,
-                                                     gchar       *arguments,
-                                                     gint         workspace,
-                                                     gboolean     no_chooser,
-                                                     GError     **error)
-{
-  GList    *files = NULL;
-  gboolean  retval;
-
-  if (arguments && *arguments)
-    files = g_list_prepend (files, arguments);
-
-  retval =  moblin_netbook_launch_application_from_desktop_file (desktop_file,
-                                                                 files,
-                                                                 workspace,
-                                                                 no_chooser);
-
-  g_list_free (files);
-
-  return retval;
-}
-
-static gboolean
-mnb_toolbar_dbus_launch_default_application_for_uri (MnbToolbar  *self,
-                                                     gchar       *uri,
-                                                     gint         workspace,
-                                                     gboolean     no_chooser,
-                                                     GError     **error)
-{
-  return moblin_netbook_launch_default_for_uri (uri, workspace, no_chooser);
-}
-
 #include "../src/mnb-toolbar-dbus-glue.h"
 
 static void

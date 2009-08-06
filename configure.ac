@@ -66,6 +66,7 @@ AM_GLIB_GNU_GETTEXT
 PKG_CHECK_MODULES(LIBMPL_CLUTTER,
                   dbus-glib-1
                   nbtk-1.0
+                  gdk-2.0
                   gio-unix-2.0)
 
 LIBMPL_CLUTTER_CFLAGS="${LIBMPL_CLUTTER_CFLAGS} "'-I$(top_srcdir)/src'
@@ -74,7 +75,8 @@ AC_SUBST([LIBMPL_CLUTTER_LIBS])
 
 PKG_CHECK_MODULES(LIBMPL_GTK,
                   dbus-glib-1
-                  gtk+-2.0)
+                  gtk+-2.0
+                  gio-unix-2.0)
 
 LIBMPL_GTK_CFLAGS="${LIBMPL_GTK_CFLAGS} "'-I$(top_srcdir)/src'
 AC_SUBST([LIBMPL_GTK_CFLAGS])

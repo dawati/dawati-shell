@@ -29,6 +29,8 @@
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
+#include <gdk/gdk.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "mpl-panel-client.h"
 #include "mpl-panel-common.h"
@@ -808,45 +810,87 @@ mpl_panel_client_request_tooltip (MplPanelClient *panel,
 
 #include "mnb-toolbar-dbus-bindings.h"
 
+/*
+ * Helper function to launch application from GAppInfo, with all the
+ * required SN housekeeping.
+ */
+static gboolean
+mpl_panel_client_launch_application_from_info (GAppInfo     *app,
+                                               GList        *files,
+                                               gint          workspace,
+                                               gboolean      no_chooser)
+{
+  GAppLaunchContext          *ctx;
+  GError                     *error = NULL;
+  gboolean                    retval = TRUE;
+
+  ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+
+  retval = g_app_info_launch (app, files, ctx, &error);
+
+  if (!retval)
+    {
+      if (error)
+        {
+          g_warning ("Failed to launch %s (%s)",
+#if GLIB_CHECK_VERSION(2,20,0)
+                     g_app_info_get_commandline (app),
+#else
+                     g_app_info_get_name (app),
+#endif
+                     error->message);
+
+          g_error_free (error);
+        }
+      else
+        {
+          g_warning ("Failed to launch %s",
+#if GLIB_CHECK_VERSION(2,20,0)
+                     g_app_info_get_commandline (app)
+#else
+                     g_app_info_get_name (app)
+#endif
+                     );
+        }
+    }
+
+  g_object_unref (ctx);
+
+  return retval;
+}
+
 gboolean
 mpl_panel_client_launch_application (MplPanelClient *panel,
                                      const gchar    *path,
                                      gint            workspace,
                                      gboolean        no_chooser)
 {
-  MplPanelClientPrivate *priv = panel->priv;
-  GError                *error = NULL;
+  GAppInfo *app;
+  GError   *error = NULL;
+  gboolean  retval;
 
-  if (!priv->toolbar_proxy)
+  g_return_val_if_fail (path, FALSE);
+
+  app = g_app_info_create_from_commandline (path, NULL,
+                                            G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                            &error);
+
+  if (error)
     {
-      if (!priv->toolbar_service)
-        g_warning ("Launching API is not available because toolbar services "
-                   "were not enabled at panel construction !!!");
-      else
-        g_warning ("Launching API is not available.");
+      g_warning ("Failed to create GAppInfo from commnad line %s (%s)",
+                 path, error->message);
 
+      g_error_free (error);
       return FALSE;
     }
 
-  if (!org_moblin_UX_Shell_Toolbar_launch_application (priv->toolbar_proxy,
-                                                       path,
-                                                       workspace,
-                                                       no_chooser,
-                                                       &error))
-    {
-      if (error)
-        {
-          g_warning ("Could not launch application %s: %s",
-                     path, error->message);
-          g_error_free (error);
-        }
-      else
-        g_warning ("Could not launch application %s", path);
+  retval = mpl_panel_client_launch_application_from_info (app, NULL,
+                                                          workspace,
+                                                          no_chooser);
 
-      return FALSE;
-    }
+  g_object_unref (app);
 
-  return TRUE;
+  return retval;
 }
 
 gboolean
@@ -856,55 +900,26 @@ mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
                                                        gint            wspace,
                                                        gboolean      no_chooser)
 {
-  MplPanelClientPrivate *priv = panel->priv;
-  GError                *error = NULL;
-  GList                 *l = files;
-  gchar                 *arguments = NULL;
+  GAppInfo *app;
+  gboolean  retval;
 
-  if (!priv->toolbar_proxy)
+  g_return_val_if_fail (desktop, FALSE);
+
+  app = G_APP_INFO (g_desktop_app_info_new_from_filename (desktop));
+
+  if (!app)
     {
-      if (!priv->toolbar_service)
-        g_warning ("Launching API is not available because toolbar services "
-                   "were not enabled at panel construction !!!");
-      else
-        g_warning ("Launching API is not available.");
-
+      g_warning ("Failed to create GAppInfo for file %s", desktop);
       return FALSE;
     }
 
-  while (l)
-    {
-      if (l->data)
-        {
-          gchar *a = g_strconcat (arguments, " ", l->data, NULL);
-          g_free (arguments);
-          arguments = a;
-        }
-      l = l->next;
-    }
+  retval = mpl_panel_client_launch_application_from_info (app, files,
+                                                          wspace,
+                                                          no_chooser);
 
-  if (!org_moblin_UX_Shell_Toolbar_launch_application_by_desktop_file (
-                                                        priv->toolbar_proxy,
-                                                        desktop,
-                                                        arguments,
-                                                        wspace,
-                                                        no_chooser,
-                                                        &error))
-    {
-      if (error)
-        {
-          g_warning ("Could not launch application from desktop file %s: %s",
-                     desktop, error->message);
-          g_error_free (error);
-        }
-      else
-        g_warning ("Could not launch application from desktop file %s",
-                   desktop);
+  g_object_unref (app);
 
-      return FALSE;
-    }
-
-  return TRUE;
+  return retval;
 }
 
 gboolean
@@ -913,40 +928,47 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
                                                      gint            workspace,
                                                      gboolean        no_chooser)
 {
-  MplPanelClientPrivate *priv = panel->priv;
-  GError                *error = NULL;
+  GAppLaunchContext          *ctx;
+  GAppInfo                   *app;
+  GError                     *error = NULL;
+  gboolean                    retval = TRUE;
+  gchar                      *uri_scheme;
 
-  if (!priv->toolbar_proxy)
+  uri_scheme = g_uri_parse_scheme (uri);
+
+  /* For local files we want the local file handler not the scheme handler */
+  if (g_str_equal (uri_scheme, "file"))
     {
-      if (!priv->toolbar_service)
-        g_warning ("Launching API is not available because toolbar services "
-                   "were not enabled at panel construction !!!");
-      else
-        g_warning ("Launching API is not available.");
-
-      return FALSE;
+      GFile *file;
+      file = g_file_new_for_uri (uri);
+      app = g_file_query_default_handler (file, NULL, NULL);
+      g_object_unref (file);
+    } else {
+      app = g_app_info_get_default_for_uri_scheme (uri_scheme);
     }
 
-  if (!org_moblin_UX_Shell_Toolbar_launch_default_application_for_uri (
-                                                  priv->toolbar_proxy,
-                                                  uri,
-                                                  workspace,
-                                                  no_chooser,
-                                                  &error))
+  g_free (uri_scheme);
+
+  ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+
+  retval = g_app_info_launch_default_for_uri (uri, ctx, &error);
+
+  if (!retval)
     {
       if (error)
         {
-          g_warning ("Could not launch default application for uri %s: %s",
+          g_warning ("Failed to launch default app for %s (%s)",
                      uri, error->message);
+
           g_error_free (error);
         }
       else
-        g_warning ("Could not launch default application for %s", uri);
-
-      return FALSE;
+        g_warning ("Failed to launch default app for %s", uri);
     }
 
-  return TRUE;
+  g_object_unref (ctx);
+
+  return retval;
 }
 
 void
