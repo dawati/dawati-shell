@@ -859,7 +859,7 @@ check_for_empty_workspace (MutterPlugin *plugin,
        */
       if (!(type == META_COMP_WINDOW_DESKTOP        ||
             type == META_COMP_WINDOW_DOCK           ||
-            type == META_COMP_WINDOW_OVERRIDE_OTHER ||
+            mutter_window_is_override_redirect (m)  ||
             ((mw = mutter_window_get_meta_window (m)) == ignore)))
         {
           g_debug ("Found singificant window %s of type %d",
