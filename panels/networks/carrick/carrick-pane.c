@@ -23,9 +23,10 @@
 #include "carrick-pane.h"
 
 #include <config.h>
-#include <gconnman/gconnman.h>
 #include <nbtk/nbtk-gtk.h>
 #include <glib/gi18n.h>
+#include <dbus/dbus-glib.h>
+
 #include "carrick-list.h"
 #include "carrick-service-item.h"
 #include "carrick-icon-factory.h"
@@ -39,7 +40,6 @@ G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
 typedef struct _CarrickPanePrivate CarrickPanePrivate;
 
 struct _CarrickPanePrivate {
-  CmManager          *manager;
   GtkWidget          *wifi_switch;
   GtkWidget          *wifi_label;
   GtkWidget          *ethernet_switch;
@@ -55,6 +55,7 @@ struct _CarrickPanePrivate {
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
   time_t              last_scan;
+  gboolean	      offline_mode;
   gboolean            have_daemon;
   gboolean            have_wifi;
   gboolean            have_ethernet;
@@ -66,6 +67,7 @@ struct _CarrickPanePrivate {
   gboolean            threeg_enabled;
   gboolean            wimax_enabled;
   gboolean            bluetooth_enabled;
+  DBusGProxy         *manager;
   CarrickNotificationManager *notes;
 };
 
@@ -73,22 +75,25 @@ enum
 {
   PROP_0,
   PROP_ICON_FACTORY,
-  PROP_MANAGER,
   PROP_NOTIFICATIONS
 };
 
-static void carrick_pane_set_manager (CarrickPane *pane,
-                                      CmManager   *manager);
+static void
+pane_free_g_value (GValue *val)
+{
+  g_value_unset (val);
+  g_slice_free (GValue, val);
+}
 
 static gboolean
-_focus_callback (GtkWidget *widget, 
+_focus_callback (GtkWidget *widget,
 		 GtkDirectionType arg1,
 		 gpointer user_data)
 {
-  /* 
+  /*
    * Work around for bug #4319:
    * Stop propogating focus events to
-   * contained widgets so that we do 
+   * contained widgets so that we do
    * not put items in the carrick-list
    * in a 'SELECTED' state
    */
@@ -107,9 +112,6 @@ carrick_pane_get_property (GObject    *object,
   switch (property_id) {
   case PROP_ICON_FACTORY:
     g_value_set_object (value, priv->icon_factory);
-    break;
-  case PROP_MANAGER:
-    g_value_set_object (value, priv->manager);
     break;
   case PROP_NOTIFICATIONS:
     g_value_set_object (value, priv->notes);
@@ -155,11 +157,6 @@ carrick_pane_set_property (GObject      *object,
       pane,
       CARRICK_ICON_FACTORY (g_value_get_object (value)));
     break;
-
-  case PROP_MANAGER:
-    carrick_pane_set_manager (pane,
-                              CM_MANAGER (g_value_get_object (value)));
-    break;
   case PROP_NOTIFICATIONS:
     carrick_pane_set_notifications (
       pane,
@@ -168,26 +165,6 @@ carrick_pane_set_property (GObject      *object,
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
-}
-
-static void
-carrick_pane_dispose (GObject *object)
-{
-  CarrickPane *pane = CARRICK_PANE (object);
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-
-  if (priv->manager)
-  {
-    carrick_pane_set_manager (pane, NULL);
-  }
-
-  G_OBJECT_CLASS (carrick_pane_parent_class)->dispose (object);
-}
-
-static void
-carrick_pane_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (carrick_pane_parent_class)->finalize (object);
 }
 
 static void
@@ -200,8 +177,6 @@ carrick_pane_class_init (CarrickPaneClass *klass)
 
   object_class->get_property = carrick_pane_get_property;
   object_class->set_property = carrick_pane_set_property;
-  object_class->dispose = carrick_pane_dispose;
-  object_class->finalize = carrick_pane_finalize;
 
   pspec = g_param_spec_object ("icon-factory",
                                "Icon factory",
@@ -220,17 +195,12 @@ carrick_pane_class_init (CarrickPaneClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_NOTIFICATIONS,
                                    pspec);
-
-  pspec = g_param_spec_object ("manager",
-                               "Manager.",
-                               "The gconnman manager to use.",
-                               CM_TYPE_MANAGER,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-  g_object_class_install_property (object_class,
-                                   PROP_MANAGER,
-                                   pspec);
 }
 
+/*
+ * FIXME: Use begin_call so that we can re-set switches in case
+ * of failure, etc.
+ */
 static gboolean
 _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                        gboolean            new_state,
@@ -244,7 +214,13 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                                               "wifi",
                                               "ready",
                                               "all");
-    cm_manager_enable_technology (priv->manager, "wifi");
+    dbus_g_proxy_call (priv->manager,
+		       "EnableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "wifi",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
   else
   {
@@ -252,7 +228,13 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                                               "wifi",
                                               "idle",
                                               "all");
-    cm_manager_disable_technology (priv->manager, "wifi");
+    dbus_g_proxy_call (priv->manager,
+		       "DisableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "wifi",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
 
   return TRUE;
@@ -271,7 +253,14 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                                               "ethernet",
                                               "ready",
                                               "all");
-    cm_manager_enable_technology (priv->manager, "ethernet");
+    dbus_g_proxy_call (priv->manager,
+		       "EnableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "ethernet",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
+
   }
   else
   {
@@ -279,7 +268,13 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                                               "ethernet",
                                               "idle",
                                               "all");
-    cm_manager_disable_technology (priv->manager, "ethernet");
+    dbus_g_proxy_call (priv->manager,
+		       "DisableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "ethernet",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
 
   return TRUE;
@@ -298,8 +293,13 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                                               "cellular",
                                               "ready",
                                               "all");
-
-    cm_manager_enable_technology (priv->manager, "cellular");
+    dbus_g_proxy_call (priv->manager,
+		       "EnableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "cellular",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
   else
   {
@@ -307,7 +307,13 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                                               "cellular",
                                               "idle",
                                               "all");
-    cm_manager_disable_technology (priv->manager, "cellular");
+    dbus_g_proxy_call (priv->manager,
+		       "DisableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "cellular",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
 
   return TRUE;
@@ -326,7 +332,13 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                                               "wimax",
                                               "ready",
                                               "all");
-    cm_manager_enable_technology (priv->manager, "wimax");
+    dbus_g_proxy_call (priv->manager,
+		       "EnableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "wimax",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
   else
   {
@@ -334,7 +346,13 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                                               "wimax",
                                               "idle",
                                               "all");
-    cm_manager_disable_technology (priv->manager, "wimax");
+    dbus_g_proxy_call (priv->manager,
+		       "DisableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "wimax",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
 
   return TRUE;
@@ -353,7 +371,13 @@ _bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
                                               "bluetooth",
                                               "ready",
                                               "all");
-    cm_manager_enable_technology (priv->manager, "bluetooth");
+    dbus_g_proxy_call (priv->manager,
+		       "EnableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "bluetooth",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
   else
   {
@@ -361,7 +385,13 @@ _bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
                                               "bluetooth",
                                               "idle",
                                               "all");
-    cm_manager_disable_technology (priv->manager, "bluetooth");
+    dbus_g_proxy_call (priv->manager,
+		       "DisableTechnology",
+		       NULL,
+		       G_TYPE_STRING,
+		       "bluetooth",
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
 
   return TRUE;
@@ -409,7 +439,8 @@ _new_connection_cb (GtkButton *button,
   const gchar *network, *secret;
   gchar *security;
   GtkWidget *image;
-  gboolean joined = FALSE;
+  GHashTable *method_props;
+  GValue *type_v, *mode_v, *ssid_v, *security_v, *pass_v;
 
   dialog = gtk_dialog_new_with_buttons (_("New connection settings"),
                                         GTK_WINDOW (gtk_widget_get_parent (user_data)),
@@ -560,16 +591,54 @@ _new_connection_cb (GtkButton *button,
                                               "wifi",
                                               "ready",
                                               network);
-    joined = cm_manager_connect_wifi (priv->manager,
-                                      network,
-                                      security,
-                                      secret);
+    /*
+     * Call method to connect
+     */
+    method_props = g_hash_table_new_full (g_str_hash,
+					  g_str_equal,
+					  g_free,
+					  (GDestroyNotify) pane_free_g_value);
+    type_v = g_slice_new0 (GValue);
+    g_value_init (type_v, G_TYPE_STRING);
+    g_value_set_string (type_v, g_strdup ("wifi"));
+    g_hash_table_insert (method_props, g_strdup ("Type"), type_v);
 
-    /* Need some error handling here */
-    if (!joined)
+    mode_v = g_slice_new0 (GValue);
+    g_value_init (mode_v, G_TYPE_STRING);
+    g_value_set_string (mode_v, g_strdup ("managed"));
+    g_hash_table_insert (method_props, g_strdup ("Mode"), mode_v);
+
+    ssid_v = g_slice_new0 (GValue);
+    g_value_init (ssid_v, G_TYPE_STRING);
+    g_value_set_string (ssid_v, secret);
+    g_hash_table_insert (method_props, g_strdup ("SSID"), ssid_v);
+
+    if (security)
     {
-      g_debug ("No WiFi device found to add network...)");
+       security_v = g_slice_new0 (GValue);
+       g_value_init (security_v, G_TYPE_STRING);
+       g_value_set_string (security_v, security);
+       g_hash_table_insert (method_props, g_strdup ("Security"), security_v);
     }
+
+    if (secret)
+    {
+       pass_v = g_slice_new0 (GValue);
+       g_value_init (pass_v, G_TYPE_STRING);
+       g_value_set_string (pass_v, secret);
+       g_hash_table_insert (method_props, g_strdup ("Passphrase"), pass_v);
+    }
+
+    dbus_g_proxy_call (priv->manager,
+		       "ConnectService",
+		       NULL,
+		       dbus_g_type_get_map ("GHashTable",
+					    G_TYPE_STRING,
+					    G_TYPE_VALUE),
+		       method_props,
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
+
   }
   gtk_widget_destroy (dialog);
 }
@@ -586,7 +655,16 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
                                             "wifi",
                                             "idle",
                                             "all");
-  cm_manager_set_offline_mode (priv->manager, new_state);
+
+  dbus_g_proxy_call (priv->manager,
+		     "SetProperty",
+		     NULL,
+		     G_TYPE_STRING,
+		     "OfflineMode",
+		     G_TYPE_BOOLEAN,
+		     new_state,
+		     G_TYPE_INVALID,
+		     G_TYPE_INVALID);
 
   return TRUE;
 }
@@ -600,8 +678,8 @@ _add_fallback (CarrickPane *pane)
   /* Need to add some fall-back content */
   if (!priv->have_daemon)
   {
-    /* 
-     * Hint to display when we detect that the connection manager 
+    /*
+     * Hint to display when we detect that the connection manager
      * is dead.  Ideally the system auto-restarts connman so the
      * user will not see this, but this is what to show if all
      * available recovery measures fail.
@@ -611,9 +689,9 @@ _add_fallback (CarrickPane *pane)
 			   "You may want to try re-starting your device."
 			   ));
   }
-  else if (cm_manager_get_offline_mode (priv->manager))
+  else if (priv->offline_mode)
   {
-    /* 
+    /*
      * Hint display if we detect that the system is in
      * offline mode and there are no available networks
      */
@@ -629,8 +707,8 @@ _add_fallback (CarrickPane *pane)
   {
     if (priv->have_wifi && !priv->wifi_enabled)
     {
-      /* 
-       * Hint to display if we detect that wifi has been turned off 
+      /*
+       * Hint to display if we detect that wifi has been turned off
        * and there are no available networks
        */
       fallback = g_strdup (_("Sorry, we can't find any networks. "
@@ -639,7 +717,7 @@ _add_fallback (CarrickPane *pane)
     }
     else if (priv->have_wimax && !priv->wimax_enabled)
     {
-      /* 
+      /*
        * Hint to display if we detect that wifi is on but
        * WiMAX has been turned off and there are no available
        * networks
@@ -650,7 +728,7 @@ _add_fallback (CarrickPane *pane)
     }
     else if (priv->have_threeg && !priv->threeg_enabled)
     {
-      /* 
+      /*
        * Hint to display if we detect that wifi and wimax is on but
        * 3G has been turned off and there are no available
        * networks
@@ -661,7 +739,7 @@ _add_fallback (CarrickPane *pane)
     }
     else if (priv->have_bluetooth && !priv->bluetooth_enabled)
    {
-      /* 
+      /*
        * Hint to display if we detect that wifi, wimax, and 3G are on but
        * bluetooth has been turned off and there are no available networks
        */
@@ -671,7 +749,7 @@ _add_fallback (CarrickPane *pane)
     }
     else if (priv->have_ethernet && !priv->ethernet_enabled)
     {
-      /* 
+      /*
        * Hint to display if we detect that all technologies
        * other then ethernet have been turned on, and there
        * are no available networks
@@ -684,7 +762,7 @@ _add_fallback (CarrickPane *pane)
   else
   {
     /*
-     * Generic message to display if all available networking 
+     * Generic message to display if all available networking
      * technologies are turned on, but for whatever reason we
      * can not find any networks
      */
@@ -696,286 +774,212 @@ _add_fallback (CarrickPane *pane)
 }
 
 static void
-_available_technologies_changed_cb (CmManager *manager,
-				    gpointer   user_data)
+pane_update_property (const gchar *property,
+		      GValue	  *value,
+		      gpointer     user_data)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (user_data);
-  const GList *l = cm_manager_get_available_technologies (manager);
+  CarrickPane *self = user_data;
+  CarrickPanePrivate *priv = GET_PRIVATE (self);
 
-  priv->have_wifi = FALSE;
-  priv->have_ethernet = FALSE;
-  priv->have_threeg = FALSE;
-  priv->have_wimax = FALSE;
-  priv->have_bluetooth = FALSE;
-
-  while (l != NULL)
+  if (g_str_equal (property, "OfflineMode"))
   {
-    const gchar *t = l->data;
+    priv->offline_mode = g_value_get_boolean (value);
 
-    if (g_strcmp0 (t, "ethernet") == 0)
-    {
-      priv->have_ethernet = TRUE;
-    }
-    else if (g_strcmp0 (t, "wifi") == 0)
-    {
-      priv->have_wifi = TRUE;
-    }
-    else if (g_strcmp0 (t, "threeg") == 0)
-    {
-      priv->have_threeg = TRUE;
-    }
-    else if (g_strcmp0 (t, "wimax") == 0)
-    {
-      priv->have_wimax = TRUE;
-    }
-    else if (g_strcmp0 (t, "bluetooth") == 0)
-    {
-      priv->have_bluetooth = TRUE;
-    }
+    /* disarm signal handler */
+    g_signal_handlers_disconnect_by_func (priv->offline_mode_switch,
+					  _offline_mode_switch_callback,
+					  user_data);
 
-    l = l->next;
+    nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+				      (priv->offline_mode_switch),
+				      priv->offline_mode);
+
+    /* arm signal handler */
+    g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
+                      "switch-flipped",
+		      G_CALLBACK (_offline_mode_switch_callback),
+		      user_data);
   }
-
-  gtk_widget_set_sensitive (priv->wifi_switch,
-			    priv->have_wifi);
-  gtk_widget_set_sensitive (priv->ethernet_switch,
-			    priv->have_ethernet);
-  gtk_widget_set_sensitive (priv->threeg_switch,
-			    priv->have_threeg);
-  gtk_widget_set_sensitive (priv->wimax_switch,
-			    priv->have_wimax);
-  gtk_widget_set_sensitive (priv->bluetooth_switch,
-			    priv->have_bluetooth);
-}
-
-static void
-_enabled_technologies_changed_cb (CmManager *manager,
-				  gpointer   user_data)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (user_data);
-  const GList *l = cm_manager_get_enabled_technologies (manager);
-
-  priv->wifi_enabled = FALSE;
-  priv->ethernet_enabled = FALSE;
-  priv->threeg_enabled = FALSE;
-  priv->wimax_enabled = FALSE;
-  priv->bluetooth_enabled = FALSE;
-
-  while (l != NULL)
+  /*else if (g_str_equal (property, "State"))
   {
-    const gchar *t = l->data;
+  }*/
+  else if (g_str_equal (property, "AvailableTechnologies"))
+  {
+    gchar **tech = g_value_get_boxed (value);
+    gint i;
 
-    if (g_strcmp0 (t, "ethernet") == 0)
+    priv->have_wifi = FALSE;
+    priv->have_ethernet = FALSE;
+    priv->have_threeg = FALSE;
+    priv->have_wimax = FALSE;
+    priv->have_bluetooth = FALSE;
+
+    for (i = 0; i < g_strv_length (tech); i++)
     {
-      priv->ethernet_enabled = TRUE;
-    } 
-    else if (g_strcmp0 (t, "wifi") == 0)
-    {
-      priv->wifi_enabled = TRUE;
+      if (g_str_equal ("wifi", *(tech + i)))
+      {
+	priv->have_wifi = TRUE;
+      }
+      else if (g_str_equal ("wimax", *(tech + i)))
+      {
+	priv->have_wimax = TRUE;
+      }
+      else if (g_str_equal ("bluetooth", *(tech + i)))
+      {
+	priv->have_bluetooth = TRUE;
+      }
+      else if (g_str_equal ("cellular", *(tech + i)))
+      {
+	priv->have_threeg = TRUE;
+      }
+      else if (g_str_equal ("ethernet", *(tech + i)))
+      {
+	priv->have_ethernet = TRUE;
+      }
     }
-    else if (g_strcmp0 (t, "threeg") == 0)
-    {
-      priv->threeg_enabled = TRUE;
-    }
-    else if (g_strcmp0 (t, "wimax") == 0)
-    {
-      priv->wimax_enabled = TRUE;
-    }
-    else if (g_strcmp0 (t, "bluetooth") == 0)
-    {
-      priv->bluetooth_enabled = TRUE;
-    }
-    
-    l = l->next;
+
+    gtk_widget_set_sensitive (priv->wifi_switch,
+			      priv->have_wifi);
+    gtk_widget_set_sensitive (priv->ethernet_switch,
+			      priv->have_ethernet);
+    gtk_widget_set_sensitive (priv->threeg_switch,
+			      priv->have_threeg);
+    gtk_widget_set_sensitive (priv->wimax_switch,
+			      priv->have_wimax);
+    gtk_widget_set_sensitive (priv->bluetooth_switch,
+			      priv->have_bluetooth);
   }
+  else if (g_str_equal (property, "EnabledTechnologies"))
+  {
+    gchar **tech = g_value_get_boxed (value);
+    gint i;
 
-  /* disarm signal handlers */
-  g_signal_handlers_disconnect_by_func (priv->ethernet_switch,
-					_ethernet_switch_callback,
-					user_data);
-  g_signal_handlers_disconnect_by_func (priv->wifi_switch,
-					_wifi_switch_callback,
-					user_data);
-  g_signal_handlers_disconnect_by_func (priv->threeg_switch,
-					_threeg_switch_callback,
-					user_data);
-  g_signal_handlers_disconnect_by_func (priv->wimax_switch,
-					_wimax_switch_callback,
-					user_data);
-  g_signal_handlers_disconnect_by_func (priv->bluetooth_switch,
-					_bluetooth_switch_callback,
-					user_data);
-  
-  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-				    (priv->ethernet_switch),
-				    priv->ethernet_enabled);
-  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-				    (priv->wifi_switch),
-				    priv->wifi_enabled);
-  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-				    (priv->threeg_switch),
-				    priv->threeg_enabled);
-  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-				    (priv->wimax_switch),
-				    priv->wimax_enabled);
-  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-				    (priv->bluetooth_switch),
-				    priv->bluetooth_enabled);
+    priv->wifi_enabled = FALSE;
+    priv->ethernet_enabled = FALSE;
+    priv->threeg_enabled = FALSE;
+    priv->wimax_enabled = FALSE;
+    priv->bluetooth_enabled = FALSE;
 
-  /* arm signal handlers */
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
-		    "switch-flipped",
-		    G_CALLBACK (_ethernet_switch_callback),
-		    user_data);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
-		    "switch-flipped",
-		    G_CALLBACK (_wifi_switch_callback),
-		    user_data);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
-		    "switch-flipped",
-		    G_CALLBACK (_threeg_switch_callback),
-		    user_data);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
-		    "switch-flipped",
-		    G_CALLBACK (_wimax_switch_callback),
-		    user_data);
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
-		    "switch-flipped",
-		    G_CALLBACK (_bluetooth_switch_callback),
-		    user_data);
+    for (i = 0; i < g_strv_length (tech); i++)
+    {
+      if (g_str_equal ("wifi", *(tech + i)))
+      {
+	priv->wifi_enabled = TRUE;
+      }
+      else if (g_str_equal ("wimax", *(tech + i)))
+      {
+	priv->wimax_enabled = TRUE;
+      }
+      else if (g_str_equal ("bluetooth", *(tech + i)))
+      {
+	priv->bluetooth_enabled = TRUE;
+      }
+      else if (g_str_equal ("cellular", *(tech + i)))
+      {
+	priv->threeg_enabled = TRUE;
+      }
+      else if (g_str_equal ("ethernet", *(tech + i)))
+      {
+	priv->ethernet_enabled = TRUE;
+      }
+    }
 
-  /* only enable if wifi is enabled */ 
-  gtk_widget_set_sensitive (priv->new_conn_button,
+    /* disarm signal handlers */
+    g_signal_handlers_disconnect_by_func (priv->ethernet_switch,
+					  _ethernet_switch_callback,
+					  user_data);
+    g_signal_handlers_disconnect_by_func (priv->wifi_switch,
+					  _wifi_switch_callback,
+					  user_data);
+    g_signal_handlers_disconnect_by_func (priv->threeg_switch,
+					  _threeg_switch_callback,
+					  user_data);
+    g_signal_handlers_disconnect_by_func (priv->wimax_switch,
+					  _wimax_switch_callback,
+					  user_data);
+    g_signal_handlers_disconnect_by_func (priv->bluetooth_switch,
+					  _bluetooth_switch_callback,
+					  user_data);
+
+    nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+				      priv->ethernet_enabled);
+    nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+				      priv->wifi_enabled);
+    nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+				      priv->threeg_enabled);
+    nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+				      priv->wimax_enabled);
+    nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
+				      priv->bluetooth_enabled);
+
+    /* arm signal handlers */
+    g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+		      "switch-flipped",
+		      G_CALLBACK (_ethernet_switch_callback),
+		      user_data);
+    g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+		      "switch-flipped",
+		      G_CALLBACK (_wifi_switch_callback),
+		      user_data);
+    g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+		      "switch-flipped",
+		      G_CALLBACK (_threeg_switch_callback),
+		      user_data);
+    g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+		      "switch-flipped",
+		      G_CALLBACK (_wimax_switch_callback),
+		      user_data);
+    g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
+		      "switch-flipped",
+		      G_CALLBACK (_bluetooth_switch_callback),
+		      user_data);
+
+    /* only enable "Add new connection" if wifi is enabled */
+    gtk_widget_set_sensitive (priv->new_conn_button,
 			    priv->wifi_enabled);
-
-  if (!cm_manager_get_services (priv->manager))
-  {
-    _add_fallback (CARRICK_PANE (user_data));
   }
 }
 
 static void
-_offline_mode_changed_cb (CmManager *manager,
-			  gpointer   user_data)
+pane_manager_changed_cb (DBusGProxy  *proxy,
+			 const gchar *property,
+			 GValue	     *value,
+			 gpointer     user_data)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (user_data);
-  gboolean mode = cm_manager_get_offline_mode (priv->manager);
+  CarrickPane *self = user_data;
 
-  /* disarm signal handler */
-  g_signal_handlers_disconnect_by_func (priv->offline_mode_switch,
-					_offline_mode_switch_callback,
-					user_data);
-
-  nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-				    (priv->offline_mode_switch),
-				    mode);
-
-  /* arm signal handler */
-  g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_offline_mode_switch_callback),
-                    user_data);
+  pane_update_property (property, value, self);
 }
 
 static void
-carrick_pane_update_list (CarrickPane *pane)
+pane_manager_get_properties_cb (DBusGProxy     *manager,
+				DBusGProxyCall *call,
+				gpointer	user_data)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  const GList *services = NULL;
-  
-  if (priv->manager)
+  CarrickPane *self = user_data;
+  GError *error = NULL;
+  GHashTable *properties;
+
+  dbus_g_proxy_end_call (manager,
+			 call,
+			 &error,
+			 dbus_g_type_get_map ("GHashTable",
+					      G_TYPE_STRING,
+					      G_TYPE_VALUE),
+			 &properties,
+			 G_TYPE_INVALID);
+
+  if (error)
   {
-    services = cm_manager_get_services (priv->manager);
-  }
-  carrick_list_update (CARRICK_LIST (priv->service_list), 
-                       services);
-}
-
-static void
-_services_changed_cb (CmManager *manager,
-                      gpointer   user_data)
-{
-  CarrickPane *pane = CARRICK_PANE (user_data);
-
-  carrick_pane_update_list (pane);
-}
-
-static void
-_manager_state_changed_cb (CmManager *manager,
-                           gpointer   user_data)
-{
-  CarrickPane *pane = CARRICK_PANE (user_data);
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-  const gchar *state = cm_manager_get_state (manager);
-
-  if (g_strcmp0 (state, "unavailable") == 0)
-  {
-    /* Daemon has gone ... */
-    priv->have_daemon = FALSE;
-    carrick_pane_update_list (pane);
-  }
-  else if (g_strcmp0 (state, "offline") == 0)
-  {
-    priv->have_daemon = TRUE;
-    _add_fallback (pane);
-  }
-}
-
-static void
-carrick_pane_set_manager (CarrickPane *pane,
-                          CmManager   *manager)
-{
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
-
-  if (priv->manager)
-  {
-    g_signal_handlers_disconnect_by_func (priv->manager,
-                                          _services_changed_cb,
-                                          pane);
-    g_signal_handlers_disconnect_by_func (priv->manager,
-                                          _available_technologies_changed_cb,
-                                          pane);
-    g_signal_handlers_disconnect_by_func (priv->manager,
-                                          _enabled_technologies_changed_cb,
-                                          pane);
-    g_signal_handlers_disconnect_by_func (priv->manager,
-                                          _manager_state_changed_cb,
-                                          pane);
-    g_signal_handlers_disconnect_by_func (priv->manager,
-                                          _offline_mode_changed_cb,
-                                          pane);
-
-    g_object_unref (priv->manager);
-    priv->manager = NULL;
+    g_debug ("Error when ending GetProperties call: %s",
+	     error->message);
+    g_clear_error (&error);
   }
 
-  if (manager)
-  {
-    priv->manager = g_object_ref (manager);
-    g_signal_connect (priv->manager,
-                      "services-changed",
-                      G_CALLBACK (_services_changed_cb),
-                      pane);
-    g_signal_connect (priv->manager,
-                      "state-changed",
-                      G_CALLBACK (_manager_state_changed_cb),
-                      pane);
-    g_signal_connect (priv->manager,
-                      "available-technologies-changed",
-                      G_CALLBACK (_available_technologies_changed_cb),
-                      pane);
-    g_signal_connect (priv->manager,
-                      "enabled-technologies-changed",
-                      G_CALLBACK (_enabled_technologies_changed_cb),
-                      pane);
-    g_signal_connect (priv->manager,
-                      "offline-mode-changed",
-                      G_CALLBACK (_offline_mode_changed_cb),
-                      pane);
-
-  }
-
-  carrick_pane_update_list (pane);
+  g_hash_table_foreach (properties,
+			(GHFunc) pane_update_property,
+			self);
+  g_hash_table_unref (properties);
 }
 
 static void
@@ -991,6 +995,8 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget *frame_title;
   GtkWidget *offline_mode_label;
   gchar *label = NULL;
+  GError *error = NULL;
+  DBusGConnection *connection;
 
   priv->icon_factory = NULL;
   priv->manager = NULL;
@@ -1006,6 +1012,39 @@ carrick_pane_init (CarrickPane *self)
   priv->threeg_enabled = FALSE;
   priv->wimax_enabled = FALSE;
   priv->bluetooth_enabled = FALSE;
+
+  /* Get D-Bus connection and create proxy */
+  connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
+  if (error)
+  {
+    g_debug ("Error connecting to bus: %s",
+	     error->message);
+    g_clear_error (&error);
+    /* FIXME: do something */
+  }
+  priv->manager = dbus_g_proxy_new_for_name (connection,
+				       CONNMAN_SERVICE,
+				       CONNMAN_MANAGER_PATH,
+				       CONNMAN_MANAGER_INTERFACE);
+
+  /* Listen for the D-Bus PropertyChanged signal */
+  dbus_g_proxy_add_signal (priv->manager,
+			   "PropertyChanged",
+			   G_TYPE_STRING,
+			   G_TYPE_VALUE,
+			   G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (priv->manager,
+			       "PropertyChanged",
+			       G_CALLBACK (pane_manager_changed_cb),
+			       self,
+			       NULL);
+
+  dbus_g_proxy_begin_call (priv->manager,
+			   "GetProperties",
+			   pane_manager_get_properties_cb,
+			   self,
+			   NULL,
+			   G_TYPE_INVALID);
 
   switch_bin = nbtk_gtk_frame_new ();
   gtk_widget_show (switch_bin);
@@ -1325,7 +1364,17 @@ carrick_pane_update (CarrickPane *pane)
   {
     priv->last_scan = now;
 
-    cm_manager_request_scan (priv->manager);
+    /* Request a scan on all technologies.
+     * The UI doesn't really care if the call to scan completes or
+     * not so just fire and forget
+     */
+    dbus_g_proxy_call (priv->manager,
+		       "RequestScan",
+			NULL,
+			G_TYPE_STRING,
+			"",
+			G_TYPE_INVALID,
+			G_TYPE_INVALID);
   }
 
   carrick_list_set_all_inactive (CARRICK_LIST (priv->service_list));
@@ -1333,15 +1382,12 @@ carrick_pane_update (CarrickPane *pane)
 
 GtkWidget*
 carrick_pane_new (CarrickIconFactory         *icon_factory,
-                  CarrickNotificationManager *notifications,
-                  CmManager                  *manager)
+                  CarrickNotificationManager *notifications)
 {
   return g_object_new (CARRICK_TYPE_PANE,
                        "icon-factory",
                        icon_factory,
                        "notification-manager",
                        notifications,
-                       "manager",
-                       manager,
                        NULL);
 }
