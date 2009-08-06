@@ -25,7 +25,6 @@
 #include <config.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <gconnman/gconnman.h>
 #include "carrick-pane.h"
 #include "carrick-list.h"
 #include "carrick-icon-factory.h"
@@ -39,7 +38,6 @@ G_DEFINE_TYPE (CarrickApplet, carrick_applet, G_TYPE_OBJECT)
 typedef struct _CarrickAppletPrivate CarrickAppletPrivate;
 
 struct _CarrickAppletPrivate {
-  CmManager          *manager;
   GtkWidget          *pane;
   CarrickIconFactory *icon_factory;
   CarrickNotificationManager *notifications;
@@ -63,22 +61,11 @@ static void
 carrick_applet_init (CarrickApplet *self)
 {
   CarrickAppletPrivate *priv = GET_PRIVATE (self);
-  GError *error = NULL;
 
-  priv->manager = cm_manager_new (&error, FALSE);
-  if (error || !priv->manager) {
-    g_debug ("Error initializing connman manager: %s\n",
-             error->message);
-    /* FIXME: must do better here */
-    return;
-  }
-  /* FIXME: handle return value here */
-  cm_manager_refresh (priv->manager);
   priv->icon_factory = carrick_icon_factory_new ();
-  priv->notifications = carrick_notification_manager_new (priv->manager);
+  priv->notifications = carrick_notification_manager_new ();
   priv->pane = carrick_pane_new (priv->icon_factory,
-                                 priv->notifications,
-                                 priv->manager);
+                                 priv->notifications);
   gtk_widget_show (priv->pane);
 }
 
