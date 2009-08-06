@@ -57,7 +57,7 @@
 #define TOOLBAR_TRIGGER_THRESHOLD       1
 #define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 500
 #define TOOLBAR_LOWLIGHT_FADE_DURATION 300
-
+#define TOOLBAR_AUTOSTART_DELAY 10
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
 #if 0
@@ -1912,6 +1912,50 @@ mnb_toolbar_noc_cb (DBusGProxy  *proxy,
   mnb_toolbar_handle_dbus_name (toolbar, name);
 }
 
+static gboolean
+mnb_toolbar_autostart_panels_cb (gpointer toolbar)
+{
+  MnbToolbarPrivate  *priv = MNB_TOOLBAR (toolbar)->priv;
+  gint                i;
+
+  for (i = 0; i < NUM_ZONES; ++i)
+    {
+      switch (i)
+        {
+          /* Add here any apps that have been converted to multiproc */
+        case APPS_ZONE:
+        case PASTEBOARD_ZONE:
+        case PEOPLE_ZONE:
+        case INTERNET_ZONE:
+        case MYZONE:
+        case MEDIA_ZONE:
+        case STATUS_ZONE:
+          if (!priv->panels[i])
+            {
+              DBusConnection *conn;
+              const gchar    *name;
+              gchar          *dbus_name;
+
+              name =  mnb_toolbar_panel_index_to_name (i);
+
+              g_debug ("Panel service [%s] is not running, starting.", name);
+
+              conn = dbus_g_connection_get_connection (priv->dbus_conn);
+
+              dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
+
+              dbus_bus_start_service_by_name (conn, dbus_name, 0, NULL, NULL);
+
+              g_free (dbus_name);
+            }
+          break;
+        default:;
+        }
+    }
+
+  return FALSE;
+}
+
 /*
  * Create panels for any of our services that are already up.
  */
@@ -1972,44 +2016,6 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
     }
 
   dbus_free_string_array (names);
-
-#if 0
-  for (i = 0; i < NUM_ZONES; ++i)
-    {
-      switch (i)
-        {
-          /* Add here any apps that have been converted to multiproc */
-        case APPS_ZONE:
-        case PASTEBOARD_ZONE:
-        case PEOPLE_ZONE:
-        case INTERNET_ZONE:
-        case MYZONE:
-        case MEDIA_ZONE:
-        case STATUS_ZONE:
-          if (!found_panels[i])
-            {
-              DBusConnection *conn;
-              const gchar    *name;
-              gchar          *dbus_name;
-
-              name =  mnb_toolbar_panel_index_to_name (i);
-
-              g_debug ("Panel service [%s] is not running, attempting to start.",
-                       name);
-
-              conn = dbus_g_connection_get_connection (priv->dbus_conn);
-
-              dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
-
-              dbus_bus_start_service_by_name (conn, dbus_name, 0, NULL, NULL);
-
-              g_free (dbus_name);
-            }
-          break;
-        default:;
-        }
-    }
-#endif
 
   dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
                                G_CALLBACK (mnb_toolbar_noc_cb),
@@ -2816,6 +2822,10 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
       priv->shown_myzone = TRUE;
       clutter_actor_show (CLUTTER_ACTOR (priv->panels[MYZONE]));
     }
+
+  g_timeout_add_seconds (TOOLBAR_AUTOSTART_DELAY,
+                         mnb_toolbar_autostart_panels_cb,
+                         toolbar);
 }
 
 /*
