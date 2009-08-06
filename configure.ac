@@ -162,7 +162,7 @@ AS_IF([test "x$enable_netpanel" = "xyes"],
       [
         AC_DEFINE(WITH_NETPANEL, [1], [Defined when building the net panel])
 
-	PKG_CHECK_MODULES(NETPANEL, gtk+-2.0 nbtk-1.0 cluttermozembed mhs-1.0)
+	PKG_CHECK_MODULES(NETPANEL, gtk+-2.0 nbtk-1.0 clutter-mozembed-0.10 mhs-1.0)
 
 NETPANEL_CFLAGS="${NETPANEL_CFLAGS} "\
 '-I$(top_srcdir)/libmoblin-panel '

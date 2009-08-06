@@ -19,7 +19,7 @@
  */
 
 #include <dbus/dbus-glib.h>
-#include <clutter-mozembed.h>
+#include <clutter-mozembed/clutter-mozembed.h>
 #include <mhs/mhs.h>
 #include <glib/gi18n.h>
 #include <sys/file.h>
