@@ -658,7 +658,7 @@ moblin_netbook_move_window_to_workspace (MutterWindow *mcw,
 }
 
 static void
-moblin_netbook_move_window_to_new_workspace (MutterPlugin *plugin,
+moblin_netbook_move_window_to_its_workspace (MutterPlugin *plugin,
                                              MutterWindow *mcw,
                                              guint32       timestamp)
 {
@@ -669,7 +669,43 @@ moblin_netbook_move_window_to_new_workspace (MutterPlugin *plugin,
 
   n_workspaces = meta_screen_get_n_workspaces (screen);
 
-  if (n_workspaces >= MAX_WORKSPACES)
+  if (n_workspaces == 1)
+    {
+      gboolean  workspace_empty = TRUE;
+      GList    *l;
+
+      /*
+       * Mutter now treats all OR windows as sticky, and the -1 will trigger
+       * false workspace switch.
+       */
+      l = mutter_get_windows (screen);
+
+      while (l)
+        {
+          MutterWindow       *m    = l->data;
+          MetaWindow         *mw   = mutter_window_get_meta_window (m);
+          MetaCompWindowType  type = mutter_window_get_window_type (m);
+
+          if ((type == META_COMP_WINDOW_NORMAL) &&
+              !mutter_window_is_override_redirect (m) &&
+              !meta_window_is_on_all_workspaces (mw))
+            {
+              workspace_empty = FALSE;
+              break;
+            }
+
+          l = l->next;
+        }
+
+      if (workspace_empty)
+        {
+          index = 0;
+          append = FALSE;
+        }
+      else
+        index = n_workspaces;
+    }
+  else if (n_workspaces >= MAX_WORKSPACES)
     {
       index = MAX_WORKSPACES - 1;
       append = FALSE;
@@ -1325,7 +1361,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           timestamp = meta_display_get_current_time_roundtrip (display);
 
-          moblin_netbook_move_window_to_new_workspace (plugin,
+          moblin_netbook_move_window_to_its_workspace (plugin,
                                                        mcw,
                                                        timestamp);
         }
