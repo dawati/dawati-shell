@@ -90,16 +90,6 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
 MUTTER_PLUGIN_CFLAGS="${MUTTER_PLUGIN_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
 AC_SUBST([MUTTER_PLUGIN_CFLAGS])
 
-# Penge
-PKG_CHECK_MODULES(PENGE,
-                  libjana-ecal
-                  mojito-client
-                  gtk+-2.0 >= 2.14
-                  nbtk-1.0
-                  gconf-2.0
-                  gio-2.0
-                  gio-unix-2.0)
-
 AC_ARG_ENABLE([scaled-background],
 	AC_HELP_STRING([--enable-scaled-background],
 		[Scale the mutter-moblin background image]),
@@ -135,22 +125,6 @@ AC_SUBST([AHOGHILL_LIBS])
 
 AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
 
-# Applications panel
-PKG_CHECK_MODULES(APPLICATIONS,
-                  clutter-x11-1.0
-                  gdk-x11-2.0
-                  gio-unix-2.0
-                  gtk+-2.0
-                  libgnome-menu
-                  nbtk-1.0)
-
-APPLICATIONS_CFLAGS="${APPLICATIONS_CFLAGS} "\
-'-I$(top_srcdir)/libmoblin-panel '
-AC_SUBST([APPLICATIONS_CFLAGS])
-APPLICATIONS_LIBS="${APPLICATIONS_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la '
-AC_SUBST([APPLICATIONS_LIBS])
-
 # Netpanel
 AC_ARG_ENABLE([netpanel],
               [AC_HELP_STRING([--enable-netpanel],
@@ -174,63 +148,6 @@ AC_SUBST([NETPANEL_LIBS])
 )
 
 AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
-
-# Pasteboard panel
-PKG_CHECK_MODULES(PASTEBOARD,
-                  clutter-x11-1.0
-                  clutter-1.0
-                  gtk+-2.0
-                  nbtk-1.0 >= 0.15.1)
-
-PASTEBOARD_CFLAGS="${PASTEBOARD_CFLAGS} "\
-'-I$(top_srcdir)/libmoblin-panel '
-AC_SUBST([PASTEBOARD_CFLAGS])
-PASTEBOARD_LIBS="${PASTEBOARD_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la '
-AC_SUBST([PASTEBOARD_LIBS])
-
-# People panel
-AC_ARG_ENABLE([people],
-              [AC_HELP_STRING([--enable-people],
-                              [Enable building of the people panel])],
-              [],
-              [enable_people=default_enable_people])
-
-AS_IF([test "x$enable_people" = "xyes"],
-      [
-        AC_DEFINE(WITH_PEOPLE, [1], [Defined when building the people panel])
-
-	PKG_CHECK_MODULES(PEOPLE, anerley gtk+-2.0 clutter-x11-1.0 gio-2.0 gio-unix-2.0)
-
-PEOPLE_CFLAGS="${PEOPLE_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
-AC_SUBST([PEOPLE_CFLAGS])
-PEOPLE_LIBS="${PEOPLE_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la'
-AC_SUBST([PEOPLE_LIBS])
-
-      ]
-)
-
-AM_CONDITIONAL([WITH_PEOPLE],   [test "x$enable_people" = "xyes"])
-
-AC_ARG_ENABLE([status],
-              [AC_HELP_STRING([--enable-status],
-                              [Enable Status Panel])],
-              [],
-              [enable_status=default_enable_status])
-
-AS_IF([test "x$enable_status" = "xyes"],
-      [
-        AC_DEFINE(WITH_STATUS, [1], [Defined when building the status panel])
-
-        PKG_CHECK_MODULES(STATUS, dbus-glib-1 clutter-x11-1.0 libmissioncontrol mojito-client nbtk-1.0)
-
-        AC_SUBST(STATUS_CFLAGS)
-        AC_SUBST(STATUS_LIBS)
-      ]
-)
-
-AM_CONDITIONAL([WITH_STATUS],   [test "x$enable_status" = "xyes"])
 
 AC_ARG_ENABLE([cache],
               [AC_HELP_STRING([--enable-cache],
@@ -276,10 +193,6 @@ SHAVE_INIT([build/autotools], [enable])
 
 AC_OUTPUT([
 Makefile
-applications/Makefile
-applications/src/Makefile
-applications/tests/Makefile
-applications/theme/Makefile
 build/Makefile
 build/autotools/Makefile
 build/autotools/shave
@@ -288,20 +201,8 @@ data/Makefile
 src/Makefile
 src/tray/Makefile
 src/effects/Makefile
-status/Makefile
-status/src/Makefile
-status/theme/Makefile
 po/Makefile.in
 tests/Makefile
-pasteboard/Makefile
-pasteboard/src/Makefile
-pasteboard/theme/Makefile
-penge/Makefile
-penge/penge/Makefile
-penge/examples/Makefile
-people/Makefile
-people/src/Makefile
-people/theme/Makefile
 netpanel/Makefile
 netpanel/src/Makefile
 netpanel/theme/Makefile
@@ -315,9 +216,6 @@ libmoblin-panel/moblin-panel.pc
 libmoblin-panel/moblin-panel/Makefile
 libmoblin-panel/theme/Makefile
 libmoblin-panel/tests/Makefile
-myzone/Makefile
-myzone/src/Makefile
-myzone/theme/Makefile
 ])
 
 echo "

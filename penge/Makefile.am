@@ -1,1 +1,0 @@
-SUBDIRS = penge examples
