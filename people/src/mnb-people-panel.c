@@ -130,7 +130,6 @@ static void
 _update_selected_item (MnbPeoplePanel *people_panel)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
-  gchar *msg;
   AnerleyItem *item;
 
   item =
