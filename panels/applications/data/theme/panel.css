@@ -1,0 +1,100 @@
+
+NbtkScrollView {
+  xthickness: 26;
+  ythickness: 26;
+}
+
+NbtkScrollBar {
+  background-color: #e7ebee;
+  padding: 3;
+}
+
+/* Launcher  */
+
+MnbLauncher > *#launcher-vbox {
+  background-color: #ffff;
+  padding: 1 5 5 5;
+}
+
+MnbLauncher *#launcher-filter-pane {
+  border-image: url('file://launcher-search-bg.png') 4 stretch;
+  padding: 4;
+}
+
+MnbLauncher *#launcher-filter-label {
+  font-family: "Droid Sans Bold";
+  font-size: 18px;
+  padding-left: 12;
+  color: #3e3e3eff;
+}
+
+MnbLauncher *#launcher-group-label {
+  font-family: "Droid Sans Bold";
+  font-size: 14;
+  color: #7e7e7e;
+  padding: 12 12 6 12;
+}
+
+MnbLauncher *#launcher-fav-grid {
+  padding-left: 18;
+}
+
+MnbLauncher *#launcher-apps-grid {
+  padding-left: 0;
+  padding-top: 12;
+}
+
+MnbLauncher *#launcher-expander-grid {
+  padding: 8 5 10 10;
+}
+
+/*
+ * Launcher button.
+ */
+
+MnbLauncherButton {
+  padding: 10;
+  padding-top: 17;
+}
+
+MnbLauncherButton:hover {
+  border-image: url("file://launcher-hover.png") 4 6 6 4 stretch stretch;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-title {
+  color: #3b3b3b;
+  font-size: 13;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-description {
+  color: #7e7e7e;
+  font-size: 12;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-comment {
+  color: #a2adb6;
+  font-size: 11;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-fav-toggle {
+  background-image: none;
+  border-image: none;
+}
+
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle {
+  background-image: url("file://launcher-button-fav-toggle.png");
+  border-image: none;
+}
+
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:checked {
+  background-image: url("file://launcher-button-fav-toggle-checked.png");
+}
+
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:active {
+  background-image: url("file://launcher-button-fav-toggle-active.png");
+}
+
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:hover {
+  background-image: url("file://launcher-button-fav-toggle-hover.png");
+}
+

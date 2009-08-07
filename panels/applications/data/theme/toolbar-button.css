@@ -1,0 +1,11 @@
+
+MnbToolbarButton#applications-button {
+  background-image: url("file://apps-normal.png");
+}
+
+MnbToolbarButton#applications-button:hover,
+MnbToolbarButton#applications-button:active,
+MnbToolbarButton#applications-button:checked  {
+  background-image: url("file://apps-coloured.png");
+}
+
