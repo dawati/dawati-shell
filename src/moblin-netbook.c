@@ -1353,8 +1353,15 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
             clutter_actor_hide (priv->toolbar);
         }
 
-      if (type == META_COMP_WINDOW_NORMAL &&
-          !meta_window_is_modal (mw)      &&
+      /*
+       * Move application window to a new workspace, if appropriate.
+       * (We only move applications, i.e., _NET_WM_WINDOW_TYPE_NORMAL that
+       * were start up with SN. We explicitely exclude modal windows and
+       * windows that are transient.)
+       */
+      if (type == META_COMP_WINDOW_NORMAL  &&
+          !meta_window_is_modal (mw)       &&
+          !meta_window_get_startup_id (mw) &&
           !meta_window_get_transient_for (mw))
         {
           MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
