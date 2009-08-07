@@ -21,7 +21,6 @@ test_entry_CFLAGS = \
 test_entry_LDADD = $(LIBMPL_LIBS)
 
 test_entry_SOURCES = \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-clutter-theme.c \
 	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-entry.c \
 	test-entry.c
 

@@ -19,8 +19,6 @@ libmoblin_panel_la_CFLAGS = \
 libmoblin_panel_la_LDFLAGS = $(LIBMPL_LIBS)
 
 libmoblin_panel_la_SOURCES = \
-	mpl-clutter-theme.c \
-	mpl-clutter-theme.h \
 	mpl-entry.c \
 	mpl-panel-client.c \
 	mpl-panel-clutter.c \
