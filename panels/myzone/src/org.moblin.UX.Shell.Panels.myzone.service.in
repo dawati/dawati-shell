@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.moblin.UX.Shell.Panels.myzone
+Exec=@libexecdir@/moblin-panel-myzone
+

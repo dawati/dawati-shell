@@ -1,0 +1,202 @@
+PengeGridView
+{
+  padding: 2 2 2 2;
+}
+
+PengeCalendarPane
+{
+  border-image: url('file://backdrop.png') 5 5 5 5;
+  padding: 2;
+}
+
+PengeAppsPane
+{
+  border-image: url('file://backdrop.png') 5 5 5 5;
+  padding: 2;
+}
+
+PengeCalendarPane > *.PengeCalendarPaneTitle
+{
+  font-size: 17;
+  color: #3e3e3eff;
+}
+
+PengeEventTile, PengeTaskTile, PengeAppTile
+{
+  background-color: #fff0;
+  padding: 9 10 11 10;
+}
+
+PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover,
+PengeEventTile:active, PengeTaskTile:active, PengeAppTile:active
+{
+  border-image: url('file://tile-partial-glow.png') 7 8 9 8;
+}
+
+
+PengeRecentFileTile, PengeTwitterTile, PengeFlickrTile, PengeLastfmTile, PengeMyspaceTile
+{
+  border-image: url('file://tile-bg.png') 7 8 9 8;
+  padding: 6 7 8 7;
+}
+
+
+PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover, PengeMyspaceTile:hover
+{
+  border-image: url('file://tile-glow.png') 7 8 9 8;
+  padding: 6 7 8 7;
+}
+
+NbtkButton.PengeTaskToggleButton
+{
+  border-image: url('file://check_box.png') 0;
+}
+
+NbtkButton.PengeTaskToggleButton:hover, NbtkButton.PengeTaskToggleButton:checked
+{
+  border-image: url('file://checked_box.png') 0;
+}
+
+PengeDateTile
+{
+  border-image: url('file://date-background.png') 16;
+}
+
+PengeEventTile *.PengeEventTimeLabel
+{
+  color: white;
+  font-size:12;
+  padding: 8;
+}
+
+PengeDateTile *.PengeDateTileBackground
+{
+  border-image: url('file://date-background-background.png') 16;
+}
+
+PengeEventTile *.PengeEventTimeLabel:past
+{
+  color: white;
+  font-size:12;
+  padding: 8;
+}
+
+PengeEventTile *.PengeEventTimeBin
+{
+  border-image: url('file://time-bg.png') 0;
+}
+
+PengeEventTile *.PengeEventTimeBin:past
+{
+  border-image: url('file://time-bg-past.png') 0;
+}
+
+PengeDateTile *.PengeDayLabel
+{
+  font-size: 18;
+}
+
+PengeDateTile *.PengeDateLabel
+{
+  font-size: 78;
+  color: #4eb9f1ff;
+}
+
+PengePeopleTile *.PengePeopleTilePrimaryLabel
+{
+}
+
+PengePeopleTile *.PengePeopleTileSecondaryLabel
+{
+  font-size: 11;
+  color: #3a3a3aff;
+}
+
+NbtkLabel.PengePeopleTilePrimaryLabel:hover, NbtkLabel.PengePeopleTileSecondaryLabel:hover
+{
+  color: white;
+}
+
+PengeTwitterTile *.PengeTwitterTileText, PengeMyspaceTile *.PengeMyspaceTileText
+{
+  font-size: 12;
+}
+
+PengeTwitterTile *.PengeTwitterTileBackground, PengeMyspaceTile *.PengeMyspaceTileBackground
+{
+  border-image: url('file://quotebackground.png') 45 51 46 52;
+  padding: 8;
+}
+
+PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
+{
+  font-size: 16;
+  color: #2c2c2cff;
+}
+
+PengeRecentFileTile NbtkTable.PengeRecentFileTileDetails, NbtkTable.PengePeopleTileDetails
+{
+  background-color: black;
+  padding: 2;
+}
+
+PengeRecentFileTile *.PengeRecentFileTileDetailsFilename
+{
+  color: white;
+  font-size: 12;
+}
+
+PengeRecentFileTile *.PengeRecentFileTileDetailsType
+{
+  color: white;
+  font-size: 11;
+}
+
+NbtkTable.PengeNoContentTile *#penge-no-content-main-message
+{
+  font-size:15px;
+  color: #2c2c2cff;
+}
+
+NbtkTable.PengeNoContentTile *#penge-no-content-other-message
+{
+  font-size:14px;
+  color: #2c2c2cff;
+}
+
+NbtkTable.PengeNoContentTile
+{
+  border-image: url('file://no-content-tile-bg.png') 7 8 9 8;
+  padding: 10 11 12 11;
+}
+
+NbtkTable.PengeNoContentTile:hover
+{
+  border-image: url('file://no-content-tile-glow-bg.png') 7 8 9 8;
+  padding: 10 11 12 11;
+}
+
+NbtkTable.PengeWelcomeTile
+{
+  border-image: url('file://backdrop.png') 5 5 5 5;
+  padding: 6;
+}
+
+NbtkTable.PengeWelcomeTile *#penge-welcome-primary-text
+{
+  color: #009bceff;
+  font-size:19px;
+}
+
+NbtkTable.PengeWelcomeTile *#penge-welcome-secondary-text
+{
+  font-size:14px;
+  color: #2c2c2cff;
+}
+
+PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover, PengeMyspaceTile:hover
+{
+  border-image: url('file://tile-glow.png') 7 8 9 8;
+  padding: 6 7 8 7;
+}
+
