@@ -370,7 +370,7 @@ config_socket_size_allocate_cb (GtkWidget     *widget,
       gtk_window_move (GTK_WINDOW (child->config),
                        x, y + MNB_DROP_DOWN_TOP_PADDING);
 
-      na_tray_expose_child (GTK_WINDOW (child->config), NULL, child);
+      na_tray_expose_child (GTK_WIDGET (child->config), NULL, child);
     }
 }
 
