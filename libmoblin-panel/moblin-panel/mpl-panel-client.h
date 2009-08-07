@@ -102,22 +102,16 @@ void  mpl_panel_client_request_tooltip      (MplPanelClient *panel,
                                              const gchar    *tooltip);
 
 gboolean mpl_panel_client_launch_application   (MplPanelClient *panel,
-                                                const gchar    *app,
-                                                gint            workspace,
-                                                gboolean        no_chooser);
+                                                const gchar    *app);
 
 gboolean
 mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
                                                        const gchar    *desktop,
-                                                       GList          *files,
-                                                       gint            wspace,
-                                                       gboolean        no_chooser);
+                                                       GList          *files);
 
 gboolean
 mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
-                                                     const gchar    *uri,
-                                                     gint            workspace,
-                                                     gboolean        no_chooser);
+                                                     const gchar    *uri);
 
 Window
 mpl_panel_client_get_xid (MplPanelClient *panel);

@@ -484,8 +484,7 @@ _secondary_button_clicked_cb (NbtkButton *button,
       command_line = g_strdup_printf ("contacts --uid %s",
                                     uid);
       if (!mpl_panel_client_launch_application (priv->panel_client,
-                                                command_line,
-                                                -2, FALSE))
+                                                command_line))
       {
         g_warning (G_STRLOC ": Error launching contacts for uid: %s",
                    uid);

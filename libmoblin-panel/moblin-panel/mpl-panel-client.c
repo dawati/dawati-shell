@@ -815,10 +815,7 @@ mpl_panel_client_request_tooltip (MplPanelClient *panel,
  * required SN housekeeping.
  */
 static gboolean
-mpl_panel_client_launch_application_from_info (GAppInfo     *app,
-                                               GList        *files,
-                                               gint          workspace,
-                                               gboolean      no_chooser)
+mpl_panel_client_launch_application_from_info (GAppInfo *app, GList *files)
 {
   GAppLaunchContext          *ctx;
   GError                     *error = NULL;
@@ -860,10 +857,7 @@ mpl_panel_client_launch_application_from_info (GAppInfo     *app,
 }
 
 gboolean
-mpl_panel_client_launch_application (MplPanelClient *panel,
-                                     const gchar    *path,
-                                     gint            workspace,
-                                     gboolean        no_chooser)
+mpl_panel_client_launch_application (MplPanelClient *panel, const gchar *path)
 {
   GAppInfo *app;
   GError   *error = NULL;
@@ -884,9 +878,7 @@ mpl_panel_client_launch_application (MplPanelClient *panel,
       return FALSE;
     }
 
-  retval = mpl_panel_client_launch_application_from_info (app, NULL,
-                                                          workspace,
-                                                          no_chooser);
+  retval = mpl_panel_client_launch_application_from_info (app, NULL);
 
   g_object_unref (app);
 
@@ -896,9 +888,7 @@ mpl_panel_client_launch_application (MplPanelClient *panel,
 gboolean
 mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
                                                        const gchar    *desktop,
-                                                       GList          *files,
-                                                       gint            wspace,
-                                                       gboolean      no_chooser)
+                                                       GList          *files)
 {
   GAppInfo *app;
   gboolean  retval;
@@ -913,9 +903,7 @@ mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
       return FALSE;
     }
 
-  retval = mpl_panel_client_launch_application_from_info (app, files,
-                                                          wspace,
-                                                          no_chooser);
+  retval = mpl_panel_client_launch_application_from_info (app, files);
 
   g_object_unref (app);
 
@@ -924,9 +912,7 @@ mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
 
 gboolean
 mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
-                                                     const gchar    *uri,
-                                                     gint            workspace,
-                                                     gboolean        no_chooser)
+                                                     const gchar    *uri)
 {
   GAppLaunchContext          *ctx;
   GAppInfo                   *app;

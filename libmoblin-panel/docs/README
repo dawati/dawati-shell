@@ -67,8 +67,7 @@ mpl_panel_client_launch_application ();
 mpl_panel_client_launch_application_from_desktop_file ();
 mpl_panel_client_launch_default_application_for_uri ();
 
-Application-launching API; Panels that need to use this API need to construct
-the MplPanelClient object with the with_toolbar_services parameter set to TRUE.
+Application-launching API.
 
 
 

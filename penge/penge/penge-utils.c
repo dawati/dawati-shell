@@ -103,10 +103,7 @@ penge_utils_launch_for_uri (ClutterActor  *actor,
   if (!client)
     return FALSE;
 
-  return mpl_panel_client_launch_default_application_for_uri (client,
-                                                              uri,
-                                                              -2,
-                                                              FALSE);
+  return mpl_panel_client_launch_default_application_for_uri (client, uri);
 }
 
 gboolean
@@ -122,9 +119,7 @@ penge_utils_launch_for_desktop_file (ClutterActor *actor,
 
   return mpl_panel_client_launch_application_from_desktop_file (client,
                                                                 path,
-                                                                NULL,
-                                                                -2,
-                                                                FALSE);
+                                                                NULL);
 }
 
 gboolean
@@ -138,9 +133,6 @@ penge_utils_launch_by_command_line (ClutterActor *actor,
   if (!client)
     return FALSE;
 
-  return mpl_panel_client_launch_application (client,
-                                              command_line,
-                                              -2,
-                                              FALSE);
+  return mpl_panel_client_launch_application (client, command_line);
 }
 

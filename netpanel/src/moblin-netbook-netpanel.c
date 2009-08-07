@@ -516,8 +516,7 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
 
   if (priv->panel_client)
     {
-      if (!mpl_panel_client_launch_application (priv->panel_client, exec,
-                                                -2, TRUE))
+      if (!mpl_panel_client_launch_application (priv->panel_client, exec))
         g_warning (G_STRLOC ": Error launching browser for url '%s'", esc_url);
       else
         mpl_panel_client_request_hide (priv->panel_client);
