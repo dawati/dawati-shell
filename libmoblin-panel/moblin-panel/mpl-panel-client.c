@@ -862,12 +862,44 @@ mpl_panel_client_launch_application (MplPanelClient *panel, const gchar *path)
   GAppInfo *app;
   GError   *error = NULL;
   gboolean  retval;
+  GKeyFile *key_file;
+  gchar    *cmd;
 
   g_return_val_if_fail (path, FALSE);
 
+#if 1
+  /*
+   * Startup notification only works with the g_app_launch API when we both
+   * supply a GDK launch context *and* create the GAppInfo from a desktop file
+   * that has the StartupNotify field set to true.
+   *
+   * To work around the limitations, we fake a desktop file via the key-file
+   * API (The alternative is provide a custom GAppInfo impelentation, but the
+   * GAppInfo design makes that hard: g_app_info_create_from_commandline () is
+   * hardcoded to use GDesktopAppInfo, so for any internal glib paths that
+   * pass through it, we are pretty much screwed anyway. It seemed like this
+   * 7LOC hack made more sense than the 800LOC, no less hacky, alternative.
+   */
+  cmd = g_strdup_printf ("%s %%u", path);
+  key_file = g_key_file_new ();
+
+  g_key_file_set_string  (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                          G_KEY_FILE_DESKTOP_KEY_TYPE,
+                          G_KEY_FILE_DESKTOP_TYPE_APPLICATION);
+  g_key_file_set_string  (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                          G_KEY_FILE_DESKTOP_KEY_EXEC, cmd);
+  g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                          G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, TRUE);
+
+  app = (GAppInfo*)g_desktop_app_info_new_from_keyfile (key_file);
+
+  g_key_file_free (key_file);
+  g_free (cmd);
+#else
   app = g_app_info_create_from_commandline (path, NULL,
                                             G_APP_INFO_CREATE_SUPPORTS_URIS,
                                             &error);
+#endif
 
   if (error)
     {
