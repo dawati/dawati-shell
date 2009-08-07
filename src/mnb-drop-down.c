@@ -392,7 +392,9 @@ mnb_drop_down_allocate (ClutterActor          *actor,
                         const ClutterActorBox *box,
                         ClutterAllocationFlags flags)
 {
+#if 0
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
+#endif
   ClutterActorClass  *parent_class;
 
   /*
