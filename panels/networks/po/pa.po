@@ -1,0 +1,335 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# A S Alam <aalam@users.sf.net>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: carrick-ng.Moblin2-UI.carrick\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-05 09:20+0000\n"
+"PO-Revision-Date: 2009-08-08 08:05+0530\n"
+"Last-Translator: A S Alam <aalam@users.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 0.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../carrick/carrick-pane.c:414
+msgid "New connection settings"
+msgstr "ਨਵਾਂ ਕੁਨੈਕਸ਼ਨ ਸੈਟਿੰਗ"
+
+#: ../carrick/carrick-pane.c:450
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+"ਨੈੱਟਵਰਕ ਲਈ ਨਾਂ ਦਿਓ, ਜਿਸ ਨਾਲ ਤੁਸੀਂ ਕੁਨੈਕਟ ਕਰਨਾ\n"
+"ਚਾਹੁੰਦੇ ਹੋ, ਅਤੇ ਜਿੱਥੇ ਲਾਜ਼ਮੀ ਹੋਵੇ, ਉੱਥੇ ਪਾਸਵਰਡ\n"
+"ਅਤੇ ਸੁਰੱਖਿਆ ਟਾਈਮ ਵੀ ਦਿਓ।"
+
+#: ../carrick/carrick-pane.c:460
+msgid "Network name"
+msgstr "ਨੈੱਟਵਰਕ ਨਾਂ"
+
+#: ../carrick/carrick-pane.c:472
+msgid "Network security"
+msgstr "ਨੈੱਟਵਰਕ ਸੁਰੱਖਿਆ"
+
+#: ../carrick/carrick-pane.c:482
+msgid "None"
+msgstr "ਕੋਈ ਨਹੀਂ"
+
+#: ../carrick/carrick-pane.c:496
+msgid "Password"
+msgstr "ਪਾਸਵਰਡ"
+
+#: ../carrick/carrick-pane.c:511 ../carrick/carrick-service-item.c:1036
+msgid "Show password"
+msgstr "ਪਾਸਵਰਡ ਵੇਖੋ"
+
+#.
+#. * Hint to display when we detect that the connection manager
+#. * is dead.  Ideally the system auto-restarts connman so the
+#. * user will not see this, but this is what to show if all
+#. * available recovery measures fail.
+#.
+#: ../carrick/carrick-pane.c:609
+msgid ""
+"Sorry, we can't find any networks. The Connection Manager doesn't seem to be "
+"running. You may want to try re-starting your device."
+msgstr ""
+"ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਕੁਨੈਕਸ਼ਨ ਮੈਨੇਜਰ ਚੱਲਦਾ ਨਹੀਂ ਜਾਪਦਾ ਹੈ। "
+"ਤੁਸੀਂ ਆਪਣੇ ਜੰਤਰ ਨੂੰ "
+"ਮੁੜ-ਸ਼ੁਰੂ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:620
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr ""
+"ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ ਆਫਲਾਈਨ ਮੋਡ ਬੰਦ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰ "
+"ਸਕਦੇ ਹੋ।"
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:636
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr ""
+"ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ ਵਾਈ-ਫਾਈ ਨਾਲ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:647
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr ""
+"ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ ਵਾਈਮੈਕਸ ਨਾਲ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:658
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr ""
+"ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ 3G ਨਾਲ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:668
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr ""
+"ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ ਬਲਿਊਟੁੱਥ ਨਾਲ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ "
+"ਹੋ।"
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-pane.c:679
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr ""
+"ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ ਤਾਰ ਵਾਲੇ ਨੈੱਟਵਰਕ ਨਾਲ ਕੋਸ਼ਿਸ਼ "
+"ਕਰ ਸਕਦੇ ਹੋ।"
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-pane.c:691
+msgid "Sorry, we can't find any networks"
+msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ।"
+
+#: ../carrick/carrick-pane.c:1030
+msgid "Networks"
+msgstr "ਨੈੱਟਵਰਕ"
+
+#: ../carrick/carrick-pane.c:1070
+msgid "Add new connection"
+msgstr "ਨਵਾਂ ਕੁਨੈਕਸ਼ਨ ਸ਼ਾਮਲ ਕਰੋ"
+
+#: ../carrick/carrick-pane.c:1097
+msgid "WiFi"
+msgstr "ਵਾਈ-ਫਾਈ"
+
+#: ../carrick/carrick-pane.c:1129 ../carrick/carrick-service-item.c:224
+msgid "Wired"
+msgstr "ਤਾਰ"
+
+#: ../carrick/carrick-pane.c:1160
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-pane.c:1191
+msgid "WiMAX"
+msgstr "ਵਾਈਮੈਕਸ"
+
+#: ../carrick/carrick-pane.c:1223
+msgid "Bluetooth"
+msgstr "ਬਲਿਊਟੁੱਥ"
+
+#: ../carrick/carrick-pane.c:1266
+msgid "Offline mode"
+msgstr "ਆਫਲਾਈਨ ਮੋਡ"
+
+#: ../carrick/carrick-pane.c:1291
+msgid "This will disable all your connections"
+msgstr "ਇਹ ਤੁਹਾਡੇ ਸਭ ਕੁਨੈਕਸ਼ਨ ਆਯੋਗ ਕਰੇਗਾ"
+
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#: ../carrick/carrick-service-item.c:183
+#, c-format
+msgid "%s encrypted"
+msgstr "%s ਇੰਕ੍ਰਿਪਟਡ"
+
+#: ../carrick/carrick-service-item.c:255
+msgid "Disconnect"
+msgstr "ਡਿਸ-ਕੁਨੈਕਟ ਕਰੋ"
+
+#: ../carrick/carrick-service-item.c:258
+msgid "Connected"
+msgstr "ਕੁਨੈਕਟ ਹੈ"
+
+#: ../carrick/carrick-service-item.c:263
+#, c-format
+msgid "Cancel"
+msgstr "ਰੱਦ ਕਰੋ"
+
+#: ../carrick/carrick-service-item.c:266
+msgid "Configuring"
+msgstr "ਸੰਰਚਨਾ ਜਾਰੀ"
+
+#: ../carrick/carrick-service-item.c:273 ../carrick/carrick-service-item.c:281
+#: ../carrick/carrick-service-item.c:1025
+msgid "Connect"
+msgstr "ਕੁਨੈਕਟ ਕਰੋ"
+
+#: ../carrick/carrick-service-item.c:284
+msgid "Connection failed"
+msgstr "ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
+
+#: ../carrick/carrick-service-item.c:289 ../carrick/carrick-service-item.c:292
+#, c-format
+msgid "Disconnecting"
+msgstr "ਡਿਸ-ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#: ../carrick/carrick-service-item.c:340
+msgid "Type password here"
+msgstr "ਇੱਥੇ ਪਾਸਵਰਡ ਲਿਖੋ"
+
+#: ../carrick/carrick-service-item.c:403
+msgid "Really remove?"
+msgstr "ਕੀ ਹਟਾਉਣਾ ਹੈ?"
+
+#: ../carrick/carrick-service-item.c:421
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr ""
+"ਕੀ ਤੁਸੀਂ %s %s ਨੈੱਟਵਰਕ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ? ਇਸ ਨਾਲ\n"
+"ਪਾਸਵਰਡ ਵੀ ਭੁੱਲਾ ਦਿੱਤਾ ਜਾਵੇਗਾ ਅਤੇ ਤੁਸੀਂ %s ਨਾਲ ਆਟੋਮੈਟਿਕ\n"
+"ਕੁਨੈਕਟ ਨਹੀਂ ਕਰ ਸਕੋਗੇ।"
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:981
+msgid "WPA2 encrypted"
+msgstr "WPA2 ਇੰਕ੍ਰਿਪਟਡ"
+
+#: ../carrick/carrick-notification-manager.c:131
+msgid "Network connected"
+msgstr "ਨੈੱਟਵਰਕ ਕੁਨੈਕਟ ਹੈ"
+
+#: ../carrick/carrick-notification-manager.c:139
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "ਹੁਣ ਤੁਸੀਂ ਤਾਰ ਵਾਲੇ ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
+
+#: ../carrick/carrick-notification-manager.c:169
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "ਹੁਣ ਤੁਸੀਂ %s, ਇੱਕ %s ਨੈੱਟਵਰਕ, ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
+
+#: ../carrick/carrick-notification-manager.c:175
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "ਹੁਣ ਤੁਸੀਂ %s ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ।"
+
+#: ../carrick/carrick-notification-manager.c:192
+msgid "Network lost"
+msgstr "ਨੈੱਟਵਰਕ ਗੁਆਚਿਆ"
+
+#: ../carrick/carrick-notification-manager.c:200
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਤੁਹਾਡਾ ਤਾਰ ਵਾਲਾ ਕੁਨੈਕਸ਼ਨ ਗੁਆ ਦਿੱਤਾ ਹੈ"
+
+#: ../carrick/carrick-notification-manager.c:204
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਤੁਹਾਡਾ %s ਕੁਨੈਕਸ਼ਨ %s ਨਾਲੋਂ ਗੁਆ ਦਿੱਤਾ ਹੈ"
+
+#: ../carrick/carrick-notification-manager.c:210
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਤੁਹਾਡਾ %s ਕੁਨੈਕਸ਼ਨ ਗੁਆ ਦਿੱਤਾ ਹੈ"
+
+#: ../carrick/carrick-notification-manager.c:227
+msgid "Network changed"
+msgstr "ਨੈੱਟਵਰਕ ਬਦਲਿਆ"
+
+#: ../carrick/carrick-notification-manager.c:246
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr ""
+"ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ ਤਾਰ ਵਾਲੇ "
+"ਕੁਨੈਕਸ਼ਨ ਨਾਲ "
+"ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ ਹੈ।"
+
+#: ../carrick/carrick-notification-manager.c:253
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"ਅਫਸੋਸ, ਤੁਹਾਡਾ %s ਨਾਲ ਕੁਨੈਕਸ਼ਨ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ %s ਕੁਨੈਕਸ਼ਨ, "
+"%s ਨੈੱਟਵਰਕ "
+"ਨਾਲ ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ ਹੈ।"
+
+#: ../carrick/carrick-notification-manager.c:261
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr ""
+"ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ %s ਨੈੱਟਵਰਕ "
+"ਨਾਲ ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ ਹੈ।"
+
+#: ../carrick/carrick-notification-manager.c:271
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr ""
+"ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ ਤਾਰ ਵਾਲੇ "
+"ਕੁਨੈਕਸ਼ਨ ਨਾਲ "
+"ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ ਹੈ।"
+
+#: ../carrick/carrick-notification-manager.c:278
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ %s ਕੁਨੈਕਸ਼ਨ, "
+"%s ਨੈੱਟਵਰਕ "
+"ਨਾਲ ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ ਹੈ।"
+
+#: ../carrick/carrick-notification-manager.c:287
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr ""
+"ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ %s ਨੈੱਟਵਰਕ "
+"ਨਾਲ ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ ਹੈ।"
+
