@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-08 09:18+0000\n"
+"POT-Creation-Date: 2009-08-10 14:54-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,453 +16,78 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../ahoghill/ahoghill/ahoghill-example-table.c:117
-msgid ""
-"You need to play some music, look at some pictures or watch some video to "
-"see your history here. In the meantime, you could take a look at some sample "
-"media:"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:388
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:930
-msgid "Recently played"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:414
-msgid "Search results"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-grid-view.c:944
-msgid "Local"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-media-tile.c:92
-#, c-format
-msgid "Season %u, Episode %u"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-results-pane.c:385
-#: ../netpanel/src/moblin-netbook-netpanel.c:824
-#: ../netpanel/src/moblin-netbook-netpanel.c:1072
-msgid "Previous"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-results-pane.c:401
-#: ../netpanel/src/moblin-netbook-netpanel.c:831
-#: ../netpanel/src/moblin-netbook-netpanel.c:1089
-msgid "Next"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-search-pane.c:87
-msgid "Media"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
-#: ../applications/src/moblin-netbook-launcher.c:1377
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:219
-#: ../people/src/mnb-people-panel.c:563
-msgid "Search"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:148
-#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:164
-#, c-format
-msgid "Season %d Episode %d"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:150
-#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:166
-#, c-format
-msgid "Season %d"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:152
-#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:168
-#, c-format
-msgid "Episode %d"
-msgstr ""
-
-#: ../ahoghill/ahoghill/ahoghill-queue-tile.c:154
-#: ../ahoghill/ahoghill/ahoghill-playlist-np.c:170
-#, c-format
-msgid "Year %d"
-msgstr ""
-
-#: ../ahoghill/src/moblin-panel-media.c:130 ../src/moblin-netbook.c:324
-msgid "media"
-msgstr ""
-
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../applications/src/moblin-netbook-launcher.c:869
-msgid "Favourite Applications"
-msgstr ""
-
-#: ../applications/src/moblin-netbook-launcher.c:1366
-msgid "Applications"
-msgstr ""
-
-#: ../applications/src/moblin-panel-applications.c:158
-#: ../src/moblin-netbook.c:315
-msgid "applications"
-msgstr ""
-
-#: ../myzone/src/moblin-panel-myzone.c:70 ../src/moblin-netbook.c:306
-msgid "myzone"
-msgstr ""
-
-#. Construct tabs previews table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:609
-msgid "Tabs"
-msgstr ""
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:644
-msgid "Favorite pages"
-msgstr ""
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:669
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:940
-msgid "Untitled"
-msgstr ""
-
-#. FIXME: this should be a default image or startpage snapshot instead,
-#. and this label should become the caption title
-#: ../netpanel/src/moblin-netbook-netpanel.c:1047
-msgid "New tab"
-msgstr ""
-
-#. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1290
-msgid "Internet"
-msgstr ""
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:1303
-msgid "Go"
-msgstr ""
-
-#: ../netpanel/src/moblin-panel-internet.c:79 ../src/moblin-netbook.c:321
-msgid "internet"
-msgstr ""
-
-#: ../netpanel/src/mwb-ac-list.c:1363
-#, c-format
-msgid "Search for %%s on %s"
-msgstr ""
-
-#: ../netpanel/src/mwb-ac-list.c:1378
-#, c-format
-msgid "Go to %s.com"
-msgstr ""
-
-#: ../pasteboard/src/mnb-clipboard-item.c:516
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:344
-msgid "Copy"
-msgstr ""
-
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:136
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:359
-msgid "the current selection to pasteboard"
-msgstr ""
-
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:141
-msgid "your selection"
-msgstr ""
-
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:206
-msgid "Pasteboard"
-msgstr ""
-
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:254
-msgid "You need to copy some text to use Pasteboard"
-msgstr ""
-
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:316
-msgid "Clear pasteboard"
-msgstr ""
-
-#: ../pasteboard/src/moblin-netbook-pasteboard.c:433
-#: ../src/moblin-netbook.c:318
-msgid "pasteboard"
-msgstr ""
-
-#: ../penge/penge/penge-calendar-pane.c:180
-msgid "<b>Appointments</b>"
-msgstr ""
-
-#: ../penge/penge/penge-events-pane.c:198
-msgid "No calendar entries this week"
-msgstr ""
-
-#: ../penge/penge/penge-people-pane.c:191
-msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr ""
-
-#: ../penge/penge/penge-recent-files-pane.c:189
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr ""
-
-#: ../penge/penge/penge-recent-files-pane.c:214
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around this Beta Release. We "
-"hope you enjoy it, The Moblin Team."
-msgstr ""
-
-#: ../penge/penge/penge-recent-file-tile.c:234
-msgid "Web page"
-msgstr ""
-
-#: ../penge/penge/penge-tasks-pane.c:287
-msgid "Nothing to do today"
-msgstr ""
-
-#: ../penge/penge/penge-task-tile.c:330
-#, c-format
-msgid "Due %x"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:63 ../status/src/mnb-web-status-entry.c:106
-msgid "Less than a minute ago"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:67 ../status/src/mnb-web-status-entry.c:110
-msgid "A few minutes ago"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:71 ../status/src/mnb-web-status-entry.c:114
-msgid "A couple of hours ago"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:78 ../status/src/mnb-web-status-entry.c:121
-msgid "Earlier today"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:81 ../status/src/mnb-web-status-entry.c:124
-msgid "Yesterday"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:89 ../status/src/mnb-web-status-entry.c:132
-#, c-format
-msgid "On %A"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:95 ../status/src/mnb-web-status-entry.c:138
-msgid "Unknown"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:102 ../status/src/mnb-web-status-entry.c:145
-msgid "Last week"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:105 ../status/src/mnb-web-status-entry.c:148
-msgid "A couple of weeks ago"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:111 ../status/src/mnb-web-status-entry.c:154
-msgid "This month"
-msgstr ""
-
-#. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:115 ../status/src/mnb-web-status-entry.c:158
-msgid "Last month"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:118 ../status/src/mnb-web-status-entry.c:161
-msgid "This year"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:121 ../status/src/mnb-web-status-entry.c:164
-msgid "Last year"
-msgstr ""
-
-#: ../penge/penge/penge-utils.c:123 ../status/src/mnb-web-status-entry.c:166
-msgid "Ages ago"
-msgstr ""
-
-#: ../people/src/moblin-panel-people.c:61 ../src/moblin-netbook.c:327
-msgid "people"
-msgstr ""
-
-#: ../people/src/mnb-people-panel.c:162
-msgid "Send an email"
-msgstr ""
-
-#: ../people/src/mnb-people-panel.c:164
-msgid "Edit details"
-msgstr ""
-
-#: ../people/src/mnb-people-panel.c:168
-msgid "Send a message"
-msgstr ""
-
-#: ../people/src/mnb-people-panel.c:302
-#: ../status/src/moblin-panel-status.c:755
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-
-#: ../people/src/mnb-people-panel.c:550
-msgid "People"
-msgstr ""
-
-#: ../people/src/mnb-people-panel.c:679
-msgid "Selection"
-msgstr ""
-
-#: ../people/src/mnb-people-panel.c:741
-msgid "Nobody selected"
-msgstr ""
-
-#: ../src/moblin-netbook.c:309 ../src/mnb-toolbar.c:1394
-msgid "zones"
-msgstr ""
-
-#: ../src/moblin-netbook.c:312 ../status/src/moblin-panel-status.c:1033
-msgid "status"
-msgstr ""
-
-#: ../src/moblin-netbook.c:437
-msgid "Moblin Netbook Effects"
-msgstr ""
-
-#: ../src/moblin-netbook.c:441
-msgid "Effects for Moblin Netbooks"
-msgstr ""
-
-#: ../src/moblin-netbook-chooser.c:790
-#, c-format
-msgid "Zone %d"
-msgstr ""
-
-#: ../src/moblin-netbook-chooser.c:839
-msgid "New zone (0)"
-msgstr ""
-
-#: ../src/moblin-netbook-chooser.c:920
-msgid "Choose zone for application:"
-msgstr ""
-
-#: ../src/tray/na-tray-child.c:121
-#, c-format
-msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-msgstr ""
-
-#: ../src/mnb-switcher.c:1205
-msgid "No Zones yet"
-msgstr ""
-
-#: ../src/mnb-switcher.c:1227
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organise them to your heart's content."
-msgstr ""
-
-#: ../src/mnb-switcher.c:1431
-msgid "No applications on this zone"
-msgstr ""
-
-#: ../src/mnb-toolbar.c:1631
-msgid "power & brightness"
-msgstr ""
-
-#: ../src/mnb-toolbar.c:1634
-msgid "volume"
-msgstr ""
-
-#: ../src/mnb-toolbar.c:1637
-msgid "bluetooth"
-msgstr ""
-
-#: ../src/mnb-toolbar.c:1640
-msgid "networks"
-msgstr ""
-
-#: ../src/mnb-toolbar.c:1643
-msgid "test"
-msgstr ""
-
-#: ../src/mnb-toolbar.c:1720
-msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr ""
-
-#: ../status/src/mnb-im-status-row.c:97 ../status/src/mnb-im-status-row.c:98
-#: ../status/src/mnb-im-status-row.c:641
+#: ../src/mnb-im-status-row.c:103 ../src/mnb-im-status-row.c:104
+#: ../src/mnb-im-status-row.c:742
 msgid "Offline"
 msgstr ""
 
-#: ../status/src/mnb-im-status-row.c:99
-#: ../status/src/moblin-panel-status.c:489
+#: ../src/mnb-im-status-row.c:105 ../src/moblin-panel-status.c:536
 msgid "Available"
 msgstr ""
 
-#: ../status/src/mnb-im-status-row.c:100 ../status/src/mnb-im-status-row.c:101
-#: ../status/src/moblin-panel-status.c:493
-#: ../status/src/moblin-panel-status.c:497
+#: ../src/mnb-im-status-row.c:106 ../src/mnb-im-status-row.c:107
+#: ../src/moblin-panel-status.c:540 ../src/moblin-panel-status.c:544
 msgid "Away"
 msgstr ""
 
-#: ../status/src/mnb-im-status-row.c:102 ../status/src/mnb-im-status-row.c:103
-#: ../status/src/moblin-panel-status.c:501
-#: ../status/src/moblin-panel-status.c:505
+#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
+#: ../src/moblin-panel-status.c:548 ../src/moblin-panel-status.c:552
 msgid "Busy"
 msgstr ""
 
-#: ../status/src/mnb-im-status-row.c:122
+#: ../src/mnb-im-status-row.c:132
 msgid "Close"
 msgstr ""
 
-#: ../status/src/mnb-im-status-row.c:129 ../status/src/mnb-im-status-row.c:654
+#: ../src/mnb-im-status-row.c:141 ../src/mnb-im-status-row.c:760
 msgid "Change"
 msgstr ""
 
-#: ../status/src/mnb-im-status-row.c:644
+#: ../src/mnb-im-status-row.c:745
 msgid "Unknown account"
 msgstr ""
 
-#: ../status/src/mnb-web-status-entry.c:178
-#: ../status/src/mnb-web-status-entry.c:731
-#: ../status/src/mnb-web-status-entry.c:812
+#: ../src/mnb-web-status-entry.c:86 ../src/mnb-web-status-entry.c:639
+#: ../src/mnb-web-status-entry.c:720
 msgid "Edit"
 msgstr ""
 
 #. Translators: %s is the user visible name of the service
-#: ../status/src/mnb-web-status-entry.c:605
+#: ../src/mnb-web-status-entry.c:513
 #, c-format
 msgid "Enter your %s status here..."
 msgstr ""
 
-#: ../status/src/mnb-web-status-entry.c:609
-#: ../status/src/mnb-web-status-entry.c:682
+#: ../src/mnb-web-status-entry.c:517 ../src/mnb-web-status-entry.c:590
 msgid "Enter your current status here..."
 msgstr ""
 
-#: ../status/src/mnb-web-status-entry.c:791
+#: ../src/mnb-web-status-entry.c:699
 msgid "Post"
 msgstr ""
 
-#: ../status/src/moblin-panel-status.c:423
-#: ../status/src/moblin-panel-status.c:890
+#: ../src/moblin-panel-status.c:470
 msgid "Your current status"
 msgstr ""
 
-#: ../status/src/moblin-panel-status.c:425
+#: ../src/moblin-panel-status.c:472 ../src/moblin-panel-status.c:960
 msgid "Your current status - you are offline"
 msgstr ""
 
-#: ../status/src/moblin-panel-status.c:924
+#: ../src/moblin-panel-status.c:825
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr ""
+
+#: ../src/moblin-panel-status.c:994
 msgid ""
 "To update your web status you need to setup a Web Services account with a "
 "provider that supports status messages"
 msgstr ""
 
-#: ../status/src/moblin-panel-status.c:951
+#: ../src/moblin-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
+msgstr ""
+
+#: ../src/moblin-panel-status.c:1118
+msgid "status"
 msgstr ""
