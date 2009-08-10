@@ -139,6 +139,7 @@ struct _MnbToolbarPrivate
   MutterPlugin *plugin;
 
   ClutterActor *hbox; /* This is where all the contents are placed */
+  ClutterActor *background;
   ClutterActor *lowlight;
 
   NbtkWidget   *time; /* The time and date fields, needed for the updates */
@@ -1905,6 +1906,8 @@ mnb_toolbar_constructed (GObject *self)
       clutter_actor_set_size (background, screen_width - 8, TOOLBAR_HEIGHT);
       clutter_actor_set_x (background, 4);
       clutter_container_add_actor (CLUTTER_CONTAINER (hbox), background);
+
+      priv->background = background;
     }
 
   /* create time and date labels */
@@ -2574,6 +2577,47 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
   return FALSE;
 }
 
+static void
+mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
+                                 GParamSpec   *pspec,
+                                 MnbToolbar   *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint               screen_width, screen_height;
+  gint               i;
+
+  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
+
+  clutter_actor_set_size (priv->background, screen_width - 8, TOOLBAR_HEIGHT);
+
+  clutter_actor_set_size (priv->lowlight,
+                          screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);
+
+  for (i = APPLETS_START; i < NUM_ZONES; ++i)
+    {
+      ClutterActor *button = priv->buttons[i];
+      gint          applets = i - APPLETS_START;
+      gint          x, y;
+
+      if (!button)
+        continue;
+
+      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
+
+      clutter_actor_set_size (button, TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
+      clutter_actor_set_position (button, (gfloat)x, (gfloat)y);
+
+      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                            0,
+                                            -(TOOLBAR_HEIGHT -
+                                              TRAY_BUTTON_HEIGHT),
+                                            TRAY_BUTTON_WIDTH,
+                                            TOOLBAR_HEIGHT);
+    }
+
+}
+
 /*
  * Callback for ClutterStage::show() signal.
  *
@@ -2636,6 +2680,10 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
   g_timeout_add_seconds (TOOLBAR_AUTOSTART_DELAY,
                          mnb_toolbar_autostart_panels_cb,
                          toolbar);
+
+  g_signal_connect (stage, "notify::allocation",
+                    G_CALLBACK (mnb_toolbar_stage_allocation_cb),
+                    toolbar);
 }
 
 /*
