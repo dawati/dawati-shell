@@ -686,7 +686,8 @@ moblin_netbook_move_window_to_its_workspace (MutterPlugin *plugin,
           MetaWindow         *mw   = mutter_window_get_meta_window (m);
           MetaCompWindowType  type = mutter_window_get_window_type (m);
 
-          if ((type == META_COMP_WINDOW_NORMAL) &&
+          if (m != mcw &&
+              (type == META_COMP_WINDOW_NORMAL) &&
               !mutter_window_is_override_redirect (m) &&
               !meta_window_is_on_all_workspaces (mw))
             {
