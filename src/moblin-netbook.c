@@ -688,6 +688,7 @@ moblin_netbook_move_window_to_its_workspace (MutterPlugin *plugin,
 
           if (m != mcw &&
               (type == META_COMP_WINDOW_NORMAL) &&
+              !meta_window_is_hidden (mw) &&
               !mutter_window_is_override_redirect (m) &&
               !meta_window_is_on_all_workspaces (mw))
             {
