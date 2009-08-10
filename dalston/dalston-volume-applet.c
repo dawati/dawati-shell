@@ -40,6 +40,7 @@ struct _DalstonVolumeAppletPrivate {
   GvcMixerControl *control;
   GtkStatusIcon *status_icon;
   GtkWidget *pane;
+  guint timeout;
 };
 
 static void
@@ -65,6 +66,14 @@ dalston_volume_applet_set_property (GObject *object, guint property_id,
 static void
 dalston_volume_applet_dispose (GObject *object)
 {
+  DalstonVolumeAppletPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->timeout)
+  {
+      g_source_remove (priv->timeout);
+      priv->timeout = 0;
+  }
+
   G_OBJECT_CLASS (dalston_volume_applet_parent_class)->dispose (object);
 }
 
@@ -112,6 +121,57 @@ _mixer_control_default_sink_changed_cb (GvcMixerControl *control,
                 NULL);
 }
 
+static gboolean
+_reopen_pa_timeout_cb (gpointer data)
+{
+  DalstonVolumeAppletPrivate *priv = GET_PRIVATE (data);
+
+  priv->timeout = 0;
+  gvc_mixer_control_open (priv->control);
+  return FALSE;
+}
+
+static void
+_mixer_control_connection_failed_cb (GvcMixerControl *control,
+				     gpointer         userdata)
+{
+  DalstonVolumeAppletPrivate *priv = GET_PRIVATE (userdata);
+
+  g_signal_handlers_disconnect_by_func (priv->control,
+					_mixer_control_default_sink_changed_cb,
+					userdata);
+  g_signal_handlers_disconnect_by_func (priv->control,
+					_mixer_control_ready_cb,
+					userdata);
+  g_signal_handlers_disconnect_by_func (priv->control,
+					_mixer_control_connection_failed_cb,
+					userdata);
+
+  priv->control = gvc_mixer_control_new ();
+  g_signal_connect (priv->control,
+                    "default-sink-changed",
+                    (GCallback)_mixer_control_default_sink_changed_cb,
+                    userdata);
+  g_signal_connect (priv->control,
+                    "ready",
+                    (GCallback)_mixer_control_ready_cb,
+                    userdata);
+  g_signal_connect (priv->control,
+                    "connection-failed",
+                    (GCallback)_mixer_control_connection_failed_cb,
+                    userdata);
+
+  if (priv->timeout)
+  {
+      g_source_remove (priv->timeout);
+      priv->timeout = 0;
+  }
+
+  priv->timeout = g_timeout_add (10000,
+				 _reopen_pa_timeout_cb,
+				 userdata);
+}
+
 static void
 dalston_volume_applet_init (DalstonVolumeApplet *self)
 {
@@ -128,6 +188,10 @@ dalston_volume_applet_init (DalstonVolumeApplet *self)
   g_signal_connect (priv->control,
                     "ready",
                     (GCallback)_mixer_control_ready_cb,
+                    self);
+  g_signal_connect (priv->control,
+                    "connection-failed",
+                    (GCallback)_mixer_control_connection_failed_cb,
                     self);
   gvc_mixer_control_open (priv->control);
 }

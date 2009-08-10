@@ -69,6 +69,7 @@ struct GvcMixerControlPrivate
 
 enum {
         READY,
+        CONNECTION_FAILED,
         STREAM_ADDED,
         STREAM_REMOVED,
         DEFAULT_SINK_CHANGED,
@@ -83,6 +84,31 @@ static void     gvc_mixer_control_init       (GvcMixerControl      *mixer_contro
 static void     gvc_mixer_control_finalize   (GObject              *object);
 
 G_DEFINE_TYPE (GvcMixerControl, gvc_mixer_control, G_TYPE_OBJECT)
+
+static void
+_create_mixer_context(GvcMixerControl *mixer)
+{
+        pa_proplist     *proplist;
+
+        /* FIXME: read these from an object property */
+        proplist = pa_proplist_new ();
+        pa_proplist_sets (proplist,
+                          PA_PROP_APPLICATION_NAME,
+                          _("GNOME Volume Control"));
+        pa_proplist_sets (proplist,
+                          PA_PROP_APPLICATION_ID,
+                          "org.gnome.VolumeControl");
+        pa_proplist_sets (proplist,
+                          PA_PROP_APPLICATION_ICON_NAME,
+                          "multimedia-volume-control");
+        pa_proplist_sets (proplist,
+                          PA_PROP_APPLICATION_VERSION,
+                          PACKAGE_VERSION);
+
+        mixer->priv->pa_context = pa_context_new_with_proplist (mixer->priv->pa_api, NULL, proplist);
+        g_assert (mixer->priv->pa_context);
+        pa_proplist_free (proplist);
+}
 
 pa_context *
 gvc_mixer_control_get_pa_context (GvcMixerControl *control)
@@ -524,6 +550,12 @@ update_sink (GvcMixerControl    *control,
                                              map);
                 g_object_unref (map);
                 is_new = TRUE;
+
+                /*
+                 * If we are creating a new stream, then this is the 
+                 * new default sink.
+                 */
+                control->priv->default_sink_name = g_strdup (info->name);
         }
 
         max_volume = pa_cvolume_max (&info->volume);
@@ -1397,7 +1429,8 @@ _pa_context_state_cb (pa_context *context,
                 break;
 
         case PA_CONTEXT_FAILED:
-                g_warning ("Connection failed");
+                g_warning ("PA Connection failed");
+                g_signal_emit (G_OBJECT (control), signals[CONNECTION_FAILED], 0);
                 break;
 
         case PA_CONTEXT_TERMINATED:
@@ -1499,30 +1532,12 @@ gvc_mixer_control_constructor (GType                  type,
 {
         GObject         *object;
         GvcMixerControl *self;
-        pa_proplist     *proplist;
 
         object = G_OBJECT_CLASS (gvc_mixer_control_parent_class)->constructor (type, n_construct_properties, construct_params);
 
         self = GVC_MIXER_CONTROL (object);
-
-        /* FIXME: read these from an object property */
-        proplist = pa_proplist_new ();
-        pa_proplist_sets (proplist,
-                          PA_PROP_APPLICATION_NAME,
-                          _("GNOME Volume Control"));
-        pa_proplist_sets (proplist,
-                          PA_PROP_APPLICATION_ID,
-                          "org.gnome.VolumeControl");
-        pa_proplist_sets (proplist,
-                          PA_PROP_APPLICATION_ICON_NAME,
-                          "multimedia-volume-control");
-        pa_proplist_sets (proplist,
-                          PA_PROP_APPLICATION_VERSION,
-                          PACKAGE_VERSION);
-
-        self->priv->pa_context = pa_context_new_with_proplist (self->priv->pa_api, NULL, proplist);
-        g_assert (self->priv->pa_context);
-        pa_proplist_free (proplist);
+        
+        _create_mixer_context (self);
 
         return object;
 }
@@ -1538,6 +1553,14 @@ gvc_mixer_control_class_init (GvcMixerControlClass *klass)
 
         signals [READY] =
                 g_signal_new ("ready",
+                              G_TYPE_FROM_CLASS (klass),
+                              G_SIGNAL_RUN_LAST,
+                              G_STRUCT_OFFSET (GvcMixerControlClass, ready),
+                              NULL, NULL,
+                              g_cclosure_marshal_VOID__VOID,
+                              G_TYPE_NONE, 0);
+        signals [CONNECTION_FAILED] =
+                g_signal_new ("connection-failed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, ready),
