@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-11 16:24+0000\n"
+"POT-Creation-Date: 2009-08-11 16:27+0000\n"
 "PO-Revision-Date: 2009-08-05 14:41-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -17,74 +17,46 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../ahoghill/ahoghill-example-table.c:117
+#: ../penge/penge-calendar-pane.c:207
+msgid "<b>Appointments</b>"
+msgstr "<b>Afspraken</b>"
+
+#: ../penge/penge-events-pane.c:208
+msgid "No calendar entries this week"
+msgstr "Geen afspraken deze week"
+
+#: ../penge/penge-people-pane.c:191
 msgid ""
-"You need to play some music, look at some pictures or watch some video to "
-"see your history here. In the meantime, you could take a look at some sample "
-"media:"
+"Your friends' feeds and web services will appear here. Activate your "
+"accounts now!"
 msgstr ""
-"Je moet wat muziek afspelen, naar foto's kijken of een video afspelen om "
-"hier je afspeel geschiedenis te zien. Tot die tijd kun je hier voorbeeld "
-"media vinden:"
+"Je vrienden hun web feeds en web services verschijnen hier. Activeer je "
+"accounts nu!"
 
-#: ../ahoghill/ahoghill-grid-view.c:417 ../ahoghill/ahoghill-grid-view.c:981
-msgid "Recently played"
-msgstr "Recent gespeeld"
+#: ../penge/penge-recent-files-pane.c:202
+msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+msgstr "<b>Welkom bij Moblin 2.0 voor Netbooks</b>"
 
-#: ../ahoghill/ahoghill-grid-view.c:443
-msgid "Search results"
-msgstr "Zoekresultaten"
+#: ../penge/penge-recent-files-pane.c:227
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
+msgstr ""
+"Moblin is anders dan traditionele computers. We hebben alles samengevoegd om "
+"makkelijker je weg te kunnen vinden. We hopen dat je het waardeert. Het "
+"Moblin Team."
 
-#: ../ahoghill/ahoghill-grid-view.c:995
-msgid "Playqueue"
-msgstr "Afspeellijst"
+#: ../penge/penge-recent-file-tile.c:218
+msgid "Web page"
+msgstr "Webpagina"
 
-#: ../ahoghill/ahoghill-media-tile.c:100
+#: ../penge/penge-tasks-pane.c:287
+msgid "Nothing to do today"
+msgstr "Niets te doen vandaag"
+
+#: ../penge/penge-task-tile.c:325
 #, c-format
-msgid "Season %u, Episode %u"
-msgstr "Seizoen %u, Episode %u"
-
-#: ../ahoghill/ahoghill-results-pane.c:385
-msgid "Previous"
-msgstr "Vorige"
-
-#: ../ahoghill/ahoghill-results-pane.c:401
-msgid "Next"
-msgstr "Volgende"
-
-#: ../ahoghill/ahoghill-search-pane.c:87
-msgid "Media"
-msgstr "Media"
-
-#: ../ahoghill/ahoghill-search-pane.c:97
-msgid "Search"
-msgstr "Zoek"
-
-#: ../ahoghill/ahoghill-queue-tile.c:164
-#: ../ahoghill/ahoghill-playlist-np.c:164
-#, c-format
-msgid "Season %d Episode %d"
-msgstr "Seizoen %d Episode %d"
-
-#: ../ahoghill/ahoghill-queue-tile.c:166
-#: ../ahoghill/ahoghill-playlist-np.c:166
-#, c-format
-msgid "Season %d"
-msgstr "Seizoen %d"
-
-#: ../ahoghill/ahoghill-queue-tile.c:168
-#: ../ahoghill/ahoghill-playlist-np.c:168
-#, c-format
-msgid "Episode %d"
-msgstr "Episide %d"
-
-#: ../ahoghill/ahoghill-queue-tile.c:170
-#: ../ahoghill/ahoghill-playlist-np.c:170
-#, c-format
-msgid "Year %d"
-msgstr "Jaar %d"
-
-#: ../src/moblin-panel-media.c:138
-msgid "media"
-msgstr "media"
+msgid "Due %x"
+msgstr "Verstrijkt %x"
 
