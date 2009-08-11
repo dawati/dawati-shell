@@ -24,9 +24,9 @@
 #define _CARRICK_SERVICE_ITEM_H
 
 #include <gtk/gtk.h>
-#include <gconnman/gconnman.h>
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
+#include "carrick-network-model.h"
 
 G_BEGIN_DECLS
 
@@ -62,10 +62,7 @@ typedef struct {
 
 GType carrick_service_item_get_type (void);
 
-CmService *carrick_service_item_get_service (CarrickServiceItem *item);
 gint carrick_service_item_get_order (CarrickServiceItem *item);
-void carrick_service_item_set_service (CarrickServiceItem *item,
-                                       CmService *service);
 void carrick_service_item_set_active (CarrickServiceItem *item,
                                       gboolean active);
 
@@ -75,7 +72,8 @@ gboolean carrick_service_item_get_draggable (CarrickServiceItem *item);
 
 GtkWidget* carrick_service_item_new (CarrickIconFactory *icon_factory,
                                      CarrickNotificationManager *notifications,
-                                     CmService          *service);
+				     CarrickNetworkModel *model,
+				     GtkTreePath *path);
 
 G_END_DECLS
 

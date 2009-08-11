@@ -41,23 +41,13 @@ enum
   PROP_0,
   PROP_DRAGGABLE,
   PROP_ICON_FACTORY,
-  PROP_SERVICE,
-  PROP_NOTIFICATIONS
+  PROP_NOTIFICATIONS,
+  PROP_MODEL,
+  PROP_PATH
 };
-
-typedef enum
-{
-  UNKNOWN,
-  IDLE,
-  FAIL,
-  CONFIGURE,
-  READY,
-  DISCONNECT,
-} ServiceItemState;
 
 struct _CarrickServiceItemPrivate
 {
-  CmService          *service;
   GtkWidget          *icon;
   GtkWidget          *name_label;
   GtkWidget          *connect_box;
@@ -68,7 +58,6 @@ struct _CarrickServiceItemPrivate
   GtkWidget          *show_password_check;
   GtkWidget          *delete_button;
   GtkWidget          *expando;
-  ServiceItemState    state;
   CarrickIconFactory *icon_factory;
   gboolean            failed;
   gboolean            passphrase_hint_visible;
@@ -81,6 +70,19 @@ struct _CarrickServiceItemPrivate
 
   gboolean            draggable;
   GdkCursor          *hand_cursor;
+
+  GtkTreeModel 	     *model;
+  GtkTreePath 	     *path;
+
+  DBusGProxy         *proxy;
+  guint               index;
+  gchar              *name;
+  gchar              *type;
+  gchar              *state;
+  guint               strength;
+  gchar              *security;
+  gboolean            need_pass;
+  gchar              *passphrase;
 };
 
 enum
@@ -112,54 +114,27 @@ carrick_service_item_get_property (GObject *object, guint property_id,
         g_value_set_object (value,
                             priv->icon_factory);
         break;
-      case PROP_SERVICE:
-        g_value_set_object (value,
-                            priv->service);
-        break;
     case PROP_NOTIFICATIONS:
       g_value_set_object (value,
                           priv->note);
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    case PROP_MODEL:
+      g_value_set_object (value,
+		          priv->model);
+      break;
+    case PROP_PATH:
+      g_value_set_object (value,
+		          priv->path);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
-static ServiceItemState
-_get_service_state (CmService *service)
-{
-  const gchar *state = NULL;
-
-  state = cm_service_get_state (service);
-  if (g_strcmp0 (state, "idle") == 0)
-  {
-    return IDLE;
-  }
-  else if (g_strcmp0 (state, "failure") == 0)
-  {
-    return FAIL;
-  }
-  else if (g_strcmp0 (state, "association") == 0
-           || g_strcmp0 (state, "configuration") == 0)
-  {
-    return CONFIGURE;
-  }
-  else if (g_strcmp0 (state, "ready") == 0)
-  {
-    return READY;
-  }
-  else if (g_strcmp0 (state, "disconnect") == 0)
-  {
-    return DISCONNECT;
-  }
-
-  return UNKNOWN;
-}
-
 static void
-_service_item_set_security (CarrickServiceItem *item,
-                            gchar *security)
+_service_item_set_security (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  gchar *security = g_strdup (priv->security);
   gchar *security_label = NULL;
 
   if (security && security[0] != '\0' && g_strcmp0 ("none", security) != 0)
@@ -178,8 +153,9 @@ _service_item_set_security (CarrickServiceItem *item,
         security[i] = g_ascii_toupper (security[i]);
       }
     }
-  /* TRANSLATORS: this is a wireless security method, at least WEP,
-     WPA and WPA2 are possible token values. Example: "WEP encrypted". */
+    /* TRANSLATORS: this is a wireless security method, at least WEP,
+     *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+     */
     security_label = g_strdup_printf (_("%s encrypted"),
                                       security);
   }
@@ -202,21 +178,99 @@ _service_item_set_security (CarrickServiceItem *item,
 }
 
 static void
-_set_state (CmService          *service,
-            CarrickServiceItem *item)
+_populate_variables (CarrickServiceItem *self)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  GtkTreeIter iter;
+
+  gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->model),
+		  	   &iter,
+			   priv->path);
+
+  gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
+                      CARRICK_COLUMN_PROXY, &priv->proxy,
+                      CARRICK_COLUMN_INDEX, &priv->index,
+		      CARRICK_COLUMN_NAME, &priv->name,
+                      CARRICK_COLUMN_TYPE, &priv->type,
+                      CARRICK_COLUMN_STATE, &priv->state,
+                      CARRICK_COLUMN_STRENGTH, &priv->strength,
+		      CARRICK_COLUMN_SECURITY, &priv->security,
+                      CARRICK_COLUMN_PASSPHRASE_REQUIRED, &priv->need_pass,
+                      CARRICK_COLUMN_PASSPHRASE, &priv->passphrase,
+		      -1);
+}
+
+static CarrickIconState
+_get_icon_state (CarrickServiceItem *self)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+
+  if (g_str_equal (priv->type, "ethernet"))
+  {
+    return ICON_ACTIVE_HOVER;
+  }
+  else if (g_str_equal (priv->type, "wifi"))
+  {
+    if (priv->strength < 30)
+    {
+      return ICON_WIRELESS_WEAK_HOVER;
+    }
+    else if (priv->strength < 60)
+    {
+      return ICON_WIRELESS_GOOD_HOVER;
+    }
+    else
+    {
+      return ICON_WIRELESS_STRONG_HOVER;
+    }
+  }
+  else if (g_str_equal (priv->type, "wimax"))
+  {
+    if (priv->strength < 50)
+    {
+      return ICON_WIMAX_WEAK_HOVER;
+    }
+    else
+    {
+      return ICON_WIMAX_STRONG_HOVER;
+    }
+  }
+  else if (g_str_equal (priv->type, "bluetooth"))
+  {
+    if (priv->strength < 50)
+    {
+      return ICON_BLUETOOTH_WEAK_HOVER;
+    }
+    else
+    {
+      return ICON_BLUETOOTH_STRONG_HOVER;
+    }
+  }
+  else if (g_str_equal (priv->type, "cellular"))
+  {
+    if (priv->strength < 50)
+    {
+      return ICON_3G_WEAK_HOVER;
+    }
+    else
+    {
+      return ICON_3G_STRONG_HOVER;
+    }
+  }
+
+  return ICON_ERROR;
+}
+
+static void
+_set_state (CarrickServiceItem *self)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
   gchar *label = NULL;
   gchar *button = NULL;
   GdkPixbuf *pixbuf = NULL;
-  gchar *name = NULL;
-  gchar *security = NULL;
+  gchar *name = g_strdup (priv->name);
 
-  name = g_strdup (cm_service_get_name (service));
-  security = g_strdup (cm_service_get_security (service));
-
-  if (security && security[0] != '\0')
-    _service_item_set_security (item, security);
+  _service_item_set_security (self);
 
   if (g_strcmp0 ("ethernet", name) == 0)
   {
@@ -230,7 +284,7 @@ _set_state (CmService          *service,
                           GTK_STATE_NORMAL,
                           &priv->prelight_color);
   }
-  else if (priv->state == READY)
+  else if (g_str_equal (priv->state, "ready"))
   {
     gtk_widget_modify_bg (priv->expando,
                           GTK_STATE_NORMAL,
@@ -243,9 +297,9 @@ _set_state (CmService          *service,
                           NULL);
   }
 
-  if (priv->state == READY)
+  if (g_str_equal (priv->state, "ready"))
   {
-    if (g_strcmp0 ("ethernet", cm_service_get_type (priv->service)))
+    if (g_str_equal (priv->type, "ethernet") == FALSE)
     {
       /* Only expose delete button for non-ethernet devices */
       gtk_widget_show (GTK_WIDGET (priv->delete_button));
@@ -258,14 +312,15 @@ _set_state (CmService          *service,
 			     _("Connected"));
     priv->failed = FALSE;
   }
-  else if (priv->state == CONFIGURE)
+  else if (g_str_equal (priv->state, "configuring") ||
+	   g_str_equal (priv->state, "associating"))
   {
     button = g_strdup_printf (_("Cancel"));
     label = g_strdup_printf ("%s - %s",
                              name,
                              _("Configuring"));
   }
-  else if (priv->state == IDLE)
+  else if (g_str_equal (priv->state, "idle"))
   {
     gtk_widget_hide (GTK_WIDGET (priv->delete_button));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
@@ -273,18 +328,33 @@ _set_state (CmService          *service,
     button = g_strdup (_("Connect"));
     label = g_strdup (name);
   }
-  else if (priv->state == FAIL)
+  else if (g_str_equal (priv->state, "failure"))
   {
-    gtk_widget_hide (GTK_WIDGET (priv->delete_button));
-    gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
-                              FALSE);
+    /*
+     * If the connection failed we should allow the user
+     * to remove the connection (and forget the password.
+     * Except, of course, when the connection is Ethernet ...
+     */
+    if (g_str_equal (priv->type, "ethernet") == FALSE)
+    {
+      gtk_widget_hide (GTK_WIDGET (priv->delete_button));
+      gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
+                                FALSE);
+    }
+    else
+    {
+      gtk_widget_show (GTK_WIDGET (priv->delete_button));
+      gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
+                                TRUE);
+    }
+
     button = g_strdup (_("Connect"));
     label = g_strdup_printf ("%s - %s",
                              name,
                              _("Connection failed"));
     priv->failed = TRUE;
   }
-  else if (priv->state == DISCONNECT)
+  else if (g_str_equal (priv->state, "disconnect"))
   {
     button = g_strdup_printf (_("Disconnecting"));
     label = g_strdup_printf ("%s - %s",
@@ -300,8 +370,8 @@ _set_state (CmService          *service,
   {
     gtk_label_set_text (GTK_LABEL (priv->name_label),
                         label);
-    pixbuf = carrick_icon_factory_get_pixbuf_for_service (priv->icon_factory,
-                                                          service);
+    pixbuf = carrick_icon_factory_get_pixbuf_for_state (priv->icon_factory,
+                                                        _get_icon_state (self));
     gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
                                pixbuf);
   }
@@ -309,7 +379,6 @@ _set_state (CmService          *service,
   if (button && button[0] != '\0')
     gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                           button);
-
   g_free (name);
   g_free (label);
   g_free (button);
@@ -348,44 +417,6 @@ _request_passphrase (CarrickServiceItem *item)
 }
 
 static void
-_service_name_changed_cb (CmService *service,
-                          gpointer   user_data)
-{
-  _set_state (service,
-              CARRICK_SERVICE_ITEM (user_data));
-}
-
-static void
-_service_state_changed_cb (CmService *service,
-                           gpointer   user_data)
-{
-  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
-
-  priv->state = _get_service_state (service);
-
-  _set_state (service,
-              item);
-}
-
-static void
-_service_security_changed_cb (CmService *service,
-                              gpointer   user_data)
-{
-  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
-  gchar *security = g_strdup (cm_service_get_security (service));
-  _service_item_set_security (item, security);
-}
-
-static void
-_service_strength_changed_cb (CmService *service,
-                              gpointer   user_data)
-{
-  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
-  _set_state (service, item);
-}
-
-static void
 _delete_button_cb (GtkButton *delete_button,
                    gpointer   user_data)
 {
@@ -393,12 +424,6 @@ _delete_button_cb (GtkButton *delete_button,
   GtkWidget *dialog;
   GtkWidget *label;
   gchar *label_text = NULL;
-  const gchar *ssid = NULL;
-  const gchar *type = NULL;
-  CmService *service = priv->service;
-
-  ssid = cm_service_get_name (service);
-  type = cm_service_get_type (service);
 
   dialog = gtk_dialog_new_with_buttons (_("Really remove?"),
                                         NULL,
@@ -422,9 +447,9 @@ _delete_button_cb (GtkButton *delete_button,
                                   "This\nwill forget the password and you will"
                                   " no longer be\nautomatically connected to "
                                   "%s."),
-                                ssid,
-                                type,
-                                ssid);
+                                priv->name,
+                                priv->type,
+                                priv->name);
   label = gtk_label_new (label_text);
 
   gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
@@ -439,10 +464,14 @@ _delete_button_cb (GtkButton *delete_button,
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
   {
     carrick_notification_manager_queue_event (priv->note,
-                                              type,
+                                              priv->type,
                                               "idle",
-                                              ssid);
-    cm_service_remove (service);
+                                              priv->name);
+    dbus_g_proxy_call (priv->proxy,
+		       "Remove",
+		       NULL,
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
 
   gtk_widget_destroy (dialog);
@@ -453,56 +482,46 @@ _connect_button_cb (GtkButton          *connect_button,
                     CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
-  const gchar *name = cm_service_get_name (priv->service);
-  const gchar *type = cm_service_get_type (priv->service);
 
   g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
-  if (priv->state == READY)
+  if (g_str_equal (priv->state, "ready") ||
+      g_str_equal (priv->state, "configuration") ||
+      g_str_equal (priv->state, "association"))
   {
     carrick_notification_manager_queue_event (priv->note,
-                                              type,
+                                              priv->type,
                                               "idle",
-                                              name);
-    cm_service_disconnect (priv->service);
-  }
-  else if (priv->state == CONFIGURE)
-  {
-    /* Cancel an in progress connection, no need to update
-     * notification manager */
-    cm_service_disconnect (priv->service);
+                                              priv->name);
+    dbus_g_proxy_call (priv->proxy,
+		       "Disconnect",
+		       NULL,
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
   else
   {
-    gchar *security = g_strdup (cm_service_get_security (priv->service));
-
     carrick_notification_manager_queue_event (priv->note,
-                                              type,
+                                              priv->type,
                                               "ready",
-                                              name);
+                                              priv->name);
 
-    if (security && g_strcmp0 ("none", security) != 0)
+    if (priv->security && g_str_equal (priv->security, "none") == FALSE)
     {
-      if (priv->failed || !cm_service_get_passphrase (priv->service))
+
+      if (priv->failed ||
+          (priv->need_pass && priv->passphrase == NULL))
       {
         _request_passphrase (item);
       }
-      else
-      {
-        /* We have the passphrase already, just connect */
-        cm_service_connect (priv->service);
-      }
-    }
-    else
-    {
-      /* No security, just connect */
-      cm_service_connect (priv->service);
     }
 
-    g_free (security);
+    dbus_g_proxy_call (priv->proxy,
+	 	       "Connect",
+		       NULL,
+		       G_TYPE_INVALID,
+		       G_TYPE_INVALID);
   }
-
-  _set_state (priv->service, item);
 }
 
 static void
@@ -510,8 +529,6 @@ _connect_with_password (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
   const gchar *passphrase;
-  const gchar *type = cm_service_get_type (priv->service);
-  const gchar *name = cm_service_get_name (priv->service);
 
   if (priv->passphrase_hint_visible)
   {
@@ -523,14 +540,24 @@ _connect_with_password (CarrickServiceItem *item)
   }
 
   carrick_notification_manager_queue_event (priv->note,
-                                              type,
-                                              "ready",
-                                              name);
-  cm_service_set_passphrase (priv->service,
-                             passphrase);
-  cm_service_connect (CM_SERVICE (priv->service));
+                                            priv->type,
+					    "ready",
+					    priv->name);
+  dbus_g_proxy_call (priv->proxy,
+		     "SetProperty",
+		     NULL,
+		     G_TYPE_STRING,
+		     "Passphrase",
+		     G_TYPE_STRING,
+		     passphrase,
+		     G_TYPE_INVALID,
+		     G_TYPE_INVALID);
 
-  _set_state (priv->service, item);
+  dbus_g_proxy_call (priv->proxy,
+	             "Connect",
+		     NULL,
+		     G_TYPE_INVALID,
+		     G_TYPE_INVALID);
 
   gtk_widget_hide (priv->passphrase_box);
   gtk_widget_show (priv->connect_box);
@@ -573,99 +600,6 @@ _passphrase_entry_clear_released_cb (GtkEntry             *entry,
   gtk_widget_grab_focus (GTK_WIDGET (entry));
 }
 
-void
-carrick_service_item_set_service (CarrickServiceItem *service_item,
-                                  CmService          *service)
-{
-  CarrickServiceItemPrivate *priv;
-
-  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (service_item));
-  g_return_if_fail (service == NULL || CM_IS_SERVICE (service));
-
-  priv = SERVICE_ITEM_PRIVATE (service_item);
-
-  if (priv->service)
-  {
-    g_signal_handlers_disconnect_by_func (priv->service,
-                                         _service_name_changed_cb,
-                                         service_item);
-    g_signal_handlers_disconnect_by_func (priv->service,
-                                          _service_state_changed_cb,
-                                          service_item);
-    g_signal_handlers_disconnect_by_func (priv->service,
-                                          _service_security_changed_cb,
-                                          service_item);
-    g_signal_handlers_disconnect_by_func (priv->service,
-                                          _service_strength_changed_cb,
-                                          service_item);
-    g_object_unref (priv->service);
-    priv->service = NULL;
-  }
-
-  if (service)
-  {
-    priv->service = g_object_ref (service);
-
-    priv->state = _get_service_state (service);
-
-    g_signal_connect (priv->connect_button,
-                      "clicked",
-                      G_CALLBACK (_connect_button_cb),
-                      service_item);
-
-    g_signal_connect (priv->delete_button,
-                      "clicked",
-                      G_CALLBACK (_delete_button_cb),
-                      service_item);
-
-    g_signal_connect (service,
-                      "name-changed",
-                      G_CALLBACK (_service_name_changed_cb),
-                      service_item);
-
-    g_signal_connect (service,
-                      "state-changed",
-                      G_CALLBACK (_service_state_changed_cb),
-                      service_item);
-
-    g_signal_connect (service,
-                      "security-changed",
-                      G_CALLBACK (_service_security_changed_cb),
-                      service_item);
-
-    g_signal_connect (service,
-                      "strength-changed",
-                      G_CALLBACK (_service_strength_changed_cb),
-                      service_item);
-
-    _set_state (service,
-                service_item);
-  }
-}
-
-gint
-carrick_service_item_get_order (CarrickServiceItem *item)
-{
-  CarrickServiceItemPrivate *priv;
-
-  g_return_val_if_fail (CARRICK_IS_SERVICE_ITEM (item), -1);
-
-  priv = SERVICE_ITEM_PRIVATE (item);
-
-  return cm_service_get_order (priv->service);
-}
-
-CmService *
-carrick_service_item_get_service (CarrickServiceItem *item)
-{
-  CarrickServiceItemPrivate *priv;
-
-  g_return_val_if_fail (CARRICK_IS_SERVICE_ITEM (item), NULL);
-
-  priv = SERVICE_ITEM_PRIVATE (item);
-  return priv->service;
-}
-
 gboolean
 carrick_service_item_get_draggable (CarrickServiceItem *item)
 {
@@ -703,13 +637,47 @@ void carrick_service_item_set_active (CarrickServiceItem *item,
   }
 }
 
+
+static void
+_set_model (CarrickServiceItem  *self,
+	    CarrickNetworkModel *model)
+{
+  g_return_if_fail (model != NULL);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+
+  priv->model = GTK_TREE_MODEL (model);
+
+  if (priv->path)
+  {
+    _populate_variables (self);
+    _set_state (self);
+  }
+}
+
+static void
+_set_path (CarrickServiceItem *self,
+	   GtkTreePath        *path)
+{
+  g_return_if_fail (path != NULL);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+
+  priv->path = path;
+
+  if (priv->model)
+  {
+    _populate_variables (self);
+    _set_state (self);
+  }
+}
+
 static void
 carrick_service_item_set_property (GObject *object, guint property_id,
                                    const GValue *value, GParamSpec *pspec)
 {
   g_return_if_fail (object != NULL);
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (object));
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
+  CarrickServiceItem *self = CARRICK_SERVICE_ITEM (object);
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
 
   switch (property_id)
     {
@@ -719,13 +687,17 @@ carrick_service_item_set_property (GObject *object, guint property_id,
       case PROP_ICON_FACTORY:
         priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
         break;
-      case PROP_SERVICE:
-        carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object),
-                                          CM_SERVICE (g_value_get_object (value)));
-        break;
       case PROP_NOTIFICATIONS:
         priv->note = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
         break;
+      case PROP_MODEL:
+	_set_model (self,
+		    CARRICK_NETWORK_MODEL (g_value_get_object (value)));
+	break;
+      case PROP_PATH:
+	_set_path (self,
+		   (GtkTreePath *) g_value_get_object (value));
+	break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -736,13 +708,18 @@ carrick_service_item_dispose (GObject *object)
 {
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
 
-  carrick_service_item_set_service (CARRICK_SERVICE_ITEM (object), NULL);
-
   if (priv->hand_cursor)
   {
     gdk_cursor_unref (priv->hand_cursor);
     priv->hand_cursor = NULL;
   }
+
+  g_free (priv->proxy);
+  g_free (priv->name);
+  g_free (priv->type);
+  g_free (priv->state);
+  g_free (priv->security);
+  g_free (priv->passphrase);
 
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
@@ -790,7 +767,7 @@ carrick_service_item_leave_notify_event (GtkWidget        *widget,
 
     priv->hover = FALSE;
 
-    if (priv->state == READY)
+    if (g_str_equal (priv->state, "ready"))
     {
     gtk_widget_modify_bg (priv->expando,
                           GTK_STATE_NORMAL,
@@ -834,15 +811,6 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
                                    PROP_DRAGGABLE,
                                    pspec);
 
-  pspec = g_param_spec_object ("service",
-                               "service",
-                               "CmService object",
-                               CM_TYPE_SERVICE,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-  g_object_class_install_property (object_class,
-                                   PROP_SERVICE,
-                                   pspec);
-
   pspec = g_param_spec_object ("notification-manager",
                                "CarrickNotificationManager",
                                "Notification manager to use",
@@ -860,6 +828,24 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_ICON_FACTORY,
                                    pspec);
+
+  pspec = g_param_spec_object ("model",
+		               "model",
+			       "CarrickNetworkModel object",
+			       CARRICK_TYPE_NETWORK_MODEL,
+			       G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+		  		   PROP_MODEL,
+				   pspec);
+
+  pspec = g_param_spec_object ("path",
+		               "path",
+			       "GtkTreePath to row in model",
+			       GTK_TYPE_TREE_PATH,
+			       G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+		  		   PROP_PATH,
+				   pspec);
 
   /* activated == some ui activity in the label part of the item */
   service_item_signals[SIGNAL_ITEM_ACTIVATE] = g_signal_new (
@@ -882,8 +868,19 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget *connect_with_pw_button;
   char *security_sample;
 
-  priv->service = NULL;
+  priv->model = NULL;
+  priv->path = NULL;
   priv->failed = FALSE;
+
+  priv->proxy = NULL;
+  priv->index = 0;
+  priv->name = NULL;
+  priv->type = NULL;
+  priv->state = NULL;
+  priv->strength = 0;
+  priv->security = NULL;
+  priv->need_pass = FALSE;
+  priv->passphrase = NULL;
 
   priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
 
@@ -942,6 +939,10 @@ carrick_service_item_init (CarrickServiceItem *self)
                                         GTK_ICON_SIZE_MENU);
   gtk_widget_show (image);
   priv->delete_button = gtk_button_new ();
+  g_signal_connect (priv->delete_button,
+                    "clicked",
+                    G_CALLBACK (_delete_button_cb),
+                    self);
   gtk_button_set_relief (GTK_BUTTON (priv->delete_button),
                          GTK_RELIEF_NONE);
   gtk_button_set_image (GTK_BUTTON (priv->delete_button),
@@ -965,6 +966,10 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->connect_button = gtk_button_new ();
   gtk_widget_show (priv->connect_button);
+  g_signal_connect (priv->connect_button,
+                    "clicked",
+                    G_CALLBACK (_connect_button_cb),
+                    self);
   gtk_box_pack_start (GTK_BOX (priv->connect_box),
                       priv->connect_button,
                       FALSE,
@@ -1050,16 +1055,19 @@ carrick_service_item_init (CarrickServiceItem *self)
 }
 
 GtkWidget*
-carrick_service_item_new (CarrickIconFactory *icon_factory,
+carrick_service_item_new (CarrickIconFactory         *icon_factory,
                           CarrickNotificationManager *notifications,
-                          CmService          *service)
+			  CarrickNetworkModel        *model,
+			  GtkTreePath 		     *path)
 {
   return g_object_new (CARRICK_TYPE_SERVICE_ITEM,
                        "icon-factory",
                        icon_factory,
                        "notification-manager",
                        notifications,
-                       "service",
-                       service,
+		       "model",
+		       model,
+		       "path",
+		       path,
                        NULL);
 }
