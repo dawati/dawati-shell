@@ -2717,10 +2717,26 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
 
   priv->shown = TRUE;
 
+  /*
+   * Show Myzone
+   */
   if (!priv->shown_myzone && priv->panels[MYZONE])
     {
-      priv->shown_myzone = TRUE;
-      clutter_actor_show (CLUTTER_ACTOR (priv->panels[MYZONE]));
+      /*
+       * We can only do this if there are no modal windows showing otherwise
+       * the zone will cover up the modal window; the user can then open another
+       * panel, such as the applications, launch a new application, at which
+       * point we switch to the new zone with the new application, but the modal
+       * window on the original zone will still have focus, and the user will
+       * have no idea why her kbd is not working. (Other than on startup this
+       * should not be an issue, since will automatically hide the Shell when
+       * the modal window pops up.
+       */
+      if (!moblin_netbook_modal_windows_present (plugin, -1))
+        {
+          priv->shown_myzone = TRUE;
+          clutter_actor_show (CLUTTER_ACTOR (priv->panels[MYZONE]));
+        }
     }
 
   g_timeout_add_seconds (TOOLBAR_AUTOSTART_DELAY,
