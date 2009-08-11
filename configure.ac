@@ -99,32 +99,6 @@ if test x"$scale_background" = xyes; then
 	AC_DEFINE(USE_SCALED_BACKGROUND, 1, [Use scaled background])
 fi
 
-
-AC_ARG_ENABLE([ahoghill],
-              [AC_HELP_STRING([--enable-ahoghill],
-                              [Enable Ahoghill Media Panel])],
-              [],
-              [enable_ahoghill=no])
-
-AS_IF([test "x$enable_ahoghill" = "xyes"],
-      [
-	AC_DEFINE(USE_AHOGHILL, [1], [Define if we are using Ahoghill])
-
-	PKG_CHECK_MODULES(AHOGHILL, nbtk-1.0 bickley-0.4 >= 0.4.2
-                                    gdk-pixbuf-2.0 bognor-regis-0.4 >= 0.4.3
-                                    gtk+-2.0)
-
-AHOGHILL_CFLAGS="${AHOGHILL_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
-AC_SUBST([AHOGHILL_CFLAGS])
-AHOGHILL_LIBS="${AHOGHILL_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la'
-AC_SUBST([AHOGHILL_LIBS])
-
-      ]
-)
-
-AM_CONDITIONAL(WITH_AHOGHILL, test x"$enable_ahoghill" = xyes)
-
 # Netpanel
 AC_ARG_ENABLE([netpanel],
               [AC_HELP_STRING([--enable-netpanel],
@@ -206,11 +180,6 @@ tests/Makefile
 netpanel/Makefile
 netpanel/src/Makefile
 netpanel/theme/Makefile
-ahoghill/Makefile
-ahoghill/ahoghill/Makefile
-ahoghill/examples/Makefile
-ahoghill/src/Makefile
-ahoghill/theme/Makefile
 libmoblin-panel/Makefile
 libmoblin-panel/moblin-panel.pc
 libmoblin-panel/moblin-panel/Makefile

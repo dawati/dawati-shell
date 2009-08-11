@@ -5,10 +5,6 @@ SUBDIRS = build
 # always built
 SUBDIRS += libmoblin-panel
 
-if WITH_AHOGHILL
-SUBDIRS += ahoghill
-endif
-
 if WITH_NETPANEL
 SUBDIRS +=netpanel
 endif
