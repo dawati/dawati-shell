@@ -164,4 +164,7 @@ moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin);
 MutterPlugin *
 moblin_netbook_get_plugin_singleton (void);
 
+gboolean
+moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace);
+
 #endif

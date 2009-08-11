@@ -1990,3 +1990,35 @@ moblin_netbook_get_plugin_singleton (void)
   return plugin_singleton;
 }
 
+/*
+ * Returns TRUE if a modal window is present on given workspace; if workspace
+ * is < 0, returns TRUE if any modal windows are present on any workspace.
+ */
+gboolean
+moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  GList      *l      = mutter_get_windows (screen);
+
+  while (l)
+    {
+      MutterWindow *m = l->data;
+      MetaWindow   *w = mutter_window_get_meta_window (m);
+
+      /*
+       * Working out the workspace index in Mutter requires examining a list,
+       * so do the modality test first.
+       */
+      if (meta_window_is_modal (w))
+        {
+          gint s = mutter_window_get_workspace (m);
+
+          if (s < 0 || s == workspace)
+            return TRUE;
+        }
+
+      l = l->next;
+     }
+
+  return FALSE;
+}
