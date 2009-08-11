@@ -24,7 +24,6 @@
 #define _CARRICK_NOTIFICATION_MANAGER_H
 
 #include <gtk/gtk.h>
-#include <gconnman/gconnman.h>
 
 G_BEGIN_DECLS
 
@@ -68,9 +67,8 @@ struct _CarrickNotificationManagerClass
 
 GType carrick_notification_manager_get_type (void);
 
-CarrickNotificationManager *carrick_notification_manager_new (CmManager *manager);
+CarrickNotificationManager *carrick_notification_manager_new ();
 
-void carrick_notification_manager_queue_service (CarrickNotificationManager *self, CmService *service, gboolean enabling);
 void
 carrick_notification_manager_queue_event (CarrickNotificationManager *self, const gchar *type, const gchar *state, const gchar *name);
 
