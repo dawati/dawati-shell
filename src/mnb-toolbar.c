@@ -70,7 +70,14 @@
 #define TOOLBAR_HEIGHT 64
 #endif
 
-#define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + 37)
+/*
+ * The toolbar shadow extends by the TOOLBAR_SHADOW_EXTRA below the toolbar.
+ * In addition, the lowlight actor is extended by the TOOLBAR_SHADOW_HEIGHT so
+ * that it does not roll above the edge of the screen during the toolbar hide
+ * animation.
+ */
+#define TOOLBAR_SHADOW_EXTRA  37
+#define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA)
 
 #define TOOLBAR_X_PADDING 4
 
@@ -2631,6 +2638,30 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
                                             TOOLBAR_HEIGHT);
     }
 
+  for (i = 0; i < NUM_ZONES; ++i)
+  {
+    MnbPanel *panel  = (MnbPanel*)priv->panels[i];
+
+    if (!panel)
+      continue;
+
+    /*
+     * The panel size is the overall size of the panel actor; the height of the
+     * actor includes the shadow, so we need to add the extra bit by which the
+     * shadow protrudes below the actor.
+     */
+      if (MNB_IS_PANEL (panel))
+        mnb_panel_set_size (panel,
+                            screen_width,
+                            screen_height -
+                            TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA);
+      else
+        clutter_actor_set_size (CLUTTER_ACTOR (panel),
+                                (gfloat)screen_width,
+                                (gfloat)(screen_height -
+                                         TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA));
+
+  }
 }
 
 /*
