@@ -1,0 +1,90 @@
+# Dutch translation of mutter-moblin.
+# Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the mutter-moblin package.
+# Auke Kok <auke-jan.h.kok@intel.com>, 2009.
+# , fuzzy
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin moblin2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-11 16:24+0000\n"
+"PO-Revision-Date: 2009-08-05 14:41-0800\n"
+"Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
+"Language-Team: Dutch\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../ahoghill/ahoghill-example-table.c:117
+msgid ""
+"You need to play some music, look at some pictures or watch some video to "
+"see your history here. In the meantime, you could take a look at some sample "
+"media:"
+msgstr ""
+"Je moet wat muziek afspelen, naar foto's kijken of een video afspelen om "
+"hier je afspeel geschiedenis te zien. Tot die tijd kun je hier voorbeeld "
+"media vinden:"
+
+#: ../ahoghill/ahoghill-grid-view.c:417 ../ahoghill/ahoghill-grid-view.c:981
+msgid "Recently played"
+msgstr "Recent gespeeld"
+
+#: ../ahoghill/ahoghill-grid-view.c:443
+msgid "Search results"
+msgstr "Zoekresultaten"
+
+#: ../ahoghill/ahoghill-grid-view.c:995
+msgid "Playqueue"
+msgstr "Afspeellijst"
+
+#: ../ahoghill/ahoghill-media-tile.c:100
+#, c-format
+msgid "Season %u, Episode %u"
+msgstr "Seizoen %u, Episode %u"
+
+#: ../ahoghill/ahoghill-results-pane.c:385
+msgid "Previous"
+msgstr "Vorige"
+
+#: ../ahoghill/ahoghill-results-pane.c:401
+msgid "Next"
+msgstr "Volgende"
+
+#: ../ahoghill/ahoghill-search-pane.c:87
+msgid "Media"
+msgstr "Media"
+
+#: ../ahoghill/ahoghill-search-pane.c:97
+msgid "Search"
+msgstr "Zoek"
+
+#: ../ahoghill/ahoghill-queue-tile.c:164
+#: ../ahoghill/ahoghill-playlist-np.c:164
+#, c-format
+msgid "Season %d Episode %d"
+msgstr "Seizoen %d Episode %d"
+
+#: ../ahoghill/ahoghill-queue-tile.c:166
+#: ../ahoghill/ahoghill-playlist-np.c:166
+#, c-format
+msgid "Season %d"
+msgstr "Seizoen %d"
+
+#: ../ahoghill/ahoghill-queue-tile.c:168
+#: ../ahoghill/ahoghill-playlist-np.c:168
+#, c-format
+msgid "Episode %d"
+msgstr "Episide %d"
+
+#: ../ahoghill/ahoghill-queue-tile.c:170
+#: ../ahoghill/ahoghill-playlist-np.c:170
+#, c-format
+msgid "Year %d"
+msgstr "Jaar %d"
+
+#: ../src/moblin-panel-media.c:138
+msgid "media"
+msgstr "media"
+
