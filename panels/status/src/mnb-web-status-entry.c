@@ -47,6 +47,8 @@ struct _MnbWebStatusEntryPrivate
   gchar *old_status_text;
   gchar *status_time;
 
+  GTimeVal status_timeval;
+
   gfloat separator_x;
 
   NbtkPadding padding;
@@ -789,7 +791,10 @@ mnb_web_status_entry_set_status_text (MnbWebStatusEntry *entry,
   priv->status_text = g_strdup (status_text);
 
   if (status_time)
-    priv->status_time = mpl_utils_format_time (status_time);
+    {
+      priv->status_time = mpl_utils_format_time (status_time);
+      priv->status_timeval = *status_time;
+    }
 
   text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->status_entry));
   clutter_text_set_markup (CLUTTER_TEXT (text), priv->status_text);
@@ -806,9 +811,13 @@ mnb_web_status_entry_set_status_text (MnbWebStatusEntry *entry,
 }
 
 G_CONST_RETURN gchar *
-mnb_web_status_entry_get_status_text (MnbWebStatusEntry *entry)
+mnb_web_status_entry_get_status_text (MnbWebStatusEntry *entry,
+                                      GTimeVal          *status_time)
 {
   g_return_val_if_fail (MNB_IS_WEB_STATUS_ENTRY (entry), NULL);
+
+  if (status_time)
+    *status_time = entry->priv->status_timeval;
 
   return entry->priv->status_text;
 }

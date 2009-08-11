@@ -48,6 +48,7 @@ struct _MnbWebStatusRowPrivate
   gchar *no_icon_file;
 
   gchar *last_status_text;
+  GTimeVal last_status_time;
 
   NbtkPadding padding;
 
@@ -294,7 +295,7 @@ mnb_web_status_row_button_release (ClutterActor       *actor,
 
 static gboolean
 mnb_web_status_row_enter (ClutterActor *actor,
-                      ClutterCrossingEvent *event)
+                          ClutterCrossingEvent *event)
 {
   MnbWebStatusRowPrivate *priv = MNB_WEB_STATUS_ROW (actor)->priv;
 
@@ -313,7 +314,7 @@ mnb_web_status_row_enter (ClutterActor *actor,
 
 static gboolean
 mnb_web_status_row_leave (ClutterActor *actor,
-                        ClutterCrossingEvent *event)
+                          ClutterCrossingEvent *event)
 {
   MnbWebStatusRowPrivate *priv = MNB_WEB_STATUS_ROW (actor)->priv;
 
@@ -352,20 +353,34 @@ mnb_web_status_row_style_changed (NbtkWidget *widget)
 
 static void
 on_mojito_update_status (MojitoClientService *service,
-                         gboolean             success,
                          const GError        *error,
                          gpointer             user_data)
 {
   MnbWebStatusRow *row = user_data;
   MnbWebStatusRowPrivate *priv = row->priv;
 
-  if (!success)
+  if (error)
     {
       g_warning ("Unable to update the status: %s", error->message);
 
       mnb_web_status_entry_set_status_text (MNB_WEB_STATUS_ENTRY (priv->entry),
-                                        priv->last_status_text,
-                                        NULL);
+                                            priv->last_status_text,
+                                            &priv->last_status_time);
+    }
+}
+
+static void
+on_mojito_status_updated (MojitoClientService *service,
+                          gboolean             success,
+                          MnbWebStatusRow     *row)
+{
+  MnbWebStatusRowPrivate *priv = row->priv;
+
+  if (!success)
+    {
+      mnb_web_status_entry_set_status_text (MNB_WEB_STATUS_ENTRY (priv->entry),
+                                            priv->last_status_text,
+                                            &priv->last_status_time);
     }
 }
 
@@ -375,14 +390,19 @@ on_status_entry_changed (MnbWebStatusEntry *entry,
                          MnbWebStatusRow   *row)
 {
   MnbWebStatusRowPrivate *priv = row->priv;
+  const gchar *status_text;
+  GTimeVal status_time;
 
   if (priv->service == NULL)
     return;
 
+  mnb_web_status_entry_get_status_text (MNB_WEB_STATUS_ENTRY (priv->entry),
+                                        &status_time);
+
   /* save the last status */
   g_free (priv->last_status_text);
-  priv->last_status_text =
-    g_strdup (mnb_web_status_entry_get_status_text (MNB_WEB_STATUS_ENTRY (priv->entry)));
+  priv->last_status_text = g_strdup (status_text);
+  priv->last_status_time = status_time;
 
   mojito_client_service_update_status (priv->service,
                                        on_mojito_update_status,
@@ -391,40 +411,24 @@ on_status_entry_changed (MnbWebStatusEntry *entry,
 }
 
 static void
-on_mojito_get_persona_icon (MojitoClientService *service,
-                            const gchar         *persona_icon,
-                            const GError        *error,
+on_mojito_avatar_retrieved (MojitoClientService *service,
+                            const gchar         *avatar_path,
                             gpointer             user_data)
 {
   MnbWebStatusRow *row = user_data;
   MnbWebStatusRowPrivate *priv = row->priv;
   GError *internal_error;
 
-  if (error)
-    {
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                     priv->no_icon_file,
-                                     NULL);
-
-      g_warning ("Unable to retrieve the icon on '%s': %s",
-                 priv->service_name,
-                 error->message);
-      return;
-    }
-
-  if (G_UNLIKELY (CLUTTER_IS_RECTANGLE (priv->icon)))
-    return;
-
   internal_error = NULL;
   clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->icon), TRUE);
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                 persona_icon,
+                                 avatar_path,
                                  &internal_error);
   if (internal_error)
     {
       g_warning ("Unable to set icon '%s' on '%s': %s",
                  priv->service_name,
-                 persona_icon,
+                 avatar_path,
                  internal_error->message);
 
       clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->icon), FALSE);
@@ -438,11 +442,9 @@ on_mojito_get_persona_icon (MojitoClientService *service,
 
 static void
 on_mojito_user_changed (MojitoClientService *service,
-                        MnbWebStatusRow     *row)
+                        MnbWebStatusRow     *row G_GNUC_UNUSED)
 {
-  mojito_client_service_get_persona_icon (service,
-                                          on_mojito_get_persona_icon,
-                                          row);
+  mojito_client_service_request_avatar (service);
 }
 
 static void
@@ -476,19 +478,21 @@ on_mojito_view_open (MojitoClient     *client,
       priv->view = g_object_ref (view);
 
       if (row->priv->service != NULL)
-        mojito_client_service_get_persona_icon (priv->service,
-                                                on_mojito_get_persona_icon,
-                                                row);
+        mojito_client_service_request_avatar (priv->service);
       else
         {
-          /* we need the service for UpdateStatus and GetPersonaIcon */
           priv->service = mojito_client_get_service (priv->client, priv->service_name);
-          mojito_client_service_get_persona_icon (priv->service,
-                                                  on_mojito_get_persona_icon,
-                                                  row);
           g_signal_connect (priv->service,
                             "user-changed", G_CALLBACK (on_mojito_user_changed),
                             row);
+          g_signal_connect (priv->service,
+                            "avatar-retrieved", G_CALLBACK (on_mojito_avatar_retrieved),
+                            row);
+          g_signal_connect (priv->service,
+                            "status-updated", G_CALLBACK (on_mojito_status_updated),
+                            row);
+
+          mojito_client_service_request_avatar (priv->service);
         }
 
 
@@ -536,9 +540,7 @@ do_update_timeout (gpointer data)
 
   /* we only call GetPersonaIcon if we have a view open */
   if (row->priv->service != NULL)
-    mojito_client_service_get_persona_icon (row->priv->service,
-                                            on_mojito_get_persona_icon,
-                                            row);
+    mojito_client_service_request_avatar (row->priv->service);
 
   return TRUE;
 }

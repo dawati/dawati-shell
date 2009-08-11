@@ -66,9 +66,10 @@ void     mnb_web_status_entry_set_in_hover  (MnbWebStatusEntry *entry,
                                              gboolean        in_hover);
 
 void                  mnb_web_status_entry_set_status_text (MnbWebStatusEntry *entry,
-                                                            const gchar    *status_text,
-                                                            GTimeVal       *status_time);
-G_CONST_RETURN gchar *mnb_web_status_entry_get_status_text (MnbWebStatusEntry *entry);
+                                                            const gchar       *status_text,
+                                                            GTimeVal          *status_time);
+G_CONST_RETURN gchar *mnb_web_status_entry_get_status_text (MnbWebStatusEntry *entry,
+                                                            GTimeVal          *status_time);
 
 G_END_DECLS
 
