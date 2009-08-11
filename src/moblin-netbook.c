@@ -1329,7 +1329,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         {
           gboolean fullscreen, modal = FALSE;
 
-          if (type == META_COMP_WINDOW_MODAL_DIALOG)
+          if (meta_window_is_modal (mw))
             modal = TRUE;
 
           g_object_get (mw, "fullscreen", &fullscreen, NULL);
@@ -1350,7 +1350,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                             G_CALLBACK (meta_window_fullcreen_notify_cb),
                             plugin);
 
-          /* Hide toolbar etc in presence of modal dialog */
+          /* Hide toolbar etc in presence of modal window */
           if (modal == TRUE)
             clutter_actor_hide (priv->toolbar);
         }
