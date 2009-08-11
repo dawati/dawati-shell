@@ -2595,7 +2595,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
 
   for (i = APPLETS_START; i < NUM_ZONES; ++i)
     {
-      ClutterActor *button = priv->buttons[i];
+      ClutterActor *button  = (ClutterActor*)priv->buttons[i];
       gint          applets = i - APPLETS_START;
       gint          x, y;
 
