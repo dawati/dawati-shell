@@ -46,6 +46,8 @@ if (CLUTTER_INIT_SUCCESS != clutter_init (argc, argv))  \
     {                                                           \
       g_error ("Unable to initialize Clutter.\n");              \
     }                                                           \
+                                                                \
+  mpl_panel_clutter_load_base_style ()                          \
 
 #define MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK(panel)          \
   {                                                             \
@@ -59,6 +61,8 @@ if (CLUTTER_INIT_SUCCESS != clutter_init (argc, argv))  \
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID(xid);       \
                                                                 \
   }                                                             \
+                                                                \
+  mpl_panel_clutter_load_base_style ()                          \
 
 #define MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID(xid)  \
   {                                                     \
