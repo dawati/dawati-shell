@@ -99,6 +99,7 @@ static void mnb_toolbar_stage_show_cb (ClutterActor *stage,
                                        MnbToolbar *toolbar);
 static void mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar);
 static void mnb_toolbar_handle_dbus_name (MnbToolbar *, const gchar *);
+static gint mnb_toolbar_panel_name_to_index (const gchar *name);
 
 enum {
     MYZONE = 0,
@@ -514,6 +515,67 @@ mnb_toolbar_allocate (ClutterActor          *actor,
 
   parent_class = CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class);
   parent_class->allocate (actor, box, flags);
+}
+
+static gboolean
+mnb_toolbar_dbus_show_toolbar (MnbToolbar *self, GError **error)
+{
+  clutter_actor_show (CLUTTER_ACTOR (self));
+  return TRUE;
+}
+
+static gboolean
+mnb_toolbar_dbus_hide_toolbar (MnbToolbar *self, GError **error)
+{
+  clutter_actor_hide (CLUTTER_ACTOR (self));
+  return TRUE;
+}
+
+static gboolean
+mnb_toolbar_dbus_show_panel (MnbToolbar *self, gchar *name, GError **error)
+{
+  MnbToolbarPrivate *priv  = self->priv;
+  gint               index = mnb_toolbar_panel_name_to_index (name);
+  ClutterActor      *panel;
+
+  if (index < 0 || !priv->panels[index])
+    return FALSE;
+
+  panel = CLUTTER_ACTOR (priv->panels[index]);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (panel))
+    return TRUE;
+
+  mnb_toolbar_activate_panel (self, name);
+  return TRUE;
+}
+
+static gboolean
+mnb_toolbar_dbus_hide_panel (MnbToolbar  *self,
+                             gchar       *name,
+                             gboolean     hide_toolbar,
+                             GError     **error)
+{
+  MnbToolbarPrivate *priv  = self->priv;
+  gint               index = mnb_toolbar_panel_name_to_index (name);
+  ClutterActor      *panel;
+
+  if (index < 0 || !priv->panels[index])
+    return FALSE;
+
+  panel = CLUTTER_ACTOR (priv->panels[index]);
+
+  if (!CLUTTER_ACTOR_IS_MAPPED (panel))
+    {
+      if (hide_toolbar && CLUTTER_ACTOR_IS_MAPPED (self))
+        clutter_actor_hide (CLUTTER_ACTOR (self));
+    }
+  else if (hide_toolbar)
+    mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (panel));
+  else
+    clutter_actor_hide (panel);
+
+  return TRUE;
 }
 
 #include "../src/mnb-toolbar-dbus-glue.h"
