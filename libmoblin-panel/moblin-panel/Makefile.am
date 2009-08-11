@@ -13,7 +13,7 @@ libmoblin_panel_include_HEADERS = \
 
 libmoblin_panel_la_CFLAGS = \
 	$(LIBMPL_CFLAGS) \
-	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
+	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel/nbtk.cache\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
 
 libmoblin_panel_la_LDFLAGS = $(LIBMPL_LIBS)

@@ -141,6 +141,8 @@ ClutterActor *mpl_panel_clutter_get_stage (MplPanelClutter *panel);
 void          mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
                                                     ClutterActor    *actor);
 
+void mpl_panel_clutter_load_base_style (void);
+
 G_END_DECLS
 
 #endif /* _MPL_PANEL_CLUTTER */

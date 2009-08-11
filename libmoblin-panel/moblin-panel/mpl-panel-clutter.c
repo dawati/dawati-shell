@@ -23,6 +23,8 @@
  */
 
 #include <clutter/x11/clutter-x11.h>
+#include <nbtk/nbtk.h>
+
 #include <string.h>
 
 #include "mpl-panel-clutter.h"
@@ -200,6 +202,22 @@ mpl_panel_clutter_xevent_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
   return CLUTTER_X11_FILTER_CONTINUE;
 }
 
+void
+mpl_panel_clutter_load_base_style (void)
+{
+  static gboolean already_loaded = FALSE;
+
+  if (!already_loaded)
+    {
+      /* Load in a base cache and a base style */
+      nbtk_texture_cache_load_cache (nbtk_texture_cache_get_default (),
+                                     NBTK_CACHE);
+      nbtk_style_load_from_file (nbtk_style_get_default (),
+                                 THEMEDIR "/theme.css", NULL);
+      already_loaded = TRUE;
+    }
+}
+
 static void
 mpl_panel_clutter_constructed (GObject *self)
 {
@@ -252,6 +270,9 @@ mpl_panel_clutter_constructed (GObject *self)
 
   g_object_set (self, "xid",
                 clutter_x11_get_stage_window (CLUTTER_STAGE (stage)), NULL);
+
+  /* Load a base style for widgets used in the Mpl panels */
+  mpl_panel_clutter_load_base_style ();
 }
 
 MplPanelClient *
