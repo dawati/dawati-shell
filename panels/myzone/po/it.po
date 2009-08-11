@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 13:09-0700\n"
-"PO-Revision-Date: 2009-07-29 09:55+0100\n"
+"POT-Creation-Date: 2009-08-11 16:27+0000\n"
+"PO-Revision-Date: 2009-08-11 18:39+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -37,15 +37,14 @@ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Benvenuti in Moblin 2.0 per netbook</b>"
 
 #: ../penge/penge-recent-files-pane.c:227
-#, fuzzy
 msgid ""
 "As Moblin is a bit different to other computers, we've put together a couple "
 "of bits and pieces to help you find your way around. We hope you enjoy it, "
 "The Moblin Team."
 msgstr ""
 "Poiché Moblin è un po' diverso rispetto agli altri computer, sono state "
-"raggruppate alcune informazioni per comprendere al meglio questa versione "
-"Beta. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
+"raggruppate alcune informazioni per comprendere al meglio il sistema. "
+"Speriamo troviate tutto di Vostro gradimento, il team Moblin."
 
 #: ../penge/penge-recent-file-tile.c:218
 msgid "Web page"
