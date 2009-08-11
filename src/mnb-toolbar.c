@@ -182,6 +182,9 @@ struct _MnbToolbarPrivate
   DBusGProxy      *dbus_proxy;
 
   GSList          *pending_panels;
+
+  gint             old_screen_width;
+  gint             old_screen_height;
 };
 
 static void
@@ -1878,6 +1881,9 @@ mnb_toolbar_constructed (GObject *self)
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
+  priv->old_screen_width  = screen_width;
+  priv->old_screen_height = screen_height;
+
   clutter_actor_set_size (actor, screen_width, TOOLBAR_SHADOW_HEIGHT);
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
@@ -2587,6 +2593,15 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
   gint               i;
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
+
+  if (priv->old_screen_width  == screen_width &&
+      priv->old_screen_height == screen_height)
+    {
+      return;
+    }
+
+  priv->old_screen_width  = screen_width;
+  priv->old_screen_height = screen_height;
 
   clutter_actor_set_size (priv->background, screen_width - 8, TOOLBAR_HEIGHT);
 
