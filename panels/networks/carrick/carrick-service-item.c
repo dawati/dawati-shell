@@ -24,7 +24,6 @@
 
 #include <config.h>
 #include <glib/gi18n.h>
-#include <gconnman/gconnman.h>
 #include <nbtk/nbtk-gtk.h>
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
@@ -637,6 +636,21 @@ void carrick_service_item_set_active (CarrickServiceItem *item,
   }
 }
 
+DBusGProxy*
+carrick_service_item_get_proxy (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+
+  return priv->proxy;
+}
+
+GtkTreePath*
+carrick_service_item_get_tree_path (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+
+  return priv->path;
+}
 
 static void
 _set_model (CarrickServiceItem  *self,
@@ -646,6 +660,7 @@ _set_model (CarrickServiceItem  *self,
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
 
   priv->model = GTK_TREE_MODEL (model);
+
 
   if (priv->path)
   {
@@ -681,25 +696,25 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 
   switch (property_id)
     {
-      case PROP_DRAGGABLE:
-        priv->draggable = g_value_get_boolean (value);
-        break;
-      case PROP_ICON_FACTORY:
-        priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
-        break;
-      case PROP_NOTIFICATIONS:
-        priv->note = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
-        break;
-      case PROP_MODEL:
-	_set_model (self,
-		    CARRICK_NETWORK_MODEL (g_value_get_object (value)));
-	break;
-      case PROP_PATH:
-	_set_path (self,
-		   (GtkTreePath *) g_value_get_object (value));
-	break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    case PROP_DRAGGABLE:
+      priv->draggable = g_value_get_boolean (value);
+      break;
+    case PROP_ICON_FACTORY:
+      priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
+      break;
+    case PROP_NOTIFICATIONS:
+      priv->note = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
+      break;
+    case PROP_MODEL:
+      _set_model (self,
+                  CARRICK_NETWORK_MODEL (g_value_get_object (value)));
+      break;
+    case PROP_PATH:
+      _set_path (self,
+                 (GtkTreePath *) g_value_get_object (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
@@ -1057,17 +1072,17 @@ carrick_service_item_init (CarrickServiceItem *self)
 GtkWidget*
 carrick_service_item_new (CarrickIconFactory         *icon_factory,
                           CarrickNotificationManager *notifications,
-			  CarrickNetworkModel        *model,
-			  GtkTreePath 		     *path)
+                          CarrickNetworkModel        *model,
+                          GtkTreePath 		           *path)
 {
   return g_object_new (CARRICK_TYPE_SERVICE_ITEM,
                        "icon-factory",
                        icon_factory,
                        "notification-manager",
                        notifications,
-		       "model",
-		       model,
-		       "path",
-		       path,
+                       "model",
+                       model,
+                       "path",
+                       path,
                        NULL);
 }
