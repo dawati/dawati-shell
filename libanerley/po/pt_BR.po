@@ -1,14 +1,16 @@
 msgid ""
 msgstr ""
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
 
 # Derived from Empathy
 # Brazilian Portuguese translation of Empathy.
@@ -24,24 +26,21 @@ msgstr ""
 # Michel Recondo <michel@recondo.com.br>, 2009.
 # Jonh Wendell <jwendell@gnome.org>, 2009.
 # Vladimir Melo <vmelo@gnome.org>, 2009.
-#: ../anerley/anerley-tile.c:201
+#
+#: ../anerley/anerley-tile.c:199
 msgid "Available"
 msgstr "Disponível"
 
-#: ../anerley/anerley-tile.c:204
+#: ../anerley/anerley-tile.c:202
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../anerley/anerley-tile.c:207
-#: ../anerley/anerley-tile.c:210
+#: ../anerley/anerley-tile.c:205
+#: ../anerley/anerley-tile.c:208
 msgid "Away"
 msgstr "Ausente"
 
-#: ../anerley/anerley-tile.c:213
+#: ../anerley/anerley-tile.c:211
 msgid "Offline"
 msgstr "Desconectado"
-
-#: ../anerley/anerley-econtact-item.c:290
-msgid "Unnamed"
-msgstr "Sem nome"
 

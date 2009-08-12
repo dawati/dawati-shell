@@ -1,0 +1,38 @@
+# translation of lo.po to Lao
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Anousak Souphavanh <anousak@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: lo\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-29 09:21+0000\n"
+"PO-Revision-Date: 2009-07-30 11:58+0700\n"
+"Last-Translator: Anousak Souphavanh <anousak@gmail.com>\n"
+"Language-Team: Lao <lo@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../anerley/anerley-tile.c:208
+msgid "Available"
+msgstr "ຫວ່າງ"
+
+#: ../anerley/anerley-tile.c:211
+msgid "Busy"
+msgstr "ບໍ່ຫວ່າງ"
+
+#: ../anerley/anerley-tile.c:214 ../anerley/anerley-tile.c:217
+msgid "Away"
+msgstr "ບໍ່ຢູ່"
+
+#: ../anerley/anerley-tile.c:220
+msgid "Offline"
+msgstr "ບໍ່ຢູ່ໃນລະບົບ"
+
+#: ../anerley/anerley-econtact-item.c:312
+msgid "Unnamed"
+msgstr "ບໍ່ມີຊື່"
+
