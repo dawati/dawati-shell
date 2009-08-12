@@ -76,13 +76,10 @@ create_tree (GtkTreeModel *model)
 int
 main (int argc, char **argv)
 {
-  DBusGConnection *connection;
-  DBusGProxy *manager;
   GtkTreeModel *model;
   GtkWidget *tree;
   GtkWidget *window;
   GtkWidget *scrolled;
-  GError *error = NULL;
 
   if (!g_thread_supported ())
   {
@@ -100,19 +97,7 @@ main (int argc, char **argv)
 				     /* eom */
 				     G_TYPE_INVALID);
 
-  connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
-  if (error)
-  {
-    g_debug ("Error getting connection: %s",
-	     error->message);
-    g_clear_error (&error);
-  }
-  manager = dbus_g_proxy_new_for_name (connection,
-		  		       CONNMAN_SERVICE,
-				       CONNMAN_MANAGER_PATH,
-				       CONNMAN_MANAGER_INTERFACE);
-
-  model = carrick_network_model_new (manager);
+  model = carrick_network_model_new ();
   tree = create_tree (model);
   gtk_tree_view_set_model (GTK_TREE_VIEW (tree),
 		  	   GTK_TREE_MODEL (model));
