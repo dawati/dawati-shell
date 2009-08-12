@@ -25,9 +25,14 @@ f */
 
 #include <glib-object.h>
 #include <mutter-plugin.h>
-#include "mnb-drop-down.h"
+#include "../mnb-drop-down.h"
 
 G_BEGIN_DECLS
+
+/*
+ * Forward declaration for the zones
+ */
+typedef struct _MnbSwitcherZone MnbSwitcherZone;
 
 #define MNB_TYPE_SWITCHER mnb_switcher_get_type()
 
@@ -63,18 +68,31 @@ GType mnb_switcher_get_type (void);
 
 NbtkWidget* mnb_switcher_new (MutterPlugin *plugin);
 
-void mnb_switcher_select_window (MnbSwitcher *switcher, MetaWindow *meta_win);
-void mnb_switcher_activate_selection (MnbSwitcher *switcher, gboolean close,
-                                      guint timestamp);
-MetaWindow *mnb_switcher_get_selection (MnbSwitcher *switcher);
-MetaWindow *mnb_switcher_get_next_window (MnbSwitcher *switcher,
-                                          MetaWindow  *current,
-                                          gboolean     backward);
-
 void        mnb_switcher_meta_window_focus_cb (MetaWindow *mw, gpointer data);
 void        mnb_switcher_meta_window_weak_ref_cb (gpointer data, GObject *mw);
 
+/*
+ * Xevent hook for the alt+tab code
+ */
 gboolean    mnb_switcher_handle_xevent (MnbSwitcher *switcher, XEvent *xev);
+
+/*
+ * These are for the subcomponents
+ */
+gboolean    mnb_switcher_get_dnd_in_progress (MnbSwitcher *switcher);
+void        mnb_switcher_dnd_started  (MnbSwitcher     *switcher,
+                                       MnbSwitcherZone *zone);
+void        mnb_switcher_dnd_ended    (MnbSwitcher     *switcher,
+                                       MnbSwitcherZone *zone);
+void        mnb_switcher_hide_tooltip (MnbSwitcher *switcher);
+void        mnb_switcher_show_tooltip (MnbSwitcher *switcher,
+                                       NbtkTooltip *tooltip);
+
+gboolean    mnb_switcher_is_constructing (MnbSwitcher *switcher);
+
+ClutterActor *mnb_switcher_append_app_zone (MnbSwitcher *switcher, gint index);
+
+void        mnb_switcher_end_kbd_grab (MnbSwitcher *switcher);
 
 G_END_DECLS
 

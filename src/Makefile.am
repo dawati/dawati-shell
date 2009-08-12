@@ -1,4 +1,4 @@
-SUBDIRS=tray effects
+SUBDIRS=tray effects switcher
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
@@ -23,8 +23,6 @@ moblin_netbook_la_SOURCES  = \
 				$(MARSHALS)                     \
 				mnb-drop-down.h                 \
 				mnb-drop-down.c                 \
-				mnb-switcher.c                  \
-				mnb-switcher.h                  \
 				mnb-notification.c              \
 				mnb-notification.h              \
 				mnb-notification-cluster.c      \
@@ -61,7 +59,8 @@ MARSHALS = marshal.c marshal.h
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				tray/libtray.la 	\
-				effects/libeffects.la
+				effects/libeffects.la	\
+				switcher/libswitcher.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 

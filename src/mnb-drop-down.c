@@ -572,20 +572,19 @@ mnb_drop_down_set_child (MnbDropDown *drop_down,
         }
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (drop_down),
-                                      drop_down->priv->child);
+                                      priv->child);
     }
 
   if (child)
     {
-      drop_down->priv->reparent_cb =
+      priv->reparent_cb =
         g_signal_connect (child, "parent-set",
                           G_CALLBACK (mnb_drop_down_reparent_cb),
                           drop_down);
       nbtk_table_add_actor (NBTK_TABLE (drop_down), child, 0, 0);
     }
 
-  drop_down->priv->child = child;
-
+  priv->child = child;
 }
 
 ClutterActor*

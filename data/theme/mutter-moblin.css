@@ -242,32 +242,32 @@ MnbSwitcher *#workspace-title-new-symbol-disabled {
   color: white;
 }
 
-MnbSwitcherZone.switcher-workspace {
+NbtkTable.switcher-workspace {
   border-image: url("file://switcher/workspace-background.png") 4;
   padding: 5;
 }
 
-MnbSwitcherZone#switcher-workspace-active {
+NbtkTable#switcher-workspace-active {
   border-image: url("file://switcher/workspace-background-active.png") 4;
   padding: 5;
 }
 
-MnbSwitcherZone.switcher-workspace-new {
+NbtkTable.switcher-workspace-new {
   border-image: url("file://switcher/workspace-background-new.png") 4;
   padding: 5;
 }
 
-MnbSwitcherZone#switcher-workspace-new-active {
+NbtkTable#switcher-workspace-new-active {
   border-image: url("file://switcher/workspace-background-new-active.png") 4;
   padding: 5;
 }
 
-MnbSwitcherZone#switcher-workspace-new-over {
+NbtkTable#switcher-workspace-new-over {
   border-image: url("file://switcher/workspace-background-new-over.png") 4;
   padding: 5;
 }
 
-MnbSwitcherZone#switcher-workspace-new-disabled {
+NbtkTable#switcher-workspace-new-disabled {
   border-image: url("file://switcher/workspace-background-new-disabled.png") 4;
   padding: 5;
 }

@@ -42,7 +42,7 @@
 #include "mnb-toolbar.h"
 #include "mnb-toolbar-button.h"
 #include "mnb-drop-down.h"
-#include "mnb-switcher.h"
+#include "switcher/mnb-switcher.h"
 
 /* For systray windows stuff */
 #include <gdk/gdkx.h>
@@ -2492,7 +2492,7 @@ mnb_toolbar_panels_showing (MnbToolbar *toolbar)
     {
       MnbPanel *panel = (MnbPanel*)priv->panels[i];
 
-      if (!panel || !MNB_IS_PANEL (panel))
+      if (!panel)
         continue;
 
       if (CLUTTER_ACTOR_IS_MAPPED (panel))

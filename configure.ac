@@ -146,6 +146,7 @@ data/Makefile
 src/Makefile
 src/tray/Makefile
 src/effects/Makefile
+src/switcher/Makefile
 po/Makefile.in
 tests/Makefile
 libmoblin-panel/Makefile

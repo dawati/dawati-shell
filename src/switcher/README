@@ -1,0 +1,62 @@
+
+Zones Panel, aka 'Switcher'
+***************************
+
+The switcher panel is designed in a way that is mean to make it exentisble. It
+consists of three fundamental object types, MnbSwitcher, MnbSwitcherZone, and
+MnbSwitcherItem.
+
+MnbSwitcher
+===========
+A subclass of MnbDropDown which holds the switcher together. Its contents are
+constructed and destroyed during the show() and hide() operations. The switcher
+provides the machinery for manipulating its contents via the keyboard.
+Internaly, the Switcher content area is 1-row table, each column holding a
+single zone.
+
+MnbSwitcherZone
+===============
+And abstract class that represents a single Zone in the Switcher. This
+encapsulates a label area at the top, with customizable text, and content area,
+where any items belonging to the zone are located. The content area is an
+object of type NbtkTable, and is exposed for subclasses to manipulate its
+contents.
+
+The class also provides a number of vfunctions and construction properties that
+allow subclasses to customize the zone appearance, and the switcher to navigate
+and manipulate the zone contents.
+
+Currently there are two concrete MnbSwitcherZone subclasses: MnbSwitcherZoneApps
+represents an a workspace on the desktop, and MnbSwitcherZoneNew represents the
+zone that is used to create new workspaces via drag & drop.
+
+Conceptually, the zones fall into three categories:
+
+  a. Zones that contain items; these items are individually navigated in the
+     Switcher (e.g., when pressing Alt+Tab). The MnbSwitcherZoneApps is of this
+     type.
+
+  b. Zones thar do not contain items but are pageable, i.e., they should be
+     treated by the Switcher as a single selectable item when navigating the
+     Switcher. There currently is no zone of this type, but the planed
+     MnbSwitcherZoneMyzone object is likely to be of this type.
+
+  c. Zones that contain neither items, nor are pageable; these are displayed in
+     the swticher but skipped over when naviagting the switcher. The
+     MnbSwitcherZoneNew zone is of this type.
+
+Specific zones can change type dynamically by manipulating the "pageable" and
+"has-items" properties. For example the MnbSwitcherZoneApps is normally of type
+(a) but if it happens to be empty, it becomes type (c).
+
+MnbSwitcherItem
+===============
+And abstract class representing an intem in a zone, the concrete implementations
+of which are tied closely to specific MnbSwitcherZone classes. The base class
+provides API and set of vfunctions that allow the Switcher to navigate and
+manipulate the items (e.g., select, activate), and any subclasses to provide
+custom styling.
+
+Currently there is only one concrete subclass, MnbSwitcherApp, representing a
+window on the desktop within the MnbSwitcherZone. It implements the logic for
+activating windows, as well as the NbtkDraggable interface.
