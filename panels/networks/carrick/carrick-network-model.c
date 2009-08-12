@@ -33,102 +33,29 @@ G_DEFINE_TYPE (CarrickNetworkModel, carrick_network_model, GTK_TYPE_LIST_STORE)
 struct _CarrickNetworkModelPrivate
 {
   DBusGConnection *connection;
-  DBusGProxy *manager;
   GList *services;
 };
 
-enum
-{
-  PROP_0,
-  PROP_MANAGER,
-};
-
-enum
-{
-  SIGNAL_LOADED,
-  NUM_SIGNALS
-};
-
-static guint signals[NUM_SIGNALS];
-
 /* forward declaration of private methods */
 static gint network_model_sort_cb (GtkTreeModel *self, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data);
-
-static void network_model_set_manager (CarrickNetworkModel *self, DBusGProxy *manager);
-
-static void
-carrick_network_model_get_property (GObject    *object,
-				    guint       property_id,
-                                    GValue     *value,
-				    GParamSpec *pspec)
-{
-  CarrickNetworkModel *self = (CarrickNetworkModel *)object;
-  CarrickNetworkModelPrivate *priv = self->priv;
-
-  switch (property_id)
-  {
-  case PROP_MANAGER:
-    g_value_set_object (value,
-			priv->manager);
-    break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
-
-static void
-carrick_network_model_set_property (GObject      *object,
-				    guint         property_id,
-				    const GValue *value,
-				    GParamSpec   *pspec)
-{
-  CarrickNetworkModel *self = (CarrickNetworkModel *)object;
-
-  switch (property_id)
-  {
-  case PROP_MANAGER:
-    network_model_set_manager (self,
-			       DBUS_G_PROXY (g_value_get_object (value)));
-    break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
+static void network_model_manager_changed_cb (DBusGProxy *service, const gchar *property, GValue *value, gpointer user_data);
+static void network_model_manager_get_properties_cb (DBusGProxy *service, DBusGProxyCall *call, gpointer user_data);
 
 static void
 carrick_network_model_class_init (CarrickNetworkModelClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
   g_type_class_add_private (klass, sizeof (CarrickNetworkModelPrivate));
-
-  object_class->get_property = carrick_network_model_get_property;
-  object_class->set_property = carrick_network_model_set_property;
-
-  g_object_class_install_property (object_class,
-                                   PROP_MANAGER,
-                                   g_param_spec_object ("manager",
-                                                        "manager",
-                                                        "Proxy to the manager",
-                                                        G_TYPE_OBJECT,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
-
-  signals[SIGNAL_LOADED] = g_signal_new ("loaded",
-                                         G_TYPE_FROM_CLASS (klass),
-                                         G_SIGNAL_RUN_FIRST,
-                                         0, NULL, NULL,
-                                         g_cclosure_marshal_VOID__VOID,
-                                         G_TYPE_NONE, 0);
 }
 
 static void
 carrick_network_model_init (CarrickNetworkModel *self)
 {
   GError *error = NULL;
+  DBusGProxy *manager;
+  DBusGProxyCall *call;
+
   self->priv = NETWORK_MODEL_PRIVATE (self);
   self->priv->services = NULL;
-  self->priv->manager = NULL;
   self->priv->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
   if (error)
   {
@@ -137,6 +64,30 @@ carrick_network_model_init (CarrickNetworkModel *self)
     g_clear_error (&error);
     /* FIXME: Do better? */
   }
+
+  manager = dbus_g_proxy_new_for_name (self->priv->connection,
+                                       CONNMAN_SERVICE,
+                                       CONNMAN_MANAGER_PATH,
+                                       CONNMAN_MANAGER_INTERFACE);
+
+  dbus_g_proxy_add_signal (manager,
+                           "PropertyChanged",
+                           G_TYPE_STRING,
+                           G_TYPE_VALUE,
+                           G_TYPE_INVALID);
+
+  dbus_g_proxy_connect_signal (manager,
+                               "PropertyChanged",
+                               G_CALLBACK (network_model_manager_changed_cb),
+                               self,
+                               NULL);
+
+  call = dbus_g_proxy_begin_call (manager,
+                                  "GetProperties",
+                                  network_model_manager_get_properties_cb,
+                                  self,
+                                  NULL,
+                                  G_TYPE_INVALID);
 
   const GType column_types[] = { G_TYPE_OBJECT, /* proxy */
                                  G_TYPE_UINT, /* index */
@@ -341,9 +292,9 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 
 static void
 network_model_service_changed_cb (DBusGProxy  *service,
-				  const gchar *property,
-				  GValue      *value,
-				  gpointer     user_data)
+                                  const gchar *property,
+                                  GValue      *value,
+                                  gpointer     user_data)
 {
   CarrickNetworkModel *self  = user_data;
   GtkListStore *store = GTK_LIST_STORE (self);
@@ -436,9 +387,9 @@ network_model_update_property (const gchar *property,
       /* if we don't have the service in the model, add it*/
       if (network_model_have_service_by_path (store, &iter, path) == FALSE)
       {
-	service = dbus_g_proxy_new_for_name (priv->connection,
-					     CONNMAN_SERVICE, path,
-					     CONNMAN_SERVICE_INTERFACE);
+        service = dbus_g_proxy_new_for_name (priv->connection,
+                                             CONNMAN_SERVICE, path,
+                                             CONNMAN_SERVICE_INTERFACE);
 
         gtk_list_store_insert_with_values (store, &iter, -1,
                                            CARRICK_COLUMN_PROXY, service,
@@ -551,59 +502,13 @@ network_model_manager_get_properties_cb (DBusGProxy     *manager,
   g_hash_table_unref (properties);
 }
 
-static void
-network_model_set_manager (CarrickNetworkModel *self,
-                           DBusGProxy          *manager)
-{
-  CarrickNetworkModelPrivate *priv = self->priv;
-  DBusGProxyCall *call;
-
-  if (priv->manager)
-  {
-    dbus_g_proxy_disconnect_signal (priv->manager,
-                                    "PropertyChanged",
-                                    G_CALLBACK
-                                    (network_model_manager_changed_cb),
-                                    self);
-    g_object_unref (priv->manager);
-    priv->manager = NULL;
-  }
-
-  if (manager)
-  {
-    priv->manager = g_object_ref (manager);
-
-    /* Connect to the Manager interface */
-    dbus_g_proxy_add_signal (priv->manager,
-                             "PropertyChanged",
-                             G_TYPE_STRING,
-                             G_TYPE_VALUE,
-                             G_TYPE_INVALID);
-
-    dbus_g_proxy_connect_signal (priv->manager,
-                                 "PropertyChanged",
-                                 G_CALLBACK (network_model_manager_changed_cb),
-                                 self,
-                                 NULL);
-
-    call = dbus_g_proxy_begin_call (priv->manager,
-                                    "GetProperties",
-                                    network_model_manager_get_properties_cb,
-                                    self,
-                                    NULL,
-                                    G_TYPE_INVALID);
-  }
-}
-
 /*
  * Public methods
  */
 
 GtkTreeModel *
-carrick_network_model_new (DBusGProxy *manager)
+carrick_network_model_new (void)
 {
   return g_object_new (CARRICK_TYPE_NETWORK_MODEL,
-		       "manager",
-                       manager,
                        NULL);
 }

@@ -86,7 +86,7 @@ struct _CarrickNetworkModelClass
 
 GType carrick_network_model_get_type (void);
 
-GtkTreeModel* carrick_network_model_new (DBusGProxy *manager);
+GtkTreeModel* carrick_network_model_new (void);
 
 G_END_DECLS
 
