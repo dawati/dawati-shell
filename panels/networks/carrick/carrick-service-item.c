@@ -622,8 +622,9 @@ carrick_service_item_set_draggable (CarrickServiceItem *item,
   priv->draggable = draggable;
 }
 
-void carrick_service_item_set_active (CarrickServiceItem *item,
-                                      gboolean active)
+void
+carrick_service_item_set_active (CarrickServiceItem *item,
+                                 gboolean active)
 {
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (item));
 
@@ -683,6 +684,13 @@ _set_path (CarrickServiceItem *self,
     _populate_variables (self);
     _set_state (self);
   }
+}
+
+void
+carrick_service_item_update (CarrickServiceItem *self)
+{
+  _populate_variables (self);
+  _set_state (self);
 }
 
 static void

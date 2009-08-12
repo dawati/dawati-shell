@@ -72,10 +72,12 @@ gboolean carrick_service_item_get_draggable (CarrickServiceItem *item);
 DBusGProxy* carrick_service_item_get_proxy (CarrickServiceItem *item);
 GtkTreePath* carrick_service_item_get_tree_path (CarrickServiceItem *item);
 
+void carrick_service_item_update (CarrickServiceItem *self);
+
 GtkWidget* carrick_service_item_new (CarrickIconFactory *icon_factory,
                                      CarrickNotificationManager *notifications,
-				     CarrickNetworkModel *model,
-				     GtkTreePath *path);
+                                     CarrickNetworkModel *model,
+                                     GtkTreePath *path);
 
 G_END_DECLS
 
