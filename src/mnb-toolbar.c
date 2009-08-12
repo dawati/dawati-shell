@@ -35,6 +35,7 @@
 #include <dbus/dbus.h>
 #include <gconf/gconf-client.h>
 #include <moblin-panel/mpl-panel-common.h>
+#include <display.h>
 
 #include "moblin-netbook.h"
 
@@ -2177,6 +2178,7 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
   MnbToolbarPrivate      *priv     = map_data->toolbar->priv;
   MutterPlugin           *plugin   = priv->plugin;
   MutterWindow           *mcw      = map_data->mcw;
+  MetaDisplay            *display;
   gfloat                  x, y, w, h;
   gint                    screen_width, screen_height;
   Window                  xid;
@@ -2199,12 +2201,16 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
 
   xid = mutter_window_get_x_window (mcw);
 
-  XRaiseWindow (GDK_DISPLAY(),
-                xid);
-  XSetInputFocus (GDK_DISPLAY(),
-                  xid,
-                  RevertToPointerRoot,
-                  CurrentTime);
+  display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+
+  gdk_error_trap_push ();
+
+  XRaiseWindow (meta_display_get_xdisplay (display), xid);
+  XSetInputFocus (meta_display_get_xdisplay (display), xid,
+                  RevertToPointerRoot, CurrentTime);
+
+  gdk_flush ();
+  gdk_error_trap_pop ();
 
   /* Notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);

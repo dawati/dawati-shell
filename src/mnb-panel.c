@@ -35,6 +35,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <moblin-panel/mpl-panel-common.h>
+#include <display.h>
 
 G_DEFINE_TYPE (MnbPanel, mnb_panel, MNB_TYPE_DROP_DOWN)
 
@@ -144,14 +145,35 @@ mnb_panel_set_property (GObject *object, guint property_id,
     }
 }
 
+static void
+mnb_panel_raise_focus_child (MnbPanel *panel)
+{
+  MetaDisplay *display;
+  MutterPlugin *plugin = NULL;
+
+  g_object_get (G_OBJECT (panel), "mutter-plugin", &plugin, NULL);
+  if (!plugin)
+        return;
+
+  display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+
+  gdk_error_trap_push ();
+
+  XRaiseWindow (meta_display_get_xdisplay (display), panel->priv->xid);
+
+  XSetInputFocus (meta_display_get_xdisplay (display), panel->priv->child_xid,
+                  RevertToPointerRoot, CurrentTime);
+
+  gdk_flush ();
+  gdk_error_trap_pop ();
+}
+
 /*
  * Callbacks for the request signals exposed by the panels.
  */
 static void
 mnb_panel_request_focus_cb (DBusGProxy *proxy, MnbPanel *panel)
 {
-  MnbPanelPrivate *priv;
-
   if (!CLUTTER_ACTOR_IS_MAPPED (panel))
     {
       g_warning ("Panel %s requested focus while not visible !!!",
@@ -159,15 +181,7 @@ mnb_panel_request_focus_cb (DBusGProxy *proxy, MnbPanel *panel)
       return;
     }
 
-  priv = panel->priv;
-
-  XRaiseWindow (GDK_DISPLAY(),
-                priv->xid);
-
-  XSetInputFocus (GDK_DISPLAY(),
-                  priv->child_xid,
-                  RevertToPointerRoot,
-                  CurrentTime);
+  mnb_panel_raise_focus_child (panel);
 }
 
 static void
@@ -464,13 +478,7 @@ mnb_panel_show_completed (MnbDropDown *self)
 
   gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
 
-  XRaiseWindow (GDK_DISPLAY(),
-                priv->xid);
-
-  XSetInputFocus (GDK_DISPLAY(),
-                  priv->child_xid,
-                  RevertToPointerRoot,
-                  CurrentTime);
+  mnb_panel_raise_focus_child (MNB_PANEL (self));
 
   org_moblin_UX_Shell_Panel_show_end_async (priv->proxy,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);

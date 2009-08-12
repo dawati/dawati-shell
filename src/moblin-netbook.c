@@ -1566,13 +1566,28 @@ moblin_netbook_unfocus_stage (MutterPlugin *plugin, guint32 timestamp)
     meta_display_set_input_focus_window (display, focus, FALSE, timestamp);
 }
 
+static void
+focus_xwin (MutterPlugin *plugin, guint xid)
+{
+  MetaDisplay *display;
+
+  display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+
+  gdk_error_trap_push ();
+
+  XSetInputFocus (meta_display_get_xdisplay (display), xid,
+                  RevertToPointerRoot, CurrentTime);
+
+  gdk_flush ();
+  gdk_error_trap_pop ();
+}
+
 void
 moblin_netbook_focus_stage (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
 
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
@@ -1593,10 +1608,7 @@ moblin_netbook_focus_stage (MutterPlugin *plugin, guint32 timestamp)
 
   priv->holding_focus = TRUE;
 
-  XSetInputFocus (xdpy,
-                  priv->focus_xwin,
-                  RevertToPointerRoot,
-                  timestamp);
+  focus_xwin (plugin, priv->focus_xwin);
 }
 
 static gboolean
@@ -1789,7 +1801,6 @@ moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   MetaWindow                 *mutter_last_focused;
 
   if (timestamp == CurrentTime)
@@ -1813,10 +1824,7 @@ moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
                          last_focus_weak_notify_cb, plugin);
     }
 
-  XSetInputFocus (xdpy,
-                  priv->focus_xwin,
-                  RevertToPointerRoot,
-                  timestamp);
+  focus_xwin (plugin, priv->focus_xwin);
 }
 
 void
