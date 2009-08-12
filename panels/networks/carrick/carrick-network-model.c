@@ -83,7 +83,6 @@ carrick_network_model_set_property (GObject      *object,
 				    GParamSpec   *pspec)
 {
   CarrickNetworkModel *self = (CarrickNetworkModel *)object;
-  CarrickNetworkModelPrivate *priv = self->priv;
 
   switch (property_id)
   {
