@@ -17,7 +17,6 @@ m4_define([lt_revision], [plugin_interface_age])
 m4_define([lt_age], [m4_eval(plugin_binary_age - plugin_interface_age)])
 
 # defaults
-m4_define([default_enable_netpanel], [no])
 m4_define([default_enable_status],   [yes])
 m4_define([default_enable_people],   [yes])
 m4_define([default_enable_ahoghill], [no])
@@ -98,30 +97,6 @@ if test x"$scale_background" = xyes; then
 	AC_DEFINE(USE_SCALED_BACKGROUND, 1, [Use scaled background])
 fi
 
-# Netpanel
-AC_ARG_ENABLE([netpanel],
-              [AC_HELP_STRING([--enable-netpanel],
-                              [Enable building of the internet panel])],
-              [],
-              [enable_netpanel=default_enable_netpanel])
-
-AS_IF([test "x$enable_netpanel" = "xyes"],
-      [
-        AC_DEFINE(WITH_NETPANEL, [1], [Defined when building the net panel])
-
-	PKG_CHECK_MODULES(NETPANEL, gtk+-2.0 nbtk-1.0 clutter-mozembed-0.10 mhs-1.0)
-
-NETPANEL_CFLAGS="${NETPANEL_CFLAGS} "\
-'-I$(top_srcdir)/libmoblin-panel '
-AC_SUBST([NETPANEL_CFLAGS])
-NETPANEL_LIBS="${NETPANEL_LIBS} "\
-'$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la '
-AC_SUBST([NETPANEL_LIBS])
-      ]
-)
-
-AM_CONDITIONAL(WITH_NETPANEL, test x"$enable_netpanel" = xyes)
-
 AC_ARG_ENABLE([cache],
               [AC_HELP_STRING([--enable-cache],
                               [Enable Nbtk image cache generation])],
@@ -176,9 +151,6 @@ src/tray/Makefile
 src/effects/Makefile
 po/Makefile.in
 tests/Makefile
-netpanel/Makefile
-netpanel/src/Makefile
-netpanel/theme/Makefile
 libmoblin-panel/Makefile
 libmoblin-panel/moblin-panel.pc
 libmoblin-panel/moblin-panel/Makefile
@@ -200,7 +172,6 @@ echo "
 
             Status           :    ${enable_status}
             Media            :    ${enable_ahoghill}
-            Internet         :    ${enable_netpanel}
             People           :    ${enable_people}
 
         Type make to build the plugin.

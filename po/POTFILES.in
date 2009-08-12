@@ -1,8 +1,5 @@
 # List of source files containing translatable strings.
 libmoblin-panel/moblin-panel/mpl-utils.c
-netpanel/src/moblin-netbook-netpanel.c
-netpanel/src/moblin-panel-internet.c
-netpanel/src/mwb-ac-list.c
 src/moblin-netbook.c
 src/tray/na-tray-child.c
 src/mnb-notification.c
