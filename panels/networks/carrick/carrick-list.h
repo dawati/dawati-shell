@@ -24,7 +24,6 @@
 #define _CARRICK_LIST_H
 
 #include <gtk/gtk.h>
-#include <gconnman/gconnman.h>
 
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
@@ -69,11 +68,11 @@ void carrick_list_set_fallback (CarrickList *list, const gchar *fallback);
 
 void carrick_list_set_all_inactive (CarrickList *list);
 
-void carrick_list_set_icon_factory (CarrickList *list, 
+void carrick_list_set_icon_factory (CarrickList *list,
                                     CarrickIconFactory *icon_factory);
 CarrickIconFactory *carrick_list_get_icon_factory (CarrickList *list);
 
-void carrick_list_set_notification_manager (CarrickList *list, 
+void carrick_list_set_notification_manager (CarrickList *list,
                                      CarrickNotificationManager *notification_manager);
 CarrickNotificationManager *carrick_list_get_notification_manager (CarrickList *list);
 
