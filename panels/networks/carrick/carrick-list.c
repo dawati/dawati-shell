@@ -307,12 +307,17 @@ _list_contains_child (GtkWidget *item,
 {
   CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
   DBusGProxy *proxy = carrick_service_item_get_proxy (service_item);
-  const gchar *path = dbus_g_proxy_get_path (proxy);
+  const gchar *path;
   const gchar *data_path = dbus_g_proxy_get_path (data->service);
 
-  if (g_str_equal (data_path, path))
+  if (proxy)
   {
-    data->widget = item;
+    path = dbus_g_proxy_get_path (proxy);
+
+    if (g_str_equal (data_path, path))
+    {
+      data->widget = item;
+    }
   }
 }
 
