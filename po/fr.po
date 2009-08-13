@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
+"POT-Creation-Date: 2009-07-30 17:11+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -98,6 +98,65 @@ msgstr "Applications"
 msgid "applications"
 msgstr "applications"
 
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+msgid "Less than a minute ago"
+msgstr "Il y a moins d'une minute"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+msgid "A few minutes ago"
+msgstr "Il y a quelques minutes"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+msgid "A couple of hours ago"
+msgstr "Il y a quelques heures"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+msgid "Earlier today"
+msgstr "Un peu plus tôt aujourd'hui"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+msgid "Yesterday"
+msgstr "Hier"
+
+# "On Tuesday" would be "Mardi" only in French.
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#, c-format
+msgid "On %A"
+msgstr "%A"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+msgid "Last week"
+msgstr "La semaine dernière"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+msgid "A couple of weeks ago"
+msgstr "Il y a quelques semaines"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+msgid "This month"
+msgstr "Ce mois"
+
+#. Now Jan., last used in Dec.
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+msgid "Last month"
+msgstr "Le mois dernier"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+msgid "This year"
+msgstr "Cette année"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+msgid "Last year"
+msgstr "L'année dernière"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+msgid "Ages ago"
+msgstr "Ça fait un bail"
+
 #: ../netpanel/src/moblin-netbook-netpanel.c:588
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Lorsque vous visitez des pages web, vos pages favorites apparaissent ici et sur la page Nouvel onglet du navigateur."
@@ -143,15 +202,15 @@ msgstr "Chercher %%s dans %s"
 msgid "Go to %s"
 msgstr "Aller sur %s"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/mnb-clipboard-item.c:248
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "Copier"
 
 # Is there a concatenation here?
 # This is displayed next to the "Copy" button.
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "la sélection actuelle vers la table de montage"
 
@@ -167,11 +226,11 @@ msgstr "Table de montage"
 msgid "You need to copy some text to use Pasteboard"
 msgstr "Vous devez copier du texte pour utiliser la table de montage"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "Effacer la table de montage"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "table de montage"
 
@@ -187,12 +246,12 @@ msgstr "Pas d'entrée dans votre calendrier pour cette semaine "
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "Les flux et services Web de vos amis vont apparaître ici. Activez vos comptes dès maintenant !"
 
-#: ../penge/penge/penge-recent-files-pane.c:201
+#: ../penge/penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Moblin 2.0 pour Netbooks vous souhaite la bienvenue</b>"
 
-#: ../penge/penge/penge-recent-files-pane.c:226
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
+#: ../penge/penge/penge-recent-files-pane.c:227
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 msgstr "Comme Moblin est différent de ce que vous avez connu jusqu'à présent, nous avons compilé quelques conseils et exemples pour vous aider à vous y retrouver. Amusez-vous à le découvrir... Le Team Moblin."
 
 #: ../penge/penge/penge-recent-file-tile.c:218
@@ -208,79 +267,6 @@ msgstr "Rien à faire aujourd'hui"
 #, c-format
 msgid "Due %x"
 msgstr "Dû %x"
-
-#: ../penge/penge/penge-utils.c:63
-#: ../status/src/mnb-web-status-entry.c:106
-msgid "Less than a minute ago"
-msgstr "Il y a moins d'une minute"
-
-#: ../penge/penge/penge-utils.c:67
-#: ../status/src/mnb-web-status-entry.c:110
-msgid "A few minutes ago"
-msgstr "Il y a quelques minutes"
-
-#: ../penge/penge/penge-utils.c:71
-#: ../status/src/mnb-web-status-entry.c:114
-msgid "A couple of hours ago"
-msgstr "Il y a quelques heures"
-
-#: ../penge/penge/penge-utils.c:78
-#: ../status/src/mnb-web-status-entry.c:121
-msgid "Earlier today"
-msgstr "Un peu plus tôt aujourd'hui"
-
-#: ../penge/penge/penge-utils.c:81
-#: ../status/src/mnb-web-status-entry.c:124
-msgid "Yesterday"
-msgstr "Hier"
-
-# "On Tuesday" would be "Mardi" only in French.
-#: ../penge/penge/penge-utils.c:89
-#: ../status/src/mnb-web-status-entry.c:132
-#, c-format
-msgid "On %A"
-msgstr "%A"
-
-#: ../penge/penge/penge-utils.c:95
-#: ../status/src/mnb-web-status-entry.c:138
-msgid "Unknown"
-msgstr "Inconnu"
-
-#: ../penge/penge/penge-utils.c:102
-#: ../status/src/mnb-web-status-entry.c:145
-msgid "Last week"
-msgstr "La semaine dernière"
-
-#: ../penge/penge/penge-utils.c:105
-#: ../status/src/mnb-web-status-entry.c:148
-msgid "A couple of weeks ago"
-msgstr "Il y a quelques semaines"
-
-#: ../penge/penge/penge-utils.c:111
-#: ../status/src/mnb-web-status-entry.c:154
-msgid "This month"
-msgstr "Ce mois"
-
-#. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:115
-#: ../status/src/mnb-web-status-entry.c:158
-msgid "Last month"
-msgstr "Le mois dernier"
-
-#: ../penge/penge/penge-utils.c:118
-#: ../status/src/mnb-web-status-entry.c:161
-msgid "This year"
-msgstr "Cette année"
-
-#: ../penge/penge/penge-utils.c:121
-#: ../status/src/mnb-web-status-entry.c:164
-msgid "Last year"
-msgstr "L'année dernière"
-
-#: ../penge/penge/penge-utils.c:123
-#: ../status/src/mnb-web-status-entry.c:166
-msgid "Ages ago"
-msgstr "Ça fait un bail"
 
 #: ../people/src/moblin-panel-people.c:69
 msgid "people"
@@ -440,24 +426,24 @@ msgstr "Changer"
 msgid "Unknown account"
 msgstr "Compte inconnu"
 
-#: ../status/src/mnb-web-status-entry.c:178
-#: ../status/src/mnb-web-status-entry.c:731
-#: ../status/src/mnb-web-status-entry.c:812
+#: ../status/src/mnb-web-status-entry.c:86
+#: ../status/src/mnb-web-status-entry.c:639
+#: ../status/src/mnb-web-status-entry.c:720
 msgid "Edit"
 msgstr "Éditer"
 
 #. Translators: %s is the user visible name of the service
-#: ../status/src/mnb-web-status-entry.c:605
+#: ../status/src/mnb-web-status-entry.c:513
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "Saisissez votre statut pour %s ici..."
 
-#: ../status/src/mnb-web-status-entry.c:609
-#: ../status/src/mnb-web-status-entry.c:682
+#: ../status/src/mnb-web-status-entry.c:517
+#: ../status/src/mnb-web-status-entry.c:590
 msgid "Enter your current status here..."
 msgstr "Saisissez votre statut actuel ici..."
 
-#: ../status/src/mnb-web-status-entry.c:791
+#: ../status/src/mnb-web-status-entry.c:699
 msgid "Post"
 msgstr "Code postal"
 

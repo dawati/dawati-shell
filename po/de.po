@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 15:29+0000\n"
+"POT-Creation-Date: 2009-07-30 17:11+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSDEU_Andreas <andreasx.machoy@intel.com>\n"
 "Language-Team: \n"
@@ -98,6 +98,64 @@ msgstr "Anwendungen"
 msgid "applications"
 msgstr "Anwendungen"
 
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+msgid "Less than a minute ago"
+msgstr "Vor weniger als einer Minute"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+msgid "A few minutes ago"
+msgstr "Vor einigen Minuten"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+msgid "A couple of hours ago"
+msgstr "Vor ein paar Stunden"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+msgid "Earlier today"
+msgstr "Heute schon früher"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+msgid "Yesterday"
+msgstr "Gestern"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#, c-format
+msgid "On %A"
+msgstr "Am %A"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+msgid "Last week"
+msgstr "Letzte Woche"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+msgid "A couple of weeks ago"
+msgstr "Vor einigen Wochen"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+msgid "This month"
+msgstr "Diesen Monat"
+
+#. Now Jan., last used in Dec.
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+msgid "Last month"
+msgstr "Letzten Monat"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+msgid "This year"
+msgstr "Dieses Jahr"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+msgid "Last year"
+msgstr "Letztes Jahr"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+msgid "Ages ago"
+msgstr "Vor einer Ewigkeit"
+
 # not 100% sure about the "New tab page" thing
 #: ../netpanel/src/moblin-netbook-netpanel.c:588
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
@@ -145,13 +203,13 @@ msgid "Go to %s"
 msgstr "Gehe zu %s"
 
 # assuming this is the text in the button...
-#: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/moblin-panel-pasteboard.c:339
+#: ../pasteboard/src/mnb-clipboard-item.c:248
+#: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "Kopiere"
 
 #: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:354
+#: ../pasteboard/src/moblin-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "den ausgewählten Text in die Zwischenablage"
 
@@ -167,11 +225,11 @@ msgstr "Zwischenablage"
 msgid "You need to copy some text to use Pasteboard"
 msgstr "Um die Zwischenablage zu benutzen, musst du erst Text kopieren"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:311
+#: ../pasteboard/src/moblin-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "Zwischenablage leeren"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:443
+#: ../pasteboard/src/moblin-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "Zwischenablage"
 
@@ -188,13 +246,13 @@ msgstr "Keine Termine diese Woche"
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "Die Newsfeeds deiner Freunde und Web-Services erscheinen hier. Aktiviere jetzt deine Konten!"
 
-#: ../penge/penge/penge-recent-files-pane.c:201
+#: ../penge/penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Willkommen bei Moblin 2.0 für Netbooks</b>"
 
-#: ../penge/penge/penge-recent-files-pane.c:226
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around this Beta Release. We hope you enjoy it, The Moblin Team."
-msgstr "Da Moblin ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich mit dieser Beta-Version zurechtzufinden. Wir hoffen, es gefällt dir. Das Moblin Team."
+#: ../penge/penge/penge-recent-files-pane.c:227
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Da Moblin ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich zurechtzufinden. Wir hoffen, es gefällt dir. Das Moblin Team."
 
 #: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -208,78 +266,6 @@ msgstr "Heute gibt es nichts zu tun"
 #, c-format
 msgid "Due %x"
 msgstr "Fällig %x"
-
-#: ../penge/penge/penge-utils.c:63
-#: ../status/src/mnb-web-status-entry.c:106
-msgid "Less than a minute ago"
-msgstr "Vor weniger als einer Minute"
-
-#: ../penge/penge/penge-utils.c:67
-#: ../status/src/mnb-web-status-entry.c:110
-msgid "A few minutes ago"
-msgstr "Vor einigen Minuten"
-
-#: ../penge/penge/penge-utils.c:71
-#: ../status/src/mnb-web-status-entry.c:114
-msgid "A couple of hours ago"
-msgstr "Vor ein paar Stunden"
-
-#: ../penge/penge/penge-utils.c:78
-#: ../status/src/mnb-web-status-entry.c:121
-msgid "Earlier today"
-msgstr "Heute schon früher"
-
-#: ../penge/penge/penge-utils.c:81
-#: ../status/src/mnb-web-status-entry.c:124
-msgid "Yesterday"
-msgstr "Gestern"
-
-#: ../penge/penge/penge-utils.c:89
-#: ../status/src/mnb-web-status-entry.c:132
-#, c-format
-msgid "On %A"
-msgstr "Am %A"
-
-#: ../penge/penge/penge-utils.c:95
-#: ../status/src/mnb-web-status-entry.c:138
-msgid "Unknown"
-msgstr "Unbekannt"
-
-#: ../penge/penge/penge-utils.c:102
-#: ../status/src/mnb-web-status-entry.c:145
-msgid "Last week"
-msgstr "Letzte Woche"
-
-#: ../penge/penge/penge-utils.c:105
-#: ../status/src/mnb-web-status-entry.c:148
-msgid "A couple of weeks ago"
-msgstr "Vor einigen Wochen"
-
-#: ../penge/penge/penge-utils.c:111
-#: ../status/src/mnb-web-status-entry.c:154
-msgid "This month"
-msgstr "Diesen Monat"
-
-#. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:115
-#: ../status/src/mnb-web-status-entry.c:158
-msgid "Last month"
-msgstr "Letzten Monat"
-
-#: ../penge/penge/penge-utils.c:118
-#: ../status/src/mnb-web-status-entry.c:161
-msgid "This year"
-msgstr "Dieses Jahr"
-
-#: ../penge/penge/penge-utils.c:121
-#: ../status/src/mnb-web-status-entry.c:164
-msgid "Last year"
-msgstr "Letztes Jahr"
-
-#: ../penge/penge/penge-utils.c:123
-#: ../status/src/mnb-web-status-entry.c:166
-msgid "Ages ago"
-msgstr "Vor einer Ewigkeit"
 
 #: ../people/src/moblin-panel-people.c:69
 msgid "people"
@@ -340,15 +326,15 @@ msgstr "Neue Zone (0)"
 msgid "Choose zone for application:"
 msgstr "Wähle die Zone für diese Anwendung aus:"
 
-# depending on the context, maybe one could also use "Schließen" (= Close), or "Ablehnen" (= Reject)
+# Since I've come across this in the UI only in connection with a button in notification pop-ups, I think "Ignorieren" (= Ignore) would be the best translation in this context. (User has to click the button to make the notification go away without taking any action.)
 #: ../src/mnb-notification.c:266
 msgid "Dismiss"
-msgstr "Verwerfen"
+msgstr "Ignorieren"
 
-# depending on the context, maybe one could also use "Alle schließen" (= Close all), or "Alle ablehnen" (= Reject all)
+# see note at "Dismiss"...
 #: ../src/mnb-notification-cluster.c:657
 msgid "Dismiss All"
-msgstr "Alle verwerfen"
+msgstr "Alle ignorieren"
 
 #: ../src/mnb-switcher.c:1707
 msgid "No Zones yet"
@@ -445,24 +431,24 @@ msgstr "Ändern"
 msgid "Unknown account"
 msgstr "Unbekanntes Konto"
 
-#: ../status/src/mnb-web-status-entry.c:178
-#: ../status/src/mnb-web-status-entry.c:731
-#: ../status/src/mnb-web-status-entry.c:812
+#: ../status/src/mnb-web-status-entry.c:86
+#: ../status/src/mnb-web-status-entry.c:639
+#: ../status/src/mnb-web-status-entry.c:720
 msgid "Edit"
 msgstr "Bearbeiten"
 
 #. Translators: %s is the user visible name of the service
-#: ../status/src/mnb-web-status-entry.c:605
+#: ../status/src/mnb-web-status-entry.c:513
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "Wähle hier deinen Status für %s aus..."
 
-#: ../status/src/mnb-web-status-entry.c:609
-#: ../status/src/mnb-web-status-entry.c:682
+#: ../status/src/mnb-web-status-entry.c:517
+#: ../status/src/mnb-web-status-entry.c:590
 msgid "Enter your current status here..."
 msgstr "Wähle hier deinen gegenwärtigen Status aus..."
 
-#: ../status/src/mnb-web-status-entry.c:791
+#: ../status/src/mnb-web-status-entry.c:699
 msgid "Post"
 msgstr "Abschicken"
 
