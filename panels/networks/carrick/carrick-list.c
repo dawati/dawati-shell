@@ -68,10 +68,11 @@ enum
 
 static void carrick_list_sort_list (CarrickList *list);
 static void carrick_list_set_model (CarrickList *list, CarrickNetworkModel *model);
+static void carrick_list_add (CarrickList *list, GtkTreePath *path);
 
 static void
 carrick_list_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
+                           GValue *value, GParamSpec *pspec)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (object);
 
@@ -108,6 +109,7 @@ carrick_list_set_property (GObject *object, guint property_id,
   case PROP_MODEL:
     carrick_list_set_model (CARRICK_LIST (object),
                             CARRICK_NETWORK_MODEL (g_value_get_object (value)));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -230,9 +232,6 @@ carrick_list_drag_end (GtkWidget      *widget,
     if (priv->drop_position == 0)
     {
       other_widget = g_list_nth_data (children, 1);
-      /*
-       * FIXME: Make direct D-Bus calls here
-       */
       other_service = carrick_service_item_get_proxy
         (CARRICK_SERVICE_ITEM (other_widget));
       path = dbus_g_proxy_get_path (other_service);
@@ -410,15 +409,13 @@ carrick_list_get_notification_manager (CarrickList *list)
 static void
 _row_inserted_cb (GtkTreeModel *tree_model,
                   GtkTreePath  *path,
+                  GtkTreeIter  *iter,
                   gpointer      user_data)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (user_data);
+  CarrickList *self = user_data;
 
   /* New row added to model, draw widgetry */
-  carrick_service_item_new (priv->icon_factory,
-                            priv->notes,
-                            CARRICK_NETWORK_MODEL (tree_model),
-                            path);
+  carrick_list_add (self, path);
 }
 
 static void
@@ -481,7 +478,7 @@ _rows_reordered_cb (GtkTreeModel *tree_model,
 }
 
 static void
-_row_changed_cb (GtkTreeModel *tree_model,
+_row_changed_cb (GtkTreeModel *model,
                  GtkTreePath  *path,
                  GtkTreeIter  *iter,
                  gpointer      user_data)
@@ -492,7 +489,7 @@ _row_changed_cb (GtkTreeModel *tree_model,
   DBusGProxy *proxy = NULL;
   guint order, index;
 
-  gtk_tree_model_get (tree_model, iter,
+  gtk_tree_model_get (model, iter,
                       CARRICK_COLUMN_PROXY, &proxy,
                       CARRICK_COLUMN_INDEX, &index,
                       -1);
@@ -501,17 +498,24 @@ _row_changed_cb (GtkTreeModel *tree_model,
    * variables and update */
   item = carrick_list_find_service_item (self,
                                          proxy);
-  carrick_service_item_update (CARRICK_SERVICE_ITEM (item));
+  if (item)
+  {
+    carrick_service_item_update (CARRICK_SERVICE_ITEM (item));
 
-  /* Check the order and, where neccesarry, reorder */
-  gtk_container_child_get (GTK_CONTAINER (priv->box),
-                           item,
-                           "position", &order,
-                           NULL);
-  if (order != index)
-    gtk_box_reorder_child (GTK_BOX (priv->box),
-                           item,
-                           index);
+    /* Check the order and, where neccesarry, reorder */
+    gtk_container_child_get (GTK_CONTAINER (priv->box),
+                             item,
+                             "position", &order,
+                             NULL);
+    if (order != index)
+      gtk_box_reorder_child (GTK_BOX (priv->box),
+                             item,
+                             index);
+  }
+  else
+  {
+    _row_inserted_cb (model, path, iter, self);
+  }
 }
 
 static gboolean
@@ -520,12 +524,7 @@ _create_service_item (GtkTreeModel *model,
                       GtkTreeIter  *iter,
                       gpointer      user_data)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (user_data);
-
-  carrick_service_item_new (priv->icon_factory,
-                            priv->notes,
-                            CARRICK_NETWORK_MODEL (model),
-                            path);
+  _row_inserted_cb (model, path, iter, user_data);
 
   return FALSE;
 }
@@ -872,6 +871,15 @@ carrick_list_class_init (CarrickListClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_NOTIFICATIONS,
                                    pspec);
+
+  pspec = g_param_spec_object ("model",
+                               "Network model",
+                               "CarrickNetworkModel which the list represents",
+                               CARRICK_TYPE_NETWORK_MODEL,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_MODEL,
+                                   pspec);
 }
 
 static void
@@ -887,10 +895,12 @@ carrick_list_init (CarrickList *self)
 
 GtkWidget*
 carrick_list_new (CarrickIconFactory *icon_factory,
-                  CarrickNotificationManager *notifications)
+                  CarrickNotificationManager *notifications,
+                  CarrickNetworkModel *model)
 {
   return g_object_new (CARRICK_TYPE_LIST,
                        "icon-factory", icon_factory,
                        "notification-manager", notifications,
+                       "model", model,
                        NULL);
 }

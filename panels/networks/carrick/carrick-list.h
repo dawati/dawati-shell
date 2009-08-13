@@ -27,6 +27,7 @@
 
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
+#include "carrick-network-model.h"
 
 G_BEGIN_DECLS
 
@@ -62,7 +63,9 @@ typedef struct {
 
 GType carrick_list_get_type (void);
 
-GtkWidget* carrick_list_new ();
+GtkWidget* carrick_list_new (CarrickIconFactory *icon_factory,
+                             CarrickNotificationManager *notifications,
+                             CarrickNetworkModel *model);
 
 void carrick_list_set_fallback (CarrickList *list, const gchar *fallback);
 
