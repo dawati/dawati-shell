@@ -17,9 +17,6 @@ m4_define([lt_revision], [plugin_interface_age])
 m4_define([lt_age], [m4_eval(plugin_binary_age - plugin_interface_age)])
 
 # defaults
-m4_define([default_enable_status],   [yes])
-m4_define([default_enable_people],   [yes])
-m4_define([default_enable_ahoghill], [no])
 m4_define([default_enable_cache],    [no])
 
 AC_PREREQ([2.59])
@@ -168,11 +165,6 @@ echo "
             Installation path:    ${MUTTER_PLUGIN_DIR}
 	    Debug            :    ${enable_debug} (CFLAGS: ${CFLAGS})
 	    Scaled background:    ${scale_background}
-        Panels:
-
-            Status           :    ${enable_status}
-            Media            :    ${enable_ahoghill}
-            People           :    ${enable_people}
 
         Type make to build the plugin.
 "
