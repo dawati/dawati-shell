@@ -70,7 +70,7 @@ struct _CarrickServiceItemPrivate
   gboolean            draggable;
   GdkCursor          *hand_cursor;
 
-  GtkTreeModel 	     *model;
+  CarrickNetworkModel *model;
   GtkTreePath 	     *path;
 
   DBusGProxy         *proxy;
@@ -110,19 +110,15 @@ carrick_service_item_get_property (GObject *object, guint property_id,
         g_value_set_boolean (value, priv->draggable);
         break;
       case PROP_ICON_FACTORY:
-        g_value_set_object (value,
-                            priv->icon_factory);
+        g_value_set_object (value, priv->icon_factory);
         break;
     case PROP_NOTIFICATIONS:
-      g_value_set_object (value,
-                          priv->note);
+      g_value_set_object (value, priv->note);
     case PROP_MODEL:
-      g_value_set_object (value,
-		          priv->model);
+      g_value_set_object (value, priv->model);
       break;
     case PROP_PATH:
-      g_value_set_object (value,
-		          priv->path);
+      g_value_set_boxed (value, priv->path);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -182,21 +178,26 @@ _populate_variables (CarrickServiceItem *self)
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
   GtkTreeIter iter;
 
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->model),
-		  	   &iter,
-			   priv->path);
+  g_return_if_fail (priv->model != NULL);
+  g_return_if_fail (CARRICK_IS_NETWORK_MODEL (priv->model));
+  g_return_if_fail (priv->path != NULL);
 
-  gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
-                      CARRICK_COLUMN_PROXY, &priv->proxy,
-                      CARRICK_COLUMN_INDEX, &priv->index,
-		      CARRICK_COLUMN_NAME, &priv->name,
-                      CARRICK_COLUMN_TYPE, &priv->type,
-                      CARRICK_COLUMN_STATE, &priv->state,
-                      CARRICK_COLUMN_STRENGTH, &priv->strength,
-		      CARRICK_COLUMN_SECURITY, &priv->security,
-                      CARRICK_COLUMN_PASSPHRASE_REQUIRED, &priv->need_pass,
-                      CARRICK_COLUMN_PASSPHRASE, &priv->passphrase,
-		      -1);
+  if (gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->model),
+                               &iter,
+                               priv->path))
+  {
+    gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
+                        CARRICK_COLUMN_PROXY, &priv->proxy,
+                        CARRICK_COLUMN_INDEX, &priv->index,
+                        CARRICK_COLUMN_NAME, &priv->name,
+                        CARRICK_COLUMN_TYPE, &priv->type,
+                        CARRICK_COLUMN_STATE, &priv->state,
+                        CARRICK_COLUMN_STRENGTH, &priv->strength,
+                        CARRICK_COLUMN_SECURITY, &priv->security,
+                        CARRICK_COLUMN_PASSPHRASE_REQUIRED, &priv->need_pass,
+                        CARRICK_COLUMN_PASSPHRASE, &priv->passphrase,
+                        -1);
+  }
 }
 
 static CarrickIconState
@@ -283,7 +284,7 @@ _set_state (CarrickServiceItem *self)
                           GTK_STATE_NORMAL,
                           &priv->prelight_color);
   }
-  else if (g_str_equal (priv->state, "ready"))
+  else if (g_strcmp0 (priv->state, "ready") == 0)
   {
     gtk_widget_modify_bg (priv->expando,
                           GTK_STATE_NORMAL,
@@ -296,9 +297,9 @@ _set_state (CarrickServiceItem *self)
                           NULL);
   }
 
-  if (g_str_equal (priv->state, "ready"))
+  if (g_strcmp0 (priv->state, "ready") == 0)
   {
-    if (g_str_equal (priv->type, "ethernet") == FALSE)
+    if (g_strcmp0 (priv->type, "ethernet") != 0)
     {
       /* Only expose delete button for non-ethernet devices */
       gtk_widget_show (GTK_WIDGET (priv->delete_button));
@@ -307,19 +308,19 @@ _set_state (CarrickServiceItem *self)
     }
     button = g_strdup (_("Disconnect"));
     label = g_strdup_printf ("%s - %s",
-			     name,
-			     _("Connected"));
+                             name,
+                             _("Connected"));
     priv->failed = FALSE;
   }
-  else if (g_str_equal (priv->state, "configuring") ||
-	   g_str_equal (priv->state, "associating"))
+  else if (g_strcmp0 (priv->state, "configuring") == 0 ||
+           g_strcmp0 (priv->state, "associating") == 0)
   {
     button = g_strdup_printf (_("Cancel"));
     label = g_strdup_printf ("%s - %s",
                              name,
                              _("Configuring"));
   }
-  else if (g_str_equal (priv->state, "idle"))
+  else if (g_strcmp0 (priv->state, "idle") == 0)
   {
     gtk_widget_hide (GTK_WIDGET (priv->delete_button));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
@@ -327,14 +328,14 @@ _set_state (CarrickServiceItem *self)
     button = g_strdup (_("Connect"));
     label = g_strdup (name);
   }
-  else if (g_str_equal (priv->state, "failure"))
+  else if (g_strcmp0 (priv->state, "failure") == 0)
   {
     /*
      * If the connection failed we should allow the user
      * to remove the connection (and forget the password.
      * Except, of course, when the connection is Ethernet ...
      */
-    if (g_str_equal (priv->type, "ethernet") == FALSE)
+    if (g_strcmp0 (priv->type, "ethernet") != 0)
     {
       gtk_widget_hide (GTK_WIDGET (priv->delete_button));
       gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
@@ -353,7 +354,7 @@ _set_state (CarrickServiceItem *self)
                              _("Connection failed"));
     priv->failed = TRUE;
   }
-  else if (g_str_equal (priv->state, "disconnect"))
+  else if (g_strcmp0 (priv->state, "disconnect") == 0)
   {
     button = g_strdup_printf (_("Disconnecting"));
     label = g_strdup_printf ("%s - %s",
@@ -655,12 +656,12 @@ carrick_service_item_get_tree_path (CarrickServiceItem *item)
 
 static void
 _set_model (CarrickServiceItem  *self,
-	    CarrickNetworkModel *model)
+            CarrickNetworkModel *model)
 {
   g_return_if_fail (model != NULL);
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
 
-  priv->model = GTK_TREE_MODEL (model);
+  priv->model = model;
 
 
   if (priv->path)
@@ -672,7 +673,7 @@ _set_model (CarrickServiceItem  *self,
 
 static void
 _set_path (CarrickServiceItem *self,
-	   GtkTreePath        *path)
+           GtkTreePath        *path)
 {
   g_return_if_fail (path != NULL);
   CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
@@ -719,7 +720,7 @@ carrick_service_item_set_property (GObject *object, guint property_id,
       break;
     case PROP_PATH:
       _set_path (self,
-                 (GtkTreePath *) g_value_get_object (value));
+                 (GtkTreePath *) g_value_get_boxed (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -853,22 +854,22 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
                                    pspec);
 
   pspec = g_param_spec_object ("model",
-		               "model",
-			       "CarrickNetworkModel object",
-			       CARRICK_TYPE_NETWORK_MODEL,
-			       G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               "model",
+                               "CarrickNetworkModel object",
+                               CARRICK_TYPE_NETWORK_MODEL,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class,
-		  		   PROP_MODEL,
-				   pspec);
+                                   PROP_MODEL,
+                                   pspec);
 
-  pspec = g_param_spec_object ("path",
-		               "path",
-			       "GtkTreePath to row in model",
-			       GTK_TYPE_TREE_PATH,
-			       G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  pspec = g_param_spec_boxed ("tree-path",
+                              "tree-path",
+                              "GtkTreePath of the row to represent",
+                              GTK_TYPE_TREE_PATH,
+                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class,
-		  		   PROP_PATH,
-				   pspec);
+                                   PROP_PATH,
+                                   pspec);
 
   /* activated == some ui activity in the label part of the item */
   service_item_signals[SIGNAL_ITEM_ACTIVATE] = g_signal_new (
@@ -1084,13 +1085,9 @@ carrick_service_item_new (CarrickIconFactory         *icon_factory,
                           GtkTreePath 		           *path)
 {
   return g_object_new (CARRICK_TYPE_SERVICE_ITEM,
-                       "icon-factory",
-                       icon_factory,
-                       "notification-manager",
-                       notifications,
-                       "model",
-                       model,
-                       "path",
-                       path,
+                       "icon-factory", icon_factory,
+                       "notification-manager", notifications,
+                       "model", model,
+                       "tree-path", path,
                        NULL);
 }
