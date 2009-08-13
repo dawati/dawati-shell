@@ -22,12 +22,13 @@
 
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-
-#include <carrick/carrick-applet.h>
-#include <carrick/carrick-pane.h>
-#include "moblin-netbook-system-tray.h"
+#include <dbus/dbus-glib.h>
 
 #include <config.h>
+
+#include "carrick/carrick-applet.h"
+#include "carrick/carrick-pane.h"
+#include "moblin-netbook-system-tray.h"
 
 #define PADDING 4
 
@@ -69,6 +70,9 @@ main (int    argc,
     { NULL }
   };
 
+  if (!g_thread_supported ())
+    g_thread_init (NULL);
+
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
@@ -76,6 +80,7 @@ main (int    argc,
   g_set_application_name (_("Carrick connectivity applet"));
   gtk_init_with_args (&argc, &argv, _("- Moblin connectivity applet"),
                       entries, GETTEXT_PACKAGE, &error);
+  dbus_g_thread_init ();
 
   if (error)
   {
