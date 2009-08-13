@@ -27,10 +27,12 @@
 #include <glib/gi18n.h>
 #include <dbus/dbus-glib.h>
 
+#include "connman-marshal.h"
 #include "carrick-list.h"
 #include "carrick-service-item.h"
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
+#include "carrick-network-model.h"
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
 
@@ -55,7 +57,7 @@ struct _CarrickPanePrivate {
   GtkWidget          *new_conn_button;
   CarrickIconFactory *icon_factory;
   time_t              last_scan;
-  gboolean	      offline_mode;
+  gboolean	          offline_mode;
   gboolean            have_daemon;
   gboolean            have_wifi;
   gboolean            have_ethernet;
@@ -215,12 +217,12 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                                               "ready",
                                               "all");
     dbus_g_proxy_call (priv->manager,
-		       "EnableTechnology",
-		       NULL,
-		       G_TYPE_STRING,
-		       "wifi",
-		       G_TYPE_INVALID,
-		       G_TYPE_INVALID);
+                       "EnableTechnology",
+                       NULL,
+                       G_TYPE_STRING,
+                       "wifi",
+                       G_TYPE_INVALID,
+                       G_TYPE_INVALID);
   }
   else
   {
@@ -229,12 +231,12 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                                               "idle",
                                               "all");
     dbus_g_proxy_call (priv->manager,
-		       "DisableTechnology",
-		       NULL,
-		       G_TYPE_STRING,
-		       "wifi",
-		       G_TYPE_INVALID,
-		       G_TYPE_INVALID);
+                       "DisableTechnology",
+                       NULL,
+                       G_TYPE_STRING,
+                       "wifi",
+                       G_TYPE_INVALID,
+                       G_TYPE_INVALID);
   }
 
   return TRUE;
@@ -254,12 +256,12 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                                               "ready",
                                               "all");
     dbus_g_proxy_call (priv->manager,
-		       "EnableTechnology",
-		       NULL,
-		       G_TYPE_STRING,
-		       "ethernet",
-		       G_TYPE_INVALID,
-		       G_TYPE_INVALID);
+                       "EnableTechnology",
+                       NULL,
+                       G_TYPE_STRING,
+                       "ethernet",
+                       G_TYPE_INVALID,
+                       G_TYPE_INVALID);
 
   }
   else
@@ -269,12 +271,12 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                                               "idle",
                                               "all");
     dbus_g_proxy_call (priv->manager,
-		       "DisableTechnology",
-		       NULL,
-		       G_TYPE_STRING,
-		       "ethernet",
-		       G_TYPE_INVALID,
-		       G_TYPE_INVALID);
+                       "DisableTechnology",
+                       NULL,
+                       G_TYPE_STRING,
+                       "ethernet",
+                       G_TYPE_INVALID,
+                       G_TYPE_INVALID);
   }
 
   return TRUE;
@@ -997,6 +999,7 @@ carrick_pane_init (CarrickPane *self)
   gchar *label = NULL;
   GError *error = NULL;
   DBusGConnection *connection;
+  GtkTreeModel *model;
 
   priv->icon_factory = NULL;
   priv->manager = NULL;
@@ -1013,6 +1016,15 @@ carrick_pane_init (CarrickPane *self)
   priv->wimax_enabled = FALSE;
   priv->bluetooth_enabled = FALSE;
 
+  dbus_g_object_register_marshaller (connman_marshal_VOID__STRING_BOXED,
+                                     /* return */
+                                     G_TYPE_NONE,
+                                     /* args */
+                                     G_TYPE_STRING,
+                                     G_TYPE_VALUE,
+                                     /* eom */
+                                     G_TYPE_INVALID);
+
   /* Get D-Bus connection and create proxy */
   connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
   if (error)
@@ -1023,28 +1035,30 @@ carrick_pane_init (CarrickPane *self)
     /* FIXME: do something */
   }
   priv->manager = dbus_g_proxy_new_for_name (connection,
-				       CONNMAN_SERVICE,
-				       CONNMAN_MANAGER_PATH,
-				       CONNMAN_MANAGER_INTERFACE);
+                                             CONNMAN_SERVICE,
+                                             CONNMAN_MANAGER_PATH,
+                                             CONNMAN_MANAGER_INTERFACE);
+
+  model = carrick_network_model_new ();
 
   /* Listen for the D-Bus PropertyChanged signal */
   dbus_g_proxy_add_signal (priv->manager,
-			   "PropertyChanged",
-			   G_TYPE_STRING,
-			   G_TYPE_VALUE,
-			   G_TYPE_INVALID);
+                           "PropertyChanged",
+                           G_TYPE_STRING,
+                           G_TYPE_VALUE,
+                           G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (priv->manager,
-			       "PropertyChanged",
-			       G_CALLBACK (pane_manager_changed_cb),
-			       self,
-			       NULL);
+                               "PropertyChanged",
+                               G_CALLBACK (pane_manager_changed_cb),
+                               self,
+                               NULL);
 
   dbus_g_proxy_begin_call (priv->manager,
-			   "GetProperties",
-			   pane_manager_get_properties_cb,
-			   self,
-			   NULL,
-			   G_TYPE_INVALID);
+                           "GetProperties",
+                           pane_manager_get_properties_cb,
+                           self,
+                           NULL,
+                           G_TYPE_INVALID);
 
   switch_bin = nbtk_gtk_frame_new ();
   gtk_widget_show (switch_bin);
@@ -1077,7 +1091,8 @@ carrick_pane_init (CarrickPane *self)
                               frame_title);
 
   priv->service_list = carrick_list_new (priv->icon_factory,
-                                         priv->notes);
+                                         priv->notes,
+                                         CARRICK_NETWORK_MODEL (model));
   gtk_container_add (GTK_CONTAINER (net_list_bin),
                      priv->service_list);
   gtk_widget_show (priv->service_list);
