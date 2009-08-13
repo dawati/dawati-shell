@@ -7,15 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 13:09-0700\n"
+"POT-Creation-Date: 2009-08-12 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -33,12 +32,8 @@ msgid "No calendar entries this week"
 msgstr "Brak wpisów w kalendarzu na ten tydzień"
 
 #: ../penge/penge-people-pane.c:191
-msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr ""
-"Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj Twoje "
-"konta!"
+msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgstr "Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj Twoje konta!"
 
 # I'm really unhappy with this one but can't think of anything better
 #: ../penge/penge-recent-files-pane.c:202
@@ -46,15 +41,8 @@ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Witamy na Moblinie 2.0 na netbooki</b>"
 
 #: ../penge/penge-recent-files-pane.c:227
-#, fuzzy
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
-msgstr ""
-"Moblin różni się od innych komputerów w wielu aspektach, pozbieraliśmy więc "
-"co nieco na temat tej wersji Beta, aby pomóc Ci się w niej znaleźć. "
-"Powodzenia, Team Moblin"
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Moblin różni się od innych komputerów w paru aspektach, pozbieraliśmy więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team Moblin"
 
 #: ../penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -68,3 +56,4 @@ msgstr "Brak zadań na dziś"
 #, c-format
 msgid "Due %x"
 msgstr "Na %x"
+
