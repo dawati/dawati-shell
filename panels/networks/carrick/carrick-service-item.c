@@ -688,10 +688,10 @@ _set_path (CarrickServiceItem *self,
 }
 
 void
-carrick_service_item_update (CarrickServiceItem *self)
+carrick_service_item_update (CarrickServiceItem *self,
+                             GtkTreePath        *path)
 {
-  _populate_variables (self);
-  _set_state (self);
+  _set_path (self, path);
 }
 
 static void

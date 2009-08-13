@@ -505,7 +505,8 @@ _row_changed_cb (GtkTreeModel *model,
                                          proxy);
   if (item)
   {
-    carrick_service_item_update (CARRICK_SERVICE_ITEM (item));
+    carrick_service_item_update (CARRICK_SERVICE_ITEM (item),
+                                 path);
 
     /* Check the order and, where neccesarry, reorder */
     gtk_container_child_get (GTK_CONTAINER (priv->box),
