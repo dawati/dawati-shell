@@ -27,27 +27,27 @@
 
 G_BEGIN_DECLS
 
-#define CARRICK_TYPE_NOTIFICATION_MANAGER carrick_notification_manager_get_type()
+#define CARRICK_TYPE_NOTIFICATION_MANAGER carrick_notification_manager_get_type ()
 
 #define CARRICK_NOTIFICATION_MANAGER(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CARRICK_TYPE_NOTIFICATION_MANAGER, CarrickNotificationManager))
+                               CARRICK_TYPE_NOTIFICATION_MANAGER, CarrickNotificationManager))
 
 #define CARRICK_NOTIFICATION_MANAGER_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CARRICK_TYPE_NOTIFICATION_MANAGER, CarrickNotificationManagerClass))
+                            CARRICK_TYPE_NOTIFICATION_MANAGER, CarrickNotificationManagerClass))
 
 #define CARRICK_IS_NOTIFICATION_MANAGER(obj) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CARRICK_TYPE_NOTIFICATION_MANAGER))
+                               CARRICK_TYPE_NOTIFICATION_MANAGER))
 
 #define CARRICK_IS_NOTIFICATION_MANAGER_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CARRICK_TYPE_NOTIFICATION_MANAGER))
+                            CARRICK_TYPE_NOTIFICATION_MANAGER))
 
 #define CARRICK_NOTIFICATION_MANAGER_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CARRICK_TYPE_NOTIFICATION_MANAGER, CarrickNotificationManagerClass))
+                              CARRICK_TYPE_NOTIFICATION_MANAGER, CarrickNotificationManagerClass))
 
 typedef struct _CarrickNotificationManager CarrickNotificationManager;
 typedef struct _CarrickNotificationManagerClass CarrickNotificationManagerClass;

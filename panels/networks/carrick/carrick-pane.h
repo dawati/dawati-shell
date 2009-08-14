@@ -29,7 +29,7 @@
 
 G_BEGIN_DECLS
 
-#define CARRICK_TYPE_PANE carrick_pane_get_type()
+#define CARRICK_TYPE_PANE carrick_pane_get_type ()
 
 #define CARRICK_PANE(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), CARRICK_TYPE_PANE, CarrickPane))
@@ -50,13 +50,15 @@ typedef struct _CarrickPane CarrickPane;
 typedef struct _CarrickPaneClass CarrickPaneClass;
 typedef struct _CarrickPanePrivate CarrickPanePrivate;
 
-struct _CarrickPane {
+struct _CarrickPane
+{
   GtkTable parent;
 
   CarrickPanePrivate *priv;
 };
 
-struct _CarrickPaneClass {
+struct _CarrickPaneClass
+{
   GtkTableClass parent_class;
 };
 

@@ -35,8 +35,9 @@ G_DEFINE_TYPE (CarrickApplet, carrick_applet, G_TYPE_OBJECT)
 #define APPLET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_APPLET, CarrickAppletPrivate))
 
-struct _CarrickAppletPrivate {
-  GtkWidget          *pane;
+struct _CarrickAppletPrivate
+{
+  GtkWidget *pane;
   CarrickIconFactory *icon_factory;
   CarrickNotificationManager *notifications;
 };

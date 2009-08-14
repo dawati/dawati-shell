@@ -69,7 +69,7 @@ struct mnbk_tray_setup_data
   GtkStatusIcon *icon;
   GtkPlug       *config;
   gchar         *type;
-  guint          init_cb_id;
+  guint init_cb_id;
 };
 
 static struct mnbk_tray_setup_data _mnbk_tray_setup_data;
@@ -79,8 +79,8 @@ _mnbk_setup_config_window (GtkStatusIcon               *icon,
                            Window                       config_win,
                            struct mnbk_tray_setup_data *tray_data)
 {
-  Atom tray_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW);
-  Atom type_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_TYPE);
+  Atom      tray_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_CONFIG_WINDOW);
+  Atom      type_atom = gdk_x11_get_xatom_by_name (MOBLIN_SYSTEM_TRAY_TYPE);
   Window    icon_win;
   gpointer *plug_location;
   GtkPlug  *plug;
@@ -92,7 +92,7 @@ _mnbk_setup_config_window (GtkStatusIcon               *icon,
    * The tray icon is a GtkPlug subclass, and is stored as the first
    * item in the private structure of GtkSystemIcon.
    */
-  plug_location = (gpointer*)icon->priv;
+  plug_location = (gpointer*) icon->priv;
 
   if (!plug_location || !*plug_location || !GTK_IS_PLUG (*plug_location))
     {
@@ -105,14 +105,14 @@ _mnbk_setup_config_window (GtkStatusIcon               *icon,
 
   icon_win = gtk_plug_get_id (plug);
 
-  XChangeProperty (GDK_DISPLAY(), icon_win,
+  XChangeProperty (GDK_DISPLAY (), icon_win,
                    tray_atom, XA_WINDOW,
-                   32, PropModeReplace, (unsigned char*)&config_win, 1);
+                   32, PropModeReplace, (unsigned char*) &config_win, 1);
 
-  XChangeProperty (GDK_DISPLAY(), icon_win,
+  XChangeProperty (GDK_DISPLAY (), icon_win,
                    type_atom, XA_STRING,
                    8, PropModeReplace,
-                   (unsigned char*)tray_data->type,
+                   (unsigned char*) tray_data->type,
                    strlen (tray_data->type));
 
   return TRUE;
@@ -155,8 +155,8 @@ _mnbk_initial_embedded_notify (GObject    *gobject,
                                gpointer    data)
 {
   struct mnbk_tray_setup_data *tray_data = data;
-  GtkStatusIcon               *icon      = tray_data->icon;
-  GtkPlug                     *config    = tray_data->config;
+  GtkStatusIcon               *icon = tray_data->icon;
+  GtkPlug                     *config = tray_data->config;
 
   /*
    * We can only set up the config window after the status icon has been

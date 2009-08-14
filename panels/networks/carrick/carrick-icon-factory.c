@@ -30,7 +30,7 @@ G_DEFINE_TYPE (CarrickIconFactory, carrick_icon_factory, G_TYPE_OBJECT)
 
 #define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
 
-static const gchar *icon_names[] = {
+static const gchar * icon_names[] = {
   PKG_ICON_DIR "/" "network-active.png",
   PKG_ICON_DIR "/" "network-active-hover.png",
   PKG_ICON_DIR "/" "network-connecting.png",
@@ -154,262 +154,288 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
                                            CarrickIconState    state)
 {
   CarrickIconFactoryPrivate *priv = factory->priv;
-  GdkPixbuf *icon = NULL;
-  GError *error = NULL;
+  GdkPixbuf                 *icon = NULL;
+  GError                    *error = NULL;
 
   switch (state)
-  {
+    {
     case ICON_ACTIVE:
       if (!priv->active_img)
-      {
-        priv->active_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->active_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->active_img;
       break;
+
     case ICON_ACTIVE_HOVER:
       if (!priv->active_hov_img)
-      {
-        priv->active_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->active_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->active_hov_img;
       break;
+
     case ICON_CONNECTING:
       if (!priv->connecting_img)
-      {
-        priv->connecting_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->connecting_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->connecting_img;
       break;
+
     case ICON_CONNECTING_HOVER:
       if (!priv->connecting_hov_img)
-      {
-        priv->connecting_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->connecting_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->connecting_hov_img;
       break;
+
     case ICON_ERROR:
       if (!priv->error_img)
-      {
-        priv->error_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->error_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->error_img;
       break;
+
     case ICON_ERROR_HOVER:
       if (!priv->error_hov_img)
-      {
-        priv->error_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->error_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->error_hov_img;
       break;
+
     case ICON_OFFLINE:
       if (!priv->offline_img)
-      {
-        priv->offline_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->offline_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->offline_img;
       break;
+
     case ICON_OFFLINE_HOVER:
       if (!priv->offline_hov_img)
-      {
-        priv->offline_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->offline_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->offline_hov_img;
       break;
+
     case ICON_WIRELESS_WEAK:
       if (!priv->wireless_weak_img)
-      {
-        priv->wireless_weak_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wireless_weak_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wireless_weak_img;
       break;
+
     case ICON_WIRELESS_WEAK_HOVER:
       if (!priv->wireless_weak_hov_img)
-      {
-        priv->wireless_weak_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wireless_weak_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wireless_weak_hov_img;
       break;
+
     case ICON_WIRELESS_GOOD:
       if (!priv->wireless_good_img)
-      {
-        priv->wireless_good_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wireless_good_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wireless_good_img;
       break;
+
     case ICON_WIRELESS_GOOD_HOVER:
       if (!priv->wireless_good_hov_img)
-      {
-        priv->wireless_good_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wireless_good_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wireless_good_hov_img;
       break;
+
     case ICON_WIRELESS_STRONG:
       if (!priv->wireless_strong_img)
-      {
-        priv->wireless_strong_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wireless_strong_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wireless_strong_img;
       break;
+
     case ICON_WIRELESS_STRONG_HOVER:
       if (!priv->wireless_strong_hov_img)
-      {
-        priv->wireless_strong_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wireless_strong_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wireless_strong_hov_img;
       break;
+
     case ICON_WIMAX_STRONG:
       if (!priv->wimax_strong_img)
-      {
-        priv->wimax_strong_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wimax_strong_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wimax_strong_img;
       break;
+
     case ICON_WIMAX_STRONG_HOVER:
       if (!priv->wimax_strong_hov_img)
-      {
-        priv->wimax_strong_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wimax_strong_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wimax_strong_hov_img;
       break;
+
     case ICON_WIMAX_WEAK:
       if (!priv->wimax_weak_img)
-      {
-        priv->wimax_weak_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wimax_weak_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wimax_weak_img;
       break;
+
     case ICON_WIMAX_WEAK_HOVER:
       if (!priv->wimax_weak_hov_img)
-      {
-        priv->wimax_weak_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->wimax_weak_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->wimax_weak_hov_img;
       break;
+
     case ICON_3G_STRONG:
       if (!priv->threeg_strong_img)
-      {
-        priv->threeg_strong_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->threeg_strong_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->threeg_strong_img;
       break;
+
     case ICON_3G_STRONG_HOVER:
       if (!priv->threeg_strong_hov_img)
-      {
-        priv->threeg_strong_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->threeg_strong_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->threeg_strong_hov_img;
       break;
+
     case ICON_3G_WEAK:
       if (!priv->threeg_weak_img)
-      {
-        priv->threeg_weak_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->threeg_weak_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->threeg_weak_img;
       break;
+
     case ICON_3G_WEAK_HOVER:
       if (!priv->threeg_weak_hov_img)
-      {
-        priv->threeg_weak_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->threeg_weak_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->threeg_weak_hov_img;
       break;
+
     case ICON_BLUETOOTH_STRONG:
       if (!priv->bluetooth_strong_img)
-      {
-        priv->bluetooth_strong_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->bluetooth_strong_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->bluetooth_strong_img;
       break;
+
     case ICON_BLUETOOTH_STRONG_HOVER:
       if (!priv->bluetooth_strong_hov_img)
-      {
-        priv->bluetooth_strong_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->bluetooth_strong_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->bluetooth_strong_hov_img;
       break;
+
     case ICON_BLUETOOTH_WEAK:
       if (!priv->bluetooth_weak_img)
-      {
-        priv->bluetooth_weak_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->bluetooth_weak_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->bluetooth_weak_img;
       break;
+
     case ICON_BLUETOOTH_WEAK_HOVER:
       if (!priv->bluetooth_weak_hov_img)
-      {
-        priv->bluetooth_weak_hov_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->bluetooth_weak_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->bluetooth_weak_hov_img;
       break;
+
     default:
       if (!priv->error_img)
-      {
-        priv->error_img =
-          gdk_pixbuf_new_from_file (icon_names[state],
-                                    &error);
-      }
+        {
+          priv->error_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
       icon = priv->error_img;
       break;
-  }
+    }
 
   if (icon == NULL || error)
-  {
-    g_warning (G_STRLOC ":error opening pixbuf: %s",
-               error->message);
-    g_clear_error (&error);
-  }
+    {
+      g_warning (G_STRLOC ":error opening pixbuf: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
 
   return icon;
 }

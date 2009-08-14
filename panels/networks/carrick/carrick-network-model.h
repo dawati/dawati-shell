@@ -26,34 +26,34 @@
 #include <gtk/gtk.h>
 #include <dbus/dbus-glib.h>
 
-#define CONNMAN_SERVICE          	"org.moblin.connman"
-#define CONNMAN_MANAGER_PATH     	"/"
-#define CONNMAN_MANAGER_INTERFACE 	CONNMAN_SERVICE ".Manager"
-#define CONNMAN_SERVICE_INTERFACE	CONNMAN_SERVICE ".Service"
+#define CONNMAN_SERVICE           "org.moblin.connman"
+#define CONNMAN_MANAGER_PATH      "/"
+#define CONNMAN_MANAGER_INTERFACE   CONNMAN_SERVICE ".Manager"
+#define CONNMAN_SERVICE_INTERFACE CONNMAN_SERVICE ".Service"
 
 G_BEGIN_DECLS
 
-#define CARRICK_TYPE_NETWORK_MODEL carrick_network_model_get_type()
+#define CARRICK_TYPE_NETWORK_MODEL carrick_network_model_get_type ()
 
 #define CARRICK_NETWORK_MODEL(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CARRICK_TYPE_NETWORK_MODEL, CarrickNetworkModel))
+                               CARRICK_TYPE_NETWORK_MODEL, CarrickNetworkModel))
 
 #define CARRICK_NETWORK_MODEL_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CARRICK_TYPE_NETWORK_MODEL, CarrickNetworkModelClass))
+                            CARRICK_TYPE_NETWORK_MODEL, CarrickNetworkModelClass))
 
 #define CARRICK_IS_NETWORK_MODEL(obj) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CARRICK_TYPE_NETWORK_MODEL))
+                               CARRICK_TYPE_NETWORK_MODEL))
 
 #define CARRICK_IS_NETWORK_MODEL_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CARRICK_TYPE_NETWORK_MODEL))
+                            CARRICK_TYPE_NETWORK_MODEL))
 
 #define CARRICK_NETWORK_MODEL_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CARRICK_TYPE_NETWORK_MODEL, CarrickNetworkModelClass))
+                              CARRICK_TYPE_NETWORK_MODEL, CarrickNetworkModelClass))
 
 typedef struct _CarrickNetworkModel CarrickNetworkModel;
 typedef struct _CarrickNetworkModelClass CarrickNetworkModelClass;

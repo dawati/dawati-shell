@@ -44,16 +44,15 @@ struct _CarrickNotificationManagerPrivate
   gchar *queued_state;
 };
 
-enum
-{
+enum {
   PROP_0,
 };
 
 void
 carrick_notification_manager_queue_event (CarrickNotificationManager *self,
-                                          const gchar *type,
-                                          const gchar *state,
-                                          const gchar *name)
+                                          const gchar                *type,
+                                          const gchar                *state,
+                                          const gchar                *name)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
 
@@ -77,8 +76,8 @@ carrick_notification_manager_queue_event (CarrickNotificationManager *self,
 }
 
 static void
-_send_note (gchar *title,
-            gchar *message,
+_send_note (gchar       *title,
+            gchar       *message,
             const gchar *icon)
 {
   NotifyNotification *note;
@@ -99,56 +98,56 @@ _send_note (gchar *title,
 static void
 _tell_online (const gchar *name,
               const gchar *type,
-              guint str)
+              guint        str)
 {
-  gchar *title = g_strdup (_("Network connected"));
-  gchar *message = NULL;
+  gchar       *title = g_strdup (_ ("Network connected"));
+  gchar       *message = NULL;
   const gchar *icon = NULL;
 
   if (g_strcmp0 (type, "ethernet") == 0)
-  {
-    icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+    {
+      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
 
-    message = g_strdup_printf (_("You're now connected to a wired network"));
-  }
+      message = g_strdup_printf (_ ("You're now connected to a wired network"));
+    }
   else
-  {
-    if (g_strcmp0 (type, "wifi") == 0)
     {
-      if (str > 70)
-        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
-      else if (str > 35)
-        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
-      else
-        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
-    }
-    else if (g_strcmp0 (type, "wimax") == 0)
-    {
-      if (str > 50)
-        icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
-      else
-        icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
-    }
-    else if (g_strcmp0 (type, "cellular") == 0)
-    {
-      if (str > 50)
-        icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
-      else
-        icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
-    }
+      if (g_strcmp0 (type, "wifi") == 0)
+        {
+          if (str > 70)
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
+          else if (str > 35)
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
+          else
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
+        }
+      else if (g_strcmp0 (type, "wimax") == 0)
+        {
+          if (str > 50)
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
+          else
+            icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
+        }
+      else if (g_strcmp0 (type, "cellular") == 0)
+        {
+          if (str > 50)
+            icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
+          else
+            icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
+        }
 
-    if (name && name[0] != '\0')
-    {
-      message = g_strdup_printf (_("You're now connected to %s, a %s network"),
-                                 name,
-                                 type);
+      if (name && name[0] != '\0')
+        {
+          message = g_strdup_printf (_ ("You're now connected to %s, a %s network"),
+                                     name,
+                                     type);
+        }
+      else
+        {
+          message = g_strdup_printf (_ ("You're now connected to a %s network"),
+                                     type);
+        }
     }
-    else
-    {
-      message = g_strdup_printf (_("You're now connected to a %s network"),
-                                 type);
-    }
-  }
 
   _send_note (title, message, icon);
 
@@ -158,31 +157,31 @@ _tell_online (const gchar *name,
 
 static void
 _tell_offline (CarrickNotificationManager *self,
-               const gchar *name,
-               const gchar *type)
+               const gchar                *name,
+               const gchar                *type)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
-  gchar *title = g_strdup (_("Network lost"));
-  gchar *message = NULL;
-  const gchar *icon;
+  gchar                             *title = g_strdup (_ ("Network lost"));
+  gchar                             *message = NULL;
+  const gchar                       *icon;
 
   icon = carrick_icon_factory_get_path_for_state (ICON_OFFLINE);
 
   if (g_strcmp0 (priv->last_type, "ethernet") == 0)
-  {
-    message = g_strdup_printf (_("Sorry, we've lost your wired connection"));
-  }
+    {
+      message = g_strdup_printf (_ ("Sorry, we've lost your wired connection"));
+    }
   else if (priv->last_name)
-  {
-    message = g_strdup_printf (_("Sorry we've lost your %s connection to %s"),
-                               priv->last_type,
-                               priv->last_name);
-  }
+    {
+      message = g_strdup_printf (_ ("Sorry we've lost your %s connection to %s"),
+                                 priv->last_type,
+                                 priv->last_name);
+    }
   else if (priv->last_type)
-  {
-    message = g_strdup_printf (_("Sorry, we've lost your %s connection"),
-                               priv->last_type);
-  }
+    {
+      message = g_strdup_printf (_ ("Sorry, we've lost your %s connection"),
+                                 priv->last_type);
+    }
 
   _send_note (title, message, icon);
 
@@ -192,102 +191,102 @@ _tell_offline (CarrickNotificationManager *self,
 
 static void
 _tell_changed (CarrickNotificationManager *self,
-	       const gchar *name,
-	       const gchar *type,
-	       guint str)
+               const gchar                *name,
+               const gchar                *type,
+               guint                       str)
 {
   CarrickNotificationManagerPrivate *priv = self->priv;
-  gchar *title = g_strdup (_("Network changed"));
-  gchar *message = NULL;
-  const gchar *icon;
+  gchar                             *title = g_strdup (_ ("Network changed"));
+  gchar                             *message = NULL;
+  const gchar                       *icon;
 
   if (priv->last_name == NULL && priv->last_type == NULL)
-  {
-    /*
-     * If we have never been notified of a previous network
-     * name or network type then we it would be better to just
-     * not send a notification.
-     */
-    g_free (title);
-    return;
-  }
+    {
+      /*
+       * If we have never been notified of a previous network
+       * name or network type then we it would be better to just
+       * not send a notification.
+       */
+      g_free (title);
+      return;
+    }
 
   if (priv->last_name)
-  {
-    if (g_strcmp0 (type, "ethernet") == 0)
     {
-      message = g_strdup_printf (_("Sorry, your connection to %s was lost. "
-                                   "So we've connected you to a wired network"),
-                                 priv->last_name);
-      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+      if (g_strcmp0 (type, "ethernet") == 0)
+        {
+          message = g_strdup_printf (_ ("Sorry, your connection to %s was lost. "
+                                        "So we've connected you to a wired network"),
+                                     priv->last_name);
+          icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+        }
+      else if (name)
+        {
+          message = g_strdup_printf (_ ("Sorry, your connection to %s was lost. So "
+                                        "we've connected you to %s, a %s network"),
+                                     priv->last_name,
+                                     name,
+                                     type);
+        }
+      else
+        {
+          message = g_strdup_printf (_ ("Sorry, your connection to %s was lost. "
+                                        "So we've connected you to a %s network"),
+                                     priv->last_name,
+                                     type);
+        }
     }
-    else if (name)
-    {
-      message = g_strdup_printf (_("Sorry, your connection to %s was lost. So "
-                                   "we've connected you to %s, a %s network"),
-                                 priv->last_name,
-                                 name,
-                                 type);
-    }
-    else
-    {
-      message = g_strdup_printf (_("Sorry, your connection to %s was lost. "
-                                   "So we've connected you to a %s network"),
-                                 priv->last_name,
-                                 type);
-    }
-  }
   else
-  {
-    if (g_strcmp0 (type, "ethernet") == 0)
     {
-      message = g_strdup_printf (_("Sorry, your %s connection was lost. "
-                                   "So we've connected you to a wired network"),
-                                 priv->last_type);
-      icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+      if (g_strcmp0 (type, "ethernet") == 0)
+        {
+          message = g_strdup_printf (_ ("Sorry, your %s connection was lost. "
+                                        "So we've connected you to a wired network"),
+                                     priv->last_type);
+          icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
+        }
+      else if (name)
+        {
+          message = g_strdup_printf (_ ("Sorry, your %s connection was lost. "
+                                        "So we've connected you to %s, a %s "
+                                        "network"),
+                                     priv->last_type,
+                                     name,
+                                     type);
+        }
+      else
+        {
+          message = g_strdup_printf (_ ("Sorry, your %s connection was lost. So "
+                                        "we've connected you to a %s network"),
+                                     priv->last_type,
+                                     type);
+        }
     }
-    else if (name)
-    {
-      message = g_strdup_printf (_("Sorry, your %s connection was lost. "
-                                   "So we've connected you to %s, a %s "
-                                   "network"),
-                                 priv->last_type,
-                                 name,
-                                 type);
-    }
-    else
-    {
-      message = g_strdup_printf (_("Sorry, your %s connection was lost. So "
-                                   "we've connected you to a %s network"),
-                                 priv->last_type,
-                                 type);
-    }
-  }
 
   /* Determine icon to show in notification */
   if (g_strcmp0 (type, "wifi") == 0)
-  {
-    if (str > 70)
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
-    else if (str > 35)
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
-    else
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
-  }
+    {
+      if (str > 70)
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_STRONG);
+      else if (str > 35)
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_GOOD);
+      else
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIRELESS_WEAK);
+    }
   else if (g_strcmp0 (type, "wimax") == 0)
-  {
-    if (str > 50)
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
-    else
-      icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
-  }
+    {
+      if (str > 50)
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_STRONG);
+      else
+        icon = carrick_icon_factory_get_path_for_state (ICON_WIMAX_WEAK);
+    }
   else if (g_strcmp0 (type, "cellular") == 0)
-  {
-    if (str > 50)
-      icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
-    else
-      icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
-  }
+    {
+      if (str > 50)
+        icon = carrick_icon_factory_get_path_for_state (ICON_3G_STRONG);
+      else
+        icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
+    }
 
   _send_note (title, message, icon);
 
@@ -297,37 +296,36 @@ _tell_changed (CarrickNotificationManager *self,
 
 static void
 carrick_notification_manager_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
+                                           GValue *value, GParamSpec *pspec)
 {
   CarrickNotificationManager *notif = CARRICK_NOTIFICATION_MANAGER (object);
 
   switch (property_id)
-  {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    break;
-  }
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
 }
 
 static void
 carrick_notification_manager_set_property (GObject *object, guint property_id,
-                              const GValue *value, GParamSpec *pspec)
+                                           const GValue *value, GParamSpec *pspec)
 {
   CarrickNotificationManager *notif = CARRICK_NOTIFICATION_MANAGER (object);
 
   switch (property_id)
-  {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    break;
-  }
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
 }
 
 static void
 carrick_notification_manager_dispose (GObject *object)
 {
-
-  CarrickNotificationManager *self = CARRICK_NOTIFICATION_MANAGER (object);
+  CarrickNotificationManager        *self = CARRICK_NOTIFICATION_MANAGER (object);
   CarrickNotificationManagerPrivate *priv = self->priv;
 
   notify_uninit ();
