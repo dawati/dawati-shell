@@ -417,6 +417,29 @@ _request_passphrase (CarrickServiceItem *item)
   gtk_widget_show (priv->passphrase_box);
 }
 
+/*
+ * Generic call_notify function for async d-bus calls
+ */
+static void
+dbus_proxy_notify_cb (DBusGProxy     *proxy,
+                      DBusGProxyCall *call,
+                      gpointer        user_data)
+{
+  GError      *error = NULL;
+
+  dbus_g_proxy_end_call (proxy,
+                         call,
+                         &error,
+                         G_TYPE_INVALID);
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_clear_error (&error);
+    }
+}
+
 static void
 _delete_button_cb (GtkButton *delete_button,
                    gpointer   user_data)
@@ -469,11 +492,12 @@ _delete_button_cb (GtkButton *delete_button,
                                                 priv->type,
                                                 "idle",
                                                 priv->name);
-      dbus_g_proxy_call (priv->proxy,
-                         "Remove",
-                         NULL,
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->proxy,
+                               "Remove",
+                               dbus_proxy_notify_cb,
+                               item,
+                               NULL,
+                               G_TYPE_INVALID);
     }
 
   gtk_widget_destroy (dialog);
@@ -495,11 +519,12 @@ _connect_button_cb (GtkButton          *connect_button,
                                                 priv->type,
                                                 "idle",
                                                 priv->name);
-      dbus_g_proxy_call (priv->proxy,
-                         "Disconnect",
-                         NULL,
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->proxy,
+                               "Disconnect",
+                               dbus_proxy_notify_cb,
+                               item,
+                               NULL,
+                               G_TYPE_INVALID);
     }
   else
     {
@@ -517,11 +542,12 @@ _connect_button_cb (GtkButton          *connect_button,
             }
         }
 
-      dbus_g_proxy_call (priv->proxy,
-                         "Connect",
-                         NULL,
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->proxy,
+                               "Connect",
+                               dbus_proxy_notify_cb,
+                               item,
+                               NULL,
+                               G_TYPE_INVALID);
     }
 }
 
@@ -544,21 +570,23 @@ _connect_with_password (CarrickServiceItem *item)
                                             priv->type,
                                             "ready",
                                             priv->name);
-  dbus_g_proxy_call (priv->proxy,
-                     "SetProperty",
-                     NULL,
-                     G_TYPE_STRING,
-                     "Passphrase",
-                     G_TYPE_STRING,
-                     passphrase,
-                     G_TYPE_INVALID,
-                     G_TYPE_INVALID);
+  dbus_g_proxy_begin_call (priv->proxy,
+                           "SetProperty",
+                           dbus_proxy_notify_cb,
+                           item,
+                           NULL,
+                           G_TYPE_STRING,
+                           "Passphrase",
+                           G_TYPE_STRING,
+                           passphrase,
+                           G_TYPE_INVALID);
 
-  dbus_g_proxy_call (priv->proxy,
-                     "Connect",
-                     NULL,
-                     G_TYPE_INVALID,
-                     G_TYPE_INVALID);
+  dbus_g_proxy_begin_call (priv->proxy,
+                           "Connect",
+                           dbus_proxy_notify_cb,
+                           item,
+                           NULL,
+                           G_TYPE_INVALID);
 
   gtk_widget_hide (priv->passphrase_box);
   gtk_widget_show (priv->connect_box);
