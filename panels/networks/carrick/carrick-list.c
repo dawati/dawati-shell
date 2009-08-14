@@ -188,6 +188,38 @@ carrick_list_drag_drop (GtkWidget      *widget,
   return TRUE;
 }
 
+typedef struct move_data
+{
+  GtkWidget *item;
+  GtkWidget *list;
+  gint pos;
+} move_data;
+
+static void
+move_notify_cb (DBusGProxy     *proxy,
+                DBusGProxyCall *call,
+                gpointer        user_data)
+{
+  move_data *data = user_data;
+  GError    *error = NULL;
+
+  dbus_g_proxy_end_call (proxy,
+                         call,
+                         &error,
+                         G_TYPE_INVALID);
+  if (error)
+    {
+      g_debug ("Moving service failed: %s, resetting",
+               error->message);
+      g_clear_error (&error);
+      gtk_box_reorder_child (GTK_BOX (data->list),
+                             data->item,
+                             data->pos);
+    }
+
+  g_slice_free (move_data, data);
+}
+
 static void
 carrick_list_drag_end (GtkWidget      *widget,
                        GdkDragContext *context,
@@ -229,6 +261,7 @@ carrick_list_drag_end (GtkWidget      *widget,
       GtkWidget   *other_widget;
       DBusGProxy  *service, * other_service;
       const gchar *path;
+      move_data   *data = NULL;
 
       service = carrick_service_item_get_proxy (CARRICK_SERVICE_ITEM (widget));
 
@@ -238,16 +271,25 @@ carrick_list_drag_end (GtkWidget      *widget,
         {
           other_widget = g_list_nth_data (children, 1);
           other_service = carrick_service_item_get_proxy
-              (CARRICK_SERVICE_ITEM (other_widget));
+                    (CARRICK_SERVICE_ITEM (other_widget));
           path = dbus_g_proxy_get_path (other_service);
 
-          dbus_g_proxy_call (service,
-                             "MoveBefore",
-                             NULL,
-                             DBUS_TYPE_G_OBJECT_PATH,
-                             path,
-                             G_TYPE_INVALID,
-                             G_TYPE_INVALID);
+          data = g_slice_new0 (move_data);
+          data->list = GTK_WIDGET (list);
+          data->item = widget;
+          gtk_container_child_get (GTK_CONTAINER (priv->box),
+                                   widget,
+                                   "position", &data->pos,
+                                   NULL);;
+
+          dbus_g_proxy_begin_call (service,
+                                   "MoveBefore",
+                                   move_notify_cb,
+                                   data,
+                                   NULL,
+                                   DBUS_TYPE_G_OBJECT_PATH,
+                                   path,
+                                   G_TYPE_INVALID);
         }
       else
         {
@@ -263,16 +305,25 @@ carrick_list_drag_end (GtkWidget      *widget,
             }
 
           other_service = carrick_service_item_get_proxy
-              (CARRICK_SERVICE_ITEM (other_widget));
+                    (CARRICK_SERVICE_ITEM (other_widget));
           path = dbus_g_proxy_get_path (other_service);
 
-          dbus_g_proxy_call (service,
-                             "MoveAfter",
-                             NULL,
-                             DBUS_TYPE_G_OBJECT_PATH,
-                             path,
-                             G_TYPE_INVALID,
-                             G_TYPE_INVALID);
+          data = g_slice_new0 (move_data);
+          data->list = GTK_WIDGET (list);
+          data->item = widget;
+          gtk_container_child_get (GTK_CONTAINER (priv->box),
+                                   widget,
+                                   "position", &data->pos,
+                                   NULL);;
+
+          dbus_g_proxy_begin_call (service,
+                                   "MoveAfter",
+                                   move_notify_cb,
+                                   data,
+                                   NULL,
+                                   DBUS_TYPE_G_OBJECT_PATH,
+                                   path,
+                                   G_TYPE_INVALID);
         }
     }
 
@@ -708,7 +759,7 @@ carrick_list_drag_motion (GtkWidget      *widget,
               g_source_remove (priv->scroll_timeout_id);
             }
           priv->scroll_timeout_id = g_timeout_add
-              (40, (GSourceFunc) carrick_list_scroll, list);
+                    (40, (GSourceFunc) carrick_list_scroll, list);
         }
     }
 }
@@ -804,11 +855,11 @@ carrick_list_constructor (GType                  gtype,
   priv = LIST_PRIVATE (obj);
 
   priv->adjustment = gtk_scrolled_window_get_vadjustment
-          (GTK_SCROLLED_WINDOW (obj));
+                (GTK_SCROLLED_WINDOW (obj));
   viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment
-                                     (GTK_SCROLLED_WINDOW (obj)),
+                                           (GTK_SCROLLED_WINDOW (obj)),
                                gtk_scrolled_window_get_vadjustment
-                                     (GTK_SCROLLED_WINDOW (obj)));
+                                           (GTK_SCROLLED_WINDOW (obj)));
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport),
                                 GTK_SHADOW_NONE);
   gtk_widget_show (viewport);
