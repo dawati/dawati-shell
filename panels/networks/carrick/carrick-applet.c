@@ -32,10 +32,8 @@
 
 G_DEFINE_TYPE (CarrickApplet, carrick_applet, G_TYPE_OBJECT)
 
-#define GET_PRIVATE(o) \
+#define APPLET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_APPLET, CarrickAppletPrivate))
-
-typedef struct _CarrickAppletPrivate CarrickAppletPrivate;
 
 struct _CarrickAppletPrivate {
   GtkWidget          *pane;
@@ -46,7 +44,7 @@ struct _CarrickAppletPrivate {
 GtkWidget*
 carrick_applet_get_pane (CarrickApplet *applet)
 {
-  CarrickAppletPrivate *priv = GET_PRIVATE (applet);
+  CarrickAppletPrivate *priv = applet->priv;
 
   return priv->pane;
 }
@@ -58,9 +56,9 @@ carrick_applet_class_init (CarrickAppletClass *klass)
 }
 
 static void
-carrick_applet_init (CarrickApplet *self)
+carrick_applet_init (CarrickApplet *applet)
 {
-  CarrickAppletPrivate *priv = GET_PRIVATE (self);
+  CarrickAppletPrivate *priv = applet->priv;
 
   priv->icon_factory = carrick_icon_factory_new ();
   priv->notifications = carrick_notification_manager_new ();

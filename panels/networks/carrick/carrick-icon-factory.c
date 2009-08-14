@@ -28,8 +28,6 @@ G_DEFINE_TYPE (CarrickIconFactory, carrick_icon_factory, G_TYPE_OBJECT)
 #define ICON_FACTORY_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_ICON_FACTORY, CarrickIconFactoryPrivate))
 
-typedef struct _CarrickIconFactoryPrivate CarrickIconFactoryPrivate;
-
 #define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
 
 static const gchar *icon_names[] = {
@@ -110,7 +108,7 @@ carrick_icon_factory_class_init (CarrickIconFactoryClass *klass)
 static void
 carrick_icon_factory_init (CarrickIconFactory *self)
 {
-  CarrickIconFactoryPrivate *priv = ICON_FACTORY_PRIVATE (self);
+  CarrickIconFactoryPrivate *priv = self->priv;
 
   priv->active_img = NULL;
   priv->active_hov_img = NULL;
@@ -155,7 +153,7 @@ GdkPixbuf *
 carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
                                            CarrickIconState    state)
 {
-  CarrickIconFactoryPrivate *priv = ICON_FACTORY_PRIVATE (factory);
+  CarrickIconFactoryPrivate *priv = factory->priv;
   GdkPixbuf *icon = NULL;
   GError *error = NULL;
 

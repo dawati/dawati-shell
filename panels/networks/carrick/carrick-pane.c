@@ -36,10 +36,8 @@
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
 
-#define GET_PRIVATE(o) \
+#define PANE_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_PANE, CarrickPanePrivate))
-
-typedef struct _CarrickPanePrivate CarrickPanePrivate;
 
 struct _CarrickPanePrivate {
   GtkWidget          *wifi_switch;
@@ -109,7 +107,7 @@ carrick_pane_get_property (GObject    *object,
                            GParamSpec *pspec)
 {
   CarrickPane *pane = CARRICK_PANE (object);
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   switch (property_id) {
   case PROP_ICON_FACTORY:
@@ -127,7 +125,7 @@ static void
 carrick_pane_set_icon_factory (CarrickPane *pane,
                                CarrickIconFactory *icon_factory)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   priv->icon_factory = icon_factory;
   carrick_list_set_icon_factory (CARRICK_LIST (priv->service_list),
@@ -138,7 +136,7 @@ static void
 carrick_pane_set_notifications (CarrickPane *pane,
                                 CarrickNotificationManager *notes)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   priv->notes = notes;
   carrick_list_set_notification_manager (CARRICK_LIST (priv->service_list),
@@ -208,7 +206,7 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                        gboolean            new_state,
                        CarrickPane        *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   if (new_state)
   {
@@ -247,7 +245,7 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                            gboolean            new_state,
                            CarrickPane        *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   if (new_state)
   {
@@ -287,7 +285,7 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                          gboolean            new_state,
                          CarrickPane        *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   if (new_state)
   {
@@ -326,7 +324,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                         gboolean            new_state,
                         CarrickPane        *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   if (new_state)
   {
@@ -365,7 +363,7 @@ _bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
 			    gboolean            new_state,
 			    CarrickPane        *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   if (new_state)
   {
@@ -429,7 +427,7 @@ static void
 _new_connection_cb (GtkButton *button,
                     gpointer   user_data)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (user_data);
+  CarrickPanePrivate *priv = PANE_PRIVATE (user_data);
   GtkWidget *dialog;
   GtkWidget *desc;
   GtkWidget *ssid_entry, *ssid_label;
@@ -650,7 +648,7 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 			       gboolean            new_state,
 			       CarrickPane        *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
 
   /* FIXME: This is a band aid, needs a better fix */
   carrick_notification_manager_queue_event (priv->notes,
@@ -674,7 +672,7 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 static void
 _add_fallback (CarrickPane *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
   gchar *fallback = NULL;
 
   /* Need to add some fall-back content */
@@ -781,7 +779,7 @@ pane_update_property (const gchar *property,
 		      gpointer     user_data)
 {
   CarrickPane *self = user_data;
-  CarrickPanePrivate *priv = GET_PRIVATE (self);
+  CarrickPanePrivate *priv = self->priv;
 
   if (g_str_equal (property, "OfflineMode"))
   {
@@ -987,7 +985,7 @@ pane_manager_get_properties_cb (DBusGProxy     *manager,
 static void
 carrick_pane_init (CarrickPane *self)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (self);
+  CarrickPanePrivate *priv;
   GtkWidget *switch_bin;
   GtkWidget *flight_bin;
   GtkWidget *net_list_bin;
@@ -1000,6 +998,8 @@ carrick_pane_init (CarrickPane *self)
   GError *error = NULL;
   DBusGConnection *connection;
   GtkTreeModel *model;
+
+  priv = self->priv = PANE_PRIVATE (self);
 
   priv->icon_factory = NULL;
   priv->manager = NULL;
@@ -1369,7 +1369,7 @@ carrick_pane_init (CarrickPane *self)
 void
 carrick_pane_update (CarrickPane *pane)
 {
-  CarrickPanePrivate *priv = GET_PRIVATE (pane);
+  CarrickPanePrivate *priv = pane->priv;
   time_t now = time (NULL);
 
   /* Only trigger a scan if we haven't triggered one in the last minute.

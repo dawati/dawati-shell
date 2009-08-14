@@ -53,13 +53,18 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CARRICK_TYPE_LIST, CarrickListClass))
 
-typedef struct {
-  GtkScrolledWindow parent;
-} CarrickList;
+typedef struct _CarrickList CarrickList;
+typedef struct _CarrickListClass CarrickListClass;
+typedef struct _CarrickListPrivate CarrickListPrivate;
 
-typedef struct {
+struct _CarrickList {
+  GtkScrolledWindow parent;
+  CarrickListPrivate *priv;
+};
+
+struct _CarrickListClass {
   GtkScrolledWindowClass parent_class;
-} CarrickListClass;
+};
 
 GType carrick_list_get_type (void);
 

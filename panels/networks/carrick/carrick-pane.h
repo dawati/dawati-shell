@@ -46,13 +46,19 @@ G_BEGIN_DECLS
 #define CARRICK_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), CARRICK_TYPE_PANE, CarrickPaneClass))
 
-typedef struct {
-  GtkTable parent;
-} CarrickPane;
+typedef struct _CarrickPane CarrickPane;
+typedef struct _CarrickPaneClass CarrickPaneClass;
+typedef struct _CarrickPanePrivate CarrickPanePrivate;
 
-typedef struct {
+struct _CarrickPane {
+  GtkTable parent;
+
+  CarrickPanePrivate *priv;
+};
+
+struct _CarrickPaneClass {
   GtkTableClass parent_class;
-} CarrickPaneClass;
+};
 
 GType carrick_pane_get_type (void);
 

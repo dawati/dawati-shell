@@ -78,13 +78,18 @@ typedef enum {
   ICON_BLUETOOTH_WEAK_HOVER
 } CarrickIconState;
 
-typedef struct {
-  GObject parent;
-} CarrickIconFactory;
+typedef struct _CarrickIconFactory CarrickIconFactory;
+typedef struct _CarrickIconFactoryClass CarrickIconFactoryClass;
+typedef struct _CarrickIconFactoryPrivate CarrickIconFactoryPrivate;
 
-typedef struct {
+struct _CarrickIconFactory {
+  GObject parent;
+  CarrickIconFactoryPrivate *priv;
+};
+
+struct _CarrickIconFactoryClass {
   GObjectClass parent_class;
-} CarrickIconFactoryClass;
+};
 
 GType carrick_icon_factory_get_type (void);
 

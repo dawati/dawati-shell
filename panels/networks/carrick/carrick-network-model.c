@@ -50,13 +50,14 @@ carrick_network_model_class_init (CarrickNetworkModelClass *klass)
 static void
 carrick_network_model_init (CarrickNetworkModel *self)
 {
+  CarrickNetworkModelPrivate *priv;
   GError *error = NULL;
   DBusGProxy *manager;
   DBusGProxyCall *call;
 
-  self->priv = NETWORK_MODEL_PRIVATE (self);
-  self->priv->services = NULL;
-  self->priv->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
+  priv =  self->priv = NETWORK_MODEL_PRIVATE (self);
+  priv->services = NULL;
+  priv->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
   if (error)
   {
     g_debug ("Error connecting to bus: %s",
@@ -65,7 +66,7 @@ carrick_network_model_init (CarrickNetworkModel *self)
     /* FIXME: Do better? */
   }
 
-  manager = dbus_g_proxy_new_for_name (self->priv->connection,
+  manager = dbus_g_proxy_new_for_name (priv->connection,
                                        CONNMAN_SERVICE,
                                        CONNMAN_MANAGER_PATH,
                                        CONNMAN_MANAGER_INTERFACE);

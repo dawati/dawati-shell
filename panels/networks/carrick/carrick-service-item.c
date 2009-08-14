@@ -33,8 +33,6 @@ G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 #define SERVICE_ITEM_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_SERVICE_ITEM, CarrickServiceItemPrivate))
 
-typedef struct _CarrickServiceItemPrivate CarrickServiceItemPrivate;
-
 enum
 {
   PROP_0,
@@ -128,7 +126,7 @@ carrick_service_item_get_property (GObject *object, guint property_id,
 static void
 _service_item_set_security (CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = item->priv;
   gchar *security = g_strdup (priv->security);
   gchar *security_label = NULL;
 
@@ -175,7 +173,7 @@ _service_item_set_security (CarrickServiceItem *item)
 static void
 _populate_variables (CarrickServiceItem *self)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  CarrickServiceItemPrivate *priv = self->priv;
   GtkTreeIter iter;
 
   g_return_if_fail (priv->model != NULL);
@@ -203,7 +201,7 @@ _populate_variables (CarrickServiceItem *self)
 static CarrickIconState
 _get_icon_state (CarrickServiceItem *self)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  CarrickServiceItemPrivate *priv = self->priv;
 
   if (g_str_equal (priv->type, "ethernet"))
   {
@@ -264,7 +262,7 @@ _get_icon_state (CarrickServiceItem *self)
 static void
 _set_state (CarrickServiceItem *self)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  CarrickServiceItemPrivate *priv = self->priv;
   gchar *label = NULL;
   gchar *button = NULL;
   GdkPixbuf *pixbuf = NULL;
@@ -388,7 +386,7 @@ static void
 _show_pass_toggled_cb (GtkToggleButton    *button,
                        CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = item->priv;
 
   if (!priv->passphrase_hint_visible)
   {
@@ -401,7 +399,7 @@ _show_pass_toggled_cb (GtkToggleButton    *button,
 static void
 _request_passphrase (CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = item->priv;
 
   /* TRANSLATORS: text should be 20 characters or less to be entirely
    * visible in the passphrase entry */
@@ -420,7 +418,8 @@ static void
 _delete_button_cb (GtkButton *delete_button,
                    gpointer   user_data)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (user_data);
+  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
+  CarrickServiceItemPrivate *priv = item->priv;
   GtkWidget *dialog;
   GtkWidget *label;
   gchar *label_text = NULL;
@@ -481,7 +480,7 @@ static void
 _connect_button_cb (GtkButton          *connect_button,
                     CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = item->priv;
 
   g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
@@ -527,7 +526,7 @@ _connect_button_cb (GtkButton          *connect_button,
 static void
 _connect_with_password (CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = item->priv;
   const gchar *passphrase;
 
   if (priv->passphrase_hint_visible)
@@ -578,7 +577,7 @@ _passphrase_entry_activated_cb (GtkEntry *entry, CarrickServiceItem *item)
 static void
 _entry_changed_cb (GtkEntry *pw_entry, CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = item->priv;
 
   if (priv->passphrase_hint_visible)
   {
@@ -607,7 +606,7 @@ carrick_service_item_get_draggable (CarrickServiceItem *item)
 
   g_return_val_if_fail (CARRICK_IS_SERVICE_ITEM (item), FALSE);
 
-  priv = SERVICE_ITEM_PRIVATE (item);
+  priv = item->priv;
   return priv->draggable;
 }
 
@@ -619,7 +618,7 @@ carrick_service_item_set_draggable (CarrickServiceItem *item,
 
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (item));
 
-  priv = SERVICE_ITEM_PRIVATE (item);
+  priv = item->priv;
   priv->draggable = draggable;
 }
 
@@ -631,7 +630,7 @@ carrick_service_item_set_active (CarrickServiceItem *item,
 
   if (!active)
   {
-    CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+    CarrickServiceItemPrivate *priv = item->priv;
 
     gtk_widget_hide (priv->passphrase_box);
     gtk_widget_show (priv->connect_box);
@@ -641,7 +640,7 @@ carrick_service_item_set_active (CarrickServiceItem *item,
 DBusGProxy*
 carrick_service_item_get_proxy (CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = item->priv;
 
   return priv->proxy;
 }
@@ -649,7 +648,7 @@ carrick_service_item_get_proxy (CarrickServiceItem *item)
 GtkTreePath*
 carrick_service_item_get_tree_path (CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (item);
+  CarrickServiceItemPrivate *priv = item->priv;
 
   return priv->path;
 }
@@ -659,7 +658,7 @@ _set_model (CarrickServiceItem  *self,
             CarrickNetworkModel *model)
 {
   g_return_if_fail (model != NULL);
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  CarrickServiceItemPrivate *priv = self->priv;
 
   priv->model = model;
 
@@ -676,7 +675,7 @@ _set_path (CarrickServiceItem *self,
            GtkTreePath        *path)
 {
   g_return_if_fail (path != NULL);
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  CarrickServiceItemPrivate *priv = self->priv;
 
   priv->path = path;
 
@@ -701,7 +700,7 @@ carrick_service_item_set_property (GObject *object, guint property_id,
   g_return_if_fail (object != NULL);
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (object));
   CarrickServiceItem *self = CARRICK_SERVICE_ITEM (object);
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  CarrickServiceItemPrivate *priv = self->priv;
 
   switch (property_id)
     {
@@ -730,7 +729,8 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 static void
 carrick_service_item_dispose (GObject *object)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (object);
+  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (object);
+  CarrickServiceItemPrivate *priv = item->priv;
 
   if (priv->hand_cursor)
   {
@@ -758,9 +758,8 @@ static gboolean
 carrick_service_item_enter_notify_event (GtkWidget        *widget,
                                          GdkEventCrossing *event)
 {
-  CarrickServiceItemPrivate *priv;
-
-  priv = SERVICE_ITEM_PRIVATE (widget);
+  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (widget);
+  CarrickServiceItemPrivate *priv = item->priv;
 
   priv->hover = TRUE;
 
@@ -785,9 +784,8 @@ carrick_service_item_leave_notify_event (GtkWidget        *widget,
   }
   else
   {
-    CarrickServiceItemPrivate *priv;
-
-    priv = SERVICE_ITEM_PRIVATE (widget);
+    CarrickServiceItem *item = CARRICK_SERVICE_ITEM (widget);
+    CarrickServiceItemPrivate *priv = item->priv;
 
     priv->hover = FALSE;
 

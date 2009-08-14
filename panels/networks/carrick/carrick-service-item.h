@@ -52,13 +52,19 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CARRICK_TYPE_SERVICE_ITEM, CarrickServiceItemClass))
 
-typedef struct {
-  GtkEventBox parent;
-} CarrickServiceItem;
+typedef struct _CarrickServiceItem CarrickServiceItem;
+typedef struct _CarrickServiceItemClass CarrickServiceItemClass;
+typedef struct _CarrickServiceItemPrivate CarrickServiceItemPrivate;
 
-typedef struct {
+struct _CarrickServiceItem {
+  GtkEventBox parent;
+
+  CarrickServiceItemPrivate *priv;
+};
+
+struct _CarrickServiceItemClass {
   GtkEventBoxClass parent_class;
-} CarrickServiceItemClass;
+};
 
 GType carrick_service_item_get_type (void);
 
