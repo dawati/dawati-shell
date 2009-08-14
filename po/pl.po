@@ -7,27 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-29 09:21+0000\n"
+"POT-Creation-Date: 2009-08-12 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../ahoghill/ahoghill/ahoghill-example-table.c:117
-msgid ""
-"You need to play some music, look at some pictures or watch some video to "
-"see your history here. In the meantime, you could take a look at some sample "
-"media:"
-msgstr ""
-"Historia przeglądania będzie widoczna tutaj kiedy posłuchasz muzyki, rzucisz "
-"okiem na zdjęcia lub obejrzysz film. Dostępne przykładowe materiały na dobry "
-"początek:"
+msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+msgstr "Historia przeglądania będzie widoczna tutaj kiedy posłuchasz muzyki, rzucisz okiem na zdjęcia lub obejrzysz film. Dostępne przykładowe materiały na dobry początek:"
 
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:417
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:981
@@ -38,6 +31,7 @@ msgstr "Ostatnio odtwarzane"
 msgid "Search results"
 msgstr "Wyniki wyszukiwania"
 
+# The literal translation is "kolejka odtwarzania" but the term is less natural than "playlista"
 #: ../ahoghill/ahoghill/ahoghill-grid-view.c:995
 msgid "Playqueue"
 msgstr "Playlista"
@@ -118,13 +112,68 @@ msgstr "Aplikacje"
 msgid "applications"
 msgstr "aplikacje"
 
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+msgid "Less than a minute ago"
+msgstr "Mniej niż minutę temu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+msgid "A few minutes ago"
+msgstr "Parę minut temu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+msgid "A couple of hours ago"
+msgstr "Kilka godzin temu"
+
+# No good way to say "earlier today"
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+msgid "Earlier today"
+msgstr "Kilkanaście godzin temu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+msgid "Yesterday"
+msgstr "Wczoraj"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#, c-format
+msgid "On %A"
+msgstr "Dnia %A"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+msgid "Unknown"
+msgstr "Nie sprecyzowano"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+msgid "Last week"
+msgstr "Zeszły tydzień"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+msgid "A couple of weeks ago"
+msgstr "Parę tygodni temu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+msgid "This month"
+msgstr "W tym miesiącu"
+
+#. Now Jan., last used in Dec.
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+msgid "Last month"
+msgstr "W zeszłym miesiącu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+msgid "This year"
+msgstr "W tym roku"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+msgid "Last year"
+msgstr "W zeszłym roku"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+msgid "Ages ago"
+msgstr "Wieki temu"
+
 #: ../netpanel/src/moblin-netbook-netpanel.c:588
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"Twoje ulubione strony będą pojawiać się tutaj oraz w nowych zakładkach w "
-"miarę jak przeglądasz sieć."
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Twoje ulubione strony będą pojawiać się tutaj oraz w nowych zakładkach w miarę jak przeglądasz sieć."
 
 #: ../netpanel/src/moblin-netbook-netpanel.c:790
 msgid "Untitled"
@@ -167,7 +216,7 @@ msgstr "Wyszukaj %%s na %s"
 msgid "Go to %s"
 msgstr "Załaduj %s"
 
-#: ../pasteboard/src/mnb-clipboard-item.c:250
+#: ../pasteboard/src/mnb-clipboard-item.c:248
 #: ../pasteboard/src/moblin-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "Skopiuj"
@@ -211,27 +260,17 @@ msgid "No calendar entries this week"
 msgstr "Brak wpisów w kalendarzu na ten tydzień"
 
 #: ../penge/penge/penge-people-pane.c:191
-msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr ""
-"Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj Twoje "
-"konta!"
+msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgstr "Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj Twoje konta!"
 
 # I'm really unhappy with this one but can't think of anything better
-#: ../penge/penge/penge-recent-files-pane.c:201
+#: ../penge/penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Witamy na Moblinie 2.0 na netbooki</b>"
 
-#: ../penge/penge/penge-recent-files-pane.c:226
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around this Beta Release. We "
-"hope you enjoy it, The Moblin Team."
-msgstr ""
-"Moblin różni się od innych komputerów w wielu aspektach, pozbieraliśmy więc "
-"co nieco na temat tej wersji Beta, aby pomóc Ci się w niej znaleźć. "
-"Powodzenia, Team Moblin"
+#: ../penge/penge/penge-recent-files-pane.c:227
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Moblin różni się od innych komputerów w wielu aspektach, pozbieraliśmy więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team Moblin"
 
 #: ../penge/penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -245,65 +284,6 @@ msgstr "Brak zadań na dziś"
 #, c-format
 msgid "Due %x"
 msgstr "Na %x"
-
-#: ../penge/penge/penge-utils.c:63 ../status/src/mnb-web-status-entry.c:106
-msgid "Less than a minute ago"
-msgstr "Mniej niż minutę temu"
-
-#: ../penge/penge/penge-utils.c:67 ../status/src/mnb-web-status-entry.c:110
-msgid "A few minutes ago"
-msgstr "Parę minut temu"
-
-#: ../penge/penge/penge-utils.c:71 ../status/src/mnb-web-status-entry.c:114
-msgid "A couple of hours ago"
-msgstr "Kilka godzin temu"
-
-# No good way to say "earlier today"
-#: ../penge/penge/penge-utils.c:78 ../status/src/mnb-web-status-entry.c:121
-msgid "Earlier today"
-msgstr "Kilkanaście godzin temu"
-
-#: ../penge/penge/penge-utils.c:81 ../status/src/mnb-web-status-entry.c:124
-msgid "Yesterday"
-msgstr "Wczoraj"
-
-#: ../penge/penge/penge-utils.c:89 ../status/src/mnb-web-status-entry.c:132
-#, c-format
-msgid "On %A"
-msgstr "Dnia %A"
-
-#: ../penge/penge/penge-utils.c:95 ../status/src/mnb-web-status-entry.c:138
-msgid "Unknown"
-msgstr "Nie sprecyzowano"
-
-#: ../penge/penge/penge-utils.c:102 ../status/src/mnb-web-status-entry.c:145
-msgid "Last week"
-msgstr "Zeszły tydzień"
-
-#: ../penge/penge/penge-utils.c:105 ../status/src/mnb-web-status-entry.c:148
-msgid "A couple of weeks ago"
-msgstr "Parę tygodni temu"
-
-#: ../penge/penge/penge-utils.c:111 ../status/src/mnb-web-status-entry.c:154
-msgid "This month"
-msgstr "W tym miesiącu"
-
-#. Now Jan., last used in Dec.
-#: ../penge/penge/penge-utils.c:115 ../status/src/mnb-web-status-entry.c:158
-msgid "Last month"
-msgstr "W zeszłym miesiącu"
-
-#: ../penge/penge/penge-utils.c:118 ../status/src/mnb-web-status-entry.c:161
-msgid "This year"
-msgstr "W tym roku"
-
-#: ../penge/penge/penge-utils.c:121 ../status/src/mnb-web-status-entry.c:164
-msgid "Last year"
-msgstr "W zeszłym roku"
-
-#: ../penge/penge/penge-utils.c:123 ../status/src/mnb-web-status-entry.c:166
-msgid "Ages ago"
-msgstr "Wieki temu"
 
 #: ../people/src/moblin-panel-people.c:69
 msgid "people"
@@ -324,9 +304,7 @@ msgstr "Wyślij wiadomość"
 #: ../people/src/mnb-people-panel.c:307
 #: ../status/src/moblin-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-"Niestety nie znaleziono znajomych. Czy konto Komunikatora jest "
-"skonfigurowane?"
+msgstr "Niestety nie znaleziono znajomych. Czy konto Komunikatora jest skonfigurowane?"
 
 #: ../people/src/mnb-people-panel.c:555
 msgid "People"
@@ -340,7 +318,8 @@ msgstr "Zaznaczenie"
 msgid "Nobody selected"
 msgstr "Nie wybrano adresatów"
 
-#: ../src/moblin-netbook.c:306 ../src/mnb-toolbar.c:1428
+#: ../src/moblin-netbook.c:306
+#: ../src/mnb-toolbar.c:1428
 msgid "zones"
 msgstr "strefy"
 
@@ -378,12 +357,8 @@ msgid "No Zones yet"
 msgstr "Na razie brak Stref"
 
 #: ../src/mnb-switcher.c:1729
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organise them to your heart's content."
-msgstr ""
-"Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał "
-"możliwość przełączać i organizować je tak jak Ci się podoba."
+msgid "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
+msgstr "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał możliwość przełączać i organizować je tak jak Ci się podoba."
 
 # "na tej strefie" is also a possiblity
 #: ../src/mnb-switcher.c:1952
@@ -432,7 +407,8 @@ msgid "To activate the toolbar, move your cursor to the top of the screen"
 msgstr "Aby skorzystać z paska narzędzi, dojedź kursorem do górnej krawędzi"
 
 # "Offline"?  Masculine form unfortunately
-#: ../status/src/mnb-im-status-row.c:103 ../status/src/mnb-im-status-row.c:104
+#: ../status/src/mnb-im-status-row.c:103
+#: ../status/src/mnb-im-status-row.c:104
 #: ../status/src/mnb-im-status-row.c:742
 msgid "Offline"
 msgstr "Rozłączony"
@@ -444,14 +420,16 @@ msgid "Available"
 msgstr "Dostępny"
 
 # Masculine form unfortunately
-#: ../status/src/mnb-im-status-row.c:106 ../status/src/mnb-im-status-row.c:107
+#: ../status/src/mnb-im-status-row.c:106
+#: ../status/src/mnb-im-status-row.c:107
 #: ../status/src/moblin-panel-status.c:540
 #: ../status/src/moblin-panel-status.c:544
 msgid "Away"
 msgstr "Nie przy komputerze"
 
 # Masculine form unfortunately
-#: ../status/src/mnb-im-status-row.c:108 ../status/src/mnb-im-status-row.c:109
+#: ../status/src/mnb-im-status-row.c:108
+#: ../status/src/mnb-im-status-row.c:109
 #: ../status/src/moblin-panel-status.c:548
 #: ../status/src/moblin-panel-status.c:552
 msgid "Busy"
@@ -461,7 +439,8 @@ msgstr "Zajęty"
 msgid "Close"
 msgstr "Zamknij"
 
-#: ../status/src/mnb-im-status-row.c:141 ../status/src/mnb-im-status-row.c:760
+#: ../status/src/mnb-im-status-row.c:141
+#: ../status/src/mnb-im-status-row.c:760
 msgid "Change"
 msgstr "Zmień"
 
@@ -469,24 +448,24 @@ msgstr "Zmień"
 msgid "Unknown account"
 msgstr "Nieznane konto"
 
-#: ../status/src/mnb-web-status-entry.c:178
-#: ../status/src/mnb-web-status-entry.c:731
-#: ../status/src/mnb-web-status-entry.c:812
+#: ../status/src/mnb-web-status-entry.c:86
+#: ../status/src/mnb-web-status-entry.c:639
+#: ../status/src/mnb-web-status-entry.c:720
 msgid "Edit"
 msgstr "Edycja"
 
 #. Translators: %s is the user visible name of the service
-#: ../status/src/mnb-web-status-entry.c:605
+#: ../status/src/mnb-web-status-entry.c:513
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "Wprowadź tu swój status na %s..."
 
-#: ../status/src/mnb-web-status-entry.c:609
-#: ../status/src/mnb-web-status-entry.c:682
+#: ../status/src/mnb-web-status-entry.c:517
+#: ../status/src/mnb-web-status-entry.c:590
 msgid "Enter your current status here..."
 msgstr "Wprowadź tu swój aktualny status..."
 
-#: ../status/src/mnb-web-status-entry.c:791
+#: ../status/src/mnb-web-status-entry.c:699
 msgid "Post"
 msgstr "Wyślij"
 
@@ -500,17 +479,12 @@ msgid "Your current status - you are offline"
 msgstr "Twój aktualny stan - rozłączony"
 
 #: ../status/src/moblin-panel-status.c:994
-msgid ""
-"To update your web status you need to setup a Web Services account with a "
-"provider that supports status messages"
-msgstr ""
-"Żeby aktualizować swój stan należy ustawić konto Web-serwisu u dostawcy, "
-"który ma opcję powiadamiania o stanach"
+msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+msgstr "Żeby aktualizować swój stan należy ustawić konto Web-serwisu u dostawcy, który ma opcję powiadamiania o stanach"
 
 #: ../status/src/moblin-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr ""
-"Aby aktualizować status w Komunikatorze potrzebujesz skonfigurowanego konta"
+msgstr "Aby aktualizować status w Komunikatorze potrzebujesz skonfigurowanego konta"
 
 # either "stan" or "status"
 #: ../status/src/moblin-panel-status.c:1118
@@ -519,17 +493,14 @@ msgstr "stan"
 
 #~ msgid "myzone"
 #~ msgstr "myzone"
-
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 #~ msgstr ""
 #~ "ikonka panelu wymaga rozmiaru (%i x %i) i będzie przeskalowana do (%i x %"
 #~ "i)"
-
 #~ msgid "Local"
 #~ msgstr "Lokalne"
-
 #~ msgid "Email %s"
 #~ msgstr "Wyślij %s"
-
 #~ msgid "IM %s"
 #~ msgstr "Prześlij %s komunikatorem"
+
