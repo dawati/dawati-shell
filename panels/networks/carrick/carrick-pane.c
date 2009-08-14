@@ -204,9 +204,28 @@ carrick_pane_class_init (CarrickPaneClass *klass)
 }
 
 /*
- * FIXME: Use begin_call so that we can re-set switches in case
- * of failure, etc.
+ * Generic call_notify function for async d-bus calls
  */
+static void
+dbus_proxy_notify_cb (DBusGProxy     *proxy,
+                      DBusGProxyCall *call,
+                      gpointer        user_data)
+{
+  GError      *error = NULL;
+
+  dbus_g_proxy_end_call (proxy,
+                         call,
+                         &error,
+                         G_TYPE_INVALID);
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_clear_error (&error);
+    }
+}
+
 static gboolean
 _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                        gboolean            new_state,
@@ -220,13 +239,14 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                                                 "wifi",
                                                 "ready",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "EnableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "wifi",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "EnableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "wifi",
+                               G_TYPE_INVALID);
     }
   else
     {
@@ -234,13 +254,14 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                                                 "wifi",
                                                 "idle",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "DisableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "wifi",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "DisableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "wifi",
+                               G_TYPE_INVALID);
     }
 
   return TRUE;
@@ -259,13 +280,14 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                                                 "ethernet",
                                                 "ready",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "EnableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "ethernet",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "EnableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "ethernet",
+                               G_TYPE_INVALID);
     }
   else
     {
@@ -273,13 +295,14 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                                                 "ethernet",
                                                 "idle",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "DisableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "ethernet",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "DisableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "ethernet",
+                               G_TYPE_INVALID);
     }
 
   return TRUE;
@@ -298,13 +321,14 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                                                 "cellular",
                                                 "ready",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "EnableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "cellular",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "EnableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "cellular",
+                               G_TYPE_INVALID);
     }
   else
     {
@@ -312,13 +336,14 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                                                 "cellular",
                                                 "idle",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "DisableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "cellular",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "DisableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "cellular",
+                               G_TYPE_INVALID);
     }
 
   return TRUE;
@@ -337,13 +362,14 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                                                 "wimax",
                                                 "ready",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "EnableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "wimax",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "EnableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "wimax",
+                               G_TYPE_INVALID);
     }
   else
     {
@@ -351,13 +377,14 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                                                 "wimax",
                                                 "idle",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "DisableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "wimax",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "DisableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "wimax",
+                               G_TYPE_INVALID);
     }
 
   return TRUE;
@@ -376,13 +403,14 @@ _bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
                                                 "bluetooth",
                                                 "ready",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "EnableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "bluetooth",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "EnableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "bluetooth",
+                               G_TYPE_INVALID);
     }
   else
     {
@@ -390,13 +418,14 @@ _bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
                                                 "bluetooth",
                                                 "idle",
                                                 "all");
-      dbus_g_proxy_call (priv->manager,
-                         "DisableTechnology",
-                         NULL,
-                         G_TYPE_STRING,
-                         "bluetooth",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "DisableTechnology",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "bluetooth",
+                               G_TYPE_INVALID);
     }
 
   return TRUE;
@@ -433,7 +462,8 @@ static void
 _new_connection_cb (GtkButton *button,
                     gpointer   user_data)
 {
-  CarrickPanePrivate *priv = PANE_PRIVATE (user_data);
+  CarrickPane        *self = CARRICK_PANE (user_data);
+  CarrickPanePrivate *priv = self->priv;
   GtkWidget          *dialog;
   GtkWidget          *desc;
   GtkWidget          *ssid_entry, *ssid_label;
@@ -635,15 +665,16 @@ _new_connection_cb (GtkButton *button,
           g_hash_table_insert (method_props, g_strdup ("Passphrase"), pass_v);
         }
 
-      dbus_g_proxy_call (priv->manager,
-                         "ConnectService",
-                         NULL,
-                         dbus_g_type_get_map ("GHashTable",
-                                              G_TYPE_STRING,
-                                              G_TYPE_VALUE),
-                         method_props,
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "ConnectService",
+                               dbus_proxy_notify_cb,
+                               self,
+                               NULL,
+                               dbus_g_type_get_map ("GHashTable",
+                                                    G_TYPE_STRING,
+                                                    G_TYPE_VALUE),
+                               method_props,
+                               G_TYPE_INVALID);
     }
   gtk_widget_destroy (dialog);
 }
@@ -661,15 +692,16 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
                                             "idle",
                                             "all");
 
-  dbus_g_proxy_call (priv->manager,
-                     "SetProperty",
-                     NULL,
-                     G_TYPE_STRING,
-                     "OfflineMode",
-                     G_TYPE_BOOLEAN,
-                     new_state,
-                     G_TYPE_INVALID,
-                     G_TYPE_INVALID);
+  dbus_g_proxy_begin_call (priv->manager,
+                           "SetProperty",
+                           dbus_proxy_notify_cb,
+                           pane,
+                           NULL,
+                           G_TYPE_STRING,
+                           "OfflineMode",
+                           G_TYPE_BOOLEAN,
+                           new_state,
+                           G_TYPE_INVALID);
 
   return TRUE;
 }
@@ -1392,13 +1424,14 @@ carrick_pane_update (CarrickPane *pane)
        * The UI doesn't really care if the call to scan completes or
        * not so just fire and forget
        */
-      dbus_g_proxy_call (priv->manager,
-                         "RequestScan",
-                         NULL,
-                         G_TYPE_STRING,
-                         "",
-                         G_TYPE_INVALID,
-                         G_TYPE_INVALID);
+      dbus_g_proxy_begin_call (priv->manager,
+                               "RequestScan",
+                               dbus_proxy_notify_cb,
+                               pane,
+                               NULL,
+                               G_TYPE_STRING,
+                               "",
+                               G_TYPE_INVALID);
     }
 
   carrick_list_set_all_inactive (CARRICK_LIST (priv->service_list));
