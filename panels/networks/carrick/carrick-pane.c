@@ -796,7 +796,7 @@ pane_update_property (const gchar *property,
                                             user_data);
 
       nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
-                    (priv->offline_mode_switch),
+                                        (priv->offline_mode_switch),
                                         priv->offline_mode);
 
       /* arm signal handler */
@@ -906,15 +906,20 @@ pane_update_property (const gchar *property,
                                             _bluetooth_switch_callback,
                                             user_data);
 
-      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                        (priv->ethernet_switch),
                                         priv->ethernet_enabled);
-      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                        (priv->wifi_switch),
                                         priv->wifi_enabled);
-      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                        (priv->threeg_switch),
                                         priv->threeg_enabled);
-      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                        (priv->wimax_switch),
                                         priv->wimax_enabled);
-      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
+      nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
+                                        (priv->bluetooth_switch),
                                         priv->bluetooth_enabled);
 
       /* arm signal handlers */
