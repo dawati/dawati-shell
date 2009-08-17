@@ -25,6 +25,8 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <moblin-panel/mpl-panel-common.h>
+#include <moblin-panel/mpl-panel-gtk.h>
 
 G_BEGIN_DECLS
 
@@ -55,8 +57,7 @@ typedef struct {
 
 GType dalston_volume_applet_get_type (void);
 
-DalstonVolumeApplet *dalston_volume_applet_new (void);
-GtkStatusIcon *dalston_volume_applet_get_status_icon (DalstonVolumeApplet *applet);
+DalstonVolumeApplet *dalston_volume_applet_new (MplPanelClient *client);
 GtkWidget *dalston_volume_applet_get_pane (DalstonVolumeApplet *applet);
 
 G_END_DECLS

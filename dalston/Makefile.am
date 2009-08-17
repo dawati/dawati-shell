@@ -9,8 +9,6 @@ libdalston_la_SOURCES = dalston-battery-monitor.c \
 			dalston-brightness-slider.h \
 			dalston-power-applet.h \
 			dalston-power-applet.c \
-			dalston-volume-status-icon.c \
-			dalston-volume-status-icon.h \
 			dalston-volume-slider.c \
 			dalston-volume-slider.h \
 			dalston-volume-pane.c \

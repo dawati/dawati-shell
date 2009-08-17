@@ -24,40 +24,22 @@
 #include <glib/gi18n.h>
 
 #include <dalston/dalston-volume-applet.h>
-#include <dalston/dalston-volume-status-icon.h>
-#include "moblin-netbook-system-tray.h"
 
+#include <moblin-panel/mpl-panel-common.h>
+#include <moblin-panel/mpl-panel-gtk.h>
 #include <config.h>
 
-#define PADDING 4
-
-static void
-_plug_notify_embedded (GObject    *object,
-                       GParamSpec *pspec,
-                       gpointer    userdata)
-{
-  DalstonVolumeStatusIcon *status_icon = (DalstonVolumeStatusIcon *)userdata;
-  gboolean embedded;
-
-  g_object_get (object,
-                "embedded",
-                &embedded,
-                NULL);
-
-  dalston_volume_status_icon_set_active (status_icon, embedded);
-}
-
+#define PKG_THEMEDIR PKG_DATADIR"/theme"
 
 int
 main (int    argc,
       char **argv)
 {
   DalstonVolumeApplet *volume_applet;
-  GtkStatusIcon *status_icon;
   GtkWidget *pane;
-  GdkScreen *screen;
+  GtkWidget *window;
   GtkSettings *settings;
-  GtkWidget *plug;
+  MplPanelClient *panel_client;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -72,23 +54,21 @@ main (int    argc,
                                     "Moblin-Netbook",
                                     NULL);
 
-  /* Volume applet */
-  volume_applet = dalston_volume_applet_new ();
-  status_icon = dalston_volume_applet_get_status_icon (volume_applet);
-  plug = gtk_plug_new (0);
-  g_signal_connect (plug,
-                    "notify::embedded",
-                    (GCallback)_plug_notify_embedded,
-                    status_icon);
+  panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
+                                    _("sound"),
+                                    PKG_THEMEDIR "/volume-applet.css",
+                                    "unknown",
+                                    TRUE);
+  /* FIXME is this correct? */
+  mpl_panel_client_set_height_request (panel_client, 200);
 
+  /* Volume applet */
+  volume_applet = dalston_volume_applet_new (panel_client);
+
+  window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
   pane = dalston_volume_applet_get_pane (volume_applet);
-  gtk_container_add (GTK_CONTAINER (plug),
-                     pane);
-  mnbk_system_tray_init (status_icon, GTK_PLUG (plug), "sound");
-  screen = gtk_widget_get_screen (plug);
-  gtk_widget_set_size_request (pane,
-                               gdk_screen_get_width (screen) - 2 * PADDING,
-                               -1);
+  gtk_container_add (GTK_CONTAINER (window), pane);
+  gtk_widget_show (window);
 
   gtk_main ();
 }
