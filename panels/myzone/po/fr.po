@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 13:09-0700\n"
+"POT-Creation-Date: 2009-08-17 09:31+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,27 +22,16 @@ msgid "No calendar entries this week"
 msgstr "Pas d'entrée dans votre calendrier pour cette semaine "
 
 #: ../penge/penge-people-pane.c:191
-msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr ""
-"Les flux et services Web de vos amis vont apparaître ici. Activez vos "
-"comptes dès maintenant !"
+msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgstr "Les flux et services Web de vos amis vont apparaître ici. Activez vos comptes dès maintenant !"
 
 #: ../penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Moblin 2.0 pour Netbooks vous souhaite la bienvenue</b>"
 
 #: ../penge/penge-recent-files-pane.c:227
-#, fuzzy
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
-msgstr ""
-"Comme Moblin est différent de ce que vous avez connu jusqu'à présent, nous "
-"avons compilé quelques conseils et exemples pour vous aider à vous y "
-"retrouver. Amusez-vous à le découvrir... Le Team Moblin."
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Comme Moblin est différent de ce que vous avez connu jusqu'à présent, nous avons compilé quelques conseils et exemples pour vous aider à vous y retrouver. Amusez-vous à le découvrir... Le Team Moblin."
 
 #: ../penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -57,3 +46,4 @@ msgstr "Rien à faire aujourd'hui"
 #, c-format
 msgid "Due %x"
 msgstr "Dû %x"
+
