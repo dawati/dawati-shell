@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 13:09-0700\n"
+"POT-Creation-Date: 2009-08-17 09:31+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSDEU_Andreas <andreasx.machoy@intel.com>\n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,27 +23,16 @@ msgid "No calendar entries this week"
 msgstr "Keine Termine diese Woche"
 
 #: ../penge/penge-people-pane.c:191
-msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr ""
-"Die Newsfeeds deiner Freunde und Web-Services erscheinen hier. Aktiviere "
-"jetzt deine Konten!"
+msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgstr "Die Newsfeeds deiner Freunde und Web-Services erscheinen hier. Aktiviere jetzt deine Konten!"
 
 #: ../penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 msgstr "<b>Willkommen bei Moblin 2.0 für Netbooks</b>"
 
 #: ../penge/penge-recent-files-pane.c:227
-#, fuzzy
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
-msgstr ""
-"Da Moblin ein bisschen anders ist, haben wir ein paar Dinge "
-"zusammengestellt, die dir dabei helfen sollen, dich mit dieser Beta-Version "
-"zurechtzufinden. Wir hoffen, es gefällt dir. Das Moblin Team."
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Da Moblin ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich zurechtzufinden. Wir hoffen, es gefällt dir. Das Moblin Team."
 
 #: ../penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -57,3 +46,4 @@ msgstr "Heute gibt es nichts zu tun"
 #, c-format
 msgid "Due %x"
 msgstr "Fällig %x"
+
