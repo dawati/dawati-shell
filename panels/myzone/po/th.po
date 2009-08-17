@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-15 09:26+0000\n"
-"PO-Revision-Date: 2009-08-16 10:23+0700\n"
+"PO-Revision-Date: 2009-08-17 19:13+0700\n"
 "Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
 "Language-Team: Thai <L10N@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr "	<b>ยินดีต้อนรับสู่ Moblin 2.0 สำห�
 
 #: ../penge/penge-recent-files-pane.c:227
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr ""
+msgstr "เพราะ Moblin แตกต่างจากคอมพิวเตอร์อื่นๆ เราใส่สิ่งละอันพันละน้อยเข้าไปเพื่อช่วยให้คุณค้นพบหนทาง เราหวังว่าคุณจะชอบมัน ทีม Moblin"
 
 #: ../penge/penge-recent-file-tile.c:218
 msgid "Web page"
