@@ -110,8 +110,10 @@ struct _MnbSwitcherZoneClass
    * navigable item within the switcher, this function is used to select the
    * zone.
    *
-   * This function needs to be implemented by all zones that declare themselves
-   * as pageable.
+   * This can be implemented by zones that declare themselves pageable and
+   * require any special steps to be take on selection. If custom
+   * implementation is not provided, the default behaviour is to apply the
+   * active state to the zone.
    */
   gboolean         (*select)      (MnbSwitcherZone      *zone);
 };

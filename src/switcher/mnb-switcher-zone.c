@@ -612,28 +612,36 @@ mnb_switcher_zone_select_item (MnbSwitcherZone *zone, MnbSwitcherItem *item)
 gboolean
 mnb_switcher_zone_select (MnbSwitcherZone *zone)
 {
-  MnbSwitcherZonePrivate *priv  = zone->priv;
-  MnbSwitcherZoneClass   *klass = MNB_SWITCHER_ZONE_GET_CLASS (zone);
-
+  MnbSwitcherZonePrivate *priv   = zone->priv;
+  MnbSwitcherZoneClass   *klass  = MNB_SWITCHER_ZONE_GET_CLASS (zone);
+  gboolean                retval = FALSE;
+  
   if (!mnb_switcher_zone_is_pageable (zone))
     {
       g_warning (G_STRLOC " only pageable zones can be selected");
       return FALSE;
     }
 
+  /*
+   * If the zone provides a class method, we call it first; if not,
+   * we fall back on the default behaviour, which is to set the state to
+   * selected.
+   */
   if (klass->select)
-    if (klass->select (zone))
-      {
-        priv->active = TRUE;
-        mnb_switcher_zone_set_state (zone, MNB_SWITCHER_ZONE_ACTIVE);
-        g_object_notify (G_OBJECT (zone), "active");
-        return TRUE;
-      }
+    retval = klass->select (zone);
+  else
+    {
+      retval = TRUE;
+      mnb_switcher_zone_set_state (zone, MNB_SWITCHER_ZONE_ACTIVE);
+    }
 
-
-  g_warning ("Object of type %s does not implement select()",
-             G_OBJECT_TYPE_NAME (zone));
-  return FALSE;
+  if (retval)
+    {
+      priv->active = TRUE;
+      g_object_notify (G_OBJECT (zone), "active");
+    }
+  
+  return retval;
 }
 
 /*
