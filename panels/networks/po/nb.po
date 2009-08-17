@@ -1,0 +1,294 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-17 09:24+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Bjørn Gustav Baklid <bg@dyret.net>\n"
+"Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmål\n"
+"X-Poedit-Country: NORWAY\n"
+
+#: ../carrick/carrick-pane.c:414
+msgid "New connection settings"
+msgstr "Nye tilkoblingsinstillinger"
+
+#: ../carrick/carrick-pane.c:450
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+"Skriv inn navnet på nettverket du vil\n"
+"koble til, og skriv inn passord og\n"
+"sikkerhetstype dersom nødvendig"
+
+#: ../carrick/carrick-pane.c:460
+msgid "Network name"
+msgstr "Nettverksnavn"
+
+#: ../carrick/carrick-pane.c:472
+msgid "Network security"
+msgstr "Nettverkssikkerhet"
+
+#: ../carrick/carrick-pane.c:482
+msgid "None"
+msgstr "Ingen"
+
+#: ../carrick/carrick-pane.c:496
+msgid "Password"
+msgstr "Passord"
+
+#: ../carrick/carrick-pane.c:511
+#: ../carrick/carrick-service-item.c:1036
+msgid "Show password"
+msgstr "Vis passord"
+
+#.
+#. * Hint to display when we detect that the connection manager
+#. * is dead.  Ideally the system auto-restarts connman so the
+#. * user will not see this, but this is what to show if all
+#. * available recovery measures fail.
+#.
+#: ../carrick/carrick-pane.c:609
+#, fuzzy
+msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
+msgstr "Beklager, vi kan ikke finne noen nettverk. Det ser ut som om Connection Manager ikke kjører. Du bør kansje restarte enheten."
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:620
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Beklager, vi kan ikke finne noen nettverk. Du bør prøve å deaktivere frakoblet modus."
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:636
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr "Beklager, vi kan ikke finne noen nettverk. Du bør prøve å aktivere WiFi."
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:647
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr "Beklager, vi kan ikke finne noen nettverk. Du bør prøve å aktivere WiMAX"
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-pane.c:658
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr "Beklager, vi kan ikke finne noen nettverk. Du bør prøve å aktivere 3G."
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-pane.c:668
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr "Beklager, vi kan ikke finne noen nettverk. Du bør prøve å aktivere Bluetooth"
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-pane.c:679
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr "Beklager, vi kan ikke finne noen nettverk. Du bør prøve å aktiver kablet nettverk."
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-pane.c:691
+msgid "Sorry, we can't find any networks"
+msgstr "Beklager, vi fant ingen nettverk"
+
+#: ../carrick/carrick-pane.c:1030
+msgid "Networks"
+msgstr "Nettverk"
+
+#: ../carrick/carrick-pane.c:1070
+msgid "Add new connection"
+msgstr "Legg til en ny tilkobling"
+
+#: ../carrick/carrick-pane.c:1097
+msgid "WiFi"
+msgstr "WiFi"
+
+#: ../carrick/carrick-pane.c:1129
+#: ../carrick/carrick-service-item.c:224
+msgid "Wired"
+msgstr "Kablet nettverk"
+
+#: ../carrick/carrick-pane.c:1160
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-pane.c:1191
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-pane.c:1223
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../carrick/carrick-pane.c:1266
+msgid "Offline mode"
+msgstr "Frakoblet modus"
+
+#: ../carrick/carrick-pane.c:1291
+msgid "This will disable all your connections"
+msgstr "Dette vil deaktivere alle dine tilkoblinger"
+
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#: ../carrick/carrick-service-item.c:183
+#, c-format
+msgid "%s encrypted"
+msgstr "%s kryptert"
+
+#: ../carrick/carrick-service-item.c:255
+msgid "Disconnect"
+msgstr "Frakoblet"
+
+#: ../carrick/carrick-service-item.c:258
+msgid "Connected"
+msgstr "Tilkoblet"
+
+#: ../carrick/carrick-service-item.c:263
+#, c-format
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: ../carrick/carrick-service-item.c:266
+msgid "Configuring"
+msgstr "Konfigurerer"
+
+#: ../carrick/carrick-service-item.c:273
+#: ../carrick/carrick-service-item.c:281
+#: ../carrick/carrick-service-item.c:1025
+msgid "Connect"
+msgstr "Koble til"
+
+#: ../carrick/carrick-service-item.c:284
+msgid "Connection failed"
+msgstr "Tilkobling feilet"
+
+#: ../carrick/carrick-service-item.c:289
+#: ../carrick/carrick-service-item.c:292
+#, c-format
+msgid "Disconnecting"
+msgstr "Frakobler"
+
+#: ../carrick/carrick-service-item.c:340
+msgid "Type password here"
+msgstr "Skriv passordet her"
+
+#: ../carrick/carrick-service-item.c:403
+#, fuzzy
+msgid "Really remove?"
+msgstr "Vil du virkelig fjerne?"
+
+#: ../carrick/carrick-service-item.c:421
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr ""
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:981
+msgid "WPA2 encrypted"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:131
+msgid "Network connected"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:139
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:169
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:175
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:192
+msgid "Network lost"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:200
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:204
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:210
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:227
+msgid "Network changed"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:246
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:253
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:261
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:271
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:278
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:287
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr ""
+
