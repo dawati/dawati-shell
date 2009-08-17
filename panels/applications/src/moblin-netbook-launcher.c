@@ -706,14 +706,6 @@ mnb_launcher_set_show_fav_apps (MnbLauncher     *self,
     }
 }
 
-static void
-inner_grid_paint_cb (ClutterActor *actor,
-                     gpointer      user_data)
-{
-  if (clutter_actor_get_paint_opacity (actor) < 255)
-    clutter_actor_set_opacity (actor, 255);
-}
-
 static gboolean
 mnb_launcher_fill_category (MnbLauncher     *self)
 {
@@ -772,10 +764,6 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   nbtk_grid_set_column_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
   nbtk_grid_set_row_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
   clutter_actor_set_name (inner_grid, "launcher-expander-grid");
-
-  /* FIXME: this is a workaround, clutter is being investigated.
-   * Revisit in the future and check if still needed. */
-  g_signal_connect (inner_grid, "paint", G_CALLBACK (inner_grid_paint_cb), NULL);
 
   button = NULL;
   for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
