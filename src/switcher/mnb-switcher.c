@@ -806,9 +806,17 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher,
 {
   MnbSwitcherPrivate *priv = switcher->priv;
   MnbSwitcherItem    *item = priv->selected_item;
+  MnbSwitcherZone    *zone = priv->selected_zone;
 
   if (item)
     mnb_switcher_item_activate (item);
+  else if (zone)
+    mnb_switcher_zone_activate (zone);
+  else
+    {
+      g_warning (G_STRLOC " Nothing to activate");
+      return;
+    }
 
   if (close)
     mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
