@@ -615,7 +615,7 @@ mnb_switcher_zone_select (MnbSwitcherZone *zone)
   MnbSwitcherZonePrivate *priv   = zone->priv;
   MnbSwitcherZoneClass   *klass  = MNB_SWITCHER_ZONE_GET_CLASS (zone);
   gboolean                retval = FALSE;
-  
+
   if (!mnb_switcher_zone_is_pageable (zone))
     {
       g_warning (G_STRLOC " only pageable zones can be selected");
@@ -640,7 +640,7 @@ mnb_switcher_zone_select (MnbSwitcherZone *zone)
       priv->active = TRUE;
       g_object_notify (G_OBJECT (zone), "active");
     }
-  
+
   return retval;
 }
 
@@ -803,5 +803,30 @@ mnb_switcher_zone_get_active_item (MnbSwitcherZone *zone)
   g_list_free (o);
 
   return item;
+}
+
+gboolean
+mnb_switcher_zone_activate (MnbSwitcherZone *zone)
+{
+  MnbSwitcherZoneClass   *klass  = MNB_SWITCHER_ZONE_GET_CLASS (zone);
+
+  if (!mnb_switcher_zone_is_pageable (zone))
+    {
+      g_warning (G_STRLOC " only pageable zones can be activated");
+      return FALSE;
+    }
+
+  /*
+   * If the zone provides a class method, we call it first; if not,
+   * we fall back on the default behaviour, which is to set the state to
+   * selected.
+   */
+  if (klass->activate)
+    return klass->activate (zone);
+
+  g_warning ("Object of type %s is pageable, but does not implement activate()",
+             G_OBJECT_TYPE_NAME (zone));
+
+  return FALSE;
 }
 

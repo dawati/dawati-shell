@@ -116,6 +116,14 @@ struct _MnbSwitcherZoneClass
    * active state to the zone.
    */
   gboolean         (*select)      (MnbSwitcherZone      *zone);
+
+  /*
+   * Implements the activation for the type, e.g., what happens when the user
+   * selects the zone with Alt+Tab.
+   *
+   * All pageable zones must implent this vfunction.
+   */
+  gboolean         (*activate)    (MnbSwitcherZone      *zone);
 };
 
 GType mnb_switcher_zone_get_type   (void);
@@ -146,6 +154,7 @@ gboolean         mnb_switcher_zone_has_items        (MnbSwitcherZone      *zone)
 void             mnb_switcher_zone_set_has_items    (MnbSwitcherZone      *zone,
                                                      gboolean              whether);
 MnbSwitcherItem *mnb_switcher_zone_get_active_item  (MnbSwitcherZone      *zone);
+gboolean         mnb_switcher_zone_activate         (MnbSwitcherZone      *zone);
 
 G_END_DECLS
 
