@@ -18,7 +18,7 @@ msgstr "<b>Citas</b>"
 
 #: ../penge/penge-events-pane.c:208
 msgid "No calendar entries this week"
-msgstr "No hay ninguna entrada en el calendario esta semana"
+msgstr "No hay notas esta semana"
 
 # the news from your friends and the web services appear here. Activate your accounts!
 #: ../penge/penge-people-pane.c:191
@@ -42,7 +42,7 @@ msgstr "Página web"
 # Today, you don't have any pending tasks
 #: ../penge/penge-tasks-pane.c:287
 msgid "Nothing to do today"
-msgstr "No tienes tareas pendientes hoy"
+msgstr "Nada que hacer hoy"
 
 # (this task) is for %x
 #: ../penge/penge-task-tile.c:325
