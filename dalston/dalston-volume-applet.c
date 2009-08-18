@@ -146,7 +146,6 @@ dalston_volume_applet_update_icon (DalstonVolumeApplet *self)
 
   if (gvc_mixer_stream_get_is_muted (priv->sink))
   {
-    // FIXME robsta where is the "mute" icon?
     mpl_panel_client_request_button_style (priv->panel_client, "state-0");
   } else {
     volume = 100 *
