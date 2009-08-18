@@ -4,5 +4,6 @@ src/moblin-netbook.c
 src/tray/na-tray-child.c
 src/mnb-notification.c
 src/mnb-notification-cluster.c
-src/mnb-switcher.c
 src/mnb-toolbar.c
+src/switcher/mnb-switcher.c
+src/switcher/mnb-switcher-zone-apps.c
