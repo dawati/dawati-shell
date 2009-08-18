@@ -549,7 +549,7 @@ mnb_toolbar_dbus_show_panel (MnbToolbar *self, gchar *name, GError **error)
   if (CLUTTER_ACTOR_IS_MAPPED (panel))
     return TRUE;
 
-  mnb_toolbar_activate_panel (self, name);
+  mnb_toolbar_activate_panel_internal (self, index);
   return TRUE;
 }
 
