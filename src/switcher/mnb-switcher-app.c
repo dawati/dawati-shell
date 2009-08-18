@@ -28,6 +28,9 @@
 #include "mnb-switcher-app.h"
 #include "mnb-switcher-zone.h"
 
+#define MNB_SWICHER_APP_ICON_PADDING  5
+#define MNB_SWICHER_APP_ICON_SIZE    32
+
 struct _MnbSwitcherAppPrivate
 {
   MutterWindow        *mw;         /* MutterWindow we represent */
@@ -584,10 +587,10 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
 
       nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
-      allocation.x1 = (int) padding.top;
-      allocation.x2 = (int) (allocation.x1 + 32);
-      allocation.y1 = (int) padding.right;
-      allocation.y2 = (int) (allocation.y1 + 32);
+      allocation.x1 = (int) padding.top + MNB_SWICHER_APP_ICON_PADDING;
+      allocation.x2 = (int) (allocation.x1 + MNB_SWICHER_APP_ICON_SIZE);
+      allocation.y1 = (int) padding.right  + MNB_SWICHER_APP_ICON_PADDING;
+      allocation.y2 = (int) (allocation.y1 + MNB_SWICHER_APP_ICON_SIZE);
 
       clutter_actor_allocate (priv->icon, &allocation, flags);
     }
