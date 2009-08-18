@@ -28,8 +28,8 @@
 #include "mnb-switcher-app.h"
 #include "mnb-switcher-zone.h"
 
-#define MNB_SWICHER_APP_ICON_PADDING  5
-#define MNB_SWICHER_APP_ICON_SIZE    32
+#define MNB_SWICHER_APP_ICON_PADDING  5.0
+#define MNB_SWICHER_APP_ICON_SIZE    48.0
 
 struct _MnbSwitcherAppPrivate
 {
@@ -572,7 +572,7 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
                            const ClutterActorBox *box,
                            ClutterAllocationFlags flags)
 {
-  MnbSwitcherAppPrivate *priv       = MNB_SWITCHER_APP (actor)->priv;
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (actor)->priv;
 
   /*
    * Let the parent class do it's thing, and then allocate for the icon.
@@ -584,13 +584,37 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
     {
       NbtkPadding     padding    = { 0, };
       ClutterActorBox allocation = { 0, };
+      gfloat          natural_width, natural_height;
+      gfloat          min_width, min_height;
+      gfloat          width, height;
+      gfloat          parent_width;
+      gfloat          parent_height;
+
+      parent_width  = box->x2 - box->x1;
+      parent_height = box->y2 - box->y1;
 
       nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
 
-      allocation.x1 = (int) padding.top + MNB_SWICHER_APP_ICON_PADDING;
-      allocation.x2 = (int) (allocation.x1 + MNB_SWICHER_APP_ICON_SIZE);
-      allocation.y1 = (int) padding.right  + MNB_SWICHER_APP_ICON_PADDING;
-      allocation.y2 = (int) (allocation.y1 + MNB_SWICHER_APP_ICON_SIZE);
+      clutter_actor_get_preferred_size (priv->icon,
+                                        &min_width,
+                                        &min_height,
+                                        &natural_width,
+                                        &natural_height);
+
+#if 0
+      width = natural_width < MNB_SWICHER_APP_ICON_SIZE ?
+        MNB_SWICHER_APP_ICON_SIZE : natural_width;
+
+      height = natural_height < MNB_SWICHER_APP_ICON_SIZE ?
+        MNB_SWICHER_APP_ICON_SIZE : natural_height;
+#else
+      width  = MNB_SWICHER_APP_ICON_PADDING;
+      height = MNB_SWICHER_APP_ICON_PADDING;
+#endif
+      allocation.x2 = parent_width - MNB_SWICHER_APP_ICON_PADDING;
+      allocation.x1 = allocation.x2 - width;
+      allocation.y2 = parent_height - MNB_SWICHER_APP_ICON_PADDING;
+      allocation.y1 = allocation.y2 - height;
 
       clutter_actor_allocate (priv->icon, &allocation, flags);
     }
