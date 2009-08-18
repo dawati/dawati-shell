@@ -108,7 +108,9 @@ carrick_icon_factory_class_init (CarrickIconFactoryClass *klass)
 static void
 carrick_icon_factory_init (CarrickIconFactory *self)
 {
-  CarrickIconFactoryPrivate *priv = self->priv;
+  CarrickIconFactoryPrivate *priv;
+
+  priv = self->priv = ICON_FACTORY_PRIVATE (self);
 
   priv->active_img = NULL;
   priv->active_hov_img = NULL;
