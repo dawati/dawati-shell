@@ -16,21 +16,20 @@ libcarrick_la_SOURCES = carrick-applet.c \
                         carrick-service-item.h \
                         carrick-list.c \
                         carrick-list.h \
-			carrick-notification-manager.c \
-			carrick-notification-manager.h \
-			carrick-network-model.c \
-			carrick-network-model.h \
+												carrick-notification-manager.c \
+												carrick-notification-manager.h \
+												carrick-network-model.c \
+												carrick-network-model.h \
+												$(MARSHALFILES) \
                         $(NULL)
 
 libcarrick_la_CFLAGS =  -Wall \
-                        $(GCONNMAN_CFLAGS) \
                         $(GTK_CFLAGS) \
                         $(NBTK_CFLAGS) \
                         $(LIBNOTIFY_CFLAGS) \
                         -DPKG_DATA_DIR=\"$(pkgdatadir)\"
 
-libcarrick_la_LIBADD = $(GCONNMAN_LIBS) \
-                       $(GTK_LIBS) \
+libcarrick_la_LIBADD = $(GTK_LIBS) \
                        $(NBTK_LIBS) \
                        $(LIBNOTIFY_LIBS)
 
