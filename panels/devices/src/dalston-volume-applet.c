@@ -68,7 +68,7 @@ main (int    argc,
   window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
   pane = dalston_volume_applet_get_pane (volume_applet);
   gtk_container_add (GTK_CONTAINER (window), pane);
-  gtk_widget_show (window);
+  gtk_widget_show_all (window);
 
   gtk_main ();
 }
