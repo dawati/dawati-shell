@@ -683,6 +683,14 @@ carrick_service_item_get_tree_path (CarrickServiceItem *item)
   return priv->path;
 }
 
+gint
+carrick_service_item_get_order (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = item->priv;
+
+  return priv->index;
+}
+
 static void
 _set_model (CarrickServiceItem  *self,
             CarrickNetworkModel *model)
