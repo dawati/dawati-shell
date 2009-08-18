@@ -6,3 +6,4 @@ theme_DATA = power-applet.css volume-applet.css
 	$(QUIET_GEN)sed -e "s|\@pkgdatadir\@|$(pkgdatadir)|" $< > $@
 
 EXTRA_DIST = power-applet.css.in volume-applet.css.in
+DISTCLEANFILES = power-applet.css volume-applet.css
