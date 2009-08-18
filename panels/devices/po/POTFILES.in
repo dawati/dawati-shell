@@ -3,3 +3,6 @@ dalston/dalston-brightness-slider.c
 dalston/dalston-volume-pane.c
 dalston/dalston-volume-slider.c
 libgvc/gvc-mixer-control.c
+src/dalston-power-applet.c
+src/dalston-volume-applet.c
+
