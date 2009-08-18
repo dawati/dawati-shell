@@ -23,7 +23,8 @@ libswitcher_la_SOURCES =				\
 			mnb-switcher-keys.c		\
 			mnb-switcher-keys.h		\
 			mnb-switcher.c                  \
-			mnb-switcher.h
+			mnb-switcher.h			\
+			mnb-switcher-private.h
 
 libswitcher_la_CPPFLAGS = $(switcher_cflags)
 libswitcher_la_LDFLAGS = $(LDADD)
