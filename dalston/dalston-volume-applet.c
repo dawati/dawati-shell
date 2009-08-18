@@ -241,19 +241,19 @@ _reopen_pa_timeout_cb (gpointer data)
 
 static void
 _mixer_control_connection_failed_cb (GvcMixerControl *control,
-				     gpointer         userdata)
+                                     gpointer         userdata)
 {
   DalstonVolumeAppletPrivate *priv = GET_PRIVATE (userdata);
 
   g_signal_handlers_disconnect_by_func (priv->control,
-					_mixer_control_default_sink_changed_cb,
-					userdata);
+                                        _mixer_control_default_sink_changed_cb,
+                                        userdata);
   g_signal_handlers_disconnect_by_func (priv->control,
-					_mixer_control_ready_cb,
-					userdata);
+                                        _mixer_control_ready_cb,
+                                        userdata);
   g_signal_handlers_disconnect_by_func (priv->control,
-					_mixer_control_connection_failed_cb,
-					userdata);
+                                        _mixer_control_connection_failed_cb,
+                                        userdata);
 
   priv->control = gvc_mixer_control_new ();
   g_signal_connect (priv->control,
@@ -276,8 +276,8 @@ _mixer_control_connection_failed_cb (GvcMixerControl *control,
   }
 
   priv->timeout = g_timeout_add (10000,
-				 _reopen_pa_timeout_cb,
-				 userdata);
+                                 _reopen_pa_timeout_cb,
+                                 userdata);
 }
 
 static void
