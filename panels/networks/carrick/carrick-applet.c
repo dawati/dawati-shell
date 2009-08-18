@@ -59,7 +59,9 @@ carrick_applet_class_init (CarrickAppletClass *klass)
 static void
 carrick_applet_init (CarrickApplet *applet)
 {
-  CarrickAppletPrivate *priv = applet->priv;
+  CarrickAppletPrivate *priv;
+
+  priv = applet->priv = APPLET_PRIVATE (applet);
 
   priv->icon_factory = carrick_icon_factory_new ();
   priv->notifications = carrick_notification_manager_new ();
