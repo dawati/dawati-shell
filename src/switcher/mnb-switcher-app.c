@@ -436,6 +436,8 @@ mnb_switcher_app_button_release_event (ClutterActor         *actor,
   gboolean               ignore = priv->ignore_button_release;
   MnbSwitcher           *switcher;
 
+  switcher = mnb_switcher_item_get_switcher (MNB_SWITCHER_ITEM (actor));
+
   /*
    * If the ignore_button_release flag is set, we stop it from propagating
    * to parents.
