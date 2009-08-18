@@ -946,7 +946,9 @@ carrick_list_class_init (CarrickListClass *klass)
 static void
 carrick_list_init (CarrickList *self)
 {
-  CarrickListPrivate *priv = self->priv;
+  CarrickListPrivate *priv;
+
+  priv = self->priv = LIST_PRIVATE (self);
 
   priv->fallback = NULL;
 
