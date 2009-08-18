@@ -220,6 +220,13 @@ dalston_volume_applet_update_default_sink (DalstonVolumeApplet  *self,
                       (GCallback)_stream_volume_notify_cb,
                       self);
     dalston_volume_applet_update_icon (self);
+    g_object_set (priv->pane,
+                  "sink", priv->sink,
+                  NULL);
+  } else {
+    g_object_set (priv->pane,
+                  "sink", NULL,
+                  NULL);
   }
 }
 
