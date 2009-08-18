@@ -36,6 +36,7 @@
 #include <gconf/gconf-client.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <display.h>
+#include <keybindings.h>
 
 #include "moblin-netbook.h"
 
@@ -101,6 +102,7 @@ static void mnb_toolbar_stage_show_cb (ClutterActor *stage,
 static void mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar);
 static void mnb_toolbar_handle_dbus_name (MnbToolbar *, const gchar *);
 static gint mnb_toolbar_panel_name_to_index (const gchar *name);
+static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, gint index);
 
 enum {
     MYZONE = 0,
@@ -2076,15 +2078,22 @@ mnb_toolbar_new (MutterPlugin *plugin)
                        "mutter-plugin", plugin, NULL);
 }
 
-void
-mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
+static void
+mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, gint index)
 {
   MnbToolbarPrivate *priv  = toolbar->priv;
-  gint               index = mnb_toolbar_panel_name_to_index (panel_name);
   gint               i;
 
-  if (index < 0 || !priv->panels[index] ||
-      CLUTTER_ACTOR_IS_MAPPED (priv->panels[index]))
+  if (index < 0)
+    return;
+
+  if (!priv->panels[index])
+    {
+      g_warning ("Panel %d is not available", index);
+      return;
+    }
+
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->panels[index]))
     {
       return;
     }
@@ -2106,6 +2115,14 @@ mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
       {
         clutter_actor_show (CLUTTER_ACTOR (priv->panels[i]));
       }
+}
+
+void
+mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
+{
+  gint index = mnb_toolbar_panel_name_to_index (panel_name);
+
+  mnb_toolbar_activate_panel_internal (toolbar, index);
 }
 
 void
@@ -2732,6 +2749,19 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
   }
 }
 
+static void
+mnb_toolbar_alt_f2_key_handler (MetaDisplay    *display,
+                                MetaScreen     *screen,
+                                MetaWindow     *window,
+                                XEvent         *event,
+                                MetaKeyBinding *binding,
+                                gpointer        data)
+{
+  MnbToolbar *toolbar = MNB_TOOLBAR (data);
+
+  mnb_toolbar_activate_panel_internal (toolbar, APPS_ZONE);
+}
+
 /*
  * Callback for ClutterStage::show() signal.
  *
@@ -2814,6 +2844,10 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
   g_signal_connect (stage, "notify::allocation",
                     G_CALLBACK (mnb_toolbar_stage_allocation_cb),
                     toolbar);
+
+  meta_keybindings_set_custom_handler ("panel_run_dialog",
+                                       mnb_toolbar_alt_f2_key_handler,
+                                       toolbar, NULL);
 }
 
 /*
@@ -2905,4 +2939,3 @@ mnb_toolbar_set_panel_input_only (MnbToolbar *toolbar, gboolean whether)
   if (panel)
     mnb_toolbar_update_dropdown_input_region (toolbar, MNB_DROP_DOWN (panel));
 }
-
