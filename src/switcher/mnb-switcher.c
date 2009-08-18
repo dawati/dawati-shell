@@ -988,7 +988,8 @@ mnb_switcher_handle_xevent (MnbSwitcher *switcher, XEvent *xev)
 
   if (xev->type == KeyRelease)
     {
-      if (XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0)==XK_Alt_L)
+      if ((XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0)==XK_Alt_L) ||
+          (XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0)==XK_Alt_R))
         {
           MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
           MetaDisplay  *display = meta_screen_get_display (screen);
