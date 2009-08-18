@@ -139,13 +139,6 @@ dalston_volume_applet_class_init (DalstonVolumeAppletClass *klass)
 }
 
 static void
-_mixer_control_ready_cb (GvcMixerControl *control,
-                         gpointer         userdata)
-{
-  g_debug (G_STRLOC ": Mixer ready!");
-}
-
-static void
 dalston_volume_applet_update_icon (DalstonVolumeApplet *self)
 {
   DalstonVolumeAppletPrivate *priv = GET_PRIVATE (self);
@@ -173,6 +166,13 @@ dalston_volume_applet_update_icon (DalstonVolumeApplet *self)
 }
 
 static void
+_mixer_control_ready_cb (GvcMixerControl *control,
+                         gpointer         userdata)
+{
+  g_debug (G_STRLOC ": Mixer ready!");
+}
+
+static void
 _stream_is_muted_notify_cb (GObject    *object,
                             GParamSpec *pspec,
                             gpointer    self)
@@ -189,9 +189,8 @@ _stream_volume_notify_cb (GObject    *object,
 }
 
 static void
-_mixer_control_default_sink_changed_cb (GvcMixerControl *control,
-                                        guint            id,
-                                        gpointer         self)
+dalston_volume_applet_update_default_sink (DalstonVolumeApplet  *self,
+                                           GvcMixerControl      *control)
 {
   DalstonVolumeAppletPrivate *priv = GET_PRIVATE (self);
 
@@ -276,6 +275,14 @@ _mixer_control_connection_failed_cb (GvcMixerControl *control,
 }
 
 static void
+_mixer_control_default_sink_changed_cb (GvcMixerControl *control,
+                                        guint            id,
+                                        gpointer         self)
+{
+  dalston_volume_applet_update_default_sink (self, control);
+}
+
+static void
 dalston_volume_applet_init (DalstonVolumeApplet *self)
 {
   DalstonVolumeAppletPrivate *priv = GET_PRIVATE (self);
@@ -283,6 +290,7 @@ dalston_volume_applet_init (DalstonVolumeApplet *self)
   priv->pane = dalston_volume_pane_new ();
 
   priv->control = gvc_mixer_control_new ();
+  dalston_volume_applet_update_default_sink (self, priv->control);
   g_signal_connect (priv->control,
                     "default-sink-changed",
                     (GCallback)_mixer_control_default_sink_changed_cb,
