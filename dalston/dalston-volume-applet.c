@@ -239,6 +239,15 @@ _reopen_pa_timeout_cb (gpointer data)
   return FALSE;
 }
 
+
+static void
+_mixer_control_default_sink_changed_cb (GvcMixerControl *control,
+                                        guint            id,
+                                        gpointer         self)
+{
+  dalston_volume_applet_update_default_sink (self, control);
+}
+
 static void
 _mixer_control_connection_failed_cb (GvcMixerControl *control,
                                      gpointer         userdata)
@@ -278,14 +287,6 @@ _mixer_control_connection_failed_cb (GvcMixerControl *control,
   priv->timeout = g_timeout_add (10000,
                                  _reopen_pa_timeout_cb,
                                  userdata);
-}
-
-static void
-_mixer_control_default_sink_changed_cb (GvcMixerControl *control,
-                                        guint            id,
-                                        gpointer         self)
-{
-  dalston_volume_applet_update_default_sink (self, control);
 }
 
 static void
