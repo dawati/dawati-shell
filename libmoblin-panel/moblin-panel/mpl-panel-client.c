@@ -798,6 +798,11 @@ void
 mpl_panel_client_request_button_style (MplPanelClient *panel,
                                        const gchar    *style)
 {
+  MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (panel)->priv;
+
+  g_free (priv->button_style);
+  priv->button_style = g_strdup (style);
+
   g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style);
 }
 
@@ -805,6 +810,11 @@ void
 mpl_panel_client_request_tooltip (MplPanelClient *panel,
                                   const gchar    *tooltip)
 {
+  MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (panel)->priv;
+
+  g_free (priv->tooltip);
+  priv->tooltip = g_strdup (tooltip);
+
   g_signal_emit (panel, signals[REQUEST_TOOLTIP], 0, tooltip);
 }
 
