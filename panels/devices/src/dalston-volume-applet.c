@@ -54,7 +54,7 @@ main (int    argc,
                                     "Moblin-Netbook",
                                     NULL);
 
-  panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
+  panel_client = mpl_panel_gtk_new (MPL_PANEL_VOLUME,
                                     _("sound"),
                                     PKG_THEMEDIR "/volume-applet.css",
                                     "unknown",
