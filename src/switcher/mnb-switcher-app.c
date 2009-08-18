@@ -23,6 +23,7 @@
  */
 #include <string.h>
 #include <clutter/x11/clutter-x11.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "mnb-switcher-app.h"
 #include "mnb-switcher-zone.h"
@@ -31,6 +32,8 @@ struct _MnbSwitcherAppPrivate
 {
   MutterWindow        *mw;         /* MutterWindow we represent */
   guint                focus_id;   /* id for our focus cb       */
+
+  ClutterActor       *icon;
 
   /* Draggable properties */
   guint               threshold;
@@ -93,6 +96,12 @@ mnb_switcher_app_dispose (GObject *object)
     {
       g_signal_handler_disconnect (meta_win, priv->focus_id);
       priv->focus_id = 0;
+    }
+
+  if (priv->icon)
+    {
+      clutter_actor_unparent (priv->icon);
+      priv->icon = NULL;
     }
 
   G_OBJECT_CLASS (mnb_switcher_app_parent_class)->dispose (object);
@@ -498,9 +507,30 @@ mnb_switcher_app_constructed (GObject *self)
   MetaWindow            *meta_win = mutter_window_get_meta_window (priv->mw);
   const gchar           *title    = meta_window_get_title (meta_win);
   ClutterActor          *texture, *c_tx;
+  GdkPixbuf             *pixbuf = NULL;
 
   if (G_OBJECT_CLASS (mnb_switcher_app_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_switcher_app_parent_class)->constructed (self);
+
+  g_object_get (meta_win, "icon", &pixbuf, NULL);
+  if (pixbuf)
+    {
+      ClutterActor *icon = clutter_texture_new ();
+
+      clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (icon),
+                                         gdk_pixbuf_get_pixels (pixbuf),
+                                         gdk_pixbuf_get_has_alpha (pixbuf),
+                                         gdk_pixbuf_get_width (pixbuf),
+                                         gdk_pixbuf_get_height (pixbuf),
+                                         gdk_pixbuf_get_rowstride (pixbuf),
+                                         gdk_pixbuf_get_has_alpha (pixbuf) ? 4 : 3,
+                                         0, NULL);
+
+      clutter_actor_set_parent (icon, actor);
+      clutter_actor_show (icon);
+
+      priv->icon = icon;
+    }
 
   nbtk_widget_set_style_class_name (NBTK_WIDGET (self),"switcher-application");
 
@@ -535,6 +565,57 @@ mnb_switcher_app_active_style (MnbSwitcherItem *item)
 }
 
 static void
+mnb_switcher_app_allocate (ClutterActor          *actor,
+                           const ClutterActorBox *box,
+                           ClutterAllocationFlags flags)
+{
+  MnbSwitcherAppPrivate *priv       = MNB_SWITCHER_APP (actor)->priv;
+
+  /*
+   * Let the parent class do it's thing, and then allocate for the icon.
+   */
+  CLUTTER_ACTOR_CLASS (mnb_switcher_app_parent_class)->allocate (actor,
+                                                                 box, flags);
+
+  if (priv->icon)
+    {
+      NbtkPadding     padding    = { 0, };
+      ClutterActorBox allocation = { 0, };
+
+      nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+
+      allocation.x1 = (int) padding.top;
+      allocation.x2 = (int) (allocation.x1 + 32);
+      allocation.y1 = (int) padding.right;
+      allocation.y2 = (int) (allocation.y1 + 32);
+
+      clutter_actor_allocate (priv->icon, &allocation, flags);
+    }
+}
+
+static void
+mnb_switcher_app_map (ClutterActor *self)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_switcher_app_parent_class)->map (self);
+
+  if (priv->icon)
+    clutter_actor_map (priv->icon);
+}
+
+static void
+mnb_switcher_app_paint (ClutterActor *self)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_switcher_app_parent_class)->paint (self);
+
+  if (priv->icon && CLUTTER_ACTOR_IS_MAPPED (priv->icon))
+    clutter_actor_paint (priv->icon);
+}
+
+static void
 mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
 {
   GObjectClass         *object_class = G_OBJECT_CLASS (klass);
@@ -548,6 +629,9 @@ mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
 
   actor_class->button_release_event  = mnb_switcher_app_button_release_event;
   actor_class->button_press_event    = mnb_switcher_app_button_press_event;
+  actor_class->allocate              = mnb_switcher_app_allocate;
+  actor_class->paint                 = mnb_switcher_app_paint;
+  actor_class->map                   = mnb_switcher_app_map;
 
   item_class->active_style           = mnb_switcher_app_active_style;
   item_class->activate               = mnb_switcher_app_activate;
