@@ -313,7 +313,8 @@ mnb_switcher_zone_apps_append_window (MnbSwitcherZoneApps *zone,
   app = mnb_switcher_app_new (switcher, mcw);
 
   if (!ignore_focus)
-    { MetaDisplay *d = meta_window_get_display (w);
+    {
+      MetaDisplay *d = meta_window_get_display (w);
       MetaWindow  *f = meta_display_get_focus_window (d);
 
       if (meta_window_has_focus (w) ||
@@ -688,5 +689,41 @@ mnb_switcher_zone_apps_check_if_empty (MnbSwitcherZoneApps *zone)
                                           priv->empty_label);
         }
     }
+
+  g_list_free (o);
+}
+
+MnbSwitcherItem*
+mnb_switcher_zone_apps_activate_window (MnbSwitcherZoneApps *zone,
+                                        MutterWindow        *mcw)
+{
+  GList           *l, *o;
+  NbtkTable       *table;
+  MnbSwitcherItem *item = NULL;
+
+  table = mnb_switcher_zone_get_content_area ((MnbSwitcherZone*)zone);
+
+  o = l = clutter_container_get_children (CLUTTER_CONTAINER (table));
+
+  while (l)
+    {
+      if (MNB_IS_SWITCHER_APP (l->data))
+        {
+          MutterWindow *m = mnb_switcher_app_get_window (l->data);
+
+          if (m == mcw)
+            {
+              item = l->data;
+              mnb_switcher_item_set_active (item, TRUE);
+              break;
+            }
+        }
+
+      l = l->next;
+    }
+
+  g_list_free (o);
+
+  return item;
 }
 

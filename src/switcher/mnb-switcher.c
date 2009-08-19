@@ -57,13 +57,52 @@ on_show_completed_cb (ClutterActor *self, gpointer data)
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
 
   /*
+   * We probably have no selected item, just a selected zone (this is because
+   * of how the focus stashing works; we unstashed focus, but it will not take
+   * place until the main loop had a chance to spin and process the X events).
+   *
+   * So, if there is a focused window, activate the item that corresponds to
+   * it.
+   */
+
+  if (!priv->selected_item && priv->selected_zone &&
+      MNB_IS_SWITCHER_ZONE_APPS (priv->selected_zone))
+    {
+      MetaScreen  *s = mutter_plugin_get_screen (priv->plugin);
+      MetaDisplay *d = meta_screen_get_display (s);
+      MetaWindow  *w = meta_display_get_focus_window (d);
+
+      if (w)
+        {
+          MetaWindow          *t;
+          MetaWindow          *f = w;
+          MnbSwitcherZoneApps *apps;
+          MutterWindow        *m;
+
+          apps = MNB_SWITCHER_ZONE_APPS (priv->selected_zone);
+
+          /*
+           * Deal with transiency, in case this window is a dialog or something
+           */
+          while ((t = meta_window_get_transient_for (f)) && t != f)
+            f = t;
+
+          m = (MutterWindow*) meta_window_get_compositor_private (f);
+
+          priv->selected_item =
+            mnb_switcher_zone_apps_activate_window (apps, m);
+        }
+    }
+
+  /*
    * Not if we are showing ourselves because of Alt+Tab press (we have a
    * separate show callback for that).
    */
   if (priv->in_alt_grab)
     return;
 
-  mnb_switcher_item_show_tooltip (MNB_SWITCHER_ITEM (data));
+  if (priv->selected_item)
+    mnb_switcher_item_show_tooltip (priv->selected_item);
 }
 
 /*
@@ -154,9 +193,10 @@ mnb_switcher_show (ClutterActor *self)
   gint                ws_count, active_ws;
   gint                i, screen_width, screen_height;
   NbtkWidget         *table;
-  ClutterActor       *current_focus_clone = NULL;
   ClutterActor       *toolbar;
   gboolean            switcher_empty = FALSE;
+
+  moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
   /*
    * Check the panel is visible, if not get the parent class to take care of
@@ -343,11 +383,9 @@ mnb_switcher_show (ClutterActor *self)
       g_signal_handler_disconnect (self, priv->show_completed_id);
     }
 
-  if (current_focus_clone)
-    priv->show_completed_id =
-      g_signal_connect (self, "show-completed",
-                        G_CALLBACK (on_show_completed_cb),
-                        current_focus_clone);
+  priv->show_completed_id =
+    g_signal_connect (self, "show-completed",
+                      G_CALLBACK (on_show_completed_cb), NULL);
 
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->show (self);
 }

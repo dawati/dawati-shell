@@ -459,6 +459,7 @@ mnb_switcher_app_button_release_event (ClutterActor         *actor,
   return FALSE;
 }
 
+#if 0
 /*
  * Callback for when our associated window get/looses focus.
  *
@@ -489,6 +490,7 @@ meta_window_focus_cb (MetaWindow *mw,  GParamSpec *pspec, gpointer data)
   else
     clutter_actor_set_name (CLUTTER_ACTOR (app), "");
 }
+#endif
 
 /*
  * We need to track the life span of the associated window.
@@ -555,9 +557,11 @@ mnb_switcher_app_constructed (GObject *self)
   if (title)
     mnb_switcher_item_set_tooltip (MNB_SWITCHER_ITEM (self), title);
 
+#if 0
   priv->focus_id =
     g_signal_connect (meta_win, "notify::has-focus",
                       G_CALLBACK (meta_window_focus_cb), self);
+#endif
 
   g_object_weak_ref (G_OBJECT (priv->mw),
                      mnb_switcher_app_origin_weak_notify, self);

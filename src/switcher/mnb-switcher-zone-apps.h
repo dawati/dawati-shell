@@ -64,6 +64,7 @@ MnbSwitcherZoneApps *mnb_switcher_zone_apps_new      (MnbSwitcher *switcher,
                                                       gboolean     active,
                                                       gint         index);
 void                 mnb_switcher_zone_apps_populate (MnbSwitcherZoneApps *zone);
+MnbSwitcherItem     *mnb_switcher_zone_apps_activate_window (MnbSwitcherZoneApps *zone, MutterWindow *mcw);
 
 G_END_DECLS
 
