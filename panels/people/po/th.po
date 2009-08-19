@@ -1,0 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-people\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-17 09:31+0000\n"
+"PO-Revision-Date: 2009-08-19 14:27+0700\n"
+"Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
+"Language-Team: Thai <L10N@opentle.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Thai\n"
+"X-Poedit-Country: THAILAND\n"
+
+#: ../src/moblin-panel-people.c:69
+msgid "people"
+msgstr "บุคคล"
+
+#: ../src/mnb-people-panel.c:161
+msgid "Send an email"
+msgstr "ส่งอีเมล์"
+
+#: ../src/mnb-people-panel.c:163
+msgid "Edit details"
+msgstr "แก้ไขรายละเอียด"
+
+#: ../src/mnb-people-panel.c:172
+msgid "Send a message"
+msgstr "ส่งข้อความ"
+
+#: ../src/mnb-people-panel.c:306
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "เสียใจด้วย เราไม่สามารถค้าหาบุคคลใดๆ ได้ คุณตั้งค่าบัญชีผู้ใช้แล้วหรือยัง ?"
+
+#: ../src/mnb-people-panel.c:553
+msgid "People"
+msgstr "บุคคล"
+
+#: ../src/mnb-people-panel.c:566
+msgid "Search"
+msgstr "ค้นหา"
+
+#: ../src/mnb-people-panel.c:682
+msgid "Selection"
+msgstr "เลือก"
+
+#: ../src/mnb-people-panel.c:745
+msgid "Nobody selected"
+msgstr "ไม่มีใครถูกเลือก"
+
