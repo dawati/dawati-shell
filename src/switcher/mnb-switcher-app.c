@@ -614,8 +614,8 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
       height = natural_height < MNB_SWICHER_APP_ICON_SIZE ?
         MNB_SWICHER_APP_ICON_SIZE : natural_height;
 #else
-      width  = MNB_SWICHER_APP_ICON_PADDING;
-      height = MNB_SWICHER_APP_ICON_PADDING;
+      width  = MNB_SWICHER_APP_ICON_SIZE;
+      height = MNB_SWICHER_APP_ICON_SIZE;
 #endif
       allocation.x2 = parent_width - MNB_SWICHER_APP_ICON_PADDING;
       allocation.x1 = allocation.x2 - width;
