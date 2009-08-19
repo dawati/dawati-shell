@@ -70,6 +70,7 @@ void hal_power_proxy_suspend (HalPowerProxy         *proxy,
                               GObject               *weak_object,
                               gpointer               userdata);
 void hal_power_proxy_suspend_sync (HalPowerProxy *proxy);
+void hal_power_proxy_shutdown_sync (HalPowerProxy *proxy);
 
 G_END_DECLS
 
