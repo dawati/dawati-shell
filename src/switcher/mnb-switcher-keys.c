@@ -92,6 +92,18 @@ mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher)
   meta_keybindings_set_custom_handler ("switch_group_backward",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_to_workspace_left",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_to_workspace_right",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_to_workspace_up",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
+  meta_keybindings_set_custom_handler ("switch_to_workspace_down",
+                                       mnb_switcher_nop_key_handler,
+                                       switcher, NULL);
 
   /*
    * Disable various shortcuts other that are not compatible with moblin UI
