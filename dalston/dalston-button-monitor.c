@@ -206,7 +206,7 @@ _device_condition_cb (HalDevice   *device,
       }
     }
   } else if (g_str_equal (type, "power")) {
-    note = notify_notification_new (_("Would you like to turn off now"),
+    note = notify_notification_new (_("Would you like to turn off now?"),
                                     _("It is a shame to see you go. "
                                       "Please come back soon."),
                                     "system-shutdown",
@@ -226,8 +226,6 @@ _device_condition_cb (HalDevice   *device,
                    error->message);
         g_clear_error (&error);
       }
-
-      g_object_unref (note);
   }
 
   g_free (type);
