@@ -699,10 +699,14 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
   checked = nbtk_button_get_checked (button);
 
   /*
-   * Set the waiting_for_panel flag if the button is in a checked state. This
-   * forces LEAVE events to be ignored until the panel is shown (see bug 3531).
+   * Set the waiting_for_panel flag; this serves two purposes:
+   *
+   *   a) forces LEAVE events to be ignored until the panel is shown (see bug
+   *      3531).
+   *   b) Prevents race conditions when the user starts clicking fast at the
+   *      button (see bug 5020)
    */
-  priv->waiting_for_panel = checked;
+  priv->waiting_for_panel = TRUE;
 
   /*
    * Clear the autohiding flag -- if the user is clicking on the panel buttons
@@ -889,6 +893,7 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbDropDown *dropdown, MnbToolbar  *tool
   moblin_netbook_stash_window_focus (plugin, CurrentTime);
 
   priv->panel_input_only = FALSE;
+  priv->waiting_for_panel = FALSE;
 }
 
 /*
@@ -1479,7 +1484,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
                     G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
                     toolbar);
 
-  g_signal_connect (panel, "hide-begin",
+  g_signal_connect (panel, "hide-completed",
                     G_CALLBACK (mnb_toolbar_dropdown_hide_completed_cb), toolbar);
 
   g_signal_connect (panel, "request-button-style",
@@ -2254,6 +2259,7 @@ tray_actor_hide_completed_cb (ClutterActor *actor, gpointer data)
 
   priv->systray_window_showing = FALSE;
   priv->panel_input_only = FALSE;
+  priv->waiting_for_panel = FALSE;
 
   for (i = APPLETS_START; i < NUM_ZONES; ++i)
     {
@@ -2941,3 +2947,12 @@ mnb_toolbar_set_panel_input_only (MnbToolbar *toolbar, gboolean whether)
   if (panel)
     mnb_toolbar_update_dropdown_input_region (toolbar, MNB_DROP_DOWN (panel));
 }
+
+gboolean
+mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  return priv->waiting_for_panel;
+}
+

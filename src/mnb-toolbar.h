@@ -99,6 +99,8 @@ NbtkWidget * mnb_toolbar_get_active_panel (MnbToolbar *toolbar);
 
 void mnb_toolbar_set_panel_input_only (MnbToolbar *toolbar, gboolean whether);
 
+gboolean mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar);
+
 G_END_DECLS
 
 #endif /* _MNB_TOOLBAR */

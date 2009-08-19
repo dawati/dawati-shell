@@ -23,6 +23,7 @@
  */
 
 #include "mnb-toolbar-button.h"
+#include "mnb-toolbar.h"
 
 G_DEFINE_TYPE (MnbToolbarButton, mnb_toolbar_button, NBTK_TYPE_BUTTON)
 
@@ -222,6 +223,19 @@ mnb_toolbar_button_transition (NbtkButton *button, ClutterActor *old_bg)
 static gboolean
 mnb_toolbar_button_press (ClutterActor *actor, ClutterButtonEvent *event)
 {
+  ClutterActor *toolbar = actor;
+
+  /*
+   * Block any key presses while the Toolbar is waiting for a panel to show.
+   */
+  while ((toolbar = clutter_actor_get_parent (toolbar)) &&
+         !MNB_IS_TOOLBAR (toolbar));
+
+  g_assert (toolbar);
+
+  if (mnb_toolbar_is_waiting_for_panel (MNB_TOOLBAR (toolbar)))
+    return TRUE;
+
 #if 0
   /* Disable until a more complete solution is ready */
   /* don't react to button press when already active */
