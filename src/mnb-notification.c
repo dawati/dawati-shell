@@ -386,7 +386,7 @@ mnb_notification_update (MnbNotification *notification,
       if (has_action == TRUE)
         {
           /* Remove the dismiss button.. */
-          clutter_container_remove_actor(CLUTTER_CONTAINER (notification),
+          clutter_container_remove_actor(CLUTTER_CONTAINER (priv->button_box),
                                          CLUTTER_ACTOR (priv->dismiss_button));
           
           if (layout != NULL)
