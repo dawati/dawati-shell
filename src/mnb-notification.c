@@ -225,12 +225,15 @@ mnb_notification_init (MnbNotification *self)
 
   /* Make the texture keep it's aspect ratio */
   clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (priv->icon), TRUE);
+  clutter_actor_set_size (priv->icon, 48, 48);
   nbtk_table_add_actor (NBTK_TABLE (self), priv->icon, 0, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->icon),
                                "y-expand", FALSE,
                                "x-expand", FALSE,
                                "x-align", 0.0,
+                               "x-fill", FALSE,
+                               "y-fill", FALSE,
                                NULL);
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->summary)));
