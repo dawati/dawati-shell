@@ -34,14 +34,14 @@ PengeEventTile:active, PengeTaskTile:active, PengeAppTile:active
 }
 
 
-PengeRecentFileTile, PengeTwitterTile, PengeFlickrTile, PengeLastfmTile, PengeMyspaceTile
+PengeRecentFileTile, PengePeopleTile
 {
   border-image: url('file://tile-bg.png') 7 8 9 8;
   padding: 6 7 8 7;
 }
 
 
-PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover, PengeMyspaceTile:hover
+PengeRecentFileTile:hover, PengePeopleTile:hover
 {
   border-image: url('file://tile-glow.png') 7 8 9 8;
   padding: 6 7 8 7;
@@ -117,12 +117,12 @@ NbtkLabel.PengePeopleTilePrimaryLabel:hover, NbtkLabel.PengePeopleTileSecondaryL
   color: white;
 }
 
-PengeTwitterTile *.PengeTwitterTileText, PengeMyspaceTile *.PengeMyspaceTileText
+PengePeopleTile *.PengePeopleTileContentLabel
 {
   font-size: 12;
 }
 
-PengeTwitterTile *.PengeTwitterTileBackground, PengeMyspaceTile *.PengeMyspaceTileBackground
+PengePeopleTile *.PengePeopleTileContentBackground
 {
   border-image: url('file://quotebackground.png') 45 51 46 52;
   padding: 8;
@@ -192,11 +192,5 @@ NbtkTable.PengeWelcomeTile *#penge-welcome-secondary-text
 {
   font-size:14px;
   color: #2c2c2cff;
-}
-
-PengeRecentFileTile:hover, PengeTwitterTile:hover, PengeFlickrTile:hover, PengeLastfmTile:hover, PengeMyspaceTile:hover
-{
-  border-image: url('file://tile-glow.png') 7 8 9 8;
-  padding: 6 7 8 7;
 }
 

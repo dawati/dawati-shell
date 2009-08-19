@@ -17,9 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <moblin-panel/mpl-utils.h>
 
 #include "penge-people-tile.h"
 #include "penge-utils.h"
+#include "penge-magic-texture.h"
 
 G_DEFINE_TYPE (PengePeopleTile, penge_people_tile, NBTK_TYPE_TABLE)
 
@@ -36,6 +38,7 @@ struct _PengePeopleTilePrivate {
     NbtkWidget *details_overlay;
     ClutterTimeline *timeline;
     ClutterBehaviour *behave;
+    MojitoItem *item;
 };
 
 enum
@@ -44,16 +47,27 @@ enum
   PROP_BODY,
   PROP_ICON_PATH,
   PROP_PRIMARY_TEXT,
-  PROP_SECONDARY_TEXT
+  PROP_SECONDARY_TEXT,
+  PROP_ITEM
 };
 
 #define DEFAULT_AVATAR_PATH THEMEDIR "/default-avatar-icon.png"
+#define DEFAULT_ALBUM_ARTWORK THEMEDIR "/default-album-artwork.png"
+
+static void
+penge_people_tile_set_item (PengePeopleTile *tile,
+                            MojitoItem      *item);
 
 static void
 penge_people_tile_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  PengePeopleTilePrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_ITEM:
+      g_value_set_boxed (value, priv->item);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -73,10 +87,13 @@ penge_people_tile_set_property (GObject *object, guint property_id,
       {
         clutter_container_remove_actor (CLUTTER_CONTAINER (object),
                                         priv->body);
-        g_object_unref (priv->body);
       }
 
-      priv->body = g_value_dup_object (value);
+      priv->body = g_value_get_object (value);
+
+      if (!priv->body)
+        return;
+
       nbtk_table_add_actor (NBTK_TABLE (object),
                             priv->body,
                             0,
@@ -139,7 +156,10 @@ penge_people_tile_set_property (GObject *object, guint property_id,
       nbtk_label_set_text (NBTK_LABEL (priv->secondary_text),
                            g_value_get_string (value));
       break;
-
+    case PROP_ITEM:
+      penge_people_tile_set_item ((PengePeopleTile *)object,
+                                  g_value_get_boxed (value));
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -160,6 +180,12 @@ penge_people_tile_dispose (GObject *object)
   {
     g_object_unref (priv->behave);
     priv->behave = NULL;
+  }
+
+  if (priv->item)
+  {
+    mojito_item_unref (priv->item);
+    priv->item = NULL;
   }
 
   G_OBJECT_CLASS (penge_people_tile_parent_class)->dispose (object);
@@ -211,6 +237,13 @@ penge_people_tile_class_init (PengePeopleTileClass *klass)
                                NULL,
                                G_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_SECONDARY_TEXT, pspec);
+
+  pspec = g_param_spec_boxed ("item",
+                              "Item",
+                              "The item to show",
+                              MOJITO_TYPE_ITEM,
+                              G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_ITEM, pspec);
 }
 
 static gboolean
@@ -390,3 +423,122 @@ penge_people_tile_activate (PengePeopleTile *tile,
   }
 }
 
+static void
+penge_people_tile_set_item (PengePeopleTile *tile,
+                            MojitoItem      *item)
+{
+  PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
+  ClutterActor *body, *tmp_text;
+  NbtkWidget *label;
+  const gchar *content, *thumbnail;
+  gchar *date;
+  GError *error = NULL;
+
+  if (priv->item == item)
+    return;
+
+  if (priv->item)
+    mojito_item_unref (priv->item);
+
+  if (item)
+    priv->item = mojito_item_ref (item);
+  else
+    priv->item = NULL;
+
+  if (!priv->item)
+    return;
+
+  if (mojito_item_has_key (item, "thumbnail"))
+  {
+    thumbnail = mojito_item_get_value (item, "thumbnail");
+    body = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
+
+    if (clutter_texture_set_from_file (CLUTTER_TEXTURE (body),
+                                       thumbnail, 
+                                       &error))
+    {
+      g_object_set (tile,
+                    "body",
+                    body,
+                    NULL);
+    } else {
+      g_critical (G_STRLOC ": Loading thumbnail failed: %s",
+                  error->message);
+      g_clear_error (&error);
+    }
+  } else if (mojito_item_has_key (item, "content")) {
+    content = mojito_item_get_value (item, "content");
+    body = (ClutterActor *)nbtk_bin_new ();
+    nbtk_widget_set_style_class_name ((NbtkWidget *)body,
+                                      "PengePeopleTileContentBackground");
+    label = nbtk_label_new (content);
+    nbtk_widget_set_style_class_name (label, "PengePeopleTileContentLabel");
+    nbtk_bin_set_child (NBTK_BIN (body), (ClutterActor *)label);
+    nbtk_bin_set_alignment (NBTK_BIN (body), NBTK_ALIGN_TOP, NBTK_ALIGN_TOP);
+    tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+    clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+    clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                     PANGO_WRAP_WORD_CHAR);
+    clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                                PANGO_ELLIPSIZE_END);
+    clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
+                                     PANGO_ALIGN_LEFT);
+    g_object_set (tile,
+              "body",
+              body,
+              NULL);
+  } else {
+    if (g_str_equal (mojito_item_get_value (item, "type"),
+                     "lastfm"))
+    {
+      body = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
+
+      if (clutter_texture_set_from_file (CLUTTER_TEXTURE (body),
+                                         DEFAULT_ALBUM_ARTWORK,
+                                         &error))
+      {
+        g_object_set (tile,
+                      "body",
+                      body,
+                      NULL);
+      } else {
+        g_critical (G_STRLOC ": Loading thumbnail failed: %s",
+                    error->message);
+        g_clear_error (&error);
+      }
+    } else {
+      g_assert_not_reached ();
+    }
+  }
+
+  if (mojito_item_has_key (item, "title"))
+  {
+    if (mojito_item_has_key (item, "author"))
+    {
+      g_object_set (tile,
+                    "primary-text", mojito_item_get_value (item, "title"),
+                    "secondary-text", mojito_item_get_value (item, "author"),
+                    NULL);
+    } else {
+      date = mpl_utils_format_time (&(item->date));
+      g_object_set (tile,
+                    "primary-text", mojito_item_get_value (item, "title"),
+                    "secondary-text", date,
+                    NULL);
+      g_free (date);
+    }
+  } else if (mojito_item_has_key (item, "author")) {
+      date = mpl_utils_format_time (&(item->date));
+      g_object_set (tile,
+                    "primary-text", mojito_item_get_value (item, "author"),
+                    "secondary-text", date,
+                    NULL);
+      g_free (date);
+  } else {
+    g_assert_not_reached ();
+  }
+
+  g_object_set (tile,
+                "icon-path", mojito_item_get_value (item, "authoricon"),
+                NULL);
+}

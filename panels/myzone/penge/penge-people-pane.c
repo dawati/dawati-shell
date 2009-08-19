@@ -25,11 +25,7 @@
 
 #include "penge-utils.h"
 
-#include "penge-flickr-tile.h"
-#include "penge-twitter-tile.h"
-#include "penge-lastfm-tile.h"
-#include "penge-myspace-tile.h"
-
+#include "penge-people-tile.h"
 #include "penge-people-pane.h"
 
 G_DEFINE_TYPE (PengePeoplePane, penge_people_pane, NBTK_TYPE_TABLE)
@@ -93,36 +89,10 @@ penge_people_pane_fabricate_actor (PengePeoplePane *pane,
                                    MojitoItem      *item)
 {
   ClutterActor *actor;
-  ClutterColor blue = {0, 0, 255, 127};
 
-  if (g_str_equal (item->service, "flickr"))
-  {
-    actor = g_object_new (PENGE_TYPE_FLICKR_TILE,
-                          "item",
-                          item,
-                          NULL);
-
-  } else if (g_str_equal (item->service, "twitter")) {
-    actor = g_object_new (PENGE_TYPE_TWITTER_TILE,
-                          "item",
-                          item,
-                          NULL);
-  } else if (g_str_equal (item->service, "myspace")) {
-    actor = g_object_new (PENGE_TYPE_MYSPACE_TILE,
-                          "item",
-                          item,
-                          NULL);
-  } else if (g_str_equal (item->service, "lastfm")) {
-    actor = g_object_new (PENGE_TYPE_LASTFM_TILE,
-                          "item",
-                          item,
-                          NULL);
-  } else {
-    actor = clutter_rectangle_new ();
-    clutter_rectangle_set_color (CLUTTER_RECTANGLE (actor),
-                               &blue);
-  }
-
+  actor = g_object_new (PENGE_TYPE_PEOPLE_TILE,
+                        "item", item,
+                        NULL);
   clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
   
   return actor;
