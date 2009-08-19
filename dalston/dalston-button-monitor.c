@@ -25,6 +25,8 @@
 #include <libhal-glib/hal-manager.h>
 #include <libhal-glib/hal-device.h>
 #include <libhal-power-glib/hal-power-proxy.h>
+#include <libnotify/notify.h>
+#include <glib/gi18n.h>
 
 G_DEFINE_TYPE (DalstonButtonMonitor, dalston_button_monitor, G_TYPE_OBJECT)
 
@@ -122,6 +124,16 @@ dalston_button_monitor_class_init (DalstonButtonMonitorClass *klass)
   object_class->finalize = dalston_button_monitor_finalize;
 }
 
+static void
+_shutdown_notify_cb (NotifyNotification *notification,
+                     gchar              *action,
+                     gpointer            userdata)
+{
+  DalstonButtonMonitor *monitor = (DalstonButtonMonitor *)userdata;
+  DalstonButtonMonitorPrivate *priv = GET_PRIVATE (monitor);
+
+  hal_power_proxy_shutdown_sync (priv->power_proxy);
+}
 
 static void
 _device_condition_cb (HalDevice   *device,
@@ -135,6 +147,7 @@ _device_condition_cb (HalDevice   *device,
   GError *error = NULL;
   gboolean state = FALSE;
   gboolean has_state = FALSE;
+  NotifyNotification *note;
 
   if (!g_str_equal (condition, "ButtonPressed"))
   {
@@ -192,6 +205,29 @@ _device_condition_cb (HalDevice   *device,
         hal_power_proxy_suspend_sync (priv->power_proxy);
       }
     }
+  } else if (g_str_equal (type, "power")) {
+    note = notify_notification_new (_("Would you like to turn off now"),
+                                    _("It is a shame to see you go. "
+                                      "Please come back soon."),
+                                    "system-shutdown",
+                                    NULL);
+     notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
+     notify_notification_add_action (note,
+                                     "shutdown",
+                                     _("Turn off"),
+                                     _shutdown_notify_cb,
+                                     g_object_ref (monitor),
+                                     (GFreeFunc)g_object_unref);
+
+      if (!notify_notification_show (note,
+                                     &error))
+      {
+        g_warning (G_STRLOC ": Error showing notification: %s",
+                   error->message);
+        g_clear_error (&error);
+      }
+
+      g_object_unref (note);
   }
 
   g_free (type);
