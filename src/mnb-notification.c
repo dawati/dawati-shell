@@ -302,6 +302,7 @@ mnb_notification_update (MnbNotification *notification,
 {
   MnbNotificationPrivate *priv;
   gboolean                has_action = FALSE, no_icon = TRUE;
+  GList                  *l;
 
   g_return_if_fail (MNB_IS_NOTIFICATION (notification));
 
@@ -333,15 +334,24 @@ mnb_notification_update (MnbNotification *notification,
           no_icon = FALSE;
         }
     }
-  
+
+  /* Since notifications can be "updated" we need to be able reverse any operations */
   if (no_icon)
     {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (notification),
-                                      priv->icon);
+      clutter_actor_hide (CLUTTER_ACTOR (priv->icon));
       clutter_container_child_set (CLUTTER_CONTAINER (notification),
                                    CLUTTER_ACTOR (priv->summary),
                                    "col-span", 2,
                                    "col", 0,
+                                   NULL);
+    }
+  else
+    {
+      clutter_actor_show (CLUTTER_ACTOR (priv->icon));
+      clutter_container_child_set (CLUTTER_CONTAINER (notification),
+                                   CLUTTER_ACTOR (priv->summary),
+                                   "col-span", 1,
+                                   "col", 1,
                                    NULL);
     }
 
@@ -350,10 +360,24 @@ mnb_notification_update (MnbNotification *notification,
       GHashTableIter iter;
       gchar *key, *value;
 
+      /* Remove all except default / Dismiss action. We must do this to
+       * support "updating".
+       */
+      for (l = clutter_container_get_children (CLUTTER_CONTAINER (priv->button_box));
+           l;
+           l = g_list_delete_link (l, l))
+        {
+          if (l->data == priv->dismiss_button)
+            continue;
+          else
+            clutter_container_remove_actor (CLUTTER_CONTAINER (priv->button_box),
+                                          CLUTTER_ACTOR (l->data));
+        }
+
       g_hash_table_iter_init (&iter, details->actions);
       while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value))
         {
-          if (strcasecmp(key, "default"))
+          if (strcasecmp(key, "default") != 0)
             {
               ActionData *data;
               NbtkWidget *button;
@@ -379,16 +403,24 @@ mnb_notification_update (MnbNotification *notification,
 
   if (details->is_urgent)
     {
-      /* Essentially change title color to Red and  remove dismiss button */
       nbtk_widget_set_style_class_name (priv->summary,
                                         "NotificationSummaryUrgent");
 
       if (has_action == TRUE)
         {
-          /* Remove the dismiss button.. */
-          clutter_container_remove_actor(CLUTTER_CONTAINER (priv->button_box),
-                                         CLUTTER_ACTOR (priv->dismiss_button));
+          /* Hide the dismiss button.. */
+          clutter_actor_hide (CLUTTER_ACTOR (priv->dismiss_button));
         }
+      else
+       {
+          clutter_actor_show (CLUTTER_ACTOR (priv->dismiss_button));
+        }
+    }
+  else
+    {
+      nbtk_widget_set_style_class_name (priv->summary,
+                                        "NotificationSummary");
+      clutter_actor_show (CLUTTER_ACTOR (priv->dismiss_button));
     }
 }
 
