@@ -275,6 +275,11 @@ mnb_notification_init (MnbNotification *self)
   nbtk_grid_set_column_gap (NBTK_GRID (priv->button_box), 7);
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->button_box),
                         2, 0);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               CLUTTER_ACTOR (priv->button_box),
+                               "col-span", 2,
+                               NULL);
+
 
   /* add the dismiss button to the button box */
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
