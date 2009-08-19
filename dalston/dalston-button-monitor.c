@@ -209,7 +209,7 @@ _device_condition_cb (HalDevice   *device,
     note = notify_notification_new (_("Would you like to turn off now?"),
                                     _("It is a shame to see you go. "
                                       "Please come back soon."),
-                                    "system-shutdown",
+                                    NULL,
                                     NULL);
      notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
      notify_notification_set_timeout (note, NOTIFY_EXPIRES_NEVER);
