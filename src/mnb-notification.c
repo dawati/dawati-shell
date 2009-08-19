@@ -301,7 +301,6 @@ mnb_notification_update (MnbNotification *notification,
 {
   MnbNotificationPrivate *priv;
   gboolean                has_action = FALSE, no_icon = TRUE;
-  ClutterActor           *layout = NULL; /* action buttons.. */
 
   g_return_if_fail (MNB_IS_NOTIFICATION (notification));
 
@@ -388,12 +387,6 @@ mnb_notification_update (MnbNotification *notification,
           /* Remove the dismiss button.. */
           clutter_container_remove_actor(CLUTTER_CONTAINER (priv->button_box),
                                          CLUTTER_ACTOR (priv->dismiss_button));
-          
-          if (layout != NULL)
-            clutter_container_child_set (CLUTTER_CONTAINER (notification),
-                                         CLUTTER_ACTOR (layout),
-                                         "col-span", 2,
-                                         NULL);
         }
     }
 }
