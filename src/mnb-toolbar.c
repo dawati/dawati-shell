@@ -816,6 +816,10 @@ mnb_toolbar_panel_index_to_name (gint index)
     }
 }
 
+/*
+ * Use for any built-in panels, which require the input region to cover the
+ * whole panel area.
+ */
 static void
 mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
                                              MnbToolbar  *toolbar)
@@ -836,8 +840,6 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
   priv->dropdown_region =
     moblin_netbook_input_region_push (plugin, 0, TOOLBAR_HEIGHT,
                                       (guint)w, screen_height-TOOLBAR_HEIGHT);
-
-  moblin_netbook_stash_window_focus (plugin, CurrentTime);
 
   priv->waiting_for_panel = FALSE;
 }
