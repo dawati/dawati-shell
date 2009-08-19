@@ -212,6 +212,7 @@ _device_condition_cb (HalDevice   *device,
                                     "system-shutdown",
                                     NULL);
      notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
+     notify_notification_set_timeout (note, NOTIFY_EXPIRES_NEVER);
      notify_notification_add_action (note,
                                      "shutdown",
                                      _("Turn off"),
