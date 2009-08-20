@@ -408,22 +408,11 @@ mnb_notification_update (MnbNotification *notification,
     {
       nbtk_widget_set_style_class_name (priv->summary,
                                         "NotificationSummaryUrgent");
-
-      if (has_action == TRUE)
-        {
-          /* Hide the dismiss button.. */
-          clutter_actor_hide (CLUTTER_ACTOR (priv->dismiss_button));
-        }
-      else
-       {
-          clutter_actor_show (CLUTTER_ACTOR (priv->dismiss_button));
-        }
     }
   else
     {
       nbtk_widget_set_style_class_name (priv->summary,
                                         "NotificationSummary");
-      clutter_actor_show (CLUTTER_ACTOR (priv->dismiss_button));
     }
 }
 
