@@ -376,14 +376,14 @@ MnbNotificationCluster *.notification-control
   padding: 15 26 38 27;
 }
 
-MnbNotification > *.NotificationSummary
+*.NotificationSummary
 {
     font-family: "Droid Sans Bold";
     font-size: 16px;
     color: #009bceff;
 }
 
-MnbNotification > *.NotificationSummaryUrgent
+*.NotificationSummaryUrgent
 {
     font-family: "Droid Sans Bold";
     font-size: 16px;

@@ -56,6 +56,7 @@ struct _MnbNotificationPrivate {
   ClutterActor *icon;
   NbtkWidget   *dismiss_button;
   NbtkWidget   *button_box;
+  NbtkWidget   *title_box;
 
   guint         id;
 
@@ -222,38 +223,47 @@ mnb_notification_init (MnbNotification *self)
   priv->icon           = clutter_texture_new ();
   priv->body           = nbtk_label_new ("");
   priv->summary        = nbtk_label_new ("");
+  priv->title_box      = nbtk_table_new ();
+
+
+  nbtk_table_set_col_spacing (NBTK_TABLE (priv->title_box), 4);
+  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->title_box), 0, 0);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               CLUTTER_ACTOR (priv->title_box),
+                               "y-expand", FALSE,
+                               "x-expand", TRUE,
+                               NULL);
 
   /* Make the texture keep it's aspect ratio */
   clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (priv->icon), TRUE);
   clutter_actor_set_size (priv->icon, 48, 48);
-  nbtk_table_add_actor (NBTK_TABLE (self), priv->icon, 0, 0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->title_box), priv->icon, 0, 0);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
                                CLUTTER_ACTOR (priv->icon),
                                "y-expand", FALSE,
                                "x-expand", FALSE,
                                "x-align", 0.0,
                                "x-fill", FALSE,
                                "y-fill", FALSE,
+                               "allocate-hidden", FALSE,
                                NULL);
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->summary)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
 
-  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->summary), 0, 1);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->title_box), CLUTTER_ACTOR (priv->summary), 0, 1);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
                                CLUTTER_ACTOR (priv->summary),
                                "y-expand", TRUE,
                                "x-expand", TRUE,
                                "y-align", 0.5,
+                               "x-align", 0.0,
                                "y-fill", FALSE,
+                               "x-fill", FALSE,
                                NULL);
 
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               CLUTTER_ACTOR (priv->body),
-                               "col-span", 2,
-                               NULL);
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->body)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
@@ -275,11 +285,6 @@ mnb_notification_init (MnbNotification *self)
   nbtk_grid_set_column_gap (NBTK_GRID (priv->button_box), 7);
   nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->button_box),
                         2, 0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               CLUTTER_ACTOR (priv->button_box),
-                               "col-span", 2,
-                               NULL);
-
 
   /* add the dismiss button to the button box */
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
@@ -347,20 +352,10 @@ mnb_notification_update (MnbNotification *notification,
   if (no_icon)
     {
       clutter_actor_hide (CLUTTER_ACTOR (priv->icon));
-      clutter_container_child_set (CLUTTER_CONTAINER (notification),
-                                   CLUTTER_ACTOR (priv->summary),
-                                   "col-span", 2,
-                                   "col", 0,
-                                   NULL);
     }
   else
     {
       clutter_actor_show (CLUTTER_ACTOR (priv->icon));
-      clutter_container_child_set (CLUTTER_CONTAINER (notification),
-                                   CLUTTER_ACTOR (priv->summary),
-                                   "col-span", 1,
-                                   "col", 1,
-                                   NULL);
     }
 
   if (details->actions)
