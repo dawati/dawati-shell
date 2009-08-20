@@ -854,7 +854,7 @@ mnb_launcher_fill (MnbLauncher     *self)
    */
 
   /* Label */
-  priv->fav_label = CLUTTER_ACTOR (nbtk_label_new (_("Favourite Applications")));
+  priv->fav_label = CLUTTER_ACTOR (nbtk_label_new (_("Favorite Applications")));
   clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
                          priv->fav_label, NULL);
   g_object_ref (priv->fav_label);
