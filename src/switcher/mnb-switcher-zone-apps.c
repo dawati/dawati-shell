@@ -73,35 +73,6 @@ mnb_switcher_zone_apps_dispose (GObject *object)
 
   priv->empty_label = NULL;
 
-#if 1
-  {
-    MnbSwitcherZone  *zone = MNB_SWITCHER_ZONE (object);
-    ClutterContainer *table;
-    GList            *l, *o;
-    /*
-     * Workaround for http://bugzilla.moblin.org/show_bug.cgi?id=5078
-     *
-     * We have to disable dnd on the draggables, otherwise, we will leak them.
-     *
-     * NB: this fixes the leak, but generates warning, as Nbtk assumes the
-     * draggable is still on stage and tries to disconnect its stage callback
-     * function from the stage this actor is on.
-     */
-    table = CLUTTER_CONTAINER (mnb_switcher_zone_get_content_area (zone));
-    o = l = clutter_container_get_children (table);
-
-    for (; l; l = l->next)
-      {
-        NbtkDraggable *d = l->data;
-
-        if (NBTK_IS_DRAGGABLE (d))
-          nbtk_draggable_disable (d);
-      }
-
-    g_list_free (o);
-  }
-#endif
-
   G_OBJECT_CLASS (mnb_switcher_zone_apps_parent_class)->dispose (object);
 }
 
