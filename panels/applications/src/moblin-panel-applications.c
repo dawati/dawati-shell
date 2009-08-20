@@ -81,6 +81,8 @@ standalone_launcher_activated_cb (MnbLauncher    *launcher,
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
+
+  g_object_unref (app_info);
 }
 
 static void
