@@ -26,6 +26,7 @@
 #include <glib/gi18n.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+#include <gio/gdesktopappinfo.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
@@ -63,6 +64,23 @@ launcher_activated_cb (MnbLauncher    *launcher,
                                                          desktop_file,
                                                          NULL);
   mpl_panel_client_request_hide (panel);
+}
+
+static void
+standalone_launcher_activated_cb (MnbLauncher    *launcher,
+                                  const gchar    *desktop_file,
+                                  gpointer        user_data)
+{
+  GDesktopAppInfo *app_info;
+  GError          *error = NULL;
+
+  app_info = g_desktop_app_info_new_from_filename (desktop_file);
+
+  g_app_info_launch (G_APP_INFO (app_info), NULL, NULL, &error);
+  if (error) {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
 }
 
 static void
@@ -144,6 +162,8 @@ main (int     argc,
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
 
       launcher = mnb_launcher_new ();
+      g_signal_connect (launcher, "launcher-activated",
+                        G_CALLBACK (standalone_launcher_activated_cb), NULL);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
 
       g_signal_connect (stage, "notify::width",
