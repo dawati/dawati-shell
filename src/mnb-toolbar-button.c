@@ -283,6 +283,17 @@ mnb_toolbar_button_allocate (ClutterActor          *actor,
 }
 
 static void
+mnb_toolbar_button_hide (ClutterActor *actor)
+{
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->hide (actor);
+
+  /*
+   * Clear any left over hover state (MB#5518)
+   */
+  nbtk_widget_set_style_pseudo_class ((NbtkWidget*) actor, NULL);
+}
+
+static void
 mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
@@ -298,6 +309,7 @@ mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
   actor_class->enter_event        = mnb_toolbar_button_enter;
   actor_class->map                = mnb_toolbar_button_map;
   actor_class->unmap              = mnb_toolbar_button_unmap;
+  actor_class->hide               = mnb_toolbar_button_hide;
 
   button_class->transition        = mnb_toolbar_button_transition;
 
