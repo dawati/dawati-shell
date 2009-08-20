@@ -117,6 +117,26 @@ container_has_children (ClutterContainer *container)
   return ret;
 }
 
+static void
+container_get_n_visible_children_cb (ClutterActor  *actor,
+                                     guint         *ret)
+{
+  if (CLUTTER_ACTOR_IS_VISIBLE (actor))
+    *ret += 1;
+}
+
+static guint
+container_get_n_visible_children (ClutterContainer *container)
+{
+  guint ret = 0;
+
+  clutter_container_foreach (container,
+                             (ClutterCallback) container_get_n_visible_children_cb,
+                             &ret);
+
+  return ret;
+}
+
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S 2
 
@@ -636,9 +656,19 @@ mnb_launcher_keynav_in_grid (MnbLauncher       *self,
       /* Nothing focused, jump to first actor. */
       launcher = mnb_launcher_grid_keynav_first (grid);
       if (launcher)
-        scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
-                                         CLUTTER_ACTOR (launcher));
-      return TRUE;
+        {
+          /* Activate if it is the only one. */
+          if (container_get_n_visible_children (CLUTTER_CONTAINER (grid)) == 1 &&
+              keyval == CLUTTER_Return)
+            {
+              launcher_button_activated_cb (MNB_LAUNCHER_BUTTON (launcher),
+                                            self);
+            } else {
+              scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+                                               CLUTTER_ACTOR (launcher));
+            }
+          return TRUE;
+        }
     }
 
   return FALSE;
