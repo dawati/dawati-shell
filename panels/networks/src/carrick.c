@@ -109,7 +109,7 @@ main (int    argc,
     {
       MplPanelClient *panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
                                                         _("sound"),
-                                                        PKG_THEME_DIR "/network-applet.css", /* TODO robsta */
+                                                        PKG_THEME_DIR "/network-applet.css",
                                                         "unknown",
                                                         TRUE);
       g_signal_connect (panel_client,

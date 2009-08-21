@@ -1,0 +1,116 @@
+MnbToolbarButton {
+  background-color: #fff0;
+}
+
+MnbToolbarButton:checked {
+  border-image: url("file://@pkgdatadir@/icons/toolbar-button-active.png") 0 stretch;
+}
+
+MnbToolbarButton:hover, MnbToolbarButton:active {
+  border-image: url("file://@pkgdatadir@/icons/toolbar-button-hover.png") 0 stretch;
+}
+
+MnbToolbarButton#3g-strong {
+  background-image: url("file://@pkgdatadir@/icons/network-3g-strong.png");
+}
+
+MnbToolbarButton#3g-strong:hover, MnbToolbarButton#3g-strong:active, MnbToolbarButton#3g-strong:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-3g-strong-hover.png");
+}
+
+MnbToolbarButton#3g-weak {
+  background-image: url("file://@pkgdatadir@/icons/network-3g-weak.png");
+}
+
+MnbToolbarButton#3g-weak:hover, MnbToolbarButton#3g-weak:active, MnbToolbarButton#3g-weak:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-3g-weak-hover.png");
+}
+
+MnbToolbarButton#active {
+  background-image: url("file://@pkgdatadir@/icons/network-active.png");
+}
+
+MnbToolbarButton#active:hover, MnbToolbarButton#active:active, MnbToolbarButton#active:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-active-hover.png");
+}
+
+MnbToolbarButton#bluetooth-strong {
+  background-image: url("file://@pkgdatadir@/icons/network-bluetooth-strong.png");
+}
+
+MnbToolbarButton#bluetooth-strong:hover, MnbToolbarButton#bluetooth-strong:active, MnbToolbarButton#bluetooth-strong:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-bluetooth-strong-hover.png");
+}
+
+MnbToolbarButton#bluetooth-weak {
+  background-image: url("file://@pkgdatadir@/icons/network-bluetooth-weak.png");
+}
+
+MnbToolbarButton#bluetooth-weak:hover, MnbToolbarButton#bluetooth-weak:active, MnbToolbarButton#bluetooth-weak:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-bluetooth-weak-hover.png");
+}
+
+MnbToolbarButton#connecting {
+  background-image: url("file://@pkgdatadir@/icons/network-connecting.png");
+}
+
+MnbToolbarButton#connecting:hover, MnbToolbarButton#connecting:active, MnbToolbarButton#connecting:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-connecting-hover.png");
+}
+
+MnbToolbarButton#error {
+  background-image: url("file://@pkgdatadir@/icons/network-error.png");
+}
+
+MnbToolbarButton#error:hover, MnbToolbarButton#error:active, MnbToolbarButton#error:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-error-hover.png");
+}
+
+MnbToolbarButton#offline {
+  background-image: url("file://@pkgdatadir@/icons/network-offline.png");
+}
+
+MnbToolbarButton#offline:hover, MnbToolbarButton#offline:active, MnbToolbarButton#offline:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-offline-hover.png");
+}
+
+MnbToolbarButton#wimax-strong {
+  background-image: url("file://@pkgdatadir@/icons/network-wimax-strong.png");
+}
+
+MnbToolbarButton#wimax-strong:hover, MnbToolbarButton#wimax-strong:active, MnbToolbarButton#wimax-strong:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-wimax-strong-hover.png");
+}
+
+MnbToolbarButton#wimax-weak {
+  background-image: url("file://@pkgdatadir@/icons/network-wimax-weak.png");
+}
+
+MnbToolbarButton#wimax-weak:hover, MnbToolbarButton#wimax-weak:active, MnbToolbarButton#wimax-weak:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-wimax-weak-hover.png");
+}
+
+MnbToolbarButton#wireless-signal-good {
+  background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-good.png");
+}
+
+MnbToolbarButton#wireless-signal-good:hover, MnbToolbarButton#wireless-signal-good:active, MnbToolbarButton#wireless-signal-good:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-good-hover.png");
+}
+
+MnbToolbarButton#wireless-signal-strong {
+  background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-strong.png");
+}
+
+MnbToolbarButton#wireless-signal-strong:hover, MnbToolbarButton#wireless-signal-strong:active, MnbToolbarButton#wireless-signal-strong:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-strong-hover.png");
+}
+
+MnbToolbarButton#wireless-signal-weak {
+  background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-weak.png");
+}
+
+MnbToolbarButton#wireless-signal-weak:hover, MnbToolbarButton#wireless-signal-weak:active, MnbToolbarButton#wireless-signal-weak:checked  {
+  background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-weak-hover.png");
+}
+
