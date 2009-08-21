@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-17 09:31+0000\n"
+"POT-Creation-Date: 2009-08-19 09:28+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +31,7 @@ msgstr "<b>Bem-vindo ao Moblin 2.0 para Netbooks</b>"
 
 #: ../penge/penge-recent-files-pane.c:227
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Como o Moblin é um pouco diferente de outros computadores, temos dicas e itens para ajudá-lo navegar esta versão. Esperamos que se divirta, a Equipe Moblin."
+msgstr "Como o Moblin é um pouco diferente de outros computadores, temos dicas e itens para ajudá-lo navegar. Esperamos que se divirta, a Equipe Moblin."
 
 #: ../penge/penge-recent-file-tile.c:218
 msgid "Web page"
