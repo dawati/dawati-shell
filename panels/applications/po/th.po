@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-applications 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 00:22+0000\n"
+"POT-Creation-Date: 2009-08-19 09:28+0000\n"
 "PO-Revision-Date: 2009-08-14 16:14+0700\n"
 "Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
-"Language-Team: Thai <L10N@OpenTLE.org>\n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,19 +21,18 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:869
+#: ../src/moblin-netbook-launcher.c:857
 msgid "Favourite Applications"
 msgstr "โปรแกรมโปรด"
 
-#: ../src/moblin-netbook-launcher.c:1366
+#: ../src/moblin-netbook-launcher.c:1354
 msgid "Applications"
 msgstr "โปรแกรมประยุกต์"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/moblin-netbook-launcher.c:1365
 msgid "Search"
 msgstr "ค้นหา"
 
 #: ../src/moblin-panel-applications.c:164
 msgid "applications"
 msgstr "โปรแกรมประยุกต์"
-
