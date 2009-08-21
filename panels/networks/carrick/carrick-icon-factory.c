@@ -59,6 +59,37 @@ static const gchar * icon_names[] = {
   PKG_ICON_DIR "/" "network-bluetooth-weak-hover.png"
 };
 
+/* Keep in sync with CarrickIconState. */
+static const gchar *icon_ids[] = {
+  "active", /* ICON_ACTIVE */
+  "active", /* ICON_ACTIVE_HOVER */
+  "connecting", /* ICON_CONNECTING */
+  "connecting", /* ICON_CONNECTING_HOVER */
+  "error", /* ICON_ERROR */
+  "error", /* ICON_ERROR_HOVER */
+  "offline", /* ICON_OFFLINE */
+  "offline", /* ICON_OFFLINE_HOVER */
+  "wireless-weak", /* ICON_WIRELESS_WEAK */
+  "wireless-weak", /* ICON_WIRELESS_WEAK_HOVER */
+  "wireless-good", /* ICON_WIRELESS_GOOD */
+  "wireless-good", /* ICON_WIRELESS_GOOD_HOVER */
+  "wireless-strong", /* ICON_WIRELESS_STRONG */
+  "wireless-strong", /* ICON_WIRELESS_STRONG_HOVER */
+  "wimax-strong", /* ICON_WIMAX_STRONG */
+  "wimax-strong", /* ICON_WIMAX_STRONG_HOVER */
+  "wimax-weak", /* ICON_WIMAX_WEAK */
+  "wimax-weak", /* ICON_WIMAX_WEAK_HOVER */
+  "3g-strong", /* ICON_3G_STRONG */
+  "3g-strong", /* ICON_3G_STRONG_HOVER */
+  "3g-weak", /* ICON_3G_WEAK */
+  "3g-weak", /* ICON_3G_WEAK_HOVER */
+  "bluetooth-strong", /* ICON_BLUETOOTH_STRONG */
+  "bluetooth-strong", /* ICON_BLUETOOTH_STRONG_HOVER */
+  "bluetooth-weak", /* ICON_BLUETOOTH_WEAK */
+  "bluetooth-weak", /* ICON_BLUETOOTH_WEAK_HOVER */
+  NULL
+};
+
 struct _CarrickIconFactoryPrivate
 {
   GdkPixbuf *active_img;
@@ -149,6 +180,72 @@ const gchar *
 carrick_icon_factory_get_path_for_state (CarrickIconState state)
 {
   return icon_names[state];
+}
+
+const gchar *
+carrick_icon_factory_get_name_for_state (CarrickIconState state)
+{
+  return icon_ids[state];
+}
+
+CarrickIconState
+carrick_icon_factory_get_state (const gchar *connection_type,
+                                guint        strength)
+{
+  if (g_str_equal (connection_type, "ethernet"))
+    {
+      return ICON_ACTIVE_HOVER;
+    }
+  else if (g_str_equal (connection_type, "wifi"))
+    {
+      if (strength < 30)
+        {
+          return ICON_WIRELESS_WEAK_HOVER;
+        }
+      else if (strength < 60)
+        {
+          return ICON_WIRELESS_GOOD_HOVER;
+        }
+      else
+        {
+          return ICON_WIRELESS_STRONG_HOVER;
+        }
+    }
+  else if (g_str_equal (connection_type, "wimax"))
+    {
+      if (strength < 50)
+        {
+          return ICON_WIMAX_WEAK_HOVER;
+        }
+      else
+        {
+          return ICON_WIMAX_STRONG_HOVER;
+        }
+    }
+  else if (g_str_equal (connection_type, "bluetooth"))
+    {
+      if (strength < 50)
+        {
+          return ICON_BLUETOOTH_WEAK_HOVER;
+        }
+      else
+        {
+          return ICON_BLUETOOTH_STRONG_HOVER;
+        }
+    }
+  else if (g_str_equal (connection_type, "cellular"))
+    {
+      if (strength < 50)
+        {
+          return ICON_3G_WEAK_HOVER;
+        }
+      else
+        {
+          return ICON_3G_STRONG_HOVER;
+        }
+    }
+
+  return ICON_ERROR;
 }
 
 GdkPixbuf *

@@ -102,6 +102,11 @@ GdkPixbuf *carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factor
 
 const gchar *carrick_icon_factory_get_path_for_state (CarrickIconState state);
 
+const gchar *carrick_icon_factory_get_name_for_state (CarrickIconState state);
+
+CarrickIconState carrick_icon_factory_get_state      (const gchar *connection_type,
+                                                      guint        strength);
+
 G_END_DECLS
 
 #endif /* _CARRICK_ICON_FACTORY_H */

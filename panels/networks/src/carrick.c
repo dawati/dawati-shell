@@ -45,6 +45,21 @@ _client_set_size_cb (MplPanelClient *client,
   carrick_pane_update (pane);
 }
 
+static void
+_connection_changed_cb (CarrickPane     *pane,
+                        const gchar     *connection_type,
+                        guint            strength,
+                        MplPanelClient  *panel_client)
+{
+  CarrickIconState   icon_state;
+  const gchar       *icon_id;
+
+  icon_state = carrick_icon_factory_get_state (connection_type, strength);
+  icon_id = carrick_icon_factory_get_name_for_state (icon_state);
+
+  mpl_panel_client_request_button_style (panel_client, icon_id);
+}
+
 int
 main (int    argc,
       char **argv)
@@ -97,16 +112,19 @@ main (int    argc,
                                                         PKG_THEME_DIR "/network-applet.css", /* TODO robsta */
                                                         "unknown",
                                                         TRUE);
-
-      mpl_panel_client_set_height_request (panel_client, 450);
-
       g_signal_connect (panel_client,
                         "set-size",
                         (GCallback) _client_set_size_cb,
                         applet);
-
+      mpl_panel_client_set_height_request (panel_client, 450);
       window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
       gtk_container_add (GTK_CONTAINER (window), pane);
+
+      g_signal_connect (pane,
+                        "connection-changed",
+                        (GCallback) _connection_changed_cb,
+                        panel_client);
+
       gtk_widget_show_all (window);
     }
   else

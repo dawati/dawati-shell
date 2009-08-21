@@ -78,6 +78,14 @@ enum {
   PROP_NOTIFICATIONS
 };
 
+enum
+{
+  CONNECTION_CHANGED, /* FIXME rename to ACTIVE_CONNECTION_CHANGED? */
+  LAST_SIGNAL
+};
+
+static guint _signals[LAST_SIGNAL] = { 0, };
+
 static void
 pane_free_g_value (GValue *val)
 {
@@ -201,6 +209,19 @@ carrick_pane_class_init (CarrickPaneClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_NOTIFICATIONS,
                                    pspec);
+
+  _signals[CONNECTION_CHANGED] =
+      g_signal_new ("connection-changed",
+                    CARRICK_TYPE_PANE,
+                    G_SIGNAL_RUN_FIRST,
+                    G_STRUCT_OFFSET(CarrickPaneClass, connection_changed),
+                    NULL,
+                    NULL,
+                    connman_marshal_VOID__STRING_UINT,
+                    G_TYPE_NONE,
+                    2,
+                    G_TYPE_STRING,
+                    G_TYPE_UINT);
 }
 
 /*
@@ -1030,7 +1051,23 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
                       GtkTreeIter   *iter,
                       CarrickPane   *self)
 {
-  // TODO Rob
+  GtkTreePath *first;
+
+  /* Emit signal if connection is first in the model -- means the active one.
+   * This could probably be done nicer, maybe by using the INDEX column? */
+  first = gtk_tree_path_new_first ();
+  if (0 == gtk_tree_path_compare (first, path)) {
+    char *connection_type;
+    guint strength;
+    gtk_tree_model_get (tree_model, iter,
+                        CARRICK_COLUMN_TYPE, &connection_type,
+                        CARRICK_COLUMN_STRENGTH, &strength,
+                        -1);
+    g_signal_emit (self, CONNECTION_CHANGED, 0,
+                   connection_type,
+                   strength);
+  }
+  gtk_tree_path_free (first);
 }
 
 static void

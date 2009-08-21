@@ -60,6 +60,10 @@ struct _CarrickPane
 struct _CarrickPaneClass
 {
   GtkTableClass parent_class;
+
+  void (*connection_changed) (CarrickPane   *self,
+                              const gchar   *connection_type,
+                              guint          strength);
 };
 
 GType carrick_pane_get_type (void);

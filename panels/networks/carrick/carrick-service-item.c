@@ -201,67 +201,6 @@ _populate_variables (CarrickServiceItem *self)
     }
 }
 
-static CarrickIconState
-_get_icon_state (CarrickServiceItem *self)
-{
-  CarrickServiceItemPrivate *priv = self->priv;
-
-  if (g_str_equal (priv->type, "ethernet"))
-    {
-      return ICON_ACTIVE_HOVER;
-    }
-  else if (g_str_equal (priv->type, "wifi"))
-    {
-      if (priv->strength < 30)
-        {
-          return ICON_WIRELESS_WEAK_HOVER;
-        }
-      else if (priv->strength < 60)
-        {
-          return ICON_WIRELESS_GOOD_HOVER;
-        }
-      else
-        {
-          return ICON_WIRELESS_STRONG_HOVER;
-        }
-    }
-  else if (g_str_equal (priv->type, "wimax"))
-    {
-      if (priv->strength < 50)
-        {
-          return ICON_WIMAX_WEAK_HOVER;
-        }
-      else
-        {
-          return ICON_WIMAX_STRONG_HOVER;
-        }
-    }
-  else if (g_str_equal (priv->type, "bluetooth"))
-    {
-      if (priv->strength < 50)
-        {
-          return ICON_BLUETOOTH_WEAK_HOVER;
-        }
-      else
-        {
-          return ICON_BLUETOOTH_STRONG_HOVER;
-        }
-    }
-  else if (g_str_equal (priv->type, "cellular"))
-    {
-      if (priv->strength < 50)
-        {
-          return ICON_3G_WEAK_HOVER;
-        }
-      else
-        {
-          return ICON_3G_STRONG_HOVER;
-        }
-    }
-
-  return ICON_ERROR;
-}
-
 static void
 _set_state (CarrickServiceItem *self)
 {
@@ -371,8 +310,11 @@ _set_state (CarrickServiceItem *self)
     {
       gtk_label_set_text (GTK_LABEL (priv->name_label),
                           label);
-      pixbuf = carrick_icon_factory_get_pixbuf_for_state (priv->icon_factory,
-                                                          _get_icon_state (self));
+      pixbuf = carrick_icon_factory_get_pixbuf_for_state (
+                  priv->icon_factory,
+                  carrick_icon_factory_get_state (self->priv->type,
+                                                  self->priv->strength));
+
       gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
                                  pixbuf);
     }
