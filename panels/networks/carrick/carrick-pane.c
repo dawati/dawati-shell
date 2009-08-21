@@ -1025,6 +1025,15 @@ pane_manager_get_properties_cb (DBusGProxy     *manager,
 }
 
 static void
+model_row_changed_cb (GtkTreeModel  *tree_model,
+                      GtkTreePath   *path,
+                      GtkTreeIter   *iter,
+                      CarrickPane   *self)
+{
+  // TODO Rob
+}
+
+static void
 carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv;
@@ -1082,6 +1091,10 @@ carrick_pane_init (CarrickPane *self)
                                              CONNMAN_MANAGER_INTERFACE);
 
   model = carrick_network_model_new ();
+  g_signal_connect (model,
+                    "row-changed",
+                    G_CALLBACK (model_row_changed_cb),
+                    self);
 
   /* Listen for the D-Bus PropertyChanged signal */
   dbus_g_proxy_add_signal (priv->manager,

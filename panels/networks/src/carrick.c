@@ -23,34 +23,26 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <dbus/dbus-glib.h>
+#include <moblin-panel/mpl-panel-common.h>
+#include <moblin-panel/mpl-panel-gtk.h>
 
 #include <config.h>
 
 #include "carrick/carrick-applet.h"
 #include "carrick/carrick-pane.h"
-#include "moblin-netbook-system-tray.h"
 
-#define PADDING 4
+#define PKG_THEME_DIR PKG_DATA_DIR"/theme"
 
 static void
-_plug_notify_embedded (GObject    *object,
-                       GParamSpec *pspec,
-                       gpointer    user_data)
+_client_set_size_cb (MplPanelClient *client,
+                     guint           width,
+                     guint           height,
+                     gpointer        user_data)
 {
   CarrickApplet *applet = CARRICK_APPLET (user_data);
   CarrickPane   *pane = CARRICK_PANE (carrick_applet_get_pane (applet));
 
-  gboolean embedded;
-
-  g_object_get (object,
-                "embedded",
-                &embedded,
-                NULL);
-
-  if (embedded)
-    {
-      carrick_pane_update (pane);
-    }
+  carrick_pane_update (pane);
 }
 
 int
@@ -58,9 +50,9 @@ main (int    argc,
       char **argv)
 {
   CarrickApplet *applet;
+  GtkWidget     *window;
   GtkWidget     *pane;
   GdkScreen     *screen;
-  GtkWidget     *plug;
   GtkSettings   *settings;
   gboolean       standalone = FALSE;
   GError        *error = NULL;
@@ -100,33 +92,34 @@ main (int    argc,
   pane = carrick_applet_get_pane (applet);
   if (!standalone)
     {
-      plug = gtk_plug_new (0);
-      g_signal_connect (plug,
-                        "notify::embedded",
-                        G_CALLBACK (_plug_notify_embedded),
+      MplPanelClient *panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
+                                                        _("sound"),
+                                                        PKG_THEME_DIR "/network-applet.css", /* TODO robsta */
+                                                        "unknown",
+                                                        TRUE);
+
+      mpl_panel_client_set_height_request (panel_client, 450);
+
+      g_signal_connect (panel_client,
+                        "set-size",
+                        (GCallback) _client_set_size_cb,
                         applet);
 
-      gtk_container_add (GTK_CONTAINER (plug),
-                         pane);
-      mnbk_system_tray_init (NULL,
-                             GTK_PLUG (plug),
-                             "wifi");
-      screen = gtk_widget_get_screen (plug);
-      gtk_widget_set_size_request (pane,
-                                   gdk_screen_get_width (screen) - 2 * PADDING,
-                                   450);
+      window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
+      gtk_container_add (GTK_CONTAINER (window), pane);
+      gtk_widget_show_all (window);
     }
   else
     {
-      plug = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      g_signal_connect (plug,
+      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      g_signal_connect (window,
                         "delete-event",
                         (GCallback) gtk_main_quit,
                         NULL);
-      gtk_container_add (GTK_CONTAINER (plug),
+      gtk_container_add (GTK_CONTAINER (window),
                          pane);
 
-      gtk_widget_show (plug);
+      gtk_widget_show (window);
     }
 
   gtk_main ();
