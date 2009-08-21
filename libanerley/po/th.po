@@ -3,17 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Anuchit Chalothorn <anoochit@gmail.com>, 2009.
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: anerley\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-17 09:29+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2009-08-19 09:27+0000\n"
+"PO-Revision-Date: 2009-08-21 16:39+0700\n"
 "Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
-"Language-Team: Thai <L10N@opentle.org>\n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Thai\n"
 "X-Poedit-Country: THAILAND\n"
@@ -26,7 +25,8 @@ msgstr "ว่าง"
 msgid "Busy"
 msgstr "ยุ่ง"
 
-#: ../anerley/anerley-tile.c:214 ../anerley/anerley-tile.c:217
+#: ../anerley/anerley-tile.c:214
+#: ../anerley/anerley-tile.c:217
 msgid "Away"
 msgstr "ไม่อยู่"
 
@@ -37,3 +37,4 @@ msgstr "ออฟไลน์"
 #: ../anerley/anerley-econtact-item.c:312
 msgid "Unnamed"
 msgstr "ไม่มีชื่อ"
+
