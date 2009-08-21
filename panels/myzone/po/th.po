@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 09:26+0000\n"
+"POT-Creation-Date: 2009-08-19 09:28+0000\n"
 "PO-Revision-Date: 2009-08-17 19:13+0700\n"
 "Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
-"Language-Team: Thai <L10N@opentle.org>\n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,16 +26,23 @@ msgid "No calendar entries this week"
 msgstr "ไม่มีนัดหมายในสัปดาห์นี้"
 
 #: ../penge/penge-people-pane.c:191
-msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgid ""
+"Your friends' feeds and web services will appear here. Activate your "
+"accounts now!"
 msgstr "ฟีดของเพื่อนๆ และเว็บเซอร์วิสจะปรากฏที่นี่ เปิดใช้งานบัญชีของคุณวันนี้!"
 
 #: ../penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "	<b>ยินดีต้อนรับสู่ Moblin 2.0 สำหรับ Netbooks</b>"
+msgstr "\t<b>ยินดีต้อนรับสู่ Moblin 2.0 สำหรับ Netbooks</b>"
 
 #: ../penge/penge-recent-files-pane.c:227
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "เพราะ Moblin แตกต่างจากคอมพิวเตอร์อื่นๆ เราใส่สิ่งละอันพันละน้อยเข้าไปเพื่อช่วยให้คุณค้นพบหนทาง เราหวังว่าคุณจะชอบมัน ทีม Moblin"
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
+msgstr ""
+"เพราะ Moblin แตกต่างจากคอมพิวเตอร์อื่นๆ "
+"เราใส่สิ่งละอันพันละน้อยเข้าไปเพื่อช่วยให้คุณค้นพบหนทาง เราหวังว่าคุณจะชอบมัน ทีม Moblin"
 
 #: ../penge/penge-recent-file-tile.c:218
 msgid "Web page"
@@ -49,4 +56,3 @@ msgstr "ไม่มีกิจกรรมวันนี้"
 #, c-format
 msgid "Due %x"
 msgstr "ระยะเวลา %x"
-
