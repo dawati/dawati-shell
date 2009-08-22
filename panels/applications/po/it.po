@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
-"PO-Revision-Date: 2009-07-29 09:55+0100\n"
+"POT-Creation-Date: 2009-08-22 09:29+0000\n"
+"PO-Revision-Date: 2009-08-22 16:38+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -20,18 +20,18 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:869
-msgid "Favourite Applications"
+#: ../src/moblin-netbook-launcher.c:887
+msgid "Favorite Applications"
 msgstr "Applicazioni preferite"
 
-#: ../src/moblin-netbook-launcher.c:1366
+#: ../src/moblin-netbook-launcher.c:1384
 msgid "Applications"
 msgstr "Applicazioni"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/moblin-netbook-launcher.c:1395
 msgid "Search"
 msgstr "Cerca"
 
-#: ../src/moblin-panel-applications.c:164
+#: ../src/moblin-panel-applications.c:186
 msgid "applications"
 msgstr "applicazioni"
