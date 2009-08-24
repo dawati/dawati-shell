@@ -31,6 +31,7 @@
 #include <dbus/dbus.h>
 #include <gdk/gdk.h>
 #include <gio/gdesktopappinfo.h>
+#include <clutter/x11/clutter-x11.h>
 
 #include "mpl-panel-client.h"
 #include "mpl-panel-common.h"
@@ -827,11 +828,18 @@ mpl_panel_client_request_tooltip (MplPanelClient *panel,
 static gboolean
 mpl_panel_client_launch_application_from_info (GAppInfo *app, GList *files)
 {
-  GAppLaunchContext          *ctx;
-  GError                     *error = NULL;
-  gboolean                    retval = TRUE;
+  GAppLaunchContext    *ctx;
+  GdkAppLaunchContext  *gctx;
+  GError               *error = NULL;
+  gboolean              retval = TRUE;
+  guint32               timestamp;
 
-  ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+  gctx = gdk_app_launch_context_new ();
+  ctx  = G_APP_LAUNCH_CONTEXT (gctx);
+
+  timestamp = clutter_x11_get_current_event_time ();
+
+  gdk_app_launch_context_set_timestamp (gctx, timestamp);
 
   retval = g_app_info_launch (app, files, ctx, &error);
 
@@ -956,11 +964,13 @@ gboolean
 mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
                                                      const gchar    *uri)
 {
-  GAppLaunchContext          *ctx;
-  GAppInfo                   *app;
-  GError                     *error = NULL;
-  gboolean                    retval = TRUE;
-  gchar                      *uri_scheme;
+  GAppLaunchContext   *ctx;
+  GdkAppLaunchContext *gctx;
+  GAppInfo            *app;
+  GError              *error = NULL;
+  gboolean             retval = TRUE;
+  gchar               *uri_scheme;
+  guint32              timestamp;
 
   uri_scheme = g_uri_parse_scheme (uri);
 
@@ -971,13 +981,20 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
       file = g_file_new_for_uri (uri);
       app = g_file_query_default_handler (file, NULL, NULL);
       g_object_unref (file);
-    } else {
+    }
+  else
+    {
       app = g_app_info_get_default_for_uri_scheme (uri_scheme);
     }
 
   g_free (uri_scheme);
 
-  ctx = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+  gctx = gdk_app_launch_context_new ();
+  ctx  = G_APP_LAUNCH_CONTEXT (gctx);
+
+  timestamp = clutter_x11_get_current_event_time ();
+
+  gdk_app_launch_context_set_timestamp (gctx, timestamp);
 
   retval = g_app_info_launch_default_for_uri (uri, ctx, &error);
 
