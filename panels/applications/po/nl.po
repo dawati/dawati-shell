@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 21:08+0000\n"
-"PO-Revision-Date: 2009-08-10 15:36-0800\n"
+"POT-Creation-Date: 2009-08-24 09:29+0000\n"
+"PO-Revision-Date: 2009-08-25 16:10-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,19 +20,19 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:869
-msgid "Favourite Applications"
+#: ../src/moblin-netbook-launcher.c:887
+msgid "Favorite Applications"
 msgstr "Favoriete Applicaties"
 
-#: ../src/moblin-netbook-launcher.c:1366
+#: ../src/moblin-netbook-launcher.c:1384
 msgid "Applications"
 msgstr "Applicaties"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/moblin-netbook-launcher.c:1395
 msgid "Search"
 msgstr "Zoek"
 
-#: ../src/moblin-panel-applications.c:164
+#: ../src/moblin-panel-applications.c:186
 msgid "applications"
 msgstr "applicaties"
 
