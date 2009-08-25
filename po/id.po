@@ -1,0 +1,147 @@
+# Translation of mutter to Indonesian.
+# Copyright (C) 2009 Andika Triwidada
+# This file is distributed under the same license as the PACKAGE package.
+# Andika Triwidada <andika@gmail.com>, 2009.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-24 09:23+0000\n"
+"PO-Revision-Date: 2009-08-26 04:16+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+msgid "Less than a minute ago"
+msgstr "Kurang dari semenit yang lalu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+msgid "A few minutes ago"
+msgstr "Beberapa menit yang lalu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+msgid "A couple of hours ago"
+msgstr "Beberapa jam yang lalu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+msgid "Earlier today"
+msgstr "Hari ini"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+msgid "Yesterday"
+msgstr "Kemarin"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#, c-format
+msgid "On %A"
+msgstr "Pada %A"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+msgid "Unknown"
+msgstr "Tak diketahui"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+msgid "Last week"
+msgstr "Minggu lalu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+msgid "A couple of weeks ago"
+msgstr "Beberapa minggu yang lalu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+msgid "This month"
+msgstr "Bulan ini"
+
+#. Now Jan., last used in Dec.
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+msgid "Last month"
+msgstr "Bulan lalu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+msgid "This year"
+msgstr "Tahun ini"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+msgid "Last year"
+msgstr "Tahun lalu"
+
+#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+msgid "Ages ago"
+msgstr "Telah lama berlalu"
+
+#: ../src/moblin-netbook.c:305 ../src/mnb-toolbar.c:1348
+msgid "zones"
+msgstr "zona"
+
+#: ../src/moblin-netbook.c:412
+msgid "Moblin Netbook Effects"
+msgstr "Efek Netbook Moblin"
+
+#: ../src/moblin-netbook.c:416
+msgid "Effects for Moblin Netbooks"
+msgstr "Efek-efek untuk Netbook Moblin"
+
+#: ../src/mnb-notification.c:280
+msgid "Dismiss"
+msgstr "Bubar"
+
+#: ../src/mnb-notification-cluster.c:657
+msgid "Dismiss All"
+msgstr "Bubar Semua"
+
+# 24 hrs without am/pm for ID
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:668
+msgid "%l:%M %P"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:678
+msgid "%B %e, %Y"
+msgstr "%d %B %Y"
+
+#: ../src/mnb-toolbar.c:1585
+msgid "power & brightness"
+msgstr "daya & kecerahan"
+
+#: ../src/mnb-toolbar.c:1588
+msgid "volume"
+msgstr "keras suara"
+
+#: ../src/mnb-toolbar.c:1591
+msgid "bluetooth"
+msgstr "bluetooth"
+
+#: ../src/mnb-toolbar.c:1594
+msgid "networks"
+msgstr "jaringan"
+
+#: ../src/mnb-toolbar.c:1597
+msgid "test"
+msgstr "uji"
+
+#: ../src/switcher/mnb-switcher.c:280
+msgid "No Zones yet"
+msgstr "Belum ada zona"
+
+#: ../src/switcher/mnb-switcher.c:302
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat menukar "
+"dan mengatur mereka sekehendak anda."
+
+#: ../src/switcher/mnb-switcher-zone-apps.c:408
+msgid "No applications on this zone"
+msgstr "Tak ada aplikasi pada zona ini"
