@@ -28,6 +28,9 @@
 #include "penge-people-tile.h"
 #include "penge-people-pane.h"
 
+#include "penge-magic-list-view.h"
+#include "penge-people-model.h"
+
 G_DEFINE_TYPE (PengePeoplePane, penge_people_pane, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -38,19 +41,14 @@ typedef struct _PengePeoplePanePrivate PengePeoplePanePrivate;
 struct _PengePeoplePanePrivate {
   MojitoClient *client;
   MojitoClientView *view;
-  GHashTable *uuid_to_actor;
-
-  ClutterActor *no_content_tile;
+  ClutterModel *model;
+  ClutterActor *list_view;
 };
 
-#define NUMBER_COLS 2
-#define MAX_ITEMS 8
+#define MAX_ITEMS 32
 
-#define TILE_WIDTH 170
-#define TILE_HEIGHT 115
-
-#define COL_SPACING 6
-#define ROW_SPACING 6
+#define TILE_WIDTH 170.0f
+#define TILE_HEIGHT 115.0f
 
 static void
 penge_people_pane_dispose (GObject *object)
@@ -69,10 +67,10 @@ penge_people_pane_dispose (GObject *object)
     priv->view = NULL;
   }
 
-  if (priv->uuid_to_actor)
+  if (priv->model)
   {
-    g_hash_table_unref (priv->uuid_to_actor);
-    priv->uuid_to_actor = NULL;
+    g_object_unref (priv->model);
+    priv->model = NULL;
   }
 
   G_OBJECT_CLASS (penge_people_pane_parent_class)->dispose (object);
@@ -84,22 +82,7 @@ penge_people_pane_finalize (GObject *object)
   G_OBJECT_CLASS (penge_people_pane_parent_class)->finalize (object);
 }
 
-static ClutterActor *
-penge_people_pane_fabricate_actor (PengePeoplePane *pane,
-                                   MojitoItem      *item)
-{
-  ClutterActor *actor;
-
-  actor = g_object_new (PENGE_TYPE_PEOPLE_TILE,
-                        "item", item,
-                        NULL);
-  clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
-  
-  return actor;
-}
-
-#define ICON_SIZE 48
-
+#if 0
 static gboolean
 _enter_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
@@ -257,177 +240,21 @@ _make_no_content_tile (void)
 
   return tile;
 }
-
-
-/*
- * This function iterates over the list of items that are apparently in the
- * view and packs them into the table.
- *
- * If an item that is not seen before comes in then a new actor of the
- * appropriate type is fabricated in the factory.
- */
-static void
-penge_people_pane_update (PengePeoplePane *pane)
-{
-  PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
-
-  GList *items = NULL, *l;
-  MojitoItem *item;
-  gint count = 0;
-  ClutterActor *actor;
-  GList *existing_actors = NULL;
-
-  /* In case opening the view failed */
-  if (priv->view)
-  {
-    items = mojito_client_view_get_sorted_items (priv->view);
-  }
-
-  if (items)
-  {
-    /* Hide the nothing configured tile */
-    if (priv->no_content_tile)
-    {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (pane), priv->no_content_tile);
-      priv->no_content_tile = NULL;
-    }
-  }
-
-  if (items == NULL)
-  {
-    existing_actors = clutter_container_get_children (CLUTTER_CONTAINER (pane));
-
-    if (g_list_length (existing_actors) == 0)
-    {
-      /* Add the nothing configured tile */
-      if (!priv->no_content_tile)
-      {
-        priv->no_content_tile = _make_no_content_tile ();
-        nbtk_table_add_actor_with_properties (NBTK_TABLE (pane),
-                                              priv->no_content_tile,
-                                              0,
-                                              0,
-                                              "col-span",
-                                              2,
-                                              "y-expand",
-                                              FALSE,
-                                              "x-expand",
-                                              TRUE,
-                                              NULL);
-        clutter_actor_show_all (priv->no_content_tile);
-      }
-    }
-
-    g_list_free (existing_actors);
-    return;
-  }
-
-
-  for (l = items; l; l = g_list_delete_link (l, l))
-  {
-    item = (MojitoItem *)l->data;
-    actor = g_hash_table_lookup (priv->uuid_to_actor, item->uuid);
-
-    if (!actor)
-    {
-      actor = penge_people_pane_fabricate_actor (pane, item);
-      nbtk_table_add_actor (NBTK_TABLE (pane),
-                            actor,
-                            count / NUMBER_COLS,
-                            count % NUMBER_COLS);
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   actor,
-                                   "y-expand",
-                                   FALSE,
-                                   "x-expand",
-                                   FALSE,
-                                   NULL);
-
-      g_hash_table_insert (priv->uuid_to_actor,
-                           g_strdup (item->uuid),
-                           g_object_ref (actor));
-    } else {
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   actor,
-                                   "row",
-                                   count / NUMBER_COLS,
-                                   "col",
-                                   count % NUMBER_COLS,
-                                   NULL);
-    }
-    count++;
-  }
-}
-
-static void
-_client_view_item_added_cb (MojitoClientView *view,
-                         MojitoItem       *item,
-                         gpointer          userdata)
-{
-  penge_people_pane_update (userdata);
-}
-
-/* When we've been told something has been removed from the view then we
- * must remove it from our local hash of uuid to actor and then destroy the
- * actor. This should remove it from it's container, etc.
- *
- * We must then update the pane to ensure that we relayout the table.
- */
-static void
-_client_view_item_removed_cb (MojitoClientView *view,
-                              MojitoItem       *item,
-                              gpointer          userdata)
-{
-  PengePeoplePane *pane = PENGE_PEOPLE_PANE (userdata);
-  PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
-  ClutterActor *actor;
- 
-  actor = g_hash_table_lookup (priv->uuid_to_actor,
-                               item->uuid);
-
-  g_hash_table_remove (priv->uuid_to_actor, item->uuid);
-  clutter_container_remove_actor (CLUTTER_CONTAINER (pane), actor);
-  penge_people_pane_update (pane);
-}
-
+#endif
 
 static void
 _client_open_view_cb (MojitoClient     *client,
                       MojitoClientView *view,
                       gpointer          userdata)
 {
-  PengePeoplePane *pane = PENGE_PEOPLE_PANE (userdata);
   PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
 
-  if (!view)
-  {
-    /* This will cause the not configured message to come up */
-    penge_people_pane_update (pane);
-    return;
-  }
-
-  /* Save out the view */
-  priv->view = view;
-
-  /* and start it ... */
-  mojito_client_view_start (priv->view);
-
-  g_signal_connect (priv->view, 
-                    "item-added",
-                    (GCallback)_client_view_item_added_cb,
-                    pane);
-/*
-  g_signal_connect (priv->view, 
-                    "item-changed",
-                    _client_view_changed_cb,
-                    object);
-*/
-  g_signal_connect (priv->view, 
-                    "item-removed",
-                    (GCallback)_client_view_item_removed_cb,
-                    pane);
-  
-  penge_people_pane_update (pane);
+  mojito_client_view_start (view);
+  priv->model = penge_people_model_new (view);
+  penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (priv->list_view),
+                                   priv->model);
+  penge_magic_list_view_set_item_type (PENGE_MAGIC_LIST_VIEW (priv->list_view),
+                                       PENGE_TYPE_PEOPLE_TILE);
 }
 
 static void
@@ -449,10 +276,10 @@ _client_get_services_cb (MojitoClient *client,
     }
   }
 
-  mojito_client_open_view (client, 
-                           filtered_services, 
-                           MAX_ITEMS, 
-                           _client_open_view_cb, 
+  mojito_client_open_view (client,
+                           filtered_services,
+                           MAX_ITEMS,
+                           _client_open_view_cb,
                            userdata);
 
   g_list_free (filtered_services);
@@ -474,19 +301,25 @@ penge_people_pane_init (PengePeoplePane *self)
 {
   PengePeoplePanePrivate *priv = GET_PRIVATE (self);
 
-  priv->uuid_to_actor = g_hash_table_new_full (g_str_hash,
-                                               g_str_equal,
-                                               g_free,
-                                               g_object_unref);
-
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), ROW_SPACING);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
-
   /* Create the client and request the services list */
   priv->client = mojito_client_new ();
   mojito_client_get_services (priv->client, _client_get_services_cb, self);
 
-  clutter_actor_set_width ((ClutterActor *)self, TILE_WIDTH * 2 + COL_SPACING);
+  priv->list_view = penge_magic_list_view_new ();
+
+  penge_magic_container_set_minimum_child_size (PENGE_MAGIC_CONTAINER (priv->list_view),
+                                                TILE_WIDTH,
+                                                TILE_HEIGHT);
+
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        priv->list_view,
+                                        0, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        NULL);
+
 }
 
 
