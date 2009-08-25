@@ -112,22 +112,7 @@ penge_people_tile_set_property (GObject *object, guint property_id,
                                    TRUE,
                                    NULL);
 
-      nbtk_table_add_actor (NBTK_TABLE (object),
-                            (ClutterActor *)priv->details_overlay,
-                            1,
-                            0);
 
-      clutter_container_child_set (CLUTTER_CONTAINER (object),
-                                   (ClutterActor *)priv->details_overlay,
-                                   "x-expand",
-                                   TRUE,
-                                   "y-expand",
-                                   TRUE,
-                                   "y-fill",
-                                   FALSE,
-                                   "y-align",
-                                   1.0,
-                                   NULL);
       break;
     case PROP_ICON_PATH:
 
@@ -330,6 +315,23 @@ penge_people_tile_init (PengePeopleTile *self)
   nbtk_widget_set_style_class_name (priv->details_overlay,
                                     "PengePeopleTileDetails");
   clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay, 0x0);
+
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        (ClutterActor *)priv->details_overlay,
+                        1,
+                        0);
+
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               (ClutterActor *)priv->details_overlay,
+                               "x-expand",
+                               TRUE,
+                               "y-expand",
+                               TRUE,
+                               "y-fill",
+                               FALSE,
+                               "y-align",
+                               1.0,
+                               NULL);
 
   priv->timeline = clutter_timeline_new (300);
 
