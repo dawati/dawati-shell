@@ -305,7 +305,7 @@ penge_grid_view_init (PengeGridView *self)
     clutter_container_child_set (CLUTTER_CONTAINER (self),
                                  div_tex,
                                  "x-expand",
-                                 TRUE,
+                                 FALSE,
                                  "x-fill",
                                  FALSE,
                                  "x-align",
