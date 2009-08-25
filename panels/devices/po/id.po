@@ -1,0 +1,200 @@
+# Translation of dalston into Indonesian.
+# Copyright (C) 2009 Andika Triwidada
+# This file is distributed under the same license as the PACKAGE package.
+# Andika Triwidada <andika@gmail.com>, 2009.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: dalston master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-24 09:22+0000\n"
+"PO-Revision-Date: 2009-08-25 19:12+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../dalston/dalston-power-applet.c:192
+#, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b> jam"
+
+#: ../dalston/dalston-power-applet.c:199 ../dalston/dalston-power-applet.c:212
+#, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b> menit"
+
+#: ../dalston/dalston-power-applet.c:233
+msgid "Running low on battery"
+msgstr "Batere bersisa sedikit"
+
+#: ../dalston/dalston-power-applet.c:233
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Kami amati bahwa batere anda bersisa sedikit. Bila mungkin, lebih baik anda "
+"tancapkan ke listrik dan mengisi penuh."
+
+#: ../dalston/dalston-power-applet.c:235
+msgid "Getting close to empty"
+msgstr "Nyarus habis"
+
+#: ../dalston/dalston-power-applet.c:235
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+"Batere anda nyaris habis. Sebaiknya anda menyimpan semua pekerjaan dan "
+"menancapkan ke listrik sesegera mungkin."
+
+#: ../dalston/dalston-power-applet.c:237
+msgid "Danger!"
+msgstr "Bahaya!"
+
+#: ../dalston/dalston-power-applet.c:237
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Maaf, batere di komputer anda akan habis dalam sekejap. Kami harus "
+"mematikannya sekarang. Silahkan simpan hasil pekerjaan anda dan semoga kita "
+"bisa segera bertemu kembali."
+
+#: ../dalston/dalston-power-applet.c:364
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Maaf, sepertinya batere anda rusak."
+
+#: ../dalston/dalston-power-applet.c:367
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Batere anda terisi penuh dan anda bisa berangkat."
+
+#: ../dalston/dalston-power-applet.c:370
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "Batere anda tengah diisi. Kira-kira terisi <b>%d</b>%%."
+
+#: ../dalston/dalston-power-applet.c:377
+#, c-format
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "Batere anda sedang dipakai. Kira-kira tersisa <b>%d</b>%%."
+
+#: ../dalston/dalston-power-applet.c:385
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Maaf, sepertinya tidak ada batere terpasang."
+
+#: ../dalston/dalston-power-applet.c:492
+msgid "Display brightness"
+msgstr "Kecerahan tampilan."
+
+#: ../dalston/dalston-power-applet.c:523
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "Maaf, kami tidak dapat mengubah kecerahan layar anda."
+
+#: ../dalston/dalston-brightness-slider.c:224
+msgid "Brighter than the sun"
+msgstr "Lebih cerah daripada matahari"
+
+#: ../dalston/dalston-brightness-slider.c:226
+msgid "Very bright"
+msgstr "Sangat cerah"
+
+#: ../dalston/dalston-brightness-slider.c:228
+msgid "Bright"
+msgstr "Cerah"
+
+#: ../dalston/dalston-brightness-slider.c:230
+msgid "Morning has broken"
+msgstr "Pagi telah tiba"
+
+#: ../dalston/dalston-brightness-slider.c:232
+msgid "Midday"
+msgstr "Tengah hari"
+
+#: ../dalston/dalston-brightness-slider.c:234
+msgid "Pretty dusky"
+msgstr "Berkabut"
+
+#: ../dalston/dalston-brightness-slider.c:236
+msgid "Twilight"
+msgstr "Jelang fajar"
+
+#: ../dalston/dalston-brightness-slider.c:238
+msgid "Very dark"
+msgstr "Sangat gelap"
+
+#: ../dalston/dalston-brightness-slider.c:240
+msgid "Total eclipse"
+msgstr "Gerhana total"
+
+#: ../dalston/dalston-volume-pane.c:258
+msgid "Output volume"
+msgstr "Kekerasan suara"
+
+#: ../dalston/dalston-volume-pane.c:302
+msgid "Mute"
+msgstr "Senyap"
+
+#: ../dalston/dalston-volume-pane.c:320
+msgid "Alert sounds"
+msgstr "Suara peringatan"
+
+#: ../dalston/dalston-volume-pane.c:332
+msgid "Play test sound"
+msgstr "Mainkan suara uji"
+
+#: ../dalston/dalston-volume-slider.c:188
+msgid "Turned up to 11"
+msgstr "Diatur ke 11"
+
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Very loud"
+msgstr "Sangat keras"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Loud"
+msgstr "Keras"
+
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Fairly loud"
+msgstr "Cukup keras"
+
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Middle of the road"
+msgstr "Di tengah jalan"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Fairly quiet"
+msgstr "Cukup sunyi"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Quiet"
+msgstr "Sunyi"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Very quiet"
+msgstr "Sangat senyap"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Silent"
+msgstr "Hening"
+
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "Kendali Keras Suara GNOME"
+
+#: ../libgvc/gvc-mixer-control.c:1020
+msgid "System Sounds"
+msgstr "Suara Sistem"
+
+#: ../src/dalston-power-applet.c:62
+msgid "power & brightness"
+msgstr "daya & kecerahan"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "suara"
