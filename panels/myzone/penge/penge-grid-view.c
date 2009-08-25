@@ -328,7 +328,13 @@ penge_grid_view_init (PengeGridView *self)
                                "row-span",
                                2,
                                "x-expand",
-                               FALSE,
+                               TRUE,
+                               "y-expand",
+                               TRUE,
+                               "x-fill",
+                               TRUE,
+                               "y-fill",
+                               TRUE,
                                NULL);
 
 
