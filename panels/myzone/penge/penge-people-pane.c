@@ -251,13 +251,9 @@ _client_open_view_cb (MojitoClient     *client,
 
   mojito_client_view_start (view);
   priv->model = penge_people_model_new (view);
+
   penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (priv->list_view),
                                    priv->model);
-  penge_magic_list_view_set_item_type (PENGE_MAGIC_LIST_VIEW (priv->list_view),
-                                       PENGE_TYPE_PEOPLE_TILE);
-  penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (priv->list_view),
-                                       "item",
-                                       0);
 }
 
 static void
@@ -313,6 +309,11 @@ penge_people_pane_init (PengePeoplePane *self)
   penge_magic_container_set_minimum_child_size (PENGE_MAGIC_CONTAINER (priv->list_view),
                                                 TILE_WIDTH,
                                                 TILE_HEIGHT);
+  penge_magic_list_view_set_item_type (PENGE_MAGIC_LIST_VIEW (priv->list_view),
+                                       PENGE_TYPE_PEOPLE_TILE);
+  penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (priv->list_view),
+                                       "item",
+                                       0);
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         priv->list_view,
@@ -322,7 +323,6 @@ penge_people_pane_init (PengePeoplePane *self)
                                         "x-fill", TRUE,
                                         "y-fill", TRUE,
                                         NULL);
-
 }
 
 
