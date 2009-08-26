@@ -35,15 +35,16 @@ G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_TABLE)
 typedef struct _PengeRecentFileTilePrivate PengeRecentFileTilePrivate;
 
 struct _PengeRecentFileTilePrivate {
-    gchar *thumbnail_path;
-    GtkRecentInfo *info;
-    NbtkWidget *details_overlay;
-    NbtkWidget *details_filename_label;
-    NbtkWidget *details_type_label;
+  gchar *thumbnail_path;
+  GtkRecentInfo *info;
+  NbtkWidget *details_overlay;
+  NbtkWidget *details_filename_label;
+  NbtkWidget *details_type_label;
+  ClutterActor *tex;
 
-    /* For the details fade in */
-    ClutterTimeline *timeline;
-    ClutterBehaviour *behave;
+  /* For the details fade in */
+  ClutterTimeline *timeline;
+  ClutterBehaviour *behave;
 };
 
 enum
@@ -52,6 +53,9 @@ enum
   PROP_THUMBNAIL_PATH,
   PROP_INFO
 };
+
+static void penge_recent_file_tile_update (PengeRecentFileTile *tile);
+static void penge_recent_file_tile_update_thumbnail (PengeRecentFileTile *tile);
 
 static void
 penge_recent_file_tile_get_property (GObject *object, guint property_id,
@@ -75,15 +79,34 @@ static void
 penge_recent_file_tile_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
+  PengeRecentFileTile *tile = (PengeRecentFileTile *)object;
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (object);
+  GtkRecentInfo *info;
 
   switch (property_id) {
     case PROP_THUMBNAIL_PATH:
+      if (priv->thumbnail_path)
+        g_free (priv->thumbnail_path);
+
       priv->thumbnail_path = g_value_dup_string (value);
+      penge_recent_file_tile_update_thumbnail (tile);
       break;
     case PROP_INFO:
-      priv->info = (GtkRecentInfo *)g_value_get_pointer (value);
-      gtk_recent_info_ref (priv->info);
+      info = (GtkRecentInfo *)g_value_get_boxed (value);
+      if (info == priv->info)
+        return;
+
+      if (priv->info)
+        gtk_recent_info_unref (priv->info);
+
+      priv->info = info;
+
+      if (info)
+      {
+        gtk_recent_info_ref (info);
+      }
+
+      penge_recent_file_tile_update (tile);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -146,10 +169,25 @@ _button_press_event (ClutterActor *actor,
 }
 
 static void
-penge_recent_file_tile_constructed (GObject *object)
+penge_recent_file_tile_update_thumbnail (PengeRecentFileTile *tile)
 {
-  PengeRecentFileTilePrivate *priv = GET_PRIVATE (object);
-  ClutterActor *tex;
+  PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
+  GError *error = NULL;
+
+  if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
+                                      priv->thumbnail_path,
+                                      &error))
+  {
+    g_warning (G_STRLOC ": Error opening thumbnail: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
+penge_recent_file_tile_update (PengeRecentFileTile *tile)
+{
+  PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
   GError *error = NULL;
   GFile *file;
   const gchar *content_type;
@@ -157,87 +195,49 @@ penge_recent_file_tile_constructed (GObject *object)
   const gchar *uri;
   GFileInfo *info;
 
-  tex = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
-                      NULL);
+  uri = gtk_recent_info_get_uri (priv->info);
 
-  if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (tex),
-                                      priv->thumbnail_path,
-                                      &error))
+  if (g_str_has_prefix (uri, "file:/"))
   {
-    g_warning (G_STRLOC ": Error opening thumbnail: %s",
-               error->message);
-    g_clear_error (&error);
-  } else {
-    nbtk_table_add_actor (NBTK_TABLE (object),
-                          tex,
-                          0,
-                          0);
-    clutter_container_child_set (CLUTTER_CONTAINER (object),
-                                 tex,
-                                 "row-span",
-                                 2,
-                                 NULL);
+    file = g_file_new_for_uri (uri);
+    info = g_file_query_info (file,
+                              G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
+                              ","
+                              G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                              G_FILE_QUERY_INFO_NONE,
+                              NULL,
+                              &error);
 
-    uri = gtk_recent_info_get_uri (priv->info);
-
-    if (g_str_has_prefix (uri, "file:/"))
+    if (!info)
     {
-      file = g_file_new_for_uri (uri);
-      info = g_file_query_info (file,
-                                G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
-                                ","
-                                G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-                                G_FILE_QUERY_INFO_NONE,
-                                NULL,
-                                &error);
-
-      if (!info)
-      {
-        g_warning (G_STRLOC ": Error getting file info: %s",
-                   error->message);
-        g_clear_error (&error);
-      } else {
-        nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
-                             g_file_info_get_display_name (info));
-
-        content_type = g_file_info_get_content_type (info);
-        type_description = g_content_type_get_description (content_type);
-        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
-                             type_description);
-        g_free (type_description);
-      }
-
-      g_object_unref (info);
-      g_object_unref (file);
+      g_warning (G_STRLOC ": Error getting file info: %s",
+                 error->message);
+      g_clear_error (&error);
     } else {
       nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
-                           gtk_recent_info_get_display_name (priv->info));
-      if (g_str_has_prefix (uri, "http"))
-      {
-        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
-                             _("Web page"));
-      } else {
-        nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
-                             "");
-      }
+                           g_file_info_get_display_name (info));
+
+      content_type = g_file_info_get_content_type (info);
+      type_description = g_content_type_get_description (content_type);
+      nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                           type_description);
+      g_free (type_description);
     }
 
-    /* Do this afterwards so that is is on top of the image */
-    nbtk_table_add_actor (NBTK_TABLE (object),
-                          (ClutterActor *)priv->details_overlay,
-                          1,
-                          0);
-    clutter_container_child_set (CLUTTER_CONTAINER (object),
-                                 (ClutterActor *)priv->details_overlay,
-                                 "y-expand",
-                                 FALSE,
-                                 NULL);
+    g_object_unref (info);
+    g_object_unref (file);
+  } else {
+    nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
+                         gtk_recent_info_get_display_name (priv->info));
+    if (g_str_has_prefix (uri, "http"))
+    {
+      nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                           _("Web page"));
+    } else {
+      nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
+                           "");
+    }
   }
-
-  g_signal_connect (object,
-                    "button-press-event",
-                    (GCallback)_button_press_event,
-                    object);
 }
 
 static void
@@ -252,21 +252,21 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
   object_class->set_property = penge_recent_file_tile_set_property;
   object_class->dispose = penge_recent_file_tile_dispose;
   object_class->finalize = penge_recent_file_tile_finalize;
-  object_class->constructed = penge_recent_file_tile_constructed;
 
   pspec = g_param_spec_string ("thumbnail-path",
                                "Thumbnail path",
                                "Path to the thumbnail to use to represent"
                                "this recent file",
                                NULL,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_THUMBNAIL_PATH, pspec);
 
-  pspec = g_param_spec_pointer ("info",
-                                "Recent file information",
-                                "The GtkRecentInfo structure for this recent"
-                                "file",
-                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  pspec = g_param_spec_boxed ("info",
+                              "Recent file information",
+                              "The GtkRecentInfo structure for this recent"
+                              "file",
+                              GTK_TYPE_RECENT_INFO,
+                              G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_INFO, pspec);
 }
 
@@ -372,6 +372,33 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   priv->behave = clutter_behaviour_opacity_new (alpha, 0x00, 0xc0);
   clutter_behaviour_apply (priv->behave,
                            (ClutterActor *)priv->details_overlay);
+
+  priv->tex = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        priv->tex,
+                        0,
+                        0);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               priv->tex,
+                               "row-span",
+                               2,
+                               NULL);
+
+  /* Do this afterwards so that is is on top of the image */
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        (ClutterActor *)priv->details_overlay,
+                        1,
+                        0);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               (ClutterActor *)priv->details_overlay,
+                               "y-expand",
+                               FALSE,
+                               NULL);
+
+  g_signal_connect (self,
+                    "button-press-event",
+                    (GCallback)_button_press_event,
+                    self);
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 }
