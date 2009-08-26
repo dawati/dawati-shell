@@ -170,7 +170,7 @@ penge_magic_list_view_update (PengeMagicListView *view)
     clutter_model_iter_next (iter);
   }
 
-  if (children_count < model_count)
+  while (children_count < model_count)
   {
     tile = g_object_new (priv->item_type, NULL);
     clutter_container_add_actor (CLUTTER_CONTAINER (view),
