@@ -1,0 +1,60 @@
+# Translation of moblin-panel-myzone into Indonesian.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Andika Triwidada <andika@gmail.com>, 2009.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-myzone\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-24 09:30+0000\n"
+"PO-Revision-Date: 2009-08-26 08:21+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../penge/penge-calendar-pane.c:207
+#, fuzzy
+msgid "<b>Appointments</b>"
+msgstr "<b>Janji Temu</b>"
+
+#: ../penge/penge-events-pane.c:208
+msgid "No calendar entries this week"
+msgstr "Tidak ada entri kalender minggu ini"
+
+#: ../penge/penge-people-pane.c:161
+msgid ""
+"Your friends' feeds and web services will appear here. Activate your "
+"accounts now!"
+msgstr ""
+"Feed dan layanan web teman-teman anda akan muncul di sini. Aktifkan akun "
+"anda sekarang!"
+
+#: ../penge/penge-recent-files-pane.c:202
+msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+msgstr "<b>Selamat Datang ke Moblin 2.0 untuk Netbook</b>"
+
+#: ../penge/penge-recent-files-pane.c:227
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
+msgstr ""
+"Karena Moblin agak berbeda daripada komputer lain, kami telah mengumpulkan "
+"beberapa hal kecil untuk membantu anda mengenali lingkungan. Kami berharap "
+"anda menikmatinya, Tim Moblin."
+
+#: ../penge/penge-recent-file-tile.c:218
+msgid "Web page"
+msgstr "Halaman web"
+
+#: ../penge/penge-tasks-pane.c:287
+msgid "Nothing to do today"
+msgstr "Tak ada yang perlu dilakukan hari ini"
+
+#: ../penge/penge-task-tile.c:325
+#, fuzzy, c-format
+msgid "Due %x"
+msgstr "Jatuh tempo %x"
