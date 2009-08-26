@@ -79,6 +79,14 @@ mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher)
                                        mnb_switcher_alt_tab_key_handler,
                                        switcher, NULL);
 
+  meta_keybindings_set_custom_handler ("tab_popup_select",
+                                       mnb_switcher_alt_tab_select_handler,
+                                       switcher, NULL);
+
+  meta_keybindings_set_custom_handler ("tab_popup_cancel",
+                                       mnb_switcher_alt_tab_cancel_handler,
+                                       switcher, NULL);
+
   /*
    * Install NOP handler for shortcuts that are related to Alt+Tab that we
    * want disabled.

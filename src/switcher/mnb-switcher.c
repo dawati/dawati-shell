@@ -844,7 +844,7 @@ mnb_switcher_select_zone (MnbSwitcher *switcher, MnbSwitcherZone *zone)
 /*
  * Activates the window currently selected in the switcher.
  */
-static void
+void
 mnb_switcher_activate_selection (MnbSwitcher *switcher,
                                  gboolean     close,
                                  guint        timestamp)

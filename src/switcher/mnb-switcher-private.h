@@ -45,6 +45,9 @@ struct _MnbSwitcherPrivate {
 };
 
 void mnb_switcher_advance (MnbSwitcher *switcher, gboolean backward);
+void mnb_switcher_activate_selection (MnbSwitcher *switcher,
+                                      gboolean     close,
+                                      guint        timestamp);
 
 #endif /* _MNB_SWITCHER_PRIVATE */
 

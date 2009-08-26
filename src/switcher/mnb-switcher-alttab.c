@@ -440,3 +440,31 @@ mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
       mnb_switcher_advance (switcher, backward);
     }
 }
+
+void
+mnb_switcher_alt_tab_select_handler (MetaDisplay    *display,
+                                     MetaScreen     *screen,
+                                     MetaWindow     *window,
+                                     XEvent         *event,
+                                     MetaKeyBinding *binding,
+                                     gpointer        data)
+{
+  MnbSwitcher *switcher = MNB_SWITCHER (data);
+
+  mnb_switcher_end_kbd_grab (switcher);
+  mnb_switcher_activate_selection (switcher, TRUE, event->xkey.time);
+}
+
+void
+mnb_switcher_alt_tab_cancel_handler (MetaDisplay    *display,
+                                     MetaScreen     *screen,
+                                     MetaWindow     *window,
+                                     XEvent         *event,
+                                     MetaKeyBinding *binding,
+                                     gpointer        data)
+{
+  MnbSwitcher *switcher = MNB_SWITCHER (data);
+
+  mnb_switcher_end_kbd_grab (switcher);
+}
+

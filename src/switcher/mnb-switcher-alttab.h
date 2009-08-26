@@ -40,6 +40,23 @@ mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
                                   MetaKeyBinding *binding,
                                   gpointer        data);
 
+void
+mnb_switcher_alt_tab_select_handler (MetaDisplay    *display,
+                                     MetaScreen     *screen,
+                                     MetaWindow     *window,
+                                     XEvent         *event,
+                                     MetaKeyBinding *binding,
+                                     gpointer        data);
+
+
+void
+mnb_switcher_alt_tab_cancel_handler (MetaDisplay    *display,
+                                     MetaScreen     *screen,
+                                     MetaWindow     *window,
+                                     XEvent         *event,
+                                     MetaKeyBinding *binding,
+                                     gpointer        data);
+
 G_END_DECLS
 
 #endif /* _MNB_SWITCHER_ALTTAB */
