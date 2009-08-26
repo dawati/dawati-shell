@@ -18,7 +18,8 @@ libpenge_headers = penge-people-pane.h \
 		   penge-tasks-pane.h \
 		   penge-magic-container.h \
 		   penge-magic-list-view.h \
-		   penge-people-model.h
+		   penge-people-model.h \
+		   penge-recent-files-model.h
 
 libpenge_la_SOURCES = \
 		      $(libpenge_headers) \
@@ -40,7 +41,8 @@ libpenge_la_SOURCES = \
 		      penge-tasks-pane.c \
 		      penge-magic-container.c \
 		      penge-magic-list-view.c \
-		      penge-people-model.c
+		      penge-people-model.c \
+		      penge-recent-files-model.c
 
 AM_CFLAGS = -Wall \
 	    $(PENGE_CFLAGS) \
