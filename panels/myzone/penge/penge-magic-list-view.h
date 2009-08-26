@@ -59,6 +59,9 @@ void penge_magic_list_view_set_model (PengeMagicListView *view,
                                       ClutterModel       *model);
 void penge_magic_list_view_set_item_type (PengeMagicListView *view,
                                           GType               item_type);
+void penge_magic_list_view_add_attribute (PengeMagicListView *view,
+                                          const gchar        *property_name,
+                                          gint                col);
 
 G_END_DECLS
 

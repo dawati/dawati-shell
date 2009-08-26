@@ -30,6 +30,7 @@ typedef struct _PengeMagicListViewPrivate PengeMagicListViewPrivate;
 
 struct _PengeMagicListViewPrivate {
   ClutterModel *model;
+  GList *attributes;
   GType item_type;
 };
 
@@ -39,6 +40,12 @@ enum
   PROP_MODEL,
   PROP_ITEM_TYPE
 };
+
+typedef struct
+{
+  gchar *property_name;
+  gint col;
+} AttributeData;
 
 static void
 penge_magic_list_view_get_property (GObject *object, guint property_id,
@@ -85,6 +92,17 @@ penge_magic_list_view_dispose (GObject *object)
 static void
 penge_magic_list_view_finalize (GObject *object)
 {
+  PengeMagicListViewPrivate *priv = GET_PRIVATE (object);
+  GList *l;
+  AttributeData *attr;
+
+  for (l = priv->attributes; l; l = g_list_delete_link (l, l))
+  {
+    attr = (AttributeData *)l->data;
+    g_free (attr->property_name);
+    g_free (attr);
+  }
+
   G_OBJECT_CLASS (penge_magic_list_view_parent_class)->finalize (object);
 }
 
@@ -131,12 +149,12 @@ static void
 penge_magic_list_view_update (PengeMagicListView *view)
 {
   PengeMagicListViewPrivate *priv = GET_PRIVATE (view);
-  GList *children, *l = NULL;
+  GList *children, *l, *ll = NULL;
   ClutterModelIter *iter = NULL;
   gint children_count = 0, model_count = 0;
   ClutterActor *tile;
   GValue value = { 0, };
-
+  AttributeData *attr;
 
   if (!priv->item_type || !priv->model)
     return;
@@ -174,11 +192,17 @@ penge_magic_list_view_update (PengeMagicListView *view)
   {
     tile = (ClutterActor *)l->data;
 
-    clutter_model_iter_get_value (iter, 0, &value);
+    g_object_freeze_notify (tile);
+    for (ll = priv->attributes; ll; ll = ll->next)
+    {
+      attr = (AttributeData *)ll->data;
 
-    /* TODO: Remove hard-coded */
-    g_object_set_property ((GObject *)tile, "item", &value);
-    g_value_unset (&value);
+      clutter_model_iter_get_value (iter, attr->col, &value);
+
+      g_object_set_property (tile, attr->property_name, &value);
+      g_value_unset (&value);
+    }
+    g_object_thaw_notify (tile);
   }
 
   for (; l; l = l->next)
@@ -298,3 +322,19 @@ penge_magic_list_view_set_item_type (PengeMagicListView *view,
     penge_magic_list_view_update (view);
   }
 }
+
+void
+penge_magic_list_view_add_attribute (PengeMagicListView *view,
+                                     const gchar        *property_name,
+                                     gint                col)
+{
+  PengeMagicListViewPrivate *priv = GET_PRIVATE (view);
+  AttributeData *attr;
+
+  attr = g_new0 (AttributeData, 1);
+  attr->property_name = g_strdup (property_name);
+  attr->col = col;
+
+  priv->attributes = g_list_append (priv->attributes, attr);
+}
+

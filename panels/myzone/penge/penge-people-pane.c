@@ -255,6 +255,9 @@ _client_open_view_cb (MojitoClient     *client,
                                    priv->model);
   penge_magic_list_view_set_item_type (PENGE_MAGIC_LIST_VIEW (priv->list_view),
                                        PENGE_TYPE_PEOPLE_TILE);
+  penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (priv->list_view),
+                                       "item",
+                                       0);
 }
 
 static void
