@@ -490,7 +490,8 @@ penge_people_tile_set_item (PengePeopleTile *tile,
               body,
               NULL);
   } else {
-    if (g_str_equal (mojito_item_get_value (item, "type"),
+    if (mojito_item_has_key (item, "type") &&
+        g_str_equal (mojito_item_get_value (item, "type"),
                      "lastfm"))
     {
       body = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
