@@ -382,7 +382,7 @@ msgstr "テスト"
 
 #: ../src/mnb-toolbar.c:1775
 msgid "To activate the toolbar, move your cursor to the top of the screen"
-msgstr "カーセルをスクリーンの上に持っていくと、ツールバーがアクティブになります"
+msgstr "カーソルをスクリーンの上に持っていくと、ツールバーがアクティブになります"
 
 #: ../status/src/mnb-im-status-row.c:103
 #: ../status/src/mnb-im-status-row.c:104
@@ -464,8 +464,8 @@ msgstr "IM のステータスを更新するには、インスタント・メッ
 msgid "status"
 msgstr "ステータス"
 
-#~ msgid "myzone"
-#~ msgstr "マイゾーン"
+msgid "myzone"
+msgstr "マイゾーン"
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 #~ msgstr ""
 #~ "トレイアイコンのサイズは (%i x %i) である必要があります。サイズが (%i x %"
