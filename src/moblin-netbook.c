@@ -241,6 +241,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   ClutterActor  *toolbar;
   ClutterActor  *lowlight;
   gint           screen_width, screen_height;
+  gfloat         w, h;
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
   MoblinNetbookNotifyStore *notify_store;
@@ -331,12 +332,10 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   priv->notification_urgent = mnb_notification_urgent_new ();
 
-  clutter_actor_set_anchor_point_from_gravity (priv->notification_urgent,
-                                               CLUTTER_GRAVITY_CENTER);
-
+  clutter_actor_get_size (priv->notification_urgent, &w, &h);
   clutter_actor_set_position (priv->notification_urgent,
-                              screen_width/2,
-                              screen_height/2);
+                              (screen_width - w) / 2,
+                              (screen_height - h) / 2);
 
   mnb_notification_urgent_set_store
                         (MNB_NOTIFICATION_URGENT(priv->notification_urgent),
