@@ -1167,7 +1167,7 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
   MutterPlugin      *plugin;
   gfloat             x, y,w, h;
   gint               screen_width, screen_height;
-  MnbInputManager   *imgr = moblin_netbook_get_input_manager (priv->plugin);
+  MnbInputManager   *imgr;
 
   /*
    * If this panel is visible, we need to update the input region to match
@@ -1176,8 +1176,9 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
   if (!CLUTTER_ACTOR_IS_MAPPED (dropdown))
     return;
 
-  priv = toolbar->priv;
+  priv   = toolbar->priv;
   plugin = priv->plugin;
+  imgr   = moblin_netbook_get_input_manager (priv->plugin);
 
   mnb_drop_down_get_footer_geometry (dropdown, &x, &y, &w, &h);
 
