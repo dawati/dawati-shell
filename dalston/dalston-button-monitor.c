@@ -276,7 +276,7 @@ _device_condition_cb (HalDevice   *device,
 
     priv->shutdown_notification = notify_notification_new (_("Would you like to turn off now?"),
                                                            _("If you don't decide i'll turn off in 30 seconds"),
-                                                           NULL,
+                                                           "system-shutdown",
                                                            NULL);
     notify_notification_set_urgency (priv->shutdown_notification, NOTIFY_URGENCY_CRITICAL);
     notify_notification_set_timeout (priv->shutdown_notification, NOTIFY_EXPIRES_NEVER);
