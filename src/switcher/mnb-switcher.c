@@ -424,6 +424,13 @@ mnb_switcher_hide (ClutterActor *self)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (self)->priv;
 
+  /*
+   * This should not be necessary, since every tooltip gets hidden in the
+   * item dispose vfunction, but if something breaks and an item leaks, we want
+   * to make sure that we at least have no left over tooltips on screen.
+   */
+  mnb_switcher_hide_tooltip ((MnbSwitcher*)self);
+
   if (priv->show_completed_id)
     {
       g_signal_handler_disconnect (self, priv->show_completed_id);
