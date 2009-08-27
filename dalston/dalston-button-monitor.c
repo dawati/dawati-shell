@@ -215,54 +215,61 @@ _device_condition_cb (HalDevice   *device,
     return;
   }
 
+  hal_device_get_bool (device,
+                       "button.has_state",
+                       &has_state,
+                       &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error getting if button has state: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    if (has_state)
+    {
+      hal_device_get_bool (device,
+                           "button.state.value",
+                           &state,
+                           &error);
+
+      if (error)
+      {
+        g_warning (G_STRLOC ": Error getting button state: %s",
+                   error->message);
+        g_clear_error (&error);
+      } else {
+        g_debug (G_STRLOC ": Lid button has state: %s",
+                 state ? "on" : "off");
+      }
+    }
+  }
+
   if (g_str_equal (type, "sleep") || g_str_equal (type, "lid"))
   {
     g_debug (G_STRLOC ": Got lid button signal");
 
-    hal_device_get_bool (device,
-                         "button.has_state",
-                         &has_state,
-                         &error);
-
-    if (error)
+    if (has_state)
     {
-      g_warning (G_STRLOC ": Error getting if button has state: %s",
-                 error->message);
-      g_clear_error (&error);
-    } else {
-      if (has_state)
-      {
-        hal_device_get_bool (device,
-                             "button.state.value",
-                             &state,
-                             &error);
-
-        if (error)
-        {
-          g_warning (G_STRLOC ": Error getting button state: %s",
-                     error->message);
-          g_clear_error (&error);
-        } else {
-          g_debug (G_STRLOC ": Lid button has state: %s",
-                   state ? "on" : "off");
-
-          /* Shutdown notification inhibits suspend */
-          if (state && !priv->shutdown_notification)
-            hal_power_proxy_suspend_sync (priv->power_proxy);
-        }
-      } else {
-        /* Shutdown notification inhibits suspend */
-        if (!priv->shutdown_notification)
+       /* Shutdown notification inhibits suspend */
+       if (state && !priv->shutdown_notification)
           hal_power_proxy_suspend_sync (priv->power_proxy);
-      }
+    } else {
+      /* Shutdown notification inhibits suspend */
+      if (!priv->shutdown_notification)
+        hal_power_proxy_suspend_sync (priv->power_proxy);
     }
+
   } else if (g_str_equal (type, "power")) {
+
+    /* Power button released" */
+    if (has_state && !state)
+      goto out;
 
     if (priv->shutdown_notification)
     {
       hal_power_proxy_shutdown_sync (priv->power_proxy);
-      g_free (type);
-      return;
+      goto out;
     }
 
     priv->shutdown_notification = notify_notification_new (_("Would you like to turn off now?"),
@@ -296,6 +303,7 @@ _device_condition_cb (HalDevice   *device,
     }
   }
 
+out:
   g_free (type);
 }
 
