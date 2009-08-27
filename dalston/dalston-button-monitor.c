@@ -37,9 +37,13 @@ typedef struct _DalstonButtonMonitorPrivate DalstonButtonMonitorPrivate;
 
 struct _DalstonButtonMonitorPrivate {
   HalPowerProxy *power_proxy;
-  HalManager    *manager;
-  GList         *devices;
-  gboolean       is_hal_running;
+  HalManager *manager;
+  GList *devices;
+  gboolean is_hal_running;
+
+  NotifyNotification *shutdown_notification;
+  guint shutdown_notification_timeout;
+  gint shutdown_seconds_remaining;
 };
 
 static void
@@ -136,6 +140,51 @@ _shutdown_notify_cb (NotifyNotification *notification,
 }
 
 static void
+_shutdown_notify_closed_cb (NotifyNotification *notification,
+                            gpointer            userdata)
+{
+  DalstonButtonMonitor *monitor = (DalstonButtonMonitor *)userdata;
+  DalstonButtonMonitorPrivate *priv = GET_PRIVATE (monitor);
+
+  if (priv->shutdown_notification_timeout > 0)
+  {
+    g_source_remove (priv->shutdown_notification_timeout);
+    priv->shutdown_notification_timeout = 0;
+  }
+
+  g_object_unref (priv->shutdown_notification);
+  priv->shutdown_notification = NULL;
+}
+
+static gboolean
+_shutdown_notify_timeout_cb (gpointer userdata)
+{
+  DalstonButtonMonitor *monitor = (DalstonButtonMonitor *)userdata;
+  DalstonButtonMonitorPrivate *priv = GET_PRIVATE (monitor);
+  gchar *summary_text;
+
+  priv->shutdown_seconds_remaining -= 5;
+
+  if (priv->shutdown_seconds_remaining == 0)
+  {
+    notify_notification_close (priv->shutdown_notification, NULL);
+    hal_power_proxy_shutdown_sync (priv->power_proxy);
+    return FALSE;
+  }
+
+  summary_text = g_strdup_printf (_("If you don't decide i'll turn off in %d seconds"),
+                                  priv->shutdown_seconds_remaining);
+  g_object_set (priv->shutdown_notification,
+                "summary",
+                summary_text,
+                NULL);
+
+  g_free (summary_text);
+
+  return TRUE;
+}
+
+static void
 _device_condition_cb (HalDevice   *device,
                       const gchar *condition,
                       const gchar *details,
@@ -147,7 +196,6 @@ _device_condition_cb (HalDevice   *device,
   GError *error = NULL;
   gboolean state = FALSE;
   gboolean has_state = FALSE;
-  NotifyNotification *note;
 
   if (!g_str_equal (condition, "ButtonPressed"))
   {
@@ -198,35 +246,54 @@ _device_condition_cb (HalDevice   *device,
           g_debug (G_STRLOC ": Lid button has state: %s",
                    state ? "on" : "off");
 
-          if (state)
+          /* Shutdown notification inhibits suspend */
+          if (state && !priv->shutdown_notification)
             hal_power_proxy_suspend_sync (priv->power_proxy);
         }
       } else {
-        hal_power_proxy_suspend_sync (priv->power_proxy);
+        /* Shutdown notification inhibits suspend */
+        if (!priv->shutdown_notification)
+          hal_power_proxy_suspend_sync (priv->power_proxy);
       }
     }
   } else if (g_str_equal (type, "power")) {
-    note = notify_notification_new (_("Would you like to turn off now?"),
-                                    _("It is a shame to see you go. "
-                                      "Please come back soon."),
-                                    NULL,
-                                    NULL);
-     notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
-     notify_notification_set_timeout (note, NOTIFY_EXPIRES_NEVER);
-     notify_notification_add_action (note,
-                                     "shutdown",
-                                     _("Turn off"),
-                                     _shutdown_notify_cb,
-                                     g_object_ref (monitor),
-                                     (GFreeFunc)g_object_unref);
 
-      if (!notify_notification_show (note,
-                                     &error))
-      {
-        g_warning (G_STRLOC ": Error showing notification: %s",
-                   error->message);
-        g_clear_error (&error);
-      }
+    if (priv->shutdown_notification)
+    {
+      hal_power_proxy_shutdown_sync (priv->power_proxy);
+      g_free (type);
+      return;
+    }
+
+    priv->shutdown_notification = notify_notification_new (_("Would you like to turn off now?"),
+                                                           _("If you don't decide i'll turn off in 30 seconds"),
+                                                           NULL,
+                                                           NULL);
+    notify_notification_set_urgency (priv->shutdown_notification, NOTIFY_URGENCY_CRITICAL);
+    notify_notification_set_timeout (priv->shutdown_notification, NOTIFY_EXPIRES_NEVER);
+    notify_notification_add_action (priv->shutdown_notification,
+                                    "shutdown",
+                                    _("Turn off"),
+                                    _shutdown_notify_cb,
+                                    g_object_ref (monitor),
+                                    (GFreeFunc)g_object_unref);
+    g_signal_connect (priv->shutdown_notification,
+                      "closed",
+                      (GCallback)_shutdown_notify_closed_cb,
+                      monitor);
+
+    priv->shutdown_seconds_remaining = 30;
+    priv->shutdown_notification_timeout = g_timeout_add_seconds (5,
+                                                                 _shutdown_notify_timeout_cb,
+                                                                 monitor);
+
+    if (!notify_notification_show (priv->shutdown_notification,
+                                   &error))
+    {
+      g_warning (G_STRLOC ": Error showing notification: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
   }
 
   g_free (type);
