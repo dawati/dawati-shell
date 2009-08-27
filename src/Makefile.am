@@ -2,11 +2,13 @@ SUBDIRS=tray effects switcher
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
-AM_CPPFLAGS = \
-	@MUTTER_PLUGIN_CFLAGS@ \
+AM_CFLAGS = \
+	$(MUTTER_PLUGIN_CFLAGS) \
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" \
 	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
-	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\"
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\" \
+	-I$(top_srcdir)/libmoblin-panel
+
 
 moblin_netbook_la_SOURCES  = \
 				mnb-scale-group.c	        \

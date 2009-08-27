@@ -29,8 +29,6 @@ AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_CONFIG_HEADER([config.h])
 
-CFLAGS="$CFLAGS -Wall"
-
 GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
@@ -65,10 +63,6 @@ PKG_CHECK_MODULES(LIBMPL,
                   gtk+-2.0
                   gio-unix-2.0)
 
-LIBMPL_CFLAGS="${LIBMPL_CFLAGS} "'-I$(top_srcdir)/src'
-AC_SUBST([LIBMPL_CFLAGS])
-AC_SUBST([LIBMPL_LIBS])
-
 MUTTER_MOBLIN_THEME_DIR="${datadir}/${PACKAGE}/theme"
 AC_SUBST([MUTTER_MOBLIN_THEME_DIR])
 
@@ -81,9 +75,6 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   dbus-glib-1                        dnl
                   gconf-2.0
                   gio-unix-2.0)
-
-MUTTER_PLUGIN_CFLAGS="${MUTTER_PLUGIN_CFLAGS} "'-I$(top_srcdir)/libmoblin-panel'
-AC_SUBST([MUTTER_PLUGIN_CFLAGS])
 
 AC_ARG_ENABLE([scaled-background],
 	AC_HELP_STRING([--enable-scaled-background],
@@ -114,6 +105,8 @@ AC_ARG_ENABLE([debug],
                               [Enable debugging features, whatever that means])],
               [],
               [enable_debug=no])
+
+CFLAGS="$CFLAGS -Wall"
 
 AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g -O0"])
 
