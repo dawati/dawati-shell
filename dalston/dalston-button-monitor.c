@@ -161,7 +161,7 @@ _shutdown_notify_timeout_cb (gpointer userdata)
 {
   DalstonButtonMonitor *monitor = (DalstonButtonMonitor *)userdata;
   DalstonButtonMonitorPrivate *priv = GET_PRIVATE (monitor);
-  gchar *summary_text;
+  gchar *body_text;
 
   priv->shutdown_seconds_remaining -= 5;
 
@@ -172,14 +172,14 @@ _shutdown_notify_timeout_cb (gpointer userdata)
     return FALSE;
   }
 
-  summary_text = g_strdup_printf (_("If you don't decide i'll turn off in %d seconds"),
+  body_text = g_strdup_printf (_("If you don't decide i'll turn off in %d seconds"),
                                   priv->shutdown_seconds_remaining);
   g_object_set (priv->shutdown_notification,
-                "summary",
-                summary_text,
+                "body",
+                body_text,
                 NULL);
 
-  g_free (summary_text);
+  g_free (body_text);
 
   notify_notification_show (priv->shutdown_notification,
                             NULL);
