@@ -35,6 +35,8 @@
 #include "mnb-notification-cluster.h"
 #include "mnb-notification-urgent.h"
 
+#include "mnb-input-manager.h"
+
 #define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
 
 #define MAX_WORKSPACES 8
@@ -71,7 +73,7 @@ struct _MoblinNetbookPluginClass
 #define MN_PADDING(a, b, c, d) {CLUTTER_UNITS_FROM_INT (a), CLUTTER_UNITS_FROM_INT (b), CLUTTER_UNITS_FROM_INT (c), CLUTTER_UNITS_FROM_INT (d)}
 
 typedef struct ActorPrivate  ActorPrivate;
-typedef struct MnbInputRegion * MnbInputRegion;
+
 /*
  * Plugin private data that we store in the .plugin_private member.
  */
@@ -80,8 +82,7 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *toolbar;
   ClutterActor          *lowlight;
 
-  XserverRegion          current_input_region;
-  GList                 *input_region_stack;
+  MnbInputManager       *input_manager;
 
   MetaWindow            *last_focused;
 
@@ -97,8 +98,8 @@ struct _MoblinNetbookPluginPrivate
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
   ClutterActor          *notification_urgent;
-  MnbInputRegion         notification_cluster_input_region;
-  MnbInputRegion         notification_urgent_input_region;
+  MnbInputRegion        *notification_cluster_input_region;
+  MnbInputRegion        *notification_urgent_input_region;
 
   Window                 focus_xwin;
 };
@@ -132,20 +133,6 @@ void           moblin_netbook_unfocus_stage (MutterPlugin *plugin,
 
 void moblin_netbook_notify_init (MutterPlugin *plugin);
 
-
-
-MnbInputRegion moblin_netbook_input_region_push (MutterPlugin *plugin,
-                                                 gint          x,
-                                                 gint          y,
-                                                 guint         width,
-                                                 guint         height);
-
-void moblin_netbook_input_region_remove_without_update (MutterPlugin  *plugin,
-                                                        MnbInputRegion mir);
-
-void moblin_netbook_input_region_remove (MutterPlugin   *plugin,
-                                         MnbInputRegion  mir);
-
 void
 moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on);
 
@@ -166,5 +153,7 @@ moblin_netbook_get_plugin_singleton (void);
 
 gboolean
 moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace);
+
+MnbInputManager *moblin_netbook_get_input_manager (MutterPlugin *plugin);
 
 #endif

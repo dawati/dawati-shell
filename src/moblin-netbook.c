@@ -94,8 +94,6 @@ static gboolean xevent_filter (MutterPlugin *plugin, XEvent *xev);
 
 MUTTER_PLUGIN_DECLARE (MoblinNetbookPlugin, moblin_netbook_plugin);
 
-static void moblin_netbook_input_region_apply (MutterPlugin *plugin);
-
 static gboolean
 on_lowlight_button_event (ClutterActor *actor,
                           ClutterEvent *event,
@@ -136,16 +134,6 @@ static void
 moblin_netbook_plugin_dispose (GObject *object)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (object)->priv;
-  Display                    *xdpy;
-
-  xdpy = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (object));
-
-
-  if (priv->current_input_region)
-    {
-      XFixesDestroyRegion (xdpy, priv->current_input_region);
-      priv->current_input_region = None;
-    }
 
   if (priv->toolbar)
     {
@@ -159,6 +147,10 @@ moblin_netbook_plugin_dispose (GObject *object)
 static void
 moblin_netbook_plugin_finalize (GObject *object)
 {
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (object)->priv;
+
+  mnb_input_manager_destroy (priv->input_manager);
+
   G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->finalize (object);
 }
 
@@ -194,8 +186,8 @@ static void
 sync_notification_input_region_cb (ClutterActor        *notify_actor,
                                    MoblinNetbookPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv   = plugin->priv;
-  MnbInputRegion             *region;
+  MoblinNetbookPluginPrivate  *priv = plugin->priv;
+  MnbInputRegion             **region;
 
   if (notify_actor == priv->notification_urgent)
     region = &priv->notification_urgent_input_region;
@@ -204,7 +196,7 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
 
   if (*region != NULL)
     {
-      moblin_netbook_input_region_remove (MUTTER_PLUGIN(plugin), *region);
+      mnb_input_manager_remove_region (priv->input_manager, *region);
       *region = NULL;
     }
 
@@ -218,8 +210,9 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
 
       if (width != 0 && height != 0)
         {
-          *region = moblin_netbook_input_region_push (MUTTER_PLUGIN(plugin),
-                                                      x, y, width, height);
+          *region = mnb_input_manager_push_region (priv->input_manager,
+                                                   x, y, width, height,
+                                                   FALSE, MNB_INPUT_LAYER_TOP);
         }
     }
 }
@@ -294,6 +287,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   g_signal_connect (priv->lowlight, "captured-event",
                     G_CALLBACK (on_lowlight_button_event),
                     NULL);
+
+  priv->input_manager = mnb_input_manager_new (MUTTER_PLUGIN (plugin));
+
   /*
    * This also creates the launcher.
    */
@@ -1872,85 +1868,6 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
     meta_display_focus_the_no_focus_window (display, screen, timestamp);
 }
 
-struct MnbInputRegion
-{
-  XserverRegion region;
-};
-
-MnbInputRegion
-moblin_netbook_input_region_push (MutterPlugin *plugin,
-                                  gint          x,
-                                  gint          y,
-                                  guint         width,
-                                  guint         height)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MnbInputRegion mir = g_slice_alloc (sizeof (struct MnbInputRegion));
-  XRectangle     rect;
-  Display       *xdpy = mutter_plugin_get_xdisplay (plugin);
-
-  rect.x       = x;
-  rect.y       = y;
-  rect.width   = width;
-  rect.height  = height;
-
-  mir->region  = XFixesCreateRegion (xdpy, &rect, 1);
-
-  priv->input_region_stack = g_list_append (priv->input_region_stack, mir);
-
-  moblin_netbook_input_region_apply (plugin);
-
-  return mir;
-}
-
-void
-moblin_netbook_input_region_remove (MutterPlugin *plugin, MnbInputRegion mir)
-{
-  moblin_netbook_input_region_remove_without_update (plugin, mir);
-  moblin_netbook_input_region_apply (plugin);
-}
-
-void
-moblin_netbook_input_region_remove_without_update (MutterPlugin  *plugin,
-                                                   MnbInputRegion mir)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display *xdpy = mutter_plugin_get_xdisplay (plugin);
-
-  if (mir->region)
-    XFixesDestroyRegion (xdpy, mir->region);
-
-  priv->input_region_stack = g_list_remove (priv->input_region_stack, mir);
-
-  g_slice_free (struct MnbInputRegion, mir);
-}
-
-static void
-moblin_netbook_input_region_apply (MutterPlugin *plugin)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Display *xdpy = mutter_plugin_get_xdisplay (plugin);
-  GList *l = priv->input_region_stack;
-  XserverRegion result;
-
-  if (priv->current_input_region)
-    XFixesDestroyRegion (xdpy, priv->current_input_region);
-
-  result = priv->current_input_region = XFixesCreateRegion (xdpy, NULL, 0);
-
-  while (l)
-    {
-      MnbInputRegion mir = l->data;
-
-      if (mir->region)
-        XFixesUnionRegion (xdpy, result, result, mir->region);
-
-      l = l->next;
-    }
-
-  mutter_plugin_set_stage_input_region (plugin, result);
-}
-
 static gboolean
 on_lowlight_button_event (ClutterActor *actor,
                           ClutterEvent *event,
@@ -1962,9 +1879,11 @@ on_lowlight_button_event (ClutterActor *actor,
 void
 moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
 {
+  static MnbInputRegion *input_region = NULL;
+  static gboolean        active       = FALSE;
+
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  static MnbInputRegion input_region;
-  static gboolean active = FALSE;
+  MnbInputManager *imgr = moblin_netbook_get_input_manager (plugin);
 
   if (on && !active)
     {
@@ -1973,8 +1892,9 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
       input_region
-        = moblin_netbook_input_region_push (plugin,
-                                            0, 0, screen_width, screen_height);
+        = mnb_input_manager_push_region (imgr,
+                                         0, 0, screen_width, screen_height,
+                                         FALSE, MNB_INPUT_LAYER_TOP);
 
       clutter_actor_show (priv->lowlight);
       active = TRUE;
@@ -1985,7 +1905,8 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
       if (active)
         {
           clutter_actor_hide (priv->lowlight);
-          moblin_netbook_input_region_remove (plugin, input_region);
+          mnb_input_manager_remove_region (imgr, input_region);
+          input_region = NULL;
           active = FALSE;
           mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), FALSE);
         }
@@ -2030,3 +1951,12 @@ moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
 
   return FALSE;
 }
+
+MnbInputManager *
+moblin_netbook_get_input_manager (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  return priv->input_manager;
+}
+

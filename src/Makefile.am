@@ -23,6 +23,8 @@ moblin_netbook_la_SOURCES  = \
 				$(MARSHALS)                     \
 				mnb-drop-down.h                 \
 				mnb-drop-down.c                 \
+				mnb-input-manager.h		\
+				mnb-input-manager.c		\
 				mnb-notification.c              \
 				mnb-notification.h              \
 				mnb-notification-cluster.c      \
