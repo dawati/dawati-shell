@@ -102,6 +102,7 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
     g_free (notification->summary);
     g_free (notification->body);
     g_free (notification->icon_name);
+    g_hash_table_remove_all (notification->actions);
   } else {
     /* This is a new notification, create a new structure and allocate an ID */
     notification = g_slice_new0 (Notification);
