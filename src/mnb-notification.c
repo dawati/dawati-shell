@@ -370,11 +370,9 @@ mnb_notification_update (MnbNotification *notification,
            l;
            l = g_list_delete_link (l, l))
         {
-          if (l->data == priv->dismiss_button)
-            continue;
-          else
+          if (l->data != priv->dismiss_button)
             clutter_container_remove_actor (CLUTTER_CONTAINER (priv->button_box),
-                                          CLUTTER_ACTOR (l->data));
+                                            CLUTTER_ACTOR (l->data));
         }
 
       g_hash_table_iter_init (&iter, details->actions);
