@@ -181,6 +181,9 @@ _shutdown_notify_timeout_cb (gpointer userdata)
 
   g_free (summary_text);
 
+  notify_notification_show (priv->shutdown_notification,
+                            NULL);
+
   return TRUE;
 }
 
@@ -259,7 +262,6 @@ _device_condition_cb (HalDevice   *device,
       if (!priv->shutdown_notification)
         hal_power_proxy_suspend_sync (priv->power_proxy);
     }
-
   } else if (g_str_equal (type, "power")) {
 
     /* Power button released" */
