@@ -33,6 +33,7 @@ typedef struct _PengePeopleTilePrivate PengePeopleTilePrivate;
 struct _PengePeopleTilePrivate {
     ClutterActor *body;
     ClutterActor *icon;
+    NbtkWidget *bin;
     NbtkWidget *primary_text;
     NbtkWidget *secondary_text;
     NbtkWidget *details_overlay;
@@ -85,7 +86,7 @@ penge_people_tile_set_property (GObject *object, guint property_id,
     case PROP_BODY:
       if (priv->body)
       {
-        clutter_container_remove_actor (CLUTTER_CONTAINER (object),
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->bin),
                                         priv->body);
       }
 
@@ -94,23 +95,8 @@ penge_people_tile_set_property (GObject *object, guint property_id,
       if (!priv->body)
         return;
 
-      nbtk_table_add_actor (NBTK_TABLE (object),
-                            priv->body,
-                            0,
-                            0);
-      clutter_container_child_set (CLUTTER_CONTAINER (object),
-                                   priv->body,
-                                   "y-align",
-                                   0.0,
-                                   "x-align",
-                                   0.0,
-                                   "row-span",
-                                   2,
-                                   "y-fill",
-                                   TRUE,
-                                   "y-expand",
-                                   TRUE,
-                                   NULL);
+      nbtk_bin_set_child (NBTK_BIN (priv->bin),
+                          priv->body);
 
 
       break;
@@ -288,6 +274,21 @@ penge_people_tile_init (PengePeopleTile *self)
   PengePeopleTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
   ClutterAlpha *alpha;
+
+  priv->bin = nbtk_bin_new ();
+  nbtk_bin_set_fill (NBTK_BIN (priv->bin), TRUE, TRUE);
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        (ClutterActor *)priv->bin,
+                        0,
+                        0);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               (ClutterActor *)priv->bin,
+                               "y-align", 0.0,
+                               "x-align", 0.0,
+                               "row-span", 2,
+                               "y-fill", TRUE,
+                               "y-expand", TRUE,
+                               NULL);
 
   priv->primary_text = nbtk_label_new ("Primary text");
   nbtk_widget_set_style_class_name (priv->primary_text, 
