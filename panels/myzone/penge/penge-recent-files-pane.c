@@ -27,6 +27,8 @@
 #include "penge-recent-files-pane.h"
 #include "penge-utils.h"
 #include "penge-recent-file-tile.h"
+#include "penge-recent-files-model.h"
+#include "penge-magic-list-view.h"
 
 G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 
@@ -44,13 +46,10 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
-static void penge_recent_files_pane_update (PengeRecentFilesPane *pane);
-
 typedef struct _PengeRecentFilesPanePrivate PengeRecentFilesPanePrivate;
 
 struct _PengeRecentFilesPanePrivate {
-  GHashTable *uri_to_actor;
-  GtkRecentManager *manager;
+  ClutterModel *model;
   ClutterActor *welcome_tile;
   gint boot_count;
 };
@@ -60,16 +59,10 @@ penge_recent_files_pane_dispose (GObject *object)
 {
   PengeRecentFilesPanePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->uri_to_actor)
+  if (priv->model)
   {
-    g_hash_table_unref (priv->uri_to_actor);
-    priv->uri_to_actor = NULL;
-  }
-
-  if (priv->manager)
-  {
-    g_object_unref (priv->manager);
-    priv->manager = NULL;
+    g_object_unref (priv->model);
+    priv->model = NULL;
   }
 
   G_OBJECT_CLASS (penge_recent_files_pane_parent_class)->dispose (object);
@@ -93,20 +86,12 @@ penge_recent_files_pane_class_init (PengeRecentFilesPaneClass *klass)
 }
 
 static void
-_recent_manager_changed_cb (GtkRecentManager *manager,
-                            gpointer          userdata)
-{
-  PengeRecentFilesPane *pane = PENGE_RECENT_FILES_PANE (userdata);
-
-  penge_recent_files_pane_update (pane);
-}
-
-static void
 penge_recent_files_pane_init (PengeRecentFilesPane *self)
 {
   PengeRecentFilesPanePrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
   GConfClient *client;
+  ClutterActor *list_view;
 
   client = gconf_client_get_default ();
 
@@ -139,52 +124,34 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
 
   g_object_unref (client);
 
-  priv->uri_to_actor = g_hash_table_new_full (g_str_hash,
-                                              g_str_equal,
-                                              g_free,
-                                              g_object_unref);
+  list_view = penge_magic_list_view_new ();
+  priv->model = penge_recent_files_model_new ();
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), ROW_SPACING);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
+  penge_magic_list_view_set_item_type (PENGE_MAGIC_LIST_VIEW (list_view),
+                                       PENGE_TYPE_RECENT_FILE_TILE);
+  penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (list_view),
+                                       "info",
+                                       0);
+  penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (list_view),
+                                       "thumbnail-path",
+                                       1);
+  penge_magic_container_set_minimum_child_size (PENGE_MAGIC_CONTAINER (list_view),
+                                                TILE_WIDTH,
+                                                TILE_HEIGHT);
 
-  priv->manager = gtk_recent_manager_get_default ();
-  g_signal_connect (priv->manager,
-                    "changed",
-                    (GCallback)_recent_manager_changed_cb,
-                    self);
+  penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (list_view), priv->model);
 
-
-  clutter_actor_set_width ((ClutterActor *)self, TILE_WIDTH * 2 + COL_SPACING);
-  penge_recent_files_pane_update (self);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        list_view,
+                                        0, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        NULL);
 }
 
-static gint
-_recent_files_sort_func (GtkRecentInfo *a,
-                         GtkRecentInfo *b)
-{
-  time_t time_a;
-  time_t time_b;
-
-  if (gtk_recent_info_get_modified (a) > gtk_recent_info_get_visited (a))
-    time_a = gtk_recent_info_get_modified (a);
-  else
-    time_a = gtk_recent_info_get_visited (a);
-
-  if (gtk_recent_info_get_modified (b) > gtk_recent_info_get_visited (b))
-    time_b = gtk_recent_info_get_modified (b);
-  else
-    time_b = gtk_recent_info_get_visited (b);
-
-  if (time_a > time_b)
-  {
-    return -1;
-  } else if (time_a < time_b) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
-
+#if 0
 static ClutterActor *
 _make_welcome_tile ()
 {
@@ -294,118 +261,7 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
                                             NULL);
     }
 
-    /* offset the recrnt files */
     count = 2;
-  }
-
-  items = g_list_sort (items, (GCompareFunc)_recent_files_sort_func);
-
-  old_actors = g_hash_table_get_values (priv->uri_to_actor);
-
-  for (l = items; l && count < NUMBER_OF_ITEMS; l = l->next)
-  {
-    info = (GtkRecentInfo *)l->data;
-
-    uri = gtk_recent_info_get_uri (info);
-
-    /* Check if we already have an actor for this URI if so then position */
-    actor = g_hash_table_lookup (priv->uri_to_actor, uri);
-
-    if (actor)
-    {
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   actor,
-                                   "row",
-                                   count / NUMBER_COLS,
-                                   "col",
-                                   count % NUMBER_COLS,
-                                   NULL);
-      old_actors = g_list_remove (old_actors, actor);
-    } else {
-      /*
-       * We need to check for a thumbnail image, and if we have one create the
-       * PengeRecentFileTile actor else skip over it
-       */
-      thumbnail_path = mpl_utils_get_thumbnail_path (uri);
-
-
-      /*
-       * *Try* and convert URI to a filename. If it's local and it doesn't
-       * exist then just skip this one. If it's non local then show it.
-       */
-
-      if (g_str_has_prefix (uri, "file:/"))
-      {
-        filename = g_filename_from_uri (uri,
-                                        NULL,
-                                        NULL);
-
-        if (filename && !g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-        {
-          continue;
-        }
-
-        g_free (filename);
-      }
-
-      if (thumbnail_path)
-      {
-        actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
-                              "thumbnail-path",
-                              thumbnail_path,
-                              "info",
-                              info,
-                              NULL);
-        g_free (thumbnail_path);
-        nbtk_table_add_actor (NBTK_TABLE (pane),
-                              actor,
-                              count / NUMBER_COLS,
-                              count % NUMBER_COLS);
-        clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                     actor,
-                                     "y-expand",
-                                     FALSE,
-                                     "x-expand",
-                                     FALSE,
-                                     "y-fill",
-                                     FALSE,
-                                     "x-fill",
-                                     FALSE,
-                                     "x-align",
-                                     0.0,
-                                     "y-align",
-                                     0.0,
-                                     NULL);
-
-        clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
-        g_hash_table_insert (priv->uri_to_actor,
-                             g_strdup (uri),
-                             g_object_ref (actor));
-      }
-    }
-
-    if (actor)
-    {
-      /* We've added / rearranged something */
-      count++;
-    }
-  }
-
-  for (l = items; l; l = g_list_delete_link (l, l))
-  {
-    info = (GtkRecentInfo *)l->data;
-    gtk_recent_info_unref (info);
-  }
-
-  for (l = old_actors; l; l = g_list_delete_link (l, l))
-  {
-    actor = CLUTTER_ACTOR (l->data);
-    tile = PENGE_RECENT_FILE_TILE (actor);
-
-    clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                    actor);
-    g_hash_table_remove (priv->uri_to_actor,
-                         penge_recent_file_tile_get_uri (tile));
   }
 
   if (priv->welcome_tile)
@@ -431,3 +287,4 @@ penge_recent_files_pane_update (PengeRecentFilesPane *pane)
     }
   }
 }
+#endif
