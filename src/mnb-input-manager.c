@@ -279,3 +279,128 @@ mnb_input_manager_apply_stack (void)
   mutter_plugin_set_stage_input_region (mgr_singleton->plugin, result);
 }
 
+static void
+mcw_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
+{
+  ClutterGeometry  geom;
+  MnbInputRegion  *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
+  XserverRegion    rgn;
+  XRectangle       rect;
+  Display         *xdpy;
+
+  g_assert (mgr_singleton);
+
+  if (!mir)
+    return;
+
+  xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
+
+  rgn = mir->region;
+
+  clutter_actor_get_geometry (actor, &geom);
+
+  rect.x      = geom.x;
+  rect.y      = geom.y;
+  rect.width  = geom.width;
+  rect.height = geom.height;
+
+  XFixesSetRegion (xdpy, mir->region, &rect, 1);
+
+  mnb_input_manager_apply_stack ();
+}
+
+static void
+mcw_hide_cb (ClutterActor *actor, gpointer data)
+{
+  MnbInputRegion *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
+
+  if (!mir)
+    return;
+
+  g_object_set_qdata (G_OBJECT (actor), quark_mir, NULL);
+
+  mnb_input_manager_remove_region (mir);
+}
+
+static void
+mcw_show_cb (ClutterActor *actor, MnbInputLayer layer)
+{
+  ClutterGeometry  geom;
+  MnbInputRegion  *mir  = g_object_get_qdata (G_OBJECT (actor), quark_mir);
+  Display         *xdpy;
+
+  g_assert (mgr_singleton);
+
+  xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
+
+  clutter_actor_get_geometry (actor, &geom);
+
+  if (!mir)
+    {
+      mir = mnb_input_manager_push_region (geom.x, geom.y,
+                                           geom.width, geom.height,
+                                           TRUE, layer);
+
+      g_object_set_qdata (G_OBJECT (actor), quark_mir, mir);
+    }
+  else
+    {
+      XserverRegion rgn;
+      XRectangle    rect;
+
+      rgn = mir->region;
+
+      rect.x      = geom.x;
+      rect.y      = geom.y;
+      rect.width  = geom.width;
+      rect.height = geom.height;
+
+      XFixesSetRegion (xdpy, mir->region, &rect, 1);
+
+      mnb_input_manager_apply_stack ();
+    }
+}
+
+static void
+mcw_destroy_cb (ClutterActor *actor, gpointer data)
+{
+  MnbInputRegion *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
+
+  if (!mir)
+    return;
+
+  g_object_set_qdata (G_OBJECT (actor), quark_mir, NULL);
+
+  mnb_input_manager_remove_region (mir);
+}
+
+/*
+ * Pushes region associated with MutterWindow onto the given layer of the input
+ * stack, connecting appropriate singnal handlers to deal with window showing,
+ * hiding, resizing and destruction.
+ */
+void
+mnb_input_manager_push_window (MutterWindow *mcw, MnbInputLayer layer)
+{
+  ClutterActor    *actor = (ClutterActor*)mcw;
+  ClutterGeometry  geom;
+  MnbInputRegion  *mir;
+
+  g_assert (mgr_singleton);
+
+  clutter_actor_get_geometry (actor, &geom);
+
+  mir = mnb_input_manager_push_region (geom.x, geom.y, geom.width, geom.height,
+                                       TRUE, layer);
+
+  g_object_set_qdata (G_OBJECT (actor), quark_mir, mir);
+
+  g_signal_connect (actor, "notify::allocation",
+                    G_CALLBACK (mcw_allocation_cb), NULL);
+  g_signal_connect (actor, "show",
+                    G_CALLBACK (mcw_show_cb), GINT_TO_POINTER (layer));
+  g_signal_connect (actor, "hide",
+                    G_CALLBACK (mcw_hide_cb), NULL);
+  g_signal_connect (actor, "destroy",
+                    G_CALLBACK (mcw_destroy_cb), NULL);
+}

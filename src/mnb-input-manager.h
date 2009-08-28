@@ -52,4 +52,5 @@ MnbInputRegion *mnb_input_manager_push_region (gint          x,
                                                 MnbInputLayer layer);
 void            mnb_input_manager_remove_region (MnbInputRegion  *mir);
 void            mnb_input_manager_remove_region_without_update (MnbInputRegion  *mir);
+void            mnb_input_manager_push_window (MutterWindow *mcw, MnbInputLayer layer);
 #endif
