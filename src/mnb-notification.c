@@ -102,7 +102,6 @@ mnb_notification_dispose (GObject *object)
 
   if (priv->timeout_id)
     {
-      printf("removing timeout...\n");
       g_source_remove (priv->timeout_id);
     }
 
@@ -131,7 +130,6 @@ mnb_notification_show (ClutterActor *actor)
 
   if (priv->timeout > 0) 
     {
-      printf("adding timeout....\n");
       priv->timeout_id = g_timeout_add (priv->timeout, 
                                         (GSourceFunc)notification_timeout, 
                                         MNB_NOTIFICATION(actor));
