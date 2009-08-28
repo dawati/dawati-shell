@@ -62,6 +62,8 @@ void penge_magic_list_view_set_item_type (PengeMagicListView *view,
 void penge_magic_list_view_add_attribute (PengeMagicListView *view,
                                           const gchar        *property_name,
                                           gint                col);
+void penge_magic_list_view_freeze (PengeMagicListView *view);
+void penge_magic_list_view_thaw (PengeMagicListView *view);
 
 G_END_DECLS
 

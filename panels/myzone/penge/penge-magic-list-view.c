@@ -32,6 +32,7 @@ struct _PengeMagicListViewPrivate {
   ClutterModel *model;
   GList *attributes;
   GType item_type;
+  gint freeze_count;
 };
 
 enum
@@ -158,6 +159,9 @@ penge_magic_list_view_update (PengeMagicListView *view)
 
   if (!priv->item_type || !priv->model)
     return;
+
+  g_debug (G_STRLOC ": Populating container from model using model: %s",
+           G_OBJECT_TYPE_NAME (priv->model));
 
   children = clutter_container_get_children (CLUTTER_CONTAINER (view));
   children_count = g_list_length (children);
@@ -337,4 +341,58 @@ penge_magic_list_view_add_attribute (PengeMagicListView *view,
 
   priv->attributes = g_list_append (priv->attributes, attr);
 }
+
+void
+penge_magic_list_view_freeze (PengeMagicListView *view)
+{
+  PengeMagicListViewPrivate *priv = GET_PRIVATE (view);
+
+  priv->freeze_count++;
+
+  if (priv->freeze_count > 0)
+  {
+    g_signal_handlers_block_by_func (priv->model,
+                                     (GCallback)_model_row_added_cb,
+                                     view);
+    g_signal_handlers_block_by_func (priv->model,
+                                     (GCallback)_model_row_removed_cb,
+                                     view);
+    g_signal_handlers_block_by_func (priv->model,
+                                     (GCallback)_model_row_changed_cb,
+                                     view);
+    g_signal_handlers_block_by_func (priv->model,
+                                     (GCallback)_model_sort_changed_cb,
+                                     view);
+  }
+}
+
+void
+penge_magic_list_view_thaw (PengeMagicListView *view)
+{
+  PengeMagicListViewPrivate *priv = GET_PRIVATE (view);
+
+  priv->freeze_count--;
+
+  if (priv->freeze_count < 0)
+  {
+    g_assert_not_reached ();
+  }
+
+  if (priv->freeze_count == 0)
+  {
+    g_signal_handlers_unblock_by_func (priv->model,
+                                       (GCallback)_model_row_added_cb,
+                                       view);
+    g_signal_handlers_unblock_by_func (priv->model,
+                                       (GCallback)_model_row_removed_cb,
+                                       view);
+    g_signal_handlers_unblock_by_func (priv->model,
+                                       (GCallback)_model_row_changed_cb,
+                                       view);
+    g_signal_handlers_unblock_by_func (priv->model,
+                                       (GCallback)_model_sort_changed_cb,
+                                       view);
+  }
+}
+
 
