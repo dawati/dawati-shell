@@ -392,6 +392,8 @@ penge_magic_list_view_thaw (PengeMagicListView *view)
     g_signal_handlers_unblock_by_func (priv->model,
                                        (GCallback)_model_sort_changed_cb,
                                        view);
+
+    penge_magic_list_view_update (view);
   }
 }
 
