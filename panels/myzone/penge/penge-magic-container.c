@@ -60,6 +60,14 @@ enum
   PROP_CHILD_HEIGHT
 };
 
+enum
+{
+  COUNT_CHANGED_SIGNAL,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
 static void
 penge_magic_container_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -114,7 +122,6 @@ penge_magic_container_finalize (GObject *object)
 {
   G_OBJECT_CLASS (penge_magic_container_parent_class)->finalize (object);
 }
-
 
 static gint
 _calculate_potential_row_count (PengeMagicContainer *pmc,
@@ -185,7 +192,7 @@ _calculate_potential_column_count (PengeMagicContainer *pmc,
 static void
 penge_magic_container_calculate_counts (PengeMagicContainer *pmc,
                                         gfloat               width,
-                                        gfloat                height)
+                                        gfloat               height)
 {
   PengeMagicContainerPrivate *priv = GET_PRIVATE (pmc);
   gint row_count, column_count;
@@ -199,17 +206,20 @@ penge_magic_container_calculate_counts (PengeMagicContainer *pmc,
     priv->column_count = column_count;
     priv->row_count = row_count;
 
-    /* TODO: Signal that the range has changed */
-  }
+    if (column_count * row_count > 0)
+    {
+      g_signal_emit (pmc, signals[COUNT_CHANGED_SIGNAL], 0, column_count * row_count);
 
-  g_debug (G_STRLOC ": Possible row count = %d, possible column count = %d"
-           " for width = %f and height = %f and child width = %f and height = %f",
-           priv->row_count,
-           priv->column_count,
-           width,
-           height,
-           priv->actual_tile_width,
-           priv->actual_tile_height);
+      g_debug (G_STRLOC ": Possible row count = %d, possible column count = %d"
+               " for width = %f and height = %f and child width = %f and height = %f",
+               priv->row_count,
+               priv->column_count,
+               width,
+               height,
+               priv->actual_tile_width,
+               priv->actual_tile_height);
+    }
+  }
 }
 
 static void
@@ -357,6 +367,18 @@ penge_magic_container_class_init (PengeMagicContainerClass *klass)
                               0.0,
                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_CHILD_HEIGHT, pspec);
+
+  signals[COUNT_CHANGED_SIGNAL] =
+    g_signal_new ("count-changed",
+                  PENGE_TYPE_MAGIC_CONTAINER,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__INT,
+                  G_TYPE_NONE,
+                  1,
+                  G_TYPE_INT);
 }
 
 static void
