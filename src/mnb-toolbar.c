@@ -1931,6 +1931,7 @@ mnb_toolbar_constructed (GObject *self)
   ClutterColor       clr = {0x0, 0x0, 0x0, 0xce};
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
   DBusGConnection   *conn;
+  NbtkWidget        *time_bin, *date_bin;
 
   /*
    * Make sure our parent gets chance to do what it needs to.
@@ -1994,24 +1995,28 @@ mnb_toolbar_constructed (GObject *self)
   /* create time and date labels */
   priv->time = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->time), "time-label");
+  time_bin = nbtk_bin_new ();
+  nbtk_bin_set_child (NBTK_BIN (time_bin), (ClutterActor*)priv->time);
+  nbtk_bin_set_alignment (NBTK_BIN (time_bin),
+                          NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
+  clutter_actor_set_position ((ClutterActor*)time_bin, 20.0, 8.0);
+  clutter_actor_set_width ((ClutterActor*)time_bin, 161.0);
 
   priv->date = nbtk_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
+  date_bin = nbtk_bin_new ();
+  nbtk_bin_set_child (NBTK_BIN (date_bin), (ClutterActor*)priv->date);
+  nbtk_bin_set_alignment (NBTK_BIN (date_bin),
+                          NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
+  clutter_actor_set_position ((ClutterActor*)date_bin, 20.0, 35.0);
+  clutter_actor_set_size ((ClutterActor*)date_bin, 161.0, 25.0);
 
   clutter_container_add (CLUTTER_CONTAINER (hbox),
-                         CLUTTER_ACTOR (priv->time),
-                         CLUTTER_ACTOR (priv->date),
+                         CLUTTER_ACTOR (time_bin),
+                         CLUTTER_ACTOR (date_bin),
                          NULL);
 
   mnb_toolbar_update_time_date (priv);
-
-  clutter_actor_set_anchor_point_from_gravity (CLUTTER_ACTOR(priv->time),
-                                               CLUTTER_GRAVITY_CENTER);
-  clutter_actor_set_position (CLUTTER_ACTOR (priv->time), 192 / 2, 16);
-
-  clutter_actor_set_anchor_point_from_gravity (CLUTTER_ACTOR(priv->date),
-                                               CLUTTER_GRAVITY_CENTER);
-  clutter_actor_set_position (CLUTTER_ACTOR (priv->date), 192 / 2, 48);
 
   nbtk_bin_set_alignment (NBTK_BIN (self), NBTK_ALIGN_LEFT, NBTK_ALIGN_TOP);
   nbtk_bin_set_child (NBTK_BIN (self), hbox);

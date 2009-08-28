@@ -38,12 +38,12 @@ NbtkTable {
   background-color: #f000;
 }
 
-MnbToolbar > *#time-label {
+NbtkLabel#time-label {
   color: #c0c0c0;
   font-size: 19px;
 }
 
-MnbToolbar > *#date-label {
+NbtkLabel#date-label {
   color: #c0c0c0;
   font-size: 12px;
 }
