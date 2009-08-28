@@ -2,14 +2,14 @@
 # Copyright (C) 2009 THE dalston'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the dalston package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-# , fuzzy
-#
-#
+#, fuzzy
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: dalston moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:22+0000\n"
+"POT-Creation-Date: 2009-08-28 06:51+0000\n"
 "PO-Revision-Date: 2009-08-25 16:12-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -25,8 +25,7 @@ msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b> uren"
 msgstr[1] "<b>%d</b> uren"
 
-#: ../dalston/dalston-power-applet.c:199
-#: ../dalston/dalston-power-applet.c:212
+#: ../dalston/dalston-power-applet.c:199 ../dalston/dalston-power-applet.c:212
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
@@ -191,3 +190,19 @@ msgstr "energie & lichtintensiteit"
 msgid "sound"
 msgstr "geluid"
 
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide i'll turn off in %d seconds"
+msgstr "Als je niet beslist sluit ik af in %d seconden"
+
+#: ../dalston/dalston-button-monitor.c:277
+msgid "Would you like to turn off now?"
+msgstr "Wil je nu afsluiten?"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide i'll turn off in 30 seconds"
+msgstr "Als je niet beslist sluit ik af in 30 seconden"
+
+#: ../dalston/dalston-button-monitor.c:285
+msgid "Turn off"
+msgstr "Afsluiten"
