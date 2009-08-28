@@ -24,6 +24,9 @@
 
 #include "mnb-input-manager.h"
 
+static MnbInputManager *mgr_singleton = NULL;
+static GQuark           quark_mir;
+
 /*
  * The machinery for manipulating shape of the stage window.
  *
@@ -72,7 +75,7 @@
  * The individual functions are commented on below.
  */
 
-static void mnb_input_manager_apply_stack (MnbInputManager *mgr);
+static void mnb_input_manager_apply_stack (void);
 
 struct MnbInputRegion
 {
@@ -88,26 +91,35 @@ struct MnbInputManager
   XserverRegion current_region;
 };
 
-MnbInputManager *
-mnb_input_manager_new (MutterPlugin *plugin)
+void
+mnb_input_manager_create (MutterPlugin *plugin)
 {
-  MnbInputManager *mgr = g_new0(MnbInputManager, 1);
+  /*
+   * Single instance permitted.
+   */
+  g_assert (!mgr_singleton);
 
-  mgr->plugin = plugin;
+  mgr_singleton = g_new0(MnbInputManager, 1);
 
-  return mgr;
+  mgr_singleton->plugin = plugin;
+
+  quark_mir = g_quark_from_static_string ("MNB-INPUT-MANAGER-mir");
 }
 
 void
-mnb_input_manager_destroy (MnbInputManager *mgr)
+mnb_input_manager_destroy ()
 {
   GList   *l, *o;
   gint     i;
-  Display *xdpy = mutter_plugin_get_xdisplay (mgr->plugin);
+  Display *xdpy;
+
+  g_assert (mgr_singleton);
+
+  xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
 
   for (i = 0; i <= MNB_INPUT_LAYER_TOP; ++i)
     {
-      l = o = mgr->layers[i];
+      l = o = mgr_singleton->layers[i];
 
       while (l)
         {
@@ -123,10 +135,11 @@ mnb_input_manager_destroy (MnbInputManager *mgr)
       g_list_free (o);
     }
 
-  if (mgr->current_region)
-    XFixesDestroyRegion (xdpy, mgr->current_region);
+  if (mgr_singleton->current_region)
+    XFixesDestroyRegion (xdpy, mgr_singleton->current_region);
 
-  g_free (mgr);
+  g_free (mgr_singleton);
+  mgr_singleton = NULL;
 }
 
 /*
@@ -147,19 +160,20 @@ mnb_input_manager_destroy (MnbInputManager *mgr)
  *          mnb_input_manager_remove_region().
  */
 MnbInputRegion *
-mnb_input_manager_push_region (MnbInputManager *mgr,
-                               gint             x,
-                               gint             y,
-                               guint            width,
-                               guint            height,
-                               gboolean         inverse,
-                               MnbInputLayer    layer)
+mnb_input_manager_push_region (gint          x,
+                               gint          y,
+                               guint         width,
+                               guint         height,
+                               gboolean      inverse,
+                               MnbInputLayer layer)
 {
   MnbInputRegion *mir  = g_slice_alloc (sizeof (MnbInputRegion));
-  Display        *xdpy = mutter_plugin_get_xdisplay (mgr->plugin);
+  Display        *xdpy;
   XRectangle      rect;
 
-  g_assert (layer >= 0 && layer <= MNB_INPUT_LAYER_TOP);
+  g_assert (mgr_singleton && layer >= 0 && layer <= MNB_INPUT_LAYER_TOP);
+
+  xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
 
   rect.x       = x;
   rect.y       = y;
@@ -170,9 +184,10 @@ mnb_input_manager_push_region (MnbInputManager *mgr,
   mir->region  = XFixesCreateRegion (xdpy, &rect, 1);
   mir->layer   = layer;
 
-  mgr->layers[layer] = g_list_append (mgr->layers[layer], mir);
+  mgr_singleton->layers[layer] =
+    g_list_append (mgr_singleton->layers[layer], mir);
 
-  mnb_input_manager_apply_stack (mgr);
+  mnb_input_manager_apply_stack ();
 
   return mir;
 }
@@ -186,10 +201,10 @@ mnb_input_manager_push_region (MnbInputManager *mgr,
  * mir: the region ID returned by mnb_input_manager_push_region().
  */
 void
-mnb_input_manager_remove_region (MnbInputManager *mgr, MnbInputRegion  *mir)
+mnb_input_manager_remove_region (MnbInputRegion  *mir)
 {
-  mnb_input_manager_remove_region_without_update (mgr, mir);
-  mnb_input_manager_apply_stack (mgr);
+  mnb_input_manager_remove_region_without_update (mir);
+  mnb_input_manager_apply_stack ();
 }
 
 /*
@@ -202,15 +217,19 @@ mnb_input_manager_remove_region (MnbInputManager *mgr, MnbInputRegion  *mir)
  * mir: the region ID returned by mnb_input_manager_push_region().
  */
 void
-mnb_input_manager_remove_region_without_update (MnbInputManager *mgr,
-                                                MnbInputRegion  *mir)
+mnb_input_manager_remove_region_without_update (MnbInputRegion *mir)
 {
-  Display *xdpy = mutter_plugin_get_xdisplay (mgr->plugin);
+  Display *xdpy;
+
+  g_assert (mgr_singleton);
+
+  xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
 
   if (mir->region)
     XFixesDestroyRegion (xdpy, mir->region);
 
-  mgr->layers[mir->layer] = g_list_remove (mgr->layers[mir->layer], mir);
+  mgr_singleton->layers[mir->layer]
+    = g_list_remove (mgr_singleton->layers[mir->layer], mir);
 
   g_slice_free (MnbInputRegion, mir);
 }
@@ -221,21 +240,25 @@ mnb_input_manager_remove_region_without_update (MnbInputManager *mgr,
  * actual implementation of the input shape stack.
  */
 static void
-mnb_input_manager_apply_stack (MnbInputManager *mgr)
+mnb_input_manager_apply_stack (void)
 {
-  Display       *xdpy = mutter_plugin_get_xdisplay (mgr->plugin);
+  Display       *xdpy;
   GList         *l;
   gint           i;
   XserverRegion  result;
 
-  if (mgr->current_region)
-    XFixesDestroyRegion (xdpy, mgr->current_region);
+  g_assert (mgr_singleton);
 
-  result = mgr->current_region = XFixesCreateRegion (xdpy, NULL, 0);
+  xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
+
+  if (mgr_singleton->current_region)
+    XFixesDestroyRegion (xdpy, mgr_singleton->current_region);
+
+  result = mgr_singleton->current_region = XFixesCreateRegion (xdpy, NULL, 0);
 
   for (i = 0; i <= MNB_INPUT_LAYER_TOP; ++i)
     {
-      l = mgr->layers[i];
+      l = mgr_singleton->layers[i];
 
       if (!l)
         continue;
@@ -253,6 +276,6 @@ mnb_input_manager_apply_stack (MnbInputManager *mgr)
         }
     }
 
-  mutter_plugin_set_stage_input_region (mgr->plugin, result);
+  mutter_plugin_set_stage_input_region (mgr_singleton->plugin, result);
 }
 

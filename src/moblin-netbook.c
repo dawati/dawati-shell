@@ -147,9 +147,7 @@ moblin_netbook_plugin_dispose (GObject *object)
 static void
 moblin_netbook_plugin_finalize (GObject *object)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (object)->priv;
-
-  mnb_input_manager_destroy (priv->input_manager);
+  mnb_input_manager_destroy ();
 
   G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->finalize (object);
 }
@@ -196,7 +194,7 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
 
   if (*region != NULL)
     {
-      mnb_input_manager_remove_region (priv->input_manager, *region);
+      mnb_input_manager_remove_region (*region);
       *region = NULL;
     }
 
@@ -210,8 +208,7 @@ sync_notification_input_region_cb (ClutterActor        *notify_actor,
 
       if (width != 0 && height != 0)
         {
-          *region = mnb_input_manager_push_region (priv->input_manager,
-                                                   x, y, width, height,
+          *region = mnb_input_manager_push_region (x, y, width, height,
                                                    FALSE, MNB_INPUT_LAYER_TOP);
         }
     }
@@ -289,7 +286,7 @@ moblin_netbook_plugin_constructed (GObject *object)
                     G_CALLBACK (on_lowlight_button_event),
                     NULL);
 
-  priv->input_manager = mnb_input_manager_new (MUTTER_PLUGIN (plugin));
+  mnb_input_manager_create (MUTTER_PLUGIN (plugin));
 
   /*
    * This also creates the launcher.
@@ -1882,7 +1879,6 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
   static gboolean        active       = FALSE;
 
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MnbInputManager *imgr = moblin_netbook_get_input_manager (plugin);
 
   if (on && !active)
     {
@@ -1891,8 +1887,7 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
       input_region
-        = mnb_input_manager_push_region (imgr,
-                                         0, 0, screen_width, screen_height,
+        = mnb_input_manager_push_region (0, 0, screen_width, screen_height,
                                          FALSE, MNB_INPUT_LAYER_TOP);
 
       clutter_actor_show (priv->lowlight);
@@ -1904,7 +1899,7 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
       if (active)
         {
           clutter_actor_hide (priv->lowlight);
-          mnb_input_manager_remove_region (imgr, input_region);
+          mnb_input_manager_remove_region (input_region);
           input_region = NULL;
           active = FALSE;
           mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), FALSE);
@@ -1950,12 +1945,3 @@ moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
 
   return FALSE;
 }
-
-MnbInputManager *
-moblin_netbook_get_input_manager (MutterPlugin *plugin)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  return priv->input_manager;
-}
-

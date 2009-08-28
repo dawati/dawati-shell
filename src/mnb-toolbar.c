@@ -237,7 +237,6 @@ static void
 mnb_toolbar_dispose (GObject *object)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (object)->priv;
-  MnbInputManager   *imgr = moblin_netbook_get_input_manager (priv->plugin);
 
   if (priv->dbus_conn)
     {
@@ -247,19 +246,19 @@ mnb_toolbar_dispose (GObject *object)
 
   if (priv->dropdown_region)
     {
-      mnb_input_manager_remove_region (imgr, priv->dropdown_region);
+      mnb_input_manager_remove_region (priv->dropdown_region);
       priv->dropdown_region = NULL;
     }
 
   if (priv->input_region)
     {
-      mnb_input_manager_remove_region (imgr, priv->input_region);
+      mnb_input_manager_remove_region (priv->input_region);
       priv->input_region = NULL;
     }
 
   if (priv->trigger_region)
     {
-      mnb_input_manager_remove_region (imgr, priv->trigger_region);
+      mnb_input_manager_remove_region (priv->trigger_region);
       priv->trigger_region = NULL;
     }
 
@@ -345,7 +344,6 @@ mnb_toolbar_show (ClutterActor *actor)
   gint                screen_width, screen_height;
   gint                i;
   ClutterAnimation   *animation;
-  MnbInputManager    *imgr = moblin_netbook_get_input_manager (priv->plugin);
 
   if (priv->in_show_animation)
     {
@@ -377,12 +375,10 @@ mnb_toolbar_show (ClutterActor *actor)
   clutter_actor_set_position (actor, 0, -(clutter_actor_get_height (actor)));
 
   if (priv->input_region)
-    mnb_input_manager_remove_region_without_update (imgr,
-                                                    priv->input_region);
+    mnb_input_manager_remove_region_without_update (priv->input_region);
 
   priv->input_region =
-    mnb_input_manager_push_region (imgr, 0, 0,
-                                   screen_width, TOOLBAR_HEIGHT + 10,
+    mnb_input_manager_push_region (0, 0, screen_width, TOOLBAR_HEIGHT + 10,
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
 
@@ -440,7 +436,6 @@ mnb_toolbar_hide (ClutterActor *actor)
   gfloat             height;
   gint               i;
   ClutterAnimation  *animation;
-  MnbInputManager   *imgr = moblin_netbook_get_input_manager (priv->plugin);
 
   if (priv->in_hide_animation)
     {
@@ -458,13 +453,13 @@ mnb_toolbar_hide (ClutterActor *actor)
 
   if (priv->input_region)
     {
-      mnb_input_manager_remove_region (imgr, priv->input_region);
+      mnb_input_manager_remove_region (priv->input_region);
       priv->input_region = NULL;
     }
 
   if (priv->dropdown_region)
     {
-      mnb_input_manager_remove_region (imgr, priv->dropdown_region);
+      mnb_input_manager_remove_region (priv->dropdown_region);
       priv->dropdown_region = NULL;
     }
 
@@ -836,18 +831,16 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
   MutterPlugin      *plugin = priv->plugin;
   gfloat             w, h;
   gint               screen_width, screen_height;
-  MnbInputManager   *imgr = moblin_netbook_get_input_manager (priv->plugin);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
 
   if (priv->dropdown_region)
-    mnb_input_manager_remove_region_without_update (imgr,
-                                                    priv->dropdown_region);
+    mnb_input_manager_remove_region_without_update (priv->dropdown_region);
 
   priv->dropdown_region =
-    mnb_input_manager_push_region (imgr, 0, TOOLBAR_HEIGHT,
+    mnb_input_manager_push_region (0, TOOLBAR_HEIGHT,
                                    (guint)w, screen_height-TOOLBAR_HEIGHT,
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
@@ -865,19 +858,16 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
   MnbToolbarPrivate *priv = toolbar->priv;
   gfloat             x, y,w, h;
   gint               screen_width, screen_height;
-  MnbInputManager   *imgr = moblin_netbook_get_input_manager (priv->plugin);
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
   mnb_drop_down_get_footer_geometry (dropdown, &x, &y, &w, &h);
 
   if (priv->dropdown_region)
-    mnb_input_manager_remove_region_without_update (imgr,
-                                                    priv->dropdown_region);
+    mnb_input_manager_remove_region_without_update (priv->dropdown_region);
 
   priv->dropdown_region =
-    mnb_input_manager_push_region (imgr,
-                                   (gint)x, TOOLBAR_HEIGHT + (gint)y,
+    mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
                                    (guint)w,
                                    screen_height - (TOOLBAR_HEIGHT+(gint)y),
                                    FALSE, MNB_INPUT_LAYER_PANEL);
@@ -890,11 +880,10 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbDropDown *dropdown, MnbToolbar  *tool
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
-  MnbInputManager   *imgr = moblin_netbook_get_input_manager (priv->plugin);
 
   if (priv->dropdown_region)
     {
-      mnb_input_manager_remove_region (imgr, priv->dropdown_region);
+      mnb_input_manager_remove_region (priv->dropdown_region);
       priv->dropdown_region = NULL;
     }
 
@@ -1167,7 +1156,6 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
   MutterPlugin      *plugin;
   gfloat             x, y,w, h;
   gint               screen_width, screen_height;
-  MnbInputManager   *imgr;
 
   /*
    * If this panel is visible, we need to update the input region to match
@@ -1178,26 +1166,22 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
 
   priv   = toolbar->priv;
   plugin = priv->plugin;
-  imgr   = moblin_netbook_get_input_manager (priv->plugin);
 
   mnb_drop_down_get_footer_geometry (dropdown, &x, &y, &w, &h);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   if (priv->dropdown_region)
-    mnb_input_manager_remove_region_without_update (imgr,
-                                                    priv->dropdown_region);
+    mnb_input_manager_remove_region_without_update (priv->dropdown_region);
 
   if (priv->panel_input_only)
     priv->dropdown_region =
-      mnb_input_manager_push_region (imgr,
-                                     (gint)x, TOOLBAR_HEIGHT + (gint)y,
+      mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
                                      (guint)w, (guint)h,
                                      FALSE, MNB_INPUT_LAYER_PANEL);
   else
     priv->dropdown_region =
-      mnb_input_manager_push_region (imgr,
-                                     (gint)x, TOOLBAR_HEIGHT + (gint)y,
+      mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
                                      (guint)w,
                                      screen_height -
                                      (TOOLBAR_HEIGHT+(gint)y),
@@ -2218,9 +2202,6 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
   gfloat                  x, y, w, h;
   gint                    screen_width, screen_height;
   Window                  xid;
-  MnbInputManager        *imgr;
-
-  imgr = moblin_netbook_get_input_manager (plugin);
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -2231,11 +2212,10 @@ tray_actor_show_completed_cb (ClutterActor *actor, gpointer data)
   mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (actor), &x, &y, &w, &h);
 
   if (priv->dropdown_region)
-    mnb_input_manager_remove_region_without_update (imgr,
-                                                    priv->dropdown_region);
+    mnb_input_manager_remove_region_without_update (priv->dropdown_region);
 
   priv->dropdown_region =
-    mnb_input_manager_push_region (imgr, x, TOOLBAR_HEIGHT + y, w,
+    mnb_input_manager_push_region (x, TOOLBAR_HEIGHT + y, w,
                                    screen_height - (TOOLBAR_HEIGHT+(gint)y),
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
@@ -2302,13 +2282,10 @@ tray_actor_hide_begin_cb (ClutterActor *actor, gpointer data)
   struct config_hide_data *hide_data = data;
   MnbToolbarPrivate       *priv = hide_data->toolbar->priv;
   ShellTrayManager        *tmgr = priv->tray_manager;
-  MnbInputManager         *imgr;
-
-  imgr = moblin_netbook_get_input_manager (priv->plugin);
 
   if (priv->dropdown_region)
     {
-      mnb_input_manager_remove_region (imgr, priv->dropdown_region);
+      mnb_input_manager_remove_region (priv->dropdown_region);
       priv->dropdown_region = NULL;
     }
 
@@ -2505,16 +2482,14 @@ mnb_toolbar_trigger_region_set_height (MnbToolbar *toolbar, gint height)
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   gint               screen_width, screen_height;
-  MnbInputManager   *imgr = moblin_netbook_get_input_manager (priv->plugin);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   if (priv->trigger_region != NULL)
-    mnb_input_manager_remove_region (imgr, priv->trigger_region);
+    mnb_input_manager_remove_region (priv->trigger_region);
 
   priv->trigger_region
-    = mnb_input_manager_push_region (imgr,
-                                     0,
+    = mnb_input_manager_push_region (0,
                                      0,
                                      screen_width,
                                      TOOLBAR_TRIGGER_THRESHOLD + height,

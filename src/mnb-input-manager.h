@@ -42,18 +42,14 @@ typedef enum
   MNB_INPUT_LAYER_TOP                /* Top layer (e.g., notifications) */
 } MnbInputLayer;
 
-MnbInputManager *mnb_input_manager_new     (MutterPlugin    *plugin);
-void             mnb_input_manager_destroy (MnbInputManager *mgr);
-MnbInputRegion  *mnb_input_manager_push_region (MnbInputManager *mgr,
-                                                gint             x,
-                                                gint             y,
-                                                guint            width,
-                                                guint            height,
-                                                gboolean         inverse,
-                                                MnbInputLayer    layer);
-void             mnb_input_manager_remove_region (MnbInputManager *mgr,
-                                                  MnbInputRegion  *mir);
-void             mnb_input_manager_remove_region_without_update (MnbInputManager *mgr,
-                                                                 MnbInputRegion  *mir);
-
+void            mnb_input_manager_create  (MutterPlugin *plugin);
+void            mnb_input_manager_destroy (void);
+MnbInputRegion *mnb_input_manager_push_region (gint          x,
+                                                gint          y,
+                                                guint         width,
+                                                guint         height,
+                                                gboolean      inverse,
+                                                MnbInputLayer layer);
+void            mnb_input_manager_remove_region (MnbInputRegion  *mir);
+void            mnb_input_manager_remove_region_without_update (MnbInputRegion  *mir);
 #endif

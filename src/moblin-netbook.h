@@ -82,8 +82,6 @@ struct _MoblinNetbookPluginPrivate
   ClutterActor          *toolbar;
   ClutterActor          *lowlight;
 
-  MnbInputManager       *input_manager;
-
   MetaWindow            *last_focused;
 
   gint                   fullscreen_apps [MAX_WORKSPACES + 1];
@@ -153,7 +151,5 @@ moblin_netbook_get_plugin_singleton (void);
 
 gboolean
 moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace);
-
-MnbInputManager *moblin_netbook_get_input_manager (MutterPlugin *plugin);
 
 #endif
