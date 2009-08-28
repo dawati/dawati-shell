@@ -86,6 +86,20 @@ penge_recent_files_pane_class_init (PengeRecentFilesPaneClass *klass)
 }
 
 static void
+_model_bulk_start_cb (ClutterModel *model,
+                      gpointer      userdata)
+{
+  penge_magic_list_view_freeze (PENGE_MAGIC_LIST_VIEW (userdata));
+}
+
+static void
+_model_bulk_end_cb (ClutterModel *model,
+                    gpointer      userdata)
+{
+  penge_magic_list_view_thaw (PENGE_MAGIC_LIST_VIEW (userdata));
+}
+
+static void
 penge_recent_files_pane_init (PengeRecentFilesPane *self)
 {
   PengeRecentFilesPanePrivate *priv = GET_PRIVATE (self);
@@ -140,6 +154,15 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
                                                 TILE_HEIGHT);
 
   penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (list_view), priv->model);
+
+  g_signal_connect (priv->model,
+                    "bulk-start",
+                    (GCallback)_model_bulk_start_cb,
+                    list_view);
+  g_signal_connect (priv->model,
+                    "bulk-end",
+                    (GCallback)_model_bulk_end_cb,
+                    list_view);
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         list_view,
