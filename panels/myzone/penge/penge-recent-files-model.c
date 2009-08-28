@@ -43,7 +43,7 @@ enum
   LAST_SIGNAL
 };
 
-guint signals[LAST_SIGNAL] = { 0, };
+static guint signals[LAST_SIGNAL] = { 0, };
 
 static void
 penge_recent_files_model_get_property (GObject *object, guint property_id,
