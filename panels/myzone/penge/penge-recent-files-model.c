@@ -183,10 +183,10 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
       continue;
     }
 
-    clutter_model_prepend ((ClutterModel *)model,
-                           0, info,
-                           1, thumbnail_path,
-                           -1);
+    clutter_model_append ((ClutterModel *)model,
+                          0, info,
+                          1, thumbnail_path,
+                          -1);
     g_free (thumbnail_path);
     gtk_recent_info_unref (info);
   }
