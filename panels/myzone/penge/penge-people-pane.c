@@ -43,6 +43,8 @@ struct _PengePeoplePanePrivate {
   MojitoClientView *view;
   ClutterModel *model;
   ClutterActor *list_view;
+
+  gint item_count;
 };
 
 #define MAX_ITEMS 32
@@ -250,6 +252,13 @@ _client_open_view_cb (MojitoClient     *client,
   PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
 
   mojito_client_view_start (view);
+
+  if (priv->model)
+  {
+    g_object_unref (priv->model);
+    priv->model = NULL;
+  }
+
   priv->model = penge_people_model_new (view);
 
   penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (priv->list_view),
@@ -261,6 +270,7 @@ _client_get_services_cb (MojitoClient *client,
                          const GList  *services,
                          gpointer      userdata)
 {
+  PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
   GList *filtered_services = NULL;
   GList *l;
 
@@ -277,7 +287,7 @@ _client_get_services_cb (MojitoClient *client,
 
   mojito_client_open_view (client,
                            filtered_services,
-                           MAX_ITEMS,
+                           priv->item_count,
                            _client_open_view_cb,
                            userdata);
 
@@ -296,15 +306,34 @@ penge_people_pane_class_init (PengePeoplePaneClass *klass)
 }
 
 static void
+_view_count_changed_cb (PengeMagicContainer *pmc,
+                        gint                 item_count,
+                        gpointer             userdata)
+{
+  PengePeoplePane *pane = PENGE_PEOPLE_PANE (userdata);
+  PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
+
+  if (item_count > priv->item_count)
+  {
+    priv->item_count = item_count;
+
+    mojito_client_get_services (priv->client, _client_get_services_cb, pane);
+  }
+}
+
+static void
 penge_people_pane_init (PengePeoplePane *self)
 {
   PengePeoplePanePrivate *priv = GET_PRIVATE (self);
 
   /* Create the client and request the services list */
   priv->client = mojito_client_new ();
-  mojito_client_get_services (priv->client, _client_get_services_cb, self);
 
   priv->list_view = penge_magic_list_view_new ();
+  g_signal_connect (priv->list_view,
+                    "count-changed",
+                    (GCallback)_view_count_changed_cb,
+                    self);
 
   penge_magic_container_set_minimum_child_size (PENGE_MAGIC_CONTAINER (priv->list_view),
                                                 TILE_WIDTH,
