@@ -106,25 +106,6 @@ mnb_notification_dispose (GObject *object)
       g_source_remove (priv->timeout_id);
     }
 
-#if 0  /* Hmmm.... */
-
-  /* FIXME : free up others.. */
-  if (priv->icon)
-    clutter_actor_destroy (priv->icon);
-
-  if (priv->body)
-    clutter_actor_destroy (CLUTTER_ACTOR(priv->body));
-
-  if (priv->summary)
-    clutter_actor_destroy (CLUTTER_ACTOR(priv->summary));
-
-  if (priv->dismiss_button)
-    clutter_actor_destroy (CLUTTER_ACTOR(priv->dismiss_button));
-
-  if (priv->action_button)
-    clutter_actor_destroy (CLUTTER_ACTOR(priv->action_button));
-#endif
-
   G_OBJECT_CLASS (mnb_notification_parent_class)->dispose (object);
 }
 
