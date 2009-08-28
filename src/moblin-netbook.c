@@ -1263,6 +1263,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
               g_signal_connect (mcw, "parent-set",
                                 G_CALLBACK (scim_preview_parent_set_cb),
                                 clone);
+
+              mnb_input_manager_push_window (mcw, MNB_INPUT_LAYER_PANEL_TRANSIENTS);
+
               return;
             }
 
