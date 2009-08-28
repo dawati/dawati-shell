@@ -223,6 +223,26 @@ on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
                                CLUTTER_ACTOR_IS_MAPPED(notify_urgent));
 }
 
+
+static void
+on_urgent_notify_allocation_cb (ClutterActor *notify_urgent,
+                                GParamSpec   *pspec,
+                                MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = ((MoblinNetbookPlugin *)plugin)->priv;
+
+  gint   screen_width, screen_height;
+  gfloat w, h;
+
+  mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
+                                   &screen_width, &screen_height);
+  clutter_actor_get_size (priv->notification_urgent, &w, &h);
+
+  clutter_actor_set_position (priv->notification_urgent,
+                              (screen_width - w) / 2,
+                              (screen_height - h) / 2);
+}
+
 static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
@@ -333,6 +353,11 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_actor_set_position (priv->notification_urgent,
                               (screen_width - w) / 2,
                               (screen_height - h) / 2);
+
+  g_signal_connect (priv->notification_urgent,
+                    "notify::allocation",
+                    G_CALLBACK (on_urgent_notify_allocation_cb),
+                    MUTTER_PLUGIN (plugin));
 
   mnb_notification_urgent_set_store
                         (MNB_NOTIFICATION_URGENT(priv->notification_urgent),
