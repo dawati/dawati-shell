@@ -1,0 +1,41 @@
+# Romanian translations for anerley package.
+# Copyright (C) 2009 The anerley copyright holder
+# This file is distributed under the same license as the anerley package.
+# Cosmin Bordeianu <elloxar@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: anerley\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-19 09:27+0000\n"
+"PO-Revision-Date: 2009-08-25 04:56+0200\n"
+"Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
+"Language-Team: Moblin Romania <live@moblin.ro>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Romanian\n"
+"X-Poedit-Country: ROMANIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../anerley/anerley-tile.c:208
+msgid "Available"
+msgstr "Disponibil"
+
+#: ../anerley/anerley-tile.c:211
+msgid "Busy"
+msgstr "Ocupat"
+
+#: ../anerley/anerley-tile.c:214
+#: ../anerley/anerley-tile.c:217
+msgid "Away"
+msgstr "Indisponibil"
+
+#: ../anerley/anerley-tile.c:220
+msgid "Offline"
+msgstr "Neconectat"
+
+#: ../anerley/anerley-econtact-item.c:312
+msgid "Unnamed"
+msgstr "Fără nume"
+
