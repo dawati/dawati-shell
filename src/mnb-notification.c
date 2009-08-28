@@ -197,7 +197,7 @@ mnb_notification_init (MnbNotification *self)
 
   nbtk_widget_set_style_class_name (NBTK_WIDGET (self), "Notification");
   nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
+  nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
 
   priv->dismiss_button = nbtk_button_new ();
   priv->icon           = clutter_texture_new ();
