@@ -239,8 +239,8 @@ on_urgent_notify_allocation_cb (ClutterActor *notify_urgent,
   clutter_actor_get_size (priv->notification_urgent, &w, &h);
 
   clutter_actor_set_position (priv->notification_urgent,
-                              (screen_width - w) / 2,
-                              (screen_height - h) / 2);
+                              (screen_width - (int)w) / 2,
+                              (screen_height - (int)h) / 2);
 }
 
 static void
@@ -351,8 +351,8 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   clutter_actor_get_size (priv->notification_urgent, &w, &h);
   clutter_actor_set_position (priv->notification_urgent,
-                              (screen_width - w) / 2,
-                              (screen_height - h) / 2);
+                              (screen_width - (int)w) / 2,
+                              (screen_height - (int)h) / 2);
 
   g_signal_connect (priv->notification_urgent,
                     "notify::allocation",
