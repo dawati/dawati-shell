@@ -1041,3 +1041,11 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
                                             mnb_panel_dbus_dumb_reply_cb, NULL);
 }
 
+MutterWindow *
+mnb_panel_get_mutter_window (MnbPanel *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+
+  return priv->mcw;
+}
+

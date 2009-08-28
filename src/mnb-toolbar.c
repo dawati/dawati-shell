@@ -2956,3 +2956,25 @@ mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar)
   return priv->waiting_for_panel;
 }
 
+gboolean
+mnb_toolbar_window_is_transient_for_active_panel (MnbToolbar   *toolbar,
+                                                  MutterWindow *mcw)
+{
+  MnbPanel     *panel = (MnbPanel*)mnb_toolbar_get_active_panel (toolbar);
+  MutterWindow *pcw;
+  MetaWindow   *pmw, *mw;
+
+  if (!panel)
+    return FALSE;
+
+  pcw = mnb_panel_get_mutter_window (panel);
+
+  if (!pcw)
+    return FALSE;
+
+  pmw = mutter_window_get_meta_window (pcw);
+  mw  = mutter_window_get_meta_window (mcw);
+
+  return meta_window_is_ancestor_of_transient (pmw, mw);
+}
+

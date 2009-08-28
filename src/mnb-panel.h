@@ -84,7 +84,7 @@ gboolean     mnb_panel_is_ready         (MnbPanel *panel);
 void         mnb_panel_set_size         (MnbPanel *panel,
                                          guint     width,
                                          guint     height);
-
+MutterWindow *mnb_panel_get_mutter_window (MnbPanel *panel);
 
 G_END_DECLS
 
