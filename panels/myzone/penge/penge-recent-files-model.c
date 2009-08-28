@@ -36,6 +36,15 @@ struct _PengeRecentFilesModelPrivate {
   gint max_count;
 };
 
+enum
+{
+  BULK_START_SIGNAL,
+  BULK_END_SIGNAL,
+  LAST_SIGNAL
+};
+
+guint signals[LAST_SIGNAL] = { 0, };
+
 static void
 penge_recent_files_model_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -79,6 +88,28 @@ penge_recent_files_model_class_init (PengeRecentFilesModelClass *klass)
   object_class->set_property = penge_recent_files_model_set_property;
   object_class->dispose = penge_recent_files_model_dispose;
   object_class->finalize = penge_recent_files_model_finalize;
+
+  signals[BULK_START_SIGNAL] =
+    g_signal_new ("bulk-start",
+                  PENGE_TYPE_RECENT_FILE_MODEL,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
+
+  signals[BULK_END_SIGNAL] =
+    g_signal_new ("bulk-end",
+                  PENGE_TYPE_RECENT_FILE_MODEL,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
 }
 
 
@@ -119,14 +150,12 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
   const gchar *uri;
   gchar *thumbnail_path;
 
-  g_debug (G_STRLOC ": Starting update");
-
   /* Unfortunately since we don't have specific information on what has
    * changed from the signal we need to empty the model and then repopulate
    * the model using a filtered, sorted, set of data
    */
 
-  /* TODO: Signal for bulk update -> reduce refreshes in the view */
+  g_signal_emit (model, signals[BULK_START_SIGNAL], 0);
 
   while (clutter_model_get_n_rows ((ClutterModel *)model))
     clutter_model_remove ((ClutterModel *)model, 0);
@@ -161,6 +190,8 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
     g_free (thumbnail_path);
     gtk_recent_info_unref (info);
   }
+
+  g_signal_emit (model, signals[BULK_END_SIGNAL], 0);
 
   g_list_free (items);
 }
