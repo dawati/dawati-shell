@@ -103,6 +103,7 @@ mnb_notification_dispose (GObject *object)
   if (priv->timeout_id)
     {
       g_source_remove (priv->timeout_id);
+      priv->timeout_id = 0;
     }
 
   G_OBJECT_CLASS (mnb_notification_parent_class)->dispose (object);
