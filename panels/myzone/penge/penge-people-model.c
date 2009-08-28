@@ -40,6 +40,15 @@ enum
   PROP_VIEW
 };
 
+enum
+{
+  BULK_START_SIGNAL,
+  BULK_END_SIGNAL,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
 static void penge_people_model_set_view (PengePeopleModel *model,
                                          MojitoClientView *view);
 
@@ -112,6 +121,28 @@ penge_people_model_class_init (PengePeopleModelClass *klass)
                                MOJITO_TYPE_CLIENT_VIEW,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_VIEW, pspec);
+
+  signals[BULK_START_SIGNAL] =
+    g_signal_new ("bulk-start",
+                  PENGE_TYPE_PEOPLE_MODEL,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
+
+  signals[BULK_END_SIGNAL] =
+    g_signal_new ("bulk-end",
+                  PENGE_TYPE_PEOPLE_MODEL,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
 }
 
 static void
