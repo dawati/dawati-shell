@@ -1,13 +1,13 @@
 # Italian translations for dalston package.
 # Copyright (C) 2009 the dalston copyright holder
 # This file is distributed under the same license as the dalston package.
-#
+# 
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-22 09:23+0000\n"
+"POT-Creation-Date: 2009-08-28 06:51+0000\n"
 "PO-Revision-Date: 2009-08-22 16:38+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -37,36 +37,24 @@ msgid "Running low on battery"
 msgstr "Batteria in esaurimento"
 
 #: ../dalston/dalston-power-applet.c:233
-msgid ""
-"We've noticed that your battery is running a bit low. If you can it would be "
-"a good idea to plug in and top up."
-msgstr ""
-"Sembra che la batteria si stia esaurendo. Se fosse possibile, è indicato "
-"collegarsi alla rete elettrica."
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Sembra che la batteria si stia esaurendo. Se fosse possibile, è indicato collegarsi alla rete elettrica."
 
 #: ../dalston/dalston-power-applet.c:235
 msgid "Getting close to empty"
 msgstr "Batteria quasi esaurita"
 
 #: ../dalston/dalston-power-applet.c:235
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can"
-msgstr ""
-"La batteria è quasi esaurita. È consigliato salvare il proprio lavoro e "
-"collegarsi alla rete elettrica il prima possibile."
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "La batteria è quasi esaurita. È consigliato salvare il proprio lavoro e collegarsi alla rete elettrica il prima possibile."
 
 #: ../dalston/dalston-power-applet.c:237
 msgid "Danger!"
 msgstr "Pericolo!"
 
 #: ../dalston/dalston-power-applet.c:237
-msgid ""
-"Sorry, your computer is about to run out of battery. We're going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
-"La batteria è praticamente esaurita e il computer verrà spento. Salvare il "
-"proprio lavoro."
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "La batteria è praticamente esaurita e il computer verrà spento. Salvare il proprio lavoro."
 
 #: ../dalston/dalston-power-applet.c:364
 msgid "Sorry, it looks like your battery is broken."
@@ -150,7 +138,8 @@ msgstr "Avvisi"
 msgid "Play test sound"
 msgstr "Riproduci test audio"
 
-# Literal translation here does not work. This is a pop culture reference (the movie This is Spinal Tap) that does not have a clear equivalent in Italian.
+# Literal translation here does not work. This is a pop culture reference (the
+# movie This is Spinal Tap) that does not have a clear equivalent in Italian.
 #: ../dalston/dalston-volume-slider.c:188
 msgid "Turned up to 11"
 msgstr "Al massimo!"
@@ -203,3 +192,20 @@ msgstr "alimentazione e luminosità"
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
 msgstr "audio"
+
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide i'll turn off in %d seconds"
+msgstr "Se non viene presa una decisione, il computer verrà spento in %d secondi"
+
+#: ../dalston/dalston-button-monitor.c:277
+msgid "Would you like to turn off now?"
+msgstr "Spegnere ora?"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide i'll turn off in 30 seconds"
+msgstr "Se non viene presa una decisione, il computer verrà spento in 30 secondi"
+
+#: ../dalston/dalston-button-monitor.c:285
+msgid "Turn off"
+msgstr "Spegni"
