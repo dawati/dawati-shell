@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:22+0000\n"
+"POT-Creation-Date: 2009-08-27 22:26+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Michał Sawicz <michal@sawicz.net>\n"
 "Language-Team: Moblin\n"
@@ -128,6 +128,23 @@ msgstr "Bardzo ciemno"
 #: ../dalston/dalston-brightness-slider.c:240
 msgid "Total eclipse"
 msgstr "Całkowite zaćmienie"
+
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide i'll turn off in %d seconds"
+msgstr "Jeśli nie wybierzesz, wyłączę za %d sekund"
+
+#: ../dalston/dalston-button-monitor.c:277
+msgid "Would you like to turn off now?"
+msgstr "Czy chcesz wyłączyć teraz?"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide i'll turn off in 30 seconds"
+msgstr "Jeśli nie wybierzesz, wyłączę za 30 sekund"
+
+#: ../dalston/dalston-button-monitor.c:285
+msgid "Turn off"
+msgstr "Wyłącz"
 
 #: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
