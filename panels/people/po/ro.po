@@ -53,5 +53,5 @@ msgstr "Selecție"
 
 #: ../src/mnb-people-panel.c:745
 msgid "Nobody selected"
-msgstr "Nimeni selectat"
+msgstr "Nici o persoană selectată"
 
