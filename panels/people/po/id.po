@@ -1,8 +1,7 @@
 # Translation of moblin-panel-people into Indonesian.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2009 Intel Corp
 # This file is distributed under the same license as the PACKAGE package.
 # Andika Triwidada <andika@gmail.com>, 2009.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-people\n"
