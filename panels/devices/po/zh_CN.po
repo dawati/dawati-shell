@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-31 18:17+0000\n"
-"PO-Revision-Date: 2009-07-25 17:30+0800\n"
+"PO-Revision-Date: 2009-09-01 17:30+0800\n"
 "Last-Translator: Zhu Yanhai <yanhai.zhu@linux.intel.com>\n"
 "Language-Team: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -122,15 +122,15 @@ msgstr "完全黑暗"
 
 #: ../dalston/dalston-button-monitor.c:277
 msgid "Would you like to turn off now?"
-msgstr ""
+msgstr "您现在想关机吗？"
 
 #: ../dalston/dalston-button-monitor.c:278
 msgid "If you don't decide i'll turn off in 30 seconds"
-msgstr ""
+msgstr "计算机将在30秒后关机"
 
 #: ../dalston/dalston-button-monitor.c:285
 msgid "Turn off"
-msgstr ""
+msgstr "关机"
 
 #: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
