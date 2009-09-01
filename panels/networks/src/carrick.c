@@ -67,7 +67,6 @@ main (int    argc,
   CarrickApplet *applet;
   GtkWidget     *window;
   GtkWidget     *pane;
-  GdkScreen     *screen;
   GtkSettings   *settings;
   gboolean       standalone = FALSE;
   GError        *error = NULL;
