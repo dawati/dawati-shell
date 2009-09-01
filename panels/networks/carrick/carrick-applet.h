@@ -24,11 +24,10 @@
 #define _CARRICK_APPLET
 
 #include <gtk/gtk.h>
-#include <gconnman/gconnman.h>
 
 G_BEGIN_DECLS
 
-#define CARRICK_TYPE_APPLET carrick_applet_get_type()
+#define CARRICK_TYPE_APPLET carrick_applet_get_type ()
 
 #define CARRICK_APPLET(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), CARRICK_TYPE_APPLET, CarrickApplet))
@@ -45,13 +44,20 @@ G_BEGIN_DECLS
 #define CARRICK_APPLET_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), CARRICK_TYPE_APPLET, CarrickAppletClass))
 
-typedef struct {
-  GObject parent;
-} CarrickApplet;
+typedef struct _CarrickApplet CarrickApplet;
+typedef struct _CarrickAppletClass CarrickAppletClass;
+typedef struct _CarrickAppletPrivate CarrickAppletPrivate;
 
-typedef struct {
+struct _CarrickApplet
+{
+  GObject parent;
+  CarrickAppletPrivate *priv;
+};
+
+struct _CarrickAppletClass
+{
   GObjectClass parent_class;
-} CarrickAppletClass;
+};
 
 GType carrick_applet_get_type (void);
 

@@ -1,4 +1,4 @@
-SUBDIRS = icons
+SUBDIRS = icons theme
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = carrick-panel.desktop

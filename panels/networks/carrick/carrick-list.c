@@ -38,151 +38,84 @@ G_DEFINE_TYPE (CarrickList, carrick_list, GTK_TYPE_SCROLLED_WINDOW)
 #define LIST_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_LIST, CarrickListPrivate))
 
-typedef struct _CarrickListPrivate CarrickListPrivate;
-
 struct _CarrickListPrivate
 {
-  GtkWidget *box;
+  GtkWidget     *box;
   GtkAdjustment *adjustment;
-  GtkWidget *drag_window;
-  GtkWidget *fallback;
+  GtkWidget     *drag_window;
+  GtkWidget     *fallback;
 
   guint drag_position;
   guint drop_position;
 
-  int scroll_speed;
+  int   scroll_speed;
   guint scroll_timeout_id;
 
   CarrickIconFactory *icon_factory;
   CarrickNotificationManager *notes;
+  CarrickNetworkModel *model;
 };
 
-enum
-{
+enum {
   PROP_0,
   PROP_ICON_FACTORY,
   PROP_NOTIFICATIONS,
+  PROP_MODEL
 };
 
 static void carrick_list_sort_list (CarrickList *list);
-static GtkWidget *carrick_list_find_service_item (CarrickList *list,
-                                                  CmService   *service);
-static void carrick_list_add (CarrickList *list, CmService *service);
-
+static void carrick_list_set_model (CarrickList *list, CarrickNetworkModel *model);
+static void carrick_list_add (CarrickList *list, GtkTreePath *path);
 
 static void
 carrick_list_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
+                           GValue *value, GParamSpec *pspec)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (object);
 
   switch (property_id)
-  {
-  case PROP_ICON_FACTORY:
-    g_value_set_object (value, priv->icon_factory);
-    break;
-  case PROP_NOTIFICATIONS:
-    g_value_set_object (value, priv->notes);
-    break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
-
-static void
-_service_updated_cb (CmService   *service,
-                     CarrickList *list)
-{
-  carrick_list_sort_list (list);
-}
-
-void
-carrick_list_update (CarrickList *list, const GList *services)
-{
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
-  CmService *service = NULL;
-  const GList *it, *iter;
-  GList *children = NULL;
-  gboolean found;
-  GtkWidget *service_item = NULL;
-
-  /* don't update if we're not constructed yet */
-  if (!priv->box)
-    return;
-
-  children = gtk_container_get_children (GTK_CONTAINER (priv->box));
-
-  /* 1. Find stale services, remove widgets */
-  for (it = children; it != NULL; it = it->next)
-  {
-    found = FALSE;
-    service = carrick_service_item_get_service (
-      CARRICK_SERVICE_ITEM (it->data));
-
-    for (iter = services; iter != NULL && !found; iter = iter->next)
     {
-      if (cm_service_is_same (service, CM_SERVICE (iter->data)))
-      {
-        found = TRUE;
-      }
+    case PROP_ICON_FACTORY:
+      g_value_set_object (value, priv->icon_factory);
+      break;
+
+    case PROP_NOTIFICATIONS:
+      g_value_set_object (value, priv->notes);
+      break;
+
+    case PROP_MODEL:
+      g_value_set_object (value, priv->model);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
-
-    if (!found)
-    {
-      g_signal_handlers_disconnect_by_func (service,
-                                            _service_updated_cb,
-                                            list);
-      gtk_container_remove (GTK_CONTAINER (priv->box), GTK_WIDGET (it->data));
-    }
-  }
-  g_list_free (children);
-
-  /* 2. Find new services, add new widgets */
-  for (it = services; it != NULL; it = it->next)
-  {
-    service = CM_SERVICE (it->data);
-    service_item = carrick_list_find_service_item (list, service);
-
-    if (service_item == NULL)
-    {
-      g_signal_connect (service,
-                        "service-updated",
-                        G_CALLBACK (_service_updated_cb),
-                        list);
-      carrick_list_add (list, service);
-    }
-  }
-
-  carrick_list_sort_list (list);
-
-  children = gtk_container_get_children (GTK_CONTAINER (priv->box));
-  if (!children) {
-    gtk_widget_show (priv->fallback);
-    gtk_widget_hide (priv->box);
-  } else {
-    gtk_widget_hide (priv->fallback);
-    gtk_widget_show (priv->box);
-  }
-  g_list_free (children);
 }
 
 static void
 carrick_list_set_property (GObject *object, guint property_id,
-                              const GValue *value, GParamSpec *pspec)
+                           const GValue *value, GParamSpec *pspec)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (object);
 
   switch (property_id)
-  {
-  case PROP_ICON_FACTORY:
-    priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
-    break;
-  case PROP_NOTIFICATIONS:
-    priv->notes = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
-    break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
+    {
+    case PROP_ICON_FACTORY:
+      priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
+      break;
+
+    case PROP_NOTIFICATIONS:
+      priv->notes = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
+      break;
+
+    case PROP_MODEL:
+      carrick_list_set_model (CARRICK_LIST (object),
+                              CARRICK_NETWORK_MODEL (g_value_get_object (value)));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
 }
 
 static void
@@ -202,8 +135,8 @@ carrick_list_drag_begin (GtkWidget      *widget,
                          GdkDragContext *context,
                          CarrickList    *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
-  gint x, y;
+  CarrickListPrivate *priv = list->priv;
+  gint                x, y;
 
   /* save old place in list for drag-failures */
   gtk_container_child_get (GTK_CONTAINER (priv->box),
@@ -234,23 +167,57 @@ carrick_list_drag_drop (GtkWidget      *widget,
                         guint           time,
                         CarrickList    *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  CarrickListPrivate *priv = list->priv;
 
   /* find drop position in list */
   if (widget == GTK_WIDGET (priv->box))
-  {
-    /* dropped on "empty" space on list */
-    priv->drop_position = -1;
-  } else {
-    /* dropped on a list item */
-    gtk_container_child_get (GTK_CONTAINER (priv->box),
-                             widget,
-                             "position", &priv->drop_position,
-                             NULL);
-  }
+    {
+      /* dropped on "empty" space on list */
+      priv->drop_position = -1;
+    }
+  else
+    {
+      /* dropped on a list item */
+      gtk_container_child_get (GTK_CONTAINER (priv->box),
+                               widget,
+                               "position", &priv->drop_position,
+                               NULL);
+    }
 
   gtk_drag_finish (context, TRUE, TRUE, time);
   return TRUE;
+}
+
+typedef struct move_data
+{
+  GtkWidget *item;
+  GtkWidget *list;
+  gint pos;
+} move_data;
+
+static void
+move_notify_cb (DBusGProxy     *proxy,
+                DBusGProxyCall *call,
+                gpointer        user_data)
+{
+  move_data *data = user_data;
+  GError    *error = NULL;
+
+  dbus_g_proxy_end_call (proxy,
+                         call,
+                         &error,
+                         G_TYPE_INVALID);
+  if (error)
+    {
+      g_debug ("Moving service failed: %s, resetting",
+               error->message);
+      g_clear_error (&error);
+      gtk_box_reorder_child (GTK_BOX (data->list),
+                             data->item,
+                             data->pos);
+    }
+
+  g_slice_free (move_data, data);
 }
 
 static void
@@ -258,9 +225,9 @@ carrick_list_drag_end (GtkWidget      *widget,
                        GdkDragContext *context,
                        CarrickList    *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
-  GList *children;
-  gboolean pos_changed;
+  CarrickListPrivate *priv = list->priv;
+  GList              *children;
+  gboolean            pos_changed;
 
   children = gtk_container_get_children (GTK_CONTAINER (priv->box));
 
@@ -272,7 +239,7 @@ carrick_list_drag_end (GtkWidget      *widget,
 
   /* insert the widget into the list */
   gtk_box_pack_start (GTK_BOX (priv->box), widget,
-                      FALSE, FALSE,  2);
+                      FALSE, FALSE, 2);
   gtk_box_reorder_child (GTK_BOX (priv->box),
                          widget,
                          priv->drop_position);
@@ -281,49 +248,84 @@ carrick_list_drag_end (GtkWidget      *widget,
   gtk_widget_set_state (widget, GTK_STATE_NORMAL);
 
   if (priv->drop_position == -1)
-  {
-    pos_changed = priv->drag_position != g_list_length (children);
-  }
+    {
+      pos_changed = priv->drag_position != g_list_length (children);
+    }
   else
-  {
-    pos_changed = priv->drop_position != priv->drag_position;
-  }
+    {
+      pos_changed = priv->drop_position != priv->drag_position;
+    }
 
   if (pos_changed)
-  {
-    GtkWidget *other_widget;
-    CmService *service, * other_service;
-
-    service = carrick_service_item_get_service
-      (CARRICK_SERVICE_ITEM (widget));
-
-    /* TODO: should ensure favorite status for one or both services ? */
-    /* TODO: should do both move_before() and move_after() if possible ? */
-    if (priv->drop_position == 0)
     {
-      other_widget = g_list_nth_data (children, 1);
-      other_service = carrick_service_item_get_service
-        (CARRICK_SERVICE_ITEM (other_widget));
-      cm_service_move_before (service, other_service);
-    }
-    else
-    {
-      if (priv->drop_position == -1)
-      {
-        /* dropped below last child */
-        other_widget = g_list_last (children)->data;
-      }
+      GtkWidget   *other_widget;
+      DBusGProxy  *service, * other_service;
+      const gchar *path;
+      move_data   *data = NULL;
+
+      service = carrick_service_item_get_proxy (CARRICK_SERVICE_ITEM (widget));
+
+      /* TODO: should ensure favorite status for one or both services ? */
+      /* TODO: should do both move_before() and move_after() if possible ? */
+      if (priv->drop_position == 0)
+        {
+          other_widget = g_list_nth_data (children, 1);
+          other_service = carrick_service_item_get_proxy
+                    (CARRICK_SERVICE_ITEM (other_widget));
+          path = dbus_g_proxy_get_path (other_service);
+
+          data = g_slice_new0 (move_data);
+          data->list = GTK_WIDGET (list);
+          data->item = widget;
+          gtk_container_child_get (GTK_CONTAINER (priv->box),
+                                   widget,
+                                   "position", &data->pos,
+                                   NULL);;
+
+          dbus_g_proxy_begin_call (service,
+                                   "MoveBefore",
+                                   move_notify_cb,
+                                   data,
+                                   NULL,
+                                   DBUS_TYPE_G_OBJECT_PATH,
+                                   path,
+                                   G_TYPE_INVALID);
+        }
       else
-      {
-        other_widget = g_list_nth_data (children,
-                                        priv->drop_position - 1);
-      }
+        {
+          if (priv->drop_position == -1)
+            {
+              /* dropped below last child */
+              other_widget = g_list_last (children)->data;
+            }
+          else
+            {
+              other_widget = g_list_nth_data (children,
+                                              priv->drop_position - 1);
+            }
 
-      other_service = carrick_service_item_get_service
-        (CARRICK_SERVICE_ITEM (other_widget));
-      cm_service_move_after (service, other_service);
+          other_service = carrick_service_item_get_proxy
+                    (CARRICK_SERVICE_ITEM (other_widget));
+          path = dbus_g_proxy_get_path (other_service);
+
+          data = g_slice_new0 (move_data);
+          data->list = GTK_WIDGET (list);
+          data->item = widget;
+          gtk_container_child_get (GTK_CONTAINER (priv->box),
+                                   widget,
+                                   "position", &data->pos,
+                                   NULL);;
+
+          dbus_g_proxy_begin_call (service,
+                                   "MoveAfter",
+                                   move_notify_cb,
+                                   data,
+                                   NULL,
+                                   DBUS_TYPE_G_OBJECT_PATH,
+                                   path,
+                                   G_TYPE_INVALID);
+        }
     }
-  }
 
   g_list_free (children);
 }
@@ -333,9 +335,9 @@ _list_collapse_inactive_items (GtkWidget *item,
                                GtkWidget *active_item)
 {
   if (item != active_item)
-  {
-    carrick_service_item_set_active (CARRICK_SERVICE_ITEM (item), FALSE);
-  }
+    {
+      carrick_service_item_set_active (CARRICK_SERVICE_ITEM (item), FALSE);
+    }
 }
 
 static void
@@ -345,14 +347,14 @@ _list_active_changed (GtkWidget *item,
   CarrickListPrivate *priv = LIST_PRIVATE (list);
 
   gtk_container_foreach (GTK_CONTAINER (priv->box),
-                         (GtkCallback)_list_collapse_inactive_items,
+                         (GtkCallback) _list_collapse_inactive_items,
                          item);
 }
 
 typedef struct find_data
 {
-  CmService *service;
-  GtkWidget *widget;
+  GtkWidget  *widget;
+  DBusGProxy *service;
 } find_data;
 
 static void
@@ -360,28 +362,35 @@ _list_contains_child (GtkWidget *item,
                       find_data *data)
 {
   CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
+  DBusGProxy         *proxy = carrick_service_item_get_proxy (service_item);
+  const gchar        *path;
+  const gchar        *data_path = dbus_g_proxy_get_path (data->service);
 
-  if (cm_service_is_same (data->service,
-                          carrick_service_item_get_service (service_item)))
-  {
-    data->widget = item;
-  }
+  if (proxy)
+    {
+      path = dbus_g_proxy_get_path (proxy);
+
+      if (g_str_equal (data_path, path))
+        {
+          data->widget = item;
+        }
+    }
 }
 
 static GtkWidget *
 carrick_list_find_service_item (CarrickList *list,
-                                CmService   *service)
+                                DBusGProxy  *service)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
-  find_data *data;
-  GtkWidget *ret;
+  CarrickListPrivate *priv = list->priv;
+  find_data          *data;
+  GtkWidget          *ret;
 
   data = g_slice_new0 (find_data);
   data->service = service;
   data->widget = NULL;
 
   gtk_container_foreach (GTK_CONTAINER (priv->box),
-                         (GtkCallback)_list_contains_child,
+                         (GtkCallback) _list_contains_child,
                          data);
   ret = data->widget;
 
@@ -400,23 +409,22 @@ _set_item_inactive (GtkWidget *widget)
 void
 carrick_list_set_all_inactive (CarrickList *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  CarrickListPrivate *priv = list->priv;
 
   gtk_container_foreach (GTK_CONTAINER (priv->box),
-                         (GtkCallback)_set_item_inactive,
+                         (GtkCallback) _set_item_inactive,
                          NULL);
-
 }
 
 void
-carrick_list_set_icon_factory (CarrickList *list, 
+carrick_list_set_icon_factory (CarrickList        *list,
                                CarrickIconFactory *icon_factory)
 {
   CarrickListPrivate *priv;
 
   g_return_if_fail (CARRICK_IS_LIST (list));
 
-  priv = LIST_PRIVATE (list);
+  priv = list->priv;
 
   priv->icon_factory = icon_factory;
 }
@@ -428,20 +436,20 @@ carrick_list_get_icon_factory (CarrickList *list)
 
   g_return_val_if_fail (CARRICK_IS_LIST (list), NULL);
 
-  priv = LIST_PRIVATE (list);
+  priv = list->priv;
 
   return priv->icon_factory;
 }
 
 void
-carrick_list_set_notification_manager (CarrickList *list, 
+carrick_list_set_notification_manager (CarrickList                *list,
                                        CarrickNotificationManager *notification_manager)
 {
   CarrickListPrivate *priv;
 
   g_return_if_fail (CARRICK_IS_LIST (list));
 
-  priv = LIST_PRIVATE (list);
+  priv = list->priv;
 
   priv->notes = notification_manager;
 }
@@ -453,16 +461,192 @@ carrick_list_get_notification_manager (CarrickList *list)
 
   g_return_val_if_fail (CARRICK_IS_LIST (list), NULL);
 
-  priv = LIST_PRIVATE (list);
+  priv = list->priv;
 
   return priv->notes;
 }
 
+static void
+_row_inserted_cb (GtkTreeModel *tree_model,
+                  GtkTreePath  *path,
+                  GtkTreeIter  *iter,
+                  gpointer      user_data)
+{
+  CarrickList *self = user_data;
+
+  /* New row added to model, draw widgetry */
+  carrick_list_add (self, path);
+}
+
+static void
+_find_and_remove (GtkWidget *item,
+                  gpointer   user_data)
+{
+  CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
+  GtkTreePath        *path = (GtkTreePath *) user_data;
+  GtkTreePath        *item_path = carrick_service_item_get_tree_path (service_item);
+
+  if (gtk_tree_path_compare (path, item_path) == 0)
+    {
+      gtk_widget_destroy (item);
+    }
+}
+
+static void
+_row_deleted_cb (GtkTreeModel *tree_model,
+                 GtkTreePath  *path,
+                 gpointer      user_data)
+{
+  /* Row removed, find widget with corresponding GtkTreePath
+   * and destroy */
+  gtk_container_foreach (GTK_CONTAINER (user_data),
+                         _find_and_remove,
+                         path);
+}
+
+static void
+_rows_reordered_cb (GtkTreeModel *tree_model,
+                    GtkTreePath  *path,
+                    GtkTreeIter  *iter,
+                    gpointer      user_data)
+{
+  CarrickList        *list = user_data;
+  CarrickListPrivate *priv = list->priv;
+  GtkWidget          *item = NULL;
+  DBusGProxy         *proxy = NULL;
+  guint               order, index;
+
+  gtk_tree_model_get (tree_model, iter,
+                      CARRICK_COLUMN_PROXY, &proxy,
+                      CARRICK_COLUMN_INDEX, &index,
+                      -1);
+
+  /* Find widget for changed row, tell it to refresh
+   * variables and update */
+  item = carrick_list_find_service_item (list,
+                                         proxy);
+
+  /* Check the order and, where neccesarry, reorder */
+  gtk_container_child_get (GTK_CONTAINER (priv->box),
+                           item,
+                           "position", &order,
+                           NULL);
+  if (order != index)
+    gtk_box_reorder_child (GTK_BOX (priv->box),
+                           item,
+                           index);
+}
+
+static void
+_row_changed_cb (GtkTreeModel *model,
+                 GtkTreePath  *path,
+                 GtkTreeIter  *iter,
+                 gpointer      user_data)
+{
+  CarrickList        *list = user_data;
+  CarrickListPrivate *priv = list->priv;
+  GtkWidget          *item = NULL;
+  DBusGProxy         *proxy = NULL;
+  guint               order, index;
+
+  gtk_tree_model_get (model, iter,
+                      CARRICK_COLUMN_PROXY, &proxy,
+                      CARRICK_COLUMN_INDEX, &index,
+                      -1);
+
+  /* Find widget for changed row, tell it to refresh
+   * variables and update */
+  item = carrick_list_find_service_item (list,
+                                         proxy);
+  if (item)
+    {
+      carrick_service_item_update (CARRICK_SERVICE_ITEM (item),
+                                   path);
+
+      /* Check the order and, where neccesarry, reorder */
+      gtk_container_child_get (GTK_CONTAINER (priv->box),
+                               item,
+                               "position", &order,
+                               NULL);
+      if (order != index)
+        gtk_box_reorder_child (GTK_BOX (priv->box),
+                               item,
+                               index);
+    }
+  else
+    {
+      _row_inserted_cb (model, path, iter, list);
+    }
+}
+
+static gboolean
+_create_service_item (GtkTreeModel *model,
+                      GtkTreePath  *path,
+                      GtkTreeIter  *iter,
+                      gpointer      user_data)
+{
+  _row_inserted_cb (model, path, iter, user_data);
+
+  return FALSE;
+}
+
+static void
+carrick_list_set_model (CarrickList         *list,
+                        CarrickNetworkModel *model)
+{
+  CarrickListPrivate *priv = list->priv;
+
+  if (priv->model)
+    {
+      g_signal_handlers_disconnect_by_func (priv->model,
+                                            _row_inserted_cb,
+                                            list);
+      g_signal_handlers_disconnect_by_func (priv->model,
+                                            _row_deleted_cb,
+                                            list);
+      g_signal_handlers_disconnect_by_func (priv->model,
+                                            _row_changed_cb,
+                                            list);
+      g_signal_handlers_disconnect_by_func (priv->model,
+                                            _rows_reordered_cb,
+                                            list);
+
+      g_object_unref (priv->model);
+      priv->model = NULL;
+    }
+
+  if (model)
+    {
+      priv->model = g_object_ref (model);
+
+      gtk_tree_model_foreach (GTK_TREE_MODEL (model),
+                              _create_service_item,
+                              NULL);
+
+      /* connect signals for changes in model */
+      g_signal_connect (priv->model,
+                        "row-inserted",
+                        G_CALLBACK (_row_inserted_cb),
+                        list);
+      g_signal_connect (priv->model,
+                        "row-deleted",
+                        G_CALLBACK (_row_deleted_cb),
+                        list);
+      g_signal_connect (priv->model,
+                        "row-changed",
+                        G_CALLBACK (_row_changed_cb),
+                        list);
+      g_signal_connect (priv->model,
+                        "rows-reordered",
+                        G_CALLBACK (_rows_reordered_cb),
+                        list);
+    }
+}
 
 GList*
 carrick_list_get_children (CarrickList *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  CarrickListPrivate *priv = list->priv;
 
   return gtk_container_get_children (GTK_CONTAINER (priv->box));
 }
@@ -470,16 +654,16 @@ carrick_list_get_children (CarrickList *list)
 static void
 carrick_list_sort_list (CarrickList *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
-  GList *items = gtk_container_get_children (GTK_CONTAINER (priv->box));
-  GList *l;
+  CarrickListPrivate *priv = list->priv;
+  GList              *items = gtk_container_get_children (GTK_CONTAINER (priv->box));
+  GList              *l;
 
   for (l = items; l; l = l->next)
-  {
-    gtk_box_reorder_child (GTK_BOX (priv->box),
-                           GTK_WIDGET (l->data),
-                           carrick_service_item_get_order (l->data));
-  }
+    {
+      gtk_box_reorder_child (GTK_BOX (priv->box),
+                             GTK_WIDGET (l->data),
+                             carrick_service_item_get_order (l->data));
+    }
 
   g_list_free (items);
 }
@@ -491,30 +675,30 @@ carrick_list_sort_list (CarrickList *list)
 static gboolean
 carrick_list_scroll (CarrickList *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
-  gdouble val, page_size;
-  gboolean at_end;
+  CarrickListPrivate *priv = list->priv;
+  gdouble             val, page_size;
+  gboolean            at_end;
 
   val = gtk_adjustment_get_value (priv->adjustment);
   page_size = gtk_adjustment_get_page_size (priv->adjustment);
 
   if (priv->scroll_speed < 0)
-  {
-    at_end = val <= gtk_adjustment_get_lower (priv->adjustment);
-  }
+    {
+      at_end = val <= gtk_adjustment_get_lower (priv->adjustment);
+    }
   else
-  {
-    at_end = val + page_size >= gtk_adjustment_get_upper (priv->adjustment);
-  }
+    {
+      at_end = val + page_size >= gtk_adjustment_get_upper (priv->adjustment);
+    }
 
 
   if (!priv->drag_window ||
       priv->scroll_speed == 0 ||
       at_end)
-  {
-    priv->scroll_timeout_id = 0;
-    return FALSE;
-  }
+    {
+      priv->scroll_timeout_id = 0;
+      return FALSE;
+    }
 
   gtk_adjustment_set_value (priv->adjustment,
                             val + priv->scroll_speed);
@@ -529,9 +713,9 @@ carrick_list_drag_motion (GtkWidget      *widget,
                           guint           time,
                           CarrickList    *list)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
-  int list_x, list_y;
-  int new_speed;
+  CarrickListPrivate *priv = list->priv;
+  int                 list_x, list_y;
+  int                 new_speed;
 
   gtk_widget_translate_coordinates (widget, GTK_WIDGET (list),
                                     x, y,
@@ -539,72 +723,73 @@ carrick_list_drag_motion (GtkWidget      *widget,
   if (gtk_adjustment_get_value (priv->adjustment) >
       gtk_adjustment_get_lower (priv->adjustment) &&
       list_y < FAST_SCROLL_BUFFER)
-  {
-    new_speed = -12;
-  }
+    {
+      new_speed = -12;
+    }
   else if (gtk_adjustment_get_value (priv->adjustment) >
            gtk_adjustment_get_lower (priv->adjustment) &&
            list_y < SCROLL_BUFFER)
-  {
-    new_speed = -5;
-  }
+    {
+      new_speed = -5;
+    }
   else if (gtk_adjustment_get_value (priv->adjustment) <
            gtk_adjustment_get_upper (priv->adjustment) &&
            GTK_WIDGET (list)->allocation.height - list_y < FAST_SCROLL_BUFFER)
-  {
-    new_speed = 12;
-  }
+    {
+      new_speed = 12;
+    }
   else if (gtk_adjustment_get_value (priv->adjustment) <
            gtk_adjustment_get_upper (priv->adjustment) &&
            GTK_WIDGET (list)->allocation.height - list_y < SCROLL_BUFFER)
-  {
-    new_speed = 5;
-  }
+    {
+      new_speed = 5;
+    }
   else
-  {
-    new_speed = 0;
-  }
+    {
+      new_speed = 0;
+    }
 
   if (new_speed != priv->scroll_speed)
-  {
-    priv->scroll_speed = new_speed;
-    if (priv->scroll_speed != 0)
     {
-      if (priv->scroll_timeout_id > 0)
-      {
-        g_source_remove (priv->scroll_timeout_id);
-      }
-      priv->scroll_timeout_id = g_timeout_add
-        (40, (GSourceFunc)carrick_list_scroll, list);
+      priv->scroll_speed = new_speed;
+      if (priv->scroll_speed != 0)
+        {
+          if (priv->scroll_timeout_id > 0)
+            {
+              g_source_remove (priv->scroll_timeout_id);
+            }
+          priv->scroll_timeout_id = g_timeout_add
+                    (40, (GSourceFunc) carrick_list_scroll, list);
+        }
     }
-  }
 }
 
 static void
 carrick_list_add (CarrickList *list,
-                  CmService *service)
+                  GtkTreePath *path)
 {
   CarrickListPrivate *priv;
-  GtkWidget *widget;
+  GtkWidget          *widget;
 
   g_return_if_fail (CARRICK_IS_LIST (list));
-  g_return_if_fail (CM_IS_SERVICE (service));
 
-  priv = LIST_PRIVATE (list);
+  priv = list->priv;
   widget = carrick_service_item_new (priv->icon_factory,
                                      priv->notes,
-                                     service);
+                                     priv->model,
+                                     path);
+
   gtk_widget_show (widget);
 
   /* define a drag source */
   /*
-  carrick_service_item_set_draggable (CARRICK_SERVICE_ITEM (widget), TRUE);
-  gtk_drag_source_set (widget,
+     carrick_service_item_set_draggable (CARRICK_SERVICE_ITEM (widget), TRUE);
+     gtk_drag_source_set (widget,
                        GDK_BUTTON1_MASK,
                        carrick_targets,
                        G_N_ELEMENTS (carrick_targets),
                        GDK_ACTION_MOVE);
-  */
+   */
   g_signal_connect (widget,
                     "drag-begin",
                     G_CALLBACK (carrick_list_drag_begin),
@@ -649,7 +834,7 @@ void
 carrick_list_set_fallback (CarrickList *list,
                            const gchar *fallback)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (list);
+  CarrickListPrivate *priv = list->priv;
 
   gtk_label_set_text (GTK_LABEL (priv->fallback), fallback);
 }
@@ -659,10 +844,10 @@ carrick_list_constructor (GType                  gtype,
                           guint                  n_properties,
                           GObjectConstructParam *properties)
 {
-  GObject *obj;
-  GObjectClass *parent_class;
+  GObject            *obj;
+  GObjectClass       *parent_class;
   CarrickListPrivate *priv;
-  GtkWidget *viewport, *box;
+  GtkWidget          *viewport, *box;
 
   parent_class = G_OBJECT_CLASS (carrick_list_parent_class);
   obj = parent_class->constructor (gtype, n_properties, properties);
@@ -670,11 +855,11 @@ carrick_list_constructor (GType                  gtype,
   priv = LIST_PRIVATE (obj);
 
   priv->adjustment = gtk_scrolled_window_get_vadjustment
-    (GTK_SCROLLED_WINDOW (obj));
+                (GTK_SCROLLED_WINDOW (obj));
   viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment
-                               (GTK_SCROLLED_WINDOW (obj)),
+                                           (GTK_SCROLLED_WINDOW (obj)),
                                gtk_scrolled_window_get_vadjustment
-                               (GTK_SCROLLED_WINDOW (obj)));
+                                           (GTK_SCROLLED_WINDOW (obj)));
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport),
                                 GTK_SHADOW_NONE);
   gtk_widget_show (viewport);
@@ -695,7 +880,7 @@ carrick_list_constructor (GType                  gtype,
   gtk_misc_set_padding (GTK_MISC (priv->fallback), 0, 12);
   gtk_widget_show (priv->fallback);
   gtk_box_pack_start (GTK_BOX (box), priv->fallback,
-                      FALSE, FALSE,  2);
+                      FALSE, FALSE, 2);
 
   priv->box = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (box),
@@ -720,7 +905,7 @@ static void
 carrick_list_class_init (CarrickListClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
+  GParamSpec   *pspec;
 
   g_type_class_add_private (klass, sizeof (CarrickListPrivate));
 
@@ -747,12 +932,24 @@ carrick_list_class_init (CarrickListClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_NOTIFICATIONS,
                                    pspec);
+
+  pspec = g_param_spec_object ("model",
+                               "Network model",
+                               "CarrickNetworkModel which the list represents",
+                               CARRICK_TYPE_NETWORK_MODEL,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_MODEL,
+                                   pspec);
 }
 
 static void
 carrick_list_init (CarrickList *self)
 {
-  CarrickListPrivate *priv = LIST_PRIVATE (self);
+  CarrickListPrivate *priv;
+
+  priv = self->priv = LIST_PRIVATE (self);
+
   priv->fallback = NULL;
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
@@ -761,11 +958,13 @@ carrick_list_init (CarrickList *self)
 }
 
 GtkWidget*
-carrick_list_new (CarrickIconFactory *icon_factory,
-                  CarrickNotificationManager *notifications)
+carrick_list_new (CarrickIconFactory         *icon_factory,
+                  CarrickNotificationManager *notifications,
+                  CarrickNetworkModel        *model)
 {
   return g_object_new (CARRICK_TYPE_LIST,
                        "icon-factory", icon_factory,
                        "notification-manager", notifications,
+                       "model", model,
                        NULL);
 }

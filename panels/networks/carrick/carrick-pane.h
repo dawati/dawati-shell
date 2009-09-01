@@ -24,13 +24,12 @@
 #define _CARRICK_PANE
 
 #include <gtk/gtk.h>
-#include <gconnman/gconnman.h>
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
 
 G_BEGIN_DECLS
 
-#define CARRICK_TYPE_PANE carrick_pane_get_type()
+#define CARRICK_TYPE_PANE carrick_pane_get_type ()
 
 #define CARRICK_PANE(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), CARRICK_TYPE_PANE, CarrickPane))
@@ -47,19 +46,30 @@ G_BEGIN_DECLS
 #define CARRICK_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), CARRICK_TYPE_PANE, CarrickPaneClass))
 
-typedef struct {
-  GtkTable parent;
-} CarrickPane;
+typedef struct _CarrickPane CarrickPane;
+typedef struct _CarrickPaneClass CarrickPaneClass;
+typedef struct _CarrickPanePrivate CarrickPanePrivate;
 
-typedef struct {
+struct _CarrickPane
+{
+  GtkTable parent;
+
+  CarrickPanePrivate *priv;
+};
+
+struct _CarrickPaneClass
+{
   GtkTableClass parent_class;
-} CarrickPaneClass;
+
+  void (*connection_changed) (CarrickPane   *self,
+                              const gchar   *connection_type,
+                              guint          strength);
+};
 
 GType carrick_pane_get_type (void);
 
 GtkWidget* carrick_pane_new (CarrickIconFactory         *icon_factory,
-                             CarrickNotificationManager *notifications,
-                             CmManager                  *manager);
+                             CarrickNotificationManager *notifications);
 
 void carrick_pane_update (CarrickPane *pane);
 

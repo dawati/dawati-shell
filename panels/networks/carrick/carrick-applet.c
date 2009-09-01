@@ -25,24 +25,19 @@
 #include <config.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <gconnman/gconnman.h>
 #include "carrick-pane.h"
-#include "carrick-status-icon.h"
 #include "carrick-list.h"
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
 
 G_DEFINE_TYPE (CarrickApplet, carrick_applet, G_TYPE_OBJECT)
 
-#define GET_PRIVATE(o) \
+#define APPLET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_APPLET, CarrickAppletPrivate))
 
-typedef struct _CarrickAppletPrivate CarrickAppletPrivate;
-
-struct _CarrickAppletPrivate {
-  CmManager          *manager;
-  GtkWidget          *icon;
-  GtkWidget          *pane;
+struct _CarrickAppletPrivate
+{
+  GtkWidget *pane;
   CarrickIconFactory *icon_factory;
   CarrickNotificationManager *notifications;
 };
@@ -50,90 +45,28 @@ struct _CarrickAppletPrivate {
 GtkWidget*
 carrick_applet_get_pane (CarrickApplet *applet)
 {
-  CarrickAppletPrivate *priv = GET_PRIVATE (applet);
+  CarrickAppletPrivate *priv = applet->priv;
 
   return priv->pane;
-}
-
-GtkWidget*
-carrick_applet_get_icon (CarrickApplet *applet)
-{
-  CarrickAppletPrivate *priv = GET_PRIVATE (applet);
-
-  return priv->icon;
-}
-
-static void
-carrick_applet_dispose (GObject *object)
-{
-  G_OBJECT_CLASS (carrick_applet_parent_class)->dispose (object);
-}
-
-static void
-carrick_applet_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (carrick_applet_parent_class)->finalize (object);
-}
-
-static void
-carrick_applet_get_property (GObject    *object,
-                             guint       property_id,
-                             GValue     *value,
-                             GParamSpec *pspec)
-{
-  switch (property_id) {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
-
-static void
-carrick_applet_set_property (GObject      *object,
-                             guint         property_id,
-                             const GValue *value,
-                             GParamSpec   *pspec)
-{
-  switch (property_id) {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
 }
 
 static void
 carrick_applet_class_init (CarrickAppletClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
   g_type_class_add_private (klass, sizeof (CarrickAppletPrivate));
-
-  object_class->dispose = carrick_applet_dispose;
-  object_class->finalize = carrick_applet_finalize;
-  object_class->get_property = carrick_applet_get_property;
-  object_class->set_property = carrick_applet_set_property;
 }
 
 static void
-carrick_applet_init (CarrickApplet *self)
+carrick_applet_init (CarrickApplet *applet)
 {
-  CarrickAppletPrivate *priv = GET_PRIVATE (self);
-  GError *error = NULL;
+  CarrickAppletPrivate *priv;
 
-  priv->manager = cm_manager_new (&error, FALSE);
-  if (error || !priv->manager) {
-    g_debug ("Error initializing connman manager: %s\n",
-             error->message);
-    /* FIXME: must do better here */
-    return;
-  }
-  /* FIXME: handle return value here */
-  cm_manager_refresh (priv->manager);
+  priv = applet->priv = APPLET_PRIVATE (applet);
+
   priv->icon_factory = carrick_icon_factory_new ();
-  priv->icon = carrick_status_icon_new (priv->icon_factory,
-                                        priv->manager);
-  priv->notifications = carrick_notification_manager_new (priv->manager);
+  priv->notifications = carrick_notification_manager_new ();
   priv->pane = carrick_pane_new (priv->icon_factory,
-                                 priv->notifications,
-                                 priv->manager);
+                                 priv->notifications);
   gtk_widget_show (priv->pane);
 }
 

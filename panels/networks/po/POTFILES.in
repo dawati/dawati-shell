@@ -3,3 +3,4 @@ carrick/carrick-applet.c
 carrick/carrick-pane.c
 carrick/carrick-service-item.c
 carrick/carrick-notification-manager.c
+src/carrick.c

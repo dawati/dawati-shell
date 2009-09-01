@@ -22,37 +22,42 @@
 
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-
-#include <carrick/carrick-applet.h>
-#include <carrick/carrick-pane.h>
-#include <carrick/carrick-status-icon.h>
-#include "moblin-netbook-system-tray.h"
+#include <dbus/dbus-glib.h>
+#include <moblin-panel/mpl-panel-common.h>
+#include <moblin-panel/mpl-panel-gtk.h>
 
 #include <config.h>
 
-#define PADDING 4
+#include "carrick/carrick-applet.h"
+#include "carrick/carrick-pane.h"
+
+#define PKG_THEME_DIR PKG_DATA_DIR"/theme"
 
 static void
-_plug_notify_embedded (GObject    *object,
-                       GParamSpec *pspec,
-                       gpointer    user_data)
+_client_set_size_cb (MplPanelClient *client,
+                     guint           width,
+                     guint           height,
+                     gpointer        user_data)
 {
   CarrickApplet *applet = CARRICK_APPLET (user_data);
-  CarrickStatusIcon *icon = CARRICK_STATUS_ICON (carrick_applet_get_icon (applet));
-  CarrickPane *pane = CARRICK_PANE (carrick_applet_get_pane (applet));
+  CarrickPane   *pane = CARRICK_PANE (carrick_applet_get_pane (applet));
 
-  gboolean embedded;
+  carrick_pane_update (pane);
+}
 
-  g_object_get (object,
-                "embedded",
-                &embedded,
-                NULL);
+static void
+_connection_changed_cb (CarrickPane     *pane,
+                        const gchar     *connection_type,
+                        guint            strength,
+                        MplPanelClient  *panel_client)
+{
+  CarrickIconState   icon_state;
+  const gchar       *icon_id;
 
-  carrick_status_icon_set_active (icon, embedded);
-  if (embedded)
-  {
-    carrick_pane_update (pane);
-  }
+  icon_state = carrick_icon_factory_get_state (connection_type, strength);
+  icon_id = carrick_icon_factory_get_name_for_state (icon_state);
+
+  mpl_panel_client_request_button_style (panel_client, icon_id);
 }
 
 int
@@ -60,33 +65,35 @@ main (int    argc,
       char **argv)
 {
   CarrickApplet *applet;
-  GtkWidget     *icon;
+  GtkWidget     *window;
   GtkWidget     *pane;
-  GdkScreen     *screen;
-  GtkWidget     *plug;
   GtkSettings   *settings;
   gboolean       standalone = FALSE;
   GError        *error = NULL;
   GOptionEntry   entries[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
-      _("Run in standalone mode"), NULL },
+      _ ("Run in standalone mode"), NULL },
     { NULL }
   };
+
+  if (!g_thread_supported ())
+    g_thread_init (NULL);
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  g_set_application_name (_("Carrick connectivity applet"));
-  gtk_init_with_args (&argc, &argv, _("- Moblin connectivity applet"),
+  g_set_application_name (_ ("Carrick connectivity applet"));
+  gtk_init_with_args (&argc, &argv, _ ("- Moblin connectivity applet"),
                       entries, GETTEXT_PACKAGE, &error);
+  dbus_g_thread_init ();
 
   if (error)
-  {
-    g_printerr ("%s\n", error->message);
-    g_error_free (error);
-    return 1;
-  }
+    {
+      g_printerr ("%s\n", error->message);
+      g_error_free (error);
+      return 1;
+    }
 
   /* Force to correct theme */
   settings = gtk_settings_get_default ();
@@ -98,36 +105,39 @@ main (int    argc,
   applet = carrick_applet_new ();
   pane = carrick_applet_get_pane (applet);
   if (!standalone)
-  {
-    icon = carrick_applet_get_icon (applet);
-    plug = gtk_plug_new (0);
-    g_signal_connect (plug,
-                      "notify::embedded",
-                      G_CALLBACK (_plug_notify_embedded),
-                      applet);
+    {
+      MplPanelClient *panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
+                                                        _("sound"),
+                                                        PKG_THEME_DIR "/network-applet.css",
+                                                        "unknown",
+                                                        TRUE);
+      g_signal_connect (panel_client,
+                        "set-size",
+                        (GCallback) _client_set_size_cb,
+                        applet);
+      mpl_panel_client_set_height_request (panel_client, 450);
+      window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
+      gtk_container_add (GTK_CONTAINER (window), pane);
 
-    gtk_container_add (GTK_CONTAINER (plug),
-                       pane);
-    mnbk_system_tray_init (GTK_STATUS_ICON (icon),
-                           GTK_PLUG (plug),
-                           "wifi");
-    screen = gtk_widget_get_screen (plug);
-    gtk_widget_set_size_request (pane,
-                                 gdk_screen_get_width (screen) - 2 * PADDING,
-                                 450);
-  }
+      g_signal_connect (pane,
+                        "connection-changed",
+                        (GCallback) _connection_changed_cb,
+                        panel_client);
+
+      gtk_widget_show_all (window);
+    }
   else
-  {
-    plug = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    g_signal_connect (plug,
-                      "delete-event",
-                      (GCallback) gtk_main_quit,
-                      NULL);
-    gtk_container_add (GTK_CONTAINER (plug),
-                       pane);
+    {
+      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      g_signal_connect (window,
+                        "delete-event",
+                        (GCallback) gtk_main_quit,
+                        NULL);
+      gtk_container_add (GTK_CONTAINER (window),
+                         pane);
 
-    gtk_widget_show (plug);
-  }
+      gtk_widget_show (window);
+    }
 
   gtk_main ();
 }

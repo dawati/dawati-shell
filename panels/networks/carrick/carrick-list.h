@@ -24,57 +24,66 @@
 #define _CARRICK_LIST_H
 
 #include <gtk/gtk.h>
-#include <gconnman/gconnman.h>
 
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
+#include "carrick-network-model.h"
 
 G_BEGIN_DECLS
 
-#define CARRICK_TYPE_LIST carrick_list_get_type()
+#define CARRICK_TYPE_LIST carrick_list_get_type ()
 
 #define CARRICK_LIST(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CARRICK_TYPE_LIST, CarrickList))
+                               CARRICK_TYPE_LIST, CarrickList))
 
 #define CARRICK_LIST_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CARRICK_TYPE_LIST, CarrickListClass))
+                            CARRICK_TYPE_LIST, CarrickListClass))
 
 #define CARRICK_IS_LIST(obj) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CARRICK_TYPE_LIST))
+                               CARRICK_TYPE_LIST))
 
 #define CARRICK_IS_LIST_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CARRICK_TYPE_LIST))
+                            CARRICK_TYPE_LIST))
 
 #define CARRICK_LIST_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CARRICK_TYPE_LIST, CarrickListClass))
+                              CARRICK_TYPE_LIST, CarrickListClass))
 
-typedef struct {
-  GtkScrolledWindow parent;
-} CarrickList;
+typedef struct _CarrickList CarrickList;
+typedef struct _CarrickListClass CarrickListClass;
+typedef struct _CarrickListPrivate CarrickListPrivate;
 
-typedef struct {
+struct _CarrickList
+{
+  GtkScrolledWindow   parent;
+  CarrickListPrivate *priv;
+};
+
+struct _CarrickListClass
+{
   GtkScrolledWindowClass parent_class;
-} CarrickListClass;
+};
 
 GType carrick_list_get_type (void);
 
-GtkWidget* carrick_list_new ();
+GtkWidget* carrick_list_new (CarrickIconFactory         *icon_factory,
+                             CarrickNotificationManager *notifications,
+                             CarrickNetworkModel        *model);
 
 void carrick_list_set_fallback (CarrickList *list, const gchar *fallback);
 
 void carrick_list_set_all_inactive (CarrickList *list);
 
-void carrick_list_set_icon_factory (CarrickList *list, 
+void carrick_list_set_icon_factory (CarrickList        *list,
                                     CarrickIconFactory *icon_factory);
 CarrickIconFactory *carrick_list_get_icon_factory (CarrickList *list);
 
-void carrick_list_set_notification_manager (CarrickList *list, 
-                                     CarrickNotificationManager *notification_manager);
+void carrick_list_set_notification_manager (CarrickList                *list,
+                                            CarrickNotificationManager *notification_manager);
 CarrickNotificationManager *carrick_list_get_notification_manager (CarrickList *list);
 
 void carrick_list_update (CarrickList *list, const GList *services);
