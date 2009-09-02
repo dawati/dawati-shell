@@ -1063,7 +1063,7 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
                         CARRICK_COLUMN_TYPE, &connection_type,
                         CARRICK_COLUMN_STRENGTH, &strength,
                         -1);
-    g_signal_emit (self, CONNECTION_CHANGED, 0,
+    g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
                    connection_type,
                    strength);
   }
