@@ -176,19 +176,19 @@ NbtkTable.PengeNoContentTile:hover
   padding: 10 11 12 11;
 }
 
-NbtkTable.PengeWelcomeTile
+PengeWelcomeTile
 {
   border-image: url('file://backdrop.png') 5 5 5 5;
   padding: 6;
 }
 
-NbtkTable.PengeWelcomeTile *#penge-welcome-primary-text
+PengeWelcomeTile *#penge-welcome-primary-text
 {
   color: #009bceff;
   font-size:19px;
 }
 
-NbtkTable.PengeWelcomeTile *#penge-welcome-secondary-text
+PengeWelcomeTile *#penge-welcome-secondary-text
 {
   font-size:14px;
   color: #2c2c2cff;
