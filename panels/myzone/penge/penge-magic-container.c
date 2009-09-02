@@ -434,7 +434,7 @@ penge_magic_container_set_minimum_child_size (PengeMagicContainer *pmc,
 {
   PengeMagicContainerPrivate *priv = GET_PRIVATE (pmc);
 
-  priv->min_tile_width = height;
+  priv->min_tile_width = width;
   priv->min_tile_height = height;
 
   penge_magic_container_calculate_counts (pmc,
