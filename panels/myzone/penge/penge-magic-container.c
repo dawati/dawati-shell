@@ -128,32 +128,19 @@ _calculate_potential_row_count (PengeMagicContainer *pmc,
                                 gfloat               height)
 {
   PengeMagicContainerPrivate *priv = GET_PRIVATE (pmc);
-  gfloat remaining_height;
-  gfloat tmp_remaining_height;
-  gint n = 0;
+  gfloat n;
+  gint excess_height;
 
-  tmp_remaining_height = height - priv->min_tile_height - 2 * priv->padding;
+  n = (int)((height - 2 * priv->padding + priv->spacing) /
+      ((int)priv->min_tile_height + (int)priv->spacing));
 
-  if (tmp_remaining_height < 0)
-    return 0;
+  excess_height = height -
+    (n * priv->min_tile_height) -
+    ((n - 1) * priv->spacing) -
+    2 * priv->padding;
+  priv->actual_tile_height = (int) (priv->min_tile_height + excess_height / n);
 
-  remaining_height = tmp_remaining_height;
-  n = 1;
-
-  do
-  {
-    tmp_remaining_height = remaining_height - priv->spacing - priv->min_tile_height;
-
-    if (tmp_remaining_height >= 0)
-    {
-      n++;
-      remaining_height = tmp_remaining_height;
-    }
-  } while (tmp_remaining_height >= 0);
-
-  priv->actual_tile_height = (int)(priv->min_tile_width + (remaining_height / n));
-
-  return n;
+  return (gint)n;
 }
 
 static gint
@@ -161,32 +148,19 @@ _calculate_potential_column_count (PengeMagicContainer *pmc,
                                    gfloat               width)
 {
   PengeMagicContainerPrivate *priv = GET_PRIVATE (pmc);
-  gfloat remaining_width;
-  gfloat tmp_remaining_width;
-  gint n = 0;
+  gfloat n;
+  gint excess_width;
 
-  tmp_remaining_width = width - priv->min_tile_width - 2 * priv->padding;
+  n = (int)((width - 2 * priv->padding + priv->spacing) /
+      ((int)priv->min_tile_width + (int)priv->spacing));
 
-  if (tmp_remaining_width < 0)
-    return 0;
+  excess_width = width -
+    (n * priv->min_tile_width) -
+    ((n - 1) * priv->spacing) -
+    2 * priv->padding;
+  priv->actual_tile_width = (int) (priv->min_tile_width + excess_width / n);
 
-  remaining_width = tmp_remaining_width;
-  n = 1;
-
-  do
-  {
-    tmp_remaining_width = remaining_width - priv->spacing - priv->min_tile_width;
-
-    if (tmp_remaining_width >= 0)
-    {
-      n++;
-      remaining_width = tmp_remaining_width;
-    }
-  } while (tmp_remaining_width >= 0);
-
-  priv->actual_tile_width = (int)(priv->min_tile_width + (remaining_width / n));
-
-  return n;
+  return (gint)n;
 }
 
 static void
