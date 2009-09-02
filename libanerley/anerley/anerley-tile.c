@@ -584,8 +584,8 @@ anerley_tile_init (AnerleyTile *self)
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
 
-  /* Need to hide it to take advantage of optimisations in grid */
-  clutter_actor_hide ((ClutterActor *)self);
+  /* Need stay hidden it to take advantage of optimisations in grid */
+  g_object_set ((ClutterActor *)self, "show-on-set-parent", FALSE, NULL);
 }
 
 NbtkWidget *
