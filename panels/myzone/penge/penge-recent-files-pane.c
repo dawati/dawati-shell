@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <glib/gi18n.h>
@@ -29,14 +28,12 @@
 #include "penge-recent-file-tile.h"
 #include "penge-recent-files-model.h"
 #include "penge-magic-list-view.h"
+#include "penge-welcome-tile.h"
 
 G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_RECENT_FILES_PANE, PengeRecentFilesPanePrivate))
-
-#define NUMBER_COLS 2
-#define NUMBER_OF_ITEMS 8
 
 #define TILE_WIDTH 170
 #define TILE_HEIGHT 115
@@ -51,7 +48,9 @@ typedef struct _PengeRecentFilesPanePrivate PengeRecentFilesPanePrivate;
 struct _PengeRecentFilesPanePrivate {
   ClutterModel *model;
   ClutterActor *welcome_tile;
+  ClutterActor *list_view;
   gint boot_count;
+  GtkRecentManager *manager;
 };
 
 static void
@@ -100,12 +99,44 @@ _model_bulk_end_cb (ClutterModel *model,
 }
 
 static void
+_recent_manager_changed_cb (GtkRecentManager *manager,
+                            gpointer          userdata)
+{
+  PengeRecentFilesPanePrivate *priv = GET_PRIVATE (userdata);
+
+  GList *items, *l;
+
+  items = gtk_recent_manager_get_items (priv->manager);
+
+  if (g_list_length (items) > 3)
+  {
+    clutter_container_remove_actor (CLUTTER_CONTAINER (userdata),
+                                    CLUTTER_ACTOR (priv->welcome_tile));
+    clutter_container_child_set (CLUTTER_CONTAINER (userdata),
+                                 CLUTTER_ACTOR (priv->list_view),
+                                 "row", 0,
+                                 NULL);
+
+    g_signal_handlers_disconnect_by_func (manager,
+                                          _recent_manager_changed_cb,
+                                          userdata);
+  }
+
+  for (l = items; l; l = g_list_delete_link (l, l))
+  {
+    gtk_recent_info_unref ((GtkRecentInfo *)l->data);
+  }
+}
+
+static void
 penge_recent_files_pane_init (PengeRecentFilesPane *self)
 {
   PengeRecentFilesPanePrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
   GConfClient *client;
   ClutterActor *list_view;
+  GList *items = NULL;
+  GList *l = NULL;
 
   client = gconf_client_get_default ();
 
@@ -120,11 +151,10 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
     g_clear_error (&error);
   }
 
-  /* increment */
-  priv->boot_count++;
-
-  if (priv->boot_count <= 5)
+  if (priv->boot_count < 5)
   {
+    /* increment */
+    priv->boot_count++;
     if (!gconf_client_set_int (client,
                                MOBLIN_BOOT_COUNT_KEY,
                                priv->boot_count,
@@ -153,7 +183,8 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
                                                 TILE_WIDTH,
                                                 TILE_HEIGHT);
 
-  penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (list_view), priv->model);
+  penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (list_view),
+                                   priv->model);
 
   g_signal_connect (priv->model,
                     "bulk-start",
@@ -164,150 +195,57 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
                     (GCallback)_model_bulk_end_cb,
                     list_view);
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        list_view,
-                                        0, 0,
-                                        "x-expand", TRUE,
-                                        "y-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        "y-fill", TRUE,
-                                        NULL);
-}
-
-#if 0
-static ClutterActor *
-_make_welcome_tile ()
-{
-  NbtkWidget *tile;
-  NbtkWidget *label;
-  ClutterActor *tmp_text;
-
-  tile = nbtk_table_new ();
-  clutter_actor_set_width ((ClutterActor *)tile,
-                           TILE_WIDTH * 2 + COL_SPACING);
-  nbtk_widget_set_style_class_name ((NbtkWidget *)tile, "PengeWelcomeTile");
-
-
-
-  label = nbtk_label_new (_("<b>Welcome to Moblin 2.0 for Netbooks</b>"));
-  clutter_actor_set_name ((ClutterActor *)label,
-                          "penge-welcome-primary-text");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
-  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
-                                   PANGO_WRAP_WORD_CHAR);
-  clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text),
-                               TRUE);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
-                              PANGO_ELLIPSIZE_NONE);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)label,
-                                        0,
-                                        0,
-                                        "x-expand",
-                                        TRUE,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-expand",
-                                        TRUE,
-                                        "y-fill",
-                                        TRUE,
-                                        NULL);
-
-  label = nbtk_label_new (_("As Moblin is a bit different to other computers, " \
-                            "we've put together a couple of bits and pieces to " \
-                            "help you find your way around. " \
-                            "We hope you enjoy it, The Moblin Team."));
-  clutter_actor_set_name ((ClutterActor *)label,
-                          "penge-welcome-secondary-text");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
-  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
-                                   PANGO_WRAP_WORD_CHAR);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
-                              PANGO_ELLIPSIZE_NONE);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)label,
-                                        1,
-                                        0,
-                                        "x-expand",
-                                        TRUE,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-expand",
-                                        TRUE,
-                                        "y-fill",
-                                        TRUE,
-                                        NULL);
-  return (ClutterActor *)tile;
-}
-
-static void
-penge_recent_files_pane_update (PengeRecentFilesPane *pane)
-{
-  PengeRecentFilesPanePrivate *priv = GET_PRIVATE (pane);
-  GList *items;
-  GList *l;
-  GtkRecentInfo *info;
-  ClutterActor *actor;
-  gint count = 0;
-  gchar *thumbnail_path;
-  const gchar *uri;
-  GList *old_actors;
-  PengeRecentFileTile *tile;
-  gchar *filename = NULL;
-
-  items = gtk_recent_manager_get_items (priv->manager);
-
-  if (priv->boot_count > 5 || g_list_length (items) > 3)
+  if (priv->boot_count < 5)
   {
-    if (priv->welcome_tile)
-    {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                      priv->welcome_tile);
-      priv->welcome_tile = NULL;
-    }
-  } else {
-    if (!priv->welcome_tile)
-    {
-      priv->welcome_tile = _make_welcome_tile ();
+    priv->manager = gtk_recent_manager_get_default ();
+    items = gtk_recent_manager_get_items (priv->manager);
 
-      clutter_actor_show_all (priv->welcome_tile);
-      nbtk_table_add_actor_with_properties (NBTK_TABLE (pane),
+    if (g_list_length (items) < 4)
+    {
+      priv->welcome_tile = penge_welcome_tile_new ();
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                             priv->welcome_tile,
-                                            0,
-                                            0,
-                                            "y-expand",
-                                            FALSE,
-                                            "x-expand",
-                                            TRUE,
+                                            0, 0,
+                                            "x-expand", TRUE,
+                                            "y-expand", FALSE,
+                                            "x-fill", TRUE,
+                                            "y-fill", TRUE,
                                             NULL);
-    }
+      nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                            list_view,
+                                            1, 0,
+                                            "x-expand", TRUE,
+                                            "y-expand", TRUE,
+                                            "x-fill", TRUE,
+                                            "y-fill", TRUE,
+                                            NULL);
 
-    count = 2;
+      /* We will remove this callback if list length exceeds 3 */
+      g_signal_connect (priv->manager,
+                        "changed",
+                        (GCallback)_recent_manager_changed_cb,
+                        self);
+    } else {
+      priv->manager = NULL;
+    }
   }
 
-  if (priv->welcome_tile)
+  if (!priv->welcome_tile)
   {
-    if (count - 2 < 2)
-    {
-      /* If the number of recent file items in the pane is less than 2 then we
-       * need to set the col-span to 1. The strange count - 2 < 2 is because
-       * count is offset by 2 to take into consideration the welcome tile.
-       * Work around a bug in NbtkTable #4686
-       */
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   priv->welcome_tile,
-                                   "col-span",
-                                   1,
-                                   NULL);
-    } else {
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   priv->welcome_tile,
-                                   "col-span",
-                                   2,
-                                   NULL);
-    }
+    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                          list_view,
+                                          0, 0,
+                                          "x-expand", TRUE,
+                                          "y-expand", TRUE,
+                                          "x-fill", TRUE,
+                                          "y-fill", TRUE,
+                                          NULL);
+  }
+
+  priv->list_view = list_view;
+
+  for (l = items; l; l = g_list_delete_link (l, l))
+  {
+    gtk_recent_info_unref ((GtkRecentInfo *)l->data);
   }
 }
-#endif
