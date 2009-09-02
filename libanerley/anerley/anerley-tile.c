@@ -482,88 +482,74 @@ anerley_tile_init (AnerleyTile *self)
   /* TODO: Prefill with unknown icon */
   nbtk_bin_set_child (NBTK_BIN (priv->avatar_bin), priv->avatar);
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->avatar_bin,
-                                        0,
-                                        0,
-                                        "x-fill",
-                                        FALSE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        FALSE,
-                                        "y-expand",
-                                        FALSE,
-                                        "row-span",
-                                        3,
-                                        NULL);
+  /* add avatar */
+  nbtk_table_add_actor (NBTK_TABLE (self), (ClutterActor *)priv->avatar_bin, 0,
+                        0);
+  nbtk_table_child_set_x_fill (NBTK_TABLE (self),
+                               (ClutterActor *)priv->avatar_bin, FALSE);
+  nbtk_table_child_set_y_fill (NBTK_TABLE (self),
+                               (ClutterActor *)priv->avatar_bin, FALSE);
+  nbtk_table_child_set_col_expand (NBTK_TABLE (self),
+                                   (ClutterActor *)priv->avatar_bin, FALSE);
+  nbtk_table_child_set_row_expand (NBTK_TABLE (self),
+                                   (ClutterActor *)priv->avatar_bin, FALSE);
+  nbtk_table_child_set_row_span (NBTK_TABLE (self),
+                                 (ClutterActor *)priv->avatar_bin, 3);
 
   priv->primary_label = nbtk_label_new ("");
   nbtk_widget_set_style_class_name (priv->primary_label,
                                     "AnerleyTilePrimaryLabel");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->primary_label,
-                                        0,
-                                        1,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        FALSE,
-                                        "y-expand",
-                                        TRUE,
-                                        "x-expand",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        1.0,
-                                        "col-span",
-                                        2,
-                                        NULL);
+
+  nbtk_table_add_actor (NBTK_TABLE (self), (ClutterActor *)priv->primary_label,
+                        0, 1);
+  nbtk_table_child_set_y_fill (NBTK_TABLE (self),
+                               (ClutterActor *)priv->primary_label, FALSE);
+  nbtk_table_child_set_col_expand (NBTK_TABLE (self),
+                                   (ClutterActor *)priv->primary_label, FALSE);
+  nbtk_table_child_set_col_span (NBTK_TABLE (self),
+                                 (ClutterActor *)priv->primary_label, 2);
+  nbtk_table_child_set_y_align (NBTK_TABLE (self),
+                                (ClutterActor *)priv->primary_label, 1.0);
+  nbtk_table_child_set_x_align (NBTK_TABLE (self),
+                                (ClutterActor *)priv->primary_label, 0.0);
 
   priv->secondary_label = nbtk_label_new ("");
   nbtk_widget_set_style_class_name (priv->secondary_label,
                                     "AnerleyTileSecondaryLabel");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->secondary_label,
-                                        1,
-                                        1,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        FALSE,
-                                        "y-expand",
-                                        FALSE,
-                                        "x-expand",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        "col-span",
-                                        2,
-                                        NULL);
+
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        (ClutterActor *)priv->secondary_label, 1, 1);
+  nbtk_table_child_set_y_fill (NBTK_TABLE (self),
+                               (ClutterActor *)priv->secondary_label,
+                               FALSE);
+  nbtk_table_child_set_row_expand (NBTK_TABLE (self),
+                                   (ClutterActor *)priv->secondary_label,
+                                   FALSE);
+  nbtk_table_child_set_col_expand (NBTK_TABLE (self),
+                                   (ClutterActor *)priv->secondary_label,
+                                   FALSE);
+  nbtk_table_child_set_col_span (NBTK_TABLE (self),
+                                 (ClutterActor *)priv->secondary_label, 2);
+  nbtk_table_child_set_y_align (NBTK_TABLE (self),
+                                (ClutterActor *)priv->secondary_label, 0.0);
+  nbtk_table_child_set_x_align (NBTK_TABLE (self),
+                                (ClutterActor *)priv->secondary_label, 0.0);
 
   priv->presence_label = nbtk_label_new ("");
   nbtk_widget_set_style_class_name (priv->presence_label,
                                     "AnerleyTilePresenceLabel");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->presence_label,
-                                        2,
-                                        2,
-                                        "x-fill",
-                                        FALSE,
-                                        "y-fill",
-                                        FALSE,
-                                        "y-expand",
-                                        TRUE,
-                                        "x-expand",
-                                        TRUE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
+
+  nbtk_table_add_actor (NBTK_TABLE (self),
+                        (ClutterActor *)priv->presence_label, 2, 2);
+  nbtk_table_child_set_y_fill (NBTK_TABLE (self),
+                               (ClutterActor *)priv->presence_label, FALSE);
+  nbtk_table_child_set_x_fill (NBTK_TABLE (self),
+                               (ClutterActor *)priv->presence_label, FALSE);
+  nbtk_table_child_set_y_align (NBTK_TABLE (self),
+                                (ClutterActor *)priv->presence_label, 0.0);
+  nbtk_table_child_set_x_align (NBTK_TABLE (self),
+                                (ClutterActor *)priv->presence_label, 0.0);
+
   nbtk_table_set_col_spacing ((NbtkTable *)self,
                               4);
   nbtk_table_set_row_spacing ((NbtkTable *)self,
