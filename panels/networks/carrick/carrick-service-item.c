@@ -868,11 +868,13 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
 static void
 carrick_service_item_init (CarrickServiceItem *self)
 {
-  CarrickServiceItemPrivate *priv = SERVICE_ITEM_PRIVATE (self);
+  CarrickServiceItemPrivate *priv;
   GtkWidget                 *box, *hbox, *vbox;
   GtkWidget                 *image;
   GtkWidget                 *connect_with_pw_button;
   char                      *security_sample;
+
+  priv = self->priv = SERVICE_ITEM_PRIVATE (self);
 
   priv->model = NULL;
   priv->path = NULL;
@@ -887,6 +889,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->security = NULL;
   priv->need_pass = FALSE;
   priv->passphrase = NULL;
+  priv->icon_factory = NULL;
+  priv->note = NULL;
 
   priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
 
