@@ -71,6 +71,30 @@ penge_magic_texture_paint (ClutterActor *actor)
                                       tx1, ty1,
                                       tx2, ty2);
 }
+static void
+penge_magic_texture_tile_get_preferred_width (ClutterActor *actor,
+                                              gfloat        for_height,
+                                              gfloat       *min_width,
+                                              gfloat       *pref_width)
+{
+  if (min_width)
+    *min_width = 64;
+  if (pref_width)
+    *pref_width = 64;
+}
+
+static void
+penge_magic_texture_tile_get_preferred_height (ClutterActor *actor,
+                                               gfloat        for_width,
+                                               gfloat       *min_height,
+                                               gfloat       *pref_height)
+{
+  if (min_height)
+    *min_height = 64;
+  if (pref_height)
+    *pref_height = 64;
+}
+
 
 static void
 penge_magic_texture_class_init (PengeMagicTextureClass *klass)
@@ -78,6 +102,8 @@ penge_magic_texture_class_init (PengeMagicTextureClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   actor_class->paint = penge_magic_texture_paint;
+  actor_class->get_preferred_width = penge_magic_texture_tile_get_preferred_width;
+  actor_class->get_preferred_height = penge_magic_texture_tile_get_preferred_height;
 }
 
 static void

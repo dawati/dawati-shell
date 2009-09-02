@@ -374,6 +374,31 @@ anerley_tile_allocate (ClutterActor           *actor,
 }
 
 static void
+anerley_tile_get_preferred_width (ClutterActor *actor,
+                                  gfloat        for_height,
+                                  gfloat       *min_width,
+                                  gfloat       *pref_width)
+{
+  if (min_width)
+    *min_width = 180;
+  if (pref_width)
+    *pref_width = 180;
+}
+
+static void
+anerley_tile_get_preferred_height (ClutterActor *actor,
+                                   gfloat        for_width,
+                                   gfloat       *min_height,
+                                   gfloat       *pref_height)
+{
+  if (min_height)
+    *min_height = 90;
+  if (pref_height)
+    *pref_height = 90;
+}
+
+
+static void
 anerley_tile_class_init (AnerleyTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -389,6 +414,8 @@ anerley_tile_class_init (AnerleyTileClass *klass)
 
   actor_class->map = anerley_tile_map;
   actor_class->allocate = anerley_tile_allocate;
+  actor_class->get_preferred_width = anerley_tile_get_preferred_width;
+  actor_class->get_preferred_height = anerley_tile_get_preferred_height;
 
   pspec = g_param_spec_object ("item",
                                "Item",
@@ -452,7 +479,6 @@ anerley_tile_init (AnerleyTile *self)
 
   priv->avatar = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
                                NULL);
-  clutter_actor_set_size ((ClutterActor *)priv->avatar_bin, 64, 64);
   /* TODO: Prefill with unknown icon */
   nbtk_bin_set_child (NBTK_BIN (priv->avatar_bin), priv->avatar);
 
@@ -557,9 +583,6 @@ anerley_tile_init (AnerleyTile *self)
                     NULL);
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
-
-  /* Need to set a fixed size */
-  clutter_actor_set_size ((ClutterActor *)self, 180, 90);
 
   /* Need to hide it to take advantage of optimisations in grid */
   clutter_actor_hide ((ClutterActor *)self);
