@@ -259,6 +259,22 @@ penge_magic_container_allocate (ClutterActor          *actor,
   }
 }
 
+
+static void
+penge_magic_container_get_preferred_width (ClutterActor *self,
+                                           gfloat        for_height,
+                                           gfloat       *min_width_p,
+                                           gfloat       *natural_width_p)
+{
+  PengeMagicContainerPrivate *priv = GET_PRIVATE (self);
+
+  if (min_width_p)
+    *min_width_p = priv->min_tile_width;
+
+  if (natural_width_p)
+    *natural_width_p = priv->min_tile_width;
+}
+
 static void
 penge_magic_container_paint (ClutterActor *actor)
 {
@@ -323,6 +339,7 @@ penge_magic_container_class_init (PengeMagicContainerClass *klass)
   actor_class->allocate = penge_magic_container_allocate;
   actor_class->paint = penge_magic_container_paint;
   actor_class->pick = penge_magic_container_pick;
+  actor_class->get_preferred_width = penge_magic_container_get_preferred_width;
 
   pspec = g_param_spec_float ("min-child-width",
                               "Minimum child width",
