@@ -1021,6 +1021,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->passphrase_entry = gtk_entry_new ();
   gtk_entry_set_width_chars (GTK_ENTRY (priv->passphrase_entry), 20);
+  gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry), TRUE);
   gtk_widget_show (priv->passphrase_entry);
   g_signal_connect (priv->passphrase_entry,
                     "activate",
@@ -1049,6 +1050,8 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->show_password_check =
     gtk_check_button_new_with_label (_ ("Show password"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->show_password_check),
+                                                   TRUE);
   gtk_widget_show (priv->show_password_check);
   g_signal_connect (priv->show_password_check,
                     "toggled",
