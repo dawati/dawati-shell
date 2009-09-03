@@ -1062,11 +1062,13 @@ pane_manager_get_properties_cb (DBusGProxy     *manager,
                error->message);
       g_clear_error (&error);
     }
-
-  g_hash_table_foreach (properties,
-                        (GHFunc) pane_update_property,
-                        self);
-  g_hash_table_unref (properties);
+  else
+    {
+      g_hash_table_foreach (properties,
+                            (GHFunc) pane_update_property,
+                            self);
+      g_hash_table_unref (properties);
+    }
 }
 
 static void
