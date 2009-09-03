@@ -496,11 +496,13 @@ network_model_manager_get_properties_cb (DBusGProxy     *manager,
       g_clear_error (&error);
       /* FIXME: Do something here */
     }
-
-  g_hash_table_foreach (properties,
-                        (GHFunc) network_model_update_property,
-                        self);
-  g_hash_table_unref (properties);
+  else
+    {
+      g_hash_table_foreach (properties,
+                            (GHFunc) network_model_update_property,
+                            self);
+      g_hash_table_unref (properties);
+    }
 }
 
 /*
