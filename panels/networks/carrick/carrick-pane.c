@@ -1215,10 +1215,13 @@ carrick_pane_init (CarrickPane *self)
                      priv->service_list);
   gtk_widget_show (priv->service_list);
 
-  gtk_table_attach_defaults (GTK_TABLE (self),
-                             net_list_bin,
-                             0, 4,
-                             0, 7);
+  gtk_table_attach (GTK_TABLE (self),
+                    net_list_bin,
+                    0, 4,
+                    0, 7,
+                    GTK_EXPAND | GTK_FILL,
+                    GTK_EXPAND | GTK_FILL,
+                    0, 0);
 
   /* New connection button */
   vbox = gtk_vbox_new (FALSE, 0);
@@ -1420,10 +1423,13 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_bluetooth_switch_callback),
                     self);
 
-  gtk_table_attach_defaults (GTK_TABLE (self),
-                             switch_bin,
-                             4, 6,
-                             0, 5);
+  gtk_table_attach (GTK_TABLE (self),
+                    switch_bin,
+                    4, 6,
+                    0, 5,
+                    GTK_FILL | GTK_EXPAND,
+                    GTK_FILL | GTK_EXPAND,
+                    0, 0);
 
   vbox = gtk_vbox_new (TRUE,
                        0);
