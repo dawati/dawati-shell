@@ -121,6 +121,9 @@ carrick_list_set_property (GObject *object, guint property_id,
 static void
 carrick_list_dispose (GObject *object)
 {
+  CarrickList *list = CARRICK_LIST (object);
+  carrick_list_set_model (list, NULL);
+
   G_OBJECT_CLASS (carrick_list_parent_class)->dispose (object);
 }
 
