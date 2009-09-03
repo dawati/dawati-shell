@@ -768,18 +768,21 @@ carrick_service_item_dispose (GObject *object)
       priv->proxy = NULL;
     }
 
-  g_free (priv->name);
-  g_free (priv->type);
-  g_free (priv->state);
-  g_free (priv->security);
-  g_free (priv->passphrase);
-
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
 
 static void
 carrick_service_item_finalize (GObject *object)
 {
+  CarrickServiceItem        *item = CARRICK_SERVICE_ITEM (object);
+  CarrickServiceItemPrivate *priv = item->priv;
+
+  g_free (priv->name);
+  g_free (priv->type);
+  g_free (priv->state);
+  g_free (priv->security);
+  g_free (priv->passphrase);
+
   G_OBJECT_CLASS (carrick_service_item_parent_class)->finalize (object);
 }
 
