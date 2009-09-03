@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
+"POT-Creation-Date: 2009-08-27 23:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -16,19 +16,20 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:869
-msgid "Favourite Applications"
+#: ../src/moblin-netbook-launcher.c:887
+msgid "Favorite Applications"
 msgstr "Aplicaciones preferidas"
 
-#: ../src/moblin-netbook-launcher.c:1366
+#: ../src/moblin-netbook-launcher.c:1384
 msgid "Applications"
 msgstr "Aplicaciones"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/moblin-netbook-launcher.c:1395
 msgid "Search"
 msgstr "Búsqueda"
 
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-applications.c:164
+#: ../src/moblin-panel-applications.c:187
 msgid "applications"
 msgstr "aplicaciones"
+
