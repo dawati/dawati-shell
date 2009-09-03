@@ -107,7 +107,7 @@ main (int    argc,
   if (!standalone)
     {
       MplPanelClient *panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
-                                                        _("sound"),
+                                                        _("network"),
                                                         PKG_THEME_DIR "/network-applet.css",
                                                         "unknown",
                                                         TRUE);
