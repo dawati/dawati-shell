@@ -325,10 +325,16 @@ carrick_notification_manager_set_property (GObject *object, guint property_id,
 static void
 carrick_notification_manager_dispose (GObject *object)
 {
-  CarrickNotificationManager        *self = CARRICK_NOTIFICATION_MANAGER (object);
-  CarrickNotificationManagerPrivate *priv = self->priv;
-
   notify_uninit ();
+
+  G_OBJECT_CLASS (carrick_notification_manager_parent_class)->dispose (object);
+}
+
+static void
+carrick_notification_manager_finalize (GObject *object)
+{
+  CarrickNotificationManager *self = CARRICK_NOTIFICATION_MANAGER (object);
+  CarrickNotificationManagerPrivate *priv = self->priv;
 
   g_free (priv->last_type);
   g_free (priv->last_name);
@@ -337,7 +343,7 @@ carrick_notification_manager_dispose (GObject *object)
   g_free (priv->queued_name);
   g_free (priv->queued_state);
 
-  G_OBJECT_CLASS (carrick_notification_manager_parent_class)->dispose (object);
+  G_OBJECT_CLASS (carrick_notification_manager_parent_class)->finalize (object);
 }
 
 static void
@@ -349,6 +355,8 @@ carrick_notification_manager_class_init (CarrickNotificationManagerClass *klass)
 
   object_class->get_property = carrick_notification_manager_get_property;
   object_class->set_property = carrick_notification_manager_set_property;
+  object_class->dispose = carrick_notification_manager_dispose;
+  object_class->finalize = carrick_notification_manager_finalize;
 }
 
 static void
