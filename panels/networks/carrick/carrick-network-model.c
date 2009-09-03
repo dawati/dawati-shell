@@ -36,15 +36,24 @@ struct _CarrickNetworkModelPrivate
   GList *services;
 };
 
-/* forward declaration of private methods */
+/*
+ * Forward declaration of private methods
+ */
 static gint network_model_sort_cb (GtkTreeModel *self, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data);
 static void network_model_manager_changed_cb (DBusGProxy *service, const gchar *property, GValue *value, gpointer user_data);
 static void network_model_manager_get_properties_cb (DBusGProxy *service, DBusGProxyCall *call, gpointer user_data);
+static void carrick_network_model_dispose (GObject *object);
+static gboolean network_model_have_service_by_path (GtkListStore *store, GtkTreeIter  *iter, const gchar  *path);
+/* end */
 
 static void
 carrick_network_model_class_init (CarrickNetworkModelClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
   g_type_class_add_private (klass, sizeof (CarrickNetworkModelPrivate));
+
+  object_class->dispose = carrick_network_model_dispose;
 }
 
 static void
@@ -114,6 +123,43 @@ carrick_network_model_init (CarrickNetworkModel *self)
           (GTK_TREE_SORTABLE (self),
           GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID,
           GTK_SORT_DESCENDING);
+}
+
+static void
+carrick_network_model_dispose (GObject *object)
+{
+  CarrickNetworkModel *self = CARRICK_NETWORK_MODEL (object);
+  CarrickNetworkModelPrivate *priv = self->priv;
+  GList *list_iter = NULL;
+  gchar *path = NULL;
+  GtkTreeIter iter;
+  GtkListStore *store = GTK_LIST_STORE (self);
+
+  if (priv->connection)
+    {
+      dbus_g_connection_unref (priv->connection);
+      priv->connection = NULL;
+    }
+
+  for (list_iter = priv->services;
+       list_iter != NULL;
+       list_iter = list_iter->next)
+    {
+      path = list_iter->data;
+
+      if (network_model_have_service_by_path (store, &iter, path) == TRUE)
+        gtk_list_store_remove (store, &iter);
+
+      g_free (path);
+    }
+
+  if (priv->services)
+    {
+      g_list_free (priv->services);
+      priv->services = NULL;
+    }
+
+  G_OBJECT_CLASS (carrick_network_model_parent_class)->dispose(object);
 }
 
 static void
@@ -443,7 +489,12 @@ network_model_update_property (const gchar *property,
 
           g_free (path);
         }
-      g_list_free (old_services);
+
+      if (old_services)
+        {
+          g_list_free (old_services);
+          old_services = NULL;
+        }
     }
 }
 
