@@ -152,25 +152,25 @@ PengeRecentFileTile *.PengeRecentFileTileDetailsType
   font-size: 11;
 }
 
-NbtkTable.PengeNoContentTile *#penge-no-content-main-message
+PengePeoplePlaceholderTile *#penge-no-content-main-message
 {
   font-size:15px;
   color: #2c2c2cff;
 }
 
-NbtkTable.PengeNoContentTile *#penge-no-content-other-message
+PengePeoplePlaceholderTile *#penge-no-content-other-message
 {
   font-size:14px;
   color: #2c2c2cff;
 }
 
-NbtkTable.PengeNoContentTile
+PengePeoplePlaceholderTile
 {
   border-image: url('file://no-content-tile-bg.png') 7 8 9 8;
   padding: 10 11 12 11;
 }
 
-NbtkTable.PengeNoContentTile:hover
+PengePeoplePlaceholderTile:hover
 {
   border-image: url('file://no-content-tile-glow-bg.png') 7 8 9 8;
   padding: 10 11 12 11;
