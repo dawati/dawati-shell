@@ -542,6 +542,7 @@ _connect_with_password (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
   const gchar               *passphrase;
+  GValue *value;
 
   carrick_notification_manager_queue_event (priv->note,
                                             priv->type,
@@ -558,6 +559,10 @@ _connect_with_password (CarrickServiceItem *item)
 
     }
 
+  value = g_slice_new0 (GValue);
+  g_value_init (value, G_TYPE_STRING);
+  g_value_set_string (value, passphrase);
+
   dbus_g_proxy_begin_call (priv->proxy,
                            "SetProperty",
                            set_passphrase_notify_cb,
@@ -565,9 +570,12 @@ _connect_with_password (CarrickServiceItem *item)
                            NULL,
                            G_TYPE_STRING,
                            "Passphrase",
-                           G_TYPE_STRING,
-                           passphrase,
+                           G_TYPE_VALUE,
+                           value,
                            G_TYPE_INVALID);
+
+  g_value_unset (value);
+  g_slice_free (GValue, value);
 
   gtk_widget_hide (priv->passphrase_box);
   gtk_widget_show (priv->connect_box);
