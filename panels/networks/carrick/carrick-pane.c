@@ -87,6 +87,10 @@ enum
 static guint _signals[LAST_SIGNAL] = { 0, };
 
 static void
+pane_manager_changed_cb (DBusGProxy  *proxy, const gchar *property,
+                         GValue      *value, gpointer     user_data);
+
+static void
 pane_free_g_value (GValue *val)
 {
   g_value_unset (val);
@@ -182,6 +186,25 @@ carrick_pane_set_property (GObject      *object,
 }
 
 static void
+carrick_pane_dispose (GObject *object)
+{
+  CarrickPane *self = CARRICK_PANE (object);
+  CarrickPanePrivate *priv = self->priv;
+
+  if (priv->manager)
+    {
+      dbus_g_proxy_disconnect_signal (priv->manager,
+                                      "PropertyChanged",
+                                      G_CALLBACK (pane_manager_changed_cb),
+                                      self);
+      g_object_unref (priv->manager);
+      priv->manager = NULL;
+    }
+
+  G_OBJECT_CLASS (carrick_pane_parent_class)->dispose (object);
+}
+
+static void
 carrick_pane_class_init (CarrickPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -191,6 +214,7 @@ carrick_pane_class_init (CarrickPaneClass *klass)
 
   object_class->get_property = carrick_pane_get_property;
   object_class->set_property = carrick_pane_set_property;
+  object_class->dispose = carrick_pane_dispose;
 
   pspec = g_param_spec_object ("icon-factory",
                                "Icon factory",
