@@ -762,7 +762,12 @@ carrick_service_item_dispose (GObject *object)
       priv->hand_cursor = NULL;
     }
 
-  g_free (priv->proxy);
+  if (priv->proxy)
+    {
+      g_object_unref (priv->proxy);
+      priv->proxy = NULL;
+    }
+
   g_free (priv->name);
   g_free (priv->type);
   g_free (priv->state);
