@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_PEOPLE_PANE, PengePeoplePaneClass))
 
 typedef struct {
-  NbtkTable parent;
+  NbtkWidget parent;
 } PengePeoplePane;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  NbtkWidgetClass parent_class;
 } PengePeoplePaneClass;
 
 GType penge_people_pane_get_type (void);

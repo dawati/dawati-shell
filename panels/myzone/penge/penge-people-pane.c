@@ -31,7 +31,9 @@
 #include "penge-magic-list-view.h"
 #include "penge-people-model.h"
 
-G_DEFINE_TYPE (PengePeoplePane, penge_people_pane, NBTK_TYPE_TABLE)
+#include "penge-people-placeholder-tile.h"
+
+G_DEFINE_TYPE (PengePeoplePane, penge_people_pane, NBTK_TYPE_WIDGET)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_PEOPLE_PANE, PengePeoplePanePrivate))
@@ -43,6 +45,7 @@ struct _PengePeoplePanePrivate {
   MojitoClientView *view;
   ClutterModel *model;
   ClutterActor *list_view;
+  ClutterActor *placeholder_tile;
 
   gint item_count;
 };
@@ -84,166 +87,6 @@ penge_people_pane_finalize (GObject *object)
   G_OBJECT_CLASS (penge_people_pane_parent_class)->finalize (object);
 }
 
-#if 0
-static gboolean
-_enter_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      "hover");
-
-  return FALSE;
-}
-
-static gboolean
-_leave_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      NULL);
-
-  return FALSE;
-}
-
-static gboolean
-_no_content_tile_button_press_event_cb (ClutterActor *actor,
-                                        ClutterEvent *event,
-                                        gpointer      userdata)
-{
-  GAppInfo *app_info = (GAppInfo *)userdata;
-
-  if (penge_utils_launch_by_command_line (actor,
-                                          g_app_info_get_executable (app_info)))
-    penge_utils_signal_activated (actor);
-  else
-    g_warning (G_STRLOC ": Unable to launch web services settings");
-
-  return TRUE;
-}
-
-static ClutterActor *
-_make_no_content_tile (void)
-{
-  ClutterActor *tile;
-  NbtkWidget *label;
-  ClutterActor *tex;
-  GtkIconTheme *icon_theme;
-  GtkIconInfo *icon_info;
-  GAppInfo *app_info;
-  GError *error = NULL;
-  GIcon *icon;
-  ClutterActor *tmp_text;
-
-  tile = (ClutterActor *)nbtk_table_new ();
-  clutter_actor_set_size (tile,
-                          TILE_WIDTH * 2 + COL_SPACING,
-                          TILE_HEIGHT);
-  nbtk_widget_set_style_class_name ((NbtkWidget *)tile, "PengeNoContentTile");
-
-
-  label = nbtk_label_new (_("Your friends' feeds and web services will appear here. " \
-                            "Activate your accounts now!"));
-  clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-main-message");
-
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
-  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
-                                   PANGO_WRAP_WORD_CHAR);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
-                              PANGO_ELLIPSIZE_NONE);
-
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)label,
-                                        0,
-                                        0,
-                                        "x-expand",
-                                        TRUE,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-expand",
-                                        TRUE,
-                                        "y-fill",
-                                        TRUE,
-                                        "col-span",
-                                        2,
-                                        NULL);
-
-  app_info = (GAppInfo *)g_desktop_app_info_new ("bisho.desktop");
-
-  if (app_info)
-  {
-    icon_theme = gtk_icon_theme_get_default ();
-
-    icon = g_app_info_get_icon (app_info);
-    icon_info = gtk_icon_theme_lookup_by_gicon (icon_theme,
-                                                icon,
-                                                ICON_SIZE,
-                                                GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-
-    tex = clutter_texture_new_from_file (gtk_icon_info_get_filename (icon_info),
-                                         &error);
-
-    if (!tex)
-    {
-      g_warning (G_STRLOC ": Error opening icon: %s",
-                 error->message);
-      g_clear_error (&error);
-    } else {
-      clutter_actor_set_size (tex, ICON_SIZE, ICON_SIZE);
-      nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                            tex,
-                                            1,
-                                            0,
-                                            "x-expand",
-                                            FALSE,
-                                            "x-fill",
-                                            FALSE,
-                                            "y-fill",
-                                            FALSE,
-                                            "y-expand",
-                                            TRUE,
-                                            NULL);
-    }
-
-    label = nbtk_label_new (g_app_info_get_name (app_info));
-    clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-other-message");
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                          (ClutterActor *)label,
-                                          1,
-                                          1,
-                                          "x-expand",
-                                          TRUE,
-                                          "x-fill",
-                                          TRUE,
-                                          "y-expand",
-                                          TRUE,
-                                          "y-fill",
-                                          FALSE,
-                                          NULL);
-  }
-
-  g_signal_connect (tile,
-                    "button-press-event",
-                    (GCallback)_no_content_tile_button_press_event_cb,
-                    app_info);
-
-  g_signal_connect (tile,
-                    "enter-event",
-                    (GCallback)_enter_event_cb,
-                    NULL);
-  g_signal_connect (tile,
-                    "leave-event",
-                    (GCallback)_leave_event_cb,
-                    NULL);
-
-  clutter_actor_set_reactive (tile, TRUE);
-
-  return tile;
-}
-#endif
-
 static void
 _client_open_view_cb (MojitoClient     *client,
                       MojitoClientView *view,
@@ -263,6 +106,9 @@ _client_open_view_cb (MojitoClient     *client,
 
   penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (priv->list_view),
                                    priv->model);
+
+  clutter_actor_hide (priv->placeholder_tile);
+  clutter_actor_show (priv->list_view);
 }
 
 static void
@@ -295,14 +141,146 @@ _client_get_services_cb (MojitoClient *client,
 }
 
 static void
+penge_people_pane_allocate (ClutterActor          *actor,
+                            const ClutterActorBox *box,
+                            ClutterAllocationFlags flags)
+{
+  PengePeoplePane *pane = (PengePeoplePane *)actor;
+  PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
+  gfloat width, height;
+  ClutterActorBox child_box;
+
+  if (CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->allocate)
+    CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->allocate (actor, box, flags);
+
+  width = box->x2 - box->x1;
+  height = box->y2 - box->y1;
+
+  child_box.x1 = 0;
+  child_box.x2 = width;
+  child_box.y1 = 0;
+  clutter_actor_get_preferred_height (priv->placeholder_tile,
+                                      width,
+                                      NULL,
+                                      &(child_box.y2));
+  clutter_actor_allocate (priv->placeholder_tile,
+                          &child_box,
+                          flags);
+
+  child_box.x1 = 0;
+  child_box.x2 = width;
+  child_box.y1 = 0;
+  child_box.y2 = height;
+
+  clutter_actor_allocate (priv->list_view,
+                          &child_box,
+                          flags);
+}
+
+static void
+penge_people_pane_paint (ClutterActor *actor)
+{
+  PengePeoplePane *pane = (PengePeoplePane *)actor;
+  PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
+
+ if (CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->paint)
+    CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->paint (actor);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->list_view))
+    clutter_actor_paint (priv->list_view);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->placeholder_tile))
+    clutter_actor_paint (priv->placeholder_tile);
+}
+
+static void
+penge_people_pane_pick (ClutterActor       *actor,
+                        const ClutterColor *color)
+{
+  PengePeoplePane *pane = (PengePeoplePane *)actor;
+  PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
+
+ if (CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->pick)
+    CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->pick (actor, color);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->list_view))
+    clutter_actor_paint (priv->list_view);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->placeholder_tile))
+    clutter_actor_paint (priv->placeholder_tile);
+}
+
+
+static void
+penge_people_pane_get_preferred_height (ClutterActor *self,
+                                        gfloat        for_width,
+                                        gfloat       *min_height_p,
+                                        gfloat       *natural_height_p)
+{
+  if (min_height_p)
+    *min_height_p = TILE_HEIGHT;
+
+  if (natural_height_p)
+    *natural_height_p = TILE_HEIGHT;
+}
+
+static void
+penge_people_pane_get_preferred_width (ClutterActor *self,
+                                       gfloat        for_height,
+                                       gfloat       *min_width_p,
+                                       gfloat       *natural_width_p)
+{
+  if (min_width_p)
+    *min_width_p = TILE_WIDTH;
+
+  if (natural_width_p)
+    *natural_width_p = TILE_HEIGHT;
+}
+
+static void
+penge_people_pane_map (ClutterActor *actor)
+{
+  PengePeoplePane *pane = (PengePeoplePane *)actor;
+  PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
+
+  if (CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->map)
+    CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->map (actor);
+
+  clutter_actor_map (priv->list_view);
+  clutter_actor_map (priv->placeholder_tile);
+}
+
+static void
+penge_people_pane_unmap (ClutterActor *actor)
+{
+  PengePeoplePane *pane = (PengePeoplePane *)actor;
+  PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
+
+  if (CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->unmap)
+    CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (priv->list_view);
+  clutter_actor_unmap (priv->placeholder_tile);
+}
+
+static void
 penge_people_pane_class_init (PengePeoplePaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (PengePeoplePanePrivate));
 
   object_class->dispose = penge_people_pane_dispose;
   object_class->finalize = penge_people_pane_finalize;
+
+  actor_class->allocate = penge_people_pane_allocate;
+  actor_class->paint = penge_people_pane_paint;
+  actor_class->pick = penge_people_pane_pick;
+  actor_class->get_preferred_width = penge_people_pane_get_preferred_width;
+  actor_class->get_preferred_height = penge_people_pane_get_preferred_height;
+  actor_class->map = penge_people_pane_map;
+  actor_class->unmap = penge_people_pane_unmap;
 }
 
 static void
@@ -344,14 +322,11 @@ penge_people_pane_init (PengePeoplePane *self)
                                        "item",
                                        0);
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        priv->list_view,
-                                        0, 0,
-                                        "x-expand", TRUE,
-                                        "y-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        "y-fill", TRUE,
-                                        NULL);
+  priv->placeholder_tile = penge_people_placeholder_tile_new ();
+
+  clutter_actor_hide (priv->list_view);
+  clutter_actor_set_parent (priv->placeholder_tile, (ClutterActor *)self);
+  clutter_actor_set_parent (priv->list_view, (ClutterActor *)self);
 }
 
 
