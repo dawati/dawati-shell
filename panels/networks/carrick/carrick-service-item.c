@@ -383,6 +383,36 @@ dbus_proxy_notify_cb (DBusGProxy     *proxy,
 }
 
 static void
+set_passphrase_notify_cb (DBusGProxy     *proxy,
+                      DBusGProxyCall *call,
+                      gpointer        user_data)
+{
+  CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
+  GError *error = NULL;
+
+  dbus_g_proxy_end_call (proxy,
+                         call,
+                         &error,
+                         G_TYPE_INVALID);
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      dbus_g_proxy_begin_call (proxy,
+                               "Connect",
+                               dbus_proxy_notify_cb,
+                               item,
+                               NULL,
+                               G_TYPE_INVALID);
+    }
+}
+
+static void
 _delete_button_cb (GtkButton *delete_button,
                    gpointer   user_data)
 {
@@ -470,11 +500,6 @@ _connect_button_cb (GtkButton          *connect_button,
     }
   else
     {
-      carrick_notification_manager_queue_event (priv->note,
-                                                priv->type,
-                                                "ready",
-                                                priv->name);
-
       if (priv->security && g_str_equal (priv->security, "none") == FALSE)
         {
           if (priv->failed ||
@@ -482,14 +507,33 @@ _connect_button_cb (GtkButton          *connect_button,
             {
               _request_passphrase (item);
             }
+          else
+            {
+              carrick_notification_manager_queue_event (priv->note,
+                                                        priv->type,
+                                                        "ready",
+                                                        priv->name);
+              dbus_g_proxy_begin_call (priv->proxy,
+                                       "Connect",
+                                       dbus_proxy_notify_cb,
+                                       item,
+                                       NULL,
+                                       G_TYPE_INVALID);
+            }
         }
-
-      dbus_g_proxy_begin_call (priv->proxy,
-                               "Connect",
-                               dbus_proxy_notify_cb,
-                               item,
-                               NULL,
-                               G_TYPE_INVALID);
+      else
+        {
+          carrick_notification_manager_queue_event (priv->note,
+                                                    priv->type,
+                                                    "ready",
+                                                    priv->name);
+          dbus_g_proxy_begin_call (priv->proxy,
+                                   "Connect",
+                                   dbus_proxy_notify_cb,
+                                   item,
+                                   NULL,
+                                   G_TYPE_INVALID);
+        }
     }
 }
 
@@ -499,6 +543,11 @@ _connect_with_password (CarrickServiceItem *item)
   CarrickServiceItemPrivate *priv = item->priv;
   const gchar               *passphrase;
 
+  carrick_notification_manager_queue_event (priv->note,
+                                            priv->type,
+                                            "ready",
+                                            priv->name);
+
   if (priv->passphrase_hint_visible)
     {
       passphrase = "";
@@ -506,28 +555,18 @@ _connect_with_password (CarrickServiceItem *item)
   else
     {
       passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
+
     }
 
-  carrick_notification_manager_queue_event (priv->note,
-                                            priv->type,
-                                            "ready",
-                                            priv->name);
   dbus_g_proxy_begin_call (priv->proxy,
                            "SetProperty",
-                           dbus_proxy_notify_cb,
+                           set_passphrase_notify_cb,
                            item,
                            NULL,
                            G_TYPE_STRING,
                            "Passphrase",
                            G_TYPE_STRING,
                            passphrase,
-                           G_TYPE_INVALID);
-
-  dbus_g_proxy_begin_call (priv->proxy,
-                           "Connect",
-                           dbus_proxy_notify_cb,
-                           item,
-                           NULL,
                            G_TYPE_INVALID);
 
   gtk_widget_hide (priv->passphrase_box);
