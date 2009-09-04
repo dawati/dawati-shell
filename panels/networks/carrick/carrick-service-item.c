@@ -212,7 +212,7 @@ _set_state (CarrickServiceItem *self)
 
   _service_item_set_security (self);
 
-  if (g_strcmp0 ("ethernet", name) == 0)
+  if (g_strcmp0 ("ethernet", priv->type) == 0)
     {
       g_free (name);
       name = g_strdup (_ ("Wired"));
