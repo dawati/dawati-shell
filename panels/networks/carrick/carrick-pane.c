@@ -241,9 +241,10 @@ carrick_pane_class_init (CarrickPaneClass *klass)
                     G_STRUCT_OFFSET(CarrickPaneClass, connection_changed),
                     NULL,
                     NULL,
-                    connman_marshal_VOID__STRING_UINT,
+                    connman_marshal_VOID__STRING_STRING_UINT,
                     G_TYPE_NONE,
-                    2,
+                    3,
+                    G_TYPE_STRING,
                     G_TYPE_STRING,
                     G_TYPE_UINT);
 }
@@ -1084,13 +1085,17 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
   first = gtk_tree_path_new_first ();
   if (0 == gtk_tree_path_compare (first, path)) {
     char *connection_type;
+    char *connection_name;
     guint strength;
+
     gtk_tree_model_get (tree_model, iter,
                         CARRICK_COLUMN_TYPE, &connection_type,
+                        CARRICK_COLUMN_NAME, &connection_name,
                         CARRICK_COLUMN_STRENGTH, &strength,
                         -1);
     g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
                    connection_type,
+                   connection_name,
                    strength);
   }
   gtk_tree_path_free (first);
