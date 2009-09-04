@@ -500,9 +500,11 @@ _row_deleted_cb (GtkTreeModel *tree_model,
                  GtkTreePath  *path,
                  gpointer      user_data)
 {
+  CarrickListPrivate *priv = CARRICK_LIST (user_data)->priv;
+
   /* Row removed, find widget with corresponding GtkTreePath
    * and destroy */
-  gtk_container_foreach (GTK_CONTAINER (user_data),
+  gtk_container_foreach (GTK_CONTAINER (priv->box),
                          _find_and_remove,
                          path);
 }
