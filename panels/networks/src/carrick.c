@@ -48,16 +48,42 @@ _client_set_size_cb (MplPanelClient *client,
 static void
 _connection_changed_cb (CarrickPane     *pane,
                         const gchar     *connection_type,
+                        const gchar     *connection_name,
                         guint            strength,
                         MplPanelClient  *panel_client)
 {
   CarrickIconState   icon_state;
   const gchar       *icon_id;
+  gchar             *tip;
 
-  icon_state = carrick_icon_factory_get_state (connection_type, strength);
+  icon_state = carrick_icon_factory_get_state (connection_type,
+                                               strength);
   icon_id = carrick_icon_factory_get_name_for_state (icon_state);
 
-  mpl_panel_client_request_button_style (panel_client, icon_id);
+  mpl_panel_client_request_button_style (panel_client,
+                                         icon_id);
+
+  if (g_str_equal (connection_type, "ethernet"))
+      tip = g_strdup (_("networks - wired"));
+  else if (g_str_equal (connection_type, "wifi"))
+    tip = g_strdup_printf (_("networks - %s - wifi"),
+                           connection_name);
+  else if (g_str_equal (connection_type, "wimax"))
+    tip = g_strdup_printf (_("networks - %s - wimax"),
+                           connection_name);
+  else if (g_str_equal (connection_type, "cellular"))
+    tip = g_strdup_printf (_("networks - %s - 3G"),
+                           connection_name);
+  else if (g_str_equal (connection_type, "bluetooth"))
+    tip = g_strdup_printf (_("networks - %s - bluetooth"),
+                           connection_name);
+  else
+      tip = g_strdup (_("networks - not connected"));
+
+  mpl_panel_client_request_tooltip (panel_client,
+                                    tip);
+
+  g_free (tip);
 }
 
 int
