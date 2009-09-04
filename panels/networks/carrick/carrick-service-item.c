@@ -664,7 +664,7 @@ carrick_service_item_get_proxy (CarrickServiceItem *item)
   return priv->proxy;
 }
 
-GtkTreePath*
+GtkTreePath *
 carrick_service_item_get_tree_path (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
@@ -704,7 +704,13 @@ _set_path (CarrickServiceItem *self,
   g_return_if_fail (path != NULL);
   CarrickServiceItemPrivate *priv = self->priv;
 
-  priv->path = path;
+  if (priv->path)
+    {
+      gtk_tree_path_free (priv->path);
+      priv->path = NULL;
+    }
+
+  priv->path = gtk_tree_path_copy (path);
 
   if (priv->model)
     {
@@ -763,6 +769,12 @@ carrick_service_item_dispose (GObject *object)
 {
   CarrickServiceItem        *item = CARRICK_SERVICE_ITEM (object);
   CarrickServiceItemPrivate *priv = item->priv;
+
+  if (priv->path)
+    {
+      gtk_tree_path_free (priv->path);
+      priv->path = NULL;
+    }
 
   if (priv->hand_cursor)
     {
