@@ -521,6 +521,9 @@ _rows_reordered_cb (GtkTreeModel *tree_model,
   DBusGProxy         *proxy = NULL;
   guint               order, index;
 
+  if (!iter)
+    return;
+
   gtk_tree_model_get (tree_model, iter,
                       CARRICK_COLUMN_PROXY, &proxy,
                       CARRICK_COLUMN_INDEX, &index,
