@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
+"POT-Creation-Date: 2009-08-27 23:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Glscht_Wen <wen.hsinx.moh@intel.com>\n"
 "Language-Team: \n"
@@ -13,22 +14,21 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/moblin-netbook-launcher.c:869
-msgid "Favourite Applications"
-msgstr "最愛應用程式"
-
-#: ../src/moblin-netbook-launcher.c:1366
+#: ../src/moblin-netbook-launcher.c:1384
 msgid "Applications"
 msgstr "應用程式"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/moblin-netbook-launcher.c:1395
 msgid "Search"
 msgstr "搜尋"
 
-#: ../src/moblin-panel-applications.c:164
+#: ../src/moblin-panel-applications.c:187
 msgid "applications"
 msgstr "應用程式"
+
+#. * Fav apps.
+#. 
+#. Label
+#: ../src/moblin-netbook-launcher.c:887
+msgid "Favorite Applications"
+msgstr "我的最愛"
