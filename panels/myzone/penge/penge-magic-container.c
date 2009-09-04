@@ -226,13 +226,13 @@ penge_magic_container_allocate (ClutterActor          *actor,
 
   l = priv->children;
 
+  if (!l)
+    return;
+
   for (y_count = 0; y_count < priv->row_count; y_count++)
   {
     for (x_count = 0; x_count < priv->column_count; x_count++)
     {
-      if (!l)
-        break;
-
       child = (ClutterActor *)l->data;
 
       child_box.x1 = x_count * priv->actual_tile_width +
@@ -247,6 +247,9 @@ penge_magic_container_allocate (ClutterActor          *actor,
       clutter_actor_allocate (child, &child_box, flags);
       clutter_actor_show (child);
       l = l->next;
+
+      if (!l)
+        break;
     }
 
     if (!l)
