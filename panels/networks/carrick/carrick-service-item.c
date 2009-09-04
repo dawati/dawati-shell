@@ -1029,7 +1029,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE,
                       6);
 
-  priv->connect_button = gtk_button_new ();
+  priv->connect_button = gtk_button_new_with_label (_("Configuring"));
   gtk_widget_show (priv->connect_button);
   g_signal_connect (priv->connect_button,
                     "clicked",
