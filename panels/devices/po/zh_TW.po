@@ -1,91 +1,84 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-29 09:20+0000\n"
+"POT-Creation-Date: 2009-08-31 18:17+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../dalston/dalston-power-applet.c:159
+#: ../dalston/dalston-power-applet.c:192
 #, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b>小時"
 msgstr[1] "<b>%d</b>小時"
 
-#: ../dalston/dalston-power-applet.c:166 ../dalston/dalston-power-applet.c:179
+#: ../dalston/dalston-power-applet.c:199 ../dalston/dalston-power-applet.c:212
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
 msgstr[0] "<b>%d</b>分"
 msgstr[1] "<b>%d</b>分"
 
-#: ../dalston/dalston-power-applet.c:200
+#: ../dalston/dalston-power-applet.c:233
 msgid "Running low on battery"
 msgstr "電池不足"
 
-#: ../dalston/dalston-power-applet.c:200
-msgid ""
-"We've noticed that your battery is running a bit low. If you can it would be "
-"a good idea to plug in and top up."
+#: ../dalston/dalston-power-applet.c:233
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "我們發現你的電池量不足。如果可以的話，你最好插入電源來充電。"
 
-#: ../dalston/dalston-power-applet.c:202
+#: ../dalston/dalston-power-applet.c:235
 msgid "Getting close to empty"
 msgstr "接近清空"
 
-#: ../dalston/dalston-power-applet.c:202
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can"
+#: ../dalston/dalston-power-applet.c:235
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "你的電池量不足。建議你最好儲存你所有的工作，並儘快插入電源。"
 
-#: ../dalston/dalston-power-applet.c:204
+#: ../dalston/dalston-power-applet.c:237
 msgid "Danger!"
 msgstr "危險！"
 
-#: ../dalston/dalston-power-applet.c:204
-msgid ""
-"Sorry, your computer is about to run out of battery. We're going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
-"很抱歉，你電腦的電池量不足。我們現在必須關閉電腦。請儲存你所有的工作，並希望"
-"再次看到你。"
+#: ../dalston/dalston-power-applet.c:237
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "很抱歉，你電腦的電池量不足。我們現在必須關閉電腦。請儲存你所有的工作，並希望再次看到你。"
 
-#: ../dalston/dalston-power-applet.c:340
+#: ../dalston/dalston-power-applet.c:364
 msgid "Sorry, it looks like your battery is broken."
 msgstr "很抱歉，看起來您的電池好像壞了。"
 
-#: ../dalston/dalston-power-applet.c:343
+#: ../dalston/dalston-power-applet.c:367
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "你的電池已完全充電並可再次出擊。"
 
-#: ../dalston/dalston-power-applet.c:346
+#: ../dalston/dalston-power-applet.c:370
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "你的電池正在充電。已充電 <b>%d</b>%%。"
 
-#: ../dalston/dalston-power-applet.c:353
+#: ../dalston/dalston-power-applet.c:377
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "你的電池正在使用。電池量現在是 <b>%d</b>%% 滿。"
 
-#: ../dalston/dalston-power-applet.c:361
+#: ../dalston/dalston-power-applet.c:385
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "很抱歉，您似乎沒有電池安裝。"
 
-#: ../dalston/dalston-power-applet.c:476
+#: ../dalston/dalston-power-applet.c:492
 msgid "Display brightness"
 msgstr "顯示亮度"
 
-#: ../dalston/dalston-power-applet.c:507
+#: ../dalston/dalston-power-applet.c:523
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "對不起，我們不支援修正你電腦屏幕的亮度"
 
@@ -177,10 +170,36 @@ msgstr "非常安靜"
 msgid "Silent"
 msgstr "無聲"
 
-#: ../libgvc/gvc-mixer-control.c:988
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "GNOME 音量控制"
+
+#: ../libgvc/gvc-mixer-control.c:1020
 msgid "System Sounds"
 msgstr "系統音響"
 
-#: ../libgvc/gvc-mixer-control.c:1512
-msgid "GNOME Volume Control"
-msgstr "GNOME 音量控制"
+#: ../src/dalston-power-applet.c:62
+#, fuzzy
+msgid "power & brightness"
+msgstr "顯示亮度"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "聲音"
+
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide i'll turn off in %d seconds"
+msgstr "電腦將在%d秒內關機"
+
+#: ../dalston/dalston-button-monitor.c:277
+msgid "Would you like to turn off now?"
+msgstr "您確定要關機嗎？"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide i'll turn off in 30 seconds"
+msgstr "電腦將在30秒內關機"
+
+#: ../dalston/dalston-button-monitor.c:285
+msgid "Turn off"
+msgstr "直接關機"
