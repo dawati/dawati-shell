@@ -485,6 +485,10 @@ static void
 _find_and_remove (GtkWidget *item,
                   gpointer   user_data)
 {
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (item));
+  g_return_if_fail (item != NULL);
+  g_return_if_fail (user_data != NULL);
+
   CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
   GtkTreePath        *path = (GtkTreePath *) user_data;
   GtkTreePath        *item_path = carrick_service_item_get_tree_path (service_item);
