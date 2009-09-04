@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-17 09:31+0000\n"
+"POT-Creation-Date: 2009-08-27 07:51+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
@@ -21,13 +22,9 @@ msgstr "<b>約會</b>"
 msgid "No calendar entries this week"
 msgstr "這禮拜行事曆上沒有任何項目"
 
-#: ../penge/penge-people-pane.c:191
+#: ../penge/penge-people-pane.c:144
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "您朋友的文章和網路服務會出現在這裡。起動您的帳戶！"
-
-#: ../penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>歡迎來到 Moblin 2.0 隨身型易網機</b>"
 
 #: ../penge/penge-recent-files-pane.c:227
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
@@ -46,3 +43,6 @@ msgstr "今天沒事可做"
 msgid "Due %x"
 msgstr "%x到期"
 
+#: ../penge/penge-recent-files-pane.c:202
+msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+msgstr "<b>歡迎來到 Moblin 2.0 for Netbooks</b>"
