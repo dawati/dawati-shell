@@ -130,7 +130,9 @@ _calculate_potential_row_count (PengeMagicContainer *pmc,
   PengeMagicContainerPrivate *priv = GET_PRIVATE (pmc);
   gfloat n;
   gint excess_height;
+  gfloat ratio;
 
+#if 0
   n = (int)((height - 2 * priv->padding + priv->spacing) /
       ((int)priv->min_tile_height + (int)priv->spacing));
 
@@ -139,6 +141,14 @@ _calculate_potential_row_count (PengeMagicContainer *pmc,
     ((n - 1) * priv->spacing) -
     2 * priv->padding;
   priv->actual_tile_height = (int) (priv->min_tile_height + excess_height / n);
+#endif
+
+  ratio = priv->actual_tile_width / priv->min_tile_width;
+
+  priv->actual_tile_height = (int) (priv->min_tile_height * ratio);
+
+  n = (int)((height - 2 * priv->padding + priv->spacing) /
+      ((int)priv->actual_tile_height + (int)priv->spacing));
 
   return (gint)n;
 }
@@ -172,8 +182,10 @@ penge_magic_container_calculate_counts (PengeMagicContainer *pmc,
   gint row_count, column_count;
 
   /* The width and height has changed. We need to recalculate our counts */
-  row_count = _calculate_potential_row_count (pmc, height);
+
+  /* Must do it in this order since row count depends on column count */
   column_count = _calculate_potential_column_count (pmc, width);
+  row_count = _calculate_potential_row_count (pmc, height);
 
   if (priv->column_count != column_count || priv->row_count != row_count)
   {
