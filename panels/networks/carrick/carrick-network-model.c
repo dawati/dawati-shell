@@ -33,7 +33,8 @@ G_DEFINE_TYPE (CarrickNetworkModel, carrick_network_model, GTK_TYPE_LIST_STORE)
 struct _CarrickNetworkModelPrivate
 {
   DBusGConnection *connection;
-  GList *services;
+  DBusGProxy      *manager;
+  GList           *services;
 };
 
 /*
@@ -61,7 +62,6 @@ carrick_network_model_init (CarrickNetworkModel *self)
 {
   CarrickNetworkModelPrivate *priv;
   GError                     *error = NULL;
-  DBusGProxy                 *manager;
   DBusGProxyCall             *call;
 
   priv = self->priv = NETWORK_MODEL_PRIVATE (self);
@@ -75,24 +75,24 @@ carrick_network_model_init (CarrickNetworkModel *self)
       /* FIXME: Do better? */
     }
 
-  manager = dbus_g_proxy_new_for_name (priv->connection,
-                                       CONNMAN_SERVICE,
-                                       CONNMAN_MANAGER_PATH,
-                                       CONNMAN_MANAGER_INTERFACE);
+  priv->manager = dbus_g_proxy_new_for_name (priv->connection,
+                                             CONNMAN_SERVICE,
+                                             CONNMAN_MANAGER_PATH,
+                                             CONNMAN_MANAGER_INTERFACE);
 
-  dbus_g_proxy_add_signal (manager,
+  dbus_g_proxy_add_signal (priv->manager,
                            "PropertyChanged",
                            G_TYPE_STRING,
                            G_TYPE_VALUE,
                            G_TYPE_INVALID);
 
-  dbus_g_proxy_connect_signal (manager,
+  dbus_g_proxy_connect_signal (priv->manager,
                                "PropertyChanged",
                                G_CALLBACK (network_model_manager_changed_cb),
                                self,
                                NULL);
 
-  call = dbus_g_proxy_begin_call (manager,
+  call = dbus_g_proxy_begin_call (priv->manager,
                                   "GetProperties",
                                   network_model_manager_get_properties_cb,
                                   self,
@@ -559,6 +559,14 @@ network_model_manager_get_properties_cb (DBusGProxy     *manager,
 /*
  * Public methods
  */
+
+DBusGProxy *
+carrick_network_model_get_proxy (CarrickNetworkModel *model)
+{
+  CarrickNetworkModelPrivate *priv = model->priv;
+
+  return priv->manager;
+}
 
 GtkTreeModel *
 carrick_network_model_new (void)
