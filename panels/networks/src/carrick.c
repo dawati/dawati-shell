@@ -50,19 +50,25 @@ _connection_changed_cb (CarrickPane     *pane,
                         const gchar     *connection_type,
                         const gchar     *connection_name,
                         guint            strength,
-                        gboolean         favorite,
+                        const gchar     *state,
                         MplPanelClient  *panel_client)
 {
   CarrickIconState   icon_state;
   const gchar       *icon_id;
   gchar             *tip;
 
-  if (!favorite)
+  if (g_str_equal (state, "idle"))
     {
       tip = g_strdup (_("networks - not connected"));
       icon_state = ICON_OFFLINE;
     }
-  else
+  else if (g_str_equal (state, "association") ||
+           g_str_equal (state, "configuration"))
+    {
+      tip = g_strdup (_("networks - connecting"));
+      icon_state = ICON_CONNECTING;
+    }
+  else if (g_str_equal (state, "ready"))
     {
       if (g_str_equal (connection_type, "ethernet"))
         tip = g_strdup (_("networks - wired"));
@@ -78,11 +84,14 @@ _connection_changed_cb (CarrickPane     *pane,
       else if (g_str_equal (connection_type, "bluetooth"))
         tip = g_strdup_printf (_("networks - %s - bluetooth"),
                                connection_name);
-      else
-        tip = g_strdup (_("networks - error"));
 
       icon_state = carrick_icon_factory_get_state (connection_type,
                                                    strength);
+    }
+  else
+    {
+      tip = g_strdup (_("networks - error"));
+      icon_state = ICON_ERROR;
     }
 
   icon_id = carrick_icon_factory_get_name_for_state (icon_state);
