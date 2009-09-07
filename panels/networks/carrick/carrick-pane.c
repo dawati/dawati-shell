@@ -959,7 +959,8 @@ pane_manager_get_properties_cb (DBusGProxy     *manager,
                error->message);
       g_clear_error (&error);
     }
-  else
+    
+  if (properties)
     {
       g_hash_table_foreach (properties,
                             (GHFunc) pane_update_property,
