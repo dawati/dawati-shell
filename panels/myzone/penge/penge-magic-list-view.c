@@ -147,7 +147,7 @@ penge_magic_list_view_new (void)
 }
 
 static void
-penge_magic_list_view_update (PengeMagicListView *view)
+penge_magic_list_view_real_update (PengeMagicListView *view)
 {
   PengeMagicListViewPrivate *priv = GET_PRIVATE (view);
   GList *children, *l, *ll = NULL;
@@ -156,12 +156,9 @@ penge_magic_list_view_update (PengeMagicListView *view)
   ClutterActor *tile;
   GValue value = { 0, };
   AttributeData *attr;
-
-  if (!priv->item_type || !priv->model)
-    return;
-
-  g_debug (G_STRLOC ": Populating container from model using model: %s",
-           G_OBJECT_TYPE_NAME (priv->model));
+  gint delay = 0;
+  ClutterAnimation *animation;
+  ClutterTimeline *timeline;
 
   children = clutter_container_get_children (CLUTTER_CONTAINER (view));
   children_count = g_list_length (children);
@@ -206,12 +203,41 @@ penge_magic_list_view_update (PengeMagicListView *view)
       g_object_set_property (tile, attr->property_name, &value);
       g_value_unset (&value);
     }
+
     g_object_thaw_notify (tile);
   }
 
   for (; l; l = l->next)
   {
-    clutter_container_remove_actor (CLUTTER_CONTAINER (view), (ClutterActor *)l->data);
+    g_debug ("killing actor");
+    clutter_container_remove_actor (CLUTTER_CONTAINER (view),
+                                    (ClutterActor *)l->data);
+  }
+
+  g_list_free (children);
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (view));
+
+  for (l = children; l; l = l->next)
+  {
+    tile = (ClutterActor *)l->data;
+    clutter_actor_set_opacity (tile, 0);
+    animation = clutter_actor_animate (tile,
+                                       CLUTTER_LINEAR,
+                                       300,
+                                       "opacity", 255,
+                                       NULL);
+
+    if (delay != 0)
+    {
+      timeline = clutter_animation_get_timeline (animation);
+      clutter_timeline_stop (timeline);
+      clutter_timeline_set_delay (timeline,
+                                  delay);
+      clutter_timeline_start (timeline);
+    }
+
+    delay += 150;
   }
 
   g_list_free (children);
@@ -221,13 +247,48 @@ penge_magic_list_view_update (PengeMagicListView *view)
 }
 
 static void
+_fade_animation_completed_cb (ClutterAnimation *animation,
+                              gpointer          userdata)
+{
+  clutter_actor_set_opacity (CLUTTER_ACTOR (userdata), 255);
+  penge_magic_list_view_real_update (PENGE_MAGIC_LIST_VIEW (userdata));
+}
+
+static void
+penge_magic_list_view_update (PengeMagicListView *view)
+{
+  PengeMagicListViewPrivate *priv = GET_PRIVATE (view);
+  GList *children, *l;
+  ClutterActor *child;
+  ClutterAnimation *animation = NULL;
+
+  if (!priv->item_type || !priv->model)
+    return;
+
+  g_debug (G_STRLOC ": Populating container from model using model: %s",
+           G_OBJECT_TYPE_NAME (priv->model));
+
+
+  animation = clutter_actor_animate (view,
+                                     CLUTTER_LINEAR,
+                                     300,
+                                     "opacity", 0,
+                                     NULL);
+
+  g_signal_connect_after (animation,
+                          "completed",
+                          _fade_animation_completed_cb,
+                          view);
+}
+
+static void
 _model_row_added_cb (ClutterModel     *model,
                      ClutterModelIter *iter,
                      gpointer          userdata)
 {
   PengeMagicListView *view = PENGE_MAGIC_LIST_VIEW (userdata);
 
-  penge_magic_list_view_update (view);
+  penge_magic_list_view_real_update (view);
 }
 
 static void
@@ -251,6 +312,7 @@ _model_row_changed_cb (ClutterModel     *model,
 }
 
 static void
+
 _model_sort_changed_cb (ClutterModel *model,
                         gpointer      userdata)
 {
@@ -309,7 +371,6 @@ penge_magic_list_view_set_model (PengeMagicListView *view,
                         (GCallback)_model_sort_changed_cb,
                         view);
     }
-
     penge_magic_list_view_update (view);
   }
 }
