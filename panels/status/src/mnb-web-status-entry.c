@@ -792,7 +792,7 @@ mnb_web_status_entry_set_status_text (MnbWebStatusEntry *entry,
 
   if (status_time)
     {
-      priv->status_time = mpl_utils_format_time (status_time);
+      priv->status_time = nbtk_utils_format_time (status_time);
       priv->status_timeval = *status_time;
     }
 
