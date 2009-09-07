@@ -247,7 +247,7 @@ carrick_pane_class_init (CarrickPaneClass *klass)
                     G_TYPE_STRING,
                     G_TYPE_STRING,
                     G_TYPE_UINT,
-                    G_TYPE_BOOLEAN);
+                    G_TYPE_STRING);
 }
 
 /*
@@ -984,20 +984,20 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
   if (0 == gtk_tree_path_compare (first, path)) {
     char *connection_type;
     char *connection_name;
+    char *connection_state;
     guint strength;
-    gboolean favorite;
 
     gtk_tree_model_get (tree_model, iter,
                         CARRICK_COLUMN_TYPE, &connection_type,
                         CARRICK_COLUMN_NAME, &connection_name,
                         CARRICK_COLUMN_STRENGTH, &strength,
-                        CARRICK_COLUMN_FAVORITE, &favorite,
+                        CARRICK_COLUMN_STATE, &connection_state,
                         -1);
     g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
                    connection_type,
                    connection_name,
                    strength,
-                   favorite);
+                   connection_state);
   }
   gtk_tree_path_free (first);
 }
