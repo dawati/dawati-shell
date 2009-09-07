@@ -172,6 +172,7 @@ penge_people_pane_allocate (ClutterActor          *actor,
   PengePeoplePanePrivate *priv = GET_PRIVATE (pane);
   gfloat width, height;
   ClutterActorBox child_box;
+  gfloat placeholder_width;
 
   if (CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->allocate)
     CLUTTER_ACTOR_CLASS (penge_people_pane_parent_class)->allocate (actor, box, flags);
@@ -179,13 +180,20 @@ penge_people_pane_allocate (ClutterActor          *actor,
   width = box->x2 - box->x1;
   height = box->y2 - box->y1;
 
-  child_box.x1 = 0;
-  child_box.x2 = width;
   child_box.y1 = 0;
+  clutter_actor_get_preferred_width (priv->placeholder_tile,
+                                     -1,
+                                     NULL,
+                                     &placeholder_width);
+
+  child_box.x1 = (width - placeholder_width) / 2;
+  child_box.x2 = child_box.x1 + placeholder_width;
   clutter_actor_get_preferred_height (priv->placeholder_tile,
-                                      width,
+                                      placeholder_width,
                                       NULL,
                                       &(child_box.y2));
+
+
   clutter_actor_allocate (priv->placeholder_tile,
                           &child_box,
                           flags);
@@ -254,10 +262,10 @@ penge_people_pane_get_preferred_width (ClutterActor *self,
                                        gfloat       *natural_width_p)
 {
   if (min_width_p)
-    *min_width_p = TILE_WIDTH;
+    *min_width_p = TILE_WIDTH * 2;
 
   if (natural_width_p)
-    *natural_width_p = TILE_HEIGHT;
+    *natural_width_p = TILE_WIDTH * 2;
 }
 
 static void
