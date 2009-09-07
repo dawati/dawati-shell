@@ -76,7 +76,6 @@ enum {
   PROP_MODEL
 };
 
-static void carrick_list_sort_list (CarrickList *list);
 static void carrick_list_set_model (CarrickList *list, CarrickNetworkModel *model);
 static void carrick_list_add (CarrickList *list, GtkTreePath *path);
 
@@ -686,24 +685,6 @@ carrick_list_get_children (CarrickList *list)
 
   return gtk_container_get_children (GTK_CONTAINER (priv->box));
 }
-
-static void
-carrick_list_sort_list (CarrickList *list)
-{
-  CarrickListPrivate *priv = list->priv;
-  GList              *items = gtk_container_get_children (GTK_CONTAINER (priv->box));
-  GList              *l;
-
-  for (l = items; l; l = l->next)
-    {
-      gtk_box_reorder_child (GTK_BOX (priv->box),
-                             GTK_WIDGET (l->data),
-                             carrick_service_item_get_order (l->data));
-    }
-
-  g_list_free (items);
-}
-
 
 #define FAST_SCROLL_BUFFER 15
 #define SCROLL_BUFFER 60
