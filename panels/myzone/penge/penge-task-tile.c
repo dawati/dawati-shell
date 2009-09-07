@@ -344,6 +344,9 @@ penge_task_tile_update (PengeTaskTile *tile)
                                  2,
                                  NULL);
   }
+
+  nbtk_button_set_checked (NBTK_BUTTON (priv->check_button),
+                           jana_task_get_completed (priv->task));
 }
 
 gchar *
