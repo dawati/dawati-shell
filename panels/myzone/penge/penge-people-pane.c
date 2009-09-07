@@ -88,6 +88,20 @@ penge_people_pane_finalize (GObject *object)
 }
 
 static void
+_model_bulk_start_cb (ClutterModel *model,
+                      gpointer      userdata)
+{
+  penge_magic_list_view_freeze (PENGE_MAGIC_LIST_VIEW (userdata));
+}
+
+static void
+_model_bulk_end_cb (ClutterModel *model,
+                    gpointer      userdata)
+{
+  penge_magic_list_view_thaw (PENGE_MAGIC_LIST_VIEW (userdata));
+}
+
+static void
 _client_open_view_cb (MojitoClient     *client,
                       MojitoClientView *view,
                       gpointer          userdata)
@@ -106,6 +120,15 @@ _client_open_view_cb (MojitoClient     *client,
 
   penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (priv->list_view),
                                    priv->model);
+
+  g_signal_connect (priv->model,
+                    "bulk-start",
+                    (GCallback)_model_bulk_start_cb,
+                    priv->list_view);
+  g_signal_connect (priv->model,
+                    "bulk-end",
+                    (GCallback)_model_bulk_end_cb,
+                    priv->list_view);
 
   clutter_actor_hide (priv->placeholder_tile);
   clutter_actor_show (priv->list_view);
