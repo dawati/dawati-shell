@@ -217,16 +217,11 @@ penge_grid_view_init (PengeGridView *self)
                         0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->calendar_pane,
-                               "y-expand",
-                               FALSE,
-                               "y-fill",
-                               FALSE,
-                               "y-align",
-                               0.0,
-                               "x-expand",
-                               FALSE,
-                               "x-fill",
-                               FALSE,
+                               "y-expand", TRUE,
+                               "y-fill", FALSE,
+                               "y-align", 0.0,
+                               "x-expand", FALSE,
+                               "x-fill", FALSE,
                                NULL);
 
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
@@ -239,16 +234,11 @@ penge_grid_view_init (PengeGridView *self)
                         0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->favourite_apps_pane,
-                               "y-expand",
-                               TRUE,
-                               "y-fill",
-                               FALSE,
-                               "y-align",
-                               1.0,
-                               "x-expand",
-                               FALSE,
-                               "x-fill",
-                               FALSE,
+                               "y-expand", TRUE,
+                               "y-fill", FALSE,
+                               "y-align", 1.0,
+                               "x-expand", FALSE,
+                               "x-fill", FALSE,
                                NULL);
 
 
