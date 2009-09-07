@@ -29,6 +29,8 @@ G_DEFINE_TYPE (PengePeoplePlaceholderTile, penge_people_placeholder_tile, NBTK_T
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_PEOPLE_PLACEHOLDER_TILE, PengePeoplePlaceholderTilePrivate))
 
 #define ICON_SIZE 48
+#define TILE_WIDTH 170.0f
+#define TILE_HEIGHT 115.0f
 
 typedef struct _PengePeoplePlaceholderTilePrivate PengePeoplePlaceholderTilePrivate;
 
@@ -49,6 +51,19 @@ penge_people_placeholder_tile_finalize (GObject *object)
 }
 
 static void
+penge_people_placeholder_tile_get_preferred_width (ClutterActor *self,
+                                                   gfloat        for_height,
+                                                   gfloat       *min_width_p,
+                                                   gfloat       *natural_width_p)
+{
+  if (min_width_p)
+    *min_width_p = TILE_WIDTH * 2;
+
+  if (natural_width_p)
+    *natural_width_p = TILE_WIDTH * 2;
+}
+
+static void
 penge_people_placeholder_tile_class_init (PengePeoplePlaceholderTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -58,6 +73,8 @@ penge_people_placeholder_tile_class_init (PengePeoplePlaceholderTileClass *klass
 
   object_class->dispose = penge_people_placeholder_tile_dispose;
   object_class->finalize = penge_people_placeholder_tile_finalize;
+
+  actor_class->get_preferred_width = penge_people_placeholder_tile_get_preferred_width;
 }
 
 static void
