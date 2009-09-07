@@ -793,15 +793,18 @@ carrick_list_add (CarrickList *list,
 
   gtk_widget_show (widget);
 
-  /* define a drag source */
+  /* Define the service item as a drag source.
+   * Note: DnD will not work in mutter-moblin until MB #5499 is fixed
+   * http://bugzilla.moblin.org/show_bug.cgi?id=5499
+   */
   /*
-     carrick_service_item_set_draggable (CARRICK_SERVICE_ITEM (widget), TRUE);
-     gtk_drag_source_set (widget,
+  carrick_service_item_set_draggable (CARRICK_SERVICE_ITEM (widget), TRUE);
+  gtk_drag_source_set (widget,
                        GDK_BUTTON1_MASK,
                        carrick_targets,
                        G_N_ELEMENTS (carrick_targets),
                        GDK_ACTION_MOVE);
-   */
+  */
   g_signal_connect (widget,
                     "drag-begin",
                     G_CALLBACK (carrick_list_drag_begin),
@@ -814,13 +817,14 @@ carrick_list_add (CarrickList *list,
                     "drag-end",
                     G_CALLBACK (carrick_list_drag_end),
                     list);
-
-  /* define a drag destination */
+  /* Define the service as a drag destination */
+  /*
   gtk_drag_dest_set (widget,
                      GTK_DEST_DEFAULT_ALL,
                      carrick_targets,
                      G_N_ELEMENTS (carrick_targets),
                      GDK_ACTION_MOVE);
+  */
   g_signal_connect (widget,
                     "drag-drop",
                     G_CALLBACK (carrick_list_drag_drop),
