@@ -84,14 +84,21 @@ _connection_changed_cb (CarrickPane     *pane,
       else if (g_str_equal (connection_type, "bluetooth"))
         tip = g_strdup_printf (_("networks - %s - bluetooth"),
                                connection_name);
+      else
+        tip = g_strdup (_("networks"));
 
       icon_state = carrick_icon_factory_get_state (connection_type,
                                                    strength);
     }
-  else
+  else if (g_str_equal (state, "error"))
     {
       tip = g_strdup (_("networks - error"));
       icon_state = ICON_ERROR;
+    }
+  else
+    {
+      tip = g_strdup (_("networks"));
+      icon_state = ICON_OFFLINE;
     }
 
   icon_id = carrick_icon_factory_get_name_for_state (icon_state);
