@@ -28,14 +28,15 @@ static void
 penge_magic_texture_paint (ClutterActor *actor)
 {
   ClutterActorBox box;
-  CoglHandle *tex;
+  CoglHandle *material, *tex;
   float bw, bh;
   float aw, ah;
   float v;
   float tx1, tx2, ty1, ty2;
-  ClutterColor col = { 0xff, 0xff, 0xff, 0xff };
+  guint8 alpha;
 
   clutter_actor_get_allocation_box (actor, &box);
+  material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (actor));
   tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (actor));
 
   bw = (float) cogl_texture_get_width (tex); /* base texture width */
@@ -62,10 +63,15 @@ penge_magic_texture_paint (ClutterActor *actor)
     ty2 = 1;
   }
 
-  col.alpha = clutter_actor_get_paint_opacity (actor);
-  cogl_set_source_color4ub (col.red, col.green, col.blue, col.alpha);
-  cogl_rectangle (0, 0, aw, ah);
-  cogl_set_source_texture (tex);
+  alpha = clutter_actor_get_paint_opacity (actor);
+
+  cogl_material_set_color4ub (material,
+                              alpha,
+                              alpha,
+                              alpha,
+                              alpha);
+
+  cogl_set_source (material);
   cogl_rectangle_with_texture_coords (0, 0,
                                       aw, ah,
                                       tx1, ty1,
