@@ -32,6 +32,7 @@ typedef struct _PengePeopleModelPrivate PengePeopleModelPrivate;
 
 struct _PengePeopleModelPrivate {
   MojitoClientView *view;
+  guint bulk_timeout_id;
 };
 
 enum
@@ -164,11 +165,37 @@ penge_people_model_new (MojitoClientView *view)
                        NULL);
 }
 
+static gboolean
+_bulk_timeout_cb (gpointer data)
+{
+  PengePeopleModelPrivate *priv = GET_PRIVATE (data);
+
+  g_signal_emit (data, signals[BULK_END_SIGNAL], 0);
+  priv->bulk_timeout_id = 0;
+
+  return FALSE;
+}
+
 static void
 _view_item_added_cb (MojitoClientView *view,
                      MojitoItem       *item,
                      gpointer          userdata)
 {
+  PengePeopleModelPrivate *priv = GET_PRIVATE (userdata);
+
+  if (priv->bulk_timeout_id == 0)
+  {
+    priv->bulk_timeout_id = g_timeout_add (300,
+                                           _bulk_timeout_cb,
+                                           userdata);
+    g_signal_emit (userdata, signals[BULK_START_SIGNAL], 0);
+  } else {
+    g_source_remove (priv->bulk_timeout_id);
+    priv->bulk_timeout_id = g_timeout_add_seconds (1,
+                                                   _bulk_timeout_cb,
+                                                   userdata);
+  }
+
   clutter_model_prepend (CLUTTER_MODEL (userdata),
                          0, item,
                          -1);
