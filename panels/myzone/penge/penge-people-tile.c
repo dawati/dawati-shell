@@ -271,7 +271,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                     "secondary-text", mojito_item_get_value (item, "author"),
                     NULL);
     } else {
-      date = mpl_utils_format_time (&(item->date));
+      date = nbtk_utils_format_time (&(item->date));
       g_object_set (tile,
                     "primary-text", mojito_item_get_value (item, "title"),
                     "secondary-text", date,
@@ -279,7 +279,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
       g_free (date);
     }
   } else if (mojito_item_has_key (item, "author")) {
-      date = mpl_utils_format_time (&(item->date));
+      date = nbtk_utils_format_time (&(item->date));
       g_object_set (tile,
                     "primary-text", mojito_item_get_value (item, "author"),
                     "secondary-text", date,
