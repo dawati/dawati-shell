@@ -22,7 +22,9 @@ icons_DATA = \
 	      network-3g-strong-hover.png \
 	      network-3g-strong.png \
 	      network-3g-weak-hover.png \
-	      network-3g-weak.png
+	      network-3g-weak.png \
+        toolbar-button-active.png \
+        toolbar-button-hover.png
 
 
 EXTRA_DIST = $(icons_DATA)
