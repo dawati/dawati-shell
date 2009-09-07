@@ -237,8 +237,8 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                           0);
     clutter_container_child_set (CLUTTER_CONTAINER (self),
                                  tex,
-                                 "col-span",
-                                 2,
+                                 "col-span", 2,
+                                 "y-expand", FALSE,
                                  NULL);
   }
 
@@ -254,10 +254,10 @@ penge_calendar_pane_init (PengeCalendarPane *self)
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->events_pane,
-                               "y-expand",
-                               FALSE,
-                               "col-span",
-                               2,
+                               "y-expand", TRUE,
+                               "y-fill", FALSE,
+                               "col-span", 2,
+                               "y-align", 0.0,
                                NULL);
 
   tex = clutter_texture_new_from_file (DOUBLE_DIV_LINE, &error);
@@ -274,8 +274,8 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                           0);
     clutter_container_child_set (CLUTTER_CONTAINER (self),
                                  tex,
-                                 "col-span",
-                                 2,
+                                 "col-span", 2,
+                                 "y-expand", FALSE,
                                  NULL);
   }
 
@@ -288,10 +288,10 @@ penge_calendar_pane_init (PengeCalendarPane *self)
 
  clutter_container_child_set (CLUTTER_CONTAINER (self),
                               priv->tasks_pane,
-                              "y-expand",
-                              FALSE,
-                              "col-span",
-                              2,
+                              "y-expand", TRUE,
+                              "y-fill", FALSE,
+                              "col-span", 2,
+                              "y-align", 0.0,
                               NULL);
 
  nbtk_table_set_row_spacing (NBTK_TABLE (self), 2);
