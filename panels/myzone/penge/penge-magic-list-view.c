@@ -193,18 +193,18 @@ penge_magic_list_view_real_update (PengeMagicListView *view)
   {
     tile = (ClutterActor *)l->data;
 
-    g_object_freeze_notify (tile);
+    g_object_freeze_notify (G_OBJECT (tile));
     for (ll = priv->attributes; ll; ll = ll->next)
     {
       attr = (AttributeData *)ll->data;
 
       clutter_model_iter_get_value (iter, attr->col, &value);
 
-      g_object_set_property (tile, attr->property_name, &value);
+      g_object_set_property (G_OBJECT (tile), attr->property_name, &value);
       g_value_unset (&value);
     }
 
-    g_object_thaw_notify (tile);
+    g_object_thaw_notify (G_OBJECT (tile));
   }
 
   for (; l; l = l->next)
@@ -267,7 +267,7 @@ penge_magic_list_view_update (PengeMagicListView *view)
            G_OBJECT_TYPE_NAME (priv->model));
 
 
-  animation = clutter_actor_animate (view,
+  animation = clutter_actor_animate (CLUTTER_ACTOR (view),
                                      CLUTTER_LINEAR,
                                      300,
                                      "opacity", 0,
@@ -275,7 +275,7 @@ penge_magic_list_view_update (PengeMagicListView *view)
 
   g_signal_connect_after (animation,
                           "completed",
-                          _fade_animation_completed_cb,
+                          (GCallback)_fade_animation_completed_cb,
                           view);
 }
 
