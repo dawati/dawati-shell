@@ -295,34 +295,6 @@ _tell_changed (CarrickNotificationManager *self,
 }
 
 static void
-carrick_notification_manager_get_property (GObject *object, guint property_id,
-                                           GValue *value, GParamSpec *pspec)
-{
-  CarrickNotificationManager *notif = CARRICK_NOTIFICATION_MANAGER (object);
-
-  switch (property_id)
-    {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-    }
-}
-
-static void
-carrick_notification_manager_set_property (GObject *object, guint property_id,
-                                           const GValue *value, GParamSpec *pspec)
-{
-  CarrickNotificationManager *notif = CARRICK_NOTIFICATION_MANAGER (object);
-
-  switch (property_id)
-    {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-    }
-}
-
-static void
 carrick_notification_manager_dispose (GObject *object)
 {
   notify_uninit ();
@@ -353,8 +325,6 @@ carrick_notification_manager_class_init (CarrickNotificationManagerClass *klass)
 
   g_type_class_add_private (klass, sizeof (CarrickNotificationManagerPrivate));
 
-  object_class->get_property = carrick_notification_manager_get_property;
-  object_class->set_property = carrick_notification_manager_set_property;
   object_class->dispose = carrick_notification_manager_dispose;
   object_class->finalize = carrick_notification_manager_finalize;
 }
