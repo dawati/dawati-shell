@@ -165,11 +165,36 @@ penge_people_model_new (MojitoClientView *view)
                        NULL);
 }
 
+static gint
+_model_time_sort_cb (ClutterModel *model,
+                     const GValue *v_a,
+                     const GValue *v_b,
+                     gpointer      userdata)
+{
+  MojitoItem *a = (MojitoItem *)g_value_get_boxed (v_a);
+  MojitoItem *b = (MojitoItem *)g_value_get_boxed (v_b);
+
+  if (a->date.tv_sec> b->date.tv_sec)
+  {
+    return -1;
+  } else if (a->date.tv_sec == b->date.tv_sec) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
 static gboolean
 _bulk_timeout_cb (gpointer data)
 {
+  PengePeopleModel *model = PENGE_PEOPLE_MODEL (data);
   PengePeopleModelPrivate *priv = GET_PRIVATE (data);
 
+  clutter_model_set_sort (CLUTTER_MODEL (model),
+                        0,
+                        _model_time_sort_cb,
+                        NULL,
+                        NULL);
   g_signal_emit (data, signals[BULK_END_SIGNAL], 0);
   priv->bulk_timeout_id = 0;
 
@@ -189,6 +214,11 @@ _view_item_added_cb (MojitoClientView *view,
                                            _bulk_timeout_cb,
                                            userdata);
     g_signal_emit (userdata, signals[BULK_START_SIGNAL], 0);
+    clutter_model_set_sort (CLUTTER_MODEL (userdata),
+                            -1,
+                            NULL,
+                            NULL,
+                            NULL);
   } else {
     g_source_remove (priv->bulk_timeout_id);
     priv->bulk_timeout_id = g_timeout_add_seconds (1,
