@@ -1,6 +1,7 @@
 # List of source files containing translatable strings
 carrick/carrick-applet.c
+carrick/carrick-list.c
+carrick/carrick-notification-manager.c
 carrick/carrick-pane.c
 carrick/carrick-service-item.c
-carrick/carrick-notification-manager.c
 src/carrick.c
