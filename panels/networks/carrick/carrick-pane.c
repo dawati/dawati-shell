@@ -976,6 +976,7 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
                       GtkTreeIter   *iter,
                       CarrickPane   *self)
 {
+  CarrickPanePrivate *priv = self->priv;
   GtkTreePath *first;
 
   /* Emit signal if connection is first in the model -- means the active one.
@@ -993,11 +994,19 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
                         CARRICK_COLUMN_STRENGTH, &strength,
                         CARRICK_COLUMN_STATE, &connection_state,
                         -1);
+
     g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
                    connection_type,
                    connection_name,
                    strength,
                    connection_state);
+
+    /* We *may* need to provide a notification */
+    carrick_notification_manager_notify_event (priv->notes,
+                                               connection_type,
+                                               connection_state,
+                                               connection_name,
+                                               strength);
   }
   gtk_tree_path_free (first);
 }
