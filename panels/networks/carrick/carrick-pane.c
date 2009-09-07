@@ -243,10 +243,11 @@ carrick_pane_class_init (CarrickPaneClass *klass)
                     NULL,
                     connman_marshal_VOID__STRING_STRING_UINT,
                     G_TYPE_NONE,
-                    3,
+                    4,
                     G_TYPE_STRING,
                     G_TYPE_STRING,
-                    G_TYPE_UINT);
+                    G_TYPE_UINT,
+                    G_TYPE_BOOLEAN);
 }
 
 /*
@@ -959,7 +960,7 @@ pane_manager_get_properties_cb (DBusGProxy     *manager,
                error->message);
       g_clear_error (&error);
     }
-    
+
   if (properties)
     {
       g_hash_table_foreach (properties,
@@ -984,16 +985,19 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
     char *connection_type;
     char *connection_name;
     guint strength;
+    gboolean favorite;
 
     gtk_tree_model_get (tree_model, iter,
                         CARRICK_COLUMN_TYPE, &connection_type,
                         CARRICK_COLUMN_NAME, &connection_name,
                         CARRICK_COLUMN_STRENGTH, &strength,
+                        CARRICK_COLUMN_FAVORITE, &favorite,
                         -1);
     g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
                    connection_type,
                    connection_name,
-                   strength);
+                   strength,
+                   favorite);
   }
   gtk_tree_path_free (first);
 }
