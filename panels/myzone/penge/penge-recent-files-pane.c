@@ -74,14 +74,30 @@ penge_recent_files_pane_finalize (GObject *object)
 }
 
 static void
+penge_recent_files_pane_get_preferred_width (ClutterActor *self,
+                                             gfloat        for_height,
+                                             gfloat       *min_width_p,
+                                             gfloat       *natural_width_p)
+{
+  if (min_width_p)
+    *min_width_p = TILE_WIDTH * 2;
+
+  if (natural_width_p)
+    *natural_width_p = TILE_WIDTH * 2;
+}
+
+static void
 penge_recent_files_pane_class_init (PengeRecentFilesPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (PengeRecentFilesPanePrivate));
 
   object_class->dispose = penge_recent_files_pane_dispose;
   object_class->finalize = penge_recent_files_pane_finalize;
+
+  actor_class->get_preferred_width = penge_recent_files_pane_get_preferred_width;
 }
 
 static void
@@ -206,9 +222,9 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
       nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                             priv->welcome_tile,
                                             0, 0,
-                                            "x-expand", TRUE,
+                                            "x-expand", FALSE,
                                             "y-expand", FALSE,
-                                            "x-fill", TRUE,
+                                            "x-fill", FALSE,
                                             "y-fill", TRUE,
                                             NULL);
       nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
