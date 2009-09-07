@@ -43,6 +43,8 @@ struct _PengeEventsPanePrivate {
   GHashTable *uid_to_actors;
 
   NbtkWidget *no_events_bin;
+
+  gint count;
 };
 
 enum
@@ -51,7 +53,8 @@ enum
   PROP_TIME
 };
 
-#define MAX_COUNT 3
+#define TILE_WIDTH 216
+#define TILE_HEIGHT 52
 
 static void penge_events_pane_update_duration (PengeEventsPane *pane);
 static void penge_events_pane_update (PengeEventsPane *pane);
@@ -134,10 +137,56 @@ penge_events_pane_finalize (GObject *object)
   G_OBJECT_CLASS (penge_events_pane_parent_class)->finalize (object);
 }
 
+static gboolean
+_update_idle_cb (gpointer userdata)
+{
+  penge_events_pane_update (PENGE_EVENTS_PANE (userdata));
+  return FALSE;
+}
+
+static void
+penge_events_pane_allocate (ClutterActor          *actor,
+                            const ClutterActorBox *box,
+                            ClutterAllocationFlags flags)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
+  gfloat height;
+
+  if (CLUTTER_ACTOR_CLASS (penge_events_pane_parent_class)->allocate)
+    CLUTTER_ACTOR_CLASS (penge_events_pane_parent_class)->allocate (actor, box, flags);
+
+  /* Work out how many we can fit in */
+  height = box->y2 - box->y1;
+  priv->count = height / TILE_HEIGHT;
+
+  /* Must use a high priority idle to avoid redraw artifacts */
+  g_idle_add_full (G_PRIORITY_HIGH_IDLE,
+                   _update_idle_cb,
+                   actor,
+                   NULL);
+}
+
+static void
+penge_events_pane_get_preferred_height (ClutterActor *actor,
+                                        gfloat        for_width,
+                                        gfloat       *min_height_p,
+                                        gfloat       *nat_height_p)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
+
+  if (min_height_p)
+    *min_height_p = TILE_HEIGHT;
+
+  /* Report our natural height to be our potential maximum */
+  if (nat_height_p)
+    *nat_height_p = TILE_HEIGHT * g_hash_table_size (priv->uid_to_events);
+}
+
 static void
 penge_events_pane_class_init (PengeEventsPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (PengeEventsPanePrivate));
@@ -146,6 +195,9 @@ penge_events_pane_class_init (PengeEventsPaneClass *klass)
   object_class->set_property = penge_events_pane_set_property;
   object_class->dispose = penge_events_pane_dispose;
   object_class->finalize = penge_events_pane_finalize;
+
+  actor_class->allocate = penge_events_pane_allocate;
+  actor_class->get_preferred_height = penge_events_pane_get_preferred_height;
 
   pspec = g_param_spec_object ("time",
                                "The time",
@@ -271,7 +323,7 @@ penge_events_pane_update (PengeEventsPane *pane)
 
   /* Next try and find the end of the window */
   window_end = window_start;
-  for (l = window_start; l && count < MAX_COUNT; l = l->next)
+  for (l = window_start; l && count < priv->count; l = l->next)
   {
     event = (JanaEvent *)l->data;
 
@@ -284,9 +336,9 @@ penge_events_pane_update (PengeEventsPane *pane)
   }
 
   /* Try and extend the window forward */
-  if (count < MAX_COUNT)
+  if (count < priv->count)
   {
-    for (l = window_start; l && count < MAX_COUNT; l = l->prev)
+    for (l = window_start; l && count < priv->count; l = l->prev)
     {
       if (l->prev)
       {
@@ -330,7 +382,7 @@ penge_events_pane_update (PengeEventsPane *pane)
                             priv->store,
                             NULL);
 
-      clutter_actor_set_size (actor, 216, 52);
+      clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
       nbtk_table_add_actor (NBTK_TABLE (pane),
                             actor,
                             count,

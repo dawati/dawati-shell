@@ -41,11 +41,14 @@ struct _PengeTasksPanePrivate {
   GHashTable *uid_to_actors;
 
   NbtkWidget *no_tasks_bin;
+
+  gint count;
 };
 
-static void penge_tasks_pane_update (PengeTasksPane *pane);
+#define TILE_WIDTH 216
+#define TILE_HEIGHT 52
 
-#define MAX_COUNT 2
+static void penge_tasks_pane_update (PengeTasksPane *pane);
 
 static void
 penge_tasks_pane_get_property (GObject *object, guint property_id,
@@ -79,17 +82,66 @@ penge_tasks_pane_finalize (GObject *object)
   G_OBJECT_CLASS (penge_tasks_pane_parent_class)->finalize (object);
 }
 
+static gboolean
+_update_idle_cb (gpointer userdata)
+{
+  penge_tasks_pane_update (PENGE_TASKS_PANE (userdata));
+  return FALSE;
+}
+
+static void
+penge_tasks_pane_allocate (ClutterActor          *actor,
+                           const ClutterActorBox *box,
+                           ClutterAllocationFlags flags)
+{
+  PengeTasksPanePrivate *priv = GET_PRIVATE (actor);
+  gfloat height;
+
+  if (CLUTTER_ACTOR_CLASS (penge_tasks_pane_parent_class)->allocate)
+    CLUTTER_ACTOR_CLASS (penge_tasks_pane_parent_class)->allocate (actor, box, flags);
+
+  /* Work out how many we can fit in */
+  height = box->y2 - box->y1;
+  priv->count = height / TILE_HEIGHT;
+
+  /* Must use a high priority idle to avoid redraw artifacts */
+  g_idle_add_full (G_PRIORITY_HIGH_IDLE,
+                   _update_idle_cb,
+                   actor,
+                   NULL);
+}
+
+static void
+penge_tasks_pane_get_preferred_height (ClutterActor *actor,
+                                       gfloat        for_width,
+                                       gfloat       *min_height_p,
+                                       gfloat       *nat_height_p)
+{
+  PengeTasksPanePrivate *priv = GET_PRIVATE (actor);
+
+  if (min_height_p)
+    *min_height_p = TILE_HEIGHT;
+
+  /* Report our natural height to be our potential maximum */
+  if (nat_height_p)
+    *nat_height_p = TILE_HEIGHT * g_hash_table_size (priv->uid_to_tasks);
+}
+
 static void
 penge_tasks_pane_class_init (PengeTasksPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (PengeTasksPanePrivate));
 
   object_class->get_property = penge_tasks_pane_get_property;
   object_class->set_property = penge_tasks_pane_set_property;
   object_class->dispose = penge_tasks_pane_dispose;
-  object_class->finalize = penge_tasks_pane_finalize;
+
+  actor_class->allocate = penge_tasks_pane_allocate;
+  actor_class->get_preferred_height = penge_tasks_pane_get_preferred_height;
 }
 
 static void
@@ -280,7 +332,7 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   if (tasks)
     first_task = (JanaTask *)tasks->data;
 
-  if (!tasks || (first_task && jana_task_get_completed (first_task)))
+  if (!tasks)
   {
     if (!priv->no_tasks_bin)
     {
@@ -306,17 +358,10 @@ penge_tasks_pane_update (PengeTasksPane *pane)
     }
   }
 
-  for (l = tasks; l && count < MAX_COUNT; l = l->next)
+  for (l = tasks; l && count < priv->count; l = l->next)
   {
     task = (JanaTask *)l->data;
     uid = jana_component_get_uid (JANA_COMPONENT (task));
-
-    /* skip those that are completed. */
-    if (jana_task_get_completed (task))
-    {
-      /* TODO: when we sort break instead */
-      continue;
-    }
 
     actor = g_hash_table_lookup (priv->uid_to_actors,
                                  uid);
@@ -340,7 +385,7 @@ penge_tasks_pane_update (PengeTasksPane *pane)
                             priv->store,
                             NULL);
 
-      clutter_actor_set_size (actor, 216, 52);
+      clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
       nbtk_table_add_actor (NBTK_TABLE (pane),
                             actor,
                             count,
