@@ -26,6 +26,9 @@ G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_WELCOME_TILE, PengeWelcomeTilePrivate))
 
+#define TILE_WIDTH 170.0f
+#define TILE_HEIGHT 115.0f
+
 typedef struct _PengeWelcomeTilePrivate PengeWelcomeTilePrivate;
 
 struct _PengeWelcomeTilePrivate {
@@ -54,12 +57,11 @@ penge_welcome_tile_get_preferred_width (ClutterActor *self,
                                         gfloat       *natural_width_p)
 {
   if (min_width_p)
-    *min_width_p = 170.0;
+    *min_width_p = TILE_WIDTH * 2;
 
   if (natural_width_p)
-    *natural_width_p = 170.0;
+    *natural_width_p = TILE_WIDTH * 2;
 }
-
 
 static void
 penge_welcome_tile_class_init (PengeWelcomeTileClass *klass)
