@@ -24,6 +24,7 @@
 
 #include <config.h>
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
 #include "carrick-service-item.h"
 
@@ -54,6 +55,18 @@ struct _CarrickListPrivate
   CarrickIconFactory *icon_factory;
   CarrickNotificationManager *notes;
   CarrickNetworkModel *model;
+
+  gboolean offline_mode;
+  gboolean wifi_enabled;
+  gboolean ethernet_enabled;
+  gboolean threeg_enabled;
+  gboolean wimax_enabled;
+  gboolean bluetooth_enabled;
+  gboolean have_wifi;
+  gboolean have_ethernet;
+  gboolean have_threeg;
+  gboolean have_wimax;
+  gboolean have_bluetooth;
 };
 
 enum {
@@ -505,12 +518,23 @@ _row_deleted_cb (GtkTreeModel *tree_model,
                  gpointer      user_data)
 {
   CarrickListPrivate *priv = CARRICK_LIST (user_data)->priv;
+  GtkTreeIter *iter = NULL;
 
   /* Row removed, find widget with corresponding GtkTreePath
    * and destroy */
   gtk_container_foreach (GTK_CONTAINER (priv->box),
                          _find_and_remove,
                          path);
+
+  /* If the model is empty, show some fallback content */
+  if (gtk_tree_model_get_iter_first (tree_model, iter) == FALSE)
+    {
+      carrick_list_set_fallback (CARRICK_LIST (user_data));
+    }
+  else
+    {
+      gtk_tree_iter_free (iter);
+    }
 }
 
 static void
@@ -846,13 +870,246 @@ carrick_list_add (CarrickList *list,
   gtk_widget_show (priv->box);
 }
 
-void
-carrick_list_set_fallback (CarrickList *list,
-                           const gchar *fallback)
+
+static void
+_set_and_show_fallback (CarrickList *self)
 {
-  CarrickListPrivate *priv = list->priv;
+  CarrickListPrivate *priv = self->priv;
+  gchar              *fallback = NULL;
+
+  /* Need to add some fall-back content */
+  if (priv->offline_mode)
+    {
+      /*
+       * Hint display if we detect that the system is in
+       * offline mode and there are no available networks
+       */
+      fallback = g_strdup (_ ("Sorry, we can't find any networks. "
+                              "You could try disabling Offline mode. "
+                              ));
+    }
+  else if ((priv->have_wifi && !priv->wifi_enabled) ||
+           (priv->have_ethernet && !priv->ethernet_enabled) ||
+           (priv->have_threeg && !priv->threeg_enabled) ||
+           (priv->have_wimax && !priv->wimax_enabled) ||
+           (priv->have_bluetooth && !priv->bluetooth_enabled))
+    {
+      if (priv->have_wifi && !priv->wifi_enabled)
+        {
+          /*
+           * Hint to display if we detect that wifi has been turned off
+           * and there are no available networks
+           */
+          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
+                                  "You could try turning on WiFi."
+                                  ));
+        }
+      else if (priv->have_wimax && !priv->wimax_enabled)
+        {
+          /*
+           * Hint to display if we detect that wifi is on but
+           * WiMAX has been turned off and there are no available
+           * networks
+           */
+          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
+                                  "You could try turning on WiMAX."
+                                  ));
+        }
+      else if (priv->have_threeg && !priv->threeg_enabled)
+        {
+          /*
+           * Hint to display if we detect that wifi and wimax is on but
+           * 3G has been turned off and there are no available
+           * networks
+           */
+          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
+                                  "You could try turning on 3G."
+                                  ));
+        }
+      else if (priv->have_bluetooth && !priv->bluetooth_enabled)
+        {
+          /*
+           * Hint to display if we detect that wifi, wimax, and 3G are on but
+           * bluetooth has been turned off and there are no available networks
+           */
+          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
+                                  "You could try turning on Bluetooth."
+                                  ));
+        }
+      else if (priv->have_ethernet && !priv->ethernet_enabled)
+        {
+          /*
+           * Hint to display if we detect that all technologies
+           * other then ethernet have been turned on, and there
+           * are no available networks
+           */
+          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
+                                  "You could try turning on Wired."
+                                  ));
+        }
+    }
+  else
+    {
+      /*
+       * Generic message to display if all available networking
+       * technologies are turned on, but for whatever reason we
+       * can not find any networks
+       */
+      fallback = g_strdup (_ ("Sorry, we can't find any networks"));
+    }
 
   gtk_label_set_text (GTK_LABEL (priv->fallback), fallback);
+
+  if (fallback)
+    gtk_widget_show (priv->fallback);
+
+  g_free (fallback);
+}
+
+static void
+list_update_property (const gchar *property,
+                      GValue      *value,
+                      gpointer     user_data)
+{
+  CarrickList        *list = user_data;
+  CarrickListPrivate *priv = list->priv;
+  gboolean state_changed = FALSE;
+
+  if (g_str_equal (property, "OfflineMode"))
+    {
+      priv->offline_mode = g_value_get_boolean (value);
+      state_changed = TRUE;
+    }
+  else if (g_str_equal (property, "AvailableTechnologies"))
+    {
+      gchar **tech = g_value_get_boxed (value);
+      gint    i;
+
+      priv->have_wifi = FALSE;
+      priv->have_ethernet = FALSE;
+      priv->have_threeg = FALSE;
+      priv->have_wimax = FALSE;
+      priv->have_bluetooth = FALSE;
+
+      for (i = 0; i < g_strv_length (tech); i++)
+        {
+          if (g_str_equal ("wifi", *(tech + i)))
+            {
+              priv->have_wifi = TRUE;
+            }
+          else if (g_str_equal ("wimax", *(tech + i)))
+            {
+              priv->have_wimax = TRUE;
+            }
+          else if (g_str_equal ("bluetooth", *(tech + i)))
+            {
+              priv->have_bluetooth = TRUE;
+            }
+          else if (g_str_equal ("cellular", *(tech + i)))
+            {
+              priv->have_threeg = TRUE;
+            }
+          else if (g_str_equal ("ethernet", *(tech + i)))
+            {
+              priv->have_ethernet = TRUE;
+            }
+        }
+      state_changed = TRUE;
+    }
+  else if (g_str_equal (property, "EnabledTechnologies"))
+    {
+      gchar **tech = g_value_get_boxed (value);
+      gint    i;
+
+      priv->wifi_enabled = FALSE;
+      priv->ethernet_enabled = FALSE;
+      priv->threeg_enabled = FALSE;
+      priv->wimax_enabled = FALSE;
+      priv->bluetooth_enabled = FALSE;
+
+      for (i = 0; i < g_strv_length (tech); i++)
+        {
+          if (g_str_equal ("wifi", *(tech + i)))
+            {
+              priv->wifi_enabled = TRUE;
+            }
+          else if (g_str_equal ("wimax", *(tech + i)))
+            {
+              priv->wimax_enabled = TRUE;
+            }
+          else if (g_str_equal ("bluetooth", *(tech + i)))
+            {
+              priv->bluetooth_enabled = TRUE;
+            }
+          else if (g_str_equal ("cellular", *(tech + i)))
+            {
+              priv->threeg_enabled = TRUE;
+            }
+          else if (g_str_equal ("ethernet", *(tech + i)))
+            {
+              priv->ethernet_enabled = TRUE;
+            }
+        }
+      state_changed = TRUE;
+    }
+
+  if (state_changed)
+    {
+      _set_and_show_fallback (list);
+    }
+}
+
+static void
+list_get_properties_cb (DBusGProxy     *manager,
+                        DBusGProxyCall *call,
+                        gpointer        user_data)
+{
+  CarrickList *list = user_data;
+  GError      *error = NULL;
+  GHashTable  *properties;
+
+  dbus_g_proxy_end_call (manager,
+                         call,
+                         &error,
+                         dbus_g_type_get_map ("GHashTable",
+                                              G_TYPE_STRING,
+                                              G_TYPE_VALUE),
+                         &properties,
+                         G_TYPE_INVALID);
+
+  if (error)
+    {
+      g_debug ("Error when ending GetProperties call: %s",
+               error->message);
+      g_clear_error (&error);
+    }
+
+  if (properties)
+    {
+      g_hash_table_foreach (properties,
+                            (GHFunc) list_update_property,
+                            list);
+      g_hash_table_unref (properties);
+    }
+}
+
+void
+carrick_list_set_fallback (CarrickList *list)
+{
+  CarrickListPrivate *priv = list->priv;
+  DBusGProxy *manager = carrick_network_model_get_proxy (priv->model);
+
+  /*
+   * Make D-Bus calls to determine whether there's a reason that we have no
+   * content. If so, set the fallback label.
+   */
+
+  dbus_g_proxy_begin_call (manager,
+                           "GetProperties",
+                           list_get_properties_cb,
+                           list,
+                           NULL,
+                           G_TYPE_INVALID);
 }
 
 static GObject *

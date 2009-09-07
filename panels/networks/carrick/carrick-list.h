@@ -74,8 +74,6 @@ GtkWidget* carrick_list_new (CarrickIconFactory         *icon_factory,
                              CarrickNotificationManager *notifications,
                              CarrickNetworkModel        *model);
 
-void carrick_list_set_fallback (CarrickList *list, const gchar *fallback);
-
 void carrick_list_set_all_inactive (CarrickList *list);
 
 void carrick_list_set_icon_factory (CarrickList        *list,
@@ -87,6 +85,8 @@ void carrick_list_set_notification_manager (CarrickList                *list,
 CarrickNotificationManager *carrick_list_get_notification_manager (CarrickList *list);
 
 void carrick_list_update (CarrickList *list, const GList *services);
+
+void carrick_list_set_fallback (CarrickList *list);
 
 G_END_DECLS
 
