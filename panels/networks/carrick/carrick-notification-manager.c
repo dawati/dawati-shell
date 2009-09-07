@@ -344,6 +344,115 @@ carrick_notification_manager_init (CarrickNotificationManager *self)
   notify_init ("Carrick");
 }
 
+void
+carrick_notification_manager_notify_event (CarrickNotificationManager *self,
+                                           const gchar                *type,
+                                           const gchar                *state,
+                                           const gchar                *name,
+                                           guint                       str)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
+  gboolean queue_handled = FALSE;
+
+  /*
+   * Determine what note to send, we can:
+   * _tell_changed (self, name, type, str)
+   * _tell_offline (self, name, type)
+   * _tell_online (name, type, str)
+   */
+
+  /* Need to handle last events and queued events separately to better maintain
+   * the systems state */
+  if (priv->queued_state)
+    {
+      /* We have a queued event, test to see if that's what happened */
+      if (g_strcmp0 (priv->queued_type, type) == 0 &&
+          g_strcmp0 (priv->queued_state, state) == 0 &&
+          (g_strcmp0 (priv->queued_name, name) ||
+           g_strcmp0 (priv->queued_name, "all")))
+        {
+          /* Remember the event info */
+          g_free (priv->last_state);
+          priv->last_state = g_strdup (priv->queued_state);
+          g_free (priv->last_type);
+          priv->last_type = g_strdup (priv->queued_type);
+          g_free (priv->last_name);
+          priv->last_name = NULL;
+          if (priv->queued_name && g_strcmp0 (priv->queued_name, "all") != 0)
+            priv->last_name = g_strdup (priv->queued_name);
+
+          /* We've handled this queued event, clear the stored data */
+          g_free (priv->queued_state);
+          priv->queued_state = NULL;
+          g_free (priv->queued_type);
+          priv->queued_type = NULL;
+          g_free (priv->queued_name);
+          priv->queued_name = NULL;
+
+          queue_handled = TRUE;
+        }
+    }
+
+  if (!queue_handled)
+    {
+      if (g_strcmp0 (priv->last_type, type) != 0 ||
+          (priv->last_name != NULL && g_strcmp0 (priv->last_name, name) != 0))
+        {
+          /* top service has changed */
+          if (g_strcmp0 (state, "ready") == 0 &&
+              g_strcmp0 (priv->last_state, "idle") == 0)
+            {
+              _tell_online (name, type, str);
+            }
+          else if (g_strcmp0 (state, "ready") == 0 &&
+                   g_strcmp0 (priv->last_state, "ready") == 0
+                   && g_strcmp0 (name, priv->last_name) != 0)
+            {
+              if (g_strcmp0 (priv->last_type, "wired") == 0)
+                {
+                  /* Special case ethernet connections.
+                   * When cable unplugged just tell the user what the
+                   * new connection is.
+                   */
+                  _tell_online (name, type, str);
+                }
+              else
+                {
+                  _tell_changed (self, name, type, str);
+                }
+            }
+          else if (g_strcmp0 (state, "idle") == 0
+                   && g_strcmp0 (priv->last_state, "ready") == 0)
+            {
+              _tell_offline (self, name, type);
+            }
+        }
+      else if (g_strcmp0 (priv->last_name, name) == 0 &&
+               g_strcmp0 (priv->last_state, state) != 0)
+        {
+          /* service same but state changed */
+          if (g_strcmp0 (state, "ready") == 0)
+            _tell_online (name, type, str);
+          else if (g_strcmp0 (state, "idle") == 0)
+            _tell_offline (self, name, type);
+        }
+    }
+
+  /*
+   * Stash state in last_*
+   */
+  g_free (priv->last_state);
+  priv->last_state = g_strdup (state);
+
+  if (g_strcmp0 (state, "ready") == 0)
+    {
+      g_free (priv->last_type);
+      priv->last_type = g_strdup (type);
+      g_free (priv->last_name);
+      priv->last_name = g_strdup (name);
+    }
+}
+
 CarrickNotificationManager *
 carrick_notification_manager_new (void)
 {

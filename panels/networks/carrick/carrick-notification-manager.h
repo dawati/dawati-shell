@@ -69,8 +69,8 @@ GType carrick_notification_manager_get_type (void);
 
 CarrickNotificationManager *carrick_notification_manager_new ();
 
-void
-carrick_notification_manager_queue_event (CarrickNotificationManager *self, const gchar *type, const gchar *state, const gchar *name);
+void carrick_notification_manager_queue_event (CarrickNotificationManager *self, const gchar *type, const gchar *state, const gchar *name);
+void carrick_notification_manager_notify_event (CarrickNotificationManager *self, const gchar *type, const gchar *state, const gchar *name, guint str);
 
 G_END_DECLS
 
