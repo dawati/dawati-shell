@@ -258,8 +258,6 @@ static void
 penge_magic_list_view_update (PengeMagicListView *view)
 {
   PengeMagicListViewPrivate *priv = GET_PRIVATE (view);
-  GList *children, *l;
-  ClutterActor *child;
   ClutterAnimation *animation = NULL;
 
   if (!priv->item_type || !priv->model)

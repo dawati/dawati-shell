@@ -129,7 +129,6 @@ _calculate_potential_row_count (PengeMagicContainer *pmc,
 {
   PengeMagicContainerPrivate *priv = GET_PRIVATE (pmc);
   gfloat n;
-  gint excess_height;
   gfloat ratio;
 
 #if 0
