@@ -161,7 +161,7 @@ main (int    argc,
       MplPanelClient *panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
                                                         _("network"),
                                                         PKG_THEME_DIR "/network-applet.css",
-                                                        "unknown",
+                                                        "offline",
                                                         TRUE);
       g_signal_connect (panel_client,
                         "set-size",
