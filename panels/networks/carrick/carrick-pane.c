@@ -241,13 +241,13 @@ carrick_pane_class_init (CarrickPaneClass *klass)
                     G_STRUCT_OFFSET(CarrickPaneClass, connection_changed),
                     NULL,
                     NULL,
-                    connman_marshal_VOID__STRING_STRING_UINT,
+                    connman_marshal_VOID__STRING_STRING_STRING_UINT,
                     G_TYPE_NONE,
                     4,
                     G_TYPE_STRING,
                     G_TYPE_STRING,
-                    G_TYPE_UINT,
-                    G_TYPE_STRING);
+                    G_TYPE_STRING,
+                    G_TYPE_UINT);
 }
 
 /*
@@ -999,8 +999,8 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
     g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
                    connection_type,
                    connection_name,
-                   strength,
-                   connection_state);
+                   connection_state,
+                   strength);
 
     /* We *may* need to provide a notification */
     carrick_notification_manager_notify_event (priv->notes,
