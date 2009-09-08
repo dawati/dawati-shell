@@ -221,7 +221,7 @@ dalston_power_applet_class_init (DalstonPowerAppletClass *klass)
                                "The battery monitor",
                                DALSTON_TYPE_BATTERY_MONITOR,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
-  g_object_class_install_property (object_class, PROP_PANEL_CLIENT, pspec);
+  g_object_class_install_property (object_class, PROP_BATTERY_MONITOR, pspec);
 }
 
 static gchar *
