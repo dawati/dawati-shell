@@ -27,6 +27,8 @@ icons_DATA = \
 	     dalston-volume-applet-2-active.png \
 	     dalston-volume-applet-2-normal.png \
 	     dalston-volume-applet-3-active.png \
-	     dalston-volume-applet-3-normal.png
+	     dalston-volume-applet-3-normal.png \
+	     toolbar-button-active.png \
+	     toolbar-button-hover.png
 
 EXTRA_DIST = $(icons_DATA)
