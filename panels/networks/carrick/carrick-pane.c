@@ -712,16 +712,17 @@ _new_connection_cb (GtkButton *button,
           g_hash_table_insert (method_props, g_strdup ("Passphrase"), pass_v);
         }
 
-      dbus_g_proxy_begin_call (priv->manager,
-                               "ConnectService",
-                               dbus_proxy_notify_cb,
-                               self,
-                               NULL,
-                               dbus_g_type_get_map ("GHashTable",
-                                                    G_TYPE_STRING,
-                                                    G_TYPE_VALUE),
-                               method_props,
-                               G_TYPE_INVALID);
+      dbus_g_proxy_begin_call_with_timeout (priv->manager,
+                                            "ConnectService",
+                                            dbus_proxy_notify_cb,
+                                            self,
+                                            NULL,
+                                            120000, /* 2min timeout */
+                                            dbus_g_type_get_map ("GHashTable",
+                                                                 G_TYPE_STRING,
+                                                                 G_TYPE_VALUE),
+                                            method_props,
+                                            G_TYPE_INVALID);
     }
   gtk_widget_destroy (dialog);
 }
