@@ -45,7 +45,7 @@ _setup_panel (DalstonBatteryMonitor *monitor)
   MplPanelClient *panel_client;
 
   panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
-                                    _("power & brightness"),
+                                    _("battery"),
                                     PKG_THEMEDIR "/power-applet.css",
                                     "unknown",
                                     TRUE);
