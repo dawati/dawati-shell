@@ -41,6 +41,7 @@
 #include <gmodule.h>
 #include <string.h>
 #include <signal.h>
+#include <X11/extensions/Xcomposite.h>
 
 #include <compositor-mutter.h>
 #include <display.h>
@@ -1066,6 +1067,54 @@ moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin)
 }
 
 static void
+moblin_netbook_detach_mutter_windows (MetaScreen *screen)
+{
+  GList* l = mutter_get_windows (screen);
+
+  while (l)
+    {
+      MutterWindow *m = l->data;
+      if (m)
+        {
+          /* we need to repair the window pixmap here */
+          mutter_window_detach (m);
+        }
+
+      l = l->next;
+    }
+}
+
+static void
+fullscreen_redirect (MetaWindow* mw, gboolean on)
+{
+  MetaDisplay *display = meta_window_get_display (mw);
+  MetaScreen  *screen  = meta_window_get_screen (mw);
+  Display     *xdpy    = meta_display_get_xdisplay (display);
+  Window       xroot   = meta_screen_get_xroot (screen);
+  Window       overlay = mutter_get_overlay_window (screen);
+
+  if (!on)
+    {
+      g_debug ("Unredirecting windows");
+      XCompositeUnredirectSubwindows (xdpy,
+                                      xroot,
+                                      CompositeRedirectManual);
+      XUnmapWindow (xdpy, overlay);
+      XSync (xdpy, FALSE);
+    }
+  else
+    {
+      g_debug ("Redirecting windows");
+      XCompositeRedirectSubwindows (xdpy,
+                                    xroot,
+                                    CompositeRedirectManual);
+      XMapWindow (xdpy, overlay);
+      XSync (xdpy, FALSE);
+      moblin_netbook_detach_mutter_windows (screen);
+    }
+}
+
+static void
 meta_window_fullcreen_notify_cb (GObject    *object,
                                  GParamSpec *spec,
                                  gpointer    data)
@@ -1086,9 +1135,15 @@ meta_window_fullcreen_notify_cb (GObject    *object,
   g_object_get (object, "fullscreen", &fullscreen, NULL);
 
   if (fullscreen)
-    fullscreen_app_added (priv, ws_index);
+    {
+      fullscreen_app_added (priv, ws_index);
+      fullscreen_redirect (mw, FALSE);
+    }
   else
-    fullscreen_app_removed (priv, ws_index);
+    {
+      fullscreen_app_removed (priv, ws_index);
+      fullscreen_redirect (mw, TRUE);
+    }
 }
 
 
@@ -1326,10 +1381,11 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       EffectCompleteData *data  = g_new0 (EffectCompleteData, 1);
       ActorPrivate       *apriv = get_actor_private (mcw);
       MetaWindow         *mw    = mutter_window_get_meta_window (mcw);
+      gboolean           fullscreen = FALSE;
 
       if (mw)
         {
-          gboolean fullscreen, modal = FALSE;
+          gboolean modal = FALSE;
 
           if (meta_window_is_modal (mw))
             modal = TRUE;
@@ -1345,6 +1401,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                   gint index = meta_workspace_index (ws);
 
                   fullscreen_app_added (priv, index);
+                  fullscreen_redirect (mw, FALSE);
+                  clutter_actor_hide (CLUTTER_ACTOR (mcw));
                 }
             }
 
@@ -1383,7 +1441,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
        * Anything that we do not animated exits at this point.
        */
       if (type == META_COMP_WINDOW_DIALOG ||
-          type == META_COMP_WINDOW_MODAL_DIALOG)
+          type == META_COMP_WINDOW_MODAL_DIALOG ||
+          fullscreen)
         {
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           return;
@@ -1472,6 +1531,7 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
               gint index = meta_workspace_index (ws);
 
               fullscreen_app_removed (priv, index);
+              fullscreen_redirect (meta_win, TRUE);
             }
         }
 
