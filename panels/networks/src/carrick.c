@@ -49,8 +49,8 @@ static void
 _connection_changed_cb (CarrickPane     *pane,
                         const gchar     *connection_type,
                         const gchar     *connection_name,
-                        guint            strength,
                         const gchar     *state,
+                        guint            strength,
                         MplPanelClient  *panel_client)
 {
   CarrickIconState   icon_state;
