@@ -403,12 +403,13 @@ set_passphrase_notify_cb (DBusGProxy     *proxy,
     }
   else
     {
-      dbus_g_proxy_begin_call (proxy,
-                               "Connect",
-                               dbus_proxy_notify_cb,
-                               item,
-                               NULL,
-                               G_TYPE_INVALID);
+      dbus_g_proxy_begin_call_with_timeout (proxy,
+                                            "Connect",
+                                            dbus_proxy_notify_cb,
+                                            item,
+                                            NULL,
+                                            120000, /* 2min timeout */
+                                            G_TYPE_INVALID);
     }
 }
 
@@ -513,12 +514,13 @@ _connect_button_cb (GtkButton          *connect_button,
                                                         priv->type,
                                                         "ready",
                                                         priv->name);
-              dbus_g_proxy_begin_call (priv->proxy,
-                                       "Connect",
-                                       dbus_proxy_notify_cb,
-                                       item,
-                                       NULL,
-                                       G_TYPE_INVALID);
+              dbus_g_proxy_begin_call_with_timeout (priv->proxy,
+                                                    "Connect",
+                                                    dbus_proxy_notify_cb,
+                                                    item,
+                                                    NULL,
+                                                    120000, /* 2min timeout */
+                                                    G_TYPE_INVALID);
             }
         }
       else
@@ -527,12 +529,13 @@ _connect_button_cb (GtkButton          *connect_button,
                                                     priv->type,
                                                     "ready",
                                                     priv->name);
-          dbus_g_proxy_begin_call (priv->proxy,
-                                   "Connect",
-                                   dbus_proxy_notify_cb,
-                                   item,
-                                   NULL,
-                                   G_TYPE_INVALID);
+          dbus_g_proxy_begin_call_with_timeout (priv->proxy,
+                                                "Connect",
+                                                dbus_proxy_notify_cb,
+                                                item,
+                                                NULL,
+                                                120000, /* 2min timeout */
+                                                G_TYPE_INVALID);
         }
     }
 }
