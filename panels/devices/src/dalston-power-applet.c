@@ -47,25 +47,32 @@ _battery_monitor_status_changed_cb (DalstonBatteryMonitor *monitor,
 
   if (dalston_battery_monitor_get_is_ready (monitor))
   {
-    panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
-                                      _("power & brightness"),
-                                      PKG_THEMEDIR "/power-applet.css",
-                                      "unknown",
-                                      TRUE);
-    mpl_panel_client_set_height_request (panel_client, 200);
+    /* We must check if we have an AC adapter, if not then we are not on a
+     * portable device and should thus not show the UI
+     */
 
-    /* Power applet */
-    power_applet = dalston_power_applet_new (panel_client,
-                                             monitor);
+    if (dalston_battery_monitor_get_has_ac_adapter (monitor))
+    {
+      panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
+                                        _("power & brightness"),
+                                        PKG_THEMEDIR "/power-applet.css",
+                                        "unknown",
+                                        TRUE);
+      mpl_panel_client_set_height_request (panel_client, 200);
 
-    window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
-    pane = dalston_power_applet_get_pane (power_applet);
-    gtk_container_add (GTK_CONTAINER (window), pane);
-    gtk_widget_show (window);
+      /* Power applet */
+      power_applet = dalston_power_applet_new (panel_client,
+                                               monitor);
 
-    g_signal_handlers_disconnect_by_func (monitor,
-                                          _battery_monitor_status_changed_cb,
-                                          userdata);
+      window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
+      pane = dalston_power_applet_get_pane (power_applet);
+      gtk_container_add (GTK_CONTAINER (window), pane);
+      gtk_widget_show (window);
+
+      g_signal_handlers_disconnect_by_func (monitor,
+                                            _battery_monitor_status_changed_cb,
+                                            userdata);
+    }
   }
 }
 
