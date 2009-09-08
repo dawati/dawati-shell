@@ -249,7 +249,6 @@ _setup_ac_device (DalstonBatteryMonitor *self)
                       (GCallback)_hal_ac_device_property_modified,
                       self);
   }
-
 }
 
 static void
@@ -306,7 +305,7 @@ _hal_device_added_cb (HalManager  *manager,
                       const gchar *udi,
                       gpointer     userdata)
 {
-	DalstonBatteryMonitor *monitor = DALSTON_BATTERY_MONITOR (userdata);
+  DalstonBatteryMonitor *monitor = DALSTON_BATTERY_MONITOR (userdata);
   gboolean is_battery;
   HalDevice *device;
 
@@ -326,7 +325,7 @@ _hal_device_removed_cb (HalManager  *manager,
                         const gchar *udi,
                         gpointer     userdata)
 {
-	DalstonBatteryMonitor *monitor = DALSTON_BATTERY_MONITOR (userdata);
+  DalstonBatteryMonitor *monitor = DALSTON_BATTERY_MONITOR (userdata);
   DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (monitor);
 
   if (g_strcmp0 (priv->battery_udi, udi) == 0)
@@ -496,4 +495,12 @@ dalston_battery_monitor_get_ac_connected (DalstonBatteryMonitor *monitor)
   }
 
   return value;
+}
+
+gboolean
+dalston_battery_monitor_get_is_ready (DalstonBatteryMonitor *monitor)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (monitor);
+
+  return priv->is_hal_running;
 }
