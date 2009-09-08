@@ -35,16 +35,47 @@
 #define PADDING 4
 
 #define PKG_THEMEDIR PKG_DATADIR"/theme"
+
+static void
+_battery_monitor_status_changed_cb (DalstonBatteryMonitor *monitor,
+                                    gpointer               userdata)
+{
+  GtkWidget *pane;
+  GtkWidget *window;
+  DalstonPowerApplet *power_applet;
+  MplPanelClient *panel_client;
+
+  if (dalston_battery_monitor_get_is_ready (monitor))
+  {
+    panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
+                                      _("power & brightness"),
+                                      PKG_THEMEDIR "/power-applet.css",
+                                      "unknown",
+                                      TRUE);
+    mpl_panel_client_set_height_request (panel_client, 200);
+
+    /* Power applet */
+    power_applet = dalston_power_applet_new (panel_client,
+                                             monitor);
+
+    window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
+    pane = dalston_power_applet_get_pane (power_applet);
+    gtk_container_add (GTK_CONTAINER (window), pane);
+    gtk_widget_show (window);
+
+    g_signal_handlers_disconnect_by_func (monitor,
+                                          _battery_monitor_status_changed_cb,
+                                          userdata);
+  }
+}
+
 int
 main (int    argc,
       char **argv)
 {
-  DalstonPowerApplet *power_applet;
-  GtkWidget *pane;
-  GtkWidget *window;
   GtkSettings *settings;
-  MplPanelClient *panel_client;
   DalstonButtonMonitor *button_monitor;
+  DalstonBatteryMonitor *battery_monitor;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -63,20 +94,12 @@ main (int    argc,
                                     "Moblin-Netbook",
                                     NULL);
 
-  panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
-                                    _("power & brightness"),
-                                    PKG_THEMEDIR "/power-applet.css",
-                                    "unknown",
-                                    TRUE);
-  mpl_panel_client_set_height_request (panel_client, 200);
-
-  /* Power applet */
-  power_applet = dalston_power_applet_new (panel_client);
-
-  window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
-  pane = dalston_power_applet_get_pane (power_applet);
-  gtk_container_add (GTK_CONTAINER (window), pane);
-  gtk_widget_show (window);
+  battery_monitor = g_object_new (DALSTON_TYPE_BATTERY_MONITOR,
+                                  NULL);
+  g_signal_connect (battery_monitor,
+                    "status-changed",
+                    (GCallback)_battery_monitor_status_changed_cb,
+                    NULL);
 
   gtk_main ();
 }

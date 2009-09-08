@@ -27,6 +27,7 @@
 #include <gtk/gtk.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-panel-gtk.h>
+#include <dalston/dalston-battery-monitor.h>
 
 G_BEGIN_DECLS
 
@@ -57,7 +58,8 @@ typedef struct {
 
 GType dalston_power_applet_get_type (void);
 
-DalstonPowerApplet *dalston_power_applet_new (MplPanelClient *client);
+DalstonPowerApplet *dalston_power_applet_new (MplPanelClient        *client,
+                                              DalstonBatteryMonitor *monitor);
 GtkWidget *dalston_power_applet_get_pane (DalstonPowerApplet *applet);
 void dalston_power_applet_set_active (DalstonPowerApplet *applet,
                                       gboolean            active);

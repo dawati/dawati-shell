@@ -99,12 +99,16 @@ static const gchar *icon_names[] = {
 #define BATTERY_IMAGE_STATE_CHARGE_75      "dalston-power-75.png"
 #define BATTERY_IMAGE_STATE_CHARGE_100     "dalston-power-full.png"
 
-
 enum
 {
   PROP_0,
-  PROP_PANEL_CLIENT
+  PROP_PANEL_CLIENT,
+  PROP_BATTERY_MONITOR
 };
+
+
+static void
+dalston_power_applet_update_battery_state (DalstonPowerApplet *applet);
 
 static void
 dalston_power_applet_get_property (GObject *object, guint property_id,
@@ -115,6 +119,9 @@ dalston_power_applet_get_property (GObject *object, guint property_id,
   switch (property_id) {
     case PROP_PANEL_CLIENT:
       g_value_set_object (value, priv->panel_client);
+      break;
+    case PROP_BATTERY_MONITOR:
+      g_value_set_object (value, priv->battery_monitor);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -131,6 +138,8 @@ dalston_power_applet_set_property (GObject *object, guint property_id,
     case PROP_PANEL_CLIENT:
       priv->panel_client = g_value_dup_object (value);
       break;
+    case PROP_BATTERY_MONITOR:
+      priv->battery_monitor = g_value_dup_object (value);
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -147,6 +156,12 @@ dalston_power_applet_dispose (GObject *object)
     priv->panel_client = NULL;
   }
 
+  if (priv->battery_monitor)
+  {
+    g_object_unref (priv->battery_monitor);
+    priv->battery_monitor = NULL;
+  }
+
   G_OBJECT_CLASS (dalston_power_applet_parent_class)->dispose (object);
 }
 
@@ -154,6 +169,29 @@ static void
 dalston_power_applet_finalize (GObject *object)
 {
   G_OBJECT_CLASS (dalston_power_applet_parent_class)->finalize (object);
+}
+
+static void
+_battery_monitor_status_changed_cb (DalstonBatteryMonitor *monitor,
+                                    gpointer               userdata)
+{
+  g_debug (G_STRLOC ": Status changed");
+
+  dalston_power_applet_update_battery_state ((DalstonPowerApplet *)userdata);
+}
+
+static void
+dalston_power_applet_constructed (GObject *object)
+{
+  DalstonPowerAppletPrivate *priv = GET_PRIVATE (object);
+
+  if (G_OBJECT_CLASS (dalston_power_applet_parent_class)->constructed)
+    G_OBJECT_CLASS (dalston_power_applet_parent_class)->constructed (object);
+
+  g_signal_connect (priv->battery_monitor,
+                    "status-changed",
+                    (GCallback)_battery_monitor_status_changed_cb,
+                    object);
 }
 
 static void
@@ -168,11 +206,19 @@ dalston_power_applet_class_init (DalstonPowerAppletClass *klass)
   object_class->set_property = dalston_power_applet_set_property;
   object_class->dispose = dalston_power_applet_dispose;
   object_class->finalize = dalston_power_applet_finalize;
+  object_class->constructed = dalston_power_applet_constructed;
 
   pspec = g_param_spec_object ("panel-client",
                                "Panel client",
                                "The panel client",
                                MPL_TYPE_PANEL_CLIENT,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_PANEL_CLIENT, pspec);
+
+  pspec = g_param_spec_object ("battery-monitor",
+                               "Battery monitor",
+                               "The battery monitor",
+                               DALSTON_TYPE_BATTERY_MONITOR,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_PANEL_CLIENT, pspec);
 }
@@ -430,15 +476,6 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
 #endif
 }
 
-static void
-_battery_monitor_status_changed_cb (DalstonBatteryMonitor *monitor,
-                                    gpointer               userdata)
-{
-  g_debug (G_STRLOC ": Status changed");
-
-  dalston_power_applet_update_battery_state ((DalstonPowerApplet *)userdata);
-}
-
 static gboolean
 _update_on_init_idle_cb (gpointer userdata)
 {
@@ -457,14 +494,6 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   GtkWidget *frame;
   GtkWidget *hbox;
   gchar *str;
-
-  /* The battery monitor that will pull in the battery state */
-  priv->battery_monitor = g_object_new (DALSTON_TYPE_BATTERY_MONITOR,
-                                        NULL);
-  g_signal_connect (priv->battery_monitor,
-                    "status-changed",
-                    (GCallback)_battery_monitor_status_changed_cb,
-                    self);
 
   /* Create the pane hbox */
   priv->main_hbox = gtk_hbox_new (FALSE, 4);
@@ -576,11 +605,12 @@ dalston_power_applet_init (DalstonPowerApplet *self)
 }
 
 DalstonPowerApplet *
-dalston_power_applet_new (MplPanelClient *panel_client)
+dalston_power_applet_new (MplPanelClient        *panel_client,
+                          DalstonBatteryMonitor *battery_monitor)
 {
   return g_object_new (DALSTON_TYPE_POWER_APPLET,
-                       "panel-client",
-                       panel_client,
+                       "panel-client", panel_client,
+                       "battery-monitor", battery_monitor,
                        NULL);
 }
 
