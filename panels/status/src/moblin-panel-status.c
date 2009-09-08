@@ -24,6 +24,7 @@
 #endif
 
 #include <locale.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <glib/gi18n.h>
