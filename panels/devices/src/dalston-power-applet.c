@@ -26,6 +26,7 @@
 
 #include <dalston/dalston-volume-applet.h>
 #include <dalston/dalston-power-applet.h>
+#include <dalston/dalston-button-monitor.h>
 
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-panel-gtk.h>
@@ -43,6 +44,7 @@ main (int    argc,
   GtkWidget *window;
   GtkSettings *settings;
   MplPanelClient *panel_client;
+  DalstonButtonMonitor *button_monitor;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -50,6 +52,9 @@ main (int    argc,
 
   gtk_init (&argc, &argv);
   notify_init ("Dalston Power Applet");
+
+  /* Monitor buttons */
+  button_monitor = dalston_button_monitor_new ();
 
   /* Force to the moblin theme (for testing) */
   settings = gtk_settings_get_default ();

@@ -52,8 +52,6 @@ struct _DalstonPowerAppletPrivate {
   GtkWidget *battery_secondary_label;
 
   gboolean active;
-
-  DalstonButtonMonitor *button_monitor;
 };
 
 typedef enum {
@@ -459,9 +457,6 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   GtkWidget *frame;
   GtkWidget *hbox;
   gchar *str;
-
-  /* Button monitor goes here, bleargh... */
-  priv->button_monitor = dalston_button_monitor_new ();
 
   /* The battery monitor that will pull in the battery state */
   priv->battery_monitor = g_object_new (DALSTON_TYPE_BATTERY_MONITOR,
