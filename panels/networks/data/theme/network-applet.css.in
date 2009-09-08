@@ -90,27 +90,27 @@ MnbToolbarButton#wimax-weak:hover, MnbToolbarButton#wimax-weak:active, MnbToolba
   background-image: url("file://@pkgdatadir@/icons/network-wimax-weak-hover.png");
 }
 
-MnbToolbarButton#wireless-signal-good {
+MnbToolbarButton#wireless-good {
   background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-good.png");
 }
 
-MnbToolbarButton#wireless-signal-good:hover, MnbToolbarButton#wireless-signal-good:active, MnbToolbarButton#wireless-signal-good:checked  {
+MnbToolbarButton#wireless-good:hover, MnbToolbarButton#wireless-signal-good:active, MnbToolbarButton#wireless-good:checked  {
   background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-good-hover.png");
 }
 
-MnbToolbarButton#wireless-signal-strong {
+MnbToolbarButton#wireless-strong {
   background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-strong.png");
 }
 
-MnbToolbarButton#wireless-signal-strong:hover, MnbToolbarButton#wireless-signal-strong:active, MnbToolbarButton#wireless-signal-strong:checked  {
+MnbToolbarButton#wireless-strong:hover, MnbToolbarButton#wireless-signal-strong:active, MnbToolbarButton#wireless-strong:checked  {
   background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-strong-hover.png");
 }
 
-MnbToolbarButton#wireless-signal-weak {
+MnbToolbarButton#wireless-weak {
   background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-weak.png");
 }
 
-MnbToolbarButton#wireless-signal-weak:hover, MnbToolbarButton#wireless-signal-weak:active, MnbToolbarButton#wireless-signal-weak:checked  {
+MnbToolbarButton#wireless-weak:hover, MnbToolbarButton#wireless-signal-weak:active, MnbToolbarButton#wireless-weak:checked  {
   background-image: url("file://@pkgdatadir@/icons/network-wireless-signal-weak-hover.png");
 }
 
