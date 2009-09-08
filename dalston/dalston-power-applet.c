@@ -471,13 +471,11 @@ dalston_power_applet_init (DalstonPowerApplet *self)
                     (GCallback)_battery_monitor_status_changed_cb,
                     self);
 
-  /* Brightness manager. We pass this into the slider when we create it */
-  priv->brightness_manager = g_object_new (DALSTON_TYPE_BRIGHTNESS_MANAGER,
-                                           NULL);
-
   /* Create the pane hbox */
   priv->main_hbox = gtk_hbox_new (FALSE, 4);
   gtk_container_set_border_width (GTK_CONTAINER (priv->main_hbox), 4);
+
+#if 0
   frame = nbtk_gtk_frame_new ();
   gtk_box_pack_start (GTK_BOX (priv->main_hbox),
                       frame,
@@ -502,6 +500,10 @@ dalston_power_applet_init (DalstonPowerApplet *self)
                       FALSE,
                       FALSE,
                       0);
+
+  /* Brightness manager. We pass this into the slider when we create it */
+  priv->brightness_manager = g_object_new (DALSTON_TYPE_BRIGHTNESS_MANAGER,
+                                           NULL);
   hbox = gtk_hbox_new (FALSE, 8);
   gtk_box_pack_start (GTK_BOX (vbox),
                       hbox,
@@ -529,7 +531,8 @@ dalston_power_applet_init (DalstonPowerApplet *self)
                         8);
 
   }
-  
+
+#endif
   frame = nbtk_gtk_frame_new ();
   gtk_box_pack_start (GTK_BOX (priv->main_hbox),
                       frame,
@@ -602,6 +605,7 @@ dalston_power_applet_set_active (DalstonPowerApplet *applet,
 
   priv->active = active;
 
+#if 0
   if (active)
   {
     /* TODO: Update the icon to be in the active state */
@@ -609,6 +613,7 @@ dalston_power_applet_set_active (DalstonPowerApplet *applet,
   } else {
     dalston_brightness_manager_stop_monitoring (priv->brightness_manager);
   }
+#endif
 
   dalston_power_applet_update_battery_state (applet);
 }
