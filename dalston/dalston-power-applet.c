@@ -561,8 +561,8 @@ dalston_power_applet_init (DalstonPowerApplet *self)
   frame = nbtk_gtk_frame_new ();
   gtk_box_pack_start (GTK_BOX (priv->main_hbox),
                       frame,
-                      FALSE,
-                      FALSE,
+                      TRUE,
+                      TRUE,
                       0);
   battery_vbox = gtk_vbox_new (FALSE, 8);
   gtk_container_set_border_width (GTK_CONTAINER (battery_vbox), 8);
