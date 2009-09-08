@@ -140,6 +140,7 @@ dalston_power_applet_set_property (GObject *object, guint property_id,
       break;
     case PROP_BATTERY_MONITOR:
       priv->battery_monitor = g_value_dup_object (value);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
