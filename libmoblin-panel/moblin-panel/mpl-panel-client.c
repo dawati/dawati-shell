@@ -801,10 +801,13 @@ mpl_panel_client_request_button_style (MplPanelClient *panel,
 {
   MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (panel)->priv;
 
-  g_free (priv->button_style);
-  priv->button_style = g_strdup (style);
+  if (!g_str_equal (style, priv->button_style))
+    {
+      g_free (priv->button_style);
+      priv->button_style = g_strdup (style);
 
-  g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style);
+      g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style);
+    }
 }
 
 void
