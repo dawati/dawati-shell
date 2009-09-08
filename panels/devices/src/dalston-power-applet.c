@@ -37,13 +37,35 @@
 #define PKG_THEMEDIR PKG_DATADIR"/theme"
 
 static void
-_battery_monitor_status_changed_cb (DalstonBatteryMonitor *monitor,
-                                    gpointer               userdata)
+_setup_panel (DalstonBatteryMonitor *monitor)
 {
   GtkWidget *pane;
   GtkWidget *window;
   DalstonPowerApplet *power_applet;
   MplPanelClient *panel_client;
+
+  panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
+                                    _("power & brightness"),
+                                    PKG_THEMEDIR "/power-applet.css",
+                                    "unknown",
+                                    TRUE);
+  mpl_panel_client_set_height_request (panel_client, 200);
+
+  /* Power applet */
+  power_applet = dalston_power_applet_new (panel_client,
+                                           monitor);
+
+  window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
+  pane = dalston_power_applet_get_pane (power_applet);
+  gtk_container_add (GTK_CONTAINER (window), pane);
+  gtk_widget_show (window);
+}
+
+static void
+_battery_monitor_status_changed_cb (DalstonBatteryMonitor *monitor,
+                                    gpointer               userdata)
+{
+
 
   if (dalston_battery_monitor_get_is_ready (monitor))
   {
@@ -53,26 +75,12 @@ _battery_monitor_status_changed_cb (DalstonBatteryMonitor *monitor,
 
     if (dalston_battery_monitor_get_has_ac_adapter (monitor))
     {
-      panel_client = mpl_panel_gtk_new (MPL_PANEL_POWER,
-                                        _("power & brightness"),
-                                        PKG_THEMEDIR "/power-applet.css",
-                                        "unknown",
-                                        TRUE);
-      mpl_panel_client_set_height_request (panel_client, 200);
-
-      /* Power applet */
-      power_applet = dalston_power_applet_new (panel_client,
-                                               monitor);
-
-      window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
-      pane = dalston_power_applet_get_pane (power_applet);
-      gtk_container_add (GTK_CONTAINER (window), pane);
-      gtk_widget_show (window);
-
-      g_signal_handlers_disconnect_by_func (monitor,
-                                            _battery_monitor_status_changed_cb,
-                                            userdata);
+      _setup_panel (monitor);
     }
+
+    g_signal_handlers_disconnect_by_func (monitor,
+                                          _battery_monitor_status_changed_cb,
+                                          userdata);
   }
 }
 
@@ -103,10 +111,18 @@ main (int    argc,
 
   battery_monitor = g_object_new (DALSTON_TYPE_BATTERY_MONITOR,
                                   NULL);
-  g_signal_connect (battery_monitor,
-                    "status-changed",
-                    (GCallback)_battery_monitor_status_changed_cb,
-                    NULL);
+
+  if (dalston_battery_monitor_get_is_ready (battery_monitor) &&
+      dalston_battery_monitor_get_has_ac_adapter (battery_monitor))
+
+  {
+    _setup_panel (battery_monitor);
+  } else {
+    g_signal_connect (battery_monitor,
+                      "status-changed",
+                      (GCallback)_battery_monitor_status_changed_cb,
+                      NULL);
+  }
 
   gtk_main ();
 }
