@@ -504,3 +504,12 @@ dalston_battery_monitor_get_is_ready (DalstonBatteryMonitor *monitor)
 
   return priv->is_hal_running;
 }
+
+/* Only makes sense to call this after _get_is_ready */
+gboolean
+dalston_battery_monitor_get_has_ac_adapter (DalstonBatteryMonitor *monitor)
+{
+  DalstonBatteryMonitorPrivate *priv = GET_PRIVATE (monitor);
+
+  return (priv->ac_device != NULL);
+}

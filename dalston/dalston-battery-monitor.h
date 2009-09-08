@@ -69,6 +69,8 @@ gint dalston_battery_monitor_get_charge_percentage (DalstonBatteryMonitor *monit
 DalstonBatteryMonitorState dalston_battery_monitor_get_state (DalstonBatteryMonitor *monitor);
 gboolean dalston_battery_monitor_get_ac_connected (DalstonBatteryMonitor *monitor);
 gboolean dalston_battery_monitor_get_is_ready (DalstonBatteryMonitor *monitor);
+
+gboolean dalston_battery_monitor_get_has_ac_adapter (DalstonBatteryMonitor *monitor);
 G_END_DECLS
 
 #endif /* _DALSTON_BATTERY_MONITOR */
