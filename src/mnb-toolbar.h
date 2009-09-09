@@ -31,7 +31,6 @@
 
 #include "mnb-panel.h"
 #include "moblin-netbook.h"
-#include "moblin-netbook-tray-manager.h"
 
 G_BEGIN_DECLS
 
