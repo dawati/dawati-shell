@@ -91,14 +91,27 @@ static void
 _model_bulk_start_cb (ClutterModel *model,
                       gpointer      userdata)
 {
-  penge_magic_list_view_freeze (PENGE_MAGIC_LIST_VIEW (userdata));
+  PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
+
+  penge_magic_list_view_freeze (PENGE_MAGIC_LIST_VIEW (priv->list_view));
 }
 
 static void
 _model_bulk_end_cb (ClutterModel *model,
                     gpointer      userdata)
 {
-  penge_magic_list_view_thaw (PENGE_MAGIC_LIST_VIEW (userdata));
+  PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
+
+  if (priv->model && clutter_model_get_n_rows (priv->model) > 0)
+  {
+    clutter_actor_hide (priv->placeholder_tile);
+    clutter_actor_show (priv->list_view);
+  } else {
+    clutter_actor_hide (priv->list_view);
+    clutter_actor_show (priv->placeholder_tile);
+  }
+
+  penge_magic_list_view_thaw (PENGE_MAGIC_LIST_VIEW (priv->list_view));
 }
 
 static void
@@ -124,14 +137,11 @@ _client_open_view_cb (MojitoClient     *client,
   g_signal_connect (priv->model,
                     "bulk-start",
                     (GCallback)_model_bulk_start_cb,
-                    priv->list_view);
+                    userdata);
   g_signal_connect (priv->model,
                     "bulk-end",
                     (GCallback)_model_bulk_end_cb,
-                    priv->list_view);
-
-  clutter_actor_hide (priv->placeholder_tile);
-  clutter_actor_show (priv->list_view);
+                    userdata);
 }
 
 static void
