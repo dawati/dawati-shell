@@ -984,10 +984,10 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
    * This could probably be done nicer, maybe by using the INDEX column? */
   first = gtk_tree_path_new_first ();
   if (0 == gtk_tree_path_compare (first, path)) {
-    char *connection_type;
-    char *connection_name;
-    char *connection_state;
-    guint strength;
+    char *connection_type = NULL;
+    char *connection_name = NULL;
+    char *connection_state = NULL;
+    guint strength = 0;
 
     gtk_tree_model_get (tree_model, iter,
                         CARRICK_COLUMN_TYPE, &connection_type,
