@@ -1317,14 +1317,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           mnb_panel_show_mutter_window (panel, mcw);
         }
-#if 1
-      /*
-       * TODO -- this should go once we convert our applets to the
-       * new dbus API.
-       */
-      else if (mnb_toolbar_is_tray_config_window (toolbar, xwin))
-        mnb_toolbar_append_tray_window (toolbar, mcw);
-#endif
       else
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 
