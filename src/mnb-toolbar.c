@@ -48,6 +48,8 @@
 /* For systray windows stuff */
 #include <gdk/gdkx.h>
 
+#include <clutter/x11/clutter-x11.h>
+
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
