@@ -159,6 +159,8 @@ _range_value_changed_cb (DalstonVolumeSlider *slider,
                                    _stream_volume_notify_cb,
                                    slider);
   volume = (float)gtk_range_get_value (GTK_RANGE (slider)) / 100.0 * PA_VOLUME_NORM;
+  gtk_range_set_fill_level (GTK_RANGE (slider),
+                            gtk_range_get_value (GTK_RANGE (slider)));
   gvc_mixer_stream_change_volume (priv->sink, volume);
   g_signal_handlers_unblock_by_func (priv->sink,
                                      _stream_volume_notify_cb,
