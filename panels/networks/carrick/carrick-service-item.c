@@ -252,13 +252,19 @@ _set_state (CarrickServiceItem *self)
                                _ ("Connected"));
       priv->failed = FALSE;
     }
-  else if (g_strcmp0 (priv->state, "configuring") == 0 ||
-           g_strcmp0 (priv->state, "associating") == 0)
+  else if (g_strcmp0 (priv->state, "configuration") == 0)
     {
       button = g_strdup_printf (_ ("Cancel"));
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Configuring"));
+    }
+  else if (g_strcmp0 (priv->state, "association") == 0)
+    {
+      button = g_strdup_printf (_("Cancel"));
+      label = g_strdup_printf ("%s - %s",
+                               name,
+                               _("Associating"));
     }
   else if (g_strcmp0 (priv->state, "idle") == 0)
     {
