@@ -137,7 +137,6 @@ build/autotools/shave
 build/autotools/shave-libtool
 data/Makefile
 src/Makefile
-src/tray/Makefile
 src/effects/Makefile
 src/switcher/Makefile
 po/Makefile.in

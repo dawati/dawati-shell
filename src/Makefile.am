@@ -1,4 +1,4 @@
-SUBDIRS=tray effects switcher
+SUBDIRS=effects switcher
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
@@ -60,7 +60,6 @@ MARSHALS = marshal.c marshal.h
 
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
-				tray/libtray.la 	\
 				effects/libeffects.la	\
 				switcher/libswitcher.la
 
