@@ -35,6 +35,7 @@ typedef struct _DalstonVolumeSliderPrivate DalstonVolumeSliderPrivate;
 
 struct _DalstonVolumeSliderPrivate {
   GvcMixerStream *sink;
+  gint playing_event_sound;
 };
 
 enum
@@ -148,12 +149,55 @@ dalston_volume_slider_class_init (DalstonVolumeSliderClass *klass)
 }
 
 static void
+_play_sound_completed_cb (ca_context *context,
+                          guint32     id,
+                          gint        res,
+                          gpointer    userdata)
+{
+  DalstonVolumeSliderPrivate *priv = GET_PRIVATE (userdata);
+  (void)g_atomic_int_dec_and_test (&priv->playing_event_sound);
+}
+
+static void
+_play_changed_sound (DalstonVolumeSlider *slider)
+{
+  DalstonVolumeSliderPrivate *priv = GET_PRIVATE (slider);
+  gint res;
+  ca_proplist *proplist;
+  ca_context *context;
+
+  if (g_atomic_int_get (&priv->playing_event_sound) > 0)
+    return;
+
+  context = ca_gtk_context_get ();
+
+  ca_proplist_create (&proplist);
+  ca_proplist_sets (proplist,
+                    CA_PROP_EVENT_ID,
+                    VOLUME_CHANGED_EVENT);
+
+  res = ca_context_play_full (context,
+                              1,
+                              proplist,
+                              _play_sound_completed_cb,
+                              slider);
+  ca_proplist_destroy (proplist);
+
+  if (res != CA_SUCCESS)
+  {
+    g_warning (G_STRLOC ": Error playing test sound: %s",
+               ca_strerror (res));
+  } else {
+    g_atomic_int_inc (&priv->playing_event_sound);
+  }
+}
+
+static void
 _range_value_changed_cb (DalstonVolumeSlider *slider,
                          gpointer             userdata)
 {
   DalstonVolumeSliderPrivate *priv = GET_PRIVATE (slider);
   guint volume;
-  gint res;
 
   g_signal_handlers_block_by_func (priv->sink,
                                    _stream_volume_notify_cb,
@@ -166,17 +210,7 @@ _range_value_changed_cb (DalstonVolumeSlider *slider,
                                      _stream_volume_notify_cb,
                                      slider);
 
-  res = ca_gtk_play_for_widget (slider,
-                                0,
-                                CA_PROP_EVENT_ID,
-                                VOLUME_CHANGED_EVENT,
-                                NULL);
-
-  if (res != CA_SUCCESS)
-  {
-    g_warning (G_STRLOC ": Error playing test sound: %s",
-               ca_strerror (res));
-  }
+  _play_changed_sound (slider);
 }
 
 static gchar *
