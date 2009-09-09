@@ -263,9 +263,9 @@ dalston_power_applet_format_time_remaining (guint time_remaining)
 
 typedef enum
 {
-  NOTIFICATION_30_PERCENT,
-  NOTIFICATION_15_PERCENT,
+  NOTIFICATION_20_PERCENT,
   NOTIFICATION_10_PERCENT,
+  NOTIFICATION_5_PERCENT,
   NOTIFICATION_LAST
 } NotificationLevel;
 
@@ -434,7 +434,7 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   if (state == DALSTON_BATTERY_MONITOR_STATE_DISCHARGING)
   {
     /* Do notifications at various levels */
-    if (percentage > 0 && percentage < 10) {
+    if (percentage > 0 && percentage < 5) {
       if (last_notification_displayed != NOTIFICATION_10_PERCENT)
       {
         dalston_power_applet_do_notification (applet, NOTIFICATION_10_PERCENT);
@@ -444,17 +444,17 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
                                _shutdown_timeout_cb,
                                applet);
       }
-    } else if (percentage < 15) {
-      if (last_notification_displayed != NOTIFICATION_15_PERCENT)
+    } else if (percentage < 10) {
+      if (last_notification_displayed != NOTIFICATION_10_PERCENT)
       {
-        dalston_power_applet_do_notification (applet, NOTIFICATION_15_PERCENT);
-        last_notification_displayed = NOTIFICATION_15_PERCENT;
+        dalston_power_applet_do_notification (applet, NOTIFICATION_10_PERCENT);
+        last_notification_displayed = NOTIFICATION_10_PERCENT;
       }
     } else if (percentage < 20) {
-      if (last_notification_displayed != NOTIFICATION_30_PERCENT)
+      if (last_notification_displayed != NOTIFICATION_20_PERCENT)
       {
-        dalston_power_applet_do_notification (applet, NOTIFICATION_30_PERCENT);
-        last_notification_displayed = NOTIFICATION_30_PERCENT;
+        dalston_power_applet_do_notification (applet, NOTIFICATION_20_PERCENT);
+        last_notification_displayed = NOTIFICATION_20_PERCENT;
       }
     } else {
       /* Reset the notification */
