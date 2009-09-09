@@ -517,7 +517,7 @@ _row_deleted_cb (GtkTreeModel *tree_model,
                  gpointer      user_data)
 {
   CarrickListPrivate *priv = CARRICK_LIST (user_data)->priv;
-  GtkTreeIter *iter = NULL;
+  GtkTreeIter iter;
 
   /* Row removed, find widget with corresponding GtkTreePath
    * and destroy */
@@ -526,13 +526,9 @@ _row_deleted_cb (GtkTreeModel *tree_model,
                          path);
 
   /* If the model is empty, show some fallback content */
-  if (gtk_tree_model_get_iter_first (tree_model, iter) == FALSE)
+  if (gtk_tree_model_get_iter_first (tree_model, &iter) == FALSE)
     {
       carrick_list_set_fallback (CARRICK_LIST (user_data));
-    }
-  else
-    {
-      gtk_tree_iter_free (iter);
     }
 }
 
