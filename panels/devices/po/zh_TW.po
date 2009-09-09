@@ -1,18 +1,17 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-31 18:17+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+"Last-Translator: tg\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
 #: ../dalston/dalston-power-applet.c:192
 #, c-format
@@ -21,7 +20,8 @@ msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b>小時"
 msgstr[1] "<b>%d</b>小時"
 
-#: ../dalston/dalston-power-applet.c:199 ../dalston/dalston-power-applet.c:212
+#: ../dalston/dalston-power-applet.c:199
+#: ../dalston/dalston-power-applet.c:212
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
@@ -118,6 +118,23 @@ msgstr "非常暗"
 msgid "Total eclipse"
 msgstr "暗"
 
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide i'll turn off in %d seconds"
+msgstr "如果你還沒決定，我要在 %d 秒內關機"
+
+#: ../dalston/dalston-button-monitor.c:277
+msgid "Would you like to turn off now?"
+msgstr "你要關機嗎?"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide i'll turn off in 30 seconds"
+msgstr "如果你還沒決定，我要在30秒內關機"
+
+#: ../dalston/dalston-button-monitor.c:285
+msgid "Turn off"
+msgstr "關機"
+
 #: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
 msgstr "輸出音量"
@@ -179,27 +196,10 @@ msgid "System Sounds"
 msgstr "系統音響"
 
 #: ../src/dalston-power-applet.c:62
-#, fuzzy
 msgid "power & brightness"
 msgstr "顯示亮度"
 
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
-msgstr "聲音"
+msgstr "音量"
 
-#: ../dalston/dalston-button-monitor.c:175
-#, c-format
-msgid "If you don't decide i'll turn off in %d seconds"
-msgstr "電腦將在%d秒內關機"
-
-#: ../dalston/dalston-button-monitor.c:277
-msgid "Would you like to turn off now?"
-msgstr "您確定要關機嗎？"
-
-#: ../dalston/dalston-button-monitor.c:278
-msgid "If you don't decide i'll turn off in 30 seconds"
-msgstr "電腦將在30秒內關機"
-
-#: ../dalston/dalston-button-monitor.c:285
-msgid "Turn off"
-msgstr "直接關機"
