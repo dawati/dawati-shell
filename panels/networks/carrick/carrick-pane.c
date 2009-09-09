@@ -733,12 +733,18 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
                                CarrickPane        *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
+  GValue *value;
 
   /* FIXME: This is a band aid, needs a better fix */
   carrick_notification_manager_queue_event (priv->notes,
                                             "wifi",
                                             "idle",
                                             "all");
+
+  value = g_slice_new0 (GValue);
+  g_value_init (value, G_TYPE_BOOLEAN);
+  g_value_set_boolean (value,
+                       new_state);
 
   dbus_g_proxy_begin_call (priv->manager,
                            "SetProperty",
@@ -747,9 +753,13 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
                            NULL,
                            G_TYPE_STRING,
                            "OfflineMode",
-                           G_TYPE_BOOLEAN,
-                           new_state,
+                           G_TYPE_VALUE,
+                           value,
                            G_TYPE_INVALID);
+
+  g_value_unset (value);
+  g_slice_free (GValue,
+                value);
 
   return TRUE;
 }
