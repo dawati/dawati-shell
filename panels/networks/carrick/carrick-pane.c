@@ -254,6 +254,34 @@ carrick_pane_class_init (CarrickPaneClass *klass)
  * Generic call_notify function for async d-bus calls
  */
 static void
+connect_service_notify_cb (DBusGProxy     *proxy,
+                           DBusGProxyCall *call,
+                           gpointer        user_data)
+{
+  GError *error = NULL;
+  GValue *value;
+
+  dbus_g_proxy_end_call (proxy,
+                         call,
+                         &error,
+                         DBUS_TYPE_G_OBJECT_PATH,
+                         &value,
+                         G_TYPE_INVALID);
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      g_debug ("Service connected %s",
+               g_value_get_string (value));
+    }
+}
+
+static void
 dbus_proxy_notify_cb (DBusGProxy     *proxy,
                       DBusGProxyCall *call,
                       gpointer        user_data)
@@ -714,7 +742,7 @@ _new_connection_cb (GtkButton *button,
 
       dbus_g_proxy_begin_call_with_timeout (priv->manager,
                                             "ConnectService",
-                                            dbus_proxy_notify_cb,
+                                            connect_service_notify_cb,
                                             self,
                                             NULL,
                                             120000, /* 2min timeout */
