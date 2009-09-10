@@ -223,8 +223,6 @@ penge_magic_container_allocate (ClutterActor          *actor,
   width = box->x2 - box->x1;
   height = box->y2 - box->y1;
 
-  g_debug ("%f %f", width, height);
-
   if (CLUTTER_ACTOR_CLASS (penge_magic_container_parent_class)->allocate)
     CLUTTER_ACTOR_CLASS (penge_magic_container_parent_class)->allocate (actor, box, flags);
 

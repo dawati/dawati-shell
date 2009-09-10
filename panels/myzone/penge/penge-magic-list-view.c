@@ -209,7 +209,6 @@ penge_magic_list_view_real_update (PengeMagicListView *view)
 
   for (; l; l = l->next)
   {
-    g_debug ("killing actor");
     clutter_container_remove_actor (CLUTTER_CONTAINER (view),
                                     (ClutterActor *)l->data);
   }
