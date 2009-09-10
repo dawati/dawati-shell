@@ -113,36 +113,54 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (tile);
   const gchar *path;
+  gchar *icon_path;
   GError *error = NULL;
   GtkIconInfo *info;
   GIcon *icon;
 
   icon = g_app_info_get_icon (priv->app_info);
-  info = gtk_icon_theme_lookup_by_gicon (priv->icon_theme,
-                                         icon,
-                                         ICON_SIZE,
-                                         GTK_ICON_LOOKUP_GENERIC_FALLBACK);
 
-  if (!info)
+  if (G_IS_FILE_ICON (icon))
   {
-    /* try falling back */
-    info = gtk_icon_theme_lookup_icon (priv->icon_theme,
-                                       "applications-other",
-                                       ICON_SIZE,
-                                       GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-  }
-
-  if (info)
-  {
-    path = gtk_icon_info_get_filename (info);
+    icon_path = g_icon_to_string (icon);
 
     if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
-                                        path,
+                                        icon_path,
                                         &error))
     {
       g_warning (G_STRLOC ": Error loading texture from file: %s",
                  error->message);
       g_clear_error (&error);
+    }
+
+    g_free (icon_path);
+  } else {
+    info = gtk_icon_theme_lookup_by_gicon (priv->icon_theme,
+                                           icon,
+                                           ICON_SIZE,
+                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+
+    if (!info)
+    {
+      /* try falling back */
+      info = gtk_icon_theme_lookup_icon (priv->icon_theme,
+                                         "applications-other",
+                                         ICON_SIZE,
+                                         GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+    }
+
+    if (info)
+    {
+      path = gtk_icon_info_get_filename (info);
+
+      if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
+                                          path,
+                                          &error))
+      {
+        g_warning (G_STRLOC ": Error loading texture from file: %s",
+                   error->message);
+        g_clear_error (&error);
+      }
     }
   }
 }
