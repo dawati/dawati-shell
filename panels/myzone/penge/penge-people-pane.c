@@ -150,27 +150,13 @@ _client_get_services_cb (MojitoClient *client,
                          gpointer      userdata)
 {
   PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
-  GList *filtered_services = NULL;
-  GList *l;
-
-  for (l = (GList *)services; l; l = l->next)
-  {
-    if (g_str_equal (l->data, "twitter") ||
-        g_str_equal (l->data, "flickr") ||
-        g_str_equal (l->data, "myspace") ||
-        g_str_equal (l->data, "lastfm"))
-    {
-      filtered_services = g_list_append (filtered_services, l->data);
-    }
-  }
 
   mojito_client_open_view (client,
-                           filtered_services,
+                           services,
                            priv->item_count,
                            _client_open_view_cb,
                            userdata);
 
-  g_list_free (filtered_services);
 }
 
 static void
