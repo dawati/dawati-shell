@@ -167,7 +167,11 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
   {
     info = (GtkRecentInfo *)l->data;
 
-    if (!gtk_recent_info_exists (info))
+    /* Skip *local* non-existing files. This is to ensure that http:// urls
+     * are included.
+     */
+    if (gtk_recent_info_is_local (info) &&
+        !gtk_recent_info_exists (info))
     {
       gtk_recent_info_unref (info);
       continue;
