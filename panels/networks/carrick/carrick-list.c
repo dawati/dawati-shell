@@ -519,17 +519,20 @@ _row_deleted_cb (GtkTreeModel *tree_model,
   CarrickListPrivate *priv = CARRICK_LIST (user_data)->priv;
   GtkTreeIter iter;
 
+  /* If the model is empty, delete all widgets and show some fallback content */
+  if (gtk_tree_model_get_iter_first (tree_model, &iter) == FALSE)
+    {
+      gtk_container_foreach (GTK_CONTAINER (priv->box),
+                             (GtkCallback) gtk_widget_destroy,
+                             NULL);
+      carrick_list_set_fallback (CARRICK_LIST (user_data));
+    }
+
   /* Row removed, find widget with corresponding GtkTreePath
    * and destroy */
   gtk_container_foreach (GTK_CONTAINER (priv->box),
                          _find_and_remove,
                          path);
-
-  /* If the model is empty, show some fallback content */
-  if (gtk_tree_model_get_iter_first (tree_model, &iter) == FALSE)
-    {
-      carrick_list_set_fallback (CARRICK_LIST (user_data));
-    }
 }
 
 static void
