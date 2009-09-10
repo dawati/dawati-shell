@@ -104,17 +104,13 @@ PengeDateTile *.PengeDateLabel
 
 PengePeopleTile *.PengePeopleTilePrimaryLabel
 {
+  color: white;
 }
 
 PengePeopleTile *.PengePeopleTileSecondaryLabel
 {
-  font-size: 11;
-  color: #3a3a3aff;
-}
-
-NbtkLabel.PengePeopleTilePrimaryLabel:hover, NbtkLabel.PengePeopleTileSecondaryLabel:hover
-{
   color: white;
+  font-size: 11;
 }
 
 PengePeopleTile *.PengePeopleTileContentLabel

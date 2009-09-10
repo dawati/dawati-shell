@@ -31,15 +31,13 @@ G_DEFINE_TYPE (PengePeopleTile, penge_people_tile, NBTK_TYPE_TABLE)
 typedef struct _PengePeopleTilePrivate PengePeopleTilePrivate;
 
 struct _PengePeopleTilePrivate {
-    ClutterActor *body;
-    ClutterActor *icon;
-    NbtkWidget *bin;
-    NbtkWidget *primary_text;
-    NbtkWidget *secondary_text;
-    NbtkWidget *details_overlay;
-    ClutterTimeline *timeline;
-    ClutterBehaviour *behave;
-    MojitoItem *item;
+  ClutterActor *body;
+  ClutterActor *icon;
+  NbtkWidget *bin;
+  NbtkWidget *primary_text;
+  NbtkWidget *secondary_text;
+  NbtkWidget *details_overlay;
+  MojitoItem *item;
 };
 
 enum
@@ -141,18 +139,6 @@ penge_people_tile_dispose (GObject *object)
 {
   PengePeopleTilePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->timeline)
-  {
-    g_object_unref (priv->timeline);
-    priv->timeline = NULL;
-  }
-
-  if (priv->behave)
-  {
-    g_object_unref (priv->behave);
-    priv->behave = NULL;
-  }
-
   if (priv->item)
   {
     mojito_item_unref (priv->item);
@@ -227,18 +213,20 @@ _enter_event_cb (ClutterActor *actor,
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
                                       "hover");
 
-  clutter_timeline_set_direction (priv->timeline,
-                                  CLUTTER_TIMELINE_FORWARD);
-  if (!clutter_timeline_is_playing (priv->timeline))
+  if (1)
   {
-    clutter_timeline_rewind (priv->timeline);
-    clutter_timeline_start (priv->timeline);
+    clutter_actor_animate (priv->details_overlay,
+                           CLUTTER_LINEAR,
+                           150,
+                           "opacity", 0xc0,
+                           NULL);
+  } else {
+    clutter_actor_animate (priv->details_overlay,
+                           CLUTTER_LINEAR,
+                           150,
+                           "opacity", 0,
+                           NULL);
   }
-
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->primary_text),
-                                      "hover");
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->secondary_text),
-                                      "hover");
 
   return FALSE;
 }
@@ -253,17 +241,20 @@ _leave_event_cb (ClutterActor *actor,
   nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
                                       NULL);
 
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->primary_text),
-                                     NULL);
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->secondary_text),
-                                      NULL);
-
-  clutter_timeline_set_direction (priv->timeline,
-                                  CLUTTER_TIMELINE_BACKWARD);
-  if (!clutter_timeline_is_playing (priv->timeline))
-    clutter_timeline_start (priv->timeline);
-
-
+  if (0)
+  {
+    clutter_actor_animate (priv->details_overlay,
+                           CLUTTER_LINEAR,
+                           150,
+                           "opacity", 0xc0,
+                           NULL);
+  } else {
+    clutter_actor_animate (priv->details_overlay,
+                           CLUTTER_LINEAR,
+                           150,
+                           "opacity", 0,
+                           NULL);
+  }
 
   return FALSE;
 }
@@ -333,14 +324,6 @@ penge_people_tile_init (PengePeopleTile *self)
                                "y-align",
                                1.0,
                                NULL);
-
-  priv->timeline = clutter_timeline_new (300);
-
-  alpha = clutter_alpha_new_full (priv->timeline,
-                                  CLUTTER_LINEAR);
-  priv->behave = clutter_behaviour_opacity_new (alpha, 0x00, 0xc0);
-  clutter_behaviour_apply (priv->behave,
-                           (ClutterActor *)priv->details_overlay);
 
   nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
                         (ClutterActor *)priv->primary_text,
