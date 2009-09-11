@@ -252,9 +252,6 @@ carrick_pane_class_init (CarrickPaneClass *klass)
                     G_TYPE_UINT);
 }
 
-/*
- * Generic call_notify function for async d-bus calls
- */
 static void
 connect_service_notify_cb (DBusGProxy *proxy,
                             gchar     *service,
@@ -267,12 +264,11 @@ connect_service_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
     }
-  else
-    {
-      g_debug ("Service connected %s", service);
-    }
 }
 
+/*
+ * Generic call_notify function for async d-bus calls with no OUT parameters
+ */
 static void
 dbus_proxy_notify_cb (DBusGProxy *proxy,
                       GError     *error,
@@ -666,24 +662,24 @@ _new_connection_cb (GtkButton *button,
 
       ssid_v = g_slice_new0 (GValue);
       g_value_init (ssid_v, G_TYPE_STRING);
-      g_value_set_string (ssid_v, secret);
+      g_value_set_string (ssid_v, network);
       g_hash_table_insert (method_props, g_strdup ("SSID"), ssid_v);
 
+      security_v = g_slice_new0 (GValue);
+      g_value_init (security_v, G_TYPE_STRING);
       if (security)
-        {
-          security_v = g_slice_new0 (GValue);
-          g_value_init (security_v, G_TYPE_STRING);
-          g_value_set_string (security_v, security);
-          g_hash_table_insert (method_props, g_strdup ("Security"), security_v);
-        }
+        g_value_set_string (security_v, security);
+      else
+        g_value_set_string (security_v, "none");
+      g_hash_table_insert (method_props, g_strdup ("Security"), security_v);
 
+      pass_v = g_slice_new0 (GValue);
+      g_value_init (pass_v, G_TYPE_STRING);
       if (secret)
-        {
-          pass_v = g_slice_new0 (GValue);
-          g_value_init (pass_v, G_TYPE_STRING);
-          g_value_set_string (pass_v, secret);
-          g_hash_table_insert (method_props, g_strdup ("Passphrase"), pass_v);
-        }
+        g_value_set_string (pass_v, secret);
+      else
+        g_value_set_string (pass_v, "");
+      g_hash_table_insert (method_props, g_strdup ("Passphrase"), pass_v);
 
       org_moblin_connman_Manager_connect_service_async (priv->manager,
                                                         method_props,
