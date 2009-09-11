@@ -26,6 +26,9 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
+#include "connman-service-bindings.h"
+#include "connman-manager-bindings.h"
+
 #include "carrick-service-item.h"
 
 #define CARRICK_DRAG_TARGET "CARRICK_DRAG_TARGET"
@@ -211,17 +214,12 @@ typedef struct move_data
 } move_data;
 
 static void
-move_notify_cb (DBusGProxy     *proxy,
-                DBusGProxyCall *call,
-                gpointer        user_data)
+move_notify_cb (DBusGProxy *proxy,
+                GError     *error,
+                gpointer    user_data)
 {
   move_data *data = user_data;
-  GError    *error = NULL;
 
-  dbus_g_proxy_end_call (proxy,
-                         call,
-                         &error,
-                         G_TYPE_INVALID);
   if (error)
     {
       g_debug ("Moving service failed: %s, resetting",
@@ -297,14 +295,10 @@ carrick_list_drag_end (GtkWidget      *widget,
                                    "position", &data->pos,
                                    NULL);;
 
-          dbus_g_proxy_begin_call (service,
-                                   "MoveBefore",
-                                   move_notify_cb,
-                                   data,
-                                   NULL,
-                                   DBUS_TYPE_G_OBJECT_PATH,
-                                   path,
-                                   G_TYPE_INVALID);
+          org_moblin_connman_Service_move_before_async (service,
+                                                        path,
+                                                        move_notify_cb,
+                                                        data);
         }
       else
         {
@@ -331,14 +325,10 @@ carrick_list_drag_end (GtkWidget      *widget,
                                    "position", &data->pos,
                                    NULL);;
 
-          dbus_g_proxy_begin_call (service,
-                                   "MoveAfter",
-                                   move_notify_cb,
-                                   data,
-                                   NULL,
-                                   DBUS_TYPE_G_OBJECT_PATH,
-                                   path,
-                                   G_TYPE_INVALID);
+          org_moblin_connman_Service_move_after_async (service,
+                                                       path,
+                                                       move_notify_cb,
+                                                       data);
         }
     }
 
@@ -1041,21 +1031,11 @@ list_update_property (const gchar *property,
 
 static void
 list_get_properties_cb (DBusGProxy     *manager,
-                        DBusGProxyCall *call,
+                        GHashTable     *properties,
+                        GError         *error,
                         gpointer        user_data)
 {
   CarrickList *list = user_data;
-  GError      *error = NULL;
-  GHashTable  *properties;
-
-  dbus_g_proxy_end_call (manager,
-                         call,
-                         &error,
-                         dbus_g_type_get_map ("GHashTable",
-                                              G_TYPE_STRING,
-                                              G_TYPE_VALUE),
-                         &properties,
-                         G_TYPE_INVALID);
 
   if (error)
     {
@@ -1083,13 +1063,10 @@ carrick_list_set_fallback (CarrickList *list)
    * Make D-Bus calls to determine whether there's a reason that we have no
    * content. If so, set the fallback label.
    */
-
-  dbus_g_proxy_begin_call (manager,
-                           "GetProperties",
-                           list_get_properties_cb,
-                           list,
-                           NULL,
-                           G_TYPE_INVALID);
+  org_moblin_connman_Manager_get_properties_async
+    (manager,
+     list_get_properties_cb,
+     list);
 }
 
 static GObject *
