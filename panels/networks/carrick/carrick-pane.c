@@ -734,19 +734,18 @@ pane_update_property (const gchar *property,
       priv->offline_mode = g_value_get_boolean (value);
 
       /* disarm signal handler */
-      g_signal_handlers_disconnect_by_func (priv->offline_mode_switch,
-                                            _offline_mode_switch_callback,
-                                            user_data);
+      g_signal_handlers_block_by_func (priv->offline_mode_switch,
+                                       _offline_mode_switch_callback,
+                                       user_data);
 
       nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
                                         (priv->offline_mode_switch),
                                         priv->offline_mode);
 
       /* arm signal handler */
-      g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
-                        "switch-flipped",
-                        G_CALLBACK (_offline_mode_switch_callback),
-                        user_data);
+      g_signal_handlers_unblock_by_func (priv->offline_mode_switch,
+                                         _offline_mode_switch_callback,
+                                         user_data);
     }
   /*else if (g_str_equal (property, "State"))
      {
@@ -833,21 +832,21 @@ pane_update_property (const gchar *property,
         }
 
       /* disarm signal handlers */
-      g_signal_handlers_disconnect_by_func (priv->ethernet_switch,
-                                            _ethernet_switch_callback,
-                                            user_data);
-      g_signal_handlers_disconnect_by_func (priv->wifi_switch,
-                                            _wifi_switch_callback,
-                                            user_data);
-      g_signal_handlers_disconnect_by_func (priv->threeg_switch,
-                                            _threeg_switch_callback,
-                                            user_data);
-      g_signal_handlers_disconnect_by_func (priv->wimax_switch,
-                                            _wimax_switch_callback,
-                                            user_data);
-      g_signal_handlers_disconnect_by_func (priv->bluetooth_switch,
-                                            _bluetooth_switch_callback,
-                                            user_data);
+      g_signal_handlers_block_by_func (priv->ethernet_switch,
+                                       _ethernet_switch_callback,
+                                       user_data);
+      g_signal_handlers_block_by_func (priv->wifi_switch,
+                                       _wifi_switch_callback,
+                                       user_data);
+      g_signal_handlers_block_by_func (priv->threeg_switch,
+                                       _threeg_switch_callback,
+                                       user_data);
+      g_signal_handlers_block_by_func (priv->wimax_switch,
+                                       _wimax_switch_callback,
+                                       user_data);
+      g_signal_handlers_block_by_func (priv->bluetooth_switch,
+                                       _bluetooth_switch_callback,
+                                       user_data);
 
       nbtk_gtk_light_switch_set_active (NBTK_GTK_LIGHT_SWITCH
                                         (priv->ethernet_switch),
@@ -866,26 +865,21 @@ pane_update_property (const gchar *property,
                                         priv->bluetooth_enabled);
 
       /* arm signal handlers */
-      g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
-                        "switch-flipped",
-                        G_CALLBACK (_ethernet_switch_callback),
-                        user_data);
-      g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
-                        "switch-flipped",
-                        G_CALLBACK (_wifi_switch_callback),
-                        user_data);
-      g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
-                        "switch-flipped",
-                        G_CALLBACK (_threeg_switch_callback),
-                        user_data);
-      g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
-                        "switch-flipped",
-                        G_CALLBACK (_wimax_switch_callback),
-                        user_data);
-      g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
-                        "switch-flipped",
-                        G_CALLBACK (_bluetooth_switch_callback),
-                        user_data);
+      g_signal_handlers_unblock_by_func (priv->ethernet_switch,
+                                         _ethernet_switch_callback,
+                                         user_data);
+      g_signal_handlers_unblock_by_func (priv->wifi_switch,
+                                         _wifi_switch_callback,
+                                         user_data);
+      g_signal_handlers_unblock_by_func (priv->threeg_switch,
+                                         _threeg_switch_callback,
+                                         user_data);
+      g_signal_handlers_unblock_by_func (priv->wimax_switch,
+                                         _wimax_switch_callback,
+                                         user_data);
+      g_signal_handlers_unblock_by_func (priv->bluetooth_switch,
+                                         _bluetooth_switch_callback,
+                                         user_data);
 
       /* only enable "Add new connection" if wifi is enabled */
       gtk_widget_set_sensitive (priv->new_conn_button,
