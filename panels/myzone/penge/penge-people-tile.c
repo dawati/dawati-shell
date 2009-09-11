@@ -38,6 +38,7 @@ struct _PengePeopleTilePrivate {
   NbtkWidget *secondary_text;
   NbtkWidget *details_overlay;
   MojitoItem *item;
+  NbtkWidget *remove_button;
 };
 
 enum
@@ -220,6 +221,11 @@ _enter_event_cb (ClutterActor *actor,
                            150,
                            "opacity", 0xc0,
                            NULL);
+    clutter_actor_animate (priv->remove_button,
+                           CLUTTER_LINEAR,
+                           150,
+                           "opacity", 0xff, /* asset already has opacity */
+                           NULL);
   } else {
     clutter_actor_animate (priv->details_overlay,
                            CLUTTER_LINEAR,
@@ -254,6 +260,11 @@ _leave_event_cb (ClutterActor *actor,
                            150,
                            "opacity", 0,
                            NULL);
+    clutter_actor_animate (priv->remove_button,
+                           CLUTTER_LINEAR,
+                           150,
+                           "opacity", 0,
+                           NULL);
   }
 
   return FALSE;
@@ -265,6 +276,7 @@ penge_people_tile_init (PengePeopleTile *self)
   PengePeopleTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
   ClutterAlpha *alpha;
+  NbtkWidget *icon;
 
   priv->bin = nbtk_bin_new ();
   nbtk_bin_set_fill (NBTK_BIN (priv->bin), TRUE, TRUE);
@@ -376,6 +388,27 @@ penge_people_tile_init (PengePeopleTile *self)
                                FALSE,
                                NULL);
 
+  priv->remove_button = nbtk_button_new ();
+  nbtk_widget_set_style_class_name (priv->remove_button,
+                                    "PengePeopleTileRemoveButton");
+  icon = nbtk_icon_new ();
+  nbtk_widget_set_style_class_name (icon,
+                                    "PengePeopleTileIcon");
+  nbtk_bin_set_child (NBTK_BIN (priv->remove_button),
+                      icon);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        priv->remove_button,
+                                        0, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 1.0,
+                                        "y-align", 0.0,
+                                        NULL);
+
+  clutter_actor_set_opacity (priv->remove_button, 0x0);
+
   g_signal_connect (self,
                     "enter-event",
                     (GCallback)_enter_event_cb,
@@ -386,7 +419,6 @@ penge_people_tile_init (PengePeopleTile *self)
                     self);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (priv->details_overlay), 4);
-
 
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }

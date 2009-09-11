@@ -190,3 +190,19 @@ PengeWelcomeTile *#penge-welcome-secondary-text
   color: #2c2c2cff;
 }
 
+*.PengePeopleTileRemoveButton, *.PengePeopleTileRemoveButton:hover
+{
+  border-image:none;
+  padding:0;
+}
+
+*.PengePeopleTileRemoveButton *.PengePeopleTileIcon
+{
+  background-image: url('file://tile-dismiss-icon-normal.png')
+}
+
+*.PengePeopleTileRemoveButton:hover *.PengePeopleTileIcon
+{
+  background-image: url('file://tile-dismiss-icon-hover.png')
+}
+
