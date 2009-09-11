@@ -224,7 +224,7 @@ move_notify_cb (DBusGProxy *proxy,
     {
       g_debug ("Moving service failed: %s, resetting",
                error->message);
-      g_clear_error (&error);
+      g_error_free (error);
       gtk_box_reorder_child (GTK_BOX (data->list),
                              data->item,
                              data->pos);
@@ -1041,7 +1041,7 @@ list_get_properties_cb (DBusGProxy     *manager,
     {
       g_debug ("Error when ending GetProperties call: %s",
                error->message);
-      g_clear_error (&error);
+      g_error_free (error);
     }
 
   if (properties)
