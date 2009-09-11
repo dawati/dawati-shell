@@ -42,7 +42,7 @@ enum {
   PROP_ICON_FACTORY,
   PROP_NOTIFICATIONS,
   PROP_MODEL,
-  PROP_PATH
+  PROP_ROW
 };
 
 struct _CarrickServiceItemPrivate
@@ -71,7 +71,7 @@ struct _CarrickServiceItemPrivate
   GdkCursor *hand_cursor;
 
   CarrickNetworkModel *model;
-  GtkTreePath         *path;
+  GtkTreeRowReference *row;
 
   DBusGProxy *proxy;
   guint index;
@@ -120,8 +120,8 @@ carrick_service_item_get_property (GObject *object, guint property_id,
       g_value_set_object (value, priv->model);
       break;
 
-    case PROP_PATH:
-      g_value_set_boxed (value, priv->path);
+    case PROP_ROW:
+      g_value_set_boxed (value, priv->row);
       break;
 
     default:
@@ -184,11 +184,10 @@ _populate_variables (CarrickServiceItem *self)
 
   g_return_if_fail (priv->model != NULL);
   g_return_if_fail (CARRICK_IS_NETWORK_MODEL (priv->model));
-  g_return_if_fail (priv->path != NULL);
 
   if (gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->model),
                                &iter,
-                               priv->path))
+                               gtk_tree_row_reference_get_path (priv->row)))
     {
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
                           CARRICK_COLUMN_PROXY, &priv->proxy,
@@ -640,13 +639,14 @@ carrick_service_item_get_proxy (CarrickServiceItem *item)
   return priv->proxy;
 }
 
-GtkTreePath *
-carrick_service_item_get_tree_path (CarrickServiceItem *item)
+GtkTreeRowReference*
+carrick_service_item_get_row_reference (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
 
-  return priv->path;
+  return priv->row;
 }
+
 
 gint
 carrick_service_item_get_order (CarrickServiceItem *item)
@@ -666,7 +666,7 @@ _set_model (CarrickServiceItem  *self,
   priv->model = model;
 
 
-  if (priv->path)
+  if (priv->row)
     {
       _populate_variables (self);
       _set_state (self);
@@ -674,19 +674,21 @@ _set_model (CarrickServiceItem  *self,
 }
 
 static void
-_set_path (CarrickServiceItem *self,
-           GtkTreePath        *path)
+_set_row (CarrickServiceItem *self,
+          GtkTreePath        *path)
 {
   g_return_if_fail (path != NULL);
   CarrickServiceItemPrivate *priv = self->priv;
 
-  if (priv->path)
+  if (priv->row)
     {
-      gtk_tree_path_free (priv->path);
-      priv->path = NULL;
+      gtk_tree_row_reference_free (priv->row);
+      priv->row = NULL;
     }
 
-  priv->path = gtk_tree_path_copy (path);
+  if (path)
+    priv->row = gtk_tree_row_reference_new (GTK_TREE_MODEL (priv->model),
+                                            path);
 
   if (priv->model)
     {
@@ -696,10 +698,10 @@ _set_path (CarrickServiceItem *self,
 }
 
 void
-carrick_service_item_update (CarrickServiceItem *self,
-                             GtkTreePath        *path)
+carrick_service_item_update (CarrickServiceItem *self)
 {
-  _set_path (self, path);
+  _populate_variables (self);
+  _set_state (self);
 }
 
 static void
@@ -730,9 +732,9 @@ carrick_service_item_set_property (GObject *object, guint property_id,
                   CARRICK_NETWORK_MODEL (g_value_get_object (value)));
       break;
 
-    case PROP_PATH:
-      _set_path (self,
-                 (GtkTreePath *) g_value_get_boxed (value));
+    case PROP_ROW:
+      _set_row (self,
+                (GtkTreePath *) g_value_get_boxed (value));
       break;
 
     default:
@@ -746,10 +748,10 @@ carrick_service_item_dispose (GObject *object)
   CarrickServiceItem        *item = CARRICK_SERVICE_ITEM (object);
   CarrickServiceItemPrivate *priv = item->priv;
 
-  if (priv->path)
+  if (priv->row)
     {
-      gtk_tree_path_free (priv->path);
-      priv->path = NULL;
+      gtk_tree_row_reference_free (priv->row);
+      priv->row = NULL;
     }
 
   if (priv->hand_cursor)
@@ -894,7 +896,7 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
                               GTK_TYPE_TREE_PATH,
                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class,
-                                   PROP_PATH,
+                                   PROP_ROW,
                                    pspec);
 
   /* activated == some ui activity in the label part of the item */
@@ -920,7 +922,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv = self->priv = SERVICE_ITEM_PRIVATE (self);
 
   priv->model = NULL;
-  priv->path = NULL;
+  priv->row = NULL;
   priv->failed = FALSE;
 
   priv->proxy = NULL;
