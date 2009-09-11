@@ -1,7 +1,16 @@
 # connman-marshal defines the marshalling code used for the signals sourced
 # by ConnMan
-MARSHALFILES = connman-marshal.c connman-marshal.h
-BUILT_SOURCES = $(MARSHALFILES)
+connman-marshal.c: connman-marshal.list Makefile
+	glib-genmarshal --prefix=connman_marshal --body $< > $@
+
+connman-marshal.h: connman-marshal.list Makefile
+	glib-genmarshal --prefix=connman_marshal --header $< > $@
+
+%-bindings.h: %.xml
+	dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
+
+BUILT_SOURCES = connman-marshal.c connman-marshal.h \
+                connman-manager-bindings.h connman-service-bindings.h
 
 noinst_LTLIBRARIES = \
                         libcarrick.la
@@ -20,7 +29,7 @@ libcarrick_la_SOURCES = carrick-applet.c \
 												carrick-notification-manager.h \
 												carrick-network-model.c \
 												carrick-network-model.h \
-												$(MARSHALFILES) \
+												$(BUILT_SOURCES) \
                         $(NULL)
 
 libcarrick_la_CFLAGS =  -Wall \
@@ -33,13 +42,9 @@ libcarrick_la_LIBADD = $(GTK_LIBS) \
                        $(NBTK_LIBS) \
                        $(LIBNOTIFY_LIBS)
 
-connman-marshal.c: connman-marshal.list Makefile
-	glib-genmarshal --prefix=connman_marshal --body $< > $@
 
-connman-marshal.h: connman-marshal.list Makefile
-	glib-genmarshal --prefix=connman_marshal --header $< > $@
 
-DISTCLEANFILES = $(MARSHALFILES)
-EXTRA_DIST = connman-marshal.list
+DISTCLEANFILES = $(BUILT_SOURCES)
+EXTRA_DIST = connman-marshal.list connman-manager.xml connman-service.xml
 
 -include $(top_srcdir)/git.mk
