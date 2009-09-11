@@ -52,8 +52,8 @@ struct _PengePeoplePanePrivate {
 
 #define MAX_ITEMS 32
 
-#define TILE_WIDTH 170.0f
-#define TILE_HEIGHT 115.0f
+#define TILE_WIDTH 140.0f
+#define TILE_HEIGHT 95.0f
 
 static void
 penge_people_pane_dispose (GObject *object)

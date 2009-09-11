@@ -35,8 +35,8 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_RECENT_FILES_PANE, PengeRecentFilesPanePrivate))
 
-#define TILE_WIDTH 170
-#define TILE_HEIGHT 115
+#define TILE_WIDTH 140
+#define TILE_HEIGHT 95
 
 #define ROW_SPACING 6
 #define COL_SPACING 6
