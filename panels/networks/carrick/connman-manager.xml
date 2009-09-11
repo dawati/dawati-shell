@@ -25,6 +25,7 @@
 
     <method name="ConnectService" tp:name-for-bindings="Connect_Service">
       <arg name="network" type="a{sv}"/>
+      <arg name="service" type="o" direction="out" />
     </method>
 
     <signal name="PropertyChanged" tp:name-for-bindings="Property_Changed">
