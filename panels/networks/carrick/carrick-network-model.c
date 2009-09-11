@@ -255,75 +255,76 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 
   if (error)
     {
-      g_debug ("Error: couldn't end get properties call - %s",
+      g_debug ("Couldn't end get properties call in _service_get_properties_cb - %s",
                error->message);
       g_error_free (error);
-      /* FIXME: Do something here too */
     }
-
-  value = g_hash_table_lookup (properties, "Name");
-  if (value)
-    name = g_value_get_string (value);
   else
-    name = g_strdup ("");
-
-  value = g_hash_table_lookup (properties, "Type");
-  type = g_value_get_string (value);
-
-  value = g_hash_table_lookup (properties, "State");
-  state = g_value_get_string (value);
-
-  value = g_hash_table_lookup (properties, "Favorite");
-  favorite = g_value_get_boolean (value);
-
-  value = g_hash_table_lookup (properties, "Strength");
-  if (value)
-    strength = g_value_get_uchar (value);
-
-  value = g_hash_table_lookup (properties, "Security");
-  if (value)
-    security = g_value_get_string (value);
-
-  value = g_hash_table_lookup (properties, "PassphraseRequired");
-  if (value)
-    passphrase_required = g_value_get_boolean (value);
-
-  if (passphrase_required)
     {
-      value = g_hash_table_lookup (properties, "Passphrase");
+      value = g_hash_table_lookup (properties, "Name");
       if (value)
-        passphrase = g_value_get_string (value);
-    }
+        name = g_value_get_string (value);
+      else
+        name = g_strdup ("");
 
-  if (network_model_have_service_by_proxy (store,
-                                           &iter,
-                                           service))
-    {
-      gtk_list_store_set (store, &iter,
-                          CARRICK_COLUMN_NAME, name,
-                          CARRICK_COLUMN_TYPE, type,
-                          CARRICK_COLUMN_STATE, state,
-                          CARRICK_COLUMN_FAVORITE, favorite,
-                          CARRICK_COLUMN_STRENGTH, strength,
-                          CARRICK_COLUMN_SECURITY, security,
-                          CARRICK_COLUMN_PASSPHRASE_REQUIRED, passphrase_required,
-                          CARRICK_COLUMN_PASSPHRASE, passphrase,
-                          -1);
-    }
-  else
-    {
-      gtk_list_store_insert_with_values
+      value = g_hash_table_lookup (properties, "Type");
+      type = g_value_get_string (value);
+
+      value = g_hash_table_lookup (properties, "State");
+      state = g_value_get_string (value);
+
+      value = g_hash_table_lookup (properties, "Favorite");
+      favorite = g_value_get_boolean (value);
+
+      value = g_hash_table_lookup (properties, "Strength");
+      if (value)
+        strength = g_value_get_uchar (value);
+
+      value = g_hash_table_lookup (properties, "Security");
+      if (value)
+        security = g_value_get_string (value);
+
+      value = g_hash_table_lookup (properties, "PassphraseRequired");
+      if (value)
+        passphrase_required = g_value_get_boolean (value);
+
+      if (passphrase_required)
+        {
+          value = g_hash_table_lookup (properties, "Passphrase");
+          if (value)
+            passphrase = g_value_get_string (value);
+        }
+
+      if (network_model_have_service_by_proxy (store,
+                                               &iter,
+                                               service))
+        {
+          gtk_list_store_set (store, &iter,
+                              CARRICK_COLUMN_NAME, name,
+                              CARRICK_COLUMN_TYPE, type,
+                              CARRICK_COLUMN_STATE, state,
+                              CARRICK_COLUMN_FAVORITE, favorite,
+                              CARRICK_COLUMN_STRENGTH, strength,
+                              CARRICK_COLUMN_SECURITY, security,
+                              CARRICK_COLUMN_PASSPHRASE_REQUIRED, passphrase_required,
+                              CARRICK_COLUMN_PASSPHRASE, passphrase,
+                              -1);
+        }
+      else
+        {
+          gtk_list_store_insert_with_values
             (store, &iter, -1,
-            CARRICK_COLUMN_PROXY, service,
-            CARRICK_COLUMN_NAME, name,
-            CARRICK_COLUMN_TYPE, type,
-            CARRICK_COLUMN_STATE, state,
-            CARRICK_COLUMN_FAVORITE, favorite,
-            CARRICK_COLUMN_STRENGTH, strength,
-            CARRICK_COLUMN_SECURITY, security,
-            CARRICK_COLUMN_PASSPHRASE_REQUIRED, passphrase,
-            CARRICK_COLUMN_PASSPHRASE, passphrase,
-            -1);
+             CARRICK_COLUMN_PROXY, service,
+             CARRICK_COLUMN_NAME, name,
+             CARRICK_COLUMN_TYPE, type,
+             CARRICK_COLUMN_STATE, state,
+             CARRICK_COLUMN_FAVORITE, favorite,
+             CARRICK_COLUMN_STRENGTH, strength,
+             CARRICK_COLUMN_SECURITY, security,
+             CARRICK_COLUMN_PASSPHRASE_REQUIRED, passphrase,
+             CARRICK_COLUMN_PASSPHRASE, passphrase,
+             -1);
+        }
     }
 }
 
