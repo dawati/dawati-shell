@@ -868,6 +868,10 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
   CarrickPanePrivate *priv = pane->priv;
   GValue *value;
 
+  g_signal_handlers_block_by_func (flight_switch,
+                                   _offline_mode_switch_callback,
+                                   pane);
+
   /* FIXME: This is a band aid, needs a better fix */
   carrick_notification_manager_queue_event (priv->notes,
                                             "wifi",
