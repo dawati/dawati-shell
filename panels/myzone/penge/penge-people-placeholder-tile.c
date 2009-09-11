@@ -21,6 +21,8 @@
 #include <glib/gi18n.h>
 #include <gio/gdesktopappinfo.h>
 
+#include <penge/penge-utils.h>
+
 #include "penge-people-placeholder-tile.h"
 
 G_DEFINE_TYPE (PengePeoplePlaceholderTile, penge_people_placeholder_tile, NBTK_TYPE_BUTTON)
@@ -75,6 +77,19 @@ penge_people_placeholder_tile_class_init (PengePeoplePlaceholderTileClass *klass
   object_class->finalize = penge_people_placeholder_tile_finalize;
 
   actor_class->get_preferred_width = penge_people_placeholder_tile_get_preferred_width;
+}
+
+static void
+_button_clicked_cb (NbtkButton *button,
+                    gpointer    userdata)
+{
+  GAppInfo *app_info = (GAppInfo *)userdata;
+
+  if (penge_utils_launch_by_command_line (CLUTTER_ACTOR (button),
+                                          g_app_info_get_executable (app_info)))
+    penge_utils_signal_activated (CLUTTER_ACTOR (button));
+  else
+    g_warning (G_STRLOC ": Unable to launch web services settings");
 }
 
 static void
@@ -158,6 +173,11 @@ penge_people_placeholder_tile_init (PengePeoplePlaceholderTile *self)
                                           "y-fill", FALSE,
                                           NULL);
   }
+
+  g_signal_connect (self,
+                    "clicked",
+                    (GCallback)_button_clicked_cb,
+                    app_info);
 }
 
 ClutterActor *
