@@ -88,6 +88,13 @@ enum
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
+static gboolean _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
+static gboolean _ethernet_switch_callback (NbtkGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
+static gboolean _wimax_switch_callback (NbtkGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
+static gboolean _threeg_switch_callback (NbtkGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
+static gboolean _bluetooth_switch_callback (NbtkGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
+static gboolean _offline_mode_switch_callback (NbtkGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
+
 static void
 pane_manager_changed_cb (DBusGProxy  *proxy, const gchar *property,
                          GValue      *value, gpointer     user_data);
@@ -282,12 +289,40 @@ dbus_proxy_notify_cb (DBusGProxy *proxy,
     }
 }
 
+static void
+wifi_switch_notify_cb (DBusGProxy *proxy,
+                       GError     *error,
+                       gpointer    user_data)
+{
+  CarrickPane *pane = CARRICK_PANE (user_data);
+  CarrickPanePrivate *priv = pane->priv;
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_error_free (error);
+
+      nbtk_gtk_light_switch_set_active
+        (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
+         priv->wifi_enabled);
+    }
+
+  g_signal_handlers_unblock_by_func (priv->wifi_switch,
+                                     _wifi_switch_callback,
+                                     pane);
+}
+
 static gboolean
 _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                        gboolean            new_state,
                        CarrickPane        *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
+
+  g_signal_handlers_block_by_func (wifi_switch,
+                                   _wifi_switch_callback,
+                                   pane);
 
   if (new_state)
     {
@@ -297,7 +332,7 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                                                 "all");
       org_moblin_connman_Manager_enable_technology_async (priv->manager,
                                                           "wifi",
-                                                          dbus_proxy_notify_cb,
+                                                          wifi_switch_notify_cb,
                                                           pane);
     }
   else
@@ -308,11 +343,35 @@ _wifi_switch_callback (NbtkGtkLightSwitch *wifi_switch,
                                                 "all");
       org_moblin_connman_Manager_disable_technology_async (priv->manager,
                                                            "wifi",
-                                                           dbus_proxy_notify_cb,
+                                                           wifi_switch_notify_cb,
                                                            pane);
     }
 
   return TRUE;
+}
+
+static void
+ethernet_switch_notify_cb (DBusGProxy *proxy,
+                           GError     *error,
+                           gpointer    user_data)
+{
+  CarrickPane *pane = CARRICK_PANE (user_data);
+  CarrickPanePrivate *priv = pane->priv;
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_error_free (error);
+
+      nbtk_gtk_light_switch_set_active
+        (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+         priv->ethernet_enabled);
+    }
+
+  g_signal_handlers_unblock_by_func (priv->ethernet_switch,
+                                     _ethernet_switch_callback,
+                                     pane);
 }
 
 static gboolean
@@ -322,6 +381,10 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
 {
   CarrickPanePrivate *priv = pane->priv;
 
+  g_signal_handlers_block_by_func (priv->ethernet_switch,
+                                   _ethernet_switch_callback,
+                                   pane);
+
   if (new_state)
     {
       carrick_notification_manager_queue_event (priv->notes,
@@ -330,7 +393,7 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                                                 "all");
       org_moblin_connman_Manager_enable_technology_async (priv->manager,
                                                           "ethernet",
-                                                          dbus_proxy_notify_cb,
+                                                          ethernet_switch_notify_cb,
                                                           pane);
     }
   else
@@ -341,11 +404,35 @@ _ethernet_switch_callback (NbtkGtkLightSwitch *ethernet_switch,
                                                 "all");
       org_moblin_connman_Manager_disable_technology_async (priv->manager,
                                                            "ethernet",
-                                                           dbus_proxy_notify_cb,
+                                                           ethernet_switch_notify_cb,
                                                            pane);
     }
 
   return TRUE;
+}
+
+static void
+threeg_switch_notify_cb (DBusGProxy *proxy,
+                         GError     *error,
+                         gpointer    user_data)
+{
+  CarrickPane *pane = CARRICK_PANE (user_data);
+  CarrickPanePrivate *priv = pane->priv;
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_error_free (error);
+
+      nbtk_gtk_light_switch_set_active
+        (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
+         priv->threeg_enabled);
+    }
+
+  g_signal_handlers_unblock_by_func (priv->threeg_switch,
+                                     _threeg_switch_callback,
+                                     pane);
 }
 
 static gboolean
@@ -355,6 +442,10 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
 {
   CarrickPanePrivate *priv = pane->priv;
 
+  g_signal_handlers_block_by_func (threeg_switch,
+                                   _threeg_switch_callback,
+                                   pane);
+
   if (new_state)
     {
       carrick_notification_manager_queue_event (priv->notes,
@@ -363,7 +454,7 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                                                 "all");
       org_moblin_connman_Manager_enable_technology_async (priv->manager,
                                                           "cellular",
-                                                          dbus_proxy_notify_cb,
+                                                          threeg_switch_notify_cb,
                                                           pane);
     }
   else
@@ -374,11 +465,35 @@ _threeg_switch_callback (NbtkGtkLightSwitch *threeg_switch,
                                                 "all");
       org_moblin_connman_Manager_disable_technology_async (priv->manager,
                                                            "cellular",
-                                                           dbus_proxy_notify_cb,
+                                                           threeg_switch_notify_cb,
                                                            pane);
     }
 
   return TRUE;
+}
+
+static void
+wimax_switch_notify_cb (DBusGProxy *proxy,
+                        GError     *error,
+                        gpointer    user_data)
+{
+  CarrickPane *pane = CARRICK_PANE (user_data);
+  CarrickPanePrivate *priv = pane->priv;
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_error_free (error);
+
+      nbtk_gtk_light_switch_set_active
+        (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
+         priv->wimax_enabled);
+    }
+
+  g_signal_handlers_unblock_by_func (priv->wimax_switch,
+                                     _wimax_switch_callback,
+                                     pane);
 }
 
 static gboolean
@@ -388,6 +503,10 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
 {
   CarrickPanePrivate *priv = pane->priv;
 
+  g_signal_handlers_block_by_func (wimax_switch,
+                                   _wimax_switch_callback,
+                                   pane);
+
   if (new_state)
     {
       carrick_notification_manager_queue_event (priv->notes,
@@ -396,7 +515,7 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                                                 "all");
       org_moblin_connman_Manager_enable_technology_async (priv->manager,
                                                           "wimax",
-                                                          dbus_proxy_notify_cb,
+                                                          wimax_switch_notify_cb,
                                                           pane);
     }
   else
@@ -407,11 +526,35 @@ _wimax_switch_callback (NbtkGtkLightSwitch *wimax_switch,
                                                 "all");
       org_moblin_connman_Manager_disable_technology_async (priv->manager,
                                                            "wimax",
-                                                           dbus_proxy_notify_cb,
+                                                           wimax_switch_notify_cb,
                                                            pane);
     }
 
   return TRUE;
+}
+
+static void
+bluetooth_switch_notify_cb (DBusGProxy *proxy,
+                            GError     *error,
+                            gpointer    user_data)
+{
+  CarrickPane *pane = CARRICK_PANE (user_data);
+  CarrickPanePrivate *priv = pane->priv;
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_error_free (error);
+
+      nbtk_gtk_light_switch_set_active
+        (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
+         priv->bluetooth_enabled);
+    }
+
+  g_signal_handlers_unblock_by_func (priv->bluetooth_switch,
+                                     _bluetooth_switch_callback,
+                                     pane);
 }
 
 static gboolean
@@ -421,6 +564,10 @@ _bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
 {
   CarrickPanePrivate *priv = pane->priv;
 
+  g_signal_handlers_block_by_func (bluetooth_switch,
+                                   _bluetooth_switch_callback,
+                                   pane);
+
   if (new_state)
     {
       carrick_notification_manager_queue_event (priv->notes,
@@ -429,7 +576,7 @@ _bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
                                                 "all");
       org_moblin_connman_Manager_enable_technology_async (priv->manager,
                                                           "bluetooth",
-                                                          dbus_proxy_notify_cb,
+                                                          bluetooth_switch_notify_cb,
                                                           pane);
     }
   else
@@ -440,7 +587,7 @@ _bluetooth_switch_callback (NbtkGtkLightSwitch *bluetooth_switch,
                                                 "all");
       org_moblin_connman_Manager_disable_technology_async (priv->manager,
                                                            "bluetooth",
-                                                           dbus_proxy_notify_cb,
+                                                           bluetooth_switch_notify_cb,
                                                            pane);
     }
 
@@ -689,6 +836,30 @@ _new_connection_cb (GtkButton *button,
   gtk_widget_destroy (dialog);
 }
 
+static void
+offline_switch_notify_cb (DBusGProxy *proxy,
+                          GError     *error,
+                          gpointer    user_data)
+{
+  CarrickPane *pane = CARRICK_PANE (user_data);
+  CarrickPanePrivate *priv = pane->priv;
+
+  if (error)
+    {
+      g_debug ("Error when ending call: %s",
+               error->message);
+      g_error_free (error);
+
+      nbtk_gtk_light_switch_set_active
+        (NBTK_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
+         priv->offline_mode);
+    }
+
+  g_signal_handlers_unblock_by_func (priv->offline_mode_switch,
+                                     _offline_mode_switch_callback,
+                                     pane);
+}
+
 static gboolean
 _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
                                gboolean            new_state,
@@ -711,7 +882,7 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
   org_moblin_connman_Manager_set_property_async (priv->manager,
                                                  "OfflineMode",
                                                  value,
-                                                 dbus_proxy_notify_cb,
+                                                 offline_switch_notify_cb,
                                                  pane);
 
   g_value_unset (value);
