@@ -25,6 +25,9 @@
 #include <config.h>
 #include <dbus/dbus.h>
 
+#include "connman-manager-bindings.h"
+#include "connman-service-bindings.h"
+
 G_DEFINE_TYPE (CarrickNetworkModel, carrick_network_model, GTK_TYPE_LIST_STORE)
 
 #define NETWORK_MODEL_PRIVATE(o) \
@@ -42,7 +45,7 @@ struct _CarrickNetworkModelPrivate
  */
 static gint network_model_sort_cb (GtkTreeModel *self, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data);
 static void network_model_manager_changed_cb (DBusGProxy *service, const gchar *property, GValue *value, gpointer user_data);
-static void network_model_manager_get_properties_cb (DBusGProxy *service, DBusGProxyCall *call, gpointer user_data);
+static void network_model_manager_get_properties_cb (DBusGProxy *manager, GHashTable *properties, GError *error, gpointer user_data);
 static void carrick_network_model_dispose (GObject *object);
 static gboolean network_model_have_service_by_path (GtkListStore *store, GtkTreeIter  *iter, const gchar  *path);
 /* end */
@@ -62,7 +65,6 @@ carrick_network_model_init (CarrickNetworkModel *self)
 {
   CarrickNetworkModelPrivate *priv;
   GError                     *error = NULL;
-  DBusGProxyCall             *call;
 
   priv = self->priv = NETWORK_MODEL_PRIVATE (self);
   priv->services = NULL;
@@ -92,12 +94,10 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                self,
                                NULL);
 
-  call = dbus_g_proxy_begin_call (priv->manager,
-                                  "GetProperties",
-                                  network_model_manager_get_properties_cb,
-                                  self,
-                                  NULL,
-                                  G_TYPE_INVALID);
+  org_moblin_connman_Manager_get_properties_async
+    (priv->manager,
+     network_model_manager_get_properties_cb,
+     self);
 
   const GType column_types[] = { G_TYPE_OBJECT, /* proxy */
                                  G_TYPE_UINT, /* index */
@@ -236,13 +236,12 @@ network_model_have_service_by_proxy (GtkListStore *store,
 
 static void
 network_model_service_get_properties_cb (DBusGProxy     *service,
-                                         DBusGProxyCall *call,
+                                         GHashTable     *properties,
+                                         GError         *error,
                                          gpointer        user_data)
 {
   CarrickNetworkModel *self = user_data;
   GtkListStore        *store = GTK_LIST_STORE (self);
-  GError              *error = NULL;
-  GHashTable          *properties;
   guint                strength = 0;
   const gchar         *name = NULL;
   const gchar         *state = NULL;
@@ -254,20 +253,11 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   GValue              *value;
   GtkTreeIter          iter;
 
-  dbus_g_proxy_end_call (service,
-                         call,
-                         &error,
-                         dbus_g_type_get_map ("GHashTable",
-                                              G_TYPE_STRING,
-                                              G_TYPE_VALUE),
-                         &properties,
-                         G_TYPE_INVALID);
-
   if (error)
     {
       g_debug ("Error: couldn't end get properties call - %s",
                error->message);
-      g_clear_error (&error);
+      g_error_free (error);
       /* FIXME: Do something here too */
     }
 
@@ -346,7 +336,6 @@ network_model_service_changed_cb (DBusGProxy  *service,
   CarrickNetworkModel *self = user_data;
   GtkListStore        *store = GTK_LIST_STORE (self);
   GtkTreeIter          iter;
-  DBusGProxyCall      *call;
 
   if (property == NULL || value == NULL)
     return;
@@ -377,12 +366,10 @@ network_model_service_changed_cb (DBusGProxy  *service,
       /* Rather than store this property we're just going to trigger
        * GetProperties to pull the up-to-date passphrase
        */
-      call = dbus_g_proxy_begin_call (service,
-                                      "GetProperties",
-                                      network_model_service_get_properties_cb,
-                                      self,
-                                      NULL,
-                                      G_TYPE_INVALID);
+      org_moblin_connman_Service_get_properties_async
+        (service,
+         network_model_service_get_properties_cb,
+         self);
     }
 }
 
@@ -399,7 +386,6 @@ network_model_update_property (const gchar *property,
   GList                      *list_iter = NULL;
   GList                      *tmp = NULL;
   GtkTreeIter                 iter;
-  DBusGProxyCall             *call = NULL;
   gchar                      *path = NULL;
   DBusGProxy                 *service;
   guint                       index = 0;
@@ -456,12 +442,11 @@ network_model_update_property (const gchar *property,
                                            self,
                                            NULL);
 
-              call = dbus_g_proxy_begin_call (service,
-                                              "GetProperties",
-                                              network_model_service_get_properties_cb,
-                                              self,
-                                              NULL,
-                                              G_TYPE_INVALID);
+              org_moblin_connman_Service_get_properties_async
+                (service,
+                 network_model_service_get_properties_cb,
+                 self);
+
               g_object_unref (service);
             }
           /* else update it */
@@ -525,26 +510,17 @@ network_model_manager_changed_cb (DBusGProxy  *proxy,
 
 static void
 network_model_manager_get_properties_cb (DBusGProxy     *manager,
-                                         DBusGProxyCall *call,
+                                         GHashTable     *properties,
+                                         GError         *error,
                                          gpointer        user_data)
 {
   CarrickNetworkModel *self = user_data;
-  GError              *error = NULL;
-  GHashTable          *properties;
 
-  dbus_g_proxy_end_call (manager,
-                         call,
-                         &error,
-                         dbus_g_type_get_map ("GHashTable",
-                                              G_TYPE_STRING,
-                                              G_TYPE_VALUE),
-                         &properties,
-                         G_TYPE_INVALID);
   if (error)
     {
       g_debug ("Error: Couldn't end get properties call - %s",
                error->message);
-      g_clear_error (&error);
+      g_error_free (error);
       /* FIXME: Do something here */
     }
   else
