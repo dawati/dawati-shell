@@ -25,6 +25,9 @@
 #include <config.h>
 #include <glib/gi18n.h>
 #include <nbtk/nbtk-gtk.h>
+
+#include "connman-service-bindings.h"
+
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
 
@@ -369,53 +372,36 @@ _request_passphrase (CarrickServiceItem *item)
  * Generic call_notify function for async d-bus calls
  */
 static void
-dbus_proxy_notify_cb (DBusGProxy     *proxy,
-                      DBusGProxyCall *call,
-                      gpointer        user_data)
+dbus_proxy_notify_cb (DBusGProxy *proxy,
+                      GError     *error,
+                      gpointer    user_data)
 {
-  GError      *error = NULL;
-
-  dbus_g_proxy_end_call (proxy,
-                         call,
-                         &error,
-                         G_TYPE_INVALID);
-
   if (error)
     {
       g_debug ("Error when ending call: %s",
                error->message);
-      g_clear_error (&error);
+      g_error_free (error);
     }
 }
 
 static void
-set_passphrase_notify_cb (DBusGProxy     *proxy,
-                      DBusGProxyCall *call,
-                      gpointer        user_data)
+set_passphrase_notify_cb (DBusGProxy *proxy,
+                          GError     *error,
+                          gpointer    user_data)
 {
   CarrickServiceItem *item = CARRICK_SERVICE_ITEM (user_data);
-  GError *error = NULL;
-
-  dbus_g_proxy_end_call (proxy,
-                         call,
-                         &error,
-                         G_TYPE_INVALID);
 
   if (error)
     {
       g_debug ("Error when ending call: %s",
                error->message);
-      g_clear_error (&error);
+      g_error_free (error);
     }
   else
     {
-      dbus_g_proxy_begin_call_with_timeout (proxy,
-                                            "Connect",
-                                            dbus_proxy_notify_cb,
-                                            item,
-                                            NULL,
-                                            120000, /* 2min timeout */
-                                            G_TYPE_INVALID);
+      org_moblin_connman_Service_connect_async (proxy,
+                                                dbus_proxy_notify_cb,
+                                                item);
     }
 }
 
@@ -471,12 +457,9 @@ _delete_button_cb (GtkButton *delete_button,
                                                 priv->type,
                                                 "idle",
                                                 priv->name);
-      dbus_g_proxy_begin_call (priv->proxy,
-                               "Remove",
-                               dbus_proxy_notify_cb,
-                               item,
-                               NULL,
-                               G_TYPE_INVALID);
+      org_moblin_connman_Service_remove_async (priv->proxy,
+                                               dbus_proxy_notify_cb,
+                                               item);
     }
 
   gtk_widget_destroy (dialog);
@@ -498,12 +481,9 @@ _connect_button_cb (GtkButton          *connect_button,
                                                 priv->type,
                                                 "idle",
                                                 priv->name);
-      dbus_g_proxy_begin_call (priv->proxy,
-                               "Disconnect",
-                               dbus_proxy_notify_cb,
-                               item,
-                               NULL,
-                               G_TYPE_INVALID);
+      org_moblin_connman_Service_disconnect_async (priv->proxy,
+                                                   dbus_proxy_notify_cb,
+                                                   item);
     }
   else
     {
@@ -520,13 +500,9 @@ _connect_button_cb (GtkButton          *connect_button,
                                                         priv->type,
                                                         "ready",
                                                         priv->name);
-              dbus_g_proxy_begin_call_with_timeout (priv->proxy,
-                                                    "Connect",
-                                                    dbus_proxy_notify_cb,
-                                                    item,
-                                                    NULL,
-                                                    120000, /* 2min timeout */
-                                                    G_TYPE_INVALID);
+              org_moblin_connman_Service_connect_async (priv->proxy,
+                                                        dbus_proxy_notify_cb,
+                                                        item);
             }
         }
       else
@@ -535,13 +511,9 @@ _connect_button_cb (GtkButton          *connect_button,
                                                     priv->type,
                                                     "ready",
                                                     priv->name);
-          dbus_g_proxy_begin_call_with_timeout (priv->proxy,
-                                                "Connect",
-                                                dbus_proxy_notify_cb,
-                                                item,
-                                                NULL,
-                                                120000, /* 2min timeout */
-                                                G_TYPE_INVALID);
+          org_moblin_connman_Service_connect_async (priv->proxy,
+                                                    dbus_proxy_notify_cb,
+                                                    item);
         }
     }
 }
@@ -572,16 +544,11 @@ _connect_with_password (CarrickServiceItem *item)
   g_value_init (value, G_TYPE_STRING);
   g_value_set_string (value, passphrase);
 
-  dbus_g_proxy_begin_call (priv->proxy,
-                           "SetProperty",
-                           set_passphrase_notify_cb,
-                           item,
-                           NULL,
-                           G_TYPE_STRING,
-                           "Passphrase",
-                           G_TYPE_VALUE,
-                           value,
-                           G_TYPE_INVALID);
+  org_moblin_connman_Service_set_property_async (priv->proxy,
+                                                 "Passphrase",
+                                                 value,
+                                                 set_passphrase_notify_cb,
+                                                 item);
 
   g_value_unset (value);
   g_slice_free (GValue, value);
