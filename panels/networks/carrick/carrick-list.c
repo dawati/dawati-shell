@@ -492,10 +492,9 @@ _find_and_remove (GtkWidget *item,
   g_return_if_fail (user_data != NULL);
 
   CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
-  GtkTreePath        *path = (GtkTreePath *) user_data;
-  GtkTreePath        *item_path = carrick_service_item_get_tree_path (service_item);
+  GtkTreeRowReference *row = carrick_service_item_get_row_reference (service_item);
 
-  if (gtk_tree_path_compare (path, item_path) == 0)
+  if (gtk_tree_row_reference_valid (row) == FALSE)
     {
       gtk_widget_destroy (item);
     }
@@ -513,16 +512,18 @@ _row_deleted_cb (GtkTreeModel *tree_model,
   if (gtk_tree_model_get_iter_first (tree_model, &iter) == FALSE)
     {
       gtk_container_foreach (GTK_CONTAINER (priv->box),
-                             (GtkCallback) gtk_widget_destroy,
+                             (GtkCallback)gtk_widget_destroy,
                              NULL);
       carrick_list_set_fallback (CARRICK_LIST (user_data));
     }
-
-  /* Row removed, find widget with corresponding GtkTreePath
-   * and destroy */
-  gtk_container_foreach (GTK_CONTAINER (priv->box),
-                         _find_and_remove,
-                         path);
+  else
+    {
+      /* Row removed, find widget with corresponding GtkTreePath
+       * and destroy */
+      gtk_container_foreach (GTK_CONTAINER (priv->box),
+                             _find_and_remove,
+                             path);
+    }
 }
 
 static void
@@ -584,8 +585,7 @@ _row_changed_cb (GtkTreeModel *model,
                                          proxy);
   if (item)
     {
-      carrick_service_item_update (CARRICK_SERVICE_ITEM (item),
-                                   path);
+      carrick_service_item_update (CARRICK_SERVICE_ITEM (item));
 
       /* Check the order and, where neccesarry, reorder */
       gtk_container_child_get (GTK_CONTAINER (priv->box),
