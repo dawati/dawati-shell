@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-27 07:51+0000\n"
-"PO-Revision-Date: 2009-08-30 04:05+0200\n"
+"PO-Revision-Date: 2009-09-14 14:07+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
 "Language-Team: Moblin Romania <live@moblin.ro>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "Nici o înregistrare în agendă pentru săptămâna aceasta"
 
 #: ../penge/penge-people-pane.c:144
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-msgstr "Feed-urile și serviciile de internet ale prietenilor dvs. vor apare aici. Activați-vă conturile acum!"
+msgstr "Feed-urile și serviciile de internet ale prietenilor vor apare aici. Activați-vă conturile acum!"
 
 #: ../penge/penge-recent-files-pane.c:202
 msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
@@ -37,7 +37,7 @@ msgstr "<b>Bine ați venit pe Moblin 2.0 pentru Netbook-uri</b>"
 
 #: ../penge/penge-recent-files-pane.c:227
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Pentru că Moblin este puțin diferit, am adăugat câteva piese pentru a vă descurca mai ușor. Sperăm să vă placă, Echipa Moblin."
+msgstr "Pentru că Moblin este puțin diferit, am adăugat câteva piese ajutătoare pentru a vă descurca mai ușor. Sperăm să vă placă, Echipa Moblin."
 
 #: ../penge/penge-recent-file-tile.c:218
 msgid "Web page"
