@@ -182,13 +182,6 @@ struct _MnbToolbarPrivate
 
   guint trigger_timeout_id;
 
-#if 1
-  /* TODO remove */
-  gboolean systray_window_showing;
-
-  guint tray_xids [NUM_ZONES];
-#endif
-
   DBusGConnection *dbus_conn;
   DBusGProxy      *dbus_proxy;
 
@@ -2223,8 +2216,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
     }
 
   if ((event->type == CLUTTER_LEAVE) &&
-      (priv->systray_window_showing ||
-       priv->waiting_for_panel ||
+      (priv->waiting_for_panel ||
        priv->dont_autohide ||
        mnb_toolbar_panels_showing (toolbar)))
     {
