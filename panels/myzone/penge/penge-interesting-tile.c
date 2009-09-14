@@ -52,6 +52,14 @@ enum
   PROP_SECONDARY_TEXT,
 };
 
+enum
+{
+  REMOVE_CLICKED_SIGNAL,
+  LAST_SIGNAL
+};
+
+guint signals [LAST_SIGNAL];
+
 static void
 penge_interesting_tile_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -171,6 +179,17 @@ penge_interesting_tile_class_init (PengeInterestingTileClass *klass)
                                NULL,
                                G_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_SECONDARY_TEXT, pspec);
+
+  signals[REMOVE_CLICKED_SIGNAL] = 
+    g_signal_new ("remove-clicked",
+                  PENGE_TYPE_INTERESTING_TILE,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
 }
 
 static gboolean
@@ -237,6 +256,15 @@ _leave_event_cb (ClutterActor *actor,
   }
 
   return FALSE;
+}
+
+static void
+_remove_button_clicked (NbtkButton *button,
+                        gpointer    userdata)
+{
+  PengeInterestingTile *tile = PENGE_INTERESTING_TILE (userdata);
+
+  g_signal_emit (tile, signals[REMOVE_CLICKED_SIGNAL], 0);
 }
 
 static void
@@ -386,6 +414,11 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   g_signal_connect (self,
                     "leave-event",
                     (GCallback)_leave_event_cb,
+                    self);
+
+  g_signal_connect (priv->remove_button,
+                    "clicked",
+                    (GCallback)_remove_button_clicked,
                     self);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (priv->details_overlay), 4);
