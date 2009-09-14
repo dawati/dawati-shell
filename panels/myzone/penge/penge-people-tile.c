@@ -18,6 +18,7 @@
  */
 
 #include <moblin-panel/mpl-utils.h>
+#include <mojito-client/mojito-client.h>
 
 #include "penge-people-tile.h"
 #include "penge-utils.h"
@@ -122,8 +123,24 @@ penge_people_tile_class_init (PengePeopleTileClass *klass)
 }
 
 static void
+_remove_clicked_cb (PengeInterestingTile *tile,
+                    gpointer              userdata)
+{
+  PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
+  MojitoClient *client;
+
+  client = penge_people_pane_dup_mojito_client_singleton ();
+  mojito_client_hide_item (client, priv->item);
+  g_object_unref (client);
+}
+
+static void
 penge_people_tile_init (PengePeopleTile *self)
 {
+  g_signal_connect (self,
+                    "remove-clicked",
+                    (GCallback)_remove_clicked_cb,
+                    self);
 }
 
 void
