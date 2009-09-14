@@ -44,7 +44,7 @@ enum
 {
   PROP_0,
   PROP_THUMBNAIL_PATH,
-  PROP_INFO
+  PROP_INFO,
 };
 
 static void penge_recent_file_tile_update (PengeRecentFileTile *tile);
@@ -253,6 +253,23 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
 }
 
 static void
+_remove_clicked_cb (PengeInterestingTile *tile,
+                           gpointer              userdata)
+{
+  PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
+  GError *error = NULL;
+
+  if (!gtk_recent_manager_remove_item (gtk_recent_manager_get_default (),
+                                       gtk_recent_info_get_uri (priv->info),
+                                       &error))
+  {
+    g_warning (G_STRLOC ": Unable to remove item: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
 penge_recent_file_tile_init (PengeRecentFileTile *self)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (self);
@@ -266,6 +283,11 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   g_signal_connect (self,
                     "button-press-event",
                     (GCallback)_button_press_event,
+                    self);
+
+  g_signal_connect (self,
+                    "remove-clicked",
+                    (GCallback)_remove_clicked_cb,
                     self);
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
