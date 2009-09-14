@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-28 06:51+0000\n"
-"PO-Revision-Date: 2009-08-29 05:23+0200\n"
+"PO-Revision-Date: 2009-09-14 13:53+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
 "Language-Team: Moblin Romania <live@moblin.ro>\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr "Acumulatorul dvs. este pe sfârșite"
 
 #: ../dalston/dalston-power-applet.c:233
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Am observat că bateria dvs. este destul de descărcată. Dacă se poate, ar fi o idee bună să conectaţi calculatorul la o priză pentru încărcare."
+msgstr "Am observat că acumulatorul este destul de descărcat. Dacă se poate, ar fi o idee bună să conectaţi calculatorul la o priză pentru încărcare."
 
 #: ../dalston/dalston-power-applet.c:235
 msgid "Getting close to empty"
@@ -48,7 +48,7 @@ msgstr "Se apropie de golire"
 
 #: ../dalston/dalston-power-applet.c:235
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "Acumulatorul dvs. este pe sfârșite. Ar fi o idee bună să vă salvați toate lucrările dvs. şi să conectați calculatorul la o priză cât de curând puteţi"
+msgstr "Acumulatorul este pe sfârșite. Ar fi o idee bună să vă salvați toate lucrările şi să conectați calculatorul la o priză cât mai curând"
 
 #: ../dalston/dalston-power-applet.c:237
 msgid "Danger!"
@@ -56,25 +56,25 @@ msgstr "Alertă!"
 
 #: ../dalston/dalston-power-applet.c:237
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Ne pare rău, calculatorul dvs. este pe cale de a rămâne cu bateria descărcată. Va trebui să ne oprim acum. Vă rugăm să vă salvaţi lucrările şi sperăm să ne vedem din nou în curând."
+msgstr "Ne pare rău, calculatorul este pe cale de a rămâne cu acumulatorul descărcat. Va trebui să ne oprim acum. Vă rugăm să vă salvaţi lucrările şi sperăm să ne vedem din nou în curând."
 
 #: ../dalston/dalston-power-applet.c:364
 msgid "Sorry, it looks like your battery is broken."
-msgstr "Ne pare rău, se pare că bateria dvs. este defectă."
+msgstr "Ne pare rău, se pare că acumulatorul este defect."
 
 #: ../dalston/dalston-power-applet.c:367
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "Acumulatorul dvs. este încărcat complet şi sunteţi gata de plecare."
+msgstr "Acumulatorul este încărcat complet şi sunteţi gata de plecare."
 
 #: ../dalston/dalston-power-applet.c:370
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
-msgstr "Acumulatorul dvs. se încarcă. Momentan este <b>%d</b>%% încărcat."
+msgstr "Acumulatorul se încarcă. Momentan este <b>%d</b>%% încărcat."
 
 #: ../dalston/dalston-power-applet.c:377
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
-msgstr "Acumulatorul dvs. este în folosință. Momentan este <b>%d</b>%% încărcat."
+msgstr "Acumulatorul este în folosință. Momentan este <b>%d</b>%% încărcat."
 
 #: ../dalston/dalston-power-applet.c:385
 msgid "Sorry, you don't appear to have a battery installed."
@@ -143,7 +143,7 @@ msgstr "Închide"
 
 #: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
-msgstr "Volum Output"
+msgstr "Ieșire Volum"
 
 #: ../dalston/dalston-volume-pane.c:302
 msgid "Mute"
