@@ -261,7 +261,7 @@ carrick_pane_class_init (CarrickPaneClass *klass)
 
 static void
 connect_service_notify_cb (DBusGProxy *proxy,
-                            gchar     *service,
+                           gchar      *service,
                            GError     *error,
                            gpointer    user_data)
 {
@@ -271,6 +271,10 @@ connect_service_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
     }
+
+  /* Re-set the default timeout on the proxy to 25s */
+  dbus_g_proxy_set_default_timeout (proxy,
+                                    25000);
 }
 
 /*
@@ -828,6 +832,11 @@ _new_connection_cb (GtkButton *button,
         g_value_set_string (pass_v, "");
       g_hash_table_insert (method_props, g_strdup ("Passphrase"), pass_v);
 
+      /* Connection methods do not return until there has been success or an error,
+       * set the timeout nice and long before we make the call
+       */
+      dbus_g_proxy_set_default_timeout (priv->manager,
+                                        120000);
       org_moblin_connman_Manager_connect_service_async (priv->manager,
                                                         method_props,
                                                         connect_service_notify_cb,
