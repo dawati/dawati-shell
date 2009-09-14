@@ -135,11 +135,25 @@ _remove_clicked_cb (PengeInterestingTile *tile,
 }
 
 static void
+_clicked_cb (NbtkButton *button,
+             gpointer    userdata)
+{
+  PengePeopleTile *tile = PENGE_PEOPLE_TILE (button);
+  PengePeopleTilePrivate *priv = GET_PRIVATE (button);
+
+  penge_people_tile_activate (tile, priv->item);
+}
+
+static void
 penge_people_tile_init (PengePeopleTile *self)
 {
   g_signal_connect (self,
                     "remove-clicked",
                     (GCallback)_remove_clicked_cb,
+                    self);
+  g_signal_connect (self,
+                    "clicked",
+                    (GCallback)_clicked_cb,
                     self);
 }
 
