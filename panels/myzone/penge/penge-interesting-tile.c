@@ -24,7 +24,7 @@
 #include "penge-utils.h"
 #include "penge-magic-texture.h"
 
-G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, NBTK_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_INTERESTING_TILE, PengeInterestingTilePrivate))
@@ -32,6 +32,8 @@ G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, NBTK_TYPE_TABLE)
 typedef struct _PengeInterestingTilePrivate PengeInterestingTilePrivate;
 
 struct _PengeInterestingTilePrivate {
+  NbtkWidget *inner_table;
+
   ClutterActor *body;
   ClutterActor *icon;
   NbtkWidget *bin;
@@ -54,8 +56,6 @@ static void
 penge_interesting_tile_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
-  PengeInterestingTilePrivate *priv = GET_PRIVATE (object);
-
   switch (property_id) {
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -122,8 +122,6 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
 static void
 penge_interesting_tile_dispose (GObject *object)
 {
-  PengeInterestingTilePrivate *priv = GET_PRIVATE (object);
-
   G_OBJECT_CLASS (penge_interesting_tile_parent_class)->dispose (object);
 }
 
@@ -249,13 +247,17 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   ClutterAlpha *alpha;
   NbtkWidget *icon;
 
+  priv->inner_table = nbtk_table_new ();
+  nbtk_bin_set_child (NBTK_BIN (self),
+                      (ClutterActor *)priv->inner_table);
+  nbtk_bin_set_fill (NBTK_BIN (self), TRUE, TRUE);
   priv->bin = nbtk_bin_new ();
   nbtk_bin_set_fill (NBTK_BIN (priv->bin), TRUE, TRUE);
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
                         (ClutterActor *)priv->bin,
                         0,
                         0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->bin,
                                "y-align", 0.0,
                                "x-align", 0.0,
@@ -292,12 +294,12 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                     "PengeInterestingTileDetails");
   clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay, 0x0);
 
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
                         (ClutterActor *)priv->details_overlay,
                         1,
                         0);
 
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->details_overlay,
                                "x-expand",
                                TRUE,
@@ -364,7 +366,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                     "PengeInterestingTileIcon");
   nbtk_bin_set_child (NBTK_BIN (priv->remove_button),
                       icon);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->inner_table),
                                         priv->remove_button,
                                         0, 0,
                                         "x-expand", TRUE,
