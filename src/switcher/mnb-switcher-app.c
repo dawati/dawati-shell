@@ -24,6 +24,7 @@
 #include <string.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <display.h>
 
 #include "mnb-switcher-app.h"
 #include "mnb-switcher-zone.h"
@@ -381,15 +382,21 @@ mnb_switcher_app_activate (MnbSwitcherItem *item)
   MetaWorkspace         *workspace;
   MetaWorkspace         *active_workspace;
   MetaScreen            *screen;
+  MetaDisplay           *display;
   guint32                timestamp;
 
   switcher = mnb_switcher_item_get_switcher (MNB_SWITCHER_ITEM (item));
 
   window           = mutter_window_get_meta_window (priv->mw);
   screen           = meta_window_get_screen (window);
+  display          = meta_screen_get_display (screen);
   workspace        = meta_window_get_workspace (window);
   active_workspace = meta_screen_get_active_workspace (screen);
-  timestamp        = clutter_x11_get_current_event_time ();
+
+  /*
+   * Make sure our stamp is recent enough.
+   */
+  timestamp = meta_display_get_current_time_roundtrip (display);
 
   mnb_switcher_end_kbd_grab (switcher);
   clutter_ungrab_pointer ();

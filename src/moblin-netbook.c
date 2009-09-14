@@ -1849,7 +1849,7 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 
 
   if (timestamp == CurrentTime)
-    timestamp = clutter_x11_get_current_event_time ();
+    timestamp = meta_display_get_current_time_roundtrip (display);
 
   /*
    * Work out what we should focus next.
