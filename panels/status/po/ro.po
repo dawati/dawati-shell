@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: moblin-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-24 09:30+0000\n"
-"PO-Revision-Date: 2009-08-30 04:28+0200\n"
+"PO-Revision-Date: 2009-09-14 14:09+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
 "Language-Team: Moblin Romania <live@moblin.ro>\n"
 "MIME-Version: 1.0\n"
@@ -66,12 +66,12 @@ msgstr "Modifică"
 #: ../src/mnb-web-status-entry.c:515
 #, c-format
 msgid "Enter your %s status here..."
-msgstr "Introduceți status-ul %s al dvs. aici..."
+msgstr "Introduceți status-ul %s aici..."
 
 #: ../src/mnb-web-status-entry.c:519
 #: ../src/mnb-web-status-entry.c:592
 msgid "Enter your current status here..."
-msgstr "Introduceți status-ul dvs. aici..."
+msgstr "Introduceți status-ul aici..."
 
 #: ../src/mnb-web-status-entry.c:701
 msgid "Post"
@@ -79,12 +79,12 @@ msgstr "Postează"
 
 #: ../src/moblin-panel-status.c:470
 msgid "Your current status"
-msgstr "Status-ul curent"
+msgstr "Status curent"
 
 #: ../src/moblin-panel-status.c:472
 #: ../src/moblin-panel-status.c:960
 msgid "Your current status - you are offline"
-msgstr "Status-ul curent - neconectat"
+msgstr "Status curent - neconectat"
 
 #: ../src/moblin-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
@@ -92,11 +92,11 @@ msgstr "Ne pare rău, nu am găsit nici o persoană. V-aţi configurat un cont d
 
 #: ../src/moblin-panel-status.c:994
 msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "Pentru a actualiza status-ul dvs. pe internet aveţi nevoie să configurați un Serviciu Web cu un furnizor care acceptă un astfel de serviciu"
+msgstr "Pentru a actualiza status-ul pe internet aveţi nevoie să configurați un Serviciu Web cu un furnizor care acceptă un astfel de serviciu"
 
 #: ../src/moblin-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr "Pentru a actualiza status-ul dvs. de chat aveţi nevoie să configurați un cont pentru acesta"
+msgstr "Pentru a actualiza status-ul de chat aveţi nevoie să configurați un cont pentru acesta"
 
 #: ../src/moblin-panel-status.c:1118
 msgid "status"
