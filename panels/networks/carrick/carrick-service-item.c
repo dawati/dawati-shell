@@ -627,8 +627,17 @@ _passphrase_entry_clear_released_cb (GtkEntry            *entry,
                                      GdkEvent            *event,
                                      gpointer             user_data)
 {
-  gtk_entry_set_text (entry, "");
-  gtk_widget_grab_focus (GTK_WIDGET (entry));
+  if (gtk_entry_get_text_length (entry) > 0)
+    {
+      gtk_entry_set_text (entry, "");
+      gtk_widget_grab_focus (GTK_WIDGET (entry));
+    }
+  /* On the second click of the clear button hide the passphrase widget */
+  else
+    {
+      carrick_service_item_set_active (CARRICK_SERVICE_ITEM (user_data),
+                                       FALSE);
+    }
 }
 
 gboolean
@@ -1116,7 +1125,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   g_signal_connect (priv->passphrase_entry,
                     "icon-release",
                     G_CALLBACK (_passphrase_entry_clear_released_cb),
-                    NULL);
+                    self);
   gtk_box_pack_start (GTK_BOX (priv->passphrase_box),
                       priv->passphrase_entry,
                       FALSE, FALSE, 6);
