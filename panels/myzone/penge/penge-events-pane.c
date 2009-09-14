@@ -151,19 +151,24 @@ penge_events_pane_allocate (ClutterActor          *actor,
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
   gfloat height;
+  gint old_count;
 
   if (CLUTTER_ACTOR_CLASS (penge_events_pane_parent_class)->allocate)
     CLUTTER_ACTOR_CLASS (penge_events_pane_parent_class)->allocate (actor, box, flags);
 
   /* Work out how many we can fit in */
   height = box->y2 - box->y1;
+  old_count = priv->count;
   priv->count = height / TILE_HEIGHT;
 
-  /* Must use a high priority idle to avoid redraw artifacts */
-  g_idle_add_full (G_PRIORITY_HIGH_IDLE,
-                   _update_idle_cb,
-                   actor,
-                   NULL);
+  if (old_count != priv->count)
+  {
+    /* Must use a high priority idle to avoid redraw artifacts */
+    g_idle_add_full (G_PRIORITY_HIGH_IDLE,
+                     _update_idle_cb,
+                     actor,
+                     NULL);
+  }
 }
 
 static void
