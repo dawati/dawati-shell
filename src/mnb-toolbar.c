@@ -1808,6 +1808,14 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
                                toolbar, NULL);
 }
 
+static gboolean
+mnb_toolbar_background_input_cb (ClutterActor *stage,
+                                 ClutterEvent *event,
+                                 gpointer      data)
+{
+  return TRUE;
+}
+
 static void
 mnb_toolbar_constructed (GObject *self)
 {
@@ -1879,6 +1887,12 @@ mnb_toolbar_constructed (GObject *self)
       clutter_container_add_actor (CLUTTER_CONTAINER (hbox), background);
 
       priv->background = background;
+
+      clutter_actor_set_reactive (background, TRUE);
+      g_signal_connect (background,
+                        "button-press-event",
+                        G_CALLBACK (mnb_toolbar_background_input_cb),
+                        self);
     }
 
   /* create time and date labels */
