@@ -331,8 +331,8 @@ penge_people_pane_init (PengePeoplePane *self)
 {
   PengePeoplePanePrivate *priv = GET_PRIVATE (self);
 
-  /* Create the client and request the services list */
-  priv->client = mojito_client_new ();
+
+  priv->client = penge_people_pane_dup_mojito_client_singleton ();
 
   priv->list_view = penge_magic_list_view_new ();
   g_signal_connect (priv->list_view,
@@ -354,6 +354,21 @@ penge_people_pane_init (PengePeoplePane *self)
   clutter_actor_hide (priv->list_view);
   clutter_actor_set_parent (priv->placeholder_tile, (ClutterActor *)self);
   clutter_actor_set_parent (priv->list_view, (ClutterActor *)self);
+}
+
+MojitoClient *
+penge_people_pane_dup_mojito_client_singleton (void)
+{
+  static MojitoClient *client = NULL;
+
+  if (client)
+  {
+    return g_object_ref (client);
+  } else {
+    client = mojito_client_new ();
+    g_object_add_weak_pointer (client, &client);
+    return client;
+  }
 }
 
 

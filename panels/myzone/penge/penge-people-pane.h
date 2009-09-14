@@ -23,6 +23,7 @@
 
 #include <nbtk/nbtk.h>
 #include <glib-object.h>
+#include <mojito-client/mojito-client.h>
 
 G_BEGIN_DECLS
 
@@ -52,7 +53,7 @@ typedef struct {
 } PengePeoplePaneClass;
 
 GType penge_people_pane_get_type (void);
-
+MojitoClient *penge_people_pane_dup_mojito_client_singleton (void);
 G_END_DECLS
 
 #endif /* _PENGE_PEOPLE_PANE */
