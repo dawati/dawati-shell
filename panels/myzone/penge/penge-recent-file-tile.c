@@ -130,23 +130,20 @@ penge_recent_file_tile_finalize (GObject *object)
   G_OBJECT_CLASS (penge_recent_file_tile_parent_class)->finalize (object);
 }
 
-static gboolean
-_button_press_event (ClutterActor *actor,
-                     ClutterEvent *event,
-                     gpointer      userdata)
+static void
+_clicked_cb (NbtkButton *button,
+             gpointer    userdata)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (userdata);
 
-  if (!penge_utils_launch_for_uri (actor,
+  if (!penge_utils_launch_for_uri (button,
                                    gtk_recent_info_get_uri (priv->info)))
   {
     g_warning (G_STRLOC ": Error launching: %s",
                gtk_recent_info_get_uri (priv->info));
   } else {
-    penge_utils_signal_activated (actor);
+    penge_utils_signal_activated (button);
   }
-
-  return TRUE;
 }
 
 static void
@@ -281,8 +278,8 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
                 NULL);
 
   g_signal_connect (self,
-                    "button-press-event",
-                    (GCallback)_button_press_event,
+                    "clicked",
+                    (GCallback)_clicked_cb,
                     self);
 
   g_signal_connect (self,
