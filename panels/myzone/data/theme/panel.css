@@ -102,12 +102,14 @@ PengeDateTile *.PengeDateLabel
   color: #4eb9f1ff;
 }
 
-PengePeopleTile *.PengePeopleTilePrimaryLabel
+PengePeopleTile *.PengeInterestingTilePrimaryLabel,
+PengeRecentFileTile *.PengeInterestingTilePrimaryLabel
 {
   color: white;
 }
 
-PengePeopleTile *.PengePeopleTileSecondaryLabel
+PengePeopleTile *.PengeInterestingTileSecondaryLabel,
+PengeRecentFileTile *.PengeInterestingTileSecondaryLabel
 {
   color: white;
   font-size: 11;
@@ -130,22 +132,10 @@ PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
   color: #2c2c2cff;
 }
 
-PengeRecentFileTile NbtkTable.PengeRecentFileTileDetails, NbtkTable.PengePeopleTileDetails
+NbtkTable.PengeInterestingTileDetails
 {
   background-color: black;
   padding: 2;
-}
-
-PengeRecentFileTile *.PengeRecentFileTileDetailsFilename
-{
-  color: white;
-  font-size: 12;
-}
-
-PengeRecentFileTile *.PengeRecentFileTileDetailsType
-{
-  color: white;
-  font-size: 11;
 }
 
 PengePeoplePlaceholderTile *#penge-no-content-main-message
@@ -190,18 +180,18 @@ PengeWelcomeTile *#penge-welcome-secondary-text
   color: #2c2c2cff;
 }
 
-*.PengePeopleTileRemoveButton, *.PengePeopleTileRemoveButton:hover
+*.PengeInterestingTileRemoveButton, *.PengeInterestingTileRemoveButton:hover
 {
   border-image:none;
   padding:0;
 }
 
-*.PengePeopleTileRemoveButton *.PengePeopleTileIcon
+*.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon
 {
   background-image: url('file://tile-dismiss-icon-normal.png')
 }
 
-*.PengePeopleTileRemoveButton:hover *.PengePeopleTileIcon
+*.PengeInterestingTileRemoveButton:hover *.PengeInterestingTileIcon
 {
   background-image: url('file://tile-dismiss-icon-hover.png')
 }

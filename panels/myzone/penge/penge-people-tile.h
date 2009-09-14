@@ -23,6 +23,7 @@
 
 #include <glib-object.h>
 #include <nbtk/nbtk.h>
+#include <penge/penge-interesting-tile.h>
 #include <mojito-client/mojito-item.h>
 
 G_BEGIN_DECLS
@@ -45,11 +46,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_PEOPLE_TILE, PengePeopleTileClass))
 
 typedef struct {
-  NbtkTable parent;
+  PengeInterestingTile parent;
 } PengePeopleTile;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  PengeInterestingTileClass parent_class;
 } PengePeopleTileClass;
 
 GType penge_people_tile_get_type (void);

@@ -27,7 +27,7 @@
 
 #include <glib/gi18n.h>
 
-G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, PENGE_TYPE_INTERESTING_TILE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_RECENT_FILE_TILE, PengeRecentFileTilePrivate))
@@ -37,14 +37,7 @@ typedef struct _PengeRecentFileTilePrivate PengeRecentFileTilePrivate;
 struct _PengeRecentFileTilePrivate {
   gchar *thumbnail_path;
   GtkRecentInfo *info;
-  NbtkWidget *details_overlay;
-  NbtkWidget *details_filename_label;
-  NbtkWidget *details_type_label;
   ClutterActor *tex;
-
-  /* For the details fade in */
-  ClutterTimeline *timeline;
-  ClutterBehaviour *behave;
 };
 
 enum
@@ -122,18 +115,6 @@ penge_recent_file_tile_dispose (GObject *object)
   {
     gtk_recent_info_unref (priv->info);
     priv->info = NULL;
-  }
-
-  if (priv->timeline)
-  {
-    g_object_unref (priv->timeline);
-    priv->timeline = NULL;
-  }
-
-  if (priv->behave)
-  {
-    g_object_unref (priv->behave);
-    priv->behave = NULL;
   }
 
   G_OBJECT_CLASS (penge_recent_file_tile_parent_class)->dispose (object);
@@ -214,28 +195,29 @@ penge_recent_file_tile_update (PengeRecentFileTile *tile)
                  error->message);
       g_clear_error (&error);
     } else {
-      nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
-                           g_file_info_get_display_name (info));
-
       content_type = g_file_info_get_content_type (info);
       type_description = g_content_type_get_description (content_type);
-      nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
-                           type_description);
+      g_object_set (tile,
+                    "primary-text", g_file_info_get_display_name (info),
+                    "secondary-text", type_description,
+                    NULL);
       g_free (type_description);
     }
 
     g_object_unref (info);
     g_object_unref (file);
   } else {
-    nbtk_label_set_text (NBTK_LABEL (priv->details_filename_label),
-                         gtk_recent_info_get_display_name (priv->info));
     if (g_str_has_prefix (uri, "http"))
     {
-      nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
-                           _("Web page"));
+      g_object_set (tile,
+                    "primary-text", g_file_info_get_display_name (info),
+                    "secondary-text", _("Web page"),
+                    NULL);
     } else {
-      nbtk_label_set_text (NBTK_LABEL (priv->details_type_label),
-                           "");
+      g_object_set (tile,
+                    "primary-text", g_file_info_get_display_name (info),
+                    "secondary-text", "",
+                    NULL);
     }
   }
 }
@@ -270,130 +252,16 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
   g_object_class_install_property (object_class, PROP_INFO, pspec);
 }
 
-static gboolean
-_enter_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  PengeRecentFileTilePrivate *priv = GET_PRIVATE (actor);
-
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      "hover");
-
-  clutter_timeline_set_direction (priv->timeline,
-                                  CLUTTER_TIMELINE_FORWARD);
-  if (!clutter_timeline_is_playing (priv->timeline))
-  {
-    clutter_timeline_rewind (priv->timeline);
-    clutter_timeline_start (priv->timeline);
-  }
-
-  return FALSE;
-}
-
-static gboolean
-_leave_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  PengeRecentFileTilePrivate *priv = GET_PRIVATE (actor);
-
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      NULL);
-
-  clutter_timeline_set_direction (priv->timeline,
-                                  CLUTTER_TIMELINE_BACKWARD);
-  if (!clutter_timeline_is_playing (priv->timeline))
-    clutter_timeline_start (priv->timeline);
-
-  return FALSE;
-}
-
 static void
 penge_recent_file_tile_init (PengeRecentFileTile *self)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (self);
-  ClutterAlpha *alpha;
-  ClutterActor *tmp_text;
-
-  g_signal_connect (self,
-                    "enter-event",
-                    (GCallback)_enter_event_cb,
-                    NULL);
-  g_signal_connect (self,
-                    "leave-event",
-                    (GCallback)_leave_event_cb,
-                    NULL);
-
-  priv->details_overlay = nbtk_table_new ();
-  clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay,
-                             0x0);
-
-  priv->details_filename_label = nbtk_label_new ("Filename");
-  tmp_text =
-    nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_filename_label));
-  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
-                                   PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
-                              PANGO_ELLIPSIZE_END);
-
-  nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
-                        (ClutterActor *)priv->details_filename_label,
-                        0,
-                        0);
-
-  priv->details_type_label = nbtk_label_new ("Type");
-  tmp_text =
-    nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_type_label));
-  clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
-                              PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
-                              PANGO_ELLIPSIZE_END);
-
-
-  nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
-                        (ClutterActor *)priv->details_type_label,
-                        1,
-                        0);
-
-  nbtk_widget_set_style_class_name (priv->details_overlay,
-                                    "PengeRecentFileTileDetails");
-  nbtk_widget_set_style_class_name (priv->details_filename_label,
-                                    "PengeRecentFileTileDetailsFilename");
-  nbtk_widget_set_style_class_name (priv->details_type_label,
-                                    "PengeRecentFileTileDetailsType");
-
-  /* Animation for fading it in and out */
-  /* TODO: Use ClutterAnimation */
-  priv->timeline = clutter_timeline_new (300);
-
-  alpha = clutter_alpha_new_full (priv->timeline,
-                                  CLUTTER_LINEAR);
-  priv->behave = clutter_behaviour_opacity_new (alpha, 0x00, 0xc0);
-  clutter_behaviour_apply (priv->behave,
-                           (ClutterActor *)priv->details_overlay);
 
   priv->tex = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->tex,
-                        0,
-                        0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               priv->tex,
-                               "row-span",
-                               2,
-                               NULL);
 
-  /* Do this afterwards so that is is on top of the image */
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)priv->details_overlay,
-                        1,
-                        0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               (ClutterActor *)priv->details_overlay,
-                               "y-expand",
-                               FALSE,
-                               NULL);
+  g_object_set (self,
+                "body", priv->tex,
+                NULL);
 
   g_signal_connect (self,
                     "button-press-event",
