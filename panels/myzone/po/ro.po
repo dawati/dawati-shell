@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 07:51+0000\n"
-"PO-Revision-Date: 2009-09-14 14:07+0200\n"
+"POT-Creation-Date: 2009-09-15 09:10+0000\n"
+"PO-Revision-Date: 2009-09-15 15:09+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
 "Language-Team: Moblin Romania <live@moblin.ro>\n"
 "MIME-Version: 1.0\n"
@@ -23,27 +23,19 @@ msgstr ""
 msgid "<b>Appointments</b>"
 msgstr "<b>Programări</b>"
 
-#: ../penge/penge-events-pane.c:208
+#: ../penge/penge-events-pane.c:265
 msgid "No calendar entries this week"
 msgstr "Nici o înregistrare în agendă pentru săptămâna aceasta"
 
-#: ../penge/penge-people-pane.c:144
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "Feed-urile și serviciile de internet ale prietenilor vor apare aici. Activați-vă conturile acum!"
 
-#: ../penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>Bine ați venit pe Moblin 2.0 pentru Netbook-uri</b>"
-
-#: ../penge/penge-recent-files-pane.c:227
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Pentru că Moblin este puțin diferit, am adăugat câteva piese ajutătoare pentru a vă descurca mai ușor. Sperăm să vă placă, Echipa Moblin."
-
-#: ../penge/penge-recent-file-tile.c:218
+#: ../penge/penge-recent-file-tile.c:211
 msgid "Web page"
 msgstr "Pagină web"
 
-#: ../penge/penge-tasks-pane.c:287
+#: ../penge/penge-tasks-pane.c:344
 msgid "Nothing to do today"
 msgstr "Nu aveți nimic programat pentru astăzi"
 
@@ -51,4 +43,12 @@ msgstr "Nu aveți nimic programat pentru astăzi"
 #, c-format
 msgid "Due %x"
 msgstr "Corespunzător %x"
+
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Bine ați venit pe Moblin 2.0 pentru Netbook-uri</b>"
+
+#: ../penge/penge-welcome-tile.c:108
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Pentru că Moblin este puțin diferit, am adăugat câteva piese ajutătoare pentru a vă descurca mai ușor. Sperăm să vă placă, Echipa Moblin."
 
