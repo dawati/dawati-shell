@@ -1131,6 +1131,13 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
                         CARRICK_COLUMN_STATE, &connection_state,
                         -1);
 
+    if (!connection_type)
+      connection_type = g_strdup ("");
+    if (!connection_name)
+      connection_name = g_strdup ("");
+    if (!connection_state)
+      connection_state = g_strdup ("");
+
     g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
                    connection_type,
                    connection_name,
