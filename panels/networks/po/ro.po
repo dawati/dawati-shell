@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 23:28+0000\n"
-"PO-Revision-Date: 2009-08-29 05:28+0200\n"
+"POT-Creation-Date: 2009-09-15 09:03+0000\n"
+"PO-Revision-Date: 2009-09-15 15:18+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
 "Language-Team: Moblin Romania <live@moblin.ro>\n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,143 @@ msgstr ""
 "X-Poedit-Country: ROMANIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../carrick/carrick-pane.c:414
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-list.c:857
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să dezactivați Modul deconectat."
+
+#.
+#. * Hint to display if we detect that wifi has been turned off
+#. * and there are no available networks
+#.
+#: ../carrick/carrick-list.c:873
+msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea WiFi."
+
+#.
+#. * Hint to display if we detect that wifi is on but
+#. * WiMAX has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-list.c:884
+msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea WiMAX."
+
+#.
+#. * Hint to display if we detect that wifi and wimax is on but
+#. * 3G has been turned off and there are no available
+#. * networks
+#.
+#: ../carrick/carrick-list.c:895
+msgid "Sorry, we can't find any networks. You could try turning on 3G."
+msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea 3G."
+
+#.
+#. * Hint to display if we detect that wifi, wimax, and 3G are on but
+#. * bluetooth has been turned off and there are no available networks
+#.
+#: ../carrick/carrick-list.c:905
+msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea Bluetooth."
+
+#.
+#. * Hint to display if we detect that all technologies
+#. * other then ethernet have been turned on, and there
+#. * are no available networks
+#.
+#: ../carrick/carrick-list.c:916
+msgid "Sorry, we can't find any networks. You could try turning on Wired."
+msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea prin fir."
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-list.c:928
+msgid "Sorry, we can't find any networks"
+msgstr "Ne pare rău dar nu putem găsi nici o rețea"
+
+#: ../carrick/carrick-notification-manager.c:103
+msgid "Network connected"
+msgstr "Rețea conectată"
+
+#: ../carrick/carrick-notification-manager.c:111
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "Acum sunteți conectat la o rețea prin fir"
+
+#: ../carrick/carrick-notification-manager.c:141
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "Acum sunteți conectat la %s, o rețea %s"
+
+#: ../carrick/carrick-notification-manager.c:147
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "Acum sunteți conectat la o rețea %s"
+
+#: ../carrick/carrick-notification-manager.c:164
+msgid "Network lost"
+msgstr "Rețea pierdută"
+
+#: ../carrick/carrick-notification-manager.c:172
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "Ne pare rău dar am pierdut conexiunea prin fir"
+
+#: ../carrick/carrick-notification-manager.c:176
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "Ne pare rău dar am pierdut conexiunea %s la %s"
+
+#: ../carrick/carrick-notification-manager.c:182
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "Ne pare rău dar am pierdut conexiunea %s"
+
+#: ../carrick/carrick-notification-manager.c:199
+msgid "Network changed"
+msgstr "Rețea schimbată"
+
+#: ../carrick/carrick-notification-manager.c:218
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Ne pare rău dar conexiunea la %s a fost pierdută. Conexiunea a fost facută la o rețea prin fir"
+
+#: ../carrick/carrick-notification-manager.c:225
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "Ne pare rău dar conexiunea la %s a fost pierdută. Conexiunea a fost facută la %s, o rețea %s"
+
+#: ../carrick/carrick-notification-manager.c:233
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Ne pare rău dar conexiunea la %s a fost pierdută. Conexiunea a fost facută la o rețea %s"
+
+#: ../carrick/carrick-notification-manager.c:243
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Ne pare rău dar conexiunea %s a fost pierdută. Conexiunea a fost facută la o rețea prin fir"
+
+#: ../carrick/carrick-notification-manager.c:250
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "Ne pare rău dar conexiunea %s a fost pierdută. Conexiunea a fost facută la %s, o rețea %s"
+
+#: ../carrick/carrick-notification-manager.c:259
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Ne pare rău dar conexiunea %s a fost pierdută. Conexiunea a fost facută la o rețea %s"
+
+#: ../carrick/carrick-pane.c:648
 msgid "New connection settings"
 msgstr "Setări conexiune nouă"
 
-#: ../carrick/carrick-pane.c:450
+#: ../carrick/carrick-pane.c:684
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -32,183 +164,119 @@ msgstr ""
 "să vă conectați și, dacă este necesar,\n"
 "parola și tipul de securitate."
 
-#: ../carrick/carrick-pane.c:460
+#: ../carrick/carrick-pane.c:694
 msgid "Network name"
 msgstr "Numele rețelei"
 
-#: ../carrick/carrick-pane.c:472
+#: ../carrick/carrick-pane.c:706
 msgid "Network security"
 msgstr "Securitatea rețelei"
 
-#: ../carrick/carrick-pane.c:482
+#: ../carrick/carrick-pane.c:716
 msgid "None"
 msgstr "Nimic"
 
-#: ../carrick/carrick-pane.c:496
+#: ../carrick/carrick-pane.c:730
 msgid "Password"
 msgstr "Parola"
 
-#: ../carrick/carrick-pane.c:511
-#: ../carrick/carrick-service-item.c:1036
+#: ../carrick/carrick-pane.c:745
+#: ../carrick/carrick-service-item.c:1144
 msgid "Show password"
 msgstr "Arată parola"
 
-#.
-#. * Hint to display when we detect that the connection manager
-#. * is dead.  Ideally the system auto-restarts connman so the
-#. * user will not see this, but this is what to show if all
-#. * available recovery measures fail.
-#.
-#: ../carrick/carrick-pane.c:609
-msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
-msgstr "Ne pare rău dar nu putem găsi nici o rețea. Se pare că managerul de conexiuni nu rulează. Ați putea încerca să restartați sistemul."
-
-#.
-#. * Hint display if we detect that the system is in
-#. * offline mode and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:620
-msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să dezactivați Modul deconectat."
-
-#.
-#. * Hint to display if we detect that wifi has been turned off
-#. * and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:636
-msgid "Sorry, we can't find any networks. You could try turning on WiFi."
-msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea WiFi."
-
-#.
-#. * Hint to display if we detect that wifi is on but
-#. * WiMAX has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-pane.c:647
-msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
-msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea WiMAX."
-
-#.
-#. * Hint to display if we detect that wifi and wimax is on but
-#. * 3G has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-pane.c:658
-msgid "Sorry, we can't find any networks. You could try turning on 3G."
-msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea 3G."
-
-#.
-#. * Hint to display if we detect that wifi, wimax, and 3G are on but
-#. * bluetooth has been turned off and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:668
-msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
-msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea Bluetooth."
-
-#.
-#. * Hint to display if we detect that all technologies
-#. * other then ethernet have been turned on, and there
-#. * are no available networks
-#.
-#: ../carrick/carrick-pane.c:679
-msgid "Sorry, we can't find any networks. You could try turning on Wired."
-msgstr "Ne pare rău dar nu putem găsi nici o rețea. Ați putea încerca să porniți conexiunea prin fir."
-
-#.
-#. * Generic message to display if all available networking
-#. * technologies are turned on, but for whatever reason we
-#. * can not find any networks
-#.
-#: ../carrick/carrick-pane.c:691
-msgid "Sorry, we can't find any networks"
-msgstr "Ne pare rău dar nu putem găsi nici o rețea"
-
-#: ../carrick/carrick-pane.c:1030
+#: ../carrick/carrick-pane.c:1249
 msgid "Networks"
 msgstr "Rețele"
 
-#: ../carrick/carrick-pane.c:1070
+#: ../carrick/carrick-pane.c:1293
 msgid "Add new connection"
 msgstr "Adaugă o conexiune nouă"
 
-#: ../carrick/carrick-pane.c:1097
+#: ../carrick/carrick-pane.c:1320
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:1129
-#: ../carrick/carrick-service-item.c:224
+#: ../carrick/carrick-pane.c:1352
+#: ../carrick/carrick-service-item.c:220
 msgid "Wired"
 msgstr "Prin fir"
 
-#: ../carrick/carrick-pane.c:1160
+#: ../carrick/carrick-pane.c:1383
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:1191
+#: ../carrick/carrick-pane.c:1414
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:1223
+#: ../carrick/carrick-pane.c:1446
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../carrick/carrick-pane.c:1266
+#: ../carrick/carrick-pane.c:1492
 msgid "Offline mode"
 msgstr "Modul deconectat"
 
-#: ../carrick/carrick-pane.c:1291
+#: ../carrick/carrick-pane.c:1517
 msgid "This will disable all your connections"
 msgstr "Această acțiune va închide toate conexiunile"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
-#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#: ../carrick/carrick-service-item.c:183
+#. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#.
+#: ../carrick/carrick-service-item.c:158
 #, c-format
 msgid "%s encrypted"
 msgstr "%s criptată"
 
-#: ../carrick/carrick-service-item.c:255
+#: ../carrick/carrick-service-item.c:251
 msgid "Disconnect"
 msgstr "Deconectat"
 
-#: ../carrick/carrick-service-item.c:258
+#: ../carrick/carrick-service-item.c:254
 msgid "Connected"
 msgstr "Conectat"
 
-#: ../carrick/carrick-service-item.c:263
+#: ../carrick/carrick-service-item.c:259
+#: ../carrick/carrick-service-item.c:266
 #, c-format
 msgid "Cancel"
 msgstr "Anulează"
 
-#: ../carrick/carrick-service-item.c:266
+#: ../carrick/carrick-service-item.c:262
 msgid "Configuring"
 msgstr "Configurează"
 
-#: ../carrick/carrick-service-item.c:273
-#: ../carrick/carrick-service-item.c:281
-#: ../carrick/carrick-service-item.c:1025
+#: ../carrick/carrick-service-item.c:269
+msgid "Associating"
+msgstr "Asociază"
+
+#: ../carrick/carrick-service-item.c:276
+#: ../carrick/carrick-service-item.c:299
+#: ../carrick/carrick-service-item.c:1133
 msgid "Connect"
 msgstr "Conectează"
 
-#: ../carrick/carrick-service-item.c:284
+#: ../carrick/carrick-service-item.c:302
 msgid "Connection failed"
 msgstr "Conexiunea nu a reușit"
 
-#: ../carrick/carrick-service-item.c:289
-#: ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:307
+#: ../carrick/carrick-service-item.c:310
 #, c-format
 msgid "Disconnecting"
 msgstr "Se deconectează"
 
-#: ../carrick/carrick-service-item.c:340
+#: ../carrick/carrick-service-item.c:360
 msgid "Type password here"
 msgstr "Introduceți parola aici"
 
-#: ../carrick/carrick-service-item.c:403
+#: ../carrick/carrick-service-item.c:443
 msgid "Really remove?"
 msgstr "Sunteți sigur că doriți să ștergeți?"
 
-#: ../carrick/carrick-service-item.c:421
+#: ../carrick/carrick-service-item.c:461
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -219,83 +287,79 @@ msgstr ""
 "acțiune va șterge parola și nu veți mai fi\n"
 "conectat automat la %s."
 
+#: ../carrick/carrick-service-item.c:1069
+msgid "Scanning"
+msgstr "Scanează"
+
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:981
+#: ../carrick/carrick-service-item.c:1088
 msgid "WPA2 encrypted"
 msgstr "Criptat WPA2"
 
-#: ../carrick/carrick-notification-manager.c:131
-msgid "Network connected"
-msgstr "Rețea conectată"
+#: ../src/carrick.c:62
+msgid "networks - not connected"
+msgstr "rețele - neconectat"
 
-#: ../carrick/carrick-notification-manager.c:139
+#: ../src/carrick.c:68
+msgid "networks - connecting"
+msgstr "rețele - se conectează"
+
+#: ../src/carrick.c:74
+msgid "networks - wired"
+msgstr "rețele - cu fir"
+
+#: ../src/carrick.c:76
 #, c-format
-msgid "You're now connected to a wired network"
-msgstr "Acum sunteți conectat la o rețea prin fir"
+msgid "networks - %s - wifi"
+msgstr "rețele - %s - fără fir"
 
-#: ../carrick/carrick-notification-manager.c:169
+#: ../src/carrick.c:79
 #, c-format
-msgid "You're now connected to %s, a %s network"
-msgstr "Acum sunteți conectat la %s, o rețea %s"
+msgid "networks - %s - wimax"
+msgstr "rețele - %s - wimax"
 
-#: ../carrick/carrick-notification-manager.c:175
+#: ../src/carrick.c:82
 #, c-format
-msgid "You're now connected to a %s network"
-msgstr "Acum sunteți conectat la o rețea %s"
+msgid "networks - %s - 3G"
+msgstr "rețele - %s - 3G"
 
-#: ../carrick/carrick-notification-manager.c:192
-msgid "Network lost"
-msgstr "Rețea pierdută"
-
-#: ../carrick/carrick-notification-manager.c:200
+#: ../src/carrick.c:85
 #, c-format
-msgid "Sorry, we've lost your wired connection"
-msgstr "Ne pare rău dar am pierdut conexiunea prin fir"
+msgid "networks - %s - bluetooth"
+msgstr "rețele - %s - bluetooth"
 
-#: ../carrick/carrick-notification-manager.c:204
-#, c-format
-msgid "Sorry we've lost your %s connection to %s"
-msgstr "Ne pare rău dar am pierdut conexiunea %s la %s"
+#: ../src/carrick.c:88
+#: ../src/carrick.c:100
+msgid "networks"
+msgstr "rețele"
 
-#: ../carrick/carrick-notification-manager.c:210
-#, c-format
-msgid "Sorry, we've lost your %s connection"
-msgstr "Ne pare rău dar am pierdut conexiunea %s"
+#: ../src/carrick.c:95
+msgid "networks - error"
+msgstr "rețele - %s - erori"
 
-#: ../carrick/carrick-notification-manager.c:227
-msgid "Network changed"
-msgstr "Rețea schimbată"
+#: ../src/carrick.c:127
+msgid "Run in standalone mode"
+msgstr "Rulează în modul independent"
 
-#: ../carrick/carrick-notification-manager.c:246
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Ne pare rău dar conexiunea la %s a fost pierdută. Conexiunea a fost facută la o rețea prin fir"
+#: ../src/carrick.c:138
+msgid "Carrick connectivity applet"
+msgstr "Applet Carrick pentru conectivitate"
 
-#: ../carrick/carrick-notification-manager.c:253
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "Ne pare rău dar conexiunea la %s a fost pierdută. Conexiunea a fost facută la %s, o rețea %s"
+#: ../src/carrick.c:139
+msgid "- Moblin connectivity applet"
+msgstr "- Applet Moblin pentru conectivitate"
 
-#: ../carrick/carrick-notification-manager.c:261
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "Ne pare rău dar conexiunea la %s a fost pierdută. Conexiunea a fost facută la o rețea %s"
+#: ../src/carrick.c:162
+msgid "network"
+msgstr "rețea"
 
-#: ../carrick/carrick-notification-manager.c:271
-#, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Ne pare rău dar conexiunea %s a fost pierdută. Conexiunea a fost facută la o rețea prin fir"
-
-#: ../carrick/carrick-notification-manager.c:278
-#, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "Ne pare rău dar conexiunea %s a fost pierdută. Conexiunea a fost facută la %s, o rețea %s"
-
-#: ../carrick/carrick-notification-manager.c:287
-#, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "Ne pare rău dar conexiunea %s a fost pierdută. Conexiunea a fost facută la o rețea %s"
+#~ msgid ""
+#~ "Sorry, we can't find any networks. The Connection Manager doesn't seem to "
+#~ "be running. You may want to try re-starting your device."
+#~ msgstr ""
+#~ "Ne pare rău dar nu putem găsi nici o rețea. Se pare că managerul de "
+#~ "conexiuni nu rulează. Ați putea încerca să restartați sistemul."
 
