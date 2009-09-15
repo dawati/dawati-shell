@@ -1043,8 +1043,7 @@ list_get_properties_cb (DBusGProxy     *manager,
                error->message);
       g_error_free (error);
     }
-
-  if (properties)
+  else
     {
       g_hash_table_foreach (properties,
                             (GHFunc) list_update_property,
