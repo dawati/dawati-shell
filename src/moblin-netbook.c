@@ -1754,25 +1754,188 @@ setup_focus_window (MutterPlugin *plugin)
   priv->focus_xwin = xwin;
 }
 
+GdkRegion *mutter_window_get_obscured_region (MutterWindow *cw);
+
+/*
+ * Based on the occlusion code in MutterWindowGroup
+ */
+GdkRegion *
+mnb_get_background_visible_region (MetaScreen *screen)
+{
+  GList       *l;
+  GdkRegion   *visible_region;
+  GdkRectangle screen_rect = { 0 };
+
+  l = mutter_get_windows (screen);
+
+  /* Start off with the full screen area (for a multihead setup, we
+   * might want to use a more accurate union of the monitors to avoid
+   * painting in holes from mismatched monitor sizes. That's just an
+   * optimization, however.)
+   */
+  meta_screen_get_size (screen, &screen_rect.width, &screen_rect.height);
+  visible_region = gdk_region_rectangle (&screen_rect);
+
+  for (; l; l = l->next)
+    {
+      MutterWindow *cw;
+      ClutterActor *actor;
+
+      if (!MUTTER_IS_WINDOW (l->data) || !CLUTTER_ACTOR_IS_VISIBLE (l->data))
+        continue;
+
+      cw = l->data;
+      actor = l->data;
+
+      /*
+       * MutterWindowGroup adds a test whether the actor is transformed or not;
+       * since we do not transform windows in any way, this was omitted.
+       */
+      if (clutter_actor_get_paint_opacity (actor) == 0xff)
+        {
+          GdkRegion *obscured_region;
+
+          if ((obscured_region = mutter_window_get_obscured_region (cw)))
+            {
+              gfloat x, y;
+
+              /* Temporarily move to the coordinate system of the actor */
+              clutter_actor_get_position (actor, &x, &y);
+              gdk_region_offset (visible_region, - (gint)x, - (gint)y);
+
+              gdk_region_subtract (visible_region, obscured_region);
+
+              /* Move back to original coord system */
+              gdk_region_offset (visible_region, (gint)x, (gint)y);
+            }
+        }
+    }
+
+  return visible_region;
+}
+
+/*
+ * Based on mutter_shaped_texture_paint()
+ */
+static void
+mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
+{
+  static CoglHandle material = COGL_INVALID_HANDLE;
+
+  CoglHandle paint_tex;
+  guint tex_width, tex_height;
+  ClutterActorBox alloc;
+  GdkRegion *visible_region;
+
+  visible_region = mnb_get_background_visible_region (screen);
+
+  if (gdk_region_empty (visible_region))
+    goto finish_up;
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (actor))
+    clutter_actor_realize (actor);
+
+  paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (actor));
+
+  tex_width = cogl_texture_get_width (paint_tex);
+  tex_height = cogl_texture_get_height (paint_tex);
+
+  if (tex_width == 0 || tex_height == 0) /* no contents yet */
+    goto finish_up;
+
+  if (paint_tex == COGL_INVALID_HANDLE)
+    goto finish_up;
+
+  if (material == COGL_INVALID_HANDLE)
+    material = cogl_material_new ();
+
+  cogl_material_set_layer (material, 0, paint_tex);
+
+  {
+    CoglColor color;
+    guchar opacity = clutter_actor_get_paint_opacity (actor);
+    cogl_color_set_from_4ub (&color, opacity, opacity, opacity, opacity);
+    cogl_material_set_color (material, &color);
+  }
+
+  cogl_set_source (material);
+
+  clutter_actor_get_allocation_box (actor, &alloc);
+
+  if (!gdk_region_empty (visible_region))
+    {
+      GdkRectangle *rects;
+      int           n_rects;
+      int           i;
+
+      /* Limit to how many separate rectangles we'll draw; beyond this just
+       * fall back and draw the whole thing */
+#     define MAX_RECTS 16
+
+      /* Would be nice to be able to check the number of rects first */
+      gdk_region_get_rectangles (visible_region, &rects, &n_rects);
+      if (n_rects > MAX_RECTS)
+	{
+	  g_free (rects);
+
+          cogl_rectangle (0, 0, alloc.x2 - alloc.x1, alloc.y2 - alloc.y1);
+	}
+      else
+	{
+	  float coords[MAX_RECTS * 8];
+	  for (i = 0; i < n_rects; i++)
+	    {
+	      GdkRectangle *rect = &rects[i];
+
+	      coords[i * 8 + 0] = rect->x;
+	      coords[i * 8 + 1] = rect->y;
+	      coords[i * 8 + 2] = rect->x + rect->width;
+	      coords[i * 8 + 3] = rect->y + rect->height;
+	      coords[i * 8 + 4] = rect->x / (alloc.x2 - alloc.x1);
+	      coords[i * 8 + 5] = rect->y / (alloc.y2 - alloc.y1);
+	      coords[i * 8 + 6] = (rect->x + rect->width) / (alloc.x2 - alloc.x1);
+	      coords[i * 8 + 7] = (rect->y + rect->height) / (alloc.y2 - alloc.y1);
+	    }
+
+	  g_free (rects);
+
+	  cogl_rectangles_with_texture_coords (coords, n_rects);
+	}
+    }
+
+ finish_up:
+  gdk_region_destroy (visible_region);
+}
+
 /*
  * Avoid painting the desktop background if it is completely occluded.
  */
 static void
 desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
 {
+  MetaScreen *screen;
+
   /*
-   * If we are painting a clone, do nothing.
+   * If we are painting a clone, do nothing letting the ClutterTexture paint
+   * kick in.
    */
   if (clutter_actor_is_in_clone_paint (background))
     return;
 
   /*
    * Don't paint desktop background if fullscreen application is present.
-   *
-   * TODO -- extend this to be more generic than just the fullscreen case.
    */
   if (moblin_netbook_fullscreen_apps_present (plugin))
-    g_signal_stop_emission_by_name (background, "paint");
+    goto finish_up;
+
+  /*
+   * Try to paint only parts of the desktop background
+   */
+  screen = mutter_plugin_get_screen (plugin);
+  mnb_desktop_texture_paint (background, screen);
+
+ finish_up:
+  g_signal_stop_emission_by_name (background, "paint");
 }
 
 static void
