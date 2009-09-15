@@ -239,8 +239,6 @@ mnb_switcher_zone_constructed (GObject *self)
       clutter_actor_set_name (CLUTTER_ACTOR (text), text_name);
 
       nbtk_bin_set_child (NBTK_BIN (label), CLUTTER_ACTOR (text));
-      nbtk_bin_set_alignment (NBTK_BIN (label),
-                              NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
 
       nbtk_widget_set_style_class_name (NBTK_WIDGET (label), label_class);
       clutter_actor_set_name (CLUTTER_ACTOR (label), label_name);

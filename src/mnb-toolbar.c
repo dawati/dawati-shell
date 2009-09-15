@@ -1911,8 +1911,6 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_set_name (CLUTTER_ACTOR (priv->time), "time-label");
   time_bin = nbtk_bin_new ();
   nbtk_bin_set_child (NBTK_BIN (time_bin), (ClutterActor*)priv->time);
-  nbtk_bin_set_alignment (NBTK_BIN (time_bin),
-                          NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
   clutter_actor_set_position ((ClutterActor*)time_bin, 20.0, 8.0);
   clutter_actor_set_width ((ClutterActor*)time_bin, 161.0);
 
@@ -1920,8 +1918,6 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
   date_bin = nbtk_bin_new ();
   nbtk_bin_set_child (NBTK_BIN (date_bin), (ClutterActor*)priv->date);
-  nbtk_bin_set_alignment (NBTK_BIN (date_bin),
-                          NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
   clutter_actor_set_position ((ClutterActor*)date_bin, 20.0, 35.0);
   clutter_actor_set_size ((ClutterActor*)date_bin, 161.0, 25.0);
 
@@ -1932,7 +1928,7 @@ mnb_toolbar_constructed (GObject *self)
 
   mnb_toolbar_update_time_date (priv);
 
-  nbtk_bin_set_alignment (NBTK_BIN (self), NBTK_ALIGN_LEFT, NBTK_ALIGN_TOP);
+  nbtk_bin_set_alignment (NBTK_BIN (self), NBTK_ALIGN_START, NBTK_ALIGN_START);
   nbtk_bin_set_child (NBTK_BIN (self), hbox);
 
   g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);

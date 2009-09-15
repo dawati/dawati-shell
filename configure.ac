@@ -59,7 +59,7 @@ AM_GLIB_GNU_GETTEXT
 # Libmoblin-panel
 PKG_CHECK_MODULES(LIBMPL,
                   dbus-glib-1
-                  nbtk-1.0
+                  nbtk-1.2
                   gtk+-2.0
                   gio-unix-2.0)
 
@@ -69,7 +69,7 @@ AC_SUBST([MUTTER_MOBLIN_THEME_DIR])
 # Mutter-moblin
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl
-                  nbtk-1.0 >= 0.8.0                  dnl
+                  nbtk-1.2                           dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
                   dbus-glib-1                        dnl

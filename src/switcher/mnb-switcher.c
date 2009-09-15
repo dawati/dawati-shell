@@ -282,8 +282,6 @@ mnb_switcher_show (ClutterActor *self)
           nbtk_widget_set_style_class_name (label, "workspace-title-label");
 
           nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
-          nbtk_bin_set_alignment (NBTK_BIN (bin),
-                                  NBTK_ALIGN_CENTER, NBTK_ALIGN_CENTER);
 
           clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-title-active");
@@ -303,7 +301,8 @@ mnb_switcher_show (ClutterActor *self)
           clutter_actor_set_name ((ClutterActor *)label, "workspace-no-wins-label");
 
           nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
-          nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
+          nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START,
+                                  NBTK_ALIGN_MIDDLE);
           clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-no-wins-bin");
 
