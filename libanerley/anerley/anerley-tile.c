@@ -100,8 +100,7 @@ _get_default_avatar_texture (void)
 
   cache = nbtk_texture_cache_get_default ();
   tmp_tex = nbtk_texture_cache_get_texture (cache,
-                                            DEFAULT_AVATAR_IMAGE,
-                                            FALSE);
+                                            DEFAULT_AVATAR_IMAGE);
   handle = clutter_texture_get_cogl_texture (tmp_tex);
   cogl_handle_ref (handle);
   g_object_unref (tmp_tex);
@@ -151,8 +150,7 @@ anerley_tile_update_presence_icon (AnerleyTile *tile,
   cache = nbtk_texture_cache_get_default ();
 
   priv->presence_icon = (ClutterActor *)nbtk_texture_cache_get_texture (cache,
-                                                                        path,
-                                                                        FALSE);
+                                                                        path);
   clutter_actor_set_size (priv->presence_icon, 16, 16);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
                                         (ClutterActor *)priv->presence_icon,
@@ -477,8 +475,7 @@ anerley_tile_init (AnerleyTile *self)
   priv->avatar_bin = nbtk_bin_new ();
   nbtk_widget_set_style_class_name (priv->avatar_bin, "AnerleyTileAvatar");
 
-  priv->avatar = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
-                               NULL);
+  priv->avatar = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
   /* TODO: Prefill with unknown icon */
   nbtk_bin_set_child (NBTK_BIN (priv->avatar_bin), priv->avatar);
 
@@ -489,10 +486,10 @@ anerley_tile_init (AnerleyTile *self)
                                (ClutterActor *)priv->avatar_bin, FALSE);
   nbtk_table_child_set_y_fill (NBTK_TABLE (self),
                                (ClutterActor *)priv->avatar_bin, FALSE);
-  nbtk_table_child_set_col_expand (NBTK_TABLE (self),
-                                   (ClutterActor *)priv->avatar_bin, FALSE);
-  nbtk_table_child_set_row_expand (NBTK_TABLE (self),
-                                   (ClutterActor *)priv->avatar_bin, FALSE);
+  nbtk_table_child_set_x_expand (NBTK_TABLE (self),
+                                 (ClutterActor *)priv->avatar_bin, FALSE);
+  nbtk_table_child_set_y_expand (NBTK_TABLE (self),
+                                 (ClutterActor *)priv->avatar_bin, FALSE);
   nbtk_table_child_set_row_span (NBTK_TABLE (self),
                                  (ClutterActor *)priv->avatar_bin, 3);
 
@@ -504,8 +501,8 @@ anerley_tile_init (AnerleyTile *self)
                         0, 1);
   nbtk_table_child_set_y_fill (NBTK_TABLE (self),
                                (ClutterActor *)priv->primary_label, FALSE);
-  nbtk_table_child_set_col_expand (NBTK_TABLE (self),
-                                   (ClutterActor *)priv->primary_label, FALSE);
+  nbtk_table_child_set_x_expand (NBTK_TABLE (self),
+                                 (ClutterActor *)priv->primary_label, FALSE);
   nbtk_table_child_set_col_span (NBTK_TABLE (self),
                                  (ClutterActor *)priv->primary_label, 2);
   nbtk_table_child_set_y_align (NBTK_TABLE (self),
@@ -522,11 +519,11 @@ anerley_tile_init (AnerleyTile *self)
   nbtk_table_child_set_y_fill (NBTK_TABLE (self),
                                (ClutterActor *)priv->secondary_label,
                                FALSE);
-  nbtk_table_child_set_row_expand (NBTK_TABLE (self),
-                                   (ClutterActor *)priv->secondary_label,
-                                   FALSE);
-  nbtk_table_child_set_col_expand (NBTK_TABLE (self),
-                                   (ClutterActor *)priv->secondary_label,
+  nbtk_table_child_set_y_expand (NBTK_TABLE (self),
+                                 (ClutterActor *)priv->secondary_label,
+                                 FALSE);
+  nbtk_table_child_set_x_expand (NBTK_TABLE (self),
+                                 (ClutterActor *)priv->secondary_label,
                                    FALSE);
   nbtk_table_child_set_col_span (NBTK_TABLE (self),
                                  (ClutterActor *)priv->secondary_label, 2);

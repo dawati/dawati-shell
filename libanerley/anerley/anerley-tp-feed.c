@@ -354,7 +354,7 @@ _tp_connection_get_contacts_cb (TpConnection      *connection,
     if (tp_contact_get_presence_type (contact) == TP_CONNECTION_PRESENCE_TYPE_OFFLINE)
     {
       /* Skip offline contacts */
-      continue;
+      //continue;
     }
 
     item = g_hash_table_lookup (priv->ids_to_items,
