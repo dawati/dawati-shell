@@ -1646,8 +1646,8 @@ carrick_pane_init (CarrickPane *self)
 
   gtk_box_pack_start (GTK_BOX (self),
                       column,
-                      TRUE,
-                      TRUE,
+                      FALSE,
+                      FALSE,
                       8);
   /*
    * End right column
