@@ -75,3 +75,4 @@ install-exec-hook:
 BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS)
 
 CLEANFILES = $(BUILT_SOURCES)
+EXTRA_DIST = marshal.list mnb-panel-dbus.xml mnb-toolbar-dbus.xml notification-manager.xml
