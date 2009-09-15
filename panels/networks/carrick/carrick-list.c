@@ -60,6 +60,7 @@ struct _CarrickListPrivate
   CarrickNetworkModel *model;
 
   gboolean offline_mode;
+  gboolean have_daemon;
   gboolean wifi_enabled;
   gboolean ethernet_enabled;
   gboolean threeg_enabled;
@@ -848,7 +849,18 @@ _set_and_show_fallback (CarrickList *self)
   gchar              *fallback = NULL;
 
   /* Need to add some fall-back content */
-  if (priv->offline_mode)
+  if (!priv->have_daemon)
+    {
+      /*
+       * Translators: this string is displayed if there
+       * are no available networks because ConnMan, the
+       * connectivity daemon, is not running.
+       */
+      fallback = g_strdup (_("Sorry, we can't find any networks. "
+                             "It appears that the ConnMan daemon is not running. "
+                             "You could try re-starting your netbook."));
+    }
+  else if (priv->offline_mode)
     {
       /*
        * Hint display if we detect that the system is in
@@ -1036,15 +1048,20 @@ list_get_properties_cb (DBusGProxy     *manager,
                         gpointer        user_data)
 {
   CarrickList *list = user_data;
+  CarrickListPrivate *priv = list->priv;
 
   if (error)
     {
       g_debug ("Error when ending GetProperties call: %s",
                error->message);
       g_error_free (error);
+
+      priv->have_daemon = FALSE;
+      _set_and_show_fallback (list);
     }
   else
     {
+      priv->have_daemon = TRUE;
       g_hash_table_foreach (properties,
                             (GHFunc) list_update_property,
                             list);
@@ -1180,6 +1197,7 @@ carrick_list_init (CarrickList *self)
   priv = self->priv = LIST_PRIVATE (self);
 
   priv->fallback = NULL;
+  priv->have_daemon = FALSE;
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
                                   GTK_POLICY_NEVER,
