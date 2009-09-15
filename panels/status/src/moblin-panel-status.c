@@ -976,8 +976,8 @@ make_status (MoblinStatusPanel *panel)
   nbtk_widget_set_style_class_name (NBTK_WIDGET (panel->empty_web_bin),
                                     "status-web-empty-bin");
   nbtk_bin_set_alignment (NBTK_BIN (panel->empty_web_bin),
-                          NBTK_ALIGN_LEFT,
-                          NBTK_ALIGN_CENTER);
+                          NBTK_ALIGN_START,
+                          NBTK_ALIGN_MIDDLE);
   nbtk_bin_set_fill (NBTK_BIN (panel->empty_web_bin), TRUE, FALSE);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (table), panel->empty_web_bin,
                                         1, 0,
@@ -1003,8 +1003,8 @@ make_status (MoblinStatusPanel *panel)
   nbtk_widget_set_style_class_name (NBTK_WIDGET (panel->empty_im_bin),
                                     "status-im-empty-bin");
   nbtk_bin_set_alignment (NBTK_BIN (panel->empty_im_bin),
-                          NBTK_ALIGN_LEFT,
-                          NBTK_ALIGN_CENTER);
+                          NBTK_ALIGN_START,
+                          NBTK_ALIGN_MIDDLE);
   nbtk_bin_set_fill (NBTK_BIN (panel->empty_im_bin), TRUE, FALSE);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (table), panel->empty_im_bin,
                                         2, 0,
