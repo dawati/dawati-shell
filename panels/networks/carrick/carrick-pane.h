@@ -63,6 +63,8 @@ struct _CarrickPaneClass
 
   void (*connection_changed) (CarrickPane   *self,
                               const gchar   *connection_type,
+                              const gchar   *connection_name,
+                              const gchar   *connection_state,
                               guint          strength);
 };
 
