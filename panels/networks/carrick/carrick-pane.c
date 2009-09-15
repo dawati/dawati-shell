@@ -1072,6 +1072,76 @@ pane_update_property (const gchar *property,
 }
 
 static void
+pane_have_daemon (CarrickPane *pane,
+                  gboolean     have_daemon)
+{
+  CarrickPanePrivate *priv = pane->priv;
+
+  if (!have_daemon)
+    {
+      /* No daemon, disable the UI */
+      gtk_widget_set_sensitive (priv->wifi_switch,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->wifi_label,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->ethernet_switch,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->ethernet_label,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->threeg_switch,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->threeg_label,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->wimax_switch,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->wimax_label,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->bluetooth_switch,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->bluetooth_label,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->offline_mode_switch,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->service_list,
+                                FALSE);
+      gtk_widget_set_sensitive (priv->new_conn_button,
+                                FALSE);
+      carrick_list_set_fallback (CARRICK_LIST (priv->service_list));
+    }
+
+  if (have_daemon)
+    {
+      /* The daemon has come back, enable the UI */
+      gtk_widget_set_sensitive (priv->wifi_switch,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->wifi_label,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->ethernet_switch,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->ethernet_label,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->threeg_switch,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->threeg_label,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->wimax_switch,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->wimax_label,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->bluetooth_switch,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->bluetooth_label,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->offline_mode_switch,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->service_list,
+                                TRUE);
+      gtk_widget_set_sensitive (priv->new_conn_button,
+                                TRUE);
+    }
+}
+
+static void
 pane_manager_changed_cb (DBusGProxy  *proxy,
                          const gchar *property,
                          GValue      *value,
@@ -1095,6 +1165,8 @@ pane_manager_get_properties_cb (DBusGProxy *manager,
       g_debug ("Error when ending GetProperties call: %s",
                error->message);
       g_error_free (error);
+      pane_have_daemon (self,
+                        FALSE);
     }
   else
     {
@@ -1154,6 +1226,27 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
 }
 
 static void
+pane_name_owner_changed (DBusGProxy  *proxy,
+                         const gchar *name,
+                         const gchar *prev_owner,
+                         const gchar *new_owner,
+                         CarrickPane *self)
+{
+  if (!g_str_equal (name, CONNMAN_SERVICE))
+    {
+      return;
+    }
+
+  if (new_owner[0] == '\0')
+    {
+      pane_have_daemon (self, FALSE);
+      return;
+    }
+
+  pane_have_daemon (self, TRUE);
+}
+
+static void
 carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv;
@@ -1169,6 +1262,7 @@ carrick_pane_init (CarrickPane *self)
   gchar              *label = NULL;
   GError             *error = NULL;
   DBusGConnection    *connection;
+  DBusGProxy         *bus_proxy;
   GtkTreeModel       *model;
 
   priv = self->priv = PANE_PRIVATE (self);
@@ -1226,6 +1320,23 @@ carrick_pane_init (CarrickPane *self)
   dbus_g_proxy_connect_signal (priv->manager,
                                "PropertyChanged",
                                G_CALLBACK (pane_manager_changed_cb),
+                               self,
+                               NULL);
+
+  /* Listen for NameOwnerChanged */
+  bus_proxy = dbus_g_proxy_new_for_name (connection,
+                                         DBUS_SERVICE_DBUS,
+                                         DBUS_PATH_DBUS,
+                                         DBUS_INTERFACE_DBUS);
+  dbus_g_proxy_add_signal (bus_proxy,
+                           "NameOwnerChanged",
+                           G_TYPE_STRING,
+                           G_TYPE_STRING,
+                           G_TYPE_STRING,
+                           G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (bus_proxy,
+                               "NameOwnerChanged",
+                               G_CALLBACK (pane_name_owner_changed),
                                self,
                                NULL);
 
