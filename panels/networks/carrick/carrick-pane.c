@@ -36,7 +36,7 @@
 #include "carrick-notification-manager.h"
 #include "carrick-network-model.h"
 
-G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_TABLE)
+G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_HBOX)
 
 #define PANE_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_PANE, CarrickPanePrivate))
@@ -1161,7 +1161,8 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget          *switch_bin;
   GtkWidget          *flight_bin;
   GtkWidget          *net_list_bin;
-  GtkWidget          *hbox, *switch_box;
+  GtkWidget          *switch_box;
+  GtkWidget          *column;
   GtkWidget          *vbox;
   GtkWidget          *switch_label;
   GtkWidget          *frame_title;
@@ -1240,15 +1241,17 @@ carrick_pane_init (CarrickPane *self)
   net_list_bin = nbtk_gtk_frame_new ();
   gtk_widget_show (net_list_bin);
 
-  /* Set table up */
-  gtk_table_resize (GTK_TABLE (self),
-                    8,
-                    6);
-  gtk_table_set_homogeneous (GTK_TABLE (self),
-                             TRUE);
-  gtk_container_set_border_width (GTK_CONTAINER (self), 4);
-  gtk_table_set_row_spacings (GTK_TABLE (self), 4);
-  gtk_table_set_col_spacings (GTK_TABLE (self), 4);
+  /* Set box (self) up */
+  gtk_box_set_spacing (GTK_BOX (self),
+                       4);
+  gtk_container_set_border_width (GTK_CONTAINER (self),
+                                  4);
+
+  /*
+   * Left column
+   */
+  column = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (column);
 
   /* Network list */
   label = g_strdup_printf ("<span font_desc=\"Liberation Sans Bold 18px\""
@@ -1270,33 +1273,13 @@ carrick_pane_init (CarrickPane *self)
                      priv->service_list);
   gtk_widget_show (priv->service_list);
 
-  gtk_table_attach (GTK_TABLE (self),
-                    net_list_bin,
-                    0, 4,
-                    0, 7,
-                    GTK_EXPAND | GTK_FILL,
-                    GTK_EXPAND | GTK_FILL,
-                    0, 0);
+  gtk_box_pack_start (GTK_BOX (column),
+                      net_list_bin,
+                      TRUE,
+                      TRUE,
+                      4);
 
   /* New connection button */
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox);
-  gtk_table_attach (GTK_TABLE (self),
-                    vbox,
-                    0, 6,
-                    7, 8,
-                    GTK_FILL,
-                    GTK_EXPAND,
-                    0, 0);
-
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox);
-  gtk_box_pack_start (GTK_BOX (vbox),
-                      hbox,
-                      FALSE,
-                      TRUE,
-                      0);
-
   priv->new_conn_button = gtk_button_new_with_label (_ ("Add new connection"));
   gtk_widget_set_sensitive (priv->new_conn_button,
                             FALSE);
@@ -1305,12 +1288,26 @@ carrick_pane_init (CarrickPane *self)
                     "clicked",
                     G_CALLBACK (_new_connection_cb),
                     self);
-  gtk_box_pack_start (GTK_BOX (hbox),
+  gtk_box_pack_start (GTK_BOX (column),
                       priv->new_conn_button,
                       FALSE,
-                      TRUE,
-                      12);
+                      FALSE,
+                      8);
 
+  gtk_box_pack_start (GTK_BOX (self),
+                      column,
+                      TRUE,
+                      TRUE,
+                      4);
+  /*
+   * End of left column
+   */
+
+  /*
+   * Right column
+   */
+  column = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (column);
 
   /* Switches */
   vbox = gtk_vbox_new (TRUE,
@@ -1408,7 +1405,7 @@ carrick_pane_init (CarrickPane *self)
                       switch_box,
                       FALSE,
                       FALSE,
-                      8);
+                      4);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
                     "switch-flipped",
                     G_CALLBACK (_threeg_switch_callback),
@@ -1478,13 +1475,11 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_bluetooth_switch_callback),
                     self);
 
-  gtk_table_attach (GTK_TABLE (self),
-                    switch_bin,
-                    4, 6,
-                    0, 5,
-                    GTK_FILL | GTK_EXPAND,
-                    GTK_FILL | GTK_EXPAND,
-                    0, 0);
+  gtk_box_pack_start (GTK_BOX (column),
+                      switch_bin,
+                      TRUE,
+                      TRUE,
+                      4);
 
   vbox = gtk_vbox_new (TRUE,
                        0);
@@ -1533,10 +1528,20 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       0);
-  gtk_table_attach_defaults (GTK_TABLE (self),
-                             flight_bin,
-                             4, 6,
-                             5, 7);
+  gtk_box_pack_start (GTK_BOX (column),
+                      flight_bin,
+                      TRUE,
+                      TRUE,
+                      8);
+
+  gtk_box_pack_start (GTK_BOX (self),
+                      column,
+                      TRUE,
+                      TRUE,
+                      8);
+  /*
+   * End right column
+   */
 
   g_signal_connect (GTK_WIDGET (self),
                     "focus",

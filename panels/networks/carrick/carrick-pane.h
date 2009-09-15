@@ -52,14 +52,14 @@ typedef struct _CarrickPanePrivate CarrickPanePrivate;
 
 struct _CarrickPane
 {
-  GtkTable parent;
+  GtkHBox parent;
 
   CarrickPanePrivate *priv;
 };
 
 struct _CarrickPaneClass
 {
-  GtkTableClass parent_class;
+  GtkHBoxClass parent_class;
 
   void (*connection_changed) (CarrickPane   *self,
                               const gchar   *connection_type,
