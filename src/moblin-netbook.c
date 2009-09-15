@@ -1754,6 +1754,27 @@ setup_focus_window (MutterPlugin *plugin)
   priv->focus_xwin = xwin;
 }
 
+/*
+ * Avoid painting the desktop background if it is completely occluded.
+ */
+static void
+desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
+{
+  /*
+   * If we are painting a clone, do nothing.
+   */
+  if (clutter_actor_is_in_clone_paint (background))
+    return;
+
+  /*
+   * Don't paint desktop background if fullscreen application is present.
+   *
+   * TODO -- extend this to be more generic than just the fullscreen case.
+   */
+  if (moblin_netbook_fullscreen_apps_present (plugin))
+    g_signal_stop_emission_by_name (background, "paint");
+}
+
 static void
 setup_desktop_background (MutterPlugin *plugin)
 {
@@ -1790,6 +1811,10 @@ setup_desktop_background (MutterPlugin *plugin)
       clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                    priv->desktop_tex);
       clutter_actor_lower_bottom (priv->desktop_tex);
+
+      g_signal_connect (priv->desktop_tex, "paint",
+                        G_CALLBACK (desktop_background_paint),
+                        plugin);
     }
 }
 
