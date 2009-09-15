@@ -1364,7 +1364,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           /* Hide toolbar etc in presence of modal window */
           if (modal == TRUE)
-            clutter_actor_hide (priv->toolbar);
+            mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
         }
 
       /*
@@ -1653,7 +1653,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
         }
       else
         {
-          clutter_actor_hide (priv->toolbar);
+          mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
         }
 
       return TRUE;

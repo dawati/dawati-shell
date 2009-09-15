@@ -101,6 +101,8 @@ gboolean mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar);
 gboolean mnb_toolbar_window_is_transient_for_active_panel (MnbToolbar *toolbar,
                                                            MutterWindow *mcw);
 
+void mnb_toolbar_hide (MnbToolbar *toolbar);
+
 G_END_DECLS
 
 #endif /* _MNB_TOOLBAR */

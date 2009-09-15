@@ -266,7 +266,7 @@ mnb_drop_down_hide_completed_cb (ClutterAnimation *anim, ClutterActor *actor)
         toolbar = clutter_actor_get_parent (toolbar);
 
       if (toolbar)
-        clutter_actor_hide (toolbar);
+        mnb_toolbar_hide ((MnbToolbar*)toolbar);
 
       priv->hide_toolbar = FALSE;
     }

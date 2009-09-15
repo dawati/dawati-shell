@@ -91,7 +91,7 @@ G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR, MnbToolbarPrivate))
 
 static void mnb_toolbar_constructed (GObject *self);
-static void mnb_toolbar_hide (ClutterActor *actor);
+static void mnb_toolbar_real_hide (ClutterActor *actor);
 static void mnb_toolbar_show (ClutterActor *actor);
 static gboolean mnb_toolbar_stage_captured_cb (ClutterActor *stage,
                                                ClutterEvent *event,
@@ -393,7 +393,7 @@ mnb_toolbar_show (ClutterActor *actor)
 }
 
 static void
-mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
+mnb_toolbar_real_hide (ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   gint i;
@@ -411,6 +411,13 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
         clutter_actor_hide (CLUTTER_ACTOR (priv->buttons[i]));
         nbtk_button_set_checked (NBTK_BUTTON (priv->buttons[i]), FALSE);
       }
+}
+
+static void
+mnb_toolbar_hide_transition_completed_cb (ClutterTimeline *timeline,
+					  ClutterActor *actor)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
 
   priv->in_hide_animation = FALSE;
   priv->dont_autohide = FALSE;
@@ -419,13 +426,17 @@ mnb_toolbar_hide_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
   moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
   g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
+
+  clutter_actor_hide (actor);
+
   g_object_unref (actor);
 }
 
-static void
-mnb_toolbar_hide (ClutterActor *actor)
+void
+mnb_toolbar_hide (MnbToolbar *toolbar)
 {
-  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+  ClutterActor *actor = CLUTTER_ACTOR (toolbar);
+  MnbToolbarPrivate *priv = toolbar->priv;
   gfloat             height;
   gint               i;
   ClutterAnimation  *animation;
@@ -470,7 +481,7 @@ mnb_toolbar_hide (ClutterActor *actor)
 
   g_signal_connect (clutter_animation_get_timeline (animation),
                     "completed",
-                    G_CALLBACK (mnb_toolbar_hide_completed_cb),
+                    G_CALLBACK (mnb_toolbar_hide_transition_completed_cb),
                     actor);
 }
 
@@ -522,7 +533,7 @@ mnb_toolbar_dbus_show_toolbar (MnbToolbar *self, GError **error)
 static gboolean
 mnb_toolbar_dbus_hide_toolbar (MnbToolbar *self, GError **error)
 {
-  clutter_actor_hide (CLUTTER_ACTOR (self));
+  mnb_toolbar_hide (self);
   return TRUE;
 }
 
@@ -563,7 +574,7 @@ mnb_toolbar_dbus_hide_panel (MnbToolbar  *self,
   if (!CLUTTER_ACTOR_IS_MAPPED (panel))
     {
       if (hide_toolbar && CLUTTER_ACTOR_IS_MAPPED (self))
-        clutter_actor_hide (CLUTTER_ACTOR (self));
+        mnb_toolbar_hide (self);
     }
   else if (hide_toolbar)
     mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (panel));
@@ -590,7 +601,7 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
   object_class->constructed = mnb_toolbar_constructed;
 
   clutter_class->show = mnb_toolbar_show;
-  clutter_class->hide = mnb_toolbar_hide;
+  clutter_class->hide = mnb_toolbar_real_hide;
   clutter_class->allocate = mnb_toolbar_allocate;
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
@@ -2310,7 +2321,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
       else if (CLUTTER_ACTOR_IS_MAPPED (toolbar))
         {
           mnb_toolbar_trigger_region_set_height (toolbar, 0);
-          clutter_actor_hide (CLUTTER_ACTOR (toolbar));
+          mnb_toolbar_hide (toolbar);
         }
     }
 
@@ -2335,7 +2346,7 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
         return FALSE;
 
       if (CLUTTER_ACTOR_IS_MAPPED (toolbar))
-        clutter_actor_hide (CLUTTER_ACTOR (toolbar));
+        mnb_toolbar_hide (toolbar);
     }
 
   return FALSE;
