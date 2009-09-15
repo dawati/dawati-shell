@@ -329,7 +329,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
                                         "x-align",
                                         0.0,
                                         NULL);
-  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_LEFT, NBTK_ALIGN_CENTER);
+  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
 
   priv->app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
 
@@ -748,8 +748,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->nobody_selected_box),
                                (ClutterActor *)label);
   nbtk_bin_set_alignment (NBTK_BIN (priv->nobody_selected_box),
-                          NBTK_ALIGN_CENTER,
-                          NBTK_ALIGN_TOP);
+                          NBTK_ALIGN_MIDDLE,
+                          NBTK_ALIGN_START);
   nbtk_bin_set_fill (NBTK_BIN (priv->nobody_selected_box),
                      FALSE,
                      FALSE);
