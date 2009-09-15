@@ -199,7 +199,7 @@ msgstr "系统声音"
 
 #: ../src/dalston-power-applet.c:48
 msgid "battery"
-msgstr ""
+msgstr "电池"
 
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
