@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPaneClass))
 
 typedef struct {
-  NbtkTable parent;
+  NbtkWidget parent;
 } PengeCalendarPane;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  NbtkWidgetClass parent_class;
 } PengeCalendarPaneClass;
 
 GType penge_calendar_pane_get_type (void);
