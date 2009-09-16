@@ -166,7 +166,6 @@ mpl_panel_clutter_xevent_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
   switch (xev->type)
     {
     case MapNotify:
-      g_debug ("### got Mapped ###");
       return CLUTTER_X11_FILTER_CONTINUE;
     case ClientMessage:
       if (xev->xclient.message_type == priv->Atom_XEMBED)
@@ -174,8 +173,6 @@ mpl_panel_clutter_xevent_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
 	  switch (xev->xclient.data.l[1])
 	    {
 	    case XEMBED_EMBEDDED_NOTIFY:
-	      g_debug ("### got XEMBED_EMBEDDED_NOTIFY ###");
-
               priv->embedder = xev->xclient.data.l[3];
 
               /* Map */
@@ -185,13 +182,10 @@ mpl_panel_clutter_xevent_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
 	      xembed_set_win_info (xdpy, priv->xwindow, XEMBED_MAPPED);
 	      break;
 	    case XEMBED_WINDOW_ACTIVATE:
-	      g_debug ("### got XEMBED_WINDOW_ACTIVATE ###");
 	      break;
 	    case XEMBED_WINDOW_DEACTIVATE:
-	      g_debug ("### got XEMBED_WINDOW_DEACTIVATE ###");
 	      break;
 	    case XEMBED_FOCUS_IN:
-	      g_debug ("### got XEMBED_FOCUS_IN ###");
 	      break;
             default: ;
 	    }
