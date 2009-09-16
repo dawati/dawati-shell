@@ -2,14 +2,14 @@
 # Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the mutter-moblin package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-# , fuzzy
-#
-#
+#, fuzzy
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-11 16:27+0000\n"
+"POT-Creation-Date: 2009-09-15 09:10+0000\n"
 "PO-Revision-Date: 2009-08-05 14:41-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -21,37 +21,19 @@ msgstr ""
 msgid "<b>Appointments</b>"
 msgstr "<b>Afspraken</b>"
 
-#: ../penge/penge-events-pane.c:208
+#: ../penge/penge-events-pane.c:265
 msgid "No calendar entries this week"
 msgstr "Geen afspraken deze week"
 
-#: ../penge/penge-people-pane.c:191
-msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr ""
-"Je vrienden hun web feeds en web services verschijnen hier. Activeer je "
-"accounts nu!"
+#: ../penge/penge-people-placeholder-tile.c:112
+msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgstr "Je vrienden hun web feeds en web services verschijnen hier. Activeer je accounts nu!"
 
-#: ../penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>Welkom bij Moblin 2.0 voor Netbooks</b>"
-
-#: ../penge/penge-recent-files-pane.c:227
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
-msgstr ""
-"Moblin is anders dan traditionele computers. We hebben alles samengevoegd om "
-"makkelijker je weg te kunnen vinden. We hopen dat je het waardeert. Het "
-"Moblin Team."
-
-#: ../penge/penge-recent-file-tile.c:218
+#: ../penge/penge-recent-file-tile.c:211
 msgid "Web page"
 msgstr "Webpagina"
 
-#: ../penge/penge-tasks-pane.c:287
+#: ../penge/penge-tasks-pane.c:344
 msgid "Nothing to do today"
 msgstr "Niets te doen vandaag"
 
@@ -60,3 +42,10 @@ msgstr "Niets te doen vandaag"
 msgid "Due %x"
 msgstr "Verstrijkt %x"
 
+#: ../penge/penge-welcome-tile.c:108
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Moblin is anders dan traditionele computers. We hebben alles samengevoegd om makkelijker je weg te kunnen vinden. We hopen dat je het waardeert. Het Moblin Team."
+
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Welkom bij Moblin 2.1 voor Netbooks</b>"
