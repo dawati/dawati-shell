@@ -68,7 +68,8 @@ enum
   PROP_AXIS,
   PROP_CONTAINMENT_TYPE,
   PROP_CONTAINMENT_AREA,
-  PROP_ENABLED
+  PROP_ENABLED,
+  PROP_DRAG_ACTOR
 };
 
 static void nbtk_draggable_iface_init (NbtkDraggableIface *iface);
@@ -323,6 +324,9 @@ mnb_switcher_app_set_property (GObject      *gobject,
         nbtk_draggable_disable (NBTK_DRAGGABLE (gobject));
       break;
 
+    case PROP_DRAG_ACTOR:
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -360,6 +364,9 @@ mnb_switcher_app_get_property (GObject    *gobject,
 
     case PROP_ENABLED:
       g_value_set_boolean (value, priv->enabled);
+      break;
+
+    case PROP_DRAG_ACTOR:
       break;
 
     default:
@@ -702,6 +709,9 @@ mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
   g_object_class_override_property (object_class,
                                     PROP_ENABLED,
                                     "enabled");
+  g_object_class_override_property (object_class,
+                                    PROP_DRAG_ACTOR,
+                                    "drag-actor");
 }
 
 static void
