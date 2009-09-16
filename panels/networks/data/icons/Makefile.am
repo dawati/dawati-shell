@@ -3,8 +3,6 @@ iconsdir = $(pkgdatadir)/icons
 icons_DATA = \
 	      network-active-hover.png \
 	      network-active.png \
-        network-bluetooth-not-paired-hover.png \
-        network-bluetooth-not-paired.png \
         network-bluetooth-strong-hover.png \
         network-bluetooth-strong.png \
         network-bluetooth-weak-hover.png \
