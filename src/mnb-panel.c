@@ -1021,6 +1021,7 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
 {
   MnbPanelPrivate *priv = panel->priv;
   gfloat x, y, w, h;
+  gint   wi, hi;
 
   /*
    * Exit if no change
@@ -1035,9 +1036,16 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
   /*
    * FIXME -- the border and shaddow should not be hardcoded here.
    */
-  org_moblin_UX_Shell_Panel_set_size_async (priv->proxy,
-                                            width - 2 * 4,
-                                            height - (guint) h - 4 - 37,
+  wi = width - 2 * 4;
+  hi = height - (gint) h - 4 - 37;
+
+  if (wi < 0)
+    wi = 0;
+
+  if (hi < 0)
+    hi = 0;
+
+  org_moblin_UX_Shell_Panel_set_size_async (priv->proxy, wi, hi,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);
 }
 
