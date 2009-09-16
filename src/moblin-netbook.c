@@ -243,6 +243,23 @@ on_urgent_notify_allocation_cb (ClutterActor *notify_urgent,
                               (screen_height - (int)h) / 2);
 }
 
+/*
+ * If the work area size changes while a panel is present (e.g., a VKB pops up),
+ * we need to resize the panel.
+ */
+static void
+moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MnbDropDown                *panel;
+
+  if (!(panel =
+        (MnbDropDown*)mnb_toolbar_get_active_panel (MNB_TOOLBAR (priv->toolbar))))
+    return;
+
+  mnb_drop_down_ensure_size (panel);
+}
+
 static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
@@ -279,6 +296,11 @@ moblin_netbook_plugin_constructed (GObject *object)
       g_warning ("%s", err->message);
       g_error_free (err);
     }
+
+  g_signal_connect (mutter_plugin_get_screen (MUTTER_PLUGIN (plugin)),
+                    "workarea-changed",
+                    G_CALLBACK (moblin_netbook_workarea_changed_cb),
+                    plugin);
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
                                    &screen_width, &screen_height);
@@ -1113,55 +1135,6 @@ scim_preview_queue_redraw_cb (ClutterActor *source,
 {
   clutter_actor_queue_redraw (clone);
 }
-
-#if 0 /* Not in use at this very moment, but will be needed for the vkb */
-/*
- * Helper function to resize active panel.
- *
- * The panel parameter can be NULL, in which case the active panel will be
- * looked up first.
- */
-static void
-resize_active_panel (MutterPlugin *plugin, MnbPanel *panel)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
-  gfloat                      w, h;
-  gint                        screen_width, screen_height;
-
-  if (!panel &&
-      !(panel = (MnbPanel*)mnb_toolbar_get_active_panel (toolbar)))
-    return;
-
-  mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
-                                   &screen_width, &screen_height);
-
-  clutter_actor_get_size (CLUTTER_ACTOR (panel), &w, &h);
-
-  /*
-   * Indicate to the toolbar that the region below panel footer
-   * should not be included in the panel input region.
-   */
-  mnb_toolbar_set_panel_input_only (toolbar, TRUE);
-
-  /*
-   * If the panel stretches all the way to the bottom of the screen
-   * shrink it, so that the IM toolbar window becomes visible.
-   */
-  if ((guint)h >= screen_height + 34 - TOOLBAR_HEIGHT)
-    {
-      if (MNB_IS_PANEL (panel))
-        mnb_panel_set_size (panel,
-                            (guint) w, screen_height + 37 - 45 -
-                            TOOLBAR_HEIGHT);
-      else
-        clutter_actor_set_size (CLUTTER_ACTOR (panel),
-                                w,
-                                (gfloat)(screen_height + 37 - 45 -
-                                         TOOLBAR_HEIGHT));
-    }
-}
-#endif
 
 /*
  * Because of the way the live windows are implemented, hiding of MutterWindows
