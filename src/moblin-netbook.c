@@ -1036,7 +1036,7 @@ meta_window_fullcreen_notify_cb (GObject    *object,
 
 
 /*
- * Temporary cludge to facilitate some rudimentary IM functionality
+ * SCIM functionality
  *
  * The basic problem is that the IM is implemented using X windows for the
  * preview, toolbar, and various other UI elements; this is fine for regular
@@ -1044,20 +1044,8 @@ meta_window_fullcreen_notify_cb (GObject    *object,
  * the windows, so, the IM windows are covered and non-interactive.
  *
  * To work around this, when a window of WM_CLASS Scim-bridge-gtk maps, we
- * create a clone and places to the top of the stage. The preview window is
- * interactive by the virtue of overlapping the panels in it's entirety (and
- * naturally sitting above the panel windows in the X stacking order). For the
- * toolbar we force the visible panel to shring to free the bottom 45 pixels,
- * and reduce the Panel input region to end at the bottom of the footer. IM
- * toolbar menus work only to the extent they overlap with the inner panel area,
- * the bits that overalap with the panel footer are not reactive, because the
- * footer occludes the window.
- *
- * NB: This is not a solution; it's a cludge hacked together at the last moment.
- *     Proper solution, starting with interaction design is needed -- it is
- *     most likely that any future implementaion will need to integrate the IM
- *     UI elements directly into the compositor stage using Clutter, rather than
- *     using X windows.
+ * create a clone and place it to the top of the stage, and we also punch a
+ * hole into the stage input region so the window can get events.
  */
 
 /*
@@ -1076,6 +1064,7 @@ scim_preview_allocation_cb (ClutterActor *source,
   clutter_actor_set_position (clone, x, y);
   clutter_actor_set_size (clone, w, h);
 }
+
 /*
  * When the original window is destroyed, destroy the clone.
  */
@@ -1125,14 +1114,15 @@ scim_preview_queue_redraw_cb (ClutterActor *source,
   clutter_actor_queue_redraw (clone);
 }
 
+#if 0 /* Not in use at this very moment, but will be needed for the vkb */
 /*
- * Helper function to resize active panel in presence of SCIM windows.
+ * Helper function to resize active panel. 
  *
  * The panel parameter can be NULL, in which case the active panel will be
  * looked up first.
  */
 static void
-scim_resize_active_panel (MutterPlugin *plugin, MnbPanel *panel)
+resize_active_panel (MutterPlugin *plugin, MnbPanel *panel)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
@@ -1171,6 +1161,7 @@ scim_resize_active_panel (MutterPlugin *plugin, MnbPanel *panel)
                                          TOOLBAR_HEIGHT));
     }
 }
+#endif
 
 /*
  * Because of the way the live windows are implemented, hiding of MutterWindows
@@ -1246,11 +1237,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                */
               mutter_plugin_effect_completed (plugin, mcw,
                                               MUTTER_PLUGIN_MAP);
-
-              /*
-               * Now resize the active panel if appropriate.
-               */
-              scim_resize_active_panel (plugin, panel);
 
               /*
                * Make a clone and place it on the top of stage.
