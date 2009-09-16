@@ -2,14 +2,13 @@
 # Copyright (C) 2009 THE dalston'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the dalston package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-#, fuzzy
 # 
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: dalston moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-28 06:51+0000\n"
+"POT-Creation-Date: 2009-09-15 09:02+0000\n"
 "PO-Revision-Date: 2009-08-25 16:12-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -18,71 +17,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../dalston/dalston-power-applet.c:192
+#: ../dalston/dalston-power-applet.c:237
 #, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b> uren"
 msgstr[1] "<b>%d</b> uren"
 
-#: ../dalston/dalston-power-applet.c:199 ../dalston/dalston-power-applet.c:212
+#: ../dalston/dalston-power-applet.c:244 ../dalston/dalston-power-applet.c:257
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
 msgstr[0] "<b>%d</b> minuut"
 msgstr[1] "<b>%d</b> minuten"
 
-#: ../dalston/dalston-power-applet.c:233
+#: ../dalston/dalston-power-applet.c:278
 msgid "Running low on battery"
 msgstr "Battery bijna leeg"
 
-#: ../dalston/dalston-power-applet.c:233
+#: ../dalston/dalston-power-applet.c:278
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Je battery begint leeg te raken. Dit is een goed moment om de stroom aan te sluiten en de batterij op te laden."
 
-#: ../dalston/dalston-power-applet.c:235
+#: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
 msgstr "Battery begint leeg te raken"
 
-#: ../dalston/dalston-power-applet.c:235
+#: ../dalston/dalston-power-applet.c:280
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "De battery is erg leeg. Probeer als het kan zo spoedig mogelijk de stroom aan te sluiten, en al je werk op te slaan."
 
-#: ../dalston/dalston-power-applet.c:237
+#: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Gevaar!"
 
-#: ../dalston/dalston-power-applet.c:237
+#: ../dalston/dalston-power-applet.c:282
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sorry, je battery is helemaal leeg. We sluiten nu automatisch af. Sla alsjeblieft je werk op. Tot snel!"
 
-#: ../dalston/dalston-power-applet.c:364
+#: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Het lijkt erop dat de battery niet werkt."
 
-#: ../dalston/dalston-power-applet.c:367
+#: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Je battery is volledig opgeladen en klaar om te gaan,"
 
-#: ../dalston/dalston-power-applet.c:370
+#: ../dalston/dalston-power-applet.c:415
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "Je batterij is aan het opladen. Hij is ongeveer <b>%d</b>%% vol."
 
-#: ../dalston/dalston-power-applet.c:377
+#: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "Je battery wordt gebruikt. Hij is ongeveer <b>%d</b>%% vol."
 
-#: ../dalston/dalston-power-applet.c:385
+#: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Sorry, er is geen battery beschikbaar."
 
-#: ../dalston/dalston-power-applet.c:492
+#: ../dalston/dalston-power-applet.c:515
 msgid "Display brightness"
 msgstr "Geef lichtintensiteit weer"
 
-#: ../dalston/dalston-power-applet.c:523
+#: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Sorry, veranderen van de lichtintensiteit op dit scherm is niet ondersteund"
 
@@ -122,74 +121,6 @@ msgstr "Heel donker"
 msgid "Total eclipse"
 msgstr "Zonsverduistering"
 
-#: ../dalston/dalston-volume-pane.c:258
-msgid "Output volume"
-msgstr "Volume"
-
-#: ../dalston/dalston-volume-pane.c:302
-msgid "Mute"
-msgstr "Uit"
-
-#: ../dalston/dalston-volume-pane.c:320
-msgid "Alert sounds"
-msgstr "Systeem geluiden"
-
-#: ../dalston/dalston-volume-pane.c:332
-msgid "Play test sound"
-msgstr "Speel test geluid"
-
-#: ../dalston/dalston-volume-slider.c:188
-msgid "Turned up to 11"
-msgstr "Knetterhard"
-
-#: ../dalston/dalston-volume-slider.c:190
-msgid "Very loud"
-msgstr "Zeer luid"
-
-#: ../dalston/dalston-volume-slider.c:192
-msgid "Loud"
-msgstr "Luid"
-
-#: ../dalston/dalston-volume-slider.c:194
-msgid "Fairly loud"
-msgstr "Redelijk luid"
-
-#: ../dalston/dalston-volume-slider.c:196
-msgid "Middle of the road"
-msgstr "Midden van de weg"
-
-#: ../dalston/dalston-volume-slider.c:198
-msgid "Fairly quiet"
-msgstr "Redelijk zacht"
-
-#: ../dalston/dalston-volume-slider.c:200
-msgid "Quiet"
-msgstr "Zacht"
-
-#: ../dalston/dalston-volume-slider.c:202
-msgid "Very quiet"
-msgstr "Heel zacht"
-
-#: ../dalston/dalston-volume-slider.c:204
-msgid "Silent"
-msgstr "Geluidsloos"
-
-#: ../libgvc/gvc-mixer-control.c:97
-msgid "GNOME Volume Control"
-msgstr "GNOME volume instellingen"
-
-#: ../libgvc/gvc-mixer-control.c:1020
-msgid "System Sounds"
-msgstr "Systeem geluiden"
-
-#: ../src/dalston-power-applet.c:62
-msgid "power & brightness"
-msgstr "energie & lichtintensiteit"
-
-#: ../src/dalston-volume-applet.c:58
-msgid "sound"
-msgstr "geluid"
-
 #: ../dalston/dalston-button-monitor.c:175
 #, c-format
 msgid "If you don't decide i'll turn off in %d seconds"
@@ -206,3 +137,74 @@ msgstr "Als je niet beslist sluit ik af in 30 seconden"
 #: ../dalston/dalston-button-monitor.c:285
 msgid "Turn off"
 msgstr "Afsluiten"
+
+#: ../dalston/dalston-volume-pane.c:258
+msgid "Output volume"
+msgstr "Volume"
+
+#: ../dalston/dalston-volume-pane.c:302
+msgid "Mute"
+msgstr "Uit"
+
+#: ../dalston/dalston-volume-pane.c:320
+msgid "Alert sounds"
+msgstr "Systeem geluiden"
+
+#: ../dalston/dalston-volume-pane.c:332
+msgid "Play test sound"
+msgstr "Speel test geluid"
+
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Turned up to 11"
+msgstr "Knetterhard"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Very loud"
+msgstr "Zeer luid"
+
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Loud"
+msgstr "Luid"
+
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Fairly loud"
+msgstr "Redelijk luid"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Middle of the road"
+msgstr "Midden van de weg"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Fairly quiet"
+msgstr "Redelijk zacht"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Quiet"
+msgstr "Zacht"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Very quiet"
+msgstr "Heel zacht"
+
+#: ../dalston/dalston-volume-slider.c:206
+msgid "Silent"
+msgstr "Geluidsloos"
+
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "GNOME volume instellingen"
+
+#: ../libgvc/gvc-mixer-control.c:1020
+msgid "System Sounds"
+msgstr "Systeem geluiden"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "geluid"
+
+#: ../src/dalston-power-applet.c:48
+msgid "battery"
+msgstr "batterij"
+
+#~ msgid "power & brightness"
+#~ msgstr "energie & lichtintensiteit"
