@@ -15,7 +15,7 @@ PengeAppsPane
   padding: 2;
 }
 
-PengeCalendarPane > *.PengeCalendarPaneTitle
+*.PengeCalendarPaneTitle
 {
   font-size: 17;
   color: #3e3e3eff;

@@ -47,6 +47,7 @@ struct _PengeCalendarPanePrivate {
     guint8 day_of_month;
 
     ClutterActor *calendar_tex;
+    NbtkWidget *header_table;
 };
 
 static void
@@ -181,8 +182,9 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   now = jana_ecal_utils_time_now_local ();
 
   /* Title bit at the top */
+  priv->header_table = nbtk_table_new ();
   priv->calendar_tex = clutter_texture_new ();
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->header_table),
                         priv->calendar_tex,
                         0,
                         0);
@@ -190,16 +192,12 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   clutter_actor_set_size (priv->calendar_tex, 30, 31);
 
   /* Use expand TRUE and fill FALSE to center valign with label */
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->header_table),
                                priv->calendar_tex,
-                               "x-expand",
-                               FALSE,
-                               "x-fill",
-                               FALSE,
-                               "y-expand",
-                               TRUE,
-                               "y-fill",
-                               FALSE,
+                               "x-expand", TRUE,
+                               "x-fill", FALSE,
+                               "y-expand", TRUE,
+                               "y-fill", FALSE,
                                NULL);
 
   penge_calendar_pane_update_calendar_icon (self, now);
@@ -209,19 +207,29 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text), TRUE);
   nbtk_widget_set_style_class_name (NBTK_WIDGET (label),
                                     "PengeCalendarPaneTitle");
-  nbtk_table_add_actor (NBTK_TABLE (self),
+  nbtk_table_add_actor (NBTK_TABLE (priv->header_table),
                         (ClutterActor *)label,
                         0,
                         1);
 
   /* Use expand TRUE and fill FALSE to center valign with icon */
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->header_table),
                                (ClutterActor *)label,
-                               "y-expand",
-                               TRUE,
-                               "y-fill",
-                               FALSE,
+                               "y-expand", TRUE,
+                               "y-fill", FALSE,
+                               "x-expand", TRUE,
+                               "x-fill", FALSE,
+                               "x-align", 0.0,
                                NULL);
+
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        priv->header_table,
+                                        0, 0,
+                                        "x-expand", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-expand", FALSE,
+                                        NULL);
 
   tex = clutter_texture_new_from_file (SINGLE_DIV_LINE, &error);
 
@@ -237,7 +245,6 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                           0);
     clutter_container_child_set (CLUTTER_CONTAINER (self),
                                  tex,
-                                 "col-span", 2,
                                  "y-expand", FALSE,
                                  NULL);
   }
@@ -256,7 +263,6 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                priv->events_pane,
                                "y-expand", TRUE,
                                "y-fill", FALSE,
-                               "col-span", 2,
                                "y-align", 0.0,
                                NULL);
 
@@ -274,7 +280,6 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                           0);
     clutter_container_child_set (CLUTTER_CONTAINER (self),
                                  tex,
-                                 "col-span", 2,
                                  "y-expand", FALSE,
                                  NULL);
   }
@@ -290,7 +295,6 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                               priv->tasks_pane,
                               "y-expand", TRUE,
                               "y-fill", FALSE,
-                              "col-span", 2,
                               "y-align", 0.0,
                               NULL);
 
