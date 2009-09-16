@@ -24,6 +24,7 @@
 #include "mnb-drop-down.h"
 #include "mnb-toolbar.h"    /* For MNB_IS_TOOLBAR */
 #include "moblin-netbook.h" /* For PANEL_HEIGHT */
+#include "switcher/mnb-switcher.h"
 
 #define SLIDE_DURATION 150
 
@@ -158,6 +159,81 @@ mnb_toolbar_show_completed_cb (MnbToolbar *toolbar, gpointer data)
   clutter_actor_show (dropdown);
 }
 
+/*
+ * Ensure that the drop down does not stretch over any reserved strut at the
+ * bottom of the screen (e.g., if VKB is present)
+ */
+void
+mnb_drop_down_ensure_size (MnbDropDown *self)
+{
+  MnbDropDownPrivate *priv  = MNB_DROP_DOWN (self)->priv;
+  ClutterActor       *actor = CLUTTER_ACTOR (self);
+
+  if (priv->child)
+    {
+      MetaRectangle  r;
+      MetaScreen    *screen;
+      MetaWorkspace *workspace;
+
+      screen    = mutter_plugin_get_screen (priv->plugin);
+      workspace = meta_screen_get_active_workspace (screen);
+
+      if (workspace)
+        {
+          gfloat x, y, w, h, wc, hc;
+          gint   xi, yi, wi, hi, wci, hci, max_height, max_inner_height;
+
+          meta_workspace_get_work_area_all_monitors (workspace, &r);
+
+          clutter_actor_get_position (actor, &x, &y);
+          clutter_actor_get_size (actor, &w, &h);
+          clutter_actor_get_size (priv->child, &wc, &hc);
+
+          xi  = (gint)x;
+          yi  = (gint)y;
+          wi  = (gint)w;
+          hi  = (gint)h;
+          wci = (gint)wc;
+          hci = (gint)hc;
+
+          /*
+           * Maximum height of the panel is the available working height plus the
+           * height of the panel shadow (we allow the shaddow to stretch out of
+           * the available area).
+           */
+          max_height = r.y + r.height - yi;
+
+          /*
+           * inner height is height of the dropdown child, i.e., the max height
+           * minus the height of the shadow (37), minus the height of the footer
+           * (half toolbar height), minus the y padding in the panel.
+           */
+          max_inner_height = max_height - 37 - TOOLBAR_HEIGHT/2 - 4;
+
+          /*
+           * We have to test the size of the child here, as the external size
+           * might not be correct (e.g., when initially showing the Switcher the
+           * external size matches the size of the child, i.e., the styling is
+           * not yet applied.
+           *
+           * When initially showing the OOP panels, the child is not yet
+           * allocated, and will have size 0; in that case we force the resize
+           * otherwise the child would get allocated with the size specified at
+           * construction.
+           */
+          if (hci == 0 || max_inner_height < hci)
+            {
+              if (MNB_IS_PANEL (actor))
+                mnb_panel_set_size ((MnbPanel*)actor, (guint) wi, max_height);
+              else if (MNB_IS_SWITCHER (actor))
+                clutter_actor_set_size (priv->child, (guint) wi, max_inner_height);
+              else
+                clutter_actor_set_size (actor, w, (gfloat) max_height);
+            }
+        }
+    }
+}
+
 static void
 mnb_drop_down_show (ClutterActor *actor)
 {
@@ -182,8 +258,10 @@ mnb_drop_down_show (ClutterActor *actor)
       priv->in_hide_animation = FALSE;
     }
 
+  mnb_drop_down_ensure_size ((MnbDropDown*)actor);
+
   /*
-   * Check the panel is visible, if not show it.
+   * Check the toolbar is visible, if not show it.
    */
   toolbar = clutter_actor_get_parent (actor);
   while (toolbar && !MNB_IS_TOOLBAR (toolbar))
