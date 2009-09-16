@@ -22,11 +22,7 @@ LDADD = \
 	$(MUTTER_PLUGIN_LIBS)
 
 noinst_PROGRAMS = \
-       test-tray \
        test-screensized
-
-test_tray_SOURCES = \
-	test-tray.c
 
 test_screensized_SOURCES = \
 	test-screensized.c
