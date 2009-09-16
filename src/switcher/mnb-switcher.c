@@ -123,9 +123,10 @@ mnb_switcher_enable_new_workspace (MnbSwitcher *switcher, MnbSwitcherZone *zone)
 
   /*
    * If the application is the only child in its zone, the new zone remains
-   * disabled.
+   * disabled (the first row in each zone is the header, so single application
+   * means 2 rows).
    */
-  if (nbtk_table_get_row_count (NBTK_TABLE (zone)) <= 1)
+  if (nbtk_table_get_row_count (NBTK_TABLE (zone)) <= 2)
     return;
 
   g_object_set (new_ws, "enabled", TRUE, NULL);
