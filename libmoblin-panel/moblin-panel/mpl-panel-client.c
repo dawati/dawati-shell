@@ -92,6 +92,7 @@ struct _MplPanelClientPrivate
   guint            width;
   guint            max_height;
   guint            requested_height;
+  guint            real_height;
 
   gboolean         constructed     : 1; /*poor man's constructor return value*/
   gboolean         toolbar_service : 1;
@@ -248,6 +249,8 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
                  priv->requested_height, height);
     }
 
+  priv->real_height = real_height;
+
   *alloc_width  = width;
   *alloc_height = real_height;
 
@@ -267,6 +270,8 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
 {
   MplPanelClientPrivate *priv = self->priv;
   guint real_height = height;
+  guint old_width = priv->width;
+  guint old_height = priv->real_height;
 
   if (height > 0)
     priv->max_height = height;
@@ -287,7 +292,10 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
                  priv->requested_height, height);
     }
 
-  g_signal_emit (self, signals[SET_SIZE], 0, priv->width, real_height);
+  priv->real_height = real_height;
+
+  if (old_width != priv->width || old_height != real_height)
+    g_signal_emit (self, signals[SET_SIZE], 0, priv->width, real_height);
 
   return TRUE;
 }
