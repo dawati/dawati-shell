@@ -220,8 +220,14 @@ mnb_drop_down_ensure_size (MnbDropDown *self)
            * allocated, and will have size 0; in that case we force the resize
            * otherwise the child would get allocated with the size specified at
            * construction.
+           *
+           * We rest the size whenever the max height does not match that of the
+           * child, so that the window gets resized in both up and down (the
+           * height passed into mpl_panel_set_height() is really a maximum
+           * allowable height, and if the panel client asked for height lesser
+           * than this, the original height request will be respected.
            */
-          if (hci == 0 || max_inner_height < hci)
+          if (max_inner_height != hci)
             {
               if (MNB_IS_PANEL (actor))
                 mnb_panel_set_size ((MnbPanel*)actor, (guint) wi, max_height);
