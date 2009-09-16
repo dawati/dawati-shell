@@ -268,10 +268,15 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
   MplPanelClientPrivate *priv = self->priv;
   guint real_height = height;
 
-  g_debug ("%s called: width %d, height %d", __FUNCTION__, width, height);
+  if (height > 0)
+    priv->max_height = height;
 
-  priv->max_height = height;
-  priv->width      = width;
+  if (width > 0)
+    priv->width = width;
+
+  g_debug ("%s called: width %d (%d), height %d (%d)",
+           __FUNCTION__, width, priv->width, height, priv->max_height);
+
 
   if (priv->requested_height > 0 && priv->requested_height < height)
     real_height = priv->requested_height;
@@ -282,7 +287,7 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
                  priv->requested_height, height);
     }
 
-  g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
+  g_signal_emit (self, signals[SET_SIZE], 0, priv->width, real_height);
 
   return TRUE;
 }
