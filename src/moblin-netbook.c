@@ -1116,7 +1116,7 @@ scim_preview_queue_redraw_cb (ClutterActor *source,
 
 #if 0 /* Not in use at this very moment, but will be needed for the vkb */
 /*
- * Helper function to resize active panel. 
+ * Helper function to resize active panel.
  *
  * The panel parameter can be NULL, in which case the active panel will be
  * looked up first.
@@ -1187,7 +1187,6 @@ scim_preview_parent_set_cb (ClutterActor *source,
     clutter_actor_hide (clone);
   else
     {
-      scim_resize_active_panel (plugin, NULL);
       clutter_actor_show (clone);
       clutter_actor_raise_top (clone);
     }
