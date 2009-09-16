@@ -366,10 +366,10 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
   if (priv->queued_state)
     {
       /* We have a queued event, test to see if that's what happened */
-      if (g_strcmp0 (priv->queued_type, type) == 0 &&
-          g_strcmp0 (priv->queued_state, state) == 0 &&
-          (g_strcmp0 (priv->queued_name, name) ||
-           g_strcmp0 (priv->queued_name, "all")))
+      if (g_strcmp0 (priv->queued_type, "all") == 0 ||
+          (g_strcmp0 (priv->queued_type, type) == 0 &&
+           g_strcmp0 (priv->queued_state, state) == 0 &&
+           g_strcmp0 (priv->queued_name, name)))
         {
           /* Remember the event info */
           g_free (priv->last_state);

@@ -883,7 +883,7 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
 
   /* FIXME: This is a band aid, needs a better fix */
   carrick_notification_manager_queue_event (priv->notes,
-                                            "wifi",
+                                            "all",
                                             "idle",
                                             "all");
 
