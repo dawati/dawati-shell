@@ -17,7 +17,6 @@ moblin_netbook_la_SOURCES  = \
 				moblin-netbook.h		\
 				moblin-netbook-notify-store.c   \
 				moblin-netbook-notify-store.h   \
-				moblin-netbook-system-tray.h    \
 				$(DBUS_BINDINGS) \
 				$(DBUS_GLUE) \
 				$(MARSHALS)                     \
