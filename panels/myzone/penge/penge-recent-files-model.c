@@ -34,6 +34,7 @@ typedef struct _PengeRecentFilesModelPrivate PengeRecentFilesModelPrivate;
 struct _PengeRecentFilesModelPrivate {
   GtkRecentManager *manager;
   gint max_count;
+  gint changed_idle_id;
 };
 
 enum
@@ -68,6 +69,14 @@ penge_recent_files_model_set_property (GObject *object, guint property_id,
 static void
 penge_recent_files_model_dispose (GObject *object)
 {
+  PengeRecentFilesModelPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->changed_idle_id)
+  {
+    g_source_remove (priv->changed_idle_id);
+    priv->changed_idle_id = 0;
+  }
+
   G_OBJECT_CLASS (penge_recent_files_model_parent_class)->dispose (object);
 }
 
@@ -200,11 +209,26 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
   g_list_free (items);
 }
 
+static gboolean
+_recent_manager_changed_idle_cb (gpointer userdata)
+{
+  PengeRecentFilesModelPrivate *priv = GET_PRIVATE (userdata);
+  priv->changed_idle_id = 0;
+  penge_recent_files_model_update ((PengeRecentFilesModel *)userdata);
+  return FALSE;
+}
+
 static void
 _recent_manager_changed_cb (GtkRecentManager *manager,
                             gpointer          userdata)
 {
-  penge_recent_files_model_update ((PengeRecentFilesModel *)userdata);
+  PengeRecentFilesModelPrivate *priv = GET_PRIVATE (userdata);
+
+  if (priv->changed_idle_id == 0)
+    priv->changed_idle_id = g_idle_add_full (G_PRIORITY_LOW,
+                                             _recent_manager_changed_idle_cb,
+                                             userdata,
+                                             NULL);
 }
 
 static void
