@@ -207,13 +207,17 @@ penge_recent_file_tile_update (PengeRecentFileTile *tile)
     if (g_str_has_prefix (uri, "http"))
     {
       g_object_set (tile,
-                    "primary-text", g_file_info_get_display_name (info),
-                    "secondary-text", _("Web page"),
+                    "primary-text",
+                    gtk_recent_info_get_display_name (priv->info),
+                    "secondary-text",
+                    _("Web page"),
                     NULL);
     } else {
       g_object_set (tile,
-                    "primary-text", g_file_info_get_display_name (info),
-                    "secondary-text", "",
+                    "primary-text",
+                    gtk_recent_info_get_display_name (priv->info),
+                    "secondary-text",
+                    "",
                     NULL);
     }
   }
