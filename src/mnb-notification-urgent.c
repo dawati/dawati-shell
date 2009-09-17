@@ -21,6 +21,7 @@
  * 02111-1307, USA.
  */
 
+#include "moblin-netbook.h"
 #include "mnb-notification-urgent.h"
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"
@@ -38,10 +39,13 @@ G_DEFINE_TYPE (MnbNotificationUrgent,   \
 #define URGENT_WIDTH 400
 #define FADE_DURATION 300
 
+static void last_focused_weak_notify (gpointer data, GObject *object);
+
 struct _MnbNotificationUrgentPrivate {
   ClutterGroup *notifiers;
   NbtkWidget   *active;
   gint          n_notifiers;
+  ClutterActor *last_focused;
 };
 
 enum
@@ -75,6 +79,16 @@ mnb_notification_urgent_set_property (GObject *object, guint property_id,
 static void
 mnb_notification_urgent_dispose (GObject *object)
 {
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (object)->priv;
+
+  if (priv->last_focused)
+    {
+      g_object_weak_unref (G_OBJECT (priv->last_focused),
+                           last_focused_weak_notify,
+                           object);
+      priv->last_focused = NULL;
+    }
+
   G_OBJECT_CLASS (mnb_notification_urgent_parent_class)->dispose (object);
 }
 
@@ -87,7 +101,7 @@ mnb_notification_urgent_finalize (GObject *object)
 static void
 mnb_notification_urgent_paint (ClutterActor *actor)
 {
-  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (actor)->priv;
 
   if (priv->notifiers && CLUTTER_ACTOR_IS_MAPPED (priv->notifiers))
       clutter_actor_paint (CLUTTER_ACTOR (priv->notifiers));
@@ -96,7 +110,7 @@ mnb_notification_urgent_paint (ClutterActor *actor)
 static void
 mnb_notification_urgent_map (ClutterActor *actor)
 {
-  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class)->map (actor);
 
@@ -107,7 +121,7 @@ mnb_notification_urgent_map (ClutterActor *actor)
 static void
 mnb_notification_urgent_unmap (ClutterActor *actor)
 {
-  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class)->unmap (actor);
 
@@ -131,7 +145,7 @@ mnb_notification_urgent_get_preferred_height (ClutterActor *actor,
                                               gfloat       *min_height,
                                               gfloat       *natural_height)
 {
-  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (actor)->priv;
 
   *min_height = 0;
   *natural_height = 0;
@@ -154,7 +168,7 @@ mnb_notification_urgent_allocate (ClutterActor          *actor,
                                   const ClutterActorBox *box,
                                   ClutterAllocationFlags flags)
 {
-  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (actor);
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (actor)->priv;
   ClutterActorClass *klass;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class);
@@ -181,11 +195,36 @@ static void
 mnb_notification_urgent_pick (ClutterActor       *actor,
                                const ClutterColor *color)
 {
-  CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class)->pick (actor, 
+  CLUTTER_ACTOR_CLASS (mnb_notification_urgent_parent_class)->pick (actor,
                                                                      color);
   mnb_notification_urgent_paint (actor);
 }
 
+static void
+dismiss_all_foreach (ClutterActor *notifier)
+{
+  g_signal_emit_by_name (notifier, "closed", 0);
+}
+
+static gboolean
+mnb_notification_urgent_key_press_event (ClutterActor    *actor,
+                                         ClutterKeyEvent *event)
+{
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (actor)->priv;
+
+  switch (event->keyval)
+    {
+    case CLUTTER_Escape:
+      clutter_container_foreach (CLUTTER_CONTAINER(priv->notifiers),
+                                 (ClutterCallback)dismiss_all_foreach,
+                                 NULL);
+      break;
+    default:
+      break;
+    }
+
+  return TRUE;
+}
 
 static void
 mnb_notification_urgent_class_init (MnbNotificationUrgentClass *klass)
@@ -209,12 +248,13 @@ mnb_notification_urgent_class_init (MnbNotificationUrgentClass *klass)
     = mnb_notification_urgent_get_preferred_width;
   clutter_class->map = mnb_notification_urgent_map;
   clutter_class->unmap = mnb_notification_urgent_unmap;
+  clutter_class->key_press_event = mnb_notification_urgent_key_press_event;
 
   urgent_signals[SYNC_INPUT_REGION] =
     g_signal_new ("sync-input-region",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbNotificationUrgentClass, 
+                  G_STRUCT_OFFSET (MnbNotificationUrgentClass,
                                    sync_input_region),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
@@ -234,7 +274,7 @@ find_widget (ClutterGroup *container, guint32 id)
 {
   GList *children, *l;
   NbtkWidget *w;
-  
+
   children = clutter_container_get_children (CLUTTER_CONTAINER(container));
   l = g_list_find_custom (children, GINT_TO_POINTER (id), id_compare);
   w = l ? l->data : NULL;
@@ -245,18 +285,18 @@ find_widget (ClutterGroup *container, guint32 id)
 static void
 on_closed (MnbNotification *notification, MoblinNetbookNotifyStore *store)
 {
-  moblin_netbook_notify_store_close (store, 
-                                     mnb_notification_get_id (notification), 
+  moblin_netbook_notify_store_close (store,
+                                     mnb_notification_get_id (notification),
                                      ClosedDismissed);
 }
 
 static void
-on_action (MnbNotification *notification, 
+on_action (MnbNotification *notification,
            gchar           *action,
            MoblinNetbookNotifyStore *store)
 {
   moblin_netbook_notify_store_action (store,
-                                      mnb_notification_get_id (notification), 
+                                      mnb_notification_get_id (notification),
                                       action);
 }
 
@@ -273,11 +313,20 @@ on_control_appear_anim_completed (ClutterAnimation *anim,
 #endif
 
 static void
-on_notification_added (MoblinNetbookNotifyStore *store, 
-                       Notification             *notification, 
+last_focused_weak_notify (gpointer data, GObject *object)
+{
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (data)->priv;
+
+  if ((GObject*)priv->last_focused == object)
+    priv->last_focused = NULL;
+}
+
+static void
+on_notification_added (MoblinNetbookNotifyStore *store,
+                       Notification             *notification,
                        MnbNotificationUrgent   *urgent)
 {
-  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (urgent);
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (urgent)->priv;
   NbtkWidget *w;
 
   if (!notification->is_urgent)
@@ -285,13 +334,13 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
   w = find_widget (priv->notifiers, notification->id);
 
-  if (!w) 
+  if (!w)
     {
       w = mnb_notification_new ();
       g_signal_connect (w, "closed", G_CALLBACK (on_closed), store);
-      g_signal_connect (w, "action", G_CALLBACK (on_action), store);      
+      g_signal_connect (w, "action", G_CALLBACK (on_action), store);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), 
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers),
                                    CLUTTER_ACTOR(w));
       clutter_actor_hide (CLUTTER_ACTOR(w));
 
@@ -309,11 +358,27 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
   if (priv->n_notifiers == 1)
     {
+      MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+      ClutterActor *self   = CLUTTER_ACTOR (urgent);
+      ClutterActor *stage  = clutter_actor_get_stage (self);
+
       priv->active = w;
       /* run appear anim ? */
       clutter_actor_show (CLUTTER_ACTOR(priv->notifiers));
       clutter_actor_show (CLUTTER_ACTOR(w));
-      clutter_actor_show_all (CLUTTER_ACTOR(urgent));
+      clutter_actor_show_all (self);
+
+      priv->last_focused = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));
+
+      if (priv->last_focused)
+        {
+          g_object_weak_ref (G_OBJECT (priv->last_focused),
+                             last_focused_weak_notify,
+                             urgent);
+        }
+
+      clutter_stage_set_key_focus (CLUTTER_STAGE (stage), self);
+      moblin_netbook_stash_window_focus (plugin, CurrentTime);
     }
 
   g_signal_emit (urgent, urgent_signals[SYNC_INPUT_REGION], 0);
@@ -321,12 +386,12 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 
 
 static void
-on_notification_closed (MoblinNetbookNotifyStore *store, 
-                        guint id, 
-                        guint reason, 
+on_notification_closed (MoblinNetbookNotifyStore *store,
+                        guint id,
+                        guint reason,
                         MnbNotificationUrgent *urgent)
 {
-  MnbNotificationUrgentPrivate *priv = GET_PRIVATE (urgent);
+  MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (urgent)->priv;
   NbtkWidget *w;
 
   w = find_widget (priv->notifiers, id);
@@ -337,20 +402,36 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
         priv->active = NULL;
 
       priv->n_notifiers--;
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers), 
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notifiers),
                                       CLUTTER_ACTOR(w));
 
       if (priv->active == NULL && priv->n_notifiers > 0)
         {
           priv->active = NBTK_WIDGET (
-            clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers), 
+            clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers),
                                          0));
           clutter_actor_show (CLUTTER_ACTOR(priv->active));
         }
       else
         {
+          MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+          ClutterActor *self   = CLUTTER_ACTOR (urgent);
+          ClutterActor *stage  = clutter_actor_get_stage (self);
+
           clutter_actor_hide (CLUTTER_ACTOR(urgent));
           clutter_actor_hide (CLUTTER_ACTOR(priv->notifiers));
+          clutter_stage_set_key_focus (CLUTTER_STAGE (stage),
+                                       priv->last_focused);
+
+          if (priv->last_focused)
+            {
+              g_object_weak_unref (G_OBJECT (priv->last_focused),
+                                   last_focused_weak_notify,
+                                   urgent);
+              priv->last_focused = NULL;
+            }
+
+          moblin_netbook_unstash_window_focus (plugin, CurrentTime);
         }
 
       g_signal_emit (urgent, urgent_signals[SYNC_INPUT_REGION], 0);
@@ -361,14 +442,14 @@ void
 mnb_notification_urgent_set_store (MnbNotificationUrgent    *self,
                                    MoblinNetbookNotifyStore *notify_store)
 {
-  g_signal_connect (notify_store, 
-                    "notification-added", 
-                    G_CALLBACK (on_notification_added), 
+  g_signal_connect (notify_store,
+                    "notification-added",
+                    G_CALLBACK (on_notification_added),
                     self);
 
-  g_signal_connect (notify_store, 
-                    "notification-closed", 
-                    G_CALLBACK (on_notification_closed), 
+  g_signal_connect (notify_store,
+                    "notification-closed",
+                    G_CALLBACK (on_notification_closed),
                     self);
 }
 
@@ -377,9 +458,11 @@ mnb_notification_urgent_init (MnbNotificationUrgent *self)
 {
   MnbNotificationUrgentPrivate *priv = GET_PRIVATE (self);
 
+  self->priv = priv;
+
   priv->notifiers = CLUTTER_GROUP(clutter_group_new ());
 
-  clutter_actor_set_parent (CLUTTER_ACTOR(priv->notifiers), 
+  clutter_actor_set_parent (CLUTTER_ACTOR(priv->notifiers),
                             CLUTTER_ACTOR(self));
 
   clutter_actor_hide (CLUTTER_ACTOR(priv->notifiers));

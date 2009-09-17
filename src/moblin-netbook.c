@@ -1951,8 +1951,6 @@ plugin_info (MutterPlugin *plugin)
   return &priv->info;
 }
 
-
-
 void
 moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 {
@@ -1992,7 +1990,22 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   MetaWindow                 *focus;
+  NbtkWidget                 *panel;
 
+  /*
+   * First check if a panel is active; if it's an OOP panel, we focus the panel,
+   * if it's the Switcher, we unstash normally.
+   */
+  panel = mnb_toolbar_get_active_panel (MNB_TOOLBAR (priv->toolbar));
+
+  if (panel)
+    {
+      if (MNB_IS_PANEL (panel))
+        {
+          mnb_panel_focus ((MnbPanel*)panel);
+          return;
+        }
+    }
 
   if (timestamp == CurrentTime)
     timestamp = meta_display_get_current_time_roundtrip (display);
@@ -2000,7 +2013,7 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
   /*
    * Work out what we should focus next.
    *
-   * First, we tray to get the window from metacity tablist, if that fails
+   * First, we try to get the window from metacity tablist, if that fails
    * fall back on the cached last_focused window.
    */
   focus = meta_display_get_tab_current (display,

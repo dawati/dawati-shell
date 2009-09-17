@@ -145,8 +145,8 @@ mnb_panel_set_property (GObject *object, guint property_id,
     }
 }
 
-static void
-mnb_panel_raise_focus_child (MnbPanel *panel)
+void
+mnb_panel_focus (MnbPanel *panel)
 {
   MetaDisplay *display;
   MutterPlugin *plugin = NULL;
@@ -181,7 +181,7 @@ mnb_panel_request_focus_cb (DBusGProxy *proxy, MnbPanel *panel)
       return;
     }
 
-  mnb_panel_raise_focus_child (panel);
+  mnb_panel_focus (panel);
 }
 
 static void
@@ -478,7 +478,7 @@ mnb_panel_show_completed (MnbDropDown *self)
 
   gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
 
-  mnb_panel_raise_focus_child (MNB_PANEL (self));
+  mnb_panel_focus (MNB_PANEL (self));
 
   org_moblin_UX_Shell_Panel_show_end_async (priv->proxy,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);

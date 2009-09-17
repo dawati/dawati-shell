@@ -75,16 +75,18 @@ MnbPanel *mnb_panel_new (MutterPlugin *plugin,
 
 void mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw);
 
-const gchar *mnb_panel_get_name         (MnbPanel *panel);
-const gchar *mnb_panel_get_tooltip      (MnbPanel *panel);
-const gchar *mnb_panel_get_stylesheet   (MnbPanel *panel);
-const gchar *mnb_panel_get_button_style (MnbPanel *panel);
-guint        mnb_panel_get_xid          (MnbPanel *panel);
-gboolean     mnb_panel_is_ready         (MnbPanel *panel);
-void         mnb_panel_set_size         (MnbPanel *panel,
-                                         guint     width,
-                                         guint     height);
+const gchar  *mnb_panel_get_name          (MnbPanel *panel);
+const gchar  *mnb_panel_get_tooltip       (MnbPanel *panel);
+const gchar  *mnb_panel_get_stylesheet    (MnbPanel *panel);
+const gchar  *mnb_panel_get_button_style  (MnbPanel *panel);
+guint         mnb_panel_get_xid           (MnbPanel *panel);
+gboolean      mnb_panel_is_ready          (MnbPanel *panel);
+void          mnb_panel_set_size          (MnbPanel *panel,
+                                           guint     width,
+                                           guint     height);
 MutterWindow *mnb_panel_get_mutter_window (MnbPanel *panel);
+void          mnb_panel_focus             (MnbPanel *panel);
+
 
 G_END_DECLS
 
