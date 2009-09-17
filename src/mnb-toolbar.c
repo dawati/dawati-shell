@@ -1943,12 +1943,6 @@ mnb_toolbar_constructed (GObject *self)
                     G_CALLBACK (mnb_toolbar_kbd_grab_notify_cb),
                     self);
 
-  /*
-   * Disable autohiding of the panel to start with (the panel needs to show
-   * on startup regardless where the pointer initially is).
-   */
-  priv->dont_autohide = TRUE;
-
   g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
                     "captured-event",
                     G_CALLBACK (mnb_toolbar_stage_captured_cb),
@@ -2228,7 +2222,10 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
     }
 
   if (!(event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE))
+    {
+      /* g_debug (G_STRLOC " leaving early"); */
       return FALSE;
+    }
 
   if ((event->type == CLUTTER_ENTER) && (event->crossing.source != stage))
     {
@@ -2241,7 +2238,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
        priv->dont_autohide ||
        mnb_toolbar_panels_showing (toolbar)))
     {
-      /* g_debug (G_STRLOC " leaving early"); */
+      /* g_debug (G_STRLOC " leaving early (waiting %d, dont_autohide %d)", */
+      /*          priv->waiting_for_panel, priv->dont_autohide); */
       return FALSE;
     }
 
