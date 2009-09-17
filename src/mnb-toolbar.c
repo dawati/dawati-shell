@@ -1460,7 +1460,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
       gint x, y;
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
+      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING) - 4;
 
       clutter_actor_set_size (CLUTTER_ACTOR (button),
                               TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
