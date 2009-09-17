@@ -55,6 +55,8 @@ typedef struct {
 GType penge_recent_files_model_get_type (void);
 
 ClutterModel *penge_recent_files_model_new (void);
+void penge_recent_files_model_remove_item (PengeRecentFilesModel *model,
+                                           GtkRecentInfo         *info);
 
 G_END_DECLS
 

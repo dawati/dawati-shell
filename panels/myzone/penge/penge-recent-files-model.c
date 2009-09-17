@@ -35,6 +35,7 @@ struct _PengeRecentFilesModelPrivate {
   GtkRecentManager *manager;
   gint max_count;
   gint changed_idle_id;
+  gboolean skip_update;
 };
 
 enum
@@ -199,6 +200,7 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
     clutter_model_append ((ClutterModel *)model,
                           0, info,
                           1, thumbnail_path,
+                          2, model,
                           -1);
     g_free (thumbnail_path);
     gtk_recent_info_unref (info);
@@ -224,6 +226,12 @@ _recent_manager_changed_cb (GtkRecentManager *manager,
 {
   PengeRecentFilesModelPrivate *priv = GET_PRIVATE (userdata);
 
+  if (priv->skip_update)
+  {
+    priv->skip_update = FALSE;
+    return;
+  }
+
   if (priv->changed_idle_id == 0)
     priv->changed_idle_id = g_idle_add_full (G_PRIORITY_LOW,
                                              _recent_manager_changed_idle_cb,
@@ -235,11 +243,13 @@ static void
 penge_recent_files_model_init (PengeRecentFilesModel *self)
 {
   PengeRecentFilesModelPrivate *priv = GET_PRIVATE (self);
-  GType types[] = { GTK_TYPE_RECENT_INFO, G_TYPE_STRING };
+  GType types[] = { GTK_TYPE_RECENT_INFO,
+                    G_TYPE_STRING,
+                    PENGE_TYPE_RECENT_FILE_MODEL };
 
   /* Set the types (or type in this case) that the model will hold */
   clutter_model_set_types (CLUTTER_MODEL (self),
-                           2,
+                           3,
                            types);
 
   priv->manager = gtk_recent_manager_get_default ();
@@ -259,5 +269,23 @@ penge_recent_files_model_new (void)
   return g_object_new (PENGE_TYPE_RECENT_FILE_MODEL, NULL);
 }
 
+void
+penge_recent_files_model_remove_item (PengeRecentFilesModel *model,
+                                      GtkRecentInfo         *info)
+{
+  PengeRecentFilesModelPrivate *priv = GET_PRIVATE (model);
+  GError *error = NULL;
 
+  priv->skip_update = FALSE;
 
+  if (!gtk_recent_manager_remove_item (priv->manager,
+                                       gtk_recent_info_get_uri (info),
+                                       &error))
+  {
+    g_warning (G_STRLOC ": Unable to remove item: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  priv->skip_update = TRUE;
+}

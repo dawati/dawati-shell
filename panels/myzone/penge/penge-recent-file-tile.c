@@ -24,6 +24,7 @@
 #include "penge-recent-file-tile.h"
 #include "penge-magic-texture.h"
 #include "penge-utils.h"
+#include "penge-recent-files-model.h"
 
 #include <glib/gi18n.h>
 
@@ -38,12 +39,14 @@ struct _PengeRecentFileTilePrivate {
   gchar *thumbnail_path;
   GtkRecentInfo *info;
   ClutterActor *tex;
+  PengeRecentFilesModel *model;
 };
 
 enum
 {
   PROP_0,
   PROP_THUMBNAIL_PATH,
+  PROP_MODEL,
   PROP_INFO,
 };
 
@@ -100,6 +103,14 @@ penge_recent_file_tile_set_property (GObject *object, guint property_id,
       }
 
       penge_recent_file_tile_update (tile);
+      break;
+    case PROP_MODEL:
+      if (g_value_get_object (value) != priv->model)
+      {
+        if (priv->model)
+          g_object_unref (priv->model);
+        priv->model = g_value_dup_object (value);
+      }
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -251,23 +262,23 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
                               GTK_TYPE_RECENT_INFO,
                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_INFO, pspec);
+
+  pspec = g_param_spec_object ("model",
+                               "Model",
+                               "Model that this tile is from",
+                               PENGE_TYPE_RECENT_FILE_MODEL,
+                               G_PARAM_WRITABLE);
+  g_object_class_install_property (object_class, PROP_MODEL, pspec);
 }
 
 static void
 _remove_clicked_cb (PengeInterestingTile *tile,
-                           gpointer              userdata)
+                    gpointer              userdata)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
-  GError *error = NULL;
 
-  if (!gtk_recent_manager_remove_item (gtk_recent_manager_get_default (),
-                                       gtk_recent_info_get_uri (priv->info),
-                                       &error))
-  {
-    g_warning (G_STRLOC ": Unable to remove item: %s",
-               error->message);
-    g_clear_error (&error);
-  }
+  penge_recent_files_model_remove_item (priv->model,
+                                        priv->info);
 }
 
 static void

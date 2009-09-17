@@ -195,6 +195,9 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
   penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (list_view),
                                        "thumbnail-path",
                                        1);
+  penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (list_view),
+                                       "model",
+                                       2);
   penge_magic_container_set_minimum_child_size (PENGE_MAGIC_CONTAINER (list_view),
                                                 TILE_WIDTH,
                                                 TILE_HEIGHT);
