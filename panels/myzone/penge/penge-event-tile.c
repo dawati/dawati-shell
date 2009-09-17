@@ -275,9 +275,6 @@ penge_event_tile_init (PengeEventTile *self)
 
   nbtk_bin_set_child (NBTK_BIN (priv->time_bin),
                       (ClutterActor *)priv->time_label);
-  nbtk_bin_set_alignment (NBTK_BIN (priv->time_bin),
-                          NBTK_ALIGN_CENTER,
-                          NBTK_ALIGN_CENTER);
 
   priv->summary_label = nbtk_label_new ("Summary text");
   nbtk_widget_set_style_class_name (priv->summary_label,
