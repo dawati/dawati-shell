@@ -410,6 +410,8 @@ mnb_switcher_append_app_zone (MnbSwitcher *switcher, gint index)
                                CLUTTER_ACTOR (priv->new_zone),
                                "col", index + 1, NULL);
 
+  mnb_switcher_zone_set_index (priv->new_zone, index + 1);
+
   return zone;
 }
 
@@ -623,6 +625,9 @@ mnb_switcher_n_workspaces_notify (MetaScreen *screen,
       if (MNB_IS_SWITCHER_ZONE (zone))
         {
           mnb_switcher_zone_set_index (zone, i);
+          clutter_container_child_set (table_cont,
+                                       l->data,
+                                       "col", i, NULL);
         }
       else
         g_warning (G_STRLOC " expected MnbSwitcherZone, got %s",

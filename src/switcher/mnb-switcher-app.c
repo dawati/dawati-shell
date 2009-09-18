@@ -274,6 +274,15 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
 
       g_object_unref (self);
     }
+  else
+    {
+      /*
+       * In case of successful drop, if we are the active item, we need to mark
+       * the original zone as no longer active.
+       */
+      if (mnb_switcher_item_is_active (MNB_SWITCHER_ITEM (self)))
+        mnb_switcher_zone_set_active (MNB_SWITCHER_ZONE (priv->orig_zone), FALSE);
+    }
 
   /*
    * Now get rid of the clone that we put in our place
