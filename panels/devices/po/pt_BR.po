@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-31 18:17+0000\n"
+"POT-Creation-Date: 2009-09-15 09:02+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: TG\n"
+"Last-Translator: tg\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,72 +13,72 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1\n"
 
-#: ../dalston/dalston-power-applet.c:192
+#: ../dalston/dalston-power-applet.c:237
 #, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b> hora"
 msgstr[1] "<b>%d</b>horas"
 
-#: ../dalston/dalston-power-applet.c:199
-#: ../dalston/dalston-power-applet.c:212
+#: ../dalston/dalston-power-applet.c:244
+#: ../dalston/dalston-power-applet.c:257
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
 msgstr[0] "<b>%d</b> minuto"
 msgstr[1] "<b>%d</b> minutos"
 
-#: ../dalston/dalston-power-applet.c:233
+#: ../dalston/dalston-power-applet.c:278
 msgid "Running low on battery"
 msgstr "Bateria esta baixa"
 
-#: ../dalston/dalston-power-applet.c:233
+#: ../dalston/dalston-power-applet.c:278
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Notamos que sua bateria esta ficando fraquinha. Se possível, seria uma boa reconectar e recarregar."
 
-#: ../dalston/dalston-power-applet.c:235
+#: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
-msgstr "Está quase descarregada"
+msgstr "Está quase esgotada"
 
-#: ../dalston/dalston-power-applet.c:235
+#: ../dalston/dalston-power-applet.c:280
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Você está com bateria quase esgotada. Seria uma boa você salvar seu trabalho e recarregar o mais rápido possível."
 
-#: ../dalston/dalston-power-applet.c:237
+#: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Perigo!"
 
-#: ../dalston/dalston-power-applet.c:237
+#: ../dalston/dalston-power-applet.c:282
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sinto muito, seu computador está quase com bateria vazia. Vamos ter que desligar agora. Favor salvar seu trabalho e até logo."
 
-#: ../dalston/dalston-power-applet.c:364
+#: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sinto muito, parece que sua bateria está quebrada."
 
-#: ../dalston/dalston-power-applet.c:367
+#: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Sua bateria está com plena carga e você pode mandar brasa."
 
-#: ../dalston/dalston-power-applet.c:370
+#: ../dalston/dalston-power-applet.c:415
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "Sua bateria está carregando. Está mais ou menos <b>%d</b> cheia."
 
-#: ../dalston/dalston-power-applet.c:377
+#: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "Sua bateria está sendo usada. Está mais ou menos <b>%d</b>%% cheia."
 
-#: ../dalston/dalston-power-applet.c:385
+#: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Sinto muito, parece que você não tem bateria instalada."
 
-#: ../dalston/dalston-power-applet.c:492
+#: ../dalston/dalston-power-applet.c:515
 msgid "Display brightness"
 msgstr "Claridade da tela"
 
-#: ../dalston/dalston-power-applet.c:523
+#: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Sinto muito, não suportamos a modificação de claridade de sua tela"
 
@@ -151,39 +151,39 @@ msgstr "Sons de alerta"
 msgid "Play test sound"
 msgstr "Tocar som de teste"
 
-#: ../dalston/dalston-volume-slider.c:188
+#: ../dalston/dalston-volume-slider.c:190
 msgid "Turned up to 11"
 msgstr "No máximo"
 
-#: ../dalston/dalston-volume-slider.c:190
+#: ../dalston/dalston-volume-slider.c:192
 msgid "Very loud"
 msgstr "Muito alto"
 
-#: ../dalston/dalston-volume-slider.c:192
+#: ../dalston/dalston-volume-slider.c:194
 msgid "Loud"
 msgstr "Alto"
 
-#: ../dalston/dalston-volume-slider.c:194
+#: ../dalston/dalston-volume-slider.c:196
 msgid "Fairly loud"
 msgstr "Bastante alto"
 
-#: ../dalston/dalston-volume-slider.c:196
+#: ../dalston/dalston-volume-slider.c:198
 msgid "Middle of the road"
 msgstr "Nem mais nem menos"
 
-#: ../dalston/dalston-volume-slider.c:198
+#: ../dalston/dalston-volume-slider.c:200
 msgid "Fairly quiet"
 msgstr "Quietinho"
 
-#: ../dalston/dalston-volume-slider.c:200
+#: ../dalston/dalston-volume-slider.c:202
 msgid "Quiet"
 msgstr "Quieto"
 
-#: ../dalston/dalston-volume-slider.c:202
+#: ../dalston/dalston-volume-slider.c:204
 msgid "Very quiet"
 msgstr "Muito quieto"
 
-#: ../dalston/dalston-volume-slider.c:204
+#: ../dalston/dalston-volume-slider.c:206
 msgid "Silent"
 msgstr "Silêncio"
 
@@ -195,11 +195,14 @@ msgstr "Control de volume GNOME "
 msgid "System Sounds"
 msgstr "Sons de sistema"
 
-#: ../src/dalston-power-applet.c:62
-msgid "power & brightness"
-msgstr "energia e claridade"
+#: ../src/dalston-power-applet.c:48
+msgid "battery"
+msgstr "bateria"
 
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
 msgstr "som"
+
+#~ msgid "power & brightness"
+#~ msgstr "energia e claridade"
 
