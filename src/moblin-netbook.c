@@ -829,8 +829,8 @@ check_for_empty_workspace (MutterPlugin *plugin,
           !meta_window_is_on_all_workspaces (mw) &&
           !meta_window_is_ancestor_of_transient (ignore, mw))
         {
-          g_debug ("querying workspace for [%s]",
-                   mutter_window_get_description (m));
+          /* g_debug ("querying workspace for [%s]", */
+          /*          mutter_window_get_description (m)); */
 
           gint w = mutter_window_get_workspace (m);
 
@@ -903,8 +903,8 @@ check_for_empty_workspace (MutterPlugin *plugin,
             type == META_COMP_WINDOW_OVERRIDE_OTHER ||
             ((mw = mutter_window_get_meta_window (m)) == ignore)))
         {
-          g_debug ("Found singificant window %s of type %d",
-                   mutter_window_get_description (m), type);
+          /* g_debug ("Found singificant window %s of type %d", */
+          /*          mutter_window_get_description (m), type); */
 
           no_apps = FALSE;
           break;
