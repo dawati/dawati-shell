@@ -520,6 +520,22 @@ mnb_drop_down_allocate (ClutterActor          *actor,
 }
 
 static void
+mnb_drop_down_constructed (GObject *object)
+{
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (object)->priv;
+  NbtkWidget         *footer;
+
+  /* footer with "up" button */
+  footer = nbtk_button_new ();
+  nbtk_widget_set_style_class_name (footer, "drop-down-footer");
+  nbtk_table_add_actor (NBTK_TABLE (object), CLUTTER_ACTOR (footer), 1, 0);
+  g_signal_connect_swapped (footer, "clicked",
+                            G_CALLBACK (mnb_drop_down_hide_with_toolbar), object);
+
+  priv->footer = CLUTTER_ACTOR (footer);
+}
+
+static void
 mnb_drop_down_class_init (MnbDropDownClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -531,6 +547,7 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
   object_class->set_property = mnb_drop_down_set_property;
   object_class->dispose = mnb_drop_down_dispose;
   object_class->finalize = mnb_drop_down_finalize;
+  object_class->constructed = mnb_drop_down_constructed;
 
   clutter_class->show = mnb_drop_down_show;
   clutter_class->hide = mnb_drop_down_hide;
@@ -589,24 +606,12 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
 static void
 mnb_drop_down_init (MnbDropDown *self)
 {
-  NbtkWidget *footer;
-  MnbDropDownPrivate *priv;
-
-  priv = self->priv = GET_PRIVATE (self);
-
-  /* footer with "up" button */
-  footer = nbtk_button_new ();
-  nbtk_widget_set_style_class_name (footer, "drop-down-footer");
-  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (footer), 1, 0);
-  g_signal_connect_swapped (footer, "clicked",
-                            G_CALLBACK (mnb_drop_down_hide_with_toolbar), self);
+  self->priv = GET_PRIVATE (self);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,
                 "reactive", TRUE,
                 NULL);
-
-  priv->footer = CLUTTER_ACTOR (footer);
 }
 
 NbtkWidget*
