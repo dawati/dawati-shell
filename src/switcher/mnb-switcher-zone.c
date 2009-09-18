@@ -137,7 +137,10 @@ mnb_switcher_zone_set_property (GObject      *gobject,
         if (priv->text)
           nbtk_label_set_text (NBTK_LABEL (priv->text), priv->label_text);
 
-        priv->text_set = TRUE;
+        if (priv->label_text)
+          priv->text_set = TRUE;
+        else
+          priv->text_set = FALSE;
       }
       break;
     default:
