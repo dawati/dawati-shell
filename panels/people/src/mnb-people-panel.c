@@ -524,9 +524,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
   NbtkWidget *hbox, *label;
   NbtkWidget *scroll_view;
-  MissionControl *mc;
   AnerleyFeed *feed, *tp_feed, *ebook_feed;
-  DBusGConnection *conn;
   EBook *book;
   GError *error = NULL;
 
@@ -581,12 +579,9 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     (GCallback)_entry_text_changed_cb,
                     self);
 
-  conn = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
-  mc = mission_control_new (conn);
-
   feed = anerley_aggregate_feed_new ();
 
-  tp_feed = anerley_aggregate_tp_feed_new (mc);
+  tp_feed = anerley_aggregate_tp_feed_new ();
   anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (feed),
                                    tp_feed);
 
