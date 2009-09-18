@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-31 18:17+0000\n"
+"POT-Creation-Date: 2009-09-15 09:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -13,73 +13,73 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../dalston/dalston-power-applet.c:192
+#: ../dalston/dalston-power-applet.c:237
 #, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b>時間"
 msgstr[1] "<b>%d</b>時間"
 
-#: ../dalston/dalston-power-applet.c:199
-#: ../dalston/dalston-power-applet.c:212
+#: ../dalston/dalston-power-applet.c:244
+#: ../dalston/dalston-power-applet.c:257
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
 msgstr[0] "<b>%d</b>分"
 msgstr[1] "<b>%d</b>分"
 
-#: ../dalston/dalston-power-applet.c:233
+#: ../dalston/dalston-power-applet.c:278
 msgid "Running low on battery"
 msgstr "バッテリー残量が少なくなっています"
 
-#: ../dalston/dalston-power-applet.c:233
+#: ../dalston/dalston-power-applet.c:278
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "バッテリー残量が少なくなっています。電源に接続して、バッテリーを充電してください。"
 
-#: ../dalston/dalston-power-applet.c:235
+#: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
 msgstr "ゼロになろうとしています"
 
-#: ../dalston/dalston-power-applet.c:235
+#: ../dalston/dalston-power-applet.c:280
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "バッテリー残量が非常に少なくなっています。全てのファイルを保存し、できるだけ早めに電源に接続してください。"
 
-#: ../dalston/dalston-power-applet.c:237
+#: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "危険！"
 
-#: ../dalston/dalston-power-applet.c:237
+#: ../dalston/dalston-power-applet.c:282
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "バッテリー残量がまもなくゼロになるので、コンピューターがオフになります。すべてのファイルを保存してください。"
 
-#: ../dalston/dalston-power-applet.c:364
+#: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
 msgstr "バッテリーが壊れているようです"
 
-#: ../dalston/dalston-power-applet.c:367
+#: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "バッテリーが十分に充電されています。"
 
-#: ../dalston/dalston-power-applet.c:370
+#: ../dalston/dalston-power-applet.c:415
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "バッテリーの充電中です。バッテリー残量：<b>%d</b>%%"
 
-#: ../dalston/dalston-power-applet.c:377
+#: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "バッテリーの使用中です。バッテリー残量：<b>%d</b>%%"
 
 # "sorry" is omitted in the translateion
-#: ../dalston/dalston-power-applet.c:385
+#: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "どうやら、バッテリーが取り付けられていないようです。"
 
-#: ../dalston/dalston-power-applet.c:492
+#: ../dalston/dalston-power-applet.c:515
 msgid "Display brightness"
 msgstr "ディスプレイ明度"
 
-#: ../dalston/dalston-power-applet.c:523
+#: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "スクリーン明度の調節はサポートされていません"
 
@@ -152,39 +152,39 @@ msgstr "アラート効果音"
 msgid "Play test sound"
 msgstr "音量のテスト"
 
-#: ../dalston/dalston-volume-slider.c:188
+#: ../dalston/dalston-volume-slider.c:190
 msgid "Turned up to 11"
 msgstr "11 まで上げる"
 
-#: ../dalston/dalston-volume-slider.c:190
+#: ../dalston/dalston-volume-slider.c:192
 msgid "Very loud"
 msgstr "非常にうるさい"
 
-#: ../dalston/dalston-volume-slider.c:192
+#: ../dalston/dalston-volume-slider.c:194
 msgid "Loud"
 msgstr "うるさい"
 
-#: ../dalston/dalston-volume-slider.c:194
+#: ../dalston/dalston-volume-slider.c:196
 msgid "Fairly loud"
 msgstr "少しうるさい"
 
-#: ../dalston/dalston-volume-slider.c:196
+#: ../dalston/dalston-volume-slider.c:198
 msgid "Middle of the road"
 msgstr "普通"
 
-#: ../dalston/dalston-volume-slider.c:198
+#: ../dalston/dalston-volume-slider.c:200
 msgid "Fairly quiet"
 msgstr "少し静か"
 
-#: ../dalston/dalston-volume-slider.c:200
+#: ../dalston/dalston-volume-slider.c:202
 msgid "Quiet"
 msgstr "静か"
 
-#: ../dalston/dalston-volume-slider.c:202
+#: ../dalston/dalston-volume-slider.c:204
 msgid "Very quiet"
 msgstr "非常に静か"
 
-#: ../dalston/dalston-volume-slider.c:204
+#: ../dalston/dalston-volume-slider.c:206
 msgid "Silent"
 msgstr "サイレント"
 
@@ -196,11 +196,14 @@ msgstr "GNOME ボリューム・コントロール"
 msgid "System Sounds"
 msgstr "システム効果音"
 
-#: ../src/dalston-power-applet.c:62
-msgid "power & brightness"
-msgstr "電源 & ディスプレイ明度"
+#: ../src/dalston-power-applet.c:48
+msgid "battery"
+msgstr "バッテリー"
 
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
 msgstr "サウンド"
+
+#~ msgid "power & brightness"
+#~ msgstr "電源 & ディスプレイ明度"
 
