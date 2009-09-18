@@ -113,6 +113,15 @@ mnb_switcher_app_dispose (GObject *object)
 }
 
 static void
+clone_weak_ref_cb (gpointer data, GObject *object)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (data)->priv;
+
+  if ((GObject*)priv->clone == object)
+    priv->clone = NULL;
+}
+
+static void
 mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
                              gfloat               event_x,
                              gfloat               event_y,
@@ -192,6 +201,7 @@ mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
   clutter_container_child_set (CLUTTER_CONTAINER (parent), clone,
                                "y-fill", FALSE,
                                "x-fill", FALSE,  NULL);
+  g_object_weak_ref (G_OBJECT (clone), clone_weak_ref_cb, self);
 
   /*
    * Release self from the Zone by reparenting to stage, so we can move about
@@ -268,8 +278,13 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
   /*
    * Now get rid of the clone that we put in our place
    */
-  parent = clutter_actor_get_parent (clone);
-  clutter_container_remove_actor (CLUTTER_CONTAINER (parent), clone);
+  if (clone)
+    {
+      g_object_weak_unref (G_OBJECT (clone), clone_weak_ref_cb, self);
+
+      parent = clutter_actor_get_parent (clone);
+      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), clone);
+    }
 }
 
 static void
