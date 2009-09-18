@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-17 09:31+0000\n"
+"POT-Creation-Date: 2009-09-15 09:10+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,27 +17,19 @@ msgstr ""
 msgid "<b>Appointments</b>"
 msgstr "<b>Möten</b>"
 
-#: ../penge/penge-events-pane.c:208
+#: ../penge/penge-events-pane.c:265
 msgid "No calendar entries this week"
 msgstr "Inget i kalendern denna vecka"
 
-#: ../penge/penge-people-pane.c:191
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina konton nu!"
 
-#: ../penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>Välkommen till Moblin 2.0 för netbooks</b>"
-
-#: ../penge/penge-recent-files-pane.c:227
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Moblin."
-
-#: ../penge/penge-recent-file-tile.c:218
+#: ../penge/penge-recent-file-tile.c:211
 msgid "Web page"
 msgstr "Webbplats"
 
-#: ../penge/penge-tasks-pane.c:287
+#: ../penge/penge-tasks-pane.c:344
 msgid "Nothing to do today"
 msgstr "Inget schemalagt idag"
 
@@ -45,4 +37,12 @@ msgstr "Inget schemalagt idag"
 #, c-format
 msgid "Due %x"
 msgstr "Färdig %x"
+
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Välkommen till Moblin 2.1 för netbooks</b>"
+
+#: ../penge/penge-welcome-tile.c:108
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Moblin."
 
