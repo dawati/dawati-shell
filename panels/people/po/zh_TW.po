@@ -16,7 +16,7 @@ msgstr ""
 
 #: ../src/moblin-panel-people.c:70
 msgid "people"
-msgstr "朋友們"
+msgstr "人們"
 
 #: ../src/mnb-people-panel.c:161
 msgid "Send an email"
@@ -36,7 +36,7 @@ msgstr "很抱歉，我們找不到任何人。你已經設立好通訊程式的
 
 #: ../src/mnb-people-panel.c:553
 msgid "People"
-msgstr "朋友們"
+msgstr "人們"
 
 #: ../src/mnb-people-panel.c:566
 msgid "Search"
