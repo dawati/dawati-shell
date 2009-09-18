@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: empathy 2.25.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-29 09:21+0000\n"
-"PO-Revision-Date: 2009-07-27 12:01-0800\n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"POT-Creation-Date: 2009-09-15 09:09+0000\n"
+"PO-Revision-Date: 2009-09-19 00:59+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@lists.linux.org.tw>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,8 @@ msgstr "有空"
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../anerley/anerley-tile.c:214 ../anerley/anerley-tile.c:217
+#: ../anerley/anerley-tile.c:214
+#: ../anerley/anerley-tile.c:217
 msgid "Away"
 msgstr "離開"
 
@@ -35,4 +36,5 @@ msgstr "離線"
 
 #: ../anerley/anerley-econtact-item.c:312
 msgid "Unnamed"
-msgstr "無名"
+msgstr "未命名"
+
