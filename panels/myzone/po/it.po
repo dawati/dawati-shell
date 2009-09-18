@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the mutter-moblin package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 #
+# Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 07:51+0000\n"
-"PO-Revision-Date: 2009-09-04 16:06-0800\n"
-"Last-Translator: GLS\n"
+"POT-Creation-Date: 2009-09-15 09:10+0000\n"
+"PO-Revision-Date: 2009-09-18 23:19+0200\n"
+"Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,27 +21,23 @@ msgstr ""
 msgid "<b>Appointments</b>"
 msgstr "<b>Appuntamenti</b>"
 
-#: ../penge/penge-events-pane.c:208
+#: ../penge/penge-events-pane.c:265
 msgid "No calendar entries this week"
 msgstr "Nessun appuntamento "
 
-#: ../penge/penge-people-pane.c:144
-msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-msgstr "Una volta attivati gli account personali, qui verranno mostrate le notizie dei propri amici e dei servizi web."
+#: ../penge/penge-people-placeholder-tile.c:112
+msgid ""
+"Your friends' feeds and web services will appear here. Activate your "
+"accounts now!"
+msgstr ""
+"Una volta attivati gli account personali, qui verranno mostrate le notizie "
+"dei propri amici e dei servizi web."
 
-#: ../penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>Benvenuti in Moblin 2.0 per netbook</b>"
-
-#: ../penge/penge-recent-files-pane.c:227
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Poiché Moblin è un po' diverso rispetto agli altri computer, sono state raggruppate alcune informazioni per comprendere al meglio il sistema. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
-
-#: ../penge/penge-recent-file-tile.c:218
+#: ../penge/penge-recent-file-tile.c:211
 msgid "Web page"
 msgstr "Pagina web"
 
-#: ../penge/penge-tasks-pane.c:287
+#: ../penge/penge-tasks-pane.c:344
 msgid "Nothing to do today"
 msgstr "Nessuna attività per oggi"
 
@@ -49,3 +46,16 @@ msgstr "Nessuna attività per oggi"
 msgid "Due %x"
 msgstr "In scadenza il %x"
 
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Benvenuti in Moblin 2.1 per netbook</b>"
+
+#: ../penge/penge-welcome-tile.c:108
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
+msgstr ""
+"Poiché Moblin è un po' diverso rispetto agli altri computer, sono state "
+"raggruppate alcune informazioni per comprendere al meglio il sistema. "
+"Speriamo troviate tutto di Vostro gradimento, il team Moblin."
