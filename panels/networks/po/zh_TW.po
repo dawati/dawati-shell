@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-15 09:03+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -231,7 +231,7 @@ msgstr "斷開"
 
 #: ../carrick/carrick-service-item.c:254
 msgid "Connected"
-msgstr "已連線"
+msgstr "已連接"
 
 #: ../carrick/carrick-service-item.c:259
 #: ../carrick/carrick-service-item.c:266
@@ -245,7 +245,7 @@ msgstr "正在配置"
 
 #: ../carrick/carrick-service-item.c:269
 msgid "Associating"
-msgstr "正在產生關聯"
+msgstr "連繫中"
 
 #: ../carrick/carrick-service-item.c:276
 #: ../carrick/carrick-service-item.c:299
@@ -269,7 +269,7 @@ msgstr "在此輸入密碼"
 
 #: ../carrick/carrick-service-item.c:443
 msgid "Really remove?"
-msgstr "真的要移除嗎？"
+msgstr "確實要刪除？"
 
 #: ../carrick/carrick-service-item.c:461
 #, c-format
@@ -284,7 +284,7 @@ msgstr ""
 
 #: ../carrick/carrick-service-item.c:1069
 msgid "Scanning"
-msgstr "正在掃描"
+msgstr "掃描中"
 
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
@@ -292,19 +292,19 @@ msgstr "正在掃描"
 #. It should look like the ones below network name in the UI
 #: ../carrick/carrick-service-item.c:1088
 msgid "WPA2 encrypted"
-msgstr "已使用 WPA2 加密"
+msgstr "WPA2 加密"
 
 #: ../src/carrick.c:62
 msgid "networks - not connected"
-msgstr "網路 - 尚未連線"
+msgstr "網路 - 離線"
 
 #: ../src/carrick.c:68
 msgid "networks - connecting"
-msgstr "網路 - 正在連線"
+msgstr "網路 - 連接"
 
 #: ../src/carrick.c:74
 msgid "networks - wired"
-msgstr "網路 - 有線"
+msgstr "網路 - %s - 有線"
 
 #: ../src/carrick.c:76
 #, c-format
@@ -336,17 +336,16 @@ msgid "networks - error"
 msgstr "網路 - 錯誤"
 
 #: ../src/carrick.c:127
-#, fuzzy
 msgid "Run in standalone mode"
-msgstr "以獨立模式執行"
+msgstr "在獨立模式中執行"
 
 #: ../src/carrick.c:138
 msgid "Carrick connectivity applet"
-msgstr "Carrick 連線小程式"
+msgstr "Carrick 連接小程序"
 
 #: ../src/carrick.c:139
 msgid "- Moblin connectivity applet"
-msgstr "- Moblin 連線小程式"
+msgstr "- Moblin 連接小程序"
 
 #: ../src/carrick.c:162
 msgid "network"
