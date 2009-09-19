@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:23+0000\n"
-"PO-Revision-Date: 2009-09-14 14:27-0800\n"
-"Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
+"POT-Creation-Date: 2009-09-15 09:04+0000\n"
+"PO-Revision-Date: 2009-09-18 11:10-0800\n"
+"Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,20 +75,20 @@ msgstr "去年"
 msgid "Ages ago"
 msgstr "几年前"
 
-#: ../src/moblin-netbook.c:305
-#: ../src/mnb-toolbar.c:1348
+#: ../src/moblin-netbook.c:319
+#: ../src/mnb-toolbar.c:1337
 msgid "zones"
 msgstr "打开的程序"
 
-#: ../src/moblin-netbook.c:412
+#: ../src/moblin-netbook.c:429
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook 特效"
 
-#: ../src/moblin-netbook.c:416
+#: ../src/moblin-netbook.c:433
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin Netbook 特效"
 
-#: ../src/mnb-notification.c:280
+#: ../src/mnb-notification.c:257
 msgid "Dismiss"
 msgstr "忽略"
 
@@ -100,7 +100,7 @@ msgstr "忽略所有"
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:668
+#: ../src/mnb-toolbar.c:660
 msgid "%l:%M %P"
 msgstr "%P %l:%M"
 
@@ -108,44 +108,39 @@ msgstr "%P %l:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:678
+#: ../src/mnb-toolbar.c:670
 msgid "%B %e, %Y"
 msgstr "%Y年%B%e日"
-
-#: ../src/mnb-toolbar.c:1585
-msgid "power & brightness"
-msgstr "电源和屏幕亮度"
-
-#: ../src/mnb-toolbar.c:1588
-msgid "volume"
-msgstr "音量"
-
-#: ../src/mnb-toolbar.c:1591
-msgid "bluetooth"
-msgstr "蓝牙"
-
-#: ../src/mnb-toolbar.c:1594
-msgid "networks"
-msgstr "网络"
-
-#: ../src/mnb-toolbar.c:1597
-msgid "test"
-msgstr "测试"
 
 #: ../src/switcher/mnb-switcher.c:280
 msgid "No Zones yet"
 msgstr "尚无区域"
 
+#: ../src/switcher/mnb-switcher.c:302
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "当前正在运行的程序会显示在这里。您可以在它们之间切换, 还可以按照您自己的方式去组织它们。"
+
 #: ../src/switcher/mnb-switcher-zone-apps.c:408
 msgid "No applications on this zone"
 msgstr "本区没有应用程序"
 
-#: ../src/switcher/mnb-switcher.c:302
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "当前正在运行的程序会显示在这里。您可以在它们之间切换, 还可以按照您自己的方式去组织它们"
-
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "这里会显示您播放过的音乐，视频和浏览过的图片。现在，您可以浏览一些媒体样本："
+#~ msgid "power & brightness"
+#~ msgstr "电源和屏幕亮度"
+#~ msgid "volume"
+#~ msgstr "音量"
+#~ msgid "bluetooth"
+#~ msgstr "蓝牙"
+#~ msgid "networks"
+#~ msgstr "网络"
+#~ msgid "test"
+#~ msgstr "测试"
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "这里会显示您播放过的音乐，视频和浏览过的图片。现在，您可以浏览一些媒体样"
+#~ "本："
 #~ msgid "Recently played"
 #~ msgstr "最近播放"
 #~ msgid "Search results"
@@ -178,8 +173,12 @@ msgstr "当前正在运行的程序会显示在这里。您可以在它们之间
 #~ msgstr "应用程序"
 #~ msgid "applications"
 #~ msgstr "应用程序"
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显示"
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显"
+#~ "示"
 #~ msgid "Untitled"
 #~ msgstr "无标题"
 #~ msgid "New tab"
@@ -216,12 +215,19 @@ msgstr "当前正在运行的程序会显示在这里。您可以在它们之间
 #~ msgstr "<b>我的日程安排</b>"
 #~ msgid "No calendar entries this week"
 #~ msgstr "本周无日程安排"
-#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
 #~ msgstr "您朋友的最新情况会在这里显示。现在就开始配置您的账户吧！"
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>欢迎使用 Moblin 2.0 系统</b>"
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 "
+#~ "Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
 #~ msgid "Web page"
 #~ msgstr "网页"
 #~ msgid "Nothing to do today"
@@ -236,7 +242,8 @@ msgstr "当前正在运行的程序会显示在这里。您可以在它们之间
 #~ msgstr "编写详细信息"
 #~ msgid "Send a message"
 #~ msgstr "发送一条消息"
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "抱歉，我不能找到任何好友。请确认您已经建立好一个聊天账户？"
 #~ msgid "People"
 #~ msgstr "好友"
@@ -278,9 +285,14 @@ msgstr "当前正在运行的程序会显示在这里。您可以在它们之间
 #~ msgstr "您当前状态"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "当前状态 - 离线"
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状态信息。"
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状"
+#~ "态信息。"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "要更新您的即时通讯状态，需要先建立一个即时通讯账户"
 #~ msgid "status"
 #~ msgstr "状态"
