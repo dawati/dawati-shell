@@ -608,23 +608,6 @@ _secret_check_toggled (GtkToggleButton *toggle,
   gtk_entry_set_visibility (entry, vis);
 }
 
-/*
- * Find the uppermost parent window plug so that
- * we can hide it.
- */
-static GtkWidget *
-pane_find_plug (GtkWidget *widget)
-{
-  /* Pippinated */
-  while (widget)
-    {
-      if (GTK_IS_PLUG (widget))
-        return widget;
-      widget = gtk_widget_get_parent (widget);
-    }
-  return NULL;
-}
-
 static void
 _new_connection_cb (GtkButton *button,
                     gpointer   user_data)
@@ -638,7 +621,6 @@ _new_connection_cb (GtkButton *button,
   GtkWidget          *secret_entry, *secret_label;
   GtkWidget          *secret_check;
   GtkWidget          *table;
-  GtkWidget          *tmp;
   const gchar        *network, *secret;
   gchar              *security;
   GtkWidget          *image;
@@ -753,11 +735,6 @@ _new_connection_cb (GtkButton *button,
                              4, 5);
 
   gtk_widget_show_all (dialog);
-  tmp = pane_find_plug (GTK_WIDGET (button));
-  if (tmp)
-    {
-      gtk_widget_hide (tmp);
-    }
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
@@ -877,7 +854,7 @@ _offline_mode_switch_callback (NbtkGtkLightSwitch *flight_switch,
   CarrickPanePrivate *priv = pane->priv;
   GValue *value;
 
-  g_signal_handlers_block_by_func (flight_switch,
+  g_signal_handlers_block_by_func (priv->offline_mode_switch,
                                    _offline_mode_switch_callback,
                                    pane);
 
