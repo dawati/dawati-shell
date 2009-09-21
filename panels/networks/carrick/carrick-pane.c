@@ -1198,13 +1198,13 @@ model_row_deleted_cb (GtkTreeModel  *tree_model,
                       GtkTreePath   *path,
                       CarrickPane   *self)
 {
-  GtkTreeIter *iter = NULL;
+  GtkTreeIter iter;
 
   if (gtk_tree_model_get_iter_first (tree_model,
-                                     iter))
+                                     &iter))
     {
       model_emit_change (tree_model,
-                         iter,
+                         &iter,
                          self);
     }
 }
