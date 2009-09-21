@@ -2190,11 +2190,13 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
       return FALSE;
     }
 
+#if 0
   if (mnb_toolbar_in_transition (toolbar))
     {
       /* g_debug (G_STRLOC " leaving early"); */
       return FALSE;
     }
+#endif
 
   /*
    * This is when we want to show the toolbar:
