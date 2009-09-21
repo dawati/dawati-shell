@@ -194,7 +194,7 @@ mnb_switcher_show (ClutterActor *self)
   gint                i, screen_width, screen_height;
   NbtkWidget         *table;
   ClutterActor       *toolbar;
-  gboolean            switcher_empty = FALSE;
+  gint                apps_count = 0xffff; /* inital value > 1 */
 
   moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
@@ -245,7 +245,7 @@ mnb_switcher_show (ClutterActor *self)
       GList *window_list, *l;
 
       window_list = mutter_plugin_get_windows (priv->plugin);
-      switcher_empty = TRUE;
+      apps_count = 0;
 
       for (l = window_list; l; l = g_list_next (l))
         {
@@ -254,8 +254,10 @@ mnb_switcher_show (ClutterActor *self)
 
           if (mutter_window_get_window_type (mw) == META_COMP_WINDOW_NORMAL)
             {
-              switcher_empty = FALSE;
-              break;
+              apps_count++;
+
+              if (apps_count >= 2)
+                break;
             }
           else if (mutter_window_get_window_type (mw)
                                          == META_COMP_WINDOW_DIALOG)
@@ -264,13 +266,15 @@ mnb_switcher_show (ClutterActor *self)
 
               if (parent == meta_win)
                 {
-                  switcher_empty = FALSE;
-                  break;
+                  apps_count++;
+
+                  if (apps_count >= 2)
+                    break;
                 }
             }
         }
 
-      if (switcher_empty)
+      if (!apps_count)
         {
           NbtkWidget         *table = priv->table;
           ClutterActor       *bin;
@@ -321,13 +325,14 @@ mnb_switcher_show (ClutterActor *self)
     {
       MnbSwitcherZoneApps *zone;
       gboolean             active = FALSE;
+      gboolean             dnd = apps_count > 1 ? TRUE : FALSE;
 
       if (i == active_ws)
         active = TRUE;
 
       zone = mnb_switcher_zone_apps_new (switcher, active, i);
       nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (zone), 0, i);
-      mnb_switcher_zone_apps_populate (zone);
+      mnb_switcher_zone_apps_populate (zone, dnd);
 
       if (active)
         {
@@ -365,7 +370,7 @@ mnb_switcher_show (ClutterActor *self)
 
  finish_up:
 
-  if (!switcher_empty)
+  if (apps_count)
     clutter_actor_set_height (CLUTTER_ACTOR (table),
                               screen_height - TOOLBAR_HEIGHT * 1.5 - 4);
 

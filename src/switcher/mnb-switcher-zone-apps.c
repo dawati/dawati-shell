@@ -270,7 +270,8 @@ mnb_switcher_zone_apps_get_property (GObject    *gobject,
 static gboolean
 mnb_switcher_zone_apps_append_window (MnbSwitcherZoneApps *zone,
                                       MutterWindow        *mcw,
-                                      gboolean             ignore_focus)
+                                      gboolean             ignore_focus,
+                                      gboolean             enable_dnd)
 {
   NbtkTable      *table;
   gint            row;
@@ -303,7 +304,7 @@ mnb_switcher_zone_apps_append_window (MnbSwitcherZoneApps *zone,
   /*
    * Enable d&d
    */
-  g_object_set (app, "enabled", TRUE, NULL);
+  g_object_set (app, "enabled", enable_dnd, NULL);
 
   clutter_container_child_set (CLUTTER_CONTAINER (table), CLUTTER_ACTOR (app),
                                "y-fill", FALSE, "x-fill", FALSE, NULL);
@@ -317,7 +318,7 @@ mnb_switcher_zone_apps_append_window (MnbSwitcherZoneApps *zone,
  * whole construction is done).
  */
 void
-mnb_switcher_zone_apps_populate (MnbSwitcherZoneApps *zone)
+mnb_switcher_zone_apps_populate (MnbSwitcherZoneApps *zone, gboolean enable_dnd)
 {
   MutterPlugin  *plugin;
   MetaScreen    *screen;
@@ -375,7 +376,8 @@ mnb_switcher_zone_apps_populate (MnbSwitcherZoneApps *zone)
         }
 
       ignore_focus |= mnb_switcher_zone_apps_append_window (zone, m,
-                                                            ignore_focus);
+                                                            ignore_focus,
+                                                            enable_dnd);
     }
 
   g_list_free (o);
@@ -385,7 +387,7 @@ mnb_switcher_zone_apps_populate (MnbSwitcherZoneApps *zone)
   /*
    * Enable d&d
    */
-  g_object_set (zone, "enabled", TRUE, NULL);
+  g_object_set (zone, "enabled", enable_dnd, NULL);
 }
 
 static void

@@ -760,7 +760,8 @@ mnb_switcher_app_get_window (MnbSwitcherApp *self)
 }
 
 MnbSwitcherApp *
-mnb_switcher_app_new (MnbSwitcher  *switcher, MutterWindow *mw)
+mnb_switcher_app_new (MnbSwitcher  *switcher,
+                      MutterWindow *mw)
 {
   return g_object_new (MNB_TYPE_SWITCHER_APP,
                        "switcher",      switcher,

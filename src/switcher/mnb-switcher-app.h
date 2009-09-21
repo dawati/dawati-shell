@@ -64,7 +64,7 @@ struct _MnbSwitcherAppClass
 
 GType mnb_switcher_app_get_type (void);
 
-MnbSwitcherApp *mnb_switcher_app_new                 (MnbSwitcher   *switcher,
+MnbSwitcherApp *mnb_switcher_app_new                 (MnbSwitcher    *switcher,
                                                       MutterWindow   *mw);
 MutterWindow   *mnb_switcher_app_get_window          (MnbSwitcherApp *self);
 ClutterActor   *mnb_switcher_app_get_pre_drag_parent (MnbSwitcherApp *self);
