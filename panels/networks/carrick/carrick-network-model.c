@@ -108,7 +108,8 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                  G_TYPE_UINT, /* strength */
                                  G_TYPE_STRING, /* security */
                                  G_TYPE_BOOLEAN, /* passphrase required */
-                                 G_TYPE_STRING /* passphrase */
+                                 G_TYPE_STRING, /* passphrase */
+                                 G_TYPE_BOOLEAN /* setup required */
   };
 
   gtk_list_store_set_column_types (GTK_LIST_STORE (self),
@@ -249,6 +250,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   const gchar         *type = NULL;
   gboolean             favorite = FALSE;
   gboolean             passphrase_required = FALSE;
+  gboolean             setup_required = FALSE;
   const gchar         *passphrase = NULL;
   GValue              *value;
   GtkTreeIter          iter;
@@ -295,6 +297,10 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
             passphrase = g_value_get_string (value);
         }
 
+      value = g_hash_table_lookup (properties, "SetupRequired");
+      if (value)
+        setup_required = g_value_get_boolean (value);
+
       if (network_model_have_service_by_proxy (store,
                                                &iter,
                                                service))
@@ -308,6 +314,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
                               CARRICK_COLUMN_SECURITY, security,
                               CARRICK_COLUMN_PASSPHRASE_REQUIRED, passphrase_required,
                               CARRICK_COLUMN_PASSPHRASE, passphrase,
+                              CARRICK_COLUMN_SETUP_REQUIRED, setup_required,
                               -1);
         }
       else
@@ -323,6 +330,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
              CARRICK_COLUMN_SECURITY, security,
              CARRICK_COLUMN_PASSPHRASE_REQUIRED, passphrase,
              CARRICK_COLUMN_PASSPHRASE, passphrase,
+             CARRICK_COLUMN_SETUP_REQUIRED, setup_required,
              -1);
         }
     }
@@ -362,7 +370,8 @@ network_model_service_changed_cb (DBusGProxy  *service,
                           CARRICK_COLUMN_STRENGTH, g_value_get_uchar (value),
                           -1);
     }
-  else if (g_str_equal (property, "PassphraseRequired"))
+  else if (g_str_equal (property, "PassphraseRequired") ||
+	  g_str_equal (property, "SetupRequired"))
     {
       /* Rather than store this property we're just going to trigger
        * GetProperties to pull the up-to-date passphrase

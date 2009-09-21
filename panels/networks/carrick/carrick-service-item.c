@@ -43,23 +43,23 @@ G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 #define DIALOG_TITLE _("Cellular Data Connection Wizard")
 
 /* Translators:
-   In each of the 3g data connection wizard dialog boxes that ask the user 
-   to select an option, we always provide a button that allows the user 
-   to manually enter the low level settings for their device.  This is the 
+   In each of the 3g data connection wizard dialog boxes that ask the user
+   to select an option, we always provide a button that allows the user
+   to manually enter the low level settings for their device.  This is the
    text used in that button.
 */
 #define MANUAL_CONFIG _("Manual Config")
 
 /* Translators:
    When configuring a device for 3G roaming, we must ask the user for
-   the country that their services is associated with.  This is the 
+   the country that their services is associated with.  This is the
    explaination text at the top of the dialog box for selecting the country.
 */
 #define SELECT_COUNTRY_MSG _("Select Country")
 
 /* Translators:
    When configuring a device for 3G roaming, we must ask the user for
-   their service provider. This is the explaination text at the that 
+   their service provider. This is the explaination text at the that
    dialog box
 */
 #define SELECT_PROVIDER_MSG _("Select Provider")
@@ -106,7 +106,7 @@ G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
    Backup domain name server address required by some access points
 
    "Tertairy DNS":
-   Alternate backup domain name server address required by some 
+   Alternate backup domain name server address required by some
    access points
 */
 #define PNAME_LABEL _("Plan Name: (required)")
@@ -181,6 +181,7 @@ struct _CarrickServiceItemPrivate
   gchar   *security;
   gboolean need_pass;
   gchar *passphrase;
+  gboolean setup_required;
 
   GtkWidget *info_bar;
   GtkWidget *info_label;
@@ -301,6 +302,7 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_SECURITY, &priv->security,
                           CARRICK_COLUMN_PASSPHRASE_REQUIRED, &priv->need_pass,
                           CARRICK_COLUMN_PASSPHRASE, &priv->passphrase,
+                          CARRICK_COLUMN_SETUP_REQUIRED, &priv->setup_required,
                           -1);
     }
 }
@@ -680,19 +682,41 @@ _connect_button_cb (GtkButton          *connect_button,
         }
       else
         {
-          carrick_notification_manager_queue_event (priv->note,
-                                                    priv->type,
-                                                    "ready",
-                                                    priv->name);
-          /* Set an unusually long timeout because the Connect
-           * method doesn't return until there has been either
-           * success or an error.
-           */
-          dbus_g_proxy_set_default_timeout (priv->proxy,
-                                            120000);
-          org_moblin_connman_Service_connect_async (priv->proxy,
-                                                    connect_notify_cb,
-                                                    item);
+	  if (priv->setup_required)
+	  {
+	    GPid pid;
+	    gulong flags = G_SPAWN_SEARCH_PATH | \
+	      G_SPAWN_STDOUT_TO_DEV_NULL | \
+	      G_SPAWN_STDERR_TO_DEV_NULL;
+	    GError *error = NULL;
+	    char *argv[] = {
+	      "connection-wizard",
+	      NULL
+	    };
+
+	    if (!g_spawn_async(NULL, argv, NULL, flags, NULL,
+			       NULL, &pid, &error))
+	    {
+	      g_debug("Unable to spawn 3g connection wizard");
+	      g_error_free(error);
+	    }
+	  }
+	  else
+	  {
+	    carrick_notification_manager_queue_event (priv->note,
+						      priv->type,
+						      "ready",
+						      priv->name);
+	    /* Set an unusually long timeout because the Connect
+	     * method doesn't return until there has been either
+	     * success or an error.
+	     */
+	    dbus_g_proxy_set_default_timeout (priv->proxy,
+					      120000);
+	    org_moblin_connman_Service_connect_async (priv->proxy,
+						      connect_notify_cb,
+						      item);
+	  }
         }
     }
 }
@@ -1179,6 +1203,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->passphrase = NULL;
   priv->icon_factory = NULL;
   priv->note = NULL;
+  priv->setup_required = FALSE;
 
   priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
 
