@@ -71,6 +71,9 @@ struct _CarrickListPrivate
   gboolean have_threeg;
   gboolean have_wimax;
   gboolean have_bluetooth;
+
+  guint enabled_count;
+  guint available_count;
 };
 
 enum {
@@ -847,6 +850,26 @@ _set_and_show_fallback (CarrickList *self)
 {
   CarrickListPrivate *priv = self->priv;
   gchar              *fallback = NULL;
+  /*
+   * Translator note: The disabled technologies available to be turned on is put together at
+   * runtime.
+   * The conjunction 'or' will be at the end of a choice of disabled technologies,
+   * for example 'WiFi, WiMAX or 3G.
+   */
+  gchar              *conjunction = _(" or ");
+  /*
+   * Translator note: the comma ',' will be used to join the different disabled technologies
+   * as in the above example; 'WiFi, WiMAX or 3G'
+   */
+  gchar              *comma = _(", ");
+  gchar              *ethernet = _("wired");
+  gchar              *wifi = _("WiFi");
+  gchar              *wimax = _("WiMAX");
+  gchar              *cellular = _("3G");
+  gchar              *bluetooth = _("Bluetooth");
+  GString            *technologies = NULL;
+  guint               count = 0;
+  gboolean            processed_first = FALSE;
 
   /* Need to add some fall-back content */
   if (!priv->have_daemon)
@@ -876,61 +899,141 @@ _set_and_show_fallback (CarrickList *self)
            (priv->have_wimax && !priv->wimax_enabled) ||
            (priv->have_bluetooth && !priv->bluetooth_enabled))
     {
+      /* How many strings we're joining */
+      count = priv->available_count - priv->enabled_count;
+      technologies = g_string_new (" ");
+      processed_first = FALSE;
+
       if (priv->have_wifi && !priv->wifi_enabled)
         {
-          /*
-           * Hint to display if we detect that wifi has been turned off
-           * and there are no available networks
-           */
-          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
-                                  "You could try turning on WiFi."
-                                  ));
+          if (count > 1)
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      wifi,
+                                      comma);
+            }
+          else
+            {
+              g_string_append (technologies,
+                               wifi);
+            }
+          processed_first = TRUE;
+          count--;
         }
-      else if (priv->have_wimax && !priv->wimax_enabled)
+
+      if (priv->have_wimax && !priv->wimax_enabled)
         {
-          /*
-           * Hint to display if we detect that wifi is on but
-           * WiMAX has been turned off and there are no available
-           * networks
-           */
-          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
-                                  "You could try turning on WiMAX."
-                                  ));
+          if (!processed_first)
+            {
+              g_string_append (technologies,
+                               wimax);
+              processed_first = TRUE;
+            }
+          else if (count > 1)
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      wimax,
+                                      comma);
+            }
+          else
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      conjunction,
+                                      wimax);
+            }
+
+          count--;
         }
-      else if (priv->have_threeg && !priv->threeg_enabled)
+
+      if (priv->have_threeg && !priv->threeg_enabled)
         {
-          /*
-           * Hint to display if we detect that wifi and wimax is on but
-           * 3G has been turned off and there are no available
-           * networks
-           */
-          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
-                                  "You could try turning on 3G."
-                                  ));
+          if (!processed_first)
+            {
+              g_string_append (technologies,
+                               cellular);
+              processed_first = TRUE;
+            }
+          else if (count > 1)
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      cellular,
+                                      comma);
+            }
+          else
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      conjunction,
+                                      cellular);
+            }
+
+          count--;
         }
-      else if (priv->have_bluetooth && !priv->bluetooth_enabled)
+
+      if (priv->have_bluetooth && !priv->bluetooth_enabled)
         {
-          /*
-           * Hint to display if we detect that wifi, wimax, and 3G are on but
-           * bluetooth has been turned off and there are no available networks
-           */
-          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
-                                  "You could try turning on Bluetooth."
-                                  ));
+          if (!processed_first)
+            {
+              g_string_append (technologies,
+                               bluetooth);
+              processed_first = TRUE;
+            }
+          else if (count > 1)
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      bluetooth,
+                                      comma);
+            }
+          else
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      conjunction,
+                                      bluetooth);
+            }
+
+          count--;
         }
-      else if (priv->have_ethernet && !priv->ethernet_enabled)
+
+      if (priv->have_ethernet && !priv->ethernet_enabled)
         {
-          /*
-           * Hint to display if we detect that all technologies
-           * other then ethernet have been turned on, and there
-           * are no available networks
-           */
-          fallback = g_strdup (_ ("Sorry, we can't find any networks. "
-                                  "You could try turning on Wired."
-                                  ));
+          if (!processed_first)
+            {
+              g_string_append (technologies,
+                               ethernet);
+              processed_first = TRUE;
+            }
+          else if (count > 1)
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      ethernet,
+                                      comma);
+            }
+          else
+            {
+              g_string_append_printf (technologies,
+                                      "%s%s",
+                                      conjunction,
+                                      ethernet);
+            }
+
+          count--;
         }
+
+      fallback = g_strdup_printf (_("Sorry, we can't find any networks. "
+                                    "You could try enabling %s."),
+                                  technologies->str);
+      g_string_free (technologies,
+                     TRUE);
     }
-  else
+
+  if (!fallback)
     {
       /*
        * Generic message to display if all available networking
@@ -972,28 +1075,34 @@ list_update_property (const gchar *property,
       priv->have_threeg = FALSE;
       priv->have_wimax = FALSE;
       priv->have_bluetooth = FALSE;
+      priv->available_count = 0;
 
       for (i = 0; i < g_strv_length (tech); i++)
         {
           if (g_str_equal ("wifi", *(tech + i)))
             {
               priv->have_wifi = TRUE;
+              priv->available_count ++;
             }
           else if (g_str_equal ("wimax", *(tech + i)))
             {
               priv->have_wimax = TRUE;
+              priv->available_count ++;
             }
           else if (g_str_equal ("bluetooth", *(tech + i)))
             {
               priv->have_bluetooth = TRUE;
+              priv->available_count ++;
             }
           else if (g_str_equal ("cellular", *(tech + i)))
             {
               priv->have_threeg = TRUE;
+              priv->available_count ++;
             }
           else if (g_str_equal ("ethernet", *(tech + i)))
             {
               priv->have_ethernet = TRUE;
+              priv->available_count ++;
             }
         }
       state_changed = TRUE;
@@ -1008,28 +1117,34 @@ list_update_property (const gchar *property,
       priv->threeg_enabled = FALSE;
       priv->wimax_enabled = FALSE;
       priv->bluetooth_enabled = FALSE;
+      priv->enabled_count = 0;
 
       for (i = 0; i < g_strv_length (tech); i++)
         {
           if (g_str_equal ("wifi", *(tech + i)))
             {
               priv->wifi_enabled = TRUE;
+              priv->enabled_count ++;
             }
           else if (g_str_equal ("wimax", *(tech + i)))
             {
               priv->wimax_enabled = TRUE;
+              priv->enabled_count ++;
             }
           else if (g_str_equal ("bluetooth", *(tech + i)))
             {
               priv->bluetooth_enabled = TRUE;
+              priv->enabled_count ++;
             }
           else if (g_str_equal ("cellular", *(tech + i)))
             {
               priv->threeg_enabled = TRUE;
+              priv->enabled_count ++;
             }
           else if (g_str_equal ("ethernet", *(tech + i)))
             {
               priv->ethernet_enabled = TRUE;
+              priv->enabled_count ++;
             }
         }
       state_changed = TRUE;
