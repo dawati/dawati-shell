@@ -1155,49 +1155,75 @@ pane_manager_get_properties_cb (DBusGProxy *manager,
 }
 
 static void
+model_emit_change (GtkTreeModel *tree_model,
+                   GtkTreeIter  *iter,
+                   CarrickPane  *self)
+{
+  CarrickPanePrivate *priv = self->priv;
+  char *connection_type = NULL;
+  char *connection_name = NULL;
+  char *connection_state = NULL;
+  guint strength = 0;
+
+  gtk_tree_model_get (tree_model, iter,
+                      CARRICK_COLUMN_TYPE, &connection_type,
+                      CARRICK_COLUMN_NAME, &connection_name,
+                      CARRICK_COLUMN_STRENGTH, &strength,
+                      CARRICK_COLUMN_STATE, &connection_state,
+                      -1);
+
+  if (!connection_type)
+    connection_type = g_strdup ("");
+  if (!connection_name)
+    connection_name = g_strdup ("");
+  if (!connection_state)
+    connection_state = g_strdup ("");
+
+  g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
+                 connection_type,
+                 connection_name,
+                 connection_state,
+                 strength);
+
+  /* We *may* need to provide a notification */
+  carrick_notification_manager_notify_event (priv->notes,
+                                             connection_type,
+                                             connection_state,
+                                             connection_name,
+                                             strength);
+}
+
+static void
+model_row_deleted_cb (GtkTreeModel  *tree_model,
+                      GtkTreePath   *path,
+                      CarrickPane   *self)
+{
+  GtkTreeIter *iter = NULL;
+
+  if (gtk_tree_model_get_iter_first (tree_model,
+                                     iter))
+    {
+      model_emit_change (tree_model,
+                         iter,
+                         self);
+    }
+}
+
+static void
 model_row_changed_cb (GtkTreeModel  *tree_model,
                       GtkTreePath   *path,
                       GtkTreeIter   *iter,
                       CarrickPane   *self)
 {
-  CarrickPanePrivate *priv = self->priv;
   GtkTreePath *first;
 
   /* Emit signal if connection is first in the model -- means the active one.
    * This could probably be done nicer, maybe by using the INDEX column? */
   first = gtk_tree_path_new_first ();
   if (0 == gtk_tree_path_compare (first, path)) {
-    char *connection_type = NULL;
-    char *connection_name = NULL;
-    char *connection_state = NULL;
-    guint strength = 0;
-
-    gtk_tree_model_get (tree_model, iter,
-                        CARRICK_COLUMN_TYPE, &connection_type,
-                        CARRICK_COLUMN_NAME, &connection_name,
-                        CARRICK_COLUMN_STRENGTH, &strength,
-                        CARRICK_COLUMN_STATE, &connection_state,
-                        -1);
-
-    if (!connection_type)
-      connection_type = g_strdup ("");
-    if (!connection_name)
-      connection_name = g_strdup ("");
-    if (!connection_state)
-      connection_state = g_strdup ("");
-
-    g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
-                   connection_type,
-                   connection_name,
-                   connection_state,
-                   strength);
-
-    /* We *may* need to provide a notification */
-    carrick_notification_manager_notify_event (priv->notes,
-                                               connection_type,
-                                               connection_state,
-                                               connection_name,
-                                               strength);
+    model_emit_change (tree_model,
+                       iter,
+                       self);
   }
   gtk_tree_path_free (first);
 }
@@ -1285,6 +1311,14 @@ carrick_pane_init (CarrickPane *self)
   model = carrick_network_model_new ();
   g_signal_connect (model,
                     "row-changed",
+                    G_CALLBACK (model_row_changed_cb),
+                    self);
+  g_signal_connect (model,
+                    "row-deleted",
+                    G_CALLBACK (model_row_deleted_cb),
+                    self);
+  g_signal_connect (model,
+                    "row-inserted",
                     G_CALLBACK (model_row_changed_cb),
                     self);
 
