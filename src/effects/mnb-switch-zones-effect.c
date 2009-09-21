@@ -373,6 +373,8 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
           /*
            * Change the running motion interaction.
            */
+          estage = MNBZE_MOTION;
+
           clutter_actor_animate (strip, CLUTTER_LINEAR,
                                  MNBZE_MOTION_DURATION,
                                  "x",
