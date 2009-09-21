@@ -192,6 +192,11 @@ CarrickIconState
 carrick_icon_factory_get_state (const gchar *connection_type,
                                 guint        strength)
 {
+  if (connection_type == NULL)
+    {
+      return ICON_ERROR;
+    }
+
   if (g_str_equal (connection_type, "ethernet"))
     {
       return ICON_ACTIVE_HOVER;
