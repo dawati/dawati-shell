@@ -1,0 +1,219 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Xosé <xosecalvo@edu.xunta.es>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-15 09:02+0000\n"
+"PO-Revision-Date: 2009-09-16 16:59+0200\n"
+"Last-Translator: Xosé <xosecalvo@edu.xunta.es>\n"
+"Language-Team: Galego <proxecto@trasno.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../dalston/dalston-power-applet.c:237
+#, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b> hora"
+msgstr[1] "<b>%d</b> horas"
+
+#: ../dalston/dalston-power-applet.c:244 ../dalston/dalston-power-applet.c:257
+#, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b> minuto"
+msgstr[1] "<b>%d</b> minutos"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid "Running low on battery"
+msgstr "Estase a esgotar a batería"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Percibimos que a batería estase a esgotar. Se pode, sería boa idea ligar á "
+"electricidade e enchela."
+
+#: ../dalston/dalston-power-applet.c:280
+msgid "Getting close to empty"
+msgstr "A aproximarse ao baleiro"
+
+#: ../dalston/dalston-power-applet.c:280
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+"A batería está moi baixa. Sería boa idea gardar todo o traballo e ligar á "
+"electricidade o antes posíbel"
+
+#: ../dalston/dalston-power-applet.c:282
+msgid "Danger!"
+msgstr "Perigo!"
+
+#: ../dalston/dalston-power-applet.c:282
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Desculpe, vaise esgotar a batería. Imos ter que apagar. Garde o seu traballo "
+"e vémonos pronto."
+
+#: ../dalston/dalston-power-applet.c:409
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Desculpe, parece que a batería está estragada."
+
+#: ../dalston/dalston-power-applet.c:412
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "A batería está chea de todo e xa está lista."
+
+#: ../dalston/dalston-power-applet.c:415
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "Estase a cargar a batería. Ten un <b>%d</b>%% da carga."
+
+#: ../dalston/dalston-power-applet.c:422
+#, c-format
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "Estase a utilizar a batería. Ten un <b>%d</b>%% da carga."
+
+#: ../dalston/dalston-power-applet.c:430
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Desculpe, parece que non a batería non está instalada."
+
+#: ../dalston/dalston-power-applet.c:515
+msgid "Display brightness"
+msgstr "Mostrar o brillo"
+
+#: ../dalston/dalston-power-applet.c:550
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "Desculpe, non é posíbel modificar o brillo da pantalla"
+
+#: ../dalston/dalston-brightness-slider.c:224
+msgid "Brighter than the sun"
+msgstr "Máis brillante que o sol"
+
+#: ../dalston/dalston-brightness-slider.c:226
+msgid "Very bright"
+msgstr "Moi brillante"
+
+#: ../dalston/dalston-brightness-slider.c:228
+msgid "Bright"
+msgstr "Brillante"
+
+#: ../dalston/dalston-brightness-slider.c:230
+msgid "Morning has broken"
+msgstr "Amenceu"
+
+#: ../dalston/dalston-brightness-slider.c:232
+msgid "Midday"
+msgstr "Mediodía"
+
+#: ../dalston/dalston-brightness-slider.c:234
+msgid "Pretty dusky"
+msgstr "Escurece"
+
+#: ../dalston/dalston-brightness-slider.c:236
+msgid "Twilight"
+msgstr "Solpór"
+
+#: ../dalston/dalston-brightness-slider.c:238
+msgid "Very dark"
+msgstr "Moi escuro"
+
+#: ../dalston/dalston-brightness-slider.c:240
+msgid "Total eclipse"
+msgstr "Eclipse total"
+
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide i'll turn off in %d seconds"
+msgstr "Se non se decide, apagarase en %d segundos"
+
+#: ../dalston/dalston-button-monitor.c:277
+msgid "Would you like to turn off now?"
+msgstr "Quere apagar agora?"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide i'll turn off in 30 seconds"
+msgstr "Se non se decide, apagarase en 30 segundos"
+
+#: ../dalston/dalston-button-monitor.c:285
+msgid "Turn off"
+msgstr "Apagar"
+
+#: ../dalston/dalston-volume-pane.c:258
+msgid "Output volume"
+msgstr "Volume de saída"
+
+#: ../dalston/dalston-volume-pane.c:302
+msgid "Mute"
+msgstr "Silencio"
+
+#: ../dalston/dalston-volume-pane.c:320
+msgid "Alert sounds"
+msgstr "Sons de aviso"
+
+#: ../dalston/dalston-volume-pane.c:332
+msgid "Play test sound"
+msgstr "Reproducir un son de proba"
+
+#: ../dalston/dalston-volume-slider.c:190
+msgid "Turned up to 11"
+msgstr "Subido a 11"
+
+#: ../dalston/dalston-volume-slider.c:192
+msgid "Very loud"
+msgstr "Moi alto"
+
+#: ../dalston/dalston-volume-slider.c:194
+msgid "Loud"
+msgstr "Alto"
+
+#: ../dalston/dalston-volume-slider.c:196
+msgid "Fairly loud"
+msgstr "Bastante alto"
+
+#: ../dalston/dalston-volume-slider.c:198
+msgid "Middle of the road"
+msgstr "Na metade"
+
+#: ../dalston/dalston-volume-slider.c:200
+msgid "Fairly quiet"
+msgstr "Bastante baixo"
+
+#: ../dalston/dalston-volume-slider.c:202
+msgid "Quiet"
+msgstr "Baixo"
+
+#: ../dalston/dalston-volume-slider.c:204
+msgid "Very quiet"
+msgstr "Moi baixo"
+
+#: ../dalston/dalston-volume-slider.c:206
+msgid "Silent"
+msgstr "Silencioso"
+
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "Control de volume de GNOME"
+
+#: ../libgvc/gvc-mixer-control.c:1020
+msgid "System Sounds"
+msgstr "Sons do sistema"
+
+#: ../src/dalston-power-applet.c:48
+msgid "battery"
+msgstr "batería"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "son"
+
