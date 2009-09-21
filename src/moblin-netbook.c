@@ -261,6 +261,29 @@ moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
 }
 
 static void
+moblin_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (!CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
+    {
+      /*
+       * Set the dont_autohide flag on the toolbar; this stops the panel
+       * hiding due to mouse pointer movement until the pointer re-enters
+       * the panel (i.e., if the toolbar opens, but the pointer is outside
+       * of it, we do not want the toolbar to hide as soon as the user
+       * moves the pointer).
+       */
+      mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (priv->toolbar), TRUE);
+      clutter_actor_show (priv->toolbar);
+    }
+  else
+    {
+      mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
+    }
+}
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -280,6 +303,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   GError        *err = NULL;
   MoblinNetbookNotifyStore *notify_store;
 
+  MetaScreen  *screen  =mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  MetaDisplay *display = meta_screen_get_display (screen);
+
   plugin_singleton = (MutterPlugin*)object;
 
   /* tweak with env var as then possible to develop in desktop env. */
@@ -297,9 +323,14 @@ moblin_netbook_plugin_constructed (GObject *object)
       g_error_free (err);
     }
 
-  g_signal_connect (mutter_plugin_get_screen (MUTTER_PLUGIN (plugin)),
+  g_signal_connect (screen,
                     "workarea-changed",
                     G_CALLBACK (moblin_netbook_workarea_changed_cb),
+                    plugin);
+
+  g_signal_connect (display,
+                    "overlay-key",
+                    G_CALLBACK (moblin_netbook_overlay_key_cb),
                     plugin);
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
@@ -1592,30 +1623,6 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
   if (switcher && mnb_switcher_handle_xevent (MNB_SWITCHER (switcher), xev))
     return TRUE;
-
-  if (xev->type == KeyPress &&
-      XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0) ==
-                                                    MOBLIN_PANEL_SHORTCUT_KEY)
-    {
-      if (!CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
-        {
-          /*
-           * Set the dont_autohide flag on the toolbar; this stops the panel
-           * hiding due to mouse pointer movement until the pointer re-enters
-           * the panel (i.e., if the toolbar opens, but the pointer is outside
-           * of it, we do not want the toolbar to hide as soon as the user
-           * moves the pointer).
-           */
-          mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (priv->toolbar), TRUE);
-          clutter_actor_show (priv->toolbar);
-        }
-      else
-        {
-          mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
-        }
-
-      return TRUE;
-    }
 
   if (xev->type == KeyPress || xev->type == KeyRelease)
     {

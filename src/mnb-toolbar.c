@@ -101,7 +101,6 @@ static gboolean mnb_toolbar_stage_input_cb (ClutterActor *stage,
                                             gpointer      data);
 static void mnb_toolbar_stage_show_cb (ClutterActor *stage,
                                        MnbToolbar *toolbar);
-static void mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar);
 static void mnb_toolbar_handle_dbus_name (MnbToolbar *, const gchar *);
 static gint mnb_toolbar_panel_name_to_index (const gchar *name);
 static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, gint index);
@@ -1538,24 +1537,6 @@ mnb_toolbar_init (MnbToolbar *self)
     priv->no_autoloading = TRUE;
 }
 
-
-static void
-mnb_toolbar_kbd_grab_notify_cb (MetaScreen *screen,
-                                GParamSpec *pspec,
-                                MnbToolbar *toolbar)
-{
-  gboolean grabbed;
-
-  g_object_get (screen, "keyboard-grabbed", &grabbed, NULL);
-
-  /*
-   * If the property has changed to FALSE, i.e., Mutter just called
-   * XUngrabKeyboard(), we have to re-establish our grabs.
-   */
-  if (!grabbed)
-    mnb_toolbar_setup_kbd_grabs (toolbar);
-}
-
 static DBusGConnection *
 mnb_toolbar_connect_to_dbus (MnbToolbar *self)
 {
@@ -1933,16 +1914,6 @@ mnb_toolbar_constructed (GObject *self)
 
   g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);
 
-  /*
-   * Set up the dedicated kbd grabs and notification callback.
-   */
-  mnb_toolbar_setup_kbd_grabs (MNB_TOOLBAR (self));
-
-  g_signal_connect (mutter_plugin_get_screen (plugin),
-                    "notify::keyboard-grabbed",
-                    G_CALLBACK (mnb_toolbar_kbd_grab_notify_cb),
-                    self);
-
   g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
                     "captured-event",
                     G_CALLBACK (mnb_toolbar_stage_captured_cb),
@@ -2092,30 +2063,6 @@ mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont)
   MnbToolbarPrivate *priv = toolbar->priv;
 
   priv->dont_autohide = dont;
-}
-
-/*
- * Sets up passive key grabs on any dedicated shortcut keys that we cannot
- * hook into throught metacity key bindings.
- */
-static void
-mnb_toolbar_setup_kbd_grabs (MnbToolbar *toolbar)
-{
-  MutterPlugin *plugin = toolbar->priv->plugin;
-  MetaScreen   *screen;
-  Display      *xdpy;
-  Window        root_xwin;
-
-  screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
-  xdpy      = mutter_plugin_get_xdisplay (MUTTER_PLUGIN (plugin));
-  root_xwin = RootWindow (xdpy, meta_screen_get_screen_number (screen));
-
-  /*
-   * Grab the panel shortcut key.
-   */
-  XGrabKey (xdpy, XKeysymToKeycode (xdpy, MOBLIN_PANEL_SHORTCUT_KEY),
-            AnyModifier,
-            root_xwin, True, GrabModeAsync, GrabModeAsync);
 }
 
 /*
