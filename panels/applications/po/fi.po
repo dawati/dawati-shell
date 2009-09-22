@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
+"POT-Creation-Date: 2009-09-15 09:09+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -17,18 +17,19 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:869
-msgid "Favourite Applications"
+#: ../src/moblin-netbook-launcher.c:887
+msgid "Favorite Applications"
 msgstr "Suosikkisovellukset"
 
-#: ../src/moblin-netbook-launcher.c:1366
+#: ../src/moblin-netbook-launcher.c:1384
 msgid "Applications"
 msgstr "Sovellukset"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/moblin-netbook-launcher.c:1395
 msgid "Search"
 msgstr "Etsi"
 
-#: ../src/moblin-panel-applications.c:164
+#: ../src/moblin-panel-applications.c:187
 msgid "applications"
 msgstr "sovellukset"
+
