@@ -46,48 +46,6 @@
 #include "mnb-switcher-private.h"
 
 /*
- * Based on do_choose_window() in metacity keybinding.c
- *
- * Tests whether the left Alt key is still down.
- */
-static gboolean
-alt_still_down (MetaDisplay *display, MetaScreen *screen, Window xwin,
-                guint entire_binding_mask)
-{
-  gint     x, y, root_x, root_y, i;
-  Window   root, child;
-  guint    mask, primary_modifier = 0;
-  Display *xdpy = meta_display_get_xdisplay (display);
-  guint    masks[] = { Mod5Mask, Mod4Mask, Mod3Mask,
-                       Mod2Mask, Mod1Mask, ControlMask,
-                       ShiftMask, LockMask };
-
-  i = 0;
-  while (i < (int) G_N_ELEMENTS (masks))
-    {
-      if (entire_binding_mask & masks[i])
-        {
-          primary_modifier = masks[i];
-          break;
-        }
-
-      ++i;
-    }
-
-  XQueryPointer (xdpy,
-                 xwin, /* some random window */
-                 &root, &child,
-                 &root_x, &root_y,
-                 &x, &y,
-                 &mask);
-
-  if ((mask & primary_modifier) == 0)
-    return FALSE;
-  else
-    return TRUE;
-}
-
-/*
  * Activates the given MetaWindow, taking care of the quirks in Meta API.
  */
 static void
@@ -323,15 +281,18 @@ alt_tab_timeout_cb (gpointer data)
   struct alt_tab_show_complete_data *alt_data = data;
   ClutterActor                      *stage;
   Window                             xwin;
+  MnbSwitcherPrivate                *priv = alt_data->switcher->priv;
 
   stage = mutter_get_stage_for_screen (alt_data->screen);
   xwin  = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+  priv->waiting_for_timeout = FALSE;
 
   /*
    * Check wether the Alt key is still down; if so, show the Switcher, and
    * wait for the show-completed signal to process the Alt+Tab.
    */
-  if (alt_still_down (alt_data->display, alt_data->screen, xwin, Mod1Mask))
+  if (priv->alt_tab_down)
     {
       ClutterActor *toolbar;
 
@@ -393,6 +354,8 @@ mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
     establish_keyboard_grab (switcher, display, screen,
                              binding->mask, event->xkey.time);
 
+  priv->alt_tab_down = TRUE;
+
   if (!CLUTTER_ACTOR_IS_MAPPED (switcher))
     {
       struct alt_tab_show_complete_data *alt_data;
@@ -428,11 +391,14 @@ mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
       memcpy (&alt_data->xevent, event, sizeof (XEvent));
 
       g_timeout_add (100, alt_tab_timeout_cb, alt_data);
+      priv->waiting_for_timeout = TRUE;
       return;
     }
   else
     {
       gboolean backward = FALSE;
+
+      priv->waiting_for_timeout = FALSE;
 
       if (event->xkey.state & ShiftMask)
         backward = !backward;
@@ -449,10 +415,15 @@ mnb_switcher_alt_tab_select_handler (MetaDisplay    *display,
                                      MetaKeyBinding *binding,
                                      gpointer        data)
 {
-  MnbSwitcher *switcher = MNB_SWITCHER (data);
+  MnbSwitcher        *switcher = MNB_SWITCHER (data);
+  MnbSwitcherPrivate *priv     = switcher->priv;
 
   mnb_switcher_end_kbd_grab (switcher);
-  mnb_switcher_activate_selection (switcher, TRUE, event->xkey.time);
+
+  priv->alt_tab_down = FALSE;
+
+  if (!switcher->priv->waiting_for_timeout)
+    mnb_switcher_activate_selection (switcher, TRUE, event->xkey.time);
 }
 
 void
@@ -463,8 +434,11 @@ mnb_switcher_alt_tab_cancel_handler (MetaDisplay    *display,
                                      MetaKeyBinding *binding,
                                      gpointer        data)
 {
-  MnbSwitcher *switcher = MNB_SWITCHER (data);
+  MnbSwitcher        *switcher = MNB_SWITCHER (data);
+  MnbSwitcherPrivate *priv     = switcher->priv;
 
   mnb_switcher_end_kbd_grab (switcher);
+
+  priv->alt_tab_down = FALSE;
 }
 

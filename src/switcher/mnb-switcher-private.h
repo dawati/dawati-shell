@@ -39,9 +39,11 @@ struct _MnbSwitcherPrivate {
   guint            show_completed_id;
   guint            hide_panel_cb_id;
 
-  gboolean         dnd_in_progress : 1;
-  gboolean         constructing    : 1;
-  gboolean         in_alt_grab     : 1;
+  gboolean         dnd_in_progress     : 1;
+  gboolean         constructing        : 1;
+  gboolean         in_alt_grab         : 1;
+  gboolean         waiting_for_timeout : 1;
+  gboolean         alt_tab_down        : 1;
 };
 
 void mnb_switcher_advance (MnbSwitcher *switcher, gboolean backward);

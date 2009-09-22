@@ -196,6 +196,8 @@ mnb_switcher_show (ClutterActor *self)
   ClutterActor       *toolbar;
   gint                apps_count = 0xffff; /* inital value > 1 */
 
+  priv->waiting_for_timeout = FALSE;
+
   moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
   /*
