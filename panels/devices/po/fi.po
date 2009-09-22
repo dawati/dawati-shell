@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
+"POT-Creation-Date: 2009-09-15 09:02+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Omar Antila <omarx.s.antila@intel.com>\n"
+"Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,72 +13,72 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../dalston/dalston-power-applet.c:159
+#: ../dalston/dalston-power-applet.c:237
 #, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b> tunti"
 msgstr[1] "<b>%d</b> tuntia"
 
-#: ../dalston/dalston-power-applet.c:166
-#: ../dalston/dalston-power-applet.c:179
+#: ../dalston/dalston-power-applet.c:244
+#: ../dalston/dalston-power-applet.c:257
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
 msgstr[0] "<b>%d</b> minuutti"
 msgstr[1] "<b>%d</b> minuuttia"
 
-#: ../dalston/dalston-power-applet.c:200
+#: ../dalston/dalston-power-applet.c:278
 msgid "Running low on battery"
 msgstr "Akun virta vähissä"
 
-#: ../dalston/dalston-power-applet.c:200
+#: ../dalston/dalston-power-applet.c:278
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Akkusi virta näyttää olevan vähissä. Jos mahdollista, nyt olisi hyvä aika kytkeä virtajohto."
 
-#: ../dalston/dalston-power-applet.c:202
+#: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
 msgstr "Kohta tyhjä"
 
-#: ../dalston/dalston-power-applet.c:202
+#: ../dalston/dalston-power-applet.c:280
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Akkusi virta on melko vähissä. Nyt olisi hyvä aika tallentaa kaikki työt ja kytkeä virtajohto niin pian kuin mahdollista."
 
-#: ../dalston/dalston-power-applet.c:204
+#: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Vaara!"
 
-#: ../dalston/dalston-power-applet.c:204
+#: ../dalston/dalston-power-applet.c:282
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Akun virta on valitettavasti lopussa ja tietokone pitää sammuttaa. Tallenna työt ja toivottavasti näemme pian uudelleen!"
 
-#: ../dalston/dalston-power-applet.c:340
+#: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Akkusi näyttää valitettavasti olevan rikki."
 
-#: ../dalston/dalston-power-applet.c:343
+#: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Akku täynnä!"
 
-#: ../dalston/dalston-power-applet.c:346
+#: ../dalston/dalston-power-applet.c:415
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "Akku latautuu. Se on noin <b>%d</b>%% täynnä."
 
-#: ../dalston/dalston-power-applet.c:353
+#: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "Akku käytössä. Se on noin <b>%d</b>%% täynnä."
 
-#: ../dalston/dalston-power-applet.c:361
+#: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Akku näyttää valitettavasti puuttuvan."
 
-#: ../dalston/dalston-power-applet.c:476
+#: ../dalston/dalston-power-applet.c:515
 msgid "Display brightness"
 msgstr "Näytön kirkkaus"
 
-#: ../dalston/dalston-power-applet.c:507
+#: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Emme valitettavasti tue näyttösi kirkkauden säätämistä"
 
@@ -118,6 +118,23 @@ msgstr "Tosi pimeä"
 msgid "Total eclipse"
 msgstr "Sysimusta"
 
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide i'll turn off in %d seconds"
+msgstr "Jos et päätä, sammutetaan %d sekunnin päästä"
+
+#: ../dalston/dalston-button-monitor.c:277
+msgid "Would you like to turn off now?"
+msgstr "Haluatko sammuttaa nyt?"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide i'll turn off in 30 seconds"
+msgstr "Jos et päätä, sammutetaan 30 sekunnin päästä"
+
+#: ../dalston/dalston-button-monitor.c:285
+msgid "Turn off"
+msgstr "Sammuta"
+
 #: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
 msgstr "Toiston voimakkuus"
@@ -134,47 +151,55 @@ msgstr "Hälytysäänet"
 msgid "Play test sound"
 msgstr "Toista testiääni"
 
-#: ../dalston/dalston-volume-slider.c:188
+#: ../dalston/dalston-volume-slider.c:190
 msgid "Turned up to 11"
 msgstr "Korviin sattuu"
 
-#: ../dalston/dalston-volume-slider.c:190
+#: ../dalston/dalston-volume-slider.c:192
 msgid "Very loud"
 msgstr "Iso meteli"
 
-#: ../dalston/dalston-volume-slider.c:192
+#: ../dalston/dalston-volume-slider.c:194
 msgid "Loud"
 msgstr "Meteli"
 
-#: ../dalston/dalston-volume-slider.c:194
+#: ../dalston/dalston-volume-slider.c:196
 msgid "Fairly loud"
 msgstr "Melko äänekäs"
 
-#: ../dalston/dalston-volume-slider.c:196
+#: ../dalston/dalston-volume-slider.c:198
 msgid "Middle of the road"
 msgstr "Keskitaso"
 
-#: ../dalston/dalston-volume-slider.c:198
+#: ../dalston/dalston-volume-slider.c:200
 msgid "Fairly quiet"
 msgstr "Melko hiljainen"
 
-#: ../dalston/dalston-volume-slider.c:200
+#: ../dalston/dalston-volume-slider.c:202
 msgid "Quiet"
 msgstr "Hiljainen"
 
-#: ../dalston/dalston-volume-slider.c:202
+#: ../dalston/dalston-volume-slider.c:204
 msgid "Very quiet"
 msgstr "Tosi hiljainen"
 
-#: ../dalston/dalston-volume-slider.c:204
+#: ../dalston/dalston-volume-slider.c:206
 msgid "Silent"
 msgstr "Äänetön"
 
-#: ../libgvc/gvc-mixer-control.c:988
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "GNOMEn äänenvoimakkuus"
+
+#: ../libgvc/gvc-mixer-control.c:1020
 msgid "System Sounds"
 msgstr "Järjestelmän äänet"
 
-#: ../libgvc/gvc-mixer-control.c:1512
-msgid "GNOME Volume Control"
-msgstr "GNOMEn äänenvoimakkuus"
+#: ../src/dalston-power-applet.c:48
+msgid "battery"
+msgstr "akku"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "ääni"
 
