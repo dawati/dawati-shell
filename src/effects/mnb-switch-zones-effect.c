@@ -39,14 +39,20 @@ typedef enum
   MNBZE_ZOOM_IN,
 } MnbzeStage;
 
-static ClutterActor     *frame        = NULL;
-static ClutterActor     *strip        = NULL;
-static ClutterActor     *desktop      = NULL;
-static ClutterAnimation *zoom_anim    = NULL;
-static MutterWindow     *actor_for_cb = NULL;
-static MnbzeStage        estage       = MNBZE_ZOOM_OUT;
-static gint              current_to   = 0;
-static gint              current_from = 0;
+static ClutterActor     *frame          = NULL;
+static ClutterActor     *strip          = NULL;
+static ClutterActor     *desktop        = NULL;
+static ClutterAnimation *current_anim   = NULL;
+static MutterWindow     *actor_for_cb   = NULL;
+static MnbzeStage        estage         = MNBZE_ZOOM_OUT;
+static gint              current_to     = 0;
+static gint              current_from   = 0;
+static guint             strip_cb_id    = 0;
+static guint             zoom_in_cb_id  = 0;
+static guint             zoom_out_cb_id = 0;
+static MutterPlugin     *plugin         = NULL;
+static gint              screen_width   = 0;
+static gint              screen_height  = 0;
 
 static void fill_strip (MutterPlugin*, NbtkTable*, gint, gint);
 
@@ -59,25 +65,9 @@ release_clones (ClutterActor *clone, gpointer data)
   clutter_actor_destroy (clone);
 }
 
-/*
- * Data for our "completed" callbacks.
- */
-struct effect_data
-{
-  MutterPlugin *plugin;
-  gint          screen_width;
-  gint          screen_height;
-  guint         strip_cb_id;
-  guint         zoom_in_cb_id;
-  guint         zoom_out_cb_id;
-};
-
 static void
 on_zoom_in_animation_completed (ClutterAnimation *anim, gpointer data)
 {
-  struct effect_data         *edata  = data;
-  MutterPlugin               *plugin = edata->plugin;
-
   switch (estage)
     {
     case MNBZE_ZOOM_IN:
@@ -88,10 +78,10 @@ on_zoom_in_animation_completed (ClutterAnimation *anim, gpointer data)
          */
         estage = MNBZE_ZOOM_OUT;
 
-        zoom_anim = NULL;
+        current_anim = NULL;
 
-        g_signal_handler_disconnect (anim, edata->zoom_in_cb_id);
-        edata->zoom_in_cb_id = 0;
+        g_signal_handler_disconnect (anim, zoom_in_cb_id);
+        zoom_in_cb_id = 0;
 
         clutter_actor_hide (desktop);
         clutter_container_foreach (CLUTTER_CONTAINER (strip),
@@ -99,13 +89,11 @@ on_zoom_in_animation_completed (ClutterAnimation *anim, gpointer data)
 
         mutter_plugin_effect_completed (plugin, actor_for_cb,
                                         MUTTER_PLUGIN_SWITCH_WORKSPACE);
-
-        g_slice_free (struct effect_data, data);
       }
       break;
     default:;
-      g_warning ("zoom-in completion callback called during stage %d\n",
-                 estage);
+      g_warning ("zoom-in completion callback for %p (%p) called in stage %d\n",
+                 anim, current_anim, estage);
     }
 }
 
@@ -115,14 +103,13 @@ on_zoom_in_animation_completed (ClutterAnimation *anim, gpointer data)
 static void
 on_strip_animation_completed (ClutterAnimation *anim, gpointer data)
 {
-  struct effect_data *edata = data;
-
   switch (estage)
     {
     case MNBZE_ZOOM_IN:
     case MNBZE_ZOOM_OUT:
     default:
-      g_warning ("Strip animation completion should not happen at this point.");
+      g_warning ("Pan completion callback for %p (%p) called in stage %d",
+                 anim, current_anim, estage);
       break;
 
     case MNBZE_MOTION:
@@ -137,8 +124,8 @@ on_strip_animation_completed (ClutterAnimation *anim, gpointer data)
         /*
          * Make sure this handler is disconnected.
          */
-        g_signal_handler_disconnect (anim, edata->strip_cb_id);
-        edata->strip_cb_id = 0;
+        g_signal_handler_disconnect (anim, strip_cb_id);
+        strip_cb_id = 0;
 
         a = clutter_actor_animate (frame, CLUTTER_LINEAR,
                                    MNBZE_ZOOM_IN_DURATION,
@@ -146,10 +133,12 @@ on_strip_animation_completed (ClutterAnimation *anim, gpointer data)
                                    "scale-y", 1.0,
                                    NULL);
 
-        edata->zoom_in_cb_id =
+        current_anim = a;
+
+        zoom_in_cb_id =
           g_signal_connect_after (a, "completed",
                                   G_CALLBACK (on_zoom_in_animation_completed),
-                                  edata);
+                                  NULL);
       }
     }
 }
@@ -157,8 +146,6 @@ on_strip_animation_completed (ClutterAnimation *anim, gpointer data)
 static void
 on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
 {
-  struct effect_data *edata = data;
-
   switch (estage)
     {
     case MNBZE_ZOOM_OUT:
@@ -167,12 +154,11 @@ on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
          * The first part of the effect completed; start the second part.
          */
         ClutterAnimation *a;
-        gint              screen_width = edata->screen_width;
 
         estage = MNBZE_MOTION;
 
-        g_signal_handler_disconnect (anim, edata->zoom_out_cb_id);
-        edata->zoom_out_cb_id = 0;
+        g_signal_handler_disconnect (anim, zoom_out_cb_id);
+        zoom_out_cb_id = 0;
 
         a = clutter_actor_animate (strip, CLUTTER_LINEAR,
                                    MNBZE_MOTION_DURATION,
@@ -181,16 +167,18 @@ on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
                                    -((screen_width + MNBZE_PAD)*current_to)),
                                    NULL);
 
-        edata->strip_cb_id =
+        current_anim = a;
+
+        strip_cb_id =
           g_signal_connect_after (a, "completed",
                                   G_CALLBACK (on_strip_animation_completed),
-                                  edata);
+                                  NULL);
       }
       break;
 
     default:
-      g_warning ("zoom-out completion callback called during stage %d\n",
-                 estage);
+      g_warning ("zoom-out completion callback for %p(%p) called in stage %d\n",
+                 anim, current_anim, estage);
     }
 }
 
@@ -220,7 +208,7 @@ on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
  *          to it.
  */
 void
-mnb_switch_zones_effect (MutterPlugin         *plugin,
+mnb_switch_zones_effect (MutterPlugin         *plug,
                          const GList         **actors,
                          gint                  from,
                          gint                  to,
@@ -229,7 +217,8 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   ClutterAnimation           *a;
   gdouble                     target_scale_x, target_scale_y;
   gint                        cell_width, cell_height;
-  gint                        screen_width, screen_height;
+
+  plugin = plug;
 
   if (from == to)
     {
@@ -315,35 +304,66 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
    * If this function is called while the effect is in progress, we need to
    * restart.
    */
-  if (zoom_anim != a)
+  if (current_anim != a)
     {
       /*
        * Brand new animation, set up the callback.
        */
-      struct effect_data *data = g_slice_new0 (struct effect_data);
+      current_to    = to;
+      current_from  = from;
 
-      current_to          = to;
-      current_from        = from;
-      data->plugin        = plugin;
-      data->screen_width  = screen_width;
-      data->screen_height = screen_height;
+      estage = MNBZE_ZOOM_OUT;
 
       /*
-       * New animation object, take extra reference and connect to signals
+       * New animation object connect to signals
        * for completion.
        */
-      zoom_anim = a;
+      if (current_anim)
+        {
+          g_warning (G_STRLOC " new animation %p while %p still around",
+                     a, current_anim);
 
-      data->zoom_out_cb_id =
+          mutter_plugin_effect_completed (plugin, actor_for_cb,
+                                          MUTTER_PLUGIN_SWITCH_WORKSPACE);
+
+          if (zoom_out_cb_id)
+            {
+              g_signal_handler_disconnect (current_anim, zoom_out_cb_id);
+              zoom_out_cb_id = 0;
+            }
+
+          if (zoom_in_cb_id)
+            {
+              g_signal_handler_disconnect (current_anim, zoom_in_cb_id);
+              zoom_in_cb_id = 0;
+            }
+
+          if (strip_cb_id)
+            {
+              g_signal_handler_disconnect (current_anim, strip_cb_id);
+              strip_cb_id = 0;
+            }
+        }
+
+      current_anim = a;
+
+      zoom_out_cb_id =
         g_signal_connect_after (a, "completed",
                                 G_CALLBACK (on_zoom_out_animation_completed),
-                                data);
+                                NULL);
     }
   else
     {
       /*
        * The animation was restarted, make appropriate changes.
+       *
+       * First we need to signal to the plugin that the original effect is
+       * finished, otherwise the switch_workspace counter in mutter-moblin
+       * will just grow and grow.
        */
+      mutter_plugin_effect_completed (plugin, actor_for_cb,
+                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+
       current_to = to;
       current_from = from;
 
@@ -358,11 +378,24 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
            */
           estage = MNBZE_ZOOM_OUT;
 
-          clutter_actor_animate (frame, CLUTTER_LINEAR,
-                                 MNBZE_ZOOM_OUT_DURATION,
-                                 "scale-x", target_scale_x,
-                                 "scale-y", target_scale_y,
-                                 NULL);
+          if (zoom_in_cb_id)
+            {
+              g_signal_handler_disconnect (a, zoom_in_cb_id);
+              zoom_in_cb_id = 0;
+            }
+
+          a = clutter_actor_animate (frame, CLUTTER_LINEAR,
+                                     MNBZE_ZOOM_OUT_DURATION,
+                                     "scale-x", target_scale_x,
+                                     "scale-y", target_scale_y,
+                                     NULL);
+
+          current_anim = a;
+
+          zoom_out_cb_id =
+            g_signal_connect_after (a, "completed",
+                                    G_CALLBACK (on_zoom_out_animation_completed),
+                                    NULL);
           break;
         case MNBZE_ZOOM_OUT:
           /*
@@ -373,19 +406,17 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
           /*
            * Change the running motion interaction.
            */
-          estage = MNBZE_MOTION;
+          a = clutter_actor_animate (strip, CLUTTER_LINEAR,
+                                     MNBZE_MOTION_DURATION,
+                                     "x",
+                                     (gfloat)(-MNBZE_PAD
+                                        -((screen_width + MNBZE_PAD)*current_to)),
+                                     NULL);
 
-          clutter_actor_animate (strip, CLUTTER_LINEAR,
-                                 MNBZE_MOTION_DURATION,
-                                 "x",
-                                 (gfloat)(-MNBZE_PAD
-                                          -((screen_width + MNBZE_PAD)*current_to)),
-                                 NULL);
+          current_anim = a;
           break;
         }
     }
-
-  estage = MNBZE_ZOOM_OUT;
 }
 
 /*
