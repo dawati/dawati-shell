@@ -68,7 +68,10 @@ GType mnb_switcher_get_type (void);
 
 NbtkWidget* mnb_switcher_new (MutterPlugin *plugin);
 
-void        mnb_switcher_meta_window_focus_cb (MetaWindow *mw, gpointer data);
+void        mnb_switcher_focus_window_cb (MetaDisplay *display,
+                                          GParamSpec  *pspec,
+                                          gpointer     data);
+
 void        mnb_switcher_meta_window_weak_ref_cb (gpointer data, GObject *mw);
 
 /*

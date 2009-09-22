@@ -1028,11 +1028,18 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
    */
   if (index == SPACES_ZONE)
     {
+      MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+      MetaDisplay *display = meta_screen_get_display (screen);
+
       panel = priv->panels[index] = mnb_switcher_new (plugin);
 
       g_signal_connect (panel, "show-completed",
                         G_CALLBACK(mnb_toolbar_dropdown_show_completed_full_cb),
                         toolbar);
+
+      g_signal_connect (display, "notify::focus-window",
+                        G_CALLBACK (mnb_switcher_focus_window_cb),
+                        panel);
     }
 
   if (!panel)

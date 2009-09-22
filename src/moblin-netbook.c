@@ -1413,19 +1413,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       g_signal_connect (mw, "workspace-changed",
                         G_CALLBACK (meta_window_workspace_changed_cb),
                         plugin);
-
-      if (type == META_COMP_WINDOW_NORMAL)
-        {
-          g_signal_connect (mw, "focus",
-                            G_CALLBACK (mnb_switcher_meta_window_focus_cb),
-                            mnb_toolbar_get_switcher (MNB_TOOLBAR (
-                                                              priv->toolbar)));
-
-          g_object_weak_ref (G_OBJECT (mw),
-                             mnb_switcher_meta_window_weak_ref_cb,
-                             mnb_toolbar_get_switcher (MNB_TOOLBAR (
-                                                              priv->toolbar)));
-        }
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);

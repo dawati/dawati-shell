@@ -1009,15 +1009,46 @@ mnb_switcher_advance (MnbSwitcher *switcher, gboolean backward)
  * (e.g., for fast Alt+Tab switching without the Switcher.
  */
 void
-mnb_switcher_meta_window_focus_cb (MetaWindow *mw, gpointer data)
+mnb_switcher_focus_window_cb (MetaDisplay *display,
+                              GParamSpec  *pspec,
+                              gpointer     data)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
+  MetaWindow         *mw = meta_display_get_focus_window (display);
+  MutterWindow       *mcw;
+  MetaCompWindowType  type;
+  gboolean            interested = FALSE;
 
-  /*
-   * Push to the top of the global tablist.
-   */
-  priv->global_tab_list = g_list_remove (priv->global_tab_list, mw);
-  priv->global_tab_list = g_list_prepend (priv->global_tab_list, mw);
+  if (!mw)
+    return;
+
+  mcw  = (MutterWindow*) meta_window_get_compositor_private (mw);
+  type = mutter_window_get_window_type (mcw);
+
+  if (type == META_COMP_WINDOW_NORMAL)
+    {
+      interested = TRUE;
+    }
+  else if (type == META_COMP_WINDOW_DIALOG)
+    {
+      MetaWindow *parent = meta_window_find_root_ancestor (mw);
+
+      if (parent == mw)
+        interested = TRUE;
+    }
+
+  if (interested)
+    {
+      g_object_weak_ref (G_OBJECT (mw),
+                         mnb_switcher_meta_window_weak_ref_cb,
+                         data);
+
+      /*
+       * Push to the top of the global tablist.
+       */
+      priv->global_tab_list = g_list_remove (priv->global_tab_list, mw);
+      priv->global_tab_list = g_list_prepend (priv->global_tab_list, mw);
+    }
 }
 
 void
