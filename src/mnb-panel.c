@@ -233,8 +233,8 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
   if (!priv->window)
     return;
 
-  g_debug (G_STRLOC " Got size change on Panel %s",
-           mnb_panel_get_name (panel));
+  g_debug (G_STRLOC " Got size change on Panel %s to %dx%d",
+           mnb_panel_get_name (panel), width, height);
 
   /*
    * Resize our top-level window to match.
