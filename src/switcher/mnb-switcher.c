@@ -139,8 +139,7 @@ mnb_switcher_enable_new_workspace (MnbSwitcher *switcher, MnbSwitcherZone *zone)
  * Disable the new Zone as a drag target.
  */
 static void
-mnb_switcher_disable_new_workspace (MnbSwitcher     *switcher,
-                                    MnbSwitcherZone *zone)
+mnb_switcher_disable_new_workspace (MnbSwitcher *switcher)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
   MnbSwitcherZone    *new_ws = priv->new_zone;
@@ -175,7 +174,7 @@ mnb_switcher_dnd_ended (MnbSwitcher *switcher, MnbSwitcherZone *zone)
   priv->dnd_in_progress = FALSE;
 
   if (zone != priv->new_zone)
-    mnb_switcher_disable_new_workspace (switcher, zone);
+    mnb_switcher_disable_new_workspace (switcher);
 }
 
 /*

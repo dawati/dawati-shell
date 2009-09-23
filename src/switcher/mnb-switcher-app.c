@@ -122,6 +122,14 @@ clone_weak_ref_cb (gpointer data, GObject *object)
 }
 
 static void
+mnb_switcher_app_orig_zone_weak_notify (gpointer data, GObject *object)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (data)->priv;
+
+  priv->orig_zone = NULL;
+}
+
+static void
 mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
                              gfloat               event_x,
                              gfloat               event_y,
@@ -168,6 +176,9 @@ mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
   clutter_container_child_get (CLUTTER_CONTAINER (parent), self,
                                "col", &col,
                                "row", &row, NULL);
+
+  g_object_weak_ref (G_OBJECT (zone), mnb_switcher_app_orig_zone_weak_notify,
+                     self);
 
   priv->orig_parent = parent;
   priv->orig_zone = zone;
@@ -241,6 +252,11 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
   clone = priv->clone;
   priv->clone = NULL;
 
+  if (priv->orig_zone)
+    g_object_weak_unref (G_OBJECT (priv->orig_zone),
+                         mnb_switcher_app_orig_zone_weak_notify,
+                         self);
+
   /*
    * Signal switcher the d&d is now over.
    */
@@ -270,7 +286,8 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
                                    "y-fill", FALSE,
                                    "x-fill", FALSE,  NULL);
 
-      mnb_switcher_zone_reset_state (MNB_SWITCHER_ZONE (priv->orig_zone));
+      if (priv->orig_zone)
+        mnb_switcher_zone_reset_state (MNB_SWITCHER_ZONE (priv->orig_zone));
 
       g_object_unref (self);
     }
@@ -280,7 +297,8 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
        * In case of successful drop, if we are the active item, we need to mark
        * the original zone as no longer active.
        */
-      if (mnb_switcher_item_is_active (MNB_SWITCHER_ITEM (self)))
+      if (priv->orig_zone &&
+          mnb_switcher_item_is_active (MNB_SWITCHER_ITEM (self)))
         mnb_switcher_zone_set_active (MNB_SWITCHER_ZONE (priv->orig_zone), FALSE);
     }
 
