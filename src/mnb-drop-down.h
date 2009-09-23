@@ -29,7 +29,12 @@
 #include <nbtk/nbtk.h>
 #include "moblin-netbook.h"
 
-#define MNB_DROP_DOWN_TOP_PADDING 4
+/*
+ * These must match the assets !
+ */
+#define MNB_DROP_DOWN_TOP_PADDING    4
+#define MNB_DROP_DOWN_SHADOW_HEIGHT 37
+
 G_BEGIN_DECLS
 
 /* useful macro, probably ought to be defined somewhere more generic */

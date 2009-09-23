@@ -205,10 +205,11 @@ mnb_drop_down_ensure_size (MnbDropDown *self)
 
           /*
            * inner height is height of the dropdown child, i.e., the max height
-           * minus the height of the shadow (37), minus the height of the footer
+           * minus the height of the shadow, minus the height of the footer
            * (half toolbar height), minus the y padding in the panel.
            */
-          max_inner_height = max_height - 37 - TOOLBAR_HEIGHT/2 - 4;
+          max_inner_height = max_height - MNB_DROP_DOWN_SHADOW_HEIGHT -
+            TOOLBAR_HEIGHT/2 - 4;
 
           /*
            * We have to test the size of the child here, as the external size

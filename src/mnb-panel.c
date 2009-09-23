@@ -1021,7 +1021,7 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
 {
   MnbPanelPrivate *priv = panel->priv;
   gfloat x, y, w, h;
-  gint   wi, hi;
+  gint   wi, hi, hfi;
 
   /*
    * Exit if no change
@@ -1034,10 +1034,20 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
   mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (panel), &x, &y, &w, &h);
 
   /*
+   * Hack: the footer geometry API for some reason returns 0 the first time
+   * we try to show the panel. Probably the panel is not yet fully setup. As
+   * a quick fix, fallback to the default size here, if that happens.
+   */
+  hfi = (gint) h;
+
+  if (!hfi)
+    hfi = TOOLBAR_HEIGHT/2;
+
+  /*
    * FIXME -- the border and shaddow should not be hardcoded here.
    */
   wi = width - 2 * 4;
-  hi = height - (gint) h - 4 - 37;
+  hi = height - hfi - MNB_DROP_DOWN_TOP_PADDING - MNB_DROP_DOWN_SHADOW_HEIGHT;
 
   if (wi < 0)
     wi = 0;
