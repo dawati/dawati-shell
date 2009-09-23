@@ -167,7 +167,6 @@ main (int    argc,
                         "set-size",
                         (GCallback) _client_set_size_cb,
                         applet);
-      mpl_panel_client_set_height_request (panel_client, 450);
       window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
       gtk_container_add (GTK_CONTAINER (window), pane);
 
