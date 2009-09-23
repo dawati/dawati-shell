@@ -181,7 +181,8 @@ mnb_drop_down_ensure_size (MnbDropDown *self)
       if (workspace)
         {
           gfloat x, y, w, h, wc, hc;
-          gint   xi, yi, wi, hi, wci, hci, max_height, max_inner_height;
+          gint   xi, yi, wi, hi, wci, hci;
+          gint   max_height, max_inner_height, inner_width;
 
           meta_workspace_get_work_area_all_monitors (workspace, &r);
 
@@ -211,6 +212,8 @@ mnb_drop_down_ensure_size (MnbDropDown *self)
           max_inner_height = max_height - MNB_DROP_DOWN_SHADOW_HEIGHT -
             TOOLBAR_HEIGHT/2 - 4;
 
+          inner_width = r.width - TOOLBAR_X_PADDING * 2;
+
           /*
            * We have to test the size of the child here, as the external size
            * might not be correct (e.g., when initially showing the Switcher the
@@ -228,12 +231,13 @@ mnb_drop_down_ensure_size (MnbDropDown *self)
            * allowable height, and if the panel client asked for height lesser
            * than this, the original height request will be respected.
            */
-          if (max_inner_height != hci)
+          if (max_inner_height != hci || inner_width != wci)
             {
               if (MNB_IS_PANEL (actor))
-                mnb_panel_set_size ((MnbPanel*)actor, (guint) wi, max_height);
+                mnb_panel_set_size ((MnbPanel*)actor, r.width, max_height);
               else if (MNB_IS_SWITCHER (actor))
-                clutter_actor_set_size (priv->child, wc, max_inner_height);
+                clutter_actor_set_size (priv->child, inner_width,
+                                        max_inner_height);
               else
                 clutter_actor_set_size (actor, w, (gfloat) max_height);
             }

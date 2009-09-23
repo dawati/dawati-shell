@@ -42,6 +42,7 @@
 #define MAX_WORKSPACES 8
 
 #define TOOLBAR_HEIGHT 64
+#define TOOLBAR_X_PADDING 4
 
 #define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
 #define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
