@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:03+0000\n"
-"PO-Revision-Date: 2009-09-18 23:19+0200\n"
+"POT-Creation-Date: 2009-09-22 04:26+0000\n"
+"PO-Revision-Date: 2009-09-24 22:59+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -17,10 +17,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #.
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#.
+#: ../carrick/carrick-list.c:859
+msgid ""
+"Sorry, we can't find any networks. It appears that the ConnMan daemon is not "
+"running. You could try re-starting your netbook."
+msgstr ""
+"Impossibile trovare alcuna rete. Il gestore della connessione non sembra "
+"essere in esecuzione: provare a riavviare il computer."
+
+#.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
-#: ../carrick/carrick-list.c:857
+#: ../carrick/carrick-list.c:869
 msgid ""
 "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr ""
@@ -31,7 +44,7 @@ msgstr ""
 #. * Hint to display if we detect that wifi has been turned off
 #. * and there are no available networks
 #.
-#: ../carrick/carrick-list.c:873
+#: ../carrick/carrick-list.c:885
 msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 msgstr ""
 "Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
@@ -42,7 +55,7 @@ msgstr ""
 #. * WiMAX has been turned off and there are no available
 #. * networks
 #.
-#: ../carrick/carrick-list.c:884
+#: ../carrick/carrick-list.c:896
 msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
 msgstr ""
 "Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
@@ -53,7 +66,7 @@ msgstr ""
 #. * 3G has been turned off and there are no available
 #. * networks
 #.
-#: ../carrick/carrick-list.c:895
+#: ../carrick/carrick-list.c:907
 msgid "Sorry, we can't find any networks. You could try turning on 3G."
 msgstr ""
 "Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete 3G."
@@ -62,7 +75,7 @@ msgstr ""
 #. * Hint to display if we detect that wifi, wimax, and 3G are on but
 #. * bluetooth has been turned off and there are no available networks
 #.
-#: ../carrick/carrick-list.c:905
+#: ../carrick/carrick-list.c:917
 msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
 msgstr ""
 "Impossibile trovare alcuna rete. È possibile provare ad abilitare il "
@@ -73,7 +86,7 @@ msgstr ""
 #. * other then ethernet have been turned on, and there
 #. * are no available networks
 #.
-#: ../carrick/carrick-list.c:916
+#: ../carrick/carrick-list.c:928
 msgid "Sorry, we can't find any networks. You could try turning on Wired."
 msgstr ""
 "Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
@@ -84,7 +97,7 @@ msgstr ""
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
 #.
-#: ../carrick/carrick-list.c:928
+#: ../carrick/carrick-list.c:940
 msgid "Sorry, we can't find any networks"
 msgstr "Impossibile trovare alcuna rete"
 
@@ -170,11 +183,11 @@ msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "La connessione %s è stata persa. Si è ora connessi a una rete %s"
 
-#: ../carrick/carrick-pane.c:648
+#: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
 msgstr "Impostazioni nuova connessione"
 
-#: ../carrick/carrick-pane.c:684
+#: ../carrick/carrick-pane.c:666
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -184,60 +197,61 @@ msgstr ""
 "collegarsi e, se necessario, la\n"
 "password e il tipo di sicurezza."
 
-#: ../carrick/carrick-pane.c:694
+#: ../carrick/carrick-pane.c:676
 msgid "Network name"
 msgstr "Nome della rete"
 
-#: ../carrick/carrick-pane.c:706
+#: ../carrick/carrick-pane.c:688
 msgid "Network security"
 msgstr "Sicurezza della rete"
 
-#: ../carrick/carrick-pane.c:716
+#: ../carrick/carrick-pane.c:698
 msgid "None"
 msgstr "Nessuna"
 
-#: ../carrick/carrick-pane.c:730
+#: ../carrick/carrick-pane.c:712
 msgid "Password"
 msgstr "Password"
 
-#: ../carrick/carrick-pane.c:745 ../carrick/carrick-service-item.c:1144
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1144
 msgid "Show password"
 msgstr "Mostrare password"
 
-#: ../carrick/carrick-pane.c:1249
+#: ../carrick/carrick-pane.c:1380
 msgid "Networks"
 msgstr "Reti"
 
 # (ndt) pulsante
-#: ../carrick/carrick-pane.c:1293
+#. New connection button
+#: ../carrick/carrick-pane.c:1404
 msgid "Add new connection"
 msgstr "Aggiungi nuova connessione"
 
-#: ../carrick/carrick-pane.c:1320
+#: ../carrick/carrick-pane.c:1445
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-pane.c:1352 ../carrick/carrick-service-item.c:220
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:220
 msgid "Wired"
 msgstr "Cablata"
 
-#: ../carrick/carrick-pane.c:1383
+#: ../carrick/carrick-pane.c:1508
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-pane.c:1414
+#: ../carrick/carrick-pane.c:1539
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-pane.c:1446
+#: ../carrick/carrick-pane.c:1571
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../carrick/carrick-pane.c:1492
+#: ../carrick/carrick-pane.c:1615
 msgid "Offline mode"
 msgstr "Modalità fuori rete"
 
-#: ../carrick/carrick-pane.c:1517
+#: ../carrick/carrick-pane.c:1640
 msgid "This will disable all your connections"
 msgstr "Disabilita tutte le connessioni"
 
@@ -376,13 +390,6 @@ msgstr "- Applet di connettività Moblin"
 msgid "network"
 msgstr "rete"
 
-#~ msgid ""
-#~ "Sorry, we can't find any networks. The Connection Manager doesn't seem to "
-#~ "be running. You may want to try re-starting your device."
-#~ msgstr ""
-#~ "Impossibile trovare alcuna rete. Il gestore della connessione non sembra "
-#~ "essere in esecuzione: provare a riavviare il dispositivo."
-
 #~ msgid "Sorry, we can't find any networks. "
 #~ msgstr "Impossibile trovare alcuna rete."
 
@@ -449,3 +456,10 @@ msgstr "rete"
 
 #~ msgid "Please enter the password for this network:"
 #~ msgstr "Inserire la password per questa rete:"
+
+#~ msgid ""
+#~ "Sorry, we can't find any networks. The Connection Manager doesn't seem to "
+#~ "be running. You may want to try re-starting your device."
+#~ msgstr ""
+#~ "Impossibile trovare alcuna rete. Il gestore della connessione non sembra "
+#~ "essere in esecuzione: provare a riavviare il dispositivo."
