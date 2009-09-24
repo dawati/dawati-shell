@@ -133,6 +133,26 @@ mpl_panel_gtk_embedded_cb (GtkWidget *widget, GParamSpec *pspec, gpointer data)
     gtk_widget_hide (widget);
 }
 
+/*
+ * The size of the plug and the size of the backing X window tends to get
+ * out of sync (MB#6246), so when the socket is resized, force the size on the
+ * backing window.
+ */
+static void
+mpl_panel_gtk_size_allocate_cb (GtkWidget     *widget,
+                                GtkAllocation *allocation,
+                                gpointer       data)
+{
+  g_debug ("Plug allocated %d,%d;%dx%d.",
+           allocation->x,
+           allocation->y,
+           allocation->width,
+           allocation->height);
+
+  if (widget->window)
+    gdk_window_resize (widget->window, allocation->width, allocation->height);
+}
+
 static void
 mpl_panel_gtk_constructed (GObject *self)
 {
@@ -151,6 +171,9 @@ mpl_panel_gtk_constructed (GObject *self)
 
   g_signal_connect (window, "notify::embedded",
                     G_CALLBACK (mpl_panel_gtk_embedded_cb), self);
+
+  g_signal_connect (window, "size-allocate",
+                    G_CALLBACK (mpl_panel_gtk_size_allocate_cb), self);
 
   g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
 }
