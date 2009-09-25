@@ -822,7 +822,8 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 
 static void
 check_for_empty_workspace (MutterPlugin *plugin,
-                           gint workspace, MetaWindow *ignore)
+                           gint workspace, MetaWindow *ignore,
+                           gboolean win_destroyed)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
@@ -845,10 +846,11 @@ check_for_empty_workspace (MutterPlugin *plugin,
       MetaWindow   *mw = mutter_window_get_meta_window (m);
 
       /*
-       * We need to check this window is not the window we are too ignore, and
-       * also not transient (e.g., dialog) of the window we are to ignore
-       * (because when a window is moved to a different workspace, the WM
-       * automatically moves its transients too).
+       * We need to check this window is not the window we are too ignore. If
+       * the ingore window was not destroyed (i.e., it was moved to a different
+       * workspace, we have to ignore its transients in the test, (because when
+       * a window is moved to a different workspace, the WM automatically moves
+       * its transients too).
        *
        * We skip over windows that are on all workspaces (they are irrelevant
        * for our purposes, and also because their workspace is the active
@@ -858,7 +860,7 @@ check_for_empty_workspace (MutterPlugin *plugin,
        */
       if (mw != ignore &&
           !meta_window_is_on_all_workspaces (mw) &&
-          !meta_window_is_ancestor_of_transient (ignore, mw))
+          (win_destroyed || !meta_window_is_ancestor_of_transient (ignore, mw)))
         {
           /* g_debug ("querying workspace for [%s]", */
           /*          mutter_window_get_description (m)); */
@@ -998,7 +1000,7 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
    */
   meta_window_calc_showing (mw);
 
-  check_for_empty_workspace (plugin, old_workspace, mw);
+  check_for_empty_workspace (plugin, old_workspace, mw, FALSE);
 }
 
 static void
@@ -1452,7 +1454,7 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
                * punishment for unmapping its window when getting minimized into
                * tray).
                */
-              check_for_empty_workspace (plugin, workspace, meta_win);
+              check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
               mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 
               kill (pid, SIGKILL);
@@ -1495,7 +1497,7 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
    *     workspace switch effect will crash.
    */
   if (type != META_COMP_WINDOW_SPLASHSCREEN)
-    check_for_empty_workspace (plugin, workspace, meta_win);
+    check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
 
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
