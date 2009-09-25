@@ -55,4 +55,4 @@ msgstr "Moblin różni się od innych komputerów w paru aspektach, pozbieraliś
 # I'm really unhappy with this one but can't think of anything better
 #: ../penge/penge-welcome-tile.c:88
 msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Witamy na Moblinie 2.1 dla netbooków</b>"
+msgstr "<b>Witamy w Moblinie 2.1 dla netbooków</b>"
