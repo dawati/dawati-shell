@@ -33,7 +33,7 @@
  * These must match the assets !
  */
 #define MNB_DROP_DOWN_TOP_PADDING    4
-#define MNB_DROP_DOWN_SHADOW_HEIGHT 37
+#define MNB_DROP_DOWN_SHADOW_HEIGHT 18
 
 G_BEGIN_DECLS
 
