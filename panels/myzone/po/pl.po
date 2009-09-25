@@ -2,12 +2,12 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-12 09:21+0000\n"
+"POT-Creation-Date: 2009-09-21 07:40+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
 "Language-Team: Moblin\n"
@@ -23,32 +23,23 @@ msgstr ""
 # <b>Grafik</b>
 # <b>Terminarz</b>
 # <b>Plany</b>
-#: ../penge/penge-calendar-pane.c:207
+#: ../penge/penge-calendar-pane.c:478
 msgid "<b>Appointments</b>"
 msgstr "<b>Zaplanowane</b>"
 
-#: ../penge/penge-events-pane.c:208
+#: ../penge/penge-events-pane.c:265
 msgid "No calendar entries this week"
 msgstr "Brak wpisów w kalendarzu na ten tydzień"
 
-#: ../penge/penge-people-pane.c:191
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 msgstr "Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj Twoje konta!"
 
-# I'm really unhappy with this one but can't think of anything better
-#: ../penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>Witamy na Moblinie 2.0 na netbooki</b>"
-
-#: ../penge/penge-recent-files-pane.c:227
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Moblin różni się od innych komputerów w paru aspektach, pozbieraliśmy więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team Moblin"
-
-#: ../penge/penge-recent-file-tile.c:218
+#: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "Strona"
 
-#: ../penge/penge-tasks-pane.c:287
+#: ../penge/penge-tasks-pane.c:344
 msgid "Nothing to do today"
 msgstr "Brak zadań na dziś"
 
@@ -57,3 +48,11 @@ msgstr "Brak zadań na dziś"
 msgid "Due %x"
 msgstr "Na %x"
 
+#: ../penge/penge-welcome-tile.c:108
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Moblin różni się od innych komputerów w paru aspektach, pozbieraliśmy więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team Moblin"
+
+# I'm really unhappy with this one but can't think of anything better
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Witamy na Moblinie 2.1 dla netbooków</b>"
