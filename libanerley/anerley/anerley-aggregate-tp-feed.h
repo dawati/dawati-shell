@@ -25,7 +25,6 @@
 
 #include <glib-object.h>
 #include <anerley/anerley-aggregate-feed.h>
-#include <libmissioncontrol/mission-control.h>
 
 G_BEGIN_DECLS
 
@@ -56,7 +55,7 @@ typedef struct {
 
 GType anerley_aggregate_tp_feed_get_type (void);
 
-AnerleyFeed *anerley_aggregate_tp_feed_new (MissionControl *mc);
+AnerleyFeed *anerley_aggregate_tp_feed_new (void);
 
 G_END_DECLS
 
