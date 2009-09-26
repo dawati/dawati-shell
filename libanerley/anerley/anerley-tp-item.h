@@ -25,6 +25,7 @@
 
 #include <glib-object.h>
 #include <anerley/anerley-item.h>
+#include <telepathy-glib/account.h>
 #include <telepathy-glib/contact.h>
 
 G_BEGIN_DECLS
@@ -59,8 +60,7 @@ typedef struct {
 
 GType anerley_tp_item_get_type (void);
 
-AnerleyTpItem *anerley_tp_item_new (MissionControl *mc,
-                                    McAccount      *account,
+AnerleyTpItem *anerley_tp_item_new (TpAccount      *account,
                                     TpContact      *contact);
 void anerley_tp_item_set_avatar_path (AnerleyTpItem *item,
                                       const gchar   *avatar_path);
