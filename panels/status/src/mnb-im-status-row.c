@@ -25,9 +25,14 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 
-#include "penge-magic-texture.h"
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include <libmissioncontrol/mission-control.h>
+#include <clutter-gtk/clutter-gtk.h>
+
+#include <telepathy-glib/account-manager.h>
+#include <telepathy-glib/enums.h>
+
+#include "penge-magic-texture.h"
 
 #include "mnb-im-status-row.h"
 #include "mnb-status-marshal.h"
@@ -65,7 +70,7 @@ struct _MnbIMStatusRowPrivate
   guint is_online   : 1;
   guint is_expanded : 1;
 
-  McAccount *account;
+  TpAccount *account;
 
   TpConnectionPresenceType presence;
   gchar *status;
@@ -588,18 +593,82 @@ mnb_im_status_row_get_property (GObject    *gobject,
 }
 
 static void
-mnb_im_status_row_constructed (GObject *gobject)
+_account_got_avatar_cb (GObject      *source_object,
+                        GAsyncResult *result,
+                        gpointer      userdata)
 {
-  MnbIMStatusRow *row = MNB_IM_STATUS_ROW (gobject);
+  TpAccount *account = TP_ACCOUNT (source_object);
+  MnbIMStatusRow *row = MNB_IM_STATUS_ROW (userdata);
+  MnbIMStatusRowPrivate *priv = row->priv;
+  const GArray *avatar;
+  GError *error = NULL;
+  GdkPixbufLoader *loader = NULL;
+  gboolean avatar_set = FALSE;
+
+  avatar = tp_account_get_avatar_finish (account, result, &error);
+
+  if (avatar != NULL && avatar->len > 0)
+    {
+      GdkPixbuf *pixbuf;
+
+      loader = gdk_pixbuf_loader_new ();
+      if (!gdk_pixbuf_loader_write (loader, avatar->data, avatar->len, &error))
+        goto error;
+
+      if (!gdk_pixbuf_loader_close (loader, &error))
+        goto error;
+
+      pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+
+      if (!gtk_clutter_texture_set_from_pixbuf (CLUTTER_TEXTURE (priv->user_icon),
+                                                pixbuf, &error))
+        goto error;
+
+      avatar_set = TRUE;
+    }
+
+error:
+  if (error)
+    {
+      g_warning ("Unable to load avatar image: %s", error->message);
+      g_error_free (error);
+    }
+
+  if (!avatar_set)
+    {
+      clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), FALSE);
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
+                                     priv->no_icon_file,
+                                     NULL);
+    }
+
+  if (loader != NULL)
+    g_object_unref (loader);
+}
+
+static void
+_account_manager_ready_cb (GObject      *source_object,
+                           GAsyncResult *result,
+                           gpointer      userdata)
+{
+  TpAccountManager *account_manager = TP_ACCOUNT_MANAGER (source_object);
+  MnbIMStatusRow *row = userdata;
   MnbIMStatusRowPrivate *priv = row->priv;
   gchar *name;
+  GError *error = NULL;
 
-  g_assert (priv->account_name != NULL);
+  if (!tp_account_manager_prepare_finish (account_manager, result, &error))
+  {
+    g_warning ("Failed to prepare account manager: %s", error->message);
+    g_error_free (error);
+    return;
+  }
 
-  priv->account = mc_account_lookup (priv->account_name);
+  priv->account = tp_account_manager_ensure_account (account_manager,
+                                                     priv->account_name);
 
   if (priv->display_name == NULL)
-    priv->display_name = g_strdup (mc_account_get_display_name (priv->account));
+    priv->display_name = g_strdup (tp_account_get_display_name (priv->account));
 
   priv->is_online = FALSE;
 
@@ -607,27 +676,24 @@ mnb_im_status_row_constructed (GObject *gobject)
   nbtk_label_set_text (NBTK_LABEL (priv->account_label), name);
   g_free (name);
 
-  if (mc_account_get_avatar (priv->account, &name, NULL, NULL))
-    {
-      GError *error = NULL;
+  tp_account_get_avatar_async (priv->account, _account_got_avatar_cb, row);
 
-      clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), TRUE);
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
-                                     name,
-                                     &error);
-      if (error)
-        {
-          g_warning ("Unable to load avatar image: %s", error->message);
-          g_error_free (error);
+  g_object_unref (account_manager);
+}
 
-          clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), FALSE);
-          clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
-                                         priv->no_icon_file,
-                                         NULL);
-        }
+static void
+mnb_im_status_row_constructed (GObject *gobject)
+{
+  MnbIMStatusRow *row = MNB_IM_STATUS_ROW (gobject);
+  MnbIMStatusRowPrivate *priv = row->priv;
+  TpAccountManager *account_manager;
 
-      g_free (name);
-    }
+  g_assert (priv->account_name != NULL);
+
+  account_manager = tp_account_manager_dup ();
+
+  tp_account_manager_prepare_async (account_manager, NULL,
+                                    _account_manager_ready_cb, row);
 
   if (G_OBJECT_CLASS (mnb_im_status_row_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_im_status_row_parent_class)->constructed (gobject);
@@ -657,14 +723,14 @@ mnb_im_status_row_class_init (MnbIMStatusRowClass *klass)
 
   pspec = g_param_spec_string ("account-name",
                                "Account Name",
-                               "The unique name of the MissionControl account",
+                               "The unique name of the Telepathy account",
                                NULL,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (gobject_class, PROP_ACCOUNT_NAME, pspec);
 
   pspec = g_param_spec_string ("display-name",
                                "Display Name",
-                               "The display name of the MissionControl account",
+                               "The display name of the Telepathy account",
                                NULL,
                                G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_DISPLAY_NAME, pspec);
@@ -675,9 +741,9 @@ mnb_im_status_row_class_init (MnbIMStatusRowClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
-                  mnb_status_marshal_VOID__INT_STRING,
+                  mnb_status_marshal_VOID__UINT_STRING,
                   G_TYPE_NONE, 2,
-                  G_TYPE_INT,
+                  G_TYPE_UINT,
                   G_TYPE_STRING);
 }
 
@@ -948,31 +1014,11 @@ mnb_im_status_row_update (MnbIMStatusRow *row)
   priv = row->priv;
 
   g_free (priv->display_name);
-  priv->display_name = g_strdup (mc_account_get_display_name (priv->account));
+  priv->display_name = g_strdup (tp_account_get_display_name (priv->account));
 
   str = g_strconcat (" - ", priv->display_name, NULL);
   nbtk_label_set_text (NBTK_LABEL (priv->account_label), str);
   g_free (str);
 
-  if (mc_account_get_avatar (priv->account, &name, NULL, NULL))
-    {
-      GError *error = NULL;
-
-      clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), TRUE);
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
-                                     name,
-                                     &error);
-      if (error)
-        {
-          g_warning ("Unable to load avatar image: %s", error->message);
-          g_error_free (error);
-
-          clutter_texture_set_load_async (CLUTTER_TEXTURE (priv->user_icon), FALSE);
-          clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->user_icon),
-                                         priv->no_icon_file,
-                                         NULL);
-        }
-
-      g_free (name);
-    }
+  tp_account_get_avatar_async (priv->account, _account_got_avatar_cb, row);
 }
