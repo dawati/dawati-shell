@@ -1,9 +1,9 @@
 noinst_PROGRAMS = test-tp-feed test-simple-grid-view test-tile-view test-aggregate-tp-feed test-simple-ui
 
-AM_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) $(NBTK_CFLAGS) \
+AM_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(NBTK_CFLAGS) \
 	    -I$(top_srcdir) \
 	    -DPKG_DATA_DIR=\"$(pkgdatadir)\"
-AM_LDFLAGS = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MC_LIBS) $(NBTK_LIBS)
+AM_LDFLAGS = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(NBTK_LIBS)
 
 test_tp_feed_SOURCES = test-tp-feed.c
 test_tp_feed_LDADD = ../anerley/libanerley.la

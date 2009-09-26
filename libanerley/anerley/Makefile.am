@@ -30,10 +30,10 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 libanerley_ladir = $(includedir)/anerley/anerley
 
 libanerley_la_CFLAGS = -I$(top_srcdir) \
-		       $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MC_CFLAGS) \
+		       $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) \
 		       $(NBTK_CFLAGS) $(EBOOK_CFLAGS) \
 		       -DPKG_DATA_DIR=\"$(pkgdatadir)\" \
 		       -D_GNU_SOURCE
-libanerley_la_LIBADD = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MC_LIBS) \
+libanerley_la_LIBADD = $(GLIB_LIBS) $(TELEPATHY_LIBS) \
 		       $(NBTK_LIBS) $(EBOOK_LIBS)
 
