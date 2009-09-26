@@ -37,10 +37,9 @@
 
 #include <mojito-client/mojito-client.h>
 
+#include <telepathy-glib/account-manager.h>
 #include <telepathy-glib/dbus.h>
 #include <telepathy-glib/util.h>
-#include <libmissioncontrol/mission-control.h>
-#include <libmissioncontrol/mc-account-monitor.h>
 
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
@@ -61,9 +60,7 @@ typedef struct _MoblinStatusPanel
   ClutterActor *header_label;
 
   MojitoClient *mojito_client;
-
-  MissionControl *mc;
-  McAccountMonitor *account_monitor;
+  TpAccountManager *account_manager;
 
   GSList *services;
   GSList *accounts;
@@ -100,7 +97,7 @@ typedef struct _AccountInfo
 
   MoblinStatusPanel *panel;
 
-  McAccount *account;
+  TpAccount *account;
   ClutterActor *row;
   ClutterActor *box;
 
@@ -155,14 +152,13 @@ account_find_by_name (MoblinStatusPanel *panel,
 }
 
 static void
-on_row_status_changed (MnbIMStatusRow *row,
-                       gint            presence,
-                       const gchar    *status,
-                       AccountInfo    *a_info)
+on_row_status_changed (MnbIMStatusRow           *row,
+                       TpConnectionPresenceType  presence,
+                       const gchar              *status,
+                       AccountInfo              *a_info)
 {
-  MissionControl *mc = a_info->panel->mc;
-
-  mission_control_set_presence (mc, presence, status, NULL, NULL);
+  tp_account_manager_set_all_requested_presences (a_info->panel->account_manager,
+                                                  presence, status, NULL);
 }
 
 static void
@@ -180,10 +176,11 @@ add_account_row (MoblinStatusPanel *panel,
 }
 
 static void
-on_mc_presence_changed (MissionControl           *mc,
-                        TpConnectionPresenceType  state,
-                        gchar                    *status,
-                        MoblinStatusPanel        *panel)
+on_presence_changed (TpAccountManager         *account_manager,
+                     TpConnectionPresenceType  state,
+                     const gchar              *status,
+                     const gchar              *status_message,
+                     MoblinStatusPanel        *panel)
 {
   const gchar *state_str = NULL;
   GSList *a;
@@ -226,8 +223,8 @@ on_mc_presence_changed (MissionControl           *mc,
     }
 
   g_free (panel->im_status);
-  panel->im_status = ((status != NULL && *status != '\0') ? g_strdup (status)
-                                                          : NULL);
+  panel->im_status = ((status_message != NULL && *status_message != '\0') ? g_strdup (status_message)
+                                                                          : NULL);
 
   g_debug ("%s: PresenceChanged ['%s'[%d], '%s']",
            G_STRLOC,
@@ -474,82 +471,42 @@ update_header (NbtkLabel *header,
 }
 
 static void
-update_mc (MoblinStatusPanel *panel,
-           gboolean           is_online)
+update_im_status (MoblinStatusPanel *panel,
+                  gboolean           is_online)
 {
-  McPresence cur_state, mc_state = MC_PRESENCE_UNSET;
-  const gchar *mc_status = NULL;
+  TpConnectionPresenceType cur_state, actual_state = TP_CONNECTION_PRESENCE_TYPE_UNSET;
+  gchar *actual_status = NULL;
   const gchar *state_str = NULL;
   GError *error = NULL;
 
-  switch (panel->im_presence)
-    {
-    case TP_CONNECTION_PRESENCE_TYPE_OFFLINE:
-      cur_state = MC_PRESENCE_OFFLINE;
-      break;
+  cur_state = panel->im_presence;
 
-    case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
-      cur_state = MC_PRESENCE_AVAILABLE;
-      break;
-
-    case TP_CONNECTION_PRESENCE_TYPE_AWAY:
-      cur_state = MC_PRESENCE_AWAY;
-      break;
-
-    case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
-      cur_state = MC_PRESENCE_EXTENDED_AWAY;
-      break;
-
-    case TP_CONNECTION_PRESENCE_TYPE_HIDDEN:
-      cur_state = MC_PRESENCE_HIDDEN;
-      break;
-
-    case TP_CONNECTION_PRESENCE_TYPE_BUSY:
-      cur_state = MC_PRESENCE_DO_NOT_DISTURB;
-      break;
-
-    default:
-      cur_state = MC_PRESENCE_UNSET;
-      break;
-    }
-
-  mc_state = mission_control_get_presence_actual (panel->mc, &error);
-  if (error)
-    {
-      g_warning ("Unable to get the actual presence: %s", error->message);
-      g_clear_error (&error);
-
-      mc_state = MC_PRESENCE_UNSET;
-    }
-
-  mc_status = mission_control_get_presence_message_actual (panel->mc, &error);
-  if (error)
-    {
-      g_warning ("Unable to get the actual status: %s", error->message);
-      g_clear_error (&error);
-
-      mc_status = NULL;
-    }
+  actual_state = tp_account_manager_get_most_available_presence (panel->account_manager,
+                                                                 NULL, &actual_status);
 
   switch (cur_state)
     {
-    case MC_PRESENCE_AVAILABLE:
+    case TP_CONNECTION_PRESENCE_TYPE_OFFLINE:
+      state_str = _("Offline");
+      break;
+
+    case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
       state_str = _("Available");
       break;
 
-    case MC_PRESENCE_AWAY:
+    case TP_CONNECTION_PRESENCE_TYPE_AWAY:
       state_str = _("Away");
       break;
 
-    case MC_PRESENCE_EXTENDED_AWAY:
+    case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
       state_str = _("Away");
       break;
 
-    case MC_PRESENCE_HIDDEN:
+    case TP_CONNECTION_PRESENCE_TYPE_HIDDEN:
       state_str = _("Busy");
       break;
 
-    case MC_PRESENCE_DO_NOT_DISTURB:
+    case TP_CONNECTION_PRESENCE_TYPE_BUSY:
       state_str = _("Busy");
       break;
 
@@ -564,35 +521,39 @@ update_mc (MoblinStatusPanel *panel,
   g_debug ("%s: cur_state [%d], mc_state [%d]",
            G_STRLOC,
            cur_state,
-           mc_state);
+           actual_state);
 
-  if (cur_state == MC_PRESENCE_UNSET || cur_state == mc_state)
+  if (cur_state == TP_CONNECTION_PRESENCE_TYPE_UNSET || cur_state == actual_state)
     {
-      on_mc_presence_changed (panel->mc,
-                              panel->im_presence,
-                              (gchar *) state_str,
-                              panel);
+      on_presence_changed (panel->account_manager,
+                           panel->im_presence,
+                           state_str, NULL,
+                           panel);
     }
-  else if (cur_state != mc_state && cur_state == MC_PRESENCE_AVAILABLE)
+  else if (cur_state != actual_state && cur_state == TP_CONNECTION_PRESENCE_TYPE_AVAILABLE)
     {
-      mission_control_set_presence (panel->mc, cur_state, state_str,
-                                    NULL,
-                                    NULL);
+      tp_account_manager_set_all_requested_presences (panel->account_manager,
+                                                      cur_state, NULL, state_str);
     }
   else
     {
-      mission_control_set_presence (panel->mc, mc_state, mc_status,
-                                    NULL,
-                                    NULL);
+      tp_account_manager_set_all_requested_presences (panel->account_manager,
+                                                      actual_state,
+                                                      NULL, actual_status);
     }
+
+  g_free (actual_status);
 }
 
 static void
-on_mc_account_enabled (McAccountMonitor  *monitor,
-                       gchar             *name,
-                       MoblinStatusPanel *panel)
+on_account_enabled (TpAccountManager  *account_manager,
+                    TpAccount         *account,
+                    MoblinStatusPanel *panel)
 {
   AccountInfo *a_info;
+  const gchar *name;
+
+  name = tp_proxy_get_object_path (account);
 
   a_info = account_find_by_name (panel, name);
   if (a_info == NULL)
@@ -600,7 +561,7 @@ on_mc_account_enabled (McAccountMonitor  *monitor,
       a_info = g_slice_new (AccountInfo);
       a_info->name = g_strdup (name);
       a_info->panel = panel;
-      a_info->account = mc_account_lookup (name);
+      a_info->account = g_object_ref (account);
       a_info->row = NULL;
       a_info->box = panel->box;
       a_info->is_visible = FALSE;
@@ -617,15 +578,18 @@ on_mc_account_enabled (McAccountMonitor  *monitor,
 
   clutter_actor_hide (panel->empty_im_bin);
 
-  update_mc (panel, panel->is_online);
+  update_im_status (panel, panel->is_online);
 }
 
 static void
-on_mc_account_disabled (McAccountMonitor  *monitor,
-                        gchar             *name,
-                        MoblinStatusPanel *panel)
+on_account_disabled (TpAccountManager  *account_manager,
+                     TpAccount         *account,
+                     MoblinStatusPanel *panel)
 {
   AccountInfo *a_info;
+  const gchar *name;
+
+  name = tp_proxy_get_object_path (account);
 
   a_info = account_find_by_name (panel, name);
   if (a_info == NULL)
@@ -638,22 +602,7 @@ on_mc_account_disabled (McAccountMonitor  *monitor,
   if (panel->n_im_available == 0)
     clutter_actor_show (panel->empty_im_bin);
 
-  update_mc (panel, panel->is_online);
-}
-
-static void
-on_mc_account_changed (McAccountMonitor  *monitor,
-                       gchar             *name,
-                       MoblinStatusPanel *panel)
-{
-  AccountInfo *a_info;
-
-  a_info = account_find_by_name (panel, name);
-  if (a_info == NULL)
-    return;
-
-  if (a_info->row)
-    mnb_im_status_row_update (MNB_IM_STATUS_ROW (a_info->row));
+  update_im_status (panel, panel->is_online);
 }
 
 static void
@@ -668,25 +617,18 @@ on_mojito_online_changed (MojitoClient      *client,
 
   panel->is_online = is_online;
 
-  /* if we are online but MC reports an unset presence then we
-   * should assume we are offline
-   */
-  if (panel->is_online &&
-      panel->im_presence == TP_CONNECTION_PRESENCE_TYPE_UNSET)
-    {
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_OFFLINE;
-      panel->im_status = NULL;
-    }
-
   cur_accounts = NULL;
-  accounts = mc_accounts_list_by_enabled (TRUE);
+  accounts = tp_account_manager_get_valid_accounts (panel->account_manager);
   for (l = accounts; l != NULL; l = l->next)
     {
-      McAccount *account = l->data;
+      TpAccount *account = l->data;
       AccountInfo *a_info;
       const gchar *name;
 
-      name = mc_account_get_unique_name (account);
+      if (!tp_account_is_enabled (account))
+        continue;
+
+      name = tp_proxy_get_object_path (account);
       if (account_find_by_name (panel, name) != NULL)
         continue;
 
@@ -704,7 +646,7 @@ on_mojito_online_changed (MojitoClient      *client,
       cur_accounts = g_slist_prepend (cur_accounts, a_info);
     }
 
-  mc_accounts_list_free (accounts);
+  g_list_free (accounts);
 
   if (panel->accounts == NULL)
     panel->accounts = g_slist_reverse (cur_accounts);
@@ -726,7 +668,101 @@ on_mojito_online_changed (MojitoClient      *client,
     }
 
   update_header (NBTK_LABEL (panel->header_label), is_online);
-  update_mc (panel, is_online);
+
+  update_im_status (panel, is_online);
+
+}
+
+static void
+on_account_manager_ready (GObject      *source_object,
+                          GAsyncResult *result,
+                          gpointer      userdata)
+{
+  TpAccountManager *account_manager = TP_ACCOUNT_MANAGER (source_object);
+  GList *accounts, *l;
+  GSList *cur_accounts, *a;
+  MoblinStatusPanel *panel = userdata;
+  GError *error = NULL;
+
+  if (!tp_account_manager_prepare_finish (account_manager, result, &error))
+  {
+    g_warning ("Failed to prepare account manager: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  g_debug ("%s: Account manager is ready\n", G_STRLOC);
+
+  /* Get initial presence */
+  g_free (panel->im_status);
+  panel->im_presence = tp_account_manager_get_most_available_presence (account_manager, NULL,
+                                                                       &(panel->im_status));
+
+  if (panel->is_online)
+    {
+      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AVAILABLE;
+      g_free (panel->im_status);
+      panel->im_status = NULL;
+    }
+
+  cur_accounts = NULL;
+  accounts = tp_account_manager_get_valid_accounts (panel->account_manager);
+  for (l = accounts; l != NULL; l = l->next)
+    {
+      TpAccount *account = l->data;
+      AccountInfo *a_info;
+      const gchar *name;
+
+      if (!tp_account_is_enabled (account))
+        continue;
+
+      name = tp_proxy_get_object_path (account);
+      if (account_find_by_name (panel, name) != NULL)
+        continue;
+
+      a_info = g_slice_new (AccountInfo);
+      a_info->name = g_strdup (name);
+      a_info->panel = panel;
+      a_info->account = g_object_ref (account);
+      a_info->row = NULL;
+      a_info->box = panel->box;
+      a_info->is_visible = FALSE;
+      a_info->is_enabled = TRUE;
+
+      add_account_row (panel, a_info);
+
+      cur_accounts = g_slist_prepend (cur_accounts, a_info);
+    }
+
+  g_list_free (accounts);
+
+  if (panel->accounts == NULL)
+    panel->accounts = g_slist_reverse (cur_accounts);
+  else
+    panel->accounts->next = g_slist_reverse (cur_accounts);
+
+  panel->n_im_available = g_slist_length (panel->accounts);
+  if (panel->n_im_available == 0)
+    clutter_actor_show (panel->empty_im_bin);
+  else
+    clutter_actor_hide (panel->empty_im_bin);
+
+  for (a = panel->accounts; a != NULL; a = a->next)
+    {
+      AccountInfo *a_info = a->data;
+
+      mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
+                                    panel->is_online);
+    }
+
+  update_header (NBTK_LABEL (panel->header_label), panel->is_online);
+  update_im_status (panel, panel->is_online);
+
+  /* get notification when the online state changes */
+  g_signal_connect (panel->mojito_client, "online-changed",
+                    G_CALLBACK (on_mojito_online_changed),
+                    panel);
+
 }
 
 static void
@@ -735,73 +771,13 @@ on_mojito_is_online (MojitoClient *client,
                      gpointer      data)
 {
   MoblinStatusPanel *panel = data;
-  GList *accounts, *l;
-  GSList *cur_accounts, *a;
 
   g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
 
   panel->is_online = is_online;
 
-  if (panel->is_online)
-    {
-      panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_AVAILABLE;
-      panel->im_status = NULL;
-    }
-
-  cur_accounts = NULL;
-  accounts = mc_accounts_list_by_enabled (TRUE);
-  for (l = accounts; l != NULL; l = l->next)
-    {
-      McAccount *account = l->data;
-      AccountInfo *a_info;
-      const gchar *name;
-
-      name = mc_account_get_unique_name (account);
-      if (account_find_by_name (panel, name) != NULL)
-        continue;
-
-      a_info = g_slice_new (AccountInfo);
-      a_info->name = g_strdup (name);
-      a_info->panel = panel;
-      a_info->account = g_object_ref (account);
-      a_info->row = NULL;
-      a_info->box = panel->box;
-      a_info->is_visible = FALSE;
-      a_info->is_enabled = TRUE;
-
-      add_account_row (panel, a_info);
-
-      cur_accounts = g_slist_prepend (cur_accounts, a_info);
-    }
-
-  mc_accounts_list_free (accounts);
-
-  if (panel->accounts == NULL)
-    panel->accounts = g_slist_reverse (cur_accounts);
-  else
-    panel->accounts->next = g_slist_reverse (cur_accounts);
-
-  panel->n_im_available = g_slist_length (panel->accounts);
-  if (panel->n_im_available == 0)
-    clutter_actor_show (panel->empty_im_bin);
-  else
-    clutter_actor_hide (panel->empty_im_bin);
-
-  for (a = panel->accounts; a != NULL; a = a->next)
-    {
-      AccountInfo *a_info = a->data;
-
-      mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
-                                    panel->is_online);
-    }
-
-  update_header (NBTK_LABEL (panel->header_label), is_online);
-  update_mc (panel, is_online);
-
-  /* get notification when the online state changes */
-  g_signal_connect (panel->mojito_client, "online-changed",
-                    G_CALLBACK (on_mojito_online_changed),
-                    panel);
+  tp_account_manager_prepare_async (panel->account_manager, NULL,
+                                    on_account_manager_ready, panel);
 }
 
 #if 0
@@ -1044,32 +1020,24 @@ make_status (MoblinStatusPanel *panel)
   nbtk_box_layout_set_vertical (NBTK_BOX_LAYOUT (panel->box), TRUE);
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll), panel->box);
 
-  /* mission control: instant messaging
-   *
-   * we need MC first because the online/offline notification is
-   * managed through Mojito; XXX yes, this is dumb - Moblin needs
+  /*
+   * we need an account manager first because the online/offline notification
+   * is managed through Mojito; XXX yes, this is dumb - Moblin needs
    * a "shell" library that notifies when we're online or offline
    */
-  panel->mc = mission_control_new (tp_get_bus ());
+  panel->account_manager = tp_account_manager_dup ();
   panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_UNSET;
   panel->im_status = NULL;
 
-  panel->account_monitor = mc_account_monitor_new ();
-  g_signal_connect (panel->account_monitor,
-                    "account-enabled", G_CALLBACK (on_mc_account_enabled),
+  g_signal_connect (panel->account_manager,
+                    "account-enabled", G_CALLBACK (on_account_enabled),
                     panel);
-  g_signal_connect (panel->account_monitor,
-                    "account-changed", G_CALLBACK (on_mc_account_changed),
+  g_signal_connect (panel->account_manager,
+                    "account-disabled", G_CALLBACK (on_account_disabled),
                     panel);
-  g_signal_connect (panel->account_monitor,
-                    "account-disabled", G_CALLBACK (on_mc_account_disabled),
-                    panel);
-
-  /* update the status when the presence changes */
-  dbus_g_proxy_connect_signal (DBUS_G_PROXY (panel->mc),
-                               "PresenceChanged",
-                               G_CALLBACK (on_mc_presence_changed),
-                               panel, NULL);
+  g_signal_connect (panel->account_manager,
+                    "most-available-presence-changed",
+                    G_CALLBACK (on_presence_changed), panel);
 
   /* mojito: web services */
   panel->mojito_client = mojito_client_new ();
@@ -1211,8 +1179,7 @@ main (int argc, char *argv[])
   g_slist_foreach (panel->services, (GFunc) service_info_destroy, NULL);
   g_slist_free (panel->services);
 
-  g_object_unref (panel->account_monitor);
-  g_object_unref (panel->mc);
+  g_object_unref (panel->account_manager);
   g_object_unref (panel->mojito_client);
   g_free (panel->im_status);
   g_free (panel);
