@@ -25,29 +25,60 @@
 #include <anerley/anerley-simple-grid-view.h>
 #include <anerley/anerley-tile.h>
 #include <anerley/anerley-aggregate-tp-feed.h>
+#include <anerley/anerley-feed-model.h>
+#include <anerley/anerley-tile-view.h>
 
 #include <clutter/clutter.h>
-#include <libmissioncontrol/mission-control.h>
+
+#include <telepathy-glib/account-manager.h>
 #include <telepathy-glib/contact.h>
 
 #include <glib.h>
 #include <dbus/dbus-glib.h>
 
-int
-main (int    argc,
-      char **argv)
+static void
+am_ready_cb (GObject      *source_object,
+             GAsyncResult *result,
+             gpointer      userdata)
+
 {
-  MissionControl *mc;
-  AnerleyTpFeed *feed;
-  DBusGConnection *conn;
+  TpAccountManager *account_manager = TP_ACCOUNT_MANAGER (source_object);
+  AnerleyFeed *feed;
   ClutterActor *stage;
   NbtkWidget *scroll_view;
   NbtkWidget *icon_view;
   ClutterModel *model;
+  GError *error = NULL;
+
+  if (!tp_account_manager_prepare_finish (account_manager, result, &error))
+  {
+    g_warning ("Failed to make account manager ready: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  feed = ANERLEY_FEED (anerley_aggregate_tp_feed_new ());
+  model = CLUTTER_MODEL (anerley_feed_model_new (feed));
+  stage = clutter_stage_get_default ();
+  icon_view = anerley_tile_view_new (ANERLEY_FEED_MODEL (model));
+
+  scroll_view = nbtk_scroll_view_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                               CLUTTER_ACTOR (scroll_view));
+  clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
+                               CLUTTER_ACTOR (icon_view));
+  clutter_actor_set_size (CLUTTER_ACTOR (scroll_view), 640, 480);
+  clutter_actor_show_all (stage);
+}
+
+int
+main (int    argc,
+      char **argv)
+{
+  TpAccountManager *account_manager;
   gchar *path;
   NbtkStyle *style;
   GError *error = NULL;
-
 
   clutter_init (&argc, &argv);
 
@@ -68,22 +99,14 @@ main (int    argc,
 
   g_free (path);
 
-  conn = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
-  mc = mission_control_new (conn);
-  feed = anerley_aggregate_tp_feed_new (mc);
-  model = anerley_feed_model_new (feed);
-  stage = clutter_stage_get_default ();
-  icon_view = anerley_tile_view_new (model);
+  account_manager = tp_account_manager_dup ();
 
-  scroll_view = nbtk_scroll_view_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               scroll_view);
-  clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
-                               icon_view);
-  clutter_actor_set_size (scroll_view, 640, 480);
-  clutter_actor_show_all (stage);
+  tp_account_manager_prepare_async (account_manager, NULL,
+                                   am_ready_cb, NULL);
 
   clutter_main ();
+
+  g_object_unref (account_manager);
 
   return 0;
 }
