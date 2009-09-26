@@ -23,8 +23,9 @@
 #ifndef _ANERLEY_TP_FEED
 #define _ANERLEY_TP_FEED
 
+#include <telepathy-glib/account.h>
+
 #include <glib-object.h>
-#include <libmissioncontrol/mission-control.h>
 
 G_BEGIN_DECLS
 
@@ -55,8 +56,7 @@ typedef struct {
 
 GType anerley_tp_feed_get_type (void);
 
-AnerleyTpFeed *anerley_tp_feed_new (MissionControl *mc,
-                                    McAccount      *account);
+AnerleyTpFeed *anerley_tp_feed_new (TpAccount *account);
 
 G_END_DECLS
 

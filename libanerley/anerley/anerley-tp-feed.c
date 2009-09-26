@@ -19,9 +19,11 @@
  *
  */
 
-
-#include <libmissioncontrol/mission-control.h>
+#include <telepathy-glib/account.h>
 #include <telepathy-glib/contact.h>
+#include <telepathy-glib/connection.h>
+#include <telepathy-glib/channel.h>
+#include <telepathy-glib/interfaces.h>
 
 #include "anerley-feed.h"
 #include "anerley-item.h"
@@ -41,8 +43,7 @@ G_DEFINE_TYPE_WITH_CODE (AnerleyTpFeed,
 typedef struct _AnerleyTpFeedPrivate AnerleyTpFeedPrivate;
 
 struct _AnerleyTpFeedPrivate {
-  MissionControl *mc;
-  McAccount *account;
+  TpAccount *account;
   TpConnection *conn;
   TpChannel *subscribe_channel;
 
@@ -54,7 +55,6 @@ struct _AnerleyTpFeedPrivate {
 enum
 {
   PROP_0,
-  PROP_MC,
   PROP_ACCOUNT
 };
 
@@ -65,9 +65,6 @@ anerley_tp_feed_get_property (GObject *object, guint property_id,
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (object);
 
   switch (property_id) {
-    case PROP_MC:
-      g_value_set_object (value, priv->mc);
-      break;
     case PROP_ACCOUNT:
       g_value_set_object (value, priv->account);
       break;
@@ -83,9 +80,6 @@ anerley_tp_feed_set_property (GObject *object, guint property_id,
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (object);
 
   switch (property_id) {
-    case PROP_MC:
-      priv->mc = g_value_dup_object (value);
-      break;
     case PROP_ACCOUNT:
       priv->account = g_value_dup_object (value);
       break;
@@ -93,6 +87,14 @@ anerley_tp_feed_set_property (GObject *object, guint property_id,
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
 }
+
+static void _account_status_changed_cb (TpAccount                *account,
+                                        TpConnectionStatus        old_status,
+                                        TpConnectionStatus        new_status,
+                                        TpConnectionStatusReason  reason,
+                                        const gchar              *dbus_error_name,
+                                        const GHashTable         *details,
+                                        gpointer                  userdata);
 
 static void
 anerley_tp_feed_dispose (GObject *object)
@@ -135,14 +137,12 @@ anerley_tp_feed_dispose (GObject *object)
 
   if (priv->account)
   {
+    g_signal_handlers_disconnect_by_func (priv->account,
+                                          _account_status_changed_cb,
+                                          object);
+
     g_object_unref (priv->account);
     priv->account = NULL;
-  }
-
-  if (priv->mc)
-  {
-    g_object_unref (priv->mc);
-    priv->mc = NULL;
   }
 
   G_OBJECT_CLASS (anerley_tp_feed_parent_class)->dispose (object);
@@ -172,14 +172,9 @@ _make_item_from_contact (AnerleyTpFeed *feed,
                          TpContact     *contact)
 {
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
-  gchar *uid;
   AnerleyTpItem *item;
 
-  uid = g_strdup_printf ("%s/%s",
-                         mc_account_get_normalized_name (priv->account),
-                         tp_contact_get_identifier (contact));
-  item = anerley_tp_item_new (priv->mc,
-                              priv->account,
+  item = anerley_tp_item_new (priv->account,
                               contact);
 
 
@@ -751,71 +746,60 @@ _tp_connection_ready_cb (TpConnection *connection,
 }
 
 static void
-_mc_account_status_changed_cb (MissionControl           *mc,
-                               TpConnectionStatus        status,
-                               McPresence                presence,
-                               TpConnectionStatusReason  reason,
-                               const gchar              *account_name,
-                               gpointer                  userdata)
+_account_status_changed_cb (TpAccount                *account,
+                            TpConnectionStatus        old_status,
+                            TpConnectionStatus        status,
+                            TpConnectionStatusReason  reason,
+                            const gchar              *dbus_error_name,
+                            const GHashTable         *details,
+                            gpointer                  userdata)
 {
-  AnerleyTpFeed *feed = (AnerleyTpFeed *)userdata;
+  AnerleyTpFeed *feed = ANERLEY_TP_FEED (userdata);
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
   GList *items;
-  GError *error = NULL;
 
-  /* This is so lame. I hear this should get better with MC5 though */
-  if (g_str_equal (account_name, mc_account_get_unique_name (priv->account)))
+  g_debug (G_STRLOC ": Connection is in state: %s",
+           status==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
+           status==TP_CONNECTION_STATUS_CONNECTING ? "connecting" :
+           status==TP_CONNECTION_STATUS_DISCONNECTED ? "disconnected" :
+           "other");
+
+  if (status == TP_CONNECTION_STATUS_CONNECTED)
   {
-    g_debug (G_STRLOC ": Connection is in state: %s",
-             status==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
-             status==TP_CONNECTION_STATUS_CONNECTING ? "connecting" :
-             status==TP_CONNECTION_STATUS_DISCONNECTED ? "disconnected" :
-             "other");
-    if (status == TP_CONNECTION_STATUS_CONNECTED)
+    priv->conn = g_object_ref (tp_account_get_connection (account));
+
+    tp_connection_call_when_ready (priv->conn,
+                                   _tp_connection_ready_cb,
+                                   feed);
+
+  } else if (status == TP_CONNECTION_STATUS_DISCONNECTED) {
+    /*
+     * This means our connection has been disconnected. That is :-( so lets
+     * remove these things from our internal store and emit the signals on
+     * the feed.
+     */
+
+    items = g_hash_table_get_values (priv->ids_to_items);
+
+    g_signal_emit_by_name (feed, "items-removed", items);
+    g_list_free (items);
+    g_hash_table_remove_all (priv->handles_to_contacts);
+    g_hash_table_remove_all (priv->ids_to_items);
+    g_hash_table_remove_all (priv->handles_to_ids);
+
+    if (priv->subscribe_channel)
     {
-      priv->conn = mission_control_get_tpconnection (priv->mc,
-                                                     priv->account,
-                                                     &error);
-      if (!priv->conn)
-      {
-        g_warning (G_STRLOC ": Error getting TP connection: %s",
-                   error->message);
-        g_clear_error (&error);
-        return;
-      }
-
-      tp_connection_call_when_ready (priv->conn,
-                                     _tp_connection_ready_cb,
-                                     feed);
-    } else if (status == TP_CONNECTION_STATUS_DISCONNECTED) {
-      /*
-       * This means our connection has been disconnected. That is :-( so lets
-       * remove these things from our internal store and emit the signals on
-       * the feed.
-       */
-
-      items = g_hash_table_get_values (priv->ids_to_items);
-
-      g_signal_emit_by_name (feed, "items-removed", items);
-      g_list_free (items);
-      g_hash_table_remove_all (priv->handles_to_contacts);
-      g_hash_table_remove_all (priv->ids_to_items);
-      g_hash_table_remove_all (priv->handles_to_ids);
-
-      if (priv->subscribe_channel)
-      {
-        g_object_unref (priv->subscribe_channel);
-        priv->subscribe_channel = NULL;
-      }
-
-      if (priv->conn)
-      {
-        g_object_unref (priv->conn);
-        priv->conn = NULL;
-      }
-    } else {
-      /* CONNECTING */
+      g_object_unref (priv->subscribe_channel);
+      priv->subscribe_channel = NULL;
     }
+
+    if (priv->conn)
+    {
+      g_object_unref (priv->conn);
+      priv->conn = NULL;
+    }
+  } else {
+    /* CONNECTING */
   }
 }
 
@@ -824,33 +808,11 @@ anerley_tp_feed_setup_tp_connection (AnerleyTpFeed *feed)
 {
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
   guint res;
-  GError *error = NULL;
 
-  /* So. Deep breath. It may be that MC is not actually running. So what we
-   * can do here is setup a signal on the proxy. Note that this proxy might
-   * not be pointing to a valid remote object yet. However once it is then we
-   * will get this signal and we can actually connect and stuff */
-  dbus_g_proxy_connect_signal (DBUS_G_PROXY (priv->mc),
-                               "AccountStatusChanged",
-                               G_CALLBACK (_mc_account_status_changed_cb),
-                               feed,
-                               NULL);
+  g_signal_connect (priv->account, "status-changed",
+                    G_CALLBACK (_account_status_changed_cb), feed);
 
-  /* This may fail if MC is not running. If it does, boohoo. But the above
-   * signal handler hook up will come alive when we do go online
-   */
-  res = mission_control_get_connection_status (priv->mc,
-                                               priv->account,
-                                               &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error requesting connection status: %s. "
-               "This may just be because MC is not running",
-               error->message);
-    g_clear_error (&error);
-    return;
-  }
+  res = tp_account_get_connection_status (priv->account, NULL);
 
   g_debug (G_STRLOC ": Connection is in state: %s",
            res==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
@@ -858,31 +820,15 @@ anerley_tp_feed_setup_tp_connection (AnerleyTpFeed *feed)
            res==TP_CONNECTION_STATUS_DISCONNECTED ? "disconnected" :
            "other");
 
+
   if (res != TP_CONNECTION_STATUS_CONNECTED)
     return;
 
-  /* 
-   * Since we've established that the connection is either connected or
-   * connecting then there will a connection available for us to grab
-   */
-  priv->conn = mission_control_get_tpconnection (priv->mc,
-                                                 priv->account,
-                                                 &error);
-  if (!priv->conn)
-  {
-    g_warning (G_STRLOC ": Error getting TP connection: %s",
-               error->message);
-    g_clear_error (&error);
-    return;
-  }
 
-  /* 
-   * The connection may or may not be ready, let's get ourselves called when
-   * it is.
-   */
-  tp_connection_call_when_ready (priv->conn,
-                                 _tp_connection_ready_cb,
-                                 feed);
+  _account_status_changed_cb (priv->account,
+                              0, TP_CONNECTION_STATUS_CONNECTED,
+                              TP_CONNECTION_STATUS_REASON_NONE_SPECIFIED,
+                              NULL, NULL, feed);
 }
 
 static void
@@ -910,17 +856,10 @@ anerley_tp_feed_class_init (AnerleyTpFeedClass *klass)
   object_class->finalize = anerley_tp_feed_finalize;
   object_class->constructed = anerley_tp_feed_constructed;
 
-  pspec = g_param_spec_object ("mc",
-                               "mission control",
-                               "The mission control object",
-                               MISSIONCONTROL_TYPE,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
-  g_object_class_install_property (object_class, PROP_MC, pspec);
-
   pspec = g_param_spec_object ("account",
                                "account",
-                               "The mission control account to use",
-                               MC_TYPE_ACCOUNT,
+                               "The Telepathy account to use",
+                               TP_TYPE_ACCOUNT,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_ACCOUNT, pspec);
 }
@@ -956,12 +895,9 @@ anerley_tp_feed_init (AnerleyTpFeed *self)
 }
 
 AnerleyTpFeed *
-anerley_tp_feed_new (MissionControl *mc,
-                     McAccount      *account)
+anerley_tp_feed_new (TpAccount *account)
 {
   return g_object_new (ANERLEY_TYPE_TP_FEED, 
-                       "mc",
-                       mc,
                        "account",
                        account,
                        NULL);
