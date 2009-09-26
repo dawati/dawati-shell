@@ -19,11 +19,11 @@
  *
  */
 
-
 #include <anerley/anerley-tp-feed.h>
 #include <anerley/anerley-item.h>
 
-#include <libmissioncontrol/mission-control.h>
+#include <telepathy-glib/account.h>
+#include <telepathy-glib/account-manager.h>
 #include <telepathy-glib/contact.h>
 
 #include <glib.h>
@@ -73,15 +73,46 @@ _feed_items_removed_cb (AnerleyTpFeed *feed,
   }
 }
 
+static void
+am_ready_cb (GObject      *source_object,
+             GAsyncResult *result,
+             gpointer      userdata)
+{
+  TpAccountManager *account_manager = TP_ACCOUNT_MANAGER (source_object);
+  TpAccount *account;
+  AnerleyTpFeed *feed;
+  const GHashTable *props;
+  const char **argv = userdata;
+  GError *error = NULL;
+
+  if (!tp_account_manager_prepare_finish (account_manager, result, &error))
+  {
+    g_warning ("Failed to prepare account manager: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  account = tp_account_manager_ensure_account (account_manager, argv[1]);
+
+  props = tp_account_get_parameters (account);
+
+  feed = anerley_tp_feed_new (account);
+  g_signal_connect (feed,
+                    "items-added",
+                    G_CALLBACK (_feed_items_added_cb),
+                    NULL);
+  g_signal_connect (feed,
+                    "items-removed",
+                    G_CALLBACK (_feed_items_removed_cb),
+                    NULL);
+}
 
 int
 main (int    argc,
       char **argv)
 {
   GMainLoop *main_loop;
-  MissionControl *mc;
-  McAccount *account;
-  AnerleyTpFeed *feed;
+  TpAccountManager *account_manager;
   DBusGConnection *conn;
 
   if (argc < 2)
@@ -94,19 +125,15 @@ main (int    argc,
 
   main_loop = g_main_loop_new (NULL, FALSE);
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
-  mc = mission_control_new (conn);
-  account = mc_account_lookup (argv[1]);
-  feed = anerley_tp_feed_new (mc, account);
-  g_signal_connect (feed,
-                    "items-added",
-                    _feed_items_added_cb,
-                    NULL);
-  g_signal_connect (feed,
-                    "items-removed",
-                    _feed_items_removed_cb,
-                    NULL);
+
+  account_manager = tp_account_manager_dup ();
+
+  tp_account_manager_prepare_async (account_manager, NULL,
+                                    am_ready_cb, argv);
 
   g_main_loop_run (main_loop);
+
+  g_object_unref (account_manager);
 
   return 0;
 }
