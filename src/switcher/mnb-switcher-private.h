@@ -44,6 +44,7 @@ struct _MnbSwitcherPrivate {
   gboolean         in_alt_grab         : 1;
   gboolean         waiting_for_timeout : 1;
   gboolean         alt_tab_down        : 1;
+  gboolean         empty               : 1;
 };
 
 void mnb_switcher_advance (MnbSwitcher *switcher, gboolean backward);

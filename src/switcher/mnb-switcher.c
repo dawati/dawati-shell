@@ -375,6 +375,8 @@ mnb_switcher_show (ClutterActor *self)
     clutter_actor_set_height (CLUTTER_ACTOR (table),
                               screen_height - TOOLBAR_HEIGHT * 1.5 - 4 +
                               MNB_DROP_DOWN_SHADOW_HEIGHT);
+  else
+    priv->empty = TRUE;
 
   priv->constructing = FALSE;
 
@@ -1189,3 +1191,19 @@ mnb_switcher_end_kbd_grab (MnbSwitcher *switcher)
       priv->in_alt_grab = FALSE;
     }
 }
+
+void
+mnb_switcher_set_size (MnbSwitcher *switcher, guint width, guint height)
+{
+  MnbSwitcherPrivate *priv = switcher->priv;
+
+  if (!priv->empty)
+    clutter_actor_set_size (CLUTTER_ACTOR (priv->table),
+                            width - TOOLBAR_X_PADDING * 2,
+                            height - TOOLBAR_HEIGHT * 1.5 - 4 +
+                            MNB_DROP_DOWN_SHADOW_HEIGHT);
+  else
+    clutter_actor_set_width (CLUTTER_ACTOR (priv->table),
+                             width - TOOLBAR_X_PADDING * 2);
+}
+

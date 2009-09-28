@@ -236,8 +236,8 @@ mnb_drop_down_ensure_size (MnbDropDown *self)
               if (MNB_IS_PANEL (actor))
                 mnb_panel_set_size ((MnbPanel*)actor, r.width, max_height);
               else if (MNB_IS_SWITCHER (actor))
-                clutter_actor_set_size (priv->child, inner_width,
-                                        max_inner_height);
+                mnb_switcher_set_size ((MnbSwitcher*)actor,
+                                       r.width, max_height);
               else
                 clutter_actor_set_size (actor, w, (gfloat) max_height);
             }

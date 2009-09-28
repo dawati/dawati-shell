@@ -97,6 +97,10 @@ ClutterActor *mnb_switcher_append_app_zone (MnbSwitcher *switcher, gint index);
 
 void        mnb_switcher_end_kbd_grab (MnbSwitcher *switcher);
 
+void        mnb_switcher_set_size (MnbSwitcher *switcher,
+                                   guint        width,
+                                   guint        height);
+
 G_END_DECLS
 
 #endif /* _MNB_SWITCHER */
