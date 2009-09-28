@@ -202,7 +202,7 @@ mnb_drop_down_ensure_size (MnbDropDown *self)
            * height of the panel shadow (we allow the shaddow to stretch out of
            * the available area).
            */
-          max_height = r.y + r.height - yi;
+          max_height = r.y + r.height - yi + MNB_DROP_DOWN_SHADOW_HEIGHT;
 
           /*
            * inner height is height of the dropdown child, i.e., the max height

@@ -373,7 +373,8 @@ mnb_switcher_show (ClutterActor *self)
 
   if (apps_count)
     clutter_actor_set_height (CLUTTER_ACTOR (table),
-                              screen_height - TOOLBAR_HEIGHT * 1.5 - 4);
+                              screen_height - TOOLBAR_HEIGHT * 1.5 - 4 +
+                              MNB_DROP_DOWN_SHADOW_HEIGHT);
 
   priv->constructing = FALSE;
 
