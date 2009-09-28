@@ -243,6 +243,12 @@ on_urgent_notify_allocation_cb (ClutterActor *notify_urgent,
                               (screen_height - (int)h) / 2);
 }
 
+static void
+moblin_netbook_workarea_changed_foreach (MnbDropDown *panel, gpointer data)
+{
+  mnb_drop_down_ensure_size (panel);
+}
+
 /*
  * If the work area size changes while a panel is present (e.g., a VKB pops up),
  * we need to resize the panel.
@@ -251,13 +257,10 @@ static void
 moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MnbDropDown                *panel;
 
-  if (!(panel =
-        (MnbDropDown*)mnb_toolbar_get_active_panel (MNB_TOOLBAR (priv->toolbar))))
-    return;
-
-  mnb_drop_down_ensure_size (panel);
+  mnb_toolbar_foreach_panel (MNB_TOOLBAR (priv->toolbar),
+                             moblin_netbook_workarea_changed_foreach,
+                             NULL);
 }
 
 static void
