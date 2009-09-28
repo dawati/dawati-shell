@@ -2335,7 +2335,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
         continue;
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
+      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING) - 4;
 
       clutter_actor_set_size (button, TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
       clutter_actor_set_position (button, (gfloat)x, (gfloat)y);
