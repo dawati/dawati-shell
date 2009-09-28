@@ -229,6 +229,8 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
                        MnbPanel   *panel)
 {
   MnbPanelPrivate *priv = panel->priv;
+  GtkWidget       *socket;
+  GdkWindow       *socket_win;
 
   if (!priv->window)
     return;
@@ -247,6 +249,10 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
     gtk_window_move (GTK_WINDOW (priv->window), 0, -(height + 100));
 
   gtk_window_resize (GTK_WINDOW (priv->window), width, height);
+
+  if ((socket = gtk_bin_get_child (GTK_BIN (priv->window))) &&
+      (socket_win = gtk_socket_get_plug_window (GTK_SOCKET (socket))))
+    gdk_window_resize (socket_win, width, height);
 
   g_signal_emit (panel, signals[SET_SIZE], 0, width, height);
 }
