@@ -236,6 +236,9 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
   g_debug (G_STRLOC " Got size change on Panel %s to %dx%d",
            mnb_panel_get_name (panel), width, height);
 
+  priv->width  = width;
+  priv->height = height;
+
   /*
    * Resize our top-level window to match. If the window is hidden, move it
    * so that we can be sure it is entirely off screen.
