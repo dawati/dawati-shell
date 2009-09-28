@@ -246,7 +246,8 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
    * so that we can be sure it is entirely off screen.
    */
   if (!CLUTTER_ACTOR_IS_VISIBLE (panel))
-    gtk_window_move (GTK_WINDOW (priv->window), 0, -(height + 100));
+    gtk_window_move (GTK_WINDOW (priv->window),
+                     TOOLBAR_X_PADDING, -(height + 100));
 
   gtk_window_resize (GTK_WINDOW (priv->window), width, height);
 
@@ -489,7 +490,8 @@ mnb_panel_show_completed (MnbDropDown *self)
 
   clutter_actor_get_position (CLUTTER_ACTOR (self), &x, &y);
 
-  gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y);
+  gtk_window_move (GTK_WINDOW (priv->window),
+                   (gint)x + TOOLBAR_X_PADDING, (gint)y);
 
   mnb_panel_focus (MNB_PANEL (self));
 
@@ -515,7 +517,8 @@ mnb_panel_hide_begin (MnbDropDown *self)
    * We do not hide the window here, only move it off screen; this significantly
    * improves the Toolbar button response time.
    */
-  gtk_window_move (GTK_WINDOW (window), 0, -(priv->height + 100));
+  gtk_window_move (GTK_WINDOW (window), TOOLBAR_X_PADDING,
+                   -(priv->height + 100));
 
   org_moblin_UX_Shell_Panel_hide_begin_async (priv->proxy,
                                               mnb_panel_dbus_dumb_reply_cb, NULL);
@@ -587,8 +590,9 @@ mnb_panel_socket_size_allocate_cb (GtkWidget     *widget,
 
           clutter_actor_get_position (CLUTTER_ACTOR (data), &x, &y);
 
-          gtk_window_move (GTK_WINDOW (priv->window), (gint)x, (gint)y +
-                           MNB_DROP_DOWN_TOP_PADDING);
+          gtk_window_move (GTK_WINDOW (priv->window),
+                           (gint)x + TOOLBAR_X_PADDING,
+                           (gint)y + MNB_DROP_DOWN_TOP_PADDING);
         }
     }
 }
@@ -684,7 +688,8 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
   gtk_window_resize (GTK_WINDOW (window), window_width, window_height);
 
   gtk_window_move (GTK_WINDOW (window),
-                   0, TOOLBAR_HEIGHT + MNB_DROP_DOWN_TOP_PADDING);
+                   TOOLBAR_X_PADDING,
+                   TOOLBAR_HEIGHT + MNB_DROP_DOWN_TOP_PADDING);
 
   gtk_container_add (GTK_CONTAINER (window), socket);
   gtk_widget_realize (socket);
