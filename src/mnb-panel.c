@@ -237,8 +237,12 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
            mnb_panel_get_name (panel), width, height);
 
   /*
-   * Resize our top-level window to match.
+   * Resize our top-level window to match. If the window is hidden, move it
+   * so that we can be sure it is entirely off screen.
    */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (panel))
+    gtk_window_move (GTK_WINDOW (priv->window), 0, -(height + 100));
+
   gtk_window_resize (GTK_WINDOW (priv->window), width, height);
 
   g_signal_emit (panel, signals[SET_SIZE], 0, width, height);
@@ -1061,9 +1065,6 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
 
   if (hi < 0)
     hi = 0;
-
-  if (h_change && !CLUTTER_ACTOR_IS_VISIBLE (panel))
-    gtk_window_move (GTK_WINDOW (priv->window), 0, -(height + 100));
 
   org_moblin_UX_Shell_Panel_set_size_async (priv->proxy, wi, hi,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);
