@@ -67,6 +67,8 @@ typedef struct {
   void (*hide_completed) (MnbToolbar *toolbar);
 } MnbToolbarClass;
 
+typedef void (* MnbToolbarCallback) (MnbDropDown *panel, gpointer data);
+
 GType mnb_toolbar_get_type (void);
 
 NbtkWidget* mnb_toolbar_new (MutterPlugin *plugin);
@@ -102,6 +104,10 @@ gboolean mnb_toolbar_window_is_transient_for_active_panel (MnbToolbar *toolbar,
                                                            MutterWindow *mcw);
 
 void mnb_toolbar_hide (MnbToolbar *toolbar);
+
+void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
+                                MnbToolbarCallback callback,
+                                gpointer           data);
 
 G_END_DECLS
 

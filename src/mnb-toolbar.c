@@ -2595,3 +2595,16 @@ mnb_toolbar_window_is_transient_for_active_panel (MnbToolbar   *toolbar,
   return meta_window_is_ancestor_of_transient (pmw, mw);
 }
 
+void
+mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
+                           MnbToolbarCallback callback,
+                           gpointer           data)
+{
+  MnbToolbarPrivate *priv  = toolbar->priv;
+  gint               i;
+
+  for (i = 0; i < NUM_ZONES; i++)
+    if (priv->panels[i])
+      callback ((MnbDropDown*)priv->panels[i], data);
+}
+
