@@ -1022,13 +1022,20 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
   MnbPanelPrivate *priv = panel->priv;
   gfloat x, y, w, h;
   gint   wi, hi, hfi;
+  gboolean h_change = FALSE, w_change = FALSE;
 
   /*
    * Exit if no change
    */
   clutter_actor_get_size (CLUTTER_ACTOR (panel), &w, &h);
 
-  if (((guint)w == width) && ((guint)h == height))
+  if ((guint)w != width)
+    w_change = TRUE;
+
+  if ((guint)h != height)
+    h_change = TRUE;
+
+  if (!w_change && !h_change)
     return;
 
   mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (panel), &x, &y, &w, &h);
@@ -1054,6 +1061,9 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
 
   if (hi < 0)
     hi = 0;
+
+  if (h_change && !CLUTTER_ACTOR_IS_VISIBLE (panel))
+    gtk_window_move (GTK_WINDOW (priv->window), 0, -(height + 100));
 
   org_moblin_UX_Shell_Panel_set_size_async (priv->proxy, wi, hi,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);
