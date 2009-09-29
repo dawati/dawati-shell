@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:11+0000\n"
+"POT-Creation-Date: 2009-09-29 15:18+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -14,9 +14,33 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:70
+#.
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending conversation
+#.
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "和你對話的朋友..."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#.
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "朋友 - 有人正在和你對話"
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#.
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "朋友- %d 個友人正在和你對話"
+
+#: ../src/moblin-panel-people.c:87
 msgid "people"
-msgstr "人們"
+msgstr "朋友"
 
 #: ../src/mnb-people-panel.c:161
 msgid "Send an email"
@@ -32,7 +56,7 @@ msgstr "發送訊息"
 
 #: ../src/mnb-people-panel.c:306
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "很抱歉，我們找不到任何人。你已經設立好通訊程式的帳戶了嗎？"
+msgstr "很抱歉，我們找不到任何朋友的資料。你已經設立好通訊程式的帳號了嗎？"
 
 #: ../src/mnb-people-panel.c:553
 msgid "People"
@@ -49,4 +73,3 @@ msgstr "選取"
 #: ../src/mnb-people-panel.c:745
 msgid "Nobody selected"
 msgstr "沒有選取任何人"
-
