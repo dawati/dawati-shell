@@ -130,6 +130,7 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
   XResizeWindow (xdpy, priv->xwindow, width, height);
 
   clutter_actor_set_size (priv->stage, width, height);
+  clutter_stage_ensure_viewport (CLUTTER_STAGE (priv->stage));
 }
 
 static void
