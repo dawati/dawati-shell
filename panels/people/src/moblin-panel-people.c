@@ -11,6 +11,23 @@
 
 #include <config.h>
 
+/*
+ * Used as header for a block of the panel showing pending conversations.
+ * The user will be able to click the tile and answer the pending conversation
+ */
+#define ONGOING_CONVERSATIONS _("People talking to you ...")
+
+/*
+ * Used for the tooltip for the hover state for the icon in the toolbar
+ */
+#define ACTIVATED_TOOLBAR_TOOLTIP _("people - Someone is talking to you")
+
+/*
+ * Used for the tooltip for the hover state for the icon in the toolbar
+ * (plural version)
+ */
+#define ACTIVATED_TOOLBAR_TOOLTIP_PLURAL _("people - %d people are talking to you")
+
 static void
 _client_set_size_cb (MplPanelClient *client,
                      guint           width,
