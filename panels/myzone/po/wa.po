@@ -1,0 +1,62 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Jean Cayron <jean.cayron@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-29 15:19+0000\n"
+"PO-Revision-Date: 2009-09-29 22:16+0000\n"
+"Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
+"Language-Team: Walloon <linux-wa@walon.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../penge/penge-calendar-pane.c:478
+msgid "<b>Appointments</b>"
+msgstr "<b>Radjoûs</b>"
+
+#: ../penge/penge-events-pane.c:265
+msgid "No calendar entries this week"
+msgstr "Rén e calindrî cisse samwinne ci"
+
+#: ../penge/penge-people-placeholder-tile.c:112
+msgid ""
+"Your friends' feeds and web services will appear here. Activate your "
+"accounts now!"
+msgstr ""
+"Les floûs da vos soçons eyet les siervices del waibe aparexhront droci. "
+"Metoz en alaedje vos contes do côp !"
+
+#: ../penge/penge-recent-file-tile.c:224
+msgid "Web page"
+msgstr "Pådje waibe"
+
+#: ../penge/penge-tasks-pane.c:344
+msgid "Nothing to do today"
+msgstr "Rén a fé ådjourdu"
+
+#: ../penge/penge-task-tile.c:325
+#, c-format
+msgid "Due %x"
+msgstr "Divou %x"
+
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Wilicome dins Moblin 2.1 po les Netbooks</b>"
+
+#: ../penge/penge-welcome-tile.c:108
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
+msgstr ""
+"Come Moblin est ene miete diferin des ôtes copiutreces, nos avans metou "
+"eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. Nos "
+"esperans k' vos alez awè do plaijhi, "
+"L' ekipe di Moblin."
+
