@@ -543,6 +543,7 @@ mnb_switcher_n_workspaces_notify (MetaScreen *screen,
   GList              *o_workspaces;
   gint                n_o_workspaces;
   gint                i;
+  gint                remove_count = 0;
   GList              *k, *l;
   ClutterContainer *table_cont = CLUTTER_CONTAINER (priv->table);
 
@@ -612,7 +613,7 @@ mnb_switcher_n_workspaces_notify (MetaScreen *screen,
         {
           GList *t = k;
 
-          g_debug ("removing workspace that used to be at position %d", i);
+          remove_count++;
 
           /* NbtkTable provides no API to get a child at given position, so we
            * have to iterate the child list, querying the child column property
@@ -627,36 +628,18 @@ mnb_switcher_n_workspaces_notify (MetaScreen *screen,
               if (col == i)
                 {
                   clutter_container_remove_actor (table_cont, a);
-                  break;
+                }
+              else if (col > i)
+                {
+                  clutter_container_child_set (table_cont, a,
+                                               "col", col - remove_count, NULL);
+                  mnb_switcher_zone_set_index (MNB_SWITCHER_ZONE (a),
+                                               col - remove_count);
                 }
 
               t = t->next;
             }
         }
-    }
-
-  g_list_free (k);
-
-  /*
-   * Get a fresh list of the switcher children and update their index.
-   *
-   * TODO -- this could be folded into the loop above.
-   */
-  k = clutter_container_get_children (table_cont);
-  for (l = k, i = 0; l; l = l->next, ++i)
-    {
-      MnbSwitcherZone *zone = l->data;
-
-      if (MNB_IS_SWITCHER_ZONE (zone))
-        {
-          mnb_switcher_zone_set_index (zone, i);
-          clutter_container_child_set (table_cont,
-                                       l->data,
-                                       "col", i, NULL);
-        }
-      else
-        g_warning (G_STRLOC " expected MnbSwitcherZone, got %s",
-                   zone ? G_OBJECT_TYPE_NAME (zone) : "NULL");
     }
 
   g_list_free (k);
