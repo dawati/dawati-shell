@@ -386,6 +386,60 @@ mnb_switcher_zone_apps_populate (MnbSwitcherZoneApps *zone, gboolean enable_dnd)
 }
 
 static void
+mnb_switcher_zone_apps_actor_removed_cb (ClutterContainer    *content_area,
+                                         ClutterActor        *actor,
+                                         MnbSwitcherZoneApps *zone)
+{
+  gint  *indices;
+  gint   i, missing = -1;
+  gint   row_count = nbtk_table_get_row_count (NBTK_TABLE (content_area));
+  GList *children  = clutter_container_get_children (content_area);
+  GList *l;
+
+  indices = g_slice_alloc0 (sizeof (gint) * row_count);
+
+  for (l = children; l; l = l->next)
+    {
+      ClutterActor *a = l->data;
+      gint          row;
+
+      clutter_container_child_get (content_area, a, "row", &row, NULL);
+
+      indices[row] = TRUE;
+    }
+
+  for (i = 0; i < row_count; ++i)
+    {
+      if (!indices[i])
+        {
+          missing = i;
+          break;
+        }
+    }
+
+  if (missing >= 0)
+    {
+      for (l = children; l; l = l->next)
+        {
+          ClutterActor *a = l->data;
+          gint          row;
+
+          clutter_container_child_get (content_area, a, "row", &row, NULL);
+
+          if (row > missing)
+            {
+              --row;
+              clutter_container_child_set (content_area, a, "row", row, NULL);
+            }
+        }
+    }
+
+  /* Clean up */
+  g_list_free (children);
+  g_slice_free1 (sizeof (gint) * row_count, indices);
+}
+
+static void
 mnb_switcher_zone_apps_constructed (GObject *self)
 {
   MnbSwitcherZoneApps        *zone = MNB_SWITCHER_ZONE_APPS (self);
@@ -396,6 +450,10 @@ mnb_switcher_zone_apps_constructed (GObject *self)
     G_OBJECT_CLASS (mnb_switcher_zone_apps_parent_class)->constructed (self);
 
   table = mnb_switcher_zone_get_content_area ((MnbSwitcherZone*)zone);
+
+  g_signal_connect (table, "actor-removed",
+                    G_CALLBACK (mnb_switcher_zone_apps_actor_removed_cb),
+                    self);
 
   nbtk_table_set_row_spacing (NBTK_TABLE (table), 6);
   nbtk_table_set_col_spacing (NBTK_TABLE (table), 6);
