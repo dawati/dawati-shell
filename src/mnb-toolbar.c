@@ -164,7 +164,10 @@ struct _MnbToolbarPrivate
   gboolean disabled          : 1;
   gboolean in_show_animation : 1; /* Animation tracking */
   gboolean in_hide_animation : 1;
-  gboolean waiting_for_panel : 1; /* Set between button click and panel show */
+  gboolean waiting_for_panel_show : 1; /* Set between button click and panel
+                                        * show */
+  gboolean waiting_for_panel_hide : 1;
+
   gboolean dont_autohide     : 1; /* Whether the panel should hide when the
                                    * pointer goes south
                                    */
@@ -706,7 +709,11 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
    *   b) Prevents race conditions when the user starts clicking fast at the
    *      button (see bug 5020)
    */
-  priv->waiting_for_panel = TRUE;
+
+  if (checked)
+    priv->waiting_for_panel_show = TRUE;
+  else
+    priv->waiting_for_panel_hide = TRUE;
 
   /*
    * Clear the autohiding flag -- if the user is clicking on the panel buttons
@@ -845,7 +852,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
                                    (guint)w, screen_height-TOOLBAR_HEIGHT,
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
-  priv->waiting_for_panel = FALSE;
+  priv->waiting_for_panel_show = FALSE;
 }
 
 static void
@@ -873,7 +880,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
                                    screen_height - (TOOLBAR_HEIGHT+(gint)y),
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
-  priv->waiting_for_panel = FALSE;
+  priv->waiting_for_panel_show = FALSE;
 }
 
 static void
@@ -891,7 +898,7 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbDropDown *dropdown, MnbToolbar  *tool
   moblin_netbook_stash_window_focus (plugin, CurrentTime);
 
   priv->panel_input_only = FALSE;
-  priv->waiting_for_panel = FALSE;
+  priv->waiting_for_panel_hide = FALSE;
 }
 
 /*
@@ -1973,7 +1980,7 @@ mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, gint index)
    * to a CLUTTER_LEAVE event that gets generated as the pointer moves from the
    * stage/toolbar into the panel as it maps.
    */
-  priv->waiting_for_panel = TRUE;
+  priv->waiting_for_panel_show = TRUE;
 
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if (i != index)
@@ -2125,6 +2132,9 @@ mnb_toolbar_panels_showing (MnbToolbar *toolbar)
   MnbToolbarPrivate *priv = toolbar->priv;
   gint i;
 
+  if (priv->waiting_for_panel_hide)
+    return FALSE;
+
   for (i = 0; i < NUM_ZONES; ++i)
     {
       MnbPanel *panel = (MnbPanel*)priv->panels[i];
@@ -2186,7 +2196,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
     }
 
   if ((event->type == CLUTTER_LEAVE) &&
-      (priv->waiting_for_panel ||
+      (priv->waiting_for_panel_show ||
        priv->dont_autohide ||
        mnb_toolbar_panels_showing (toolbar)))
     {
@@ -2570,7 +2580,7 @@ mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
 
-  return priv->waiting_for_panel;
+  return (priv->waiting_for_panel_show || priv->waiting_for_panel_hide);
 }
 
 gboolean
