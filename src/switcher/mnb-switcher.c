@@ -334,6 +334,7 @@ mnb_switcher_show (ClutterActor *self)
       zone = mnb_switcher_zone_apps_new (switcher, active, i);
       nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (zone), 0, i);
       mnb_switcher_zone_apps_populate (zone, dnd);
+      g_object_set (zone, "enabled", TRUE, NULL);
 
       if (active)
         {
@@ -411,6 +412,7 @@ mnb_switcher_append_app_zone (MnbSwitcher *switcher, gint index)
 
   zone = (ClutterActor*)mnb_switcher_zone_apps_new (switcher, FALSE, index);
   nbtk_table_add_actor (NBTK_TABLE (table), zone, 0, index);
+  g_object_set (zone, "enabled", TRUE, NULL);
 
   /*
    * Move the new zone 1 back

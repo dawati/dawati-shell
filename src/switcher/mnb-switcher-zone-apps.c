@@ -383,11 +383,6 @@ mnb_switcher_zone_apps_populate (MnbSwitcherZoneApps *zone, gboolean enable_dnd)
   g_list_free (o);
 
   mnb_switcher_zone_apps_check_if_empty (zone);
-
-  /*
-   * Enable d&d
-   */
-  g_object_set (zone, "enabled", enable_dnd, NULL);
 }
 
 static void
