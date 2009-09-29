@@ -115,6 +115,8 @@ mnb_switcher_enable_new_workspace (MnbSwitcher *switcher, MnbSwitcherZone *zone)
   gint                ws_count;
   MetaScreen         *screen = mutter_plugin_get_screen (priv->plugin);
   MnbSwitcherZone    *new_ws = priv->new_zone;
+  GList              *children;
+  gint                child_count = 0;
 
   ws_count = meta_screen_get_n_workspaces (screen);
 
@@ -124,9 +126,21 @@ mnb_switcher_enable_new_workspace (MnbSwitcher *switcher, MnbSwitcherZone *zone)
   /*
    * If the application is the only child in its zone, the new zone remains
    * disabled.
+   *
+   * Would like to be able to use here nbtk_table_get_row_count(), but it
+   * is unreliable.
    */
-  if (nbtk_table_get_row_count (mnb_switcher_zone_get_content_area (zone)) <= 1)
-    return;
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (
+                                   mnb_switcher_zone_get_content_area (zone)));
+
+  child_count = g_list_length (children);
+
+    if (children)
+      g_list_free (children);
+
+    if (child_count <= 1)
+      return;
 
   g_object_set (new_ws, "enabled", TRUE, NULL);
 
