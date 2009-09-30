@@ -60,7 +60,7 @@ msgstr "很抱歉，我們找不到任何朋友的資料。你已經設立好通
 
 #: ../src/mnb-people-panel.c:553
 msgid "People"
-msgstr "人們"
+msgstr "朋友"
 
 #: ../src/mnb-people-panel.c:566
 msgid "Search"
