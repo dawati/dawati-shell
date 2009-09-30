@@ -62,6 +62,7 @@
 #define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 500
 #define TOOLBAR_LOWLIGHT_FADE_DURATION 300
 #define TOOLBAR_AUTOSTART_DELAY 10
+#define TOOLBAR_WAITING_FOR_PANEL_TIMEOUT 1 /* in seconds */
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
 #if 0
@@ -189,6 +190,8 @@ struct _MnbToolbarPrivate
 
   gint             old_screen_width;
   gint             old_screen_height;
+
+  guint            waiting_for_panel_cb_id;
 };
 
 static void
@@ -687,6 +690,69 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
 }
 
 /*
+ * We need a safety clearing mechanism for the waiting_for_panel flags (so that
+ * if a panel fails to complete the show/hide process, we do not block the
+ * various depenedent UI ops indefinitely).
+ */
+static gboolean
+mnb_toolbar_waiting_for_panel_cb (gpointer data)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (data)->priv;
+
+  priv->waiting_for_panel_show  = FALSE;
+  priv->waiting_for_panel_hide  = FALSE;
+  priv->waiting_for_panel_cb_id = 0;
+
+  return FALSE;
+}
+
+static void
+mnb_toolbar_set_waiting_for_panel_show (MnbToolbar *toolbar, gboolean whether)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  /*
+   * Remove any existing timeout (if whether is TRUE, we need to restart it)
+   */
+  if (priv->waiting_for_panel_cb_id)
+    {
+      g_source_remove (priv->waiting_for_panel_cb_id);
+      priv->waiting_for_panel_cb_id = 0;
+    }
+
+  if (whether)
+    priv->waiting_for_panel_cb_id =
+      g_timeout_add_seconds (TOOLBAR_WAITING_FOR_PANEL_TIMEOUT,
+                             mnb_toolbar_waiting_for_panel_cb, toolbar);
+
+  priv->waiting_for_panel_hide = FALSE;
+  priv->waiting_for_panel_show = whether;
+}
+
+static void
+mnb_toolbar_set_waiting_for_panel_hide (MnbToolbar *toolbar, gboolean whether)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  /*
+   * Remove any existing timeout (if whether is TRUE, we need to restart it)
+   */
+  if (priv->waiting_for_panel_cb_id)
+    {
+      g_source_remove (priv->waiting_for_panel_cb_id);
+      priv->waiting_for_panel_cb_id = 0;
+    }
+
+  if (whether)
+    priv->waiting_for_panel_cb_id =
+      g_timeout_add_seconds (TOOLBAR_WAITING_FOR_PANEL_TIMEOUT,
+                             mnb_toolbar_waiting_for_panel_cb, toolbar);
+
+  priv->waiting_for_panel_hide = whether;
+  priv->waiting_for_panel_show = FALSE;
+}
+
+/*
  * Toolbar button click handler.
  *
  * If the new button stage is 'checked' we show the asociated panel and hide
@@ -695,7 +761,8 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
 static void
 mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
 {
-  MnbToolbarPrivate *priv = MNB_TOOLBAR (data)->priv;
+  MnbToolbar        *toolbar = MNB_TOOLBAR (data);
+  MnbToolbarPrivate *priv    = toolbar->priv;
   gint               i;
   gboolean           checked;
 
@@ -711,9 +778,9 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
    */
 
   if (checked)
-    priv->waiting_for_panel_show = TRUE;
+    mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
   else
-    priv->waiting_for_panel_hide = TRUE;
+    mnb_toolbar_set_waiting_for_panel_hide (toolbar, TRUE);
 
   /*
    * Clear the autohiding flag -- if the user is clicking on the panel buttons
@@ -852,7 +919,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
                                    (guint)w, screen_height-TOOLBAR_HEIGHT,
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
-  priv->waiting_for_panel_show = FALSE;
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
 }
 
 static void
@@ -880,7 +947,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
                                    screen_height - (TOOLBAR_HEIGHT+(gint)y),
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
-  priv->waiting_for_panel_show = FALSE;
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
 }
 
 static void
@@ -898,7 +965,7 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbDropDown *dropdown, MnbToolbar  *tool
   moblin_netbook_stash_window_focus (plugin, CurrentTime);
 
   priv->panel_input_only = FALSE;
-  priv->waiting_for_panel_hide = FALSE;
+  mnb_toolbar_set_waiting_for_panel_hide (toolbar, FALSE);
 }
 
 /*
@@ -1980,7 +2047,7 @@ mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, gint index)
    * to a CLUTTER_LEAVE event that gets generated as the pointer moves from the
    * stage/toolbar into the panel as it maps.
    */
-  priv->waiting_for_panel_show = TRUE;
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
 
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if (i != index)
@@ -2617,4 +2684,3 @@ mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
     if (priv->panels[i])
       callback ((MnbDropDown*)priv->panels[i], data);
 }
-
