@@ -294,7 +294,7 @@ _set_state (CarrickServiceItem *self)
        * to remove the connection (and forget the password.
        * Except, of course, when the connection is Ethernet ...
        */
-      if (g_strcmp0 (priv->type, "ethernet") != 0)
+      if (g_strcmp0 (priv->type, "ethernet") == 0)
         {
           gtk_widget_hide (GTK_WIDGET (priv->delete_button));
           gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
@@ -462,6 +462,7 @@ _delete_button_cb (GtkButton *delete_button,
   GtkWidget                 *dialog;
   GtkWidget                 *label;
   gchar                     *label_text = NULL;
+  GValue                    *value;
 
   dialog = gtk_dialog_new_with_buttons (_ ("Really remove?"),
                                         NULL,
@@ -501,13 +502,32 @@ _delete_button_cb (GtkButton *delete_button,
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
-      carrick_notification_manager_queue_event (priv->note,
-                                                priv->type,
-                                                "idle",
-                                                priv->name);
-      org_moblin_connman_Service_remove_async (priv->proxy,
-                                               dbus_proxy_notify_cb,
-                                               item);
+      if (priv->failed)
+        {
+          /* Clear the passphrase */
+          value = g_slice_new0 (GValue);
+          g_value_init (value, G_TYPE_STRING);
+          g_value_set_string (value, "");
+
+          org_moblin_connman_Service_set_property_async (priv->proxy,
+                                                         "Passphrase",
+                                                         value,
+                                                         dbus_proxy_notify_cb,
+                                                         item);
+
+          g_value_unset (value);
+          g_slice_free (GValue, value);
+        }
+      else
+        {
+          carrick_notification_manager_queue_event (priv->note,
+                                                    priv->type,
+                                                    "idle",
+                                                    priv->name);
+          org_moblin_connman_Service_remove_async (priv->proxy,
+                                                   dbus_proxy_notify_cb,
+                                                   item);
+        }
     }
 
   gtk_widget_destroy (dialog);
