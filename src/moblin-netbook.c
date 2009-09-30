@@ -341,7 +341,6 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   if (mutter_plugin_debug_mode (MUTTER_PLUGIN (plugin)))
     {
-      g_debug ("%s: Entering debug mode.", priv->info.name);
       /*
        * Double the effect duration to make them easier to observe.
        */
@@ -1299,9 +1298,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
         {
-          g_debug ("@@@ setting mutter window for panel %s @@@",
-                   mnb_panel_get_name (panel));
-
           /*
            * Order matters; mnb_panel_show_mutter_window() hides the mcw,
            * and since the compositor call clutter_actor_show() when a map

@@ -1116,7 +1116,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
 
   if (!panel)
     {
-      g_debug ("Panel %s is not available", name);
+      g_warning ("Panel %s is not available", name);
       clutter_actor_destroy (CLUTTER_ACTOR (button));
       return;
     }
@@ -1861,8 +1861,6 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
 
                   if (index >= 0)
                     found_panels[index] = TRUE;
-
-                  g_debug ("Found dbus name %s", *p);
 
                   mnb_toolbar_handle_dbus_name (toolbar, *p);
                 }

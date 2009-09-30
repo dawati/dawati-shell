@@ -262,7 +262,6 @@ mnb_drop_down_show (ClutterActor *actor)
 
   if (priv->hide_completed_id)
     {
-      g_debug ("disconnecting hide_completed_cb");
       g_signal_handler_disconnect (priv->hide_anim, priv->hide_completed_id);
       priv->hide_anim = NULL;
       priv->hide_completed_id = 0;
@@ -381,7 +380,6 @@ mnb_drop_down_hide (ClutterActor *actor)
 
   if (priv->show_completed_id)
     {
-      g_debug ("disconnecting show_completed_cb");
       g_signal_handler_disconnect (priv->show_anim, priv->show_completed_id);
       priv->show_anim = NULL;
       priv->show_completed_id = 0;

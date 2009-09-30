@@ -235,9 +235,6 @@ mnb_panel_set_size_cb (DBusGProxy *proxy,
   if (!priv->window)
     return;
 
-  g_debug (G_STRLOC " Got size change on Panel %s to %dx%d",
-           mnb_panel_get_name (panel), width, height);
-
   priv->width  = width;
   priv->height = height;
 
@@ -566,11 +563,7 @@ mnb_panel_socket_size_allocate_cb (GtkWidget     *widget,
 {
   GtkSocket *socket = GTK_SOCKET (widget);
 
-  if (!socket->is_mapped)
-    {
-      g_debug ("socket deallocated");
-    }
-  else
+  if (socket->is_mapped)
     {
       MnbPanelPrivate *priv = MNB_PANEL (data)->priv;
 
@@ -581,12 +574,6 @@ mnb_panel_socket_size_allocate_cb (GtkWidget     *widget,
       if (!priv->hide_in_progress && CLUTTER_ACTOR_IS_MAPPED (data))
         {
           gfloat x = 0, y = 0;
-
-          g_debug ("socket allocated %d,%d;%dx%d",
-                   allocation->x,
-                   allocation->y,
-                   allocation->width,
-                   allocation->height);
 
           clutter_actor_get_position (CLUTTER_ACTOR (data), &x, &y);
 
@@ -749,9 +736,6 @@ mnb_panel_proxy_owner_changed_cb (DBusGProxy *proxy,
                                   const char *new,
                                   gpointer    data)
 {
-  g_debug ("Proxy %s owner changed (old %s, new %s).",
-           name, old, new);
-
   mnb_panel_init_owner (MNB_PANEL (data));
 }
 
@@ -768,9 +752,6 @@ mnb_panel_setup_proxy (MnbPanel *panel)
       g_warning (G_STRLOC " No dbus connection, cannot connect to panel!");
       return FALSE;
     }
-
-  g_debug ("Creating proxy for %s, %p",
-           priv->dbus_name, panel);
 
   dbus_path = g_strconcat ("/", priv->dbus_name, NULL);
 
@@ -989,10 +970,7 @@ mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw)
     }
 
   if (mcw == priv->mcw)
-    {
-      g_debug ("Window already handled.");
-      return;
-    }
+    return;
 
   texture = mutter_window_get_texture (mcw);
 
