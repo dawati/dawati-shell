@@ -82,6 +82,9 @@ struct _CarrickServiceItemPrivate
   gchar   *security;
   gboolean need_pass;
   gchar *passphrase;
+
+  GtkWidget *info_bar;
+  GtkWidget *info_label;
 };
 
 enum {
@@ -253,6 +256,8 @@ _set_state (CarrickServiceItem *self)
                                name,
                                _ ("Connected"));
       priv->failed = FALSE;
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          "");
     }
   else if (g_strcmp0 (priv->state, "configuration") == 0)
     {
@@ -260,6 +265,8 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Configuring"));
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          "");
     }
   else if (g_strcmp0 (priv->state, "association") == 0)
     {
@@ -267,6 +274,8 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup_printf ("%s - %s",
                                name,
                                _("Associating"));
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          "");
     }
   else if (g_strcmp0 (priv->state, "idle") == 0)
     {
@@ -275,6 +284,8 @@ _set_state (CarrickServiceItem *self)
                                 FALSE);
       button = g_strdup (_ ("Connect"));
       label = g_strdup (name);
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          "");
     }
   else if (g_strcmp0 (priv->state, "failure") == 0)
     {
@@ -301,6 +312,10 @@ _set_state (CarrickServiceItem *self)
                                name,
                                _ ("Connection failed"));
       priv->failed = TRUE;
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          _("Sorry, the connection failed. You could try again."));
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                     GTK_MESSAGE_ERROR);
     }
   else if (g_strcmp0 (priv->state, "disconnect") == 0)
     {
@@ -308,6 +323,8 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Disconnecting"));
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          "");
     }
   else
     {
@@ -330,6 +347,12 @@ _set_state (CarrickServiceItem *self)
   if (button && button[0] != '\0')
     gtk_button_set_label (GTK_BUTTON (priv->connect_button),
                           button);
+
+  if (g_str_equal (gtk_label_get_text (GTK_LABEL (priv->info_label)), ""))
+    gtk_widget_hide (priv->info_bar);
+  else
+    gtk_widget_show (priv->info_bar);
+
   g_free (name);
   g_free (label);
   g_free (button);
@@ -560,7 +583,9 @@ _connect_with_password (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
   const gchar               *passphrase;
-  GValue *value;
+  GValue                    *value;
+  guint                      len;
+  gchar                     *label = NULL;
 
   carrick_notification_manager_queue_event (priv->note,
                                             priv->type,
@@ -573,25 +598,73 @@ _connect_with_password (CarrickServiceItem *item)
     }
   else
     {
-      passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
+      /* Basic validation of the passphrase */
+      len = gtk_entry_get_text_length (GTK_ENTRY (priv->passphrase_entry));
+      if (g_str_equal (priv->security, "wep"))
+        {
+          /* WEP passphrase must be 10 chars or 28 */
+          if (len != 10 || len != 28)
+            {
+              label = g_strdup_printf (_("Your password isn't the right length."
+                                         " For a WEP connection it needs to be"
+                                         " either 10 or 28 characters, you"
+                                         " have %i."), len);
+            }
+        }
+      else if (g_str_equal (priv->security, "wpa"))
+        {
+          /* WPA passphrase must be more than 9 chars, less than 62 */
+          if (len < 8)
+            label = g_strdup_printf (_("Your password is too short. For a WPA "
+                                       " connection it needs to be at least"
+                                       " 8 characters long, you have %i"), len);
+          else if (len > 62)
+            label = g_strdup_printf (_("Your password is too long. For a WPA "
+                                       " connection it needs to have fewer than"
+                                       " 62 characters, you have %i"), len);
+        }
+      else if (g_str_equal (priv->security, "rsn"))
+        {
+          /* WPA2 passphrase must be more than 9 chars, less than 62 */
+          if (len < 8)
+            label = g_strdup_printf (_("Your password is too short. For a WPA2 "
+                                       " connection it needs to be at least"
+                                       " 8 characters long, you have %i"), len);
+          else if (len > 62)
+            label = g_strdup_printf (_("Your password is too long. For a WPA2 "
+                                       " connection it needs to have fewer than"
+                                       " 62 characters, you have %i"), len);
+        }
 
+      if (!label)
+        {
+          passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
+          value = g_slice_new0 (GValue);
+          g_value_init (value, G_TYPE_STRING);
+          g_value_set_string (value, passphrase);
+
+          org_moblin_connman_Service_set_property_async (priv->proxy,
+                                                         "Passphrase",
+                                                         value,
+                                                         set_passphrase_notify_cb,
+                                                         item);
+
+          g_value_unset (value);
+          g_slice_free (GValue, value);
+
+          gtk_widget_hide (priv->passphrase_box);
+          gtk_widget_show (priv->connect_box);
+        }
+      else
+        {
+          gtk_label_set_text (GTK_LABEL (priv->info_label),
+                              label);
+          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                         GTK_MESSAGE_WARNING);
+          gtk_widget_show (priv->info_bar);
+          gtk_widget_grab_focus (priv->passphrase_entry);
+        }
     }
-
-  value = g_slice_new0 (GValue);
-  g_value_init (value, G_TYPE_STRING);
-  g_value_set_string (value, passphrase);
-
-  org_moblin_connman_Service_set_property_async (priv->proxy,
-                                                 "Passphrase",
-                                                 value,
-                                                 set_passphrase_notify_cb,
-                                                 item);
-
-  g_value_unset (value);
-  g_slice_free (GValue, value);
-
-  gtk_widget_hide (priv->passphrase_box);
-  gtk_widget_show (priv->connect_box);
 }
 
 static void
@@ -627,6 +700,8 @@ _passphrase_entry_clear_released_cb (GtkEntry            *entry,
                                      GdkEvent            *event,
                                      gpointer             user_data)
 {
+  CarrickServiceItem *self = CARRICK_SERVICE_ITEM (user_data);
+
   if (gtk_entry_get_text_length (entry) > 0)
     {
       gtk_entry_set_text (entry, "");
@@ -635,7 +710,7 @@ _passphrase_entry_clear_released_cb (GtkEntry            *entry,
   /* On the second click of the clear button hide the passphrase widget */
   else
     {
-      carrick_service_item_set_active (CARRICK_SERVICE_ITEM (user_data),
+      carrick_service_item_set_active (self,
                                        FALSE);
     }
 }
@@ -675,6 +750,7 @@ carrick_service_item_set_active (CarrickServiceItem *item,
 
       gtk_widget_hide (priv->passphrase_box);
       gtk_widget_show (priv->connect_box);
+      gtk_widget_hide (priv->info_bar);
     }
 }
 
@@ -964,6 +1040,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget                 *box, *hbox, *vbox;
   GtkWidget                 *image;
   GtkWidget                 *connect_with_pw_button;
+  GtkWidget                 *content_area;
   char                      *security_sample;
 
   priv = self->priv = SERVICE_ITEM_PRIVATE (self);
@@ -1157,6 +1234,16 @@ carrick_service_item_init (CarrickServiceItem *self)
                     "changed",
                     G_CALLBACK (_entry_changed_cb),
                     self);
+
+  priv->info_bar = gtk_info_bar_new ();
+  gtk_widget_set_no_show_all (priv->info_bar, TRUE);
+  priv->info_label = gtk_label_new ("");
+  gtk_widget_show (priv->info_label);
+  content_area = gtk_info_bar_get_content_area (GTK_INFO_BAR (priv->info_bar));
+  gtk_container_add (GTK_CONTAINER (content_area), priv->info_label);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      priv->info_bar,
+                      FALSE, FALSE, 6);
 }
 
 GtkWidget*
