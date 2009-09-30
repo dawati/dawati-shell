@@ -176,6 +176,16 @@ add_account_row (MoblinStatusPanel *panel,
 }
 
 static void
+remove_account_row (MoblinStatusPanel *panel,
+                    AccountInfo       *a_info)
+{
+  g_signal_handlers_disconnect_by_func (a_info->row, on_row_status_changed,
+                                        a_info);
+
+  clutter_container_remove_actor (CLUTTER_CONTAINER (a_info->box), a_info->row);
+}
+
+static void
 on_presence_changed (TpAccountManager         *account_manager,
                      TpConnectionPresenceType  state,
                      const gchar              *status,
@@ -603,6 +613,31 @@ on_account_disabled (TpAccountManager  *account_manager,
     clutter_actor_show (panel->empty_im_bin);
 
   update_im_status (panel, panel->is_online);
+}
+
+static void
+on_account_removed (TpAccountManager *manager,
+                    TpAccount        *account,
+                    gpointer          user_data)
+{
+  MoblinStatusPanel *panel = (MoblinStatusPanel *) user_data;
+  AccountInfo *a_info;
+  const gchar *name;
+
+  name = tp_proxy_get_object_path (account);
+
+  a_info = account_find_by_name (panel, name);
+  if (a_info == NULL)
+    return;
+
+  on_account_disabled (manager, account, panel);
+
+  /* We need to actually remove it from the accounts list because
+   * the object path might be re-used in the future. */
+  remove_account_row (panel, a_info);
+
+  panel->accounts = g_slist_remove (panel->accounts, a_info);
+  account_info_destroy (a_info);
 }
 
 static void
@@ -1034,6 +1069,9 @@ make_status (MoblinStatusPanel *panel)
                     panel);
   g_signal_connect (panel->account_manager,
                     "account-disabled", G_CALLBACK (on_account_disabled),
+                    panel);
+  g_signal_connect (panel->account_manager,
+                    "account-removed", G_CALLBACK (on_account_removed),
                     panel);
   g_signal_connect (panel->account_manager,
                     "most-available-presence-changed",
