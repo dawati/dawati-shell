@@ -588,6 +588,9 @@ on_account_enabled (TpAccountManager  *account_manager,
 
   clutter_actor_hide (panel->empty_im_bin);
 
+  mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
+                                panel->is_online);
+
   update_im_status (panel, panel->is_online);
 }
 
