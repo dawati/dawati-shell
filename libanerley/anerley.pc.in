@@ -8,6 +8,6 @@ Description: Anerley people widgets
 Version: @VERSION@
 Libs: -L${libdir} -lanerley
 Cflags: -I${includedir}
-Requires: glib-2.0 dbus-glib-1 telepathy-glib libmissioncontrol nbtk-1.2 libebook-1.2
+Requires: glib-2.0 dbus-glib-1 telepathy-glib nbtk-1.2 libebook-1.2
 
 
