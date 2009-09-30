@@ -664,8 +664,8 @@ _account_manager_ready_cb (GObject      *source_object,
     return;
   }
 
-  priv->account = tp_account_manager_ensure_account (account_manager,
-                                                     priv->account_name);
+  priv->account = g_object_ref (tp_account_manager_ensure_account (account_manager,
+                                priv->account_name));
 
   if (priv->display_name == NULL)
     priv->display_name = g_strdup (tp_account_get_display_name (priv->account));
