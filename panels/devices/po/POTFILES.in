@@ -6,3 +6,5 @@ dalston/dalston-volume-slider.c
 libgvc/gvc-mixer-control.c
 src/dalston-power-applet.c
 src/dalston-volume-applet.c
+src/dalston-power-settings-capplet.c
+data/dalston-power-settings-capplet.desktop.in
