@@ -1419,7 +1419,7 @@ carrick_pane_init (CarrickPane *self)
                       column,
                       TRUE,
                       TRUE,
-                      4);
+                      0);
   /*
    * End of left column
    */
@@ -1432,13 +1432,13 @@ carrick_pane_init (CarrickPane *self)
 
   /* Switches */
   vbox = gtk_vbox_new (TRUE,
-                       6);
+                       0);
   gtk_widget_show (vbox);
   gtk_container_add (GTK_CONTAINER (switch_bin),
                      vbox);
 
   switch_box = gtk_hbox_new (TRUE,
-                             6);
+                             0);
   gtk_widget_show (switch_box);
 
   priv->wifi_switch = nbtk_gtk_light_switch_new ();
@@ -1454,24 +1454,24 @@ carrick_pane_init (CarrickPane *self)
                       priv->wifi_label,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->wifi_switch,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (vbox),
                       switch_box,
                       FALSE,
                       FALSE,
-                      8);
+                      6);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wifi_switch),
                     "switch-flipped",
                     G_CALLBACK (_wifi_switch_callback),
                     self);
 
   switch_box = gtk_hbox_new (TRUE,
-                             6);
+                             0);
   gtk_widget_show (switch_box);
   priv->ethernet_switch = nbtk_gtk_light_switch_new ();
   priv->ethernet_label = gtk_label_new (_ ("Wired"));
@@ -1485,24 +1485,24 @@ carrick_pane_init (CarrickPane *self)
                       priv->ethernet_label,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->ethernet_switch,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (vbox),
                       switch_box,
                       FALSE,
                       FALSE,
-                      8);
+                      6);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->ethernet_switch),
                     "switch-flipped",
                     G_CALLBACK (_ethernet_switch_callback),
                     self);
 
   switch_box = gtk_hbox_new (TRUE,
-                             6);
+                             0);
   gtk_widget_show (switch_box);
   priv->threeg_switch = nbtk_gtk_light_switch_new ();
   priv->threeg_label = gtk_label_new (_ ("3G"));
@@ -1516,24 +1516,24 @@ carrick_pane_init (CarrickPane *self)
                       priv->threeg_label,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->threeg_switch,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (vbox),
                       switch_box,
                       FALSE,
                       FALSE,
-                      4);
+                      6);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->threeg_switch),
                     "switch-flipped",
                     G_CALLBACK (_threeg_switch_callback),
                     self);
 
   switch_box = gtk_hbox_new (TRUE,
-                             6);
+                             0);
   gtk_widget_show (switch_box);
   priv->wimax_switch = nbtk_gtk_light_switch_new ();
   priv->wimax_label = gtk_label_new (_ ("WiMAX"));
@@ -1548,24 +1548,24 @@ carrick_pane_init (CarrickPane *self)
                       priv->wimax_label,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->wimax_switch,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (vbox),
                       switch_box,
                       FALSE,
                       FALSE,
-                      8);
+                      6);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->wimax_switch),
                     "switch-flipped",
                     G_CALLBACK (_wimax_switch_callback),
                     self);
 
   switch_box = gtk_hbox_new (TRUE,
-                             6);
+                             0);
   gtk_widget_show (switch_box);
   priv->bluetooth_switch = nbtk_gtk_light_switch_new ();
   priv->bluetooth_label = gtk_label_new (_ ("Bluetooth"));
@@ -1580,17 +1580,17 @@ carrick_pane_init (CarrickPane *self)
                       priv->bluetooth_label,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->bluetooth_switch,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (vbox),
                       switch_box,
                       FALSE,
                       FALSE,
-                      8);
+                      6);
   g_signal_connect (NBTK_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
                     "switch-flipped",
                     G_CALLBACK (_bluetooth_switch_callback),
@@ -1600,7 +1600,7 @@ carrick_pane_init (CarrickPane *self)
                       switch_bin,
                       TRUE,
                       TRUE,
-                      4);
+                      0);
 
   vbox = gtk_vbox_new (TRUE,
                        0);
@@ -1610,7 +1610,7 @@ carrick_pane_init (CarrickPane *self)
   priv->offline_mode_switch = nbtk_gtk_light_switch_new ();
   gtk_widget_show (priv->offline_mode_switch);
   switch_box = gtk_hbox_new (TRUE,
-                             6);
+                             0);
   gtk_widget_show (switch_box);
   switch_label = gtk_label_new (_ ("Offline mode"));
   gtk_widget_show (switch_label);
@@ -1625,17 +1625,17 @@ carrick_pane_init (CarrickPane *self)
                       switch_label,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (switch_box),
                       priv->offline_mode_switch,
                       TRUE,
                       TRUE,
-                      8);
+                      6);
   gtk_box_pack_start (GTK_BOX (vbox),
                       switch_box,
                       TRUE,
                       FALSE,
-                      8);
+                      6);
   offline_mode_label = gtk_label_new
           (_ ("This will disable all your connections"));
   gtk_label_set_line_wrap (GTK_LABEL (offline_mode_label),
@@ -1659,7 +1659,7 @@ carrick_pane_init (CarrickPane *self)
                       column,
                       FALSE,
                       FALSE,
-                      8);
+                      0);
   /*
    * End right column
    */
