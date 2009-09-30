@@ -556,12 +556,17 @@ update_im_status (MoblinStatusPanel *panel,
 }
 
 static void
-on_account_enabled (TpAccountManager  *account_manager,
-                    TpAccount         *account,
-                    MoblinStatusPanel *panel)
+on_account_ready (GObject *source_object,
+                  GAsyncResult *result,
+                  gpointer user_data)
 {
+  MoblinStatusPanel *panel = (MoblinStatusPanel *) user_data;
   AccountInfo *a_info;
   const gchar *name;
+  TpAccount *account = TP_ACCOUNT (source_object);
+
+  if (!tp_account_prepare_finish (account, result, NULL))
+    return;
 
   name = tp_proxy_get_object_path (account);
 
@@ -592,6 +597,14 @@ on_account_enabled (TpAccountManager  *account_manager,
                                 panel->is_online);
 
   update_im_status (panel, panel->is_online);
+}
+
+static void
+on_account_enabled (TpAccountManager  *account_manager,
+                    TpAccount         *account,
+                    MoblinStatusPanel *panel)
+{
+  tp_account_prepare_async (account, NULL, on_account_ready, panel);
 }
 
 static void
