@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
+"POT-Creation-Date: 2009-09-29 15:18+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
@@ -12,6 +12,34 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
+
+#.
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending conversation
+#.
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Relations en train de vous parler..."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#.
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "relations - quelqu'un est en train de vous parler"
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#.
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "relations - %d personnes en train de vous parler"
+
+#: ../src/moblin-panel-people.c:87
+msgid "people"
+msgstr "relations"
 
 #: ../src/mnb-people-panel.c:161
 msgid "Send an email"
@@ -46,7 +74,3 @@ msgstr "Sélection"
 #: ../src/mnb-people-panel.c:745
 msgid "Nobody selected"
 msgstr "Pas de sélection"
-
-#: ../src/moblin-panel-people.c:69
-msgid "people"
-msgstr "relations"
