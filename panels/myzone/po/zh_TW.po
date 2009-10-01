@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:10+0000\n"
+"POT-Creation-Date: 2009-09-29 20:28+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-calendar-pane.c:207
+#: ../penge/penge-calendar-pane.c:478
 msgid "<b>Appointments</b>"
 msgstr "<b>約會</b>"
 
@@ -23,16 +23,18 @@ msgid "No calendar entries this week"
 msgstr "這禮拜的行事曆上沒有任何條目"
 
 #: ../penge/penge-people-placeholder-tile.c:112
-msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgid ""
+"Your friends' feeds and web services will appear here. Activate your "
+"accounts now!"
 msgstr "你朋友的消息通知和網路服務會在出現這裡。現在就啟動你的帳戶吧！"
 
-#: ../penge/penge-recent-file-tile.c:211
+#: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "網頁"
 
 #: ../penge/penge-tasks-pane.c:344
 msgid "Nothing to do today"
-msgstr "今天沒有要做的事"
+msgstr "今天沒有待辦的事"
 
 #: ../penge/penge-task-tile.c:325
 #, c-format
@@ -44,6 +46,10 @@ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 msgstr "<b>歡迎來到專為網路筆電所設計的 Moblin 2.1</b>"
 
 #: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "由於 Moblin 和其他電腦有些不同，我們把一些東西湊在一塊來協助你上手。我們希望你能盡情地享受 Moblin，Moblin 團隊敬上。"
-
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
+msgstr ""
+"由於 Moblin 和其他電腦有些不同，我們把一些東西湊在一塊來協助你上手。我們希望"
+"你能盡情地享受 Moblin，Moblin 團隊敬上。"
