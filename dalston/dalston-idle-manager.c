@@ -129,8 +129,10 @@ _idletime_alarm_expired_cb (EggIdletime *idletime,
 
   if (alarm_id == SUSPEND_ALARM_ID)
   {
-    g_debug (G_STRLOC ": Got supend on idle alarm event");
+    g_debug (G_STRLOC ": Got suspend on idle alarm event");
   }
+
+  egg_idletime_alarm_reset_all (idletime);
 }
 
 static void
