@@ -27,6 +27,7 @@
 #include <dalston/dalston-volume-applet.h>
 #include <dalston/dalston-power-applet.h>
 #include <dalston/dalston-button-monitor.h>
+#include <dalston/dalston-idle-manager.h>
 
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-panel-gtk.h>
@@ -91,6 +92,7 @@ main (int    argc,
   GtkSettings *settings;
   DalstonButtonMonitor *button_monitor;
   DalstonBatteryMonitor *battery_monitor;
+  DalstonIdleManager *idle_manager;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -108,6 +110,9 @@ main (int    argc,
                                     "gtk-theme-name",
                                     "Moblin-Netbook",
                                     NULL);
+
+
+  idle_manager = dalston_idle_manager_new ();
 
   battery_monitor = g_object_new (DALSTON_TYPE_BATTERY_MONITOR,
                                   NULL);
