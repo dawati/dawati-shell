@@ -56,6 +56,9 @@ enum
 #define TILE_WIDTH 216
 #define TILE_HEIGHT 52
 
+#define APPOINTMENT_ENTRY_TEXT _("Create an appointment")
+#define APPOINTMENT_ENTRY_BUTTON _("Add")
+
 static void penge_events_pane_update_duration (PengeEventsPane *pane);
 static void penge_events_pane_update (PengeEventsPane *pane);
 

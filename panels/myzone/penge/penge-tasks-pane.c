@@ -48,6 +48,9 @@ struct _PengeTasksPanePrivate {
 #define TILE_WIDTH 216
 #define TILE_HEIGHT 52
 
+#define TASK_ENTRY_TEXT _("Create a new task")
+#define TASK_ENTRY_BUTTON _("Add")
+
 static void penge_tasks_pane_update (PengeTasksPane *pane);
 
 static void
