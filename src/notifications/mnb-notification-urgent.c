@@ -321,6 +321,35 @@ last_focused_weak_notify (gpointer data, GObject *object)
     priv->last_focused = NULL;
 }
 
+void meta_window_unmake_fullscreen (MetaWindow  *window);
+
+static void
+handle_fullscreen_application (MutterPlugin *plugin)
+{
+  MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay  *display = meta_screen_get_display (screen);
+  MetaWindow   *mw = NULL;
+  gboolean      fullscreen = FALSE;
+
+  g_object_get (display, "focus-window", &mw, NULL);
+
+  if (!mw)
+    {
+      g_warning (G_STRLOC " Could not obtain currently focused window!");
+      return;
+    }
+
+  g_object_get (mw, "fullscreen", &fullscreen, NULL);
+
+  if (!fullscreen)
+    {
+      g_warning (G_STRLOC " Currently focused window is not fullscreen!");
+      return ;
+    }
+
+  meta_window_unmake_fullscreen (mw);
+}
+
 static void
 on_notification_added (MoblinNetbookNotifyStore *store,
                        Notification             *notification,
@@ -328,11 +357,18 @@ on_notification_added (MoblinNetbookNotifyStore *store,
 {
   MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (urgent)->priv;
   NbtkWidget *w;
+  MutterPlugin *plugin;
 
   if (!notification->is_urgent)
     return;
 
+  plugin = moblin_netbook_get_plugin_singleton ();
+
+  if (moblin_netbook_compositor_disabled (plugin))
+    handle_fullscreen_application (plugin);
+
   w = find_widget (priv->notifiers, notification->id);
+
 
   if (!w)
     {
