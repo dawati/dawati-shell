@@ -2,14 +2,14 @@
 # Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the mutter-moblin package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-# , fuzzy
-#
-#
+#, fuzzy
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-11 16:32+0000\n"
+"POT-Creation-Date: 2009-10-01 19:19+0000\n"
 "PO-Revision-Date: 2009-08-05 14:41-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-people.c:69
+#: ../src/moblin-panel-people.c:87
 msgid "people"
 msgstr "personen"
 
@@ -35,23 +35,42 @@ msgstr "Stuur een bericht"
 
 #: ../src/mnb-people-panel.c:306
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-"Sorry, we kunnen geen personen vinden. Heb je een Messenger account "
-"aangemaakt?"
+msgstr "Sorry, we kunnen geen personen vinden. Heb je een Messenger account aangemaakt?"
 
-#: ../src/mnb-people-panel.c:553
+#: ../src/mnb-people-panel.c:551
 msgid "People"
 msgstr "Personen"
 
-#: ../src/mnb-people-panel.c:566
+#: ../src/mnb-people-panel.c:564
 msgid "Search"
 msgstr "Zoek"
 
-#: ../src/mnb-people-panel.c:682
+#: ../src/mnb-people-panel.c:677
 msgid "Selection"
 msgstr "Selectie"
 
-#: ../src/mnb-people-panel.c:745
+#: ../src/mnb-people-panel.c:740
 msgid "Nobody selected"
 msgstr "Niemand geselecteerd"
 
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending
+#. conversation
+#. 
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Personen die met je praten ..."
+
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#. 
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "personen - %d mensen praten met je"
+
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. 
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "personen - iemand praat met je"
