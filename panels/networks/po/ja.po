@@ -549,11 +549,21 @@ msgstr "- Moblin 接続システム"
 msgid "network"
 msgstr "ネットワーク"
 
+#~ msgid ""
+#~ "Sorry, we can't find any networks. It appears that the ConnMan daemon is "
+#~ "not running. You could try re-starting your netbook."
+#~ msgstr ""
+#~ "ネットワークが見つかりません。ConnMan デーモンが実行されていないようです。"
+#~ "ネットブックを再起動してみてください。"
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr "ネットワークが見つかりません。WiFi をオンにしてみてください。"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
 #~ msgstr "ネットワークが見つかりません。WiMAX をオンにしてみてください。"
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
+#~ msgstr "ネットワークが見つかりません。3G をオンにしてみてください。"
 
 #~ msgid ""
 #~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
@@ -561,15 +571,6 @@ msgstr "ネットワーク"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
 #~ msgstr "ネットワークが見つかりません。優先接続をオンにしてみてください。"
-
-#~ msgid "Warning"
-#~ msgstr "警告"
-
-#~ msgid "Add a new account"
-#~ msgstr "新規アカウントの追加"
-
-#~ msgid "Unencrypted"
-#~ msgstr "暗合化されていない"
 
 #~ msgid "Run Anjal in a window"
 #~ msgstr "ウィンドウ内で Anjal を立ち上げる"
@@ -706,6 +707,9 @@ msgstr "ネットワーク"
 
 #~ msgid "Junk"
 #~ msgstr "迷惑メール"
+
+#~ msgid "Select Folder"
+#~ msgstr "フォルダーの選択"
 
 #~ msgid "Loading folder"
 #~ msgstr "フォルダーの読み込み"
@@ -1166,3 +1170,12 @@ msgstr "ネットワーク"
 
 #~ msgid "Width of Anjal window."
 #~ msgstr "Anjal ウィンドウの幅"
+
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#~ msgid "Add a new account"
+#~ msgstr "新規アカウントの追加"
+
+#~ msgid "Unencrypted"
+#~ msgstr "暗合化されていない"
