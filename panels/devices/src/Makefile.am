@@ -56,6 +56,6 @@ dalston_power_settings_capplet_CFLAGS = -I$(top_srcdir) \
 					$(GCONF_CFLAGS)
 dalston_power_settings_capplet_LDADD =  $(GLIB_LIBS) \
 					$(GTK_LIBS) \
-					$(GCONFLIBS)
+					$(GCONF_LIBS)
 dalston_power_settings_capplet_SOURCES = dalston-power-settings-capplet.c
 
