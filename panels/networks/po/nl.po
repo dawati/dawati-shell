@@ -16,11 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../carrick/carrick-list.c:865
-#, fuzzy
-msgid "wired"
-msgstr "Wired"
-
 #: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1445
 msgid "WiFi"
 msgstr "Wifi"
@@ -37,26 +32,12 @@ msgstr "3G"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#. * Translators: this string is displayed if there
-#. * are no available networks because ConnMan, the
-#. * connectivity daemon, is not running.
-#. 
-#: ../carrick/carrick-list.c:882
-#, fuzzy
-msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Sorry, geen netwerken gevonden. De verbindings beheer lijkt niet actief te zijn. Je kunt proberen het apparaat opnieuw op te starten."
-
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #. 
 #: ../carrick/carrick-list.c:892
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om Offline mode uit te schakelen."
-
-#: ../carrick/carrick-list.c:1029
-#, fuzzy, c-format
-msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om 3G aan te zetten"
 
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
@@ -220,7 +201,7 @@ msgstr "Configureren"
 
 #: ../carrick/carrick-service-item.c:375
 msgid "Associating"
-msgstr "AssociÃÂ«ren"
+msgstr "AssociÃÂÃÂ«ren"
 
 #: ../carrick/carrick-service-item.c:384 ../carrick/carrick-service-item.c:409
 #: ../carrick/carrick-service-item.c:1329
@@ -517,6 +498,23 @@ msgstr "Je wachtwoord is te kort. Voor een WPA verbinding heb je minstens 8 kara
 #: ../carrick/carrick-service-item.c:43
 msgid "Cellular Data Connection Wizard"
 msgstr "Mobiele Data Verbindings Wizard"
+
+#: ../carrick/carrick-list.c:865
+msgid "wired"
+msgstr "Wired"
+
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#. 
+#: ../carrick/carrick-list.c:882
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "Sorry, geen netwerken gevonden. De verbindings beheer lijkt niet actief te zijn. Je kunt proberen het apparaat opnieuw op te starten."
+
+#: ../carrick/carrick-list.c:1029
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om %s aan te zetten"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om WiFi aan te zetten."
