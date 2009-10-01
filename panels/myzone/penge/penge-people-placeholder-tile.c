@@ -109,7 +109,7 @@ penge_people_placeholder_tile_init (PengePeoplePlaceholderTile *self)
   nbtk_bin_set_child (NBTK_BIN (self), (ClutterActor *)priv->inner_table);
   nbtk_bin_set_fill (NBTK_BIN (self), TRUE, TRUE);
 
-  label = nbtk_label_new (_("Your friends' feeds and web services will appear here. " \
+  label = nbtk_label_new (_("Things that your friends do online will appear here. " \
                             "Activate your accounts now!"));
   clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-main-message");
 
