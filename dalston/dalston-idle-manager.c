@@ -22,6 +22,7 @@
 #include "dalston-idle-manager.h"
 #include <libegg-idletime/egg-idletime.h>
 #include <gconf/gconf-client.h>
+#include <libhal-power-glib/hal-power-proxy.h>
 
 G_DEFINE_TYPE (DalstonIdleManager, dalston_idle_manager, G_TYPE_OBJECT)
 
@@ -34,6 +35,7 @@ struct _DalstonIdleManagerPrivate {
   EggIdletime *idletime;
   GConfClient *client;
   guint suspend_idle_time_notify_id;
+  HalPowerProxy *power_proxy;
 };
 
 #define MOBLIN_GCONF_DIR "/desktop/moblin"
@@ -65,6 +67,12 @@ dalston_idle_manager_dispose (GObject *object)
     priv->client = NULL;
   }
 
+  if (priv->power_proxy)
+  {
+    g_object_unref (priv->power_proxy);
+    priv->power_proxy = NULL;
+  }
+
   G_OBJECT_CLASS (dalston_idle_manager_parent_class)->dispose (object);
 }
 
@@ -86,12 +94,8 @@ dalston_idle_manager_class_init (DalstonIdleManagerClass *klass)
 }
 
 static void
-_suspend_idle_time_key_changed_cb (GConfClient *client,
-                                   guint        cnxn_id,
-                                   GConfEntry  *entry,
-                                   gpointer     userdata)
+_set_suspend_idle_alarm (DalstonIdleManager *manager)
 {
-  DalstonIdleManager *manager = DALSTON_IDLE_MANAGER (userdata);
   DalstonIdleManagerPrivate *priv = GET_PRIVATE (manager);
   gint suspend_idle_time_minutes = -1;
   GError *error = NULL;
@@ -109,7 +113,6 @@ _suspend_idle_time_key_changed_cb (GConfClient *client,
     suspend_idle_time_minutes = -1;
   }
 
-  egg_idletime_alarm_remove (priv->idletime, SUSPEND_ALARM_ID);
 
   if (suspend_idle_time_minutes > 0)
   {
@@ -117,6 +120,20 @@ _suspend_idle_time_key_changed_cb (GConfClient *client,
                             SUSPEND_ALARM_ID,
                             suspend_idle_time_minutes * 60 * 1000);
   }
+}
+
+static void
+_suspend_idle_time_key_changed_cb (GConfClient *client,
+                                   guint        cnxn_id,
+                                   GConfEntry  *entry,
+                                   gpointer     userdata)
+{
+  DalstonIdleManager *manager = DALSTON_IDLE_MANAGER (userdata);
+  DalstonIdleManagerPrivate *priv = GET_PRIVATE (manager);
+
+  egg_idletime_alarm_remove (priv->idletime, SUSPEND_ALARM_ID);
+
+  _set_suspend_idle_alarm (manager);
 }
 
 static void
@@ -130,9 +147,9 @@ _idletime_alarm_expired_cb (EggIdletime *idletime,
   if (alarm_id == SUSPEND_ALARM_ID)
   {
     g_debug (G_STRLOC ": Got suspend on idle alarm event");
+    hal_power_proxy_suspend_sync (priv->power_proxy);
+    _set_suspend_idle_alarm (manager);
   }
-
-  egg_idletime_alarm_reset_all (idletime);
 }
 
 static void
@@ -178,6 +195,8 @@ dalston_idle_manager_init (DalstonIdleManager *self)
                     "alarm-expired",
                     (GCallback)_idletime_alarm_expired_cb,
                     self);
+
+  priv->power_proxy = hal_power_proxy_new ();
 }
 
 DalstonIdleManager *
