@@ -172,7 +172,7 @@ _shutdown_notify_timeout_cb (gpointer userdata)
     return FALSE;
   }
 
-  body_text = g_strdup_printf (_("If you don't decide i'll turn off in %d seconds"),
+  body_text = g_strdup_printf (_("If you don't decide I'll turn off in %d seconds"),
                                   priv->shutdown_seconds_remaining);
   g_object_set (priv->shutdown_notification,
                 "body",
@@ -275,7 +275,7 @@ _device_condition_cb (HalDevice   *device,
     }
 
     priv->shutdown_notification = notify_notification_new (_("Would you like to turn off now?"),
-                                                           _("If you don't decide i'll turn off in 30 seconds"),
+                                                           _("If you don't decide I'll turn off in 30 seconds"),
                                                            "system-shutdown",
                                                            NULL);
     notify_notification_set_urgency (priv->shutdown_notification, NOTIFY_URGENCY_CRITICAL);
