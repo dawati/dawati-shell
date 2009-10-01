@@ -880,8 +880,8 @@ _set_and_show_fallback (CarrickList *self)
        * connectivity daemon, is not running.
        */
       fallback = g_strdup (_("Sorry, we can't find any networks. "
-                             "It appears that the ConnMan daemon is not running. "
-                             "You could try re-starting your netbook."));
+                             "It appears that the connection manager is not running. "
+                             "You could try restarting your computer."));
     }
   else if (priv->offline_mode)
     {
