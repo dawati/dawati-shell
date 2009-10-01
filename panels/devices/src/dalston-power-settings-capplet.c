@@ -1,7 +1,9 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gconf/gconf-client.h>
 #include <config.h>
 
+#define MOBLIN_GCONF_DIR "/desktop/moblin"
 #define IDLE_TIME_KEY "/desktop/moblin/suspend_idle_time"
 
 enum
@@ -32,6 +34,49 @@ _slider_format_value_cb (GtkScale *scale,
   return g_strdup (slider_labels[(int)value]);
 }
 
+static void
+_idle_time_key_changed_cb (GConfClient *client,
+                           guint        cnxn_id,
+                           GConfEntry  *entry,
+                           gpointer     userdata)
+{
+  GtkWidget *slider = GTK_WIDGET (userdata);
+  gint idle_time;
+  GError *error = NULL;
+  gdouble slider_value;
+
+  idle_time = gconf_client_get_int (client,
+                                    IDLE_TIME_KEY,
+                                    &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error getting gconf key: %s",
+               error->message);
+    g_clear_error (&error);
+    idle_time = -1;
+  }
+
+  if (idle_time == -1)
+  {
+    slider_value = (double)NEVER;
+  } else if (idle_time == 10) {
+    slider_value = (double)TEN_MINUTES;
+  } else if (idle_time == 20) {
+    slider_value = (double)TWENTY_MINUTES;
+  } else if (idle_time == 30) {
+    slider_value = (double)THIRTY_MINUTES;
+  } else if (idle_time == 40) {
+    slider_value = (double)FORTY_MINUTES;
+  } else if (idle_time == 60) {
+    slider_value = (double)ONE_HOUR;
+  } else {
+    slider_value = (double)NEVER;
+  }
+
+  gtk_range_set_value (GTK_RANGE (slider), slider_value);
+}
+
 gint
 main (gint    argc,
       gchar **argv)
@@ -43,9 +88,14 @@ main (gint    argc,
   GtkWidget *slider;
   GtkWidget *inner_vbox;
   GtkWidget *vbox;
+  GConfClient *client;
+  guint notify_id;
+  GError *error = NULL;
 
   g_set_application_name (_("Power Management Settings"));
   gtk_init (&argc, &argv);
+
+  client = gconf_client_get_default ();
 
   main_window = gtk_dialog_new_with_buttons (_("Power Management Preferences"),
                                              NULL,
@@ -101,5 +151,36 @@ main (gint    argc,
   gtk_widget_show_all (main_frame);
   gtk_widget_set_size_request (main_window, 600, -1);
 
+  gconf_client_add_dir (client,
+                        MOBLIN_GCONF_DIR,
+                        GCONF_CLIENT_PRELOAD_NONE,
+                        &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error adding gconf directory: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  notify_id = gconf_client_notify_add (client,
+                                       IDLE_TIME_KEY,
+                                       _idle_time_key_changed_cb,
+                                       slider,
+                                       NULL,
+                                       &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error setting up gconf key notification: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  gconf_client_notify (client, IDLE_TIME_KEY);
+
   gtk_dialog_run (GTK_DIALOG (main_window));
+
+  gconf_client_notify_remove (client, notify_id);
+  g_object_unref (client);
 }
