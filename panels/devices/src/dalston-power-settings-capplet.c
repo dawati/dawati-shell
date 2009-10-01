@@ -26,6 +26,15 @@ static const gchar *slider_labels[LAST_RANGE] = {
   N_("Never")
 };
 
+static const gint idle_time_minutes[LAST_RANGE] = {
+  10,
+  20,
+  30,
+  40,
+  60,
+  -1
+};
+
 static gchar *
 _slider_format_value_cb (GtkScale *scale,
                          gdouble   value,
@@ -33,6 +42,31 @@ _slider_format_value_cb (GtkScale *scale,
 {
   return g_strdup (slider_labels[(int)value]);
 }
+
+static void
+_slider_value_changed_cb (GtkRange *range,
+                          gpointer  userdata)
+{
+  GConfClient *client = GCONF_CLIENT (userdata);
+  gdouble slider_value;
+  GError *error = NULL;
+
+  slider_value = gtk_range_get_value (GTK_RANGE (range));
+
+  gconf_client_set_int (client,
+                        IDLE_TIME_KEY,
+                        idle_time_minutes[(gint)slider_value],
+                        &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error setting gconf key: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+}
+
+
 
 static void
 _idle_time_key_changed_cb (GConfClient *client,
@@ -74,7 +108,13 @@ _idle_time_key_changed_cb (GConfClient *client,
     slider_value = (double)NEVER;
   }
 
+  g_signal_handlers_block_by_func (slider,
+                                   _slider_value_changed_cb,
+                                   client);
   gtk_range_set_value (GTK_RANGE (slider), slider_value);
+  g_signal_handlers_unblock_by_func (slider,
+                                     _slider_value_changed_cb,
+                                     client);
 }
 
 gint
@@ -125,6 +165,11 @@ main (gint    argc,
                     "format-value",
                     (GCallback)_slider_format_value_cb,
                     NULL);
+  g_signal_connect (slider,
+                    "value-changed",
+                    (GCallback)_slider_value_changed_cb,
+                    client);
+
   gtk_scale_set_value_pos (GTK_SCALE (slider),
                            GTK_POS_BOTTOM);
 
