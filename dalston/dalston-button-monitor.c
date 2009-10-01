@@ -44,6 +44,7 @@ struct _DalstonButtonMonitorPrivate {
   NotifyNotification *shutdown_notification;
   guint shutdown_notification_timeout;
   gint shutdown_seconds_remaining;
+  gboolean shutdown_initiated;
 };
 
 static void
@@ -136,6 +137,7 @@ _shutdown_notify_cb (NotifyNotification *notification,
   DalstonButtonMonitor *monitor = (DalstonButtonMonitor *)userdata;
   DalstonButtonMonitorPrivate *priv = GET_PRIVATE (monitor);
 
+  priv->shutdown_initiated = TRUE;
   hal_power_proxy_shutdown_sync (priv->power_proxy);
 }
 
@@ -168,6 +170,7 @@ _shutdown_notify_timeout_cb (gpointer userdata)
   if (priv->shutdown_seconds_remaining == 0)
   {
     notify_notification_close (priv->shutdown_notification, NULL);
+    priv->shutdown_initiated = TRUE;
     hal_power_proxy_shutdown_sync (priv->power_proxy);
     return FALSE;
   }
@@ -255,11 +258,11 @@ _device_condition_cb (HalDevice   *device,
     if (has_state)
     {
        /* Shutdown notification inhibits suspend */
-       if (state && !priv->shutdown_notification)
+       if (state && !(priv->shutdown_notification && priv->shutdown_initiated))
           hal_power_proxy_suspend_sync (priv->power_proxy);
     } else {
       /* Shutdown notification inhibits suspend */
-      if (!priv->shutdown_notification)
+      if (!(priv->shutdown_notification || priv->shutdown_initiated))
         hal_power_proxy_suspend_sync (priv->power_proxy);
     }
   } else if (g_str_equal (type, "power")) {
@@ -270,6 +273,7 @@ _device_condition_cb (HalDevice   *device,
 
     if (priv->shutdown_notification)
     {
+      priv->shutdown_initiated = TRUE;
       hal_power_proxy_shutdown_sync (priv->power_proxy);
       goto out;
     }
