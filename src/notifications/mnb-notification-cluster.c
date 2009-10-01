@@ -23,9 +23,11 @@
 
 #include <glib/gi18n.h>
 
+#include "../moblin-netbook.h"
 #include "mnb-notification-cluster.h"
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"
+#include "mnb-notification-gtk.h"
 
 G_DEFINE_TYPE (MnbNotificationCluster,   \
                mnb_notification_cluster, \
@@ -333,10 +335,18 @@ on_notification_added (MoblinNetbookNotifyStore *store,
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
   NbtkWidget *w;
   ClutterAnimation *anim;
+  MutterPlugin *plugin;
 
   /* Handled by mnb-notification-urgent */
   if (notification->is_urgent)
     return;
+
+  plugin = moblin_netbook_get_plugin_singleton ();
+
+  if (moblin_netbook_compositor_disabled (plugin))
+    {
+      mnb_notification_gtk_show ();
+    }
 
   w = find_widget (priv->notifiers, notification->id);
 
@@ -573,6 +583,7 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
         {
           /* Animation above would have removed */
           priv->active_notifier = NULL;
+          mnb_notification_gtk_hide ();
         }
       else if (priv->n_notifiers == 1)
         {

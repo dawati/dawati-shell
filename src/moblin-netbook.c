@@ -31,6 +31,7 @@
 #include "switcher/mnb-switcher.h"
 #include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"
+#include "notifications/mnb-notification-gtk.h"
 
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
@@ -1114,6 +1115,11 @@ moblin_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
   else
     {
       priv->compositor_disabled = FALSE;
+
+      /*
+       * Hide the gtk notification notifier if present
+       */
+      mnb_notification_gtk_hide ();
 
       XCompositeRedirectSubwindows (xdpy,
                                     xroot,

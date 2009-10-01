@@ -15,7 +15,9 @@ libnotifications_la_SOURCES =				\
                         mnb-notification-cluster.c      \
                         mnb-notification-cluster.h      \
                         mnb-notification-urgent.c       \
-                        mnb-notification-urgent.h
+                        mnb-notification-urgent.h	\
+			mnb-notification-gtk.c		\
+			mnb-notification-gtk.h
 
 DBUS_GLUE =	notification-manager-glue.h
 
