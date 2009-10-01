@@ -87,7 +87,8 @@ struct _MoblinNetbookPluginPrivate
 
   gint                   fullscreen_apps [MAX_WORKSPACES + 1];
 
-  gboolean               holding_focus : 1;
+  gboolean               holding_focus       : 1;
+  gboolean               compositor_disabled : 1;
 
   /* Background desktop texture */
   ClutterActor          *desktop_tex;
@@ -152,5 +153,8 @@ moblin_netbook_get_plugin_singleton (void);
 
 gboolean
 moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace);
+
+gboolean
+moblin_netbook_compositor_disabled (MutterPlugin *plugin);
 
 #endif

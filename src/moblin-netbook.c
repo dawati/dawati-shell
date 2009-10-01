@@ -1085,17 +1085,26 @@ moblin_netbook_detach_mutter_windows (MetaScreen *screen)
 }
 
 static void
-fullscreen_redirect (MetaWindow* mw, gboolean on)
+moblin_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
 {
-  MetaDisplay *display = meta_window_get_display (mw);
-  MetaScreen  *screen  = meta_window_get_screen (mw);
-  Display     *xdpy    = meta_display_get_xdisplay (display);
-  Window       xroot   = meta_screen_get_xroot (screen);
-  Window       overlay = mutter_get_overlay_window (screen);
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen;
+  Display                    *xdpy;
+  Window                      xroot;
+  Window                      overlay;
+
+  if ((priv->compositor_disabled && !on) || (!priv->compositor_disabled && on))
+    return;
+
+  screen  = mutter_plugin_get_screen (plugin);
+  xdpy    = mutter_plugin_get_xdisplay (plugin);
+  xroot   = meta_screen_get_xroot (screen);
+  overlay = mutter_get_overlay_window (screen);
 
   if (!on)
     {
-      g_debug ("Unredirecting windows");
+      priv->compositor_disabled = TRUE;
+
       XCompositeUnredirectSubwindows (xdpy,
                                       xroot,
                                       CompositeRedirectManual);
@@ -1104,7 +1113,8 @@ fullscreen_redirect (MetaWindow* mw, gboolean on)
     }
   else
     {
-      g_debug ("Redirecting windows");
+      priv->compositor_disabled = FALSE;
+
       XCompositeRedirectSubwindows (xdpy,
                                     xroot,
                                     CompositeRedirectManual);
@@ -1137,12 +1147,12 @@ meta_window_fullcreen_notify_cb (GObject    *object,
   if (fullscreen)
     {
       fullscreen_app_added (priv, ws_index);
-      fullscreen_redirect (mw, FALSE);
+      moblin_netbook_toggle_compositor (data, FALSE);
     }
   else
     {
       fullscreen_app_removed (priv, ws_index);
-      fullscreen_redirect (mw, TRUE);
+      moblin_netbook_toggle_compositor (data, TRUE);
     }
 }
 
@@ -1401,7 +1411,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                   gint index = meta_workspace_index (ws);
 
                   fullscreen_app_added (priv, index);
-                  fullscreen_redirect (mw, FALSE);
+                  moblin_netbook_toggle_compositor (plugin, FALSE);
                   clutter_actor_hide (CLUTTER_ACTOR (mcw));
                 }
             }
@@ -1531,7 +1541,7 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
               gint index = meta_workspace_index (ws);
 
               fullscreen_app_removed (priv, index);
-              fullscreen_redirect (meta_win, TRUE);
+              moblin_netbook_toggle_compositor (plugin, TRUE);
             }
         }
 
@@ -2178,4 +2188,12 @@ moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
      }
 
   return FALSE;
+}
+
+gboolean
+moblin_netbook_compositor_disabled (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  return priv->compositor_disabled;
 }
