@@ -31,9 +31,9 @@
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
 
-#include "moblin-netbook-notify-store.h"
-#include "mnb-notification-cluster.h"
-#include "mnb-notification-urgent.h"
+#include "notifications/moblin-netbook-notify-store.h"
+#include "notifications/mnb-notification-cluster.h"
+#include "notifications/mnb-notification-urgent.h"
 
 #include "mnb-input-manager.h"
 

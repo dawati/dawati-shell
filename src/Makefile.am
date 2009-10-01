@@ -1,4 +1,4 @@
-SUBDIRS=effects switcher
+SUBDIRS=effects switcher notifications
 
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
@@ -15,8 +15,6 @@ moblin_netbook_la_SOURCES  = \
 				mnb-scale-group.h               \
 				moblin-netbook.c		\
 				moblin-netbook.h		\
-				moblin-netbook-notify-store.c   \
-				moblin-netbook-notify-store.h   \
 				$(DBUS_BINDINGS) \
 				$(DBUS_GLUE) \
 				$(MARSHALS)                     \
@@ -24,12 +22,6 @@ moblin_netbook_la_SOURCES  = \
 				mnb-drop-down.c                 \
 				mnb-input-manager.h		\
 				mnb-input-manager.c		\
-				mnb-notification.c              \
-				mnb-notification.h              \
-				mnb-notification-cluster.c      \
-				mnb-notification-cluster.h      \
-				mnb-notification-urgent.c       \
-				mnb-notification-urgent.h       \
 				mnb-toolbar.c                   \
 				mnb-toolbar.h                   \
 				mnb-toolbar-button.c            \
@@ -37,8 +29,7 @@ moblin_netbook_la_SOURCES  = \
 				mnb-panel.c                     \
 				mnb-panel.h
 
-DBUS_GLUE =	notification-manager-glue.h	\
-		mnb-panel-dbus-glue.h		\
+DBUS_GLUE =	mnb-panel-dbus-glue.h		\
 		mnb-toolbar-dbus-glue.h
 
 DBUS_BINDINGS =	mnb-panel-dbus-bindings.h	\
@@ -60,7 +51,8 @@ MARSHALS = marshal.c marshal.h
 moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				effects/libeffects.la	\
-				switcher/libswitcher.la
+				switcher/libswitcher.la \
+				notifications/libnotifications.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la
 
@@ -74,4 +66,4 @@ install-exec-hook:
 BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS)
 
 CLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = marshal.list mnb-panel-dbus.xml mnb-toolbar-dbus.xml notification-manager.xml
+EXTRA_DIST = marshal.list mnb-panel-dbus.xml mnb-toolbar-dbus.xml

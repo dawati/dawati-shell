@@ -21,7 +21,7 @@
  * 02111-1307, USA.
  */
 
-#include "moblin-netbook.h"
+#include "../moblin-netbook.h"
 #include "mnb-notification-urgent.h"
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"

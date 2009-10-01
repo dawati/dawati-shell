@@ -15,7 +15,7 @@
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
-#include "marshal.h"
+#include "../marshal.h"
 
 G_DEFINE_TYPE (MoblinNetbookNotifyStore, moblin_netbook_notify_store, G_TYPE_OBJECT);
 
