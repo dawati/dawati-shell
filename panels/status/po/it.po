@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
-"PO-Revision-Date: 2009-07-29 09:55+0100\n"
+"POT-Creation-Date: 2009-10-01 19:19+0000\n"
+"PO-Revision-Date: 2009-10-02 23:06+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -16,71 +16,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/mnb-im-status-row.c:103 ../src/mnb-im-status-row.c:104
-#: ../src/mnb-im-status-row.c:742
+#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
+#: ../src/mnb-im-status-row.c:808 ../src/moblin-panel-status.c:500
 msgid "Offline"
 msgstr "Fuori rete"
 
-#: ../src/mnb-im-status-row.c:105 ../src/moblin-panel-status.c:536
+#: ../src/mnb-im-status-row.c:110 ../src/moblin-panel-status.c:504
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../src/mnb-im-status-row.c:106 ../src/mnb-im-status-row.c:107
-#: ../src/moblin-panel-status.c:540 ../src/moblin-panel-status.c:544
+#: ../src/mnb-im-status-row.c:111 ../src/mnb-im-status-row.c:112
+#: ../src/moblin-panel-status.c:508 ../src/moblin-panel-status.c:512
 msgid "Away"
 msgstr "Assente"
 
-#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
-#: ../src/moblin-panel-status.c:548 ../src/moblin-panel-status.c:552
+#: ../src/mnb-im-status-row.c:113 ../src/mnb-im-status-row.c:114
+#: ../src/moblin-panel-status.c:516 ../src/moblin-panel-status.c:520
 msgid "Busy"
-msgstr "Occupato"
+msgstr "Non disponibile"
 
-#: ../src/mnb-im-status-row.c:132
+#: ../src/mnb-im-status-row.c:137
 msgid "Close"
 msgstr "Chiudi"
 
-#: ../src/mnb-im-status-row.c:141 ../src/mnb-im-status-row.c:760
+#: ../src/mnb-im-status-row.c:146 ../src/mnb-im-status-row.c:826
 msgid "Change"
 msgstr "Modifica"
 
-#: ../src/mnb-im-status-row.c:745
+#: ../src/mnb-im-status-row.c:811
 msgid "Unknown account"
 msgstr "Account sconosciuto"
 
-#: ../src/mnb-web-status-entry.c:86 ../src/mnb-web-status-entry.c:639
-#: ../src/mnb-web-status-entry.c:720
+#: ../src/mnb-web-status-entry.c:88 ../src/mnb-web-status-entry.c:641
+#: ../src/mnb-web-status-entry.c:722
 msgid "Edit"
 msgstr "Modifica"
 
 #. Translators: %s is the user visible name of the service
-#: ../src/mnb-web-status-entry.c:513
+#: ../src/mnb-web-status-entry.c:515
 #, c-format
 msgid "Enter your %s status here..."
 msgstr "Scrivere qui il proprio stato per %s..."
 
-#: ../src/mnb-web-status-entry.c:517 ../src/mnb-web-status-entry.c:590
+#: ../src/mnb-web-status-entry.c:519 ../src/mnb-web-status-entry.c:592
 msgid "Enter your current status here..."
 msgstr "Scrivere qui il proprio stato..."
 
-#: ../src/mnb-web-status-entry.c:699
+#: ../src/mnb-web-status-entry.c:701
 msgid "Post"
 msgstr "Pubblica"
 
-#: ../src/moblin-panel-status.c:470
+#: ../src/moblin-panel-status.c:478
 msgid "Your current status"
 msgstr "Il proprio stato attuale"
 
-#: ../src/moblin-panel-status.c:472 ../src/moblin-panel-status.c:960
+#: ../src/moblin-panel-status.c:480 ../src/moblin-panel-status.c:972
 msgid "Your current status - you are offline"
 msgstr "Il proprio stato attuale - fuori rete"
 
-#: ../src/moblin-panel-status.c:825
+#: ../src/moblin-panel-status.c:837
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr ""
 "Non è stata trovata alcuna persona. È stato configurato un account di "
 "messaggistica istantanea?"
 
-#: ../src/moblin-panel-status.c:994
+#: ../src/moblin-panel-status.c:1006
 msgid ""
 "To update your web status you need to setup a Web Services account with a "
 "provider that supports status messages"
@@ -88,12 +88,12 @@ msgstr ""
 "Per aggiornare il proprio stato è necessario configurare un account di un "
 "Servizio web che supporti i messaggi di stato"
 
-#: ../src/moblin-panel-status.c:1021
+#: ../src/moblin-panel-status.c:1033
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr ""
 "Per aggiornare il proprio stato è necessario configurare un account di "
 "messaggistica istantanea"
 
-#: ../src/moblin-panel-status.c:1118
+#: ../src/moblin-panel-status.c:1125
 msgid "status"
 msgstr "stato"
