@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
+"POT-Creation-Date: 2009-10-01 19:19+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -11,6 +11,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#.
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending conversation
+#.
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Hay gente conversando contigo..."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#.
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "gente - hay alguien conversando contigo"
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#.
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "gente - personas conversando contigo: %d"
+
+# <mousetip of the top of the screen>
+#: ../src/moblin-panel-people.c:87
+msgid "people"
+msgstr "gente"
 
 #: ../src/mnb-people-panel.c:161
 msgid "Send an email"
@@ -30,23 +59,18 @@ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr ""
 "Lo sentimos, no econtramos a nadie. ¿Tienes ya una cuenta en Messenger?"
 
-#: ../src/mnb-people-panel.c:553
+#: ../src/mnb-people-panel.c:551
 msgid "People"
 msgstr "Gente"
 
-#: ../src/mnb-people-panel.c:566
+#: ../src/mnb-people-panel.c:564
 msgid "Search"
 msgstr "Búsqueda"
 
-#: ../src/mnb-people-panel.c:682
+#: ../src/mnb-people-panel.c:677
 msgid "Selection"
 msgstr "Selección"
 
-#: ../src/mnb-people-panel.c:745
+#: ../src/mnb-people-panel.c:740
 msgid "Nobody selected"
 msgstr "Nadie seleccionado"
-
-# <mousetip of the top of the screen>
-#: ../src/moblin-panel-people.c:69
-msgid "people"
-msgstr "gente"
