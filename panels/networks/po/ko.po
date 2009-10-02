@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:03+0000\n"
+"POT-Creation-Date: 2009-10-01 19:09+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,62 +14,78 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #.
+#. * Translator note: The disabled technologies available to be turned on is put together at
+#. * runtime.
+#. * The conjunction 'or' will be at the end of a choice of disabled technologies,
+#. * for example 'WiFi, WiMAX or 3G.
+#.
+#: ../carrick/carrick-list.c:859
+msgid " or "
+msgstr "또는 "
+
+#.
+#. * Translator note: the comma ',' will be used to join the different disabled technologies
+#. * as in the above example; 'WiFi, WiMAX or 3G'
+#.
+#: ../carrick/carrick-list.c:864
+msgid ", "
+msgstr ", "
+
+#: ../carrick/carrick-list.c:865
+msgid "wired"
+msgstr "유선  "
+
+#: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1445
+msgid "WiFi"
+msgstr "WiFi"
+
+#: ../carrick/carrick-list.c:867 ../carrick/carrick-pane.c:1539
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-list.c:868 ../carrick/carrick-pane.c:1508
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-list.c:869 ../carrick/carrick-pane.c:1571
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#.
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#.
+#: ../carrick/carrick-list.c:882
+msgid ""
+"Sorry, we can't find any networks. It appears that the connection manager is "
+"not running. You could try restarting your computer."
+msgstr ""
+"죄송합니다. 네트워크를 찿을 수 없습니다. 연결 관리자가 실행되는 것 같지 않습"
+"니다. 컴퓨터의 재시작을 시도해 보십시오. "
+
+#.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
-#: ../carrick/carrick-list.c:857
-msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "죄송합니다. 네트워크를 찾을 수 없습니다. 오프모드 비활성화를 시도해 보십시오. "
+#: ../carrick/carrick-list.c:892
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr ""
+"죄송합니다. 네트워크를 찾을 수 없습니다. 오프모드 비활성화를 시도해 보십시"
+"오. "
 
-#.
-#. * Hint to display if we detect that wifi has been turned off
-#. * and there are no available networks
-#.
-#: ../carrick/carrick-list.c:873
-msgid "Sorry, we can't find any networks. You could try turning on WiFi."
-msgstr "죄송합니다. 네트워크를 찾을 수 없습니다. WiFi 켜기를 시도해 보십시오. "
-
-#.
-#. * Hint to display if we detect that wifi is on but
-#. * WiMAX has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-list.c:884
-msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
-msgstr "죄송합니다. 네트워크를 찾을 수 없습니다. WiMAX 켜기를 시도해 보십시오.  "
-
-#.
-#. * Hint to display if we detect that wifi and wimax is on but
-#. * 3G has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-list.c:895
-msgid "Sorry, we can't find any networks. You could try turning on 3G."
-msgstr "죄송합니다. 네트워크를 찾을 수 없습니다. 3G 켜기를 시도해 보십시오.  "
-
-#.
-#. * Hint to display if we detect that wifi, wimax, and 3G are on but
-#. * bluetooth has been turned off and there are no available networks
-#.
-#: ../carrick/carrick-list.c:905
-msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
-msgstr "죄송합니다. 네트워크를 찾을 수 없습니다. Bluetooth 켜기를 시도해 보십시오.  "
-
-#.
-#. * Hint to display if we detect that all technologies
-#. * other then ethernet have been turned on, and there
-#. * are no available networks
-#.
-#: ../carrick/carrick-list.c:916
-msgid "Sorry, we can't find any networks. You could try turning on Wired."
-msgstr "죄송합니다. 네트워크를 찾을 수 없습니다. 유선 켜기를 시도해 보십시오. "
+#: ../carrick/carrick-list.c:1029
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr "죄송합니다. 네트워크를 찾을 수 없습니다. %s 활성화를 시도해 보십시오. "
 
 #.
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
 #.
-#: ../carrick/carrick-list.c:928
+#: ../carrick/carrick-list.c:1043
 msgid "Sorry, we can't find any networks"
 msgstr "죄송합니다. 네트워크를 찾을 수 없습니다."
 
@@ -117,39 +133,53 @@ msgstr "변경된 네트워크"
 
 #: ../carrick/carrick-notification-manager.c:218
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "죄송합니다. %s의 연결이 끊어졌습니다. 그래서 유선 네트워크에 연결했습니다."
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr ""
+"죄송합니다. %s의 연결이 끊어졌습니다. 그래서 유선 네트워크에 연결했습니다."
 
 #: ../carrick/carrick-notification-manager.c:225
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "죄송합니다. %s의 연결이 끊어졌습니다. 그래서 %s, %s 네트워크에 연결했습니다. "
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"죄송합니다. %s의 연결이 끊어졌습니다. 그래서 %s, %s 네트워크에 연결했습니다. "
 
 #: ../carrick/carrick-notification-manager.c:233
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "죄송합니다. %s의 연결이 끊어졌습니다. 그래서 %s 네트워크에 연결했습니다."
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr ""
+"죄송합니다. %s의 연결이 끊어졌습니다. 그래서 %s 네트워크에 연결했습니다."
 
 #: ../carrick/carrick-notification-manager.c:243
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "죄송합니다. %s 연결이 끊어졌습니다. 그래서 유선 네트워크에 연결했습니다."
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr ""
+"죄송합니다. %s 연결이 끊어졌습니다. 그래서 유선 네트워크에 연결했습니다."
 
 #: ../carrick/carrick-notification-manager.c:250
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "죄송합니다. %s 연결이 끊어졌습니다. 그래서 %s 네트워크 %s에 연결했습니다. "
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"죄송합니다. %s 연결이 끊어졌습니다. 그래서 %s 네트워크 %s에 연결했습니다. "
 
 #: ../carrick/carrick-notification-manager.c:259
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "죄송합니다. %s 연결이 끊어졌습니다. 그래서 %s 네트워크에 연결했습니다."
 
-#: ../carrick/carrick-pane.c:648
+#: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
 msgstr "새로운 연결 설정"
 
-#: ../carrick/carrick-pane.c:684
+#: ../carrick/carrick-pane.c:666
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -159,119 +189,250 @@ msgstr ""
 "이름과 암호 및 보안 유형을\n"
 "입력하십시오. "
 
-#: ../carrick/carrick-pane.c:694
+#: ../carrick/carrick-pane.c:676
 msgid "Network name"
 msgstr "네트워크 이름"
 
-#: ../carrick/carrick-pane.c:706
+#: ../carrick/carrick-pane.c:688
 msgid "Network security"
 msgstr "네트워크 보안 "
 
-#: ../carrick/carrick-pane.c:716
+#: ../carrick/carrick-pane.c:698
 msgid "None"
 msgstr "없음"
 
-#: ../carrick/carrick-pane.c:730
+#: ../carrick/carrick-pane.c:712
 msgid "Password"
 msgstr "암호"
 
-#: ../carrick/carrick-pane.c:745
-#: ../carrick/carrick-service-item.c:1144
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1340
 msgid "Show password"
 msgstr "암호 보이기"
 
-#: ../carrick/carrick-pane.c:1249
+#: ../carrick/carrick-pane.c:1380
 msgid "Networks"
 msgstr "네트워크"
 
-#: ../carrick/carrick-pane.c:1293
+#. New connection button
+#: ../carrick/carrick-pane.c:1404
 msgid "Add new connection"
 msgstr "새로운 연결 추가"
 
-#: ../carrick/carrick-pane.c:1320
-msgid "WiFi"
-msgstr "WiFi"
-
-#: ../carrick/carrick-pane.c:1352
-#: ../carrick/carrick-service-item.c:220
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:322
 msgid "Wired"
 msgstr "유선"
 
-#: ../carrick/carrick-pane.c:1383
-msgid "3G"
-msgstr "3G"
-
-#: ../carrick/carrick-pane.c:1414
-msgid "WiMAX"
-msgstr "WiMAX"
-
-#: ../carrick/carrick-pane.c:1446
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
-#: ../carrick/carrick-pane.c:1492
+#: ../carrick/carrick-pane.c:1615
 msgid "Offline mode"
 msgstr "오프라인 모드"
 
-#: ../carrick/carrick-pane.c:1517
+#: ../carrick/carrick-pane.c:1640
 msgid "This will disable all your connections"
 msgstr "이는 모든 연결을 해제할 것입니다."
+
+#. Translators:
+#. This is the title seen on the top of the connection wizard
+#. window forconfiguring a 3G  data service.
+#.
+#: ../carrick/carrick-service-item.c:43
+msgid "Cellular Data Connection Wizard"
+msgstr "Cellular 데이타 연결 마법사"
+
+#. Translators:
+#. In each of the 3g data connection wizard dialog boxes that ask the user
+#. to select an option, we always provide a button that allows the user
+#. to manually enter the low level settings for their device.  This is the
+#. text used in that button.
+#.
+#: ../carrick/carrick-service-item.c:51
+msgid "Manual Config"
+msgstr "수동 구성"
+
+#. Translators:
+#. When configuring a device for 3G roaming, we must ask the user for
+#. the country that their services is associated with.  This is the
+#. explaination text at the top of the dialog box for selecting the country.
+#.
+#: ../carrick/carrick-service-item.c:58
+msgid "Select Country"
+msgstr "국가를 선택하십시오."
+
+#. Translators:
+#. When configuring a device for 3G roaming, we must ask the user for
+#. their service provider. This is the explaination text at the that
+#. dialog box
+#.
+#: ../carrick/carrick-service-item.c:65
+msgid "Select Provider"
+msgstr "공급자를 선택하십시오. "
+
+#. Translators:
+#. When a user first tries to connect to a given provider, they
+#. must select which plan (i.e. pre-paid, unlimited, etc) to use
+#. that the associated service provider allows.
+#. This is the explaination text used at the top of dialog box.
+#.
+#: ../carrick/carrick-service-item.c:73
+msgid "Select your 3G Data Plan"
+msgstr "3G 데이타 플랜을 선택하십시오."
+
+#. Translators:
+#. This is the text we add to the top of the dialog for allowing the user to
+#. manually enter configuration settings. This is a single line of nor more
+#. then 60 chars wide
+#.
+#: ../carrick/carrick-service-item.c:80
+msgid "Manual Configuration"
+msgstr "수동 구성"
+
+#. Translators:
+#. The following strings are used as labels for each of the
+#. text entry fields that the user uses to manually enter configuration
+#. settings.  Each label is a single line of no more then 40 chars:
+#.
+#. "Plan Name":
+#. This is a uniqe string that the service provider
+#. uses to identify a give data plan.  This is the only
+#. setting that is required.
+#.
+#. "Username":
+#. This is the userame of a username/password combination
+#. required for some access points.
+#.
+#. "Password":
+#. Password required by some access points.
+#.
+#. "Gateway":
+#. Gateway IP Address required by some access points
+#.
+#. "Primary DNS":
+#. Primary domain name server address required by some access points
+#.
+#. "Secondary DNS":
+#. Backup domain name server address required by some access points
+#.
+#. "Tertairy DNS":
+#. Alternate backup domain name server address required by some
+#. access points
+#.
+#: ../carrick/carrick-service-item.c:112
+msgid "Plan Name: (required)"
+msgstr "플랜 이름: (필수)"
+
+#: ../carrick/carrick-service-item.c:113
+msgid "Username:"
+msgstr "사용자 이름:"
+
+#: ../carrick/carrick-service-item.c:114
+msgid "Password:"
+msgstr "암호:"
+
+#: ../carrick/carrick-service-item.c:115
+msgid "Gateway:"
+msgstr "게이트웨이:"
+
+#: ../carrick/carrick-service-item.c:116
+msgid "Primary DNS:"
+msgstr "일차적인 DNS:"
+
+#: ../carrick/carrick-service-item.c:117
+msgid "Secondary DNS:"
+msgstr "이차적인 DNS:"
+
+#: ../carrick/carrick-service-item.c:118
+msgid "Tertairy DNS:"
+msgstr "삼차적인 DNS:"
+
+#. Translators:
+#. If this utility is executed without any arguments specifying which
+#. service to configure, then a dialog is used to allow the user to pick
+#. from a list of valid services.  This is the explaination text shown
+#. at the top of the dialog
+#.
+#: ../carrick/carrick-service-item.c:126
+msgid "Select 3G Service"
+msgstr "3G 서비스를 선택하십시오."
+
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#.
+#: ../carrick/carrick-service-item.c:132
+msgid "Critical Error: Invalid country code"
+msgstr "치명적 오류: 잘못된 국가 코드"
+
+#: ../carrick/carrick-service-item.c:133
+msgid "Missing required APN (service plan name)"
+msgstr "필요한 APN(서비스 플랜 이름)이 없음"
+
+#: ../carrick/carrick-service-item.c:134
+msgid "Internal Error: Invalid network service"
+msgstr "내부 오류: 잘못된 네트워크 서비스"
+
+#: ../carrick/carrick-service-item.c:135
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr "치명적 오류: 연결 관리자에 액세스할 수 없음"
+
+#: ../carrick/carrick-service-item.c:136
+msgid "ERROR: No 3G Hardware detected"
+msgstr "오류: 발견된 3G 하드웨어 없음."
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:158
+#: ../carrick/carrick-service-item.c:260
 #, c-format
 msgid "%s encrypted"
 msgstr "%s 암호화"
 
-#: ../carrick/carrick-service-item.c:251
+#: ../carrick/carrick-service-item.c:353
 msgid "Disconnect"
 msgstr "연결 끊기"
 
-#: ../carrick/carrick-service-item.c:254
+#: ../carrick/carrick-service-item.c:356
 msgid "Connected"
 msgstr "연결됨"
 
-#: ../carrick/carrick-service-item.c:259
-#: ../carrick/carrick-service-item.c:266
+#: ../carrick/carrick-service-item.c:363 ../carrick/carrick-service-item.c:372
 #, c-format
 msgid "Cancel"
 msgstr "취소"
 
-#: ../carrick/carrick-service-item.c:262
+#: ../carrick/carrick-service-item.c:366
 msgid "Configuring"
 msgstr "구성"
 
-#: ../carrick/carrick-service-item.c:269
+#: ../carrick/carrick-service-item.c:375
 msgid "Associating"
 msgstr "융화 중"
 
-#: ../carrick/carrick-service-item.c:276
-#: ../carrick/carrick-service-item.c:299
-#: ../carrick/carrick-service-item.c:1133
+#: ../carrick/carrick-service-item.c:384 ../carrick/carrick-service-item.c:409
+#: ../carrick/carrick-service-item.c:1329
 msgid "Connect"
 msgstr "연결"
 
-#: ../carrick/carrick-service-item.c:302
+#: ../carrick/carrick-service-item.c:412
 msgid "Connection failed"
 msgstr "연결 실패"
 
-#: ../carrick/carrick-service-item.c:307
-#: ../carrick/carrick-service-item.c:310
+#: ../carrick/carrick-service-item.c:415
+msgid "Sorry, the connection failed. You could try again."
+msgstr "죄송합니다. 연결에 실패했습니다. 다시 시도해 보십시오. "
+
+#: ../carrick/carrick-service-item.c:421 ../carrick/carrick-service-item.c:424
 #, c-format
 msgid "Disconnecting"
 msgstr "연결을 끊는 중"
 
-#: ../carrick/carrick-service-item.c:360
+#: ../carrick/carrick-service-item.c:482
 msgid "Type password here"
 msgstr "암호를 입력하십시오."
 
-#: ../carrick/carrick-service-item.c:443
+#: ../carrick/carrick-service-item.c:566
 msgid "Really remove?"
 msgstr "제거하시겠습니까?"
 
-#: ../carrick/carrick-service-item.c:461
+#: ../carrick/carrick-service-item.c:584
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -282,7 +443,52 @@ msgstr ""
 "이로인해 암호가 삭제될 것이며\n"
 "더이상 자동으로 %s에 연결되지 않을것입니다. "
 
-#: ../carrick/carrick-service-item.c:1069
+#: ../carrick/carrick-service-item.c:727
+#, c-format
+msgid ""
+"Your password isn't the right length. For a WEP connection it needs to be "
+"either 10 or 28 characters, you have %i."
+msgstr ""
+"암호의 길이가 적당하지 않습니다. WEP 연결을 위해서는 10자에서 28자 안의 문자"
+"가 필요합니다. 지금은 %d자 입니다. "
+
+#: ../carrick/carrick-service-item.c:737
+#, c-format
+msgid ""
+"Your password is too short. For a WPA  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"암호가 너무 짧습니다. WEP 연결을 위해서는 적어도 8자 정도의 문자가 필요합니"
+"다. 지금은 %d자 입니다. "
+
+#: ../carrick/carrick-service-item.c:741
+#, c-format
+msgid ""
+"Your password is too long. For a WPA  connection it needs to have fewer than "
+"62 characters, you have %i"
+msgstr ""
+"암호가 너무 깁니다 . WEP 연결을 위해서 62자 미만의 문자가 필요합니다. 지금은 "
+"%d자 입니다. "
+
+#: ../carrick/carrick-service-item.c:749
+#, c-format
+msgid ""
+"Your password is too short. For a WPA2  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"암호가 너무 짧습니다. WEP2 연결을 위해서는 적어도 8자 정도의 문자가 필요합니"
+"다. 지금은 %d자 입니다. "
+
+#: ../carrick/carrick-service-item.c:753
+#, c-format
+msgid ""
+"Your password is too long. For a WPA2  connection it needs to have fewer "
+"than 62 characters, you have %i"
+msgstr ""
+"암호가 너무 깁니다 . WEP2 연결을 위해서 62자 미만의 문자가 필요합니다. 지금"
+"은 %d자 입니다. "
+
+#: ../carrick/carrick-service-item.c:1265
 msgid "Scanning"
 msgstr "스켄 중"
 
@@ -290,7 +496,7 @@ msgstr "스켄 중"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1088
+#: ../carrick/carrick-service-item.c:1284
 msgid "WPA2 encrypted"
 msgstr "암호화된 WPA2"
 
@@ -326,8 +532,7 @@ msgstr "네트워크 - %s - 3G"
 msgid "networks - %s - bluetooth"
 msgstr "네트워크 - %s - Bluetooth"
 
-#: ../src/carrick.c:88
-#: ../src/carrick.c:100
+#: ../src/carrick.c:88 ../src/carrick.c:100
 msgid "networks"
 msgstr "네트워크  "
 
@@ -351,55 +556,94 @@ msgstr "- Moblin 연결성 애플렛"
 msgid "network"
 msgstr "네트워크  "
 
+#~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
+#~ msgstr ""
+#~ "죄송합니다. 네트워크를 찾을 수 없습니다. 3G 켜기를 시도해 보십시오.  "
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+#~ msgstr ""
+#~ "죄송합니다. 네트워크를 찾을 수 없습니다. WiFi 켜기를 시도해 보십시오. "
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+#~ msgstr ""
+#~ "죄송합니다. 네트워크를 찾을 수 없습니다. WiMAX 켜기를 시도해 보십시오.  "
+
+#~ msgid ""
+#~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
+#~ msgstr ""
+#~ "죄송합니다. 네트워크를 찾을 수 없습니다. Bluetooth 켜기를 시도해 보십시"
+#~ "오.  "
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
+#~ msgstr ""
+#~ "죄송합니다. 네트워크를 찾을 수 없습니다. 유선 켜기를 시도해 보십시오. "
+
+#~ msgid "Sorry, we can't find any networks. "
+#~ msgstr "죄송합니다. 네트워크를 찿을수 없습니다."
+
+#~ msgid ""
+#~ "The ConnMan daemon doesn't seem to be running. You may want to try re-"
+#~ "starting your device"
+#~ msgstr ""
+#~ "ConnMan daemon이 작동하지 않습니다. 장치를 다시 시작해야할수도 있습니다."
+
+#~ msgid "You could try disabling Offline mode"
+#~ msgstr "오프모드 비활성화 시도해 보십시오."
+
+#~ msgid "You could try turning on "
+#~ msgstr "켜기를 시도하십시오."
+
+#~ msgid " and "
+#~ msgstr "및"
+
+#~ msgid "Ethernet"
+#~ msgstr "이더넷"
+
+#~ msgid "Sorry, your connection to %s was lost. So we've "
+#~ msgstr "죄송합니다. %s에 당신의 연결이 끊어졌습니다."
+
+#~ msgid "Sorry, your %s connection was lost. So we've "
+#~ msgstr "죄송합니다. 당신의 %s 연결이 끊어졌습니다."
+
+#~ msgid "connected you to a wired network"
+#~ msgstr "유선 네트워크에 연결되었습니다."
+
+#~ msgid "connected you to %s, a %s network"
+#~ msgstr "%s 네트워크 %s에 연결되었습니다."
+
+#~ msgid "connected you to a %s network"
+#~ msgstr "%s 네트워크에 연결 되었습니다."
+
+#~ msgid "Sorry, your wired connection was lost. So we've "
+#~ msgstr "죄송합니다. 당신의 유선 연결을 잃었습니다."
+
+#~ msgid "Offline"
+#~ msgstr "오프라인 "
+
+#~ msgid "No active connection."
+#~ msgstr "활성 연결이 없습니다. "
+
+#~ msgid "Online"
+#~ msgstr "온라인"
+
+#~ msgid "Now online and connected to %s."
+#~ msgstr "지금은 온라인 상태며 %s로 연결됩니다."
+
+#~ msgid "Connecting"
+#~ msgstr "연결하는중"
+
+#~ msgid "<b><big>Network Requires a Password</big></b>"
+#~ msgstr "<b><big>네트워크에는 암호가 필수입니다.</big></b>"
+
+#~ msgid "Please enter the password for this network:"
+#~ msgstr "네트워크의 암호를 입력하십시오."
+
 #~ msgid ""
 #~ "Sorry, we can't find any networks. The Connection Manager doesn't seem to "
 #~ "be running. You may want to try re-starting your device."
 #~ msgstr ""
 #~ "죄송합니다. 네트워크를 찿을수 없습니다. Connection Manager가 실행되는 것 "
 #~ "같지 않습니다. 장치의 재시작을 시도해 보십시오. "
-#~ msgid "Sorry, we can't find any networks. "
-#~ msgstr "죄송합니다. 네트워크를 찿을수 없습니다."
-#~ msgid ""
-#~ "The ConnMan daemon doesn't seem to be running. You may want to try re-"
-#~ "starting your device"
-#~ msgstr ""
-#~ "ConnMan daemon이 작동하지 않습니다. 장치를 다시 시작해야할수도 있습니다."
-#~ msgid "You could try disabling Offline mode"
-#~ msgstr "오프모드 비활성화 시도해 보십시오."
-#~ msgid "You could try turning on "
-#~ msgstr "켜기를 시도하십시오."
-#~ msgid ", "
-#~ msgstr ", "
-#~ msgid " and "
-#~ msgstr "및"
-#~ msgid "Ethernet"
-#~ msgstr "이더넷"
-#~ msgid "Sorry, your connection to %s was lost. So we've "
-#~ msgstr "죄송합니다. %s에 당신의 연결이 끊어졌습니다."
-#~ msgid "Sorry, your %s connection was lost. So we've "
-#~ msgstr "죄송합니다. 당신의 %s 연결이 끊어졌습니다."
-#~ msgid "connected you to a wired network"
-#~ msgstr "유선 네트워크에 연결되었습니다."
-#~ msgid "connected you to %s, a %s network"
-#~ msgstr "%s 네트워크 %s에 연결되었습니다."
-#~ msgid "connected you to a %s network"
-#~ msgstr "%s 네트워크에 연결 되었습니다."
-#~ msgid "Sorry, your wired connection was lost. So we've "
-#~ msgstr "죄송합니다. 당신의 유선 연결을 잃었습니다."
-#~ msgid "Offline"
-#~ msgstr "오프라인 "
-#~ msgid "No active connection."
-#~ msgstr "활성 연결이 없습니다. "
-#~ msgid "Online"
-#~ msgstr "온라인"
-#~ msgid "Now online and connected to %s."
-#~ msgstr "지금은 온라인 상태며 %s로 연결됩니다."
-#~ msgid "Connecting"
-#~ msgstr "연결하는중"
+
 #~ msgid "Passphrase required"
 #~ msgstr "암호화가 필요함"
-#~ msgid "<b><big>Network Requires a Password</big></b>"
-#~ msgstr "<b><big>네트워크에는 암호가 필수입니다.</big></b>"
-#~ msgid "Please enter the password for this network:"
-#~ msgstr "네트워크의 암호를 입력하십시오."
-
