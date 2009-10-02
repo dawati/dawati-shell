@@ -22,7 +22,7 @@ msgstr ""
 #.
 #: ../carrick/carrick-list.c:859
 msgid " or "
-msgstr ""
+msgstr "または"
 
 #.
 #. * Translator note: the comma ',' will be used to join the different disabled technologies
@@ -30,10 +30,9 @@ msgstr ""
 #.
 #: ../carrick/carrick-list.c:864
 msgid ", "
-msgstr ""
+msgstr "、"
 
 #: ../carrick/carrick-list.c:865
-#, fuzzy
 msgid "wired"
 msgstr "有線接続"
 
@@ -59,13 +58,12 @@ msgstr "Bluetooth"
 #. * connectivity daemon, is not running.
 #.
 #: ../carrick/carrick-list.c:882
-#, fuzzy
 msgid ""
 "Sorry, we can't find any networks. It appears that the connection manager is "
 "not running. You could try restarting your computer."
 msgstr ""
-"ネットワークが見つかりません。ConnMan デーモンが実行されていないようです。"
-"ネットブックを再起動してみてください。"
+"ネットワークが見つかりません。接続マネージャーが実行されていないようです。コ"
+"ンピューターを再起動してみてください。"
 
 #.
 #. * Hint display if we detect that the system is in
@@ -78,9 +76,9 @@ msgstr ""
 "ネットワークが見つかりません。オフラインモードを無効にしてみてください。"
 
 #: ../carrick/carrick-list.c:1029
-#, fuzzy, c-format
+#, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "ネットワークが見つかりません。3G をオンにしてみてください。"
+msgstr "ネットワークが見つかりません。「%s」を有効にしてみてください。"
 
 #.
 #. * Generic message to display if all available networking
@@ -233,7 +231,7 @@ msgstr "接続がすべて無効になります"
 #.
 #: ../carrick/carrick-service-item.c:43
 msgid "Cellular Data Connection Wizard"
-msgstr ""
+msgstr "携帯データ接続ウィザード"
 
 #. Translators:
 #. In each of the 3g data connection wizard dialog boxes that ask the user
@@ -243,7 +241,7 @@ msgstr ""
 #.
 #: ../carrick/carrick-service-item.c:51
 msgid "Manual Config"
-msgstr ""
+msgstr "手動で設定"
 
 #. Translators:
 #. When configuring a device for 3G roaming, we must ask the user for
@@ -251,9 +249,8 @@ msgstr ""
 #. explaination text at the top of the dialog box for selecting the country.
 #.
 #: ../carrick/carrick-service-item.c:58
-#, fuzzy
 msgid "Select Country"
-msgstr "フォルダーの選択"
+msgstr "国の選択"
 
 #. Translators:
 #. When configuring a device for 3G roaming, we must ask the user for
@@ -261,9 +258,8 @@ msgstr "フォルダーの選択"
 #. dialog box
 #.
 #: ../carrick/carrick-service-item.c:65
-#, fuzzy
 msgid "Select Provider"
-msgstr "フォルダーの選択"
+msgstr "プロバイダーの選択"
 
 #. Translators:
 #. When a user first tries to connect to a given provider, they
@@ -273,7 +269,7 @@ msgstr "フォルダーの選択"
 #.
 #: ../carrick/carrick-service-item.c:73
 msgid "Select your 3G Data Plan"
-msgstr ""
+msgstr "3G データプランを選択してください"
 
 #. Translators:
 #. This is the text we add to the top of the dialog for allowing the user to
@@ -281,9 +277,8 @@ msgstr ""
 #. then 60 chars wide
 #.
 #: ../carrick/carrick-service-item.c:80
-#, fuzzy
 msgid "Manual Configuration"
-msgstr "設定中"
+msgstr "手動で設定"
 
 #. Translators:
 #. The following strings are used as labels for each of the
@@ -317,32 +312,31 @@ msgstr "設定中"
 #.
 #: ../carrick/carrick-service-item.c:112
 msgid "Plan Name: (required)"
-msgstr ""
+msgstr "プラン名：（必須）"
 
 #: ../carrick/carrick-service-item.c:113
 msgid "Username:"
 msgstr "ユーザー名："
 
 #: ../carrick/carrick-service-item.c:114
-#, fuzzy
 msgid "Password:"
-msgstr "パスワード"
+msgstr "パスワード："
 
 #: ../carrick/carrick-service-item.c:115
 msgid "Gateway:"
-msgstr ""
+msgstr "Gateway："
 
 #: ../carrick/carrick-service-item.c:116
 msgid "Primary DNS:"
-msgstr ""
+msgstr "一次 DNS："
 
 #: ../carrick/carrick-service-item.c:117
 msgid "Secondary DNS:"
-msgstr ""
+msgstr "二次 DNS："
 
 #: ../carrick/carrick-service-item.c:118
 msgid "Tertairy DNS:"
-msgstr ""
+msgstr "三次 DNS："
 
 #. Translators:
 #. If this utility is executed without any arguments specifying which
@@ -351,9 +345,8 @@ msgstr ""
 #. at the top of the dialog
 #.
 #: ../carrick/carrick-service-item.c:126
-#, fuzzy
 msgid "Select 3G Service"
-msgstr "フォルダーの選択"
+msgstr "3G サービスの選択"
 
 #. Translators:
 #. The following are potential errors that a user might see while
@@ -361,23 +354,23 @@ msgstr "フォルダーの選択"
 #.
 #: ../carrick/carrick-service-item.c:132
 msgid "Critical Error: Invalid country code"
-msgstr ""
+msgstr "重大なエラー： 無効な国コード"
 
 #: ../carrick/carrick-service-item.c:133
 msgid "Missing required APN (service plan name)"
-msgstr ""
+msgstr "必要な APN がありません（サービスプラン名）"
 
 #: ../carrick/carrick-service-item.c:134
 msgid "Internal Error: Invalid network service"
-msgstr ""
+msgstr "内部エラー： 無効なネットワークサービス"
 
 #: ../carrick/carrick-service-item.c:135
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr ""
+msgstr "重大なエラー： 接続マネージャーにアクセスできません"
 
 #: ../carrick/carrick-service-item.c:136
 msgid "ERROR: No 3G Hardware detected"
-msgstr ""
+msgstr "エラー： 3G ハードウェアが検出されません"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
@@ -418,9 +411,8 @@ msgid "Connection failed"
 msgstr "接続に失敗しました"
 
 #: ../carrick/carrick-service-item.c:415
-#, fuzzy
 msgid "Sorry, the connection failed. You could try again."
-msgstr "ネットワークが見つかりません。3G をオンにしてみてください。"
+msgstr "接続に失敗しました。再度接続してみてください。"
 
 #: ../carrick/carrick-service-item.c:421 ../carrick/carrick-service-item.c:424
 #, c-format
@@ -452,6 +444,8 @@ msgid ""
 "Your password isn't the right length. For a WEP connection it needs to be "
 "either 10 or 28 characters, you have %i."
 msgstr ""
+"パスワードの長さが正しくありません。WEP 接続には、10 文字または 28 文字必要で"
+"すが、これは %i 文字です。"
 
 #: ../carrick/carrick-service-item.c:737
 #, c-format
@@ -459,6 +453,8 @@ msgid ""
 "Your password is too short. For a WPA  connection it needs to be at least 8 "
 "characters long, you have %i"
 msgstr ""
+"パスワードが短すぎます。WPA 接続には、少なくとも 8 文字必要ですが、これは %i "
+"文字です"
 
 #: ../carrick/carrick-service-item.c:741
 #, c-format
@@ -466,6 +462,8 @@ msgid ""
 "Your password is too long. For a WPA  connection it needs to have fewer than "
 "62 characters, you have %i"
 msgstr ""
+"パスワードが長すぎます。WPA 接続には、62 文字より少なくなければなりませんが、"
+"これは %i 文字です"
 
 #: ../carrick/carrick-service-item.c:749
 #, c-format
@@ -473,6 +471,8 @@ msgid ""
 "Your password is too short. For a WPA2  connection it needs to be at least 8 "
 "characters long, you have %i"
 msgstr ""
+"パスワードが短すぎます。WPA2 接続には、少なくとも 8 文字必要ですが、これは %"
+"i 文字です"
 
 #: ../carrick/carrick-service-item.c:753
 #, c-format
@@ -480,6 +480,8 @@ msgid ""
 "Your password is too long. For a WPA2  connection it needs to have fewer "
 "than 62 characters, you have %i"
 msgstr ""
+"パスワードが長すぎます。WPA2 接続には、62 文字より少なくなければなりません"
+"が、これは %i 文字です。"
 
 #: ../carrick/carrick-service-item.c:1265
 msgid "Scanning"
