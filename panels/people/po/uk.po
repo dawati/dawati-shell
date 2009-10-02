@@ -2,20 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-21 07:40+0000\n"
+"POT-Creation-Date: 2009-10-01 19:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-people.c:70
+#: ../src/moblin-panel-people.c:87
 msgid "people"
 msgstr "люди"
 
@@ -35,18 +34,40 @@ msgstr "Надіслати повідомлення"
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Вибачте, ми не можемо знайти людей. Ви налаштували обліковий запис?"
 
-#: ../src/mnb-people-panel.c:553
+#: ../src/mnb-people-panel.c:551
 msgid "People"
 msgstr "Люди"
 
-#: ../src/mnb-people-panel.c:566
+#: ../src/mnb-people-panel.c:564
 msgid "Search"
 msgstr "Пошук"
 
-#: ../src/mnb-people-panel.c:682
+#: ../src/mnb-people-panel.c:677
 msgid "Selection"
 msgstr "Вибір"
 
-#: ../src/mnb-people-panel.c:745
+#: ../src/mnb-people-panel.c:740
 msgid "Nobody selected"
 msgstr "Ніхто не вибраний"
+
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending
+#. conversation
+#. 
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "людина говорить до Вас..."
+
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#. 
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "люди - %d людей говорять з Вами"
+
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. 
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "люди - хтось говорить до Вас"
