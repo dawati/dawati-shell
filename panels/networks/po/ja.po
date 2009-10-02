@@ -541,11 +541,11 @@ msgstr "スタンドアロン モードで実行する"
 
 #: ../src/carrick.c:138
 msgid "Carrick connectivity applet"
-msgstr "Carrick 接続システム"
+msgstr "Carrick 接続アプレット"
 
 #: ../src/carrick.c:139
 msgid "- Moblin connectivity applet"
-msgstr "- Moblin 接続システム"
+msgstr "- Moblin 接続アプレット"
 
 #: ../src/carrick.c:162
 msgid "network"
