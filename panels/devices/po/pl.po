@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-21 07:35+0000\n"
+"POT-Creation-Date: 2009-10-01 15:59+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Michał Sawicz <michal@sawicz.net>\n"
 "Language-Team: Moblin\n"
@@ -128,18 +128,9 @@ msgstr "Bardzo ciemno"
 msgid "Total eclipse"
 msgstr "Całkowite zaćmienie"
 
-#: ../dalston/dalston-button-monitor.c:175
-#, c-format
-msgid "If you don't decide i'll turn off in %d seconds"
-msgstr "Jeśli nie wybierzesz, wyłączę za %d sekund"
-
 #: ../dalston/dalston-button-monitor.c:277
 msgid "Would you like to turn off now?"
 msgstr "Czy chcesz wyłączyć teraz?"
-
-#: ../dalston/dalston-button-monitor.c:278
-msgid "If you don't decide i'll turn off in 30 seconds"
-msgstr "Jeśli nie wybierzesz, wyłączę za 30 sekund"
 
 #: ../dalston/dalston-button-monitor.c:285
 msgid "Turn off"
@@ -205,13 +196,67 @@ msgstr "Kontrola Głośności GNOME"
 msgid "System Sounds"
 msgstr "Dzwięki systemowe"
 
+#: ../src/dalston-power-applet.c:49
+msgid "battery"
+msgstr "bateria"
+
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
 msgstr "dźwięk"
 
-#: ../src/dalston-power-applet.c:48
-msgid "battery"
-msgstr "bateria"
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Uśpij komputer, gdy nieaktywny przez:"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Ustawienia energii</b>"
+
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "Nigdy"
+
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "Godzina"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Preferencje zarządzania energią"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Ustawienia zarządzania energią"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Ustawienia zużycia energii"
+
+#: ../src/dalston-power-settings-capplet.c:21
+msgid "Ten minutes"
+msgstr "Dziesięc minut"
+
+#: ../src/dalston-power-settings-capplet.c:22
+msgid "Twenty minutes"
+msgstr "Dwadzieścia minut"
+
+#: ../src/dalston-power-settings-capplet.c:23
+msgid "Half an hour"
+msgstr "Pół godziny"
+
+#: ../src/dalston-power-settings-capplet.c:24
+msgid "40 minutes"
+msgstr "40 minut"
+
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Jeśli nic nie wybierzesz, wyłączę komputer za %d sekund"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide I'll turn off in 30 seconds"
+msgstr "Jeśli nic nie wybierzesz, wyłączę komputer za 30 sekund"
 
 #~ msgid "power & brightness"
 #~ msgstr "zasilanie i jasność"
