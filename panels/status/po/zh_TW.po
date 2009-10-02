@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-29 15:17+0000\n"
+"POT-Creation-Date: 2009-10-01 19:19+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -13,34 +13,34 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/mnb-im-status-row.c:103 ../src/mnb-im-status-row.c:104
-#: ../src/mnb-im-status-row.c:742
+#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
+#: ../src/mnb-im-status-row.c:808 ../src/moblin-panel-status.c:500
 msgid "Offline"
 msgstr "離線"
 
-#: ../src/mnb-im-status-row.c:105 ../src/moblin-panel-status.c:537
+#: ../src/mnb-im-status-row.c:110 ../src/moblin-panel-status.c:504
 msgid "Available"
 msgstr "有空"
 
-#: ../src/mnb-im-status-row.c:106 ../src/mnb-im-status-row.c:107
-#: ../src/moblin-panel-status.c:541 ../src/moblin-panel-status.c:545
+#: ../src/mnb-im-status-row.c:111 ../src/mnb-im-status-row.c:112
+#: ../src/moblin-panel-status.c:508 ../src/moblin-panel-status.c:512
 msgid "Away"
 msgstr "離開"
 
-#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
-#: ../src/moblin-panel-status.c:549 ../src/moblin-panel-status.c:553
+#: ../src/mnb-im-status-row.c:113 ../src/mnb-im-status-row.c:114
+#: ../src/moblin-panel-status.c:516 ../src/moblin-panel-status.c:520
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../src/mnb-im-status-row.c:132
+#: ../src/mnb-im-status-row.c:137
 msgid "Close"
 msgstr "關閉"
 
-#: ../src/mnb-im-status-row.c:141 ../src/mnb-im-status-row.c:760
+#: ../src/mnb-im-status-row.c:146 ../src/mnb-im-status-row.c:826
 msgid "Change"
 msgstr "變更"
 
-#: ../src/mnb-im-status-row.c:745
+#: ../src/mnb-im-status-row.c:811
 msgid "Unknown account"
 msgstr "未知的帳戶"
 
@@ -63,29 +63,29 @@ msgstr "在這裡輸入你目前的狀態..."
 msgid "Post"
 msgstr "貼出"
 
-#: ../src/moblin-panel-status.c:471
+#: ../src/moblin-panel-status.c:478
 msgid "Your current status"
 msgstr "你目前的狀態"
 
-#: ../src/moblin-panel-status.c:473 ../src/moblin-panel-status.c:961
+#: ../src/moblin-panel-status.c:480 ../src/moblin-panel-status.c:972
 msgid "Your current status - you are offline"
 msgstr "你目前的狀態 - 你是離線"
 
-#: ../src/moblin-panel-status.c:826
+#: ../src/moblin-panel-status.c:837
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "抱歉，我們找不到任何朋友的資料。你已經設立好通訊程式的帳戶了嗎？"
 
-#: ../src/moblin-panel-status.c:995
+#: ../src/moblin-panel-status.c:1006
 msgid ""
 "To update your web status you need to setup a Web Services account with a "
 "provider that supports status messages"
 msgstr ""
 "要更新你的網路狀態，你需要設置一個支援狀態訊息的廠商所提供的網路服務帳戶。"
 
-#: ../src/moblin-panel-status.c:1022
+#: ../src/moblin-panel-status.c:1033
 msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr "要更新你的 IM 狀態，你需要設置一個即時通訊的帳戶"
+msgstr "要更新你即時通訊的狀態，你需要設置一個即時通訊帳戶"
 
-#: ../src/moblin-panel-status.c:1119
+#: ../src/moblin-panel-status.c:1125
 msgid "status"
 msgstr "狀態"
