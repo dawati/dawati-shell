@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:02+0000\n"
+"POT-Creation-Date: 2009-10-01 15:59+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,8 +20,7 @@ msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b> timme"
 msgstr[1] "  <b>%d</b> timmar"
 
-#: ../dalston/dalston-power-applet.c:244
-#: ../dalston/dalston-power-applet.c:257
+#: ../dalston/dalston-power-applet.c:244 ../dalston/dalston-power-applet.c:257
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
@@ -33,24 +32,36 @@ msgid "Running low on battery"
 msgstr "Låg batterinivå "
 
 #: ../dalston/dalston-power-applet.c:278
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Ditt batteri börjar ha låg energinivå. Om möjligt kan det vara bra att ladda det nu."
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Ditt batteri börjar ha låg energinivå. Om möjligt kan det vara bra att ladda "
+"det nu."
 
 #: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
 msgstr "Nästan slut på energi"
 
 #: ../dalston/dalston-power-applet.c:280
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "Batteriet har bara litet energi kvar. Det är dags att spara det du jobbar på och ladda betteriet så snart du kan."
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+"Batteriet har bara litet energi kvar. Det är dags att spara det du jobbar på "
+"och ladda betteriet så snart du kan."
 
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Varning!"
 
 #: ../dalston/dalston-power-applet.c:282
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Ursäkta, ditt batteri har nästan slut på energi. Vi måste avsluta nu. Spara det du jobbar på, hoppas vi ses igen snart."
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Ursäkta, ditt batteri har nästan slut på energi. Vi måste avsluta nu. Spara "
+"det du jobbar på, hoppas vi ses igen snart."
 
 #: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
@@ -120,7 +131,7 @@ msgstr "Nattsvart"
 
 #: ../dalston/dalston-button-monitor.c:175
 #, c-format
-msgid "If you don't decide i'll turn off in %d seconds"
+msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "Om du inte väljer avslutar jag om %d sekunder"
 
 #: ../dalston/dalston-button-monitor.c:277
@@ -128,7 +139,7 @@ msgid "Would you like to turn off now?"
 msgstr "Vill du avsluta nu?"
 
 #: ../dalston/dalston-button-monitor.c:278
-msgid "If you don't decide i'll turn off in 30 seconds"
+msgid "If you don't decide I'll turn off in 30 seconds"
 msgstr "Om du inte väljer avslutar jag om 30 sekunder"
 
 #: ../dalston/dalston-button-monitor.c:285
@@ -151,39 +162,39 @@ msgstr "Varningsljud"
 msgid "Play test sound"
 msgstr "Spela upp testljud"
 
-#: ../dalston/dalston-volume-slider.c:190
+#: ../dalston/dalston-volume-slider.c:224
 msgid "Turned up to 11"
 msgstr "Maxvolym"
 
-#: ../dalston/dalston-volume-slider.c:192
+#: ../dalston/dalston-volume-slider.c:226
 msgid "Very loud"
 msgstr "Väldigt högt"
 
-#: ../dalston/dalston-volume-slider.c:194
+#: ../dalston/dalston-volume-slider.c:228
 msgid "Loud"
 msgstr "Hög ljudnivå"
 
-#: ../dalston/dalston-volume-slider.c:196
+#: ../dalston/dalston-volume-slider.c:230
 msgid "Fairly loud"
 msgstr "Ganska högt"
 
-#: ../dalston/dalston-volume-slider.c:198
+#: ../dalston/dalston-volume-slider.c:232
 msgid "Middle of the road"
 msgstr "Medelnivå"
 
-#: ../dalston/dalston-volume-slider.c:200
+#: ../dalston/dalston-volume-slider.c:234
 msgid "Fairly quiet"
 msgstr "Ganska tyst "
 
-#: ../dalston/dalston-volume-slider.c:202
+#: ../dalston/dalston-volume-slider.c:236
 msgid "Quiet"
 msgstr "Tyst"
 
-#: ../dalston/dalston-volume-slider.c:204
+#: ../dalston/dalston-volume-slider.c:238
 msgid "Very quiet"
 msgstr "Väldigt tyst"
 
-#: ../dalston/dalston-volume-slider.c:206
+#: ../dalston/dalston-volume-slider.c:240
 msgid "Silent"
 msgstr "Ljudlös"
 
@@ -195,7 +206,7 @@ msgstr "GNOME volymkontroll:"
 msgid "System Sounds"
 msgstr "Varningsljud"
 
-#: ../src/dalston-power-applet.c:48
+#: ../src/dalston-power-applet.c:49
 msgid "battery"
 msgstr "batteri"
 
@@ -203,6 +214,56 @@ msgstr "batteri"
 msgid "sound"
 msgstr "volym"
 
+#: ../src/dalston-power-settings-capplet.c:21
+msgid "Ten minutes"
+msgstr "Tio minuter"
+
+#: ../src/dalston-power-settings-capplet.c:22
+msgid "Twenty minutes"
+msgstr "Tjugo minuter"
+
+#: ../src/dalston-power-settings-capplet.c:23
+msgid "Half an hour"
+msgstr "En halvtimme"
+
+#: ../src/dalston-power-settings-capplet.c:24
+msgid "40 minutes"
+msgstr "Fyrtio minuter"
+
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "En timme"
+
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "Aldrig"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Energiinställningar"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Energiinställningar"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Energiinställningar</b>"
+
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Låt datorn använda lågenergiläge när den varit inaktiv i: "
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Inställningar för energianvändning"
+
+#~ msgid "If you don't decide i'll turn off in %d seconds"
+#~ msgstr "Om du inte väljer avslutar jag om %d sekunder"
+
+#~ msgid "If you don't decide i'll turn off in 30 seconds"
+#~ msgstr "Om du inte väljer avslutar jag om 30 sekunder"
+
 #~ msgid "power & brightness"
 #~ msgstr "skärmljusstyrka & batteri"
-
