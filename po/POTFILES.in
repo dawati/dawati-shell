@@ -1,7 +1,7 @@
 # List of source files containing translatable strings.
 src/moblin-netbook.c
-src/mnb-notification.c
-src/mnb-notification-cluster.c
 src/mnb-toolbar.c
+src/notifications/mnb-notification.c
+src/notifications/mnb-notification-cluster.c
 src/switcher/mnb-switcher.c
 src/switcher/mnb-switcher-zone-apps.c
