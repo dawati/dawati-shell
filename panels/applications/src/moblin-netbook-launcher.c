@@ -197,9 +197,10 @@ G_DEFINE_TYPE (MnbLauncher, mnb_launcher, NBTK_TYPE_BIN);
  */
 struct MnbLauncherPrivate_ {
   GtkIconTheme            *theme;
-  MplAppBookmarkManager *manager;
+  MplAppBookmarkManager   *manager;
   MnbLauncherMonitor      *monitor;
   GHashTable              *expanders;
+  ClutterActor            *first_expander;
   GSList                  *launchers;
 
   /* Static widgets, managed by clutter. */
@@ -842,9 +843,12 @@ mnb_launcher_fill_category (MnbLauncher     *self)
                               g_strdup (directory->name), expander);
         clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
-        /* Open first expander by default. */
+        /* Remember and open first expander by default. */
         if (priv->directory_iter == priv->directories)
+        {
           nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
+          priv->first_expander = NBTK_EXPANDER (expander);
+        }
 
         g_signal_connect (expander, "notify::expanded",
                           G_CALLBACK (expander_expanded_notify_cb),
@@ -1515,8 +1519,18 @@ mnb_launcher_ensure_filled (MnbLauncher *self)
 void
 mnb_launcher_clear_filter (MnbLauncher *self)
 {
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  MnbLauncherPrivate  *priv = GET_PRIVATE (self);
+  GHashTableIter       iter;
+  NbtkExpander        *expander;
 
   mpl_entry_set_text (MPL_ENTRY (priv->filter_entry), "");
+
+  /* Close expanders, expand first. */
+  g_hash_table_iter_init (&iter, priv->expanders);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &expander))
+  {
+    gboolean is_first = expander == priv->first_expander;
+    nbtk_expander_set_expanded (expander, is_first);
+  }
 }
 
