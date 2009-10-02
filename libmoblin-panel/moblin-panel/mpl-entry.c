@@ -109,6 +109,8 @@ text_key_press_cb (ClutterActor     *actor,
       case CLUTTER_Up:
       case CLUTTER_Right:
       case CLUTTER_Down:
+      case CLUTTER_Page_Up:
+      case CLUTTER_Page_Down:
         /* Only emit if caret at end of text. */
         if (pos == -1)
           {
