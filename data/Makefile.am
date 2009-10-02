@@ -84,7 +84,9 @@ dist_theme_dropdown_DATA = \
 
 theme_notifiersdir = $(MUTTER_MOBLIN_THEME_DIR)/notifiers
 dist_theme_notifiers_DATA = \
-	theme/notifiers/notification-bg.png
+	theme/notifiers/notification-bg.png	\
+	theme/notifiers/fscreen-notif-hover.png \
+	theme/notifiers/fscreen-notif-normal.png
 
 theme_effectsdir = $(MUTTER_MOBLIN_THEME_DIR)/effects
 dist_theme_effects_DATA = \
