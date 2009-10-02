@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:30+0000\n"
+"POT-Creation-Date: 2009-10-01 19:19+0000\n"
 "PO-Revision-Date: 2009-08-26 08:39+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-people.c:69
+#: ../src/moblin-panel-people.c:87
 msgid "people"
 msgstr "orang"
 
@@ -32,21 +32,42 @@ msgstr "Kirim sebuah pesan"
 
 #: ../src/mnb-people-panel.c:306
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-"Maaf, kami tak menemukan seorangpun. Sudahkah anda menyiapkan akun Messenger?"
+msgstr "Maaf, kami tak menemukan seorangpun. Sudahkah anda menyiapkan akun Messenger?"
 
-#: ../src/mnb-people-panel.c:553
+#: ../src/mnb-people-panel.c:551
 msgid "People"
 msgstr "Orang"
 
-#: ../src/mnb-people-panel.c:566
+#: ../src/mnb-people-panel.c:564
 msgid "Search"
 msgstr "Cari"
 
-#: ../src/mnb-people-panel.c:682
+#: ../src/mnb-people-panel.c:677
 msgid "Selection"
 msgstr "Pilihan"
 
-#: ../src/mnb-people-panel.c:745
+#: ../src/mnb-people-panel.c:740
 msgid "Nobody selected"
 msgstr "Tak seorangpun dipilih"
+
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending
+#. conversation
+#. 
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Orang sedang bicara padamu..."
+
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#. 
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "orang - %d orang sedang bicara padamu"
+
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. 
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "orang - Seseorang sedang bicara padamu"
