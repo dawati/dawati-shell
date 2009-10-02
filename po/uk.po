@@ -1,0 +1,68 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Roman Tuz <tuzr@yandex.ru>, 2009.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-01 19:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/moblin-netbook.c:374 ../src/mnb-toolbar.c:1426
+msgid "zones"
+msgstr "зони"
+
+#: ../src/moblin-netbook.c:484
+msgid "Moblin Netbook Effects"
+msgstr "Ефекти Moblin Netbook"
+
+#: ../src/moblin-netbook.c:488
+msgid "Effects for Moblin Netbooks"
+msgstr "Ефекти для Moblin Netbooks"
+
+#: ../src/mnb-notification.c:257
+msgid "Dismiss"
+msgstr "Відхилити"
+
+#: ../src/mnb-notification-cluster.c:657
+msgid "Dismiss All"
+msgstr "Відхилити все"
+
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:674
+msgid "%l:%M %P"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:684
+msgid "%B %e, %Y"
+msgstr "%B %e, %Y"
+
+#: ../src/switcher/mnb-switcher.c:299
+msgid "No Zones yet"
+msgstr "Ще немає зон"
+
+#: ../src/switcher/mnb-switcher.c:319
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Програми, що ви їх використовуєте, показані тут. Ви можете переключатись"
+"між ними, організовувати на свій смак."
+
+#: ../src/switcher/mnb-switcher-zone-apps.c:463
+msgid "No applications on this zone"
+msgstr "Немає програм в цій зоні"
