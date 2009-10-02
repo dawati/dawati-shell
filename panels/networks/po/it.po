@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 04:26+0000\n"
-"PO-Revision-Date: 2009-09-24 22:59+0200\n"
+"POT-Creation-Date: 2009-10-01 19:09+0000\n"
+"PO-Revision-Date: 2009-10-02 22:54+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -17,14 +17,52 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #.
+#. * Translator note: The disabled technologies available to be turned on is put together at
+#. * runtime.
+#. * The conjunction 'or' will be at the end of a choice of disabled technologies,
+#. * for example 'WiFi, WiMAX or 3G.
+#.
+#: ../carrick/carrick-list.c:859
+msgid " or "
+msgstr " o "
+
+#.
+#. * Translator note: the comma ',' will be used to join the different disabled technologies
+#. * as in the above example; 'WiFi, WiMAX or 3G'
+#.
+#: ../carrick/carrick-list.c:864
+msgid ", "
+msgstr ", "
+
+#: ../carrick/carrick-list.c:865
+msgid "wired"
+msgstr "via cavo"
+
+#: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1445
+msgid "WiFi"
+msgstr "WiFi"
+
+#: ../carrick/carrick-list.c:867 ../carrick/carrick-pane.c:1539
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-list.c:868 ../carrick/carrick-pane.c:1508
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-list.c:869 ../carrick/carrick-pane.c:1571
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#.
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
 #.
-#: ../carrick/carrick-list.c:859
+#: ../carrick/carrick-list.c:882
 msgid ""
-"Sorry, we can't find any networks. It appears that the ConnMan daemon is not "
-"running. You could try re-starting your netbook."
+"Sorry, we can't find any networks. It appears that the connection manager is "
+"not running. You could try restarting your computer."
 msgstr ""
 "Impossibile trovare alcuna rete. Il gestore della connessione non sembra "
 "essere in esecuzione: provare a riavviare il computer."
@@ -33,71 +71,25 @@ msgstr ""
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
-#: ../carrick/carrick-list.c:869
+#: ../carrick/carrick-list.c:892
 msgid ""
 "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr ""
 "Impossibile trovare alcuna rete. È possibile provare a disabilitare la "
 "modalità fuori rete"
 
-#.
-#. * Hint to display if we detect that wifi has been turned off
-#. * and there are no available networks
-#.
-#: ../carrick/carrick-list.c:885
-msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+#: ../carrick/carrick-list.c:1029
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
 msgstr ""
-"Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
-"WiFi."
-
-#.
-#. * Hint to display if we detect that wifi is on but
-#. * WiMAX has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-list.c:896
-msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
-msgstr ""
-"Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
-"WiMAX."
-
-#.
-#. * Hint to display if we detect that wifi and wimax is on but
-#. * 3G has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-list.c:907
-msgid "Sorry, we can't find any networks. You could try turning on 3G."
-msgstr ""
-"Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete 3G."
-
-#.
-#. * Hint to display if we detect that wifi, wimax, and 3G are on but
-#. * bluetooth has been turned off and there are no available networks
-#.
-#: ../carrick/carrick-list.c:917
-msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
-msgstr ""
-"Impossibile trovare alcuna rete. È possibile provare ad abilitare il "
-"Bluetooth."
-
-#.
-#. * Hint to display if we detect that all technologies
-#. * other then ethernet have been turned on, and there
-#. * are no available networks
-#.
-#: ../carrick/carrick-list.c:928
-msgid "Sorry, we can't find any networks. You could try turning on Wired."
-msgstr ""
-"Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
-"cablata."
+"Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete %s."
 
 #.
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
 #.
-#: ../carrick/carrick-list.c:940
+#: ../carrick/carrick-list.c:1043
 msgid "Sorry, we can't find any networks"
 msgstr "Impossibile trovare alcuna rete"
 
@@ -108,7 +100,7 @@ msgstr "Rete collegata"
 #: ../carrick/carrick-notification-manager.c:111
 #, c-format
 msgid "You're now connected to a wired network"
-msgstr "Si è ora connessi a una rete cablata"
+msgstr "Si è ora connessi a una rete via cavo"
 
 #: ../carrick/carrick-notification-manager.c:141
 #, c-format
@@ -127,7 +119,7 @@ msgstr "Connessione persa"
 #: ../carrick/carrick-notification-manager.c:172
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "La connessione alla rete cablata è stata persa"
+msgstr "La connessione alla rete via cavo è stata persa"
 
 #: ../carrick/carrick-notification-manager.c:176
 #, c-format
@@ -149,7 +141,7 @@ msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to a wired "
 "network"
 msgstr ""
-"La connessione a %s è stata persa. Si è ora connessi a una rete cablata."
+"La connessione a %s è stata persa. Si è ora connessi a una rete via cavo."
 
 #: ../carrick/carrick-notification-manager.c:225
 #, c-format
@@ -168,7 +160,7 @@ msgstr "La connessione a %s è stata persa. Si è ora connessi a una rete %s"
 #, c-format
 msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "La connessione %s è stata persa. Si è ora connessi a una rete cablata"
+msgstr "La connessione %s è stata persa. Si è ora connessi a una rete via cavo"
 
 #: ../carrick/carrick-notification-manager.c:250
 #, c-format
@@ -213,7 +205,7 @@ msgstr "Nessuna"
 msgid "Password"
 msgstr "Password"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1144
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1340
 msgid "Show password"
 msgstr "Mostrare password"
 
@@ -227,25 +219,9 @@ msgstr "Reti"
 msgid "Add new connection"
 msgstr "Aggiungi nuova connessione"
 
-#: ../carrick/carrick-pane.c:1445
-msgid "WiFi"
-msgstr "WiFi"
-
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:220
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:322
 msgid "Wired"
-msgstr "Cablata"
-
-#: ../carrick/carrick-pane.c:1508
-msgid "3G"
-msgstr "3G"
-
-#: ../carrick/carrick-pane.c:1539
-msgid "WiMAX"
-msgstr "WiMAX"
-
-#: ../carrick/carrick-pane.c:1571
-msgid "Bluetooth"
-msgstr "Bluetooth"
+msgstr "Via cavo"
 
 #: ../carrick/carrick-pane.c:1615
 msgid "Offline mode"
@@ -255,63 +231,214 @@ msgstr "Modalità fuori rete"
 msgid "This will disable all your connections"
 msgstr "Disabilita tutte le connessioni"
 
+#. Translators:
+#. This is the title seen on the top of the connection wizard
+#. window forconfiguring a 3G  data service.
+#.
+#: ../carrick/carrick-service-item.c:43
+msgid "Cellular Data Connection Wizard"
+msgstr "Assistente connessione dati rete mobile"
+
+#. Translators:
+#. In each of the 3g data connection wizard dialog boxes that ask the user
+#. to select an option, we always provide a button that allows the user
+#. to manually enter the low level settings for their device.  This is the
+#. text used in that button.
+#.
+#: ../carrick/carrick-service-item.c:51
+msgid "Manual Config"
+msgstr "Configurazione manuale"
+
+#. Translators:
+#. When configuring a device for 3G roaming, we must ask the user for
+#. the country that their services is associated with.  This is the
+#. explaination text at the top of the dialog box for selecting the country.
+#.
+#: ../carrick/carrick-service-item.c:58
+msgid "Select Country"
+msgstr "Selezionare un Paese"
+
+#. Translators:
+#. When configuring a device for 3G roaming, we must ask the user for
+#. their service provider. This is the explaination text at the that
+#. dialog box
+#.
+#: ../carrick/carrick-service-item.c:65
+msgid "Select Provider"
+msgstr "Selezionare un operatore"
+
+#. Translators:
+#. When a user first tries to connect to a given provider, they
+#. must select which plan (i.e. pre-paid, unlimited, etc) to use
+#. that the associated service provider allows.
+#. This is the explaination text used at the top of dialog box.
+#.
+#: ../carrick/carrick-service-item.c:73
+msgid "Select your 3G Data Plan"
+msgstr "Selezionare il piano tariffario 3G"
+
+#. Translators:
+#. This is the text we add to the top of the dialog for allowing the user to
+#. manually enter configuration settings. This is a single line of nor more
+#. then 60 chars wide
+#.
+#: ../carrick/carrick-service-item.c:80
+msgid "Manual Configuration"
+msgstr "Configurazione manuale"
+
+#. Translators:
+#. The following strings are used as labels for each of the
+#. text entry fields that the user uses to manually enter configuration
+#. settings.  Each label is a single line of no more then 40 chars:
+#.
+#. "Plan Name":
+#. This is a uniqe string that the service provider
+#. uses to identify a give data plan.  This is the only
+#. setting that is required.
+#.
+#. "Username":
+#. This is the userame of a username/password combination
+#. required for some access points.
+#.
+#. "Password":
+#. Password required by some access points.
+#.
+#. "Gateway":
+#. Gateway IP Address required by some access points
+#.
+#. "Primary DNS":
+#. Primary domain name server address required by some access points
+#.
+#. "Secondary DNS":
+#. Backup domain name server address required by some access points
+#.
+#. "Tertairy DNS":
+#. Alternate backup domain name server address required by some
+#. access points
+#.
+#: ../carrick/carrick-service-item.c:112
+msgid "Plan Name: (required)"
+msgstr "Nome piano (richiesto):"
+
+#: ../carrick/carrick-service-item.c:113
+msgid "Username:"
+msgstr "Nome utente"
+
+#: ../carrick/carrick-service-item.c:114
+msgid "Password:"
+msgstr "Password:"
+
+#: ../carrick/carrick-service-item.c:115
+msgid "Gateway:"
+msgstr "Gateway:"
+
+#: ../carrick/carrick-service-item.c:116
+msgid "Primary DNS:"
+msgstr "DNS primario:"
+
+#: ../carrick/carrick-service-item.c:117
+msgid "Secondary DNS:"
+msgstr "DNS secondario:"
+
+#: ../carrick/carrick-service-item.c:118
+msgid "Tertairy DNS:"
+msgstr "Terzo DNS:"
+
+#. Translators:
+#. If this utility is executed without any arguments specifying which
+#. service to configure, then a dialog is used to allow the user to pick
+#. from a list of valid services.  This is the explaination text shown
+#. at the top of the dialog
+#.
+#: ../carrick/carrick-service-item.c:126
+msgid "Select 3G Service"
+msgstr "Selezionare il servizio 3G"
+
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#.
+#: ../carrick/carrick-service-item.c:132
+msgid "Critical Error: Invalid country code"
+msgstr "Errore critico: codice del Paese non valido"
+
+#: ../carrick/carrick-service-item.c:133
+msgid "Missing required APN (service plan name)"
+msgstr "APN (nome del piano tariffario) mancante"
+
+#: ../carrick/carrick-service-item.c:134
+msgid "Internal Error: Invalid network service"
+msgstr "Errore interno: servizio di rete non valido"
+
+#: ../carrick/carrick-service-item.c:135
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr "Errore critico: impossibile accedere al gestore della connessione"
+
+#: ../carrick/carrick-service-item.c:136
+msgid "ERROR: No 3G Hardware detected"
+msgstr "Errore: nessun hardware 3G rilevato"
+
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:158
+#: ../carrick/carrick-service-item.c:260
 #, c-format
 msgid "%s encrypted"
 msgstr "%s cifrato"
 
 # (ndt) pulsante
-#: ../carrick/carrick-service-item.c:251
+#: ../carrick/carrick-service-item.c:353
 msgid "Disconnect"
 msgstr "Disconnetti"
 
 # (ndt) viene fuori qualche cosa di simile:
 # Cablata - Collegata
 # Metto al femminile essendo rete
-#: ../carrick/carrick-service-item.c:254
+#: ../carrick/carrick-service-item.c:356
 msgid "Connected"
 msgstr "Collegata"
 
-#: ../carrick/carrick-service-item.c:259 ../carrick/carrick-service-item.c:266
+#: ../carrick/carrick-service-item.c:363 ../carrick/carrick-service-item.c:372
 #, c-format
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../carrick/carrick-service-item.c:262
+#: ../carrick/carrick-service-item.c:366
 msgid "Configuring"
 msgstr "Configurazione in corso"
 
-#: ../carrick/carrick-service-item.c:269
+#: ../carrick/carrick-service-item.c:375
 msgid "Associating"
 msgstr "Associazione in corso"
 
-#: ../carrick/carrick-service-item.c:276 ../carrick/carrick-service-item.c:299
-#: ../carrick/carrick-service-item.c:1133
+#: ../carrick/carrick-service-item.c:384 ../carrick/carrick-service-item.c:409
+#: ../carrick/carrick-service-item.c:1329
 msgid "Connect"
 msgstr "Connetti"
 
 # (ndt) un po' libera, ma preferisco lasciarla così
-#: ../carrick/carrick-service-item.c:302
+#: ../carrick/carrick-service-item.c:412
 msgid "Connection failed"
 msgstr "Connessione non stabilita"
 
-#: ../carrick/carrick-service-item.c:307 ../carrick/carrick-service-item.c:310
+#: ../carrick/carrick-service-item.c:415
+msgid "Sorry, the connection failed. You could try again."
+msgstr "La connessione non è riuscita. Provare nuovamente."
+
+#: ../carrick/carrick-service-item.c:421 ../carrick/carrick-service-item.c:424
 #, c-format
 msgid "Disconnecting"
 msgstr "Disconnessione in corso"
 
-#: ../carrick/carrick-service-item.c:360
+#: ../carrick/carrick-service-item.c:482
 msgid "Type password here"
 msgstr "Digitare la password"
 
-#: ../carrick/carrick-service-item.c:443
+#: ../carrick/carrick-service-item.c:566
 msgid "Really remove?"
 msgstr "Rimuovere veramente?"
 
-#: ../carrick/carrick-service-item.c:461
+#: ../carrick/carrick-service-item.c:584
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -322,7 +449,52 @@ msgstr ""
 "la password verrà cancellata e non sarà più possibile\n"
 "connettersi automaticamente a %s."
 
-#: ../carrick/carrick-service-item.c:1069
+#: ../carrick/carrick-service-item.c:727
+#, c-format
+msgid ""
+"Your password isn't the right length. For a WEP connection it needs to be "
+"either 10 or 28 characters, you have %i."
+msgstr ""
+"La password non è della dimensione corretta. Per una connessione WEP sono "
+"necessari 10 o 28 caratteri, ora ne sono presenti %i."
+
+#: ../carrick/carrick-service-item.c:737
+#, c-format
+msgid ""
+"Your password is too short. For a WPA  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"La password è troppo corta. Per una connessione WPA sono necessari 8 "
+"caratteri, ora ne sono presenti %i."
+
+#: ../carrick/carrick-service-item.c:741
+#, c-format
+msgid ""
+"Your password is too long. For a WPA  connection it needs to have fewer than "
+"62 characters, you have %i"
+msgstr ""
+"La password è troppo lunga. Per una connessione WPA sono necessari meno di "
+"62 caratteri, ora ne sono presenti %i."
+
+#: ../carrick/carrick-service-item.c:749
+#, c-format
+msgid ""
+"Your password is too short. For a WPA2  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"La password è troppo corta. Per una connessione WPA2 sono necessari 8 "
+"caratteri, ora ne sono presenti %i."
+
+#: ../carrick/carrick-service-item.c:753
+#, c-format
+msgid ""
+"Your password is too long. For a WPA2  connection it needs to have fewer "
+"than 62 characters, you have %i"
+msgstr ""
+"La password è troppo lunga. Per una connessione WPA2 sono necessari meno di "
+"62 caratteri, ora ne sono presenti %i."
+
+#: ../carrick/carrick-service-item.c:1265
 msgid "Scanning"
 msgstr "Analisi in corso"
 
@@ -330,7 +502,7 @@ msgstr "Analisi in corso"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1088
+#: ../carrick/carrick-service-item.c:1284
 msgid "WPA2 encrypted"
 msgstr "WPA2 cifrato"
 
@@ -390,6 +562,39 @@ msgstr "- Applet di connettività Moblin"
 msgid "network"
 msgstr "rete"
 
+#~ msgid ""
+#~ "Sorry, we can't find any networks. It appears that the ConnMan daemon is "
+#~ "not running. You could try re-starting your netbook."
+#~ msgstr ""
+#~ "Impossibile trovare alcuna rete. Il gestore della connessione non sembra "
+#~ "essere in esecuzione: provare a riavviare il computer."
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
+#~ msgstr ""
+#~ "Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
+#~ "3G."
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+#~ msgstr ""
+#~ "Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
+#~ "WiFi."
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+#~ msgstr ""
+#~ "Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
+#~ "WiMAX."
+
+#~ msgid ""
+#~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
+#~ msgstr ""
+#~ "Impossibile trovare alcuna rete. È possibile provare ad abilitare il "
+#~ "Bluetooth."
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
+#~ msgstr ""
+#~ "Impossibile trovare alcuna rete. È possibile provare ad abilitare la rete "
+#~ "cablata."
+
 #~ msgid "Sorry, we can't find any networks. "
 #~ msgstr "Impossibile trovare alcuna rete."
 
@@ -405,9 +610,6 @@ msgstr "rete"
 
 #~ msgid "You could try turning on "
 #~ msgstr "È possibile provare ad abilitare "
-
-#~ msgid ", "
-#~ msgstr ", "
 
 #~ msgid " and "
 #~ msgstr " e "
@@ -448,9 +650,6 @@ msgstr "rete"
 #~ msgid "Connecting"
 #~ msgstr "Connessione in corso"
 
-#~ msgid "Passphrase required"
-#~ msgstr "Richiesta passphrase"
-
 #~ msgid "<b><big>Network Requires a Password</big></b>"
 #~ msgstr "<b><big>La rete richiede una password</big></b>"
 
@@ -463,3 +662,6 @@ msgstr "rete"
 #~ msgstr ""
 #~ "Impossibile trovare alcuna rete. Il gestore della connessione non sembra "
 #~ "essere in esecuzione: provare a riavviare il dispositivo."
+
+#~ msgid "Passphrase required"
+#~ msgstr "Richiesta passphrase"
