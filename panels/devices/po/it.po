@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:02+0000\n"
-"PO-Revision-Date: 2009-09-18 23:16+0200\n"
+"POT-Creation-Date: 2009-10-01 15:59+0000\n"
+"PO-Revision-Date: 2009-10-02 22:38+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -136,7 +136,7 @@ msgstr "Eclissi totale"
 
 #: ../dalston/dalston-button-monitor.c:175
 #, c-format
-msgid "If you don't decide i'll turn off in %d seconds"
+msgid "If you don't decide I'll turn off in %d seconds"
 msgstr ""
 "Se non viene presa una decisione, il computer verrà spento in %d secondi"
 
@@ -145,7 +145,7 @@ msgid "Would you like to turn off now?"
 msgstr "Spegnere ora?"
 
 #: ../dalston/dalston-button-monitor.c:278
-msgid "If you don't decide i'll turn off in 30 seconds"
+msgid "If you don't decide I'll turn off in 30 seconds"
 msgstr ""
 "Se non viene presa una decisione, il computer verrà spento in 30 secondi"
 
@@ -171,40 +171,40 @@ msgstr "Riproduci test audio"
 
 # Literal translation here does not work. This is a pop culture reference (the
 # movie This is Spinal Tap) that does not have a clear equivalent in Italian.
-#: ../dalston/dalston-volume-slider.c:190
+#: ../dalston/dalston-volume-slider.c:224
 msgid "Turned up to 11"
 msgstr "Al massimo!"
 
-#: ../dalston/dalston-volume-slider.c:192
+#: ../dalston/dalston-volume-slider.c:226
 msgid "Very loud"
 msgstr "Molto alto"
 
-#: ../dalston/dalston-volume-slider.c:194
+#: ../dalston/dalston-volume-slider.c:228
 msgid "Loud"
 msgstr "Alto"
 
-#: ../dalston/dalston-volume-slider.c:196
+#: ../dalston/dalston-volume-slider.c:230
 msgid "Fairly loud"
 msgstr "Abbastanza alto"
 
 # Literal translation does not work in this context.
-#: ../dalston/dalston-volume-slider.c:198
+#: ../dalston/dalston-volume-slider.c:232
 msgid "Middle of the road"
 msgstr "Medio"
 
-#: ../dalston/dalston-volume-slider.c:200
+#: ../dalston/dalston-volume-slider.c:234
 msgid "Fairly quiet"
 msgstr "Abbastanza basso"
 
-#: ../dalston/dalston-volume-slider.c:202
+#: ../dalston/dalston-volume-slider.c:236
 msgid "Quiet"
 msgstr "Basso"
 
-#: ../dalston/dalston-volume-slider.c:204
+#: ../dalston/dalston-volume-slider.c:238
 msgid "Very quiet"
 msgstr "Molto basso"
 
-#: ../dalston/dalston-volume-slider.c:206
+#: ../dalston/dalston-volume-slider.c:240
 msgid "Silent"
 msgstr "Muto"
 
@@ -216,13 +216,66 @@ msgstr "Controllo volume"
 msgid "System Sounds"
 msgstr "Suoni di sistema"
 
-#: ../src/dalston-power-applet.c:48
+#: ../src/dalston-power-applet.c:49
 msgid "battery"
 msgstr "batteria"
 
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
 msgstr "audio"
+
+#: ../src/dalston-power-settings-capplet.c:21
+msgid "Ten minutes"
+msgstr "10 minuti"
+
+#: ../src/dalston-power-settings-capplet.c:22
+msgid "Twenty minutes"
+msgstr "20 minuti"
+
+#: ../src/dalston-power-settings-capplet.c:23
+msgid "Half an hour"
+msgstr "30 minuti"
+
+#: ../src/dalston-power-settings-capplet.c:24
+msgid "40 minutes"
+msgstr "40 minuti"
+
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "1 ora"
+
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "Mai"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Impostazioni di gestione alimentazione"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Preferenze di gestione alimentazione"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Impostazioni di alimentazione</b>"
+
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Mettere il computer in pausa se inattivo per:"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Impostazioni per regolare il consumo elettrico"
+
+#~ msgid "If you don't decide i'll turn off in %d seconds"
+#~ msgstr ""
+#~ "Se non viene presa una decisione, il computer verrà spento in %d secondi"
+
+#~ msgid "If you don't decide i'll turn off in 30 seconds"
+#~ msgstr ""
+#~ "Se non viene presa una decisione, il computer verrà spento in 30 secondi"
 
 #~ msgid "power & brightness"
 #~ msgstr "alimentazione e luminosità"
