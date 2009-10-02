@@ -7,14 +7,42 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
-"PO-Revision-Date: 2009-07-29 09:55+0100\n"
+"POT-Creation-Date: 2009-10-01 19:19+0000\n"
+"PO-Revision-Date: 2009-10-02 22:40+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#.
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending conversation
+#.
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Persone con cui si sta parlando..."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#.
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "persone - Si sta parlando con qualcuno"
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#.
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "persone - %d persone con cui si sta parlando"
+
+#: ../src/moblin-panel-people.c:87
+msgid "people"
+msgstr "persone"
 
 #: ../src/mnb-people-panel.c:161
 msgid "Send an email"
@@ -34,22 +62,18 @@ msgstr ""
 "Non è stata trovata alcuna persona. È stato configurato un account di "
 "messaggistica istantanea?"
 
-#: ../src/mnb-people-panel.c:553
+#: ../src/mnb-people-panel.c:551
 msgid "People"
 msgstr "Persone"
 
-#: ../src/mnb-people-panel.c:566
+#: ../src/mnb-people-panel.c:564
 msgid "Search"
 msgstr "Cerca"
 
-#: ../src/mnb-people-panel.c:682
+#: ../src/mnb-people-panel.c:677
 msgid "Selection"
 msgstr "Selezione"
 
-#: ../src/mnb-people-panel.c:745
+#: ../src/mnb-people-panel.c:740
 msgid "Nobody selected"
 msgstr "Nessuno selezionato"
-
-#: ../src/moblin-panel-people.c:69
-msgid "people"
-msgstr "persone"
