@@ -60,8 +60,8 @@ msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."
 msgstr ""
-"Програми, що ви їх використовуєте, показані тут. Ви можете переключатись"
-"між ними, організовувати на свій смак."
+"Програми, що ви їх використовуєте, показані тут. Ви можете переключатисьміж "
+"ними, організовувати на свій смак."
 
 #: ../src/switcher/mnb-switcher-zone-apps.c:463
 msgid "No applications on this zone"
