@@ -371,11 +371,6 @@ msgstr "Błąd krytyczny: Brak dostępu do Menedżera połączeń"
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Niestety połączenie nie powiodło się. Możesz spróbować jeszcze raz."
 
-#: ../src/carrick.c:127
-#, fuzzy
-msgid "Run in standalone mode"
-msgstr "Uruchom w trybie niezależnym"
-
 #: ../carrick/carrick-service-item.c:113
 msgid "Username:"
 msgstr "Nazwa użytkownika:"
@@ -519,6 +514,10 @@ msgstr "Podane hasło jest zbyt krótkie. Połączenie WPA wymaga co najmniej 8 
 #: ../carrick/carrick-service-item.c:43
 msgid "Cellular Data Connection Wizard"
 msgstr "Połączenie komórkowe"
+
+#: ../src/carrick.c:127
+msgid "Run in standalone mode"
+msgstr "Uruchom w trybie samodzielnym"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr "Niestety nie odnaleźliśmy żadnych sieci. Spróbuj połączyć się przez WiFi."
