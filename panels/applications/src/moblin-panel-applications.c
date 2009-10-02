@@ -174,7 +174,7 @@ main (int     argc,
       g_signal_connect (stage, "notify::height",
                         G_CALLBACK (stage_height_notify_cb), launcher);
 
-      clutter_actor_set_size (stage, 1024, 768);
+      clutter_actor_set_size (stage, 1024, 600);
       clutter_actor_show (stage);
 
     } else {

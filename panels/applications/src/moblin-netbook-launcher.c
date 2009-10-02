@@ -200,7 +200,7 @@ struct MnbLauncherPrivate_ {
   MplAppBookmarkManager   *manager;
   MnbLauncherMonitor      *monitor;
   GHashTable              *expanders;
-  ClutterActor            *first_expander;
+  NbtkExpander            *first_expander;
   GSList                  *launchers;
 
   /* Static widgets, managed by clutter. */
@@ -1136,6 +1136,33 @@ entry_keynav_cb (MplEntry         *entry,
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   NbtkWidget *launcher;
   NbtkWidget *expander;
+
+  if (keyval == CLUTTER_Page_Up)
+    {
+      NbtkScrollBar *vscroll = NBTK_SCROLL_BAR (
+                                  nbtk_scroll_view_get_vscroll_bar (
+                                    NBTK_SCROLL_VIEW (priv->scrollview)));
+      NbtkAdjustment *adjust = nbtk_scroll_bar_get_adjustment (vscroll);
+      gdouble page_size, value;
+      g_object_get (adjust,
+                    "page-size", &page_size,
+                    "value", &value,
+                    NULL);
+      nbtk_adjustment_set_value (adjust, value - page_size);
+    }
+  else if (keyval == CLUTTER_Page_Down)
+    {
+      NbtkScrollBar *vscroll = NBTK_SCROLL_BAR (
+                                  nbtk_scroll_view_get_vscroll_bar (
+                                    NBTK_SCROLL_VIEW (priv->scrollview)));
+      NbtkAdjustment *adjust = nbtk_scroll_bar_get_adjustment (vscroll);
+      gdouble page_size, value;
+      g_object_get (adjust,
+                    "page-size", &page_size,
+                    "value", &value,
+                    NULL);
+      nbtk_adjustment_set_value (adjust, value + page_size);
+    }
 
   if (priv->is_filtering)
     {
