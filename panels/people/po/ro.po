@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:30+0000\n"
-"PO-Revision-Date: 2009-08-30 04:10+0200\n"
+"POT-Creation-Date: 2009-10-01 19:19+0000\n"
+"PO-Revision-Date: 2009-10-03 20:43+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
 "Language-Team: Moblin Romania <live@moblin.ro>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,31 @@ msgstr ""
 "X-Poedit-Country: ROMANIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:69
+#.
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending conversation
+#.
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Persoane ce comunică cu dvs. ..."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#.
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "persoane - Cineva comunică cu dvs."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#.
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "persoane - %d persoane comunică cu dvs."
+
+#: ../src/moblin-panel-people.c:87
 msgid "people"
 msgstr "persoane"
 
@@ -37,21 +61,22 @@ msgstr "Trimite un mesaj"
 
 #: ../src/mnb-people-panel.c:306
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Ne pare rău, nu am găsit nici o persoană. V-aţi configurat un cont de Messenger?"
+msgstr ""
+"Ne pare rău, nu am găsit nici o persoană. V-aţi configurat un cont de "
+"Messenger?"
 
-#: ../src/mnb-people-panel.c:553
+#: ../src/mnb-people-panel.c:551
 msgid "People"
 msgstr "Persoane"
 
-#: ../src/mnb-people-panel.c:566
+#: ../src/mnb-people-panel.c:564
 msgid "Search"
 msgstr "Caută"
 
-#: ../src/mnb-people-panel.c:682
+#: ../src/mnb-people-panel.c:677
 msgid "Selection"
 msgstr "Selecție"
 
-#: ../src/mnb-people-panel.c:745
+#: ../src/mnb-people-panel.c:740
 msgid "Nobody selected"
 msgstr "Nici o persoană selectată"
-
