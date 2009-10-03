@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:02+0000\n"
-"PO-Revision-Date: 2009-09-15 15:07+0200\n"
+"POT-Creation-Date: 2009-10-01 15:59+0000\n"
+"PO-Revision-Date: 2009-10-03 20:40+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
 "Language-Team: Moblin Romania <live@moblin.ro>\n"
 "MIME-Version: 1.0\n"
@@ -26,8 +26,7 @@ msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b> oră"
 msgstr[1] "<b>%d</b> ore"
 
-#: ../dalston/dalston-power-applet.c:244
-#: ../dalston/dalston-power-applet.c:257
+#: ../dalston/dalston-power-applet.c:244 ../dalston/dalston-power-applet.c:257
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
@@ -39,24 +38,37 @@ msgid "Running low on battery"
 msgstr "Acumulatorul dvs. este pe sfârșite"
 
 #: ../dalston/dalston-power-applet.c:278
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Am observat că acumulatorul este destul de descărcat. Dacă se poate, ar fi o idee bună să conectaţi calculatorul la o priză pentru încărcare."
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Am observat că acumulatorul este destul de descărcat. Dacă se poate, ar fi o "
+"idee bună să conectaţi calculatorul la o priză pentru încărcare."
 
 #: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
 msgstr "Se apropie de golire"
 
 #: ../dalston/dalston-power-applet.c:280
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "Acumulatorul este pe sfârșite. Ar fi o idee bună să vă salvați toate lucrările şi să conectați calculatorul la o priză cât mai curând"
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+"Acumulatorul este pe sfârșite. Ar fi o idee bună să vă salvați toate "
+"lucrările şi să conectați calculatorul la o priză cât mai curând"
 
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Alertă!"
 
 #: ../dalston/dalston-power-applet.c:282
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Ne pare rău, calculatorul este pe cale de a rămâne cu acumulatorul descărcat. Va trebui să ne oprim acum. Vă rugăm să vă salvaţi lucrările şi sperăm să ne vedem din nou în curând."
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Ne pare rău, calculatorul este pe cale de a rămâne cu acumulatorul "
+"descărcat. Va trebui să ne oprim acum. Vă rugăm să vă salvaţi lucrările şi "
+"sperăm să ne vedem din nou în curând."
 
 #: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
@@ -126,7 +138,7 @@ msgstr "Eclipsă totală"
 
 #: ../dalston/dalston-button-monitor.c:175
 #, c-format
-msgid "If you don't decide i'll turn off in %d seconds"
+msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "Dacă nu vă decideţi mă voi opri în %d secunde"
 
 #: ../dalston/dalston-button-monitor.c:277
@@ -134,7 +146,7 @@ msgid "Would you like to turn off now?"
 msgstr "Doriţi să dezactivaţi acum?"
 
 #: ../dalston/dalston-button-monitor.c:278
-msgid "If you don't decide i'll turn off in 30 seconds"
+msgid "If you don't decide I'll turn off in 30 seconds"
 msgstr "Dacă nu vă decideți mă voi opri în 30 de secunde"
 
 #: ../dalston/dalston-button-monitor.c:285
@@ -157,39 +169,39 @@ msgstr "Sunete de alertă"
 msgid "Play test sound"
 msgstr "Cântă sunet de experimentare"
 
-#: ../dalston/dalston-volume-slider.c:190
+#: ../dalston/dalston-volume-slider.c:224
 msgid "Turned up to 11"
 msgstr "Ridicat pană la 11"
 
-#: ../dalston/dalston-volume-slider.c:192
+#: ../dalston/dalston-volume-slider.c:226
 msgid "Very loud"
 msgstr "Foarte tare"
 
-#: ../dalston/dalston-volume-slider.c:194
+#: ../dalston/dalston-volume-slider.c:228
 msgid "Loud"
 msgstr "Tare"
 
-#: ../dalston/dalston-volume-slider.c:196
+#: ../dalston/dalston-volume-slider.c:230
 msgid "Fairly loud"
 msgstr "Destul de tare"
 
-#: ../dalston/dalston-volume-slider.c:198
+#: ../dalston/dalston-volume-slider.c:232
 msgid "Middle of the road"
 msgstr "Mijlocul drumului"
 
-#: ../dalston/dalston-volume-slider.c:200
+#: ../dalston/dalston-volume-slider.c:234
 msgid "Fairly quiet"
 msgstr "Destul de încet"
 
-#: ../dalston/dalston-volume-slider.c:202
+#: ../dalston/dalston-volume-slider.c:236
 msgid "Quiet"
 msgstr "Încet"
 
-#: ../dalston/dalston-volume-slider.c:204
+#: ../dalston/dalston-volume-slider.c:238
 msgid "Very quiet"
 msgstr "Foarte încet"
 
-#: ../dalston/dalston-volume-slider.c:206
+#: ../dalston/dalston-volume-slider.c:240
 msgid "Silent"
 msgstr "Silențios"
 
@@ -201,7 +213,7 @@ msgstr "Panoul GNOME de control al volumului"
 msgid "System Sounds"
 msgstr "Sunete Sistem"
 
-#: ../src/dalston-power-applet.c:48
+#: ../src/dalston-power-applet.c:49
 msgid "battery"
 msgstr "acumulator"
 
@@ -209,6 +221,56 @@ msgstr "acumulator"
 msgid "sound"
 msgstr "sunet"
 
+#: ../src/dalston-power-settings-capplet.c:21
+msgid "Ten minutes"
+msgstr "Zece minute"
+
+#: ../src/dalston-power-settings-capplet.c:22
+msgid "Twenty minutes"
+msgstr "Douăzeci de minute"
+
+#: ../src/dalston-power-settings-capplet.c:23
+msgid "Half an hour"
+msgstr "Jumătate de oră"
+
+#: ../src/dalston-power-settings-capplet.c:24
+msgid "40 minutes"
+msgstr "40 de minute"
+
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "O oră"
+
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "Niciodată"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Setări Menagement Putere"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Preferințe Menagement Putere"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Setări Putere</b>"
+
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Pune calculatorul să doarmă după ce este inactiv timp de:"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Setări pentru ajustarea puterii utilizate"
+
+#~ msgid "If you don't decide i'll turn off in %d seconds"
+#~ msgstr "Dacă nu vă decideţi mă voi opri în %d secunde"
+
+#~ msgid "If you don't decide i'll turn off in 30 seconds"
+#~ msgstr "Dacă nu vă decideți mă voi opri în 30 de secunde"
+
 #~ msgid "power & brightness"
 #~ msgstr "putere & luminozitate"
-
