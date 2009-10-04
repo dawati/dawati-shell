@@ -1,0 +1,268 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Jean Cayron <jean.cayron@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: dalston.master.dalston\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-01 15:59+0000\n"
+"PO-Revision-Date: 2009-10-04 19:04+0200\n"
+"Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
+"Language-Team: Walloon <linux-wa@walon.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 0.3\n"
+
+#: ../dalston/dalston-power-applet.c:237
+#, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b> eure"
+msgstr[1] "<b>%d</b> eures"
+
+#: ../dalston/dalston-power-applet.c:244 ../dalston/dalston-power-applet.c:257
+#, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b> munute"
+msgstr[1] "<b>%d</b> munutes"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid "Running low on battery"
+msgstr "Batreye avou bas livea"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Nos avans avizé k' vosse batreye a-st on livea ene miete bas. Si vos l' "
+"poloz, ça pôreut esse ene boune idêye del tchôkî å corant eyet l' ritcherdjî."
+
+#: ../dalston/dalston-power-applet.c:280
+msgid "Getting close to empty"
+msgstr "Cåzu vude"
+
+#: ../dalston/dalston-power-applet.c:280
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+"Vosse batreye est mo basse. Ça sreut ene boune idêye di schaper tot vost "
+"ovraedje eyet tchôkî å corant ttossu rade ki possibe"
+
+#: ../dalston/dalston-power-applet.c:282
+msgid "Danger!"
+msgstr "Dandjî !"
+
+#: ../dalston/dalston-power-applet.c:282
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Dji rgrete mins i gn årè bén rade pus rén el batreye di vosse copiutrece. "
+"Nos l' alans distinde sol côp. Schaper vost ovraedje s' i vs plait et ns "
+"esperans vs rivey bén rade."
+
+#: ../dalston/dalston-power-applet.c:409
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Dji rgrete mins i shonne ki vosse batreye est sketêye."
+
+#: ../dalston/dalston-power-applet.c:412
+msgid "Your battery is fully charged and you're ready to go."
+msgstr ""
+"Vosse batreye est ttafwaitmint tcherdjeye eyet vs estoz presse as ataker."
+
+#: ../dalston/dalston-power-applet.c:415
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "Vosse batreye tchedje. Elle est aviè les <b>%d</b>%% rimpleye."
+
+#: ../dalston/dalston-power-applet.c:422
+#, c-format
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "Vosse batreye est eployeye. Elle est aviè les <b>%d</b>%% rimpleye."
+
+#: ../dalston/dalston-power-applet.c:430
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Dji rgrete mins vos n' shonnez nén aveur di batreye astalêye."
+
+#: ../dalston/dalston-power-applet.c:515
+msgid "Display brightness"
+msgstr "Rilujhance do håynaedje"
+
+#: ../dalston/dalston-power-applet.c:550
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr ""
+"Dji rgrete mins nos n' savans nén candjî l' rilujhance di vosse waitroûle"
+
+#: ../dalston/dalston-brightness-slider.c:224
+msgid "Brighter than the sun"
+msgstr "Pus blincant kel solea"
+
+#: ../dalston/dalston-brightness-slider.c:226
+msgid "Very bright"
+msgstr "Foirt blincant"
+
+#: ../dalston/dalston-brightness-slider.c:228
+msgid "Bright"
+msgstr "Blincant"
+
+#: ../dalston/dalston-brightness-slider.c:230
+msgid "Morning has broken"
+msgstr "Èn åmatén"
+
+#: ../dalston/dalston-brightness-slider.c:232
+msgid "Midday"
+msgstr "Nonne"
+
+#: ../dalston/dalston-brightness-slider.c:234
+msgid "Pretty dusky"
+msgstr "Ene miete sombe"
+
+#: ../dalston/dalston-brightness-slider.c:236
+msgid "Twilight"
+msgstr "So l' anuti"
+
+#: ../dalston/dalston-brightness-slider.c:238
+msgid "Very dark"
+msgstr "Mo sombe"
+
+#: ../dalston/dalston-brightness-slider.c:240
+msgid "Total eclipse"
+msgstr "Eclipse totåle"
+
+#: ../dalston/dalston-button-monitor.c:175
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Si vos n' decidez nén, dji m' va distinde dins %d segondes"
+
+#: ../dalston/dalston-button-monitor.c:277
+msgid "Would you like to turn off now?"
+msgstr "Vôrîz distinde sol côp ?"
+
+#: ../dalston/dalston-button-monitor.c:278
+msgid "If you don't decide I'll turn off in 30 seconds"
+msgstr "Si vos n' decidez nén, dji m' va distinde dins 30 segondes"
+
+#: ../dalston/dalston-button-monitor.c:285
+msgid "Turn off"
+msgstr "Distinde"
+
+#: ../dalston/dalston-volume-pane.c:258
+msgid "Output volume"
+msgstr "Volume e rexhowe"
+
+#: ../dalston/dalston-volume-pane.c:302
+msgid "Mute"
+msgstr "Moya"
+
+#: ../dalston/dalston-volume-pane.c:320
+msgid "Alert sounds"
+msgstr "Sons d' abranle"
+
+#: ../dalston/dalston-volume-pane.c:332
+msgid "Play test sound"
+msgstr "Djouwer son d' saye"
+
+#: ../dalston/dalston-volume-slider.c:224
+msgid "Turned up to 11"
+msgstr "Monté a 11"
+
+#: ../dalston/dalston-volume-slider.c:226
+msgid "Very loud"
+msgstr "Mo foirt"
+
+#: ../dalston/dalston-volume-slider.c:228
+msgid "Loud"
+msgstr "Foirt"
+
+#: ../dalston/dalston-volume-slider.c:230
+msgid "Fairly loud"
+msgstr "Ene miete foirt"
+
+#: ../dalston/dalston-volume-slider.c:232
+msgid "Middle of the road"
+msgstr "Å mitan del voye"
+
+#: ../dalston/dalston-volume-slider.c:234
+msgid "Fairly quiet"
+msgstr "Ene miete coet"
+
+#: ../dalston/dalston-volume-slider.c:236
+msgid "Quiet"
+msgstr "Coet"
+
+#: ../dalston/dalston-volume-slider.c:238
+msgid "Very quiet"
+msgstr "Mo coet"
+
+#: ../dalston/dalston-volume-slider.c:240
+msgid "Silent"
+msgstr "Sins nou brut"
+
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "Mwaistraedje do volume di GNOME"
+
+#: ../libgvc/gvc-mixer-control.c:1020
+msgid "System Sounds"
+msgstr "Sons do sistinme"
+
+#: ../src/dalston-power-applet.c:49
+msgid "battery"
+msgstr "batreye"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "son"
+
+#: ../src/dalston-power-settings-capplet.c:21
+msgid "Ten minutes"
+msgstr "Dijh munutes"
+
+#: ../src/dalston-power-settings-capplet.c:22
+msgid "Twenty minutes"
+msgstr "Vint munutes"
+
+#: ../src/dalston-power-settings-capplet.c:23
+msgid "Half an hour"
+msgstr "Ene dimey eure"
+
+#: ../src/dalston-power-settings-capplet.c:24
+msgid "40 minutes"
+msgstr "40 munutes"
+
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "Ene eure"
+
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "Måy"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Apontiaedje do Manaedjmint di l' enerdjeye"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Preferinces do Manaedjmint di l' enerdjeye"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Tchuzes di l' enerdjeye</b>"
+
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Edoirmi l' copiutrece cwand i n' fwait rén sol tins di :"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Tchuzes pos apontyî l' eployaedje di l' enerdjeye"
+
+
