@@ -1,13 +1,13 @@
 # connman-marshal defines the marshalling code used for the signals sourced
 # by ConnMan
 connman-marshal.c: connman-marshal.list Makefile
-	glib-genmarshal --prefix=connman_marshal --body $< > $@
+	$(AM_V_GEN)glib-genmarshal --prefix=connman_marshal --body $< > $@
 
 connman-marshal.h: connman-marshal.list Makefile
-	glib-genmarshal --prefix=connman_marshal --header $< > $@
+	$(AM_V_GEN)glib-genmarshal --prefix=connman_marshal --header $< > $@
 
 %-bindings.h: %.xml
-	dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
+	$(AM_V_GEN)dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
 
 BUILT_SOURCES = connman-marshal.c connman-marshal.h \
                 connman-manager-bindings.h connman-service-bindings.h
