@@ -43,6 +43,9 @@ G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
 
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
+#define MOBLIN_MYZONE_MIN_TILE_WIDTH "/desktop/moblin/myzone/min_tile_width"
+#define MOBLIN_MYZONE_MIN_TILE_HEIGHT "/desktop/moblin/myzone/min_tile_height"
+
 typedef struct _PengeRecentFilesPanePrivate PengeRecentFilesPanePrivate;
 
 struct _PengeRecentFilesPanePrivate {
@@ -153,6 +156,7 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
   ClutterActor *list_view;
   GList *items = NULL;
   GList *l = NULL;
+  gfloat tile_width = 0.0, tile_height = 0.0;
 
   client = gconf_client_get_default ();
 
@@ -182,7 +186,6 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
     }
   }
 
-  g_object_unref (client);
 
   list_view = penge_magic_list_view_new ();
   priv->model = penge_recent_files_model_new ();
@@ -198,9 +201,33 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
   penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (list_view),
                                        "model",
                                        2);
+
+
+  tile_width = gconf_client_get_float (client,
+                                       MOBLIN_MYZONE_MIN_TILE_WIDTH,
+                                       NULL);
+
+  /* Returns 0.0 if unset */
+  if (tile_width == 0.0)
+  {
+    tile_width = TILE_WIDTH;
+  }
+
+  tile_height = gconf_client_get_float (client,
+                                        MOBLIN_MYZONE_MIN_TILE_HEIGHT,
+                                        NULL);
+
+  if (tile_height == 0.0)
+  {
+    tile_height = TILE_HEIGHT;
+  }
+
   penge_magic_container_set_minimum_child_size (PENGE_MAGIC_CONTAINER (list_view),
-                                                TILE_WIDTH,
-                                                TILE_HEIGHT);
+                                                tile_width,
+                                                tile_height);
+
+
+
 
   penge_magic_list_view_set_model (PENGE_MAGIC_LIST_VIEW (list_view),
                                    priv->model);
@@ -267,4 +294,6 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
   {
     gtk_recent_info_unref ((GtkRecentInfo *)l->data);
   }
+
+  g_object_unref (client);
 }
