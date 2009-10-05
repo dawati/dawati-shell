@@ -8,3 +8,4 @@ theme_DATA = network-applet.css
 EXTRA_DIST = network-applet.css.in
 DISTCLEANFILES = network-applet.css
 
+-include $(top_srcdir)/git.mk
