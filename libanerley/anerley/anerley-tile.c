@@ -431,7 +431,7 @@ _button_press_event_cb (ClutterActor *actor,
   AnerleyTilePrivate *priv = GET_PRIVATE (actor);
   ClutterActor *parent;
 
-  if (((ClutterButtonEvent *)event)->click_count > 1)
+  if (((ClutterButtonEvent *)event)->click_count == 2)
   {
     parent = clutter_actor_get_parent (actor);
 
