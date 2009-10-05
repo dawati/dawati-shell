@@ -22,6 +22,7 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <gio/gdesktopappinfo.h>
+#include <gconf/gconf-client.h>
 
 #include "penge-utils.h"
 
@@ -54,6 +55,9 @@ struct _PengePeoplePanePrivate {
 
 #define TILE_WIDTH 140.0f
 #define TILE_HEIGHT 95.0f
+
+#define MOBLIN_MYZONE_MIN_TILE_WIDTH "/desktop/moblin/myzone/min_tile_width"
+#define MOBLIN_MYZONE_MIN_TILE_HEIGHT "/desktop/moblin/myzone/min_tile_height"
 
 static void
 penge_people_pane_dispose (GObject *object)
@@ -330,7 +334,8 @@ static void
 penge_people_pane_init (PengePeoplePane *self)
 {
   PengePeoplePanePrivate *priv = GET_PRIVATE (self);
-
+  GConfClient *client;
+  gfloat tile_width = 0.0, tile_height = 0.0;
 
   priv->client = penge_people_pane_dup_mojito_client_singleton ();
 
@@ -340,9 +345,33 @@ penge_people_pane_init (PengePeoplePane *self)
                     (GCallback)_view_count_changed_cb,
                     self);
 
+  client = gconf_client_get_default ();
+
+  tile_width = gconf_client_get_float (client,
+                                       MOBLIN_MYZONE_MIN_TILE_WIDTH,
+                                       NULL);
+
+  /* Returns 0.0 if unset */
+  if (tile_width == 0.0)
+  {
+    tile_width = TILE_WIDTH;
+  }
+
+  tile_height = gconf_client_get_float (client,
+                                        MOBLIN_MYZONE_MIN_TILE_HEIGHT,
+                                        NULL);
+
+  if (tile_height == 0.0)
+  {
+    tile_height = TILE_HEIGHT;
+  }
+
   penge_magic_container_set_minimum_child_size (PENGE_MAGIC_CONTAINER (priv->list_view),
-                                                TILE_WIDTH,
-                                                TILE_HEIGHT);
+                                                tile_width,
+                                                tile_height);
+
+  g_object_unref (client);
+
   penge_magic_list_view_set_item_type (PENGE_MAGIC_LIST_VIEW (priv->list_view),
                                        PENGE_TYPE_PEOPLE_TILE);
   penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (priv->list_view),
