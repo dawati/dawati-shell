@@ -18,6 +18,7 @@ PengeAppsPane
 *.PengeCalendarPaneTitle
 {
   font-size: 17;
+  font-family: "Droid Sans", "Sans";
   color: #3e3e3eff;
 }
 
@@ -66,6 +67,7 @@ PengeEventTile *.PengeEventTimeLabel
 {
   color: white;
   font-size:12;
+  font-family: "Droid Sans", "Sans";
   padding: 8;
 }
 
@@ -78,6 +80,7 @@ PengeEventTile *.PengeEventTimeLabel:past
 {
   color: white;
   font-size:12;
+  font-family: "Droid Sans", "Sans";
   padding: 8;
 }
 
@@ -94,11 +97,13 @@ PengeEventTile *.PengeEventTimeBin:past
 PengeDateTile *.PengeDayLabel
 {
   font-size: 18;
+  font-family: "Droid Sans", "Sans";
 }
 
 PengeDateTile *.PengeDateLabel
 {
   font-size: 78;
+  font-family: "Droid Sans", "Sans";
   color: #4eb9f1ff;
 }
 
@@ -118,6 +123,7 @@ PengeRecentFileTile *.PengeInterestingTileSecondaryLabel
 PengePeopleTile *.PengePeopleTileContentLabel
 {
   font-size: 12;
+  font-family: "Droid Sans", "Sans";
 }
 
 PengePeopleTile *.PengePeopleTileContentBackground
@@ -129,6 +135,7 @@ PengePeopleTile *.PengePeopleTileContentBackground
 PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 {
   font-size: 16;
+  font-family: "Droid Sans", "Sans";
   color: #2c2c2cff;
 }
 
@@ -141,12 +148,14 @@ NbtkTable.PengeInterestingTileDetails
 PengePeoplePlaceholderTile *#penge-no-content-main-message
 {
   font-size:15px;
+  font-family: "Droid Sans", "Sans";
   color: #2c2c2cff;
 }
 
 PengePeoplePlaceholderTile *#penge-no-content-other-message
 {
   font-size:14px;
+  font-family: "Droid Sans", "Sans";
   color: #2c2c2cff;
 }
 
@@ -172,11 +181,13 @@ PengeWelcomeTile *#penge-welcome-primary-text
 {
   color: #009bceff;
   font-size:19px;
+  font-family: "Droid Sans", "Sans";
 }
 
 PengeWelcomeTile *#penge-welcome-secondary-text
 {
   font-size:14px;
+  font-family: "Droid Sans", "Sans";
   color: #2c2c2cff;
 }
 
@@ -195,4 +206,3 @@ PengeWelcomeTile *#penge-welcome-secondary-text
 {
   background-image: url('file://tile-dismiss-icon-hover.png')
 }
-
