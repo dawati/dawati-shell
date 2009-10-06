@@ -10,6 +10,7 @@
 #include "ggg-country-dialog.h"
 #include "ggg-provider-dialog.h"
 #include "ggg-plan-dialog.h"
+#include "ggg-manual-dialog.h"
 
 #define CONNMAN_SERVICE           "org.moblin.connman"
 #define CONNMAN_MANAGER_PATH      "/"
@@ -35,7 +36,7 @@ static enum {
   STATE_PLAN,
   STATE_MANUAL,
   STATE_SAVE,
-  STATE_DONE
+  STATE_FINISH,
 } state;
 
 static GList *services = NULL;
@@ -53,8 +54,12 @@ static void
 state_machine (void)
 {
   GtkWidget *dialog;
+  int old_state;
 
-  while (state != STATE_DONE) {
+  while (state != STATE_FINISH) {
+    /* For sanity checking state changes later */
+    old_state = state;
+
     switch (state) {
     case STATE_START:
       /*
@@ -64,12 +69,14 @@ state_machine (void)
       if (services) {
         if (services->next) {
           /* TODO switch to select service state */
+          state = STATE_FINISH;
         } else {
           service = services->data;
           state = STATE_SERVICE;
         }
       } else {
         /* TODO: error dialog */
+        state = STATE_FINISH;
       }
       break;
     case STATE_SERVICE:
@@ -93,7 +100,7 @@ state_machine (void)
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
       case GTK_RESPONSE_CANCEL:
       case GTK_RESPONSE_DELETE_EVENT:
-        state = STATE_DONE;
+        state = STATE_FINISH;
         break;
       case GTK_RESPONSE_REJECT:
         state = STATE_MANUAL;
@@ -113,7 +120,7 @@ state_machine (void)
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
       case GTK_RESPONSE_CANCEL:
       case GTK_RESPONSE_DELETE_EVENT:
-        state = STATE_DONE;
+        state = STATE_FINISH;
         break;
       case GTK_RESPONSE_REJECT:
         state = STATE_MANUAL;
@@ -133,7 +140,7 @@ state_machine (void)
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
       case GTK_RESPONSE_CANCEL:
       case GTK_RESPONSE_DELETE_EVENT:
-        state = STATE_DONE;
+        state = STATE_FINISH;
         break;
       case GTK_RESPONSE_REJECT:
         state = STATE_MANUAL;
@@ -152,8 +159,19 @@ state_machine (void)
       }
       break;
     case STATE_MANUAL:
-      /* TODO */
-      state = STATE_DONE;
+      dialog = g_object_new (GGG_TYPE_MANUAL_DIALOG, NULL);
+      switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+      case GTK_RESPONSE_CANCEL:
+      case GTK_RESPONSE_DELETE_EVENT:
+        state = STATE_FINISH;
+        break;
+      case GTK_RESPONSE_ACCEPT:
+        auth_data.apn = g_strdup (ggg_manual_dialog_get_apn (GGG_MANUAL_DIALOG (dialog)));
+        auth_data.username = g_strdup (ggg_manual_dialog_get_username (GGG_MANUAL_DIALOG (dialog)));
+        auth_data.password = g_strdup (ggg_manual_dialog_get_password (GGG_MANUAL_DIALOG (dialog)));
+        state = STATE_SAVE;
+        break;
+      }
       break;
     case STATE_SAVE:
       if (auth_data.apn) {
@@ -163,11 +181,13 @@ state_machine (void)
                          auth_data.password);
       }
       /* TODO: write data */
-      state = STATE_DONE;
+      state = STATE_FINISH;
       break;
-    case STATE_DONE:
+    case STATE_FINISH:
       break;
     }
+
+    g_assert (state != old_state);
   }
 }
 

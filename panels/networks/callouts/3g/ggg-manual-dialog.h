@@ -40,6 +40,10 @@ struct _GggManualDialogClass {
 
 GType ggg_manual_dialog_get_type (void) G_GNUC_CONST;
 
+const char * ggg_manual_dialog_get_apn (GggManualDialog *dialog);
+const char * ggg_manual_dialog_get_username (GggManualDialog *dialog);
+const char * ggg_manual_dialog_get_password (GggManualDialog *dialog);
+
 G_END_DECLS
 
 #endif /* __GGG_MANUAL_DIALOG_H__ */

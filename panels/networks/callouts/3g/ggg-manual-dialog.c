@@ -18,6 +18,16 @@ ggg_manual_dialog_class_init (GggManualDialogClass *klass)
     g_type_class_add_private (klass, sizeof (GggManualDialogPrivate));
 }
 
+#define MAKE_LABEL(s, row)                                              \
+  label = gtk_label_new (_(s));                                         \
+  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);                   \
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                  \
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, row, row + 1);
+#define MAKE_ENTRY(var, row)                                            \
+  entry = gtk_entry_new ();                                             \
+  gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, row, row + 1); \
+  self->priv->var = entry;
+
 static void
 ggg_manual_dialog_init (GggManualDialog *self)
 {
@@ -36,7 +46,7 @@ ggg_manual_dialog_init (GggManualDialog *self)
                           GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
                           NULL);
 
-  table = gtk_table_new (8, 2, FALSE);
+  table = gtk_table_new (4, 2, FALSE);
   g_object_set (table,
                 "row-spacing", 6,
                 "column-spacing", 6,
@@ -49,17 +59,7 @@ ggg_manual_dialog_init (GggManualDialog *self)
   gtk_label_set_use_markup (GTK_LABEL (label), TRUE);                   \
   gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 0, 1);
 
-#define MAKE_LABEL(s, row)                                              \
-  label = gtk_label_new (_(s));                                         \
-  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);                   \
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                  \
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, row, row + 1);
-#define MAKE_ENTRY(var, row)                                            \
-  entry = gtk_entry_new ();                                             \
-  gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, row, row + 1); \
-  self->priv->var = entry;
-
-  MAKE_LABEL ("<b>Plan Name:</b>", 1);
+  MAKE_LABEL ("<b>Plan Name (APN):</b>", 1);
   MAKE_ENTRY (apn, 1);
 
   MAKE_LABEL ("<b>Username:</b>", 2);
@@ -83,4 +83,22 @@ ggg_manual_dialog_init (GggManualDialog *self)
 #endif
 
   gtk_widget_show_all (table);
+}
+
+const char *
+ggg_manual_dialog_get_apn (GggManualDialog *dialog)
+{
+  return gtk_entry_get_text (GTK_ENTRY (dialog->priv->apn));
+}
+
+const char *
+ggg_manual_dialog_get_username (GggManualDialog *dialog)
+{
+  return gtk_entry_get_text (GTK_ENTRY (dialog->priv->username));
+}
+
+const char *
+ggg_manual_dialog_get_password (GggManualDialog *dialog)
+{
+  return gtk_entry_get_text (GTK_ENTRY (dialog->priv->password));
 }
