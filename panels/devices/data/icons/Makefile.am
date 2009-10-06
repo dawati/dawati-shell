@@ -20,6 +20,8 @@ icons_DATA = \
 	     dalston-power-applet-full-normal.png \
 	     dalston-power-applet-plugged-active.png \
 	     dalston-power-applet-plugged-normal.png \
+	     dalston-power-applet-battery-missing-active.png \
+	     dalston-power-applet-battery-missing-normal.png \
 	     dalston-volume-applet-0-active.png \
 	     dalston-volume-applet-0-normal.png \
 	     dalston-volume-applet-1-active.png \
