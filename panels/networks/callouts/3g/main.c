@@ -207,6 +207,8 @@ main (int argc, char **argv)
   /* TODO: scan connman for services if none were found */
   /* TODO: handle multiple services */
 
+  gtk_window_set_default_icon_name ("network-wireless");
+
   state = STATE_START;
   state_machine ();
 
