@@ -276,8 +276,6 @@ penge_calendar_pane_allocate (ClutterActor          *actor,
 
   remaining_height = height - last_y - padding.bottom - double_div_nat_h;
 
-  g_debug ("%f %f", remaining_height, events_nat_h + tasks_nat_h);
-
   if (tasks_nat_h <= (int)(remaining_height / 2.0))
   {
     tasks_available_h = tasks_nat_h;
