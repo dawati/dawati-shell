@@ -144,9 +144,9 @@ state_machine (void)
 
         g_assert (plan_node);
         /* TOOD: not shit */
-        auth_data.apn = rest_xml_node_get_attr (plan_node, "value");
-        auth_data.username = rest_xml_node_find (plan_node, "username")->content;
-        auth_data.password = rest_xml_node_find (plan_node, "password")->content;
+        auth_data.apn = g_strdup (rest_xml_node_get_attr (plan_node, "value"));
+        auth_data.username = g_strdup (rest_xml_node_find (plan_node, "username")->content);
+        auth_data.password = g_strdup (rest_xml_node_find (plan_node, "password")->content);
         state = STATE_SAVE;
         break;
       }
