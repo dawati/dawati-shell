@@ -282,6 +282,10 @@ MnbSwitcherApp#switcher-application-active {
   padding: 2;
 }
 
+NbtkIcon.switcher-application-close-button {
+  background-image: url("file://switcher/application-close-button.png");
+}
+
 /* drop down */
 *.drop-down-footer {
   border-image: url("file://drop-down/panel_up_button.png") 5;
