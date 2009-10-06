@@ -92,6 +92,7 @@ state_machine (void)
       dialog = g_object_new (GGG_TYPE_COUNTRY_DIALOG, NULL);
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
       case GTK_RESPONSE_CANCEL:
+      case GTK_RESPONSE_DELETE_EVENT:
         state = STATE_DONE;
         break;
       case GTK_RESPONSE_REJECT:
@@ -111,6 +112,7 @@ state_machine (void)
                              NULL);
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
       case GTK_RESPONSE_CANCEL:
+      case GTK_RESPONSE_DELETE_EVENT:
         state = STATE_DONE;
         break;
       case GTK_RESPONSE_REJECT:
@@ -130,6 +132,7 @@ state_machine (void)
                              NULL);
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
       case GTK_RESPONSE_CANCEL:
+      case GTK_RESPONSE_DELETE_EVENT:
         state = STATE_DONE;
         break;
       case GTK_RESPONSE_REJECT:
