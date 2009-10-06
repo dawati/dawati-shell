@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:19+0000\n"
-"PO-Revision-Date: \n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"PO-Revision-Date: 2009-10-06 23:31+0200\n"
 "Last-Translator: Clara <steiner-jay.clarax@intel.com>\n"
-"Language-Team: \n"
+"Language-Team:  <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,42 +35,53 @@ msgstr "Leute - Jemand redet mit dir"
 #: ../src/moblin-panel-people.c:29
 #, c-format
 msgid "people - %d people are talking to you"
-msgstr "Leute - %d Leute reden mit euch"
+msgstr "Leute - %d Leute reden mit dir"
 
 #: ../src/moblin-panel-people.c:87
 msgid "people"
 msgstr "Leute"
 
-#: ../src/mnb-people-panel.c:161
-msgid "Send an email"
-msgstr "Eine E-Mail schicken"
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr ""
+"Um ihre IM-Kontakte zu sehen, gehen sie bitte online in der Statusleiste."
 
-#: ../src/mnb-people-panel.c:163
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr ""
+"Wir können leider keine Leute finden. Es sieht danach aus, alsob sie alle "
+"offline sind."
+
+#: ../src/mnb-people-panel.c:164
+msgid "Send an email"
+msgstr "Eine E-Mail abschicken"
+
+#: ../src/mnb-people-panel.c:166
 msgid "Edit details"
 msgstr "Details bearbeiten"
 
-#: ../src/mnb-people-panel.c:172
+#: ../src/mnb-people-panel.c:175
 msgid "Send a message"
 msgstr "Eine Nachricht abschicken"
 
-#: ../src/mnb-people-panel.c:306
+#: ../src/mnb-people-panel.c:309
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr ""
 "Wir können leider keine Leute finden. Hast du ein Messenger-Konto "
 "eingerichtet?"
 
-#: ../src/mnb-people-panel.c:551
+#: ../src/mnb-people-panel.c:554
 msgid "People"
 msgstr "Leute"
 
-#: ../src/mnb-people-panel.c:564
+#: ../src/mnb-people-panel.c:567
 msgid "Search"
 msgstr "Suchen"
 
-#: ../src/mnb-people-panel.c:677
+#: ../src/mnb-people-panel.c:680
 msgid "Selection"
 msgstr "Auswahl"
 
-#: ../src/mnb-people-panel.c:740
+#: ../src/mnb-people-panel.c:743
 msgid "Nobody selected"
 msgstr "Niemand ausgewählt"
