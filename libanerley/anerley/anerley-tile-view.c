@@ -261,7 +261,6 @@ anerley_tile_view_init (AnerleyTileView *self)
 
   nbtk_grid_set_row_gap (NBTK_GRID (self), ROW_SPACING);
   nbtk_grid_set_column_gap (NBTK_GRID (self), COL_SPACING);
-  g_object_set (self, "fixed-size-children", TRUE, NULL);
 }
 
 NbtkWidget *
