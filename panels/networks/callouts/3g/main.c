@@ -79,10 +79,10 @@ state_machine (void)
             break;
           case GTK_RESPONSE_ACCEPT:
             service = ggg_service_dialog_get_selected (GGG_SERVICE_DIALOG (dialog));
-            gtk_widget_destroy (dialog);
             state = STATE_SERVICE;
             break;
           }
+          gtk_widget_destroy (dialog);
         } else {
           service = services->data;
           state = STATE_SERVICE;
@@ -120,10 +120,10 @@ state_machine (void)
         break;
       case GTK_RESPONSE_ACCEPT:
         country_node = ggg_country_dialog_get_selected (GGG_COUNTRY_DIALOG (dialog));
-        gtk_widget_destroy (dialog);
         state = STATE_PROVIDER;
         break;
       }
+      gtk_widget_destroy (dialog);
       break;
     case STATE_PROVIDER:
       g_assert (country_node);
@@ -140,10 +140,10 @@ state_machine (void)
         break;
       case GTK_RESPONSE_ACCEPT:
         provider_node = ggg_provider_dialog_get_selected (GGG_PROVIDER_DIALOG (dialog));
-        gtk_widget_destroy (dialog);
         state = STATE_PLAN;
         break;
       }
+      gtk_widget_destroy (dialog);
       break;
     case STATE_PLAN:
       g_assert (provider_node);
@@ -160,7 +160,6 @@ state_machine (void)
         break;
       case GTK_RESPONSE_ACCEPT:
         plan_node = ggg_plan_dialog_get_selected (GGG_PLAN_DIALOG (dialog));
-        gtk_widget_destroy (dialog);
 
         g_assert (plan_node);
         /* TOOD: not shit */
@@ -170,6 +169,7 @@ state_machine (void)
         state = STATE_SAVE;
         break;
       }
+      gtk_widget_destroy (dialog);
       break;
     case STATE_MANUAL:
       dialog = g_object_new (GGG_TYPE_MANUAL_DIALOG, NULL);
