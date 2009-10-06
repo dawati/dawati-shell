@@ -8,6 +8,7 @@
 #include "ggg-service.h"
 #include "ggg-mobile-info.h"
 #include "ggg-country-dialog.h"
+#include "ggg-service-dialog.h"
 #include "ggg-provider-dialog.h"
 #include "ggg-plan-dialog.h"
 #include "ggg-manual-dialog.h"
@@ -68,14 +69,26 @@ state_machine (void)
        */
       if (services) {
         if (services->next) {
-          /* TODO switch to select service state */
-          state = STATE_FINISH;
+          dialog = g_object_new (GGG_TYPE_SERVICE_DIALOG,
+                                 "services", services,
+                                 NULL);
+          switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+          case GTK_RESPONSE_CANCEL:
+          case GTK_RESPONSE_DELETE_EVENT:
+            state = STATE_FINISH;
+            break;
+          case GTK_RESPONSE_ACCEPT:
+            service = ggg_service_dialog_get_selected (GGG_SERVICE_DIALOG (dialog));
+            gtk_widget_destroy (dialog);
+            state = STATE_SERVICE;
+            break;
+          }
         } else {
           service = services->data;
           state = STATE_SERVICE;
         }
       } else {
-        /* TODO: error dialog */
+        g_printerr ("No services found\n");
         state = STATE_FINISH;
       }
       break;
