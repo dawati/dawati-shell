@@ -4,6 +4,7 @@ lib_LTLIBRARIES = libmoblin-panel.la
 libmoblin_panel_includedir = $(includedir)/libmoblin-panel/moblin-panel
 libmoblin_panel_include_HEADERS = \
 	mpl-entry.h \
+	mpl-icon-theme.h \
 	mpl-panel-client.h \
 	mpl-panel-clutter.h \
 	mpl-panel-common.h \
@@ -14,12 +15,14 @@ libmoblin_panel_include_HEADERS = \
 libmoblin_panel_la_CFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel/nbtk.cache\" \
+	-DDATADIR=\"$(datadir)\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
 
 libmoblin_panel_la_LDFLAGS = $(LIBMPL_LIBS)
 
 libmoblin_panel_la_SOURCES = \
 	mpl-entry.c \
+	mpl-icon-theme.c \
 	mpl-panel-client.c \
 	mpl-panel-clutter.c \
 	mpl-panel-gtk.c \
