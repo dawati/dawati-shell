@@ -51,6 +51,13 @@ struct _PengeTasksPanePrivate {
 #define TASK_ENTRY_TEXT _("Create a new task")
 #define TASK_ENTRY_BUTTON _("Add")
 
+enum {
+  PRIORITY_NONE = 0,
+  PRIORITY_HIGH = 1,
+  PRIORITY_MEDIUM = 5,
+  PRIORITY_LOW = 9,
+};
+
 static void penge_tasks_pane_update (PengeTasksPane *pane);
 
 static void
@@ -300,22 +307,107 @@ penge_tasks_pane_init (PengeTasksPane *self)
   jana_store_open (priv->store);
 }
 
+/* Copied from koto-task-store.c */
+static int
+get_weight (int priority, struct icaltimetype due) {
+
+  struct icaltimetype today;
+
+  if (priority == PRIORITY_NONE)
+    priority = PRIORITY_MEDIUM;
+
+  if (icaltime_is_null_time (due)) {
+    return priority;
+  }
+
+  today = icaltime_today ();
+
+  /* If we're due in the past */
+  if (icaltime_compare_date_only (due, today) < 0)
+    return priority - 10;
+
+  /* If it's due today */
+  if (icaltime_compare_date_only(due, today) == 0)
+    return priority - 5;
+
+  /* If it's due in the next three days */
+  icaltime_adjust(&today, 3, 0, 0, 0);
+  if (icaltime_compare_date_only(due, today) <= 0)
+    return priority - 2;
+
+  /* If its due later than a fortnight away */
+  icaltime_adjust(&today, -3 + 14, 0, 0, 0);
+  if (icaltime_compare_date_only(due, today) > 0)
+    return priority + 2;
+
+  return priority;
+}
+
+static gint
+_calculate_weight (JanaTask *task)
+{
+  struct icaltimetype *itime;
+  JanaTime *time;
+  gint weight;
+  gint priority;
+
+  priority = jana_task_get_priority (task);
+  time = jana_task_get_due_date (task);
+
+  if (time)
+  {
+    g_object_get (time,
+                  "icaltime", &itime,
+                  NULL);
+
+    weight = get_weight (priority,
+                         *itime);
+
+    g_object_unref (time);
+  } else {
+    if (priority == PRIORITY_NONE)
+      priority = PRIORITY_MEDIUM;
+
+    weight = priority;
+  }
+
+  return weight;
+}
+
 gint
 _tasks_list_sort_cb (gconstpointer a,
                      gconstpointer b)
 {
   JanaTask *task_a, *task_b;
+  gboolean done_a, done_b;
+  gint weight_a, weight_b;
+  gchar *summary_a, *summary_b;
+  gint res;
 
   task_a = (JanaTask *)a;
   task_b = (JanaTask *)b;
 
-  /* TODO: Do more interesting things here */
-  if (!jana_task_get_completed (task_a) && jana_task_get_completed (task_b))
-    return -1;
-  else if (!jana_task_get_completed (task_b) && jana_task_get_completed (task_a))
-    return 1;
-  else
-    return 0;
+  done_a = jana_task_get_completed (task_a);
+  done_b = jana_task_get_completed (task_b);
+
+  if (done_a != done_b)
+    return done_a < done_b ? -1 : 1;
+
+  weight_a = _calculate_weight (task_a);
+  weight_b = _calculate_weight (task_b);
+
+  if (weight_a != weight_b)
+    return weight_a < weight_b ? -1 : 1;
+
+  summary_a = jana_task_get_summary (task_a);
+  summary_b = jana_task_get_summary (task_b);
+
+  res = g_utf8_collate (summary_a ?: "", summary_b ?: "");
+
+  g_free (summary_a);
+  g_free (summary_b);
+
+  return res;
 }
 
 static void
