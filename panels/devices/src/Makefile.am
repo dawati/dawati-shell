@@ -1,4 +1,8 @@
-bin_PROGRAMS = dalston-volume-applet dalston-power-applet dalston-power-settings-capplet
+bin_PROGRAMS = dalston-volume-applet dalston-power-applet 
+
+if WITH_SETTINGS_CAPPLET
+bin_PROGRAMS += dalston-power-settings-capplet
+endif
 
 dalston_volume_applet_CFLAGS = -I$(top_srcdir) \
 			       $(DBUS_GLIB_CFLAGS) \
@@ -52,6 +56,7 @@ dalston_power_applet_LDADD = $(top_builddir)/dalston/libdalston.la \
 			     $(GCONF_LIBS)
 dalston_power_applet_SOURCES = dalston-power-applet.c moblin-netbook-system-tray.h
 
+if WITH_SETTINGS_CAPPLET
 dalston_power_settings_capplet_CFLAGS = -I$(top_srcdir) \
 					$(GLIB_CFLAGS) \
 					$(GTK_CFLAGS) \
@@ -60,4 +65,4 @@ dalston_power_settings_capplet_LDADD =  $(GLIB_LIBS) \
 					$(GTK_LIBS) \
 					$(GCONF_LIBS)
 dalston_power_settings_capplet_SOURCES = dalston-power-settings-capplet.c
-
+endif
