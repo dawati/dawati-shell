@@ -29,8 +29,11 @@
 #include "mnb-switcher-app.h"
 #include "mnb-switcher-zone.h"
 
-#define MNB_SWICHER_APP_ICON_PADDING  5.0
-#define MNB_SWICHER_APP_ICON_SIZE    48.0
+#define MNB_SWICHER_APP_ICON_PADDING         5.0
+#define MNB_SWICHER_APP_ICON_SIZE           48.0
+#define MNB_SWITCHER_APP_WM_DELETE_TIMEOUT 150
+
+static void mnb_switcher_app_origin_weak_notify (gpointer data, GObject *obj);
 
 struct _MnbSwitcherAppPrivate
 {
@@ -38,6 +41,7 @@ struct _MnbSwitcherAppPrivate
   guint                focus_id;   /* id for our focus cb       */
 
   ClutterActor       *icon;
+  ClutterActor       *close_button;
 
   /* Draggable properties */
   guint               threshold;
@@ -108,6 +112,15 @@ mnb_switcher_app_dispose (GObject *object)
       clutter_actor_unparent (priv->icon);
       priv->icon = NULL;
     }
+
+  if (priv->close_button)
+    {
+      clutter_actor_unparent (priv->close_button);
+      priv->close_button = NULL;
+    }
+
+  g_object_weak_unref (G_OBJECT (priv->mw),
+                       mnb_switcher_app_origin_weak_notify, object);
 
   G_OBJECT_CLASS (mnb_switcher_app_parent_class)->dispose (object);
 }
@@ -562,6 +575,77 @@ mnb_switcher_app_origin_weak_notify (gpointer data, GObject *obj)
   clutter_actor_destroy (self);
 }
 
+/*
+ * Missing mutter prototypes
+ */
+void        meta_window_delete (MetaWindow *window, guint32 timestamp);
+MetaWindow *meta_display_lookup_x_window (MetaDisplay *display, Window xwindow);
+
+typedef struct
+{
+  Window          xid;
+  MnbSwitcherApp *app; /* NB -- this is only valid if the xid is ! */
+} WmDeleteData;
+
+static void
+wm_delete_data_free (gpointer data)
+{
+  g_slice_free (WmDeleteData, data);
+}
+
+static gboolean
+mnb_switcher_app_wm_delete_timeout_cb (gpointer data)
+{
+  WmDeleteData *ddata   = (WmDeleteData*)data;
+  MutterPlugin *plugin  = moblin_netbook_get_plugin_singleton ();
+  MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay  *display = meta_screen_get_display (screen);
+  MetaWindow   *mw      = meta_display_lookup_x_window (display, ddata->xid);
+
+  if (mw)
+    {
+      mnb_switcher_item_activate (MNB_SWITCHER_ITEM (ddata->app));
+    }
+
+  return FALSE;
+}
+
+static gboolean
+mnb_switcher_app_close_button_press_cb (NbtkIcon           *button,
+                                        ClutterButtonEvent *event,
+                                        MnbSwitcherApp     *app)
+{
+  /*
+   * Block presses (the close action must happen on relase, so that the
+   * release does not land on the zone when the app is destroye).
+   */
+  return TRUE;
+}
+
+static gboolean
+mnb_switcher_app_close_button_release_cb (NbtkIcon           *button,
+                                          ClutterButtonEvent *event,
+                                          MnbSwitcherApp     *app)
+{
+  MnbSwitcherAppPrivate *priv = app->priv;
+  MetaWindow            *mw;
+  WmDeleteData          *ddata = g_slice_new (WmDeleteData);
+
+  mw         = mutter_window_get_meta_window (priv->mw);
+  ddata->xid = meta_window_get_xwindow (mw);
+  ddata->app = app;
+
+  g_timeout_add_full (G_PRIORITY_DEFAULT,
+                      MNB_SWITCHER_APP_WM_DELETE_TIMEOUT,
+                      mnb_switcher_app_wm_delete_timeout_cb,
+                      ddata,
+                      wm_delete_data_free);
+
+  meta_window_delete (mw, event->time);
+
+  return TRUE;
+}
+
 static void
 mnb_switcher_app_constructed (GObject *self)
 {
@@ -621,6 +705,32 @@ mnb_switcher_app_constructed (GObject *self)
 
   g_object_weak_ref (G_OBJECT (priv->mw),
                      mnb_switcher_app_origin_weak_notify, self);
+
+  /*
+   * TODO -- we should probably test if the window has a close function, but
+   *         currently Mutter does not expose this.
+   */
+  {
+    ClutterActor *button;
+
+    button = (ClutterActor*) nbtk_icon_new ();
+
+    clutter_actor_set_parent (button, actor);
+    clutter_actor_set_reactive (button, TRUE);
+    clutter_actor_show (button);
+
+    nbtk_widget_set_style_class_name (NBTK_WIDGET (button),
+                                      "switcher-application-close-button");
+
+    g_signal_connect (button, "button-press-event",
+                      G_CALLBACK (mnb_switcher_app_close_button_press_cb),
+                      actor);
+    g_signal_connect (button, "button-release-event",
+                      G_CALLBACK (mnb_switcher_app_close_button_release_cb),
+                      actor);
+
+    priv->close_button = button;
+  }
 }
 
 static const gchar *
@@ -663,22 +773,47 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
                                         &natural_width,
                                         &natural_height);
 
-#if 0
-      width = natural_width < MNB_SWICHER_APP_ICON_SIZE ?
-        MNB_SWICHER_APP_ICON_SIZE : natural_width;
-
-      height = natural_height < MNB_SWICHER_APP_ICON_SIZE ?
-        MNB_SWICHER_APP_ICON_SIZE : natural_height;
-#else
       width  = MNB_SWICHER_APP_ICON_SIZE;
       height = MNB_SWICHER_APP_ICON_SIZE;
-#endif
+
       allocation.x2 = parent_width - MNB_SWICHER_APP_ICON_PADDING;
       allocation.x1 = allocation.x2 - width;
       allocation.y2 = parent_height - MNB_SWICHER_APP_ICON_PADDING;
       allocation.y1 = allocation.y2 - height;
 
       clutter_actor_allocate (priv->icon, &allocation, flags);
+    }
+
+  if (priv->close_button)
+    {
+      NbtkPadding     padding    = { 0, };
+      ClutterActorBox allocation = { 0, };
+      gfloat          natural_width, natural_height;
+      gfloat          min_width, min_height;
+      gfloat          width, height;
+      gfloat          parent_width;
+      gfloat          parent_height;
+
+      parent_width  = box->x2 - box->x1;
+      parent_height = box->y2 - box->y1;
+
+      nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+
+      clutter_actor_get_preferred_size (priv->close_button,
+                                        &min_width,
+                                        &min_height,
+                                        &natural_width,
+                                        &natural_height);
+
+      width  = MNB_SWICHER_APP_ICON_SIZE;
+      height = MNB_SWICHER_APP_ICON_SIZE;
+
+      allocation.x2 = parent_width - MNB_SWICHER_APP_ICON_PADDING;
+      allocation.x1 = allocation.x2 - width;
+      allocation.y1 = MNB_SWICHER_APP_ICON_PADDING;
+      allocation.y2 = allocation.y1 + height;
+
+      clutter_actor_allocate (priv->close_button, &allocation, flags);
     }
 }
 
@@ -691,6 +826,23 @@ mnb_switcher_app_map (ClutterActor *self)
 
   if (priv->icon)
     clutter_actor_map (priv->icon);
+
+  if (priv->close_button)
+    clutter_actor_map (priv->close_button);
+}
+
+static void
+mnb_switcher_app_pick (ClutterActor *self, const ClutterColor *color)
+{
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_switcher_app_parent_class)->pick (self, color);
+
+  if (priv->icon && CLUTTER_ACTOR_IS_MAPPED (priv->icon))
+    clutter_actor_paint (priv->icon);
+
+  if (priv->close_button && CLUTTER_ACTOR_IS_MAPPED (priv->close_button))
+    clutter_actor_paint (priv->close_button);
 }
 
 static void
@@ -702,6 +854,9 @@ mnb_switcher_app_paint (ClutterActor *self)
 
   if (priv->icon && CLUTTER_ACTOR_IS_MAPPED (priv->icon))
     clutter_actor_paint (priv->icon);
+
+  if (priv->close_button && CLUTTER_ACTOR_IS_MAPPED (priv->close_button))
+    clutter_actor_paint (priv->close_button);
 }
 
 static void
@@ -720,6 +875,7 @@ mnb_switcher_app_class_init (MnbSwitcherAppClass *klass)
   actor_class->button_press_event    = mnb_switcher_app_button_press_event;
   actor_class->allocate              = mnb_switcher_app_allocate;
   actor_class->paint                 = mnb_switcher_app_paint;
+  actor_class->pick                  = mnb_switcher_app_pick;
   actor_class->map                   = mnb_switcher_app_map;
 
   item_class->active_style           = mnb_switcher_app_active_style;

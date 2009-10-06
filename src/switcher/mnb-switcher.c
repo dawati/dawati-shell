@@ -39,6 +39,8 @@
 
 #include "mnb-switcher-private.h"
 
+static void mnb_switcher_tooltip_weak_notify (gpointer data, GObject *obj);
+
 /*
  * MnbSwitcher is an MnbDropDown subclass implementing the Zones panel of the
  * shell.
@@ -700,8 +702,14 @@ on_switcher_hide_completed_cb (ClutterActor *self, gpointer data)
   priv  = MNB_SWITCHER (self)->priv;
   ppriv = MOBLIN_NETBOOK_PLUGIN (priv->plugin)->priv;
 
+  if (priv->active_tooltip)
+    {
+      g_object_weak_unref (G_OBJECT (priv->active_tooltip),
+                           mnb_switcher_tooltip_weak_notify, self);
+      priv->active_tooltip = NULL;
+    }
+
   priv->table = NULL;
-  priv->active_tooltip = NULL;
   priv->new_zone = NULL;
   priv->selected_zone = NULL;
   priv->selected_item = NULL;
@@ -1120,6 +1128,15 @@ mnb_switcher_get_dnd_in_progress (MnbSwitcher *switcher)
   return priv->dnd_in_progress;
 }
 
+static void
+mnb_switcher_tooltip_weak_notify (gpointer data, GObject *obj)
+{
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
+
+  if (priv->active_tooltip == (NbtkTooltip*)obj)
+    priv->active_tooltip = NULL;
+}
+
 /*
  * Hides the currently showing tooltip, if any.
  */
@@ -1130,6 +1147,8 @@ mnb_switcher_hide_tooltip (MnbSwitcher *switcher)
 
   if (priv->active_tooltip)
     {
+      g_object_weak_unref (G_OBJECT (priv->active_tooltip),
+                           mnb_switcher_tooltip_weak_notify, switcher);
       nbtk_tooltip_hide (NBTK_TOOLTIP (priv->active_tooltip));
       priv->active_tooltip = NULL;
     }
@@ -1145,6 +1164,8 @@ mnb_switcher_show_tooltip (MnbSwitcher *switcher, NbtkTooltip *tooltip)
 
   if (priv->active_tooltip)
     {
+      g_object_weak_unref (G_OBJECT (priv->active_tooltip),
+                           mnb_switcher_tooltip_weak_notify, switcher);
       nbtk_tooltip_hide (NBTK_TOOLTIP (priv->active_tooltip));
       priv->active_tooltip = NULL;
     }
@@ -1152,6 +1173,8 @@ mnb_switcher_show_tooltip (MnbSwitcher *switcher, NbtkTooltip *tooltip)
   if (tooltip)
     {
       nbtk_tooltip_show (tooltip);
+      g_object_weak_ref (G_OBJECT (tooltip),
+                         mnb_switcher_tooltip_weak_notify, switcher);
       priv->active_tooltip = NBTK_TOOLTIP (tooltip);
     }
 }
