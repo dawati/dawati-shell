@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
+#include <moblin-panel/mpl-icon-theme.h>
 
 #include "penge-app-tile.h"
 #include "penge-utils.h"
@@ -112,7 +113,6 @@ static void
 _update_icon_from_icon_theme (PengeAppTile *tile)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (tile);
-  const gchar *path;
   gchar *icon_path;
   GError *error = NULL;
   GtkIconInfo *info;
@@ -123,46 +123,24 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
   if (G_IS_FILE_ICON (icon))
   {
     icon_path = g_icon_to_string (icon);
-
-    if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
-                                        icon_path,
-                                        &error))
-    {
-      g_warning (G_STRLOC ": Error loading texture from file: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-
-    g_free (icon_path);
   } else {
-    info = gtk_icon_theme_lookup_by_gicon (priv->icon_theme,
-                                           icon,
-                                           ICON_SIZE,
-                                           GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-
-    if (!info)
-    {
-      /* try falling back */
-      info = gtk_icon_theme_lookup_icon (priv->icon_theme,
-                                         "applications-other",
-                                         ICON_SIZE,
-                                         GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-    }
-
-    if (info)
-    {
-      path = gtk_icon_info_get_filename (info);
-
-      if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
-                                          path,
-                                          &error))
-      {
-        g_warning (G_STRLOC ": Error loading texture from file: %s",
-                   error->message);
-        g_clear_error (&error);
-      }
-    }
+    gchar *icon_name = g_icon_to_string (icon);
+    icon_path = mpl_icon_theme_lookup_icon_file (priv->icon_theme,
+                                                 icon_name,
+                                                 ICON_SIZE);
+    g_free (icon_name);
   }
+
+  if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
+                                      icon_path,
+                                      &error))
+  {
+    g_warning (G_STRLOC ": Error loading texture from file: %s",
+                error->message);
+    g_clear_error (&error);
+  }
+
+  g_free (icon_path);
 }
 
 void
