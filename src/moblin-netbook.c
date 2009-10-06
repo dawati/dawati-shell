@@ -954,6 +954,25 @@ check_for_empty_workspace (MutterPlugin *plugin,
     mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar), MPL_PANEL_MYZONE);
 }
 
+static void
+window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin)
+{
+  MetaCompWindowType  type;
+  gint                workspace;
+  MetaWindow         *meta_win;
+  const gchar        *wm_class;
+  const gchar        *wm_name;
+
+  type      = mutter_window_get_window_type (mcw);
+  workspace = mutter_window_get_workspace (mcw);
+  meta_win  = mutter_window_get_meta_window (mcw);
+  wm_class  = meta_window_get_wm_class (meta_win);
+  wm_name   = meta_window_get_title (meta_win);
+
+  if (type != META_COMP_WINDOW_SPLASHSCREEN)
+    check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
+}
+
 /*
  * Protype; don't want to add this the public includes in metacity,
  * should be able to get rid of this call eventually.
@@ -1532,7 +1551,8 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
                * tray).
                */
               check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
-              mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+              mutter_plugin_effect_completed (plugin, mcw,
+                                              MUTTER_PLUGIN_DESTROY);
 
               kill (pid, SIGKILL);
               return;
