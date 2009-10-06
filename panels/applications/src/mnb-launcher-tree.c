@@ -132,29 +132,15 @@ mnb_launcher_monitor_free (MnbLauncherMonitor *self)
 static MnbLauncherApplication *
 mnb_launcher_application_create_from_gmenu_entry (GMenuTreeEntry *entry)
 {
-  MnbLauncherApplication  *self;
-  const gchar             *name;
+  MnbLauncherApplication *self;
 
   g_return_val_if_fail (entry, NULL);
 
-  /* We have a patch to libgnome-menu that adds an accessor for the
-   * GenericName desktop entry field. */
-#ifdef GMENU_WITH_GENERIC_NAME
-
-  name = gmenu_tree_entry_get_generic_name (entry) ?
-            gmenu_tree_entry_get_generic_name (entry) :
-            gmenu_tree_entry_get_name (entry);
-
-  self = mnb_launcher_application_new (name,
+  self = mnb_launcher_application_new (gmenu_tree_entry_get_name (entry),
                                        gmenu_tree_entry_get_icon (entry),
                                        gmenu_tree_entry_get_comment (entry),
                                        gmenu_tree_entry_get_exec (entry),
                                        gmenu_tree_entry_get_desktop_file_path (entry));
-
-#else
-  name = NULL; /* prevent compiler moaning. */
-  self = mnb_launcher_application_new_from_desktop_file (gmenu_tree_entry_get_desktop_file_path (entry));
-#endif
 
   return self;
 }

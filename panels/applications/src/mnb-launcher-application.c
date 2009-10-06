@@ -68,21 +68,6 @@ desktop_file_get_name (GKeyFile *application)
 
   g_return_val_if_fail (application, NULL);
 
-  ret = g_key_file_get_locale_string (application,
-                                      G_KEY_FILE_DESKTOP_GROUP,
-                                      G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
-                                      NULL,
-                                      &error);
-  if (error)
-    {
-      /* Missing generic name is very common, so just ignore.
-       * g_warning ("%s", error->message); */
-      g_clear_error (&error);
-    }
-
-  if (ret)
-    return ret;
-
   /* Fall back to "Name" */
   ret = g_key_file_get_locale_string (application,
                                       G_KEY_FILE_DESKTOP_GROUP,
@@ -93,7 +78,6 @@ desktop_file_get_name (GKeyFile *application)
     {
       g_warning ("%s", error->message);
       g_clear_error (&error);
-      return NULL;
     }
 
   return ret;

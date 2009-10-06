@@ -389,16 +389,10 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
 
   if (generic_name && exec && icon_file)
     {
-      gchar *last_used;
-
-      /* Launcher button
-       * TODO reactivate "last used" once we've got the infrastructure. */
-      last_used = NULL;
       button = mnb_launcher_button_new (icon_name, icon_file, LAUNCHER_BUTTON_ICON_SIZE,
                                         generic_name, category,
-                                        description, last_used, exec,
+                                        description, exec,
                                         mnb_launcher_application_get_desktop_file (entry));
-      g_free (last_used);
       clutter_actor_set_size (CLUTTER_ACTOR (button),
                               LAUNCHER_BUTTON_WIDTH,
                               LAUNCHER_BUTTON_HEIGHT);

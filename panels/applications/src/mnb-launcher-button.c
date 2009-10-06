@@ -51,10 +51,9 @@ struct _MnbLauncherButtonPrivate
 {
   ClutterActor  *icon;
   NbtkLabel     *title;
-  NbtkLabel     *description;
-  NbtkLabel     *comment;
   ClutterActor  *fav_toggle;
 
+  char          *description;
   char          *category;
   char          *executable;
   char          *desktop_file_path;
@@ -129,6 +128,7 @@ finalize (GObject *object)
 
   /* Child actors are managed by clutter. */
 
+  g_free (self->priv->description);
   g_free (self->priv->category);
   g_free (self->priv->executable);
   g_free (self->priv->desktop_file_path);
@@ -138,7 +138,6 @@ finalize (GObject *object)
   g_free (self->priv->category_key);
   g_free (self->priv->title_key);
   g_free (self->priv->description_key);
-  g_free (self->priv->comment_key);
 
   G_OBJECT_CLASS (mnb_launcher_button_parent_class)->finalize (object);
 }
@@ -236,14 +235,6 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
   child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &child_box, flags);
 
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->description), &child_box);
-  child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->description), &child_box, flags);
-
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->comment), &child_box);
-  child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->comment), &child_box, flags);
-
   /* Pin location hardcoded, designers want this to fit perfectly. */
   child_box.x1 = box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET;
   child_box.x2 = child_box.x1 + FAV_TOGGLE_SIZE;
@@ -339,38 +330,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   label = nbtk_label_get_clutter_text (self->priv->title);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
-
-  /* "category" label */
-  self->priv->description = (NbtkLabel *) nbtk_label_new (NULL);
-  clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->description), FALSE);
-  clutter_actor_set_name (CLUTTER_ACTOR (self->priv->description),
-                          "mnb-launcher-button-description");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        CLUTTER_ACTOR (self->priv->description),
-                                        1, 1,
-                                        "x-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        NULL);
-
-  label = nbtk_label_get_clutter_text (self->priv->description);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
-  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
-
-  /* "comment" label */
-  self->priv->comment = (NbtkLabel *) nbtk_label_new (NULL);
-  clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->comment), FALSE);
-  clutter_actor_set_name (CLUTTER_ACTOR (self->priv->comment),
-                          "mnb-launcher-button-comment");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        CLUTTER_ACTOR (self->priv->comment),
-                                        2, 1,
-                                        "x-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        NULL);
-
-  label = nbtk_label_get_clutter_text (self->priv->comment);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
-  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (label), TRUE);
 
   /* "fav app" toggle */
   self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (nbtk_button_new ()));
@@ -381,7 +341,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         CLUTTER_ACTOR (self->priv->fav_toggle),
                                         0, 2,
-                                        "row-span", 3,
+                                        "row-span", 1,
                                         NULL);
 
   g_signal_connect (self->priv->fav_toggle, "clicked",
@@ -397,7 +357,6 @@ mnb_launcher_button_new (const gchar *icon_name,
                          const gchar *title,
                          const gchar *category,
                          const gchar *description,
-                         const gchar *comment,
                          const gchar *executable,
                          const gchar *desktop_file_path)
 {
@@ -415,10 +374,7 @@ mnb_launcher_button_new (const gchar *icon_name,
     self->priv->category = g_strdup (category);
 
   if (description)
-    nbtk_label_set_text (self->priv->description, description);
-
-  if (comment)
-    nbtk_label_set_text (self->priv->comment, comment);
+    self->priv->description = g_strdup (description);
 
   if (executable)
     self->priv->executable = g_strdup (executable);
@@ -441,8 +397,7 @@ mnb_launcher_button_create_favorite (MnbLauncherButton *self)
                                    self->priv->icon_size,
                                    nbtk_label_get_text (self->priv->title),
                                    self->priv->category,
-                                   nbtk_label_get_text (self->priv->description),
-                                   nbtk_label_get_text (self->priv->comment),
+                                   self->priv->description,
                                    self->priv->executable,
                                    self->priv->desktop_file_path);
 
@@ -484,24 +439,7 @@ mnb_launcher_button_get_description (MnbLauncherButton *self)
 {
   g_return_val_if_fail (self, NULL);
 
-  return nbtk_label_get_text (self->priv->description);
-}
-
-const char *
-mnb_launcher_button_get_comment (MnbLauncherButton *self)
-{
-  g_return_val_if_fail (self, NULL);
-
-  return nbtk_label_get_text (self->priv->comment);
-}
-
-void
-mnb_launcher_button_set_comment (MnbLauncherButton *self,
-                                 const gchar       *comment)
-{
-  g_return_if_fail (self);
-
-  nbtk_label_set_text (self->priv->comment, comment);
+  return self->priv->description;
 }
 
 const char *
@@ -588,7 +526,7 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
     nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                           CLUTTER_ACTOR (self->priv->icon),
                                           0, 0,
-                                          "row-span", 3,
+                                          "row-span", 1,
                                           NULL);
   }
 }
@@ -644,18 +582,6 @@ mnb_launcher_button_match (MnbLauncherButton *self,
 
   if (self->priv->description_key &&
       NULL != strstr (self->priv->description_key, lcase_needle))
-    {
-      return TRUE;
-    }
-
-  /* Comment. */
-  if (!self->priv->comment_key)
-    self->priv->comment_key =
-      g_utf8_strdown (nbtk_label_get_text (NBTK_LABEL (self->priv->comment)),
-                      -1);
-
-  if (self->priv->comment_key &&
-      NULL != strstr (self->priv->comment_key, lcase_needle))
     {
       return TRUE;
     }
