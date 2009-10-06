@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-29 15:18+0000\n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -42,34 +42,42 @@ msgstr "朋友- %d 個友人正在和你對話"
 msgid "people"
 msgstr "朋友"
 
-#: ../src/mnb-people-panel.c:161
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "若要檢視你的即時通訊連絡人，請從狀態面板上線。"
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "抱歉，我們找不到任何朋友。似乎大家都離線了。"
+
+#: ../src/mnb-people-panel.c:164
 msgid "Send an email"
 msgstr "發送電子郵件"
 
-#: ../src/mnb-people-panel.c:163
+#: ../src/mnb-people-panel.c:166
 msgid "Edit details"
 msgstr "編輯細節"
 
-#: ../src/mnb-people-panel.c:172
+#: ../src/mnb-people-panel.c:175
 msgid "Send a message"
 msgstr "發送訊息"
 
-#: ../src/mnb-people-panel.c:306
+#: ../src/mnb-people-panel.c:309
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "很抱歉，我們找不到任何朋友的資料。你已經設立好通訊程式的帳號了嗎？"
 
-#: ../src/mnb-people-panel.c:553
+#: ../src/mnb-people-panel.c:554
 msgid "People"
 msgstr "朋友"
 
-#: ../src/mnb-people-panel.c:566
+#: ../src/mnb-people-panel.c:567
 msgid "Search"
 msgstr "搜尋"
 
-#: ../src/mnb-people-panel.c:682
+#: ../src/mnb-people-panel.c:680
 msgid "Selection"
 msgstr "選取"
 
-#: ../src/mnb-people-panel.c:745
+#: ../src/mnb-people-panel.c:743
 msgid "Nobody selected"
 msgstr "沒有選取任何人"
