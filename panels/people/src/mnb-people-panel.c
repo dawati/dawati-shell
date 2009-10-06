@@ -47,6 +47,9 @@ G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
 
 #define TIMEOUT 250
 
+#define OFFLINE_BANNER _("To see your IM contacts, go online in the Status panel.")
+#define NO_PEOPLE_PLACEHOLDER _("Sorry, we can't find any people. It looks like they are all offline.")
+
 typedef struct _MnbPeoplePanelPrivate MnbPeoplePanelPrivate;
 
 struct _MnbPeoplePanelPrivate {
