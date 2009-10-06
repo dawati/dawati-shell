@@ -1401,10 +1401,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (mw)
         {
-          gboolean modal = FALSE;
+          gboolean system_modal = FALSE;
 
-          if (meta_window_is_modal (mw))
-            modal = TRUE;
+          if (meta_window_is_modal (mw) &&
+              !meta_window_get_transient_for (mw))
+            {
+              system_modal = TRUE;
+            }
 
           g_object_get (mw, "fullscreen", &fullscreen, NULL);
 
@@ -1427,7 +1430,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                             plugin);
 
           /* Hide toolbar etc in presence of modal window */
-          if (modal == TRUE)
+          if (system_modal == TRUE)
             mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
         }
 
