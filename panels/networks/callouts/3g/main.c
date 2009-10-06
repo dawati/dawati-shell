@@ -27,72 +27,144 @@ static const GOptionEntry entries[] = {
   { NULL }
 };
 
+static enum {
+  STATE_START,
+  STATE_SERVICE,
+  STATE_COUNTRY,
+  STATE_PROVIDER,
+  STATE_PLAN,
+  STATE_MANUAL,
+  STATE_SAVE,
+  STATE_DONE
+} state;
+
+static GList *services = NULL;
+static GggService *service;
+static RestXmlNode *country_node = NULL;
+static RestXmlNode *provider_node = NULL;
+static RestXmlNode *plan_node = NULL;
+static struct {
+  char *apn;
+  char *username;
+  char *password;
+} auth_data = { NULL, NULL, NULL };
+
 static void
-configure_roaming_service (GggService *service)
+state_machine (void)
 {
   GtkWidget *dialog;
-  RestXmlNode *node;
 
-  dialog = g_object_new (GGG_TYPE_COUNTRY_DIALOG, NULL);
-  switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
-  case GTK_RESPONSE_CANCEL:
-    /* Cancel button, do nothing */
-    break;
-  case GTK_RESPONSE_REJECT:
-    /* Manual button */
-    /* TODO */
-    break;
-  case GTK_RESPONSE_ACCEPT:
-    /* OK button */
-    node = ggg_country_dialog_get_selected (GGG_COUNTRY_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
-
-    dialog = g_object_new (GGG_TYPE_PROVIDER_DIALOG,
-                           "country", node, NULL);
-    switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
-    case GTK_RESPONSE_CANCEL:
+  while (state != STATE_DONE) {
+    switch (state) {
+    case STATE_START:
+      /*
+       * Determine if we need to select a service or can go straight to probing
+       * the service.
+       */
+      if (services) {
+        if (services->next) {
+          /* TODO switch to select service state */
+        } else {
+          service = services->data;
+          state = STATE_SERVICE;
+        }
+      } else {
+        /* TODO: error dialog */
+      }
       break;
-    case GTK_RESPONSE_REJECT:
-      /* TODO */
-      break;
-    case GTK_RESPONSE_ACCEPT:
-      node = ggg_provider_dialog_get_selected (GGG_PROVIDER_DIALOG (dialog));
-      gtk_widget_destroy (dialog);
+    case STATE_SERVICE:
+      /*
+       * Exmaine the service and determine if we can probe some information, or
+       * have to do guided configuration.
+       */
+      g_assert (service);
 
+      if (ggg_service_is_roaming (service)) {
+        state = STATE_COUNTRY;
+      } else {
+        provider_node = ggg_mobile_info_get_provider_for_ids
+          (ggg_service_get_mcc (service), ggg_service_get_mnc (service));
+        /* If we found a provider switch straight to the plan selector, otherwises
+           fall back to the manual configuration */
+        state = provider_node ? STATE_PLAN : STATE_MANUAL;
+      }
+    case STATE_COUNTRY:
+      dialog = g_object_new (GGG_TYPE_COUNTRY_DIALOG, NULL);
+      switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+      case GTK_RESPONSE_CANCEL:
+        state = STATE_DONE;
+        break;
+      case GTK_RESPONSE_REJECT:
+        state = STATE_MANUAL;
+        break;
+      case GTK_RESPONSE_ACCEPT:
+        country_node = ggg_country_dialog_get_selected (GGG_COUNTRY_DIALOG (dialog));
+        gtk_widget_destroy (dialog);
+        state = STATE_PROVIDER;
+        break;
+      }
+      break;
+    case STATE_PROVIDER:
+      g_assert (country_node);
+      dialog = g_object_new (GGG_TYPE_PROVIDER_DIALOG,
+                             "country", country_node,
+                             NULL);
+      switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+      case GTK_RESPONSE_CANCEL:
+        state = STATE_DONE;
+        break;
+      case GTK_RESPONSE_REJECT:
+        state = STATE_MANUAL;
+        break;
+      case GTK_RESPONSE_ACCEPT:
+        provider_node = ggg_provider_dialog_get_selected (GGG_PROVIDER_DIALOG (dialog));
+        gtk_widget_destroy (dialog);
+        state = STATE_PLAN;
+        break;
+      }
+      break;
+    case STATE_PLAN:
+      g_assert (provider_node);
       dialog = g_object_new (GGG_TYPE_PLAN_DIALOG,
-                             "provider", node, NULL);
-      gtk_dialog_run (GTK_DIALOG (dialog));
+                             "provider", provider_node,
+                             NULL);
+      switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+      case GTK_RESPONSE_CANCEL:
+        state = STATE_DONE;
+        break;
+      case GTK_RESPONSE_REJECT:
+        state = STATE_MANUAL;
+        break;
+      case GTK_RESPONSE_ACCEPT:
+        plan_node = ggg_plan_dialog_get_selected (GGG_PLAN_DIALOG (dialog));
+        gtk_widget_destroy (dialog);
+
+        g_assert (plan_node);
+        /* TOOD: not shit */
+        auth_data.apn = rest_xml_node_get_attr (plan_node, "value");
+        auth_data.username = rest_xml_node_find (plan_node, "username")->content;
+        auth_data.password = rest_xml_node_find (plan_node, "password")->content;
+        state = STATE_SAVE;
+        break;
+      }
+      break;
+    case STATE_MANUAL:
+      /* TODO */
+      state = STATE_DONE;
+      break;
+    case STATE_SAVE:
+      if (auth_data.apn) {
+        ggg_service_set (service,
+                         auth_data.apn,
+                         auth_data.username,
+                         auth_data.password);
+      }
+      /* TODO: write data */
+      state = STATE_DONE;
+      break;
+    case STATE_DONE:
+      break;
     }
-    break;
-  }
-}
-
-static void
-configure_service (GggService *service)
-{
-  RestXmlNode *provider;
-  GtkWidget *dialog;
-
-  provider = ggg_mobile_info_get_provider_for_ids
-    (ggg_service_get_mcc (service), ggg_service_get_mnc (service));
-
-  if (provider) {
-    dialog = g_object_new (GGG_TYPE_PLAN_DIALOG,
-                           "provider", provider, NULL);
-    gtk_dialog_run (GTK_DIALOG (dialog));
-  } else {
-    /* TODO: not roaming but manual configuration */
-    configure_roaming_service (service);
-  }
-}
-
-static void
-configure (GggService *service)
-{
-  if (ggg_service_is_roaming (service)) {
-    configure_roaming_service (service);
-  } else {
-    configure_service (service);
   }
 }
 
@@ -101,7 +173,6 @@ main (int argc, char **argv)
 {
   GError *error = NULL;
   GOptionContext *context;
-  GList *services = NULL;
   char **l;
 
   context = g_option_context_new ("- Carrick/ConnMan 3G connection wizard");
@@ -136,7 +207,8 @@ main (int argc, char **argv)
   /* TODO: scan connman for services if none were found */
   /* TODO: handle multiple services */
 
-  configure (services->data);
+  state = STATE_START;
+  state_machine ();
 
   return 0;
 }
