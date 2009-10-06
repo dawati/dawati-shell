@@ -34,6 +34,7 @@
 
 #include <gtk/gtk.h>
 #include <nbtk/nbtk.h>
+#include <moblin-panel/mpl-icon-theme.h>
 
 #include <moblin-panel/mpl-app-bookmark-manager.h>
 #include <moblin-panel/mpl-entry.h>
@@ -165,9 +166,6 @@ container_get_n_visible_children (ClutterContainer *container)
 #define SCROLLVIEW_INNER_WIDTH(self_)                                          \
           (clutter_actor_get_width (CLUTTER_ACTOR (self_)) -                   \
            SCROLLBAR_RESERVED_WIDTH)
-
-#define LAUNCHER_FALLBACK_ICON_NAME "applications-other"
-#define LAUNCHER_FALLBACK_ICON_FILE "/usr/share/icons/moblin/48x48/categories/applications-other.png"
 
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
@@ -355,76 +353,6 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
   mpl_app_bookmark_manager_save (priv->manager);
 }
 
-static gchar *
-launcher_button_get_icon_file (const gchar  *icon_name,
-                               GtkIconTheme *theme)
-{
-  GtkIconInfo *info;
-  gchar *icon_file;
-
-  info = NULL;
-  icon_file = NULL;
-
-  if (icon_name)
-    {
-      /* 1 - look up in the icon theme. */
-      info = gtk_icon_theme_lookup_icon (theme,
-                                          icon_name,
-                                          LAUNCHER_BUTTON_ICON_SIZE,
-                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-      if (info)
-        icon_file = g_strdup (gtk_icon_info_get_filename (info));
-    }
-
-  if (icon_name && !icon_file)
-    {
-      /* 2 - fallback lookups. */
-      if (g_path_is_absolute (icon_name) &&
-          g_file_test (icon_name, G_FILE_TEST_IS_REGULAR))
-        {
-          /* 2.1 - absolute path. */
-          icon_file = g_strdup (icon_name);
-        }
-      else if (g_str_has_suffix (icon_name, ".png"))
-        {
-          /* 2.2 - filename in a well-known directory. */
-          icon_file = g_build_filename ("/usr/share/icons", icon_name, NULL);
-          if (!g_file_test (icon_file, G_FILE_TEST_IS_REGULAR))
-            {
-              g_free (icon_file);
-              icon_file = g_build_filename ("/usr/share/pixmaps", icon_name, NULL);
-              if (!g_file_test (icon_file, G_FILE_TEST_IS_REGULAR))
-                {
-                  g_free (icon_file);
-                  icon_file = NULL;
-                }
-            }
-        }
-    }
-
-  if (!icon_file)
-    {
-      /* 3 - lookup generic icon in theme. */
-      info = gtk_icon_theme_lookup_icon (theme,
-                                          LAUNCHER_FALLBACK_ICON_NAME,
-                                          LAUNCHER_BUTTON_ICON_SIZE,
-                                          GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-      if (info)
-        icon_file = g_strdup (gtk_icon_info_get_filename (info));
-    }
-
-  if (!icon_file)
-    {
-      /* 4 - Use hardcoded icon. */
-      icon_file = g_strdup (LAUNCHER_FALLBACK_ICON_FILE);
-    }
-
-  if (info)
-    gtk_icon_info_free (info);
-
-  return icon_file;
-}
-
 static void
 launcher_button_reload_icon_cb (ClutterActor  *launcher,
                                 GtkIconTheme  *theme)
@@ -433,7 +361,7 @@ launcher_button_reload_icon_cb (ClutterActor  *launcher,
     return;
 
   const gchar *icon_name = mnb_launcher_button_get_icon_name (MNB_LAUNCHER_BUTTON (launcher));
-  gchar *icon_file = launcher_button_get_icon_file (icon_name, theme);
+  gchar *icon_file = mpl_icon_theme_lookup_icon_file (theme, icon_name, LAUNCHER_BUTTON_ICON_SIZE);
   mnb_launcher_button_set_icon (MNB_LAUNCHER_BUTTON (launcher), icon_file, LAUNCHER_BUTTON_ICON_SIZE);
   g_free (icon_file);
 
@@ -457,7 +385,7 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
   exec = mnb_launcher_application_get_executable (entry);
   description = mnb_launcher_application_get_description (entry);
   icon_name = mnb_launcher_application_get_icon (entry);
-  icon_file = launcher_button_get_icon_file (icon_name, theme);
+  icon_file = mpl_icon_theme_lookup_icon_file (theme, icon_name, LAUNCHER_BUTTON_ICON_SIZE);
 
   if (generic_name && exec && icon_file)
     {
