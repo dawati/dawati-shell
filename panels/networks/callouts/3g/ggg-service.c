@@ -88,7 +88,7 @@ ggg_service_new_fake (void)
   service->priv->name = g_strdup ("Fake Service");
   service->priv->mcc = g_strdup ("234");
   service->priv->mnc = g_strdup ("15");
-  service->priv->roaming = FALSE;
+  service->priv->roaming = TRUE;
 
   return service;
 }
@@ -109,4 +109,39 @@ const char *
 ggg_service_get_mnc (GggService *service)
 {
   return service->priv->mnc;
+}
+
+static void
+set_string_prop (DBusGProxy *proxy, const char *name, const char *string)
+{
+  GError *error = NULL;
+  GValue value = { 0, };
+
+  g_value_init (&value, G_TYPE_STRING);
+  g_value_set_static_string (&value, string);
+
+  if (!org_moblin_connman_Service_set_property
+      (proxy, name, &value, &error)) {
+    g_printerr ("Cannot set property %s to %s: %s",
+                name, string, error->message);
+    g_error_free (error);
+  }
+
+  g_value_unset (&value);
+}
+
+void
+ggg_service_set (GggService *service,
+                 const char *apn,
+                 const char *username,
+                 const char *password)
+{
+  if (service->priv->proxy) {
+    set_string_prop (service->priv->proxy, "APN", apn);
+    set_string_prop (service->priv->proxy, "Username", username);
+    set_string_prop (service->priv->proxy, "Password", password);
+  } else {
+    g_debug ("ggg_service_set: APN %s, username %s, password %s",
+             apn, username, password);
+  }
 }

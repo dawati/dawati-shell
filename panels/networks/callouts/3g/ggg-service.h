@@ -51,6 +51,11 @@ const char * ggg_service_get_mcc (GggService *service);
 
 const char * ggg_service_get_mnc (GggService *service);
 
+void ggg_service_set (GggService *service,
+                      const char *apn,
+                      const char *username,
+                      const char *password);
+
 G_END_DECLS
 
 #endif /* __GGG_SERVICE_H__ */
