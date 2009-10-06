@@ -78,19 +78,25 @@ ggg_service_new (DBusGConnection *connection, const char *path)
 }
 
 GggService *
-ggg_service_new_fake (void)
+ggg_service_new_fake (const char *name)
 {
   GggService *service;
 
   service = g_object_new (GGG_TYPE_SERVICE, NULL);
   service->priv->proxy = NULL;
 
-  service->priv->name = g_strdup ("Fake Service");
+  service->priv->name = g_strdup (name);
   service->priv->mcc = g_strdup ("234");
   service->priv->mnc = g_strdup ("15");
   service->priv->roaming = TRUE;
 
   return service;
+}
+
+const char *
+ggg_service_get_name (GggService *service)
+{
+  return service->priv->name;
 }
 
 gboolean

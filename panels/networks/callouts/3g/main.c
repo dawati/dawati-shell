@@ -222,7 +222,8 @@ main (int argc, char **argv)
   }
 
   if (add_fake) {
-    services = g_list_prepend (services, ggg_service_new_fake ());
+    services = g_list_prepend (services, ggg_service_new_fake ("Fake Device 1"));
+    services = g_list_prepend (services, ggg_service_new_fake ("Fake Device 2"));
   }
 
   /* TODO: scan connman for services if none were found */
