@@ -889,34 +889,39 @@ check_for_empty_workspace (MutterPlugin *plugin,
   if (workspace_empty)
     {
       MetaWorkspace  *current_ws;
+      MetaWorkspace  *active_ws;
       guint32         timestamp;
       gint            next_index = -1;
 
       timestamp  = clutter_x11_get_current_event_time ();
       current_ws = meta_screen_get_workspace_by_index (screen, workspace);
+      active_ws  = meta_screen_get_active_workspace (screen);
 
-      /*
-       * We need to activate the next workspace before we remove this one, so
-       * that the zone switch effect works.
-       */
-      if (workspace > 0)
-        next_index = workspace - 1;
-      else if (meta_screen_get_n_workspaces (screen) > 1)
-        next_index = workspace + 1;
-
-      if (next_index != -1)
+      if (active_ws == current_ws)
         {
-          MetaWorkspace  *next_ws;
-          next_ws = meta_screen_get_workspace_by_index (screen, next_index);
+          /*
+           * We need to activate the next workspace before we remove this one,
+           * so that the zone switch effect works.
+           */
+          if (workspace > 0)
+            next_index = workspace - 1;
+          else if (meta_screen_get_n_workspaces (screen) > 1)
+            next_index = workspace + 1;
 
-          if (!next_ws)
+          if (next_index != -1)
             {
-              g_warning ("%s:%d: No workspace for index %d\n",
-                         __FILE__, __LINE__, next_index);
-            }
-          else
-            {
-              meta_workspace_activate (next_ws, timestamp);
+              MetaWorkspace  *next_ws;
+              next_ws = meta_screen_get_workspace_by_index (screen, next_index);
+
+              if (!next_ws)
+                {
+                  g_warning ("%s:%d: No workspace for index %d\n",
+                             __FILE__, __LINE__, next_index);
+                }
+              else
+                {
+                  meta_workspace_activate (next_ws, timestamp);
+                }
             }
         }
 
