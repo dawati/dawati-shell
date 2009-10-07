@@ -643,10 +643,8 @@ mnb_launcher_button_match (MnbLauncherButton *self,
     }
 
   /* Description. */
-  if (!self->priv->description_key)
-    self->priv->description_key =
-      g_utf8_strdown (nbtk_label_get_text (NBTK_LABEL (self->priv->description)),
-                      -1);
+  if (self->priv->description && !self->priv->description_key)
+    self->priv->description_key = g_utf8_strdown (self->priv->description, -1);
 
   if (self->priv->description_key &&
       NULL != strstr (self->priv->description_key, lcase_needle))
