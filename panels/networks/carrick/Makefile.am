@@ -32,6 +32,10 @@ libcarrick_la_SOURCES = carrick-applet.c \
 												$(BUILT_SOURCES) \
                         $(NULL)
 
+if ! HAVE_INFOBAR
+libcarrick_la_SOURCES += gtkinfobar.h gtkinfobar.c
+endif
+
 libcarrick_la_CFLAGS =  -Wall \
                         $(GTK_CFLAGS) \
                         $(NBTK_CFLAGS) \
