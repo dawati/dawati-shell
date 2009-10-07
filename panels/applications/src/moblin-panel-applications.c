@@ -56,6 +56,15 @@ stage_height_notify_cb (ClutterActor  *stage,
 }
 
 static void
+panel_set_size_cb (MplPanelClient *panel,
+                   guint           width,
+                   guint           height,
+                   MnbLauncher    *launcher)
+{
+  clutter_actor_set_size (CLUTTER_ACTOR (launcher), width, height);
+}
+
+static void
 launcher_activated_cb (MnbLauncher    *launcher,
                        const gchar    *desktop_file,
                        MplPanelClient *panel)
@@ -203,12 +212,10 @@ main (int     argc,
                         G_CALLBACK (panel_hide_end_cb), launcher);
 
       stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
-      g_signal_connect (stage, "notify::width",
-                        G_CALLBACK (stage_width_notify_cb), launcher);
-      g_signal_connect (stage, "notify::height",
-                        G_CALLBACK (stage_height_notify_cb), launcher);
-
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
+
+      g_signal_connect (panel, "set-size",
+                        G_CALLBACK (panel_set_size_cb), launcher);
     }
 
   clutter_main ();
