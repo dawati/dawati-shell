@@ -334,7 +334,7 @@ moblin_netbook_plugin_constructed (GObject *object)
     }
 
   g_signal_connect (screen,
-                    "workarea-changed",
+                    "workareas-changed",
                     G_CALLBACK (moblin_netbook_workarea_changed_cb),
                     plugin);
 
