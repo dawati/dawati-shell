@@ -1532,7 +1532,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       if (type == META_COMP_WINDOW_NORMAL  &&
           !meta_window_is_modal (mw)       &&
           meta_window_get_startup_id (mw) &&
-          meta_window_get_transient_for_xid (mw) == None)
+          meta_window_get_transient_for_as_xid (mw) == None)
         {
           MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
           MetaDisplay *display = meta_screen_get_display (screen);
