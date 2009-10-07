@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:19+0000\n"
-"PO-Revision-Date: 2009-10-01 18:37-0800\n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"PO-Revision-Date: 2009-10-07 14:21-0800\n"
 "Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
@@ -45,34 +45,42 @@ msgstr "好友 - %d 有人正在跟您讲话"
 msgid "people"
 msgstr "好友"
 
-#: ../src/mnb-people-panel.c:161
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "要查看您的 IM 联系人，请在状态面板上上线。"
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "抱歉，找到任何联系人。看起来他们都下线了。"
+
+#: ../src/mnb-people-panel.c:164
 msgid "Send an email"
 msgstr "发送一封邮件"
 
-#: ../src/mnb-people-panel.c:163
+#: ../src/mnb-people-panel.c:166
 msgid "Edit details"
 msgstr "编写详细信息"
 
-#: ../src/mnb-people-panel.c:172
+#: ../src/mnb-people-panel.c:175
 msgid "Send a message"
 msgstr "发送一条消息"
 
-#: ../src/mnb-people-panel.c:306
+#: ../src/mnb-people-panel.c:309
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "抱歉，我不能找到任何联系人。您已经建立好一个聊天账户了吗？"
 
-#: ../src/mnb-people-panel.c:551
+#: ../src/mnb-people-panel.c:554
 msgid "People"
 msgstr "好友"
 
-#: ../src/mnb-people-panel.c:564
+#: ../src/mnb-people-panel.c:567
 msgid "Search"
 msgstr "搜索"
 
-#: ../src/mnb-people-panel.c:677
+#: ../src/mnb-people-panel.c:680
 msgid "Selection"
 msgstr "选择"
 
-#: ../src/mnb-people-panel.c:740
+#: ../src/mnb-people-panel.c:743
 msgid "Nobody selected"
 msgstr "没有选择任何人"
