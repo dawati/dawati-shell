@@ -690,7 +690,7 @@ _connect_button_cb (GtkButton          *connect_button,
 	      G_SPAWN_STDERR_TO_DEV_NULL;
 	    GError *error = NULL;
 	    char *argv[] = {
-	      "connection-wizard",
+              LIBEXECDIR "/carrick-3g-wizard",
 	      NULL
 	    };
 
