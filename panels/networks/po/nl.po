@@ -8,13 +8,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:09+0000\n"
+"POT-Creation-Date: 2009-10-07 18:32+0000\n"
 "PO-Revision-Date: 2009-08-04 13:38-0700\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#. * Translator note: The disabled technologies available to be turned on is
+#. put together at
+#. * runtime.
+#. * The conjunction 'or' will be at the end of a choice of disabled
+#. technologies,
+#. * for example 'WiFi, WiMAX or 3G.
+#. 
+#: ../carrick/carrick-list.c:859
+msgid " or "
+msgstr "of"
+
+#. * Translator note: the comma ',' will be used to join the different
+#. disabled technologies
+#. * as in the above example; 'WiFi, WiMAX or 3G'
+#. 
+#: ../carrick/carrick-list.c:864
+msgid ", "
+msgstr ","
+
+#: ../carrick/carrick-list.c:865
+msgid "wired"
+msgstr "Wired"
 
 #: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1445
 msgid "WiFi"
@@ -32,12 +55,25 @@ msgstr "3G"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#. 
+#: ../carrick/carrick-list.c:882
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "Sorry, geen netwerken gevonden. De verbindings beheer lijkt niet actief te zijn. Je kunt proberen het apparaat opnieuw op te starten."
+
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #. 
 #: ../carrick/carrick-list.c:892
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om Offline mode uit te schakelen."
+
+#: ../carrick/carrick-list.c:1029
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om %s aan te zetten"
 
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
@@ -149,7 +185,7 @@ msgstr "Geen"
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1340
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1280
 msgid "Show password"
 msgstr "Geef wachtwoord weer"
 
@@ -162,7 +198,7 @@ msgstr "netwerken"
 msgid "Add new connection"
 msgstr "Nieuwe verbinding toevoegen"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:322
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:239
 msgid "Wired"
 msgstr "Wired"
 
@@ -174,58 +210,86 @@ msgstr "Offline mode"
 msgid "This will disable all your connections"
 msgstr "Dit maakt alle verbindingen inactief"
 
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#. 
+#: ../carrick/carrick-service-item.c:47
+msgid "Critical Error: Invalid country code"
+msgstr "Kritieke Fout: Ongeldige land code"
+
+#: ../carrick/carrick-service-item.c:48
+msgid "Missing required APN (service plan name)"
+msgstr "Missende vereiste APN (service plan naam)"
+
+#: ../carrick/carrick-service-item.c:49
+msgid "Internal Error: Invalid network service"
+msgstr "Interne fout: Ongeldige netwerk dienst"
+
+#: ../carrick/carrick-service-item.c:50
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr "Kritieke fout: Kan geen verbinding maken met connectie beheer"
+
+#: ../carrick/carrick-service-item.c:51
+msgid "ERROR: No 3G Hardware detected"
+msgstr "Fout: Geen 3G hardware gevonden"
+
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
 #. 
-#: ../carrick/carrick-service-item.c:260
+#: ../carrick/carrick-service-item.c:176
 #, c-format
 msgid "%s encrypted"
 msgstr "%s versleuteld"
 
-#: ../carrick/carrick-service-item.c:353
+#: ../carrick/carrick-service-item.c:270
 msgid "Disconnect"
 msgstr "Verbreek verbinding"
 
-#: ../carrick/carrick-service-item.c:356
+#: ../carrick/carrick-service-item.c:273
 msgid "Connected"
 msgstr "Verbonden"
 
-#: ../carrick/carrick-service-item.c:363 ../carrick/carrick-service-item.c:372
+#: ../carrick/carrick-service-item.c:280 ../carrick/carrick-service-item.c:289
 #, c-format
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ../carrick/carrick-service-item.c:366
+#: ../carrick/carrick-service-item.c:283
 msgid "Configuring"
 msgstr "Configureren"
 
-#: ../carrick/carrick-service-item.c:375
+#: ../carrick/carrick-service-item.c:292
 msgid "Associating"
-msgstr "AssociÃÂÃÂ«ren"
+msgstr "AssociÃÂÃÂÃÂÃÂ«ren"
 
-#: ../carrick/carrick-service-item.c:384 ../carrick/carrick-service-item.c:409
-#: ../carrick/carrick-service-item.c:1329
+#: ../carrick/carrick-service-item.c:301 ../carrick/carrick-service-item.c:326
+#: ../carrick/carrick-service-item.c:1269
 msgid "Connect"
 msgstr "Maak verbinding"
 
-#: ../carrick/carrick-service-item.c:412
+#: ../carrick/carrick-service-item.c:329
 msgid "Connection failed"
 msgstr "Verbindingsfout"
 
-#: ../carrick/carrick-service-item.c:421 ../carrick/carrick-service-item.c:424
+#: ../carrick/carrick-service-item.c:332
+msgid "Sorry, the connection failed. You could try again."
+msgstr "Sorry, kon geen verbinding maken. Je kunt het nogmaals proberen."
+
+#: ../carrick/carrick-service-item.c:338 ../carrick/carrick-service-item.c:341
 #, c-format
 msgid "Disconnecting"
 msgstr "Verbinding wordt verbroken"
 
-#: ../carrick/carrick-service-item.c:482
+#: ../carrick/carrick-service-item.c:399
 msgid "Type password here"
 msgstr "Geef wachtwoord hier"
 
-#: ../carrick/carrick-service-item.c:566
+#: ../carrick/carrick-service-item.c:483
 msgid "Really remove?"
 msgstr "Echt verwijderen?"
 
-#: ../carrick/carrick-service-item.c:584
+#: ../carrick/carrick-service-item.c:501
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -236,7 +300,32 @@ msgstr ""
 "verwijdert ook het opgeslagen wachtwoord. Je zult niet\n"
 "langer met %s automatisch verbonden worden."
 
-#: ../carrick/carrick-service-item.c:1265
+#: ../carrick/carrick-service-item.c:666
+#, c-format
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 28 characters, you have %i."
+msgstr "Je wachtwoord is niet de juiste lengte. Een WEP verbinding heeft een lengte van 10 of 28 karakters nodig, je hebt %i."
+
+#: ../carrick/carrick-service-item.c:676
+#, c-format
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Je wachtwoord is te kort. Voor een WPA verbinding heb je minstens 8 karakters nodig, je hebt %i."
+
+#: ../carrick/carrick-service-item.c:680
+#, c-format
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 62 characters, you have %i"
+msgstr "Je wachtwoord is te lang. Voor een WPA verbinding heb je minder dan 62 karakters nodig, je hebt %i."
+
+#: ../carrick/carrick-service-item.c:688
+#, c-format
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Je wachtwoord is te kort. Voor een WPA2 verbinding heb je minstens 8 karakters nodig, je hebt %i."
+
+#: ../carrick/carrick-service-item.c:692
+#, c-format
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 62 characters, you have %i"
+msgstr "Je wachtwoord is te lang. Voor een WPA2 verbinding heb je minder dan 62 karakters nodig, je hebt %i."
+
+#: ../carrick/carrick-service-item.c:1205
 msgid "Scanning"
 msgstr "Scannen"
 
@@ -244,7 +333,7 @@ msgstr "Scannen"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1284
+#: ../carrick/carrick-service-item.c:1224
 msgid "WPA2 encrypted"
 msgstr "WPA2 versleuteld"
 
@@ -304,217 +393,68 @@ msgstr "- Moblin connectiviteits applet"
 msgid "network"
 msgstr "netwerk"
 
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. their service provider. This is the explaination text at the that
-#. dialog box
-#. 
-#: ../carrick/carrick-service-item.c:65
-msgid "Select Provider"
-msgstr "Selecteer provider"
-
-#: ../carrick/carrick-service-item.c:727
-#, c-format
-msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 28 characters, you have %i."
-msgstr "Je wachtwoord is niet de juiste lengte. Een WEP verbinding heeft een lengte van 10 of 28 karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:134
-msgid "Internal Error: Invalid network service"
-msgstr "Interne fout: Ongeldige netwerk dienst"
-
-#: ../carrick/carrick-service-item.c:133
-msgid "Missing required APN (service plan name)"
-msgstr "Missende vereiste APN (service plan naam)"
-
-#: ../carrick/carrick-service-item.c:118
-msgid "Tertairy DNS:"
-msgstr "Tertairy DNS:"
-
-#: ../carrick/carrick-service-item.c:117
-msgid "Secondary DNS:"
-msgstr "Secondary DNS:"
-
-#. Translators:
-#. The following are potential errors that a user might see while
-#. attempting to configure a 3G data service.
-#. 
-#: ../carrick/carrick-service-item.c:132
-msgid "Critical Error: Invalid country code"
-msgstr "Kritieke Fout: Ongeldige land code"
-
-#. Translators:
-#. If this utility is executed without any arguments specifying which
-#. service to configure, then a dialog is used to allow the user to pick
-#. from a list of valid services.  This is the explaination text shown
-#. at the top of the dialog
-#. 
-#: ../carrick/carrick-service-item.c:126
-msgid "Select 3G Service"
-msgstr "Selecteer 3G dienst"
-
-#: ../carrick/carrick-service-item.c:136
-msgid "ERROR: No 3G Hardware detected"
-msgstr "Fout: Geen 3G hardware gevonden"
-
-#: ../carrick/carrick-service-item.c:135
-msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Kritieke fout: Kan geen verbinding maken met connectie beheer"
-
-#: ../carrick/carrick-service-item.c:415
-msgid "Sorry, the connection failed. You could try again."
-msgstr "Sorry, kon geen verbinding maken. Je kunt het nogmaals proberen."
-
-#: ../carrick/carrick-service-item.c:113
-msgid "Username:"
-msgstr "Gebruikersnaam:"
-
-#: ../carrick/carrick-service-item.c:114
-msgid "Password:"
-msgstr "Wachtwoord:"
-
-#. Translators:
-#. This is the text we add to the top of the dialog for allowing the user to
-#. manually enter configuration settings. This is a single line of nor more
-#. then 60 chars wide
-#. 
-#: ../carrick/carrick-service-item.c:80
-msgid "Manual Configuration"
-msgstr "Configureren"
-
-#. Translators:
-#. The following strings are used as labels for each of the
-#. text entry fields that the user uses to manually enter configuration
-#. settings.  Each label is a single line of no more then 40 chars:
-#. 
-#. "Plan Name":
-#. This is a uniqe string that the service provider
-#. uses to identify a give data plan.  This is the only
-#. setting that is required.
-#. 
-#. "Username":
-#. This is the userame of a username/password combination
-#. required for some access points.
-#. 
-#. "Password":
-#. Password required by some access points.
-#. 
-#. "Gateway":
-#. Gateway IP Address required by some access points
-#. 
-#. "Primary DNS":
-#. Primary domain name server address required by some access points
-#. 
-#. "Secondary DNS":
-#. Backup domain name server address required by some access points
-#. 
-#. "Tertairy DNS":
-#. Alternate backup domain name server address required by some
-#. access points
-#. 
-#: ../carrick/carrick-service-item.c:112
-msgid "Plan Name: (required)"
-msgstr "Plan naam: (vereist)"
-
-#. Translators:
-#. When a user first tries to connect to a given provider, they
-#. must select which plan (i.e. pre-paid, unlimited, etc) to use
-#. that the associated service provider allows.
-#. This is the explaination text used at the top of dialog box.
-#. 
-#: ../carrick/carrick-service-item.c:73
-msgid "Select your 3G Data Plan"
-msgstr "Selecteer je 3G data plan"
-
-#. Translators:
-#. In each of the 3g data connection wizard dialog boxes that ask the user
-#. to select an option, we always provide a button that allows the user
-#. to manually enter the low level settings for their device.  This is the
-#. text used in that button.
-#. 
-#: ../carrick/carrick-service-item.c:51
-msgid "Manual Config"
-msgstr "Handmatige Configuratie"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. the country that their services is associated with.  This is the
-#. explaination text at the top of the dialog box for selecting the country.
-#. 
-#: ../carrick/carrick-service-item.c:58
-msgid "Select Country"
-msgstr "Selecteer land"
-
-#. * Translator note: The disabled technologies available to be turned on is
-#. put together at
-#. * runtime.
-#. * The conjunction 'or' will be at the end of a choice of disabled
-#. technologies,
-#. * for example 'WiFi, WiMAX or 3G.
-#. 
-#: ../carrick/carrick-list.c:859
-msgid " or "
-msgstr "of"
-
-#. * Translator note: the comma ',' will be used to join the different
-#. disabled technologies
-#. * as in the above example; 'WiFi, WiMAX or 3G'
-#. 
-#: ../carrick/carrick-list.c:864
-msgid ", "
-msgstr ","
-
-#: ../carrick/carrick-service-item.c:115
-msgid "Gateway:"
-msgstr "Gateway:"
-
-#: ../carrick/carrick-service-item.c:116
-msgid "Primary DNS:"
-msgstr "Primary DNS:"
-
-#: ../carrick/carrick-service-item.c:753
-#, c-format
-msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 62 characters, you have %i"
-msgstr "Je wachtwoord is te lang. Voor een WPA2 verbinding heb je minder dan 62 karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:749
-#, c-format
-msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Je wachtwoord is te kort. Voor een WPA2 verbinding heb je minstens 8 karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:741
-#, c-format
-msgid "Your password is too long. For a WPA  connection it needs to have fewer than 62 characters, you have %i"
-msgstr "Je wachtwoord is te lang. Voor een WPA verbinding heb je minder dan 62 karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:737
-#, c-format
-msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Je wachtwoord is te kort. Voor een WPA verbinding heb je minstens 8 karakters nodig, je hebt %i."
-
-#. Translators:
-#. This is the title seen on the top of the connection wizard
-#. window forconfiguring a 3G  data service.
-#. 
-#: ../carrick/carrick-service-item.c:43
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:69 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
 msgstr "Mobiele Data Verbindings Wizard"
 
-#: ../carrick/carrick-list.c:865
-msgid "wired"
-msgstr "Wired"
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "Selecteer land"
 
-#. * Translators: this string is displayed if there
-#. * are no available networks because ConnMan, the
-#. * connectivity daemon, is not running.
-#. 
-#: ../carrick/carrick-list.c:882
-msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Sorry, geen netwerken gevonden. De verbindings beheer lijkt niet actief te zijn. Je kunt proberen het apparaat opnieuw op te starten."
+#: ../callouts/3g/ggg-manual-dialog.c:88
+msgid "Manual Configuration"
+msgstr "Configureren"
 
-#: ../carrick/carrick-list.c:1029
+#: ../callouts/3g/ggg-manual-dialog.c:95
+msgid "Username:"
+msgstr "Gebruikersnaam:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:98
+msgid "Password:"
+msgstr "Wachtwoord:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:102
+msgid "Gateway:"
+msgstr "Gateway:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:105
+msgid "Primary DNS:"
+msgstr "Primary DNS:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:108
+msgid "Secondary DNS:"
+msgstr "Secondary DNS:"
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "Selecteer provider"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "Selecteer 3G dienst"
+
+#: ../callouts/3g/ggg-manual-dialog.c:92
+msgid "Plan Name (required):"
+msgstr "Plan naam (vereist):"
+
+#: ../callouts/3g/ggg-manual-dialog.c:111
+msgid "Tertiary DNS:"
+msgstr "Tertiare DNS:"
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "Selecteer je 3G plan"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
-msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om %s aan te zetten"
+msgid "%s (Roaming)"
+msgstr "%s (Roaming)"
+
+#~ msgid "Manual Config"
+#~ msgstr "Handmatige Configuratie"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om WiFi aan te zetten."
