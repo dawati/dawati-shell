@@ -283,7 +283,7 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
   NbtkPadding        padding;
-  ClutterActorBox    child_box;
+  ClutterActorBox    icon_box, title_box, pin_box;
 
   CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)
     ->allocate (actor, box, flags);
@@ -292,22 +292,23 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
 
   /* Hack allocation of the labels, so the fav toggle overlaps. */
 
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->icon), &child_box);
-  child_box.y1 = (int) ((box->y2 - box->y1 - self->priv->icon_size) / 2);
-  child_box.x2 = child_box.x1 + self->priv->icon_size;
-  child_box.y2 = child_box.y1 + self->priv->icon_size;
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &child_box, flags);
+  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->icon), &icon_box);
+  icon_box.y1 = (int) ((box->y2 - box->y1 - self->priv->icon_size) / 2);
+  icon_box.x2 = icon_box.x1 + self->priv->icon_size;
+  icon_box.y2 = icon_box.y1 + self->priv->icon_size;
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &icon_box, flags);
 
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->title), &child_box);
-  child_box.x2 = (int) (box->x2 - box->x1 - padding.right);
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &child_box, flags);
+  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->title), &title_box);
+  title_box.x1 = icon_box.x2 + COL_SPACING;
+  title_box.x2 = (int) (box->x2 - box->x1 - padding.right);
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &title_box, flags);
 
   /* Pin location hardcoded, designers want this to fit perfectly. */
-  child_box.x1 = box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET;
-  child_box.x2 = child_box.x1 + FAV_TOGGLE_SIZE;
-  child_box.y1 = FAV_TOGGLE_Y_OFFSET;
-  child_box.y2 = child_box.y1 + FAV_TOGGLE_SIZE;
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->fav_toggle), &child_box, flags);
+  pin_box.x1 = box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET;
+  pin_box.x2 = pin_box.x1 + FAV_TOGGLE_SIZE;
+  pin_box.y1 = FAV_TOGGLE_Y_OFFSET;
+  pin_box.y2 = pin_box.y1 + FAV_TOGGLE_SIZE;
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->fav_toggle), &pin_box, flags);
 }
 
 static void
@@ -391,6 +392,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         CLUTTER_ACTOR (self->priv->title),
                                         0, 1,
+                                        "x-align", 0.0,
                                         "x-expand", TRUE,
                                         "x-fill", TRUE,
                                         NULL);
