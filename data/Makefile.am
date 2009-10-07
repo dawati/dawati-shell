@@ -58,6 +58,7 @@ theme_switcherdir = $(MUTTER_MOBLIN_THEME_DIR)/switcher
 dist_theme_switcher_DATA = \
 	theme/switcher/application-active.png \
 	theme/switcher/application-close-button.png \
+	theme/switcher/application-close-button-hover.png \
 	theme/switcher/application-inactive.png \
 	theme/switcher/workspace-background-active.png \
 	theme/switcher/workspace-background-new.png \

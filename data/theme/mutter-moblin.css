@@ -286,6 +286,10 @@ NbtkIcon.switcher-application-close-button {
   background-image: url("file://switcher/application-close-button.png");
 }
 
+NbtkIcon.switcher-application-close-button:hover {
+  background-image: url("file://switcher/application-close-button-hover.png");
+}
+
 /* drop down */
 *.drop-down-footer {
   border-image: url("file://drop-down/panel_up_button.png") 5;
