@@ -58,6 +58,8 @@ void ggg_service_set (GggService *service,
                       const char *username,
                       const char *password);
 
+void ggg_service_connect (GggService *service);
+
 G_END_DECLS
 
 #endif /* __GGG_SERVICE_H__ */

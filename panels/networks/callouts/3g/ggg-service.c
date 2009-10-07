@@ -151,3 +151,18 @@ ggg_service_set (GggService *service,
              apn, username, password);
   }
 }
+
+void
+ggg_service_connect (GggService *service)
+{
+  GError *error = NULL;
+
+  if (service->priv->proxy) {
+    if (!org_moblin_connman_Service_connect (service->priv->proxy, &error)) {
+      g_printerr ("Cannot connect: %s\n", error->message);
+      g_error_free (error);
+    }
+  } else {
+    g_debug ("ggg_service_connect");
+  }
+}

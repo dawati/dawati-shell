@@ -190,11 +190,13 @@ state_machine (void)
       break;
     case STATE_SAVE:
       g_assert (auth_data.apn);
+
       ggg_service_set (service,
                        auth_data.apn,
                        auth_data.username,
                        auth_data.password);
-      /* TODO: connect */
+      ggg_service_connect (service);
+
       state = STATE_FINISH;
       break;
     case STATE_FINISH:
