@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:09+0000\n"
-"PO-Revision-Date: 2009-10-01 18:52-0800\n"
+"POT-Creation-Date: 2009-10-07 18:32+0000\n"
+"PO-Revision-Date: 2009-10-07 13:31-0800\n"
 "Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
 "Language-Team: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -197,7 +197,7 @@ msgstr "无"
 msgid "Password"
 msgstr "密码"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1340
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1280
 msgid "Show password"
 msgstr "显示密码"
 
@@ -210,7 +210,7 @@ msgstr "网络"
 msgid "Add new connection"
 msgstr "添加新连接"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:322
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:239
 msgid "Wired"
 msgstr "有线"
 
@@ -223,208 +223,85 @@ msgid "This will disable all your connections"
 msgstr "这将关闭您的所有连接"
 
 #. Translators:
-#. This is the title seen on the top of the connection wizard
-#. window forconfiguring a 3G  data service.
-#.
-#: ../carrick/carrick-service-item.c:43
-msgid "Cellular Data Connection Wizard"
-msgstr "手机数据连接向导"
-
-#. Translators:
-#. In each of the 3g data connection wizard dialog boxes that ask the user
-#. to select an option, we always provide a button that allows the user
-#. to manually enter the low level settings for their device.  This is the
-#. text used in that button.
-#.
-#: ../carrick/carrick-service-item.c:51
-msgid "Manual Config"
-msgstr "手动配置"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. the country that their services is associated with.  This is the
-#. explaination text at the top of the dialog box for selecting the country.
-#.
-#: ../carrick/carrick-service-item.c:58
-msgid "Select Country"
-msgstr "选择国家"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. their service provider. This is the explaination text at the that
-#. dialog box
-#.
-#: ../carrick/carrick-service-item.c:65
-msgid "Select Provider"
-msgstr "选择提供商"
-
-#. Translators:
-#. When a user first tries to connect to a given provider, they
-#. must select which plan (i.e. pre-paid, unlimited, etc) to use
-#. that the associated service provider allows.
-#. This is the explaination text used at the top of dialog box.
-#.
-#: ../carrick/carrick-service-item.c:73
-msgid "Select your 3G Data Plan"
-msgstr "选择您的 3G 数据计划"
-
-#. Translators:
-#. This is the text we add to the top of the dialog for allowing the user to
-#. manually enter configuration settings. This is a single line of nor more
-#. then 60 chars wide
-#.
-#: ../carrick/carrick-service-item.c:80
-msgid "Manual Configuration"
-msgstr "手动配置"
-
-#. Translators:
-#. The following strings are used as labels for each of the
-#. text entry fields that the user uses to manually enter configuration
-#. settings.  Each label is a single line of no more then 40 chars:
-#.
-#. "Plan Name":
-#. This is a uniqe string that the service provider
-#. uses to identify a give data plan.  This is the only
-#. setting that is required.
-#.
-#. "Username":
-#. This is the userame of a username/password combination
-#. required for some access points.
-#.
-#. "Password":
-#. Password required by some access points.
-#.
-#. "Gateway":
-#. Gateway IP Address required by some access points
-#.
-#. "Primary DNS":
-#. Primary domain name server address required by some access points
-#.
-#. "Secondary DNS":
-#. Backup domain name server address required by some access points
-#.
-#. "Tertairy DNS":
-#. Alternate backup domain name server address required by some
-#. access points
-#.
-#: ../carrick/carrick-service-item.c:112
-msgid "Plan Name: (required)"
-msgstr "计划名称：（必填）)"
-
-#: ../carrick/carrick-service-item.c:113
-msgid "Username:"
-msgstr "用户名："
-
-#: ../carrick/carrick-service-item.c:114
-msgid "Password:"
-msgstr "密码："
-
-#: ../carrick/carrick-service-item.c:115
-msgid "Gateway:"
-msgstr "网关："
-
-#: ../carrick/carrick-service-item.c:116
-msgid "Primary DNS:"
-msgstr "主域名（DNS）："
-
-#: ../carrick/carrick-service-item.c:117
-msgid "Secondary DNS:"
-msgstr "次域名（DNS）："
-
-#: ../carrick/carrick-service-item.c:118
-msgid "Tertairy DNS:"
-msgstr "第三域名（DNS）："
-
-#. Translators:
-#. If this utility is executed without any arguments specifying which
-#. service to configure, then a dialog is used to allow the user to pick
-#. from a list of valid services.  This is the explaination text shown
-#. at the top of the dialog
-#.
-#: ../carrick/carrick-service-item.c:126
-msgid "Select 3G Service"
-msgstr "选择 3G 服务"
-
-#. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
 #.
-#: ../carrick/carrick-service-item.c:132
+#: ../carrick/carrick-service-item.c:47
 msgid "Critical Error: Invalid country code"
 msgstr "严重错误：无效的国家代码"
 
-#: ../carrick/carrick-service-item.c:133
+#: ../carrick/carrick-service-item.c:48
 msgid "Missing required APN (service plan name)"
 msgstr "缺少必要的服务计划名称"
 
-#: ../carrick/carrick-service-item.c:134
+#: ../carrick/carrick-service-item.c:49
 msgid "Internal Error: Invalid network service"
 msgstr "内部错误：无效的网络服务"
 
-#: ../carrick/carrick-service-item.c:135
+#: ../carrick/carrick-service-item.c:50
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "严重错误：无法访问连接管理器"
 
-#: ../carrick/carrick-service-item.c:136
+#: ../carrick/carrick-service-item.c:51
 msgid "ERROR: No 3G Hardware detected"
 msgstr "错误：没有检测到 3G 的硬件"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:260
+#: ../carrick/carrick-service-item.c:176
 #, c-format
 msgid "%s encrypted"
 msgstr "%s 已加密"
 
-#: ../carrick/carrick-service-item.c:353
+#: ../carrick/carrick-service-item.c:270
 msgid "Disconnect"
 msgstr "断开连接"
 
-#: ../carrick/carrick-service-item.c:356
+#: ../carrick/carrick-service-item.c:273
 msgid "Connected"
 msgstr "已连接"
 
-#: ../carrick/carrick-service-item.c:363 ../carrick/carrick-service-item.c:372
+#: ../carrick/carrick-service-item.c:280 ../carrick/carrick-service-item.c:289
 #, c-format
 msgid "Cancel"
 msgstr "取消"
 
-#: ../carrick/carrick-service-item.c:366
+#: ../carrick/carrick-service-item.c:283
 msgid "Configuring"
 msgstr "配置"
 
-#: ../carrick/carrick-service-item.c:375
+#: ../carrick/carrick-service-item.c:292
 msgid "Associating"
 msgstr "正在关联"
 
-#: ../carrick/carrick-service-item.c:384 ../carrick/carrick-service-item.c:409
-#: ../carrick/carrick-service-item.c:1329
+#: ../carrick/carrick-service-item.c:301 ../carrick/carrick-service-item.c:326
+#: ../carrick/carrick-service-item.c:1269
 msgid "Connect"
 msgstr "连接"
 
-#: ../carrick/carrick-service-item.c:412
+#: ../carrick/carrick-service-item.c:329
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: ../carrick/carrick-service-item.c:415
+#: ../carrick/carrick-service-item.c:332
 msgid "Sorry, the connection failed. You could try again."
 msgstr "抱歉，连接失败。您可以再试一次。"
 
-#: ../carrick/carrick-service-item.c:421 ../carrick/carrick-service-item.c:424
+#: ../carrick/carrick-service-item.c:338 ../carrick/carrick-service-item.c:341
 #, c-format
 msgid "Disconnecting"
 msgstr "断开连接"
 
-#: ../carrick/carrick-service-item.c:482
+#: ../carrick/carrick-service-item.c:399
 msgid "Type password here"
 msgstr "请在此处输入密码"
 
-#: ../carrick/carrick-service-item.c:566
+#: ../carrick/carrick-service-item.c:483
 msgid "Really remove?"
 msgstr "真的要删除吗?"
 
-#: ../carrick/carrick-service-item.c:584
+#: ../carrick/carrick-service-item.c:501
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -434,42 +311,42 @@ msgstr ""
 "您想删除网络连接%s %s吗?这样系统会同时删除为该连接保存\n"
 "的密码,并且您将不再会被自动连接至%s."
 
-#: ../carrick/carrick-service-item.c:727
+#: ../carrick/carrick-service-item.c:666
 #, c-format
 msgid ""
 "Your password isn't the right length. For a WEP connection it needs to be "
 "either 10 or 28 characters, you have %i."
 msgstr "您的密码长度不正确。对于 WEP 连接，需要 10 或 28 个字符，您有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:737
+#: ../carrick/carrick-service-item.c:676
 #, c-format
 msgid ""
 "Your password is too short. For a WPA  connection it needs to be at least 8 "
 "characters long, you have %i"
 msgstr "您的密码太短了。对于 WPA 连接，需要至少 8 个字符，您只有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:741
+#: ../carrick/carrick-service-item.c:680
 #, c-format
 msgid ""
 "Your password is too long. For a WPA  connection it needs to have fewer than "
 "62 characters, you have %i"
 msgstr "您的密码太长了。对于 WPA 连接，需要少于 62 个字符，您有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:749
+#: ../carrick/carrick-service-item.c:688
 #, c-format
 msgid ""
 "Your password is too short. For a WPA2  connection it needs to be at least 8 "
 "characters long, you have %i"
 msgstr "您的密码太短了。对于 WPA2 连接，需要至少 8 个字符，您有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:753
+#: ../carrick/carrick-service-item.c:692
 #, c-format
 msgid ""
 "Your password is too long. For a WPA2  connection it needs to have fewer "
 "than 62 characters, you have %i"
 msgstr "您的密码太长了。对于 WPA2 连接，需要少于 62 个字符，您有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:1265
+#: ../carrick/carrick-service-item.c:1205
 msgid "Scanning"
 msgstr "正在扫描"
 
@@ -477,7 +354,7 @@ msgstr "正在扫描"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1284
+#: ../carrick/carrick-service-item.c:1224
 msgid "WPA2 encrypted"
 msgstr "WPA2 已加密"
 
@@ -536,6 +413,78 @@ msgstr "- Moblin 连接小程序"
 #: ../src/carrick.c:162
 msgid "network"
 msgstr "网络"
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:69 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr "手机数据连接向导"
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "选择国家"
+
+#: ../callouts/3g/ggg-manual-dialog.c:88
+msgid "Manual Configuration"
+msgstr "手动配置"
+
+#: ../callouts/3g/ggg-manual-dialog.c:92
+msgid "Plan Name (required):"
+msgstr "计划名称（必填）："
+
+#: ../callouts/3g/ggg-manual-dialog.c:95
+msgid "Username:"
+msgstr "用户名："
+
+#: ../callouts/3g/ggg-manual-dialog.c:98
+msgid "Password:"
+msgstr "密码："
+
+#: ../callouts/3g/ggg-manual-dialog.c:102
+msgid "Gateway:"
+msgstr "网关："
+
+#: ../callouts/3g/ggg-manual-dialog.c:105
+msgid "Primary DNS:"
+msgstr "主域名（DNS）："
+
+#: ../callouts/3g/ggg-manual-dialog.c:108
+msgid "Secondary DNS:"
+msgstr "次域名（DNS）："
+
+#: ../callouts/3g/ggg-manual-dialog.c:111
+msgid "Tertiary DNS:"
+msgstr "第三域名（DNS）："
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "选择您的 3G 计划"
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "选择提供商"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr "%s（漫游）"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "选择 3G 服务"
+
+#~ msgid "Select your 3G Data Plan"
+#~ msgstr "选择您的 3G 数据计划"
+
+#~ msgid "Plan Name: (required)"
+#~ msgstr "计划名称：（必填）)"
+
+#~ msgid "Tertairy DNS:"
+#~ msgstr "第三域名（DNS）："
+
+#~ msgid "Manual Config"
+#~ msgstr "手动配置"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
 #~ msgstr ""
