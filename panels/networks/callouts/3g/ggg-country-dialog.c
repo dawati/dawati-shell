@@ -25,6 +25,7 @@
 #include <rest/rest-xml-parser.h>
 #include "ggg-country-dialog.h"
 #include "ggg-mobile-info.h"
+#include "ggg-iso.h"
 
 struct _GggCountryDialogPrivate {
   GtkWidget *combo;
@@ -48,10 +49,13 @@ populate_store (GtkListStore *store)
 
   node = rest_xml_node_find (root, "country");
   for (; node; node = node->next) {
+    const char *country;
+
+    country = ggg_iso_country_name_for_code (rest_xml_node_get_attr (node, "code"));
+
     gtk_list_store_insert_with_values (store, NULL, 0,
                                        0, node,
-                                       /* TODO; get localised string */
-                                       1, rest_xml_node_get_attr (node, "code"),
+                                       1, g_dgettext ("iso_3166", country),
                                        -1);
   }
 }
