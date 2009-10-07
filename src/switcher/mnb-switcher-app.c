@@ -646,6 +646,26 @@ mnb_switcher_app_close_button_release_cb (NbtkIcon           *button,
   return TRUE;
 }
 
+static gboolean
+mnb_switcher_app_close_button_enter_cb (NbtkWidget           *button,
+                                        ClutterCrossingEvent *event,
+                                        gpointer              data)
+{
+  nbtk_widget_set_style_pseudo_class (button, "hover");
+
+  return FALSE;
+}
+
+static gboolean
+mnb_switcher_app_close_button_leave_cb (NbtkWidget           *button,
+                                        ClutterCrossingEvent *event,
+                                        gpointer              data)
+{
+  nbtk_widget_set_style_pseudo_class (button, NULL);
+
+  return FALSE;
+}
+
 static void
 mnb_switcher_app_constructed (GObject *self)
 {
@@ -727,6 +747,12 @@ mnb_switcher_app_constructed (GObject *self)
                       actor);
     g_signal_connect (button, "button-release-event",
                       G_CALLBACK (mnb_switcher_app_close_button_release_cb),
+                      actor);
+    g_signal_connect (button, "enter-event",
+                      G_CALLBACK (mnb_switcher_app_close_button_enter_cb),
+                      actor);
+    g_signal_connect (button, "leave-event",
+                      G_CALLBACK (mnb_switcher_app_close_button_leave_cb),
                       actor);
 
     priv->close_button = button;
