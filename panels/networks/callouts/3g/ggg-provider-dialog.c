@@ -23,7 +23,6 @@ populate_store (GtkListStore *store, RestXmlNode *c_node)
 {
   RestXmlNode *p_node, *name_node;
 
-  /* TODO: what is the right logic here? */
   for (p_node = rest_xml_node_find (c_node, "provider");
        p_node != NULL;
        p_node = p_node->next) {

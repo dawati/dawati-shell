@@ -27,14 +27,11 @@ populate_store (GtkListStore *store)
 
   node = rest_xml_node_find (root, "country");
   for (; node; node = node->next) {
-    /* TODO: really only GSM nodes? There are CDMA nodes too */
-    if (rest_xml_node_find (node, "gsm")) {
-      gtk_list_store_insert_with_values (store, NULL, 0,
-                                         0, node,
-                                         /* TODO; get localised string */
-                                         1, rest_xml_node_get_attr (node, "code"),
-                                         -1);
-    }
+    gtk_list_store_insert_with_values (store, NULL, 0,
+                                       0, node,
+                                       /* TODO; get localised string */
+                                       1, rest_xml_node_get_attr (node, "code"),
+                                       -1);
   }
 }
 
