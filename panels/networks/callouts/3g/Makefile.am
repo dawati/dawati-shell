@@ -8,7 +8,8 @@ carrick_3g_wizard_SOURCES = \
 	ggg-provider-dialog.h ggg-provider-dialog.c \
 	ggg-plan-dialog.h ggg-plan-dialog.c \
 	ggg-manual-dialog.h ggg-manual-dialog.c \
-	ggg-mobile-info.h ggg-mobile-info.c
+	ggg-mobile-info.h ggg-mobile-info.c \
+	ggg-iso.h ggg-iso.c
 
 carrick_3g_wizard_CFLAGS = -I$(top_srcdir) \
                            $(GTK_CFLAGS) \
