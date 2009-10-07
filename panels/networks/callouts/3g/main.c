@@ -13,6 +13,8 @@
 #include "ggg-plan-dialog.h"
 #include "ggg-manual-dialog.h"
 
+#include "carrick/connman-manager-bindings.h"
+
 #define CONNMAN_SERVICE           "org.moblin.connman"
 #define CONNMAN_MANAGER_PATH      "/"
 #define CONNMAN_MANAGER_INTERFACE CONNMAN_SERVICE ".Manager"
@@ -192,6 +194,7 @@ state_machine (void)
                        auth_data.apn,
                        auth_data.username,
                        auth_data.password);
+      /* TODO: connect */
       state = STATE_FINISH;
       break;
     case STATE_FINISH:
@@ -200,6 +203,48 @@ state_machine (void)
 
     g_assert (state != old_state);
   }
+}
+
+static void
+add_service (const GValue *value, gpointer user_data)
+{
+  GList **services = user_data;
+  const char *path = g_value_get_boxed (value);
+  GggService *service;
+
+  if (path) {
+    service = ggg_service_new (connection, path);
+    if (service) {
+      *services = g_list_append (*services, service);
+    }
+  }
+}
+
+static void
+find_services (void)
+{
+  DBusGProxy *proxy;
+  GHashTable *props = NULL;
+  GError *error = NULL;
+  GValue *value;
+
+  proxy = dbus_g_proxy_new_for_name (connection,
+                                     CONNMAN_SERVICE, "/",
+                                     CONNMAN_MANAGER_INTERFACE);
+
+  if (!org_moblin_connman_Manager_get_properties (proxy, &props, &error)) {
+    g_printerr ("Cannot get properties for manager: %s\n", error->message);
+    g_error_free (error);
+    g_object_unref (proxy);
+    return;
+  }
+
+  value = g_hash_table_lookup (props, "Services");
+  if (value)
+    dbus_g_type_collection_value_iterate (value, add_service, &services);
+
+  g_hash_table_unref (props);
+  g_object_unref (proxy);
 }
 
 int
@@ -239,8 +284,9 @@ main (int argc, char **argv)
     services = g_list_prepend (services, ggg_service_new_fake ("Fake Device 2"));
   }
 
-  /* TODO: scan connman for services if none were found */
-  /* TODO: handle multiple services */
+  /* Scan connman for services if none were found */
+  if (services == NULL)
+    find_services ();
 
   gtk_window_set_default_icon_name ("network-wireless");
 
