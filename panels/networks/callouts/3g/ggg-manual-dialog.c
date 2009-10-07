@@ -22,12 +22,12 @@ ggg_manual_dialog_class_init (GggManualDialogClass *klass)
   {                                                                     \
     PangoAttrList *attrs;                                               \
     PangoAttribute *attr;                                               \
-    label = gtk_label_new (s);                                       \
+    label = gtk_label_new (s);                                          \
     attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);                   \
     attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;           \
     attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;                     \
     attrs = pango_attr_list_new ();                                     \
-    pango_attr_list_insert (attrs, attr);                              \
+    pango_attr_list_insert (attrs, attr);                               \
     gtk_label_set_attributes (GTK_LABEL (label), attrs);                \
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                \
     gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, row, row + 1); \
@@ -64,8 +64,8 @@ ggg_manual_dialog_init (GggManualDialog *self)
   gtk_widget_show (table);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (self)->vbox), table);
 
-  label = gtk_label_new (_("<b>Manual Configuration</b>"));
-  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);                   \
+  label = gtk_label_new (_("Manual Configuration"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 0, 1);
 
   MAKE_LABEL (_("Plan Name (required):"), 1);
