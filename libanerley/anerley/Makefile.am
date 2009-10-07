@@ -11,7 +11,8 @@ libanerley_la_HEADERS = anerley-tp-feed.h \
 			anerley-aggregate-feed.h \
 			anerley-aggregate-tp-feed.h \
 			anerley-econtact-item.h \
-			anerley-ebook-feed.h
+			anerley-ebook-feed.h \
+			anerley-tp-observer.h
 libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-feed.c \
 			anerley-item.c \
@@ -24,6 +25,7 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-aggregate-tp-feed.c \
 			anerley-econtact-item.c \
 			anerley-ebook-feed.c \
+			anerley-tp-observer.c \
 			$(libanerley_la_HEADERS) \
 			penge-magic-texture.c \
 			penge-magic-texture.h
