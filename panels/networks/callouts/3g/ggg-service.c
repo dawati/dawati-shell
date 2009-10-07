@@ -32,6 +32,40 @@ ggg_service_init (GggService *self)
   self->priv = GET_PRIVATE (self);
 }
 
+static const char *
+get_string_prop (GHashTable *props, const char *name)
+{
+  GValue *value;
+
+  value = g_hash_table_lookup (props, name);
+  if (value == NULL)
+    return NULL;
+
+  if (!G_VALUE_HOLDS_STRING (value)) {
+    g_warning ("Property %s is not a string", name);
+    return NULL;
+  }
+
+  return g_value_get_string (value);
+}
+
+static gboolean
+get_bool_prop (GHashTable *props, const char *name)
+{
+  GValue *value;
+
+  value = g_hash_table_lookup (props, name);
+  if (value == NULL)
+    return FALSE;
+
+  if (!G_VALUE_HOLDS_BOOLEAN (value)) {
+    g_warning ("Property %s is not a boolean", name);
+    return FALSE;
+  }
+
+  return g_value_get_boolean (value);
+}
+
 GggService *
 ggg_service_new (DBusGConnection *connection, const char *path)
 {
@@ -39,7 +73,7 @@ ggg_service_new (DBusGConnection *connection, const char *path)
   DBusGProxy *proxy;
   GHashTable *props;
   GError *error = NULL;
-  GValue *value;
+  const char *s;
 
   g_assert (connection);
   g_assert (path);
@@ -56,14 +90,14 @@ ggg_service_new (DBusGConnection *connection, const char *path)
     return NULL;
   }
 
-  value = g_hash_table_lookup (props, "Type");
-  if (!value || !G_VALUE_HOLDS_STRING (value)) {
+  s = get_string_prop (props, "Type");
+  if (s == NULL) {
     g_hash_table_unref (props);
     g_object_unref (proxy);
     return NULL;
   }
 
-  if (g_strcmp0 (g_value_get_string (value), "cellular") != 0) {
+  if (g_strcmp0 (s, "cellular") != 0) {
     g_hash_table_unref (props);
     g_object_unref (proxy);
     return NULL;
@@ -72,7 +106,12 @@ ggg_service_new (DBusGConnection *connection, const char *path)
   service = g_object_new (GGG_TYPE_SERVICE, NULL);
   service->priv->proxy = proxy;
 
-  /* TODO: populate from properties */
+  service->priv->name = g_strdup (get_string_prop (props, "Name"));
+  service->priv->mcc = g_strdup (get_string_prop (props, "MCC"));
+  service->priv->mnc = g_strdup (get_string_prop (props, "MNC"));
+  service->priv->roaming = get_bool_prop (props, "Roaming");
+
+  g_hash_table_unref (props);
 
   return service;
 }
