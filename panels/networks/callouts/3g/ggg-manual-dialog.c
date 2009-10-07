@@ -22,7 +22,7 @@ ggg_manual_dialog_class_init (GggManualDialogClass *klass)
   {                                                                     \
     PangoAttrList *attrs;                                               \
     PangoAttribute *attr;                                               \
-    label = gtk_label_new (_(s));                                       \
+    label = gtk_label_new (s);                                       \
     attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);                   \
     attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;           \
     attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;                     \
@@ -68,26 +68,26 @@ ggg_manual_dialog_init (GggManualDialog *self)
   gtk_label_set_use_markup (GTK_LABEL (label), TRUE);                   \
   gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 0, 1);
 
-  MAKE_LABEL ("Plan Name (required):", 1);
+  MAKE_LABEL (_("Plan Name (required):"), 1);
   MAKE_ENTRY (apn, 1);
 
-  MAKE_LABEL ("Username:", 2);
+  MAKE_LABEL (_("Username:"), 2);
   MAKE_ENTRY (username, 2);
 
-  MAKE_LABEL ("Password:", 3);
+  MAKE_LABEL (_("Password:"), 3);
   MAKE_ENTRY (password, 3);
 
 #if 0
-  MAKE_LABEL ("Gateway:", 4);
+  MAKE_LABEL (_("Gateway:"), 4);
   MAKE_ENTRY (gateway, 4);
 
-  MAKE_LABEL ("Primary DNS:", 5);
+  MAKE_LABEL (_("Primary DNS:"), 5);
   MAKE_ENTRY (dns1, 5);
 
-  MAKE_LABEL ("Secondary DNS:", 6);
+  MAKE_LABEL (_("Secondary DNS:"), 6);
   MAKE_ENTRY (dns2, 6);
 
-  MAKE_LABEL ("Tertiary DNS:", 7);
+  MAKE_LABEL (_("Tertiary DNS:"), 7);
   MAKE_ENTRY (dns3, 7);
 #endif
 
