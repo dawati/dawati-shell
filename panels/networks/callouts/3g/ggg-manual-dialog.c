@@ -19,10 +19,19 @@ ggg_manual_dialog_class_init (GggManualDialogClass *klass)
 }
 
 #define MAKE_LABEL(s, row)                                              \
-  label = gtk_label_new (_(s));                                         \
-  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);                   \
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                  \
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, row, row + 1);
+  {                                                                     \
+    PangoAttrList *attrs;                                               \
+    PangoAttribute *attr;                                               \
+    label = gtk_label_new (_(s));                                       \
+    attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);                   \
+    attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;           \
+    attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;                     \
+    attrs = pango_attr_list_new ();                                     \
+    pango_attr_list_insert (attrs, attr);                              \
+    gtk_label_set_attributes (GTK_LABEL (label), attrs);                \
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                \
+    gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, row, row + 1); \
+  }
 #define MAKE_ENTRY(var, row)                                            \
   entry = gtk_entry_new ();                                             \
   gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, row, row + 1); \
@@ -59,26 +68,26 @@ ggg_manual_dialog_init (GggManualDialog *self)
   gtk_label_set_use_markup (GTK_LABEL (label), TRUE);                   \
   gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 0, 1);
 
-  MAKE_LABEL ("<b>Plan Name (APN):</b>", 1);
+  MAKE_LABEL ("Plan Name (required):", 1);
   MAKE_ENTRY (apn, 1);
 
-  MAKE_LABEL ("<b>Username:</b>", 2);
+  MAKE_LABEL ("Username:", 2);
   MAKE_ENTRY (username, 2);
 
-  MAKE_LABEL ("<b>Password:</b>", 3);
+  MAKE_LABEL ("Password:", 3);
   MAKE_ENTRY (password, 3);
 
 #if 0
-  MAKE_LABEL ("<b>Gateway:</b>", 4);
+  MAKE_LABEL ("Gateway:", 4);
   MAKE_ENTRY (gateway, 4);
 
-  MAKE_LABEL ("<b>Primary DNS:</b>", 5);
+  MAKE_LABEL ("Primary DNS:", 5);
   MAKE_ENTRY (dns1, 5);
 
-  MAKE_LABEL ("<b>Secondary DNS:</b>", 6);
+  MAKE_LABEL ("Secondary DNS:", 6);
   MAKE_ENTRY (dns2, 6);
 
-  MAKE_LABEL ("<b>Tertiary DNS:</b>", 7);
+  MAKE_LABEL ("Tertiary DNS:", 7);
   MAKE_ENTRY (dns3, 7);
 #endif
 
