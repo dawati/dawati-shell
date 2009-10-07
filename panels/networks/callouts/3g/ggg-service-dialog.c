@@ -101,7 +101,7 @@ ggg_service_dialog_init (GggServiceDialog *self)
   gtk_widget_show (image);
   gtk_table_attach_defaults (GTK_TABLE (table), image, 0, 1, 0, 2);
 
-  label = gtk_label_new (_("Select your 3G Service"));
+  label = gtk_label_new (_("Select 3G Service"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_widget_show (label);
   gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 3, 0, 1);
