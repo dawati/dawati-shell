@@ -38,6 +38,8 @@
 #define FAV_TOGGLE_X_OFFSET 7
 #define FAV_TOGGLE_Y_OFFSET 5
 
+#define TOOLTIP_TIMEOUT_S 1
+
 enum
 {
   HOVERED,
@@ -62,6 +64,8 @@ struct _MnbLauncherButtonPrivate
   gint           icon_size;
 
   guint is_pressed  : 1;
+  guint tooltip_timeout_id;
+  ClutterActor  *tooltip;
 
   /* Cached for matching. */
   char          *category_key;
@@ -119,6 +123,38 @@ fav_button_clicked_cb (NbtkButton         *button,
           g_signal_emit (plain_sibling, _signals[FAV_TOGGLED], 0);
         }
     }
+}
+
+static gboolean
+mnb_launcher_button_tooltip_cb (MnbLauncherButton *self)
+{
+  ClutterGeometry area;
+  ClutterVertex in_v, out_v;
+
+  if (NULL == self->priv->description)
+    return FALSE;
+
+  in_v.x = in_v.y = in_v.z = 0;
+  clutter_actor_apply_transform_to_point (CLUTTER_ACTOR (self), &in_v, &out_v);
+  area.x = out_v.x;
+  area.y = out_v.y;
+
+  in_v.x = clutter_actor_get_width (CLUTTER_ACTOR (self));
+  in_v.y = clutter_actor_get_height (CLUTTER_ACTOR (self));
+  clutter_actor_apply_transform_to_point (CLUTTER_ACTOR (self), &in_v, &out_v);
+  area.width = out_v.x - area.x;
+  area.height = out_v.y - area.y;
+
+  self->priv->tooltip = g_object_new (NBTK_TYPE_TOOLTIP,
+                                      "label", self->priv->description,
+                                      NULL);
+  clutter_actor_set_parent (self->priv->tooltip, CLUTTER_ACTOR (self));
+  nbtk_tooltip_set_tip_area (NBTK_TOOLTIP (self->priv->tooltip), &area);
+  nbtk_tooltip_show (NBTK_TOOLTIP (self->priv->tooltip));
+
+  /* One shot only. */
+  self->priv->tooltip_timeout_id = 0;
+  return FALSE;
 }
 
 static void
@@ -193,6 +229,31 @@ mnb_launcher_button_enter_event (ClutterActor         *actor,
 }
 
 static gboolean
+mnb_launcher_button_motion_event (ClutterActor        *actor,
+                                  ClutterMotionEvent  *event)
+{
+  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+
+  /* Restart timeout if running. */
+  if (self->priv->tooltip_timeout_id)
+  {
+    g_source_remove (self->priv->tooltip_timeout_id);
+  }
+  self->priv->tooltip_timeout_id = g_timeout_add_seconds (TOOLTIP_TIMEOUT_S,
+                                                          (GSourceFunc) mnb_launcher_button_tooltip_cb,
+                                                          self);
+
+  /* Destroy tooltip if already shown. */
+  if (self->priv->tooltip)
+  {
+    clutter_actor_destroy (self->priv->tooltip);
+    self->priv->tooltip = NULL;
+  }
+
+  return FALSE;
+}
+
+static gboolean
 mnb_launcher_button_leave_event (ClutterActor         *actor,
                                  ClutterCrossingEvent *event)
 {
@@ -205,6 +266,12 @@ mnb_launcher_button_leave_event (ClutterActor         *actor,
       clutter_ungrab_pointer ();
       self->priv->is_pressed = FALSE;
     }
+
+  if (self->priv->tooltip_timeout_id)
+  {
+    g_source_remove (self->priv->tooltip_timeout_id);
+    self->priv->tooltip_timeout_id = 0;
+  }
 
   return FALSE;
 }
@@ -274,6 +341,7 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
   actor_class->button_press_event = mnb_launcher_button_button_press_event;
   actor_class->button_release_event = mnb_launcher_button_button_release_event;
   actor_class->enter_event = mnb_launcher_button_enter_event;
+  actor_class->motion_event = mnb_launcher_button_motion_event;
   actor_class->leave_event = mnb_launcher_button_leave_event;
   actor_class->allocate = mnb_launcher_button_allocate;
   actor_class->pick = mnb_launcher_button_pick;
