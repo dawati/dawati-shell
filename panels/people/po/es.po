@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:19+0000\n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -12,25 +13,23 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#.
 #. * Used as header for a block of the panel showing pending conversations.
-#. * The user will be able to click the tile and answer the pending conversation
-#.
+#. * The user will be able to click the tile and answer the pending
+#. conversation
+#. 
 #: ../src/moblin-panel-people.c:18
 msgid "People talking to you ..."
 msgstr "Hay gente conversando contigo..."
 
-#.
 #. * Used for the tooltip for the hover state for the icon in the toolbar
-#.
+#. 
 #: ../src/moblin-panel-people.c:23
 msgid "people - Someone is talking to you"
 msgstr "gente - hay alguien conversando contigo"
 
-#.
 #. * Used for the tooltip for the hover state for the icon in the toolbar
 #. * (plural version)
-#.
+#. 
 #: ../src/moblin-panel-people.c:29
 #, c-format
 msgid "people - %d people are talking to you"
@@ -41,36 +40,46 @@ msgstr "gente - personas conversando contigo: %d"
 msgid "people"
 msgstr "gente"
 
-#: ../src/mnb-people-panel.c:161
+#: ../src/mnb-people-panel.c:164
 msgid "Send an email"
 msgstr "Enviar un correo electrónico"
 
-#: ../src/mnb-people-panel.c:163
+#: ../src/mnb-people-panel.c:166
 msgid "Edit details"
 msgstr "Editar detalles"
 
-#: ../src/mnb-people-panel.c:172
+#: ../src/mnb-people-panel.c:175
 msgid "Send a message"
 msgstr "Enviar un mensaje"
 
-# We didn't find anybody. Do you already have an account in any Instant Messenger (service)?
-#: ../src/mnb-people-panel.c:306
+# We didn't find anybody. Do you already have an account in any Instant
+# Messenger (service)?
+#: ../src/mnb-people-panel.c:309
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-"Lo sentimos, no econtramos a nadie. ¿Tienes ya una cuenta en Messenger?"
+msgstr "Lo sentimos, no econtramos a nadie. ¿Tienes ya una cuenta en Messenger?"
 
-#: ../src/mnb-people-panel.c:551
+#: ../src/mnb-people-panel.c:554
 msgid "People"
 msgstr "Gente"
 
-#: ../src/mnb-people-panel.c:564
+#: ../src/mnb-people-panel.c:567
 msgid "Search"
 msgstr "Búsqueda"
 
-#: ../src/mnb-people-panel.c:677
+#: ../src/mnb-people-panel.c:680
 msgid "Selection"
 msgstr "Selección"
 
-#: ../src/mnb-people-panel.c:740
+#: ../src/mnb-people-panel.c:743
 msgid "Nobody selected"
 msgstr "Nadie seleccionado"
+
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Si quieres ver tus contactos en IM, ponte en línea y ve al panel del estado."
+
+# We didn't find anybody. Do you already have an account in any Instant
+# Messenger (service)?
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Lo sentimos, no econtramos a nadie. Parece que están todos fuera de línea."
