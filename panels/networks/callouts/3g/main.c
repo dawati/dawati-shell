@@ -110,6 +110,7 @@ state_machine (void)
            fall back to the manual configuration */
         state = provider_node ? STATE_PLAN : STATE_MANUAL;
       }
+      break;
     case STATE_COUNTRY:
       dialog = g_object_new (GGG_TYPE_COUNTRY_DIALOG, NULL);
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
