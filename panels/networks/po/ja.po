@@ -1,33 +1,35 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:09+0000\n"
+"POT-Creation-Date: 2009-10-07 18:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSJPN_Etsuko <etsuko.murozono@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Bookmarks: -1,161,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
-#.
-#. * Translator note: The disabled technologies available to be turned on is put together at
+#. * Translator note: The disabled technologies available to be turned on is
+#. put together at
 #. * runtime.
-#. * The conjunction 'or' will be at the end of a choice of disabled technologies,
+#. * The conjunction 'or' will be at the end of a choice of disabled
+#. technologies,
 #. * for example 'WiFi, WiMAX or 3G.
-#.
+#. 
 #: ../carrick/carrick-list.c:859
 msgid " or "
 msgstr "または"
 
-#.
-#. * Translator note: the comma ',' will be used to join the different disabled technologies
+#. * Translator note: the comma ',' will be used to join the different
+#. disabled technologies
 #. * as in the above example; 'WiFi, WiMAX or 3G'
-#.
+#. 
 #: ../carrick/carrick-list.c:864
 msgid ", "
 msgstr "、"
@@ -52,39 +54,30 @@ msgstr "3G"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#.
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
-#.
+#. 
 #: ../carrick/carrick-list.c:882
-msgid ""
-"Sorry, we can't find any networks. It appears that the connection manager is "
-"not running. You could try restarting your computer."
-msgstr ""
-"ネットワークが見つかりません。接続マネージャーが実行されていないようです。コ"
-"ンピューターを再起動してみてください。"
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "ネットワークが見つかりません。接続マネージャーが実行されていないようです。コンピューターを再起動してみてください。"
 
-#.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
-#.
+#. 
 #: ../carrick/carrick-list.c:892
-msgid ""
-"Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr ""
-"ネットワークが見つかりません。オフラインモードを無効にしてみてください。"
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "ネットワークが見つかりません。オフラインモードを無効にしてみてください。"
 
 #: ../carrick/carrick-list.c:1029
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
 msgstr "ネットワークが見つかりません。「%s」を有効にしてみてください。"
 
-#.
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
-#.
+#. 
 #: ../carrick/carrick-list.c:1043
 msgid "Sorry, we can't find any networks"
 msgstr "ネットワークが見つかりません。"
@@ -133,41 +126,32 @@ msgstr "ネットワークが変更されました"
 
 #: ../carrick/carrick-notification-manager.c:218
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a wired "
-"network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
 msgstr "「%s」への接続が失われたので、有線ネットワークに接続されました"
 
 #: ../carrick/carrick-notification-manager.c:225
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
-"network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
 msgstr "「%s」への接続が失われたので、%s (%s ネットワーク) に接続されました"
 
 #: ../carrick/carrick-notification-manager.c:233
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr "「%s」 への接続が失われたので、%s ネットワークに接続されました "
 
 #: ../carrick/carrick-notification-manager.c:243
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
 msgstr "%s 接続が失われたので、有線ネットワークへ接続されました"
 
 #: ../carrick/carrick-notification-manager.c:250
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
-"network"
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
 msgstr "%s 接続が失われたので、%s (%s ネットワーク) に接続されました"
 
 #: ../carrick/carrick-notification-manager.c:259
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "%s 接続が失われたので、%s ネットワークに接続されました"
 
 #: ../carrick/carrick-pane.c:630
@@ -200,7 +184,7 @@ msgstr "なし"
 msgid "Password"
 msgstr "パスワード"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1340
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1280
 msgid "Show password"
 msgstr "パスワードの表示"
 
@@ -213,7 +197,7 @@ msgstr "ネットワーク"
 msgid "Add new connection"
 msgstr "新規接続の追加"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:322
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:239
 msgid "Wired"
 msgstr "有線接続"
 
@@ -226,208 +210,85 @@ msgid "This will disable all your connections"
 msgstr "接続がすべて無効になります"
 
 #. Translators:
-#. This is the title seen on the top of the connection wizard
-#. window forconfiguring a 3G  data service.
-#.
-#: ../carrick/carrick-service-item.c:43
-msgid "Cellular Data Connection Wizard"
-msgstr "携帯データ接続ウィザード"
-
-#. Translators:
-#. In each of the 3g data connection wizard dialog boxes that ask the user
-#. to select an option, we always provide a button that allows the user
-#. to manually enter the low level settings for their device.  This is the
-#. text used in that button.
-#.
-#: ../carrick/carrick-service-item.c:51
-msgid "Manual Config"
-msgstr "手動で設定"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. the country that their services is associated with.  This is the
-#. explaination text at the top of the dialog box for selecting the country.
-#.
-#: ../carrick/carrick-service-item.c:58
-msgid "Select Country"
-msgstr "国の選択"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. their service provider. This is the explaination text at the that
-#. dialog box
-#.
-#: ../carrick/carrick-service-item.c:65
-msgid "Select Provider"
-msgstr "プロバイダーの選択"
-
-#. Translators:
-#. When a user first tries to connect to a given provider, they
-#. must select which plan (i.e. pre-paid, unlimited, etc) to use
-#. that the associated service provider allows.
-#. This is the explaination text used at the top of dialog box.
-#.
-#: ../carrick/carrick-service-item.c:73
-msgid "Select your 3G Data Plan"
-msgstr "3G データプランを選択してください"
-
-#. Translators:
-#. This is the text we add to the top of the dialog for allowing the user to
-#. manually enter configuration settings. This is a single line of nor more
-#. then 60 chars wide
-#.
-#: ../carrick/carrick-service-item.c:80
-msgid "Manual Configuration"
-msgstr "手動で設定"
-
-#. Translators:
-#. The following strings are used as labels for each of the
-#. text entry fields that the user uses to manually enter configuration
-#. settings.  Each label is a single line of no more then 40 chars:
-#.
-#. "Plan Name":
-#. This is a uniqe string that the service provider
-#. uses to identify a give data plan.  This is the only
-#. setting that is required.
-#.
-#. "Username":
-#. This is the userame of a username/password combination
-#. required for some access points.
-#.
-#. "Password":
-#. Password required by some access points.
-#.
-#. "Gateway":
-#. Gateway IP Address required by some access points
-#.
-#. "Primary DNS":
-#. Primary domain name server address required by some access points
-#.
-#. "Secondary DNS":
-#. Backup domain name server address required by some access points
-#.
-#. "Tertairy DNS":
-#. Alternate backup domain name server address required by some
-#. access points
-#.
-#: ../carrick/carrick-service-item.c:112
-msgid "Plan Name: (required)"
-msgstr "プラン名：（必須）"
-
-#: ../carrick/carrick-service-item.c:113
-msgid "Username:"
-msgstr "ユーザー名："
-
-#: ../carrick/carrick-service-item.c:114
-msgid "Password:"
-msgstr "パスワード："
-
-#: ../carrick/carrick-service-item.c:115
-msgid "Gateway:"
-msgstr "Gateway："
-
-#: ../carrick/carrick-service-item.c:116
-msgid "Primary DNS:"
-msgstr "一次 DNS："
-
-#: ../carrick/carrick-service-item.c:117
-msgid "Secondary DNS:"
-msgstr "二次 DNS："
-
-#: ../carrick/carrick-service-item.c:118
-msgid "Tertairy DNS:"
-msgstr "三次 DNS："
-
-#. Translators:
-#. If this utility is executed without any arguments specifying which
-#. service to configure, then a dialog is used to allow the user to pick
-#. from a list of valid services.  This is the explaination text shown
-#. at the top of the dialog
-#.
-#: ../carrick/carrick-service-item.c:126
-msgid "Select 3G Service"
-msgstr "3G サービスの選択"
-
-#. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
-#.
-#: ../carrick/carrick-service-item.c:132
+#. 
+#: ../carrick/carrick-service-item.c:47
 msgid "Critical Error: Invalid country code"
 msgstr "重大なエラー： 無効な国コード"
 
-#: ../carrick/carrick-service-item.c:133
+#: ../carrick/carrick-service-item.c:48
 msgid "Missing required APN (service plan name)"
 msgstr "必要な APN がありません（サービスプラン名）"
 
-#: ../carrick/carrick-service-item.c:134
+#: ../carrick/carrick-service-item.c:49
 msgid "Internal Error: Invalid network service"
 msgstr "内部エラー： 無効なネットワークサービス"
 
-#: ../carrick/carrick-service-item.c:135
+#: ../carrick/carrick-service-item.c:50
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "重大なエラー： 接続マネージャーにアクセスできません"
 
-#: ../carrick/carrick-service-item.c:136
+#: ../carrick/carrick-service-item.c:51
 msgid "ERROR: No 3G Hardware detected"
 msgstr "エラー： 3G ハードウェアが検出されません"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#.
-#: ../carrick/carrick-service-item.c:260
+#. 
+#: ../carrick/carrick-service-item.c:176
 #, c-format
 msgid "%s encrypted"
 msgstr "暗合化されています： %s"
 
-#: ../carrick/carrick-service-item.c:353
+#: ../carrick/carrick-service-item.c:270
 msgid "Disconnect"
 msgstr "切断する"
 
-#: ../carrick/carrick-service-item.c:356
+#: ../carrick/carrick-service-item.c:273
 msgid "Connected"
 msgstr "接続中"
 
-#: ../carrick/carrick-service-item.c:363 ../carrick/carrick-service-item.c:372
+#: ../carrick/carrick-service-item.c:280 ../carrick/carrick-service-item.c:289
 #, c-format
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ../carrick/carrick-service-item.c:366
+#: ../carrick/carrick-service-item.c:283
 msgid "Configuring"
 msgstr "設定中"
 
-#: ../carrick/carrick-service-item.c:375
+#: ../carrick/carrick-service-item.c:292
 msgid "Associating"
 msgstr "関連付け中"
 
-#: ../carrick/carrick-service-item.c:384 ../carrick/carrick-service-item.c:409
-#: ../carrick/carrick-service-item.c:1329
+#: ../carrick/carrick-service-item.c:301 ../carrick/carrick-service-item.c:326
+#: ../carrick/carrick-service-item.c:1269
 msgid "Connect"
 msgstr "接続する"
 
-#: ../carrick/carrick-service-item.c:412
+#: ../carrick/carrick-service-item.c:329
 msgid "Connection failed"
 msgstr "接続に失敗しました"
 
-#: ../carrick/carrick-service-item.c:415
+#: ../carrick/carrick-service-item.c:332
 msgid "Sorry, the connection failed. You could try again."
 msgstr "接続に失敗しました。再度接続してみてください。"
 
-#: ../carrick/carrick-service-item.c:421 ../carrick/carrick-service-item.c:424
+#: ../carrick/carrick-service-item.c:338 ../carrick/carrick-service-item.c:341
 #, c-format
 msgid "Disconnecting"
 msgstr "切断中"
 
-#: ../carrick/carrick-service-item.c:482
+#: ../carrick/carrick-service-item.c:399
 msgid "Type password here"
 msgstr "パスワードを入力する"
 
-#: ../carrick/carrick-service-item.c:566
+#: ../carrick/carrick-service-item.c:483
 msgid "Really remove?"
 msgstr "削除しますか？"
 
-#: ../carrick/carrick-service-item.c:584
+#: ../carrick/carrick-service-item.c:501
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -438,52 +299,32 @@ msgstr ""
 "削除するとパスワードが忘れられ、\n"
 "%s に自動接続されなくなります。"
 
-#: ../carrick/carrick-service-item.c:727
+#: ../carrick/carrick-service-item.c:666
 #, c-format
-msgid ""
-"Your password isn't the right length. For a WEP connection it needs to be "
-"either 10 or 28 characters, you have %i."
-msgstr ""
-"パスワードの長さが正しくありません。WEP 接続には、10 文字または 28 文字必要で"
-"すが、これは %i 文字です。"
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 28 characters, you have %i."
+msgstr "パスワードの長さが正しくありません。WEP 接続には、10 文字または 28 文字必要ですが、これは %i 文字です。"
 
-#: ../carrick/carrick-service-item.c:737
+#: ../carrick/carrick-service-item.c:676
 #, c-format
-msgid ""
-"Your password is too short. For a WPA  connection it needs to be at least 8 "
-"characters long, you have %i"
-msgstr ""
-"パスワードが短すぎます。WPA 接続には、少なくとも 8 文字必要ですが、これは %i "
-"文字です"
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "パスワードが短すぎます。WPA 接続には、少なくとも 8 文字必要ですが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:741
+#: ../carrick/carrick-service-item.c:680
 #, c-format
-msgid ""
-"Your password is too long. For a WPA  connection it needs to have fewer than "
-"62 characters, you have %i"
-msgstr ""
-"パスワードが長すぎます。WPA 接続には、62 文字より少なくなければなりませんが、"
-"これは %i 文字です"
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 62 characters, you have %i"
+msgstr "パスワードが長すぎます。WPA 接続には、62 文字より少なくなければなりませんが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:749
+#: ../carrick/carrick-service-item.c:688
 #, c-format
-msgid ""
-"Your password is too short. For a WPA2  connection it needs to be at least 8 "
-"characters long, you have %i"
-msgstr ""
-"パスワードが短すぎます。WPA2 接続には、少なくとも 8 文字必要ですが、これは %"
-"i 文字です"
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "パスワードが短すぎます。WPA2 接続には、少なくとも 8 文字必要ですが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:753
+#: ../carrick/carrick-service-item.c:692
 #, c-format
-msgid ""
-"Your password is too long. For a WPA2  connection it needs to have fewer "
-"than 62 characters, you have %i"
-msgstr ""
-"パスワードが長すぎます。WPA2 接続には、62 文字より少なくなければなりません"
-"が、これは %i 文字です。"
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 62 characters, you have %i"
+msgstr "パスワードが長すぎます。WPA2 接続には、62 文字より少なくなければなりませんが、これは %i 文字です。"
 
-#: ../carrick/carrick-service-item.c:1265
+#: ../carrick/carrick-service-item.c:1205
 msgid "Scanning"
 msgstr "スキャン中"
 
@@ -491,7 +332,7 @@ msgstr "スキャン中"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1284
+#: ../carrick/carrick-service-item.c:1224
 msgid "WPA2 encrypted"
 msgstr "WPA2 暗合化"
 
@@ -551,12 +392,71 @@ msgstr "- Moblin 接続アプレット"
 msgid "network"
 msgstr "ネットワーク"
 
-#~ msgid ""
-#~ "Sorry, we can't find any networks. It appears that the ConnMan daemon is "
-#~ "not running. You could try re-starting your netbook."
-#~ msgstr ""
-#~ "ネットワークが見つかりません。ConnMan デーモンが実行されていないようです。"
-#~ "ネットブックを再起動してみてください。"
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:69 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr "携帯データ接続ウィザード"
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "国の選択"
+
+#: ../callouts/3g/ggg-manual-dialog.c:88
+msgid "Manual Configuration"
+msgstr "手動で設定"
+
+#: ../callouts/3g/ggg-manual-dialog.c:95
+msgid "Username:"
+msgstr "ユーザー名："
+
+#: ../callouts/3g/ggg-manual-dialog.c:98
+msgid "Password:"
+msgstr "パスワード："
+
+#: ../callouts/3g/ggg-manual-dialog.c:102
+msgid "Gateway:"
+msgstr "Gateway："
+
+#: ../callouts/3g/ggg-manual-dialog.c:105
+msgid "Primary DNS:"
+msgstr "一次 DNS："
+
+#: ../callouts/3g/ggg-manual-dialog.c:108
+msgid "Secondary DNS:"
+msgstr "二次 DNS："
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "プロバイダーの選択"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "3G サービスの選択"
+
+#: ../callouts/3g/ggg-manual-dialog.c:92
+msgid "Plan Name (required):"
+msgstr "プラン名（必須）："
+
+#: ../callouts/3g/ggg-manual-dialog.c:111
+msgid "Tertiary DNS:"
+msgstr "三次 DNS："
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "3G プランを選択してください"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr "%s (ローミング中)"
+
+#~ msgid "Manual Config"
+#~ msgstr "手動で設定"
+
+#~ msgid "Sorry, we can't find any networks. It appears that the ConnMan daemon is not running. You could try re-starting your netbook."
+#~ msgstr "ネットワークが見つかりません。ConnMan デーモンが実行されていないようです。ネットブックを再起動してみてください。"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr "ネットワークが見つかりません。WiFi をオンにしてみてください。"
@@ -567,8 +467,7 @@ msgstr "ネットワーク"
 #~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
 #~ msgstr "ネットワークが見つかりません。3G をオンにしてみてください。"
 
-#~ msgid ""
-#~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
+#~ msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
 #~ msgstr "ネットワークが見つかりません。Bluetooth をオンにしてみてください。"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
@@ -623,8 +522,7 @@ msgstr "ネットワーク"
 #~ msgstr "<span foreground=\"%s\" >%s%s</span>"
 
 #~ msgid "Message not yet downloaded  or preview could not be constructed\n"
-#~ msgstr ""
-#~ "メッセージがまだダウンロードされていないか、プレビューを作成できません\n"
+#~ msgstr "メッセージがまだダウンロードされていないか、プレビューを作成できません\n"
 
 #~ msgid "Inbox"
 #~ msgstr "受信トレイ"
@@ -875,41 +773,20 @@ msgstr "ネットワーク"
 #~ msgid "<span size=\"large\" weight=\"bold\">Sending details:</span>"
 #~ msgstr "<span size=\"large\" weight=\"bold\">送信の詳細：</span>"
 
-#~ msgid ""
-#~ "To use the email application you'll need to setup an account. Put your "
-#~ "email address and password in below and we'll try and work out all the "
-#~ "settings. If we can't do it automatically you'll need your server details "
-#~ "as well."
-#~ msgstr ""
-#~ "このメールアプリを使用するには、アカウントを作成する必要があります。メール"
-#~ "アドレスとパスワードを下に入力してください。すべての設定は自動的に試行され"
-#~ "ますが、自動的に設定ができない場合は、サーバーの詳細を自分で入力する必要が"
-#~ "あります。"
+#~ msgid "To use the email application you'll need to setup an account. Put your email address and password in below and we'll try and work out all the settings. If we can't do it automatically you'll need your server details as well."
+#~ msgstr "このメールアプリを使用するには、アカウントを作成する必要があります。メールアドレスとパスワードを下に入力してください。すべての設定は自動的に試行されますが、自動的に設定ができない場合は、サーバーの詳細を自分で入力する必要があります。"
 
-#~ msgid ""
-#~ "Sorry, we can't work out the settings to get your mail automatically. "
-#~ "Please enter them below. We've tried  to make a start with the details "
-#~ "you just entered but you may need to change them."
-#~ msgstr ""
-#~ "申し訳ありません。メール取得を自動的に行うための設定ができません。必要な情"
-#~ "報を下に入力してください。入力された情報で開始しようとしましたが、この情報"
-#~ "を変更する必要があるようです。"
+#~ msgid "Sorry, we can't work out the settings to get your mail automatically. Please enter them below. We've tried  to make a start with the details you just entered but you may need to change them."
+#~ msgstr "申し訳ありません。メール取得を自動的に行うための設定ができません。必要な情報を下に入力してください。入力された情報で開始しようとしましたが、この情報を変更する必要があるようです。"
 
 #~ msgid "You can specify more options to configure the account."
 #~ msgstr "アカウントの設定に、さらにオプションを指定することができます。"
 
-#~ msgid ""
-#~ "Now we need your settings for sending mail. We've tried to make some "
-#~ "guesses but you should check them over to make sure."
-#~ msgstr ""
-#~ "メールを送信するために設定が必要です。いくつか試行してみましたが、もう一度"
-#~ "設定をチェックしてください。"
+#~ msgid "Now we need your settings for sending mail. We've tried to make some guesses but you should check them over to make sure."
+#~ msgstr "メールを送信するために設定が必要です。いくつか試行してみましたが、もう一度設定をチェックしてください。"
 
-#~ msgid ""
-#~ "Time to check things over before we try and connect to the server and "
-#~ "fetch your mail."
-#~ msgstr ""
-#~ "サーバーに接続してメールを取得してみる前に、もう一度チェックしてください。"
+#~ msgid "Time to check things over before we try and connect to the server and fetch your mail."
+#~ msgstr "サーバーに接続してメールを取得してみる前に、もう一度チェックしてください。"
 
 #~ msgid "Identity"
 #~ msgstr "個人情報"
@@ -1032,73 +909,34 @@ msgstr "ネットワーク"
 #~ msgstr " (%Z %R)"
 
 #~ msgid "This message was sent by <b>%s</b> on behalf of <b>%s</b>"
-#~ msgstr ""
-#~ "このメッセージは <b>%s</b> さんの代わりに <b>%s</b> さんによって送信されま"
-#~ "した。"
+#~ msgstr "このメッセージは <b>%s</b> さんの代わりに <b>%s</b> さんによって送信されました。"
 
-#~ msgid ""
-#~ "This message is not signed. There is no guarantee that this message is "
-#~ "authentic."
-#~ msgstr ""
-#~ "このメッセージは署名されていません。このメッセージは信ぴょう性があるとは言"
-#~ "えません。"
+#~ msgid "This message is not signed. There is no guarantee that this message is authentic."
+#~ msgstr "このメッセージは署名されていません。このメッセージは信ぴょう性があるとは言えません。"
 
-#~ msgid ""
-#~ "This message is signed and is valid meaning that it is very likely that "
-#~ "this message is authentic."
-#~ msgstr ""
-#~ "このメッセージは署名されていて有効です。したがって、このメッセージは信ぴょ"
-#~ "う性が高いと言えます。"
+#~ msgid "This message is signed and is valid meaning that it is very likely that this message is authentic."
+#~ msgstr "このメッセージは署名されていて有効です。したがって、このメッセージは信ぴょう性が高いと言えます。"
 
-#~ msgid ""
-#~ "The signature of this message cannot be verified, it may have been "
-#~ "altered in transit."
-#~ msgstr ""
-#~ "このメッセージの署名を確認できません。送信中に変更された可能性があります。"
+#~ msgid "The signature of this message cannot be verified, it may have been altered in transit."
+#~ msgstr "このメッセージの署名を確認できません。送信中に変更された可能性があります。"
 
-#~ msgid ""
-#~ "This message is signed with a valid signature, but the sender of the "
-#~ "message cannot be verified."
-#~ msgstr ""
-#~ "このメッセージは有効な署名でサインされていますが、メッセージの送信者を確認"
-#~ "てきません。"
+#~ msgid "This message is signed with a valid signature, but the sender of the message cannot be verified."
+#~ msgstr "このメッセージは有効な署名でサインされていますが、メッセージの送信者を確認てきません。"
 
-#~ msgid ""
-#~ "This message is signed with a signature, but there is no corresponding "
-#~ "public key."
-#~ msgstr ""
-#~ "このメッセージは署名されていますが、対応するパブリックキーがありません。"
+#~ msgid "This message is signed with a signature, but there is no corresponding public key."
+#~ msgstr "このメッセージは署名されていますが、対応するパブリックキーがありません。"
 
-#~ msgid ""
-#~ "This message is not encrypted. Its content may be viewed in transit "
-#~ "across the Internet."
-#~ msgstr ""
-#~ "このメッセージは暗号化されていません。メッセージの内容はインターネットの通"
-#~ "過中に閲覧されることもあります。"
+#~ msgid "This message is not encrypted. Its content may be viewed in transit across the Internet."
+#~ msgstr "このメッセージは暗号化されていません。メッセージの内容はインターネットの通過中に閲覧されることもあります。"
 
-#~ msgid ""
-#~ "This message is encrypted, but with a weak encryption algorithm. It would "
-#~ "be difficult, but not impossible for an outsider to view the content of "
-#~ "this message in a practical amount of time."
-#~ msgstr ""
-#~ "このメッセージは暗号化されていますが、弱い暗号化アルゴリズムを使用していま"
-#~ "す。困難ですが、部外者は実用的な時間内にこのメッセージを閲覧することが不可"
-#~ "能ではありません。"
+#~ msgid "This message is encrypted, but with a weak encryption algorithm. It would be difficult, but not impossible for an outsider to view the content of this message in a practical amount of time."
+#~ msgstr "このメッセージは暗号化されていますが、弱い暗号化アルゴリズムを使用しています。困難ですが、部外者は実用的な時間内にこのメッセージを閲覧することが不可能ではありません。"
 
-#~ msgid ""
-#~ "This message is encrypted.  It would be difficult for an outsider to view "
-#~ "the content of this message."
-#~ msgstr ""
-#~ "このメッセージは暗号化されています。このメッセージの内容を部外者が閲覧する"
-#~ "のは困難です。"
+#~ msgid "This message is encrypted.  It would be difficult for an outsider to view the content of this message."
+#~ msgstr "このメッセージは暗号化されています。このメッセージの内容を部外者が閲覧するのは困難です。"
 
-#~ msgid ""
-#~ "This message is encrypted, with a strong encryption algorithm. It would "
-#~ "be very difficult for an outsider to view the content of this message in "
-#~ "a practical amount of time."
-#~ msgstr ""
-#~ "このメッセージは強い暗合化アルゴリズムで暗合化されています。このメッセージ"
-#~ "の内容を部外者が実用的な時間内に閲覧するのは非常に困難です。"
+#~ msgid "This message is encrypted, with a strong encryption algorithm. It would be very difficult for an outsider to view the content of this message in a practical amount of time."
+#~ msgstr "このメッセージは強い暗合化アルゴリズムで暗合化されています。このメッセージの内容を部外者が実用的な時間内に閲覧するのは非常に困難です。"
 
 #~ msgid "_View Certificate"
 #~ msgstr "証明書の表示(_V)"
@@ -1154,12 +992,8 @@ msgstr "ネットワーク"
 #~ msgid "O_pen With"
 #~ msgstr "プログラムから開く(_P)"
 
-#~ msgid ""
-#~ "Evolution cannot render this email as it is too large to process. You can "
-#~ "view it unformatted or with an external text editor."
-#~ msgstr ""
-#~ "処理するには大きすぎるため、Evolution ではこのメールを表示できません。"
-#~ "フォーマットされていない状態または外部のテキストエディターで表示できます。"
+#~ msgid "Evolution cannot render this email as it is too large to process. You can view it unformatted or with an external text editor."
+#~ msgstr "処理するには大きすぎるため、Evolution ではこのメールを表示できません。フォーマットされていない状態または外部のテキストエディターで表示できます。"
 
 #~ msgid "Anjal window height"
 #~ msgstr "Anjal ウィンドウの高さ"
