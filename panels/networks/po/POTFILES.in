@@ -5,3 +5,8 @@ carrick/carrick-notification-manager.c
 carrick/carrick-pane.c
 carrick/carrick-service-item.c
 src/carrick.c
+callouts/3g/ggg-country-dialog.c
+callouts/3g/ggg-manual-dialog.c
+callouts/3g/ggg-plan-dialog.c
+callouts/3g/ggg-provider-dialog.c
+callouts/3g/ggg-service-dialog.c
