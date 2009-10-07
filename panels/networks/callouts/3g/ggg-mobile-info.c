@@ -12,7 +12,7 @@ mobile_info_init (gpointer user_data)
   RestXmlNode *root;
 
   if (!g_file_get_contents (MOBILE_DATA, &contents, &length, NULL)) {
-    g_printerr ("Cannot open mobile broadband provider information");
+    g_printerr ("Cannot open mobile broadband provider information\n");
     return NULL;
   }
 

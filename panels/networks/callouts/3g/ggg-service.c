@@ -128,7 +128,7 @@ set_string_prop (DBusGProxy *proxy, const char *name, const char *string)
 
   if (!org_moblin_connman_Service_set_property
       (proxy, name, &value, &error)) {
-    g_printerr ("Cannot set property %s to %s: %s",
+    g_printerr ("Cannot set property %s to %s: %s\n",
                 name, string, error->message);
     g_error_free (error);
   }
