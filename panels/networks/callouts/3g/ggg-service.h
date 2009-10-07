@@ -43,7 +43,7 @@ GType ggg_service_get_type (void) G_GNUC_CONST;
 
 GggService * ggg_service_new (DBusGConnection *connection, const char *path);
 
-GggService * ggg_service_new_fake (const char *name);
+GggService * ggg_service_new_fake (const char *name, gboolean roaming);
 
 const char * ggg_service_get_name (GggService *service);
 

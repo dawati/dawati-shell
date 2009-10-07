@@ -117,7 +117,7 @@ ggg_service_new (DBusGConnection *connection, const char *path)
 }
 
 GggService *
-ggg_service_new_fake (const char *name)
+ggg_service_new_fake (const char *name, gboolean roaming)
 {
   GggService *service;
 
@@ -127,7 +127,7 @@ ggg_service_new_fake (const char *name)
   service->priv->name = g_strdup (name);
   service->priv->mcc = g_strdup ("234");
   service->priv->mnc = g_strdup ("15");
-  service->priv->roaming = TRUE;
+  service->priv->roaming = roaming;
 
   return service;
 }
