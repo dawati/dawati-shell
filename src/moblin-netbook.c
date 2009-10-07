@@ -71,6 +71,11 @@ static void setup_focus_window (MutterPlugin *plugin);
 
 static void fullscreen_app_added (MoblinNetbookPluginPrivate *, gint);
 static void fullscreen_app_removed (MoblinNetbookPluginPrivate *, gint);
+static void meta_window_fullcreen_notify_cb (GObject    *object,
+                                             GParamSpec *spec,
+                                             gpointer    data);
+static void moblin_netbook_toggle_compositor (MutterPlugin *, gboolean on);
+static void window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin);
 
 static GQuark actor_data_quark = 0;
 
@@ -955,7 +960,7 @@ check_for_empty_workspace (MutterPlugin *plugin,
 }
 
 static void
-window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin)
+handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
 {
   MetaCompWindowType  type;
   gint                workspace;
@@ -969,8 +974,66 @@ window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin)
   wm_class  = meta_window_get_wm_class (meta_win);
   wm_name   = meta_window_get_title (meta_win);
 
+  if (type == META_COMP_WINDOW_NORMAL)
+    {
+      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      gboolean                    fullscreen;
+
+      g_signal_handlers_disconnect_by_func (mcw,
+                                            window_destroyed_cb,
+                                            plugin);
+
+      if (wm_class && wm_name &&
+          !strcmp (wm_class, "Skype") && strstr (wm_name, "Skype™"))
+        {
+          gint pid = meta_window_get_pid (meta_win);
+
+          if (pid)
+            kill (pid, SIGKILL);
+        }
+
+      g_object_get (meta_win, "fullscreen", &fullscreen, NULL);
+
+      if (fullscreen)
+        {
+          MetaWorkspace *ws = meta_window_get_workspace (meta_win);
+
+          if (ws)
+            {
+              gint index = meta_workspace_index (ws);
+
+              fullscreen_app_removed (priv, index);
+              moblin_netbook_toggle_compositor (plugin, TRUE);
+            }
+        }
+
+      /*
+       * Disconnect the fullscreen notification handler; strictly speaking
+       * this should not be necessary, as the MetaWindow should be going away,
+       * but take no chances.
+       */
+      g_signal_handlers_disconnect_by_func (meta_win,
+                                            meta_window_fullcreen_notify_cb,
+                                            plugin);
+    }
+
+  /*
+   * Do not destroy workspace if the closing window is a splash screen.
+   * (Sometimes the splash gets destroyed before the application window
+   * maps, e.g., Gimp.)
+   *
+   * NB: This must come before we notify Mutter that the effect completed,
+   *     otherwise the destruction of this window will be completed and the
+   *     workspace switch effect will crash.
+   */
   if (type != META_COMP_WINDOW_SPLASHSCREEN)
     check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
+}
+
+static void
+window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin)
+{
+  handle_window_destruction (mcw, plugin);
 }
 
 /*
@@ -1453,6 +1516,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
             mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
         }
 
+      if (type == META_COMP_WINDOW_NORMAL)
+        {
+          g_signal_connect (mcw, "window-destroyed",
+                            G_CALLBACK (window_destroyed_cb),
+                            plugin);
+        }
+
       /*
        * Move application window to a new workspace, if appropriate.
        * (We only move applications, i.e., _NET_WM_WINDOW_TYPE_NORMAL that
@@ -1520,83 +1590,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 static void
 destroy (MutterPlugin *plugin, MutterWindow *mcw)
 {
-  MetaCompWindowType          type;
-  gint                        workspace;
-  MetaWindow                 *meta_win;
-  const gchar                *wm_class;
-  const gchar                *wm_name;
-
-  type      = mutter_window_get_window_type (mcw);
-  workspace = mutter_window_get_workspace (mcw);
-  meta_win  = mutter_window_get_meta_window (mcw);
-  wm_class  = meta_window_get_wm_class (meta_win);
-  wm_name   = meta_window_get_title (meta_win);
-
-  if (type == META_COMP_WINDOW_NORMAL)
-    {
-      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-      gboolean                    fullscreen;
-
-      if (wm_class && wm_name &&
-          !strcmp (wm_class, "Skype") && strstr (wm_name, "Skype™"))
-        {
-          gint pid = meta_window_get_pid (meta_win);
-
-          if (pid)
-            {
-              /*
-               * Let the WM finish its dealing with this window first, then
-               * just kill the application without mercy ... (this is a
-               * punishment for unmapping its window when getting minimized into
-               * tray).
-               */
-              check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
-              mutter_plugin_effect_completed (plugin, mcw,
-                                              MUTTER_PLUGIN_DESTROY);
-
-              kill (pid, SIGKILL);
-              return;
-            }
-        }
-
-      g_object_get (meta_win, "fullscreen", &fullscreen, NULL);
-
-      if (fullscreen)
-        {
-          MetaWorkspace *ws = meta_window_get_workspace (meta_win);
-
-          if (ws)
-            {
-              gint index = meta_workspace_index (ws);
-
-              fullscreen_app_removed (priv, index);
-              moblin_netbook_toggle_compositor (plugin, TRUE);
-            }
-        }
-
-      /*
-       * Disconnect the fullscreen notification handler; strictly speaking
-       * this should not be necessary, as the MetaWindow should be going away,
-       * but take no chances.
-       */
-      g_signal_handlers_disconnect_by_func (meta_win,
-                                            meta_window_fullcreen_notify_cb,
-                                            plugin);
-
-    }
-
-  /*
-   * Do not destroy workspace if the closing window is a splash screen.
-   * (Sometimes the splash gets destroyed before the application window
-   * maps, e.g., Gimp.)
-   *
-   * NB: This must come before we notify Mutter that the effect completed,
-   *     otherwise the destruction of this window will be completed and the
-   *     workspace switch effect will crash.
-   */
-  if (type != META_COMP_WINDOW_SPLASHSCREEN)
-    check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
-
+  handle_window_destruction (mcw, plugin);
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
