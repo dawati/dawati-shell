@@ -31,11 +31,23 @@ ggg_service_set_property (GObject *object, guint property_id, const GValue *valu
 
       for (; services; services = services->next) {
         GggService *service = services->data;
-        /* TODO: add roaming marker */
-        gtk_list_store_insert_with_values (dialog->priv->store, NULL, 0,
-                                           0, service,
-                                           1, ggg_service_get_name (service),
-                                           -1);
+
+        if (ggg_service_is_roaming (service)) {
+          char *name;
+
+          name = g_strdup_printf (_("%s (Roaming)"), ggg_service_get_name (service));
+
+          gtk_list_store_insert_with_values (dialog->priv->store, NULL, 0,
+                                             0, service,
+                                             1, name,
+                                             -1);
+          g_free (name);
+        } else {
+          gtk_list_store_insert_with_values (dialog->priv->store, NULL, 0,
+                                             0, service,
+                                             1, ggg_service_get_name (service),
+                                             -1);
+        }
       }
       gtk_combo_box_set_active (GTK_COMBO_BOX (dialog->priv->combo), 0);
     }
