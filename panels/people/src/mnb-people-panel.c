@@ -28,6 +28,7 @@
 #include <anerley/anerley-tile-view.h>
 #include <anerley/anerley-tile.h>
 #include <anerley/anerley-aggregate-tp-feed.h>
+#include <anerley/anerley-tp-monitor-feed.h>
 #include <anerley/anerley-ebook-feed.h>
 #include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-econtact-item.h>
@@ -55,6 +56,7 @@ typedef struct _MnbPeoplePanelPrivate MnbPeoplePanelPrivate;
 struct _MnbPeoplePanelPrivate {
   guint filter_timeout_id;
   AnerleyFeedModel *model;
+  AnerleyFeedModel *active_model;
   ClutterActor *tex;
   NbtkWidget *entry;
   GAppInfo *app_info;
@@ -62,13 +64,15 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *primary_button;
   NbtkWidget *secondary_button;
   NbtkWidget *tile_view;
+  NbtkWidget *active_tile_view;
   MplPanelClient *panel_client;
   NbtkWidget *selection_pane;
   NbtkWidget *control_box;
-  NbtkWidget *scroll_bin;
   NbtkWidget *no_people_tile;
   NbtkWidget *selected_tile;
   NbtkWidget *nobody_selected_box;
+  NbtkWidget *content_table;
+  NbtkWidget *active_content_table;
 };
 
 static void
@@ -429,6 +433,22 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
 }
 
 static void
+_active_model_bulk_change_end_cb (AnerleyFeedModel *model,
+                                  gpointer          userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+
+  if (clutter_model_get_first_iter ((ClutterModel *)model))
+  {
+    clutter_actor_show ((ClutterActor *)priv->active_content_table);
+    nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 6);
+  } else {
+    nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 0);
+    clutter_actor_hide ((ClutterActor *)priv->active_content_table);
+  }
+}
+
+static void
 _model_bulk_changed_end_cb (AnerleyFeedModel *model,
                             gpointer          userdata)
 {
@@ -437,10 +457,10 @@ _model_bulk_changed_end_cb (AnerleyFeedModel *model,
   if (clutter_model_get_first_iter ((ClutterModel *)model))
   {
     clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
-    clutter_actor_show ((ClutterActor *)priv->scroll_bin);
+    clutter_actor_show ((ClutterActor *)priv->content_table);
     clutter_actor_show ((ClutterActor *)priv->selection_pane);
   } else {
-    clutter_actor_hide ((ClutterActor *)priv->scroll_bin);
+    clutter_actor_hide ((ClutterActor *)priv->content_table);
     clutter_actor_hide ((ClutterActor *)priv->selection_pane);
     clutter_actor_show ((ClutterActor *)priv->no_people_tile);
   }
@@ -526,8 +546,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
   NbtkWidget *hbox, *label;
-  NbtkWidget *scroll_view;
-  AnerleyFeed *feed, *tp_feed, *ebook_feed;
+  NbtkWidget *scroll_view, *scroll_bin, *bin;
+  AnerleyFeed *feed, *tp_feed, *ebook_feed, *active_feed;
   EBook *book;
   GError *error = NULL;
 
@@ -603,22 +623,65 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   priv->model = (AnerleyFeedModel *)anerley_feed_model_new (feed);
   priv->tile_view = anerley_tile_view_new (priv->model);
+
+  active_feed = anerley_tp_monitor_feed_new (tp_feed);
+  priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
+  priv->active_tile_view = anerley_tile_view_new (priv->active_model);
+
+  priv->content_table = nbtk_table_new ();
+
+  /* active conversations */
+  priv->active_content_table = nbtk_table_new ();
+
+  clutter_actor_hide (priv->active_content_table);
+  clutter_actor_set_name (priv->active_content_table, "active-content-table");
+
+  bin = nbtk_bin_new ();
+  label = nbtk_label_new (_("People talking to you ..."));
+  clutter_actor_set_name (label, "active-content-header-label");
+  nbtk_bin_set_child (bin, label);
+  nbtk_bin_set_alignment (bin, NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
+  nbtk_bin_set_fill (bin, FALSE, TRUE);
+  clutter_actor_set_name (bin, "active-content-header");
+
+  nbtk_table_add_actor (NBTK_TABLE (priv->active_content_table),
+                        (ClutterActor *)bin,
+                        0,
+                        0);
+
+  nbtk_table_add_actor (NBTK_TABLE (priv->active_content_table),
+                        (ClutterActor *)priv->active_tile_view,
+                        1,
+                        0);
+
+  nbtk_table_add_actor (NBTK_TABLE (priv->content_table),
+                        (ClutterActor *)priv->active_content_table,
+                        0,
+                        0);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->content_table),
+                               (ClutterActor *)priv->active_content_table,
+                               "allocate-hidden", FALSE,
+                               NULL);
+
+  /* main area */
   scroll_view = nbtk_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
                                (ClutterActor *)priv->tile_view);
 
-  /* Use a table here rather than a bin since this give significantly better
-   * scrolling peformance
-   */
-  priv->scroll_bin = nbtk_table_new ();
-  nbtk_table_add_actor (NBTK_TABLE (priv->scroll_bin),
+  scroll_bin = nbtk_table_new ();
+  nbtk_table_add_actor (NBTK_TABLE (scroll_bin),
                         (ClutterActor *)scroll_view,
                         0,
                         0);
-  clutter_actor_set_name ((ClutterActor *)priv->scroll_bin, "people-scroll-bin");
+  nbtk_table_add_actor (NBTK_TABLE (priv->content_table),
+                        (ClutterActor *)scroll_bin,
+                        1,
+                        0);
+  clutter_actor_set_name (scroll_bin, "people-scroll-bin");
+
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->scroll_bin,
+                                        (ClutterActor *)priv->content_table,
                                         1,
                                         0,
                                         "x-fill",
@@ -752,7 +815,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                      FALSE,
                      FALSE);
 
-
   priv->selected_tile = anerley_tile_new (NULL);
   clutter_actor_set_height ((ClutterActor *)priv->selected_tile, 90);
   clutter_actor_set_name (CLUTTER_ACTOR (priv->selected_tile),
@@ -841,11 +903,15 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   /* Put into the no people state */
   clutter_actor_hide ((ClutterActor *)priv->selection_pane);
-  clutter_actor_hide ((ClutterActor *)priv->scroll_bin);
+  clutter_actor_hide ((ClutterActor *)priv->content_table);
 
   g_signal_connect (priv->model,
                     "bulk-change-end",
                     (GCallback)_model_bulk_changed_end_cb,
+                    self);
+  g_signal_connect (priv->active_model,
+                    "bulk-change-end",
+                    (GCallback)_active_model_bulk_change_end_cb,
                     self);
 }
 

@@ -88,9 +88,15 @@ AnerleyTile *.AnerleyTileSecondaryLabel
 {
 }
 
-*#people-scroll-bin
+*#people-scroll-bin, *#active-content-table
 {
   border-image: url('file://scroll-view-bin-bg.png') 10 stretch;
+  padding: 8;
+}
+
+*#active-content-header
+{
+  border-image: url('file://active-conversations-header.png') 1 stretch;
   padding: 8;
 }
 
@@ -127,7 +133,7 @@ AnerleyTile *.AnerleyTileSecondaryLabel
   padding: 6;
 }
 
-*#people-nobody-selected-label
+*#people-nobody-selected-label, *#active-content-header-label
 {
   font-family: "Droid Sans";
   font-size: 16;
