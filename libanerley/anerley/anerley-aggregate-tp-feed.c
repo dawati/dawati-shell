@@ -86,6 +86,9 @@ _account_manager_account_enabled_cb (TpAccountManager *account_manager,
                          g_strdup (account_name),
                          feed);
 
+    g_debug (G_STRLOC ": Adding account with identifier %s to feed",
+             account_name);
+
     anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (aggregate),
                                      ANERLEY_FEED (feed));
   }
@@ -137,10 +140,12 @@ _account_manager_ready_cb (GObject      *source_object,
 
     feed = anerley_tp_feed_new (account);
     account_name = tp_proxy_get_object_path (account);
+
     g_hash_table_insert (priv->feeds,
                          g_strdup (account_name),
                          feed);
-
+    g_debug (G_STRLOC ": Adding account with identifier %s to feed",
+             account_name);
     anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (aggregate),
                                      ANERLEY_FEED (feed));
   }
