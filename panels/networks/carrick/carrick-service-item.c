@@ -1297,6 +1297,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->info_bar = gtk_info_bar_new ();
   gtk_widget_set_no_show_all (priv->info_bar, TRUE);
   priv->info_label = gtk_label_new ("");
+  gtk_label_set_line_wrap (GTK_LABEL (priv->info_label),
+                           TRUE);
   gtk_widget_show (priv->info_label);
   content_area = gtk_info_bar_get_content_area (GTK_INFO_BAR (priv->info_bar));
   gtk_container_add (GTK_CONTAINER (content_area), priv->info_label);
