@@ -1,5 +1,14 @@
 lib_LTLIBRARIES = libanerley.la
 
+%.c: %.list Makefile.am
+	$(QUIET_GEN)glib-genmarshal --body --prefix=anerley_marshal $< > $@
+
+%.h: %.list Makefile.am
+	$(QUIET_GEN)glib-genmarshal --header --prefix=anerley_marshal $< > $@
+
+EXTRA_DIST = anerley-marshals.list
+BUILT_SOURCES = anerley-marshals.c anerley-marshals.h
+
 libanerley_la_HEADERS = anerley-tp-feed.h \
 			anerley-feed.h \
 			anerley-item.h \
@@ -27,6 +36,7 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-ebook-feed.c \
 			anerley-tp-observer.c \
 			$(libanerley_la_HEADERS) \
+			$(BUILT_SOURCES) \
 			penge-magic-texture.c \
 			penge-magic-texture.h
 libanerley_ladir = $(includedir)/anerley/anerley
