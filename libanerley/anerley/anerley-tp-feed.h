@@ -24,8 +24,9 @@
 #define _ANERLEY_TP_FEED
 
 #include <telepathy-glib/account.h>
-
 #include <glib-object.h>
+
+#include <anerley/anerley-item.h>
 
 G_BEGIN_DECLS
 
@@ -57,7 +58,8 @@ typedef struct {
 GType anerley_tp_feed_get_type (void);
 
 AnerleyTpFeed *anerley_tp_feed_new (TpAccount *account);
-
+AnerleyItem *anerley_tp_feed_get_item_by_uid (AnerleyTpFeed *feed,
+                                              const gchar   *uid);
 G_END_DECLS
 
 #endif /* _ANERLEY_TP_FEED */

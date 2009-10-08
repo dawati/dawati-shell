@@ -910,3 +910,12 @@ feed_interface_init (gpointer g_iface,
 {
   /* Nothing to do here..? */
 }
+
+AnerleyItem *
+anerley_tp_feed_get_item_by_uid (AnerleyTpFeed *feed,
+                                 const gchar   *uid)
+{
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+
+  return g_hash_table_lookup (priv->ids_to_items, uid);
+}
