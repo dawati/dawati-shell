@@ -30,7 +30,7 @@
 #include "mnb-switcher-zone.h"
 
 #define MNB_SWICHER_APP_ICON_PADDING         5.0
-#define MNB_SWICHER_APP_ICON_SIZE           48.0
+#define MNB_SWICHER_APP_ICON_SIZE           32.0
 #define MNB_SWITCHER_APP_WM_DELETE_TIMEOUT 150
 
 static void mnb_switcher_app_origin_weak_notify (gpointer data, GObject *obj);
