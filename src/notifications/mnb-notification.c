@@ -106,6 +106,12 @@ mnb_notification_dispose (GObject *object)
       priv->timeout_id = 0;
     }
 
+  if (priv->icon)
+    {
+      g_object_unref (priv->icon);
+      priv->icon = NULL;
+    }
+
   G_OBJECT_CLASS (mnb_notification_parent_class)->dispose (object);
 }
 
@@ -200,7 +206,7 @@ mnb_notification_init (MnbNotification *self)
   nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
 
   priv->dismiss_button = nbtk_button_new ();
-  priv->icon           = clutter_texture_new ();
+  priv->icon           = g_object_ref_sink (clutter_texture_new ());
   priv->body           = nbtk_label_new ("");
   priv->summary        = nbtk_label_new ("");
   priv->title_box      = nbtk_table_new ();
@@ -222,7 +228,6 @@ mnb_notification_init (MnbNotification *self)
                                "x-align", 0.0,
                                "x-fill", FALSE,
                                "y-fill", FALSE,
-                               "allocate-hidden", FALSE,
                                NULL);
 
   txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->summary)));
@@ -328,11 +333,28 @@ mnb_notification_update (MnbNotification *notification,
   /* Since notifications can be "updated" we need to be able reverse any operations */
   if (no_icon)
     {
-      clutter_actor_hide (CLUTTER_ACTOR (priv->icon));
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->title_box),
+                                      priv->icon);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
+                                   CLUTTER_ACTOR (priv->summary),
+                                   "col", 0,
+                                   NULL);
     }
   else
     {
-      clutter_actor_show (CLUTTER_ACTOR (priv->icon));
+      nbtk_table_add_actor (NBTK_TABLE (priv->title_box), priv->icon, 0, 0);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
+                                   CLUTTER_ACTOR (priv->icon),
+                                   "y-expand", FALSE,
+                                   "x-expand", FALSE,
+                                   "x-align", 0.0,
+                                   "x-fill", FALSE,
+                                   "y-fill", FALSE,
+                                   NULL);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
+                                   CLUTTER_ACTOR (priv->summary),
+                                   "col", 1,
+                                   NULL);
     }
 
   if (details->actions)
