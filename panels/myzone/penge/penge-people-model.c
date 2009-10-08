@@ -87,6 +87,12 @@ penge_people_model_dispose (GObject *object)
 {
   PengePeopleModelPrivate *priv = GET_PRIVATE (object);
 
+  if (priv->bulk_timeout_id)
+  {
+    g_source_remove (priv->bulk_timeout_id);
+    priv->bulk_timeout_id = 0;
+  }
+
   if (priv->view)
   {
     g_object_unref (priv->view);
