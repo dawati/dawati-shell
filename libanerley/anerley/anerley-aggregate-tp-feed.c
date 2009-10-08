@@ -195,4 +195,13 @@ anerley_aggregate_tp_feed_new (void)
   return g_object_new (ANERLEY_TYPE_AGGREGATE_TP_FEED, NULL);
 }
 
+AnerleyFeed *
+anerley_aggregate_tp_feed_get_feed_by_account_name (AnerleyAggregateTpFeed *feed,
+                                                    const gchar            *account_name)
+{
+  AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (feed);
+
+  return g_hash_table_lookup (priv->feeds, account_name);
+}
+
 
