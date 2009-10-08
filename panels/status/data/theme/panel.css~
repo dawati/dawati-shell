@@ -29,7 +29,6 @@ MnbWebStatusEntry:active
 MnbWebStatusEntry > *.MnbWebStatusEntryText
 {
   font-size: 16px;
-  font-family: "Droid Sans";
   color: #595959ff;
   border-image: none;
 }
@@ -77,7 +76,6 @@ MnbIMStatusRow > *.MnbStatusAvatar
 NbtkLabel.MnbImStatusLabel
 {
   font-size: 16px;
-  font-family: "Droid Sans";
   color: #595959ff;
   border-image: none;
 }
@@ -126,7 +124,6 @@ NbtkBoxLayout.MnbImStatusSelector
 NbtkGrid.MnbImPresenceRow
 {
   font-size: 16px;
-  font-family: "Droid Sans";
   color: #595959ff;
   padding: 2 2 2 2;
   background-color: #e8e8e8;
