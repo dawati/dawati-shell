@@ -54,6 +54,7 @@
 #define MAP_TIMEOUT                 350
 #define SWITCH_TIMEOUT              400
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
+#define MYZONE_TIMEOUT              200
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
 static MutterPlugin *plugin_singleton = NULL;
@@ -829,16 +830,64 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
+/*
+ * Shows the myzone if no applications are running.
+ *
+ * Always returns FALSE, so that we can pass it directly into g_timeout_add()
+ * as a one-of check.
+ */
+static gboolean
+maybe_show_myzone (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  gboolean                    no_apps = TRUE;
+  GList                      *l;
+
+  /*
+   * Check for running applications; we do this by checking if any
+   * application-type windows are present.
+   */
+  l = mutter_get_windows (screen);
+
+  while (l)
+    {
+      MutterWindow       *m    = l->data;
+      MetaCompWindowType  type = mutter_window_get_window_type (m);
+
+      /*
+       * Ignore desktop, docs, and panel windows
+       *
+       * (Panel windows are currently of type META_COMP_WINDOW_OVERRIDE_OTHER)
+       */
+      if (!(type == META_COMP_WINDOW_DESKTOP        ||
+            type == META_COMP_WINDOW_DOCK           ||
+            type == META_COMP_WINDOW_OVERRIDE_OTHER))
+        {
+          /* g_debug ("Found singificant window %s of type %d", */
+          /*          mutter_window_get_description (m), type); */
+
+          no_apps = FALSE;
+          break;
+        }
+
+      l = l->next;
+    }
+
+  if (no_apps)
+    mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar), MPL_PANEL_MYZONE);
+
+  return FALSE;
+}
+
 static void
 check_for_empty_workspace (MutterPlugin *plugin,
                            gint workspace, MetaWindow *ignore,
                            gboolean win_destroyed)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
-  gboolean                    workspace_empty = TRUE;
-  gboolean                    no_apps = TRUE;
-  GList                      *l;
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  gboolean    workspace_empty = TRUE;
+  GList      *l;
 
   /*
    * Mutter now treats all OR windows as sticky, and the -1 will trigger
@@ -929,39 +978,12 @@ check_for_empty_workspace (MutterPlugin *plugin,
     }
 
   /*
-   * Now check for running applications; we do this by checking if any
-   * application-type windows are present.
+   * Check if we show the myzone; we do this after a short timeout, so that
+   * we do not drop the myzone if the application does something like first
+   * pop a root password dialog, and only after the dialog closes, creates its
+   * main window (see MB#4766).
    */
-  l = mutter_get_windows (screen);
-
-  while (l)
-    {
-      MutterWindow       *m    = l->data;
-      MetaCompWindowType  type = mutter_window_get_window_type (m);
-      MetaWindow         *mw;
-
-      /*
-       * Ignore desktop, docs, and panel windows
-       *
-       * (Panel windows are currently of type META_COMP_WINDOW_OVERRIDE_OTHER)
-       */
-      if (!(type == META_COMP_WINDOW_DESKTOP        ||
-            type == META_COMP_WINDOW_DOCK           ||
-            type == META_COMP_WINDOW_OVERRIDE_OTHER ||
-            ((mw = mutter_window_get_meta_window (m)) == ignore)))
-        {
-          /* g_debug ("Found singificant window %s of type %d", */
-          /*          mutter_window_get_description (m), type); */
-
-          no_apps = FALSE;
-          break;
-        }
-
-      l = l->next;
-    }
-
-  if (no_apps)
-    mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar), MPL_PANEL_MYZONE);
+  g_timeout_add (MYZONE_TIMEOUT, (GSourceFunc)maybe_show_myzone, plugin);
 }
 
 static void
