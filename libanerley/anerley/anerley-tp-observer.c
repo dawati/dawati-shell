@@ -29,6 +29,7 @@
 #include <telepathy-glib/channel.h>
 
 #include "anerley-tp-observer.h"
+#include "anerley-marshals.h"
 
 static void
 client_observer_iface_init (gpointer g_iface,
@@ -200,9 +201,10 @@ anerley_tp_observer_class_init (AnerleyTpObserverClass *klass)
                                               0,
                                               NULL,
                                               NULL,
-                                              g_cclosure_marshal_VOID__OBJECT,
+                                              anerley_marshal_VOID__STRING_OBJECT,
                                               G_TYPE_NONE,
-                                              1,
+                                              2,
+                                              G_TYPE_STRING,
                                               TP_TYPE_CHANNEL);
 }
 
@@ -252,12 +254,19 @@ anerley_tp_observer_new (void)
   return g_object_new (ANERLEY_TYPE_TP_OBSERVER, NULL);
 }
 
+typedef struct
+{
+  AnerleyTpObserver *observer;
+  gchar *channel;
+  gchar *account_name;
+} ReadyClosure;
+
 static void
 _channel_ready_cb (TpChannel    *channel,
                    const GError *error_in,
                    gpointer      userdata)
 {
-  AnerleyTpObserver *observer = ANERLEY_TP_OBSERVER (userdata);
+  ReadyClosure *closure = (ReadyClosure *)userdata;
 
   if (error_in)
   {
@@ -266,20 +275,18 @@ _channel_ready_cb (TpChannel    *channel,
     goto done;
   }
 
-  g_signal_emit (observer,
+  g_signal_emit (closure->observer,
                  signals [NEW_CHANNEL_SIGNAL],
                  0,
+                 closure->account_name,
                  channel);
+
 done:
-  g_object_unref (observer);
+  g_object_unref (closure->observer);
+  g_free (closure->channel);
+  g_free (closure->account_name);
+  g_free (closure);
 }
-
-
-typedef struct
-{
-  AnerleyTpObserver *observer;
-  gchar *channel;
-} ReadyClosure;
 
 static void 
 _connection_ready_cb (TpConnection *connection,
@@ -294,7 +301,7 @@ _connection_ready_cb (TpConnection *connection,
   {
     g_warning (G_STRLOC ": Error when making connection ready: %s",
                error_in->message);
-    goto done;
+    goto error;
   }
 
   channel = tp_channel_new (connection,
@@ -309,16 +316,22 @@ _connection_ready_cb (TpConnection *connection,
     g_warning (G_STRLOC ": Error creating channel: %s",
                error->message);
     g_clear_error (&error);
+    goto error;
   } else {
     g_debug (G_STRLOC ": Created a channel for %s",
              closure->channel);
     tp_channel_call_when_ready (channel,
                                 _channel_ready_cb,
-                                g_object_ref (closure->observer));
+                                closure);
   }
-done:
+
+  return;
+
+error:
   g_object_unref (closure->observer);
   g_free (closure->channel);
+  g_free (closure->account_name);
+  g_free (closure);
 }
 
 static void
@@ -397,6 +410,7 @@ _observer_observe_channels (TpSvcClientObserver   *observer,
       closure = g_new0 (ReadyClosure, 1);
       closure->observer = g_object_ref (observer);
       closure->channel = g_strdup (channel);
+      closure->account_name = g_strdup (account_obj_path);
       tp_connection_call_when_ready (connection,
                                      _connection_ready_cb,
                                      closure);
