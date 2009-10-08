@@ -1503,10 +1503,12 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            type == META_COMP_WINDOW_MODAL_DIALOG)
     {
       ClutterAnimation   *animation;
-      EffectCompleteData *data  = g_new0 (EffectCompleteData, 1);
       ActorPrivate       *apriv = get_actor_private (mcw);
       MetaWindow         *mw    = mutter_window_get_meta_window (mcw);
       gboolean           fullscreen = FALSE;
+      MetaScreen        *screen = mutter_plugin_get_screen (plugin);
+      gint               screen_width, screen_height;
+      gfloat             actor_width, actor_height;
 
       if (mw)
         {
@@ -1561,7 +1563,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           meta_window_get_startup_id (mw) &&
           meta_window_get_transient_for_as_xid (mw) == None)
         {
-          MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
           MetaDisplay *display = meta_screen_get_display (screen);
           guint32      timestamp;
 
@@ -1583,35 +1584,49 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           return;
         }
 
-      clutter_actor_move_anchor_point_from_gravity (actor,
-                                                    CLUTTER_GRAVITY_CENTER);
-
-      clutter_actor_set_scale (actor, 0.0, 0.0);
-      clutter_actor_show (actor);
-
-      animation = clutter_actor_animate (actor, CLUTTER_EASE_OUT_ELASTIC,
-                                         MAP_TIMEOUT,
-                                         "scale-x", 1.0,
-                                         "scale-y", 1.0,
-                                         NULL);
-      data->plugin = plugin;
-      data->actor = actor;
-      apriv->tml_map = clutter_animation_get_timeline (animation);
-
-      g_signal_connect (apriv->tml_map,
-                        "completed",
-                        G_CALLBACK (on_map_effect_complete),
-                        data);
-
       apriv->is_minimized = FALSE;
 
       g_signal_connect (mw, "workspace-changed",
                         G_CALLBACK (meta_window_workspace_changed_cb),
                         plugin);
+
+      /*
+       * Only animate windows that are smaller than the screen size
+       * (see MB#5273)
+       */
+      mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+      clutter_actor_get_size (actor, &actor_width, &actor_height);
+
+      if ((gint)actor_width  < screen_width ||
+          (gint)actor_height < screen_height)
+        {
+          EffectCompleteData *data  = g_new0 (EffectCompleteData, 1);
+
+          clutter_actor_move_anchor_point_from_gravity (actor,
+                                                        CLUTTER_GRAVITY_CENTER);
+
+          clutter_actor_set_scale (actor, 0.0, 0.0);
+          clutter_actor_show (actor);
+
+          animation = clutter_actor_animate (actor, CLUTTER_EASE_OUT_ELASTIC,
+                                             MAP_TIMEOUT,
+                                             "scale-x", 1.0,
+                                             "scale-y", 1.0,
+                                             NULL);
+          data->plugin = plugin;
+          data->actor = actor;
+          apriv->tml_map = clutter_animation_get_timeline (animation);
+
+          g_signal_connect (apriv->tml_map,
+                            "completed",
+                            G_CALLBACK (on_map_effect_complete),
+                            data);
+        }
+      else
+        mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
     }
   else
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-
 }
 
 static void
