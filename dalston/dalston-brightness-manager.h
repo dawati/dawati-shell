@@ -64,6 +64,8 @@ void dalston_brightness_manager_set_brightness (DalstonBrightnessManager *manage
                                                 gint                      value);
 gboolean dalston_brightness_manager_is_controllable (DalstonBrightnessManager *manager);
 
+DalstonBrightnessManager *dalston_brightness_manager_dup_singleton (void);
+
 G_END_DECLS
 
 #endif /* _DALSTON_BRIGHTNESS_MANAGER */

@@ -455,3 +455,18 @@ dalston_brightness_manager_is_controllable (DalstonBrightnessManager *manager)
 
   return priv->controllable;
 }
+
+DalstonBrightnessManager *
+dalston_brightness_manager_dup_singleton (void)
+{
+  static DalstonBrightnessManager *manager = NULL;
+
+  if (manager)
+    return g_object_ref (manager);
+
+  manager = dalston_brightness_manager_new ();
+  g_object_add_weak_pointer ((GObject *)manager, (gpointer)&manager);
+
+  return manager;
+}
+
