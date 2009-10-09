@@ -498,3 +498,58 @@ dalston_brightness_manager_maximise (DalstonBrightnessManager *manager)
                             manager);
   }
 }
+
+static void
+_panel_proxy_get_brightness_for_increase_cb (HalPanelProxy *proxy,
+                                             gint           value,
+                                             const GError  *error,
+                                             GObject       *weak_object,
+                                             gpointer       userdata)
+{
+  DalstonBrightnessManager *manager = (DalstonBrightnessManager *)weak_object;
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  if (value == (priv->num_levels - 1))
+    return;
+
+  dalston_brightness_manager_set_brightness (manager, value + 1);
+}
+
+void
+dalston_brightness_manager_increase (DalstonBrightnessManager *manager)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  hal_panel_proxy_get_brightness_async (priv->panel_proxy,
+                                        _panel_proxy_get_brightness_for_increase_cb,
+                                        (GObject *)manager,
+                                        NULL);
+}
+
+
+static void
+_panel_proxy_get_brightness_for_decrease_cb (HalPanelProxy *proxy,
+                                             gint           value,
+                                             const GError  *error,
+                                             GObject       *weak_object,
+                                             gpointer       userdata)
+{
+  DalstonBrightnessManager *manager = (DalstonBrightnessManager *)weak_object;
+
+  if (value == 0)
+    return;
+
+  dalston_brightness_manager_set_brightness (manager, value - 1);
+}
+
+void
+dalston_brightness_manager_decrease (DalstonBrightnessManager *manager)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  hal_panel_proxy_get_brightness_async (priv->panel_proxy,
+                                        _panel_proxy_get_brightness_for_decrease_cb,
+                                        (GObject *)manager,
+                                        NULL);
+}
+
