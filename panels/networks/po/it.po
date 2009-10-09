@@ -2,14 +2,14 @@
 # Copyright (C) 2009 the carrick-ng's copyright hodler
 # This file is distributed under the same license as the carrick-ng package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-#
+# Milo Casagrande <milo@casagrande.name>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:09+0000\n"
-"PO-Revision-Date: 2009-10-02 22:54+0200\n"
-"Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
+"POT-Creation-Date: 2009-10-07 18:32+0000\n"
+"PO-Revision-Date: 2009-10-09 21:18+0200\n"
+"Last-Translator: Milo Casagrande <milo@casagrande.name>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,7 +205,7 @@ msgstr "Nessuna"
 msgid "Password"
 msgstr "Password"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1340
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1280
 msgid "Show password"
 msgstr "Mostrare password"
 
@@ -219,7 +219,7 @@ msgstr "Reti"
 msgid "Add new connection"
 msgstr "Aggiungi nuova connessione"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:322
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:239
 msgid "Wired"
 msgstr "Via cavo"
 
@@ -232,213 +232,90 @@ msgid "This will disable all your connections"
 msgstr "Disabilita tutte le connessioni"
 
 #. Translators:
-#. This is the title seen on the top of the connection wizard
-#. window forconfiguring a 3G  data service.
-#.
-#: ../carrick/carrick-service-item.c:43
-msgid "Cellular Data Connection Wizard"
-msgstr "Assistente connessione dati rete mobile"
-
-#. Translators:
-#. In each of the 3g data connection wizard dialog boxes that ask the user
-#. to select an option, we always provide a button that allows the user
-#. to manually enter the low level settings for their device.  This is the
-#. text used in that button.
-#.
-#: ../carrick/carrick-service-item.c:51
-msgid "Manual Config"
-msgstr "Configurazione manuale"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. the country that their services is associated with.  This is the
-#. explaination text at the top of the dialog box for selecting the country.
-#.
-#: ../carrick/carrick-service-item.c:58
-msgid "Select Country"
-msgstr "Selezionare un Paese"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. their service provider. This is the explaination text at the that
-#. dialog box
-#.
-#: ../carrick/carrick-service-item.c:65
-msgid "Select Provider"
-msgstr "Selezionare un operatore"
-
-#. Translators:
-#. When a user first tries to connect to a given provider, they
-#. must select which plan (i.e. pre-paid, unlimited, etc) to use
-#. that the associated service provider allows.
-#. This is the explaination text used at the top of dialog box.
-#.
-#: ../carrick/carrick-service-item.c:73
-msgid "Select your 3G Data Plan"
-msgstr "Selezionare il piano tariffario 3G"
-
-#. Translators:
-#. This is the text we add to the top of the dialog for allowing the user to
-#. manually enter configuration settings. This is a single line of nor more
-#. then 60 chars wide
-#.
-#: ../carrick/carrick-service-item.c:80
-msgid "Manual Configuration"
-msgstr "Configurazione manuale"
-
-#. Translators:
-#. The following strings are used as labels for each of the
-#. text entry fields that the user uses to manually enter configuration
-#. settings.  Each label is a single line of no more then 40 chars:
-#.
-#. "Plan Name":
-#. This is a uniqe string that the service provider
-#. uses to identify a give data plan.  This is the only
-#. setting that is required.
-#.
-#. "Username":
-#. This is the userame of a username/password combination
-#. required for some access points.
-#.
-#. "Password":
-#. Password required by some access points.
-#.
-#. "Gateway":
-#. Gateway IP Address required by some access points
-#.
-#. "Primary DNS":
-#. Primary domain name server address required by some access points
-#.
-#. "Secondary DNS":
-#. Backup domain name server address required by some access points
-#.
-#. "Tertairy DNS":
-#. Alternate backup domain name server address required by some
-#. access points
-#.
-#: ../carrick/carrick-service-item.c:112
-msgid "Plan Name: (required)"
-msgstr "Nome piano (richiesto):"
-
-#: ../carrick/carrick-service-item.c:113
-msgid "Username:"
-msgstr "Nome utente"
-
-#: ../carrick/carrick-service-item.c:114
-msgid "Password:"
-msgstr "Password:"
-
-#: ../carrick/carrick-service-item.c:115
-msgid "Gateway:"
-msgstr "Gateway:"
-
-#: ../carrick/carrick-service-item.c:116
-msgid "Primary DNS:"
-msgstr "DNS primario:"
-
-#: ../carrick/carrick-service-item.c:117
-msgid "Secondary DNS:"
-msgstr "DNS secondario:"
-
-#: ../carrick/carrick-service-item.c:118
-msgid "Tertairy DNS:"
-msgstr "Terzo DNS:"
-
-#. Translators:
-#. If this utility is executed without any arguments specifying which
-#. service to configure, then a dialog is used to allow the user to pick
-#. from a list of valid services.  This is the explaination text shown
-#. at the top of the dialog
-#.
-#: ../carrick/carrick-service-item.c:126
-msgid "Select 3G Service"
-msgstr "Selezionare il servizio 3G"
-
-#. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
 #.
-#: ../carrick/carrick-service-item.c:132
+#: ../carrick/carrick-service-item.c:47
 msgid "Critical Error: Invalid country code"
 msgstr "Errore critico: codice del Paese non valido"
 
-#: ../carrick/carrick-service-item.c:133
+#: ../carrick/carrick-service-item.c:48
 msgid "Missing required APN (service plan name)"
 msgstr "APN (nome del piano tariffario) mancante"
 
-#: ../carrick/carrick-service-item.c:134
+#: ../carrick/carrick-service-item.c:49
 msgid "Internal Error: Invalid network service"
 msgstr "Errore interno: servizio di rete non valido"
 
-#: ../carrick/carrick-service-item.c:135
+#: ../carrick/carrick-service-item.c:50
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "Errore critico: impossibile accedere al gestore della connessione"
 
-#: ../carrick/carrick-service-item.c:136
+#: ../carrick/carrick-service-item.c:51
 msgid "ERROR: No 3G Hardware detected"
 msgstr "Errore: nessun hardware 3G rilevato"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:260
+#: ../carrick/carrick-service-item.c:176
 #, c-format
 msgid "%s encrypted"
 msgstr "%s cifrato"
 
 # (ndt) pulsante
-#: ../carrick/carrick-service-item.c:353
+#: ../carrick/carrick-service-item.c:270
 msgid "Disconnect"
 msgstr "Disconnetti"
 
 # (ndt) viene fuori qualche cosa di simile:
 # Cablata - Collegata
 # Metto al femminile essendo rete
-#: ../carrick/carrick-service-item.c:356
+#: ../carrick/carrick-service-item.c:273
 msgid "Connected"
 msgstr "Collegata"
 
-#: ../carrick/carrick-service-item.c:363 ../carrick/carrick-service-item.c:372
+#: ../carrick/carrick-service-item.c:280 ../carrick/carrick-service-item.c:289
 #, c-format
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../carrick/carrick-service-item.c:366
+#: ../carrick/carrick-service-item.c:283
 msgid "Configuring"
 msgstr "Configurazione in corso"
 
-#: ../carrick/carrick-service-item.c:375
+#: ../carrick/carrick-service-item.c:292
 msgid "Associating"
 msgstr "Associazione in corso"
 
-#: ../carrick/carrick-service-item.c:384 ../carrick/carrick-service-item.c:409
-#: ../carrick/carrick-service-item.c:1329
+#: ../carrick/carrick-service-item.c:301 ../carrick/carrick-service-item.c:326
+#: ../carrick/carrick-service-item.c:1269
 msgid "Connect"
 msgstr "Connetti"
 
 # (ndt) un po' libera, ma preferisco lasciarla così
-#: ../carrick/carrick-service-item.c:412
+#: ../carrick/carrick-service-item.c:329
 msgid "Connection failed"
 msgstr "Connessione non stabilita"
 
-#: ../carrick/carrick-service-item.c:415
+#: ../carrick/carrick-service-item.c:332
 msgid "Sorry, the connection failed. You could try again."
 msgstr "La connessione non è riuscita. Provare nuovamente."
 
-#: ../carrick/carrick-service-item.c:421 ../carrick/carrick-service-item.c:424
+#: ../carrick/carrick-service-item.c:338 ../carrick/carrick-service-item.c:341
 #, c-format
 msgid "Disconnecting"
 msgstr "Disconnessione in corso"
 
-#: ../carrick/carrick-service-item.c:482
+#: ../carrick/carrick-service-item.c:399
 msgid "Type password here"
 msgstr "Digitare la password"
 
-#: ../carrick/carrick-service-item.c:566
+#: ../carrick/carrick-service-item.c:483
 msgid "Really remove?"
 msgstr "Rimuovere veramente?"
 
-#: ../carrick/carrick-service-item.c:584
+#: ../carrick/carrick-service-item.c:501
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -449,7 +326,7 @@ msgstr ""
 "la password verrà cancellata e non sarà più possibile\n"
 "connettersi automaticamente a %s."
 
-#: ../carrick/carrick-service-item.c:727
+#: ../carrick/carrick-service-item.c:666
 #, c-format
 msgid ""
 "Your password isn't the right length. For a WEP connection it needs to be "
@@ -458,7 +335,7 @@ msgstr ""
 "La password non è della dimensione corretta. Per una connessione WEP sono "
 "necessari 10 o 28 caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:737
+#: ../carrick/carrick-service-item.c:676
 #, c-format
 msgid ""
 "Your password is too short. For a WPA  connection it needs to be at least 8 "
@@ -467,7 +344,7 @@ msgstr ""
 "La password è troppo corta. Per una connessione WPA sono necessari 8 "
 "caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:741
+#: ../carrick/carrick-service-item.c:680
 #, c-format
 msgid ""
 "Your password is too long. For a WPA  connection it needs to have fewer than "
@@ -476,7 +353,7 @@ msgstr ""
 "La password è troppo lunga. Per una connessione WPA sono necessari meno di "
 "62 caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:749
+#: ../carrick/carrick-service-item.c:688
 #, c-format
 msgid ""
 "Your password is too short. For a WPA2  connection it needs to be at least 8 "
@@ -485,7 +362,7 @@ msgstr ""
 "La password è troppo corta. Per una connessione WPA2 sono necessari 8 "
 "caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:753
+#: ../carrick/carrick-service-item.c:692
 #, c-format
 msgid ""
 "Your password is too long. For a WPA2  connection it needs to have fewer "
@@ -494,7 +371,7 @@ msgstr ""
 "La password è troppo lunga. Per una connessione WPA2 sono necessari meno di "
 "62 caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:1265
+#: ../carrick/carrick-service-item.c:1205
 msgid "Scanning"
 msgstr "Analisi in corso"
 
@@ -502,7 +379,7 @@ msgstr "Analisi in corso"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1284
+#: ../carrick/carrick-service-item.c:1224
 msgid "WPA2 encrypted"
 msgstr "WPA2 cifrato"
 
@@ -561,6 +438,78 @@ msgstr "- Applet di connettività Moblin"
 #: ../src/carrick.c:162
 msgid "network"
 msgstr "rete"
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:69 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr "Assistente connessione dati rete mobile"
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "Selezionare un Paese"
+
+#: ../callouts/3g/ggg-manual-dialog.c:88
+msgid "Manual Configuration"
+msgstr "Configurazione manuale"
+
+#: ../callouts/3g/ggg-manual-dialog.c:92
+msgid "Plan Name (required):"
+msgstr "Nome piano (richiesto):"
+
+#: ../callouts/3g/ggg-manual-dialog.c:95
+msgid "Username:"
+msgstr "Nome utente"
+
+#: ../callouts/3g/ggg-manual-dialog.c:98
+msgid "Password:"
+msgstr "Password:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:102
+msgid "Gateway:"
+msgstr "Gateway:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:105
+msgid "Primary DNS:"
+msgstr "DNS primario:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:108
+msgid "Secondary DNS:"
+msgstr "DNS secondario:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:111
+msgid "Tertiary DNS:"
+msgstr "Terzo DNS:"
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "Selezionare il piano 3G"
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "Selezionare un operatore"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr "%s (roaming)"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "Selezionare il servizio 3G"
+
+#~ msgid "Select your 3G Data Plan"
+#~ msgstr "Selezionare il piano tariffario 3G"
+
+#~ msgid "Plan Name: (required)"
+#~ msgstr "Nome piano (richiesto):"
+
+#~ msgid "Tertairy DNS:"
+#~ msgstr "Terzo DNS:"
+
+#~ msgid "Manual Config"
+#~ msgstr "Configurazione manuale"
 
 #~ msgid ""
 #~ "Sorry, we can't find any networks. It appears that the ConnMan daemon is "
