@@ -1242,10 +1242,20 @@ moblin_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
        */
       mnb_notification_gtk_hide ();
 
+      /*
+       * Order matters; mapping the window before redirection seems to be
+       * least visually disruptive. The fullscreen application is displayed
+       * pretty much immediately at correct size, with correct contents, only
+       * there is brief delay before the Moblin background appears, and the
+       * window decoration is drawn.
+       *
+       * In the oposite order, we get a brief period of random content between
+       * the fullscreen and normal view of the application.xs
+       */
+      XMapWindow (xdpy, overlay);
       XCompositeRedirectSubwindows (xdpy,
                                     xroot,
                                     CompositeRedirectManual);
-      XMapWindow (xdpy, overlay);
       XSync (xdpy, FALSE);
       moblin_netbook_detach_mutter_windows (screen);
     }
