@@ -158,6 +158,22 @@ mnb_launcher_button_tooltip_cb (MnbLauncherButton *self)
 }
 
 static void
+mnb_launcher_button_reset_tooltip (MnbLauncherButton *self)
+{
+  if (self->priv->tooltip_timeout_id)
+  {
+    g_source_remove (self->priv->tooltip_timeout_id);
+    self->priv->tooltip_timeout_id = 0;
+  }
+
+  if (self->priv->tooltip)
+  {
+    clutter_actor_destroy (self->priv->tooltip);
+    self->priv->tooltip = NULL;
+  }
+}
+
+static void
 finalize (GObject *object)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (object);
@@ -209,6 +225,9 @@ mnb_launcher_button_button_release_event (ClutterActor       *actor,
       self->priv->is_pressed = FALSE;
       g_signal_emit (self, _signals[ACTIVATED], 0);
 
+      mnb_launcher_button_reset_tooltip (self);
+      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
+
       return TRUE;
     }
 
@@ -235,21 +254,10 @@ mnb_launcher_button_motion_event (ClutterActor        *actor,
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
   /* Restart timeout if running. */
-  if (self->priv->tooltip_timeout_id)
-  {
-    g_source_remove (self->priv->tooltip_timeout_id);
-  }
+  mnb_launcher_button_reset_tooltip (self);
   self->priv->tooltip_timeout_id = g_timeout_add_seconds (TOOLTIP_TIMEOUT_S,
                                                           (GSourceFunc) mnb_launcher_button_tooltip_cb,
                                                           self);
-
-  /* Destroy tooltip if already shown. */
-  if (self->priv->tooltip)
-  {
-    clutter_actor_destroy (self->priv->tooltip);
-    self->priv->tooltip = NULL;
-  }
-
   return FALSE;
 }
 
@@ -267,11 +275,7 @@ mnb_launcher_button_leave_event (ClutterActor         *actor,
       self->priv->is_pressed = FALSE;
     }
 
-  if (self->priv->tooltip_timeout_id)
-  {
-    g_source_remove (self->priv->tooltip_timeout_id);
-    self->priv->tooltip_timeout_id = 0;
-  }
+  mnb_launcher_button_reset_tooltip (self);
 
   return FALSE;
 }
@@ -373,6 +377,30 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 }
 
 static void
+_mapped_notify_cb (MnbLauncherButton  *self,
+                   GParamSpec         *pspec,
+                   gpointer            user_data)
+{
+  if (!CLUTTER_ACTOR_IS_MAPPED (self))
+  {
+    nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
+
+    mnb_launcher_button_reset_tooltip (self);
+  }
+}
+
+static void
+_pseudo_class_notify_cb (MnbLauncherButton  *self,
+                         GParamSpec         *pspec,
+                         gpointer            user_data)
+{
+  if (NULL == nbtk_widget_get_style_pseudo_class (NBTK_WIDGET (self)))
+  {
+    mnb_launcher_button_reset_tooltip (self);
+  }
+}
+
+static void
 mnb_launcher_button_init (MnbLauncherButton *self)
 {
   ClutterActor *label;
@@ -380,6 +408,12 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   self->priv = MNB_LAUNCHER_BUTTON_GET_PRIVATE (self);
 
   nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
+
+  g_signal_connect (self, "notify::mapped",
+                    G_CALLBACK (_mapped_notify_cb), NULL);
+
+  g_signal_connect (self, "notify::pseudo-class",
+                    G_CALLBACK (_pseudo_class_notify_cb), NULL);
 
   /* icon */
   self->priv->icon = NULL;

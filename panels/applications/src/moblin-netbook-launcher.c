@@ -1471,6 +1471,8 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   MnbLauncherPrivate  *priv = GET_PRIVATE (self);
   GHashTableIter       iter;
   NbtkExpander        *expander;
+  NbtkScrollBar       *vscroll;
+  NbtkAdjustment      *adjust;
 
   mpl_entry_set_text (MPL_ENTRY (priv->filter_entry), "");
 
@@ -1478,8 +1480,17 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   g_hash_table_iter_init (&iter, priv->expanders);
   while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &expander))
   {
-    gboolean is_first = expander == priv->first_expander;
-    nbtk_expander_set_expanded (expander, is_first);
+    if (expander == priv->first_expander &&
+        !nbtk_expander_get_expanded (expander))
+    {
+      nbtk_expander_set_expanded (expander, TRUE);    
+    }
   }
+
+  /* Reset scroll position. */
+  vscroll = NBTK_SCROLL_BAR (nbtk_scroll_view_get_vscroll_bar (
+                              NBTK_SCROLL_VIEW (self->priv->scrollview)));
+  adjust = nbtk_scroll_bar_get_adjustment (vscroll);
+  nbtk_adjustment_set_value (adjust, 0.0);
 }
 
