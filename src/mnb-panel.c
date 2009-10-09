@@ -488,7 +488,8 @@ mnb_panel_show_completed (MnbDropDown *self)
   clutter_actor_get_position (CLUTTER_ACTOR (self), &x, &y);
 
   gtk_window_move (GTK_WINDOW (priv->window),
-                   (gint)x + TOOLBAR_X_PADDING, (gint)y);
+                   (gint)x + TOOLBAR_X_PADDING,
+                   (gint)y + MNB_DROP_DOWN_TOP_PADDING);
 
   mnb_panel_focus (MNB_PANEL (self));
 
