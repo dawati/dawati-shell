@@ -402,6 +402,9 @@ on_notification_added (MoblinNetbookNotifyStore *store,
       /* run appear anim ? */
       clutter_actor_show (CLUTTER_ACTOR(priv->notifiers));
       clutter_actor_show (CLUTTER_ACTOR(w));
+
+      /* ensure correct stacking before showing */
+      clutter_actor_raise_top (self);
       clutter_actor_show_all (self);
 
       priv->last_focused = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));

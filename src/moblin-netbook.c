@@ -314,8 +314,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   GError        *err = NULL;
   MoblinNetbookNotifyStore *notify_store;
 
-  MetaScreen  *screen  =mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
-  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaScreen   *screen  = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  MetaDisplay  *display = meta_screen_get_display (screen);
+  ClutterActor *stage   = mutter_get_stage_for_screen (screen);
 
   plugin_singleton = (MutterPlugin*)object;
 
@@ -445,6 +446,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_container_add (CLUTTER_CONTAINER (overlay),
                          toolbar,
                          priv->notification_cluster,
+                         NULL);
+
+  clutter_container_add (CLUTTER_CONTAINER (stage),
                          lowlight,
                          priv->notification_urgent,
                          NULL);
@@ -2199,6 +2203,10 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
         = mnb_input_manager_push_region (0, 0, screen_width, screen_height,
                                          FALSE, MNB_INPUT_LAYER_TOP);
 
+      /*
+       * Enusre correct stacking position
+       */
+      clutter_actor_lower (priv->lowlight, priv->notification_urgent);
       clutter_actor_show (priv->lowlight);
       active = TRUE;
       mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), TRUE);
