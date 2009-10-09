@@ -28,6 +28,7 @@
 #include <dalston/dalston-power-applet.h>
 #include <dalston/dalston-button-monitor.h>
 #include <dalston/dalston-idle-manager.h>
+#include <dalston/dalston-brightness-manager.h>
 
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-panel-gtk.h>
@@ -93,6 +94,7 @@ main (int    argc,
   DalstonButtonMonitor *button_monitor;
   DalstonBatteryMonitor *battery_monitor;
   DalstonIdleManager *idle_manager;
+  DalstonBrightnessManager *brightness_manager;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -113,6 +115,9 @@ main (int    argc,
 
 
   idle_manager = dalston_idle_manager_new ();
+
+  brightness_manager = dalston_brightness_manager_dup_singleton ();
+  dalston_brightness_manager_maximise (brightness_manager);
 
   battery_monitor = g_object_new (DALSTON_TYPE_BATTERY_MONITOR,
                                   NULL);
