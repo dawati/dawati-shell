@@ -660,12 +660,12 @@ _connect_with_password (CarrickServiceItem *item)
       len = gtk_entry_get_text_length (GTK_ENTRY (priv->passphrase_entry));
       if (g_str_equal (priv->security, "wep"))
         {
-          /* WEP passphrase must be 10 chars or 28 */
-          if (len != 10 || len != 28)
+          /* WEP passphrase must be 10 chars or 26 */
+          if (len != 10 || len != 26)
             {
               label = g_strdup_printf (_("Your password isn't the right length."
                                          " For a WEP connection it needs to be"
-                                         " either 10 or 28 characters, you"
+                                         " either 10 or 26 characters, you"
                                          " have %i."), len);
             }
         }
