@@ -470,3 +470,31 @@ dalston_brightness_manager_dup_singleton (void)
   return manager;
 }
 
+static void
+_num_levels_changed_cb (DalstonBrightnessManager *manager,
+                        gint                      num_levels,
+                        gpointer                  userdata)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  dalston_brightness_manager_set_brightness (manager, priv->num_levels - 1);
+  g_signal_handlers_disconnect_by_func (manager,
+                                        _num_levels_changed_cb,
+                                        userdata);
+}
+
+void
+dalston_brightness_manager_maximise (DalstonBrightnessManager *manager)
+{
+  DalstonBrightnessManagerPrivate *priv = GET_PRIVATE (manager);
+
+  if (priv->num_levels > 0)
+  {
+    dalston_brightness_manager_set_brightness (manager, priv->num_levels - 1);
+  } else {
+    g_signal_connect_after (manager,
+                            "num-levels-changed",
+                            (GCallback)_num_levels_changed_cb,
+                            manager);
+  }
+}

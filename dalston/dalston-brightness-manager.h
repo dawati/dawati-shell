@@ -66,6 +66,7 @@ gboolean dalston_brightness_manager_is_controllable (DalstonBrightnessManager *m
 
 DalstonBrightnessManager *dalston_brightness_manager_dup_singleton (void);
 
+void dalston_brightness_manager_maximise (DalstonBrightnessManager *manager);
 G_END_DECLS
 
 #endif /* _DALSTON_BRIGHTNESS_MANAGER */
