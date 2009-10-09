@@ -2,7 +2,7 @@
 _Name=Power Management Preferences
 _Comment=Settings for adjusting power usage
 Exec=dalston-power-settings-capplet
-Icon=dalston-power-settings-capplet
+Icon=dalston-power-capplet
 StartupNotify=true
 Terminal=false
 Type=Application
