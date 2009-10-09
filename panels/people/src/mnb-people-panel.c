@@ -134,13 +134,10 @@ _entry_text_changed_cb (MplEntry *entry,
 }
 
 static void
-_update_selected_item (MnbPeoplePanel *people_panel)
+_update_selected_item (MnbPeoplePanel *people_panel,
+                       AnerleyItem    *item)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
-  AnerleyItem *item;
-
-  item =
-    anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
 
   if (item)
   {
@@ -525,7 +522,30 @@ static void
 _tile_view_selection_changed_cb (AnerleyTileView *view,
                                  gpointer         userdata)
 {
-  _update_selected_item ((MnbPeoplePanel *)userdata);
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  AnerleyItem *item;
+
+  anerley_tile_view_clear_selected_item ((AnerleyTileView *)priv->active_tile_view);
+
+  item =
+    anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
+
+  _update_selected_item ((MnbPeoplePanel *)userdata,
+                         item);
+}
+
+static void
+_active_tile_view_selection_changed_cb (AnerleyTileView *view,
+                                        gpointer         userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  AnerleyItem *item;
+
+  anerley_tile_view_clear_selected_item ((AnerleyTileView *)priv->tile_view);
+
+  item = anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->active_tile_view);
+  _update_selected_item ((MnbPeoplePanel *)userdata,
+                         item);
 }
 
 static void
@@ -879,7 +899,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         0.0,
                                         NULL);
 
-  _update_selected_item (self);
+  _update_selected_item (self, NULL);
 
   g_signal_connect (priv->primary_button,
                     "clicked",
@@ -895,8 +915,17 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                           "selection-changed",
                           (GCallback)_tile_view_selection_changed_cb,
                           self);
+  g_signal_connect_after (priv->active_tile_view,
+                          "selection-changed",
+                          (GCallback)_active_tile_view_selection_changed_cb,
+                          self);
 
   g_signal_connect (priv->tile_view,
+                    "item-activated",
+                    (GCallback)_tile_view_item_activated_cb,
+                    self);
+
+  g_signal_connect (priv->active_tile_view,
                     "item-activated",
                     (GCallback)_tile_view_item_activated_cb,
                     self);
