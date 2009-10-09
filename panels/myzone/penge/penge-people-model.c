@@ -191,6 +191,30 @@ _model_time_sort_cb (ClutterModel *model,
 }
 
 static gboolean
+_sanity_check_item (MojitoItem *item)
+{
+  if (mojito_item_has_key (item, "thumbnail"))
+    goto next;
+
+  if (mojito_item_has_key (item, "content"))
+    goto next;
+
+  if (g_str_equal (item->service, "lastfm"))
+    goto next;
+
+  return FALSE;
+next:
+
+  if (mojito_item_has_key (item, "title"))
+    return TRUE;
+
+  if (mojito_item_has_key (item, "author"))
+    return TRUE;
+
+  return FALSE;
+}
+
+static gboolean
 _bulk_timeout_cb (gpointer data)
 {
   PengePeopleModel *model = PENGE_PEOPLE_MODEL (data);
@@ -213,6 +237,9 @@ _view_item_added_cb (MojitoClientView *view,
                      gpointer          userdata)
 {
   PengePeopleModelPrivate *priv = GET_PRIVATE (userdata);
+
+  if (!_sanity_check_item (item))
+    return;
 
   if (priv->bulk_timeout_id == 0)
   {
