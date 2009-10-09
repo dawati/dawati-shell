@@ -276,6 +276,14 @@ moblin_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->notification_urgent))
+    {
+      /*
+       * Ignore the overlay key if we have urgent notifications (MB#6036)
+       */
+      return;
+    }
+
   if (!CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
     {
       /*
