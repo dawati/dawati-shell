@@ -347,12 +347,30 @@ mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
                                   MetaKeyBinding *binding,
                                   gpointer        data)
 {
-  MnbSwitcher        *switcher = MNB_SWITCHER (data);
-  MnbSwitcherPrivate *priv     = switcher->priv;
+  MnbSwitcher                *switcher = MNB_SWITCHER (data);
+  MnbSwitcherPrivate         *priv     = switcher->priv;
+  MoblinNetbookPluginPrivate *ppriv    =
+        MOBLIN_NETBOOK_PLUGIN (priv->plugin)->priv;
+
+  if (CLUTTER_ACTOR_IS_MAPPED (ppriv->notification_urgent))
+    {
+      /*
+       * Ignore if we have urgent notifications (MB#6036)
+       */
+      if (priv->in_alt_grab)
+        {
+          mnb_switcher_end_kbd_grab (switcher);
+          priv->alt_tab_down = FALSE;
+        }
+
+      return;
+    }
 
   if (!priv->in_alt_grab)
-    establish_keyboard_grab (switcher, display, screen,
-                             binding->mask, event->xkey.time);
+    {
+      establish_keyboard_grab (switcher, display, screen,
+                               binding->mask, event->xkey.time);
+    }
 
   priv->alt_tab_down = TRUE;
 
@@ -415,12 +433,22 @@ mnb_switcher_alt_tab_select_handler (MetaDisplay    *display,
                                      MetaKeyBinding *binding,
                                      gpointer        data)
 {
-  MnbSwitcher        *switcher = MNB_SWITCHER (data);
-  MnbSwitcherPrivate *priv     = switcher->priv;
+  MnbSwitcher                *switcher = MNB_SWITCHER (data);
+  MnbSwitcherPrivate         *priv     = switcher->priv;
+  MoblinNetbookPluginPrivate *ppriv    =
+    MOBLIN_NETBOOK_PLUGIN (priv->plugin)->priv;
 
   mnb_switcher_end_kbd_grab (switcher);
 
   priv->alt_tab_down = FALSE;
+
+  if (CLUTTER_ACTOR_IS_MAPPED (ppriv->notification_urgent))
+    {
+      /*
+       * Ignore if we have urgent notifications (MB#6036)
+       */
+      return;
+    }
 
   if (!switcher->priv->waiting_for_timeout)
     mnb_switcher_activate_selection (switcher, TRUE, event->xkey.time);
