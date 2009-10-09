@@ -370,3 +370,9 @@ anerley_tile_view_get_selected_item (AnerleyTileView *view)
 }
 
 
+void
+anerley_tile_view_clear_selected_item (AnerleyTileView *view)
+{
+  anerley_tile_view_set_selected_actor (view, NULL);
+}
+
