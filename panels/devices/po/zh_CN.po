@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 15:59+0000\n"
-"PO-Revision-Date: 2009-10-01 19:01-0800\n"
+"POT-Creation-Date: 2009-10-06 17:03+0000\n"
+"PO-Revision-Date: 2009-10-09 12:12-0800\n"
 "Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
 "Language-Team: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgstr "电量不足"
 msgid ""
 "We've noticed that your battery is running a bit low. If you can it would be "
 "a good idea to plug in and top up."
-msgstr "我们注意到您的电池电量不足,若有可能请切换至外接电源."
+msgstr "我们注意到您的电池电量不足，若有可能请切换至外接电源。"
 
 #: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
@@ -49,35 +49,35 @@ msgstr "电池即将耗尽"
 msgid ""
 "You're running quite low on battery. It'd be a good idea to save all your "
 "work and plug in as soon as you can"
-msgstr "电量严重不足.请尽快保存您的工作并切换至外接电源"
+msgstr "电量严重不足，请尽快保存您的工作并切换至外接电源"
 
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
-msgstr "危险!"
+msgstr "危险！"
 
 #: ../dalston/dalston-power-applet.c:282
 msgid ""
 "Sorry, your computer is about to run out of battery. We're going to have to "
 "turn off now. Please save your work and hope to see you again soon."
-msgstr "抱歉,您的电池电量已不足.现在即将关机.请保存您的工作,再见."
+msgstr "抱歉，您的电池电量已不足.现在即将关机.请保存您的工作,再见."
 
 #: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
-msgstr "抱歉，您的电池有故障."
+msgstr "抱歉，您的电池有故障。"
 
 #: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "您的电池已充满"
+msgstr "您的电池已充满。"
 
 #: ../dalston/dalston-power-applet.c:415
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
-msgstr "正在充电中。已充至约<b>%d</b>%%."
+msgstr "正在充电中。已充至约<b>%d</b>%%。"
 
 #: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
-msgstr "电池放电中。剩余约<b>%d</b>%%."
+msgstr "电池放电中。剩余约<b>%d</b>%%。"
 
 #: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
@@ -89,7 +89,7 @@ msgstr "屏幕亮度"
 
 #: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
-msgstr "抱歉，目前暂不支持修改此种屏幕的亮度."
+msgstr "抱歉，目前暂不支持修改此种屏幕的亮度。"
 
 #: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
@@ -127,20 +127,20 @@ msgstr "非常暗"
 msgid "Total eclipse"
 msgstr "完全黑暗"
 
-#: ../dalston/dalston-button-monitor.c:175
+#: ../dalston/dalston-button-monitor.c:178
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "如果您不作决定，我将在 %d 秒后关机。"
 
-#: ../dalston/dalston-button-monitor.c:277
+#: ../dalston/dalston-button-monitor.c:281
 msgid "Would you like to turn off now?"
 msgstr "您现在想关机吗？"
 
-#: ../dalston/dalston-button-monitor.c:278
+#: ../dalston/dalston-button-monitor.c:282
 msgid "If you don't decide I'll turn off in 30 seconds"
 msgstr "如果您不作决定，我将在 30 秒后关机。"
 
-#: ../dalston/dalston-button-monitor.c:285
+#: ../dalston/dalston-button-monitor.c:289
 msgid "Turn off"
 msgstr "关机"
 
@@ -198,7 +198,7 @@ msgstr "无声"
 
 #: ../libgvc/gvc-mixer-control.c:97
 msgid "GNOME Volume Control"
-msgstr "GNOME音量控制"
+msgstr "GNOME 音量控制"
 
 #: ../libgvc/gvc-mixer-control.c:1020
 msgid "System Sounds"
