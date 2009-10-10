@@ -661,7 +661,7 @@ _connect_with_password (CarrickServiceItem *item)
       if (g_str_equal (priv->security, "wep"))
         {
           /* WEP passphrase must be 10 chars or 26 */
-          if (len != 10 || len != 26)
+          if (len != 10 && len != 26)
             {
               label = g_strdup_printf (_("Your password isn't the right length."
                                          " For a WEP connection it needs to be"
