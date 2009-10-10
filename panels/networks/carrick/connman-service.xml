@@ -11,6 +11,10 @@
       <arg name="value" type="v"/>
     </method>
 
+    <method name="ClearProperty" tp:name-for-bindings="Clear_Property">
+      <arg name="name" type="s" />
+    </method>
+
     <method name="Connect" tp:name-for-bindings="Connect" />
 
     <method name="Disconnect" tp:name-for-bindings="Disconnect" />

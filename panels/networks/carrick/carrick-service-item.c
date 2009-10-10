@@ -478,7 +478,6 @@ _delete_button_cb (GtkButton *delete_button,
   GtkWidget                 *dialog;
   GtkWidget                 *label;
   gchar                     *label_text = NULL;
-  GValue                    *value;
 
   dialog = gtk_dialog_new_with_buttons (_ ("Really remove?"),
                                         NULL,
@@ -521,18 +520,10 @@ _delete_button_cb (GtkButton *delete_button,
       if (priv->failed)
         {
           /* Clear the passphrase */
-          value = g_slice_new0 (GValue);
-          g_value_init (value, G_TYPE_STRING);
-          g_value_set_string (value, "");
-
-          org_moblin_connman_Service_set_property_async (priv->proxy,
-                                                         "Passphrase",
-                                                         value,
-                                                         dbus_proxy_notify_cb,
-                                                         item);
-
-          g_value_unset (value);
-          g_slice_free (GValue, value);
+          org_moblin_connman_Service_clear_property_async (priv->proxy,
+                                                           "Passphrase",
+                                                           dbus_proxy_notify_cb,
+                                                           item);
         }
       else
         {
