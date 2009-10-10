@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:19+0000\n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anu McDougall <anu.mcdougall@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -41,34 +41,42 @@ msgstr "ihmiset - %d ihmistä juttelee kanssasi"
 msgid "people"
 msgstr "ihmiset"
 
-#: ../src/mnb-people-panel.c:161
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Nähdäksesi IM kontaktisi, mene nettiin Tila palkissa."
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Emme valitettavasti löydä ketään. Kukaan ei näytä olevan netissä."
+
+#: ../src/mnb-people-panel.c:164
 msgid "Send an email"
 msgstr "Lähetä sähköpostiviesti"
 
-#: ../src/mnb-people-panel.c:163
+#: ../src/mnb-people-panel.c:166
 msgid "Edit details"
 msgstr "Muokkaa tietoja"
 
-#: ../src/mnb-people-panel.c:172
+#: ../src/mnb-people-panel.c:175
 msgid "Send a message"
 msgstr "Lähetä viesti"
 
-#: ../src/mnb-people-panel.c:306
+#: ../src/mnb-people-panel.c:309
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
 
-#: ../src/mnb-people-panel.c:551
+#: ../src/mnb-people-panel.c:554
 msgid "People"
 msgstr "Ihmiset"
 
-#: ../src/mnb-people-panel.c:564
+#: ../src/mnb-people-panel.c:567
 msgid "Search"
 msgstr "Etsi"
 
-#: ../src/mnb-people-panel.c:677
+#: ../src/mnb-people-panel.c:680
 msgid "Selection"
 msgstr "Valinta"
 
-#: ../src/mnb-people-panel.c:740
+#: ../src/mnb-people-panel.c:743
 msgid "Nobody selected"
 msgstr "Ei ketään valittuna"
