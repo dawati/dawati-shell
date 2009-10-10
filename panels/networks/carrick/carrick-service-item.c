@@ -97,6 +97,7 @@ struct _CarrickServiceItemPrivate
   gboolean need_pass;
   gchar *passphrase;
   gboolean setup_required;
+  gboolean favorite;
 
   GtkWidget *info_bar;
   GtkWidget *info_label;
@@ -218,6 +219,7 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_PASSPHRASE_REQUIRED, &priv->need_pass,
                           CARRICK_COLUMN_PASSPHRASE, &priv->passphrase,
                           CARRICK_COLUMN_SETUP_REQUIRED, &priv->setup_required,
+                          CARRICK_COLUMN_FAVORITE, &priv->favorite,
                           -1);
     }
 }
@@ -517,16 +519,11 @@ _delete_button_cb (GtkButton *delete_button,
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
-      if (priv->failed)
+      if (priv->favorite)
         {
-          /* Clear the passphrase */
-          org_moblin_connman_Service_clear_property_async (priv->proxy,
-                                                           "Passphrase",
-                                                           dbus_proxy_notify_cb,
-                                                           item);
-        }
-      else
-        {
+          /* If the network is a favorite it's set to auto-connect and
+           * has therefore been connected before, use Service.Remove
+           */
           carrick_notification_manager_queue_event (priv->note,
                                                     priv->type,
                                                     "idle",
@@ -534,6 +531,16 @@ _delete_button_cb (GtkButton *delete_button,
           org_moblin_connman_Service_remove_async (priv->proxy,
                                                    dbus_proxy_notify_cb,
                                                    item);
+        }
+      else
+        {
+          /* The service isn't marked favorite so probably hasn't been
+           * successfully connected to before, just clear the passphrase
+           */
+          org_moblin_connman_Service_clear_property_async (priv->proxy,
+                                                           "Passphrase",
+                                                           dbus_proxy_notify_cb,
+                                                           item);
         }
     }
 
@@ -1110,6 +1117,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->icon_factory = NULL;
   priv->note = NULL;
   priv->setup_required = FALSE;
+  priv->favorite = FALSE;
 
   priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
 
