@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: carrick\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-07 18:32+0000\n"
-"PO-Revision-Date: 2009-10-07 13:31-0800\n"
+"PO-Revision-Date: 2009-10-09 14:39-0800\n"
 "Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
 "Language-Team: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr ""
 #: ../carrick/carrick-list.c:892
 msgid ""
 "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "抱歉，我们无法找到任何网络连接。您可能需要试试关闭离线模式"
+msgstr "抱歉，我们无法找到任何网络连接。您可以尝试关闭离线模式。"
 
 #: ../carrick/carrick-list.c:1029
 #, c-format
@@ -120,12 +120,12 @@ msgstr "抱歉，您的有线连接出问题了。"
 #: ../carrick/carrick-notification-manager.c:176
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "抱歉，您的%s连接出问题了，它原来连接至%s"
+msgstr "抱歉，您的 %s 连接出问题了，它原来连接至 %s"
 
 #: ../carrick/carrick-notification-manager.c:182
 #, c-format
 msgid "Sorry, we've lost your %s connection"
-msgstr "抱歉，您的%s连接出问题了。"
+msgstr "抱歉，您的 %s 连接出问题了。"
 
 #: ../carrick/carrick-notification-manager.c:199
 msgid "Network changed"
@@ -136,39 +136,39 @@ msgstr "网络已改变"
 msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to a wired "
 "network"
-msgstr "抱歉，您连接至%s的连接出问题了。所以现在将连接至有线网络。"
+msgstr "抱歉，您连接至 %s 的连接出问题了。所以现在将连接至有线网络。"
 
 #: ../carrick/carrick-notification-manager.c:225
 #, c-format
 msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
 "network"
-msgstr "抱歉，您连接至%s的连接出问题了。现在将您连至%s，一个%s网络。"
+msgstr "抱歉，您连接至 %s 的连接出问题了。现在将您连至 %s，一个 %s 网络。"
 
 #: ../carrick/carrick-notification-manager.c:233
 #, c-format
 msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "抱歉，您连接至%s的连接出问题了。现在将您连至一个%s网络。"
+msgstr "抱歉，您连接至 %s 的连接出问题了。现在将您连至一个 %s 网络。"
 
 #: ../carrick/carrick-notification-manager.c:243
 #, c-format
 msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "抱歉，您的%s连接出问题了。现在将您连至有线网络。"
+msgstr "抱歉，您的 %s 连接出问题了。现在将您连至有线网络。"
 
 #: ../carrick/carrick-notification-manager.c:250
 #, c-format
 msgid ""
 "Sorry, your %s connection was lost. So we've connected you to %s, a %s "
 "network"
-msgstr "抱歉，您的%s连接出问题了。现在将您连至%s，一个%s网络。"
+msgstr "抱歉，您的 %s 连接出问题了。现在将您连至%s，一个 %s 网络。"
 
 #: ../carrick/carrick-notification-manager.c:259
 #, c-format
 msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "抱歉，您的%s连接出问题了。现在将您连至一个%s网络。"
+msgstr "抱歉，您的 %s 连接出问题了。现在将您连至一个 %s 网络。"
 
 #: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
@@ -179,11 +179,11 @@ msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
 "password and security type."
-msgstr "输入您想连接的网络的名字,若有必要请输入密码和加密类型."
+msgstr "输入您想连接的网络的名字，若有必要请输入密码和加密类型。"
 
 #: ../carrick/carrick-pane.c:676
 msgid "Network name"
-msgstr "网络名字"
+msgstr "网络名称"
 
 #: ../carrick/carrick-pane.c:688
 msgid "Network security"
@@ -308,8 +308,8 @@ msgid ""
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-"您想删除网络连接%s %s吗?这样系统会同时删除为该连接保存\n"
-"的密码,并且您将不再会被自动连接至%s."
+"您想删除网络连接 %s %s 吗? 这样系统会同时删除为该连接保存\n"
+"的密码，并且您将不再会被自动连接至%s。"
 
 #: ../carrick/carrick-service-item.c:666
 #, c-format
@@ -474,15 +474,6 @@ msgstr "%s（漫游）"
 msgid "Select 3G Service"
 msgstr "选择 3G 服务"
 
-#~ msgid "Select your 3G Data Plan"
-#~ msgstr "选择您的 3G 数据计划"
-
-#~ msgid "Plan Name: (required)"
-#~ msgstr "计划名称：（必填）)"
-
-#~ msgid "Tertairy DNS:"
-#~ msgstr "第三域名（DNS）："
-
 #~ msgid "Manual Config"
 #~ msgstr "手动配置"
 
@@ -587,3 +578,12 @@ msgstr "选择 3G 服务"
 
 #~ msgid "Passphrase required"
 #~ msgstr "需要密码提示(此处翻译不确定!)"
+
+#~ msgid "Select your 3G Data Plan"
+#~ msgstr "选择您的 3G 数据计划"
+
+#~ msgid "Plan Name: (required)"
+#~ msgstr "计划名称：（必填）)"
+
+#~ msgid "Tertairy DNS:"
+#~ msgstr "第三域名（DNS）："
