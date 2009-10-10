@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:19+0000\n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
 "Language-Team: \n"
@@ -41,35 +41,43 @@ msgstr "pessoas - %d pessoas estão falando com você"
 msgid "people"
 msgstr "gente"
 
-#: ../src/mnb-people-panel.c:161
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Para ver seus contatos IM, vá online no painel de status."
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Sinto muito, não achamos ninguém.  Parece que todos estão offline."
+
+#: ../src/mnb-people-panel.c:164
 msgid "Send an email"
 msgstr "Enviar um email"
 
-#: ../src/mnb-people-panel.c:163
+#: ../src/mnb-people-panel.c:166
 msgid "Edit details"
 msgstr "Editar detalhes"
 
-#: ../src/mnb-people-panel.c:172
+#: ../src/mnb-people-panel.c:175
 msgid "Send a message"
 msgstr "Enviar uma mensagem"
 
-#: ../src/mnb-people-panel.c:306
+#: ../src/mnb-people-panel.c:309
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr ""
 "Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
 
-#: ../src/mnb-people-panel.c:551
+#: ../src/mnb-people-panel.c:554
 msgid "People"
 msgstr "Gente"
 
-#: ../src/mnb-people-panel.c:564
+#: ../src/mnb-people-panel.c:567
 msgid "Search"
 msgstr "Pesquisar"
 
-#: ../src/mnb-people-panel.c:677
+#: ../src/mnb-people-panel.c:680
 msgid "Selection"
 msgstr "Seleção  "
 
-#: ../src/mnb-people-panel.c:740
+#: ../src/mnb-people-panel.c:743
 msgid "Nobody selected"
 msgstr "Ninguém selecionado"
