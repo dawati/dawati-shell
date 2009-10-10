@@ -7,48 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:19+0000\n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: ../src/moblin-panel-people.c:87
-msgid "people"
-msgstr "люди"
-
-#: ../src/mnb-people-panel.c:161
-msgid "Send an email"
-msgstr "Надіслати листа"
-
-#: ../src/mnb-people-panel.c:163
-msgid "Edit details"
-msgstr "Змінити деталі"
-
-#: ../src/mnb-people-panel.c:172
-msgid "Send a message"
-msgstr "Надіслати повідомлення"
-
-#: ../src/mnb-people-panel.c:306
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Вибачте, ми не можемо знайти людей. Ви налаштували обліковий запис?"
-
-#: ../src/mnb-people-panel.c:551
-msgid "People"
-msgstr "Люди"
-
-#: ../src/mnb-people-panel.c:564
-msgid "Search"
-msgstr "Пошук"
-
-#: ../src/mnb-people-panel.c:677
-msgid "Selection"
-msgstr "Вибір"
-
-#: ../src/mnb-people-panel.c:740
-msgid "Nobody selected"
-msgstr "Ніхто не вибраний"
 
 #. * Used as header for a block of the panel showing pending conversations.
 #. * The user will be able to click the tile and answer the pending
@@ -59,6 +23,12 @@ msgid "People talking to you ..."
 msgstr "людина говорить до Вас..."
 
 #. * Used for the tooltip for the hover state for the icon in the toolbar
+#. 
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "люди - хтось говорить до Вас"
+
+#. * Used for the tooltip for the hover state for the icon in the toolbar
 #. * (plural version)
 #. 
 #: ../src/moblin-panel-people.c:29
@@ -66,8 +36,46 @@ msgstr "людина говорить до Вас..."
 msgid "people - %d people are talking to you"
 msgstr "люди - %d людей говорять з Вами"
 
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. 
-#: ../src/moblin-panel-people.c:23
-msgid "people - Someone is talking to you"
-msgstr "люди - хтось говорить до Вас"
+#: ../src/moblin-panel-people.c:87
+msgid "people"
+msgstr "люди"
+
+#: ../src/mnb-people-panel.c:164
+msgid "Send an email"
+msgstr "Надіслати листа"
+
+#: ../src/mnb-people-panel.c:166
+msgid "Edit details"
+msgstr "Змінити деталі"
+
+#: ../src/mnb-people-panel.c:175
+msgid "Send a message"
+msgstr "Надіслати повідомлення"
+
+#: ../src/mnb-people-panel.c:309
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Вибачте, ми не можемо знайти людей. Ви налаштували обліковий запис?"
+
+#: ../src/mnb-people-panel.c:554
+msgid "People"
+msgstr "Люди"
+
+#: ../src/mnb-people-panel.c:567
+msgid "Search"
+msgstr "Пошук"
+
+#: ../src/mnb-people-panel.c:680
+msgid "Selection"
+msgstr "Вибір"
+
+#: ../src/mnb-people-panel.c:743
+msgid "Nobody selected"
+msgstr "Ніхто не вибраний"
+
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Для перегляду Ваших IM-контактів, перейдіть в режим \"в мережі\" на панелі \"Статус\"."
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Вибачте, ми не можемо знайти людей. Схоже, вони всі поза мережею."
