@@ -49,7 +49,6 @@ G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
 #define TIMEOUT 250
 
 #define OFFLINE_BANNER _("To see your IM contacts, go online in the Status panel.")
-#define NO_PEOPLE_PLACEHOLDER _("Sorry, we can't find any people. It looks like they are all offline.")
 
 typedef struct _MnbPeoplePanelPrivate MnbPeoplePanelPrivate;
 
@@ -74,6 +73,7 @@ struct _MnbPeoplePanelPrivate {
   NbtkWidget *nobody_selected_box;
   NbtkWidget *content_table;
   NbtkWidget *active_content_table;
+  NbtkWidget *everybody_offline_tile;
 };
 
 static void
@@ -430,6 +430,56 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
   return tile;
 }
 
+static NbtkWidget *
+_make_everybody_offline_tile (MnbPeoplePanel *pane,
+                              gint            width)
+{
+  NbtkWidget *tile;
+  ClutterActor *tmp_text;
+  NbtkWidget *label, *bin;
+
+  tile = nbtk_table_new ();
+  nbtk_table_set_row_spacing (NBTK_TABLE (tile), 8);
+
+  clutter_actor_set_width ((ClutterActor *)tile, width);
+  clutter_actor_set_name ((ClutterActor *)tile,
+                          "people-pane-everybody-offline-tile");
+  label = nbtk_label_new (_("Sorry, we can't find any people. " \
+                            "It looks like they are all offline."));
+  clutter_actor_set_name ((ClutterActor *)label,
+                          "people-pane-everybody-offline-label");
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
+                                   PANGO_WRAP_WORD_CHAR);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
+                              PANGO_ELLIPSIZE_NONE);
+
+  bin = nbtk_bin_new ();
+  nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *)label);
+  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
+  nbtk_bin_set_fill (NBTK_BIN (bin), FALSE, TRUE);
+  clutter_actor_set_name ((ClutterActor *)bin,
+                          "people-pane-everybody-offline-bin");
+
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
+                                        (ClutterActor *)bin,
+                                        0,
+                                        0,
+                                        "x-expand",
+                                        TRUE,
+                                        "y-expand",
+                                        FALSE,
+                                        "x-fill",
+                                        TRUE,
+                                        "y-fill",
+                                        FALSE,
+                                        "x-align",
+                                        0.0,
+                                        NULL);
+  return tile;
+}
+
 static void
 _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
                                   gpointer          userdata)
@@ -447,24 +497,6 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
 
   /* Workaround for MB#6690 */
   clutter_actor_queue_relayout (CLUTTER_ACTOR (priv->content_table));
-}
-
-static void
-_model_bulk_changed_end_cb (AnerleyFeedModel *model,
-                            gpointer          userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-
-  if (clutter_model_get_first_iter ((ClutterModel *)model))
-  {
-    clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
-    clutter_actor_show ((ClutterActor *)priv->content_table);
-    clutter_actor_show ((ClutterActor *)priv->selection_pane);
-  } else {
-    clutter_actor_hide ((ClutterActor *)priv->content_table);
-    clutter_actor_hide ((ClutterActor *)priv->selection_pane);
-    clutter_actor_show ((ClutterActor *)priv->no_people_tile);
-  }
 }
 
 static void
@@ -563,6 +595,52 @@ _tile_view_item_activated_cb (AnerleyTileView *view,
 
   if (priv->panel_client)
     mpl_panel_client_request_hide (priv->panel_client);
+}
+
+static void
+_update_placeholder_state (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+
+  /* There is something in the model, hide all placeholders */
+  if (clutter_model_get_first_iter (priv->model))
+  {
+    clutter_actor_hide (priv->no_people_tile);
+    clutter_actor_hide (priv->everybody_offline_tile);
+
+    /* Ensure content stuff is visible */
+    clutter_actor_show ((ClutterActor *)priv->content_table);
+    clutter_actor_show ((ClutterActor *)priv->selection_pane);
+  } else {
+    /* Hide real content stuff */
+    clutter_actor_hide ((ClutterActor *)priv->content_table);
+    clutter_actor_hide ((ClutterActor *)priv->selection_pane);
+
+    if (anerley_aggregate_tp_feed_get_accounts_online (priv->tp_feed) == 0)
+    {
+      clutter_actor_show ((ClutterActor *)priv->no_people_tile);
+      clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
+    } else {
+      clutter_actor_show ((ClutterActor *)priv->everybody_offline_tile);
+      clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
+    }
+  }
+}
+
+static void
+_tp_feed_online_notify_cb (GObject    *object,
+                           GParamSpec *pspec,
+                           gpointer    userdata)
+{
+  _update_placeholder_state (MNB_PEOPLE_PANEL (userdata));
+}
+
+static void
+_model_bulk_changed_end_cb (AnerleyFeedModel *model,
+                            gpointer          userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  _update_placeholder_state (MNB_PEOPLE_PANEL (userdata));
 }
 
 static void
@@ -719,6 +797,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "row-span",
                                         1,
                                         NULL);
+
+  /* No people && no accounts enabled */
   priv->no_people_tile =
     _make_empty_people_tile (self,
                              clutter_actor_get_width ((ClutterActor *)scroll_view));
@@ -727,20 +807,33 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         (ClutterActor *)priv->no_people_tile,
                                         1,
                                         0,
-                                        "x-fill",
-                                        TRUE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        FALSE,
-                                        "y-fill",
-                                        FALSE,
-                                        "y-align",
-                                        0.0,
-                                        "row-span",
+                                        "x-fill", TRUE,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "y-fill", FALSE,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 2,
+                                        NULL);
+
+
+  /* No people && acounts are online */
+  priv->everybody_offline_tile =
+    _make_everybody_offline_tile (self,
+                                  clutter_actor_get_width ((ClutterActor *)scroll_view));
+  clutter_actor_hide (priv->everybody_offline_tile);
+
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        (ClutterActor *)priv->everybody_offline_tile,
                                         1,
-                                        "col-span",
-                                        2,
+                                        0,
+                                        "x-fill", TRUE,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "y-fill", FALSE,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 2,
                                         NULL);
 
   priv->selection_pane = nbtk_table_new ();
@@ -945,6 +1038,14 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   g_signal_connect (priv->active_model,
                     "bulk-change-end",
                     (GCallback)_active_model_bulk_change_end_cb,
+                    self);
+
+  /* Placeholder changes based on onlineness or not */
+  _update_placeholder_state (self);
+
+  g_signal_connect (priv->tp_feed,
+                    "notify::accounts-online",
+                    (GCallback)_tp_feed_online_notify_cb,
                     self);
 }
 

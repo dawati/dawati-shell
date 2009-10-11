@@ -20,12 +20,12 @@
   color: #fba40b;
 }
 
-*#people-no-people-message-bin {
+*#people-no-people-message-bin, *#people-pane-everybody-offline-bin {
   border-image: url('file://grey-backdrop.png') 4 stretch;
   padding: 8;
 }
 
-*#people-people-pane-main-label {
+*#people-people-pane-main-label, *#people-pane-everybody-offline-label {
   font-size:16px;
   font-family: "Droid Sans";
   color: #595959ff;
