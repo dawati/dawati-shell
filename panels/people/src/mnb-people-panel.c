@@ -54,6 +54,7 @@ G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
 typedef struct _MnbPeoplePanelPrivate MnbPeoplePanelPrivate;
 
 struct _MnbPeoplePanelPrivate {
+  AnerleyFeed *tp_feed;
   guint filter_timeout_id;
   AnerleyFeedModel *model;
   AnerleyFeedModel *active_model;
@@ -570,7 +571,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
   NbtkWidget *hbox, *label;
   NbtkWidget *scroll_view, *scroll_bin, *bin;
-  AnerleyFeed *feed, *tp_feed, *ebook_feed, *active_feed;
+  AnerleyFeed *feed, *ebook_feed, *active_feed;
   EBook *book;
   GError *error = NULL;
 
@@ -627,9 +628,9 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   feed = anerley_aggregate_feed_new ();
 
-  tp_feed = anerley_aggregate_tp_feed_new ();
+  priv->tp_feed = anerley_aggregate_tp_feed_new ();
   anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (feed),
-                                   tp_feed);
+                                   priv->tp_feed);
 
   book = e_book_new_default_addressbook (&error);
 
@@ -647,7 +648,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   priv->model = (AnerleyFeedModel *)anerley_feed_model_new (feed);
   priv->tile_view = anerley_tile_view_new (priv->model);
 
-  active_feed = anerley_tp_monitor_feed_new (tp_feed);
+  active_feed = anerley_tp_monitor_feed_new (priv->tp_feed);
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
   priv->active_tile_view = anerley_tile_view_new (priv->active_model);
 
