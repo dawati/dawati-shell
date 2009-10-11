@@ -601,12 +601,13 @@ static void
 _update_placeholder_state (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  AnerleyAggregateTpFeed *aggregate;
 
   /* There is something in the model, hide all placeholders */
-  if (clutter_model_get_first_iter (priv->model))
+  if (clutter_model_get_first_iter (CLUTTER_MODEL (priv->model)))
   {
-    clutter_actor_hide (priv->no_people_tile);
-    clutter_actor_hide (priv->everybody_offline_tile);
+    clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
+    clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
 
     /* Ensure content stuff is visible */
     clutter_actor_show ((ClutterActor *)priv->content_table);
@@ -616,7 +617,8 @@ _update_placeholder_state (MnbPeoplePanel *self)
     clutter_actor_hide ((ClutterActor *)priv->content_table);
     clutter_actor_hide ((ClutterActor *)priv->selection_pane);
 
-    if (anerley_aggregate_tp_feed_get_accounts_online (priv->tp_feed) == 0)
+    aggregate = ANERLEY_AGGREGATE_TP_FEED (priv->tp_feed);
+    if (anerley_aggregate_tp_feed_get_accounts_online (aggregate) == 0)
     {
       clutter_actor_show ((ClutterActor *)priv->no_people_tile);
       clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
@@ -639,7 +641,6 @@ static void
 _model_bulk_changed_end_cb (AnerleyFeedModel *model,
                             gpointer          userdata)
 {
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
   _update_placeholder_state (MNB_PEOPLE_PANEL (userdata));
 }
 
@@ -726,7 +727,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   priv->model = (AnerleyFeedModel *)anerley_feed_model_new (feed);
   priv->tile_view = anerley_tile_view_new (priv->model);
 
-  active_feed = anerley_tp_monitor_feed_new (priv->tp_feed);
+  active_feed = anerley_tp_monitor_feed_new ((AnerleyAggregateTpFeed *)priv->tp_feed);
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
   priv->active_tile_view = anerley_tile_view_new (priv->active_model);
 
@@ -735,16 +736,16 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   /* active conversations */
   priv->active_content_table = nbtk_table_new ();
 
-  clutter_actor_hide (priv->active_content_table);
-  clutter_actor_set_name (priv->active_content_table, "active-content-table");
+  clutter_actor_hide ((ClutterActor *)priv->active_content_table);
+  clutter_actor_set_name ((ClutterActor *)priv->active_content_table, "active-content-table");
 
   bin = nbtk_bin_new ();
   label = nbtk_label_new (_("People talking to you ..."));
-  clutter_actor_set_name (label, "active-content-header-label");
-  nbtk_bin_set_child (bin, label);
-  nbtk_bin_set_alignment (bin, NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
-  nbtk_bin_set_fill (bin, FALSE, TRUE);
-  clutter_actor_set_name (bin, "active-content-header");
+  clutter_actor_set_name ((ClutterActor *)label, "active-content-header-label");
+  nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *)label);
+  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
+  nbtk_bin_set_fill (NBTK_BIN (bin), FALSE, TRUE);
+  clutter_actor_set_name ((ClutterActor *)bin, "active-content-header");
 
   nbtk_table_add_actor (NBTK_TABLE (priv->active_content_table),
                         (ClutterActor *)bin,
@@ -779,7 +780,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                         (ClutterActor *)scroll_bin,
                         1,
                         0);
-  clutter_actor_set_name (scroll_bin, "people-scroll-bin");
+  clutter_actor_set_name ((ClutterActor *)scroll_bin, "people-scroll-bin");
 
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
@@ -821,7 +822,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   priv->everybody_offline_tile =
     _make_everybody_offline_tile (self,
                                   clutter_actor_get_width ((ClutterActor *)scroll_view));
-  clutter_actor_hide (priv->everybody_offline_tile);
+  clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->everybody_offline_tile,
