@@ -1,0 +1,71 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Jean Cayron <jean.cayron@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-10 07:24+0000\n"
+"PO-Revision-Date: 2009-10-11 21:31+0200\n"
+"Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
+"Language-Team: Walloon <linux-wa@walon.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 0.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../src/moblin-netbook.c:391 ../src/mnb-toolbar.c:1426
+msgid "zones"
+msgstr "redjons"
+
+#: ../src/moblin-netbook.c:504
+msgid "Moblin Netbook Effects"
+msgstr "Efets po Netbook da Moblin"
+
+#: ../src/moblin-netbook.c:508
+msgid "Effects for Moblin Netbooks"
+msgstr "Efets da Moblin po les Netbooks"
+
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:674
+msgid "%l:%M %P"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:684
+msgid "%B %e, %Y"
+msgstr "li %e di %B %Y"
+
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Rinoncî"
+
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Rinoncî a ttafwait"
+
+#: ../src/switcher/mnb-switcher.c:301
+msgid "No Zones yet"
+msgstr "Nén co d' redjon"
+
+#: ../src/switcher/mnb-switcher.c:321
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet "
+"les assonrer sorlon çou k' vos veyoz voltî."
+
+#: ../src/switcher/mnb-switcher-zone-apps.c:463
+msgid "No applications on this zone"
+msgstr "Nou programe dins cisse redjon"
+
+
