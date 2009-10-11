@@ -42,7 +42,8 @@ struct _AnerleyAggregateTpFeedPrivate {
 enum
 {
   PROP_0,
-  PROP_ACCOUNTS_AVAILABLE
+  PROP_ACCOUNTS_AVAILABLE,
+  PROP_ACCOUNTS_ONLINE
 };
 
 static void
@@ -75,11 +76,16 @@ static void
 anerley_aggregate_tp_feed_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  AnerleyAggregateTpFeed *feed = ANERLEY_AGGREGATE_FEED (object);
   AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (object);
 
   switch (property_id) {
     case PROP_ACCOUNTS_AVAILABLE:
       g_value_set_int (value, priv->accounts_available);
+      break;
+    case PROP_ACCOUNTS_ONLINE:
+      g_value_set_int (value,
+                       anerley_aggregate_tp_feed_get_accounts_online (feed));
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -96,6 +102,14 @@ anerley_aggregate_tp_feed_set_property (GObject *object, guint property_id,
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
+}
+
+static void
+_feed_notify_online_cb (GObject    *object,
+                        GParamSpec *pspec,
+                        gpointer    userdata)
+{
+  g_object_notify (G_OBJECT (userdata), "accounts-online");
 }
 
 static void
@@ -126,7 +140,12 @@ _account_manager_account_enabled_cb (TpAccountManager *account_manager,
     anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (aggregate),
                                      ANERLEY_FEED (feed));
     priv->accounts_available++;
+    g_signal_connect (feed,
+                      "notify::online",
+                      (GCallback)_feed_notify_online_cb,
+                      aggregate);
     g_object_notify (G_OBJECT (aggregate), "accounts-available");
+    g_object_notify (G_OBJECT (aggregate), "accounts-online");
   }
 }
 
@@ -189,7 +208,13 @@ _account_manager_ready_cb (GObject      *source_object,
     anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (aggregate),
                                      ANERLEY_FEED (feed));
     priv->accounts_available++;
+    g_signal_connect (feed,
+                      "notify::online",
+                      (GCallback)_feed_notify_online_cb,
+                      aggregate);
+
     g_object_notify (G_OBJECT (aggregate), "accounts-available");
+    g_object_notify (G_OBJECT (aggregate), "accounts-online");
   }
 
   g_list_free (accounts);
@@ -235,6 +260,15 @@ anerley_aggregate_tp_feed_class_init (AnerleyAggregateTpFeedClass *klass)
                             0,
                             G_PARAM_READABLE);
   g_object_class_install_property (object_class, PROP_ACCOUNTS_AVAILABLE, pspec);
+
+  pspec = g_param_spec_int ("accounts-online",
+                            "accounts-online",
+                            "Number of accounts online",
+                            0,
+                            G_MAXINT,
+                            0,
+                            G_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_ACCOUNTS_ONLINE, pspec);
 }
 
 static void
@@ -263,4 +297,25 @@ anerley_aggregate_tp_feed_get_feed_by_account_name (AnerleyAggregateTpFeed *feed
   return g_hash_table_lookup (priv->feeds, account_name);
 }
 
+gint
+anerley_aggregate_tp_feed_get_accounts_online (AnerleyAggregateTpFeed *feed)
+{
+  AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (feed);
+  GList *feeds = NULL;
+  gint online = 0;
+  GList *l;
 
+  feeds = g_hash_table_get_values (priv->feeds);
+
+  for (l = feeds; l; l = l->next)
+  {
+    if (anerley_tp_feed_get_online (ANERLEY_TP_FEED (l->data)))
+    {
+      online++;
+    }
+  }
+
+  g_list_free (feeds);
+
+  return online;
+}
