@@ -443,6 +443,9 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
     nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 0);
     clutter_actor_hide ((ClutterActor *)priv->active_content_table);
   }
+
+  /* Workaround for MB#6690 */
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (priv->content_table));
 }
 
 static void
