@@ -1,0 +1,93 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Jean Cayron <jean.cayron@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-people.master.moblin-panel-people\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"PO-Revision-Date: 2009-10-11 21:24+0200\n"
+"Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
+"Language-Team: Walloon <linux-wa@walon.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 0.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#.
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending conversation
+#.
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Les djins ki vs divizez avou..."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#.
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "djins - Ene sakî vs djåze"
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#.
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "djins - %d djins vs djåznut"
+
+#: ../src/moblin-panel-people.c:87
+msgid "people"
+msgstr "djins"
+
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr ""
+"Po vey vos soçons d' berdelaedje sol moumint, potchîz so fyis e Scriftôr "
+"d' estat"
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr ""
+"Dji rgrete, nos n' avans savou trouver d' djin. I shonne k' i sont tertos "
+"disraloyîs."
+
+#: ../src/mnb-people-panel.c:164
+msgid "Send an email"
+msgstr "Evoyî èn emile"
+
+#: ../src/mnb-people-panel.c:166
+msgid "Edit details"
+msgstr "Candjî detays"
+
+#: ../src/mnb-people-panel.c:175
+msgid "Send a message"
+msgstr "Evoyî on messaedje"
+
+#: ../src/mnb-people-panel.c:309
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr ""
+"Dji rgrete, nos n' avans savou trouver d' djin. Avoz apontyî on conte di "
+"Messaedjreye ?"
+
+#: ../src/mnb-people-panel.c:554
+msgid "People"
+msgstr "Djins"
+
+#: ../src/mnb-people-panel.c:567
+msgid "Search"
+msgstr "Trover"
+
+#: ../src/mnb-people-panel.c:680
+msgid "Selection"
+msgstr "Tchoes"
+
+#: ../src/mnb-people-panel.c:743
+msgid "Nobody selected"
+msgstr "Nolu d' tchoezi"
+
+
