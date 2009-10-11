@@ -20,6 +20,7 @@
  */
 
 #include <glib/gi18n.h>
+#include <gio/gio.h>
 
 #include "anerley-econtact-item.h"
 G_DEFINE_TYPE (AnerleyEContactItem, anerley_econtact_item, ANERLEY_TYPE_ITEM)

@@ -51,7 +51,7 @@ main (int    argc,
 
   g_signal_connect (observer,
                     "new-channel",
-                    _observer_new_channel_cb,
+                    (GCallback)_observer_new_channel_cb,
                     NULL);
   g_main_loop_run (main_loop);
 

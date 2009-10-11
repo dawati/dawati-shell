@@ -33,13 +33,11 @@ _account_manager_ready_cb (GObject      *source_object,
                            gpointer      userdata)
 
 {
-  TpAccountManager *account_manager = TP_ACCOUNT_MANAGER (source_object);
-  AnerleyAggregateTpFeed *aggregate;
-  AnerleyTpMonitorFeed *monitor;
+  AnerleyFeed *aggregate;
+  AnerleyFeed *monitor;
 
   aggregate = anerley_aggregate_tp_feed_new ();
-  monitor = anerley_tp_monitor_feed_new (aggregate);
-
+  monitor = anerley_tp_monitor_feed_new (ANERLEY_AGGREGATE_TP_FEED (aggregate));
 }
 
 int

@@ -287,7 +287,7 @@ anerley_tp_item_activate (AnerleyItem *item)
                                                  _item_activate_ensure_channel_cb,
                                                  NULL,
                                                  NULL,
-                                                 item);
+                                                 (GObject *)item);
 
   g_hash_table_destroy (properties);
   g_object_unref (dispatcher);

@@ -76,7 +76,7 @@ static void
 anerley_aggregate_tp_feed_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
-  AnerleyAggregateTpFeed *feed = ANERLEY_AGGREGATE_FEED (object);
+  AnerleyAggregateTpFeed *feed = ANERLEY_AGGREGATE_TP_FEED (object);
   AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (object);
 
   switch (property_id) {
@@ -96,8 +96,6 @@ static void
 anerley_aggregate_tp_feed_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
-  AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (object);
-
   switch (property_id) {
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
