@@ -60,6 +60,8 @@ GType anerley_tp_feed_get_type (void);
 AnerleyTpFeed *anerley_tp_feed_new (TpAccount *account);
 AnerleyItem *anerley_tp_feed_get_item_by_uid (AnerleyTpFeed *feed,
                                               const gchar   *uid);
+
+gboolean anerley_tp_feed_get_online (AnerleyTpFeed *feed);
 G_END_DECLS
 
 #endif /* _ANERLEY_TP_FEED */

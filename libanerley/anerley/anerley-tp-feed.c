@@ -55,18 +55,23 @@ struct _AnerleyTpFeedPrivate {
 enum
 {
   PROP_0,
-  PROP_ACCOUNT
+  PROP_ACCOUNT,
+  PROP_ONLINE
 };
 
 static void
 anerley_tp_feed_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  AnerleyTpFeed *feed = ANERLEY_TP_FEED (object);
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (object);
 
   switch (property_id) {
     case PROP_ACCOUNT:
       g_value_set_object (value, priv->account);
+      break;
+    case PROP_ONLINE:
+      g_value_set_boolean (value, anerley_tp_feed_get_online (feed));
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -771,7 +776,7 @@ _account_status_changed_cb (TpAccount                *account,
     tp_connection_call_when_ready (priv->conn,
                                    _tp_connection_ready_cb,
                                    feed);
-
+    g_object_notify ((GObject *)feed, "online");
   } else if (status == TP_CONNECTION_STATUS_DISCONNECTED) {
     /*
      * This means our connection has been disconnected. That is :-( so lets
@@ -798,6 +803,8 @@ _account_status_changed_cb (TpAccount                *account,
       g_object_unref (priv->conn);
       priv->conn = NULL;
     }
+
+    g_object_notify ((GObject *)feed, "online");
   } else {
     /* CONNECTING */
   }
@@ -862,6 +869,13 @@ anerley_tp_feed_class_init (AnerleyTpFeedClass *klass)
                                TP_TYPE_ACCOUNT,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_ACCOUNT, pspec);
+
+  pspec = g_param_spec_boolean ("online",
+                                "online",
+                                "Whether we are online or not",
+                                FALSE,
+                                G_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_ONLINE, pspec);
 }
 
 static void
@@ -918,4 +932,21 @@ anerley_tp_feed_get_item_by_uid (AnerleyTpFeed *feed,
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
 
   return g_hash_table_lookup (priv->ids_to_items, uid);
+}
+
+
+gboolean
+anerley_tp_feed_get_online (AnerleyTpFeed *feed)
+{
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+  TpConnectionStatus status;
+
+  if (priv->conn)
+  {
+    status = tp_account_get_connection_status (priv->account, NULL);
+    if (status == TP_CONNECTION_STATUS_CONNECTED)
+      return TRUE;
+  }
+
+  return FALSE;
 }
