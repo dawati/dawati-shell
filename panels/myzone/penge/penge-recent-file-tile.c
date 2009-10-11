@@ -147,13 +147,13 @@ _clicked_cb (NbtkButton *button,
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (userdata);
 
-  if (!penge_utils_launch_for_uri (button,
+  if (!penge_utils_launch_for_uri ((ClutterActor *)button,
                                    gtk_recent_info_get_uri (priv->info)))
   {
     g_warning (G_STRLOC ": Error launching: %s",
                gtk_recent_info_get_uri (priv->info));
   } else {
-    penge_utils_signal_activated (button);
+    penge_utils_signal_activated ((ClutterActor *)button);
   }
 }
 

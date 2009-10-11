@@ -156,7 +156,7 @@ _client_get_services_cb (MojitoClient *client,
   PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
 
   mojito_client_open_view (client,
-                           services,
+                           (GList *)services,
                            priv->item_count,
                            _client_open_view_cb,
                            userdata);
@@ -395,7 +395,7 @@ penge_people_pane_dup_mojito_client_singleton (void)
     return g_object_ref (client);
   } else {
     client = mojito_client_new ();
-    g_object_add_weak_pointer (client, &client);
+    g_object_add_weak_pointer ((GObject *)client, (gpointer)&client);
     return client;
   }
 }

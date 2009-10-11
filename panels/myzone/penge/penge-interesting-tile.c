@@ -204,18 +204,18 @@ _enter_event_cb (ClutterActor *actor,
 
   if (1)
   {
-    clutter_actor_animate (priv->details_overlay,
+    clutter_actor_animate ((ClutterActor *)priv->details_overlay,
                            CLUTTER_LINEAR,
                            150,
                            "opacity", 0xc0,
                            NULL);
-    clutter_actor_animate (priv->remove_button,
+    clutter_actor_animate ((ClutterActor *)priv->remove_button,
                            CLUTTER_LINEAR,
                            150,
                            "opacity", 0xff, /* asset already has opacity */
                            NULL);
   } else {
-    clutter_actor_animate (priv->details_overlay,
+    clutter_actor_animate ((ClutterActor *)priv->details_overlay,
                            CLUTTER_LINEAR,
                            150,
                            "opacity", 0,
@@ -237,18 +237,18 @@ _leave_event_cb (ClutterActor *actor,
 
   if (0)
   {
-    clutter_actor_animate (priv->details_overlay,
+    clutter_actor_animate ((ClutterActor *)priv->details_overlay,
                            CLUTTER_LINEAR,
                            150,
                            "opacity", 0xc0,
                            NULL);
   } else {
-    clutter_actor_animate (priv->details_overlay,
+    clutter_actor_animate ((ClutterActor *)priv->details_overlay,
                            CLUTTER_LINEAR,
                            150,
                            "opacity", 0,
                            NULL);
-    clutter_actor_animate (priv->remove_button,
+    clutter_actor_animate ((ClutterActor *)priv->remove_button,
                            CLUTTER_LINEAR,
                            150,
                            "opacity", 0,
@@ -272,7 +272,6 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 {
   PengeInterestingTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
-  ClutterAlpha *alpha;
   NbtkWidget *icon;
 
   priv->inner_table = nbtk_table_new ();
@@ -389,13 +388,13 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   priv->remove_button = nbtk_button_new ();
   nbtk_widget_set_style_class_name (priv->remove_button,
                                     "PengeInterestingTileRemoveButton");
-  icon = nbtk_icon_new ();
+  icon = (NbtkWidget *)nbtk_icon_new ();
   nbtk_widget_set_style_class_name (icon,
                                     "PengeInterestingTileIcon");
   nbtk_bin_set_child (NBTK_BIN (priv->remove_button),
-                      icon);
+                      (ClutterActor *)icon);
   nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->inner_table),
-                                        priv->remove_button,
+                                        (ClutterActor *)priv->remove_button,
                                         0, 0,
                                         "x-expand", TRUE,
                                         "y-expand", TRUE,
@@ -405,7 +404,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                         "y-align", 0.0,
                                         NULL);
 
-  clutter_actor_set_opacity (priv->remove_button, 0x0);
+  clutter_actor_set_opacity ((ClutterActor *)priv->remove_button, 0x0);
 
   g_signal_connect (self,
                     "enter-event",

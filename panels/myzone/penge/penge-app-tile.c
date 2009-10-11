@@ -115,7 +115,6 @@ _update_icon_from_icon_theme (PengeAppTile *tile)
   PengeAppTilePrivate *priv = GET_PRIVATE (tile);
   gchar *icon_path;
   GError *error = NULL;
-  GtkIconInfo *info;
   GIcon *icon;
 
   icon = g_app_info_get_icon (priv->app_info);

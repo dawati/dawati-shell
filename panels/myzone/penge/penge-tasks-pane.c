@@ -86,12 +86,6 @@ penge_tasks_pane_dispose (GObject *object)
   G_OBJECT_CLASS (penge_tasks_pane_parent_class)->dispose (object);
 }
 
-static void
-penge_tasks_pane_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (penge_tasks_pane_parent_class)->finalize (object);
-}
-
 static gboolean
 _update_idle_cb (gpointer userdata)
 {

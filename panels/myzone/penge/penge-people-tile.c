@@ -23,6 +23,7 @@
 #include "penge-people-tile.h"
 #include "penge-utils.h"
 #include "penge-magic-texture.h"
+#include "penge-people-pane.h"
 
 G_DEFINE_TYPE (PengePeopleTile, penge_people_tile, PENGE_TYPE_INTERESTING_TILE)
 
@@ -67,10 +68,6 @@ static void
 penge_people_tile_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
-  PengePeopleTilePrivate *priv = GET_PRIVATE (object);
-  GError *error = NULL;
-  const gchar *path;
-
   switch (property_id) {
     case PROP_ITEM:
       penge_people_tile_set_item ((PengePeopleTile *)object,
