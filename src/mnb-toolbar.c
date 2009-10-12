@@ -61,7 +61,8 @@
 #define TOOLBAR_TRIGGER_THRESHOLD       1
 #define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 500
 #define TOOLBAR_LOWLIGHT_FADE_DURATION 300
-#define TOOLBAR_AUTOSTART_DELAY 10
+#define TOOLBAR_AUTOSTART_DELAY 15
+#define TOOLBAR_AUTOSTART_ATTEMPTS 10
 #define TOOLBAR_WAITING_FOR_PANEL_TIMEOUT 1 /* in seconds */
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
@@ -1772,8 +1773,11 @@ mnb_toolbar_noc_cb (DBusGProxy  *proxy,
 static gboolean
 mnb_toolbar_autostart_panels_cb (gpointer toolbar)
 {
+  static gint count = 0;
+
   MnbToolbarPrivate  *priv = MNB_TOOLBAR (toolbar)->priv;
   gint                i;
+  gboolean            missing = FALSE;
 
   for (i = 0; i < NUM_ZONES; ++i)
     {
@@ -1787,6 +1791,12 @@ mnb_toolbar_autostart_panels_cb (gpointer toolbar)
         case MYZONE:
         case MEDIA_ZONE:
         case STATUS_ZONE:
+        case WIFI_APPLET:
+        case VOLUME_APPLET:
+        case BATTERY_APPLET:
+#if 0
+        case BT_APPLET:
+#endif
           if (!priv->panels[i])
             {
               DBusConnection *conn;
@@ -1804,13 +1814,28 @@ mnb_toolbar_autostart_panels_cb (gpointer toolbar)
               dbus_bus_start_service_by_name (conn, dbus_name, 0, NULL, NULL);
 
               g_free (dbus_name);
+
+              missing = TRUE;
+
+                if (count > TOOLBAR_AUTOSTART_ATTEMPTS)
+                  {
+                    g_warning ("Panel %s is still not running after %d "
+                               "attempts to start it, last attempt.",
+                               mnb_toolbar_panel_index_to_name (i),
+                               count);
+                  }
             }
           break;
         default:;
         }
     }
 
-  return FALSE;
+  if (!missing || count > TOOLBAR_AUTOSTART_ATTEMPTS)
+    return FALSE;
+
+  count++;
+
+  return TRUE;
 }
 
 /*
