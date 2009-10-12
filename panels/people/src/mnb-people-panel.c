@@ -490,9 +490,18 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
   {
     clutter_actor_show ((ClutterActor *)priv->active_content_table);
     nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 6);
+
+    if (priv->panel_client)
+      mpl_panel_client_request_button_style (priv->panel_client,
+                                             "people-button-active");
   } else {
     nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 0);
     clutter_actor_hide ((ClutterActor *)priv->active_content_table);
+
+    if (priv->panel_client)
+      mpl_panel_client_request_button_style (priv->panel_client,
+                                             "people-button");
+
   }
 
   /* Workaround for MB#6690 */
