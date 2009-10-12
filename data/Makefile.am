@@ -19,6 +19,8 @@ dist_theme_panel_DATA = \
 	theme/panel/pasteboard-normal.png \
 	theme/panel/people-coloured.png \
 	theme/panel/people-normal.png \
+	theme/panel/people-active-coloured.png \
+	theme/panel/people-active-normal.png \
 	theme/panel/spaces-coloured.png \
 	theme/panel/spaces-normal.png \
 	theme/panel/status-coloured.png \

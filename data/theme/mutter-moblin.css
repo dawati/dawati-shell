@@ -132,6 +132,14 @@ MnbToolbarButton#people-button:hover, MnbToolbarButton#people-button:active, Mnb
   background-image: url("file://panel/people-coloured.png");
 }
 
+MnbToolbarButton#people-button-active {
+  background-image: url("file://panel/people-active-normal.png");
+}
+MnbToolbarButton#people-button-active:hover, MnbToolbarButton#people-button-active:active, MnbToolbarButton#people-button-active:checked {
+  background-image: url("file://panel/people-active-coloured.png");
+}
+
+
 /* spaces button */
 MnbToolbarButton#zones-button {
   background-image: url("file://panel/spaces-normal.png");
