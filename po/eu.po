@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-10 07:24+0000\n"
+"PO-Revision-Date: 2009-10-13 22:40+0100\n"
+"Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/moblin-netbook.c:391
+#: ../src/mnb-toolbar.c:1426
+msgid "zones"
+msgstr "zonak"
+
+#: ../src/moblin-netbook.c:504
+msgid "Moblin Netbook Effects"
+msgstr "Moblin Netbook Efektuak"
+
+#: ../src/moblin-netbook.c:508
+msgid "Effects for Moblin Netbooks"
+msgstr "Moblin Netbook-entzako Efektuak"
+
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:674
+msgid "%l:%M %P"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:684
+msgid "%B %e, %Y"
+msgstr "%Y %B %e"
+
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Arbuiatu"
+
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Guztiak Arbuiatu"
+
+#: ../src/switcher/mnb-switcher.c:301
+msgid "No Zones yet"
+msgstr "Zonarik Ez oraindik"
+
+#: ../src/switcher/mnb-switcher.c:321
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Darabiltzazun aplikazioak agertuko dira hemen. Nahi duzun bezala antolatu ditzakezu."
+
+#: ../src/switcher/mnb-switcher-zone-apps.c:463
+msgid "No applications on this zone"
+msgstr "Aplikaziorik ez zona honetan"
+
