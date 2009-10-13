@@ -1,0 +1,50 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-29 20:28+0000\n"
+"PO-Revision-Date: 2009-10-13 22:32+0100\n"
+"Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../penge/penge-calendar-pane.c:478
+msgid "<b>Appointments</b>"
+msgstr "<b>Hitzorduak</b>"
+
+#: ../penge/penge-events-pane.c:265
+msgid "No calendar entries this week"
+msgstr "Ezer ez egutegian aste honetarako"
+
+#: ../penge/penge-people-placeholder-tile.c:112
+msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+msgstr "Zure lagunen berri-jarioak eta web-zerbitzuak agertuko dira hemen. Oraintxe aktibatu itzazu zure kontuak!"
+
+#: ../penge/penge-recent-file-tile.c:224
+msgid "Web page"
+msgstr "Webgunea"
+
+#: ../penge/penge-tasks-pane.c:344
+msgid "Nothing to do today"
+msgstr "Ezer ez gaurko"
+
+#: ../penge/penge-task-tile.c:325
+#, c-format
+msgid "Due %x"
+msgstr "%x-erako"
+
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Ongietorri Moblin 2.1era</b>"
+
+#: ../penge/penge-welcome-tile.c:108
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Beste ordenagailuekiko ezberdina denez Moblin, arrasto batzuk jarri dizkizugu han eta hemen, erabiltzen ikasi dezazun. Gozatuko duzula espero dugu, Moblin Taldea."
+
