@@ -480,11 +480,13 @@ _make_everybody_offline_tile (MnbPeoplePanel *pane,
   return tile;
 }
 
+
 static void
 _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
                                   gpointer          userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  gint number_active_people;
 
   if (clutter_model_get_first_iter ((ClutterModel *)model))
   {
@@ -492,16 +494,31 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
     nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 6);
 
     if (priv->panel_client)
+    {
       mpl_panel_client_request_button_style (priv->panel_client,
                                              "people-button-active");
+      number_active_people = clutter_model_get_n_rows (CLUTTER_MODEL (priv->active_model));
+
+      if (number_active_people > 1)
+      {
+        mpl_panel_client_request_tooltip (priv->panel_client,
+                                          _("people - %d people are talking to you"));
+      } else {
+        mpl_panel_client_request_tooltip (priv->panel_client,
+                                          _("people - Someone is talking to you"));
+      }
+    }
   } else {
     nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 0);
     clutter_actor_hide ((ClutterActor *)priv->active_content_table);
 
     if (priv->panel_client)
+    {
       mpl_panel_client_request_button_style (priv->panel_client,
                                              "people-button");
-
+      mpl_panel_client_request_tooltip (priv->panel_client,
+                                        _("people"));
+    }
   }
 
   /* Workaround for MB#6690 */
