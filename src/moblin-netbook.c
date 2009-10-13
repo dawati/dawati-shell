@@ -1868,6 +1868,9 @@ GdkRegion *mutter_window_get_obscured_region (MutterWindow *cw);
 
 /*
  * Based on the occlusion code in MutterWindowGroup
+ *
+ * Returns the visible region that needs to be painted, or NULL, if the
+ * entire area needs to be painted.
  */
 GdkRegion *
 mnb_get_background_visible_region (MetaScreen *screen)
@@ -1896,6 +1899,12 @@ mnb_get_background_visible_region (MetaScreen *screen)
 
       cw = l->data;
       actor = l->data;
+
+      if (mutter_window_effect_in_progress (cw))
+        {
+          gdk_region_destroy (visible_region);
+          return NULL;
+        }
 
       /*
        * MutterWindowGroup adds a test whether the actor is transformed or not;
@@ -1926,8 +1935,11 @@ mnb_get_background_visible_region (MetaScreen *screen)
 
 /*
  * Based on mutter_shaped_texture_paint()
+ *
+ * Returns TRUE if the texture was painted; if FALSE, regular path for
+ * painting textures should be fallen back on.
  */
-static void
+static gboolean
 mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 {
   static CoglHandle material = COGL_INVALID_HANDLE;
@@ -1938,6 +1950,9 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
   GdkRegion *visible_region;
 
   visible_region = mnb_get_background_visible_region (screen);
+
+  if (!visible_region)
+    return FALSE;
 
   if (gdk_region_empty (visible_region))
     goto finish_up;
@@ -2015,6 +2030,7 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 
  finish_up:
   gdk_region_destroy (visible_region);
+  return TRUE;
 }
 
 /*
@@ -2042,7 +2058,14 @@ desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
    * Try to paint only parts of the desktop background
    */
   screen = mutter_plugin_get_screen (plugin);
-  mnb_desktop_texture_paint (background, screen);
+  if (!mnb_desktop_texture_paint (background, screen))
+    {
+      /*
+       * We have not painted the texture, so we leave without stoping
+       * emission of the signal.
+       */
+      return;
+    }
 
  finish_up:
   g_signal_stop_emission_by_name (background, "paint");
