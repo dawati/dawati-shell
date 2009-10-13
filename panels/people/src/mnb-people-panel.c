@@ -487,6 +487,7 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
   gint number_active_people;
+  gchar *tooltip;
 
   if (clutter_model_get_first_iter ((ClutterModel *)model))
   {
@@ -501,8 +502,11 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
 
       if (number_active_people > 1)
       {
+        tooltip = g_strdup_printf (_("people - %d people are talking to you"),
+                                   number_active_people);
         mpl_panel_client_request_tooltip (priv->panel_client,
-                                          _("people - %d people are talking to you"));
+                                          tooltip);
+        g_free (tooltip);
       } else {
         mpl_panel_client_request_tooltip (priv->panel_client,
                                           _("people - Someone is talking to you"));
