@@ -669,27 +669,27 @@ _connect_with_password (CarrickServiceItem *item)
         }
       else if (g_str_equal (priv->security, "wpa"))
         {
-          /* WPA passphrase must be more than 9 chars, less than 62 */
+          /* WPA passphrase must be more than 9 chars, less than or equal 63 */
           if (len < 8)
             label = g_strdup_printf (_("Your password is too short. For a WPA "
                                        " connection it needs to be at least"
                                        " 8 characters long, you have %i"), len);
-          else if (len > 62)
+          else if (len > 63)
             label = g_strdup_printf (_("Your password is too long. For a WPA "
                                        " connection it needs to have fewer than"
-                                       " 62 characters, you have %i"), len);
+                                       " 63 characters, you have %i"), len);
         }
       else if (g_str_equal (priv->security, "rsn"))
         {
-          /* WPA2 passphrase must be more than 9 chars, less than 62 */
+          /* WPA2 passphrase must be more than 9 chars, less than 63 */
           if (len < 8)
             label = g_strdup_printf (_("Your password is too short. For a WPA2 "
                                        " connection it needs to be at least"
                                        " 8 characters long, you have %i"), len);
-          else if (len > 62)
+          else if (len > 63)
             label = g_strdup_printf (_("Your password is too long. For a WPA2 "
                                        " connection it needs to have fewer than"
-                                       " 62 characters, you have %i"), len);
+                                       " 63 characters, you have %i"), len);
         }
 
       if (!label)
