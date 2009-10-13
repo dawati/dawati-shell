@@ -1865,6 +1865,7 @@ setup_focus_window (MutterPlugin *plugin)
 }
 
 GdkRegion *mutter_window_get_obscured_region (MutterWindow *cw);
+gboolean   mutter_window_effect_in_progress (MutterWindow *self);
 
 /*
  * Based on the occlusion code in MutterWindowGroup
