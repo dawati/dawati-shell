@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:19+0000\n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Michał Sawicz <michal@sawicz.net>\n"
 "Language-Team: Moblin\n"
@@ -47,36 +47,44 @@ msgstr "osoby - %d osób pisze do ciebie"
 msgid "people"
 msgstr "osoby"
 
-#: ../src/mnb-people-panel.c:161
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Aby zobaczyć swoje kontakty, zmień swój status na dostępny."
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr ""
+"Niestety nikogo nie znaleziono. Wygląda na to, że wszyscy są niedostępni."
+
+#: ../src/mnb-people-panel.c:164
 msgid "Send an email"
 msgstr "Wyślij e-mail"
 
-#: ../src/mnb-people-panel.c:163
+#: ../src/mnb-people-panel.c:166
 msgid "Edit details"
 msgstr "Ustaw dane"
 
-#: ../src/mnb-people-panel.c:172
+#: ../src/mnb-people-panel.c:175
 msgid "Send a message"
 msgstr "Wyślij wiadomość"
 
-#: ../src/mnb-people-panel.c:306
+#: ../src/mnb-people-panel.c:309
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr ""
-"Niestety nie znaleziono znajomych. Czy konto Komunikatora jest "
-"skonfigurowane?"
+"Niestety nikogo nie znaleziono. Czy skonfigurowano jakieś konto komunikatora?"
 
-#: ../src/mnb-people-panel.c:551
+#: ../src/mnb-people-panel.c:554
 msgid "People"
 msgstr "Osoby"
 
-#: ../src/mnb-people-panel.c:564
+#: ../src/mnb-people-panel.c:567
 msgid "Search"
 msgstr "Szukaj"
 
-#: ../src/mnb-people-panel.c:677
+#: ../src/mnb-people-panel.c:680
 msgid "Selection"
 msgstr "Zaznaczenie"
 
-#: ../src/mnb-people-panel.c:740
+#: ../src/mnb-people-panel.c:743
 msgid "Nobody selected"
 msgstr "Nie wybrano adresatów"
