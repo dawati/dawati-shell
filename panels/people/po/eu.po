@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"PO-Revision-Date: 2009-10-13 12:22+0100\n"
+"Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#.
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending conversation
+#.
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Hitz egiten ari zaizkizu ..."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#.
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "jendea - Hizketan ari zaizu norbait"
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#.
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "jendea - %d pertsona hizketan ari zaizkizu"
+
+#: ../src/moblin-panel-people.c:87
+msgid "people"
+msgstr "jendea"
+
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Zure IM-kontaktuak ikusteko, Egoera panelean konektatu zaitez."
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Lastima, ezin dugu inor aurkitu. Guztiak deskonektatuta daudela dirudi."
+
+#: ../src/mnb-people-panel.c:164
+msgid "Send an email"
+msgstr "E-posta bidali"
+
+#: ../src/mnb-people-panel.c:166
+msgid "Edit details"
+msgstr "Xehetasunak aldatu"
+
+#: ../src/mnb-people-panel.c:175
+msgid "Send a message"
+msgstr "Mezua bidali"
+
+#: ../src/mnb-people-panel.c:309
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Ezin dugu jenderik aurkitu. Messenger konturen bat kofiguratu al duzu?"
+
+#: ../src/mnb-people-panel.c:554
+msgid "People"
+msgstr "Jendea"
+
+#: ../src/mnb-people-panel.c:567
+msgid "Search"
+msgstr "Bilatu"
+
+#: ../src/mnb-people-panel.c:680
+msgid "Selection"
+msgstr "Hautaketa"
+
+#: ../src/mnb-people-panel.c:743
+msgid "Nobody selected"
+msgstr "Inor ez hautatuta"
+
