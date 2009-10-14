@@ -50,8 +50,7 @@ typedef struct {
 
 typedef struct {
   GObjectClass parent_class;
-  void (*bookmark_added)(MplAppBookmarkManager *manager, const gchar *uri);
-  void (*bookmark_removed) (MplAppBookmarkManager *manager, const gchar *uri);
+  void (*bookmarks_changed)(MplAppBookmarkManager *manager);
 } MplAppBookmarkManagerClass;
 
 GType mpl_app_bookmark_manager_get_type (void);

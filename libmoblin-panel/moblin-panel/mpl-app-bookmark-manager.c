@@ -44,8 +44,7 @@ struct _MplAppBookmarkManagerPrivate {
 
 enum
 {
-  BOOKMARK_ADDED_SIGNAL,
-  BOOKMARK_REMOVED_SIGNAL,
+  BOOKMARKS_CHANGED,
   LAST_SIGNAL
 };
 
@@ -268,29 +267,15 @@ mpl_app_bookmark_manager_class_init (MplAppBookmarkManagerClass *klass)
   object_class->dispose = mpl_app_bookmark_manager_dispose;
   object_class->finalize = mpl_app_bookmark_manager_finalize;
 
-  signals[BOOKMARK_ADDED_SIGNAL] = 
-    g_signal_new ("bookmark-added",
+  signals[BOOKMARKS_CHANGED] =
+    g_signal_new ("bookmarks-changed",
                   MPL_TYPE_APP_BOOKMARK_MANAGER,
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MplAppBookmarkManagerClass, bookmark_added),
-                  NULL,
-                  NULL,
-                  g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE,
-                  1,
-                  G_TYPE_STRING);
-
-  signals[BOOKMARK_REMOVED_SIGNAL] =
-    g_signal_new ("bookmark-removed",
-                  MPL_TYPE_APP_BOOKMARK_MANAGER,
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MplAppBookmarkManagerClass, bookmark_removed),
-                  NULL,
-                  NULL,
-                  g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE,
-                  1,
-                  G_TYPE_STRING);
+                  G_STRUCT_OFFSET (MplAppBookmarkManagerClass,
+                                   bookmarks_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -439,42 +424,13 @@ _file_monitor_changed_cb (GFileMonitor      *monitor,
 {
   MplAppBookmarkManager *self = (MplAppBookmarkManager *)userdata;
   MplAppBookmarkManagerPrivate *priv = GET_PRIVATE (self);
-  GList *l;
-  gchar *uri;
 
-  /*
-   * FIXME -- this is somewhat inefficient; it would be better to emit the
-   * "bookmark-remove" signal for each of the bookmarks, and then free the
-   * list. Unfortunately, Myzone (and perhaps elsewhere), expects to reload the
-   * entire uri list when the signal is emitted so we need to keep the list
-   * valid. (This also means that if we have 5 bookmarks one of which changes,
-   * the Myzone re-loads the bookmarks completely 5 times, which is
-   * suboptimal).
-   *
-   * One option would be to have an additional bookmarks-changed signal that
-   * would be emitted only once.
-   */
-  l = priv->uris;
-  while (l)
-  {
-    GList *next = l->next;
-
-    uri = (gchar *)l->data;
-    priv->uris = g_list_delete_link (priv->uris, l);
-    g_signal_emit_by_name (self, "bookmark-removed", uri);
-    g_free (uri);
-
-    l = next;
-  }
-
+  g_list_free (priv->uris);
   priv->uris = NULL;
 
   mpl_app_bookmark_manager_load (self);
 
-  for (l = priv->uris; l; l = l->next)
-  {
-    g_signal_emit_by_name (self, "bookmark-added", l->data);
-  }
+  g_signal_emit (self, signals[BOOKMARKS_CHANGED], 0);
 }
 
 static void
@@ -563,7 +519,6 @@ mpl_app_bookmark_manager_remove_uri (MplAppBookmarkManager *manager,
   g_hash_table_remove (priv->monitors_hash, uri);
 
   mpl_app_bookmark_manager_idle_save (manager);
-  g_signal_emit_by_name (manager, "bookmark-removed", uri);
 }
 
 void
@@ -582,6 +537,4 @@ mpl_app_bookmark_manager_add_uri (MplAppBookmarkManager *manager,
   _setup_file_monitor (manager, uri);
 
   mpl_app_bookmark_manager_idle_save (manager);
-  g_signal_emit_by_name (manager, "bookmark-added", uri);
 }
-
