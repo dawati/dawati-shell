@@ -22,6 +22,7 @@
 #include <config.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
+#include <rest/rest-xml-parser.h>
 #include "ggg-manual-dialog.h"
 
 struct _GggManualDialogPrivate {
@@ -115,20 +116,27 @@ ggg_manual_dialog_init (GggManualDialog *self)
   gtk_widget_show_all (table);
 }
 
-const char *
-ggg_manual_dialog_get_apn (GggManualDialog *dialog)
+RestXmlNode *
+ggg_manual_dialog_get_plan (GggManualDialog *dialog)
 {
-  return gtk_entry_get_text (GTK_ENTRY (dialog->priv->apn));
-}
+  const char *template = "<apn value='%s'>"
+    "<username>%s</username>"
+    "<password>%s</password>"
+    "</apn>";
+  char *xml;
+  RestXmlParser *parser;
+  RestXmlNode *node;
 
-const char *
-ggg_manual_dialog_get_username (GggManualDialog *dialog)
-{
-  return gtk_entry_get_text (GTK_ENTRY (dialog->priv->username));
-}
+  xml = g_strdup_printf (template,
+                         gtk_entry_get_text (GTK_ENTRY (dialog->priv->apn)),
+                         gtk_entry_get_text (GTK_ENTRY (dialog->priv->username)),
+                         gtk_entry_get_text (GTK_ENTRY (dialog->priv->password)));
 
-const char *
-ggg_manual_dialog_get_password (GggManualDialog *dialog)
-{
-  return gtk_entry_get_text (GTK_ENTRY (dialog->priv->password));
+  parser = rest_xml_parser_new ();
+  node = rest_xml_parser_parse_from_data (parser, xml, strlen (xml));
+  g_assert (node);
+  g_object_unref (parser);
+  g_free (xml);
+
+  return node;
 }

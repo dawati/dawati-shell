@@ -68,11 +68,6 @@ static GggService *service;
 static RestXmlNode *country_node = NULL;
 static RestXmlNode *provider_node = NULL;
 static RestXmlNode *plan_node = NULL;
-static struct {
-  char *apn;
-  char *username;
-  char *password;
-} auth_data = { NULL, NULL, NULL };
 
 static void
 state_machine (void)
@@ -184,12 +179,6 @@ state_machine (void)
         break;
       case GTK_RESPONSE_ACCEPT:
         plan_node = ggg_plan_dialog_get_selected (GGG_PLAN_DIALOG (dialog));
-
-        g_assert (plan_node);
-        /* TOOD: not shit */
-        auth_data.apn = g_strdup (rest_xml_node_get_attr (plan_node, "value"));
-        auth_data.username = g_strdup (rest_xml_node_find (plan_node, "username")->content);
-        auth_data.password = g_strdup (rest_xml_node_find (plan_node, "password")->content);
         state = STATE_SAVE;
         break;
       }
@@ -203,20 +192,18 @@ state_machine (void)
         state = STATE_FINISH;
         break;
       case GTK_RESPONSE_ACCEPT:
-        auth_data.apn = g_strdup (ggg_manual_dialog_get_apn (GGG_MANUAL_DIALOG (dialog)));
-        auth_data.username = g_strdup (ggg_manual_dialog_get_username (GGG_MANUAL_DIALOG (dialog)));
-        auth_data.password = g_strdup (ggg_manual_dialog_get_password (GGG_MANUAL_DIALOG (dialog)));
+        plan_node = ggg_manual_dialog_get_plan (GGG_MANUAL_DIALOG (dialog));
         state = STATE_SAVE;
         break;
       }
       break;
     case STATE_SAVE:
-      g_assert (auth_data.apn);
+      g_assert (plan_node);
 
       ggg_service_set (service,
-                       auth_data.apn,
-                       auth_data.username,
-                       auth_data.password);
+                       rest_xml_node_get_attr (plan_node, "value"),
+                       rest_xml_node_find (plan_node, "username")->content,
+                       rest_xml_node_find (plan_node, "password")->content);
       ggg_service_connect (service);
 
       state = STATE_FINISH;
