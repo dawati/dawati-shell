@@ -1,0 +1,61 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Xosé <xosecalvo@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-29 20:28+0000\n"
+"PO-Revision-Date: 2009-10-14 20:50+0200\n"
+"Last-Translator: Xosé <xosecalvo@gmail.com>\n"
+"Language-Team: Galego <proxecto@trasno.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../penge/penge-calendar-pane.c:478
+msgid "<b>Appointments</b>"
+msgstr "<b>Citas</b>"
+
+#: ../penge/penge-events-pane.c:265
+msgid "No calendar entries this week"
+msgstr "Non hai entradas no calendario para esta semana"
+
+#: ../penge/penge-people-placeholder-tile.c:112
+msgid ""
+"Your friends' feeds and web services will appear here. Activate your "
+"accounts now!"
+msgstr ""
+"Aquí aparecen as fontes das súas amizades e dos servizos web. Active agora "
+"as súas contas!"
+
+#: ../penge/penge-recent-file-tile.c:224
+msgid "Web page"
+msgstr "Páxina web"
+
+#: ../penge/penge-tasks-pane.c:344
+msgid "Nothing to do today"
+msgstr "Hoxe non hai nada que facer"
+
+#: ../penge/penge-task-tile.c:325
+#, c-format
+msgid "Due %x"
+msgstr "Vence %x"
+
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Reciba a benvida a Moblin 2.1 para netbooks</b>"
+
+#: ../penge/penge-welcome-tile.c:108
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
+msgstr ""
+"Dado que o Moblin é un chisco diferente a outros computadores, reunimos "
+"algunhas cousiñas para axudar a atopar o que sexa necesario. Agardamos que "
+"goce del, o Equipo de Moblin."
+
