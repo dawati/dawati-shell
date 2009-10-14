@@ -998,6 +998,48 @@ check_for_empty_workspace (MutterPlugin *plugin,
   g_timeout_add (MYZONE_TIMEOUT, (GSourceFunc)maybe_show_myzone, plugin);
 }
 
+/*
+ * Checks for presence of windows of given class the name of which *contains*
+ * the wm_name string, skipping the ignore window.
+ */
+static gboolean
+check_for_windows_of_wm_class_and_name (MutterPlugin *plugin,
+                                        const gchar  *wm_class,
+                                        const gchar  *wm_name,
+                                        MutterWindow *ignore)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  GList      *l;
+
+  if (!wm_class)
+    return FALSE;
+
+  l = mutter_get_windows (screen);
+
+  while (l)
+    {
+      MutterWindow *m = l->data;
+
+      if (m != ignore)
+        {
+          MetaWindow  *win;
+          const gchar *klass;
+          const gchar *name;
+
+          win   = mutter_window_get_meta_window (m);
+          klass = meta_window_get_wm_class (win);
+          name  = meta_window_get_title (win);
+
+          if (klass && !strcmp (wm_class, klass) && strstr (name, wm_name))
+            return TRUE;
+        }
+
+      l = l->next;
+    }
+
+  return FALSE;
+}
+
 static void
 handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
 {
@@ -1022,8 +1064,14 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
                                             window_destroyed_cb,
                                             plugin);
 
+      /*
+       * If the closed window is one of the main Skype windows, and no other
+       * toplevel skype windows are present, kill the application.
+       */
       if (wm_class && wm_name &&
-          !strcmp (wm_class, "Skype") && strstr (wm_name, "Skype™"))
+          !strcmp (wm_class, "Skype") && strstr (wm_name, "Skype™") &&
+          !check_for_windows_of_wm_class_and_name (plugin,
+                                                   "Skype", "Skype™", mcw))
         {
           gint pid = meta_window_get_pid (meta_win);
 
@@ -1865,6 +1913,7 @@ setup_focus_window (MutterPlugin *plugin)
 }
 
 GdkRegion *mutter_window_get_obscured_region (MutterWindow *cw);
+gboolean   mutter_window_effect_in_progress (MutterWindow *self);
 
 /*
  * Based on the occlusion code in MutterWindowGroup
