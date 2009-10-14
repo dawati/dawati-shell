@@ -277,6 +277,13 @@ on_caps_changed (MojitoClientService  *service,
   gboolean was_visible, has_row;
   gboolean can_update, has_icon;
 
+  if (new_caps == NULL)
+    {
+      /* Bail out immediately; this should not happen, though */
+      g_warning (G_STRLOC ": Received empty capabilities");
+      return;
+    }
+
   was_visible = s_info->is_visible;
   has_row     = s_info->row != NULL;
   can_update  = FALSE;
