@@ -442,13 +442,31 @@ _file_monitor_changed_cb (GFileMonitor      *monitor,
   GList *l;
   gchar *uri;
 
-  for (l = priv->uris; l; l=l->next)
+  /*
+   * FIXME -- this is somewhat inefficient; it would be better to emit the
+   * "bookmark-remove" signal for each of the bookmarks, and then free the
+   * list. Unfortunately, Myzone (and perhaps elsewhere), expects to reload the
+   * entire uri list when the signal is emitted so we need to keep the list
+   * valid. (This also means that if we have 5 bookmarks one of which changes,
+   * the Myzone re-loads the bookmarks completely 5 times, which is
+   * suboptimal).
+   *
+   * One option would be to have an additional bookmarks-changed signal that
+   * would be emitted only once.
+   */
+  l = priv->uris;
+  while (l)
   {
+    GList *next = l->next;
+
     uri = (gchar *)l->data;
     priv->uris = g_list_delete_link (priv->uris, l);
     g_signal_emit_by_name (self, "bookmark-removed", uri);
     g_free (uri);
+
+    l = next;
   }
+
   priv->uris = NULL;
 
   mpl_app_bookmark_manager_load (self);
