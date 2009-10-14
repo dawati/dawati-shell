@@ -378,7 +378,7 @@ mpl_app_bookmark_manager_save (MplAppBookmarkManager *manager)
 
   contents = g_strjoinv (" ", uris);
 
-  if (!g_file_set_contents (priv->path, 
+  if (!g_file_set_contents (priv->path,
                             contents,
                             -1,
                             &error))
@@ -457,7 +457,7 @@ mpl_app_bookmark_manager_init (MplAppBookmarkManager *self)
                error->message);
     g_clear_error (&error);
   } else {
-    g_signal_connect (priv->monitor, 
+    g_signal_connect (priv->monitor,
                       "changed",
                       (GCallback)_file_monitor_changed_cb,
                       self);
