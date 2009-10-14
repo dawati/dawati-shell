@@ -1,0 +1,35 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: anerley\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-07 18:30+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Mohamad Elrashidin Bin Sajeli <archayl@gmail.com>\n"
+"Language-Team: Malaysia\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Malay\n"
+"X-Poedit-Country: MALAYSIA\n"
+
+#: ../anerley/anerley-tile.c:206
+msgid "Available"
+msgstr "Ada"
+
+#: ../anerley/anerley-tile.c:209
+msgid "Busy"
+msgstr "Sibuk"
+
+#: ../anerley/anerley-tile.c:212
+#: ../anerley/anerley-tile.c:215
+msgid "Away"
+msgstr "Tiada"
+
+#: ../anerley/anerley-tile.c:218
+msgid "Offline"
+msgstr "Luar talian"
+
+#: ../anerley/anerley-econtact-item.c:312
+msgid "Unnamed"
+msgstr "Tidak dinamakan"
+
