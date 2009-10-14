@@ -69,6 +69,19 @@ static RestXmlNode *country_node = NULL;
 static RestXmlNode *provider_node = NULL;
 static RestXmlNode *plan_node = NULL;
 
+static const char *
+get_child_content (RestXmlNode *node, const char *name)
+{
+  g_assert (node);
+  g_assert (name);
+
+  node = rest_xml_node_find (node, name);
+  if (node && node->content != '\0')
+    return node->content;
+  else
+    return NULL;
+}
+
 static void
 state_machine (void)
 {
@@ -202,8 +215,9 @@ state_machine (void)
 
       ggg_service_set (service,
                        rest_xml_node_get_attr (plan_node, "value"),
-                       rest_xml_node_find (plan_node, "username")->content,
-                       rest_xml_node_find (plan_node, "password")->content);
+                       get_child_content (plan_node, "username"),
+                       get_child_content (plan_node, "password"));
+
       ggg_service_connect (service);
 
       state = STATE_FINISH;
