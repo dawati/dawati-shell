@@ -88,17 +88,8 @@ penge_apps_pane_class_init (PengeAppsPaneClass *klass)
 }
 
 static void
-_manager_bookmark_added_cb (MplAppBookmarkManager *manager,
-                            const gchar           *uri,
-                            gpointer               userdata)
-{
-  penge_apps_pane_update ((PengeAppsPane *)userdata);
-}
-
-static void
-_manager_bookmark_removed_cb (MplAppBookmarkManager *manager,
-                              const gchar           *uri,
-                              gpointer               userdata)
+_manager_bookmarks_changed_cb (MplAppBookmarkManager *manager,
+                               gpointer               userdata)
 {
   penge_apps_pane_update ((PengeAppsPane *)userdata);
 }
@@ -111,12 +102,8 @@ penge_apps_pane_init (PengeAppsPane *self)
   priv->manager = mpl_app_bookmark_manager_get_default ();
 
   g_signal_connect (priv->manager,
-                    "bookmark-added",
-                    (GCallback)_manager_bookmark_added_cb,
-                    self);
-  g_signal_connect (priv->manager,
-                    "bookmark-removed",
-                    (GCallback)_manager_bookmark_removed_cb,
+                    "bookmarks-changed",
+                    (GCallback)_manager_bookmarks_changed_cb,
                     self);
 
   priv->uris_to_actors = g_hash_table_new_full (g_str_hash,
