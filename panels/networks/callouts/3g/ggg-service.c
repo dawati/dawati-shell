@@ -183,6 +183,9 @@ set_string_prop (DBusGProxy *proxy, const char *name, const char *string)
   GError *error = NULL;
   GValue value = { 0, };
 
+  if (string == NULL)
+    return;
+
   g_value_init (&value, G_TYPE_STRING);
   g_value_set_static_string (&value, string);
 
