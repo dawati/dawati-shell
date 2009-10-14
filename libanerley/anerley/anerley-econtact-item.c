@@ -88,21 +88,15 @@ _update_contact_avatar_details (AnerleyEContactItem *item)
                                       uid,
                                       NULL);
 
-      if (!g_file_test (avatar_path, G_FILE_TEST_EXISTS))
+
+      if (!g_file_set_contents (avatar_path,
+                                (gchar *)photo->data.inlined.data,
+                                photo->data.inlined.length,
+                                &error))
       {
-        if (!g_file_set_contents (avatar_path,
-                                  (gchar *)photo->data.inlined.data,
-                                  photo->data.inlined.length,
-                                  &error))
-        {
-          g_warning (G_STRLOC ": Unable to set file contents: %s",
-                     error->message);
-          g_clear_error (&error);
-        } else {
-          /* Move string ownership */
-          priv->avatar_path = avatar_path;
-          avatar_path = NULL;
-        }
+        g_warning (G_STRLOC ": Unable to set file contents: %s",
+                   error->message);
+        g_clear_error (&error);
       } else {
         /* Move string ownership */
         priv->avatar_path = avatar_path;
