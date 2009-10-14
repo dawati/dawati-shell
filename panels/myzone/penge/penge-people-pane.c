@@ -54,7 +54,7 @@ struct _PengePeoplePanePrivate {
 #define MAX_ITEMS 32
 
 #define TILE_WIDTH 140.0f
-#define TILE_HEIGHT 95.0f
+#define TILE_HEIGHT 92.0f
 
 #define MOBLIN_MYZONE_MIN_TILE_WIDTH "/desktop/moblin/myzone/min_tile_width"
 #define MOBLIN_MYZONE_MIN_TILE_HEIGHT "/desktop/moblin/myzone/min_tile_height"
