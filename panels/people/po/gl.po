@@ -1,0 +1,91 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Xosé <xosecalvo@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"PO-Revision-Date: 2009-10-14 20:56+0200\n"
+"Last-Translator: Xosé <xosecalvo@gmail.com>\n"
+"Language-Team: Galego <proxecto@trasno.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#.
+#. * Used as header for a block of the panel showing pending conversations.
+#. * The user will be able to click the tile and answer the pending conversation
+#.
+#: ../src/moblin-panel-people.c:18
+msgid "People talking to you ..."
+msgstr "Persoas que lle están a falar..."
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#.
+#: ../src/moblin-panel-people.c:23
+msgid "people - Someone is talking to you"
+msgstr "persoas - Alguén lle está a falar"
+
+#.
+#. * Used for the tooltip for the hover state for the icon in the toolbar
+#. * (plural version)
+#.
+#: ../src/moblin-panel-people.c:29
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "persoas - estanlle a falar %d persoas"
+
+#: ../src/moblin-panel-people.c:87
+msgid "people"
+msgstr "persoas"
+
+#: ../src/mnb-people-panel.c:50
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr ""
+"Para ver os seus contactos de mensaxaría instantánea, entre na rede no "
+"panel de estado."
+
+#: ../src/mnb-people-panel.c:51
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr ""
+"Desculpe, non damos atopado a ninguén. Parece que están todos fóra de liña."
+
+#: ../src/mnb-people-panel.c:164
+msgid "Send an email"
+msgstr "Enviar unha mensaxe de correo"
+
+#: ../src/mnb-people-panel.c:166
+msgid "Edit details"
+msgstr "Modificar os detalles"
+
+#: ../src/mnb-people-panel.c:175
+msgid "Send a message"
+msgstr "Enviar unha mensaxe"
+
+#: ../src/mnb-people-panel.c:309
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr ""
+"Desculpe, non damos atopado ningunha persoa. Configurou unha conta do "
+"Messenger?"
+
+#: ../src/mnb-people-panel.c:554
+msgid "People"
+msgstr "Persoas"
+
+#: ../src/mnb-people-panel.c:567
+msgid "Search"
+msgstr "Procurar"
+
+#: ../src/mnb-people-panel.c:680
+msgid "Selection"
+msgstr "Selección"
+
+#: ../src/mnb-people-panel.c:743
+msgid "Nobody selected"
+msgstr "Non hai ninguén seleccionado"
+
