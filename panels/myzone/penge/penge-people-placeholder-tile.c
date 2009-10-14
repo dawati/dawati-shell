@@ -58,11 +58,15 @@ penge_people_placeholder_tile_get_preferred_width (ClutterActor *self,
                                                    gfloat       *min_width_p,
                                                    gfloat       *natural_width_p)
 {
+  NbtkPadding padding = { 0, };
+
+  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+
   if (min_width_p)
-    *min_width_p = TILE_WIDTH * 2;
+    *min_width_p = TILE_WIDTH * 2 + padding.left + padding.right;
 
   if (natural_width_p)
-    *natural_width_p = TILE_WIDTH * 2;
+    *natural_width_p = TILE_WIDTH * 2 + padding.left + padding.right;
 }
 
 static void
