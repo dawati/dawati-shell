@@ -393,7 +393,7 @@ penge_magic_container_init (PengeMagicContainer *self)
   priv->column_count = -1;
 
   priv->padding = 0;
-  priv->spacing = 6;
+  priv->spacing = 2;
 
   priv->min_tile_height = 100;
   priv->min_tile_width = 100;
