@@ -48,7 +48,7 @@ enum
   LAST_SIGNAL
 };
 
-guint signals[LAST_SIGNAL] = { 0 };
+static guint signals[LAST_SIGNAL] = { 0 };
 
 typedef struct {
   MplAppBookmarkManager *self;
