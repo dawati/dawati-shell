@@ -102,7 +102,6 @@ typedef struct _AccountInfo
   ClutterActor *box;
 
   guint is_visible : 1;
-  guint is_enabled : 1;
 } AccountInfo;
 
 static void
@@ -572,14 +571,11 @@ on_account_ready (GObject *source_object,
       a_info->row = NULL;
       a_info->box = panel->box;
       a_info->is_visible = FALSE;
-      a_info->is_enabled = TRUE;
 
       add_account_row (panel, a_info);
 
       panel->accounts = g_slist_prepend (panel->accounts, a_info);
     }
-  else
-    a_info->is_enabled = TRUE;
 
   panel->n_im_available += 1;
 
@@ -587,6 +583,8 @@ on_account_ready (GObject *source_object,
 
   mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
                                 panel->is_online);
+  mnb_im_status_row_set_enabled (MNB_IM_STATUS_ROW (a_info->row),
+                                 TRUE);
 
   update_im_status (panel, panel->is_online);
 }
@@ -613,8 +611,8 @@ on_account_disabled (TpAccountManager  *account_manager,
   if (a_info == NULL)
     return;
 
-  a_info->is_enabled = FALSE;
-
+  mnb_im_status_row_set_enabled (MNB_IM_STATUS_ROW (a_info->row),
+                                 FALSE);
   panel->n_im_available -= 1;
 
   if (panel->n_im_available == 0)
@@ -724,7 +722,6 @@ on_account_manager_ready (GObject      *source_object,
       a_info->row = NULL;
       a_info->box = panel->box;
       a_info->is_visible = FALSE;
-      a_info->is_enabled = TRUE;
 
       add_account_row (panel, a_info);
 
@@ -750,6 +747,8 @@ on_account_manager_ready (GObject      *source_object,
 
       mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
                                     panel->is_online);
+      mnb_im_status_row_set_enabled (MNB_IM_STATUS_ROW (a_info->row),
+                                     TRUE);
     }
 
   update_header (NBTK_LABEL (panel->header_label), panel->is_online);
