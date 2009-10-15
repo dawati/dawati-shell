@@ -52,14 +52,6 @@ msgstr ""
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "Вибачте, але зміна яскравості для Вашого екрану не підтримується"
 
-#: ../dalston/dalston-brightness-slider.c:238
-msgid "Very dark"
-msgstr ""
-
-#: ../dalston/dalston-brightness-slider.c:240
-msgid "Total eclipse"
-msgstr ""
-
 #: ../dalston/dalston-button-monitor.c:178
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
@@ -72,46 +64,6 @@ msgstr "Ви хочете вимкнути живлення?"
 #: ../dalston/dalston-button-monitor.c:282
 msgid "If you don't decide I'll turn off in 30 seconds"
 msgstr "Якщо Ви не вирішите, вимкнення відбудеться за 30 секунд"
-
-#: ../dalston/dalston-button-monitor.c:289
-msgid "Turn off"
-msgstr ""
-
-#: ../dalston/dalston-volume-pane.c:258
-msgid "Output volume"
-msgstr ""
-
-#: ../dalston/dalston-volume-pane.c:302
-msgid "Mute"
-msgstr ""
-
-#: ../dalston/dalston-volume-pane.c:320
-msgid "Alert sounds"
-msgstr ""
-
-#: ../dalston/dalston-volume-pane.c:332
-msgid "Play test sound"
-msgstr ""
-
-#: ../dalston/dalston-volume-slider.c:224
-msgid "Turned up to 11"
-msgstr ""
-
-#: ../dalston/dalston-volume-slider.c:226
-msgid "Very loud"
-msgstr ""
-
-#: ../dalston/dalston-volume-slider.c:228
-msgid "Loud"
-msgstr ""
-
-#: ../dalston/dalston-volume-slider.c:230
-msgid "Fairly loud"
-msgstr ""
-
-#: ../dalston/dalston-volume-slider.c:232
-msgid "Middle of the road"
-msgstr ""
 
 #: ../dalston/dalston-volume-slider.c:234
 msgid "Fairly quiet"
@@ -250,3 +202,55 @@ msgstr "Після обіду"
 #: ../dalston/dalston-brightness-slider.c:236
 msgid "Twilight"
 msgstr "Сутінки"
+
+#: ../dalston/dalston-brightness-slider.c:240
+msgid "Total eclipse"
+msgstr "Повне затемнення"
+
+#: ../dalston/dalston-brightness-slider.c:238
+msgid "Very dark"
+msgstr "Дуже темний"
+
+#: ../dalston/dalston-volume-slider.c:226
+#, fuzzy
+msgid "Very loud"
+msgstr "Дуже голосно"
+
+#: ../dalston/dalston-volume-slider.c:224
+msgid "Turned up to 11"
+msgstr "Збільшено до 11"
+
+#: ../dalston/dalston-button-monitor.c:289
+msgid "Turn off"
+msgstr "Вимкнення"
+
+#: ../dalston/dalston-volume-pane.c:302
+msgid "Mute"
+msgstr "Приглушити"
+
+#: ../dalston/dalston-volume-pane.c:258
+msgid "Output volume"
+msgstr "Вихідна гучність"
+
+#: ../dalston/dalston-volume-pane.c:332
+msgid "Play test sound"
+msgstr "Програти тестовий звук"
+
+#: ../dalston/dalston-volume-pane.c:320
+msgid "Alert sounds"
+msgstr "Звуки сповіщень"
+
+#: ../dalston/dalston-volume-slider.c:228
+#, fuzzy
+msgid "Loud"
+msgstr "Гучний"
+
+#: ../dalston/dalston-volume-slider.c:230
+#, fuzzy
+msgid "Fairly loud"
+msgstr "Досить голосно"
+
+#: ../dalston/dalston-volume-slider.c:232
+#, fuzzy
+msgid "Middle of the road"
+msgstr "Посеред дороги"
