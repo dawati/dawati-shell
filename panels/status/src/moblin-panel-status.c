@@ -246,21 +246,6 @@ on_presence_changed (TpAccountManager         *account_manager,
     {
       AccountInfo *a_info = a->data;
 
-      if (panel->is_online && a_info->is_enabled)
-        {
-          g_assert (a_info->row != NULL);
-
-          clutter_actor_show (a_info->row);
-          a_info->is_visible = TRUE;
-        }
-      else
-        {
-          g_assert (a_info->row != NULL);
-
-          clutter_actor_hide (a_info->row);
-          a_info->is_visible = FALSE;
-        }
-
       g_debug ("setting status: '%s'", panel->im_status);
       mnb_im_status_row_set_status (MNB_IM_STATUS_ROW (a_info->row),
                                     panel->im_presence,
@@ -675,48 +660,6 @@ on_mojito_online_changed (MojitoClient      *client,
 
   panel->is_online = is_online;
 
-  cur_accounts = NULL;
-  accounts = tp_account_manager_get_valid_accounts (panel->account_manager);
-  for (l = accounts; l != NULL; l = l->next)
-    {
-      TpAccount *account = l->data;
-      AccountInfo *a_info;
-      const gchar *name;
-
-      if (!tp_account_is_enabled (account))
-        continue;
-
-      name = tp_proxy_get_object_path (account);
-      if (account_find_by_name (panel, name) != NULL)
-        continue;
-
-      a_info = g_slice_new (AccountInfo);
-      a_info->name = g_strdup (name);
-      a_info->panel = panel;
-      a_info->account = g_object_ref (account);
-      a_info->row = NULL;
-      a_info->box = panel->box;
-      a_info->is_visible = FALSE;
-      a_info->is_enabled = TRUE;
-
-      add_account_row (panel, a_info);
-
-      cur_accounts = g_slist_prepend (cur_accounts, a_info);
-    }
-
-  g_list_free (accounts);
-
-  if (panel->accounts == NULL)
-    panel->accounts = g_slist_reverse (cur_accounts);
-  else
-    panel->accounts->next = g_slist_reverse (cur_accounts);
-
-  panel->n_im_available = g_slist_length (panel->accounts);
-  if (panel->n_im_available == 0)
-    clutter_actor_show (panel->empty_im_bin);
-  else
-    clutter_actor_hide (panel->empty_im_bin);
-
   for (a = panel->accounts; a != NULL; a = a->next)
     {
       AccountInfo *a_info = a->data;
@@ -728,7 +671,6 @@ on_mojito_online_changed (MojitoClient      *client,
   update_header (NBTK_LABEL (panel->header_label), is_online);
 
   update_im_status (panel, is_online);
-
 }
 
 static void
@@ -770,9 +712,6 @@ on_account_manager_ready (GObject      *source_object,
       TpAccount *account = l->data;
       AccountInfo *a_info;
       const gchar *name;
-
-      if (!tp_account_is_enabled (account))
-        continue;
 
       name = tp_proxy_get_object_path (account);
       if (account_find_by_name (panel, name) != NULL)
@@ -833,9 +772,6 @@ on_mojito_is_online (MojitoClient *client,
   g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
 
   panel->is_online = is_online;
-
-  tp_account_manager_prepare_async (panel->account_manager, NULL,
-                                    on_account_manager_ready, panel);
 }
 
 #if 0
@@ -1086,6 +1022,9 @@ make_status (MoblinStatusPanel *panel)
   panel->account_manager = tp_account_manager_dup ();
   panel->im_presence = TP_CONNECTION_PRESENCE_TYPE_UNSET;
   panel->im_status = NULL;
+
+  tp_account_manager_prepare_async (panel->account_manager, NULL,
+                                    on_account_manager_ready, panel);
 
   g_signal_connect (panel->account_manager,
                     "account-enabled", G_CALLBACK (on_account_enabled),
