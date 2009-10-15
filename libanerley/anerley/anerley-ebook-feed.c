@@ -40,6 +40,7 @@ struct _AnerleyEBookFeedPrivate {
   EBook *book;
   EBookView *view;
   GHashTable *uids_to_items;
+  gchar *self_uid;
 };
 
 enum
@@ -47,6 +48,8 @@ enum
   PROP_0,
   PROP_BOOK
 };
+
+#define SELF_UID_KEY "/apps/evolution/addressbook/self/self_uid"
 
 static void
 anerley_ebook_feed_set_book (AnerleyEBookFeed *feed,
@@ -110,6 +113,9 @@ anerley_ebook_feed_dispose (GObject *object)
 static void
 anerley_ebook_feed_finalize (GObject *object)
 {
+  AnerleyEBookFeedPrivate *priv = GET_PRIVATE (object);
+
+  g_free (priv->self_uid);
   G_OBJECT_CLASS (anerley_ebook_feed_parent_class)->finalize (object);
 }
 
@@ -139,6 +145,7 @@ anerley_ebook_feed_init (AnerleyEBookFeed *self)
 {
   AnerleyEBookFeedPrivate *priv = GET_PRIVATE (self);
   gchar *avatar_cache_dir;
+  GConfClient *client;
 
   priv->uids_to_items = g_hash_table_new_full (g_str_hash,
                                                g_str_equal,
@@ -153,6 +160,17 @@ anerley_ebook_feed_init (AnerleyEBookFeed *self)
                                        NULL);
   g_mkdir_with_parents (avatar_cache_dir, 0755);
   g_free (avatar_cache_dir);
+
+
+  client = gconf_client_get_default ();
+
+  /* Let's just try and grab the key. No error checking and no monitoring.
+   * Living on the edge.
+   */
+  priv->self_uid = gconf_client_get_string (client,
+                                            SELF_UID_KEY,
+                                            NULL);
+  g_object_unref (client);
 }
 
 AnerleyFeed *
@@ -181,10 +199,17 @@ _e_book_view_contacts_added_cb (EBookView *view,
   {
     contact = (EContact *)l->data;
 
-    item = anerley_econtact_item_new (contact);
-
     uid = e_contact_get_const (contact,
                                E_CONTACT_UID);
+
+    /* Skip self uid */
+    if (priv->self_uid && g_str_equal (uid, priv->self_uid))
+    {
+      continue;
+    }
+
+    item = anerley_econtact_item_new (contact);
+
     /* captures reference */
     g_hash_table_insert (priv->uids_to_items,
                          g_strdup (uid),
@@ -220,9 +245,13 @@ _e_book_view_contacts_removed_cb (EBookView *view,
 
     item = g_hash_table_lookup (priv->uids_to_items, uid);
 
-    /* reference item here since when we remove it we lose original */
-    items_removed = g_list_append (items_removed, g_object_ref (item));
-    g_hash_table_remove (priv->uids_to_items, uid);
+    /* Item may be NULL because of self uid filter */
+    if (item)
+    {
+      /* reference item here since when we remove it we lose original */
+      items_removed = g_list_append (items_removed, g_object_ref (item));
+      g_hash_table_remove (priv->uids_to_items, uid);
+    }
   }
 
   if (items_removed)
@@ -254,10 +283,14 @@ _e_book_view_contacts_changed_cb (EBookView *view,
     item = g_hash_table_lookup (priv->uids_to_items,
                                 uid);
 
-    g_object_set (item,
-                  "contact",
-                  contact,
-                  NULL);
+    /* May be null because of self uid filter */
+    if (item)
+    {
+      g_object_set (item,
+                    "contact",
+                    contact,
+                    NULL);
+    }
   }
 }
 
