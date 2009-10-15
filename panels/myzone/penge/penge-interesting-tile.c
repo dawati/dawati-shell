@@ -58,7 +58,7 @@ enum
   LAST_SIGNAL
 };
 
-guint signals [LAST_SIGNAL];
+static guint signals [LAST_SIGNAL];
 
 static void
 penge_interesting_tile_get_property (GObject *object, guint property_id,
