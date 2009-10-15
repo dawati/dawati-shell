@@ -100,9 +100,6 @@ void mnb_toolbar_set_panel_input_only (MnbToolbar *toolbar, gboolean whether);
 
 gboolean mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar);
 
-gboolean mnb_toolbar_window_is_transient_for_active_panel (MnbToolbar *toolbar,
-                                                           MutterWindow *mcw);
-
 void mnb_toolbar_hide (MnbToolbar *toolbar);
 
 void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,

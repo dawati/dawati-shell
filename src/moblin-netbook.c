@@ -1450,6 +1450,57 @@ scim_preview_parent_set_cb (ClutterActor *source,
     }
 }
 
+static void
+handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
+{
+  MetaWindow   *mw      = mutter_window_get_meta_window (mcw);
+  ClutterActor *clone   = clutter_clone_new (CLUTTER_ACTOR(mcw));
+  MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+  ClutterActor *stage   = mutter_get_stage_for_screen (screen);
+  gfloat        x, y;
+
+  /*
+   * Make a clone and place it on the top of stage.
+   */
+  clutter_actor_get_position (CLUTTER_ACTOR (mcw), &x, &y);
+  clutter_actor_set_position (clone, x, y);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                               clone);
+  clutter_actor_raise_top (clone);
+
+  g_signal_connect (mutter_window_get_texture (mcw),
+                    "notify::allocation",
+                    G_CALLBACK (scim_preview_texture_allocation_cb),
+                    clone);
+
+  g_signal_connect (mw,
+                    "raised",
+                    G_CALLBACK (scim_preview_raised_cb),
+                    clone);
+
+  g_signal_connect (mcw, "notify::allocation",
+                    G_CALLBACK (scim_preview_allocation_cb),
+                    clone);
+
+  g_signal_connect (mcw, "destroy",
+                    G_CALLBACK (scim_preview_destroy_cb),
+                    clone);
+
+  g_signal_connect (mutter_window_get_texture (mcw),
+                    "queue-redraw",
+                    G_CALLBACK (scim_preview_queue_redraw_cb),
+                    clone);
+
+  g_signal_connect (mcw, "parent-set",
+                    G_CALLBACK (scim_preview_parent_set_cb),
+                    clone);
+
+  mnb_input_manager_push_window (mcw,
+                                 MNB_INPUT_LAYER_PANEL_TRANSIENTS);
+
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -1458,19 +1509,33 @@ static void
 map (MutterPlugin *plugin, MutterWindow *mcw)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   ClutterActor               *actor = CLUTTER_ACTOR (mcw);
   MetaCompWindowType          type;
+  MnbPanel                   *active_panel;
+  Window                      xwin;
 
-  type = mutter_window_get_window_type (mcw);
+  active_panel = (MnbPanel*)mnb_toolbar_get_active_panel (toolbar);
+  type         = mutter_window_get_window_type (mcw);
+  xwin         = mutter_window_get_x_window (mcw);
+
+  if (active_panel && MNB_IS_PANEL (active_panel) &&
+      mnb_panel_owns_window (active_panel, mcw))
+    {
+      mutter_plugin_effect_completed (plugin, mcw,
+                                      MUTTER_PLUGIN_MAP);
+
+      handle_panel_child (plugin, mcw);
+      return;
+    }
 
   /*
-   * The OR test must come first, since GTK_WINDOW_POPUP type windows are
-   * both override redirect, but also have a _NET_WM_WINDOW_TYPE set to NORMAL
+   * The OR test must come before the type test since GTK_WINDOW_POPUP type
+   * windows are both override redirect, but also have a _NET_WM_WINDOW_TYPE set
+   * to NORMAL
    */
-  if (mutter_window_is_override_redirect (mcw))
+  else if (mutter_window_is_override_redirect (mcw))
     {
-      Window       xwin     = mutter_window_get_x_window (mcw);
-      MnbToolbar  *toolbar  = MNB_TOOLBAR (priv->toolbar);
       MetaWindow  *mw       = mutter_window_get_meta_window (mcw);
       const gchar *wm_class = meta_window_get_wm_class (mw);
       MnbPanel    *panel;
@@ -1482,58 +1547,16 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
        */
       if (wm_class && !strcmp (wm_class, "Scim-panel-gtk"))
         {
-          if ((panel = (MnbPanel*)mnb_toolbar_get_active_panel (toolbar)))
+          if (active_panel)
             {
-              ClutterActor *clone   = clutter_clone_new (CLUTTER_ACTOR(mcw));
-              MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-              ClutterActor *stage   = mutter_get_stage_for_screen (screen);
-              gfloat        x, y;
-
               /*
                * Let the compositor to finish up mapping of this window.
                */
               mutter_plugin_effect_completed (plugin, mcw,
                                               MUTTER_PLUGIN_MAP);
 
-              /*
-               * Make a clone and place it on the top of stage.
-               */
-              clutter_actor_get_position (CLUTTER_ACTOR (mcw), &x, &y);
-              clutter_actor_set_position (clone, x, y);
 
-              clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                                           clone);
-              clutter_actor_raise_top (clone);
-
-              g_signal_connect (mutter_window_get_texture (mcw),
-                                "notify::allocation",
-                                G_CALLBACK (scim_preview_texture_allocation_cb),
-                                clone);
-
-              g_signal_connect (mw,
-                                "raised",
-                                G_CALLBACK (scim_preview_raised_cb),
-                                clone);
-
-              g_signal_connect (mcw, "notify::allocation",
-                                G_CALLBACK (scim_preview_allocation_cb),
-                                clone);
-
-              g_signal_connect (mcw, "destroy",
-                                G_CALLBACK (scim_preview_destroy_cb),
-                                clone);
-
-              g_signal_connect (mutter_window_get_texture (mcw),
-                                "queue-redraw",
-                                G_CALLBACK (scim_preview_queue_redraw_cb),
-                                clone);
-
-              g_signal_connect (mcw, "parent-set",
-                                G_CALLBACK (scim_preview_parent_set_cb),
-                                clone);
-
-              mnb_input_manager_push_window (mcw, MNB_INPUT_LAYER_PANEL_TRANSIENTS);
-
+              handle_panel_child (plugin, mcw);
               return;
             }
 

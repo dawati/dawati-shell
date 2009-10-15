@@ -86,7 +86,9 @@ void          mnb_panel_set_size          (MnbPanel *panel,
                                            guint     height);
 MutterWindow *mnb_panel_get_mutter_window (MnbPanel *panel);
 void          mnb_panel_focus             (MnbPanel *panel);
-
+gboolean      mnb_panel_owns_window       (MnbPanel *panel, MutterWindow *mcw);
+gboolean      mnb_panel_is_ancestor_of_transient (MnbPanel     *panel,
+                                                  MutterWindow *mcw);
 
 G_END_DECLS
 

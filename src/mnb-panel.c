@@ -28,6 +28,7 @@
 #include "mnb-panel.h"
 #include "marshal.h"
 
+#include <string.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
@@ -36,6 +37,7 @@
 #include <gdk/gdkx.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <display.h>
+#include <X11/Xatom.h>
 
 G_DEFINE_TYPE (MnbPanel, mnb_panel, MNB_TYPE_DROP_DOWN)
 
@@ -84,6 +86,7 @@ struct _MnbPanelPrivate
   gchar           *button_style_id;
   guint            xid;
   guint            child_xid;
+  gchar           *child_class;
 
   GtkWidget       *window;
 
@@ -316,6 +319,7 @@ mnb_panel_finalize (GObject *object)
   g_free (priv->tooltip);
   g_free (priv->stylesheet);
   g_free (priv->button_style_id);
+  g_free (priv->child_class);
 
   G_OBJECT_CLASS (mnb_panel_parent_class)->finalize (object);
 }
@@ -658,6 +662,54 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
   priv->button_style_id = g_strdup (button_style_id);
 
   priv->child_xid = xid;
+
+  g_free (priv->child_class);
+
+  /*
+   * Retrieve the WM_CLASS property for the child window (we have to do it the
+   * hard way, because the WM_CLASS on the MutterWindow is coming from mutter,
+   * not the application).
+   *
+   * (We use the wm-class to identify sub-windows.)
+   */
+  {
+    Atom r_type;
+    int  r_fmt;
+    unsigned long n_items;
+    unsigned long r_after;
+    char *r_prop;
+
+    gdk_error_trap_push ();
+
+
+    if (Success == XGetWindowProperty (GDK_DISPLAY (), xid, XA_WM_CLASS,
+                                       0, 8192,
+                                       False, XA_STRING,
+                                       &r_type, &r_fmt, &n_items, &r_after,
+                                       (unsigned char **)&r_prop) &&
+        r_type != 0)
+      {
+        if (r_prop)
+          {
+            /*
+             * The property contains two strings separated by \0; we want the
+             * second string.
+             */
+            gint len0 = strlen (r_prop);
+
+            if (len0 == n_items)
+              len0--;
+
+            priv->child_class = g_strdup (r_prop + len0 + 1);
+
+            g_debug ("child class %s", priv->child_class);
+            XFree (r_prop);
+          }
+      }
+
+    gdk_flush ();
+    gdk_error_trap_pop ();
+  }
 
   /*
    * If we already have a window, we are being called because the panel has
@@ -1069,5 +1121,56 @@ mnb_panel_get_mutter_window (MnbPanel *panel)
   MnbPanelPrivate *priv = panel->priv;
 
   return priv->mcw;
+}
+
+/*
+ * Retruns TRUE if the passed window is both distinct from the panel window,
+ * and belongs to the same window class.
+ */
+gboolean
+mnb_panel_owns_window (MnbPanel *panel, MutterWindow *mcw)
+{
+  MnbPanelPrivate *priv = panel->priv;
+  const gchar     *wclass;
+
+  if (!priv->mcw || !mcw)
+    return FALSE;
+
+  /*
+   * Return FALSE for the top level panel window.
+   */
+  if (priv->mcw == mcw)
+    return FALSE;
+
+  wclass = meta_window_get_wm_class (mutter_window_get_meta_window (mcw));
+
+  if (priv->child_class && wclass && !strcmp (priv->child_class, wclass))
+    return TRUE;
+
+  return FALSE;
+}
+
+/*
+ * Returns TRUE if the passed window is both distinct from the panel window,
+ * and transient for it.
+ */
+gboolean
+mnb_panel_is_ancestor_of_transient (MnbPanel *panel, MutterWindow *mcw)
+{
+  MutterWindow *pcw;
+  MetaWindow   *pmw, *mw;
+
+  if (!panel)
+    return FALSE;
+
+  pcw = mnb_panel_get_mutter_window (panel);
+
+  if (!pcw || pcw == mcw)
+    return FALSE;
+
+  pmw = mutter_window_get_meta_window (pcw);
+  mw  = mutter_window_get_meta_window (mcw);
+
+  return meta_window_is_ancestor_of_transient (pmw, mw);
 }
 
