@@ -65,38 +65,6 @@ msgstr "Ви хочете вимкнути живлення?"
 msgid "If you don't decide I'll turn off in 30 seconds"
 msgstr "Якщо Ви не вирішите, вимкнення відбудеться за 30 секунд"
 
-#: ../dalston/dalston-volume-slider.c:234
-msgid "Fairly quiet"
-msgstr ""
-
-#: ../dalston/dalston-volume-slider.c:236
-msgid "Quiet"
-msgstr ""
-
-#: ../dalston/dalston-volume-slider.c:238
-msgid "Very quiet"
-msgstr ""
-
-#: ../dalston/dalston-volume-slider.c:240
-msgid "Silent"
-msgstr ""
-
-#: ../libgvc/gvc-mixer-control.c:97
-msgid "GNOME Volume Control"
-msgstr ""
-
-#: ../libgvc/gvc-mixer-control.c:1020
-msgid "System Sounds"
-msgstr ""
-
-#: ../src/dalston-power-applet.c:49
-msgid "battery"
-msgstr ""
-
-#: ../src/dalston-volume-applet.c:58
-msgid "sound"
-msgstr ""
-
 #: ../src/dalston-power-settings-capplet.c:21
 msgid "Ten minutes"
 msgstr "10 хвилин"
@@ -121,35 +89,6 @@ msgstr "Година"
 msgid "Never"
 msgstr "Ніколи"
 
-#: ../src/dalston-power-settings-capplet.c:135
-msgid "Power Management Settings"
-msgstr ""
-
-#: ../src/dalston-power-settings-capplet.c:140
-#: ../data/dalston-power-settings-capplet.desktop.in.h:1
-msgid "Power Management Preferences"
-msgstr ""
-
-#: ../src/dalston-power-settings-capplet.c:146
-msgid "<b>Power Settings</b>"
-msgstr ""
-
-#: ../src/dalston-power-settings-capplet.c:157
-msgid "Put computer to sleep when inactive for:"
-msgstr ""
-
-#: ../data/dalston-power-settings-capplet.desktop.in.h:2
-msgid "Settings for adjusting power usage"
-msgstr ""
-
-#: ../dalston/dalston-power-applet.c:278
-msgid "Running low on battery"
-msgstr ""
-
-#: ../dalston/dalston-power-applet.c:280
-msgid "Getting close to empty"
-msgstr ""
-
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Небезпека!"
@@ -161,10 +100,6 @@ msgstr "На жаль, на Вашому комп'ютері вичерпуює�
 #: ../dalston/dalston-brightness-slider.c:230
 msgid "Morning has broken"
 msgstr "Похмурий ранок"
-
-#: ../dalston/dalston-brightness-slider.c:228
-msgid "Bright"
-msgstr "Яскравий"
 
 #: ../dalston/dalston-power-applet.c:415
 #, c-format
@@ -207,15 +142,6 @@ msgstr "Сутінки"
 msgid "Total eclipse"
 msgstr "Повне затемнення"
 
-#: ../dalston/dalston-brightness-slider.c:238
-msgid "Very dark"
-msgstr "Дуже темний"
-
-#: ../dalston/dalston-volume-slider.c:226
-#, fuzzy
-msgid "Very loud"
-msgstr "Дуже голосно"
-
 #: ../dalston/dalston-volume-slider.c:224
 msgid "Turned up to 11"
 msgstr "Збільшено до 11"
@@ -240,17 +166,87 @@ msgstr "Програти тестовий звук"
 msgid "Alert sounds"
 msgstr "Звуки сповіщень"
 
-#: ../dalston/dalston-volume-slider.c:228
-#, fuzzy
-msgid "Loud"
-msgstr "Гучний"
-
 #: ../dalston/dalston-volume-slider.c:230
-#, fuzzy
 msgid "Fairly loud"
 msgstr "Досить голосно"
 
+#: ../dalston/dalston-volume-slider.c:228
+msgid "Loud"
+msgstr "Гучно"
+
 #: ../dalston/dalston-volume-slider.c:232
-#, fuzzy
 msgid "Middle of the road"
 msgstr "Посеред дороги"
+
+#: ../dalston/dalston-brightness-slider.c:238
+msgid "Very dark"
+msgstr "Дуже темно"
+
+#: ../dalston/dalston-volume-slider.c:226
+msgid "Very loud"
+msgstr "Дуже голосно"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "звук"
+
+#: ../dalston/dalston-volume-slider.c:234
+msgid "Fairly quiet"
+msgstr "Досить тихо"
+
+#: ../dalston/dalston-volume-slider.c:238
+msgid "Very quiet"
+msgstr "Дуже тихо"
+
+#: ../dalston/dalston-volume-slider.c:236
+msgid "Quiet"
+msgstr "Тихо"
+
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "Контроль гучності GNOME"
+
+#: ../dalston/dalston-volume-slider.c:240
+msgid "Silent"
+msgstr "Тишина"
+
+#: ../src/dalston-power-applet.c:49
+msgid "battery"
+msgstr "батарея"
+
+#: ../libgvc/gvc-mixer-control.c:1020
+msgid "System Sounds"
+msgstr "Системні звуки"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Керування живленням"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Налаштування живлення"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Налаштування живлення</b>"
+
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Перевести комп'ютер у режим сну через:"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Налаштування для використання живлення"
+
+#: ../dalston/dalston-power-applet.c:280
+msgid "Getting close to empty"
+msgstr "Скоро буде вичерпано"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid "Running low on battery"
+msgstr ""
+
+#: ../dalston/dalston-brightness-slider.c:228
+msgid "Bright"
+msgstr "Яскраво"
