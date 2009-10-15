@@ -31,22 +31,9 @@ msgstr[0] "<b>%d</b> хвилину"
 msgstr[1] "<b>%d</b> хвилини"
 msgstr[2] "<b>%d</b> хвилин"
 
-#: ../dalston/dalston-power-applet.c:278
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr ""
-
-#: ../dalston/dalston-power-applet.c:280
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr ""
-
 #: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Вибачте, але здається Ваша батарея пошкоджена."
-
-#: ../dalston/dalston-power-applet.c:422
-#, c-format
-msgid "Your battery is being used. It is about <b>%d</b>%% full."
-msgstr ""
 
 #: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
@@ -243,10 +230,23 @@ msgstr "Налаштування для використання живленн�
 msgid "Getting close to empty"
 msgstr "Скоро буде вичерпано"
 
-#: ../dalston/dalston-power-applet.c:278
-msgid "Running low on battery"
-msgstr ""
-
 #: ../dalston/dalston-brightness-slider.c:228
 msgid "Bright"
 msgstr "Яскраво"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid "Running low on battery"
+msgstr "Тривалість роботи від акумуляторів є малою"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Заряд батареї зменшується. Було б непогано підключити кабель живлення для початку зарядки."
+
+#: ../dalston/dalston-power-applet.c:280
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Низький заряд батареї. Збережіть всю Вашу роботу та при нагоді підключіть кабель живлення"
+
+#: ../dalston/dalston-power-applet.c:422
+#, c-format
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "Живлення від батареї. Залишилось біля <b>%d</b>%%."
