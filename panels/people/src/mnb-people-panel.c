@@ -638,6 +638,10 @@ _update_placeholder_state (MnbPeoplePanel *self)
   {
     clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
     clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
+    /* Because allocate-hidden=false still causes row spacing to be applied,
+     * so halve it.
+     */
+    nbtk_table_set_row_spacing (NBTK_TABLE (self), 3);
 
     /* Ensure content stuff is visible */
     clutter_actor_show ((ClutterActor *)priv->content_table);
@@ -646,6 +650,7 @@ _update_placeholder_state (MnbPeoplePanel *self)
     /* Hide real content stuff */
     clutter_actor_hide ((ClutterActor *)priv->content_table);
     clutter_actor_hide ((ClutterActor *)priv->selection_pane);
+    nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
 
     aggregate = ANERLEY_AGGREGATE_TP_FEED (priv->tp_feed);
     if (anerley_aggregate_tp_feed_get_accounts_online (aggregate) == 0)
@@ -813,21 +818,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_name ((ClutterActor *)scroll_bin, "people-scroll-bin");
 
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->content_table,
-                                        1,
-                                        0,
-                                        "x-fill",
-                                        TRUE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        FALSE,
-                                        "y-fill",
-                                        TRUE,
-                                        "row-span",
-                                        1,
-                                        NULL);
 
   /* No people && no accounts enabled */
   priv->no_people_tile =
@@ -845,6 +835,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-align", 0.0,
                                         "row-span", 1,
                                         "col-span", 2,
+                                        "allocate-hidden", FALSE,
                                         NULL);
 
 
@@ -856,8 +847,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->everybody_offline_tile,
-                                        1,
-                                        0,
+                                        1, 0,
                                         "x-fill", TRUE,
                                         "x-expand", TRUE,
                                         "y-expand", FALSE,
@@ -865,6 +855,19 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                         "y-align", 0.0,
                                         "row-span", 1,
                                         "col-span", 2,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+
+  /* Real content stuff */
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+                                        (ClutterActor *)priv->content_table,
+                                        2, 0,
+                                        "x-fill", TRUE,
+                                        "x-expand", TRUE,
+                                        "y-expand", FALSE,
+                                        "y-fill", TRUE,
+                                        "row-span", 1,
                                         NULL);
 
   priv->selection_pane = nbtk_table_new ();
@@ -872,20 +875,13 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_name ((ClutterActor *)priv->selection_pane, "people-selection-pane");
   nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
                                         (ClutterActor *)priv->selection_pane,
-                                        1,
-                                        1,
-                                        "x-fill",
-                                        FALSE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        FALSE,
-                                        "y-expand",
-                                        TRUE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
+                                        2, 1,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-expand", FALSE,
+                                        "y-expand", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
                                         NULL);
 
   label = nbtk_label_new (_("Selection"));
