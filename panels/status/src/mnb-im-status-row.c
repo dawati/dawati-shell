@@ -68,6 +68,7 @@ struct _MnbIMStatusRowPrivate
 
   guint in_hover    : 1;
   guint is_online   : 1;
+  guint is_enabled  : 1;
   guint is_expanded : 1;
 
   TpAccount *account;
@@ -922,6 +923,47 @@ mnb_im_status_row_new (const gchar *account_name)
 }
 
 void
+mnb_im_status_row_refresh (MnbIMStatusRow *row)
+{
+  MnbIMStatusRowPrivate *priv;
+  gboolean enabled = FALSE;
+  g_return_if_fail (MNB_IS_IM_STATUS_ROW (row));
+
+  priv = row->priv;
+
+  if (priv->is_enabled && priv->is_online)
+    enabled = TRUE;
+
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->user_icon),
+                             enabled ? 255 :128);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->presence_icon),
+                             enabled ? 255 :128);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->status_label),
+                             enabled ? 255 :128);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->account_label),
+                             enabled ? 255 :128);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->expand_box),
+                             enabled ? 255 :128);
+  clutter_actor_set_reactive (priv->expand_box,
+                              enabled ? TRUE : FALSE);
+}
+
+void
+mnb_im_status_row_set_enabled (MnbIMStatusRow *row,
+                               gboolean        is_enabled)
+{
+  MnbIMStatusRowPrivate *priv;
+
+  g_return_if_fail (MNB_IS_IM_STATUS_ROW (row));
+
+  priv = row->priv;
+
+  priv->is_enabled = is_enabled ? TRUE : FALSE;
+
+  mnb_im_status_row_refresh (row);
+}
+
+void
 mnb_im_status_row_set_online (MnbIMStatusRow *row,
                               gboolean        is_online)
 {
@@ -933,18 +975,7 @@ mnb_im_status_row_set_online (MnbIMStatusRow *row,
 
   priv->is_online = is_online ? TRUE : FALSE;
 
-  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->user_icon),
-                             priv->is_online ? 255 :128);
-  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->presence_icon),
-                             priv->is_online ? 255 :128);
-  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->status_label),
-                             priv->is_online ? 255 :128);
-  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->account_label),
-                             priv->is_online ? 255 :128);
-  clutter_actor_set_opacity (CLUTTER_ACTOR (priv->expand_box),
-                             priv->is_online ? 255 :128);
-  clutter_actor_set_reactive (priv->expand_box,
-                              priv->is_online ? TRUE : FALSE);
+  mnb_im_status_row_refresh (row);
 }
 
 G_CONST_RETURN gchar *

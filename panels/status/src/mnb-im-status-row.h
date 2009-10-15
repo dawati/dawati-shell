@@ -54,6 +54,8 @@ NbtkWidget *mnb_im_status_row_new        (const gchar              *account_name
 
 void        mnb_im_status_row_set_online (MnbIMStatusRow           *row,
                                           gboolean                  is_online);
+void        mnb_im_status_row_set_enabled (MnbIMStatusRow           *row,
+                                           gboolean                  is_enabled);
 void        mnb_im_status_row_set_status (MnbIMStatusRow           *row,
                                           TpConnectionPresenceType  presence,
                                           const gchar              *status);
