@@ -20,12 +20,18 @@
   color: #fba40b;
 }
 
-*#people-no-people-message-bin, *#people-pane-everybody-offline-bin {
+*#people-no-people-message-bin,
+*#people-pane-everybody-offline-bin,
+*#people-pane-you-offline-bin
+{
   border-image: url('file://grey-backdrop.png') 4 stretch;
   padding: 8;
 }
 
-*#people-people-pane-main-label, *#people-pane-everybody-offline-label {
+*#people-people-pane-main-label,
+*#people-pane-everybody-offline-label,
+*#people-pane-you-offline-label
+{
   font-size:16px;
   font-family: "Droid Sans";
   color: #595959ff;
