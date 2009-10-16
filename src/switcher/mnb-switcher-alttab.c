@@ -291,8 +291,11 @@ alt_tab_timeout_cb (gpointer data)
   /*
    * Check wether the Alt key is still down; if so, show the Switcher, and
    * wait for the show-completed signal to process the Alt+Tab.
+   *
+   * If the compositor is currently disabled, ignore.
    */
-  if (priv->alt_tab_down)
+  if (priv->alt_tab_down &&
+      !moblin_netbook_compositor_disabled (priv->plugin))
     {
       ClutterActor *toolbar;
 
@@ -315,7 +318,7 @@ alt_tab_timeout_cb (gpointer data)
           mnb_toolbar_activate_panel (MNB_TOOLBAR (toolbar), "zones");
         }
     }
-  else
+  else if (!priv->alt_tab_down)
     {
       gboolean backward  = FALSE;
 
@@ -374,7 +377,8 @@ mnb_switcher_alt_tab_key_handler (MetaDisplay    *display,
 
   priv->alt_tab_down = TRUE;
 
-  if (!CLUTTER_ACTOR_IS_MAPPED (switcher))
+  if (!CLUTTER_ACTOR_IS_MAPPED (switcher) ||
+      moblin_netbook_compositor_disabled (priv->plugin))
     {
       struct alt_tab_show_complete_data *alt_data;
 
