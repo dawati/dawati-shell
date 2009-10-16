@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-07 18:32+0000\n"
+"POT-Creation-Date: 2009-10-16 11:26+0000\n"
 "PO-Revision-Date: 2009-10-02 14:41+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -183,7 +183,7 @@ msgstr "Tak satupun"
 msgid "Password"
 msgstr "Kata sandi"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1280
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1279
 msgid "Show password"
 msgstr "Tampilkan kata sandi"
 
@@ -196,7 +196,7 @@ msgstr "Jaringan"
 msgid "Add new connection"
 msgstr "Tambah koneksi baru"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:239
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "Ethernet"
 
@@ -235,59 +235,59 @@ msgstr "GALAT: Tak ada perangkat keras 3G yang terdeteksi"
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
 #. 
-#: ../carrick/carrick-service-item.c:176
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
 msgstr "%s tersandi"
 
-#: ../carrick/carrick-service-item.c:270
+#: ../carrick/carrick-service-item.c:272
 msgid "Disconnect"
 msgstr "Putus"
 
-#: ../carrick/carrick-service-item.c:273
+#: ../carrick/carrick-service-item.c:275
 msgid "Connected"
 msgstr "Tersambung"
 
-#: ../carrick/carrick-service-item.c:280 ../carrick/carrick-service-item.c:289
+#: ../carrick/carrick-service-item.c:282 ../carrick/carrick-service-item.c:291
 #, c-format
 msgid "Cancel"
 msgstr "Batal"
 
-#: ../carrick/carrick-service-item.c:283
+#: ../carrick/carrick-service-item.c:285
 msgid "Configuring"
 msgstr "Menata"
 
-#: ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:294
 msgid "Associating"
 msgstr "Mengasosiasikan"
 
-#: ../carrick/carrick-service-item.c:301 ../carrick/carrick-service-item.c:326
-#: ../carrick/carrick-service-item.c:1269
+#: ../carrick/carrick-service-item.c:303 ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-service-item.c:1268
 msgid "Connect"
 msgstr "Sambung"
 
-#: ../carrick/carrick-service-item.c:329
+#: ../carrick/carrick-service-item.c:331
 msgid "Connection failed"
 msgstr "Sambungan gagal"
 
-#: ../carrick/carrick-service-item.c:332
+#: ../carrick/carrick-service-item.c:334
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Maaf, sambungan gagal. Anda dapat mencoba lagi."
 
-#: ../carrick/carrick-service-item.c:338 ../carrick/carrick-service-item.c:341
+#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:343
 #, c-format
 msgid "Disconnecting"
 msgstr "Memutus"
 
-#: ../carrick/carrick-service-item.c:399
+#: ../carrick/carrick-service-item.c:401
 msgid "Type password here"
 msgstr "Ketikkan kata sandi di sini"
 
-#: ../carrick/carrick-service-item.c:483
+#: ../carrick/carrick-service-item.c:484
 msgid "Really remove?"
 msgstr "Yakin dihapus?"
 
-#: ../carrick/carrick-service-item.c:501
+#: ../carrick/carrick-service-item.c:502
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -298,32 +298,17 @@ msgstr ""
 "melupakan kata sandi dan anda tidak akan secara\n"
 "otomatis tersambung ke %s."
 
-#: ../carrick/carrick-service-item.c:666
-#, c-format
-msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 28 characters, you have %i."
-msgstr "Panjang kata sandi Anda salah. Bagi sambungan WEP panjangnya mesti 10 atau 28 karakter, Anda punya %i."
-
-#: ../carrick/carrick-service-item.c:676
+#: ../carrick/carrick-service-item.c:674
 #, c-format
 msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
 msgstr "Kata sandi Anda terlalu pendek. Bagi sambungan WPA panjangnya paling tidak 8 karakter, Anda punya %i"
 
-#: ../carrick/carrick-service-item.c:680
-#, c-format
-msgid "Your password is too long. For a WPA  connection it needs to have fewer than 62 characters, you have %i"
-msgstr "Kata sandi Anda terlalu panjang. Bagi sambungan WPA panjangnya mesti kurang dari 62 karakter, Anda punya %i"
-
-#: ../carrick/carrick-service-item.c:688
+#: ../carrick/carrick-service-item.c:686
 #, c-format
 msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
 msgstr "Kata sandi Anda terlalu pendek. Bagi sambungan WPA2 panjangnya paling tidak 8 karakter, Anda punya %i"
 
-#: ../carrick/carrick-service-item.c:692
-#, c-format
-msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 62 characters, you have %i"
-msgstr "Kata sandi Anda terlalu panjang. Bagi sambungan WPA2 panjangnya mesti kurang dari 62 karakter, Anda punya %i"
-
-#: ../carrick/carrick-service-item.c:1205
+#: ../carrick/carrick-service-item.c:1204
 msgid "Scanning"
 msgstr "Memindai"
 
@@ -331,7 +316,7 @@ msgstr "Memindai"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1224
+#: ../carrick/carrick-service-item.c:1223
 msgid "WPA2 encrypted"
 msgstr "Tersandi WPA2"
 
@@ -392,7 +377,7 @@ msgid "network"
 msgstr "jaringan"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:69 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -402,43 +387,35 @@ msgstr "Wizard Sambungan Data Seluler"
 msgid "Select Country"
 msgstr "Pilih Negara"
 
-#: ../callouts/3g/ggg-manual-dialog.c:88
+#: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
 msgstr "Konfigurasi Manual"
 
-#: ../callouts/3g/ggg-manual-dialog.c:95
-msgid "Username:"
-msgstr "Nama pengguna:"
-
-#: ../callouts/3g/ggg-manual-dialog.c:98
-msgid "Password:"
-msgstr "Kata sandi:"
-
-#: ../callouts/3g/ggg-manual-dialog.c:102
-msgid "Gateway:"
-msgstr "Gateway:"
-
-#: ../callouts/3g/ggg-manual-dialog.c:105
-msgid "Primary DNS:"
-msgstr "DNS primer:"
-
-#: ../callouts/3g/ggg-manual-dialog.c:108
-msgid "Secondary DNS:"
-msgstr "DNS sekunder:"
-
-#: ../callouts/3g/ggg-provider-dialog.c:126
-msgid "Select Provider"
-msgstr "Pilih Operator"
-
-#: ../callouts/3g/ggg-service-dialog.c:125
-msgid "Select 3G Service"
-msgstr "Pilih Layanan 3G"
-
-#: ../callouts/3g/ggg-manual-dialog.c:92
+#: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
 msgstr "Nama Paket: (diperlukan)"
 
-#: ../callouts/3g/ggg-manual-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:96
+msgid "Username:"
+msgstr "Nama pengguna:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:99
+msgid "Password:"
+msgstr "Kata sandi:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:103
+msgid "Gateway:"
+msgstr "Gateway:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:106
+msgid "Primary DNS:"
+msgstr "DNS primer:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:109
+msgid "Secondary DNS:"
+msgstr "DNS sekunder:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
 msgstr "DNS tersier:"
 
@@ -446,10 +423,33 @@ msgstr "DNS tersier:"
 msgid "Select your 3G Plan"
 msgstr "Pilih Jenis Paket 3G Anda"
 
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "Pilih Operator"
+
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
 msgid "%s (Roaming)"
 msgstr "%s (Roaming)"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "Pilih Layanan 3G"
+
+#: ../carrick/carrick-service-item.c:664
+#, c-format
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
+msgstr "Panjang kata sandi Anda salah. Bagi sambungan WEP panjangnya mesti 10 atau 26 karakter, Anda punya %i."
+
+#: ../carrick/carrick-service-item.c:690
+#, c-format
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "Kata sandi Anda terlalu panjang. Bagi sambungan WPA2 panjangnya mesti kurang dari 63 karakter, Anda punya %i"
+
+#: ../carrick/carrick-service-item.c:678
+#, c-format
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "Kata sandi Anda terlalu panjang. Bagi sambungan WPA panjangnya mesti kurang dari 63 karakter, Anda punya %i"
 
 #~ msgid "Manual Config"
 #~ msgstr "Konfigurasi Manual"
