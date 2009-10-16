@@ -628,7 +628,7 @@ _new_connection_cb (GtkButton *button,
   GValue             *type_v, *mode_v, *ssid_v, *security_v, *pass_v;
 
   dialog = gtk_dialog_new_with_buttons (_ ("New connection settings"),
-                                        GTK_WINDOW (gtk_widget_get_parent (user_data)),
+                                        GTK_WINDOW (gtk_widget_get_toplevel (user_data)),
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_STOCK_CANCEL,
