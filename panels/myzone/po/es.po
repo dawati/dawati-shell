@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:10+0000\n"
+"POT-Creation-Date: 2009-10-16 11:31+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12,25 +12,37 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-calendar-pane.c:207
+#: ../penge/penge-calendar-pane.c:476
 msgid "<b>Appointments</b>"
 msgstr "<b>Citas</b>"
 
-#: ../penge/penge-events-pane.c:265
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "Crear una cita"
+
+#: ../penge/penge-events-pane.c:60
+#: ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Agregar"
+
+#: ../penge/penge-events-pane.c:268
 msgid "No calendar entries this week"
 msgstr "No hay notas esta semana"
 
-# the news from your friends and the web services appear here. Activate your accounts!
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-msgstr "Las noticias de tus amigos y los servicios web aparecerán aquí. ¡Activa tus cuentas!"
+#: ../penge/penge-people-placeholder-tile.c:116
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
+msgstr "Aquí verás lo que hacen tus amigos en línea. ¡Activa tus cuentas!"
 
-#: ../penge/penge-recent-file-tile.c:211
+#: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "Página web"
 
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "Crear una tarea"
+
 # Today, you don't have any pending tasks
-#: ../penge/penge-tasks-pane.c:344
+#: ../penge/penge-tasks-pane.c:433
 msgid "Nothing to do today"
 msgstr "Nada que hacer hoy"
 
