@@ -1,12 +1,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Xosé <xosecalvo@edu.xunta.es>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:02+0000\n"
+"POT-Creation-Date: 2009-10-16 11:24+0000\n"
 "PO-Revision-Date: 2009-09-16 16:59+0200\n"
 "Last-Translator: Xosé <xosecalvo@edu.xunta.es>\n"
 "Language-Team: Galego <proxecto@trasno.org>\n"
@@ -35,36 +35,24 @@ msgid "Running low on battery"
 msgstr "Estase a esgotar a batería"
 
 #: ../dalston/dalston-power-applet.c:278
-msgid ""
-"We've noticed that your battery is running a bit low. If you can it would be "
-"a good idea to plug in and top up."
-msgstr ""
-"Percibimos que a batería estase a esgotar. Se pode, sería boa idea ligar á "
-"electricidade e enchela."
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Percibimos que a batería estase a esgotar. Se pode, sería boa idea ligar á electricidade e enchela."
 
 #: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
 msgstr "A aproximarse ao baleiro"
 
 #: ../dalston/dalston-power-applet.c:280
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can"
-msgstr ""
-"A batería está moi baixa. Sería boa idea gardar todo o traballo e ligar á "
-"electricidade o antes posíbel"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "A batería está moi baixa. Sería boa idea gardar todo o traballo e ligar á electricidade o antes posíbel"
 
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Perigo!"
 
 #: ../dalston/dalston-power-applet.c:282
-msgid ""
-"Sorry, your computer is about to run out of battery. We're going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
-"Desculpe, vaise esgotar a batería. Imos ter que apagar. Garde o seu traballo "
-"e vémonos pronto."
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Desculpe, vaise esgotar a batería. Imos ter que apagar. Garde o seu traballo e vémonos pronto."
 
 #: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
@@ -132,20 +120,11 @@ msgstr "Moi escuro"
 msgid "Total eclipse"
 msgstr "Eclipse total"
 
-#: ../dalston/dalston-button-monitor.c:175
-#, c-format
-msgid "If you don't decide i'll turn off in %d seconds"
-msgstr "Se non se decide, apagarase en %d segundos"
-
-#: ../dalston/dalston-button-monitor.c:277
+#: ../dalston/dalston-button-monitor.c:281
 msgid "Would you like to turn off now?"
 msgstr "Quere apagar agora?"
 
-#: ../dalston/dalston-button-monitor.c:278
-msgid "If you don't decide i'll turn off in 30 seconds"
-msgstr "Se non se decide, apagarase en 30 segundos"
-
-#: ../dalston/dalston-button-monitor.c:285
+#: ../dalston/dalston-button-monitor.c:289
 msgid "Turn off"
 msgstr "Apagar"
 
@@ -165,39 +144,39 @@ msgstr "Sons de aviso"
 msgid "Play test sound"
 msgstr "Reproducir un son de proba"
 
-#: ../dalston/dalston-volume-slider.c:190
+#: ../dalston/dalston-volume-slider.c:224
 msgid "Turned up to 11"
 msgstr "Subido a 11"
 
-#: ../dalston/dalston-volume-slider.c:192
+#: ../dalston/dalston-volume-slider.c:226
 msgid "Very loud"
 msgstr "Moi alto"
 
-#: ../dalston/dalston-volume-slider.c:194
+#: ../dalston/dalston-volume-slider.c:228
 msgid "Loud"
 msgstr "Alto"
 
-#: ../dalston/dalston-volume-slider.c:196
+#: ../dalston/dalston-volume-slider.c:230
 msgid "Fairly loud"
 msgstr "Bastante alto"
 
-#: ../dalston/dalston-volume-slider.c:198
+#: ../dalston/dalston-volume-slider.c:232
 msgid "Middle of the road"
 msgstr "Na metade"
 
-#: ../dalston/dalston-volume-slider.c:200
+#: ../dalston/dalston-volume-slider.c:234
 msgid "Fairly quiet"
 msgstr "Bastante baixo"
 
-#: ../dalston/dalston-volume-slider.c:202
+#: ../dalston/dalston-volume-slider.c:236
 msgid "Quiet"
 msgstr "Baixo"
 
-#: ../dalston/dalston-volume-slider.c:204
+#: ../dalston/dalston-volume-slider.c:238
 msgid "Very quiet"
 msgstr "Moi baixo"
 
-#: ../dalston/dalston-volume-slider.c:206
+#: ../dalston/dalston-volume-slider.c:240
 msgid "Silent"
 msgstr "Silencioso"
 
@@ -209,7 +188,7 @@ msgstr "Control de volume de GNOME"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/dalston-power-applet.c:48
+#: ../src/dalston-power-applet.c:50
 msgid "battery"
 msgstr "batería"
 
@@ -217,3 +196,56 @@ msgstr "batería"
 msgid "sound"
 msgstr "son"
 
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Pór a durmir o computador cando leve inactivo:"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Configuración da enerxía</p>"
+
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "Nunca"
+
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "Unha hora"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Preferencias da xestión da enerxía"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Configuración da xestión da enerxía"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Opcións de axuste do uso da enerxía"
+
+#: ../src/dalston-power-settings-capplet.c:21
+msgid "Ten minutes"
+msgstr "Dez minutos"
+
+#: ../src/dalston-power-settings-capplet.c:22
+msgid "Twenty minutes"
+msgstr "Vinte minutos"
+
+#: ../src/dalston-power-settings-capplet.c:23
+msgid "Half an hour"
+msgstr "Media hora"
+
+#: ../src/dalston-power-settings-capplet.c:24
+msgid "40 minutes"
+msgstr "Cuarenta minutos"
+
+#: ../dalston/dalston-button-monitor.c:178
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Se non se decide, apagareime en %d segundos"
+
+#: ../dalston/dalston-button-monitor.c:282
+msgid "If you don't decide I'll turn off in 30 seconds"
+msgstr "Se non se decide, apagareime en 30 segundos"
