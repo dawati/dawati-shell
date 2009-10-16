@@ -303,6 +303,30 @@ moblin_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
 }
 
 static void
+moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
+                                      gint                 from,
+                                      gint                 to,
+                                      MetaMotionDirection  dir,
+                                      MutterPlugin        *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gboolean                    on   = TRUE;
+
+  if (to < 0 || to >= MAX_WORKSPACES)
+    {
+      g_warning ("Got invalid workspace %d", to);
+      return;
+    }
+
+  if (priv->fullscreen_apps[MAX_WORKSPACES] || priv->fullscreen_apps[to])
+    on = FALSE;
+
+  g_debug ("Workspace changed, compositor should be %d", on);
+
+  moblin_netbook_toggle_compositor (plugin, on);
+}
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -346,6 +370,11 @@ moblin_netbook_plugin_constructed (GObject *object)
   g_signal_connect (screen,
                     "workareas-changed",
                     G_CALLBACK (moblin_netbook_workarea_changed_cb),
+                    plugin);
+
+  g_signal_connect (screen,
+                    "workspace-switched",
+                    G_CALLBACK (moblin_netbook_workspace_switched_cb),
                     plugin);
 
   g_signal_connect (display,
