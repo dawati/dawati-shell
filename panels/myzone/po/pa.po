@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 07:51+0000\n"
-"PO-Revision-Date: 2009-09-04 06:43+0530\n"
+"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"PO-Revision-Date: 2009-10-17 07:16+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,43 +16,37 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../penge/penge-calendar-pane.c:207
+#: ../penge/penge-calendar-pane.c:476
 msgid "<b>Appointments</b>"
 msgstr "<b>ਮੁਲਾਕਾਤ</b>"
 
-#: ../penge/penge-events-pane.c:208
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "ਨਵੀਂ ਮੁਲਾਕਾਤ ਬਣਾਓ"
+
+#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "ਸ਼ਾਮਲ"
+
+#: ../penge/penge-events-pane.c:268
 msgid "No calendar entries this week"
 msgstr "ਇਹ ਹਫ਼ਤੇ ਲਈ ਕੋਈ ਕੈਲੰਡਰ ਐਂਟਰੀ ਨਹੀਂ"
 
-#: ../penge/penge-people-pane.c:144
+#: ../penge/penge-people-placeholder-tile.c:116
 msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr ""
-"ਤੁਹਾਡੇ ਦੋਸਤਾਂ ਦੀ ਫੀਡ ਅਤੇ ਵੈੱਬ ਸਰਵਿਸਾਂ ਇੱਥੇ ਵੇਖਾਈਆਂ ਜਾਣਗੀਆਂ। ਆਪਣਾ ਅਕਾਊਂਟ ਹੁਣੇ "
-"ਐਕਟੀਵੇਟ "
-"ਕਰੋ!"
+"Things that your friends do online will appear here. Activate your accounts "
+"now!"
+msgstr "ਤੁਹਾਡੇ ਦੋਸਤ ਚੀਜ਼ਾਂ ਕਰਨਗੇ, ਉਹ ਇੱਥੇ ਵੇਖਾਈਆਂ ਜਾਣਗੀਆਂ। ਆਪਣਾ ਅਕਾਊਂਟ ਹੁਣੇ ਐਕਟੀਵੇਟ ਕਰੋ!"
 
-#: ../penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "<b>ਨੋਟਬੁੱਕ ਲਈ ਮੋਬਲਿਨ ੨.੦ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ</b>"
-
-#: ../penge/penge-recent-files-pane.c:227
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
-msgstr ""
-"ਮੋਬਲਿਨ ਹੋਰ ਕੰਪਿਊਟਰ ਤੋਂ ਕੁਝ ਅੱਡ ਹੈ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਮ ਕਰਨ ਲਈ ਮੱਦਦਗਾਰ "
-"ਹੋਣ ਵਾਸਤੇ ਬਹੁਤ "
-"ਕੁਝ ਇੱਕਠਾ ਕੀਤਾ ਹੈ। ਅਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹਾਂ ਕਿ ਤੁਸੀਂ ਇਸ ਨਾਲ ਮੌਜਾਂ ਮਾਣੋਗੇ, ਮੋਬਲਿਨ "
-"ਟੀਮ"
-
-#: ../penge/penge-recent-file-tile.c:218
+#: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../penge/penge-tasks-pane.c:287
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "ਨਵੀਂ ਟਾਸਕ ਬਣਾਓ"
+
+#: ../penge/penge-tasks-pane.c:433
 msgid "Nothing to do today"
 msgstr "ਅੱਜ ਲਈ ਕੁਝ ਨਹੀਂ ਹੈ"
 
@@ -60,4 +54,17 @@ msgstr "ਅੱਜ ਲਈ ਕੁਝ ਨਹੀਂ ਹੈ"
 #, c-format
 msgid "Due %x"
 msgstr "%x ਨੂੰ ਚਾਹੀਦਾ"
+
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>ਨੋਟਬੁੱਕ ਲਈ ਮੋਬਲਿਨ ੨.੧ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ</b>"
+
+#: ../penge/penge-welcome-tile.c:108
+msgid ""
+"As Moblin is a bit different to other computers, we've put together a couple "
+"of bits and pieces to help you find your way around. We hope you enjoy it, "
+"The Moblin Team."
+msgstr ""
+"ਮੋਬਲਿਨ ਹੋਰ ਕੰਪਿਊਟਰ ਤੋਂ ਕੁਝ ਅੱਡ ਹੈ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਮ ਕਰਨ ਲਈ ਮੱਦਦਗਾਰ ਹੋਣ ਵਾਸਤੇ ਬਹੁਤ ਕੁਝ "
+"ਇੱਕਠਾ ਕੀਤਾ ਹੈ। ਅਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹਾਂ ਕਿ ਤੁਸੀਂ ਇਸ ਨਾਲ ਮੌਜਾਂ ਮਾਣੋਗੇ, ਮੋਬਲਿਨ ਟੀਮ"
 
