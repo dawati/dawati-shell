@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:30+0000\n"
-"PO-Revision-Date: 2009-09-04 06:44+0530\n"
+"POT-Creation-Date: 2009-10-16 11:32+0000\n"
+"PO-Revision-Date: 2009-10-17 07:24+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,41 +16,60 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../src/moblin-panel-people.c:69
+#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
 msgid "people"
 msgstr "ਲੋਕ"
 
-#: ../src/mnb-people-panel.c:161
+#: ../src/mnb-people-panel.c:166
 msgid "Send an email"
 msgstr "ਈਮੇਲ ਭੇਜੋ"
 
-#: ../src/mnb-people-panel.c:163
+#: ../src/mnb-people-panel.c:168
 msgid "Edit details"
 msgstr "ਵੇਰਵਾ ਸੋਧੋ"
 
-#: ../src/mnb-people-panel.c:172
+#: ../src/mnb-people-panel.c:177
 msgid "Send a message"
 msgstr "ਸੁਨੇਹਾ ਭੇਜੋ"
 
-#: ../src/mnb-people-panel.c:306
+#: ../src/mnb-people-panel.c:311
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-"ਅਫਸੋਸ, ਅਸੀਂ ਕਿਸੇ ਨੂੰ ਵੀ ਲੱਭ ਨਹੀਂ ਸਕਦੇ ਹਾਂ। ਕੀ ਤੁਸੀਂ ਮੈਸੈਂਜ਼ਰ ਅਕਾਊਂਟ "
-"ਸੈੱਟਅੱਪ ਕਰ ਲਿਆ ਹੈ?"
+msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਕਿਸੇ ਨੂੰ ਵੀ ਲੱਭ ਨਹੀਂ ਸਕਦੇ ਹਾਂ। ਕੀ ਤੁਸੀਂ ਮੈਸੈਂਜ਼ਰ ਅਕਾਊਂਟ ਸੈੱਟਅੱਪ ਕਰ ਲਿਆ ਹੈ?"
 
-#: ../src/mnb-people-panel.c:553
+#: ../src/mnb-people-panel.c:447
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਕਿਸੇ ਨੂੰ ਵੀ ਲੱਭ ਨਹੀਂ ਸਕਦੇ ਹਾਂ। ਉਹ ਸਾਰੇ ਆਫਲਾਈਨ ਜਾਪਦੇ ਹਨ।"
+
+#: ../src/mnb-people-panel.c:497
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "ਆਪਣੇ IM ਸੰਪਰਕ ਵੇਖਣ ਲਈ, ਹਾਲਤ ਪੈਨਲ ਵਿੱਚ ਆਨਲਾਈਨ ਜਾਓ।"
+
+#: ../src/mnb-people-panel.c:554
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "ਲੋਕ - %d ਤੁਹਾਡੇ ਨਾਲ ਗੱਲ ਕਰ ਰਹੇ ਹਨ"
+
+#: ../src/mnb-people-panel.c:561
+msgid "people - Someone is talking to you"
+msgstr "ਲੋਕ - ਕੋਈ ਤੁਹਾਡੇ ਨਾਲ ਗੱਲ ਕਰ ਰਿਹਾ ਹੈ"
+
+#: ../src/mnb-people-panel.c:790
 msgid "People"
 msgstr "ਲੋਕ"
 
-#: ../src/mnb-people-panel.c:566
+#: ../src/mnb-people-panel.c:803
 msgid "Search"
 msgstr "ਖੋਜ"
 
-#: ../src/mnb-people-panel.c:682
+#: ../src/mnb-people-panel.c:856
+msgid "People talking to you ..."
+msgstr "ਤੁਹਾਡੇ ਨਾਲ ਗੱਲਾਂ ਕਰ ਰਹੇ ਲੋਕ..."
+
+#: ../src/mnb-people-panel.c:983
 msgid "Selection"
 msgstr "ਚੋਣ"
 
-#: ../src/mnb-people-panel.c:745
+#: ../src/mnb-people-panel.c:1046
 msgid "Nobody selected"
 msgstr "ਕੋਈ ਵੀ ਨਹੀਂ ਚੁਣਿਆ"
 
