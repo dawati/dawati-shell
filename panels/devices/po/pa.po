@@ -6,87 +6,96 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dalston.Moblin2-UI.dalston\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-05 09:19+0000\n"
-"PO-Revision-Date: 2009-08-07 07:12+0530\n"
+"POT-Creation-Date: 2009-10-16 11:24+0000\n"
+"PO-Revision-Date: 2009-10-17 07:22+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Punjabi Users <punjabi-users@lists.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 0.3\n"
+"X-Generator: Lokalize 1.0\n"
 
-#: ../dalston/dalston-power-applet.c:159
+#: ../dalston/dalston-power-applet.c:237
 #, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b> ਘੰਟਾ"
 msgstr[1] "<b>%d</b> ਘੰਟੇ"
 
-#: ../dalston/dalston-power-applet.c:166 ../dalston/dalston-power-applet.c:179
+#: ../dalston/dalston-power-applet.c:244 ../dalston/dalston-power-applet.c:257
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
 msgstr[0] "<b>%d</b> ਮਿੰਟ"
 msgstr[1] "<b>%d</b> ਮਿੰਟ"
 
-#: ../dalston/dalston-power-applet.c:200
+#: ../dalston/dalston-power-applet.c:278
 msgid "Running low on battery"
 msgstr "ਘੱਟ ਬੈਟਰੀ ਉੱਤੇ ਚੱਲ ਰਿਹਾ ਹੈ"
 
-#: ../dalston/dalston-power-applet.c:200
+#: ../dalston/dalston-power-applet.c:278
 msgid ""
 "We've noticed that your battery is running a bit low. If you can it would be "
 "a good idea to plug in and top up."
 msgstr ""
+"ਸਾਨੂੰ ਪਤਾ ਲੱਗਾ ਹੈ ਕਿ ਤੁਹਾਡੀ ਬੈਟਰੀ ਕੁਝ ਘੱਟ ਗਈ ਹੈ। ਜੇ ਤੁਸੀਂ ਪਲੱਗ ਲਗਾ ਕੇ ਚਾਰਜ "
+"ਕਰ ਲਵੋ ਤਾਂ ਇਹ "
+"ਚੰਗਾ ਹੋ ਸਕਦਾ ਹੈ।"
 
-#: ../dalston/dalston-power-applet.c:202
+#: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
 msgstr "ਖਾਲੀ ਹੋਣ ਜਾ ਰਹੀ ਹੈ"
 
-#: ../dalston/dalston-power-applet.c:202
+#: ../dalston/dalston-power-applet.c:280
 msgid ""
 "You're running quite low on battery. It'd be a good idea to save all your "
 "work and plug in as soon as you can"
 msgstr ""
+"ਤੁਹਾਡੀ ਬੈਟਰੀ ਬਹੁਤ ਘੱਟ ਗਈ ਹੈ। ਆਪਣੇ ਕੰਮ ਨੂੰ ਸੰਭਾਲਣਾ ਚੰਗਾ ਰਹੇਗਾ ਅਤੇ ਜਿੰਨਾ ਛੇਤੀ "
+"ਚਾਰਜ ਲਗਾ "
+"ਸਕੋ ਉਹ ਵੀ ਚੰਗਾ ਹੈ।"
 
-#: ../dalston/dalston-power-applet.c:204
+#: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "ਖਤਰਾ!"
 
-#: ../dalston/dalston-power-applet.c:204
+#: ../dalston/dalston-power-applet.c:282
 msgid ""
 "Sorry, your computer is about to run out of battery. We're going to have to "
 "turn off now. Please save your work and hope to see you again soon."
 msgstr ""
+"ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਦੀ ਬੈਟਰੀ ਖਤਮ ਹੋਣ ਹੀ ਵਾਲੀ ਹੈ। ਅਸੀਂ ਇਸ ਨੂੰ ਹੁਣ ਬੰਦ ਕਰਨ "
+"ਜਾ ਰਹੇ ਹਾਂ। "
+"ਆਪਣਾ ਕੰਮ ਸੰਭਾਲ ਲਵੋ ਜੀ ਅਤੇ ਤੁਹਾਨੂੰ ਛੇਤੀ ਹੀ ਮੁੜ ਮਿਲਾਂਗੇ।"
 
-#: ../dalston/dalston-power-applet.c:340
+#: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
 msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੀ ਬੈਟਰੀ ਖ਼ਰਾਬ ਜਾਪਦੀ ਹੈ।"
 
-#: ../dalston/dalston-power-applet.c:343
+#: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਪੂਰੀ ਚਾਰਜ ਹੈ ਅਤੇ ਤੁਹਾਡੇ ਵਰਤਣ ਲੀ ਤਿਆਰ ਹੈ।"
 
-#: ../dalston/dalston-power-applet.c:346
+#: ../dalston/dalston-power-applet.c:415
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
 msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਚਾਰਜ ਹੋ ਰਹੀ ਹੈ। ਇਸ <b>%d</b>%% ਪੂਰੀ ਹੈ।"
 
-#: ../dalston/dalston-power-applet.c:353
+#: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
 msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਵਰਤੀ ਜਾ ਰਹੀ ਹੈ। ਇਹ <b>%d</b>%% ਪੂਰੀ ਹੈ।"
 
-#: ../dalston/dalston-power-applet.c:361
+#: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੋਲ ਬੈਟਰੀ ਇੰਸਟਾਲ ਨਹੀਂ ਜਾਪਦੀ ਹੈ।"
 
-#: ../dalston/dalston-power-applet.c:476
+#: ../dalston/dalston-power-applet.c:515
 msgid "Display brightness"
 msgstr "ਡਿਸਪਲੇਅ ਚਮਕ"
 
-#: ../dalston/dalston-power-applet.c:507
+#: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
 msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਤੁਹਾਡੀ ਸਕਰੀਨ ਦੀ ਚਮਕ ਬਦਲਣ ਲਈ ਸਹਾਇਕ ਨਹੀਂ ਹਾਂ।"
 
@@ -112,7 +121,7 @@ msgstr "ਦੁਪਹਿਰ"
 
 #: ../dalston/dalston-brightness-slider.c:234
 msgid "Pretty dusky"
-msgstr ""
+msgstr "ਘੁਸਮੁਸਾ"
 
 #: ../dalston/dalston-brightness-slider.c:236
 msgid "Twilight"
@@ -125,6 +134,23 @@ msgstr "ਬਹੁਤ ਹਨ੍ਹੇਰਾ"
 #: ../dalston/dalston-brightness-slider.c:240
 msgid "Total eclipse"
 msgstr "ਮੱਸਿਆ"
+
+#: ../dalston/dalston-button-monitor.c:178
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ"
+
+#: ../dalston/dalston-button-monitor.c:281
+msgid "Would you like to turn off now?"
+msgstr "ਕੀ ਤੁਸੀਂ ਹੁਣੇ ਬੰਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
+
+#: ../dalston/dalston-button-monitor.c:282
+msgid "If you don't decide I'll turn off in 30 seconds"
+msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ ੩੦ ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ"
+
+#: ../dalston/dalston-button-monitor.c:289
+msgid "Turn off"
+msgstr "ਬੰਦ ਕਰੋ"
 
 #: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
@@ -142,47 +168,100 @@ msgstr "ਚੇਤਾਵਨੀ ਸਾਊਂਡ"
 msgid "Play test sound"
 msgstr "ਟੈਸਟ ਸਾਊਂਡ ਚਲਾਓ"
 
-#: ../dalston/dalston-volume-slider.c:188
+#: ../dalston/dalston-volume-slider.c:224
 msgid "Turned up to 11"
 msgstr "11 ਤੱਕ ਵਧਾਓ"
 
-#: ../dalston/dalston-volume-slider.c:190
+#: ../dalston/dalston-volume-slider.c:226
 msgid "Very loud"
 msgstr "ਬਹੁਤ ਉਚੀ"
 
-#: ../dalston/dalston-volume-slider.c:192
+#: ../dalston/dalston-volume-slider.c:228
 msgid "Loud"
 msgstr "ਉੱਚੀ"
 
-#: ../dalston/dalston-volume-slider.c:194
+#: ../dalston/dalston-volume-slider.c:230
 msgid "Fairly loud"
 msgstr "ਮੱਧਮ ਉੱਚੀ"
 
-#: ../dalston/dalston-volume-slider.c:196
+#: ../dalston/dalston-volume-slider.c:232
 msgid "Middle of the road"
 msgstr "ਰਾਹ ਦੇ ਵਿਚਾਲੇ"
 
-#: ../dalston/dalston-volume-slider.c:198
+#: ../dalston/dalston-volume-slider.c:234
 msgid "Fairly quiet"
 msgstr "ਠੀਕ-ਠਾਕ ਚੁੱਪ"
 
-#: ../dalston/dalston-volume-slider.c:200
+#: ../dalston/dalston-volume-slider.c:236
 msgid "Quiet"
 msgstr "ਚੁੱਪ"
 
-#: ../dalston/dalston-volume-slider.c:202
+#: ../dalston/dalston-volume-slider.c:238
 msgid "Very quiet"
 msgstr "ਬਹੁਤ ਚੁੱਪ"
 
-#: ../dalston/dalston-volume-slider.c:204
+#: ../dalston/dalston-volume-slider.c:240
 msgid "Silent"
 msgstr "ਸ਼ਾਂਤ"
 
-#: ../libgvc/gvc-mixer-control.c:988
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "ਗਨੋਮ ਵਾਲੀਅਮ ਕੰਟਰੋਲ"
+
+#: ../libgvc/gvc-mixer-control.c:1020
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
-#: ../libgvc/gvc-mixer-control.c:1512
-msgid "GNOME Volume Control"
-msgstr "ਗਨੋਮ ਵਾਲੀਅਮ ਕੰਟਰੋਲ"
+#: ../src/dalston-power-applet.c:50
+msgid "battery"
+msgstr "ਬੈਟਰੀ"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "ਸਾਊਂਡ"
+
+#: ../src/dalston-power-settings-capplet.c:21
+msgid "Ten minutes"
+msgstr "ਦਸ ਮਿੰਟ"
+
+#: ../src/dalston-power-settings-capplet.c:22
+msgid "Twenty minutes"
+msgstr "ਵੀਹ ਮਿੰਟ"
+
+#: ../src/dalston-power-settings-capplet.c:23
+msgid "Half an hour"
+msgstr "ਅੱਧਾ ਘੰਟਾ"
+
+#: ../src/dalston-power-settings-capplet.c:24
+msgid "40 minutes"
+msgstr "40 ਮਿੰਟ"
+
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "ਘੰਟਾ"
+
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "ਕਦੇ ਨਹੀਂ"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "ਪਾਵਰ ਪਰਬੰਧ ਸੈਟਿੰਗ"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "ਪਾਵਰ ਪਰਬੰਧ ਪਸੰਦ"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>ਪਾਵਰ ਸੈਟਿੰਗ</b>"
+
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "ਕੰਪਿਊਟਰ ਨੂੰ ਸਲੀਪ ਕਰੋ, ਜਦੋਂ ਗ਼ੈਰ-ਸਰਗਰਮ ਹੋਵੇ:"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "ਪਾਵਰ ਵਰਤੋਂ ਅਡਜੱਸਟ ਕਰਨ ਲਈ ਸੈਟਿੰਗ"
 
