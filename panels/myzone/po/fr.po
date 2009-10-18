@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-29 20:28+0000\n"
+"POT-Creation-Date: 2009-10-16 11:31+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: glsfra_Sophie <sophiex.marchese@intel.com>\n"
 "Language-Team: \n"
@@ -14,19 +14,20 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-calendar-pane.c:478
+#: ../penge/penge-calendar-pane.c:476
 msgid "<b>Appointments</b>"
 msgstr "<b>Rendez-vous</b>"
 
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-msgstr "Les flux et services Web de vos amis vont apparaître ici. Activez vos comptes dès maintenant !"
+# FRA QA : No calendar entries
+#: ../penge/penge-events-pane.c:268
+msgid "No calendar entries this week"
+msgstr "Aucune entrée cette semaine"
 
 #: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "Page Web"
 
-#: ../penge/penge-tasks-pane.c:344
+#: ../penge/penge-tasks-pane.c:433
 msgid "Nothing to do today"
 msgstr "Rien à faire aujourd'hui"
 
@@ -44,7 +45,18 @@ msgstr "<b>Moblin 2.1 pour Netbooks vous souhaite la bienvenue</b>"
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 msgstr "Comme Moblin est différent de ce que vous avez connu jusqu'à présent, nous avons compilé quelques conseils et exemples pour vous aider à vous y retrouver. Amusez-vous à le découvrir... Le Team Moblin."
 
-# FRA QA : No calendar entries
-#: ../penge/penge-events-pane.c:265
-msgid "No calendar entries this week"
-msgstr "Aucune entrée cette semaine"
+#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Ajouter"
+
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "Créer un rendez-vous"
+
+#: ../penge/penge-people-placeholder-tile.c:116
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
+msgstr "Ce que vos amis font en ligne va apparaître ici. Activez vos comptes dès maintenant !"
+
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "Creer une nouvelle tâche"
