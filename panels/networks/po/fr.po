@@ -36,19 +36,23 @@ msgstr ", "
 msgid "wired"
 msgstr "par câble"
 
-#: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1445
+#: ../carrick/carrick-list.c:866
+#: ../carrick/carrick-pane.c:1445
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:867 ../carrick/carrick-pane.c:1539
+#: ../carrick/carrick-list.c:867
+#: ../carrick/carrick-pane.c:1539
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:868 ../carrick/carrick-pane.c:1508
+#: ../carrick/carrick-list.c:868
+#: ../carrick/carrick-pane.c:1508
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:869 ../carrick/carrick-pane.c:1571
+#: ../carrick/carrick-list.c:869
+#: ../carrick/carrick-pane.c:1571
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -58,23 +62,16 @@ msgstr "Bluetooth"
 #. * connectivity daemon, is not running.
 #.
 #: ../carrick/carrick-list.c:882
-msgid ""
-"Sorry, we can't find any networks. It appears that the connection manager is "
-"not running. You could try restarting your computer."
-msgstr ""
-"Désolé, aucun réseau trouvé. L'assistant de connexion ne semble pas "
-"fonctionner. Essayez de redémarrer votre ordinateur."
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "Désolé, aucun réseau trouvé. L'assistant de connexion ne semble pas fonctionner. Essayez de redémarrer votre ordinateur."
 
 #.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
 #: ../carrick/carrick-list.c:892
-msgid ""
-"Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr ""
-"Désolé, aucun réseau trouvé. Vous pouvez essayer de désactiver le mode Hors-"
-"ligne"
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Désolé, aucun réseau trouvé. Vous pouvez essayer de désactiver le mode Hors-ligne"
 
 #: ../carrick/carrick-list.c:1029
 #, c-format
@@ -134,54 +131,33 @@ msgstr "Réseau modifié"
 
 #: ../carrick/carrick-notification-manager.c:218
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a wired "
-"network"
-msgstr ""
-"Désolé, nous avons perdu votre connexion à %s. Nous vous avons connecté à un "
-"réseau par câble"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Désolé, nous avons perdu votre connexion à %s. Nous vous avons connecté à un réseau par câble"
 
 #: ../carrick/carrick-notification-manager.c:225
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
-"network"
-msgstr ""
-"Désolé, nous avons perdu votre connexion à %s. Nous vous avons connecté à %"
-"s, un réseau %s "
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "Désolé, nous avons perdu votre connexion à %s. Nous vous avons connecté à %s, un réseau %s "
 
 #: ../carrick/carrick-notification-manager.c:233
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr ""
-"Désolé, nous avons perdu votre connexion à %s. Nous vous avons connecté à un "
-"réseau %s"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Désolé, nous avons perdu votre connexion à %s. Nous vous avons connecté à un réseau %s"
 
 #: ../carrick/carrick-notification-manager.c:243
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr ""
-"Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté à un "
-"réseau par câble"
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté à un réseau par câble"
 
 #: ../carrick/carrick-notification-manager.c:250
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
-"network"
-msgstr ""
-"Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté à %s, "
-"un réseau %s "
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté à %s, un réseau %s "
 
 #: ../carrick/carrick-notification-manager.c:259
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr ""
-"Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté à un "
-"réseau %s "
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté à un réseau %s "
 
 #: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
@@ -213,7 +189,8 @@ msgstr "Aucun"
 msgid "Password"
 msgstr "Mot de passe"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1280
+#: ../carrick/carrick-pane.c:727
+#: ../carrick/carrick-service-item.c:1280
 msgid "Show password"
 msgstr "Montrer le mot de passe"
 
@@ -226,7 +203,8 @@ msgstr "Réseaux"
 msgid "Add new connection"
 msgstr "Ajouter une nouvelle connexion"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:239
+#: ../carrick/carrick-pane.c:1477
+#: ../carrick/carrick-service-item.c:239
 msgid "Wired"
 msgstr "Par câble"
 
@@ -279,7 +257,8 @@ msgstr "Déconnecter"
 msgid "Connected"
 msgstr "Connecté"
 
-#: ../carrick/carrick-service-item.c:280 ../carrick/carrick-service-item.c:289
+#: ../carrick/carrick-service-item.c:280
+#: ../carrick/carrick-service-item.c:289
 #, c-format
 msgid "Cancel"
 msgstr "Annuler"
@@ -292,7 +271,8 @@ msgstr "En cours de configuration"
 msgid "Associating"
 msgstr "En cours d'association"
 
-#: ../carrick/carrick-service-item.c:301 ../carrick/carrick-service-item.c:326
+#: ../carrick/carrick-service-item.c:301
+#: ../carrick/carrick-service-item.c:326
 #: ../carrick/carrick-service-item.c:1269
 msgid "Connect"
 msgstr "Connecter"
@@ -305,7 +285,8 @@ msgstr "Connexion non établie"
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Désolé, la connexion a échoué. Vous pouvez réessayer plus tard."
 
-#: ../carrick/carrick-service-item.c:338 ../carrick/carrick-service-item.c:341
+#: ../carrick/carrick-service-item.c:338
+#: ../carrick/carrick-service-item.c:341
 #, c-format
 msgid "Disconnecting"
 msgstr "En cours de déconnexion"
@@ -331,48 +312,28 @@ msgstr ""
 
 #: ../carrick/carrick-service-item.c:666
 #, c-format
-msgid ""
-"Your password isn't the right length. For a WEP connection it needs to be "
-"either 10 or 28 characters, you have %i."
-msgstr ""
-"Votre mot de passe n'est pas de la bonne longueur. Pour une connexion WEP, "
-"il doit contenir 10 ou 28 caractères, pas %i."
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 28 characters, you have %i."
+msgstr "Votre mot de passe n'est pas de la bonne longueur. Pour une connexion WEP, il doit contenir 10 ou 28 caractères, pas %i."
 
 #: ../carrick/carrick-service-item.c:676
 #, c-format
-msgid ""
-"Your password is too short. For a WPA  connection it needs to be at least 8 "
-"characters long, you have %i"
-msgstr ""
-"Votre mot de passe est trop court. Pour une connexion WPA, il doit contenir "
-"au moins 8 caractères, au lieu de %i"
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Votre mot de passe est trop court. Pour une connexion WPA, il doit contenir au moins 8 caractères, au lieu de %i"
 
 #: ../carrick/carrick-service-item.c:680
 #, c-format
-msgid ""
-"Your password is too long. For a WPA  connection it needs to have fewer than "
-"62 characters, you have %i"
-msgstr ""
-"Votre mot de passe est trop long. Pour une connexion WPA, il doit contenir "
-"moins de 62 caractères, au lieu de %i"
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 62 characters, you have %i"
+msgstr "Votre mot de passe est trop long. Pour une connexion WPA, il doit contenir moins de 62 caractères, au lieu de %i"
 
 #: ../carrick/carrick-service-item.c:688
 #, c-format
-msgid ""
-"Your password is too short. For a WPA2  connection it needs to be at least 8 "
-"characters long, you have %i"
-msgstr ""
-"Votre mot de passe est trop court. Pour une connexion WPA2, il doit contenir "
-"au moins 8 caractères, au lieu de %i"
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Votre mot de passe est trop court. Pour une connexion WPA2, il doit contenir au moins 8 caractères, au lieu de %i"
 
 #: ../carrick/carrick-service-item.c:692
 #, c-format
-msgid ""
-"Your password is too long. For a WPA2  connection it needs to have fewer "
-"than 62 characters, you have %i"
-msgstr ""
-"Votre mot de passe est trop long. Pour une connexion WPA2, il doit contenir "
-"moins de 62 caractères, au lieu de %i"
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 62 characters, you have %i"
+msgstr "Votre mot de passe est trop long. Pour une connexion WPA2, il doit contenir moins de 62 caractères, au lieu de %i"
 
 #: ../carrick/carrick-service-item.c:1205
 msgid "Scanning"
@@ -418,7 +379,8 @@ msgstr "réseaux - %s - 3G"
 msgid "networks - %s - bluetooth"
 msgstr "réseaux - %s - bluetooth"
 
-#: ../src/carrick.c:88 ../src/carrick.c:100
+#: ../src/carrick.c:88
+#: ../src/carrick.c:100
 msgid "networks"
 msgstr "réseaux"
 
@@ -443,7 +405,8 @@ msgid "network"
 msgstr "réseau"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:69 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:69
+#: ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -502,111 +465,75 @@ msgstr "%s (Itinérance)"
 msgid "Select 3G Service"
 msgstr "Sélectionner le service 3G"
 
-#~ msgid "Select your 3G Data Plan"
-#~ msgstr "Sélectionner le plan de données 3G"
-
-#~ msgid "Plan Name: (required)"
-#~ msgstr "Nom du plan : (requis)"
-
-#~ msgid "Tertairy DNS:"
-#~ msgstr "DNS tertiaire :"
-
 #~ msgid "Manual Config"
 #~ msgstr "Config manuelle"
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
 #~ msgstr "Désolé, aucun réseau trouvé. Vous pouvez essayer d'activer le 3G."
-
 #~ msgid ""
 #~ "Sorry, we can't find any networks. It appears that the ConnMan daemon is "
 #~ "not running. You could try re-starting your netbook."
 #~ msgstr ""
 #~ "Désolé, aucun réseau trouvé. L'assistant de connexion ne semble pas "
 #~ "fonctionner. Essayez de redémarrer votre netbook."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr "Désolé, aucun réseau trouvé. Vous pouvez essayer d'activer le WiFi."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
 #~ msgstr ""
 #~ "Désolé, aucun réseau trouvé. Vous pouvez essayer d'activer le WiMAX."
-
 #~ msgid ""
 #~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
 #~ msgstr ""
 #~ "Désolé, aucun réseau trouvé. Vous pouvez essayer d'activer le Bluetooth."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
 #~ msgstr ""
 #~ "Désolé, aucun réseau trouvé. Vous pouvez essayer d'activer une connexion "
 #~ "par câble."
-
 #~ msgid "Sorry, we can't find any networks. "
 #~ msgstr "Désolé, aucun réseau trouvé."
-
 #~ msgid ""
 #~ "The ConnMan daemon doesn't seem to be running. You may want to try re-"
 #~ "starting your device"
 #~ msgstr ""
 #~ "Le deamon ConnMan ne semble pas fonctionner. Essayez de redémarrer votre "
 #~ "périphérique"
-
 #~ msgid "You could try disabling Offline mode"
 #~ msgstr "Vous pouvez essayer de désactiver le mode Hors-ligne"
-
 #~ msgid "You could try turning on "
 #~ msgstr "Vous pouvez essayer d'activer "
-
 #~ msgid " and "
 #~ msgstr " et "
-
 #~ msgid "Ethernet"
 #~ msgstr "Ethernet"
-
 #~ msgid "Sorry, your connection to %s was lost. So we've "
 #~ msgstr "Désolé, nous avons perdu votre connexion à %s. Nous "
-
 #~ msgid "Sorry, your %s connection was lost. So we've "
 #~ msgstr "Désolé, nous avons perdu votre connexion %s. Nous "
-
 #~ msgid "connected you to a wired network"
 #~ msgstr "vous avons connecté à un réseau par câble"
-
 #~ msgid "connected you to %s, a %s network"
 #~ msgstr "vous avons connecté à %s, un réseau %s"
-
 #~ msgid "connected you to a %s network"
 #~ msgstr "vous avons connecté à un réseau %s"
-
 #~ msgid "Sorry, your wired connection was lost. So we've "
 #~ msgstr "Désolé, nous avons perdu votre connexion par câble. Nous"
-
 #~ msgid "Abort"
 #~ msgstr "Abandonner"
-
 #~ msgid "Offline"
 #~ msgstr "Hors-ligne"
-
 #~ msgid "No active connection."
 #~ msgstr "Pas de connexion active."
-
 #~ msgid "Online"
 #~ msgstr "En ligne"
-
 #~ msgid "Now online and connected to %s."
 #~ msgstr "En ligne et connecté à %s."
-
 #~ msgid "Connecting"
 #~ msgstr "En cours de connexion"
-
 #~ msgid "<b><big>Network Requires a Password</big></b>"
 #~ msgstr "<b><big>Mot de passe requis pour ce réseau</big></b>"
-
 #~ msgid "Please enter the password for this network:"
 #~ msgstr "Veuillez saisir le mot de passe pour ce réseau :"
-
 #~ msgid "Close"
 #~ msgstr "Fermer"
-
 #~ msgid "Passphrase required"
 #~ msgstr "Phrase de passe requise"
+
