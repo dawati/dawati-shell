@@ -57,6 +57,9 @@
 #define MYZONE_TIMEOUT              200
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 
+#define KEY_DIR "/desktop/moblin/background"
+#define KEY_BG_FILENAME KEY_DIR "/picture_filename"
+
 static MutterPlugin *plugin_singleton = NULL;
 
 /* callback data for when animations complete */
@@ -66,8 +69,7 @@ typedef struct
   MutterPlugin *plugin;
 } EffectCompleteData;
 
-static void setup_desktop_background (MutterPlugin *plugin);
-
+static void desktop_background_init (MutterPlugin *plugin);
 static void setup_focus_window (MutterPlugin *plugin);
 
 static void fullscreen_app_added (MutterPlugin *, MetaWindow *);
@@ -440,7 +442,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   clutter_set_motion_events_enabled (TRUE);
 
-  setup_desktop_background (MUTTER_PLUGIN (plugin));
+  desktop_background_init (MUTTER_PLUGIN (plugin));
 
   setup_focus_window (MUTTER_PLUGIN (plugin));
 
@@ -2115,24 +2117,30 @@ desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
 }
 
 static void
-setup_desktop_background (MutterPlugin *plugin)
+setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   gint                        screen_width, screen_height;
+  gboolean                    new_texture = FALSE;
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
                                    &screen_width, &screen_height);
 
-  /* FIXME: pull image from theme, css ? */
-  priv->desktop_tex = clutter_texture_new_from_file
-                        (THEMEDIR "/panel/background-tile.png", NULL);
+  g_assert (filename);
+
+  if (!priv->desktop_tex)
+    {
+      new_texture = TRUE;
+      priv->desktop_tex = clutter_texture_new_from_file (filename, NULL);
+    }
+  else
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->desktop_tex),
+                                   filename, NULL);
 
   if (priv->desktop_tex == NULL)
     {
-      g_warning ("Failed to load '"
-                 THEMEDIR
-                 "/panel/background-tile.png', No tiled desktop image");
+      g_warning ("Failed to load '%s', No tiled desktop image", filename);
     }
   else
     {
@@ -2146,15 +2154,79 @@ setup_desktop_background (MutterPlugin *plugin)
                     "repeat-y", TRUE,
                     NULL);
 #endif
-      clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                                   priv->desktop_tex);
-      clutter_actor_lower_bottom (priv->desktop_tex);
 
-      g_signal_connect (priv->desktop_tex, "paint",
-                        G_CALLBACK (desktop_background_paint),
-                        plugin);
+      if (new_texture)
+        {
+          clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                       priv->desktop_tex);
+          clutter_actor_lower_bottom (priv->desktop_tex);
+
+          g_signal_connect (priv->desktop_tex, "paint",
+                            G_CALLBACK (desktop_background_paint),
+                            plugin);
+        }
     }
+}
+
+static void
+desktop_filename_changed_cb (GConfClient *client,
+                             guint        cnxn_id,
+                             GConfEntry  *entry,
+                             gpointer     data)
+{
+  MutterPlugin *plugin = MUTTER_PLUGIN (data);
+  const gchar  *filename = NULL;
+  GConfValue   *value;
+
+  value = gconf_entry_get_value (entry);
+
+  if (value)
+    filename = gconf_value_get_string (value);
+
+  if (!filename || !*filename)
+    filename = THEMEDIR "/panel/background-tile.png";
+
+  setup_desktop_background (plugin, filename);
+}
+
+static void
+desktop_background_init (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GError *error = NULL;
+
+  priv->gconf_client = gconf_client_get_default ();
+
+  gconf_client_add_dir (priv->gconf_client,
+                        KEY_DIR,
+                        GCONF_CLIENT_PRELOAD_NONE,
+                        &error);
+
+  if (error)
+    {
+      g_warning (G_STRLOC ": Error when adding directory for notification: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+  gconf_client_notify_add (priv->gconf_client,
+                           KEY_BG_FILENAME,
+                           desktop_filename_changed_cb,
+                           plugin,
+                           NULL,
+                           &error);
+
+  if (error)
+    {
+      g_warning (G_STRLOC ": Error when adding key for notification: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+  /*
+   * Read the background via our notify func
+   */
+  gconf_client_notify (priv->gconf_client, KEY_BG_FILENAME);
 }
 
 /*

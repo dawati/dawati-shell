@@ -25,6 +25,7 @@
 #ifndef MOBLIN_NETBOOK_H
 #define MOBLIN_NETBOOK_H
 
+#include <gconf/gconf-client.h>
 #include <mutter-plugin.h>
 #include <nbtk/nbtk.h>
 
@@ -102,6 +103,9 @@ struct _MoblinNetbookPluginPrivate
   MnbInputRegion        *notification_urgent_input_region;
 
   Window                 focus_xwin;
+
+  /* Desktop background stuff */
+  GConfClient           *gconf_client;
 };
 
 GType moblin_netbook_plugin_get_type (void);
