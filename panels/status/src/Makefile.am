@@ -31,8 +31,8 @@ libexec_PROGRAMS = moblin-panel-status
 
 BUILT_SOURCES = mnb-status-marshal.h mnb-status-marshal.c
 
-moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS)
-moblin_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS)
+moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
+moblin_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
 moblin_panel_status_SOURCES  = 	\
 	$(BUILT_SOURCES)	\
 	mnb-im-status-row.h	\
@@ -43,7 +43,9 @@ moblin_panel_status_SOURCES  = 	\
 	mnb-web-status-row.c	\
 	moblin-panel-status.c \
 	penge-magic-texture.h \
-	penge-magic-texture.c
+	penge-magic-texture.c \
+	mojito-online.h \
+	mojito-online.c
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.status.service.in
