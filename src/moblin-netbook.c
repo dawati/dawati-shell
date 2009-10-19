@@ -70,11 +70,11 @@ static void setup_desktop_background (MutterPlugin *plugin);
 
 static void setup_focus_window (MutterPlugin *plugin);
 
-static void fullscreen_app_added (MoblinNetbookPluginPrivate *, gint);
-static void fullscreen_app_removed (MoblinNetbookPluginPrivate *, gint);
-static void meta_window_fullcreen_notify_cb (GObject    *object,
-                                             GParamSpec *spec,
-                                             gpointer    data);
+static void fullscreen_app_added (MutterPlugin *, MetaWindow *);
+static void fullscreen_app_removed (MutterPlugin *, MetaWindow *);
+static void meta_window_fullscreen_notify_cb (GObject    *object,
+                                              GParamSpec *spec,
+                                              gpointer    data);
 static void moblin_netbook_toggle_compositor (MutterPlugin *, gboolean on);
 static void window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin);
 
@@ -302,6 +302,34 @@ moblin_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
     }
 }
 
+static gboolean
+moblin_netbook_fullscreen_apps_present_on_workspace (MutterPlugin *plugin,
+                                                     gint          index)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GList *l;
+
+  l = priv->fullscreen_wins;
+
+  while (l)
+    {
+      MetaWindow    *m = l->data;
+      MetaWorkspace *w;
+
+      if (meta_window_is_on_all_workspaces (m))
+        return TRUE;
+
+      w = meta_window_get_workspace (m);
+
+      if (w && index == meta_workspace_index (w))
+        return TRUE;
+
+      l = l->next;
+    }
+
+  return FALSE;
+}
+
 static void
 moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
                                       gint                 from,
@@ -309,19 +337,9 @@ moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
                                       MetaMotionDirection  dir,
                                       MutterPlugin        *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  gboolean                    on   = TRUE;
+  gboolean on;
 
-  if (to < 0 || to >= MAX_WORKSPACES)
-    {
-      g_warning ("Got invalid workspace %d", to);
-      return;
-    }
-
-  if (priv->fullscreen_apps[MAX_WORKSPACES] || priv->fullscreen_apps[to])
-    on = FALSE;
-
-  g_debug ("Workspace changed, compositor should be %d", on);
+  on = !moblin_netbook_fullscreen_apps_present_on_workspace (plugin, to);
 
   moblin_netbook_toggle_compositor (plugin, on);
 }
@@ -1086,9 +1104,6 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-      gboolean                    fullscreen;
-
       g_signal_handlers_disconnect_by_func (mcw,
                                             window_destroyed_cb,
                                             plugin);
@@ -1108,20 +1123,11 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
             kill (pid, SIGKILL);
         }
 
-      g_object_get (meta_win, "fullscreen", &fullscreen, NULL);
-
-      if (fullscreen)
-        {
-          MetaWorkspace *ws = meta_window_get_workspace (meta_win);
-
-          if (ws)
-            {
-              gint index = meta_workspace_index (ws);
-
-              fullscreen_app_removed (priv, index);
-              moblin_netbook_toggle_compositor (plugin, TRUE);
-            }
-        }
+      /*
+       * Remove the window from the fullscreen list; do this unconditionally,
+       * so that under no circumstance we leave a dangling pointer behind.
+       */
+      fullscreen_app_removed (plugin, meta_win);
 
       /*
        * Disconnect the fullscreen notification handler; strictly speaking
@@ -1129,7 +1135,7 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
        * but take no chances.
        */
       g_signal_handlers_disconnect_by_func (meta_win,
-                                            meta_window_fullcreen_notify_cb,
+                                            meta_window_fullscreen_notify_cb,
                                             plugin);
     }
 
@@ -1163,27 +1169,7 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
                                   gint        old_workspace,
                                   gpointer    data)
 {
-  MutterPlugin               *plugin = MUTTER_PLUGIN (data);
-  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (data)->priv;
-  gboolean                    fullscreen;
-
-  g_object_get (mw, "fullscreen", &fullscreen, NULL);
-
-  if (fullscreen)
-    {
-      MetaWorkspace *ws;
-
-      ws = meta_window_get_workspace (mw);
-
-      if (ws)
-        {
-          gint index = meta_workspace_index (ws);
-
-          fullscreen_app_added (priv, index);
-        }
-
-      fullscreen_app_removed (priv, old_workspace);
-    }
+  MutterPlugin *plugin = MUTTER_PLUGIN (data);
 
   /*
    * Flush any pending changes to the visibility of the window.
@@ -1206,63 +1192,38 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
 }
 
 static void
-fullscreen_app_added (MoblinNetbookPluginPrivate *priv, gint workspace)
+fullscreen_app_added (MutterPlugin *plugin, MetaWindow *mw)
 {
-  if (workspace >= MAX_WORKSPACES)
-    {
-      g_warning ("There should be no workspace %d", workspace);
-      return;
-    }
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gboolean                    compositor_on;
 
-  /* for sticky apps translate -1 to the sticky counter index */
-  if (workspace < 0)
-    workspace = MAX_WORKSPACES;
+  priv->fullscreen_wins = g_list_prepend (priv->fullscreen_wins, mw);
 
-  priv->fullscreen_apps[workspace]++;
+  compositor_on = !moblin_netbook_fullscreen_apps_present (plugin);
+  moblin_netbook_toggle_compositor (plugin, compositor_on);
 }
 
 static void
-fullscreen_app_removed (MoblinNetbookPluginPrivate *priv, gint workspace)
+fullscreen_app_removed (MutterPlugin *plugin, MetaWindow *mw)
 {
-  if (workspace >= MAX_WORKSPACES)
-    {
-      g_warning ("There should be no workspace %d", workspace);
-      return;
-    }
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gboolean                    compositor_on;
 
-  /* for sticky apps translate -1 to the sticky counter index */
-  if (workspace < 0)
-    workspace = MAX_WORKSPACES;
+  priv->fullscreen_wins = g_list_remove (priv->fullscreen_wins, mw);
 
-  priv->fullscreen_apps[workspace]--;
-
-  if (priv->fullscreen_apps[workspace] < 0)
-    {
-      g_warning ("%s:%d: Error in fullscreen app accounting !!!",
-                 __FILE__, __LINE__);
-      priv->fullscreen_apps[workspace] = 0;
-    }
+  compositor_on = !moblin_netbook_fullscreen_apps_present (plugin);
+  moblin_netbook_toggle_compositor (plugin, compositor_on);
 }
 
 gboolean
 moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
-  gint                        active;
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  gint        active;
 
   active = meta_screen_get_active_workspace_index (screen);
 
-  if (active >= MAX_WORKSPACES)
-    {
-      g_warning ("There should be no workspace %d", active);
-      return FALSE;
-    }
-
-  if (active < 0)
-    active = MAX_WORKSPACES;
-
-  return (gboolean) priv->fullscreen_apps[active];
+  return moblin_netbook_fullscreen_apps_present_on_workspace (plugin, active);
 }
 
 static void
@@ -1339,35 +1300,19 @@ moblin_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
 }
 
 static void
-meta_window_fullcreen_notify_cb (GObject    *object,
-                                 GParamSpec *spec,
-                                 gpointer    data)
+meta_window_fullscreen_notify_cb (GObject    *object,
+                                  GParamSpec *spec,
+                                  gpointer    data)
 {
-  MetaWindow                 *mw   = META_WINDOW (object);
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
-  MetaWorkspace              *ws;
-  gint                        ws_index;
-  gboolean                    fullscreen;
-
-  ws = meta_window_get_workspace (mw);
-
-  if (!ws)
-    return;
-
-  ws_index = meta_workspace_index (ws);
+  MetaWindow *mw = META_WINDOW (object);
+  gboolean    fullscreen;
 
   g_object_get (object, "fullscreen", &fullscreen, NULL);
 
   if (fullscreen)
-    {
-      fullscreen_app_added (priv, ws_index);
-      moblin_netbook_toggle_compositor (data, FALSE);
-    }
+    fullscreen_app_added (data, mw);
   else
-    {
-      fullscreen_app_removed (priv, ws_index);
-      moblin_netbook_toggle_compositor (data, TRUE);
-    }
+    fullscreen_app_removed (data, mw);
 }
 
 
@@ -1627,10 +1572,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       ClutterAnimation   *animation;
       ActorPrivate       *apriv = get_actor_private (mcw);
       MetaWindow         *mw    = mutter_window_get_meta_window (mcw);
-      gboolean           fullscreen = FALSE;
       MetaScreen        *screen = mutter_plugin_get_screen (plugin);
       gint               screen_width, screen_height;
       gfloat             actor_width, actor_height;
+      gboolean           fullscreen = FALSE;
 
       if (mw)
         {
@@ -1650,16 +1595,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
               if (ws)
                 {
-                  gint index = meta_workspace_index (ws);
-
-                  fullscreen_app_added (priv, index);
-                  moblin_netbook_toggle_compositor (plugin, FALSE);
+                  fullscreen_app_added (plugin, mw);
                   clutter_actor_hide (CLUTTER_ACTOR (mcw));
                 }
             }
 
           g_signal_connect (mw, "notify::fullscreen",
-                            G_CALLBACK (meta_window_fullcreen_notify_cb),
+                            G_CALLBACK (meta_window_fullscreen_notify_cb),
                             plugin);
 
           /* Hide toolbar etc in presence of modal window */

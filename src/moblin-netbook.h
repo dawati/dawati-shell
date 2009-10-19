@@ -85,7 +85,7 @@ struct _MoblinNetbookPluginPrivate
 
   MetaWindow            *last_focused;
 
-  gint                   fullscreen_apps [MAX_WORKSPACES + 1];
+  GList                 *fullscreen_wins;
 
   gboolean               holding_focus       : 1;
   gboolean               compositor_disabled : 1;
