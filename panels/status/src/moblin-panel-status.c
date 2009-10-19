@@ -46,6 +46,7 @@
 
 #include "mnb-web-status-row.h"
 #include "mnb-im-status-row.h"
+#include "mojito-online.h"
 
 #define ICON_SIZE       48
 #define PADDING         8
@@ -647,9 +648,8 @@ on_account_removed (TpAccountManager *manager,
 }
 
 static void
-on_mojito_online_changed (MojitoClient      *client,
-                          gboolean           is_online,
-                          MoblinStatusPanel *panel)
+on_mojito_online_notify (gboolean           is_online,
+                         MoblinStatusPanel *panel)
 {
   GList *accounts, *l;
   GSList *cur_accounts, *a;
@@ -753,24 +753,6 @@ on_account_manager_ready (GObject      *source_object,
 
   update_header (NBTK_LABEL (panel->header_label), panel->is_online);
   update_im_status (panel, panel->is_online);
-
-  /* get notification when the online state changes */
-  g_signal_connect (panel->mojito_client, "online-changed",
-                    G_CALLBACK (on_mojito_online_changed),
-                    panel);
-
-}
-
-static void
-on_mojito_is_online (MojitoClient *client,
-                     gboolean      is_online,
-                     gpointer      data)
-{
-  MoblinStatusPanel *panel = data;
-
-  g_debug ("%s: We are now %s", G_STRLOC, is_online ? "online" : "offline");
-
-  panel->is_online = is_online;
 }
 
 #if 0
@@ -1042,7 +1024,10 @@ make_status (MoblinStatusPanel *panel)
   panel->mojito_client = mojito_client_new ();
 
   /* online notification on the header */
-  mojito_client_is_online (panel->mojito_client, on_mojito_is_online, panel);
+  mojito_online_add_notify ((MojitoOnlineNotify)on_mojito_online_notify, panel);
+
+  if (mojito_is_online ())
+    on_mojito_online_notify (TRUE, panel);
 
   /* start retrieving the services */
   mojito_client_get_services (panel->mojito_client,
