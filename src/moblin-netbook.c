@@ -1426,6 +1426,9 @@ scim_preview_parent_set_cb (ClutterActor *source,
     }
 }
 
+/* missing prototype; for some reason frame.h is not installed. */
+Window meta_frame_get_xwindow (MetaFrame *frame);
+
 static void
 handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
 {
@@ -1434,6 +1437,7 @@ handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
   MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
   ClutterActor *stage   = mutter_get_stage_for_screen (screen);
   gfloat        x, y;
+  Window        xid;
 
   /*
    * Make a clone and place it on the top of stage.
@@ -1475,6 +1479,17 @@ handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
   mnb_input_manager_push_window (mcw,
                                  MNB_INPUT_LAYER_PANEL_TRANSIENTS);
 
+  if (meta_window_get_frame (mw))
+    xid = meta_frame_get_xwindow (meta_window_get_frame (mw));
+  else
+    xid = meta_window_get_xwindow (mw);
+
+  gdk_error_trap_push ();
+
+  XRaiseWindow (GDK_DISPLAY (), xid);
+
+  gdk_flush ();
+  gdk_error_trap_pop ();
 }
 
 /*
