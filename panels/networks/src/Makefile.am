@@ -17,4 +17,15 @@ carrick_connection_panel_CFLAGS = -I$(top_srcdir) \
 carrick_connection_panel_LDADD= $(top_builddir)/carrick/libcarrick.la \
                                 $(GTK_LIBS) $(DBUS_LIBS) $(CONNMAN_LIBS) $(MPL_LIBS)
 
+servicedir = $(datadir)/dbus-1/services
+service_in_files = org.moblin.UX.Shell.Panels.network.service.in
+service_DATA =     org.moblin.UX.Shell.Panels.network.service
+
+EXTRA_DIST = $(service_in_files)
+
+DISTCLEANFILES = $(service_DATA)
+
+%.service: %.service.in
+	$(QUIET_GEN)sed -e "s|\@bindir\@|$(bindir)|" $< > $@
+
 -include $(top_srcdir)/git.mk
