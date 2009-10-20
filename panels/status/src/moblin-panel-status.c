@@ -34,6 +34,8 @@
 
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
+#include <gtk/gtk.h>
+#include <clutter/x11/clutter-x11.h>
 
 #include <mojito-client/mojito-client.h>
 
@@ -1050,6 +1052,7 @@ static void
 setup_standalone (MoblinStatusPanel *status_panel)
 {
   ClutterActor *stage, *status;
+  Window xwin;
 
   status = make_status (status_panel);
   clutter_actor_set_size (status, 1000, 400);
@@ -1057,6 +1060,11 @@ setup_standalone (MoblinStatusPanel *status_panel)
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 1000, 400);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
+
+  clutter_actor_realize (stage);
+  xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+  MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
 
   clutter_actor_show (stage);
 }
@@ -1072,6 +1080,8 @@ setup_panel (MoblinStatusPanel *status_panel)
                                  NULL,
                                  "status-button",
                                  TRUE);
+
+  MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (panel);
 
   status = make_status (status_panel);
   mpl_panel_clutter_track_actor_height (MPL_PANEL_CLUTTER (panel), status);
@@ -1114,26 +1124,28 @@ int
 main (int argc, char *argv[])
 {
   MoblinStatusPanel *panel;
-  GError *error;
+  GOptionContext *context;
+  GError *error = NULL;
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  error = NULL;
-  clutter_init_with_args (&argc, &argv,
-                          "- Mutter-moblin's status page",
-                          status_options,
-                          GETTEXT_PACKAGE,
-                          &error);
+  context = g_option_context_new ("- mutter-moblin status panel");
+  g_option_context_add_main_entries (context, status_options, GETTEXT_PACKAGE);
+  g_option_context_add_group (context, clutter_get_option_group_without_init ());
+  g_option_context_add_group (context, gtk_get_option_group (FALSE));
 
-  if (error)
-    {
-      g_critical ("Unable to initialize Clutter: %s", error->message);
-      g_clear_error (&error);
-      return EXIT_FAILURE;
-    }
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+  {
+    g_critical (G_STRLOC ": Error parsing option: %s", error->message);
+    g_clear_error (&error);
+  }
+
+  g_option_context_free (context);
+
+  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
 
   nbtk_texture_cache_load_cache (nbtk_texture_cache_get_default (),
                                  NBTK_CACHE);
