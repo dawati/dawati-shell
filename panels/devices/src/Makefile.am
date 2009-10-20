@@ -67,15 +67,3 @@ dalston_power_settings_capplet_LDADD =  $(GLIB_LIBS) \
 dalston_power_settings_capplet_SOURCES = dalston-power-settings-capplet.c
 endif
 
-servicedir = $(datadir)/dbus-1/services
-service_in_files = 	org.moblin.UX.Shell.Panels.volume.service.in \
-			org.moblin.UX.Shell.Panels.power.service.in
-service_DATA = 		org.moblin.UX.Shell.Panels.volume.service \
-			org.moblin.UX.Shell.Panels.power.service
-
-EXTRA_DIST = $(service_in_files)
-
-DISTCLEANFILES = $(service_DATA)
-
-%.service: %.service.in
-	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@

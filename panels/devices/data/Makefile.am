@@ -14,5 +14,14 @@ desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 endif
 @INTLTOOL_DESKTOP_RULE@
 
-CLEANFILES = $(desktop_DATA) $(autostart_DATA)
-EXTRA_DIST = $(desktop_in_files) $(autostart_src_files)
+servicedir = $(datadir)/dbus-1/services
+service_in_files = 	org.moblin.UX.Shell.Panels.volume.service.in \
+			org.moblin.UX.Shell.Panels.power.service.in
+service_DATA = 		org.moblin.UX.Shell.Panels.volume.service \
+			org.moblin.UX.Shell.Panels.power.service
+
+%.service: %.service.in
+	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
+
+CLEANFILES = $(desktop_DATA) $(autostart_DATA) $(service_DATA)
+EXTRA_DIST = $(desktop_in_files) $(autostart_src_files) $(service_in_files)
