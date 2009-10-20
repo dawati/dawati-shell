@@ -176,3 +176,20 @@ NbtkGrid.MnbImPresenceRow:hover
   color: #595959ff;
 }
 
+MnbLauncherButton:hover
+{
+  border-image: url("file://launcher-button-bg.png") 5 6 7 6;
+  padding: 9 10 11 10;
+}
+
+MnbLauncherButton
+{
+  padding: 9 10 11 10;
+}
+
+MnbLauncherButton *#launcher-app-description
+{
+  font-family: "Droid Sans";
+  font-size: 16px;
+  color: #595959ff;
+}

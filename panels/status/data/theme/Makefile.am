@@ -16,7 +16,8 @@ dist_theme_DATA = \
 	minus-button.png \
 	plus-button-hover.png \
 	plus-button.png \
-	avatar-bg.png
+	avatar-bg.png \
+	launcher-button-bg.png
 
 # Manage mutter-moblin's texture cache.
 

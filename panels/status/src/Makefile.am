@@ -45,7 +45,9 @@ moblin_panel_status_SOURCES  = 	\
 	penge-magic-texture.h \
 	penge-magic-texture.c \
 	mojito-online.h \
-	mojito-online.c
+	mojito-online.c \
+	mnb-launcher-button.h \
+	mnb-launcher-button.c
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.status.service.in
