@@ -49,6 +49,7 @@
 #include "mnb-web-status-row.h"
 #include "mnb-im-status-row.h"
 #include "mojito-online.h"
+#include "mnb-launcher-button.h"
 
 #define ICON_SIZE       48
 #define PADDING         8
@@ -61,6 +62,9 @@ typedef struct _MoblinStatusPanel
   ClutterActor *empty_web_bin;
   ClutterActor *empty_im_bin;
   ClutterActor *header_label;
+  ClutterActor *empty_web_launcher;
+  ClutterActor *empty_im_launcher;
+  ClutterActor *launchers;
 
   MojitoClient *mojito_client;
   TpAccountManager *account_manager;
@@ -75,6 +79,8 @@ typedef struct _MoblinStatusPanel
 
   TpConnectionPresenceType im_presence;
   gchar *im_status;
+
+  MplPanelClient *panel_client;
 } MoblinStatusPanel;
 
 typedef struct _ServiceInfo
@@ -340,9 +346,17 @@ on_caps_changed (MojitoClientService  *service,
     }
 
   if (panel->n_web_available == 0)
-    clutter_actor_show (panel->empty_web_bin);
+    {
+      clutter_actor_show (panel->empty_web_bin);
+      clutter_actor_show (panel->empty_web_launcher);
+      clutter_actor_queue_relayout (panel->launchers);
+    }
   else
-    clutter_actor_hide (panel->empty_web_bin);
+    {
+      clutter_actor_hide (panel->empty_web_bin);
+      clutter_actor_hide (panel->empty_web_launcher);
+      clutter_actor_queue_relayout (panel->launchers);
+    }
 }
 
 static void
@@ -583,6 +597,8 @@ on_account_ready (GObject *source_object,
   panel->n_im_available += 1;
 
   clutter_actor_hide (panel->empty_im_bin);
+  clutter_actor_hide (panel->empty_im_launcher);
+  clutter_actor_queue_relayout (panel->launchers);
 
   mnb_im_status_row_set_online (MNB_IM_STATUS_ROW (a_info->row),
                                 panel->is_online);
@@ -619,7 +635,11 @@ on_account_disabled (TpAccountManager  *account_manager,
   panel->n_im_available -= 1;
 
   if (panel->n_im_available == 0)
+  {
     clutter_actor_show (panel->empty_im_bin);
+    clutter_actor_show (panel->empty_im_launcher);
+    clutter_actor_queue_relayout (panel->launchers);
+  }
 
   update_im_status (panel, panel->is_online);
 }
@@ -739,9 +759,17 @@ on_account_manager_ready (GObject      *source_object,
 
   panel->n_im_available = g_slist_length (panel->accounts);
   if (panel->n_im_available == 0)
-    clutter_actor_show (panel->empty_im_bin);
+    {
+      clutter_actor_show (panel->empty_im_bin);
+      clutter_actor_show (panel->empty_im_launcher);
+      clutter_actor_queue_relayout (panel->launchers);
+    }
   else
-    clutter_actor_hide (panel->empty_im_bin);
+    {
+      clutter_actor_hide (panel->empty_im_bin);
+      clutter_actor_hide (panel->empty_im_launcher);
+      clutter_actor_queue_relayout (panel->launchers);
+    }
 
   for (a = panel->accounts; a != NULL; a = a->next)
     {
@@ -899,6 +927,17 @@ make_empty_status_tile (gint width)
 }
 #endif
 
+static void
+_launcher_clicked_cb (NbtkButton        *launcher_button,
+                      MoblinStatusPanel *panel)
+{
+  if (mnb_launcher_button_launch (MNB_LAUNCHER_BUTTON (launcher_button)))
+    {
+      if (panel)
+        mpl_panel_client_request_hide (MPL_PANEL_CLIENT (panel));
+    }
+}
+
 static ClutterActor *
 make_status (MoblinStatusPanel *panel)
 {
@@ -978,10 +1017,62 @@ make_status (MoblinStatusPanel *panel)
   clutter_container_add_actor (CLUTTER_CONTAINER (panel->empty_im_bin),
                                CLUTTER_ACTOR (label));
 
+  panel->launchers = CLUTTER_ACTOR (nbtk_table_new ());
+  nbtk_table_set_col_spacing (NBTK_TABLE (panel->launchers), 8);
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (table), panel->launchers,
+                                        3, 0,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+  panel->empty_web_launcher = CLUTTER_ACTOR (mnb_launcher_button_new ("bisho.desktop"));
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (panel->launchers), panel->empty_web_launcher,
+                                        0, 0,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+  panel->empty_im_launcher = CLUTTER_ACTOR (mnb_launcher_button_new ("empathy-accounts.desktop"));
+  nbtk_table_add_actor_with_properties (NBTK_TABLE (panel->launchers), panel->empty_im_launcher,
+                                        0, 1,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        "row-span", 1,
+                                        "col-span", 1,
+                                        "allocate-hidden", FALSE,
+                                        NULL);
+
+  g_signal_connect (panel->empty_im_launcher,
+                    "clicked",
+                    (GCallback)_launcher_clicked_cb,
+                    panel->panel_client);
+  g_signal_connect (panel->empty_web_launcher,
+                    "clicked",
+                    (GCallback)_launcher_clicked_cb,
+                    panel->panel_client);
+
   scroll = nbtk_scroll_view_new ();
   nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
                                         CLUTTER_ACTOR (scroll),
-                                        3, 0,
+                                        4, 0,
                                         "x-expand", TRUE,
                                         "y-expand", TRUE,
                                         "x-fill", TRUE,
@@ -1080,6 +1171,7 @@ setup_panel (MoblinStatusPanel *status_panel)
                                  NULL,
                                  "status-button",
                                  TRUE);
+  status_panel->panel_client = panel;
 
   MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (panel);
 
