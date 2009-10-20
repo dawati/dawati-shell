@@ -516,23 +516,43 @@ mnb_im_status_row_finalize (GObject *gobject)
 {
   MnbIMStatusRowPrivate *priv = MNB_IM_STATUS_ROW (gobject)->priv;
 
-  if (priv->account)
-    g_object_unref (priv->account);
-
-  /* this will take care of the timeline as well */
-  if (priv->alpha)
-    g_object_unref (priv->alpha);
-
   g_free (priv->account_name);
   g_free (priv->display_name);
   g_free (priv->no_icon_file);
 
-  clutter_actor_destroy (priv->avatar_bin);
-  clutter_actor_destroy (priv->header);
-  clutter_actor_destroy (priv->expand_box);
-  clutter_actor_destroy (priv->status_grid);
-
   G_OBJECT_CLASS (mnb_im_status_row_parent_class)->finalize (gobject);
+}
+
+
+static void
+mnb_im_status_row_dispose (GObject *gobject)
+{
+  MnbIMStatusRowPrivate *priv = MNB_IM_STATUS_ROW (gobject)->priv;
+
+  if (priv->account)
+    {
+      g_object_unref (priv->account);
+      priv->account = NULL;
+    }
+
+  /* this will take care of the timeline as well */
+  if (priv->alpha)
+    {
+      g_object_unref (priv->alpha);
+      priv->alpha = NULL;
+    }
+
+  if (priv->avatar_bin)
+  {
+    clutter_actor_destroy (priv->avatar_bin);
+    clutter_actor_destroy (priv->header);
+    clutter_actor_destroy (priv->expand_box);
+    clutter_actor_destroy (priv->status_grid);
+
+    priv->avatar_bin = NULL;
+  }
+
+  G_OBJECT_CLASS (mnb_im_status_row_parent_class)->dispose (gobject);
 }
 
 static void
@@ -713,6 +733,7 @@ mnb_im_status_row_class_init (MnbIMStatusRowClass *klass)
   gobject_class->set_property = mnb_im_status_row_set_property;
   gobject_class->get_property = mnb_im_status_row_get_property;
   gobject_class->finalize = mnb_im_status_row_finalize;
+  gobject_class->dispose = mnb_im_status_row_dispose;
 
   actor_class->get_preferred_width = mnb_im_status_row_get_preferred_width;
   actor_class->get_preferred_height = mnb_im_status_row_get_preferred_height;
