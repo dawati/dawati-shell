@@ -2489,6 +2489,11 @@ mnb_toolbar_alt_f2_key_handler (MetaDisplay    *display,
                                 gpointer        data)
 {
   MnbToolbar *toolbar = MNB_TOOLBAR (data);
+  MoblinNetbookPluginPrivate *ppriv =
+    MOBLIN_NETBOOK_PLUGIN (toolbar->priv->plugin)->priv;
+
+  if (CLUTTER_ACTOR_IS_MAPPED (ppriv->notification_urgent))
+    return;
 
   mnb_toolbar_activate_panel_internal (toolbar, APPS_ZONE);
 }
