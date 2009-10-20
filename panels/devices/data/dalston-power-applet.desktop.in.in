@@ -2,8 +2,8 @@
 Version=1.0
 Type=Application
 Encoding=UTF-8
-TryExec=dalston-power-applet
-Exec=dalston-power-applet
+TryExec=@LIBEXECDIR@/dalston-power-applet
+Exec=@LIBEXECDIR@/dalston-power-applet
 Icon=dalston-power-applet
 Terminal=false
 Categories=

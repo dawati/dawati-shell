@@ -2,8 +2,8 @@
 Version=1.0
 Type=Application
 Encoding=UTF-8
-TryExec=dalston-volume-applet
-Exec=dalston-volume-applet
+TryExec=@LIBEXECDIR@/dalston-volume-applet
+Exec=@LIBEXECDIR@/dalston-volume-applet
 Icon=dalston-volume-applet
 Terminal=false
 Categories=

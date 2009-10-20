@@ -1,7 +1,7 @@
-bin_PROGRAMS = dalston-volume-applet dalston-power-applet
+libexec_PROGRAMS = dalston-volume-applet dalston-power-applet
 
 if WITH_SETTINGS_CAPPLET
-bin_PROGRAMS += dalston-power-settings-capplet
+libexec_PROGRAMS += dalston-power-settings-capplet
 endif
 
 dalston_volume_applet_CFLAGS = -I$(top_srcdir) \

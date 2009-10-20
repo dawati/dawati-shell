@@ -1,7 +1,9 @@
 SUBDIRS = icons theme
 
+autostart_in_files = 	dalston-power-applet.desktop.in \
+			dalston-volume-applet.desktop.in
 autostartdir = $(sysconfdir)/xdg/autostart
-autostart_DATA = dalston-volume-applet.desktop dalston-power-applet.desktop
+autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
 
 desktop_in_files = dalston-power-settings-capplet.desktop.in
 if WITH_SETTINGS_CAPPLET
