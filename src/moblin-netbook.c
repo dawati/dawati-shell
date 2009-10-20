@@ -2366,7 +2366,14 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
 
   if (on && !active)
     {
-      gint screen_width, screen_height;
+      gint          screen_width, screen_height;
+      MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+      ClutterActor *stage   = mutter_get_stage_for_screen (screen);
+      Window        xwin;
+      guint32       timestamp;
+
+      xwin      = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+      timestamp = clutter_x11_get_current_event_time ();
 
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -2380,17 +2387,26 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
       clutter_actor_lower (priv->lowlight, priv->notification_urgent);
       clutter_actor_show (priv->lowlight);
       active = TRUE;
+      mutter_plugin_begin_modal (plugin, xwin, None,
+                                 META_MODAL_POINTER_ALREADY_GRABBED,
+                                 timestamp);
+
       mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), TRUE);
     }
   else
     {
       if (active)
         {
+          guint32 timestamp;
+
+          timestamp = clutter_x11_get_current_event_time ();
+
           clutter_actor_hide (priv->lowlight);
           mnb_input_manager_remove_region (input_region);
           input_region = NULL;
           active = FALSE;
           mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), FALSE);
+          mutter_plugin_end_modal (plugin, timestamp);
         }
     }
 }
