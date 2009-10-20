@@ -85,6 +85,15 @@ if test x"$scale_background" = xyes; then
 	AC_DEFINE(USE_SCALED_BACKGROUND, 1, [Use scaled background])
 fi
 
+AC_ARG_ENABLE([power-applet],
+	AC_HELP_STRING([--disable-power-applet],
+		[Disable power applet]),
+		[power_applet="$enableval"], [power_applet=yes])
+
+if test x"$power_applet" = xno; then
+	AC_DEFINE(DISABLE_POWER_APPLET, 1, [Disable power applet])
+fi
+
 AC_ARG_ENABLE([cache],
               [AC_HELP_STRING([--enable-cache],
                               [Enable Nbtk image cache generation])],
@@ -159,6 +168,7 @@ echo "
             Installation path:    ${MUTTER_PLUGIN_DIR}
 	    Debug            :    ${enable_debug} (CFLAGS: ${CFLAGS})
 	    Scaled background:    ${scale_background}
+	    Power Applet     :    ${power_applet}
 
         Type make to build the plugin.
 "

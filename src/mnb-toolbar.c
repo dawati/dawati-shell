@@ -122,7 +122,9 @@ enum {
      */
     WIFI_APPLET = APPLETS_START,
     VOLUME_APPLET,
+#ifndef DISABLE_POWER_APPLET
     BATTERY_APPLET,
+#endif
     BT_APPLET,
     TEST_APPLET,
     /* LAST */
@@ -859,8 +861,10 @@ mnb_toolbar_panel_name_to_index (const gchar *name)
     index = BT_APPLET;
   else if (!strcmp (name, MPL_PANEL_VOLUME))
     index = VOLUME_APPLET;
+#ifndef DISABLE_POWER_APPLET
   else if (!strcmp (name, MPL_PANEL_POWER))
     index = BATTERY_APPLET;
+#endif
   else if (!strcmp (name, MPL_PANEL_TEST))
     index = TEST_APPLET;
   else
@@ -888,7 +892,9 @@ mnb_toolbar_panel_index_to_name (gint index)
     case WIFI_APPLET: return MPL_PANEL_NETWORK;
     case BT_APPLET: return MPL_PANEL_BLUETOOTH;
     case VOLUME_APPLET: return MPL_PANEL_VOLUME;
+#ifndef DISABLE_POWER_APPLET
     case BATTERY_APPLET: return MPL_PANEL_POWER;
+#endif
     case TEST_APPLET: return MPL_PANEL_TEST;
 
     default: return NULL;
@@ -1793,10 +1799,10 @@ mnb_toolbar_autostart_panels_cb (gpointer toolbar)
         case STATUS_ZONE:
         case WIFI_APPLET:
         case VOLUME_APPLET:
+#ifndef DISABLE_POWER_APPLET
         case BATTERY_APPLET:
-#if 0
-        case BT_APPLET:
 #endif
+        case BT_APPLET:
           if (!priv->panels[i])
             {
               DBusConnection *conn;
