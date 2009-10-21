@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:10+0000\n"
+"POT-Creation-Date: 2009-10-16 11:31+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,23 +13,36 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-calendar-pane.c:207
+#: ../penge/penge-calendar-pane.c:476
 msgid "<b>Appointments</b>"
 msgstr "<b>Möten</b>"
 
-#: ../penge/penge-events-pane.c:265
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "Skapa ett möte"
+
+#: ../penge/penge-events-pane.c:60
+#: ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Lägg till"
+
+#: ../penge/penge-events-pane.c:268
 msgid "No calendar entries this week"
 msgstr "Inget i kalendern denna vecka"
 
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+#: ../penge/penge-people-placeholder-tile.c:116
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina konton nu!"
 
-#: ../penge/penge-recent-file-tile.c:211
+#: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "Webbplats"
 
-#: ../penge/penge-tasks-pane.c:344
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "Skapa en ny uppgift"
+
+#: ../penge/penge-tasks-pane.c:433
 msgid "Nothing to do today"
 msgstr "Inget schemalagt idag"
 
