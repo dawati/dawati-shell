@@ -1,48 +1,60 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:10+0000\n"
+"POT-Creation-Date: 2009-10-16 11:31+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: tg\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
-
-#: ../penge/penge-calendar-pane.c:207
-msgid "<b>Appointments</b>"
-msgstr "<b>Agenda</b>"
-
-#: ../penge/penge-events-pane.c:265
-msgid "No calendar entries this week"
-msgstr "Nenhum item esta semana"
-
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-msgstr "Os feeds de seus amigos e serviços na web aparecerão aqui. Ative suas contas agora!"
-
-#: ../penge/penge-recent-file-tile.c:211
-msgid "Web page"
-msgstr "Página da web"
-
-#: ../penge/penge-tasks-pane.c:344
-msgid "Nothing to do today"
-msgstr "Nada que fazer agora"
 
 #: ../penge/penge-task-tile.c:325
 #, c-format
 msgid "Due %x"
 msgstr "Prazo %x"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Bem-vindo ao Moblin 2.0 para Netbooks</b>"
+#: ../penge/penge-calendar-pane.c:476
+msgid "<b>Appointments</b>"
+msgstr "<b>Compromissos</b>"
+
+#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Adicionar"
+
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "Criar um compromisso"
+
+#: ../penge/penge-people-placeholder-tile.c:116
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
+msgstr "As coisas que o seus amigos fazem online aparecerão aqui. Ative suas contas agora!"
+
+#: ../penge/penge-events-pane.c:268
+msgid "No calendar entries this week"
+msgstr "Nenhum compromisso esta semana"
+
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "Criar uma nova tarefa"
+
+#: ../penge/penge-recent-file-tile.c:224
+msgid "Web page"
+msgstr "Página web"
+
+#: ../penge/penge-tasks-pane.c:433
+msgid "Nothing to do today"
+msgstr "Nada para fazer hoje"
 
 #: ../penge/penge-welcome-tile.c:108
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Como o Moblin é um pouco diferente de outros computadores, temos dicas e itens para ajudá-lo navegar. Esperamos que se divirta, a Equipe Moblin."
+msgstr "Como o Moblin é um pouco diferente de outros computadores, nós juntamos algumas dicas e itens para ajudá-lo a navegar pelo sistema. Esperamos que se divirta, a Equipe Moblin."
 
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>Bem-vindo ao Moblin 2.1 para Netbooks</b>"
