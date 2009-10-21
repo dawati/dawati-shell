@@ -4,12 +4,12 @@
 # This file is distributed under the same license as the mutter-moblin package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-04 07:32+0000\n"
+"POT-Creation-Date: 2009-10-16 11:32+0000\n"
 "PO-Revision-Date: 2009-10-09 12:45-0800\n"
 "Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -17,34 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
-#: ../src/mnb-im-status-row.c:808 ../src/moblin-panel-status.c:500
+#: ../src/mnb-im-status-row.c:109 ../src/mnb-im-status-row.c:110
+#: ../src/mnb-im-status-row.c:809 ../src/moblin-panel-status.c:491
 msgid "Offline"
 msgstr "离线"
 
-#: ../src/mnb-im-status-row.c:110 ../src/moblin-panel-status.c:504
-msgid "Available"
-msgstr "可用"
-
-#: ../src/mnb-im-status-row.c:111 ../src/mnb-im-status-row.c:112
-#: ../src/moblin-panel-status.c:508 ../src/moblin-panel-status.c:512
+#: ../src/mnb-im-status-row.c:112 ../src/mnb-im-status-row.c:113
+#: ../src/moblin-panel-status.c:499 ../src/moblin-panel-status.c:503
 msgid "Away"
 msgstr "离开"
 
-#: ../src/mnb-im-status-row.c:113 ../src/mnb-im-status-row.c:114
-#: ../src/moblin-panel-status.c:516 ../src/moblin-panel-status.c:520
+#: ../src/mnb-im-status-row.c:114 ../src/mnb-im-status-row.c:115
+#: ../src/moblin-panel-status.c:507 ../src/moblin-panel-status.c:511
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../src/mnb-im-status-row.c:137
+#: ../src/mnb-im-status-row.c:138
 msgid "Close"
 msgstr "关闭"
 
-#: ../src/mnb-im-status-row.c:146 ../src/mnb-im-status-row.c:826
+#: ../src/mnb-im-status-row.c:147 ../src/mnb-im-status-row.c:827
 msgid "Change"
 msgstr "修改"
 
-#: ../src/mnb-im-status-row.c:811
+#: ../src/mnb-im-status-row.c:812
 msgid "Unknown account"
 msgstr "未知账户"
 
@@ -67,30 +63,30 @@ msgstr "在这里输入您的当前状态 ..."
 msgid "Post"
 msgstr "发送"
 
-#: ../src/moblin-panel-status.c:478
+#: ../src/moblin-panel-status.c:469
 msgid "Your current status"
 msgstr "您的当前状态"
 
-#: ../src/moblin-panel-status.c:480 ../src/moblin-panel-status.c:988
+#: ../src/moblin-panel-status.c:471 ../src/moblin-panel-status.c:930
 msgid "Your current status - you are offline"
 msgstr "当前状态 - 离线"
 
-#: ../src/moblin-panel-status.c:853
+#: ../src/moblin-panel-status.c:795
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "抱歉，我不能找到任何联系人。您已经建立好一个聊天账户了吗？"
 
-#: ../src/moblin-panel-status.c:1022
-msgid ""
-"To update your web status you need to setup a Web Services account with a "
-"provider that supports status messages"
-msgstr ""
-"要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状态"
-"信息。"
+#: ../src/moblin-panel-status.c:964
+msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+msgstr "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状态信息。"
 
-#: ../src/moblin-panel-status.c:1049
+#: ../src/moblin-panel-status.c:991
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "要更新您的即时通讯状态，需要先建立一个即时通讯账户。"
 
-#: ../src/moblin-panel-status.c:1141
+#: ../src/moblin-panel-status.c:1086
 msgid "status"
 msgstr "状态"
+
+#: ../src/mnb-im-status-row.c:111 ../src/moblin-panel-status.c:495
+msgid "Available"
+msgstr "在线"
