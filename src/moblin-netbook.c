@@ -906,6 +906,12 @@ maybe_show_myzone (MutterPlugin *plugin)
   GList                      *l;
 
   /*
+   * Do not drop Myzone if the Toolbar is visible.
+   */
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
+    return FALSE;
+
+  /*
    * Check for running applications; we do this by checking if any
    * application-type windows are present.
    */
@@ -1092,11 +1098,12 @@ check_for_windows_of_wm_class_and_name (MutterPlugin *plugin,
 static void
 handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
 {
-  MetaCompWindowType  type;
-  gint                workspace;
-  MetaWindow         *meta_win;
-  const gchar        *wm_class;
-  const gchar        *wm_name;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaCompWindowType          type;
+  gint                        workspace;
+  MetaWindow                 *meta_win;
+  const gchar                *wm_class;
+  const gchar                *wm_name;
 
   type      = mutter_window_get_window_type (mcw);
   workspace = mutter_window_get_workspace (mcw);
@@ -1142,15 +1149,19 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
     }
 
   /*
-   * Do not destroy workspace if the closing window is a splash screen.
-   * (Sometimes the splash gets destroyed before the application window
-   * maps, e.g., Gimp.)
+   * * Do not destroy workspace if the closing window is a splash screen.
+   *   (Sometimes the splash gets destroyed before the application window
+   *   maps, e.g., Gimp.)
+   *
+   * * Similarly do not destroy the workspace, if the closing window belongs
+   *   to a Panel.
    *
    * NB: This must come before we notify Mutter that the effect completed,
    *     otherwise the destruction of this window will be completed and the
    *     workspace switch effect will crash.
-   */
-  if (type != META_COMP_WINDOW_SPLASHSCREEN)
+
+ */ if (type != META_COMP_WINDOW_SPLASHSCREEN &&
+      !mnb_toolbar_owns_window ((MnbToolbar*)priv->toolbar, mcw))
     check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
 }
 

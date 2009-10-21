@@ -106,6 +106,8 @@ void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
                                 MnbToolbarCallback callback,
                                 gpointer           data);
 
+gboolean mnb_toolbar_owns_window (MnbToolbar *toolbar, MutterWindow *mcw);
+
 G_END_DECLS
 
 #endif /* _MNB_TOOLBAR */

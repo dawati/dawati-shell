@@ -2696,3 +2696,21 @@ mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
     if (priv->panels[i])
       callback ((MnbDropDown*)priv->panels[i], data);
 }
+
+gboolean
+mnb_toolbar_owns_window (MnbToolbar *toolbar, MutterWindow *mcw)
+{
+  MnbToolbarPrivate *priv  = toolbar->priv;
+  gint               i;
+
+  if (!mcw)
+    return FALSE;
+
+  for (i = 0; i < NUM_ZONES; i++)
+    if (priv->panels[i] && MNB_IS_PANEL (priv->panels[i]))
+      if (mnb_panel_owns_window ((MnbPanel*)priv->panels[i], mcw))
+        return TRUE;
+
+  return FALSE;
+}
+
