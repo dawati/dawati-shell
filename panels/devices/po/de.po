@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 15:59+0000\n"
+"POT-Creation-Date: 2009-10-16 11:24+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Clara <steiner-jay.clarax@intel.com>\n"
 "Language-Team: \n"
@@ -20,7 +20,8 @@ msgid_plural "<b>%d</b> hours"
 msgstr[0] "<b>%d</b> Stunde"
 msgstr[1] "<b>%d</b> Stunden"
 
-#: ../dalston/dalston-power-applet.c:244 ../dalston/dalston-power-applet.c:257
+#: ../dalston/dalston-power-applet.c:244
+#: ../dalston/dalston-power-applet.c:257
 #, c-format
 msgid "<b>%d</b> minute"
 msgid_plural "<b>%d</b> minutes"
@@ -29,61 +30,49 @@ msgstr[1] "<b>%d</b> Minuten"
 
 #: ../dalston/dalston-power-applet.c:278
 msgid "Running low on battery"
-msgstr "Die Batterie wird schwach"
+msgstr "Der Akku wird schwach"
 
 #: ../dalston/dalston-power-applet.c:278
-msgid ""
-"We've noticed that your battery is running a bit low. If you can it would be "
-"a good idea to plug in and top up."
-msgstr ""
-"Wir haben festgestellt, dass deine Batterie ein bisschen schwach wird. Wenn "
-"möglich, wäre Einstöpseln und Aufladen jetzt eine gute Idee."
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Wir haben festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstöpseln und Aufladen jetzt eine gute Idee."
 
 #: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
-msgstr "Batterie ist fast leer"
+msgstr "Akku ist fast leer"
 
 #: ../dalston/dalston-power-applet.c:280
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can"
-msgstr ""
-"Deine Batterie ist ziemlich schwach. Es wäre wirklich eine gute Idee, alles "
-"zu speichern und dann unverzüglich aufzuladen."
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Dein Akku ist ziemlich schwach. Es wäre wirklich eine gute Idee, alles zu speichern und dann unverzüglich aufzuladen."
 
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Gefahr!"
 
 #: ../dalston/dalston-power-applet.c:282
-msgid ""
-"Sorry, your computer is about to run out of battery. We're going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
-"Leider hat dein Computer keinen Saft mehr. Wir müssen jetzt abschalten. "
-"Bitte speichere alles Wichtige und wir hoffen dich bald wiederzusehen."
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Leider hat dein Computer keinen Saft mehr. Wir müssen jetzt abschalten. Bitte speichere alles Wichtige und wir hoffen dich bald wiederzusehen."
 
 #: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
-msgstr "Leider scheint deine Batterie defekt zu sein."
+msgstr "Leider scheint dein Akku defekt zu sein."
 
 #: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "Deine Batterie ist voll geladen und du kannst loslegen."
+msgstr "Dein Akku ist voll geladen und du kannst loslegen."
 
 #: ../dalston/dalston-power-applet.c:415
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
-msgstr "Deine Batterie wird geladen. Sie ist etwa <b>%d</b>%% voll."
+msgstr "Dein Akku wird geladen. Er ist etwa <b>%d</b>%% voll."
 
 #: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
-msgstr "Deine Batterie wird genutzt. Sie ist etwa <b>%d</b>%% voll."
+msgstr "Dein Akku wird genutzt. Sie ist etwa <b>%d</b>%% voll."
 
 #: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr "Leider scheinst du keine Batterie installiert zu haben."
+msgstr "Leider scheinst du keinen Akku installiert zu haben."
 
 #: ../dalston/dalston-power-applet.c:515
 msgid "Display brightness"
@@ -91,8 +80,7 @@ msgstr "Bildschirmhelligkeit"
 
 #: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
-msgstr ""
-"Leider wird das Verändern deiner Bildschirmhelligkeit nicht unterstützt"
+msgstr "Leider wird das Verändern deiner Bildschirmhelligkeit nicht unterstützt"
 
 #: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
@@ -130,21 +118,20 @@ msgstr "Sehr dunkel"
 msgid "Total eclipse"
 msgstr "Totale Finsternis"
 
-#: ../dalston/dalston-button-monitor.c:175
+#: ../dalston/dalston-button-monitor.c:178
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr ""
-"Wenn  keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
+msgstr "Wenn  keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
 
-#: ../dalston/dalston-button-monitor.c:277
+#: ../dalston/dalston-button-monitor.c:281
 msgid "Would you like to turn off now?"
 msgstr "Möchtest du jetzt abschalten?"
 
-#: ../dalston/dalston-button-monitor.c:278
+#: ../dalston/dalston-button-monitor.c:282
 msgid "If you don't decide I'll turn off in 30 seconds"
 msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
 
-#: ../dalston/dalston-button-monitor.c:285
+#: ../dalston/dalston-button-monitor.c:289
 msgid "Turn off"
 msgstr "Abschalten"
 
@@ -208,9 +195,9 @@ msgstr "GNOME-Lautstärkeregler"
 msgid "System Sounds"
 msgstr "Systemklänge"
 
-#: ../src/dalston-power-applet.c:49
+#: ../src/dalston-power-applet.c:50
 msgid "battery"
-msgstr "Batterie"
+msgstr "Akku"
 
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
@@ -263,9 +250,8 @@ msgstr "Einstellungen zur Regelung des Energieverbrauchs"
 
 #~ msgid "If you don't decide i'll turn off in %d seconds"
 #~ msgstr "Wenn du keine Entscheidung triffst, schalte ich in %d Sekunden ab."
-
 #~ msgid "If you don't decide i'll turn off in 30 seconds"
 #~ msgstr "Wenn du keine Entscheidung triffst, schalte ich in 30 Sekunden ab."
-
 #~ msgid "power & brightness"
 #~ msgstr "Energie & Helligkeit"
+
