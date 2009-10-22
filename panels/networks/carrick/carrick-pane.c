@@ -1194,6 +1194,16 @@ model_emit_change (GtkTreeModel *tree_model,
 }
 
 static void
+model_emit_empty (CarrickPane *self)
+{
+  g_signal_emit (self, _signals[CONNECTION_CHANGED], 0,
+                 "",
+                 "",
+                 "idle",
+                 0);
+}
+
+static void
 model_row_deleted_cb (GtkTreeModel  *tree_model,
                       GtkTreePath   *path,
                       CarrickPane   *self)
@@ -1206,6 +1216,10 @@ model_row_deleted_cb (GtkTreeModel  *tree_model,
       model_emit_change (tree_model,
                          &iter,
                          self);
+    }
+  else
+    {
+      model_emit_empty (self);
     }
 }
 
