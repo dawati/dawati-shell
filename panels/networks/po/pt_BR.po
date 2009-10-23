@@ -1,16 +1,17 @@
+# GLSPTB_Gabor <gaborx.k.becht@intel.com>, 2009.
+# Og Maciel <ogmaciel@gnome.org>, 2009.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:26+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2009-10-22 20:45-0400\n"
+"PO-Revision-Date: 2009-10-22 21:14-0500\n"
+"Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
+"Language-Team: Brazilian Portuguese <l10n@moblin.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Portuguese\n"
-"X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
 #.
@@ -21,7 +22,7 @@ msgstr ""
 #.
 #: ../carrick/carrick-list.c:859
 msgid " or "
-msgstr "ou"
+msgstr " ou "
 
 #.
 #. * Translator note: the comma ',' will be used to join the different disabled technologies
@@ -29,29 +30,25 @@ msgstr "ou"
 #.
 #: ../carrick/carrick-list.c:864
 msgid ", "
-msgstr ","
+msgstr ", "
 
 #: ../carrick/carrick-list.c:865
 msgid "wired"
 msgstr "cabeado"
 
-#: ../carrick/carrick-list.c:866
-#: ../carrick/carrick-pane.c:1445
+#: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1459
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:867
-#: ../carrick/carrick-pane.c:1539
+#: ../carrick/carrick-list.c:867 ../carrick/carrick-pane.c:1553
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:868
-#: ../carrick/carrick-pane.c:1508
+#: ../carrick/carrick-list.c:868 ../carrick/carrick-pane.c:1522
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:869
-#: ../carrick/carrick-pane.c:1571
+#: ../carrick/carrick-list.c:869 ../carrick/carrick-pane.c:1585
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -61,21 +58,28 @@ msgstr "Bluetooth"
 #. * connectivity daemon, is not running.
 #.
 #: ../carrick/carrick-list.c:882
-msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Sinto muito, não encontramos nenhuma rede. Parece que o Gerente de conexão não está rodando. Talvez seja melhor reiniciar seu dispositivo."
+msgid ""
+"Sorry, we can't find any networks. It appears that the connection manager is "
+"not running. You could try restarting your computer."
+msgstr ""
+"Sinto muito, mas não encontramos nenhuma rede. Parece que o gerente de conexão "
+"não está rodando. Talvez seja melhor reiniciar o seu computador."
 
 #.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
 #: ../carrick/carrick-list.c:892
-msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "Sinto muito, não encontramos nenhuma rede. Você poderia tentar desabilitar o modo Offline."
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr ""
+"Sinto muito, mas não encontramos nenhuma rede. Você poderia tentar desabilitar o modo offline. "
 
 #: ../carrick/carrick-list.c:1029
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Sinto muito, não encontramos nenhuma rede. Você poderia tentar habilitar %s."
+msgstr ""
+"Sinto muito, mas não encontramos nenhuma rede. Você poderia tentar habilitar %s."
 
 #.
 #. * Generic message to display if all available networking
@@ -84,16 +88,16 @@ msgstr "Sinto muito, não encontramos nenhuma rede. Você poderia tentar habilit
 #.
 #: ../carrick/carrick-list.c:1043
 msgid "Sorry, we can't find any networks"
-msgstr "Sinto muito, não achamos nenhuma rede"
+msgstr "Sinto muito, mas não encontramos nenhuma rede"
 
 #: ../carrick/carrick-notification-manager.c:103
 msgid "Network connected"
-msgstr "Rede perdida"
+msgstr "Rede conectada"
 
 #: ../carrick/carrick-notification-manager.c:111
 #, c-format
 msgid "You're now connected to a wired network"
-msgstr "Você esta conectado a uma rede via cabo"
+msgstr "Você agora está conectado a uma rede com fio"
 
 #: ../carrick/carrick-notification-manager.c:141
 #, c-format
@@ -112,55 +116,72 @@ msgstr "Rede perdida"
 #: ../carrick/carrick-notification-manager.c:172
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "Sinto muito, perdemos sua conexão via cabo"
+msgstr "Sinto muito, nós perdemos sua conexão com fio"
 
 #: ../carrick/carrick-notification-manager.c:176
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "Sinto muito, perdemos sua conexão %s a %s "
+msgstr "Sinto muito, nós perdemos sua conexão %s a %s"
 
 #: ../carrick/carrick-notification-manager.c:182
 #, c-format
 msgid "Sorry, we've lost your %s connection"
-msgstr "Sinto muito, perdemos sua conexão %s"
+msgstr "Sinto muito, nós perdemos sua conexão %s"
 
 #: ../carrick/carrick-notification-manager.c:199
 msgid "Network changed"
-msgstr "Rede mudou"
+msgstr "A rede mudou"
 
 #: ../carrick/carrick-notification-manager.c:218
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Sinto muito, sua conexão a %s caiu. Portanto nós conectamos você a uma rede via cabo."
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr ""
+"Sinto muito, mas sua conexão a %s caiu. Portanto nós conectamos você a uma rede "
+"com fio"
 
 #: ../carrick/carrick-notification-manager.c:225
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "Sinto muito, sua conexão a %s caiu. Portanto nós conectamos você a %s, uma rede %s"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"Sinto muito, mas sua conexão a %s caiu. Portanto nós conectamos você a %s, uma "
+"rede %s"
 
 #: ../carrick/carrick-notification-manager.c:233
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "Sinto muito, sua conexão a %s caiu. Portanto nós conectamos você a uma rede %s"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr ""
+"Sinto muito, mas sua conexão a %s caiu. Portanto nós conectamos você a uma rede %s"
 
 #: ../carrick/carrick-notification-manager.c:243
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Sinto muito, conexão %s caiu. Portanto nós conectamos você a uma rede via cabo"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr ""
+"Sinto muito, mas sua conexão %s caiu. Portanto nós conectamos você a uma rede vcom fios"
 
 #: ../carrick/carrick-notification-manager.c:250
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "Sinto muito, conexão %s caiu. Portanto nós conectamos você a %s, uma rede %s"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"Sinto muito, mas sua conexão %s caiu. Portanto nós conectamos você a %s, uma rede %s"
 
 #: ../carrick/carrick-notification-manager.c:259
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "Sinto muito, conexão %s caiu. Portanto nós conectamos você a uma rede %s"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr ""
+"Sinto muito, mas sua conexão %s caiu. Portanto nós conectamos você a uma rede %s"
 
 #: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
-msgstr "Novas configurações de conexão"
+msgstr "Configurações da nova conexão"
 
 #: ../carrick/carrick-pane.c:666
 msgid ""
@@ -168,8 +189,8 @@ msgid ""
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"Digite o nome da rede desejada\n"
-"e se necessário, a senha e\n"
+"Digite o nome da rede que você deseja\n"
+"conectar e, onde necessário, a senha e\n"
 "tipo de segurança."
 
 #: ../carrick/carrick-pane.c:676
@@ -182,38 +203,36 @@ msgstr "Segurança de rede"
 
 #: ../carrick/carrick-pane.c:698
 msgid "None"
-msgstr "Nenhum"
+msgstr "Nenhuma"
 
 #: ../carrick/carrick-pane.c:712
 msgid "Password"
 msgstr "Senha"
 
-#: ../carrick/carrick-pane.c:727
-#: ../carrick/carrick-service-item.c:1279
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1279
 msgid "Show password"
 msgstr "Mostrar senha"
 
-#: ../carrick/carrick-pane.c:1380
+#: ../carrick/carrick-pane.c:1394
 msgid "Networks"
 msgstr "Redes"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1404
+#: ../carrick/carrick-pane.c:1418
 msgid "Add new connection"
-msgstr "Adicionar conexão"
+msgstr "Adicionar uma nova conexão"
 
-#: ../carrick/carrick-pane.c:1477
-#: ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-pane.c:1491 ../carrick/carrick-service-item.c:241
 msgid "Wired"
-msgstr "Cabeado"
+msgstr "Com fio"
 
-#: ../carrick/carrick-pane.c:1615
+#: ../carrick/carrick-pane.c:1629
 msgid "Offline mode"
 msgstr "Modo offline"
 
-#: ../carrick/carrick-pane.c:1640
+#: ../carrick/carrick-pane.c:1654
 msgid "This will disable all your connections"
-msgstr "Isso irá desativar suas conexões"
+msgstr "Isso irá desabilitar todas as suas conexões"
 
 #. Translators:
 #. The following are potential errors that a user might see while
@@ -233,7 +252,7 @@ msgstr "Erro interno: serviço de rede inválido"
 
 #: ../carrick/carrick-service-item.c:50
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Erro crítico: impossível acessar Gerente de conexão"
+msgstr "Erro crítico: não foi possível acessar o Gerente de conexões"
 
 #: ../carrick/carrick-service-item.c:51
 msgid "ERROR: No 3G Hardware detected"
@@ -245,7 +264,7 @@ msgstr "ERRO: Nenhum hardware 3G detectado"
 #: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
-msgstr "%s encriptado"
+msgstr "%s criptografado"
 
 #: ../carrick/carrick-service-item.c:272
 msgid "Disconnect"
@@ -255,8 +274,7 @@ msgstr "Desconectado"
 msgid "Connected"
 msgstr "Conectado"
 
-#: ../carrick/carrick-service-item.c:282
-#: ../carrick/carrick-service-item.c:291
+#: ../carrick/carrick-service-item.c:282 ../carrick/carrick-service-item.c:291
 #, c-format
 msgid "Cancel"
 msgstr "Cancelar"
@@ -269,22 +287,20 @@ msgstr "Configurando"
 msgid "Associating"
 msgstr "Associando"
 
-#: ../carrick/carrick-service-item.c:303
-#: ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-service-item.c:303 ../carrick/carrick-service-item.c:328
 #: ../carrick/carrick-service-item.c:1268
 msgid "Connect"
 msgstr "Conectar"
 
 #: ../carrick/carrick-service-item.c:331
 msgid "Connection failed"
-msgstr "Conexão falhou"
+msgstr "A conexão falhou"
 
 #: ../carrick/carrick-service-item.c:334
 msgid "Sorry, the connection failed. You could try again."
-msgstr "Sinto muito, a conexão falhou. Tente de novo."
+msgstr "Sinto muito, mas a conexão falhou. Você pode tentar novamente."
 
-#: ../carrick/carrick-service-item.c:340
-#: ../carrick/carrick-service-item.c:343
+#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:343
 #, c-format
 msgid "Disconnecting"
 msgstr "Desconectando"
@@ -295,7 +311,7 @@ msgstr "Digite a senha aqui"
 
 #: ../carrick/carrick-service-item.c:484
 msgid "Really remove?"
-msgstr "Quer remover mesmo?"
+msgstr "Você realmente deseja remover?"
 
 #: ../carrick/carrick-service-item.c:502
 #, c-format
@@ -304,34 +320,54 @@ msgid ""
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-"Você quer remover a rede %s %s? Isso\n"
+"Você deseja remover a rede %s %s? Isso\n"
 "esquecerá a senha e você não estará mais\n"
 "conectado automaticamente a %s."
 
 #: ../carrick/carrick-service-item.c:664
 #, c-format
-msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
-msgstr "Sua senha não tem o comprimento correto. Para uma conexão WEP ela tenha que ter 10 ou 26 caracteres, você tem %i."
+msgid ""
+"Your password isn't the right length. For a WEP connection it needs to be "
+"either 10 or 26 characters, you have %i."
+msgstr ""
+"Sua senha não tem o comprimento correto. Para uma conexão WEP ela precisa "
+"ter 10 ou 26 caracteres, e a sua tem %i."
 
 #: ../carrick/carrick-service-item.c:674
 #, c-format
-msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Sua senha é muito curta. Para uma conexão WPA ela tenha que ter no mínimo 8 caracteres, você tem %i"
+msgid ""
+"Your password is too short. For a WPA  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"Sua senha é muito curta. Para uma conexão WPA ela precisa ter no mínimo 8 "
+"caracteres, e a sua tem %i"
 
 #: ../carrick/carrick-service-item.c:678
 #, c-format
-msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Sua senha é muito comprida. Para uma conexão WPA ela tenha que ter menos que 63 caracteres, você tem %i"
+msgid ""
+"Your password is too long. For a WPA  connection it needs to have fewer than "
+"63 characters, you have %i"
+msgstr ""
+"Sua senha é muito comprida. Para uma conexão WPA ela precisa ter menos que "
+"63 caracteres, e a sua tem %i"
 
 #: ../carrick/carrick-service-item.c:686
 #, c-format
-msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Sua senha é muito curta. Para uma conexão WPA2 ela tenha que ter no mínimo 8 caracteres, você tem %i"
+msgid ""
+"Your password is too short. For a WPA2  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"Sua senha é muito curta. Para uma conexão WPA2 ela precisa ter no mínimo 8 "
+"caracteres, e a sua tem %i"
 
 #: ../carrick/carrick-service-item.c:690
 #, c-format
-msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Sua senha é muito comprida. Para uma conexão WPA2 ela tenha que ter menos que 63 caracteres, você tem %i"
+msgid ""
+"Your password is too long. For a WPA2  connection it needs to have fewer "
+"than 63 characters, you have %i"
+msgstr ""
+"Sua senha é muito comprida. Para uma conexão WPA2 ela precisa ter menos "
+"que 63 caracteres, e a sua tem %i"
 
 #: ../carrick/carrick-service-item.c:1204
 msgid "Scanning"
@@ -343,7 +379,7 @@ msgstr "Pesquisando"
 #. It should look like the ones below network name in the UI
 #: ../carrick/carrick-service-item.c:1223
 msgid "WPA2 encrypted"
-msgstr "WPA2 encriptado"
+msgstr "WPA2 criptografado"
 
 #: ../src/carrick.c:62
 msgid "networks - not connected"
@@ -355,7 +391,7 @@ msgstr "redes - conectando"
 
 #: ../src/carrick.c:74
 msgid "networks - wired"
-msgstr "redes - cabeado"
+msgstr "redes - com fio"
 
 #: ../src/carrick.c:76
 #, c-format
@@ -377,8 +413,7 @@ msgstr "redes - %s - 3G"
 msgid "networks - %s - bluetooth"
 msgstr "redes - %s - bluetooth"
 
-#: ../src/carrick.c:88
-#: ../src/carrick.c:100
+#: ../src/carrick.c:88 ../src/carrick.c:100
 msgid "networks"
 msgstr "redes"
 
@@ -388,23 +423,22 @@ msgstr "redes - erro"
 
 #: ../src/carrick.c:127
 msgid "Run in standalone mode"
-msgstr "Rodar no modo singular"
+msgstr "Executar no modo singular"
 
 #: ../src/carrick.c:138
 msgid "Carrick connectivity applet"
-msgstr "Mini-aplicativo de conectividade Carrick"
+msgstr "Miniaplicativo de conectividade Carrick"
 
 #: ../src/carrick.c:139
 msgid "- Moblin connectivity applet"
-msgstr "- Mini-aplicativo de conectividade Moblin"
+msgstr "- Miniaplicativo de conectividade do Moblin"
 
 #: ../src/carrick.c:162
 msgid "network"
 msgstr "rede"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70
-#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -420,7 +454,7 @@ msgstr "Configuração manual"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr "Nome do plano: (exigido)"
+msgstr "Nome do plano (exigido):"
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
@@ -448,7 +482,7 @@ msgstr "DNS terceiro:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
-msgstr "Selecione seu plano de dados 3G"
+msgstr "Selecione o seu plano 3G"
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
@@ -465,80 +499,108 @@ msgstr "Selecione serviço 3G"
 
 #~ msgid "Select your 3G Data Plan"
 #~ msgstr "Selecione seu plano de dados 3G"
+
 #~ msgid "Plan Name: (required)"
 #~ msgstr "Nome do plano: (exigido)"
+
 #~ msgid "Tertairy DNS:"
 #~ msgstr "DNS terceiro:"
+
 #~ msgid "Manual Config"
 #~ msgstr "Config. Manual"
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
 #~ msgstr ""
 #~ "Sinto muito, não encontramos nenhuma rede. Você poderia tentar ligar o 3G."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr ""
 #~ "Sinto muito, não encontramos nenhuma rede. Você poderia tentar ligar o "
 #~ "WiFi."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
 #~ msgstr ""
 #~ "Sinto muito, não encontramos nenhuma rede. Você poderia tentar ligar o "
 #~ "WiMAX."
+
 #~ msgid ""
 #~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
 #~ msgstr ""
 #~ "Sinto muito, não encontramos nenhuma rede. Você poderia tentar ligar o "
 #~ "Bluetooth."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
 #~ msgstr ""
 #~ "Sinto muito, não encontramos nenhuma rede. Você poderia tentar ligar a "
 #~ "conexão via cabo."
+
 #~ msgid "Sorry, we can't find any networks. "
 #~ msgstr "Sinto muito, não encontramos nenhuma rede."
+
 #~ msgid ""
 #~ "The ConnMan daemon doesn't seem to be running. You may want to try re-"
 #~ "starting your device"
 #~ msgstr ""
 #~ "Parece que o daemon ConnMan não está rodando. Talvez seja melhor "
 #~ "reiniciar seu dispositivo"
+
 #~ msgid "You could try disabling Offline mode"
 #~ msgstr "Você poderia tentar desabilitar o modo Offline"
+
 #~ msgid "You could try turning on "
 #~ msgstr "Você poderia tentar ligar"
+
 #~ msgid " and "
 #~ msgstr "e"
+
 #~ msgid "Ethernet"
 #~ msgstr "Ethernet"
+
 #~ msgid "Sorry, your connection to %s was lost. So we've "
 #~ msgstr "Sinto muito, sua conexão a %s caiu. Portanto nós"
+
 #~ msgid "Sorry, your %s connection was lost. So we've "
 #~ msgstr "Sinto muito, conexão %s caiu. Portanto nós"
+
 #~ msgid "connected you to a wired network"
 #~ msgstr "conectamos você a uma rede via cabo"
+
 #~ msgid "connected you to %s, a %s network"
 #~ msgstr "conectamos você a %s, uma rede %s"
+
 #~ msgid "connected you to a %s network"
 #~ msgstr "conectamos você a uma rede %s"
+
 #~ msgid "Sorry, your wired connection was lost. So we've "
 #~ msgstr "Sinto muito, sua conexão via cabo caiu. Portanto nós"
+
 #~ msgid "Offline"
 #~ msgstr "Offline"
+
 #~ msgid "No active connection."
 #~ msgstr "Nenhuma conexão ativa."
+
 #~ msgid "Online"
 #~ msgstr "Online"
+
 #~ msgid "Now online and connected to %s."
 #~ msgstr "Online e conectado a %s."
+
 #~ msgid "Connecting"
 #~ msgstr "Conectando"
+
 #~ msgid "<b><big>Network Requires a Password</big></b>"
 #~ msgstr "<b><big>Rede requer uma senha</big></b>"
+
 #~ msgid "Please enter the password for this network:"
 #~ msgstr "Favor digitar a senha para essa rede:"
+
 #~ msgid ""
 #~ "Sorry, we can't find any networks. The Connection Manager doesn't seem to "
 #~ "be running. You may want to try re-starting your device."
 #~ msgstr ""
 #~ "Sinto muito, não encontramos nenhuma rede. Parece que o Gerenciamento de "
 #~ "conexão não está rodando. Talvez seja melhor reiniciar seu dispositivo."
+
 #~ msgid "Passphrase required"
 #~ msgstr "Frase de senha requerida"
-
