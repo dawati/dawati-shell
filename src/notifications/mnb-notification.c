@@ -331,7 +331,7 @@ mnb_notification_update (MnbNotification *notification,
     }
 
   /* Since notifications can be "updated" we need to be able reverse any operations */
-  if (no_icon)
+  if (no_icon && clutter_actor_get_parent (priv->icon))
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (priv->title_box),
                                       priv->icon);
@@ -340,7 +340,7 @@ mnb_notification_update (MnbNotification *notification,
                                    "col", 0,
                                    NULL);
     }
-  else
+  else if (!clutter_actor_get_parent (priv->icon))
     {
       nbtk_table_add_actor (NBTK_TABLE (priv->title_box), priv->icon, 0, 0);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
