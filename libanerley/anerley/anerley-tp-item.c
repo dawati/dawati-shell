@@ -42,11 +42,12 @@ struct _AnerleyTpItemPrivate {
 
   gchar *display_name;
   gchar *avatar_path;
-  gchar *presence_status;
   gchar *presence_message;
   gchar *sortable_name;
   gchar *first_name;
   gchar *last_name;
+
+  const gchar *presence_status;
 };
 
 enum
@@ -422,6 +423,34 @@ _contact_notify_alias_cb (GObject    *object,
   anerley_item_emit_display_name_changed ((AnerleyItem *)item);
 }
 
+static const gchar *
+_get_real_presence_status (TpContact *contact)
+{
+  switch (tp_contact_get_presence_type (contact))
+  {
+    case TP_CONNECTION_PRESENCE_TYPE_UNSET:
+      return "offline";
+    case TP_CONNECTION_PRESENCE_TYPE_OFFLINE:
+      return "offline";
+    case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
+      return "available";
+    case TP_CONNECTION_PRESENCE_TYPE_AWAY:
+      return "away";
+    case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
+      return "xa";
+    case TP_CONNECTION_PRESENCE_TYPE_HIDDEN:
+      return "offline";
+    case TP_CONNECTION_PRESENCE_TYPE_BUSY:
+      return "dnd";
+    case TP_CONNECTION_PRESENCE_TYPE_UNKNOWN:
+      return "offline";
+    case TP_CONNECTION_PRESENCE_TYPE_ERROR:
+      return "offline";
+    default:
+      return "offline";
+  }
+}
+
 static void
 _contact_notify_presence_status_cb (GObject    *object,
                                     GParamSpec *pspec,
@@ -431,12 +460,11 @@ _contact_notify_presence_status_cb (GObject    *object,
   AnerleyTpItem *item = (AnerleyTpItem *)userdata;
   AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
 
-  g_free (priv->presence_status);
-  priv->presence_status = NULL;
-
-  if (tp_contact_get_presence_status (contact))
+  if (_get_real_presence_status (contact))
   {
-    priv->presence_status = g_strdup (tp_contact_get_presence_status (contact));
+    priv->presence_status = _get_real_presence_status (contact);
+  } else {
+    priv->presence_status = NULL;
   }
 
   anerley_item_emit_presence_changed ((AnerleyItem *)item);
@@ -488,7 +516,6 @@ anerley_tp_item_update_contact (AnerleyTpItem *item,
 
   g_free (priv->display_name);
   g_free (priv->avatar_path);
-  g_free (priv->presence_status);
   g_free (priv->presence_message);
 
   priv->display_name = NULL;
