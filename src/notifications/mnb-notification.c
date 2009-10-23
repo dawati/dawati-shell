@@ -135,10 +135,10 @@ mnb_notification_show (ClutterActor *actor)
 
   priv = GET_PRIVATE (actor);
 
-  if (priv->timeout > 0) 
+  if (priv->timeout > 0)
     {
-      priv->timeout_id = g_timeout_add (priv->timeout, 
-                                        (GSourceFunc)notification_timeout, 
+      priv->timeout_id = g_timeout_add (priv->timeout,
+                                        (GSourceFunc)notification_timeout,
                                         MNB_NOTIFICATION(actor));
     }
 
