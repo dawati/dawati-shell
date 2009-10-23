@@ -9,9 +9,9 @@ AM_CFLAGS = \
 	-DTHEMEDIR=\"$(pkgdatadir)/netpanel\" \
 	-I$(top_srcdir)/common
 
-libexec_PROGRAMS = moblin-panel-internet
+libexec_PROGRAMS = moblin-panel-web
 
-moblin_panel_internet_LDADD = \
+moblin_panel_web_LDADD = \
 	$(MOZHELPER_LIBS) \
 	$(NBTK_LIBS) \
 	$(GTK_LIBS) \
@@ -19,8 +19,8 @@ moblin_panel_internet_LDADD = \
 	$(MPL_LIBS) \
 	$(top_builddir)/common/libcommon.a
 
-moblin_panel_internet_SOURCES = \
-  moblin-panel-internet.c   \
+moblin_panel_web_SOURCES = \
+  moblin-panel-web.c   \
   moblin-netbook-netpanel.c \
   moblin-netbook-netpanel.h \
   mnb-netpanel-bar.c        \
@@ -28,7 +28,7 @@ moblin_panel_internet_SOURCES = \
   mnb-netpanel-scrollview.c \
   mnb-netpanel-scrollview.h
 
-moblin_panel_internet_DEPENDENCIES = \
+moblin_panel_web_DEPENDENCIES = \
   $(top_builddir)/common/libcommon.a
 
 servicedir = $(datadir)/dbus-1/services
