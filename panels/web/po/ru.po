@@ -1,0 +1,339 @@
+# translation of moblin-web-browser.po to
+# translation of moblin-web-browser.master.moblin-web-browser.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-web-browser ru\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-19 06:40+0000\n"
+"PO-Revision-Date: 2009-08-19 12:27+0300\n"
+"Last-Translator: Volynets Ievgenii <gentoo@list.ru>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../common/mwb-ac-list.c:1723
+#, c-format
+msgid "Search for %%s on %s"
+msgstr ""
+
+#: ../common/mwb-ac-list.c:1746
+#, c-format
+msgid "Go to %s"
+msgstr "Перейти к %s "
+
+#: ../common/mwb-radical-bar.c:459
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Нажмите \"Ввод\" для\n"
+"посещения сайта"
+
+#: ../common/mwb-radical-bar.c:462
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Нажмите стрелку вниз для\n"
+"получения списка"
+
+#: ../data/moblin-web-browser.desktop.in.h:1
+msgid "It's the internet"
+msgstr ""
+
+#: ../data/moblin-web-browser.desktop.in.h:2
+msgid "Web Browser"
+msgstr ""
+
+#: ../browser/mwb-browser.c:1154
+msgid "Moblin web browser - "
+msgstr ""
+
+#: ../browser/mwb-browser.c:1177 ../browser/mwb-browser.c:2717
+#: ../netpanel/moblin-netbook-netpanel.c:807
+msgid "Untitled"
+msgstr "Безымянное"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:1975 ../browser/mwb-browser.c:2254
+#: ../browser/mwb-browser.c:2304
+msgid "Downloads"
+msgstr "Закачки"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2289
+#, c-format
+msgid "Downloads - %d%%"
+msgstr ""
+
+#: ../browser/mwb-browser.c:2352
+msgid "Moblin web browser"
+msgstr ""
+
+#: ../browser/mwb-download.c:286
+msgid "Download cancelled"
+msgstr "Скачивание отменено"
+
+#: ../browser/mwb-download.c:299
+msgid "Download completed"
+msgstr "Скачивание завершено"
+
+#: ../browser/mwb-download.c:615
+msgid "Open file"
+msgstr "Открыть файл"
+
+#: ../browser/mwb-main.c:295
+msgid "Run the browser in a window"
+msgstr "Запустить браузер в окне"
+
+#: ../browser/mwb-main.c:298
+msgid "Add the URL to the recent files list"
+msgstr "Добавить URL к текущему списку файлов"
+
+#: ../browser/mwb-main.c:315
+msgid "Moblin Web Browser"
+msgstr ""
+
+#: ../browser/mwb-mozembed.c:317
+msgid "Open link in new tab"
+msgstr "Открыть ссылку в новой вкладке"
+
+#: ../browser/mwb-mozembed.c:321
+msgid "Copy link location"
+msgstr "Копировать ссылку"
+
+#: ../data/mwbpages/content/settings.js:215
+#, fuzzy
+msgid ""
+"Do you want to reset your browser? This will remove your web history, pinned "
+"pages and personal settings. "
+msgstr "Переустановить браузер? Это уничтожит данные о посещении web, связанные страницы и личный настройки. "
+
+#: ../data/mwbpages/content/settings.js:223
+msgid "Yes, delete"
+msgstr "Да, удалить"
+
+#: ../data/mwbpages/content/settings.js:224
+msgid "No, save"
+msgstr "Нет, сохранить"
+
+#. Construct title for favorite pages section
+#: ../data/mwbpages/content/startpage.js:53
+#: ../netpanel/moblin-netbook-netpanel.c:1236
+msgid "Favorite pages"
+msgstr "Любимые страницы"
+
+#: ../data/mwbpages/content/startpage.js:191
+msgid "Less than a minute ago"
+msgstr "Менее минуты назад"
+
+#. Translators: The two underscores here will get replaced with a
+#. number so they should be in the translation too. Eg 'About __
+#. minutes ago' will become 'About 10 minutes ago'.
+#: ../data/mwbpages/content/startpage.js:199
+msgid "About a minute ago"
+msgid_plural "About __ minutes ago"
+ msgstr[0] "Около минуты назад"
+ msgstr[1] "Около __ минут назад"
+ msgstr[2] ""
+
+#. Translators: The two underscores here will get replaced with a
+#. number so they should be in the translation too. Eg 'About __
+#. minutes ago' will become 'About 10 minutes ago'.
+#: ../data/mwbpages/content/startpage.js:206
+msgid "About an hour ago"
+msgid_plural "About __ hours ago"
+ msgstr[0] "Около часа назад"
+ msgstr[1] "Около __ часов назад"
+ msgstr[2] ""
+
+#: ../data/mwbpages/content/startpage.js:219
+msgid "Today at %H:%M"
+msgstr "Сегодня в %H:%M"
+
+#: ../data/mwbpages/content/startpage.js:221
+msgid "Yesterday at %H:%M"
+msgstr "Вчера в %H:%M"
+
+#: ../data/mwbpages/content/startpage.js:223
+msgid "Last %A at %H:%M"
+msgstr ""
+
+#: ../data/mwbpages/content/startpage.js:225
+msgid "%x at %H:%M"
+msgstr "%x в %H:%M"
+
+#: ../data/mwbpages/content/startpage.js:261
+msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+msgstr ""
+
+#: ../data/mwbpages/content/startpage.js:305
+msgid "Fewer pinned pages"
+msgstr ""
+
+#: ../data/mwbpages/content/startpage.js:310
+msgid "More pinned pages"
+msgstr ""
+
+#. Translators: The two underscores will get replaced with a
+#. * hostname so they should be in the translation too. Eg the
+#. * string might become 'www.google.com wants to know your
+#. * location.'
+#: ../components/mwbGeolocationPrompt.js:69
+msgid "__ wants to know your location."
+msgstr ""
+
+#: ../components/mwbGeolocationPrompt.js:82
+msgid "Share location"
+msgstr ""
+
+#: ../components/mwbGeolocationPrompt.js:83
+msgid "Don't share"
+msgstr ""
+
+#: ../components/mwbGeolocationPrompt.js:85
+msgid "Remember for this site"
+msgstr "Запомнить для этого сайта"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:4
+msgid "Settings"
+msgstr "Настройки"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:5
+msgid "General"
+msgstr "Общие"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:6
+msgid "Try to complete domain names in automagic bar"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:7
+msgid "Search in automagic bar"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:8
+msgid "Add new search engine"
+msgstr "Добавить новую поисковую систему"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:9
+msgid "Privacy"
+msgstr "Конфиденциальность"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:10
+msgid "Remember my passwords"
+msgstr "Запоминать мои пароли"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:11
+msgid "Remember what I type into forms"
+msgstr "Запоминать заполненные поля в формах"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:12
+msgid "Keep my browser history for up to"
+msgstr "Сохранять историю"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:13
+msgid "1 year"
+msgstr "1 год"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:14
+msgid "1 month"
+msgstr "1 месяц"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:15
+msgid "1 week"
+msgstr "1 неделю"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:16
+msgid "1 day"
+msgstr "1 день"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:17
+#, fuzzy
+msgid "Reset my browser now"
+msgstr "Переустановить мой браузер"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:4
+#: ../netpanel/moblin-netbook-netpanel.c:622
+#: ../netpanel/moblin-netbook-netpanel.c:996
+msgid "New tab"
+msgstr "Новая вкладка"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:5
+msgid "Pinned pages"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:6
+msgid "Trouble connecting?"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:7
+msgid ""
+"Move your pointer to the top of the screen to bring down the toolbar and "
+"choose the Networks panel."
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:8
+msgid ""
+"Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+"ones will show up here."
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:9
+#, fuzzy
+msgid "Getting started"
+msgstr "Начать"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:10
+msgid ""
+"First, make sure you have an internet connection! Then click on the "
+"automagic bar or press Ctrl+L to get there quickly and type the address or "
+"search you want."
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:11
+msgid "Make this a private tab"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:12
+msgid ""
+"This is a private tab. Things you do in this tab will not be stored on this "
+"machine. However, websites you use may still keep records of your actions."
+msgstr ""
+
+#: ../netpanel/moblin-netbook-netpanel.c:602
+msgid ""
+"As you visit web pages, your favorites will appear here and on the New tab "
+"page in the browser."
+msgstr ""
+
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.c:1197
+msgid "Internet"
+msgstr ""
+
+#: ../netpanel/moblin-netbook-netpanel.c:1210
+msgid "Go"
+msgstr "Перейти"
+
+#. Construct title for tab preview section
+#: ../netpanel/moblin-netbook-netpanel.c:1231
+msgid "Tabs"
+msgstr "Вкладки"
+
+#: ../netpanel/moblin-panel-internet.c:87
+msgid "internet"
+msgstr ""
+
+
+msgid "Next"
+msgstr "Следующий"
+
+msgid "Previous"
+msgstr "Предыдущий"

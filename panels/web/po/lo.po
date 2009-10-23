@@ -1,0 +1,276 @@
+# translation of lo.po to Lao
+# Esperanto translations for moblin-web-browser package.
+# Copyright (C) 2009 Intel Corporation
+# This file is distributed under the same license as the moblin-web-browser package.
+#
+# Neil Roberts <neil@linux.intel.com>, 2009.
+# Anousak Souphavanh <anousak@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: lo\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-29 09:16+0000\n"
+"PO-Revision-Date: 2009-07-31 18:14+0700\n"
+"Last-Translator: Anousak Souphavanh <anousak@gmail.com>\n"
+"Language-Team: Lao <lo@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../data/moblin-web-browser.desktop.in.h:1
+msgid "It's the internet"
+msgstr "ມັນເເມ່ນ ອີນເຕີເເນດ"
+
+#: ../data/moblin-web-browser.desktop.in.h:2
+msgid "Web Browser"
+msgstr "ເວບ ບາວເຊີ"
+
+#: ../src/mwb-ac-list.c:1667
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "ຊອກຫາ ສະເພາະ %%s ໃນ %s"
+
+#: ../src/mwb-ac-list.c:1690
+#, c-format
+msgid "Go to %s"
+msgstr "ໄປຫາ %s"
+
+#: ../src/mwb-browser.c:1124
+msgid "Moblin web browser - "
+msgstr "ມອບລີນ ເວບ ບາວເຊີ -"
+
+#: ../src/mwb-browser.c:1147 ../src/mwb-browser.c:2621
+msgid "Untitled"
+msgstr "ບໍ່ມີຫົວຂໍ້"
+
+#. Update the tab title
+#: ../src/mwb-browser.c:1883 ../src/mwb-browser.c:2162
+#: ../src/mwb-browser.c:2212
+msgid "Downloads"
+msgstr "ດາວໂລດ"
+
+#. Update the tab title
+#: ../src/mwb-browser.c:2197
+#, c-format
+msgid "Downloads - %d%%"
+msgstr "ດາວໂລດ - %d%%"
+
+#: ../src/mwb-browser.c:2260
+msgid "Moblin web browser"
+msgstr "ມອບລີນ ເວບ ບາວເຊີ"
+
+#: ../src/mwb-download.c:248
+msgid "Download cancelled"
+msgstr "ຍົກເລີກ ດາວໂລດ "
+
+#: ../src/mwb-download.c:261
+msgid "Download completed"
+msgstr "ດາວໂລດ ເເລ້ວ"
+
+#: ../src/mwb-download.c:544
+msgid "Open file"
+msgstr "ເປີດເເຟ້ມ"
+
+#: ../src/mwb-main.c:294
+msgid "Run the browser in a window"
+msgstr ""
+
+#: ../src/mwb-main.c:297
+msgid "Add the URL to the recent files list"
+msgstr ""
+
+#: ../src/mwb-main.c:314
+msgid "Moblin Web Browser"
+msgstr "ມອບລີນ ເວບ ບາວເຊີ"
+
+#: ../src/mwb-mozembed.c:317
+msgid "Open link in new tab"
+msgstr ""
+
+#: ../src/mwb-mozembed.c:321
+msgid "Copy link location"
+msgstr ""
+
+#: ../src/mwb-radical-bar.c:399
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+
+#: ../src/mwb-radical-bar.c:402
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+
+#: ../data/mwbpages/content/settings.js:215
+msgid ""
+"Do you want to clear your browsing history now? This will also remove all "
+"your pinned pages and personal settings."
+msgstr ""
+
+#: ../data/mwbpages/content/settings.js:224
+msgid "Yes, delete"
+msgstr "ເເມ່ນ, ລຶບ"
+
+#: ../data/mwbpages/content/settings.js:225
+msgid "No, save"
+msgstr "ບໍ່ແມ່ນ, ບັນທຶກ"
+
+#: ../data/mwbpages/content/startpage.js:53
+msgid "Favorite pages"
+msgstr ""
+
+#: ../data/mwbpages/content/startpage.js:191
+msgid "Less than a minute ago"
+msgstr "ປະມານ ລົດນາທີ ນຶງພ່ານໄປ"
+
+#. Translators: The two underscores here will get replaced with a
+#. number so they should be in the translation too. Eg 'About __
+#. minutes ago' will become 'About 10 minutes ago'.
+#: ../data/mwbpages/content/startpage.js:199
+msgid "About a minute ago"
+msgid_plural "About __ minutes ago"
+msgstr[0] "ປະມານ ນາທີ ນຶງພ່ານໄປ"
+msgstr[1] "ປະມານ ນາທີ ນຶງພ່ານໄປ"
+
+#. Translators: The two underscores here will get replaced with a
+#. number so they should be in the translation too. Eg 'About __
+#. minutes ago' will become 'About 10 minutes ago'.
+#: ../data/mwbpages/content/startpage.js:206
+msgid "About an hour ago"
+msgid_plural "About __ hours ago"
+msgstr[0] "ປະມານ ຊົ່ວໂມງ ນຶງພ່ານໄປ"
+msgstr[1] "ປະມານ ນາທີ ນຶງພ່ານໄປ"
+
+#: ../data/mwbpages/content/startpage.js:219
+msgid "Today at %H:%M"
+msgstr "ມື້ນີ້ŭ ໃນ %H:%M"
+
+#: ../data/mwbpages/content/startpage.js:221
+msgid "Yesterday at %H:%M"
+msgstr "ມື້ວານນີິ ໃນ %H:%M"
+
+#: ../data/mwbpages/content/startpage.js:223
+msgid "Last %A at %H:%M"
+msgstr "ສຸດທ້າຍ %An ໃນ %H:%M"
+
+#: ../data/mwbpages/content/startpage.js:225
+msgid "%x at %H:%M"
+msgstr "%x ໃນ %H:%M"
+
+#: ../data/mwbpages/content/startpage.js:251
+msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+msgstr ""
+
+#: ../data/mwbpages/content/startpage.js:295
+msgid "Fewer pinned pages"
+msgstr ""
+
+#: ../data/mwbpages/content/startpage.js:300
+msgid "More pinned pages"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:4
+msgid "Settings"
+msgstr "ຕັ້ງຄ່າ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:5
+msgid "General"
+msgstr "ທົ່ວໄປ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:6
+msgid "Try to complete domain names in automagic bar"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:7
+msgid "Search in automagic bar"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:8
+msgid "Add new search engine"
+msgstr "ເພີ້ມເຄຶ້ອງຊອກໃຫມ່"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:9
+msgid "Privacy"
+msgstr "ສິດຊ່ວນຕົວ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:10
+msgid "Remember my passwords"
+msgstr "ຈໍາລະຫັດພ່ານ ຂອງຂ້ອຍ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:11
+msgid "Remember what I type into forms"
+msgstr "ຈື່ວ່າຂ້ອຍປ້ອນຫຍັງເຂົ້າຟອມ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:12
+msgid "Keep my browser history for up to"
+msgstr "ŭ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:13
+msgid "1 year"
+msgstr "1 ປີ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:14
+msgid "1 month"
+msgstr "1 ເດືອນ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:15
+msgid "1 week"
+msgstr "1 ອາທິດ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:16
+msgid "1 day"
+msgstr "1 ມື້"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:17
+msgid "Reset my browsing history now"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:4
+msgid "New tab"
+msgstr "ເເທບໃຫມ່"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:5
+msgid "Pinned pages"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:6
+msgid "Trouble connecting?"
+msgstr "ບັນຫາເຊີ່ມຕໍ່?"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:7
+msgid ""
+"Move your pointer to the top of the screen to bring down the toolbar and "
+"choose the Networks panel."
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:8
+msgid ""
+"Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+"ones will show up here."
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:9
+msgid "Getting started"
+msgstr "ກໍາລັງເລີ້ມ"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:10
+msgid ""
+"First, make sure you have an internet connection! Then click on the "
+"automagic bar or press Ctrl+L to get there quickly and type the address or "
+"search you want."
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:11
+msgid "Make this a private tab"
+msgstr ""
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:12
+msgid ""
+"This is a private tab. Things you do in this tab will not be stored on this "
+"machine. However, websites you use may still keep records of your actions."
+msgstr ""
+

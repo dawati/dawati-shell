@@ -1,0 +1,408 @@
+# moblin web browser
+# Copyright Intel(C) 2009
+# This file is distributed under the same license as the PACKAGE package.
+# Zhang Qiang <qiang.z.zhang@intel.com>, 2009
+# Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-web-browser\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:27+0000\n"
+"PO-Revision-Date: 2009-10-21 15:59-0800\n"
+"Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
+"Language-Team: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.c:1733
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "在%s上搜索%%s"
+
+#: ../common/mwb-ac-list.c:1756
+#, c-format
+msgid "Go to %s"
+msgstr "打开%s"
+
+#: ../common/mwb-radical-bar.c:505
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"按回车键\n"
+"打开站点"
+
+#: ../common/mwb-radical-bar.c:508
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"按向下键\n"
+"浏览列表"
+
+#: ../data/moblin-web-browser.desktop.in.h:1
+msgid "It's the internet"
+msgstr "连接至互联网"
+
+#: ../data/moblin-web-browser.desktop.in.h:2
+msgid "Web Browser"
+msgstr "Moblin 浏览器"
+
+#: ../browser/mwb-browser.c:1137
+msgid "Moblin web browser - "
+msgstr "Moblin 浏览器 - "
+
+#: ../browser/mwb-browser.c:1170
+msgid "Loading..."
+msgstr "加载..."
+
+#: ../browser/mwb-browser.c:1172
+#: ../browser/mwb-browser.c:2863
+#: ../netpanel/moblin-netbook-netpanel.c:807
+msgid "Untitled"
+msgstr "未命名"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2015
+#: ../browser/mwb-browser.c:2295
+#: ../browser/mwb-browser.c:2345
+msgid "Downloads"
+msgstr "下载"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2330
+#, c-format
+msgid "Downloads - %d%%"
+msgstr "下载中 - %d%%"
+
+#: ../browser/mwb-browser.c:2452
+msgid "Moblin web browser"
+msgstr "Moblin 浏览器"
+
+#: ../browser/mwb-crash-page.c:312
+msgid "Oops!"
+msgstr "哎呀！"
+
+#: ../browser/mwb-crash-page.c:315
+msgid "New tab page"
+msgstr "新建标签页"
+
+#: ../browser/mwb-crash-page.c:316
+msgid "Reload page"
+msgstr "刷新页面"
+
+#: ../browser/mwb-crash-page.c:370
+#, c-format
+msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+msgstr "对不起，看起来 <span color=\"#909090\">%s</span> 造成了此标签崩溃。浏览器其它部分都安然无恙。您可以尝试重新载入网页，或访问另一个网页。"
+
+#: ../browser/mwb-download.c:286
+msgid "Download cancelled"
+msgstr "下载已取消"
+
+#: ../browser/mwb-download.c:299
+msgid "Download completed"
+msgstr "完成下载"
+
+#: ../browser/mwb-download.c:619
+msgid "Open file"
+msgstr "打开文件"
+
+#. Create widgets
+#: ../browser/mwb-find-bar.c:200
+msgid "Find in Page"
+msgstr "在网页查找"
+
+#: ../browser/mwb-find-bar.c:203
+msgid "Type to search"
+msgstr "搜索类型"
+
+#: ../browser/mwb-find-bar.c:204
+msgid "Next result"
+msgstr "下一个结果"
+
+#: ../browser/mwb-find-bar.c:205
+msgid "Previous result"
+msgstr "上一个结果"
+
+#: ../browser/mwb-main.c:288
+msgid "Run the browser in a window"
+msgstr "在新窗口中打开浏览器"
+
+#: ../browser/mwb-main.c:291
+msgid "Add the URL to the recent files list"
+msgstr "把这个地址加入最近访问过的文件列表"
+
+#: ../browser/mwb-main.c:306
+msgid "Moblin Web Browser"
+msgstr "Moblin 浏览器"
+
+#: ../browser/mwb-mozembed.c:575
+msgid "Open link in new tab"
+msgstr "在新标签页中打开此链接"
+
+#: ../browser/mwb-mozembed.c:581
+msgid "Copy link location"
+msgstr "拷贝链接"
+
+#: ../browser/mwb-mozembed.c:587
+msgid "Save link"
+msgstr "保存链接"
+
+#: ../browser/mwb-mozembed.c:596
+msgid "View image"
+msgstr "查看图片"
+
+#: ../browser/mwb-mozembed.c:602
+msgid "Copy image location"
+msgstr "复制图片位置"
+
+#: ../browser/mwb-mozembed.c:608
+msgid "Save image"
+msgstr "保存图片"
+
+#: ../browser/mwb-mozembed.c:617
+msgid "Copy text"
+msgstr "复制文本"
+
+#: ../browser/mwb-mozembed.c:628
+msgid "Back"
+msgstr "上一个"
+
+#: ../browser/mwb-mozembed.c:638
+msgid "Forward"
+msgstr "下一个"
+
+#: ../browser/mwb-mozembed.c:648
+msgid "Stop"
+msgstr "停止"
+
+#: ../browser/mwb-mozembed.c:658
+msgid "Reload"
+msgstr "刷新"
+
+#: ../browser/mwb-mozembed.c:668
+msgid "Pin this page"
+msgstr "锁定页面"
+
+#: ../browser/mwb-mozembed.c:673
+msgid "Save page"
+msgstr "保存网页"
+
+#: ../data/mwbpages/content/settings.js:215
+msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+msgstr "您想现在对浏览器进行重置操作吗？这个操作还会同时删除所有您的浏览历史、锁定的页面和个人设置。"
+
+#: ../data/mwbpages/content/settings.js:223
+msgid "Yes, delete"
+msgstr "是的，请删除"
+
+#: ../data/mwbpages/content/settings.js:224
+msgid "No, save"
+msgstr "不，保存"
+
+#. Construct title for favorite pages section
+#: ../data/mwbpages/content/startpage.js:55
+#: ../netpanel/moblin-netbook-netpanel.c:1236
+msgid "Favorite pages"
+msgstr "书签"
+
+#: ../data/mwbpages/content/startpage.js:151
+#: ../data/mwbpages/content/pinnedpages.js:193
+msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+msgstr "没有锁定的页面。在想要记住的网页的地址栏中按下大头针。"
+
+#: ../data/mwbpages/content/startpage.js:195
+msgid "More pinned pages"
+msgstr "更多的锁定页面"
+
+#: ../data/mwbpages/content/pinnedpages.js:192
+msgid "No matching pages were found"
+msgstr "没有找到匹配的网页"
+
+#. Translators: The two underscores will get replaced with a
+#. * hostname so they should be in the translation too. Eg the
+#. * string might become 'www.google.com wants to know your
+#. * location.'
+#: ../components/mwbGeolocationPrompt.js:69
+msgid "__ wants to know your location."
+msgstr "__ 想知道您现在在哪"
+
+#: ../components/mwbGeolocationPrompt.js:82
+msgid "Share location"
+msgstr "共享您的位置"
+
+#: ../components/mwbGeolocationPrompt.js:83
+msgid "Don't share"
+msgstr "不共享"
+
+#: ../components/mwbGeolocationPrompt.js:85
+msgid "Remember for this site"
+msgstr "记住我对这个站点的设置"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:4
+msgid "Settings"
+msgstr "设置"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:5
+msgid "General"
+msgstr "常规"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:6
+msgid "Try to complete domain names in automagic bar"
+msgstr "尝试在地址栏中自动补全地址"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:7
+msgid "Search in automagic bar"
+msgstr "在地址栏中搜索"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:8
+msgid "Add new search engine"
+msgstr "添加新的搜索引擎"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:9
+msgid "Privacy"
+msgstr "个人设置"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:10
+msgid "Remember my passwords"
+msgstr "记住我的密码"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:11
+msgid "Remember what I type into forms"
+msgstr "记住我在网页中输入的信息"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:12
+msgid "Keep my browser history for up to"
+msgstr "保留浏览的页面信息"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:13
+msgid "1 year"
+msgstr "一年"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:14
+msgid "1 month"
+msgstr "一个月"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:15
+msgid "1 week"
+msgstr "一周"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:16
+msgid "1 day"
+msgstr "一天"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:17
+msgid "Reset my browser now"
+msgstr "重置浏览器"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:4
+#: ../netpanel/moblin-netbook-netpanel.c:622
+#: ../netpanel/moblin-netbook-netpanel.c:996
+msgid "New tab"
+msgstr "新建标签"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:5
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:4
+msgid "Pinned pages"
+msgstr "锁定的页面"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:6
+msgid "Trouble connecting?"
+msgstr "连接错误？"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:7
+msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+msgstr "移动鼠标到屏幕顶部，在显示的工具栏上选择网络面板项。"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:8
+msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+msgstr "欢迎使用 Moblin Netbook 浏览器。当你要浏览网页时，你最喜欢的网页会先显示在这里。"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:9
+msgid "Getting started"
+msgstr "开始"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:10
+msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+msgstr "首先，确认您连到互联网！然后点击地址栏，或者按下 Ctrl+L 以快速定位到地址栏，然后输入您想要的地址或者想搜索的内容。"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:11
+msgid "Make this a private tab"
+msgstr "隐藏我在此页面上输入的信息"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:12
+msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+msgstr ""
+"这是一个隐藏的标签页。您在本页面上进行的一切操作都不会被存储在这台计算机上。然而，\n"
+"您所访问的网站仍然有可能保存您的操作记录。"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:13
+msgid "Moblin Web Browser is proudly based on Mozilla technology"
+msgstr "Moblin 网络浏览器是基于 Mozilla 技术。"
+
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:5
+msgid "Search"
+msgstr "搜索"
+
+#: ../netpanel/moblin-netbook-netpanel.c:602
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显示"
+
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.c:1197
+msgid "Internet"
+msgstr "互联网"
+
+#: ../netpanel/moblin-netbook-netpanel.c:1210
+msgid "Go"
+msgstr "出发"
+
+#. Construct title for tab preview section
+#: ../netpanel/moblin-netbook-netpanel.c:1231
+msgid "Tabs"
+msgstr "标签"
+
+#: ../netpanel/moblin-panel-internet.c:87
+msgid "internet"
+msgstr "互联网"
+
+#~ msgid ""
+#~ "<p>Push the pin icon in the location bar above to add pages to this list."
+#~ "</p>"
+#~ msgstr "<p>点击此图标，向列表中添加新的页面.</p>"
+#~ msgid "Fewer pinned pages"
+#~ msgstr "较少的锁定页面"
+#~ msgid "Less than a minute ago"
+#~ msgstr "不到一分钟之前"
+#~ msgid "About a minute ago"
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "大约一分钟以前"
+#~ msgstr[1] "大约__分钟以前"
+#~ msgid "About an hour ago"
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "大约一小时前"
+#~ msgstr[1] "大约几小时前"
+#~ msgid "Today at %H:%M"
+#~ msgstr "今天%H点%M分"
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "昨天%H点%M分"
+#~ msgid "Last %A at %H:%M"
+#~ msgstr "最后 %A 在%H:%M"
+#~ msgid "%x at %H:%M"
+#~ msgstr "%x 在 %H:%M"
+
+
+msgid "Next"
+msgstr "下一个"
+
+msgid "Previous"
+msgstr "上一个"

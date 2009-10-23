@@ -1,0 +1,12 @@
+# List of source files which contain translatable strings.
+
+# Common
+common/mwb-ac-list.c
+common/mwb-radical-bar.c
+common/mwb-separator.c
+common/mwb-utils.c
+
+# Panel
+netpanel/moblin-netbook-netpanel.c
+netpanel/moblin-panel-internet.c
+netpanel/mnb-netpanel-scrollview.c

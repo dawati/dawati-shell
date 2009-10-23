@@ -1,0 +1,314 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-01 19:20+0000\n"
+"PO-Revision-Date: 2009-10-13 12:50+0100\n"
+"Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../browser/mwb-crash-page.c:312
+msgid "Oops!"
+msgstr "Hara!"
+
+#: ../browser/mwb-crash-page.c:315
+msgid "New tab page"
+msgstr "Fitxa berria"
+
+#: ../browser/mwb-crash-page.c:316
+msgid "Reload page"
+msgstr "Orria birkargatu"
+
+#: ../browser/mwb-crash-page.c:370
+#, c-format
+msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+msgstr "Lastima, badirudi <span color=\"#909090\">%s</span>-k fitxa hau kraskatuarazi duela. Ez da arakatzailearen beste ezer kaltetu. Orria birkagatzen saiatu zaitezke, edo beste bat bisitatu dezakezu."
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.c:1733
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "%%s bilatu %s-n"
+
+#: ../common/mwb-ac-list.c:1756
+#, c-format
+msgid "Go to %s"
+msgstr "%s-ra joan"
+
+#: ../common/mwb-radical-bar.c:494
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"'Sartu' sakatu\n"
+"webgunea bisitatzeko"
+
+#: ../common/mwb-radical-bar.c:497
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"'Behera' sakatu\n"
+"zerrenda arakatzeko"
+
+#: ../data/moblin-web-browser.desktop.in.h:1
+msgid "It's the internet"
+msgstr "Internet da"
+
+#: ../data/moblin-web-browser.desktop.in.h:2
+msgid "Web Browser"
+msgstr "Web-Arakatzailea"
+
+#: ../browser/mwb-browser.c:1189
+msgid "Moblin web browser - "
+msgstr "Moblin web-arakatzailea - "
+
+#: ../browser/mwb-browser.c:1220
+#: ../browser/mwb-browser.c:2772
+#: ../netpanel/moblin-netbook-netpanel.c:807
+msgid "Untitled"
+msgstr "Izengabea"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2031
+#: ../browser/mwb-browser.c:2310
+#: ../browser/mwb-browser.c:2360
+msgid "Downloads"
+msgstr "Deskargak"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2345
+#, c-format
+msgid "Downloads - %d%%"
+msgstr "Deskargak - %d%%"
+
+#: ../browser/mwb-browser.c:2407
+msgid "Moblin web browser"
+msgstr "Moblin web-arakatzailea"
+
+#: ../browser/mwb-download.c:286
+msgid "Download cancelled"
+msgstr "Deskarga ezeztatua"
+
+#: ../browser/mwb-download.c:299
+msgid "Download completed"
+msgstr "Deskarga burutua"
+
+#: ../browser/mwb-download.c:615
+msgid "Open file"
+msgstr "Fitxategia ireki"
+
+#: ../browser/mwb-main.c:276
+msgid "Run the browser in a window"
+msgstr "Leiho batean exekutatu arakatzailea"
+
+#: ../browser/mwb-main.c:279
+msgid "Add the URL to the recent files list"
+msgstr "Azken fitxategien zerrendara gehitu URLa"
+
+#: ../browser/mwb-main.c:294
+msgid "Moblin Web Browser"
+msgstr "Moblin Web-Arakatzailea"
+
+#: ../browser/mwb-mozembed.c:316
+msgid "Open link in new tab"
+msgstr "Fitxa berrian ireki fitxa"
+
+#: ../browser/mwb-mozembed.c:320
+msgid "Copy link location"
+msgstr "Estekaren kokalekua kopiatu"
+
+#: ../data/mwbpages/content/settings.js:215
+msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+msgstr "Zure arakatzailea garbitu nahi al duzu? Zure web historia, orri markatuak eta ezarpen pertsonalak ezabatuko dira."
+
+#: ../data/mwbpages/content/settings.js:223
+msgid "Yes, delete"
+msgstr "Bai, ezabatu"
+
+#: ../data/mwbpages/content/settings.js:224
+msgid "No, save"
+msgstr "Ez, gorde"
+
+#. Construct title for favorite pages section
+#: ../data/mwbpages/content/startpage.js:55
+#: ../netpanel/moblin-netbook-netpanel.c:1236
+msgid "Favorite pages"
+msgstr "Orri gogokoenak"
+
+#: ../data/mwbpages/content/startpage.js:151
+#: ../data/mwbpages/content/pinnedpages.js:193
+msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+msgstr "Markatutako orririk ez. Barra automagikoarekin markatu ditzakezu gogoratu nahi dituzun orriak."
+
+#: ../data/mwbpages/content/startpage.js:195
+msgid "More pinned pages"
+msgstr "Markatutako orri gehiago"
+
+#: ../data/mwbpages/content/pinnedpages.js:192
+msgid "No matching pages were found"
+msgstr "Ez da kointzidentziarik aurkitu"
+
+#. Translators: The two underscores will get replaced with a
+#. * hostname so they should be in the translation too. Eg the
+#. * string might become 'www.google.com wants to know your
+#. * location.'
+#: ../components/mwbGeolocationPrompt.js:69
+msgid "__ wants to know your location."
+msgstr "__ zure kokalekua ezagutu nahi du."
+
+#: ../components/mwbGeolocationPrompt.js:82
+msgid "Share location"
+msgstr "Kokalekua konpartitu"
+
+#: ../components/mwbGeolocationPrompt.js:83
+msgid "Don't share"
+msgstr "Ez konpartitu"
+
+#: ../components/mwbGeolocationPrompt.js:85
+msgid "Remember for this site"
+msgstr "Webgune honetarako gogoratu"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:4
+msgid "Settings"
+msgstr "Ezarpenak"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:5
+msgid "General"
+msgstr "Orokorrak"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:6
+msgid "Try to complete domain names in automagic bar"
+msgstr "Domeinu-izenak osatzen saiatu barra automagikoan"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:7
+msgid "Search in automagic bar"
+msgstr "Barra automagikoan bilatu"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:8
+msgid "Add new search engine"
+msgstr "Bilaketa-motore berria gehitu"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:9
+msgid "Privacy"
+msgstr "Pribatutasuna"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:10
+msgid "Remember my passwords"
+msgstr "Nire pasahitzak gogoratu"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:11
+msgid "Remember what I type into forms"
+msgstr "Formularioetan idazten dudana gogoratu"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:12
+msgid "Keep my browser history for up to"
+msgstr "Nire arakatzailearen historia gorde"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:13
+msgid "1 year"
+msgstr "urte 1"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:14
+msgid "1 month"
+msgstr "hilabete 1"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:15
+msgid "1 week"
+msgstr "aste 1"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:16
+msgid "1 day"
+msgstr "egun 1"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:17
+msgid "Reset my browser now"
+msgstr "Arakatzailea garbitu"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:4
+#: ../netpanel/moblin-netbook-netpanel.c:622
+#: ../netpanel/moblin-netbook-netpanel.c:996
+msgid "New tab"
+msgstr "Fitxa berria"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:5
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:4
+msgid "Pinned pages"
+msgstr "Markatutako orriak"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:6
+msgid "Trouble connecting?"
+msgstr "Konektatzeko arazoak?"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:7
+msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+msgstr "Panatailaren goralderaino mugitu ezazu sagua tresna-barra agertarazteko, eta Sareak panela hautatu ezazu."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:8
+msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+msgstr "Ongietorri Moblin Netbook Web-Arakatzailera. Orriak bisitatzen dituzunean, hemen agertuko dira zure gogokoenak."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:9
+msgid "Getting started"
+msgstr "Nola hasi"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:10
+msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+msgstr "Lehenik, internet konexioa duzula egiaztatu ezazu! Ondoren, barra automagikoan egizu klik edo Ctrl+L sakatu ezazu nahi duzun helbidea edo bilaketa idazteko."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:11
+msgid "Make this a private tab"
+msgstr "Probatu bihurtu fitxa hau"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:12
+msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+msgstr "Pribatua da fitxa hau. Ez da fitxa honetan egiten duzunaren arrastorik gordeko ordenagailu honetan. Halaere, webguneek zure ekintzen erregistroa gorde dezakete."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:13
+msgid "Moblin Web Browser is proudly based on Mozilla technology"
+msgstr "Mozilla-ren teknologian oinarritzen da Moblin Web-Arakatzailea"
+
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:5
+msgid "Search"
+msgstr "Bilatu"
+
+#: ../netpanel/moblin-netbook-netpanel.c:602
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Webguneak bisitatzen dituzun eran, zure gogokoenak hemen eta arakatzailean 'Fitxa berria' agertuko dira."
+
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.c:1197
+msgid "Internet"
+msgstr "Internet"
+
+#: ../netpanel/moblin-netbook-netpanel.c:1210
+msgid "Go"
+msgstr "Joan"
+
+#. Construct title for tab preview section
+#: ../netpanel/moblin-netbook-netpanel.c:1231
+msgid "Tabs"
+msgstr "Fitxak"
+
+#: ../netpanel/moblin-panel-internet.c:87
+msgid "internet"
+msgstr "internet"
+
+
+msgid "Next"
+msgstr "Hurrengoa"
+
+msgid "Previous"
+msgstr "Aurrekoa"

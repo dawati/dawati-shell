@@ -1,0 +1,408 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:27+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Anu McDougall <anu.mcdougall@ptiglobal.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Finnish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.c:1733
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Etsi '%%s' käyttäen seuraavaa: %s"
+
+#: ../common/mwb-ac-list.c:1756
+#, c-format
+msgid "Go to %s"
+msgstr "Siirry kohteeseen %s"
+
+# visit site\n
+# by pressing enter
+#: ../common/mwb-radical-bar.c:505
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Siirry sivustoon\n"
+"painamalla enter"
+
+# explore list\n
+# by pressing down
+#: ../common/mwb-radical-bar.c:508
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Tutki listaa\n"
+"painamalla alas"
+
+#: ../data/moblin-web-browser.desktop.in.h:1
+msgid "It's the internet"
+msgstr "Se on Internet!"
+
+#: ../data/moblin-web-browser.desktop.in.h:2
+msgid "Web Browser"
+msgstr "Verkkoselain"
+
+#: ../browser/mwb-browser.c:1137
+msgid "Moblin web browser - "
+msgstr "Moblin verkkoselain -"
+
+#: ../browser/mwb-browser.c:1170
+msgid "Loading..."
+msgstr "Lataa..."
+
+#: ../browser/mwb-browser.c:1172
+#: ../browser/mwb-browser.c:2863
+#: ../netpanel/moblin-netbook-netpanel.c:807
+msgid "Untitled"
+msgstr "Nimetön"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2015
+#: ../browser/mwb-browser.c:2295
+#: ../browser/mwb-browser.c:2345
+msgid "Downloads"
+msgstr "Tallennetut tiedostot"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2330
+#, c-format
+msgid "Downloads - %d%%"
+msgstr "Tallennetut tiedostot - %d%%"
+
+#: ../browser/mwb-browser.c:2452
+msgid "Moblin web browser"
+msgstr "Moblin verkkoselain"
+
+#: ../browser/mwb-crash-page.c:312
+msgid "Oops!"
+msgstr "Upsis!"
+
+#: ../browser/mwb-crash-page.c:315
+msgid "New tab page"
+msgstr "Uusi välilehti"
+
+#: ../browser/mwb-crash-page.c:316
+msgid "Reload page"
+msgstr "Lataa sivu uudelleen"
+
+#: ../browser/mwb-crash-page.c:370
+#, c-format
+msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+msgstr "Anteeksi,  <jakso väri=\"#909090\">%s</jakso> näyttää kaataneen tämän välilehden. Loput selaimesta ei ole vahingoittunut. Voit yrittää ladata sivun uudelleen tai siirtyä toiselle sivulle."
+
+#: ../browser/mwb-download.c:286
+msgid "Download cancelled"
+msgstr "Lataus peruttu"
+
+#: ../browser/mwb-download.c:299
+msgid "Download completed"
+msgstr "Lataus valmis"
+
+#: ../browser/mwb-download.c:619
+msgid "Open file"
+msgstr "Avaa tiedosto"
+
+#. Create widgets
+#: ../browser/mwb-find-bar.c:200
+msgid "Find in Page"
+msgstr "Etsi sivulta"
+
+#: ../browser/mwb-find-bar.c:203
+msgid "Type to search"
+msgstr "Kirjoita etsiäksesi"
+
+#: ../browser/mwb-find-bar.c:204
+msgid "Next result"
+msgstr "Seuraava tulos"
+
+#: ../browser/mwb-find-bar.c:205
+msgid "Previous result"
+msgstr "Edellinen tulos"
+
+#: ../browser/mwb-main.c:288
+msgid "Run the browser in a window"
+msgstr "Suorita selain ikkunassa"
+
+#: ../browser/mwb-main.c:291
+msgid "Add the URL to the recent files list"
+msgstr "Lisää URL viimeaikaisten tiedostojen listaan"
+
+#: ../browser/mwb-main.c:306
+msgid "Moblin Web Browser"
+msgstr "Moblin verkkoselain"
+
+#: ../browser/mwb-mozembed.c:575
+msgid "Open link in new tab"
+msgstr "Avaa linkki uudessa välilehdessä"
+
+#: ../browser/mwb-mozembed.c:581
+msgid "Copy link location"
+msgstr "Avaa linkin kohde"
+
+#: ../browser/mwb-mozembed.c:587
+msgid "Save link"
+msgstr "Tallenna linkki"
+
+#: ../browser/mwb-mozembed.c:596
+msgid "View image"
+msgstr "Katsele kuvaa"
+
+#: ../browser/mwb-mozembed.c:602
+msgid "Copy image location"
+msgstr "Kopioi kuvan kohde"
+
+#: ../browser/mwb-mozembed.c:608
+msgid "Save image"
+msgstr "Tallenna kuva"
+
+#: ../browser/mwb-mozembed.c:617
+msgid "Copy text"
+msgstr "Kopioi teksti"
+
+#: ../browser/mwb-mozembed.c:628
+msgid "Back"
+msgstr "Takaisin"
+
+#: ../browser/mwb-mozembed.c:638
+msgid "Forward"
+msgstr "Eteenpäin"
+
+#: ../browser/mwb-mozembed.c:648
+msgid "Stop"
+msgstr "Pysäytä"
+
+#: ../browser/mwb-mozembed.c:658
+msgid "Reload"
+msgstr "Lataa sivu uudelleen"
+
+#: ../browser/mwb-mozembed.c:668
+msgid "Pin this page"
+msgstr "Neulaa tämä sivu"
+
+#: ../browser/mwb-mozembed.c:673
+msgid "Save page"
+msgstr "Tallenna sivu"
+
+#: ../data/mwbpages/content/settings.js:215
+msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+msgstr "Haluatko tyhjätä selaimesi? Tämä poistaa sivuhistorian, neulatut sivut ja henkilökohtaiset asetukset."
+
+#: ../data/mwbpages/content/settings.js:223
+msgid "Yes, delete"
+msgstr "Kyllä, poista"
+
+#: ../data/mwbpages/content/settings.js:224
+msgid "No, save"
+msgstr "Ei, tallenna"
+
+#. Construct title for favorite pages section
+#: ../data/mwbpages/content/startpage.js:55
+#: ../netpanel/moblin-netbook-netpanel.c:1236
+msgid "Favorite pages"
+msgstr "Suosikkisivut"
+
+#: ../data/mwbpages/content/startpage.js:151
+#: ../data/mwbpages/content/pinnedpages.js:193
+msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+msgstr "Ei neulattuja sivuja. Paina neulaa automaagisella rivillä sivulla jonka haluat muistaa."
+
+#: ../data/mwbpages/content/startpage.js:195
+msgid "More pinned pages"
+msgstr "Enemmän neulattuja sivuja"
+
+#: ../data/mwbpages/content/pinnedpages.js:192
+msgid "No matching pages were found"
+msgstr "Yhteensopivia sivuja ei löytynyt"
+
+#. Translators: The two underscores will get replaced with a
+#. * hostname so they should be in the translation too. Eg the
+#. * string might become 'www.google.com wants to know your
+#. * location.'
+#: ../components/mwbGeolocationPrompt.js:69
+msgid "__ wants to know your location."
+msgstr "__ haluaa tietää sijaintisi."
+
+#: ../components/mwbGeolocationPrompt.js:82
+msgid "Share location"
+msgstr "Jaa sijainti"
+
+#: ../components/mwbGeolocationPrompt.js:83
+msgid "Don't share"
+msgstr "Älä jaa"
+
+#: ../components/mwbGeolocationPrompt.js:85
+msgid "Remember for this site"
+msgstr "Muista tälle sivustolle"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:4
+msgid "Settings"
+msgstr "Asetukset"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:5
+msgid "General"
+msgstr "Yleiset"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:6
+msgid "Try to complete domain names in automagic bar"
+msgstr "Yritä täyttää verkkotunnukset automaagisessa rivissä"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:7
+msgid "Search in automagic bar"
+msgstr "Etsi automaagisella rivillä"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:8
+msgid "Add new search engine"
+msgstr "Lisää uusi hakukone"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:9
+msgid "Privacy"
+msgstr "Yksityisyys"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:10
+msgid "Remember my passwords"
+msgstr "Muista salasanani"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:11
+msgid "Remember what I type into forms"
+msgstr "Muista täyttämäni lomakkeet"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:12
+msgid "Keep my browser history for up to"
+msgstr "Säilytä sivuhistoria"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:13
+msgid "1 year"
+msgstr "1 vuosi"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:14
+msgid "1 month"
+msgstr "1 kuukausi"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:15
+msgid "1 week"
+msgstr "1 viikko"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:16
+msgid "1 day"
+msgstr "1 päivä"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:17
+msgid "Reset my browser now"
+msgstr "Tyhjää selain nyt"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:4
+#: ../netpanel/moblin-netbook-netpanel.c:622
+#: ../netpanel/moblin-netbook-netpanel.c:996
+msgid "New tab"
+msgstr "Uusi välilehti"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:5
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:4
+msgid "Pinned pages"
+msgstr "Neulatut sivut"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:6
+msgid "Trouble connecting?"
+msgstr "Yhteysongelmia?"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:7
+msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+msgstr "Siirrä osoitin ruudun yläreunaan työkalurivin aktivoimiseksi ja valitse sitten verkot-paneeli."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:8
+msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+msgstr "Tervetuloa käyttämään Moblin-verkkoselainta. Useimmiten vierailemasi sivut näkyvät täällä."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:9
+msgid "Getting started"
+msgstr "Alkuvalmistelut"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:10
+msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+msgstr "Tarkista ensin, että onko sinulla Internet-yhteys! Napsauta sitten automaagista riviä tai paina Ctrl+L ja syötä haluamasi osoite tai etsintätermi."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:11
+msgid "Make this a private tab"
+msgstr "Muuta tämä välilehti yksityiseksi"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:12
+msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+msgstr "Tämä on yksityinen välilehti. Tämän välilehden tapahtumia ei tallenneta tähän koneeseen. Vierailemasi sivustot voivat tosin silti säilyttää tietoja tekemisistäsi."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:13
+msgid "Moblin Web Browser is proudly based on Mozilla technology"
+msgstr "Moblin Verkkoselain perustuu Mozilla teknologiaan"
+
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:5
+msgid "Search"
+msgstr "Etsi"
+
+#: ../netpanel/moblin-netbook-netpanel.c:602
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi välilehti -sivulla."
+
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.c:1197
+msgid "Internet"
+msgstr "Internet"
+
+#: ../netpanel/moblin-netbook-netpanel.c:1210
+msgid "Go"
+msgstr "Siirry"
+
+#. Construct title for tab preview section
+#: ../netpanel/moblin-netbook-netpanel.c:1231
+msgid "Tabs"
+msgstr "Välilehdet"
+
+#: ../netpanel/moblin-panel-internet.c:87
+msgid "internet"
+msgstr "internet"
+
+#~ msgid ""
+#~ "<p>Push the pin icon in the location bar above to add pages to this list."
+#~ "</p>"
+#~ msgstr ""
+#~ "<p>Napsauta neulakuvaketta yllä olevassa osoiterivissä sivujen "
+#~ "lisäämiseksi tähän listaan.</p>"
+#~ msgid "Fewer pinned pages"
+#~ msgstr "Vähemmän neulattuja sivuja"
+#~ msgid "Less than a minute ago"
+#~ msgstr "Alle minuutti sitten"
+#~ msgid "About a minute ago"
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "Noin minuutti sitten"
+#~ msgstr[1] "Noin __ minuuttia sitten"
+#~ msgid "About an hour ago"
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "Noin tunti sitten"
+#~ msgstr[1] "Noin __ tuntia sitten"
+#~ msgid "Today at %H:%M"
+#~ msgstr "Tänään klo %H:%M"
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "Eilen klo %H:%M"
+#~ msgid "Last %A at %H:%M"
+#~ msgstr "Viimeksi %A klo %H:%M"
+#~ msgid "%x at %H:%M"
+#~ msgstr "%x klo %H:%M"
+
+
+msgid "Next"
+msgstr "Seuraava"
+
+msgid "Previous"
+msgstr "Edellinen"

@@ -1,0 +1,410 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:27+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Quentin Nerden <quentinx.nerden@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: FRANCE\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.c:1733
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Recherche de %%s sur %s"
+
+#: ../common/mwb-ac-list.c:1756
+#, c-format
+msgid "Go to %s"
+msgstr "Aller sur %s"
+
+#: ../common/mwb-radical-bar.c:505
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Cliquez sur Entrée\n"
+"pour visiter le site"
+
+#: ../common/mwb-radical-bar.c:508
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Utilisez les flêches\n"
+"pour voir la liste"
+
+#: ../data/moblin-web-browser.desktop.in.h:1
+msgid "It's the internet"
+msgstr "C'est l'internet"
+
+#: ../data/moblin-web-browser.desktop.in.h:2
+msgid "Web Browser"
+msgstr "Navigateur"
+
+#: ../browser/mwb-browser.c:1137
+msgid "Moblin web browser - "
+msgstr "Navigateur Web Moblin -"
+
+#: ../browser/mwb-browser.c:1172 ../browser/mwb-browser.c:2863
+#: ../netpanel/moblin-netbook-netpanel.c:807
+msgid "Untitled"
+msgstr "Sans titre"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2015 ../browser/mwb-browser.c:2295
+#: ../browser/mwb-browser.c:2345
+msgid "Downloads"
+msgstr "Téléchargements"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2330
+#, c-format
+msgid "Downloads - %d%%"
+msgstr "Téléchargements - %d%%"
+
+#: ../browser/mwb-browser.c:2452
+msgid "Moblin web browser"
+msgstr "Navigateur Web Mobin"
+
+#: ../browser/mwb-crash-page.c:312
+msgid "Oops!"
+msgstr "Oops !"
+
+#: ../browser/mwb-crash-page.c:315
+msgid "New tab page"
+msgstr "Nouvelle page d'onglet"
+
+#: ../browser/mwb-crash-page.c:316
+msgid "Reload page"
+msgstr "Recharger la page"
+
+#: ../browser/mwb-crash-page.c:370
+#, c-format
+msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+msgstr "Désolé, <span color=\"#909090\">%s</span> semble avoir causé le crash de cet onglet. Le reste du navigateur est indemne. Vous pouvez essayer de recharger la page ou d'en visiter une autre."
+
+#: ../browser/mwb-download.c:286
+msgid "Download cancelled"
+msgstr "Téléchargement annulé"
+
+#: ../browser/mwb-download.c:299
+msgid "Download completed"
+msgstr "Téléchargement terminé"
+
+#: ../browser/mwb-download.c:619
+msgid "Open file"
+msgstr "Ouvrir le fichier"
+
+#: ../browser/mwb-main.c:288
+msgid "Run the browser in a window"
+msgstr "Utiliser le navigateur dans une fenêtre"
+
+#: ../browser/mwb-main.c:291
+msgid "Add the URL to the recent files list"
+msgstr "Ajouter l'URL à la liste des fichiers récents"
+
+#: ../browser/mwb-main.c:306
+msgid "Moblin Web Browser"
+msgstr "Navigateur Web Mobin"
+
+#: ../browser/mwb-mozembed.c:575
+msgid "Open link in new tab"
+msgstr "Ouvrir le lien dans un nouvel onglet"
+
+#: ../browser/mwb-mozembed.c:581
+msgid "Copy link location"
+msgstr "Copier le lien"
+
+#: ../data/mwbpages/content/settings.js:215
+msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+msgstr "Voulez-vous effacer l'historique de vos visites maintenant ? Cela supprimera aussi vos pages épinglées et vos paramètres personnels."
+
+#: ../data/mwbpages/content/settings.js:223
+msgid "Yes, delete"
+msgstr "Oui, effacer"
+
+#: ../data/mwbpages/content/settings.js:224
+msgid "No, save"
+msgstr "Non, sauvergarder"
+
+#. Construct title for favorite pages section
+#: ../data/mwbpages/content/startpage.js:55
+#: ../netpanel/moblin-netbook-netpanel.c:1236
+msgid "Favorite pages"
+msgstr "Pages favorites"
+
+#: ../data/mwbpages/content/startpage.js:151
+#: ../data/mwbpages/content/pinnedpages.js:193
+msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+msgstr "Aucune page épinglée. Enfoncez l'épingle dans la barre automagique sur une page que vous souhaitez mémoriser."
+
+#: ../data/mwbpages/content/startpage.js:195
+msgid "More pinned pages"
+msgstr "Plus de pages épinglées"
+
+#: ../data/mwbpages/content/pinnedpages.js:192
+msgid "No matching pages were found"
+msgstr "Pas de page répondant à vos critères"
+
+#. Translators: The two underscores will get replaced with a
+#. * hostname so they should be in the translation too. Eg the
+#. * string might become 'www.google.com wants to know your
+#. * location.'
+#: ../components/mwbGeolocationPrompt.js:69
+msgid "__ wants to know your location."
+msgstr "__ veut connaître votre location."
+
+#: ../components/mwbGeolocationPrompt.js:82
+msgid "Share location"
+msgstr "Partager la location"
+
+#: ../components/mwbGeolocationPrompt.js:83
+msgid "Don't share"
+msgstr "Ne pas partager"
+
+#: ../components/mwbGeolocationPrompt.js:85
+msgid "Remember for this site"
+msgstr "Retenir pour ce site"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:4
+msgid "Settings"
+msgstr "Paramètres"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:5
+msgid "General"
+msgstr "Général"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:6
+msgid "Try to complete domain names in automagic bar"
+msgstr "Essayer de compléter les noms de domaines dans la barre automagique"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:7
+msgid "Search in automagic bar"
+msgstr "Chercher avec la barre automagique"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:8
+msgid "Add new search engine"
+msgstr "Ajouter un nouveau moteur de recherche"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:9
+msgid "Privacy"
+msgstr "Confidentialité"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:10
+msgid "Remember my passwords"
+msgstr "Se Souvenir de mes mots de passe"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:11
+msgid "Remember what I type into forms"
+msgstr "Se souvenir de ce que je saisis dans les formulaires"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:12
+msgid "Keep my browser history for up to"
+msgstr "Conserver l'historique de mes visites pendant"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:13
+msgid "1 year"
+msgstr "1 an"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:14
+msgid "1 month"
+msgstr "1 mois"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:15
+msgid "1 week"
+msgstr "1 semaine"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:16
+msgid "1 day"
+msgstr "1 jour"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:17
+msgid "Reset my browser now"
+msgstr "Effacer l'historique de mes visites maintenant"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:4
+#: ../netpanel/moblin-netbook-netpanel.c:622
+#: ../netpanel/moblin-netbook-netpanel.c:996
+msgid "New tab"
+msgstr "Nouvel onglet"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:5
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:4
+msgid "Pinned pages"
+msgstr "Pages épinglées"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:6
+msgid "Trouble connecting?"
+msgstr "Des problêmes pour vous connecter ?"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:7
+msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+msgstr "Déplacer votre pointeur vers le haut de l'écran pour afficher la barre d'outils et choisissez Réseaux."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:8
+msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+msgstr "Le navigateur Moblin Netbook vous souhaite la bienvenue. Durant vos visites, vos pages favorites seront affichées ici."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:9
+msgid "Getting started"
+msgstr "Pour commencer"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:10
+msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+msgstr "Tout d'abord, assurez-vous d'être connecté à l'internet ! Ensuite cliquez sur la barre automagique ou appuyez sur Ctrl+L pour y accéder rapidement et saisissez l'adresse que vous souhaitez ou commencez votre recherche."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:11
+msgid "Make this a private tab"
+msgstr "Faites-en une étiquette privée"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:12
+msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+msgstr "Cet onglet est privé. Ce système ne conservera pas en mémoire ce que vous y faites. Les sites que vous visitez peuvent cependant garder une trace de vos actions."
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:13
+msgid "Moblin Web Browser is proudly based on Mozilla technology"
+msgstr "Le navigateur Web Moblin est fièrement basé sur la technologie Mozilla"
+
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:5
+msgid "Search"
+msgstr "Chercher"
+
+#: ../netpanel/moblin-netbook-netpanel.c:602
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Lorsque vous visitez des pages web, vos pages favorites apparaissent ici et sur la page Nouvel onglet du navigateur."
+
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.c:1197
+msgid "Internet"
+msgstr "Internet"
+
+#: ../netpanel/moblin-netbook-netpanel.c:1210
+msgid "Go"
+msgstr "Lancer"
+
+#. Construct title for tab preview section
+#: ../netpanel/moblin-netbook-netpanel.c:1231
+msgid "Tabs"
+msgstr "Onglets"
+
+#: ../netpanel/moblin-panel-internet.c:87
+msgid "internet"
+msgstr "Internet"
+
+#: ../browser/mwb-browser.c:1170
+msgid "Loading..."
+msgstr "Chargement en cours..."
+
+#. Create widgets
+#: ../browser/mwb-find-bar.c:200
+msgid "Find in Page"
+msgstr "Trouver dans la page"
+
+#: ../browser/mwb-find-bar.c:203
+msgid "Type to search"
+msgstr "Saisir pour la recherche"
+
+#: ../browser/mwb-find-bar.c:204
+msgid "Next result"
+msgstr "Résultat suivant"
+
+#: ../browser/mwb-find-bar.c:205
+msgid "Previous result"
+msgstr "Résultat précédent"
+
+#: ../browser/mwb-mozembed.c:587
+msgid "Save link"
+msgstr "Sauvegarder le lien"
+
+#: ../browser/mwb-mozembed.c:617
+msgid "Copy text"
+msgstr "Copier le texte"
+
+#: ../browser/mwb-mozembed.c:608
+msgid "Save image"
+msgstr "Sauvegarder l'image"
+
+#: ../browser/mwb-mozembed.c:602
+msgid "Copy image location"
+msgstr "Copier l'emplacement de l'image"
+
+#: ../browser/mwb-mozembed.c:596
+msgid "View image"
+msgstr "Afficher l'image"
+
+#: ../browser/mwb-mozembed.c:658
+msgid "Reload"
+msgstr "Recharger"
+
+#: ../browser/mwb-mozembed.c:648
+msgid "Stop"
+msgstr "Stopper"
+
+#: ../browser/mwb-mozembed.c:638
+msgid "Forward"
+msgstr "Avancer"
+
+#: ../browser/mwb-mozembed.c:628
+msgid "Back"
+msgstr "Retourner"
+
+#: ../browser/mwb-mozembed.c:673
+msgid "Save page"
+msgstr "Sauvergarder la page"
+
+#: ../browser/mwb-mozembed.c:668
+msgid "Pin this page"
+msgstr "Épingler cette page"
+
+#~ msgid "Push the pin icon in the location bar above to add pages to this list."
+#~ msgstr "Pousser l'épingle dans la barre d'emplacement ci-dessus pour ajouter des pages à cette liste."
+
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+#~ msgstr "<p>Pousser l'épingle dans la barre d'emplacement ci-dessus pour ajouter des pages à cette liste.</p>"
+
+#~ msgid "Fewer pinned pages"
+#~ msgstr "Moins de pages épinglées"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Il y a moins d'une minute"
+
+#~ msgid "About a minute ago"
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "Il y a environ une minute"
+#~ msgstr[1] "Il y a __ minutes "
+
+#~ msgid "About an hour ago"
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "Il y a une heure"
+#~ msgstr[1] "Il y a environ __ heures "
+
+#~ msgid "Today at %H:%M"
+#~ msgstr "Aujourd'hui à %H:%M"
+
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "Hier à %H:%M"
+
+#~ msgid "Last %A at %H:%M"
+#~ msgstr "%A dernier à %H:%M"
+
+#~ msgid "%x at %H:%M"
+#~ msgstr "Le %x à %H:%M"
+
+msgid "Next"
+msgstr "Suivant"
+
+msgid "Previous"
+msgstr "Précédent"

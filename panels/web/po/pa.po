@@ -1,0 +1,448 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# A S Alam <aalam@users.sf.net>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-web-browser.Moblin2.moblin-web-browser\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:27+0000\n"
+"PO-Revision-Date: 2009-10-17 07:28+0530\n"
+"Last-Translator: A S Alam <aalam@users.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.0\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.c:1733
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "%%s ਲਈ %s ਉੱਤੇ ਖੋਜ"
+
+#: ../common/mwb-ac-list.c:1756
+#, c-format
+msgid "Go to %s"
+msgstr "%s ਉੱਤੇ ਜਾਓ"
+
+#: ../common/mwb-radical-bar.c:505
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"ਸਾਈਟ ਖੋਲ੍ਹਣ ਲਈ\n"
+"ਐਂਟਰ ਦੱਬੋ।"
+
+#: ../common/mwb-radical-bar.c:508
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"ਲਿਸਟ ਵੇਖਣ ਲਈ\n"
+"ਹੇਠਾਂ ਦੱਬੋ"
+
+#: ../data/moblin-web-browser.desktop.in.h:1
+msgid "It's the internet"
+msgstr "ਇਹ ਇੰਟਰਨੈੱਟ ਹੈ"
+
+#: ../data/moblin-web-browser.desktop.in.h:2
+msgid "Web Browser"
+msgstr "ਵੈੱਬ ਬਰਾਊਜ਼ਰ"
+
+#: ../browser/mwb-browser.c:1137
+msgid "Moblin web browser - "
+msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ"
+
+#: ../browser/mwb-browser.c:1170
+msgid "Loading..."
+msgstr "ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
+
+#: ../browser/mwb-browser.c:1172 ../browser/mwb-browser.c:2863
+#: ../netpanel/moblin-netbook-netpanel.c:807
+msgid "Untitled"
+msgstr "ਬਿਨ-ਟਾਈਟਲ"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2015 ../browser/mwb-browser.c:2295
+#: ../browser/mwb-browser.c:2345
+msgid "Downloads"
+msgstr "ਡਾਊਨਲੋਡ"
+
+#. Update the tab title
+#: ../browser/mwb-browser.c:2330
+#, c-format
+msgid "Downloads - %d%%"
+msgstr "ਡਾਊਨਲੋਡ - %d%%"
+
+#: ../browser/mwb-browser.c:2452
+msgid "Moblin web browser"
+msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ"
+
+#: ../browser/mwb-crash-page.c:312
+msgid "Oops!"
+msgstr "ਓਹ ਹੋ!"
+
+#: ../browser/mwb-crash-page.c:315
+msgid "New tab page"
+msgstr "ਨਵਾਂ ਟੈਬ ਪੇਜ਼"
+
+#: ../browser/mwb-crash-page.c:316
+msgid "Reload page"
+msgstr "ਪੇਜ਼ ਮੁੜ-ਲੋਡ ਕਰੋ"
+
+#: ../browser/mwb-crash-page.c:370
+#, c-format
+msgid ""
+"Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to "
+"crash. The rest of the browser is unharmed. You can try to reload the page "
+"or visit another one."
+msgstr ""
+"ਅਫਸੋਸ, <span color=\"#909090\">%s</span> ਨੇ ਇਹ ਟੈਬ ਨੂੰ ਕਰੈਸ਼ ਕਰ ਦਿੱਤਾ ਹੈ। ਬਰਾਊਜ਼ਰ ਦਾ "
+"ਬਾਕੀ ਭਾਗ ਦਾ ਕੋਈ ਨੁਕਸਾਨ ਨਹੀਂ ਹੋਇਆ ਹੈ। ਤੁਸੀਂ ਪੇਜ਼ ਨੂੰ ਮੁੜ-ਲੋਡ ਕਰ ਸਕਦੇ ਹੋ ਜਾ ਹੋਰ ਕੋਈ ਖੋਲ੍ਹ ਸਕਦੇ ਹੋ।"
+
+#: ../browser/mwb-download.c:286
+msgid "Download cancelled"
+msgstr "ਡਾਊਨਲੋਡ ਰੱਦ ਕੀਤਾ"
+
+#: ../browser/mwb-download.c:299
+msgid "Download completed"
+msgstr "ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋਇਆ"
+
+#: ../browser/mwb-download.c:619
+msgid "Open file"
+msgstr "ਫਾਇਲ ਖੋਲ੍ਹੋ"
+
+#. Create widgets
+#: ../browser/mwb-find-bar.c:200
+msgid "Find in Page"
+msgstr "ਪੇਜ਼ ਵਿੱਚ ਖੋਜ"
+
+#: ../browser/mwb-find-bar.c:203
+msgid "Type to search"
+msgstr "ਖੋਜ ਦੀ ਕਿਸਮ"
+
+#: ../browser/mwb-find-bar.c:204
+msgid "Next result"
+msgstr "ਅਗਲਾ ਨਤੀਜਾ"
+
+#: ../browser/mwb-find-bar.c:205
+msgid "Previous result"
+msgstr "ਪਿਛਲਾ ਨਤੀਜਾ"
+
+#: ../browser/mwb-main.c:288
+msgid "Run the browser in a window"
+msgstr "ਬਰਾਊਜ਼ਰ ਵਿੰਡੋ ਵਿੱਚ ਚਲਾਓ"
+
+#: ../browser/mwb-main.c:291
+msgid "Add the URL to the recent files list"
+msgstr "ਤਾਜ਼ਾ ਫਾਇਲ ਲਿਸਟ ਵਿੱਚ URL ਸ਼ਾਮਲ ਕਰੋ"
+
+#: ../browser/mwb-main.c:306
+msgid "Moblin Web Browser"
+msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ"
+
+#: ../browser/mwb-mozembed.c:575
+msgid "Open link in new tab"
+msgstr "ਲਿੰਕ ਨਵੀਂ ਟੈਬ ਵਿੱਚ ਖੋਲ੍ਹੋ"
+
+#: ../browser/mwb-mozembed.c:581
+msgid "Copy link location"
+msgstr "ਲਿੰਕ ਟਿਕਾਣਾ ਕਾਪੀ ਕਰੋ"
+
+#: ../browser/mwb-mozembed.c:587
+msgid "Save link"
+msgstr "ਲਿੰਕ ਸੰਭਾਲੋ"
+
+#: ../browser/mwb-mozembed.c:596
+msgid "View image"
+msgstr "ਚਿੱਤਰ ਵੇਖੋ"
+
+#: ../browser/mwb-mozembed.c:602
+msgid "Copy image location"
+msgstr "ਚਿੱਤਰ ਟਿਕਾਣਾ ਕਾਪੀ ਕਰੋ"
+
+#: ../browser/mwb-mozembed.c:608
+msgid "Save image"
+msgstr "ਚਿੱਤਰ ਸੰਭਾਲੋ"
+
+#: ../browser/mwb-mozembed.c:617
+msgid "Copy text"
+msgstr "ਟੈਕਸਟ ਕਾਪੀ ਕਰੋ"
+
+#: ../browser/mwb-mozembed.c:628
+msgid "Back"
+msgstr "ਪਿੱਛੇ"
+
+#: ../browser/mwb-mozembed.c:638
+msgid "Forward"
+msgstr "ਅੱਗੇ"
+
+#: ../browser/mwb-mozembed.c:648
+msgid "Stop"
+msgstr "ਰੋਕੋ"
+
+#: ../browser/mwb-mozembed.c:658
+msgid "Reload"
+msgstr "ਮੁੜ-ਲੋਡ ਕਰੋ"
+
+#: ../browser/mwb-mozembed.c:668
+msgid "Pin this page"
+msgstr "ਇਹ ਪੇਜ਼ ਪਿੰਨ ਕਰੋ"
+
+#: ../browser/mwb-mozembed.c:673
+msgid "Save page"
+msgstr "ਪੇਜ਼ ਸੰਭਾਲੋ"
+
+#: ../data/mwbpages/content/settings.js:215
+msgid ""
+"Do you want to reset your browser? This will remove your web history, pinned "
+"pages and personal settings. "
+msgstr ""
+"ਕੀ ਤੁਸੀਂ ਆਪਣਾ ਬਰਾਊਜ਼ਰ ਮੁੜ-ਸੈੱਟ ਕਰਨ ਚਾਹੁੰਦ ਹੋ? ਇਹ ਵੈੱਬ ਅਤੀਤ, ਪਿੰਨ ਕੀਤੇ ਪੇਜ਼, ਅਤੇ ਨਿੱਜੀ ਸੈਟਿੰਗ "
+"ਹਟਾਏਗਾ। "
+
+#: ../data/mwbpages/content/settings.js:223
+msgid "Yes, delete"
+msgstr "ਹਾਂ, ਹਟਾਓ"
+
+#: ../data/mwbpages/content/settings.js:224
+msgid "No, save"
+msgstr "ਨਹੀਂ, ਸੰਭਾਲੋ"
+
+#. Construct title for favorite pages section
+#: ../data/mwbpages/content/startpage.js:55
+#: ../netpanel/moblin-netbook-netpanel.c:1236
+msgid "Favorite pages"
+msgstr "ਪਸੰਦੀਦਾ ਪੇਜ਼"
+
+#: ../data/mwbpages/content/startpage.js:151
+#: ../data/mwbpages/content/pinnedpages.js:193
+msgid ""
+"No pinned pages. Push the pin in the automagic bar on a page you wish to "
+"remember."
+msgstr "ਕੋਈ ਪਿੰਨ ਕੀਤਾ ਪੇਜ਼ ਨਹੀਂ ਹੈ। ਪੇਜ਼ ਉੱਤੇ ਆਟੋਮੈਟਿਕ ਪੱਟੀ ਵਿੱਚ ਪਿੰਨ ਲਗਾਉ, ਜੇ ਤੁਸੀਂ ਯਾਦ ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
+
+#: ../data/mwbpages/content/startpage.js:195
+msgid "More pinned pages"
+msgstr "ਹੋਰ ਪਿੰਨ ਕੀਤੇ ਪੇਜ਼"
+
+#: ../data/mwbpages/content/pinnedpages.js:192
+msgid "No matching pages were found"
+msgstr "ਕੋਈ ਮਿਲਦਾ ਪੇਜ਼ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ"
+
+#. Translators: The two underscores will get replaced with a
+#. * hostname so they should be in the translation too. Eg the
+#. * string might become 'www.google.com wants to know your
+#. * location.'
+#: ../components/mwbGeolocationPrompt.js:69
+msgid "__ wants to know your location."
+msgstr "__ ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਜਾਣਨਾ ਚਾਹੁੰਦਾ ਹੈ।"
+
+#: ../components/mwbGeolocationPrompt.js:82
+msgid "Share location"
+msgstr "ਟਿਕਾਣਾ ਸਾਂਝਾ ਕਰੋ"
+
+#: ../components/mwbGeolocationPrompt.js:83
+msgid "Don't share"
+msgstr "ਸਾਂਝਾ ਨਾ ਕਰੋ"
+
+#: ../components/mwbGeolocationPrompt.js:85
+msgid "Remember for this site"
+msgstr "ਇਹ ਸਾਈਟ ਯਾਦ ਰੱਖੋ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:4
+msgid "Settings"
+msgstr "ਸੈਟਿੰਗ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:5
+msgid "General"
+msgstr "ਆਮ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:6
+msgid "Try to complete domain names in automagic bar"
+msgstr "ਆਟੋਮੈਜਿਕ ਬਾਰ ਵਿੱਚ ਡੋਮੇਨ ਨਾਂ ਪੂਰਾ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:7
+msgid "Search in automagic bar"
+msgstr "ਆਟੋਮੈਜਿਕ ਬਾਰ ਵਿੱਚ ਖੋਜ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:8
+msgid "Add new search engine"
+msgstr "ਨਵਾਂ ਖੋਜ ਇੰਜਣ ਸ਼ਾਮਲ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:9
+msgid "Privacy"
+msgstr "ਪਰਾਈਵੇਸੀ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:10
+msgid "Remember my passwords"
+msgstr "ਮੇਰੇ ਪਾਸਵਰਡ ਚੇਤੇ ਰੱਖੋ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:11
+msgid "Remember what I type into forms"
+msgstr "ਮੈਂ ਫਾਰਮਾਂ ਵਿੱਚ ਜੋ ਵੀ ਲਿਖਾਂ, ਚੇਤੇ ਰੱਖੋ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:12
+msgid "Keep my browser history for up to"
+msgstr "ਮੇਰਾ ਬਰਾਊਜ਼ਰ ਅਤੀਤ ਚੇਤੇ ਰੱਖੋ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:13
+msgid "1 year"
+msgstr "1 ਸਾਲ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:14
+msgid "1 month"
+msgstr "1 ਮਹੀਨਾ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:15
+msgid "1 week"
+msgstr "1 ਹਫ਼ਤਾ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:16
+msgid "1 day"
+msgstr "1 ਦਿਨ"
+
+#: ../data/mwbpages/locale/en-US/settings.dtd:17
+msgid "Reset my browser now"
+msgstr "ਮੇਰਾ ਬਰਾਊਜ਼ਰ ਹੁਣ ਰੀ-ਸੈੱਟ ਕਰੋ"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:4
+#: ../netpanel/moblin-netbook-netpanel.c:622
+#: ../netpanel/moblin-netbook-netpanel.c:996
+msgid "New tab"
+msgstr "ਨਵੀਂ ਟੈਬ"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:5
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:4
+msgid "Pinned pages"
+msgstr "ਪਿੰਨ ਕੀਤੇ ਪੇਜ਼"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:6
+msgid "Trouble connecting?"
+msgstr "ਕੁਨੈਕਟ ਕਰਨ ਵਿੱਚ ਸਮੱਸਿਆ?"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:7
+msgid ""
+"Move your pointer to the top of the screen to bring down the toolbar and "
+"choose the Networks panel."
+msgstr "ਪੁਆਇੰਟਰ ਨੂੰ ਸਕਰੀਨ ਦੇ ਉੱਤੇ ਲੈ ਜਾਉ ਤਾਂ ਕਿ ਟੂਲਬਾਰ ਹੇਠਾਂ ਲੈ ਆਂਦੀ ਜਾ ਸਕੇ ਅਤੇ ਨੈੱਟਵਰਕ ਪੈਨਲ ਚੁਣੋ।"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:8
+msgid ""
+"Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+"ones will show up here."
+msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ। ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੇ ਪਸੰਦੀਦਾ ਪੇਜ਼ ਖੋਲ੍ਹੋਗੇ ਤਾਂ ਉਹ ਇੱਥੇ ਵੇਖਾਏ ਜਾਣਗੇ।"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:9
+msgid "Getting started"
+msgstr "ਸ਼ੁਰੂ ਕਰੋ"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:10
+msgid ""
+"First, make sure you have an internet connection! Then click on the "
+"automagic bar or press Ctrl+L to get there quickly and type the address or "
+"search you want."
+msgstr ""
+"ਪਹਿਲਾਂ, ਯਕੀਨੀ ਬਣਾਓ ਕਿ ਤੁਸੀਂ ਇੰਟਰਨੈੱਟ ਨਾਲ ਕੁਨੈਕਟ ਹੋ! ਤਦ ਆਟੋਮੈਜਿਕ ਬਾਰ ਉੱਤੇ ਕਲਿੱਕ ਕਰੋ ਜਾਂ Ctrl"
+"+L ਦੱਬ ਕੇ ਉੱਤੇ ਜਾਓ ਅਤੇ ਐਡਰੈੱਸ ਜਾਂ ਖੋਜ ਲਈ ਸ਼ਬਦ, ਜੋ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ, ਲਿਖੋ"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:11
+msgid "Make this a private tab"
+msgstr "ਇਹ ਪ੍ਰਾਈਵੇਟ ਟੈਬ ਬਣਾਓ"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:12
+msgid ""
+"This is a private tab. Things you do in this tab will not be stored on this "
+"machine. However, websites you use may still keep records of your actions."
+msgstr ""
+"ਇਹ ਟੈਬ ਪ੍ਰਾਈਵੇਟ ਬਣਾਉ। ਇਸ ਟੈਬ ਵਿੱਚ ਜੋ ਵੀ ਕੁਝ ਤੁਸੀਂ ਕਰੋਗੇ ਤਾਂ ਉਹ ਮਸ਼ੀਨ ਉੱਤੇ ਸਟੋਰ ਨਹੀਂ ਕੀਤਾ "
+"ਜਾਵੇਗਾ। ਪਰ, ਵੈਬਸਾਈਟਾਂ, ਜੋ ਤੁਸੀਂ ਵਰਤੋਂਗੇ, ਤੁਹਾਡੀਆਂ ਕਾਰਵਾਈਆਂ ਦਾ ਰਿਕਾਰਡ ਰੱਖਣਗੀਆਂ।"
+
+#: ../data/mwbpages/locale/en-US/startpage.dtd:13
+msgid "Moblin Web Browser is proudly based on Mozilla technology"
+msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ ਮਾਣ ਨਾਲ ਮੋਜ਼ੀਲਾ ਤਕਨਾਲੋਜੀ ਵਰਤਦਾ ਹੈ"
+
+#: ../data/mwbpages/locale/en-US/pinnedpages.dtd:5
+msgid "Search"
+msgstr "ਖੋਜ"
+
+#: ../netpanel/moblin-netbook-netpanel.c:602
+msgid ""
+"As you visit web pages, your favorites will appear here and on the New tab "
+"page in the browser."
+msgstr ""
+"ਜਿਵੇਂ ਤੁਸੀਂ ਵੈੱਬ ਪੇਜ਼ ਖੋਲ੍ਹੋਗੇ, ਤੁਹਾਡੇ ਪਸੰਦੀਦਾ ਇੱਥੇ ਵੇਖਾਈ ਦੇਣਗੇ ਅਤੇ ਬਰਾਊਜ਼ਰ ਵਿੱਚ ਨਵਾਂ ਟੈਬ ਪੇਜ਼ ਉੱਤੇ ਹੋਵੇਗਾ।"
+
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.c:1197
+msgid "Internet"
+msgstr "ਇੰਟਰਨੈੱਟ"
+
+#: ../netpanel/moblin-netbook-netpanel.c:1210
+msgid "Go"
+msgstr "ਜਾਓ"
+
+#. Construct title for tab preview section
+#: ../netpanel/moblin-netbook-netpanel.c:1231
+msgid "Tabs"
+msgstr "ਟੈਬਾਂ"
+
+#: ../netpanel/moblin-panel-internet.c:87
+msgid "internet"
+msgstr "ਇੰਟਰਨੈੱਟ"
+
+#~ msgid ""
+#~ "Do you want to clear your browsing history now? This will also remove all "
+#~ "your pinned pages and personal settings."
+#~ msgstr ""
+#~ "ਕੀ ਤੁਸੀਂ ਆਪਣਾ ਬਰਾਊਜ਼ਿੰਗ ਅਤੀਤ ਹੁਣ ਸਾਫ਼ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ? ਇਸ ਨਾਲ ਤੁਹਾਡੇ ਪਿੰਨ ਕੀਤੇ ਪੇਜ਼ ਅਤੇ "
+#~ "ਨਿੱਜੀ ਸੈਟਿੰਗ ਸਭ ਕੁਝ ਹਟਾਇਆ ਜਾਵੇਗਾ।"
+
+#~ msgid "Reset my browsing history now"
+#~ msgstr "ਮੇਰਾ ਬਰਾਊਜ਼ਰ ਅਤੀਤ ਹੁਣੇ ਮੁੜ-ਸੈੱਟ ਕਰੋ"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਪਹਿਲਾਂ"
+
+#~ msgid "About a minute ago"
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "ਇੱਕ ਮਿੰਟ ਪਹਿਲਾਂ"
+#~ msgstr[1] "__ ਮਿੰਟ ਪਹਿਲਾਂ"
+
+#~ msgid "About an hour ago"
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "ਇੱਕ ਘੰਟਾ ਪਹਿਲਾਂ"
+#~ msgstr[1] "__ ਮਿੰਟ ਪਹਿਲਾਂ"
+
+#~ msgid "Today at %H:%M"
+#~ msgstr "ਅੱਜ %H:%M ਵਜੇ"
+
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "ਕੱਲ੍ਹ %H:%M ਵਜੇ"
+
+#~ msgid "Last %A at %H:%M"
+#~ msgstr "ਆਖਰੀ %A %H:%M ਵਜੇ"
+
+#~ msgid "%x at %H:%M"
+#~ msgstr "%x %H:%M ਵਜੇ"
+
+#~ msgid ""
+#~ "<p>Push the pin icon in the location bar above to add pages to this list."
+#~ "</p>"
+#~ msgstr ""
+#~ "<p>ਉੱਤੇ ਟਿਕਾਣਾ ਪੱਟੀ ਵਿੱਚ ਪਿੰਨ ਆਈਕਾਨ ਨੂੰ ਧੱਕੋ ਤਾਂ ਕਿ ਪੇਜ਼ ਲਿਸਟ ਵਿੱਚ ਜੋੜਿਆ ਜਾ ਸਕੇ।</p>"
+
+#~ msgid "Fewer pinned pages"
+#~ msgstr "ਥੋੜੇ ਪਿੰਨ ਕੀਤੇ ਪੇਜ਼"
+
+msgid "Next"
+msgstr "ਅੱਗੇ"
+
+msgid "Previous"
+msgstr "ਪਿੱਛੇ"
