@@ -253,9 +253,25 @@ void
 mnb_switcher_item_show_tooltip (MnbSwitcherItem *self)
 {
   MnbSwitcherItemPrivate *priv = self->priv;
+  ClutterGeometry         area;
+  gfloat                  x, y, w, h;
+  ClutterActor           *actor = CLUTTER_ACTOR (self);
 
   if (!priv->tooltip)
     return;
+
+  /*
+   * Ensure the tooltip is in the correct position (MB#7225)
+   */
+  clutter_actor_get_transformed_position (actor, &x, &y);
+  clutter_actor_get_size (actor, &w, &h);
+
+  area.x      = x;
+  area.y      = y;
+  area.width  = w;
+  area.height = h;
+
+  nbtk_tooltip_set_tip_area ((NbtkTooltip*) priv->tooltip, &area);
 
   mnb_switcher_show_tooltip (priv->switcher, NBTK_TOOLTIP (priv->tooltip));
 }
