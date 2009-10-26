@@ -46,7 +46,7 @@
 #define CELL_WIDTH  223
 #define CELL_HEIGHT 111
 
-#define START_PAGE "chrome://mwbpages/content/startpage.xhtml"
+#define START_PAGE "moblin://start/"
 
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_WIDGET)
 
