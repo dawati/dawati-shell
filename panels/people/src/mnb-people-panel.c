@@ -598,38 +598,46 @@ _primary_button_clicked_cb (NbtkButton *button,
 }
 
 static void
+_edit_contact_action (MnbPeoplePanel *panel,
+                      AnerleyItem    *item)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (panel);
+  gchar *command_line;
+  const gchar *uid;
+
+  if (priv->panel_client)
+  {
+    uid = anerley_econtact_item_get_uid ((AnerleyEContactItem *)item);
+    command_line = g_strdup_printf ("contacts --uid %s",
+                                  uid);
+    if (!mpl_panel_client_launch_application (priv->panel_client,
+                                              command_line))
+    {
+      g_warning (G_STRLOC ": Error launching contacts for uid: %s",
+                 uid);
+      g_free (command_line);
+    } else {
+      g_free (command_line);
+
+      if (priv->panel_client)
+        mpl_panel_client_request_hide (priv->panel_client);
+    }
+  }
+}
+
+static void
 _secondary_button_clicked_cb (NbtkButton *button,
                               gpointer    userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
   AnerleyItem *item;
-  gchar *command_line;
-  const gchar *uid;
 
   item =
     anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
 
   if (item)
   {
-    uid = anerley_econtact_item_get_uid ((AnerleyEContactItem *)item);
-
-    if (priv->panel_client)
-    {
-      command_line = g_strdup_printf ("contacts --uid %s",
-                                    uid);
-      if (!mpl_panel_client_launch_application (priv->panel_client,
-                                                command_line))
-      {
-        g_warning (G_STRLOC ": Error launching contacts for uid: %s",
-                   uid);
-        g_free (command_line);
-      } else {
-        g_free (command_line);
-
-        if (priv->panel_client)
-          mpl_panel_client_request_hide (priv->panel_client);
-      }
-    }
+    _edit_contact_action (MNB_PEOPLE_PANEL (userdata), item);
   }
 }
 
@@ -668,9 +676,16 @@ _tile_view_item_activated_cb (AnerleyTileView *view,
                               AnerleyItem     *item,
                               gpointer         userdata)
 {
+  MnbPeoplePanel *panel = MNB_PEOPLE_PANEL (userdata);
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
-  anerley_item_activate (item);
+  if (ANERLEY_IS_ECONTACT_ITEM (item) &&
+      anerley_econtact_item_get_email (ANERLEY_ECONTACT_ITEM (item)) == NULL)
+  {
+    _edit_contact_action (panel, item);
+  } else {
+    anerley_item_activate (item);
+  }
 
   if (priv->panel_client)
     mpl_panel_client_request_hide (priv->panel_client);
