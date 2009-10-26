@@ -667,6 +667,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   GList                 *entry_iter;
   ClutterActor          *inner_grid;
   NbtkWidget            *button;
+  int                    n_buttons = 0;
 
   if (priv->tree == NULL)
     {
@@ -747,11 +748,12 @@ mnb_launcher_fill_category (MnbLauncher     *self)
                             self);
           priv->launchers = g_slist_prepend (priv->launchers,
                                                       button);
+          n_buttons++;
         }
     }
 
     /* Create expander if at least 1 launcher inside. */
-    if (button)
+    if (n_buttons > 0)
       {
         ClutterActor *expander;
 
