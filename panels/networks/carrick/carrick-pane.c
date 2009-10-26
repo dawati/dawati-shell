@@ -26,6 +26,7 @@
 #include <nbtk/nbtk-gtk.h>
 #include <glib/gi18n.h>
 #include <dbus/dbus-glib.h>
+#include <moblin-panel/mpl-panel-gtk.h>
 
 #include "connman-marshal.h"
 #include "connman-manager-bindings.h"
@@ -35,6 +36,12 @@
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
 #include "carrick-network-model.h"
+
+/*
+ * TODO: A last-minute pre-release fix for MB#7304; better solution
+ *       to be implement.
+ */
+extern MplPanelClient *panel_client;
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_HBOX)
 
@@ -819,6 +826,13 @@ _new_connection_cb (GtkButton *button,
                                                         connect_service_notify_cb,
                                                         self);
     }
+
+  /*
+   * Now explicitely focus the panel (MB#7304)
+   */
+  if (panel_client)
+    mpl_panel_client_request_focus (panel_client);
+
   gtk_widget_destroy (dialog);
 }
 

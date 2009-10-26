@@ -38,12 +38,14 @@ endif
 
 libcarrick_la_CFLAGS =  -Wall \
                         $(GTK_CFLAGS) \
+			$(MPL_CFLAGS) \
                         $(NBTK_CFLAGS) \
                         $(LIBNOTIFY_CFLAGS) \
                         -DPKG_DATA_DIR=\"$(pkgdatadir)\" \
                         -DLIBEXECDIR=\"$(libexecdir)\"
 
 libcarrick_la_LIBADD = $(GTK_LIBS) \
+			$(MPL_LIBS) \
                        $(NBTK_LIBS) \
                        $(LIBNOTIFY_LIBS)
 

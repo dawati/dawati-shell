@@ -33,6 +33,8 @@
 
 #define PKG_THEME_DIR PKG_DATA_DIR"/theme"
 
+MplPanelClient *panel_client = NULL;
+
 static void
 _client_set_size_cb (MplPanelClient *client,
                      guint           width,
@@ -158,7 +160,7 @@ main (int    argc,
   pane = carrick_applet_get_pane (applet);
   if (!standalone)
     {
-      MplPanelClient *panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
+      panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
                                                         _("network"),
                                                         PKG_THEME_DIR "/network-applet.css",
                                                         "offline",
