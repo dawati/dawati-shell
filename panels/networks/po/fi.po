@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:26+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Anu McDougall <anu.mcdougall@ptiglobal.net>\n"
+"Last-Translator: Paula <pkwanzek@hotmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -221,7 +221,7 @@ msgstr "Tämä katkaisee kaikki yhteydet"
 #.
 #: ../carrick/carrick-service-item.c:47
 msgid "Critical Error: Invalid country code"
-msgstr "Kriittinen Virhe: Virheellinen maa koodi"
+msgstr "Kriittinen virhe: Virheellinen maa koodi"
 
 #: ../carrick/carrick-service-item.c:48
 msgid "Missing required APN (service plan name)"
@@ -233,7 +233,7 @@ msgstr "Sisäinen virhe: Virheellinen verkko palvelin"
 
 #: ../carrick/carrick-service-item.c:50
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Kriittinen Virhe: Yhteys Manageriin ei saada yhteyttä"
+msgstr "Kriittinen virhe: Yhteys Manageriin ei saada yhteyttä"
 
 #: ../carrick/carrick-service-item.c:51
 msgid "ERROR: No 3G Hardware detected"
@@ -311,27 +311,27 @@ msgstr ""
 #: ../carrick/carrick-service-item.c:664
 #, c-format
 msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
-msgstr "Salasanasi ei ole oikean mittainen. WEP yhteyteen sen pitää olla kymmenestä kahteenkymmeneenkuuteen kirjasinta, sinulla on %i."
+msgstr "Salasanasi ei ole oikean mittainen. WEP yhteyteen sen pitää olla 10 tai 26 merkkiä, sinulla on %i."
 
 #: ../carrick/carrick-service-item.c:674
 #, c-format
 msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Salasanasi on liian lyhyt. WPA yhteyteen sen pitää olla ainakin kahdeksan kirjasinta, sinulla on  %i"
+msgstr "Salasanasi on liian lyhyt. WPA yhteyteen sen pitää olla ainakin kahdeksan merkkiä, sinulla on  %i"
 
 #: ../carrick/carrick-service-item.c:678
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Salasanasi on liian pitkä. WPA yhteyteen sen pitää olla vähemmän kuin 63 kirjasinta, sinulla on  %i"
+msgstr "Salasanasi on liian pitkä. WPA yhteyteen sen pitää olla vähemmän kuin 63 merkkiä, sinulla on  %i"
 
 #: ../carrick/carrick-service-item.c:686
 #, c-format
 msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Salasanasi on liian lyhyt. WPA2 yhteyteen sen pitää olla ainakin kahdeksan kirjasinta, sinulla on %i"
+msgstr "Salasanasi on liian lyhyt. WPA2 yhteyteen sen pitää olla ainakin kahdeksan merkkiä, sinulla on %i"
 
 #: ../carrick/carrick-service-item.c:690
 #, c-format
 msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Salasanasi on liian pitkä. WPA2 yhteyteen sen pitää olla vähemmän kuin 63 kirjasinta, sinulla on %i"
+msgstr "Salasanasi on liian pitkä. WPA2 yhteyteen sen pitää olla vähemmän kuin 63 merkkiä, sinulla on %i"
 
 #: ../carrick/carrick-service-item.c:1204
 msgid "Scanning"
@@ -408,19 +408,19 @@ msgstr "verkko"
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
-msgstr "Tietoyhteys Velho"
+msgstr "Tietoyhteys velho"
 
 #: ../callouts/3g/ggg-country-dialog.c:93
 msgid "Select Country"
-msgstr "Valitse Maa"
+msgstr "Valitse maa"
 
 #: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
-msgstr "Manuaalinen Määritys"
+msgstr "Manuaalinen määritys"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr "Liittymän Nimi (pakollinen):"
+msgstr "Liittymän nimi (pakollinen):"
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
@@ -432,7 +432,7 @@ msgstr "Salasana:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:103
 msgid "Gateway:"
-msgstr "Portti:"
+msgstr "Yhdyskäytävä:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
