@@ -16,13 +16,13 @@ AnerleyTile:hover
 
 *.AnerleyTilePrimaryLabel
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 14;
 }
 
 *.AnerleyTileSecondaryLabel
 {
-  font-family: "Liberation Sans";
+  font-family: "Droid Sans";
   font-size: 13;
   color: #3e3e3eff;
 }
