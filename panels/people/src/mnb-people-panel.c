@@ -588,6 +588,9 @@ _primary_button_clicked_cb (NbtkButton *button,
   item =
     anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
 
+  if (!item)
+    item = anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->active_tile_view);
+
   if (item)
   {
     anerley_item_activate (item);
