@@ -621,11 +621,21 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
   GError *error = NULL;
   NbtkWidget *button, *label;
   gchar *path;
+  gboolean new_tab = FALSE;
 
   if (!title && !strcmp (url, START_PAGE))
-    title = _("New tab");
+    {
+      title = _("New tab");
+      new_tab = TRUE;
+    }
 
   path = mpl_utils_get_thumbnail_path (url);
+
+  /* FIXME - Dont show those pages dont have a thumbnails, this is a workaround
+     for not showing the redirected pages. We will fix this from mozhelper once 
+     we upgraded to Firefox 3.5.4 */
+  if (!new_tab && !g_file_test (path, G_FILE_TEST_EXISTS))
+    return NULL;
 
   button = nbtk_button_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (button), "weblink");
@@ -711,13 +721,19 @@ favs_received_cb (MozhelperHistory            *history,
       NbtkWidget *button;
       MnbNetpanelScrollview *scrollview;
 
+      if (priv->fav_urls && !strcmp (priv->fav_urls[i], START_PAGE)) 
+        continue;
+
       scrollview = MNB_NETPANEL_SCROLLVIEW (priv->favs_view);
       button = add_thumbnail_to_scrollview (scrollview, priv->fav_urls[i],
                                             priv->fav_titles[i]);
 
-      g_object_set_data (G_OBJECT (button), "fav", GUINT_TO_POINTER (i));
-      g_signal_connect (button, "clicked",
-                        G_CALLBACK (fav_button_clicked_cb), self);
+      if (button) 
+        {
+          g_object_set_data (G_OBJECT (button), "fav", GUINT_TO_POINTER (i));
+          g_signal_connect (button, "clicked",
+                            G_CALLBACK (fav_button_clicked_cb), self);
+        }
     }
 }
 
@@ -837,12 +853,14 @@ load_session (MoblinNetbookNetpanel *self, MnbNetpanelScrollview *scrollview)
           button = add_thumbnail_to_scrollview (scrollview, prev_url, title);
           g_free(prev_url);
 
-          g_object_set_data (G_OBJECT (button), "url", url);
-          g_signal_connect (button, "clicked",
-                            G_CALLBACK (session_tab_button_clicked_cb), self);
-
-          priv->session_urls = g_list_prepend (priv->session_urls, url);
-          opened_something = TRUE;
+          if (button)
+            {
+              g_object_set_data (G_OBJECT (button), "url", url);
+              g_signal_connect (button, "clicked",
+                                G_CALLBACK (session_tab_button_clicked_cb), self);
+              priv->session_urls = g_list_prepend (priv->session_urls, url);
+              opened_something = TRUE;
+            }
         }
 
       g_free (title);
