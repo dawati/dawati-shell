@@ -2,13 +2,13 @@
 # Copyright (C) 2009 THE dalston'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the dalston package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: dalston moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 15:59+0000\n"
+"POT-Creation-Date: 2009-10-16 11:24+0000\n"
 "PO-Revision-Date: 2009-08-25 16:12-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -21,8 +21,8 @@ msgstr ""
 #, c-format
 msgid "<b>%d</b> hour"
 msgid_plural "<b>%d</b> hours"
-msgstr[0] "<b>%d</b> uren"
-msgstr[1] "<b>%d</b> uren"
+msgstr[0] "<b>%d</b> uur"
+msgstr[1] "<b>%d</b> uur"
 
 #: ../dalston/dalston-power-applet.c:244 ../dalston/dalston-power-applet.c:257
 #, c-format
@@ -36,32 +36,44 @@ msgid "Running low on battery"
 msgstr "Battery bijna leeg"
 
 #: ../dalston/dalston-power-applet.c:278
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Je battery begint leeg te raken. Dit is een goed moment om de stroom aan te sluiten en de batterij op te laden."
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Je battery begint leeg te raken. Dit is een goed moment om de stroom aan te "
+"sluiten en de batterij op te laden."
 
 #: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
-msgstr "Battery begint leeg te raken"
+msgstr "Batterij begint leeg te raken"
 
 #: ../dalston/dalston-power-applet.c:280
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "De battery is erg leeg. Probeer als het kan zo spoedig mogelijk de stroom aan te sluiten, en al je werk op te slaan."
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+"De batterij is bijna. Probeer zo snel mogelijk je werk op te slaan "
+" en de stroom aan te sluiten."
 
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Gevaar!"
 
 #: ../dalston/dalston-power-applet.c:282
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Sorry, je battery is helemaal leeg. We sluiten nu automatisch af. Sla alsjeblieft je werk op. Tot snel!"
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Sorry, je batterij is bijna helemaal leeg. We moeten nu afsluiten. Sla "
+"je werk op en tot snel!"
 
 #: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
-msgstr "Het lijkt erop dat de battery niet werkt."
+msgstr "Sorry, het lijkt erop dat de batterij kapot is."
 
 #: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "Je battery is volledig opgeladen en klaar om te gaan,"
+msgstr "Je batterij is volledig opgeladen en klaar om te gaan."
 
 #: ../dalston/dalston-power-applet.c:415
 #, c-format
@@ -71,11 +83,11 @@ msgstr "Je batterij is aan het opladen. Hij is ongeveer <b>%d</b>%% vol."
 #: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
-msgstr "Je battery wordt gebruikt. Hij is ongeveer <b>%d</b>%% vol."
+msgstr "Je battery is in gebruik. Hij is ongeveer <b>%d</b>%% vol."
 
 #: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr "Sorry, er is geen battery beschikbaar."
+msgstr "Sorry, je hebt geen batterij geïnstalleerd."
 
 #: ../dalston/dalston-power-applet.c:515
 msgid "Display brightness"
@@ -83,7 +95,8 @@ msgstr "Geef lichtintensiteit weer"
 
 #: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
-msgstr "Sorry, veranderen van de lichtintensiteit op dit scherm is niet ondersteund"
+msgstr ""
+"Sorry, het veranderen van de lichtintensiteit op dit scherm is niet ondersteund"
 
 #: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
@@ -121,11 +134,20 @@ msgstr "Heel donker"
 msgid "Total eclipse"
 msgstr "Zonsverduistering"
 
-#: ../dalston/dalston-button-monitor.c:277
+#: ../dalston/dalston-button-monitor.c:178
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Als je niet beslist sluit ik in %d seconden af"
+
+#: ../dalston/dalston-button-monitor.c:281
 msgid "Would you like to turn off now?"
 msgstr "Wil je nu afsluiten?"
 
-#: ../dalston/dalston-button-monitor.c:285
+#: ../dalston/dalston-button-monitor.c:282
+msgid "If you don't decide I'll turn off in 30 seconds"
+msgstr "Als je niet beslist sluit ik in 30 seconden af"
+
+#: ../dalston/dalston-button-monitor.c:289
 msgid "Turn off"
 msgstr "Afsluiten"
 
@@ -139,11 +161,11 @@ msgstr "Uit"
 
 #: ../dalston/dalston-volume-pane.c:320
 msgid "Alert sounds"
-msgstr "Systeem geluiden"
+msgstr "Alarmgeluiden"
 
 #: ../dalston/dalston-volume-pane.c:332
 msgid "Play test sound"
-msgstr "Speel test geluid"
+msgstr "Speel testgeluid"
 
 #: ../dalston/dalston-volume-slider.c:224
 msgid "Turned up to 11"
@@ -163,7 +185,7 @@ msgstr "Redelijk luid"
 
 #: ../dalston/dalston-volume-slider.c:232
 msgid "Middle of the road"
-msgstr "Midden van de weg"
+msgstr "Gouden middenweg"
 
 #: ../dalston/dalston-volume-slider.c:234
 msgid "Fairly quiet"
@@ -175,56 +197,27 @@ msgstr "Zacht"
 
 #: ../dalston/dalston-volume-slider.c:238
 msgid "Very quiet"
-msgstr "Heel zacht"
+msgstr "Erg zacht"
 
 #: ../dalston/dalston-volume-slider.c:240
 msgid "Silent"
-msgstr "Geluidsloos"
+msgstr "Geruisloos"
 
 #: ../libgvc/gvc-mixer-control.c:97
 msgid "GNOME Volume Control"
-msgstr "GNOME volume instellingen"
+msgstr "GNOME volume-instellingen"
 
 #: ../libgvc/gvc-mixer-control.c:1020
 msgid "System Sounds"
-msgstr "Systeem geluiden"
+msgstr "Systeemgeluiden"
 
-#: ../src/dalston-power-applet.c:49
+#: ../src/dalston-power-applet.c:50
 msgid "battery"
 msgstr "batterij"
 
 #: ../src/dalston-volume-applet.c:58
 msgid "sound"
 msgstr "geluid"
-
-#: ../src/dalston-power-settings-capplet.c:157
-msgid "Put computer to sleep when inactive for:"
-msgstr "Zet computer in slaap wanneer inactief voor:"
-
-#: ../src/dalston-power-settings-capplet.c:146
-msgid "<b>Power Settings</b>"
-msgstr "<b>Power instellingen</b>"
-
-#: ../src/dalston-power-settings-capplet.c:26
-msgid "Never"
-msgstr "Nooit"
-
-#: ../src/dalston-power-settings-capplet.c:25
-msgid "An hour"
-msgstr "Een uur"
-
-#: ../src/dalston-power-settings-capplet.c:140
-#: ../data/dalston-power-settings-capplet.desktop.in.h:1
-msgid "Power Management Preferences"
-msgstr "Power Management voorkeuzes"
-
-#: ../src/dalston-power-settings-capplet.c:135
-msgid "Power Management Settings"
-msgstr "Power Management instellingen"
-
-#: ../data/dalston-power-settings-capplet.desktop.in.h:2
-msgid "Settings for adjusting power usage"
-msgstr "Instellingen voor stroomverbruik aanpassingen"
 
 #: ../src/dalston-power-settings-capplet.c:21
 msgid "Ten minutes"
@@ -242,14 +235,34 @@ msgstr "Een half uur"
 msgid "40 minutes"
 msgstr "Veertig minuten"
 
-#: ../dalston/dalston-button-monitor.c:175
-#, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Als je niet beslist sluit ik af in %d seconden"
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "Een uur"
 
-#: ../dalston/dalston-button-monitor.c:278
-msgid "If you don't decide I'll turn off in 30 seconds"
-msgstr "Als je niet beslist sluit ik af in 30 seconden"
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "Nooit"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Instellingen voor stroomverbruik"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Voorkeuren voor stroomverbruik"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Stroominstellingen</b>"
+
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Zet computer in slaapstand na:"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Instellingen voor stroomverbruik"
 
 #~ msgid "power & brightness"
 #~ msgstr "energie & lichtintensiteit"
