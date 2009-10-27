@@ -151,21 +151,31 @@ mnb_panel_set_property (GObject *object, guint property_id,
 void
 mnb_panel_focus (MnbPanel *panel)
 {
-  MetaDisplay *display;
-  MutterPlugin *plugin = NULL;
+  MnbPanelPrivate *priv = panel->priv;
+  MetaDisplay     *display;
+  MutterPlugin    *plugin = NULL;
+  guint32          timestamp;
 
   g_object_get (G_OBJECT (panel), "mutter-plugin", &plugin, NULL);
   if (!plugin)
         return;
 
-  display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+  display   = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+  timestamp = meta_display_get_current_time_roundtrip (display);
 
   gdk_error_trap_push ();
 
-  XRaiseWindow (meta_display_get_xdisplay (display), panel->priv->xid);
+  XRaiseWindow (meta_display_get_xdisplay (display), priv->xid);
+  XSync (meta_display_get_xdisplay (display), False);
 
-  XSetInputFocus (meta_display_get_xdisplay (display), panel->priv->child_xid,
-                  RevertToPointerRoot, CurrentTime);
+  if (priv->mcw)
+    meta_display_set_input_focus_window (display,
+                                     mutter_window_get_meta_window (priv->mcw),
+                                     FALSE,
+                                     timestamp);
+
+  XSetInputFocus (meta_display_get_xdisplay (display), priv->child_xid,
+                  RevertToPointerRoot, timestamp);
 
   gdk_flush ();
   gdk_error_trap_pop ();
