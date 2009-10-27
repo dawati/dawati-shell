@@ -2,6 +2,7 @@
 # Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the mutter-moblin package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
+# Hylke Bons <hylke.bons@intel.com>, 2009.
 # 
 # 
 msgid ""
@@ -43,11 +44,11 @@ msgstr "<b>Welkom bij Moblin 2.1 voor Netbooks</b>"
 
 #: ../penge/penge-welcome-tile.c:108
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Moblin is anders dan traditionele computers. We hebben alles samengevoegd om makkelijker je weg te kunnen vinden. We hopen dat je het waardeert. Het Moblin Team."
+msgstr "Moblin is anders dan andere computers. We hebben hier en daar wat dingetjes toegevoegd om je op weg te helpen. We hopen dat je het waardeert, Het Moblin Team."
 
 #: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
 msgid "Add"
-msgstr "Voe toe"
+msgstr "Voeg toe"
 
 #: ../penge/penge-events-pane.c:59
 msgid "Create an appointment"
@@ -55,8 +56,8 @@ msgstr "Maak een afspraak"
 
 #: ../penge/penge-people-placeholder-tile.c:116
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "Wat je vrienden doen online verschijnt hier. Activeer je accounts nu!"
+msgstr "Dingen die je vrienden online doen verschijnen hier. Activeer je accounts!"
 
 #: ../penge/penge-tasks-pane.c:51
 msgid "Create a new task"
-msgstr "Maak een nieuwe taak"
+msgstr "Nieuwe taak"
