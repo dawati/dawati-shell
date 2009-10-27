@@ -642,6 +642,9 @@ _connect_button_cb (GtkButton          *connect_button,
 	    org_moblin_connman_Service_connect_async (priv->proxy,
 						      connect_notify_cb,
 						      item);
+
+            if (panel_client)
+              mpl_panel_client_request_hide (panel_client);
 	  }
         }
     }
