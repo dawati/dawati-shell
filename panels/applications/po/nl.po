@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:29+0000\n"
+"POT-Creation-Date: 2009-10-16 11:30+0000\n"
 "PO-Revision-Date: 2009-08-25 16:10-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -16,23 +16,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Dutch\n"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/moblin-netbook-launcher.c:887
-msgid "Favorite Applications"
-msgstr "Favoriete Applicaties"
-
-#: ../src/moblin-netbook-launcher.c:1384
+#: ../src/moblin-netbook-launcher.c:1337
 msgid "Applications"
 msgstr "Applicaties"
 
-#: ../src/moblin-netbook-launcher.c:1395
+#: ../src/moblin-netbook-launcher.c:1348
 msgid "Search"
 msgstr "Zoek"
 
-#: ../src/moblin-panel-applications.c:186
+#: ../src/moblin-panel-applications.c:196
 msgid "applications"
 msgstr "applicaties"
 
+#. * Fav apps.
+#. 
+#. Label
+#: ../src/moblin-netbook-launcher.c:813
+msgid "Favorite Applications"
+msgstr "Favoriete applicaties"
