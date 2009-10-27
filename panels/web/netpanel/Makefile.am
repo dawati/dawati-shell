@@ -35,7 +35,10 @@ servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.internet.service.in
 service_DATA = org.moblin.UX.Shell.Panels.internet.service
 
-EXTRA_DIST = $(service_in_files)
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_DATA = moblin-panel-web.desktop
+
+EXTRA_DIST = $(service_in_files) $(autostart_DATA)
 
 DISTCLEANFILES = org.moblin.UX.Shell.Panels.internet.service
 

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Moblin Web Panel
+Comment=Moblin Web Panel
+Icon=moblin-web-browser
+Exec=/usr/libexec/moblin-panel-web
+Terminal=false
+Type=Application
+Categories=
+OnlyShowIn=MOBLIN;
+X-GNOME-Autostart-enable=true
