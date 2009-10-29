@@ -20,10 +20,6 @@ msgstr ""
 msgid "Applications"
 msgstr "Applicaties"
 
-#: ../src/moblin-netbook-launcher.c:1348
-msgid "Search"
-msgstr "Zoek"
-
 #: ../src/moblin-panel-applications.c:196
 msgid "applications"
 msgstr "applicaties"
@@ -34,3 +30,7 @@ msgstr "applicaties"
 #: ../src/moblin-netbook-launcher.c:813
 msgid "Favorite Applications"
 msgstr "Favoriete applicaties"
+
+#: ../src/moblin-netbook-launcher.c:1348
+msgid "Search"
+msgstr "Zoeken"
