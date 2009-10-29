@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"POT-Creation-Date: 2009-10-16 11:32+0000\n"
 "PO-Revision-Date: 2009-08-05 14:41-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -16,68 +16,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. * Used as header for a block of the panel showing pending conversations.
-#. * The user will be able to click the tile and answer the pending
-#. conversation
-#. 
-#: ../src/moblin-panel-people.c:18
-msgid "People talking to you ..."
-msgstr "Personen die met je praten ..."
-
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. 
-#: ../src/moblin-panel-people.c:23
-msgid "people - Someone is talking to you"
-msgstr "personen - iemand praat met je"
-
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. * (plural version)
-#. 
-#: ../src/moblin-panel-people.c:29
-#, c-format
-msgid "people - %d people are talking to you"
-msgstr "personen - %d mensen praten met je"
-
-#: ../src/moblin-panel-people.c:87
+#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
 msgid "people"
 msgstr "personen"
 
-#: ../src/mnb-people-panel.c:164
+#: ../src/mnb-people-panel.c:166
 msgid "Send an email"
 msgstr "Stuur een e-mail"
 
-#: ../src/mnb-people-panel.c:166
+#: ../src/mnb-people-panel.c:168
 msgid "Edit details"
 msgstr "bewerk details"
 
-#: ../src/mnb-people-panel.c:175
+#: ../src/mnb-people-panel.c:177
 msgid "Send a message"
 msgstr "Stuur een bericht"
 
-#: ../src/mnb-people-panel.c:309
+#: ../src/mnb-people-panel.c:311
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Sorry, we kunnen geen personen vinden. Heb je een Messenger account aangemaakt?"
 
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:561
+msgid "people - Someone is talking to you"
+msgstr "personen - iemand praat met je"
+
+#: ../src/mnb-people-panel.c:790
 msgid "People"
 msgstr "Personen"
 
-#: ../src/mnb-people-panel.c:567
-msgid "Search"
-msgstr "Zoek"
-
-#: ../src/mnb-people-panel.c:680
+#: ../src/mnb-people-panel.c:983
 msgid "Selection"
 msgstr "Selectie"
 
-#: ../src/mnb-people-panel.c:743
+#: ../src/mnb-people-panel.c:1046
 msgid "Nobody selected"
 msgstr "Niemand geselecteerd"
 
-#: ../src/mnb-people-panel.c:50
+#: ../src/mnb-people-panel.c:497
 msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Om je IM contacten te zien, ga online in het Status panel."
+msgstr "Ga online in het Status-paneel om je Chat-contacten te zien."
 
-#: ../src/mnb-people-panel.c:51
+#: ../src/mnb-people-panel.c:447
 msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Sorry, we kunnen geen personen vinden. Het ziet eruit alsof ze allemaal offline zijn."
+msgstr "Sorry, we kunnen geen personen vinden. Het ziet er naar uit dat ze allemaal offline zijn."
+
+#: ../src/mnb-people-panel.c:554
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "personen - %d personen praten met je"
+
+#: ../src/mnb-people-panel.c:803
+msgid "Search"
+msgstr "Zoeken"
+
+#: ../src/mnb-people-panel.c:856
+msgid "People talking to you ..."
+msgstr "Personen die met je praten ..."
