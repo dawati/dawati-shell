@@ -1526,6 +1526,41 @@ handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
 }
 
 /*
+ * Returns TRUE if the panel should close when this window appears.
+ */
+static gboolean
+meta_window_is_blessed_window (MetaWindow *mw)
+{
+  const gchar *wm_class;
+
+  /*
+   * Only top-level windows can be blessed.
+   */
+  if (meta_window_get_transient_for (mw))
+    return FALSE;
+
+  /*
+   * System modal windows are all blessed as a birth-right.
+   */
+  if (meta_window_is_modal (mw))
+    return TRUE;
+
+  /*
+   * Of the commonners, only the following can mingle with the aristocracy
+   */
+  if ((wm_class = meta_window_get_wm_class (mw)))
+    {
+      if (!strcmp (wm_class, "Gnome-screenshot") ||
+          !strcmp (wm_class, "Nautilus"))
+        {
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+/*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
  */
@@ -1629,14 +1664,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       if (mw)
         {
-          gboolean system_modal = FALSE;
-
-          if (meta_window_is_modal (mw) &&
-              !meta_window_get_transient_for (mw))
-            {
-              system_modal = TRUE;
-            }
-
           g_object_get (mw, "fullscreen", &fullscreen, NULL);
 
           if (fullscreen)
@@ -1655,7 +1682,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                             plugin);
 
           /* Hide toolbar etc in presence of modal window */
-          if (system_modal == TRUE)
+          if (meta_window_is_blessed_window (mw))
             mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
         }
 
