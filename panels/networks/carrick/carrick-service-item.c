@@ -674,9 +674,14 @@ _connect_with_password (CarrickServiceItem *item)
       len = gtk_entry_get_text_length (GTK_ENTRY (priv->passphrase_entry));
       if (g_str_equal (priv->security, "wep"))
         {
-          /* WEP hex keys must be 10 or 26 characters, WEP ASCII keys must be 5
-             or 13 characters */
-          if (len != 10 && len != 26 && len != 5 && len != 13)
+          /*
+            48/64-bit WEP keys are 5 or 10 characters (ASCII/hexadecimal)
+            128-bit WEP keys are 13 or 26.
+            (Unofficial) 256-bit WEP keys are 29 or 58
+          */
+          if (len != 5 && len != 10 &&
+              len != 13 && len != 26 &&
+              len != 29 && len != 58)
             {
               label = g_strdup_printf (_("Your password isn't the right length."
                                          " For a WEP connection it needs to be"
