@@ -120,7 +120,11 @@ mpl_icon_theme_lookup_icon_file (GtkIconTheme *self,
   gchar                *icon_file = NULL;
 
   g_return_val_if_fail (self, NULL);
-  g_return_val_if_fail (icon_name, NULL);
+
+  if (NULL == icon_name)
+  {
+    icon_name = FALLBACK_ICON;
+  }
 
   /* Shortcut absolute paths.
    * Used e.g. in ~/.local installed desktop files. */
