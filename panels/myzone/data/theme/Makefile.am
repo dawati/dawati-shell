@@ -59,7 +59,8 @@ dist_theme_DATA = \
 	calendar-icon-30.png \
 	calendar-icon-31.png \
 	tile-dismiss-icon-hover.png \
-	tile-dismiss-icon-normal.png
+	tile-dismiss-icon-normal.png \
+	cat.png
 
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/nbtk.cache
