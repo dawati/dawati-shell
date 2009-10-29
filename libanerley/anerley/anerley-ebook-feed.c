@@ -49,8 +49,6 @@ enum
   PROP_BOOK
 };
 
-#define SELF_UID_KEY "/apps/evolution/addressbook/self/self_uid"
-
 static void
 anerley_ebook_feed_set_book (AnerleyEBookFeed *feed,
                              EBook            *book);
@@ -116,7 +114,35 @@ anerley_ebook_feed_finalize (GObject *object)
   AnerleyEBookFeedPrivate *priv = GET_PRIVATE (object);
 
   g_free (priv->self_uid);
+
   G_OBJECT_CLASS (anerley_ebook_feed_parent_class)->finalize (object);
+}
+
+static void
+anerley_ebook_feed_constructed (GObject *object)
+{
+  AnerleyEBookFeedPrivate *priv = GET_PRIVATE (object);
+  EContact *self_contact;
+  EBook *self_book;
+  GError *error = NULL;
+
+  if (e_book_get_self (&self_contact,
+                       &self_book,
+                       &error))
+  {
+    priv->self_uid = e_contact_get (self_contact,
+                                    E_CONTACT_UID);
+    g_debug (G_STRLOC ": Found self contact: %s",
+             priv->self_uid);
+  } else {
+    g_warning (G_STRLOC ": Error getting self contact: %s",
+               error->message);
+  }
+
+  g_object_unref (self_contact);
+
+  if (G_OBJECT_CLASS (anerley_ebook_feed_parent_class)->constructed)
+    G_OBJECT_CLASS (anerley_ebook_feed_parent_class)->constructed (object);
 }
 
 static void
@@ -131,6 +157,7 @@ anerley_ebook_feed_class_init (AnerleyEBookFeedClass *klass)
   object_class->set_property = anerley_ebook_feed_set_property;
   object_class->dispose = anerley_ebook_feed_dispose;
   object_class->finalize = anerley_ebook_feed_finalize;
+  object_class->constructed = anerley_ebook_feed_constructed;
 
   pspec = g_param_spec_object ("book",
                                "The book to read",
@@ -145,7 +172,6 @@ anerley_ebook_feed_init (AnerleyEBookFeed *self)
 {
   AnerleyEBookFeedPrivate *priv = GET_PRIVATE (self);
   gchar *avatar_cache_dir;
-  GConfClient *client;
 
   priv->uids_to_items = g_hash_table_new_full (g_str_hash,
                                                g_str_equal,
@@ -161,16 +187,6 @@ anerley_ebook_feed_init (AnerleyEBookFeed *self)
   g_mkdir_with_parents (avatar_cache_dir, 0755);
   g_free (avatar_cache_dir);
 
-
-  client = gconf_client_get_default ();
-
-  /* Let's just try and grab the key. No error checking and no monitoring.
-   * Living on the edge.
-   */
-  priv->self_uid = gconf_client_get_string (client,
-                                            SELF_UID_KEY,
-                                            NULL);
-  g_object_unref (client);
 }
 
 AnerleyFeed *
