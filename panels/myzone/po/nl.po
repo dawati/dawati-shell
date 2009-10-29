@@ -21,10 +21,6 @@ msgstr ""
 msgid "<b>Appointments</b>"
 msgstr "<b>Afspraken</b>"
 
-#: ../penge/penge-events-pane.c:268
-msgid "No calendar entries this week"
-msgstr "Geen afspraken deze week"
-
 #: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "Webpagina"
@@ -46,14 +42,6 @@ msgstr "<b>Welkom bij Moblin 2.1 voor Netbooks</b>"
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 msgstr "Moblin is anders dan andere computers. We hebben hier en daar wat dingetjes toegevoegd om je op weg te helpen. We hopen dat je het waardeert, Het Moblin Team."
 
-#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
-msgid "Add"
-msgstr "Voeg toe"
-
-#: ../penge/penge-events-pane.c:59
-msgid "Create an appointment"
-msgstr "Maak een afspraak"
-
 #: ../penge/penge-people-placeholder-tile.c:116
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Dingen die je vrienden online doen verschijnen hier. Activeer je accounts!"
@@ -61,3 +49,15 @@ msgstr "Dingen die je vrienden online doen verschijnen hier. Activeer je account
 #: ../penge/penge-tasks-pane.c:51
 msgid "Create a new task"
 msgstr "Nieuwe taak"
+
+#: ../penge/penge-events-pane.c:268
+msgid "No calendar entries this week"
+msgstr "Deze week geen afspraken"
+
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "Nieuwe afspraak"
+
+#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Toevoegen"
