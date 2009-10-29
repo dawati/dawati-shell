@@ -1,14 +1,4 @@
 
-NbtkScrollView {
-  xthickness: 26;
-  ythickness: 26;
-}
-
-NbtkScrollBar {
-  background-color: #e7ebee;
-  padding: 3;
-}
-
 /* Launcher  */
 
 MnbLauncher > *#launcher-vbox {
