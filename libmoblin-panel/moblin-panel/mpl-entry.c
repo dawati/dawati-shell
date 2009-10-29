@@ -31,7 +31,6 @@ enum
 {
   BUTTON_CLICKED,
   TEXT_CHANGED,
-  KEYNAV_EVENT,
 
   LAST_SIGNAL
 };
@@ -88,38 +87,6 @@ text_changed_cb (ClutterText  *actor,
     clutter_actor_hide (entry->priv->clear_button);
 
   g_signal_emit (entry, _signals[TEXT_CHANGED], 0);
-}
-
-static gboolean
-text_key_press_cb (ClutterActor     *actor,
-                   ClutterKeyEvent  *event,
-                   MplEntry         *entry)
-{
-  MplEntryPrivate *priv = entry->priv;
-  ClutterText     *text;
-  gint             pos;
-
-  text = CLUTTER_TEXT (nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry)));
-  pos = clutter_text_get_cursor_position (text);
-
-  switch (event->keyval)
-    {
-      case CLUTTER_Return:
-      case CLUTTER_Left:
-      case CLUTTER_Up:
-      case CLUTTER_Right:
-      case CLUTTER_Down:
-      case CLUTTER_Page_Up:
-      case CLUTTER_Page_Down:
-        /* Only emit if caret at end of text. */
-        if (pos == -1)
-          {
-            g_signal_emit (entry, _signals[KEYNAV_EVENT], 0, event->keyval);
-            return TRUE;
-          }
-    }
-
-  return FALSE;
 }
 
 static void
@@ -391,15 +358,6 @@ mpl_entry_class_init (MplEntryClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-
-  _signals[KEYNAV_EVENT] =
-    g_signal_new ("keynav-event",
-                  G_TYPE_FROM_CLASS (gobject_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MplEntryClass, keynav_event),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__UINT,
-                  G_TYPE_NONE, 1, G_TYPE_UINT);
 }
 
 static void
@@ -452,9 +410,6 @@ mpl_entry_init (MplEntry *self)
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   g_signal_connect (text, "text-changed",
                     G_CALLBACK (text_changed_cb),
-                    self);
-  g_signal_connect (text, "key-press-event",
-                    G_CALLBACK (text_key_press_cb),
                     self);
 
   priv->table = CLUTTER_ACTOR (nbtk_table_new ());
