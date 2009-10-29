@@ -24,10 +24,6 @@ msgstr "personen"
 msgid "Send an email"
 msgstr "Stuur een e-mail"
 
-#: ../src/mnb-people-panel.c:168
-msgid "Edit details"
-msgstr "bewerk details"
-
 #: ../src/mnb-people-panel.c:177
 msgid "Send a message"
 msgstr "Stuur een bericht"
@@ -72,3 +68,7 @@ msgstr "Zoeken"
 #: ../src/mnb-people-panel.c:856
 msgid "People talking to you ..."
 msgstr "Personen die met je praten ..."
+
+#: ../src/mnb-people-panel.c:168
+msgid "Edit details"
+msgstr "Bewerk details"
