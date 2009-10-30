@@ -312,7 +312,22 @@ mnb_notification_update (MnbNotification *notification,
   if (details->body)
     nbtk_label_set_text (NBTK_LABEL(priv->body), details->body);
 
-  if (details->icon_name)
+  if (details->icon_pixbuf)
+    {
+      GdkPixbuf *pixbuf = details->icon_pixbuf;
+
+      clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (priv->icon),
+                                         gdk_pixbuf_get_pixels (pixbuf),
+                                         gdk_pixbuf_get_has_alpha (pixbuf),
+                                         gdk_pixbuf_get_width (pixbuf),
+                                         gdk_pixbuf_get_height (pixbuf),
+                                         gdk_pixbuf_get_rowstride (pixbuf),
+                                         gdk_pixbuf_get_has_alpha (pixbuf) ?
+                                         4 : 3,
+                                         0, NULL);
+      no_icon = FALSE;
+    }
+  else if (details->icon_name)
     {
       GtkIconTheme           *theme;
       GtkIconInfo            *info;

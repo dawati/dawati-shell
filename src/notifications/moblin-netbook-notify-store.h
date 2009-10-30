@@ -2,6 +2,7 @@
 #define _MOBLIN_NETBOOK_NOTIFY_STORE
 
 #include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
@@ -38,6 +39,7 @@ typedef struct {
   gboolean    is_urgent;
 
   gpointer internal_data;
+  GdkPixbuf *icon_pixbuf;
 } Notification;
 
 typedef enum {
