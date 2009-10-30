@@ -1,4 +1,4 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -14,20 +14,21 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#.
-#. * Translator note: The disabled technologies available to be turned on is put together at
+#. * Translator note: The disabled technologies available to be turned on is
+#. put together at
 #. * runtime.
-#. * The conjunction 'or' will be at the end of a choice of disabled technologies,
+#. * The conjunction 'or' will be at the end of a choice of disabled
+#. technologies,
 #. * for example 'WiFi, WiMAX or 3G.
-#.
+#. 
 #: ../carrick/carrick-list.c:859
 msgid " or "
 msgstr " o "
 
-#.
-#. * Translator note: the comma ',' will be used to join the different disabled technologies
+#. * Translator note: the comma ',' will be used to join the different
+#. disabled technologies
 #. * as in the above example; 'WiFi, WiMAX or 3G'
-#.
+#. 
 #: ../carrick/carrick-list.c:864
 msgid ", "
 msgstr ", "
@@ -36,39 +37,33 @@ msgstr ", "
 msgid "wired"
 msgstr "alámbrica"
 
-#: ../carrick/carrick-list.c:866
-#: ../carrick/carrick-pane.c:1445
+#: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1445
 msgid "WiFi"
 msgstr "Wi-Fi"
 
-#: ../carrick/carrick-list.c:867
-#: ../carrick/carrick-pane.c:1539
+#: ../carrick/carrick-list.c:867 ../carrick/carrick-pane.c:1539
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:868
-#: ../carrick/carrick-pane.c:1508
+#: ../carrick/carrick-list.c:868 ../carrick/carrick-pane.c:1508
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:869
-#: ../carrick/carrick-pane.c:1571
+#: ../carrick/carrick-list.c:869 ../carrick/carrick-pane.c:1571
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#.
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
-#.
+#. 
 #: ../carrick/carrick-list.c:882
 msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
 msgstr "No se encuentra ninguna red. Parece que el gestor de conexiones no está ejecutándose. Se recomienda reinicar el miniportátil."
 
-#.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
-#.
+#. 
 #: ../carrick/carrick-list.c:892
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "No se encuentra ninguna red. Puede que haya que desactivar el modo fuera de línea."
@@ -78,11 +73,10 @@ msgstr "No se encuentra ninguna red. Puede que haya que desactivar el modo fuera
 msgid "Sorry, we can't find any networks. You could try enabling %s."
 msgstr "No se encuentra ninguna red. Puede que haya que activar el modo %s."
 
-#.
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
-#.
+#. 
 #: ../carrick/carrick-list.c:1043
 msgid "Sorry, we can't find any networks"
 msgstr "No se encuentra ninguna red. "
@@ -189,8 +183,7 @@ msgstr "Ninguna"
 msgid "Password"
 msgstr "Contraseña"
 
-#: ../carrick/carrick-pane.c:727
-#: ../carrick/carrick-service-item.c:1279
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1279
 msgid "Show password"
 msgstr "Mostrar la contraseña"
 
@@ -203,8 +196,7 @@ msgstr "Redes"
 msgid "Add new connection"
 msgstr "Agregar una nueva conexión"
 
-#: ../carrick/carrick-pane.c:1477
-#: ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "Alámbrica"
 
@@ -219,7 +211,7 @@ msgstr "Esto deshabilitará todas las conexiones"
 #. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
-#.
+#. 
 #: ../carrick/carrick-service-item.c:47
 msgid "Critical Error: Invalid country code"
 msgstr "Error crítico: el código de país no es válido"
@@ -242,7 +234,7 @@ msgstr "ERROR: no se ha detectado el hardware de 3G"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#.
+#. 
 #: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
@@ -256,8 +248,7 @@ msgstr "Desconectarse"
 msgid "Connected"
 msgstr "Conectado"
 
-#: ../carrick/carrick-service-item.c:282
-#: ../carrick/carrick-service-item.c:291
+#: ../carrick/carrick-service-item.c:282 ../carrick/carrick-service-item.c:291
 #, c-format
 msgid "Cancel"
 msgstr "Cancelar"
@@ -270,8 +261,7 @@ msgstr "Configurando"
 msgid "Associating"
 msgstr "Asociándose"
 
-#: ../carrick/carrick-service-item.c:303
-#: ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-service-item.c:303 ../carrick/carrick-service-item.c:328
 #: ../carrick/carrick-service-item.c:1268
 msgid "Connect"
 msgstr "Conectarse"
@@ -284,8 +274,7 @@ msgstr "Falló la conexión"
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Error en la conexión. Inténtalo otra vez."
 
-#: ../carrick/carrick-service-item.c:340
-#: ../carrick/carrick-service-item.c:343
+#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:343
 #, c-format
 msgid "Disconnecting"
 msgstr "Desconectándose"
@@ -358,16 +347,6 @@ msgstr "Conectándose a redes"
 msgid "networks - wired"
 msgstr "Red cableada"
 
-#: ../src/carrick.c:76
-#, c-format
-msgid "networks - %s - wifi"
-msgstr "Red wifi - %s -"
-
-#: ../src/carrick.c:79
-#, c-format
-msgid "networks - %s - wimax"
-msgstr "Red wimax - %s -"
-
 #: ../src/carrick.c:82
 #, c-format
 msgid "networks - %s - 3G"
@@ -378,8 +357,7 @@ msgstr "Red 3G - %s -"
 msgid "networks - %s - bluetooth"
 msgstr "Red bluetooth - %s -"
 
-#: ../src/carrick.c:88
-#: ../src/carrick.c:100
+#: ../src/carrick.c:88 ../src/carrick.c:100
 msgid "networks"
 msgstr "Redes"
 
@@ -404,8 +382,7 @@ msgid "network"
 msgstr "Red"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70
-#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -464,73 +441,96 @@ msgstr "%s (itinerancia)"
 msgid "Select 3G Service"
 msgstr "Selecciona el servicio 3G"
 
+#: ../src/carrick.c:79
+#, c-format
+msgid "networks - %s - wimax"
+msgstr "Red WiMAX - %s -"
+
+#: ../src/carrick.c:76
+#, c-format
+msgid "networks - %s - wifi"
+msgstr "Red WiFi - %s -"
+
 #~ msgid "Manual Config"
 #~ msgstr "Configuración manual"
-#~ msgid ""
-#~ "Sorry, we can't find any networks. It appears that the ConnMan daemon is "
-#~ "not running. You could try re-starting your netbook."
-#~ msgstr ""
-#~ "No se encuentra ninguna red. Parece que el ConnMan no está ejecutándose. "
-#~ "Se recomienda reinicar el miniportátil."
+
+#~ msgid "Sorry, we can't find any networks. It appears that the ConnMan daemon is not running. You could try re-starting your netbook."
+#~ msgstr "No se encuentra ninguna red. Parece que el ConnMan no está ejecutándose. Se recomienda reinicar el miniportátil."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
 #~ msgstr "No se encuentra ninguna red. Puede que haya que activar el modo 3G."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
-#~ msgstr ""
-#~ "No se encuentra ninguna red. Puede que haya que activar el modo WiFI."
+#~ msgstr "No se encuentra ninguna red. Puede que haya que activar el modo WiFI."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
-#~ msgstr ""
-#~ "No se encuentra ninguna red. Puede que haya que activar el modo WiMAX."
-#~ msgid ""
-#~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
-#~ msgstr ""
-#~ "No se encuentra ninguna red. Puede que haya que activar el modo Bluetooth."
+#~ msgstr "No se encuentra ninguna red. Puede que haya que activar el modo WiMAX."
+
+#~ msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+#~ msgstr "No se encuentra ninguna red. Puede que haya que activar el modo Bluetooth."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
-#~ msgstr ""
-#~ "No se encuentra ninguna red. Puede que haya que activar la red alámbrica."
+#~ msgstr "No se encuentra ninguna red. Puede que haya que activar la red alámbrica."
+
 #~ msgid "Sorry, we can't find any networks. "
 #~ msgstr "No se encuentra ninguna red."
-#~ msgid ""
-#~ "The ConnMan daemon doesn't seem to be running. You may want to try re-"
-#~ "starting your device"
-#~ msgstr ""
-#~ "No se está ejecutando el proceso en segundo plano ConnMan. Reinicia el "
-#~ "dispositivo."
+
+#~ msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
+#~ msgstr "No se está ejecutando el proceso en segundo plano ConnMan. Reinicia el dispositivo."
+
 #~ msgid "You could try disabling Offline mode"
 #~ msgstr "Inténtalo desactivando el modo fuera de línea"
+
 #~ msgid "You could try turning on "
 #~ msgstr "Inténtalo encendiendo "
+
 #~ msgid " and "
 #~ msgstr " y "
+
 #~ msgid "Ethernet"
 #~ msgstr "Ethernet"
+
 #~ msgid "Sorry, your connection to %s was lost. So we've "
 #~ msgstr "Hemos perdido la conexión a %s, así que te hemos"
+
 #~ msgid "Sorry, your %s connection was lost. So we've "
 #~ msgstr "Hemos perdido la conexión %s, así que te hemos"
+
 #~ msgid "connected you to a wired network"
 #~ msgstr "conectado a una red alámbrica"
+
 #~ msgid "connected you to %s, a %s network"
 #~ msgstr "conectado a %s, una red %s"
+
 #~ msgid "connected you to a %s network"
 #~ msgstr "conectado a una red %s"
+
 #~ msgid "Sorry, your wired connection was lost. So we've "
 #~ msgstr "Hemos perdido la conexión alámbrica, así que te hemos"
+
 #~ msgid "Abort"
 #~ msgstr "Cancelar"
+
 #~ msgid "Offline"
 #~ msgstr "Fuera de línea"
+
 #~ msgid "No active connection."
 #~ msgstr "No hay conexión activa."
+
 #~ msgid "Online"
 #~ msgstr "En línea"
+
 #~ msgid "Now online and connected to %s."
 #~ msgstr "Está ahora en línea y conectado a %s."
+
 #~ msgid "Connecting"
 #~ msgstr "Conectandose"
+
 #~ msgid "<b><big>Network Requires a Password</big></b>"
 #~ msgstr "<b><big>La red requiere de una contraseña</big></b>"
+
 #~ msgid "Please enter the password for this network:"
 #~ msgstr "Por favor ingrese la contraseña para esta red:"
+
 #~ msgid "Passphrase required"
 #~ msgstr "Frase clave requerida"
-
