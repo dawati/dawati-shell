@@ -334,16 +334,6 @@ msgstr "redes - a conectar"
 msgid "networks - wired"
 msgstr "redes - con fíos"
 
-#: ../src/carrick.c:76
-#, c-format
-msgid "networks - %s - wifi"
-msgstr "redes - %s - wifi"
-
-#: ../src/carrick.c:79
-#, c-format
-msgid "networks - %s - wimax"
-msgstr "redes - %s - wimax"
-
 #: ../src/carrick.c:82
 #, c-format
 msgid "networks - %s - 3G"
@@ -452,3 +442,13 @@ msgstr "Este contrasinal é longo de máis. Nas conexións WPA2 ha de ter menos 
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "Este contrasinal é longo de máis. Nas conexións WPA ha de ter menos de 63 caracteres; ten %i."
+
+#: ../src/carrick.c:76
+#, c-format
+msgid "networks - %s - wifi"
+msgstr "redes - %s - WiFi"
+
+#: ../src/carrick.c:79
+#, c-format
+msgid "networks - %s - wimax"
+msgstr "redes - %s - WiMAX"
