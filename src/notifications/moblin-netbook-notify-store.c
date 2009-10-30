@@ -78,6 +78,10 @@ free_notification (Notification *n)
   g_free (n->body);
   g_free (n->icon_name);
   g_hash_table_destroy (n->actions);
+
+  if (n->icon_pixbuf)
+    g_object_unref (n->icon_pixbuf);
+
   g_slice_free (Notification, n);
 }
 
@@ -142,7 +146,6 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
                              DBusGMethodInvocation     *context)
 {
   Notification *notification;
-  GValue       *val = NULL;
   gint          i;
 
   /* TODO: Sanity check the required arguments */
@@ -153,9 +156,56 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
   notification->icon_name = g_strdup (icon);
 
   if (hints)
-    val = g_hash_table_lookup (hints, "urgency");
+    {
+      GValue *val = NULL;
 
-  notification->is_urgent = (val && g_value_get_uchar(val) == 2) ? TRUE : FALSE;
+      val = g_hash_table_lookup (hints, "urgency");
+      notification->is_urgent =
+        (val && g_value_get_uchar(val) == 2) ? TRUE : FALSE;
+
+      val = g_hash_table_lookup (hints, "icon_data");
+      if (val && G_VALUE_HOLDS (val, G_TYPE_VALUE_ARRAY))
+        {
+          GValueArray *array = g_value_get_boxed (val);
+          GdkPixbuf   *pixbuf;
+          gint width, height, rowstride, bits_per_sample;
+          gboolean has_alpha;
+          GArray *data_array;
+          GValue *v;
+
+          v = g_value_array_get_nth (array, 0);
+          width = g_value_get_int (v);
+
+          v = g_value_array_get_nth (array, 1);
+          height = g_value_get_int (v);
+
+          v = g_value_array_get_nth (array, 2);
+          rowstride = g_value_get_int (v);
+
+          v = g_value_array_get_nth (array, 3);
+          has_alpha = g_value_get_boolean (v);
+
+          v = g_value_array_get_nth (array, 4);
+          bits_per_sample = g_value_get_int (v);
+
+          v = g_value_array_get_nth (array, 6);
+          data_array = g_value_get_boxed (v);
+
+          pixbuf = gdk_pixbuf_new_from_data ((const guchar*) data_array->data,
+                                             GDK_COLORSPACE_RGB,
+                                             has_alpha,
+                                             bits_per_sample,
+                                             width,
+                                             height,
+                                             rowstride,
+                                             NULL, NULL);
+
+          if (notification->icon_pixbuf)
+            g_object_unref (notification->icon_pixbuf);
+
+          notification->icon_pixbuf = pixbuf;
+        }
+    }
 
   for (i = 0; actions[i] != NULL; i += 2)
     {
