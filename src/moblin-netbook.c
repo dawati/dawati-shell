@@ -33,6 +33,19 @@
 #include "effects/mnb-switch-zones-effect.h"
 #include "notifications/mnb-notification-gtk.h"
 
+#include <compositor-mutter.h>
+#include <display.h>
+#include <prefs.h>
+#include <keybindings.h>
+#include <errors.h>
+
+/*
+ * Including mutter's errors.h defines the i18n macros, so undefine them before
+ * including the glib i18n header.
+ */
+#undef _
+#undef N_
+
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
 
@@ -43,11 +56,6 @@
 #include <string.h>
 #include <signal.h>
 #include <X11/extensions/Xcomposite.h>
-
-#include <compositor-mutter.h>
-#include <display.h>
-#include <prefs.h>
-#include <keybindings.h>
 
 #define MINIMIZE_TIMEOUT            250
 #define MAXIMIZE_TIMEOUT            250
@@ -1446,6 +1454,7 @@ handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
   MetaWindow   *mw      = mutter_window_get_meta_window (mcw);
   ClutterActor *clone   = clutter_clone_new (CLUTTER_ACTOR(mcw));
   MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay  *display = meta_screen_get_display (screen);
   ClutterActor *stage   = mutter_get_stage_for_screen (screen);
   gfloat        x, y;
   Window        xid;
@@ -1495,12 +1504,11 @@ handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
   else
     xid = meta_window_get_xwindow (mw);
 
-  gdk_error_trap_push ();
+  meta_error_trap_push (display);
 
   XRaiseWindow (GDK_DISPLAY (), xid);
 
-  gdk_flush ();
-  gdk_error_trap_pop ();
+  meta_error_trap_pop (display, TRUE);
 }
 
 /*
@@ -1789,13 +1797,12 @@ focus_xwin (MutterPlugin *plugin, guint xid)
 
   display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
 
-  gdk_error_trap_push ();
+  meta_error_trap_push (display);
 
   XSetInputFocus (meta_display_get_xdisplay (display), xid,
                   RevertToPointerRoot, CurrentTime);
 
-  gdk_flush ();
-  gdk_error_trap_pop ();
+  meta_error_trap_pop (display, TRUE);
 }
 
 void

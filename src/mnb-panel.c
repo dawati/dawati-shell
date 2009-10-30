@@ -37,6 +37,15 @@
 #include <gdk/gdkx.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <display.h>
+#include <errors.h>
+
+/*
+ * Including mutter's errors.h defines the i18n macros, so undefine them before
+ * including the glib i18n header.
+ */
+#undef _
+#undef N_
+
 #include <X11/Xatom.h>
 
 G_DEFINE_TYPE (MnbPanel, mnb_panel, MNB_TYPE_DROP_DOWN)
@@ -153,17 +162,13 @@ mnb_panel_focus (MnbPanel *panel)
 {
   MnbPanelPrivate *priv = panel->priv;
   MetaDisplay     *display;
-  MutterPlugin    *plugin = NULL;
+  MutterPlugin    *plugin = moblin_netbook_get_plugin_singleton ();
   guint32          timestamp;
-
-  g_object_get (G_OBJECT (panel), "mutter-plugin", &plugin, NULL);
-  if (!plugin)
-        return;
 
   display   = meta_screen_get_display (mutter_plugin_get_screen (plugin));
   timestamp = meta_display_get_current_time_roundtrip (display);
 
-  gdk_error_trap_push ();
+  meta_error_trap_push (display);
 
   XRaiseWindow (meta_display_get_xdisplay (display), priv->xid);
   XSync (meta_display_get_xdisplay (display), False);
@@ -177,8 +182,7 @@ mnb_panel_focus (MnbPanel *panel)
   XSetInputFocus (meta_display_get_xdisplay (display), priv->child_xid,
                   RevertToPointerRoot, timestamp);
 
-  gdk_flush ();
-  gdk_error_trap_pop ();
+  meta_error_trap_pop (display, TRUE);
 }
 
 /*
@@ -688,9 +692,12 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
     unsigned long n_items;
     unsigned long r_after;
     char *r_prop;
+    MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+    MetaDisplay *display;
 
-    gdk_error_trap_push ();
+    display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
 
+    meta_error_trap_push (display);
 
     if (Success == XGetWindowProperty (GDK_DISPLAY (), xid, XA_WM_CLASS,
                                        0, 8192,
@@ -717,8 +724,7 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
           }
       }
 
-    gdk_flush ();
-    gdk_error_trap_pop ();
+    meta_error_trap_pop (display, TRUE);
   }
 
   /*
