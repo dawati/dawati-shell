@@ -441,38 +441,17 @@ mnb_switcher_app_activate (MnbSwitcherItem *item)
   MnbSwitcherAppPrivate *priv   = MNB_SWITCHER_APP (item)->priv;
   MnbSwitcher           *switcher;
   MetaWindow            *window;
-  MetaWorkspace         *workspace;
-  MetaWorkspace         *active_workspace;
-  MetaScreen            *screen;
-  MetaDisplay           *display;
-  guint32                timestamp;
 
   switcher = mnb_switcher_item_get_switcher (MNB_SWITCHER_ITEM (item));
 
   window           = mutter_window_get_meta_window (priv->mw);
-  screen           = meta_window_get_screen (window);
-  display          = meta_screen_get_display (screen);
-  workspace        = meta_window_get_workspace (window);
-  active_workspace = meta_screen_get_active_workspace (screen);
-
-  /*
-   * Make sure our stamp is recent enough.
-   */
-  timestamp = meta_display_get_current_time_roundtrip (display);
 
   mnb_switcher_end_kbd_grab (switcher);
   clutter_ungrab_pointer ();
 
   mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
 
-  if (!active_workspace || (active_workspace == workspace))
-    {
-      meta_window_activate_with_workspace (window, timestamp, workspace);
-    }
-  else
-    {
-      meta_workspace_activate_with_focus (workspace, window, timestamp);
-    }
+  moblin_netbook_activate_window (window);
 
   return TRUE;
 }

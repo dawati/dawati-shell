@@ -161,4 +161,7 @@ moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace);
 gboolean
 moblin_netbook_compositor_disabled (MutterPlugin *plugin);
 
+void
+moblin_netbook_activate_window (MetaWindow *window);
+
 #endif

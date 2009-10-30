@@ -2475,3 +2475,32 @@ moblin_netbook_compositor_disabled (MutterPlugin *plugin)
 
   return priv->compositor_disabled;
 }
+
+void
+moblin_netbook_activate_window (MetaWindow *window)
+{
+  MetaWorkspace *workspace;
+  MetaWorkspace *active_workspace;
+  MetaScreen    *screen;
+  MetaDisplay   *display;
+  guint32        timestamp;
+
+  screen           = meta_window_get_screen (window);
+  display          = meta_screen_get_display (screen);
+  workspace        = meta_window_get_workspace (window);
+  active_workspace = meta_screen_get_active_workspace (screen);
+
+  /*
+   * Make sure our stamp is recent enough.
+   */
+  timestamp = meta_display_get_current_time_roundtrip (display);
+
+  if (!active_workspace || (active_workspace == workspace))
+    {
+      meta_window_activate_with_workspace (window, timestamp, workspace);
+    }
+  else
+    {
+      meta_workspace_activate_with_focus (workspace, window, timestamp);
+    }
+}
