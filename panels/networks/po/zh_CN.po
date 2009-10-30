@@ -329,16 +329,6 @@ msgstr "网络 - 正在连接"
 msgid "networks - wired"
 msgstr "网络 - 有线"
 
-#: ../src/carrick.c:76
-#, c-format
-msgid "networks - %s - wifi"
-msgstr "网络 - %s - wifi"
-
-#: ../src/carrick.c:79
-#, c-format
-msgid "networks - %s - wimax"
-msgstr "网络 - %s - wimax"
-
 #: ../src/carrick.c:82
 #, c-format
 msgid "networks - %s - 3G"
@@ -447,6 +437,16 @@ msgstr "您的密码太长了。对于 WPA2 连接，需要少于 63 个字符�
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "您的密码太长了。对于 WPA 连接，需要少于 63 个字符，您有 %i 个。"
+
+#: ../src/carrick.c:76
+#, c-format
+msgid "networks - %s - wifi"
+msgstr "网络 - %s - WiFi"
+
+#: ../src/carrick.c:79
+#, c-format
+msgid "networks - %s - wimax"
+msgstr "网络 - %s - WiMAX"
 
 #~ msgid "Manual Config"
 #~ msgstr "手动配置"
