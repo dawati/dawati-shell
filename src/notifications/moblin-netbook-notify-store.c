@@ -15,7 +15,9 @@
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
+#include <string.h>
 #include "../marshal.h"
+#include "../moblin-netbook.h"
 
 G_DEFINE_TYPE (MoblinNetbookNotifyStore, moblin_netbook_notify_store, G_TYPE_OBJECT);
 
@@ -48,19 +50,23 @@ get_next_id (MoblinNetbookNotifyStore *notify)
 }
 
 static gboolean
-find_notification (MoblinNetbookNotifyStore *notify, guint id, Notification **found)
+find_notification (MoblinNetbookNotifyStore  *notify,
+                   guint                      id,
+                   Notification             **found)
 {
   /* TODO: should this return a GList*? */
   MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
   GList *l;
 
-  for (l = priv->notifications; l ; l = l->next) {
-    Notification *notification = l->data;
-    if (notification->id == id) {
-      *found = notification;
-      return TRUE;
+  for (l = priv->notifications; l ; l = l->next)
+    {
+      Notification *notification = l->data;
+      if (notification->id == id)
+        {
+          *found = notification;
+          return TRUE;
+        }
     }
-  }
 
   return FALSE;
 }
@@ -79,49 +85,77 @@ free_notification (Notification *n)
  * Notification Manager implementation.
  */
 
-/* TODO: make this async so we can store the sender, and then target the
-   NotificationClosed signal? */
-static gboolean
-notification_manager_notify (MoblinNetbookNotifyStore *notify,
-                             const gchar *app_name, const guint id,
-                             const gchar *icon, const gchar *summary,
-                             const gchar *body,
-                             const gchar **actions, GHashTable *hints,
-                             gint timeout,
-			     DBusGMethodInvocation *context)
+/*
+ * Gets notificaiton with given id, creating one if it does not exist.
+ * internal_data is data to be passed to internal notificatio callbacks and
+ * is NULL for external notifications.
+ */
+static Notification *
+get_notification (MoblinNetbookNotifyStore *notify,
+                  guint                     id,
+                  gpointer                  internal_data)
 {
   MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
+  Notification                    *notification;
+
+  if (find_notification (notify, id, &notification))
+    {
+      /* Found an existing notification, clear it */
+      g_free (notification->summary);
+      g_free (notification->body);
+      g_free (notification->icon_name);
+      g_hash_table_remove_all (notification->actions);
+    }
+  else
+    {
+      /* This is a new notification, create a new structure and allocate an ID
+       */
+      notification = g_slice_new0 (Notification);
+      notification->id = get_next_id (notify);
+      notification->actions = g_hash_table_new_full (NULL,
+                                                     NULL,
+                                                     g_free,
+                                                     g_free);
+
+      notification->internal_data = internal_data;
+
+      /* TODO: use _insert_sorted with some magic sorting algorithm */
+      priv->notifications = g_list_append (priv->notifications, notification);
+    }
+
+  return notification;
+}
+
+/*
+ * Implementation of the dbus notify method
+ */
+static gboolean
+notification_manager_notify (MoblinNetbookNotifyStore  *notify,
+                             const gchar               *app_name,
+                             const guint                id,
+                             const gchar               *icon,
+                             const gchar               *summary,
+                             const gchar               *body,
+                             const gchar              **actions,
+                             GHashTable                *hints,
+                             gint                       timeout,
+                             DBusGMethodInvocation     *context)
+{
   Notification *notification;
-  GValue *val;
-  gint i;
+  GValue       *val = NULL;
+  gint          i;
 
   /* TODO: Sanity check the required arguments */
-
-  if (find_notification (notify, id, &notification)) {
-    /* Found an existing notification, clear it */
-    g_free (notification->summary);
-    g_free (notification->body);
-    g_free (notification->icon_name);
-    g_hash_table_remove_all (notification->actions);
-  } else {
-    /* This is a new notification, create a new structure and allocate an ID */
-    notification = g_slice_new0 (Notification);
-    notification->id = get_next_id (notify);
-    notification->actions = g_hash_table_new_full (NULL,
-						   NULL,
-						   g_free,
-						   g_free);
-    /* TODO: use _insert_sorted with some magic sorting algorithm */
-    priv->notifications = g_list_append (priv->notifications, notification);
-  }
+  notification = get_notification (notify, id, NULL);
 
   notification->summary = g_strdup (summary);
   notification->body = g_strdup (body);
   notification->icon_name = g_strdup (icon);
 
-  val = g_hash_table_lookup (hints, "urgency");
+  if (hints)
+    val = g_hash_table_lookup (hints, "urgency");
 
-  notification->is_urgent = (g_value_get_uchar(val) == 2) ? TRUE : FALSE;
+  notification->is_urgent = (val && g_value_get_uchar(val) == 2) ? TRUE : FALSE;
 
   for (i = 0; actions[i] != NULL; i += 2)
     {
@@ -141,29 +175,68 @@ notification_manager_notify (MoblinNetbookNotifyStore *notify,
 
   notification->timeout_ms = timeout;
 
-  notification->sender = dbus_g_method_get_sender (context);
+  if (context)
+    notification->sender = dbus_g_method_get_sender (context);
 
   g_signal_emit (notify, signals[NOTIFICATION_ADDED], 0, notification);
 
-  dbus_g_method_return(context, notification->id);
+  if (context)
+    dbus_g_method_return(context, notification->id);
 
   return TRUE;
 }
 
-static gboolean
-notification_manager_close_notification (MoblinNetbookNotifyStore *notify, guint id, GError **error)
+/*
+ * Function allowing to pop up notifications internally from mutter-moblin
+ *
+ * This is bit of a hack that relies on special action ids, and has the
+ * associated actions hardcoded in invoke_action_for_notification().
+ *
+ * data: the data to pass to the specific internal callback.
+ */
+guint
+notification_manager_notify_internal (MoblinNetbookNotifyStore  *notify,
+                                      guint                      id,
+                                      const gchar               *app_name,
+                                      const gchar               *icon,
+                                      const gchar               *summary,
+                                      const gchar               *body,
+                                      const gchar              **actions,
+                                      GHashTable                *hints,
+                                      gint                       timeout,
+                                      gpointer                   data)
 {
-  if (moblin_netbook_notify_store_close (notify, id, ClosedProgramatically)) {
-    return TRUE;
-  } else {
-    g_set_error (error, g_quark_from_static_string("NotifyStore"), 0, "Unknown notification ID %d", id);
-    return FALSE;
-  }
+  Notification *n = get_notification (notify, id, data);
+
+  g_assert (n->internal_data == data);
+
+  notification_manager_notify (notify, app_name, n->id, icon, summary, body,
+                               actions, hints, timeout, NULL);
+
+  return n->id;
 }
 
 static gboolean
-notification_manager_get_capabilities (MoblinNetbookNotifyStore *notify,
-				       gchar ***caps, GError *error)
+notification_manager_close_notification (MoblinNetbookNotifyStore  *notify,
+                                         guint                      id,
+                                         GError                   **error)
+{
+  if (moblin_netbook_notify_store_close (notify, id, ClosedProgramatically))
+    {
+      return TRUE;
+    }
+  else
+    {
+      g_set_error (error, g_quark_from_static_string("NotifyStore"), 0,
+                   "Unknown notification ID %d", id);
+      return FALSE;
+    }
+}
+
+static gboolean
+notification_manager_get_capabilities (MoblinNetbookNotifyStore   *notify,
+				       gchar                    ***caps,
+                                       GError                     *error)
 {
   *caps = g_new0 (gchar *, 6);
 
@@ -178,15 +251,16 @@ notification_manager_get_capabilities (MoblinNetbookNotifyStore *notify,
 }
 
 static gboolean
-notification_manager_get_server_information (MoblinNetbookNotifyStore *notify,
-                                             gchar **name,
-                                             gchar **vendor,
-                                             gchar **version,
-                                             GError *error)
+notification_manager_get_server_information (MoblinNetbookNotifyStore  *notify,
+                                             gchar                    **name,
+                                             gchar                    **vendor,
+                                             gchar                    **version,
+                                             GError                    *error)
 {
-  *name = g_strdup ("Moblin Netbook Notification Manager");
-  *vendor = g_strdup ("Moblin Netbook");
+  *name    = g_strdup ("Moblin Netbook Notification Manager");
+  *vendor  = g_strdup ("Moblin Netbook");
   *version = g_strdup (VERSION);
+
   return TRUE;
 }
 
@@ -220,7 +294,8 @@ moblin_netbook_notify_store_class_init (MoblinNetbookNotifyStoreClass *klass)
     g_signal_new ("notification-added",
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MoblinNetbookNotifyStoreClass, notification_added),
+                  G_STRUCT_OFFSET (MoblinNetbookNotifyStoreClass,
+                                   notification_added),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__POINTER,
                   G_TYPE_NONE, 1, G_TYPE_POINTER);
@@ -229,7 +304,8 @@ moblin_netbook_notify_store_class_init (MoblinNetbookNotifyStoreClass *klass)
     g_signal_new ("notification-closed",
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MoblinNetbookNotifyStoreClass, notification_closed),
+                  G_STRUCT_OFFSET (MoblinNetbookNotifyStoreClass,
+                                   notification_closed),
                   NULL, NULL,
                   moblin_netbook_marshal_VOID__UINT_UINT,
                   G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
@@ -260,18 +336,21 @@ connect_to_dbus (MoblinNetbookNotifyStore *self)
                                          DBUS_PATH_DBUS,
                                          DBUS_INTERFACE_DBUS);
 
-  if (!org_freedesktop_DBus_request_name (bus_proxy, "org.freedesktop.Notifications",
+  if (!org_freedesktop_DBus_request_name (bus_proxy,
+                                          "org.freedesktop.Notifications",
                                           DBUS_NAME_FLAG_DO_NOT_QUEUE,
-                                          &request_name_ret, &error)) {
-    g_warning ("Cannot request name: %s", error->message);
-    g_error_free (error);
-    return;
-  }
+                                          &request_name_ret, &error))
+    {
+      g_warning ("Cannot request name: %s", error->message);
+      g_error_free (error);
+      return;
+    }
 
-  if (request_name_ret == DBUS_REQUEST_NAME_REPLY_EXISTS) {
-    g_printerr ("Notification manager already running, not taking over\n");
-    return;
-  }
+  if (request_name_ret == DBUS_REQUEST_NAME_REPLY_EXISTS)
+    {
+      g_printerr ("Notification manager already running, not taking over\n");
+      return;
+    }
 
   dbus_g_connection_register_g_object (connection,
                                        "/org/freedesktop/Notifications",
@@ -306,14 +385,29 @@ invoke_action_for_notification (Notification *n, const char *key)
 {
   DBusMessage *message;
 
-  message = create_signal_for_notification (n, "ActionInvoked");
-  dbus_message_append_args(message,
-			   DBUS_TYPE_STRING, &key,
-			   DBUS_TYPE_INVALID);
+  if (n->sender)
+    {
+      message = create_signal_for_notification (n, "ActionInvoked");
+      dbus_message_append_args(message,
+                               DBUS_TYPE_STRING, &key,
+                               DBUS_TYPE_INVALID);
 
-  dbus_connection_send(_dbus_conn, message, NULL);
-  dbus_message_unref(message);
-
+      dbus_connection_send(_dbus_conn, message, NULL);
+      dbus_message_unref(message);
+    }
+  else
+    {
+      /*
+       * Internal notification
+       *
+       * TODO -- if we are going to use this for anything else, we should add
+       *         api to formally install callbacks.
+       */
+      if (!strcmp (key, "MNB-urgent-window"))
+        {
+          moblin_netbook_activate_window (n->internal_data);
+        }
+    }
 }
 
 MoblinNetbookNotifyStore *
@@ -335,6 +429,7 @@ moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify,
       priv->notifications = g_list_remove (priv->notifications, notification);
       free_notification (notification);
       g_signal_emit (notify, signals[NOTIFICATION_CLOSED], 0, id, reason);
+
       return TRUE;
     }
 
@@ -342,9 +437,9 @@ moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify,
 }
 
 void
-moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify,
-				    guint                        id,
-				    gchar                       *action)
+moblin_netbook_notify_store_action (MoblinNetbookNotifyStore *notify,
+				    guint                     id,
+				    gchar                    *action)
 {
   Notification *notification;
 
@@ -354,5 +449,3 @@ moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify,
       moblin_netbook_notify_store_close (notify, id, ClosedProgramatically);
     }
 }
-
-

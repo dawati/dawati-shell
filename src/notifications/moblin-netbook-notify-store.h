@@ -35,8 +35,9 @@ typedef struct {
   gchar *sender;
   gint  timeout_ms;
   GHashTable *actions;
-  gboolean    is_urgent; 
+  gboolean    is_urgent;
 
+  gpointer internal_data;
 } Notification;
 
 typedef enum {
@@ -51,7 +52,7 @@ typedef struct {
 } MoblinNetbookNotifyStore;
 
 typedef struct {
-  GObjectClass parent_class;  
+  GObjectClass parent_class;
   void (*notification_added) (MoblinNetbookNotifyStore *notify, Notification *notification);
   void (*notification_closed) (MoblinNetbookNotifyStore *notify, guint id, MoblinNetbookNotifyStoreCloseReason reason);
 } MoblinNetbookNotifyStoreClass;
@@ -60,15 +61,24 @@ GType moblin_netbook_notify_store_get_type (void);
 
 MoblinNetbookNotifyStore* moblin_netbook_notify_store_new (void);
 
-gboolean 
-moblin_netbook_notify_store_close (MoblinNetbookNotifyStore *notify, 
-				   guint id, 
+gboolean
+moblin_netbook_notify_store_close (MoblinNetbookNotifyStore *notify,
+				   guint id,
 				   MoblinNetbookNotifyStoreCloseReason reason);
 
 void
-moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify, 
+moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify,
 				    guint                        id,
 				    gchar                       *action);
+
+guint
+notification_manager_notify_internal (MoblinNetbookNotifyStore *notify,
+                                      guint id,
+                                      const gchar *app_name, const gchar *icon,
+                                      const gchar *summary, const gchar *body,
+                                      const gchar **actions, GHashTable *hints,
+                                      gint timeout,
+                                      gpointer data);
 
 G_END_DECLS
 
