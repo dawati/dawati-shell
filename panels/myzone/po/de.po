@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -21,8 +22,7 @@ msgstr "<b>Termine</b>"
 msgid "Create an appointment"
 msgstr "Termin erstellen"
 
-#: ../penge/penge-events-pane.c:60
-#: ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Zufügen"
 
@@ -43,10 +43,6 @@ msgstr "Webseite"
 msgid "Create a new task"
 msgstr "Neue Aufgabe erstellen"
 
-#: ../penge/penge-tasks-pane.c:433
-msgid "Nothing to do today"
-msgstr "Heute gibt es nichts zu tun"
-
 #: ../penge/penge-task-tile.c:325
 #, c-format
 msgid "Due %x"
@@ -60,3 +56,6 @@ msgstr "<b>Willkommen bei Moblin 2.1 für Netbooks</b>"
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 msgstr "Da Moblin ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich zurechtzufinden. Wir hoffen, es gefällt dir. Das Moblin Team."
 
+#: ../penge/penge-tasks-pane.c:433
+msgid "Nothing to do today"
+msgstr "Heute gibt es nichts zu tun."
