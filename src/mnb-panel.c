@@ -655,6 +655,7 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
     {
       g_warning ("Could not initialize Panel %s: %s",
                  mnb_panel_get_name (panel), error->message);
+      clutter_actor_destroy (CLUTTER_ACTOR (panel));
       return;
     }
 
