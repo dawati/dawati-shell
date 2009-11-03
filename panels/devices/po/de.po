@@ -34,7 +34,7 @@ msgstr "Der Akku wird schwach"
 
 #: ../dalston/dalston-power-applet.c:278
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Wir haben festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstöpseln und Aufladen jetzt eine gute Idee."
+msgstr "Wir haben festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstecken und Aufladen jetzt eine gute Idee."
 
 #: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
@@ -68,7 +68,7 @@ msgstr "Dein Akku wird geladen. Er ist etwa <b>%d</b>%% voll."
 #: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
-msgstr "Dein Akku wird genutzt. Sie ist etwa <b>%d</b>%% voll."
+msgstr "Dein Akku wird genutzt. Er ist etwa <b>%d</b>%% voll."
 
 #: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
@@ -80,7 +80,7 @@ msgstr "Bildschirmhelligkeit"
 
 #: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
-msgstr "Leider wird das Verändern deiner Bildschirmhelligkeit nicht unterstützt"
+msgstr "Leider wird das Verändern deiner Bildschirmhelligkeit nicht unterstützt."
 
 #: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
