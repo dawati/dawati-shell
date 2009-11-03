@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the carrick-ng package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 # Milo Casagrande <milo@casagrande.name>, 2009.
+# Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-07 18:32+0000\n"
-"PO-Revision-Date: 2009-10-09 21:18+0200\n"
-"Last-Translator: Milo Casagrande <milo@casagrande.name>\n"
+"POT-Creation-Date: 2009-10-16 11:26+0000\n"
+"PO-Revision-Date: 2009-11-03 22:43+0100\n"
+"Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,7 +206,7 @@ msgstr "Nessuna"
 msgid "Password"
 msgstr "Password"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1280
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1279
 msgid "Show password"
 msgstr "Mostrare password"
 
@@ -219,7 +220,7 @@ msgstr "Reti"
 msgid "Add new connection"
 msgstr "Aggiungi nuova connessione"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:239
+#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "Via cavo"
 
@@ -258,64 +259,64 @@ msgstr "Errore: nessun hardware 3G rilevato"
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:176
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
 msgstr "%s cifrato"
 
 # (ndt) pulsante
-#: ../carrick/carrick-service-item.c:270
+#: ../carrick/carrick-service-item.c:272
 msgid "Disconnect"
 msgstr "Disconnetti"
 
 # (ndt) viene fuori qualche cosa di simile:
 # Cablata - Collegata
 # Metto al femminile essendo rete
-#: ../carrick/carrick-service-item.c:273
+#: ../carrick/carrick-service-item.c:275
 msgid "Connected"
 msgstr "Collegata"
 
-#: ../carrick/carrick-service-item.c:280 ../carrick/carrick-service-item.c:289
+#: ../carrick/carrick-service-item.c:282 ../carrick/carrick-service-item.c:291
 #, c-format
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../carrick/carrick-service-item.c:283
+#: ../carrick/carrick-service-item.c:285
 msgid "Configuring"
 msgstr "Configurazione in corso"
 
-#: ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:294
 msgid "Associating"
 msgstr "Associazione in corso"
 
-#: ../carrick/carrick-service-item.c:301 ../carrick/carrick-service-item.c:326
-#: ../carrick/carrick-service-item.c:1269
+#: ../carrick/carrick-service-item.c:303 ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-service-item.c:1268
 msgid "Connect"
 msgstr "Connetti"
 
 # (ndt) un po' libera, ma preferisco lasciarla così
-#: ../carrick/carrick-service-item.c:329
+#: ../carrick/carrick-service-item.c:331
 msgid "Connection failed"
 msgstr "Connessione non stabilita"
 
-#: ../carrick/carrick-service-item.c:332
+#: ../carrick/carrick-service-item.c:334
 msgid "Sorry, the connection failed. You could try again."
 msgstr "La connessione non è riuscita. Provare nuovamente."
 
-#: ../carrick/carrick-service-item.c:338 ../carrick/carrick-service-item.c:341
+#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:343
 #, c-format
 msgid "Disconnecting"
 msgstr "Disconnessione in corso"
 
-#: ../carrick/carrick-service-item.c:399
+#: ../carrick/carrick-service-item.c:401
 msgid "Type password here"
 msgstr "Digitare la password"
 
-#: ../carrick/carrick-service-item.c:483
+#: ../carrick/carrick-service-item.c:484
 msgid "Really remove?"
 msgstr "Rimuovere veramente?"
 
-#: ../carrick/carrick-service-item.c:501
+#: ../carrick/carrick-service-item.c:502
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -326,16 +327,16 @@ msgstr ""
 "la password verrà cancellata e non sarà più possibile\n"
 "connettersi automaticamente a %s."
 
-#: ../carrick/carrick-service-item.c:666
+#: ../carrick/carrick-service-item.c:664
 #, c-format
 msgid ""
 "Your password isn't the right length. For a WEP connection it needs to be "
-"either 10 or 28 characters, you have %i."
+"either 10 or 26 characters, you have %i."
 msgstr ""
 "La password non è della dimensione corretta. Per una connessione WEP sono "
-"necessari 10 o 28 caratteri, ora ne sono presenti %i."
+"necessari 10 o 26 caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:676
+#: ../carrick/carrick-service-item.c:674
 #, c-format
 msgid ""
 "Your password is too short. For a WPA  connection it needs to be at least 8 "
@@ -344,16 +345,16 @@ msgstr ""
 "La password è troppo corta. Per una connessione WPA sono necessari 8 "
 "caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:680
+#: ../carrick/carrick-service-item.c:678
 #, c-format
 msgid ""
 "Your password is too long. For a WPA  connection it needs to have fewer than "
-"62 characters, you have %i"
+"63 characters, you have %i"
 msgstr ""
 "La password è troppo lunga. Per una connessione WPA sono necessari meno di "
-"62 caratteri, ora ne sono presenti %i."
+"63 caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:688
+#: ../carrick/carrick-service-item.c:686
 #, c-format
 msgid ""
 "Your password is too short. For a WPA2  connection it needs to be at least 8 "
@@ -362,16 +363,16 @@ msgstr ""
 "La password è troppo corta. Per una connessione WPA2 sono necessari 8 "
 "caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:692
+#: ../carrick/carrick-service-item.c:690
 #, c-format
 msgid ""
 "Your password is too long. For a WPA2  connection it needs to have fewer "
-"than 62 characters, you have %i"
+"than 63 characters, you have %i"
 msgstr ""
 "La password è troppo lunga. Per una connessione WPA2 sono necessari meno di "
-"62 caratteri, ora ne sono presenti %i."
+"63 caratteri, ora ne sono presenti %i."
 
-#: ../carrick/carrick-service-item.c:1205
+#: ../carrick/carrick-service-item.c:1204
 msgid "Scanning"
 msgstr "Analisi in corso"
 
@@ -379,7 +380,7 @@ msgstr "Analisi in corso"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1224
+#: ../carrick/carrick-service-item.c:1223
 msgid "WPA2 encrypted"
 msgstr "WPA2 cifrato"
 
@@ -440,7 +441,7 @@ msgid "network"
 msgstr "rete"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:69 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -450,35 +451,35 @@ msgstr "Assistente connessione dati rete mobile"
 msgid "Select Country"
 msgstr "Selezionare un Paese"
 
-#: ../callouts/3g/ggg-manual-dialog.c:88
+#: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
 msgstr "Configurazione manuale"
 
-#: ../callouts/3g/ggg-manual-dialog.c:92
+#: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
 msgstr "Nome piano (richiesto):"
 
-#: ../callouts/3g/ggg-manual-dialog.c:95
+#: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
 msgstr "Nome utente"
 
-#: ../callouts/3g/ggg-manual-dialog.c:98
+#: ../callouts/3g/ggg-manual-dialog.c:99
 msgid "Password:"
 msgstr "Password:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:102
+#: ../callouts/3g/ggg-manual-dialog.c:103
 msgid "Gateway:"
 msgstr "Gateway:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:105
+#: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
 msgstr "DNS primario:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:108
+#: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
 msgstr "DNS secondario:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
 msgstr "Terzo DNS:"
 
