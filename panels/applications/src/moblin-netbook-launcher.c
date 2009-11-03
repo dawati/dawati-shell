@@ -38,6 +38,7 @@
 #include <moblin-panel/mpl-entry.h>
 
 #include "moblin-netbook-launcher.h"
+#include "mnb-expander.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-grid.h"
 #include "mnb-launcher-tree.h"
@@ -73,10 +74,12 @@ scrollable_ensure_box_visible (NbtkScrollable         *scrollable,
 
   /* Vertical. */
   if (box->y1 < top)
+  {
     nbtk_adjustment_set_value (vadjustment, box->y1);
-
-  if (box->y2 > bottom)
-    nbtk_adjustment_set_value (vadjustment, box->y2 - v_page);
+  } else if (box->y2 > bottom) {
+    gdouble height = box->y2 - box->y1;
+    nbtk_adjustment_set_value (vadjustment, box->y2 - height - 3);
+  }
 }
 
 static void
@@ -426,10 +429,6 @@ expander_expand_complete_idle_cb (MnbLauncher *self)
       if (!launcher)
         launcher = (ClutterActor *) mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
 
-      if (launcher)
-        scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
-                                         launcher);
-
       priv->expand_timeout_id = 0;
       priv->expand_expander = NULL;
     }
@@ -456,6 +455,8 @@ expander_expand_complete_cb (NbtkExpander     *expander,
       priv->expand_expander = expander;
       priv->expand_timeout_id = g_idle_add ((GSourceFunc) expander_expand_complete_idle_cb,
                                             self);
+      scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+                                       CLUTTER_ACTOR (expander));
     }
   else
     {
@@ -504,6 +505,17 @@ expander_expanded_notify_cb (NbtkExpander    *expander,
       ClutterActor *inner_grid = nbtk_bin_get_child (NBTK_BIN (expander));
       mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
     }
+}
+
+static void
+expander_frame_allocated_cb (NbtkExpander           *expander,
+                             ClutterActorBox const  *box,
+                             MnbLauncher            *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+
+  scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+                                   CLUTTER_ACTOR (expander));
 }
 
 static gboolean
@@ -755,7 +767,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
       {
         ClutterActor *expander;
 
-        expander = CLUTTER_ACTOR (nbtk_expander_new ());
+        expander = CLUTTER_ACTOR (mnb_expander_new ());
         nbtk_expander_set_label (NBTK_EXPANDER (expander),
                                   directory->name);
         clutter_actor_set_width (expander, SCROLLVIEW_INNER_WIDTH (self));
@@ -777,6 +789,9 @@ mnb_launcher_fill_category (MnbLauncher     *self)
                           self);
         g_signal_connect (expander, "expand-complete",
                           G_CALLBACK (expander_expand_complete_cb),
+                          self);
+        g_signal_connect (expander, "frame-allocated",
+                          G_CALLBACK (expander_frame_allocated_cb),
                           self);
       }
     else
@@ -1483,7 +1498,7 @@ mnb_launcher_clear_filter (MnbLauncher *self)
     if (expander == priv->first_expander &&
         !nbtk_expander_get_expanded (expander))
     {
-      nbtk_expander_set_expanded (expander, TRUE);    
+      nbtk_expander_set_expanded (expander, TRUE);
     }
   }
 
