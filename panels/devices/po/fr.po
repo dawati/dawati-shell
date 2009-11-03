@@ -1,17 +1,18 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 15:59+0000\n"
+"POT-Creation-Date: 2009-10-16 11:24+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
 #: ../dalston/dalston-power-applet.c:237
 #, c-format
@@ -32,37 +33,24 @@ msgid "Running low on battery"
 msgstr "Batterie presque à bout"
 
 #: ../dalston/dalston-power-applet.c:278
-msgid ""
-"We've noticed that your battery is running a bit low. If you can it would be "
-"a good idea to plug in and top up."
-msgstr ""
-"Votre batterie est presque à bout. Il serait bon de vous brancher au secteur "
-"pour la recharger."
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Votre batterie est presque à bout. Il serait bon de vous brancher au secteur pour la recharger."
 
 #: ../dalston/dalston-power-applet.c:280
 msgid "Getting close to empty"
 msgstr "Pratiquement vide"
 
 #: ../dalston/dalston-power-applet.c:280
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can"
-msgstr ""
-"Votre batterie est pratiquement vide. Il serait bon de sauvegarder votre "
-"travail maintenant et de vous brancher sur secteur dès que possible"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Votre batterie est pratiquement vide. Il serait bon de sauvegarder votre travail maintenant et de vous brancher sur secteur dès que possible"
 
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
 msgstr "Danger !"
 
 #: ../dalston/dalston-power-applet.c:282
-msgid ""
-"Sorry, your computer is about to run out of battery. We're going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
-"Désolé, votre batterie est pratiquement vide. Nous allons éteindre votre "
-"système. Veuillez sauvegarder votre travail. Nous espérons vous revoir "
-"bientôt."
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Désolé, votre batterie est pratiquement vide. Nous allons éteindre votre système. Veuillez sauvegarder votre travail. Nous espérons vous revoir bientôt."
 
 #: ../dalston/dalston-power-applet.c:409
 msgid "Sorry, it looks like your battery is broken."
@@ -75,14 +63,12 @@ msgstr "Votre batterie est complètement chargée. Votre système est prêt. "
 #: ../dalston/dalston-power-applet.c:415
 #, c-format
 msgid "Your battery is charging. It is about <b>%d</b>%% full."
-msgstr ""
-"Votre batterie est en cours de chargement. Elle est chargée à <b>%d</b>%%."
+msgstr "Votre batterie est en cours de chargement. Elle est chargée à <b>%d</b>%%."
 
 #: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
-msgstr ""
-"Votre batterie est en cours d'utilisation. Elle est chargée à <b>%d</b>%%."
+msgstr "Votre batterie est en cours d'utilisation. Elle est chargée à <b>%d</b>%%."
 
 #: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
@@ -94,8 +80,7 @@ msgstr "Luminosité de l'écran"
 
 #: ../dalston/dalston-power-applet.c:550
 msgid "Sorry, we don't support modifying the brightness of your screen"
-msgstr ""
-"Désolé, nous sommes incapables de modifier la luminosité de votre écran"
+msgstr "Désolé, nous sommes incapables de modifier la luminosité de votre écran"
 
 #: ../dalston/dalston-brightness-slider.c:224
 msgid "Brighter than the sun"
@@ -133,20 +118,20 @@ msgstr "Très sombre"
 msgid "Total eclipse"
 msgstr "Complète obscurité"
 
-#: ../dalston/dalston-button-monitor.c:175
+#: ../dalston/dalston-button-monitor.c:178
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "Si vous ne décidez pas, je m'éteindrai dans %d secondes"
 
-#: ../dalston/dalston-button-monitor.c:277
+#: ../dalston/dalston-button-monitor.c:281
 msgid "Would you like to turn off now?"
 msgstr "Voulez-vous éteindre maintenant ?"
 
-#: ../dalston/dalston-button-monitor.c:278
+#: ../dalston/dalston-button-monitor.c:282
 msgid "If you don't decide I'll turn off in 30 seconds"
 msgstr "Si vous ne décidez pas, je m'éteindrai dans 30 secondes"
 
-#: ../dalston/dalston-button-monitor.c:285
+#: ../dalston/dalston-button-monitor.c:289
 msgid "Turn off"
 msgstr "Eteindre"
 
@@ -210,7 +195,7 @@ msgstr "Contrôle de volume GNOME"
 msgid "System Sounds"
 msgstr "Sons système"
 
-#: ../src/dalston-power-applet.c:49
+#: ../src/dalston-power-applet.c:50
 msgid "battery"
 msgstr "batterie"
 
@@ -246,11 +231,6 @@ msgstr "Jamais"
 msgid "Power Management Settings"
 msgstr "Paramètres de gestion de la consommation d'énergie"
 
-#: ../src/dalston-power-settings-capplet.c:140
-#: ../data/dalston-power-settings-capplet.desktop.in.h:1
-msgid "Power Management Preferences"
-msgstr "Préférences de gestion de la consommation d'énergie"
-
 #: ../src/dalston-power-settings-capplet.c:146
 msgid "<b>Power Settings</b>"
 msgstr "<b>Paramètres de consommation d'énergie</b>"
@@ -263,6 +243,11 @@ msgstr "Mettre l'ordinateur en veille quand inactif pour :"
 msgid "Settings for adjusting power usage"
 msgstr "Paramètres de réglage de la consommation d'énergie"
 
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Gestion de la consommation d'énergie"
+
 #~ msgid "If you don't decide i'll turn off in %d seconds"
 #~ msgstr "Si vous ne décidez pas, je vais m'éteindre dans %d secondes"
 
@@ -270,6 +255,4 @@ msgstr "Paramètres de réglage de la consommation d'énergie"
 #~ msgstr "Si vous ne décidez pas, je vais m'éteindre dans 30 secondes"
 
 #~ msgid "Your battery is discharging. It is about <b>%d</b>%% full."
-#~ msgstr ""
-#~ "Votre batterie est en train de se décharger. Elle est chargée à <b>%d</b>%"
-#~ "%."
+#~ msgstr "Votre batterie est en train de se décharger. Elle est chargée à <b>%d</b>%%."
