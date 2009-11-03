@@ -157,16 +157,6 @@ msgstr "Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté
 msgid "New connection settings"
 msgstr "Paramètres de la nouvelle connexion"
 
-#: ../carrick/carrick-pane.c:666
-msgid ""
-"Enter the name of the network you want\n"
-"to connect to and, where necessary, the\n"
-"password and security type."
-msgstr ""
-"Saisissez le nom du réseau auquel vous\n"
-"voulez vous connecter et, si nécessaire\n"
-"le mot de passe et type de sécurité."
-
 #: ../carrick/carrick-pane.c:676
 msgid "Network name"
 msgstr "Nom de réseau"
@@ -451,6 +441,16 @@ msgstr "réseaux - %s - WiMAX"
 #, c-format
 msgid "networks - %s - wifi"
 msgstr "réseaux - %s - WiFi"
+
+#: ../carrick/carrick-pane.c:666
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+"Saisissez le nom du réseau auquel vous\n"
+"voulez vous connecter et, si nécessaire\n"
+"le mot de passe et le type de sécurité."
 
 #~ msgid "Manual Config"
 #~ msgstr "Config manuelle"
