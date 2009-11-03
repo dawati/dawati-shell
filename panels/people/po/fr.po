@@ -1,86 +1,72 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"POT-Creation-Date: 2009-10-16 11:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#.
-#. * Used as header for a block of the panel showing pending conversations.
-#. * The user will be able to click the tile and answer the pending conversation
-#.
-#: ../src/moblin-panel-people.c:18
-msgid "People talking to you ..."
-msgstr "Relations en train de vous parler..."
+#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
+msgid "people"
+msgstr "relations"
 
-#.
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#.
-#: ../src/moblin-panel-people.c:23
-msgid "people - Someone is talking to you"
-msgstr "relations - quelqu'un est en train de vous parler"
+#: ../src/mnb-people-panel.c:166
+msgid "Send an email"
+msgstr "Envoyer un courriel"
 
-#.
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. * (plural version)
-#.
-#: ../src/moblin-panel-people.c:29
+#: ../src/mnb-people-panel.c:168
+msgid "Edit details"
+msgstr "Modifier les détails"
+
+#: ../src/mnb-people-panel.c:177
+msgid "Send a message"
+msgstr "Envoyer un message"
+
+#: ../src/mnb-people-panel.c:311
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte Messenger ?"
+
+#: ../src/mnb-people-panel.c:447
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Désolé, nous n'avons trouvé personne. Il semble que personne n'est connecté."
+
+#: ../src/mnb-people-panel.c:554
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "relations - %d personnes en train de vous parler"
 
-#: ../src/moblin-panel-people.c:87
-msgid "people"
-msgstr "relations"
+#: ../src/mnb-people-panel.c:561
+msgid "people - Someone is talking to you"
+msgstr "relations - quelqu'un est en train de vous parler"
 
-#: ../src/mnb-people-panel.c:50
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr ""
-"Pour voir vos contacts IM, connectez-vous et allez sur le panneau Statut."
-
-#: ../src/mnb-people-panel.c:51
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr ""
-"Désolé, nous n'avons trouvé personne. Il semble que personne n'est connecté."
-
-#: ../src/mnb-people-panel.c:164
-msgid "Send an email"
-msgstr "Envoyer un courriel"
-
-#: ../src/mnb-people-panel.c:166
-msgid "Edit details"
-msgstr "Modifier les détails"
-
-#: ../src/mnb-people-panel.c:175
-msgid "Send a message"
-msgstr "Envoyer un message"
-
-#: ../src/mnb-people-panel.c:309
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-"Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte "
-"Messenger ?"
-
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:790
 msgid "People"
 msgstr "Relations"
 
-#: ../src/mnb-people-panel.c:567
+#: ../src/mnb-people-panel.c:803
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../src/mnb-people-panel.c:680
+#: ../src/mnb-people-panel.c:856
+msgid "People talking to you ..."
+msgstr "Relations en train de vous parler..."
+
+#: ../src/mnb-people-panel.c:983
 msgid "Selection"
 msgstr "Sélection"
 
-#: ../src/mnb-people-panel.c:743
+#: ../src/mnb-people-panel.c:1046
 msgid "Nobody selected"
 msgstr "Pas de sélection"
+
+#: ../src/mnb-people-panel.c:497
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Pour voir vos contacts IM, connectez-vous et allez sur le panneau Statuts."
