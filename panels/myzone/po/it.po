@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:10+0000\n"
-"PO-Revision-Date: 2009-09-18 23:19+0200\n"
+"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"PO-Revision-Date: 2009-11-03 22:46+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -17,27 +17,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../penge/penge-calendar-pane.c:207
+#: ../penge/penge-calendar-pane.c:476
 msgid "<b>Appointments</b>"
 msgstr "<b>Appuntamenti</b>"
 
-#: ../penge/penge-events-pane.c:265
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "Crea un appuntamento"
+
+#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Aggiungi"
+
+#: ../penge/penge-events-pane.c:268
 msgid "No calendar entries this week"
 msgstr "Nessun appuntamento "
 
-#: ../penge/penge-people-placeholder-tile.c:112
+#: ../penge/penge-people-placeholder-tile.c:116
 msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
+"Things that your friends do online will appear here. Activate your accounts "
+"now!"
 msgstr ""
-"Una volta attivati gli account personali, qui verranno mostrate le notizie "
-"dei propri amici e dei servizi web."
+"Qui verranno mostrate le attività svolte in rete dai propri amici. Attivate "
+"i vostri account!"
 
-#: ../penge/penge-recent-file-tile.c:211
+#: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "Pagina web"
 
-#: ../penge/penge-tasks-pane.c:344
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "Crea una nuova attività"
+
+#: ../penge/penge-tasks-pane.c:433
 msgid "Nothing to do today"
 msgstr "Nessuna attività per oggi"
 
