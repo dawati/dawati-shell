@@ -332,6 +332,13 @@ mnb_panel_dbus_hide_end (MplPanelClient *self, GError **error)
   return TRUE;
 }
 
+static gboolean
+mnb_panel_dbus_ping (MplPanelClient *self, GError **error)
+{
+  g_debug ("%s called", __FUNCTION__);
+  return TRUE;
+}
+
 #include "mnb-panel-dbus-glue.h"
 
 static void

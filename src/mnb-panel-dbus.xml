@@ -25,6 +25,8 @@
     <method name="HideBegin"/>
     <method name="HideEnd"/>
 
+    <method name="Ping"/>
+
     <signal name="RequestButtonStyle">
       <arg name="style_id" type="s"/>
     </signal>
