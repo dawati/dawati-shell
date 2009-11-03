@@ -76,6 +76,7 @@ MnbPanel *mnb_panel_new (MutterPlugin *plugin,
 void mnb_panel_show_mutter_window (MnbPanel *panel, MutterWindow *mcw);
 
 const gchar  *mnb_panel_get_name          (MnbPanel *panel);
+const gchar  *mnb_panel_get_dbus_name     (MnbPanel *panel);
 const gchar  *mnb_panel_get_tooltip       (MnbPanel *panel);
 const gchar  *mnb_panel_get_stylesheet    (MnbPanel *panel);
 const gchar  *mnb_panel_get_button_style  (MnbPanel *panel);

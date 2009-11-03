@@ -969,6 +969,14 @@ mnb_panel_get_name (MnbPanel *panel)
 }
 
 const gchar *
+mnb_panel_get_dbus_name (MnbPanel *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+
+  return priv->dbus_name;
+}
+
+const gchar *
 mnb_panel_get_tooltip (MnbPanel *panel)
 {
   MnbPanelPrivate *priv = panel->priv;
