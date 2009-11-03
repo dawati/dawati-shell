@@ -1,5 +1,5 @@
 AM_CFLAGS = \
-	$(MOZHELPER_CFLAGS) \
+	$(SQLITE_CFLAGS) \
 	$(NBTK_CFLAGS) \
 	$(GTK_CFLAGS) \
 	$(NETPANEL_CFLAGS) \
@@ -12,7 +12,7 @@ AM_CFLAGS = \
 libexec_PROGRAMS = moblin-panel-web
 
 moblin_panel_web_LDADD = \
-	$(MOZHELPER_LIBS) \
+	$(SQLITE_LIBS) \
 	$(NBTK_LIBS) \
 	$(GTK_LIBS) \
 	$(NETPANEL_LIBS) \

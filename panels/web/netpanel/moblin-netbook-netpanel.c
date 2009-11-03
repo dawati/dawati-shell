@@ -23,11 +23,12 @@
 #endif
 
 #include <dbus/dbus-glib.h>
-#include <mozhelper/mozhelper.h>
 #include <glib/gi18n.h>
 #include <sys/file.h>
 #include <glib/gstdio.h>
 #include <unistd.h>
+
+#include <sqlite3.h>
 
 #include <moblin-panel/mpl-entry.h>
 #include <moblin-panel/mpl-utils.h>
@@ -37,8 +38,9 @@
 #include "mnb-netpanel-scrollview.h"
 #include "mwb-utils.h"
 
-/* Number of tab columns to display */
-#define DISPLAY_TABS 4
+/* Number of favorites columns to display */
+#define NR_FAVORITE_MAX 16
+#define NR_FAVORITE 9
 
 /* FIXME: Replace with stylable spacing */
 #define COL_SPACING 6
@@ -47,6 +49,10 @@
 #define CELL_HEIGHT 111
 
 #define START_PAGE "moblin://start/"
+
+#define MWB_FAVORITE_SQL  "SELECT url, title, rev_host FROM moz_places " \
+                          "WHERE rev_host <> '' AND url <> 'moblin://start/' " \
+                          "GROUP BY rev_host ORDER BY visit_count DESC LIMIT 16"
 
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_WIDGET)
 
@@ -57,8 +63,6 @@ struct _MoblinNetbookNetpanelPrivate
 {
   DBusGProxy     *proxy;
   GList          *calls;
-
-  MozhelperHistory     *history;
 
   NbtkWidget     *entry_table;
   NbtkWidget     *entry;
@@ -82,6 +86,10 @@ struct _MoblinNetbookNetpanelPrivate
   GList          *session_urls;
 
   MplPanelClient *panel_client;
+
+  /* SQLite connection */
+  gchar          *places_db;
+  sqlite3        *dbcon;
 };
 
 static void
@@ -103,6 +111,7 @@ moblin_netbook_netpanel_dispose (GObject *object)
 {
   MoblinNetbookNetpanel *self = MOBLIN_NETBOOK_NETPANEL (object);
   MoblinNetbookNetpanelPrivate *priv = self->priv;
+  guint i;
 
   if (priv->panel_client)
     {
@@ -117,21 +126,19 @@ moblin_netbook_netpanel_dispose (GObject *object)
       priv->proxy = NULL;
     }
 
-  if (priv->history)
-    {
-      g_object_unref (priv->history);
-      priv->history = NULL;
-    }
-
   if (priv->fav_urls)
     {
-      g_strfreev (priv->fav_urls);
+      for (i = 0; i < priv->n_favs; i++)
+        g_free (priv->fav_urls[i]);
+      g_free (priv->fav_urls);
       priv->fav_urls = NULL;
     }
 
   if (priv->fav_titles)
     {
-      g_strfreev (priv->fav_titles);
+      for (i = 0; i < priv->n_favs; i++)
+        g_free (priv->fav_titles[i]);
+      g_free (priv->fav_titles);
       priv->fav_titles = NULL;
     }
 
@@ -163,6 +170,12 @@ moblin_netbook_netpanel_dispose (GObject *object)
     {
       clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
       priv->favs_view = NULL;
+    }
+
+  if (priv->places_db)
+    {
+      g_free (priv->places_db);
+      priv->places_db = NULL;
     }
 
   while (priv->session_urls)
@@ -631,9 +644,6 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
 
   path = mpl_utils_get_thumbnail_path (url);
 
-  /* FIXME - Dont show those pages dont have a thumbnails, this is a workaround
-     for not showing the redirected pages. We will fix this from mozhelper once 
-     we upgraded to Firefox 3.5.4 */
   if (!new_tab && !g_file_test (path, G_FILE_TEST_EXISTS))
     return NULL;
 
@@ -684,56 +694,25 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
 }
 
 static void
-favs_received_cb (MozhelperHistory            *history,
-                  gchar                **urls,
-                  gchar                **titles,
-                  MoblinNetbookNetpanel *self)
+favs_received (MoblinNetbookNetpanel *self, char* url, char *title)
 {
-  guint i;
-  gchar **url_p, **title_p;
   MoblinNetbookNetpanelPrivate *priv = self->priv;
 
-  if (!priv->tabs_view)
-    create_tabs_view (self);
+  NbtkWidget *button;
+  MnbNetpanelScrollview *scrollview;
 
-  if (priv->fav_urls)
-    g_strfreev (priv->fav_urls);
-  if (priv->fav_titles)
-    g_strfreev (priv->fav_titles);
-  priv->fav_urls = g_strdupv (urls);
-  priv->fav_titles = g_strdupv (titles);
+  scrollview = MNB_NETPANEL_SCROLLVIEW (priv->favs_view);
+  button = add_thumbnail_to_scrollview (scrollview, url, title);
 
-  /* Count the number of favorites */
-  priv->n_favs = 0;
-  for (url_p = urls, title_p = titles; *url_p && *title_p; url_p++, title_p++)
-    priv->n_favs++;
-
-  if (!priv->n_favs)
+  if (button) 
     {
-      create_favs_placeholder (self);
-      return;
-    }
+      priv->fav_urls[priv->n_favs] = g_strdup (url);
+      priv->fav_titles[priv->n_favs] = g_strdup (title);
 
-  create_favs_view (self);
-
-  for (i = 0; i < priv->n_favs; i++)
-    {
-      NbtkWidget *button;
-      MnbNetpanelScrollview *scrollview;
-
-      if (priv->fav_urls && !strcmp (priv->fav_urls[i], START_PAGE)) 
-        continue;
-
-      scrollview = MNB_NETPANEL_SCROLLVIEW (priv->favs_view);
-      button = add_thumbnail_to_scrollview (scrollview, priv->fav_urls[i],
-                                            priv->fav_titles[i]);
-
-      if (button) 
-        {
-          g_object_set_data (G_OBJECT (button), "fav", GUINT_TO_POINTER (i));
-          g_signal_connect (button, "clicked",
-                            G_CALLBACK (fav_button_clicked_cb), self);
-        }
+      g_object_set_data (G_OBJECT (button), "fav", GUINT_TO_POINTER (priv->n_favs));
+      g_signal_connect (button, "clicked",
+                        G_CALLBACK (fav_button_clicked_cb), self);
+      priv->n_favs++;
     }
 }
 
@@ -927,15 +906,58 @@ static void
 create_history (MoblinNetbookNetpanel *self)
 {
   MoblinNetbookNetpanelPrivate *priv = self->priv;
+  sqlite3_stmt *fav_stmt;
+  gchar* errmsg = NULL;
+  gint rc, i;
 
-  /* Request favorites information */
-  priv->history = mozhelper_history_new ();
-  if (priv->history)
+  if (!priv->tabs_view)
+    create_tabs_view (self);
+
+  create_favs_view (self);
+
+  if (priv->fav_urls)
     {
-      g_signal_connect (priv->history, "favorites-received",
-                        G_CALLBACK (favs_received_cb), self);
-      mozhelper_history_get_favorites (priv->history);
+      for (i = 0; i < priv->n_favs; i++)
+        g_free (priv->fav_urls[i]);
+      g_free (priv->fav_urls);
+      priv->fav_urls = NULL;
     }
+  if (priv->fav_titles)
+    {
+      for (i = 0; i < priv->n_favs; i++)
+        g_free (priv->fav_titles[i]);
+      g_free (priv->fav_titles);
+      priv->fav_titles = NULL;
+    }
+
+  priv->fav_urls = g_malloc0 (NR_FAVORITE_MAX * sizeof (gchar*));
+  priv->fav_titles = g_malloc0 (NR_FAVORITE_MAX * sizeof (gchar*));
+  priv->n_favs = 0;
+
+  if (priv->dbcon) {
+    rc = sqlite3_prepare_v2 (priv->dbcon,
+                             MWB_FAVORITE_SQL, 
+                             sizeof (MWB_FAVORITE_SQL), 
+                             &fav_stmt, NULL);
+    if (rc)
+      g_warning ("[netpanel] sqlite3_prepare_v2(): %s", 
+                 sqlite3_errmsg(priv->dbcon));
+
+    sqlite3_reset(fav_stmt);
+
+    while (sqlite3_step (fav_stmt) == SQLITE_ROW)
+      {
+        if (priv->n_favs < NR_FAVORITE)
+          favs_received (self, 
+                         (gchar*) sqlite3_column_text (fav_stmt, 0),
+                         (gchar*) sqlite3_column_text (fav_stmt, 1));
+      }
+
+    sqlite3_finalize (fav_stmt);
+  }
+
+  if (priv->n_favs == 0)
+      create_favs_placeholder (self);
 }
 
 static void
@@ -954,17 +976,24 @@ request_live_previews (MoblinNetbookNetpanel *self)
     dbus_g_proxy_begin_call (priv->proxy, "GetNTabs", notify_get_ntabs,
                              g_object_ref (self), g_object_unref,
                              G_TYPE_INVALID));
-
-  if (!priv->history)
-    create_history (self);
+  create_history (self);
 }
 
 static void
 moblin_netbook_netpanel_show (ClutterActor *actor)
 {
   MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
+  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
 
   moblin_netbook_netpanel_focus (netpanel);
+
+  if (!priv->places_db)
+    priv->places_db = mwb_utils_places_db_get_filename ();
+
+  mwb_utils_places_db_connect(priv->places_db, &priv->dbcon);
+
+  mnb_netpanel_bar_set_dbcon (G_OBJECT (priv->entry), priv->dbcon);
+
   request_live_previews (netpanel);
 
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->show (actor);
@@ -1000,23 +1029,17 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
 
   if (priv->fav_urls)
     {
-      g_strfreev (priv->fav_urls);
-      priv->fav_urls = NULL;
+      for (i = 0; i < priv->n_favs; i++)
+        g_free (priv->fav_urls[i]);
     }
 
   if (priv->fav_titles)
     {
-      g_strfreev (priv->fav_titles);
-      priv->fav_titles = NULL;
+      for (i = 0; i < priv->n_favs; i++)
+        g_free (priv->fav_titles[i]);
     }
 
   priv->n_favs = 0;
-
-  if (priv->history)
-    {
-      g_object_unref (priv->history);
-      priv->history = NULL;
-    }
 
   /* Destroy tab table */
   cancel_dbus_calls (netpanel);
@@ -1038,6 +1061,10 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
       priv->session_urls = g_list_delete_link (priv->session_urls,
                                                priv->session_urls);
     }
+
+  mnb_netpanel_bar_clear_dbcon (G_OBJECT (priv->entry));
+
+  mwb_utils_places_db_close (priv->dbcon);
 
   CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->hide (actor);
 }
@@ -1083,8 +1110,7 @@ netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
       return;
     }
 
-  if (!mnb_netpanel_bar_check_for_search (netpanel_bar, url))
-    moblin_netbook_netpanel_launch_url (self, url, TRUE);
+  moblin_netbook_netpanel_launch_url (self, url, TRUE);
 }
 
 static void
@@ -1127,6 +1153,14 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                                         "x-align", 0.0,
                                         "y-align", 0.5,
                                         NULL);
+
+  /* Decide places db path */
+  priv->places_db = mwb_utils_places_db_get_filename();
+  if (!priv->places_db)
+    {
+      g_warning ("[netpanel]: no places database found");
+    }
+  priv->dbcon = NULL;
 
   priv->entry = mnb_netpanel_bar_new (_("Go"));
 

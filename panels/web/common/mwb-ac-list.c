@@ -20,14 +20,40 @@
 #include "config.h"
 #endif
 
+#include <stdlib.h>
 #include <cogl/cogl-pango.h>
 #include <string.h>
-#include <mozhelper/mozhelper.h>
 #include <glib/gi18n.h>
 #include <math.h>
+#include <sqlite3.h>
 #include "mwb-ac-list.h"
 #include "mwb-separator.h"
 #include "mwb-utils.h"
+
+#define MWB_AC_LIST_SQL \
+  "SELECT r.url, GROUP_CONCAT(IFNULL(r.title, ' '), ', '), " \
+          "IFNULL(f.mime_type, ''), IFNULL(f.data, ''), IFNULL(LENGTH(f.data), 0) " \
+  "FROM ( " \
+          "SELECT bmtag.id AS id, bmtag.url AS url, bmtag.title AS title, " \
+                  "bmtag.favicon_id AS favicon_id, bmtag.frecency AS frecency " \
+          "FROM ( " \
+                  "SELECT h.id, h.url, t.title, h.favicon_id, h.frecency " \
+                  "FROM moz_bookmarks b, moz_places h " \
+                  "JOIN moz_bookmarks t ON t.id = b.parent AND t.parent = 4 " \
+                  "WHERE b.fk = h.id AND b.type = 1 AND LENGTH(t.title) > 0 " \
+                  "UNION ALL " \
+                  "SELECT h.id, h.url, b.title, h.favicon_id, h.frecency " \
+                  "FROM moz_bookmarks b, moz_places h " \
+                  "JOIN moz_bookmarks t ON t.id = b.parent AND t.parent <> 4 " \
+                  "WHERE b.fk = h.id AND b.type = 1 AND h.hidden = 0 " \
+          ") AS bmtag WHERE title LIKE ?1 " \
+          "UNION ALL " \
+          "SELECT id, url, title, favicon_id, frecency " \
+          "FROM moz_places " \
+          "WHERE hidden = 0 AND (url LIKE ?1 OR title LIKE ?1) " \
+  ") AS r " \
+  "LEFT OUTER JOIN moz_favicons f ON r.favicon_id = f.id " \
+  "GROUP BY r.id ORDER BY r.frecency DESC LIMIT 14"
 
 G_DEFINE_TYPE (MwbAcList, mwb_ac_list, NBTK_TYPE_WIDGET);
 
@@ -54,9 +80,6 @@ enum
 
 struct _MwbAcListPrivate
 {
-  MozhelperHistory    *history;
-
-  MozhelperPrefs      *prefs;
   gint           prefs_branch;
   guint          prefs_branch_changed_handler;
   gboolean       complete_domains;
@@ -95,6 +118,9 @@ struct _MwbAcListPrivate
   CoglHandle     search_engine_icon;
   gchar         *search_engine_name;
   gchar         *search_engine_url;
+
+  sqlite3       *dbcon;
+  sqlite3_stmt  *search_stmt;
 
   /* List of suggested TLD completions */
   GHashTable    *tld_suggestions;
@@ -152,12 +178,6 @@ mwb_ac_list_boolean_prefs[] =
   };
 
 static void mwb_ac_list_clear_entries (MwbAcList *self);
-
-static void mwb_ac_list_result_received_cb (MozhelperHistory *history,
-                                            guint32 search_id,
-                                            const gchar *value,
-                                            const gchar *comment,
-                                            MwbAcList *self);
 
 static void mwb_ac_list_add_default_entries (MwbAcList *self);
 
@@ -258,37 +278,6 @@ mwb_ac_list_dispose (GObject *object)
      should be cleared to unref them */
   g_hash_table_remove_all (priv->favicon_cache);
 
-  if (priv->history)
-    {
-      g_signal_handler_disconnect (priv->history,
-                                   priv->result_received_handler);
-      if (priv->search_id)
-        mozhelper_history_stop_ac_search (priv->history,
-                                    priv->search_id,
-                                    NULL);
-      g_object_unref (priv->history);
-      priv->history = NULL;
-    }
-
-  if (priv->prefs)
-    {
-      if (priv->prefs_branch != -1)
-        {
-          mozhelper_prefs_release_branch (priv->prefs, priv->prefs_branch, NULL);
-          priv->prefs_branch = -1;
-        }
-
-      if (priv->prefs_branch_changed_handler)
-        {
-          g_signal_handler_disconnect (priv->prefs,
-                                       priv->prefs_branch_changed_handler);
-          priv->prefs_branch_changed_handler = 0;
-        }
-
-      g_object_unref (priv->prefs);
-      priv->prefs = NULL;
-    }
-
   G_OBJECT_CLASS (mwb_ac_list_parent_class)->dispose (object);
 }
 
@@ -366,9 +355,6 @@ mwb_ac_list_cached_favicon_free (MwbAcListCachedFavicon *cached_favicon)
 
   if (cached_favicon->texture)
     cogl_handle_unref (cached_favicon->texture);
-  if (cached_favicon->favicon_handler)
-    mozhelper_history_cancel (cached_favicon->ac_list->priv->history,
-                        cached_favicon->favicon_handler);
 
   g_slice_free (MwbAcListCachedFavicon, cached_favicon);
 }
@@ -626,98 +612,6 @@ mwb_ac_list_forget_search_engine (MwbAcList *self)
     }
 }
 
-static void
-mwb_ac_list_update_search_engine (MwbAcList *ac_list)
-{
-  MwbAcListPrivate *priv = ac_list->priv;
-
-  mwb_ac_list_forget_search_engine (ac_list);
-
-  if (priv->prefs && priv->prefs_branch != -1)
-    {
-      GError *error = NULL;
-
-      if (mozhelper_prefs_branch_get_char (priv->prefs, priv->prefs_branch,
-                                     "search_engine.selected",
-                                     &priv->search_engine_name,
-                                     &error))
-        {
-          gchar *url_pref_name = g_strconcat ("search_engine.data.",
-                                              priv->search_engine_name,
-                                              ".url",
-                                              NULL);
-
-          if (mozhelper_prefs_branch_get_char (priv->prefs, priv->prefs_branch,
-                                         url_pref_name,
-                                         &priv->search_engine_url,
-                                         &error))
-            {
-              /* Get a filename-safe version of the search engine name */
-              gchar *clean_name =
-                g_malloc (strlen (priv->search_engine_name) + 4);
-              gchar *path;
-              gchar *src, *dst = clean_name;
-              for (src = priv->search_engine_name; *src; src++)
-                if ((*src >= 'A' && *src <= 'Z') ||
-                    (*src >= 'a' && *src <= 'z') ||
-                    (*src >= '0' && *src <= '9'))
-                  *(dst++) = *src;
-              strcpy (dst, ".ico");
-
-              /* Try to load the icon from the user's home directory */
-              path = g_build_filename (g_get_home_dir (),
-                                       ".moblin-web-browser",
-                                       "search-icons",
-                                       clean_name,
-                                       NULL);
-
-              priv->search_engine_icon =
-                cogl_texture_new_from_file (path,
-                                            COGL_TEXTURE_NONE,
-                                            COGL_PIXEL_FORMAT_ANY,
-                                            &error);
-              g_free (path);
-
-              /* If that didn't exist, try the system directory */
-              if (priv->search_engine_icon == COGL_INVALID_HANDLE &&
-                  error &&
-                  error->domain == G_FILE_ERROR &&
-                  error->code == G_FILE_ERROR_NOENT)
-                {
-                  path = g_build_filename (PKGDATADIR,
-                                           "search-icons",
-                                           clean_name,
-                                           NULL);
-
-                  priv->search_engine_icon =
-                    cogl_texture_new_from_file (path,
-                                                COGL_TEXTURE_NONE,
-                                                COGL_PIXEL_FORMAT_ANY,
-                                                NULL);
-
-                  g_free (path);
-                }
-
-              g_clear_error (&error);
-
-              g_free (clean_name);
-            }
-          else
-            {
-              g_warning ("%s", error->message);
-              g_clear_error (&error);
-            }
-
-          g_free (url_pref_name);
-        }
-      else
-        {
-          g_warning ("%s", error->message);
-          g_clear_error (&error);
-        }
-    }
-}
-
 struct BestTldData
 {
   const gchar *best_tld;
@@ -725,165 +619,6 @@ struct BestTldData
   gint best_overlap_length;
   const gchar *search_string;
 };
-
-static void
-mwb_ac_list_check_best_tld_suggestion (gpointer key,
-                                       gpointer value,
-                                       gpointer user_data)
-{
-  struct BestTldData *data = (struct BestTldData *) user_data;
-
-  if (GPOINTER_TO_INT (value) >= data->best_score)
-    {
-      data->best_score = GPOINTER_TO_INT (value);
-      data->best_tld = key;
-    }
-}
-
-static void
-mwb_ac_list_update_best_tld_suggestion (MwbAcList *self)
-{
-  MwbAcListPrivate *priv = self->priv;
-  struct BestTldData data;
-
-  data.best_score = G_MININT;
-  data.best_tld = NULL;
-
-  g_hash_table_foreach (priv->tld_suggestions,
-                        mwb_ac_list_check_best_tld_suggestion,
-                        &data);
-
-  priv->best_tld_suggestion = data.best_tld;
-}
-
-static void
-mwb_ac_list_update_suggested_tld (MwbAcList *ac_list, const gchar *pref)
-{
-  MwbAcListPrivate *priv = ac_list->priv;
-  GError *error = NULL;
-  gint score;
-
-  if (!mozhelper_prefs_branch_get_int (priv->prefs, priv->prefs_branch, pref,
-                                 &score, &error))
-    {
-      /* If there was an error then the TLD has probably been
-         removed */
-      g_clear_error (&error);
-      g_hash_table_remove (priv->tld_suggestions,
-                           MWB_AC_LIST_TLD_FROM_PREF (pref));
-    }
-  else
-    g_hash_table_replace (priv->tld_suggestions,
-                          g_strdup (MWB_AC_LIST_TLD_FROM_PREF (pref)),
-                          GINT_TO_POINTER (score));
-
-  mwb_ac_list_update_best_tld_suggestion (ac_list);
-}
-
-static void
-mwb_ac_list_update_tld_suggestions (MwbAcList *self)
-{
-  MwbAcListPrivate *priv = self->priv;
-  gchar **children;
-  guint n_children;
-  GError *error = NULL;
-
-  g_hash_table_remove_all (priv->tld_suggestions);
-
-  if (priv->prefs && priv->prefs_branch != -1)
-    {
-      if (!mozhelper_prefs_branch_get_child_list (priv->prefs, priv->prefs_branch,
-                                            MWB_AC_LIST_SUGGESTED_TLD_PREF,
-                                            &n_children,
-                                            &children,
-                                            &error))
-        {
-          g_warning ("%s", error->message);
-          g_clear_error (&error);
-        }
-      else
-        {
-          gchar **p;
-
-          for (p = children; *p; p++)
-            {
-              gint score;
-
-              if (!mozhelper_prefs_branch_get_int (priv->prefs, priv->prefs_branch,
-                                             *p, &score, &error))
-                {
-                  g_warning ("%s", error->message);
-                  g_clear_error (&error);
-                }
-              else
-                {
-                  const gchar *name = MWB_AC_LIST_TLD_FROM_PREF (*p);
-
-                  g_hash_table_insert (priv->tld_suggestions,
-                                       g_strdup (name),
-                                       GINT_TO_POINTER (score));
-                }
-            }
-
-          g_strfreev (children);
-        }
-    }
-
-  mwb_ac_list_update_best_tld_suggestion (self);
-}
-
-static void
-mwb_ac_list_prefs_branch_changed_cb (MozhelperPrefs *prefs,
-                                     gint id,
-                                     const gchar *domain,
-                                     MwbAcList *ac_list)
-{
-  MwbAcListPrivate *priv = ac_list->priv;
-
-  if (id == priv->prefs_branch)
-    {
-      int i;
-
-      /* If any of the search engine prefs change then update our
-         search engine data */
-      if (g_str_has_prefix (domain, "search_engine."))
-        {
-          mwb_ac_list_update_search_engine (ac_list);
-          return;
-        }
-
-      if (g_str_has_prefix (domain, MWB_AC_LIST_SUGGESTED_TLD_PREF))
-        {
-          mwb_ac_list_update_suggested_tld (ac_list, domain);
-          return;
-        }
-
-      for (i = 0; i < G_N_ELEMENTS (mwb_ac_list_boolean_prefs); i++)
-        if (!strcmp (domain, mwb_ac_list_boolean_prefs[i].name))
-          {
-            const gchar *prop;
-            GError *error = NULL;
-            gboolean *val = (gboolean *) ((guchar *) priv +
-                                          mwb_ac_list_boolean_prefs[i].offset);
-
-            if (!mozhelper_prefs_branch_get_bool (priv->prefs,
-                                            priv->prefs_branch,
-                                            mwb_ac_list_boolean_prefs[i].name,
-                                            val,
-                                            &error))
-              {
-                g_warning ("%s", error->message);
-                g_clear_error (&error);
-              }
-
-            prop = mwb_ac_list_boolean_prefs[i].notify;
-            if (prop)
-              g_object_notify (G_OBJECT (ac_list), prop);
-
-            break;
-          }
-    }
-}
 
 static void
 mwb_ac_list_update_entry (MwbAcList *ac_list,
@@ -1125,73 +860,6 @@ mwb_ac_list_unmap (ClutterActor *actor)
 static void
 mwb_ac_list_realize (ClutterActor *actor)
 {
-  MwbAcList *self = MWB_AC_LIST (actor);
-  MwbAcListPrivate *priv = self->priv;
-  GError *error = NULL;
-
-  /* Initialise the preference observers */
-  priv->prefs = mozhelper_prefs_new ();
-  if (mozhelper_prefs_get_branch (priv->prefs, "mwb.", &priv->prefs_branch, &error))
-    {
-      int i;
-
-      /* Add the boolean observers */
-      for (i = 0; i < G_N_ELEMENTS (mwb_ac_list_boolean_prefs); i++)
-        {
-          const gchar *name = mwb_ac_list_boolean_prefs[i].name;
-          gboolean *val = (gboolean *) ((guchar *) priv +
-                                        mwb_ac_list_boolean_prefs[i].offset);
-
-          if (!mozhelper_prefs_branch_get_bool (priv->prefs,
-                                          priv->prefs_branch,
-                                          name,
-                                          val,
-                                          &error)
-              || !mozhelper_prefs_branch_add_observer (priv->prefs,
-                                                 priv->prefs_branch,
-                                                 name,
-                                                 &error))
-            {
-              g_warning ("%s", error->message);
-              g_clear_error (&error);
-            }
-        }
-
-      /* Add the search engine observer */
-      if (!mozhelper_prefs_branch_add_observer (priv->prefs,
-                                          priv->prefs_branch,
-                                          "search_engine.",
-                                          &error))
-        {
-          g_warning ("%s", error->message);
-          g_clear_error (&error);
-        }
-
-      /* Add the tld suggestion observer */
-      if (!mozhelper_prefs_branch_add_observer (priv->prefs,
-                                          priv->prefs_branch,
-                                          MWB_AC_LIST_SUGGESTED_TLD_PREF,
-                                          &error))
-        {
-          g_warning ("%s", error->message);
-          g_clear_error (&error);
-        }
-
-      mwb_ac_list_update_search_engine (self);
-      mwb_ac_list_update_tld_suggestions (self);
-    }
-  else
-    {
-      g_warning ("%s", error->message);
-      g_clear_error (&error);
-      priv->prefs_branch = -1;
-    }
-
-  priv->prefs_branch_changed_handler =
-    g_signal_connect (priv->prefs, "branch-changed",
-                      G_CALLBACK (mwb_ac_list_prefs_branch_changed_cb),
-                      self);
-
   if (CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->realize)
     CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->realize (actor);
 }
@@ -1271,13 +939,6 @@ mwb_ac_list_init (MwbAcList *self)
 
   priv->entries = g_array_new (FALSE, TRUE, sizeof (MwbAcListEntry));
 
-  priv->history = mozhelper_history_new ();
-
-  priv->result_received_handler =
-    g_signal_connect (priv->history, "ac-result-received",
-                      G_CALLBACK (mwb_ac_list_result_received_cb),
-                      self);
-
   priv->search_text = g_string_new ("");
 
   priv->selection = -1;
@@ -1301,6 +962,9 @@ mwb_ac_list_init (MwbAcList *self)
 
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mwb_ac_list_style_changed_cb), NULL);
+
+  priv->dbcon = NULL;
+  priv->search_stmt = NULL;
 }
 
 NbtkWidget*
@@ -1310,52 +974,40 @@ mwb_ac_list_new (void)
 }
 
 static void
-mwb_ac_list_get_favicon_cb (MozhelperHistory *history,
-                            const gchar *mime_type,
-                            const guint8 *data,
-                            guint data_len,
-                            const GError *error,
-                            gpointer user_data)
+mwb_ac_list_set_favicon (const gchar *mime_type,
+                         const guint8 *data,
+                         guint data_len,
+                         gpointer user_data)
 {
   MwbAcListCachedFavicon *cached_favicon = user_data;
   MwbAcList *ac_list = cached_favicon->ac_list;
   MwbAcListPrivate *priv = ac_list->priv;
 
-  if (error)
+  GError *texture_error = NULL;
+
+  cached_favicon->texture = mwb_utils_image_to_texture (data, data_len,
+                                                        &texture_error);
+  if (cached_favicon->texture != COGL_INVALID_HANDLE)
     {
-      /* We don't care if the icon isn't available */
-      if (error->domain != MOZHELPER_ERROR
-          || error->code != MOZHELPER_ERROR_NOTAVAILABLE)
-        g_warning ("favicon error: %s", error->message);
+      guint i;
+
+      /* Set all of the entries that correspond to this URL */
+      for (i = MWB_AC_LIST_N_FIXED_ENTRIES; i < priv->entries->len; i++)
+        {
+          MwbAcListEntry *entry = &g_array_index (priv->entries,
+                                                  MwbAcListEntry, i);
+
+          if (entry->url && !strcmp (entry->url, cached_favicon->url))
+            {
+              entry->texture = cogl_handle_ref (cached_favicon->texture);
+              clutter_actor_queue_redraw (CLUTTER_ACTOR (ac_list));
+            }
+        }
     }
   else
     {
-      GError *texture_error = NULL;
-
-      cached_favicon->texture = mwb_utils_image_to_texture (data, data_len,
-                                                            &texture_error);
-      if (cached_favicon->texture != COGL_INVALID_HANDLE)
-        {
-          guint i;
-
-          /* Set all of the entries that correspond to this URL */
-          for (i = MWB_AC_LIST_N_FIXED_ENTRIES; i < priv->entries->len; i++)
-            {
-              MwbAcListEntry *entry = &g_array_index (priv->entries,
-                                                      MwbAcListEntry, i);
-
-              if (entry->url && !strcmp (entry->url, cached_favicon->url))
-                {
-                  entry->texture = cogl_handle_ref (cached_favicon->texture);
-                  clutter_actor_queue_redraw (CLUTTER_ACTOR (ac_list));
-                }
-            }
-        }
-      else
-        {
-          g_warning ("favicon error: %s", texture_error->message);
-          g_error_free (texture_error);
-        }
+      g_warning ("favicon error: %s", texture_error->message);
+      g_error_free (texture_error);
     }
 
   cached_favicon->favicon_handler = 0;
@@ -1405,16 +1057,22 @@ mwb_ac_list_start_transition (MwbAcList *self)
 }
 
 static void
-mwb_ac_list_result_received_cb (MozhelperHistory *history,
-                                guint32 search_id,
-                                const gchar *value,
-                                const gchar *comment,
-                                MwbAcList *self)
+mwb_ac_list_result_received(MwbAcList *self, 
+                            gchar     *value, 
+                            gchar     *comment, 
+                            gchar     *mime_type, 
+                            guint8    *favicon, 
+                            guint      favicon_len)
 {
   MwbAcListPrivate *priv = self->priv;
 
-  if (search_id == priv->search_id
-      && priv->entries->len < MWB_AC_LIST_MAX_ENTRIES)
+  if (!value) /* No URL */
+    return; 
+
+  if (!comment) /* No title, will display URL */
+    comment = "";
+
+  if (priv->entries->len < MWB_AC_LIST_MAX_ENTRIES)
     {
       MwbAcListEntry *entry;
       const gchar *result_text;
@@ -1485,14 +1143,11 @@ mwb_ac_list_result_received_cb (MozhelperHistory *history,
 
           cached_favicon->texture = NULL;
           cached_favicon->ac_list = self;
-
-          cached_favicon->favicon_handler
-            = mozhelper_history_get_favicon (priv->history, value, FALSE,
-                                       mwb_ac_list_get_favicon_cb,
-                                       cached_favicon,
-                                       NULL);
-
           cached_favicon->url = g_strdup (value);
+
+          if (favicon && favicon_len > 0)
+            mwb_ac_list_set_favicon (mime_type, favicon, 
+                                     favicon_len, cached_favicon);
 
           g_hash_table_insert (priv->favicon_cache,
                                cached_favicon->url,
@@ -1762,67 +1417,6 @@ mwb_ac_list_add_default_entries (MwbAcList *self)
     }
 }
 
-void
-mwb_ac_list_increment_tld_score_for_url (MwbAcList *self,
-                                         const gchar *url)
-{
-  MwbAcListPrivate *priv;
-  const gchar *domain_start, *domain_end;
-
-  g_return_if_fail (MWB_IS_AC_LIST (self));
-
-  priv = self->priv;
-
-  if (priv->prefs == NULL || priv->prefs_branch == -1)
-    return;
-
-  /* Try to extract the domain name from the URL */
-  for (domain_start = url; *domain_start; domain_start++)
-    if ((*domain_start < 'a' || *domain_start > 'z') &&
-        (*domain_start < 'A' || *domain_start > 'Z'))
-      break;
-  if (domain_start > url && g_str_has_prefix (domain_start, "://"))
-    domain_start += 3;
-  else
-    domain_start = url;
-  for (domain_end = domain_start;
-       *domain_end && strchr ("/?:@#&", *domain_end) == NULL;
-       domain_end++);
-  if (domain_end > domain_start)
-    {
-      gchar *domain = g_strndup (domain_start, domain_end - domain_start);
-      gchar *p;
-      gpointer value;
-
-      /* Increment the score for each part of the domain */
-      for (p = domain + (domain_end - domain_start);
-           p >= domain;
-           p--)
-        if (*p == '.' &&
-            g_hash_table_lookup_extended (priv->tld_suggestions,
-                                          p,
-                                          NULL,
-                                          &value))
-          {
-            gchar *pref = g_strconcat (MWB_AC_LIST_SUGGESTED_TLD_PREF,
-                                       p + 1, NULL);
-            GError *error = NULL;
-            if (!mozhelper_prefs_branch_set_int (priv->prefs,
-                                           priv->prefs_branch,
-                                           pref,
-                                           GPOINTER_TO_INT (value) + 1,
-                                           &error))
-              {
-                g_warning ("%s", error->message);
-                g_error_free (error);
-              }
-            g_free (pref);
-          }
-
-      g_free (domain);
-    }
-}
-
 static gboolean
 mwb_ac_list_clear_timeout_cb (MwbAcList *self)
 {
@@ -1839,10 +1433,49 @@ mwb_ac_list_clear_timeout_cb (MwbAcList *self)
 }
 
 void
+mwb_ac_list_db_stmt_prepare (MwbAcList *self, void *dbcon)
+{
+  gint rc;
+  MwbAcListPrivate *priv = self->priv;
+  priv->dbcon = (sqlite3 *)dbcon;
+
+  if (!priv->dbcon)
+    {
+      g_warning ("[netpanel] No available database connection");
+      return;
+    }
+
+  if (!priv->search_stmt)
+    {
+      rc = sqlite3_prepare_v2 (priv->dbcon,
+                               MWB_AC_LIST_SQL, 
+                               sizeof (MWB_AC_LIST_SQL), 
+                               &priv->search_stmt, 
+                               NULL);
+      if (rc)
+        g_warning("[netpanel] sqlite3_prepare_v2 (): %s", 
+                  sqlite3_errmsg(priv->dbcon));
+    }
+}
+
+void
+mwb_ac_list_db_stmt_finalize (MwbAcList *self)
+{
+  MwbAcListPrivate *priv = self->priv;
+
+  if (priv->search_stmt)
+    sqlite3_finalize(priv->search_stmt);
+
+  priv->search_stmt = NULL;
+  priv->dbcon = NULL; /* let panel to close db */
+}
+
+void
 mwb_ac_list_set_search_text (MwbAcList *self,
                              const gchar *search_text)
 {
   MwbAcListPrivate *priv = self->priv;
+  gint rc = 0;
 
   g_return_if_fail (MWB_IS_AC_LIST (self));
 
@@ -1857,20 +1490,6 @@ mwb_ac_list_set_search_text (MwbAcList *self,
       g_string_set_size (priv->search_text, 0);
       g_string_append_len (priv->search_text, search_text, search_text_len);
 
-      if (priv->history)
-        {
-          GError *error = NULL;
-
-          if (!mozhelper_history_start_ac_search (priv->history, search_text,
-                                            &priv->search_id,
-                                            &error))
-            {
-              g_warning ("Search failed: %s", error->message);
-              g_error_free (error);
-              priv->search_id = 0;
-            }
-        }
-
       /* Only clear after a short timeout, stops us from spawning
        * lots of queries if this gets set frequently, and stops
        * the animation from looking shaky
@@ -1882,6 +1501,27 @@ mwb_ac_list_set_search_text (MwbAcList *self,
                                            self);
 
       g_object_notify (G_OBJECT (self), "search-text");
+
+      if (search_text_len == 0 || !priv->search_stmt)
+        return;
+
+      sqlite3_reset(priv->search_stmt);
+
+      gchar param[search_text_len + 3];
+      sprintf(param, "%%%s%%", search_text);
+      rc = sqlite3_bind_text(priv->search_stmt, 1, param, search_text_len + 2, SQLITE_TRANSIENT);
+      if (rc)
+        g_warning("[netpanel] sqlite3_bind_text(): %s", sqlite3_errmsg(priv->dbcon));
+
+      while (sqlite3_step(priv->search_stmt) == SQLITE_ROW) 
+        {
+          mwb_ac_list_result_received(self, 
+                                      (gchar*) sqlite3_column_text(priv->search_stmt, 0), 
+                                      (gchar*) sqlite3_column_text(priv->search_stmt, 1), 
+                                      (gchar*) sqlite3_column_text(priv->search_stmt, 2),
+                                      (guint8*)sqlite3_column_blob(priv->search_stmt, 3), 
+                                      (guint)  sqlite3_column_int (priv->search_stmt, 4));
+        }
     }
 }
 

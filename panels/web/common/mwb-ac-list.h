@@ -65,6 +65,10 @@ GType mwb_ac_list_get_type (void);
 
 NbtkWidget *mwb_ac_list_new (void);
 
+void mwb_ac_list_db_stmt_prepare (MwbAcList *self, void *dbcon);
+
+void mwb_ac_list_db_stmt_finalize (MwbAcList *self);
+
 void mwb_ac_list_set_search_text (MwbAcList *self,
                                   const gchar *search_text);
 const gchar *mwb_ac_list_get_search_text (MwbAcList *self);

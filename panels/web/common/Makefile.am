@@ -1,7 +1,6 @@
 AM_CPPFLAGS = \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_VERSION_STRING=\"$(MWB_VERSION)\" \
-	$(MOZHELPER_CFLAGS) \
 	$(NBTK_CFLAGS) \
 	$(GTK_CFLAGS) \
 	-Wall \

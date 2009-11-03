@@ -165,3 +165,96 @@ mwb_utils_cursor_new_from_stock (const gchar *icon_name)
     return NULL;
 }
 
+gchar*
+mwb_utils_places_db_get_filename()
+{
+  GKeyFile *keys;
+  gboolean is_relative = TRUE;
+  gboolean is_default = FALSE;
+  gchar *profile_ini;
+  gchar **groups;
+  gchar *result = NULL;
+  gchar *path = NULL;
+  guint i, length = 0;
+
+  profile_ini = g_build_filename(g_get_home_dir(),
+                                 MWB_PROFILES_INI,
+                                 NULL);
+  if (!g_file_test (profile_ini, G_FILE_TEST_EXISTS))
+    {
+      /* Browser profile does not created yet */
+      g_free (profile_ini);
+      return NULL;
+    }
+
+  keys = g_key_file_new ();
+  if (!g_key_file_load_from_file (keys, profile_ini, 0, NULL))
+    {
+      g_warning ("[netpanel] Failed to load keys from profile config: %s", profile_ini);
+      g_free (profile_ini);
+      g_key_file_free (keys);
+      return NULL;
+    }
+
+  groups = g_key_file_get_groups (keys, &length);
+  for (i = 0; groups[i]; i++)
+    {
+      if (g_strcmp0(groups[i], "General"))
+        {
+          is_default = g_key_file_get_boolean(keys, groups[i], "Default", NULL);
+          is_relative = g_key_file_get_boolean(keys, groups[i], "IsRelative", NULL);
+          if (is_default || i == length-1)
+            {
+              path = g_key_file_get_string(keys, groups[i], "Path", NULL);
+              break;
+            }
+        }
+    }
+
+  if (is_relative)
+    result = g_build_filename(g_get_home_dir (), MWB_PROFILES_BASE, 
+                              path, MWB_PLACES_SQLITE, NULL);
+  else
+    result = g_build_filename(path, MWB_PLACES_SQLITE, NULL); 
+
+  /* Ensure we return a valid db path */
+  if (!g_file_test (result, G_FILE_TEST_EXISTS))
+    {
+      g_free (result);
+      result = NULL;
+    }
+
+  g_strfreev (groups);
+  g_key_file_free (keys);
+  g_free (profile_ini);
+  g_free (path);
+
+  return result;
+}
+
+int
+mwb_utils_places_db_connect(const gchar *places_db, sqlite3 **dbcon)
+{
+  if (!places_db)
+    return -1;
+
+  g_assert (dbcon != NULL);
+  gint rc = sqlite3_open(places_db, dbcon);
+  if (rc)
+    {
+      g_warning ("[netpanel] unable to open places db: %s, places=%s\n",
+                 sqlite3_errmsg(*dbcon), places_db);
+      sqlite3_close(*dbcon);
+      *dbcon = NULL;
+      return -1;
+    }
+  sqlite3_busy_timeout(*dbcon, 5000);
+
+  return 0;
+}
+
+void 
+mwb_utils_places_db_close(sqlite3 *dbcon)
+{
+    sqlite3_close(dbcon);
+}

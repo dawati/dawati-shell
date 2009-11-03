@@ -20,10 +20,16 @@
 #ifndef _MWB_UTILS_H
 #define _MWB_UTILS_H
 
+#include <sqlite3.h>
 #include <glib-object.h>
 #include <clutter/clutter.h>
 #include <nbtk/nbtk.h>
 #include <gdk/gdk.h>
+
+#define MWB_PROFILES_BASE ".mozilla/moblin-web-browser/"
+#define MWB_PROFILES_INI  MWB_PROFILES_BASE "/profiles.ini"
+#define MWB_PLACES_SQLITE "places.sqlite"
+
 
 G_BEGIN_DECLS
 
@@ -75,6 +81,16 @@ mwb_utils_pixbuf_new_from_stock (const gchar *icon_name, gint size);
 
 GdkCursor *
 mwb_utils_cursor_new_from_stock (const gchar *icon_name);
+
+gchar* 
+mwb_utils_places_db_get_filename ();
+
+int 
+mwb_utils_places_db_connect (const gchar *places_db, sqlite3 **dbcon);
+
+void 
+mwb_utils_places_db_close (sqlite3 *dbcon);
+
 
 G_END_DECLS
 

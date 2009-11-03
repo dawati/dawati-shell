@@ -354,10 +354,25 @@ mnb_netpanel_bar_unmap (ClutterActor *actor)
 static void
 mnb_netpanel_bar_go (MnbNetpanelBar *self, const gchar *url)
 {
+  /* empty */
+}
+
+void
+mnb_netpanel_bar_set_dbcon (GObject *object, void *dbcon)
+{
+  MnbNetpanelBar *self = MNB_NETPANEL_BAR(object);
   MnbNetpanelBarPrivate *priv = self->priv;
 
-  if (priv->ac_list)
-    mwb_ac_list_increment_tld_score_for_url (MWB_AC_LIST (priv->ac_list), url);
+  mwb_ac_list_db_stmt_prepare (MWB_AC_LIST (priv->ac_list), dbcon);
+}
+
+void
+mnb_netpanel_bar_clear_dbcon (GObject *object)
+{
+  MnbNetpanelBar *self = MNB_NETPANEL_BAR(object);
+  MnbNetpanelBarPrivate *priv = self->priv;
+
+  mwb_ac_list_db_stmt_finalize (MWB_AC_LIST (priv->ac_list));
 }
 
 static void
@@ -365,6 +380,7 @@ mnb_netpanel_bar_class_init (MnbNetpanelBarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MnbNetpanelBarPrivate));
 
@@ -500,6 +516,7 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
                     GINT_TO_POINTER (FALSE));
 
   priv->ac_list = mwb_ac_list_new ();
+
   priv->ac_list_activate_handler
     = g_signal_connect (priv->ac_list, "activate",
                         G_CALLBACK (mnb_netpanel_bar_ac_list_activate_cb),
@@ -510,7 +527,7 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
 }
 
 NbtkWidget*
-mnb_netpanel_bar_new (const char *label)
+mnb_netpanel_bar_new (const gchar *label)
 {
   return NBTK_WIDGET (g_object_new (MNB_TYPE_NETPANEL_BAR,
                                     "label", label,

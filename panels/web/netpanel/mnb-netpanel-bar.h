@@ -73,6 +73,10 @@ void mnb_netpanel_bar_focus (MnbNetpanelBar *netpanel_bar);
 gboolean mnb_netpanel_bar_check_for_search (MnbNetpanelBar *netpanel_bar,
                                             const gchar *url);
 
+void mnb_netpanel_bar_set_dbcon (GObject *object, void *dbcon);
+
+void mnb_netpanel_bar_clear_dbcon (GObject *object);
+
 G_END_DECLS
 
 #endif /* _MNB_NETPANEL_BAR_H */
