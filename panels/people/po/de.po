@@ -1,10 +1,9 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:32+0000\n"
-"PO-Revision-Date: 2009-10-06 23:31+0200\n"
+"PO-Revision-Date: 2009-11-02 16:31-0800\n"
 "Last-Translator: Clara <steiner-jay.clarax@intel.com>\n"
 "Language-Team: <>\n"
 "MIME-Version: 1.0\n"
@@ -14,7 +13,8 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
+#: ../src/moblin-panel-people.c:70
+#: ../src/mnb-people-panel.c:573
 msgid "people"
 msgstr "Leute"
 
@@ -34,9 +34,13 @@ msgstr "Eine Nachricht abschicken"
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Wir können leider keine Leute finden. Hast du ein Messenger-Konto eingerichtet?"
 
+#: ../src/mnb-people-panel.c:447
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Wir können leider keine Leute finden. Es sieht danach aus, als ob sie alle offline sind."
+
 #: ../src/mnb-people-panel.c:497
 msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Um ihre IM-Kontakte zu sehen, gehen sie bitte online in der Statusleiste."
+msgstr "Um deine IM-Kontakte zu sehen, gehe bitte online in der Statusleiste."
 
 #: ../src/mnb-people-panel.c:554
 #, c-format
@@ -67,6 +71,3 @@ msgstr "Auswahl"
 msgid "Nobody selected"
 msgstr "Niemand ausgewählt"
 
-#: ../src/mnb-people-panel.c:447
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Wir können leider keine Leute finden. Es sieht danach aus, als ob sie alle offline sind."
