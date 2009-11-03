@@ -1182,6 +1182,36 @@ mnb_toolbar_panel_request_tooltip_cb (MnbPanel    *panel,
 }
 
 /*
+ * Removes the panel from the pending_panels list
+ */
+static void
+mnb_toolbar_remove_panel_from_pending (MnbToolbar *toolbar, MnbPanel *panel)
+{
+  MnbToolbarPrivate *priv      = toolbar->priv;
+  const gchar       *dbus_name = mnb_panel_get_dbus_name (MNB_PANEL (panel));
+
+  if (dbus_name)
+    {
+      GSList *l = priv->pending_panels;
+
+      while (l)
+        {
+          gchar *n = l->data;
+
+          if (!strcmp (n, dbus_name))
+            {
+              g_free (n);
+              priv->pending_panels =
+                g_slist_delete_link (priv->pending_panels, l);
+              break;
+            }
+
+          l = l->next;
+        }
+    }
+}
+
+/*
  * Removes the button/panel pair from the toolbar, avoiding any recursion
  * due to "destroy" signal handler.
  *
@@ -1229,7 +1259,8 @@ mnb_toolbar_dispose_of_panel (MnbToolbar *toolbar,
 
   if (panel)
     {
-      priv->panels[index] = NULL;
+      if (MNB_IS_PANEL (panel))
+        mnb_toolbar_remove_panel_from_pending (toolbar, (MnbPanel*)panel);
 
       if (!panel_destroyed)
         clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
@@ -1397,7 +1428,22 @@ mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
   index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
 
   if (index < 0)
-    return;
+    {
+      /*
+       * This is the case when the panel initialization failed, and the panel
+       * was never added to the Toolbar. We need to release any floating
+       * reference.
+       */
+      mnb_toolbar_remove_panel_from_pending (toolbar, panel);
+
+      if (g_object_is_floating (panel))
+        {
+          g_object_ref_sink (panel);
+          g_object_unref (panel);
+        }
+
+      return;
+    }
 
   mnb_toolbar_dispose_of_panel (toolbar, index, TRUE);
 }
@@ -1418,7 +1464,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   const gchar       *tooltip;
   const gchar       *stylesheet = NULL;
   const gchar       *style_id = NULL;
-  GSList            *l;
 
   if (MNB_IS_PANEL (panel))
     {
@@ -1426,6 +1471,11 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
       tooltip    = mnb_panel_get_tooltip (MNB_PANEL (panel));
       stylesheet = mnb_panel_get_stylesheet (MNB_PANEL (panel));
       style_id   = mnb_panel_get_button_style (MNB_PANEL (panel));
+
+      /*
+       * Remove this panel from the pending list.
+       */
+      mnb_toolbar_remove_panel_from_pending (toolbar, (MnbPanel*)panel);
     }
   else if (MNB_IS_SWITCHER (panel))
     {
@@ -1436,24 +1486,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
     {
       g_warning ("Unhandled panel type: %s", G_OBJECT_TYPE_NAME (panel));
       return;
-    }
-
-  /*
-   * Remove this panel from the pending list.
-   */
-  l = priv->pending_panels;
-  while (l)
-    {
-      gchar *n = l->data;
-
-      if (!strcmp (n, name))
-        {
-          g_free (n);
-          priv->pending_panels = g_slist_delete_link (priv->pending_panels, l);
-          break;
-        }
-
-      l = l->next;
     }
 
   index = mnb_toolbar_panel_name_to_index (name);
@@ -1579,9 +1611,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   g_signal_connect (panel, "request-tooltip",
                     G_CALLBACK (mnb_toolbar_panel_request_tooltip_cb),
                     toolbar);
-
-  g_signal_connect (panel, "destroy",
-                    G_CALLBACK (mnb_toolbar_panel_destroy_cb), toolbar);
 
   g_signal_connect (panel, "ready",
                     G_CALLBACK (mnb_toolbar_panel_ready_cb), toolbar);
@@ -1714,6 +1743,9 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
       if (panel)
         {
+          g_signal_connect (panel, "destroy",
+                            G_CALLBACK (mnb_toolbar_panel_destroy_cb), toolbar);
+
           if (mnb_panel_is_ready (panel))
             {
               mnb_toolbar_append_panel (toolbar, (MnbDropDown*)panel);
