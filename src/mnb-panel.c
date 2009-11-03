@@ -809,21 +809,15 @@ mnb_panel_proxy_owner_changed_cb (DBusGProxy *proxy,
   mnb_panel_init_owner (MNB_PANEL (data));
 }
 
-static gboolean
-mnb_panel_setup_proxy (MnbPanel *panel)
+DBusGProxy *
+mnb_panel_create_dbus_proxy (DBusGConnection *dbus_conn,
+                             const gchar     *dbus_name)
 {
-  MnbPanelPrivate *priv = panel->priv;
-  DBusGProxy      *proxy;
-  gchar           *dbus_path;
-  gchar           *p;
+  DBusGProxy *proxy;
+  gchar      *dbus_path;
+  gchar      *p;
 
-  if (!priv->dbus_conn)
-    {
-      g_warning (G_STRLOC " No dbus connection, cannot connect to panel!");
-      return FALSE;
-    }
-
-  dbus_path = g_strconcat ("/", priv->dbus_name, NULL);
+  dbus_path = g_strconcat ("/", dbus_name, NULL);
 
   p = dbus_path;
   while (*p)
@@ -834,12 +828,29 @@ mnb_panel_setup_proxy (MnbPanel *panel)
       ++p;
     }
 
-  proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
-                                     priv->dbus_name,
+  proxy = dbus_g_proxy_new_for_name (dbus_conn,
+                                     dbus_name,
                                      dbus_path,
                                      MPL_PANEL_DBUS_INTERFACE);
 
   g_free (dbus_path);
+
+  return proxy;
+}
+
+static gboolean
+mnb_panel_setup_proxy (MnbPanel *panel)
+{
+  MnbPanelPrivate *priv = panel->priv;
+  DBusGProxy      *proxy;
+
+  if (!priv->dbus_conn)
+    {
+      g_warning (G_STRLOC " No dbus connection, cannot connect to panel!");
+      return FALSE;
+    }
+
+  proxy = mnb_panel_create_dbus_proxy (priv->dbus_conn, priv->dbus_name);
 
   if (!proxy)
     {
@@ -1197,5 +1208,31 @@ mnb_panel_is_ancestor_of_transient (MnbPanel *panel, MutterWindow *mcw)
   mw  = mutter_window_get_meta_window (mcw);
 
   return meta_window_is_ancestor_of_transient (pmw, mw);
+}
+
+static void
+mnb_panel_dbus_ping_cb (DBusGProxy *proxy, GError *error, gpointer data)
+{
+  g_debug ("Ping to %s acknowledged", (gchar*)data);
+  g_free (data);
+}
+
+
+void
+mnb_toolbar_ping_panel (DBusGConnection *dbus_conn, const gchar *dbus_name)
+{
+  DBusGProxy *proxy = mnb_panel_create_dbus_proxy (dbus_conn, dbus_name);
+
+  if (!proxy)
+    {
+      g_warning ("Unable to create proxy for %s (reason unknown)", dbus_name);
+      return;
+    }
+
+  org_moblin_UX_Shell_Panel_ping_async (proxy,
+                                        mnb_panel_dbus_ping_cb,
+                                        g_strdup (dbus_name));
+
+  g_object_unref (proxy);
 }
 

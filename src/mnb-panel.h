@@ -26,6 +26,7 @@
 #define _MNB_PANEL
 
 #include <glib-object.h>
+#include <dbus/dbus-glib.h>
 
 #include "mnb-drop-down.h"
 
@@ -90,6 +91,9 @@ void          mnb_panel_focus             (MnbPanel *panel);
 gboolean      mnb_panel_owns_window       (MnbPanel *panel, MutterWindow *mcw);
 gboolean      mnb_panel_is_ancestor_of_transient (MnbPanel     *panel,
                                                   MutterWindow *mcw);
+
+void          mnb_toolbar_ping_panel      (DBusGConnection *dbus_conn,
+                                           const gchar     *dbus_name);
 
 G_END_DECLS
 
