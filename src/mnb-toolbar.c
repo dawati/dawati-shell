@@ -1837,19 +1837,16 @@ mnb_toolbar_autostart_panels_cb (gpointer toolbar)
         case BT_APPLET:
           if (!priv->panels[i])
             {
-              DBusConnection *conn;
-              const gchar    *name;
-              gchar          *dbus_name;
+              const gchar *name;
+              gchar       *dbus_name;
 
-              name =  mnb_toolbar_panel_index_to_name (i);
-
-              g_debug ("Panel service [%s] is not running, starting.", name);
-
-              conn = dbus_g_connection_get_connection (priv->dbus_conn);
-
+              name      = mnb_toolbar_panel_index_to_name (i);
               dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
 
-              dbus_bus_start_service_by_name (conn, dbus_name, 0, NULL, NULL);
+              g_debug ("Panel service [%s (%s)] is not running, starting.",
+                       name, dbus_name);
+
+              mnb_toolbar_ping_panel (priv->dbus_conn, dbus_name);
 
               g_free (dbus_name);
 
