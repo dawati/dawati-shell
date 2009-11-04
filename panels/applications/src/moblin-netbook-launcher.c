@@ -35,9 +35,9 @@
 #include <moblin-panel/mpl-icon-theme.h>
 
 #include <moblin-panel/mpl-app-bookmark-manager.h>
-#include <moblin-panel/mpl-entry.h>
 
 #include "moblin-netbook-launcher.h"
+#include "mnb-entry.h"
 #include "mnb-expander.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-grid.h"
@@ -1366,7 +1366,7 @@ _constructor (GType                  gtype,
                                         "y-fill", FALSE,
                                         NULL);
 
-  priv->filter_entry = (ClutterActor *) mpl_entry_new (_("Search"));
+  priv->filter_entry = mnb_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->filter_entry),
                            FILTER_ENTRY_WIDTH);

@@ -14,6 +14,8 @@ libexec_PROGRAMS = moblin-panel-applications
 moblin_panel_applications_LDADD = $(APPLICATIONS_LIBS) $(MPL_LIBS)
 
 moblin_panel_applications_SOURCES = \
+  mnb-entry.c \
+  mnb-entry.h \
   mnb-expander.c \
   mnb-expander.h \
   mnb-launcher-application.c \
