@@ -29,6 +29,8 @@ libcarrick_la_SOURCES = carrick-applet.c \
                         carrick-notification-manager.h \
                         carrick-network-model.c \
                         carrick-network-model.h \
+                        carrick-util.c \
+                        carrick-util.h \
                         $(BUILT_SOURCES) \
                         $(NULL)
 
