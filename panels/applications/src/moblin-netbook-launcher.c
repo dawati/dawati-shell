@@ -207,6 +207,7 @@ struct MnbLauncherPrivate_ {
   GHashTable              *expanders;
   NbtkExpander            *first_expander;
   GSList                  *launchers;
+  gboolean                 first_expansion;
 
   /* Static widgets, managed by clutter. */
   ClutterActor            *filter_hbox;
@@ -461,8 +462,13 @@ expander_expand_complete_cb (NbtkExpander     *expander,
       priv->expand_expander = expander;
       priv->expand_timeout_id = g_idle_add ((GSourceFunc) expander_expand_complete_idle_cb,
                                             self);
-      scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
-                                       CLUTTER_ACTOR (expander));
+      if (!priv->first_expansion)
+        {
+          scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+                                           CLUTTER_ACTOR (expander));
+        }
+      else
+        priv->first_expansion = FALSE;
     }
   else
     {
@@ -520,8 +526,11 @@ expander_frame_allocated_cb (NbtkExpander           *expander,
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
-                                   CLUTTER_ACTOR (expander));
+  if (!priv->first_expansion)
+    {
+      scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+                                       CLUTTER_ACTOR (expander));
+    }
 }
 
 static gboolean
@@ -1461,7 +1470,11 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
 
 static void
 mnb_launcher_init (MnbLauncher *self)
-{}
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+
+  priv->first_expansion = TRUE;
+}
 
 ClutterActor *
 mnb_launcher_new (void)
