@@ -31,6 +31,7 @@
 
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
+#include "carrick-util.h"
 
 #if ! HAVE_DECL_GTK_INFO_BAR_NEW
 #include "gtkinfobar.h"
@@ -511,7 +512,7 @@ _delete_button_cb (GtkButton *delete_button,
                                    " no longer be\nautomatically connected to "
                                    "%s."),
                                 priv->name,
-                                priv->type,
+                                util_get_service_type_for_display (priv->type),
                                 priv->name);
   label = gtk_label_new (label_text);
 
