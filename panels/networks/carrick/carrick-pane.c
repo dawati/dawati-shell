@@ -278,10 +278,6 @@ connect_service_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
     }
-
-  /* Re-set the default timeout on the proxy to 25s */
-  dbus_g_proxy_set_default_timeout (proxy,
-                                    25000);
 }
 
 /*
@@ -819,12 +815,12 @@ _new_connection_cb (GtkButton *button,
       /* Connection methods do not return until there has been success or an error,
        * set the timeout nice and long before we make the call
        */
-      dbus_g_proxy_set_default_timeout (priv->manager,
-                                        120000);
+      dbus_g_proxy_set_default_timeout (priv->manager, 120000);
       org_moblin_connman_Manager_connect_service_async (priv->manager,
                                                         method_props,
                                                         connect_service_notify_cb,
                                                         self);
+      dbus_g_proxy_set_default_timeout (priv->manager, -1);
     }
 
   /*

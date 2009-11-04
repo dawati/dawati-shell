@@ -432,26 +432,6 @@ dbus_proxy_notify_cb (DBusGProxy *proxy,
     }
 }
 
-/*
- * After the connect method calls return re-set the default timeout on the
- * proxy to something saner.
- */
-static void
-connect_notify_cb (DBusGProxy *proxy,
-                   GError     *error,
-                   gpointer    user_data)
-{
-  if (error)
-    {
-      g_debug ("Error when connecting: %s",
-               error->message);
-      g_error_free (error);
-    }
-
-  dbus_g_proxy_set_default_timeout (proxy,
-                                    25000);
-}
-
 static void
 set_passphrase_notify_cb (DBusGProxy *proxy,
                           GError     *error,
@@ -471,11 +451,11 @@ set_passphrase_notify_cb (DBusGProxy *proxy,
        * method doesn't return until there has been either
        * success or an error.
        */
-      dbus_g_proxy_set_default_timeout (proxy,
-                                        120000);
+      dbus_g_proxy_set_default_timeout (proxy, 120000);
       org_moblin_connman_Service_connect_async (proxy,
-                                                connect_notify_cb,
+                                                dbus_proxy_notify_cb,
                                                 item);
+      dbus_g_proxy_set_default_timeout (proxy, -1);
     }
 }
 
@@ -600,11 +580,11 @@ _connect_button_cb (GtkButton          *connect_button,
                * method doesn't return until there has been either
                * success or an error.
                */
-              dbus_g_proxy_set_default_timeout (priv->proxy,
-                                                120000);
+              dbus_g_proxy_set_default_timeout (priv->proxy, 120000);
               org_moblin_connman_Service_connect_async (priv->proxy,
-                                                        connect_notify_cb,
+                                                        dbus_proxy_notify_cb,
                                                         item);
+	      dbus_g_proxy_set_default_timeout (priv->proxy, -1);
             }
         }
       else
@@ -638,11 +618,11 @@ _connect_button_cb (GtkButton          *connect_button,
 	     * method doesn't return until there has been either
 	     * success or an error.
 	     */
-	    dbus_g_proxy_set_default_timeout (priv->proxy,
-					      120000);
+	    dbus_g_proxy_set_default_timeout (priv->proxy, 120000);
 	    org_moblin_connman_Service_connect_async (priv->proxy,
-						      connect_notify_cb,
+						      dbus_proxy_notify_cb,
 						      item);
+	    dbus_g_proxy_set_default_timeout (priv->proxy, -1);
 
             if (panel_client)
               mpl_panel_client_request_hide (panel_client);
