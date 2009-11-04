@@ -25,11 +25,11 @@ libcarrick_la_SOURCES = carrick-applet.c \
                         carrick-service-item.h \
                         carrick-list.c \
                         carrick-list.h \
-												carrick-notification-manager.c \
-												carrick-notification-manager.h \
-												carrick-network-model.c \
-												carrick-network-model.h \
-												$(BUILT_SOURCES) \
+                        carrick-notification-manager.c \
+                        carrick-notification-manager.h \
+                        carrick-network-model.c \
+                        carrick-network-model.h \
+                        $(BUILT_SOURCES) \
                         $(NULL)
 
 if ! HAVE_INFOBAR
