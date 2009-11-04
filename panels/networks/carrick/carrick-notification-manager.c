@@ -27,6 +27,7 @@
 #include <glib/gi18n.h>
 
 #include "carrick-icon-factory.h"
+#include "carrick-util.h"
 
 G_DEFINE_TYPE (CarrickNotificationManager, carrick_notification_manager, G_TYPE_OBJECT)
 
@@ -140,12 +141,12 @@ _tell_online (const gchar *name,
         {
           message = g_strdup_printf (_ ("You're now connected to %s, a %s network"),
                                      name,
-                                     type);
+                                     util_get_service_type_for_display (type));
         }
       else
         {
           message = g_strdup_printf (_ ("You're now connected to a %s network"),
-                                     type);
+                                     util_get_service_type_for_display (type));
         }
     }
 
@@ -174,13 +175,13 @@ _tell_offline (CarrickNotificationManager *self,
   else if (priv->last_name)
     {
       message = g_strdup_printf (_ ("Sorry we've lost your %s connection to %s"),
-                                 priv->last_type,
+                                 util_get_service_type_for_display (priv->last_type),
                                  priv->last_name);
     }
   else if (priv->last_type)
     {
       message = g_strdup_printf (_ ("Sorry, we've lost your %s connection"),
-                                 priv->last_type);
+                                 util_get_service_type_for_display (priv->last_type));
     }
 
   _send_note (title, message, icon);
@@ -226,14 +227,14 @@ _tell_changed (CarrickNotificationManager *self,
                                         "we've connected you to %s, a %s network"),
                                      priv->last_name,
                                      name,
-                                     type);
+                                     util_get_service_type_for_display (type));
         }
       else
         {
           message = g_strdup_printf (_ ("Sorry, your connection to %s was lost. "
                                         "So we've connected you to a %s network"),
                                      priv->last_name,
-                                     type);
+                                     util_get_service_type_for_display (type));
         }
     }
   else
@@ -250,16 +251,16 @@ _tell_changed (CarrickNotificationManager *self,
           message = g_strdup_printf (_ ("Sorry, your %s connection was lost. "
                                         "So we've connected you to %s, a %s "
                                         "network"),
-                                     priv->last_type,
+                                     util_get_service_type_for_display (priv->last_type),
                                      name,
-                                     type);
+                                     util_get_service_type_for_display (type));
         }
       else
         {
           message = g_strdup_printf (_ ("Sorry, your %s connection was lost. So "
                                         "we've connected you to a %s network"),
-                                     priv->last_type,
-                                     type);
+                                     util_get_service_type_for_display (priv->last_type),
+                                     util_get_service_type_for_display (type));
         }
     }
 
