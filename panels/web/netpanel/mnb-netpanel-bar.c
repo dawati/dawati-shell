@@ -465,8 +465,9 @@ mnb_netpanel_bar_key_press_event_cb (GObject         *obj,
 }
 
 static void
-mnb_netpanel_bar_key_focus_out_cb (GObject        *obj,
-                                   MnbNetpanelBar *self)
+mnb_netpanel_bar_key_focus_out_cb (GObject         *obj,
+                                   ClutterKeyEvent *event,
+                                   MnbNetpanelBar  *self)
 {
   mnb_netpanel_bar_set_show_auto_complete (self, FALSE);
 }
@@ -491,6 +492,15 @@ mnb_netpanel_bar_ac_list_activate_cb (MwbAcList      *ac_list,
     }
 }
 
+void
+mnb_netpanel_bar_button_press_cb (GObject         *obj,
+                                  ClutterKeyEvent *event,
+                                  MnbNetpanelBar  *self)
+{
+  mnb_netpanel_bar_set_show_auto_complete (self, FALSE);
+}
+
+
 static void
 mnb_netpanel_bar_init (MnbNetpanelBar *self)
 {
@@ -509,11 +519,9 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
                     G_CALLBACK (mnb_netpanel_bar_key_press_event_cb), self);
   g_signal_connect (entry, "key-focus-out",
                     G_CALLBACK (mnb_netpanel_bar_key_focus_out_cb), self);
-
-  clutter_actor_set_reactive (actor, TRUE);
   g_signal_connect (actor, "button-press-event",
-                    G_CALLBACK (mwb_utils_focus_on_click_cb),
-                    GINT_TO_POINTER (FALSE));
+                    G_CALLBACK(mnb_netpanel_bar_button_press_cb),
+                    self);
 
   priv->ac_list = mwb_ac_list_new ();
 

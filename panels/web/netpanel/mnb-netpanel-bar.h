@@ -77,6 +77,10 @@ void mnb_netpanel_bar_set_dbcon (GObject *object, void *dbcon);
 
 void mnb_netpanel_bar_clear_dbcon (GObject *object);
 
+void mnb_netpanel_bar_button_press_cb(GObject         *obj,
+                                      ClutterKeyEvent *event,
+                                      MnbNetpanelBar  *self);
+
 G_END_DECLS
 
 #endif /* _MNB_NETPANEL_BAR_H */

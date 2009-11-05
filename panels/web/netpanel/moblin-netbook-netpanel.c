@@ -1182,6 +1182,12 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   g_signal_connect (priv->entry, "button-clicked",
                     G_CALLBACK (netpanel_bar_button_clicked_cb), self);
 
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
+  g_signal_connect (CLUTTER_ACTOR (self), "button-press-event",
+                    G_CALLBACK (mnb_netpanel_bar_button_press_cb),
+                    MNB_NETPANEL_BAR (priv->entry));
+
+
   /* Construct title for tab preview section */
   priv->tabs_label = label = nbtk_label_new (_("Tabs"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "section");
