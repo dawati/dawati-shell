@@ -553,6 +553,11 @@ mnb_panel_hide_completed (MnbDropDown *self)
       return;
     }
 
+  if (priv->window)
+    {
+      gtk_widget_hide (priv->window);
+    }
+
   org_moblin_UX_Shell_Panel_hide_end_async (priv->proxy,
                                             mnb_panel_dbus_dumb_reply_cb, NULL);
 }
