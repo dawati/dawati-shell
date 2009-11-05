@@ -55,7 +55,11 @@ typedef struct
 
 GType mnb_entry_get_type (void);
 
-ClutterActor * mnb_entry_new (const char *label);
+ClutterActor *  mnb_entry_new                     (const char *label);
+
+gboolean        mnb_entry_get_has_keyboard_focus  (MnbEntry   *self);
+void            mnb_entry_set_has_keyboard_focus  (MnbEntry   *self,
+                                                   gboolean    keyboard_focus);
 
 G_END_DECLS
 

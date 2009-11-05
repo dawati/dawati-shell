@@ -1060,15 +1060,19 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 }
 
 static void
-entry_changed_cb (MplEntry         *entry,
+entry_changed_cb (MnbEntry         *entry,
                   MnbLauncher      *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   gchar *needle;
 
+  /* Switch back to edit mode. */
+  mnb_entry_set_has_keyboard_focus (entry, TRUE);
+  mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->apps_grid));
+
   mnb_launcher_cancel_search (self);
 
-  needle = g_strdup (mpl_entry_get_text (entry));
+  needle = g_strdup (mpl_entry_get_text (MPL_ENTRY (entry)));
   needle = g_strstrip (needle);
 
   if (needle && *needle)
@@ -1081,13 +1085,17 @@ entry_changed_cb (MplEntry         *entry,
 }
 
 static void
-entry_keynav_cb (MplEntry         *entry,
+entry_keynav_cb (MnbEntry         *entry,
                  guint             keyval,
                  MnbLauncher      *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   NbtkWidget *launcher;
   NbtkWidget *expander;
+
+  /* First keynav event switches from edit- to nav-mode. */
+  if (mnb_entry_get_has_keyboard_focus (entry))
+    mnb_entry_set_has_keyboard_focus (entry, FALSE);
 
   if (keyval == CLUTTER_Page_Up)
     {
@@ -1118,9 +1126,20 @@ entry_keynav_cb (MplEntry         *entry,
 
   if (priv->is_filtering)
     {
-      mnb_launcher_keynav_in_grid (self,
-                                    MNB_LAUNCHER_GRID (priv->apps_grid),
-                                    keyval);
+      gboolean keystroke_handled = mnb_launcher_keynav_in_grid (self,
+                                         MNB_LAUNCHER_GRID (priv->apps_grid),
+                                         keyval);
+      if (keystroke_handled)
+        return;
+
+      /* Move focus back to the entry? */
+      if (keyval == CLUTTER_Left ||
+          keyval == CLUTTER_Up)
+        {
+          mnb_entry_set_has_keyboard_focus (MNB_ENTRY (priv->filter_entry), TRUE);
+          mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->apps_grid));
+        }
+
       return;
     }
 
@@ -1133,11 +1152,20 @@ entry_keynav_cb (MplEntry         *entry,
       gboolean keystroke_handled = mnb_launcher_keynav_in_grid (self,
                                     MNB_LAUNCHER_GRID (priv->fav_grid),
                                     keyval);
+      if (keystroke_handled)
+        return;
 
+      /* Move focus back to the entry? */
+      if (keyval == CLUTTER_Left ||
+          keyval == CLUTTER_Up)
+        {
+          mnb_entry_set_has_keyboard_focus (MNB_ENTRY (priv->filter_entry), TRUE);
+          mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->fav_grid));
+        }
+      else
       /* Move focus to the expanders? */
-      if (!keystroke_handled &&
-            (keyval == CLUTTER_Down ||
-            keyval == CLUTTER_Right))
+      if (keyval == CLUTTER_Down ||
+          keyval == CLUTTER_Right)
         {
           NbtkPadding padding;
           nbtk_widget_get_padding (NBTK_WIDGET (priv->apps_grid),
@@ -1309,6 +1337,7 @@ _key_focus_in (ClutterActor *actor)
   MnbLauncherPrivate *priv = GET_PRIVATE (actor);
 
   clutter_actor_grab_key_focus (priv->filter_entry);
+  mnb_entry_set_has_keyboard_focus (MNB_ENTRY (priv->filter_entry), TRUE);
 }
 
 static void
