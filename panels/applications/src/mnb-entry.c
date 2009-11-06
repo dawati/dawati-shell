@@ -247,8 +247,21 @@ mnb_entry_set_has_keyboard_focus (MnbEntry *self,
 
   if (keyboard_focus != priv->has_keyboard_focus)
   {
+    NbtkEntry   *entry = (NbtkEntry *) mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
+    ClutterText *text = (ClutterText *) nbtk_entry_get_clutter_text (entry);
+
     priv->has_keyboard_focus = keyboard_focus;
     g_object_notify (G_OBJECT (self), "has-keyboard-focus");
+
+    if (priv->has_keyboard_focus)
+    {
+      clutter_text_set_selection (text, 0, -1);
+      clutter_text_set_cursor_visible (text, TRUE);
+    } else {
+      gint pos = clutter_text_get_cursor_position (text);
+      clutter_text_set_selection_bound (text, pos);
+      clutter_text_set_cursor_visible (text, FALSE);
+    }
   }
 }
 
