@@ -243,6 +243,34 @@ static void mnb_launcher_monitor_cb        (MnbLauncherMonitor *monitor,
 static void mnb_launcher_set_show_fav_apps (MnbLauncher        *self,
                                              gboolean            show);
 
+static void
+entry_set_focus (MnbLauncher *self,
+                 gboolean     focus)
+{
+  MnbLauncherPrivate  *priv = GET_PRIVATE (self);
+  NbtkWidget          *expander;
+
+  if (focus)
+    clutter_actor_grab_key_focus (priv->filter_entry);
+
+  mnb_entry_set_has_keyboard_focus (MNB_ENTRY (priv->filter_entry), focus);
+
+  /* Reset highlighed item regardless of focus so we don't end up
+   * with multiple highlighted ones when mixing mouse- and
+   * keyboard-navigation. */
+
+  mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->fav_grid));
+
+  expander = mnb_launcher_grid_find_widget_by_pseudo_class (
+              MNB_LAUNCHER_GRID (priv->apps_grid),
+              "active");
+  if (expander)
+    {
+      NbtkWidget *inner_grid = NBTK_WIDGET (nbtk_bin_get_child (NBTK_BIN (expander)));
+      mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
+    }
+}
+
 static gboolean
 launcher_button_set_reactive_cb (ClutterActor *launcher)
 {
@@ -411,6 +439,9 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
   return button;
 }
 
+#if 0
+/* The idle delay doesn't work for being able to select the first item
+ * of a freshly expanded expander, so get rid of it. */
 static gboolean
 expander_expand_complete_idle_cb (MnbLauncher *self)
 {
@@ -442,6 +473,7 @@ expander_expand_complete_idle_cb (MnbLauncher *self)
 
   return FALSE;
 }
+#endif
 
 static void
 expander_expand_complete_cb (NbtkExpander     *expander,
@@ -460,15 +492,29 @@ expander_expand_complete_cb (NbtkExpander     *expander,
   if (nbtk_expander_get_expanded (expander))
     {
       priv->expand_expander = expander;
+#if 0
+      /* See callback for why this is deactivated. */
       priv->expand_timeout_id = g_idle_add ((GSourceFunc) expander_expand_complete_idle_cb,
                                             self);
-      if (!priv->first_expansion)
+#endif
+      /* On first expansion focus is in the entry, do not highlight anything. */
+      if (priv->first_expansion)
         {
+          priv->first_expansion = FALSE;
+        }
+      else
+        {
+          /* Do not highlight if the focus has already moved on to fav apps. */
+          ClutterActor *inner_grid = nbtk_bin_get_child (NBTK_BIN (priv->expand_expander));
+          ClutterActor *launcher = (ClutterActor *) mnb_launcher_grid_find_widget_by_pseudo_class (
+                                                      MNB_LAUNCHER_GRID (inner_grid),
+                                                      "hover");
+          if (!launcher)
+            mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
+
           scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
                                            CLUTTER_ACTOR (expander));
         }
-      else
-        priv->first_expansion = FALSE;
     }
   else
     {
@@ -1067,8 +1113,7 @@ entry_changed_cb (MnbEntry         *entry,
   gchar *needle;
 
   /* Switch back to edit mode. */
-  mnb_entry_set_has_keyboard_focus (entry, TRUE);
-  mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->apps_grid));
+  entry_set_focus (self, TRUE);
 
   mnb_launcher_cancel_search (self);
 
@@ -1092,10 +1137,6 @@ entry_keynav_cb (MnbEntry         *entry,
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   NbtkWidget *launcher;
   NbtkWidget *expander;
-
-  /* First keynav event switches from edit- to nav-mode. */
-  if (mnb_entry_get_has_keyboard_focus (entry))
-    mnb_entry_set_has_keyboard_focus (entry, FALSE);
 
   if (keyval == CLUTTER_Page_Up)
     {
@@ -1136,11 +1177,21 @@ entry_keynav_cb (MnbEntry         *entry,
       if (keyval == CLUTTER_Left ||
           keyval == CLUTTER_Up)
         {
-          mnb_entry_set_has_keyboard_focus (MNB_ENTRY (priv->filter_entry), TRUE);
-          mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->apps_grid));
+          entry_set_focus (self, TRUE);
         }
 
       return;
+    }
+
+  /* First keynav event switches from edit- to nav-mode
+   * and selects first fav app. */
+  if (mnb_entry_get_has_keyboard_focus (entry))
+    {
+      entry_set_focus (self, FALSE);
+
+      launcher = mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (priv->fav_grid));
+      if (launcher)
+        return;
     }
 
   /* Favourite apps pane. */
@@ -1159,8 +1210,7 @@ entry_keynav_cb (MnbEntry         *entry,
       if (keyval == CLUTTER_Left ||
           keyval == CLUTTER_Up)
         {
-          mnb_entry_set_has_keyboard_focus (MNB_ENTRY (priv->filter_entry), TRUE);
-          mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->fav_grid));
+          entry_set_focus (self, TRUE);
         }
       else
       /* Move focus to the expanders? */
@@ -1334,10 +1384,7 @@ _dispose (GObject *object)
 static void
 _key_focus_in (ClutterActor *actor)
 {
-  MnbLauncherPrivate *priv = GET_PRIVATE (actor);
-
-  clutter_actor_grab_key_focus (priv->filter_entry);
-  mnb_entry_set_has_keyboard_focus (MNB_ENTRY (priv->filter_entry), TRUE);
+  entry_set_focus (MNB_LAUNCHER (actor), TRUE);
 }
 
 static void
@@ -1540,6 +1587,7 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   mpl_entry_set_text (MPL_ENTRY (priv->filter_entry), "");
 
   /* Close expanders, expand first. */
+  priv->first_expansion = TRUE;
   g_hash_table_iter_init (&iter, priv->expanders);
   while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &expander))
   {

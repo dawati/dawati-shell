@@ -79,8 +79,6 @@ _text_key_press_cb (ClutterActor     *actor,
                     ClutterKeyEvent  *event,
                     MplEntry         *entry)
 {
-  g_debug ("%s()", __FUNCTION__);
-
   /* Some of the keys are swallowed, i.e. they don't move the
    * focus away from the entry. */
   switch (event->keyval)

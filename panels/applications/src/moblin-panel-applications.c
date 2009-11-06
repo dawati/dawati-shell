@@ -183,6 +183,7 @@ main (int     argc,
 
       clutter_actor_set_size (stage, 1024, 600);
       clutter_actor_show (stage);
+      clutter_actor_grab_key_focus (launcher);
 
     } else {
 
