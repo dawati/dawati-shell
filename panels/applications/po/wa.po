@@ -6,12 +6,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: panel-apps.master.moblin-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 19:17+0000\n"
-"PO-Revision-Date: 2009-10-10 12:51+0200\n"
+"POT-Creation-Date: 2009-10-16 11:30+0000\n"
+"PO-Revision-Date: 2009-11-08 14:01+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
@@ -20,20 +20,19 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:887
+#: ../src/moblin-netbook-launcher.c:813
 msgid "Favorite Applications"
 msgstr "Programes colåds"
 
-#: ../src/moblin-netbook-launcher.c:1384
+#: ../src/moblin-netbook-launcher.c:1337
 msgid "Applications"
 msgstr "Programes"
 
-#: ../src/moblin-netbook-launcher.c:1395
+#: ../src/moblin-netbook-launcher.c:1348
 msgid "Search"
 msgstr "Trover"
 
-#: ../src/moblin-panel-applications.c:187
+#: ../src/moblin-panel-applications.c:196
 msgid "applications"
 msgstr "programes"
-
 
