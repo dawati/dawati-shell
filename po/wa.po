@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-10 07:24+0000\n"
-"PO-Revision-Date: 2009-10-11 21:31+0200\n"
+"POT-Creation-Date: 2009-10-16 11:26+0000\n"
+"PO-Revision-Date: 2009-11-08 15:39+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,8 @@ msgstr ""
 "X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../src/moblin-netbook.c:391 ../src/mnb-toolbar.c:1426
+#: ../src/moblin-netbook.c:391
+#: ../src/mnb-toolbar.c:1427
 msgid "zones"
 msgstr "redjons"
 
@@ -32,7 +33,7 @@ msgstr "Efets da Moblin po les Netbooks"
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:674
+#: ../src/mnb-toolbar.c:675
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -40,7 +41,7 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:684
+#: ../src/mnb-toolbar.c:685
 msgid "%B %e, %Y"
 msgstr "li %e di %B %Y"
 
@@ -57,15 +58,10 @@ msgid "No Zones yet"
 msgstr "Nén co d' redjon"
 
 #: ../src/switcher/mnb-switcher.c:321
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet "
-"les assonrer sorlon çou k' vos veyoz voltî."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
 
 #: ../src/switcher/mnb-switcher-zone-apps.c:463
 msgid "No applications on this zone"
 msgstr "Nou programe dins cisse redjon"
-
 
