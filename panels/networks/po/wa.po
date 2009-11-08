@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-04 16:10+0000\n"
-"PO-Revision-Date: 2009-10-04 18:18+0200\n"
+"POT-Creation-Date: 2009-10-16 11:26+0000\n"
+"PO-Revision-Date: 2009-11-08 16:07+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
@@ -38,19 +38,23 @@ msgstr ", "
 msgid "wired"
 msgstr "avou fyi"
 
-#: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1445
+#: ../carrick/carrick-list.c:866
+#: ../carrick/carrick-pane.c:1445
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:867 ../carrick/carrick-pane.c:1539
+#: ../carrick/carrick-list.c:867
+#: ../carrick/carrick-pane.c:1539
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:868 ../carrick/carrick-pane.c:1508
+#: ../carrick/carrick-list.c:868
+#: ../carrick/carrick-pane.c:1508
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:869 ../carrick/carrick-pane.c:1571
+#: ../carrick/carrick-list.c:869
+#: ../carrick/carrick-pane.c:1571
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -60,31 +64,21 @@ msgstr "Bluetooth"
 #. * connectivity daemon, is not running.
 #.
 #: ../carrick/carrick-list.c:882
-msgid ""
-"Sorry, we can't find any networks. It appears that the connection manager is "
-"not running. You could try restarting your computer."
-msgstr ""
-"Dji rgrete, nos n' avans savou nou raloyaedje. I m' shonne kel manaedjeu di "
-"raloyaedje n' est nén en alaedje. Vos pôrîz sayî d' renonder vosse "
-"copiutrece."
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "Dji rgrete, nos n' avans savou nou raloyaedje. I m' shonne kel manaedjeu di raloyaedje n' est nén en alaedje. Vos pôrîz sayî d' renonder vosse copiutrece."
 
 #.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
 #: ../carrick/carrick-list.c:892
-msgid ""
-"Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr ""
-"Dji rgrete, nos n' avans savou nou raloyaedje. Vos pôrîz sayî d' dismete li "
-"môde Disraloyî. "
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Dji rgrete, nos n' avans savou nou raloyaedje. Vos pôrîz sayî d' dismete li môde Disraloyî. "
 
 #: ../carrick/carrick-list.c:1029
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr ""
-"Dji rgrete, nos n' avans savou nou raloyaedje. Vos pôrîz sayî d' mete en "
-"alaedje %s."
+msgstr "Dji rgrete, nos n' avans savou nou raloyaedje. Vos pôrîz sayî d' mete en alaedje %s."
 
 #.
 #. * Generic message to display if all available networking
@@ -139,54 +133,33 @@ msgstr "Rantoele candjeye"
 
 #: ../carrick/carrick-notification-manager.c:218
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a wired "
-"network"
-msgstr ""
-"Dji rgrete, vosse raloyaedje a %s a stî pierdou. Adon nos vs avans raloyî a "
-"ene rantoele avou fyi"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Dji rgrete, vosse raloyaedje a %s a stî pierdou. Adon nos vs avans raloyî a ene rantoele avou fyi"
 
 #: ../carrick/carrick-notification-manager.c:225
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
-"network"
-msgstr ""
-"Dji rgrete, vosse raloyaedje a %s a stî pierdou. Adon nos vs avans raloyî a %"
-"s, ene rantoele %s"
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "Dji rgrete, vosse raloyaedje a %s a stî pierdou. Adon nos vs avans raloyî a %s, ene rantoele %s"
 
 #: ../carrick/carrick-notification-manager.c:233
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr ""
-"Dji rgrete, vosse raloyaedje a %s a stî pierdou. Adon nos vs avans raloyî a "
-"ene rantoele %s"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Dji rgrete, vosse raloyaedje a %s a stî pierdou. Adon nos vs avans raloyî a ene rantoele %s"
 
 #: ../carrick/carrick-notification-manager.c:243
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr ""
-"Dji rgrete, vosse raloyaedje %s a stî pierdou. Adon nos vs avans raloyî a "
-"ene rantoele avou fyi"
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Dji rgrete, vosse raloyaedje %s a stî pierdou. Adon nos vs avans raloyî a ene rantoele avou fyi"
 
 #: ../carrick/carrick-notification-manager.c:250
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
-"network"
-msgstr ""
-"Dji rgrete, vosse raloyaedje %s a stî pierdou. Adon nos vs avans raloyî a %"
-"s, ene rantoele %s"
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "Dji rgrete, vosse raloyaedje %s a stî pierdou. Adon nos vs avans raloyî a %s, ene rantoele %s"
 
 #: ../carrick/carrick-notification-manager.c:259
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr ""
-"Dji rgrete, vosse raloyaedje %s a stî pierdou. Adon nos vs avans raloyî a "
-"ene rantoele %s"
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Dji rgrete, vosse raloyaedje %s a stî pierdou. Adon nos vs avans raloyî a ene rantoele %s"
 
 #: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
@@ -218,7 +191,8 @@ msgstr "Nole"
 msgid "Password"
 msgstr "Sicret"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1340
+#: ../carrick/carrick-pane.c:727
+#: ../carrick/carrick-service-item.c:1279
 msgid "Show password"
 msgstr "Mostrer sicret"
 
@@ -231,7 +205,8 @@ msgstr "Rantoeles"
 msgid "Add new connection"
 msgstr "Radjouter novele rantoele"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:322
+#: ../carrick/carrick-pane.c:1477
+#: ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "Avou fyi"
 
@@ -244,209 +219,88 @@ msgid "This will disable all your connections"
 msgstr "Ça va essocter tos vos raloyaedjes"
 
 #. Translators:
-#. This is the title seen on the top of the connection wizard
-#. window forconfiguring a 3G  data service.
-#.
-#: ../carrick/carrick-service-item.c:43
-msgid "Cellular Data Connection Wizard"
-msgstr "Macrea di raloyaedje des dnêyes des telefones axhlåves"
-
-#. Translators:
-#. In each of the 3g data connection wizard dialog boxes that ask the user
-#. to select an option, we always provide a button that allows the user
-#. to manually enter the low level settings for their device.  This is the
-#. text used in that button.
-#.
-#: ../carrick/carrick-service-item.c:51
-msgid "Manual Config"
-msgstr "Apontiaedje al mwin"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. the country that their services is associated with.  This is the
-#. explaination text at the top of the dialog box for selecting the country.
-#.
-#: ../carrick/carrick-service-item.c:58
-msgid "Select Country"
-msgstr "Tchoezi payis"
-
-#. Translators:
-#. When configuring a device for 3G roaming, we must ask the user for
-#. their service provider. This is the explaination text at the that
-#. dialog box
-#.
-#: ../carrick/carrick-service-item.c:65
-msgid "Select Provider"
-msgstr "Tchoezi ahesseu"
-
-#. Translators:
-#. When a user first tries to connect to a given provider, they
-#. must select which plan (i.e. pre-paid, unlimited, etc) to use
-#. that the associated service provider allows.
-#. This is the explaination text used at the top of dialog box.
-#.
-#: ../carrick/carrick-service-item.c:73
-msgid "Select your 3G Data Plan"
-msgstr "Tchoezi vosse plan di dnêyes 3G"
-
-#. Translators:
-#. This is the text we add to the top of the dialog for allowing the user to
-#. manually enter configuration settings. This is a single line of nor more
-#. then 60 chars wide
-#.
-#: ../carrick/carrick-service-item.c:80
-msgid "Manual Configuration"
-msgstr "Apontiaedje al mwin"
-
-#. Translators:
-#. The following strings are used as labels for each of the
-#. text entry fields that the user uses to manually enter configuration
-#. settings.  Each label is a single line of no more then 40 chars:
-#.
-#. "Plan Name":
-#. This is a uniqe string that the service provider
-#. uses to identify a give data plan.  This is the only
-#. setting that is required.
-#.
-#. "Username":
-#. This is the userame of a username/password combination
-#. required for some access points.
-#.
-#. "Password":
-#. Password required by some access points.
-#.
-#. "Gateway":
-#. Gateway IP Address required by some access points
-#.
-#. "Primary DNS":
-#. Primary domain name server address required by some access points
-#.
-#. "Secondary DNS":
-#. Backup domain name server address required by some access points
-#.
-#. "Tertairy DNS":
-#. Alternate backup domain name server address required by some
-#. access points
-#.
-#: ../carrick/carrick-service-item.c:112
-msgid "Plan Name: (required)"
-msgstr "No do plan : (mezåjhe)"
-
-#: ../carrick/carrick-service-item.c:113
-msgid "Username:"
-msgstr "No di l' uzeu :"
-
-#: ../carrick/carrick-service-item.c:114
-msgid "Password:"
-msgstr "Sicret :"
-
-#: ../carrick/carrick-service-item.c:115
-msgid "Gateway:"
-msgstr "Pontea :"
-
-#: ../carrick/carrick-service-item.c:116
-msgid "Primary DNS:"
-msgstr "Prumî DNS :"
-
-#: ../carrick/carrick-service-item.c:117
-msgid "Secondary DNS:"
-msgstr "Deujhinme DNS :"
-
-#: ../carrick/carrick-service-item.c:118
-msgid "Tertairy DNS:"
-msgstr "Troejhinme DNS :"
-
-#. Translators:
-#. If this utility is executed without any arguments specifying which
-#. service to configure, then a dialog is used to allow the user to pick
-#. from a list of valid services.  This is the explaination text shown
-#. at the top of the dialog
-#.
-#: ../carrick/carrick-service-item.c:126
-msgid "Select 3G Service"
-msgstr "Tchoezi siervice 3G"
-
-#. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
 #.
-#: ../carrick/carrick-service-item.c:132
+#: ../carrick/carrick-service-item.c:47
 msgid "Critical Error: Invalid country code"
 msgstr "Aroke critike : Côde do payis nén valåbe"
 
-#: ../carrick/carrick-service-item.c:133
+#: ../carrick/carrick-service-item.c:48
 msgid "Missing required APN (service plan name)"
 msgstr "I manke l' APN k' ons a mezåjhe (no d' plan do siervice)"
 
-#: ../carrick/carrick-service-item.c:134
+#: ../carrick/carrick-service-item.c:49
 msgid "Internal Error: Invalid network service"
 msgstr "Divintrinne aroke : Siervice rantoele nén valåbe"
 
-#: ../carrick/carrick-service-item.c:135
+#: ../carrick/carrick-service-item.c:50
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "Aroke critike : Dji n' a sepou moussî e Manaedjeu do Raloyaedje"
 
-#: ../carrick/carrick-service-item.c:136
+#: ../carrick/carrick-service-item.c:51
 msgid "ERROR: No 3G Hardware detected"
 msgstr "AROKE : Dji n' a nén trové d' éndjolreye 3G"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:260
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
 msgstr "%s ecripté"
 
-#: ../carrick/carrick-service-item.c:353
+#: ../carrick/carrick-service-item.c:272
 msgid "Disconnect"
 msgstr "Disraloyî"
 
-#: ../carrick/carrick-service-item.c:356
+#: ../carrick/carrick-service-item.c:275
 msgid "Connected"
 msgstr "Raloyî"
 
-#: ../carrick/carrick-service-item.c:363 ../carrick/carrick-service-item.c:372
+#: ../carrick/carrick-service-item.c:282
+#: ../carrick/carrick-service-item.c:291
 #, c-format
 msgid "Cancel"
 msgstr "Rinoncî"
 
-#: ../carrick/carrick-service-item.c:366
+#: ../carrick/carrick-service-item.c:285
 msgid "Configuring"
 msgstr "Dj' aponteye"
 
-#: ../carrick/carrick-service-item.c:375
+#: ../carrick/carrick-service-item.c:294
 msgid "Associating"
 msgstr "Dj' assoçnêye"
 
-#: ../carrick/carrick-service-item.c:384 ../carrick/carrick-service-item.c:409
-#: ../carrick/carrick-service-item.c:1329
+#: ../carrick/carrick-service-item.c:303
+#: ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-service-item.c:1268
 msgid "Connect"
 msgstr "Raloyî"
 
-#: ../carrick/carrick-service-item.c:412
+#: ../carrick/carrick-service-item.c:331
 msgid "Connection failed"
 msgstr "Li raloyaedje a fwait berwete"
 
-#: ../carrick/carrick-service-item.c:415
+#: ../carrick/carrick-service-item.c:334
 msgid "Sorry, the connection failed. You could try again."
-msgstr ""
-"Dji rgrete mins l'  raloyaedje a fwait berwete. Vos pôrîz cor on côp sayî."
+msgstr "Dji rgrete mins l'  raloyaedje a fwait berwete. Vos pôrîz cor on côp sayî."
 
-#: ../carrick/carrick-service-item.c:421 ../carrick/carrick-service-item.c:424
+#: ../carrick/carrick-service-item.c:340
+#: ../carrick/carrick-service-item.c:343
 #, c-format
 msgid "Disconnecting"
 msgstr "Dji m' disraloye"
 
-#: ../carrick/carrick-service-item.c:482
+#: ../carrick/carrick-service-item.c:401
 msgid "Type password here"
 msgstr "Tapez chal li sicret"
 
-#: ../carrick/carrick-service-item.c:566
+#: ../carrick/carrick-service-item.c:484
 msgid "Really remove?"
 msgstr "Oister podbon ?"
 
-#: ../carrick/carrick-service-item.c:584
+#: ../carrick/carrick-service-item.c:502
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -457,52 +311,32 @@ msgstr ""
 "kel sicret srè rovyî eyet vos n' såroz pus\n"
 "vs raloyî otomaticmint a %s."
 
-#: ../carrick/carrick-service-item.c:727
+#: ../carrick/carrick-service-item.c:664
 #, c-format
-msgid ""
-"Your password isn't the right length. For a WEP connection it needs to be "
-"either 10 or 28 characters, you have %i."
-msgstr ""
-"Vosse sicret n' est nén del boune longueur. Pos on raloyaedje WEP, i fåt k' "
-"i soeye soeye-t i 10 oudonbén 28 caracteres, vos nd avoz %i."
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
+msgstr "Vosse sicret n' est nén del boune longueur. Pos on raloyaedje WEP, i fåt k' i soeye soeye-t i 10 oudonbén 26 caracteres, vos nd avoz %i."
 
-#: ../carrick/carrick-service-item.c:737
+#: ../carrick/carrick-service-item.c:674
 #, c-format
-msgid ""
-"Your password is too short. For a WPA  connection it needs to be at least 8 "
-"characters long, you have %i"
-msgstr ""
-"Vosse sicret est trop court. Pos on raloyaedje WPA, i fåt k' i soeye pol "
-"moens long di 8 caracteres, vos nd avoz %i."
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Vosse sicret est trop court. Pos on raloyaedje WPA, i fåt k' i soeye pol moens long di 8 caracteres, vos nd avoz %i."
 
-#: ../carrick/carrick-service-item.c:741
+#: ../carrick/carrick-service-item.c:678
 #, c-format
-msgid ""
-"Your password is too long. For a WPA  connection it needs to have fewer than "
-"62 characters, you have %i"
-msgstr ""
-"Vosse sicret est trop long. Pos on raloyaedje WPA, i fåt k' il åye moens di "
-"62 caracteres, vos nd avoz %i."
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "Vosse sicret est trop long. Pos on raloyaedje WPA, i fåt k' il åye moens di 63 caracteres, vos nd avoz %i."
 
-#: ../carrick/carrick-service-item.c:749
+#: ../carrick/carrick-service-item.c:686
 #, c-format
-msgid ""
-"Your password is too short. For a WPA2  connection it needs to be at least 8 "
-"characters long, you have %i"
-msgstr ""
-"Vosse sicret est trop court. Pos on raloyaedje WPA2, i fåt k' i soeye pol "
-"moens long di 8 caracteres, vos nd avoz %i."
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Vosse sicret est trop court. Pos on raloyaedje WPA2, i fåt k' i soeye pol moens long di 8 caracteres, vos nd avoz %i."
 
-#: ../carrick/carrick-service-item.c:753
+#: ../carrick/carrick-service-item.c:690
 #, c-format
-msgid ""
-"Your password is too long. For a WPA2  connection it needs to have fewer "
-"than 62 characters, you have %i"
-msgstr ""
-"Vosse sicret est trop long. Pos on raloyaedje WPA2, i fåt k' il åye moens di "
-"62 caracteres, vos nd avoz %i."
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "Vosse sicret est trop long. Pos on raloyaedje WPA2, i fåt k' il åye moens di 63 caracteres, vos nd avoz %i."
 
-#: ../carrick/carrick-service-item.c:1265
+#: ../carrick/carrick-service-item.c:1204
 msgid "Scanning"
 msgstr "Dji corwaite"
 
@@ -510,7 +344,7 @@ msgstr "Dji corwaite"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1284
+#: ../carrick/carrick-service-item.c:1223
 msgid "WPA2 encrypted"
 msgstr "WPA2 ecripté"
 
@@ -546,7 +380,8 @@ msgstr "rantoeles - %s - 3G"
 msgid "networks - %s - bluetooth"
 msgstr "rantoeles - %s - bluetooth"
 
-#: ../src/carrick.c:88 ../src/carrick.c:100
+#: ../src/carrick.c:88
+#: ../src/carrick.c:100
 msgid "networks"
 msgstr "rantoeles"
 
@@ -569,3 +404,68 @@ msgstr "- Aplikete di raloyåvisté da Moblin"
 #: ../src/carrick.c:162
 msgid "network"
 msgstr "rantoele"
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr "Macrea di raloyaedje des dnêyes des telefones axhlåves"
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "Tchoezi payis"
+
+#: ../callouts/3g/ggg-manual-dialog.c:89
+msgid "Manual Configuration"
+msgstr "Apontiaedje al mwin"
+
+#: ../callouts/3g/ggg-manual-dialog.c:93
+msgid "Plan Name (required):"
+msgstr "No do plan (mezåjhe) :"
+
+#: ../callouts/3g/ggg-manual-dialog.c:96
+msgid "Username:"
+msgstr "No di l' uzeu :"
+
+#: ../callouts/3g/ggg-manual-dialog.c:99
+msgid "Password:"
+msgstr "Sicret :"
+
+#: ../callouts/3g/ggg-manual-dialog.c:103
+msgid "Gateway:"
+msgstr "Pontea :"
+
+#: ../callouts/3g/ggg-manual-dialog.c:106
+msgid "Primary DNS:"
+msgstr "Prumî DNS :"
+
+#: ../callouts/3g/ggg-manual-dialog.c:109
+msgid "Secondary DNS:"
+msgstr "Deujhinme DNS :"
+
+#: ../callouts/3g/ggg-manual-dialog.c:112
+msgid "Tertiary DNS:"
+msgstr "Troejhinme DNS :"
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "Tchoezi vosse plan 3G"
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "Tchoezi ahesseu"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr "%s (Priyî)"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "Tchoezi siervice 3G"
+
+#~ msgid "Manual Config"
+#~ msgstr "Apontiaedje al mwin"
+
