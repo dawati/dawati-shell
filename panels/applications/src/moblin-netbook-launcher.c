@@ -82,7 +82,7 @@ scrollable_ensure_box_visible (NbtkScrollable         *scrollable,
 
     gdouble height = box->y2 - box->y1;
     if (height < v_page)
-      nbtk_adjustment_set_value (vadjustment, box->y1 + v_page - height - SCROLL_TOP_MARGIN);
+      nbtk_adjustment_set_value (vadjustment, box->y2 - v_page + SCROLL_TOP_MARGIN);
     else
       nbtk_adjustment_set_value (vadjustment, box->y1 - SCROLL_TOP_MARGIN);
   }
