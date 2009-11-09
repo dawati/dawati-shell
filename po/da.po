@@ -1,0 +1,68 @@
+# Danish translation mutter-moblin
+# Copyright (C) 2009
+# This file is distributed under the same license as the mutter-moblin package.
+# Kris Thomsen <lakristho@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:26+0000\n"
+"PO-Revision-Date: 2009-11-06 12:56+0100\n"
+"Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/moblin-netbook.c:391 ../src/mnb-toolbar.c:1427
+msgid "zones"
+msgstr "zoner"
+
+#: ../src/moblin-netbook.c:504
+msgid "Moblin Netbook Effects"
+msgstr "Moblin Netbook-effekter"
+
+#: ../src/moblin-netbook.c:508
+msgid "Effects for Moblin Netbooks"
+msgstr "Effekter til Moblin Netbooks"
+
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:675
+msgid "%l:%M %P"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:685
+msgid "%B %e, %Y"
+msgstr "%e. %B, %Y"
+
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Forkast"
+
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Forkast alle"
+
+#: ../src/switcher/mnb-switcher.c:301
+msgid "No Zones yet"
+msgstr "Endnu ingen zoner"
+
+#: ../src/switcher/mnb-switcher.c:321
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Programmer som du bruger vil blive vist her. Du vil kunne skifte "
+"mellem dem og organisere dem efter dine egne ønsker."
+
+#: ../src/switcher/mnb-switcher-zone-apps.c:463
+msgid "No applications on this zone"
+msgstr "Ingen programmer i denne zone"
