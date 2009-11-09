@@ -259,15 +259,22 @@ entry_set_focus (MnbLauncher *self,
    * with multiple highlighted ones when mixing mouse- and
    * keyboard-navigation. */
 
-  mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->fav_grid));
-
-  expander = mnb_launcher_grid_find_widget_by_pseudo_class (
-              MNB_LAUNCHER_GRID (priv->apps_grid),
-              "active");
-  if (expander)
+  if (priv->is_filtering)
     {
-      NbtkWidget *inner_grid = NBTK_WIDGET (nbtk_bin_get_child (NBTK_BIN (expander)));
-      mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
+      mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->apps_grid));
+    }
+  else
+    {
+      mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->fav_grid));
+
+      expander = mnb_launcher_grid_find_widget_by_pseudo_class (
+                  MNB_LAUNCHER_GRID (priv->apps_grid),
+                  "active");
+      if (expander)
+        {
+          NbtkWidget *inner_grid = NBTK_WIDGET (nbtk_bin_get_child (NBTK_BIN (expander)));
+          mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
+        }
     }
 }
 
@@ -1167,6 +1174,11 @@ entry_keynav_cb (MnbEntry         *entry,
 
   if (priv->is_filtering)
     {
+      /* First keynav event switches from edit- to nav-mode
+       * and selects first fav app. */
+      if (mnb_entry_get_has_keyboard_focus (entry))
+        entry_set_focus (self, FALSE);
+
       gboolean keystroke_handled = mnb_launcher_keynav_in_grid (self,
                                          MNB_LAUNCHER_GRID (priv->apps_grid),
                                          keyval);
