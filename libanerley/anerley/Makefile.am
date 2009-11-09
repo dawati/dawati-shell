@@ -37,6 +37,7 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-ebook-feed.c \
 			anerley-tp-observer.c \
 			anerley-tp-monitor-feed.c \
+			anerley-main.c \
 			$(libanerley_la_HEADERS) \
 			$(BUILT_SOURCES) \
 			penge-magic-texture.c \
