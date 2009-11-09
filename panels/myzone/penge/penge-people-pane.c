@@ -119,6 +119,20 @@ _model_bulk_end_cb (ClutterModel *model,
 }
 
 static void
+_model_row_removed_cb (ClutterModel     *model,
+                       ClutterModelIter *iter,
+                       gpointer          userdata)
+{
+  PengePeoplePanePrivate *priv = GET_PRIVATE (userdata);
+
+  if (priv->model && clutter_model_get_n_rows (priv->model) == 0)
+  {
+    clutter_actor_hide (priv->list_view);
+    clutter_actor_show (priv->placeholder_tile);
+  }
+}
+
+static void
 _client_open_view_cb (MojitoClient     *client,
                       MojitoClientView *view,
                       gpointer          userdata)
@@ -145,6 +159,10 @@ _client_open_view_cb (MojitoClient     *client,
   g_signal_connect (priv->model,
                     "bulk-end",
                     (GCallback)_model_bulk_end_cb,
+                    userdata);
+  g_signal_connect (priv->model,
+                    "row-removed",
+                    (GCallback)_model_row_removed_cb,
                     userdata);
 }
 
