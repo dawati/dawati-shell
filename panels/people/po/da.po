@@ -1,0 +1,73 @@
+# Danish translation moblin-panel-people
+# Copyright (C) 2009
+# This file is distributed under the same license as the moblin-panel-people package.
+# Kris Thomsen <lakristho@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-people\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:32+0000\n"
+"PO-Revision-Date: 2009-11-08 22:15+0100\n"
+"Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
+msgid "people"
+msgstr "mennesker"
+
+#: ../src/mnb-people-panel.c:166
+msgid "Send an email"
+msgstr "Send en e-post"
+
+#: ../src/mnb-people-panel.c:168
+msgid "Edit details"
+msgstr "Redigér detaljer"
+
+#: ../src/mnb-people-panel.c:177
+msgid "Send a message"
+msgstr "Send en besked"
+
+#: ../src/mnb-people-panel.c:311
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Beklager, men vi kan ikke finde nogen mennesker. Har du sat en Messenger-konto op?"
+
+#: ../src/mnb-people-panel.c:447
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Beklager, men vi kan ikke finde nogen mennesker. Det ser ud til at de alle er offline."
+
+#: ../src/mnb-people-panel.c:497
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Gå online i statuspanelet, for at se dine kvikchat-kontakter."
+
+#: ../src/mnb-people-panel.c:554
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "mennesker - %d mennesker snakker til dig"
+
+#: ../src/mnb-people-panel.c:561
+msgid "people - Someone is talking to you"
+msgstr "mennesker - Nogen snakker til dig"
+
+#: ../src/mnb-people-panel.c:790
+msgid "People"
+msgstr "Mennesker"
+
+#: ../src/mnb-people-panel.c:803
+msgid "Search"
+msgstr "Søg"
+
+#: ../src/mnb-people-panel.c:856
+msgid "People talking to you ..."
+msgstr "Mennesker som taler til dig ..."
+
+#: ../src/mnb-people-panel.c:983
+msgid "Selection"
+msgstr "Markering"
+
+#: ../src/mnb-people-panel.c:1046
+msgid "Nobody selected"
+msgstr "Ingen valgt"
