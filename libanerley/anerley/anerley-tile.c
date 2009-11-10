@@ -43,7 +43,6 @@ struct _AnerleyTilePrivate {
   ClutterActor *avatar;
   NbtkWidget *avatar_bin;
   NbtkWidget *primary_label;
-  NbtkWidget *secondary_label;
   ClutterActor *presence_icon;
   NbtkWidget *presence_label;
 };
@@ -62,30 +61,8 @@ _item_display_name_changed_cb (AnerleyItem *item,
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (userdata);
 
-  /* If first and last present then set as first and secondary, otherwise if
-   * just first then put that in primary or if just last then put that in
-   * primary. Last will always be set to something.
-   */
-  if (anerley_item_get_first_name (priv->item) &&
-      anerley_item_get_last_name (priv->item))
-  {
-    nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
-                         anerley_item_get_first_name (priv->item));
-    nbtk_label_set_text (NBTK_LABEL (priv->secondary_label),
-                         anerley_item_get_last_name (priv->item));
-  } else {
-    if (anerley_item_get_first_name (priv->item))
-    {
-      nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
-                           anerley_item_get_first_name (priv->item));
-    } else {
-      nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
-                           anerley_item_get_last_name (priv->item));
-    }
-
-    nbtk_label_set_text (NBTK_LABEL (priv->secondary_label),
-                         "");
-  }
+  nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
+                       anerley_item_get_display_name (priv->item));
 }
 
 static CoglHandle 
@@ -470,6 +447,8 @@ static void
 anerley_tile_init (AnerleyTile *self)
 {
   AnerleyTilePrivate *priv = GET_PRIVATE_REAL (self);
+  ClutterActor *tmp_text;
+
   self->priv = priv;
 
   priv->avatar_bin = nbtk_bin_new ();
@@ -509,28 +488,9 @@ anerley_tile_init (AnerleyTile *self)
                                 (ClutterActor *)priv->primary_label, 1.0);
   nbtk_table_child_set_x_align (NBTK_TABLE (self),
                                 (ClutterActor *)priv->primary_label, 0.0);
-
-  priv->secondary_label = nbtk_label_new ("");
-  nbtk_widget_set_style_class_name (priv->secondary_label,
-                                    "AnerleyTileSecondaryLabel");
-
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)priv->secondary_label, 1, 1);
-  nbtk_table_child_set_y_fill (NBTK_TABLE (self),
-                               (ClutterActor *)priv->secondary_label,
-                               FALSE);
-  nbtk_table_child_set_y_expand (NBTK_TABLE (self),
-                                 (ClutterActor *)priv->secondary_label,
-                                 FALSE);
-  nbtk_table_child_set_x_expand (NBTK_TABLE (self),
-                                 (ClutterActor *)priv->secondary_label,
-                                   FALSE);
-  nbtk_table_child_set_col_span (NBTK_TABLE (self),
-                                 (ClutterActor *)priv->secondary_label, 2);
-  nbtk_table_child_set_y_align (NBTK_TABLE (self),
-                                (ClutterActor *)priv->secondary_label, 0.0);
-  nbtk_table_child_set_x_align (NBTK_TABLE (self),
-                                (ClutterActor *)priv->secondary_label, 0.0);
+  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->primary_label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text), PANGO_WRAP_WORD);
 
   priv->presence_label = nbtk_label_new ("");
   nbtk_widget_set_style_class_name (priv->presence_label,
