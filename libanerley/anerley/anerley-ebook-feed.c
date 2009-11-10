@@ -134,12 +134,11 @@ anerley_ebook_feed_constructed (GObject *object)
                                     E_CONTACT_UID);
     g_debug (G_STRLOC ": Found self contact: %s",
              priv->self_uid);
+    g_object_unref (self_contact);
   } else {
     g_warning (G_STRLOC ": Error getting self contact: %s",
                error->message);
   }
-
-  g_object_unref (self_contact);
 
   if (G_OBJECT_CLASS (anerley_ebook_feed_parent_class)->constructed)
     G_OBJECT_CLASS (anerley_ebook_feed_parent_class)->constructed (object);
