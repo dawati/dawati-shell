@@ -44,8 +44,6 @@ struct _AnerleyTpItemPrivate {
   gchar *avatar_path;
   gchar *presence_message;
   gchar *sortable_name;
-  gchar *first_name;
-  gchar *last_name;
 
   const gchar *presence_status;
 };
@@ -295,22 +293,6 @@ anerley_tp_item_activate (AnerleyItem *item)
   g_object_unref (dbus);
 }
 
-static const gchar *
-anerley_tp_item_get_first_name (AnerleyItem *item)
-{
-  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
-
-  return priv->first_name;
-}
-
-static const gchar *
-anerley_tp_item_get_last_name (AnerleyItem *item)
-{
-  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
-
-  return priv->last_name;
-}
-
 static void
 anerley_tp_item_class_init (AnerleyTpItemClass *klass)
 {
@@ -330,8 +312,6 @@ anerley_tp_item_class_init (AnerleyTpItemClass *klass)
   item_class->get_avatar_path = anerley_tp_item_get_avatar_path;
   item_class->get_presence_status = anerley_tp_item_get_presence_status;
   item_class->get_presence_message = anerley_tp_item_get_presence_message;
-  item_class->get_first_name = anerley_tp_item_get_first_name;
-  item_class->get_last_name = anerley_tp_item_get_last_name;
   item_class->activate = anerley_tp_item_activate;
 
   pspec = g_param_spec_object ("account",
@@ -380,7 +360,6 @@ _contact_notify_alias_cb (GObject    *object,
   AnerleyTpItem *item = (AnerleyTpItem *)userdata;
   AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
   const gchar *alias;
-  gchar **splits;
 
   g_free (priv->display_name);
   priv->display_name = NULL;
@@ -393,31 +372,6 @@ _contact_notify_alias_cb (GObject    *object,
   {
     priv->display_name = g_strdup (alias);
     priv->sortable_name = g_utf8_casefold (alias, -1);
-
-    splits = g_strsplit (priv->display_name,
-                         " ",
-                         2);
-
-    if (splits)
-    {
-      if (splits[0])
-      {
-        priv->first_name = splits[0];
-
-        if (splits[1])
-        {
-          priv->last_name = splits[1];
-        } else {
-          g_free (priv->last_name);
-          priv->last_name = NULL;
-        }
-      } else {
-        g_free (priv->first_name);
-        priv->first_name = NULL;
-      }
-    }
-
-    g_free (splits);
   }
 
   anerley_item_emit_display_name_changed ((AnerleyItem *)item);
