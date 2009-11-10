@@ -1,0 +1,473 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: carrick-ng.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-09 23:53+0000\n"
+"PO-Revision-Date: 2009-11-10 22:35+0200\n"
+"Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
+"Language-Team: ITSOFTEX <info@itsoftex.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Arabic\n"
+
+#.
+#. * Translator note: The disabled technologies available to be turned on is put together at
+#. * runtime.
+#. * The conjunction 'or' will be at the end of a choice of disabled technologies,
+#. * for example 'WiFi, WiMAX or 3G.
+#.
+#: ../carrick/carrick-list.c:859
+msgid " or "
+msgstr " او"
+
+#.
+#. * Translator note: the comma ',' will be used to join the different disabled technologies
+#. * as in the above example; 'WiFi, WiMAX or 3G'
+#.
+#: ../carrick/carrick-list.c:864
+msgid ", "
+msgstr "،"
+
+#: ../carrick/carrick-list.c:865
+#: ../carrick/carrick-util.c:34
+msgid "wired"
+msgstr "سلكي"
+
+#: ../carrick/carrick-list.c:866
+#: ../carrick/carrick-pane.c:1469
+#: ../carrick/carrick-util.c:32
+msgid "WiFi"
+msgstr "WiFi"
+
+#: ../carrick/carrick-list.c:867
+#: ../carrick/carrick-pane.c:1563
+#: ../carrick/carrick-util.c:38
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-list.c:868
+#: ../carrick/carrick-pane.c:1532
+#: ../carrick/carrick-util.c:36
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-list.c:869
+#: ../carrick/carrick-pane.c:1595
+#: ../carrick/carrick-util.c:40
+msgid "Bluetooth"
+msgstr "بلوتوث"
+
+#.
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#.
+#: ../carrick/carrick-list.c:882
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "للأسف لم نتمكن من ايجاد اي شبكة. يبدو ان مدير الاتصالات غير شغّال. يمكنك محاولة اعادة تشغيل الحاسوب"
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-list.c:892
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "للأسف لا يمكننا ايجاد اية شبكة. يمكنك محاولة تعطيل الوضع غير المتصل"
+
+#: ../carrick/carrick-list.c:1029
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr "للأسف لا يمكننا ايجاد اية شبكة. يمكنك محاولة تفعيل %s"
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-list.c:1043
+msgid "Sorry, we can't find any networks"
+msgstr "للأسف لا يمكننا ايجاد اية شبكة"
+
+#: ../carrick/carrick-notification-manager.c:104
+msgid "Network connected"
+msgstr "شبكة موصولة"
+
+#: ../carrick/carrick-notification-manager.c:112
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "انت موصول الآن بشبكة سلكية"
+
+#: ../carrick/carrick-notification-manager.c:142
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "انت موصول الآن ب %s شبكة %s"
+
+#: ../carrick/carrick-notification-manager.c:148
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "انت موصول الآن بشبكة %s"
+
+#: ../carrick/carrick-notification-manager.c:165
+msgid "Network lost"
+msgstr "خسارة الشبكة"
+
+#: ../carrick/carrick-notification-manager.c:173
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "للأسف انقطع اتصالك السلكي"
+
+#: ../carrick/carrick-notification-manager.c:177
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "للأسف انقطع اتصالك %s الى %s"
+
+#: ../carrick/carrick-notification-manager.c:183
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "للأسف انقطع اتصالك %s"
+
+#: ../carrick/carrick-notification-manager.c:200
+msgid "Network changed"
+msgstr "تم تغيير الشبكة"
+
+#: ../carrick/carrick-notification-manager.c:219
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "للأسف انقطع اتصالك ب %s . تم وصلك الآن بشبكة سلكية"
+
+#: ../carrick/carrick-notification-manager.c:226
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "للأسف انقطع اتصالك ب %s. تم وصلك ب %s شبكة %s"
+
+#: ../carrick/carrick-notification-manager.c:234
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "للأسف انقطع اتصالك ب %s لذلك تم وصلك بشبكة %s"
+
+#: ../carrick/carrick-notification-manager.c:244
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "للأسف انقطع اتصالك %s لذلك تم وصلك بشبكة سلكية"
+
+#: ../carrick/carrick-notification-manager.c:251
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "للأسف انقطع اتصالك %s لذلك تم وصلبك ب %s شبكة %s"
+
+#: ../carrick/carrick-notification-manager.c:260
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "للأسف انقطع اتصالك %s لذلك تم وصلك بشبكة %s"
+
+#: ../carrick/carrick-pane.c:633
+msgid "New connection settings"
+msgstr "اعدادات اتصال جديد"
+
+#: ../carrick/carrick-pane.c:669
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+"ادخل اسم الشبكة التي تود الاتصال بها\n"
+"وكلمة السر ونوع الأمن ان كان\n"
+"ذلك ضروريا"
+
+#: ../carrick/carrick-pane.c:679
+msgid "Network name"
+msgstr "اسم الشبكة"
+
+#: ../carrick/carrick-pane.c:691
+msgid "Network security"
+msgstr "أمن الشبكة"
+
+#: ../carrick/carrick-pane.c:701
+msgid "None"
+msgstr "بلا"
+
+#: ../carrick/carrick-pane.c:715
+msgid "Password"
+msgstr "كلمة السر"
+
+#: ../carrick/carrick-pane.c:730
+#: ../carrick/carrick-service-item.c:1284
+msgid "Show password"
+msgstr "اعرض كلمة السر"
+
+#: ../carrick/carrick-pane.c:1404
+msgid "Networks"
+msgstr "شبكات"
+
+#. New connection button
+#: ../carrick/carrick-pane.c:1428
+msgid "Add new connection"
+msgstr "اضافة اتصال جديد"
+
+#: ../carrick/carrick-pane.c:1501
+#: ../carrick/carrick-service-item.c:249
+msgid "Wired"
+msgstr "سلكي"
+
+#: ../carrick/carrick-pane.c:1639
+msgid "Offline mode"
+msgstr "الوضع غير متصل"
+
+#: ../carrick/carrick-pane.c:1664
+msgid "This will disable all your connections"
+msgstr "سوف يبطل هذا كل اتصالاتك"
+
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#.
+#: ../carrick/carrick-service-item.c:49
+msgid "Critical Error: Invalid country code"
+msgstr "خطأ حرج: رمز الدولة غير صحيح"
+
+#: ../carrick/carrick-service-item.c:50
+msgid "Missing required APN (service plan name)"
+msgstr "ينقص اسم نقطة الوصول المطلوبة"
+
+#: ../carrick/carrick-service-item.c:51
+msgid "Internal Error: Invalid network service"
+msgstr "خطأ داخلي: خدمة شبكة غير صحيحة"
+
+#: ../carrick/carrick-service-item.c:52
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr "خطأ حرج: لا يمكن الوصول لمدير الاتصالات"
+
+#: ../carrick/carrick-service-item.c:53
+msgid "ERROR: No 3G Hardware detected"
+msgstr "خطأ: لم يوجد جهاز 3G"
+
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#.
+#: ../carrick/carrick-service-item.c:185
+#, c-format
+msgid "%s encrypted"
+msgstr "%s مشفر"
+
+#: ../carrick/carrick-service-item.c:280
+msgid "Disconnect"
+msgstr "قطع الاتصال"
+
+#: ../carrick/carrick-service-item.c:283
+msgid "Connected"
+msgstr "موصول"
+
+#: ../carrick/carrick-service-item.c:290
+#: ../carrick/carrick-service-item.c:299
+#, c-format
+msgid "Cancel"
+msgstr "الغاء"
+
+#: ../carrick/carrick-service-item.c:293
+msgid "Configuring"
+msgstr "يتم التكوين"
+
+#: ../carrick/carrick-service-item.c:302
+msgid "Associating"
+msgstr "اقتران"
+
+#: ../carrick/carrick-service-item.c:311
+#: ../carrick/carrick-service-item.c:336
+#: ../carrick/carrick-service-item.c:1273
+msgid "Connect"
+msgstr "اتصال"
+
+#: ../carrick/carrick-service-item.c:339
+msgid "Connection failed"
+msgstr "فشل في الاتصال"
+
+#: ../carrick/carrick-service-item.c:342
+msgid "Sorry, the connection failed. You could try again."
+msgstr "للأسف فشل الاتصال. يمكنك المحاولة من جديد"
+
+#: ../carrick/carrick-service-item.c:348
+#: ../carrick/carrick-service-item.c:351
+#, c-format
+msgid "Disconnecting"
+msgstr "جاري قطع الاتصال"
+
+#: ../carrick/carrick-service-item.c:409
+msgid "Type password here"
+msgstr "اكتب كلمة السر هنا"
+
+#: ../carrick/carrick-service-item.c:472
+msgid "Really remove?"
+msgstr "أمتاكد من الازالة؟"
+
+#: ../carrick/carrick-service-item.c:490
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr ""
+"هل ترغب بازالة %s شبكة %s؟\n"
+"سيقوم هذا بنسي كلمة السر ولن يمكنك الاتصال\n"
+"ب %s بشكل تلقائي."
+
+#: ../carrick/carrick-service-item.c:667
+#, c-format
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
+msgstr "كلمة السر في الطول الخطأ. لاتصال WEP يتوجب ان تكون بين 10 الى 26 حرف وانت لديك %i"
+
+#: ../carrick/carrick-service-item.c:678
+#, c-format
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "كلمة السر قصيرة. اتصال WPA يحتاج الى 8 احرف على الأقل وانت لديك %i"
+
+#: ../carrick/carrick-service-item.c:682
+#, c-format
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "كلمة السر قصيرة. اتصال WPA يحتاج الى اقل من 63 حرف وانت لديك %i"
+
+#: ../carrick/carrick-service-item.c:691
+#, c-format
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "كلمة السر قصيرة. اتصال WPA2 يحتاج على الاقل 8 احرف وانت لديك %i"
+
+#: ../carrick/carrick-service-item.c:695
+#, c-format
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "كلمة السر طويلة. اتصال WPA2 يحتاج الى اقل من 63 حرف وانت لديك %i"
+
+#: ../carrick/carrick-service-item.c:1209
+msgid "Scanning"
+msgstr "جاري الفحص"
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:1228
+msgid "WPA2 encrypted"
+msgstr "مشفر WPA2"
+
+#: ../src/carrick.c:64
+msgid "networks - not connected"
+msgstr "شبكات - غير موصول"
+
+#: ../src/carrick.c:70
+msgid "networks - connecting"
+msgstr "شبكات - جاري التوصيل"
+
+#: ../src/carrick.c:76
+msgid "networks - wired"
+msgstr "شبكات - %s - سلكي"
+
+#: ../src/carrick.c:78
+#, c-format
+msgid "networks - %s - wifi"
+msgstr "شبكات - %s - WiFi"
+
+#: ../src/carrick.c:81
+#, c-format
+msgid "networks - %s - wimax"
+msgstr "شبكات - %s - wimax"
+
+#: ../src/carrick.c:84
+#, c-format
+msgid "networks - %s - 3G"
+msgstr "شبكات - %s - 3G"
+
+#: ../src/carrick.c:87
+#, c-format
+msgid "networks - %s - bluetooth"
+msgstr "شبكات - %s - بلوتوث"
+
+#: ../src/carrick.c:90
+#: ../src/carrick.c:102
+msgid "networks"
+msgstr "شبكات"
+
+#: ../src/carrick.c:97
+msgid "networks - error"
+msgstr "شبكات - خطأ"
+
+#: ../src/carrick.c:129
+msgid "Run in standalone mode"
+msgstr "شغل في وضع مستقل"
+
+#: ../src/carrick.c:140
+msgid "Carrick connectivity applet"
+msgstr "تطبيق توصيل Carrick"
+
+#: ../src/carrick.c:141
+msgid "- Moblin connectivity applet"
+msgstr "- تطبيق توصيل Moblin"
+
+#: ../src/carrick.c:164
+msgid "network"
+msgstr "شبكة"
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr "معالج اتصالات البيانات الخليوية"
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "حدد الدولة"
+
+#: ../callouts/3g/ggg-manual-dialog.c:89
+msgid "Manual Configuration"
+msgstr "تكوين يدوي"
+
+#: ../callouts/3g/ggg-manual-dialog.c:93
+msgid "Plan Name (required):"
+msgstr "اسم الخطة (مطلوب):"
+
+#: ../callouts/3g/ggg-manual-dialog.c:96
+msgid "Username:"
+msgstr "اسم المستخدم:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:99
+msgid "Password:"
+msgstr "كلمة السر:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:103
+msgid "Gateway:"
+msgstr "بوابة:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:106
+msgid "Primary DNS:"
+msgstr "DNS اساسي:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:109
+msgid "Secondary DNS:"
+msgstr "DNS ثانوي:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:112
+msgid "Tertiary DNS:"
+msgstr "DNS ثالث:"
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "حدد خطة 3G"
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "حدد المزود"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr "%s (تجوال)"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "حدد خدمة 3G"
+
