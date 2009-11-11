@@ -22,7 +22,8 @@ libpenge_headers = penge-people-pane.h \
 		   penge-recent-files-model.h \
 		   penge-welcome-tile.h \
 		   penge-people-placeholder-tile.h \
-		   penge-interesting-tile.h
+		   penge-interesting-tile.h \
+		   penge-source-manager.h
 
 libpenge_la_SOURCES = \
 		      $(libpenge_headers) \
@@ -48,7 +49,8 @@ libpenge_la_SOURCES = \
 		      penge-recent-files-model.c \
 		      penge-welcome-tile.c \
 		      penge-people-placeholder-tile.c \
-		      penge-interesting-tile.c
+		      penge-interesting-tile.c \
+		      penge-source-manager.c
 
 AM_CFLAGS = -Wall \
 	    $(PENGE_CFLAGS) \
