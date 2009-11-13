@@ -56,11 +56,24 @@ static void
 penge_source_manager_dispose (GObject *object)
 {
   PengeSourceManagerPrivate *priv = GET_PRIVATE (object);
+  GList *l;
 
   if (priv->manager)
   {
     g_object_unref (priv->manager);
     priv->manager = NULL;
+  }
+
+  for (l = priv->transient_sources; l; l = l->next)
+  {
+    g_object_unref ((GObject *)l->data);
+    priv->transient_sources = g_list_delete_link (priv->transient_sources, l);
+  }
+
+  if (priv->local_source)
+  {
+    g_object_unref (priv->local_source);
+    priv->local_source = NULL;
   }
 
   G_OBJECT_CLASS (penge_source_manager_parent_class)->dispose (object);
