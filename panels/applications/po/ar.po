@@ -1,0 +1,38 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-applications\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:30+0000\n"
+"PO-Revision-Date: 2009-11-13 22:22+0200\n"
+"Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
+"Language-Team: ITSOFTEX <info@itsoftex.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Arabic\n"
+
+#.
+#. * Fav apps.
+#.
+#. Label
+#: ../src/moblin-netbook-launcher.c:813
+msgid "Favorite Applications"
+msgstr "التطبيقات المفضّلة"
+
+#: ../src/moblin-netbook-launcher.c:1337
+msgid "Applications"
+msgstr "تطبيقات"
+
+#: ../src/moblin-netbook-launcher.c:1348
+msgid "Search"
+msgstr "بحث"
+
+#: ../src/moblin-panel-applications.c:196
+msgid "applications"
+msgstr "تطبيقات"
+
