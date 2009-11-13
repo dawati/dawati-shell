@@ -55,6 +55,14 @@ penge_source_manager_finalize (GObject *object)
 static void
 penge_source_manager_dispose (GObject *object)
 {
+  PengeSourceManagerPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->manager)
+  {
+    g_object_unref (priv->manager);
+    priv->manager = NULL;
+  }
+
   G_OBJECT_CLASS (penge_source_manager_parent_class)->dispose (object);
 }
 
