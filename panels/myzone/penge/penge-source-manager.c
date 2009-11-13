@@ -78,10 +78,13 @@ penge_source_manager_class_init (PengeSourceManagerClass *klass)
 
   signals[READY] = g_signal_new ("ready",
                                  G_TYPE_FROM_CLASS (klass),
-                                 G_SIGNAL_RUN_FIRST |
-                                 G_SIGNAL_NO_RECURSE, 0, NULL, NULL,
+                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
+                                 0,
+                                 NULL,
+                                 NULL,
                                  g_cclosure_marshal_VOID__VOID,
-                                 G_TYPE_NONE, 0);
+                                 G_TYPE_NONE,
+                                 0);
 }
 
 static void
@@ -125,7 +128,7 @@ source_added_cb (BklSourceManagerClient *client,
 static void
 source_removed_cb (BklSourceManagerClient *client,
                    const char             *object_path,
-                   PengeSourceManager    *manager)
+                   PengeSourceManager     *manager)
 {
   PengeSourceManagerPrivate *priv = manager->priv;
   GList *s;
@@ -144,7 +147,7 @@ source_removed_cb (BklSourceManagerClient *client,
 
 static void
 local_source_ready (BklSourceClient     *client,
-                    PengeSourceManager *manager)
+                    PengeSourceManager  *manager)
 {
   PengeSourceManagerPrivate *priv = manager->priv;
 
