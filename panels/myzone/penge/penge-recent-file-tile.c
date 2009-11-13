@@ -21,6 +21,10 @@
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 
+#include <bickley/bkl-item-audio.h>
+#include <bickley/bkl-item-image.h>
+#include <bickley/bkl-item-video.h>
+
 #include "penge-recent-file-tile.h"
 #include "penge-magic-texture.h"
 #include "penge-utils.h"
@@ -40,6 +44,7 @@ struct _PengeRecentFileTilePrivate {
   GtkRecentInfo *info;
   ClutterActor *tex;
   PengeRecentFilesModel *model;
+  BklItem *item;
 };
 
 enum
@@ -48,6 +53,7 @@ enum
   PROP_THUMBNAIL_PATH,
   PROP_MODEL,
   PROP_INFO,
+  PROP_ITEM,
 };
 
 static void penge_recent_file_tile_update (PengeRecentFileTile *tile);
@@ -65,6 +71,9 @@ penge_recent_file_tile_get_property (GObject *object, guint property_id,
       break;
     case PROP_INFO:
       g_value_set_pointer (value, priv->info);
+      break;
+    case PROP_ITEM:
+      g_value_set_object (value, priv->item);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -112,6 +121,14 @@ penge_recent_file_tile_set_property (GObject *object, guint property_id,
         priv->model = g_value_dup_object (value);
       }
       break;
+    case PROP_ITEM:
+      if (priv->item)
+        g_object_unref (priv->item);
+
+      priv->item = g_value_dup_object (value);
+
+      penge_recent_file_tile_update (tile);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -126,6 +143,12 @@ penge_recent_file_tile_dispose (GObject *object)
   {
     gtk_recent_info_unref (priv->info);
     priv->info = NULL;
+  }
+
+  if (priv->item)
+  {
+    g_object_unref (priv->item);
+    priv->item = NULL;
   }
 
   G_OBJECT_CLASS (penge_recent_file_tile_parent_class)->dispose (object);
@@ -173,6 +196,96 @@ penge_recent_file_tile_update_thumbnail (PengeRecentFileTile *tile)
   }
 }
 
+static char *
+get_filename_without_extension (BklItem *item)
+{
+  char *ret = g_path_get_basename (bkl_item_get_uri (item));
+  char *dot;
+
+  dot = strrchr (ret, '.');
+  if (dot)
+    *dot = '\0';
+
+  return ret;
+}
+
+static void
+tile_update_from_bkl (PengeRecentFileTile *tile)
+{
+  PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
+  char *tmp = NULL, *secondary = NULL;
+  const char *primary;
+  GPtrArray *artists;
+
+  switch (bkl_item_get_item_type (priv->item)) {
+  case BKL_ITEM_TYPE_AUDIO:
+    if (bkl_item_audio_get_title ((BklItemAudio *) priv->item))
+      primary = bkl_item_audio_get_title ((BklItemAudio *) priv->item);
+    else
+    {
+      tmp = get_filename_without_extension (priv->item);
+      primary = tmp;
+    }
+
+    artists = bkl_item_audio_get_artists ((BklItemAudio *) priv->item);
+    /* FIXME: Handle multiple artists? */
+    if (artists && artists->len > 0)
+      secondary = g_strdup (artists->pdata[0]);
+
+    break;
+
+  case BKL_ITEM_TYPE_IMAGE:
+    if (bkl_item_image_get_title ((BklItemImage *) priv->item))
+      primary = bkl_item_image_get_title ((BklItemImage *) priv->item);
+    else
+    {
+      tmp = get_filename_without_extension (priv->item);
+      primary = tmp;
+    }
+    break;
+
+  case BKL_ITEM_TYPE_VIDEO:
+    if (bkl_item_video_get_title ((BklItemVideo *) priv->item))
+      primary = bkl_item_video_get_title ((BklItemVideo *) priv->item);
+    else if (bkl_item_video_get_series_name ((BklItemVideo *) priv->item))
+    {
+      guint s = 0, e = 0;
+
+      s = bkl_item_video_get_season ((BklItemVideo *) priv->item);
+      e = bkl_item_video_get_episode ((BklItemVideo *) priv->item);
+
+      primary = bkl_item_video_get_series_name ((BklItemVideo *) priv->item);
+      if (s == 0 && e == 0)
+        secondary = NULL;
+      else if (s == 0)
+        secondary = g_strdup_printf (_("Episode: %d"), e);
+      else if (e == 0)
+        secondary = g_strdup_printf (_("Season: %d"), s);
+      else
+        secondary = g_strdup_printf (_("Season: %d, Episode: %d"), s, e);
+    }
+    else
+    {
+      tmp = get_filename_without_extension (priv->item);
+      primary = tmp;
+    }
+    break;
+
+  default:
+    return;
+  }
+
+  g_object_set (tile,
+                "primary-text",
+                primary,
+                "secondary-text",
+                secondary ? secondary : "",
+                NULL);
+
+  g_free (tmp);
+  g_free (secondary);
+}
+
 static void
 penge_recent_file_tile_update (PengeRecentFileTile *tile)
 {
@@ -183,6 +296,12 @@ penge_recent_file_tile_update (PengeRecentFileTile *tile)
   gchar *type_description;
   const gchar *uri;
   GFileInfo *info;
+
+  if (priv->item)
+  {
+    tile_update_from_bkl (tile);
+    return;
+  }
 
   uri = gtk_recent_info_get_uri (priv->info);
 
@@ -269,6 +388,13 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
                                PENGE_TYPE_RECENT_FILE_MODEL,
                                G_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_MODEL, pspec);
+
+  pspec = g_param_spec_object ("item",
+                               "Item",
+                               "BklItem for this tile",
+                               BKL_TYPE_ITEM,
+                               G_PARAM_WRITABLE);
+  g_object_class_install_property (object_class, PROP_ITEM, pspec);
 }
 
 static void
