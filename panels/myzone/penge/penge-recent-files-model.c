@@ -20,7 +20,9 @@
 
 #include <gtk/gtk.h>
 #include <moblin-panel/mpl-utils.h>
+#include <bickley/bkl-item-extended.h>
 
+#include "penge-source-manager.h"
 #include "penge-recent-files-model.h"
 
 G_DEFINE_TYPE (PengeRecentFilesModel, penge_recent_files_model, CLUTTER_TYPE_LIST_MODEL)
@@ -32,6 +34,7 @@ typedef struct _PengeRecentFilesModelPrivate PengeRecentFilesModelPrivate;
 
 struct _PengeRecentFilesModelPrivate {
   GtkRecentManager *manager;
+  PengeSourceManager *source_manager;
   gint max_count;
   gint changed_idle_id;
   gboolean skip_update;
@@ -164,16 +167,21 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
    * the model using a filtered, sorted, set of data
    */
 
+  items = gtk_recent_manager_get_items (priv->manager);
+  if (items == NULL)
+    return;
+
   g_signal_emit (model, signals[BULK_START_SIGNAL], 0);
 
   while (clutter_model_get_n_rows ((ClutterModel *)model))
     clutter_model_remove ((ClutterModel *)model, 0);
 
-  items = gtk_recent_manager_get_items (priv->manager);
   items = g_list_sort (items, (GCompareFunc)_recent_files_sort_func);
 
   for (l = items; l; l = l->next)
   {
+    BklItem *bi;
+
     info = (GtkRecentInfo *)l->data;
 
     /* Skip *local* non-existing files. This is to ensure that http:// urls
@@ -187,10 +195,24 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
     }
 
     uri = gtk_recent_info_get_uri (info);
-    thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+
+    bi = penge_source_manager_find_item (priv->source_manager, uri);
+    if (bi) {
+      const char *thumb_uri;
+      thumb_uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) bi);
+      if (thumb_uri)
+        thumbnail_path = g_filename_from_uri (thumb_uri, NULL, NULL);
+      else
+        thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+    } else {
+      thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+    }
 
     if (!g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
     {
+      if (bi)
+        g_object_unref (bi);
+
       gtk_recent_info_unref (info);
       g_free (thumbnail_path);
       continue;
@@ -198,11 +220,14 @@ penge_recent_files_model_update (PengeRecentFilesModel *model)
 
     clutter_model_append ((ClutterModel *)model,
                           0, info,
-                          1, thumbnail_path,
-                          2, model,
+                          1, bi,
+                          2, thumbnail_path,
+                          3, model,
                           -1);
     g_free (thumbnail_path);
     gtk_recent_info_unref (info);
+    if (bi)
+      g_object_unref (bi);
   }
 
   g_signal_emit (model, signals[BULK_END_SIGNAL], 0);
@@ -239,24 +264,37 @@ _recent_manager_changed_cb (GtkRecentManager *manager,
 }
 
 static void
+source_manager_ready (PengeSourceManager    *source_manager,
+                      PengeRecentFilesModel *model)
+{
+  /* Now that we have the source manager ready, we can update the tiles */
+  penge_recent_files_model_update (model);
+}
+
+static void
 penge_recent_files_model_init (PengeRecentFilesModel *self)
 {
   PengeRecentFilesModelPrivate *priv = GET_PRIVATE (self);
   GType types[] = { GTK_TYPE_RECENT_INFO,
+                    BKL_TYPE_ITEM,
                     G_TYPE_STRING,
                     PENGE_TYPE_RECENT_FILE_MODEL };
 
   /* Set the types (or type in this case) that the model will hold */
   clutter_model_set_types (CLUTTER_MODEL (self),
-                           3,
+                           4,
                            types);
+
+  /* Set up a source manager for finding the recent items */
+  priv->source_manager = g_object_new (PENGE_TYPE_SOURCE_MANAGER, NULL);
+  g_signal_connect (priv->source_manager, "ready",
+                    G_CALLBACK (source_manager_ready), self);
 
   priv->manager = gtk_recent_manager_get_default ();
   g_signal_connect (priv->manager,
                     "changed",
                     (GCallback)_recent_manager_changed_cb,
                     self);
-  penge_recent_files_model_update (self);
 
   /* TODO: Make updatable */
   priv->max_count = 40;
