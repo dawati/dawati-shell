@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-people\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:32+0000\n"
+"PO-Revision-Date: 2009-11-13 23:36+0200\n"
+"Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
+"Language-Team: ITSOFTEX <info@itsoftex.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Arabic\n"
+
+#: ../src/moblin-panel-people.c:70
+#: ../src/mnb-people-panel.c:573
+msgid "people"
+msgstr "أشخاص"
+
+#: ../src/mnb-people-panel.c:166
+msgid "Send an email"
+msgstr "إرسال بريد الكتروني"
+
+#: ../src/mnb-people-panel.c:168
+msgid "Edit details"
+msgstr "تحرير التفاصيل"
+
+#: ../src/mnb-people-panel.c:177
+msgid "Send a message"
+msgstr "إرسال رسالة"
+
+#: ../src/mnb-people-panel.c:311
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "نأسف، لم نتمكن من ايجاد أشخاص. هل أعددت حساب للمراسلة؟"
+
+#: ../src/mnb-people-panel.c:447
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "نأسف، لم نتمكن من ايجاد أشخاص. يبدو ان جميعهم غير متصلين"
+
+#: ../src/mnb-people-panel.c:497
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "لرؤية الرسائل الفورية, حوّل حالتك الى متصل في لوحة الحالة"
+
+#: ../src/mnb-people-panel.c:554
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "أشخاص - %d أشخاص يتكلمون معك"
+
+#: ../src/mnb-people-panel.c:561
+msgid "people - Someone is talking to you"
+msgstr "أشخاص - احدهم يتكلم معك"
+
+#: ../src/mnb-people-panel.c:790
+msgid "People"
+msgstr "أشخاص"
+
+#: ../src/mnb-people-panel.c:803
+msgid "Search"
+msgstr "بحث"
+
+#: ../src/mnb-people-panel.c:856
+msgid "People talking to you ..."
+msgstr "أشخاص يتكلمون معك..."
+
+#: ../src/mnb-people-panel.c:983
+msgid "Selection"
+msgstr "اختيار"
+
+#: ../src/mnb-people-panel.c:1046
+msgid "Nobody selected"
+msgstr "لم تختر احدًا"
+
