@@ -116,8 +116,10 @@ source_added_cb (BklSourceManagerClient *client,
   BklSourceClient *source;
 
   source = bkl_source_client_new (object_path);
-  g_signal_connect (source, "ready",
-                    G_CALLBACK (source_ready_cb), manager);
+  g_signal_connect (source,
+                    "ready",
+                    G_CALLBACK (source_ready_cb),
+                    manager);
 }
 
 static void
@@ -167,8 +169,10 @@ get_sources_reply (BklSourceManagerClient *client,
   }
 
   ls = bkl_source_client_new (BKL_LOCAL_SOURCE_PATH);
-  g_signal_connect (ls, "ready",
-                    G_CALLBACK (local_source_ready), manager);
+  g_signal_connect (ls,
+                    "ready",
+                    G_CALLBACK (local_source_ready),
+                    manager);
 
   for (s = sources; s; s = s->next) {
     priv->source_count++;
@@ -185,7 +189,8 @@ bkl_manager_ready_cb (BklSourceManagerClient *manager_client,
   PengeSourceManagerPrivate *priv = manager->priv;
 
   bkl_source_manager_client_get_sources (priv->manager,
-                                         get_sources_reply, manager);
+                                         get_sources_reply,
+                                         manager);
 }
 
 static void
@@ -196,12 +201,18 @@ penge_source_manager_init (PengeSourceManager *self)
   self->priv = priv;
 
   priv->manager = g_object_new (BKL_TYPE_SOURCE_MANAGER_CLIENT, NULL);
-  g_signal_connect (priv->manager, "ready",
-                    G_CALLBACK (bkl_manager_ready_cb), self);
-  g_signal_connect (priv->manager, "source-added",
-                    G_CALLBACK (source_added_cb), self);
-  g_signal_connect (priv->manager, "source-removed",
-                    G_CALLBACK (source_removed_cb), self);
+  g_signal_connect (priv->manager,
+                    "ready",
+                    G_CALLBACK (bkl_manager_ready_cb),
+                    self);
+  g_signal_connect (priv->manager,
+                    "source-added",
+                    G_CALLBACK (source_added_cb),
+                    self);
+  g_signal_connect (priv->manager,
+                    "source-removed",
+                    G_CALLBACK (source_removed_cb),
+                    self);
 }
 
 static BklItem *
