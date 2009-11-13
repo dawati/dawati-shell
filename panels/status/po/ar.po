@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-status\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:32+0000\n"
+"PO-Revision-Date: 2009-11-14 00:01+0200\n"
+"Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
+"Language-Team: ITSOFTEX <info@itsoftex.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Arabic\n"
+
+#: ../src/mnb-im-status-row.c:109
+#: ../src/mnb-im-status-row.c:110
+#: ../src/mnb-im-status-row.c:809
+#: ../src/moblin-panel-status.c:491
+msgid "Offline"
+msgstr "غير متصل"
+
+#: ../src/mnb-im-status-row.c:111
+#: ../src/moblin-panel-status.c:495
+msgid "Available"
+msgstr "متوفر"
+
+#: ../src/mnb-im-status-row.c:112
+#: ../src/mnb-im-status-row.c:113
+#: ../src/moblin-panel-status.c:499
+#: ../src/moblin-panel-status.c:503
+msgid "Away"
+msgstr "بعيد"
+
+#: ../src/mnb-im-status-row.c:114
+#: ../src/mnb-im-status-row.c:115
+#: ../src/moblin-panel-status.c:507
+#: ../src/moblin-panel-status.c:511
+msgid "Busy"
+msgstr "مشغول"
+
+#: ../src/mnb-im-status-row.c:138
+msgid "Close"
+msgstr "إغلاق"
+
+#: ../src/mnb-im-status-row.c:147
+#: ../src/mnb-im-status-row.c:827
+msgid "Change"
+msgstr "تغيير"
+
+#: ../src/mnb-im-status-row.c:812
+msgid "Unknown account"
+msgstr "حساب غير معروف"
+
+#: ../src/mnb-web-status-entry.c:88
+#: ../src/mnb-web-status-entry.c:641
+#: ../src/mnb-web-status-entry.c:722
+msgid "Edit"
+msgstr "حرر"
+
+#. Translators: %s is the user visible name of the service
+#: ../src/mnb-web-status-entry.c:515
+#, c-format
+msgid "Enter your %s status here..."
+msgstr "ادخل الحالة عندما تكون حالتك %s"
+
+#: ../src/mnb-web-status-entry.c:519
+#: ../src/mnb-web-status-entry.c:592
+msgid "Enter your current status here..."
+msgstr "ادخل الحالة الحالية هنا..."
+
+#: ../src/mnb-web-status-entry.c:701
+msgid "Post"
+msgstr "نشر"
+
+#: ../src/moblin-panel-status.c:469
+msgid "Your current status"
+msgstr "حالتك الحالية"
+
+#: ../src/moblin-panel-status.c:471
+#: ../src/moblin-panel-status.c:930
+msgid "Your current status - you are offline"
+msgstr "حالتك الحالية - غير متصل"
+
+#: ../src/moblin-panel-status.c:795
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "نأسف، لم نتمكن من ايجاد أشخاص. هل أعددت حساب للمرسالة؟"
+
+#: ../src/moblin-panel-status.c:964
+msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+msgstr "لتحديث حالتك في الويب تحتاج لإعداد حساب خدمات الويب عن طريق مزوّد يدعم رسائل الحالة"
+
+#: ../src/moblin-panel-status.c:991
+msgid "To update your IM status you need to setup an Instant Messaging account"
+msgstr "لتحديث حالة الرسائل الفورية تحتاج لإعداد حساب للرسائل الفورية"
+
+#: ../src/moblin-panel-status.c:1086
+msgid "status"
+msgstr "الحالة"
+
