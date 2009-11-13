@@ -275,11 +275,17 @@ tile_update_from_bkl (PengeRecentFileTile *tile)
     return;
   }
 
+  if (!secondary)
+  {
+    const gchar *content_type = bkl_item_get_mimetype (priv->item);
+    secondary = g_content_type_get_description (content_type);
+  }
+
   g_object_set (tile,
                 "primary-text",
                 primary,
                 "secondary-text",
-                secondary ? secondary : "",
+                secondary,
                 NULL);
 
   g_free (tmp);
