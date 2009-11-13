@@ -196,11 +196,14 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
                                        "info",
                                        0);
   penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (list_view),
-                                       "thumbnail-path",
+                                       "item",
                                        1);
   penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (list_view),
-                                       "model",
+                                       "thumbnail-path",
                                        2);
+  penge_magic_list_view_add_attribute (PENGE_MAGIC_LIST_VIEW (list_view),
+                                       "model",
+                                       3);
 
 
   tile_width = gconf_client_get_float (client,
