@@ -816,8 +816,10 @@ anerley_tp_feed_setup_tp_connection (AnerleyTpFeed *feed)
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
   guint res;
 
-  g_signal_connect (priv->account, "status-changed",
-                    G_CALLBACK (_account_status_changed_cb), feed);
+  g_signal_connect (priv->account,
+                    "status-changed",
+                    G_CALLBACK (_account_status_changed_cb),
+                    feed);
 
   res = tp_account_get_connection_status (priv->account, NULL);
 
@@ -831,11 +833,13 @@ anerley_tp_feed_setup_tp_connection (AnerleyTpFeed *feed)
   if (res != TP_CONNECTION_STATUS_CONNECTED)
     return;
 
-
   _account_status_changed_cb (priv->account,
-                              0, TP_CONNECTION_STATUS_CONNECTED,
+                              0,
+                              TP_CONNECTION_STATUS_CONNECTED,
                               TP_CONNECTION_STATUS_REASON_NONE_SPECIFIED,
-                              NULL, NULL, feed);
+                              NULL,
+                              NULL,
+                              feed);
 }
 
 static void
