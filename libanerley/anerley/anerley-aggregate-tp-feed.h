@@ -59,7 +59,7 @@ AnerleyFeed *anerley_aggregate_tp_feed_new (void);
 AnerleyFeed * anerley_aggregate_tp_feed_get_feed_by_account_name (AnerleyAggregateTpFeed *feed,
                                                                   const gchar            *account_name);
 gint anerley_aggregate_tp_feed_get_accounts_online (AnerleyAggregateTpFeed *feed);
-
+gint anerley_aggregate_tp_feed_get_accounts_available (AnerleyAggregateTpFeed *feed);
 G_END_DECLS
 
 #endif /* _ANERLEY_AGGREGATE_TP_FEED */

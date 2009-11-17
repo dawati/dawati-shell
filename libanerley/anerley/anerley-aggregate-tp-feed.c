@@ -36,7 +36,6 @@ typedef struct _AnerleyAggregateTpFeedPrivate AnerleyAggregateTpFeedPrivate;
 struct _AnerleyAggregateTpFeedPrivate {
   GHashTable *feeds;
   TpAccountManager *account_manager;
-  gint accounts_available;
 };
 
 enum
@@ -81,7 +80,8 @@ anerley_aggregate_tp_feed_get_property (GObject *object, guint property_id,
 
   switch (property_id) {
     case PROP_ACCOUNTS_AVAILABLE:
-      g_value_set_int (value, priv->accounts_available);
+      g_value_set_int (value,
+                       anerley_aggregate_tp_feed_get_accounts_available (feed));
       break;
     case PROP_ACCOUNTS_ONLINE:
       g_value_set_int (value,
@@ -137,7 +137,6 @@ _account_manager_account_enabled_cb (TpAccountManager *account_manager,
 
     anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (aggregate),
                                      ANERLEY_FEED (feed));
-    priv->accounts_available++;
     g_signal_connect (feed,
                       "notify::online",
                       (GCallback)_feed_notify_online_cb,
@@ -162,7 +161,6 @@ _account_manager_account_disabled_cb (TpAccountManager *account_manager,
    * feed here. But for now it isn't.
    */
 
-  priv->accounts_available--;
   g_object_notify (G_OBJECT (userdata), "accounts-available");
 }
 
@@ -205,7 +203,6 @@ _account_manager_ready_cb (GObject      *source_object,
              account_name);
     anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (aggregate),
                                      ANERLEY_FEED (feed));
-    priv->accounts_available++;
     g_signal_connect (feed,
                       "notify::online",
                       (GCallback)_feed_notify_online_cb,
@@ -316,4 +313,25 @@ anerley_aggregate_tp_feed_get_accounts_online (AnerleyAggregateTpFeed *feed)
   g_list_free (feeds);
 
   return online;
+}
+
+gint
+anerley_aggregate_tp_feed_get_accounts_available (AnerleyAggregateTpFeed *feed)
+{
+  AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (feed);
+  GList *feeds = NULL;
+  gint available = 0;
+  GList *l;
+
+  feeds = g_hash_table_get_values (priv->feeds);
+
+  for (l = feeds; l; l = l->next)
+  {
+    if (anerley_tp_feed_get_enabled (ANERLEY_TP_FEED (l->data)))
+      available++;
+  }
+
+  g_list_free (feeds);
+
+  return available;
 }
