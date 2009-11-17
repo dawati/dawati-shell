@@ -76,7 +76,6 @@ anerley_aggregate_tp_feed_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
   AnerleyAggregateTpFeed *feed = ANERLEY_AGGREGATE_TP_FEED (object);
-  AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (object);
 
   switch (property_id) {
     case PROP_ACCOUNTS_AVAILABLE:
@@ -111,11 +110,9 @@ _feed_notify_online_cb (GObject    *object,
 }
 
 static void
-_account_manager_account_enabled_cb (TpAccountManager *account_manager,
-                                     TpAccount        *account,
-                                     gpointer          userdata)
+_add_feed_from_account (AnerleyAggregateTpFeed *aggregate,
+                        TpAccount              *account)
 {
-  AnerleyAggregateTpFeed *aggregate = ANERLEY_AGGREGATE_TP_FEED (userdata);
   AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (aggregate);
   AnerleyTpFeed *feed;
   const gchar *account_name;
@@ -147,11 +144,34 @@ _account_manager_account_enabled_cb (TpAccountManager *account_manager,
 }
 
 static void
+_account_manager_account_validity_changed_cb (TpAccountManager *account_manager,
+                                              TpAccount        *account,
+                                              gboolean          valid,
+                                              gpointer          userdata)
+{
+  AnerleyAggregateTpFeed *aggregate = ANERLEY_AGGREGATE_TP_FEED (userdata);
+
+  if (!valid)
+    return;
+
+  _add_feed_from_account (aggregate, account);
+}
+
+static void
+_account_manager_account_enabled_cb (TpAccountManager *account_manager,
+                                     TpAccount        *account,
+                                     gpointer          userdata)
+{
+  AnerleyAggregateTpFeed *aggregate = ANERLEY_AGGREGATE_TP_FEED (userdata);
+
+  _add_feed_from_account (aggregate, account);
+}
+
+static void
 _account_manager_account_disabled_cb (TpAccountManager *account_manager,
                                       TpAccount        *account,
                                       gpointer          userdata)
 {
-  AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (userdata);
   /* For TP feeds we don't actually want to remove the feed from aggregator
    * because otherwise the removals get lost when the TP connection gets
    * disconnect on MC account disablement.
@@ -162,7 +182,27 @@ _account_manager_account_disabled_cb (TpAccountManager *account_manager,
    */
 
   g_object_notify (G_OBJECT (userdata), "accounts-available");
+  g_object_notify (G_OBJECT (userdata), "accounts-online");
 }
+
+static void
+_account_manager_account_removed_cb (TpAccountManager *account_manager,
+                                     TpAccount        *account,
+                                     gpointer          userdata)
+{
+  /* For TP feeds we don't actually want to remove the feed from aggregator
+   * because otherwise the removals get lost when the TP connection gets
+   * disconnect on MC account disablement.
+   *
+   * If the aggregator becomes cleverer and thus knows which items come from
+   * which feed then it can issue the removals and we will then remove the
+   * feed here. But for now it isn't.
+   */
+
+  g_object_notify (G_OBJECT (userdata), "accounts-online");
+  g_object_notify (G_OBJECT (userdata), "accounts-available");
+}
+
 
 static void
 _account_manager_ready_cb (GObject      *source_object,
@@ -171,7 +211,6 @@ _account_manager_ready_cb (GObject      *source_object,
 {
   TpAccountManager *account_manager = TP_ACCOUNT_MANAGER (source_object);
   AnerleyAggregateTpFeed *aggregate = ANERLEY_AGGREGATE_TP_FEED (userdata);
-  AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (aggregate);
   GList *accounts, *l;
   GError *error = NULL;
 
@@ -187,29 +226,8 @@ _account_manager_ready_cb (GObject      *source_object,
   for (l = accounts; l != NULL; l = l->next)
   {
     TpAccount *account = TP_ACCOUNT (l->data);
-    AnerleyTpFeed *feed;
-    const gchar *account_name;
 
-    if (!tp_account_is_enabled (account))
-      continue;
-
-    feed = anerley_tp_feed_new (account);
-    account_name = tp_proxy_get_object_path (account);
-
-    g_hash_table_insert (priv->feeds,
-                         g_strdup (account_name),
-                         feed);
-    g_debug (G_STRLOC ": Adding account with identifier %s to feed",
-             account_name);
-    anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (aggregate),
-                                     ANERLEY_FEED (feed));
-    g_signal_connect (feed,
-                      "notify::online",
-                      (GCallback)_feed_notify_online_cb,
-                      aggregate);
-
-    g_object_notify (G_OBJECT (aggregate), "accounts-available");
-    g_object_notify (G_OBJECT (aggregate), "accounts-online");
+    _add_feed_from_account (aggregate, account);
   }
 
   g_list_free (accounts);
@@ -221,13 +239,27 @@ anerley_aggregate_tp_feed_constructed (GObject *object)
   AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (object);
 
   priv->account_manager = tp_account_manager_dup ();
-  g_signal_connect (priv->account_manager, "account-enabled",
-                    G_CALLBACK (_account_manager_account_enabled_cb), object);
-  g_signal_connect (priv->account_manager, "account-disabled",
-                    G_CALLBACK (_account_manager_account_disabled_cb), object);
+  g_signal_connect (priv->account_manager,
+                    "account-enabled",
+                    G_CALLBACK (_account_manager_account_enabled_cb),
+                    object);
+  g_signal_connect (priv->account_manager,
+                    "account-disabled",
+                    G_CALLBACK (_account_manager_account_disabled_cb),
+                    object);
+  g_signal_connect (priv->account_manager,
+                    "account-validity-changed",
+                    G_CALLBACK (_account_manager_account_validity_changed_cb),
+                    object);
+  g_signal_connect (priv->account_manager,
+                    "account-removed",
+                    G_CALLBACK (_account_manager_account_removed_cb),
+                    object);
 
-  tp_account_manager_prepare_async (priv->account_manager, NULL,
-                                    _account_manager_ready_cb, object);
+  tp_account_manager_prepare_async (priv->account_manager,
+                                    NULL,
+                                    _account_manager_ready_cb,
+                                    object);
 
   if (G_OBJECT_CLASS (anerley_aggregate_tp_feed_parent_class)->constructed)
     G_OBJECT_CLASS (anerley_aggregate_tp_feed_parent_class)->constructed (object);
