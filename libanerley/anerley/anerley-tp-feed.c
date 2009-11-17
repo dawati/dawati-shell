@@ -751,17 +751,16 @@ _tp_connection_ready_cb (TpConnection *connection,
 }
 
 static void
-_account_status_changed_cb (TpAccount                *account,
-                            TpConnectionStatus        old_status,
-                            TpConnectionStatus        status,
-                            TpConnectionStatusReason  reason,
-                            const gchar              *dbus_error_name,
-                            const GHashTable         *details,
-                            gpointer                  userdata)
+_connection_notify_status_cb (TpConnection *connection,
+                              GParamSpec   *pspec,
+                              gpointer      userdata)
 {
   AnerleyTpFeed *feed = ANERLEY_TP_FEED (userdata);
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
   GList *items;
+  TpConnectionStatus status;
+
+  status = tp_connection_get_status (priv->conn, NULL);
 
   g_debug (G_STRLOC ": Connection is in state: %s",
            status==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
@@ -769,15 +768,8 @@ _account_status_changed_cb (TpAccount                *account,
            status==TP_CONNECTION_STATUS_DISCONNECTED ? "disconnected" :
            "other");
 
-  if (status == TP_CONNECTION_STATUS_CONNECTED)
+  if (status == TP_CONNECTION_STATUS_DISCONNECTED)
   {
-    priv->conn = g_object_ref (tp_account_get_connection (account));
-
-    tp_connection_call_when_ready (priv->conn,
-                                   _tp_connection_ready_cb,
-                                   feed);
-    g_object_notify ((GObject *)feed, "online");
-  } else if (status == TP_CONNECTION_STATUS_DISCONNECTED) {
     /*
      * This means our connection has been disconnected. That is :-( so lets
      * remove these things from our internal store and emit the signals on
@@ -805,6 +797,46 @@ _account_status_changed_cb (TpAccount                *account,
     }
 
     g_object_notify ((GObject *)feed, "online");
+  }
+}
+
+static void
+_account_status_changed_cb (TpAccount                *account,
+                            TpConnectionStatus        old_status,
+                            TpConnectionStatus        status,
+                            TpConnectionStatusReason  reason,
+                            const gchar              *dbus_error_name,
+                            const GHashTable         *details,
+                            gpointer                  userdata)
+{
+  AnerleyTpFeed *feed = ANERLEY_TP_FEED (userdata);
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+
+  g_debug (G_STRLOC ": Connection is in state: %s",
+           status==TP_CONNECTION_STATUS_CONNECTED ? "connected" :
+           status==TP_CONNECTION_STATUS_CONNECTING ? "connecting" :
+           status==TP_CONNECTION_STATUS_DISCONNECTED ? "disconnected" :
+           "other");
+
+  if (status == TP_CONNECTION_STATUS_CONNECTED)
+  {
+    priv->conn = g_object_ref (tp_account_get_connection (account));
+
+    g_signal_connect (priv->conn,
+                      "notify::status",
+                      (GCallback)_connection_notify_status_cb,
+                      feed);
+
+    tp_connection_call_when_ready (priv->conn,
+                                   _tp_connection_ready_cb,
+                                   feed);
+    g_object_notify ((GObject *)feed, "online");
+  } else if (status == TP_CONNECTION_STATUS_DISCONNECTED) {
+
+    /* This gets handled in the notify::status on the connection directly
+     * above. We need to do this because of http://bugs.freedesktop.org/show_bug.cgi?id=25149
+     */
+
   } else {
     /* CONNECTING */
   }
