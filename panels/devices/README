@@ -1,7 +1,8 @@
 This package uses code copied from various places:
 
-libhal-glib - GNOME Power Manager 
+libhal-glib - GNOME Power Manager
 libgvc - GNOME Volume control
+libegg-idletime - GNOME Power Manager
 
 Many thanks to those guys for their source code. These blocks of code are
 licensed under the terms of the GPL. The rest of Dalston is licensed under the
