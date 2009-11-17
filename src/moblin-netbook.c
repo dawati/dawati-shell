@@ -1513,6 +1513,7 @@ handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
   mnb_input_manager_push_window (mcw,
                                  MNB_INPUT_LAYER_PANEL_TRANSIENTS);
 
+#if 0
   if (meta_window_get_frame (mw))
     xid = meta_frame_get_xwindow (meta_window_get_frame (mw));
   else
@@ -1523,6 +1524,7 @@ handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
   XRaiseWindow (GDK_DISPLAY (), xid);
 
   meta_error_trap_pop (display, TRUE);
+#endif
 }
 
 /*
@@ -1583,7 +1585,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     {
       mutter_plugin_effect_completed (plugin, mcw,
                                       MUTTER_PLUGIN_MAP);
-
       handle_panel_child (plugin, mcw);
       return;
     }
@@ -1597,7 +1598,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     {
       MetaWindow  *mw       = mutter_window_get_meta_window (mcw);
       const gchar *wm_class = meta_window_get_wm_class (mw);
-      MnbPanel    *panel;
 
       /*
        * Handle the case of a IM preview window for a panel.
@@ -1627,6 +1627,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           return;
         }
+      else
+        mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+
+    }
+  else if (type == META_COMP_WINDOW_DOCK)
+    {
+      MnbPanel *panel;
 
       if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
         {
@@ -1639,12 +1646,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           mnb_panel_show_mutter_window (panel, mcw);
         }
-      else
-        mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-
     }
-
-
   /*
    * Anything that might be associated with startup notification needs to be
    * handled here; if this list grows, we should just split it further.

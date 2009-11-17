@@ -745,8 +745,11 @@ mnb_panel_init_panel_reply_cb (DBusGProxy *proxy,
     }
 
   socket = gtk_socket_new ();
-  priv->window = window = gtk_window_new (GTK_WINDOW_POPUP);
-
+  priv->window = window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DOCK);
+#if 0
+  gtk_window_set_keep_above (GTK_WINDOW (window), TRUE);
+#endif
   gtk_window_resize (GTK_WINDOW (window), window_width, window_height);
 
   gtk_window_move (GTK_WINDOW (window),
