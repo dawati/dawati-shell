@@ -36,6 +36,8 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    [Name of default gettext domain])
 
 IT_PROG_INTLTOOL([0.34.90])
+AS_ALL_LINGUAS
+
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_ISC_POSIX
