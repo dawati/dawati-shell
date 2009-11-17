@@ -950,3 +950,11 @@ anerley_tp_feed_get_online (AnerleyTpFeed *feed)
 
   return FALSE;
 }
+
+gboolean
+anerley_tp_feed_get_enabled (AnerleyTpFeed *feed)
+{
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+
+  return tp_account_is_enabled (priv->account);
+}
