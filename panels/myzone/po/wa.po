@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-29 15:19+0000\n"
-"PO-Revision-Date: 2009-09-29 22:16+0000\n"
+"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"PO-Revision-Date: 2009-11-18 07:29+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,27 +16,36 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../penge/penge-calendar-pane.c:478
+#: ../penge/penge-calendar-pane.c:476
 msgid "<b>Appointments</b>"
 msgstr "<b>Radjoûs</b>"
 
-#: ../penge/penge-events-pane.c:265
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "Ahiver on radjoû"
+
+#: ../penge/penge-events-pane.c:60
+#: ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Radjouter"
+
+#: ../penge/penge-events-pane.c:268
 msgid "No calendar entries this week"
 msgstr "Rén e calindrî cisse samwinne ci"
 
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr ""
-"Les floûs da vos soçons eyet les siervices del waibe aparexhront droci. "
-"Metoz en alaedje vos contes do côp !"
+#: ../penge/penge-people-placeholder-tile.c:116
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
+msgstr "Il aparexhrè droci les sacwès k' vos soçons fijhnut so fyis. Metoz en alaedje vos contes do côp !"
 
 #: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "Pådje waibe"
 
-#: ../penge/penge-tasks-pane.c:344
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "Ahiver ene novele bouye"
+
+#: ../penge/penge-tasks-pane.c:433
 msgid "Nothing to do today"
 msgstr "Rén a fé ådjourdu"
 
@@ -50,13 +59,6 @@ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 msgstr "<b>Wilicome dins Moblin 2.1 po les Netbooks</b>"
 
 #: ../penge/penge-welcome-tile.c:108
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
-msgstr ""
-"Come Moblin est ene miete diferin des ôtes copiutreces, nos avans metou "
-"eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. Nos "
-"esperans k' vos alez awè do plaijhi, "
-"L' ekipe di Moblin."
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "Come Moblin est ene miete diferin des ôtes copiutreces, nos avans metou eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. Nos esperans k' vos alez awè do plaijhi, L' ekipe di Moblin."
 
