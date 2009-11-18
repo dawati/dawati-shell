@@ -29,6 +29,7 @@
 #include <glib-object.h>
 #include <nbtk/nbtk.h>
 
+#include "mnb-panel.h"
 #include "mnb-panel-oop.h"
 #include "moblin-netbook.h"
 
@@ -86,18 +87,15 @@ const gchar * mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar);
 
 gboolean mnb_toolbar_in_transition (MnbToolbar *toolbar);
 
-NbtkWidget * mnb_toolbar_get_switcher (MnbToolbar *toolbar);
+MnbPanel * mnb_toolbar_get_switcher (MnbToolbar *toolbar);
 
 void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);
 
 void mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled);
 
-/*FIXME*/
-MnbPanelOop * mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid);
+MnbPanel * mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid);
 
-NbtkWidget * mnb_toolbar_get_active_panel (MnbToolbar *toolbar);
-
-void mnb_toolbar_set_panel_input_only (MnbToolbar *toolbar, gboolean whether);
+MnbPanel * mnb_toolbar_get_active_panel (MnbToolbar *toolbar);
 
 gboolean mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar);
 
@@ -108,6 +106,8 @@ void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
                                 gpointer           data);
 
 gboolean mnb_toolbar_owns_window (MnbToolbar *toolbar, MutterWindow *mcw);
+
+void mnb_toolbar_hide_panel_and_self (MnbToolbar *self, MnbPanel *panel);
 
 G_END_DECLS
 

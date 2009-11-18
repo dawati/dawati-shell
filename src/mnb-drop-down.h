@@ -68,10 +68,6 @@ typedef struct {
 typedef struct {
   NbtkTableClass parent_class;
 
-  void (*show_begin)     (MnbDropDown *drop_down);
-  void (*show_completed) (MnbDropDown *drop_down);
-  void (*hide_begin)     (MnbDropDown *drop_down);
-  void (*hide_completed) (MnbDropDown *drop_down);
 } MnbDropDownClass;
 
 GType mnb_drop_down_get_type (void);
@@ -83,8 +79,6 @@ ClutterActor* mnb_drop_down_get_child (MnbDropDown *drop_down);
 
 
 void          mnb_drop_down_set_button (MnbDropDown *drop_down, NbtkButton *button);
-
-void          mnb_drop_down_hide_with_toolbar (MnbDropDown *drop_down);
 
 void          mnb_drop_down_get_footer_geometry (MnbDropDown *drop_down,
                                                  gfloat      *x,

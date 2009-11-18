@@ -28,6 +28,7 @@
 
 #include "mnb-switcher-app.h"
 #include "mnb-switcher-zone.h"
+#include "../mnb-panel.h"
 
 #define MNB_SWICHER_APP_ICON_PADDING         5.0
 #define MNB_SWICHER_APP_ICON_SIZE           32.0
@@ -449,7 +450,7 @@ mnb_switcher_app_activate (MnbSwitcherItem *item)
   mnb_switcher_end_kbd_grab (switcher);
   clutter_ungrab_pointer ();
 
-  mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
+  mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));
 
   moblin_netbook_activate_window (window);
 

@@ -60,11 +60,6 @@ typedef struct {
 typedef struct {
   GObjectClass parent_class;
 
-  void (*show_begin)            (MnbPanelOop *panel);
-  void (*show_completed)        (MnbPanelOop *panel);
-  void (*hide_begin)            (MnbPanelOop *panel);
-  void (*hide_completed)        (MnbPanelOop *panel);
-
   void (*ready)                 (MnbPanelOop *panel);
   void (*remote_process_died)   (MnbPanelOop *panel);
   void (*request_button_style)  (MnbPanelOop *panel, const gchar *style);
@@ -81,16 +76,10 @@ MnbPanelOop *mnb_panel_oop_new (MutterPlugin *plugin,
 
 void mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw);
 
-const gchar  *mnb_panel_oop_get_name          (MnbPanelOop *panel);
 const gchar  *mnb_panel_oop_get_dbus_name     (MnbPanelOop *panel);
-const gchar  *mnb_panel_oop_get_tooltip       (MnbPanelOop *panel);
-const gchar  *mnb_panel_oop_get_stylesheet    (MnbPanelOop *panel);
-const gchar  *mnb_panel_oop_get_button_style  (MnbPanelOop *panel);
 guint         mnb_panel_oop_get_xid           (MnbPanelOop *panel);
 gboolean      mnb_panel_oop_is_ready          (MnbPanelOop *panel);
-void          mnb_panel_oop_set_size          (MnbPanelOop *panel,
-                                               guint     width,
-                                               guint     height);
+
 MutterWindow *mnb_panel_oop_get_mutter_window (MnbPanelOop *panel);
 void          mnb_panel_oop_focus             (MnbPanelOop *panel);
 gboolean      mnb_panel_oop_owns_window       (MnbPanelOop *panel, MutterWindow *mcw);
@@ -100,9 +89,7 @@ gboolean      mnb_panel_oop_is_ancestor_of_transient (MnbPanelOop     *panel,
 void          mnb_toolbar_ping_panel_oop      (DBusGConnection *dbus_conn,
                                                const gchar     *dbus_name);
 
-void          mnb_panel_oop_show              (MnbPanelOop *panel);
 void          mnb_panel_oop_show_animate      (MnbPanelOop *panel);
-void          mnb_panel_oop_hide              (MnbPanelOop *panel);
 void          mnb_panel_oop_hide_animate      (MnbPanelOop *panel);
 
 G_END_DECLS

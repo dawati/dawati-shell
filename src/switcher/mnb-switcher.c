@@ -45,7 +45,13 @@ static void mnb_switcher_tooltip_weak_notify (gpointer data, GObject *obj);
  * MnbSwitcher is an MnbDropDown subclass implementing the Zones panel of the
  * shell.
  */
-G_DEFINE_TYPE (MnbSwitcher, mnb_switcher, MNB_TYPE_DROP_DOWN)
+static void mnb_panel_iface_init (MnbPanelIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MnbSwitcher,
+                         mnb_switcher,
+                         MNB_TYPE_DROP_DOWN,
+                         G_IMPLEMENT_INTERFACE (MNB_TYPE_PANEL,
+                                                mnb_panel_iface_init));
 
 #define MNB_SWITCHER_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER, MnbSwitcherPrivate))
@@ -884,7 +890,7 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher,
     }
 
   if (close)
-    mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
+    mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));
 }
 
 /*
@@ -1214,10 +1220,10 @@ mnb_switcher_end_kbd_grab (MnbSwitcher *switcher)
     }
 }
 
-void
-mnb_switcher_set_size (MnbSwitcher *switcher, guint width, guint height)
+static void
+mnb_switcher_set_size (MnbPanel *panel, guint width, guint height)
 {
-  MnbSwitcherPrivate *priv = switcher->priv;
+  MnbSwitcherPrivate *priv = MNB_SWITCHER (panel)->priv;
 
   if (!priv->empty)
     clutter_actor_set_size (CLUTTER_ACTOR (priv->table),
@@ -1227,5 +1233,33 @@ mnb_switcher_set_size (MnbSwitcher *switcher, guint width, guint height)
   else
     clutter_actor_set_width (CLUTTER_ACTOR (priv->table),
                              width - TOOLBAR_X_PADDING * 2);
+}
+
+static const gchar *
+mnb_switcher_get_name (MnbPanel *panel)
+{
+  return "zones";
+}
+
+static const gchar *
+mnb_switcher_get_tooltip (MnbPanel *panel)
+{
+  return _("zones");
+}
+
+static const gchar *
+mnb_switcher_get_button_style (MnbPanel *panel)
+{
+  return "zones-button";
+}
+
+static void
+mnb_panel_iface_init (MnbPanelIface *iface)
+{
+  iface->get_name         = mnb_switcher_get_name;
+  iface->get_tooltip      = mnb_switcher_get_tooltip;
+  iface->get_button_style = mnb_switcher_get_button_style;
+
+  iface->set_size         = mnb_switcher_set_size;
 }
 

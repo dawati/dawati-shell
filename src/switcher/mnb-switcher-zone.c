@@ -360,7 +360,7 @@ mnb_switcher_zone_button_release (ClutterActor       *actor,
       return FALSE;
     }
 
-  mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (priv->switcher));
+  mnb_panel_hide_with_toolbar (MNB_PANEL (priv->switcher));
 
   mnb_switcher_end_kbd_grab (priv->switcher);
 

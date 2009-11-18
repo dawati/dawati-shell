@@ -64,7 +64,7 @@ activate_window (MnbSwitcher *switcher, MetaWindow *next, guint timestamp)
   workspace        = meta_window_get_workspace (next);
   active_workspace = meta_screen_get_active_workspace (screen);
 
-  mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (switcher));
+  mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));
 
   if (!active_workspace || (active_workspace == workspace))
     {

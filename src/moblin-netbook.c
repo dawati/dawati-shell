@@ -1633,7 +1633,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     }
   else if (type == META_COMP_WINDOW_DOCK)
     {
-      MnbPanelOop *panel;
+      MnbPanel *panel;
 
       if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
         {
@@ -1644,7 +1644,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * thing, and only then impose our will on it.
            */
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-          mnb_panel_oop_show_mutter_window (panel, mcw);
+          mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
         }
     }
   /*
@@ -1884,7 +1884,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   NbtkWidget                 *switcher;
 
-  switcher = mnb_toolbar_get_switcher (toolbar);
+  switcher = (NbtkWidget*) mnb_toolbar_get_switcher (toolbar);
 
   if (switcher && mnb_switcher_handle_xevent (MNB_SWITCHER (switcher), xev))
     return TRUE;
@@ -2356,7 +2356,7 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   MetaWindow                 *focus;
-  NbtkWidget                 *panel;
+  MnbPanel                   *panel;
 
   /*
    * First check if a panel is active; if it's an OOP panel, we focus the panel,

@@ -21,7 +21,10 @@
  * 02111-1307, USA.
  */
 
+#include <glib/gi18n.h>
+
 #include "mnb-drop-down.h"
+#include "mnb-panel.h"
 #include "mnb-toolbar.h"    /* For MNB_IS_TOOLBAR */
 #include "moblin-netbook.h" /* For PANEL_HEIGHT */
 #include "switcher/mnb-switcher.h"
@@ -30,7 +33,13 @@
 
 static void mnb_button_toggled_cb (NbtkWidget *, GParamSpec *, MnbDropDown *);
 
-G_DEFINE_TYPE (MnbDropDown, mnb_drop_down, NBTK_TYPE_TABLE)
+static void mnb_panel_iface_init (MnbPanelIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MnbDropDown,
+                         mnb_drop_down,
+                         NBTK_TYPE_TABLE,
+                         G_IMPLEMENT_INTERFACE (MNB_TYPE_PANEL,
+                                                mnb_panel_iface_init));
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_DROP_DOWN, MnbDropDownPrivate))
@@ -40,18 +49,6 @@ enum {
 
   PROP_MUTTER_PLUGIN,
 };
-
-enum
-{
-  SHOW_BEGIN,
-  SHOW_COMPLETED,
-  HIDE_BEGIN,
-  HIDE_COMPLETED,
-
-  LAST_SIGNAL
-};
-
-static guint dropdown_signals[LAST_SIGNAL] = { 0 };
 
 struct _MnbDropDownPrivate {
   MutterPlugin *plugin;
@@ -66,7 +63,6 @@ struct _MnbDropDownPrivate {
 
   gboolean in_show_animation : 1;
   gboolean in_hide_animation : 1;
-  gboolean hide_toolbar      : 1;
 
   gulong show_completed_id;
   gulong hide_completed_id;
@@ -133,7 +129,6 @@ mnb_drop_down_show_completed_cb (ClutterAnimation *anim, ClutterActor *actor)
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (actor)->priv;
 
   priv->in_show_animation = FALSE;
-  priv->hide_toolbar = FALSE;
   priv->show_anim = NULL;
   priv->show_completed_id = 0;
 
@@ -143,7 +138,7 @@ mnb_drop_down_show_completed_cb (ClutterAnimation *anim, ClutterActor *actor)
         nbtk_button_set_checked (priv->button, TRUE);
     }
 
-  g_signal_emit (actor, dropdown_signals[SHOW_COMPLETED], 0);
+  g_signal_emit_by_name (actor, "show-completed");
   g_object_unref (actor);
 }
 
@@ -233,11 +228,7 @@ mnb_drop_down_ensure_size (MnbDropDown *self)
            */
           if (max_inner_height != hci || inner_width != wci)
             {
-              if (MNB_IS_SWITCHER (actor))
-                mnb_switcher_set_size ((MnbSwitcher*)actor,
-                                       r.width, max_height);
-              else
-                clutter_actor_set_size (actor, w, (gfloat) max_height);
+              mnb_panel_set_size ((MnbPanel*)actor, r.width, max_height);
             }
         }
     }
@@ -295,7 +286,7 @@ mnb_drop_down_show (ClutterActor *actor)
       return;
     }
 
-  g_signal_emit (actor, dropdown_signals[SHOW_BEGIN], 0);
+  g_signal_emit_by_name (actor, "show-begin");
 
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->show (actor);
 
@@ -340,25 +331,8 @@ mnb_drop_down_hide_completed_cb (ClutterAnimation *anim, ClutterActor *actor)
   /* now that it's hidden we can put it back to where it is suppoed to be */
   clutter_actor_set_position (actor, priv->x, priv->y);
 
-  if (priv->hide_toolbar)
-    {
-      /*
-       * If the hide_toolbar flag is set, we attempt to hide the Toolbar now
-       * that the panel is hidden.
-       */
-      ClutterActor *toolbar = clutter_actor_get_parent (actor);
-
-      while (toolbar && !MNB_IS_TOOLBAR (toolbar))
-        toolbar = clutter_actor_get_parent (toolbar);
-
-      if (toolbar)
-        mnb_toolbar_hide ((MnbToolbar*)toolbar);
-
-      priv->hide_toolbar = FALSE;
-    }
-
   priv->in_hide_animation = FALSE;
-  g_signal_emit (actor, dropdown_signals[HIDE_COMPLETED], 0);
+  g_signal_emit_by_name (actor, "hide-completed");
   g_object_unref (actor);
 }
 
@@ -382,7 +356,6 @@ mnb_drop_down_hide (ClutterActor *actor)
       priv->show_anim = NULL;
       priv->show_completed_id = 0;
       priv->in_show_animation = FALSE;
-      priv->hide_toolbar = FALSE;
 
       if (priv->button)
         {
@@ -391,7 +364,7 @@ mnb_drop_down_hide (ClutterActor *actor)
         }
     }
 
-  g_signal_emit (actor, dropdown_signals[HIDE_BEGIN], 0);
+  g_signal_emit_by_name (actor, "hide-begin");
 
   /* de-activate the button */
   if (priv->button)
@@ -531,7 +504,7 @@ mnb_drop_down_constructed (GObject *object)
   nbtk_widget_set_style_class_name (footer, "drop-down-footer");
   nbtk_table_add_actor (NBTK_TABLE (object), CLUTTER_ACTOR (footer), 1, 0);
   g_signal_connect_swapped (footer, "clicked",
-                            G_CALLBACK (mnb_drop_down_hide_with_toolbar), object);
+                            G_CALLBACK (mnb_panel_hide_with_toolbar), object);
 
   priv->footer = CLUTTER_ACTOR (footer);
 }
@@ -546,9 +519,9 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
 
   object_class->get_property = mnb_drop_down_get_property;
   object_class->set_property = mnb_drop_down_set_property;
-  object_class->dispose = mnb_drop_down_dispose;
-  object_class->finalize = mnb_drop_down_finalize;
-  object_class->constructed = mnb_drop_down_constructed;
+  object_class->dispose      = mnb_drop_down_dispose;
+  object_class->finalize     = mnb_drop_down_finalize;
+  object_class->constructed  = mnb_drop_down_constructed;
 
   clutter_class->show = mnb_drop_down_show;
   clutter_class->hide = mnb_drop_down_hide;
@@ -557,42 +530,6 @@ mnb_drop_down_class_init (MnbDropDownClass *klass)
   clutter_class->button_press_event = mnb_button_event_capture;
   clutter_class->button_release_event = mnb_button_event_capture;
   clutter_class->allocate = mnb_drop_down_allocate;
-
-  dropdown_signals[SHOW_BEGIN] =
-    g_signal_new ("show-begin",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbDropDownClass, show_begin),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
-
-  dropdown_signals[SHOW_COMPLETED] =
-    g_signal_new ("show-completed",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbDropDownClass, show_completed),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
-
-  dropdown_signals[HIDE_BEGIN] =
-    g_signal_new ("hide-begin",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbDropDownClass, hide_begin),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
-
-  dropdown_signals[HIDE_COMPLETED] =
-    g_signal_new ("hide-completed",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbDropDownClass, hide_completed),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
                                    PROP_MUTTER_PLUGIN,
@@ -728,23 +665,6 @@ mnb_drop_down_set_button (MnbDropDown *drop_down,
 }
 
 /*
- * Hides both dropdown and toolbar, in a sequnce so as to preserve the
- * hide animations.
- */
-void
-mnb_drop_down_hide_with_toolbar (MnbDropDown *self)
-{
-  MnbDropDownPrivate *priv = self->priv;
-
-  priv->hide_toolbar = TRUE;
-
-  if (priv->in_hide_animation)
-    return;
-
-  clutter_actor_hide (CLUTTER_ACTOR (self));
-}
-
-/*
  * Returns untransformed geometry of the footer relative to the drop down.
  */
 void
@@ -767,5 +687,47 @@ mnb_drop_down_get_footer_geometry (MnbDropDown *self,
   *y      = clutter_actor_get_height (priv->child);
   *width  = clutter_actor_get_width  (CLUTTER_ACTOR (self));
   *height = clutter_actor_get_height (priv->footer);
+}
+
+static void
+mnb_drop_down_panel_show (MnbPanel *panel)
+{
+  clutter_actor_show (CLUTTER_ACTOR (panel));
+}
+
+static void
+mnb_drop_down_panel_hide (MnbPanel *panel)
+{
+  clutter_actor_hide (CLUTTER_ACTOR (panel));
+}
+
+static void
+mnb_drop_down_panel_set_size (MnbPanel *panel, guint width, guint height)
+{
+  clutter_actor_set_size (CLUTTER_ACTOR (panel), width, height);
+}
+
+static void
+mnb_drop_down_panel_get_size (MnbPanel *panel, guint *width, guint *height)
+{
+  gfloat w, h;
+
+  clutter_actor_get_size (CLUTTER_ACTOR (panel), &w, &h);
+
+  if (width)
+    *width = w;
+
+  if (height)
+    *height = h;
+}
+
+static void
+mnb_panel_iface_init (MnbPanelIface *iface)
+{
+  iface->show             = mnb_drop_down_panel_show;
+  iface->hide             = mnb_drop_down_panel_hide;
+
+  iface->set_size         = mnb_drop_down_panel_set_size;
+  iface->get_size         = mnb_drop_down_panel_get_size;
 }
 

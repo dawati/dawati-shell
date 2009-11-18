@@ -41,6 +41,7 @@
 #include "moblin-netbook.h"
 
 #include "mnb-toolbar.h"
+#include "mnb-panel-oop.h"
 #include "mnb-toolbar-button.h"
 #include "mnb-drop-down.h"
 #include "switcher/mnb-switcher.h"
@@ -160,7 +161,7 @@ struct _MnbToolbarPrivate
   NbtkWidget   *date;
 
   NbtkWidget   *buttons[NUM_ZONES]; /* Buttons, one per zone & applet */
-  NbtkWidget   *panels[NUM_ZONES];  /* Panels (the dropdowns) */
+  MnbPanel     *panels[NUM_ZONES];  /* Panels (the dropdowns) */
 
   gboolean no_autoloading    : 1;
   gboolean shown             : 1;
@@ -548,15 +549,14 @@ mnb_toolbar_dbus_show_panel (MnbToolbar *self, gchar *name, GError **error)
 {
   MnbToolbarPrivate *priv  = self->priv;
   gint               index = mnb_toolbar_panel_name_to_index (name);
-  ClutterActor      *panel;
+  MnbPanel          *panel;
 
   if (index < 0 || !priv->panels[index])
     return FALSE;
 
-  /*FIXME -- use iface, when we have one */
-  panel = CLUTTER_ACTOR (priv->panels[index]);
+  panel = priv->panels[index];
 
-  if (CLUTTER_ACTOR_IS_MAPPED (panel))
+  if (mnb_panel_is_mapped(panel))
     return TRUE;
 
   mnb_toolbar_activate_panel_internal (self, index);
@@ -571,23 +571,22 @@ mnb_toolbar_dbus_hide_panel (MnbToolbar  *self,
 {
   MnbToolbarPrivate *priv  = self->priv;
   gint               index = mnb_toolbar_panel_name_to_index (name);
-  ClutterActor      *panel;
+  MnbPanel          *panel;
 
   if (index < 0 || !priv->panels[index])
     return FALSE;
 
-  /*FIXME -- use iface, when we have one */
-  panel = CLUTTER_ACTOR (priv->panels[index]);
+  panel = priv->panels[index];
 
-  if (!CLUTTER_ACTOR_IS_MAPPED (panel))
+  if (!mnb_panel_is_mapped (panel))
     {
       if (hide_toolbar && CLUTTER_ACTOR_IS_MAPPED (self))
         mnb_toolbar_hide (self);
     }
   else if (hide_toolbar)
-    mnb_drop_down_hide_with_toolbar (MNB_DROP_DOWN (panel));
+    mnb_panel_hide_with_toolbar (panel);
   else
-    clutter_actor_hide (panel);
+    mnb_panel_hide (panel);
 
   return TRUE;
 }
@@ -801,24 +800,22 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
       }
     else
       {
-        /*FIXME -- use iface, when we have one */
         if (priv->panels[i])
           {
-            if (checked && !CLUTTER_ACTOR_IS_MAPPED (priv->panels[i]))
+            if (checked && !mnb_panel_is_mapped (priv->panels[i]))
               {
-                clutter_actor_show (CLUTTER_ACTOR (priv->panels[i]));
+                mnb_panel_show (priv->panels[i]);
               }
-            else if (!checked && CLUTTER_ACTOR_IS_MAPPED (priv->panels[i]))
+            else if (!checked && mnb_panel_is_mapped (priv->panels[i]))
               {
-                clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
+                mnb_panel_hide (priv->panels[i]);
               }
           }
       }
 }
 
-/*FIXME -- use iface, when we have one */
 static gint
-mnb_toolbar_panel_instance_to_index (MnbToolbar *toolbar, MnbPanelOop *panel)
+mnb_toolbar_panel_instance_to_index (MnbToolbar *toolbar, MnbPanel *panel)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   gint i;
@@ -934,28 +931,25 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
 }
 
 static void
-mnb_toolbar_dropdown_show_completed_partial_cb (MnbDropDown *dropdown,
+mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
                                                 MnbToolbar  *toolbar)
 {
-  /*
-   * TODO -- only the bottom panel should be added to the input region once
-   * we do multiproc
-   */
   MnbToolbarPrivate *priv = toolbar->priv;
-  gfloat             x, y,w, h;
+  guint              panel_width, panel_height;
   gint               screen_width, screen_height;
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
-  mnb_drop_down_get_footer_geometry (dropdown, &x, &y, &w, &h);
+  mnb_panel_get_size (panel, &panel_width, &panel_height);
 
   if (priv->dropdown_region)
     mnb_input_manager_remove_region_without_update (priv->dropdown_region);
 
   priv->dropdown_region =
-    mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
-                                   (guint)w,
-                                   screen_height - (TOOLBAR_HEIGHT+(gint)y),
+    mnb_input_manager_push_region (0, TOOLBAR_HEIGHT + panel_height,
+                                   screen_width,
+                                   screen_height -
+                                   (TOOLBAR_HEIGHT + panel_height),
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
@@ -994,7 +988,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   NbtkWidget        *button;
-  NbtkWidget        *panel = NULL;
+  MnbPanel          *panel = NULL;
   gint               screen_width, screen_height;
   gint               index;
   gchar             *button_style;
@@ -1004,6 +998,13 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   if (index < 0)
     return;
 
+  if (index != SPACES_ZONE)
+    {
+      g_warning ("%s can only be called with the Zones panel, not for %s",
+                 __FUNCTION__, name);
+      return;
+    }
+
   button_style = g_strdup_printf ("%s-button", name);
 
   /*
@@ -1011,36 +1012,24 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
    */
   if (priv->buttons[index])
     {
-      if (index == SPACES_ZONE)
-        {
-          /*
-           * TODO
-           * The spaces zone exposes some singnal handlers require to track
-           * the focus order, and replacing it would be bit messy. For now
-           * we simply do not allow this.
-           */
-          g_warning ("The Spaces Zone cannot be replaced\n");
-          return;
-        }
-
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
-                                      CLUTTER_ACTOR (priv->buttons[index]));
+      /*
+       * TODO
+       * The spaces zone exposes some singnal handlers require to track
+       * the focus order, and replacing it would be bit messy. For now
+       * we simply do not allow this.
+       */
+      g_warning ("The Spaces Zone cannot be replaced\n");
+      return;
     }
 
   if (priv->panels[index])
     {
-      if (index == SPACES_ZONE)
-        {
-          /*
-           * BTW -- this code should not be reached; we should have exited
-           * already in the button test.
-           */
-          g_warning ("The Spaces Zone cannot be replaced\n");
-          return;
-        }
-
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
-                                      CLUTTER_ACTOR (priv->panels[index]));
+      /*
+       * BTW -- this code should not be reached; we should have exited
+       * already in the button test.
+       */
+      g_warning ("The Spaces Zone cannot be replaced\n");
+      return;
     }
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
@@ -1054,67 +1043,29 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   clutter_actor_set_name (CLUTTER_ACTOR (button), button_style);
   g_free (button_style);
 
-  /*
-   * The button size and positioning depends on whether this is a regular
-   * zone button, but one of the applet buttons.
-   */
-  if (index < APPLETS_START)
-    {
-      /*
-       * Zone button
-       */
-      clutter_actor_set_size (CLUTTER_ACTOR (button),
-                              BUTTON_WIDTH, BUTTON_HEIGHT);
+  clutter_actor_set_size (CLUTTER_ACTOR (button),
+                          BUTTON_WIDTH, BUTTON_HEIGHT);
 
-      clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                  213 + (BUTTON_WIDTH * index)
-                                  + (BUTTON_SPACING * index),
-                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+  clutter_actor_set_position (CLUTTER_ACTOR (button),
+                              213 + (BUTTON_WIDTH * index)
+                              + (BUTTON_SPACING * index),
+                              TOOLBAR_HEIGHT - BUTTON_HEIGHT);
 
-      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
-                                            0,
-                                            -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
-                                            BUTTON_WIDTH,
-                                            TOOLBAR_HEIGHT);
-    }
-  else
-    {
-      /*
-       * Applet button.
-       */
-      gint applets = index - APPLETS_START;
-      gint x, y;
-
-      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING);
-
-      clutter_actor_set_size (CLUTTER_ACTOR (button),
-                              TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
-      clutter_actor_set_position (CLUTTER_ACTOR (button), x, y);
-
-      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
-                                         0,
-                                         -(TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT),
-                                         TRAY_BUTTON_WIDTH,
-                                         TOOLBAR_HEIGHT);
-    }
+  mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                        0,
+                                        -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
+                                        BUTTON_WIDTH,
+                                        TOOLBAR_HEIGHT);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (mnb_toolbar_toggle_buttons),
                     toolbar);
 
-  /*
-   * Special case Space; we have an internal component for this.
-   *
-   * TODO -- should we allow it to be replaced by a thirdparty component just
-   * like all the other dropdowns?
-   */
-  if (index == SPACES_ZONE)
     {
       MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
       MetaDisplay *display = meta_screen_get_display (screen);
 
-      panel = priv->panels[index] = mnb_switcher_new (plugin);
+      panel = priv->panels[index] = MNB_PANEL (mnb_switcher_new (plugin));
 
       g_signal_connect (panel, "show-completed",
                         G_CALLBACK(mnb_toolbar_dropdown_show_completed_full_cb),
@@ -1143,7 +1094,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                     G_CALLBACK(mnb_toolbar_dropdown_hide_completed_cb),
                     toolbar);
 
-  /*FIXME -- use iface, when we have one */
+  /* This is safe, because the Switcher is an actor */
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
   clutter_actor_set_width (CLUTTER_ACTOR (panel), screen_width);
@@ -1153,9 +1104,8 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
 }
 
-/*FIXME -- use iface, when we have one */
 static void
-mnb_toolbar_panel_request_button_style_cb (MnbPanelOop *panel,
+mnb_toolbar_panel_request_button_style_cb (MnbPanel    *panel,
                                            const gchar *style_id,
                                            MnbToolbar  *toolbar)
 {
@@ -1170,9 +1120,8 @@ mnb_toolbar_panel_request_button_style_cb (MnbPanelOop *panel,
   clutter_actor_set_name (CLUTTER_ACTOR (priv->buttons[index]), style_id);
 }
 
-/*FIXME -- use iface, when we have one */
 static void
-mnb_toolbar_panel_request_tooltip_cb (MnbPanelOop *panel,
+mnb_toolbar_panel_request_tooltip_cb (MnbPanel    *panel,
                                       const gchar *tooltip,
                                       MnbToolbar  *toolbar)
 {
@@ -1191,7 +1140,6 @@ mnb_toolbar_panel_request_tooltip_cb (MnbPanelOop *panel,
 /*
  * Removes the panel from the pending_panels list
  */
-/*FIXME -- use iface, when we have one */
 static void
 mnb_toolbar_remove_panel_from_pending (MnbToolbar *toolbar, MnbPanelOop *panel)
 {
@@ -1233,8 +1181,7 @@ mnb_toolbar_dispose_of_panel (MnbToolbar *toolbar,
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   NbtkWidget        *button;
-  /*FIXME -- use iface, when we have one */
-  NbtkWidget        *panel;
+  MnbPanel          *panel;
 
   if (index < 0)
     return;
@@ -1277,9 +1224,10 @@ mnb_toolbar_dispose_of_panel (MnbToolbar *toolbar,
     }
 }
 
+#if 0
 static void
 mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
-                                          MnbDropDown *dropdown)
+                                          MnbPanel    *panel)
 {
   MnbToolbarPrivate *priv;
   MutterPlugin      *plugin;
@@ -1290,13 +1238,13 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
    * If this panel is visible, we need to update the input region to match
    * the new geometry.
    */
-  if (!CLUTTER_ACTOR_IS_MAPPED (dropdown))
+  if (!mnb_panel_is_mapped (panel))
     return;
 
   priv   = toolbar->priv;
   plugin = priv->plugin;
 
-  mnb_drop_down_get_footer_geometry (dropdown, &x, &y, &w, &h);
+  mnb_drop_down_get_footer_geometry (panel, &x, &y, &w, &h);
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
@@ -1316,17 +1264,10 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
                                      (TOOLBAR_HEIGHT+(gint)y),
                                      FALSE, MNB_INPUT_LAYER_PANEL);
 }
+#endif
 
 static void
-mnb_toolbar_panel_allocation_cb (MnbDropDown  *dropdown,
-                                 GParamSpec   *pspec,
-                                 MnbToolbar   *toolbar)
-{
-  mnb_toolbar_update_dropdown_input_region (toolbar, dropdown);
-}
-
-static void
-mnb_toolbar_panel_died_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
+mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
   gint   index;
   gchar *name = NULL;
@@ -1338,7 +1279,7 @@ mnb_toolbar_panel_died_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
       /*
        * Get the panel name before we dispose of it.
        */
-      name = g_strdup (mnb_panel_oop_get_name (panel));
+      name = g_strdup (mnb_panel_get_name (panel));
       mnb_toolbar_dispose_of_panel (toolbar, index, FALSE);
     }
 
@@ -1358,9 +1299,9 @@ mnb_toolbar_panel_died_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
 }
 
 static void
-mnb_toolbar_panel_ready_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
+mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
-  if (MNB_IS_PANEL_OOP (panel))
+  if (MNB_IS_PANEL (panel))
     {
       MnbToolbarPrivate *priv = toolbar->priv;
       NbtkWidget        *button;
@@ -1370,7 +1311,7 @@ mnb_toolbar_panel_ready_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
       const gchar       *stylesheet;
       gint               index;
 
-      name = mnb_panel_oop_get_name (panel);
+      name = mnb_panel_get_name (panel);
 
       index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
 
@@ -1379,9 +1320,9 @@ mnb_toolbar_panel_ready_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
 
       button = priv->buttons[index];
 
-      tooltip    = mnb_panel_oop_get_tooltip (panel);
-      stylesheet = mnb_panel_oop_get_stylesheet (panel);
-      style_id   = mnb_panel_oop_get_button_style (panel);
+      tooltip    = mnb_panel_get_tooltip (panel);
+      stylesheet = mnb_panel_get_stylesheet (panel);
+      style_id   = mnb_panel_get_button_style (panel);
 
       if (button)
         {
@@ -1418,7 +1359,7 @@ mnb_toolbar_panel_ready_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
 }
 
 static void
-mnb_toolbar_panel_destroy_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
+mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
   gint index;
 
@@ -1443,7 +1384,8 @@ mnb_toolbar_panel_destroy_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
        * was never added to the Toolbar. We need to release any floating
        * reference.
        */
-      mnb_toolbar_remove_panel_from_pending (toolbar, panel);
+      if (MNB_IS_PANEL_OOP (panel))
+        mnb_toolbar_remove_panel_from_pending (toolbar, (MnbPanelOop*)panel);
 
       if (g_object_is_floating (panel))
         {
@@ -1461,7 +1403,7 @@ mnb_toolbar_panel_destroy_cb (MnbPanelOop *panel, MnbToolbar *toolbar)
  * Appends a panel
  */
 static void
-mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
+mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
@@ -1474,22 +1416,18 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   const gchar       *stylesheet = NULL;
   const gchar       *style_id = NULL;
 
-  if (MNB_IS_PANEL_OOP (panel))
+  if (MNB_IS_PANEL (panel))
     {
-      name       = mnb_panel_oop_get_name (MNB_PANEL_OOP (panel));
-      tooltip    = mnb_panel_oop_get_tooltip (MNB_PANEL_OOP (panel));
-      stylesheet = mnb_panel_oop_get_stylesheet (MNB_PANEL_OOP (panel));
-      style_id   = mnb_panel_oop_get_button_style (MNB_PANEL_OOP (panel));
+      name       = mnb_panel_get_name (panel);
+      tooltip    = mnb_panel_get_tooltip (panel);
+      stylesheet = mnb_panel_get_stylesheet (panel);
+      style_id   = mnb_panel_get_button_style (panel);
 
       /*
        * Remove this panel from the pending list.
        */
-      mnb_toolbar_remove_panel_from_pending (toolbar, (MnbPanelOop*)panel);
-    }
-  else if (MNB_IS_SWITCHER (panel))
-    {
-      name    = "zones";
-      tooltip = _("zones");
+      if (MNB_IS_PANEL_OOP (panel))
+        mnb_toolbar_remove_panel_from_pending (toolbar, (MnbPanelOop*)panel);
     }
   else
     {
@@ -1627,13 +1565,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
   g_signal_connect (panel, "remote-process-died",
                     G_CALLBACK (mnb_toolbar_panel_died_cb), toolbar);
 
-  g_signal_connect (panel, "notify::allocation",
-                    G_CALLBACK (mnb_toolbar_panel_allocation_cb), toolbar);
-
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
 
-  priv->panels[index] = NBTK_WIDGET (panel);
+  priv->panels[index] = panel;
 
   /*FIXME -- use iface, when we have one */
   mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
@@ -1645,8 +1580,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbDropDown *panel)
     {
       if (priv->shown)
         {
-          /*FIXME -- use iface, when we have one */
-          clutter_actor_show (CLUTTER_ACTOR (panel));
+          mnb_panel_show (panel);
           priv->shown_myzone = TRUE;
         }
     }
@@ -1759,7 +1693,7 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
           if (mnb_panel_oop_is_ready (panel))
             {
-              mnb_toolbar_append_panel (toolbar, (MnbDropDown*)panel);
+              mnb_toolbar_append_panel (toolbar, (MnbPanel*)panel);
             }
           else
             {
@@ -2106,8 +2040,7 @@ mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, gint index)
       return;
     }
 
-  /*FIXME -- use iface, when we have one */
-  if (CLUTTER_ACTOR_IS_MAPPED (priv->panels[index]))
+  if (mnb_panel_is_mapped (priv->panels[index]))
     {
       return;
     }
@@ -2122,14 +2055,12 @@ mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, gint index)
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
     if (i != index)
       {
-        /*FIXME -- use iface, when we have one */
-        if (priv->panels[i] && CLUTTER_ACTOR_IS_MAPPED (priv->panels[i]))
-          clutter_actor_hide (CLUTTER_ACTOR (priv->panels[i]));
+        if (priv->panels[i] && mnb_panel_is_mapped (priv->panels[i]))
+          mnb_panel_hide (priv->panels[i]);
       }
     else
       {
-        /*FIXME -- use iface, when we have one */
-        clutter_actor_show (CLUTTER_ACTOR (priv->panels[i]));
+        mnb_panel_show (priv->panels[i]);
       }
 }
 
@@ -2147,14 +2078,13 @@ mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name)
   MnbToolbarPrivate *priv  = toolbar->priv;
   gint               index = mnb_toolbar_panel_name_to_index (panel_name);
 
-  /*FIXME -- use iface, when we have one */
   if (index < 0 || !priv->panels[index] ||
-      !CLUTTER_ACTOR_IS_MAPPED (priv->panels[index]))
+      !mnb_panel_is_mapped (priv->panels[index]))
     {
       return;
     }
 
-  clutter_actor_hide (CLUTTER_ACTOR (priv->panels[index]));
+  mnb_panel_hide (priv->panels[index]);
 }
 
 /* returns NULL if no panel active */
@@ -2165,9 +2095,8 @@ mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
   gint               index = -1;
   gint               i;
 
-  /*FIXME -- use iface, when we have one */
   for (i = 0; i < G_N_ELEMENTS (priv->buttons); i++)
-    if (priv->panels[i] && CLUTTER_ACTOR_IS_MAPPED (priv->panels[i]))
+    if (priv->panels[i] && mnb_panel_is_mapped (priv->panels[i]))
       {
         index = i;
         break;
@@ -2194,7 +2123,7 @@ mnb_toolbar_in_transition (MnbToolbar *toolbar)
  * (This is needed because we have to hookup the switcher focus related
  * callbacks plugin so it can maintain accurate switching order list.)
  */
-NbtkWidget *
+MnbPanel *
 mnb_toolbar_get_switcher (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
@@ -2278,13 +2207,12 @@ mnb_toolbar_panels_showing (MnbToolbar *toolbar)
 
   for (i = 0; i < NUM_ZONES; ++i)
     {
-      MnbPanelOop *panel = (MnbPanelOop*)priv->panels[i];
+      MnbPanel *panel = (MnbPanel*)priv->panels[i];
 
       if (!panel)
         continue;
 
-  /*FIXME -- use iface, when we have one */
-      if (CLUTTER_ACTOR_IS_MAPPED (panel))
+      if (mnb_panel_is_mapped (panel))
         return TRUE;
     }
 
@@ -2502,7 +2430,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
 
   for (i = 0; i < NUM_ZONES; ++i)
   {
-    MnbPanelOop *panel  = (MnbPanelOop*)priv->panels[i];
+    MnbPanel *panel  = priv->panels[i];
 
     if (!panel)
       continue;
@@ -2512,17 +2440,9 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
      * actor includes the shadow, so we need to add the extra bit by which the
      * shadow protrudes below the actor.
      */
-      if (MNB_IS_PANEL_OOP (panel))
-        mnb_panel_oop_set_size (panel,
-                                screen_width,
-                                screen_height -
-                                TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA);
-      else
-        clutter_actor_set_size (CLUTTER_ACTOR (panel),
-                                (gfloat)screen_width,
-                                (gfloat)(screen_height -
-                                         TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA));
-
+    mnb_panel_set_size (panel,
+                        screen_width,
+                        screen_height - TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA);
   }
 }
 
@@ -2615,8 +2535,7 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
       if (!moblin_netbook_modal_windows_present (plugin, -1))
         {
           priv->shown_myzone = TRUE;
-          /*FIXME -- use iface, when we have one */
-          clutter_actor_show (CLUTTER_ACTOR (priv->panels[MYZONE]));
+          mnb_panel_show (priv->panels[MYZONE]);
         }
     }
 
@@ -2648,7 +2567,7 @@ mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled)
   priv->disabled = disabled;
 }
 
-MnbPanelOop *
+MnbPanel *
 mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
@@ -2656,12 +2575,12 @@ mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid)
 
   for (i = 0; i < NUM_ZONES; ++i)
     {
-      MnbPanelOop *panel = (MnbPanelOop*) priv->panels[i];
+      MnbPanel *panel = priv->panels[i];
 
       if (!panel || !MNB_IS_PANEL_OOP (panel))
         continue;
 
-      if (xid == mnb_panel_oop_get_xid (panel))
+      if (xid == mnb_panel_oop_get_xid ((MnbPanelOop*)panel))
         {
           return panel;
         }
@@ -2673,7 +2592,7 @@ mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid)
 /*
  * Returns the active panel, or NULL, if no panel is active.
  */
-NbtkWidget *
+MnbPanel *
 mnb_toolbar_get_active_panel (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
@@ -2684,43 +2603,13 @@ mnb_toolbar_get_active_panel (MnbToolbar *toolbar)
 
   for (i = 0; i < NUM_ZONES; ++i)
     {
-      NbtkWidget *panel = priv->panels[i];
-      /*FIXME -- use iface, when we have one */
-      if (panel && CLUTTER_ACTOR_IS_MAPPED (panel))
+      MnbPanel *panel = priv->panels[i];
+
+      if (panel && mnb_panel_is_mapped (panel))
         return panel;
     }
 
   return NULL;
-}
-
-/*
- * Sets the panel_input_only flag.
- *
- * The flag, when set, indicates that when calculating the input region for the
- * panel, the area below the panel footer should not be included.
- *
- * NB: the flag gets automatically cleared every time a panel, or the toolbar,
- *     hides.
- *
- * (Normally, we include everything below the footer to the end of the screen;
- * this allows for the panel to hide if the user clicks below the panel, but
- * prevents interaction with things like IM windows.)
- */
-void
-mnb_toolbar_set_panel_input_only (MnbToolbar *toolbar, gboolean whether)
-{
-  MnbToolbarPrivate *priv = toolbar->priv;
-  NbtkWidget        *panel;
-
-  if (priv->panel_input_only == whether)
-    return;
-
-  priv->panel_input_only = whether;
-
-  panel = mnb_toolbar_get_active_panel (toolbar);
-
-  if (panel)
-    mnb_toolbar_update_dropdown_input_region (toolbar, MNB_DROP_DOWN (panel));
 }
 
 gboolean
