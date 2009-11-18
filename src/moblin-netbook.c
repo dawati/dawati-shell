@@ -2772,3 +2772,11 @@ moblin_netbook_activate_window (MetaWindow *window)
       meta_workspace_activate_with_focus (workspace, window, timestamp);
     }
 }
+
+ClutterActor *
+moblin_netbook_get_toolbar (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  return priv->toolbar;
+}
