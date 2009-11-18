@@ -1573,15 +1573,15 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   ClutterActor               *actor = CLUTTER_ACTOR (mcw);
   MetaCompWindowType          type;
-  MnbPanel                   *active_panel;
+  MnbPanelOop                *active_panel;
   Window                      xwin;
 
-  active_panel = (MnbPanel*)mnb_toolbar_get_active_panel (toolbar);
+  active_panel = (MnbPanelOop*)mnb_toolbar_get_active_panel (toolbar);
   type         = mutter_window_get_window_type (mcw);
   xwin         = mutter_window_get_x_window (mcw);
 
-  if (active_panel && MNB_IS_PANEL (active_panel) &&
-      mnb_panel_owns_window (active_panel, mcw))
+  if (active_panel && MNB_IS_PANEL_OOP (active_panel) &&
+      mnb_panel_oop_owns_window (active_panel, mcw))
     {
       mutter_plugin_effect_completed (plugin, mcw,
                                       MUTTER_PLUGIN_MAP);
@@ -1633,7 +1633,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     }
   else if (type == META_COMP_WINDOW_DOCK)
     {
-      MnbPanel *panel;
+      MnbPanelOop *panel;
 
       if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
         {
@@ -1644,7 +1644,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * thing, and only then impose our will on it.
            */
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-          mnb_panel_show_mutter_window (panel, mcw);
+          mnb_panel_oop_show_mutter_window (panel, mcw);
         }
     }
   /*
@@ -2366,9 +2366,9 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 
   if (panel)
     {
-      if (MNB_IS_PANEL (panel))
+      if (MNB_IS_PANEL_OOP (panel))
         {
-          mnb_panel_focus ((MnbPanel*)panel);
+          mnb_panel_oop_focus ((MnbPanelOop*)panel);
           return;
         }
     }

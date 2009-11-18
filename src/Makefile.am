@@ -26,8 +26,8 @@ moblin_netbook_la_SOURCES  = \
 				mnb-toolbar.h                   \
 				mnb-toolbar-button.c            \
 				mnb-toolbar-button.h            \
-				mnb-panel.c                     \
-				mnb-panel.h
+				mnb-panel-oop.c                 \
+				mnb-panel-oop.h
 
 DBUS_GLUE =	mnb-panel-dbus-glue.h		\
 		mnb-toolbar-dbus-glue.h

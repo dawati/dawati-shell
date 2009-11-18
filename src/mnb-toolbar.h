@@ -29,7 +29,7 @@
 #include <glib-object.h>
 #include <nbtk/nbtk.h>
 
-#include "mnb-panel.h"
+#include "mnb-panel-oop.h"
 #include "moblin-netbook.h"
 
 G_BEGIN_DECLS
@@ -92,7 +92,8 @@ void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);
 
 void mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled);
 
-MnbPanel * mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid);
+/*FIXME*/
+MnbPanelOop * mnb_toolbar_find_panel_for_xid (MnbToolbar *toolbar, guint xid);
 
 NbtkWidget * mnb_toolbar_get_active_panel (MnbToolbar *toolbar);
 
