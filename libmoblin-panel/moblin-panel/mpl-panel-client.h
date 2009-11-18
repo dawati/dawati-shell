@@ -64,8 +64,10 @@ typedef struct
    * Public signals -- connect to these from your panel.
    */
   void (*set_size)           (MplPanelClient *panel, guint width, guint height);
+  void (*show)               (MplPanelClient *panel);
   void (*show_begin)         (MplPanelClient *panel);
   void (*show_end)           (MplPanelClient *panel);
+  void (*hide)               (MplPanelClient *panel);
   void (*hide_begin)         (MplPanelClient *panel);
   void (*hide_end)           (MplPanelClient *panel);
 
@@ -73,8 +75,6 @@ typedef struct
    * Private signals
    * Signals for DBus -- these are the interface signals.
    */
-  void (*request_show)         (MplPanelClient *panel);
-  void (*request_hide)         (MplPanelClient *panel);
   void (*request_focus)        (MplPanelClient *panel);
   void (*request_button_style) (MplPanelClient *panel, const gchar *style);
   void (*request_tooltip)      (MplPanelClient *panel, const gchar *tooltip);
@@ -93,8 +93,8 @@ void  mpl_panel_client_set_height_request   (MplPanelClient *panel,
                                              guint           height);
 guint mpl_panel_client_get_height_request   (MplPanelClient *panel);
 
-void  mpl_panel_client_request_show         (MplPanelClient *panel);
-void  mpl_panel_client_request_hide         (MplPanelClient *panel);
+void  mpl_panel_client_show                 (MplPanelClient *panel);
+void  mpl_panel_client_hide                 (MplPanelClient *panel);
 void  mpl_panel_client_request_focus        (MplPanelClient *panel);
 void  mpl_panel_client_request_button_style (MplPanelClient *panel,
                                              const gchar    *style);

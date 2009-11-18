@@ -42,7 +42,7 @@ button_clicked_cb (GtkButton *button, gpointer data)
 {
   MplPanelClient *panel = MPL_PANEL_CLIENT (data);
 
-  mpl_panel_client_request_hide (panel);
+  mpl_panel_client_hide (panel);
 }
 
 /*

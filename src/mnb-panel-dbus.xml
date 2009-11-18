@@ -19,9 +19,11 @@
       <arg name="max_window_height" type="u" direction="in"/>
     </method>
 
+    <method name="Show"/>
     <method name="ShowBegin"/>
     <method name="ShowEnd"/>
 
+    <method name="Hide"/>
     <method name="HideBegin"/>
     <method name="HideEnd"/>
 
@@ -40,8 +42,6 @@
       <arg name="max_window_height" type="u"/>
     </signal>
 
-    <signal name="RequestShow"/>
-    <signal name="RequestHide"/>
     <signal name="RequestFocus"/>
   </interface>
 </node>

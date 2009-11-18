@@ -61,13 +61,13 @@ enum
 enum
 {
   SET_SIZE,
+  SHOW,
   SHOW_BEGIN,
   SHOW_END,
+  HIDE,
   HIDE_BEGIN,
   HIDE_END,
 
-  REQUEST_SHOW,
-  REQUEST_HIDE,
   REQUEST_FOCUS,
   REQUEST_BUTTON_STYLE,
   REQUEST_TOOLTIP,
@@ -301,6 +301,14 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
 }
 
 static gboolean
+mnb_panel_dbus_show (MplPanelClient *self, GError **error)
+{
+  g_debug ("%s called", __FUNCTION__);
+  g_signal_emit (self, signals[SHOW], 0);
+  return TRUE;
+}
+
+static gboolean
 mnb_panel_dbus_show_begin (MplPanelClient *self, GError **error)
 {
   g_debug ("%s called", __FUNCTION__);
@@ -313,6 +321,14 @@ mnb_panel_dbus_show_end (MplPanelClient *self, GError **error)
 {
   g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[SHOW_END], 0);
+  return TRUE;
+}
+
+static gboolean
+mnb_panel_dbus_hide (MplPanelClient *self, GError **error)
+{
+  g_debug ("%s called", __FUNCTION__);
+  g_signal_emit (self, signals[HIDE], 0);
   return TRUE;
 }
 
@@ -460,20 +476,20 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  signals[REQUEST_SHOW] =
-    g_signal_new ("request-show",
+  signals[SHOW] =
+    g_signal_new ("show",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MplPanelClientClass, request_show),
+                  G_STRUCT_OFFSET (MplPanelClientClass, show),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  signals[REQUEST_HIDE] =
-    g_signal_new ("request-hide",
+  signals[HIDE] =
+    g_signal_new ("hide",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MplPanelClientClass, request_hide),
+                  G_STRUCT_OFFSET (MplPanelClientClass, hide),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -798,15 +814,15 @@ mpl_panel_client_new (guint        xid,
 }
 
 void
-mpl_panel_client_request_show (MplPanelClient *panel)
+mpl_panel_client_show (MplPanelClient *panel)
 {
-  g_signal_emit (panel, signals[REQUEST_SHOW], 0);
+  g_signal_emit (panel, signals[SHOW], 0);
 }
 
 void
-mpl_panel_client_request_hide (MplPanelClient *panel)
+mpl_panel_client_hide (MplPanelClient *panel)
 {
-  g_signal_emit (panel, signals[REQUEST_HIDE], 0);
+  g_signal_emit (panel, signals[HIDE], 0);
 }
 
 void
