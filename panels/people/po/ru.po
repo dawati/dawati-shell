@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:32+0000\n"
+"PO-Revision-Date: 2009-11-19 12:24+0300\n"
+"Last-Translator: Alexander Mineev <alexander.g.mineev@intel.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: \n"
+
+#: ../src/moblin-panel-people.c:70
+#: ../src/mnb-people-panel.c:573
+msgid "people"
+msgstr "люди"
+
+#: ../src/mnb-people-panel.c:166
+msgid "Send an email"
+msgstr "Отправить письмо"
+
+#: ../src/mnb-people-panel.c:168
+msgid "Edit details"
+msgstr "Редактировать дополнительную информацию"
+
+#: ../src/mnb-people-panel.c:177
+msgid "Send a message"
+msgstr "Отправить сообщение"
+
+#: ../src/mnb-people-panel.c:311
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Извините, невозможно найти людей. Вы настроили учетную запись?"
+
+#: ../src/mnb-people-panel.c:447
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Извините, невозможно найти людей. Похоже, что Вы находитесь не в сети."
+
+#: ../src/mnb-people-panel.c:497
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Для просмотра контактов, передите в режим \"в сети\" в понели статуса."
+
+#: ../src/mnb-people-panel.c:554
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "люди - %d людей общаются с Вами"
+
+#: ../src/mnb-people-panel.c:561
+msgid "people - Someone is talking to you"
+msgstr "люди - Кто-то общается с Вами"
+
+#: ../src/mnb-people-panel.c:790
+msgid "People"
+msgstr "Люди"
+
+#: ../src/mnb-people-panel.c:803
+msgid "Search"
+msgstr "Поиск"
+
+#: ../src/mnb-people-panel.c:856
+msgid "People talking to you ..."
+msgstr "Люди общаются с Вами..."
+
+#: ../src/mnb-people-panel.c:983
+msgid "Selection"
+msgstr "Выбор"
+
+#: ../src/mnb-people-panel.c:1046
+msgid "Nobody selected"
+msgstr "Никто не выбран"
+
