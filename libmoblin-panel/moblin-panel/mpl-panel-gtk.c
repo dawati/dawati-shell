@@ -45,9 +45,9 @@ struct _MplPanelGtkPrivate
 
 static void
 mpl_panel_gtk_get_property (GObject    *object,
-                               guint       property_id,
-                               GValue     *value,
-                               GParamSpec *pspec)
+                            guint       property_id,
+                            GValue     *value,
+                            GParamSpec *pspec)
 {
   switch (property_id)
     {
@@ -58,9 +58,9 @@ mpl_panel_gtk_get_property (GObject    *object,
 
 static void
 mpl_panel_gtk_set_property (GObject      *object,
-                               guint         property_id,
-                               const GValue *value,
-                               GParamSpec   *pspec)
+                            guint         property_id,
+                            const GValue *value,
+                            GParamSpec   *pspec)
 {
   switch (property_id)
     {
@@ -82,9 +82,42 @@ mpl_panel_gtk_finalize (GObject *object)
 }
 
 static void
+mpl_panel_gtk_set_size (MplPanelClient *self, guint width, guint height)
+{
+  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (self)->priv;
+
+  gtk_window_resize (GTK_WINDOW (priv->window), width, height);
+}
+
+static void
+mpl_panel_gtk_set_position (MplPanelClient *self, gint x, gint y)
+{
+  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (self)->priv;
+
+  gtk_window_move (GTK_WINDOW (priv->window), x, y);
+}
+
+static void
+mpl_panel_gtk_show (MplPanelClient *self)
+{
+  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (self)->priv;
+
+  gtk_widget_show (priv->window);
+}
+
+static void
+mpl_panel_gtk_hide (MplPanelClient *self)
+{
+  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (self)->priv;
+
+  gtk_widget_hide (priv->window);
+}
+
+static void
 mpl_panel_gtk_class_init (MplPanelGtkClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass        *object_class = G_OBJECT_CLASS (klass);
+  MplPanelClientClass *client_class = MPL_PANEL_CLIENT_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MplPanelGtkPrivate));
 
@@ -93,6 +126,11 @@ mpl_panel_gtk_class_init (MplPanelGtkClass *klass)
   object_class->dispose          = mpl_panel_gtk_dispose;
   object_class->finalize         = mpl_panel_gtk_finalize;
   object_class->constructed      = mpl_panel_gtk_constructed;
+
+  client_class->set_position     = mpl_panel_gtk_set_position;
+  client_class->set_size         = mpl_panel_gtk_set_size;
+  client_class->show             = mpl_panel_gtk_show;
+  client_class->hide             = mpl_panel_gtk_hide;
 }
 
 static void
@@ -121,39 +159,6 @@ mpl_panel_gtk_window_delete_event_cb (GtkWidget *window,
 }
 
 static void
-mpl_panel_gtk_embedded_cb (GtkWidget *widget, GParamSpec *pspec, gpointer data)
-{
-  gboolean embedded;
-
-  g_object_get (widget, "embedded", &embedded, NULL);
-
-  if (embedded)
-    gtk_widget_show (widget);
-  else
-    gtk_widget_hide (widget);
-}
-
-/*
- * The size of the plug and the size of the backing X window tends to get
- * out of sync (MB#6246), so when the socket is resized, force the size on the
- * backing window.
- */
-static void
-mpl_panel_gtk_size_allocate_cb (GtkWidget     *widget,
-                                GtkAllocation *allocation,
-                                gpointer       data)
-{
-  g_debug ("Plug allocated %d,%d;%dx%d.",
-           allocation->x,
-           allocation->y,
-           allocation->width,
-           allocation->height);
-
-  if (widget->window)
-    gdk_window_resize (widget->window, allocation->width, allocation->height);
-}
-
-static void
 mpl_panel_gtk_constructed (GObject *self)
 {
   MplPanelGtkPrivate *priv = MPL_PANEL_GTK (self)->priv;
@@ -162,18 +167,18 @@ mpl_panel_gtk_constructed (GObject *self)
   if (G_OBJECT_CLASS (mpl_panel_gtk_parent_class)->constructed)
     G_OBJECT_CLASS (mpl_panel_gtk_parent_class)->constructed (self);
 
-  priv->window = window = gtk_plug_new (0);
+  priv->window = window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DOCK);
+  gtk_window_stick (GTK_WINDOW (window));
+
+#if 0
+  gtk_window_set_keep_above (GTK_WINDOW (window), TRUE);
+#endif
 
   gtk_widget_realize (window);
 
   g_signal_connect (window, "delete-event",
                     G_CALLBACK (mpl_panel_gtk_window_delete_event_cb), self);
-
-  g_signal_connect (window, "notify::embedded",
-                    G_CALLBACK (mpl_panel_gtk_embedded_cb), self);
-
-  g_signal_connect (window, "size-allocate",
-                    G_CALLBACK (mpl_panel_gtk_size_allocate_cb), self);
 
   g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
 }

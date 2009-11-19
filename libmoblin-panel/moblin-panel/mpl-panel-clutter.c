@@ -31,29 +31,6 @@
 
 #include "mpl-panel-clutter.h"
 
-#define MAX_SUPPORTED_XEMBED_VERSION   1
-
-#define XEMBED_MAPPED          (1 << 0)
-
-/* XEMBED messages */
-#define XEMBED_EMBEDDED_NOTIFY          0
-#define XEMBED_WINDOW_ACTIVATE          1
-#define XEMBED_WINDOW_DEACTIVATE        2
-#define XEMBED_REQUEST_FOCUS            3
-#define XEMBED_FOCUS_IN                 4
-#define XEMBED_FOCUS_OUT                5
-#define XEMBED_FOCUS_NEXT               6
-#define XEMBED_FOCUS_PREV               7
-/* 8-9 were used for XEMBED_GRAB_KEY/XEMBED_UNGRAB_KEY */
-#define XEMBED_MODALITY_ON              10
-#define XEMBED_MODALITY_OFF             11
-#define XEMBED_REGISTER_ACCELERATOR     12
-#define XEMBED_UNREGISTER_ACCELERATOR   13
-#define XEMBED_ACTIVATE_ACCELERATOR     14
-
-static void xembed_init (MplPanelClutter *panel);
-static void xembed_set_win_info (Display *xdpy, Window xwin, int flags);
-
 G_DEFINE_TYPE (MplPanelClutter, mpl_panel_clutter, MPL_TYPE_PANEL_CLIENT)
 
 #define MPL_PANEL_CLUTTER_GET_PRIVATE(o) \
@@ -70,8 +47,6 @@ struct _MplPanelClutterPrivate
 {
   ClutterActor *stage;
   Window        xwindow;
-  Window        embedder;
-  Atom          Atom_XEMBED;
 
   ClutterActor *tracked_actor;
   guint         height_notify_cb;
@@ -134,6 +109,34 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
 }
 
 static void
+mpl_panel_clutter_set_position (MplPanelClient *self, gint x, gint y)
+{
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
+  Display                *xdpy = clutter_x11_get_default_display ();
+
+  XMoveWindow (xdpy, priv->xwindow, x, y);
+}
+
+static void
+mpl_panel_clutter_show (MplPanelClient *self)
+{
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
+  Display                *xdpy = clutter_x11_get_default_display ();
+
+  XMapRaised (xdpy, priv->xwindow);
+}
+
+static void
+mpl_panel_clutter_hide (MplPanelClient *self)
+{
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
+  Display                *xdpy = clutter_x11_get_default_display ();
+
+  XUnmapWindow (xdpy, priv->xwindow);
+}
+
+
+static void
 mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
 {
   GObjectClass        *object_class = G_OBJECT_CLASS (klass);
@@ -147,7 +150,10 @@ mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
   object_class->finalize         = mpl_panel_clutter_finalize;
   object_class->constructed      = mpl_panel_clutter_constructed;
 
+  client_class->set_position     = mpl_panel_clutter_set_position;
   client_class->set_size         = mpl_panel_clutter_set_size;
+  client_class->show             = mpl_panel_clutter_show;
+  client_class->hide             = mpl_panel_clutter_hide;
 }
 
 static void
@@ -156,47 +162,6 @@ mpl_panel_clutter_init (MplPanelClutter *self)
   MplPanelClutterPrivate *priv;
 
   priv = self->priv = MPL_PANEL_CLUTTER_GET_PRIVATE (self);
-}
-
-ClutterX11FilterReturn
-mpl_panel_clutter_xevent_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
-{
-  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (data)->priv;
-  Display                *xdpy = clutter_x11_get_default_display ();
-
-  switch (xev->type)
-    {
-    case MapNotify:
-      return CLUTTER_X11_FILTER_CONTINUE;
-    case ClientMessage:
-      if (xev->xclient.message_type == priv->Atom_XEMBED)
-	{
-	  switch (xev->xclient.data.l[1])
-	    {
-	    case XEMBED_EMBEDDED_NOTIFY:
-              priv->embedder = xev->xclient.data.l[3];
-
-              /* Map */
-              clutter_actor_show (priv->stage);
-
-              /* Signal the embedder we are mapped */
-	      xembed_set_win_info (xdpy, priv->xwindow, XEMBED_MAPPED);
-	      break;
-	    case XEMBED_WINDOW_ACTIVATE:
-	      break;
-	    case XEMBED_WINDOW_DEACTIVATE:
-	      break;
-	    case XEMBED_FOCUS_IN:
-	      break;
-            default: ;
-	    }
-
-          return CLUTTER_X11_FILTER_REMOVE;
-	}
-    default: ;
-    }
-
-  return CLUTTER_X11_FILTER_CONTINUE;
 }
 
 void
@@ -221,52 +186,46 @@ mpl_panel_clutter_constructed (GObject *self)
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   ClutterActor           *stage = NULL;
   Window                  xwin = None;
-  XSetWindowAttributes    attr;
   Display                *xdpy;
-  gint                    screen;
+  gint32                  myint;
+  Atom                    atom1, atom2;
 
   if (G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed)
     G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed (self);
 
-  /*
-   * TODO
-   *
-   * create stage in an override redirect window.
-   */
-
-  xdpy   = clutter_x11_get_default_display ();
-  screen = clutter_x11_get_default_screen ();
-
-  attr.override_redirect = True;
-
-  priv->xwindow = xwin = XCreateWindow (xdpy,
-                                        RootWindow (xdpy, screen),
-                                        0, 0, 100, 100, 0,
-                                        CopyFromParent, InputOutput,
-                                        CopyFromParent,
-                                        CWOverrideRedirect, &attr);
-
-  xembed_init (MPL_PANEL_CLUTTER (self));
-
   stage = clutter_stage_get_default ();
-
-  clutter_x11_set_stage_foreign (CLUTTER_STAGE (stage), xwin);
+  xdpy  = clutter_x11_get_default_display ();
 
   priv->stage = stage;
 
-  XSelectInput (xdpy, xwin,
-                StructureNotifyMask |
-                ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
-                FocusChangeMask |
-                ExposureMask |
-                KeyPressMask | KeyReleaseMask |
-                EnterWindowMask | LeaveWindowMask |
-                PropertyChangeMask);
+  clutter_actor_realize (stage);
 
-  clutter_x11_add_filter (mpl_panel_clutter_xevent_filter, self);
+  priv->xwindow = xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-  g_object_set (self, "xid",
-                clutter_x11_get_stage_window (CLUTTER_STAGE (stage)), NULL);
+  g_object_set (self, "xid", xwin, NULL);
+
+  /*
+   * Make dock, sticky and position at the correct place.
+   */
+   atom1 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE", False);
+   atom2 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE_DOCK", False);
+
+   XChangeProperty (xdpy,
+                    xwin,
+                    atom1,
+                    XA_ATOM, 32,
+                    PropModeReplace, (unsigned char *) atom2, 1);
+
+   atom1 = XInternAtom(xdpy, "_NET_WM_DESKTOP", False);
+   myint = -1;
+
+   XChangeProperty (xdpy,
+                    xwin,
+                    atom1,
+                    XA_CARDINAL, 32,
+                    PropModeReplace, (unsigned char *) myint, 1);
+
+   XSync (xdpy, False);
 
   /* Load a base style for widgets used in the Mpl panels */
   mpl_panel_clutter_load_base_style ();
@@ -458,78 +417,3 @@ mpl_panel_clutter_setup_events_with_gtk (MplPanelClient *panel)
 
     mpl_panel_clutter_load_base_style ();
 }
-
-
-/*
- * The XEmbed stuff based on Matchbox keyboard.
- */
-static void
-xembed_set_win_info (Display *xdpy, Window xwin, int flags)
-{
-   guint32 list[2];
-
-   Atom atom_ATOM_XEMBED_INFO;
-
-   atom_ATOM_XEMBED_INFO
-     = XInternAtom(xdpy, "_XEMBED_INFO", False);
-
-
-   list[0] = MAX_SUPPORTED_XEMBED_VERSION;
-   list[1] = flags;
-   XChangeProperty (xdpy,
-		    xwin,
-		    atom_ATOM_XEMBED_INFO,
-		    atom_ATOM_XEMBED_INFO, 32,
-		    PropModeReplace, (unsigned char *) list, 2);
-}
-
-static void
-xembed_init (MplPanelClutter *panel)
-{
-  MplPanelClutterPrivate *priv = panel->priv;
-  Display                *xdpy = clutter_x11_get_default_display ();
-
-  priv->Atom_XEMBED = XInternAtom(xdpy, "_XEMBED", False);
-
-  xembed_set_win_info (xdpy, priv->xwindow, 0);
-}
-
-#if 0
-/*
- * TODO -- currently not needed, probalby remove.
- */
-static Bool
-xembed_send_message (MplPanelClutter *panel,
-                     Window          *w,
-                     long             message,
-                     long             detail,
-                     long             data1,
-                     long             data2)
-{
-  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (data)->priv;
-  Display                *xdpy = clutter_x11_get_default_display ();
-  XEvent                  ev;
-
-  memset(&ev, 0, sizeof(ev));
-
-  ev.xclient.type = ClientMessage;
-  ev.xclient.window = w;
-  ev.xclient.message_type = Atom_XEMBED;
-  ev.xclient.format = 32;
-  ev.xclient.data.l[0] = CurrentTime; /* FIXME: Is this correct */
-  ev.xclient.data.l[1] = message;
-  ev.xclient.data.l[2] = detail;
-  ev.xclient.data.l[3] = data1;
-  ev.xclient.data.l[4] = data2;
-
-  clutter_x11_trap_x_errors ();
-
-  XSendEvent(xdpy, w, False, NoEventMask, &ev);
-  XSync(xdpy, False);
-
-  if (clutter_x11_untrap_x_errors ())
-    return False;
-
-  return True;
-}
-#endif

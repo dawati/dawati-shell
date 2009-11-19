@@ -64,6 +64,7 @@ typedef struct
    * Public signals -- connect to these from your panel.
    */
   void (*set_size)           (MplPanelClient *panel, guint width, guint height);
+  void (*set_position)       (MplPanelClient *panel, gint x, gint y);
   void (*show)               (MplPanelClient *panel);
   void (*show_begin)         (MplPanelClient *panel);
   void (*show_end)           (MplPanelClient *panel);

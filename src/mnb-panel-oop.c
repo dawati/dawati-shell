@@ -81,6 +81,8 @@ enum
   PROP_0,
 
   PROP_DBUS_NAME,
+  PROP_X,
+  PROP_Y,
   PROP_WIDTH,
   PROP_HEIGHT,
 };
@@ -108,6 +110,8 @@ struct _MnbPanelOopPrivate
   guint            xid;
   gchar           *child_class;
 
+  gint             x;
+  gint             y;
   guint            width;
   guint            height;
 
@@ -148,6 +152,12 @@ mnb_panel_oop_get_property (GObject    *object,
     case PROP_DBUS_NAME:
       g_value_set_string (value, priv->dbus_name);
       break;
+    case PROP_X:
+      g_value_set_int (value, priv->x);
+      break;
+    case PROP_Y:
+      g_value_set_int (value, priv->y);
+      break;
     case PROP_WIDTH:
       g_value_set_uint (value, priv->width);
       break;
@@ -172,6 +182,12 @@ mnb_panel_oop_set_property (GObject      *object,
     case PROP_DBUS_NAME:
       g_free (priv->dbus_name);
       priv->dbus_name = g_value_dup_string (value);
+      break;
+    case PROP_X:
+      priv->x = g_value_get_int (value);
+      break;
+    case PROP_Y:
+      priv->y = g_value_get_int (value);
       break;
     case PROP_WIDTH:
       priv->width = g_value_get_uint (value);
@@ -247,6 +263,20 @@ mnb_panel_oop_set_size_cb (DBusGProxy  *proxy,
   priv->height = height;
 
   g_debug (G_STRLOC " Panel resized to %dx%d", width, height);
+}
+
+static void
+mnb_panel_oop_set_position_cb (DBusGProxy  *proxy,
+                               gint         x,
+                               gint         y,
+                               MnbPanelOop *panel)
+{
+  MnbPanelOopPrivate *priv = panel->priv;
+
+  priv->x = x;
+  priv->y = y;
+
+  g_debug (G_STRLOC " Panel moved to %dx%d", x, y);
 }
 
 static void
@@ -635,6 +665,8 @@ mnb_panel_oop_init_owner (MnbPanelOop *panel)
    * tooltip and xid.
    */
   org_moblin_UX_Shell_Panel_init_panel_async (priv->proxy,
+                                          priv->x,
+                                          priv->y,
                                           priv->width, priv->height,
                                           mnb_panel_oop_init_panel_oop_reply_cb,
                                           panel);
@@ -742,6 +774,12 @@ mnb_panel_oop_setup_proxy (MnbPanelOop *panel)
                                G_CALLBACK (mnb_panel_oop_set_size_cb),
                                panel, NULL);
 
+  dbus_g_proxy_add_signal (proxy, "SetPosition",
+                           G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy, "SetPosition",
+                               G_CALLBACK (mnb_panel_oop_set_position_cb),
+                               panel, NULL);
+
   mnb_panel_oop_init_owner (panel);
 
   return TRUE;
@@ -787,6 +825,8 @@ mnb_panel_oop_new (const gchar  *dbus_name,
 {
   MnbPanelOop *panel = g_object_new (MNB_TYPE_PANEL_OOP,
                                      "dbus-name",     dbus_name,
+                                     "x",             x,
+                                     "y",             y,
                                      "width",         width,
                                      "height",        height,
                                      NULL);

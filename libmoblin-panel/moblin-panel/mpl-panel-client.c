@@ -61,6 +61,7 @@ enum
 enum
 {
   SET_SIZE,
+  SET_POSITION,
   SHOW,
   SHOW_BEGIN,
   SHOW_END,
@@ -89,6 +90,8 @@ struct _MplPanelClientPrivate
   gchar           *button_style;
   guint            xid;
 
+  gint             x;
+  gint             y;
   guint            width;
   guint            max_height;
   guint            requested_height;
@@ -212,6 +215,8 @@ mpl_panel_client_finalize (GObject *object)
  */
 static gboolean
 mnb_panel_dbus_init_panel (MplPanelClient  *self,
+                           gint             x,
+                           gint             y,
                            guint            width,
                            guint            height,
                            gchar          **name,
@@ -237,6 +242,8 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
   *stylesheet   = g_strdup (priv->stylesheet);
   *button_style = g_strdup (priv->button_style);
 
+  priv->x          = x;
+  priv->y          = y;
   priv->max_height = height;
   priv->width      = width;
 
@@ -254,6 +261,7 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
   *alloc_width  = width;
   *alloc_height = real_height;
 
+  g_signal_emit (self, signals[SET_POSITION], 0, x, y);
   g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
 
   return TRUE;
@@ -296,6 +304,29 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
 
   if (old_width != priv->width || old_height != real_height)
     g_signal_emit (self, signals[SET_SIZE], 0, priv->width, real_height);
+
+  return TRUE;
+}
+
+/*
+ * The functions required by the interface.
+ */
+static gboolean
+mnb_panel_dbus_set_position (MplPanelClient  *self,
+                             gint             x,
+                             gint             y,
+                             GError         **error)
+{
+  MplPanelClientPrivate *priv = self->priv;
+  guint old_x = priv->x;
+  guint old_y = priv->y;
+
+  g_debug ("%s called: x %d (%d), y %d (%d)",
+           __FUNCTION__, x, priv->x, y, priv->y);
+
+
+  if (old_x != priv->x || old_y != priv->y)
+    g_signal_emit (self, signals[SET_POSITION], 0, x, y);
 
   return TRUE;
 }
@@ -439,6 +470,17 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   G_TYPE_NONE, 2,
                   G_TYPE_UINT,
                   G_TYPE_UINT);
+
+  signals[SET_POSITION] =
+    g_signal_new ("set-position",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (MplPanelClientClass, set_position),
+                  NULL, NULL,
+                  moblin_netbook_marshal_VOID__INT_INT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_INT,
+                  G_TYPE_INT);
 
   signals[SHOW_BEGIN] =
     g_signal_new ("show-begin",

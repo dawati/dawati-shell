@@ -3,6 +3,8 @@
 <node name="/">
   <interface name="org.moblin.UX.Shell.Panel">
     <method name="InitPanel">
+      <arg name="x" type="i" direction="in"/>
+      <arg name="y" type="i" direction="in"/>
       <arg name="max_window_width" type="u" direction="in"/>
       <arg name="max_window_height" type="u" direction="in"/>
       <arg name="panel_name" type="s" direction="out"/>
@@ -12,6 +14,11 @@
       <arg name="button_style" type="s" direction="out"/>
       <arg name="window_width" type="u" direction="out"/>
       <arg name="window_height" type="u" direction="out"/>
+    </method>
+
+    <method name="SetPosition">
+      <arg name="x" type="i" direction="in"/>
+      <arg name="y" type="i" direction="in"/>
     </method>
 
     <method name="SetSize">
