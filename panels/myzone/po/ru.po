@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -10,10 +10,10 @@ msgstr ""
 "POT-Creation-Date: 2009-10-16 11:31+0000\n"
 "PO-Revision-Date: 2009-11-19 12:11+0300\n"
 "Last-Translator: Alexander Mineev <alexander.g.mineev@intel.com>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language-Team: \n"
 
 #: ../penge/penge-calendar-pane.c:476
 msgid "<b>Appointments</b>"
@@ -23,8 +23,7 @@ msgstr "<b>Встречи</b>"
 msgid "Create an appointment"
 msgstr "Создать встречу"
 
-#: ../penge/penge-events-pane.c:60
-#: ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Добавить"
 
@@ -58,6 +57,6 @@ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 msgstr "<b>Добро пожаловать в Moblin 2.1</b>"
 
 #: ../penge/penge-welcome-tile.c:108
+#, fuzzy
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 msgstr "Так как Moblin немного отличается от других компьютеров, мы расположили вместе некоторые программы, которые помогут Вам ориентироваться. Мы надеемся, что Вам понравится, команда Moblin."
-
