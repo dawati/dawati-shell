@@ -82,7 +82,6 @@ make_window_content (MplPanelGtk *panel)
   gtk_widget_show_all (table);
 
   gtk_container_add (GTK_CONTAINER (window), table);
-  gtk_widget_show (window);
 }
 
 /*
