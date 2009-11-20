@@ -141,23 +141,6 @@ mpl_panel_gtk_init (MplPanelGtk *self)
   priv = self->priv = MPL_PANEL_GTK_GET_PRIVATE (self);
 }
 
-static gboolean
-mpl_panel_gtk_window_delete_event_cb (GtkWidget *window,
-                                      GdkEvent  *event,
-                                      gpointer   data)
-{
-  /*
-   * Ensure the config window will be available.
-   */
-  g_debug ("delete-event: interupting");
-  gtk_widget_hide (window);
-
-  /*
-   * Returning TRUE here stops the widget from getting destroyed.
-   */
-  return TRUE;
-}
-
 static void
 mpl_panel_gtk_constructed (GObject *self)
 {
@@ -176,9 +159,6 @@ mpl_panel_gtk_constructed (GObject *self)
 #endif
 
   gtk_widget_realize (window);
-
-  g_signal_connect (window, "delete-event",
-                    G_CALLBACK (mpl_panel_gtk_window_delete_event_cb), self);
 
   g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
 }
