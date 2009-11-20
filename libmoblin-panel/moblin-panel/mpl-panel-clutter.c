@@ -31,6 +31,16 @@
 
 #include "mpl-panel-clutter.h"
 
+#define MPL_X_ERROR_TRAP() clutter_x11_trap_x_errors()
+
+#define MPL_X_ERROR_UNTRAP()                            \
+  {                                                     \
+    gint e__;                                           \
+    if ((e__ = clutter_x11_untrap_x_errors ()))         \
+      g_debug (G_STRLOC ": Cought X error %d", e__);    \
+  }
+
+
 G_DEFINE_TYPE (MplPanelClutter, mpl_panel_clutter, MPL_TYPE_PANEL_CLIENT)
 
 #define MPL_PANEL_CLUTTER_GET_PRIVATE(o) \
@@ -101,8 +111,12 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
   hints.min_height = height;
   hints.flags = PMinSize;
 
+  MPL_X_ERROR_TRAP ();
+
   XSetWMNormalHints (xdpy, priv->xwindow, &hints);
   XResizeWindow (xdpy, priv->xwindow, width, height);
+
+  MPL_X_ERROR_UNTRAP ();
 
   clutter_actor_set_size (priv->stage, width, height);
   clutter_stage_ensure_viewport (CLUTTER_STAGE (priv->stage));
@@ -114,7 +128,11 @@ mpl_panel_clutter_set_position (MplPanelClient *self, gint x, gint y)
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
 
+  MPL_X_ERROR_TRAP ();
+
   XMoveWindow (xdpy, priv->xwindow, x, y);
+
+  MPL_X_ERROR_UNTRAP ();
 }
 
 static void
@@ -123,7 +141,13 @@ mpl_panel_clutter_show (MplPanelClient *self)
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
 
+  clutter_actor_show (priv->stage);
+
+  MPL_X_ERROR_TRAP ();
+
   XMapRaised (xdpy, priv->xwindow);
+
+  MPL_X_ERROR_UNTRAP ();
 }
 
 static void
@@ -132,7 +156,11 @@ mpl_panel_clutter_hide (MplPanelClient *self)
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
 
+  MPL_X_ERROR_TRAP ();
+
   XUnmapWindow (xdpy, priv->xwindow);
+
+  MPL_X_ERROR_UNTRAP ();
 }
 
 
@@ -204,6 +232,8 @@ mpl_panel_clutter_constructed (GObject *self)
 
   g_object_set (self, "xid", xwin, NULL);
 
+  MPL_X_ERROR_TRAP ();
+
   /*
    * Make dock, sticky and position at the correct place.
    */
@@ -214,7 +244,7 @@ mpl_panel_clutter_constructed (GObject *self)
                     xwin,
                     atom1,
                     XA_ATOM, 32,
-                    PropModeReplace, (unsigned char *) atom2, 1);
+                    PropModeReplace, (unsigned char *) &atom2, 1);
 
    atom1 = XInternAtom(xdpy, "_NET_WM_DESKTOP", False);
    myint = -1;
@@ -223,9 +253,11 @@ mpl_panel_clutter_constructed (GObject *self)
                     xwin,
                     atom1,
                     XA_CARDINAL, 32,
-                    PropModeReplace, (unsigned char *) myint, 1);
+                    PropModeReplace, (unsigned char *) &myint, 1);
 
    XSync (xdpy, False);
+
+   MPL_X_ERROR_UNTRAP ();
 
   /* Load a base style for widgets used in the Mpl panels */
   mpl_panel_clutter_load_base_style ();
