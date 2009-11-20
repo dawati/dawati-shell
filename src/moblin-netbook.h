@@ -106,6 +106,8 @@ struct _MoblinNetbookPluginPrivate
 
   /* Desktop background stuff */
   GConfClient           *gconf_client;
+
+  MoblinNetbookNotifyStore *notify_store;
 };
 
 GType moblin_netbook_plugin_get_type (void);

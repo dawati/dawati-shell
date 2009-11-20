@@ -56,6 +56,8 @@
 #include <string.h>
 #include <signal.h>
 #include <X11/extensions/Xcomposite.h>
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
 
 #define MINIMIZE_TIMEOUT            250
 #define MAXIMIZE_TIMEOUT            250
@@ -64,7 +66,7 @@
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define MYZONE_TIMEOUT              200
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
-
+#define NOTIFICATION_KEY "MNB-MW-urgent-notification"
 #define KEY_DIR "/desktop/moblin/background"
 #define KEY_BG_FILENAME KEY_DIR "/picture_filename"
 
@@ -87,8 +89,12 @@ static void meta_window_fullscreen_notify_cb (GObject    *object,
                                               gpointer    data);
 static void moblin_netbook_toggle_compositor (MutterPlugin *, gboolean on);
 static void window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin);
+static void meta_display_window_demands_attention_cb (MetaDisplay *display,
+                                                      MetaWindow  *mw,
+                                                      gpointer     data);
 
 static GQuark actor_data_quark = 0;
+static GQuark notification_quark = 0;
 
 static void     minimize   (MutterPlugin *plugin,
                             MutterWindow *actor);
@@ -372,7 +378,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   gfloat         w, h;
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
-  MoblinNetbookNotifyStore *notify_store;
 
   MetaScreen   *screen  = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
   MetaDisplay  *display = meta_screen_get_display (screen);
@@ -408,6 +413,15 @@ moblin_netbook_plugin_constructed (GObject *object)
   g_signal_connect (display,
                     "overlay-key",
                     G_CALLBACK (moblin_netbook_overlay_key_cb),
+                    plugin);
+
+  g_signal_connect (display,
+                    "window-demands-attention",
+                    G_CALLBACK (meta_display_window_demands_attention_cb),
+                    plugin);
+  g_signal_connect (display,
+                    "window-marked-urgent",
+                    G_CALLBACK (meta_display_window_demands_attention_cb),
                     plugin);
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
@@ -455,13 +469,13 @@ moblin_netbook_plugin_constructed (GObject *object)
   setup_focus_window (MUTTER_PLUGIN (plugin));
 
   /* Notifications */
-  notify_store = moblin_netbook_notify_store_new ();
+  priv->notify_store = moblin_netbook_notify_store_new ();
 
   priv->notification_cluster = mnb_notification_cluster_new ();
 
   mnb_notification_cluster_set_store
                     (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster),
-                     notify_store);
+                     priv->notify_store);
 
   clutter_actor_set_anchor_point_from_gravity (priv->notification_cluster,
                                                CLUTTER_GRAVITY_SOUTH_EAST);
@@ -490,7 +504,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   mnb_notification_urgent_set_store
                         (MNB_NOTIFICATION_URGENT(priv->notification_urgent),
-                         notify_store);
+                         priv->notify_store);
 
   g_signal_connect (priv->notification_urgent,
                     "sync-input-region",
@@ -2474,6 +2488,231 @@ moblin_netbook_compositor_disabled (MutterPlugin *plugin)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   return priv->compositor_disabled;
+}
+
+/*
+ * Shim layer for translating demands-attention hint into notifications.
+ */
+
+/*
+ * Handle the case where the window demands-attention state is unset
+ * (for it being set, we watch centrally on MetaDisplay).
+ */
+static void
+meta_window_demands_attention_cb (MetaWindow         *mw,
+                                  GParamSpec         *spec,
+                                  gpointer            data)
+{
+  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  guint                       ntf_id            = GPOINTER_TO_INT (data);
+  gboolean                    demands_attention = FALSE;
+  gboolean                    urgent            = FALSE;
+
+  g_object_get (G_OBJECT (mw),
+                "demands-attention", &demands_attention,
+                "urgent", &urgent,
+                NULL);
+
+  if (!demands_attention && !urgent)
+    moblin_netbook_notify_store_close (priv->notify_store, ntf_id,
+                                       ClosedProgramatically);
+}
+
+/*
+ * set_notification_icon is based on notify_notification_set_icon_from_pixbuf()
+ * from libnotify
+ *
+ * Copyright (C) 2006 Christian Hammond
+ * Copyright (C) 2006 John Palmieri
+ */
+static void
+_gvalue_array_append_int(GValueArray *array, gint i)
+{
+  GValue value = {0};
+
+  g_value_init(&value, G_TYPE_INT);
+  g_value_set_int(&value, i);
+  g_value_array_append(array, &value);
+  g_value_unset(&value);
+}
+
+static void
+_gvalue_array_append_bool(GValueArray *array, gboolean b)
+{
+  GValue value = {0};
+
+  g_value_init(&value, G_TYPE_BOOLEAN);
+  g_value_set_boolean(&value, b);
+  g_value_array_append(array, &value);
+  g_value_unset(&value);
+}
+
+static void
+_gvalue_array_append_byte_array(GValueArray *array, guchar *bytes, gsize len)
+{
+  GArray *byte_array;
+  GValue value = {0};
+
+  byte_array = g_array_sized_new(FALSE, FALSE, sizeof(guchar), len);
+  g_assert(byte_array != NULL);
+  byte_array = g_array_append_vals(byte_array, bytes, len);
+
+  g_value_init(&value, DBUS_TYPE_G_UCHAR_ARRAY);
+  g_value_set_boxed_take_ownership(&value, byte_array);
+  g_value_array_append(array, &value);
+  g_value_unset(&value);
+}
+
+static void
+free_hint (gpointer v)
+{
+  GValue *value = v;
+
+  g_value_unset (value);
+  g_free (value);
+}
+
+static void
+set_notification_icon (GHashTable **hints, GdkPixbuf *icon)
+{
+  gint width;
+  gint height;
+  gint rowstride;
+  gint bits_per_sample;
+  gint n_channels;
+  guchar *image;
+  gsize image_len;
+  GValueArray *image_struct;
+  GValue *value;
+
+  if (!*hints)
+    *hints = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, free_hint);
+
+  width           = gdk_pixbuf_get_width (icon);
+  height          = gdk_pixbuf_get_height (icon);
+  rowstride       = gdk_pixbuf_get_rowstride (icon);
+  n_channels      = gdk_pixbuf_get_n_channels (icon);
+  bits_per_sample = gdk_pixbuf_get_bits_per_sample (icon);
+  image_len       = (height - 1) * rowstride + width *
+    ((n_channels * bits_per_sample + 7) / 8);
+
+  image = gdk_pixbuf_get_pixels (icon);
+
+  image_struct = g_value_array_new (1);
+
+  _gvalue_array_append_int (image_struct, width);
+  _gvalue_array_append_int (image_struct, height);
+  _gvalue_array_append_int (image_struct, rowstride);
+  _gvalue_array_append_bool (image_struct, gdk_pixbuf_get_has_alpha (icon));
+  _gvalue_array_append_int (image_struct, bits_per_sample);
+  _gvalue_array_append_int (image_struct, n_channels);
+  _gvalue_array_append_byte_array (image_struct, image, image_len);
+
+  value = g_new0 (GValue, 1);
+  g_value_init (value, G_TYPE_VALUE_ARRAY);
+  g_value_take_boxed (value, image_struct);
+
+  g_hash_table_insert (*hints, g_strdup("icon_data"), value);
+}
+
+/*
+ * Returns notification associated with current window; if the raw paremeter is
+ * TRUE, the notification pointer will be returned as is (possibly NULL, if the
+ * notification has not been previously created). If raw is FALSE the
+ * notification will be created if it previously did not exist, or, the summary
+ * and icon will be updated.
+ */
+static guint
+get_demands_attention_notification (MutterPlugin *plugin,
+                                    MetaWindow   *mw,
+                                    gboolean      raw)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  guint                       ntf_id;
+  const gchar                *title  = meta_window_get_title (mw);
+  const gchar                *summary;
+  const gchar                *body;
+  guint                       old_id;
+  const gchar                *actions[3] = {"MNB-urgent-window", NULL, NULL};
+  GHashTable                 *hints = NULL;
+
+  actions[1] = _("Activate");
+
+  if (G_UNLIKELY (notification_quark == 0))
+    notification_quark = g_quark_from_static_string (NOTIFICATION_KEY);
+
+  old_id = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (mw),
+                                                notification_quark));
+
+  if (!old_id && raw)
+    return 0;
+
+  if (title)
+    summary = title;
+  else
+    summary = _("Unknown window");
+
+  body = _("Is asking for your attention.");
+
+  if (!raw)
+    {
+      GdkPixbuf *pixbuf = NULL;
+
+      g_object_get (mw, "icon", &pixbuf, NULL);
+
+      if (pixbuf)
+        set_notification_icon (&hints, pixbuf);
+    }
+
+  ntf_id = notification_manager_notify_internal (priv->notify_store,
+                                                 old_id,
+                                                 "mutter-moblin",
+                                                 NULL,
+                                                 summary,
+                                                 body,
+                                                 actions,
+                                                 hints,
+                                                 0,
+                                                 mw);
+
+  if (!ntf_id)
+    {
+      g_warning ("Failed to create notification for %s", summary);
+      return 0;
+    }
+
+  if (old_id != ntf_id)
+    {
+      g_debug ("New notification %d", ntf_id);
+
+      g_object_set_qdata_full (G_OBJECT (mw), notification_quark,
+                               GINT_TO_POINTER (ntf_id), NULL);
+
+      g_signal_connect (mw, "notify::demands-attention",
+                        G_CALLBACK (meta_window_demands_attention_cb),
+                        GINT_TO_POINTER (ntf_id));
+      g_signal_connect (mw, "notify::urgent",
+                        G_CALLBACK (meta_window_demands_attention_cb),
+                        GINT_TO_POINTER (ntf_id));
+    }
+  else
+    g_debug ("Reusing notificaiton %d", ntf_id);
+
+  if (hints)
+    g_hash_table_destroy (hints);
+
+  return ntf_id;
+}
+
+static void
+meta_display_window_demands_attention_cb (MetaDisplay *display,
+                                          MetaWindow  *mw,
+                                          gpointer     data)
+{
+  MutterPlugin       *plugin = MUTTER_PLUGIN (data);
+
+  get_demands_attention_notification (plugin, mw, FALSE);
 }
 
 void
