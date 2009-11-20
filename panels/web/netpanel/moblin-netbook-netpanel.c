@@ -50,9 +50,21 @@
 
 #define START_PAGE "moblin://start/"
 
-#define MWB_FAVORITE_SQL  "SELECT url, title, rev_host FROM moz_places " \
-                          "WHERE rev_host <> '' AND url <> 'moblin://start/' " \
-                          "GROUP BY rev_host ORDER BY visit_count DESC LIMIT 16"
+#define MWB_FAVORITE_SQL  "SELECT h.url, h.title " \
+                          "FROM (" \
+                                 "SELECT (" \
+                                          "SELECT p.id FROM moz_places p " \
+                                          "WHERE p.rev_host=s.rev_host " \
+                                          "ORDER BY p.visit_count desc " \
+                                          ") AS id " \
+                                "FROM (" \
+                                       "SELECT rev_host, SUM(visit_count) AS count " \
+                                       "FROM moz_places " \
+                                       "WHERE visit_count <> 0 AND hidden <> 1 AND SUBSTR(url, 1, 7) <> 'moblin:' " \
+                                       "GROUP BY rev_host ORDER BY count desc limit 16 " \
+                                       ") s " \
+                               ") r " \
+                          "LEFT JOIN moz_places h ON h.id=r.id"
 
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, NBTK_TYPE_WIDGET)
 
