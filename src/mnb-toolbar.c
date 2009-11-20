@@ -903,6 +903,35 @@ mnb_toolbar_panel_index_to_name (gint index)
 }
 
 /*
+ * Helper function to manage lowlight stacking when showing a panel.
+ */
+static void
+mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  g_debug ("%s", __FUNCTION__);
+
+  if (CLUTTER_IS_ACTOR (panel))
+    clutter_actor_raise_top (priv->lowlight);
+  else if (MNB_IS_PANEL_OOP (panel))
+    {
+      MnbPanelOop  *opanel = (MnbPanelOop*) panel;
+      ClutterActor *actor;
+
+      actor = (ClutterActor*) mnb_panel_oop_get_mutter_window (opanel);
+
+      clutter_actor_lower (priv->lowlight, actor);
+    }
+}
+
+static void
+mnb_toolbar_panel_show_begin_cb (MnbPanel *panel, MnbToolbar *toolbar)
+{
+  mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
+}
+
+/*
  * Use for any built-in panels, which require the input region to cover the
  * whole panel area.
  */
@@ -952,6 +981,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
                                    (TOOLBAR_HEIGHT + panel_height),
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
+  mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
 }
 
@@ -1069,6 +1099,9 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
 
       g_signal_connect (panel, "show-completed",
                         G_CALLBACK(mnb_toolbar_dropdown_show_completed_full_cb),
+                        toolbar);
+      g_signal_connect (panel, "show-begin",
+                        G_CALLBACK(mnb_toolbar_panel_show_begin_cb),
                         toolbar);
 
       g_signal_connect (display, "notify::focus-window",
@@ -1546,6 +1579,9 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
   g_signal_connect (panel, "show-completed",
                     G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
                     toolbar);
+  g_signal_connect (panel, "show-begin",
+                    G_CALLBACK(mnb_toolbar_panel_show_begin_cb),
+                    toolbar);
 
   g_signal_connect (panel, "hide-completed",
                     G_CALLBACK (mnb_toolbar_dropdown_hide_completed_cb), toolbar);
@@ -1884,6 +1920,23 @@ mnb_toolbar_background_input_cb (ClutterActor *stage,
   return TRUE;
 }
 
+/*
+ * If the compositor restacks, and we are showing an OOP panel, we need to
+ * lower the shadow below the panel.
+ */
+static void
+mnb_toolbar_screen_restacked_cb (MetaScreen *screen, MnbToolbar *toolbar)
+{
+  MnbPanel *panel;
+
+  panel = mnb_toolbar_get_active_panel (toolbar);
+
+  if (!panel || !MNB_IS_PANEL_OOP (panel))
+    return;
+
+  mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
+}
+
 static void
 mnb_toolbar_constructed (GObject *self)
 {
@@ -1897,6 +1950,8 @@ mnb_toolbar_constructed (GObject *self)
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
   DBusGConnection   *conn;
   NbtkWidget        *time_bin, *date_bin;
+  MetaScreen        *screen = mutter_plugin_get_screen (plugin);
+  ClutterActor      *wgroup = mutter_get_window_group_for_screen (screen);
 
   /*
    * Make sure our parent gets chance to do what it needs to.
@@ -1935,7 +1990,7 @@ mnb_toolbar_constructed (GObject *self)
    */
   clutter_actor_set_size (lowlight,
                           screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), lowlight);
+  clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), lowlight);
   clutter_actor_hide (lowlight);
   priv->lowlight = lowlight;
 
@@ -2010,6 +2065,10 @@ mnb_toolbar_constructed (GObject *self)
 
   if (conn)
     mnb_toolbar_dbus_setup_panels (MNB_TOOLBAR (self));
+
+  g_signal_connect (screen, "restacked",
+                    G_CALLBACK (mnb_toolbar_screen_restacked_cb),
+                    self);
 }
 
 NbtkWidget*
