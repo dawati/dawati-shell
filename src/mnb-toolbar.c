@@ -1100,8 +1100,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   clutter_actor_set_width (CLUTTER_ACTOR (panel), screen_width);
 
   mnb_panel_set_button (panel, NBTK_BUTTON (button));
-  clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
-  clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
+  mnb_panel_set_position (panel, 0, TOOLBAR_HEIGHT);
 }
 
 static void
@@ -1218,7 +1217,7 @@ mnb_toolbar_dispose_of_panel (MnbToolbar *toolbar,
       if (MNB_IS_PANEL_OOP (panel))
         mnb_toolbar_remove_panel_from_pending (toolbar, (MnbPanelOop*)panel);
 
-      if (!panel_destroyed)
+      if (!panel_destroyed && CLUTTER_IS_ACTOR (panel))
         clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
                                         CLUTTER_ACTOR (panel));
     }
@@ -1565,15 +1564,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
   g_signal_connect (panel, "remote-process-died",
                     G_CALLBACK (mnb_toolbar_panel_died_cb), toolbar);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                               CLUTTER_ACTOR (panel));
-
   priv->panels[index] = panel;
 
   mnb_panel_set_button (panel, NBTK_BUTTON (button));
-  clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
-  clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
-  clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
+  mnb_panel_set_position (panel, 0, TOOLBAR_HEIGHT);
 
   if (index == MYZONE)
     {
