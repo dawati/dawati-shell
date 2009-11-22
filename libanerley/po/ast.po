@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: anerley.master.ast\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-09 23:54+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: astur <malditoastur@gmail.com>\n"
+"Language-Team: asturian <alministradores@softastur.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: asturian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+# Derived from Empathy
+# translation of empathy.HEAD.po to Asturian
+# Copyright (C) 2003 Free Software Foundation
+# This file is distributed under the same license as the Gossip package.
+# Astur <malditoastur@gmail.com>, 2009.
+#: ../anerley/anerley-tile.c:206
+msgid "Available"
+msgstr "Disponible"
+
+#: ../anerley/anerley-tile.c:209
+msgid "Busy"
+msgstr "Ocupáu"
+
+#: ../anerley/anerley-tile.c:212
+#: ../anerley/anerley-tile.c:215
+msgid "Away"
+msgstr "Ausente"
+
+#: ../anerley/anerley-tile.c:218
+msgid "Offline"
+msgstr "Desconeutáu"
+
+#: ../anerley/anerley-econtact-item.c:307
+msgid "Unnamed"
+msgstr "Ensin nome"
+
