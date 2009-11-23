@@ -404,7 +404,7 @@ mnb_panel_ensure_size (MnbPanel *panel)
     {
       gint  x, y;
       guint w, h;
-      guint max_height;
+      guint max_height, max_width;
 
       meta_workspace_get_work_area_all_monitors (workspace, &r);
 
@@ -418,10 +418,11 @@ mnb_panel_ensure_size (MnbPanel *panel)
        */
       /* FIXME -- devise a way of doing the shadow */
       max_height = r.height - y /*+ MNB_PANEL_OOP_SHADOW_HEIGHT*/;
+      max_width  = r.width - TOOLBAR_X_PADDING * 2;
 
       if (max_height != h || r.width != w)
         {
-          mnb_panel_set_size (panel, r.width, max_height);
+          mnb_panel_set_size (panel, max_width, max_height);
         }
     }
 }
