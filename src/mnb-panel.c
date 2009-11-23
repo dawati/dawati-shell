@@ -300,7 +300,7 @@ mnb_panel_set_position (MnbPanel *panel, gint x, gint y)
       return;
     }
 
-  iface->set_position (panel, x, x);
+  iface->set_position (panel, x, y);
 }
 
 void
@@ -318,7 +318,7 @@ mnb_panel_get_position (MnbPanel *panel, gint *x, gint *y)
       return;
     }
 
-  iface->get_position (panel, x, x);
+  iface->get_position (panel, x, y);
 }
 
 gboolean
