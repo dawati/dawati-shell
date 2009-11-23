@@ -1719,6 +1719,9 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
       if (panel)
         {
+          /*
+           * FIXME -- destroy is ClutterActor signal
+           */
           g_signal_connect (panel, "destroy",
                             G_CALLBACK (mnb_toolbar_panel_destroy_cb), toolbar);
 

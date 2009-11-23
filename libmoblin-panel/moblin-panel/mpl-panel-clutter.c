@@ -142,12 +142,6 @@ mpl_panel_clutter_show (MplPanelClient *self)
   Display                *xdpy = clutter_x11_get_default_display ();
 
   clutter_actor_show (priv->stage);
-
-  MPL_X_ERROR_TRAP ();
-
-  XMapRaised (xdpy, priv->xwindow);
-
-  MPL_X_ERROR_UNTRAP ();
 }
 
 static void
@@ -156,11 +150,7 @@ mpl_panel_clutter_hide (MplPanelClient *self)
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
 
-  MPL_X_ERROR_TRAP ();
-
-  XUnmapWindow (xdpy, priv->xwindow);
-
-  MPL_X_ERROR_UNTRAP ();
+  clutter_actor_hide (priv->stage);
 }
 
 
@@ -261,6 +251,8 @@ mpl_panel_clutter_constructed (GObject *self)
 
   /* Load a base style for widgets used in the Mpl panels */
   mpl_panel_clutter_load_base_style ();
+
+  clutter_actor_hide (priv->stage);
 }
 
 MplPanelClient *
