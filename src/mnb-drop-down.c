@@ -630,15 +630,32 @@ mnb_drop_down_panel_set_size (MnbPanel *panel, guint width, guint height)
 static void
 mnb_drop_down_panel_get_size (MnbPanel *panel, guint *width, guint *height)
 {
+  MnbDropDownPrivate *priv = MNB_DROP_DOWN (panel)->priv;
   gfloat w, h;
+  gfloat wc, hc;
 
+  /*
+   * FIXME -- need to find out why the height of the panel is reported as
+   * 0 and fix that; this is a very uggly cludge.
+   */
   clutter_actor_get_size (CLUTTER_ACTOR (panel), &w, &h);
+  clutter_actor_get_size (priv->child, &wc, &hc);
 
   if (width)
-    *width = w;
+    {
+      if (w)
+        *width = w;
+      else
+        *width = wc + TOOLBAR_X_PADDING * 2;
+    }
 
   if (height)
-    *height = h;
+    {
+      if (h)
+        *height = h;
+      else
+        *height = hc + TOOLBAR_HEIGHT / 2 + 4;
+    }
 }
 
 static void
