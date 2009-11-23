@@ -154,8 +154,8 @@ struct _MnbToolbarPrivate
   MutterPlugin *plugin;
 
   ClutterActor *hbox; /* This is where all the contents are placed */
-  ClutterActor *background;
   ClutterActor *lowlight;
+  ClutterActor *shadow;
 
   NbtkWidget   *time; /* The time and date fields, needed for the updates */
   NbtkWidget   *date;
@@ -297,6 +297,8 @@ mnb_toolbar_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
   for (i = 0; i < NUM_ZONES; ++i)
     if (priv->buttons[i])
       clutter_actor_set_reactive (CLUTTER_ACTOR (priv->buttons[i]), TRUE);
+
+  clutter_actor_show (priv->shadow);
 
   priv->in_show_animation = FALSE;
   g_signal_emit (actor, toolbar_signals[SHOW_COMPLETED], 0);
@@ -453,6 +455,8 @@ mnb_toolbar_hide (MnbToolbar *toolbar)
       g_signal_stop_emission_by_name (actor, "hide");
       return;
     }
+
+  clutter_actor_hide (priv->shadow);
 
   mnb_toolbar_hide_lowlight (MNB_TOOLBAR (actor));
 
@@ -913,7 +917,10 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
   g_debug ("%s", __FUNCTION__);
 
   if (CLUTTER_IS_ACTOR (panel))
-    clutter_actor_raise_top (priv->lowlight);
+    {
+      clutter_actor_raise_top (priv->lowlight);
+      clutter_actor_raise_top (priv->shadow);
+    }
   else if (MNB_IS_PANEL_OOP (panel))
     {
       MnbPanelOop  *opanel = (MnbPanelOop*) panel;
@@ -921,7 +928,8 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
 
       actor = (ClutterActor*) mnb_panel_oop_get_mutter_window (opanel);
 
-      clutter_actor_lower (priv->lowlight, actor);
+      clutter_actor_lower (priv->shadow, actor);
+      clutter_actor_lower (priv->lowlight, priv->shadow);
     }
 }
 
@@ -1948,8 +1956,8 @@ mnb_toolbar_constructed (GObject *self)
   MutterPlugin      *plugin = priv->plugin;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
-  ClutterActor      *background, *bg_texture;
   ClutterActor      *lowlight;
+  ClutterActor      *shadow, *sh_texture;
   gint               screen_width, screen_height;
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
   DBusGConnection   *conn;
@@ -1984,7 +1992,7 @@ mnb_toolbar_constructed (GObject *self)
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
 
-  clutter_actor_set_size (actor, screen_width, TOOLBAR_SHADOW_HEIGHT);
+  clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
 
@@ -1998,29 +2006,31 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_hide (lowlight);
   priv->lowlight = lowlight;
 
-  bg_texture =
+  /*
+   * The shadow needs to go into the window group, like the lowlight.
+   */
+  sh_texture =
     clutter_texture_new_from_file (THEMEDIR
-                                   "/panel/panel-background.png",
+                                   "/panel/panel-shadow.png",
                                    NULL);
-  if (bg_texture)
+  if (sh_texture)
     {
-      background = nbtk_texture_frame_new (CLUTTER_TEXTURE (bg_texture),
+      shadow = nbtk_texture_frame_new (CLUTTER_TEXTURE (sh_texture),
                                            0,   /* top */
                                            200, /* right */
                                            0,   /* bottom */
                                            200  /* left */);
-      clutter_actor_set_size (background, screen_width - 8, TOOLBAR_HEIGHT);
-      clutter_actor_set_x (background, 4);
-      clutter_container_add_actor (CLUTTER_CONTAINER (hbox), background);
-
-      priv->background = background;
-
-      clutter_actor_set_reactive (background, TRUE);
-      g_signal_connect (background,
-                        "button-press-event",
-                        G_CALLBACK (mnb_toolbar_background_input_cb),
-                        self);
+      clutter_actor_set_size (shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
+      clutter_actor_set_y (shadow, TOOLBAR_HEIGHT);
+      clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), shadow);
+      clutter_actor_hide (shadow);
+      priv->shadow = shadow;
     }
+
+  g_signal_connect (self,
+                    "button-press-event",
+                    G_CALLBACK (mnb_toolbar_background_input_cb),
+                    self);
 
   /* create time and date labels */
   priv->time = nbtk_label_new ("");
@@ -2456,8 +2466,6 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
 
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
-
-  clutter_actor_set_size (priv->background, screen_width - 8, TOOLBAR_HEIGHT);
 
   clutter_actor_set_size (priv->lowlight,
                           screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);

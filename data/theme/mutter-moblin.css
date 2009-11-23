@@ -55,7 +55,7 @@ MnbSwitcher > *#switcher-table {
 }
 
 MnbToolbar {
-  border-image: url("file://panel/panel-shadow.png") 0 200 0 200 stretch;
+  border-image: url("file://panel/panel-background.png") 0 200 0 200 stretch;
 }
 
 MnbToolbarButton {
