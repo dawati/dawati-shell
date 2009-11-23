@@ -663,6 +663,8 @@ mpl_panel_client_noc_cb (DBusGProxy     *proxy,
        */
       g_debug ("Toolbar gone away, cleaning up");
       priv->toolbar_proxy = NULL;
+
+      mpl_panel_client_hide (panel);
       return;
     }
 
