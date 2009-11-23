@@ -1228,9 +1228,8 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
   priv->in_hide_animation = FALSE;
   g_signal_emit_by_name (panel, "hide-completed");
 
-  mutter_plugin_effect_completed (plugin, priv->mcw, MUTTER_PLUGIN_DESTROY);
-
   g_object_unref (priv->mcw);
+  mutter_plugin_effect_completed (plugin, priv->mcw, MUTTER_PLUGIN_DESTROY);
 }
 
 void
