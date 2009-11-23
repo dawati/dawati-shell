@@ -1095,75 +1095,6 @@ mnb_toolbar_show_completed_cb (MnbToolbar *toolbar, gpointer data)
   mnb_panel_oop_show ((MnbPanel*)panel);
 }
 
-/*
- * Ensure that the drop down does not stretch over any reserved strut at the
- * bottom of the screen (e.g., if VKB is present)
- */
-static void
-mnb_panel_oop_ensure_size (MnbPanelOop *panel)
-{
-  MnbPanelOopPrivate *priv  = panel->priv;
-  ClutterActor    *mcw = (ClutterActor*)priv->mcw;
-
-  if (mcw)
-    {
-      MetaRectangle  r;
-      MetaScreen    *screen;
-      MetaWorkspace *workspace;
-      MutterPlugin  *plugin = moblin_netbook_get_plugin_singleton ();
-
-      screen    = mutter_plugin_get_screen (plugin);
-      workspace = meta_screen_get_active_workspace (screen);
-
-      if (workspace)
-        {
-          gfloat x, y, w, h;
-          gint   xi, yi, wi, hi;
-          gint   max_height;
-
-          meta_workspace_get_work_area_all_monitors (workspace, &r);
-
-          clutter_actor_get_position (mcw, &x, &y);
-          clutter_actor_get_size (mcw, &w, &h);
-
-          xi  = (gint)x;
-          yi  = (gint)y;
-          wi  = (gint)w;
-          hi  = (gint)h;
-
-          /*
-           * Maximum height of the panel is the available working height plus
-           * the height of the panel shadow (we allow the shaddow to stretch out
-           * of the available area).
-           */
-          /* FIXME -- devise a way of doing the shadow */
-          max_height = r.y + r.height - yi /*+ MNB_PANEL_OOP_SHADOW_HEIGHT*/;
-
-          /*
-           * We have to test the size of the child here, as the external size
-           * might not be correct (e.g., when initially showing the Switcher the
-           * external size matches the size of the child, i.e., the styling is
-           * not yet applied.
-           *
-           * When initially showing the OOP panels, the child is not yet
-           * allocated, and will have size 0; in that case we force the resize
-           * otherwise the child would get allocated with the size specified at
-           * construction.
-           *
-           * We rest the size whenever the max height does not match that of the
-           * child, so that the window gets resized in both up and down (the
-           * height passed into mpl_panel_oop_set_height() is really a maximum
-           * allowable height, and if the panel client asked for height lesser
-           * than this, the original height request will be respected.
-           */
-          if (max_height != hi || r.width != wi)
-            {
-              mnb_panel_oop_set_size ((MnbPanel*)panel, r.width, max_height);
-            }
-        }
-    }
-}
-
 static void
 mnb_panel_oop_show_animate (MnbPanelOop *panel)
 {
@@ -1195,7 +1126,7 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
       priv->in_hide_animation = FALSE;
     }
 
-  mnb_panel_oop_ensure_size (panel);
+  mnb_panel_ensure_size ((MnbPanel*)panel);
 
   /*
    * Check the toolbar is visible, if not show it.

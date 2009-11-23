@@ -83,8 +83,6 @@ void          mnb_drop_down_get_footer_geometry (MnbDropDown *drop_down,
                                                  gfloat      *width,
                                                  gfloat      *height);
 
-void          mnb_drop_down_ensure_size (MnbDropDown *self);
-
 G_END_DECLS
 
 #endif /* _MNB_DROP_DOWN */

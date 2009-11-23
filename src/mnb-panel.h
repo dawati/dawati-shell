@@ -107,6 +107,8 @@ gboolean      mnb_panel_is_mapped         (MnbPanel *panel);
 
 void          mnb_panel_set_button        (MnbPanel *panel, NbtkButton *button);
 
+void          mnb_panel_ensure_size       (MnbPanel *panel);
+
 G_END_DECLS
 
 #endif /* _MNB_PANEL */

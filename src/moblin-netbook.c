@@ -270,7 +270,7 @@ on_urgent_notify_allocation_cb (ClutterActor *notify_urgent,
 static void
 moblin_netbook_workarea_changed_foreach (MnbDropDown *panel, gpointer data)
 {
-  mnb_drop_down_ensure_size (panel);
+  mnb_panel_ensure_size (panel);
 }
 
 /*

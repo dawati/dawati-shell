@@ -388,3 +388,40 @@ mnb_panel_hide_with_toolbar (MnbPanel *panel)
       mnb_panel_hide (panel);
     }
 }
+
+void
+mnb_panel_ensure_size (MnbPanel *panel)
+{
+  MetaRectangle  r;
+  MetaScreen    *screen;
+  MetaWorkspace *workspace;
+  MutterPlugin  *plugin = moblin_netbook_get_plugin_singleton ();
+
+  screen    = mutter_plugin_get_screen (plugin);
+  workspace = meta_screen_get_active_workspace (screen);
+
+  if (workspace)
+    {
+      gint  x, y;
+      guint w, h;
+      guint max_height;
+
+      meta_workspace_get_work_area_all_monitors (workspace, &r);
+
+      mnb_panel_get_position (panel, &x, &y);
+      mnb_panel_get_size (panel, &w, &h);
+
+      /*
+       * Maximum height of the panel is the available working height plus
+       * the height of the panel shadow (we allow the shadow to stretch out
+       * of the available area).
+       */
+      /* FIXME -- devise a way of doing the shadow */
+      max_height = r.y + r.height - y /*+ MNB_PANEL_OOP_SHADOW_HEIGHT*/;
+
+      if (max_height != h || r.width != w)
+        {
+          mnb_panel_set_size (panel, r.width, max_height);
+        }
+    }
+}
