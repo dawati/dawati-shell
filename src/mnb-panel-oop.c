@@ -1092,7 +1092,7 @@ mnb_toolbar_show_completed_cb (MnbToolbar *toolbar, gpointer data)
                                         mnb_toolbar_show_completed_cb,
                                         data);
 
-  mnb_panel_oop_show ((MnbPanel*)panel);
+  mnb_panel_oop_show_animate (panel);
 }
 
 static void
