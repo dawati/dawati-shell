@@ -40,6 +40,15 @@ _client_set_size_cb (MplPanelClient *client,
                           height);
 }
 
+static gboolean
+stage_button_press_event (ClutterStage          *stage,
+                          ClutterEvent          *event,
+                          MoblinNetbookNetpanel *netpanel)
+{
+  moblin_netbook_netpanel_button_press (netpanel);
+  return TRUE;
+}
+
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
@@ -115,6 +124,11 @@ main (int    argc,
     clutter_actor_set_size (stage, 1016, 500);
     clutter_actor_show_all (stage);
   }
+
+  g_signal_connect (stage,
+                    "button-press-event",
+                    (GCallback)stage_button_press_event,
+                    netpanel);
 
   clutter_main ();
 

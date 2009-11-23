@@ -71,6 +71,8 @@ void moblin_netbook_netpanel_clear (MoblinNetbookNetpanel *netpanel);
 void moblin_netbook_netpanel_set_panel_client (MoblinNetbookNetpanel *netpanel,
                                                MplPanelClient *panel_client);
 
+void moblin_netbook_netpanel_button_press (MoblinNetbookNetpanel *netpanel);
+
 G_END_DECLS
 
 #endif /* _MOBLIN_NETBOOK_NETPANEL_H */

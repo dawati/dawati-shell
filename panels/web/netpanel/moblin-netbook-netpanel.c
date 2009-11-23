@@ -509,6 +509,19 @@ moblin_netbook_netpanel_unmap (ClutterActor *actor)
     clutter_actor_unmap (CLUTTER_ACTOR (priv->favs_view));
 }
 
+void
+moblin_netbook_netpanel_button_press (MoblinNetbookNetpanel *netpanel)
+{
+  if (!netpanel)
+    return;
+
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
+
+  if (priv->entry)
+    mnb_netpanel_bar_button_press_cb(NULL, NULL,
+                                     MNB_NETPANEL_BAR (priv->entry));
+}
+
 /*
  * TODO -- we might need dbus API for launching things to retain control over
  * the application workspace; investigate further.
@@ -1193,12 +1206,6 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                     G_CALLBACK (netpanel_bar_go_cb), self);
   g_signal_connect (priv->entry, "button-clicked",
                     G_CALLBACK (netpanel_bar_button_clicked_cb), self);
-
-  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
-  g_signal_connect (CLUTTER_ACTOR (self), "button-press-event",
-                    G_CALLBACK (mnb_netpanel_bar_button_press_cb),
-                    MNB_NETPANEL_BAR (priv->entry));
-
 
   /* Construct title for tab preview section */
   priv->tabs_label = label = nbtk_label_new (_("Tabs"));
