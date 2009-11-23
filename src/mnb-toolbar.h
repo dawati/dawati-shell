@@ -68,7 +68,7 @@ typedef struct {
   void (*hide_completed) (MnbToolbar *toolbar);
 } MnbToolbarClass;
 
-typedef void (* MnbToolbarCallback) (MnbDropDown *panel, gpointer data);
+typedef void (* MnbToolbarCallback) (MnbPanel *panel, gpointer data);
 
 GType mnb_toolbar_get_type (void);
 

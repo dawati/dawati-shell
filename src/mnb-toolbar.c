@@ -2683,7 +2683,7 @@ mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
 
   for (i = 0; i < NUM_ZONES; i++)
     if (priv->panels[i])
-      callback ((MnbDropDown*)priv->panels[i], data);
+      callback (priv->panels[i], data);
 }
 
 gboolean

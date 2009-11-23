@@ -268,7 +268,7 @@ on_urgent_notify_allocation_cb (ClutterActor *notify_urgent,
 }
 
 static void
-moblin_netbook_workarea_changed_foreach (MnbDropDown *panel, gpointer data)
+moblin_netbook_workarea_changed_foreach (MnbPanel *panel, gpointer data)
 {
   mnb_panel_ensure_size (panel);
 }
@@ -1350,183 +1350,6 @@ meta_window_fullscreen_notify_cb (GObject    *object,
     fullscreen_app_removed (data, mw);
 }
 
-
-/*
- * SCIM functionality
- *
- * The basic problem is that the IM is implemented using X windows for the
- * preview, toolbar, and various other UI elements; this is fine for regular
- * applications, but does not work for UX Shell UI (the UI is always above
- * the windows, so, the IM windows are covered and non-interactive.
- *
- * To work around this, when a window of WM_CLASS Scim-bridge-gtk maps, we
- * create a clone and place it to the top of the stage, and we also punch a
- * hole into the stage input region so the window can get events.
- */
-
-/*
- * When the real window moves, move the clone.
- */
-static void
-scim_preview_allocation_cb (ClutterActor *source,
-                            GParamSpec   *pspec,
-                            ClutterActor *clone)
-{
-  gfloat x, y, w, h;
-
-  clutter_actor_get_position (source, &x, &y);
-  clutter_actor_get_size (source, &w, &h);
-
-  clutter_actor_set_position (clone, x, y);
-  clutter_actor_set_size (clone, w, h);
-}
-
-/*
- * When the original window is destroyed, destroy the clone.
- */
-static void
-scim_preview_destroy_cb (ClutterActor *source, ClutterActor *clone)
-{
-  ClutterActor *parent = clutter_actor_get_parent (clone);
-
-  if (parent)
-    clutter_container_remove_actor (CLUTTER_CONTAINER (parent), clone);
-  else
-    clutter_actor_destroy (clone);
-}
-
-static void
-scim_preview_raised_cb (MetaWindow *mw, ClutterActor *clone)
-{
-  clutter_actor_raise_top (clone);
-}
-
-/*
- * The following functions are trying to catch out possible corner cases where
- * our clone is left unpainted. Unfortunately, this still happens.
- */
-
-/*
- * When the inner texture alloation changes, make sure to queue redraw of the
- * clone. (Should be unnecessary.)
- */
-static void
-scim_preview_texture_allocation_cb (ClutterActor *source,
-                                    GParamSpec   *pspec,
-                                    ClutterActor *clone)
-{
-  clutter_actor_queue_redraw (clone);
-}
-
-/*
- * Make sure that any queued redraws on the inner texture get propagated to
- * our clone. (Should be unnecessary.)
- */
-static void
-scim_preview_queue_redraw_cb (ClutterActor *source,
-                              ClutterActor *origin,
-                              ClutterActor *clone)
-{
-  clutter_actor_queue_redraw (clone);
-}
-
-/*
- * Because of the way the live windows are implemented, hiding of MutterWindows
- * is accomplished by moving them into a special hidden group; so we have to
- * watch the parent-set signal, and if the parent matches the window group, we
- * make the actor visible, otherwise we hide it.
- *
- * (Should be unnecessary; the IM windows are not getting hidden from within
- * the compositor but from the IM control process, and as such undergo real
- * unmap.)
- */
-static void
-scim_preview_parent_set_cb (ClutterActor *source,
-                            ClutterActor *old_parent,
-                            ClutterActor *clone)
-{
-  MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
-  MetaScreen   *screen = mutter_plugin_get_screen (plugin);
-  ClutterActor *wgroup = mutter_get_window_group_for_screen (screen);
-  ClutterActor *parent = clutter_actor_get_parent (source);
-
-  if (parent != wgroup)
-    clutter_actor_hide (clone);
-  else
-    {
-      clutter_actor_show (clone);
-      clutter_actor_raise_top (clone);
-    }
-}
-
-/* missing prototype; for some reason frame.h is not installed. */
-Window meta_frame_get_xwindow (MetaFrame *frame);
-
-static void
-handle_panel_child (MutterPlugin *plugin, MutterWindow *mcw)
-{
-  MetaWindow   *mw      = mutter_window_get_meta_window (mcw);
-  ClutterActor *clone   = clutter_clone_new (CLUTTER_ACTOR(mcw));
-  MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay  *display = meta_screen_get_display (screen);
-  ClutterActor *stage   = mutter_get_stage_for_screen (screen);
-  gfloat        x, y;
-  Window        xid;
-
-  /*
-   * Make a clone and place it on the top of stage.
-   */
-  clutter_actor_get_position (CLUTTER_ACTOR (mcw), &x, &y);
-  clutter_actor_set_position (clone, x, y);
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               clone);
-  clutter_actor_raise_top (clone);
-
-  g_signal_connect (mutter_window_get_texture (mcw),
-                    "notify::allocation",
-                    G_CALLBACK (scim_preview_texture_allocation_cb),
-                    clone);
-
-  g_signal_connect (mw,
-                    "raised",
-                    G_CALLBACK (scim_preview_raised_cb),
-                    clone);
-
-  g_signal_connect (mcw, "notify::allocation",
-                    G_CALLBACK (scim_preview_allocation_cb),
-                    clone);
-
-  g_signal_connect (mcw, "destroy",
-                    G_CALLBACK (scim_preview_destroy_cb),
-                    clone);
-
-  g_signal_connect (mutter_window_get_texture (mcw),
-                    "queue-redraw",
-                    G_CALLBACK (scim_preview_queue_redraw_cb),
-                    clone);
-
-  g_signal_connect (mcw, "parent-set",
-                    G_CALLBACK (scim_preview_parent_set_cb),
-                    clone);
-
-  mnb_input_manager_push_window (mcw,
-                                 MNB_INPUT_LAYER_PANEL_TRANSIENTS);
-
-#if 0
-  if (meta_window_get_frame (mw))
-    xid = meta_frame_get_xwindow (meta_window_get_frame (mw));
-  else
-    xid = meta_window_get_xwindow (mw);
-
-  meta_error_trap_push (display);
-
-  XRaiseWindow (GDK_DISPLAY (), xid);
-
-  meta_error_trap_pop (display, TRUE);
-#endif
-}
-
 /*
  * Returns TRUE if the panel should close when this window appears.
  */
@@ -1580,56 +1403,14 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   type         = mutter_window_get_window_type (mcw);
   xwin         = mutter_window_get_x_window (mcw);
 
-  if (active_panel && MNB_IS_PANEL_OOP (active_panel) &&
-      mnb_panel_oop_owns_window (active_panel, mcw))
-    {
-      mutter_plugin_effect_completed (plugin, mcw,
-                                      MUTTER_PLUGIN_MAP);
-      handle_panel_child (plugin, mcw);
-      return;
-    }
-
   /*
    * The OR test must come before the type test since GTK_WINDOW_POPUP type
    * windows are both override redirect, but also have a _NET_WM_WINDOW_TYPE set
    * to NORMAL
    */
-  else if (mutter_window_is_override_redirect (mcw))
+  if (mutter_window_is_override_redirect (mcw))
     {
-      MetaWindow  *mw       = mutter_window_get_meta_window (mcw);
-      const gchar *wm_class = meta_window_get_wm_class (mw);
-
-      /*
-       * Handle the case of a IM preview window for a panel.
-       *
-       * We want to narrow this down before calling XGetProperty().
-       */
-      if (wm_class && !strcmp (wm_class, "Scim-panel-gtk"))
-        {
-          if (active_panel)
-            {
-              /*
-               * Let the compositor to finish up mapping of this window.
-               */
-              mutter_plugin_effect_completed (plugin, mcw,
-                                              MUTTER_PLUGIN_MAP);
-
-
-              handle_panel_child (plugin, mcw);
-              return;
-            }
-
-          /*
-           * We know by now that this window requires just a normal OR
-           * treatment, so exit here to avoid testing it against panels and
-           * system tray windows.
-           */
-          mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-          return;
-        }
-      else
-        mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-
+      mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
     }
   else if (type == META_COMP_WINDOW_DOCK)
     {
