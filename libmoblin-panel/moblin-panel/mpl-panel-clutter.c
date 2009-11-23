@@ -139,7 +139,6 @@ static void
 mpl_panel_clutter_show (MplPanelClient *self)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
-  Display                *xdpy = clutter_x11_get_default_display ();
 
   clutter_actor_show (priv->stage);
 }
@@ -148,7 +147,6 @@ static void
 mpl_panel_clutter_hide (MplPanelClient *self)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
-  Display                *xdpy = clutter_x11_get_default_display ();
 
   clutter_actor_hide (priv->stage);
 }
