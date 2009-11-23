@@ -417,7 +417,7 @@ mnb_panel_ensure_size (MnbPanel *panel)
        * of the available area).
        */
       /* FIXME -- devise a way of doing the shadow */
-      max_height = r.y + r.height - y /*+ MNB_PANEL_OOP_SHADOW_HEIGHT*/;
+      max_height = r.height - y /*+ MNB_PANEL_OOP_SHADOW_HEIGHT*/;
 
       if (max_height != h || r.width != w)
         {
