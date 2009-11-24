@@ -1719,10 +1719,12 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
       mutter_plugin_query_screen_size (priv->plugin,
                                        &screen_width, &screen_height);
 
+      /* FIXME */
       panel  = mnb_panel_oop_new (name,
-                                  TOOLBAR_X_PADDING, TOOLBAR_HEIGHT,
+                                  TOOLBAR_X_PADDING,
+                                  TOOLBAR_HEIGHT + 4,
                                   screen_width - TOOLBAR_X_PADDING * 2,
-                                  screen_height - TOOLBAR_HEIGHT);
+                                  screen_height - TOOLBAR_HEIGHT - 30);
 
       if (panel)
         {
@@ -2504,9 +2506,10 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
      * actor includes the shadow, so we need to add the extra bit by which the
      * shadow protrudes below the actor.
      */
+    /* FIXME */
     mnb_panel_set_size (panel,
                         screen_width - TOOLBAR_X_PADDING * 2,
-                        screen_height - TOOLBAR_HEIGHT);
+                        screen_height - TOOLBAR_HEIGHT - 4 - 30);
   }
 }
 

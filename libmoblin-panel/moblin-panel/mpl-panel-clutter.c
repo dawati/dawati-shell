@@ -55,11 +55,11 @@ enum
 
 struct _MplPanelClutterPrivate
 {
-  ClutterActor *stage;
-  Window        xwindow;
+  ClutterActor    *stage;
+  Window           xwindow;
 
-  ClutterActor *tracked_actor;
-  guint         height_notify_cb;
+  ClutterActor    *tracked_actor;
+  guint            height_notify_cb;
 };
 
 static void
@@ -261,7 +261,7 @@ mpl_panel_clutter_constructed (GObject *self)
   /* Load a base style for widgets used in the Mpl panels */
   mpl_panel_clutter_load_base_style ();
 
-  clutter_actor_hide (priv->stage);
+  clutter_actor_hide (stage);
 }
 
 MplPanelClient *
@@ -298,6 +298,7 @@ mpl_panel_clutter_actor_height_notify_cb (GObject    *gobject,
   guint           height;
 
   height = (guint) clutter_actor_get_height (actor);
+
   mpl_panel_client_set_height_request (panel, height);
 }
 
@@ -449,4 +450,12 @@ mpl_panel_clutter_setup_events_with_gtk (MplPanelClient *panel)
     mpl_panel_clutter_setup_events_with_gtk_for_xid (xid);
 
     mpl_panel_clutter_load_base_style ();
+}
+
+void
+mpl_panel_clutter_set_child (MplPanelClutter *panel, ClutterActor *child)
+{
+  MplPanelClutterPrivate *priv = panel->priv;
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->stage), child);
 }

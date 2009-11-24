@@ -32,6 +32,7 @@
 #include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"
 #include "notifications/mnb-notification-gtk.h"
+#include "mnb-panel-frame.h"
 
 #include <compositor-mutter.h>
 #include <display.h>
@@ -541,6 +542,50 @@ moblin_netbook_plugin_constructed (GObject *object)
 }
 
 static void
+moblin_netbook_panel_frame_footer_cb (MnbPanelFrame *frame, MutterWindow *mcw)
+{
+  MutterPlugin               *plugin  = moblin_netbook_get_plugin_singleton ();
+  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  Window                      xwin    = mutter_window_get_x_window (mcw);
+  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
+  MnbPanel                   *panel;
+
+  if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
+    {
+      mnb_panel_hide (panel);
+    }
+}
+
+static MutterShadow *
+moblin_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
+{
+  MetaCompWindowType type;
+
+  type = mutter_window_get_window_type (mcw);
+
+  if (type == META_COMP_WINDOW_DOCK)
+    {
+      MutterShadow *shadow = mutter_shadow_new ();
+
+      shadow->actor = (ClutterActor*) mnb_panel_frame_new ();
+
+      g_signal_connect (shadow->actor,
+                        "footer-clicked",
+                        G_CALLBACK (moblin_netbook_panel_frame_footer_cb),
+                        mcw);
+
+      shadow->attach_left   = -4;
+      shadow->attach_top    = -4;
+      shadow->attach_right  =  4;
+      shadow->attach_bottom = 38;
+
+      return shadow;
+    }
+
+  return NULL;
+}
+
+static void
 moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
@@ -561,6 +606,7 @@ moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
   plugin_class->kill_effect      = kill_effect;
   plugin_class->plugin_info      = plugin_info;
   plugin_class->xevent_filter    = xevent_filter;
+  plugin_class->get_shadow       = moblin_netbook_get_shadow;
 
   g_type_class_add_private (gobject_class, sizeof (MoblinNetbookPluginPrivate));
 }
@@ -1424,6 +1470,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * effect completes, we have to first let the compositor to do its
            * thing, and only then impose our will on it.
            */
+          g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL);
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
         }

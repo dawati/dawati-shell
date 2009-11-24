@@ -32,20 +32,24 @@
 static void
 make_window_content (MplPanelClutter *panel)
 {
-  ClutterActor *stage = mpl_panel_clutter_get_stage (panel);
-  ClutterActor *label;
-  ClutterColor  white = {0xff, 0xff, 0xff, 0xff};
-  ClutterColor  black = {0, 0, 0, 0xff};
+  ClutterActor     *stage = mpl_panel_clutter_get_stage (panel);
+  ClutterActor     *label;
+  ClutterColor      black = {0, 0, 0, 0xff};
+  ClutterColor      red =   {0xff, 0, 0, 0xff};
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &white);
-
+#if 0
   label = clutter_text_new_with_text ("Sans 16pt", "This is a clutter panel");
   clutter_text_set_color  (CLUTTER_TEXT (label), &black);
   clutter_text_set_editable (CLUTTER_TEXT (label), TRUE);
 
   clutter_stage_set_key_focus (CLUTTER_STAGE (stage), label);
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+#else
+  label = clutter_rectangle_new_with_color (&black);
+  clutter_actor_set_size (label, 50.0,50.0);
+  clutter_actor_show (label);
+#endif
+  mpl_panel_clutter_set_child (panel, label);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), &red);
 }
 
 int

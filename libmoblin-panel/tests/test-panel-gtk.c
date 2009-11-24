@@ -55,9 +55,7 @@ button_clicked_cb (GtkButton *button, gpointer data)
 static void
 make_window_content (MplPanelGtk *panel)
 {
-  GtkWidget *window, *table, *button, *old_child, *entry;
-
-  window = mpl_panel_gtk_get_window (panel);
+  GtkWidget *table, *button, *entry, *toplevel;
 
   table = gtk_table_new (5, 3, TRUE);
 
@@ -72,16 +70,14 @@ make_window_content (MplPanelGtk *panel)
   gtk_entry_set_text (GTK_ENTRY (entry), "test");
   gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, 3, 4);
 
-  gtk_window_set_focus (GTK_WINDOW (window), entry);
-
-  old_child = gtk_bin_get_child (GTK_BIN (window));
-
-  if (old_child)
-    gtk_container_remove (GTK_CONTAINER (window), old_child);
-
   gtk_widget_show_all (table);
 
-  gtk_container_add (GTK_CONTAINER (window), table);
+  mpl_panel_gtk_set_child (panel, table);
+
+  toplevel = gtk_widget_get_toplevel (table);
+
+  if (GTK_WIDGET_TOPLEVEL (toplevel) && GTK_IS_WINDOW (toplevel))
+    gtk_window_set_focus (GTK_WINDOW (toplevel), entry);
 }
 
 /*

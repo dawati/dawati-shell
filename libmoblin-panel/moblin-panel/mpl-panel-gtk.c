@@ -23,6 +23,7 @@
  */
 
 #include <gdk/gdkx.h>
+#include <math.h>
 
 #include "mpl-panel-gtk.h"
 
@@ -41,6 +42,7 @@ enum
 struct _MplPanelGtkPrivate
 {
   GtkWidget *window;
+  GtkWidget *child;
 };
 
 static void
@@ -166,10 +168,9 @@ mpl_panel_gtk_constructed (GObject *self)
   gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DOCK);
   gtk_window_stick (GTK_WINDOW (window));
 
-#if 0
-  gtk_window_set_keep_above (GTK_WINDOW (window), TRUE);
-#endif
-
+  /*
+   * Realize the window so we can get the xid.
+   */
   gtk_widget_realize (window);
 
   g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
@@ -193,9 +194,24 @@ mpl_panel_gtk_new (const gchar *name,
   return panel;
 }
 
+void
+mpl_panel_gtk_set_child (MplPanelGtk *panel, GtkWidget *child)
+{
+  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (panel)->priv;
+
+  if (priv->child)
+    gtk_container_remove (GTK_CONTAINER (priv->window), priv->child);
+
+  priv->child = child;
+
+  gtk_container_add (GTK_CONTAINER (priv->window), child);
+}
+
 GtkWidget *
 mpl_panel_gtk_get_window (MplPanelGtk *panel)
 {
-  return panel->priv->window;
+  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (panel)->priv;
+
+  return priv->window;
 }
 

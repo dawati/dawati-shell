@@ -94,6 +94,8 @@ void          mpl_panel_clutter_init_lib (gint *argc, gchar ***argv);
 void          mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv);
 void          mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid);
 void          mpl_panel_clutter_setup_events_with_gtk (MplPanelClient *panel);
+void          mpl_panel_clutter_set_child (MplPanelClutter *panel,
+                                           ClutterActor    *child);
 
 G_END_DECLS
 

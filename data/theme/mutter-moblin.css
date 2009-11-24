@@ -311,7 +311,7 @@ NbtkIcon.switcher-application-close-button:hover {
   padding: 15;
 }
 
-MnbPanel, MnbDropDown, MnbSwitcher {
+MnbPanelFrame, MnbDropDown, MnbSwitcher {
   border-image: url("file://drop-down/panel_shadow.png") 4 8 14 8;
   padding: 4 4 8 4;
 }

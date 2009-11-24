@@ -28,6 +28,8 @@ moblin_netbook_la_SOURCES  = \
 				mnb-toolbar-button.h            \
 				mnb-panel.c         		\
 				mnb-panel.h			\
+				mnb-panel-frame.c         	\
+				mnb-panel-frame.h		\
 				mnb-panel-oop.c                 \
 				mnb-panel-oop.h
 

@@ -74,7 +74,8 @@ MplPanelClient *mpl_panel_gtk_new   (const gchar *name,
                                      const gchar *button_style,
                                      gboolean     with_toolbar_service);
 
-GtkWidget *mpl_panel_gtk_get_window (MplPanelGtk *panel);
+GtkWidget *     mpl_panel_gtk_get_window (MplPanelGtk *panel);
+void            mpl_panel_gtk_set_child (MplPanelGtk *panel, GtkWidget *child);
 
 G_END_DECLS
 
